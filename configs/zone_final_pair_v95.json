@@ -1,0 +1,54 @@
+{
+  "schema": "ugrp.final_pair_heldout.v95",
+  "execution_bundle_id": "zone-final-pair-v95",
+  "status": "DRAFT_UNSEALED",
+  "workflow_id": "zone-final-pair-heldout-v95",
+  "workflow_version": "3.7.0",
+  "check": "calibration-unloaded",
+  "maps": [
+    "zone_wide_door_geometry_v3",
+    "zone_wide_corridor_final_v3"
+  ],
+  "robots": [
+    "r1",
+    "r2"
+  ],
+  "seed": 911,
+  "collection_role": "HELD_OUT_VALIDATION",
+  "training_eligible": false,
+  "teacher_only": true,
+  "start_xy_yaw": {
+    "zone_wide_door_geometry_v3": {
+      "r1": [
+        3.75,
+        -1.85,
+        0.35
+      ],
+      "r2": [
+        0.65,
+        -1.55,
+        -0.55
+      ]
+    },
+    "zone_wide_corridor_final_v3": {
+      "r1": [
+        4.15,
+        -1.4,
+        -0.35
+      ],
+      "r2": [
+        0.85,
+        -1.1,
+        0.55
+      ]
+    }
+  },
+  "schedule_family": "v88 unloaded 10s signed steps + PRBS31",
+  "robot_model": "masterpi_v3",
+  "render_profile": "floor_light_v1",
+  "contact_profile": "cargo_noslip_v1",
+  "weld": "off",
+  "sensors": {
+    "ultrasonic_front": "off"
+  }
+}

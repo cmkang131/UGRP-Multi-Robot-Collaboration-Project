@@ -1,0 +1,195 @@
+{
+  "state": "draft_unfrozen_no_confirmatory_execution",
+  "date": "2026-09-30",
+  "review_branch_sha": "26b300b954fcb0079616a05a0ff094b851790b56",
+  "parent_reviewed_sha": "8ae2237ffbc72e0bcff382654f75d63bc4f3203d",
+  "branch": "codex/stall-d1-prereg",
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "pytest": "9.1.1",
+    "omp_openblas_mkl_threads": 1
+  },
+  "verification": {
+    "exit_code": 0,
+    "passed": 120,
+    "d1_tests": 54,
+    "ci_sharding_tests": 66,
+    "test_command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_stall_detector_d1.py",
+      "tests/test_ci_sharding.py",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "guard": "scripts.run_ci_tests.run_locked with local_lock_root; released after each run",
+    "new_tests_failed_before_fix": 8,
+    "initial_failures": {
+      "jitter_status": 6,
+      "preregistration_contract": 1,
+      "missing_evaluation_module": 1
+    },
+    "syntax": "passed",
+    "local_markdown_links": "passed"
+  },
+  "targeted_mutations": {
+    "command": [
+      "python",
+      "experiments/2026-09-30-stall-detector-d1/review_mutations.py"
+    ],
+    "killed": 5,
+    "total": 5,
+    "names": [
+      "relax_30_to_24_and_drop_start_kind",
+      "onset_only_matching_ignores_recovery",
+      "relax_95_to_80",
+      "omit_incomplete",
+      "omit_posthoc_freeze"
+    ]
+  },
+  "statistics": {
+    "z": 1.9599639845400534,
+    "wilson": [
+      {
+        "detected": 22,
+        "n": 24,
+        "sensitivity": 0.9166666666666666,
+        "two_sided_95_wilson_lower": 0.741511978067893
+      },
+      {
+        "detected": 27,
+        "n": 30,
+        "sensitivity": 0.9,
+        "two_sided_95_wilson_lower": 0.7437891742081593
+      },
+      {
+        "detected": 24,
+        "n": 30,
+        "sensitivity": 0.8,
+        "two_sided_95_wilson_lower": 0.6269430358685176
+      }
+    ],
+    "zero_of_60_one_sided_exact_95_upper": 0.04870291331009746,
+    "method": "direct NormalDist and Wilson expression; no project statistical function"
+  },
+  "timestamp_only_reproduction": {
+    "image_score": 1.0,
+    "timestamp_jitter_s": [
+      -0.1,
+      0.1
+    ],
+    "stable_tie_rule": "smaller original frame index",
+    "rows": [
+      {
+        "command_s": 60.0,
+        "rng": 93001,
+        "valid": 223,
+        "scheduled_after_reference": 284,
+        "fraction": 0.7852112676056338,
+        "old_status": "EVALUATED",
+        "fixed_status": "INSUFFICIENT_COVERAGE"
+      },
+      {
+        "command_s": 60.0,
+        "rng": 93002,
+        "valid": 224,
+        "scheduled_after_reference": 284,
+        "fraction": 0.7887323943661971,
+        "old_status": "EVALUATED",
+        "fixed_status": "INSUFFICIENT_COVERAGE"
+      },
+      {
+        "command_s": 60.0,
+        "rng": 93003,
+        "valid": 231,
+        "scheduled_after_reference": 284,
+        "fraction": 0.8133802816901409,
+        "old_status": "EVALUATED",
+        "fixed_status": "INSUFFICIENT_COVERAGE"
+      },
+      {
+        "command_s": 90.0,
+        "rng": 93001,
+        "valid": 349,
+        "scheduled_after_reference": 434,
+        "fraction": 0.804147465437788,
+        "old_status": "EVALUATED",
+        "fixed_status": "INSUFFICIENT_COVERAGE"
+      },
+      {
+        "command_s": 90.0,
+        "rng": 93002,
+        "valid": 341,
+        "scheduled_after_reference": 434,
+        "fraction": 0.7857142857142857,
+        "old_status": "EVALUATED",
+        "fixed_status": "INSUFFICIENT_COVERAGE"
+      },
+      {
+        "command_s": 90.0,
+        "rng": 93003,
+        "valid": 350,
+        "scheduled_after_reference": 434,
+        "fraction": 0.8064516129032258,
+        "old_status": "EVALUATED",
+        "fixed_status": "INSUFFICIENT_COVERAGE"
+      }
+    ],
+    "scope": "synthetic timing arithmetic; not new physical or detection-performance data"
+  },
+  "scope": {
+    "physics_simulation_render_runs": 0,
+    "model_calls": 0,
+    "controller_changes": false,
+    "new_cohort_results": false,
+    "raw_frames_loaded": false,
+    "tensorboard_conversion": false,
+    "merge": false,
+    "seal": false,
+    "unverified": [
+      "full CI",
+      "original-frame replay",
+      "confirmatory acceptance",
+      "stage manipulation feasibility",
+      "GT window-label and case aggregation adapters",
+      "physical or E2E success"
+    ]
+  },
+  "files": {
+    "experiments/2026-09-30-stall-detector-d1/d1_detector.py": {
+      "bytes": 9954,
+      "sha256": "0b788243cee404776bae86090ffb1f53b6a5b4219602e9a9acd17ab5213c5b66"
+    },
+    "experiments/2026-09-30-stall-detector-d1/d1_evaluation.py": {
+      "bytes": 3914,
+      "sha256": "c097bb339f569872d46847459d18565d8f117ab397baabf96d323686574853c4"
+    },
+    "experiments/2026-09-30-stall-detector-d1/review_mutations.py": {
+      "bytes": 3023,
+      "sha256": "e5b78c5f445963175f1e1ff6bdc60754c5353e4459bf1df4e16a410286dc4d1a"
+    },
+    "experiments/2026-09-30-stall-detector-d1/PREREG_DRAFT.md": {
+      "bytes": 23361,
+      "sha256": "976a529498f5646f3b60887c817810d5db1f8d4a8cf1ff32f3c2d95bb9172fbc"
+    },
+    "experiments/2026-09-30-stall-detector-d1/STAGING_PLAN.md": {
+      "bytes": 10463,
+      "sha256": "500bc6b1143396bb8099921910c4209b8dd165d372811f765ff2f6623b58a9ee"
+    },
+    "experiments/2026-09-30-stall-detector-d1/README.md": {
+      "bytes": 7107,
+      "sha256": "b131921df02954878616a7a2e1f6ae6761aab087710cbf2f146e1c74addfacd5"
+    },
+    "experiments/2026-09-30-stall-detector-d1/REVIEW_RESPONSE.md": {
+      "bytes": 7509,
+      "sha256": "5cd8869ae4fbd454888a5e857e22d5cb1a484ceabe37522706896ae6cc81b05d"
+    },
+    "tests/test_stall_detector_d1.py": {
+      "bytes": 20562,
+      "sha256": "e8b120d9d0944699e65e69c5ee3010dfe93d0a3a781357cf8b0fe14fe0047723"
+    }
+  }
+}
