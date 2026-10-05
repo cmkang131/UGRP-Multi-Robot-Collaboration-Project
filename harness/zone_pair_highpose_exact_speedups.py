@@ -38,6 +38,12 @@ PF, its random stream or any frozen file. A set is chosen by name; 'none' is the
     render sees the same physics state, the same GL calls run in the same order on the same context,
     and each output file receives the same rows in the same order. Only the interleaving of writes to
     DIFFERENT files changes. A pending r2 is completed before any later backend call.
+
+``v98-exact-v3`` = v1 + ``pf_geometry_shared`` (CANDIDATE: adopt only after a full-run byte comparison)
+    ``vision_loc.expected_rows`` replaced by the bit-identical rewrite in
+    ``harness.zone_pair_highpose_pf_geometry_shared`` (shared bottom/top trace work, subset corner times);
+    refused unless the frozen functions' source hashes to the recorded value. Offline: ~45 % less time per
+    P=2000 call, 110 inputs and a 400-frame replay byte-equal.
 """
 from __future__ import annotations
 
@@ -46,7 +52,8 @@ import functools
 import numpy as np
 
 SETS = {'none': (), 'v98-exact-v1': ('expected_memo', 'drive_kernel', 'schedule_memo'),
-        'v98-exact-v2': ('expected_memo', 'drive_kernel', 'schedule_memo', 'render_pipeline')}
+        'v98-exact-v2': ('expected_memo', 'drive_kernel', 'schedule_memo', 'render_pipeline'),
+        'v98-exact-v3': ('expected_memo', 'drive_kernel', 'schedule_memo', 'pf_geometry_shared')}
 VERSION = 'ugrp.v98_exact_speedups.v1'
 # sha256 of inspect.getsource(sim.final_pair_v3.PhysicsBackend.capture) whose per-robot body render_pipeline copies
 CAPTURE_SOURCE_SHA256 = 'fd76fe25a67bd1a9dc1c2cf80eee900a6912bc85fc0b0fd1e01a8882cf1d0cad'
@@ -132,6 +139,9 @@ def install(name, record=None):
 
     if 'render_pipeline' in items:
         undo.append(_install_render_pipeline(record))
+    if 'pf_geometry_shared' in items:
+        from harness import zone_pair_highpose_pf_geometry_shared as geometry
+        undo.append(geometry.install(record))
 
     def uninstall():
         while undo:
