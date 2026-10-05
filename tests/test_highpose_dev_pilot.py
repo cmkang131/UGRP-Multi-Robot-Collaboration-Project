@@ -31,6 +31,9 @@ V102_PATH = (Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-loade
 V104_SHA = 'a04371f614bd7f6f7583ef4f4121abce1c337fd5652899dbfe0fe6df1703f926'
 V104_PATH = (Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-loaded-rest-calibration-v104'/'products'
              /'calibration_dev_pilot_loaded_v102_rest_v104.json')
+NOISE_SHA = 'a75fc9325f8a8b89a158c2be0872cebfd4d11c8d2a7482c720eb9e1f99c41501'
+NOISE_PATH = (Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-loaded-rest-calibration-v104'/'products_noise'
+              /'calibration_dev_pilot_loaded_v102_rest_noise.json')
 V101 = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-unloaded-gain-calibration-v101'/'products'
 C_PATH = V101/'C'/'calibration_dev_pilot_unloaded_v101.json'
 BASE_COPY = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-03-v92-dev-pilot'/'calibration_dev_pilot.json'
@@ -67,7 +70,7 @@ def test_registry_keeps_measured_list_empty_and_admits_one_exact_dev_sha():
     adm, _ = c.d5_admission()
     assert adm['completed_measurements'] == [] and c.registry()['runnable'] is False
     dev = c.registry()['dev_pilot']
-    assert dev['admitted_calibration_sha256'] == [REAL_SHA, C_SHA, V102_SHA, V104_SHA]
+    assert dev['admitted_calibration_sha256'] == [REAL_SHA, C_SHA, V102_SHA, V104_SHA, NOISE_SHA]
     assert dev['promotable'] is False and dev['run_status'] == 'FUNCTIONAL_DEV'
     assert dev['tensorboard_cohort'] != 'FUNCTIONAL_DEV_REPLAY' and dev['cohort_role'] != 'FUNCTIONAL_DEV_REPLAY'
 
@@ -824,3 +827,23 @@ def test_loaded_rest_v104_differs_from_v102_only_in_rest_noise_and_its_record():
     assert rec['rest_noise'] is False and all(rec['result'][r]['rms_m'] < 1e-3 for r in ('r1', 'r2'))
     assert cal['parent_calibration'] == {'path': str(V102_PATH.relative_to(Path(__file__).resolve().parents[1])),
                                          'sha256': V102_SHA}
+
+
+# ---- loaded noise_abs/noise_rel by the #376 fit_noise rule (v102 FIT split, 2026-10-05)
+def test_loaded_noise_calibration_is_admitted_and_differs_only_in_forward_left_noise():
+    source = c.registry()['dev_pilot']['admitted_source'][NOISE_SHA]
+    assert (Path(__file__).resolve().parents[1]/source['path']) == NOISE_PATH and c.base.sha(NOISE_PATH) == NOISE_SHA
+    assert source['parent']['sha256'] == V104_SHA
+    cal = c.admitted_calibration(str(NOISE_PATH), NOISE_SHA, MAPS[0])
+    assert cal['missing'] == [] and cal['status'] == c.DEV_PILOT
+    new, base = json.loads(NOISE_PATH.read_text()), json.loads(V104_PATH.read_text())
+    changed = {k for k in set(new) | set(base) if new.get(k) != base.get(k)}
+    assert changed == {'params', 'field_provenance', 'parent_calibration', 'loaded_noise_calibration', 'source_sha',
+                       'dev_manifest_sha256'}
+    n, o = new['params']['motion_loaded'], base['params']['motion_loaded']
+    assert {k for k in set(n) | set(o) if n.get(k) != o.get(k)} == {'noise_abs', 'noise_rel'}
+    assert n['noise_abs'][:2] == [0.002, 0.002] and n['noise_abs'][2] == o['noise_abs'][2]   # floor; turn unchanged
+    assert n['noise_rel'][2] == o['noise_rel'][2] and all(0 < v < .05 for v in n['noise_rel'][:2])
+    assert n['rest_noise'] is False
+    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+        c.require_promotable({'calibration_sha256': NOISE_SHA})
