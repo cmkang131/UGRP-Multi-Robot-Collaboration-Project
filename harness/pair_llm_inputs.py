@@ -6,7 +6,7 @@ robots: ``channel_section`` lists r3, ``allowed_edges`` is a 3-mesh, ``_build_sh
 two-robot payload therefore cannot pass ``validate_robot_payload`` and the study code is
 frozen and hashed into earlier bundles. This module is the thin pair layer instead:
 
-* its own payload schema (``ugrp.pair_llm_call_input.v2``), pair channel section
+* its own payload schema (``ugrp.pair_llm_call_input.v3``), pair channel section
   (``can_send_to`` is the partner only) and ``team_size = 2`` order sheet;
 * its validator REUSES the study's closed-schema checks (forbidden keys, non-ASCII keys,
   evaluation-only values, static-map / order-sheet / history / inbox / rgb-ref shapes, pinned
@@ -33,6 +33,7 @@ from dataclasses import dataclass
 
 from harness import pair_llm_billing as billing
 from harness import pair_llm_status as status
+from harness.pair_llm_stop_adapter import unknown_belief, belief_violations, window_violations
 from harness import zone_study_contract as zc
 from harness import zone_study_prompts_ko as pk
 from harness import zone_study_protocol as zp
@@ -41,12 +42,12 @@ from harness.pair_llm_prompts_ko import (PAIR_CONDITIONS, PAIR_ROBOTS, PAIR_ROLE
 from harness.zone_map_schematic import digest
 from harness.zone_study_inputs import INPUT_PROFILE, OrderSheetSource, vocabulary
 
-PAYLOAD_SCHEMA = 'ugrp.pair_llm_call_input.v2'      # v2: + own_status (closed own skill/claim status)
+PAYLOAD_SCHEMA = 'ugrp.pair_llm_call_input.v3'      # v3: closed own-belief bands and decision-window times
 REQUEST_SCHEMA = 'ugrp.pair_llm_request.v2'         # v2: billed_tokens carries the image bill
 BASE_KEYS = ('schema', 'request_id', 'robot_id', 'condition', 'sim_time_s', 'static_map', 'order_sheet',
-             'own_rgb_refs', 'own_command_history', 'self_belief', 'own_status', 'channel')
+             'own_rgb_refs', 'own_command_history', 'self_belief', 'own_status', 'own_belief', 'decision_window', 'channel')
 REQUIRED_KEYS = ('schema', 'request_id', 'robot_id', 'condition', 'sim_time_s', 'static_map', 'order_sheet',
-                 'own_rgb_refs', 'own_command_history', 'own_status', 'channel')
+                 'own_rgb_refs', 'own_command_history', 'own_status', 'own_belief', 'decision_window', 'channel')
 IMAGE_OWN, IMAGE_MAP = pk.IMAGE_OWN, pk.IMAGE_MAP
 JPEG, PNG = 'image/jpeg', 'image/png'
 
@@ -131,6 +132,7 @@ def _trim(values: Sequence | None, limit: int) -> list:
 def build_payload(*, robot_id: str, condition: str, request_id: str, sim_time_s: float, static_map: Mapping,
                   order_sheet: Mapping, own_rgb_refs: Sequence[Mapping], own_command_history: Sequence[Mapping],
                   self_belief: Mapping, own_status: Mapping, inbox: Sequence[Mapping] | None = None,
+                  own_belief: Mapping | None = None, decision_window: Mapping | None = None,
                   pinned: Mapping | None = None, profile: Mapping = INPUT_PROFILE) -> dict:
     """One per-call payload of a pair robot, validated before it is returned."""
     _check_condition(condition)
@@ -142,6 +144,8 @@ def build_payload(*, robot_id: str, condition: str, request_id: str, sim_time_s:
                'own_rgb_refs': _trim(own_rgb_refs, int(profile['own_rgb_frames'])),
                'own_command_history': _trim(own_command_history, int(profile['command_history_entries'])),
                'self_belief': copy.deepcopy(dict(self_belief)), 'own_status': copy.deepcopy(dict(own_status)),
+               'own_belief': copy.deepcopy(unknown_belief() if own_belief is None else dict(own_belief)),
+               'decision_window': copy.deepcopy(decision_window),
                'channel': pair_channel_section(condition, robot_id)}
     if zp.spec(study_spec(condition)).channel_open:
         payload['inbox'] = _trim(inbox, int(profile['inbox_messages']))
@@ -183,6 +187,8 @@ def payload_violations(payload: object, *, pinned: Mapping | None = None) -> lis
     out.extend(zc.forbidden_key_hits(payload))
     out.extend(zc.non_ascii_keys(payload))
     out.extend(zc._value_hits(payload))
+    out.extend(belief_violations(payload.get('own_belief')))
+    out.extend(window_violations(payload.get('decision_window'), time_s))
     now = time_s if isinstance(time_s, (int, float)) and not isinstance(time_s, bool) else None
     out.extend(zc._static_map_hits(payload))
     out.extend(zc._order_sheet_hits(payload))

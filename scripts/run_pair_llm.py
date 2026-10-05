@@ -97,7 +97,7 @@ def main(argv=None):
     if not args.execute:
         print(json.dumps(plan, ensure_ascii=False, indent=2))
         return 0
-    from harness import zone_final_pair_contract as skill_layer
+    from harness import zone_pair_highpose_contract as skill_layer
     if args.calibration:
         skill_layer.measured_calibration(args.calibration, args.calibration_sha256, plan_bundle['map_id'])
     check_source(args.expected_source_sha)

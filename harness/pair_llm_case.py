@@ -3,19 +3,21 @@
 The loop is ``scripts.run_final_pair_v3.run_case`` (non-collection branch) with three additions that exist
 only in the LLM arms and never in ``rule``:
 
-* the runtime is ``GatedRuntime`` (``Team.start`` behind a released-claim permit), not ``Runtime``;
+* the runtime is ``GatedHighRuntime`` (``Team.start`` behind a released-claim permit), not ``Runtime``;
 * each tick feeds the robot's OWN capture to its ``PairLink`` and drains its OWN executor events into the
   study scheduler, and the scheduler is advanced to the episode-relative tick time before the control step;
 * a ``PairTrial`` (two-robot study layer) runs the calls, the SIM cost charge, the message transport and
   the send ledger.
 
-The ``rule`` arm builds the unmodified ``Runtime`` and runs the identical sequence of ``eval_sample ->
+The ``rule`` arm builds the unmodified #363 HIGH ``Runtime`` and runs the identical sequence of ``eval_sample ->
 capture -> on_frames -> step -> arm_step -> advance_to`` calls as ``run_case``; a test pins that its issued
 commands equal ``run_case``'s for the same runtime and cap.
 
 Evaluation is write-only: ``backend.eval_sample()`` writes the private trajectory, and the judge reads it
 only AFTER the loop (``pair_llm_eval``). Nothing in this module reads a pose, a joint, a contact or a result
-during the run, and no robot-side module imports the evaluator.
+to choose actions during the run, and no robot-side module imports the evaluator.
+Own hook decisions are copied to evaluation records; the model-facing projection contains only closed own belief bands
+and window times.
 """
 from __future__ import annotations
 
@@ -171,8 +173,9 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
     """
     from harness.pair_llm_dispatch import PairLink, PairTrial
     from harness.pair_llm_eval import judge, read_trajectory, trial_metrics
-    from harness.pair_llm_runtime import GatedRuntime
-    from harness.zone_final_pair_runtime import Runtime
+    from harness.pair_llm_runtime import GatedHighRuntime
+    from harness.zone_pair_highpose_runtime import Runtime
+    from harness.pair_llm_stop_adapter import StopAdapter
     if condition not in contract.CONDITIONS or bundle['condition'] != condition:
         raise ValueError('condition differs from the bundle')
     if not 0 < float(cap_s) <= contract.CAP_S:
@@ -196,6 +199,7 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
               'failure_class': None}
     backend = runtime = trial = static = None
     links, wire, adapter, counts = {}, None, None, {r: {} for r in PAIR_ROBOTS}
+    stops = {}
     started_wall = time.time()
     try:
         static, _, _ = skill_layer.resolve(physics['map_id'])
@@ -206,14 +210,16 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
         start = backend.now
         backend.set_deadline(start + cap_s)
         result['reset_sim_s'] = reset
-        make = runtime_factory or (GatedRuntime if llm else Runtime)
+        make = runtime_factory or (GatedHighRuntime if llm else Runtime)
         kwargs = {'provider_factory': provider_factory} if provider_factory is not None else {}
         runtime = make(static, calibration, calibration_sha, seed=seed, **kwargs)
         runtime.initial_commands(start, backend.commands)
+        stops = {rid: StopAdapter(ex, condition=condition, origin_s=start)
+                 for rid, ex in getattr(runtime, 'actors', {}).items()}
         if llm:
             adapter, wire = adapter_factory(out)
             map_bundle = ms.map_bundle(physics['map_id'], landmark_detail=scenario.get('landmark_detail', 'full'))
-            links = {rid: PairLink(runtime, rid, origin_s=start) for rid in PAIR_ROBOTS}
+            links = {rid: PairLink(runtime, rid, origin_s=start, stop_adapter=stops[rid]) for rid in PAIR_ROBOTS}
             reg = contract.read_registry(root=root)
             from harness.zone_study_decisions import DecisionLimits
             trial = (trial_class or PairTrial)(
@@ -230,6 +236,7 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
             backend.eval_sample()                      # raw labels have no return channel into any selector
             frames = backend.capture()
             runtime.on_frames(backend.now, frames)
+            hook_events = [event for stop in stops.values() for event in stop.poll()]
             if llm:
                 for rid in PAIR_ROBOTS:
                     links[rid].observe(frames[rid][0])
@@ -240,6 +247,8 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
                     for rid in PAIR_ROBOTS:
                         for event in runtime.actors[rid].drain_events():
                             trial.on_executor_event(event, at_s=elapsed)
+                    for event in hook_events:
+                        trial.on_executor_event(event, at_s=elapsed)
                     trial.step_to(elapsed)
                 if health is not None:
                     health(trial)
@@ -272,6 +281,14 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
             or ('ENOSPC' if getattr(exc, 'errno', None) == errno.ENOSPC else 'HOST_ERROR')},
             failure_class=_study_failure_class(exc))
     finally:
+        try:
+            for stop in stops.values():
+                stop.poll()
+            result['stop_decisions'] = [row for stop in stops.values() for row in stop.decisions]
+            jsonl(out / 'stop_hook_events.jsonl', [row for stop in stops.values() for row in stop.events])
+            jsonl(out / 'stop_decisions.jsonl', result['stop_decisions'])
+        except Exception as exc:                  # noqa: BLE001 - preserve partial records and cleanup
+            result.update(status='HOST_ERROR', stop_record_error=str(exc))
         if runtime is not None:
             try:
                 write(out / 'student_record.json', runtime.record())

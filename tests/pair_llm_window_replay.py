@@ -30,6 +30,10 @@ class ReplayLink:
     def belief(self):
         return belief_skeleton()
 
+    def own_belief(self):
+        from harness.pair_llm_stop_adapter import unknown_belief
+        return unknown_belief()
+
     def job(self):
         return None if self.stopped else {'kind': 'pair_carry', 'order_id': 'cargoX', 'job_id': 'own-job'}
 

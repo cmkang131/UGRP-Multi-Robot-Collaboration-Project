@@ -30,9 +30,9 @@ def user(row):
 
 @pytest.fixture(scope='module')
 def peer_run(tmp_path_factory):
-    """One cooperative peer_nl run on the real GatedRuntime (blind provider): shared by the read-only tests."""
+    """Real GatedHighRuntime + blind provider; enough SIM time for two v4-prompt reply rounds."""
     tmp = tmp_path_factory.mktemp('peer')
-    result, out, model = run_arm(tmp, 'peer_nl', cap_s=12.)
+    result, out, model = run_arm(tmp, 'peer_nl', cap_s=14.)
     return result, out, model
 
 
@@ -161,7 +161,7 @@ def test_a_model_that_never_claims_keeps_the_scripted_start_closed(tmp_path):
 
 
 def test_rule_arm_uses_the_unmodified_runtime_and_the_llm_arms_the_gated_one(tmp_path, monkeypatch):
-    from harness import zone_final_pair_runtime as runtime_module
+    from harness import zone_pair_highpose_runtime as runtime_module
     created = []
     original = runtime_module.Runtime
 
@@ -231,7 +231,7 @@ def test_every_arm_has_the_same_case_cap_and_a_larger_one_is_refused(tmp_path):
     bundle = contract.bundle('rule', source_sha='0' * 40)
     with pytest.raises(ValueError):
         run_pair_case(bundle, tmp_path / 'toolong', condition='rule', seed=1, backend_factory=FakeBackend,
-                      calibration='x', calibration_sha='0' * 64, cap_s=301.)
+                      calibration='x', calibration_sha='0' * 64, cap_s=901.)
     with pytest.raises(ValueError):
         run_pair_case(bundle, tmp_path / 'wrongarm', condition='no_comm', seed=1, backend_factory=FakeBackend,
                       calibration='x', calibration_sha='0' * 64, cap_s=3.)
@@ -304,7 +304,7 @@ def test_sim_cost_is_charged_and_wall_time_is_recorded_apart(peer_run):
     study = json.loads((out / 'llm' / 'study_config.json').read_text())
     assert study['cost_params']['version'] == 'zone_sim_cost.v1' and study['cost_params']['provisional'] is True
     assert study['model_settings']['model'] == 'stub-pair-llm-v1' and study['model_settings']['temperature'] == 0.
-    assert study['prompt_version'] == 'ugrp.pair_llm_prompts_ko.v3' and study['robots'] == ['r1', 'r2']
+    assert study['prompt_version'] == 'ugrp.pair_llm_prompts_ko.v4' and study['robots'] == ['r1', 'r2']
     # the thinking charge moves the SIM clock; wall latency never does (the stub's wall latency is ~0 but nonzero)
     scheduler = rows(out / 'llm' / 'scheduler_events.jsonl')
     starts = [e for e in scheduler if e.get('kind') == 'call_start']
@@ -372,7 +372,7 @@ def test_cli_plans_without_running_and_refuses_missing_calibration_and_unfrozen_
     with pytest.raises(ValueError):
         cli.main(['--condition', 'rule', '--expected-source-sha', 'a' * 40, '--output', '/x'])
     with pytest.raises(ValueError):
-        cli.main(args[:-1] + ['--cap-s', '301', '--synthetic-plumbing-calibration'])
+        cli.main(args[:-1] + ['--cap-s', '901', '--synthetic-plumbing-calibration'])
     with pytest.raises(ValueError, match='expected source SHA'):      # nothing runs on an unfrozen source
         cli.main(args + ['--execute'])
 

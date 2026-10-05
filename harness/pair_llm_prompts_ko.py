@@ -27,7 +27,7 @@ from harness import zone_study_prompts_ko as pk
 from harness import zone_study_protocol as zp
 from harness import pair_llm_decisions as decisions
 
-PROMPT_VERSION = 'ugrp.pair_llm_prompts_ko.v3'
+PROMPT_VERSION = 'ugrp.pair_llm_prompts_ko.v4'
 PAIR_ROBOTS = ('r1', 'r2')
 PAIR_ROLES = {'r1': 'end_neg', 'r2': 'end_pos'}
 PAIR_CONDITIONS = ('no_comm', 'peer_nl')
@@ -40,7 +40,8 @@ PAIR_CONDITIONS = ('no_comm', 'peer_nl')
 STUDY_SPEC = {'no_comm': 'no_comm', 'peer_nl': 'peer_ko'}
 #: SIM seconds both claims must be within (``PairTeam.rendezvous_timeout_s``). A fixed rule
 #: of the task, stated identically in every arm.
-RENDEZVOUS_S = 5
+from harness.zone_pair_highpose_relook import RENDEZVOUS_TIMEOUT_S
+RENDEZVOUS_S = int(RENDEZVOUS_TIMEOUT_S)
 
 KO_PAIR_HEAD = '''당신은 로봇 {rid}입니다. 로봇 r1, r2는 한 팀의 동등한 동료입니다. 당신의 역할 이름은 {role}이고, \
 동료 {partner}의 역할 이름은 {partner_role}입니다. 역할은 로봇마다 고정되어 있습니다.
@@ -78,13 +79,23 @@ since_claim_s는 claim 뒤 지난 SIM초, refusals_since_last_call은 지난 호
 start_refused의 reason SELF_UNCERTAIN은 로봇이 자기 위치를 확신하지 못해 시작을 거절했다는 뜻입니다.
 {"kind": "look_around"}는 제자리에서 돌며 주변을 둘러보는 동작입니다. 위치를 다시 추정하는 데 도움이 될 수
 있지만 보장되지는 않습니다.
-own_status를 근거로 쓰면 decision_sources에는 own_commands로 적습니다.''' % {'window': RENDEZVOUS_S}
+own_status를 근거로 쓰면 decision_sources에는 own_commands로 적습니다.
+own_belief는 자기 영상·명령에서 나온 추정의 불확실성 띠와 마지막 위치 확인의 나이 구간입니다.
+동료 메시지의 추정을 자기 추정에 합치거나 정답으로 취급하지 마십시오.
+decision_window가 있으면 지금 열린 정지 판단 창입니다. 모든 시간은 사례 시작부터의 SIM초입니다.
+carry_decision 창에서는 continue 또는 set_down, post_look_decision 창에서는 regrasp 또는 look_again을
+선택할 수 있습니다. 창은 10 SIM초이며 set_down은 latch_until_sim_s까지 도착해야 합니다.
+기본 continue 행동은 새 정지 결정을 내리지 않으며 창 끝에 로봇 규칙이 적용됩니다.
+carry_decision의 continue와 post_look_decision의 regrasp는 자기 불확실성 안전 규칙을 무시할 수 없습니다.
+look_again은 로봇당 사례 1회, 정지점당 1회입니다. 창 밖이거나 너무 늦은 결정은 거절됩니다.''' % {'window': RENDEZVOUS_S}
 
 KO_PAIR_ACTION = '''- action: 당신 자신의 행동 하나입니다. 다음 중 하나를 씁니다.
   {"kind": "claim", "order_id": order_sheet의 order_id, "role": order_sheet.kinds의 roles 중 당신의 역할 이름,
    "destination_zone": order_sheet의 destination_zone}
   {"kind": "continue"}
   {"kind": "release", "order_id": 놓아줄 order_id}
+  {"kind": "carry_decision", "choice": "continue" 또는 "set_down"}  (해당 판단 창에서만)
+  {"kind": "post_look_decision", "choice": "regrasp" 또는 "look_again"}  (해당 판단 창에서만)
   {"kind": "look_around"}  (제자리에서 돌며 둘러봅니다. 위치를 다시 추정하는 데 도움이 될 수 있습니다. 실행 중인 작업이 없을 때만 시작됩니다)'''
 
 

@@ -28,6 +28,7 @@ from harness import pair_llm_billing as billing
 from harness import pair_llm_decisions as decisions
 from harness import pair_llm_inputs as pi
 from harness import pair_llm_status as status
+from harness.pair_llm_stop_adapter import StopAdapter
 from harness import zone_map_schematic as ms
 from harness import zone_study_integration as zi
 from harness import zone_study_offline as zo
@@ -54,11 +55,11 @@ PAIR_POLICY = CallPolicy(max_calls_per_actor=decisions.CALLS_PER_ACTOR,
                          max_retries=0)
 
 
-#: The one action kind the pair adds to the sealed study vocabulary (``zp.ROBOT_ACTION_KINDS``): the robot's own
+#: Pair-owned action kinds layered over the sealed study vocabulary (``zp.ROBOT_ACTION_KINDS``): the robot's own
 #: executor already exposes ``look_around()`` (a guarded wide own-camera look sweep; whether it recovers the pose is NOT
 #: verified, see the experiment README).
 LOOK_AROUND = 'look_around'
-PAIR_ACTION_KINDS = tuple(k for k in zp.ROBOT_ACTION_KINDS if k != 'wait') + (LOOK_AROUND,)
+PAIR_ACTION_KINDS = tuple(k for k in zp.ROBOT_ACTION_KINDS if k != 'wait') + (LOOK_AROUND,) + tuple(decisions.HOOK_ACTIONS)
 #: The two SIM clocks of one run's records. The harness (calls, decisions, caps, ``sim_s``) counts SIM seconds
 #: since the case reset; the backend and the robot executors count absolute SIM seconds, so the same instant reads
 #: ``reset_sim_s`` higher there (1.3 SIM s in the v99 smoke1, ``result.json`` ``reset_sim_s``).
@@ -75,9 +76,9 @@ CLOCKS = {
 
 
 def validate_reply(raw, **kwargs) -> dict:
-    """``zp.validate_reply`` plus ``{"kind": "look_around"}``, without editing the sealed study validator.
+    """``zp.validate_reply`` plus look_around and closed stop choices, without editing the sealed validator.
 
-    A look_around reply is checked by the sealed validator with a placeholder ``continue`` action (so the id,
+    A pair-only action is checked by the sealed validator with a placeholder ``continue`` action (so the id,
     sources, messages and every other rule apply unchanged) and the real action is put back afterwards.
     Anything else goes to the sealed validator exactly as before.
     """
@@ -88,12 +89,15 @@ def validate_reply(raw, **kwargs) -> dict:
     action = value.get('action') if isinstance(value, dict) else None
     if isinstance(action, dict) and action.get('kind') in ('wait', 'give_up'):
         raise zp.ProtocolError('this action is excluded from the first pair cohort')
-    if not (isinstance(action, dict) and action.get('kind') == LOOK_AROUND):
+    if not (isinstance(action, dict) and action.get('kind') in (LOOK_AROUND, *decisions.HOOK_ACTIONS)):
         return zp.validate_reply(raw, **kwargs)
-    if set(action) != {'kind'}:
+    if action['kind'] in decisions.HOOK_ACTIONS:
+        if set(action) != {'kind', 'choice'} or action['choice'] not in decisions.HOOK_ACTIONS[action['kind']]:
+            raise zp.ProtocolError('stop decision needs exactly kind and a registered choice')
+    elif set(action) != {'kind'}:
         raise zp.ProtocolError(f'{LOOK_AROUND} takes no other field')
     checked = zp.validate_reply({**value, 'action': {'kind': 'continue'}}, **kwargs)
-    checked['action'] = {'kind': LOOK_AROUND}
+    checked['action'] = dict(action)
     return checked
 
 
@@ -101,6 +105,8 @@ def pair_executor_plan(action, job, *, actor, orders) -> zi.Plan:
     """The study's action -> executor-call map, plus ``look_around`` -> the robot's own ``look_around()``."""
     if isinstance(action, Mapping) and action.get('kind') == LOOK_AROUND:
         return zi.Plan(LOOK_AROUND, ())
+    if isinstance(action, Mapping) and action.get('kind') in decisions.HOOK_ACTIONS:
+        return zi.Plan(action['kind'], (action['choice'],))
     return zi.executor_plan(action, job, actor=actor, orders=orders)
 
 
@@ -108,6 +114,8 @@ def pair_action_row(action):
     """Model action -> (package A action kind, arguments, order_id, role); ``look_around`` is an ``observe``."""
     if action['kind'] == LOOK_AROUND:
         return ('observe', {}, None, None)
+    if action['kind'] in decisions.HOOK_ACTIONS:
+        return ('noop', {}, None, None)
     return zo._action_row(action)
 
 
@@ -129,7 +137,7 @@ class PairLink:
     scripted ``Runtime.step`` submits it on the robot's next idle tick.
     """
 
-    def __init__(self, runtime, rid, *, origin_s=0.):
+    def __init__(self, runtime, rid, *, origin_s=0., stop_adapter=None):
         if rid not in PAIR_ROBOTS:
             raise ContractViolation(f'{rid!r} is not a pair robot {PAIR_ROBOTS}')
         self.robot_id, self._rt, self._ex = rid, runtime, runtime.actors[rid]
@@ -138,11 +146,13 @@ class PairLink:
         self.call_ref = None
         self.api_calls, self.abort_log = [], []
         self._counter = 0
-        self.decision_window = decisions.DecisionWindow()
+        self.stop_adapter = stop_adapter or StopAdapter(self._ex, condition='no_comm', origin_s=origin_s)
+        self.decision_window = self.stop_adapter.window
 
     # -- time and frames -----------------------------------------------------------------
     def set_origin(self, origin_s) -> None:
         self.origin_s = float(origin_s)
+        self.stop_adapter.origin_s = self.origin_s
 
     def tick(self, abs_now) -> None:
         self._abs_now = float(abs_now)
@@ -169,6 +179,9 @@ class PairLink:
     # -- own state -------------------------------------------------------------------------
     def belief(self):
         return self._ex.belief_projection()
+
+    def own_belief(self):
+        return self.stop_adapter.own_belief(self._abs_now)
 
     def job(self):
         job = self._ex.job
@@ -202,8 +215,12 @@ class PairLink:
         self.api_calls.append(copy.deepcopy(ack))
         return ack
 
-    def call(self, api, *args):
+    def call(self, api, *args, window_ref=None):
         ex = self._ex
+        if api in decisions.HOOK_ACTIONS:
+            verdict = self.stop_adapter.command(api, args[0], absolute_now=self._abs_now, window_ref=window_ref)
+            return self._ack(api, {'choice': args[0]}, verdict['accepted'],
+                             None if verdict['accepted'] else verdict['own_status'])
         if api == 'pair_carry':
             order_id, zone, partner = args
             arguments = {'order_id': ex._token(order_id), 'target_ref': ex._token(zone),
@@ -245,7 +262,6 @@ class PairTrial(zo.OfflineTrial):
     decision_end_reason = zi.IntegratedTrial.decision_end_reason
     end_state = zi.IntegratedTrial.end_state
     finish = zi.IntegratedTrial.finish
-    _remember_command = zi.IntegratedTrial._remember_command
     _arm_reask = zi.IntegratedTrial._arm_reask
     wakeups = zi.IntegratedTrial.wakeups
 
@@ -319,6 +335,7 @@ class PairTrial(zo.OfflineTrial):
         self._call_index = {a: 0 for a in PAIR_ROBOTS}
         self._observations = {a: 0 for a in PAIR_ROBOTS}
         self._snapshots, self._jobs, self._claim_entries = {}, {}, {}
+        self._window_refs = {}
         self.request_images: dict[str, bytes] = {}
         self.input_log, self.dispatch_log, self.executor_events = [], [], []
         self.language_rows, self.claim_results = [], []
@@ -343,6 +360,9 @@ class PairTrial(zo.OfflineTrial):
         actor, t = call.actor, float(call.started_sim_s)
         snap = self._snapshots[(actor, round(t, 6))]
         link = self.links[actor]
+        snap['own_belief'] = link.own_belief()
+        snap['decision_window'] = link.decision_window.snapshot(t)
+        self._window_refs[call.call_id] = link.decision_window.reference(t)
         view = link.gate_view()
         since = view['refusal_total'] - self._refusal_mark[actor]
         self._refusal_mark[actor] = view['refusal_total']
@@ -384,6 +404,7 @@ class PairTrial(zo.OfflineTrial):
             static_map=self.static_map, order_sheet=self.source.sheet(),
             own_rgb_refs=[pi.own_rgb_ref(actor, frame.index, frame.t, frame.sha256)],
             own_command_history=snap['history'], self_belief=snap['belief'], own_status=snap['status'],
+            own_belief=snap['own_belief'], decision_window=snap['decision_window'],
             inbox=snap['inbox'], pinned=self.source.pinned)
         self.request_images[frame.sha256] = frame.jpeg
         self.input_log.append({'request_id': request_id, 'robot': actor, 'sim_s': sim_time_s,
@@ -498,14 +519,17 @@ class PairTrial(zo.OfflineTrial):
 
     # -- actions ----------------------------------------------------------------------------
     def _release_action(self, actor, action, sim_s, call_id):
-        """``zi.IntegratedTrial._on_action`` with the pair's action plan (``look_around`` added); otherwise identical."""
+        """``zi.IntegratedTrial._on_action`` with the pair's own action plan; otherwise identical."""
         extra = getattr(self, '_pending', {}).get(call_id)
         if extra is None or self.scheduler.calls[-1].actor != actor:
             raise AssertionError(f'released action of {actor} has no recorded call')
         link = self.links[actor]
         plan = pair_executor_plan(action, link.job(), actor=actor, orders=self.sheet['orders'])
         kind, arguments, order_id, role = pair_action_row(action)
-        ack = link.call(plan.api, *plan.args) if plan.api else None
+        if plan.api in decisions.HOOK_ACTIONS:
+            ack = link.call(plan.api, *plan.args, window_ref=self._window_refs.get(call_id))
+        else:
+            ack = link.call(plan.api, *plan.args) if plan.api else None
         absolute = None if ack is None else ack['sim_s']
         self.dispatch_log.append({'call_id': call_id, 'actor': actor, 'sim_s': sim_s, 'action': action,
                                   'api': plan.api, 'args': list(plan.args), 'ack': ack,
@@ -525,6 +549,16 @@ class PairTrial(zo.OfflineTrial):
             self._remember_command(actor, call_id, sim_s, plan, ack, kind, arguments, local)
         if self.scheduler.call_causes[call_id]['cause'] == 'common':
             self._arm_reask(actor, sim_s)
+
+    def _remember_command(self, actor, call_id, sim_s, plan, ack, kind, arguments, local):
+        if plan.api in decisions.HOOK_ACTIONS:
+            # The frozen history vocabulary has no hook actions. Preserve our own closed command/ack
+            # in its existing reason_code slot; never read the controller's evaluation record.
+            code = f'{plan.api}_{plan.args[0]}_{ack["rejected_reason"] or "LATCHED"}'
+            self._history[actor].append(command_entry(f'cmd_{call_id.replace("-", "_")}', sim_s,
+                                                      'noop', {'reason_code': code}, local_state=local))
+            return
+        return zi.IntegratedTrial._remember_command(self, actor, call_id, sim_s, plan, ack, kind, arguments, local)
 
     def _on_action(self, actor, action, sim_s):
         call_id = self.scheduler.calls[-1].call_id

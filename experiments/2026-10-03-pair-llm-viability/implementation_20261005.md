@@ -84,3 +84,62 @@ look_around 검증, 번들 기록 검사 **26 passed**(8.58초). 실제 요청�
 가짜 제어기·실제 스케줄러/전송 계층을 사용했다. 창 안 호출 2·호출 중 수신 대기열·창 밖 억제,
 rule/no_comm의 변경 전후 명령 바이트와 no_comm의 실제 중단 명령 시각 동일,
 원점 0/1.3/2.6/7.0과 정확한 마감 경계를 확인했다. 물리 궤적이나 실제 모델 증거가 아니다.
+
+## 4. #363 정지 결정 어댑터
+
+- v100 기본 실행기를 #363 `zone_pair_highpose_runtime.Runtime`(규칙) 및 그 위의
+  `GatedHighRuntime`(LLM)으로 바꿨다. 종전 v88 gate 클래스는 과거 회귀 시험 경로에 보존한다.
+  번들의 하위 기술·물리 설정도 v98을 가리킨다. 실측 보정 검사에는 HIGH의 D5 admission을 사용하며
+  v88 보정으로 재표기하지 않는다. 기존 합성·블라인드 경로는 계속 배관 확인 전용이다.
+- `pair_llm_stop_adapter.py`는 해당 로봇 실행기의 제어기만 참조한다. 7개 사건을 받되 깨움에는
+  사건 이름·창 시간만 넘긴다. 원시 사건·`rule_would_do`·결정 주체는 평가 기록에만 쓴다.
+  호출 입력은 닫힌 자기 추정 5필드와 현재 창 4필드만 허용한다(입력 v3, 프롬프트 v4).
+- 두 명령의 `kind`/`choice`를 검사한 뒤 기존 봉인 검증기의 나머지 검사를 그대로 사용한다.
+  호출 시작 시 창 번호를 고정하므로 늦은 응답이나 이전 정지점 응답이 다음 창에 적용되지 않는다.
+  #363의 `OVER_BUDGET`·`LOOK_OVER_BUDGET` 및 one-shot 거절은 그대로다.
+- 새 자기 재시도 제어기로 바뀌어도 사례당 `look_again=1` 사용량을 이어 간다.
+  자기 명령 이력은 봉인 어휘의 `noop`/`reason_code`에 닫힌 명령·확인 코드만 저장하며,
+  실제 실행 상세는 `llm/dispatch.jsonl`에 보존한다. 명령 수락을 작업 성공으로 바꾸지 않는다.
+- `stop_hook_events.jsonl`·`stop_decisions.jsonl` 및 result에 평가용 정지 결정을 누적하고,
+  LLM_INERT 계산까지 연결한다. 결정 시각은 사례 상대 시각과 `_absolute` 원시 시각을 함께 기록한다.
+- #363 v6(양쪽 내려놓기·둘러보기, 추가 둘러보기 사례당 1회)을 따른다. e4의 한쪽 생략과
+  v5의 keep-hold 제안을 복원하지 않는다. HIGH rendezvous의 실제 30초를 프롬프트에도 반영했다.
+- 중간 검사: 입력·창·상수 **55 passed**(16.29초). 다음 묶음은 **27 passed, 1 failed**(85.89초):
+  기능 시험은 통과했고, 기존 런타임 시험 하나가 메서드의 직접 정의 위치를 가정했다.
+  공통 mixin과 v88 메서드 상속이 그대로인지 검사하도록 갱신한 뒤 최종 묶음을 다시 실행한다.
+
+남은 한계: 실제 호출·물리·렌더링 0회, 제공자 M2 사용량 미측정. 새 v100 운반 결과·확증 결과 없음.
+#363의 실측 HIGH 보정 admission과 최종 판정기 결합은 완료 주장하지 않는다. 현재 평가는 계속
+잠정 기하 판정이다. 최신 재고정 전체 경로의 900초 상한·1.1M 토큰 예산 적합성은 실제 실행 전에 확인할 항목이다.
+조정자에게 새 구현 선택을 요청할 필요는 없으며, 실행 재개·비교 코호트는 별도 단계다.
+
+- 확장 중간 묶음: **91 passed, 2 failed**(165.17초). 새 CLI 시험의 필수 SHA 인자 누락을 고쳤다.
+  다른 하나는 확장된 프롬프트의 SIM 청구 시간 때문에 12초 가짜 사례에서 두 번째 응답이 잘린 경우다
+  (호출 시작 8.85초, 12초에 censored, 최초 응답 4.7초). 전달 완료를 검사하는 공유 fixture만
+  14초로 늘렸으며 비용 모델·타이머·실제 사례 상한은 바꾸지 않았다. 요청 보존 시험을 포함해 다시 확인한다.
+- 코드 검토 중 정지 기록 저장 실패가 자원 정리를 건너뛰지 않도록 finally의 기록 오류를 처리했고,
+  가짜 기록 쓰기 오류에서도 자기 backend/runtime을 닫는 회귀 시험을 추가했다.
+
+- 최종 제품 코드의 확장 묶음: **115 passed, 3 failed**(400.94초). 어댑터·스케줄러·입력 경계·실제 훅
+  가짜 응답 연결·재시도 한도·시각·보존·평가 시험은 모두 통과했다. 남은 세 시험은 옛 기대값이었다.
+  두 곳의 301초 초과 거절을 새 900초 상한에 맞춰 901초로 갱신했다. HIGH 기본 실행기의
+  자동 재관측 중에는 모델의 `look_around`가 `BUSY:look_around`로 거절되는 것이 올바르다.
+  이전 v88의 수락 기대를 이 동작으로 갱신하고, 같은 자기 작업이 계속되어 정상 종료하며
+  거절이 자기 명령 이력에 남는지도 검사한다. 이 뒤 제품 코드는 바꾸지 않고 세 시험만 재실행한다.
+
+최종 재검사 **3 passed**(28.81초, exit 0). 따라서 동일한 최종 제품 코드의 관련 118개는
+확장 묶음 115개 통과 + 기대값을 갱신한 3개 통과로 확인했다. 단일 전체 묶음의 118 passed 줄은
+만들지 않았고, 앞의 실패 기록은 그대로 보존한다. `git diff --check` 통과.
+
+확장 묶음 파일: `test_pair_llm_stop_adapter.py`, `test_pair_llm_windows.py`, `test_pair_llm_inputs.py`,
+`test_pair_llm_decisions.py`, `test_pair_llm_runtime.py`, `test_pair_llm_eval.py`, `test_pair_llm_case.py` 전체;
+status의 프롬프트/새 행동 검증/둘러보기 실행 2개/번들/조건 차이/은퇴 바이트 7개와
+live의 입력 경로 분리 1개. 재검사 명령(동시 실행 없음):
+
+```sh
+nice -n 10 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q --tb=short tests/test_pair_llm_case.py::test_every_arm_has_the_same_case_cap_and_a_larger_one_is_refused tests/test_pair_llm_case.py::test_cli_plans_without_running_and_refuses_missing_calibration_and_unfrozen_source tests/test_pair_llm_status.py::test_high_runtime_refuses_a_model_look_while_its_own_bounded_recovery_is_running
+```
+
+최종 소스 대조: #363 `14ba8b5e` 대비 봉인 `zone_event_scheduler.py`, `zone_study_decisions.py`,
+`zone_study_protocol.py`, `zone_study_contract.py`와 #363 `zone_pair_highpose_refix.py`의 차이는 없다.
+이번 테스트 결과는 로컬 프로젝트에만 기록하고 UGRP 지침에 따라 Drive에 보내지 않는다.

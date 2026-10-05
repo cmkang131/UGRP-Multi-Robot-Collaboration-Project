@@ -48,7 +48,7 @@ def test_prompt_reuses_study_blocks_with_the_three_robot_text_rewritten_and_the_
     # the study text that carries the language rule is untouched; the pair does not use it
     assert '한국어' in pk.KO_LANGUAGE and '한국어' in pk.KO_MESSAGES_KO
     assert all('한국어' not in text for slot in prompts.PAIR_CHANNEL_SLOTS.values() for text in slot.values())
-    assert prompts.PROMPT_VERSION == 'ugrp.pair_llm_prompts_ko.v3'
+    assert prompts.PROMPT_VERSION == 'ugrp.pair_llm_prompts_ko.v4'
     assert prompts.study_spec('peer_nl') == 'peer_ko' and prompts.study_spec('no_comm') == 'no_comm'
     digest = prompts.prompt_template_sha256()
     assert re.fullmatch('[0-9a-f]{64}', digest) and digest == prompts.prompt_template_sha256()
@@ -228,9 +228,9 @@ def test_bundle_records_everything_a_result_depends_on():
         assert row['render_profile'] == 'floor_light_v1' and row['sensors'] == {'ultrasonic_front': 'off'}
         assert row['shared_top_camera'] is False and row['research_result'] is False
         assert row['caps']['per_case_s'] == 900. and row['cost_model']['version'] == 'zone_sim_cost.v1'
-        assert row['skill_layer']['bundle_id'] == 'zone-final-pair-v88'
+        assert row['skill_layer']['bundle_id'] == 'zone-final-pair-highpose-v98'
         assert row['controller_inputs'] == ['own_rgb', 'static_map', 'order_sheet', 'own_command_history',
-                                            'own_status', 'delivered_messages']
+                                            'own_status', 'own_belief', 'decision_window', 'delivered_messages']
         assert 'harness/pair_llm_eval.py' in row['eval_source_sha256']
         assert row['model']['seed'] is None
         if condition == 'rule':

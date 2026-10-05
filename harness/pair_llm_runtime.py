@@ -25,6 +25,7 @@ from __future__ import annotations
 
 from harness.zone_final_pair_contract import ROBOTS
 from harness.zone_final_pair_runtime import Runtime
+from harness.zone_pair_highpose_runtime import Runtime as HighRuntime
 
 GATE_VERSION = 'ugrp.pair_llm_claim_gate.v2'     # v2: + refusal_total / last_event (own status source)
 NOT_RELEASED = 'CLAIM_NOT_RELEASED'
@@ -132,8 +133,8 @@ class ClaimGate:
                 'pending': {rid: dict(p) for rid, p in self.permits.items()}}
 
 
-class GatedRuntime(Runtime):
-    """The v88 pair ``Runtime`` with ``Team.start`` behind a :class:`ClaimGate` (LLM arms only).
+class _Gated:
+    """Shared claim-gate seam for the historical v88 and current HIGH runtimes (LLM arms only).
 
     ``Runtime.step`` and every other method are inherited unchanged; the ``rule`` arm uses the plain
     ``Runtime``. After a permit is granted the robot may submit again (``submitted`` is cleared), so a
@@ -159,4 +160,12 @@ class GatedRuntime(Runtime):
         return {**super().record(), 'claim_gate': self.gate.record()}
 
 
-__all__ = ['GATE_VERSION', 'NOT_RELEASED', 'ClaimGate', 'GatedRuntime', 'retryable']
+class GatedRuntime(_Gated, Runtime):
+    """Historical v88 gate retained for v97/v99 regression fixtures only."""
+
+
+class GatedHighRuntime(_Gated, HighRuntime):
+    """v100: #363 HIGH/sigma re-fix runtime with the same claim permit seam."""
+
+
+__all__ = ['GATE_VERSION', 'NOT_RELEASED', 'ClaimGate', 'GatedRuntime', 'GatedHighRuntime', 'retryable']

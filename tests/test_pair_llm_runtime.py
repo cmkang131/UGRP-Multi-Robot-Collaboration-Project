@@ -155,6 +155,9 @@ def test_gated_runtime_is_the_v88_runtime_with_one_replaced_attribute(runtime):
     from harness.zone_final_pair_runtime import Runtime
     assert isinstance(runtime, Runtime) and isinstance(runtime, GatedRuntime)
     assert runtime.team.start == runtime.gate.start
-    assert {n for n in vars(GatedRuntime) if not n.startswith('__')} == {'grant', 'record'}
+    from harness.pair_llm_runtime import _Gated
+    assert GatedRuntime.__bases__ == (_Gated, Runtime)
+    assert {n for n in vars(_Gated) if not n.startswith('__')} == {'grant', 'record'}
+    assert GatedRuntime.step is Runtime.step and GatedRuntime.arm_step is Runtime.arm_step
     assert 'claim_gate' in runtime.record() and 'pair' in runtime.record()
     assert contract.read_registry()['weld'] == 'off'

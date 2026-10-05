@@ -1,6 +1,6 @@
 """Execution bundle of the pair LLM viability test (v100). Static: never imports a simulator or a model client.
 
-``zone-pair-llm-v100`` (workflow 3.12.0) puts an LLM decision layer on top of the v88 scripted two-robot pair
+``zone-pair-llm-v100`` (workflow 3.12.0) puts an LLM decision layer on top of the #363 v98 HIGH scripted two-robot pair
 skill and compares three arms on the SAME map, order, 900 SIM s cap and evaluator:
 
 * ``rule``     C-rule         both robots submit the scripted claim as soon as they are idle (no model);
@@ -9,7 +9,7 @@ skill and compares three arms on the SAME map, order, 900 SIM s cap and evaluato
                                requirement: user decision 2026-10-03, "걍 한국어 조건 뺴주라").
 
 The fixed-enum pair status wire stays on in every arm. This bundle records what a result of a run depends
-on (model id, prompt template hash, temperature, the absence of a seed, the cost model, the condition, the v88
+on (model id, prompt template hash, temperature, the absence of a seed, the cost model, the condition, the v98
 skill layer it sits on) so a number is never detached from its configuration. It does not seal, preregister or
 admit anything: ``research_result`` is false.
 """
@@ -26,6 +26,7 @@ from harness import pair_llm_status as status
 from harness import zone_final_environment as base
 from harness import zone_final_pair_contract as skill_layer
 from harness import zone_final_pair_skill as skill
+from harness import zone_pair_highpose_contract as high_skill
 
 ROOT = base.ROOT
 REGISTRY = 'configs/pair_llm_v100.json'
@@ -55,8 +56,8 @@ def _closure(root, entries) -> tuple:
 
 
 @lru_cache(maxsize=4)
-def _v88_bundle(map_id):
-    return skill_layer.bundle(map_id, 'carry')
+def _high_bundle(map_id):
+    return high_skill.bundle(map_id, 'carry')
 
 
 def read_registry(*, root=ROOT) -> dict:
@@ -106,9 +107,9 @@ def driver_profile(*, root=ROOT) -> dict:
 
 
 def physics_bundle(*, root=ROOT) -> dict:
-    """The v88 physics/skill bundle the three arms share (cap raised from the v88 120 s to the case 900 s)."""
+    """The #363 v98 physics/skill bundle shared by all three arms, capped at 900 SIM seconds."""
     reg = read_registry(root=root)
-    row = copy.deepcopy(_v88_bundle(reg['map_id']))
+    row = copy.deepcopy(_high_bundle(reg['map_id']))
     return {**row, 'case': {'id': 'pair_llm', 'map_id': reg['map_id'], 'checkpoint': None, 'sim_cap_s': CAP_S}}
 
 
@@ -178,15 +179,15 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
                      'scenario_id': scenario(root=root)['scenario_id']},
         'map_id': reg['map_id'], 'map_sha256': physics['map_sha256'], 'robots': list(skill_layer.ROBOTS),
         'roles': {'r1': 'end_neg', 'r2': 'end_pos'},
-        'skill_layer': {'bundle_id': skill_layer.BUNDLE_ID, 'workflow_id': skill_layer.WORKFLOW_ID,
+        'skill_layer': {'bundle_id': high_skill.BUNDLE_ID, 'workflow_id': high_skill.WORKFLOW_ID,
                         'bundle_sha256': base.digest(physics), 'controller_family': physics['controller_family'],
                         'controller_variant': physics['controller_variant'],
-                        'note': 'the scripted v88 pair skill is unchanged; the LLM layer only gates and orders it'},
+                        'note': 'the #363 v98 HIGH runtime and sigma re-fix hooks; own-only claim and stop decisions'},
         'calibration': None if calibration is None else {
             'path': str(calibration['path']), 'sha256': calibration['sha256'],
             'synthetic_plumbing_only': bool(synthetic_calibration),
             'note': ('SYNTHETIC plumbing-only calibration: the controller is blind; no carry result'
-                     if synthetic_calibration else 'measured v88 calibration')},
+                     if synthetic_calibration else 'admitted measured HIGH calibration')},
         'model': model_record(condition, kind=kind, root=root),
         'prompt': None if not llm else {
             'version': PROMPT_VERSION, 'template_sha256': prompt_template_sha256(),
@@ -217,12 +218,12 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
         'timing': physics['timing'],
         'render_profile': 'floor_light_v1', 'contact_profile': 'cargo_noslip_v1', 'weld': 'off',
         'sensors': {'ultrasonic_front': 'off'}, 'shared_top_camera': False,
-        'controller_inputs': ['own_rgb', 'static_map', 'order_sheet', 'own_command_history', 'own_status',
+        'controller_inputs': ['own_rgb', 'static_map', 'order_sheet', 'own_command_history', 'own_status', 'own_belief', 'decision_window',
                               'delivered_messages'],
         'evaluation': {'judge': 'harness/pair_llm_eval.py', 'status': 'PROVISIONAL_GEOMETRIC_JUDGE_NOT_THE_363_JUDGE',
                        'success_source': 'separate evaluator over eval_only/trajectory.jsonl; never a robot input'},
-        'rule_arm_runtime': 'harness.zone_final_pair_runtime.Runtime (unmodified)',
-        'llm_arm_runtime': 'harness.pair_llm_runtime.GatedRuntime (Team.start behind a released-claim permit)',
+        'rule_arm_runtime': 'harness.zone_pair_highpose_runtime.Runtime (unmodified)',
+        'llm_arm_runtime': 'harness.pair_llm_runtime.GatedHighRuntime (claim permit and own stop-hook adapter)',
         'physical_ready': False,
         'source_sha256': {p: base.sha(Path(root) / p) for p in sorted(paths)},
         'eval_source_sha256': {p: base.sha(Path(root) / p) for p in sorted(eval_paths)}}

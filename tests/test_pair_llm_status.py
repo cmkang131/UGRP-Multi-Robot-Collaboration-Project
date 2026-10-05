@@ -227,7 +227,7 @@ def test_the_prompt_tells_the_model_about_own_status_and_the_decision_source_to_
     assert 'own_status' in text and 'start_refused' in text and 'look_around' in text
     assert 'own_commands로 적습니다' in text
     assert 'own_status' not in zp.DECISION_SOURCES        # the sealed set: the model cites own_commands
-    assert prompts.PROMPT_VERSION.endswith('.v3')
+    assert prompts.PROMPT_VERSION.endswith('.v4')
 
 
 # --------------------------------------------------------------------------- look_around
@@ -255,7 +255,7 @@ def test_a_look_around_reply_passes_the_sealed_validator_through_a_placeholder()
     with pytest.raises(zp.ProtocolError, match='not allowed'):               # the vocabulary grew by exactly one kind
         dispatch.validate_reply(reply({'kind': 'goto', 'x': 1}), **kw)
     assert dispatch.validate_reply(reply({'kind': 'continue'}), **kw) == zp.validate_reply(reply({'kind': 'continue'}), **kw)
-    assert dispatch.PAIR_ACTION_KINDS == tuple(k for k in zp.ROBOT_ACTION_KINDS if k != 'wait') + ('look_around',)
+    assert dispatch.PAIR_ACTION_KINDS == tuple(k for k in zp.ROBOT_ACTION_KINDS if k != 'wait') + ('look_around', 'carry_decision', 'post_look_decision')
 
 
 def test_the_plan_of_every_other_action_is_the_studys_and_look_around_is_the_executors_look_around():
@@ -270,26 +270,30 @@ def test_the_plan_of_every_other_action_is_the_studys_and_look_around_is_the_exe
     assert dispatch.pair_action_row({'kind': 'look_around'}) == ('observe', {}, None, None)
 
 
-def test_in_the_loop_a_look_around_runs_on_the_robots_own_executor_and_shows_in_its_own_status(tmp_path):
+def test_high_runtime_refuses_a_model_look_while_its_own_bounded_recovery_is_running(tmp_path):
     table = {('r1', 0): (claim_action('r1', ORDER), []), ('r2', 0): (claim_action('r2', ORDER), []),
              ('r1', 1): ({'kind': 'look_around'}, [])}
     result, out, _ = run_arm(tmp_path, 'no_comm', StubModel(scripted(table)), cap_s=30.)
     dispatched = [d for d in rows(out / 'llm' / 'dispatch.jsonl') if d['action']['kind'] == 'look_around']
     assert len(dispatched) == 1 and dispatched[0]['api'] == 'look_around' and dispatched[0]['actor'] == 'r1'
     ack = dispatched[0]['ack']
-    assert ack['accepted'] is True and ack['arguments'] == {'observe': 'wide_look'}
-    events = rows(out / 'llm' / 'executor_events.jsonl')
-    mine = [e for e in events if e['robot_id'] == 'r1' and e['job_kind'] == 'look_around'
-            and e['sim_s'] > dispatched[0]['sim_s']]          # the executor clock runs 1 SIM s ahead of the harness
-    assert [e['event'] for e in mine] == ['job_started', 'job_done']
+    assert ack['accepted'] is False and ack['arguments'] == {'observe': 'wide_look'}
+    assert ack['rejected_reason'].startswith('BUSY:look_around:')
+    job_id = ack['rejected_reason'].split(':', 2)[2]
+    # #363 already started its own bounded recovery. The model must not preempt it or add a second sweep.
+    own = [e for e in rows(out / 'llm' / 'executor_events.jsonl')
+           if e['robot_id'] == 'r1' and e['job_id'] == job_id]
+    started = next(e for e in own if e['event'] == 'job_started')
+    ended = next(e for e in own if e['event'] == 'job_done')
+    assert started['sim_s'] < ack['sim_s'] < ended['sim_s']
+    recovery = json.loads((out / 'student_record.json').read_text())['look_recovery']['robots']['r1']
+    assert any(a['job_id'] == job_id and a['trigger'] == 'SELF_UNCERTAIN' for a in recovery['attempts'])
     history = [e for row in rows(out / 'llm' / 'requests.jsonl') if json.loads(row['user'])['robot_id'] == 'r1'
                for e in json.loads(row['user'])['own_command_history']]
-    assert any(e['kind'] == 'observe' for e in history)
+    assert any(e['kind'] == 'observe' and e['local_state'] == 'command_rejected' for e in history)
     later = [r['own_status'] for r in rows(out / 'llm' / 'inputs.jsonl')
              if r['robot'] == 'r1' and r['sim_s'] > dispatched[0]['sim_s']]
-    assert later and later[0]['last_outcome'] == 'look_around_ended' and later[0]['reason'] == 'queue_empty'
-    # the end of a look-around is not a success flag: the claim is still refused and the count keeps saying so
-    assert later[0]['refusals_since_last_call'] > 0 and later[-1]['last_outcome'] == 'start_refused'
+    assert any(s['last_outcome'] == 'look_around_ended' and s['reason'] == 'queue_empty' for s in later)
     assert result['status'] == 'COLLECTED_UNQUALIFIED' and result['failure'] is None
 
 
@@ -394,7 +398,7 @@ def test_the_bundle_records_the_bill_the_status_and_the_actions():
     assert row['cost_model']['input_billing']['version'] == 'ugrp.pair_image_billing.v2'
     assert row['cost_model']['version'] == 'zone_sim_cost.v1'                    # the cost parameters are unchanged
     assert row['prompt']['own_status']['version'] == st.STATUS_VERSION
-    assert row['prompt']['action_kinds'][-1] == 'look_around' and 'placeholder continue' in row['prompt']['look_around']
+    assert 'look_around' in row['prompt']['action_kinds'] and 'placeholder continue' in row['prompt']['look_around']
     for needed in ('harness/pair_llm_billing.py', 'harness/pair_llm_status.py', 'harness/pair_llm_live.py'):
         assert needed in row['source_sha256']
     assert contract.bundle('rule')['cost_model']['input_billing'] is None
