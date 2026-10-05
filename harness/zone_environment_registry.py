@@ -37,6 +37,16 @@ def environment_entry(map_id, *, root=ROOT):
     root = Path(root)
     reg = registry(root)
     if map_id not in reg['maps']:
+        from harness.zone_final_env import V3_MAP_PARENTS
+        if map_id in V3_MAP_PARENTS:
+            from harness import zone_final_environment as final_v3
+            static, pin, _ = final_v3.resolve(map_id, root=root)
+            return {'map_id': map_id, 'map_file': pin['file'], 'file_sha256': pin['sha256'],
+                    'static_map_sha256': digest(static), 'catalog': 'final_v3',
+                    'catalog_file': final_v3.REGISTRY, 'catalog_sha256': _sha(root / final_v3.REGISTRY),
+                    'scene_factory': 'sim.zone_final_v3_scene:FinalV3Scene',
+                    'robot_model': 'masterpi_v3', 'wall_profile': 'walls_v3',
+                    'providers': {}, 'research_result': False}
         return None
     entry = copy.deepcopy(reg['maps'][map_id])
     catalog = reg['catalogs'][entry['catalog']]
@@ -83,12 +93,27 @@ def resolve_static_map(map_id, *, root=ROOT, robot_model=None, static_map_sha256
             parent, _ = resolve_static_map('zone_wide_door_geometry_v2', root=root)
             if data.get('parent_scene') != {'map_id': parent['map_id'], 'sha256': digest(parent)}:
                 raise ValueError('v3 scene parent identity mismatch')
+        elif entry['catalog'] == 'final_v3':
+            from harness.zone_final_environment import resolve
+            if data != resolve(map_id, root=root)[0]:
+                raise ValueError('final v3 scene identity mismatch')
     return data, file_sha
 
 
 def maps_dir_for(map_id, *, root=ROOT):
     resolve_static_map(map_id, root=root)
     return static_map_path(map_id, root=root).parent
+
+
+def load_scenario(scenario_id):
+    """Explicit version routing; the legacy loader and its default list stay frozen."""
+    from harness.zone_study_scenarios import load, SCENARIO_DIR
+    directory = SCENARIO_DIR
+    for version in (2, 3, 4):
+        if scenario_id.endswith(f'_v{version}'):
+            directory = ROOT / 'configs' / f'zone_study_scenarios_v{version}'
+            break
+    return load(scenario_id, directory=directory)
 
 
 def bundle_for(scenario, *, schematic=False):

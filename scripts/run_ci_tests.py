@@ -90,6 +90,7 @@ TEST_PATTERNS = (
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py", "tests/test_zone_study_scenarios_v3.py", "tests/test_zone_study_scenarios_v4.py",
     "tests/test_zone_environment_registry.py",
+    "tests/test_zone_scenario_scene.py",
     "tests/test_zone_final_environment_runnable.py",
     "tests/test_zone_final_pair_v3.py",
     "tests/test_zone_final_pair_highpose.py",

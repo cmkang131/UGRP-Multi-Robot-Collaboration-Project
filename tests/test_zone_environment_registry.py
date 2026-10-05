@@ -29,6 +29,29 @@ CATALOG = json.loads(fe.CATALOG_PATH.read_text())
 CALIBRATION = 'experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json'
 
 
+@pytest.mark.parametrize('sid', sorted(p.stem for p in (ROOT / 'configs/zone_study_scenarios_v4').glob('*.json')))
+def test_v4_scenarios_resolve_validate_and_project_without_runtime(sid):
+    scenario = env.load_scenario(sid)
+    static, file_sha = env.resolve_static_map(scenario['map_id'])
+    assert static['robot_model'] == 'masterpi_v3'
+    assert file_sha == scenario['eval']['setup']['map_file_sha256']
+    assert fe.maps_dir_for(scenario['map_id']) == env.maps_dir_for(scenario['map_id'])
+    report = env.validate(scenario)
+    assert report.ok, report.problems
+    bundle = env.bundle_for(scenario)
+    assert bundle['map_file_sha256'] == file_sha
+    assert 'eval' not in bundle['public_map'] and 'setup_only' not in bundle['public_map']
+
+
+@pytest.mark.parametrize('map_id', ['zone_wide_two_doors_final_v3', 'zone_wide_corridor_final_v3'])
+def test_new_v3_map_factory_is_registered_without_admitting_v2_providers(map_id):
+    entry = env.environment_entry(map_id)
+    assert entry['scene_factory'] == 'sim.zone_final_v3_scene:FinalV3Scene'
+    assert entry['providers'] == {} and entry['research_result'] is False
+    sentinel = object()
+    assert own_scene({'map': map_id}, 'cargo_noslip_v1', scene_factory=lambda *args: sentinel) is sentinel
+
+
 @pytest.fixture(scope='module')
 def registered_sources():
     """Read historical Git objects before the per-test runtime subprocess guard."""

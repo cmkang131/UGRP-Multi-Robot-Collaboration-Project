@@ -1,0 +1,85 @@
+{
+  "schema": "ugrp.zone_scenario.v1",
+  "scenario_id": "dev_s1lite",
+  "map_id": "zone_wide_door_geometry_v3",
+  "landmark_detail": "none",
+  "seeds": [
+    601,
+    602,
+    603
+  ],
+  "orders": [
+    {
+      "order_id": "order-1",
+      "kind": "cyan",
+      "count": 1,
+      "identity": "kind_fungible",
+      "required_robots": 1,
+      "destination_zone": "A",
+      "initial_location": {
+        "pickup_bay": "P1",
+        "slot": "P1-1"
+      }
+    },
+    {
+      "order_id": "order-5",
+      "kind": "long_beam",
+      "count": 1,
+      "identity": "specific_item",
+      "item_ids": [
+        "beam_1"
+      ],
+      "required_robots": 2,
+      "destination_zone": "B",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-3"
+      }
+    }
+  ],
+  "eval": {
+    "schema": "ugrp.zone_study_scenario_private.v1",
+    "design_notes_ko": "S1 개발 고정물: 동서 빔 1개→B(r1/r2), cyan 1개→A(r3). 역할은 향후 호스트에서 고정하며 연구 코호트에 쓰지 않는다.",
+    "tests_ko": "혼합 배치 오프라인 검사 및 코디네이터의 별도 30 SIM초 정지 확인용. 제어기·LLM·물리 성공 근거 아님.",
+    "notes_ko": "빌드 계획 6.1절의 동서 빔 자세와 목적지 B를 따른다. 기존 TASK_POSE의 x=1.0은 P2 slot 안에 빔 전체가 들어가지 않아, x=1.275로 놓는다(y=0.05, yaw=0 유지). cyan은 s1 P1-1 첫 배치. 과거 빔 완주 판정을 승계하지 않는다.",
+    "setup": {
+      "arena_variant": "zone_wide_door",
+      "map_file_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+      "contact_profile": "cargo_noslip_v1",
+      "weld": "off",
+      "robot_spawns": "arena_default",
+      "placements": [
+        {
+          "item_id": "cyan_1",
+          "kind": "cyan",
+          "order_id": "order-1",
+          "slot": "P1-1",
+          "pose_m": [
+            -0.2,
+            -2.45,
+            0.0
+          ]
+        },
+        {
+          "item_id": "beam_1",
+          "kind": "long_beam",
+          "order_id": "order-5",
+          "slot": "P2-3",
+          "pose_m": [
+            1.275,
+            0.05,
+            0.0
+          ],
+          "notes_ko": "동서 시작 자세. 정적 P2-3 slot 경계를 지키도록 x만 중심으로 이동."
+        }
+      ]
+    },
+    "hidden_events": [],
+    "budget": {
+      "sim_seconds": 1800,
+      "http_attempts_per_trial": 90,
+      "http_attempts_per_actor": 30,
+      "output_tokens_per_call": 768
+    }
+  }
+}
