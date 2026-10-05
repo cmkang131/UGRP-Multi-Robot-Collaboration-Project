@@ -251,6 +251,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-final-pair-heldout-v91": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40],
             "zone-final-pair-loaded-v92": ["--check", "calibration-loaded", "--map-id", "zone_wide_two_doors_final_v3", "--expected-source-sha", "0" * 40],
             "zone-final-environment-floor-light-v2-check": ["--check", "calibration-motion-v2", "--expected-source-sha", "0" * 40],
+            "zone-final-environment-gaincal-v101": ["--check", "calibration-gain-v101", "--run-id", "fitA1", "--seed", "1101", "--expected-source-sha", "0" * 40],
         }
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
