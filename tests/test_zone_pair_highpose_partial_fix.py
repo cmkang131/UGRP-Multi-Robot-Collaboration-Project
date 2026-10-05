@@ -82,3 +82,47 @@ def test_partial_provider_installs_on_the_real_pf_and_default_has_no_hook(tmp_pa
     assert getattr(default.loc._pf, 'partial_fix', None) is None
     assert partial.loc._pf.partial_fix['record']['id'] == pfix.ID
     assert partial.m1_calibration['partial_fix']['id'] == pfix.ID and 'partial_fix' not in default.m1_calibration
+
+
+def _wstd(px, logw, axis):
+    w = np.exp(logw - logw.max())
+    w /= w.sum()
+    m = (w * px[:, axis]).sum()
+    return float(np.sqrt((w * (px[:, axis] - m) ** 2).sum()))
+
+
+def test_partial_receipt_resets_fix_age_but_not_the_weak_direction_sigma(monkeypatch):
+    """#383 P3: a single-wall view (wall along x) constrains y only. The receipt resets the fix age (last_scan_t), but
+    the spread along the weak direction x is left as it was: the wrapper never touches particles or weights, and the
+    scan's own likelihood is flat in x."""
+    gx, gy = np.meshgrid(np.linspace(-.3, .3, 25), np.linspace(-.3, .3, 25))
+    pf = SimpleNamespace(last_scan_t=1.0, v3_last_fix_quality=None, stats={}, partial_fix=None,
+                         px=np.c_[gx.ravel(), gy.ravel(), np.zeros(gx.size)], logw=np.zeros(gx.size))
+    pf.apply_scan = lambda t, obs, pose: setattr(pf, 'logw', pf.logw - .5 * (pf.px[:, 1] / .02) ** 2)
+
+    def update(t, obs, pose):
+        pf.apply_scan(t, obs, pose)
+        return {'measured': False}          # old gate (lambda_min) refuses the single-wall view
+    pf.update_obs = update
+    q = {'accepted': True, 'informative': True, 'old_informative': False, 'settled': True, 'ambiguous': False,
+         'partial': True, 'eigenvalues': [0., 5., 40.], 'observed_rank': 2, 'weakest_direction_xy_yaw': [1., 0., 0.]}
+    monkeypatch.setattr(pfix, 'scan_quality', lambda *a: dict(q))
+    pfix.install(pf, object())
+    sx, sy, px0 = _wstd(pf.px, pf.logw, 0), _wstd(pf.px, pf.logw, 1), pf.px.copy()
+    assert pf.update_obs(5.0, object(), {})['measured'] is True and pf.last_scan_t == 5.0   # fix age reset
+    assert np.array_equal(pf.px, px0)
+    assert _wstd(pf.px, pf.logw, 0) == pytest.approx(sx, rel=1e-9)        # weak direction: unchanged
+    assert _wstd(pf.px, pf.logw, 1) < .2 * sy                               # observed direction: tightened
+
+
+def test_report_marks_partial_fix():
+    from dataclasses import dataclass, field
+
+    @dataclass(frozen=True)
+    class R:
+        observation_quality: dict = field(default_factory=dict)
+    out = pfix.mark_partial(R({'informative': True}), {'partial': True, 'observed_rank': 2,
+                                                         'weakest_direction_xy_yaw': [1., 0., 0.]})
+    assert out.observation_quality['informative'] is True and out.observation_quality['partial'] is True
+    assert out.observation_quality['observed_rank'] == 2
+    assert pfix.mark_partial(R(), None).observation_quality['partial'] is False
