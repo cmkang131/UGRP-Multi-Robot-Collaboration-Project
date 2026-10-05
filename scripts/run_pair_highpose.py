@@ -187,7 +187,7 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runtime,
 
 
 def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runtime,
-                     calibration=None, calibration_sha=None, probe=None):
+                     calibration=None, calibration_sha=None, probe=None, dev_checkpoint=None):
     """Student-only copy of scripts/run_final_pair_v3.run_case with the v96 cap.
 
     The parent hard-codes the v88 120 SIM s student cap. v96 uses the
@@ -196,6 +196,10 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     parent's; no collection branch (v96 has no calibration checks).
     probe (STAGE_PROBES key): same loop, stops at the stage end/failure or the
     probe cap and reports a STAGE_PROBE_* status, never COLLECTED_UNQUALIFIED.
+    dev_checkpoint (DEV only, default None = this function's bytes unchanged):
+    scripts/dev_pair_checkpoint.py saves pickled mid-route states at loop
+    boundaries, or restores one instead of the fresh setup (resumed runs are
+    DEV diagnostics labelled resumed_from, never evidence).
     """
     import os
     # Direct callers get the same admission as run_case (REVIEW_363 re-review
@@ -252,26 +256,33 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
               'timing': bundle['timing'], 'clearance_preflight': None, 'calibration_sha256': calibration_sha,
               'loadavg_start': list(os.getloadavg()), 'failure': None}
     try:
-        backend = backend_factory(bundle, out, seed=seed)
-        # 2026-10-05: which SIM clock the host used (host clock v2 = integer substeps; never pooled with earlier runs).
-        from sim import final_pair_highpose_clock as host_clock
-        result['host_clock'] = (host_clock.record() if getattr(backend, 'host_clock', None) == host_clock.ID
-                                else {'id': 'float_running_sum_v1'})
-        reset = backend.reset(contract.RESET_CAP_S)
-        if not 0 <= reset <= contract.RESET_CAP_S+1e-8:
-            raise RuntimeError('RESET_SIM_CAP_EXCEEDED')
-        if staged:
-            staging_record.update(staging.run_preroll(backend, STAGE_PROBES[probe]['preroll']))
-            write(out/'stage_probe_staging.json', staging_record)
-            result['staging'] = staging_record
-        start = backend.now
-        backend.set_deadline(start+cap)
-        result['reset_sim_s'] = reset
-        static, _, _ = contract.resolve(bundle['map_id'])
-        runtime = runtime_factory(static, calibration, calibration_sha, seed=seed)
-        runtime.initial_commands(start, backend.commands)
+        first = 0
+        if dev_checkpoint is not None and dev_checkpoint.resuming:
+            backend, runtime, start, first, commands = dev_checkpoint.restore(out, result)
+        else:
+            backend = backend_factory(bundle, out, seed=seed)
+            # 2026-10-05: which SIM clock the host used (host clock v2 = integer substeps; never pooled with earlier runs).
+            from sim import final_pair_highpose_clock as host_clock
+            result['host_clock'] = (host_clock.record() if getattr(backend, 'host_clock', None) == host_clock.ID
+                                    else {'id': 'float_running_sum_v1'})
+            reset = backend.reset(contract.RESET_CAP_S)
+            if not 0 <= reset <= contract.RESET_CAP_S+1e-8:
+                raise RuntimeError('RESET_SIM_CAP_EXCEEDED')
+            if staged:
+                staging_record.update(staging.run_preroll(backend, STAGE_PROBES[probe]['preroll']))
+                write(out/'stage_probe_staging.json', staging_record)
+                result['staging'] = staging_record
+            start = backend.now
+            backend.set_deadline(start+cap)
+            result['reset_sim_s'] = reset
+            static, _, _ = contract.resolve(bundle['map_id'])
+            runtime = runtime_factory(static, calibration, calibration_sha, seed=seed)
+            runtime.initial_commands(start, backend.commands)
         steps = round(cap/contract.TICK_S)
-        for i in range(steps+1):
+        for i in range(first, steps+1):
+            if dev_checkpoint is not None and dev_checkpoint.at_tick(
+                    i, backend=backend, runtime=runtime, start=start, commands=commands, result=result):
+                break
             # Raw labels have no return channel into the command selector.
             backend.eval_sample()
             runtime.on_frames(backend.now, backend.capture())
