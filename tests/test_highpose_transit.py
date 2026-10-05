@@ -243,7 +243,9 @@ def test_intermediate_high_checkpoint_stops_reobserves_and_resumes_without_lower
         assert open_t > end
 
 
-def test_checkpoint_reobserve_timeout_aborts_and_partner_stops_on_status():
+def test_checkpoint_reobserve_timeout_aborts_and_partner_stops_on_status(monkeypatch):
+    from harness import zone_pair_highpose_contract as _c
+    monkeypatch.setattr(_c, 'DEV_LIGHT', False)   # enforcing behaviour; DEV light has its own tests
     _, ctls = pair(segments=(.1, .1))
     run(ctls, until=60., fresh_after=.5, no_fix=('r2',))
     r1, r2 = ctls

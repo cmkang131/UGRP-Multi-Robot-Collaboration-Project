@@ -14,7 +14,6 @@ import numpy as np
 
 from harness import owncam_localizer as motion
 from harness import vision_loc_protocol as vp
-from harness import zone_pair_deadband as deadband
 from harness import zone_final_pair_contract as contract
 from harness.vision_motion_init import motion_module
 from harness.vision_pose_source_p03 import VisionPoseSource, FailClosedLoc
@@ -47,20 +46,8 @@ def pair_motion_module():
             # Frozen prediction applies deadband to own commands but expects
             # the partner operand to be effective before multiplying gain.
             db = self.params['motion_loaded']['deadband']
-            return deadband.effective(raw, db)
-
-        def predict_to(self, t):
-            # v102 affine dead zone of the loaded plant: the sealed base predictor applies only the ramp, so a loaded
-            # prediction sees the affine-effective command (identity without params.motion_loaded.deadband.u0).
-            db = (self.params.get('motion_loaded') or {}).get('deadband') if self.load.loaded else None
-            if not deadband.has_affine(db):
-                return super().predict_to(t)
-            issued = self.cmd
-            self.cmd = deadband.affine(issued, db)
-            try:
-                return super().predict_to(t)
-            finally:
-                self.cmd = issued
+            c0, u1 = (np.asarray(db[k], float) for k in ('c0', 'u1'))
+            return raw*np.where(u1 > c0, np.clip((abs(raw)-c0)/np.maximum(u1-c0, 1e-9), 0., 1.), 1.)
 
     return SimpleNamespace(**{**vars(motion), 'OwnCamLocalizer': PairMotion})
 

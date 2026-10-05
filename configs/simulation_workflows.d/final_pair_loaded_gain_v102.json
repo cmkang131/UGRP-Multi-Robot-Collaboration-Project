@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-final-pair-loaded-gaincal-v102",
+      "version": "1.0.0",
+      "purpose": "DEV loaded pair gain/lag calibration (v102): open-loop left/forward steps of the HIGH-carried pair over the carry command range (left 0.0125-0.10, forward 0.0125-0.05), duration series and the recorded fcc5215f legs as held-out; teacher ground truth for offline calibration only",
+      "entry": "scripts/run_final_pair_loaded_gain_v102.py",
+      "runner": "scripts.run_final_pair_loaded_gain_v102",
+      "docs": "experiments/2026-10-05-loaded-gain-calibration-v102/PREREGISTRATION.md",
+      "requires": "Committed expected SHA; owned non-exclusive --sim-slot or exclusive host lock; loaded diagnostic only; v91 fast abort-only guard plus corner preflight; no student/model/camera capture; one registered run per invocation",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": ["--check", "--run-id", "--expected-source-sha", "--seed"],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

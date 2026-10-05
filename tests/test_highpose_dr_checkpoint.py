@@ -7,6 +7,8 @@ end of leg 0 (before_door stop) std_xy 42.4/42.3 mm, std_yaw 1.38/1.22 deg (r1/r
 """
 from __future__ import annotations
 
+import pytest
+
 import math
 from types import SimpleNamespace
 
@@ -18,6 +20,13 @@ from tests.test_highpose_transit import pair, opened, short_route  # noqa: F401 
 
 MIN = CHECKPOINT_REOBSERVE_S
 
+
+
+@pytest.fixture(autouse=True)
+def _dev_light_off(monkeypatch):
+    """These tests cover the enforcing (non-light) behaviour; DEV light has its own tests (test_highpose_guard_log_only)."""
+    from harness import zone_pair_highpose_contract as _c
+    monkeypatch.setattr(_c, 'DEV_LIGHT', False)
 
 def rep(t, *, fix_t, sxy, syaw_deg, initialized=True, cov='diag'):
     """Fake own report. ``cov='diag'``: the 3x3 covariance implied by the sigmas; ``None``: no ``cov`` attribute."""
@@ -105,7 +114,6 @@ def run_dr(ctls, *, until, sxy, syaw_deg, only=None, voided=False, fresh_fix=Fal
     return ctls
 
 
-import pytest
 
 
 @pytest.mark.parametrize('voided', [False, True])

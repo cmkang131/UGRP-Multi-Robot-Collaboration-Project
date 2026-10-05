@@ -208,4 +208,4 @@ def test_v96_registry_retired_byte_identical_and_v98_differs_only_by_ids():
         'tensorboard_cohort', 'admitted_calibration_sha256', 'admitted_source'}
     admitted = new['dev_pilot']['admitted_calibration_sha256']
     assert admitted[:len(old['dev_pilot']['admitted_calibration_sha256'])] == old['dev_pilot']['admitted_calibration_sha256']
-    assert len(admitted) == 4 and {k: new['dev_pilot']['admitted_source'][k] for k in old['dev_pilot']['admitted_source']} == old['dev_pilot']['admitted_source']
+    assert len(admitted) == 5 and {k: new['dev_pilot']['admitted_source'][k] for k in old['dev_pilot']['admitted_source']} == old['dev_pilot']['admitted_source']

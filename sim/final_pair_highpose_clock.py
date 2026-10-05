@@ -28,6 +28,7 @@ from __future__ import annotations
 import math
 
 from sim.final_pair_v3 import PhysicsBackend as V3Backend
+from sim.final_pair_highpose_nearclip import NearClip
 
 ID = 'v98_host_clock_v2_integer_substeps'
 SCHEMA = 'ugrp.highpose_host_clock.v98.v2'
@@ -91,5 +92,5 @@ class IntegerClock:
             d.time = grid_time(self._substeps, self.dt)
 
 
-class PhysicsBackend(IntegerClock, V3Backend):
-    """v98 case host: sim.final_pair_v3.PhysicsBackend with host clock v2."""
+class PhysicsBackend(NearClip, IntegerClock, V3Backend):
+    """v98 case host: sim.final_pair_v3.PhysicsBackend with host clock v2 and render near-clip floor_light_nearclip_v1."""

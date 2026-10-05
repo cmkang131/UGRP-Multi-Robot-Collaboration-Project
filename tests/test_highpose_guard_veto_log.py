@@ -36,6 +36,14 @@ R2 = dict(role='end_pos', pose=(-0.9369527160577948, -0.8785887011813964, 0.0251
           cov=((2.28e-06, 6.5e-07, -5.4e-07), (6.5e-07, 4.08e-06, -1.41e-06), (-5.4e-07, -1.41e-06, 5.33e-06)))
 
 
+
+@pytest.fixture(autouse=True)
+def _enforce_collision_guard(monkeypatch):
+    """These tests cover the enforcing guard; the v105 log-only mode has its own test file."""
+    from harness import zone_pair_highpose_contract as _c
+    monkeypatch.setattr(_c, 'COLLISION_GUARD_MODE', 'enforce')
+    monkeypatch.setattr(_c, 'DEV_LIGHT', False)
+
 @pytest.fixture(scope='module')
 def arm():
     return PairArmGuard(c.resolve(MAPS[0])[0])
