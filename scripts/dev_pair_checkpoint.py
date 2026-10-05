@@ -351,8 +351,12 @@ class DevCheckpoint:
         if self.dir is not None and not self.resuming:
             reasons = self._triggers(now, start, runtime)
             if reasons:
-                self.save(i, backend=backend, runtime=runtime, start=start, commands=commands, result=result,
-                          reasons=reasons)
+                try:
+                    self.save(i, backend=backend, runtime=runtime, start=start, commands=commands, result=result,
+                              reasons=reasons)
+                except Exception as exc:  # noqa: BLE001 - saving only reads state; a failed save never stops the run
+                    result.setdefault('dev_checkpoint_errors', []).append(
+                        {'tick': i, 'sim_s': now, 'type': type(exc).__name__, 'message': str(exc)[:500]})
         return False
 
     # -- save ----------------------------------------------------------------------------------------------------
