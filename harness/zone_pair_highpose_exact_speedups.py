@@ -27,6 +27,17 @@ PF, its random stream or any frozen file. A set is chosen by name; 'none' is the
     ``harness.zone_final_pair_loaded_schedule.schedule_bytes`` is a pure function (no arguments) that the
     calibration admission recomputes three times at start-up (~6 s each under load). Later calls
     return the same ``bytes`` object.
+
+``v98-exact-v2`` = v1 + ``render_pipeline`` (CANDIDATE: adopt only after a full-run byte comparison)
+    The host captures r1 then r2 (render on the GL owner thread, JPEG, files, logs) and only then runs
+    the controllers (r1 then r2); the main thread idles while each camera renders. Here r1 is captured
+    exactly as before, the r2 render is queued on the same GL thread right after r1's render returns,
+    and r2's post-processing (the original per-robot body, unchanged) runs when the runtime first reads
+    ``frames['r2']`` - after r1's controller update. Nothing between those points touches the world,
+    the ports or the backend command state (the controllers only read their own frame), so the r2
+    render sees the same physics state, the same GL calls run in the same order on the same context,
+    and each output file receives the same rows in the same order. Only the interleaving of writes to
+    DIFFERENT files changes. A pending r2 is completed before any later backend call.
 """
 from __future__ import annotations
 
@@ -34,8 +45,11 @@ import functools
 
 import numpy as np
 
-SETS = {'none': (), 'v98-exact-v1': ('expected_memo', 'drive_kernel', 'schedule_memo')}
+SETS = {'none': (), 'v98-exact-v1': ('expected_memo', 'drive_kernel', 'schedule_memo'),
+        'v98-exact-v2': ('expected_memo', 'drive_kernel', 'schedule_memo', 'render_pipeline')}
 VERSION = 'ugrp.v98_exact_speedups.v1'
+# sha256 of inspect.getsource(sim.final_pair_v3.PhysicsBackend.capture) whose per-robot body render_pipeline copies
+CAPTURE_SOURCE_SHA256 = 'fd76fe25a67bd1a9dc1c2cf80eee900a6912bc85fc0b0fd1e01a8882cf1d0cad'
 
 
 def resolve(name):
@@ -116,6 +130,9 @@ def install(name, record=None):
         undo.append(lambda: setattr(sched, 'schedule_bytes', original))
         record['schedule_memo'] = True
 
+    if 'render_pipeline' in items:
+        undo.append(_install_render_pipeline(record))
+
     def uninstall():
         while undo:
             undo.pop()()
@@ -128,3 +145,158 @@ def summary(record):
     if 'expected_memo' in record:
         out['expected_memo'] = [{'hits': m.hits, 'misses': m.misses} for m in record['expected_memo']]
     return out
+
+
+class _PipelinedFrames(dict):
+    """capture() result whose second robot entry is completed on first read."""
+
+    def __init__(self, first, finish):
+        super().__init__(first)
+        self._finish = finish
+
+    def _complete(self):
+        if self._finish is not None:
+            finish, self._finish = self._finish, None
+            dict.update(self, finish())
+
+    def __getitem__(self, key):
+        if key not in self.keys():
+            self._complete()
+        return dict.__getitem__(self, key)
+
+    def __iter__(self):
+        self._complete()
+        return dict.__iter__(self)
+
+    def items(self):
+        self._complete()
+        return dict.items(self)
+
+    def values(self):
+        self._complete()
+        return dict.values(self)
+
+
+def _install_render_pipeline(record):
+    import base64
+    import io
+    from sim import final_pair_v3
+    from sim.multi_masterpi_production import MultiMasterPiProductionV2
+    from harness import zone_final_pair_contract as contract
+    backend_cls, world_cls = final_pair_v3.PhysicsBackend, MultiMasterPiProductionV2
+    capture0, render_for0 = backend_cls.capture, world_cls._render_rgb_for
+    stats = record.setdefault('render_pipeline', {'prefetched': 0, 'completed_late': 0, 'forced': 0})
+
+    def _render_rgb_for(world, robot, camera):
+        pending = getattr(world, '_v98_prefetch', None)
+        if pending is not None and pending[0] is robot and pending[1] == camera:
+            world._v98_prefetch = None
+            return pending[2].result(timeout=30.0)
+        if pending is not None:
+            raise RuntimeError('render_pipeline: unexpected render while a prefetch is pending')
+        return render_for0(world, robot, camera)
+
+    def one(backend, rid):
+        """The original per-robot body of sim.final_pair_v3.PhysicsBackend.capture (verbatim order)."""
+        import numpy as np
+        from PIL import Image
+        obs = backend.ports[rid].capture()
+        jpeg = base64.b64decode(obs['image'], validate=True)
+        rgb = np.asarray(Image.open(io.BytesIO(jpeg)).convert('RGB'))
+        relative = f'robots/{rid}/rgb/{backend.frame:05d}.jpg'
+        path = backend.out / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(jpeg)
+        backend._append(f'robots/{rid}/frames.jsonl', {**{k: v for k, v in obs.items() if k != 'image'},
+                        'path': relative, 'commanded_servo': backend.commands[rid]})
+        base = backend.world.data.body(rid+'__robot')
+        cam = backend.world.data.camera(rid+'__robot_cam')
+        rb = np.asarray(base.xmat).reshape(3, 3)
+        from harness.zone_final_pair_camera import measurement_label
+        label = measurement_label(base.xpos, rb, cam.xpos, np.asarray(cam.xmat).reshape(3, 3))
+        backend._append(f'eval_only/{rid}/camera_labels.jsonl', {
+            't': backend.now, 'frame_id': obs['frame_id'], 'sha256': obs['sha256'],
+            'commanded_servo': backend.commands[rid], **label, 'base_position_m': base.xpos.tolist(),
+            'base_rotation': rb.tolist(), 'requested_check': backend.bundle['check'],
+            'load_validity': 'UNCLASSIFIED; inspect contacts and beam trajectory offline'})
+        return obs, rgb
+
+    def capture(backend):
+        robots = tuple(contract.ROBOTS)
+        world = backend.world
+        executor = getattr(world, '_render_executor', None)
+        if len(robots) != 2 or executor is None:
+            return capture0(backend)
+        _flush(backend)
+        first, second = robots
+        world_robot = world.robot(second)
+
+        result = {first: one(backend, first)}
+        # r1's render has returned; queue r2's render on the GL owner thread (same order as before).
+        world._v98_prefetch = (world_robot, 'robot_cam',
+                               executor.submit(world._render_rgb_direct, world_robot, 'robot_cam'))
+        stats['prefetched'] += 1
+        frame = backend.frame
+
+        def finish():
+            if backend.frame != frame:
+                raise RuntimeError('render_pipeline: frame counter moved before completion')
+            out = {second: one(backend, second)}
+            backend.frame += 1
+            backend._v98_pending = None
+            stats['completed_late'] += 1
+            return out
+        frames = _PipelinedFrames(result, finish)
+        backend._v98_pending = frames
+        return frames
+
+    def _flush(backend):
+        pending = getattr(backend, '_v98_pending', None)
+        if pending is not None:
+            stats['forced'] += 1
+            pending._complete()
+
+    import hashlib
+    import inspect
+    source = hashlib.sha256(inspect.getsource(capture0).encode()).hexdigest()
+    if source != CAPTURE_SOURCE_SHA256:
+        stats['installed'] = False
+        stats['refused'] = f'sim.final_pair_v3.PhysicsBackend.capture source {source[:12]} differs from the copied body'
+        return lambda: None
+    stats['installed'] = True
+    owners = [backend_cls]
+    try:
+        from sim.final_pair_highpose_clock import IntegerClock
+        owners.insert(0, IntegerClock)
+    except ImportError:
+        pass
+    for base in backend_cls.__mro__[1:]:
+        if base is not object:
+            owners.append(base)
+    patched = [(world_cls, '_render_rgb_for', render_for0)]
+    world_cls._render_rgb_for = _render_rgb_for
+    for owner in owners:
+        for name in ('advance_to', 'issue', 'eval_sample', 'close', 'reset'):
+            if name not in vars(owner):
+                continue
+            original = vars(owner)[name]
+
+            def method(backend, *args, _original=original, _name=name, **kwargs):
+                if _name == 'close':     # error path: complete best-effort, never block the cleanup
+                    try:
+                        _flush(backend)
+                    except Exception:    # noqa: BLE001 - the original error is already being reported
+                        pass
+                else:
+                    _flush(backend)      # a pending r2 is always completed before any later backend call
+                return _original(backend, *args, **kwargs)
+            method.__wrapped__ = original
+            patched.append((owner, name, original))
+            setattr(owner, name, method)
+    patched.append((backend_cls, 'capture', capture0))
+    backend_cls.capture = capture
+
+    def uninstall():
+        for owner, name, value in reversed(patched):
+            setattr(owner, name, value)
+    return uninstall

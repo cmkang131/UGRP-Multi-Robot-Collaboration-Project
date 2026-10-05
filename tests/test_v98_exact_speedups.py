@@ -88,3 +88,26 @@ def test_compare_allows_only_listed_key_paths(tmp_path):
     _case(tmp_path / 'd', 'pair-4', command=0.2)
     r = cmp.compare(tmp_path / 'a', tmp_path / 'd')
     assert r['behaviour_differences'] == ['artifacts.sha256.json', 'robots/r1/commands.jsonl']
+
+
+def test_pipelined_frames_complete_once_on_first_read_of_the_second_robot():
+    calls = []
+
+    def finish():
+        calls.append(1)
+        return {'r2': ('obs2', 'rgb2')}
+    frames = sp._PipelinedFrames({'r1': ('obs1', 'rgb1')}, finish)
+    assert frames['r1'] == ('obs1', 'rgb1') and calls == []      # r1 read: r2 still pending
+    assert frames['r2'] == ('obs2', 'rgb2') and calls == [1]
+    assert frames['r2'] == ('obs2', 'rgb2') and list(frames) == ['r1', 'r2'] and calls == [1]
+
+
+def test_render_pipeline_refuses_when_the_copied_capture_body_changed(monkeypatch):
+    monkeypatch.setattr(sp, 'CAPTURE_SOURCE_SHA256', '0' * 64)
+    from sim import final_pair_v3
+    before = dict(vars(final_pair_v3.PhysicsBackend))
+    rec, undo = sp.install('v98-exact-v2')
+    assert rec['render_pipeline']['installed'] is False and 'differs' in rec['render_pipeline']['refused']
+    assert vars(final_pair_v3.PhysicsBackend)['capture'] is before['capture']
+    undo()
+    assert dict(vars(final_pair_v3.PhysicsBackend)) == before
