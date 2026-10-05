@@ -1,0 +1,21 @@
+v102 patch (diffs/*.patch) tests, run in a scratch extract of #363 HEAD 14ba8b5e0b8e58fc6bc9d4b97c5efb337a0c76db with the patch applied (new14b).
+The scratch extract is 'git archive' output (no git history) plus the experiments dirs the related tests read; env: /Users/changmin/projects/ugrp/.venv-sim-worker-mac (python 3.12.13).
+
+== A. directly touched test files (OMP_NUM_THREADS=1, nice 10): tests/test_deadband_u0_v102.py tests/test_highpose_dev_pilot.py tests/test_zone_final_pair_highpose.py
+.....................................................................    [100%]
+============================= slowest 3 durations ==============================
+393.70s call     tests/test_highpose_dev_pilot.py::test_headless_nominal_replay_with_c0_zero_carry_leg
+76.78s call     tests/test_highpose_dev_pilot.py::test_cli_dev_pilot_needs_explicit_flag
+41.30s call     tests/test_zone_final_pair_highpose.py::test_p03_missing_v92_gate_before_any_output_or_backend
+69 passed in 843.80s (0:14:03)
+
+== B. wider related run (highpose / zone pair families, 693 tests selected; the exact file list of that run was not saved, only the pass/fail counts): 658 passed, 1 skipped, 34 failed in 1780.63s
+SKIPPED [1] tests/test_highpose_edge_fit.py:141: raw probe output not on this host
+All 34 failures are in tests/test_owncam_memory.py (33) and tests/test_zone_pair_executor.py::test_frozen_m2_sources_or_explicit_followup_hashes (1):
+they need git history ('git show <old sha>:<file>' exits 128 in a git archive extract) or experiments dirs absent from the extract.
+The same 34 fail identically in the UNPATCHED extract (base14b), checked with:
+  cd base14b && python -m pytest -q -p no:cacheprovider tests/test_owncam_memory.py tests/test_zone_pair_executor.py::test_frozen_m2_sources_or_explicit_followup_hashes
+  -> 34 failed, 43 passed, 152 subtests passed in 6.07s
+Hence the patch adds no failure relative to the unpatched extract; those 34 are an extract limitation. Not verified in a real #363 clone (the patch is not applied to #363 here).
+
+== C. patch applicability: both patches apply with 'git apply --check' to a clean 'git archive 14ba8b5e' and reproduce the scratch tree byte for byte (cmp on all 10 files).
