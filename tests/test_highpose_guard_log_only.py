@@ -235,3 +235,14 @@ def test_extra_dev_seed_for_full_case_only_in_dev_light(monkeypatch):
     with pytest.raises(Exception):
         runner.seed_admission(912, None, c.DEV_PILOT)
     assert runner.seed_admission(912, 'align_to_carry', c.DEV_PILOT)['extra_dev_seed'] is not None
+
+
+def test_run_case_uses_the_shared_seed_rule(monkeypatch):
+    """2026-10-05 light8: run_case refused seed 912 (it called require_dev_seed directly). It now uses seed_admission."""
+    from scripts import run_pair_highpose as runner
+    bundle = {'admission_mode': c.DEV_PILOT}           # no map_id: stops right after the seed rule
+    with pytest.raises(KeyError):
+        runner.run_case(bundle, None, seed=912, backend_factory=None)
+    monkeypatch.setattr(c, 'DEV_LIGHT', False)
+    with pytest.raises(ValueError, match='SEED_911'):
+        runner.run_case(bundle, None, seed=912, backend_factory=None)

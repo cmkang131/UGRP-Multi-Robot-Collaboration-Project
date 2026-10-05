@@ -180,9 +180,10 @@ def time_case(case, check):
 
 def run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runtime,
              calibration=None, calibration_sha=None):
-    # Check even a direct caller before creating output/backend/provider.
-    starts.require_dev_seed(seed)
+    # Check even a direct caller before creating output/backend/provider (the one shared seed rule; 2026-10-05 light8
+    # was refused here because this entry point still called require_dev_seed directly).
     mode = bundle.get('admission_mode', contract.MEASURED_SIM)
+    seed_admission(seed, None, mode)
     cal = contract.calibration_for(mode, calibration, calibration_sha, bundle['map_id'])
     contract.require_runnable(bundle)
     time_budget.require_feasible(contract.resolve(bundle['map_id'])[0], time_case(bundle['case'], bundle['check']),

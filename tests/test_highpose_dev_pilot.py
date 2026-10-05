@@ -705,8 +705,10 @@ def test_measured_unloaded_calibration_c_pins_its_fit_and_heldout_records():
     assert 'NOT MEASURED_SIM' in cal['qualification']
 
 
-def test_extra_dev_seeds_only_for_dev_pilot_stage_probes():
-    """2026-10-05 coordinator: seeds 912/913 for DEV stage probes only (more failure types), labelled, never evidence."""
+def test_extra_dev_seeds_only_for_dev_pilot_stage_probes(monkeypatch):
+    """2026-10-05 coordinator: seeds 912/913 for DEV stage probes only (more failure types), labelled, never evidence.
+    With DEV_LIGHT off (formal path); the DEV-light full-case extension is tested in test_highpose_guard_log_only."""
+    monkeypatch.setattr(c, 'DEV_LIGHT', False)
     from harness import zone_pair_highpose_starts as starts
     conf = {r['seed'] for r in starts.registration()['confirmation_starts']}
     assert not set(run.STAGE_PROBE_DEV_EXTRA_SEEDS) & (conf | {starts.DEV_SEED})
@@ -727,6 +729,7 @@ def test_extra_dev_seeds_only_for_dev_pilot_stage_probes():
 @pytest.mark.parametrize('seed', [912, 913, 9301001, 914])
 def test_direct_student_run_case_refuses_non_dev_seed_full_case_before_backend(tmp_path, monkeypatch, seed):
     """review delta4 P1-1: the common entry point applies the seed rule too (no output folder, no backend)."""
+    monkeypatch.setattr(c, 'DEV_LIGHT', False)   # formal path; DEV light admits 912/913 full cases (guard_log_only tests)
     path, _ = dev_file(tmp_path)
     sha = c.base.sha(path)
     admit(monkeypatch, sha)
