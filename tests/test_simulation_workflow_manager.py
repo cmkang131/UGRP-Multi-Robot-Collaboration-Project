@@ -185,7 +185,7 @@ raise SystemExit(3 if a.fail else 0)
 
     def test_catalog_has_registered_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 51)
+        self.assertEqual(len(data["workflows"]), 52)
         self.assertEqual(len(digest), 64)
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "dispatch-skills")["runner"], "scripts.run_dispatch_e2e")
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "communication")["output_kind"]["prepare"], "file")
@@ -243,6 +243,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-pair-dev": ["--prereg", str(PROJECT / "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json"), "--run-id", "dev03"],
             "zone-pair-bootstrap-probe": ["--seeds", "911", "--policy", "b-boot"],
             "masterpi-v3-static-audit": [],
+            "zone-target-checks": ["--group", "t13a", "--condition", "no_comm"],
             "zone-final-environment-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
             "zone-final-environment-floor-light-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
             "zone-final-pair-v3": ["--check", "calibration-loaded", "--expected-source-sha", "0" * 40],
