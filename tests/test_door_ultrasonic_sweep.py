@@ -10,7 +10,15 @@ import pytest
 pytest.importorskip('mujoco')                                  # the CI offline shards have no MuJoCo
 
 from harness.ultrasonic_model import DEFAULT_SPEC, noisy_reading_with_cause, reading_rng, sensor_seed
-from scripts import door_ultrasonic_sweep as ds
+import mujoco as _mujoco
+
+# scripts/door_ultrasonic_sweep.py replaces mujoco.mj_step* with a raising stub at import time. Restore the real
+# functions so tests that run later in the same process (shard order decides) can still step physics.
+_REAL_STEPS = {name: getattr(_mujoco, name) for name in ('mj_step', 'mj_step1', 'mj_step2')}
+from scripts import door_ultrasonic_sweep as ds  # noqa: E402
+
+for _name, _fn in _REAL_STEPS.items():
+    setattr(_mujoco, _name, _fn)
 
 HAS_MUJOCO = importlib.util.find_spec('mujoco') is not None
 FACTS = {'door_half_width': .25}
