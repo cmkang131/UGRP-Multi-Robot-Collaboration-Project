@@ -64,9 +64,10 @@ def test_cli_routes_every_arm_to_integer_clock_and_records_it(tmp_path, monkeypa
         completion = json.loads((out/'admission_completion.json').read_text())
         assert completion['status'] == 'completed' and completion['rule_success'] is True
     assert seen == [clock.PhysicsBackend]
-    assert clock.PhysicsBackend.__mro__[1] is clock.IntegerClock
+    from sim.final_pair_highpose_nearclip import NearClip   # floor_light_nearclip_v1 render profile (v105)
+    assert clock.PhysicsBackend.__mro__[1] is NearClip and clock.PhysicsBackend.__mro__[2] is clock.IntegerClock
     from sim.final_pair_v3 import PhysicsBackend as V3Backend
-    assert clock.PhysicsBackend.__bases__ == (clock.IntegerClock, V3Backend)  # no acceleration wrapper
+    assert clock.PhysicsBackend.__bases__ == (NearClip, clock.IntegerClock, V3Backend)  # no acceleration wrapper
     for filename in ('plan.json', 'result.json'):
         row = json.loads((out/filename).read_text())
         assert row['host_clock'] == clock.record()

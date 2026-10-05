@@ -237,6 +237,34 @@ def test_every_arm_has_the_same_case_cap_and_a_larger_one_is_refused(tmp_path):
                       calibration='x', calibration_sha='0' * 64, cap_s=3.)
 
 
+def test_dev_light_early_end_and_physics_profile_are_the_same_in_every_arm(tmp_path):
+    """DEV light: both pair jobs ended -> the case stops CASE_END_SETTLE_S later (rule and LLM arms alike), and every
+    result records dev_light / partial_fix / render profile of the shared physics bundle."""
+    from types import SimpleNamespace
+
+    class EndedRuntime(FakeRuntime):
+        def __init__(self, *a, **k):
+            super().__init__(*a, **k)
+            self.actors = {r: SimpleNamespace(jobs_done=[{'kind': 'pair_carry'}]) for r in c.ROBOTS}
+
+    ends = {}
+    for condition in contract.CONDITIONS:
+        # rule: fake runtime whose jobs already ended; LLM arms: the real gated runtime (its blind-pose pair job ends
+        # on its own, see test_with_an_available_pose_...)
+        factory = EndedRuntime if condition == 'rule' else ReadyRuntime
+        result, out, _ = run_arm(tmp_path, condition, cap_s=14., name=f'end-{condition}', runtime_factory=factory)
+        assert result['status'] == 'COLLECTED_UNQUALIFIED' and result['case_end']['rule'] == 'dev_light_both_jobs_ended'
+        ends[condition] = result
+        assert result['case_end']['settle_s'] == 3.
+        assert result['case_sim_s'] == pytest.approx(result['case_end']['jobs_ended_sim_s'] + 3., abs=1e-6)
+        assert result['case_sim_s'] < 14.
+        assert result['dev_light']['enabled'] is True and result['partial_fix']['enabled'] is True
+        assert result['collision_guard']['mode'] == 'log_only'
+        assert result['render_profile_effective']['id'] == 'floor_light_nearclip_v1'
+    assert {r['render_profile_effective']['sha256'] for r in ends.values()} == {
+        ends['rule']['render_profile_effective']['sha256']}
+
+
 # --------------------------------------------------------------------------- ledger, wire images, archive
 
 def test_the_ledger_preserves_every_request_and_response_byte_for_byte(peer_run):

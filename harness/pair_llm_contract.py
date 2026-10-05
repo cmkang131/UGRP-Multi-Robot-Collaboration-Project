@@ -113,6 +113,15 @@ def physics_bundle(*, root=ROOT, admission_mode=high_skill.MEASURED_SIM) -> dict
     return {**row, 'case': {'id': 'pair_llm', 'map_id': reg['map_id'], 'checkpoint': None, 'sim_cap_s': CAP_S}}
 
 
+def physics_profile(physics) -> dict:
+    """The DEV-light / partial-fix / render / guard settings of the shared #363 physics bundle, for plan, bundle and result."""
+    nearclip = physics['render_nearclip']
+    return {'dev_light': copy.deepcopy(physics['dev_light']), 'partial_fix': copy.deepcopy(physics['partial_fix']),
+            'collision_guard': copy.deepcopy(physics['collision_guard']),
+            'render_profile_effective': {'id': nearclip['id'], 'sha256': nearclip['sha256'],
+                                         'base_profile': nearclip['base_profile']}}
+
+
 def model_record(condition, *, kind, root=ROOT) -> dict:
     """What a run records about the model. ``kind``: ``none`` (rule), ``stub`` (plumbing) or ``live``."""
     reg = read_registry(root=root)['model']
@@ -187,7 +196,7 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
         'schema': BUNDLE_SCHEMA, 'execution_bundle_id': BUNDLE_ID, 'workflow_id': WORKFLOW_ID,
         'workflow_version': WORKFLOW_VERSION, 'status': 'DRAFT_UNSEALED', 'research_result': False,
         'condition': condition, 'arm': ARMS[condition], 'llm': llm, 'source_sha': source_sha,
-        **admission_record(admission_mode),
+        **admission_record(admission_mode), **physics_profile(physics),
         'scenario': {'file': SCENARIO, 'sha256': base.sha(Path(root) / SCENARIO),
                      'scenario_id': scenario(root=root)['scenario_id']},
         'map_id': reg['map_id'], 'map_sha256': physics['map_sha256'], 'robots': list(skill_layer.ROBOTS),
@@ -247,4 +256,4 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
 
 __all__ = ['BUNDLE_ID', 'WORKFLOW_ID', 'WORKFLOW_VERSION', 'CONDITIONS', 'ARMS', 'CAP_S', 'RESET_CAP_S',
            'SMOKE_MAX_S', 'read_registry', 'scenario', 'driver_profile', 'physics_bundle', 'model_record',
-           'bundle']
+           'bundle', 'physics_profile']

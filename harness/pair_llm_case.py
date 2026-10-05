@@ -201,7 +201,8 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
               'case_sim_cap_s': float(cap_s), 'registered_case_cap_s': contract.CAP_S,
               'bundle_sha256': digest(bundle), 'physics_bundle_sha256': digest(physics),
               'loadavg_start': list(os.getloadavg()), 'failure': None,
-              'failure_class': None, **contract.admission_record(mode)}
+              'failure_class': None, **contract.admission_record(mode),
+              **contract.physics_profile(physics)}
     from sim import final_pair_highpose_clock as clock
     # Identify the actual host, including failed attempts; fake/legacy hosts must not claim clock v2.
     result['host_clock'] = clock.record() if getattr(backend_factory, 'host_clock', None) == clock.ID else None
@@ -239,6 +240,10 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
                 run_id=f'{condition}-{scenario["scenario_id"]}-s{seed}')
             runtime.gate.listeners.append(trial.on_claim_result)
         steps = round(cap_s / skill_layer.TICK_S)
+        # DEV light early end (same rule and helper as scripts.run_pair_highpose.student_run_case, all three arms):
+        # stop CASE_END_SETTLE_S after both robots' pair/carry jobs ended (control-side job records only).
+        from scripts.run_pair_highpose import CASE_END_SETTLE_S, jobs_ended_all
+        case_end_at = None
         for i in range(steps + 1):
             elapsed = round(i * skill_layer.TICK_S, 6)
             backend.eval_sample()                      # raw labels have no return channel into any selector
@@ -271,13 +276,20 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
                 runtime.on_command(rid, backend.now, action)
                 counts[rid][action['kind']] = counts[rid].get(action['kind'], 0) + 1
             backend.advance_to(start + (i + 1) * skill_layer.TICK_S)
-        if abs(backend.now - start - cap_s) > 1e-7:
+            if contract.high_skill.DEV_LIGHT:
+                if jobs_ended_all(runtime) and case_end_at is None:
+                    case_end_at = backend.now
+                    result['case_end'] = {'rule': 'dev_light_both_jobs_ended', 'jobs_ended_sim_s': backend.now - start,
+                                          'settle_s': CASE_END_SETTLE_S}
+                if case_end_at is not None and backend.now - case_end_at >= CASE_END_SETTLE_S - 1e-9:
+                    break
+        if abs(backend.now - start - cap_s) > 1e-7 and result.get('case_end') is None:
             raise RuntimeError('INCOMPLETE_BOUNDED_PROTOCOL')
         result.update(protocol_complete=True, status='COLLECTED_UNQUALIFIED', case_sim_s=backend.now - start)
         if llm:
             if health is not None:
                 health(trial, final=True)
-            trial_result = trial.finish(float(cap_s))
+            trial_result = trial.finish(float(backend.now - start) if result.get('case_end') else float(cap_s))
             result['trial'] = {'calls': len(trial_result.calls), 'messages': len(trial_result.messages),
                                'actions': len(trial_result.actions), 'end_reason': trial_result.end_reason,
                                'end_state': trial_result.end_state}
