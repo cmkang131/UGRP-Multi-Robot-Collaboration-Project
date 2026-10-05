@@ -185,7 +185,7 @@ raise SystemExit(3 if a.fail else 0)
 
     def test_catalog_has_registered_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 52)
+        self.assertEqual(len(data["workflows"]), 53)
         self.assertEqual(len(digest), 64)
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "dispatch-skills")["runner"], "scripts.run_dispatch_e2e")
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "communication")["output_kind"]["prepare"], "file")
