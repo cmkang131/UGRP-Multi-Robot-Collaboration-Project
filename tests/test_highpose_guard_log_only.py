@@ -163,3 +163,14 @@ def test_hard_reasons_are_not_soft():
     for reason in ('BARRIER_CLOSE_ABORT', 'PARTNER_ABORT', 'LOADED_BASE_MOTION_REQUIRES_HIGH', 'PAIR_RELOOK_WHILE_GRIPPED',
                    'HIGH_CARRY_VIEW_REQUIRED', 'LIFT_GRIP_NOT_COMMANDED_CLOSED', 'OWN_COMMAND_HISTORY_MISMATCH'):
         assert reason not in c.DEV_LIGHT_SOFT_STOPS
+
+
+def test_case_end_needs_every_robot_pair_job_ended():
+    from types import SimpleNamespace as NS
+    from scripts import run_pair_highpose as runner
+    look, pair = {'kind': 'look_around'}, {'kind': 'pair_carry'}
+    rt_ = lambda **jobs: NS(actors={r: NS(jobs_done=j) for r, j in jobs.items()})
+    assert runner.jobs_ended_all(rt_(r1=[look, pair], r2=[pair])) is True
+    assert runner.jobs_ended_all(rt_(r1=[look, pair], r2=[look])) is False
+    assert runner.jobs_ended_all(rt_(r1=[pair])) is False
+    assert runner.jobs_ended_all(NS(actors={})) is False

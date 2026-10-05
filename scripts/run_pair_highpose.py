@@ -76,6 +76,16 @@ STAGE_PROBES.update({k: {**v, 'staged': True} for k, v in staging.PROBE_SPECS.it
 STAGE_STATUS = ('STAGE_PROBE_REACHED', 'STAGE_PROBE_FAILED', 'STAGE_PROBE_NOT_REACHED')
 
 
+CASE_END_SETTLE_S = 3.
+
+
+def jobs_ended_all(runtime):
+    """True when every robot has an ended non-look_around (pair/carry) job."""
+    actors = getattr(runtime, 'actors', None) or {}
+    return bool(actors) and all(any(j.get('kind') != 'look_around' for j in actors[r].jobs_done)
+                                for r in contract.ROBOTS if r in actors) and all(r in actors for r in contract.ROBOTS)
+
+
 def stage_progress(runtime, probe):
     """Live controller events/failures (control-side objects only; no eval labels)."""
     spec = STAGE_PROBES[probe]
@@ -272,6 +282,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
         runtime = runtime_factory(static, calibration, calibration_sha, seed=seed)
         runtime.initial_commands(start, backend.commands)
         steps = round(cap/contract.TICK_S)
+        case_end_at = None
         for i in range(steps+1):
             # Raw labels have no return channel into the command selector.
             backend.eval_sample()
@@ -290,6 +301,17 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
             if probe is not None:
                 progress = stage_progress(runtime, probe)
                 if progress['stop']:
+                    break
+            elif contract.DEV_LIGHT:
+                # DEV light (2026-10-05): a full case used to run to the 900 s cap after both pair jobs had ended
+                # (v105light a6fec250: jobs ended at 138.85 s, ~25 min of idle SIM). Stop CASE_END_SETTLE_S after both
+                # robots' pair/carry jobs have ended (control-side job records only, no eval labels).
+                ended = jobs_ended_all(runtime)
+                if ended and case_end_at is None:
+                    case_end_at = backend.now
+                    result['case_end'] = {'rule': 'dev_light_both_jobs_ended', 'jobs_ended_sim_s': backend.now-start,
+                                          'settle_s': CASE_END_SETTLE_S}
+                if case_end_at is not None and backend.now-case_end_at >= CASE_END_SETTLE_S-1e-9:
                     break
         if probe is not None:
             progress = stage_progress(runtime, probe)
