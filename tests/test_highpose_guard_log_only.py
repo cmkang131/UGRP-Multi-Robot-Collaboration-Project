@@ -201,3 +201,12 @@ def test_align_relook_fix_expired_resumes_align_in_light_mode():
     ctl = type('C', (LightFail, B), {})()
     ctl.fail('ALIGN_RELOOK_FIX_EXPIRED', 5.)
     assert ctl.state == 'align' and ctl.failed == [] and ctl.state_t == 1. and ctl.align_look_total_s == 1.
+
+
+def test_align_timeout_opens_a_new_window_in_light_mode():
+    from harness.zone_pair_highpose_runtime import LightFail
+    class B(_Base):
+        state, state_t, align_started_at = 'align', 10., 10.
+    ctl = type('C', (LightFail, B), {})()
+    ctl.fail('ALIGN_TIMEOUT', 70.)
+    assert ctl.failed == [] and ctl.state == 'align' and ctl.state_t == ctl.align_started_at == 70.

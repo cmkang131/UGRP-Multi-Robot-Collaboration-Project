@@ -489,6 +489,10 @@ class LightFail:
                 from harness.zone_pair_align import PairAlignRelook
                 setter = super(PairAlignRelook, self) if isinstance(self, PairAlignRelook) else super()
                 return setter.set('align_relook_return', now)
+            if reason == 'ALIGN_TIMEOUT' and self.state == 'align':
+                # A time limit only: start a new align window from now (the alignment itself is unchanged).
+                self.state_t = self.align_started_at = now
+                return None
             if reason == 'ALIGN_RELOOK_FIX_EXPIRED' and self.state == 'align_relook_return':
                 # The rest of the accepted branch of zone_pair_align._align_relook_return (own estimate as it is).
                 from harness.zone_pair_align import PairAlignRelook

@@ -53,12 +53,13 @@ DEV_LIGHT_SOFT_STOPS = frozenset({'PAIR_COLLISION_GUARD', 'POSE_UNCERTAIN', 'POS
                                   'HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED', 'HIGH_CHECKPOINT_REOBSERVE_TIMEOUT',
                                   'HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', 'APPROACH_TIMEOUT',
                                   # light v3: an align re-look without an accepted fix resumes on the own estimate
-                                  'ALIGN_RELOOK_NO_FIX', 'ALIGN_RELOOK_FIX_EXPIRED'})
+                                  'ALIGN_RELOOK_NO_FIX', 'ALIGN_RELOOK_FIX_EXPIRED',
+                                  'ALIGN_TIMEOUT'})
 # Not softened (real physical failure or impossible to continue): drop/tilt/grip loss, GO barrier mismatch
 # (BARRIER_*), PARTNER_ABORT, own command/clock/provider errors, LOADED_BASE_MOTION_REQUIRES_HIGH,
 # PAIR_RELOOK_WHILE_GRIPPED, HIGH_CARRY_VIEW_REQUIRED, frozen approach-driver failures (APPROACH_* from the driver,
 # DOOR_POSE_NOT_LOCALIZED: the frozen driver is already in its failed phase, so a retry cannot proceed).
-DEV_LIGHT_VERSION = 'dev_light_v4'
+DEV_LIGHT_VERSION = 'dev_light_v5'
 DEV_LIGHT_LOG_EVERY = 50              # a soft stop repeated every tick is logged at its 1st, 51st, ... occurrence
 DEV_LIGHT_EVENT = 'dev_light_would_stop'
 CAP_PREREG_VERSION = 'v98-cap-3'
