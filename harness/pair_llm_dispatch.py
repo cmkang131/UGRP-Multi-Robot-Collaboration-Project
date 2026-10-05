@@ -138,6 +138,7 @@ class PairLink:
         self.call_ref = None
         self.api_calls, self.abort_log = [], []
         self._counter = 0
+        self.decision_window = decisions.DecisionWindow()
 
     # -- time and frames -----------------------------------------------------------------
     def set_origin(self, origin_s) -> None:
@@ -309,7 +310,7 @@ class PairTrial(zo.OfflineTrial):
         self.scheduler = DecisionScheduler(
             self.transport, cost_params=self.params, policy=self.policy, actors=PAIR_ROBOTS,
             on_action=self._on_action, bus=self.channel, bus_owner=zo.BUS_OWNER,
-            own_job=lambda actor: self.links[actor].job(), decision_limits=self.decision_limits,
+            own_job=self._message_own_job, decision_limits=self.decision_limits,
             external_budget_spent=lambda: self.transport.budget_exhausted)
         self.calls, self.messages, self.actions, self.requests = [], [], [], []
         self._output_token_counts = {}
@@ -326,6 +327,16 @@ class PairTrial(zo.OfflineTrial):
         self.clock_drift_s = 0.0
 
     # -- inputs -----------------------------------------------------------------------------
+    def _message_own_job(self, actor):
+        """Coordinator-approved deviation e7: only received-text availability sees the open window.
+
+        The real own job, controller, busy re-ask timer and sealed scheduler are unchanged.
+        """
+        link = self.links[actor]
+        if link.decision_window.is_open(self.scheduler.clock):
+            return None
+        return link.job()
+
     def snapshot(self, call):
         """The caller's OWN inputs at the call start: the study's snapshot plus the closed own-status record."""
         zi.IntegratedTrial.snapshot(self, call)
@@ -346,6 +357,13 @@ class PairTrial(zo.OfflineTrial):
         """The study's own-event handling, plus the class of the robot's latest finished job (own status)."""
         zi.IntegratedTrial.on_executor_event(self, event, at_s=at_s)
         self.executor_events[-1].update(delivered_at_sim_s_since_reset=float(at_s), sim_s_absolute=event.get('sim_s'))
+        link = self.links[event['robot_id']]
+        opened = link.decision_window.on_event(event, origin_s=link.origin_s)
+        if opened and link.decision_window.is_open(at_s) and at_s <= self.horizon_s:
+            # Existing pair_progress, pair-owned trigger label; the sealed EVENTS/trigger map is untouched.
+            self.scheduler.trigger(event['robot_id'], 'idle', at=at_s)
+            if self.spec.channel_open:
+                self.scheduler.available(event['robot_id'], at=at_s)
         if event['event'] in ('job_done', 'job_failed') and event.get('job_kind') in ('pair_carry', LOOK_AROUND):
             reason = (event.get('detail') or {}).get('reason')
             # The end is dated by the event's own backend time on the harness clock (backend time - reset origin),

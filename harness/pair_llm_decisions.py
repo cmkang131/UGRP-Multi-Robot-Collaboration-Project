@@ -1,5 +1,9 @@
 """Pair-owned stop-decision contract; no scheduler, estimator or simulator edits."""
 
+import math
+
+from harness.zone_study_contract import ContractViolation
+
 DECISION_WINDOW_S = 10.
 LOOK_AGAIN_PER_STOP = 1
 LOOK_AGAIN_PER_CASE = 1
@@ -14,6 +18,51 @@ POST_LOOK_CHOICES = ('regrasp', 'look_again')
 HOOK_ACTIONS = {'carry_decision': CARRY_CHOICES, 'post_look_decision': POST_LOOK_CHOICES}
 HOOK_EVENTS = ('carry_leg_started', 'carry_stop_reached', 'setdown_started', 'setdown_completed',
                'relook_result', 'regrasp_result', 'carry_resumed')
+
+
+class DecisionWindow:
+    """One robot's window on the harness clock. No controller/evaluation fields are copied."""
+
+    def __init__(self):
+        self.current = None
+        self.serial = 0
+
+    def on_event(self, event, *, origin_s):
+        if event['event'] in ('job_done', 'job_failed'):
+            self.current = None
+            return False
+        if event['event'] != 'pair_progress':
+            return False
+        detail = event.get('detail') or {}
+        kind = detail.get('kind')
+        if kind == 'carry_stop_reached':
+            command, end = 'carry_decision', detail.get('decide_at_s')
+            cutoff = detail.get('latch_until_s')
+        elif kind == 'relook_result' and 'window_until_s' in detail:
+            command, end = 'post_look_decision', detail['window_until_s']
+            cutoff = end
+        else:
+            return False
+        start = event.get('sim_s')
+        if any(type(t) not in (int, float) or not math.isfinite(t) for t in (start, end, cutoff)):
+            raise ContractViolation('decision window needs finite controller-clock timestamps')
+        if not (start <= cutoff <= end and 0 < end-start <= DECISION_WINDOW_S+1e-6):
+            raise ContractViolation('invalid decision window interval')
+        self.serial += 1
+        self.current = {'kind': command, 'opened_at_sim_s': round(start-origin_s, 6),
+                        'decide_at_sim_s': round(end-origin_s, 6),
+                        'latch_until_sim_s': round(cutoff-origin_s, 6)}
+        return True
+
+    def is_open(self, now):
+        w = self.current
+        return w is not None and w['opened_at_sim_s']-1e-9 <= now < w['decide_at_sim_s']-1e-9
+
+    def snapshot(self, now):
+        return dict(self.current) if self.is_open(now) else None
+
+    def reference(self, now):
+        return self.serial if self.is_open(now) else None
 
 
 def record():
