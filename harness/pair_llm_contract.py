@@ -119,7 +119,8 @@ def physics_profile(physics) -> dict:
     return {'dev_light': copy.deepcopy(physics['dev_light']), 'partial_fix': copy.deepcopy(physics['partial_fix']),
             'collision_guard': copy.deepcopy(physics['collision_guard']),
             'render_profile_effective': {'id': nearclip['id'], 'sha256': nearclip['sha256'],
-                                         'base_profile': nearclip['base_profile']}}
+                                         'base_profile': nearclip['base_profile']},
+            'own_load_occlusion': copy.deepcopy(physics['own_load_occlusion'])}
 
 
 def model_record(condition, *, kind, root=ROOT) -> dict:

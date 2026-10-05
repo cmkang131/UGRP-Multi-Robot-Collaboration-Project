@@ -1652,6 +1652,20 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
 - Reed, "Depth Precision Visualized", NVIDIA Developer Blog, 2015. reversed-Z + 부동소수 깊이가 가까운 near plane에서도 정밀도를
   유지한다는 설명. **미확인**(이번 작업에서 원문을 다시 읽지 않음).
 
+### 자기 하중 가림 (own_load_occlusion_v1, 2026-10-05)
+
+- 문제: 근거리 절단면(4.4 mm)을 켜자 든 빔이 r1 자기 카메라를 꽉 채워 `INVALID_OWN_IMAGE`로 abort(첫 LLM DEV 실행
+  `pair-llm-DEV-v103b-light-s911-8a1acdad-fast1` no_comm, SIM 338.05, r2는 PARTNER_ABORT). 얼어 있는 자기 영상 문턱은 그대로다.
+- 처방: 이 로봇이 자기 하중 구간(`lift`~`wait_open`이면서 자기 파지 영수증이 닫힘, 또는 열기 명령 뒤 자기 팔 동작이 끝나기 전)에
+  있을 때, 신선하고 해독되고 480x640인 프레임이 대비/어둠 규칙만 못 넘으면 `OCCLUDED_BY_OWN_LOAD`(관측 없음)로 기록하고
+  명령 이력 그대로 이어 간다. 낡은·해독 불가·모양 틀린 프레임, 하중 구간 밖의 어두운 프레임은 여전히 `INVALID_OWN_IMAGE`.
+  입력은 자기 영상·자기 명령·자기 단계뿐. 정식·DEV 모두 적용(DEV_LIGHT 소프트 정지가 아니다). 번들 기록: `own_load_occlusion`
+  (`zone_pair_own_load_occlusion_v1_v98`). 구현: `harness/zone_pair_highpose_own_load_occlusion.py`, 얼어 있는 실행기는 v98 이중 바인딩으로만 우회.
+- 근거 영상: `tests/fixtures/own_load_occlusion/` (r1 6705, 6736), 실패 프레임 6736은 값 퍼짐 0(문턱 1.0), 표준편차 0.2244(문턱 0.22 이상이지만 퍼짐 규칙에서 탈락).
+- 아직 안 한 것: 근거리 절단면의 다른 부작용(공중 호버 점검, 빔 마스크, 파지 관계 912행, 파지 near_m 22.2 mm) 감사 — 후속.
+- 출처 표기: 칼만 필터/robot_localization `sensor_timeout`은 관측이 없으면 갱신을 건너뛰고 예측만 한다 [F]; MoveIt 인식 파이프라인의 자기 필터링 [F];
+  EyeRobot 2.0(arXiv 2610.03710, 쥔 물체가 손목 카메라를 가림) [F 초록만]. 자세한 표기는 모듈 docstring 참조.
+
 ### HIGH 운반 빔 경계 맞춤 (v98, 처방 제안의 출처)
 
 - Fischler, Bolles, "Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated

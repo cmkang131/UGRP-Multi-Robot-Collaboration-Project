@@ -396,6 +396,11 @@ def _nearclip_record():
     return nearclip.record()
 
 
+def _own_load_occlusion_record():
+    from harness import zone_pair_highpose_own_load_occlusion as occlusion   # imports this module's siblings
+    return occlusion.record()
+
+
 def bundle(map_id, check, admission=MEASURED_SIM):
     from harness.python_source_closure import source_closure
     static, _, contract = resolve(map_id)
@@ -410,6 +415,7 @@ def bundle(map_id, check, admission=MEASURED_SIM):
         calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only',
         collision_guard={'mode': COLLISION_GUARD_MODE, 'bundle_label': COLLISION_GUARD_BUNDLE_LABEL},
         render_nearclip=_nearclip_record(),
+        own_load_occlusion=_own_load_occlusion_record(),
         partial_fix={'enabled': PARTIAL_FIX, 'module': 'harness/zone_pair_highpose_partial_fix.py'},
         dev_light={'enabled': DEV_LIGHT, 'version': DEV_LIGHT_VERSION, 'soft_stops': sorted(DEV_LIGHT_SOFT_STOPS),
                    'event': DEV_LIGHT_EVENT,

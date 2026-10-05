@@ -15,6 +15,7 @@ from harness import zone_pair_highpose_lookaround as lookaround
 from harness import zone_pair_highpose_relook as relook
 from harness import zone_pair_highpose_start_relief as start_relief
 from harness import zone_pair_highpose_guard_log_only as guard_log_only
+from harness import zone_pair_highpose_own_load_occlusion as occlusion
 from harness import zone_pair_highpose_contract as hp_contract
 from harness import zone_pair_highpose_carry_align as carry_align
 from harness import zone_pair_highpose_posture_defer as posture_defer
@@ -608,9 +609,29 @@ def controller_class(base):
 
 
 class Execution(previous.Execution):
-    # Per-step own-image gate (INVALID_OWN_IMAGE) with the v98 values.
-    step = frame_gate.gated(PairExecution.step)
-    arm_step = frame_gate.gated(PairExecution.arm_step)
+    # Per-step own-image gate (INVALID_OWN_IMAGE) with the v98 values. The frozen code objects run twice bound:
+    # with the v98 gate (``_*_gated``), and with a gate that accepts (``_*_accepted``), which is chosen only for a
+    # tick whose frame ``OwnLoadOcclusion`` classified VALID or OCCLUDED_BY_OWN_LOAD inside a loaded window
+    # (zone_pair_highpose_own_load_occlusion: no observation, not a fault).
+    _step_gated = frame_gate.gated(PairExecution.step)
+    _arm_step_gated = frame_gate.gated(PairExecution.arm_step)
+    _step_accepted = frame_gate.gated_accepted(PairExecution.step)
+    _arm_step_accepted = frame_gate.gated_accepted(PairExecution.arm_step)
+
+    @property
+    def own_load_occlusion(self):
+        occ = self.__dict__.get('_own_load_occlusion')
+        if occ is None:
+            occ = self._own_load_occlusion = occlusion.OwnLoadOcclusion(self)
+        return occ
+
+    def step(self, now):
+        run = self._step_accepted if self.own_load_occlusion.accepts(now) else self._step_gated
+        return run(now)
+
+    def arm_step(self, now):
+        run = self._arm_step_accepted if self.own_load_occlusion.accepts(now) else self._arm_step_gated
+        return run(now)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -622,7 +643,8 @@ class Execution(previous.Execution):
         ctl.high_raising, ctl.high_ready = False, False
         ctl.grip_epoch, ctl.pose_anchors, ctl.transit = 0, {}, None
         ctl.floor_return_verified = False
-        ctl.grip_monitor, ctl.grip_closed_epoch = grip.GripMonitorLog(), None
+        ctl.grip_monitor = grip.GripMonitorLog(tag=self.own_load_occlusion.tag_row)   # occluded frames are tagged
+        ctl.grip_closed_epoch = None
         ctl.v98_measured_camera_keys = posture_defer.measured_keys(kwargs['calibration'])  # static calibration
         self.command_guard = CommandGuard(self, self.vision)
         blind.adopt(self.command_guard, ctl)
@@ -651,6 +673,9 @@ class Team(previous.Team):
                                    'grasp_time_view': GRASP_TIME_VIEW,
                                    'rows': {r: ep.controller.grip_monitor.export()
                                             for r, ep in session['endpoints'].items()}}
+            # Evaluation/audit output only (2026-10-05): own-image frames occluded by the own load (no observation).
+            row['own_load_occlusion'] = {r: ep.own_load_occlusion.export() for r, ep in session['endpoints'].items()
+                                         if hasattr(type(ep), 'own_load_occlusion')}
             # Log only (2026-10-05): the pair approach driver's own event log (looks, relocalizations, the
             # arrival view verdicts). Executor jobs already keep their driver_log; this driver's log was not saved,
             # so the dock_approach probe 1236c63d had no record of its arrival_view_* events.
@@ -684,6 +709,7 @@ def adopt_v98_frame_gate(runtime):
             'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record(),
             'carry_align': carry_align.record(), 'relook_posture_defer': posture_defer.record(),
             'dr_checkpoint': dr_checkpoint.record(), 'approach_looks': approach_looks.record(), 'arrival_confirm': arrival_confirm.record(),
+            'own_load_occlusion': occlusion.record(),
             'high_edge_informative': HIGH_EDGE_INFORMATIVE,
             'sigma_refix': refix.record()}
 
