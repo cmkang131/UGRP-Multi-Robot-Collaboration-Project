@@ -197,17 +197,21 @@ def test_a_status_never_gets_anything_the_study_boundary_forbids_in_a_real_reque
 
 # --------------------------------------------------------------------------- the refusal reaches the model
 
-def test_in_the_loop_the_model_is_told_its_start_was_refused_and_how_often(tmp_path):
+def test_high_recovery_keeps_own_refusal_counts_and_reports_the_latest_own_job_state(tmp_path):
     result, out, _ = run_arm(tmp_path, 'no_comm', cap_s=30.)
     inputs = rows(out / 'llm' / 'inputs.jsonl')
     first = {r['robot']: r['own_status'] for r in inputs if r['sim_s'] == 0.}
     assert all(s == {'last_outcome': 'no_claim', 'reason': None, 'since_claim_s': None,
                      'refusals_since_last_call': 0} for s in first.values())
     refused_calls = [r for r in inputs if r['own_status']['last_outcome'] == 'start_refused']
-    assert refused_calls, [r['own_status'] for r in inputs]
+    # HIGH's own bounded re-look is newer than the refusal that triggered it. Preserve that latest
+    # own state and the separate refusal count; do not overwrite a look-end event with an older refusal.
+    recovered_calls = [r for r in inputs if r['own_status']['last_outcome'] == 'look_around_ended'
+                       and r['own_status']['refusals_since_last_call'] > 0]
+    assert recovered_calls, [r['own_status'] for r in inputs]
     for r in refused_calls:
         assert r['own_status']['reason'] == 'SELF_UNCERTAIN' and r['own_status']['since_claim_s'] > 0
-    assert any(r['own_status']['refusals_since_last_call'] > 0 for r in refused_calls)
+    assert all(r['own_status']['reason'] == 'queue_empty' for r in recovered_calls)
     # the counts are per call: they add up to no more than the gate's own refusal totals
     gate = json.loads((out / 'llm' / 'claim_gate.json').read_text())
     for rid in ('r1', 'r2'):
@@ -358,7 +362,8 @@ def test_the_history_keeps_v1_for_the_runs_that_billed_images_zero():
 
 
 def test_in_the_loop_the_sim_cost_includes_the_images_and_the_split_is_recorded(tmp_path):
-    result, out, _ = run_arm(tmp_path, 'no_comm', cap_s=12.)
+    # Complete both v4-prompt reply rounds; a censored call pays elapsed time, not its full input bill.
+    result, out, _ = run_arm(tmp_path, 'no_comm', cap_s=16.)
     metrics = result['metrics']
     requests = rows(out / 'llm' / 'requests.jsonl')
     assert all(r['billed_tokens']['total_billed'] == r['billed_tokens']['total_text_billed'] + 2980 for r in requests)

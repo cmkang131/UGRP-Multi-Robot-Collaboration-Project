@@ -32,6 +32,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
 from harness import pair_llm_billing as billing
+from harness import pair_llm_decisions as decisions
 from harness import pair_llm_status as status
 from harness.pair_llm_stop_adapter import unknown_belief, belief_violations, window_violations
 from harness import zone_study_contract as zc
@@ -392,8 +393,8 @@ def build_request(inputs: PairInputs, *, window=None) -> dict:
         raise zp.ProtocolError('the payload changed after validation: ' + '; '.join(problems))
     cap_window, cap_robot = spec.max_window_utterances, spec.max_robot_utterances
     if spec.channel_open:
-        cap_window = window.pop('max_utterances', spec.max_window_utterances)
-        cap_robot = window.pop('max_your_utterances', spec.max_robot_utterances)
+        cap_window = window.pop('max_utterances', decisions.UTTERANCES_TOTAL)
+        cap_robot = window.pop('max_your_utterances', decisions.UTTERANCES_PER_ACTOR)
         if any(type(cap) is not int or cap < 0 for cap in (cap_window, cap_robot)):
             raise zp.ProtocolError('dialogue caps must be non-negative integers')
         left = window.pop('your_utterances_left', max(0, cap_robot - len(issued)))

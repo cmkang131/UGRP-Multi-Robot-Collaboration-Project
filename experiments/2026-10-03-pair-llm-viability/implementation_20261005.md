@@ -143,3 +143,16 @@ nice -n 10 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pyte
 최종 소스 대조: #363 `14ba8b5e` 대비 봉인 `zone_event_scheduler.py`, `zone_study_decisions.py`,
 `zone_study_protocol.py`, `zone_study_contract.py`와 #363 `zone_pair_highpose_refix.py`의 차이는 없다.
 이번 테스트 결과는 로컬 프로젝트에만 기록하고 UGRP 지침에 따라 Drive에 보내지 않는다.
+
+## 4b. 요청 기본 발화 상한과 HIGH 상태 회귀 보완
+
+커밋 `665dcfc0` 후 마무리 검사 4개에서 **1 passed, 3 failed**(47.58초)를 확인했다.
+실제 PairTrial은 이미 6/12를 넘겼지만, 직접 `build_request`를 쓸 때는 봉인 채널의 기본 2/6으로
+되돌아가는 곳이 남아 있었다. 요청 기본값도 짝 계약의 6/12로 맞췄다.
+HIGH의 자동 재관측이 거절보다 최신이면 모델에 최신 자기 작업 종료와 별도 거절 횟수가 보이는 것이
+맞으므로 그 동작을 검사한다. 입력 청구 하한 시험은 미완료 호출을 섞지 않도록 가짜 사례를 12→16초로
+늘렸다(비용 모델 변경 없음). 원점 0/1.3/4.9의 실제 가짜 루프 상태 순서 시험은 변경 없이 통과했다.
+
+보완 후 입력 파일·판단 창 파일 전체와 위 세 회귀 검사 **42 passed**(47.10초, exit 0).
+앞 118개 결과와 중복되는 검사가 있으므로 합계 성공 건수로 더하지 않는다.
+실제 모델 호출·물리·렌더링·병합 없음.
