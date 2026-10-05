@@ -306,10 +306,15 @@ class HighController:
                                                 CHECKPOINT_REOBSERVE_S)
             if kind == 'over':
                 self.log(self.rid, dr_checkpoint.OVER_EVENT, now, seg=self.seg, high=True, **detail)
-                return self._transit_abort(dr_checkpoint.OVER_REASON, now)
+                if not light_soft(self, dr_checkpoint.OVER_REASON, now, 'wait_carry.dr_checkpoint'):
+                    return self._transit_abort(dr_checkpoint.OVER_REASON, now)
+                kind = 'dr'                         # DEV light: continue on the DR estimate (logged above)
             # Localization re-observe (navigation) keeps its bounded timeout.
             if now-self.checkpoint_started > 8.:
-                return self._transit_abort('HIGH_CHECKPOINT_REOBSERVE_TIMEOUT', now)
+                if not light_soft(self, 'HIGH_CHECKPOINT_REOBSERVE_TIMEOUT', now, 'wait_carry.dr_checkpoint'):
+                    return self._transit_abort('HIGH_CHECKPOINT_REOBSERVE_TIMEOUT', now)
+                if kind == 'wait':
+                    kind = 'dr'                     # DEV light: continue on the DR estimate
             if now >= self.next_look:
                 self.next_look = now+m2.study.LOOK_EVERY_S
                 obs = self.look(now)
@@ -327,9 +332,13 @@ class HighController:
                          epoch=self.grip_epoch, **detail)
             self.checkpoint_fix_after = None
         provider = self.port.own.pose.provider
-        if HIGH_EDGE_INFORMATIVE and not provider.beam_edge.available(now):     # v98: no edge reference to wait for otherwise
+        if (HIGH_EDGE_INFORMATIVE and not provider.beam_edge.available(now)
+                and self.__dict__.get('dev_light_skip_edge_wait') != self.state_t):     # v98: no edge reference to wait for otherwise
             if now-self.state_t > m2.study.STATE_LIMIT_S['wait_carry']:
-                return self.fail('HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', now)
+                if not light_soft(self, 'HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', now, 'wait_carry.edge'):
+                    return self.fail('HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', now)
+                self.dev_light_skip_edge_wait = self.state_t   # DEV light: this wait only, carry on without the edge
+                return super()._wait_carry(now, arm_idle)
             if now >= self.next_look:
                 self.next_look = now+m2.study.LOOK_EVERY_S
                 self.report('carry', self.look(now), now, ready=False, reason='HIGH edge reference pending')
@@ -398,6 +407,89 @@ class HighController:
 _RELOOK_GRASP = frame_gate.gated(PairGraspRelook._grasp, _frame_gate=frame_gate.controller_gate)
 
 
+class light_aborts:
+    """DEV light (user 2026-10-05 "다 라이트 하게 줄여"): inside the block, ``ep.abort`` with a soft reason is recorded
+    in ``soft`` instead of aborting. Hard reasons abort as before. No-op when DEV_LIGHT is off."""
+
+    def __init__(self, ep, soft):
+        self.ep, self.soft = ep, soft
+
+    def __enter__(self):
+        ep = self.ep
+        self.shadowed, self.real = 'abort' in vars(ep), getattr(ep, 'abort', None)
+        self.on = hp_contract.DEV_LIGHT and self.real is not None
+        if self.on:
+            real, soft = self.real, self.soft
+            def abort(t, reason):
+                if reason in hp_contract.DEV_LIGHT_SOFT_STOPS:
+                    soft.append(reason)
+                    return None
+                return real(t, reason)
+            ep.abort = abort
+        return self
+
+    def __exit__(self, *exc):
+        if self.on:
+            if self.shadowed:
+                self.ep.abort = self.real
+            else:
+                del self.ep.abort
+        return False
+
+
+def _light_due(holder, key):
+    counts = holder.__dict__.setdefault('dev_light_counts', {})
+    counts[key] = counts.get(key, 0) + 1
+    return counts[key], (counts[key] - 1) % hp_contract.DEV_LIGHT_LOG_EVERY == 0
+
+
+def light_log(guard, now, soft, site, **detail):
+    """One ``dev_light_would_stop`` event (deduplicated per site/reason). Never raises into the run."""
+    ep = guard.ep
+    count, due = _light_due(guard, (site, soft[0]))
+    if not due:
+        return
+    try:
+        report = guardlog._report(ep.own.last_report)
+    except Exception as exc:
+        report = {'error': repr(exc)}
+    try:
+        ep.log(ep.own.robot_id, hp_contract.DEV_LIGHT_EVENT, now, would_reason=soft[0], reasons=list(soft), site=site,
+               occurrence=count, estimate=report, loaded=bool(getattr(guard, 'carrying_beam', False)),
+               light_version=hp_contract.DEV_LIGHT_VERSION, **detail)
+    except Exception as exc:
+        ep.log(ep.own.robot_id, hp_contract.DEV_LIGHT_EVENT, now, would_reason=soft[0], log_error=repr(exc))
+
+
+def light_soft(ctl, reason, now, site):
+    """True (and one deduplicated ``dev_light_would_stop`` event) when DEV light turns this controller stop into a log."""
+    if not (hp_contract.DEV_LIGHT and reason in hp_contract.DEV_LIGHT_SOFT_STOPS):
+        return False
+    count, due = _light_due(ctl, (site, reason))
+    if due:
+        ctl.log(ctl.rid, hp_contract.DEV_LIGHT_EVENT, now, would_reason=reason, site=site, state=ctl.state,
+                seg=getattr(ctl, 'seg', None), occurrence=count, light_version=hp_contract.DEV_LIGHT_VERSION)
+    return True
+
+
+class LightFail:
+    """Controller side of DEV light: ``fail``/``_transit_abort`` with a soft reason log and return (the state is
+    retried next tick) instead of failing. Hard reasons are unchanged."""
+
+    def _light_soft(self, reason, now, site):
+        return light_soft(self, reason, now, site)
+
+    def fail(self, reason, now):
+        if self._light_soft(reason, now, 'controller.fail'):
+            return None
+        return super().fail(reason, now)
+
+    def _transit_abort(self, reason, now):
+        if self._light_soft(reason, now, 'controller._transit_abort'):
+            return None
+        return super()._transit_abort(reason, now)
+
+
 class CommandGuard(PreviousGuard):
     preclose_check = frame_gate.gated(PreviousGuard.preclose_check)
     observe_standoff = frame_gate.gated(PairCommandGuard.observe_standoff)
@@ -407,6 +499,24 @@ class CommandGuard(PreviousGuard):
     def __init__(self, execution, vision):
         super().__init__(execution, vision)
         progress.install(self)           # v98: loaded no-progress check, motion = REQUIRED_MOVEMENT_M commanded (B)
+
+    def before_control(self, now):
+        soft = []
+        with light_aborts(self.ep, soft):
+            out = super().before_control(now)
+        if soft and out is False:
+            light_log(self, now, soft, 'CommandGuard.before_control')
+            return True
+        return out
+
+    def _stationary_reobserve(self, now, pose):
+        soft = []
+        with light_aborts(self.ep, soft):
+            out = super()._stationary_reobserve(now, pose)
+        if soft and out is False:
+            light_log(self, now, soft, 'CommandGuard._stationary_reobserve')
+            return True
+        return out
 
     def sweep_guard(self):
         if hp_contract.COLLISION_GUARD_MODE == 'log_only':     # user 2026-10-05: PAIR_COLLISION_GUARD log only
@@ -422,32 +532,14 @@ class CommandGuard(PreviousGuard):
         progress.leg_reset(self, now)    # v98: reset the loaded no-progress check at each carry leg start (A)
         before, issued = len(self.ep.own.events), copy.deepcopy(commands)
         self.veto_trace = trace = guardlog.Trace()
-        soft, ep = [], self.ep
-        shadowed, real_abort = 'abort' in vars(ep), getattr(ep, 'abort', None)
-        light = hp_contract.DEV_LIGHT and real_abort is not None
-        if light:        # user 2026-10-05 "다 라이트 하게 줄여": conservative stops are logged only
-            def abort(t, reason):
-                if reason in hp_contract.DEV_LIGHT_SOFT_STOPS:
-                    soft.append(reason)
-                    return None
-                return real_abort(t, reason)
-            ep.abort = abort
+        soft = []
         try:
-            out = super().check(now, commands)
+            with light_aborts(self.ep, soft):
+                out = super().check(now, commands)
         finally:
             self.veto_trace = None
-            if light:
-                if shadowed:
-                    ep.abort = real_abort
-                else:
-                    del ep.abort
         if soft:
-            try:
-                report = guardlog._report(ep.own.last_report)
-            except Exception as exc:
-                report = {'error': repr(exc)}
-            ep.log(ep.own.robot_id, hp_contract.DEV_LIGHT_EVENT, now, would_reason=soft[0], reasons=soft,
-                   site='CommandGuard.check', commands=issued, estimate=report, loaded=bool(self.carrying_beam))
+            light_log(self, now, soft, 'CommandGuard.check', commands=issued)
             out = commands
         start_relief.log_reliefs(self, now, trace)
         guardlog.log_veto(self, now, issued, before, trace)
@@ -483,7 +575,7 @@ class GraspViewLogOnly(m2.M2DoorStudent):
 def controller_class(base):
     # blind.HoverConfirm sits between HighController and V3Controller: hover check, then the blind descent (v98).
     # posture_defer.DeferRelook goes first: an align re-look never starts mid arm transition (v98).
-    return type('HighPairController', (posture_defer.DeferRelook, refix.SigmaRefix, HighController, blind.HoverConfirm, base,
+    return type('HighPairController', (LightFail, posture_defer.DeferRelook, refix.SigmaRefix, HighController, blind.HoverConfirm, base,
                                        GraspViewLogOnly), {})
 
 

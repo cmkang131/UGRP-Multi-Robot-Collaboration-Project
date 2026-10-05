@@ -91,3 +91,75 @@ def test_clear_command_logs_nothing(monkeypatch):
     monkeypatch.setattr(PreviousGuard, 'check', parent_check())
     guard, commands = stand_in(far), [dict(R1['cmd'])]
     assert guard.check(8.7, commands) is commands and guard.ep.events == []
+
+
+# ---------------------------------------------------------------- DEV light v2 (before_control, controller fail)
+def test_before_control_soft_abort_proceeds_and_logs(monkeypatch):
+    def before(self, now):
+        self.ep.abort(now, 'PAIR_SCHEDULED_REOBSERVE_LIMIT')
+        return False
+    monkeypatch.setattr(PreviousGuard, 'before_control', before, raising=False)
+    guard = light_stand_in(R1)
+    assert guard.before_control(9.0) is True and guard.ep.own.events == []
+    [event] = guard.ep.events
+    assert event['event'] == c.DEV_LIGHT_EVENT and event['site'] == 'CommandGuard.before_control'
+    assert 'abort' not in vars(guard.ep)
+
+
+def test_before_control_hard_abort_still_stops(monkeypatch):
+    def before(self, now):
+        self.ep.abort(now, 'PAIR_RELOOK_WHILE_GRIPPED')
+        return False
+    monkeypatch.setattr(PreviousGuard, 'before_control', before, raising=False)
+    guard = light_stand_in(R1)
+    assert guard.before_control(9.0) is False
+    assert guard.ep.own.events[-1]['detail'] == {'reason': 'PAIR_RELOOK_WHILE_GRIPPED'}
+
+
+def test_repeated_soft_stop_is_logged_once_per_window(monkeypatch):
+    monkeypatch.setattr(PreviousGuard, 'check', parent_check('POSE_UNCERTAIN', via_ep=True))
+    guard = light_stand_in(R1)
+    for i in range(c.DEV_LIGHT_LOG_EVERY + 1):
+        guard.check(8.7 + i * .05, [dict(R1['cmd'])])
+    assert [e['occurrence'] for e in guard.ep.events] == [1, c.DEV_LIGHT_LOG_EVERY + 1]
+
+
+class _Base:
+    rid, state, seg = 'r1', 'wait_carry', 2
+
+    def __init__(self):
+        self.logged, self.failed, self.transit = [], [], []
+
+    def log(self, rid, kind, now, **d):
+        self.logged.append({'event': kind, **d})
+
+    def fail(self, reason, now):
+        self.failed.append(reason)
+
+    def _transit_abort(self, reason, now):
+        self.transit.append(reason)
+
+
+def test_controller_soft_fail_retries_and_hard_fail_fails():
+    from harness.zone_pair_highpose_runtime import LightFail
+    ctl = type('C', (LightFail, _Base), {})()
+    assert ctl.fail('HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', 5.) is None and ctl.failed == []
+    assert ctl._transit_abort('HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED', 5.) is None and ctl.transit == []
+    assert [e['would_reason'] for e in ctl.logged] == ['HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', 'HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED']
+    ctl.fail('BARRIER_CLOSE_ABORT', 5.)
+    ctl._transit_abort('LIFT_GRIP_NOT_COMMANDED_CLOSED', 5.)
+    assert ctl.failed == ['BARRIER_CLOSE_ABORT'] and ctl.transit == ['LIFT_GRIP_NOT_COMMANDED_CLOSED']
+
+
+def test_controller_fail_unchanged_without_dev_light(monkeypatch):
+    from harness.zone_pair_highpose_runtime import LightFail
+    monkeypatch.setattr(c, 'DEV_LIGHT', False)
+    ctl = type('C', (LightFail, _Base), {})()
+    ctl.fail('HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', 5.)
+    assert ctl.failed == ['HIGH_CARRY_EDGE_REFERENCE_TIMEOUT'] and ctl.logged == []
+
+
+def test_hard_reasons_are_not_soft():
+    for reason in ('BARRIER_CLOSE_ABORT', 'PARTNER_ABORT', 'LOADED_BASE_MOTION_REQUIRES_HIGH', 'PAIR_RELOOK_WHILE_GRIPPED',
+                   'HIGH_CARRY_VIEW_REQUIRED', 'LIFT_GRIP_NOT_COMMANDED_CLOSED', 'OWN_COMMAND_HISTORY_MISMATCH'):
+        assert reason not in c.DEV_LIGHT_SOFT_STOPS

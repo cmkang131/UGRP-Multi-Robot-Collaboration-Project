@@ -66,6 +66,35 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   **그 뒤에는:** (1) 이전 v98 기록과 결과를 합산하지 않는다(SHA로 구분). (2) 이 README의 오프라인 NEES 표를 다시 만든다.
   (3) σ 문턱(짝 입장 0.05 m, 도착 확인의 허용 오차 경계)을 다시 검증한다. σ가 정직해지면 같은 문턱의 의미가 바뀌기 때문이다.
 
+### v105 DEV 라이트: 보수적 정지를 기록 전용으로 (사용자 결정, 2026-10-05)
+
+- **사용자 결정 원문:**
+  - 17:2x "걍 충돌 방지를 빼. 충돌 하면 다시 생각하면 되잖아"
+  - 17:3x "다 라이트 하게 줄여"(조정자 전달)
+- **바꾼 것:**
+  - `COLLISION_GUARD_MODE='log_only'`: 충돌 가드(PAIR_COLLISION_GUARD)는 막지 않고 `pair_collision_guard_log_only`에 여유·σ항·부족분만 남긴다.
+  - `DEV_LIGHT=True`: 목록에 있는 보수적 정지는 멈추지 않고 `dev_light_would_stop`만 남긴다.
+  - 두 값 모두 `harness/zone_pair_highpose_contract.py`에 있다.
+- **v1 `a6fec250`:** `CommandGuard.check` 안의 정지와 재고정 지평 검사(REFIX_HORIZON_INFEASIBLE)만 바꿨다.
+- **v2(이 커밋):** 아래를 더 넣었다.
+  - 재관측 경로의 정지: before_control·_stationary_reobserve의 재관측 한도·시한.
+  - HIGH 정지점 DR 예산 초과와 재관측 시한: DR 추정으로 계속 간다.
+  - 모서리 기준 시한: 그 대기만 건너뛴다.
+  - 제어기 fail의 시한·불확실 계열: 다음 틱에 다시 시도한다.
+- **그대로 멈추는 것:**
+  - 실제 물리 실패: 짐 낙하, 기울어짐, 집게 이탈.
+  - GO 상호 확인과 BARRIER_* 계열, PARTNER_ABORT.
+  - 실행 불가 오류: 명령·시계·공급자 오류.
+  - 동결된 접근 구동기의 APPROACH_*·DOOR_POSE_NOT_LOCALIZED: 구동기가 이미 실패 상태라 다시 시도해도 진행할 수 없다.
+- **물리 접촉은 정상 그대로다.** 평가 전용 접촉 요약은 `outputs/v98-probe-tools/light_summary.py`가 `light_summary.json`으로 만든다.
+- **번들 표시:** `zone-final-pair-highpose-v105-collision-log-only` + dev_light.
+  - 브랜치 전체에서 가장 큰 번호가 v104라서 그다음인 v105를 썼다.
+  - 정식 E2E와 본 실험에서는 반드시 끈다.
+  - 이전 실행과 합산하지 않는다.
+- **첫 실행:** case-carry `a6fec250`(v1), 보정은 v103b 잡음 `a75fc932…`, 17:25:06 시작.
+  - 바꾼 것 두 가지(라이트 모드, 잡음 값)를 함께 넣었으므로 결과의 원인을 하나로 나누지 않는다.
+  - 출력: `outputs/v98-dev-case-carry-a6fec250-s911-v105light/`.
+
 ### v103a 결과 → 적재 과정 잡음 측정 규칙 적용 (2026-10-05)
 
 - **v103a 실행** (`f2a426e7`, 보정 `a04371f6…`, 가속 `v98-exact-v6`, nice 0): `STAGE_PROBE_FAILED`, 477.1 SIM초. 원본 `outputs/v98-dev-align_to_carry-f2a426e7-s911-v103a/`.

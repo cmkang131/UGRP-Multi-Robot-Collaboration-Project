@@ -46,7 +46,18 @@ COLLISION_GUARD_BUNDLE_LABEL = 'zone-final-pair-highpose-v105-collision-log-only
 # study cohort. Runs carry COLLISION_GUARD_BUNDLE_LABEL + dev_light and are never pooled with earlier runs.
 DEV_LIGHT = True
 DEV_LIGHT_SOFT_STOPS = frozenset({'PAIR_COLLISION_GUARD', 'POSE_UNCERTAIN', 'POSE_UNCERTAIN_PROGRESS',
-                                  'SELF_POSE_UNCERTAIN', 'GLOBAL_ENVELOPE_BLOCKED', 'REFIX_HORIZON_INFEASIBLE'})
+                                  'SELF_POSE_UNCERTAIN', 'GLOBAL_ENVELOPE_BLOCKED', 'REFIX_HORIZON_INFEASIBLE',
+                                  # light v2 (coordinator 2026-10-05 17:4x): re-observe limits/timeouts in
+                                  # before_control and conservative controller timeouts/uncertainty
+                                  'ALIGN_RELOOK_TIMEOUT', 'PAIR_SCHEDULED_REOBSERVE_LIMIT', 'PAIR_REOBSERVE_TIMEOUT',
+                                  'HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED', 'HIGH_CHECKPOINT_REOBSERVE_TIMEOUT',
+                                  'HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', 'APPROACH_TIMEOUT'})
+# Not softened (real physical failure or impossible to continue): drop/tilt/grip loss, GO barrier mismatch
+# (BARRIER_*), PARTNER_ABORT, own command/clock/provider errors, LOADED_BASE_MOTION_REQUIRES_HIGH,
+# PAIR_RELOOK_WHILE_GRIPPED, HIGH_CARRY_VIEW_REQUIRED, frozen approach-driver failures (APPROACH_* from the driver,
+# DOOR_POSE_NOT_LOCALIZED: the frozen driver is already in its failed phase, so a retry cannot proceed).
+DEV_LIGHT_VERSION = 'dev_light_v2'
+DEV_LIGHT_LOG_EVERY = 50              # a soft stop repeated every tick is logged at its 1st, 51st, ... occurrence
 DEV_LIGHT_EVENT = 'dev_light_would_stop'
 CAP_PREREG_VERSION = 'v98-cap-3'
 CAP_DECISION = 'experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md'
@@ -386,8 +397,11 @@ def bundle(map_id, check, admission=MEASURED_SIM):
         timing=execution_timing(check), high_pose=pose.record(), calibration_contract=contract,
         calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only',
         collision_guard={'mode': COLLISION_GUARD_MODE, 'bundle_label': COLLISION_GUARD_BUNDLE_LABEL},
-        dev_light={'enabled': DEV_LIGHT, 'soft_stops': sorted(DEV_LIGHT_SOFT_STOPS), 'event': DEV_LIGHT_EVENT,
-                   'scope': 'CommandGuard.check aborts + refix horizon check; before_control/controller fails unchanged'})
+        dev_light={'enabled': DEV_LIGHT, 'version': DEV_LIGHT_VERSION, 'soft_stops': sorted(DEV_LIGHT_SOFT_STOPS),
+                   'event': DEV_LIGHT_EVENT,
+                   'scope': 'CommandGuard.check/before_control/_stationary_reobserve aborts, refix horizon check, '
+                            'HIGH checkpoint DR budget/timeout (proceed as DR), edge reference timeout (proceed), '
+                            'controller fail() of the listed reasons (retry next tick)'})
     # Independent review #363 P1-4: the inherited parent ``caps`` (per_case_s 120) contradicted the applied
     # v98-cap-3 case cap; the executor reads ``timing``, but the record must state the applied value.
     reset_s = value['caps']['reset_per_case_s']
