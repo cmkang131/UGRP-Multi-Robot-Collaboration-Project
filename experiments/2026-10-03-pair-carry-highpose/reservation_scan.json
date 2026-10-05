@@ -1,0 +1,2148 @@
+{
+  "at_utc": "2026-10-03T06:08:31.686547+00:00",
+  "main_and_all_open_prs": [
+    {
+      "number": null,
+      "headRefName": "main",
+      "ref": "origin/main",
+      "sha": "7cd729416fc04dfc4633cb4da5c4cd9435dd582d",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/main:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/main:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/main:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/main:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/main:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/main:configs/zone_final_environment_v84.json:3:  \"execution_bundle_id\": \"zone-final-environment-v84\",",
+        "origin/main:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+        "origin/main:configs/zone_final_pair_v88.json:3:  \"execution_bundle_id\": \"zone-final-pair-v88\",",
+        "origin/main:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\",",
+        "origin/main:configs/zone_final_pair_v91.json:3:  \"execution_bundle_id\": \"zone-final-pair-v91\",",
+        "origin/main:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "origin/main:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/main:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "origin/main:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "origin/main:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "origin/main:harness/zone_final_pair_fast.py:9:BUNDLE_ID = 'zone-final-pair-v91'",
+        "origin/main:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'",
+        "origin/main:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "origin/main:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/main:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/main:scripts/zone_pair_v6_contract.py:350:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 91,
+      "workflows": [
+        {
+          "id": "zone-final-environment-floor-light-v2-check",
+          "version": "2.21.0"
+        },
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0"
+        },
+        {
+          "id": "zone-final-environment-floor-light-check",
+          "version": "2.20.0"
+        },
+        {
+          "id": "zone-final-pair-v3",
+          "version": "3.1.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v90",
+          "version": "3.2.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v91",
+          "version": "3.3.0"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.16.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/v92-loaded-schedule",
+      "headRefOid": "a9481446d9c7c503bdbc53941d3538cd5ec5ee12",
+      "number": 361,
+      "ref": "origin/codex/v92-loaded-schedule",
+      "sha": "a9481446d9c7c503bdbc53941d3538cd5ec5ee12",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/codex/v92-loaded-schedule:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/v92-loaded-schedule:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/v92-loaded-schedule:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/v92-loaded-schedule:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/v92-loaded-schedule:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/codex/v92-loaded-schedule:configs/zone_final_environment_v84.json:3:  \"execution_bundle_id\": \"zone-final-environment-v84\",",
+        "origin/codex/v92-loaded-schedule:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+        "origin/codex/v92-loaded-schedule:configs/zone_final_pair_v88.json:3:  \"execution_bundle_id\": \"zone-final-pair-v88\",",
+        "origin/codex/v92-loaded-schedule:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\",",
+        "origin/codex/v92-loaded-schedule:configs/zone_final_pair_v91.json:3:  \"execution_bundle_id\": \"zone-final-pair-v91\",",
+        "origin/codex/v92-loaded-schedule:configs/zone_final_pair_v92.json:3:  \"execution_bundle_id\": \"zone-final-pair-v92\",",
+        "origin/codex/v92-loaded-schedule:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "origin/codex/v92-loaded-schedule:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/v92-loaded-schedule:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "origin/codex/v92-loaded-schedule:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "origin/codex/v92-loaded-schedule:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "origin/codex/v92-loaded-schedule:harness/zone_final_pair_fast.py:9:BUNDLE_ID = 'zone-final-pair-v91'",
+        "origin/codex/v92-loaded-schedule:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'",
+        "origin/codex/v92-loaded-schedule:harness/zone_final_pair_loaded.py:8:BUNDLE_ID = 'zone-final-pair-v92'",
+        "origin/codex/v92-loaded-schedule:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "origin/codex/v92-loaded-schedule:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/codex/v92-loaded-schedule:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/codex/v92-loaded-schedule:scripts/zone_pair_v6_contract.py:350:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 92,
+      "workflows": [
+        {
+          "id": "zone-final-environment-floor-light-v2-check",
+          "version": "2.21.0"
+        },
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0"
+        },
+        {
+          "id": "zone-final-environment-floor-light-check",
+          "version": "2.20.0"
+        },
+        {
+          "id": "zone-final-pair-v3",
+          "version": "3.1.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v90",
+          "version": "3.2.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v91",
+          "version": "3.3.0"
+        },
+        {
+          "id": "zone-final-pair-loaded-v92",
+          "version": "3.4.0"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.16.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/critb-rotation",
+      "headRefOid": "c3af0783e8d05b40c9e859657e7f6ecae0928aed",
+      "number": 360,
+      "ref": "origin/codex/critb-rotation",
+      "sha": "c3af0783e8d05b40c9e859657e7f6ecae0928aed",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/codex/critb-rotation:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/critb-rotation:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/critb-rotation:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/critb-rotation:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/critb-rotation:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/codex/critb-rotation:configs/zone_final_environment_v84.json:3:  \"execution_bundle_id\": \"zone-final-environment-v84\",",
+        "origin/codex/critb-rotation:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+        "origin/codex/critb-rotation:configs/zone_final_pair_v88.json:3:  \"execution_bundle_id\": \"zone-final-pair-v88\",",
+        "origin/codex/critb-rotation:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\",",
+        "origin/codex/critb-rotation:configs/zone_final_pair_v91.json:3:  \"execution_bundle_id\": \"zone-final-pair-v91\",",
+        "origin/codex/critb-rotation:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "origin/codex/critb-rotation:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/critb-rotation:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "origin/codex/critb-rotation:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "origin/codex/critb-rotation:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "origin/codex/critb-rotation:harness/zone_final_pair_fast.py:9:BUNDLE_ID = 'zone-final-pair-v91'",
+        "origin/codex/critb-rotation:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'",
+        "origin/codex/critb-rotation:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "origin/codex/critb-rotation:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/codex/critb-rotation:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/codex/critb-rotation:scripts/zone_pair_v6_contract.py:350:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 91,
+      "workflows": [
+        {
+          "id": "zone-final-environment-floor-light-v2-check",
+          "version": "2.21.0"
+        },
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0"
+        },
+        {
+          "id": "zone-final-environment-floor-light-check",
+          "version": "2.20.0"
+        },
+        {
+          "id": "zone-final-pair-v3",
+          "version": "3.1.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v90",
+          "version": "3.2.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v91",
+          "version": "3.3.0"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.16.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/diag-loaded-v88",
+      "headRefOid": "f2fc0cc3d2315e8b4441028a1713a1ba5af23175",
+      "number": 359,
+      "ref": "origin/codex/diag-loaded-v88",
+      "sha": "f2fc0cc3d2315e8b4441028a1713a1ba5af23175",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/codex/diag-loaded-v88:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/diag-loaded-v88:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/diag-loaded-v88:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/diag-loaded-v88:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/diag-loaded-v88:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/codex/diag-loaded-v88:configs/zone_final_environment_v84.json:3:  \"execution_bundle_id\": \"zone-final-environment-v84\",",
+        "origin/codex/diag-loaded-v88:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+        "origin/codex/diag-loaded-v88:configs/zone_final_pair_v88.json:3:  \"execution_bundle_id\": \"zone-final-pair-v88\",",
+        "origin/codex/diag-loaded-v88:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\",",
+        "origin/codex/diag-loaded-v88:configs/zone_final_pair_v91.json:3:  \"execution_bundle_id\": \"zone-final-pair-v91\",",
+        "origin/codex/diag-loaded-v88:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "origin/codex/diag-loaded-v88:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/diag-loaded-v88:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "origin/codex/diag-loaded-v88:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "origin/codex/diag-loaded-v88:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "origin/codex/diag-loaded-v88:harness/zone_final_pair_fast.py:9:BUNDLE_ID = 'zone-final-pair-v91'",
+        "origin/codex/diag-loaded-v88:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'",
+        "origin/codex/diag-loaded-v88:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "origin/codex/diag-loaded-v88:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/codex/diag-loaded-v88:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/codex/diag-loaded-v88:scripts/zone_pair_v6_contract.py:350:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 91,
+      "workflows": [
+        {
+          "id": "zone-final-environment-floor-light-v2-check",
+          "version": "2.21.0"
+        },
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0"
+        },
+        {
+          "id": "zone-final-environment-floor-light-check",
+          "version": "2.20.0"
+        },
+        {
+          "id": "zone-final-pair-v3",
+          "version": "3.1.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v90",
+          "version": "3.2.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v91",
+          "version": "3.3.0"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.16.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "headRefName": "claude/calib-assembly-clock",
+      "headRefOid": "576bf4dad2d1fa1d6d8613564929d0f4b7b455bf",
+      "number": 358,
+      "ref": "origin/claude/calib-assembly-clock",
+      "sha": "576bf4dad2d1fa1d6d8613564929d0f4b7b455bf",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/claude/calib-assembly-clock:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/calib-assembly-clock:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/calib-assembly-clock:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/calib-assembly-clock:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/calib-assembly-clock:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/claude/calib-assembly-clock:configs/zone_final_environment_v84.json:3:  \"execution_bundle_id\": \"zone-final-environment-v84\",",
+        "origin/claude/calib-assembly-clock:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+        "origin/claude/calib-assembly-clock:configs/zone_final_pair_v88.json:3:  \"execution_bundle_id\": \"zone-final-pair-v88\",",
+        "origin/claude/calib-assembly-clock:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\",",
+        "origin/claude/calib-assembly-clock:configs/zone_final_pair_v91.json:3:  \"execution_bundle_id\": \"zone-final-pair-v91\",",
+        "origin/claude/calib-assembly-clock:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "origin/claude/calib-assembly-clock:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/calib-assembly-clock:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "origin/claude/calib-assembly-clock:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "origin/claude/calib-assembly-clock:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "origin/claude/calib-assembly-clock:harness/zone_final_pair_fast.py:9:BUNDLE_ID = 'zone-final-pair-v91'",
+        "origin/claude/calib-assembly-clock:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'",
+        "origin/claude/calib-assembly-clock:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "origin/claude/calib-assembly-clock:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/claude/calib-assembly-clock:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/claude/calib-assembly-clock:scripts/zone_pair_v6_contract.py:350:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 91,
+      "workflows": [
+        {
+          "id": "zone-final-environment-floor-light-v2-check",
+          "version": "2.21.0"
+        },
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0"
+        },
+        {
+          "id": "zone-final-environment-floor-light-check",
+          "version": "2.20.0"
+        },
+        {
+          "id": "zone-final-pair-v3",
+          "version": "3.1.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v90",
+          "version": "3.2.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v91",
+          "version": "3.3.0"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.16.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/critb-v91",
+      "headRefOid": "352a2389b30b6e95025e375beec0ec9eb68c2355",
+      "number": 356,
+      "ref": "origin/codex/critb-v91",
+      "sha": "352a2389b30b6e95025e375beec0ec9eb68c2355",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/codex/critb-v91:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/critb-v91:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/critb-v91:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/critb-v91:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/critb-v91:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/codex/critb-v91:configs/zone_final_environment_v84.json:3:  \"execution_bundle_id\": \"zone-final-environment-v84\",",
+        "origin/codex/critb-v91:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+        "origin/codex/critb-v91:configs/zone_final_pair_v88.json:3:  \"execution_bundle_id\": \"zone-final-pair-v88\",",
+        "origin/codex/critb-v91:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\",",
+        "origin/codex/critb-v91:configs/zone_final_pair_v91.json:3:  \"execution_bundle_id\": \"zone-final-pair-v91\",",
+        "origin/codex/critb-v91:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "origin/codex/critb-v91:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/critb-v91:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "origin/codex/critb-v91:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "origin/codex/critb-v91:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "origin/codex/critb-v91:harness/zone_final_pair_fast.py:9:BUNDLE_ID = 'zone-final-pair-v91'",
+        "origin/codex/critb-v91:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'",
+        "origin/codex/critb-v91:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "origin/codex/critb-v91:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/codex/critb-v91:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/codex/critb-v91:scripts/zone_pair_v6_contract.py:350:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 91,
+      "workflows": [
+        {
+          "id": "zone-final-environment-floor-light-v2-check",
+          "version": "2.21.0"
+        },
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0"
+        },
+        {
+          "id": "zone-final-environment-floor-light-check",
+          "version": "2.20.0"
+        },
+        {
+          "id": "zone-final-pair-v3",
+          "version": "3.1.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v90",
+          "version": "3.2.0"
+        },
+        {
+          "id": "zone-final-pair-heldout-v91",
+          "version": "3.3.0"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.16.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "headRefName": "claude/frame-storage-policy",
+      "headRefOid": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f",
+      "number": 353,
+      "ref": "origin/claude/frame-storage-policy",
+      "sha": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/claude/frame-storage-policy:configs/zone_final_environment_v84.json:3:  \"execution_bundle_id\": \"zone-final-environment-v84\",",
+        "origin/claude/frame-storage-policy:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+        "origin/claude/frame-storage-policy:configs/zone_final_pair_v88.json:3:  \"execution_bundle_id\": \"zone-final-pair-v88\",",
+        "origin/claude/frame-storage-policy:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/frame-storage-policy:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "origin/claude/frame-storage-policy:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "origin/claude/frame-storage-policy:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "origin/claude/frame-storage-policy:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "origin/claude/frame-storage-policy:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/claude/frame-storage-policy:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/claude/frame-storage-policy:scripts/zone_pair_v6_contract.py:350:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 89,
+      "workflows": [
+        {
+          "id": "zone-final-environment-floor-light-v2-check",
+          "version": "2.21.0"
+        },
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0"
+        },
+        {
+          "id": "zone-final-environment-floor-light-check",
+          "version": "2.20.0"
+        },
+        {
+          "id": "zone-final-pair-v3",
+          "version": "3.1.0"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.16.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/integ-target-backend",
+      "headRefOid": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "number": 339,
+      "ref": "origin/codex/integ-target-backend",
+      "sha": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/codex/integ-target-backend:configs/t13_target_checks.json:5:  \"execution_bundle_id\": \"zone-target-v86\",",
+        "origin/codex/integ-target-backend:configs/zone_final_environment_v84.json:3:  \"execution_bundle_id\": \"zone-final-environment-v84\",",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/integ-target-backend:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "origin/codex/integ-target-backend:harness/zone_pair_v6_policy.py:26:EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'",
+        "origin/codex/integ-target-backend:harness/zone_study_integration.py:102:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/codex/integ-target-backend:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/codex/integ-target-backend:scripts/zone_pair_v6_contract.py:249:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 86,
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0"
+        },
+        {
+          "id": "zone-target-checks",
+          "version": "2.19.0"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/outputs-retention",
+      "headRefOid": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "number": 309,
+      "ref": "origin/codex/outputs-retention",
+      "sha": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/outputs-retention:harness/zone_pair_v6_policy.py:26:EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'",
+        "origin/codex/outputs-retention:harness/zone_study_integration.py:102:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/codex/outputs-retention:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/codex/outputs-retention:scripts/zone_pair_v6_contract.py:249:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 81,
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/stall-d1-prereg",
+      "headRefOid": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "number": 293,
+      "ref": "origin/codex/stall-d1-prereg",
+      "sha": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "remote_head_matches": true,
+      "runnable_id_scan": [
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundle_id_scan": [
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/stall-d1-prereg:harness/zone_pair_v6_policy.py:26:EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'",
+        "origin/codex/stall-d1-prereg:harness/zone_study_integration.py:102:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "origin/codex/stall-d1-prereg:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'",
+        "origin/codex/stall-d1-prereg:scripts/zone_pair_v6_contract.py:249:            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),"
+      ],
+      "max_bundle_number": 81,
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0"
+        }
+      ]
+    }
+  ],
+  "maximum_bundle_number": 92,
+  "maximum_workflow_version": "3.4.0",
+  "reserved_bundle_id": "zone-final-pair-highpose-v93",
+  "reserved_workflow_version": "3.5.0"
+}

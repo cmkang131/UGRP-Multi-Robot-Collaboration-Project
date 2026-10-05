@@ -92,9 +92,38 @@ TEST_PATTERNS = (
     "tests/test_zone_environment_registry.py",
     "tests/test_zone_final_environment_runnable.py",
     "tests/test_zone_final_pair_v3.py",
+    "tests/test_zone_final_pair_highpose.py",
+    "tests/test_highpose_d5_gate.py",
+    "tests/test_highpose_starts.py",
+    "tests/test_highpose_timing.py",
+    "tests/test_highpose_transit.py",
+    "tests/test_highpose_blind_close.py",  # v98 blind final approach (recorded own frames, no simulator)
+    "tests/test_highpose_guard_veto_log.py",  # v98 pair-guard veto log (observation only)
+    "tests/test_highpose_start_relief.py",  # v98 start-state relief after a frozen sweep veto
+    "tests/test_highpose_start_exit_face.py",  # v98 start relief v2: inside-pair depth to the wall face facing the robot
+    "tests/test_highpose_edge_fit.py",  # v98 HIGH beam-edge consensus fit (recorded own frames)
+    "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
+    "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
+    "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
     "tests/test_review_355.py",
+    "tests/test_highpose_carry_align.py",  # v98 door-align significance rule + loaded-gate check log
+    "tests/test_highpose_relook_posture_defer.py",  # v98 align re-look never starts mid arm transition (af2f7c2a replay)
+    "tests/test_highpose_dr_checkpoint.py",  # v98 HIGH checkpoint own-DR budget receipt
+    "tests/test_highpose_refix.py",  # v98 sigma-triggered set-down re-fix (prediction, pair decision, v3 path)
+    "tests/test_highpose_refix_hooks.py",  # v98 re-fix LLM hooks (#371): events, latched commands, rule default
+    "tests/test_highpose_hover_barrier.py",  # v98 re-fix hover@k+1 pair barrier before the blind descent (delta2 P1-1)
+    "tests/test_highpose_arrival_confirm.py",  # v98 arrival needs the beam in the expected image bands (1f7fb800 false/true arrival frames)
+    "tests/test_highpose_approach_looks.py",  # v98 unloaded approach no_fix look gated on own travel (r2 1f7fb800 record)
+    "tests/test_highpose_edge_uninformative.py",  # v98 HIGH edge = render near-clip trace: not used (znear live check)
+    "tests/test_highpose_grasp_receipt_carry.py",  # v98 grasp receipt kept across HIGH stops (1236c63d record)
+    "tests/test_highpose_receipt_nees.py",  # v98 eval-only NEES of HIGH checkpoint receipts (σ 예산 영수증), never fed to control
+    "tests/test_highpose_belief_expansion.py",  # v98 R2: one-shot belief expansion armed only by an arrival-view rejection
+    "tests/test_highpose_progress_arming.py",  # v98 loaded no-progress check: carry-leg reset + REQUIRED_MOVEMENT_M motion
+    "tests/test_highpose_host_clock.py",  # v98 host clock v2: integer substep SIM time (no float drift, no 612 s cliff)
+    "tests/test_highpose_pf_local_redraw.py",  # v98 R1 random poses redrawn locally next to walls (review #363 P1-2)
+    "tests/test_dev_pair_checkpoint.py",  # DEV-only checkpoint/resume for v98 stage probes (reducers, triggers, bit-identity gate)
     "tests/test_zone_final_pair_review_fixes.py",
     "tests/test_review_344*.py",
     "tests/test_zone_final_environment_floor_light.py",
@@ -113,6 +142,7 @@ TEST_PATTERNS = (
     "tests/test_review_351b.py",
     "tests/test_review_346.py",
     "tests/test_final_environment_measurement_v2.py",
+    "tests/test_final_environment_gain_calibration_v101.py",
     "tests/test_review_347.py",
     "tests/test_review_e2e_batch_k.py",  # K1: final environment CI collection regression
     "tests/test_scenario_capabilities_docs.py",
