@@ -1,0 +1,179 @@
+{
+  "execution_bundle_id": "zone-final-environment-gaincal-v101",
+  "workflow_id": "zone-final-environment-gaincal-v101",
+  "workflow_version": "1.0.0",
+  "status": "DRAFT_UNSEALED",
+  "execution_started": true,
+  "runnable": true,
+  "physical_ready": false,
+  "expected_source_sha": "341ce3b9aeda6aca38fac57c6d5030b9c458760d",
+  "check": "calibration-gain-v101",
+  "run_id": "fitA1",
+  "bundle_sha256": "750756198cc4c466ef4acce0513220149b2b33430b3689eac18f53771fbd2a40",
+  "caps": {
+    "cases": 1,
+    "per_case_sim_cap_s": 111.5,
+    "total_sim_cap_s": 111.5,
+    "total_including_reset_cap_s": 116.5,
+    "student_control": false
+  },
+  "measurement_sha256": "bcbf250f2029e9cfc9c3b1a331e4e993fcd8627ee6863c836a2de25dc53b851b",
+  "clearance_preflight": {
+    "fitA1": {
+      "start_clearance_m": 0.4750000000000002,
+      "predicted_min_clearance_m": 0.4750000000000002,
+      "worst_corner": {
+        "gain": [
+          0.8,
+          0.6,
+          0.5
+        ],
+        "tau_drive_s": 0.1,
+        "yaw_error_rad": -0.05
+      },
+      "admitted": true
+    },
+    "fitA2": {
+      "start_clearance_m": 0.4750000000000001,
+      "predicted_min_clearance_m": 0.4750000000000001,
+      "worst_corner": {
+        "gain": [
+          0.8,
+          0.6,
+          0.5
+        ],
+        "tau_drive_s": 0.1,
+        "yaw_error_rad": -0.05
+      },
+      "admitted": true
+    },
+    "heldA3": {
+      "start_clearance_m": 0.4750000000000002,
+      "predicted_min_clearance_m": 0.4750000000000002,
+      "worst_corner": {
+        "gain": [
+          0.8,
+          0.6,
+          0.5
+        ],
+        "tau_drive_s": 0.1,
+        "yaw_error_rad": -0.05
+      },
+      "admitted": true
+    },
+    "heldM1": {
+      "start_clearance_m": 0.4750000000000001,
+      "predicted_min_clearance_m": 0.4750000000000001,
+      "worst_corner": {
+        "gain": [
+          0.8,
+          0.6,
+          0.5
+        ],
+        "tau_drive_s": 0.1,
+        "yaw_error_rad": -0.05
+      },
+      "admitted": true
+    },
+    "heldP1": {
+      "start_clearance_m": 0.4750000000000002,
+      "predicted_min_clearance_m": 0.4750000000000002,
+      "worst_corner": {
+        "gain": [
+          0.8,
+          0.6,
+          0.5
+        ],
+        "tau_drive_s": 0.1,
+        "yaw_error_rad": -0.05
+      },
+      "admitted": true
+    },
+    "heldP2": {
+      "start_clearance_m": 0.4750000000000002,
+      "predicted_min_clearance_m": 0.4750000000000002,
+      "worst_corner": {
+        "gain": [
+          0.8,
+          0.6,
+          0.5
+        ],
+        "tau_drive_s": 0.1,
+        "yaw_error_rad": -0.05
+      },
+      "admitted": true
+    }
+  },
+  "seed": 1101,
+  "lock_mode": "sim_slot",
+  "sim_slot": "sim-claude-gaincal-fitA1",
+  "host_start": {
+    "loadavg": [
+      18.29296875,
+      15.4736328125,
+      20.00830078125
+    ],
+    "concurrent_holders": [
+      {
+        "name": "sim-claude-gaincal-fitA1",
+        "owner": "claude",
+        "branch": "claude/calib-unloaded-gain",
+        "purpose": "v101 unloaded gain calibration fitA1; SIM time, not a timing benchmark",
+        "pid": 66460,
+        "acquired_unix": 1791137714.1810079,
+        "expected_end_unix": 1791141314.1810079,
+        "loadavg_at_acquire": [
+          13.27099609375,
+          14.44873046875,
+          19.70703125
+        ],
+        "timing_sensitive": false,
+        "physics_identity": {
+          "owner": "claude",
+          "pid": 66460,
+          "acquired_unix": 1791137714.180031,
+          "v91_group": "dbbeb21ead5647f4a788e786ac9e9f87"
+        },
+        "pid_alive": true
+      },
+      {
+        "name": "sim-claude-gaincal-fitA2",
+        "owner": "claude",
+        "branch": "claude/calib-unloaded-gain",
+        "purpose": "v101 unloaded gain calibration fitA2; SIM time, not a timing benchmark",
+        "pid": 66460,
+        "acquired_unix": 1791137714.987008,
+        "expected_end_unix": 1791141314.987009,
+        "loadavg_at_acquire": [
+          13.27099609375,
+          14.44873046875,
+          19.70703125
+        ],
+        "timing_sensitive": false,
+        "physics_identity": {
+          "owner": "claude",
+          "pid": 66460,
+          "acquired_unix": 1791137714.180031,
+          "v91_group": "dbbeb21ead5647f4a788e786ac9e9f87"
+        },
+        "pid_alive": true
+      }
+    ],
+    "physics_holder": {
+      "owner": "claude",
+      "branch": "claude/calib-unloaded-gain",
+      "purpose": "v101 unloaded gain calibration fitA1; SIM time, not a timing benchmark",
+      "pid": 66460,
+      "acquired_unix": 1791137714.180031,
+      "expected_end_unix": 1791141314.180032,
+      "loadavg_at_acquire": [
+        13.27099609375,
+        14.44873046875,
+        19.70703125
+      ],
+      "timing_sensitive": false,
+      "v91_group": "dbbeb21ead5647f4a788e786ac9e9f87",
+      "pid_alive": true
+    }
+  }
+}
