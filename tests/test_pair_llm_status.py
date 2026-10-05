@@ -255,7 +255,7 @@ def test_a_look_around_reply_passes_the_sealed_validator_through_a_placeholder()
     with pytest.raises(zp.ProtocolError, match='not allowed'):               # the vocabulary grew by exactly one kind
         dispatch.validate_reply(reply({'kind': 'goto', 'x': 1}), **kw)
     assert dispatch.validate_reply(reply({'kind': 'continue'}), **kw) == zp.validate_reply(reply({'kind': 'continue'}), **kw)
-    assert dispatch.PAIR_ACTION_KINDS == tuple(zp.ROBOT_ACTION_KINDS) + ('look_around',)
+    assert dispatch.PAIR_ACTION_KINDS == tuple(k for k in zp.ROBOT_ACTION_KINDS if k != 'wait') + ('look_around',)
 
 
 def test_the_plan_of_every_other_action_is_the_studys_and_look_around_is_the_executors_look_around():

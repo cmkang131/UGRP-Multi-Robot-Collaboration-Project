@@ -128,5 +128,22 @@ def record() -> dict:
             'calibration': dict(CALIBRATION), 'history': [dict(row) for row in IMAGE_BILLING_HISTORY]}
 
 
+def token_measurement(request, *, output_tokens=None, provider_usage=None):
+    """M2: count the actual request/reply text; keep provider usage and image charge distinct.
+
+    The local tokenizer is a proxy, not the provider tokenizer. An absent response/usage is unknown,
+    never zero. The image charge is calibrated/fixed, not a measured per-modality provider count.
+    """
+    tokens, bill = request['tokens'], request['billed_tokens']
+    return {'local_tokenizer': tokens['tokenizer'],
+            'input_text_tokens': tokens['system'] + tokens['user'],
+            'input_text_billed_tokens': bill['total_text_billed'],
+            'image_count': bill['images'], 'image_charge_tokens': bill['image_tokens_billed'],
+            'input_billed_tokens': bill['total_billed'], 'output_text_tokens': output_tokens,
+            'provider_usage': None if provider_usage is None else dict(provider_usage),
+            'provider_usage_measured': provider_usage is not None,
+            'provider_image_tokens': None}
+
+
 __all__ = ['IMAGE_BILLING_VERSION', 'IMAGE_BILLING_V1', 'IMAGE_TOKENS_PER_IMAGE', 'IMAGE_TOKENS_BY_POLICY',
            'IMAGE_BILLING_HISTORY', 'CALIBRATION', 'image_tokens', 'billed_tokens', 'billing_problems', 'record']

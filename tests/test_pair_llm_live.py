@@ -262,8 +262,8 @@ def test_the_live_path_refuses_the_rule_arm_and_a_long_case(tmp_path):
                   backend_factory=FakeBackend, calibration=cal['path'], calibration_sha=cal['sha256'], wire=LiveShapedWire())
     with pytest.raises(ValueError, match='no model call'):
         live.run_pair_live(tmp_path / 'a', condition='rule', cap_s=12., **common)
-    with pytest.raises(ValueError, match='capped at 60'):
-        live.run_pair_live(tmp_path / 'b', condition='peer_nl', cap_s=61., **common)
+    with pytest.raises(ValueError, match='capped at 900'):
+        live.run_pair_live(tmp_path / 'b', condition='peer_nl', cap_s=901., **common)
 
 
 # --------------------------------------------------------------------------- the ledger and the CLI
@@ -299,8 +299,8 @@ def test_cli_live_refusals_need_no_network_or_filesystem(capsys):
             '/Users/changmin/projects/ugrp/outputs/never-created', '--synthetic-plumbing-calibration', '--live', '--cap-s', '60']
     with pytest.raises(ValueError, match='LLM condition'):
         cli.main(['--condition', 'rule', *base[2:]])
-    with pytest.raises(ValueError, match='capped at 60'):
-        cli.main(base + ['--cap-s', '61'])
+    with pytest.raises(ValueError, match='capped at 900'):
+        cli.main(base + ['--cap-s', '901'])
     assert cli.main(base) == 0                       # a plan only
     assert json.loads(capsys.readouterr().out)['model_kind'] == 'live'
     with pytest.raises(ValueError, match='needs --proxy-pid, --budget-db, --cohort-id, --cohort-token-cap'):

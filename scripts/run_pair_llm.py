@@ -3,8 +3,8 @@
 ``--condition rule | no_comm | peer_nl`` is C-rule / C-llm-nocomm / C-llm-nl. Without ``--execute`` this only
 prints a plan. The default model path is the STUB (plumbing only). ``--live`` sends real requests through the
 study's own live driver (``harness.pair_llm_live``: ``MainStudySendLedger``, the audited local proxy checked
-read-only, a durable token budget ledger) and is allowed only for a smoke: a LLM condition, a case cap of at
-most 60 SIM s, an explicit running proxy PID, budget ledger, cohort id and cohort token cap. A 429 / quota
+read-only, a durable token budget ledger) and requires an LLM condition, a case cap of at
+most 900 SIM s, an explicit running proxy PID, budget ledger, cohort id and cohort token cap. A 429 / quota
 answer stops the run as ``RATE_LIMIT``; nothing retries it. Physics is lazy, requires committed source, an owned
 SIM slot and 10 GiB free before it starts, and writes raw output under the primary checkout's ``outputs/`` by
 absolute path.
@@ -33,7 +33,7 @@ def parser():
                    help=f'per-case SIM cap (registered {contract.CAP_S:g}; a stub smoke uses <= {contract.SMOKE_MAX_S:g})')
     p.add_argument('--seed', type=int, default=911)
     p.add_argument('--live', action='store_true',
-                   help='real model calls through the study live driver (smoke only: LLM condition, cap <= 60 SIM s)')
+                   help='real model calls through the study live driver (LLM condition, cap <= 900 SIM s)')
     p.add_argument('--proxy-pid', type=int, help='PID of the already running local subscription proxy (read-only check)')
     p.add_argument('--budget-db', type=Path, help='absolute path of the main-study usage ledger (SQLite)')
     p.add_argument('--create-budget', action='store_true', help='create --budget-db (never created implicitly)')

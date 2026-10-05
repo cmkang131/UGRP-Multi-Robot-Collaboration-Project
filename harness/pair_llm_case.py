@@ -128,6 +128,9 @@ def write_llm_artifacts(out, trial, adapter_wire, runtime, links) -> dict:
         (images / f'{sha_hex}.jpg').write_bytes(jpeg)
     (study / 'map_figure.png').write_bytes(trial.map_png)
     jsonl(study / 'requests.jsonl', trial.requests)
+    jsonl(study / 'token_measurements.jsonl', [
+        {'call_id': r['call_id'], 'robot': r['robot'], 'sim_s': r['sim_s'], **r['token_measurement']}
+        for r in trial.requests])
     problems = [p for row in trial.requests for p in pk.verify_archived_request(row)]
     problems += [p for row in trial.requests
                  for p in billing.billing_problems(row, require=billing.IMAGE_BILLING_VERSION)]
@@ -350,6 +353,14 @@ def _evaluate(out, result, condition, static, target, trial, walls, links, runti
         row['claims'] = claim_counts(runtime.gate)
     row['host_status'] = result['status']
     row['model_kind'] = result['model_kind']
+    from harness.pair_llm_eval import decision_evidence
+    row['decision_evidence'] = decision_evidence(
+        condition=condition, success=row['success'], decisions=result.get('stop_decisions', ()),
+        scheduler_events=(() if trial is None else trial.scheduler.events + trial.scheduler.decision_events),
+        failure_class=result.get('failure_class'))
+    # Keep the geometric success separate; exhausted/default-dominated LLM cases are not LLM success evidence.
+    row['success_provisional'] = row['success']
+    row['success'] = row['decision_evidence']['primary_success']
     return row
 
 

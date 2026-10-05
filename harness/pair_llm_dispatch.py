@@ -25,6 +25,7 @@ import types
 from collections.abc import Mapping
 
 from harness import pair_llm_billing as billing
+from harness import pair_llm_decisions as decisions
 from harness import pair_llm_inputs as pi
 from harness import pair_llm_status as status
 from harness import zone_map_schematic as ms
@@ -45,9 +46,11 @@ DISPATCH_VERSION = 'ugrp.pair_llm_dispatch.v1'
 BUNDLE_ID = 'zone-pair-llm-v100'
 TAP_FRAMES = 64
 #: LLM-arm call policy of the viability test: the study defaults except the call cap (about 5 busy re-asks
-#: in a 300 SIM s case plus start and event wakes) and no post-send retry (the registered live driver
+#: in a 900 SIM s case plus stop-window and event wakes) and no post-send retry (the registered live driver
 #: refuses scheduler retries).
-PAIR_POLICY = CallPolicy(max_calls_per_actor=12, max_http_attempts_per_actor=12, max_attempts_total=24,
+PAIR_POLICY = CallPolicy(max_calls_per_actor=decisions.CALLS_PER_ACTOR,
+                         max_http_attempts_per_actor=decisions.CALLS_PER_ACTOR,
+                         max_attempts_total=decisions.CALLS_TOTAL,
                          max_retries=0)
 
 
@@ -55,7 +58,7 @@ PAIR_POLICY = CallPolicy(max_calls_per_actor=12, max_http_attempts_per_actor=12,
 #: executor already exposes ``look_around()`` (a guarded wide own-camera look sweep; whether it recovers the pose is NOT
 #: verified, see the experiment README).
 LOOK_AROUND = 'look_around'
-PAIR_ACTION_KINDS = tuple(zp.ROBOT_ACTION_KINDS) + (LOOK_AROUND,)
+PAIR_ACTION_KINDS = tuple(k for k in zp.ROBOT_ACTION_KINDS if k != 'wait') + (LOOK_AROUND,)
 #: The two SIM clocks of one run's records. The harness (calls, decisions, caps, ``sim_s``) counts SIM seconds
 #: since the case reset; the backend and the robot executors count absolute SIM seconds, so the same instant reads
 #: ``reset_sim_s`` higher there (1.3 SIM s in the v99 smoke1, ``result.json`` ``reset_sim_s``).
@@ -83,6 +86,8 @@ def validate_reply(raw, **kwargs) -> dict:
     except Exception:                                        # noqa: BLE001 - the sealed validator reports it
         return zp.validate_reply(raw, **kwargs)
     action = value.get('action') if isinstance(value, dict) else None
+    if isinstance(action, dict) and action.get('kind') in ('wait', 'give_up'):
+        raise zp.ProtocolError('this action is excluded from the first pair cohort')
     if not (isinstance(action, dict) and action.get('kind') == LOOK_AROUND):
         return zp.validate_reply(raw, **kwargs)
     if set(action) != {'kind'}:
@@ -257,7 +262,9 @@ class PairTrial(zo.OfflineTrial):
         if policy.max_outstanding_per_actor != 1:
             raise ContractViolation('pair decisions require one outstanding call per robot')
         self.links = dict(links)
-        self.decision_limits = decision_limits or DecisionLimits()
+        self.decision_limits = decision_limits or DecisionLimits(
+            max_calls_total=decisions.CALLS_TOTAL, max_utterances_per_actor=decisions.UTTERANCES_PER_ACTOR,
+            max_utterances_total=decisions.UTTERANCES_TOTAL)
         # ``arm`` is the pair's own name (peer_nl); ``condition`` is the sealed study name the borrowed
         # study methods validate against (``study_spec``). Everything the pair writes carries ``arm``.
         self.arm, self.condition, self.seed = condition, study_spec(condition), int(seed)
@@ -296,7 +303,7 @@ class PairTrial(zo.OfflineTrial):
             self.channel.cap_window = self.decision_limits.max_utterances_total
         else:
             self.channel.cap_robot = min(self.channel.cap_robot, self.decision_limits.max_utterances_per_actor)
-        self.channel.cap_total = self.decision_limits.max_utterances_total
+        self.channel.cap_total = self.decision_limits.max_utterances_total if self.spec.channel_open else 0
         self.policy = policy
         self.transport = zi._LiveTransport(self, send_ledger=self.send_ledger, client_factory=self.client_factory)
         self.scheduler = DecisionScheduler(
@@ -305,6 +312,7 @@ class PairTrial(zo.OfflineTrial):
             own_job=lambda actor: self.links[actor].job(), decision_limits=self.decision_limits,
             external_budget_spent=lambda: self.transport.budget_exhausted)
         self.calls, self.messages, self.actions, self.requests = [], [], [], []
+        self._output_token_counts = {}
         self.envelopes = {}
         self._history, self._issued = {a: [] for a in PAIR_ROBOTS}, []
         self._call_index = {a: 0 for a in PAIR_ROBOTS}
@@ -377,6 +385,8 @@ class PairTrial(zo.OfflineTrial):
     def finish_call(self, call, prepared, raw, *, provider_usage=None) -> CallReply:
         """Reply text -> validation -> relay -> costed attempts. ``zo.OfflineTrial.finish_call`` with the pair."""
         actor, bundled, request, request_id = call.actor, prepared.bundled, prepared.request, prepared.request_id
+        self._output_token_counts[call.call_id] = pk.count_tokens(
+            raw if isinstance(raw, str) else json.dumps(raw, ensure_ascii=False))
         input_tokens = request['billed_tokens']['total_billed']       # text bill + fixed image charge (v2)
         try:
             value = validate_reply(raw, request_id=request_id, condition=self.condition, actor=actor,
@@ -426,6 +436,13 @@ class PairTrial(zo.OfflineTrial):
 
     def sim_output_tokens(self, raw, utterances):
         return pk.count_tokens(raw)
+
+    def _archive(self, call, bundled, request, **kwargs):
+        row = zo.OfflineTrial._archive(self, call, bundled, request, **kwargs)
+        row['token_measurement'] = billing.token_measurement(
+            request, output_tokens=self._output_token_counts.get(call.call_id),
+            provider_usage=kwargs.get('provider_usage'))
+        return row
 
     def channel_summary(self):
         row = zo.OfflineTrial.channel_summary(self)
@@ -523,6 +540,7 @@ class PairTrial(zo.OfflineTrial):
                 'cost_params': {'version': self.params.version, 'digest': self.params.digest(),
                                 'provisional': self.params.provisional},
                 'input_billing': billing.record(), 'own_status': status.record(),
+                'stop_decisions': decisions.record(),
                 'action_kinds': list(PAIR_ACTION_KINDS), 'clocks': dict(CLOCKS),
                 'call_policy': policy, 'quantum_s': zi.QUANTUM_S, 'think_hold_policy': zi.THINK_HOLD_POLICY,
                 'action_map': {'version': zi.ACTION_MAP_VERSION, 'wait_hold_s': zi.WAIT_HOLD_S},

@@ -1,7 +1,7 @@
 """Execution bundle of the pair LLM viability test (v100). Static: never imports a simulator or a model client.
 
 ``zone-pair-llm-v100`` (workflow 3.12.0) puts an LLM decision layer on top of the v88 scripted two-robot pair
-skill and compares three arms on the SAME map, order, 300 SIM s cap and evaluator:
+skill and compares three arms on the SAME map, order, 900 SIM s cap and evaluator:
 
 * ``rule``     C-rule         both robots submit the scripted claim as soon as they are idle (no model);
 * ``no_comm``  C-llm-nocomm   each robot's model decides on its own RGB, the map and the order sheet; no messages;
@@ -21,6 +21,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from harness import pair_llm_billing as billing
+from harness import pair_llm_decisions as decisions
 from harness import pair_llm_status as status
 from harness import zone_final_environment as base
 from harness import zone_final_pair_contract as skill_layer
@@ -37,7 +38,7 @@ BUNDLE_SCHEMA = 'ugrp.pair_llm_bundle.v100'
 REGISTRY_SCHEMA = 'ugrp.pair_llm.v100'
 CONDITIONS = ('rule', 'no_comm', 'peer_nl')
 ARMS = {'rule': 'C-rule', 'no_comm': 'C-llm-nocomm', 'peer_nl': 'C-llm-nl'}
-CAP_S = 300.
+CAP_S = 900.
 RESET_CAP_S = skill_layer.RESET_CAP_S
 SMOKE_MAX_S = 60.
 #: Not an allow-list: the entries whose import closure is hashed into the bundle.
@@ -71,6 +72,11 @@ def read_registry(*, root=ROOT) -> dict:
             or value['caps']['per_case_s'] != CAP_S or value['caps']['reset_per_case_s'] != RESET_CAP_S
             or value['model']['seed'] is not None):
         raise ValueError('invalid pair LLM registry')
+    if value.get('decision_limits') != {
+            'max_calls_total': decisions.CALLS_TOTAL,
+            'max_utterances_per_actor': decisions.UTTERANCES_PER_ACTOR,
+            'max_utterances_total': decisions.UTTERANCES_TOTAL} or value.get('stop_decisions') != decisions.record():
+        raise ValueError('pair LLM decision limits drift from coordinator decisions')
     return value
 
 
@@ -100,7 +106,7 @@ def driver_profile(*, root=ROOT) -> dict:
 
 
 def physics_bundle(*, root=ROOT) -> dict:
-    """The v88 physics/skill bundle the three arms share (cap raised from the v88 120 s to the study 300 s)."""
+    """The v88 physics/skill bundle the three arms share (cap raised from the v88 120 s to the case 900 s)."""
     reg = read_registry(root=root)
     row = copy.deepcopy(_v88_bundle(reg['map_id']))
     return {**row, 'case': {'id': 'pair_llm', 'map_id': reg['map_id'], 'checkpoint': None, 'sim_cap_s': CAP_S}}
@@ -203,6 +209,7 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
                        'input_billing': billing.record() if llm else None},
         'call_policy': {k: getattr(PAIR_POLICY, k) for k in PAIR_POLICY.__dataclass_fields__} if llm else None,
         'decision_limits': dict(limits) if llm else None,
+        'stop_decisions': decisions.record(),
         'channel': reg['conditions'][condition]['channel'],
         'inter_robot_channels': (['dialogue'] if condition == 'peer_nl' else []) + ['pair_status'],
         'caps': {'per_case_s': CAP_S, 'reset_per_case_s': RESET_CAP_S,

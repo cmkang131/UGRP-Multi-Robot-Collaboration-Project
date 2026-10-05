@@ -45,8 +45,8 @@ RATE_LIMIT = 'RATE_LIMIT'
 #: reported under another status (403 quota, 503 resource exhausted).
 QUOTA_TEXT = re.compile(r'quota|rate[ _-]?limit|resource[ _-]?exhausted|too many requests', re.IGNORECASE)
 ERROR_EXCERPT_BYTES = 600
-#: A smoke is allowed to spend this long a case only; a longer live case is a separate decision.
-LIVE_MAX_CAP_S = contract.SMOKE_MAX_S
+#: Coordinator-approved case cap; stub smoke length remains separately registered.
+LIVE_MAX_CAP_S = contract.CAP_S
 
 
 class RateLimited(GeminiProxyError):

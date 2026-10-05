@@ -227,7 +227,7 @@ def test_bundle_records_everything_a_result_depends_on():
         assert row['arm'] == contract.ARMS[condition] and row['weld'] == 'off'
         assert row['render_profile'] == 'floor_light_v1' and row['sensors'] == {'ultrasonic_front': 'off'}
         assert row['shared_top_camera'] is False and row['research_result'] is False
-        assert row['caps']['per_case_s'] == 300. and row['cost_model']['version'] == 'zone_sim_cost.v1'
+        assert row['caps']['per_case_s'] == 900. and row['cost_model']['version'] == 'zone_sim_cost.v1'
         assert row['skill_layer']['bundle_id'] == 'zone-final-pair-v88'
         assert row['controller_inputs'] == ['own_rgb', 'static_map', 'order_sheet', 'own_command_history',
                                             'own_status', 'delivered_messages']

@@ -45,3 +45,28 @@
   전부 직접 읽음. 뒤 코멘트와 현재 코드가 앞 제안을 대체한 부분은 별도로 명시한다.
 - 재기반 최종 관련 검사: workflow 등록·읽기 전용 계획 2개 + `test_ci_fast_path.py` + 은퇴 번들 바이트 시험,
   **13 passed, 280 subtests passed**(10.61초, exit 0). 위 두 중단 묶음과 구분한다.
+
+## 2. 설계 v3.1 값·비용·분류
+
+- 세 조건 사례 상한 900 SIM초, 실제 호출 경로의 최대 허용값도 900초로 맞췄다(호출하지 않음).
+- 호출 36/36/72와 등록 `max_calls_total=72`를 대조하며 어긋나면 거절한다.
+  발화 6/12는 peer_nl에만 적용하고 no_comm 채널의 실제 상한은 0/0/0이다.
+- 판단 창 10초·`look_again` 정지점당 1회/로봇당 사례 1회는 #363 실제 상수와 대조한다.
+  `wait`·`give_up`은 짝 응답 검증에서 거절한다. 봉인 검증기는 바꾸지 않았다.
+- 호출별 `token_measurement`와 `llm/token_measurements.jsonl`에 입력/출력 텍스트의 로컬 계수,
+  고정 이미지 청구량, 제공자 사용량을 분리한다. 응답·사용량이 없으면 null이며 0으로 만들지 않는다.
+  이미지 2장의 2,980은 고정 청구량이지 제공자 이미지 토큰 실측이 아니다.
+- 아래 분류는 평가 후에만 적용한다. 원래 기하 판정은 `success_provisional`에 보존한다.
+
+| 조건 | 실제 기록 라벨 | 분류·지표 |
+|---|---|---|
+| 호출 상한 | `budget` / `http_budget` / `episode_call_cap`, 끝 `budget_exhausted` | `LLM_CALL_CAP_REACHED`, LLM 성공에서 제외, 완주하면 `completed_by_rule_default` |
+| 코호트 토큰 상한 | `pilot_budget_exhausted`, `infra:API` | 채점 제외; 호출 상한과 혼동하지 않음 |
+| 규칙 기본값 비율 > 0.5 | 정지/둘러본 뒤 결정 기록 | `LLM_INERT`, LLM 조건 증거 제외(정확히 0.5는 제외하지 않음) |
+| 판단 창 마감 초과 | `DEADLINE_PASSED` | 유효 결정 아님, 규칙 기본값; 호출/토큰 기록은 보존 |
+
+M2의 실제 제공자 수치는 이번에 새로 얻지 않았다. 후속 실제 실행은 설계 9.6절의
+rule → no_comm → peer_nl 순서와 실측 기반 예산 확인이 필요하다. 코호트 1.1M은 유지한다.
+
+2단계 시험: `test_pair_llm_decisions.py`, `test_pair_llm_eval.py`, 실제 경로/CLI 상한 거절,
+look_around 검증, 번들 기록 검사 **26 passed**(8.58초). 실제 요청은 0회이며 제공자 사용량 시험은 가짜 응답이다.

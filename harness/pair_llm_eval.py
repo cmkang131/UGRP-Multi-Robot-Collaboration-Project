@@ -23,6 +23,36 @@ import json
 import math
 from pathlib import Path
 
+from harness.pair_llm_decisions import LLM_INERT_THRESHOLD
+
+CALL_CAP_LABELS = ('budget', 'http_budget', 'episode_call_cap')
+
+
+def decision_evidence(*, condition, success, decisions=(), scheduler_events=(), failure_class=None):
+    """Post-run classification only; never changes the controller or the raw geometric verdict."""
+    counts = _count(r['decided_by'] for r in decisions)
+    total = len(decisions)
+    default_fraction = counts.get('rule_default', 0) / total if total else None
+    labels = sorted({label for e in scheduler_events for label in CALL_CAP_LABELS
+                     if e.get('event') == label or
+                     (e.get('kind') == 'call_refused' and str(e.get('line', '')).endswith(' '+label))})
+    cap = condition != 'rule' and bool(labels)
+    inert = condition != 'rule' and default_fraction is not None and default_fraction > LLM_INERT_THRESHOLD
+    api = failure_class == 'infra:API'
+    classes = (['LLM_CALL_CAP_REACHED'] if cap else []) + (['LLM_INERT'] if inert else [])
+    if api:
+        classes.append('infra:API')
+    return {'decisions_total': total, 'decided_by': counts, 'rule_default_fraction': default_fraction,
+            'last_llm_decision_sim_s': max((r.get('decided_s', 0.) for r in decisions
+                                          if r['decided_by'] == 'llm'), default=None),
+            'llm_inert_threshold': LLM_INERT_THRESHOLD, 'classifications': classes,
+            'call_cap_labels': labels, 'call_cap_end_reason': 'budget_exhausted' if cap else None,
+            'llm_condition_evidence': condition != 'rule' and not (cap or inert or api),
+            'primary_success': bool(success and not (cap or inert or api)),
+            'completed_by_rule_default': bool(success and cap),
+            'token_cap_label': 'pilot_budget_exhausted' if any(
+                e.get('event') == 'pilot_budget_exhausted' for e in scheduler_events) else None}
+
 EVAL_VERSION = 'ugrp.pair_llm_eval.v1'
 JUDGE_STATUS = 'PROVISIONAL_GEOMETRIC_JUDGE_NOT_THE_363_JUDGE'
 LIFT_MIN_M = .03

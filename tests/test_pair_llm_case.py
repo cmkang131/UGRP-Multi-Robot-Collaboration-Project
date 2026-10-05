@@ -227,7 +227,7 @@ def test_every_arm_has_the_same_case_cap_and_a_larger_one_is_refused(tmp_path):
         result, _, _ = run_arm(tmp_path, condition, cap_s=3., name=f'cap-{condition}')
         caps[condition] = (result['case_sim_cap_s'], result['registered_case_cap_s'], result['reset_sim_cap_s'],
                            result['case_sim_s'])
-    assert set(caps.values()) == {(3., 300., 5., 3.)}
+    assert set(caps.values()) == {(3., 900., 5., 3.)}
     bundle = contract.bundle('rule', source_sha='0' * 40)
     with pytest.raises(ValueError):
         run_pair_case(bundle, tmp_path / 'toolong', condition='rule', seed=1, backend_factory=FakeBackend,

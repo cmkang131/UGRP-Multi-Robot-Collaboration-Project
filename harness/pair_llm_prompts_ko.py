@@ -25,6 +25,7 @@ import re
 
 from harness import zone_study_prompts_ko as pk
 from harness import zone_study_protocol as zp
+from harness import pair_llm_decisions as decisions
 
 PROMPT_VERSION = 'ugrp.pair_llm_prompts_ko.v3'
 PAIR_ROBOTS = ('r1', 'r2')
@@ -63,7 +64,7 @@ claim은 이 주문의 운반을 시작해도 좋다는 허가입니다. 허가�
 운반은 두 로봇이 같은 order_id를 각자 claim하고 두 claim이 약 %(window)d SIM초 안에 이루어질 때 시작됩니다. \
 claim의 role은 자기 역할 이름으로, destination_zone은 order_sheet의 값 그대로 씁니다.
 운반이 진행되고 있다고 판단되는 동안 기본 행동은 {"kind": "continue"}입니다.
-{"kind": "wait"}와 {"kind": "release"}는 진행 중인 작업을 중단시킵니다. 자기 wrist RGB에 위험의 근거가 \
+{"kind": "release"}는 진행 중인 작업을 중단시킵니다. 자기 wrist RGB에 위험의 근거가 \
 있을 때만 쓰십시오.
 자기 wrist RGB에서 대상이 보이지 않아도 order_sheet의 주문이 계획입니다. 보이지 않는다는 이유만으로 \
 중단하거나 미루지 마십시오.
@@ -83,7 +84,6 @@ KO_PAIR_ACTION = '''- action: 당신 자신의 행동 하나입니다. 다음 �
   {"kind": "claim", "order_id": order_sheet의 order_id, "role": order_sheet.kinds의 roles 중 당신의 역할 이름,
    "destination_zone": order_sheet의 destination_zone}
   {"kind": "continue"}
-  {"kind": "wait"}
   {"kind": "release", "order_id": 놓아줄 order_id}
   {"kind": "look_around"}  (제자리에서 돌며 둘러봅니다. 위치를 다시 추정하는 데 도움이 될 수 있습니다. 실행 중인 작업이 없을 때만 시작됩니다)'''
 
@@ -142,6 +142,9 @@ def study_spec(condition: str) -> str:
 
 def _channel_block(condition: str, spec, *, cap_window=None, cap_robot=None) -> str:
     slots = PAIR_CHANNEL_SLOTS[condition]
+    if spec.channel_open:
+        cap_window = decisions.UTTERANCES_TOTAL if cap_window is None else cap_window
+        cap_robot = decisions.UTTERANCES_PER_ACTOR if cap_robot is None else cap_robot
     values = {'cap_window': spec.max_window_utterances if cap_window is None else cap_window,
               'cap_robot': spec.max_robot_utterances if cap_robot is None else cap_robot}
     return pk.KO_CHANNEL_TEMPLATE.format(**{name: text.format(**values) for name, text in slots.items()})
