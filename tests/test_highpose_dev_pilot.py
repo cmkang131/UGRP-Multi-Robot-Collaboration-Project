@@ -443,6 +443,8 @@ def test_cli_execute_dev_pilot_one_case_on_a_sim_slot_is_not_host_error(tmp_path
     monkeypatch.setattr(slots, 'require_sim_slot', lambda root, **k: slot_calls.append(k))
     monkeypatch.setattr(slots, 'sim_snapshot', lambda root: {'loadavg': [1., 1., 1.]})
     monkeypatch.setattr(backend_module, 'PhysicsBackend', FakePhysics)
+    import sim.final_pair_highpose_clock as clock_module   # v98 main() builds the host clock v2 backend
+    monkeypatch.setattr(clock_module, 'PhysicsBackend', FakePhysics)
     real_case, real_student = run.run_case, run.student_run_case
     monkeypatch.setattr(run, 'run_case', lambda b, o, **k: real_case(b, o, runtime_factory=FakeRuntime, **k))
     monkeypatch.setattr(run, 'student_run_case', lambda b, o, **k: real_student(

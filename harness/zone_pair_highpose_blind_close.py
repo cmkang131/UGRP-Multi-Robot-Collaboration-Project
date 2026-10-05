@@ -259,6 +259,20 @@ class BlindTrack:
         return {k: w[k] for k in ('profile', 'segment', 'confirmed_at_s', 'frame_id', 'sha256', 'drop_m',
                                   'xy_m', 'lateral_m', 'beam_at_confirm', 'disarmed')}
 
+    def reference_record(self, now):
+        """Read-only age of the resting-beam reference the hover check stands on (review delta3 P2-1).
+
+        The reference is the standoff anchor: a hover partial image never renews its time or sigma (frozen
+        ``RestingBeamTrack.estimate``), so every wait at the hover ages it. The frozen track refuses an estimate older
+        than ``resting.MAX_AGE_S`` (30 s, unchanged); this record only makes that refusal visible in the log.
+        """
+        b = self.beam
+        if b is None:
+            return {'anchor_time_s': None, 'age_s': None, 'max_age_s': resting.MAX_AGE_S, 'expired': None}
+        age = float(now)-float(b['anchor_time_s'])
+        return {'anchor_time_s': b['anchor_time_s'], 'age_s': round(age, 4), 'max_age_s': resting.MAX_AGE_S,
+                'expired': not 0 <= age <= resting.MAX_AGE_S}
+
 
 def adopt(guard, controller):
     """Give the v98 guard's resting beam track the blind window; hand the controller the same object."""
@@ -316,11 +330,18 @@ class HoverConfirm:
             self.blind_hover_streak = 0
         self.blind_hover_last_frame = obs['frame_id']
         checks = self._grasp_pose_checks(now)
+        reference = getattr(track, 'reference_record', None)
         self.log(self.rid, 'blind_hover_check', now, ok=code is None, code=code, frame_id=obs['frame_id'],
                  sha256=obs.get('sha256'), checks=checks, failed_checks=[k for k, v in checks.items() if not v],
                  streak=self.blind_hover_streak, need=HOVER_CONFIRM_FRAMES,
-                 window=track.window_record(), profile=PROFILE)
+                 window=track.window_record(), reference=None if reference is None else reference(now),
+                 profile=PROFILE)
         if code is not None:
+            # A failed frame cancels a readiness already sent at once (v98 re-fix hover@k+1 barrier, review delta3
+            # P1-1): the channel would otherwise keep it for its whole TTL and the partner alone could get the GO.
+            withdraw = getattr(self, 'hover_barrier_withdraw', None)
+            if withdraw is not None:
+                withdraw(now, obs, code)
             if now-self.blind_hover_started < HOVER_CONFIRM_MAX_S:
                 return                      # retry on a later own frame, bounded
             return self.fail(code, now)

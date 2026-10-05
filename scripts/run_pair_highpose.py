@@ -118,7 +118,13 @@ FAILURE_CAUSE_TEXT['PAIR_DECISION_EXCHANGE'] = ('re-fix decision exchange failed
                                                 'never seen in the window, or the re-fix echo did not come)')
 FAILURE_CAUSE_TEXT['PAIR_BARRIER_WAIT'] = ('re-fix hover@k+1 pair barrier: the partner did not become hover ready within '
                                            'its own derived limits, or the barrier aborted')
+# 2026-10-05: the close barrier of a pair re-grasp (runtime _wait_close) had no label (14ba8b5e probe ->
+# UNCLASSIFIED). Its stop is a pair-coordination stop like the hover barrier, so it gets its own label too.
+FAILURE_CAUSE_TEXT['PAIR_BARRIER_CLOSE'] = ('close pair barrier (wait_close) before the jaws close: the barrier aborted'
+                                            ' (e.g. LATE_OR_EXPIRED_GO, own poll after the shared GO time) or timed out')
 V98_FAILURE_TO_CAUSE = {
+    'BARRIER_CLOSE_ABORT': 'PAIR_BARRIER_CLOSE',
+    'BARRIER_CLOSE_TIMEOUT': 'PAIR_BARRIER_CLOSE',
     'REFIX_HOVER_BARRIER_TIMEOUT': 'PAIR_BARRIER_WAIT',
     'REFIX_HOVER_BARRIER_ABORT': 'PAIR_BARRIER_WAIT',
     'HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED': 'SELF_POSE_UNCERTAIN',
@@ -224,7 +230,8 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
                           **staging.TEST_SETUP_GT}
         real_backend = backend_factory
         from sim.final_pair_v3 import PhysicsBackend as _V3
-        if real_backend is _V3:
+        from sim.final_pair_highpose_clock import PhysicsBackend as _V3Clock
+        if real_backend in (_V3, _V3Clock):   # StagedBackend carries host clock v2 itself
             from sim.final_pair_highpose_staged import StagedBackend
             backend_factory = lambda b, o, *, seed: StagedBackend(b, o, seed=seed, stations=stations)
         if runtime_factory is Runtime:
@@ -246,6 +253,10 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
               'loadavg_start': list(os.getloadavg()), 'failure': None}
     try:
         backend = backend_factory(bundle, out, seed=seed)
+        # 2026-10-05: which SIM clock the host used (host clock v2 = integer substeps; never pooled with earlier runs).
+        from sim import final_pair_highpose_clock as host_clock
+        result['host_clock'] = (host_clock.record() if getattr(backend, 'host_clock', None) == host_clock.ID
+                                else {'id': 'float_running_sum_v1'})
         reset = backend.reset(contract.RESET_CAP_S)
         if not 0 <= reset <= contract.RESET_CAP_S+1e-8:
             raise RuntimeError('RESET_SIM_CAP_EXCEEDED')
@@ -418,7 +429,7 @@ def main(argv=None):
         if (not held or not held['pid_alive'] or held['owner'] != args.lock_owner
                 or held['branch'] != branch or sim_holders(DEFAULT_ROOT)):
             raise ValueError('live owned host lock for this branch required')
-    from sim.final_pair_v3 import PhysicsBackend
+    from sim.final_pair_highpose_clock import PhysicsBackend   # v98 host clock v2 (integer substep time)
     args.output.mkdir(parents=True)
     admission.update(execution_started=True, host_start=sim_snapshot(DEFAULT_ROOT))
     write(args.output/'plan.json', admission)

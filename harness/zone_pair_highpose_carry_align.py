@@ -1,26 +1,35 @@
-"""v98-only: act on the door-axis align only when the own offset is significant; log every loaded-gate check.
+"""v98-only: loaded door-axis align is ALWAYS zero for both robots (pair neutral, v2); the own significance test and the
+command it would have issued are only logged (``would_*``); every loaded-gate check is logged.
 
-Problem (offline replay of the 6727751b ``align_to_carry`` probe through the v98 provider; ground truth used for
-scoring only, never here). Both robots reached HIGH and the carry barrier opened at 89.1 s. The first item of the
-v3 carry schedule (``zone_final_pair_skill.V3Controller.door_schedule``) is a fixed 6 s door-axis align whose
-command corrects the own estimated offset ``dy`` (world y) and heading error ``e_yaw``. The estimated corrections
-were r1 -4.1 mm / +0.04 deg and r2 +9.6 mm / +0.18 deg against own sigmas of about 24 mm and 1.1 deg, i.e. noise
-(0.2-0.4 sigma), and the two ends of the rigid beam pushed in opposite world directions (beam moved 0.7 mm). The
-align command is not the planned pair leg, so ``pair_ok()`` is False while it runs and the provider's yaw
-availability fallback switches from ``b['pm+edge']`` (0.00023 rad/s) to ``b['edge']`` (0.0174 rad/s). The own yaw
-sigma grew from 1.14 deg to 3.02 deg in 2.9 s and the loaded gate (3 deg) stopped r1 at 92.2 s with
-``POSE_UNCERTAIN``, 3.1 s into the 6 s align and before the axial leg (95.6 s). Under the same model the align
-interval can never complete with any non-zero command (sigma_yaw ~6 deg at its end, model-predicted).
+Current rule (v2, pair neutral; coordinator decision 2026-10-05, after align_to_carry@fcc5215f leg 6; diagnosis
+``outputs/v98-leg6-yaw-diag-20261005``). The first item of the v3 carry schedule
+(``zone_final_pair_skill.V3Controller.door_schedule``) is a fixed 6 s door-axis align whose parent command corrects the
+own estimated offset ``dy`` (world y) and heading error ``e_yaw``. While loaded, this align command is ALWAYS the all-zero
+``mecanum`` command for BOTH robots, whatever the own estimate, its significance or even a missing own sigma
+(``NO_OWN_SIGMA``): no motion, ``pair_ok()`` stays True, no yaw-availability fallback inflation (only a non-finite
+parent claim, which is not a production path, returns the parent's schedule unchanged). The window, its timing, the
+0.5 s pause, the planned leg and its ``pair_plan`` are the parent's, unchanged (both robots keep the same schedule without
+any message). The significance test (``|dy| > Z * sigma_y`` and ``|e_yaw| > Z * sigma_yaw``, ``Z = 1.959964``, the standard
+normal 0.975 quantile, not tuned; ``sigma_y`` is the world-y standard deviation of the own report covariance at schedule
+time, ``std_xy_m`` if the covariance is unusable) and the command the parent or the significance rule would have issued
+are still computed and logged as ``would_keep_lateral``, ``would_keep_yaw`` and ``would_cmd`` (log only, never executed).
+There is no lateral correction while loaded; the remaining cross-track error is left to the door protection-level check
+(PL) and the set-down re-fix. The 3 deg loaded gate is unchanged.
 
-Rule (no tuned constant): each align component is kept only when its estimated correction differs from zero at the
-two-sided 95 % level of the own Gaussian posterior, ``|dy| > Z * sigma_y`` and ``|e_yaw| > Z * sigma_yaw`` with
-``Z = 1.959964`` (standard normal 0.975 quantile). An insignificant component is set to zero. With both components
-insignificant the align window carries an all-zero ``mecanum`` command: no motion, ``pair_ok()`` stays True, no
-fallback inflation. The window, its timing, the 0.5 s pause, the planned leg and its ``pair_plan`` are the parent's,
-unchanged (both robots keep the same schedule without any message). ``sigma_y`` is the world-y standard deviation
-of the own report covariance at schedule time (``std_xy_m`` if the covariance is unusable, which only makes skipping
-more likely); with no usable own sigma the parent's command is kept. A component that is significant still runs
-exactly as before (and can still trip the gate; that limit is recorded, not hidden).
+Why v2 (history of v1, superseded; ``v98_carry_align_significance_v1``). Offline replay of the 6727751b ``align_to_carry``
+probe through the v98 provider (ground truth used for scoring only, never here): both robots reached HIGH and the carry
+barrier opened at 89.1 s. The estimated corrections were r1 -4.1 mm / +0.04 deg and r2 +9.6 mm / +0.18 deg against own
+sigmas of about 24 mm and 1.1 deg, i.e. noise (0.2-0.4 sigma), and the two ends of the rigid beam pushed in opposite world
+directions (beam moved 0.7 mm). The align command is not the planned pair leg, so ``pair_ok()`` is False while it runs and
+the provider's yaw availability fallback switches from ``b['pm+edge']`` (0.00023 rad/s) to ``b['edge']`` (0.0174 rad/s).
+The own yaw sigma grew from 1.14 deg to 3.02 deg in 2.9 s and the loaded gate (3 deg) stopped r1 at 92.2 s with
+``POSE_UNCERTAIN``, 3.1 s into the 6 s align and before the axial leg (95.6 s). Under the same model the align interval can
+never complete with any non-zero command (sigma_yaw ~6 deg at its end, model-predicted). v1 therefore kept only the
+components that were significant (and the parent's command when no own sigma existed), decided by each robot from its OWN
+estimate. That is what failed at leg 6: r1 had z = 2.20 (kept its lateral push) and r2 z = 1.13 (zero); r1 alone pushed the
+loaded beam sideways (beam turned 1.23 deg, eval-only), the align window is outside ``pair_plan`` so the provider used its
+fallback yaw rate, and r1's yaw sigma reached 3 deg in 2.9 s -> ``POSE_UNCERTAIN``. Cooperative carrying uses one common
+motion authority (Kosuge & Oosumi line of work), and a one-sided correction of a held beam has none; hence v2.
 
 The loaded-gate log (``loaded_gate_check``) records, at every ``CommandGuard.check`` that runs under the loaded
 profile and evaluates arm/look/motion commands, the own report time (the guard sees a 0.16 s delayed report), its
@@ -31,18 +40,6 @@ observes.
 
 Inputs: own report (own RGB + own commands), own grasp estimate, static plan, fixed calibration. No peer pose,
 no world state, no ground truth. Shared/frozen modules are not modified.
-
-v2 pair-neutral (coordinator decision 2026-10-05, after align_to_carry@fcc5215f leg 6; diagnosis
-``outputs/v98-leg6-yaw-diag-20261005``): the significance rule above is decided by each robot from its OWN estimate, so
-the two ends of the rigid beam can disagree. At leg 6 r1 had z = 2.20 (kept its lateral push) and r2 z = 1.13 (zero);
-r1 alone pushed the loaded beam sideways (beam turned 1.23 deg, eval-only), the align window is outside ``pair_plan`` so
-the provider used its fallback yaw rate, and r1's yaw sigma reached 3 deg in 2.9 s -> ``POSE_UNCERTAIN``. Cooperative
-carrying uses one common motion authority (Kosuge & Oosumi line of work), and a one-sided correction of a held beam has
-none. So during loaded carry the align command is ALWAYS all-zero for both robots (pair neutral). The significance test
-and the command it would have issued are still computed and logged as ``would_keep_lateral``, ``would_keep_yaw``,
-``would_cmd`` (log only). The window length, the leg, ``pair_plan``, ``Z`` and the 3 deg gate are unchanged.
-Stated as a fact: there is no lateral correction while loaded; the remaining cross-track error is left to the door
-protection-level check (PL) and the set-down re-fix.
 """
 from __future__ import annotations
 

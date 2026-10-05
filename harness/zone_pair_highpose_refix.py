@@ -140,7 +140,8 @@ HOVER_BARRIER_WIRE = 'approach'
 HOVER_TIMEOUT = 'REFIX_HOVER_BARRIER_TIMEOUT'
 HOVER_ABORT = 'REFIX_HOVER_BARRIER_ABORT'
 HOVER_MOVE_S = 1.                       # HoverConfirm._queue_open_descent: hover posture queue duration
-HOVER_EVENTS = ('refix_hover_barrier_wait', 'refix_hover_reconfirmed', 'refix_hover_barrier_timeout')
+HOVER_EVENTS = ('refix_hover_barrier_wait', 'refix_hover_reconfirmed', 'refix_hover_barrier_timeout',
+                'refix_hover_ready_withdrawn')
 
 
 def hover_barrier_limit_terms():
@@ -161,6 +162,34 @@ def hover_barrier_limit_terms():
 
 def hover_barrier_limit_s():
     return round(sum(hover_barrier_limit_terms().values()), 6)
+
+
+def _hover_limits_record():
+    """The two time limits that bound a wait at the hover, kept apart (review delta3 P2-1).
+
+    ``partner_budget_sum_s`` (123.94 s) only bounds how long a LIVE, non-aborted partner can keep the pair waiting.
+    It is not a promise that a robot can hold the hover that long: the own resting-beam reference (the standoff
+    anchor) is refused by the frozen track after ``own_reference_age_s`` (30 s, unchanged), and a hover partial image
+    never renews it. Whichever is shorter ends the wait; the 30 s one surfaces as ``PREGRASP_HOVER_UNCONFIRMED``,
+    not as ``HOVER_TIMEOUT``.
+    """
+    from harness import zone_pair_highpose_blind_close as blind
+    own = float(blind.limits()['anchor_max_age_s'])
+    return {
+        'partner_budget_sum_s': {
+            'value_s': hover_barrier_limit_s(),
+            'means': 'sum of the partner own phase limits from its open GO to its hover readiness; bounds how long a '
+                     'live partner can keep the pair waiting; ends with HOVER_TIMEOUT (REFIX_HOVER_BARRIER_TIMEOUT)'},
+        'own_reference_age_s': {
+            'value_s': own,
+            'means': 'frozen zone_pair_beam_track.MAX_AGE_S: the standoff reference image (the hover partial image '
+                     'does not renew it) is refused older than this, so the own hover check fails; ends with '
+                     'PREGRASP_HOVER_UNCONFIRMED after HOVER_CONFIRM_MAX_S, readiness withdrawn',
+            'log': "blind_hover_check.reference {anchor_time_s, age_s, max_age_s, expired}; "
+                   "refix_hover_ready_withdrawn; preclose_beam_guard BEAM_UNCERTAIN"},
+        'effective_wait_s': 'min(partner_budget_sum_s, own_reference_age_s - age of the standoff reference at the '
+                            'hover entry); not lengthened: 30 s is unchanged and a partial image does not renew it',
+        'longer_waits_need': 'a synchronised position or a re-observation order (not designed here)'}
 
 # ---- LLM decision hooks (#371, coordinator 2026-10-04). Own robot only; identical in all four conditions.
 # Events go to the own ``refix_hook_events`` list (and the run log). Commands are latched one-shot requests that the
@@ -565,12 +594,14 @@ def record() -> dict:
                 'decision': '고정 상태 관례 추가 (조정자 승인 2026-10-05, review delta2 P1-1 option A)',
                 'where': 'after the own hover confirmation, before the blind descent (re-fix re-grasp only)',
                 'limit_s': hover_barrier_limit_s(), 'limit_terms': hover_barrier_limit_terms(),
+                'limits_two_different_things': _hover_limits_record(),
                 'codes': [HOVER_TIMEOUT, HOVER_ABORT], 'events': list(HOVER_EVENTS),
                 'reconfirm': 'after the GO a fresh hover confirmation (2 new passing own frames, unchanged bounded '
                              'retries) is required before the descent',
                 'while_waiting': 'hover checks continue on every own frame (fresh report, window re-armed); a failing '
-                                 'check withdraws the readiness and fails closed after HOVER_CONFIRM_MAX_S from the '
-                                 'last passing frame'},
+                                 'check withdraws the readiness AT ONCE (existing not_ready report; review delta3 '
+                                 'P1-1) and fails closed after HOVER_CONFIRM_MAX_S from the last passing frame; '
+                                 'the readiness is reported again after 2 new passing frames'},
             'refresh_look': {'max_directions': REFRESH_MAX_DIRECTIONS,
                              'order': 'the pan that gave the look fix first, then dock order (guard-clear only)',
                              'look_again': 'full dock look (up to 7 directions)'},
@@ -977,7 +1008,8 @@ class SigmaRefix:
         h = self.__dict__.get('refix_hover')
         if h is None or h['seg'] != self.seg:
             h = self.refix_hover = {'seg': self.seg, 'started_s': float(now), 'go_s': None, 'last_frame': None,
-                                    'limit_s': hover_barrier_limit_s(), 'reports': 0}
+                                    'limit_s': hover_barrier_limit_s(), 'reports': 0, 'ready': False,
+                                    'withdrawn': 0}
             self.log(self.rid, 'refix_hover_barrier_wait', now, seg=self.seg, limit_s=h['limit_s'],
                      wire=f'{HOVER_BARRIER_WIRE}@{self.seg}')
         if h['go_s'] is not None:
@@ -995,6 +1027,7 @@ class SigmaRefix:
         if obs.get('frame_id') != h['last_frame']:
             h['last_frame'] = obs.get('frame_id')
             h['reports'] += 1
+            h['ready'] = True
             self.report(HOVER_BARRIER_WIRE, obs, now, ready=True, reason='own hover confirmation (re-fix hover@k+1)')
         decision = self.sync_for(HOVER_BARRIER_WIRE).authorize(now)
         if decision['phase'] == 'ABORT':
@@ -1008,6 +1041,28 @@ class SigmaRefix:
             self.blind_hover_streak, self.blind_hover_last_frame = 0, obs.get('frame_id')
             self.blind_hover_started = now
         return False
+
+    def hover_barrier_withdraw(self, now, obs, code):
+        """Called by HoverConfirm with a FAILED hover confirmation frame while waiting (review delta3 P1-1).
+
+        A readiness already sent stays valid on the channel for its whole TTL (``zone_pair_status``
+        READINESS_TTL_S, 0.6 s) unless the robot reports ``ready=False``; the partner could therefore get the GO
+        alone and schedule its descent while this robot is no longer hover ready. A failed frame sends the existing
+        ``not_ready`` report at once (``_StatusBarrier.report(ready=False)``), one per failing run; the next passing
+        run (2 frames) reports ready again through the gate. After the GO nothing is withdrawn here: the GO is
+        consumed, and the unchanged bounded retries of the fresh confirmation end in the abort.
+        """
+        h = self.__dict__.get('refix_hover')
+        if not self.__dict__.get('refix_resume') or h is None or h['seg'] != self.seg or h['go_s'] is not None:
+            return
+        if not h['ready']:
+            return                                          # nothing standing: no wire row per failing frame
+        h['ready'] = False
+        h['withdrawn'] += 1
+        self.report(HOVER_BARRIER_WIRE, obs, now, ready=False,
+                    reason=f'own hover confirmation failed ({code}); readiness withdrawn')
+        self.log(self.rid, 'refix_hover_ready_withdrawn', now, seg=self.seg, code=code,
+                 frame_id=obs.get('frame_id'), count=h['withdrawn'], wire=f'{HOVER_BARRIER_WIRE}@{self.seg}')
 
     def _cp_open(self, now, arm_idle):
         if arm_idle and getattr(self, 'refix_active', False):

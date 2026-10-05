@@ -17,12 +17,15 @@ from harness.zone_final_pair_scan import install, resample
 from harness.zone_pair_highpose_edge import HIGH_EDGE_INFORMATIVE, HighBeamEdgeTracker
 from harness.opencv_wall_observation import OpenCVObserver, DETECTOR
 from harness import zone_pair_highpose_pf_consistency as pf_consistency
+from harness import zone_pair_highpose_pf_local_redraw as pf_redraw
 
 
 # Augmented MCL (Thrun, Burgard & Fox 2005, Table 8.3; Nav2 AMCL pf.c): v98 ran with robust={} (off), so a filter that became over-confident
 # had no way back. Trigger rates are the Nav2-documented example values (recovery_alpha_slow 0.001 / recovery_alpha_fast 0.1), cap 1 = Nav2.
 # The random poses are drawn around the own estimate (uniform_share 0) with the expansion radii of Ueda et al. 2004 / emcl2 (0.1 m, 0.1 m, 0.2 rad),
 # NOT uniformly over the map: replay showed uniform injection can move the estimate metres away for seconds (evidence/recovery_transient_cost.txt).
+# The frozen vision_pf replaces a candidate that lands in a wall with a uniform draw over the whole map (independent review #363 P1-2: 101 of 2000 near a door, up to 4.2 m);
+# harness/zone_pair_highpose_pf_local_redraw.py redraws such candidates from the same local Gaussian instead (frozen PF unchanged, no scale changed).
 # DEV candidate: constants come from the sources, not tuned; not validated closed-loop.
 PF_RECOVERY = {'alpha_slow': 0.001, 'alpha_fast': 0.1, 'max_fraction': 1.0, 'uniform_share': 0.0, 'local_std': [0.1, 0.1, 0.2]}
 
@@ -52,6 +55,7 @@ class HighPoseSource(PairVisionPoseSource):
             'own_image_gates': {'path': self.gates['path'], 'sha256': self.gates['sha256']},
             'pf_consistency': pf_consistency.record(pf_consistency.CONFIG),
             'pf_recovery': copy.deepcopy(PF_RECOVERY),
+            'pf_local_redraw': pf_redraw.record(pf_redraw.CONFIG),
             'pf_expansion': {'radius': list(EXPANSION_RADIUS), 'trigger': 'own arrival-view rejection only (one shot)'}}
         # These frozen modules supply only column geometry, likelihood and PF.
         # load_vis3 never imports seg_model/torch or opens a checkpoint.
@@ -79,6 +83,8 @@ class HighPoseSource(PairVisionPoseSource):
             (pose.at_high(self.servo) and self.high_since is not None and now-self.high_since >= pose.HIGH_SETTLE_S))
         install(pf, vl)
         pf._normalize_and_resample = lambda: resample(pf)
+        # R1 stays local next to walls: invalid random poses are redrawn around the own estimate, never over the whole map (review #363 P1-2).
+        pf_redraw.install(pf, pf_redraw.CONFIG)
         # v98 consistency: one stationary view counts once; columns tempered (calibrated, see module).
         pf_consistency.install(pf, pf_consistency.CONFIG)
         self.loc = FailClosedLoc(pf, self.provider_id, on_command=self.on_command)

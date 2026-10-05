@@ -380,6 +380,9 @@ def test_every_refusal_name_is_listed_and_classified():
         assert runner.failure_cause(code) == {'code': 'BLIND_WINDOW_CLOSED', 'sub': code}
     # + the re-fix labels (review delta2 P2-4 / P1-1 decision A)
     assert set(runner.FAILURE_CAUSE_TEXT) == {'HOVER_NOT_CONFIRMED', 'BLIND_WINDOW_CLOSED', 'ARRIVAL_VIEW_NOT_CONFIRMED',
-                                              'PAIR_DECISION_EXCHANGE', 'PAIR_BARRIER_WAIT'}
+                                              'PAIR_DECISION_EXCHANGE', 'PAIR_BARRIER_WAIT', 'PAIR_BARRIER_CLOSE'}
+    # 2026-10-05: close barrier (runtime _wait_close) stops are labelled, not UNCLASSIFIED (14ba8b5e probe)
+    for code in ('BARRIER_CLOSE_ABORT', 'BARRIER_CLOSE_TIMEOUT'):
+        assert runner.failure_cause(code) == {'code': 'PAIR_BARRIER_CLOSE', 'sub': code}
     assert runner.failure_cause('PAIR_COLLISION_GUARD')['code'] == 'COLLISION_GUARD'
     assert runner.failure_cause('PREGRASP_NOT_READY')['code'] == 'UNCLASSIFIED' and runner.failure_cause(None) is None
