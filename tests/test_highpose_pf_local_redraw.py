@@ -190,3 +190,110 @@ def test_validate_rejects_bad_configs(bad):
     assert lr.validate(None) == lr.DEFAULT
     with pytest.raises(ValueError):
         lr.validate(bad)
+
+
+# ---- exhaustion fallback (independent review delta4 P2-2): the documented semantics, see the module docstring ----------------------
+LEFT, RIGHT, BLOCKED = (1., 0., 0.), (3.4, 0., 0.), (1.2, 4., 0.)     # BLOCKED: heavy particles whose pose the fake map rejects
+
+
+def _only_valid_at(pf, monkeypatch, poses):
+    """Every pose except the listed ones is blocked, so the local redraw is exhausted for every slot (exact-copy poses stay valid)."""
+    poses = np.asarray(poses, float)
+    monkeypatch.setattr(pf, '_map_logprior', lambda px: np.where(np.any(np.all(np.asarray(px)[:, None, :] == poses[None], axis=2), axis=1), 0., -5.))
+
+
+def _particles(pf, groups):
+    """Particle set of ``(pose, total weight)`` groups with equal-sized blocks (weights split evenly inside a block)."""
+    n, g = pf.n, len(groups)
+    sizes = [n//g]*(g - 1) + [n - (n//g)*(g - 1)]
+    pf.px = np.concatenate([np.tile(np.asarray(pose, float), (m, 1)) for (pose, _), m in zip(groups, sizes)])
+    pf.logw = np.concatenate([np.full(m, np.log(wt/m) if wt > 0 else -np.inf) for (_, wt), m in zip(groups, sizes)])
+    pf.rng = np.random.default_rng(911)
+
+
+def _share(points, pose):
+    return int(np.sum(np.all(np.asarray(points) == np.asarray(pose, float), axis=1)))
+
+
+@pytest.mark.parametrize('w_left', [.5, .8, .1])
+def test_exhausted_fallback_splits_two_valid_modes_by_weight(source, monkeypatch, w_left):
+    """Two well separated valid modes: the exhausted slots follow the weights (fixed seed, 5-sigma binomial bound), not one pose."""
+    pf = source.loc._pf
+    _particles(pf, [(LEFT, w_left), (RIGHT, 1. - w_left)])
+    _only_valid_at(pf, monkeypatch, [LEFT, RIGHT])
+    k = pf.n
+    points = pf._random_poses(k)
+    last = pf.local_redraw['last']
+    assert points.shape == (k, 3) and last['kept_existing'].all() and not last['redrawn'].any()
+    left = _share(points, LEFT)
+    assert left + _share(points, RIGHT) == k                         # existing poses only, nothing else
+    assert len(np.unique(points, axis=0)) == 2                       # not collapsed to one pose
+    assert abs(left - k*w_left) <= 5*np.sqrt(k*w_left*(1. - w_left)) + 1.    # 5 sigma of Binomial(k, w_left)
+    assert pf.stats['local_redraw_exhausted'] == k and pf.stats['local_redraw_redrawn'] == 0
+
+
+def test_exhausted_fallback_never_picks_a_heavy_invalid_particle(source, monkeypatch):
+    """Heavy blocked particles (half of all weight) are ignored when map-valid particles exist; the valid weights are renormalised."""
+    pf = source.loc._pf
+    _particles(pf, [(LEFT, .25), (RIGHT, .25), (BLOCKED, .5)])
+    _only_valid_at(pf, monkeypatch, [LEFT, RIGHT])
+    k = pf.n
+    points = pf._random_poses(k)
+    assert _share(points, BLOCKED) == 0 and _share(points, LEFT) + _share(points, RIGHT) == k
+    assert abs(_share(points, LEFT) - k/2) <= 5*np.sqrt(k/4) + 1.
+
+
+def test_exhausted_fallback_is_not_always_the_first_particle(source, monkeypatch):
+    """Guards the 'copy particle 0 for every slot' regression: the first particle is one of the modes, the other must appear too."""
+    pf = source.loc._pf
+    _particles(pf, [(LEFT, .5), (RIGHT, .5)])
+    _only_valid_at(pf, monkeypatch, [LEFT, RIGHT])
+    assert np.all(pf.px[0] == LEFT)
+    points = pf._random_poses(pf.n)
+    assert _share(points, RIGHT) > 0 and _share(points, LEFT) > 0
+
+
+def _collapse(source, monkeypatch, groups, valid, inject=1.):
+    """Run the installed resampler on a set whose latent state is distinctive, with the redraw exhausted."""
+    pf = source.loc._pf
+    _particles(pf, groups)
+    _only_valid_at(pf, monkeypatch, valid)
+    n = pf.n
+    pf.scale, pf.stuck = np.tile([1.7, .4, 1.3], (n, 1)), np.ones(n, bool)
+    pf.yaw_bias, pf.yaw_extra, pf.drift = np.full(n, .123), np.full(n, .234), np.tile([.3, .4], (n, 1))
+    pf.w_slow = pf.w_fast = .7
+    pf._inject = inject
+    rough = pf.stats.get('roughened', 0)
+    pf._normalize_and_resample()
+    return pf, rough
+
+
+def test_current_documented_behaviour_one_valid_particle_collapses_all_injected_rows_to_it(source, monkeypatch):
+    """Documented current behaviour (module docstring), not a safeguard: one valid particle -> every injected row is that pose."""
+    pf, rough = _collapse(source, monkeypatch, [(LEFT, .001), (BLOCKED, .999)], [LEFT])
+    assert pf.diag['injected'] == pf.n
+    last = pf.local_redraw['last']
+    assert last['kept_existing'].all() and len(np.unique(pf.px, axis=0)) == 1 and np.all(pf.px == LEFT)
+    assert pf.stats['local_redraw_exhausted'] == pf.n
+    assert pf.stats.get('roughened', 0) == rough                     # injected rows are excluded from roughening
+    assert not pf.stuck.any() and not np.any(pf.scale == [1.7, .4, 1.3])      # latent state is re-initialised, not carried over
+    assert not np.any(pf.yaw_bias == .123) and not np.any(pf.yaw_extra == .234) and not np.any(pf.drift == [.3, .4])
+    assert pf.w_slow == 0. and pf.w_fast == 0.                       # augmented-MCL averages restart with every injection
+    assert pf.px.shape == (pf.n, 3) and pf.scale.shape == (pf.n, 3) and pf.stuck.shape == (pf.n,)
+
+
+def test_current_documented_behaviour_no_valid_particle_keeps_the_invalid_pose(source, monkeypatch):
+    """Documented current behaviour: no map-valid particle -> the unrestricted weights are used and the invalid pose is copied."""
+    pf, rough = _collapse(source, monkeypatch, [(BLOCKED, 1.)], [LEFT])
+    assert pf.local_redraw['last']['kept_existing'].all() and len(np.unique(pf.px, axis=0)) == 1 and np.all(pf.px == BLOCKED)
+    assert np.all(pf._map_logprior(pf.px) < 0)                       # the out-of-map pose is kept, not repaired
+    assert pf.stats.get('roughened', 0) == rough and not pf.stuck.any()
+
+
+def test_current_documented_behaviour_valid_particle_with_zero_weight_counts_as_no_valid_particle(source, monkeypatch):
+    """Documented current behaviour: map-valid particles that carry zero weight do not restrict the draw to valid poses."""
+    pf = source.loc._pf
+    _particles(pf, [(LEFT, 0.), (BLOCKED, 1.)])
+    _only_valid_at(pf, monkeypatch, [LEFT])
+    points = pf._random_poses(pf.n)
+    assert np.all(points == BLOCKED)

@@ -202,6 +202,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     # #2): the calibration must match the bundle's own admission mode, so a DEV
     # file can never run inside a MEASURED_SIM (unlabelled) bundle.
     mode = bundle.get('admission_mode', contract.MEASURED_SIM)
+    seed_record = seed_admission(seed, probe, mode)    # before the output folder and the backend (delta4 P1-1)
     contract.calibration_for(mode, calibration, calibration_sha, bundle['map_id'])
     contract.require_runnable(bundle)
     out = Path(out)
@@ -250,7 +251,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
               'protocol_complete': False, 'physical_success': None, 'research_result': False,
               'student_control': True, 'reset_sim_cap_s': contract.RESET_CAP_S, 'check_sim_cap_s': cap,
               'timing': bundle['timing'], 'clearance_preflight': None, 'calibration_sha256': calibration_sha,
-              'loadavg_start': list(os.getloadavg()), 'failure': None}
+              'loadavg_start': list(os.getloadavg()), 'failure': None, **seed_record}
     try:
         backend = backend_factory(bundle, out, seed=seed)
         # 2026-10-05: which SIM clock the host used (host clock v2 = integer substeps; never pooled with earlier runs).
@@ -364,17 +365,33 @@ def admission_mode(args):
 STAGE_PROBE_DEV_EXTRA_SEEDS = (912, 913)
 
 
-def extra_dev_seed(args):
+def seed_admission(seed, probe, mode):
+    """One seed rule for every execution entry point (CLI plan, run_case, student_run_case; review delta4 P1-1).
+
+    Seed 911 (FUNCTIONAL_DEV replay) everywhere; 912/913 only for a DEV_PILOT stage probe. Anything else, including
+    the confirmation seeds, is refused before an output folder or a backend exists. Returns the record for result.json.
+    """
     confirmation = {row['seed'] for row in starts.registration()['confirmation_starts']}
     if set(STAGE_PROBE_DEV_EXTRA_SEEDS) & (confirmation | {starts.DEV_SEED}):
         raise ValueError('extra DEV seeds must differ from the dev and confirmation seeds')
-    return (args.seed != starts.DEV_SEED and args.seed in STAGE_PROBE_DEV_EXTRA_SEEDS
-            and args.stage_probe is not None and args.admission == 'dev-pilot')
+    extra = (seed != starts.DEV_SEED and seed in STAGE_PROBE_DEV_EXTRA_SEEDS
+             and probe is not None and mode == contract.DEV_PILOT)
+    if not extra:
+        starts.require_dev_seed(seed)
+    return {'seed': seed, 'extra_dev_seed': ({'seeds': list(STAGE_PROBE_DEV_EXTRA_SEEDS), 'evidence': False,
+                                              'pooled': False} if extra else None)}
+
+
+def extra_dev_seed(args):
+    mode = contract.DEV_PILOT if args.admission == 'dev-pilot' else contract.MEASURED_SIM
+    try:
+        return seed_admission(args.seed, args.stage_probe, mode)['extra_dev_seed'] is not None
+    except ValueError:
+        return False
 
 
 def plan(args):
-    if not extra_dev_seed(args):
-        starts.require_dev_seed(args.seed)
+    seed_admission(args.seed, args.stage_probe, admission_mode(args))
     starts.registration()
     cases = contract.cases(args.check, args.map_id)
     if args.case_id is not None:

@@ -4,8 +4,8 @@ The gate is ``SigmaRefix.hover_barrier_gate`` and a failed frame calls ``SigmaRe
 delta3 P1-1); the hover check, its 2-frame streak and the bounded retries are the unchanged
 ``HoverConfirm._pregrasp_descend``. The first half uses a fake barrier with a scripted phase. The second half
 (``wire`` tests) uses the REAL ``PairStatusChannel``/``PairStatusEndpoint`` and the real ``PairStudent.report``; the
-long-wait test also wires the real resting-beam track (recorded frames, review delta3 P2-1). Stand-ins are named in
-each test: the pair guard's pose/frame gates and the arm."""
+GO-tick overlap tests also run the real frozen ``PairExecution.check`` (review delta4 P2-1); the long-wait test also
+wires the real resting-beam track (recorded frames, review delta3 P2-1). Stand-ins are named in each test: the pair guard's pose/frame gates and the arm."""
 from __future__ import annotations
 
 from types import SimpleNamespace
@@ -264,7 +264,7 @@ def wire_states(bus, rid):
 def test_wire_a_failed_frame_cancels_the_readiness_so_the_partner_gets_no_go_and_both_go_together_later(order, failing):
     other = 'r2' if failing == 'r1' else 'r1'
     bus, ctls = team(order)
-    # both are hover ready at 11.55 (the old one-sided GO was at 11.80, its descent at 11.90); one robot fails from 11.60
+    # both are hover ready at 11.55 (the old one-sided GO was at 11.80); one robot fails from 11.60
     drive(ctls, grid(11.5, 12.0), failing, 11.6, 12.0)
     assert {rid: c.blind_phase for rid, c in ctls.items()} == {'r1': 'hover', 'r2': 'hover'}
     assert all(c.refix_hover['go_s'] is None and len(c.arm.queued) == 1 and c.failed is None for c in ctls.values())
@@ -286,7 +286,8 @@ def test_wire_a_failed_frame_cancels_the_readiness_so_the_partner_gets_no_go_and
 
 def test_wire_the_old_behaviour_without_the_withdrawal_gave_a_one_sided_go(monkeypatch):
     """The review delta3 P1-1 counterexample, kept as a guard that this test setup detects it: with the withdrawal
-    switched off (the pre-fix behaviour) only the partner gets the GO at 11.80 and descends at 11.90."""
+    switched off (the pre-fix behaviour) only the partner gets the GO at 11.80. This stand-in loop has no executor GO
+    mutual check; with it the one-sided GO is stopped at 11.85 by PARTNER_MISSED_GO (see the real-executor test)."""
     monkeypatch.setattr(WireCtl, 'hover_barrier_withdraw', lambda self, now, obs, code: None)
     bus, ctls = team(('r1', 'r2'))
     drive(ctls, grid(11.5, 12.0), 'r1', 11.6, 12.0)
@@ -294,40 +295,102 @@ def test_wire_the_old_behaviour_without_the_withdrawal_gave_a_one_sided_go(monke
     assert ctls['r2'].blind_phase == 'descend' and ctls['r1'].blind_phase == 'hover'
 
 
-def test_wire_a_failure_exactly_at_the_commit_tick_is_the_remaining_exposure_and_ends_in_an_abort():
-    """Residual, not a fix claim: the GO is decided on the control grid (zone_pair_status, frozen). A failing frame
-    that lands only on the GO tick, with the partner ticked first, finds the GO already consumed by the partner: the
-    withdrawal is too late. Measured: the partner descends alone for about 0.1 s of its own confirmation plus the
-    failing robot's bounded retries, then the abort ends both (no silent close)."""
-    bus, ctls = team(('r2', 'r1'))                                      # partner (r2) ticks first at every instant
-    drive(ctls, grid(11.5, 11.8), 'r1', 11.8, 11.85)                    # ready at 11.55, GO tick 11.8 comes next
-    drive(ctls, grid(11.8, 11.85), 'r1', 11.8, 11.85)
-    assert ctls['r2'].refix_hover['go_s'] == pytest.approx(11.8)       # the partner consumed the GO first
-    assert ctls['r1'].refix_hover['go_s'] is None and (11.8, 'not_ready') in wire_states(bus, 'r1')
-    drive(ctls, grid(11.85, 13.2), 'r1', 11.85, 99.)                    # r1's own frame keeps failing
-    assert ctls['r2'].blind_phase == 'descend'                         # the one-sided descent happened ...
-    assert ctls['r1'].failed == 'PREGRASP_HOVER_UNCONFIRMED'           # ... and is ended by the failing robot's abort
-    assert ctls['r2'].failed == 'PARTNER_ABORT'
-    abort_at = {m['robot_id']: m['sent_at_s'] for m in bus.log if m['state'] == 'abort'}
-    one_sided_s = abort_at['r1']-ctls['r2'].refix_hover['descend_s']
-    assert 0. < one_sided_s <= blind.HOVER_CONFIRM_MAX_S+.05 and abort_at['r2'] > abort_at['r1']   # measured 0.85 s
-    assert not any(m['state'].startswith('close_') for m in bus.log)   # nobody reached the close barrier
+# ---- GO tick overlap with the REAL frozen executor check (review delta4 P2-1) ---------------------------------------
+# The two residual-risk tests of the earlier rounds used a stand-in loop without ``PairExecution.check``. The frozen
+# executor's GO mutual check (``zone_pair_executor.py`` 331-335: a robot that consumed a GO checks on its next tick that
+# the partner consumed the same GO at the same time, else ``PARTNER_MISSED_GO``) changes the outcome. These tests run
+# the real ``PairExecution.check``/``abort`` (built with ``object.__new__``: no job, plan or port, only the fields the
+# check reads) over the real Channel/Endpoint/PairStudent/hover hooks, as ``audit_behaviour.py`` of review delta4 does.
+# Stand-ins: the hover check result (``preclose``), the arm, the video frames, the job/port stubs of the executor.
+
+def real_executors(bus, ctls):
+    """One real (frozen) ``PairExecution`` per robot around the hover controllers; both already in ``start_ready``."""
+    from harness.zone_pair_executor import PairExecution
+    failures, executions = {}, {}
+    for rid, ctl in ctls.items():
+        ctl.ep.tick('start_ready', 11.45)
+        ctl.arm.events, ctl.schedule = [], []
+        e = object.__new__(PairExecution)
+        own = SimpleNamespace(now=11.45, robot_id=rid, stopped=None, job=SimpleNamespace(job_id='j', deadline=100.))
+        own._fail = lambda now, reason, rid=rid: failures.setdefault(rid, {'at': now, 'reason': reason})
+        e.own, e.status, e.controller = own, ctl.ep, ctl
+        e.partner_id = 'r2' if rid == 'r1' else 'r1'
+        e.terminal, e.started, e.job_id, e.rendezvous_deadline = False, True, 'j', 16.45
+        e.port = SimpleNamespace(commands=[])
+        executions[rid] = e
+    return executions, failures
 
 
-def test_wire_a_one_frame_failure_on_the_commit_tick_leaves_the_partner_descended_and_waiting():
-    """Residual, second branch (measured, not fixed): the failing frame recovers right after the partner consumed the
-    GO. The frozen ``authorize`` needs both robots' latest wire state to be ``approach_ready``; the partner's is already
-    past it, so the recovered robot never gets a GO and stays at the hover while the partner has descended. This stub has
-    no close barrier: in the run the partner then waits at ``close@k+1`` for CLOSE_WAIT_S (20 s, runtime) and stops with
-    BARRIER_CLOSE_TIMEOUT -> abort; nothing closes. Fixing it needs a change in zone_pair_status (frozen)."""
+def drive_real(order, failing, recover, cadence, until=14.):
+    """Real executor check + hover step per robot in ``order`` on each 0.05 s tick; the failing robot's hover check
+    fails from 11.80 (one frame only if ``recover``). ``cadence`` is the controller step interval (0.05 or 0.1 s)."""
+    bus, ctls = team(order)
+    executions, failures = real_executors(bus, ctls)
+    for t in grid(11.5, until):
+        for rid, e in executions.items():
+            ctl = e.controller
+            ctl.failure = ctl.failed
+            e.check(t)                                          # the frozen executor check (GO mutual check included)
+            if not e.terminal:
+                ctl.ep.tick(ctl.ep.state or 'aligning', t)
+                if cadence == .05 or round(t*20) % 2 == 0:
+                    ctl.preclose = not (rid == failing and t >= 11.8-1e-9 and (not recover or t < 11.85-1e-9))
+                    ctl.step(t)
+                    ctl.failure = ctl.failed
+        for _ in range(2):                                      # the host polls every executor again on the same tick
+            for e in executions.values():
+                e.check(t)
+    return bus, ctls, failures
+
+
+@pytest.mark.parametrize('cadence', [.05, .1])
+@pytest.mark.parametrize('recover', [True, False])
+@pytest.mark.parametrize('failing', ['r1', 'r2'])
+@pytest.mark.parametrize('order', [('r1', 'r2'), ('r2', 'r1')])
+def test_wire_a_failure_on_the_go_tick_with_the_real_executor_check(order, failing, recover, cadence):
+    """Residual risk of the frozen state channel, measured with the REAL ``PairExecution.check`` (review delta4 P2-1;
+    16 conditions = order x failing robot x recover/persist x cadence). The GO is decided on the control grid (11.80).
+    Partner processed first: it consumes the GO before the withdrawal reaches the wire; at 11.85 the executor's GO
+    mutual check finds the failing robot never consumed it -> ``PARTNER_MISSED_GO`` -> ``PARTNER_ABORT``, so NO descent is
+    ever scheduled (the 2 new frames of the hover confirmation have not even been checked yet). Failing robot processed
+    first: its withdrawal wins, nobody is granted at 11.80; a recovered frame lets both go together later, a persistent
+    failure ends in the bounded-retry abort. In no condition does only one robot descend or close."""
+    bus, ctls, failures = drive_real(order, failing, recover, cadence)
+    other = 'r2' if failing == 'r1' else 'r1'
+    go = {rid: c.refix_hover['go_s'] for rid, c in ctls.items()}
+    descended = {rid: c.blind_phase == 'descend' or len(c.arm.queued) > 1 for rid, c in ctls.items()}
+    assert not any(m['state'].startswith('close_') for m in bus.log) and not bus.rejected
+    if order[0] != failing:                                     # the partner consumed the GO first
+        first = order[0]
+        assert go[first] == pytest.approx(11.8) and go[failing] is None
+        assert failures == {first: {'at': 11.85, 'reason': 'PARTNER_MISSED_GO'},
+                            failing: {'at': 11.85, 'reason': 'PARTNER_ABORT'}}
+        assert not any(descended.values()) and all(len(c.arm.queued) == 1 for c in ctls.values())
+        assert not any('descend_s' in c.refix_hover for c in ctls.values())
+        assert [m['state'] for m in bus.log if '_go_' in m['state']] == ['approach_go_2']     # one GO, never repeated
+        assert bus.latest[first]['state'] == bus.latest[failing]['state'] == 'abort'
+    elif recover:                                               # the withdrawal won: a fresh joint GO after recovery
+        assert not failures and all(descended.values())
+        assert go[failing] == go[other] == pytest.approx(12.1 if cadence == .05 else 12.2)
+        assert all(kinds(c).count('refix_hover_reconfirmed') == 1 for c in ctls.values())
+        assert not any(m['state'] == 'abort' for m in bus.log)
+    else:                                                       # the withdrawal won and the failure persists
+        assert go == {failing: None, other: None} and not any(descended.values())
+        assert failures[failing]['reason'] == 'PREGRASP_HOVER_UNCONFIRMED' and failures[other]['reason'] == 'PARTNER_ABORT'
+        assert failures[failing]['at'] == failures[other]['at'] == pytest.approx(12.75 if cadence == .05 else 12.7)
+        assert all(len(c.arm.queued) == 1 for c in ctls.values())
+
+
+def test_wire_without_the_executor_check_the_stand_in_loop_shows_a_one_sided_descent_that_the_real_check_stops():
+    """Guard: the frozen check is what stops the partner. The same condition driven WITHOUT the executor check (the
+    stand-in loop of the earlier rounds) leaves the partner descended alone; that outcome is a property of the stand-in
+    and is not a claim about the real run."""
     bus, ctls = team(('r2', 'r1'))
-    drive(ctls, grid(11.5, 11.85), 'r1', 11.8, 11.85)                   # one failing frame, on the GO tick
-    drive(ctls, grid(11.85, 40.), 'r1', 99., 99.)                       # r1 passes again from 11.85 on
-    assert ctls['r2'].refix_hover['go_s'] == pytest.approx(11.8) and ctls['r2'].blind_phase == 'descend'
-    assert ctls['r1'].refix_hover['go_s'] is None and ctls['r1'].blind_phase == 'hover' and ctls['r1'].failed is None
-    assert ctls['r1'].refix_hover['ready'] is True                      # it did report ready again ...
-    assert [m['state'] for m in bus.log if '_go_' in m['state']] == ['approach_go_2']       # ... but no second GO
-    assert not any(m['state'].startswith('close_') or m['state'] == 'abort' for m in bus.log)
+    drive(ctls, grid(11.5, 11.85), 'r1', 11.8, 11.85)
+    drive(ctls, grid(11.85, 13.2), 'r1', 11.85, 99.)
+    assert ctls['r2'].blind_phase == 'descend'                  # stand-in only: nobody ran PairExecution.check
+    bus, ctls, failures = drive_real(('r2', 'r1'), 'r1', False, .05, until=13.2)
+    assert ctls['r2'].blind_phase == 'hover' and failures['r2']['reason'] == 'PARTNER_MISSED_GO'
 
 
 # ---- long wait with the real resting-beam track (review delta3 P2-1) -------------------------------------------

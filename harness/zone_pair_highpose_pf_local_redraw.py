@@ -19,10 +19,33 @@ candidate that is not valid:
   ``max_redraw_rounds`` vectorised rounds over the still-invalid slots (rejection sampling against the map prior); the
   neighbourhood is therefore a hard box of ``bound_sigma * local_std`` around the belief mean, never the whole map;
 * a slot still invalid after the last round (the belief mean sits inside or against a wall so that almost every nearby pose is
-  blocked) keeps an existing particle: one pose drawn from the current weighted particle set restricted to valid particles (all
-  particles if none is valid). The method still returns exactly ``k`` rows because the caller concatenates ``k`` new scale,
-  stuck and latent-state rows with them, so rejecting a slot would break the resampler; an existing particle is what ordinary
-  resampling would have put there, and it can never be a jump across the map. Counted in ``pf.stats``.
+  blocked) copies an existing particle pose. The method still returns exactly ``k`` rows because the caller concatenates ``k``
+  new scale, stuck and latent-state rows with them, so rejecting a slot would break the resampler. It is counted in ``pf.stats``.
+
+Exact semantics of that last step (the *exhaustion fallback*; documented, not changed, after independent review delta4 P2-2):
+
+* Selection. ``valid`` is the current particle weight vector with every particle whose ``_map_logprior`` is negative set to 0
+  (map validity only; unlike a candidate, an existing particle is *not* required to lie inside the ``bound_sigma`` box around the
+  belief mean). All exhausted slots are drawn independently with replacement, ``rng.choice(n, p=valid/sum)``, so the draws follow
+  the weights of the valid particles: with two well separated valid modes the slots split in proportion to their total weights,
+  and an invalid particle is never chosen however heavy it is.
+* Zero valid weight. When ``valid.sum() == 0`` the draw uses the unrestricted weights ``w`` instead. That happens with no map-valid
+  particle and also when every map-valid particle has zero weight. A pose outside the map or inside a wall is then copied, and
+  an out-of-map own belief is kept rather than repaired.
+* One valid particle. ``valid`` has a single non-zero entry, so every exhausted slot becomes that one pose. With zero valid
+  particles and a collapsed particle set (all particles at the same pose) every slot is again one identical pose. Diversity can
+  therefore collapse to a single pose (the positional spread of the injected rows is ~0); this is the current behaviour, not a
+  safeguard. With many valid particles the spread of the exhausted rows is only that of the weighted particle set.
+* Only the pose is copied. The caller (``zone_final_pair_scan.resample``) gives each injected row a newly drawn scale, ``stuck``
+  False and newly drawn yaw_bias/yaw_extra/drift; the state of the copied particle is not carried over. The same call
+  resets the augmented-MCL averages (``w_slow = w_fast = 0``) and weights are equalised afterwards.
+* Injected rows, so the exhausted rows too, are excluded from the roughening of ``zone_pair_highpose_pf_consistency``
+  (``roughened_resample`` perturbs only the resampled head of the particle array), so copies of one pose stay identical until
+  the next motion or scan update.
+
+Nothing here refuses the injection or records a recovery request when the neighbourhood is exhausted, and no uniform free-space
+draw is used instead; a different exhaustion rule would be a behaviour change and needs a new bundle. (The ``exhausted`` text of
+``record()`` is a registered short label and is deliberately left as it was; this docstring is the precise description.)
 
 ``_uniform_free`` is never called (``install`` refuses a recovery config with ``uniform_share != 0``). When no candidate is
 invalid the draw is bit-identical to the frozen method: the generator is consumed in the same order (the binomial for the

@@ -713,3 +713,45 @@ def test_extra_dev_seeds_only_for_dev_pilot_stage_probes():
         assert not run.extra_dev_seed(args)
         with pytest.raises(ValueError, match='SEED_911'):
             run.plan(args)
+
+
+@pytest.mark.parametrize('seed', [912, 913, 9301001, 914])
+def test_direct_student_run_case_refuses_non_dev_seed_full_case_before_backend(tmp_path, monkeypatch, seed):
+    """review delta4 P1-1: the common entry point applies the seed rule too (no output folder, no backend)."""
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    case = c.cases('carry')[0]
+    bundle = {**c.bundle(case['map_id'], 'carry', c.DEV_PILOT), 'case': case, 'source_sha': 'a'*40}
+    made = []
+    out = tmp_path/f'direct-{seed}'
+    with pytest.raises(ValueError, match='SEED_911'):
+        run.student_run_case(bundle, out, seed=seed, backend_factory=lambda *a, **k: made.append(1),
+                             calibration=path, calibration_sha=sha, probe=None)
+    assert not made and not out.exists()
+    if seed in run.STAGE_PROBE_DEV_EXTRA_SEEDS:     # an extra seed with a stage probe outside DEV_PILOT: refused too
+        measured = {**bundle, 'admission_mode': c.MEASURED_SIM}
+        with pytest.raises(ValueError, match='SEED_911'):
+            run.student_run_case(measured, out, seed=seed, backend_factory=lambda *a, **k: made.append(1),
+                                 calibration=path, calibration_sha=sha, probe='align_to_carry')
+        assert not made and not out.exists()
+
+
+def test_direct_student_run_case_extra_seed_stage_probe_is_labelled(tmp_path, monkeypatch):
+    from tests.test_zone_final_pair_v3 import FakePhysics
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    case = c.cases('p03')[0]
+    bundle = {**c.bundle(case['map_id'], 'p03', c.DEV_PILOT), 'case': case, 'source_sha': 'a'*40}
+    result = run.student_run_case(bundle, tmp_path/'s912', seed=912, backend_factory=FakePhysics,
+        runtime_factory=lambda *a, **k: _ProbeRuntime(*a, t_event=1e9, **k),
+        calibration=path, calibration_sha=sha, probe='align_to_carry')
+    assert result['seed'] == 912 and result['extra_dev_seed'] == {'seeds': [912, 913], 'evidence': False, 'pooled': False}
+    assert result['status'] == 'STAGE_PROBE_NOT_REACHED'
+    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+        c.require_promotable(result)
+    dev = run.student_run_case(bundle, tmp_path/'s911', seed=911, backend_factory=FakePhysics,
+        runtime_factory=lambda *a, **k: _ProbeRuntime(*a, t_event=1e9, **k),
+        calibration=path, calibration_sha=sha, probe='align_to_carry')
+    assert dev['seed'] == 911 and dev['extra_dev_seed'] is None
