@@ -113,6 +113,7 @@ TEST_PATTERNS = (
     "tests/test_final_environment_measurement_v2.py",
     "tests/test_final_environment_gain_calibration_v101.py",
     "tests/test_final_pair_loaded_gain_v102.py",
+    "tests/test_final_pair_loaded_rest_v104.py",
     "tests/test_fit_loaded_gain_calibration.py",
     "tests/test_review_347.py",
     "tests/test_review_e2e_batch_k.py",  # K1: final environment CI collection regression

@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-final-pair-loaded-restcal-v104",
+      "version": "1.0.0",
+      "purpose": "DEV loaded pair REST calibration (v104, #363 (가)): v92 preparation, one 3 s step, 12 s explicit zero commands of the HIGH-carried pair, to apply the v101 rest_noise rule; teacher ground truth for offline calibration only",
+      "entry": "scripts/run_final_pair_loaded_rest_v104.py",
+      "runner": "scripts.run_final_pair_loaded_rest_v104",
+      "docs": "experiments/2026-10-05-loaded-rest-calibration-v104/README.md",
+      "requires": "Committed expected SHA; owned non-exclusive --sim-slot or exclusive host lock; loaded diagnostic only; v91 fast abort-only guard plus corner preflight; no student/model/camera capture; one registered run per invocation",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": ["--check", "--run-id", "--expected-source-sha", "--seed"],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

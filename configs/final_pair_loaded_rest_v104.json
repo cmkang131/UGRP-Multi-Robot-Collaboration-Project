@@ -1,0 +1,142 @@
+{
+  "schema": "ugrp.final_pair_loaded_rest.v104",
+  "status": "DEV_DIAGNOSTIC_COMMANDS",
+  "load_state": "loaded_high_carry",
+  "map_id": "zone_wide_two_doors_final_v3",
+  "axes": [
+    "forward",
+    "left"
+  ],
+  "control_period_s": 0.1,
+  "command_lease_s": 0.15,
+  "eval_pose_period_s": 0.05,
+  "prep_end_s": 40.0,
+  "step_s": 7.0,
+  "coast_s": 1.5,
+  "end_hold_s": 3.0,
+  "reset_cap_s": 5.0,
+  "images": "none: no camera capture in this acquisition",
+  "preparation": "v92 floor grasp -> controller hover -> transition 110/130 -> edge_view_150 (HIGH carry), identical servo visits; the beam must be lifted and rigid before PREP_END_S (offline gate)",
+  "translation_convention": "r1 = +u, r2 = -u (the pair translates along r1 forward/left; as v92 and fcc5215f)",
+  "rest_program": {
+    "step": {
+      "value": 0.03,
+      "duration_s": 3.0
+    },
+    "rest_s": 12.0,
+    "rule": "v101 rest_rms (1 s windows from >= 5 stop lags after the zero command), 1 mm"
+  },
+  "nominal_design_plant": {
+    "forward": {
+      "g": 1.5709,
+      "u0": 0.00557
+    },
+    "left": {
+      "g": 1.1746,
+      "u0": 0.00725
+    },
+    "tau_s": 0.97,
+    "tau_stop_s": 0.085
+  },
+  "excursion_corners": {
+    "gain_scale": [
+      0.85,
+      1.25
+    ],
+    "u0_scale": [
+      0.0,
+      2.0
+    ],
+    "tau_s": [
+      0.6,
+      1.6
+    ]
+  },
+  "clearance": {
+    "minimum_m": 0.3,
+    "abort_buffer_m": 0.05,
+    "robot_radius_bound_m": 0.4,
+    "max_substep_displacement_m": 0.01
+  },
+  "reserved_seeds": [
+    911,
+    1101,
+    1102,
+    1103,
+    1104,
+    1105,
+    1106,
+    1201,
+    1202,
+    1203,
+    1204
+  ],
+  "runs": [
+    {
+      "id": "restL",
+      "axis": "left",
+      "seed": 1301,
+      "beam_xy_yaw": [
+        3.55,
+        -1.05,
+        0.0
+      ],
+      "order": "up",
+      "sign_first": 1,
+      "segments": [
+        {
+          "axis": "left",
+          "phase": "step",
+          "role": "fit",
+          "duration_s": 3.0,
+          "value": 0.03,
+          "level": 0.03
+        },
+        {
+          "axis": "left",
+          "phase": "coast",
+          "role": "coast",
+          "duration_s": 12.0,
+          "value": 0.0,
+          "level": null
+        }
+      ],
+      "motion_s": 15.0,
+      "sim_cap_s": 58.0,
+      "total_including_reset_cap_s": 63.0
+    },
+    {
+      "id": "restF",
+      "axis": "forward",
+      "seed": 1302,
+      "beam_xy_yaw": [
+        3.8,
+        -1.05,
+        1.5707963267948966
+      ],
+      "order": "up",
+      "sign_first": 1,
+      "segments": [
+        {
+          "axis": "forward",
+          "phase": "step",
+          "role": "fit",
+          "duration_s": 3.0,
+          "value": 0.03,
+          "level": 0.03
+        },
+        {
+          "axis": "forward",
+          "phase": "coast",
+          "role": "coast",
+          "duration_s": 12.0,
+          "value": 0.0,
+          "level": null
+        }
+      ],
+      "motion_s": 15.0,
+      "sim_cap_s": 58.0,
+      "total_including_reset_cap_s": 63.0
+    }
+  ]
+}
