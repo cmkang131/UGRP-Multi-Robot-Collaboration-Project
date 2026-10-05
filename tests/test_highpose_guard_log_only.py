@@ -190,3 +190,14 @@ def test_align_relook_no_fix_resumes_in_light_mode(monkeypatch):
     ctl.fail('ALIGN_RELOOK_NO_FIX', 5.)
     assert ctl.state == 'align_relook_return' and ctl.failed == [] and queued
     assert ctl.logged[-1]['would_reason'] == 'ALIGN_RELOOK_NO_FIX'
+
+
+def test_align_relook_fix_expired_resumes_align_in_light_mode():
+    from harness.zone_pair_highpose_runtime import LightFail
+    class B(_Base):
+        state, align_started_at, align_look_started_at = 'align_relook_return', 1., 4.
+        def set(self, state, now, **d):
+            self.state = state
+    ctl = type('C', (LightFail, B), {})()
+    ctl.fail('ALIGN_RELOOK_FIX_EXPIRED', 5.)
+    assert ctl.state == 'align' and ctl.failed == [] and ctl.state_t == 1. and ctl.align_look_total_s == 1.

@@ -489,6 +489,19 @@ class LightFail:
                 from harness.zone_pair_align import PairAlignRelook
                 setter = super(PairAlignRelook, self) if isinstance(self, PairAlignRelook) else super()
                 return setter.set('align_relook_return', now)
+            if reason == 'ALIGN_RELOOK_FIX_EXPIRED' and self.state == 'align_relook_return':
+                # The rest of the accepted branch of zone_pair_align._align_relook_return (own estimate as it is).
+                from harness.zone_pair_align import PairAlignRelook
+                setter = super(PairAlignRelook, self) if isinstance(self, PairAlignRelook) else super()
+                self.align_look_total_s = getattr(self, 'align_look_total_s', 0.) + now - getattr(self, 'align_look_started_at', now)
+                self.relative_views_tried = {}
+                reset = getattr(self, 'reset_object_anchor', None)
+                if reset is not None:
+                    reset()
+                self.next_look = now
+                setter.set('align', now, resumed=True)
+                self.state_t = getattr(self, 'align_started_at', now)
+                return None
             return None
         return super().fail(reason, now)
 
