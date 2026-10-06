@@ -1,5 +1,10 @@
 # S2 현실성 재검증 — 실행 전 등록 (2026-10-06)
 
+**후속 완료:** s1039의 직접 원인은 (a) 173mm 옆 이동에 의한 정렬/시야 초과다.
+35/.06초 정렬 옵션을 적용한 v115 `57f8c174` s1040과 동일 동작 v116 `46b8e7af` s1041은
+둘 다 정렬에 도달했으나 **CYAN_HOVER_UNCONFIRMED 2회**로 종료했다. full1029–1031은
+미실행이며 추가 실행을 중단했다. [최신 완료 기록](#v115v116-최신-완료-기록)을 따른다.
+
 **최종 결과:** 실행 SHA `ab27cffd8f70cfbf51ccbb0dbf5b4ced286c91f7`,
 `zone-s2-realism-v114` / workflow `7.7.0`의 새 probe s1039는 집기 전
 `CYAN_ALIGN_VIEW_LOST`로 실패했다. full s1029–1031은 probe 조건 미충족으로 미실행이다.
@@ -397,3 +402,69 @@ v115와 바이트 동일하다. s1040은 재사용하지 않는다. hover 미확
 세션 관리·dev_light·외부 정체 감시·DRAFT/미병합은 이전 등록 그대로다.
 
 후속 admission 시험 `test_v116_replication_preserves_behavior_and_counts_distinct_causes` 1개 통과. v115 실행 bundle이 참조한 소스 전체의 바이트 동일성도 재검사했다.
+
+## v115/v116 최신 완료 기록
+
+두 새 probe는 동일한 제어/물리/옵션/계수로 실행했다. 버전 차이는 seed admission이며,
+v115 소스 `57f8c174bb32648bef495a8ae9335dd1815745e3`, v116 소스
+`46b8e7af8151f3d54f5fd098f85e0a1ad50b8f97`이다. 첫 실행 뒤 튜닝하지 않았다.
+[v115 결과](completed-v115.json), [v116 결과](completed-v116.json),
+[원본 기반 펄스·hover 비교](fine-hover-comparison.json), [그 분석 코드](audit_fine_hover.py).
+
+|seed/slot|판정|lifted/inside|원래 자리 전후 cyan 면적|재집기|wall / SIM 초|wall/SIM|
+|---|---|---|---|---:|---:|---:|
+|1040/P1-2 probe|CYAN_HOVER_UNCONFIRMED|false/false|미측정/미측정|0|355.40354 / 108.900|3.26358|
+|1041/P1-2 probe|CYAN_HOVER_UNCONFIRMED|false/false|미측정/미측정|0|255.55864 / 89.150|2.86661|
+|1029/P1-1 full|NOT_RUN, probe 미통과|미측정|미측정|미측정|미측정|미측정|
+|1030/P2-1 full|NOT_RUN, probe 미통과|미측정|미측정|미측정|미측정|미측정|
+|1031/P1-2 full|NOT_RUN, probe 미통과|미측정|미측정|미측정|미측정|미측정|
+
+raw는 각각 `/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick`,
+`/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick`이다.
+full 예정 경로는 cohort JSON에 있으나 실제 디렉터리는 없다. wall 시간은 reset/cleanup 포함,
+SIM 시간은 reset 1.3초 포함이다. seed와 호스트 부하가 달라 시간 차이를 성능 개선으로 해석하지 않는다.
+모델 호출은 모두0, 명령 수 1276/1216, would-stop 13/50개는 기록만 했다.
+
+정렬→hover 전이는 103.6/83.75 SIM초이며 당시 eval 오차는 각각 전후 −.646mm/−1.875mm,
+좌우 −2.625mm/+1.134mm로 ±3mm 안이었다. fine pulse는 78/73회.
+s1040의 한 펄스 평면 이동 중앙값은 forward7.470mm, lateral7.034mm였다.
+이는 s1039의 마지막 lateral172.986mm보다 작지만, 매 pulse가 3mm 이하라는 주장은 아니다.
+기존 영상 피드백으로 허용 구간에 들어간 결과이며 정식 정렬 일반화/실물 검증은 아니다.
+
+두 번 모두 정렬 최종 영상은 cyan19,867/19,846px였으나 ROI 확장 영역이 lens edge에 걸려
+`pickup-site comparison region is clipped`였다. hover 팔 자세로 바뀐 뒤 cyan0px,
+모든 hover support=false여서 닫기/들기에 진입하지 않았다. 이 **정렬 영상→hover 영상 변화**는
+원래 자리 집기 전후 비교 수치가 아니다. 같은 원인 CYAN_HOVER_UNCONFIRMED 2회로
+중단했다. 과거 s1039의 횡방향 시야 이탈 1회와 합쳐서 동일 원인으로 세지 않는다.
+새 probe 통과0/2·정렬 도달2/2이며 full 성공률은 없다. 정지 기준·hover 확인·ROI 가드를 완화하지 않았다.
+
+실물에는 `physical_state_machine_reference.py:1517–1548`의 pan/tilt 추적과
+`:4287–4348`의 고정 close pose 이동 후 같은 표적 재확인,
+`search.py:281–299`의 아래 시야가 부족할 때 close near-look 전환이 있다.
+그러나 실물 `Robot.drive`는 lateral을 65/.65초로 올리는 별도 정책도 갖는다
+(`scripts/red_block/robot.py:252–292`). 이번 35/.06초 lateral 연결은 명시한 DEV 어댑터다.
+기존 실물 전후 creep의 재사용과 실물 정렬 전체의 동일성을 구분한다.
+새 hover/기준 ROI 문제는 남았고, 이를 해결하려고 카메라 mount/FOV나 파지 확인을 바꾸지 않았다.
+
+### 전달과 종료 검증
+
+- 새 동작 모듈5개 사례와 후속 admission1개 사례가 각각 통과했다. 같은 시험을 추가로 반복하지 않았다.
+  사후 분석 스크립트는 실제 두 raw에 실행해 이미지 해시와 사건 시각을 대조했다.
+- [완료 기록 검사](fine-record-verification.json): raw 파일 **3,839개**를 다시 해시했고,
+  두 실행의 소스 closure는 그대로다. 독립 기하 심판·20Hz 프레임 시간·미실행 폴더 부재도 확인했다.
+- [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1006-s2-realism-fine-v116%2F#timeseries)
+  새 snapshot `outputs/tensorboard/1006-s2-realism-fine-v116`의 **3개 기록·48개 수치**가
+  원본→event→기존 서버 live API에서 일치했다([전달 검사](fine-delivery-verification.json)).
+  이 중 1개는 s1039 오프라인 원인 분석이며 추가 실행이 아니다. 이전 8개 기록의 snapshot은 보존했다.
+  자기 view key `s2_realism_fine_20261006`만 추가했다. HParams 열/pinned tag/영상 등록을
+  검사했고, 브라우저는 사용자 지시에 따라 생략했다. 변환 시 dirty 표시는 사후 기록/분석 파일이며
+  실행 closure와 변환기 자체는 변경되지 않았다.
+- 대표 4배속 MP4는 s1040(P1-2, 두 실패 중 첫 실행)을 선택했다. 새 seed 지시 때문에 옛 s1039와
+  paired seed 비교가 아니다. `/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-analysis/views/s1040-probe/execution.mp4`,
+  26.15초/523frames/640×480/20fps/575008bytes,
+  SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`.
+  전체 decode, 첫/중간/정렬 끝/마지막 프레임, TensorBoard manifest 등록을 확인했다.
+- 자기 세션/드라이버 종료·잠금 해제·일회성 launchd job unload를 확인했다.
+  다른 작업의 잠금은 해제될 때까지 기다렸다. 원격 push 일시 실패는 일반 push 재시도로 해결했다.
+  강제 변경·raw 삭제·다른 작업 종료는 없었다. PR #406 DRAFT 유지·미병합이다.
+  v116 실행 SHA의 CI는 확인 시25개 통과/7개 진행 중이며 전체 통과로 보고하지 않는다.
