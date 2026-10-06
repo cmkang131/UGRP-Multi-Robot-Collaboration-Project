@@ -6,13 +6,16 @@ wall never overwrites it ("Peer assertions never overwrite directly measured obj
 
 ``harness/coela_modules.py`` and ``harness/coela_runtime.py`` are hash-pinned
 (``tests/fixtures/rgb_communication_audit/source_manifest.json``), so this is an additive subclass, not an edit of ``Memory``.
-Nothing constructs it yet: ``coela_runtime.py`` builds ``Memory(r)`` itself. Wiring it in means changing that pinned file
-(or the manifest with it); that is a separate, explicit step.
+``coela_runtime.py`` builds ``Memory(r)`` itself and is not edited: ``harness/coela_runtime_self_walls.py`` runs it with this
+class in place of ``Memory`` when the option ``self_wall_memory=on_v1`` is given (default ``off``: the pinned runtime, untouched).
 
 Options, constructor keywords, defaults OFF:
 
   ``self_walls_enabled``  keep ``observation['self_walls']`` records and put ``self_walls`` in ``snapshot()``.
   ``self_walls_text``     additionally put ``self_walls_text`` (the LLM wording) in ``snapshot()``; needs the option above.
+  ``self_walls_source``   optional ``callable(robot_id) -> iterable of records``, polled on every ``observe()`` (the runtime's
+                          observation carries no wall data; this is where the stage C map reaches the memory). Needs
+                          ``self_walls_enabled``; with the option off it is never called.
   ``self_walls_text_height``  print each face's measured height ``h`` in that wording (needs ``self_walls_text``). Off: the
                           records keep ``h`` but the wording leaves it out, because the measured height is not yet reliable
                           (README: a 0.40 m wall reads 0.08-0.13 m in the search pose where its top is out of frame or at a
@@ -103,8 +106,10 @@ def render_self_walls(records, now=None, max_obs=6, min_gap_s=2.0, max_segments=
 
 class SelfWallMemory(Memory):
     def __init__(self, robot_id, *, self_walls_enabled=False, self_walls_text=False, self_walls_text_height=False,
-                 snapshot_records=12, text_max_obs=6, text_min_gap_s=2.0, **kwargs):
+                 snapshot_records=12, text_max_obs=6, text_min_gap_s=2.0, self_walls_source=None, **kwargs):
         super().__init__(robot_id, **kwargs)
+        if self_walls_source is not None and not self_walls_enabled:
+            raise ValueError("SELF_WALLS_SOURCE_NEEDS_SELF_WALLS_ENABLED")
         if self_walls_text and not self_walls_enabled:
             raise ValueError("SELF_WALLS_TEXT_NEEDS_SELF_WALLS_ENABLED")
         if self_walls_text_height and not self_walls_text:
@@ -112,6 +117,7 @@ class SelfWallMemory(Memory):
         self.self_walls_enabled = bool(self_walls_enabled)
         self.self_walls_text = bool(self_walls_text)
         self.self_walls_text_height = bool(self_walls_text_height)
+        self._source = self_walls_source
         self.snapshot_records = int(snapshot_records)
         self.text_max_obs, self.text_min_gap_s = int(text_max_obs), float(text_min_gap_s)
         self.self_walls = []
@@ -123,7 +129,10 @@ class SelfWallMemory(Memory):
         if not self.self_walls_enabled:
             return
         self._sim_time = observation.get("sim_time", sim_time)
-        for raw in observation.get("self_walls", []):
+        records = list(observation.get("self_walls", []))
+        if self._source is not None:
+            records += list(self._source(self.robot_id))
+        for raw in records:
             rec = validate_record(raw)
             key = (rec["t_sim"], rec["view_index"])
             if key not in self._self_wall_keys:

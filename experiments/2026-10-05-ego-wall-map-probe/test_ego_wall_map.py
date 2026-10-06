@@ -32,6 +32,22 @@ class RecorderTests(unittest.TestCase):
         self.assertIsNone(ewm.segment_to_chassis({**SEG, 'height_m': None}, (0., 0.))[4])
         self.assertAlmostEqual(ewm.segment_to_chassis(SEG, (0., 0.), arm_axis_offset_m=0.)[0], 1.0, places=4)
 
+    def test_the_arm_axis_offset_is_recorded_only_by_default_and_applied_on_request(self):
+        self.assertEqual(ewm.DEFAULT_APPLIED_OFFSET_M, 0.0)
+        results = {}
+        for label, kwargs in (('default', {}), ('zero', {'arm_axis_offset_m': 0.0}),
+                              ('applied', {'arm_axis_offset_m': ewm.ARM_AXIS_OFFSET_M})):
+            m = ewm.EgoWallMap(enabled=True, settle_s=None, **kwargs)
+            m.update_command(1.0, SERVO)
+            results[label] = (m.observe(1.0, SERVO, False, (0.10, 0.0), [SEG], 1), m.header())
+        self.assertEqual(results['default'][0], results['zero'][0])
+        self.assertEqual(results['default'][0]['seg'][0][0], 1.1)               # nadir 0.10 + range 1.0, no shift
+        self.assertAlmostEqual(results['applied'][0]['seg'][0][0], 1.1 + ewm.ARM_AXIS_OFFSET_M, places=4)
+        self.assertEqual(results['default'][1]['arm_axis_offset_m'], 0.0)
+        self.assertEqual(results['applied'][1]['arm_axis_offset_m'], ewm.ARM_AXIS_OFFSET_M)
+        for label in results:                                                     # the physical offset is always recorded
+            self.assertEqual(results[label][1]['arm_axis_offset_recorded_m'], ewm.ARM_AXIS_OFFSET_M)
+
     def test_record_fields(self):
         m = ewm.EgoWallMap(enabled=True, settle_s=None)
         m.update_command(1.0, SERVO)
@@ -102,7 +118,8 @@ class FileTests(unittest.TestCase):
             lines = (Path(d)/'ego_map.jsonl').read_text().splitlines()
             header, records = ewm.EgoWallMap.load(Path(d)/'ego_map.jsonl')
         self.assertEqual(len(lines), 2)
-        self.assertEqual(header['arm_axis_offset_m'], ewm.ARM_AXIS_OFFSET_M)
+        self.assertEqual(header['arm_axis_offset_m'], 0.0)                       # recorded only: nothing applied by default
+        self.assertEqual(header['arm_axis_offset_recorded_m'], ewm.ARM_AXIS_OFFSET_M)
         self.assertEqual(header['schema'], 'ego-wall-map/1')
         self.assertEqual((header['records'], header['settled_frames_seen']), (1, 1))
         self.assertEqual(records, [json.loads(json.dumps(r)) for r in m.records])

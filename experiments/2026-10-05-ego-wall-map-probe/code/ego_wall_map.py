@@ -10,8 +10,11 @@ de-duplication. Every settled observation that shows at least one wall face is a
 ``t_sim`` is kept: an old observation is less accurate than a new one, and the LLM has to be able to know that.
 
 Frame. The detector works in forward-kinematics coordinates whose origin is the arm-base axis, ``ARM_AXIS_OFFSET_M``
-(0.0482 m, ``sim/masterpi_geometry_v3.YAW_AXIS_X_M``) ahead of the chassis origin. The map origin is the chassis origin: the
-end points are moved by that offset, and the offset is written in the header of the saved file.
+(0.0482 m, ``sim/masterpi_geometry_v3.YAW_AXIS_X_M``) ahead of the chassis origin. The map origin is the chassis origin,
+and the arm-axis offset is RECORDED ONLY: ``EgoWallMap(arm_axis_offset_m=...)`` is the shift applied to the end points and
+defaults to 0 (``DEFAULT_APPLIED_OFFSET_M``), so the records are in the detector's arm-axis coordinates. The header always
+carries the physical offset (``arm_axis_offset_recorded_m``) and the one applied (``arm_axis_offset_m``); pass
+``arm_axis_offset_m=ARM_AXIS_OFFSET_M`` to get exact chassis-origin coordinates. README §13.1 scores both.
 
 Gate (``settle_s``). The camera model is forward kinematics of the COMMANDED pulses, valid once the arm has followed
 them. An observation is recorded only when the commanded pulses have been unchanged for ``settle_s[load class]``
@@ -34,17 +37,22 @@ from harness.zone_pair_highpose import at_high  # noqa: E402
 from sim.masterpi_geometry_v3 import YAW_AXIS_X_M  # noqa: E402
 
 ARM_AXIS_OFFSET_M = YAW_AXIS_X_M                       # chassis origin -> arm-base axis (the FK frame origin), 0.0482 m
+DEFAULT_APPLIED_OFFSET_M = 0.0                         # recorded only (coordinator decision): nothing is shifted by default
 SETTLE_S = {'unloaded': 0.25, 'loaded': 2.25}           # settle_curve.py: fit on s911, confirmed on s912/s913 (loaded: 1 run)
 SCHEMA = 'ego-wall-map/1'
 
 
 def fk_to_chassis(point_fk, arm_axis_offset_m: float = ARM_AXIS_OFFSET_M):
-    """FK-frame (x, y) -> chassis-frame (x, y): the FK origin is the arm axis, ahead of the chassis origin."""
+    """FK-frame (x, y) -> chassis-frame (x, y): the FK origin is the arm axis, ahead of the chassis origin.
+
+    ``arm_axis_offset_m`` is the shift to apply; the default is the physical offset, ``EgoWallMap`` passes its own
+    (default 0, recorded only)."""
     return point_fk[0] + arm_axis_offset_m, point_fk[1]
 
 
 def segment_to_chassis(seg: Mapping, nadir_fk, arm_axis_offset_m: float = ARM_AXIS_OFFSET_M):
-    """``height_free_wall.link_segments`` entry -> (r1, th1, r2, th2, h) about the chassis origin.
+    """``height_free_wall.link_segments`` entry -> (r1, th1, r2, th2, h) about the chassis origin
+    (``arm_axis_offset_m`` = 0: about the arm axis).
 
     ``range_*`` / ``bearing_*`` are measured from the camera nadir in the FK frame; ``nadir_fk`` is that nadir
     (``ColumnModel.origin[:2]``).
@@ -68,7 +76,7 @@ class EgoWallMap:
     """Append-only list of ego-frame wall observations. ``enabled=False`` (default) is a no-op."""
 
     def __init__(self, enabled: bool = False, settle_s: Mapping[str, float] | None = SETTLE_S,
-                 arm_axis_offset_m: float = ARM_AXIS_OFFSET_M):
+                 arm_axis_offset_m: float = DEFAULT_APPLIED_OFFSET_M):
         self.enabled = bool(enabled)
         self.settle_s = None if settle_s is None else dict(settle_s)
         self.arm_axis_offset_m = float(arm_axis_offset_m)
@@ -111,11 +119,14 @@ class EgoWallMap:
 
     # -- file ----------------------------------------------------------------------------------------------
     def header(self) -> dict:
-        return {'schema': SCHEMA, 'frame': 'chassis origin; +x forward, +y left; seg = (r1, th1, r2, th2, h) in m, rad, m',
+        return {'schema': SCHEMA, 'frame': 'origin labelled chassis; +x forward, +y left; seg = (r1, th1, r2, th2, h) in m, rad, m',
                 'arm_axis_offset_m': self.arm_axis_offset_m,
-                'arm_axis_offset_note': 'the detector (forward kinematics) frame origin is the arm axis, this far ahead '
-                                        'of the chassis origin; the end points are already shifted by it, so seg is in '
-                                        'chassis-origin coordinates; subtract it from x to get the arm-axis frame back',
+                'arm_axis_offset_recorded_m': ARM_AXIS_OFFSET_M,
+                'arm_axis_offset_note': 'arm_axis_offset_recorded_m is how far the arm axis (the detector / forward-'
+                                        'kinematics frame origin) lies ahead of the chassis origin. arm_axis_offset_m is the '
+                                        'shift already applied to the x of the end points: 0 = not applied, seg is about '
+                                        'the arm axis, add the recorded offset to x for exact chassis-origin coordinates; '
+                                        'equal to the recorded offset = seg is about the chassis origin',
                 'settle_s': self.settle_s, 'settled_frames_seen': self.frames_seen, 'records': len(self.records)}
 
     def save(self, path) -> None:

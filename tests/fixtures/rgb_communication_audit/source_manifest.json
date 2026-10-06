@@ -30,5 +30,27 @@
     "agreement_plan_hash": "e6c059e6b92dae95c292dc349c3b134697dbeea64725f89dd4311fed7d314476",
     "image_labels": ["CURRENT OWN RGB", "CURRENT SHARED TOP RGB", "BEFORE_CURRENT OWN RGB", "BEFORE_CURRENT SHARED TOP RGB", "AFTER_CURRENT OWN RGB", "AFTER_CURRENT SHARED TOP RGB"],
     "storage": "local original inspected; not copied or remotely backed up by this audit"
+  },
+  "additional_bundles": {
+    "coela-self-wall-memory-on-v1": {
+      "purpose": "Option self_wall_memory=on_v1: the CoELA runtime with SelfWallMemory in place of Memory. Default off = harness/coela_runtime.py itself. The pinned files below are used unchanged (same hashes as the original bundle above).",
+      "option": {
+        "name": "self_wall_memory",
+        "values": [
+          "off",
+          "on_v1"
+        ],
+        "default": "off"
+      },
+      "built_on_git_sha": "f802de31fe0eac06231cd208bcb72f9f21d9dd0b",
+      "files_sha256": {
+        "harness/coela_runtime_self_walls.py": "f1dbbbb9fc14f3e4821631511ba27749026ef7c40943e7bc153e1a1f3e5476cd",
+        "harness/self_wall_memory.py": "b875d9a187b81fddf1210c88d7d368bd3196b3964b1b61deade51f0bedb74194"
+      },
+      "pinned_files_used_unchanged_sha256": {
+        "harness/coela_runtime.py": "a6fc5afa7d873281c4f008958f946bd9696d30b376a79a611e84b1a7fd8c75e3",
+        "harness/coela_modules.py": "af8275de470d75ed4037f1be236f6572cde49abc0c597f1c2760795f7ba2706e"
+      }
+    }
   }
 }

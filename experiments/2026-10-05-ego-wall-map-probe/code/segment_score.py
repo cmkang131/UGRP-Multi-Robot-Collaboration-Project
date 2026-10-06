@@ -146,7 +146,8 @@ def run(args):
     cols = mp.column_positions(wp.FROZEN_DETECTOR['columns'], wp.FROZEN_DETECTOR['strip_half_px'])
     det_params = json.loads(args.detector_params) if args.detector_params else {}
     min_run = int({**hfw.PARAMS, **det_params}['min_run_columns'])
-    emap = ewm.EgoWallMap(enabled=True, settle_s=ewm.SETTLE_S if args.gate == 'settle' else None)
+    emap = ewm.EgoWallMap(enabled=True, settle_s=ewm.SETTLE_S if args.gate == 'settle' else None,
+                          arm_axis_offset_m=args.arm_axis_offset_m)
     step = max(1, int(args.every))
 
     seg_rows, frame_rows, gt_cell_all, gt_cell_settled, correct_chords = [], [], {}, {}, []
@@ -249,7 +250,8 @@ def run(args):
         'episode': str(ep_dir), 'robot': args.robot, 'frames_jsonl': str(frames_rel), 'step': step,
         'options': {'load_rule': args.load_rule, 'detector_params': det_params, 'sag_comp': bool(args.sag_comp),
                     'gate': args.gate, 'settle_s': ewm.SETTLE_S if args.gate == 'settle' else None,
-                    'ego_map_origin': 'chassis', 'arm_axis_offset_m': ewm.ARM_AXIS_OFFSET_M},
+                    'ego_map_origin': 'chassis', 'arm_axis_offset_m': args.arm_axis_offset_m,
+                    'arm_axis_offset_recorded_m': ewm.ARM_AXIS_OFFSET_M},
         'tol_m': args.tol_m, 'frames_scored': len(frame_rows), 'visible_frames': len(vis_f),
         'settled_frames': sum(r['settled'] for r in frame_rows),
         'settled_visible_frames': sum(r['settled'] for r in vis_f),
@@ -303,4 +305,6 @@ if __name__ == '__main__':
     ap.add_argument('--load-rule', choices=wp.LOAD_RULES, default=wp.LOAD_RULE_DEFAULT)
     ap.add_argument('--detector-params', default='')
     ap.add_argument('--sag-comp', action='store_true')
+    ap.add_argument('--arm-axis-offset-m', type=float, default=ewm.DEFAULT_APPLIED_OFFSET_M,
+                    help='shift applied to the end points (default 0: recorded only; %.4f = exact chassis origin)' % ewm.ARM_AXIS_OFFSET_M)
     run(ap.parse_args())
