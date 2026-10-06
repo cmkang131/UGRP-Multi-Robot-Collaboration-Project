@@ -24,6 +24,8 @@ def main():
     parser.add_argument('out', type=Path)
     parser.add_argument('snapshot', type=Path)
     parser.add_argument('--set', action='append', help='label=raw folder below primary outputs; completed sources only')
+    parser.add_argument('--qualification', default='NOT_READY: lateral/yaw coupling remains; public v2 removes near-stall but not residual drift; motor/floor uncalibrated. No pair or v106 validation.')
+    parser.add_argument('--stopped-reason', default='same unwanted lateral/yaw coupling repeated unloaded and cyan-loaded; no additional physics')
     args = parser.parse_args()
     out = args.out; snapshot = args.snapshot
     out.mkdir(parents=True, exist_ok=False)
@@ -44,7 +46,8 @@ def main():
             dest = out/name; dest.mkdir()
             source = {'path': str(result), 'sha256': sha(result)}
             scalars = {'offline/record_completed': int(r['status'] == 'MEASURED_DEV')}
-            for key in ('steady_contact_slip_mps','wall_per_sim','stop_drift_m','cargo_min_z_m'):
+            for key in ('steady_contact_slip_mps','wall_per_sim','stop_drift_m','cargo_min_z_m',
+                        'wheel_input','peak_command_com_xy_m'):
                 if key in r: scalars['offline/'+key] = r[key]
             if 'yaw_change_rad' in r:
                 scalars['offline/yaw_change_deg'] = math.degrees(r['yaw_change_rad'])
@@ -56,10 +59,10 @@ def main():
                     scalars['offline/'+field+'_'+str(k)] = value
             view = {'schema':'ugrp.offline_audit_view.v1','derived_view_only':True,
                 'offline_source':source, 'offline_scalar_scope':'Short staged drive physics diagnostic; same normalized commands but different actuator scale. Not hardware performance or mission success.',
-                'offline_scalars':scalars,'policy':r['profile'],'condition':label,'case':r['case'],
+                'offline_scalars':scalars,'policy':r['profile'],'condition':label,'case':result.parent.name,
                 'source_sha':json.loads((raw/'manifest.json').read_text())['source_sha'],
                 'outcome':r['status'], 'model_calls':0,
-                'texts':{'evaluation/qualification': 'NOT_READY: lateral/yaw coupling remains; public v2 removes near-stall but not residual drift; motor/floor uncalibrated. No pair or v106 validation.'},
+                'texts':{'evaluation/qualification': args.qualification},
                 'hparam_metrics':[k for k in ('offline/steady_contact_slip_mps','offline/wall_per_sim','offline/yaw_radps') if k in scalars]}
             for field in ('sim_s','wall_s','commands'):
                 if field in r: view[field] = r[field]
@@ -70,7 +73,7 @@ def main():
             if f.is_file(): files.append({'path':str(f),'bytes':f.stat().st_size,'sha256':sha(f)})
     write(out/'summary.json', {'verdict':'NOT_READY','rows':rows,
         'remaining':['lateral/yaw coupling','roller contact envelope and source-to-MasterPi adaptation','installed motor/floor measurements','paired beam and v106 replay'],
-        'stopped_reason':'same unwanted lateral/yaw coupling repeated unloaded and cyan-loaded; no additional physics',
+        'stopped_reason':args.stopped_reason,
         'model_calls':0, 'raw_remote_backup':False})
     write(out/'artifacts.sha256.json',files)
     subprocess.run([sys.executable,'-m','scripts.export_offline_audit',*sources,'--output',str(snapshot)], cwd=ROOT, check=True)
