@@ -3,7 +3,9 @@
 No model/physics imports. Raw originals are never changed. New output only.
 """
 import hashlib
+import argparse
 import json
+import math
 from pathlib import Path
 import subprocess
 import sys
@@ -18,7 +20,12 @@ def write(p, v):
     p.write_text(json.dumps(v, indent=2, ensure_ascii=False, allow_nan=False)+'\n')
 
 def main():
-    out = Path(sys.argv[1]); snapshot = Path(sys.argv[2])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('out', type=Path)
+    parser.add_argument('snapshot', type=Path)
+    parser.add_argument('--set', action='append', help='label=raw folder below primary outputs; completed sources only')
+    args = parser.parse_args()
+    out = args.out; snapshot = args.snapshot
     out.mkdir(parents=True, exist_ok=False)
     sets = {
         'old-shape': 'drive-friction-5f04f473-empty2',
@@ -27,6 +34,8 @@ def main():
         'new-cyan': 'drive-friction-f323a7b7-cyan',
         'host-error': 'drive-friction-995ff901-forward',
     }
+    if args.set:
+        sets = dict(item.split('=', 1) for item in args.set)
     sources = []; rows = []; files = []
     for label, directory in sets.items():
         raw = RAW/directory
@@ -37,6 +46,8 @@ def main():
             scalars = {'offline/record_completed': int(r['status'] == 'MEASURED_DEV')}
             for key in ('steady_contact_slip_mps','wall_per_sim','stop_drift_m','cargo_min_z_m'):
                 if key in r: scalars['offline/'+key] = r[key]
+            if 'yaw_change_rad' in r:
+                scalars['offline/yaw_change_deg'] = math.degrees(r['yaw_change_rad'])
             if r.get('steady_velocity'):
                 for k, i in (('forward_mps',0),('lateral_mps',1),('yaw_radps',5)):
                     scalars['offline/'+k] = r['steady_velocity'][i]
@@ -48,7 +59,7 @@ def main():
                 'offline_scalars':scalars,'policy':r['profile'],'condition':label,'case':r['case'],
                 'source_sha':json.loads((raw/'manifest.json').read_text())['source_sha'],
                 'outcome':r['status'], 'model_calls':0,
-                'texts':{'evaluation/qualification': 'NOT_READY: lateral/yaw coupling; front-wheel stalling in new profile; motor/floor uncalibrated. No pair or v106 validation.'},
+                'texts':{'evaluation/qualification': 'NOT_READY: lateral/yaw coupling remains; public v2 removes near-stall but not residual drift; motor/floor uncalibrated. No pair or v106 validation.'},
                 'hparam_metrics':[k for k in ('offline/steady_contact_slip_mps','offline/wall_per_sim','offline/yaw_radps') if k in scalars]}
             for field in ('sim_s','wall_s','commands'):
                 if field in r: view[field] = r[field]
@@ -58,7 +69,7 @@ def main():
         for f in raw.rglob('*'):
             if f.is_file(): files.append({'path':str(f),'bytes':f.stat().st_size,'sha256':sha(f)})
     write(out/'summary.json', {'verdict':'NOT_READY','rows':rows,
-        'remaining':['lateral/yaw coupling and front wheel stalling','roller contact envelope','installed motor/floor measurements','paired beam and v106 replay'],
+        'remaining':['lateral/yaw coupling','roller contact envelope and source-to-MasterPi adaptation','installed motor/floor measurements','paired beam and v106 replay'],
         'stopped_reason':'same unwanted lateral/yaw coupling repeated unloaded and cyan-loaded; no additional physics',
         'model_calls':0, 'raw_remote_backup':False})
     write(out/'artifacts.sha256.json',files)
