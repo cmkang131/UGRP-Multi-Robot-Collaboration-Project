@@ -1,6 +1,6 @@
 # S2 현실성 재검증 — 실행 전 등록 (2026-10-06)
 
-**최신 진행(v121):** 새 사용자 결정으로 unknown은 DEV 기록만 하고 전체 경로 s1045를 1회 사전 등록했다. 아래 [v121 기록](#v121-전체-dev-사전-기록--s1045-2026-10-07)을 따른다.
+**최신 완료(v121):** `f0bb26e7`의 s1045는 pick→carry→place까지 진행했지만 **lifted=true/inside=false**다. B 밖 바닥에 안정적으로 놓였고 최종 위치 추정 오차3.839m를 확인했다. 팔 가드5회·위치 불확실519회는 기록만 했다. 추가 실행 없이 종료·잠금 해제했다. [완료 기록](#v121s1045-전체-dev-완료--b-밖에-놓음), [사전 기록](#v121-전체-dev-사전-기록--s1045-2026-10-07)을 따른다.
 
 **이전 완료(v120):** 문헌 조사와 s1042·1043 오프라인 비교 뒤 새 s1044를 1회 실행했다. `97c05e41`에서 lifted=true였지만 두 들기 자세의 cyan이 각각 0/9로 **hold unknown·probe 미통과**다. 추가 실행·튜닝 없이 중단했고 잠금·세션·일회 실행기를 정리했다. [v120 완료](#v120s1044-완료--추가-실행-중단), [조사·사전 등록](#v120-레퍼런스-조사사전-등록--s1044-실행-전)을 따른다.
 
@@ -829,3 +829,99 @@ trace-off 바이트 동일/trace-on 상태 불변, seed·freeze 범위, 기존 o
 README·소스 커밋/push 뒤만 agent_lock status null→acquire, ugrp_session 단독 실행한다.
 raw `/Users/changmin/projects/ugrp/outputs/s2-realism-<sha8>-s1045-P1-2-place`.
 PR #406 DRAFT 유지, 병합 금지. 실행 전 가용 공간 약49GiB.
+
+## v121/s1045 전체 DEV 완료 — B 밖에 놓음
+
+실행 소스 **f0bb26e70ae42210823007c1c617cc4e45a65347**, bundle **zone-s2-realism-v121**.
+seed1045 사전 기록/옵션/소스를 커밋·push한 뒤, 잠금 null을 확인하고
+`ugrp_session run s2-full-s1045 -- zsh launch_v121.zsh ... place 1045 P1-2`로 1회 실행했다.
+PID/PGID19865 nice0, freeze ON, 모델 호출0. 실행 소스352파일을 종료까지 고정했다.
+
+- **lifted=true, inside=false, floor=true, stable=true(2s), success=false**.
+  제어기 상태 done/`STAGE_REACHED_UNQUALIFIED`는 명령 경로 완료이며 임무 성공이 아니다.
+  마지막 cyan 중심은 **(0.790556, −1.960510, 0.015892)m**로 B 중심(4.6,−2.1) 밖이다.
+  정상 내려놓기를 낙하로 분류하지 않았다. 실제 낙하/그립 이탈/기울기 중단, HOST_ERROR 없음.
+- 이번 시각 판정은 **probable_held_inhand_rgb**. VIA110/HIGH 각각9/9,
+  cyan39099–39110/39012px, mask IoU0.997596, 중심차0.074985px였다.
+  이전 세 실행의 unknown을 성공으로 소급 변경하지 않는다. unknown 자체의 계속 진행은
+  실행 전 단위 시험으로 확인했고, 이번 새 표본에서는 unknown이 발생하지 않았다.
+  원래 자리 비교는 `not_evaluated_inhand_selected`, 전후 비교 면적null, 재집기0.
+- **멈췄을 지점 전체:** `ARM_COLLISION_GUARD` **5회**(첫1.40s),
+  `POSE_UNCERTAIN` **519회**(첫89.55s). 모두 계속 진행했다.
+  result/student_record에 전체 횟수와 50회 간격 이벤트 시각을 보존했다.
+  실제 물리 중단0, 시각 확인 정지0, 정체 중단0. `failure=null`은 제어기 예외 없음이지 성공이 아니다.
+- **벽시계1359.968446s / total SIM693.95s / wall/SIM1.959750**, check SIM692.65s,
+  명령5023, 프레임13794. 기존 제어기 내부 상한900s와 외부 case cap1800s 이전에
+  place 시퀀스가 자연 종료했다. 상한을 늘리거나 실행 중 제어를 바꾸지 않았다.
+  출력 `/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place`.
+- freeze 비교는 wall/SIM만: s1042 OFF **2.587649**, s1043 ON **1.467896**,
+  s1044 ON **1.603048**, s1045 ON **1.959750**. 서로 다른 seed·probe/full 경로이며
+  속도 인과 효과/성공률로 합산하지 않는다. 이번 read-only eval trace 비용도 포함한다.
+
+### 시야 소실 원인 추가 분리 — 실행 후 오프라인
+
+v121의 실제 HIGH camera pitch **−32.687°**, 높이0.187244m/차체 전방0.196704m였다.
+기존 명령 보정 pitch−36.592°와 **3.904°**, 높이는 약7.35mm 다르다.
+전체 capture에서 cached camera와 body+mount의 차이는 위치 최대2.24e−16m,
+회전6.39e−6°로 일치한다. **이번 실행에는 upward camera나 pose cache 불일치 근거가 없다.**
+이것을 과거 freeze OFF/ON 인과 판정으로 확장하지 않는다.
+
+실측 HIGH로 이번 블록을 투영하면 **38608px**, 실제 RGB는38980px(첫 carry 프레임)다.
+같은 실측 시선을 과거 s1042·1043·1044의 평가용 블록 상대 자세에 공통 적용하면
+**7607/0/0px**, 과거 관측은 **7600/0/0px**다([조건부 비교](shared-camera-sensitivity.json)).
+따라서 **1.35–1.58mm의 블록 상대 위치 차이만으로 하단 렌즈 경계를 넘어 사라지는 현상**을
+공통 시선 가정에서 수치로 재현했다. 팔 명령 변경이나 위를 향한 카메라를 가정할 필요가 없다.
+다만 과거 실제 카메라/그리퍼 pose가 저장되지 않았으므로, 이것은 강한 기하적 설명이지
+과거 프레임의 카메라 각도를 실측한 결과가 아니다. 투영은 손/장면 가림을 모델링하지 않는다.
+카메라 각도·팔 자세·시각 임계값은 이 분석 후에도 수정하지 않았다.
+
+### B 미도달과 반복 주행 — 조사 후 추가 실행 중단
+
+[명령·추정 위치·GT 대조](s1045-navigation.json): carry 진입 때 위치 오차 **0.458m**,
+100s **1.152m**, 최종 **3.839m**. 마지막 보고 추정 **(4.422789,−2.089974)m**,
+같은 추정 시각의 실제 차체 **(0.586001,−1.954691)m**였다.
+300s에는 실제 오차1.235m인데 보고 std_xy는0.0106m로 과신했다.
+시각 fix 시각이 갱신됐다는 사실도 정확한 위치의 증거가 아니었다.
+B 밖 배치의 직접 관찰은 **잘못된 자기 위치로 목적지에 도착했다고 판단한 것**이다.
+명령 이동 모델·시각 보정·보정 외재값 중 각각의 인과 기여는 이 1회로 분리되지 않았다.
+
+운반 구간 발행 펄스994회 중 옆 이동672회, 연속 옆 이동 부호 반전538회.
+`65/0.65s` 펄스 실제 이동 **151.2–160.7mm, 중앙153.3mm**로 경로점 pop 허용35mm의
+4.38배, 체크포인트 허용30mm의5.11배다. 이 긴 펄스/작은 허용치 부조화는
+s1039 집기 정렬에서 본 계열이며, 당시 수정은 align에만 적용돼 carry에는 남아 있다.
+단, 반복 횟수 전체를 이 요인 하나로 귀속하지 않는다(위치 추정 오차도 함께 존재).
+
+실물 표준 동작은 `scripts/red_block/place.py:144–185`에서 운반 중 회전/전진을
+정지 후 재측정하고 남은 거리에 따라 **35, 0.60→0.42→0.18→0.10s**로 줄인다.
+`sim/real_stack_adapter.py:993–1002`도 운반용 wrist1400 복귀→drive→stop→관측 자세 복원을 따른다.
+현재 S2의 모든 옆 이동을65/0.65로 바꾸는 경로는 이 배송용 거리별 조절과 다르다.
+참고한 고전/후속 문헌:
+[Fox et al. 1999 MCL, 운동 모델과 관측 모델 분리](https://www.cs.cmu.edu/~thrun/papers/fox.aaai99.pdf),
+[Thrun et al. 2001 mixture-MCL, 일반 PF의 실패와 복구](https://publications.ri.cmu.edu/robust-monte-carlo-localization-for-mobile-robots),
+[Akai 2022 Reliable MCL, 신뢰도 평가·실패 감지·재위치 추정](https://arxiv.org/abs/2205.04769).
+후속 두 문헌은 공식 초록 범위까지 확인했으며 코드 이식/재현 완료로 주장하지 않는다.
+작은 공분산이나 새 fix만으로 위치가 맞다고 판정하지 않는 문제를 다음 조사 항목으로 남긴다.
+사용자 지시대로 이번 **full1회 후 중단**, 추가 seed/펄스 조정/재실행은 하지 않았다.
+
+### 보존·TensorBoard·정리
+
+[완료 결과](completed-v121.json), [검증 기록](full-delivery-verification.json).
+실행 source closure352파일, raw artifact manifest, 모든 RGB sha256을 대조했고,
+독립 궤적 채점의 lifted/inside/floor/stable/success가 원래 result와 일치한다.
+4배속 영상(172.45s,3449frames,640×480,20fps):
+`/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-analysis/views/s1045-full/execution.mp4`,
+sha256 `241adc738fa3d932530a4d27c9f9eb7bb254de74ac5b611f2e3585eb9d238c4d`.
+ffprobe·전체 decode 통과, TensorBoard video id `23a311153dfa35b93ce4` 등록.
+
+[TensorBoard 수치 보기](http://127.0.0.1:6006/?runFilter=%5E1007-s2-realism-full-v121-verified%2F#timeseries),
+새 snapshot `1007-s2-realism-full-v121-verified`: **실행1+과거 오프라인 비교3**, 새 실행4회가 아니다.
+**31 scalar**를 source→event→실제6006 API로 대조하고 HParams 필드를 확인했다.
+첫 export는 대문자 scalar tag로 full1건이 거부돼 offline3건만 변환됐다. 부분 snapshot
+`1007-s2-realism-full-v121`은 보존하고, 태그를 소문자로 고친 새 완전 snapshot만 기본 보기 키에 등록했다.
+raw는 수정하지 않았다. 기존 TB PID52016/logdir 유지, 공유 view에는 자기 새 키만 추가했다.
+사용자 지시대로 수치만 비교하고 브라우저는 열지 않았다.
+
+agent_lock 해제(null), ugrp_session stopped, PGID19865 잔여0, 일회 launchd unload 확인.
+실행 후 변경은 기록뿐이며 제어/물리는 f0bb26e7 그대로다. 실행 전 관련24시험 통과;
+원격 CI run37485044909는 preflight가 **2분 시간 초과로 cancelled**, 후속 시험이 skip돼
+전체 CI 통과를 주장하지 않는다. PR #406 DRAFT·미병합 유지. raw 로컬 보존은 원격 백업이 아니다.
