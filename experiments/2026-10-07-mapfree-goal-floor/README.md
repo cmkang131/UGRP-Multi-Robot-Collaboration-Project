@@ -620,3 +620,124 @@ STL로 저장된 v7 wheel mesh를 inline vertex처럼 읽는 내보내기 오류
 binary STL 정점과 scale을 처리해 해결·회귀 시험했다. 실행 시에는 추출한 자기 형상 JSON만 읽으며
 scene/mesh 파일이나 simulator를 열지 않는다. 바퀴/수동 roller의 모르는 회전은 회전 envelope로 감쌌다.
 현재 관련 시험 **28 passed**: floor_goal/v2/v3의 default off·v1/v2 골든, 기하/면적/시간 계약.
+
+## 15. v3 확인 결과 (봉인 `3bbf3337` 이후, 재튜닝 없음)
+
+**새 확인 기준 5개 중 4개 통과, recall 실패로 전체 성공 아님.** 기존 녹화의 거짓 확인은 모두 0으로
+줄었지만 실제 B가 보이는 새 격자에서 일부 관측을 버리는 비용이 있었다. v3는 기본 off의 실험 옵션으로
+남긴다. [결과 원장](v3-results.json), [산출물 해시](v3-artifacts.json)에 조건별 근거를 보존한다.
+
+### 추가 576장: 개발 / 확인을 별도로 비교
+
+| 집합·버전 | B 양성 / 음성 / 작은 B | TP / FP / FN | precision | recall | 투영 median / P95 (m) | 참 / 거짓 확인 |
+|---|---:|---:|---:|---:|---:|---:|
+| 개발 v1 | 57 / 231 / 0 | 20 / 43 / 37 | 31.75% | 35.09% | .00152 / .00696 | 4 / 3 |
+| 개발 v2 | 57 / 231 / 0 | 47 / 6 / 10 | 88.68% | 82.46% | .00283 / .00755 | 9 / 0 |
+| 개발 v3 | 57 / 231 / 0 | 43 / 0 / 14 | **100%** | **75.44%** | .00358 / .00773 | 6 / 0 |
+| 확인 v1 | 68 / 219 / 1 | 23 / 41 / 45 | 35.94% | 33.82% | .00199 / .00643 | 4 / 3 |
+| 확인 v2 | 68 / 219 / 1 | 58 / 6 / 10 | 90.63% | 85.29% | .00431 / .00979 | 12 / 0 |
+| 확인 v3 | 68 / 219 / 1 | 54 / 0 / 14 | **100%** | **79.41%** | **.00449 / .00997** | **9 / 0** |
+
+각 집합은 72개 **4-view** 묶음이며 완전 음성 묶음은 DEV51/확인48이다. 평가 코드의 과거 필드명
+`negative_three_view_groups`는 이번에도 실제 묶음 전체를 검사하므로 여기서는 4-view 수를 뜻한다.
+raw `results.json.options`는 공통 호출 인자이고 v1/v2 factory가 자체 고정값을 사용한다. 혼동을 피하기 위해
+최종 원장에 버전별 **실제 적용 옵션 `effective_options`**를 별도로 기록했다.
+v3 accepted component도 DEV TP44/FP0, 확인 TP57/FP0이었다(작은 B 미판정 제외).
+
+![v3 확인의 참 B·부분 가림·면적 gate로 놓친 B·거짓 바닥 제거](v3-confirmation-examples.jpg)
+
+초록은 GT B footprint, 빨강은 검출이다. 오른쪽 아래는 **pickup 바닥**의 거짓 검출이 제거된 사례이며
+스위치가 아니다. GT ID 진단에서 추가 집합의 v2 FP는 DEV 스위치3/pickup3, 확인 pickup6이었다.
+픽셀 수가 큰 pickup 근접 영상도 투영 면적이 작은 관측일 수 있다. 반대로 확인에서 **v2가 찾은 B 4프레임을
+v3 면적 gate가 추가로 놓쳤다**: g030/031/032-v0의 관측 부분은 각각 .01420 m², g034-v3의 두 부분은
+.0000397/.002502 m²로, 고정 .020 m² 하한보다 작았다. 나머지 10개 FN은 v2에서도 FN이었다.
+새 확인 recall은 85.29→79.41%로 **5.88%p 하락**했다. 이것을 확인 자료에 맞춰 하한을 낮추는 근거로
+사용하지 않았다. 부분 B의 관측 크기와 전체 B의 치수는 같지 않다는 한계가 실제로 드러났다.
+
+### 기존 288장: 이미 본 자료의 사후 회귀 비교
+
+| 집합 | v1 P / R | v2 P / R | v3 P / R | v3 투영 median / P95 (m) | v3 참 / 거짓 확인 |
+|---|---:|---:|---:|---:|---:|
+| 이전 개발 144장 | 28.57 / 40.00% | 70.73 / 96.67% | **100 / 96.67%** | .00359 / .01033 | 0 / 0 |
+| 이전 확인 144장 | 36.36 / 33.33% | 86.84 / 91.67% | **100 / 91.67%** | .00380 / .01166 | 0 / 0 |
+
+이전 스위치 FP 12/5개는 제거됐지만, yaw 중심의 3-view에는 v3의 .05 m 병진 baseline이 없어 참 확인도
+0이다. 이는 새 확인 성공으로 합산하지 않는다. 필요 조건을 약하게 바꾸지 않고 기록한다.
+
+### 저장 실행 녹화: 거짓 확인 0, 검출 FP는 남음
+
+아래 수치는 **v1 → v2 → v3**다. v3가 이 녹화들에 맞춰 임계값을 선정한 것은 아니지만, 자료 자체는
+이전에 본 회귀 자료다. 실물 카메라에서의 독립 일반화 증거라고 하지 않는다.
+
+| 녹화 | 프레임 | 거짓 component | 거짓 확인 region | v3 거짓 검출 프레임 |
+|---|---:|---:|---:|---:|
+| s1042 (v3) | 70 | 3 → 52 → 3 | 0 → 4 → 0 | 3 |
+| s1043 (v3) | 56 | 1 → 86 → 5 | 0 → 4 → 0 | 3 |
+| s1044 (v3) | 55 | 1 → 91 → 4 | 0 → 3 → 0 | 2 |
+| s1045 (v3) | 346 | 12 → 1212 → 2 | 2 → 7 → 0 | 2 |
+| s911-r1 (legacy) | 48 | 2 → 22 → 1 | 0 → 3 → 0 | 1 |
+| s911-r2 (legacy) | 48 | 0 → 51 → 1 | 0 → 2 → 0 | 1 |
+| s912-r1 (legacy) | 39 | 2 → 14 → 0 | 0 → 2 → 0 | 0 |
+| s912-r2 (legacy) | 39 | 2 → 20 → 1 | 0 → 2 → 0 | 1 |
+| s913-r1 (legacy) | 39 | 2 → 10 → 0 | 0 → 2 → 0 | 0 |
+| s913-r2 (legacy) | 39 | 0 → 13 → 0 | 0 → 2 → 0 | 0 |
+
+카메라 v3 코호트는 component **1441→14**, 거짓 확인 **18→0**. legacy는 component **130→3**,
+거짓 확인 **13→0**이다. B 양성은 계속 0이므로 녹화 recall/투영 오차는 N/A, 남은 검출 precision은 0이다.
+거짓 확인 0을 거짓 검출 0 또는 B 인식 완성이라고 바꾸어 말하지 않는다.
+
+마스크 적용 후 metric gate 전 component 수는 여전히 1441/130이었다. 여기서 면적 gate가 각각
+1427/127개를 제거했다. 남은 패치는 최근 footprint/최초 중심 기준 one-to-one 추적과 3 s 간격/병진 baseline
+확인 조건을 통과해 확정되지 않았다. 형상 gate와 시간 gate는 단위 반례도 검사했지만 이 코호트의 주된
+감소를 자기 스위치 마스크의 성과로 해석할 근거는 없다.
+
+### 자기 마스크·다른 로봇 범위와 최종 판정
+
+평가 전용 ID 기준 추가 집합에서 동료 로봇이 보인 프레임은 DEV68/확인66, 동료 스위치가 보인 프레임은
+DEV8/확인28이다. **자기 몸 픽셀은 양쪽 모두 0**이며 명령 기하 마스크도 0으로 일치한다. 따라서 이 격자에서
+자기 마스크 recall/precision은 N/A이고, 양성 자기 스위치 제거 성능은 아직 미검증이다. 실제 FOV/높이/팔을
+임의로 바꿔 양성 수를 채우지 않았다. legacy 녹화 일부에서는 마스크가 적용됐지만 robot ID 정답이 없으므로
+그 픽셀 정확도를 확정하지 않는다. 외부 로봇은 자기 모델로 가리지 않고 면적/시간 일관성으로 검사한다.
+
+| 사전 기준 | 확인값 | 판정 |
+|---|---|---|
+| frame precision ≥.95 | 1.00 | 통과 |
+| B≥256 px recall ≥.90 | .7941 | **실패** |
+| 투영 median ≤.10 m | .00449 m | 통과 |
+| 정적 거짓 확인 0 | 0 (참 확인9) | 통과 |
+| 저장 녹화 거짓 확인 각각0 | v3 0 / legacy 0 | 통과 |
+
+**4/5이며 전체 성공 아님.** 현재 남는 문제는 작은 관측 부분의 B 손실, 자기 차체 양성 마스크 검증 부재,
+명령 FK/DR와 실제 구동·팔 변형 차이다. 정적 mm 오차는 물리/실물 정확도 인증이 아니다.
+동일 설정 재평가만 했고, 확인 후 HSV/면적/형상/시간/기준 변경·추가 렌더는 0회다.
+
+## 16. v3 옵션·재현·검증 기록
+
+| 항목 | 기본 / 명시 값 |
+|---|---|
+| `goal_detection` | 기본 `off`; `floor_color_v1`/`floor_color_v2` 보존; 새 `floor_color_v3` |
+| v3 options | [봉인 선택](v3-selection.json)의 `selected.options` 필수, 미지정 오류 |
+| 자기 마스크 | robot-only JSON + 명령 FK; envelope padding .002 m, dilation 2 px; v3 내부에서 적용 |
+| 색·영상 면적 | v2의 H109–115/S≥77/V≥30/128 px/solidity .3 그대로 |
+| 평면 면적·형상 | 관측 면적≥.020 m², 짧은 변≥.03 m, B .6×1.4 m 대비 변 상한×1.2, solidity≥.25 |
+| 시간 association | 최근 convex hull intersection / 작은 면적≥.35, 최초 중심 잔차≤.20 m, frame별 one-to-one |
+| 확인 | 서로 다른 3회, 관측 간격≤3 s, 경과≥2 s, 자기 병진 baseline≥.05 m; yaw만은 불충분 |
+
+```sh
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+$PY -m pytest tests/test_floor_goal.py tests/test_floor_goal_v2.py tests/test_floor_goal_v3.py -q
+$PY experiments/2026-10-07-mapfree-goal-floor/code/v3_evaluate.py --dataset outputs/mapfree-goal-floor-v3/static-render --output outputs/NEW-floor-v3-confirm evaluate --selection experiments/2026-10-07-mapfree-goal-floor/v3-selection.json --split confirmation --version v3
+$PY experiments/2026-10-07-mapfree-goal-floor/code/v3_recorded.py --cases experiments/2026-10-07-mapfree-goal-floor/cases.json --selection experiments/2026-10-07-mapfree-goal-floor/v3-selection.json --baseline outputs/mapfree-goal-floor-v1 --output outputs/NEW-floor-v3-recorded
+```
+
+v3 추론·평가 코드/옵션은 `3bbf3337`의 해시와 일치한다. 추가 렌더는 `87fa1169`로 고정했으며 GT 마스크·
+카메라/base pose는 `eval_only`에만 있다. [보고 코드](code/v3_report.py)는 봉인 해시를 검사한 뒤 결과를
+요약한다. 그림 caption의 FP 종류는 GT ID와 대조했고 수치를 바꾸지 않았다. 초기 보고 그림도 로컬 보존했다.
+명령 DR/FK·카메라 입력 외에 제어/누적에 들어간 GT·타 로봇 지도 입력은 0이다. 패키지 설치/모델 호출 0,
+physics step/forward dynamics 0, 576장 렌더 잠금 정상 해제. 새 raw는 이 worktree의
+`outputs/mapfree-goal-floor-v3/`에 보존하며 원격 백업으로 표현하지 않는다. 자기 지도 #405는 동결·DRAFT 그대로다.
+
+최종 관련 **28 passed**, `git diff --check` 통과. 봉인 파일10개·기존 입력 해시799항목·사용자 미추적 파일4개
+불변을 확인했고, v1/v2 검출 모듈 소스도 `840f0725`와 바이트 동일하다. CI에는 floor-goal 시험4개 파일이 각각
+한 번 포함된다. v3 로컬 artifact 3,809개를 해시로 연결했고 새 그림은 217,742/69,549 bytes다. 이번 실험의
+전체 커밋 미디어는 603,386 bytes로 예산 이하다. 전체 로컬 suite/물리 실행/추가 venv 설치는 하지 않았다.
