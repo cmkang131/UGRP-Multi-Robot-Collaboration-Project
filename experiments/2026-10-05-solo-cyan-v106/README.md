@@ -117,6 +117,8 @@ watchdog는 `/Users/changmin/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.
 |---|---|---|---|
 | 1 | `457aeccc5315c53a88f84e15917a750518585514` | STAGE_FAILED / CYAN_ALIGN_VIEW_LOST, lifted=false (SIM 50.3 s) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-457aeccc-s911-P1-2-place` |
 | 2 | `25638624704fb8c2d348894b40e6d3b69e1ecc52` | STAGE_REACHED_UNQUALIFIED, lifted=true / inside=false (SIM 179.8 s, 명령 3794) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-25638624-s911-P1-2-place` |
+| 3 | `ee40923ca165dc4fbf8092ba85aeeaa618ce8838` | STAGE_REACHED_UNQUALIFIED, lifted=true / inside=false (SIM 363.2 s, 명령 12000) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-ee40923c-s911-P1-2-place` |
+| 4 | `d18600598b25b45f7b99a47e6b08e1d0afe7366e` | STAGE_REACHED_UNQUALIFIED, **lifted=true / inside=true / success=true(잠정 기하 판정)** (SIM 366.2 s, 명령 12030) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-d1860059-s911-P1-2-place` |
 
 실행 1: 정렬 중 작은 cuboid가 p45 영상 아래쪽으로 벗어났다 → 25638624에서 아래쪽 행 440 근처에서 한 단계 낮은 시점으로 내리도록 고쳤다.
 실행 2: 집기·운반·놓기를 끝까지 했지만 cyan이 목적 구역 B 밖(마지막 위치 (2.283,-0.185), B 중심과 xy로 3.006 m)에 놓였다.
@@ -185,3 +187,27 @@ Borenstein & Feng (1996, UMBmark)의 체계적 오도메트리 오차 보정 원
 
 `build_provider`에서 `motion_loaded` 덮어쓰기를 제거했다. `MOTION_PROXY=cyan30g_loaded_uses_v102_pair_high_carry_profile_UNQUALIFIED`.
 빔 파트너 입력·pair plan은 계속 끈다(`pair_plan=None`, `carry_yaw_fallback=None`). 30 g cyan에 대한 하중 이동 모델은 여전히 미측정이다(HIGH 자세에서 측정된 프로필의 대용값).
+
+### 실행 4 — `d18600598b25b45f7b99a47e6b08e1d0afe7366e` (loaded 이동 프로필 교체, 재관측 v1 유지)
+
+출력: `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-d1860059-s911-P1-2-place` (콘솔 로그와 watchdog 로그는 같은 이름에 `-console.log`/`-watchdog.log`).
+결과: STAGE_REACHED_UNQUALIFIED, 사후 잠정 기하 판정 **lifted=true, inside=true, floor=true, stable=true(2.0 s), success=true**. SIM 366.2 s, 명령 12030, 모델 호출 0.
+`physical_success=null`, `research_result=false`, 실행 중 낙하·기울기 감지 없음은 그대로다. `dev_light_would_stop`: ARM_COLLISION_GUARD 3, REOBSERVATION_NO_FIX 2(마지막 스캔), POSE_UNCERTAIN 1. 실제 물리 실패 없음. 부하 평균(시작→끝) 3.19→2.54.
+최종 cyan (4.797,-1.692) — B 구역(x 4.3–4.9, y -2.8~-0.7) 안, 동쪽 경계와 x로 약 8.6 cm(상자 반폭 제외) 여유.
+
+| 시점 | 추정-실제 xy 거리 | 마지막 fix |
+|---|---:|---|
+| 문 앞 도착 104.7 s | 0.067 m | 37.75 s |
+| 문 앞 재관측 뒤 133.9 s | 0.057 m | 132.35 s (새 fix) |
+| 문 뒤 도착 187.3 s | 0.069 m | 132.35 s |
+| 문 뒤 재관측 뒤 216.4 s | 0.086 m | 216.2 s (새 fix) |
+| 목적지 도착 286.5 s | 0.408 m | 218.15 s |
+| 목적지 재관측 뒤 315.8 s (fix 없음) | 0.390 m | 없음 |
+
+- 이동 프로필 교체로 문 앞·문 뒤 단계의 오차가 실행 3의 0.24/0.30 m에서 0.07/0.07 m로 줄었다(재관측 전 기준).
+- **취약한 점(남은 문제):** 마지막 구간(문 뒤 → 목적지)에서 오차가 0.09 → 0.41 m로 커졌다. 추정이 가고 실제는 x로 +0.27 m 더 가고 y로 0.29 m 덜 갔다. 이동 방향이 추정 대비 약 8° 돌아간 것과 맞는다(헤딩 오차 의심; 실제 요는 저장되지 않아 확인하지 못했다, 미확인).
+  목적지 재관측은 fix를 얻지 못했다(실행 3과 같은 현상). 통과는 여유 약 8.6 cm로 이루어졌다. 이 성공은 s911/P1-2/B 한 번의 DEV 판정이며 재현·일반화·확증이 아니다.
+  같은 seed에서 모델을 고쳐가며 얻은 결과이므로 탐색 자료다. 다른 seed/slot과 반복 실행으로 확인해야 한다.
+- 이번 실행에서 확정한 것: (1) 운반 중 HIGH 시야는 든 cyan으로 가득 차 fix가 불가능하다 → 내려놓고 빈 카메라로 재관측한다. (2) 재관측 후 재집기는 세 번 모두 성공했다. (3) 무하중 프로필 대용값은 하중 구간 이동량을 과대 예측했다.
+  확인하지 못한 것: 목적지 스캔에서 fix가 없는 이유(PF 거부 사유 미조사), 마지막 구간의 요 오차, 30 g cyan 하중에 대한 실측 이동 모델.
+- 실행 3→4에서 바뀐 것은 `motion_loaded` 프로필 한 가지다(재관측 로직은 동일). 실행 3의 결과가 같은 원인으로 두 번 막힌 것이 아니므로 중단 조건은 충족하지 않았다.
