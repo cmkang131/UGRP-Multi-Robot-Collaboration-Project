@@ -311,6 +311,7 @@ alpha 합성의 각각의 기여율은 미확인으로 남긴다.
 | XML 항목 | alpha | 원본 HSV (uint8) | ΔH (°) | ΔE76 |
 |---|---:|---|---:|---:|
 | B 바닥 | .30 | 112 / 201 / 242 | 0.0 | 0.0 |
+| 로봇 v3 port blue | 1.0 | 112 / 223 / 204 | 1.1 | 11.4 |
 | pickup 바닥 | .14 | 108 / 211 / 178 | 8.8 | 31.8 |
 | blumat | 1.0 | 115 / 244 / 224 | 6.0 | 32.3 |
 | C 바닥 | .30 | 143 / 195 / 217 | 62.2 | 41.9 |
@@ -358,3 +359,124 @@ S P05=87에서 사전 32개 조합을 비교했다. [v2-selection.json](v2-selec
 goal_detection_options=selection['selected']['options'])`. **v2에는 이 봉인 옵션을 명시적으로 전달**한다.
 개발 옵션 없이 v2를 요청하면 `GOAL_V2_NEEDS_FROZEN_DEV_OPTIONS`로 거부한다. 기본 `off`와 v1은 동일하며,
 그 골든 bytes를 새 시험에 고정했다. 기본 정적 목적지 경로/제어기는 바꾸지 않았다.
+
+## 11. 봉인 뒤 확인 결과: 기준 2/4 통과, v2 채택 불가
+
+사전 등록 `6a5e4110` → 구현/렌더 `64fd5fae` → 개발 선정·소스/설정 봉인 **`9e4e4cbd`**를
+시험 후 커밋·push한 다음 확인 집합을 열었다. 확인 이후 HSV/형상/누적 규칙 변경은 **0회**다.
+DEV 144장과 확인 144장, 기존 녹화 779장은 서로 합산하지 않는다.
+[결과 원장](v2-results.json), [로컬 산출물 해시](v2-artifacts.json)에 근거를 남긴다.
+
+### 정적 렌더: v1 / v2
+
+| 집합·버전 | B 양성 / 음성 | TP / FP / FN | 프레임 precision | recall | 투영 median / P95 (m) | 참 / 거짓 확인 |
+|---|---:|---:|---:|---:|---:|---:|
+| 개발 v1 | 30 / 114 | 12 / 30 / 18 | 28.57% | 40.00% | .00290 / .00564 | 3 / 5 |
+| 개발 v2 | 30 / 114 | 29 / 12 / 1 | 70.73% | 96.67% | .00370 / .01125 | 9 / 0 |
+| 확인 v1 | 36 / 108 | 12 / 21 / 24 | 36.36% | 33.33% | .00213 / .00571 | 4 / 3 |
+| 확인 v2 | 36 / 108 | 33 / 5 / 3 | **86.84%** | **91.67%** | **.00380 / .01196** | **11 / 0** |
+
+각 집합은 48개 3-view 묶음이다. B 1–255 px 미판정 프레임은 두 집합 모두 0이며, 완전 음성 묶음은
+개발 38개/확인 36개다. 양성에서 엉뚱한 패치만 검출하면 FP와 FN을 함께 세므로 TP+FP+FN+TN이
+144보다 클 수 있다. 프레임 TP는 참 component 하나 이상이므로, 같은 프레임의 추가 거짓 component까지
+없다는 뜻은 아니다. 투영 표본은 참 component별로 v1/v2 개발 16/47개, 확인 14/44개다.
+
+![확인 집합의 B·부분 가림·비슷한 로봇 색](v2-static-examples.jpg)
+
+초록은 평가 전용 B footprint, 빨강은 v2 검출 경계다. 위쪽은 근거리 B와 같은 B를 r1이 부분 가린 조건이다.
+아래쪽은 A/C 앞 r1의 파란 스위치를 B로 오인한 사례다. **개발 FP 12개, 확인 FP 5개 모두** 지배 ID가
+`r1__v3_expansion_switch`였고, component pixel 중 해당 geometry 비율은 68.5–89.0%였다.
+실제 검출 HSV 중앙 H111–112/S210–221은 B hue와 겹친다. XML 재질 `v3_port_blue`는 B와 ΔH=1.14°,
+ΔE76=11.43으로 가깝고, 숨김 geometry가 아니라 group 0으로 실제 렌더된다. ID는 사후 진단에만 사용했다.
+이 FP들은 3번째 시점까지 검출되지 않아 이 정적 집합의 거짓 확인은 0이지만, 그 결과를 일반적인 제거
+성능으로 확대할 수 없다.
+
+### 기존 녹화: 별도의 음성 회귀 결과
+
+v1과 동일한 2 s 간격 표본·자기 명령·settle gate·프레임 ID를 사용했다. GT 가시성 라벨은 예측 파일을
+쓴 다음 읽었고, 녹화 10건 모두 B 양성 0인 기존 라벨과 일치함을 검사했다. 이 표의 recall/투영 오차는
+계속 N/A이며, v2 검출 precision은 참 B가 없어 0%다. 표의 수는 **v1 → v2**다.
+
+| 녹화 | 카메라 | 프레임 | 거짓 검출 프레임 | 거짓 component | 거짓 확인 region | v2 첫 거짓 확인 (s) |
+|---|---|---:|---:|---:|---:|---:|
+| s1042 | v3 | 70 | 2 → 35 | 3 → 52 | 0 → 4 | 21.3 |
+| s1043 | v3 | 56 | 1 → 29 | 1 → 86 | 0 → 4 | 19.3 |
+| s1044 | v3 | 55 | 1 → 38 | 1 → 91 | 0 → 3 | 17.3 |
+| s1045 | v3 | 346 | 11 → 277 | 12 → 1212 | 2 → 7 | 29.3 |
+| s911-r1 | legacy | 48 | 2 → 18 | 2 → 22 | 0 → 3 | 19.3 |
+| s911-r2 | legacy | 48 | 0 → 17 | 0 → 51 | 0 → 2 | 17.3 |
+| s912-r1 | legacy | 39 | 2 → 9 | 2 → 14 | 0 → 2 | 19.3 |
+| s912-r2 | legacy | 39 | 2 → 9 | 2 → 20 | 0 → 2 | 17.3 |
+| s913-r1 | legacy | 39 | 2 → 8 | 2 → 10 | 0 → 2 | 19.3 |
+| s913-r2 | legacy | 39 | 0 → 7 | 0 → 13 | 0 → 2 | 17.3 |
+
+카메라 v3 녹화 527장에서는 거짓 확인 **2→18**, legacy 252장에서는 **0→13**이다. 정적 집합의
+거짓 확인 0으로 이 회귀 실패를 가리지 않는다. s1045의 전체 346개 표본을 유지했으며, 카메라가 바닥을
+가까이 보는 후반도 제외하지 않았다.
+
+![v2가 기존 녹화의 B 아닌 바닥을 검출한 사례](v2-recorded-failures.jpg)
+
+녹화별 accepted pixel 면적이 최대인 프레임을 골라 검수했다. 대표 s1042/s1044의 HSV 중앙은
+**109/78/111**, s1045/s911-r1은 **109/93/124**로 v2 H109–115/S≥77에 걸린다. 파란 tint의 체크무늬
+바닥이 넓게 받아들여진다. ROI 상단 제한 .35→0, 중립색 둘레 S≤55→128도 v1과 다른 고정 설계 선택이다.
+s1043 최대면적 사례의 accepted pixels 100%, s1045는 83.2%가 v1의 상단 제외 영역에 있다. 반면
+s911-r1 사례는 0%이므로 **ROI 확대 하나만으로 실패를 설명할 수 없다**. 파라미터별 인과 기여를 분리하는
+추가 ablation/튜닝은 하지 않았다. 반복되는 같은 거짓 표면은 3회 누적으로도 확인 상태가 된다.
+
+| 사전 고정 주 기준 | 확인 결과 | 판정 |
+|---|---|---|
+| frame precision ≥95% | 86.84% | 실패 |
+| B≥256 px recall ≥90% | 91.67% | 통과 |
+| 투영 중심 median ≤.10 m | .00380 m | 통과 |
+| 거짓 확인 0: 정적 음성 및 기존 녹화 | 정적 0, v3 녹화 18, legacy 13 | 실패 |
+
+**주 기준 2/4 통과, 전체 성공 아님.** default off/v1 호환과 자기 입력 경계 시험은 별도로 통과했다.
+v2는 실험 옵션으로만 보존하며 제어/정적 목적지 대체용으로 채택하지 않는다. 실패 후 추가 후보를 만들지 않았다.
+
+### 방법·해석의 범위
+
+HSV `inRange`, morphology opening, 연결 성분 면적/convex hull solidity는 §8의 OpenCV 공개 구현을 따른다.
+시간 누적의 표준적인 tentative→confirmed 구분은 [Deep SORT 공개 `Track` 구현](https://github.com/nwojke/deep_sort/blob/master/deep_sort/track.py)의
+`n_init` 연속 관측 확인과 비교했다. 여기서는 움직이는 사람의 Kalman/appearance 추적을 이식하지 않고,
+기존 v1의 **정적 자기 지도 patch association + 서로 다른 3회/2 s/5°(또는 이동 baseline)** 확인을 유지했다.
+연속성/삭제 규칙까지 Deep SORT와 동일한 구현이라는 뜻은 아니며, 3회라는 수치의 보편성을 주장하지 않는다.
+
+이 자료는 동일 장면의 좌우 격자이며, 확인은 새 실물/새 scene 일반화가 아니다. 모든 사전 배치를 유지했으므로
+벽 건너/경계 밖 배치도 있을 수 있고 충돌 없는 실제 접근 경로는 검증하지 않았다. base 높이·팔 명령·FOV는
+고정했지만 하중/중력/servo 오차를 물리로 만들지 않았다. mm 단위 중심 오차는 **동일한 B 관측 부분의 명령
+FK와 렌더 GT 투영의 정적 일치도**이고, 전체 B 구역 중심 오차·실물 보정 정확도·목적지 도착 성능이 아니다.
+입력 RGB와 평가 전용 mask/pose 디렉터리를 분리했으며 검출기/누적 API에 GT/타 로봇 지도는 전달하지 않았다.
+
+## 12. v2 산출물·재현·검증
+
+| 옵션 | 기본값 | 이번 사용 |
+|---|---|---|
+| `goal_detection` | `off` | `floor_color_v1` 보존, 새 `floor_color_v2` |
+| `goal_detection_options` | v2는 명시 필수 | [봉인 선택](v2-selection.json)의 `selected.options`; 미지정은 오류 |
+| HSV | v2 봉인값 | H109–115, S≥77, V≥30 (OpenCV uint8) |
+| 연결 성분 | v2 봉인값 | 3×3 opening, 면적≥128 px, solidity≥.3 |
+| 투영/바닥 둘레 | v2 봉인값 | 하향 광선 전체, 최대4 m, neutral S≤128, 둘레 support≥.35 |
+| 누적 | v1과 같음 | 자기 odom .1 m 관측 cell, 3회/2 s/자기 baseline 확인 |
+
+재현 시 이미 있는 출력 디렉터리를 덮어쓰지 않는다. static 렌더를 다시 하는 명령은 별도 권한/잠금이
+필요하며 아래는 **저장 RGB를 읽는 오프라인 평가만**이다. 개발 재선정도 확인 결과로 다시 하지 않는다.
+
+```sh
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+$PY experiments/2026-10-07-mapfree-goal-floor/code/v2_evaluate.py --dataset outputs/mapfree-goal-floor-v2/static-render --output outputs/NEW-floor-v2-confirm evaluate --selection experiments/2026-10-07-mapfree-goal-floor/v2-selection.json --split confirmation --version v2
+$PY experiments/2026-10-07-mapfree-goal-floor/code/v2_recorded.py --cases experiments/2026-10-07-mapfree-goal-floor/cases.json --selection experiments/2026-10-07-mapfree-goal-floor/v2-selection.json --baseline outputs/mapfree-goal-floor-v1 --output outputs/NEW-floor-v2-recorded
+$PY -m pytest tests/test_floor_goal.py tests/test_floor_goal_v2.py tests/test_self_wall_memory.py -q
+```
+
+- 렌더 288장 **10,784,104 bytes**, physics step/forward dynamics **0**, `data.time=0`.
+  목적 `B render testset` 잠금 null 확인→획득→해제, 완료 후 null 확인. 모델 호출 0, 새 패키지 설치 0.
+- 기본/명시 off 골든, v1 검출/snapshot 골든, v2 HSV/면적/solidity·GT/peer 경계, 렌더 잠금/비물리
+  계약·평가 분모·기존 녹화 adapter 포함 관련 **34 passed**. 전체 로컬 suite/물리 시험은 실행하지 않았다.
+  CI shard에 floor-goal 시험 3개 파일이 각각 한 번 등록됨을 확인했다. 기존 입력 해시 799개 항목,
+  봉인 소스 4개, 기존 미추적 파일 4개의 SHA 불변도 확인했다.
+- [보고 생성 코드](code/v2_report.py)가 봉인 소스/설정/렌더 입력·마스크 해시, 예측-mask 재생 일치를 검사했다.
+  1,492개 로컬 artifact의 크기/SHA를 기록했다. 새 그림은 각각 92,255 / 59,164 bytes로 1 MiB 미만이다.
+  raw RGB/ID/마스크는 `outputs/mapfree-goal-floor-v2/`에 보존하며 원격 백업으로 표현하지 않는다.
+- XML 색 표 JSON 생성에서 NumPy bool 직렬화 오류가 한 번 발생해 Python `bool`로 변환하고 회귀 시험했다.
+  초기 불완전 출력도 보존했다. 다른 작업 잠금 때문에 한 번 렌더를 보류했고, null 확인 후에만 실행했다.
+  확인 실패 이후 재튜닝/재렌더는 없었다. TensorBoard 변환 생략 요청을 유지한다.
