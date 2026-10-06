@@ -5,6 +5,14 @@
 모델 호출·실물 명령·동적 임무 재실행 없음. 기존 v106과 기본 프로필은 바꾸지 않는다.
 원본은 `/Users/changmin/projects/ugrp/outputs/camera-review-20261006/`에만 보존한다.
 
+**결론:** “cyan을 들면 실물에서도 앞이 가려진다”는 전제를 확인하지 못했다.
+기존 시뮬레이션의 가림은 실제 저장 영상으로 확인되지만, 현재 장착값은 순정 도면과 다르고
+우리 개체에서 검증되지 않았다. 별도 도면 후보에서는 가림이 줄었으나 일부 cyan은 계속 보인다.
+실물에서 블록이 안 보였다는 관찰을 부정할 근거도, 내려놓기를 바로 없앨 근거도 없다.
+현재 v106의 내려놓기는 **기존 SIM 프로필을 위한 우회 동작**으로만 해석한다.
+
+![기존 기록과 같은 명령 자세의 두 카메라 비교](comparison.png)
+
 ## 조사로 먼저 고정한 비교
 
 | 항목 | 현재 v106 | 새 진단 프로필 |
@@ -36,8 +44,9 @@ y=0은 기존 중앙 배치를 유지한 가정이다. 정확한 좌우 위치�
 - `sim/navigation_camera_profile.py`의 차체 고정 `nav_cam`은 별도 simulator-only 카메라다.
   S2는 `sim/solo_cyan_v106.py → CameraRobotPort.capture()`의 `robot_cam`을 사용한다.
 - `harness/zone_pair_highpose.py`: HIGH={3:896,4:2035,5:1894,6:1500}, 집게 닫기 1500.
-  목표는 집게 중심 바닥 높이 약150 mm, 공구축 약-40°다. 명령은 실제 관절 측정이 아니다.
-  낮은 파지/hover는 `harness/zone_final_pair_vision.grasp_postures()`를 재사용한다.
+  명령 FK는 집게 중심 (203.21,0,149.86) mm, 공구축 -40.05°다. 명령은 실제 관절 측정이 아니다.
+  `harness/zone_final_pair_vision.grasp_postures()`의 hover는 {3:807,4:1897,5:2187,6:1500},
+  마지막 바닥 파지는 {3:1269,4:2052,5:2494,6:1500}; 그 사이 7단계 하강을 유지한다.
 - 공식 MasterPi 조립 사진과 도면은 카메라가 집게 위에서 팔과 함께 움직이는 구조를 보여 준다.
   `codex/masterpi-public-specs` 원격 브랜치는 현재 목록에 없지만 그 조사 기록은
   [기존 README](../2026-09-28-masterpi-public-specs/README.md)에 보존돼 있다.
@@ -73,7 +82,8 @@ OpenCV의 K/왜곡 모델을 각각 확인한다. 최근 Wise 등의 RWHEC 연�
   [공식 치수도](https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111):
   제품 페이지 열람·도면 새 다운로드·직접 시각 확인. 이미지 원본은 로컬에만 보존.
 - [Hiwonder 조립·부품 문서](https://docs.hiwonder.com/projects/MasterPi/en/latest/docs/1.getting_ready.html): 본문 확인.
-  조립 팔 개별 이미지의 web fetch는 실패. 도면으로 장착 관계를 확인했다.
+  조립 팔 개별 이미지의 web fetch는 실패했으나 공식 URL을 직접 다운로드해 시각 확인했다.
+  [집게 위 카메라 사진](https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.1/image1.png).
 - [MuJoCo camera 공식 문서](https://mujoco.readthedocs.io/en/stable/XMLreference.html#body-camera):
   부모 좌표계·-Z 광축·principalpixel·focalpixel·resolution 규칙 확인.
 - [OpenCV calib3d](https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html):
@@ -103,3 +113,67 @@ OpenCV의 K/왜곡 모델을 각각 확인한다. 최근 Wise 등의 RWHEC 연�
   기존 모델은 `shoulder`/`elbow`를 쓴다. `render-v1/`의 부분 XML·잠금 반환 기록을 보존했다.
   기존 NamespacedMasterPi의 이름표를 따르고, 실제 v3 XML과 대조하는 시험을 추가했다.
   값·자세·카메라 후보는 바꾸지 않았다. 동일 원인 재발 시 추가 실행하지 않는다.
+- `ff6a3aaa` (`render-summary.json`에 전체 SHA): 관련 **11시험 통과**, commit/push 후
+  정지 렌더 6장 완료. 렌더 작업 약0.88초, 잠금 점유 약1.86초, 반환 뒤 `status=null`.
+  각 쌍의 qpos SHA-256가 같아 자세·물체 차이 없이 mount만 비교했음을 확인했다.
+  `mj_step=0`, 모델 호출0, 제어 명령0. 동적 운반·실물 성공률은 측정하지 않았다.
+- 결과 포장 첫 시도는 기존 venv의 matplotlib 부재로 중단했다. 환경을 늘리지 않고
+  기존 Pillow로 원본 RGB를 그대로 나란히 배치했다. 부분 `comparison.json`도 보존했다.
+  이는 렌더 실패 재발이나 카메라 수치 변경이 아니다.
+
+## 측정 결과와 해석
+
+| 자료 / SIM 시각 | 프레임 수 | cyan / 전체 영상 | cyan / 유효 렌즈 픽셀 |
+|---|---:|---:|---:|
+| 실제 저장 HIGH carry 전체, 중간값 | 1,320 | 82.3525% | 99.9849% |
+| 정지 재구성 기존 mount, 105초 | 1 | 61.3363% | 74.5668% |
+| 정지 재구성 도면 mount, 105초 | 1 | 21.7503% | 26.3753% |
+| 정지 재구성 기존 mount, 180초 | 1 | 60.9219% | 74.0634% |
+| 정지 재구성 도면 mount, 180초 | 1 | 21.3734% | 25.9159% |
+| 정지 재구성 기존 mount, 270초 | 1 | 60.3317% | 73.3490% |
+| 정지 재구성 도면 mount, 270초 | 1 | 20.8903% | 25.3303% |
+
+유효 픽셀은 remap 좌표가 입력 영상 안에 완전히 들어오는 251,679개다(전체307,200).
+테두리 보간 픽셀은 전체 면적에는 들어가지만 유효 분모에서는 제외한다.
+전체 저장 구간의 유효 가림 범위는99.9825–99.9885%다. 각 원본 JPEG 해시·시각·면적은
+`frames-audit/frames.jsonl`에 있다. 사전 등록된 새 확증 코호트가 아니라 과거 DEV 영상의 사후 분석이다.
+
+**정지 기존 mount도 원본99.98%를 재현하지 못했다.** 측정 관절·차체 roll/pitch·손가락 접촉 자세가
+없어 HIGH 명령값을 사용한 한계이며 정확한 원인은 아직 분리하지 못했다. 따라서 원본99.98%와
+후보25–26%를 직접 비교해 실물 개선율이라고 말하면 안 된다. 비교 가능한 두 정지 조건의
+평균은73.9931%와25.8738%다. 완주·wall 관측 성공·위치 추정 정확도 결과가 아니다.
+
+카메라와 물체가 집게에 대해 고정돼 있다면 팔을 들어도 둘 사이 상대 배치는 유지된다.
+시야 안팎은 운반 높이 자체보다 **렌즈 높이·방향·파지 깊이·블록 크기**로 결정된다.
+도면 후보는 렌즈를 손목 기준14.02 mm 뒤·14.55 mm 위로 옮기며, 이 HIGH 자세에서는
+바닥 높이가약172.9→193.1 mm, 광축은아래32.59→40.05°가 된다. 블록 위쪽이 화면 아래로
+내려가 배경이 더 보이지만 가까운 바닥을 더 보게 돼 먼 벽 관측까지 좋아진다고 할 수 없다.
+공식 구성품은3×3 cm 블록이며 SIM cyan은34×40×32 mm이다. 실제 사용 물체 치수는 미확인이고
+이번 비교에서는 물체를 바꾸지 않았다. 이 차이도 실물 영상과 대조해야 한다.
+
+## 재현과 보존
+
+```sh
+# 공통 세션으로 실행하며 render 모드는 내부에서 공용 잠금을 확인/획득/반환한다.
+python3 scripts/ugrp_session.py run camera-review-render-NEW -- \
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/review_masterpi_camera.py render \
+  --source /Users/changmin/projects/ugrp/outputs/s2-graduation-fae1fc4a-s1026-P2-2-place \
+  --output /Users/changmin/projects/ugrp/outputs/camera-review-NEW
+```
+
+`analyze` 모드는 원본 이미지 읽기만 한다. `export_review.py`는 기록을
+기존 native TensorBoard 변환기에 넘기고 event를 다시 읽어 수치를 검증한다.
+완료된 snapshot은 덧쓰지 않는다. 같은 호스트에서 재포장할 때 새 출력 경로를 정해야 한다.
+공유 보기 root는 `/Users/changmin/projects/ugrp/outputs/tensorboard`, 새 snapshot은
+`1006-camera-review-v1`이다. saved-1320 / static-old / static-drawing / render-error를
+서로 다른 조건으로 표시한다. raw MP4는 이번 정지 진단에 없고 동영상 등록도 없다.
+정지 RGB·입력 XML·실패 흔적·공식 이미지·해시·세션 로그는 로컬 보관이며 원격 백업이 아니다.
+
+## TensorBoard와 최종 확인
+
+- [저장된 비교 대시보드 링크](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fvalid_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffull_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fframes%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E1006-camera-review-v1%2F#timeseries). 새 이벤트 readback 및 기존 서버 scalar API 전체 수치 일치.
+- 기존 `tensorboard-s2-grad` 서버 PID52016, 공용 logdir 확인; 서버 시작/재시작/종료 없음.
+- Chrome 강에서 링크를 열었으나 최초 로드와 1회 새로고침 모두 빈 화면이었다. 2회 같은 표시 문제로 UI 확인 중단.
+- 새 카드 표시·pin 적용·HParams 열 재적용은 **미확인**. `tensorboard-view.json`에는 자기 키만 추가했다.
+- `delivery-verification.json`, `tensorboard-readback.json`, `raw-manifest.json`에 검증 경계와 로컬 원본 해시 보존.
+- 새 번들 ID·workflow 번호 없음. 기존 표준 Scene 산출물을 읽는 진단이며 실행 가능한 연구 프로필로 등록하지 않았다.

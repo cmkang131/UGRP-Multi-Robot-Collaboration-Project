@@ -1,0 +1,277 @@
+{
+  "schema": "ugrp.camera-review.static.v1",
+  "profile": {
+    "id": "masterpi-camera-drawing-mount-review-v1",
+    "status": "DRAWING_NOMINAL_NOT_REAL_CALIBRATED",
+    "runtime_admitted": false,
+    "parent_body": "gripper",
+    "position_m": [
+      0.052982009925558314,
+      0.0,
+      0.028152173913043477
+    ],
+    "quat_wxyz": [
+      0.5,
+      0.5,
+      -0.5,
+      -0.5
+    ],
+    "source": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+    "source_class": "official_drawing_scaled",
+    "translation_reading_uncertainty_m": 0.002,
+    "uncertainty_scope": "drawing reading only, not manufacturing tolerance",
+    "unmeasured": [
+      "optical centre vs lens front",
+      "lateral offset",
+      "mount angles",
+      "actual hardware camera revision"
+    ],
+    "orientation_basis": "parallel to tool in drawing; nominal, not measured",
+    "intrinsics": "existing ugrp1 K and fisheye D unchanged; stock lens unverified",
+    "default_changed": false
+  },
+  "scope": "static HIGH command pose plus recorded evaluation cargo/base; no dynamic replay, no hardware validation",
+  "missing_state": "actual arm joints/base roll-pitch/finger contact positions not recorded; commanded pose is not actual pose",
+  "source_sha": "ff6a3aaad37110929150ec40637857dd8d2b903c",
+  "source_scene_sha256": "c9d9e69111ba68d71b83515dc3ec13d68afcbdb4ff82103a1cabea8d2797a8c4",
+  "mujoco": "3.12.0",
+  "results": [
+    {
+      "profile": "baseline",
+      "t": 105.0,
+      "image": "baseline-t105.png",
+      "sha256": "5d994aeeba18f310942cf667140c9b24f9bcdf4c056ab8f145abfc7a04d64aea",
+      "cyan_pixels": 188425,
+      "full_pixels": 307200,
+      "valid_pixels": 251679,
+      "full_fraction": 0.6133626302083334,
+      "valid_fraction": 0.7456680930868289,
+      "camera_parent": "r3__gripper",
+      "camera_pos_world_m": [
+        1.411861458036166,
+        -0.5807859938238225,
+        0.17289970513068298
+      ],
+      "camera_forward_world": [
+        0.8423537788152702,
+        -0.01765026984541035,
+        -0.5386358503571957
+      ],
+      "optical_pitch_world_deg": -32.59082346958044,
+      "cargo_centre_gripper_m": [
+        0.09684328475850494,
+        -8.822292540681429e-05,
+        -0.002121604699243165
+      ],
+      "qpos_sha256": "e302e828388fc2eeaad766405696460dc6296c91b53e78470fc575a3d27249fe",
+      "recorded_frame": "robots/r3/rgb/02074.jpg",
+      "recorded_frame_sha256": "412b925e3c57c0d9c37c929c44cc0024f0d034a7d6c66276b361bc715603ba32",
+      "recorded_frame_metrics": {
+        "cyan_pixels": 252984,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.823515625,
+        "valid_fraction": 0.9998331207609693
+      }
+    },
+    {
+      "profile": "baseline",
+      "t": 180.0,
+      "image": "baseline-t180.png",
+      "sha256": "10c4957f71d3c10422458e300e53822b596e504080ccfc465a93fefb394f70b2",
+      "cyan_pixels": 187152,
+      "full_pixels": 307200,
+      "valid_pixels": 251679,
+      "full_fraction": 0.60921875,
+      "valid_fraction": 0.7406339027094037,
+      "camera_parent": "r3__gripper",
+      "camera_pos_world_m": [
+        1.828590662220218,
+        0.04134672374538738,
+        0.17289608772262477
+      ],
+      "camera_forward_world": [
+        0.8425382505084285,
+        -0.0008468412942380099,
+        -0.5386358503571957
+      ],
+      "optical_pitch_world_deg": -32.59082346958044,
+      "cargo_centre_gripper_m": [
+        0.09677045642097994,
+        -4.059948876098754e-05,
+        -0.0022283473498880546
+      ],
+      "qpos_sha256": "92ea307bbf15b27eac86f075ccd5f9c4e9930e11dbe7a5d3badba1d420c3ad96",
+      "recorded_frame": "robots/r3/rgb/03574.jpg",
+      "recorded_frame_sha256": "7afc1851c288ab5a0a413282c7a7c46d21fadc93baa8198d2b17dbc3cd821e00",
+      "recorded_frame_metrics": {
+        "cyan_pixels": 252986,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.8235221354166666,
+        "valid_fraction": 0.9998370940761844
+      }
+    },
+    {
+      "profile": "baseline",
+      "t": 270.0,
+      "image": "baseline-t270.png",
+      "sha256": "efd985eb992a92c20149383bb3cca7cdeefe4b84c9e27d6850a19924fe8f2fbc",
+      "cyan_pixels": 185339,
+      "full_pixels": 307200,
+      "valid_pixels": 251679,
+      "full_fraction": 0.6033170572916666,
+      "valid_fraction": 0.733489881952805,
+      "camera_parent": "r3__gripper",
+      "camera_pos_world_m": [
+        3.7381832073949255,
+        -1.0533235242243377,
+        0.17289958167191827
+      ],
+      "camera_forward_world": [
+        0.8421706142062397,
+        0.024901350916486098,
+        -0.5386358503571959
+      ],
+      "optical_pitch_world_deg": -32.59082346958045,
+      "cargo_centre_gripper_m": [
+        0.09669152803361475,
+        3.6048959604340148e-06,
+        -0.0023852105281252176
+      ],
+      "qpos_sha256": "d4a5e53394578a801f69fa9b8de9818200bdfd12457d028da7ed960050b339d2",
+      "recorded_frame": "robots/r3/rgb/05374.jpg",
+      "recorded_frame_sha256": "0f108b2dba056f674a6bd1ac83aba5b6fcda94b496aba12619081ab98a747d87",
+      "recorded_frame_metrics": {
+        "cyan_pixels": 252985,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.8235188802083333,
+        "valid_fraction": 0.9998569606522594
+      }
+    },
+    {
+      "profile": "masterpi-camera-drawing-mount-review-v1",
+      "t": 105.0,
+      "image": "masterpi-camera-drawing-mount-review-v1-t105.png",
+      "sha256": "206c89711098f6f3f51193e4df50bcee496e96aa648744947132523783f782eb",
+      "cyan_pixels": 66817,
+      "full_pixels": 307200,
+      "valid_pixels": 251679,
+      "full_fraction": 0.21750325520833333,
+      "valid_fraction": 0.263752637287974,
+      "camera_parent": "r3__gripper",
+      "camera_pos_world_m": [
+        1.4104949035559589,
+        -0.580757359708394,
+        0.19305910790612923
+      ],
+      "camera_forward_world": [
+        0.765315226236035,
+        -0.016036041624773845,
+        -0.643455864733779
+      ],
+      "optical_pitch_world_deg": -40.05000000000001,
+      "cargo_centre_gripper_m": [
+        0.09684328475850494,
+        -8.822292540681429e-05,
+        -0.002121604699243165
+      ],
+      "qpos_sha256": "e302e828388fc2eeaad766405696460dc6296c91b53e78470fc575a3d27249fe",
+      "recorded_frame": "robots/r3/rgb/02074.jpg",
+      "recorded_frame_sha256": "412b925e3c57c0d9c37c929c44cc0024f0d034a7d6c66276b361bc715603ba32",
+      "recorded_frame_metrics": {
+        "cyan_pixels": 252984,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.823515625,
+        "valid_fraction": 0.9998331207609693
+      }
+    },
+    {
+      "profile": "masterpi-camera-drawing-mount-review-v1",
+      "t": 180.0,
+      "image": "masterpi-camera-drawing-mount-review-v1-t180.png",
+      "sha256": "ac0a48c3247b5a40ccc16cc03e62e562dfdb7d029d188cbaa3db56b7be53f4fe",
+      "cyan_pixels": 65659,
+      "full_pixels": 307200,
+      "valid_pixels": 251679,
+      "full_fraction": 0.21373372395833334,
+      "valid_fraction": 0.25915948489941554,
+      "camera_parent": "r3__gripper",
+      "camera_pos_world_m": [
+        1.827223808470719,
+        0.04134809757998487,
+        0.19305549049807103
+      ],
+      "camera_forward_world": [
+        0.7654828268322857,
+        -0.00076939233014095,
+        -0.6434558647337791
+      ],
+      "optical_pitch_world_deg": -40.05000000000002,
+      "cargo_centre_gripper_m": [
+        0.09677045642097994,
+        -4.059948876098754e-05,
+        -0.0022283473498880546
+      ],
+      "qpos_sha256": "92ea307bbf15b27eac86f075ccd5f9c4e9930e11dbe7a5d3badba1d420c3ad96",
+      "recorded_frame": "robots/r3/rgb/03574.jpg",
+      "recorded_frame_sha256": "7afc1851c288ab5a0a413282c7a7c46d21fadc93baa8198d2b17dbc3cd821e00",
+      "recorded_frame_metrics": {
+        "cyan_pixels": 252986,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.8235221354166666,
+        "valid_fraction": 0.9998370940761844
+      }
+    },
+    {
+      "profile": "masterpi-camera-drawing-mount-review-v1",
+      "t": 270.0,
+      "image": "masterpi-camera-drawing-mount-review-v1-t270.png",
+      "sha256": "1843a6bc4142c149392aef10434ee17adf96dd014b9f23927165bec6efa17ce8",
+      "cyan_pixels": 64175,
+      "full_pixels": 307200,
+      "valid_pixels": 251679,
+      "full_fraction": 0.20890299479166666,
+      "valid_fraction": 0.253302818272482,
+      "camera_parent": "r3__gripper",
+      "camera_pos_world_m": [
+        3.7368169500635218,
+        -1.0533639218025455,
+        0.19305898444736452
+      ],
+      "camera_forward_world": [
+        0.7651488131828452,
+        0.022623965713119698,
+        -0.6434558647337791
+      ],
+      "optical_pitch_world_deg": -40.05000000000002,
+      "cargo_centre_gripper_m": [
+        0.09669152803361475,
+        3.6048959604340148e-06,
+        -0.0023852105281252176
+      ],
+      "qpos_sha256": "d4a5e53394578a801f69fa9b8de9818200bdfd12457d028da7ed960050b339d2",
+      "recorded_frame": "robots/r3/rgb/05374.jpg",
+      "recorded_frame_sha256": "0f108b2dba056f674a6bd1ac83aba5b6fcda94b496aba12619081ab98a747d87",
+      "recorded_frame_metrics": {
+        "cyan_pixels": 252985,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.8235188802083333,
+        "valid_fraction": 0.9998569606522594
+      }
+    }
+  ],
+  "mj_step_calls": 0,
+  "model_calls": 0,
+  "commands": 0,
+  "wall_s": 0.8813060419925023,
+  "loadavg": [
+    3.23291015625,
+    5.12548828125,
+    8.05078125
+  ]
+}
