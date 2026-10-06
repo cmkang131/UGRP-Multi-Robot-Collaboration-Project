@@ -24,7 +24,6 @@ def parser():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--seed', type=int, choices=contract.SEEDS, default=contract.SEEDS[0])
     p.add_argument('--speedups', choices=('none', 'v98-exact-v6'), default='v98-exact-v6')
-    p.add_argument('--door-yield', choices=('off', 's3-door-yield-v1'), default='off')
     p.add_argument('--execute', action='store_true')
     p.add_argument('--release-s3-simulation', action='store_true',
                    help='coordinator explicitly releases S3 after the S2 reservation; lock vacancy alone is not release')
@@ -45,13 +44,7 @@ def artifact_manifest(out):
 
 
 def run(bundle, out, *, runtime_factory=Runtime, backend_factory=None):
-    selected = contract
-    if bundle.get('door_yield', 'off') != 'off':
-        from harness import zone_s3_door_contract as selected
-        from harness.zone_s3_door_yield import Runtime as DoorRuntime
-        if runtime_factory is Runtime:
-            runtime_factory = DoorRuntime
-    selected.verify(bundle)
+    contract.verify(bundle)
     scenario, map_bundle, sheet = contract.inputs()
     static = contract.hp.resolve(bundle['map_id'])[0]
     if backend_factory is None:
@@ -61,7 +54,7 @@ def run(bundle, out, *, runtime_factory=Runtime, backend_factory=None):
     out.mkdir(parents=True, exist_ok=False)
     write(out/'bundle.json', bundle)
     started = time.monotonic()
-    result = {'execution_bundle_id': selected.BUNDLE_ID, 'source_sha': bundle['source_sha'],
+    result = {'execution_bundle_id': contract.BUNDLE_ID, 'source_sha': bundle['source_sha'],
         'seed': bundle['seed'], 'status': 'HOST_ERROR', 'cohort_role': 'FUNCTIONAL_DEV',
         'research_result': False, 'physical_success': None, 'model_calls': 0, 'http_attempts': 0,
         'model_response_time_s': 0., 'tokens': 0, 'commands_issued': {r: 0 for r in ROBOTS},
@@ -83,8 +76,6 @@ def run(bundle, out, *, runtime_factory=Runtime, backend_factory=None):
             horizon_s=start+bundle['case_cap_s'], code_sha=bundle['source_sha'],
             pair_records=runtime.pair.team.records)
         runtime.trial = trial
-        if selected is not contract:
-            result['door_yield'] = bundle['door_yield']
         trial.begin(start)
         ended = None
         steps = round(bundle['case_cap_s']/bundle['tick_s'])
@@ -126,11 +117,7 @@ def run(bundle, out, *, runtime_factory=Runtime, backend_factory=None):
                              ('trial.json', (lambda: trial.finish(backend.now)) if trial is not None else None)):
             if record is not None:
                 try:
-                    value = record()
-                    if name == 'trial.json' and selected is not contract:
-                        value['inter_robot_channels'].append(bundle['door_yield'])
-                        value['door_protocol'] = bundle['door_protocol']
-                    write(out/name, value)
+                    write(out/name, record())
                 except Exception as exc:
                     result.update(status='HOST_ERROR', record_error=str(exc))
         for owner in (runtime, backend):
@@ -163,8 +150,7 @@ def require_execution(args):
     from scripts.agent_sim_slots import sim_holders
     branch = subprocess.check_output(['git', 'branch', '--show-current'], cwd=contract.ROOT, text=True).strip()
     held = status(DEFAULT_ROOT)
-    expected_branch = ('codex/s3-door-yield' if args.door_yield != 'off' else 'codex/s3-three-robot-host')
-    if (branch != expected_branch or not held or not held['pid_alive']
+    if (branch != 'codex/s3-three-robot-host' or not held or not held['pid_alive']
             or held['owner'] != 'codex' or held['branch'] != branch or sim_holders(DEFAULT_ROOT)):
         raise ValueError('S3 requires its own live exclusive SIM lock; no slots or foreign lock')
 
@@ -173,12 +159,9 @@ def main(argv=None):
     args = parser().parse_args(argv)
     if args.execute:
         require_execution(args)  # before physics, provider or speedup construction
-    selected = contract
-    if args.door_yield != 'off':
-        from harness import zone_s3_door_contract as selected
-    bundle = selected.bundle(args.expected_source_sha, seed=args.seed, speedups=args.speedups)
+    bundle = contract.bundle(args.expected_source_sha, seed=args.seed, speedups=args.speedups)
     if not args.execute:
-        print(json.dumps({'execution_started': False, 'execution_bundle_id': selected.BUNDLE_ID,
+        print(json.dumps({'execution_started': False, 'execution_bundle_id': contract.BUNDLE_ID,
             'bundle_sha256': contract.hp.base.digest(bundle), 'seed': args.seed,
             'source_sha': args.expected_source_sha, 'model_calls': 0,
             'simulation_release_required': True, 'physical_success': None}, indent=2))

@@ -187,3 +187,120 @@ def test_post_run_existing_referee_requires_both_orders_and_final_standing(tmp_p
     result = judge(tmp_path, rows)
     assert result['orders_complete'] == (defect is None)
     assert result['feedback_to_controller'] is False
+
+
+def frozen_runner():
+    """Exact e4b72aaf runner, committed as a small immutable differential oracle."""
+    import hashlib
+    import importlib.util
+    path = c.ROOT/'tests/fixtures/s3_runner_e4b72aaf.py'
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == '832aba4bc0cafd7b6bf5d2aef1f24e7b73c8ad0d9870e9579669c73b2586ce05'
+    spec = importlib.util.spec_from_file_location('_s3_runner_e4b72aaf', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.parametrize('mode', ['horizon', 'complete', 'failure'])
+def test_off_artifacts_and_issued_commands_byte_identical_to_394(tmp_path, monkeypatch, mode):
+    old = frozen_runner()
+    monkeypatch.setattr(c, 'CAP_S', .2)
+    monkeypatch.setattr(runner.time, 'monotonic', lambda: 42.)
+    monkeypatch.setattr(runner.os, 'getloadavg', lambda: (0., 0., 0.))
+    for module in (old, runner):
+        monkeypatch.setattr(module, 'environment_record', lambda: {'fixture': 'same host'})
+    backends = []
+    def backend(*args, **kw):
+        obj = Backend(*args, **kw)
+        obj.verdict = True
+        backends.append(obj)
+        return obj
+    def runtime(*args, **kw):
+        obj = host.Runtime(*args, **kw, pair_factory=FakePair, solo_factory=FakeSolo)
+        original = obj.step
+        def step(now):
+            rows = original(now)
+            if now >= .1 and mode != 'horizon':
+                for own in obj.pair.actors.values():
+                    own.jobs_done.append({'kind': 'pair_carry', 'confirmation': 'unconfirmed'})
+                obj.solo.terminal = True
+                obj.solo.failure = 'TEST' if mode == 'failure' else None
+            return rows
+        obj.step = step
+        return obj
+    b = c.bundle('a'*40)
+    assert 'door_yield' not in b
+    assert runner.parser().parse_args(['--expected-source-sha', 'a'*40, '--output', 'unused']).door_yield == 'off'
+    for module, name in ((old, 'old'), (runner, 'new')):
+        module.run(b, tmp_path/name, runtime_factory=runtime, backend_factory=backend)
+    # Every persisted byte, including student/trial/result and artifact manifests;
+    # freeze only actual wall/environment noise, never commands or control state.
+    files = sorted(p.relative_to(tmp_path/'old') for p in (tmp_path/'old').rglob('*') if p.is_file())
+    assert files
+    for rel in files:
+        assert (tmp_path/'old'/rel).read_bytes() == (tmp_path/'new'/rel).read_bytes(), rel
+    encode = lambda rows: json.dumps(rows, ensure_ascii=False, separators=(',', ':')).encode()
+    assert encode(backends[0].issued) == encode(backends[1].issued)
+
+
+def test_explicit_off_plan_matches_omitted_and_frozen_runner(capsys, tmp_path):
+    args = ['--expected-source-sha', 'a'*40, '--output', str(tmp_path/'unused')]
+    outputs = []
+    for module, tail in ((frozen_runner(), []), (runner, []), (runner, ['--door-yield', 'off'])):
+        assert module.main([*args, *tail]) == 0
+        outputs.append(capsys.readouterr().out.encode())
+    assert outputs[0] == outputs[1] == outputs[2]
+    assert not (tmp_path/'unused').exists()
+
+
+def test_door_bundle_and_managed_option_are_distinct_and_tamper_proof(tmp_path, monkeypatch, capsys):
+    from harness import zone_s3_door_contract as dc
+    from scripts import run_s3_door_yield as dr
+    from sim.workflow_manager import plan
+    b = dc.bundle('a'*40)
+    assert b['execution_bundle_id'] == dc.BUNDLE_ID
+    assert b['door_protocol']['conditions'] == ['rule', 'no_comm', 'peer_nl']
+    assert b['inter_robot_channels'] == ['existing_pair_fixed_enum_status', 's3-door-yield-v1']
+    assert 'harness/zone_s3_door_yield.py' in b['source_sha256']
+    dc.verify(b)
+    bad = copy.deepcopy(b)
+    bad['door_protocol']['timeout_releases'] = True
+    with pytest.raises(ValueError, match='mismatch'):
+        runner.run(bad, tmp_path/'bad', backend_factory=lambda *a, **k: pytest.fail('backend'))
+    args = ['--expected-source-sha', 'a'*40, '--output', str(tmp_path/'plan')]
+    monkeypatch.setattr(runner, 'run', lambda *a, **k: pytest.fail('dry execution'))
+    assert dr.main(args) == 0
+    assert json.loads(capsys.readouterr().out)['execution_bundle_id'] == dc.BUNDLE_ID
+    for flag in (['--door-yield', 'off'], ['--door-yield=off']):
+        with pytest.raises(ValueError, match='fixes'):
+            dr.main([*args, *flag])
+    managed = plan(c.ROOT, dc.BUNDLE_ID, args)
+    assert managed['workflow_id'] == dc.BUNDLE_ID
+    assert not (tmp_path/'plan').exists()
+
+
+def test_real_host_loop_uses_door_runtime_and_saves_status(tmp_path, monkeypatch):
+    from harness import zone_s3_door_contract as dc
+    from harness import zone_s3_door_yield as dy
+    monkeypatch.setattr(c, 'CAP_S', .2)
+    original = dy.Runtime.__init__
+    made = []
+    def initialize(self, *a, **kw):
+        original(self, *a, **kw, pair_factory=FakePair, solo_factory=FakeSolo)
+        made.append(self)
+    monkeypatch.setattr(dy.Runtime, '__init__', initialize)
+    def backend(*a, **kw):
+        obj = Backend(*a, **kw)
+        obj.verdict = False
+        return obj
+    result = runner.run(dc.bundle('a'*40), tmp_path/'out', backend_factory=backend)
+    assert result['status'] == 'DEV_NOT_DELIVERED'
+    assert result['execution_bundle_id'] == dc.BUNDLE_ID
+    rt = made[0]
+    assert all(cmd['kind'] == 'hold' for _, _, cmd in rt.solo.commands)
+    student = json.loads((tmp_path/'out/student_record.json').read_text())
+    trial = json.loads((tmp_path/'out/trial.json').read_text())
+    assert student['door_yield']['final_states'] == {'r1': 'USING', 'r2': 'USING', 'r3': 'REQUEST'}
+    assert student['door_yield']['wait_robot_s']['r3'] == pytest.approx(.2)
+    assert trial['inter_robot_channels'][-1] == dy.PROFILE
+    assert trial['model_calls'] == trial['http_attempts'] == 0
