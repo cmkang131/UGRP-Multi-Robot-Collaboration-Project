@@ -21,7 +21,7 @@ def parser():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--execute', action='store_true')
     p.add_argument('--admission', choices=('dev-pilot',), default='dev-pilot')
-    p.add_argument('--seed', type=int, choices=(911, 912, 913, 914), default=911)
+    p.add_argument('--seed', type=int, choices=contract.DEV_SEEDS, default=911)
     p.add_argument('--robot-id', choices=('r1', 'r2', 'r3'), default='r3')
     p.add_argument('--pickup-slot', default='P1-2')
     p.add_argument('--destination', choices=('A', 'B', 'C'), default='B')
