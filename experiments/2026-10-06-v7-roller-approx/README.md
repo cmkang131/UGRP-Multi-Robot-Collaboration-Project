@@ -13,7 +13,7 @@ v7은 FUJI 공개 모델의 convex barrel mesh 롤러를 바퀴당 9개 쓴다. 
 | 옵션 | 값 | 기본 | 설명 |
 |---|---|---|---|
 | `roller_collision` (`build_world(..., roller_collision=)`, `transform_xml(xml, params, roller_collision)`) | `mesh` / `sphere6_v1` | `mesh` | `mesh`는 기존 FUJI convex mesh, XML이 바이트 단위로 같다. `sphere6_v1`은 롤러마다 구 6개 |
-| `idle_robot_contacts` | 검토 결과는 아래 | 없음(off) | 아래 "정지 로봇 접촉 축소 검토" 참고 |
+| `idle_robot_contacts` (`build_world(..., idle_robot_contacts=)`) | `off` / `freeze_v1` | `off` | `freeze_v1`은 MuJoCo 공식 sleeping island: 로봇 트리만 sleep 허용, 다른 free body는 `never`(짐을 잡은 로봇은 안 잠김). 명령·servo ctrl이 바뀌면 월드 스텝이 직접 깨운다 |
 
 기본 `mesh`에서는 구동 기록(`drive_profile_record`)과 XML이 이전과 같다. 옵션을 켠 실행만 기록에
 `roller_collision*` 항목(구 좌표, 출처 커밋, 미확인 목록, 해시)이 추가된다.

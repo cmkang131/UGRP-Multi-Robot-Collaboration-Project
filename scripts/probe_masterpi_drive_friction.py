@@ -177,7 +177,8 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
                             slips.append(float(np.linalg.norm(relative-(relative@contact.frame[:3])*contact.frame[:3])))
                 if profile_timers:
                     profile_samples.append({'t': float(d.time-start_t), 'ncon': int(d.ncon), 'nefc': int(d.nefc),
-                        'solver_niter': int(d.solver_niter[0]), 'nisland': int(d.nisland)})
+                        'solver_niter': int(d.solver_niter[0]), 'nisland': int(d.nisland),
+                        'trees_asleep': int((d.tree_asleep >= 0).sum()), 'ntree': int(m.ntree)})
                 rows.append({'t': float(d.time-start_t), 'xyz': c.base_xyz().tolist(),
                     'yaw': c.base_rpy()[2], 'velocity': d.qvel[c.base_dadr:c.base_dadr+6].tolist(),
                     'com_xyz': d.subtree_com[c.robot_bid].tolist(),

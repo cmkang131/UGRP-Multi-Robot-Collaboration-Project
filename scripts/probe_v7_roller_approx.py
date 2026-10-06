@@ -19,7 +19,11 @@ ROOT = Path(__file__).resolve().parents[1]
 RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
 BRANCH = 'claude/v7-roller-approx'
 PROFILE = 'masterpi_drive_friction_v7'
-VARIANTS = {'mesh': {'roller_collision': 'mesh'}, 'sphere6_v1': {'roller_collision': 'sphere6_v1'}}
+VARIANTS = {'mesh': {'roller_collision': 'mesh'},
+            'sphere6_v1': {'roller_collision': 'sphere6_v1'},
+            'mesh_freeze': {'roller_collision': 'mesh', 'idle_robot_contacts': 'freeze_v1'},
+            'sphere6_freeze': {'roller_collision': 'sphere6_v1', 'idle_robot_contacts': 'freeze_v1'}}
+BASE = 'mesh'   # every other variant is compared with this one
 
 # (tag, case, loaded, wheel_input, drive_s, long_lane): same set-ups as the recorded v7 steps.
 EQUIVALENCE = (
@@ -66,13 +70,13 @@ def compare_forward(tag, wheel_input, mesh, s6):
         a, b = mesh['peak_command_com_xy_m'], s6['peak_command_com_xy_m']
         limit = ACCEPT['stationary_peak_com_xy_m']
         return _item(tag, a <= limit and b <= limit, {'rule': 'both stay <=1 mm',
-                     'mesh_peak_com_xy_m': a, 'sphere6_peak_com_xy_m': b})
+                     'base_peak_com_xy_m': a, 'variant_peak_com_xy_m': b})
     vm, vs = mesh['steady_velocity'][0], s6['steady_velocity'][0]
     lm, ls = mesh['tail_forward_min_mps'], s6['tail_forward_min_mps']
     ok = (lm > ACCEPT['sustained_tail_min_mps'] and ls > ACCEPT['sustained_tail_min_mps']
           and _rel(vs, vm) <= ACCEPT['forward_speed_rel'])
-    return _item(tag, ok, {'rule': 'both sustained and speed within 5%', 'mesh_mps': vm, 'sphere6_mps': vs,
-                 'relative_difference': vs/vm-1. if vm else None, 'mesh_tail_min': lm, 'sphere6_tail_min': ls})
+    return _item(tag, ok, {'rule': 'both sustained and speed within 5%', 'base_mps': vm, 'variant_mps': vs,
+                 'relative_difference': vs/vm-1. if vm else None, 'base_tail_min': lm, 'variant_tail_min': ls})
 
 
 def compare_left(tag, mesh, s6):
@@ -84,8 +88,8 @@ def compare_left(tag, mesh, s6):
     moving = mesh['tail_lateral_min_mps'] > ACCEPT['sustained_tail_min_mps'] and s6['tail_lateral_min_mps'] > ACCEPT['sustained_tail_min_mps']
     ok = moving and abs(ys-ym) <= ACCEPT['left_yaw_diff_deg'] and _rel(vs, vm) <= ACCEPT['left_speed_rel']
     return _item(tag, ok, {'rule': 'both move left, yaw difference <=0.5 deg, lateral speed within 5%',
-                 'mesh_yaw_deg': ym, 'sphere6_yaw_deg': ys, 'yaw_difference_deg': ys-ym,
-                 'mesh_lateral_mps': vm, 'sphere6_lateral_mps': vs, 'relative_difference': vs/vm-1. if vm else None})
+                 'base_yaw_deg': ym, 'variant_yaw_deg': ys, 'yaw_difference_deg': ys-ym,
+                 'base_lateral_mps': vm, 'variant_lateral_mps': vs, 'relative_difference': vs/vm-1. if vm else None})
 
 
 def compare_beam(mesh, s6):
@@ -100,9 +104,9 @@ def compare_beam(mesh, s6):
           and _rel(ps, pm) <= ACCEPT['beam_progress_difference_rel'])
     return _item('pair-beam', ok, {'rule': 'no physical failure; beam y shift within 10%, yaw within 0.5 deg, '
                  'r1-r2 progress difference within 10%',
-                 'mesh_beam_y_m': ym, 'sphere6_beam_y_m': ys, 'beam_y_relative_difference': ys/ym-1. if ym else None,
-                 'mesh_beam_yaw_deg': fm['beam_yaw_change_deg'], 'sphere6_beam_yaw_deg': fs['beam_yaw_change_deg'],
-                 'yaw_difference_deg': yaw, 'mesh_progress_difference_m': pm, 'sphere6_progress_difference_m': ps,
+                 'base_beam_y_m': ym, 'variant_beam_y_m': ys, 'beam_y_relative_difference': ys/ym-1. if ym else None,
+                 'base_beam_yaw_deg': fm['beam_yaw_change_deg'], 'variant_beam_yaw_deg': fs['beam_yaw_change_deg'],
+                 'yaw_difference_deg': yaw, 'base_progress_difference_m': pm, 'variant_progress_difference_m': ps,
                  'progress_difference_relative': ps/pm-1. if pm else None})
 
 
@@ -113,16 +117,20 @@ def physics_only_wall_per_sim(result):
 
 def speed_summary(runs):
     """runs: variant -> list of result dicts of the same case (profile timers on)."""
-    out = {}
+    out = {'variants': {}}
     for variant, results in runs.items():
         phys = [physics_only_wall_per_sim(r) for r in results]
-        out[variant] = {'physics_only_wall_per_sim': phys, 'diagnostic_wall_per_sim': [r['wall_per_sim'] for r in results]}
-        out[variant]['physics_only_mean'] = sum(phys)/len(phys)
-        out[variant]['diagnostic_mean'] = sum(out[variant]['diagnostic_wall_per_sim'])/len(results)
-    if 'mesh' in out and 'sphere6_v1' in out:
-        out['gain_physics_only'] = out['mesh']['physics_only_mean']/out['sphere6_v1']['physics_only_mean']
-        out['gain_diagnostic'] = out['mesh']['diagnostic_mean']/out['sphere6_v1']['diagnostic_mean']
+        diag = [r['wall_per_sim'] for r in results]
+        out['variants'][variant] = {'physics_only_wall_per_sim': phys, 'diagnostic_wall_per_sim': diag,
+                                    'physics_only_mean': sum(phys)/len(phys), 'diagnostic_mean': sum(diag)/len(diag)}
+    if BASE in out['variants']:
+        base = out['variants'][BASE]
+        for variant, row in out['variants'].items():
+            row['gain_physics_only'] = base['physics_only_mean']/row['physics_only_mean']
+            row['gain_diagnostic'] = base['diagnostic_mean']/row['diagnostic_mean']
+    if 'sphere6_v1' in out['variants']:
         out['gain_required'] = ACCEPT['speed_gain_min']
+        out['gain_physics_only'] = out['variants']['sphere6_v1']['gain_physics_only']
         out['passed'] = bool(out['gain_physics_only'] >= ACCEPT['speed_gain_min'])
     return out
 
@@ -167,12 +175,14 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--expected-source-sha', required=True)
     p.add_argument('--phase', choices=('profile', 'equivalence', 'speed', 'render'), required=True)
-    p.add_argument('--variants', nargs='+', choices=tuple(VARIANTS), default=list(VARIANTS))
+    p.add_argument('--variants', nargs='+', choices=tuple(VARIANTS), default=['mesh', 'sphere6_v1'])
     p.add_argument('--repeats', type=int, default=3, help='speed phase: runs per variant (ABBA-style alternation)')
     p.add_argument('--expected-minutes', type=float, default=6.)
     args = p.parse_args()
     if not args.output.is_absolute() or not args.output.resolve().is_relative_to(RAW_ROOT):
         p.error('raw output must be absolute below primary outputs/')
+    if args.phase == 'equivalence' and BASE not in args.variants:
+        p.error(f'--variants must include {BASE}')
     source = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     if source != args.expected_source_sha or subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT).strip():
         p.error('expected clean committed source required')
@@ -181,14 +191,14 @@ def main():
     from scripts import agent_lock
     if agent_lock.status(agent_lock.DEFAULT_ROOT) is not None:
         p.error('physics lock occupied; no simulation started')
-    args.output.mkdir(parents=True, exist_ok=False)
     lock = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='claude', branch=BRANCH,
         purpose=f'v7 roller approximation {args.phase}', pid=os.getpid(),
         expected_minutes=args.expected_minutes, timing_sensitive=True)
-    write(args.output/'manifest.json', {'source_sha': source, 'python': platform.python_version(),
-        'phase': args.phase, 'accept': ACCEPT, 'command': vars(args) | {'output': str(args.output)},
-        'lock': lock, 'loadavg_start': os.getloadavg(), 'model_calls': 0})
     try:
+        args.output.mkdir(parents=True, exist_ok=False)
+        write(args.output/'manifest.json', {'source_sha': source, 'python': platform.python_version(),
+            'phase': args.phase, 'accept': ACCEPT, 'command': vars(args) | {'output': str(args.output)},
+            'lock': lock, 'loadavg_start': os.getloadavg(), 'model_calls': 0})
         from scripts.probe_masterpi_drive_friction import run_case
         rows, order = [], list(args.variants)
         if args.phase == 'render':
@@ -206,6 +216,7 @@ def main():
                                       world_options=VARIANTS[variant], profile_timers=True)
                     result.update(variant=variant, tag=tag)
                     rows.append(result)
+                    write(args.output/'results.json', rows)
                     print(json.dumps({k: result.get(k) for k in ('variant', 'tag', 'status', 'wall_per_sim', 'steady_velocity')}), flush=True)
             if args.phase == 'equivalence':
                 from scripts.probe_drive_pair_beam import run_pair_case
@@ -215,11 +226,11 @@ def main():
                     result = run_pair_case(PROFILE, folder/'pair-beam', world_options=VARIANTS[variant])
                     result.update(variant=variant, tag='pair-beam')
                     rows.append(result)
+                    write(args.output/'results.json', rows)
                     print(json.dumps({k: result.get(k) for k in ('variant', 'status', 'stop_reason', 'wall_per_sim', 'final')}), flush=True)
         else:
             runs = {v: [] for v in order}
-            sequence = [order[i % len(order)] if (i//len(order)) % 2 == 0 else order[::-1][i % len(order)]
-                        for i in range(args.repeats*len(order))]
+            sequence = [v for k in range(args.repeats) for v in (order if k % 2 == 0 else order[::-1])]
             for k, variant in enumerate(sequence):
                 folder = args.output/variant
                 folder.mkdir(exist_ok=True)
@@ -227,21 +238,26 @@ def main():
                                   world_options=VARIANTS[variant], profile_timers=True)
                 result.update(variant=variant, tag=f'empty-f050-r{k}')
                 rows.append(result)
+                write(args.output/'results.json', rows)
                 runs[variant].append(result)
                 print(json.dumps({k2: result.get(k2) for k2 in ('variant', 'tag', 'status', 'wall_per_sim')}), flush=True)
             write(args.output/'speed-summary.json', speed_summary(runs))
         write(args.output/'results.json', rows)
         if args.phase == 'equivalence':
             by = {(r['variant'], r['tag']): r for r in rows}
-            checks = []
-            for tag, case, loaded, level, drive_s, lane in EQUIVALENCE:
-                a, b = by[('mesh', tag)], by[('sphere6_v1', tag)]
-                checks.append(compare_left(tag, a, b) if case == 'left' else compare_forward(tag, level, a, b))
-            checks.append(compare_beam(by[('mesh', 'pair-beam')], by[('sphere6_v1', 'pair-beam')]))
-            write(args.output/'equivalence.json', {'accept': ACCEPT, 'checks': checks,
-                                                    'all_passed': all(c['passed'] for c in checks)})
-            print(json.dumps({'all_passed': all(c['passed'] for c in checks),
-                              'failed': [c['check'] for c in checks if not c['passed']]}), flush=True)
+            report = {'accept': ACCEPT, 'base': BASE, 'variants': {}}
+            for variant in order:
+                if variant == BASE:
+                    continue
+                checks = []
+                for tag, case, loaded, level, drive_s, lane in EQUIVALENCE:
+                    a, b = by[(BASE, tag)], by[(variant, tag)]
+                    checks.append(compare_left(tag, a, b) if case == 'left' else compare_forward(tag, level, a, b))
+                checks.append(compare_beam(by[(BASE, 'pair-beam')], by[(variant, 'pair-beam')]))
+                report['variants'][variant] = {'checks': checks, 'all_passed': all(c['passed'] for c in checks)}
+            write(args.output/'equivalence.json', report)
+            print(json.dumps({v: {'all_passed': r['all_passed'], 'failed': [c['check'] for c in r['checks'] if not c['passed']]}
+                              for v, r in report['variants'].items()}), flush=True)
     finally:
         held = agent_lock.status(agent_lock.DEFAULT_ROOT)
         if held and held['pid'] == os.getpid() and held['branch'] == BRANCH:

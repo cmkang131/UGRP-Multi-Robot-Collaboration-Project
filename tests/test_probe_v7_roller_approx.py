@@ -55,8 +55,9 @@ def test_beam_comparison_limits():
 def test_speed_summary_gain_uses_physics_only_time():
     def run(step, sim=6., diag=1.2):
         return {'sim_s': sim, 'wall_per_sim': diag, 'profile': {'step_total_s': step}}
-    summary = probe.speed_summary({'mesh': [run(3.0), run(3.3)], 'sphere6_v1': [run(2.0), run(2.2)]})
+    summary = probe.speed_summary({'mesh': [run(3.0), run(3.3)], 'sphere6_v1': [run(2.0), run(2.2)], 'mesh_freeze': [run(2.4), run(2.4)]})
     assert summary['gain_physics_only'] == pytest.approx(1.5)
+    assert summary['variants']['mesh_freeze']['gain_physics_only'] == pytest.approx(1.3125)
     assert summary['passed']
     slow = probe.speed_summary({'mesh': [run(3.0)], 'sphere6_v1': [run(2.7)]})
     assert not slow['passed']
