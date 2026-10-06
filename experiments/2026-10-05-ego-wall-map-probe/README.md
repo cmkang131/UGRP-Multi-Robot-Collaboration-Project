@@ -2344,3 +2344,64 @@ guard 뒤 거짓 셀의 자세 기여 **39.4–62.0%**가 6건 모두 가장 크
   기하학/광선 함수를 재사용한다. timing 측정과 잠금은 하지 않았다. TensorBoard 변환은 기존 사용자 요청대로 생략했다.
 
 ![r2 고정 RBPF 자세와 양의 깊이 검사, 평가 GT 비교](results/wall_projection_guard_v1/r2-positive-depth-maps.png)
+
+## 22. 자기 submap 자세 그래프 — 구현 전 사전 등록 (2026-10-07)
+
+### 22.1 범위·성공 기준 (구현 전에 커밋)
+
+`pose_graph=off|own_submap_v1`, **기본 off**. 자기 로봇의 저장된 local SLAM 원장에만 적용하는
+오프라인 global SLAM 후처리다. `self_map=odom_grid_v1`, `wall_projection_guard=positive_depth_v1` 및
+`pose_correction=own_map_rbpf_v1|own_map_csm_prob_v1` 조합을 지원한다. RBPF는 선택 입자의
+자기 지도 원장 하나를 사용하며 입자/로봇 사이 지도를 합치지 않는다. prob는 기존 삽입 가중치를 보존한다.
+local 추정기·검출·guard 판정은 바꾸지 않는다. 과거 scan/submap 자세를 함께 최적화하고 같은 선분·광선을
+보정 자세로 다시 삽입한다. 실시간 제어 피드백은 이번 범위가 아니다.
+
+**§17.1의 수치·분모·성공 기준을 그대로 재사용한다.** graph vs off(DR): 종료 XY ≤0.75 m이면서
+≥30% 감소, 전체 프레임 경로 median/P95 악화 없음·RMSE ≥20% 감소, 최종 지도 precision 악화 없음,
+전체 recall(349 bin) 감소 ≤2%p, 벽 RMSE ≥20% 감소. §21의 positive-depth 기준도 적용한다:
+수락된 비양수 z/t 끝점과 뒤 교점 기여 0, **graph vs RBPF100+guard** precision 감소 없음(허용 1e−12),
+가시 recall 감소 ≤2%p. graph의 목적상 자세는 바뀌지만, 원본 RBPF 자세·guard 판정·관측은 불변이며
+GT는 산출물 저장 뒤 평가에서만 읽는다. 기본/명시적 graph off의 snapshot·격자·자세·LLM bytes 동일은 필수다.
+
+비교 열은 **off / RBPF100+guard / RBPF100+guard+graph / GT+guard**이며 합산하지 않는다.
+같은 s911-r1/r2 개발 2건 → 소스·설정 해시 고정 → s912/s913-r1/r2 확인 4건 순서다.
+이미 본 녹화의 재생이며 신규 확증 실험이 아니다. 개발/확인/r2 통과 수와 각 실패 조건을 따로 기록하고,
+전체 성공은 6/6 필수 조건 만족일 때만 선언한다. 결과를 본 뒤 튜닝하지 않는다. 그래프 제약이 없으면
+보정 없음으로 기록하며 이를 루프 폐쇄 성공으로 세지 않는다. 입력 누락/ENOSPC는 HOST_ERROR로 보존한다.
+같은 원인으로 두 번 막히면 멈춰 문헌/공개 코드 확인 후 보고한다. 시뮬레이션·렌더링·모델 호출 금지.
+
+**s911–s913은 v7 구동·카메라 v3 이전 녹화다. 현행 구동·카메라에서 재검증 필요.**
+이전 위치·지도 개선 수치를 현행 장치 성능으로 승계하지 않는다.
+
+### 22.2 표준법·고정 구현 계획
+
+[Hess et al., ICRA 2016 §IV–V](https://research.google.com/pubs/archive/45466.pdf)의 probability submap,
+scan–submap 상대 자세 제약, sparse pose adjustment와 Huber loss를 따른다.
+[Cartographer 고정 코드](https://github.com/cartographer-project/cartographer/blob/877157a0d91788a7700221d87232d412cb3c1ef4/cartographer/mapping/internal/optimization/optimization_problem_2d.cc#L253)의
+첫 submap 고정과 inter-submap 제약만 Huber로 처리하는 구조를 재사용한다. Ceres 대신 기존
+**SciPy 1.17.1 `least_squares(method=trf, tr_solver=lsmr, jac_sparsity=...)`**로 동일 SE(2) 상대 자세
+목적함수를 푼다([공식 문서](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.least_squares.html)).
+NumPy 2.5.2/SciPy 1.17.1은 기존 venv와 requirements-test에 이미 있어 새 설치·업데이트하지 않는다.
+
+- 0.1 m log-odds submap, 최대 20 삽입 scan, 10 scan마다 새 submap(겹치는 두 활성 submap).
+  완성 submap은 불변이다. 첫 submap 좌표는 자기 출발 자세 원점, 이후는 생성 scan의 local pose.
+  local scan–submap 상대 자세는 기존 RBPF/prob 추정값, 공분산 하한은 기존 0.10 m/2°다.
+- query 자신이 들어간 submap은 제외한다. 관측 상관/좁은 FOV 때문에 submap 시각 구간과 5 s 이상
+  떨어진 재관측만 루프 후보로 한다. 현재 local 추정에서 submap 관측 범위와 6 m 이내인 후보만 검색한다.
+- Hess Algorithm 1의 정확한 격자 전수 검색(±1 m, ±15°, 0.1 m/1°)을 사용한다. 작은 오프라인 문제여서
+  branch-and-bound 가속은 생략한다. 평균 점유 확률 ≥0.55, 겹침 ≥0.60(0.20 m), 벽 잔차 RMS ≤0.15 m,
+  창 경계 아님, 0.20 m/5° 이상 떨어진 다른 mode와 점수 차 ≥0.02를 모두 요구한다.
+  유효 점은 기존처럼 0.1 m마다 최대 한 번, 최소 6개이며 정보량은 최대 12점으로 제한한다.
+- 단일/평행 벽은 접선 위치를 결정할 수 없어 기존 점–벽 법선 Hessian 고유값 비율 ≥0.03 조건을 추가한다.
+  이 관측성·mode 검사와 5 s 분리는 좁은 FOV 벽 접점에 필요한 보수적 제약이며 원 논문의 기본값이라고
+  주장하지 않는다. 탐색/수락 수치 역시 재생 전 고정한 설계값이며 GT로 맞추지 않는다.
+- 수락 상대 자세는 확률 격자에서 연속 least-squares로 정제하고 재검사한다. Huber 전환점은 whitened
+  SE(2) residual norm 1.5, 최대 200 함수 평가, 첫 submap 고정. 수치 최적화 실패/비유한 결과는 적용하지 않는다.
+- 지도 재삽입은 원래 시간순·hit/miss·가중치·guard 선분을 그대로 쓴다. 전체 경로의 비삽입 프레임은
+  가장 최근 삽입 scan의 global/local SE(2) 보정으로 옮긴다(첫 scan 이전은 identity). scan 사이 추가
+  위치 관측을 만들지 않는다. 루프 수락이 0이면 원래 원장·경로·격자를 그대로 보존한다.
+
+기록: 모든 후보의 수락/거부 이유·점수/차이·겹침·잔차·관측성·상대 자세·공분산,
+submap 회원 frame ID/격자·제약·최적화 전후 목적값·보정 원장·경로·지도/LLM와 입력 해시를 보존한다.
+단일 벽·반복 벽 거부, 알려진 코너 재방문, 강건 목적함수, 자신/외부 로봇 제약 금지,
+prob 가중치 보존·off 골든을 작은 오프라인 시험으로 먼저 확인한다. timing 비교는 하지 않는다.
