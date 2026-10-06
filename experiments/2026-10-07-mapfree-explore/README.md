@@ -361,3 +361,20 @@ s1/C는 swept footprint 거부149회로 끝났다. 이는 같은 장소에서 �
 소스/수치를 보고 임계값을 바꾸지 않는다. [freeze-v2.json](freeze-v2.json)에 소스·개발 결과 해시를
 고정했다. 이제 §9의 새 E/F×3701/3702 확인32쌍 noisy/oracle을 각각 한 번 평가한다.
 B v3 봉인10파일은 해시 동일하다. 변경 모듈 시험22개 통과, v1/off golden 바이트 동일이다.
+
+### 10.1 확인 후 발견한 채점 순서 오류 (제어기 변경 없이 별도 평가 교정)
+
+원 실행기의 `passage_intent`는 `Actor.command`보다 먼저 불려, swept 검사에서 정지로 거부된 경로도
+문 시도로 셌다. 새 oracle static의 원 카운터1172가 이 오류를 드러냈다. 성공 기준의 **발행 시도** 정의는
+바꾸지 않는다. [Nav2 controller server](https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_controller/src/controller_server.cpp)의
+경로 수신→속도 계산→명령 발행 구분에 맞춰 `scripts/score_mapfree_passage_commands.py`가 저장된
+실제 명령의 M1 평균 병진을 사용해 오프라인 재채점한다. `pre_command_plan_counters`에 원 값을 남긴다.
+명령0/순수 회전/미발행 경로는 통과 시도가 아니다. 발행한 병진 구간의 GT 기하 검사는 평가에만 쓰며,
+실제 통과 완료를 뜻하지 않는다. 모든 코호트에 같은 채점 교정을 적용하고 raw/제어 궤적/설정은 수정하지 않는다.
+이 수정은 알고리즘 재튜닝이나 확인 재생 재실행이 아니다. 원 실행기 counter는 역사 보존용으로 남고,
+최종 판정은 `issued_translation_v2` 채점 결과를 사용한다.
+
+보고서 첫 변환은 NumPy 정수 JSON 직렬화에서 1회 실패했다(`outputs/mapfree-explore-environment-delivery-v1`).
+[Python JSON 기본형 계약](https://docs.python.org/3.12/library/json.html#json.JSONEncoder)에 맞춰 집계만
+native bool/float로 변환하고 회귀시험을 추가했다. v2 출력은 문 카운터 교정 이전 보고서로 보존한다.
+채점/직렬화 반례를 포함한 해당 시험6개 통과. B·위치·경로·충돌·센서 runtime 봉인 해시는 그대로다.
