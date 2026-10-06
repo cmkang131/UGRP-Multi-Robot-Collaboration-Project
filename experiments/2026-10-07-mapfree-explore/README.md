@@ -86,3 +86,41 @@ HOST_ERROR/ENOSPC는 실패로 보존한다. 시간 측정은 modeled time이며
   `pair_passage_plan.PAIR_ENVELOPE`(±.625×±.20 m) 전체를 사용하고 회전은 circumscribed sweep으로 보수 검사한다.
 
 새 패키지/venv 설치 없음. 결과는 로컬/실험 기록에 남긴다. 이전 사용자 결정대로 TensorBoard 변환은 생략한다.
+
+### 구현 중, DEV 전 명시한 센서 자세 보완
+
+K-pinhole 시야는 **수평54.535°/수직42.149°**다. SEARCH의 바닥 최근거리는 섀시 기준 .377 m여서
+자기 몸 밖에 미관측 고리가 생긴다. 이를 free로 메우지 않는다. 기존 B v3 격자의 **close_floor** 명령
+(1:2000,3:807,4:1897,5:2187,6:1500; 최근거리 .245 m)을 매 관측의 근거리 확인에 추가한다.
+두 자세 각각 정착 .5 s와 관측 .5 s, 합2 s를 비용에 넣는다. 가림/광선은 각 자세별로 계산한다.
+현재 camera/FOV/높이/팔 링크를 변경하지 않으며 새 물리 동작 검증은 아니다. 성공 기준/분할은 그대로다.
+
+## 4. 실제 구현 명세 (DEV 이전)
+
+`harness/own_map_navigation.py`는 새 독립 인터페이스이며 기존 물리 실행기에 자동 연결하지 않는다.
+`ObservedGrid.observe`는 자기 pose·관측 floor 점·wall 점만 받는다. wall hit가 ray free를 생성하지 않는다.
+B/C/E 기본 off는 원래 출력 객체를 그대로 반환한다. on은 GT/static fallback 없이 관측/경로 요청을 반환한다.
+자기 body support는 최초에만 추가하며, 임의 이동 뒤 footprint를 지워 길을 만드는 동작은 없다.
+
+A*는 unknown/occupied를 전체 footprint+margin으로 팽창하고 대각선 corner cut을 거부한다. 빈손은
+.12×.10 m half rectangle의 circumscribed sweep, pair는 .625×.20 m를 쓴다. pair 회전 sweep은 좁은
+문에 보수적일 수 있고 이번 코호트는 **빈손 1대**다. 관측 grid revision마다 재계획한다. pair 탐색 명령은
+`shared_carry_action_required`로 거부한다. frontier는 최소 군집 크기 삭제 없이 reachable 관측점+heading,
+가시 unknown 면적−.35×거리−.75×최근 방문 수(12개)를 점수로 한다. 임의 세계 bounds를 제공하지 않는다.
+
+문은 [OpenCV HoughLinesP](https://docs.opencv.org/4.13.0/d9/db0/tutorial_hough_lines.html)의 선분 끝점을 사용한다.
+collinear 10°/.15 m, gap .25–1.5 m, 폭 하한=측정 gap−2셀; 양 jamb의 ≥.05 m/≥5° 다른 자기 관측,
+내부 floor ribbon 연결, 운반 footprint 폭을 각각 검사한다. 좁은 FOV 끝·미검출 gap은 free 확인 없이 통과
+가능으로 승격하지 않는다. `visually_confirmed_passage`는 아직 실제 통과 확인 adapter가 없어 false다.
+OpenCV5의 반환 배열 Nx4와 OpenCV4 Nx1x4 차이로 첫 단위시험 1회 실패; 공식 endpoint 형식을 확인하고
+둘 다 받는 reshape로 수정했다. 새 의존성 설치 없음.
+
+센서 추출 표는 ≤4 m 양의 거리/가시 열≥8/프레임당96열 재표본 조건이다. 개발 P=.89113/R=.98739,
+확인 P=.89208/R=.98786; 거리 잔차 중앙 +.01368/+.01421 m, P95 +.28632/+.28806 m.
+이 값이 옛 전체범위 열 P≈.845/R≈.889와 다른 **분모/거리 제한**을 `sensor-model.json`에 명시했다.
+측정된 정오·누락·잔차는 한 행에 함께 재표본하여 precision 오류를 다시 중복 주입하지 않는다.
+바닥 자유 관측에는 그 프레임 거리 잔차 중앙을 공통 radial bias로 쓴다(바닥 오차 실측 아님).
+B는 동결 frame recall .75439/.79412와 실제 투영 오차 표본을 쓰고, FP는 기존 v3 녹화 14개 body hull을
+14/527 확률로 재표본한다. temporal 확인은 `FloorGoalMemoryV3`를 그대로 호출한다.
+정적 B 마스크의 convex hull pixel 면적은 가림이 복잡할 때 낙관적일 수 있다. 시간 iid 재표본도 실제
+오류 지속 시간을 보장하지 않는다. 이 센서 가정이 없는 물리/실물 성능으로 확대 해석하지 않는다.
