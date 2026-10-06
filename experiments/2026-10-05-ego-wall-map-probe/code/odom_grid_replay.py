@@ -275,9 +275,9 @@ def run(args):
                             'offline_scalars': {**{'offline/'+k: final[k] for k in fields if final.get(k) is not None},
                                                 'offline/end_position_error_m': result['end_position_error_m'],
                                                 'offline/end_yaw_error_deg': result['end_yaw_error_deg']},
-                            'offline_series': [{'source': {'path': str(out/'series.jsonl'), 'sha256': sha(out/'series.jsonl')},
+                            'offline_series': {'source': {'path': str(out/'series.jsonl'), 'sha256': sha(out/'series.jsonl')},
                                                 'format': 'jsonl', 'sim_time_field': 't',
-                                                'tags': [{'tag': 'trace/'+k, 'path': [k]} for k in fields]}],
+                                                'tags': [{'tag': 'trace/'+k, 'path': [k]} for k in fields]},
                             'hparam_metrics': ['offline/precision_015', 'offline/wall_coverage', 'offline/end_position_error_m']})
     print(json.dumps({'output': str(out), 'robot': args.robot, 'frames': result['frames'],
                       'final': final, 'end_position_error_m': result['end_position_error_m'],

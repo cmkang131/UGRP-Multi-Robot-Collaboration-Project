@@ -26,27 +26,9 @@
     "path": "/Users/changmin/projects/ugrp-worktrees/dispatch-e2e/outputs/dispatch-adaptive-final19-20260918/F1/team/r2/dispatch-56ac717bbe8e-r2-plan-3-request.json",
     "sha256": "6a6c0c56697538a18d8f4241d22f9b2ddb7c29791f5306d97762f29c8e815221",
     "inspected": "text context fields, full agreement plan, image labels; no new model call or image-inference replay",
-    "context_fields": [
-      "agreement",
-      "mission",
-      "own_issued_commands",
-      "own_motion_identity",
-      "own_probe_image_readout",
-      "peer_claims",
-      "reply_binding",
-      "reply_envelope",
-      "request_id",
-      "robot_id"
-    ],
+    "context_fields": ["agreement", "mission", "own_issued_commands", "own_motion_identity", "own_probe_image_readout", "peer_claims", "reply_binding", "reply_envelope", "request_id", "robot_id"],
     "agreement_plan_hash": "e6c059e6b92dae95c292dc349c3b134697dbeea64725f89dd4311fed7d314476",
-    "image_labels": [
-      "CURRENT OWN RGB",
-      "CURRENT SHARED TOP RGB",
-      "BEFORE_CURRENT OWN RGB",
-      "BEFORE_CURRENT SHARED TOP RGB",
-      "AFTER_CURRENT OWN RGB",
-      "AFTER_CURRENT SHARED TOP RGB"
-    ],
+    "image_labels": ["CURRENT OWN RGB", "CURRENT SHARED TOP RGB", "BEFORE_CURRENT OWN RGB", "BEFORE_CURRENT SHARED TOP RGB", "AFTER_CURRENT OWN RGB", "AFTER_CURRENT SHARED TOP RGB"],
     "storage": "local original inspected; not copied or remotely backed up by this audit"
   },
   "additional_bundles": {
@@ -86,7 +68,7 @@
         "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
         "harness/owncam_localizer.py": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
         "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
-        "experiments/2026-10-05-ego-wall-map-probe/code/odom_grid_replay.py": "97261828f650275c7be684c8f8b4e05ba26cc1a10052f8891a8489d252b234af"
+        "experiments/2026-10-05-ego-wall-map-probe/code/odom_grid_replay.py": "4f96b68b7bf838dc8824f6e037e253eaff32dd5bef576989c2f3e5a38674fc9a"
       },
       "runtime_wiring": "offline API command()/observe_wall(); no new live camera/command runtime adapter"
     }
