@@ -42,7 +42,7 @@ def palette(scene):
                        'hue_distance_deg_to_raw_B': float(hue),
                        'rgb_l2_to_raw_B': float(np.linalg.norm(np.array(rgba[:3])-target[:3])),
                        'deltaE76_to_raw_B': float(np.linalg.norm(lab-bl)),
-                       'alpha_zero': rgba[3] == 0})
+                       'alpha_zero': bool(rgba[3] == 0)})
     composites = []
     texture = root.find('.//texture[@name="ground"]')
     for ground_key in ('rgb1', 'rgb2'):

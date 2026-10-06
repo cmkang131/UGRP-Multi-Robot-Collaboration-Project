@@ -39,6 +39,17 @@ def test_static_renderer_has_no_physics_call():
     assert {'mj_kinematics', 'mj_camlight'}.issubset(calls)
 
 
+def test_palette_is_json_serializable(tmp_path):
+    from v2_color_audit import palette
+    scene = tmp_path/'scene.xml'
+    scene.write_text('<mujoco><asset><texture name="ground" rgb1=".3 .3 .3" rgb2=".6 .6 .6"/></asset>'
+        '<worldbody><geom name="zone_zone_B" rgba=".2 .4 .95 .3"/>'
+        '<geom name="zone_zone_A" rgba=".95 .45 .1 .3"/><geom name="zone_zone_C" rgba=".7 .2 .85 .3"/>'
+        '<geom name="zone_pickup" rgba=".12 .36 .7 .14"/></worldbody></mujoco>')
+    value = json.loads(json.dumps(palette(scene), allow_nan=False))
+    assert value['colours'][0]['deltaE76_to_raw_B'] == 0.
+
+
 def test_v1_before_v2_golden_bytes():
     hsv = np.full((480, 640, 3), (0, 0, 130), np.uint8)
     hsv[280:420, 240:390] = (115, 170, 180)
