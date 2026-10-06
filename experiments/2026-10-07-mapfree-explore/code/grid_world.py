@@ -155,18 +155,37 @@ class GridWorld:
         if self.collision(self.pose[:2]):
             self.collisions += 1
             self.collision_latched = True
+    def passage_intent(self,plan,estimated_pose,t):
+        """Evaluation of issued short path, including blocked attempts before centre crossing."""
+        path = plan.get('path_m',[])
+        if len(path)<2:
+            return
+        local = inverse([path[min(2,len(path)-1)]],estimated_pose)[0]
+        local *= min(1.,.12/max(1e-9,np.linalg.norm(local)))
+        end = transform([local],self.pose)[0]
+        radius = math.hypot(.12,.10)
         for p in self.static.get('passages',[]):
             if p['kind'] not in ('door','corridor'):
                 continue
             axis = 0 if p['axis']=='x' else 1
             center = p['center_m']
-            cross = before[axis] < center[axis] <= self.pose[axis] or self.pose[axis] < center[axis] <= before[axis]
-            if cross and abs(self.pose[1-axis]-center[1-axis]) <= p['width_m']/2+.2:
-                if self.motion.t-self.last_attempt.get(p['id'],-10) > 2.:
-                    self.door_attempts += 1
-                    if self.collision(self.pose[:2]):
-                        self.wrong_doors += 1
-                    self.last_attempt[p['id']] = self.motion.t
+            approaching = abs(end[axis]-center[axis]) < abs(self.pose[axis]-center[axis])
+            near = abs(end[axis]-center[axis])<=radius+.05
+            within = abs(end[1-axis]-center[1-axis])<=p['width_m']/2+radius
+            if approaching and near and within and t-self.last_attempt.get(p['id'],-100)>3.:
+                self.door_attempts += 1
+                samples = np.linspace(self.pose[:2],end,9)
+                if any(self.collision(xy) for xy in samples):
+                    self.wrong_doors += 1
+                self.last_attempt[p['id']] = t
+        for p in plan.get('doors',[]):
+            center = transform([p['center_m']],self.start)[0]
+            if np.linalg.norm(end-center)<.3 and t-self.last_attempt.get(p['id'],-100)>3.:
+                self.candidate_attempts += 1
+                matched = any(np.linalg.norm(center-np.array(q['center_m']))<.3 for q in self.static.get('passages',[]))
+                if not matched:
+                    self.false_candidate_attempts += 1
+                self.last_attempt[p['id']] = t
 
     def advance(self,command,end):
         self.motion.command(command)

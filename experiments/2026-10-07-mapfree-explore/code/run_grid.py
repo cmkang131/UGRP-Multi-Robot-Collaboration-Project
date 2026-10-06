@@ -72,7 +72,7 @@ class Actor:
         if self.t-self.last_goal_t > 3.:
             snapshot = {**snapshot,'candidates':[p for p in snapshot['candidates'] if p['confirmed_t'] is not None]}
         if self.condition=='static_map':
-            state,clear,dist,lo = footprint_clearance(self.grid,Footprint(),.02)
+            state,clear,dist,lo = footprint_clearance(self.grid,Footprint(),.02,yaw=pose[2])
             start = tuple(np.array(self.grid.cell(pose[:2]))-lo)
             target = tuple(np.array(self.grid.cell(self.static_goal))-lo)
             path = astar(clear,start,target,.1,dist)
@@ -99,8 +99,15 @@ class Actor:
             error = wrap(heading-pose[2])
             if abs(error)<.05:
                 error = math.radians(25)
+            _,sweep,_,lo = footprint_clearance(self.grid,Footprint(),.02)
+            x,y = np.array(self.grid.cell(pose[:2]))-lo
+            # Initial same-place scan is the registered own-body support assumption.
+            initial = np.linalg.norm(pose[:2]) < .05
+            allowed = initial or (0<=y<sweep.shape[0] and 0<=x<sweep.shape[1] and sweep[y,x])
             command = {'t':self.t,'kind':'mecanum','forward':0.,'left':0.,
-                       'turn':float(np.clip(error/gain[2,2],-.5,.5)), 'duration_s':1.}
+                       'turn':float(np.clip(error/gain[2,2],-.5,.5)) if allowed else 0., 'duration_s':1.}
+            if not allowed:
+                self.counts['rotation_sweep_unknown'] = self.counts.get('rotation_sweep_unknown',0)+1
         self.steps += 1
         self.counts[plan['status']] = self.counts.get(plan['status'],0)+1
         return command
@@ -109,12 +116,21 @@ class Actor:
 def static_inputs(world):
     """Authored baseline exception, exact initial alignment only; no dynamic GT state."""
     grid = ObservedGrid('r1')
-    points = inverse(world.floor,world.start)
+    # Rasterize cell centres in the baseline's own aligned frame; transformed input lattice
+    # points can alias at floating cell boundaries and invent unknown holes.
+    x0,x1,y0,y1 = world.static['bounds_m']
+    corners = inverse(np.array([[x0,y0],[x0,y1],[x1,y0],[x1,y1]]),world.start)
+    lo,hi = np.floor(corners.min(0)/.1).astype(int),np.ceil(corners.max(0)/.1).astype(int)
+    xx,yy = np.meshgrid(np.arange(lo[0],hi[0]),np.arange(lo[1],hi[1]))
+    cells = np.stack([xx.ravel(),yy.ravel()],1)
+    points = transform((cells+.5)*.1,world.start)
     rects = [dict(center=o['center_m'],half=o['half_extents_m'],yaw=0.) for o in world.static['obstacles']]
-    occupied = boxes_occupied(world.floor,rects,padding=.04)
-    for p,hit in zip(points,occupied):
-        c = grid.cell(p)
-        # Public static map is separate from measured sensor odds (same navigation API).
+    occupied = boxes_occupied(points,rects,padding=.05)
+    inside = (points[:,0]>=x0)&(points[:,0]<=x1)&(points[:,1]>=y0)&(points[:,1]<=y1)
+    for c,hit,keep in zip(cells,occupied,inside):
+        if not keep:
+            continue
+        c = tuple(int(v) for v in c)
         grid.odds[c] = 4. if hit else -4.
         (grid.wall_frames if hit else grid.floor_frames)[c] = {'authored_static'}
     goal = inverse([world.static['regions']['zone_B']['center_m']],world.start)[0].tolist()
@@ -165,6 +181,7 @@ def episode(index,start_id,seed,split,condition,out):
             if plan['status']=='search_exhausted':
                 status = 'search_exhausted'
                 break
+            world.passage_intent(plan,actor.odom.pose,actor.t)
             command = actor.command(plan)
             log[-1]['command'] = command
             actor.odom.command(command)
@@ -177,6 +194,7 @@ def episode(index,start_id,seed,split,condition,out):
     result = {'scenario':f's{index}','start':start_id,'seed':seed,'split':split,'condition':condition,
         'status':status,'first_B':first,'time_s':actor.t,'distance_m':world.distance,'coverage':world.coverage(),
         'collisions':world.collisions,'door_attempts':world.door_attempts,'wrong_door_attempts':world.wrong_doors,
+        'candidate_passage_attempts':world.candidate_attempts,'false_candidate_passage_attempts':world.false_candidate_attempts,
         'door_reasons':door_reasons,'plans':actor.counts,'observations':len(log),
         'sensor_draws':world.sensor_counters,'end_position_error_m':float(np.linalg.norm(
             transform([actor.odom.pose[:2]],world.start)[0]-world.pose[:2])),

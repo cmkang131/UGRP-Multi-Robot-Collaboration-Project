@@ -84,7 +84,7 @@ class ObservedGrid:
         self.support = set()
 
     def cell(self, xy):
-        return tuple(np.floor(np.asarray(xy)/self.resolution).astype(int))
+        return tuple(int(v) for v in np.floor(np.asarray(xy)/self.resolution))
 
     def point(self, cell):
         return (np.asarray(cell)+.5)*self.resolution
@@ -218,7 +218,7 @@ def visible_unknown(grid, point, yaw, fov_deg, range_m):
 
 
 def frontier_candidates(grid, pose, options, footprint=Footprint(), recent=()):
-    state,clear,dist,lo = footprint_clearance(grid,footprint,options.pose_margin_m)
+    state,clear,dist,lo = footprint_clearance(grid,footprint,options.pose_margin_m,yaw=pose[2])
     start = np.asarray(grid.cell(pose[:2]))-lo
     reach = reachable(clear,tuple(start))
     # Actual frontier lies on raw free/unknown edge; viewpoint lies in eroded reachable free.
@@ -362,7 +362,7 @@ class OwnMapNavigator:
         if goal:
             candidates = [c for c in goal.get('candidates',[]) if c.get('state')=='locally_confirmed_region']
         if candidates:
-            state,clear,dist,lo = footprint_clearance(grid,footprint,o.pose_margin_m)
+            state,clear,dist,lo = footprint_clearance(grid,footprint,o.pose_margin_m,yaw=pose[2])
             start = tuple(np.asarray(grid.cell(pose[:2]))-lo)
             target = np.asarray(candidates[0]['center_m'])
             yy,xx = np.nonzero(reachable(clear,start))
@@ -377,7 +377,7 @@ class OwnMapNavigator:
             seen = [c for c in goal.get('candidates',[]) if c.get('state')=='visually_seen']
             if seen:
                 target = np.asarray(seen[-1]['center_m'])
-                state,clear,dist,lo = footprint_clearance(grid,footprint,o.pose_margin_m)
+                state,clear,dist,lo = footprint_clearance(grid,footprint,o.pose_margin_m,yaw=pose[2])
                 start = tuple(np.asarray(grid.cell(pose[:2]))-lo)
                 yy,xx = np.nonzero(reachable(clear,start))
                 if len(xx):

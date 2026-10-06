@@ -152,3 +152,17 @@ def test_all_scenario_assets_resolve_without_scene_builder():
     layouts = [m.load_layout(i) for i in range(1,9)]
     assert len({x[1]['map_id'] for x in layouts})==3
     assert all(x[2] for x in layouts)
+
+
+def test_json_serializable_native_cells_and_initial_static_baseline_path():
+    g = rectangle_grid()
+    json.dumps({'cells':[[*c,v] for c,v in g.odds.items()]},allow_nan=False)
+    sys.path.insert(0,str(EXP/'code'))
+    try:
+        import run_grid
+        w = run_grid.GridWorld(1,run_grid.STARTS['A'],1701,'development')
+        g,target = run_grid.static_inputs(w)
+        actor = run_grid.Actor('static_map',g,target)
+        assert actor.plan()['path_m']
+    finally:
+        sys.path.remove(str(EXP/'code'))

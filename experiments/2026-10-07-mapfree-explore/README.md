@@ -124,3 +124,17 @@ B는 동결 frame recall .75439/.79412와 실제 투영 오차 표본을 쓰고,
 14/527 확률로 재표본한다. temporal 확인은 `FloorGoalMemoryV3`를 그대로 호출한다.
 정적 B 마스크의 convex hull pixel 면적은 가림이 복잡할 때 낙관적일 수 있다. 시간 iid 재표본도 실제
 오류 지속 시간을 보장하지 않는다. 이 센서 가정이 없는 물리/실물 성능으로 확대 해석하지 않는다.
+
+### 작은 DEV 인수 재생의 구현 오류 기록
+
+첫 `87b069eb` smoke의 static 결과는 11 s 충돌이고, 마지막 grid JSON 저장에서 NumPy int64 형식 오류로
+중단했다(`outputs/mapfree-explore-smoke-v1`, 부분 결과 보존). Python JSON 기본형 계약에 맞춰 grid cell을
+native int로 반환한다. 새 저장 회귀검사를 추가했다. 별도로 static raster는 입력 좌표를 floor 양자화할 때
+생길 수 있는 빈 칸을 없애도록 **자기 셀 중심에서 기하를 rasterize**한다.
+
+static 최초 경로 회귀검사에서 0.5 m 문이 여전히 막혔다. 이는 cell 경계 여유를 포함한 **모든 방향 회전 원**이
+통로에 들어가지 않는 보수성이다. 위 §4의 명세를 구체화하여 translation A*는 현재 yaw의 전체 사각 footprint,
+제자리 회전 명령만 circumscribed sweep으로 검사한다(Nav2 oriented footprint 원리). 새 반례 시험을 통과했다.
+초기 body support 안의 제자리 관측 가정 외에는 unknown 회전 sweep도 이동 명령으로 내보내지 않는다.
+실험 기준·센서 잡음·B threshold 변경은 없다. 문 시도 채점은 실제 중심이 문을 넘은 경우만이 아니라
+발행한 짧은 경로가 문 경계의 차체 폭 안으로 진입하려는 경우도 세므로 충돌 직전 시도를 놓치지 않는다.
