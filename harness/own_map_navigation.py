@@ -30,9 +30,9 @@ class NavigationOptions:
     pose_margin_m: float = .02
 
     def __post_init__(self):
-        for field, allowed in [('exploration', ('off','own_frontier_v1')),
+        for field, allowed in [('exploration', ('off','own_frontier_v1','own_frontier_v2')),
                                ('door_detection', ('off','own_gap_v1')),
-                               ('partial_planning', ('off','own_astar_v1'))]:
+                               ('partial_planning', ('off','own_astar_v1','own_astar_v2'))]:
             if getattr(self, field) not in allowed:
                 raise ValueError('UNKNOWN_NAVIGATION_OPTION: '+field)
         for k in ('resolution_m','range_m','fov_deg','gain_weight','travel_weight','repeat_weight','pose_margin_m'):
@@ -41,6 +41,8 @@ class NavigationOptions:
                 raise ValueError('INVALID_NAVIGATION_OPTION: '+k)
         if self.exploration != 'off' and self.partial_planning == 'off':
             raise ValueError('FRONTIER_REQUIRES_OWN_ASTAR')
+        if self.exploration == 'own_frontier_v2' and self.partial_planning != 'own_astar_v2':
+            raise ValueError('FRONTIER_V2_REQUIRES_ASTAR_V2')
 
     @property
     def enabled(self):
@@ -152,6 +154,9 @@ def footprint_clearance(grid, footprint, margin, yaw=None):
 
     yaw=None encloses every rotated pose (safe sweep); fixed yaw uses a box envelope.
     """
+    if getattr(grid,'_polygon_clearance_v2',False):
+        from harness.own_map_navigation_v2 import polygon_clearance
+        return polygon_clearance(grid,footprint,margin,yaw)
     state, lo = grid.dense()
     r = grid.resolution
     radius = footprint.radius+margin
@@ -346,6 +351,11 @@ class OwnMapNavigator:
         o = self.options
         if not o.enabled:
             return legacy_output
+        if type(self) is OwnMapNavigator and (o.exploration=='own_frontier_v2' or o.partial_planning=='own_astar_v2'):
+            from harness.own_map_navigation_v2 import OwnMapNavigatorV2
+            if not hasattr(self,'_v2_delegate'):
+                self._v2_delegate = OwnMapNavigatorV2(self.robot_id,o)
+            return self._v2_delegate.update(legacy_output,grid=grid,pose=pose,goal=goal,footprint=footprint,carrying=carrying)
         if grid is None or grid.robot_id != self.robot_id:
             raise ValueError('NAV_REQUIRES_OWN_GRID')
         out = {'coordinate_frame':f'{self.robot_id}/own_odom','revision':grid.revision,

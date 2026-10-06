@@ -318,3 +318,34 @@ Yamauchi 원문은 이후 [CMU 보관본](https://biorobotics.ri.cmu.edu/papers/
   기하 setup 오류도 실패로 남기며 시작을 바꾸지 않는다. noisy가 주 판정, oracle은 별도 진단 표다.
 - 개발 뒤 소스/옵션을 해시로 고정하고 새 확인32쌍을 한 번만 실행한다. 실패여도 확인 뒤 튜닝하지 않는다.
   두 조건 모두 성공한 쌍0이면 효율 실패, 문 시도0이면 안전 실패 규칙도 유지한다.
+
+### 9.1 환경만 교정한 ablation (`a6600b8b`, 알고리즘 v1 그대로)
+
+| 기존32쌍 | static B/충돌/coverage | frontier B/충돌/coverage |
+|---|---|---|
+| noisy, circle v1 | 0/31/15.84% | 0/13/15.11% |
+| noisy, rectangle v2 | 0/31/17.11% | 0/13/15.11% |
+| oracle, circle v1 | 20/12/40.32% | 0/0/22.51% |
+| oracle, rectangle v2 | 20/12/40.32% | 0/0/22.51% |
+
+원본 `outputs/mapfree-explore-env-v2-{noisy,oracle}`. 종료 전에 외접원만 닿았던 사례도 계속
+주행하면 실제 사각 접촉으로 끝날 수 있어 **31→31**이다. 교정은 판정의 정확성이며 성공 향상이 아니다.
+예: oracle s1/B는 기존 11 s 외접원 접촉 뒤, 교정 환경에서는 12 s green_1 실제 접촉으로 끝났다.
+작은 물체가 근거리 camera 사각에 들어간 뒤에는 새 접점이 없었다. static free의 -4 prior는
+1회 wall hit를 여러 차례 쌓기 전 occupied로 바꾸지 않는 별도 문제도 있다.
+
+### 9.2 v2 알고리즘 경계 (개발 실행 전)
+
+`own_map_navigation_v2.py`는 ROS obstacle layer와 같이 관측 hit를 즉시 계획 비용층에 표시하고,
+그 셀의 **더 나중 floor 관측**으로만 해제한다. 원래 log-odds/카메라 provenance는 그대로 둔다.
+몸 footprint의 .02 m padding을 polygon 경계+내부로 rasterize하며 body support는 따로 추적한다.
+바깥 unknown은 free로 바꾸지 않는다. v1의 dilation은 모든 축에 셀 반대각(.071 m)을 더했는데,
+v2는 실제 polygon이 차지한 칸을 사용해 회전/셀 중심 이동으로 인한 과도한 시작 차단을 줄인다.
+명령은 다음 A* 한 칸 또는 관측 heading까지, 실제 현재 subcell 위치에서 .025 m/5° 간격의
+swept polygon으로 검사한다. M1 전체 inverse gain으로 순수 병진/회전 요구를 변환하며 GT 피드백은 없다.
+이것은 새 알고리즘 옵션의 변화이고 환경 교정 커밋에 섞지 않았다. `own_gap_v1`/B v3/잡음은 불변이다.
+
+v1 변경 전 생성한 golden `tests/fixtures/floor_goal/navigation_v1.json`(SHA256
+`4bba3882bb5fc7a024a63251ebbfa1fc0ca4681f707634ebc4338bb26e619c68`)과 기본 off golden을 모두 검사한다.
+초기 1 camera frame의 floor와 body 연결, unknown 통과 금지, static prior보다 최신 hit 우선,
+회전의 평균 병진0, circle-only/실제 사각 충돌을 각각 반례로 고정했다.
