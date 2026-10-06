@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "masterpi-v7-roller-approx-probe",
+      "version": "1.0.0",
+      "purpose": "v7 roller collider approximation: MuJoCo stage profile, mesh versus sphere6_v1 equivalence and speed; fixed commands, no policy",
+      "entry": "scripts/probe_v7_roller_approx.py",
+      "runner": "scripts.probe_v7_roller_approx",
+      "docs": "experiments/2026-10-06-v7-roller-approx/README.md",
+      "requires": "clean committed expected SHA; exclusive claude lock acquired by the driver only when null; no model calls; no legacy bundle admission",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--phase"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

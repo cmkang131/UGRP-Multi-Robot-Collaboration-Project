@@ -11,6 +11,7 @@ shaft from command history alone. See experiment README and official Relay.
 from dataclasses import dataclass
 import hashlib
 import json
+from pathlib import Path
 import xml.etree.ElementTree as ET
 import numpy as np
 import mujoco
@@ -19,6 +20,9 @@ from sim.masterpi_drive_friction_v2 import DriveParameters as V2Parameters
 from sim.masterpi_drive_friction_v6 import transform_xml as v6_xml
 from sim.multi_masterpi_production import MultiMasterPiProductionV2
 PROFILE='masterpi_drive_friction_v7'
+# Opt-in, default-off speed option. The default 'mesh' leaves the XML byte-identical.
+ROLLER_COLLISION_MODES=('mesh','sphere6_v1')
+SPHERE6_ASSETS=Path(__file__).resolve().parent/'assets/masterpi_drive_friction_v7_sphere6'
 
 @dataclass(frozen=True)
 class DriveParameters(V2Parameters):
@@ -74,10 +78,70 @@ class DriveParameters(V2Parameters):
         return r
 
 
-def transform_xml(xml,params):
+def sphere6_source():
+    """TIAGo public USD sphere layout (provenance in assets/.../source.json)."""
+    return json.loads((SPHERE6_ASSETS/'source.json').read_text())
+
+
+def sphere6_layout():
+    """Six (axis_x_m, radius_m) pairs for one MasterPi roller, TIAGo values x 65/205."""
+    from sim.masterpi_geometry_v3 import OFFICIAL_WHEEL_DIAMETER_M
+    from sim.masterpi_drive_friction_v2 import SOURCE as FUJI
+    src=sphere6_source()
+    # Same scale the v2 port applies to the FUJI barrel mesh.
+    scale=OFFICIAL_WHEEL_DIAMETER_M/(2*FUJI['source_radius_m'])
+    return [(s['axis_x_m']*scale,s['radius_m']*scale) for s in src['spheres_tiago_m']]
+
+
+def apply_sphere6(root):
+    """Replace each FUJI mesh roller collider by six spheres on the roller axis.
+
+    Only the collision geom changes: body, hinge, inertia, damping, material,
+    contype/conaffinity/condim/priority and the self-collision excludes stay.
+    """
+    layout=sphere6_layout()
+    targets=[(parent,geom) for parent in root.iter() for geom in parent.findall('geom')
+             if geom.get('type')=='mesh' and geom.get('mesh')=='fuji_roller_v2']
+    if not targets or len(targets)%36:
+        raise ValueError('sphere6_v1 requires the v2 FUJI mesh rollers (36 per robot)')
+    for parent,geom in targets:
+        index=list(parent).index(geom)
+        parent.remove(geom)
+        for k,(x,r) in enumerate(layout):
+            attrs={key:value for key,value in geom.attrib.items() if key not in ('name','type','mesh')}
+            attrs.update(name=f"{geom.get('name')}_s{k}",type='sphere',pos=f'{x!r} 0 0',size=repr(r))
+            parent.insert(index+k,ET.Element('geom',attrs))
+    asset=root.find('asset')
+    if asset is not None:
+        for mesh in asset.findall("mesh[@name='fuji_roller_v2']"):
+            asset.remove(mesh)  # no geom references it any more
+    custom=root.find('custom')
+    ET.SubElement(custom,'text',name='roller_collision',data='sphere6_v1')
+    return len(targets)
+
+
+def transform_xml(xml,params,roller_collision='mesh'):
+    if roller_collision not in ROLLER_COLLISION_MODES:
+        raise ValueError(f'roller_collision must be one of {ROLLER_COLLISION_MODES}')
     root=ET.fromstring(v6_xml(xml,params))
     root.find("custom/text[@name='drive_profile']").set('data',PROFILE)
+    if roller_collision=='sphere6_v1':
+        apply_sphere6(root)
     return ET.tostring(root,encoding='unicode')
+
+
+def option_record(roller_collision='mesh'):
+    """Extra audit fields; empty for the default so the default record is unchanged."""
+    if roller_collision=='mesh':
+        return {}
+    src=sphere6_source()
+    r={'roller_collision':roller_collision,
+       'roller_collision_spheres_m':sphere6_layout(),
+       'roller_collision_source':{k:src['values_source'][k] for k in ('repository','commit','wheel_file','roller_file')},
+       'roller_collision_paper':src['method_source']['paper']+' '+src['method_source']['section'],
+       'roller_collision_unconfirmed':src['unconfirmed']}
+    r['roller_collision_sha256']=hashlib.sha256(json.dumps(r,sort_keys=True).encode()).hexdigest()
+    return r
 
 
 class HysteresisWorld(FrictionWorld):
@@ -101,9 +165,11 @@ class HysteresisWorld(FrictionWorld):
             for c in self.controllers.values():c._presentation_dirty=True
 
 
-def build_world(scene, *, drive_profile, params=None, **kwargs):
+def build_world(scene, *, drive_profile, params=None, roller_collision='mesh', **kwargs):
     if drive_profile != PROFILE:
         raise ValueError('explicit '+PROFILE+' required')
+    if roller_collision not in ROLLER_COLLISION_MODES:
+        raise ValueError(f'roller_collision must be one of {ROLLER_COLLISION_MODES}')
     from sim.session_scenes import Scene
     from sim.masterpi_model_v3 import v3_hardware
     from sim.masterpi_robot_models import V3_DRAWING_HARDWARE_KEYS
@@ -117,7 +183,7 @@ def build_world(scene, *, drive_profile, params=None, **kwargs):
         xml = apply(scene.transform(xml), 'cargo_noslip_v1')
         xml = scene.robot_transform(xml, hardware=world.physical_params,
                                     calibrated_keys=world.calibration_parameters)
-        return transform_xml(xml, world.drive_parameters)
+        return transform_xml(xml, world.drive_parameters, roller_collision)
 
     MultiMasterPiProductionV2.__init__(world, xml_transform=transform, **kwargs)
     hw = dict(world.physical_params)
@@ -126,6 +192,8 @@ def build_world(scene, *, drive_profile, params=None, **kwargs):
             hw.pop(key, None)
     world.physical_params.update(v3_hardware(hw))
     world.calibration_status = 'INPUT_STICK_SLIP_CANDIDATE'
+    world.roller_collision = roller_collision
     world.drive_profile_record = world.drive_parameters.record()
+    world.drive_profile_record.update(option_record(roller_collision))
     world.drive_profile_record['xml_sha256'] = hashlib.sha256(world.scene_xml.encode()).hexdigest()
     return world

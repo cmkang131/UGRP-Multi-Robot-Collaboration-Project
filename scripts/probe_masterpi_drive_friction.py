@@ -28,7 +28,24 @@ def write(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False)+'\n')
 
 
-def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torque_audit=False, long_lane=False, stall_audit=False):
+def timer_snapshot(data):
+    import mujoco
+    return {t.name[len('mjTIMER_'):].lower(): (float(data.timer[t].duration), int(data.timer[t].number))
+            for t in mujoco.mjtTimer}
+
+
+def timer_delta(before, after):
+    """Per-call MuJoCo pipeline stage times (microseconds) between two snapshots."""
+    out = {}
+    for key, (duration, number) in after.items():
+        d_t, d_n = duration-before[key][0], number-before[key][1]
+        if d_n > 0:
+            out[key] = {'calls': d_n, 'total_s': d_t, 'mean_us': 1e6*d_t/d_n}
+    return out
+
+
+def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torque_audit=False, long_lane=False, stall_audit=False,
+             world_options=None, profile_timers=False):
     import mujoco
     import numpy as np
     from sim.masterpi_drive_friction import build_world
@@ -64,7 +81,7 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
               'qualification': 'staged DEV physics diagnostic, not student/hardware success',
               'model_calls': 0, 'physical_success': None, 'loadavg_start': os.getloadavg()}
     try:
-        world = (build_world(scene, drive_profile=profile, **kwargs) if profile in CONTACT_PROFILES else
+        world = (build_world(scene, drive_profile=profile, **(world_options or {}), **kwargs) if profile in CONTACT_PROFILES else
                  legacy_world(scene, 'cargo_noslip_v1', initial_sim_cap_s=30., **kwargs))
         scene.setup(world)
         c = world.robot('r1'); m, d = world.model, world.data
@@ -113,7 +130,9 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
         wheel_dofs = [m.jnt_dofadr[m.joint(f'r1__wheel_{w}_joint').id] for w in ('fl','fr','rl','rr')]
         result['drive_command_s'] = drive_s
         result['diagnostic_lane'] = 'east_long_x2.5_v1' if long_lane else 'east_x3_v1'
-        rows = []; audit_rows = []; own_contact_pairs = {}; wall0 = time.perf_counter()
+        rows = []; audit_rows = []; own_contact_pairs = {}
+        profile_samples = []; timers0 = timer_snapshot(d) if profile_timers else None
+        wall0 = time.perf_counter()
         force6 = np.zeros(6)
         jac = np.zeros((3, m.nv)); jacr = np.zeros((3, m.nv))
         for i in range(round((drive_s+1.)/dt)):
@@ -156,6 +175,9 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
                         relative = velocity[1]-velocity[0]
                         if force6[0] > 1e-6:
                             slips.append(float(np.linalg.norm(relative-(relative@contact.frame[:3])*contact.frame[:3])))
+                if profile_timers:
+                    profile_samples.append({'t': float(d.time-start_t), 'ncon': int(d.ncon), 'nefc': int(d.nefc),
+                        'solver_niter': int(d.solver_niter[0]), 'nisland': int(d.nisland)})
                 rows.append({'t': float(d.time-start_t), 'xyz': c.base_xyz().tolist(),
                     'yaw': c.base_rpy()[2], 'velocity': d.qvel[c.base_dadr:c.base_dadr+6].tolist(),
                     'com_xyz': d.subtree_com[c.robot_bid].tolist(),
@@ -176,6 +198,18 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
         else:
             result['status'] = 'MEASURED_DEV'
         elapsed = time.perf_counter()-wall0
+        if profile_timers:
+            stages = timer_delta(timers0, timer_snapshot(d))
+            step_total = stages.get('step', {}).get('total_s', 0.)
+            result['profile'] = {'mj_stage_us_per_call': stages, 'step_total_s': step_total,
+                'python_and_trace_share_of_wall': 1.-step_total/elapsed if elapsed else None,
+                'ncon_mean': float(np.mean([r['ncon'] for r in profile_samples])), 'ncon_max': max(r['ncon'] for r in profile_samples),
+                'nefc_mean': float(np.mean([r['nefc'] for r in profile_samples])),
+                'solver_niter_mean': float(np.mean([r['solver_niter'] for r in profile_samples])),
+                'model': {k: int(getattr(m, k)) for k in ('nbody', 'ngeom', 'njnt', 'nv', 'nu', 'neq')},
+                'integrator': int(m.opt.integrator), 'solver': int(m.opt.solver), 'cone': int(m.opt.cone),
+                'iterations': int(m.opt.iterations), 'dt': dt}
+            write(output/'profile-samples.json', profile_samples)
         tail = [r for r in rows if drive_s-.5 <= r['t'] <= drive_s]
         result['tail_lateral_min_mps'] = min(r['velocity'][1] for r in tail) if tail else None
         result['tail_yaw_min_radps'] = min(r['velocity'][5] for r in tail) if tail else None
