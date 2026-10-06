@@ -13,6 +13,10 @@ Options, constructor keywords, defaults OFF:
 
   ``self_walls_enabled``  keep ``observation['self_walls']`` records and put ``self_walls`` in ``snapshot()``.
   ``self_walls_text``     additionally put ``self_walls_text`` (the LLM wording) in ``snapshot()``; needs the option above.
+  ``self_walls_text_height``  print each face's measured height ``h`` in that wording (needs ``self_walls_text``). Off: the
+                          records keep ``h`` but the wording leaves it out, because the measured height is not yet reliable
+                          (README: a 0.40 m wall reads 0.08-0.13 m in the search pose where its top is out of frame or at a
+                          door edge).
 
 With both off the object behaves exactly as ``Memory``: ``observe`` ignores ``self_walls`` and ``snapshot()`` is
 byte-identical to ``Memory.snapshot()`` (tested).
@@ -73,23 +77,24 @@ def select_for_text(records, max_obs=6, min_gap_s=2.0):
     return picked
 
 
-def render_self_walls(records, now=None, max_obs=6, min_gap_s=2.0, max_segments=4):
+def render_self_walls(records, now=None, max_obs=6, min_gap_s=2.0, max_segments=4, show_height=False):
     """LLM wording of the own wall observations. ``now`` (sim time) adds each observation's age.
 
-    ``self_walls (own camera; ego frame at each t: distance in metres and angle in degrees, 0 = straight ahead, positive =
-    left; wall base lines, h = measured wall height): 2 observations | t=14.8 [high, carrying] 1.2m @ 88° h=0.40 | ...``
+    ``self_walls (own camera; ego frame at each t: distance in metres, angle in degrees, 0 = straight ahead, positive =
+    left; wall base lines): 2 observations | t=14.8 (age 1.0s) [high, carrying] 1.2m @ 88° → 1.2m @ 70° | ...``
+    ``show_height`` appends `` h=0.40`` to a face whose height was measured.
     """
     picked = select_for_text(records, max_obs, min_gap_s)
     if not picked:
         return "self_walls: no wall observed yet"
     head = ("self_walls (own camera; ego frame at each t: distance in metres, angle in degrees, 0 = straight ahead, positive = "
-            f"left; wall base lines; h = measured height): {len(picked)} observations")
+            f"left; wall base lines{'; h = measured height' if show_height else ''}): {len(picked)} observations")
     parts = []
     for r in picked:
         age = "" if now is None else f" (age {max(0.0, now - r['t_sim']):.1f}s)"
         segs = " ; ".join(
             f"{s[0]:.1f}m @ {math.degrees(s[1]):.0f}° → {s[2]:.1f}m @ {math.degrees(s[3]):.0f}°"
-            + ("" if s[4] is None else f" h={s[4]:.2f}") for s in r["seg"][:max_segments])
+            + (f" h={s[4]:.2f}" if show_height and s[4] is not None else "") for s in r["seg"][:max_segments])
         more = len(r["seg"]) - max_segments
         parts.append(f"t={r['t_sim']:.1f}{age} [{r['posture']}, {'carrying' if r['load'] else 'not carrying'}] {segs}"
                      + (f" ; +{more} more" if more > 0 else ""))
@@ -97,13 +102,16 @@ def render_self_walls(records, now=None, max_obs=6, min_gap_s=2.0, max_segments=
 
 
 class SelfWallMemory(Memory):
-    def __init__(self, robot_id, *, self_walls_enabled=False, self_walls_text=False, snapshot_records=12,
-                 text_max_obs=6, text_min_gap_s=2.0, **kwargs):
+    def __init__(self, robot_id, *, self_walls_enabled=False, self_walls_text=False, self_walls_text_height=False,
+                 snapshot_records=12, text_max_obs=6, text_min_gap_s=2.0, **kwargs):
         super().__init__(robot_id, **kwargs)
         if self_walls_text and not self_walls_enabled:
             raise ValueError("SELF_WALLS_TEXT_NEEDS_SELF_WALLS_ENABLED")
+        if self_walls_text_height and not self_walls_text:
+            raise ValueError("SELF_WALLS_TEXT_HEIGHT_NEEDS_SELF_WALLS_TEXT")
         self.self_walls_enabled = bool(self_walls_enabled)
         self.self_walls_text = bool(self_walls_text)
+        self.self_walls_text_height = bool(self_walls_text_height)
         self.snapshot_records = int(snapshot_records)
         self.text_max_obs, self.text_min_gap_s = int(text_max_obs), float(text_min_gap_s)
         self.self_walls = []
@@ -128,8 +136,8 @@ class SelfWallMemory(Memory):
             return snap
         snap["self_walls"] = copy.deepcopy([self._json(r) for r in self.self_walls[-self.snapshot_records:]])
         if self.self_walls_text:
-            snap["self_walls_text"] = render_self_walls(self.self_walls, now=self._sim_time,
-                                                        max_obs=self.text_max_obs, min_gap_s=self.text_min_gap_s)
+            snap["self_walls_text"] = render_self_walls(self.self_walls, now=self._sim_time, max_obs=self.text_max_obs,
+                                                        min_gap_s=self.text_min_gap_s, show_height=self.self_walls_text_height)
         return snap
 
     @staticmethod

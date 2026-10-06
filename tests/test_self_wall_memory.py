@@ -108,7 +108,7 @@ class RecordsOnTests(unittest.TestCase):
 
 class TextOnTests(unittest.TestCase):
     def test_text_lists_newest_first_with_age_and_is_deterministic(self):
-        m = SelfWallMemory("r1", self_walls_enabled=True, self_walls_text=True)
+        m = SelfWallMemory("r1", self_walls_enabled=True, self_walls_text=True, self_walls_text_height=True)
         m.observe(observation([record(10.0, 1), record(12.3, 2, seg=[(2.1, math.radians(12), 2.4, math.radians(-8), 0.40),
                                                                        (1.2, math.radians(88), 1.2, math.radians(70), None)],
                                                     load=False)], sim_time=14.0), 14.0)
@@ -119,17 +119,27 @@ class TextOnTests(unittest.TestCase):
         self.assertIn("2 observations", text)
         self.assertIn("positive = left", text)
 
+    def test_height_is_left_out_of_the_wording_by_default(self):
+        m = SelfWallMemory("r1", self_walls_enabled=True, self_walls_text=True)
+        m.observe(observation([record(10.0, 1)], sim_time=11.0), 11.0)
+        text = m.snapshot()["self_walls_text"]
+        self.assertNotIn("h=", text)
+        self.assertNotIn("measured height", text)
+        self.assertEqual(m.snapshot()["self_walls"][0]["seg"][0][4], 0.4)        # the record still carries it
+        with self.assertRaises(ValueError):
+            SelfWallMemory("r1", self_walls_enabled=True, self_walls_text_height=True)
+
     def test_text_is_bounded_and_thinned(self):
         recs = [record(float(t), t) for t in range(0, 60)]
         picked = select_for_text(recs, max_obs=6, min_gap_s=2.0)
         self.assertEqual([r["t_sim"] for r in picked], [59.0, 57.0, 55.0, 53.0, 51.0, 49.0])
-        text = render_self_walls(recs, now=60.0)
+        text = render_self_walls(recs, now=60.0, show_height=True)
         self.assertEqual(text.count("t="), 6)
         self.assertLess(len(text), 1500)
 
     def test_segments_per_observation_are_capped(self):
         many = [(1.0 + i*0.1, 0.1, 1.5 + i*0.1, 0.2, 0.4) for i in range(7)]
-        text = render_self_walls([record(1.0, seg=many)], max_segments=4)
+        text = render_self_walls([record(1.0, seg=many)], max_segments=4, show_height=True)
         self.assertIn("+3 more", text)
 
     def test_empty(self):

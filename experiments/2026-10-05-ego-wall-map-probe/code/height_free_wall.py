@@ -88,6 +88,11 @@ PARAMS = {
     # a column can stay inside one cell for at most its diagonal, 0.571*sqrt(2) = 0.81 m (FLOOR_PATCH_DIAGONAL_M).
     # OPTION, OFF by default (0): the behaviour before #405. Switch on with ``floor_patch_max_m=FLOOR_PATCH_DIAGONAL_M``.
     'floor_patch_max_m': 0.,
+    # OPTION, OFF by default (0 = a run top at row 0 is the only "surface leaves the frame"). A run top within this many
+    # rows of the frame top is read as "the surface leaves the frame" too: the first rows of the undistorted frame are
+    # darkened by the remap border, so ~95 % of the run tops of the recorded episodes sit on rows 1-4 (row 3 alone: 40 %),
+    # and a height solved from such a row is a lower bound at best, not the wall height (it read 0.13 m for a 0.40 m wall).
+    'top_edge_px': 0,
 }
 
 # The value the floor-patch option is meant to take on the recorded 0.571 m checker floor.
@@ -96,7 +101,7 @@ FLOOR_PATCH_DIAGONAL_M = 0.81
 # Options added in #405 and their OFF values (= the behaviour before #405). ``recorded_params`` leaves an option out
 # of a run's recorded parameter dict while it is off, so a run with every option off records exactly what it
 # recorded before.
-OPTION_PARAMS_OFF = {'clamp_horizon': False, 'run_step_window': 1, 'floor_patch_max_m': 0.}
+OPTION_PARAMS_OFF = {'clamp_horizon': False, 'run_step_window': 1, 'floor_patch_max_m': 0., 'top_edge_px': 0}
 
 
 def recorded_params(params: Mapping | None = None) -> dict:
@@ -329,7 +334,8 @@ def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bo
             t_here = float(t_all[i, j])
             top = float(run_top[max(vb_i[i, j] - kwin, 0), j])
             out['vt'][j, k] = top
-            if top > 0:
+            leaves_frame = top <= float(p['top_edge_px'])
+            if not leaves_frame:
                 h = solve_height(cm, j, t_here, top)
                 if h is not None:
                     out['h'][j, k] = h
@@ -339,7 +345,7 @@ def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bo
                 h_lb = solve_height(cm, j, t_here, 0.)
                 if h_lb is not None:
                     out['h_lb'][j, k] = h_lb
-            ceiling = top + 2. if top > 0 else vb - band_px
+            ceiling = vb - band_px if leaves_frame else top + 2.
             r_here, b_here = column_range_bearing(cm, j, t_here)
             out['r'][j, k] = r_here
             out['b'][j, k] = b_here
