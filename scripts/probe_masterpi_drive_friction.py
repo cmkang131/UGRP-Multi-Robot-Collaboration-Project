@@ -13,6 +13,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
 PROFILE = 'masterpi_drive_friction_v1'
+PUBLIC_PROFILE = 'masterpi_drive_friction_v2'
 CASES = ('rest', 'forward', 'left', 'turn', 'push', 'no_contact', 'rated_speed')
 
 
@@ -23,7 +24,9 @@ def write(path, value):
 def run_case(profile, case, loaded, output):
     import mujoco
     import numpy as np
-    from sim.masterpi_drive_friction import build_world, DriveParameters
+    from sim.masterpi_drive_friction import build_world
+    if profile == PUBLIC_PROFILE:
+        from sim.masterpi_drive_friction_v2 import build_world
     from sim.zone_final_v3_scene import FinalV3Scene, build_world as legacy_world
     from harness.zone_pair_highpose import HIGH
     from sim.masterpi_dynamics_v2 import FORWARD_PATTERN, LEFT_PATTERN, YAW_LEFT_PATTERN
@@ -41,7 +44,7 @@ def run_case(profile, case, loaded, output):
               'qualification': 'staged DEV physics diagnostic, not student/hardware success',
               'model_calls': 0, 'physical_success': None, 'loadavg_start': os.getloadavg()}
     try:
-        world = (build_world(scene, drive_profile=PROFILE, **kwargs) if profile == PROFILE else
+        world = (build_world(scene, drive_profile=profile, **kwargs) if profile in (PROFILE, PUBLIC_PROFILE) else
                  legacy_world(scene, 'cargo_noslip_v1', initial_sim_cap_s=30., **kwargs))
         scene.setup(world)
         c = world.robot('r1'); m, d = world.model, world.data
@@ -83,7 +86,7 @@ def run_case(profile, case, loaded, output):
                     'no_contact': FORWARD_PATTERN, 'rated_speed': FORWARD_PATTERN}
         cmd = patterns.get(case, np.zeros(4)) * (1. if case == 'rated_speed' else .2)
         drive_s = 1.5
-        rows = []; wall0 = time.perf_counter()
+        rows = []; own_contact_pairs = {}; wall0 = time.perf_counter()
         force6 = np.zeros(6)
         jac = np.zeros((3, m.nv)); jacr = np.zeros((3, m.nv))
         for i in range(round((drive_s+1.)/dt)):
@@ -92,19 +95,23 @@ def run_case(profile, case, loaded, output):
                 # One-newton lateral force is a declared diagnostic excitation,
                 # not an inferred beam force or MasterPi load specification.
                 d.xfrc_applied[c.robot_bid, 1] = 1. if t < drive_s else 0.
-                if profile != PROFILE:
+                if profile not in (PROFILE, PUBLIC_PROFILE):
                     # Legacy stepping overwrites external xfrc; qfrc provides
                     # the identical declared world-y perturbation in both cases.
                     d.qfrc_applied[c.base_dadr+1] = 1. if t < drive_s else 0.
             world._physics_step_for(c, command)
             if i % max(1, round(.02/dt)) == 0:
-                tangential = normal = 0.; wheel_contacts = 0; slips = []
+                tangential = normal = 0.; wheel_contacts = 0; slips = []; own_force = 0.
                 for j in range(d.ncon):
                     contact = d.contact[j]
                     names = [m.geom(int(g)).name for g in contact.geom]
                     if any(n.startswith('r1__') and ('_contact' in n and '_roller_' in n or n in
                                [f'r1__wheel_{w}' for w in ('fl','fr','rl','rr')]) for n in names):
                         mujoco.mj_contactForce(m, d, j, force6)
+                        if all(n.startswith('r1__') for n in names):
+                            own_force += abs(force6[0])
+                            key = '|'.join(sorted(names))
+                            own_contact_pairs[key] = max(own_contact_pairs.get(key, 0.), abs(float(force6[0])))
                         normal += abs(force6[0]); tangential += np.linalg.norm(force6[1:3]); wheel_contacts += 1
                         velocity = []
                         for geom in contact.geom:
@@ -120,6 +127,7 @@ def run_case(profile, case, loaded, output):
                     'wheel_speed': [float(d.qvel[m.jnt_dofadr[m.joint(f'r1__wheel_{w}_joint').id]])
                                     for w in ('fl','fr','rl','rr')],
                     'wheel_normal_n': normal, 'wheel_tangent_n': tangential, 'wheel_contacts': wheel_contacts,
+                    'own_wheel_contact_force_n': own_force,
                     'base_external_force': d.xfrc_applied[c.robot_bid].tolist(),
                     'cargo_z': float(d.xpos[cargo, 2])})
             if not np.isfinite(d.qpos).all() or max(abs(c.base_rpy()[0]), abs(c.base_rpy()[1])) > .5:
@@ -141,7 +149,8 @@ def run_case(profile, case, loaded, output):
             cargo_min_z_m=min(r['cargo_z'] for r in rows),
             stop_drift_m=float(np.linalg.norm(np.array(rows[-1]['xyz'])[:2]-np.array(next((r for r in rows if r['t']>=drive_s), rows[-1])['xyz'])[:2])),
             warnings={mujoco.mjtWarning(i).name: int(d.warning[i].number) for i in range(len(d.warning)) if d.warning[i].number},
-            drive_parameters=DriveParameters().record() if profile == PROFILE else None,
+            own_wheel_contact_pairs_max_n=own_contact_pairs,
+            drive_parameters=getattr(world, 'drive_profile_record', None),
             scene=scene.record(), xml_sha256=hashlib.sha256(world.scene_xml.encode()).hexdigest())
         write(output/'trace.json', rows)
         (output/'scene.xml').write_text(world.scene_xml)
@@ -161,7 +170,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--expected-source-sha', required=True)
-    p.add_argument('--drive-profile', choices=(PROFILE, 'legacy_wrench'), required=True)
+    p.add_argument('--drive-profile', choices=(PROFILE, PUBLIC_PROFILE, 'legacy_wrench'), required=True)
     p.add_argument('--cases', nargs='+', choices=CASES, default=list(CASES))
     p.add_argument('--loaded', action='store_true')
     args = p.parse_args()

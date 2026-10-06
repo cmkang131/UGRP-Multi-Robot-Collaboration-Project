@@ -1,6 +1,6 @@
 # MasterPi 구동 검토와 접촉 구동 후보 (2026-10-06)
 
-**NOT_READY — DEV 구조 후보, 실물 보정 전.** 접촉 추진은 확인했지만 옆 이동 때 회전 편향이
+**v1 NOT_READY — DEV 구조 후보, 실물 보정 전.** 접촉 추진은 확인했지만 옆 이동 때 회전 편향이
 무하중·cyan 하중에서 반복돼 두 번 막히면 중단하라는 요청에 따라 추가 물리 실행을 중단했다.
 기본값·기존 번들·v102/v106·카메라·팔/물체 접촉은 변경하지 않는다.
 별도 `masterpi_drive_friction_v1`과 `masterpi-drive-friction-probe` 1.0.0을 명시적으로 선택한다.
@@ -179,3 +179,47 @@ cyan 최저 높이는 약 .141 m로 초기 .143 m 부근을 유지했다. 집기
 
 채택 전 다음 작업은 실제 롤러 윤곽·접촉 위치와 장착 모터를 확인한 뒤 접촉 걸림/앞뒤 하중을 분리 진단하는 것이다.
 그 후에만 위 재보정 목록과 짝 빔/v106 검증을 새 버전으로 진행한다. 이번 PR은 **draft, 병합 금지**다.
+
+
+## 재개: 공개 FUJI 모델 이식 v2 (측정 전 고정)
+
+2026-10-06 사용자 재개 요청으로 공개 모델을 먼저 대조했다. **v1 파일/기존 번들은 그대로 두고**
+`masterpi_drive_friction_v2`와 진단 workflow 2.0.0을 추가했다. remote 브랜치 전체의 workflow ID를
+조회했고 `codex/drive-friction-model`의 1.0.0만 존재했다. PR #402 draft/병합 금지 유지.
+
+| 공개 기준 | 실제 확인한 설정 | 사용 판단 |
+|---|---|---|
+| [Menagerie robot_soccer_kit](https://github.com/google-deepmind/mujoco_menagerie/tree/f054586a8e90465d49ee5be15335c4a0c7f57caf/robot_soccer_kit) | 20개 수동 롤러/바퀴, 원통 접촉, 기본 condim=3/friction, CAD 관성. README가 정밀 system identification 없음을 명시 | 옴니휠이며 메카넘의 45° 구성과 다름. 직접 대체하지 않음 |
+| [JunHeonYoon MuJoCo](https://github.com/JunHeonYoon/mujoco_mecanum/tree/4d0fb46f363fc23fe4eb58653a6a4653e73a3c76) / Roundly fork | 12개 hinge, damping .1, sphere radius가 wheel radius와 같고 mass/inertia 인자가 generator에서 상수로 고정됨; force actuator 권고 | 동작 예제는 있으나 그대로 MasterPi 치수로 환산하는 데 불일치가 있어 기준으로 선택하지 않음 |
+| [FUJI 공개 물리 모델](https://github.com/DaiGuard/fuji_mecanum/tree/646431a5e107448e0e2bdeeba4575db9aa3665ff) | 15개 배럴 mesh, 45° continuous joint, roller mass .3 kg / hub 2 kg, 관성·마찰 .8·damping .001·friction .0001 명시 | **이식 기준**. 아래 변경만 적용 |
+| [TIAGo 논문 §III-A](https://arxiv.org/html/2510.10273v1) / [공개 USD](https://github.com/AIS-Bonn/tiago_isaac/tree/812ef55cdca2502dec6044ecddb08991ff41982d) | FUJI 생성 형상 사용, 15개/45°; 각 롤러의 6구 접촉 근사와 물리/실물 비교. USD 원문을 시스템 usdcat으로 읽어 .8 마찰·.001 damping 확인 | 출처 모델의 사용/검증 근거. 이번에는 FUJI 원본 convex barrel mesh를 그대로 써 별도 구 근사를 만들지 않음 |
+
+**이식 내역:** `sim/assets/masterpi_drive_friction_v2/fuji_roller.stl`은 MIT 원본 바이트 그대로이며
+SHA-256 `2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424`와 LICENSE를 보존했다.
+원문 [roller 설정](https://github.com/DaiGuard/fuji_mecanum/blob/646431a5e107448e0e2bdeeba4575db9aa3665ff/urdf/rollers.xacro),
+[hub 설정](https://github.com/DaiGuard/fuji_mecanum/blob/646431a5e107448e0e2bdeeba4575db9aa3665ff/urdf/wheel.xacro).
+
+- 길이 배율 `65/205`: 공식 MasterPi 바퀴 지름 65 mm에 맞춘 균일 축소. 바퀴 중심/폭/가시 형상/카메라는 기존 MasterPi 위치를 보존한다.
+- 롤러 수 15→9: 기존 MasterPi 도면/사진 추정값. 실측 확정값이 아니다. 원본 continuous hinge와 45° 축 배치는 유지하고 원본 X 바퀴축을 MasterPi Y축으로 바꾼다.
+- 원래 바퀴 합계 .05 kg 유지: `mass_scale=.05/(2+9*.3)`로 hub/roller 질량 비율을 보존한다.
+  원문 관성에 `mass_scale*(65/205)^2`를 곱하고 바퀴축의 좌표 변환을 적용한다.
+  roller damping/frictionloss에도 같은 관성 배율을 적용해 원문 단독 관절의 감쇠 시간/마찰 각감속 관계를 유지한다.
+  **이것은 닮은꼴 이식 가정이며 실물 MasterPi의 질량 분포/베어링 식별이 아니다.**
+- 원문 sliding friction .8 그대로, MuJoCo `condim=3`, torsional/rolling=0. MuJoCo 공식 표준 Coulomb 접촉으로 번역하며
+  Gazebo의 kp/kd를 단위가 다른 MuJoCo solref에 복사하지 않는다. 기존 `local_contact_fine` solver를 보존한다.
+- 원문 URDF의 자체 충돌 기본 OFF([SDF 공식 기본값](https://sdformat.org/spec?ver=1.12&elem=model#model_self_collide))를
+  새 롤러와 **자기 로봇**의 exclude 쌍으로 옮긴다. 다른 로봇/바닥/짐과의 접촉은 유지한다.
+  MuJoCo는 바로 인접한 부모-자식만 기본 접촉에서 제외하므로 롤러 몸체를 한 단계 더 만들면 차체와 접촉 후보가 될 수 있다
+  ([공식 collision filtering](https://mujoco.readthedocs.io/en/stable/computation/index.html#collision-detection)).
+  이전 v1의 실제 원인이 자체 충돌이었다고 아직 확정하지 않으며, 새 진단은 접촉한 자기 형상 이름/힘도 기록한다.
+- MasterPi 모터의 실제 식별값이 없으므로 v1의 유사 TT 기반 bounded torque-speed 근사를 그대로 유지한다.
+  TIAGo의 학습 S-curve·PID를 MasterPi에 옮기거나 모델을 호출하지 않는다.
+
+정적 검사 **9 passed**: v1 6개와 v2 3개. 모델 compile/기구학·전체 질량 보존·108개 연속 수동 관절·45° 축·원본 mesh 해시·
+자기 조립체만 제외·카메라와 가시 롤러 위치 보존을 검사했으며 physics step은 실행하지 않았다.
+
+다음 측정은 이전과 같은 1.5 s 명령 + 1 s 정지, .2 명령/같은 HIGH 팔이다.
+무하중·cyan 각각 `no_contact forward turn left`를 한 번씩 기록한다.
+짝 빔으로 넘어가는 DEV 기준은 두 하중 모두 옆 이동이 왼쪽이고 총 회전 크기가 **1° 이하**, 실제 물리 실패가 없는 것이다.
+1°는 이번 진단의 사전 보류 기준이며 실물 사양/연구 성공 기준이 아니다. 같은 옆 이동 문제가 두 하중에서 재발하면
+더 튜닝하거나 짝 빔을 실행하지 않고 중단한다. 새로운 자료는 기존 raw와 다른 폴더에 저장한다.
