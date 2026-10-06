@@ -378,3 +378,87 @@ B v3 봉인10파일은 해시 동일하다. 변경 모듈 시험22개 통과, v1
 [Python JSON 기본형 계약](https://docs.python.org/3.12/library/json.html#json.JSONEncoder)에 맞춰 집계만
 native bool/float로 변환하고 회귀시험을 추가했다. v2 출력은 문 카운터 교정 이전 보고서로 보존한다.
 채점/직렬화 반례를 포함한 해당 시험6개 통과. B·위치·경로·충돌·센서 runtime 봉인 해시는 그대로다.
+
+## 11. 새 확인 결과·최종 판정 (재튜닝 없음)
+
+사전 등록 `ca4fc575` → 환경만 교정 `a6600b8b` → 알고리즘 v2 `23ff6378` →
+개발16쌍 후 동결 `a2f7902d` → 새 E/F×3701/3702 확인32쌍 noisy/oracle을 각각1회 실행했다.
+관측/명령/환경 runtime은 확인 후 바꾸지 않았다. 문 시도 채점만 `8ae0733a`에서 별도 교정했다.
+[448개 조건별 표](environment-results/final/tables.md), [요약/판정](environment-results/final/summary.json),
+[원수치](environment-results/final/results.json), [경로→시야→B 누적 funnel](environment-results/final/funnels.json),
+[raw 위치·해시](environment-results/final/artifacts.json), [확인한 문헌 해시](environment-results/references.json).
+수정 전32쌍·환경 ablation·개발·새 확인을 각각 분리하며 합산 성공률을 만들지 않는다.
+
+| 새 확인32쌍 | 2D 조건 | 참/거짓 B | 첫 B 거리/시간 중앙 | coverage 중앙 | 충돌 | 잘못된 문/발행 시도 | 종료 위치 오차 중앙 |
+|---|---|---:|---|---:|---:|---:|---:|
+| noisy | static v2 | 0/0 | N/A | 23.47% | 24 | 1/2 | .405 m |
+| noisy | frontier v2 | 0/0 | N/A | 27.39% | 26 | 0/0 | .559 m |
+| oracle | static v2 | 8/0 | 6.061 m / 263 s | 25.34% | 8 | 0/12 | <1e-12 m |
+| oracle | frontier v2 | 0/0 | N/A | 14.81% | 0 | 0/0 | <1e-12 m |
+
+oracle은 현행 FOV·가림·4 m·96개 가시 광선 안의 완전 검출이다. 두 seed의 잡음을 모두 끄면
+동일 기하 조건은 같은 결과이므로 독립 확증 표본이 늘어난 것으로 해석하지 않는다.
+원 문 후보 카운터1172 중 **발행 명령 기반 시도는12**였다. 두 수치를 JSON에 함께 보존했다.
+원 noisy static의 잘못된 시도1/전체2, frontier0/0은 재채점 뒤에도 같다.
+
+| §2 기준 (그대로) | 새 noisy 확인 | 판정 |
+|---|---|---|
+| off/입력 경계 | v1/off golden, GT/peer 경계, runtime 봉인 동일 | 통과 |
+| 참 B≥80%, 거짓0 | 0/32, 거짓0 | 실패 |
+| 공통 성공쌍 거리/시간비≤2 | 공통 성공0, N/A | 실패 |
+| coverage 중앙≥40% | 27.39% | 실패 |
+| 잘못된 문/충돌0, 발행 문 시도≥1 | 0/26, 시도0 | 실패 |
+
+**1/5, 전체 미통과.** oracle도 frontier 기준1/5다. oracle 충돌0/문 시도0을 안전 통과로 세지 않는다.
+새 코호트는 위치·yaw가 달라 기존32쌍 oracle static20/32와 새8/32를 알고리즘 개선율로 비교하지 않는다.
+
+### 남은 원인 분리
+
+- **경로/시야:** 새 static의 첫 관측 병진 경로는24/32건이었다. frontier 경로 후보는32/32건이고, 다음 칸이 있는
+  병진 경로는 noisy26/32·oracle32/32건이었다. noisy B 가시 프레임은
+  두 조건 모두0이다. 현재 실패를 B v3 recall 미달의 증거로 쓰지 않는다. oracle static은 가시/검출24/24,
+  3회+병진 track8개가 모두 확인됐다. oracle frontier는 가시B0으로, detector 확인 단계에 도달하지 않았다.
+- **초기 연결:** v1의 병진 frontier0은 해소했다. 새 oracle frontier는 이동 중앙19.62 m지만
+  coverage14.81%로 같은 좁은 구간/관측점을 반복했다. A* 재계획마다 목표가 바뀌는 진행성/heading의
+  한계가 남는다. 좁은 시야/블라인드 영역을 임의 free로 메워 숨기지 않았다.
+- **셀 내부 위치와 격자 경로 연결:** oracle s1/F static은 .876 m 뒤에 경로가 남아도 발행을192회
+  거부했다. 현재 DR=(-.61973,.61973), 첫 격자 중심=(-.65,.65), 다음=(-.65,.75)에서 실제 위치→다음 칸
+  segment의 footprint 검사가 막혔다. 정답 오차≈0에서도 생겨 **DR 잡음만의 실패가 아니다.**
+  현재 셀 중심/국소 경로 연결을 다루는 실행기 개선이 필요하지만, 확인 뒤 v2를 고치지 않았다.
+- **충돌/잡음:** 평가 벽 두께는 JSON의 .05 m 그대로다. 외접원→사각 교정은 필요했으나 이후 실제
+  접촉까지 진행하면 기존 noisy static 충돌31은31로 같았다. 새 noisy 종료 위치 오차 .405/.559 m,
+  oracle <1e-12 m를 별도 기록했다. 사용하는 구조 사전의 이동 중 1√s 표준편차는
+  XY=.07845/.04892 m, yaw=.08142 rad이며 실측 v7 잡음이 아니다. 연속 이동30 s라면
+  XY=.430/.268 m 정도로 누적되는 모델이다. 분산을 낮춰 결과를 맞추지 않았다.
+  현행 v7·카메라 v3에서 벽/free 및 명령 오차를 실측해야 물리 의미를 부여할 수 있다.
+- **확인 전 후보의 오검출:** noisy frontier의 `goal_reobserve`47회는 참 B 가시가0인 상황의 후보 반응이다.
+  거짓 최종 확인은0이지만 미확인 색 후보가 탐색 시간을 소비할 수 있다. B v3는 계속 동결한다.
+
+![평가 전용 세계 좌표: 조기 충돌, 실제 접촉, 개발 성공과 반복 탐색](environment-results/final/environment-diagnosis.png)
+
+### 최종 옵션·재현·검증
+
+| 옵션/평가 구성 | 기본 | 이번 값과 의미 |
+|---|---|---|
+| `exploration` | `off` | 기존 `own_frontier_v1` 보존; `own_frontier_v2`는 polygon free 비용층 사용 |
+| `partial_planning` | `off` | 기존 `own_astar_v1` 보존; `own_astar_v2`는 polygon raster/현재 footprint/최신 hit |
+| `door_detection` | `off` | `own_gap_v1` 그대로 |
+| 2D actor `--algorithm` | 명시 필수 | `v1` 기존 / `v2` 공통 M1 역변환·실제 위치 segment 검사 |
+| 2D sensing `--sensing` | 명시 필수 | `noisy` 주 판정 / `oracle` 별도 진단 |
+| 2D 환경 | 기존 `run_grid.py` 보존 | `run_revision.py`는 `rect_footprint_v2`; 문 지표는 아래 후처리 필수 |
+
+새 v2 탐색에는 `own_astar_v2`가 필요하다. v1/off 바이트 골든을 보존하며 다른 로봇 지도/GT 보정을
+제어에 넣지 않는다. 현행 물리 실행기에 자동 연결하지 않는다. 기존 사용자 미추적4파일과 B v3 봉인10파일 불변.
+
+```sh
+# 같은 확인 결과 재현 시에도 출력 폴더는 새 이름 사용
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-mapfree-explore/code/run_revision.py --cohort confirmation --sensing noisy --algorithm v2 --freeze experiments/2026-10-07-mapfree-explore/freeze-v2.json --output outputs/mapfree-explore-v2-confirmation-noisy-REPLAY
+# 원본 코호트들을 읽는 최종 채점/집계 (미발행 경로 카운터 교정 포함)
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/report_mapfree_environment.py --output outputs/mapfree-explore-environment-delivery-REPLAY
+```
+
+검증: navigation v1/v2 및 evaluator 시험 총24개 통과(기존18개 + 변경 evaluator6개),
+v1/off golden 동일, 소스 봉인 비교·JSON 표 분모·그림 확인·diff 검사. MuJoCo/렌더/모델 호출0,
+추가 패키지/venv 변경0. CPU 속도 측정 없이 modeled time만 보고해 잠금은 사용하지 않았다.
+raw는 `outputs/` 로컬 보존이며 GitHub 원격 백업으로 표현하지 않는다. TensorBoard는 앞선 요청대로 생략.
+성공 기준/센서/잡음 튜닝으로 실패를 덮지 않았으며 PR #409는 DRAFT로 유지한다.
