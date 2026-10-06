@@ -19,7 +19,8 @@ STRIBECK_PROFILE = 'masterpi_drive_friction_v4'
 KARNOPP_PROFILE = 'masterpi_drive_friction_v5'
 HARD_PROFILE = 'masterpi_drive_friction_v5_hard_v1'
 DEADZONE_PROFILE = 'masterpi_drive_friction_v6'
-CONTACT_PROFILES = (PROFILE, PUBLIC_PROFILE, THRESHOLD_PROFILE, STRIBECK_PROFILE, KARNOPP_PROFILE, HARD_PROFILE, DEADZONE_PROFILE)
+HYSTERESIS_PROFILE = 'masterpi_drive_friction_v7'
+CONTACT_PROFILES = (PROFILE, PUBLIC_PROFILE, THRESHOLD_PROFILE, STRIBECK_PROFILE, KARNOPP_PROFILE, HARD_PROFILE, DEADZONE_PROFILE, HYSTERESIS_PROFILE)
 CASES = ('rest', 'forward', 'left', 'turn', 'push', 'no_contact', 'rated_speed')
 
 
@@ -43,6 +44,8 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
         from sim.masterpi_drive_friction_v5_hard import build_world
     elif profile == DEADZONE_PROFILE:
         from sim.masterpi_drive_friction_v6 import build_world
+    elif profile == HYSTERESIS_PROFILE:
+        from sim.masterpi_drive_friction_v7 import build_world
     from sim.zone_final_v3_scene import FinalV3Scene, build_world as legacy_world
     from harness.zone_pair_highpose import HIGH
     from sim.masterpi_dynamics_v2 import FORWARD_PATTERN, LEFT_PATTERN, YAW_LEFT_PATTERN
@@ -159,6 +162,7 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
                     'contact_slip_mps': float(np.mean(slips)) if slips else 0.,
                     'wheel_speed': [float(d.qvel[m.jnt_dofadr[m.joint(f'r1__wheel_{w}_joint').id]])
                                     for w in ('fl','fr','rl','rr')],
+                    'drive_input_state': getattr(world,'drive_input_state',{}).get('r1',np.zeros(4,dtype=int)).tolist(),
                     'wheel_actuator_torque_nm': d.actuator_force[c.wheel_act].tolist(),
                     'wheel_friction_limit_nm': m.dof_frictionloss[wheel_dofs].tolist(),
                     'wheel_normal_n': normal, 'wheel_tangent_n': tangential, 'wheel_contacts': wheel_contacts,
@@ -173,6 +177,8 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
             result['status'] = 'MEASURED_DEV'
         elapsed = time.perf_counter()-wall0
         tail = [r for r in rows if drive_s-.5 <= r['t'] <= drive_s]
+        result['tail_lateral_min_mps'] = min(r['velocity'][1] for r in tail) if tail else None
+        result['tail_yaw_min_radps'] = min(r['velocity'][5] for r in tail) if tail else None
         result['tail_forward_min_mps'] = min(r['velocity'][0] for r in tail) if tail else None
         result['tail_forward_progress_m'] = tail[-1]['com_xyz'][0]-tail[0]['com_xyz'][0] if tail else None
         result.update(sim_s=float(d.time-start_t), wall_s=elapsed, wall_per_sim=elapsed/(d.time-start_t),
@@ -207,6 +213,24 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
         write(output/'result.json', result)
 
 
+def evaluate_criterion(result):
+    """Predeclared DEV gates; never alter commands or physical parameters."""
+    if result['status']!='MEASURED_DEV':return {'passed':False,'reason':result['status']}
+    case=result['case'];level=result['wheel_input']
+    if case=='rest' or (case=='forward' and level<=30):
+        return {'passed':bool(result['peak_command_com_xy_m']<=.001),'reason':'COM displacement <=1mm'}
+    if case in ('forward','rated_speed'):
+        return {'passed':bool(result['tail_forward_min_mps']>.001),'reason':'all last .5s vx >.001m/s'}
+    if case=='left':
+        return {'passed':bool(result['tail_lateral_min_mps']>.001 and abs(result['yaw_change_rad'])<=__import__('math').radians(1)),
+                'reason':'all last .5s vy >.001m/s and total yaw <=1deg'}
+    if case=='turn':
+        return {'passed':bool(result['tail_yaw_min_radps']>.001),'reason':'all last .5s positive yaw rate'}
+    if case=='no_contact':
+        return {'passed':bool(result['peak_command_com_xy_m']<=1e-5),'reason':'free-flight COM displacement <=10um'}
+    return {'passed':None,'reason':'measurement-only excitation'}
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output', type=Path, required=True)
@@ -216,6 +240,7 @@ def main():
                    help='legacy signed Board magnitude in 0..100; separate reset for each input')
     p.add_argument('--cases', nargs='+', choices=CASES, default=list(CASES))
     p.add_argument('--loaded', action='store_true')
+    p.add_argument('--stop-on-criterion-failure', action='store_true', help='stop batch after failed diagnostic acceptance criterion')
     p.add_argument('--stall-audit', action='store_true', help='read-only .01 s torque/contact breakdown throughout the command and stop')
     p.add_argument('--long-lane', action='store_true', help='setup x2.5: clearance for 5 s at rated speed')
     p.add_argument('--torque-audit', action='store_true', help='read-only every-step torque breakdown for first .15 s')
@@ -246,11 +271,15 @@ def main():
             for level in args.wheel_inputs or [None]:
                 name = case if level is None else f'{case}-u{level:03}'
                 result = run_case(args.drive_profile, case, args.loaded, args.output/name, level, args.drive_seconds, args.torque_audit, args.long_lane, args.stall_audit)
+                if args.stop_on_criterion_failure:
+                    criterion = evaluate_criterion(result)
+                    result['acceptance'] = criterion
+                    write(args.output/name/'acceptance.json', criterion)
                 results.append(result)
                 print(json.dumps({k: result.get(k) for k in ('case','wheel_input','status','steady_velocity','wall_per_sim')}, ensure_ascii=False), flush=True)
-                if result['status'] != 'MEASURED_DEV':
+                if result['status'] != 'MEASURED_DEV' or result.get('acceptance',{}).get('passed') is False:
                     break
-            if results[-1]['status'] != 'MEASURED_DEV':
+            if results[-1]['status'] != 'MEASURED_DEV' or results[-1].get('acceptance',{}).get('passed') is False:
                 break
         write(args.output/'results.json', results)
     finally:
