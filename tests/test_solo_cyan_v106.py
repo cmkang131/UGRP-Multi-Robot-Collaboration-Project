@@ -82,6 +82,9 @@ class FakeVision:
     def hover_support(self, obs, servo, center):
         return True
 
+    def mask_bottom_row(self, obs):
+        return 300  # mid-frame: no field-of-view step
+
 
 def runtime(static, cal):
     return rt.Runtime(static, None, None, provider_factory=lambda *a, **kw: FakePose(cal), vision_factory=FakeVision)
@@ -267,3 +270,25 @@ def test_default_v98_speedups_attach_to_actual_solo_provider_and_undo(static):
             provider.close()
         undo()
     assert HighPoseSource.__init__ is before
+
+
+def test_align_steps_view_down_before_cyan_leaves_frame_bottom(static, cal):
+    # 2026-10-06 s911: the cuboid clipped at the p45 bottom edge before x < .255.
+    r = runtime(static, cal)
+    r.initial_commands(0., {'r3': {1: 2000, **pose_of('p45')}})
+    r.state, r.state_t, r.last_obs = 'align', 0., {'frame_id': 7}
+    r.last_report = r.pose.report(1.)
+    r.arm.until = 0.
+    r.detections = lambda: [{'estimated_box_center_base_m': [.27, 0., .016]}]
+    r.vision.mask_bottom_row = lambda obs: 452
+    assert r._control(1., True) == [{'kind': 'hold'}]
+    assert r.align_view == 'inspect'
+    assert [e for e in r.events if e['event'] == 'cyan_view_step'][0]['bottom_row'] == 452
+    # Never steps back up to p45 while x still says p45.
+    for k, v in pose_of('inspect').items():
+        r.servo[k] = v
+    r.arm.until = 0.
+    r.vision.mask_bottom_row = lambda obs: 300
+    r._control(2., True)
+    assert r.align_view == 'inspect' and r.failure is None
+    r.close()

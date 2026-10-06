@@ -35,6 +35,8 @@ CONTROL_S = .1
 CAP_S = 900.
 ENVELOPE = {'x_m': [-.18, .28], 'y_m': [-.18, .18]}
 LOOK_PANS = (1500, 1230, 970, 1770, 2030, 1500)
+ALIGN_VIEWS = ('search', 'p45', 'inspect')
+ALIGN_EDGE_ROW = 440  # of 480; s911 p45 frames touched the valid bottom (463) at ~0.28 m
 
 
 def build_provider(static_map, calibration, calibration_sha256, seed=0, *, model_runtime=None, worker=None):
@@ -118,6 +120,7 @@ class Runtime:
         self.route_i, self.search_i = 0, 0
         self.scan_queue, self.scan_after = [], None
         self.align_streak, self.last_align_frame = 0, None
+        self.align_view = None
         self.last_visual_state = None
         self.soft_counts = {}
         self.controller = self.own = self
@@ -308,6 +311,23 @@ class Runtime:
                 return self.fail('CYAN_NOT_UNIQUELY_VISIBLE', now)
         elif self.state == 'align':
             fits = self.detections()
+            # Field-of-view guard (2026-10-06 run s911: the small cuboid left the
+            # p45 frame bottom at ~0.27 m, above the beam-tuned .255 switch).
+            # Step one view lower when the mask nears the bottom edge; never back up.
+            bottom = self.vision.mask_bottom_row(self.last_obs)
+            held = [i for i, k in enumerate(ALIGN_VIEWS)
+                    if all(self.servo.get(j) == v for j, v in pose_of(k).items())]
+            current = max([*held, ALIGN_VIEWS.index(self.align_view)
+                           if self.align_view in ALIGN_VIEWS else 0])
+            if (bottom is not None and bottom >= ALIGN_EDGE_ROW
+                    and current < len(ALIGN_VIEWS)-1):
+                self.align_view = ALIGN_VIEWS[current+1]
+                self.event('cyan_view_step', now, view=self.align_view, bottom_row=bottom,
+                           frame_id=self.last_obs['frame_id'])
+                self.align_streak = 0
+                self.state_t = now
+                self.queue(pose_of(self.align_view), now)
+                return [{'kind': 'hold'}]
             if len(fits) != 1:
                 self.align_streak = 0
                 if now-self.state_t > 4.:
@@ -315,8 +335,12 @@ class Runtime:
                 return [{'kind': 'hold'}]
             self.target = fits[0]['estimated_box_center_base_m'][:2]
             x, y = self.target
-            # Same finite calibrated view changes as the pair approach.
+            # Same finite calibrated view changes as the pair approach, floored
+            # by any image-edge step above.
             look_name = 'search' if x >= .34 else 'p45' if x >= .255 else 'inspect'
+            if self.align_view in ALIGN_VIEWS:
+                look_name = ALIGN_VIEWS[max(ALIGN_VIEWS.index(look_name), current)]
+            self.align_view = look_name
             target_pose = pose_of(look_name)
             if any(self.servo.get(k) != v for k, v in target_pose.items()):
                 self.queue(target_pose, now)

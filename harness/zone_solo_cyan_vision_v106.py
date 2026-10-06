@@ -37,6 +37,17 @@ class CyanVision:
         got = self._detect(obs['image'], servo, kinds=('cyan',), profile=colors.OWN_PROFILE_ZONE)
         return got['detections']
 
+    def mask_bottom_row(self, obs):
+        """Lowest image row of the own-RGB cyan mask, or None below 90 pixels.
+
+        Image-space only (no geometry): the align loop uses it as a field-of-view
+        guard so the target is re-framed before it leaves the bottom edge.
+        """
+        frame = colors._frame(obs['image'])
+        mask = colors._mask(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV), colors.OWN_ZONE_CYAN_HSV)
+        rows = np.nonzero(mask.any(axis=1))[0]
+        return int(rows.max()) if int(mask.sum()) >= 90 else None
+
     def hover_support(self, obs, servo, center):
         """Partial cyan support near the last full fit; never invent a hidden centre.
 
