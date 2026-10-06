@@ -1802,3 +1802,12 @@ RBPF는 coarse/fine 정합의 관측×이동 prior로 Gaussian을 만들고 실�
 실제 정합 거부는 motion fallback 표본의 우도로 가중하고 삽입하지 않는다.
 정합/삽입에 GT가 들어가는 인자는 없으며, RBPF의 보고 자세와 지도는 동일한 현재 최대 가중치 입자다.
 입자 선택이 바뀌면 온라인 경로는 불연속일 수 있다. 최종 지도 원장은 선택 입자의 조상 관측만 보존한다.
+
+재생기 첫 실행(`0c3a7142`, `outputs/self-map-prob-rbpf-v1`)은 **개발 실행 실패**로 보존한다.
+prob 개발 두 건의 예측은 끝났지만, 평가기의 `zip(observations, states)` 계약에 서로 다른 길이를
+넣어 지도 시계열이 어긋났다. RBPF30 첫 건은 예측 뒤 NumPy int64 셀 인덱스 JSON 저장에서 종료했다.
+[Python JSON 기본형 규약](https://docs.python.org/3/library/json.html#json.JSONEncoder)에 맞춰 int/float로
+변환하고, 과거 `odom_grid_replay.evaluate`의 1:1 계약에 시간 키로 맞춘 oracle 입력과
+전체 온라인 지도 시계열을 분리했다. 마지막 거부 프레임에서 입자가 바뀌어도 최종 지도를 채점한다.
+각 원인은 첫 발생이며 회귀 시험을 추가했다. **추정기·분산·정합·입자 수는 변경하지 않았다.**
+이 실행의 지도 점수·성공 판정은 무효이며 새 출력 디렉터리에서 개발부터 전체를 다시 실행한다.

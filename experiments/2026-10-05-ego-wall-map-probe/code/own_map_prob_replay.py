@@ -69,6 +69,34 @@ def predict(commands, frames, contacts, robot, condition):
     return memory, poses, obs, states, covariance
 
 
+def particle_artifacts(grid):
+    return [{'particle': i, 'weight': float(grid.weights[i]), 'pose': grid.poses[i].tolist(),
+             'cells': [[int(x), int(y), float(v)] for (x, y), v in sorted(g.cells.items())],
+             'history': grid.histories[i]}
+            for i, g in enumerate(grid.maps)]
+
+
+def evaluate_prediction(episode, robot, poses, obs, states):
+    # Historical evaluator zips one inserted observation with one map state.
+    # RBPF selection can change on rejection, so align oracle inputs explicitly
+    # and score the full online map series separately, including its final state.
+    by_time = {s['t']: s for s in states}
+    result, oracle_series, _, rects, samples = base.evaluate(
+        episode, robot, poses, obs, [by_time[o['t']] for o in obs])
+    oracle_at = {r['t']: {k: v for k, v in r.items() if k.startswith('oracle_')} for r in oracle_series}
+    ever = np.zeros(len(samples), bool)
+    series = []
+    for state in states:
+        points = base.transform(np.asarray(state['occupied']).reshape(-1, 2), result['origin_eval_only'])
+        quality, cover = base.quality(points, rects, samples)
+        ever |= cover
+        series.append({'t': state['t'], **quality, 'wall_coverage_ever': float(ever.mean()),
+                       **oracle_at.get(state['t'], {})})
+    if series:
+        result['final'] = {**series[-1], **(oracle_at[obs[-1]['t']] if obs else {})}
+    return result, series
+
+
 def run_case(name, condition, baseline, output):
     robot = name.split('-')[1]
     cache = baseline/name
@@ -99,10 +127,7 @@ def run_case(name, condition, baseline, output):
         write_rows(target/f'{filename}.jsonl', rows)
     base.dump(target/'resources.json', resources)
     if condition != 'prob':
-        base.dump(target/'final_particles.json',
-                  [{'particle': i, 'weight': float(grid.weights[i]), 'pose': grid.poses[i].tolist(),
-                    'cells': [[x, y, v] for (x, y), v in sorted(g.cells.items())], 'history': grid.histories[i]}
-                   for i, g in enumerate(grid.maps)])
+        base.dump(target/'final_particles.json', particle_artifacts(grid))
     # Freeze predictions before reading any truth. Off replay is a byte audit.
     off_memory, off_poses, _, _, _ = old_predict(commands, frames, contacts, robot, 'off')
     golden = {'poses_bytes': ''.join(json.dumps(r, allow_nan=False)+'\n' for r in off_poses).encode() == (cache/'poses.jsonl').read_bytes(),
@@ -116,7 +141,7 @@ def run_case(name, condition, baseline, output):
         raise ValueError('OFF_GOLDEN_MISMATCH')
     source_sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     # GT starts here, including off path errors. No further predictor writes.
-    result, series, _, _, _ = base.evaluate(episode, robot, poses, obs, states)
+    result, series = evaluate_prediction(episode, robot, poses, obs, states)
     result.update(path_position_error=path_errors(episode, robot, poses)[0], name=name, condition=condition,
                   source_sha=source_sha, split='development' if name.startswith('s911') else 'confirmation_replay',
                   inserted_frames=grid.frames, resources=resources,

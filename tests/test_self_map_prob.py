@@ -154,3 +154,38 @@ def test_particle_count_and_resolution_are_fixed():
     with pytest.raises(ValueError, match='010M'):
         RaoBlackwellizedGrid('r1', resolution_m=.2)
     assert len(RaoBlackwellizedGrid('r1', correction_options={'particles': 100}).maps) == 100
+
+
+def replay_module():
+    import importlib.util
+    path = ROOT/'experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py'
+    spec = importlib.util.spec_from_file_location('prob_replay', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_particle_json_uses_native_scalar_types():
+    module = replay_module()
+    grid = RaoBlackwellizedGrid('r1', settle_s=None)
+    observe(grid, 0., 0)
+    payload = json.loads(json.dumps(module.particle_artifacts(grid), allow_nan=False))
+    assert len(payload) == 30 and payload[0]['cells']
+
+
+def test_evaluation_aligns_oracle_and_keeps_final_rejected_map_state(tmp_path, monkeypatch):
+    module = replay_module()
+    inputs = tmp_path/'inputs'
+    inputs.mkdir()
+    (inputs/'static_map.json').write_text(json.dumps({'obstacles': [
+        {'kind': 'wall', 'center_m': [2., 0.], 'half_extents_m': [.05, 1.]}]}))
+    monkeypatch.setattr(module.base, 'ground_truth', lambda *args: (np.array([0., 1., 2.]), np.zeros((3, 3))))
+    poses = [{'t': float(t), 'pose': [0., 0., 0.]} for t in range(3)]
+    obs = [{'t': 1., 'pose': [0., 0., 0.], 'camera': [0., 0.], 'segments': [[[2., -.5], [2., .5]]]}]
+    states = [{'t': 0., 'occupied': []}, {'t': 1., 'occupied': [[2.05, 0.]]},
+              {'t': 2., 'occupied': [[2.05, 0.], [10., 10.]]}]
+    result, series = module.evaluate_prediction(tmp_path, 'r1', poses, obs, states)
+    assert len(series) == 3
+    assert series[1]['precision_015'] == 1.
+    assert result['final']['occupied_cells'] == 2
+    assert result['final']['precision_015'] == .5
