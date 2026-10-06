@@ -529,3 +529,21 @@ DV·Ts·모터 힘을 결과에 맞춰 다시 바꾸지 않았고 추가 물리 
   과거 snapshot을 중복 변환하지 않았다. 공용 뷰의 자기 키만 추가했고 서버 PID52016은 유지했다.
   **브라우저 화면 확인은 사용자 요청으로 생략**했다. 임무 성공·영상·모델 응답시간 자료는 없다.
   [대시보드](http://127.0.0.1:6006/?runFilter=%5E1006-drive-friction-v45%2F#timeseries).
+
+
+## #404 재개: 출발 토크 원인 분리 (2026-10-06, 실행 전)
+
+사용자가 재개를 요청했다. v4/v5의 물리 상수는 동결하고 무하중 입력30 각각 한 번만
+짧게 재생한다. 첫0.15 s 매 스텝의 모터 generalized torque, joint friction 행,
+접촉/다른 제약의 `J^T efc_force`, bias/passive/관성항을 기록한다.
+MuJoCo 공식 [힘 식](https://mujoco.readthedocs.io/en/3.12.0/computation/index.html),
+[`mj_mulJacTVec`](https://mujoco.readthedocs.io/en/3.12.0/APIreference/APIfunctions.html#mj-muljactvec)를 따른다.
+`mj_step` 뒤 힘은 적분 전 상태의 값이므로 속도/시각을 적분 전후로 구분한다.
+gear=1 여부, actuator_force와 qfrc_actuator 일치, 실제 friction 행과 설정 상한을 확인한다.
+접촉 프레임 힘과 geom 이름도 원본에 저장한다. 평가만 하며 추가 mj_forward/상태 변경 없음.
+
+원인이 특정된 경우 그 원인만 새 후보에 고친다. 분리 불가/최소 수정 실패 시 사용자 승인한
+v6 액추에이터 dead-zone으로 전환한다. 같은 원인으로 다시 막히면 추가 튜닝 없이 중단한다.
+문턱 30 이하 정지(최대 COM 이동1 mm),35/50/100은5 s 명령 마지막0.5 s 전진속도
+모든 표본>0.001 m/s를 진단 기준으로 유지한다. 옆 회전은 기존1° 기준, 짝 빔은 별도
+물리 진단으로 비교하며 기존 운반 성공을 승계하지 않는다. 모델 호출/렌더 없음.
