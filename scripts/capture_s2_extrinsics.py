@@ -10,6 +10,7 @@ def main(argv=None):
     p.add_argument('--execute',action='store_true')
     p.add_argument('--expected-source-sha',required=True)
     p.add_argument('--output',type=Path)
+    p.add_argument('--states',choices=('all','loaded','unloaded'),default='all')
     args=p.parse_args(argv)
     if not args.execute:
         print(json.dumps(dict(execution_started=False,poses=len(targets.poses()),images=3*len(targets.poses()),
@@ -23,7 +24,7 @@ def main(argv=None):
         raise ValueError('owned calibration lock required')
     if args.output is None or not args.output.is_absolute():raise ValueError('absolute new output required')
     from sim.s2_extrinsic_capture import capture
-    capture(args.output,args.expected_source_sha)
+    capture(args.output,args.expected_source_sha,states=args.states)
 
 
 if __name__=='__main__':main()

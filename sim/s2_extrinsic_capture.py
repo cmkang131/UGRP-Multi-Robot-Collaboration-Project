@@ -28,7 +28,7 @@ def board_xml(xml):
     return ET.tostring(root,encoding='unicode')
 
 
-def capture(out, source_sha):
+def capture(out, source_sha, states='all'):
     import cv2
     import mujoco
     from PIL import Image
@@ -70,6 +70,7 @@ def capture(out, source_sha):
             cargo_weld=False,load='cyan 30 g, fingers only',intrinsics_K=target.K.tolist(),fisheye_D=target.D.tolist()))
         loaded=False
         for state,pose in target.poses():
+            if states!='all' and state!=states:continue
             if state=='loaded' and not loaded:
                 # Manual placement in a fixed grasp station, then pre-authored
                 # ordinary descent/close. No success/GT steers these commands.
@@ -84,7 +85,21 @@ def capture(out, source_sha):
                 world._team_joint_move_servos({'r3':{1:1500}},.6,settle_s=1.)
                 loaded=True
             world._team_joint_move_servos({'r3':{1:1500 if loaded else 2000,**pose}},1.2,settle_s=8.)
+            # Standard manual-calibration equivalent: move the surveyed board
+            # within the image until its full corner grid is visible. Only RGB
+            # detection decides the choice; all attempted known poses are saved.
+            pending=[]
             for board in target.boards(pose):
+                for shift in (0.,-.15,-.30,.15,.30):
+                    shifted=dict(board)
+                    delta=target.nominal(pose)[1][:,1]*board['square_m']/.045*shift
+                    shifted['origin_m']=(np.asarray(board['origin_m'])+delta).tolist()
+                    shifted['object_points_floor_m']=(np.asarray(board['object_points_floor_m'])+delta).tolist()
+                    shifted['layout_shift']=shift
+                    pending.append(shifted)
+            accepted=set()
+            for board in pending:
+                if board['index'] in accepted:continue
                 axes=np.asarray(board['rotation']);p=np.asarray(board['origin_m'])+[target.FIXTURE[0],target.FIXTURE[1],0]
                 body=world.model.body('cal_board');mid=int(body.mocapid[0])
                 world.data.mocap_pos[mid]=p
@@ -96,11 +111,13 @@ def capture(out, source_sha):
                         geom.pos[:2]=[(x-4)*s,(y-2.5)*s];geom.size[:2]=s/2
                 mujoco.mj_forward(world.model,world.data)
                 rgb=world.render_rgb(robot_id='r3',camera='robot_cam')
-                filename=f'{state}-{target.key(pose)}-{board["index"]}.png'
+                filename=f'{state}-{target.key(pose)}-{board["index"]}-{board["layout_shift"]:+.2f}.png'
                 Image.fromarray(rgb).save(out/filename)
                 row=dict(state=state,servo=pose,pose_key=target.key(pose),path=filename,
                     sha256=c.old.hp.base.sha(out/filename),sim_time=float(world.data.time),**board)
-                try:row['corners_px']=target.detect(rgb).tolist();row['status']='detected'
+                try:
+                    row['corners_px']=target.detect(rgb).tolist();row['status']='detected'
+                    accepted.add(board['index'])
                 except ValueError as exc:row['status']=str(exc)
                 rows.append(row);write(out/'observations.json',rows)
                 # Evaluation-only sidecar, not read by the PnP assembler.
@@ -116,11 +133,11 @@ def capture(out, source_sha):
                     active_weld_count=sum(int(world.data.eq_active[i]) for i in range(world.model.neq)
                         if world.model.eq_type[i]==mujoco.mjtEq.mjEQ_WELD)))
                 write(out/'eval_only.json',audit)
-            print(state,target.key(pose),[r['status'] for r in rows[-3:]],flush=True)
-            if any(r['status']!='detected' for r in rows[-3:]):
+            print(state,target.key(pose),'accepted',sorted(accepted),flush=True)
+            if len(accepted)!=3:
                 raise ValueError('CALIBRATION_TARGET_NOT_FULLY_VISIBLE: '+target.key(pose))
         write(out/'result.json',dict(status='CAPTURE_COMPLETED',classification='S2_DEV_calibration_not_transport',
-            source_sha=source_sha,observations=len(rows),detected=sum(r['status']=='detected' for r in rows),
+            source_sha=source_sha,states=states,observations=len(rows),detected=sum(r['status']=='detected' for r in rows),
             wall_s=time.monotonic()-start,sim_s=float(world.data.time),options=dict(idle_robot_contacts='freeze_v1'),
             fixture=True,model_calls=0,source_sha256={p:c.old.hp.base.sha(c.ROOT/p) for p in source_closure(c.ROOT,
                 ['scripts/capture_s2_extrinsics.py','sim/s2_extrinsic_capture.py'])}))

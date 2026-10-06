@@ -5,6 +5,7 @@ cd /Users/changmin/projects/ugrp-wt/drive-friction
 cal_py=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 cal_sha=${1:?source SHA}
 cal_out=${2:?absolute output}
+cal_states=${3:-all}
 [[ $(git rev-parse HEAD) == "$cal_sha" && -z $(git status --porcelain) ]]
 [[ $(ps -o nice= -p $$ | tr -d ' ') == 0 ]]
 [[ $("$cal_py" scripts/agent_lock.py status) == null ]]
@@ -20,7 +21,7 @@ cleanup() {
 trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
-"$cal_py" -m scripts.sim_cli workflow run s2-camera-extrinsic-capture-v1 --record "${cal_out}-managed" --timeout 720 -- --execute --expected-source-sha "$cal_sha" --output "$cal_out" &
+"$cal_py" -m scripts.sim_cli workflow run s2-camera-extrinsic-capture-v1 --record "${cal_out}-managed" --timeout 720 -- --execute --expected-source-sha "$cal_sha" --output "$cal_out" --states "$cal_states" &
 cal_child=$!
 cal_rc=0
 wait "$cal_child" || cal_rc=$?
