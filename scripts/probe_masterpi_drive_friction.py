@@ -240,6 +240,7 @@ def main():
                    help='legacy signed Board magnitude in 0..100; separate reset for each input')
     p.add_argument('--cases', nargs='+', choices=CASES, default=list(CASES))
     p.add_argument('--loaded', action='store_true')
+    p.add_argument('--pair-beam', action='store_true', help='one fixed v92-staged asymmetric beam perturbation; legacy or v7 only')
     p.add_argument('--stop-on-criterion-failure', action='store_true', help='stop batch after failed diagnostic acceptance criterion')
     p.add_argument('--stall-audit', action='store_true', help='read-only .01 s torque/contact breakdown throughout the command and stop')
     p.add_argument('--long-lane', action='store_true', help='setup x2.5: clearance for 5 s at rated speed')
@@ -247,6 +248,8 @@ def main():
     p.add_argument('--drive-seconds', type=float, default=1.5,
                    help='fixed command duration, 1.5 to 5 s; stop duration remains 1 s')
     args = p.parse_args()
+    if args.pair_beam and (args.drive_profile not in ('legacy_wrench',HYSTERESIS_PROFILE) or args.loaded or args.wheel_inputs or args.cases!=list(CASES) or args.long_lane or args.torque_audit or args.stall_audit or args.drive_seconds!=1.5):
+        p.error('pair-beam has a fixed design; use legacy_wrench or v7 without loaded/cases/wheel-inputs')
     if not 1.5 <= args.drive_seconds <= 5:
         p.error('drive-seconds must be within 1.5..5')
     if not args.output.is_absolute() or not args.output.resolve().is_relative_to(RAW_ROOT):
@@ -267,6 +270,12 @@ def main():
         'command': vars(args) | {'output': str(args.output)}, 'lock': lock, 'model_calls': 0})
     try:
         results = []
+        if args.pair_beam:
+            from scripts.probe_drive_pair_beam import run_pair_case
+            result=run_pair_case(args.drive_profile,args.output/'pair-beam')
+            write(args.output/'results.json',[result])
+            print(json.dumps({k:result.get(k) for k in ('profile','status','stop_reason','failure_phase','final','wall_per_sim')},ensure_ascii=False),flush=True)
+            return
         for case in args.cases:
             for level in args.wheel_inputs or [None]:
                 name = case if level is None else f'{case}-u{level:03}'

@@ -813,3 +813,47 @@ v102의 시간/하중 gain, v106의 하중 이동·자세별 속도, 짝 빔을 
 정지거리·odometry/PF·경로 시간은 새 구동에서 다시 측정해야 한다. 이번 입력 관측 재현만으로
 기존 성공/오차 결과를 승계하거나 기본 프로필을 바꾸지 않는다. 다음 변경에는 옆 yaw 원인의
 별도 근거가 필요하며, 이번 작업에서는 실패 뒤 추가 원인 실험/수정 없이 중단한다.
+
+
+## 메인 결정 이후: v7 DEV 후보 채택·짝 빔 비교 1건
+
+2026-10-06 메인 세션/사용자 결정([#404 기록](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/404#issuecomment-6013834255)):
+옆 이동1°는 실물 근거가 없는 임시 보류 기준이었다. v7의−2.487829°를 알려진 특성으로
+남기고 **DEV 후보로 채택**한다. 기존 wrench의−2.05°는 메인 세션이 제시한 비교 기록이며,
+이번 짝 빔 실행에서 다시 측정한 단독 옆 이동 값은 아니다. 이전1° 판정/원본은 당시 기록으로
+보존하고 소급해서 통과로 바꾸지 않는다. 기본값·기존 번들 승격·실물 검증 완료와 구분한다.
+
+실제 로봇 운용은 자기 카메라로 방향을 관측하고 보정하는 경로를 전제로 한다. 이번 고정 명령
+진단에는 카메라 방향 보정을 넣지 않으며, 그러한 보정이 이 편향을 충분히 줄인다는 실물 증거는
+아직 없다. **실물 옆 이동 거리·yaw(무하중/하중, 양 방향, 입력/시간 기록)와 자기 카메라 보정 전후
+오차를 측정**하는 TODO를 #404에 유지한다. GT yaw로 보정하거나 새1° 기준을 만들지 않는다.
+
+짝 빔 비교 사전 설계(workflow7.1.0, `--pair-beam` 명시적 옵션):
+
+- 기존 표준 `FinalV3Scene`, `zone_wide_two_doors_final_v3`, seed1601, 같은300g/600mm
+  `long_beam`, `cargo_noslip_v1`, weld OFF. 등록 지도/카메라/팔/빔/접촉은 불변.
+- 기존 [v92 고정 HIGH 준비](../../harness/zone_final_pair_loaded_schedule.py)의
+  `high_held`32 s 순서와 [staging 어댑터](../../harness/zone_pair_highpose_staging.py)를 재사용한다.
+  빔 위치 `[3.55,-.85,0]`와 정적 station_offset도 기존 측정 설계 그대로. CameraRobotPort의
+ 2000 pulse/s 보간으로 실제 팔 액추에이터가 파지·상승하며, 준비 후 자세 강제 배치/보정은 없다.
+- 준비 후 **r1만 옆 방향 바퀴 입력35를0.5 s**, r2는명령0; 이어서 둘 다1 s 정지.
+  짝 사이 비동기 명령의 고정 perturbation으로 수동 밀림을 드러내는 DEV 조건이다.
+  같은 명령·시간 비교이며 같은 속도/힘 비교는 아니다. 진단값에 맞춘 보정/재시도 없음.
+- 순서wrench→v7 각1회, 매회 새 reset. 동일 설계 해시·시작 상태·준비 과정 차이도 보존한다.
+  조건 사이 잠금을 바로 놓고 다음 시작 직전에 status null 확인 후 자기 PID로 다시 잡는다.
+- 비교: 빔 중심(x,y,z) 이동·yaw, 두 로봇의 world-y 진행량과 그 차이, 빔 좌표계에서 각
+  finger midpoint 변화(집게 안 미끄러짐), 손가락 반력·빔 최저 높이·기울기. 준비 종료를 기준으로
+  계산한다. 전체 준비 trace도 보존하고 준비 중 실패를 구동 비교로 대신하지 않는다.
+- abort만 GT를 사용한다. 기존 teacher의 finger>=0.5N/양쪽·이탈0.3 s, lift clear12mm,
+  낙하 최저 높이5mm 또는 상승 뒤 바닥 접촉을 따른다. 기존 cargo probe의 로봇10° 제한을
+  사용하고 빔에도 같은10° DEV 안전 제한을 적용한다(실물 한계가 아님). 실제 실패면 그 시점에
+  멈추고 남은 조건/재실행은 하지 않는다. yaw 편향·진행 차이는 수치 그대로 기록한다.
+
+방법 출처: [MuJoCo 공식 접촉 힘 API](https://mujoco.readthedocs.io/en/3.12.0/APIreference/APIfunctions.html#mj-contactforce),
+[접촉 좌표](https://mujoco.readthedocs.io/en/3.12.0/computation/index.html#contact) 직접 확인.
+힘은 공식 `mj_contactForce`의 normal을 합산한다. 상대 slip/기울기/바닥 기준은
+기존 [cargo probe](../../scripts/probe_zone_cargo.py),
+[team teacher](../../scripts/zone_team_teacher.py)의 정의를 따른다. 새로운 마찰 법칙이나 물성을
+만들지 않으며 공개 모델·모터 자료의 확인/미확인 범위는 위 v2–v7 조사에 유지한다.
+
+실행 전 관련 단위 시험: `test_probe_drive_pair_beam.py`3개와 `test_masterpi_drive_friction_v7.py`4개, 총7개 통과(0.93s). 시간 적분 실험이 아닌 중단/측정/관리 경로 및 기존 v7 회귀 검사다.
