@@ -80,6 +80,20 @@ def loaded_for(servo, rule: str | None = None, legacy_str_key: bool = False) -> 
     raise ValueError(f'load rule must be one of {LOAD_RULES}, got {rule!r}')
 
 
+def detector_bias(servo, loaded: bool, sag: bool = False) -> float:
+    """Elevation bias of the detector's camera model for the commanded pose.
+
+    OPTION ``sag`` (``--sag-comp``, default off = the behaviour before #405): the constant ``SEED_BIAS`` entry for
+    the load state. On: ``sag_comp.bias_rad``, the command-only gravity-droop model (commanded pulses and the own
+    gripper command only). The model has its own load class (``is_loaded``, the gripper command), whatever
+    ``--load-rule`` says, because its load term was fitted on frames split that way.
+    """
+    if sag:
+        import sag_comp
+        return sag_comp.bias_rad(servo, is_loaded(servo))
+    return mp.elevation_bias(SEED_BIAS['loaded' if loaded else 'unloaded'], servo)
+
+
 # Frozen VIS3 detector parameters at the current final-environment wall height.
 FROZEN_DETECTOR = {'wall_height_m': .40, 'columns': 96, 'strip_half_px': 2}
 

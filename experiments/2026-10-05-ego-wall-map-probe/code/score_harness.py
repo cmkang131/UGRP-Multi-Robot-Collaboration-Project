@@ -53,7 +53,8 @@ rendered from (``true_camera.TrueCamera``: recorded ``qpos`` -> ``mj_forward``, 
 OPTIONS. Every behaviour change of #405 is an explicit switch and its default is the behaviour before #405:
 ``--load-rule s3|gripper`` (default ``s3``: ``servo[3] >= 900``, an arm pose that marks the open-gripper search
 pose (s3 = 1072) as loaded; ``gripper``: the own commanded gripper pulse closed, ``wall_probe.is_loaded``),
-``--detector-params '{"floor_patch_max_m": 0.81}'`` (floor-patch rule, off by default). ``--gt-camera true|model``
+``--detector-params '{"floor_patch_max_m": 0.81}'`` (floor-patch rule, off by default), ``--sag-comp`` (command-only
+gravity-droop elevation bias for the detector, ``sag_comp.py``, off by default). ``--gt-camera true|model``
 is scoring only and is the one exception: ``true`` (default) is the corrected ground truth, ``model`` the earlier one.
 The earlier ``wall_probe.py`` read the load state with the string key ``'3'`` on an int-keyed dict (never loaded);
 ``s3`` here reads the int key, as the earlier scorer did. Of the 1848 frames of the v98 dev episode ``s3`` marks 669
@@ -271,8 +272,7 @@ def run(args):
 
         # ---- detection (no ground truth below this line) ----------------------------------
         und = mp.undistort(bgr)
-        cm = mp.column_model(servo, mp.elevation_bias(
-            wp.SEED_BIAS['loaded' if loaded else 'unloaded'], servo), cols)   # DETECTOR: own servo only
+        cm = mp.column_model(servo, wp.detector_bias(servo, loaded, args.sag_comp), cols)   # DETECTOR: own servo only
 
         rec = {'frame_index': int(row.get('frame_id', idx)), 't': round(t, 3), 'loaded': bool(loaded),
                's3': int(servo.get(3, 0)), 'wall_hit_cols': int(hit.sum()),
@@ -430,6 +430,7 @@ def run(args):
         'visible_frame_share': round(n_visible/max(n_frames, 1), 4),
         'testable_frames': len(testable_frames),
         'gt_camera': args.gt_camera, 'load_rule': args.load_rule,
+        **({'sag_comp': True} if args.sag_comp else {}),          # recorded only when the option is on
         'min_visible_cols': args.min_visible_cols,
         'max_range_m': args.max_range_m,
         'visible_cols_total': sum(r['visible_cols'] for r in rows_out),
@@ -463,6 +464,9 @@ if __name__ == '__main__':
                     help='ground-truth camera: the rendered MuJoCo camera, or the detector FK model (legacy)')
     ap.add_argument('--load-rule', choices=wp.LOAD_RULES, default=wp.LOAD_RULE_DEFAULT,
                     help='own load state: s3 = servo[3] >= 900 (default, the earlier rule), gripper = commanded gripper closed')
+    ap.add_argument('--sag-comp', action='store_true',
+                    help='OPTION (default off): command-only gravity-droop elevation bias for the detector (sag_comp.py); '
+                         'the ground truth camera is unaffected')
     ap.add_argument('--detector-params', default='',
                     help='JSON overrides of height_free_wall.PARAMS, e.g. {"clamp_horizon": true}')
     ap.add_argument('--row-tol-px', type=float, default=3.,

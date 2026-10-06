@@ -295,7 +295,10 @@ def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bo
 
     run_top = surface_run_top(strips, float(p['run_edge_tol']), int(p['run_step_window']))
     horizon = horizon_rows(cm)
-    above = run_top[np.clip(vb_i - 1, 0, HEIGHT - 1), np.arange(n_c)[None, :]]
+    kwin = max(1, int(p['run_step_window']))
+    # the run of the surface above the candidate is read ``kwin`` rows up: with a k-row step operator the rows within
+    # k - 1 of the boundary are already split off by it (kwin = 1 reads row vb - 1, as before)
+    above = run_top[np.clip(vb_i - kwin, 0, HEIGHT - 1), np.arange(n_c)[None, :]]
     if p['clamp_horizon']:
         horizon = np.maximum(horizon, 0.)     # horizon outside the frame: the frame top is the nearest it can be tested
     above_is_vertical = above <= horizon[None, :]
@@ -324,7 +327,7 @@ def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bo
             out['c'][j, k] = contrast[i, j]
             out['s'][j, k] = std[i, j]
             t_here = float(t_all[i, j])
-            top = float(run_top[vb_i[i, j] - 1, j])
+            top = float(run_top[max(vb_i[i, j] - kwin, 0), j])
             out['vt'][j, k] = top
             if top > 0:
                 h = solve_height(cm, j, t_here, top)
