@@ -1,5 +1,7 @@
 # 자기 지도 B·C·E: 2D 오프라인 탐색 (2026-10-07)
 
+후속 환경 진단·수정은 아래 §8 이후에 별도 기록한다. §1–7의 실패/확인 자료는 보존한다.
+
 ## 1. 범위와 동결
 
 설계 `/Users/changmin/projects/ugrp/outputs/mapfree-design-20261006/DESIGN.md` §4/5/7/9를 따른다.
@@ -245,3 +247,24 @@ scene geometry는 등록 map 해시와 대조한다. 화물은 catalog landing f
 로컬 관련 시험 **21 passed**, `git diff --check` 통과. B v3 봉인10파일·사용자 기존 미추적4파일 바이트 불변.
 MuJoCo/렌더/모델 호출0, 새 venv/패키지 설치0, CPU timing benchmark/잠금0이다. CI에는 새 시험 파일을
 정확히 한 번 추가한다. PR #409는 #408 위 DRAFT이며 병합하지 않는다. TensorBoard는 앞선 사용자 결정대로 생략.
+
+## 8. 수정 전 환경 진단 등록 (2026-10-07)
+
+`585f2745`의 평가기/actor는 아직 수정하지 않았다. 기존 확인 32쌍은 이제 **본 자료**다.
+`code/diagnose_environment.py`로 원래 로그의 최초 경로, B 가시/검출/누적, 병진 명령,
+종료 충돌의 사각 차체 실제 겹침/외접원만 겹침/명령 DR와 GT 차이를 분리한다.
+같은 32쌍에 과정·투영 잡음0, 가시 검출률1/오검출0을 적용한 오라클 관측 재생을 먼저 한다.
+카메라 FOV·가림·4 m·B 256 px 조건과 동결 B v3의 시간/병진 확인은 유지한다.
+오라클도 자기 명령 DR만 입력받으며, 정답 위치로 제어기를 보정하지 않는다.
+이 진단은 새 확인 성능이 아니다. 수정 전/후 자료를 덮어쓰거나 합산하지 않는다.
+
+[ROS explore_lite](https://raw.githubusercontent.com/hrnr/m-explore/master/explore/src/frontier_search.cpp)의
+`searchFrom`은 costmap의 가장 가까운 FREE_SPACE에서 free BFS를 시작하고,
+NO_INFORMATION이 4-neighbor free와 접하는 셀을 frontier로 삼는다. **자체적으로 free 원을 만들지 않는다.**
+[ROS obstacle_layer](https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/plugins/obstacle_layer.cpp)의
+`updateCosts`는 변환한 현재 footprint polygon만 FREE_SPACE로 지운다.
+[costmap_2d](https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/src/costmap_2d.cpp)의
+`setConvexPolygonCost`/`convexFillCells`는 경계선과 내부를 rasterize한다.
+unknown을 추적하는 설정의 기본 셀은 NO_INFORMATION이다. 따라서 임의 반경 주변/카메라 사각지대를
+free로 채우는 것으로 일반화하지 않는다. Yamauchi 원문 재조회는 실패했으며 footprint 초기화의 직접
+근거는 위 공개 구현이다. v1의 free provenance와 B 검출 기준은 완화하지 않는다.
