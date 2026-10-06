@@ -64,7 +64,7 @@ def run_case(profile, case, loaded, output):
         for _ in range(round(.8/dt)):
             world._physics_step_for(c, np.zeros(4))
         result['cargo_mass_kg'] = float(m.body_mass[cargo])
-        result['robot_mass_kg'] = c.robot_mass_kg()
+        result['robot_mass_kg'] = float(c.robot_mass_kg)
         result['cargo_initial_z_m'] = float(d.xpos[cargo, 2])
         if loaded and d.xpos[cargo, 2] < .08:
             result['status'] = 'STAGING_FAILED'
@@ -133,6 +133,9 @@ def run_case(profile, case, loaded, output):
         write(output/'trace.json', rows)
         (output/'scene.xml').write_text(world.scene_xml)
         return result
+    except Exception as exc:
+        result['error'] = {'type': type(exc).__name__, 'message': str(exc)}
+        raise
     finally:
         result['total_wall_s'] = time.perf_counter()-started
         result['loadavg_end'] = os.getloadavg()

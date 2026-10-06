@@ -2,8 +2,9 @@
 import xml.etree.ElementTree as ET
 import pytest
 
+pytest.importorskip('mujoco')
+
 from sim.masterpi_drive_friction import DriveParameters, PROFILE, transform_xml
-from sim.masterpi_model_v3 import build_v3_xml
 from sim.multi_masterpi_production import build_multi_robot_xml
 from sim.masterpi_robot_models import v3_robot_xml_transform
 

@@ -69,7 +69,7 @@ cyan은 표준 Scene 물체를 HIGH 집게에 초기 배치하는 진단이며 �
 
 ```sh
 python3 scripts/ugrp_session.py run drive-friction-CASE -- \
-  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/sim_cli.py workflow run masterpi-drive-friction-probe -- \
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow run masterpi-drive-friction-probe --record /Users/changmin/projects/ugrp/outputs/drive-friction-record-NEW-ID -- \
   --expected-source-sha SHA --drive-profile masterpi_drive_friction_v1 \
   --cases rest forward left turn push no_contact rated_speed \
   --output /Users/changmin/projects/ugrp/outputs/drive-friction-NEW-ID
@@ -98,3 +98,10 @@ python3 scripts/ugrp_session.py run drive-friction-CASE -- \
 - [Schönbach et al., 2025 논문](https://arxiv.org/html/2510.10273v1), [공개 구현](https://github.com/AIS-Bonn/tiago_isaac): passive revolute roller·collision approximation과 실측 가속 곡선 필요성. 본문/README 확인; 이 코드의 실행 재현은 하지 않음.
 - [MuJoCo mecanum 공개 예](https://github.com/Roundly/Mujoco-omni-mecanum/blob/main/wheel_example.xml): 수동 roller joint+접촉 기하. 코드 확인; 형상/질량 값은 복사하지 않음.
 - [asRoBallet 2026](https://arxiv.org/html/2604.24916v1): MuJoCo explicit roller·마찰 모델/실측의 최근 연구. 다른 구형 로봇이며 MasterPi 성능 근거는 아님.
+
+## 실행 기록
+
+- `995ff901` 구조 검사 5 passed. 첫 호출은 다른 Codex 카메라 진단 잠금으로 시작 전 거부.
+- 두 번째 호출은 초기 정지까지 실행 후 기록 코드가 `robot_mass_kg` property를 함수로 불러 HOST_ERROR.
+  표준 NamespacedMasterPi API를 확인해 읽기만 고쳤으며 물리 수치는 바꾸지 않음.
+  원본: `/Users/changmin/projects/ugrp/outputs/drive-friction-995ff901-forward{,-record}`. 실패 원본 보존.
