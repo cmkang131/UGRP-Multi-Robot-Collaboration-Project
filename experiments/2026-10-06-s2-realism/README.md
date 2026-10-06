@@ -1199,3 +1199,57 @@ hover→VIA110→VIA130→HIGH를 측정하고 마지막에 정상 lower 경로�
 하중이 필요한 자세에서 접촉이 없으면 평가 측이 촬영을 중단한다(명령/보정에 GT 전달 없음).
 하중 이탈 1회이며 같은 원인 반복 시 추가 촬영·full 실행을 중단한다. 후보1 원본/표는 보존한다.
 추가 바닥 정지가 이탈을 일으켰다는 것은 아직 원인 후보이며, 다음 하중 촬영으로 확인한다.
+
+### 외부 보정 결과: 하중 이탈 2회로 중단, v124 실행 미등록
+
+두 번째 하중 촬영 source **`d6070c52`**에서도 hover에서 `CALIBRATION_GRIP_LOSS`가 발생했다.
+cyan z=0.015892 m, bilateral=false였다. 앞선 하중 source `486c5cce`와 같은 이탈이므로 추가
+물리 촬영과 full DEV를 중단했다. 단순히 닫힘 뒤 바닥 정지만의 문제라는 가설은 입증되지 않았다.
+촬영기의 수평 차체 지그와 `_team_joint_move_servos` 연속 보간은 원래 자유 차체/0.05초 arm
+발행 경로와 다르므로, 원래 S2 성공 파지를 재현했다고 볼 수 없다. 특히 기존 blind descent의
+별도 정지 시간까지 동일한지 추가 감사가 필요하다. 이를 고치려는 추가 실행은 하지 않았다.
+
+- [부분 보정표](../../configs/calibration/s2_camera_v3_extrinsic_v1.json): **무하중 21자세/63장**,
+  자세당 fit 80점·holdout 40점, holdout RMS 최대 **0.304978 px**.
+  HIGH/VIA110/VIA130/hover/정렬·검색 pan·하강을 포함한다. **loaded table은 빈 값**,
+  `PARTIAL_NO_LOADED_CALIBRATION / load_qualified=false / admitted=false`이다.
+- 별도 무하중 HIGH 값은 pitch **−29.902435°**, 높이 **0.193148 m**다. 하중인 줄 알고 촬영한
+  후보1도 같은 값이 나왔으나 실제 물체는 바닥에 있었으므로 하중 보정에 쓸 수 없다.
+  s1045–1047 실제 carry 약 −32.69°/0.1872 m를 이 값으로 대체하지 않았다.
+- `harness/zone_solo_cyan_extrinsic.py`에 `camera_calibration=off|v3_extrinsic_v1`을 추가했다.
+  기본/명시적 off는 명령·record bytes 동일. 부분 표로 on하면
+  **`LOADED_CAMERA_CALIBRATION_UNAVAILABLE`**로 거절한다. 유효한 하중 표가 없어 CLI/번들
+  실행 입장은 연결하지 않았다. **v124/7.17.0은 예약만**, seed1048은 미실행·미소비다.
+- 요청한 s1045–1047의 **유효한 새 보정 replay와 fix 수락 비교는 미수행**이다. 잘못된 무하중
+  HIGH를 적용해 fix 수가 늘어난 것을 개선으로 보고하지 않는다. 새 full DEV도 실행하지 않아
+  lifted/inside 및 운반 wall/SIM의 새 결과는 없다. 이전 결과와 합산하지 않는다.
+- [촬영·모든 raw 해시·정리 요약](extrinsic-calibration-summary.json),
+  [첫 하중 불채택](calibration-load-rejected.json), [두 번째 이탈 중단](calibration-load-stop.json).
+  raw는 `/Users/changmin/projects/ugrp/outputs/s2-calibration-<sha8>-checkerboard[-loaded]`에 보존한다.
+  첫 강제 중단의 관리 manifest는 원래 `running`으로 남았지만 실제 소유 PID 종료를 확인하고
+  별도 요약에서 `ABORTED`로 기록했다. 원본 manifest를 덮어쓰지 않았다.
+  모든 촬영은 agent_lock/ugrp_session과 nice0, 순차 실행. 최종 lock=null, 자체 프로세스 종료.
+
+### 보정 공유 경로와 다른 작업 영향 범위 (수정 없음)
+
+| 소비자 | 보정 경로와 확인 범위 |
+|---|---|
+| S2 PF·벽 투영 | `vision_pose_source_highpose.py:73`의 `column_model_for` → `camera_record` → `floor_camera` → `measured_column_model`; provider가 잡은 calibration 사전을 제자리 갱신한다. |
+| S2 벽 검출 | `OpenCVObserver`가 위 PF의 column-model factory를 매번 사용한다. K/D·임계값을 바꾸지 않는다. |
+| S2 cyan·블록 투영 | `zone_solo_cyan_vision_v106.CyanVision`이 동일한 provider calibration 객체를 받는다. `extrinsics`·바닥 cuboid·hover ray projection이 같은 표를 쓴다. |
+| pickup-site 재관측 | `zone_solo_cyan_scene_runtime.py:185–191`은 그 사전의 복사본으로 loaded→unloaded 조회를 구성한다. 기본 경로/픽셀 차분은 바꾸지 않았다. 이번 inhand 선택에서는 이 경로를 쓰지 않는다. |
+| in-hand/flow | RGB 픽셀 증거이며 외부 보정표를 직접 소비하지 않는다. 입력 카메라는 v3 그대로다. |
+| 짝/S3 | `vision_pose_source_pair_v3.py`, `zone_final_pair_vision.py`, HIGH provider를 공유하는 제어기는 각자의 카메라 profile/하중 표 조합을 점검해야 한다. 이전 장착을 유지한 실행에 같은 오류가 있다고 단정하지 않는다. 새 표는 이들에 적용하지 않았다. |
+| PR405 자기 지도·벽 검출기 | 점검 ref `f3eeb6bf090f3eba2fd16a29020e7e187ed5241c`. `wall_probe.detector_bias`의 `SEED_BIAS`/선택 `sag_comp` 및 `height_free_wall`의 명령 자세 ColumnModel·horizon·바닥 역투영은 별도 보정 경로다. v3/단독 하중으로 검증되지 않으면 같은 종류의 투영 오차가 가능하다. `self_wall_memory.observe_wall`·`wall_projection_guard`는 호출자가 준 camera origin/rotation을 사용한다. PR405 파일/결과/PR은 수정하지 않았다. |
+
+실제 PF/벽 column model과 cyan 투영이 같은 사전을 읽는 것은 **합성 하중 표를 넣은 단위 시험**으로
+확인했다. 이는 유효한 loaded 보정을 획득했거나 새 운반이 성공했다는 뜻이 아니다.
+
+최종 변경 모듈 2파일 **15 passed**: off bytes, 부분 표 on 거절, 실제 PF/벽/cyan 사전 공유,
+독립 인스턴스 불변, RGB-PnP·holdout 거절을 확인했다. 촬영기/관리 경로 시험은 앞서 **23 passed**.
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1007-s2-extrinsic-capture-verified%2F#timeseries)
+새 snapshot `1007-s2-extrinsic-capture-verified`, 촬영 기록 4건·**40 scalar 원본=event=API** 확인.
+실패 포함 보정 기록이며 임무 실행 분모는 0이다. 기존 snapshot·서버·영상은 유지했다.
+최초 export는 derived-view 근거 필드 누락으로 거절되어 실패 manifest를 보존했고, 새 snapshot으로
+수정 export 후 검증했다([전달 검증](extrinsic-delivery-verification.json)). 브라우저는 수치 대조 요청에
+따라 열지 않았다. freeze 전후 운반 wall/SIM의 새 비교값은 없다. PR #406 DRAFT, 병합 금지 유지.
