@@ -18,7 +18,7 @@ def executor_plan(action, job, *, actor, orders):
         if action.get('destination_zone') != order['destination_zone']:
             return Plan(None, rejected_reason='WRONG_DESTINATION')
         if order['kind'] == 'cyan' and order['required_robots'] == 1 and order['count'] == 1:
-            if actor != 'r3' or action.get('role') != 'solo':
+            if actor != 'r3' or action.get('role') != 'west':
                 return Plan(None, rejected_reason='UNSUPPORTED_SOLO_ROLE')
         elif order['kind'] != 'long_beam' or order['required_robots'] != 2 or order['count'] != 1:
             return Plan(None, rejected_reason='UNSUPPORTED_ORDER')

@@ -8,7 +8,7 @@ ORDERS = [dict(order_id='order-1', kind='cyan', required_robots=1, count=1, dest
 
 
 @pytest.mark.parametrize('actor,order,role,api,args', [
-    ('r3', 'order-1', 'solo', 'deliver', ('order-1', 'A')),
+    ('r3', 'order-1', 'west', 'deliver', ('order-1', 'A')),
     ('r1', 'order-5', 'end_neg', 'pair_carry', ('order-5', 'B', 'r2')),
     ('r2', 'order-5', 'end_pos', 'pair_carry', ('order-5', 'B', 'r1')),
 ])
@@ -19,10 +19,10 @@ def test_claim_selects_only_the_requested_executor(actor, order, role, api, args
 
 
 @pytest.mark.parametrize('actor,order,role,zone,reason', [
-    ('r1', 'order-1', 'solo', 'A', 'UNSUPPORTED_SOLO_ROLE'),
+    ('r1', 'order-1', 'west', 'A', 'UNSUPPORTED_SOLO_ROLE'),
     ('r3', 'order-5', 'end_neg', 'B', 'UNSUPPORTED_PAIR_ROLE'),
-    ('r3', 'missing', 'solo', 'A', 'UNKNOWN_ORDER'),
-    ('r3', 'order-1', 'solo', 'B', 'WRONG_DESTINATION'),
+    ('r3', 'missing', 'west', 'A', 'UNKNOWN_ORDER'),
+    ('r3', 'order-1', 'west', 'B', 'WRONG_DESTINATION'),
 ])
 def test_bad_claim_never_falls_back_to_another_executor(actor, order, role, zone, reason):
     plan = executor_plan(dict(kind='claim', order_id=order, role=role, destination_zone=zone),
