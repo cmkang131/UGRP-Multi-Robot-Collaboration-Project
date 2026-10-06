@@ -59,8 +59,19 @@ def test_speed_summary_gain_uses_physics_only_time():
     assert summary['gain_physics_only'] == pytest.approx(1.5)
     assert summary['variants']['mesh_freeze']['gain_physics_only'] == pytest.approx(1.3125)
     assert summary['passed']
+    assert summary['variants']['mesh_freeze']['speed_gate_passed']
     slow = probe.speed_summary({'mesh': [run(3.0)], 'sphere6_v1': [run(2.7)]})
     assert not slow['passed']
+
+
+def test_combined_speed_gate_and_missing_baseline():
+    run = lambda seconds: {'sim_s': 6., 'wall_per_sim': 1., 'profile': {'step_total_s': seconds}}
+    summary = probe.speed_summary({'mesh': [run(3.)], 'sphere6_freeze': [run(2.)]})
+    assert summary['variants']['sphere6_freeze']['speed_gate_passed']
+    with pytest.raises(ValueError, match='requires mesh'):
+        probe.speed_summary({'sphere6_freeze': [run(2.)]})
+    with pytest.raises(ValueError, match='nonempty'):
+        probe.speed_summary({'mesh': []})
 
 
 def test_timer_delta_reports_per_call_microseconds():

@@ -18,6 +18,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
 BRANCH = 'claude/v7-roller-approx'
+LOCK_OWNER = 'codex'  # authorized handover; preserve the existing branch and history
 PROFILE = 'masterpi_drive_friction_v7'
 VARIANTS = {'mesh': {'roller_collision': 'mesh'},
             'sphere6_v1': {'roller_collision': 'sphere6_v1'},
@@ -149,6 +150,8 @@ def physics_only_wall_per_sim(result):
 def speed_summary(runs):
     """runs: variant -> list of result dicts of the same case (profile timers on)."""
     out = {'variants': {}}
+    if BASE not in runs or any(not results for results in runs.values()):
+        raise ValueError('speed comparison requires mesh and nonempty repeat lists')
     for variant, results in runs.items():
         phys = [physics_only_wall_per_sim(r) for r in results]
         diag = [r['wall_per_sim'] for r in results]
@@ -159,6 +162,7 @@ def speed_summary(runs):
         for variant, row in out['variants'].items():
             row['gain_physics_only'] = base['physics_only_mean']/row['physics_only_mean']
             row['gain_diagnostic'] = base['diagnostic_mean']/row['diagnostic_mean']
+            row['speed_gate_passed'] = row['gain_physics_only'] >= ACCEPT['speed_gain_min']
     out['gain_required'] = ACCEPT['speed_gain_min']
     for variant, key in (('sphere6_v1', 'passed'), ('mesh_freeze', 'freeze_passed')):
         if variant in out['variants']:
@@ -214,8 +218,12 @@ def main():
     args = p.parse_args()
     if not args.output.is_absolute() or not args.output.resolve().is_relative_to(RAW_ROOT):
         p.error('raw output must be absolute below primary outputs/')
-    if args.phase == 'equivalence' and BASE not in args.variants:
+    if args.phase in ('equivalence', 'speed') and BASE not in args.variants:
         p.error(f'--variants must include {BASE}')
+    if args.repeats < 1 or len(args.variants) != len(set(args.variants)):
+        p.error('positive repeats and unique variants required')
+    if args.phase != 'profile' and any(v in ABLATIONS for v in args.variants):
+        p.error('frictionloss ablation is profile-only; not an equivalence candidate')
     source = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     if source != args.expected_source_sha or subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT).strip():
         p.error('expected clean committed source required')
@@ -224,7 +232,7 @@ def main():
     from scripts import agent_lock
     if agent_lock.status(agent_lock.DEFAULT_ROOT) is not None:
         p.error('physics lock occupied; no simulation started')
-    lock = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='claude', branch=BRANCH,
+    lock = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner=LOCK_OWNER, branch=BRANCH,
         purpose=f'v7 roller approximation {args.phase}', pid=os.getpid(),
         expected_minutes=args.expected_minutes, timing_sensitive=True)
     try:
@@ -305,7 +313,7 @@ def main():
     finally:
         held = agent_lock.status(agent_lock.DEFAULT_ROOT)
         if held and held['pid'] == os.getpid() and held['branch'] == BRANCH:
-            agent_lock.release(agent_lock.DEFAULT_ROOT, owner='claude')
+            agent_lock.release(agent_lock.DEFAULT_ROOT, owner=LOCK_OWNER)
 
 
 if __name__ == '__main__':

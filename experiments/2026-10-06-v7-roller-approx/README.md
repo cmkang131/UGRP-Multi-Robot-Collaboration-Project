@@ -56,4 +56,31 @@ mesh 쪽 재측정은 기존 v7 기록(`v7-results.json`)과 값이 같아야 �
    제약 행 수, 풀이 반복, 파이썬/계측 비율. ablation은 `dof_frictionloss`를 런타임에 0으로 하는 원인 추적용이며 옵션이 아니다.
 2. 렌더 비율: 운영 경로 `render_jpeg`(robot_cam) 프레임당 시간과 S2 기록의 프레임 수로 추정.
 3. 동등성 표와 속도 반복.
-4. 모든 실행은 `status == null` 확인 뒤 자기 PID로 잠금(`--owner claude`), 끝나면 바로 release.
+4. 모든 실행은 `status == null` 확인 뒤 자기 PID로 잠금(인계 전 `claude`, 인계 후 `codex`), 끝나면 바로 release.
+
+## Codex 인계 및 남은 측정의 사전 고정
+
+`f051e1968c8424ad11eb4a121f1e58f2af1a6bdb`까지 clean/pushed 확인. 기존 12개 profile
+(`5a0544d3`)와 30개 equivalence (`f051e196`)는 완료된 Claude 실행으로 분리해 인용한다.
+이미 sphere6의 속도/yaw/빔, mesh_freeze의 빔 동등성 실패를 확인했으므로 재튜닝하지 않는다.
+인계 후 변경은 실행 소유자, 입력 검사와 결합 옵션의 속도 판정 기록뿐이며 물리 구현은 그대로다.
+workflow는 소유자 인계를 나타내는 1.0.1, RGB 번들 추가 없음.
+
+추가 실행 **전에** 아래 범위를 고정한다. 탐색 DEV 진단이며 새 확증 코호트가 아니다.
+
+- 빠진 `sphere6_freeze`에 기존 표의 모든 허용 기준을 그대로 적용하고 mesh와 10건씩 비교한다.
+- 네 조합의 input50 5s+stop1s를 각각 3회, 순서를 정방향/역방향/정방향으로 교대한다.
+  `mjTIMER_STEP / sim_s`와 Python 계측 포함 wall/SIM을 모두 기록한다. speed gate는 1.2배 그대로다.
+- `mesh`와 `mesh_nofl`의 rest/empty50/cyan50만 비교해 롤러 frictionloss 108행 비용을 분리한다.
+  이것은 채택 가능한 옵션이 아니며 동등성/속도 phase에서 사용을 거부한다.
+- 네 조합의 기존 `robot_cam` JPEG 경로를 5 warmup+40 frames 측정한다. 카메라/FOV/외관 변경 없음.
+- `launch_remaining.zsh <SHA>`는 S2 잠금이 `null`일 때까지 `until`로 기다린다.
+  각 자식이 원자적 acquire(owner=codex, 자신의 PID) 후 실행하고 finally에서 자기 잠금만 반환한다.
+  모든 측정은 직렬·최대 phase당 900초이며 다른 실행을 중지하지 않는다.
+  ENOSPC/실행 오류는 HOST_ERROR로 기록하며 완료/동등성으로 세지 않는다.
+- TensorBoard는 새 수치 스냅샷을 실제 이벤트 값으로 대조한다. 사용자 요청에 따라 UI는 열지 않는다.
+
+공개 USD 두 파일을 고정 commit에서 다시 받아 기록된 SHA-256 및 기존 원본과 일치함을 확인했다.
+구 중심/반지름은 **roller 로컬 좌표**이다. wheel 루트의 추가 `xformOp:scale=0.976`도 확인했다.
+이 옵션은 사용자 지정 65/205와 기존 FUJI 배율을 그대로 적용하며, USD 전체 조립체의 world 치수를
+그대로 복제했다는 의미가 아니다. 설치된 MasterPi 형상·실물 견인력은 계속 미확인이다.
