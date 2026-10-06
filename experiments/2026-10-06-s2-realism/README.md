@@ -975,3 +975,30 @@ agent_lock 해제(null), ugrp_session stopped, PGID19865 잔여0, 일회 launchd
 실행은 시험 통과→source/seed 커밋·push→lock null 확인→agent_lock acquire→ugrp_session 순서다. freezeON/dev_light에서는 unknown·위치 불확실·보수적 가드를 기록만 한다. 낙하/이탈/기울기/실행 오류·120SIM초1cm미만 정체 및 유한 cap에서 중단한다. ENOSPC는 HOST_ERROR로 기록하고 부분raw를 보존한다. 모델 호출0. PR406은 DRAFT 유지·병합 금지. 새 seed 결과로 보정값을 다시 맞추거나 이번 실행을 재사용하지 않는다.
 
 실행 전 검증: 바뀐 범위3개 시험 파일에서 **19 passed, 280 subtests passed / 29.48초**. 기본off 명령·record 바이트 일치, 실제 PF 경로의 load 양 상태, 펄스 정지 꼬리/도착 해상도, fresh estimate 대기, 신규 seed/번들·freeze 제한, 실패 결과 저장 및 CI gate를 확인했다. [검증 기록](v122-local-verification.json). 여유48.15GiB, 사전 확인 잠금null.
+
+### v122 완료: 양자화 진동 감소, B 배치 실패 — 추가 실행 중단
+
+실행 소스 **`e619ee571ea6d03ad33f92793e91492d968f4d30`**, s1046/P1-2/full 1회. source/seed 등록 커밋·push 후 lock acquire, `ugrp_session run s2-pulse-s1046`로 실행했다(실행 프로세스 모두 nice0). **lifted=true, inside=false, floor=true, stable=true**, 독립 기하 판정도 동일하다. 제어기는 done/`STAGE_REACHED_UNQUALIFIED`, raw `failure=null`이지만 물리 임무 성공은 **false**다. cyan 최종 `[2.079624,0.535995,0.015892]`m로 B 중심`[4.6,-2.1]`에 도착하지 않았다. in-hand=`probable_held_inhand_rgb`, 원래 자리 비교는 선택하지 않아 전후 면적null, 다시 집기0, 모델 호출0.
+
+| 지표 | s1045 (기존) | s1046 (새 DEV) |
+|---|---:|---:|
+| 운반 옆 펄스 / 방향 반전 | 672 / 538 | 143 / **3** |
+| 마지막 자기 위치 오차 (평가 전용) | 3.839m | **3.346m** |
+| 마지막 방향 오차 (평가 전용) | 별도 과거 기록 | **95.74°** |
+| POSE_UNCERTAIN 기록 | 519 | **278** |
+| ARM_COLLISION_GUARD 기록 | 5 | **7** |
+| wall / SIM / wall÷SIM | 1359.97 / 693.95 / 1.95975 | **618.427 / 329.25 / 1.87829** |
+
+이 표는 서로 다른 DEV seed/명령 조건의 관측값이며 성공률이나 인과 효과를 합산하지 않는다. freeze 이전 s1042 OFF=2.58765, 이후 s1043=1.46790, s1044=1.60305, s1045=1.95975, s1046=1.87829 wall/SIM만 별도 기록한다(단계·seed·모델이 달라 freeze 자체의 가속률은 아님).
+
+남은 원인은 [새 seed 실패 분석](s1046-failure-analysis.json)과 [새 펄스 분포](s1046-navigation.json)에 구분했다. (1) 문 서쪽의 하중 +전진151회는 예측보다 평균1.250mm 짧았다. (2) **미확증 하중 fine 음의 옆 이동**70회는 yaw 평균 잔차+0.5205°/회, RMSE0.6974°로 전이가 맞지 않았다. (3) 연속 전진의 정지 간격도 보정 자료0.10초(n154)→새 실행0.30초(n124)로 달랐고 이동 중앙1.306→1.166cm였다. 이 초기 구동 상태/정지 간격 전이를 충분히 검증하지 못했다. 간격만의 인과 효과를 증명한 것은 아니다([간격 분석](s1046-stop-intervals.json)). 이 새 seed로 상수를 다시 맞추지 않았다.
+
+시각 위치 보정의 마지막 시각은32.85초인데, 문 동쪽 도착 선언209.60초에도 갱신되지 않았다. 그때 추정`[2.73785,0.02448]` 대 실제`[1.97873,-0.11034]`, 오차0.771m였다. 이후217.6/218.55/219.5초 옆 펄스의 실제 yaw 변화는16.21/33.81/29.25°(예측 약1.50°)이고, 이어진 coarse 음의 옆 펄스15회 전체 이동 중앙은0.625mm였다. 문/분리벽 부근에서 차체가 막혀 회전·미끄러진 정황이며 **벽 접촉 impulse는 저장하지 않아 접촉 원인은 기하 추론**이다. 명령만으로 실제 이동·막힘을 알 수 없다는 표준 운동 모델의 한계와, stale/과신한 위치 추정이 남아 있다. 정지 후 관측을 기다린 것이 실제 유효한 fix를 보장하지 않는다. 보정표만으로 B 배치 문제를 해결했다고 보고하지 않는다.
+
+dev_light에 따라 보수적 정지 지점은 위 두 종류를 기록만 했고, 낙하/집게 이탈/기울기/정체/실행 오류 중단은 없었다. B 배치·위치 추정 실패가 반복되어 **이번 1회로 종료**, 추가 시뮬레이션·seed 재사용·후속 재보정 없음. source closure 전체, raw manifest, RGB6500개 해시와 독립 기하 판정을 검증했다([완료 기록](completed-v122.json)). 원본 result/trace는 수정하지 않았다.
+
+출력: `/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place`.
+4배속 MP4: `/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-analysis/views/s1046-full/execution.mp4` (640×480,20fps,81.25초, SHA256`34a95ea928fc5872017886e0184d51d4df22b5d33b944654b39d178236b066da`). 전체 decode 및 등록된 원본 HTTP206 바이트 대조 통과.
+TensorBoard 새 snapshot `1007-s2-realism-pulse-v122`: 완료 실행1+오프라인 보정감사1, **26개 scalar 원본/event/live API 일치**, 기존 viewer PID52016/logdir 유지. [대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-realism-pulse-v122%2F#timeseries), [영상](http://127.0.0.1:6007/video/286cb3ea73aabecc1c6a), [검증](pulse-delivery-verification.json). 사용자 요청대로 숫자만 대조하고 브라우저는 열지 않았다. 공유 view에는 자기 키만 추가했다.
+
+CI preflight는 [새 실행37493154746](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37493154746)에서 **24초 success**로 시간초과 수정 확인. 전체 CI는 기록 시 진행 중이며 미완료를 통과로 표현하지 않는다([조회](v122-ci-readback.json)). 세션 stopped, 소유PID32708/32712/32722/32728 모두 종료, one-shot launchd 해제, **agent_lock=null**. PR406 DRAFT 유지·병합 금지.
