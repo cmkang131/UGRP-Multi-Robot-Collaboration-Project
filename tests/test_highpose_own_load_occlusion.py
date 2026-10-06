@@ -55,7 +55,7 @@ def test_recorded_failure_frame_is_content_only_and_the_boolean_gate_still_refus
         verdict, measures = g.assess(obs, 'r1', 338.05, ob=ob)
         assert verdict == fg.CONTENT_ONLY
         assert measures['value_spread'] == 0. and measures['dark_fraction'] == 0.
-        assert measures['value_std'] == pytest.approx(.2244, abs=1e-3)           # below the pinned 0.22 std floor? no: equal
+        assert measures['value_std'] == pytest.approx(.2244, abs=1e-3)           # std alone passes the 0.22 floor; the frame fails on value_spread 0 (< 1.0)
     assert not g.valid_frame(obs, 'r1', 338.05) and not g.valid_frame_ob(obs, 'r1', 338.05)
     held = at(HELD_VIEW, 336.55)
     assert g.assess(held, 'r1', 336.55, ob=True)[0] == fg.VALID and g.valid_frame_ob(held, 'r1', 336.55)
@@ -144,8 +144,8 @@ def test_occluded_frame_is_accepted_logged_once_per_episode_and_ends_on_the_next
     assert end['frames'] == 2 and end['duration_s'] == pytest.approx(.1) and end['last_frame_id'] == 6737
     export = o.export()
     assert export['occluded_frames'] == 2 and export['episodes'][0]['open_at_job_end'] is False
-    assert o.tag_row({'frame_id': 6736}) == {'own_image': occ.VERDICT} and o.tag_row({'frame_id': 6738}) == {}
-    assert o.tag_row({'kind': 'anchor'}) == {}
+    assert o.note_row({'frame_id': 6736}) == {'own_image': occ.VERDICT} and o.note_row({'frame_id': 6738}) == {}
+    assert o.note_row({'kind': 'anchor'}) == {}
 
 
 def test_everything_else_is_left_to_the_unchanged_gate():
@@ -294,7 +294,7 @@ def test_release_window_keeps_an_occluded_view_open_until_the_queued_arm_motion_
 def test_grip_monitor_rows_of_an_occluded_frame_are_tagged_and_other_rows_are_not():
     o = occ.OwnLoadOcclusion(fake_ep('lower', obs=at(OCCLUDED, 338.05, fid=6736)))
     assert o.accepts(338.05)
-    log = grip.GripMonitorLog(tag=o.tag_row)
+    log = grip.GripMonitorLog(annotate=o.note_row)
     log.record('r1', 'transit_view', 338.05, frame_id=6736, relation={'ok': False})
     log.record('r1', 'transit_view', 338.0, frame_id=6735)
     log.record('r1', 'anchor', 338.0)

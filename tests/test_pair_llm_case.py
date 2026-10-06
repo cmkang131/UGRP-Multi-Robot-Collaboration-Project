@@ -237,10 +237,12 @@ def test_every_arm_has_the_same_case_cap_and_a_larger_one_is_refused(tmp_path):
                       calibration='x', calibration_sha='0' * 64, cap_s=3.)
 
 
-def test_dev_light_early_end_and_physics_profile_are_the_same_in_every_arm(tmp_path):
+def test_dev_light_early_end_and_physics_profile_are_the_same_in_every_arm(tmp_path, monkeypatch):
     """DEV light: both pair jobs ended -> the case stops CASE_END_SETTLE_S later (rule and LLM arms alike), and every
     result records dev_light / partial_fix / render profile of the shared physics bundle."""
     from types import SimpleNamespace
+    for name, value in (('DEV_LIGHT', True), ('PARTIAL_FIX', True), ('COLLISION_GUARD_MODE', 'log_only')):
+        monkeypatch.setattr(contract.high_skill, name, value)   # synthetic plumbing runs may carry DEV switches
 
     class EndedRuntime(FakeRuntime):
         def __init__(self, *a, **k):
@@ -413,3 +415,17 @@ def test_workflow_is_registered_in_the_managed_catalog():
     assert not plan['execution_started'] and plan['command'][1:3] == ['-m', 'scripts.run_pair_llm']
     assert contract.WORKFLOW == 'configs/simulation_workflows.d/pair_llm_v100.json'
     assert 'stub' in json.dumps(json.loads((contract.ROOT / contract.WORKFLOW).read_text()))
+
+
+def test_measured_label_is_refused_with_dev_switches_on_unless_synthetic_and_then_not_promotable(monkeypatch):
+    """Review #371 P2: a non-synthetic MEASURED_SIM record needs every DEV-only switch off; a synthetic plumbing record
+    keeps the label but says it is never promotable evidence."""
+    monkeypatch.setattr(contract.high_skill, 'DEV_LIGHT', True)
+    with pytest.raises(ValueError, match='DEV_ONLY_FLAGS_IN_FORMAL_MODE'):
+        contract.admission_record(contract.high_skill.MEASURED_SIM)
+    record = contract.admission_record(contract.high_skill.MEASURED_SIM, synthetic=True)
+    assert record['promotable'] is False and record['measured_sim_evidence'] is False
+    monkeypatch.setattr(contract.high_skill, 'DEV_LIGHT', False)
+    monkeypatch.setattr(contract.high_skill, 'PARTIAL_FIX', False)
+    monkeypatch.setattr(contract.high_skill, 'COLLISION_GUARD_MODE', 'enforce')
+    assert contract.admission_record(contract.high_skill.MEASURED_SIM) == {'admission_mode': contract.high_skill.MEASURED_SIM}

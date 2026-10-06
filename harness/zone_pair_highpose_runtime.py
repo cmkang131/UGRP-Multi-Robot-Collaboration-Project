@@ -448,9 +448,9 @@ def _light_due(holder, key):
 
 
 def light_log(guard, now, soft, site, **detail):
-    """One ``dev_light_would_stop`` event (deduplicated per site/reason). Never raises into the run."""
+    """One ``dev_light_would_stop`` event (deduplicated per site/reason/moving). Never raises into the run."""
     ep = guard.ep
-    count, due = _light_due(guard, (site, soft[0]))
+    count, due = _light_due(guard, (site, soft[0], detail.get('moving')))
     if not due:
         return
     try:
@@ -477,38 +477,68 @@ def light_soft(ctl, reason, now, site):
 
 
 class LightFail:
-    """Controller side of DEV light: ``fail``/``_transit_abort`` with a soft reason log and return (the state is
-    retried next tick) instead of failing. Hard reasons are unchanged."""
+    """Controller side of DEV light: ``fail``/``_transit_abort`` with a soft reason log and resume the state instead
+    of failing. Hard reasons are unchanged.
+
+    Independent review #383 P2-a: a soft reason that only returned left some states holding to the case cap (light5:
+    ALIGN_RELOOK_TIMEOUT x751). Every soft controller reason now either resumes explicitly (the window or state is
+    restarted so the next tick makes progress) or is hard here (CONTROLLER_HARD), and the same reason repeated more
+    than hp_contract.DEV_LIGHT_REPEAT_LIMIT times for one robot becomes a real failure ('dev_light_repeat_limit')."""
+
+    # No state to resume into at this site (the align tick cannot continue without the re-observe); stays soft in
+    # CommandGuard.before_control.
+    CONTROLLER_HARD = frozenset({'PAIR_SCHEDULED_REOBSERVE_LIMIT'})
 
     def _light_soft(self, reason, now, site):
         return light_soft(self, reason, now, site)
 
+    def _light_setter(self):
+        from harness.zone_pair_align import PairAlignRelook
+        return super(PairAlignRelook, self) if isinstance(self, PairAlignRelook) else super(LightFail, self)
+
+    def _light_resume_align(self, now):
+        """The accepted-fix branch of zone_pair_align._align_relook_return (own estimate as it is)."""
+        self.align_look_total_s = getattr(self, 'align_look_total_s', 0.) + now - getattr(self, 'align_look_started_at', now)
+        self.relative_views_tried = {}
+        reset = getattr(self, 'reset_object_anchor', None)
+        if reset is not None:
+            reset()
+        self.next_look = now
+        self._light_setter().set('align', now, resumed=True)
+        self.state_t = getattr(self, 'align_started_at', now)
+
+    def _light_return_from_relook(self, now):
+        """Pan back to the align pose, then align_relook_return resumes (as the accepted-fix branch of _align_relook)."""
+        from harness.owncam_pair_beam_v2 import pose_of
+        self.arm.queue(pose_of(self.align_resume_name), now, duration=.6, settle=.3)
+        return self._light_setter().set('align_relook_return', now)
+
+    def _light_repeat_exceeded(self, reason, now):
+        counts = self.__dict__.setdefault('dev_light_soft_counts', {})
+        counts[reason] = counts.get(reason, 0) + 1
+        if counts[reason] <= hp_contract.DEV_LIGHT_REPEAT_LIMIT:
+            return False
+        self.log(self.rid, 'dev_light_repeat_limit', now, would_reason=reason, occurrences=counts[reason],
+                 limit=hp_contract.DEV_LIGHT_REPEAT_LIMIT, state=self.state, light_version=hp_contract.DEV_LIGHT_VERSION)
+        return True
+
     def fail(self, reason, now):
-        if self._light_soft(reason, now, 'controller.fail'):
-            if reason == 'ALIGN_RELOOK_NO_FIX' and self.state == 'align_relook':
-                # Retrying would stay in align_relook with no pans left: resume exactly like the accepted-fix branch
-                # of zone_pair_align._align_relook (own estimate as it is; logged as dev_light_would_stop).
-                from harness.owncam_pair_beam_v2 import pose_of
-                self.arm.queue(pose_of(self.align_resume_name), now, duration=.6, settle=.3)
-                from harness.zone_pair_align import PairAlignRelook
-                setter = super(PairAlignRelook, self) if isinstance(self, PairAlignRelook) else super()
-                return setter.set('align_relook_return', now)
+        if reason not in self.CONTROLLER_HARD and self._light_soft(reason, now, 'controller.fail'):
+            if self._light_repeat_exceeded(reason, now):
+                return super().fail(reason, now)
+            if reason in ('ALIGN_RELOOK_NO_FIX', 'ALIGN_RELOOK_TIMEOUT') and self.state == 'align_relook':
+                # Retrying would stay in align_relook with no pans/time left: pan back and resume.
+                return self._light_return_from_relook(now)
+            if reason in ('ALIGN_RELOOK_FIX_EXPIRED', 'ALIGN_RELOOK_TIMEOUT') and self.state in (
+                    'align_relook_return', 'align_relook_stop'):
+                return self._light_resume_align(now)
             if reason == 'ALIGN_TIMEOUT' and self.state == 'align':
                 # A time limit only: start a new align window from now (the alignment itself is unchanged).
                 self.state_t = self.align_started_at = now
                 return None
-            if reason == 'ALIGN_RELOOK_FIX_EXPIRED' and self.state == 'align_relook_return':
-                # The rest of the accepted branch of zone_pair_align._align_relook_return (own estimate as it is).
-                from harness.zone_pair_align import PairAlignRelook
-                setter = super(PairAlignRelook, self) if isinstance(self, PairAlignRelook) else super()
-                self.align_look_total_s = getattr(self, 'align_look_total_s', 0.) + now - getattr(self, 'align_look_started_at', now)
-                self.relative_views_tried = {}
-                reset = getattr(self, 'reset_object_anchor', None)
-                if reset is not None:
-                    reset()
-                self.next_look = now
-                setter.set('align', now, resumed=True)
-                self.state_t = getattr(self, 'align_started_at', now)
+            if reason == 'APPROACH_TIMEOUT' and self.state == 'approach':
+                # A time limit only: a new approach window from now (state_t is the approach start).
+                self.state_t = now
                 return None
             return None
         return super().fail(reason, now)
@@ -568,7 +598,11 @@ class CommandGuard(PreviousGuard):
         finally:
             self.veto_trace = None
         if soft:
-            light_log(self, now, soft, 'CommandGuard.check', commands=issued)
+            # #383 P3: a softened stop lets the issued commands through. 'moving' marks a base motion command sent
+            # where the guard would have held or re-observed (parent_commands), so motion during a would-be
+            # re-observe is counted apart from holds (own dedup key).
+            light_log(self, now, soft, 'CommandGuard.check', commands=issued, moving=moving,
+                      parent_commands=copy.deepcopy(out))
             out = commands
         start_relief.log_reliefs(self, now, trace)
         guardlog.log_veto(self, now, issued, before, trace)
@@ -643,7 +677,7 @@ class Execution(previous.Execution):
         ctl.high_raising, ctl.high_ready = False, False
         ctl.grip_epoch, ctl.pose_anchors, ctl.transit = 0, {}, None
         ctl.floor_return_verified = False
-        ctl.grip_monitor = grip.GripMonitorLog(tag=self.own_load_occlusion.tag_row)   # occluded frames are tagged
+        ctl.grip_monitor = grip.GripMonitorLog(annotate=self.own_load_occlusion.note_row)   # occluded frames are annotated
         ctl.grip_closed_epoch = None
         ctl.v98_measured_camera_keys = posture_defer.measured_keys(kwargs['calibration'])  # static calibration
         self.command_guard = CommandGuard(self, self.vision)
@@ -719,14 +753,20 @@ def adopt_look_recovery(runtime):
     return relook.install(runtime, relook.LookRecovery(tuple(runtime.actors)))
 
 
+def provider_builder():
+    """The pose provider the bundle records (``partial_fix``): one choice for Runtime and StagedRuntime (#383 P2-c)."""
+    if hp_contract.PARTIAL_FIX:      # DEV light: second-eigenvalue fix receipt (zone_pair_highpose_partial_fix)
+        from harness.zone_pair_highpose_partial_fix import build_provider
+    else:
+        from harness.vision_pose_source_highpose import build_provider
+    return build_provider
+
+
 class Runtime(PreviousRuntime):
     def __init__(self, static, calibration_path, calibration_sha, *, seed, provider_factory=None):
-        from harness.vision_pose_source_highpose import build_provider
-        if hp_contract.PARTIAL_FIX:      # DEV light: second-eigenvalue fix receipt (zone_pair_highpose_partial_fix)
-            from harness.zone_pair_highpose_partial_fix import build_provider
         initialize = bind(PreviousRuntime.__init__, Team=Team)
         initialize(self, static, calibration_path, calibration_sha, seed=seed,
-                   provider_factory=provider_factory or build_provider)
+                   provider_factory=provider_factory or provider_builder())
         # The parent hard-codes job_sim_limit_s=120 for every executor, which
         # would expire the pair job before the registered per-case cap (lower
         # bounds 184.6 s / 190-219 s). Align it with the bundle's case cap

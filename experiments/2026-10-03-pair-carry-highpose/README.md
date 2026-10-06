@@ -85,6 +85,10 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
 - 남은 위험: 빔 위 잡기 자세(t≥180, 짐 들기 전)와 운반 전체에서 화면의 약 19만/30.7만 화소가 바뀐다. 잘린 화면에서 맞춘 잡기 전
   확인(pregrasp hover)·빔 색 마스크·기록 전용 grip 관계(`zone_pair_highpose_grip`의 고정 near_m 22.2 mm)는 새 화면에서 다르게 동작할 수
   있다. light7(39919479)·light8(seed 912)은 이전 렌더 그대로이고, 이 프로필은 그다음 실행부터 적용한다. 이전 결과와 합산하지 않는다.
+- grip 관계와의 관계(#383 P3): `harness/zone_pair_highpose_grip.relation()`은 근거리 절단면을 상수 `near_m` = 0.002 × 11.112 m
+  = 22.2 mm로 v93 장면 기록에서 한 번 복사해 쓴다. 이 프로필에서는 실제 절단면이 4.44 mm라 그 상수가 렌더와 맞지 않는다.
+  relation()은 기록 전용(어떤 제어기도 읽지 않음)이라 동작은 바뀌지 않지만, nearclip 실행의 grip 관계 기록은 잘린 화면 기준
+  예측이므로 해석하지 않는다. 고치려면 near_m을 프로필 기록(`render_nearclip.near_m`)에서 읽는 새 버전이 필요하다.
 
 ### v105 DEV 라이트: 보수적 정지를 기록 전용으로 (사용자 결정, 2026-10-05)
 
@@ -102,11 +106,27 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   - 모서리 기준 시한: 그 대기만 건너뛴다.
   - 제어기 fail의 시한·불확실 계열: 다음 틱에 다시 시도한다.
 - **그대로 멈추는 것:**
-  - 실제 물리 실패: 짐 낙하, 기울어짐, 집게 이탈.
   - GO 상호 확인과 BARRIER_* 계열, PARTNER_ABORT.
+  - (정정, #383 독립 검토 P2-b) 짐 낙하·기울어짐·집게 이탈은 **실행 중에 감지하지 않는다.** 이 버전에서는 실행이 끝난 뒤
+    평가 전용 판정으로만 기록된다. 그래서 "멈춘다"는 이전 문구는 틀렸다.
   - 실행 불가 오류: 명령·시계·공급자 오류.
   - 동결된 접근 구동기의 APPROACH_*·DOOR_POSE_NOT_LOCALIZED: 구동기가 이미 실패 상태라 다시 시도해도 진행할 수 없다.
-- **물리 접촉은 정상 그대로다.** 평가 전용 접촉 요약은 `outputs/v98-probe-tools/light_summary.py`가 `light_summary.json`으로 만든다.
+- **물리 접촉은 정상 그대로다.** 평가 전용 접촉 요약은 `scripts/v98_light_summary.py`(`outputs/v98-probe-tools/light_summary.py`의
+  복사본, #383 P3로 PR에 포함)가 `light_summary.json`으로 만든다.
+- **#383 독립 검토 수정 묶음 (dev_light_v6, 2026-10-05):**
+  - P1: 세 값(DEV_LIGHT, PARTIAL_FIX, COLLISION_GUARD_MODE='log_only')의 모듈 기본값이 DEV 값이다. 그래서 정식(MEASURED_SIM 등
+    DEV_PILOT이 아닌) 실행은 셋 중 하나라도 켜져 있으면 `require_runnable`과 `student_run_case`에서 `DEV_ONLY_FLAGS_IN_FORMAL_MODE`로
+    시작하지 않는다. 번들에는 `dev_only_flags`(켜진 목록, 정식 거부)를 남긴다.
+  - P2-a: 제어기 소프트 사유가 그냥 돌아가기만 하면 영구 hold가 됐다(light5의 ALIGN_RELOOK_TIMEOUT 751회). 이제 각 사유를 이렇게 처리한다.
+    - APPROACH_TIMEOUT: 새 접근 시간 창을 연다.
+    - ALIGN_RELOOK_TIMEOUT: NO_FIX·FIX_EXPIRED와 같은 재개 경로로 정렬에 돌아간다.
+    - PAIR_SCHEDULED_REOBSERVE_LIMIT: 제어기에서는 돌아갈 상태가 없어 실제 실패로 둔다(가드 쪽은 여전히 기록 전용).
+    - 같은 사유가 한 로봇에서 20회를 넘으면 `dev_light_repeat_limit`를 남기고 실제 실패로 기록한다.
+  - P2-c: `StagedRuntime`도 `rt.provider_builder()`를 써서, 번들의 partial_fix 기록과 실제 공급자가 같다.
+  - P3:
+    - 보고의 `observation_quality`에 `partial`·`observed_rank`·약한 방향을 붙인다. 부분 고정은 fix_age만 0으로 만들고 약한 방향의
+      σ는 줄이지 않는다(시험).
+    - 소프트 정지에서 통과한 명령에 `moving`과 가드가 원래 내려 했던 명령을 남긴다. 그래서 재관측 대신 움직인 경우를 구분한다.
 - **번들 표시:** `zone-final-pair-highpose-v105-collision-log-only` + dev_light.
   - 브랜치 전체에서 가장 큰 번호가 v104라서 그다음인 v105를 썼다.
   - 정식 E2E와 본 실험에서는 반드시 끈다.

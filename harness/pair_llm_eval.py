@@ -2,7 +2,7 @@
 
 The physics owner writes ``eval_only/trajectory.jsonl`` (beam position every 0.05 SIM s). This module
 reads it AFTER the case and returns a verdict. The verdict never re-enters a prompt, a permit, a wake-up or
-an executor decision (``tests/test_pair_llm_boundary.py`` pins that no robot-side module imports it).
+an executor decision (``tests/test_pair_llm_inputs.py::test_no_robot_side_module_imports_the_evaluator`` pins that no robot-side module imports it).
 
 The judge is deliberately small and PROVISIONAL (``JUDGE_STATUS``). The v88 pair path records
 ``physical_success: None`` and the v96 judge (#363) is not final; this module does not invent a stronger

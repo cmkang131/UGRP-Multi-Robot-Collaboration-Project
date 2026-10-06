@@ -1,0 +1,368 @@
+{
+ "schema": "ugrp.critb_v95_score_summary.v1",
+ "validation_kind": "새 시작점 검증 (new-start validation)",
+ "derived_from": {
+  "path": "/Users/changmin/projects/ugrp/outputs/criterion-b-v95-score-20261003T170731Z/criterion_B_v95.json",
+  "sha256": "998bc3d4c32eeae1dae4225c4dbade458dd13c0562a0a21bf3613bfc6052a368"
+ },
+ "output_files_sha256": {
+  "criterion_B_v95.json": "998bc3d4c32eeae1dae4225c4dbade458dd13c0562a0a21bf3613bfc6052a368",
+  "run_meta.txt": "36e80f7411ff4a4c40a354a6153b68fb06c1f2d267ed9f0eeb305e0347564c11",
+  "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout.txt": "db31d066fce20cc5e2b55030c6d4e9cd9cd961014b27d4e8ec5d29528e71d46b"
+ },
+ "run": {
+  "start_utc": "2026-10-03T17:07:31Z",
+  "end_utc": "2026-10-03T17:07:37Z",
+  "exit_code": 0,
+  "nice": 10,
+  "loadavg_start": [
+   17.44,
+   15.94,
+   16.7
+  ],
+  "loadavg_end": [
+   16.37,
+   15.74,
+   16.63
+  ],
+  "command": "nice -n 10 .venv-sim-worker-mac/bin/python -m scripts.score_consumer_criterion_b_v95 --raw .../zone_wide_door_geometry_v3 --raw .../zone_wide_corridor_final_v3 --precheck outputs/heldout-v95-precheck-20261003T085307Z --adapter-comment 5971425132 --output /Users/changmin/projects/ugrp/outputs/criterion-b-v95-score-20261003T170731Z/criterion_B_v95.json"
+ },
+ "verdict": {
+  "scope": "HELD_OUT_VALIDATION",
+  "axis_pass_original_B": {
+   "forward": true,
+   "left": true,
+   "rotate": null
+  },
+  "pass_original_B": null,
+  "with_rotation_addendum": {
+   "axis_pass": {
+    "forward": true,
+    "left": true,
+    "rotate": true
+   },
+   "pass": true
+  }
+ },
+ "evidence": {
+  "verified": true,
+  "adapter_comment": {
+   "id": 5971425132,
+   "html_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5971425132",
+   "created_at": "2026-10-03T17:06:21Z",
+   "updated_at": "2026-10-03T17:06:21Z",
+   "author_association": "OWNER",
+   "author": "cmkang131",
+   "adapter_sha256": "f64016dd93a48bc54d1e50f17b592132e370a3d72204d6aa8dc6f34205d01e5a"
+  },
+  "commitment": {
+   "id": 5968608872,
+   "html_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5968608872",
+   "created_at": "2026-10-03T11:12:35Z"
+  },
+  "gate_record": {
+   "id": 5968809408,
+   "html_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5968809408",
+   "created_at": "2026-10-03T11:40:41Z"
+  },
+  "raw_read_started": "2026-10-03T17:07:33.530238+00:00",
+  "earliest_recorded_start": {
+   "utc": "2026-10-03T11:14:03.595419+00:00",
+   "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z/zone_wide_door_geometry_v3/plan.json",
+   "field": "host_start.physics_holder.acquired_unix",
+   "recorded_value": 1791026043.595419,
+   "kind": "lock_acquisition_lower_bound"
+  },
+  "kinematic_gate": {
+   "status": "DISJOINT",
+   "prior_comparisons": 152,
+   "prior_status": "DISJOINT",
+   "mutual_pairs": 6,
+   "mutual_overlaps": []
+  },
+  "sources_rehashed": 271,
+  "scoring_checkout": {
+   "head": "b4cd1336d3b5a77785314b69dad64f42625fd73f",
+   "status_porcelain": []
+  },
+  "rotation_ordering": "PRE_COLLECTION",
+  "clock_limit": "GitHub server UTC versus runner/scoring host UTC; not signed raw.",
+  "input_files": 300
+ },
+ "cases": [
+  {
+   "map_id": "zone_wide_door_geometry_v3",
+   "robot_id": "r1",
+   "scope": "HELD_OUT_VALIDATION",
+   "forward": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.8081063319835695,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.8014217636378371,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    }
+   },
+   "left": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.9991754077672856,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.7778242710771571,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "2.0"
+    }
+   },
+   "rotate_original_B": {
+    "pass": null,
+    "reason": "no frozen candidate or missing signed steps/PRBS/horizon support"
+   },
+   "yaw_r5_addendum": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.9999994338255191,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.36030154513402385,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "0.2"
+    }
+   }
+  },
+  {
+   "map_id": "zone_wide_door_geometry_v3",
+   "robot_id": "r2",
+   "scope": "HELD_OUT_VALIDATION",
+   "forward": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.8081063319856954,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.801694816080008,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.0"
+    }
+   },
+   "left": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.9991753992511259,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.7774825361433376,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "2.0"
+    }
+   },
+   "rotate_original_B": {
+    "pass": null,
+    "reason": "no frozen candidate or missing signed steps/PRBS/horizon support"
+   },
+   "yaw_r5_addendum": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.9999992129733555,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.36029446942227267,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "0.2"
+    }
+   }
+  },
+  {
+   "map_id": "zone_wide_corridor_final_v3",
+   "robot_id": "r1",
+   "scope": "HELD_OUT_VALIDATION",
+   "forward": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.8081063319862558,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.8014212812964382,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    }
+   },
+   "left": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.999175408310889,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.7778242710789175,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "2.0"
+    }
+   },
+   "rotate_original_B": {
+    "pass": null,
+    "reason": "no frozen candidate or missing signed steps/PRBS/horizon support"
+   },
+   "yaw_r5_addendum": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.9999994256953668,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.36030732118431025,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "0.2"
+    }
+   }
+  },
+  {
+   "map_id": "zone_wide_corridor_final_v3",
+   "robot_id": "r2",
+   "scope": "HELD_OUT_VALIDATION",
+   "forward": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.8081063319779058,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.8016974554897162,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.0"
+    }
+   },
+   "left": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.9991754114386335,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.7774825384116457,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "2.0"
+    }
+   },
+   "rotate_original_B": {
+    "pass": null,
+    "reason": "no frozen candidate or missing signed steps/PRBS/horizon support"
+   },
+   "yaw_r5_addendum": {
+    "pass": true,
+    "split_pass": {
+     "steps": true,
+     "prbs": true
+    },
+    "steps": {
+     "nae_p95_max": 1.9999992366847164,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "3.2"
+    },
+    "prbs": {
+     "nae_p95_max": 0.3602679077525618,
+     "cov2sigma_min": 1.0,
+     "worst_horizon_s": "0.2"
+    }
+   }
+  }
+ ],
+ "comparison_vs_v91_r2_door": {
+  "source": {
+   "path": "/Users/changmin/projects/ugrp/outputs/criterion-b-v91-score-r2-20261003/criterion_B_v91_with_yaw.json",
+   "sha256": "8e452f25a3151b3b2b3263d6b7fec4bd197d64cc0d9dc849b9e7a894e07cdd9f"
+  },
+  "by_split_axis": {
+   "steps/forward": {
+    "max_abs_nae_p95_diff_vs_v91_r2": 2.960965281355131e-07,
+    "max_abs_nae_p95_diff_among_v95_cases": 2.69980921311701e-07
+   },
+   "steps/left": {
+    "max_abs_nae_p95_diff_vs_v91_r2": 9.48416287416265e-06,
+    "max_abs_nae_p95_diff_among_v95_cases": 7.391904382112206e-06
+   },
+   "steps/yaw": {
+    "max_abs_nae_p95_diff_vs_v91_r2": 4.626791447637224e-06,
+    "max_abs_nae_p95_diff_among_v95_cases": 3.859691667662535e-07
+   },
+   "prbs/forward": {
+    "max_abs_nae_p95_diff_vs_v91_r2": 0.09376071217781856,
+    "max_abs_nae_p95_diff_among_v95_cases": 0.09371739786283495
+   },
+   "prbs/left": {
+    "max_abs_nae_p95_diff_vs_v91_r2": 0.07640319778479288,
+    "max_abs_nae_p95_diff_among_v95_cases": 0.07651961357513082
+   },
+   "prbs/yaw": {
+    "max_abs_nae_p95_diff_vs_v91_r2": 0.02106819934487597,
+    "max_abs_nae_p95_diff_among_v95_cases": 0.0003557518146063421
+   }
+  },
+  "note": "steps 구간은 v91과 사실상 같다(정규화 오차 차이 ≤1e-5). 차이는 PRBS 구간에서만 난다."
+ }
+}

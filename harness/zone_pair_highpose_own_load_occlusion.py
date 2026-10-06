@@ -14,7 +14,9 @@ dark-fraction / contrast rule (``FrameGate.assess`` verdict ``CONTENT_ONLY``) is
 ``own_image_occlusion_ended`` at its end, counts in the record) and the step goes on: the commanded motion (arm
 lowering, wait for the partner barrier, release) continues from the controller's own command history, and the frame is
 marked ``own_image = OCCLUDED_BY_OWN_LOAD`` in every grip-monitor row that carries its ``frame_id``, i.e. it is no
-observation. Nothing is inferred from the occluded frame.
+observation. This module infers nothing from the occluded frame; the pose source and the beam-edge tracker still read it
+with their own thresholds (a uniform frame gives them no edge to update on), and the occlusion label is inferred from the
+own phase, not measured (a dark frame in the loaded phase from another cause is labelled the same).
 
 Loaded phase = both of the controller's own signals agree: its phase is one of ``LOADED_PHASES`` (grip closed and
 held from the lift to the final-release barrier, including the sigma decision stop and the set-down) and its own
@@ -79,7 +81,7 @@ RELEASE_PHASES = frozenset({'cp_open', 'released'})
 
 def record():
     return {'profile': PROFILE, 'version': VERSION, 'verdict': VERDICT, 'module': 'harness/zone_pair_highpose_own_load_occlusion.py',
-            'events': [EVENT_START, EVENT_END], 'monitor_row_tag': {'own_image': VERDICT},
+            'events': [EVENT_START, EVENT_END], 'monitor_row_note': {'own_image': VERDICT},
             'loaded_phases': sorted(LOADED_PHASES), 'release_phases': sorted(RELEASE_PHASES),
             'loaded_requires': 'own controller phase in loaded_phases AND own grasp receipt held '
                                '(beam_grasp_confirmed: current segment, issued gripper pulse closed)',
@@ -186,7 +188,7 @@ class OwnLoadOcclusion:
                duration_s=round(now-episode['start_s'], 4), frames=episode['frames'], phases=list(episode['phases']),
                last_frame_id=episode['last_frame_id'])
 
-    def tag_row(self, row):
+    def note_row(self, row):
         """Extra fields of a grip-monitor row: the frame it reads was occluded by the own load."""
         return {'own_image': VERDICT} if row.get('frame_id') in self.frame_ids else {}
 
