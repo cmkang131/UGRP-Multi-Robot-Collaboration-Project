@@ -16,7 +16,8 @@ PROFILE = 'masterpi_drive_friction_v1'
 PUBLIC_PROFILE = 'masterpi_drive_friction_v2'
 THRESHOLD_PROFILE = 'masterpi_drive_friction_v3'
 STRIBECK_PROFILE = 'masterpi_drive_friction_v4'
-CONTACT_PROFILES = (PROFILE, PUBLIC_PROFILE, THRESHOLD_PROFILE, STRIBECK_PROFILE)
+KARNOPP_PROFILE = 'masterpi_drive_friction_v5'
+CONTACT_PROFILES = (PROFILE, PUBLIC_PROFILE, THRESHOLD_PROFILE, STRIBECK_PROFILE, KARNOPP_PROFILE)
 CASES = ('rest', 'forward', 'left', 'turn', 'push', 'no_contact', 'rated_speed')
 
 
@@ -34,6 +35,8 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5):
         from sim.masterpi_drive_friction_v3 import build_world
     elif profile == STRIBECK_PROFILE:
         from sim.masterpi_drive_friction_v4 import build_world
+    elif profile == KARNOPP_PROFILE:
+        from sim.masterpi_drive_friction_v5 import build_world
     from sim.zone_final_v3_scene import FinalV3Scene, build_world as legacy_world
     from harness.zone_pair_highpose import HIGH
     from sim.masterpi_dynamics_v2 import FORWARD_PATTERN, LEFT_PATTERN, YAW_LEFT_PATTERN

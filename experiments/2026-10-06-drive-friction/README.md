@@ -462,3 +462,31 @@ TT의 전체 실측 토크-속도 곡선은 찾지 못했으며 **공식 DC 식�
 3. 옆 이동 회전 문제가 사라질 때에만 짝 빔 밀림 비교로 넘어간다. weld/모델 호출 없이 정해진 명령의 DEV 물리 비교다.
 4. 모든 실행은 primary 잠금 null 확인 후 자기 PID acquire/release, 관리 세션, 절대 raw 경로.
    새 실패도 보존하고 TensorBoard 수치 대조만 수행한다(사용자 요청으로 브라우저 확인 생략).
+
+## v4 첫 실패와 v5 계획 수정 (추가 실행 전)
+
+v4 물리 SHA `7dce794b527ccbda830ef798eaf6ad0de0c43101`, 무하중20/30만 측정했다.
+20은 .156 mm로 정지 기준 안이지만 **30은156.353 mm, 끝 속도 .11098 m/s**로 관측을 위반했다(첫 발생).
+trace에서 .02 s에 첫 바퀴 속도 .013 rad/s, 마찰 상한 .03492 Nm로 감소하고 .04 s에는1.23 rad/s와
+운동 저항 .00980665 Nm가 나타났다. 이 증거는 경계의 미세 속도가 Stribeck 저항 감소로 확대되는 설명을 지지한다.
+이를 마찰값/토크를 높여 보정하지 않는다. 원본·실패 후보는 유지하고 새 구조적 분기를 조사했다.
+
+- [Kirk Roffi 2024 공개 Karnopp/Simulink 예제1.1.0](https://www.mathworks.com/matlabcentral/fileexchange/155462-karnopp-s-model-stick-slip-friction-dynamics-in-simulink?s_tid=FX_rc2_behav):
+  저자가 설명한 zero-velocity band, static saturation, 바깥쪽 Stribeck 분기와 시연 설명 확인.
+  SLX 다운로드는403/로그인 경로로 원본 블록 파일 직접 확인은 **미확인**이며 실행하지 않았다.
+- [Song & Smedley 2010](https://doi.org/10.1115/1.4000321): 출판사 초록에서 고정/가변 step의 Karnopp 비교 확인.
+  전체 PDF 접근 실패로 원문의 개선 clutch 식은 **미확인**이며 복사하지 않았다.
+- [BME 로봇 마찰 교재 §8.4.2.3](https://www.mogi.bme.hu/TAMOP/robot_applications/math-ch07.html):
+  작은 속도 구간을 별도로 취급하는 Karnopp 원리 확인. MuJoCo에 옮길 때는 단일 물체 힘 상쇄/가상 속도 적분을
+  **결합된 native joint constraint의 soft 정지 근사**로 대체한다. 원저자 SLX 전체와 동일한 구현이라고 하지 않는다.
+
+v5은 `abs(w)<=DV`에서 native 마찰 상한을 Ts로 유지하고 바깥에서는 기존 Stribeck 식을 사용한다.
+**모터/토크·Ts·Tc·ws·접촉·관성 값은 v4와 동일**하다. DV는 이미 고정했던 .1 rad/s 속도 척도를 재사용하는
+수치 근사이며 실물 베어링 실측값이 아니다. 통과하도록 값을 탐색/선택한 것이 아니며 band 민감도는 미검증이다.
+바퀴 qvel/차체 위치를 강제로0으로 만들지 않고, 제어 명령값으로 분기를 선택하지 않는다.
+공개 원리에 대한 MuJoCo 이식 후보이고 미세 creep는 남을 수 있다.
+
+새 profile `masterpi_drive_friction_v5`, workflow5.0.0(원격의 자기4.0.0 뒤). v4 물리 파일은 동결한다.
+이전에 적은 전체 비교를 v5 새 초기 상태로 다시 수행한다. **30 정지 실패가 v5에서도 재발하면 전체 두 번째로 세어
+즉시 멈춘다**. 35/50/100 지속 주행을 확인한 뒤 접촉 제거·옆/회전, 그 뒤 짝 빔 순서는 유지한다.
+v4의 나머지 조건은 미실행으로 남기며 v5 성공 자료로 합산하지 않는다. 두 프로필/실패/후처리의 출처 SHA를 구분한다.
