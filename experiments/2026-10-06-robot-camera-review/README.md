@@ -568,3 +568,108 @@ native TensorBoard 새 스냅샷 `1006-camera-v3-relook-off-v2`에 두 조건의
 - 공식 Hiwonder 사양·도면·SDK 및 MuJoCo/OpenCV 광축 자료는 앞 절의 링크와 manifest를 유지한다.
   새 장착각/카메라 사양/물리 계수를 추가 추정하지 않았다. 과거 원본 렌즈 보정과
   해당 개체의 연결, 최초 집기/새 구동 성능은 계속 **미확인**이다.
+
+### #403 후속 17:25: 원래 자리 재관측으로 파지 확인
+
+사용자 제안 “집고 나서 원래 블록이 있던 곳을 보면 되지 않나?”를
+`grasp_check=pickup_site_v1` 명시적 옵션으로 구현했다. 기본은 `off`이고 v3 카메라를
+함께 지정해야 한다. 새 오프라인 프로필은 `solo-cyan-v106-camera-v3-scene-check-offline-v1`.
+기존 v106 번들의 소스305개 및 모든 카메라·물리값·기존 번들은 그대로다.
+시뮬레이션·렌더·모델 호출·실물 명령은 **모두0**이다.
+
+```sh
+python -m harness.zone_solo_cyan_camera_v3 \
+  --camera-profile masterpi-camera-user-observation-target-review-v3 \
+  --setdown-relook off --grasp-check pickup_site_v1
+```
+
+위 CLI는 여전히 계획 출력만 한다. Python의 같은 `Runtime`에
+`grasp_check='pickup_site_v1'`을 넘기면 아래 제어 분기가 연결된다.
+실행 승인은 `runtime_admitted=false`이며 #404 확정 후 새 통합 번들이 필요하다.
+
+1. 집기 전 마지막 정렬 영상에서 자기 RGB로 검출한 cyan의 위치·bbox·색·면적·영상 SHA256과
+   당시 발행한 팔/시선 명령을 기억한다. 실시간 정답 좌표·접촉·측정 관절·TOP 영상은 쓰지 않는다.
+2. 기존 닫기·HIGH 들기를 마친 뒤, **집게는 닫은 채** VIA130→VIA110→기억한 정렬 시선으로
+   돌아온다. 차체 후진은 하지 않는다. 명령 FK상 inspect 집게 중심 높이는148.16mm,
+   HIGH는149.86mm지만 이는 고정 기하의 예측이며 실측/실제 하중 검증이 아니다.
+3. 팔 명령 종료 뒤 촬영한 서로 다른 최신 영상7장을 비교한다. 바닥 자리와 cyan을 제외한
+   배경을 OpenCV ECC 평행이동으로 정렬하고, 원래 자리의 색 영역·주변 바닥 외관을 비교한다.
+   전후 SHA256·촬영 시각·색 면적·변경 픽셀·정렬 점수·결정 이유를 각 표본에 남긴다.
+4. 원래 자리에 cyan이 남은 표본이2장 이상이면 `failed`이고, 정상 하강 경로 뒤 집게를 열고
+   새 RGB로 다시 탐색·집기한다. 옛 좌표로 바로 닫지 않는다. 재시도는 실행당1회;
+   같은 실패가 두 번째 확인되면 `CYAN_SCENE_RETRY_EXHAUSTED`로 끝낸다.
+5. 7장이 모두 판별 가능하고 잔류 표본이1장 이하이면 `confirmed_by_site_disappearance`로
+   기록하고 HIGH로 복귀해 운반한다. 마지막 내려놓기는 그대로 유지한다.
+
+**확인 범위:** `visual_grasp_confirmed`는 원래 자리에서 사라졌다는 영상 판정이다.
+블록이 옆으로 밀려났거나 다른 물체가 치웠어도 원래 자리는 빌 수 있으므로 실제 접촉·
+파지 성공이라고 확정하지 않는다. `physical_success`는 계속 `null`이다.
+기존 `receipt`/`beam_grasp_confirmed`는 자체 가림 처리를 위한 닫기 명령 상태로 유지해
+새 영상 판정과 분리한다. 집게를 열면 영상 확인의 현재 유효 표시도 해제된다.
+
+시선 불일치·검은 가림·바닥 외관 불일치·잘린 영역·배경 무늬 부족·작은 애매한 cyan은
+`unknown`이다. 아래쪽에 잘려 보이는 든 블록이 비교 영역과 겹쳐도 실패/성공으로 세지 않는다.
+반복·역순 프레임은 표본 수를 늘리지 않는다. 기억 이후 차체 이동 명령이 있으면 같은 자리
+비교를 무효화한다. 30초 안에 판별 표본이 모이지 않는 경우도 미확인이다.
+기존 **DEV light** 정책에 따라 미확인은 `GRASP_SCENE_UNCONFIRMED` 기록·통보 후 HIGH로
+복귀해 계속하며, 영상 파지 확인값은 false다. 미확인을 성공으로 바꾸지 않는다.
+
+#### 운반 중 놓침 통보는 log-only
+
+HIGH에서 자기 RGB를 기존 loaded HIGH 광선과 바닥 cyan 검출기로 읽는다.
+화면 경계 또는 기존 K/D의 유효 렌즈 경계에 닿은 작은 손목 cyan 띠는 바닥 블록 판정에서 제외한다.
+분리된 바닥 cyan이 서로 다른 유효 영상2장에 보이면 `CYAN_CARRY_DROP_SUSPECTED`를
+기록하고 한국어 통보를 생성한다. 상태·경로·집게·주행 명령에는 영향을 주지 않는다.
+`drain_notifications()`로 호스트가 통보를 읽을 수 있고 전체 통보는 실행 기록에 남는다.
+이번에는 실제 호스트/모델/외부 메시지를 실행하지 않았다.
+화면 밖에서 떨어진 물건·바닥에 가려진 물건은 검출하지 못하며, 다른 cyan을 놓침으로
+오인할 수 있다. 이는 **놓침 의심 알림**이지 완전한 낙하 센서가 아니다.
+
+#### 표준 방법·최근 연구·공개 코드
+
+- [Willimon·Birchfield·Walker, 2012](https://journals.sagepub.com/doi/10.5772/53810), §3C:
+  팔을 치운 뒤 전후 영상 차이로 물체 제거를 확인하고 남으면 재시도한다. 같은 시점·가림 처리와
+  제거 확인을 적용했다. 논문의 스테레오·깊이 센서는 도입하지 않았다.
+- 저장소 `scripts/red_block/pick.py:473`의 기존 실물용 pickup-site disappearance 검사도
+  같은 hover 시선의7장·잔류≤1·면적비0.45–2.20을 사용한다. 그 규칙을 재사용하되
+  색은 기존 v106 cyan 범위/최소90px, 정렬·가림·새 프레임 구분과 근거 기록을 추가했다.
+  옛 코드 주석의 성공 주장을 이번 v3 실물 성능으로 승계하지 않는다.
+- [OpenCV ECC 공식 문서](https://docs.opencv.org/4.13.0/dc/d6b/group__video__track.html),
+  [공식 image_alignment.cpp](https://github.com/opencv/opencv/blob/4.x/samples/cpp/image_alignment.cpp):
+  `findTransformECC(MOTION_TRANSLATION)`와 역방향 warp로 미세한 시점 차이를 보정한다.
+  새 알고리즘 기준인 상관0.95·이동≤12px·바닥 외관95%·색 거리20 이상 허용 폭은
+  **미검증 DEV 선택값**이며 실물 측정값이나 논문의 권장값이라고 주장하지 않는다.
+  알고리즘 기준은 이번 시험 결과를 보고 조정하지 않았다. 카메라/물리값은 바꾸지 않았다.
+- [Liu·Chen·Abbeel, IROS2023](https://arxiv.org/abs/2305.06305): 전후 영상으로 제거된 물체를
+  추정하며 단순 영상 차분의 오류를 다룬다. 초록을 확인했고 학습 모델·저자 코드 실행은 하지 않았다.
+  해당 논문의 독립 공개 코드 위치는 이번 조사에서 **미확인**이다.
+- [Yang 외, TRO2024 / arXiv 공개2025](https://arxiv.org/html/2501.02149v1), §IV-B:
+  집기 전후 장면 차이와 물체 지속성을 학습 신호로 사용한다. 해당 본문을 확인했다.
+  임베딩 모델·RGB-D·훈련은 도입하지 않았다. 이번에 확인한 관련 최근 자료이며 2026 신논문으로
+  표현하지 않는다. [VPG 공개 코드](https://github.com/andyzeng/visual-pushing-grasping/blob/master/main.py)의
+  깊이 장면 변화와 grasp_success는 별도 값이므로 그 성공/시뮬레이터 판정도 가져오지 않았다.
+
+#### 이번 검증과 남은 실증
+
+변경 모듈 시험2파일 **25/25 통과**:
+`tests/test_solo_cyan_v106_camera_v3.py`, `tests/test_solo_cyan_v106_scene_check.py`.
+기본값 일치, 명시적 옵션, 영상 정렬·소멸·잔류·가림·잘못된 SHA·중복/역순 프레임,
+같은 시선 복귀·재집기·두 번째 실패 종료·최종 놓기·log-only 알림을 확인했다.
+실제 렌더 대신 아래쪽 cyan 띠5.625%를 포함한 **합성 JPEG**를 사용했다.
+[대표6쌍 근거·해시·결정](scene-check-offline.json): 잔류1, 소멸2, 미확인3.
+이는 여섯 번의 로봇 실행이나 파지 성공률이 아니다. 마지막 점검에서 화면 바깥 경계뿐 아니라
+어안 영상 **내부의 유효 렌즈 경계**에 잘리는 반례를 추가했다. 기존 K/D와 remap은 그대로 쓰며
+이 경계에 걸친 비교 영역/색 띠도 미확인으로 처리한다. 초기 감사·스냅샷은 삭제하지 않았다.
+
+native TensorBoard 새 스냅샷 `1006-camera-scene-check-v2`에 합성 분기 결과만 별도로 기록했고
+event·서버 API 수치6개 및 JPEG7장 SHA256을 확인했다.
+[검증·저장 대시보드 링크](scene-check-tensorboard.json)를 보존한다.
+raw JPEG와 감사 원문은 `/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/`.
+브라우저 확인은 기존 사용자 허용에 따라 생략한다.
+
+#404 이후 새 카메라+새 구동 S2에서 **추가로** 확인할 것:
+기억한 시선으로 실제 복귀했을 때 원래 바닥 자리가 보이는지, 빈 바닥의 ECC 가용성,
+짐을 든 채 시선을 바꾸는 동안 접촉/미끄러짐, 사라짐과 옆으로 밀림의 오판,
+남은 블록 재집기1회, 보이지 않는 낙하/다른 cyan의 알림 오판,
+호스트의 `drain_notifications()` 소비와 log-only 유지. 기존 v3 들기 자료에는
+이 전후 시선 쌍이 없어 **실제 v3 파지 확인·놓침 검출률은 미검증**이다.

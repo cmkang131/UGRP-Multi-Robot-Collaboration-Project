@@ -14,21 +14,30 @@ from sim import masterpi_camera_review_v3 as camera
 from sim.masterpi_camera_review_v1 import quat_matrix
 
 PROFILE = 'solo-cyan-v106-camera-v3-setdown-option-offline-v1'
+SCENE_PROFILE = 'solo-cyan-v106-camera-v3-scene-check-offline-v1'
 
 
-def option_record(setdown_relook='on', camera_profile=None):
+def option_record(setdown_relook='on', camera_profile=None, grasp_check='off'):
     if setdown_relook not in ('on', 'off'):
         raise ValueError('setdown_relook must be on or off')
     if camera_profile not in (None, camera.PROFILE_ID):
         raise ValueError('unsupported camera profile')
     if setdown_relook == 'off' and camera_profile != camera.PROFILE_ID:
         raise ValueError('off requires explicit camera v3 profile')
-    return {'profile': PROFILE, 'setdown_relook': setdown_relook,
+    if grasp_check not in ('off', 'pickup_site_v1'):
+        raise ValueError('grasp_check must be off or pickup_site_v1')
+    if grasp_check != 'off' and camera_profile != camera.PROFILE_ID:
+        raise ValueError('pickup-site check requires explicit camera v3 profile')
+    record = {'profile': PROFILE, 'setdown_relook': setdown_relook,
             'camera_profile': camera_profile, 'runtime_admitted': False,
             'execution_bundle_id': None, 'pending_drive_issue': 404,
             'motion_proxy': legacy.MOTION_PROXY,
             'localization': 'own issued commands predict; visible wall RGB corrects',
             'physical_success': None}
+    if grasp_check != 'off':
+        record['grasp_check'] = grasp_check
+        record['profile'] = SCENE_PROFILE
+    return record
 
 
 def camera_calibration(calibration):
@@ -85,11 +94,37 @@ build_provider.uses_landmark_tags = False
 
 class Runtime(legacy.Runtime):
     def __init__(self, *args, setdown_relook='on', camera_profile=None,
-                 provider_factory=None, **kwargs):
-        self.option = option_record(setdown_relook, camera_profile)
+                 grasp_check='off', provider_factory=None, **kwargs):
+        self.option = option_record(setdown_relook, camera_profile, grasp_check)
         self.skipped_relooks = []
         factory = provider_factory or (build_provider if camera_profile else legacy.build_provider)
         super().__init__(*args, provider_factory=factory, **kwargs)
+        self.scene_check = None
+        if grasp_check != 'off':
+            from harness.zone_solo_cyan_scene_runtime import SceneCheck
+            self.scene_check = SceneCheck()
+
+    def _control(self, now, idle):
+        if self.scene_check is None:
+            return super()._control(now, idle)
+        return self.scene_check.control(self, now, idle, super()._control)
+
+    def on_frames(self, now, frames):
+        super().on_frames(now, frames)
+        if self.scene_check is not None and not self.failure:
+            self.scene_check.observe_carry(self, now)
+
+    def drain_notifications(self):
+        """Host-readable notices; no robot command or external message is sent."""
+        if self.scene_check is None:
+            return []
+        notices, self.scene_check.pending_notifications = self.scene_check.pending_notifications, []
+        return notices
+
+    @property
+    def visual_grasp_confirmed(self):
+        return bool(self.receipt and self.scene_check is not None and
+                    self.scene_check.visual_status == 'confirmed_by_site_disappearance')
 
     def setdown_relook(self, now, index):
         if self.option['setdown_relook'] == 'on':
@@ -112,10 +147,14 @@ class Runtime(legacy.Runtime):
         # Default extension is behaviour/record-equivalent to frozen v106.
         if self.option['camera_profile'] is None:
             return out
-        out['profile'] = PROFILE
+        out['profile'] = self.option['profile']
         out['offline_option'] = copy.deepcopy(self.option)
         out['setdown_relook'].update(enabled=self.option['setdown_relook'] == 'on',
                                     skipped_indexes=list(self.skipped_relooks))
+        if self.scene_check is not None:
+            out['scene_grasp_check'] = self.scene_check.record()
+            out['visual_grasp_confirmed'] = self.visual_grasp_confirmed
+            out['in_run_visual_drop_notifications'] = 'suspected_only_log_only'
         return out
 
 
@@ -126,9 +165,10 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--setdown-relook', choices=('on', 'off'), default='on')
     parser.add_argument('--camera-profile', choices=(camera.PROFILE_ID,))
+    parser.add_argument('--grasp-check', choices=('off', 'pickup_site_v1'), default='off')
     args = parser.parse_args(argv)
     try:
-        record = option_record(args.setdown_relook, args.camera_profile)
+        record = option_record(args.setdown_relook, args.camera_profile, args.grasp_check)
     except ValueError as exc:
         parser.error(str(exc))
     print(json.dumps(record, indent=2))
