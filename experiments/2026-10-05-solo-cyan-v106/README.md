@@ -211,3 +211,37 @@ Borenstein & Feng (1996, UMBmark)의 체계적 오도메트리 오차 보정 원
 - 이번 실행에서 확정한 것: (1) 운반 중 HIGH 시야는 든 cyan으로 가득 차 fix가 불가능하다 → 내려놓고 빈 카메라로 재관측한다. (2) 재관측 후 재집기는 세 번 모두 성공했다. (3) 무하중 프로필 대용값은 하중 구간 이동량을 과대 예측했다.
   확인하지 못한 것: 목적지 스캔에서 fix가 없는 이유(PF 거부 사유 미조사), 마지막 구간의 요 오차, 30 g cyan 하중에 대한 실측 이동 모델.
 - 실행 3→4에서 바뀐 것은 `motion_loaded` 프로필 한 가지다(재관측 로직은 동일). 실행 3의 결과가 같은 원인으로 두 번 막힌 것이 아니므로 중단 조건은 충족하지 않았다.
+
+## 2026-10-06 Codex 후속: main 병합과 오프라인 원인 조사
+
+- main `origin/main`을 merge(리베이스 없음), 인덱스 충돌의 양쪽 행을 모두 보존했다. `876deed0` push 뒤 PR #391은 MERGEABLE/DRAFT, CI `37404278977` 시작. 관련 두 파일 31 passed/11.93 s. PR 병합은 금지 상태다.
+- [오프라인 요약](offline-summary.json), 재현기 [replay_fix_gates.py](replay_fix_gates.py). 실행 3/4의 own JPEG 전체 SHA 확인, 명령/0.16초 지연/재관측 reset 재생에서 저장된 pose **7205/7265개 전부 오차 0**. 물리·모델 호출 0. 원본 밖 `outputs/solo-cyan-v106-offline-20261006/`에 상세 gate를 보존했다.
+- (a) 목적지 scan→재집기 창은 각각 301–311.8/305–315.8 s, gate 평가 74개씩이다. 유효 벽 열 24–96/46–96(최소 6 이상)이지만 **inlier fraction 최대 0.552083/0.434783 < 0.66**, posterior support **전부 0 < 0.10**. 실행 4의 관측 rank도 0–1(필요 2). 영상 없음이 아니라 예측 입자와 벽 영상 불일치로 거절됐다. 예: 실행4 pan1770, t310.45는 일치율 약 0.39–0.43/support0/rank1. 기존 gate를 완화하지 않는다.
+- (b) 실행4 246.2→286.5 s: 추정 이동 (1.639712,-2.068948) m, 실제 (1.928287,-1.787042) m. 길이 비 **0.995874**, 방향 차 **8.779°**. 마지막 fix218.15 이후 목적지까지 68.35 s 동안 위치 보정이 없었다. HIGH RGB는 cyan으로 막힌다.
+- 저장된 robot yaw는 없으므로 단정 대신 **차체 중심→파지 cyan 중심의 방향**을 강체 파지 대용 측정으로 썼다. 이 구간 반경 0.209322–0.209368 m(변동 0.047 mm), 방향 -3.810→15.217°(**+19.028°**). 상자 자체 yaw도 +19.043°여서 두 대용 측정이 일치한다. 실제 차체 yaw는 새 실행의 `eval_only`에만 추가 기록한다.
+- 원인은 단독 옆 이동→회전 결합을 2대 빔용 loaded 모델이 표현하지 못하는 것이다. 그 모델 yaw행은 `[0,0,0.907315]`, 작은 turn은 `u1=0.031909` ramp로 추가 축소한다. 선형 unloaded yaw 대체만으로는 옆 이동의 반대 부호 회전을 설명하지 못해 채택하지 않았다. [초기 명령-only 진단](diagnose_loaded_yaw.py)은 관측 없는 전체 replay라 지도 prior/입자 선택이 섞인 수치이며 원인 판정의 정량 근거로 쓰지 않는다.
+- 고전적인 절편 없는 최소제곱으로 **실행3의 운반 세 구간만** 적합: `delta_yaw = -0.1196712834 * integral(raw_left) + 0.7033488467 * integral(raw_turn)`. 적합 최대 잔차 0.081°, 이미 본 실행4 세 구간의 사후 점검 최대 잔차 **0.066°**. [fit_solo_yaw.py](fit_solo_yaw.py), [계수·입력 해시·전 구간 결과](yaw-fit.json). s911 탐색 자료이며 검증 표본/독립 확증으로 세지 않는다. 전진 결합은 넣지 않았고 yaw 시간상수는 새로 적합하지 않았다.
+- 최소 수정: v106 전용 predictor에서 위 yaw 식을 적용하고 loaded xy는 v102 그대로 유지한다. 고정 과거 PF/보정 파일은 바꾸지 않는다. profile `setdown-relook-v3`, 모델 `solo-cyan-yaw-coupling-s911-exploratory-v1`; 소스 해시와 runtime contract가 새 후보를 식별한다. 거절된 `last_scan_gate`도 pose마다 보존한다. 새 코드 관련 시험 **33 passed/11.98 s**, shell 구문·diff 검사 통과. yaw 결합/명령 만료/원래 명령 복원/무하중 byte 동일을 실제 PF로 검사했다.
+- 디스크 시작 점검: 여유 39.50 GiB. raw를 삭제하거나 Drive에 올리지 않는다. 초기 오프라인 replay 도구의 누락된 base64 봉투는 실패 기록으로 보존했고, 수정 뒤 위 exact replay를 확인했다.
+
+### 고정 DEV 확인 실행 목록 (실행 전 등록)
+
+아래 순서/seed/slot/후보를 커밋·push한 뒤 실행한다. **s911은 실행하지 않는다.** 실행 소스는 이 등록과 yaw 수정이 들어간 첫 커밋이며, 코호트 동안 바꾸지 않는다. 모두 r3, B, door_1, place, v98-exact-v6, DEV light, 900 SIM초/10800 wall초, LLM 0회다.
+
+| 순서 | seed | pickup slot | 실행 전 상태 |
+|---|---:|---|---|
+| 1 | 912 | P1-1 | 미실행 |
+| 2 | 913 | P1-3 | 미실행 |
+| 3 | 914 | P2-2 | 미실행 |
+
+seed914를 DEV admission에 명시 추가했다. 성공·실패를 모두 기록하고 **같은 원인으로 두 실행이 막히면 이후 실행을 중단**한다. 중간 결과를 보고 같은 후보를 튜닝하거나 재시도하지 않는다. 이 목록은 개발 후보의 새 조건 확인이며 정식 E2E/연구 코호트가 아니다. HOST_ERROR/ENOSPC/미실행을 성공 분모에서 빼지 않는다. 낙하·기울기·집게 이탈의 실행 중 감지가 없는 기존 한계는 유지한다.
+
+실행은 `ugrp_session.py run solo-cyan-confirm-s<seed> -- /bin/zsh launch_dev.zsh FULL_SHA ABS_OUT place SEED SLOT`로 한다. 출력은 `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-<sha8>-s<seed>-<slot>-place`. 스크립트가 null 잠금 확인→owner codex/branch claude/solo-cyan/purpose `S2 v106 confirm`/자기 PID 잠금→표준 sim_cli→release한다. nice0/NO_BG_NICE, 한 번에 하나만 실행한다.
+
+### 추가 참고 자료 (2026-10-06 확인)
+
+- **본문 확인** — [NIST Linear Least Squares Regression](https://www.itl.nist.gov/div898/handbook/pmd/section1/pmd141.htm): 선형 계수를 잔차 제곱합으로 적합하고 외삽·이상값·검증 한계를 명시. 여기서는 새 비선형 제어기 대신 raw 명령 적분의 두 계수를 구했다.
+- **README/자료 형식 확인; 구현 재현 안 함** — [INESCTEC OptiOdom 공개 저장소](https://github.com/INESCTEC/optiodom): 동기화된 odometry/정답 자료에 의한 보정과 omni4 지원. 우리 관측에는 encoder가 없어서 자기 명령 적분을 쓰며 사후 평가 자료와 실행 입력을 분리했다.
+- **저자 초록 확인** — [Zhang et al. 2016, degeneracy](https://www.cs.cmu.edu/~kaess/pub/Zhang16icra.html): 잘 관측되는 방향과 약한 방향을 구분. 관측 부적합을 fix로 승격하지 않는 기존 gate 유지.
+- **공개 코드 본문 확인** — [Nav2 AMCL pf.c](https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_amcl/src/pf/pf.c), **README 확인** — [emcl2](https://github.com/ryuichiueda/emcl2): recovery/expansion은 관측 불일치 뒤 입자 지지 복구 방법. 이번 최소 수정에서는 먼저 잘못된 이동 예측을 고치며 새 전역 reset/고정 prior 주입은 채택하지 않았다.
+- **최근 논문 v2(2025) 초록 확인; 본문·실행 미확인** — [NuRF](https://arxiv.org/abs/2406.00312): radiance field/visual place recognition을 활용한 시각 입자 위치 추정. 새 학습 지도·추론 경로가 필요해 기존 정적 지도/고정 own-RGB 구현에 채택하지 않았다.

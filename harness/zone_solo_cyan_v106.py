@@ -2,7 +2,7 @@
 
 No world, ports, measured joints, contacts, seeded placement or judge inputs.
 The provider is the pair partial-fix stack with an explicit solo motion proxy:
-30 g loaded motion uses the measured UNLOADED single-robot model, unqualified.
+30 g loaded translation uses v102; yaw uses an exploratory solo coupling fit.
 No pair motion plan or beam yaw correction is supplied. Formal use is refused.
 """
 from __future__ import annotations
@@ -19,6 +19,7 @@ from harness import zone_pair_highpose_frame_gate as frame_gate
 from harness import zone_pair_highpose_own_load_occlusion as occlusion
 from harness import zone_pair_highpose_partial_fix as partial
 from harness import zone_pair_highpose_contract as hp
+from harness import zone_solo_cyan_motion_v106 as solo_motion
 from harness.owncam_drive import LOOK_P20
 from harness.owncam_pair_beam_v2 import pose_of
 from harness.zone_final_pair_vision import GRASP_RADIUS_M, grasp_postures
@@ -29,8 +30,8 @@ from harness.zone_own_guards_v3 import SweepGuardV3
 from harness.zone_solo_cyan_vision_v106 import CyanVision, BlindCyan
 from harness.visual_arm_v3 import CONTROLLER_GEOMETRY_ID
 
-PROFILE = 'solo-cyan-v106-v98-stack-dev-setdown-relook-v2'
-MOTION_PROXY = 'cyan30g_loaded_uses_v102_pair_high_carry_profile_UNQUALIFIED'
+PROFILE = 'solo-cyan-v106-v98-stack-dev-setdown-relook-v3'
+MOTION_PROXY = 'cyan30g_v102_xy_s911_solo_yaw_coupling_UNQUALIFIED'
 CONTROL_S = .1
 CAP_S = 900.
 ENVELOPE = {'x_m': [-.18, .28], 'y_m': [-.18, .18]}
@@ -45,12 +46,14 @@ def build_provider(static_map, calibration, calibration_sha256, seed=0, *, model
     source = partial.build_source_class()(static_map, calibration, calibration_sha256, seed, worker=worker)
     try:
         pf = source.loc._pf
+        solo_motion.install(pf)
         # Loaded motion keeps the measured v102 HIGH-carry profile (gain + affine dead zone).
         # The 2026-10-06 s911 runs showed the earlier unloaded-copy proxy over-predicted loaded
         # forward travel by ~10% (act/est x 0.88-0.93, offline replay reproduces it); this
         # profile predicts the same three loaded legs within 3%. No partner/pair plan is supplied.
         source.carry_yaw_fallback = None
         source.runtime_contract['solo_motion_proxy'] = MOTION_PROXY
+        source.runtime_contract['solo_yaw_model'] = solo_motion.record()
         source.runtime_contract['pair_plan'] = None
         source.identity_sha256 = hp.base.digest(source.runtime_contract)
         source.source = 'owncam_pf_'+PROFILE+':'+source.identity_sha256[:8]
@@ -204,7 +207,8 @@ class Runtime:
         rep = self.last_report
         self.pose_log.append({'t': now, 't_est': rep.t_est, 'x': rep.x_m, 'y': rep.y_m, 'yaw': rep.yaw_rad,
             'std_xy_m': rep.std_xy_m, 'std_yaw_rad': rep.std_yaw_rad, 'last_fix_t': rep.last_fix_t,
-            'observation_quality': rep.observation_quality})
+            'observation_quality': rep.observation_quality,
+            'last_scan_gate': copy.deepcopy(getattr(self.pose.provider.loc._pf, 'partial_fix_last', None))})
 
     def queue(self, target, now, *, duration=1., settle=.6):
         # Log the SAME v3 static arm sweep veto, then continue in DEV light.

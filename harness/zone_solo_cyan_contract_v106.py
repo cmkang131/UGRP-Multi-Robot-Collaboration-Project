@@ -21,7 +21,7 @@ def validate(*, robot_id, pickup_slot, destination, passage_id, seed, admission=
     from harness.zone_solo_cyan_v106 import passage_route
     if admission != 'dev-pilot':
         raise ValueError('SOLO_CYAN_DEV_ONLY')
-    if robot_id not in ('r1', 'r2', 'r3') or seed not in (911, 912, 913):
+    if robot_id not in ('r1', 'r2', 'r3') or seed not in (911, 912, 913, 914):
         raise ValueError('DEV robot/seed not registered')
     static = hp.resolve(MAP_ID)[0]
     if pickup_slot not in pickup_slots(static) or destination not in ('A', 'B', 'C'):

@@ -7,6 +7,8 @@ solo_py=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 solo_sha=${1:?expected full source SHA required}
 solo_out=${2:?absolute new output directory required}
 solo_stage=${3:-place}
+solo_seed=${4:-911}
+solo_slot=${5:-P1-2}
 [[ $(git rev-parse HEAD) == "$solo_sha" ]]
 [[ $(git branch --show-current) == claude/solo-cyan ]]
 [[ -z $(git status --porcelain) ]]
@@ -14,8 +16,9 @@ solo_stage=${3:-place}
 [[ $(ps -o nice= -p $$ | tr -d ' ') == 0 ]]
 [[ -f /Users/changmin/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py ]]
 
-"$solo_py" scripts/agent_lock.py acquire --owner claude --branch claude/solo-cyan \
-  --purpose "S2 solo cyan v106 ${solo_stage} DEV" --pid $$ --expected-minutes 180
+[[ $("$solo_py" scripts/agent_lock.py status) == null ]]
+"$solo_py" scripts/agent_lock.py acquire --owner codex --branch claude/solo-cyan \
+  --purpose "S2 v106 confirm" --pid $$ --expected-minutes 180
 solo_sim_pid=''
 solo_watch_pid=''
 cleanup() {
@@ -27,7 +30,7 @@ cleanup() {
     kill -TERM "$solo_watch_pid" 2>/dev/null || true
     wait "$solo_watch_pid" 2>/dev/null || true
   fi
-  "$solo_py" scripts/agent_lock.py release --owner claude
+  "$solo_py" scripts/agent_lock.py release --owner codex
 }
 trap cleanup EXIT
 trap 'exit 130' INT
@@ -36,8 +39,8 @@ trap 'exit 143' TERM
 "$solo_py" -m scripts.sim_cli workflow run zone-solo-cyan-v106 \
   --record "${solo_out}-managed" --timeout 10800 -- \
   --execute --expected-source-sha "$solo_sha" --output "$solo_out" \
-  --stage-probe "$solo_stage" --seed 911 --robot-id r3 --pickup-slot P1-2 \
-  --destination B --passage-id door_1 --speedups v98-exact-v6 --lock-owner claude &
+  --stage-probe "$solo_stage" --seed "$solo_seed" --robot-id r3 --pickup-slot "$solo_slot" \
+  --destination B --passage-id door_1 --speedups v98-exact-v6 --lock-owner codex &
 solo_sim_pid=$!
 "$solo_py" /Users/changmin/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.py \
   "$solo_out" --pid "$solo_sim_pid" --stall-sim 30 --hung-wall 300 --every 30 \

@@ -130,6 +130,42 @@ def test_real_partial_provider_solo_load_and_predict_only(static):
         provider.close()
 
 
+def test_solo_yaw_cross_axis_expiry_and_original_command(static):
+    """Real predictor: small lateral command must turn even below the XY dead zone."""
+    from harness.zone_solo_cyan_motion_v106 import LEFT_TO_YAW, TURN_TO_YAW
+    provider = rt.build_provider(static, c.ROOT/c.CALIBRATION, c.CALIBRATION_SHA)
+    try:
+        pf = provider.provider.loc._pf
+        pf.load.loaded = True
+        issued = np.array([.04, -.004, .003])
+        pf.cmd, pf.cmd_expires = issued, 5.
+        target = LEFT_TO_YAW*issued[1] + TURN_TO_YAW*issued[2]
+        pf.predict_to(4.)
+        tau = pf.params['motion_loaded']['tau_axis_s'][2]
+        assert pf.vel[2] == pytest.approx(target*(1-math.exp(-4./tau)), abs=1e-12)
+        assert pf.cmd is issued and np.array_equal(issued, [.04, -.004, .003])
+        pf.predict_to(10.)
+        assert abs(pf.vel[2]) < 1e-12  # expired command cannot keep turning
+        assert pf.cmd is issued
+    finally:
+        provider.close()
+
+
+def test_solo_yaw_preserves_unloaded_prediction(static):
+    """Same real PF, same random seed; unloaded operation stays byte identical."""
+    sources = [rt.partial.build_source_class()(static, c.ROOT/c.CALIBRATION, c.CALIBRATION_SHA, 12) for _ in range(2)]
+    try:
+        rt.solo_motion.install(sources[1].loc._pf)
+        for src in sources:
+            src.init_prior((-.7, -.85, 0.), (.01, .01, .01), source='test')
+            src.on_command({'t': 0., 'kind': 'mecanum', 'forward': .04, 'left': -.03, 'turn': .01, 'duration_s': 1.})
+            src.report(2.)
+        assert np.array_equal(sources[0].loc._pf.px, sources[1].loc._pf.px)
+    finally:
+        for src in sources:
+            src.close()
+
+
 @pytest.mark.parametrize('name,xy', [('search', (.5, .01)), ('p45', (.30, -.01)), ('inspect', (GRASP_RADIUS_M, 0.))])
 def test_cyan_cuboid_uses_measured_v3_projection(cal, name, xy, monkeypatch):
     """Independent synthetic pinhole/fisheye projection catches the axes transpose and v2 fallback."""

@@ -96,8 +96,10 @@ class PhysicsBackend(IntegerClock, BaseBackend):
         from sim.zone_arena import BOX_HALF
         item = next(iter(self.scene.config['setup_only']['objects'].values()))
         body = self.world.data.body(item['body_name'])
+        robot = self.world.data.body(self.bundle['task']['robot_id']+'__robot')
         row = {'t': self.now, 'cyan_xyz_m': body.xpos.tolist(), 'cyan_rotation': body.xmat.tolist(),
-            'robot_xyz_m': self.world.data.body(self.bundle['task']['robot_id']+'__robot').xpos.tolist(),
+            'robot_xyz_m': robot.xpos.tolist(),
+            'robot_yaw_rad': math.atan2(float(robot.xmat[3]), float(robot.xmat[0])),
             'box_half_m': list(BOX_HALF)}
         self.eval_rows.append(row)
         self._append('eval_only/trajectory.jsonl', row)
