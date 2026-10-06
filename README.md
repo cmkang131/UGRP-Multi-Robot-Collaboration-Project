@@ -21,6 +21,8 @@
 - [연구 제어기 검증·사용 기준](docs/research_controller_validation.md) — RGB 기준선, ACT 완료 거부와 명시적 혼합 제어기를 구분하고 유한한 전체 시험으로 채택 여부 판정
 - [문서 찾아보기](docs/README.md) · [실험 인덱스](experiments/README.md) · [지도 목록](maps/README.md)
 
+- [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — 명시적 실험 프로필, 기존 차체 힘 구동 유지, 실물 미보정.
+
 ## 현재 검증 범위
 
 2026-09-20 main에 포함된 기록 기준이다. 실험별 실행 SHA와 조건이 다르며 아래 결과를 현재 main에서 새로 실행한 결과로 해석하지 않는다.
