@@ -28,6 +28,7 @@ TEST_PATTERNS = (
     "tests/test_self_map_csm.py",
     "tests/test_self_map_csm_v2.py",
     "tests/test_self_map_prob.py",
+    "tests/test_map_error_oracle.py",
     "tests/test_self_wall_memory.py",
     "tests/test_coela_runtime_self_walls.py",
     "tests/test_ci_fast_path.py",

@@ -22,7 +22,7 @@ from harness.self_odom_grid import OdomGrid, ray_cells, transform
 from prob_result_report import historical
 
 CONDITIONS = ('off', 'v2', 'prob', 'rbpf100')
-CATEGORIES = ('range_projection', 'pose', 'nonwall', 'cell_boundary')
+CATEGORIES = ('range_projection', 'pose', 'nonwall', 'cell_boundary', 'unresolved')
 TOL = .15
 # Floor contact is 5 mm above the coincident floor/wall edge. Body visibility
 # additionally samples a 40 cm wall at 1 cm vertical spacing, including that edge.
@@ -51,7 +51,7 @@ def sample_frame(row, pose):
 def update_support(old, new, support, label=None):
     """Allocate only surviving positive log odds; miss/clamp preserve mass."""
     if new <= 0:
-        return np.zeros(4)
+        return np.zeros(len(CATEGORIES))
     if old <= 0:
         return new*np.asarray(label)
     if new < old:
@@ -62,10 +62,12 @@ def update_support(old, new, support, label=None):
 def attribution(estimated_distance, gt_distance, wall_fraction):
     """Ordered operational decomposition, not uniquely identified causal labels."""
     if estimated_distance <= TOL:
-        return np.array([0., 0., 0., 1.])
+        return np.array([0., 0., 0., 1., 0.])
     if gt_distance <= TOL:
-        return np.array([0., 1., 0., 0.])
-    return np.array([wall_fraction, 0., 1.-wall_fraction, 0.])
+        return np.array([0., 1., 0., 0., 0.])
+    if wall_fraction is None:
+        return np.array([0., 0., 0., 0., 1.])
+    return np.array([wall_fraction, 0., 1.-wall_fraction, 0., 0.])
 
 
 def in_image(uv, depth):
@@ -157,7 +159,7 @@ class Evidence:
     def __init__(self, geometry, frames, labels, states):
         self.geometry, self.frames, self.labels, self.states = geometry, frames, labels, states
         self.active = None
-        self.cache, self.records = {}, []
+        self.cache, self.records, self.behind = {}, [], {}
 
     def at(self, frame_id):
         if self.active != frame_id:
@@ -178,25 +180,34 @@ class Evidence:
         # Historical detector's above-contact evidence band; do not label the
         # first floor pixel at the contact itself as a floor false detection.
         patch = uv+np.array([(dx, dy) for dy in (-10, -6, -2) for dx in (-2, 0, 2)])
-        if not in_image(patch, np.full(len(patch), optical[2])).all():
-            raise ValueError('EVIDENCE_OUTSIDE_RECORDED_IMAGE')
+        valid = in_image(patch, np.full(len(patch), optical[2]))
+        if optical[2] <= 0 or not valid.any():
+            # A floor-plane point behind the optical center is an invalid
+            # projective range, independently of what the RGB patch contains.
+            reason = 'behind_camera_projection' if optical[2] <= 0 else 'no_visible_evidence_band'
+            frac = 1. if optical[2] <= 0 else None
+            self.cache[key] = frac
+            self.behind[key] = optical[2] <= 0
+            self.records.append({'frame_id': frame_id, 'local_xy': p.tolist(), 'uv': uv.tolist(),
+                                 'optical_depth_m': float(optical[2]), 'reason': reason, 'wall_fraction': frac})
+            return frac
+        patch = patch[valid]
         origin, rotation = camera_world(self.labels[frame_id])
         rays = np.column_stack(((patch-[mp.CX, mp.CY])/[mp.FX, mp.FY], np.ones(len(patch))))@rotation.T
         _, ids = self.geometry.rays(origin, rays)
         semantics = self.geometry.semantics(ids)
-        if 'unknown' in semantics:
-            raise ValueError('UNRESOLVED_EVIDENCE_RAY')
-        frac = semantics.count('wall')/len(semantics)
+        frac = None if 'unknown' in semantics else semantics.count('wall')/len(semantics)
         self.cache[key] = frac
         self.records.append({'frame_id': frame_id, 'local_xy': p.tolist(), 'uv': uv.tolist(),
-                             'above_band_semantics': dict(Counter(semantics)), 'wall_fraction': frac})
+                             'above_band_semantics': dict(Counter(semantics)), 'valid_patch_rays': len(patch),
+                             'optical_depth_m': float(optical[2]), 'wall_fraction': frac})
         return frac
 
 
 def audited_grid(robot, ledger, truth, origin, rects, evidence):
     grid = OdomGrid(robot)
     support = {}
-    mixed_mass = {}
+    mixed_mass, behind_mass = {}, {}
     for row in ledger:
         occupied, free = sample_frame(row, row['pose'])
         gt = truth[round(row['t'], 6)]
@@ -207,6 +218,7 @@ def audited_grid(robot, ledger, truth, origin, rects, evidence):
             if old > 0:
                 support[key] = update_support(old, new, support[key])
                 mixed_mass[key] *= max(0., new)/old
+                behind_mass[key] *= max(0., new)/old
             grid.cells[key] = new
         for key, sources in occupied.items():
             old = grid.cells.get(key, 0.)
@@ -214,7 +226,7 @@ def audited_grid(robot, ledger, truth, origin, rects, evidence):
             if new > 0:
                 center = transform([(np.array(key)+.5)*.1], origin)
                 is_false = base.boundary_dist(center, rects)[0] > TOL
-                label, mixed = np.zeros(4), 0.
+                label, mixed, behind = np.zeros(len(CATEGORIES)), 0., 0.
                 # Correct cells also carry bookkeeping mass, but are excluded
                 # from the final false-cell attribution denominator.
                 if is_false:
@@ -225,15 +237,18 @@ def audited_grid(robot, ledger, truth, origin, rects, evidence):
                     for p, a, b in zip(local, de, dg):
                         f = evidence.fraction(row['frame_id'], p) if min(a, b) > TOL else 0.
                         label += attribution(a, b, f)/len(sources)
-                        mixed += float(0. < f < 1.)/len(sources)
+                        if min(a, b) > TOL:
+                            behind += float(getattr(evidence, 'behind', {}).get((row['frame_id'], *np.round(p, 10)), False))/len(sources)
+                        mixed += float(f is not None and 0. < f < 1.)/len(sources)
                 else:
                     label[3] = 1.
-                support[key] = update_support(old, new, support.get(key, np.zeros(4)), label)
+                support[key] = update_support(old, new, support.get(key, np.zeros(len(CATEGORIES))), label)
                 inc = max(0., new)-max(0., old)
                 mixed_mass[key] = mixed_mass.get(key, 0.)+inc*mixed
+                behind_mass[key] = behind_mass.get(key, 0.)+inc*behind
             grid.cells[key] = new
         grid.frames += 1
-    records, counts = [], np.zeros(4)
+    records, counts = [], np.zeros(len(CATEGORIES))
     for key, value in sorted(grid.cells.items()):
         if value <= 0:
             continue
@@ -245,10 +260,11 @@ def audited_grid(robot, ledger, truth, origin, rects, evidence):
         counts += shares
         records.append({'cell': [int(k) for k in key], 'world_xy': xy.tolist(), 'log_odds': value,
                         'shares': dict(zip(CATEGORIES, shares.tolist())),
-                        'mixed_patch_share': mixed_mass[key]/value})
+                        'mixed_patch_share': mixed_mass[key]/value, 'behind_camera_share': behind_mass[key]/value})
     return grid, {'false_cells': len(records), 'cell_equivalents': dict(zip(CATEGORIES, counts.tolist())),
                   'fractions': dict(zip(CATEGORIES, (counts/max(1, len(records))).tolist())),
-                  'mixed_patch_cell_equivalents': sum(r['mixed_patch_share'] for r in records)}, records
+                  'mixed_patch_cell_equivalents': sum(r['mixed_patch_share'] for r in records),
+                  'behind_camera_cell_equivalents': sum(r['behind_camera_share'] for r in records)}, records
 
 
 def measure(grid, origin, rects, samples, masks):

@@ -2003,3 +2003,15 @@ s911-r1/r2, s912-r1/r2, s913-r1/r2의 기존 산출물을 읽는다. 이미 본 
 광선은 위치 기하 계산만으로 사용할 수 있다는 [MuJoCo 공식 API](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#ray-casting)를 확인했다.
 `mj_kinematics`는 rigid transform, `mj_multiRay`는 nearest surface intersection을 수행한다.
 동역학·렌더링 API를 차단한 시험과 단일/일괄 광선 일치 시험을 둔다.
+
+**실행 전제 오류 1회 및 명시적 보완:** 첫 진단(`ac768041`,
+`outputs/self-map-oracle-diagnostic-v1.log`)은 s911-r1 frame 133에서 판별 띠가 영상 밖이라는
+검사로 종료했다. 자세·검출 원본은 변경하지 않았다. 실제 검출기는 화면 경계를 clip한다
+(`height_free_wall.py:120,133`); 평가도 유효 광선만 사용하고 남지 않으면 **판별 불가**로 남긴다.
+추가 점검에서 해당 점은 optical depth **−2.088 m**로 카메라 뒤의 바닥 평면 교점이었다.
+투영은 음의 깊이에서도 같은 픽셀을 줄 수 있으므로 이것은 가시 벽 접점이 될 수 없다
+([OpenCV 투영식](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html),
+[MuJoCo ray의 x≥0 조건](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#ray-casting)).
+GT 치환 후에도 틀린 점 중 이런 경우는 (a) 거리/투영 오류로 배정하고 그 근거를 별도 기록한다.
+(a)의 `wall_fraction=1`은 이 경우 실제 벽 pixel 비율이 아니라 **배정 가중치**다.
+미확인 ray도 판별 불가에 남기며 네 범주에 숨기지 않는다. 결과는 새 디렉터리로 전부 다시 계산한다.

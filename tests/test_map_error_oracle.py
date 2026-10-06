@@ -22,23 +22,27 @@ def test_relative_gt_keeps_start_grid_anchor():
 
 
 def test_attribution_order_and_mixed_band():
-    np.testing.assert_equal(e.attribution(.12, .1, 1), [0, 0, 0, 1])
-    np.testing.assert_equal(e.attribution(.4, .1, 0), [0, 1, 0, 0])
-    np.testing.assert_equal(e.attribution(.4, .3, 1), [1, 0, 0, 0])
-    np.testing.assert_equal(e.attribution(.4, .3, 0), [0, 0, 1, 0])
-    np.testing.assert_allclose(e.attribution(.4, .3, 2/3), [2/3, 0, 1/3, 0])
+    np.testing.assert_equal(e.attribution(.12, .1, 1), [0, 0, 0, 1,0])
+    np.testing.assert_equal(e.attribution(.4, .1, 0), [0, 1, 0, 0,0])
+    np.testing.assert_equal(e.attribution(.4, .3, 1), [1, 0, 0, 0,0])
+    np.testing.assert_equal(e.attribution(.4, .3, 0), [0, 0, 1, 0,0])
+    np.testing.assert_allclose(e.attribution(.4, .3, 2/3), [2/3, 0, 1/3, 0,0])
+
+
+def test_unavailable_band_is_unresolved_not_nonwall():
+    np.testing.assert_equal(e.attribution(.4, .3, None), [0,0,0,0,1])
 
 
 def test_logodds_attribution_survives_misses_and_saturation():
-    v, mass = -2., np.zeros(4)
-    for inc, label in [(1., [1,0,0,0]), (2., [0,1,0,0]), (1., [1,0,0,0]),
-                       (-.5, None), (9., [0,0,1,0]), (-9., None), (4., [0,0,0,1])]:
+    v, mass = -2., np.zeros(5)
+    for inc, label in [(1., [1,0,0,0,0]), (2., [0,1,0,0,0]), (1., [1,0,0,0,0]),
+                       (-.5, None), (9., [0,0,1,0,0]), (-9., None), (4., [0,0,0,1,0])]:
         nxt = np.clip(v+inc, -2, 3.5)
         mass = e.update_support(v, nxt, mass, label)
         assert mass.sum() == pytest.approx(max(0, nxt))
         assert (mass >= 0).all()
         v = nxt
-    np.testing.assert_allclose(mass, [0,0,0,2])
+    np.testing.assert_allclose(mass, [0,0,0,2,0])
 
 
 def test_sampling_audit_matches_original_with_weights():
@@ -99,3 +103,17 @@ def test_real_source_endpoint_projection_roundtrip():
     optical = (point-(cm.origin+[.0482,0,0]))@cm._rot
     uv = optical[:2]/optical[2]*[mp.FX,mp.FY]+[mp.CX,mp.CY]
     np.testing.assert_allclose(uv, [10,139], atol=.03)
+
+
+def test_behind_camera_range_is_recorded_without_raycast():
+    class Geometry:
+        def at(self, qpos):
+            pass
+        def rays(self, *args):
+            raise AssertionError('behind-camera point must not cast a forward ray')
+    frames = {133: {'commanded_servo': {1:2000, 3:1072, 4:2400, 5:1482, 6:2300}}}
+    evidence = e.Evidence(Geometry(), frames, {133: {'t': 0.}}, {0.: {'qpos': []}})
+    value = evidence.fraction(133, np.array([-1.0433787162409256, -1.8397370861755797]))
+    assert value == 1.
+    assert evidence.records[0]['reason'] == 'behind_camera_projection'
+    assert evidence.records[0]['optical_depth_m'] == pytest.approx(-2.08816532)
