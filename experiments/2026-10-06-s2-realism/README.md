@@ -468,3 +468,38 @@ s1040의 한 펄스 평면 이동 중앙값은 forward7.470mm, lateral7.034mm였
   다른 작업의 잠금은 해제될 때까지 기다렸다. 원격 push 일시 실패는 일반 push 재시도로 해결했다.
   강제 변경·raw 삭제·다른 작업 종료는 없었다. PR #406 DRAFT 유지·미병합이다.
   v116 실행 SHA의 CI는 확인 시25개 통과/7개 진행 중이며 전체 통과로 보고하지 않는다.
+
+## 2026-10-06 hover 오프라인 분리와 v117/s1042 사전 등록
+
+사용자 후속 범위: s1040/1041 hover 실패2회를 **시뮬레이션 없이 먼저** 분석하고, v3가 원인이면 카메라를 수정하지 않는다. 다른 원인을 고칠 수 있을 때만 새 probe1회를 실행한다. PR #406 DRAFT·병합 금지 유지. 이번 등록에는 full1029–1031을 넣지 않으며 기존 두 실패를 지우거나 성공률에 합산하지 않는다.
+
+### 저장 영상과 기하 판정 (새 물리 실행 아님)
+
+`analyze_hover_projection.py`와 `hover-projection.json`은 저장 RGB·명령 자세·eval 전용 블록 좌표/회전·로봇 xy/yaw만 사용한다. MuJoCo world/step/render를 만들지 않았다. 각 사진의 SHA-256을 확인했고 카메라 기록을 같은 블록에 바꿔 적용했다. `cv2.fisheye.projectPoints`의 8개 모서리 좌표와 모든640×480 pixel ray–cuboid 교차를 계산했다. **사각 이미지 범위와 실제 raw_fisheye_remap의 유효 영역을 따로 판정**했다. 렌즈의 x≈287 유효 하단은 row463이다.
+
+|seed|정렬→중간→소실 cyan 면적(px)|첫0px SIM시각|이전 hover 모서리 y범위(px)|v3 hover 모서리 y범위(px)|이전 사각/유효 픽셀|v3 사각/유효 픽셀|
+|---|---|---|---|---|---|---|
+|1040|19,867(103.60)→11,498(104.00)→0|104.20|461.94–736.33|546.80–834.23|3,566 / **0**|0 / **0**|
+|1041|19,846(83.75)→10,287(84.15)→0|84.35|476.01–778.31|558.56–883.89|54 / **0**|0 / **0**|
+
+두 contact sheet를 직접 확인했다. cyan 상단이 아래로 내려가 렌즈 하단으로 사라지며 집게/팔이 가리는 패턴은 없다. 이전 카메라의 이미지 사각형 교차만 보고 '보인다'고 판정하면 틀린다. 둘 다 유효 영역에서는0px다. v3는 하단 이탈을 약83–85px 더 키우지만 **v3만의 회귀가 아니라 작은 cyan에도 hover 가시성을 요구하는 제어 정책의 불일치**다. 따라서 각도 변경 없이 실물의 pre-grasp 확인 방식을 옵션으로 옮긴다. +10°는 v3의 tool 상대 절대 각도이며 이전 카메라 대비10° 증가라는 뜻이 아니다. 카메라 mount/각도의 실물 타당성은 이번 계산으로 확정하지 않는다.
+
+hover 카메라 원점(x,y,z; floor-heading,m): 이전[.205223,.000000,.115322], v3[.212001,.000000,.134357]. 광축(x,y,z): 이전[.558204,−.000000,−.829704], v3[.594437,−.000000,−.804142]. 두 seed의 블록 중심은 각각[.203915,−.004457,.015892]/[.201402,.000734,.015892]. 전체 회전행렬·모서리·명령 자세는 JSON에 있다. 정렬 시점 v3 예측 bbox는 관측과 최대2px 차이다. 카메라 위치/방향은 **기존 정지 명령별 SIM 보정 + mount 강체 변환**이며 각 프레임의 실제 관절·roll/pitch는 저장되지 않았다. 이 한계와 장면 occlusion을 계산하지 않았음을 남긴다. 이전 카메라 재실행 성공이나 실물 성공을 주장하지 않는다.
+
+Raw는 원래 s1040/s1041 폴더 그대로다. contact sheet는 `/Users/changmin/projects/ugrp/outputs/s2-realism-hover-offline-20261006/s1040-hover-contact-sheet.png`, `s1041-hover-contact-sheet.png`다.
+
+### 실물 근거와 명시 옵션
+
+- `scripts/red_block/physical_state_machine_reference.py:250–254`:9장 중4hit,정지.45초; `track.py:45`:최소500px.
+- 같은 파일`:4740–4758,4796–4832`:정렬한 정지 자세에서 기준 영상을 먼저 확보한다. hover가 바닥 블록 시야를 벗어나0/9였다는 주석 뒤, hover 이동→시각 재확인 없이 고정 경로 하강→닫기→들기를 수행한다. `:4760–4793`는 들어올린 뒤 기준 자세로 복귀해 floor-compatible 물체를 비교하며 PROBABLE_HELD로 한정한다. 파일의 해당 줄은 저장소 shallow 경계 `2df57325`에 이미 존재한다(그보다 앞의 작성 이력은 미확인).
+- `scripts/red_block/pick.py:364–390`의 실제 near-field pick도 위 함수를 호출한다. `sim/real_stack_adapter.py:1175–1183`는 이 real pick 호출 후에만 별도 물리 평가를 한다. `:755–848`의SIM reach/픽셀/빠른 카메라 override는 실물 원본값과 구별했다. adapter는 hover 시각 재확인을 추가하지 않는다.
+- 실물 `:4287–4348`에는 capture 자세로 시선을 바꾸고 새 영상 확인이 있지만 **hover에서 손목을 내려 추가 확인하는 동작은 위 집기 경로에 없다**. docs/archive의3개 추적 문서를 hover/blind/camera/집기 검색했으며 이 분기를 대체하는 실물 구현은 발견하지 못했다.
+- [OpenCV fisheye 식](https://docs.opencv.org/4.13.0/db/d58/group__calib3d__fisheye.html)을 확인해 그대로 계산했다. 기존 연구 근거의 look-then-move와 실제 공개 저장소 구현을 따르고, 새 카메라 최적화나 논문 알고리즘을 도입하지 않았다.
+
+새 `hover_check=real_pregrasp_v1`(기본off): 기존2프레임 정렬 완료 후 팔을 움직이기 전에.45초 정지,최대9개 새 영상에서4회500px/고유 cyan/기존±3mm를 확인한다. 시각 anchor의 frame/hash/시각을 기록하고 hover 시각확인은 요구하지 않는다. 기존 고정 하강·닫기 명령 경계와30초 anchor 상한은 유지하며 자기 주행·pan·팔 경로 이탈 시 무효다. blind command window 시작 시각을 과거 시각확인 시각과 구분한다. 실물 확인 방식만 옮겼고 실제 arm 시간·IK·카메라·구동·pickup_site_v1 ROI 조건은 바꾸지 않았다. 따라서 **pickup-site clipped ROI는 별도 미해결 사항**이며 시각 파지 성공으로 대체하지 않는다.
+
+### 실행 전 등록: s1042 한 번
+
+main+열린 PR14개 및 raw에서 seed1042 사용 없음, bundle 최대116/workflow7.9.0 확인(`reservation-scan-v117.json`). 새 **zone-s2-realism-v117 / workflow7.10.0**, seed**1042/P1-2/pick**1개를 탐색적 수정 probe로 등록했다. s1040/1041은 원인 분석 자료이며 확증 분모에 넣지 않는다. `registration-v117.json`은 기존 실패2회를 별도 보존하고 사용자 지시의 수정 후1회만 허용한다. 자동 재시도/full 실행 없음, 결과와 무관하게 이 probe 뒤 종료한다. ENOSPC=HOST_ERROR,eval-only120SIM초1cm 미만 정체 중단,dev_light,agent_lock/ugrp_session,모델 호출0을 유지한다.
+
+출력 예정 `/Users/changmin/projects/ugrp/outputs/s2-realism-<실행SHA8>-s1042-P1-2-pick`. 소스·이 README·사전 등록을 **시험 통과→commit→push한 뒤** 고정 SHA로 실행한다. `hover-preservation.json`: v115/v116 각각332개 실행 소스의 바이트를 유지했다. 변경 모듈 시험5개는 off 명령/기록 바이트 동일,실제 align/hover 기본 실패 경로 동일,실물 pre-grasp 확인→0px hover 하강/닫기,stale/미확인/주행 이탈 거부,저장 투영 재현 및 새 admission을 검사한다. 물리 probe의 결과는 아래 완료 기록으로 따로 보고한다.
