@@ -1567,3 +1567,35 @@ P는 최종 점유 셀 중 정답 벽 ≤0.15 m인 비율, R은 전체 벽 표�
 그림·선택 진단 생성기는 [csm_result_report.py](code/csm_result_report.py)다. 새로 선택된 계수는 없고,
 별도 보고 소스 해시·Python/NumPy/SciPy/Matplotlib 환경은 산출물에 남겼다.
 이번 구현의 직선/코너/대칭 반례와 녹화는 오프라인 검증이며 실제 시뮬레이션을 실행하지 않았다.
+
+## 18. CSM v2: 정합 일정과 지도 삽입 분리 — 구현 전 사전 기록
+
+2026-10-06 사용자 후속 요청. **v2에 §17.1의 같은 기준을 그대로 적용한다.** 구현 전에 이 절을 별도 커밋한다.
+종료 XY 오차 30% 이상 감소 및 0.75 m 이하, 경로 median/P95 악화 없음 및 RMSE 20% 이상 감소,
+지도 P 악화 없음·전체 벽 349개 recall 하락 2%p 이내·벽 RMSE 20% 이상 감소를 확인 네 건 각각 요구한다.
+모든 조건과 off 바이트 호환성을 통과해야 성공이며, 성공 기준·분모·허용 거리·개발/확인 구분을 바꾸지 않는다.
+
+먼저 저장된 v1의 자세·판정은 고정하고 보류 관측만 추가 삽입하는 평가용 반사실 재생으로 원인을 확인한다.
+기존 v1 map, v1+보류, v1+모든 프레임(거부 포함, 진단용), off를 비교한다. 이것은 v2의 성능 결과가 아니며
+그 결과를 보정기 입력에 넣지 않는다. 모든 예측 지도를 저장한 뒤 평가 벽으로 채점한다.
+그다음 `pose_correction=own_map_csm_v2`를 별도 옵션으로 구현한다. v1 코드/결과와 기본 off를 보존한다.
+개발 s911 두 건 → 설정 고정 확인 → s912/s913 네 건 순서로 실행하며 확인 결과 뒤 튜닝하지 않는다.
+기존 녹화의 재현 확인이고 신규 확증 자료가 아니다. 시뮬레이션·모델 호출·TensorBoard 변환은 하지 않는다.
+
+### 18.1 문헌·공개 코드에서 확인한 범위
+
+- [Cartographer LocalTrajectoryBuilder2D](https://github.com/cartographer-project/cartographer/blob/877157a0d91788a7700221d87232d412cb3c1ef4/cartographer/mapping/internal/2d/local_trajectory_builder_2d.cc#L57-L91):
+  online correlative 정합은 선택 사항이며 그 뒤 Ceres 정합이 별도로 있다. local range data를 현재 추정 자세로
+  변환한 다음 `InsertIntoSubmap`을 부른다(L214–229). 삽입에는 **별도 motion filter**가 있다(L255–265).
+  따라서 모든 원시 scan을 무조건 삽입하거나 모든 정합을 생략한 DR를 항상 넣는다고 일반화할 수 없다.
+- [HectorSlamProcessor::update](https://github.com/tu-darmstadt-ros-pkg/hector_slam/blob/5abd5e1fcc8dd4efdd20d3d8be8e1a77bc23d484/hector_mapping/include/hector_slam_lib/slam_main/HectorSlamProcessor.h#L64-L85):
+  `map_without_matching`이면 `poseHintWorld`를 쓰고, 그렇지 않으면 `matchData` 결과를 쓴다.
+  이동/회전 기준 또는 `map_without_matching` 조건에서 그 자세로 `updateByScan`을 호출한다.
+  정합 수행 여부와 지도 삽입의 분리가 직접 확인되지만, 여기에도 무조건 모든 scan 삽입이라는 규칙은 없다.
+- [Olson 2009 §III B–C](https://april.eecs.umich.edu/media/media/pdfs/olson2009icra.pdf):
+  과거 scan을 참조 모델로 사용하고 여러 scan으로 더 상세한 모델을 만들 수 있다고 설명한다.
+  논문의 주 대상은 정합이며 모든 scan의 submap 삽입/거부 정책을 정한 문헌은 아니다.
+
+따르는 원리는 **현재 최선 추정 자세로 관측을 투영하고, 정합 실행 여부와 삽입 여부를 별도로 결정**하는 것이다.
+우리의 1 s 정합 보류를 지도 증거 폐기로 연결하지 않는 v2 규칙은 이 구조를 자기 RGB 접점에 적용한 것이다.
+명백한 불일치 거부·근거리/정착·로봇 분리·중복 프레임 방어는 설계 A의 제한으로 유지한다.
