@@ -268,3 +268,53 @@ NO_INFORMATION이 4-neighbor free와 접하는 셀을 frontier로 삼는다. **�
 unknown을 추적하는 설정의 기본 셀은 NO_INFORMATION이다. 따라서 임의 반경 주변/카메라 사각지대를
 free로 채우는 것으로 일반화하지 않는다. Yamauchi 원문 재조회는 실패했으며 footprint 초기화의 직접
 근거는 위 공개 구현이다. v1의 free provenance와 B 검출 기준은 완화하지 않는다.
+
+### 8.1 수정 전 진단 결과 (`8f383be1`)
+
+| 기존 확인32 (이제 개발/진단) | 최초 static 경로 | B 가시/검출 프레임 | 참 확인 | 충돌 | 사각 차체 접촉 / 외접원만 접촉 |
+|---|---:|---:|---:|---:|---:|
+| 측정 오차 static | 32/32 | 0/0 | 0/32 | 31 | 3 / 28 |
+| 측정 오차 frontier v1 | 해당 없음 | 191/162 | 0/32 | 13 | 2 / 11 |
+| 오라클 static | 32/32 | 86/86 | 20/32 | 12 | 2 / 10 |
+| 오라클 frontier v1 | 해당 없음 | 0/0 | 0/32 | 0 | 0 / 0 |
+
+원본 `outputs/mapfree-explore-environment-diagnostic-v1`과
+[잡음 진단](environment-results/before-noisy-diagnosis.json)/[오라클 진단](environment-results/before-oracle-diagnosis.json)을 보존한다.
+경로 자체는 존재한다. 잡음 static은 B를 시야에 넣기 전에 종료돼 검출기를 평가할 기회가 없었다.
+오라클 static의 20건은 동결 v3 누적 조건까지 통과했으므로 확인이 구조적으로 불가능한 환경은 아니다.
+frontier의 초기 clearance/회전이 막혀, noisy는 병진0·참 track baseline 최대4.22 µm,
+오라클은 병진0·가시B0이다. 원인을 HSV recall로 돌리지 않는다.
+
+충돌 판정은 원래 **외접원(.1562 m)**, translation 계획은 **사각(.12×.10 m half)**로 불일치했다.
+외접원만 닿은 28건을 실제 사각 접촉으로 보고한 것은 평가 오류다. 이는 종료 시점의 분류이며,
+그대로 더 주행해도 안전하다는 뜻은 아니다. 사각 실제 접촉은 noisy static의 beam_1 2건/cyan_1 1건,
+오라클 static의 45 s에 추가된 fallen_pallet_1 2건이었다. noisy static의 명령 DR 자세를 같은 기하로
+검사하면 접촉1건(실제3건)이다. v7 구조 잡음은 계속 별도 한계로 남긴다.
+벽 JSON의 실제 두께를 유지하며 raster cell 경계와 footprint margin을 GT 벽 두께에 더하지 않는다.
+50 ms 백색 과정 잡음은 거리 합계를 부풀리고 제자리 회전 중에도 XY 오차를 만든다. 실측 잡음이
+없으므로 이번에 분산을 낮춰 성능을 맞추지 않는다. 오라클 비교가 그 영향의 대조군이다.
+
+Yamauchi 원문은 이후 [CMU 보관본](https://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated1/yamauchi_frontiers.pdf)으로
+접근했다. 알려진 free/unknown 경계와 perfect sensor/control 가정의 탐색 논증이며,
+임의의 초기 free 원이나 카메라 사각지대를 free로 메우라는 근거는 확인하지 못했다.
+
+## 9. 환경 교정·v2·새 확인 사전 등록 (구현 전)
+
+**§2의 다섯 성공 기준을 수치·분모·미성공 처리 모두 그대로 재사용한다.**
+최신 사용자 요청에 따라 아래 새32쌍을 확인으로 사용한다. 기존32쌍은 재확증하지 않는다.
+
+- 환경 `rect_footprint_v2`: 평가 충돌만 현재 yaw의 사각 SAT와 bounds 검사로 교정한다.
+  기존 환경 `circle_v1`은 소스 그대로 보존한다. 센서 오차, v7 공분산, 벽 두께, 예산, B 누적은 불변.
+  환경 수정은 별도 커밋. 기존32쌍에 기존 actor를 그대로 넣은 전/후 비교를 noisy/oracle 각각 기록한다.
+- 알고리즘은 `exploration=own_frontier_v2`/`partial_planning=own_astar_v2`로만 추가한다.
+  ROS의 현재 padded footprint(.02 m 기존 여유) polygon clearing, 정확한 polygon-cell 범위 검사,
+  탐색점의 실제 관측 heading/발행 명령 경로 검사를 적용한다. outside unknown은 차단한다.
+  자기 몸 support는 관측 coverage/벽 free evidence와 구분한다. v1 및 기본 off 보존.
+  명령 adapter v2는 같은 M1 gain의 **전체 역행렬**로 목표 병진/회전을 보상하고,
+  회전은 실제 각도 구간의 footprint를 검사한다. 탐색 기준/센서/B threshold 튜닝은 하지 않는다.
+- 개발: 기존 A/C×1701의16쌍, noisy/oracle 두 조건. 기존 B/D32쌍은 환경 교정 ablation 전용.
+- 새 확인: s1–s8 × E=(-.55,-1.65,π/4), F=(1.35,-.65,-π/2) × seed3701/3702 =32쌍.
+  기존과 다른 시작+seed를 결과를 보기 전에 지정한다. 지도8배치는 재사용임을 명시한다.
+  기하 setup 오류도 실패로 남기며 시작을 바꾸지 않는다. noisy가 주 판정, oracle은 별도 진단 표다.
+- 개발 뒤 소스/옵션을 해시로 고정하고 새 확인32쌍을 한 번만 실행한다. 실패여도 확인 뒤 튜닝하지 않는다.
+  두 조건 모두 성공한 쌍0이면 효율 실패, 문 시도0이면 안전 실패 규칙도 유지한다.
