@@ -100,3 +100,19 @@ def test_v115_default_off_and_fresh_preregistered_probe():
     assert 'harness/zone_solo_cyan_align_pulse.py' in b['source_sha256']
     assert any(w['id']==c.BUNDLE_ID and w['version']=='7.8.0' for w in catalog(c.ROOT)[0]['workflows'])
     with pytest.raises(ValueError):c.bundle('a'*40,seed=1039,stage_probe='pick',pickup_slot='P1-2')
+
+
+def test_v116_replication_preserves_behavior_and_counts_distinct_causes():
+    from harness import zone_s2_realism_contract_v116 as c
+    from scripts.run_s2_realism_v116 import parser, CameraRuntime
+    from sim.workflow_manager import catalog
+    plan=json.loads((c.ROOT/c.PLAN).read_text())
+    assert plan['prior_same_cause_failures']=={'CYAN_ALIGN_VIEW_LOST':1,'CYAN_HOVER_UNCONFIRMED':1}
+    assert plan['runs'][0]['seed']==1041
+    args=parser().parse_args(['--expected-source-sha','a'*40,'--output','/tmp/no-run','--seed','1041'])
+    assert all(getattr(args,key)=='off' for key in c.NEW_OPTIONS)
+    assert CameraRuntime is Runtime
+    b=c.bundle('a'*40,seed=1041,stage_probe='pick',pickup_slot='P1-2',**c.NEW_OPTIONS)
+    assert b['options']['alignment_pulse']=='real_fine_v1'
+    assert any(w['id']==c.BUNDLE_ID and w['version']=='7.9.0' for w in catalog(c.ROOT)[0]['workflows'])
+    with pytest.raises(ValueError):c.bundle('a'*40,seed=1040,stage_probe='pick',pickup_slot='P1-2')

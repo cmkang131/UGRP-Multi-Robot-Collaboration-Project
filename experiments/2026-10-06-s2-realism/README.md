@@ -373,3 +373,27 @@ agent_lock·ugrp_session·nice0·출력 경로·ENOSPC HOST_ERROR·DRAFT/미병�
 변경 모듈 시험 `tests/test_s2_realism_alignment.py`: **5 passed**.
 off byte 동일, s1039 실제 마지막 요청 변환, .06초 정확한 만료/잘못된 입력 거부,
 정지 뒤 새 프레임 강제·정렬 외 구동 보존, 실제 IntegerClock.reset 경로, 새 등록/CLI 기본값을 확인했다.
+
+
+## v115 결과와 변경 없는 v116 반복 확인 등록
+
+소스 `57f8c174bb32648bef495a8ae9335dd1815745e3` / v115 s1040은 103.6 SIM초에
+정렬→hover로 전이했다. 이때 eval 중심은 [202.554,-2.625]mm여서 목표 203.2mm와
+±3mm 범위 안이었다. fine pulse 78회를 발행했으며 s1039의 CYAN_ALIGN_VIEW_LOST는
+재발하지 않았다. 새 실패는 105.9초 `CYAN_HOVER_UNCONFIRMED`다.
+원래 자리 기준 영상 ROI가 clipped라 저장되지 않았고, hover 자세 변화 뒤 cyan mask가
+0px가 됐다(103.6초 19,867px → 104.9초 0px). 팔 이동 뒤 eval 좌우 오차는 약 -4.46mm다.
+집기/들기는 시작하지 않았다. 최종 lifted/inside=false/false, 재집기0,
+wall355.404초 / SIM108.9초 = 3.26358. 보수적 would-stop 13개는 기록만 했다.
+full1029–1031은 probe 미통과로 미실행이며 출력 폴더도 생성되지 않았다.
+
+같은 새 실패의 반복 여부를 확인하기 위해 **제어·물리·옵션·계수 수정 없이**
+새 **v116/workflow7.9.0, 미사용 probe s1041/P1-2**를
+[사전 등록](registration-v116.json)한다([번호/seed 조회](reservation-scan-v116.json)).
+실행 admission/seed만 새 버전이며 `zone_solo_cyan_align_pulse.py`와 `sim/s2_align_pulse.py`는
+v115와 바이트 동일하다. s1040은 재사용하지 않는다. hover 미확인이 다시 나면
+같은 원인 2회로 종료한다. 다른 원인의 과거 s1039와 성공률/동일 원인을 합치지 않는다.
+통과했을 때만 등록된 full1029–1031을 진행한다. 기본 off·시험 후 커밋/push·단일 잠금·
+세션 관리·dev_light·외부 정체 감시·DRAFT/미병합은 이전 등록 그대로다.
+
+후속 admission 시험 `test_v116_replication_preserves_behavior_and_counts_distinct_causes` 1개 통과. v115 실행 bundle이 참조한 소스 전체의 바이트 동일성도 재검사했다.
