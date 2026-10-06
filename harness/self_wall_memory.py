@@ -108,7 +108,8 @@ class SelfWallMemory(Memory):
     def __init__(self, robot_id, *, self_walls_enabled=False, self_walls_text=False, self_walls_text_height=False,
                  snapshot_records=12, text_max_obs=6, text_min_gap_s=2.0, self_walls_source=None,
                  self_map="off", self_map_options=None, pose_correction="off", pose_correction_options=None,
-                 wall_projection_guard="off", pose_graph="off", pose_graph_options=None, **kwargs):
+                 wall_projection_guard="off", pose_graph="off", pose_graph_options=None,
+                 goal_detection="off", goal_detection_options=None, **kwargs):
         super().__init__(robot_id, **kwargs)
         if self_map not in ("off", "odom_grid_v1"):
             raise ValueError("UNKNOWN_SELF_MAP")
@@ -170,6 +171,14 @@ class SelfWallMemory(Memory):
         self.self_walls = []
         self._self_wall_keys = set()
         self._sim_time = None
+        if goal_detection not in ("off", "floor_color_v1"):
+            raise ValueError("UNKNOWN_GOAL_DETECTION")
+        self.self_goal = None
+        if goal_detection != "off":
+            if self.self_map is None:
+                raise ValueError("GOAL_DETECTION_NEEDS_SELF_MAP")
+            from harness.floor_goal import FloorGoalMemory
+            self.self_goal = FloorGoalMemory(robot_id, options=goal_detection_options)
 
     def observe(self, observation, sim_time):
         super().observe(observation, sim_time)
@@ -191,6 +200,28 @@ class SelfWallMemory(Memory):
         if self.self_map is not None:
             self._graph_view = self.pose_graph_result = None
             self.self_map.odom.command(row)
+
+    def observe_goal_rgb(self, rgb, *, robot_id, frame_id, t, commanded_servo, camera_profile):
+        """Offline D input boundary: own RGB/issued arm commands and own map pose.
+
+        Default off is inert, including invalid inputs. No static/GT/peer inputs.
+        Replayed graph revisions of older goal patches are outside floor_color_v1.
+        """
+        if self.self_goal is None:
+            return None
+        if robot_id != self.robot_id:
+            raise ValueError("GOAL_PEER_INPUT_FORBIDDEN")
+        if frame_id in self.self_goal.seen or t <= self.self_goal.last_t:
+            raise ValueError("GOAL_DUPLICATE_OR_NON_MONOTONIC_FRAME")
+        odom = self.self_map.odom
+        pose = odom.advance(t)
+        settled = odom.has_servo and t-odom.servo_since+1e-8 >= (.25, 2.25)[int(odom.loaded)]
+        return self.self_goal.observe(rgb, robot_id=robot_id, frame_id=frame_id, t=t, pose=pose,
+                                      servo=commanded_servo, profile=camera_profile, settled=settled)
+
+    def goal_target(self, static_goal):
+        """Off returns the unchanged static goal; on never falls back on unknown."""
+        return static_goal if self.self_goal is None else self.self_goal.snapshot()
 
     def observe_wall(self, record, *, camera_xy, robot_id, camera_origin=None, camera_rotation=None):
         """Own C record and camera geometry, no peer/GT.
@@ -249,6 +280,8 @@ class SelfWallMemory(Memory):
 
     def snapshot(self):
         snap = super().snapshot()
+        if self.self_goal is not None:
+            snap["self_goal"] = self.self_goal.snapshot()
         if self.self_map is not None:
             snap["self_map_text"] = (self.self_map.text() if self._graph_view is None else
                 self._graph_view.text().replace("drift uncorrected", "own submap graph; drift uncertain"))
