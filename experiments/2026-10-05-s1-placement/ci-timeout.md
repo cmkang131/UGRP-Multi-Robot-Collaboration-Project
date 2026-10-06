@@ -64,3 +64,15 @@ alias와 가져온 시험 파일이 #371 측정 커밋과 동일함을 Git blob�
   CI 비용 자료 보완이므로 제어기나 논문 기반 물리 방법을 변경하지 않았다.
 - `CONTRIBUTING.md`, `scripts/run_ci_tests.py`, `scripts/refresh_ci_durations.py`,
   #371 커밋 `933e88031e1064c95663ce04f8bd508c494a70f4`.
+
+## 최신 main과의 충돌 해결
+
+첫 수정 커밋 `df56e5e8` push 뒤 GitHub가 `mergeable=false / dirty`로 판정해
+CI가 시작되지 않았다. main `f98ed0e3ccfc04bb7c690035635ffeffd92a92c8`을 일반 merge했다.
+충돌은 시간 JSON 한 파일뿐이었다. 측정값·모든 기존 행을 그대로 보존하고
+main에만 있던 pair-LLM 비용 12개를 추가했다. 이 확인은 `main-merge-duration-receipt.json`에 있다.
+main의 새 `test_highpose_own_load_occlusion.py`도 기록이 없어서 단독으로 측정했다:
+**14 passed in 3.87s**, JUnit 3.210초 × 1.5 = **4.81초**.
+최종 CI 목록 477개 모두 시간 기록이 있으며 예상 비용은 1122.30–1122.31초다.
+merge 후 shard 검사와 S1 장면 시험: **100 passed in 2.69s**, `git diff --check` 통과.
+이 일반 merge는 PR 병합·rebase·강제 push가 아니며 다른 worktree를 수정하지 않았다.

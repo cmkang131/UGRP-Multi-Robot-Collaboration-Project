@@ -17,6 +17,14 @@ Every other import is the normal one. The admission check keeps its own rule: it
 The bound copies read their module globals as they were when this module was imported, so a later test or
 probe patch of e.g. ``harness.zone_pair_vision.valid_frame`` (``scripts/run_pair_stage_probes.py``
 ``image_valid_off``) does not reach v98; those tools target earlier bundles.
+
+Own-load occlusion (``zone_pair_highpose_own_load_occlusion``, 2026-10-05). ``FrameGate.assess`` splits the frame
+verdict in three: ``VALID``; ``CONTENT_ONLY`` (a fresh, decodable, correctly shaped frame that fails only the
+dark-fraction / contrast rule); ``INVALID`` (stale, undecodable, wrong shape, malformed). ``valid_frame`` and
+``valid_frame_ob`` are ``assess(...)[0] == VALID``, so every boolean answer is the one given before this split.
+``gated_accepted`` is a second private builtins dictionary for the frozen ``PairExecution.step``/``arm_step``
+code objects only: its ``frame_gate`` accepts. It is chosen per call by the v98 ``Execution`` after the occlusion
+rule has classified the frame; it is never reachable from any other function.
 """
 import base64
 import builtins
@@ -34,6 +42,7 @@ from harness.zone_final_pair_binding import bind
 
 PROFILE = 'zone_pair_frame_gate_floor_light_v1_v98'
 _ERRORS = (ValueError, TypeError, KeyError, AttributeError, RuntimeError, cv2.error)
+VALID, CONTENT_ONLY, INVALID = 'valid', 'content_only', 'invalid'
 
 
 class FrameGate:
@@ -45,10 +54,6 @@ class FrameGate:
     @classmethod
     def from_values(cls, values):
         return cls(values['frame_contrast_spread_min'], values['frame_value_std_min'])
-
-    def _contrast_ok(self, value):
-        low, high = np.percentile(value, [1, 99])
-        return bool(high - low >= self.spread_min and value.std() >= self.std_min)
 
     @staticmethod
     def _frame(obs, rid, now):
@@ -65,26 +70,39 @@ class FrameGate:
             return None
         return frame
 
-    def valid_frame(self, obs, rid, now):
-        try:
-            frame = self._frame(obs, rid, now)
-            if frame is None:
-                return False
-            value = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)[..., 2][_valid()]
-            return bool((value < 8).mean() < .25 and self._contrast_ok(value))
-        except _ERRORS:
-            return False
+    def assess(self, obs, rid, now, *, ob):
+        """``(verdict, measures)``: ``VALID``, ``CONTENT_ONLY`` or ``INVALID``.
 
-    def valid_frame_ob(self, obs, rid, now):
+        ``ob`` selects the dark-fraction rule of ``valid_frame_ob`` (``frozen.dark_level``) instead of the fixed
+        ``V < 8`` of ``valid_frame``. ``CONTENT_ONLY`` means the frame passed every prefix check (observation
+        contract, age, JPEG markers, shape) and failed only the dark-fraction / contrast rule; ``measures`` then
+        holds the three values the rule read. ``INVALID`` carries no measures.
+        """
         try:
             frame = self._frame(obs, rid, now)
             if frame is None:
-                return False
+                return INVALID, None
             v_channel = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)[..., 2]
             value = v_channel[_valid()]
-            return bool((value <= frozen.dark_level(v_channel)).mean() < .25 and self._contrast_ok(value))
+            dark = float((value <= frozen.dark_level(v_channel)).mean() if ob else (value < 8).mean())
+            low, high = np.percentile(value, [1, 99])
+            spread, std = float(high - low), float(value.std())
+            measures = {'dark_fraction': dark, 'value_spread': spread, 'value_std': std}
+            ok = bool(dark < .25 and high - low >= self.spread_min and value.std() >= self.std_min)
+            return (VALID if ok else CONTENT_ONLY), measures
         except _ERRORS:
-            return False
+            return INVALID, None
+
+    def valid_frame(self, obs, rid, now):
+        return self.assess(obs, rid, now, ob=False)[0] == VALID
+
+    def valid_frame_ob(self, obs, rid, now):
+        return self.assess(obs, rid, now, ob=True)[0] == VALID
+
+    def assessor(self, policy):
+        """The verdict function of a pair policy (the ``frame_gate`` selection rule)."""
+        ob = bool(getattr(policy, 'own_image_ob', False))
+        return lambda obs, rid, now: self.assess(obs, rid, now, ob=ob)
 
     def frame_gate(self, policy):
         """``zone_pair_vision.frame_gate``: the per-step gate of a pair policy."""
@@ -133,14 +151,58 @@ def _import(name, globals=None, locals=None, fromlist=(), level=0):
 BUILTINS = {**vars(builtins), '__import__': _import}
 
 
+def _accepting_gate(policy):
+    """``frame_gate`` of the accepted view: the caller already classified this frame (see ``gated_accepted``)."""
+    return _accepts
+
+
+def _accepts(obs, rid, now):
+    return True
+
+
+@functools.lru_cache(maxsize=None)
+def _views_accepted():
+    vision = types.ModuleType('harness.zone_pair_vision[v98 accepted]')
+    vision.frame_gate = _accepting_gate
+    vision.PROFILE = PROFILE
+    return {'harness.zone_pair_vision': vision, 'harness.zone_pair_admission': _views()['harness.zone_pair_admission']}
+
+
+def _import_accepted(name, globals=None, locals=None, fromlist=(), level=0):
+    if level == 0 and name in _TARGETS:
+        if not fromlist:
+            raise ImportError(f'v98 frame gate: only "from {name} import ..." is answered')
+        return _views_accepted()[name]
+    return _import(name, globals, locals, fromlist, level)
+
+
+BUILTINS_ACCEPTED = {**vars(builtins), '__import__': _import_accepted}
+
+
 def gated(function, **dependencies):
     """``bind`` the frozen ``function`` (same code object and closure) with the v98 private builtins."""
     return bind(function, __builtins__=BUILTINS, **dependencies)
 
 
+def gated_accepted(function):
+    """``bind`` the frozen ``function`` so its ``frame_gate`` accepts: for ``PairExecution.step``/``arm_step`` only.
+
+    The caller (``zone_pair_highpose_own_load_occlusion``) has classified this tick's frame as ``VALID`` or
+    ``OCCLUDED_BY_OWN_LOAD`` with the same ``FrameGate.assess`` the gated copy would run; a stale, undecodable,
+    wrong-shape or (outside a loaded phase) occluded frame is never routed here.
+    """
+    return bind(function, __builtins__=BUILTINS_ACCEPTED)
+
+
 def is_gated(function):
     function = getattr(function, '__func__', function)
-    return function.__globals__.get('__builtins__') is BUILTINS
+    private = function.__globals__.get('__builtins__')
+    return private is BUILTINS or private is BUILTINS_ACCEPTED
+
+
+def is_gated_accepted(function):
+    function = getattr(function, '__func__', function)
+    return function.__globals__.get('__builtins__') is BUILTINS_ACCEPTED
 
 
 def record():

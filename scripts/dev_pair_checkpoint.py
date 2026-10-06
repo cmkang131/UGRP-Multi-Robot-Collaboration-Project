@@ -514,6 +514,8 @@ def cmd_run(args, rest):
     """Continuous run through the unchanged runner main(), saving checkpoints (bytes otherwise unchanged)."""
     from scripts import run_pair_highpose as rph
     _require_dev_probe(rest)
+    if '--speedups' not in rest:    # checkpoints pickle the whole object graph; keep the original path unless asked
+        rest = [*rest, '--speedups', 'none']
     out = Path(rest[rest.index('--output') + 1])
     dc = DevCheckpoint(checkpoint_dir=out / 'checkpoints', every_s=args.every_s, at_sim_s=args.at_sim_s or (),
                        after_carry_go_s=args.after_carry_go_s, stop_at_sim_s=args.stop_at_sim_s)

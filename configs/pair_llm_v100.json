@@ -1,0 +1,71 @@
+{
+  "schema": "ugrp.pair_llm.v100",
+  "execution_bundle_id": "zone-pair-llm-v100",
+  "workflow_id": "zone-pair-llm-v100",
+  "workflow_version": "3.12.0",
+  "status": "DRAFT_UNSEALED",
+  "research_result": false,
+  "note_ko": "두 로봇 짝 운반의 LLM 판단 층 첫 가능성 시험(Refs #219). 2026-10-03 사용자 결정(\"걍 한국어 조건 뺴주라\")으로 한국어 요구 조건은 없고 통신 조건은 자연어 대화(peer_nl)이다. #363 v98 HIGH 제어기의 자기 훅에 연결하며 LLM은 청구(claim)·메시지·정지/재관측 결정을 내린다. 규칙 조건은 모델 없이 같은 기본 제어기를 쓴다. 연구 결과가 아니며 봉인·사전 등록·학생 승인과 무관하다.",
+  "map_id": "zone_wide_door_geometry_v3",
+  "conditions": {
+    "rule": {
+      "arm": "C-rule",
+      "llm": false,
+      "channel": "none"
+    },
+    "no_comm": {
+      "arm": "C-llm-nocomm",
+      "llm": true,
+      "channel": "closed"
+    },
+    "peer_nl": {
+      "arm": "C-llm-nl",
+      "llm": true,
+      "channel": "natural_language_peer_dialogue"
+    }
+  },
+  "caps": {
+    "per_case_s": 900.0,
+    "reset_per_case_s": 5.0
+  },
+  "decision_limits": {
+    "max_calls_total": 72,
+    "max_utterances_per_actor": 6,
+    "max_utterances_total": 12
+  },
+  "model": {
+    "driver_profiles_file": "configs/zone_study_integration/llm_driver.json",
+    "driver_profile": "main_study_gemini_v1",
+    "seed": null,
+    "seed_statement": "No seed: the Gemini proxy request carries no seed field, so a live model run is not reproducible bit for bit. Temperature is recorded; per-call request/response bytes and hashes are the replay record."
+  },
+  "render_profile": "floor_light_v1",
+  "contact_profile": "cargo_noslip_v1",
+  "weld": "off",
+  "sensors": {
+    "ultrasonic_front": "off"
+  },
+  "stop_decisions": {
+    "decision_window_s": 10.0,
+    "post_look_window_s": 10.0,
+    "same_in_all_conditions": true,
+    "carry_choices": [
+      "continue",
+      "set_down"
+    ],
+    "post_look_choices": [
+      "regrasp",
+      "look_again"
+    ],
+    "look_again_caps": {
+      "per_stop": 1,
+      "per_robot_per_case": 1
+    },
+    "llm_inert_threshold": 0.5,
+    "llm_inert_comparison": "strictly_greater",
+    "token_method": "M2",
+    "cohort_token_cap": 1100000,
+    "message_wake_scope": "stop_window",
+    "deviation": "Coordinator e7: received text can wake the owning robot inside a decision window while its pair job remains active; sealed scheduler sources stay unchanged."
+  }
+}

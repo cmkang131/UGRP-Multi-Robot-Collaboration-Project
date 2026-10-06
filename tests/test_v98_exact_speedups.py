@@ -151,3 +151,39 @@ def test_observation_memo_returns_the_previous_value_only_for_identical_inputs()
     img2 = img.copy(); img2[0, 0, 0] = 1
     memo(None, img2, Cam(0)); memo(None, img2, Cam(1)); memo(None, img2, Cam(1), {'g': 1})
     assert len(calls) == 4 and memo.hits == 2
+
+
+def test_runners_default_to_the_exact_set_and_write_a_sidecar(tmp_path):
+    from scripts import run_pair_highpose as rph
+    from scripts import run_pair_llm
+    assert sp.DEFAULT_SET == 'v98-exact-v6'
+    for parser, argv in ((rph.parser, ['--check', 'carry', '--expected-source-sha', 'x', '--output', '/o']),
+                         (run_pair_llm.parser, ['--condition', 'rule', '--expected-source-sha', 'x', '--output', '/o'])):
+        assert parser().parse_args(argv).speedups == sp.DEFAULT_SET
+        assert parser().parse_args([*argv, '--speedups', 'none']).speedups == 'none'
+    from harness import zone_final_pair_loaded_schedule as sched
+    before = sched.schedule_bytes
+    out = tmp_path / 'run'
+    run = sp.RunSpeedups('v98-exact-v1', out)
+    run.finish(1)                                       # never started: nothing to undo or write
+    assert not out.exists()
+    run.start()
+    assert sched.schedule_bytes is not before           # installed
+    out.mkdir()
+    run.finish(0)
+    assert sched.schedule_bytes is before               # undone afterwards
+    side = json.loads((out / sp.SIDECAR).read_text())
+    assert side['speedups']['set'] == 'v98-exact-v1' and side['runner_rc'] == 0
+    # an existing output is never written into; 'none' records the original path
+    pre = tmp_path / 'pre'
+    pre.mkdir()
+    run = sp.RunSpeedups('none', pre)
+    run.start()
+    run.finish(0)
+    assert not (pre / sp.SIDECAR).exists()
+    out2 = tmp_path / 'run2'
+    run = sp.RunSpeedups('none', out2)
+    run.start()
+    out2.mkdir()
+    run.finish(0)
+    assert json.loads((out2 / sp.SIDECAR).read_text())['speedups']['set'] == 'none'

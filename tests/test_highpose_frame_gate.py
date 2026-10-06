@@ -130,6 +130,11 @@ GATED = {'step': 'harness.zone_pair_executor.PairExecution', 'arm_step': 'harnes
          'pair_readiness': 'harness.zone_own_executor.ZoneOwnExecutor'}
 
 
+# v98 Execution.step/arm_step are v98 dispatchers (zone_pair_highpose_own_load_occlusion); the frozen code objects
+# live in four bound copies: the v98 gate (_*_gated) and the accepting gate chosen per tick (_*_accepted).
+BOUND = {'step': ('_step_gated', '_step_accepted'), 'arm_step': ('_arm_step_gated', '_arm_step_accepted')}
+
+
 def owner(cls, name):
     return next(k for k in cls.__mro__ if name in vars(k))
 
@@ -152,7 +157,7 @@ def test_every_frozen_gate_reference_in_the_v98_classes_is_replaced():
                 if k.__module__.startswith('harness.zone_pair_highpose'):
                     assert fg.is_gated(f) or k is rt.HighController, key
                     continue
-                resolved = getattr(cls, name)
+                resolved = getattr(cls, BOUND[name][0] if cls is rt.Execution and name in BOUND else name)
                 if fg.is_gated(resolved) and resolved.__code__ is f.__code__:
                     continue
                 assert key in replaced, key
@@ -160,16 +165,23 @@ def test_every_frozen_gate_reference_in_the_v98_classes_is_replaced():
         'harness.zone_pair_highpose_runtime.HighController._wait_close',
         'harness.zone_pair_highpose_runtime.CommandGuard.preclose_check',
         'harness.zone_pair_highpose_runtime.CommandGuard.observe_standoff',
-        'harness.zone_pair_highpose_runtime.Execution.step', 'harness.zone_pair_highpose_runtime.Execution.arm_step',
+        'harness.zone_pair_highpose_runtime.Execution._step_gated',
+        'harness.zone_pair_highpose_runtime.Execution._arm_step_gated',
+        'harness.zone_pair_highpose_runtime.Execution._step_accepted',
+        'harness.zone_pair_highpose_runtime.Execution._arm_step_accepted',
         'harness.zone_pair_highpose_runtime.OwnExecutor._ack',
         'harness.zone_pair_highpose_runtime.OwnExecutor.pair_readiness'}
     for name, frozen_owner in GATED.items():
         cls = {'step': rt.Execution, 'arm_step': rt.Execution, 'preclose_check': rt.CommandGuard,
                'observe_standoff': rt.CommandGuard}.get(name, rt.OwnExecutor)
-        resolved, base = getattr(cls, name), owner(cls.__mro__[1], name)
+        base = owner(cls.__mro__[1], name)
         assert f'{base.__module__}.{base.__qualname__}' == frozen_owner
-        assert fg.is_gated(resolved) and resolved.__code__ is getattr(base, name).__code__
-        assert 'super' not in resolved.__code__.co_names
+        for attr in (BOUND[name] if cls is rt.Execution else (name,)):
+            resolved = getattr(cls, attr)
+            assert fg.is_gated(resolved) and resolved.__code__ is getattr(base, name).__code__
+            assert 'super' not in resolved.__code__.co_names
+    assert all(fg.is_gated_accepted(getattr(rt.Execution, a)) and not fg.is_gated_accepted(getattr(rt.Execution, g))
+               for g, a in (BOUND['step'], BOUND['arm_step']))
     relook = rt._RELOOK_GRASP
     assert fg.is_gated(relook) and relook.__code__ is grasp.PairGraspRelook._grasp.__code__
     assert relook.__globals__['_frame_gate'] is fg.controller_gate
