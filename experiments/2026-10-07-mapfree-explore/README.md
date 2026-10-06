@@ -349,3 +349,15 @@ v1 변경 전 생성한 golden `tests/fixtures/floor_goal/navigation_v1.json`(SH
 `4bba3882bb5fc7a024a63251ebbfa1fc0ca4681f707634ebc4338bb26e619c68`)과 기본 off golden을 모두 검사한다.
 초기 1 camera frame의 floor와 body 연결, unknown 통과 금지, static prior보다 최신 hit 우선,
 회전의 평균 병진0, circle-only/실제 사각 충돌을 각각 반례로 고정했다.
+
+## 10. v2 개발 종료·고정 (새 확인 개봉 전)
+
+실행 SHA `23ff6378`. 개발16쌍 noisy: static B0/16·충돌12·coverage47.89%,
+frontier B1/16·충돌14·coverage20.42%. oracle: static B11/16·충돌4·coverage21.62%,
+frontier B4/16·충돌1·coverage18.94%; 공통4쌍의 거리비2.919/시간비2.776이다.
+모두 실패를 포함하며 noisy/oracle을 합산하지 않는다. 초기 병진0은 해소됐지만 좁은 FOV에서
+heading/관측점 선택이 반복되는 한계가 있다. 예: oracle s1/A는 21.61 m를 이동하고도 coverage9.80%,
+s1/C는 swept footprint 거부149회로 끝났다. 이는 같은 장소에서 관측만 했던 v1과 다른 실패다.
+소스/수치를 보고 임계값을 바꾸지 않는다. [freeze-v2.json](freeze-v2.json)에 소스·개발 결과 해시를
+고정했다. 이제 §9의 새 E/F×3701/3702 확인32쌍 noisy/oracle을 각각 한 번 평가한다.
+B v3 봉인10파일은 해시 동일하다. 변경 모듈 시험22개 통과, v1/off golden 바이트 동일이다.
