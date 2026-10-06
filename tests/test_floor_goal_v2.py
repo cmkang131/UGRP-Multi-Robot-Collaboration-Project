@@ -132,3 +132,26 @@ def test_static_scoring_positive_negative_small_and_center_error():
     assert frame_score([], np.zeros_like(mask), truth, mask)['fn'] == 1
     mask[305:] = False
     assert frame_score([], np.zeros_like(mask), truth, mask)['unscored'] == 1
+
+
+def test_recorded_adapter_negative_scoring_happens_after_prediction(tmp_path):
+    from v2_recorded import replay_case
+    from replay import sha
+    episode = tmp_path/'episode'
+    folder = episode/'robots/r3'
+    folder.mkdir(parents=True)
+    rgb_path = folder/'frame.jpg'
+    assert cv2.imwrite(str(rgb_path), cv2.cvtColor(synthetic_patch(), cv2.COLOR_RGB2BGR))
+    (folder/'frames.jsonl').write_text(json.dumps({'frame_id': 1, 'sim_time': 3., 'path': 'robots/r3/frame.jpg',
+        'sha256': sha(rgb_path), 'commanded_servo': CONFIG['arm_poses']['search']})+'\n')
+    (folder/'commands.jsonl').write_text(json.dumps({'t': 0., 'kind': 'initial_servo_command',
+                                                   'pulses': CONFIG['arm_poses']['search']})+'\n')
+    baseline = tmp_path/'baseline/case'
+    baseline.mkdir(parents=True)
+    (baseline/'evaluation.json').write_text(json.dumps({'frames': [{'frame_id': 1, 'B_visible': False}]}))
+    output = tmp_path/'prediction'
+    result = replay_case({'id': 'case', 'episode': str(episode), 'robot': 'r3', 'camera_profile': 'camera_v3'},
+                         v2_options(), baseline.parent, output)
+    assert (output/'predictions.jsonl').exists()
+    assert result['false_components'] == result['false_frames'] == 1
+    assert result['false_confirmations'] == 0
