@@ -245,3 +245,62 @@ seed914를 DEV admission에 명시 추가했다. 성공·실패를 모두 기록
 - **저자 초록 확인** — [Zhang et al. 2016, degeneracy](https://www.cs.cmu.edu/~kaess/pub/Zhang16icra.html): 잘 관측되는 방향과 약한 방향을 구분. 관측 부적합을 fix로 승격하지 않는 기존 gate 유지.
 - **공개 코드 본문 확인** — [Nav2 AMCL pf.c](https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_amcl/src/pf/pf.c), **README 확인** — [emcl2](https://github.com/ryuichiueda/emcl2): recovery/expansion은 관측 불일치 뒤 입자 지지 복구 방법. 이번 최소 수정에서는 먼저 잘못된 이동 예측을 고치며 새 전역 reset/고정 prior 주입은 채택하지 않았다.
 - **최근 논문 v2(2025) 초록 확인; 본문·실행 미확인** — [NuRF](https://arxiv.org/abs/2406.00312): radiance field/visual place recognition을 활용한 시각 입자 위치 추정. 새 학습 지도·추론 경로가 필요해 기존 정적 지도/고정 own-RGB 구현에 채택하지 않았다.
+
+## 고정 후보의 새 seed/slot DEV 확인 결과 (2026-10-06)
+
+실행 소스 **`dfec1f19e1580534242d3b1b436eb45c07a979ea`**를 세 실행 동안 고정했다.
+위의 사전 목록을 그대로 한 번씩 실행했으며 중간 튜닝·재시도·제외는 없다.
+**3/3이 사후 잠정 기하 판정(lifted/inside/floor/stable)을 통과**했다.
+모두 `STAGE_REACHED_UNQUALIFIED`, `physical_success=null`, `research_result=false`다.
+이 결과는 새로운 조건 세 개의 DEV 확인이며 정식 연구 확증·S2 전체 졸업·실물 성공이 아니다.
+
+| seed / slot | 결과 | SIM초 / 관리 실행 wall초 | 명령 / 모델 호출 | 목적지 첫 도착 xy / yaw 오차 | 최종 상자 전체의 B 경계 여유 |
+|---|---|---:|---:|---:|---:|
+| 912 / P1-1 | lifted=true, inside=true, success=true | 309.7 / 332.27 | 9753 / 0 | 0.0666 m / +0.679° | 0.2575 m |
+| 913 / P1-3 | lifted=true, inside=true, success=true | 379.9 / 434.93 | 12167 / 0 | 0.0988 m / +0.281° | 0.2622 m |
+| 914 / P2-2 | lifted=true, inside=true, success=true | 316.0 / 357.80 | 9816 / 0 | 0.0554 m / -0.224° | 0.2670 m |
+
+원본 출력(각 경로 뒤 `-managed/manifest.json`에 관리 실행·환경·소스 고정 증거):
+
+- `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s912-P1-1-place`
+- `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s913-P1-3-place`
+- `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s914-P2-2-place`
+
+[전수 해시·사후 판정 재계산·모든 체크포인트 수치](confirm-results.json), [검증기](verify_confirm.py).
+6151/7555/6277개, 총 **19,983개 artifact 파일 SHA-256 일치**, 저장된 평가를 원본 trajectory로 재계산해 세 건 모두 동일했다.
+관리 실행은 전부 exit0·source_changed_during_run=false·finalization_errors=[]다.
+위치 비교는 pose의 지연 보정 시각 `t_est`와 가장 가까운 평가 표본을 맞췄다(차이 0.01초).
+SIM 시간은 이미 reset을 제외한 `check_sim_s` 그대로이며 다시 reset을 빼지 않았다. wall 시간은 관리 실행 전체다.
+
+- 재관측은 **9/9 fresh fix**, 목적지 fix 시각은 304.95/324.45/311.25초다. 목적지 세 건 모두 inlier=1, support=1, observed_rank=2인 partial fix이며 약한 축은 y다. gate 기준은 그대로다.
+- s913은 목적지 재관측 후 다시 집어 재배치했으며 마지막 체크포인트 오차는 0.1218 m / -0.785°다. 첫 도착 수치만으로 이 잔여 오차를 숨기지 않는다. 초기 문 앞 오차도 s912에서 0.2169 m / 3.420°까지 있었다.
+- 새 실행은 실제 robot yaw를 평가 전용 로그에 기록했다. HIGH 운반(z>0.12 m)에서 파지 방향 대용 측정과 실제 yaw 차이는 전체 세 실행에서 -0.0451~+0.0558°였다. 이는 대용 측정의 타당성을 뒷받침하지만, 과거 실행의 미기록 실제 yaw를 직접 측정한 것으로 바꾸지는 않는다.
+- `dev_light_would_stop` 발생 횟수: s912 `ARM_COLLISION_GUARD=11`, `POSE_UNCERTAIN=345`; s913 arm=2; s914 arm=3. 동일 상태를 여러 tick에서 기록한 횟수이며 독립 실패 사건 수가 아니다. 대표 event 행은 일부만 남으므로 event 개수와 전체 횟수를 구별했다. 정식 stop-ON 실행의 통과로 해석할 수 없다.
+- 종료 실패는 0/3이므로 같은 원인 두 번 실패 중단 조건은 발동하지 않았다. 각 실행 뒤 자기 관리 프로세스·watchdog가 종료됐고 마지막 `agent_lock.py status`는 **null**이다. 다른 작업의 프로세스는 종료하지 않았다.
+- 최초 s912 launcher 호출 한 번은 잘못 옮긴 full SHA 때문에 소스 사전 검사에서 즉시 거부됐다. 잠금·시뮬레이션·출력 생성 전이며 실행 표본에 넣지 않는다. 올바른 위 SHA로 첫 물리 실행을 시작했다. 해당 세션 로그도 보존한다.
+
+### CI의 두 실패와 최소 시험 수정
+
+[run 37405135288](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37405135288)은 8개 shard 모두 종료됐고 **시간 초과는 없었다**.
+shard7의 v106 provider 시험은 쓰지 않는 drive installer를 import하며 MuJoCo를 요구했고,
+shard5의 전체 workflow 계획 시험에는 새 `zone-solo-cyan-v106`의 입력 예시가 없었다(`KeyError`).
+시험에서만 미사용 물리 installer를 격리하고, 실제 PF wrapper 설치·복원 검사는 유지했다.
+전체 workflow 표에는 v106의 `--expected-source-sha` 입력 예시 한 행을 추가했다. 실행 제어기와 세 실행의 소스는 바꾸지 않았다.
+
+- MuJoCo import를 `sys.modules['mujoco']=None`으로 차단한 상태에서 관련 두 파일 **33 passed / 10.67 s**.
+- `tests/test_simulation_workflow_manager.py`: **18 passed / 1.42 s**. 자식 실행을 금지한 모든 catalog 계획 검사도 통과했다.
+- CI JUnit 8개를 로컬 `outputs/solo-cyan-v106-offline-20261006/ci-artifacts-final-37405135288/`에 회수했다. 기존 run의 두 새 파일 testcase 시간 합계는 1.887초(v106, 실패 포함)/20.900초(runner)다. shard 전체는 665.30–1303.81초였다. timeout 설정·공통 시간 배정은 변경하지 않았다.
+- 참고: [pytest 공식 monkeypatch 문서](https://docs.pytest.org/en/stable/how-to/monkeypatch.html) 본문 확인. 시험 범위의 모듈 대체와 자동 복원을 사용한다. 새 알고리즘이나 외부 코드 복제는 없다.
+- 위 수정 push 뒤의 CI 최종 상태는 PR #391 후속 코멘트와 로컬 CI 완료 영수증에 별도로 남긴다. PR은 DRAFT 유지, 병합 금지다.
+
+### TensorBoard
+
+실행3·4와 새 실행3건을 **`outputs/tensorboard/1006-solo-cyan-v106-confirm-dfec1f19`** 새 snapshot에 등록했다.
+기존 snapshot/원본은 보존했다. 각 원본 result·bundle 해시를 연결하고 EventAccumulator로 5개 event의 실제 값/HParams를 읽었다.
+[대시보드 링크·원본 연결·event 해시·표시 설정](tensorboard.json).
+공유 logdir `/Users/changmin/projects/ugrp/outputs/tensorboard`로 자기 뷰어를 시작했고 Chrome `강`의 기존 탭에서 확인했다.
+성공 판정·SIM 시간·명령 수·모델 호출 4개 Time Series 카드를 고정했고, HParams에서 outcome과 같은 4개 지표 열을 적용해 5개 행을 원본과 대조했다.
+HParams는 공유 전체 3676개 group 중 당시 37페이지에 있으며 Time Series의 run filter와 별도다.
+모델 호출은 0회라 응답 시간은 계측되지 않았고 0으로 만들지 않았다. raw MP4가 없어 영상 등록은 없다.
+공유 `tensorboard-view.json`에는 자기 새 키 `solo_cyan_v106_confirm_dfec1f19_20261006`만 추가하고 기존 176개 키/값을 보존했다.
+뷰어는 작업 중에만 유지하고 완료 후 자기 `tensorboard-solo-cyan-1006` 세션을 종료한다.

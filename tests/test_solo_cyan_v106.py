@@ -299,7 +299,15 @@ def test_real_map_planning_and_motion_inverse(static, cal):
     r.close()
 
 
-def test_default_v98_speedups_attach_to_actual_solo_provider_and_undo(static):
+def test_default_v98_speedups_attach_to_actual_solo_provider_and_undo(static, monkeypatch):
+    # This exercises the real camera/PF wrappers, never a physics world. Keep
+    # the unused drive installer isolated so the offline CI needs no MuJoCo.
+    import sys
+    from types import ModuleType
+    drive = ModuleType('sim.exact_speedups')
+    drive.install_drive_kernel = lambda world: pytest.fail('offline test built a physics world')
+    monkeypatch.setitem(sys.modules, 'sim.exact_speedups', drive)
+    monkeypatch.setitem(sys.modules, 'mujoco', None)
     from harness import zone_pair_highpose_exact_speedups as speed
     from harness.vision_pose_source_highpose import HighPoseSource
     before = HighPoseSource.__init__
