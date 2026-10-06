@@ -2,7 +2,7 @@
 
 Refs #216, #366. **물리 실행 0회, 새 렌더링 0회.** 기록된 자기 손목 카메라 프레임, `mj_forward`(적분 없음)와 `mj_ray`, 그리고 정답 기준용 분할 렌더(기록된 `qpos`로 `mj_forward` 후 한 장)만 썼다. 기록된 에피소드 폴더에는 쓰지 않는다. 채점에 정답(`eval_only/`, `inputs/static_map.json`)을 쓰지만 **검출기 입력에는 절대 넣지 않는다.** 검출기가 보는 것은 자기 undistorted RGB, 자기 발행 servo, 고정 카메라 보정, 자기 적재 상태(자기 그리퍼 명령)뿐이다.
 
-브랜치 `claude/ego-wall-map`. 병합한 origin/main `b07f33aba278fda7434acaed0974c3d38f7b9ef0`, 코드·시험 커밋 `2643f8b7ce89db8dd57cf483901870273808e842` (이 README는 그 다음 커밋). 설계 근거: [`docs/design/2026-10-05-ego-wall-map-for-llm-memory.md`](../../docs/design/2026-10-05-ego-wall-map-for-llm-memory.md).
+브랜치 `claude/ego-wall-map`. 병합한 origin/main `b07f33aba278fda7434acaed0974c3d38f7b9ef0`, 코드·시험 커밋 `2643f8b7ce89db8dd57cf483901870273808e842` (이후 커밋은 README, `before_after_table.py` 표 이름 한 줄, `column_profile.py` 추가뿐이고 검출·채점 코드는 그대로다). 설계 근거: [`docs/design/2026-10-05-ego-wall-map-for-llm-memory.md`](../../docs/design/2026-10-05-ego-wall-map-for-llm-memory.md).
 
 **핵심 불변식: 벽 높이는 측정값이지 입력값이 아니다. 0.40 m도 예외가 아니다.**
 
