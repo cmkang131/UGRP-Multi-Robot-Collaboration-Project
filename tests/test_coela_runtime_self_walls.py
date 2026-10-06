@@ -216,7 +216,8 @@ class RegisteredAsANewBundle(unittest.TestCase):
         self.assertEqual(set(self.manifest) - {"audited_git_sha", "files_sha256", "visually_inspected_existing_samples",
                                                "recorded_request_sample"}, {"additional_bundles"})
         self.assertEqual(set(self.manifest["additional_bundles"]),
-                         {BUNDLE_ID, "self-map-odom-grid-v1", "self-map-own-csm-v1", "self-map-own-csm-v2"})
+                         {BUNDLE_ID, "self-map-odom-grid-v1", "self-map-own-csm-v1", "self-map-own-csm-v2",
+                          "self-map-own-prob-v1"})
         for name, expected in self.manifest["additional_bundles"]["self-map-odom-grid-v1"]["files_sha256"].items():
             actual = (hashlib.sha256((ROOT / "tests/fixtures/self_wall_memory_before_csm.py.txt").read_bytes()).hexdigest()
                       if name == "harness/self_wall_memory.py" else sha(name))
@@ -226,6 +227,10 @@ class RegisteredAsANewBundle(unittest.TestCase):
                       if name == "harness/self_wall_memory.py" else sha(name))
             self.assertEqual(actual, expected)
         for name, expected in self.manifest["additional_bundles"]["self-map-own-csm-v2"]["files_sha256"].items():
+            actual = (hashlib.sha256((ROOT / "tests/fixtures/self_wall_memory_before_prob.py.txt").read_bytes()).hexdigest()
+                      if name == "harness/self_wall_memory.py" else sha(name))
+            self.assertEqual(actual, expected)
+        for name, expected in self.manifest["additional_bundles"]["self-map-own-prob-v1"]["files_sha256"].items():
             self.assertEqual(sha(name), expected)
 
 
