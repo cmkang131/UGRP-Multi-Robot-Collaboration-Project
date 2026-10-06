@@ -264,6 +264,24 @@ raise SystemExit(3 if a.fail else 0)
             "masterpi-drive-friction-probe": ["--expected-source-sha", "0" * 40, "--drive-profile", "masterpi_drive_friction_v7"],
             "masterpi-v7-roller-approx-probe": ["--expected-source-sha", "0" * 40, "--phase", "profile"],
         }
+        # Explicit samples for preserved S2 bundles; planning never executes.
+        samples.update({name: ["--expected-source-sha", "0" * 40] for name in (
+            'zone-s2-realism-v109',
+            'zone-s2-realism-v110',
+            'zone-s2-realism-v113',
+            'zone-s2-realism-v114',
+            'zone-s2-realism-v115',
+            'zone-s2-realism-v116',
+            'zone-s2-realism-v117',
+            'zone-s2-realism-v118',
+            'zone-s2-realism-v119',
+            'zone-s2-realism-v120',
+            'zone-s2-realism-v121',
+            'zone-s2-realism-v122',
+            'zone-s2-realism-v123',
+            'zone-s2-real-output-diag-v111',
+            'zone-s2-real-output-diag-v112',
+        )})
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
             plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}

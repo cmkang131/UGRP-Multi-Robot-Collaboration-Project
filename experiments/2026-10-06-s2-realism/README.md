@@ -1091,3 +1091,50 @@ s1046 정체 의심 221.4–222.15, 222.35–223.1, 267.2–269.55 s의 평가 �
 yaw 0.015/−0.026/0.146°. 이 채점값은 검출 후에만 결합했다. 무늬 부족으로 검출하지 못한 구간은 숨기지 않는다.
 근거: [gate 감사](v123-gates-audit.json), [카메라 투영](v123-geometry-audit.json),
 [flow 감사](v123-flow-summary.json), [고정 입력 재생](v123-replay-summary.json), [시험](v123-local-verification.json).
+
+### v123 s1047 전체 DEV 결과 — B 밖 내려놓기, 추가 실행 중단
+
+실행 SHA **`1a2dbf5e306732163a5019a1d52589e0ce3b2e22`**, 번들 **zone-s2-realism-v123**.
+`lifted=true / inside=false / floor=true / stable=true / success=false`, 상태 `STAGE_REACHED_UNQUALIFIED`,
+제어기 `done`, 실행 오류 `failure=null`. 이것은 정상 종료한 **임무 실패**다. 짐 낙하·집게 이탈·기울기·
+120초 정체 중단은 없었다. r3가 문을 통과한 뒤 cyan 중심 (3.999989, −2.277317, 0.015892)m에
+내려놓았다. B의 x 범위 4.3–4.9m에 못 미쳤다. GT는 종료 후 독립 기하 채점에만 사용했다.
+
+- 최종 추정 (4.379715, −2.081092)m, 실제 (3.796074, −2.289609)m: **0.619772m 오차**.
+  s1046의 3.345608m보다 작지만 seed/제어 궤적이 달라 옵션만의 인과 효과로 단정하지 않는다.
+- 마지막 fix **34.45s**, HIGH 후보 **3,048건 모두 거절**, carry fix **0**. 최종 추정 시각 256.14s의
+  fix age는 **221.69s**. 거절 관측은 이제 HIGH PF 가중치에 넣지 않지만 카메라 외부 보정·거짓 경계
+  문제가 남았고 명령 기반 오차를 보정하지 못했다. 정체가 아니라 **B까지의 위치 오차**로 실패했다.
+- would-stop: `ARM_COLLISION_GUARD=7`, `POSE_UNCERTAIN=348`; 모두 기록 후 계속했다.
+  flow window 103개: `changed_view=26`, `unknown_texture=77`, 정체 의심 0.
+  이는 정체가 없었다는 완전한 검출 증명이 아니다. 특징 부족 구간 74.8%는 판정 불가다.
+- 집기 확인 `probable_held_inhand_rgb`, 재집기 0. pickup-site before/after 면적은
+  `not_evaluated_inhand_selected`/null이며 unknown을 성공으로 바꾸지 않았다. 모델 호출 **0**.
+- **wall 410.407985s / SIM 259.30s = 1.582754 wall/SIM**, 명령 3,679, own RGB 5,100장.
+  freeze OFF s1042 **2.587649**, ON s1046 **1.878291**, ON s1047 **1.582754**.
+  seed/단계/코드가 달라 wall/SIM 참고 비교만 하며 결과를 합산하거나 가속 인과 효과를 주장하지 않는다.
+- 원본: `/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place`.
+  [전체 결과](completed-v123.json), [위치](s1047-navigation.json), [체크포인트 채점](s1047-checkpoint-evaluation.json).
+  source closure **362파일**, raw manifest, RGB 전체 SHA와 독립 기하 판정 일치. 원본 보존.
+- 4배속 영상: `/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-analysis/views/s1047-full/execution.mp4`
+  (640×480, 20fps, 63.75s, sha256 `4ce34a1ae8cc2f43eb06f25c7e15659895a8a296f59d651f8bfcd5770ad246aa`).
+  [TensorBoard](http://127.0.0.1:6006/) snapshot `1007-s2-realism-visual-v123`: full 1건/오프라인 감사 1건,
+  **29개 scalar** 원본=event=API 확인. 사용자 요청대로 수치만 대조하고 브라우저는 열지 않았다.
+  [검증](visual-delivery-verification.json), [영상 등록 확인](v123-media-readback.json).
+- `ugrp_session` stopped, 자체 PID 41828/41832/41842/41848 종료, 일회성 launchd 항목 제거,
+  잠금 **null** 확인. 다른 세션/TensorBoard 서버는 변경하지 않았다. **추가 SIM 없음.**
+
+남은 문제는 HIGH 자세별 카메라 외부 보정의 실물 가능한 측정과 실제 벽 관측의 획득/식별이다.
+카메라 장착 각도·σ·gate 문턱을 임의 조정하지 않았으며, 기본 옵션을 켜거나 성공 cohort로 승격하지 않는다.
+
+### CI 실패 분리와 시험 설정 수정 (실행 종료 후)
+
+실행 소스 CI preflight는 통과했다. 전체 CI에서는 offline shard1의 MuJoCo 미설치/새 S2 workflow
+시험 샘플 누락, shard3의 Mac/Linux corner projection 차이(약 6×10⁻¹⁴ px)로 실패했다.
+생산 제어 코드는 바꾸지 않았다. MuJoCo binding 시험은 [pytest 공식 방식](https://docs.pytest.org/en/stable/how-to/skipping.html#skipping-on-a-missing-import-dependency)으로
+해당 의존성이 없을 때만 skip하고, 의존성을 설치하는 Ubuntu simulation CI에도 명시적으로 배치했다.
+S2 보존 버전 15개의 계획 입력을 추가했고, corner float 두 필드만 [NumPy assert_allclose](https://numpy.org/doc/stable/reference/generated/numpy.testing.assert_allclose.html)
+`rtol=0, atol=1e-10 px`로 대조한다. lens coverage·정수 bbox·나머지 필드는 exact 유지한다.
+변경된 3시험 파일 **40 passed**, 의도적 MuJoCo 부재 fixture **1 skipped**, CI YAML 구문·배치 검증 통과.
+실제 시뮬레이션 0, 실행 source closure **362파일은 그대로**다. 원격 재실행 결과는 아직 미확인으로 남긴다.
+[CI 원인과 로컬 검증](v123-ci-diagnosis.json).

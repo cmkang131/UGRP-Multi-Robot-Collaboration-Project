@@ -315,7 +315,7 @@ jobs:
           python -m pip check
 
       - name: Check demo input and output boundaries
-        run: python -m pytest -q tests/test_sim_quickstart.py tests/test_simulation_recovery_optional.py
+        run: python -m pytest -q tests/test_sim_quickstart.py tests/test_simulation_recovery_optional.py tests/test_s2_idle_contacts.py
 
       - name: Preserve dispatch and ACT scene physics across standard and research adapters
         run: python -m pytest -q tests/test_dispatch_scene_parity.py

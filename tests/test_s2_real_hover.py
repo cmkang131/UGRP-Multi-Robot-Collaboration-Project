@@ -111,7 +111,13 @@ def test_offline_projection_checks_actual_lens_not_rectangle():
             row=pose['eval_pose']
             for name,v in pose['variants'].items():
                 replay=m.project(row,dict(origin_m=v['camera_origin_floor_heading_m'],rotation=v['camera_rotation']))
-                assert replay==v
+                # Cross-platform BLAS differs at ~6e-14 px. Keep integer lens
+                # coverage/bboxes and every other field exact; only floating
+                # projection coordinates get a sub-nanopixel tolerance.
+                float_keys=('corner_uv','corner_bbox_xyxy')
+                for key in float_keys:
+                    np.testing.assert_allclose(replay[key],v[key],rtol=0,atol=1e-10)
+                assert {k:x for k,x in replay.items() if k not in float_keys}=={k:x for k,x in v.items() if k not in float_keys}
                 if pose['label']=='settled_hover':assert v['valid_ray_pixels']==0
             if pose['label']=='aligned':
                 observed=run['frames'][0]['bbox_xyxy'];expected=pose['variants']['v3']['valid_bbox_xyxy']

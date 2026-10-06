@@ -1,0 +1,108 @@
+{
+  "final_pose_error_m": 0.6197718290234954,
+  "final_estimate": {
+    "t": 256.3,
+    "t_est": 256.14,
+    "x": 4.379715423867086,
+    "y": -2.0810922098901017,
+    "yaw": 0.03985788179230276,
+    "std_xy_m": 0.2640505177205522,
+    "std_yaw_rad": 0.0929837693817337,
+    "last_fix_t": 34.45,
+    "observation_quality": {
+      "accepted": false,
+      "informative_columns": 44,
+      "diagnostics": {
+        "fit": 0.92617,
+        "n_terms": 39,
+        "w_slow": 0.72104,
+        "w_fast": 0.80797,
+        "w_diff": 0.0,
+        "gain": [
+          -0.0032,
+          -0.0006,
+          -0.0028
+        ],
+        "ess_pre": 1352.6
+      },
+      "last_fix_quality": {
+        "accepted": true,
+        "informative": true,
+        "settled": true,
+        "ambiguous": false,
+        "inlier_fraction": 1.0,
+        "posterior_support": 1.0,
+        "likelihood_span": 0.9199274032087523,
+        "saturated": false,
+        "geometric_curvature": 3.452329158160139,
+        "reason": "informative",
+        "t": 34.45
+      },
+      "informative": true,
+      "partial": false,
+      "observed_rank": null,
+      "weakest_direction_xy_yaw": null,
+      "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+    },
+    "last_scan_gate": {
+      "accepted": true,
+      "informative": false,
+      "old_informative": false,
+      "settled": true,
+      "ambiguous": true,
+      "inlier_fraction": 0.20512820512820512,
+      "posterior_support": 0.0,
+      "saturated": false,
+      "geometric_curvature": 0.0,
+      "eigenvalues": [
+        -686.5430322651841,
+        393.2003571027896,
+        1140.4343476854224
+      ],
+      "observed_rank": 2,
+      "weakest_direction_xy_yaw": [
+        0.9544017515094444,
+        -0.2973371000771771,
+        -0.02660724776071229
+      ],
+      "partial": false,
+      "rule": "v98_partial_fix_second_eigenvalue_v1",
+      "reason": "residual_or_geometry_inconsistent"
+    }
+  },
+  "final_eval_pose": [
+    3.796073581362141,
+    -2.2896091629863937,
+    0.06592185090580895
+  ],
+  "carry_start": 70.1,
+  "unique_fixes": 470,
+  "carry_fixes": 0,
+  "last_fix": 34.45,
+  "max_between_accepted_fixes_s": 1.1500000000000004,
+  "last_fix_age_s": 221.69,
+  "max_fix_gap_including_tail_s": 221.69,
+  "checkpoints": [
+    {
+      "robot_id": "r3",
+      "event": "carry_checkpoint",
+      "t": 130.45,
+      "index": 0,
+      "last_fix_t": 34.45
+    },
+    {
+      "robot_id": "r3",
+      "event": "carry_checkpoint",
+      "t": 172.85,
+      "index": 1,
+      "last_fix_t": 34.45
+    },
+    {
+      "robot_id": "r3",
+      "event": "carry_checkpoint",
+      "t": 237.9,
+      "index": 2,
+      "last_fix_t": 34.45
+    }
+  ]
+}

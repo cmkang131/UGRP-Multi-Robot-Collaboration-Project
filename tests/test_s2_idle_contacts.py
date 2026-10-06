@@ -59,6 +59,9 @@ def test_extra_actor_and_sphere_option_cannot_hide_in_s2_label(candidate):
 
 
 def test_actual_constructor_binding_record_reset_and_restore(candidate,tmp_path,monkeypatch):
+    # The real binding imports MuJoCo, although this fixture never creates or
+    # steps a world. Also run in the CI job with simulator dependencies.
+    pytest.importorskip('mujoco')
     from sim import s2_realism_camera_binding as camera
     from sim.s2_idle_contacts import backend_class
     calls=[]
