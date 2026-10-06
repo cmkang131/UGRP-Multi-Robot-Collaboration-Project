@@ -59,3 +59,16 @@ def test_calibration_jig_board_has_no_contacts_or_welds():
     assert not root.findall('.//equality')
     assert len(root.findall('.//geom'))==55
     assert all(g.get('contype')==g.get('conaffinity')=='0' for g in root.findall('.//geom'))
+
+
+def test_moving_target_uses_mocap_kinematics_no_step_or_render():
+    mujoco=pytest.importorskip('mujoco')
+    from sim.s2_extrinsic_capture import board_xml
+    m=mujoco.MjModel.from_xml_string(board_xml('<mujoco><asset/><worldbody/></mujoco>'))
+    d=mujoco.MjData(m);mid=int(m.body('cal_board').mocapid[0])
+    assert mid>=0
+    d.mocap_pos[mid]=[.2,.3,.4]
+    m.geom('cal_0_0').pos[:]=[.01,.02,.03]
+    mujoco.mj_forward(m,d)
+    np.testing.assert_allclose(d.geom('cal_0_0').xpos,[.21,.32,.43])
+    assert d.time==0

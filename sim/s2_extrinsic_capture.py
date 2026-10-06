@@ -17,7 +17,7 @@ def board_xml(xml):
     asset=root.find('asset')
     for name, colour in [('white','1 1 1 1'),('black','0 0 0 1')]:
         ET.SubElement(asset,'material',name='cal_'+name,rgba=colour,emission='1',specular='0',reflectance='0')
-    body=ET.SubElement(root.find('worldbody'),'body',name='cal_board',pos='0 0 3')
+    body=ET.SubElement(root.find('worldbody'),'body',name='cal_board',pos='0 0 3',mocap='true')
     ET.SubElement(body,'geom',name='cal_border',type='box',size='1 1 .00001',pos='0 0 .00003',
                   material='cal_white',contype='0',conaffinity='0',group='2')
     for y in range(6):
@@ -86,8 +86,9 @@ def capture(out, source_sha):
             world._team_joint_move_servos({'r3':{1:1500 if loaded else 2000,**pose}},1.2,settle_s=8.)
             for board in target.boards(pose):
                 axes=np.asarray(board['rotation']);p=np.asarray(board['origin_m'])+[target.FIXTURE[0],target.FIXTURE[1],0]
-                body=world.model.body('cal_board');body.pos[:]=p
-                quat=np.zeros(4);mujoco.mju_mat2Quat(quat,axes.ravel());body.quat[:]=quat
+                body=world.model.body('cal_board');mid=int(body.mocapid[0])
+                world.data.mocap_pos[mid]=p
+                quat=np.zeros(4);mujoco.mju_mat2Quat(quat,axes.ravel());world.data.mocap_quat[mid]=quat
                 s=board['square_m'];border=world.model.geom('cal_border');border.size[:2]=[5.5*s,4*s]
                 for y in range(6):
                     for x in range(9):
@@ -116,6 +117,8 @@ def capture(out, source_sha):
                         if world.model.eq_type[i]==mujoco.mjtEq.mjEQ_WELD)))
                 write(out/'eval_only.json',audit)
             print(state,target.key(pose),[r['status'] for r in rows[-3:]],flush=True)
+            if any(r['status']!='detected' for r in rows[-3:]):
+                raise ValueError('CALIBRATION_TARGET_NOT_FULLY_VISIBLE: '+target.key(pose))
         write(out/'result.json',dict(status='CAPTURE_COMPLETED',classification='S2_DEV_calibration_not_transport',
             source_sha=source_sha,observations=len(rows),detected=sum(r['status']=='detected' for r in rows),
             wall_s=time.monotonic()-start,sim_s=float(world.data.time),options=dict(idle_robot_contacts='freeze_v1'),

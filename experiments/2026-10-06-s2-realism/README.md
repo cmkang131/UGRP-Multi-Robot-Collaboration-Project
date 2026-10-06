@@ -1173,3 +1173,10 @@ S2 보존 버전 15개의 계획 입력을 추가했고, corner float 두 필드
   촬영·오프라인 검증 뒤 별도 커밋으로 고정한다. 현재는 보정 촬영만 준비했다.
 촬영 전 변경 모듈 2개 시험: **22 passed**. 합성 fisheye 코너의 PnP 복원·미검출/holdout 불합격
 거절·26자세 범위·비접촉 표적·CLI 계획의 비실행을 확인했다. 지그 실제 렌더/파지는 아직 미검증이다.
+
+촬영 source `acab0c8f`는 18장 모두 표적 미검출로 자체 세션을 중단했다. 표적 없는 영상 확인 후
+원인을 분리했다: 컴파일된 정적 body의 model pose 직접 변경은 이 경로에서 표시 위치를 갱신하지 않았다.
+[MuJoCo 공식 runtime state 문서](https://mujoco.readthedocs.io/en/latest/programming/simulation.html)에 따라
+표적만 비접촉 mocap body로 만들고 `data.mocap_pos/quat`로 알려진 배치를 준다. 로봇·카메라·하중
+모델은 동일하다. 단일 자세라도 3장 모두 검출되지 않으면 즉시 촬영 오류로 종료하도록 했다.
+[중단 원본·해시](calibration-capture-aborted.json), 잠금 null 및 자체 세션 stopped 확인.
