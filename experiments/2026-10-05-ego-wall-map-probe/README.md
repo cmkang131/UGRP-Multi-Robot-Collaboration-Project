@@ -2202,3 +2202,28 @@ PYTHONPATH=outputs/self-map-plot-deps $PY experiments/2026-10-05-ego-wall-map-pr
 [PBRT 4판의 ray 구간 (0, tMax) 및 평면 교점](https://www.pbr-book.org/4ed/Shapes/Basic_Shape_Interface).
 기존 `ColumnModel.t_of_row`의 t는 **바닥 trace상의 좌표**라서 음수 자체가 오류는 아니다.
 검사는 이 trace 좌표의 부호가 아니라 **카메라 원점에서 출발한 optical ray의 매개변수**와 optical Z를 쓴다.
+
+### 21.2 옵션·연결 위치와 실행 방법
+
+| 인터페이스 | 옵션/기본값 | 적용 위치 |
+|---|---|---|
+| `SelfWallMemory(..., wall_projection_guard=...)` | `off` / `positive_depth_v1`, 기본 off | `observe_wall`에서 C record를 검증한 뒤 정합/지도 입력에 전달하기 전 |
+| `observe_wall(..., camera_origin=..., camera_rotation=...)` | guard on일 때 필수 | 현재 chassis frame의 자기 명령 기반 3D origin, optical→chassis rotation; `camera_xy`와 동일 원점 검사 |
+| `harness.wall_projection_guard.filter_segments` | 동일 옵션, 기본 off | Cartesian cache/원장 재생에서 같은 검사 사용; off는 원본 객체를 그대로 반환하고 카메라 인수를 읽지 않음 |
+| `projection_guard_replay.py --wall-projection-guard` | 동일 옵션, 기본 off | §21.1의 저장 RBPF100 자세 고정 비교; on은 명시적으로 지정 |
+
+검출기 `height_free_wall.detect` 자체와 원본 C 기록은 변경하지 않는다. 지도 입력 직전에 거르므로
+guard on에서도 광학적으로 불가능한 원본 검출이 진단 파일에 남을 수 있으나 누적 점유·free ray에는
+들어가지 않는다. low-level `grid.insert`는 이미 지도 좌표로 변환된 자료를 받으므로 카메라 검사를
+할 수 없다. 직접 쓰는 재생기는 **변환 전** 위 공용 Cartesian 필터를 호출한다. 로봇 통합은
+`SelfWallMemory.observe_wall` 경로를 사용한다. 모든 선분이 거부된 관측은 지도 갱신 없이 자기 DR
+시각과 중복 처리 키만 진행한다. 진단 로그는 `projection_guard_events`이며 LLM 문구에 넣지 않는다.
+
+이번 비교는 pose를 고정한 map insertion 실험이다. 이후 새 RGB에서 이 옵션을 켜 정합까지 다시 실행하면
+관측 변경으로 RBPF pose도 달라질 수 있다. 그 온라인 피드백은 이번 결과로 검증했다고 주장하지 않는다.
+
+```sh
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+$PY experiments/2026-10-05-ego-wall-map-probe/code/projection_guard_replay.py \
+  --wall-projection-guard positive_depth_v1 --output outputs/wall-projection-guard-v1-NEW
+```

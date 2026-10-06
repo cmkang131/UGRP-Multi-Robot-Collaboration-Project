@@ -107,8 +107,7 @@ def render_self_walls(records, now=None, max_obs=6, min_gap_s=2.0, max_segments=
 class SelfWallMemory(Memory):
     def __init__(self, robot_id, *, self_walls_enabled=False, self_walls_text=False, self_walls_text_height=False,
                  snapshot_records=12, text_max_obs=6, text_min_gap_s=2.0, self_walls_source=None,
-                 self_map="off", self_map_options=None, pose_correction="off", pose_correction_options=None,
-                 wall_projection_guard="off", **kwargs):
+                 self_map="off", self_map_options=None, pose_correction="off", pose_correction_options=None, **kwargs):
         super().__init__(robot_id, **kwargs)
         if self_map not in ("off", "odom_grid_v1"):
             raise ValueError("UNKNOWN_SELF_MAP")
@@ -116,12 +115,6 @@ class SelfWallMemory(Memory):
             raise ValueError("UNKNOWN_POSE_CORRECTION")
         if pose_correction != "off" and self_map != "odom_grid_v1":
             raise ValueError("POSE_CORRECTION_NEEDS_SELF_MAP")
-        from harness.wall_projection_guard import validate_option
-        validate_option(wall_projection_guard)
-        if wall_projection_guard != "off" and self_map != "odom_grid_v1":
-            raise ValueError("WALL_PROJECTION_GUARD_NEEDS_SELF_MAP")
-        self.wall_projection_guard = wall_projection_guard
-        self.projection_guard_events = []
         self.self_map = None
         if self_map == "odom_grid_v1":
             if pose_correction == "off":
@@ -179,36 +172,9 @@ class SelfWallMemory(Memory):
         if self.self_map is not None:
             self.self_map.odom.command(row)
 
-    def observe_wall(self, record, *, camera_xy, robot_id, camera_origin=None, camera_rotation=None):
-        """Own C record and camera geometry, no peer/GT.
-
-        positive_depth_v1 requires command-calibrated 3D origin and optical-to-
-        chassis rotation. It filters BEFORE matching/insertion, including free
-        rays. Default off delegates byte-for-byte to the legacy map path.
-        """
+    def observe_wall(self, record, *, camera_xy, robot_id):
+        """Current chassis-frame stage C record and calibrated camera nadir, no peer/GT."""
         if self.self_map is not None:
-            if self.wall_projection_guard != "off":
-                import numpy as np
-                from harness.wall_projection_guard import filter_segments
-                if robot_id != self.self_map.robot_id:
-                    raise ValueError("SELF_MAP_PEER_INPUT_FORBIDDEN")
-                rec = validate_record(record)
-                key = (rec["t_sim"], rec["view_index"])
-                if key in self.self_map.seen:
-                    return []
-                local = [[[r1*math.cos(a1), r1*math.sin(a1)], [r2*math.cos(a2), r2*math.sin(a2)]]
-                         for r1, a1, r2, a2, _ in rec["seg"]]
-                kept, event = filter_segments(local, wall_projection_guard=self.wall_projection_guard,
-                                              camera_origin=camera_origin, camera_rotation=camera_rotation)
-                if not np.allclose(np.asarray(camera_origin, float)[:2], camera_xy, atol=1e-8, rtol=0):
-                    raise ValueError("WALL_PROJECTION_CAMERA_FRAME_MISMATCH")
-                event.update(t=rec["t_sim"], frame_id=rec["view_index"])
-                self.projection_guard_events.append(event)
-                if not kept:
-                    self.self_map.odom.advance(rec["t_sim"])
-                    self.self_map.seen.add(key)
-                    return []
-                record = {**rec, "seg": [rec["seg"][e["segment"]] for e in event["segments"] if e["accepted"]]}
             return self.self_map.observe(record, camera_xy=camera_xy, robot_id=robot_id)
         return []
 
