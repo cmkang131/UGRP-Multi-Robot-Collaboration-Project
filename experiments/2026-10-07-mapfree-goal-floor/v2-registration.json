@@ -46,8 +46,11 @@
   ],
   "views_per_group": 3,
   "yaw_command": {
-    "turn": 10.0,
-    "duration_s": 0.15
+    "turn_by_arm": {
+      "search": 0.06,
+      "high": 0.25
+    },
+    "duration_s": 1.0
   },
   "view_times_s": [
     3.0,
@@ -89,5 +92,6 @@
   "render_limit_minutes": 8,
   "physics_steps": 0,
   "data_limit_mib": 250,
-  "predictions_use_gt": false
+  "predictions_use_gt": false,
+  "pre_render_correction": "6a5e4110 used turn=10 as if degrees; existing M1 accepts normalized command. Corrected before rendering, using command-only preflight (about 5deg/view); 32 candidates, not prose typo 64."
 }

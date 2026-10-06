@@ -247,7 +247,7 @@ HSV는 다르며, alpha 혼합/조명을 특정 단일 원인으로 단정하지
 base 높이 0.0325 m와 녹화에 실제 쓰인 SEARCH/HIGH servo 명령을 그대로 쓴다. 팔 pitch/카메라 FOV를
 B가 잘 보이도록 바꾸지 않는다. B/A/C/pickup 4개 중심 앞 거리 0.45/1.0/2.4 m × 좌우 ±0.25 m ×
 팔 2자세 × 가림 2조건(original / 기존 r1을 대상 앞 0.15 m에 정적으로 배치) = 96개 묶음이다.
-각 묶음은 같은 자기 `turn=10, duration=.15 s` 명령을 두 번 발행하는 3-view이며 **총 288장**이다.
+각 묶음은 자기 `turn=0.06(SEARCH)/0.25(HIGH), duration=1 s` 명령을 두 번 발행하는 3-view이며 **총 288장**이다.
 이 명령의 기존 M1 DR yaw 변화를 렌더 배치에 적용해 물리 없는 정적 시점열을 만든다. 검출기에 renderer
 세계 pose를 반환하지 않는다. 의도적으로 잡음 없는 정적 배치이므로 위치 추정/주행 성능 증거가 아니다.
 
@@ -257,7 +257,7 @@ B가 잘 보이도록 바꾸지 않는다. B/A/C/pickup 4개 중심 앞 거리 0
 전체 격자를 유지한다. 정적 교차/팔 하중·변형은 물리로 검증하지 않는다.
 
 v2는 표준 HSV + morphology + 연결 성분의 면적/solidity/바닥 연결 + 반복 관측 확인을 사용한다.
-개발 B interior pixel의 hue/S 분포만으로 기준 색을 추정하고, JSON의 유한한 64개 임계값 조합을 개발에서만
+개발 B interior pixel의 hue/S 분포만으로 기준 색을 추정하고, JSON의 유한한 32개 임계값 조합을 개발에서만
 비교한다. **precision 우선, 그 다음 recall**, 동률이면 작은 변경을 선택한다. 설정/소스/개발 결과를 봉인·
 커밋한 다음 확인 영상·마스크를 평가한다. 확인 성능에 맞춰 다시 튜닝하지 않는다. v1 비교도 같은 집합에서
 따로 보고한다. 기존 녹화는 유사색 회귀 진단이며 새로운 확인 집합과 합산하지 않는다.
@@ -275,3 +275,7 @@ RGB JPEG 품질 95를 고정한다. segmentation은 평가 디렉터리에만 �
 [MuJoCo 기구학/카메라 갱신](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html),
 [공개 Renderer segmentation 구현](https://github.com/google-deepmind/mujoco/blob/main/python/mujoco/renderer.py).
 반복 관측 확인은 현재 v1의 3회/2 s/5° 자기 명령 baseline을 재사용하며 문헌 보편값이라고 주장하지 않는다.
+
+사전 배치 점검 정정: `6a5e4110`의 turn=10은 degree처럼 적은 명령 단위 오류였다. 기존 M1의 정규화 명령으로
+고쳐 SEARCH/HIGH의 첫 회전이 약 5°가 되도록 했다. 영상/렌더/개발 결과를 보기 전 순수 명령 모델로 확인했으며
+격자 수·분할·성공 기준은 변경하지 않았다. 임계값 곱집합은 32개이며 초기 본문의 64는 계산 오기였다.
