@@ -177,3 +177,42 @@ python3 scripts/ugrp_session.py run camera-review-render-NEW -- \
 - 새 카드 표시·pin 적용·HParams 열 재적용은 **미확인**. `tensorboard-view.json`에는 자기 키만 추가했다.
 - `delivery-verification.json`, `tensorboard-readback.json`, `raw-manifest.json`에 검증 경계와 로컬 원본 해시 보존.
 - 새 번들 ID·workflow 번호 없음. 기존 표준 Scene 산출물을 읽는 진단이며 실행 가능한 연구 프로필로 등록하지 않았다.
+
+
+## 2026-10-06 사용자 실물 관찰에 따른 v2 추가 검토
+
+사용자는 **순정 MasterPi 카메라였고, 들고 있을 때 물건은 거의 안 보였다**고 확인했다.
+이는 실물 관찰 근거다. 당시 원본 영상·서보값·물건 치수는 없으므로 수치 가림률이나 특정 자세의 측정값으로 바꾸지 않는다.
+기존 파일의 `icspring` 이름을 다른 카메라를 사용했다는 증거로 취급하지 않는다.
+
+실행 전 고정한 새 후보 `masterpi-camera-official-sdk-sample-review-v2`는 v1 도면 mount와
+공식 SDK `11b0cb04ada14be7c391e6c865ac705f903a95e7`의 Camera.py/NPZ가 만드는 **출력 영상**을 조합한다.
+Camera.py 원문은 이번에 공식 GitHub raw로 확보해 확인했다(이전 웹 cache miss 기록은 당시 이력).
+Brown-5 + getOptimalNewCameraMatrix(alpha=0) + initUndistortRectifyMap이다. ROI slice는 없으며,
+시뮬레이터는 이 보정된 출력 광선을 직접 렌더한다. 기존 fisheye D4를 섞지 않는다.
+공개 NPZ는 개체·보정 품질이 미확인이라 **사용자 실물 보정 프로필이 아니라 공식 샘플 진단 후보**다.
+공식 170°는 축/투영식이 없어 fovy로 사용할 수 없다. 출력 K에서 약29.23°×21.49°가 계산되지만
+170° 렌즈와의 관계·공개 샘플의 적합성은 미확인이다. 원하는 가림률을 얻기 위한 파라미터 탐색은 하지 않는다.
+
+실행 계획: 기존 standard Scene XML의 동일 HIGH 정지 3개 및 동일 상대 화물 자세를 유지한 공식 lift 3개를
+baseline / 위치만 / v1 / v2로 비교한다. 그 뒤 고정 fixture에서 **집게 닫기·들기 1회**만 실시한다.
+기존 접촉·물체 34×40×32 mm·질량·마찰·관절·기본값·번들은 유지한다. 강체 파지 가정은 정지 진단에만 쓰고
+동적 실행에서는 weld/화물 추종/상태 보정 없이 정상 접촉으로 진행한다. HIGH 대기는 진단용1초로 단축하므로
+S2 carry 인수로 인정하지 않는다. 차체 구동0, 모델0, 실물 명령0, S2 실행0. wall 예산45초, 잠금1분 이내 목표.
+
+공식 color_sorting.py의 lift 요청은 `(0,6,18) cm, pitch=0°, 1500 ms`다.
+공식 IK 수학 부분만 격리 계산한 nominal PWM (3,4,5,6)=(695,2413,782,1500)에
+공식 Deviation.yaml (54,53,89,64)을 더하면 **(749,2466,871,1564)**다.
+HIGH=(896,2035,1894,1500), 공구각−40.05°와 같지 않다.
+공식 init 요청 `(0,8,10), -90°`는 범위 탐색 결과−58°이며, nominal=(508,2414,1238,1500)이다.
+예제는 open=2000, close=1500을 쓰지만 **lift→open→close** 순서이며 바닥 접근·들고 주행하는 표준 절차를
+제시한 것으로 읽으면 안 된다. “MasterPi 유일한 기본 운반 자세”는 확인 못 했다.
+SDK tool=100 mm, v3 pad centre=86.85 mm, shoulder 기준도 달라 SDK 목표 높이18cm를 SIM 실제 높이로 치환하지 않는다.
+
+### v2에서 추가 확인한 자료
+
+- [공식 카메라 사양 그림](https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523): 직접 판독, HBVCAM-V2101 V11/640×480/170°(축 미지정), 초점거리 범위30cm–무한대.
+- [공식 Camera.py](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/Camera.py), [MasterPi.py](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/MasterPi.py): 원문 전체 확인. 처리된 cam.frame이 MJPEG로 전달됨.
+- [공식 color_sorting.py](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/functions/color_sorting.py), [공식 IK](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/arm_move_ik.py), [역기구학](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py): 수학·서보 매핑·sequence 확인, 보드 호출 없음.
+- 표준 방법: OpenCV Brown 보정/출력 K 및 hand-eye의 좌표 변환을 그대로 사용. 위 OpenCV·MuJoCo 문서와 Wise2026 논문/공개 코드를 다시 확인했다. 새로운 최적화나 파라미터 fit은 하지 않았다.
+- raw 출처/해시/계산: `/Users/changmin/projects/ugrp/outputs/camera-review-20261006/references-v2/{manifest,derived}.json`.
