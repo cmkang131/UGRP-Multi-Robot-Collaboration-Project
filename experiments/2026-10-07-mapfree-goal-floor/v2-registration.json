@@ -1,0 +1,93 @@
+{
+  "schema": "ugrp.floor_goal_static_render.v2",
+  "scene": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/scene.xml",
+  "scene_sha256": "f6d335be525889b1825decee74a60b5625fcf4439b0a35f88068b77d0be00b20",
+  "robot": "r3",
+  "camera": "r3__robot_cam",
+  "resolution": [
+    640,
+    480
+  ],
+  "camera_profile": "camera_v3",
+  "targets": [
+    "zone_B",
+    "zone_A",
+    "zone_C",
+    "pickup"
+  ],
+  "distances_m": [
+    0.45,
+    1.0,
+    2.4
+  ],
+  "lateral_offsets_m": [
+    -0.25,
+    0.25
+  ],
+  "arm_poses": {
+    "search": {
+      "1": 2000,
+      "3": 740,
+      "4": 2320,
+      "5": 1320,
+      "6": 1500
+    },
+    "high": {
+      "1": 1500,
+      "3": 896,
+      "4": 2035,
+      "5": 1894,
+      "6": 1500
+    }
+  },
+  "occlusion": [
+    "original",
+    "r1_in_front"
+  ],
+  "views_per_group": 3,
+  "yaw_command": {
+    "turn": 10.0,
+    "duration_s": 0.15
+  },
+  "view_times_s": [
+    3.0,
+    5.0,
+    7.0
+  ],
+  "split": "negative lateral=development; positive lateral=confirmation; entire 3-view groups together",
+  "groups": 96,
+  "frames": 288,
+  "frame_positive_B_pixels": 256,
+  "threshold_search": {
+    "hue_half_width": [
+      3,
+      5,
+      8,
+      12
+    ],
+    "saturation_margin": [
+      10,
+      25
+    ],
+    "min_pixels": [
+      64,
+      128
+    ],
+    "min_solidity": [
+      0.3,
+      0.6
+    ],
+    "fit_hue_saturation": "DEV B interior HSV pixels only; deterministic quantiles, no confirmation RGB/masks",
+    "selection": "max frame precision first, then recall, then fewer parameters; report if criteria fail"
+  },
+  "criteria": {
+    "frame_precision_min": 0.95,
+    "frame_recall_min": 0.9,
+    "projection_median_max_m": 0.1,
+    "false_confirmed_regions_max": 0
+  },
+  "render_limit_minutes": 8,
+  "physics_steps": 0,
+  "data_limit_mib": 250,
+  "predictions_use_gt": false
+}

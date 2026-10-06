@@ -220,3 +220,58 @@ $PY experiments/2026-10-07-mapfree-goal-floor/code/evaluate.py --predictions out
   평가가 예측 파일을 변경하지 않았고 10건 모두 source/options/prediction hash가 봉인과 일치함을 확인했다.
 - 기존 미추적 4개 파일의 해시 불변, #405의 HEAD `f3eeb6bf`·DRAFT 유지. 새 DRAFT PR은 #405 위에 쌓는다.
   양쪽 PR 모두 병합하지 않는다.
+
+## 8. floor_color_v2 사전 등록 (구현·렌더 전, 2026-10-07)
+
+사용자가 정적 렌더 시험을 명시적으로 허용했다. §1–7은 v1 당시의 무렌더 기록으로 보존한다.
+v1/off/자기 지도 알고리즘은 그대로 두고 `goal_detection=floor_color_v2`를 추가한다. 물리 적분·시뮬레이션
+주행·모델 호출 없이 `mj_kinematics`/`mj_camlight`와 RGB/평가 segmentation 렌더만 한다. 정답 마스크·
+세계 pose·장면 재질은 평가/개발 임계값 선정에만 쓰고, 추론과 자기 기억에는 RGB/고정 보정/자기 명령만 준다.
+
+**이 절과 [격자 설정](v2-registration.json)을 구현 전에 커밋한다.** 기존 거짓 component 25개의 실제
+HSV 분포·표면 종류와 scene XML 재질/조명/alpha를 먼저 분석한다. 원본 재질 RGB 거리와 렌더된 RGB의
+HSV는 다르며, alpha 혼합/조명을 특정 단일 원인으로 단정하지 않는다.
+
+| 성공 기준 | 사전 고정 분모·문턱 |
+|---|---|
+| 프레임 precision | TP/(TP+FP) ≥0.95; 검출한 프레임 전체, 잘못된 구역 검출도 FP |
+| 프레임 recall | TP/(TP+FN) ≥0.90; **실제 보이는 B 마스크 ≥256 px**인 프레임 전체 |
+| TP 공간 일치 | accepted component pixels의 ≥50%가 B 마스크와 겹침; 양성 프레임에서 엉뚱한 패치만 검출하면 FP와 FN 모두 기록 |
+| 작은 B | 1–255 px 프레임은 주 판정에서 별도 미판정; 0 px 음성과 섞지 않음 |
+| 중심 투영 | TP component의 동일 관측 B pixel을 GT 카메라로 투영한 중심 대비, 명령 FK 기반 중심 오차 median ≤0.10 m; P95도 보고 |
+| 거짓 확인 | 독립 음성 3-view 묶음/기존 음성 녹화에서 거짓 confirmed region 0; 확인된 참 region 수도 함께 보고 |
+| 호환·경계 | default/explicit off golden bytes 동일, v1 snapshot/검출 bytes 동일; GT·peer 추론 입력 0 |
+| 판정 불가 | 양성/TP/음성 확인 기회가 없으면 N/A, 통과로 대입하지 않음 |
+
+정적 집합은 s1045의 저장 `scene.xml`(SHA는 JSON에 고정), 현행 camera v3 mount·실제 K/D·640×480,
+base 높이 0.0325 m와 녹화에 실제 쓰인 SEARCH/HIGH servo 명령을 그대로 쓴다. 팔 pitch/카메라 FOV를
+B가 잘 보이도록 바꾸지 않는다. B/A/C/pickup 4개 중심 앞 거리 0.45/1.0/2.4 m × 좌우 ±0.25 m ×
+팔 2자세 × 가림 2조건(original / 기존 r1을 대상 앞 0.15 m에 정적으로 배치) = 96개 묶음이다.
+각 묶음은 같은 자기 `turn=10, duration=.15 s` 명령을 두 번 발행하는 3-view이며 **총 288장**이다.
+이 명령의 기존 M1 DR yaw 변화를 렌더 배치에 적용해 물리 없는 정적 시점열을 만든다. 검출기에 renderer
+세계 pose를 반환하지 않는다. 의도적으로 잡음 없는 정적 배치이므로 위치 추정/주행 성능 증거가 아니다.
+
+좌측 lateral −0.25 m의 48묶음/144장은 개발, +0.25 m의 48묶음/144장은 확인이다. 동일 묶음의 3장은
+절대 양쪽에 나누지 않는다. 같은 장면의 가까운 격자이므로 독립 실물/새 장면 일반화 검증이라고 부르지 않는다.
+목표 물체/벽에 의해 가려지거나 FOV 밖인 조건도 사후 제거하지 않는다. 일부 팔 자세에서 B가 안 보여도
+전체 격자를 유지한다. 정적 교차/팔 하중·변형은 물리로 검증하지 않는다.
+
+v2는 표준 HSV + morphology + 연결 성분의 면적/solidity/바닥 연결 + 반복 관측 확인을 사용한다.
+개발 B interior pixel의 hue/S 분포만으로 기준 색을 추정하고, JSON의 유한한 64개 임계값 조합을 개발에서만
+비교한다. **precision 우선, 그 다음 recall**, 동률이면 작은 변경을 선택한다. 설정/소스/개발 결과를 봉인·
+커밋한 다음 확인 영상·마스크를 평가한다. 확인 성능에 맞춰 다시 튜닝하지 않는다. v1 비교도 같은 집합에서
+따로 보고한다. 기존 녹화는 유사색 회귀 진단이며 새로운 확인 집합과 합산하지 않는다.
+
+렌더 직전에 `agent_lock.py status == null` 및 시뮬레이션 프로세스 부재를 확인하고,
+`--owner codex --purpose "B render testset"`으로 짧게 acquire한다. 드라이버가 `finally`로 release한다.
+시간 상한 8분·raw 250 MiB, ENOSPC/렌더 실패는 HOST_ERROR이며 원본을 보존한다. 다른 작업 잠금/프로세스는
+건드리지 않고 같은 원인 두 번 실패하면 중단한다. 표준 snapshot의 geom groups 4/5 숨김, raw fisheye remap,
+RGB JPEG 품질 95를 고정한다. segmentation은 평가 디렉터리에만 저장하며 투명 바닥 마커의 가시 mask 정의도
+렌더 코드/README에 공개한다. 렌더는 기존 녹화와 별도 시험셋이고 물리/실물 검증이 아니다.
+
+출처: [OpenCV HSV](https://docs.opencv.org/4.13.0/da/d97/tutorial_threshold_inRange.html),
+[morphology](https://docs.opencv.org/4.13.0/d9/d61/tutorial_py_morphological_ops.html),
+[연결 성분·면적·convex hull](https://docs.opencv.org/4.13.0/d3/dc0/group__imgproc__shape.html),
+[MuJoCo 기구학/카메라 갱신](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html),
+[공개 Renderer segmentation 구현](https://github.com/google-deepmind/mujoco/blob/main/python/mujoco/renderer.py).
+반복 관측 확인은 현재 v1의 3회/2 s/5° 자기 명령 baseline을 재사용하며 문헌 보편값이라고 주장하지 않는다.
