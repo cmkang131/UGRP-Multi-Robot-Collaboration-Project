@@ -22,9 +22,13 @@ def validate(bundle):
     dev_probe_registration = (identity is not None and int(identity[1]) >= 119
         and bundle.get('preregistered_run') is True
         and bundle.get('registration_kind') == 's2-dev-probe'
-        and bundle.get('user_authorization') == '2026-10-06-s1042-site-check'
         and bundle.get('stage_probe') == 'pick'
-        and bundle['options'].get('site_check') == 'real_floor_v1')
+        and ((bundle.get('user_authorization') == '2026-10-06-s1042-site-check'
+              and bundle['options'].get('site_check') == 'real_floor_v1')
+             or (int(identity[1]) >= 120
+                 and bundle.get('user_authorization') == '2026-10-06-grasp-reference-probe'
+                 and bundle['options'].get('hold_check') == 'inhand_rgb_v1'
+                 and bundle['options'].get('site_check') == 'off')))
     required = dict(scenario='S2', transport='solo', cargo='cyan', admission='dev-pilot',
                     cohort_role='FUNCTIONAL_DEV', active_robot_ids=[rid])
     allowed = (identity is not None and int(identity[1]) >= 118

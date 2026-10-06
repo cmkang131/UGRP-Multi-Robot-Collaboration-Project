@@ -621,3 +621,92 @@ freeze 전후 결과는 합산하지 않는다. off s1042 wall/SIM=**2.587649**�
 - eval idle 옵션 sidecar는 #407 기본 정책 문구를 유지하고, 실행 bundle에는 후속 사용자 지시의 DEV seed 사전 기록 예외가 별도로 명시돼 있다. 실제 옵션 적용값은 둘 다 freeze_v1이다. 본 연구 예외나 S3/짝 실행으로 해석하지 않는다.
 
 사후에는 제어 코드/번들/원본 결과를 바꾸지 않고 이 실패 기록과 전달 증거만 별도 커밋한다. raw/영상은 로컬 보존이며 GitHub 원격 raw 백업으로 표현하지 않는다. PR #406은 **DRAFT·미병합**이다.
+
+
+## v120 레퍼런스 조사·사전 등록 — s1044, 실행 전
+
+2026-10-06 후속 사용자 지시: 같은 시야 경계 실패 뒤 표준 방법을 조사하고,
+저장 자료와 분리한 **새 seed1044 / r3 / P1-2 / pick 1회**만 실행한다.
+성공·unknown·실패 어느 결과든 이 실행으로 끝내며 full1029–1031은 실행하지 않는다.
+PR #406은 DRAFT, 병합 금지. 번호는 main+열린 PR14개에서 최대119/7.12.0을
+확인해 **zone-s2-realism-v120 / 7.13.0**으로 예약했다
+([예약](reservation-scan-v120.json), [실행 사전 기록](registration-v120.json)).
+1042·1043은 탐색 자료이며 새 실행의 확증 자료로 재사용하거나 합산하지 않는다.
+
+### 조사 결과와 출처
+
+| 방법 | 원문에서 확인한 판정 | 현재 S2/MasterPi에서의 채택 여부 |
+|---|---|---|
+| 개도·힘 피드백 | [Levine et al. 2018, IJRR](https://journals.sagepub.com/doi/10.1177/0278364917710318)의 [공개 선행 원문 §5.2](https://arxiv.org/pdf/1603.02199)은 실제 개도 >1cm와 얇은 물체용 drop 전후 영상 비교를 사용. [Pinto & Gupta 2016 §III-A](https://arxiv.org/pdf/1509.06825)는 20cm 들어 올린 뒤 Baxter 그리퍼 force sensor로 라벨링. | 현재 MasterPi에는 이 측정 스트림이 없어 미채택. 발행 PWM을 개도 측정으로 바꾸어 부르지 않는다. 전류만으로 이 세 논문을 한데 분류하지 않는다. |
+| QT-Opt 성공 라벨 | [Kalashnikov et al. 2018 §5, Appendix D.3](https://arxiv.org/html/1806.10293v3)은 팔을 장면에서 치우고 drop 전후 배경 차분으로 라벨링. gripper open/closed는 정책 상태에 포함되지만 성공 라벨이 전류 센서라는 근거는 없다. | 운반 중 물체를 놓는 drop test는 이번 조건과 맞지 않아 미채택. 모델 훈련·호출 없음. |
+| in-hand RGB | [Nair et al. 2020 §V](https://arxiv.org/html/2003.10167v1)은 손이 보이는 카메라 영상의 grasped/not-grasped 분류. [Amargant et al. 2025](https://arxiv.org/html/2505.03046v1) 및 [공개 코드/자료](https://github.com/pauamargant/HSR-GraspSynth)는 gripper 검출 후 물체 유무 분류. | 측정 방법을 채택. 카메라를 옮기거나 학습 분류기를 이식하지 않는다. 단일 알려진 cyan·모델 호출 금지 제약 때문에 기존 HSV와 두 들기 자세의 지속성을 쓰는 **DEV 한정 적응**이다. 원 논문 알고리즘/정확도의 재현이나 검증된 범용 분류기라고 주장하지 않는다. |
+| 능동 재관측 | [Morrison et al. 2019 Multi-View Picking](https://arxiv.org/abs/1809.08564)은 불확실성을 줄이는 시점 이동. [Terashima et al. 2025](https://alife-robotics.co.jp/members2025/icarob/data/html/data/OS/OS17/OS17-6.pdf)은 손·물체 이외 배경을 depth로 가린 뒤 차분하며, 배경/가림을 통제하지 않은 차분의 한계를 보인다. | 원래 자리로 시선을 돌리거나 후진하는 원리는 타당하지만, 위 논문들이 이 MasterPi의 5cm 후진을 검증한 것은 아니다. 두 raw에 해당 후진 영상이 없고 깊이 센서도 없으므로 계산상 시야 확보와 실제 확인을 구분한다. 이번 probe에는 추가 후진을 넣지 않는다. |
+
+실물 구현 근거: `scripts/masterpi_control.py:74–78`은 PWM servo에 위치
+피드백이 없고 `load_pose_state`가 마지막 **명령**이라고 명시한다.
+`ServoTransport:349–363`은 write만 제공한다. `scripts/red_block/robot.py:192–207`도
+I2C write·대기 뒤 `self.pose`에 목표 PWM을 저장한다. 배터리 전압 판독은 서보 전류가 아니다.
+[Hiwonder 공식 제품 자료](https://www.hiwonder.com/products/masterpi)는 PWM 서보를 명시한다.
+다른 Hiwonder bus servo의 encoder API나 새 보드의 PWM pulse readback을 이 로봇의
+실측 관절 피드백으로 대체할 수 없다. 하드웨어에 새 센서를 연결하거나 읽지 않았다.
+
+`physical_state_machine_reference.py:4740–4793`, `pick.py:364–393`은 집기 전
+신뢰 자세를 저장하고 집은 뒤 같은 자세에서 바닥색을 최대9 fresh frame으로 확인한다.
+바닥에 해당하는 검출 <=1이면 **FLOOR_CLEAR_PROBABLE**, 힘·전류 없는
+positive hold proof는 아님을 원 코드가 명시한다. `sim/real_stack_adapter.py:1151–1187`
+의 bilateral contact/z 검사는 별도 SIM 후조건이며 이번 제어 입력으로 쓰지 않는다.
+기존 s1042·1043 기록은 이 구분을 그대로 보존한다.
+
+### 저장 자료 후보 비교 (실행·튜닝 자료, GT는 아래 평가 열에만)
+
+[재현 코드](compare_grasp_verifiers.py), [전체 수치·이미지 해시](grasp-verifier-comparison.json).
+이미지 hash와 own RGB/발행 명령을 사용한 판정 뒤 별도 평가 결과를 읽는다.
+
+| 후보 | s1042 | s1043 |
+|---|---|---|
+| 실측 개도/전류 | 자료 각각0개 → unavailable | 자료 각각0개 → unavailable |
+| 기존 원래 자리 | unknown, 실제 비교 sample0 | unknown, 실제 비교 sample0 |
+| in-hand 두 자세 | VIA110 9/9, HIGH 9/9; mask IoU **0.991401**, 중심 이동 **0.237625px** → probable | VIA110 0/9, HIGH 0/9 → **unknown** |
+| 첫 lift부터 기존 check까지 모든 RGB | 425프레임, cyan **7959–8064px**, 중앙8010 | 425프레임, cyan **0px** |
+| 5cm 후진 뒤 같은 팔 자세의 가상 원래 자리 | 바닥 가설 bbox 아래행460→326, valid15967px | 아래행463→330, valid16122px |
+| 별도 GT 평가 | lifted=true / inside=false | lifted=true / inside=false |
+
+후진 계산은 RGB가 추정한 중심·정적 물체 치수·발행 이동 가정만 쓴 순수 기하이다.
+손/화물 가림과 실제 이동을 포함하지 않으며 두 실행 모두 counterfactual 판정은
+**unknown**이다. in-hand 후보도 s1043의 실제 lifted를 읽고 성공으로 바꾸지 않는다.
+v3의 5.63%는 특정 카메라 검토 장면 값이며 모든 파지의 최소 가시 면적이 아니다.
+
+### 선택한 명시 옵션과 고정 판정
+
+`hold_check=off|inhand_rgb_v1` (기본 off). off는 v119의 명령·record를 그대로 위임한다.
+on은 기존 들어 올리기(VIA110→HIGH)의 정지 구간에서만 각각 fresh9장,
+0.45s 자세 안정 대기, cyan90px 이상8/9장, 두 majority mask IoU>=0.90,
+중심 이동<=12px일 때 **probable_held_inhand_rgb**를 기록한다. 보이지 않음·오래된
+영상·digest 오류·흑영상·개방/차체 명령·불완전 관찰은 성공 근거로 쓰지 않는다.
+카메라/그리퍼/들기 경로를 수정하지 않고, 원래 자리 ROI 검사를 느슨하게 하지 않는다.
+기존9장/0.45s/90px/12px는 실물·기존 비교 코드의 수치를 재사용하며, 8/9와
+IoU0.90은 새로 고정한 DEV 판정 선택이다. 두 양성 실행만으로 false-positive
+비율이나 파지력을 검증할 수 없고, 발행 팔 이동이 실제로 이행됐다는 보장도 없다.
+이 한계를 기록한 **시각적 probable**만 채택하며 force/contact 확인이라고 부르지 않는다.
+
+실행 options는 v3, v7, setdown_relook=off, grasp_check=pickup_site_v1,
+min_wheel_cmd=real_v1, dead_reckoning=v7_diag_v1, stagnation_watch=window120_v1,
+alignment_pulse=real_fine_v1, hover_check=real_pregrasp_v1,
+idle_robot_contacts=freeze_v1, site_check=off, hold_check=inhand_rgb_v1이다.
+`grasp_check`는 기존 확장 진입점이며 **effective verifier는 inhand**이다.
+result의 `pickup_site_status=not_evaluated_inhand_selected`와 `hold_status`를 분리한다.
+probe pass는 stage reached + 시각 probable + 별도 eval lifted 모두 필요하다.
+원래 자리 비교에 성공했다고 보고하지 않는다.
+
+freeze는 사용자 승인 **S2 단독 DEV**에서만 사용. S3·짝 운반·본 연구·본 연구 사전 등록 금지,
+현재 사용자 지시의 새 seed DEV 사전 기록만 명시적 예외이다. 옵션 off/on 결과 합산 금지,
+wall/SIM만 비교하며 서로 다른 seed/경로의 인과 속도 비교라고 주장하지 않는다.
+실행은 시험 통과→이 README와 소스 커밋·push→잠금 status null 확인→acquire→
+ugrp_session으로 1개만 수행한다. PR405 잠금 강제 해제/다른 프로세스 종료 금지.
+120 SIM초에1cm 미만 정체는 기존 eval 감시를 유지한다. ENOSPC는 HOST_ERROR,
+partial raw와 seed를 보존하며 재사용하지 않는다. 실패/unknown이면 추가 실행 없이 중단한다.
+
+실행 전 검증: `tests/test_s2_inhand.py`, `tests/test_s2_real_site.py`,
+`tests/test_s2_idle_contacts.py` **26 passed /16.80s**. 저장 양성·가림, 움직이는
+cyan 음성 대조, close 명령만 있음/영상 없음, stale·hash 오류, off 명령/record bytes,
+seed·S2 freeze 범위·오류 result를 검사했다. 추가 로컬 전체 시험/모델 호출은 하지 않았다.
