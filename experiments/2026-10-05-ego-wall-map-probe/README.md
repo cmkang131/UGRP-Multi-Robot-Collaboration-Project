@@ -1647,3 +1647,78 @@ v1의 12개/15 s 정합 참조 keyframe에 추가하지 않는다. 이번에는 
 정합-삽입 분리 구조와 Olson의 과거 scan 참조를 기존 설계 A에 적용한 제한된 변경이다.
 새 scan을 정합 참조에도 넣는 변경·과거 scan의 소급 보정·새 튜닝은 이번 v2에 섞지 않는다.
 삽입 원장에는 현재 추정 자세, frame/robot ID, `matching_keyframe` 여부와 삽입 사유를 남긴다.
+
+### 18.4 v2 오프라인 결과 — 개발 2/2, 확인 1/4 통과
+
+사전 기록 `5538499b`, 진단 `76d51e00`, 구현/재생 소스 **`0b002a41d6d3d5e6da06ef9841a64460825d6ac8`**.
+개발 두 건 뒤 `confirmation-freeze.json`으로 같은 소스·옵션 해시를 고정했고, 확인 네 건도 변경 없이 실행했다.
+판정 함수는 v1의 `acceptance()`를 직접 재사용했다. 결과를 보고 계수·기준을 조정하지 않았다.
+
+**보류 프레임 삽입 문제는 해결됐고, 전체 성공은 확인 1/4(s913-r1)다.**
+확인 4건 모두 지도 정밀도가 off 이상이고 recall 하락은 2%p 이내다. 그러나 종료 위치 조건은 3건에서 미달,
+s913-r2 경로 RMSE 감소율도 17.0%로 20% 미달이다. s912-r2/s913-r2 벽 RMSE 감소율은 각각 14.1%/12.6%로
+20% 미달이다. 위치 보정 궤적은 v1과 같으므로 남은 위치 문제를 해결한 변경으로 보고하지 않는다.
+
+표는 **off→v2**, P/R 분모·벽 허용 거리·RMSE 정의는 §17과 같다. 모든 프레임의 경로 오차 분포도 보존했다.
+
+| 녹화 | 종료 XY (m) | 경로 XY RMSE (m) | 지도 P | 지도 R | 지도 벽 RMSE (m) | 전체 기준 |
+|---|---:|---:|---:|---:|---:|---|
+| s911-r1 | 1.067→0.564 | 0.869→0.482 | 47.2%→55.0% | 28.7%→29.2% | 0.542→0.304 | 통과 |
+| s911-r2 | 1.068→0.570 | 0.860→0.443 | 29.8%→31.6% | 17.5%→17.5% | 0.783→0.543 | 통과 |
+| s912-r1 | 1.078→0.788 | 0.816→0.642 | 50.6%→55.5% | 27.5%→27.2% | 0.521→0.376 | 미달 |
+| s912-r2 | 1.070→0.870 | 0.789→0.620 | 32.2%→33.7% | 16.0%→16.0% | 0.740→0.635 | 미달 |
+| s913-r1 | 1.059→0.555 | 0.812→0.460 | 45.7%→53.8% | 28.7%→28.7% | 0.559→0.294 | 통과 |
+| s913-r2 | 1.054→0.866 | 0.785→0.651 | 28.0%→30.7% | 16.0%→15.8% | 0.852→0.744 | 미달 |
+
+| 녹화 | 경로 median off→v2 (m) | P95 off→v2 (m) | 지도 갱신 v1→v2 | 수락 / 거부 / 보류삽입 / bootstrap |
+|---|---:|---:|---:|---|
+| s911-r1 | 1.022→0.553 | 1.058→0.637 | 11→126 | 9 / 12 / 115 / 2 |
+| s911-r2 | 0.968→0.512 | 1.081→0.583 | 7→150 | 5 / 22 / 143 / 2 |
+| s912-r1 | 0.877→0.781 | 1.081→0.870 | 10→134 | 8 / 15 / 124 / 2 |
+| s912-r2 | 0.836→0.636 | 1.073→0.873 | 9→157 | 6 / 23 / 148 / 3 |
+| s913-r1 | 0.874→0.554 | 1.062→0.648 | 11→129 | 9 / 13 / 118 / 2 |
+| s913-r2 | 0.817→0.717 | 1.057→0.869 | 9→156 | 6 / 23 / 147 / 3 |
+
+보류 **795개 모두** 현재 추정 자세로 지도에 들어갔다. 전체 삽입은 v1 **57→v2 852개**,
+실제 정합 거부 108개는 제외됐다. 수락 43·거부 108·보류 795·bootstrap 14의 판정 횟수와 거부 이유는 v1과 동일하다.
+거부 사유별 수는 §17.5 표와 같으며 v2 `*-corrections.jsonl`에도 각 프레임의 사유와 삽입 정책을 기록했다.
+여섯 v2 지도 셀 전체가 §18.2의 **고정 v1 자세+보류 삽입** 진단과 정확히 같았다.
+여섯 v2 자세 파일도 저장된 v1과 바이트 동일하다. 따라서 이번 변화는 지도 삽입 정책의 효과다.
+
+좁은 자기 영상에서 누적 DR 오차를 충분히 줄이지 못하는 문제와 카메라/벽 접점 오차가 남았다.
+참조 keyframe 확대·보정 모델 변경은 하지 않았다. 같은 조건의 실패를 추가 재생/튜닝으로 덮지 않고,
+고정한 여섯 건의 결과 기록에서 마무리한다. 기본 off, v1 보존, PR #405 DRAFT와 미병합을 유지한다.
+
+### 18.5 보존·검증·재현
+
+- [원인 진단 결과/출처](results/csm_v2_insertion_diagnosis/manifest.json),
+  [v2 결과/원본 경로/해시](results/own_map_csm_v2/manifest.json),
+  [개발 뒤 설정 고정·v1 자세 골든·진단 일치](results/own_map_csm_v2/v2-validation-manifest.json).
+- 전체 로컬 파일은 이 worktree의 `outputs/self-map-csm-v2-insertion-diagnosis/`,
+  `outputs/self-map-csm-v2-development/`, `outputs/self-map-csm-v2-confirmation/`에 새로 보존했다.
+  기존 v1/raw를 덮어쓰거나 삭제하지 않았다. 전체 녹화의 원격 백업을 뜻하지 않는다.
+- 구현 전 기준 커밋: 기존 관련 38개 시험 통과. 진단 소스: 진단 선택/중복 회귀 1개 통과.
+  구현/마감 관련 3파일은 `test_self_map_csm_v2.py`, `test_self_map_csm.py`,
+  `test_coela_runtime_self_walls.py`다. 구현 커밋 직전 **36 passed**, 마감에서도 **36 passed (4.64 s)**; 기본/명시적 off와 v1의 소스 골든,
+  거부/보류 분리, 현재 추정 자세 삽입, 공분산/정합 참조 불변, 원장 재투영을 검사했다.
+- 마감 검증: 보존 파일 80개·전체 로컬 파일 131개 해시/크기, 개발/확인 소스·설정 고정,
+  여섯 원장 재투영·과거 keyframe 참조·공분산 PSD, 진단 원본 해시와 그림 두 장을 확인했다.
+- 실제 여섯 재생의 off 자세·셀·LLM 문구 골든 통과. v1 모듈·DR/grid·v1 재생기 소스는 `20d26d7e`와
+  바이트 동일이다. 이전 메모리 소스와 번들 해시도 동결 보존하고 v2 번들/CI 시험만 추가했다.
+- 모든 지도/자세/원장을 저장한 뒤 평가 벽·정답을 읽었다. 정답·상대 지도 입력, 시뮬레이션·모델 호출 없음.
+  TensorBoard 변환은 앞선 사용자 지시대로 생략했다.
+
+그림은 v2 결과다. 경로 오차 곡선은 v1과 동일하며 지도에 남은 증거만 증가했다. 회색 벽은 평가 전용,
+출발 정답 변환 한 번만 사용하고 로봇 지도를 합치지 않았다. PNG는 각각 1 MiB 미만이다.
+
+![v2 s912 로봇별 off/on 누적 지도](results/own_map_csm_v2/s912-off-on-maps.png)
+
+![v2 off/on 경로 오차: v1과 같은 보정 궤적](results/own_map_csm_v2/path-errors-off-on.png)
+
+```sh
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/csm_insertion_diagnosis.py --output outputs/self-map-csm-v2-diagnosis-NEW
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_v2_replay.py --split development --output outputs/self-map-csm-v2-development-NEW
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_v2_replay.py --split confirmation_replay --output outputs/self-map-csm-v2-confirmation-NEW
+```
+
+비교 생성기는 기존 `csm_result_report.py`를 `--development`/`--confirmation`에 v2 경로를 지정해 그대로 재사용했다.
