@@ -1,6 +1,8 @@
 # S2 현실성 재검증 — 실행 전 등록 (2026-10-06)
 
-**최신 완료(v120):** 문헌 조사와 s1042·1043 오프라인 비교 뒤 새 s1044를 1회 실행했다. `97c05e41`에서 lifted=true였지만 두 들기 자세의 cyan이 각각 0/9로 **hold unknown·probe 미통과**다. 추가 실행·튜닝 없이 중단했고 잠금·세션·일회 실행기를 정리했다. [v120 완료](#v120s1044-완료--추가-실행-중단), [조사·사전 등록](#v120-레퍼런스-조사사전-등록--s1044-실행-전)을 따른다.
+**최신 진행(v121):** 새 사용자 결정으로 unknown은 DEV 기록만 하고 전체 경로 s1045를 1회 사전 등록했다. 아래 [v121 기록](#v121-전체-dev-사전-기록--s1045-2026-10-07)을 따른다.
+
+**이전 완료(v120):** 문헌 조사와 s1042·1043 오프라인 비교 뒤 새 s1044를 1회 실행했다. `97c05e41`에서 lifted=true였지만 두 들기 자세의 cyan이 각각 0/9로 **hold unknown·probe 미통과**다. 추가 실행·튜닝 없이 중단했고 잠금·세션·일회 실행기를 정리했다. [v120 완료](#v120s1044-완료--추가-실행-중단), [조사·사전 등록](#v120-레퍼런스-조사사전-등록--s1044-실행-전)을 따른다.
 
 **이전 완료(v119):** `f6cb04b3` / s1043은 **lifted=true,inside=false,원래 자리 unknown,probe 미통과**다. 확대 여백 오류를 피하는 실물식 확인 옵션을 넣었지만 새 seed에서는 기준 cyan 자체가 렌즈 경계에 닿아 사후 확인을 시작하지 못했다. 경계에서 기준 확보 실패가 재발해 추가 SIM을 중단했다. [결과와 중단 근거](#v119s1043-완료--추가-sim-중단)를 따른다. freeze 사용 및 DEV seed 사전 기록은 후속 사용자 지시이며 본 연구 예외가 아니다.
 
@@ -763,3 +765,67 @@ ffprobe 및 전체 decode 통과, TensorBoard video id `0df1674a7a870162f501` �
 목록/분할 검사 `tests/test_ci_sharding.py` **68 passed /1.62s**;
 실행 전 관련 모듈26시험 통과와 별개로 기록한다. 전체 CI를 로컬에서 돌리지 않았고,
 PR #406은 DRAFT·미병합으로 유지한다. 로컬 raw 보관을 원격 백업으로 표현하지 않는다.
+
+## v121 전체 DEV 사전 기록 — s1045, 2026-10-07
+
+최신 사용자 결정은 **시각 unknown을 DEV 정지 조건에서 제외**하고 전체 경로 1회를 수행하는 것이다.
+이 결정은 위 v120의 probe gate/추가 실행 중단 지시를 대체한다. 기존 실행 결과는 그대로 보존한다.
+main+열린 PR 14개(15 refs)의 최댓값 v120/7.13.0을 확인하여 **zone-s2-realism-v121 /7.14.0**을 예약했다.
+seed1045 등록/실행 흔적과 primary outputs가 없는 것을 확인했다([예약 조회](reservation-scan-v121.json)).
+**새 seed1045, r3, P1-2, destination B, door_1, stage=place, 전체 DEV 단 1회**를 실행 전에 기록한다.
+1029–1031 또는 1042–1044를 재사용하지 않는다. [기계 판독 등록](registration-v121.json).
+
+오프라인 [비교 코드](compare_carry_views.py)와 [수치·원본 해시](carry-view-comparison.json)는
+기존 RGB·발행 팔 명령·평가 전용 궤적만 읽었으며 새 시뮬레이션을 만들지 않았다.
+carry 진입 직전 마지막0.5초의 HIGH11장(유효 렌즈 마스크 적용)에서 cyan은
+s1042 **7599–7600px(중앙7600)**, s1043·s1044 **0px**이다. 이전 ~8000px는
+들기 구간·전체 영상 마스크의 수치이므로 표본과 유효 영역을 혼동하지 않는다.
+세 실행의 carry 팔 명령은 **1/3/4/5/6=1500/896/2035/1894/1500**으로 완전히 같다.
+GT를 차체 yaw 좌표로만 변환한 블록 중심은 s1042 기준 s1043 **1.577mm**,
+s1044 **1.350mm** 차이, 상대 회전 차이는 **0.745°/0.683°**이다.
+그리퍼 실측 자세가 저장되지 않아 이를 손 안의 상대 이동으로 확정하지 않는다.
+
+명령 HIGH의 보관 보정값으로 계산한 v3 광축 pitch는 모두 **−36.592°**(아래),
+가림 없는 블록 광선 투영은 **74545/55055/57180px**다. 이전 카메라의 명목 pitch는
+−39.132°다. 실제 영상 7600/0/0과 크게 달라 **이 명령 보정만으로 실제 시야를 설명할 수 없다**.
+s1044 01978.jpg는 벽/천장처럼 보이며 회색 영역을 cyan 가림이라고 판단했던 이전 표현은
+검증되지 않았다. 과거 raw에는 실제 관절·그리퍼·카메라 pose/sleep 상태가 없다.
+따라서 팔 명령 차이는 배제되지만, 실제 카메라 방향·렌더 상태·손의 가림 중 최종 원인은
+**미분리**다. 블록의 작은 차이만으로 설명했다고 보고하지 않는다. 시작 위치/seed/freeze도
+다르므로 freeze의 인과 효과라고 단정하지 않는다. 카메라 각도는 변경하지 않는다.
+
+실물 출처: `scripts/red_block/physical_state_machine_reference.py:103–111`은 옛
+CARRY_POSE(700/2200/780)가 바닥 위를 향해 자율 배송에 부적절하다고 기록하고,
+**DELIVERY_CARRY_POSE={1:1500,3:600,4:2200,5:1400}**으로 아래 시야를 유지한다.
+`scripts/red_block/pick.py:393–400`은 바닥 비움 probable 확인 뒤 그 자세를 발행한다.
+`scripts/red_block/poses.py:12–20`의 별도 observe/carry960/2410/1215와도 구분한다.
+S2의 HIGH는 이 실물 delivery 자세와 같지 않다. 이번 요청은 전체 실패 수집이므로
+아직 검증하지 않은 실물 carry 자세 이식을 추가하지 않는다.
+기하 계산은 [OpenCV fisheye 공식 수식](https://docs.opencv.org/4.x/db/d58/group__calib3d__fisheye.html)을 사용한다.
+
+v121은 v120 제어 명령/판정 문턱을 그대로 사용하고 종료 목표만 place까지 확장한다.
+`dev_grasp_policy=log_only_v1`은 full DEV admission의 명시 옵션(기본 off)이다.
+기존 inhand 제어기는 unknown일 때 `GRASP_INHAND_UNCONFIRMED`를 soft 기록하고 이미
+carry로 넘어갔다. 앞선 실행은 pick probe 종료 조건으로 끝났으며 물리 실패 중단이 아니었다.
+새 result에는 hold_status와 `dev_light_would_stop` 전체 횟수·시각을 보존한다.
+unknown은 성공으로 바꾸지 않고 eval lifted/inside/floor/stable/success를 별도로 기록한다.
+`eval_camera_trace=pose_v1`(기본 off)은 capture 뒤 camera cached pose와 body+mount pose,
+그리퍼 pose·tree sleep을 **eval_only/camera-pose.jsonl**에만 쓴다. forward/step/제어 입력 없음.
+이 기록은 과거 원인을 소급 확정하지 않으며 이번 실행의 불일치 진단용이다.
+
+나머지 옵션은 v120과 동일: v3, v7, setdown_relook=off, grasp_check=pickup_site_v1,
+min_wheel_cmd=real_v1, dead_reckoning=v7_diag_v1, stagnation_watch=window120_v1,
+alignment_pulse=real_fine_v1, hover_check=real_pregrasp_v1, **idle_robot_contacts=freeze_v1**,
+site_check=off, hold_check=inhand_rgb_v1. 원래 자리 전후 비교는 미실행으로 기록한다.
+freeze는 S2 단독 DEV에서만 허용하며 S3·짝 운반·본 연구/연구 사전등록은 여전히 오류다.
+이번 사용자 승인 full DEV seed 사전 기록만 좁게 추가 허용한다. 과거 결과와 합산하지 않는다.
+실제 낙하·그립 이탈·기울기·실행 오류는 중단, 120 SIM초<1cm 정체 감시/1800 SIM초 유한 상한은 유지한다.
+보수적 확인·위치 불확실은 기록만 한다. 한 실행 뒤 원인과 반복 여부를 보고하며 추가 seed는 돌리지 않는다.
+ENOSPC는 HOST_ERROR이고 partial raw/seed를 보존한다. 모델 호출0, GT는 평가/외부 중단에만 쓴다.
+
+실행 전 시험 `test_s2_full_dev.py`, `test_s2_idle_contacts.py`, `test_s2_inhand.py`:
+**24 passed /20.88s**. unknown→carry 연속성, 실패를 성공으로 바꾸지 않는 result,
+trace-off 바이트 동일/trace-on 상태 불변, seed·freeze 범위, 기존 off 명령/record bytes를 확인했다.
+README·소스 커밋/push 뒤만 agent_lock status null→acquire, ugrp_session 단독 실행한다.
+raw `/Users/changmin/projects/ugrp/outputs/s2-realism-<sha8>-s1045-P1-2-place`.
+PR #406 DRAFT 유지, 병합 금지. 실행 전 가용 공간 약49GiB.

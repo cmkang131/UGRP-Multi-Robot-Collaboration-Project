@@ -1,0 +1,54 @@
+{
+  "schema": "ugrp.s2_dev_full_registration.v1",
+  "execution_bundle_id": "zone-s2-realism-v121",
+  "workflow_version": "7.14.0",
+  "user_authorization": "2026-10-07-s2-full-dev-light",
+  "registration_kind": "s2-dev-full",
+  "research_result": false,
+  "confirmation_sample": false,
+  "dev_confirmation": false,
+  "preregistered_run": true,
+  "dev_runs": [
+    {
+      "seed": 1045,
+      "slot": "P1-2",
+      "stage": "place",
+      "role": "full_dev"
+    }
+  ],
+  "same_failure_stop_count": 1,
+  "prior_same_cause_failures": {},
+  "stop_after_this_probe": false,
+  "full_route_admitted": true,
+  "model_calls": 0,
+  "pool_with_previous_s2": false,
+  "comparison_metrics": [
+    "wall_per_sim"
+  ],
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1"
+  },
+  "host_error": "ENOSPC or execution failure; preserve all partial raw; no seed reuse",
+  "case_cap_s": 1800,
+  "wall_cap_s": 10800,
+  "exploration_seeds": [
+    1042,
+    1043,
+    1044
+  ],
+  "stop_after_this_run": true,
+  "stop_policy": "Unknown grasp evidence and conservative uncertainty log only; physical drop/grip loss/tilt, errors, stagnation or finite cap stop. One run only."
+}

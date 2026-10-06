@@ -31,6 +31,14 @@ def validate(bundle):
                  and bundle['options'].get('site_check') == 'off')))
     required = dict(scenario='S2', transport='solo', cargo='cyan', admission='dev-pilot',
                     cohort_role='FUNCTIONAL_DEV', active_robot_ids=[rid])
+    dev_full_registration = (identity is not None and int(identity[1]) >= 121
+        and bundle.get('preregistered_run') is True
+        and bundle.get('registration_kind') == 's2-dev-full'
+        and bundle.get('stage_probe') == 'place'
+        and bundle.get('user_authorization') == '2026-10-07-s2-full-dev-light'
+        and bundle['options'].get('dev_grasp_policy') == 'log_only_v1'
+        and bundle['options'].get('hold_check') == 'inhand_rgb_v1'
+        and bundle['options'].get('site_check') == 'off')
     allowed = (identity is not None and int(identity[1]) >= 118
         and bundle.get('schema') == 'ugrp.s2_realism_bundle.v'+identity[1]
         and bundle.get('check') == 's2-realism-dev'
@@ -39,7 +47,7 @@ def validate(bundle):
         and set(task) == {'robot_id','pickup_slot','destination','passage_id','seed'}
         and bundle.get('research_result') is False
         and bundle.get('confirmation_sample') is False
-        and (bundle.get('preregistered_run') is False or dev_probe_registration)
+        and (bundle.get('preregistered_run') is False or dev_probe_registration or dev_full_registration)
         and bundle.get('dev_light') is True
         and bundle['options'].get('drive_profile') == 'masterpi_drive_friction_v7'
         and bundle['options'].get('roller_collision', 'mesh') == 'mesh')
