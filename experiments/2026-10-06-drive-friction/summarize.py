@@ -47,7 +47,8 @@ def main():
             source = {'path': str(result), 'sha256': sha(result)}
             scalars = {'offline/record_completed': int(r['status'] == 'MEASURED_DEV')}
             for key in ('steady_contact_slip_mps','wall_per_sim','stop_drift_m','cargo_min_z_m',
-                        'wheel_input','peak_command_com_xy_m'):
+                        'wheel_input','peak_command_com_xy_m','drive_command_s',
+                        'tail_forward_min_mps','tail_forward_progress_m'):
                 if key in r: scalars['offline/'+key] = r[key]
             if 'yaw_change_rad' in r:
                 scalars['offline/yaw_change_deg'] = math.degrees(r['yaw_change_rad'])

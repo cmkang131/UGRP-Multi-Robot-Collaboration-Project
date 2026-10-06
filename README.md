@@ -21,7 +21,7 @@
 - [연구 제어기 검증·사용 기준](docs/research_controller_validation.md) — RGB 기준선, ACT 완료 거부와 명시적 혼합 제어기를 구분하고 유한한 전체 시험으로 채택 여부 판정
 - [문서 찾아보기](docs/README.md) · [실험 인덱스](experiments/README.md) · [지도 목록](maps/README.md)
 
-- [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — FUJI v2에 실물 출력 문턱을 반영한 v3 진단: 입력 30 이하 정지는 재현했으나 35에서 출발 후 정지가 두 하중에서 반복되어 **채택 보류**. 옆 회전·짝 비교 미완료, 기본값 유지.
+- [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — Stribeck v4/Karnopp 정지 구간 v5와 공식 DC 모터를 비교했으나 입력30 정지가 두 번 실패해 **채택 보류**. 이슈 #404 추적, 기본값 유지.
 
 ## 현재 검증 범위
 
