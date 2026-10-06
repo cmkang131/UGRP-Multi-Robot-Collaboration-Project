@@ -44,3 +44,16 @@ def test_circle_contact_is_not_rectangle_collision_and_yaw_matters():
     w = GridWorld(1,STARTS['B'],2701,'confirmation')
     w.rects = rects
     assert w.collision([0.,0.])  # the frozen evaluator's circumscribed-circle false positive
+
+
+def test_corrected_evaluator_uses_orientation_and_preserves_real_contacts():
+    from grid_world_v2 import RectangleWorld, RectangleOracleWorld
+    for cls in (RectangleWorld, RectangleOracleWorld):
+        world = cls(1,STARTS['B'],2701,'confirmation')
+        world.rects = [dict(id='wall',center=[0.,.20],half=[1.,.05],yaw=0.)]
+        world.pose[:] = [0.,0.,0.]
+        assert not world.collision([0.,0.])
+        assert world.collision([0.,.06])
+        world.pose[2] = np.pi/2
+        assert world.collision([0.,.04])
+        assert world.collision([-1.1,0.])
