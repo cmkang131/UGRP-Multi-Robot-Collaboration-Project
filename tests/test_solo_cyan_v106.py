@@ -112,7 +112,8 @@ def test_real_partial_provider_solo_load_and_predict_only(static):
         inner = provider.provider
         pf = inner.loc._pf
         assert pf.partial_fix['record']['id'] == rt.partial.ID
-        assert pf.params['motion_loaded'] == pf.params['motion']
+        assert 'deadband' in pf.params['motion_loaded'] and 'deadband' not in pf.params['motion']
+        assert pf.params['motion_loaded']['gain'] != pf.params['motion']['gain']
         assert inner.carry_yaw_fallback is None and pf.pair_plan is None
         provider.init_prior((-.7, -.85, 0.), (.1, .5, .1), source='test public region')
         floor = {**grasp_postures()[1][-1], 1: 2000}

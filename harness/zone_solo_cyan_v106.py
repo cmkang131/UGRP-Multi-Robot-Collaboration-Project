@@ -29,8 +29,8 @@ from harness.zone_own_guards_v3 import SweepGuardV3
 from harness.zone_solo_cyan_vision_v106 import CyanVision, BlindCyan
 from harness.visual_arm_v3 import CONTROLLER_GEOMETRY_ID
 
-PROFILE = 'solo-cyan-v106-v98-stack-dev-setdown-relook-v1'
-MOTION_PROXY = 'cyan30g_loaded_uses_v101_unloaded_single_robot_UNQUALIFIED'
+PROFILE = 'solo-cyan-v106-v98-stack-dev-setdown-relook-v2'
+MOTION_PROXY = 'cyan30g_loaded_uses_v102_pair_high_carry_profile_UNQUALIFIED'
 CONTROL_S = .1
 CAP_S = 900.
 ENVELOPE = {'x_m': [-.18, .28], 'y_m': [-.18, .18]}
@@ -45,9 +45,10 @@ def build_provider(static_map, calibration, calibration_sha256, seed=0, *, model
     source = partial.build_source_class()(static_map, calibration, calibration_sha256, seed, worker=worker)
     try:
         pf = source.loc._pf
-        # Do NOT inherit the 300 g two-carrier gain/deadband/partner model.
-        # Loaded camera geometry and command-based load state remain v98's.
-        pf.params['motion_loaded'] = copy.deepcopy(pf.params['motion'])
+        # Loaded motion keeps the measured v102 HIGH-carry profile (gain + affine dead zone).
+        # The 2026-10-06 s911 runs showed the earlier unloaded-copy proxy over-predicted loaded
+        # forward travel by ~10% (act/est x 0.88-0.93, offline replay reproduces it); this
+        # profile predicts the same three loaded legs within 3%. No partner/pair plan is supplied.
         source.carry_yaw_fallback = None
         source.runtime_contract['solo_motion_proxy'] = MOTION_PROXY
         source.runtime_contract['pair_plan'] = None

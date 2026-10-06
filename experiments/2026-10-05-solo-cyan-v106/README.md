@@ -40,6 +40,7 @@ S2 계획(#389)의 첫 실행 후보이며, S2 졸업(6개 slot 파지·단독 6
 **보정 한계:** v98의 300 g 두 로봇 빔 이동 보정을 cyan 단독에 적용하지 않았다. 새 provider는 loaded 상태에서도
 측정된 v101 **무하중 단독 이동 모델을 대용값**으로 쓴다. 쌍 이동/빔 yaw 입력은 끈다. loaded HIGH 카메라 행렬은
 부모의 빔 하중 보정이므로 cyan에서 처짐 차이를 확인해야 한다. 이 조합은 `MOTION_PROXY`로 기록하고 DEV만 허용한다.
+(2026-10-06: 이 대용값은 저장된 실행으로 반증되어 v102 HIGH 운반 측정 프로필로 바꿨다. 아래 "실행 3" 참고.)
 
 DEV light의 위치 불확실·정적 충돌 거절은 `dev_light_would_stop`으로 기록하고 계속한다. 표적 영상 없음, blind 경로 이탈,
 깨진 입력, 실행 오류와 900 SIM초 상한은 종료한다. **낙하·기울기·집게 이탈은 실행 중 감지하지 못한다.**
@@ -161,3 +162,26 @@ watchdog는 `/Users/changmin/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.
 - **확인: 저장소 구현** — `harness/zone_pair_highpose_refix.py`의 v98 set-down 재관측·재집기 순서, `harness/zone_study_pose_delay_p03.py`·`vision_pose_source_p03.py`의 `begin_relocalization`(분포 보존, 영수증 무효화).
 - **채택하지 않음(미확인 포함)** — Di Giammarino et al. (ECCV 2024, Learning Where to Look), rvp-group actloc_benchmark, Bajpai et al. (ECMR 2025): 학습·SfM·VLM 경로라서 무모델 조건에 맞지 않는다. 본문/구현은 이번에 확인하지 않았다(미확인).
 - 외부 논문의 성공 수치를 이 후보의 성공 근거로 합산하지 않는다. 이 문서의 진단 초안은 Codex(2026-10-06 오프라인 감사, `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-pr391-20261006-codex-audit/`)가 작성했다.
+
+### 실행 3 — `ee40923ca165dc4fbf8092ba85aeeaa618ce8838` (set-down 재관측 v1, 체크포인트 3개)
+
+출력: `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-ee40923c-s911-P1-2-place`
+결과: STAGE_REACHED_UNQUALIFIED, **lifted=true / inside=false** (SIM 363.2 s, 명령 12000, 모델 호출 0, `physical_success=null`).
+`dev_light_would_stop`: ARM_COLLISION_GUARD 3, POSE_UNCERTAIN 400, REOBSERVATION_NO_FIX 2(둘 다 마지막 스캔: 스캔 종료 시점과 재관측 결과 시점). 실제 물리 실패 없음.
+
+- 재관측은 동작했다. 문 앞(130.35 s)·문 뒤(207.35 s) 스캔은 새 fix를 얻었고, 세 번 모두 빈 카메라로 cyan을 다시 찾아 집었다. 문(`door_1`)을 통과했다(실행 2는 x=2.10에서 칸막이에 막힘).
+- 마지막 스캔(목적지, 301–311 s)은 fix가 없었다. cyan은 최종 (4.306,-2.173)에 놓였고 B 구역 x 범위 4.3–4.9의 서쪽 경계를 약 1.1 cm 벗어났다(상자 x 반폭 0.017). 마지막 추정과 실제의 xy 거리는 0.29 m였다.
+- 추정-실제 오차(사후 채점): 문 앞 0.241→재관측 뒤 0.113, 문 뒤 0.301→0.206, 마지막 이동 뒤 0.321.
+
+**남은 오차의 원인 — 운반 중 이동량 과대 예측.** 세 운반 구간에서 실제 이동/예측 이동 비가 x방향 0.925·0.883·0.888이었다(저장된 명령으로 같은 PF를 오프라인 재생하면 같은 편향이 나온다).
+원인은 이번 모듈의 대용값이었다. `build_provider`가 loaded 프로필을 무하중 프로필의 복사본으로 덮어써, 실제 로봇이 갖는 하중 구간의 affine 불감대(v102 측정)가 PF에 없었다.
+동일 명령을 v102 HIGH 운반 측정 프로필(`motion_loaded` 그대로)로 재생하면 같은 세 구간의 비가 1.021·0.969·1.009로, 오차가 0.12–0.20 m/구간에서 0.01–0.03 m/구간(x)이 된다. y 방향은 0.02–0.13 m 남는다(요 오차의 옆 이동; 재관측이 보정한다).
+재생 스크립트와 방법: `dr_replay_motion_profiles.py`(시뮬레이션·프레임·fix 없음; GT는 채점에만 사용). 이 비교는 s911 한 번의 실행에서 기존 측정 프로필 두 개를 고른 것이며 새 상수를 맞춘 것이 아니다. 다른 seed/slot에서 확인된 것은 아니다(탐색 자료).
+참고: 불감대에서는 낮은 명령일수록 상대 손실이 크다(정렬 구간 act/model 0.66). 이 구간은 위치 fix가 흡수하므로 이번에는 건드리지 않았다.
+출처: Thrun, Burgard, Fox, *Probabilistic Robotics* (2005) ch. 5(속도/오도메트리 운동 모델과 잡음 모델, 모델 밖 편향은 추정 분산에 반영되지 않으면 과신으로 이어진다) — 일반 서적 지식, 이번에 본문 재확인 없음(미확인).
+Borenstein & Feng (1996, UMBmark)의 체계적 오도메트리 오차 보정 원칙(체계 오차는 측정해 보정) — 이번에 본문 재확인 없음(미확인).
+
+### 수정 2 — loaded 이동 프로필 (`solo-cyan-v106-v98-stack-dev-setdown-relook-v2`)
+
+`build_provider`에서 `motion_loaded` 덮어쓰기를 제거했다. `MOTION_PROXY=cyan30g_loaded_uses_v102_pair_high_carry_profile_UNQUALIFIED`.
+빔 파트너 입력·pair plan은 계속 끈다(`pair_plan=None`, `carry_yaw_fallback=None`). 30 g cyan에 대한 하중 이동 모델은 여전히 미측정이다(HIGH 자세에서 측정된 프로필의 대용값).
