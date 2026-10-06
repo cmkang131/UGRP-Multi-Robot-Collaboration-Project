@@ -27,7 +27,7 @@ def write(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False)+'\n')
 
 
-def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torque_audit=False, long_lane=False):
+def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torque_audit=False, long_lane=False, stall_audit=False):
     import mujoco
     import numpy as np
     from sim.masterpi_drive_friction import build_world
@@ -123,12 +123,16 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
                     # Legacy stepping overwrites external xfrc; qfrc provides
                     # the identical declared world-y perturbation in both cases.
                     d.qfrc_applied[c.base_dadr+1] = 1. if t < drive_s else 0.
-            if torque_audit and t <= .15:
+            audit_now = (torque_audit and t <= .15) or (stall_audit and i % max(1, round(.01/dt)) == 0)
+            if audit_now:
                 pre_velocity = d.qvel.copy()
             world._physics_step_for(c, command)
-            if torque_audit and t <= .15:
-                from scripts.drive_torque_audit import snapshot
-                audit_rows.append(snapshot(m, d, c, pre_velocity, t))
+            if audit_now:
+                from scripts.drive_torque_audit import snapshot, contact_loss_breakdown
+                audit = snapshot(m, d, c, pre_velocity, t)
+                if stall_audit:
+                    audit.update(contact_loss_breakdown(m,d,c,pre_velocity))
+                audit_rows.append(audit)
             if i % max(1, round(.02/dt)) == 0:
                 tangential = normal = 0.; wheel_contacts = 0; slips = []; own_force = 0.
                 for j in range(d.ncon):
@@ -187,7 +191,7 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
             own_wheel_contact_pairs_max_n=own_contact_pairs,
             drive_parameters=getattr(world, 'drive_profile_record', None),
             scene=scene.record(), xml_sha256=hashlib.sha256(world.scene_xml.encode()).hexdigest())
-        if torque_audit:
+        if torque_audit or stall_audit:
             write(output/'torque-audit.json', audit_rows)
         write(output/'trace.json', rows)
         (output/'scene.xml').write_text(world.scene_xml)
@@ -212,6 +216,7 @@ def main():
                    help='legacy signed Board magnitude in 0..100; separate reset for each input')
     p.add_argument('--cases', nargs='+', choices=CASES, default=list(CASES))
     p.add_argument('--loaded', action='store_true')
+    p.add_argument('--stall-audit', action='store_true', help='read-only .01 s torque/contact breakdown throughout the command and stop')
     p.add_argument('--long-lane', action='store_true', help='setup x2.5: clearance for 5 s at rated speed')
     p.add_argument('--torque-audit', action='store_true', help='read-only every-step torque breakdown for first .15 s')
     p.add_argument('--drive-seconds', type=float, default=1.5,
@@ -240,7 +245,7 @@ def main():
         for case in args.cases:
             for level in args.wheel_inputs or [None]:
                 name = case if level is None else f'{case}-u{level:03}'
-                result = run_case(args.drive_profile, case, args.loaded, args.output/name, level, args.drive_seconds, args.torque_audit, args.long_lane)
+                result = run_case(args.drive_profile, case, args.loaded, args.output/name, level, args.drive_seconds, args.torque_audit, args.long_lane, args.stall_audit)
                 results.append(result)
                 print(json.dumps({k: result.get(k) for k in ('case','wheel_input','status','steady_velocity','wall_per_sim')}, ensure_ascii=False), flush=True)
                 if result['status'] != 'MEASURED_DEV':

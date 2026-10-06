@@ -660,3 +660,21 @@ Raw:
 저항의 바퀴축 환산이다. 실측 또는 공개 모델 대조 없이 b나 모터 기울기를 바꾸지 않는다.
 그 후 cyan/옆·회전/짝 빔을 새 후보에서 검증하고 v102 시간·하중 gain 및 v106 하중 이동,
 정지거리/odometry/PF/경로 시간을 다시 보정해야 한다. 현재 어떤 후보도 기본 채택하지 않는다.
+
+
+## v7 재개 사전 기록: 입력35 멎음 1회 진단
+
+사용자 지시에 따라 v6 입력35, 무하중 HIGH, x2.5 long-lane,5 s 구동+1 s 정지 한 번만
+실행한다. 물리상수와 v6는 불변. `--stall-audit`는0.01 s마다 generalized torque 균형,
+모터 속도 저항, elliptic 접촉의 normal/tangential 행을 `J^T efc_force`로 분해한다.
+바퀴 지지 실린더와 roller의 접촉을 구분한다. Roller bearing은 서로 다른 관절좌표이므로
+축 토크에 단순히 더하지 않고 각 hinge 토크/각속도와 소산 전력을 별도로 기록한다.
+공식 [MuJoCo 접촉 좌표](https://mujoco.readthedocs.io/en/3.12.0/computation/index.html#contact),
+[제약 투영 API](https://mujoco.readthedocs.io/en/3.12.0/APIreference/APIfunctions.html#mj-muljactvec)를 따른다.
+
+이 결과와 [Hiwonder TT](https://www.hiwonder.com/products/tt-motor-plastic)의 I0/Is를
+근거로 v7 입력 측 stick/slip 상태 후보를 고정한다. 정지시 출발 문턱32.5는 유지하고,
+운동 문턱을35 통과 결과로 조정하지 않는다.20/30 정지,35/50/100 각각5 s 지속을 먼저
+측정하고 이어서 옆/회전·짝 빔을 비교한다. **첫 실패에서 중단**하며 추가 조정하지 않는다.
+정지 판정은 최대 COM이동1 mm, 지속은 마지막0.5 s 모든 전진속도>0.001 m/s,
+옆 이동의 기존 yaw 허용1°를 유지한다. 기본값·기존 번들/프로필·원본은 불변이다.
