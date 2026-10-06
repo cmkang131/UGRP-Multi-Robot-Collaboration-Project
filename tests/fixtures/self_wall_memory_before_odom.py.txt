@@ -106,15 +106,8 @@ def render_self_walls(records, now=None, max_obs=6, min_gap_s=2.0, max_segments=
 
 class SelfWallMemory(Memory):
     def __init__(self, robot_id, *, self_walls_enabled=False, self_walls_text=False, self_walls_text_height=False,
-                 snapshot_records=12, text_max_obs=6, text_min_gap_s=2.0, self_walls_source=None,
-                 self_map="off", self_map_options=None, **kwargs):
+                 snapshot_records=12, text_max_obs=6, text_min_gap_s=2.0, self_walls_source=None, **kwargs):
         super().__init__(robot_id, **kwargs)
-        if self_map not in ("off", "odom_grid_v1"):
-            raise ValueError("UNKNOWN_SELF_MAP")
-        self.self_map = None
-        if self_map == "odom_grid_v1":
-            from harness.self_odom_grid import OdomGrid
-            self.self_map = OdomGrid(robot_id, **(self_map_options or {}))
         if self_walls_source is not None and not self_walls_enabled:
             raise ValueError("SELF_WALLS_SOURCE_NEEDS_SELF_WALLS_ENABLED")
         if self_walls_text and not self_walls_enabled:
@@ -146,21 +139,8 @@ class SelfWallMemory(Memory):
                 self._self_wall_keys.add(key)
                 self.self_walls.append(rec)
 
-    def command(self, row):
-        """Issued own command; inert with self_map off. Feed in timestamp order."""
-        if self.self_map is not None:
-            self.self_map.odom.command(row)
-
-    def observe_wall(self, record, *, camera_xy, robot_id):
-        """Current chassis-frame stage C record and calibrated camera nadir, no peer/GT."""
-        if self.self_map is not None:
-            return self.self_map.observe(record, camera_xy=camera_xy, robot_id=robot_id)
-        return []
-
     def snapshot(self):
         snap = super().snapshot()
-        if self.self_map is not None:
-            snap["self_map_text"] = self.self_map.text()
         if not self.self_walls_enabled:
             return snap
         snap["self_walls"] = copy.deepcopy([self._json(r) for r in self.self_walls[-self.snapshot_records:]])

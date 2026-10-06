@@ -1200,3 +1200,51 @@ beam은 노란초록 테이프 + 검정 가운데 띠의 **두 HSV 밴드를 함
 
 버린 것은 아니지만 단독으로는 실패다. 벽면−바닥 휘도 차가 1.70 레벨(중앙값)에 불과해 `min_contrast_below = 6.`을 못 넘고, 대신 체크 경계가 더 강한 계단을 만든다. contrast는 **주 게이트가 아니라 필요조건**이고, 주 게이트는 지평선 단서다.
 
+
+
+## 16. 출발 좌표계 누적 격자 (2026-10-06, 오프라인 작업)
+
+사용자 요청: 자기 카메라에서 나온 면을 자기 명령으로 적분한 출발 자세 좌표에 계속 쌓는다.
+`SelfWallMemory(robot_id, self_map="odom_grid_v1")`와 `harness/self_odom_grid.py`를 추가했다.
+기본 `self_map="off"`는 기존 D 출력과 바이트 동일하며, 기존 C·정적 지도·CoELA 기본 실행기는 수정하지 않는다.
+로봇별 `command(row)`와 `observe_wall(record, camera_xy=..., robot_id=...)`를 시간순으로 호출한다.
+실시간 프레임/명령 어댑터와 지도 없는 제어·주행은 이번 범위 밖이다.
+
+위치 추정은 `OwnCamLocalizer.command/predict_to`를 그대로 재사용한다. 1개 결정론 입자,
+slip=1, 잡음=0, 지도 우도=0, 측정 갱신 없음으로 만들고 출발 위치·방향은 (0,0,0)이다.
+PF 생성자에는 실제 지도가 아닌 빈 장애물·무한 경계만 준다.
+`calibration_m1_dev.json`의 `motion`·`motion_loaded`만 읽으며 고정 SHA-256은
+`126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72`다.
+기존 M1 개발 보정(9/26 loop-v2 계승)으로, 이번 녹화나 확인 녹화에서 다시 맞추지 않는다.
+팔이 낮은 fine profile·상대 명령 평균·영상 위치 보정은 사용하지 않는다.
+짐 상태는 C와 같은 자기 그리퍼 명령 ≤1600이고 실제 접촉 판정이 아니다.
+명령 만료 시각에서 적분 구간을 분할하며 기존 모델의 ≤0.05 s 적분을 유지한다.
+
+| 설정 | 기본 | 의미 |
+|---|---|---|
+| `self_map` | `off` | `odom_grid_v1`로 명시적으로 켬 |
+| `self_map_options.resolution_m` | 0.10 m | 셀 중심 양자화 최대 0.071 m; 기존 0.15 m 평가 허용치보다 작음. 기존 검출 오차보다 지나친 정밀도를 주장하지 않음 |
+| `max_range_m` | 4.0 m | 카메라 nadir에서 두 끝점 중 하나라도 초과하면 면 전체 배제; `None`으로 끔 |
+| `settle_s` | (0.25, 2.25) s | 비적재/적재 명령 정착 게이트; `None`으로 끔 |
+| `text_top_k` / `text_max_tokens` | 6 / 384 | 점유 셀의 Hough+TLS 선분을 길이순 요약; ASCII 바이트 수로 byte-BPE 토큰 수의 보수적 상한을 보장 |
+| 위치 불확실성 가중치 | 미구현/off | 표준 고정 inverse sensor model 유지; 로봇간 융합 없음 |
+
+역센서 모델은 prior=0.5, hit=0.7, miss=0.4, clamp=[0.1192,0.971].
+`l_t = clamp(l_(t-1) + logit(p_hit/miss) - logit(0.5))`를 적용한다.
+면을 반 셀 이하 간격으로 표본화하여 끝점 셀은 점유, 카메라에서 끝점 직전 셀까지는 빈 공간으로 갱신한다.
+한 프레임의 셀은 한 번만 갱신하고 점유를 우선한다. 끝점 뒤·관측 없는 방향은 미지로 남긴다.
+점유 판정은 l>0. 기존 C의 기록된 팔 축 offset 0.0482 m를 명시적으로 한 번 적용한다.
+LLM에는 전체 격자를 복제하지 않고 `self_map_text`만 추가하며, 메모리 객체는 전체 희소 격자를 소유한다.
+
+### 16.1 사전 고정한 방법·출처
+
+- Thrun, Burgard, Fox, *Probabilistic Robotics* (2005), ch.9의 표준 점유 격자.
+  원문 수식 확인은 [Thrun 2003, §2 / Table 1](https://robots.stanford.edu/papers/thrun.occ-journal.pdf)의 log-odds 유도와 inverse model 설명으로 했다. 책 본문은 이번에 직접 열지 못했다.
+- [OctoMap 공식 구현](https://octomap.github.io/octomap/doc/OccupancyOcTreeBase_8hxx_source.html): 프레임별 free/occupied 집합, occupied 우선, ray traversal, clamping.
+  [공식 기본 확률](https://github.com/OctoMap/octomap/blob/devel/octomap/src/AbstractOccupancyOcTree.cpp)을 그대로 채택했다. 위 확률은 우리 카메라의 실측 정확도라는 뜻이 아니다.
+- 최근 방법 조사: [Steyer et al. 2024, Dynamic Occupancy Grids for Object Detection](https://arxiv.org/abs/2402.01488) 초록 확인. radar 속도/동적 상태가 전제라 이번 자기 RGB 정적 벽 누적에는 도입하지 않았다.
+- Amanatides–Woo (1987) 방식의 2D DDA 셀 순회. 저자 PDF는 접속 시간 초과로 본문 미확인. 끝점 반올림에서 축이 목표 셀을 넘어가지 않게 제한했다.
+- 개발 중 첫 시험에서 끝점 경계 DDA 순회가 종료되지 않아 중단했다(1 passed 후 Ctrl-C). 축별 목표 셀 제한과 순·역방향 경계 회귀를 추가했다. 같은 실패의 반복은 없다.
+
+개발 재생은 s911, 확인 재생은 s912·s913으로 고정한다. 세 녹화는 이전 PR에서 이미 본 동일 시나리오라 재현 확인이며 신규 확증 코호트가 아니다.
+계수·격자 설정은 결과를 보기 전에 고정한다. 결과표·그림·소스 해시는 아래 후속 기록으로 추가한다.

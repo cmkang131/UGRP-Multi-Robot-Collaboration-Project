@@ -205,7 +205,9 @@ class RegisteredAsANewBundle(unittest.TestCase):
         self.assertEqual(bundle["option"], {"name": "self_wall_memory", "values": ["off", "on_v1"], "default": "off"})
         self.assertEqual(set(bundle["files_sha256"]), {"harness/coela_runtime_self_walls.py", "harness/self_wall_memory.py"})
         for name, expected in bundle["files_sha256"].items():
-            self.assertEqual(sha(name), expected, f"{name}: update the bundle in source_manifest.json")
+            actual = (hashlib.sha256((ROOT / "tests/fixtures/self_wall_memory_before_odom.py.txt").read_bytes()).hexdigest()
+                      if name == "harness/self_wall_memory.py" else sha(name))
+            self.assertEqual(actual, expected, f"{name}: historical bundle changed")
         self.assertEqual(bundle["pinned_files_used_unchanged_sha256"], walls.PINNED_SOURCES_SHA256)
         self.assertEqual(bundle["pinned_files_used_unchanged_sha256"],
                          {k: ORIGINAL_BUNDLE["files_sha256"][k] for k in walls.PINNED_SOURCES_SHA256})
@@ -213,7 +215,9 @@ class RegisteredAsANewBundle(unittest.TestCase):
     def test_the_manifest_has_nothing_else_new(self):
         self.assertEqual(set(self.manifest) - {"audited_git_sha", "files_sha256", "visually_inspected_existing_samples",
                                                "recorded_request_sample"}, {"additional_bundles"})
-        self.assertEqual(set(self.manifest["additional_bundles"]), {BUNDLE_ID})
+        self.assertEqual(set(self.manifest["additional_bundles"]), {BUNDLE_ID, "self-map-odom-grid-v1"})
+        for name, expected in self.manifest["additional_bundles"]["self-map-odom-grid-v1"]["files_sha256"].items():
+            self.assertEqual(sha(name), expected)
 
 
 class SourceHookOfSelfWallMemory(unittest.TestCase):
