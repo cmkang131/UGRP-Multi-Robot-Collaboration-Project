@@ -21,7 +21,7 @@
 - [연구 제어기 검증·사용 기준](docs/research_controller_validation.md) — RGB 기준선, ACT 완료 거부와 명시적 혼합 제어기를 구분하고 유한한 전체 시험으로 채택 여부 판정
 - [문서 찾아보기](docs/README.md) · [실험 인덱스](experiments/README.md) · [지도 목록](maps/README.md)
 
-- [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — Stribeck v4/Karnopp 정지 구간 v5와 공식 DC 모터를 비교했으나 입력30 정지가 두 번 실패해 **채택 보류**. 이슈 #404 추적, 기본값 유지.
+- [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — v4/v5의 soft 마찰 제약 누출을 분리했고, 대체 v6 dead-zone은 입력20/30 정지를 재현했으나35에서 다시 멎어 **채택 보류**. 이슈 #404 추적, 기본값 유지.
 
 ## 현재 검증 범위
 
