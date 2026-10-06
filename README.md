@@ -22,7 +22,7 @@
 - [문서 찾아보기](docs/README.md) · [실험 인덱스](experiments/README.md) · [지도 목록](maps/README.md)
 
 - [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — 무하중·cyan에서20/30 정지·35/50/100의5초 주행을 재현한 **v7을 DEV 후보로 채택**. 옆 회전−2.49°는 알려진 특성이며 실물 측정·자기 카메라 방향 보정 검증은 #404 TODO. 짝 빔 비교는 아래 기록, PR #402 DRAFT·기본값 유지.
-- [S2 DEV idle-contact 제한](experiments/2026-10-06-s2-realism/README.md#2026-10-06-사용자-결정-idle-robot-contacts): 다음 단독 cyan 탐색 DEV는 v118에서 `idle_robot_contacts=freeze_v1`을 명시한다. **S3·짝 운반·본 연구·사전 등록 실행은 금지**하며 번들 검증이 거부한다. 기본 off/mesh 유지, 전후 결과 합산 금지·wall/SIM만 비교. 현재 새 probe는 실행하지 않았다.
+- [S2 DEV freeze·원래 자리 확인](experiments/2026-10-06-s2-realism/README.md#v119s1043-완료--추가-sim-중단): v119/s1043은 `freeze_v1`+실물식 확인 옵션으로 lifted=true였으나 기준 cyan이 렌즈 경계에 닿아 **probe 미통과·추가 SIM 중단**이다. 기본 off/mesh 유지,전후 결과 합산 금지·wall/SIM만 비교한다. **S3·짝 운반·본 연구·본 연구 사전 등록은 금지**하며 후속 사용자 지시의 새 seed S2 DEV 사전 기록만 명시적으로 허용한다.
 
 ## 현재 검증 범위
 

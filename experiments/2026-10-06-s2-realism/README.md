@@ -1,8 +1,8 @@
 # S2 현실성 재검증 — 실행 전 등록 (2026-10-06)
 
-**진행 중(v119):** s1042 ROI 원인을 저장 자료로 분리하고 `site_check=real_floor_v1`(기본 off)을 추가했다. 아래 **s1043 실행 전 기록**에 고정한 단독 DEV probe1회를 시험·commit·push 후 실행한다. freeze 사용 및 DEV seed 사전 기록은 2026-10-06 후속 사용자 지시이며 본 연구 사전 등록 예외가 아니다. 결과는 실행 후 별도 절에 남긴다.
+**최신 완료(v119):** `f6cb04b3` / s1043은 **lifted=true,inside=false,원래 자리 unknown,probe 미통과**다. 확대 여백 오류를 피하는 실물식 확인 옵션을 넣었지만 새 seed에서는 기준 cyan 자체가 렌즈 경계에 닿아 사후 확인을 시작하지 못했다. 경계에서 기준 확보 실패가 재발해 추가 SIM을 중단했다. [결과와 중단 근거](#v119s1043-완료--추가-sim-중단)를 따른다. freeze 사용 및 DEV seed 사전 기록은 후속 사용자 지시이며 본 연구 예외가 아니다.
 
-**최신:** v117 `ef820ab2`의 s1042는 hover·하강·SIM lifted=true에 도달했지만 pickup-site ROI clipped/unknown으로 probe gate 미통과다. [v117 완료](#v117s1042-완료-실행-sha-ef820ab2d367b1a25e14b0cc4df6be4b3e58bb3d)를 따른다. 이후 사용자 결정으로 #407을 병합하고 다음 **탐색 S2 DEV 전용** v118 freeze 프로필을 준비했다. [새 제한과 미실행 상태](#2026-10-06-사용자-결정-idle-robot-contacts). 아래 v116 이전 요약·사전 등록은 당시 기록이다.
+**v117 당시:** v117 `ef820ab2`의 s1042는 hover·하강·SIM lifted=true에 도달했지만 pickup-site ROI clipped/unknown으로 probe gate 미통과다. [v117 완료](#v117s1042-완료-실행-sha-ef820ab2d367b1a25e14b0cc4df6be4b3e58bb3d)를 따른다. 이후 사용자 결정으로 #407을 병합하고 다음 **탐색 S2 DEV 전용** v118 freeze 프로필을 준비했다. [당시 제한과 미실행 상태](#2026-10-06-사용자-결정-idle-robot-contacts). 아래 v116 이전 요약·사전 등록은 당시 기록이다.
 
 **후속 완료:** s1039의 직접 원인은 (a) 173mm 옆 이동에 의한 정렬/시야 초과다.
 35/.06초 정렬 옵션을 적용한 v115 `57f8c174` s1040과 동일 동작 v116 `46b8e7af` s1041은
@@ -596,3 +596,28 @@ main+열린 PR14개의 ID/버전과 명시적 seed 필드·이름·CLI 및 공�
 raw 예정 `/Users/changmin/projects/ugrp/outputs/s2-realism-<SHA8>-s1043-P1-2-pick`. `ugrp_session run`→`launch_v119.zsh`→표준`sim_cli workflow run`이며 실행기 PID의 agent_lock을 acquire하고 finally/EXIT에서 release한다. 한 번에1개·nice0·dev_light·120SIM초/1cm 정체 eval 중단·실제 물리 실패 중단을 유지한다. case cap1800SIM초,wall cap10800초,시작 시 여유51.26GiB를 확인했다. ENOSPC는HOST_ERROR이고 부분 raw도 보존한다. 같은 원인이2회면 중단한다(기존 ROI 확인불가 s1042=1회; 동일 원인 재발이면 추가 seed 없음). 이 probe1회 뒤에는 결과에 관계없이 이번 실행을 끝내고 기록하며 full1029–1031은 이 등록에 포함하지 않는다.
 
 freeze 전후 결과는 합산하지 않는다. off s1042 wall/SIM=**2.587649**와 새 실행의 wall/SIM만 기술적으로 나란히 기록하며, seed·확인 동작이 달라 인과적인 가속률로 해석하지 않는다. 결과·전후 면적·재집기·시간·영상·TensorBoard는 종료 후 실제 값으로 기록한다. PR #406은 DRAFT·미병합으로 유지한다.
+
+## v119/s1043 완료 — 추가 SIM 중단
+
+실행·수정·seed 사전 기록 SHA **`f6cb04b360363edde2683fa50941d377d20f5758`**, bundle **zone-s2-realism-v119**, workflow7.12.0이다. 변경 모듈 시험22개 통과 뒤 `Co-Authored-By: Codex <codex@openai.com>`으로 커밋·push하고 실행했다. 실행 중 소스는 고정됐고 종료 뒤 bundle source346파일·raw2,198파일 및 원래 manifest 해시를 대조했다. 상세 [완료 결과](completed-v119.json), [새 기준 실패](s1043-site-reference-failure.json), [전달 검증](site-delivery-verification.json).
+
+|seed/조건|probe / lifted / inside|원래 자리 확인|wall초 / SIM초 / wall·SIM비|
+|---|---|---|---|
+|s1042/off/v117|미통과 / true / false|expanded ROI clipped,unknown|363.176558 /140.35 /2.587649|
+|**s1043/freeze/v119**|**미통과 / true / false**|**target at lens edge,unknown**|**165.725440 /112.90 /1.467896**|
+
+두 행은 wall/SIM만 나란히 기록하며 결과 분모·성공률을 합산하지 않는다. 확인 정책·seed·이동 펄스 수·호스트 부하도 달라 **freeze 인과 가속률로 해석하지 않는다**. 새 실행 명령2,520개,정렬 펄스66회,재집기0회,모델 호출0개,최대 cyan 높이.139680m이다. dev_light 기록은 ARM7/POSE60/GRASP_SCENE1이며 기록만 하고 종료 시점까지 진행했다. full1029–1031은 미실행이다.
+
+새 원인:68.10초 기준 사진1337에서 bbox **[213,322,148,142]**, cyan **19,854px**이었다. 이제 확장 여백을 요구하지 않지만, 실제 cyan support가 **유효 렌즈 밖47px·1pixel 렌즈 경계170px**과 겹쳐 `real floor reference is clipped or unsupported`로 거부됐다. bbox하단463px,경계 여유0px이다. eval 전용 기하 투영도 하단465.045px이고 사각형19,785px 중 유효19,581px(204px 제외)로 경계 이탈을 지지한다. mask의47px과 기하204px은 JPEG/정지보정/면 투영 차이가 있으므로 동일 측정으로 취급하지 않는다. 원래 s1042보다 eval target이1.210mm 더 가까워 시야 여유가 줄었다. 카메라 각도를 변경하거나 이 새 seed에 맞춰 임계값을 완화하지 않았다.
+
+사후92.70초 체크는 다시 **before=null,samples=[]**였다. 앞의19,854px은 실패 직전 이미지의 진단 면적일 뿐 **집기 전후 비교 면적은 미측정**이다. 바닥 검출0/9나 성공 확인으로 바꾸지 않는다. `visual_grasp_confirmed=false`, `probe_gate_passed=false`, `probe_failure=SITE_OR_LIFT_UNCONFIRMED`를 raw result/student 기록 그대로 유지한다. lifted=true는 별도 eval 판정이다. 새 `PROBABLE_HELD` 확인 경로는 이 probe에서 실제 도달/검증되지 않았다.
+
+중단 기준은 보수적으로 **원래 자리 기준을 렌즈 경계에서 확보하지 못하는 문제**의2회(s1042,s1043)로 묶었다. 세부 원인은 s1042=확장 여백,s1043=cyan 자체의 경계 접촉으로 구별했다. 따라서 새 seed·추가 튜닝·물리 실행 없이 중단한다. 남은 문제는 정렬 허용 위치에서 재관측 기준 전체가 보일 만큼의 시야 여유 확보이며, 카메라 하드웨어 각도는 사용자 실물 확인 대상이다.
+
+- raw `/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick`; managed 기록은 같은 경로 뒤`-managed/manifest.json`이다.
+- 4배속 own-RGB 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-analysis/views/s1043-probe/execution.mp4`:27.15초/543frames/20fps/414,990bytes,전체 decode통과,sha256 `32e44a41e9c76a2bd54a55fd64435cfebfa28d1e7e4918a303da8c1ae0fa0776`.
+- [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1006-s2-realism-site-v119%2F#timeseries): **실패 probe1건+오프라인 ROI 분석1건/29scalar**,원본→event→기존live6006 API 수치 일치. 두 기록을 실행2회로 세지 않는다. 영상 등록과 HParams/핀 설정을 확인하고 공용 view에 자기 키`s2_realism_site_20261006`만 추가했다. PID52016/logdir 및 과거 snapshot은 보존했다. 사용자 지시대로 browser UI 대신 수치만 대조했다.
+- 첫 도구 셸 실행은 inherited nice10 검사에서 **SIM·seed 사용 전에 거부**됐다. 로그를 보존하고 기존 일회성 launchd(KeepAlive=false)→ugrp_session 경로로 nice0 실행1회만 시작했다. **agent_lock release·세션 stopped·launchd unload·자식 종료**를 확인했다. 다른 작업 프로세스/자료는 건드리지 않았다.
+- eval idle 옵션 sidecar는 #407 기본 정책 문구를 유지하고, 실행 bundle에는 후속 사용자 지시의 DEV seed 사전 기록 예외가 별도로 명시돼 있다. 실제 옵션 적용값은 둘 다 freeze_v1이다. 본 연구 예외나 S3/짝 실행으로 해석하지 않는다.
+
+사후에는 제어 코드/번들/원본 결과를 바꾸지 않고 이 실패 기록과 전달 증거만 별도 커밋한다. raw/영상은 로컬 보존이며 GitHub 원격 raw 백업으로 표현하지 않는다. PR #406은 **DRAFT·미병합**이다.
