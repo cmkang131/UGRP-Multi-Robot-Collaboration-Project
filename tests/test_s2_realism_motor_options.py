@@ -130,3 +130,24 @@ def test_fixed_v7_model_drives_real_pf_recursion_and_keeps_old_provider(static):
             np.testing.assert_allclose(pf.vel,expected,atol=1e-12)
         assert r.pose.source!=baseline.source and 'v7_motion_option' in r.pose.provider.runtime_contract
     finally:r.close();baseline.close()
+
+
+def test_real_output_survives_actual_integer_clock_reset_rebuilding_ports():
+    pytest.importorskip('mujoco')
+    from sim.final_pair_highpose_clock import IntegerClock
+    from sim.s2_real_output_reset import backend_class
+    class Parent:
+        def reset(self,cap):
+            self.world.data.time=1.3000000000000178
+        @property
+        def now(self):return float(self.world.data.time)
+    class ClockBase(IntegerClock,Parent):pass
+    b=backend_class(ClockBase)()
+    c=NS(servo_command_pulses={1:2000},set_motor_commands=lambda x:None)
+    b.world=NS(data=NS(time=0.),robot=lambda rid:c);b.dt=.00025;b.ports={'r3':None}
+    b.bundle=dict(options=dict(min_wheel_cmd='real_v1',stagnation_watch='window120_v1'))
+    assert b.reset(5.)==1.3
+    assert isinstance(b.ports['r3'],RealPrimitivePort)
+    a=b.ports['r3'].apply(dict(kind='mecanum',forward=.35,left=0.,turn=0.,duration_s=.1),b.now)
+    assert a['actuator_state']['motor_commands']==[.35]*4
+    assert b.stagnation.option=='window120_v1'
