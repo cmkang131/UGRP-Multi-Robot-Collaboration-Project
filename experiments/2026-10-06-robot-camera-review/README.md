@@ -417,3 +417,46 @@ v106 중간 내려놓기→재관측→다시 집기를 생략하는 새 번들 
 관련 표준 조사: 위 OpenCV Tsai–Lenz/Park–Martin·MuJoCo 카메라 문서와 Wise 2026 논문/공개 코드를
 다시 확인했다. 알려진3D 점과 여러 자세 없는 영상 면적만으로 보정 완료를 주장하지 않는 것이 적용 범위다.
 공식 Hiwonder 도면·순정170° 표·SDK lift 근거는 위 참고 자료와 `official-sdk-manifest.json`에 보존했다.
+
+
+### v3 실행 결과와 전달
+
+실행 SHA `7495b8d952410aa8bb5965752929e207f04e9c06`, 관련 시험 **4/4 통과** 후 push했다.
+`cam-review-v3-lift` 세션에서 공용 잠금 owner=codex/PID79772를 사용했다.
+19.2SIM초/76,800 step, wall16.06초, 잠금 반환 후 null·세션 종료 확인.
+정지6쌍 + 동적102쌍 = 108시점×4카메라=432PNG를 저장하고 해시를 검증했다.
+동일 시점4카메라의 qpos가 같고, 이전 v2의 baseline/v1/v2 **324장 모두 qpos와 RGB 해시가 그대로**다.
+즉 접촉·팔 움직임은 바뀌지 않았으며 새 v3 시야만 비교한 것이다.
+
+| 같은 HIGH 집기·들기 실행 | 프레임 | 블록/전체 영상 평균 | 블록/유효 렌즈 픽셀 평균 |
+|---|---:|---:|---:|
+| 기존 mount | 12 | 80.4713% | 97.8891% |
+| v1 도면 mount | 12 | 24.8991% | 30.2031% |
+| v2 도면+공식 SDK 샘플 | 12 | 31.4583% | 31.4667% |
+| **v3 사용자 관찰 목표** | 12 | **5.6337%** | **6.7359%** |
+| v3 공식 lift | 16 | 5.6375% | 6.7519% |
+
+v3 HIGH 전체 범위5.6318–5.6361%, 공식lift5.6279–5.6556%다.
+정지 HIGH3장의 평균은2.4314%(범위2.0101–2.8174%)로 실제 접촉 자세와 다르다.
+화물 중심 높이는 HIGH 끝140.57mm, 공식lift 끝212.21mm이며 정상 접촉으로 들렸다.
+**주행하지 않았으므로 운반 중 하중 이동·낙하·위치 추정·S2 성공은 미검증**이다.
+실물의1.35%/7.92%와 낮은 노출이라는 목표는 일치하지만 색·치수·파지 깊이·실물각도 차이를
+해결하거나 실제 카메라를 보정했다는 뜻은 아니다. v3는 로봇/벽 정보와 파지 확인 사이의
+유불리를 다시 평가하기 위한 후보이고, 가림이 적거나 많다는 이유만으로 보수적이라 부르지 않는다.
+
+![같은 실제 관절 상태의 카메라 비교](comparison-v3.png)
+![복구된 실물 집기 전후; PROBABLE은 확정 성공이 아님](real-post-lift-comparison.jpg)
+
+[결과·해시](comparison-v3.json), [전달 검증](delivery-verification-v3.json),
+[TensorBoard readback](tensorboard-v3-readback.json)을 보존했다.
+새 native snapshot `1006-camera-review-v3`의14개 파생 뷰는14번 실행을 뜻하지 않는다.
+새 SIM1회와 옛 실물3기록의 서로 다른 지표를 구분해 보여 준다. event 및 기존 서버 API39수치 일치,
+5fps 비교 영상102프레임 디코딩·등록·HTTP200 전체 SHA256 일치를 확인했다.
+기존 다른 작업의 서버 PID52016/logdir는 그대로다. 성공·모델 응답시간 값은 새로 만들지 않았다.
+Chrome 강에서 v3 링크를 열었으나 본문이 비었고1회 새로고침도 같아 UI 시도를 중단했다.
+따라서 v3 수치/pin/HParams 열의 **브라우저 표시 확인은 미완료**다(파일·event·API는 검증).
+공유 `tensorboard-view.json`에는 자기 v3 키만 추가했다. 결과는 로컬 저장이며 raw 원격 백업은 아니다.
+
+[v3 TensorBoard 저장 링크](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fvalid_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffull_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E1006-camera-review-v3%2F#timeseries).
+
+재현: `scripts/ugrp_session.py run <새 이름> -- /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/review_masterpi_camera_v3.py --source /Users/changmin/projects/ugrp/outputs/s2-graduation-fae1fc4a-s1026-P2-2-place --output /Users/changmin/projects/ugrp/outputs/<새 경로>` (내부 잠금 확인·획득·반환).
