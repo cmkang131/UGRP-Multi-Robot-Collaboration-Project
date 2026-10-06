@@ -79,3 +79,19 @@ def test_eval_stagnation_disabled_and_strict_time_distance_boundaries():
     for t,x in [(0,0),(60,.011),(120,0)]:moving.check(dict(t=t,robot_xyz_m=[x,0,0]))
     edge=StagnationGuard('window120_v1')
     edge.check(dict(t=0,robot_xyz_m=[0,0,0]));edge.check(dict(t=120,robot_xyz_m=[.01,0,0]))
+
+
+def test_diagnostic_numpy_scalars_serialize_without_losing_boolean_type(tmp_path):
+    from scripts.diagnose_s2_real_output_v112 import write
+    p=tmp_path/'result.json'
+    write(p,dict(refit_required=np.bool_(True),relative_main_axis_error=np.float64(2.),samples=np.int64(411)))
+    assert json.loads(p.read_text())==dict(refit_required=True,relative_main_axis_error=2.,samples=411)
+
+
+def test_replacement_diagnostic_preserves_used_seed_and_reserves_new_forward():
+    from harness.s2_real_output_diagnostic_v112 import bundle,ROOT
+    from sim.workflow_manager import catalog
+    b=bundle('a'*40,min_wheel_cmd='real_v1')
+    assert [r['seed'] for r in b['task']['runs']]==[1038,1035,1036]
+    assert any(r['id']==b['execution_bundle_id'] and r['version']=='7.5.0' for r in catalog(ROOT)[0]['workflows'])
+    assert b['options']['dead_reckoning']=='off'
