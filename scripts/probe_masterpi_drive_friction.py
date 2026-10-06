@@ -30,8 +30,8 @@ def write(path, value):
 
 def timer_snapshot(data):
     import mujoco
-    return {t.name[len('mjTIMER_'):].lower(): (float(data.timer[t].duration), int(data.timer[t].number))
-            for t in mujoco.mjtTimer}
+    return {t.name[len('mjTIMER_'):].lower(): (float(data.timer[int(t)].duration), int(data.timer[int(t)].number))
+            for t in mujoco.mjtTimer.__members__.values() if t.name.startswith('mjTIMER_')}
 
 
 def timer_delta(before, after):

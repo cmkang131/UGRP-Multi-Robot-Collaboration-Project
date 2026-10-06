@@ -68,3 +68,15 @@ def test_timer_delta_reports_per_call_microseconds():
     before = {'step': (1.0, 100), 'forward': (.5, 100)}
     after = {'step': (1.2, 300), 'forward': (.5, 100)}
     assert timer_delta(before, after) == {'step': {'calls': 200, 'total_s': pytest.approx(.2), 'mean_us': pytest.approx(1000.)}}
+
+
+def test_timer_snapshot_reads_every_mujoco_stage():
+    import mujoco
+    from scripts.probe_masterpi_drive_friction import timer_snapshot
+    model = mujoco.MjModel.from_xml_string('<mujoco><worldbody><geom type="plane" size="1 1 .1"/></worldbody></mujoco>')
+    data = mujoco.MjData(model)
+    before = timer_snapshot(data)
+    mujoco.mj_step(model, data)
+    after = timer_snapshot(data)
+    assert {'step', 'forward', 'position', 'constraint', 'pos_collision', 'col_narrow'} <= set(before)
+    assert after['step'][1] == before['step'][1]+1 and after['step'][0] >= before['step'][0]
