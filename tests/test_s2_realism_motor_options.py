@@ -95,3 +95,38 @@ def test_replacement_diagnostic_preserves_used_seed_and_reserves_new_forward():
     assert [r['seed'] for r in b['task']['runs']]==[1038,1035,1036]
     assert any(r['id']==b['execution_bundle_id'] and r['version']=='7.5.0' for r in catalog(ROOT)[0]['workflows'])
     assert b['options']['dead_reckoning']=='off'
+
+
+def test_v113_options_default_off_and_registered_model_hash():
+    from harness import zone_s2_realism_contract_v113 as c
+    from scripts.run_s2_realism_v113 import parser
+    a=parser().parse_args(['--expected-source-sha','a'*40,'--output','/tmp/not-running','--seed','1037'])
+    assert all(getattr(a,k)=='off' for k in c.NEW_OPTIONS)
+    off=c.bundle('a'*40,seed=1037,stage_probe='pick',pickup_slot='P1-2')
+    on=c.bundle('a'*40,seed=1037,stage_probe='pick',pickup_slot='P1-2',**c.NEW_OPTIONS)
+    assert off['motion_model'] is None and on['motion_model']['option']=='v7_diag_v1'
+    assert on['supervisor']['stagnation']['window_sim_s']==120
+    assert on['options']['setdown_relook']=='off' and on['options']['grasp_check']=='pickup_site_v1'
+    with pytest.raises(ValueError):c.bundle('a'*40,seed=1033,stage_probe='pick',pickup_slot='P1-2')
+
+
+def test_fixed_v7_model_drives_real_pf_recursion_and_keeps_old_provider(static):
+    from harness.zone_solo_cyan_v7_motion import Runtime as NewRuntime
+    from harness import zone_s2_realism_contract_v113 as c
+    from harness.zone_solo_cyan_camera_v3 import build_provider
+    model=json.loads((c.ROOT/c.MOTION_MODEL).read_text())
+    r=NewRuntime(static,c.ROOT/c.old.CALIBRATION,c.old.CALIBRATION_SHA,min_wheel_cmd='real_v1',
+                 dead_reckoning='v7_diag_v1',motion_model=model,camera_profile=c.camera.PROFILE_ID,
+                 grasp_check='pickup_site_v1',setdown_relook='off')
+    baseline=build_provider(static,c.ROOT/c.old.CALIBRATION,c.old.CALIBRATION_SHA)
+    try:
+        pf=r.pose.provider.loc._pf;old=baseline.provider.loc._pf
+        assert 'real_v7_motion' not in vars(old) and 'deadband' in old.params['motion_loaded']
+        for loaded in (False,True):
+            pf.t=0.;pf.vel=np.zeros(3);pf.initialized=False;pf.load.loaded=loaded
+            pf.command(dict(t=0.,kind='mecanum',forward=.35,left=0.,turn=0.,duration_s=.1))
+            pf.predict_to(.05)
+            expected=(1-np.exp(-.05/np.array(model['tau_axis_s'])))*(np.array(model['gain'])@np.array([.35,0,0]))
+            np.testing.assert_allclose(pf.vel,expected,atol=1e-12)
+        assert r.pose.source!=baseline.source and 'v7_motion_option' in r.pose.provider.runtime_contract
+    finally:r.close();baseline.close()
