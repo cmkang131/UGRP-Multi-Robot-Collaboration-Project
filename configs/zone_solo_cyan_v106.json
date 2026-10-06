@@ -1,0 +1,23 @@
+{
+  "schema": "ugrp.solo_cyan_registry.v106",
+  "execution_bundle_id": "zone-solo-cyan-v106",
+  "workflow_version": "3.13.0",
+  "runnable_modes": ["DEV_PILOT"],
+  "map_id": "zone_wide_door_geometry_v3",
+  "robot_model": "masterpi_v3",
+  "contact_profile": "cargo_noslip_v1",
+  "weld": "off",
+  "controller_inputs": ["own_rgb", "static_map", "own_command_history"],
+  "parent_stack": "zone-final-pair-highpose-v98",
+  "physical_success": null,
+  "research_result": false,
+  "dev_light": true,
+  "loaded_motion": "v102 translation plus exploratory s911 solo yaw coupling; unqualified 30g cyan proxy",
+  "in_run_drop_tilt_contact_detection": false,
+  "reservation": {
+    "date": "2026-10-05",
+    "max_seen": 105,
+    "refs": ["origin/main", "origin/claude/scenarios-v4", "origin/claude/occlusion-fix", "origin/claude/speed-default", "origin/codex/real-robot-link", "origin/claude/llm-pair-e2e", "origin/codex/integ-target-backend"],
+    "method": "RUNNABLE_ID plus execution_bundle_id/BUNDLE_ID/BUNDLE_LABEL in all open PR refs; legacy RGB max 86, active v98 DEV label max 105"
+  }
+}

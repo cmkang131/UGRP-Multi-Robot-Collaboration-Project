@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-solo-cyan-v106",
+    "version": "3.13.0",
+    "purpose": "S2 단독 cyan 집기·운반·놓기 DEV 후보, 최종 v3 지도와 v98 자기 카메라 위치 추정",
+    "entry": "scripts/run_solo_cyan.py",
+    "runner": "scripts.run_solo_cyan",
+    "docs": "experiments/2026-10-05-solo-cyan-v106/README.md",
+    "requires": "committed SHA; owned exclusive SIM lock or coordinator slot; DEV only; no model calls",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

@@ -1,0 +1,773 @@
+{
+  "scope": "Frozen three-case DEV, provisional geometry only; no study/physical claim",
+  "source_sha": "dfec1f19e1580534242d3b1b436eb45c07a979ea",
+  "runs": [
+    {
+      "seed": 912,
+      "slot": "P1-1",
+      "source": "/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s912-P1-1-place",
+      "source_sha": "dfec1f19e1580534242d3b1b436eb45c07a979ea",
+      "artifact_files_checked": 6151,
+      "artifact_mismatches": [],
+      "judge_recomputed_equal": true,
+      "hashes": {
+        "result.json": "13121be5cb65cac99f923269bf00d1f036dcb4c30c72bfe41b58e49dd7bb3d87",
+        "bundle.json": "feda65470504793e5ecd3fac932902ca04fff8c8ed83d11e33095f9bbfb121d4",
+        "artifacts.sha256.json": "e5ec486182cd7eef6619829b9af2a4730a43d11122c872c0e46a4f2e9df7acaf",
+        "student_record.json": "426a3e001d8368c2beb61e88969cd652febd1c31e18d17192204b82734e6f432",
+        "eval_only/trajectory.jsonl": "3713108db1c292087ef7637ad7182bf10a77b5460df3766f5e5a64a35d16c0bb"
+      },
+      "managed_path": "/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s912-P1-1-place-managed/manifest.json",
+      "managed_sha256": "43008d2d319759e40494c720bbe0a3db1732430fe048536ada28cb015adbf0db",
+      "managed": {
+        "status": "process_completed",
+        "runtime_s": 332.26546275000146,
+        "exit_code": 0,
+        "source_changed_during_run": false,
+        "started_utc": "2026-10-06T02:39:05.311147+00:00",
+        "ended_utc": "2026-10-06T02:44:37.577064+00:00",
+        "finalization_errors": []
+      },
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "dfec1f19e1580534242d3b1b436eb45c07a979ea",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "place",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          3.07568359375,
+          3.52685546875,
+          4.2021484375
+        ],
+        "model_calls": 0,
+        "commands_issued": 9753,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "done",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 309.7,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": true,
+          "lifted": true,
+          "inside": true,
+          "floor": true,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          5.24169921875,
+          4.8525390625,
+          4.638671875
+        ]
+      },
+      "relooks": [
+        {
+          "index": 0,
+          "t": 135.6,
+          "fresh_fix": true,
+          "last_fix_t": 135.4,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 36,
+            "diagnostics": {
+              "fit": 0.99736,
+              "n_terms": 36,
+              "w_slow": 0.78167,
+              "w_fast": 0.98962,
+              "w_diff": 0.0,
+              "gain": [
+                0.0151,
+                0.0199,
+                0.001
+              ],
+              "ess_pre": 1280.3
+            },
+            "last_fix_quality": {
+              "accepted": true,
+              "informative": true,
+              "settled": true,
+              "ambiguous": false,
+              "inlier_fraction": 1.0,
+              "posterior_support": 0.9999985761403174,
+              "likelihood_span": 1.1584272208416515,
+              "saturated": false,
+              "geometric_curvature": 4969.7128152937,
+              "reason": "informative",
+              "t": 135.4
+            },
+            "informative": true,
+            "partial": false,
+            "observed_rank": null,
+            "weakest_direction_xy_yaw": null,
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          }
+        },
+        {
+          "index": 1,
+          "t": 218.6,
+          "fresh_fix": true,
+          "last_fix_t": 218.4,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 54,
+            "diagnostics": {
+              "fit": 0.99489,
+              "n_terms": 54,
+              "w_slow": 0.80585,
+              "w_fast": 0.98611,
+              "w_diff": 0.0,
+              "gain": [
+                -0.0003,
+                -0.0003,
+                0.0003
+              ],
+              "ess_pre": 1904.7
+            },
+            "last_fix_quality": {
+              "accepted": true,
+              "informative": true,
+              "old_informative": false,
+              "settled": true,
+              "ambiguous": false,
+              "inlier_fraction": 1.0,
+              "posterior_support": 1.0,
+              "saturated": false,
+              "geometric_curvature": 0.0,
+              "observed_rank": 2,
+              "weakest_direction_xy_yaw": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "partial": true,
+              "rule": "v98_partial_fix_second_eigenvalue_v1",
+              "reason": "informative",
+              "t": 218.4
+            },
+            "informative": true,
+            "partial": true,
+            "observed_rank": 2,
+            "weakest_direction_xy_yaw": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          }
+        },
+        {
+          "index": 2,
+          "t": 308.0,
+          "fresh_fix": true,
+          "last_fix_t": 304.95,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 96,
+            "diagnostics": {
+              "ess_pre": 1057.0
+            },
+            "last_fix_quality": {
+              "accepted": true,
+              "informative": true,
+              "old_informative": false,
+              "settled": true,
+              "ambiguous": false,
+              "inlier_fraction": 1.0,
+              "posterior_support": 1.0,
+              "saturated": false,
+              "geometric_curvature": 0.0,
+              "observed_rank": 2,
+              "weakest_direction_xy_yaw": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "partial": true,
+              "rule": "v98_partial_fix_second_eigenvalue_v1",
+              "reason": "informative",
+              "t": 304.95
+            },
+            "informative": true,
+            "partial": true,
+            "observed_rank": 2,
+            "weakest_direction_xy_yaw": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "index": 0,
+          "t": 106.4,
+          "t_est": 106.24,
+          "truth_t": 106.25,
+          "xy_error_m": 0.2168612928849011,
+          "yaw_error_deg": 3.4198618528472577
+        },
+        {
+          "index": 0,
+          "t": 168.7,
+          "t_est": 168.54,
+          "truth_t": 168.55,
+          "xy_error_m": 0.01586251220847482,
+          "yaw_error_deg": -0.3091193505198301
+        },
+        {
+          "index": 1,
+          "t": 189.5,
+          "t_est": 189.34,
+          "truth_t": 189.35,
+          "xy_error_m": 0.04683890630408063,
+          "yaw_error_deg": -0.2778833298568729
+        },
+        {
+          "index": 2,
+          "t": 278.9,
+          "t_est": 278.74,
+          "truth_t": 278.75,
+          "xy_error_m": 0.0665653868117419,
+          "yaw_error_deg": 0.6789680270795301
+        }
+      ],
+      "final_cyan_xyz_m": [
+        4.5744878214921885,
+        -2.029323798758588,
+        0.015892244579784
+      ],
+      "final_cuboid_boundary_margin_m": 0.2574674243306609,
+      "carry_proxy_minus_actual_yaw_deg_minmax": [
+        -0.04503592066273285,
+        0.04555635945088513
+      ],
+      "would_stop_codes": {
+        "ARM_COLLISION_GUARD": 11,
+        "POSE_UNCERTAIN": 345
+      },
+      "would_stop_logged_event_counts": {
+        "ARM_COLLISION_GUARD": 1,
+        "POSE_UNCERTAIN": 7
+      }
+    },
+    {
+      "seed": 913,
+      "slot": "P1-3",
+      "source": "/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s913-P1-3-place",
+      "source_sha": "dfec1f19e1580534242d3b1b436eb45c07a979ea",
+      "artifact_files_checked": 7555,
+      "artifact_mismatches": [],
+      "judge_recomputed_equal": true,
+      "hashes": {
+        "result.json": "e7b3dfe1f644d8b064164eb7a8d35283fbc24da44c64ba039fee7248b10c42e2",
+        "bundle.json": "66845ec692d6519012e0ebdf9bdc7397801a9b1894fceed9da9d6056b94b5d3d",
+        "artifacts.sha256.json": "20778ddf35aebb68cb97827e6c7aa626c954b50e7710fbaee37320255df045b0",
+        "student_record.json": "3bfff90bcdfe73a6bf917eafdc65cdaeec2d37c87f4f563c6b1f0053cb060ed7",
+        "eval_only/trajectory.jsonl": "963ded318a53c39daec3e70879bb1aed31cf0f7ae14c8618b512ffc03224ce7b"
+      },
+      "managed_path": "/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s913-P1-3-place-managed/manifest.json",
+      "managed_sha256": "411b5697058d67ed6f4c04f50aa6409d9b815f415602bbf599e798d2474b36a1",
+      "managed": {
+        "status": "process_completed",
+        "runtime_s": 434.92528891700204,
+        "exit_code": 0,
+        "source_changed_during_run": false,
+        "started_utc": "2026-10-06T02:45:06.252414+00:00",
+        "ended_utc": "2026-10-06T02:52:21.178347+00:00",
+        "finalization_errors": []
+      },
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "dfec1f19e1580534242d3b1b436eb45c07a979ea",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "place",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          6.65869140625,
+          5.15869140625,
+          4.751953125
+        ],
+        "model_calls": 0,
+        "commands_issued": 12167,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "done",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 379.9,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": true,
+          "lifted": true,
+          "inside": true,
+          "floor": true,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          5.3251953125,
+          4.67626953125,
+          4.61474609375
+        ]
+      },
+      "relooks": [
+        {
+          "index": 0,
+          "t": 146.6,
+          "fresh_fix": true,
+          "last_fix_t": 145.05,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 21,
+            "diagnostics": {
+              "fit": 0.92968,
+              "n_terms": 19,
+              "w_slow": 0.38575,
+              "w_fast": 0.89574,
+              "w_diff": 0.0,
+              "gain": [
+                0.0001,
+                0.0008,
+                0.0017
+              ],
+              "ess_pre": 1103.1
+            },
+            "last_fix_quality": {
+              "accepted": true,
+              "informative": true,
+              "settled": true,
+              "ambiguous": false,
+              "inlier_fraction": 0.9523809523809523,
+              "posterior_support": 1.0,
+              "likelihood_span": 0.4575437578705752,
+              "saturated": false,
+              "geometric_curvature": 23.380144932102365,
+              "reason": "informative",
+              "t": 145.05
+            },
+            "informative": true,
+            "partial": false,
+            "observed_rank": null,
+            "weakest_direction_xy_yaw": null,
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          }
+        },
+        {
+          "index": 1,
+          "t": 228.2,
+          "fresh_fix": true,
+          "last_fix_t": 228.0,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 54,
+            "diagnostics": {
+              "fit": 0.9811,
+              "n_terms": 54,
+              "w_slow": 0.452,
+              "w_fast": 0.95924,
+              "w_diff": 0.0,
+              "gain": [
+                0.0161,
+                0.0057,
+                0.003
+              ],
+              "ess_pre": 1353.5
+            },
+            "last_fix_quality": {
+              "accepted": true,
+              "informative": true,
+              "old_informative": false,
+              "settled": true,
+              "ambiguous": false,
+              "inlier_fraction": 1.0,
+              "posterior_support": 1.0,
+              "saturated": false,
+              "geometric_curvature": 0.0,
+              "observed_rank": 2,
+              "weakest_direction_xy_yaw": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "partial": true,
+              "rule": "v98_partial_fix_second_eigenvalue_v1",
+              "reason": "informative",
+              "t": 228.0
+            },
+            "informative": true,
+            "partial": true,
+            "observed_rank": 2,
+            "weakest_direction_xy_yaw": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          }
+        },
+        {
+          "index": 2,
+          "t": 327.5,
+          "fresh_fix": true,
+          "last_fix_t": 324.45,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 96,
+            "diagnostics": {
+              "ess_pre": 1943.1
+            },
+            "last_fix_quality": {
+              "accepted": true,
+              "informative": true,
+              "old_informative": false,
+              "settled": true,
+              "ambiguous": false,
+              "inlier_fraction": 1.0,
+              "posterior_support": 1.0,
+              "saturated": false,
+              "geometric_curvature": 0.0,
+              "observed_rank": 2,
+              "weakest_direction_xy_yaw": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "partial": true,
+              "rule": "v98_partial_fix_second_eigenvalue_v1",
+              "reason": "informative",
+              "t": 324.45
+            },
+            "informative": true,
+            "partial": true,
+            "observed_rank": 2,
+            "weakest_direction_xy_yaw": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "index": 0,
+          "t": 117.5,
+          "t_est": 117.34,
+          "truth_t": 117.35,
+          "xy_error_m": 0.15897621234147155,
+          "yaw_error_deg": 0.4030720883622971
+        },
+        {
+          "index": 0,
+          "t": 177.9,
+          "t_est": 177.74,
+          "truth_t": 177.75,
+          "xy_error_m": 0.12874788924746303,
+          "yaw_error_deg": -1.1367192204797585
+        },
+        {
+          "index": 1,
+          "t": 199.1,
+          "t_est": 198.94,
+          "truth_t": 198.95,
+          "xy_error_m": 0.16007419250019964,
+          "yaw_error_deg": -1.0980685158680226
+        },
+        {
+          "index": 1,
+          "t": 259.9,
+          "t_est": 259.74,
+          "truth_t": 259.75,
+          "xy_error_m": 0.11864392514474563,
+          "yaw_error_deg": -0.34639923362983016
+        },
+        {
+          "index": 2,
+          "t": 298.4,
+          "t_est": 298.24,
+          "truth_t": 298.25,
+          "xy_error_m": 0.09876942905193475,
+          "yaw_error_deg": 0.2813585476651466
+        },
+        {
+          "index": 2,
+          "t": 359.8,
+          "t_est": 359.64,
+          "truth_t": 359.65,
+          "xy_error_m": 0.12182258231081235,
+          "yaw_error_deg": -0.785342315569088
+        }
+      ],
+      "final_cyan_xyz_m": [
+        4.579417784993815,
+        -1.9883609665267632,
+        0.015892244579783988
+      ],
+      "final_cuboid_boundary_margin_m": 0.26215151114021246,
+      "carry_proxy_minus_actual_yaw_deg_minmax": [
+        -0.03772279008458188,
+        0.02651268453826592
+      ],
+      "would_stop_codes": {
+        "ARM_COLLISION_GUARD": 2
+      },
+      "would_stop_logged_event_counts": {
+        "ARM_COLLISION_GUARD": 1
+      }
+    },
+    {
+      "seed": 914,
+      "slot": "P2-2",
+      "source": "/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s914-P2-2-place",
+      "source_sha": "dfec1f19e1580534242d3b1b436eb45c07a979ea",
+      "artifact_files_checked": 6277,
+      "artifact_mismatches": [],
+      "judge_recomputed_equal": true,
+      "hashes": {
+        "result.json": "4fea0c7289d7d799ab685e792dbda48a7a68cef6d6f0d442ee71d1c27fc6bad2",
+        "bundle.json": "4826139b2d2820148f4b5a9731da848b98b03779459713c5c09c2ffd3d0f1498",
+        "artifacts.sha256.json": "4b677251892c3bd87234250487cd46183f36b807d78597c7fe668dfa3b181d8e",
+        "student_record.json": "ad7b34f630850a80561a0bf4588406f99ac230b84b7597e45dc730af8c8ddae8",
+        "eval_only/trajectory.jsonl": "76f7a9011c5f7babdd26739e5162eaeba2292bcc8d83c377756e7769536efecb"
+      },
+      "managed_path": "/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-dfec1f19-s914-P2-2-place-managed/manifest.json",
+      "managed_sha256": "c93eb15787183a189f88bef51419a8e9c9e306a8d5f1f1822fa0b360229880d5",
+      "managed": {
+        "status": "process_completed",
+        "runtime_s": 357.79549858300015,
+        "exit_code": 0,
+        "source_changed_during_run": false,
+        "started_utc": "2026-10-06T02:52:39.105420+00:00",
+        "ended_utc": "2026-10-06T02:58:36.903329+00:00",
+        "finalization_errors": []
+      },
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "dfec1f19e1580534242d3b1b436eb45c07a979ea",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "place",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          5.0224609375,
+          4.64794921875,
+          4.60498046875
+        ],
+        "model_calls": 0,
+        "commands_issued": 9816,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "done",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 316.0,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": true,
+          "lifted": true,
+          "inside": true,
+          "floor": true,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          2.98681640625,
+          3.4775390625,
+          4.05224609375
+        ]
+      },
+      "relooks": [
+        {
+          "index": 0,
+          "t": 142.9,
+          "fresh_fix": true,
+          "last_fix_t": 139.85,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 90,
+            "diagnostics": {
+              "ess_pre": 1018.9
+            },
+            "last_fix_quality": {
+              "accepted": true,
+              "informative": true,
+              "settled": true,
+              "ambiguous": false,
+              "inlier_fraction": 1.0,
+              "posterior_support": 0.9999999518416762,
+              "likelihood_span": 2.1360263932856958,
+              "saturated": false,
+              "geometric_curvature": 7340.8924247166315,
+              "reason": "informative",
+              "t": 139.85
+            },
+            "informative": true,
+            "partial": false,
+            "observed_rank": null,
+            "weakest_direction_xy_yaw": null,
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          }
+        },
+        {
+          "index": 1,
+          "t": 225.0,
+          "fresh_fix": true,
+          "last_fix_t": 224.8,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 56,
+            "diagnostics": {
+              "fit": 0.9966,
+              "n_terms": 56,
+              "w_slow": 0.82506,
+              "w_fast": 0.98729,
+              "w_diff": 0.0,
+              "gain": [
+                0.0007,
+                -0.0001,
+                0.0004
+              ],
+              "ess_pre": 1843.5
+            },
+            "last_fix_quality": {
+              "accepted": true,
+              "informative": true,
+              "old_informative": false,
+              "settled": true,
+              "ambiguous": false,
+              "inlier_fraction": 1.0,
+              "posterior_support": 0.9999999999999998,
+              "saturated": false,
+              "geometric_curvature": 0.0,
+              "observed_rank": 2,
+              "weakest_direction_xy_yaw": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "partial": true,
+              "rule": "v98_partial_fix_second_eigenvalue_v1",
+              "reason": "informative",
+              "t": 224.8
+            },
+            "informative": true,
+            "partial": true,
+            "observed_rank": 2,
+            "weakest_direction_xy_yaw": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          }
+        },
+        {
+          "index": 2,
+          "t": 314.3,
+          "fresh_fix": true,
+          "last_fix_t": 311.25,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 96,
+            "diagnostics": {
+              "ess_pre": 1499.5
+            },
+            "last_fix_quality": {
+              "accepted": true,
+              "informative": true,
+              "old_informative": false,
+              "settled": true,
+              "ambiguous": false,
+              "inlier_fraction": 1.0,
+              "posterior_support": 1.0,
+              "saturated": false,
+              "geometric_curvature": 0.0,
+              "observed_rank": 2,
+              "weakest_direction_xy_yaw": [
+                -5.222388024526041e-16,
+                1.0,
+                -5.551115123125782e-16
+              ],
+              "partial": true,
+              "rule": "v98_partial_fix_second_eigenvalue_v1",
+              "reason": "informative",
+              "t": 311.25
+            },
+            "informative": true,
+            "partial": true,
+            "observed_rank": 2,
+            "weakest_direction_xy_yaw": [
+              -5.222388024526041e-16,
+              1.0,
+              -5.551115123125782e-16
+            ],
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "index": 0,
+          "t": 113.8,
+          "t_est": 113.64,
+          "truth_t": 113.65,
+          "xy_error_m": 0.03819665116153059,
+          "yaw_error_deg": -0.2860374575488434
+        },
+        {
+          "index": 0,
+          "t": 174.7,
+          "t_est": 174.54,
+          "truth_t": 174.55,
+          "xy_error_m": 0.017538616869709145,
+          "yaw_error_deg": -0.2648039481280683
+        },
+        {
+          "index": 1,
+          "t": 195.9,
+          "t_est": 195.74,
+          "truth_t": 195.75,
+          "xy_error_m": 0.05378753003605852,
+          "yaw_error_deg": -0.26878501678015093
+        },
+        {
+          "index": 2,
+          "t": 285.2,
+          "t_est": 285.04,
+          "truth_t": 285.05,
+          "xy_error_m": 0.05535116248061714,
+          "yaw_error_deg": -0.22443307062636147
+        }
+      ],
+      "final_cyan_xyz_m": [
+        4.615704273509445,
+        -2.0443280957173857,
+        0.015892244579783974
+      ],
+      "final_cuboid_boundary_margin_m": 0.26695404634664793,
+      "carry_proxy_minus_actual_yaw_deg_minmax": [
+        -0.044691548707385335,
+        0.055793733266760744
+      ],
+      "would_stop_codes": {
+        "ARM_COLLISION_GUARD": 3
+      },
+      "would_stop_logged_event_counts": {
+        "ARM_COLLISION_GUARD": 1
+      }
+    }
+  ]
+}
