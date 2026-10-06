@@ -107,6 +107,26 @@
         "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
         "experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_replay.py": "85cdae2791f66d98b74db19c624aff5cd18dc36bf9bde3cadaeea6889b3cc1ac"
       }
+    },
+    "self-map-own-csm-v2": {
+      "purpose": "Insertion-only v2; unchanged v1 matcher/reference keyframes, off and v1 preserved. Previous memory source frozen in self_wall_memory_before_csm_v2.py.txt.",
+      "option": {
+        "name": "pose_correction",
+        "values": [
+          "off",
+          "own_map_csm_v2"
+        ],
+        "default": "off"
+      },
+      "built_on_git_sha": "76d51e00",
+      "files_sha256": {
+        "harness/self_wall_memory.py": "01fb06f8b8d3d6397bab450bafa2671510989800ccd71a947d9b72b4a288b998",
+        "harness/self_map_csm.py": "96f6010f44477673240d39183c67c26407a9e4c087717ae5ffa76c1c854ad40f",
+        "harness/self_map_csm_v2.py": "f8b13afffe0c55bab43a846c461a2293876d924b3cb48ed5c36549ca2ade8b20",
+        "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+        "experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_replay.py": "85cdae2791f66d98b74db19c624aff5cd18dc36bf9bde3cadaeea6889b3cc1ac",
+        "experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_v2_replay.py": "70e336227c7c9a5c6b4c7cc6b48c2a4cf2fababa2051e36df89fad4fb4f1b601"
+      }
     }
   }
 }
