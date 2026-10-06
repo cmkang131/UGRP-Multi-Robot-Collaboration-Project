@@ -1,0 +1,5043 @@
+{
+  "source_sha256": "4a1310c3aebc9dc9012324d2869f0e6b99c12f7451ea4e49672b99fa9ab0c875",
+  "reviewed_contact_sheets": {
+    "outputs/mapfree-goal-floor-v3/diagnosis/confirmations-0.jpg": "a19fe25682edca79a1a04818759155d9757b0f0c78a0a86fbba29d0427423354",
+    "outputs/mapfree-goal-floor-v3/diagnosis/confirmations-1.jpg": "a2bb1b8917b7fca9ae537bc79989c7af821a8f7885732542d65b586d88ad5aae",
+    "outputs/mapfree-goal-floor-v3/diagnosis/confirmations-2.jpg": "c38edaf3152fee66c202a68c3f1224351cdee3358c39e6ab2512f00c049815e0",
+    "outputs/mapfree-goal-floor-v3/diagnosis/support-0.jpg": "9e897aa9bc0e3207227f089414685d2f75ee21a93dc77d75bb0416c57ef44abe",
+    "outputs/mapfree-goal-floor-v3/diagnosis/support-1.jpg": "613acd98813198cf8606505a31259c4d20cd337521b222de89a0c2c515937706",
+    "outputs/mapfree-goal-floor-v3/diagnosis/support-2.jpg": "a9d888a27b50d5170d34eae8fbd6dd3fde3f6b623c42b35569af653626e4df70",
+    "outputs/mapfree-goal-floor-v3/diagnosis/support-3.jpg": "eaa7409e5047a065082833ffedcaab63f5bef672c13e6e3fd6a880631893328b"
+  },
+  "summary": [
+    {
+      "profile": "camera_v3",
+      "tracks": 18,
+      "support_components": 75,
+      "self_switch": 0,
+      "peer_switch": 0,
+      "floor_tracks": 18,
+      "unclassified_tracks": 0,
+      "pixels_min_median_max": [
+        136.0,
+        202.0,
+        3181.0
+      ],
+      "area_min_median_max_m2": [
+        3.260797600856957e-05,
+        0.001966429883632159,
+        0.057254446353312005
+      ],
+      "screen_u_range_px": [
+        28.183168316831683,
+        596.2781065088758
+      ],
+      "screen_v_range_px": [
+        12.0,
+        456.31382978723406
+      ]
+    },
+    {
+      "profile": "legacy",
+      "tracks": 13,
+      "support_components": 46,
+      "self_switch": 0,
+      "peer_switch": 0,
+      "floor_tracks": 13,
+      "unclassified_tracks": 0,
+      "pixels_min_median_max": [
+        135.0,
+        232.0,
+        108377.0
+      ],
+      "area_min_median_max_m2": [
+        0.00015413623981341829,
+        0.0007014740949469189,
+        0.036636195513603864
+      ],
+      "screen_u_range_px": [
+        28.231155778894472,
+        580.4313725490196
+      ],
+      "screen_v_range_px": [
+        17.692307692307693,
+        344.59956497333707
+      ]
+    }
+  ],
+  "tracks": [
+    {
+      "case": "s1042",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 6,
+      "confirmed_t": 21.3,
+      "observations": [
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/00320.jpg",
+          "sha256": "47d253096fad2724088999f248243f2c638956f6ce26b775999c337d9fa164bb",
+          "centroid_px": [
+            596.2781065088758,
+            271.20118343195264
+          ],
+          "bbox_xywh_px": [
+            594,
+            257,
+            6,
+            31
+          ],
+          "pixels": 169,
+          "projected_hull_area_m2": 0.00047735809921434225,
+          "projected_rect_sides_m": [
+            0.0061065563932061195,
+            0.08892595022916794
+          ],
+          "center_body_m": [
+            0.6527467268663613,
+            -0.31874413424962755
+          ],
+          "center_odom_m": [
+            1.333319382919359,
+            0.8529699876447059
+          ],
+          "hsv_median": [
+            110.0,
+            88.0,
+            116.0
+          ],
+          "screen_zone": "right/middle"
+        },
+        {
+          "frame_id": 361,
+          "t": 19.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/00360.jpg",
+          "sha256": "2103c7196e723c277dfb59e1dc51b9d1ed74021e06ea0e11d8ee48c289be2670",
+          "centroid_px": [
+            596.2781065088758,
+            271.20118343195264
+          ],
+          "bbox_xywh_px": [
+            594,
+            257,
+            6,
+            31
+          ],
+          "pixels": 169,
+          "projected_hull_area_m2": 0.00047735809921434225,
+          "projected_rect_sides_m": [
+            0.0061065563932061195,
+            0.08892595022916794
+          ],
+          "center_body_m": [
+            0.6527467268663613,
+            -0.31874413424962755
+          ],
+          "center_odom_m": [
+            1.373411485761932,
+            0.9537165662098309
+          ],
+          "hsv_median": [
+            110.0,
+            88.0,
+            116.0
+          ],
+          "screen_zone": "right/middle"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/00400.jpg",
+          "sha256": "369983db92964d398f9cad6ffcf5979cc37b5dbe1791249d70fb427b6b317af2",
+          "centroid_px": [
+            223.41884816753927,
+            380.5130890052356
+          ],
+          "bbox_xywh_px": [
+            208,
+            378,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.0001317625554473345,
+          "projected_rect_sides_m": [
+            0.006318619474768639,
+            0.021297140046954155
+          ],
+          "center_body_m": [
+            0.47632295053506485,
+            0.043250876302864595
+          ],
+          "center_odom_m": [
+            1.218107979073321,
+            1.2108820331106636
+          ],
+          "hsv_median": [
+            110.0,
+            79.0,
+            116.0
+          ],
+          "screen_zone": "middle/bottom"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/00400.jpg",
+          "sha256": "369983db92964d398f9cad6ffcf5979cc37b5dbe1791249d70fb427b6b317af2",
+          "centroid_px": [
+            217.7340425531915,
+            456.31382978723406
+          ],
+          "bbox_xywh_px": [
+            190,
+            454,
+            50,
+            6
+          ],
+          "pixels": 188,
+          "projected_hull_area_m2": 0.00011102856421243978,
+          "projected_rect_sides_m": [
+            0.00458804564550519,
+            0.028025658801198006
+          ],
+          "center_body_m": [
+            0.3954596725885857,
+            0.03949003984509575
+          ],
+          "center_odom_m": [
+            1.1385094535771425,
+            1.196148114760615
+          ],
+          "hsv_median": [
+            110.0,
+            86.0,
+            118.0
+          ],
+          "screen_zone": "middle/bottom"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 401,
+        "component": 1,
+        "t": 21.3
+      }
+    },
+    {
+      "case": "s1042",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 7,
+      "confirmed_t": 59.3,
+      "observations": [
+        {
+          "frame_id": 881,
+          "t": 45.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/00880.jpg",
+          "sha256": "2a0784639e8db0c1a561ab7948601ccabd56609b7f3419a026c7ab7621d860de",
+          "centroid_px": [
+            488.3478260869565,
+            89.8840579710145
+          ],
+          "bbox_xywh_px": [
+            480,
+            84,
+            22,
+            12
+          ],
+          "pixels": 207,
+          "projected_hull_area_m2": 0.03458368911924481,
+          "projected_rect_sides_m": [
+            0.0812300443649292,
+            0.5217304229736328
+          ],
+          "center_body_m": [
+            2.4276191164083083,
+            -0.7763934489637242
+          ],
+          "center_odom_m": [
+            3.635442939414473,
+            0.6495784154462337
+          ],
+          "hsv_median": [
+            109.0,
+            78.0,
+            111.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 1121,
+          "t": 57.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01120.jpg",
+          "sha256": "2215078288e23205df003787b6bba40e86afd20e55f066b044920673ad5575b8",
+          "centroid_px": [
+            464.2922077922078,
+            89.35064935064935
+          ],
+          "bbox_xywh_px": [
+            448,
+            84,
+            42,
+            12
+          ],
+          "pixels": 308,
+          "projected_hull_area_m2": 0.057254446353312005,
+          "projected_rect_sides_m": [
+            0.1624307632446289,
+            0.4513334035873413
+          ],
+          "center_body_m": [
+            2.396180822719827,
+            -0.6683294801350683
+          ],
+          "center_odom_m": [
+            3.809127189676837,
+            0.1868693074381259
+          ],
+          "hsv_median": [
+            109.0,
+            78.0,
+            111.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 1161,
+          "t": 59.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01160.jpg",
+          "sha256": "84386f2e0591372ffc103f6f3990b40e3af82f8801ccabd8424480717fc3ac55",
+          "centroid_px": [
+            472.9414893617021,
+            89.76063829787235
+          ],
+          "bbox_xywh_px": [
+            464,
+            85,
+            22,
+            11
+          ],
+          "pixels": 188,
+          "projected_hull_area_m2": 0.02867276244598571,
+          "projected_rect_sides_m": [
+            0.07942013442516327,
+            0.47552040219306946
+          ],
+          "center_body_m": [
+            2.3979224598862805,
+            -0.7036114761768045
+          ],
+          "center_odom_m": [
+            3.866794414746432,
+            0.1123713211911691
+          ],
+          "hsv_median": [
+            109.0,
+            78.0,
+            111.0
+          ],
+          "screen_zone": "right/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 1121,
+        "component": 1,
+        "t": 57.3
+      }
+    },
+    {
+      "case": "s1042",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 9,
+      "confirmed_t": 75.3,
+      "observations": [
+        {
+          "frame_id": 1321,
+          "t": 67.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01320.jpg",
+          "sha256": "a00fd1e52a7e22954a5d0bda6385355d644a2bc90d877febdbaabadd00096b38",
+          "centroid_px": [
+            239.41884816753927,
+            124.5130890052356
+          ],
+          "bbox_xywh_px": [
+            224,
+            122,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.004896595617857713,
+          "projected_rect_sides_m": [
+            0.07010789215564728,
+            0.07904975861310959
+          ],
+          "center_body_m": [
+            1.5095767860430214,
+            0.10925028368507687
+          ],
+          "center_odom_m": [
+            1.8167458528368097,
+            4.070349439986999
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1441,
+          "t": 73.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01440.jpg",
+          "sha256": "c49b7e17ca2789d9758a3e88f737a58bf1160dfbed3b505b6254833872bcd9d3",
+          "centroid_px": [
+            287.5,
+            124.5
+          ],
+          "bbox_xywh_px": [
+            272,
+            122,
+            32,
+            6
+          ],
+          "pixels": 192,
+          "projected_hull_area_m2": 0.004841617422905786,
+          "projected_rect_sides_m": [
+            0.069365493953228,
+            0.07158274203538895
+          ],
+          "center_body_m": [
+            1.5068885522347177,
+            0.00042624513042592327
+          ],
+          "center_odom_m": [
+            1.7483397912279641,
+            4.240479221114975
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1481,
+          "t": 75.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01480.jpg",
+          "sha256": "fb0e209b4fbcdb8bc704bb7cf10f47cd2c455af87ca0f4cd9b02aa59824b8c50",
+          "centroid_px": [
+            279.41811846689893,
+            124.50871080139373
+          ],
+          "bbox_xywh_px": [
+            256,
+            122,
+            48,
+            6
+          ],
+          "pixels": 287,
+          "projected_hull_area_m2": 0.007358508073656234,
+          "projected_rect_sides_m": [
+            0.06974967569112778,
+            0.10843205451965332
+          ],
+          "center_body_m": [
+            1.5069793825211844,
+            0.018658632849551327
+          ],
+          "center_odom_m": [
+            1.8767023913241008,
+            4.057095813851293
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 1481,
+        "component": 1,
+        "t": 75.3
+      }
+    },
+    {
+      "case": "s1042",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 10,
+      "confirmed_t": 73.3,
+      "observations": [
+        {
+          "frame_id": 1361,
+          "t": 69.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01360.jpg",
+          "sha256": "ed83140ba405f57994500737717eb397b7eba9be09dc38b610c8c069f2ebbfc1",
+          "centroid_px": [
+            79.0,
+            172.5
+          ],
+          "bbox_xywh_px": [
+            64,
+            170,
+            31,
+            6
+          ],
+          "pixels": 186,
+          "projected_hull_area_m2": 0.0018689871357331356,
+          "projected_rect_sides_m": [
+            0.03388068452477455,
+            0.07015679031610489
+          ],
+          "center_body_m": [
+            1.0682403134685607,
+            0.34146751967967875
+          ],
+          "center_odom_m": [
+            1.3406980880499368,
+            4.031020110672603
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 1361,
+          "t": 69.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01360.jpg",
+          "sha256": "ed83140ba405f57994500737717eb397b7eba9be09dc38b610c8c069f2ebbfc1",
+          "centroid_px": [
+            28.613559322033897,
+            211.6
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            70
+          ],
+          "pixels": 295,
+          "projected_hull_area_m2": 0.002688608939319437,
+          "projected_rect_sides_m": [
+            0.010123436339199543,
+            0.346924364566803
+          ],
+          "center_body_m": [
+            0.8655505421207825,
+            0.34815831733153874
+          ],
+          "center_odom_m": [
+            1.158794207815529,
+            3.94136026158786
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 1401,
+          "t": 71.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01400.jpg",
+          "sha256": "7c7f8856f81b1758d638d743513d0fd3ea6860293926eb1b6cd3a80f277925d2",
+          "centroid_px": [
+            28.70731707317073,
+            215.5
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            78
+          ],
+          "pixels": 328,
+          "projected_hull_area_m2": 0.0028583713349119577,
+          "projected_rect_sides_m": [
+            0.010123436339199543,
+            0.37357762455940247
+          ],
+          "center_body_m": [
+            0.8503531763714299,
+            0.34156823494123195
+          ],
+          "center_odom_m": [
+            1.0505581632058543,
+            4.063962504300119
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 1441,
+          "t": 73.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01440.jpg",
+          "sha256": "c49b7e17ca2789d9758a3e88f737a58bf1160dfbed3b505b6254833872bcd9d3",
+          "centroid_px": [
+            28.70731707317073,
+            215.5
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            78
+          ],
+          "pixels": 328,
+          "projected_hull_area_m2": 0.0028583713349119577,
+          "projected_rect_sides_m": [
+            0.010123436339199543,
+            0.37357762455940247
+          ],
+          "center_body_m": [
+            0.8503531763714299,
+            0.34156823494123195
+          ],
+          "center_odom_m": [
+            1.009376285474909,
+            4.203743759539279
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 1441,
+          "t": 73.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/robots/r3/rgb/01440.jpg",
+          "sha256": "c49b7e17ca2789d9758a3e88f737a58bf1160dfbed3b505b6254833872bcd9d3",
+          "centroid_px": [
+            415.5,
+            364.0
+          ],
+          "bbox_xywh_px": [
+            400,
+            362,
+            32,
+            5
+          ],
+          "pixels": 160,
+          "projected_hull_area_m2": 0.00012463975319421117,
+          "projected_rect_sides_m": [
+            0.005566831678152084,
+            0.023065106943249702
+          ],
+          "center_body_m": [
+            0.49539997522353596,
+            -0.09055399100072149
+          ],
+          "center_odom_m": [
+            0.9209555503978144,
+            3.651563384329699
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/bottom"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 1401,
+        "component": 1,
+        "t": 71.3
+      }
+    },
+    {
+      "case": "s1043",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 3,
+      "confirmed_t": 55.3,
+      "observations": [
+        {
+          "frame_id": 121,
+          "t": 7.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00120.jpg",
+          "sha256": "75303ab17134a341e1691567187eec6974459dca4e95f455a8c9ab217f35ea39",
+          "centroid_px": [
+            400.11392405063293,
+            158.93037974683546
+          ],
+          "bbox_xywh_px": [
+            383,
+            156,
+            32,
+            6
+          ],
+          "pixels": 158,
+          "projected_hull_area_m2": 0.04175877341259593,
+          "projected_rect_sides_m": [
+            0.1491367667913437,
+            0.3746268153190613
+          ],
+          "center_body_m": [
+            2.9980318277328832,
+            0.7477076012062094
+          ],
+          "center_odom_m": [
+            2.9980318277328832,
+            0.7477076012062094
+          ],
+          "hsv_median": [
+            110.0,
+            88.0,
+            116.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1041,
+          "t": 53.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/01040.jpg",
+          "sha256": "2ec4db54c6de0ee6b2be74161dc2c081aff5f3ffa8f669947a745c66a28c3797",
+          "centroid_px": [
+            28.183168316831683,
+            201.0
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            47
+          ],
+          "pixels": 202,
+          "projected_hull_area_m2": 0.001966429883632159,
+          "projected_rect_sides_m": [
+            0.010001258924603462,
+            0.2572384774684906
+          ],
+          "center_body_m": [
+            0.91127916339206,
+            0.3683018870551183
+          ],
+          "center_odom_m": [
+            2.715767163274583,
+            0.366278922164209
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 1081,
+          "t": 55.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/01080.jpg",
+          "sha256": "d7ef3d30bf50d03c8cf50947f5efd26db2c94b7b4f77c6849bc2c223ed28429e",
+          "centroid_px": [
+            37.684065934065934,
+            196.10164835164835
+          ],
+          "bbox_xywh_px": [
+            24,
+            184,
+            39,
+            40
+          ],
+          "pixels": 364,
+          "projected_hull_area_m2": 0.007082800635306974,
+          "projected_rect_sides_m": [
+            0.05645320191979408,
+            0.2077392041683197
+          ],
+          "center_body_m": [
+            0.9338010389365801,
+            0.3616371609258864
+          ],
+          "center_odom_m": [
+            3.045357633276622,
+            0.3577974909063086
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 1081,
+        "component": 2,
+        "t": 55.3
+      }
+    },
+    {
+      "case": "s1043",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 5,
+      "confirmed_t": 27.3,
+      "observations": [
+        {
+          "frame_id": 241,
+          "t": 13.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00240.jpg",
+          "sha256": "b34bea1d103c7cc536cad3a6cf46821f0d9d9a30bf23e336f5fac2d6bccc73d1",
+          "centroid_px": [
+            319.4188481675393,
+            114.4869109947644
+          ],
+          "bbox_xywh_px": [
+            304,
+            112,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.006615321258764739,
+          "projected_rect_sides_m": [
+            0.07985731214284897,
+            0.09056039154529572
+          ],
+          "center_body_m": [
+            1.6619210620920646,
+            -0.07936716902698364
+          ],
+          "center_odom_m": [
+            1.9392938657708154,
+            -0.0800064936644684
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00400.jpg",
+          "sha256": "e66c3273abbc2c8d2745e99c8c55f5ba82239e3e84619dd986ce5b6bc362a471",
+          "centroid_px": [
+            238.05769230769232,
+            300.40384615384613
+          ],
+          "bbox_xywh_px": [
+            208,
+            298,
+            63,
+            6
+          ],
+          "pixels": 364,
+          "projected_hull_area_m2": 0.0005150927782951453,
+          "projected_rect_sides_m": [
+            0.009964712895452976,
+            0.053602434694767
+          ],
+          "center_body_m": [
+            0.6019332888872472,
+            0.04237170967166144
+          ],
+          "center_odom_m": [
+            1.7622094116701819,
+            0.11501782559391642
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00400.jpg",
+          "sha256": "e66c3273abbc2c8d2745e99c8c55f5ba82239e3e84619dd986ce5b6bc362a471",
+          "centroid_px": [
+            585.1830065359477,
+            326.8267973856209
+          ],
+          "bbox_xywh_px": [
+            576,
+            319,
+            21,
+            17
+          ],
+          "pixels": 306,
+          "projected_hull_area_m2": 0.0005164718519350409,
+          "projected_rect_sides_m": [
+            0.019207561388611794,
+            0.03589995205402374
+          ],
+          "center_body_m": [
+            0.5360951429231875,
+            -0.24849526337725586
+          ],
+          "center_odom_m": [
+            1.6979511088502737,
+            -0.17620224238445864
+          ],
+          "hsv_median": [
+            110.0,
+            86.0,
+            118.0
+          ],
+          "screen_zone": "right/bottom"
+        },
+        {
+          "frame_id": 521,
+          "t": 27.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00520.jpg",
+          "sha256": "0bf74b5471a4da4854306ba78a0f713d842728510f5677e8ad083744cd0a30fa",
+          "centroid_px": [
+            439.5,
+            300.5
+          ],
+          "bbox_xywh_px": [
+            416,
+            298,
+            48,
+            6
+          ],
+          "pixels": 288,
+          "projected_hull_area_m2": 0.0004273948968835928,
+          "projected_rect_sides_m": [
+            0.010181455872952938,
+            0.04385651275515556
+          ],
+          "center_body_m": [
+            0.5984703825901534,
+            -0.13146045865193842
+          ],
+          "center_odom_m": [
+            1.8253560242009441,
+            -0.022987471412059007
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/middle"
+        },
+        {
+          "frame_id": 521,
+          "t": 27.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00520.jpg",
+          "sha256": "0bf74b5471a4da4854306ba78a0f713d842728510f5677e8ad083744cd0a30fa",
+          "centroid_px": [
+            534.0018861993084,
+            397.04275385099027
+          ],
+          "bbox_xywh_px": [
+            464,
+            384,
+            127,
+            37
+          ],
+          "pixels": 3181,
+          "projected_hull_area_m2": 0.0031710100611035408,
+          "projected_rect_sides_m": [
+            0.04432748630642891,
+            0.09607923775911331
+          ],
+          "center_body_m": [
+            0.4430652835036654,
+            -0.16495434030643807
+          ],
+          "center_odom_m": [
+            1.6702816628510941,
+            -0.05798071907933067
+          ],
+          "hsv_median": [
+            110.0,
+            86.0,
+            118.0
+          ],
+          "screen_zone": "right/bottom"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 521,
+        "component": 3,
+        "t": 27.3
+      }
+    },
+    {
+      "case": "s1043",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 6,
+      "confirmed_t": 21.3,
+      "observations": [
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00280.jpg",
+          "sha256": "e2be6cbfb17a4615399d46a90f6b260b3bd54570b31ff21227df4f41ca188a55",
+          "centroid_px": [
+            28.183168316831683,
+            201.0
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            47
+          ],
+          "pixels": 202,
+          "projected_hull_area_m2": 0.001966429883632159,
+          "projected_rect_sides_m": [
+            0.010001258924603462,
+            0.2572384774684906
+          ],
+          "center_body_m": [
+            0.91127916339206,
+            0.3683018870551183
+          ],
+          "center_odom_m": [
+            1.7017637089562565,
+            0.3676815402642874
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00320.jpg",
+          "sha256": "c4ae365397d63a7748d5d8f27739cff5711410c1a78aaedf878b2c4182a3bdc0",
+          "centroid_px": [
+            28.70731707317073,
+            215.5
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            78
+          ],
+          "pixels": 328,
+          "projected_hull_area_m2": 0.0028583713349119577,
+          "projected_rect_sides_m": [
+            0.010123436339199543,
+            0.37357762455940247
+          ],
+          "center_body_m": [
+            0.8503531763714299,
+            0.34156823494123195
+          ],
+          "center_odom_m": [
+            1.8486504727843283,
+            0.5454198099955219
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00320.jpg",
+          "sha256": "c4ae365397d63a7748d5d8f27739cff5711410c1a78aaedf878b2c4182a3bdc0",
+          "centroid_px": [
+            213.05464480874318,
+            455.75409836065575
+          ],
+          "bbox_xywh_px": [
+            190,
+            453,
+            50,
+            7
+          ],
+          "pixels": 183,
+          "projected_hull_area_m2": 0.0001180943347073582,
+          "projected_rect_sides_m": [
+            0.005420566536486149,
+            0.028184443712234497
+          ],
+          "center_body_m": [
+            0.39582027464335956,
+            0.0421943204072923
+          ],
+          "center_odom_m": [
+            1.4008430823948101,
+            0.23607624602619634
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            120.0
+          ],
+          "screen_zone": "left/bottom"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00400.jpg",
+          "sha256": "e66c3273abbc2c8d2745e99c8c55f5ba82239e3e84619dd986ce5b6bc362a471",
+          "centroid_px": [
+            28.515151515151516,
+            207.9848484848485
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            62
+          ],
+          "pixels": 264,
+          "projected_hull_area_m2": 0.0025085929666595064,
+          "projected_rect_sides_m": [
+            0.010123436339199543,
+            0.31917688250541687
+          ],
+          "center_body_m": [
+            0.8803598893372346,
+            0.3546071551607458
+          ],
+          "center_odom_m": [
+            2.038937045459616,
+            0.42876001586357854
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 321,
+        "component": 1,
+        "t": 17.3
+      }
+    },
+    {
+      "case": "s1043",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 7,
+      "confirmed_t": 19.3,
+      "observations": [
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00280.jpg",
+          "sha256": "e2be6cbfb17a4615399d46a90f6b260b3bd54570b31ff21227df4f41ca188a55",
+          "centroid_px": [
+            541.913982300885,
+            343.04318584070796
+          ],
+          "bbox_xywh_px": [
+            464,
+            330,
+            131,
+            38
+          ],
+          "pixels": 2825,
+          "projected_hull_area_m2": 0.004617747435961439,
+          "projected_rect_sides_m": [
+            0.06066761910915375,
+            0.11001810431480408
+          ],
+          "center_body_m": [
+            0.5151007216548754,
+            -0.1981670773099846
+          ],
+          "center_odom_m": [
+            1.3042130061129393,
+            -0.19782520943456505
+          ],
+          "hsv_median": [
+            110.0,
+            86.0,
+            118.0
+          ],
+          "screen_zone": "right/bottom"
+        },
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00320.jpg",
+          "sha256": "c4ae365397d63a7748d5d8f27739cff5711410c1a78aaedf878b2c4182a3bdc0",
+          "centroid_px": [
+            361.27222222222224,
+            455.76666666666665
+          ],
+          "bbox_xywh_px": [
+            336,
+            453,
+            49,
+            7
+          ],
+          "pixels": 180,
+          "projected_hull_area_m2": 0.00011566755473430002,
+          "projected_rect_sides_m": [
+            0.005420301109552383,
+            0.027605528011918068
+          ],
+          "center_body_m": [
+            0.3958463456312453,
+            -0.04159484017216857
+          ],
+          "center_odom_m": [
+            1.402720436612376,
+            0.15230811574117162
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            120.0
+          ],
+          "screen_zone": "middle/bottom"
+        },
+        {
+          "frame_id": 361,
+          "t": 19.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/00360.jpg",
+          "sha256": "8df951c9e43afd553a0c14541bc6fee6943694a826aa4be8bc183c4c47ff87c1",
+          "centroid_px": [
+            549.7514983863532,
+            357.9354541263255
+          ],
+          "bbox_xywh_px": [
+            480,
+            343,
+            115,
+            31
+          ],
+          "pixels": 2169,
+          "projected_hull_area_m2": 0.003161242748000559,
+          "projected_rect_sides_m": [
+            0.04443686082959175,
+            0.10244876891374588
+          ],
+          "center_body_m": [
+            0.49185106879540497,
+            -0.19618633194039836
+          ],
+          "center_odom_m": [
+            1.5757414953633164,
+            -0.12033285885413528
+          ],
+          "hsv_median": [
+            110.0,
+            86.0,
+            118.0
+          ],
+          "screen_zone": "right/bottom"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 281,
+        "component": 2,
+        "t": 15.3
+      }
+    },
+    {
+      "case": "s1044",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 5,
+      "confirmed_t": 17.3,
+      "observations": [
+        {
+          "frame_id": 241,
+          "t": 13.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/00240.jpg",
+          "sha256": "ad9e25ffc2480198cfe28e4a7a72ab93daf092ee2b815ef6d7a18082d4f02f03",
+          "centroid_px": [
+            247.41811846689896,
+            114.49128919860627
+          ],
+          "bbox_xywh_px": [
+            224,
+            112,
+            48,
+            6
+          ],
+          "pixels": 287,
+          "projected_hull_area_m2": 0.010137749734189239,
+          "projected_rect_sides_m": [
+            0.08584587275981903,
+            0.1276872158050537
+          ],
+          "center_body_m": [
+            1.6630667599941389,
+            0.10090503198865752
+          ],
+          "center_odom_m": [
+            1.9405931400357865,
+            0.10026466589548712
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/00280.jpg",
+          "sha256": "239cefa5deec778d8ffeebc7d200045deefb890ea5b630b41b33b18856b4cab3",
+          "centroid_px": [
+            28.183168316831683,
+            201.0
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            47
+          ],
+          "pixels": 202,
+          "projected_hull_area_m2": 0.001966429883632159,
+          "projected_rect_sides_m": [
+            0.010001258924603462,
+            0.2572384774684906
+          ],
+          "center_body_m": [
+            0.91127916339206,
+            0.3683018870551183
+          ],
+          "center_odom_m": [
+            1.7017637089562565,
+            0.3676815402642874
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/00320.jpg",
+          "sha256": "df39334dd94772e29105c0d26d0fe892d38c418f109a8738f744090dc4d97b81",
+          "centroid_px": [
+            223.6659707724426,
+            300.5
+          ],
+          "bbox_xywh_px": [
+            144,
+            298,
+            160,
+            6
+          ],
+          "pixels": 958,
+          "projected_hull_area_m2": 0.0014481300750192258,
+          "projected_rect_sides_m": [
+            0.010889980010688305,
+            0.13803201913833618
+          ],
+          "center_body_m": [
+            0.6012038447843455,
+            0.054919769573120024
+          ],
+          "center_odom_m": [
+            1.7434236346506324,
+            0.34373328464022224
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 321,
+        "component": 3,
+        "t": 17.3
+      }
+    },
+    {
+      "case": "s1044",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 7,
+      "confirmed_t": 25.3,
+      "observations": [
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/00320.jpg",
+          "sha256": "df39334dd94772e29105c0d26d0fe892d38c418f109a8738f744090dc4d97b81",
+          "centroid_px": [
+            63.5,
+            156.5
+          ],
+          "bbox_xywh_px": [
+            48,
+            154,
+            32,
+            6
+          ],
+          "pixels": 192,
+          "projected_hull_area_m2": 0.00287918702813883,
+          "projected_rect_sides_m": [
+            0.04238426312804222,
+            0.0908408835530281
+          ],
+          "center_body_m": [
+            1.1971791408366002,
+            0.4173376471578902
+          ],
+          "center_odom_m": [
+            2.3270197423074332,
+            0.7257658154873404
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/top"
+        },
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/00320.jpg",
+          "sha256": "df39334dd94772e29105c0d26d0fe892d38c418f109a8738f744090dc4d97b81",
+          "centroid_px": [
+            28.70731707317073,
+            215.5
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            78
+          ],
+          "pixels": 328,
+          "projected_hull_area_m2": 0.0028583713349119577,
+          "projected_rect_sides_m": [
+            0.010123436339199543,
+            0.37357762455940247
+          ],
+          "center_body_m": [
+            0.8503531763714299,
+            0.34156823494123195
+          ],
+          "center_odom_m": [
+            1.9829047134325604,
+            0.6385070029965721
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 441,
+          "t": 23.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/00440.jpg",
+          "sha256": "c82fe20a233ffdc81fd9e915ea2ea67c1c3cd29f3ace4b53b6ee127522b96b0b",
+          "centroid_px": [
+            159.41884816753927,
+            156.5130890052356
+          ],
+          "bbox_xywh_px": [
+            144,
+            154,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.0023395115826563284,
+          "projected_rect_sides_m": [
+            0.04102706164121628,
+            0.0689009502530098
+          ],
+          "center_body_m": [
+            1.177656726571975,
+            0.22627767763906814
+          ],
+          "center_odom_m": [
+            2.3248678488216017,
+            0.523899703497221
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/top"
+        },
+        {
+          "frame_id": 441,
+          "t": 23.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/00440.jpg",
+          "sha256": "c82fe20a233ffdc81fd9e915ea2ea67c1c3cd29f3ace4b53b6ee127522b96b0b",
+          "centroid_px": [
+            28.70731707317073,
+            215.5
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            78
+          ],
+          "pixels": 328,
+          "projected_hull_area_m2": 0.0028583713349119577,
+          "projected_rect_sides_m": [
+            0.010123436339199543,
+            0.37357762455940247
+          ],
+          "center_body_m": [
+            0.8503531763714299,
+            0.34156823494123195
+          ],
+          "center_odom_m": [
+            1.9940483378898985,
+            0.628675548823484
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 481,
+          "t": 25.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/00480.jpg",
+          "sha256": "59e78192e641f39b8d3c88a9d4380fd75e063e313f0dc0b5419072ce82f77670",
+          "centroid_px": [
+            46.825301204819276,
+            156.289156626506
+          ],
+          "bbox_xywh_px": [
+            33,
+            154,
+            30,
+            6
+          ],
+          "pixels": 166,
+          "projected_hull_area_m2": 0.002702795663150681,
+          "projected_rect_sides_m": [
+            0.04269231855869293,
+            0.08689761161804199
+          ],
+          "center_body_m": [
+            1.2041300423113734,
+            0.4552114150615444
+          ],
+          "center_odom_m": [
+            2.421607831975283,
+            0.1913941131653306
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 321,
+        "component": 2,
+        "t": 17.3
+      }
+    },
+    {
+      "case": "s1044",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 8,
+      "confirmed_t": 63.3,
+      "observations": [
+        {
+          "frame_id": 521,
+          "t": 27.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/00520.jpg",
+          "sha256": "ae35e28ab6e95dda4caebf4e7df5d7515522868db131846ae3cae12effbd0f2c",
+          "centroid_px": [
+            239.41884816753927,
+            108.5130890052356
+          ],
+          "bbox_xywh_px": [
+            224,
+            106,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.008172521914599606,
+          "projected_rect_sides_m": [
+            0.08599865436553955,
+            0.10867541283369064
+          ],
+          "center_body_m": [
+            1.7734527626437802,
+            0.1294251207804716
+          ],
+          "center_odom_m": [
+            2.958962520342798,
+            0.1379042296208341
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1201,
+          "t": 61.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/01200.jpg",
+          "sha256": "5989850d15dfd120fec8ced4c7ddad87d64e63dfaa8efa7c20541aa3be054b23",
+          "centroid_px": [
+            351.4188481675393,
+            146.4869109947644
+          ],
+          "bbox_xywh_px": [
+            336,
+            144,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.0027613600813274353,
+          "projected_rect_sides_m": [
+            0.047290101647377014,
+            0.06554137170314789
+          ],
+          "center_body_m": [
+            1.259277341350324,
+            -0.1192689571143883
+          ],
+          "center_odom_m": [
+            2.783874704746675,
+            0.2659813615999904
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1201,
+          "t": 61.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/01200.jpg",
+          "sha256": "5989850d15dfd120fec8ced4c7ddad87d64e63dfaa8efa7c20541aa3be054b23",
+          "centroid_px": [
+            399.5,
+            146.5
+          ],
+          "bbox_xywh_px": [
+            384,
+            144,
+            32,
+            6
+          ],
+          "pixels": 192,
+          "projected_hull_area_m2": 0.0029045294440308567,
+          "projected_rect_sides_m": [
+            0.047628019005060196,
+            0.0735202506184578
+          ],
+          "center_body_m": [
+            1.2647635885424056,
+            -0.21193395428446268
+          ],
+          "center_odom_m": [
+            2.797092917743922,
+            0.17410002805534744
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1241,
+          "t": 63.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/robots/r3/rgb/01240.jpg",
+          "sha256": "a2b9d75c30a92864db7bb5c5c2b50a44e1d84f9a78ecbb8219b506a556c9e6af",
+          "centroid_px": [
+            295.0,
+            146.5
+          ],
+          "bbox_xywh_px": [
+            192,
+            144,
+            207,
+            6
+          ],
+          "pixels": 1242,
+          "projected_hull_area_m2": 0.02028205361226526,
+          "projected_rect_sides_m": [
+            0.054309580475091934,
+            0.3971834182739258
+          ],
+          "center_body_m": [
+            1.2588368850091063,
+            -0.013814719368610546
+          ],
+          "center_odom_m": [
+            2.8506048152904926,
+            0.225185513270461
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 1241,
+        "component": 1,
+        "t": 63.3
+      }
+    },
+    {
+      "case": "s1045",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 5,
+      "confirmed_t": 39.3,
+      "observations": [
+        {
+          "frame_id": 441,
+          "t": 23.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00440.jpg",
+          "sha256": "6e3f5add655c41bb0d53382882ae0bbff70c7f2d3e0b57df9b7eff958c2f0ad8",
+          "centroid_px": [
+            351.4177545691906,
+            108.50652741514361
+          ],
+          "bbox_xywh_px": [
+            320,
+            106,
+            64,
+            6
+          ],
+          "pixels": 383,
+          "projected_hull_area_m2": 0.017094178599197374,
+          "projected_rect_sides_m": [
+            0.09918265044689178,
+            0.1909836083650589
+          ],
+          "center_body_m": [
+            1.7777409688373396,
+            -0.1718140352081174
+          ],
+          "center_odom_m": [
+            1.9561873908185552,
+            -3.71633122867149
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 441,
+          "t": 23.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00440.jpg",
+          "sha256": "6e3f5add655c41bb0d53382882ae0bbff70c7f2d3e0b57df9b7eff958c2f0ad8",
+          "centroid_px": [
+            359.5,
+            130.5
+          ],
+          "bbox_xywh_px": [
+            336,
+            128,
+            48,
+            6
+          ],
+          "pixels": 288,
+          "projected_hull_area_m2": 0.006421680025824106,
+          "projected_rect_sides_m": [
+            0.062452785670757294,
+            0.11484411358833313
+          ],
+          "center_body_m": [
+            1.434043984927981,
+            -0.1544424085603053
+          ],
+          "center_odom_m": [
+            1.6458462344157265,
+            -3.5676108305973315
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 721,
+          "t": 37.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00720.jpg",
+          "sha256": "755f8915385caed8f750dc00a7c4fd0592f3266a38400ca88d6058e7c92564b4",
+          "centroid_px": [
+            399.5,
+            146.5
+          ],
+          "bbox_xywh_px": [
+            384,
+            144,
+            32,
+            6
+          ],
+          "pixels": 192,
+          "projected_hull_area_m2": 0.0029045294440308567,
+          "projected_rect_sides_m": [
+            0.047628019005060196,
+            0.0735202506184578
+          ],
+          "center_body_m": [
+            1.2647635885424056,
+            -0.21193395428446268
+          ],
+          "center_odom_m": [
+            1.6872978549887616,
+            -4.137734542406183
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 761,
+          "t": 39.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00760.jpg",
+          "sha256": "e1c2d0372d1cade4048ef8ce7141d06f5cfa6b4fbd883f94305120fb211f6e75",
+          "centroid_px": [
+            319.5,
+            146.5
+          ],
+          "bbox_xywh_px": [
+            288,
+            144,
+            64,
+            6
+          ],
+          "pixels": 384,
+          "projected_hull_area_m2": 0.005585111357196762,
+          "projected_rect_sides_m": [
+            0.047582950443029404,
+            0.12133374065160751
+          ],
+          "center_body_m": [
+            1.2573648436111162,
+            -0.05932481565574544
+          ],
+          "center_odom_m": [
+            1.768105614915671,
+            -4.0865755872685305
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 761,
+        "component": 1,
+        "t": 39.3
+      }
+    },
+    {
+      "case": "s1045",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 8,
+      "confirmed_t": 29.3,
+      "observations": [
+        {
+          "frame_id": 481,
+          "t": 25.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00480.jpg",
+          "sha256": "4333c671d3e87dd1e3a6c828e3c83b03936f10c8c2fe59c43b30378b77e60704",
+          "centroid_px": [
+            28.70731707317073,
+            215.5
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            78
+          ],
+          "pixels": 328,
+          "projected_hull_area_m2": 0.0028583713349119577,
+          "projected_rect_sides_m": [
+            0.010123436339199543,
+            0.37357762455940247
+          ],
+          "center_body_m": [
+            0.8503531763714299,
+            0.34156823494123195
+          ],
+          "center_odom_m": [
+            1.2160297414585235,
+            -3.2451450736748684
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 521,
+          "t": 27.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00520.jpg",
+          "sha256": "bef6ece61b2a36eab69368dc2c37bedbeac79b4254f4c132ba274ae09b92c0b2",
+          "centroid_px": [
+            28.69325153374233,
+            215.26687116564418
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            78
+          ],
+          "pixels": 326,
+          "projected_hull_area_m2": 0.0028546857079678745,
+          "projected_rect_sides_m": [
+            0.010123436339199543,
+            0.37316036224365234
+          ],
+          "center_body_m": [
+            0.8512437512207476,
+            0.3419647419232752
+          ],
+          "center_odom_m": [
+            1.3178734894880537,
+            -3.2924098859200077
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 561,
+          "t": 29.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00560.jpg",
+          "sha256": "353330dc6c0044d16ac11e28fe86a8b627349742de78d1c7b399b8039b420c55",
+          "centroid_px": [
+            28.231155778894472,
+            200.66834170854273
+          ],
+          "bbox_xywh_px": [
+            24,
+            177,
+            8,
+            46
+          ],
+          "pixels": 199,
+          "projected_hull_area_m2": 0.0019488864609122913,
+          "projected_rect_sides_m": [
+            0.010001258924603462,
+            0.2540092468261719
+          ],
+          "center_body_m": [
+            0.9128304689180072,
+            0.3688963655759881
+          ],
+          "center_odom_m": [
+            1.338748761192884,
+            -3.499930026414032
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 481,
+        "component": 1,
+        "t": 25.3
+      }
+    },
+    {
+      "case": "s1045",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 9,
+      "confirmed_t": 33.3,
+      "observations": [
+        {
+          "frame_id": 481,
+          "t": 25.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00480.jpg",
+          "sha256": "4333c671d3e87dd1e3a6c828e3c83b03936f10c8c2fe59c43b30378b77e60704",
+          "centroid_px": [
+            463.5,
+            284.0253164556962
+          ],
+          "bbox_xywh_px": [
+            448,
+            282,
+            32,
+            5
+          ],
+          "pixels": 158,
+          "projected_hull_area_m2": 0.0002727007163110251,
+          "projected_rect_sides_m": [
+            0.009155451320111752,
+            0.031479764729738235
+          ],
+          "center_body_m": [
+            0.6320230481561174,
+            -0.16245596404267773
+          ],
+          "center_odom_m": [
+            0.8033699143793949,
+            -3.607664459588105
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/middle"
+        },
+        {
+          "frame_id": 481,
+          "t": 25.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00480.jpg",
+          "sha256": "4333c671d3e87dd1e3a6c828e3c83b03936f10c8c2fe59c43b30378b77e60704",
+          "centroid_px": [
+            213.05464480874318,
+            455.75409836065575
+          ],
+          "bbox_xywh_px": [
+            190,
+            453,
+            50,
+            7
+          ],
+          "pixels": 183,
+          "projected_hull_area_m2": 0.0001180943347073582,
+          "projected_rect_sides_m": [
+            0.005420566536486149,
+            0.028184443712234497
+          ],
+          "center_body_m": [
+            0.39582027464335956,
+            0.0421943204072923
+          ],
+          "center_odom_m": [
+            0.6771815584783953,
+            -3.321744911505825
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            120.0
+          ],
+          "screen_zone": "left/bottom"
+        },
+        {
+          "frame_id": 481,
+          "t": 25.3,
+          "component": 4,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00480.jpg",
+          "sha256": "4333c671d3e87dd1e3a6c828e3c83b03936f10c8c2fe59c43b30378b77e60704",
+          "centroid_px": [
+            361.27222222222224,
+            455.76666666666665
+          ],
+          "bbox_xywh_px": [
+            336,
+            453,
+            49,
+            7
+          ],
+          "pixels": 180,
+          "projected_hull_area_m2": 0.00011566755473430002,
+          "projected_rect_sides_m": [
+            0.005420301109552383,
+            0.027605528011918068
+          ],
+          "center_body_m": [
+            0.3958463456312453,
+            -0.04159484017216857
+          ],
+          "center_odom_m": [
+            0.6414237919739377,
+            -3.3975209383541607
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            120.0
+          ],
+          "screen_zone": "middle/bottom"
+        },
+        {
+          "frame_id": 521,
+          "t": 27.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00520.jpg",
+          "sha256": "bef6ece61b2a36eab69368dc2c37bedbeac79b4254f4c132ba274ae09b92c0b2",
+          "centroid_px": [
+            432.4065040650407,
+            301.9728997289973
+          ],
+          "bbox_xywh_px": [
+            400,
+            298,
+            64,
+            12
+          ],
+          "pixels": 369,
+          "projected_hull_area_m2": 0.0008352269780322885,
+          "projected_rect_sides_m": [
+            0.02177944779396057,
+            0.05514362081885338
+          ],
+          "center_body_m": [
+            0.5959151106679921,
+            -0.12441992356088183
+          ],
+          "center_odom_m": [
+            0.8877454078356812,
+            -3.604975405866366
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/middle"
+        },
+        {
+          "frame_id": 521,
+          "t": 27.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00520.jpg",
+          "sha256": "bef6ece61b2a36eab69368dc2c37bedbeac79b4254f4c132ba274ae09b92c0b2",
+          "centroid_px": [
+            361.27222222222224,
+            455.76666666666665
+          ],
+          "bbox_xywh_px": [
+            336,
+            453,
+            49,
+            7
+          ],
+          "pixels": 180,
+          "projected_hull_area_m2": 0.00011566755473430002,
+          "projected_rect_sides_m": [
+            0.005420301109552383,
+            0.027605528011918068
+          ],
+          "center_body_m": [
+            0.3958463456312453,
+            -0.04159484017216857
+          ],
+          "center_odom_m": [
+            0.7422507538934805,
+            -3.4446045517315964
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            120.0
+          ],
+          "screen_zone": "middle/bottom"
+        },
+        {
+          "frame_id": 641,
+          "t": 33.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/00640.jpg",
+          "sha256": "8c784306956bacf82ee6be72924e4d45cd23db83096bab198227dbc1ef46ee18",
+          "centroid_px": [
+            159.41884816753927,
+            300.5130890052356
+          ],
+          "bbox_xywh_px": [
+            144,
+            298,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.0002736021607714356,
+          "projected_rect_sides_m": [
+            0.010049354285001755,
+            0.028796227648854256
+          ],
+          "center_body_m": [
+            0.5995552699231494,
+            0.11050995548501541
+          ],
+          "center_odom_m": [
+            1.0375289433448032,
+            -3.7386303636424913
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 521,
+        "component": 2,
+        "t": 27.3
+      }
+    },
+    {
+      "case": "s1045",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 10,
+      "confirmed_t": 89.3,
+      "observations": [
+        {
+          "frame_id": 1641,
+          "t": 83.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01640.jpg",
+          "sha256": "4e62075e5929afc2ce8a09e0011cad1622069e417a8061e6dc8762a9bc1ba867",
+          "centroid_px": [
+            288.0,
+            12.0
+          ],
+          "bbox_xywh_px": [
+            256,
+            11,
+            65,
+            3
+          ],
+          "pixels": 195,
+          "projected_hull_area_m2": 0.0019244850552228021,
+          "projected_rect_sides_m": [
+            0.019317258149385452,
+            0.10378915816545486
+          ],
+          "center_body_m": [
+            1.1853222024698822,
+            -0.0005000135781870202
+          ],
+          "center_odom_m": [
+            3.33549619642183,
+            -4.94319695044043
+          ],
+          "hsv_median": [
+            110.0,
+            86.0,
+            121.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1681,
+          "t": 85.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01680.jpg",
+          "sha256": "ae26c6550accb1caf910af9a2e161f7f51e140959b92d41d64fb83bb3ae1240a",
+          "centroid_px": [
+            288.0,
+            12.0
+          ],
+          "bbox_xywh_px": [
+            256,
+            11,
+            65,
+            3
+          ],
+          "pixels": 195,
+          "projected_hull_area_m2": 0.0019244850552228021,
+          "projected_rect_sides_m": [
+            0.019317258149385452,
+            0.10378915816545486
+          ],
+          "center_body_m": [
+            1.1853222024698822,
+            -0.0005000135781870202
+          ],
+          "center_odom_m": [
+            3.33549619642183,
+            -4.94319695044043
+          ],
+          "hsv_median": [
+            110.0,
+            86.0,
+            121.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1721,
+          "t": 87.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01720.jpg",
+          "sha256": "dfd4fe60f250c495e3d87a82426135d1c8f8c6fc835220d4be49cff3ccfbc9e0",
+          "centroid_px": [
+            288.0,
+            12.0
+          ],
+          "bbox_xywh_px": [
+            256,
+            11,
+            65,
+            3
+          ],
+          "pixels": 195,
+          "projected_hull_area_m2": 0.0019244850552228021,
+          "projected_rect_sides_m": [
+            0.019317258149385452,
+            0.10378915816545486
+          ],
+          "center_body_m": [
+            1.1853222024698822,
+            -0.0005000135781870202
+          ],
+          "center_odom_m": [
+            3.33549619642183,
+            -4.94319695044043
+          ],
+          "hsv_median": [
+            110.0,
+            86.0,
+            121.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1761,
+          "t": 89.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01760.jpg",
+          "sha256": "23385d4a6e6046efd1c99b4015499d82a9af1b197764cea07cbc3d8dab73943b",
+          "centroid_px": [
+            580.4313725490196,
+            39.84313725490196
+          ],
+          "bbox_xywh_px": [
+            576,
+            32,
+            10,
+            16
+          ],
+          "pixels": 153,
+          "projected_hull_area_m2": 0.0022029850602418577,
+          "projected_rect_sides_m": [
+            0.017086820676922798,
+            0.14876171946525574
+          ],
+          "center_body_m": [
+            1.111922302621678,
+            -0.4822241430736206
+          ],
+          "center_odom_m": [
+            3.1534248706419614,
+            -5.107870500874037
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            121.0
+          ],
+          "screen_zone": "right/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 1641,
+        "component": 1,
+        "t": 83.3
+      }
+    },
+    {
+      "case": "s1045",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 11,
+      "confirmed_t": 89.3,
+      "observations": [
+        {
+          "frame_id": 1641,
+          "t": 83.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01640.jpg",
+          "sha256": "4e62075e5929afc2ce8a09e0011cad1622069e417a8061e6dc8762a9bc1ba867",
+          "centroid_px": [
+            71.5,
+            101.5
+          ],
+          "bbox_xywh_px": [
+            64,
+            96,
+            16,
+            12
+          ],
+          "pixels": 192,
+          "projected_hull_area_m2": 0.000581351209845149,
+          "projected_rect_sides_m": [
+            0.016146231442689896,
+            0.045256607234478
+          ],
+          "center_body_m": [
+            0.7598172775214961,
+            0.21722895733405187
+          ],
+          "center_odom_m": [
+            3.0704928003163334,
+            -4.54541114629153
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            121.0
+          ],
+          "screen_zone": "left/top"
+        },
+        {
+          "frame_id": 1641,
+          "t": 83.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01640.jpg",
+          "sha256": "4e62075e5929afc2ce8a09e0011cad1622069e417a8061e6dc8762a9bc1ba867",
+          "centroid_px": [
+            231.5,
+            97.5
+          ],
+          "bbox_xywh_px": [
+            128,
+            96,
+            208,
+            4
+          ],
+          "pixels": 832,
+          "projected_hull_area_m2": 0.00234515260625872,
+          "projected_rect_sides_m": [
+            0.012842537835240364,
+            0.20423956215381622
+          ],
+          "center_body_m": [
+            0.75640061843951,
+            0.054426580027852056
+          ],
+          "center_odom_m": [
+            2.988012147349867,
+            -4.685814955007882
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            123.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1681,
+          "t": 85.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01680.jpg",
+          "sha256": "ae26c6550accb1caf910af9a2e161f7f51e140959b92d41d64fb83bb3ae1240a",
+          "centroid_px": [
+            215.5,
+            97.5
+          ],
+          "bbox_xywh_px": [
+            128,
+            96,
+            176,
+            4
+          ],
+          "pixels": 704,
+          "projected_hull_area_m2": 0.0018659939309933421,
+          "projected_rect_sides_m": [
+            0.01174922101199627,
+            0.17390672862529755
+          ],
+          "center_body_m": [
+            0.7567702861215394,
+            0.06981487126006208
+          ],
+          "center_odom_m": [
+            2.9958490968835005,
+            -4.672566619895509
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            123.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1721,
+          "t": 87.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01720.jpg",
+          "sha256": "dfd4fe60f250c495e3d87a82426135d1c8f8c6fc835220d4be49cff3ccfbc9e0",
+          "centroid_px": [
+            63.18,
+            101.76
+          ],
+          "bbox_xywh_px": [
+            48,
+            96,
+            32,
+            13
+          ],
+          "pixels": 400,
+          "projected_hull_area_m2": 0.0013109410388683074,
+          "projected_rect_sides_m": [
+            0.03443371132016182,
+            0.054712068289518356
+          ],
+          "center_body_m": [
+            0.7606365496002704,
+            0.2269164765229949
+          ],
+          "center_odom_m": [
+            3.0759383249588708,
+            -4.5373572344381055
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            121.0
+          ],
+          "screen_zone": "left/top"
+        },
+        {
+          "frame_id": 1721,
+          "t": 87.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01720.jpg",
+          "sha256": "dfd4fe60f250c495e3d87a82426135d1c8f8c6fc835220d4be49cff3ccfbc9e0",
+          "centroid_px": [
+            215.5,
+            97.5
+          ],
+          "bbox_xywh_px": [
+            128,
+            96,
+            176,
+            4
+          ],
+          "pixels": 704,
+          "projected_hull_area_m2": 0.0018659939309933421,
+          "projected_rect_sides_m": [
+            0.01174922101199627,
+            0.17390672862529755
+          ],
+          "center_body_m": [
+            0.7567702861215394,
+            0.06981487126006208
+          ],
+          "center_odom_m": [
+            2.9958490968835005,
+            -4.672566619895509
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            123.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 1761,
+          "t": 89.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01760.jpg",
+          "sha256": "23385d4a6e6046efd1c99b4015499d82a9af1b197764cea07cbc3d8dab73943b",
+          "centroid_px": [
+            497.0492957746479,
+            101.05352112676056
+          ],
+          "bbox_xywh_px": [
+            463,
+            96,
+            65,
+            13
+          ],
+          "pixels": 710,
+          "projected_hull_area_m2": 0.002370100533233721,
+          "projected_rect_sides_m": [
+            0.03592054545879364,
+            0.0880676880478859
+          ],
+          "center_body_m": [
+            0.7601533736688671,
+            -0.21009137202050965
+          ],
+          "center_odom_m": [
+            2.9847922743393362,
+            -4.696335967788551
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            121.0
+          ],
+          "screen_zone": "right/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 1641,
+        "component": 3,
+        "t": 83.3
+      }
+    },
+    {
+      "case": "s1045",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 12,
+      "confirmed_t": 95.3,
+      "observations": [
+        {
+          "frame_id": 1801,
+          "t": 91.3,
+          "component": 4,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01800.jpg",
+          "sha256": "1982f9c51afe73e45d766c0538b6795db9bcccdde0643cc4ddc1427be1aa5d06",
+          "centroid_px": [
+            56.83762376237624,
+            154.14455445544556
+          ],
+          "bbox_xywh_px": [
+            32,
+            148,
+            48,
+            12
+          ],
+          "pixels": 505,
+          "projected_hull_area_m2": 0.0008779073009157479,
+          "projected_rect_sides_m": [
+            0.021473795175552368,
+            0.049788620322942734
+          ],
+          "center_body_m": [
+            0.6293050087868751,
+            0.18658259504694014
+          ],
+          "center_odom_m": [
+            3.2219009604246667,
+            -4.0967393900066575
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            121.0
+          ],
+          "screen_zone": "left/top"
+        },
+        {
+          "frame_id": 1841,
+          "t": 93.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01840.jpg",
+          "sha256": "6a971d27048eae837d2de27093f3af9469f814be444bbfb02abfe9cf9e59caed",
+          "centroid_px": [
+            584.4628571428572,
+            202.74857142857144
+          ],
+          "bbox_xywh_px": [
+            575,
+            198,
+            19,
+            10
+          ],
+          "pixels": 175,
+          "projected_hull_area_m2": 0.00020277885425601383,
+          "projected_rect_sides_m": [
+            0.013474691659212112,
+            0.022448476403951645
+          ],
+          "center_body_m": [
+            0.548247346885521,
+            -0.21205653007250805
+          ],
+          "center_odom_m": [
+            3.0663082304630693,
+            -4.286874726854188
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            123.0
+          ],
+          "screen_zone": "right/middle"
+        },
+        {
+          "frame_id": 1841,
+          "t": 93.3,
+          "component": 4,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01840.jpg",
+          "sha256": "6a971d27048eae837d2de27093f3af9469f814be444bbfb02abfe9cf9e59caed",
+          "centroid_px": [
+            112.50074515648286,
+            218.28166915052162
+          ],
+          "bbox_xywh_px": [
+            79,
+            212,
+            65,
+            12
+          ],
+          "pixels": 671,
+          "projected_hull_area_m2": 0.0005413601030723747,
+          "projected_rect_sides_m": [
+            0.013860148377716541,
+            0.045181725174188614
+          ],
+          "center_body_m": [
+            0.5261068670757487,
+            0.11142103970246686
+          ],
+          "center_odom_m": [
+            3.2147730266831744,
+            -3.9986280559678558
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            121.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 1881,
+          "t": 95.3,
+          "component": 5,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01880.jpg",
+          "sha256": "a68004cd711a65602bec6239516f3ae7f0ae048096a76bb0f755ba19b6d62c82",
+          "centroid_px": [
+            503.5735294117647,
+            363.4117647058824
+          ],
+          "bbox_xywh_px": [
+            495,
+            359,
+            17,
+            9
+          ],
+          "pixels": 136,
+          "projected_hull_area_m2": 4.065091864569048e-05,
+          "projected_rect_sides_m": [
+            0.005538312718272209,
+            0.00894161220639944
+          ],
+          "center_body_m": [
+            0.39261979598830093,
+            -0.09974061378848764
+          ],
+          "center_odom_m": [
+            3.049768498439187,
+            -4.145238643897884
+          ],
+          "hsv_median": [
+            109.0,
+            89.5,
+            123.0
+          ],
+          "screen_zone": "right/bottom"
+        },
+        {
+          "frame_id": 1881,
+          "t": 95.3,
+          "component": 6,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/01880.jpg",
+          "sha256": "a68004cd711a65602bec6239516f3ae7f0ae048096a76bb0f755ba19b6d62c82",
+          "centroid_px": [
+            335.92857142857144,
+            379.16785714285714
+          ],
+          "bbox_xywh_px": [
+            319,
+            374,
+            33,
+            10
+          ],
+          "pixels": 280,
+          "projected_hull_area_m2": 6.95098049023346e-05,
+          "projected_rect_sides_m": [
+            0.0056373076513409615,
+            0.014137674123048782
+          ],
+          "center_body_m": [
+            0.38710302233250565,
+            -0.0209364437578258
+          ],
+          "center_odom_m": [
+            3.0858237353444165,
+            -4.074949584311783
+          ],
+          "hsv_median": [
+            109.0,
+            89.0,
+            123.0
+          ],
+          "screen_zone": "middle/bottom"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 1841,
+        "component": 4,
+        "t": 93.3
+      }
+    },
+    {
+      "case": "s1045",
+      "robot": "r3",
+      "profile": "camera_v3",
+      "track": 14,
+      "confirmed_t": 651.3,
+      "observations": [
+        {
+          "frame_id": 12881,
+          "t": 645.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/12880.jpg",
+          "sha256": "e788c1106b81bcb8e2a2ff2378c135657a65e30348171856cf083f048a5c4c8b",
+          "centroid_px": [
+            367.5,
+            236.5
+          ],
+          "bbox_xywh_px": [
+            336,
+            234,
+            64,
+            6
+          ],
+          "pixels": 384,
+          "projected_hull_area_m2": 0.0002112841773833085,
+          "projected_rect_sides_m": [
+            0.005628184415400028,
+            0.03823712468147278
+          ],
+          "center_body_m": [
+            0.5046612934827441,
+            -0.04714611431092119
+          ],
+          "center_odom_m": [
+            2.976109432660552,
+            -5.903395610886075
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 12921,
+          "t": 647.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/12920.jpg",
+          "sha256": "db81bbbae5b4b0d04294beeb44d3117c77abb95f2e26b498d6ccccadf2791056",
+          "centroid_px": [
+            367.5,
+            271.5
+          ],
+          "bbox_xywh_px": [
+            336,
+            270,
+            64,
+            4
+          ],
+          "pixels": 256,
+          "projected_hull_area_m2": 9.872649198031103e-05,
+          "projected_rect_sides_m": [
+            0.0028802722226828337,
+            0.034741487354040146
+          ],
+          "center_body_m": [
+            0.46874045841970213,
+            -0.04321012279117405
+          ],
+          "center_odom_m": [
+            3.0495217778038572,
+            -5.682299570197451
+          ],
+          "hsv_median": [
+            110.0,
+            84.0,
+            121.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 12921,
+          "t": 647.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/12920.jpg",
+          "sha256": "db81bbbae5b4b0d04294beeb44d3117c77abb95f2e26b498d6ccccadf2791056",
+          "centroid_px": [
+            42.26553672316384,
+            300.05649717514126
+          ],
+          "bbox_xywh_px": [
+            28,
+            289,
+            36,
+            15
+          ],
+          "pixels": 177,
+          "projected_hull_area_m2": 0.0001643659323676827,
+          "projected_rect_sides_m": [
+            0.010347941890358925,
+            0.02678832970559597
+          ],
+          "center_body_m": [
+            0.43950206099490313,
+            0.13064877046866383
+          ],
+          "center_odom_m": [
+            3.104702802552024,
+            -5.514857481231599
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            123.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 12921,
+          "t": 647.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/12920.jpg",
+          "sha256": "db81bbbae5b4b0d04294beeb44d3117c77abb95f2e26b498d6ccccadf2791056",
+          "centroid_px": [
+            384.0,
+            384.0
+          ],
+          "bbox_xywh_px": [
+            352,
+            383,
+            65,
+            3
+          ],
+          "pixels": 195,
+          "projected_hull_area_m2": 3.690071572984288e-05,
+          "projected_rect_sides_m": [
+            0.0013500392669811845,
+            0.028189700096845627
+          ],
+          "center_body_m": [
+            0.3833710467082469,
+            -0.041680994480488245
+          ],
+          "center_odom_m": [
+            2.9747087780219847,
+            -5.641149968097454
+          ],
+          "hsv_median": [
+            110.0,
+            84.0,
+            123.0
+          ],
+          "screen_zone": "middle/bottom"
+        },
+        {
+          "frame_id": 13001,
+          "t": 651.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/rgb/13000.jpg",
+          "sha256": "c9f7356356a3ceeecb843e882d061803faff28b13ae21903518f7c7e8cceac3d",
+          "centroid_px": [
+            407.5,
+            384.3125
+          ],
+          "bbox_xywh_px": [
+            384,
+            383,
+            48,
+            4
+          ],
+          "pixels": 144,
+          "projected_hull_area_m2": 3.260797600856957e-05,
+          "projected_rect_sides_m": [
+            0.001858772011473775,
+            0.020876118913292885
+          ],
+          "center_body_m": [
+            0.38266185949850823,
+            -0.05199563045931122
+          ],
+          "center_odom_m": [
+            2.864950686597366,
+            -5.851918254951162
+          ],
+          "hsv_median": [
+            110.0,
+            89.0,
+            120.0
+          ],
+          "screen_zone": "middle/bottom"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 12881,
+        "component": 1,
+        "t": 645.3
+      }
+    },
+    {
+      "case": "s911-r1",
+      "robot": "r1",
+      "profile": "legacy",
+      "track": 2,
+      "confirmed_t": 19.3,
+      "observations": [
+        {
+          "frame_id": 201,
+          "t": 11.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/rgb/00200.jpg",
+          "sha256": "7cb920f31469c6ed9f2fd77437aa588e9a853f6b72bd67c3bdca60e0f6806e97",
+          "centroid_px": [
+            423.41728763040237,
+            124.5037257824143
+          ],
+          "bbox_xywh_px": [
+            368,
+            122,
+            112,
+            6
+          ],
+          "pixels": 671,
+          "projected_hull_area_m2": 0.008393707418044016,
+          "projected_rect_sides_m": [
+            0.04257461056113243,
+            0.21383041143417358
+          ],
+          "center_body_m": [
+            1.134870467687384,
+            -0.22915839357247134
+          ],
+          "center_odom_m": [
+            1.134870467687384,
+            -0.22915839357247134
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/rgb/00280.jpg",
+          "sha256": "c40c665019c653fa44b97c7a9bafd711b5865d94242b9610d2f13074f4db0a60",
+          "centroid_px": [
+            495.5,
+            146.5
+          ],
+          "bbox_xywh_px": [
+            464,
+            144,
+            64,
+            6
+          ],
+          "pixels": 384,
+          "projected_hull_area_m2": 0.0033070813209690186,
+          "projected_rect_sides_m": [
+            0.030715515837073326,
+            0.12353892624378204
+          ],
+          "center_body_m": [
+            0.9914004103343056,
+            -0.31038966618504954
+          ],
+          "center_odom_m": [
+            1.077318264224957,
+            -0.31038649526858036
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 361,
+          "t": 19.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/rgb/00360.jpg",
+          "sha256": "ff73bb4d00798cbb7c524142e6d99a6b56e89747d57665d8f0cab9395be21199",
+          "centroid_px": [
+            471.41728763040237,
+            140.5037257824143
+          ],
+          "bbox_xywh_px": [
+            416,
+            138,
+            112,
+            6
+          ],
+          "pixels": 671,
+          "projected_hull_area_m2": 0.006447963341056795,
+          "projected_rect_sides_m": [
+            0.03426528722047806,
+            0.20491984486579895
+          ],
+          "center_body_m": [
+            1.0259568263143277,
+            -0.2827918149286556
+          ],
+          "center_odom_m": [
+            1.455074618523074,
+            -0.28304758788258366
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 201,
+        "component": 1,
+        "t": 11.3
+      }
+    },
+    {
+      "case": "s911-r1",
+      "robot": "r1",
+      "profile": "legacy",
+      "track": 3,
+      "confirmed_t": 21.3,
+      "observations": [
+        {
+          "frame_id": 201,
+          "t": 11.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/rgb/00200.jpg",
+          "sha256": "7cb920f31469c6ed9f2fd77437aa588e9a853f6b72bd67c3bdca60e0f6806e97",
+          "centroid_px": [
+            28.231155778894472,
+            230.33165829145727
+          ],
+          "bbox_xywh_px": [
+            24,
+            209,
+            8,
+            46
+          ],
+          "pixels": 199,
+          "projected_hull_area_m2": 0.0007043653341010092,
+          "projected_rect_sides_m": [
+            0.007169164717197418,
+            0.1314353495836258
+          ],
+          "center_body_m": [
+            0.6566799880678755,
+            0.25483067464440173
+          ],
+          "center_odom_m": [
+            0.6566799880678755,
+            0.25483067464440173
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/rgb/00280.jpg",
+          "sha256": "c40c665019c653fa44b97c7a9bafd711b5865d94242b9610d2f13074f4db0a60",
+          "centroid_px": [
+            29.5,
+            231.5
+          ],
+          "bbox_xywh_px": [
+            28,
+            209,
+            4,
+            46
+          ],
+          "pixels": 184,
+          "projected_hull_area_m2": 0.00041695552776177536,
+          "projected_rect_sides_m": [
+            0.003467888105660677,
+            0.12918755412101746
+          ],
+          "center_body_m": [
+            0.653548994716427,
+            0.251979670327079
+          ],
+          "center_odom_m": [
+            0.7396153670234292,
+            0.2520720391193251
+          ],
+          "hsv_median": [
+            109.5,
+            88.0,
+            118.5
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/rgb/00400.jpg",
+          "sha256": "c63e8dd2f2951163a55f6f83e7ccc2f8b1b7ac12eacad665246a8c65f602621e",
+          "centroid_px": [
+            222.14768917624522,
+            338.3196120689655
+          ],
+          "bbox_xywh_px": [
+            24,
+            152,
+            420,
+            312
+          ],
+          "pixels": 83520,
+          "projected_hull_area_m2": 0.026559663681853293,
+          "projected_rect_sides_m": [
+            0.16910558938980103,
+            0.18522238731384277
+          ],
+          "center_body_m": [
+            0.3456756732879063,
+            0.02599676521948974
+          ],
+          "center_odom_m": [
+            0.8875318218576558,
+            0.026712019498519167
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "middle/bottom"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 401,
+        "component": 1,
+        "t": 21.3
+      }
+    },
+    {
+      "case": "s911-r1",
+      "robot": "r1",
+      "profile": "legacy",
+      "track": 4,
+      "confirmed_t": 93.65,
+      "observations": [
+        {
+          "frame_id": 681,
+          "t": 35.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/rgb/00680.jpg",
+          "sha256": "dc94798ceaaf2479d27bd653053e4ec4959a596f4b6d09fb51ccb88b022a19ad",
+          "centroid_px": [
+            431.4188481675393,
+            226.4869109947644
+          ],
+          "bbox_xywh_px": [
+            416,
+            224,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.001503705212490658,
+          "projected_rect_sides_m": [
+            0.032072097063064575,
+            0.05422039330005646
+          ],
+          "center_body_m": [
+            1.0285511944461472,
+            -0.2107715768528069
+          ],
+          "center_odom_m": [
+            2.158183119350378,
+            -0.21267031537509487
+          ],
+          "hsv_median": [
+            110.0,
+            81.0,
+            114.0
+          ],
+          "screen_zone": "right/middle"
+        },
+        {
+          "frame_id": 1841,
+          "t": 93.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/rgb/01840.jpg",
+          "sha256": "259e539c14b3357e8e973d28e5f051a5d241dcfc1b6e27b393054ba0bdb3f704",
+          "centroid_px": [
+            227.6560063482104,
+            315.7134262804839
+          ],
+          "bbox_xywh_px": [
+            24,
+            173,
+            428,
+            286
+          ],
+          "pixels": 108377,
+          "projected_hull_area_m2": 0.036636195513603864,
+          "projected_rect_sides_m": [
+            0.19840730726718903,
+            0.22422800958156586
+          ],
+          "center_body_m": [
+            0.3963605701394625,
+            0.027166079242288355
+          ],
+          "center_odom_m": [
+            1.8212214409816216,
+            0.027075212918530954
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 1848,
+          "t": 93.65,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/rgb/01847.jpg",
+          "sha256": "2d84dc7b3a04b27440c5998ec3f78ff76504a8bee1f523911fc2a4ed1f251999",
+          "centroid_px": [
+            206.3954716540717,
+            221.57079917135937
+          ],
+          "bbox_xywh_px": [
+            24,
+            173,
+            384,
+            131
+          ],
+          "pixels": 34273,
+          "projected_hull_area_m2": 0.020616524712064765,
+          "projected_rect_sides_m": [
+            0.12020716071128845,
+            0.22243934869766235
+          ],
+          "center_body_m": [
+            0.46300171096501264,
+            0.04264016704199744
+          ],
+          "center_odom_m": [
+            1.907830622963945,
+            0.04229070726380026
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "left/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 1841,
+        "component": 1,
+        "t": 93.3
+      }
+    },
+    {
+      "case": "s911-r2",
+      "robot": "r2",
+      "profile": "legacy",
+      "track": 3,
+      "confirmed_t": 17.3,
+      "observations": [
+        {
+          "frame_id": 201,
+          "t": 11.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/rgb/00200.jpg",
+          "sha256": "432cd2985d7221a375fb9aed1b8a83db59562f78aabdca83ed0f463694bcd117",
+          "centroid_px": [
+            317.2074074074074,
+            204.3925925925926
+          ],
+          "bbox_xywh_px": [
+            315,
+            185,
+            6,
+            38
+          ],
+          "pixels": 135,
+          "projected_hull_area_m2": 0.0005141574835625939,
+          "projected_rect_sides_m": [
+            0.005424662958830595,
+            0.11598097532987595
+          ],
+          "center_body_m": [
+            0.7297201931138567,
+            -0.03026646479430923
+          ],
+          "center_odom_m": [
+            0.7297201931138567,
+            -0.03026646479430923
+          ],
+          "hsv_median": [
+            110.0,
+            89.0,
+            120.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/rgb/00280.jpg",
+          "sha256": "c888462f4d98f7be2096fdb5d2ceddc4b147f569de84120857ff67d1b6914a7d",
+          "centroid_px": [
+            317.1811594202899,
+            203.94927536231884
+          ],
+          "bbox_xywh_px": [
+            315,
+            184,
+            6,
+            39
+          ],
+          "pixels": 138,
+          "projected_hull_area_m2": 0.0005286659613443212,
+          "projected_rect_sides_m": [
+            0.005424662958830595,
+            0.11972025781869888
+          ],
+          "center_body_m": [
+            0.7311927414584751,
+            -0.030302866255624825
+          ],
+          "center_odom_m": [
+            0.8171845678225226,
+            -0.03023099124892795
+          ],
+          "hsv_median": [
+            110.0,
+            90.0,
+            120.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/rgb/00320.jpg",
+          "sha256": "9722bb3190400145ba4e073f80c2b51e6c8302cf432c058d2cd66a5e77033f43",
+          "centroid_px": [
+            71.58280922431865,
+            268.50524109014674
+          ],
+          "bbox_xywh_px": [
+            32,
+            266,
+            80,
+            6
+          ],
+          "pixels": 477,
+          "projected_hull_area_m2": 0.0006985828557928286,
+          "projected_rect_sides_m": [
+            0.009970195591449738,
+            0.07306124269962311
+          ],
+          "center_body_m": [
+            0.570666804044768,
+            0.17839295955390483
+          ],
+          "center_odom_m": [
+            0.8244751126591734,
+            0.17866475527480732
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 321,
+        "component": 2,
+        "t": 17.3
+      }
+    },
+    {
+      "case": "s911-r2",
+      "robot": "r2",
+      "profile": "legacy",
+      "track": 4,
+      "confirmed_t": 25.3,
+      "observations": [
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/rgb/00320.jpg",
+          "sha256": "9722bb3190400145ba4e073f80c2b51e6c8302cf432c058d2cd66a5e77033f43",
+          "centroid_px": [
+            495.4188481675393,
+            124.5130890052356
+          ],
+          "bbox_xywh_px": [
+            480,
+            122,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.0026410108554095757,
+          "projected_rect_sides_m": [
+            0.040872614830732346,
+            0.08619451522827148
+          ],
+          "center_body_m": [
+            1.1551319802518474,
+            -0.3653834167867355
+          ],
+          "center_odom_m": [
+            1.4085165517062974,
+            -0.3655667093987216
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/rgb/00400.jpg",
+          "sha256": "d820495bc0d25ac821a48ded6648bee7b7be739c74410d07b2185d34b39b97b0",
+          "centroid_px": [
+            580.4313725490196,
+            39.84313725490196
+          ],
+          "bbox_xywh_px": [
+            576,
+            32,
+            10,
+            16
+          ],
+          "pixels": 153,
+          "projected_hull_area_m2": 0.0004252786814324949,
+          "projected_rect_sides_m": [
+            0.009408663958311081,
+            0.05264496058225632
+          ],
+          "center_body_m": [
+            0.6842886501435975,
+            -0.2700096823662978
+          ],
+          "center_odom_m": [
+            1.2256518638848837,
+            -0.269857369156035
+          ],
+          "hsv_median": [
+            109.0,
+            88.0,
+            122.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/rgb/00400.jpg",
+          "sha256": "d820495bc0d25ac821a48ded6648bee7b7be739c74410d07b2185d34b39b97b0",
+          "centroid_px": [
+            503.5,
+            113.5
+          ],
+          "bbox_xywh_px": [
+            448,
+            112,
+            112,
+            4
+          ],
+          "pixels": 448,
+          "projected_hull_area_m2": 0.00036128977430349707,
+          "projected_rect_sides_m": [
+            0.0046153380535542965,
+            0.08352726697921753
+          ],
+          "center_body_m": [
+            0.5240091450883361,
+            -0.1378311162979619
+          ],
+          "center_odom_m": [
+            1.0655924862530444,
+            -0.13741232885346555
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 481,
+          "t": 25.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/rgb/00480.jpg",
+          "sha256": "c8061a50e59e5f65357433948bfe16c0afc46b4e6d92a89e9a474896b67caa3b",
+          "centroid_px": [
+            377.7857142857143,
+            21.428571428571427
+          ],
+          "bbox_xywh_px": [
+            368,
+            14,
+            32,
+            18
+          ],
+          "pixels": 336,
+          "projected_hull_area_m2": 0.0009389444669121172,
+          "projected_rect_sides_m": [
+            0.027693863958120346,
+            0.05175228789448738
+          ],
+          "center_body_m": [
+            0.6880998138785728,
+            -0.0764669011771925
+          ],
+          "center_odom_m": [
+            1.3329724641474816,
+            -0.07639577770490397
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 481,
+          "t": 25.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/rgb/00480.jpg",
+          "sha256": "c8061a50e59e5f65357433948bfe16c0afc46b4e6d92a89e9a474896b67caa3b",
+          "centroid_px": [
+            580.4313725490196,
+            39.84313725490196
+          ],
+          "bbox_xywh_px": [
+            576,
+            32,
+            10,
+            16
+          ],
+          "pixels": 153,
+          "projected_hull_area_m2": 0.0004252786814324949,
+          "projected_rect_sides_m": [
+            0.009408663958311081,
+            0.05264496058225632
+          ],
+          "center_body_m": [
+            0.6842886501435975,
+            -0.2700096823662978
+          ],
+          "center_odom_m": [
+            1.328777972293656,
+            -0.2699306307870216
+          ],
+          "hsv_median": [
+            109.0,
+            88.0,
+            122.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 481,
+          "t": 25.3,
+          "component": 3,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/rgb/00480.jpg",
+          "sha256": "c8061a50e59e5f65357433948bfe16c0afc46b4e6d92a89e9a474896b67caa3b",
+          "centroid_px": [
+            479.5,
+            129.5
+          ],
+          "bbox_xywh_px": [
+            448,
+            128,
+            64,
+            4
+          ],
+          "pixels": 256,
+          "projected_hull_area_m2": 0.00015413623981341829,
+          "projected_rect_sides_m": [
+            0.003757553407922387,
+            0.0428597666323185
+          ],
+          "center_body_m": [
+            0.5014769990131874,
+            -0.11446899378587641
+          ],
+          "center_odom_m": [
+            1.1462747474517347,
+            -0.11402816603614728
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "right/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 401,
+        "component": 2,
+        "t": 21.3
+      }
+    },
+    {
+      "case": "s912-r1",
+      "robot": "r1",
+      "profile": "legacy",
+      "track": 2,
+      "confirmed_t": 19.3,
+      "observations": [
+        {
+          "frame_id": 201,
+          "t": 11.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/rgb/00200.jpg",
+          "sha256": "7cb920f31469c6ed9f2fd77437aa588e9a853f6b72bd67c3bdca60e0f6806e97",
+          "centroid_px": [
+            423.41728763040237,
+            124.5037257824143
+          ],
+          "bbox_xywh_px": [
+            368,
+            122,
+            112,
+            6
+          ],
+          "pixels": 671,
+          "projected_hull_area_m2": 0.008393707418044016,
+          "projected_rect_sides_m": [
+            0.04257461056113243,
+            0.21383041143417358
+          ],
+          "center_body_m": [
+            1.134870467687384,
+            -0.22915839357247134
+          ],
+          "center_odom_m": [
+            1.134870467687384,
+            -0.22915839357247134
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/rgb/00280.jpg",
+          "sha256": "c40c665019c653fa44b97c7a9bafd711b5865d94242b9610d2f13074f4db0a60",
+          "centroid_px": [
+            495.5,
+            146.5
+          ],
+          "bbox_xywh_px": [
+            464,
+            144,
+            64,
+            6
+          ],
+          "pixels": 384,
+          "projected_hull_area_m2": 0.0033070813209690186,
+          "projected_rect_sides_m": [
+            0.030715515837073326,
+            0.12353892624378204
+          ],
+          "center_body_m": [
+            0.9914004103343056,
+            -0.31038966618504954
+          ],
+          "center_odom_m": [
+            1.077318264224957,
+            -0.31038649526858036
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 361,
+          "t": 19.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/rgb/00360.jpg",
+          "sha256": "6419662810114f979c7b13f6ee81c882429fd0f5c696997ebda82c9fa54efd6a",
+          "centroid_px": [
+            463.4170286707211,
+            140.50217202432668
+          ],
+          "bbox_xywh_px": [
+            368,
+            138,
+            192,
+            6
+          ],
+          "pixels": 1151,
+          "projected_hull_area_m2": 0.012022217985394823,
+          "projected_rect_sides_m": [
+            0.038180284202098846,
+            0.3441225588321686
+          ],
+          "center_body_m": [
+            1.025953783047506,
+            -0.27234287875801655
+          ],
+          "center_odom_m": [
+            1.4525258820494205,
+            -0.2725954705269744
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 361,
+          "t": 19.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/rgb/00360.jpg",
+          "sha256": "6419662810114f979c7b13f6ee81c882429fd0f5c696997ebda82c9fa54efd6a",
+          "centroid_px": [
+            367.6649214659686,
+            162.5
+          ],
+          "bbox_xywh_px": [
+            336,
+            160,
+            64,
+            6
+          ],
+          "pixels": 382,
+          "projected_hull_area_m2": 0.001963651955925405,
+          "projected_rect_sides_m": [
+            0.024151720106601715,
+            0.08520102500915527
+          ],
+          "center_body_m": [
+            0.8898180956816396,
+            -0.10225547717968926
+          ],
+          "center_odom_m": [
+            1.3166132858603947,
+            -0.10232974952769935
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 361,
+        "component": 1,
+        "t": 19.3
+      }
+    },
+    {
+      "case": "s912-r1",
+      "robot": "r1",
+      "profile": "legacy",
+      "track": 3,
+      "confirmed_t": 25.3,
+      "observations": [
+        {
+          "frame_id": 201,
+          "t": 11.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/rgb/00200.jpg",
+          "sha256": "7cb920f31469c6ed9f2fd77437aa588e9a853f6b72bd67c3bdca60e0f6806e97",
+          "centroid_px": [
+            28.231155778894472,
+            230.33165829145727
+          ],
+          "bbox_xywh_px": [
+            24,
+            209,
+            8,
+            46
+          ],
+          "pixels": 199,
+          "projected_hull_area_m2": 0.0007043653341010092,
+          "projected_rect_sides_m": [
+            0.007169164717197418,
+            0.1314353495836258
+          ],
+          "center_body_m": [
+            0.6566799880678755,
+            0.25483067464440173
+          ],
+          "center_odom_m": [
+            0.6566799880678755,
+            0.25483067464440173
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/rgb/00280.jpg",
+          "sha256": "c40c665019c653fa44b97c7a9bafd711b5865d94242b9610d2f13074f4db0a60",
+          "centroid_px": [
+            29.5,
+            231.5
+          ],
+          "bbox_xywh_px": [
+            28,
+            209,
+            4,
+            46
+          ],
+          "pixels": 184,
+          "projected_hull_area_m2": 0.00041695552776177536,
+          "projected_rect_sides_m": [
+            0.003467888105660677,
+            0.12918755412101746
+          ],
+          "center_body_m": [
+            0.653548994716427,
+            0.251979670327079
+          ],
+          "center_odom_m": [
+            0.7396153670234292,
+            0.2520720391193251
+          ],
+          "hsv_median": [
+            109.5,
+            88.0,
+            118.5
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 481,
+          "t": 25.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/rgb/00480.jpg",
+          "sha256": "d0e3814f51983f56cc23bfd00ed5731ef7e03e991451f0deb85a8f28f8af7b11",
+          "centroid_px": [
+            216.75338198147628,
+            344.59956497333707
+          ],
+          "bbox_xywh_px": [
+            24,
+            155,
+            420,
+            309
+          ],
+          "pixels": 71260,
+          "projected_hull_area_m2": 0.024503643179332554,
+          "projected_rect_sides_m": [
+            0.16826708614826202,
+            0.1820690780878067
+          ],
+          "center_body_m": [
+            0.34205258187584925,
+            0.027639602589653475
+          ],
+          "center_odom_m": [
+            0.9963408665320397,
+            0.028397444820648435
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "middle/bottom"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 481,
+        "component": 1,
+        "t": 25.3
+      }
+    },
+    {
+      "case": "s912-r2",
+      "robot": "r2",
+      "profile": "legacy",
+      "track": 3,
+      "confirmed_t": 17.3,
+      "observations": [
+        {
+          "frame_id": 201,
+          "t": 11.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r2/rgb/00200.jpg",
+          "sha256": "2e1e26ecfa0a0703ba76d7ab18d0b4f99f69c1ac024550954dc875b605c51497",
+          "centroid_px": [
+            317.2074074074074,
+            204.3925925925926
+          ],
+          "bbox_xywh_px": [
+            315,
+            185,
+            6,
+            38
+          ],
+          "pixels": 135,
+          "projected_hull_area_m2": 0.0005141574835625939,
+          "projected_rect_sides_m": [
+            0.005424662958830595,
+            0.11598097532987595
+          ],
+          "center_body_m": [
+            0.7297201931138567,
+            -0.03026646479430923
+          ],
+          "center_odom_m": [
+            0.7297201931138567,
+            -0.03026646479430923
+          ],
+          "hsv_median": [
+            110.0,
+            89.0,
+            120.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r2/rgb/00280.jpg",
+          "sha256": "668dde01d60912d6a495b1acc177be8bc1817949db422e8bf02845cc73d842fa",
+          "centroid_px": [
+            317.1811594202899,
+            203.94927536231884
+          ],
+          "bbox_xywh_px": [
+            315,
+            184,
+            6,
+            39
+          ],
+          "pixels": 138,
+          "projected_hull_area_m2": 0.0005286659613443212,
+          "projected_rect_sides_m": [
+            0.005424662958830595,
+            0.11972025781869888
+          ],
+          "center_body_m": [
+            0.7311927414584751,
+            -0.030302866255624825
+          ],
+          "center_odom_m": [
+            0.8171845678225226,
+            -0.03023099124892795
+          ],
+          "hsv_median": [
+            110.0,
+            90.0,
+            120.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r2/rgb/00320.jpg",
+          "sha256": "d9728dc3c4ae2438c7d0665d7fe9c2bb6a03119724733f6f115a935e5db9e656",
+          "centroid_px": [
+            71.58280922431865,
+            268.50524109014674
+          ],
+          "bbox_xywh_px": [
+            32,
+            266,
+            80,
+            6
+          ],
+          "pixels": 477,
+          "projected_hull_area_m2": 0.0006985828557928286,
+          "projected_rect_sides_m": [
+            0.009970195591449738,
+            0.07306124269962311
+          ],
+          "center_body_m": [
+            0.570666804044768,
+            0.17839295955390483
+          ],
+          "center_odom_m": [
+            0.8244751126591734,
+            0.17866475527480732
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 321,
+        "component": 2,
+        "t": 17.3
+      }
+    },
+    {
+      "case": "s912-r2",
+      "robot": "r2",
+      "profile": "legacy",
+      "track": 4,
+      "confirmed_t": 27.3,
+      "observations": [
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r2/rgb/00320.jpg",
+          "sha256": "d9728dc3c4ae2438c7d0665d7fe9c2bb6a03119724733f6f115a935e5db9e656",
+          "centroid_px": [
+            495.4188481675393,
+            124.5130890052356
+          ],
+          "bbox_xywh_px": [
+            480,
+            122,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.0026410108554095757,
+          "projected_rect_sides_m": [
+            0.040872614830732346,
+            0.08619451522827148
+          ],
+          "center_body_m": [
+            1.1551319802518474,
+            -0.3653834167867355
+          ],
+          "center_odom_m": [
+            1.4085165517062974,
+            -0.3655667093987216
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r2/rgb/00400.jpg",
+          "sha256": "d820495bc0d25ac821a48ded6648bee7b7be739c74410d07b2185d34b39b97b0",
+          "centroid_px": [
+            580.4313725490196,
+            39.84313725490196
+          ],
+          "bbox_xywh_px": [
+            576,
+            32,
+            10,
+            16
+          ],
+          "pixels": 153,
+          "projected_hull_area_m2": 0.0004252786814324949,
+          "projected_rect_sides_m": [
+            0.009408663958311081,
+            0.05264496058225632
+          ],
+          "center_body_m": [
+            0.6842886501435975,
+            -0.2700096823662978
+          ],
+          "center_odom_m": [
+            1.2256518638848837,
+            -0.269857369156035
+          ],
+          "hsv_median": [
+            109.0,
+            88.0,
+            122.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r2/rgb/00400.jpg",
+          "sha256": "d820495bc0d25ac821a48ded6648bee7b7be739c74410d07b2185d34b39b97b0",
+          "centroid_px": [
+            503.5,
+            113.5
+          ],
+          "bbox_xywh_px": [
+            448,
+            112,
+            112,
+            4
+          ],
+          "pixels": 448,
+          "projected_hull_area_m2": 0.00036128977430349707,
+          "projected_rect_sides_m": [
+            0.0046153380535542965,
+            0.08352726697921753
+          ],
+          "center_body_m": [
+            0.5240091450883361,
+            -0.1378311162979619
+          ],
+          "center_odom_m": [
+            1.0655924862530444,
+            -0.13741232885346555
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 521,
+          "t": 27.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r2/rgb/00520.jpg",
+          "sha256": "a6d1c9d869e59c2c1dd0c12e7fa7f2b19209e0362bc0778b4d5767245f3df962",
+          "centroid_px": [
+            379.1923076923077,
+            17.692307692307693
+          ],
+          "bbox_xywh_px": [
+            368,
+            14,
+            32,
+            10
+          ],
+          "pixels": 208,
+          "projected_hull_area_m2": 0.0005416045820376691,
+          "projected_rect_sides_m": [
+            0.024159464985132217,
+            0.034571390599012375
+          ],
+          "center_body_m": [
+            0.6980749435369111,
+            -0.07902182412768524
+          ],
+          "center_odom_m": [
+            1.3661810387867437,
+            -0.07899236038805228
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 521,
+          "t": 27.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r2/rgb/00520.jpg",
+          "sha256": "a6d1c9d869e59c2c1dd0c12e7fa7f2b19209e0362bc0778b4d5767245f3df962",
+          "centroid_px": [
+            580.4313725490196,
+            39.84313725490196
+          ],
+          "bbox_xywh_px": [
+            576,
+            32,
+            10,
+            16
+          ],
+          "pixels": 153,
+          "projected_hull_area_m2": 0.0004252786814324949,
+          "projected_rect_sides_m": [
+            0.009408663958311081,
+            0.05264496058225632
+          ],
+          "center_body_m": [
+            0.6842886501435975,
+            -0.2700096823662978
+          ],
+          "center_odom_m": [
+            1.352002867610171,
+            -0.269951527076082
+          ],
+          "hsv_median": [
+            109.0,
+            88.0,
+            122.0
+          ],
+          "screen_zone": "right/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 401,
+        "component": 2,
+        "t": 21.3
+      }
+    },
+    {
+      "case": "s913-r1",
+      "robot": "r1",
+      "profile": "legacy",
+      "track": 2,
+      "confirmed_t": 19.3,
+      "observations": [
+        {
+          "frame_id": 201,
+          "t": 11.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r1/rgb/00200.jpg",
+          "sha256": "7cb920f31469c6ed9f2fd77437aa588e9a853f6b72bd67c3bdca60e0f6806e97",
+          "centroid_px": [
+            423.41728763040237,
+            124.5037257824143
+          ],
+          "bbox_xywh_px": [
+            368,
+            122,
+            112,
+            6
+          ],
+          "pixels": 671,
+          "projected_hull_area_m2": 0.008393707418044016,
+          "projected_rect_sides_m": [
+            0.04257461056113243,
+            0.21383041143417358
+          ],
+          "center_body_m": [
+            1.134870467687384,
+            -0.22915839357247134
+          ],
+          "center_odom_m": [
+            1.134870467687384,
+            -0.22915839357247134
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "middle/top"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r1/rgb/00280.jpg",
+          "sha256": "c40c665019c653fa44b97c7a9bafd711b5865d94242b9610d2f13074f4db0a60",
+          "centroid_px": [
+            495.5,
+            146.5
+          ],
+          "bbox_xywh_px": [
+            464,
+            144,
+            64,
+            6
+          ],
+          "pixels": 384,
+          "projected_hull_area_m2": 0.0033070813209690186,
+          "projected_rect_sides_m": [
+            0.030715515837073326,
+            0.12353892624378204
+          ],
+          "center_body_m": [
+            0.9914004103343056,
+            -0.31038966618504954
+          ],
+          "center_odom_m": [
+            1.077318264224957,
+            -0.31038649526858036
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 361,
+          "t": 19.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r1/rgb/00360.jpg",
+          "sha256": "ff73bb4d00798cbb7c524142e6d99a6b56e89747d57665d8f0cab9395be21199",
+          "centroid_px": [
+            471.41728763040237,
+            140.5037257824143
+          ],
+          "bbox_xywh_px": [
+            416,
+            138,
+            112,
+            6
+          ],
+          "pixels": 671,
+          "projected_hull_area_m2": 0.006447963341056795,
+          "projected_rect_sides_m": [
+            0.03426528722047806,
+            0.20491984486579895
+          ],
+          "center_body_m": [
+            1.0259568263143277,
+            -0.2827918149286556
+          ],
+          "center_odom_m": [
+            1.455074618523074,
+            -0.28304758788258366
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 201,
+        "component": 1,
+        "t": 11.3
+      }
+    },
+    {
+      "case": "s913-r1",
+      "robot": "r1",
+      "profile": "legacy",
+      "track": 3,
+      "confirmed_t": 21.3,
+      "observations": [
+        {
+          "frame_id": 201,
+          "t": 11.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r1/rgb/00200.jpg",
+          "sha256": "7cb920f31469c6ed9f2fd77437aa588e9a853f6b72bd67c3bdca60e0f6806e97",
+          "centroid_px": [
+            28.231155778894472,
+            230.33165829145727
+          ],
+          "bbox_xywh_px": [
+            24,
+            209,
+            8,
+            46
+          ],
+          "pixels": 199,
+          "projected_hull_area_m2": 0.0007043653341010092,
+          "projected_rect_sides_m": [
+            0.007169164717197418,
+            0.1314353495836258
+          ],
+          "center_body_m": [
+            0.6566799880678755,
+            0.25483067464440173
+          ],
+          "center_odom_m": [
+            0.6566799880678755,
+            0.25483067464440173
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r1/rgb/00280.jpg",
+          "sha256": "c40c665019c653fa44b97c7a9bafd711b5865d94242b9610d2f13074f4db0a60",
+          "centroid_px": [
+            29.5,
+            231.5
+          ],
+          "bbox_xywh_px": [
+            28,
+            209,
+            4,
+            46
+          ],
+          "pixels": 184,
+          "projected_hull_area_m2": 0.00041695552776177536,
+          "projected_rect_sides_m": [
+            0.003467888105660677,
+            0.12918755412101746
+          ],
+          "center_body_m": [
+            0.653548994716427,
+            0.251979670327079
+          ],
+          "center_odom_m": [
+            0.7396153670234292,
+            0.2520720391193251
+          ],
+          "hsv_median": [
+            109.5,
+            88.0,
+            118.5
+          ],
+          "screen_zone": "left/middle"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r1/rgb/00400.jpg",
+          "sha256": "c63e8dd2f2951163a55f6f83e7ccc2f8b1b7ac12eacad665246a8c65f602621e",
+          "centroid_px": [
+            222.14768917624522,
+            338.3196120689655
+          ],
+          "bbox_xywh_px": [
+            24,
+            152,
+            420,
+            312
+          ],
+          "pixels": 83520,
+          "projected_hull_area_m2": 0.026559663681853293,
+          "projected_rect_sides_m": [
+            0.16910558938980103,
+            0.18522238731384277
+          ],
+          "center_body_m": [
+            0.3456756732879063,
+            0.02599676521948974
+          ],
+          "center_odom_m": [
+            0.8875318218576558,
+            0.026712019498519167
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "middle/bottom"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 401,
+        "component": 1,
+        "t": 21.3
+      }
+    },
+    {
+      "case": "s913-r2",
+      "robot": "r2",
+      "profile": "legacy",
+      "track": 3,
+      "confirmed_t": 17.3,
+      "observations": [
+        {
+          "frame_id": 201,
+          "t": 11.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/rgb/00200.jpg",
+          "sha256": "67744b4fab25b7657c625c1cb462459f427ab62ac945daffbebbf37349f219f1",
+          "centroid_px": [
+            317.2074074074074,
+            204.3925925925926
+          ],
+          "bbox_xywh_px": [
+            315,
+            185,
+            6,
+            38
+          ],
+          "pixels": 135,
+          "projected_hull_area_m2": 0.0005141574835625939,
+          "projected_rect_sides_m": [
+            0.005424662958830595,
+            0.11598097532987595
+          ],
+          "center_body_m": [
+            0.7297201931138567,
+            -0.03026646479430923
+          ],
+          "center_odom_m": [
+            0.7297201931138567,
+            -0.03026646479430923
+          ],
+          "hsv_median": [
+            110.0,
+            89.0,
+            120.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 281,
+          "t": 15.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/rgb/00280.jpg",
+          "sha256": "606fba1b7bf3d0b81fdb3dd9ae8edab68ded1ba083f7ccc6b550509494cf6bdb",
+          "centroid_px": [
+            317.1811594202899,
+            203.94927536231884
+          ],
+          "bbox_xywh_px": [
+            315,
+            184,
+            6,
+            39
+          ],
+          "pixels": 138,
+          "projected_hull_area_m2": 0.0005286659613443212,
+          "projected_rect_sides_m": [
+            0.005424662958830595,
+            0.11972025781869888
+          ],
+          "center_body_m": [
+            0.7311927414584751,
+            -0.030302866255624825
+          ],
+          "center_odom_m": [
+            0.8171845678225226,
+            -0.03023099124892795
+          ],
+          "hsv_median": [
+            110.0,
+            90.0,
+            120.0
+          ],
+          "screen_zone": "middle/middle"
+        },
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/rgb/00320.jpg",
+          "sha256": "5bd8c41bd5b8c4df7d80bfcaffc9013a119c6db49df7de6c8c6e698fda2e6722",
+          "centroid_px": [
+            71.58280922431865,
+            268.50524109014674
+          ],
+          "bbox_xywh_px": [
+            32,
+            266,
+            80,
+            6
+          ],
+          "pixels": 477,
+          "projected_hull_area_m2": 0.0006985828557928286,
+          "projected_rect_sides_m": [
+            0.009970195591449738,
+            0.07306124269962311
+          ],
+          "center_body_m": [
+            0.570666804044768,
+            0.17839295955390483
+          ],
+          "center_odom_m": [
+            0.8244751126591734,
+            0.17866475527480732
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "left/middle"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 321,
+        "component": 2,
+        "t": 17.3
+      }
+    },
+    {
+      "case": "s913-r2",
+      "robot": "r2",
+      "profile": "legacy",
+      "track": 4,
+      "confirmed_t": 23.3,
+      "observations": [
+        {
+          "frame_id": 321,
+          "t": 17.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/rgb/00320.jpg",
+          "sha256": "5bd8c41bd5b8c4df7d80bfcaffc9013a119c6db49df7de6c8c6e698fda2e6722",
+          "centroid_px": [
+            495.4188481675393,
+            124.5130890052356
+          ],
+          "bbox_xywh_px": [
+            480,
+            122,
+            32,
+            6
+          ],
+          "pixels": 191,
+          "projected_hull_area_m2": 0.0026410108554095757,
+          "projected_rect_sides_m": [
+            0.040872614830732346,
+            0.08619451522827148
+          ],
+          "center_body_m": [
+            1.1551319802518474,
+            -0.3653834167867355
+          ],
+          "center_odom_m": [
+            1.4085165517062974,
+            -0.3655667093987216
+          ],
+          "hsv_median": [
+            109.0,
+            90.0,
+            119.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/rgb/00400.jpg",
+          "sha256": "d820495bc0d25ac821a48ded6648bee7b7be739c74410d07b2185d34b39b97b0",
+          "centroid_px": [
+            580.4313725490196,
+            39.84313725490196
+          ],
+          "bbox_xywh_px": [
+            576,
+            32,
+            10,
+            16
+          ],
+          "pixels": 153,
+          "projected_hull_area_m2": 0.0004252786814324949,
+          "projected_rect_sides_m": [
+            0.009408663958311081,
+            0.05264496058225632
+          ],
+          "center_body_m": [
+            0.6842886501435975,
+            -0.2700096823662978
+          ],
+          "center_odom_m": [
+            1.2256518638848837,
+            -0.269857369156035
+          ],
+          "hsv_median": [
+            109.0,
+            88.0,
+            122.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 401,
+          "t": 21.3,
+          "component": 2,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/rgb/00400.jpg",
+          "sha256": "d820495bc0d25ac821a48ded6648bee7b7be739c74410d07b2185d34b39b97b0",
+          "centroid_px": [
+            503.5,
+            113.5
+          ],
+          "bbox_xywh_px": [
+            448,
+            112,
+            112,
+            4
+          ],
+          "pixels": 448,
+          "projected_hull_area_m2": 0.00036128977430349707,
+          "projected_rect_sides_m": [
+            0.0046153380535542965,
+            0.08352726697921753
+          ],
+          "center_body_m": [
+            0.5240091450883361,
+            -0.1378311162979619
+          ],
+          "center_odom_m": [
+            1.0655924862530444,
+            -0.13741232885346555
+          ],
+          "hsv_median": [
+            109.0,
+            93.0,
+            124.0
+          ],
+          "screen_zone": "right/top"
+        },
+        {
+          "frame_id": 441,
+          "t": 23.3,
+          "component": 1,
+          "rgb_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/rgb/00440.jpg",
+          "sha256": "e132b0dfa3aa6d66b30d4ddd84c6a0b3c58a58715b461e668f8a57e3d0d27c7a",
+          "centroid_px": [
+            580.4313725490196,
+            39.84313725490196
+          ],
+          "bbox_xywh_px": [
+            576,
+            32,
+            10,
+            16
+          ],
+          "pixels": 153,
+          "projected_hull_area_m2": 0.0004252786814324949,
+          "projected_rect_sides_m": [
+            0.009408663958311081,
+            0.05264496058225632
+          ],
+          "center_body_m": [
+            0.6842886501435975,
+            -0.2700096823662978
+          ],
+          "center_odom_m": [
+            1.3945750155672934,
+            -0.26999416944460913
+          ],
+          "hsv_median": [
+            109.0,
+            88.0,
+            122.0
+          ],
+          "screen_zone": "right/top"
+        }
+      ],
+      "category": "floor_checker_or_tint",
+      "classification_method": "Visual review of full representative RGB with exact red component outline and all pre-confirmation bbox crops; no self/peer switch observed. Not simulator identity proof.",
+      "representative": {
+        "frame_id": 401,
+        "component": 2,
+        "t": 21.3
+      }
+    }
+  ]
+}

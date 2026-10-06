@@ -24,6 +24,7 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_floor_goal*.py",  # Offline HSV floor-goal geometry, memory and evaluation boundaries.
     "tests/test_self_odom_grid.py",
     "tests/test_self_map_csm.py",
     "tests/test_self_map_csm_v2.py",
