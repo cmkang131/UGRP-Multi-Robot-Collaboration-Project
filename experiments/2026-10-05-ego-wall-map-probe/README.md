@@ -2405,3 +2405,35 @@ NumPy 2.5.2/SciPy 1.17.1은 기존 venv와 requirements-test에 이미 있어 �
 submap 회원 frame ID/격자·제약·최적화 전후 목적값·보정 원장·경로·지도/LLM와 입력 해시를 보존한다.
 단일 벽·반복 벽 거부, 알려진 코너 재방문, 강건 목적함수, 자신/외부 로봇 제약 금지,
 prob 가중치 보존·off 골든을 작은 오프라인 시험으로 먼저 확인한다. timing 비교는 하지 않는다.
+
+### 22.3 구현 인터페이스·재현
+
+| 인터페이스 | 기본값·조합 | 동작 |
+|---|---|---|
+| `SelfWallMemory(..., pose_graph=...)` | `off`; `own_submap_v1`는 §22.1의 guard+RBPF/prob 조합 필수 | local 추정기는 그대로 두고 global 후처리를 선택 |
+| `finalize_pose_graph(poses=None)` | 명시적으로 호출 | 자기 최종 원장으로 submap/제약 생성·SPA·재삽입. 생략 시 원장 시각의 경로만 반환 |
+| `poses` 입력 | 전체 경로 평가용 선택 입력, 각 행에 자기 `robot_id` 필수 | scan 이후 local→global 변환을 보존된 전체 프레임 자세에 적용 |
+| `pose_graph_result` / `_graph_view` | finalization 전 `None` | 보정 원장·경로·진단 / 재삽입 지도. snapshot의 LLM 문구는 완료된 graph 지도를 사용 |
+| 새 명령·관측 | 기존 local 추정 계속 | 완료된 graph view를 무효화; 오래된 graph 지도를 현재 메모리로 표시하지 않음 |
+| `pose_graph_options` | `GraphOptions`의 §22.2 고정 기본값 | 이번 재생은 별도 튜닝 없이 기본값만 사용 |
+
+`harness/self_pose_graph.py`는 GT·지도 파일·시뮬레이터를 import하지 않는다. 입력은 guard·4 m·정착 게이트를
+통과한 원장이며 source robot/frame/time·중복을 확인한다. 직접 low-level 함수를 쓰는 재생기는 기존 guard
+판정과 자기 카메라 geometry를 먼저 다시 확인한다. graph off는 입력을 검사하지 않고 원래 객체를 반환한다.
+기존 `self_map` 필드는 local frontend를 보존하며 graph 최종 지도는 `_graph_view`에 분리한다.
+
+RBPF의 저장 온라인 자세는 매 시각 최대 가중치 입자이며, 최종 지도 원장은 마지막 선택 입자의 계보다.
+둘을 같은 궤적이라고 가정하지 않는다. 지도는 후자를 최적화하고, 전체 경로 표는 가장 최근 계보 scan의
+local→global 변환을 전자의 저장 pose에 적용한다. 원장 scan과 온라인 pose가 다른 시각에서 그 차이는
+유지된다. 종료·경로 지표와 지도 지표를 합산하지 않으며, 최적화한 map-node 자세도 원장에 따로 보존한다.
+
+공식 [submap 구현](https://github.com/cartographer-project/cartographer/blob/877157a0d91788a7700221d87232d412cb3c1ef4/cartographer/mapping/2d/submap_2d.cc#L161)의
+N scan마다 생성·2N에서 완료 패턴(N=10)을 확인했다. 전역 배치가 끝날 때 아직 활성인 마지막 submap도
+마지막 관측까지 확정한다. Hess의 확률 격자 정제에서 bicubic 대신 bilinear 보간을 써 점유 확률 범위를
+유지한다. solver·보간·frontend 교체 외에는 scan/submap 상대 SE(2) 목적함수 구조를 유지한다.
+
+```sh
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
+  experiments/2026-10-05-ego-wall-map-probe/code/own_submap_replay.py \
+  --pose-graph own_submap_v1 --output outputs/own-submap-v1-NEW
+```
