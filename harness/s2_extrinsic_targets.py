@@ -37,7 +37,9 @@ def poses():
     empty = list({key(p): p for p in [*empty, *extra]}.values())
     # A cyan is placed manually in the calibration jig between these groups.
     # No contacts or pose labels decide this fixed command order.
-    loaded = [descent[-1], hover, VIA_110, VIA_130, HIGH]
+    # Match S2: lift immediately after its .5 s close + .4 s settle. Survey the
+    # floor pose after lowering, not by pressing against the floor for 8 s first.
+    loaded = [hover, VIA_110, VIA_130, HIGH, descent[-1]]
     return [('unloaded', p) for p in empty] + [('loaded', p) for p in loaded]
 
 

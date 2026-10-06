@@ -82,8 +82,12 @@ def capture(out, source_sha, states='all'):
                 world.data.qpos[q:q+7]=[target.FIXTURE[0]+radius,target.FIXTURE[1],.016,1,0,0,0]
                 world.data.qvel[v:v+6]=0;mujoco.mj_forward(world.model,world.data)
                 for p in path:world._team_joint_move_servos({'r3':p},.12)
-                world._team_joint_move_servos({'r3':{1:1500}},.6,settle_s=1.)
+                world._team_joint_move_servos({'r3':{1:1500}},.5,settle_s=.4)
                 loaded=True
+            if loaded and pose==target.grasp_postures()[1][-1]:
+                for p in (target.VIA_130,target.VIA_110,target.grasp_postures()[0]):
+                    world._team_joint_move_servos({'r3':p},1.2,settle_s=2.8)
+                for p in target.grasp_postures()[1]:world._team_joint_move_servos({'r3':p},.12)
             world._team_joint_move_servos({'r3':{1:1500 if loaded else 2000,**pose}},1.2,settle_s=8.)
             # Standard manual-calibration equivalent: move the surveyed board
             # within the image until its full corner grid is visible. Only RGB
@@ -136,6 +140,8 @@ def capture(out, source_sha, states='all'):
             print(state,target.key(pose),'accepted',sorted(accepted),flush=True)
             if len(accepted)!=3:
                 raise ValueError('CALIBRATION_TARGET_NOT_FULLY_VISIBLE: '+target.key(pose))
+            if loaded and pose!=target.grasp_postures()[1][-1] and not audit[-1]['bilateral_contacts']:
+                raise RuntimeError('CALIBRATION_GRIP_LOSS')  # abort only; never correct a command/fit
         write(out/'result.json',dict(status='CAPTURE_COMPLETED',classification='S2_DEV_calibration_not_transport',
             source_sha=source_sha,states=states,observations=len(rows),detected=sum(r['status']=='detected' for r in rows),
             wall_s=time.monotonic()-start,sim_s=float(world.data.time),options=dict(idle_robot_contacts='freeze_v1'),
