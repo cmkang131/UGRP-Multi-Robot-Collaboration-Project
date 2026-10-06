@@ -1,6 +1,8 @@
 # S2 현실성 재검증 — 실행 전 등록 (2026-10-06)
 
-**최신 완료(v119):** `f6cb04b3` / s1043은 **lifted=true,inside=false,원래 자리 unknown,probe 미통과**다. 확대 여백 오류를 피하는 실물식 확인 옵션을 넣었지만 새 seed에서는 기준 cyan 자체가 렌즈 경계에 닿아 사후 확인을 시작하지 못했다. 경계에서 기준 확보 실패가 재발해 추가 SIM을 중단했다. [결과와 중단 근거](#v119s1043-완료--추가-sim-중단)를 따른다. freeze 사용 및 DEV seed 사전 기록은 후속 사용자 지시이며 본 연구 예외가 아니다.
+**최신 완료(v120):** 문헌 조사와 s1042·1043 오프라인 비교 뒤 새 s1044를 1회 실행했다. `97c05e41`에서 lifted=true였지만 두 들기 자세의 cyan이 각각 0/9로 **hold unknown·probe 미통과**다. 추가 실행·튜닝 없이 중단했고 잠금·세션·일회 실행기를 정리했다. [v120 완료](#v120s1044-완료--추가-실행-중단), [조사·사전 등록](#v120-레퍼런스-조사사전-등록--s1044-실행-전)을 따른다.
+
+**이전 완료(v119):** `f6cb04b3` / s1043은 **lifted=true,inside=false,원래 자리 unknown,probe 미통과**다. 확대 여백 오류를 피하는 실물식 확인 옵션을 넣었지만 새 seed에서는 기준 cyan 자체가 렌즈 경계에 닿아 사후 확인을 시작하지 못했다. 경계에서 기준 확보 실패가 재발해 추가 SIM을 중단했다. [결과와 중단 근거](#v119s1043-완료--추가-sim-중단)를 따른다. freeze 사용 및 DEV seed 사전 기록은 후속 사용자 지시이며 본 연구 예외가 아니다.
 
 **v117 당시:** v117 `ef820ab2`의 s1042는 hover·하강·SIM lifted=true에 도달했지만 pickup-site ROI clipped/unknown으로 probe gate 미통과다. [v117 완료](#v117s1042-완료-실행-sha-ef820ab2d367b1a25e14b0cc4df6be4b3e58bb3d)를 따른다. 이후 사용자 결정으로 #407을 병합하고 다음 **탐색 S2 DEV 전용** v118 freeze 프로필을 준비했다. [당시 제한과 미실행 상태](#2026-10-06-사용자-결정-idle-robot-contacts). 아래 v116 이전 요약·사전 등록은 당시 기록이다.
 
@@ -710,3 +712,54 @@ partial raw와 seed를 보존하며 재사용하지 않는다. 실패/unknown이
 `tests/test_s2_idle_contacts.py` **26 passed /16.80s**. 저장 양성·가림, 움직이는
 cyan 음성 대조, close 명령만 있음/영상 없음, stale·hash 오류, off 명령/record bytes,
 seed·S2 freeze 범위·오류 result를 검사했다. 추가 로컬 전체 시험/모델 호출은 하지 않았다.
+
+
+## v120/s1044 완료 — 추가 실행 중단
+
+실행 소스 **97c05e4105f2eef98e53ad310b81f92549ac761f**, 번들 **zone-s2-realism-v120**.
+이 SHA에 seed1044 사전 등록·제어 소스·고정 기준을 함께 커밋하고 push한 뒤 실행했다.
+PR405의 잠금이 실제 `null`이 된 뒤만 acquire했다. 기존 tool process의 nice10을
+변경하지 않고, RunAtLoad=true/KeepAlive=false인 수동 일회 launchd 경로로
+`ugrp_session run s2-inhand-s1044 -- zsh launch_v120.zsh ...`를 실행했다.
+드라이버 PID/PGID15180·nice0 확인. agent_lock으로 단독 실행했다.
+
+- **probe_gate_passed=false / hold_status=unknown**, `INHAND_OR_LIFT_UNCONFIRMED`.
+  VIA110 **0/9**, HIGH **0/9**, 실제 샘플18장 모두 cyan **0px**.
+  fresh 관찰18장은 완결됐으나 물체가 안 보여 mask IoU/중심 이동은 미측정(null)이다.
+  HIGH 원본 `robots/r3/rgb/01978.jpg`도 직접 확인했다. 소실을 empty/실패로 단정하지 않았다.
+- 평가 전용 **lifted=true, inside=false, floor=false, stable=true, delivery success=false**.
+  제어에는 GT를 쓰지 않았고 독립 궤적 채점과 기존 평가의5개 bool이 모두 같다.
+  시각 판정과 물리 상승을 합쳐 성공으로 바꾸지 않는다. raw의 `grasp_claim`은 방법의
+  주장 상한이며, 실제 판정은 `hold_status=unknown`이다.
+- `pickup_site_status=not_evaluated_inhand_selected`: 원래 자리 전후 비교는 수행하지 않았다.
+  따라서 전후 비교 면적은 null. pregrasp 면적이나 held 영상 면적을 site-after로 넣지 않는다.
+- 재집기0, 명령2039, 모델 호출0, RGB2129장. wall **177.457465s**, total SIM **110.7s**,
+  check SIM109.4s, wall/SIM **1.603048**. 출력:
+  `/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick`.
+- freeze 전 s1042 **2.587649**, freeze 후 s1043 **1.467896**, 이번 s1044 **1.603048**.
+  wall/SIM만 나란히 기록한다. seed·경로·검사 시간이 다르므로 인과 속도 개선 주장이 아니며
+  성공률/결과를 합산하지 않는다.
+- 사용자 지시대로 **새 probe1회 후 중단**. 1044 재사용·추가 seed·full1029–1031 없음.
+  기본값 off, 카메라 각도·물리·그리퍼·판정 문턱을 이 실패 뒤 조정하지 않았다.
+  현 시야에서 cyan이 보이지 않는 경우 이 옵션으로 성공을 확인할 수 없다.
+- **agent_lock 해제, session stopped, PGID15180 잔여 프로세스0, 일회 launchd unload 확인**.
+  다른 작업/PR/프로세스는 수정·종료하지 않았다. raw와 이전 결과는 보존했다.
+
+[완료 수치·옵션·원본 해시](completed-v120.json),
+[TensorBoard 수치·HParams·영상·정리 검증](inhand-delivery-verification.json).
+실행 bundle source closure **349파일**과 raw manifest/프레임 hash를 대조했다.
+4배속 MP4(26.6s,532frames)는
+`/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-analysis/views/s1044-probe/execution.mp4`,
+SHA256 `0a45916aa7917022bf98d22fe14413f80644faebe1022385c7b7a0498571a15b`;
+ffprobe 및 전체 decode 통과, TensorBoard video id `0df1674a7a870162f501` 등록.
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1006-s2-realism-inhand-v120%2F#timeseries)의
+새 snapshot `1006-s2-realism-inhand-v120`은 **실행1 + 오프라인 재분석2**, 시험3회가 아니다.
+30개 scalar를 source→event→실제6006 API에서 대조했다. 사용자 수치만 비교 지시로
+브라우저는 열지 않았다. 기존 TB PID52016/logdir를 유지했고 공용 view에는 자기 새 키만 추가했다.
+
+후속 기록 과정에서 CI glob이 `test_s2_realism*.py`만 포함하던 누락을 발견해
+`test_s2_*.py`로 수정했다. 새 inhand/기존 real-site/freeze 시험도 원격 CI에 포함된다.
+이 변경은 실행 source closure 밖의 CI 목록뿐이며 제어 소스는97c05e41 그대로다.
+목록/분할 검사 `tests/test_ci_sharding.py` **68 passed /1.62s**;
+실행 전 관련 모듈26시험 통과와 별개로 기록한다. 전체 CI를 로컬에서 돌리지 않았고,
+PR #406은 DRAFT·미병합으로 유지한다. 로컬 raw 보관을 원격 백업으로 표현하지 않는다.
