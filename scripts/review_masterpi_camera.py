@@ -20,6 +20,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 PRIMARY = Path('/Users/changmin/projects/ugrp')
 LOCK = PRIMARY / 'scripts/agent_lock.py'
+# Names used by NamespacedMasterPi.arm_joint, not inferred from body names.
+JOINT_NAMES = {'yaw': 'arm_yaw', 'shoulder': 'shoulder',
+               'elbow': 'elbow', 'wrist': 'wrist_pitch'}
 
 
 def sha(path):
@@ -164,9 +167,7 @@ def _render_locked(source, out):
                 data.qpos[adr+3:adr+7] = [math.cos(yaw/2), 0, 0, math.sin(yaw/2)]
                 target = MasterPiDynamicsV2.pulse_to_joint_targets(
                     SimpleNamespace(physical_params={'servo6_center_pwm': 1500}), {**HIGH, 1: 1500})
-                names = {'yaw': 'arm_yaw', 'shoulder': 'shoulder_pitch',
-                         'elbow': 'elbow_pitch', 'wrist': 'wrist_pitch'}
-                for key, name in names.items():
+                for key, name in JOINT_NAMES.items():
                     data.qpos[model.jnt_qposadr[model.joint('r3__'+name).id]] = target[key]
                 # Closed PWM targets, not measured finger positions. Both variants identical.
                 for side in ('left', 'right'):

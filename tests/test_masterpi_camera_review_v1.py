@@ -69,6 +69,19 @@ def test_unknown_profile_is_refused():
         transform_xml(fixture_xml(), profile_id='default')
 
 
+def test_diagnostic_joint_names_and_transform_match_actual_v3_xml():
+    from scripts.review_masterpi_camera import JOINT_NAMES
+    from sim.masterpi_model_v3 import build_v3_xml
+    xml = build_v3_xml()
+    before = ET.fromstring(xml)
+    assert set(JOINT_NAMES.values()) <= {e.get('name') for e in before.iter('joint')}
+    after = ET.fromstring(transform_xml(xml, profile_id=PROFILE_ID))
+    for a, b in zip(before.iter(), after.iter()):
+        if a.get('name') == 'robot_cam' or a.get('name', '').startswith('v3_camera_'):
+            continue
+        assert a.attrib == b.attrib
+
+
 def test_carry_selection_excludes_transition_and_lowering(tmp_path):
     import json
     from harness.zone_pair_highpose import HIGH
