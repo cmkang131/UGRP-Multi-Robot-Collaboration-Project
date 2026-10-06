@@ -460,3 +460,111 @@ Chrome 강에서 v3 링크를 열었으나 본문이 비었고1회 새로고침�
 [v3 TensorBoard 저장 링크](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fvalid_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffull_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E1006-camera-review-v3%2F#timeseries).
 
 재현: `scripts/ugrp_session.py run <새 이름> -- /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/review_masterpi_camera_v3.py --source /Users/changmin/projects/ugrp/outputs/s2-graduation-fae1fc4a-s1026-P2-2-place --output /Users/changmin/projects/ugrp/outputs/<새 경로>` (내부 잠금 확인·획득·반환).
+
+### #403 후속: 중간 내려놓기 OFF 오프라인 구현
+
+2026-10-06 사용자 후속 지시로 위의 **미구현 후보**를
+`harness/zone_solo_cyan_camera_v3.py`의 별도 `Runtime` 확장으로 구현했다.
+이전 v3 프로필의 `implemented: false` 기록은 당시 산출물로 보존한다.
+기존 v106 실행기·물리·카메라·번들·보정 파일의 바이트는 바꾸지 않았다.
+새 실행 번들/워크플로 번호도 발급하지 않았다. **시뮬레이션·렌더·모델·실물 실행0**이다.
+
+```python
+from harness.zone_solo_cyan_camera_v3 import Runtime
+from sim.masterpi_camera_review_v3 import PROFILE_ID
+# 기존 v106 Runtime과 같은 static/calibration/sha 입력. 오프라인 구성 예시.
+runtime = Runtime(static, calibration_path, calibration_sha,
+                  setdown_relook='off', camera_profile=PROFILE_ID)
+```
+
+선택값은 `on`/`off`, 기본은 `on`이다. 카메라를 생략한 기본 확장은 기존 v106과
+동작·기록이 같다. `off`에는 v3 프로필을 명시해야 하며 다른 이름/누락은 거부한다.
+`on`과 v3를 함께 선택할 수도 있다. OFF는 각 경유점에서 내려놓기→재관측→다시 집기만
+생략하고 경로를 한 번 진행한다. 마지막 목적지의 하강·집게 열기·완료 흐름은 유지한다.
+생략한 경유점과 마지막 실제 영상 보정 시각을 기록하며, 생략을 재관측 성공으로 세지 않는다.
+
+다음 명령은 **계획 JSON 출력만** 한다. `--execute`나 백엔드 연결은 없으며,
+기존 `scripts/run_solo_cyan.py`에 새 플래그를 붙여 실행하는 경로가 아니다.
+기존 실행기를 수정하면 과거 v106 번들의 소스 해시가 달라지므로 확장을 분리했다.
+
+```sh
+python -m harness.zone_solo_cyan_camera_v3 \
+  --setdown-relook off \
+  --camera-profile masterpi-camera-user-observation-target-review-v3
+```
+
+기존 PF의 **자기 발행 명령 예측 + 자기 RGB의 벽 경계 갱신**을 사용한다.
+벽 정보가 없으면 예측만 하며 `last_fix_t`를 새로 만들지 않는다. 영상 지연·명령 만료·
+오래된/잘못된 영상 거부와 DEV 불확실성 기록은 유지한다. 실제 관절·접촉·물체 좌표는
+새 제어 입력에 추가하지 않았다. 기존 v106 구동 계수는 오프라인 연결 확인용으로 남아 있고
+#404의 새 구동에 맞는 계수라는 뜻이 아니다.
+
+v3용 광선은 정적 보정표에서 기존 집게→카메라 변환을 빼고 v3 변환을 합성한다:
+`T_chassis_camera_v3 = T_chassis_camera_old × inverse(T_gripper_camera_old) × T_gripper_camera_v3`.
+MuJoCo의 right/up/back을 OpenCV의 right/down/forward로 변환한다.
+K/D·보정 팔 자세·하중별 차체→바닥 변환은 유지하며, 파생 보정의 입력/결과 SHA를 기록한다.
+PF와 물체 검출기가 인스턴스별 같은 파생 표를 사용하고 다른 실행의 전역 값은 바꾸지 않는다.
+이는 **강체 변환 합성, 새 실측 보정 아님**이다. production renderer의 mount 연결도 아직
+없으므로 `runtime_admitted=false`, 번들 ID 없음, #404 대기를 명시한다.
+
+#### 파지와 저장 영상 점검
+
+- 집기 전에는 cyan 후보 검출·정렬과 열린 집게의 hover 영상2장이 필요하다.
+  OFF도 이 조건을 우회하지 않는다. 화면 지지 정보가 없으면 기존 `CYAN_HOVER_UNCONFIRMED`다.
+- 닫기 이후 `receipt`/`beam_grasp_confirmed`는 **자기 닫기 명령 기록**이다.
+  운반 중 cyan 면적이나 블록 재검출을 조건으로 쓰지 않는다. 따라서 v3 5.63%나
+  cyan 0%도 운반 상태 자체를 막지 않음은 시험했지만, 실제 파지·낙하 확인 능력은 없다.
+- 기존 들기 자료는 바닥 close에서 시작하므로 집기 전 접근·열린 hover 영상이 없다.
+  v3에서 최초 집기 영상 확인이 통과하는지는 **미검증**이다. 성공이라고 추정하지 않는다.
+
+`audit_relook_off.py`로 기존 HIGH PNG 24장(기존/v3 각12장)을 해시 확인 후 JPEG95로
+읽어 기존 영상 게이트와 OpenCV 벽 검출에 넣었다. 새 렌더나 물리 실행은 하지 않았다.
+실제 provider와 같은 96열 위치를 사용한 [감사 결과](relook-off-audit.json):
+
+| 저장 영상 조건 | 게이트 valid | 벽 경계가 있는 영상 | 벽 경계 열 평균/96 | 기존 기록의 블록 면적 |
+|---|---:|---:|---:|---:|
+| 기존 카메라 | 12/12 | 0/12 | 0 | 80.47% |
+| v3 | 12/12 | 11/12 | 85.42 | 5.63% |
+
+한 v3 프레임은 벽 경계0열이다. 이 수치는 벽 **관측 후보**이지 PF 보정 수용·위치 정확도·
+실제 운반 성공이 아니다. 가림의 많고 적음만으로 보수적/낙관적이라고 판단하지 않는다.
+초기 감사의 임의 열 위치는 실제 provider의 `column_positions(96,2)`로 바로잡아
+`relook-off-audit-v2.json`에 저장했고 원본·초기 감사는 삭제하지 않았다.
+
+변경 모듈 시험 `tests/test_solo_cyan_v106_camera_v3.py` **10/10 통과**:
+기본 v106 기록 일치, 잘못된 선택 거부, 경유점 생략/최종 놓기, 보정 시각 미조작,
+cyan 없는 운반/오래된 영상 거부, 집기 전 영상 조건 유지, 강체 광선 합성,
+실제 PF의 명령 예측/지연/무관측 처리 및 오프라인 CLI 실행 차단을 확인했다.
+첫 시험에서 unloaded 표에 HIGH를 요구한 테스트 준비 오류1건을 고쳐 search 자세로 검증했다.
+시험을 위해 물리·보정값·검출 임계값을 맞추지 않았다.
+
+native TensorBoard 새 스냅샷 `1006-camera-v3-relook-off-v2`에 두 조건의 오프라인 수치를
+분리했고 event·실행 중 서버 API의 수치8개가 원자료와 일치했다.
+[검증·저장 대시보드 링크](relook-off-tensorboard.json),
+[v106 소스305개 불변·시험 기록](relook-off-verification.json)을 보존했다.
+원자료는 `/Users/changmin/projects/ugrp/outputs/camera-review-20261006/`에 있다.
+첫 export는 파생 뷰 schema 누락으로 실패했고 이를 보완한 새 폴더에 변환했다.
+브라우저 확인은 사용자 허용에 따라 생략하며 기존 서버를 변경하지 않는다.
+
+#### #404 확정 후 한 번에 할 재검증
+
+1. 새 구동/새 카메라/선택 옵션의 새 번들과 source closure 등록, 실제 renderer mount·K/D·광선 해시 일치.
+2. 새 구동의 자기 명령 이동 모델을 측정·출처와 연결; 빈손/하중 벽 관측, 가려진 구간의 누적 오차,
+   보정 수용·지연·부분 관측의 방향 불확실성 확인. 기존 v106 계수를 새 구동에 승계하지 않기.
+3. 접근·정렬·열린 hover2장·blind descent·닫기·HIGH를 새 카메라로 확인.
+   안 보이는 화물의 명령 상태와 실제 파지/낙하 사후 판정을 구분하기.
+4. 동일 새 번들로 S2 1회: 하중 이동·회전·문 통과·미끄러짐/기울기·목표 위치 오차·최종 놓기 확인.
+   중간 재관측 OFF 기록과 마지막 실제 보정 시각을 함께 감사하기.
+
+#### #403 참고 자료와 적용 범위
+
+- 고전 Bayes filter의 예측/관측 갱신 분리를 기존 PF에 그대로 적용한다.
+  [robot_localization 공식 문서/공개 코드](https://github.com/cra-ros-pkg/robot_localization/blob/rolling-devel/doc/state_estimation_nodes.rst)의
+  `sensor_timeout` 예측 전용 처리 및 [Nav2 AMCL 공식 문서](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/)
+  의 운동/관측 분리를 확인했다. ROS 패키지를 이식하거나 센서/엔코더를 추가하지 않았다.
+- 최신 보정 관련 [Wise 외 IJRR2026/arXiv v2](https://arxiv.org/abs/2507.23045v2),
+  [저자 공개 코드](https://github.com/utiasSTARS/certifiable-rwhe-calibration)의 초록/README를 재확인했다.
+  본 수정은 강체 변환만 합성하며 해당 최적화 알고리즘 실행·실물 식별 검증은 하지 않았다.
+- 공식 Hiwonder 사양·도면·SDK 및 MuJoCo/OpenCV 광축 자료는 앞 절의 링크와 manifest를 유지한다.
+  새 장착각/카메라 사양/물리 계수를 추가 추정하지 않았다. 과거 원본 렌즈 보정과
+  해당 개체의 연결, 최초 집기/새 구동 성능은 계속 **미확인**이다.
