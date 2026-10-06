@@ -120,6 +120,22 @@ def gt_faces(vis, rid, min_run):
     return out
 
 
+def height_by_pose(seg_rows):
+    """Per commanded wrist pulse s3: faces, faces with a measured height, and that height's median / p10 / p90 (m).
+
+    The walls of the recorded scene are 0.40 m. Heights come from the run top found in the frame: where the wall top is out
+    of the frame (``top_edge_px`` on) or the run is cut at a door edge, it is missing or wrong.
+    """
+    out = {}
+    for s3 in sorted({r['s3'] for r in seg_rows if r['s3'] is not None}):
+        rows = [r for r in seg_rows if r['s3'] == s3]
+        h = [r['height_m'] for r in rows if r['height_m'] is not None]
+        out[str(s3)] = {'faces': len(rows), 'with_height': len(h),
+                        'height_median_p10_p90': [round(float(np.median(h)), 3), round(float(np.percentile(h, 10)), 3),
+                                                  round(float(np.percentile(h, 90)), 3)] if h else None}
+    return out
+
+
 def run(args):
     ep_dir, out_dir = Path(args.episode), Path(args.output)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -185,7 +201,7 @@ def run(args):
                 n_correct += 1
                 covered[s['col_first']:s['col_last'] + 1] = True
                 correct_chords.append((chord[0], chord[-1]))
-            seg_rows.append({'frame_index': int(row.get('frame_id', idx)), 't': round(t, 3), 'loaded': bool(held),
+            seg_rows.append({'frame_index': int(row.get('frame_id', idx)), 't': round(t, 3), 'loaded': bool(held), 's3': servo.get(3),
                              'visible_frame': visible_frame, 'n_columns': s['n_columns'], 'length_m': round(length, 3),
                              'd_med_m': round(d_med, 4), 'd_max_m': round(float(d[:, nearest].max()), 4),
                              'nearest_wall': nearest, 'axis_err_deg': None if ang is None else round(ang, 2),
@@ -243,6 +259,7 @@ def run(args):
             for lo, hi in RANGE_BANDS_M},
         'segments_visible_frames_by_load': {name: seg_stats([r for r in seg_vis if r['loaded'] == flag])
                                             for name, flag in (('unloaded', False), ('loaded', True))},
+        'height_m_by_arm_pose_s3': height_by_pose(seg_rows),
         'false_on_invisible_frames': {'frames': len(inv_f), 'settled_frames': sum(r['settled'] for r in inv_f),
                                       'segments': len(seg_inv),
                                       'frames_with_any_segment': sum(1 for r in inv_f if r['segments']),
