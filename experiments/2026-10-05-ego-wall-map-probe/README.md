@@ -2165,3 +2165,40 @@ PYTHONPATH=outputs/self-map-plot-deps $PY experiments/2026-10-05-ego-wall-map-pr
 
 ![6건 RBPF100와 동일 관측의 GT 자세 지도](results/map_error_oracle_v2/rbpf100-gt-maps.png)
 ![RBPF100 거짓 점유 셀 원인 분해](results/map_error_oracle_v2/false-cell-attribution.png)
+
+## 21. 양의 깊이 투영 검사 positive_depth_v1 (2026-10-07)
+
+### 21.1 구현 전 고정한 범위·성공 기준
+
+새 옵션은 `wall_projection_guard=off|positive_depth_v1`, **기본 off**다. 검출기 원본을 재선택하거나
+튜닝하지 않고, **검출된 자기 선분이 누적 지도에 들어오는 입력 경계**에서 적용한다. 자기 명령 기반
+카메라 origin/optical rotation으로 바닥 점의 `z_camera > 0` 및 카메라에서 앞으로 나가는 pinhole
+광선의 바닥 교점 `t > 0`을 모두 확인한다. 지평선·0 깊이·비유한 값은 거부한다. 선분 두 끝점 중
+하나라도 실패하면 그 선분 전체의 occupied hit와 free ray를 함께 제외하며 새 끝점을 만들어 붙이지 않는다.
+카메라 calibration은 기존 명령 FK+sag 및 chassis offset을 그대로 쓴다. GT·상대 로봇·정적 지도는
+검사에 쓰지 않는다. 원본 C 검출 파일은 보존하며, 이 옵션은 누적 지도와 거기서 만든 LLM 문구에 적용한다.
+
+**비교는 자세를 고정한다.** 같은 6건 s911-r1/r2(개발), s912-r1/r2·s913-r1/r2(확인 재생)에 대해
+기존 off(DR) / RBPF100 / **RBPF100+guard(저장된 최종 선택 입자의 자세·삽입 원장 고정)** /
+**GT 자세+guard(같은 guarded 원장, 평가 전용)**를 나란히 기록한다. RBPF를 새 검출로 다시 정합하거나
+입자를 다시 선택하지 않는다. 이것은 투영 필터의 지도 영향 진단이며 온라인 재정합 성능 검증이 아니다.
+기존 종료·경로 위치 오차는 RBPF100 열에 그대로 남기며 GT 지도 성능과 합산하지 않는다.
+개발 2건 후 설정 변경 없이 확인 4건을 재생한다. 이미 본 녹화이므로 새 확증 자료라고 부르지 않는다.
+
+| 사전 고정 기준 | 분모·비교 | 통과 조건 |
+|---|---|---|
+| 카메라 뒤 교점 제거 | guard가 수락한 모든 선분 끝점 및 최종 거짓 셀의 뒤 교점 증거 | 각 건 0개; 특히 r2 3건 모두 0 |
+| 정밀도 비열화 | 각 건 RBPF100+guard vs 기존 RBPF100, §20의 0.15 m precision | 감소 없음(수치 오차 허용 1e−12) |
+| 가시 recall 보존 | §20.3에 고정된 349 bin 중 가시 bin, 각 건 RBPF100+guard vs RBPF100 | 감소 ≤2 %p |
+| off 호환성 | 기본/명시적 off 및 6건 원장→기존 격자·LLM 문구 | 바이트 동일 |
+| 자세 분리 | 기존 RBPF100 저장 자세·최종 입자 원장 pose | 변경 0, GT는 평가에서만 사용 |
+
+전체 성공은 위 필수 조건을 **6/6건** 만족할 때만 선언한다. r2 통과 수 및 개발/확인 통과 수를 따로
+표시한다. precision·전체/가시 recall·벽 RMSE·거부 선분/프레임·남은 원인 분해를 모두 기록하며 실패를
+튜닝으로 덮지 않는다. ENOSPC/입력 누락은 HOST_ERROR로 기록하고 원본을 삭제하지 않는다.
+시뮬레이션·렌더링·모델 호출·timing 측정은 하지 않는다. 같은 원인으로 두 번 막히면 중단하고 보고한다.
+
+표준 근거: [OpenCV의 positive-depth/cheirality 조건](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html),
+[PBRT 4판의 ray 구간 (0, tMax) 및 평면 교점](https://www.pbr-book.org/4ed/Shapes/Basic_Shape_Interface).
+기존 `ColumnModel.t_of_row`의 t는 **바닥 trace상의 좌표**라서 음수 자체가 오류는 아니다.
+검사는 이 trace 좌표의 부호가 아니라 **카메라 원점에서 출발한 optical ray의 매개변수**와 optical Z를 쓴다.
