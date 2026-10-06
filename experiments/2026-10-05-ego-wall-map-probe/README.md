@@ -2,7 +2,7 @@
 
 Refs #216, #366. **물리 실행 0회, 새 렌더링 0회, 모델 호출 0회.** 기록된 자기 손목 카메라 프레임, `mj_forward`(적분 없음)와 `mj_ray`, 그리고 정답 기준용 분할 렌더(기록된 `qpos`로 `mj_forward` 후 한 장)만 썼다. 기록된 에피소드 폴더에는 쓰지 않는다. 채점에 정답(`eval_only/`, `inputs/static_map.json`)을 쓰지만 **검출기 입력에는 절대 넣지 않는다.** 검출기가 보는 것은 자기 undistorted RGB, 자기 발행 servo, 고정 카메라 보정, 자기 적재 상태(자기 그리퍼 명령)뿐이다.
 
-브랜치 `claude/ego-wall-map`. 병합한 origin/main `b07f33aba278fda7434acaed0974c3d38f7b9ef0`, 코드·시험 커밋 `3daf8f27428a4633eb8d29ad5d8c2e23c7720f93` (이후 커밋은 README뿐이다). 설계 근거: [`docs/design/2026-10-05-ego-wall-map-for-llm-memory.md`](../../docs/design/2026-10-05-ego-wall-map-for-llm-memory.md).
+브랜치 `claude/ego-wall-map`. 병합한 origin/main `b07f33aba278fda7434acaed0974c3d38f7b9ef0`, 코드·시험 커밋 `c0449803b38cbe2c4099fce2324ac361f2ecefea` (이후 커밋은 README뿐이다). 설계 근거: [`docs/design/2026-10-05-ego-wall-map-for-llm-memory.md`](../../docs/design/2026-10-05-ego-wall-map-for-llm-memory.md).
 
 **핵심 불변식: 벽 높이는 측정값이지 입력값이 아니다. 0.40 m도 예외가 아니다.**
 
@@ -21,7 +21,9 @@ Refs #216, #366. **물리 실행 0회, 새 렌더링 0회, 모델 호출 0회.**
 | 지평선 고정 | `clamp_horizon` | `False` | `True` (탐색용, 버린 변형) | 지평선 그대로 |
 | 처짐 보정 | `--sag-comp` (`wall_probe.detector_bias(sag=True)`) | 끔 | 켬 (적재 항은 `--load-rule`과 무관하게 그리퍼 명령으로 가른다, §12.1) | 고정 편향 `SEED_BIAS` |
 | C 자기 지도 | `ego_wall_map.EgoWallMap(enabled=…, settle_s=…)`, `segment_score.py --gate none\|settle` | `enabled=False` | `True` (`settle_s` 기본 0.25 s / 2.25 s, `None` = 게이트 없음) | 아무것도 쌓지 않고 아무것도 돌려주지 않음 |
+| C 팔 축 오프셋 | `EgoWallMap(arm_axis_offset_m=…)`, `segment_score.py --arm-axis-offset-m` | `0` (기록만: 머리글에 `arm_axis_offset_recorded_m = 0.0482`) | `0.0482` (끝점 x에 더해 섀시 원점 좌표) | 끝점은 팔 축 좌표 그대로 (§13.1, 점수는 §13.5) |
 | D 메모리 주입 | `harness.self_wall_memory.SelfWallMemory(self_walls_enabled, self_walls_text, self_walls_text_height)` | 셋 다 `False` | `True` | `Memory`와 같은 `snapshot()` (바이트 단위) |
+| D 실행기 연결 | `harness.coela_runtime_self_walls.run_coela_episode(…, self_wall_memory=…, self_walls_source=…)` | `off` | `on_v1` | 고정된 `harness.coela_runtime.run_coela_episode`를 그 인자로 그대로 호출한다 (§14) |
 | (예외) 채점 정답 | `--gt-camera` | `true` (고친 정답) | `model` = 옛 정답 | 평가 전용 |
 
 옵션을 켠 구성에 붙인 이름은 이 README의 표에서만 쓴다. **A** = 모두 끔 + 옛 채점기(`--gt-camera model`), **A2** = 모두 끔 + 고친 채점기, **B** = A2 + `--load-rule gripper`, **C** = B + `floor_patch_max_m=0.81`, **D** = C + `run_step_window=3`, **E** = D + `top_edge_px=4`, "+sag" = `--sag-comp` 추가.
@@ -29,7 +31,7 @@ Refs #216, #366. **물리 실행 0회, 새 렌더링 0회, 모델 호출 0회.**
 끈 상태가 이전과 같다는 것은 시험으로 고정했다.
 - `test_options_off_identical.py`: 옵션을 하나도 켜지 않고(`--gt-camera model`만) 개발 녹화를 채점하면 이전 세션의 `harness-full/`과 **`segments.jsonl` 바이트 동일, `per_frame.csv`의 옛 열이 셀 단위로 동일, `summary.json`의 옛 키가 동일**하다(그 뒤에 채점기에 더한 열은 평가 전용이다). 합성 장면에서는 기본 검출기와 "모든 옵션을 꺼진 값으로 명시한" 검출기의 출력이 같다. 켠 옵션은 `recorded_params`에 기록되고 꺼진 옵션은 기록되지 않는다(실행 기록이 이전과 같다).
 - 별도로, `final/`의 9개 실행(3 녹화 × A·B·C)을 옵션 플래그만으로 다시 돌려 `options/`에 두고 `cmp`했다. `per_frame.csv`, `segments.jsonl`, `columns.npz`가 27개 모두 바이트 동일이었다. `summary.json`은 **기록된 파라미터 사전만** 다르다(`final/` 실행은 그 시점 `PARAMS`의 키를 전부 적었고 지금은 꺼진 옵션을 적지 않는다). 놓친 프레임 분류(`classify_missed --load-rule gripper`)는 `missed_frames.csv`가 같다.
-- `test_load_rule.py`(옛 규칙·키 읽는 방식), `test_run_step_window.py`, `test_top_edge.py`, `test_floor_patch_extent.py`(`floor_patch_max_m` 기본 0, 켠 값), `test_sag_comp.py`(`detector_bias`가 꺼지면 상수 편향), `test_ego_wall_map.py`(꺼진 지도는 아무것도 쌓지 않음), `tests/test_self_wall_memory.py`(꺼진 D는 `Memory`와 바이트 동일, 켠 D도 기존 키를 그대로 둠).
+- `test_load_rule.py`(옛 규칙·키 읽는 방식), `test_run_step_window.py`, `test_top_edge.py`, `test_floor_patch_extent.py`(`floor_patch_max_m` 기본 0, 켠 값), `test_sag_comp.py`(`detector_bias`가 꺼지면 상수 편향), `test_ego_wall_map.py`(꺼진 지도는 아무것도 쌓지 않음), `tests/test_self_wall_memory.py`(꺼진 D는 `Memory`와 바이트 동일, 켠 D도 기존 키를 그대로 둠), `tests/test_coela_runtime_self_walls.py`(꺼진 연결은 고정된 런타임과 같은 호출·같은 에피소드, §14).
 - 한계: `coverage.py`, `overlay.py`, `diag_rows.py`, `cue_study.py`, `height_invariance.py`, `map2d.py`는 보관된 옛 출력이 없어 바이트 비교를 못 했다. 이 도구들은 옛 키 읽기 방식을 `legacy_str_key`로 보존했고 그 의미를 `test_load_rule.py`가 고정한다.
 
 
@@ -69,12 +71,12 @@ Refs #216, #366. **물리 실행 0회, 새 렌더링 0회, 모델 호출 0회.**
 
 ### 0.1 이어서 한 일: 자기 지도 C와 메모리 D (같은 PR, 옵션, 모델 호출 0회, 새 시뮬레이션 0회)
 
-**지도에 들어가는 단위(면)로 처음 쟀다.** 지도에 쌓이는 면 하나를 정답 벽에 놓고 0.15 m 안이면 "정확"이라 할 때 개발 녹화의 정확한 면 비율은 옛 검출기(A) 5%, 바닥 조각 길이(C) 40%, 분할 창(D) 62%, D + 처짐 보정 78%, 게이트까지 건 지도(E + 처짐 + 정착 게이트) **89%**이다 (§10, §11, §12, §13). 확인 녹화에서도 같다.
+**지도에 들어가는 단위(면)로 처음 쟀다.** 지도에 쌓이는 면 하나를 정답 벽에 놓고 0.15 m 안이면 "정확"이라 할 때 개발 녹화의 정확한 면 비율은 옛 검출기(A) 4%, 바닥 조각 길이(C) 36%, 분할 창(D) 64%, D + 처짐 보정 77%, 게이트까지 건 지도(E + 처짐 + 정착 게이트) **88%**이다 (§10, §11, §12, §13). 확인 녹화에서도 같다.
 
-- **C0는 필요했고 했다 (§11).** 위 §5.1의 "잘못된 접촉 36%"는 면으로 묶인 뒤에도 면의 절반 이상을 틀리게 했다(C 40%). 원인은 `run_step_window`를 쓸 때 면 위쪽을 읽는 행이 틀려 있던 것이다. 고치자 벽 밑동 앞 체크 칸 모서리를 잡는 접촉(+10…+20 px)이 17.8% → 0.4%로 사라졌고 열 단위 precision이 0.64 → 0.84로 올랐다.
-- **처짐 보정은 옵션으로 넣었다 (§12).** 명령 자세만으로 카메라 고도 오차를 예측한다. 자세 하나 빼기 교차검증에서 남는 고도 오차(절댓값 중앙값)가 상수 편향 0.36° → 0.15°다. 4 m 이상의 정확한 면 비율은 3% → 43%(면 수 196개)다.
-- **C: 자기 지도 쌓기를 만들었다 (§13).** 섀시 원점 기준, 정착 후 관측만, 중복 제거 없음, `t_sim` 유지. 개발 녹화에서 138개 관측이 쌓였고 정답 면의 68%를 찾았다.
-- **D: 메모리 주입을 만들었다 (§14).** `SelfWallMemory`(고정된 `coela_*`를 건드리지 않는 덧붙임 하위 클래스). **런타임에 연결하는 것은 하지 않았다**: `coela_runtime.py`가 `Memory(r)`를 직접 만들고 그 파일이 해시로 고정돼 있다.
+- **C0는 필요했고 했다 (§11).** 위 §5.1의 "잘못된 접촉 36%"는 면으로 묶인 뒤에도 면의 절반 이상을 틀리게 했다(C의 정확한 면은 36%뿐). 원인은 `run_step_window`를 쓸 때 면 위쪽을 읽는 행이 틀려 있던 것이다. 고치자 벽 밑동 앞 체크 칸 모서리를 잡는 접촉(+10…+20 px)이 17.8% → 0.4%로 사라졌고 열 단위 precision이 0.64 → 0.84로 올랐다.
+- **처짐 보정은 옵션으로 넣었다 (§12).** 명령 자세만으로 카메라 고도 오차를 예측한다. 자세 하나 빼기 교차검증에서 남는 고도 오차(절댓값 중앙값)가 상수 편향 0.36° → 0.15°다. 4 m 이상의 정확한 면 비율은 2% → 41%(면 수 195개)다.
+- **C: 자기 지도 쌓기를 만들었다 (§13).** 정착 후 관측만, 중복 제거 없음, `t_sim` 유지. 지도 원점은 섀시 원점이고 **팔 축 오프셋 0.0482 m는 기록만 한다**(`arm_axis_offset_m` 기본 0). 더한 쪽과 안 더한 쪽의 점수는 §13.5에 둘 다 있다. 개발 녹화에서 138개 관측이 쌓였고 정답 면의 66%를 찾았다.
+- **D: 메모리 주입을 만들고 실행기에 옵션으로 연결했다 (§14).** `SelfWallMemory`는 고정된 `coela_*`를 건드리지 않는 덧붙임 하위 클래스이고, 새 모듈 `harness/coela_runtime_self_walls.py`가 `self_wall_memory=on_v1`일 때만 그것을 쓴다(기본 `off`는 고정된 런타임을 그대로 부른다). `source_manifest.json`에는 새 번들로 등록했다. 벽 기록을 채워 주는 쪽(프레임 → 검출기 → 자기 지도)은 실행기에 없어서 `self_walls_source` 훅으로만 열어 뒀다.
 - **카메라 v3 재측정은 아직 못 했다 (§15).**
 
 ### 튜닝에 쓴 프레임과 확인용 프레임
@@ -250,7 +252,7 @@ row      L      Cr   marks
 - `test_floor_patch_extent.py` (신규, 합성 렌더): 지평선 −29 px 자세에서 벽이 정확한 밑동 행(0 … +1.5 px)에 잡히고 면 하나로 묶인다. 같은 장면을 `floor_patch_max_m=0`으로 돌리면 아무것도 안 나온다. 맨 바닥은 면이 0개. 맨 바닥에서 열 몇 개(체크 칸 대각선과 열 궤적이 나란한 경우)가 단독으로 접촉을 내지만 인접 열 연결이 없애며, 이 한계를 시험이 명시한다.
 - `test_load_rule.py` (신규): 열린 그리퍼 + 손목을 든 자세는 비적재, 닫힌 그리퍼는 자세와 무관하게 적재, 문자열 키, 명령 없음.
 - `test_height_free_wall.py` (기존): 5개 통과 + 알려진 미해결 1개 `xfail` 통과. `test_height_invariance`는 높이 0.05·0.10 m 벽을 지평선 단서가 거부하는 **알려진 미해결**이라서(수정 유무와 무관, 같은 96/96 놓침) `expectedFailure`로 표시하고 이유를 코드에 적었다.
-- 실행(이후 추가한 시험 포함): `python -m pytest experiments/2026-10-05-ego-wall-map-probe/` → 48 passed, 1 xfailed (골든 시험 포함, 약 20 s). 이 파일들은 CI가 모으는 `tests/`에 없어서 CI에 들어가지 않는다. D의 시험(`tests/test_self_wall_memory.py`)은 `tests/`에 있어 CI에 들어간다.
+- 실행(이후 추가한 시험 포함): `python -m pytest experiments/2026-10-05-ego-wall-map-probe/` → 49 passed, 1 xfailed (골든 시험 포함, 약 20 s). 이 파일들은 CI가 모으는 `tests/`에 없어서 CI에 들어가지 않는다. D의 시험(`tests/test_self_wall_memory.py`)은 `tests/`에 있어 CI에 들어간다.
 
 ## 5. 남은 문제
 
@@ -330,9 +332,11 @@ $PY -I $CODE/score_harness.py --episode $EP --robot r1 --output $OPT/main-E-top4
     --load-rule gripper --detector-params "$DP" --sag-comp                                                          # +sag
 
 # 면 단위 채점 (§10, §13): 구성 × 처짐 보정 × 게이트. --gate settle이면 ego_map.jsonl도 쓴다
+$PY -I $CODE/segment_score.py --episode $EP --robot r1 --output $OPT/seg-offset0/main-E-sagon-settle --every 2 \
+    --gate settle --load-rule gripper --detector-params "$DP" --sag-comp                                  # 팔 축 오프셋은 기록만 (기본)
 $PY -I $CODE/segment_score.py --episode $EP --robot r1 --output $OPT/seg/main-E-sagon-settle --every 2 \
-    --gate settle --load-rule gripper --detector-params "$DP" --sag-comp
-$PY -I $CODE/segment_score.py --episode $EP --robot r1 --output $OPT/seg/main-A-sagoff-none --every 2 --gate none   # 모두 끔
+    --gate settle --load-rule gripper --detector-params "$DP" --sag-comp --arm-axis-offset-m 0.0482      # 오프셋을 더함 (§13.5)
+$PY -I $CODE/segment_score.py --episode $EP --robot r1 --output $OPT/seg-offset0/main-A-sagoff-none --every 2 --gate none   # 모두 끔
 
 # 처짐 계수 맞춤과 정착 시간 (녹화만 바꿔서 v3에도 그대로 돈다, §12, §13.3, §15)
 $PY -I $CODE/fit_sag.py --fit-episode $EP --episode <확인 녹화 1> --episode <확인 녹화 2> --robot r1 --output $OPT/sag-fit.json
@@ -341,12 +345,12 @@ $PY -I $CODE/settle_curve.py --episode $EP --robot r1 --output $OPT/settle-<녹�
 # 확인 에피소드: EP를 .../v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3 (s913도) 로 바꿔 같은 A, B, C
 # 시험
 $PY -m pytest experiments/2026-10-05-ego-wall-map-probe/          # 옵션 시험, 꺼진 상태의 바이트 동일 시험(로컬 녹화 필요)
-$PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/test_rgb_communication_boundary_audit.py
+$PY -m pytest tests/test_self_wall_memory.py tests/test_coela_runtime_self_walls.py tests/test_coela_modules.py tests/test_coela_runtime.py tests/test_rgb_communication_boundary_audit.py
 ```
 
 ### 7.1 산출물 위치
 
-모든 산출물은 `/Users/changmin/projects/ugrp/outputs/ego-wall-map-probe/wall-bias-fix/final/` (약 19 MB, 커밋하지 않음). 이전 세션의 `harness-full`, `harness-full-all`, `wall_analysis`, `design_synthesis.md`는 건드리지 않았다. 옵션 실행은 `options/`(열 단위 `<녹화>-<구성>/`, 면 단위 `seg/<녹화>-<구성>-sag<off|on>-<gate>/`, `sag-fit.json`, `settle-*.json`)에 있다(`final/`은 §0–§9의 표, `options/`는 §10 이후의 표와 `final/`의 옵션 재현). 개발 중 중간·버린 실행은 같은 `wall-bias-fix/` 아래 `0-legacy-reproduce`, `1-truegt-gripper*`, `2-cause-separation`, `3-missed-classification`, `4-clamp-horizon`, `scratch/`, `heldout-*`에 있다(최종 표에는 `final/`만 쓴다).
+모든 산출물은 `/Users/changmin/projects/ugrp/outputs/ego-wall-map-probe/wall-bias-fix/final/` (약 19 MB, 커밋하지 않음). 이전 세션의 `harness-full`, `harness-full-all`, `wall_analysis`, `design_synthesis.md`는 건드리지 않았다. 옵션 실행은 `options/`(열 단위 `<녹화>-<구성>/`, 면 단위 `seg-offset0/<녹화>-<구성>-sag<off|on>-<gate>/`(기본: 팔 축 오프셋 안 더함) 과 `seg/…`(같은 매트릭스, 0.0482 m를 더함; §13.5), `sag-fit.json`, `settle-*.json`)에 있다(`final/`은 §0–§9의 표, `options/`는 §10 이후의 표와 `final/`의 옵션 재현). 개발 중 중간·버린 실행은 같은 `wall-bias-fix/` 아래 `0-legacy-reproduce`, `1-truegt-gripper*`, `2-cause-separation`, `3-missed-classification`, `4-clamp-horizon`, `scratch/`, `heldout-*`에 있다(최종 표에는 `final/`만 쓴다).
 
 ### 7.2 코드
 
@@ -363,8 +367,9 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 | `code/segment_score.py`, `segment_table.py` | 면 단위 채점(§10)과 표. `--gate {none,settle}`, `--sag-comp`, `--load-rule`, `--detector-params`. `--gate settle`이면 `ego_map.jsonl`도 쓴다 |
 | `code/sag_comp.py`, `fit_sag.py`, `sag_coeffs.json` | 처짐 보정 모델, 오프라인 맞춤·확인, 계수(§12) |
 | `code/settle_curve.py` | 명령이 일정한 구간에서 정착 시간을 잰다(§13.3) |
-| `code/ego_wall_map.py` | 자기 지도 쌓기 C. `EgoWallMap(enabled=False, settle_s=…, arm_axis_offset_m=…)`(§13) |
-| `harness/self_wall_memory.py` (저장소 `harness/`) | D. `Memory`를 잇는 하위 클래스, 옵션 셋 모두 기본 꺼짐(§14). 시험 `tests/test_self_wall_memory.py` |
+| `code/ego_wall_map.py` | 자기 지도 쌓기 C. `EgoWallMap(enabled=False, settle_s=…, arm_axis_offset_m=0)`(§13; 오프셋은 기록만, 더하려면 0.0482) |
+| `harness/self_wall_memory.py` (저장소 `harness/`) | D. `Memory`를 잇는 하위 클래스, 옵션 셋 모두 기본 꺼짐, 선택적 `self_walls_source`(§14). 시험 `tests/test_self_wall_memory.py` |
+| `harness/coela_runtime_self_walls.py` (저장소 `harness/`) | D 실행기 연결. `run_coela_episode(…, self_wall_memory="off"\|"on_v1", self_walls_source=…)`; 고정된 `coela_runtime.py`는 고치지 않는다(§14.1). 시험 `tests/test_coela_runtime_self_walls.py` |
 | `test_load_rule.py`, `test_run_step_window.py`, `test_top_edge.py`, `test_sag_comp.py`, `test_ego_wall_map.py`, `test_options_off_identical.py` | 옵션 시험과 꺼진 상태 동일 시험 (실험 폴더, CI 밖) |
 | `code/self_mask.py`, `coverage.py`, `diag_rows.py`, `overlay.py`, `replay_render.py`, `height_invariance.py`, `cue_study.py`, `fast_detect.py`, `map2d.py` | 이전 세션 도구. 적재 규칙은 `--load-rule`(기본 옛 규칙)로 읽는다 |
 
@@ -409,8 +414,10 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 | `options/settle-a3415342-s911-wtA.json` | `4ef27a9ce3795c0164f5f437199ebb72deac5fc86be633614189b04e30a0f3c5` |
 | `options/settle-7194637e-s912.json` | `4203a1362f3cfd8b7924bd673940dd080c33a8731bb65df21ad40151cad3470d` |
 | `options/settle-7194637e-s913.json` | `461ec8a3e7696c5bcbeb2b9e208df596ce59adf734e5a337935fe8a6dcb2f2be` |
+| `options/seg-offset0/main-E-sagon-settle/summary.json` | `23e65ad9dc3bea6bcf7885579f0ec8ee772910e54cd2ea8c2f6c3db1edf7ca91` |
+| `options/seg-offset0/main-E-sagon-settle/segments.csv` | `da866f9bcb4f22037a4a85c8f9441f9039f64fa01711e38b9e11e4cd9cf4f497` |
+| `options/seg-offset0/main-E-sagon-settle/ego_map.jsonl` | `4e1ad8a3da15f68055b6df11fb12a03dcbdeadc68b2af2dd5057a40f964990e1` |
 | `options/seg/main-E-sagon-settle/summary.json` | `6bc3f527e196989ae5a77dbce4df9731103369de8629b97dfec83202a9455421` |
-| `options/seg/main-E-sagon-settle/segments.csv` | `c4fbabeb880b0dd7cfd7ca6a015791e646d40279138e92e73d750eb624b72ad0` |
 | `options/seg/main-E-sagon-settle/ego_map.jsonl` | `219c0055534a0ccc12479d86ee0ed8869784225b9a1439ac5541d4b233737244` |
 
 <details><summary>`options/`의 열 단위 실행 `summary.json`과 면 단위 실행 `summary.json` 전부</summary>
@@ -448,6 +455,54 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 | `options/s913-D-step3/summary.json` | `634ca545bd41bef258644f72527d3440d72f5e803dc27ff54a509dfb01118fe6` |
 | `options/s913-D-step3-sag/summary.json` | `caa6210b5c0e7418224bb7bd68e200e0472fb13b98247882223e683eedf2cbbc` |
 | `options/s913-E-top4-sag/summary.json` | `fbf96beb5501d08a5ba7e89c56da86f295d67f79d3645f355d3006a01ee285e7` |
+| `options/seg-offset0/main-A-sagoff-none/summary.json` | `546bc45db8b3b9918b1b69abd4c12a093bd9e13b8d5cdaea181d908d8bb49321` |
+| `options/seg-offset0/main-A-sagoff-settle/summary.json` | `3df58f4d727349c2369fbe823c6d59e9f10f7621f522d0ae7fdb75f6dc90caef` |
+| `options/seg-offset0/main-A-sagon-none/summary.json` | `52cb50e38b166f60e2950b4c089c09ab1cfeb7eb42783cb690c3ca5df9b856f3` |
+| `options/seg-offset0/main-A-sagon-settle/summary.json` | `e5c8cd97f7e5e6296b3c2421e5b792e278b669eb8648b68e5b4f4651443d7895` |
+| `options/seg-offset0/main-C-sagoff-none/summary.json` | `5a38f6716d8a55b51ef97a9bf08f23a1e4f79a669fa2d9324e13493c863fdd51` |
+| `options/seg-offset0/main-C-sagoff-settle/summary.json` | `8fb4dc49bdbf8c7137f6c0ad8225df1dea4ac28a12962ad16051ca3787977219` |
+| `options/seg-offset0/main-C-sagon-none/summary.json` | `b2799db611c5c9bfd898f98f6a48f768db2238ee9ffff09d2560097919d1288d` |
+| `options/seg-offset0/main-C-sagon-settle/summary.json` | `a6e8bbee0b0d4c7d3ab58beed6a71a3729cedeb4489ab8fd24e06bcc35504511` |
+| `options/seg-offset0/main-D-sagoff-none/summary.json` | `223e3735c9e828d85657c93ea760e775b4a04c74cd90f6c5a2bfb6806b9dea90` |
+| `options/seg-offset0/main-D-sagoff-settle/summary.json` | `dc878c1422e6839edb8828c4f2c9cb4dc6c9934603577dcc560627597d1ae5af` |
+| `options/seg-offset0/main-D-sagon-none/summary.json` | `da7671b871dfb3ba73f78eea78aff6b5d907ee598caf923b286601edc335951d` |
+| `options/seg-offset0/main-D-sagon-settle/summary.json` | `6db677fcc8fbfb72c5b0954f10bf1c4c34128225df54638288f2c98d47af326d` |
+| `options/seg-offset0/main-E-sagoff-none/summary.json` | `28b252da8be9e3556f581752efb6795ec659489ba308a7d5fe7b0a413fa6008e` |
+| `options/seg-offset0/main-E-sagoff-settle/summary.json` | `153073855601cda1037bdaabad0d263810396813f159749c70e32a045a153d5a` |
+| `options/seg-offset0/main-E-sagon-none/summary.json` | `5fb1bbf451137a98c5e93e06affc302394ecce0bb35c5e3b20fc5eff268181cb` |
+| `options/seg-offset0/main-E-sagon-settle/summary.json` | `23e65ad9dc3bea6bcf7885579f0ec8ee772910e54cd2ea8c2f6c3db1edf7ca91` |
+| `options/seg-offset0/s912-A-sagoff-none/summary.json` | `d21b5bac1f701335e4c32b2ff783a27ed0dda5382765cf9c14657e092f552051` |
+| `options/seg-offset0/s912-A-sagoff-settle/summary.json` | `4828b2a652c4cfe320ff1caec031c79a217673cdb3d5d41b4b8a4ab19e534dc7` |
+| `options/seg-offset0/s912-A-sagon-none/summary.json` | `71be574fa3434395c3d5e192a3b93ba613c974e4aec2e12da8b317e9315215bf` |
+| `options/seg-offset0/s912-A-sagon-settle/summary.json` | `8c42c7fccc5b8b41c5af5e1775378cc6375db77572349ab8c48c0cebd8c8028d` |
+| `options/seg-offset0/s912-C-sagoff-none/summary.json` | `1983b25747a6b0ab5bf922c26f630ab74d27a68b49d713d2229049032a372b33` |
+| `options/seg-offset0/s912-C-sagoff-settle/summary.json` | `0e3abd451dbfd5f995d63f170d2a76d08af84b387d6fb7e3591d11ffd3bdc9e0` |
+| `options/seg-offset0/s912-C-sagon-none/summary.json` | `96d725866f28b6f421527d9d9f6a91fef3658f4ca997e3109e72f503c351cd6e` |
+| `options/seg-offset0/s912-C-sagon-settle/summary.json` | `a88199f5c041742faee57fb2e2d3e5cd5f41cd8ed3be638d46eab261760c0b5d` |
+| `options/seg-offset0/s912-D-sagoff-none/summary.json` | `14338f439f59f97fde8b35bc88eb408910906693cbe3de5e797c4cbd144b5537` |
+| `options/seg-offset0/s912-D-sagoff-settle/summary.json` | `88d8e3f0f29a7202c7e2efaceeea95b902a11f260969aac29c815b42f5b2f193` |
+| `options/seg-offset0/s912-D-sagon-none/summary.json` | `d016531004032c70687f114fa32de012a546335498536ebd0c663f66d5cc88fc` |
+| `options/seg-offset0/s912-D-sagon-settle/summary.json` | `51542179702fb8f822a3972122db96c34b51f6ad3912a8cf2c36fd4ea21e2ec8` |
+| `options/seg-offset0/s912-E-sagoff-none/summary.json` | `24d84a81e87cf73683f7ef3ff4749e472593092b798d8c8c5e6561a2f6608387` |
+| `options/seg-offset0/s912-E-sagoff-settle/summary.json` | `185d9cf8f9839044fe8825b47feb91f19ddeaf2749d8b67db17410c30e975bfc` |
+| `options/seg-offset0/s912-E-sagon-none/summary.json` | `35747402aa830d166d4936324f8a005d8e9da1038c1ab39d7ac1639f648c19ea` |
+| `options/seg-offset0/s912-E-sagon-settle/summary.json` | `ed314bdd30b05b5fa9750ec3f004dc2d0f7efe3235cf7382939a70d26acaa2ab` |
+| `options/seg-offset0/s913-A-sagoff-none/summary.json` | `8f3d07ebd09a5cea7baa327183a5c46286d90faec9de598170108bf96e011688` |
+| `options/seg-offset0/s913-A-sagoff-settle/summary.json` | `73cc21c07838406c062ebb009a8360e1aedf99d4f4081a78cacef7aa887586e5` |
+| `options/seg-offset0/s913-A-sagon-none/summary.json` | `b6eec9f1b5233ce1438e20086a8469af222c15a1758682b61597bb7fa05b7c9e` |
+| `options/seg-offset0/s913-A-sagon-settle/summary.json` | `19ae865f7d43cec34969e512b2037e308006bdca6007dbe12e34753e8438435e` |
+| `options/seg-offset0/s913-C-sagoff-none/summary.json` | `578fb793552ae43185e8022a7e17c976b2ace8ad81f1f3eabf4995d19a199344` |
+| `options/seg-offset0/s913-C-sagoff-settle/summary.json` | `3a36034e58f3e4dbf2b7a40adad114f4afb512163d5f45680070d883bc156c0e` |
+| `options/seg-offset0/s913-C-sagon-none/summary.json` | `a9554f87b930d4c115cf8394ab0106cdb96f8d4eacce792fa845d0657bd9f9a9` |
+| `options/seg-offset0/s913-C-sagon-settle/summary.json` | `8bc6f0ea7234eded392e219bee5a62c252118fdde903ebc27907b58be53d5635` |
+| `options/seg-offset0/s913-D-sagoff-none/summary.json` | `f3c7411253051f381db6316587af7920fd2af6a96617663666bb745ab2649e0c` |
+| `options/seg-offset0/s913-D-sagoff-settle/summary.json` | `58554728ffdf3b7533cf5958b54abb8b8aed4575d6c680a01eb2c3da7d10ab37` |
+| `options/seg-offset0/s913-D-sagon-none/summary.json` | `14cda61a7db8e28eb66390b00dc1a9883ed871e16544cd4158d17a65ff22f801` |
+| `options/seg-offset0/s913-D-sagon-settle/summary.json` | `f3909d672eafeba99271024f09ae0f4119bba30e726b7014c63f4c8e73cd58c3` |
+| `options/seg-offset0/s913-E-sagoff-none/summary.json` | `2eb06bb0e1c70d232d2eb1b0f6fa0ea72c43475d419c1086f838cb5bfc626488` |
+| `options/seg-offset0/s913-E-sagoff-settle/summary.json` | `b7b1426ca1cf6bc12830ac625dd9b84a803ba096b8c681ef47f6de6d24f9f82e` |
+| `options/seg-offset0/s913-E-sagon-none/summary.json` | `9a21738ea1c8ac50de72e8151dc6a8c63943faaa7fa8032d4045732430c75dd6` |
+| `options/seg-offset0/s913-E-sagon-settle/summary.json` | `d1040d5c17f9f39b51b17003e5f625e39f8dbb890629211256b9cc87e4473ed6` |
 | `options/seg/main-A-sagoff-none/summary.json` | `cce4cd32ff3699ebb0906a3e6dbcab7f9bc12ae36f0a0cc84c9625d369fa9954` |
 | `options/seg/main-A-sagoff-settle/summary.json` | `8461c35d554a80d680591a8b03d627f82418e3ac15bfb7a73c096124273b01c3` |
 | `options/seg/main-A-sagon-none/summary.json` | `c503028ac39f2b3eb2aa034393be11f6cb0d1843de0fee17e38db501223c4b20` |
@@ -513,7 +568,8 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 - **s912, s913은 s911과 같은 시나리오·같은 자세 집합이라 독립 확인이 아니다.** 처짐 계수와 정착 시간은 s911에서 맞추고 둘에서 재현을 봤을 뿐이다. 새 자세에서의 일반화는 자세 하나 빼기로만 봤다(§12.2).
 - 처짐의 적재 항은 점수로 검증하지 못했다. 보이는 프레임에 운반 자세가 없다(§12.4).
 - 4 m 이상의 면은 아직 많이 틀리고(§10.3), 높이 `h`는 탐색 자세에서 틀린다(§11.4). 검출 접촉의 경계 위쪽 오류(약 15%)는 원인을 조사하지 않았다.
-- D는 모듈과 시험까지만 했고 실행기에 연결하지 않았다(§14).
+- D는 `coela_runtime`에 옵션으로 연결했지만(§14.1) 실행해 본 것은 가짜 환경·가짜 플래너의 계약 시험뿐이고, 벽 기록을 채워 주는 쪽(프레임 → 검출기 → 자기 지도)은 실행기에 없다. 켠 상태의 LLM 응답은 보지 않았다.
+- 팔 축 오프셋은 기본이 "기록만"(안 더함)이다. 점수 차이는 0.15 m 기준에서 작지만 0.10 m 기준과 위치 오차 중앙값에서 서로 반대로 움직이고 이유를 조사하지 않았다(§13.5).
 - 카메라 v3 재측정은 못 했다(§15). 처짐 계수, `SEED_BIAS`, 정착 시간 기본값은 예전 카메라의 값이다.
 - 거짓 검출은 "벽이 안 보이는 프레임에서 접촉이 있는가"만 센다. 벽이 보이는 프레임의 잘못된 접촉은 precision에 들어간다. 둘을 섞지 않는다.
 
@@ -525,7 +581,7 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 
 ### 10.1 무엇을 쟀나
 
-§0의 숫자는 열 하나하나의 접촉이다. 지도에 쌓이는 것은 **면**(벽 밑동 선분의 두 끝점)이다. 그래서 `code/segment_score.py`는 기록된 녹화를 다시 돌려, 지도에 쌓이는 그대로(섀시 좌표 극좌표의 두 끝점) 면을 만들고 **진짜 로봇 자세로 맵 좌표에 놓은 뒤** 정답 벽 발자국과 비교한다(정답은 채점에만 쓴다. 검출기 호출 자리는 코드에 표시했다).
+§0의 숫자는 열 하나하나의 접촉이다. 지도에 쌓이는 것은 **면**(벽 밑동 선분의 두 끝점)이다. 그래서 `code/segment_score.py`는 기록된 녹화를 다시 돌려, 지도에 쌓이는 그대로(로봇 좌표 극좌표의 두 끝점, 팔 축 오프셋은 기본 안 더함: §13.1) 면을 만들고 **진짜 로봇 자세로 맵 좌표에 놓은 뒤** 정답 벽 발자국과 비교한다(정답은 채점에만 쓴다. 검출기 호출 자리는 코드에 표시했다).
 
 - **정확한 면**: 두 끝점 사이 선분 위 9점에서 가장 가까운 벽 발자국 경계까지 거리의 중앙값이 0.15 m 이하(0.10, 0.25 m도 함께 적는다).
 - **위치 오차**: 정확한 면에서 그 거리의 중앙값. **방향 오차**: 면이 0.3 m 이상일 때 가장 가까운 맵 축(벽은 축에 나란하다)과의 각도 차.
@@ -541,59 +597,59 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 
 | 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
 |---|---|---|---|---|---|---|---|---|
-| A, 처짐 보정 끔 | 565 | 2% / 5% / 23% | 0.101 | 9.3 | 2% | 40% | 0 | 146 |
-| A, 처짐 보정 켬 | 622 | 40% / 61% / 69% | 0.058 | 17.1 | 26% | 93% | 0 | 146 |
-| C, 처짐 보정 끔 | 903 | 25% / 40% / 64% | 0.079 | 21.4 | 31% | 82% | 0 | 247 |
-| C, 처짐 보정 켬 | 885 | 33% / 64% / 73% | 0.097 | 27.7 | 50% | 93% | 0 | 247 |
-| D, 처짐 보정 끔 | 867 | 56% / 62% / 70% | 0.019 | 2.5 | 56% | 81% | 0 | 246 |
-| D, 처짐 보정 켬 | 851 | 69% / 78% / 82% | 0.018 | 2.6 | 64% | 93% | 0 | 246 |
-| E, 처짐 보정 끔 | 867 | 56% / 62% / 70% | 0.019 | 2.5 | 56% | 81% | 0 | 246 |
-| E, 처짐 보정 켬 | 851 | 69% / 78% / 82% | 0.018 | 2.6 | 64% | 93% | 0 | 246 |
+| A, 처짐 보정 끔 | 565 | 1% / 4% / 13% | 0.100 | 9.3 | 2% | 36% | 0 | 146 |
+| A, 처짐 보정 켬 | 622 | 43% / 53% / 69% | 0.038 | 10.2 | 20% | 93% | 0 | 146 |
+| C, 처짐 보정 끔 | 903 | 25% / 36% / 63% | 0.058 | 9.0 | 24% | 82% | 0 | 247 |
+| C, 처짐 보정 켬 | 885 | 35% / 43% / 73% | 0.037 | 10.8 | 24% | 93% | 0 | 247 |
+| D, 처짐 보정 끔 | 867 | 60% / 64% / 71% | 0.046 | 2.5 | 56% | 83% | 0 | 246 |
+| D, 처짐 보정 켬 | 851 | 74% / 77% / 82% | 0.027 | 2.6 | 63% | 93% | 0 | 246 |
+| E, 처짐 보정 끔 | 867 | 60% / 64% / 71% | 0.046 | 2.5 | 56% | 83% | 0 | 246 |
+| E, 처짐 보정 켬 | 851 | 74% / 77% / 82% | 0.027 | 2.6 | 63% | 93% | 0 | 246 |
 
 **s912 (확인)**
 
 | 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
 |---|---|---|---|---|---|---|---|---|
-| A, 처짐 보정 끔 | 630 | 2% / 4% / 20% | 0.101 | 8.8 | 2% | 42% | 0 | 161 |
-| A, 처짐 보정 켬 | 679 | 38% / 59% / 70% | 0.058 | 20.7 | 26% | 92% | 0 | 161 |
-| C, 처짐 보정 끔 | 1000 | 24% / 39% / 63% | 0.086 | 26.0 | 31% | 81% | 0 | 276 |
-| C, 처짐 보정 켬 | 975 | 31% / 62% / 74% | 0.098 | 29.3 | 50% | 92% | 0 | 276 |
-| D, 처짐 보정 끔 | 983 | 56% / 62% / 69% | 0.021 | 2.5 | 56% | 79% | 0 | 275 |
-| D, 처짐 보정 켬 | 963 | 69% / 77% / 82% | 0.019 | 2.6 | 65% | 93% | 0 | 275 |
-| E, 처짐 보정 끔 | 983 | 56% / 62% / 69% | 0.021 | 2.5 | 56% | 79% | 0 | 275 |
-| E, 처짐 보정 켬 | 963 | 69% / 77% / 82% | 0.019 | 2.6 | 65% | 93% | 0 | 275 |
+| A, 처짐 보정 끔 | 630 | 1% / 4% / 11% | 0.100 | 8.8 | 2% | 35% | 0 | 161 |
+| A, 처짐 보정 켬 | 679 | 42% / 50% / 69% | 0.039 | 16.4 | 20% | 93% | 0 | 161 |
+| C, 처짐 보정 끔 | 1000 | 23% / 35% / 62% | 0.077 | 13.9 | 25% | 81% | 0 | 276 |
+| C, 처짐 보정 켬 | 975 | 33% / 41% / 73% | 0.039 | 16.4 | 24% | 93% | 0 | 276 |
+| D, 처짐 보정 끔 | 983 | 59% / 63% / 70% | 0.043 | 2.5 | 57% | 81% | 0 | 275 |
+| D, 처짐 보정 켬 | 963 | 73% / 76% / 82% | 0.029 | 2.6 | 63% | 92% | 0 | 275 |
+| E, 처짐 보정 끔 | 983 | 59% / 63% / 70% | 0.043 | 2.5 | 57% | 81% | 0 | 275 |
+| E, 처짐 보정 켬 | 963 | 73% / 76% / 82% | 0.029 | 2.6 | 63% | 92% | 0 | 275 |
 
 **s913 (확인)**
 
 | 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
 |---|---|---|---|---|---|---|---|---|
-| A, 처짐 보정 끔 | 586 | 2% / 5% / 22% | 0.101 | 9.1 | 2% | 36% | 0 | 156 |
-| A, 처짐 보정 켬 | 644 | 39% / 61% / 71% | 0.058 | 18.1 | 26% | 93% | 0 | 156 |
-| C, 처짐 보정 끔 | 920 | 25% / 40% / 64% | 0.079 | 21.3 | 31% | 83% | 0 | 257 |
-| C, 처짐 보정 켬 | 905 | 32% / 64% / 75% | 0.098 | 26.1 | 49% | 93% | 0 | 257 |
-| D, 처짐 보정 끔 | 892 | 56% / 62% / 70% | 0.021 | 2.5 | 55% | 80% | 0 | 256 |
-| D, 처짐 보정 켬 | 877 | 70% / 78% / 82% | 0.018 | 2.6 | 65% | 93% | 0 | 256 |
-| E, 처짐 보정 끔 | 892 | 56% / 62% / 70% | 0.021 | 2.5 | 55% | 80% | 0 | 256 |
-| E, 처짐 보정 켬 | 877 | 70% / 78% / 82% | 0.018 | 2.6 | 65% | 93% | 0 | 256 |
+| A, 처짐 보정 끔 | 586 | 2% / 4% / 13% | 0.100 | 9.1 | 1% | 36% | 0 | 156 |
+| A, 처짐 보정 켬 | 644 | 44% / 53% / 70% | 0.035 | 15.3 | 19% | 93% | 0 | 156 |
+| C, 처짐 보정 끔 | 920 | 25% / 36% / 63% | 0.062 | 10.1 | 25% | 81% | 0 | 257 |
+| C, 처짐 보정 켬 | 905 | 35% / 43% / 73% | 0.034 | 14.9 | 23% | 93% | 0 | 257 |
+| D, 처짐 보정 끔 | 892 | 60% / 64% / 71% | 0.043 | 2.5 | 56% | 82% | 0 | 256 |
+| D, 처짐 보정 켬 | 877 | 75% / 78% / 83% | 0.027 | 2.6 | 64% | 93% | 0 | 256 |
+| E, 처짐 보정 끔 | 892 | 60% / 64% / 71% | 0.043 | 2.5 | 56% | 82% | 0 | 256 |
+| E, 처짐 보정 켬 | 877 | 75% / 78% / 83% | 0.027 | 2.6 | 64% | 93% | 0 | 256 |
 
 (E는 D와 같은 접촉이고 면 높이만 다르다. 표의 "정확"은 0.10 / 0.15 / 0.25 m 기준 순서.)
 
 읽는 법:
-- 개발 녹화에서 A는 면 565개 중 0.15 m 안이 5%다. 바닥 조각 길이(C)가 면 수를 903개로 늘리면서(놓쳤던 프레임이 살아나서) 정확한 면은 40%, 방향 오차는 중앙값 21°다. 면의 끝점이 벽에 놓이지 않고 비스듬히 선다.
-- 분할 창(D, §11)이 방향 오차를 중앙값 2.5°로, 위치 오차를 1.9 cm로 줄인다.
-- 처짐 보정(§12)은 위치 오차 중앙값을 바꾸지 못하지만(가까운 면은 이미 정확하다) **먼 벽**의 거리를 바로잡아 0.15 m 안의 면 비율을 62% → 78%로 올린다.
-- **A에 처짐 보정만 켠 행(5% → 61%)이 큰 것은 처짐 보정이 적재 판정도 그리퍼 명령으로 바꾸기 때문이다**(§12.1). 옛 적재 규칙의 오류(§1)가 면 단위 점수의 큰 부분이라는 뜻이다. 처짐 보정 자체의 효과는 적재 규칙을 같이 고친 C, D 쪽의 끔/켬 비교로 봐야 한다.
+- 개발 녹화에서 A는 면 565개 중 0.15 m 안이 4%다. 바닥 조각 길이(C)가 면 수를 903개로 늘리면서(놓쳤던 프레임이 살아나서) 정확한 면은 36%, 방향 오차는 중앙값 9°다. 면의 끝점이 벽에 놓이지 않고 비스듬히 선다.
+- 분할 창(D, §11)이 방향 오차를 중앙값 2.5°로, 위치 오차를 4.6 cm로 줄인다.
+- 처짐 보정(§12)은 위치 오차 중앙값을 바꾸지 못하지만(가까운 면은 이미 정확하다) **먼 벽**의 거리를 바로잡아 0.15 m 안의 면 비율을 64% → 77%로 올린다.
+- **A에 처짐 보정만 켠 행(5% → 53%)이 큰 것은 처짐 보정이 적재 판정도 그리퍼 명령으로 바꾸기 때문이다**(§12.1). 옛 적재 규칙의 오류(§1)가 면 단위 점수의 큰 부분이라는 뜻이다. 처짐 보정 자체의 효과는 적재 규칙을 같이 고친 C, D 쪽의 끔/켬 비교로 봐야 한다.
 - 안 보이는 프레임에서 나온 면은 어떤 구성에서도 0개다.
 
 ### 10.3 거리 구간별 정확한 면 (E + 처짐 보정, 0.15 m)
 
 | 녹화 | 0–2 m | 2–3 m | 3–4 m | 4 m 이상 |
 |---|---|---|---|---|
-| s911 (개발) | 90% (244) | 90% (375) | 53% (36) | 43% (196) |
-| s912 (확인) | 92% (294) | 89% (394) | 49% (35) | 44% (240) |
-| s913 (확인) | 90% (250) | 89% (389) | 53% (36) | 47% (202) |
+| s911 (개발) | 91% (317) | 89% (302) | 54% (37) | 41% (195) |
+| s912 (확인) | 90% (373) | 90% (315) | 49% (37) | 40% (238) |
+| s913 (확인) | 91% (324) | 90% (315) | 54% (37) | 45% (201) |
 
-(괄호 안은 면 수.) 거리가 멀수록 맞는 면이 줄어든다. 바닥 접촉 행 하나가 거리에 주는 영향은 먼 곳일수록 커진다(거리 d = 카메라 높이 / tan(바닥을 보는 각)이라 먼 곳에서는 한 행이 가리키는 바닥 길이가 길다). 이 표에서 4 m 이상은 43%만 0.15 m 안이다(개발 녹화, 게이트 없음). 이것은 이번에 고치지 않았다(§13의 한계).
+(괄호 안은 면 수.) 거리가 멀수록 맞는 면이 줄어든다. 바닥 접촉 행 하나가 거리에 주는 영향은 먼 곳일수록 커진다(거리 d = 카메라 높이 / tan(바닥을 보는 각)이라 먼 곳에서는 한 행이 가리키는 바닥 길이가 길다). 이 표에서 4 m 이상은 41%만 0.15 m 안이다(개발 녹화, 게이트 없음). 이것은 이번에 고치지 않았다(§13의 한계).
 
 ## 11. C0: 검출기 정밀도 (`run_step_window`)
 
@@ -715,23 +771,23 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 
 - 행 오차 중앙값은 그대로다(D -0.60 → D+sag -0.60 px). 접촉 행은 영상에서 나오지만 카메라 피치가 지평선 검사에도 들어가므로 일부 접촉이 달라진다(precision 0.841 → 0.845, 열 단위 행 오차 p10 -10.6 → -4.4 px).
 - **거리 오차**가 줄어든다(열 단위 중앙값, p10…p90): C +0.039 m (-0.36…+0.30) → C+sag +0.015 m (-0.34…+0.18), D +0.061 m → D+sag +0.015 m.
-- 면 단위(§10.2): 정확한 면 비율이 D에서 62% → 78%. 거리 구간별로 보면 **먼 구간은 크게 오르고 가장 가까운 구간(0–2 m)은 조금 나빠진다.** 확인 녹화 둘에서도 같은 방향이다.
+- 면 단위(§10.2): 정확한 면 비율이 D에서 64% → 77%. 거리 구간별로 보면 **먼 구간은 크게 오르고 가장 가까운 구간(0–2 m)은 조금 나빠진다.** 확인 녹화 둘에서도 같은 방향이다.
 
 처짐 보정 끔 (D):
 
 | 녹화 | 0–2 m | 2–3 m | 3–4 m | 4 m 이상 |
 |---|---|---|---|---|
-| s911 (개발) | 96% (274) | 78% (335) | 17% (48) | 3% (210) |
-| s912 (확인) | 95% (326) | 77% (359) | 14% (42) | 4% (256) |
-| s913 (확인) | 95% (280) | 78% (346) | 18% (49) | 3% (217) |
+| s911 (개발) | 94% (332) | 81% (278) | 28% (47) | 2% (210) |
+| s912 (확인) | 93% (388) | 81% (297) | 29% (42) | 3% (256) |
+| s913 (확인) | 94% (339) | 81% (289) | 28% (47) | 2% (217) |
 
 처짐 보정 켬 (D):
 
 | 녹화 | 0–2 m | 2–3 m | 3–4 m | 4 m 이상 |
 |---|---|---|---|---|
-| s911 (개발) | 90% (244) | 90% (375) | 53% (36) | 43% (196) |
-| s912 (확인) | 92% (294) | 89% (394) | 49% (35) | 44% (240) |
-| s913 (확인) | 90% (250) | 89% (389) | 53% (36) | 47% (202) |
+| s911 (개발) | 91% (317) | 89% (302) | 54% (37) | 41% (195) |
+| s912 (확인) | 90% (373) | 90% (315) | 49% (37) | 40% (238) |
+| s913 (확인) | 91% (324) | 90% (315) | 54% (37) | 45% (201) |
 
 (괄호 안은 면 수. 0–2 m가 나빠지는 원인은 조사하지 않았다. 면 수가 줄어드는 것과 함께 일어난다.)
 
@@ -750,14 +806,14 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 `code/ego_wall_map.py`. 정착한 관측마다, 면이 하나라도 보이면 한 줄을 덧붙인다. **위치 추정·융합·루프 클로저·중복 제거 없음. 같은 벽을 여러 번 봐도 그대로 쌓고 `t_sim`을 버리지 않는다.**
 
 ```
-{"t_sim": 1.9, "seg": [[2.1044, 0.3894, 2.3871, 0.2619, null], [2.077, 0.2238, 2.162, 0.1412, null], [5.0709, 0.1261, 5.6419, 0.0456, 0.3906], [5.4263, -0.0542, 5.0687, -0.1225, 0.3871], [2.1923, -0.1379, 2.085, -0.2401, null], [2.0938, -0.3031, 2.1805, -0.4671, null]], "posture": "other", "load": false, "view_index": 13}
+{"t_sim": 1.9, "seg": [[2.0599, 0.3982, 2.3406, 0.2672, null], [2.03, 0.2291, 2.1143, 0.1444, null], [5.0231, 0.1273, 5.5938, 0.046, 0.3906], [5.3782, -0.0546, 5.0208, -0.1236, 0.3871], [2.1446, -0.1409, 2.0382, -0.2457, null], [2.0478, -0.3101, 2.1376, -0.4772, null]], "posture": "other", "load": false, "view_index": 13}
 ```
 
-`seg`는 `(r1, θ1, r2, θ2, h)`: 관측 시각의 **섀시 좌표**(섀시 원점, +x 앞, +y 왼쪽)에서 면의 두 끝점까지 거리(m)와 각도(rad, 반시계), 측정한 높이(m, 못 쟀으면 `null`). `posture`는 `high`(`harness.zone_pair_highpose.at_high`가 참)이거나 `other`, `load`는 자기 그리퍼 명령, `view_index`는 프레임 번호다.
+`seg`는 `(r1, θ1, r2, θ2, h)`: 관측 시각의 **로봇 좌표**(+x 앞, +y 왼쪽; 기본은 팔 축 원점, `arm_axis_offset_m`을 더하면 섀시 원점)에서 면의 두 끝점까지 거리(m)와 각도(rad, 반시계), 측정한 높이(m, 못 쟀으면 `null`). `posture`는 `high`(`harness.zone_pair_highpose.at_high`가 참)이거나 `other`, `load`는 자기 그리퍼 명령, `view_index`는 프레임 번호다.
 
-**원점은 섀시 원점이다. 팔 축 오프셋은 파일 머리글에 적는다.** 검출기(순기구학) 좌표의 원점은 팔 축이고 섀시 원점보다 0.0482 m 앞이다(`sim/masterpi_geometry_v3.YAW_AXIS_X_M`). 섀시 원점으로 쓰려면 끝점의 x에 그만큼을 더해야 해서 **더했고**, 머리글에 `arm_axis_offset_m = 0.0482`와 그 설명을 적었다(빼면 팔 축 좌표가 돌아온다). "기록만 하고 더하지 않는다"로 읽는다면 `arm_axis_offset_m=0`으로 만들면 된다(`EgoWallMap` 인자). 면 단위 점수는 더한 좌표로 쟀고, 더하지 않은 좌표의 점수는 따로 재지 않았다.
+**원점은 섀시 원점으로 하고, 팔 축 오프셋은 기록만 한다(기본).** 검출기(순기구학) 좌표의 원점은 팔 축이고 섀시 원점보다 0.0482 m 앞이다(`sim/masterpi_geometry_v3.YAW_AXIS_X_M`). 기본(`arm_axis_offset_m = 0.0`)에서는 끝점에 아무것도 더하지 않아서 `seg`는 **팔 축 좌표**이고, 머리글의 `arm_axis_offset_recorded_m`(= 0.0482)과 설명이 "x에 이 값을 더하면 섀시 원점 좌표"라고 알려 준다. `EgoWallMap(arm_axis_offset_m=0.0482)`(`segment_score.py --arm-axis-offset-m 0.0482`)이면 끝점 x에 더해서 섀시 원점 좌표로 쌓는다. 이 README의 **표는 모두 기본(더하지 않음)**이고, 더한 경우와의 점수 비교는 §13.5에 둘 다 있다. (처음에는 더하는 쪽을 기본으로 했다가 "기록만"이라는 결정에 맞춰 바꿨다.)
 
-머리글: `{"schema": "ego-wall-map/1", "arm_axis_offset_m": 0.0482, "settle_s": {"unloaded": 0.25, "loaded": 2.25}, "settled_frames_seen": 602, "records": 138}` (개발 녹화, E + 처짐 + 게이트).
+머리글: `{"schema": "ego-wall-map/1", "arm_axis_offset_m": 0.0, "arm_axis_offset_recorded_m": 0.0482, "settle_s": {"unloaded": 0.25, "loaded": 2.25}, "settled_frames_seen": 602, "records": 138}` (개발 녹화, E + 처짐 + 게이트, 기본).
 
 ### 13.2 게이트: 정착 후 관측만 (설계 위협 T3)
 
@@ -781,22 +837,22 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 
 | 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
 |---|---|---|---|---|---|---|---|---|
-| E, 처짐 보정 끔 | 453 | 67% / 72% / 79% | 0.017 | 2.5 | 33% | 49% | 0 | 138 |
-| E, 처짐 보정 켬 | 444 | 80% / 89% / 90% | 0.018 | 2.5 | 39% | 77% | 0 | 138 |
+| E, 처짐 보정 끔 | 453 | 73% / 74% / 79% | 0.050 | 2.5 | 34% | 55% | 0 | 138 |
+| E, 처짐 보정 켬 | 444 | 86% / 88% / 90% | 0.025 | 2.5 | 38% | 77% | 0 | 138 |
 
 **s912 (확인)**
 
 | 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
 |---|---|---|---|---|---|---|---|---|
-| E, 처짐 보정 끔 | 496 | 69% / 72% / 78% | 0.016 | 2.5 | 32% | 49% | 0 | 149 |
-| E, 처짐 보정 켬 | 485 | 81% / 89% / 91% | 0.018 | 2.5 | 38% | 78% | 0 | 149 |
+| E, 처짐 보정 끔 | 496 | 72% / 74% / 79% | 0.050 | 2.5 | 33% | 56% | 0 | 149 |
+| E, 처짐 보정 켬 | 485 | 87% / 88% / 91% | 0.025 | 2.5 | 37% | 76% | 0 | 149 |
 
 **s913 (확인)**
 
 | 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
 |---|---|---|---|---|---|---|---|---|
-| E, 처짐 보정 끔 | 467 | 67% / 72% / 78% | 0.018 | 2.5 | 33% | 49% | 0 | 142 |
-| E, 처짐 보정 켬 | 458 | 80% / 88% / 90% | 0.018 | 2.6 | 39% | 78% | 0 | 142 |
+| E, 처짐 보정 끔 | 467 | 73% / 74% / 79% | 0.050 | 2.5 | 34% | 55% | 0 | 142 |
+| E, 처짐 보정 켬 | 458 | 87% / 88% / 90% | 0.025 | 2.5 | 39% | 77% | 0 | 142 |
 
 <details><summary>게이트를 건 모든 구성 (A, C, D, E × 처짐 보정 끔/켬)</summary>
 
@@ -804,40 +860,40 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 
 | 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
 |---|---|---|---|---|---|---|---|---|
-| A, 처짐 보정 끔 | 231 | 2% / 6% / 29% | 0.101 | 8.8 | 1% | 15% | 0 | 58 |
-| A, 처짐 보정 켬 | 251 | 43% / 69% / 74% | 0.067 | 18.8 | 11% | 75% | 0 | 58 |
-| C, 처짐 보정 끔 | 453 | 20% / 37% / 71% | 0.089 | 25.9 | 13% | 52% | 0 | 138 |
-| C, 처짐 보정 켬 | 443 | 29% / 74% / 81% | 0.126 | 30.1 | 32% | 75% | 0 | 138 |
-| D, 처짐 보정 끔 | 453 | 67% / 72% / 79% | 0.017 | 2.5 | 33% | 49% | 0 | 138 |
-| D, 처짐 보정 켬 | 444 | 80% / 89% / 90% | 0.018 | 2.5 | 39% | 77% | 0 | 138 |
-| E, 처짐 보정 끔 | 453 | 67% / 72% / 79% | 0.017 | 2.5 | 33% | 49% | 0 | 138 |
-| E, 처짐 보정 켬 | 444 | 80% / 89% / 90% | 0.018 | 2.5 | 39% | 77% | 0 | 138 |
+| A, 처짐 보정 끔 | 231 | 0% / 4% / 14% | 0.101 | 8.8 | 1% | 12% | 0 | 58 |
+| A, 처짐 보정 켬 | 251 | 48% / 59% / 74% | 0.037 | 11.0 | 8% | 79% | 0 | 58 |
+| C, 처짐 보정 끔 | 453 | 21% / 31% / 71% | 0.066 | 11.2 | 9% | 60% | 0 | 138 |
+| C, 처짐 보정 켬 | 443 | 31% / 40% / 81% | 0.035 | 13.4 | 10% | 83% | 0 | 138 |
+| D, 처짐 보정 끔 | 453 | 73% / 74% / 79% | 0.050 | 2.5 | 34% | 55% | 0 | 138 |
+| D, 처짐 보정 켬 | 444 | 86% / 88% / 90% | 0.025 | 2.5 | 38% | 77% | 0 | 138 |
+| E, 처짐 보정 끔 | 453 | 73% / 74% / 79% | 0.050 | 2.5 | 34% | 55% | 0 | 138 |
+| E, 처짐 보정 켬 | 444 | 86% / 88% / 90% | 0.025 | 2.5 | 38% | 77% | 0 | 138 |
 
 **s912 (확인)**
 
 | 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
 |---|---|---|---|---|---|---|---|---|
-| A, 처짐 보정 끔 | 247 | 2% / 4% / 23% | 0.101 | 8.8 | 1% | 12% | 0 | 62 |
-| A, 처짐 보정 켬 | 261 | 41% / 67% / 76% | 0.064 | 22.5 | 10% | 75% | 0 | 62 |
-| C, 처짐 보정 끔 | 482 | 20% / 35% / 70% | 0.092 | 26.0 | 13% | 55% | 0 | 149 |
-| C, 처짐 보정 켬 | 468 | 28% / 72% / 83% | 0.127 | 30.1 | 30% | 75% | 0 | 149 |
-| D, 처짐 보정 끔 | 496 | 69% / 72% / 78% | 0.016 | 2.5 | 32% | 49% | 0 | 149 |
-| D, 처짐 보정 켬 | 485 | 81% / 89% / 91% | 0.018 | 2.5 | 38% | 78% | 0 | 149 |
-| E, 처짐 보정 끔 | 496 | 69% / 72% / 78% | 0.016 | 2.5 | 32% | 49% | 0 | 149 |
-| E, 처짐 보정 켬 | 485 | 81% / 89% / 91% | 0.018 | 2.5 | 38% | 78% | 0 | 149 |
+| A, 처짐 보정 끔 | 247 | 0% / 3% / 11% | 0.101 | 8.8 | 1% | 9% | 0 | 62 |
+| A, 처짐 보정 켬 | 261 | 48% / 57% / 75% | 0.034 | 18.8 | 8% | 83% | 0 | 62 |
+| C, 처짐 보정 끔 | 482 | 20% / 31% / 71% | 0.082 | 13.9 | 9% | 60% | 0 | 149 |
+| C, 처짐 보정 켬 | 468 | 31% / 38% / 82% | 0.033 | 20.5 | 10% | 83% | 0 | 149 |
+| D, 처짐 보정 끔 | 496 | 72% / 74% / 79% | 0.050 | 2.5 | 33% | 56% | 0 | 149 |
+| D, 처짐 보정 켬 | 485 | 87% / 88% / 91% | 0.025 | 2.5 | 37% | 76% | 0 | 149 |
+| E, 처짐 보정 끔 | 496 | 72% / 74% / 79% | 0.050 | 2.5 | 33% | 56% | 0 | 149 |
+| E, 처짐 보정 켬 | 485 | 87% / 88% / 91% | 0.025 | 2.5 | 37% | 76% | 0 | 149 |
 
 **s913 (확인)**
 
 | 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
 |---|---|---|---|---|---|---|---|---|
-| A, 처짐 보정 끔 | 235 | 2% / 6% / 26% | 0.101 | 8.8 | 1% | 15% | 0 | 62 |
-| A, 처짐 보정 켬 | 257 | 42% / 67% / 75% | 0.064 | 20.5 | 11% | 76% | 0 | 62 |
-| C, 처짐 보정 끔 | 458 | 20% / 36% / 70% | 0.086 | 25.8 | 13% | 54% | 0 | 142 |
-| C, 처짐 보정 켬 | 449 | 28% / 73% / 82% | 0.125 | 30.1 | 31% | 76% | 0 | 142 |
-| D, 처짐 보정 끔 | 467 | 67% / 72% / 78% | 0.018 | 2.5 | 33% | 49% | 0 | 142 |
-| D, 처짐 보정 켬 | 458 | 80% / 88% / 90% | 0.018 | 2.6 | 39% | 78% | 0 | 142 |
-| E, 처짐 보정 끔 | 467 | 67% / 72% / 78% | 0.018 | 2.5 | 33% | 49% | 0 | 142 |
-| E, 처짐 보정 켬 | 458 | 80% / 88% / 90% | 0.018 | 2.6 | 39% | 78% | 0 | 142 |
+| A, 처짐 보정 끔 | 235 | 0% / 4% / 14% | 0.100 | 8.8 | 1% | 12% | 0 | 62 |
+| A, 처짐 보정 켬 | 257 | 48% / 57% / 73% | 0.034 | 17.1 | 8% | 80% | 0 | 62 |
+| C, 처짐 보정 끔 | 458 | 21% / 31% / 71% | 0.066 | 9.8 | 10% | 60% | 0 | 142 |
+| C, 처짐 보정 켬 | 449 | 31% / 39% / 81% | 0.033 | 18.1 | 9% | 84% | 0 | 142 |
+| D, 처짐 보정 끔 | 467 | 73% / 74% / 79% | 0.050 | 2.5 | 34% | 55% | 0 | 142 |
+| D, 처짐 보정 켬 | 458 | 87% / 88% / 90% | 0.025 | 2.5 | 39% | 77% | 0 | 142 |
+| E, 처짐 보정 끔 | 467 | 73% / 74% / 79% | 0.050 | 2.5 | 34% | 55% | 0 | 142 |
+| E, 처짐 보정 켬 | 458 | 87% / 88% / 90% | 0.025 | 2.5 | 39% | 77% | 0 | 142 |
 
 </details>
 
@@ -845,27 +901,76 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 
 | 녹화 | 정확한 면 (게이트 없음 → 있음, 0.15 m) | 기록 수 | 정답 면 찾음 (정착 프레임의 정답 면 중) | 벽 칸 덮임 (게이트 없음 → 있음) | 안 보이는 프레임의 면 |
 |---|---|---|---|---|---|
-| s911 (개발) | 78% → **89%** | 138 (프레임 247개 중 정착한 보이는 프레임 138) | 68% | 93% → 77% | 0 |
-| s912 (확인) | 77% → **89%** | 149 (프레임 276개 중 정착한 보이는 프레임 149) | 69% | 93% → 78% | 0 |
-| s913 (확인) | 78% → **88%** | 142 (프레임 257개 중 정착한 보이는 프레임 142) | 68% | 93% → 78% | 0 |
+| s911 (개발) | 77% → **88%** | 138 (프레임 247개 중 정착한 보이는 프레임 138) | 66% | 93% → 77% | 0 |
+| s912 (확인) | 76% → **88%** | 149 (프레임 276개 중 정착한 보이는 프레임 149) | 67% | 92% → 76% | 0 |
+| s913 (확인) | 78% → **88%** | 142 (프레임 257개 중 정착한 보이는 프레임 142) | 67% | 93% → 77% | 0 |
 
 거리 구간별 정확한 면 (게이트 있음):
 
 | 녹화 | 0–2 m | 2–3 m | 3–4 m | 4 m 이상 |
 |---|---|---|---|---|
-| s911 (개발) | 97% (121) | 95% (239) | 62% (13) | 58% (71) |
-| s912 (확인) | 97% (146) | 95% (241) | 62% (13) | 61% (85) |
-| s913 (확인) | 97% (125) | 95% (243) | 62% (13) | 58% (77) |
+| s911 (개발) | 98% (177) | 96% (183) | 62% (13) | 51% (71) |
+| s912 (확인) | 98% (202) | 96% (185) | 62% (13) | 51% (85) |
+| s913 (확인) | 98% (181) | 96% (187) | 62% (13) | 52% (77) |
 
 읽는 법과 한계:
-- **정착 게이트는 정확도를 올리고 범위를 깎는다.** 정확한 면이 78% → 89%로 오르는 대신, 정착한 프레임이 602/924이고 그중 벽이 보이는 것이 138/247프레임뿐이다. 벽 칸 덮임은 93% → 77%로 줄어든다. 설계 문서의 T3(움직이는 동안 무효)에 맞는 대가다.
-- 정답 면을 모두 찾지는 못한다. 개발 녹화에서 정답 면의 39%만 정확한 면으로 덮였다(정착한 프레임의 정답 면 중 68%).
+- **정착 게이트는 정확도를 올리고 범위를 깎는다.** 정확한 면이 77% → 88%로 오르는 대신, 정착한 프레임이 602/924이고 그중 벽이 보이는 것이 138/247프레임뿐이다. 벽 칸 덮임은 93% → 77%로 줄어든다. 설계 문서의 T3(움직이는 동안 무효)에 맞는 대가다.
+- 정답 면을 모두 찾지는 못한다. 개발 녹화에서 정답 면의 38%만 정확한 면으로 덮였다(정착한 프레임의 정답 면 중 66%).
 - **4 m 이상의 면은 아직 틀리는 것이 많다**(§10.3). 이것을 거르는 규칙은 넣지 않았다.
 - 높이 `h`는 §11.4.
-- 지도는 **관측 시각의 섀시 좌표**다. 로봇이 움직이면 옛 관측은 맞지 않는다. 그 사실을 LLM이 알도록 `t_sim`을 남겼다.
+- 지도는 **관측 시각의 로봇 좌표**다. 로봇이 움직이면 옛 관측은 맞지 않는다. 그 사실을 LLM이 알도록 `t_sim`을 남겼다.
 - 점수의 정답 자세는 녹화의 진짜 자세이고 검출기에는 들어가지 않는다.
 
-기록 파일: `options/seg/<녹화>-E-sagon-settle/ego_map.jsonl`(약 138줄).
+기록 파일: `options/seg-offset0/<녹화>-E-sagon-settle/ego_map.jsonl`(기본, 약 138줄). 오프셋을 더한 같은 실행은 `options/seg/` 아래에 있다.
+
+### 13.5 팔 축 오프셋: 더한 경우와 안 더한 경우
+
+같은 코드·같은 녹화·같은 구성에서 `arm_axis_offset_m`만 다르다(안 더함 = 기본 `options/seg-offset0/`, 더함 = 0.0482 `options/seg/`). 채점은 둘 다 "기록된 끝점은 섀시 원점 기준"이라고 보고 진짜 섀시 자세로 지도에 옮기므로, 더하지 않은 쪽은 끝점이 로봇 앞쪽으로 최대 0.0482 m 어긋난 채로 점수가 매겨진다. 이 어긋남이 점수에 주는 비용이 아래 차이다.
+
+**s911 (개발)**
+
+| 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
+|---|---|---|---|---|---|---|---|---|
+| A, 오프셋 안 더함 (기본) | 565 | 1% / 4% / 13% | 0.100 | 9.3 | 2% | 36% | 0 | 146 |
+| A, 0.0482 m 더함 | 565 | 2% / 5% / 23% | 0.101 | 9.3 | 2% | 40% | 0 | 146 |
+| D, 오프셋 안 더함 (기본) | 867 | 60% / 64% / 71% | 0.046 | 2.5 | 56% | 83% | 0 | 246 |
+| D, 0.0482 m 더함 | 867 | 56% / 62% / 70% | 0.019 | 2.5 | 56% | 81% | 0 | 246 |
+| D + 처짐 보정, 오프셋 안 더함 (기본) | 851 | 74% / 77% / 82% | 0.027 | 2.6 | 63% | 93% | 0 | 246 |
+| D + 처짐 보정, 0.0482 m 더함 | 851 | 69% / 78% / 82% | 0.018 | 2.6 | 64% | 93% | 0 | 246 |
+| E + 처짐 보정 + 게이트, 오프셋 안 더함 (기본) | 444 | 86% / 88% / 90% | 0.025 | 2.5 | 38% | 77% | 0 | 138 |
+| E + 처짐 보정 + 게이트, 0.0482 m 더함 | 444 | 80% / 89% / 90% | 0.018 | 2.5 | 39% | 77% | 0 | 138 |
+
+**s912 (확인)**
+
+| 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
+|---|---|---|---|---|---|---|---|---|
+| A, 오프셋 안 더함 (기본) | 630 | 1% / 4% / 11% | 0.100 | 8.8 | 2% | 35% | 0 | 161 |
+| A, 0.0482 m 더함 | 630 | 2% / 4% / 20% | 0.101 | 8.8 | 2% | 42% | 0 | 161 |
+| D, 오프셋 안 더함 (기본) | 983 | 59% / 63% / 70% | 0.043 | 2.5 | 57% | 81% | 0 | 275 |
+| D, 0.0482 m 더함 | 983 | 56% / 62% / 69% | 0.021 | 2.5 | 56% | 79% | 0 | 275 |
+| D + 처짐 보정, 오프셋 안 더함 (기본) | 963 | 73% / 76% / 82% | 0.029 | 2.6 | 63% | 92% | 0 | 275 |
+| D + 처짐 보정, 0.0482 m 더함 | 963 | 69% / 77% / 82% | 0.019 | 2.6 | 65% | 93% | 0 | 275 |
+| E + 처짐 보정 + 게이트, 오프셋 안 더함 (기본) | 485 | 87% / 88% / 91% | 0.025 | 2.5 | 37% | 76% | 0 | 149 |
+| E + 처짐 보정 + 게이트, 0.0482 m 더함 | 485 | 81% / 89% / 91% | 0.018 | 2.5 | 38% | 78% | 0 | 149 |
+
+**s913 (확인)**
+
+| 구성 | 면 수 | 정확 (0.10 / 0.15 / 0.25 m) | 위치 오차 중앙값 (m) | 방향 오차 중앙값 (°) | 정답 면 찾음 | 벽 칸 덮임 | 안 보이는 프레임의 면 | 쌓일 기록 수 (면이 있는 프레임) |
+|---|---|---|---|---|---|---|---|---|
+| A, 오프셋 안 더함 (기본) | 586 | 2% / 4% / 13% | 0.100 | 9.1 | 1% | 36% | 0 | 156 |
+| A, 0.0482 m 더함 | 586 | 2% / 5% / 22% | 0.101 | 9.1 | 2% | 36% | 0 | 156 |
+| D, 오프셋 안 더함 (기본) | 892 | 60% / 64% / 71% | 0.043 | 2.5 | 56% | 82% | 0 | 256 |
+| D, 0.0482 m 더함 | 892 | 56% / 62% / 70% | 0.021 | 2.5 | 55% | 80% | 0 | 256 |
+| D + 처짐 보정, 오프셋 안 더함 (기본) | 877 | 75% / 78% / 83% | 0.027 | 2.6 | 64% | 93% | 0 | 256 |
+| D + 처짐 보정, 0.0482 m 더함 | 877 | 70% / 78% / 82% | 0.018 | 2.6 | 65% | 93% | 0 | 256 |
+| E + 처짐 보정 + 게이트, 오프셋 안 더함 (기본) | 458 | 87% / 88% / 90% | 0.025 | 2.5 | 39% | 77% | 0 | 142 |
+| E + 처짐 보정 + 게이트, 0.0482 m 더함 | 458 | 80% / 88% / 90% | 0.018 | 2.6 | 39% | 78% | 0 | 142 |
+
+- **D + 처짐 보정 (게이트 없음)**, 정확한 면 0.10 / 0.15 / 0.25 m (안 더함 → 더함): s911 73.6% → 69.3% / 77.2% → 77.6% / 82.0% → 81.5%, 위치 오차 중앙값 2.7 → 1.8 cm; s912 72.6% → 68.7% / 76.1% → 77.0% / 82.1% → 81.7%, 위치 오차 중앙값 2.9 → 1.9 cm; s913 75.5% → 70.2% / 78.3% → 78.3% / 82.7% → 82.4%, 위치 오차 중앙값 2.7 → 1.8 cm.
+- **E + 처짐 보정 + 정착 게이트 (지도에 쌓이는 것)**, 정확한 면 0.10 / 0.15 / 0.25 m (안 더함 → 더함): s911 86.3% → 80.2% / 88.3% → 88.5% / 90.3% → 90.3%, 위치 오차 중앙값 2.5 → 1.8 cm; s912 86.6% → 80.6% / 87.8% → 88.9% / 91.3% → 91.3%, 위치 오차 중앙값 2.5 → 1.8 cm; s913 87.1% → 80.1% / 88.2% → 88.4% / 90.4% → 90.4%, 위치 오차 중앙값 2.5 → 1.8 cm.
+
+읽는 법(D, E 행): 0.15 m와 0.25 m 기준은 거의 같고(차이는 1점 안팎) 방향 오차, 벽 칸 덮임, 정답 면 찾음도 거의 같다. 0.10 m 기준은 **안 더한 쪽이 오히려 높고**(5~6점), 위치 오차 중앙값은 **더한 쪽이 작다**(2.5~2.9 → 1.8 cm). 둘이 함께 나오는 이유는 조사하지 않았다. 가설 하나는, 검출기에 남은 거리 편향(§12.3의 +0.015 m)이 4.8 cm 이동과 면의 방향에 따라 일부 상쇄되거나 더해진다는 것이지만 확인하지 않았다. A(옛 검출기) 행은 면이 애초에 벽에서 멀어서(위치 오차 중앙값 약 0.10 m) 0.25 m 기준에서만 차이가 보인다(13% → 23%). 정리하면 **면 단위 점수(0.15 m)에서 팔 축 오프셋을 더하는 것은 큰 차이를 만들지 않는다.** 그래서 기본을 "기록만"(안 더함)으로 두어도 §10–§13의 결론은 그대로다. 정확한 섀시 원점 좌표가 필요한 소비자는 `arm_axis_offset_recorded_m`을 더하거나 `arm_axis_offset_m=0.0482`로 쌓으면 된다.
+
 
 ## 14. D: 메모리 주입 (옵션, 기본 끔)
 
@@ -877,14 +982,30 @@ $PY -m pytest tests/test_self_wall_memory.py tests/test_coela_modules.py tests/t
 - 문구(`render_self_walls`): 최신 관측부터, 최대 6개, 서로 2 s 이상 떨어진 것만, 관측당 면 4개까지, 나이(`age`) 포함. 기하만 적고 이름은 붙이지 않는다(설계 §8). 개발 녹화 지도의 한 시점에서 나온 문구:
 
 ```
-self_walls (own camera; ego frame at each t: distance in metres, angle in degrees, 0 = straight ahead, positive = left; wall base lines): 6 observations | t=17.5 (age 1.0s) [other, not carrying] 2.1m @ 22° → 2.0m @ 13° ; 2.0m @ 12° → 1.9m @ 8° ; 1.9m @ -8° → 2.1m @ -27° | t=15.5 (age 3.0s) [other, not carrying] 2.1m @ 22° → 1.9m @ 8° ; 2.0m @ -8° → 2.0m @ -13° ; 2.1m @ -14° → 2.2m @ -27° | t=13.1 (age 5.4s) [other, not carrying] 2.1m @ 22° → 2.4m @ 16° ; 2.1m @ 14° → 2.1m @ 11° ; 5.2m @ -175° → 5.1m @ -180° ; 2.2m @ -8° → 2.0m @ -11° ; +2 more | t=11.1 (age 7.4s) [other, not carrying] 2.1m @ 22° → 2.0m @ 7° ; 2.0m @ -7° → 2.2m @ -27° | t=8.2 (age 10.3s) [other, not carrying] 1.4m @ 92° → 1.5m @ 86° ; 1.4m @ 84° → 1.8m @ 60° ; 2.1m @ -120° → 2.1m @ -121° ; 1.7m @ 56° → 2.0m @ 44° | t=6.1 (age 12.4s) [other, not carrying] 1.9m @ 46° → 2.0m @ 13° ; 2.0m @ 9° → 2.0m @ 7° ; 5.1m @ 5° → 5.1m @ 2° ; 5.1m @ 179° → 5.2m @ 176°
+self_walls (own camera; ego frame at each t: distance in metres, angle in degrees, 0 = straight ahead, positive = left; wall base lines): 6 observations | t=17.5 (age 1.0s) [other, not carrying] 2.0m @ 23° → 1.9m @ 13° ; 2.0m @ 12° → 1.9m @ 8° ; 1.9m @ -8° → 2.1m @ -27° | t=15.5 (age 3.0s) [other, not carrying] 2.1m @ 23° → 1.9m @ 8° ; 1.9m @ -8° → 2.0m @ -13° ; 2.0m @ -14° → 2.1m @ -27° | t=13.1 (age 5.4s) [other, not carrying] 2.1m @ 23° → 2.4m @ 16° ; 2.0m @ 14° → 2.0m @ 12° ; 5.2m @ -175° → 5.2m @ -180° ; 2.1m @ -8° → 1.9m @ -11° ; +2 more | t=11.1 (age 7.4s) [other, not carrying] 2.1m @ 23° → 1.9m @ 8° ; 2.0m @ -7° → 2.2m @ -27° | t=8.2 (age 10.3s) [other, not carrying] 1.4m @ 94° → 1.5m @ 88° ; 1.4m @ 85° → 1.8m @ 61° ; 2.1m @ -121° → 2.2m @ -122° ; 1.7m @ 57° → 2.0m @ 45° | t=6.1 (age 12.4s) [other, not carrying] 1.9m @ 47° → 2.0m @ 13° ; 2.0m @ 10° → 1.9m @ 8° ; 5.1m @ 5° → 5.0m @ 2° ; 5.1m @ 179° → 5.3m @ 176°
 ```
 
-문구는 약 931자다. 높이를 켜면 면마다 ` h=0.40` 꼴이 붙는다(`self_walls_text_height=True`). **기본은 끈 상태다**: 위 §11.4처럼 측정한 높이가 탐색 자세에서 틀려서(0.08–0.11 m) LLM에게 틀린 숫자를 주기 때문이다.
+문구는 약 932자다. 높이를 켜면 면마다 ` h=0.40` 꼴이 붙는다(`self_walls_text_height=True`). **기본은 끈 상태다**: 위 §11.4처럼 측정한 높이가 탐색 자세에서 틀려서(0.08–0.11 m) LLM에게 틀린 숫자를 주기 때문이다.
 
 - 시험: `tests/test_self_wall_memory.py` 14개(꺼진 상태 동일, 같은 관측 중복 방지, 새 기록만 싣기, 잘못된 기록, 동료 주장이 못 덮음, 문구 결정성·길이·정렬·높이 옵션). `tests/test_coela_modules.py`, `tests/test_rgb_communication_boundary_audit.py`(해시 고정)은 그대로 통과한다.
-- **연결은 안 했다.** `harness/coela_runtime.py:38`이 `Memory(r)`를 직접 만들고 그 파일(과 `coela_modules.py`, `camera_runtime.py`)은 `tests/fixtures/rgb_communication_audit/source_manifest.json`에 해시로 고정돼 있다. 이 하위 클래스를 쓰려면 그 파일을 바꾸고 매니페스트를 함께 갱신해야 한다. 또 RGB 통신 실행기(`harness/rgb_communication_runtime.py`의 `_ActorState.memory_snapshot()`)는 `Memory`를 쓰지 않고 자기 `snapshot`을 만든다. 어느 경로에 붙일지는 결정이 필요하다.
-- 한계: C의 출력을 관측에 실어 주는 쪽은 만들지 않았다. 실행기가 `EgoWallMap.observe`가 돌려준 기록을 `observation["self_walls"]`에 넣어야 한다.
+
+### 14.1 실행기 연결 (옵션 `self_wall_memory`, 기본 `off`)
+
+`harness/coela_runtime.py:38`은 `Memory(r)`를 직접 만들고, 그 파일과 `coela_modules.py`는 `tests/fixtures/rgb_communication_audit/source_manifest.json`에 해시로 고정돼 있다. 그래서 **그 파일들은 고치지 않고** 새 모듈 `harness/coela_runtime_self_walls.py`를 더했다.
+
+- `run_coela_episode(environment, planners, *, self_wall_memory="off", self_walls_source=None, **고정된 함수의 인자)`.
+- **`off`(기본)**: 고정된 `harness.coela_runtime.run_coela_episode`를 호출자의 인자 그대로 부르고 그 결과를 돌려준다. 같은 함수이므로 출력이 이전과 같다. 시험은 (1) 고정된 함수가 받은 인자에 키워드가 하나도 더해지지 않았고 반환값이 그대로임, (2) 같은 가짜 환경·플래너로 고정된 함수와 `off`의 에피소드가 같은 `actor_input` 맥락과 같은 호출 수를 냄(`wall_s`만 뺌).
+- **`on_v1`**: 같은 함수의 **같은 코드 객체**를, `Memory`만 `SelfWallMemory`(`self_walls_enabled`, `self_walls_text` 켬, 높이는 문구에서 뺌)를 만드는 공장으로 바꾼 **모듈 이름공간의 복사본**에서 돌린다. 전역을 패치하지 않으므로(시험이 에피소드 도중 `harness.coela_runtime.Memory`가 그대로임을 확인) 다른 에피소드에 영향이 없다. 이 방식이 고정된 소스 구조에 기대므로, `coela_runtime.py`·`coela_modules.py`가 번들에 적은 해시와 다르면 `on_v1`은 `PINNED_SOURCE_CHANGED`로 요청 전에 거부한다.
+- **벽 기록의 출처**: 런타임의 관측은 카메라 정보를 담지 않는다. 그래서 `self_walls_source(robot_id) -> 기록 목록`(없으면 빈 `self_walls`와 `self_walls: no wall observed yet`)을 `observe()`마다 불러 읽는다. `source_from_maps({robot_id: 자기 지도})`는 `.records`를 가진 객체(C의 `EgoWallMap`)용 어댑터다. **프레임 → 검출기 → `EgoWallMap` 기록을 채우는 쪽은 실행기에 없다**(이 PR은 오프라인 재생만 했다). 어느 실행기가 채울지는 정해지지 않았다.
+- 켠 상태의 플래너 맥락: `memory`에 `self_walls`(최근 12개, 샘플 지도에서 약 2648자 JSON)와 `self_walls_text`(약 932자)가 **함께** 들어가고 플래너는 맥락 전체를 JSON으로 보낸다. 토큰이 신경 쓰이면 `snapshot_records`를 줄이는 변형이 필요하다(`on_v1`은 기본값 그대로).
+- **다른 메모리 경로**: RGB 통신 실행기(`harness/rgb_communication_runtime.py`의 `_ActorState.memory_snapshot()`)는 `Memory`를 쓰지 않고 자기 `snapshot`을 만든다. 건드리지 않았다.
+- 호출하는 스크립트(`scripts/evaluate_coela.py`, `scripts/evaluate_coela_arena.py`, `harness/web.py`)는 고치지 않았다. 모두 여전히 고정된 `run_coela_episode`를 부른다. 모델 호출이 드는 실행기라서 실행해 보지 않았고 벽 기록의 출처도 없어서다.
+
+### 14.2 `source_manifest.json`에는 새 번들로 등록
+
+`additional_bundles["coela-self-wall-memory-on-v1"]`: 옵션 이름·값·기본값, 새 두 파일(`harness/coela_runtime_self_walls.py`, `harness/self_wall_memory.py`)의 sha256, 그리고 **그대로 쓰는** 고정 파일(`coela_runtime.py`, `coela_modules.py`)의 sha256. **기존 번들(`audited_git_sha`, `files_sha256` 11개)은 한 글자도 바꾸지 않았다**(diff는 추가만, 시험이 기존 값을 글자 그대로 고정). 다만 파일 전체의 sha256은 번들 추가 때문에 바뀌었다(이전 `c97445bb…`, 과거 감사 기록 `offline-boundary-review.json`이 그 값을 적고 있으나 그 기록 자체는 고치지 않았다; 코드에서 그 파일 해시를 검사하는 곳은 찾지 못했다).
+
+- 시험 `tests/test_coela_runtime_self_walls.py` 15개: 꺼진 연결이 고정된 런타임과 같음, `on_v1`이 맥락에 두 키만 더함, 로봇별 소스가 그 로봇의 플래너에만 닿음, 고정 소스가 바뀌면 거부, 번들의 해시가 현재 파일과 같음, 기존 번들이 그대로임, `SelfWallMemory`의 소스 훅(옵션 없이는 불리지 않음, 잘못된 기록은 크게 실패).
 
 ## 15. 카메라 v3 재측정 (아직 못 했다)
 
