@@ -1,0 +1,257 @@
+{
+  "case": "s912-r1",
+  "source_sha": "278fee8b067b4fb5e36031843276df1ebc80fc5b",
+  "pose_graph": "own_submap_v1",
+  "split": "confirmation_replay",
+  "options": {
+    "submap_scans": 20,
+    "stride": 10,
+    "separation_s": 5.0,
+    "candidate_distance_m": 6.0,
+    "translation_window_m": 1.0,
+    "yaw_window_deg": 15.0,
+    "translation_step_m": 0.1,
+    "yaw_step_deg": 1.0,
+    "min_score": 0.55,
+    "min_overlap": 0.6,
+    "overlap_m": 0.2,
+    "max_residual_m": 0.15,
+    "mode_distance_m": 0.2,
+    "mode_yaw_deg": 5.0,
+    "mode_gap": 0.02,
+    "hessian_ratio": 0.03,
+    "min_points": 6,
+    "effective_points": 12.0,
+    "sigma_xy_m": 0.1,
+    "sigma_yaw_deg": 2.0,
+    "huber_delta": 1.5,
+    "max_nfev": 200
+  },
+  "metrics": {
+    "off": {
+      "final": {
+        "occupied_cells": 172,
+        "precision_015": 0.5058139534883721,
+        "precision_cell": 0.3953488372093023,
+        "wall_coverage": 0.27507163323782235,
+        "wall_error_rmse_m": 0.5207472331217162,
+        "covered_all_count": 96,
+        "recall_visible": 0.6442307692307693,
+        "covered_visible_count": 67,
+        "recall_contact_visible": 0.6442307692307693,
+        "covered_contact_visible_count": 67,
+        "recall_contact_near4": 0.7613636363636364,
+        "covered_contact_near4_count": 67,
+        "recall_contact_admitted": 0.6504854368932039,
+        "covered_contact_admitted_count": 67
+      },
+      "path_position_error": {
+        "median_m": 0.8767265430529833,
+        "p90_m": 1.0811272062500763,
+        "p95_m": 1.0811272062503734,
+        "max_m": 1.0851565475034348,
+        "rmse_m": 0.8163815537262918,
+        "count": 1521
+      },
+      "end_position_error_m": 1.078196965305985,
+      "end_yaw_error_deg": 0.2415450163213472
+    },
+    "rbpf100_guard": {
+      "final": {
+        "occupied_cells": 159,
+        "precision_015": 0.46540880503144655,
+        "precision_cell": 0.31446540880503143,
+        "wall_coverage": 0.2693409742120344,
+        "wall_error_rmse_m": 0.25274679516524107,
+        "covered_all_count": 94,
+        "recall_visible": 0.6153846153846154,
+        "covered_visible_count": 64,
+        "recall_contact_visible": 0.6153846153846154,
+        "covered_contact_visible_count": 64,
+        "recall_contact_near4": 0.7272727272727273,
+        "covered_contact_near4_count": 64,
+        "recall_contact_admitted": 0.6213592233009708,
+        "covered_contact_admitted_count": 64
+      },
+      "path_position_error": {
+        "median_m": 0.33377867991919896,
+        "p90_m": 0.5135944880410458,
+        "p95_m": 0.5397450936231307,
+        "max_m": 0.6775444241300577,
+        "rmse_m": 0.36436471005105653,
+        "count": 1521
+      },
+      "end_position_error_m": 0.3308505109643112,
+      "end_yaw_error_deg": 9.918546791458153
+    },
+    "graph": {
+      "final": {
+        "occupied_cells": 158,
+        "precision_015": 0.6518987341772152,
+        "precision_cell": 0.4620253164556962,
+        "wall_coverage": 0.3438395415472779,
+        "wall_error_rmse_m": 0.21008429972970866,
+        "covered_all_count": 120,
+        "recall_visible": 0.75,
+        "covered_visible_count": 78,
+        "recall_contact_visible": 0.75,
+        "covered_contact_visible_count": 78,
+        "recall_contact_near4": 0.8863636363636364,
+        "covered_contact_near4_count": 78,
+        "recall_contact_admitted": 0.7572815533980582,
+        "covered_contact_admitted_count": 78
+      },
+      "path_position_error": {
+        "median_m": 0.11710851452027357,
+        "p90_m": 0.3504022622002676,
+        "p95_m": 0.37737536453405635,
+        "max_m": 0.5133314679323702,
+        "rmse_m": 0.21672816400170122,
+        "count": 1521
+      },
+      "end_position_error_m": 0.10936660128454305,
+      "end_yaw_error_deg": 1.0414827872569952
+    },
+    "gt_guard": {
+      "final": {
+        "occupied_cells": 161,
+        "precision_015": 0.7080745341614907,
+        "precision_cell": 0.5962732919254659,
+        "wall_coverage": 0.33810888252148996,
+        "wall_error_rmse_m": 0.18042676705066832,
+        "covered_all_count": 118,
+        "recall_visible": 0.7692307692307693,
+        "covered_visible_count": 80,
+        "recall_contact_visible": 0.7692307692307693,
+        "covered_contact_visible_count": 80,
+        "recall_contact_near4": 0.9090909090909091,
+        "covered_contact_near4_count": 80,
+        "recall_contact_admitted": 0.7766990291262136,
+        "covered_contact_admitted_count": 80
+      },
+      "scope": "evaluation-only map; not estimator performance"
+    }
+  },
+  "checks": {
+    "terminal_30pct_and_075m": true,
+    "path_median_not_worse": true,
+    "path_p95_not_worse": true,
+    "path_rmse_20pct": true,
+    "map_precision_not_worse": true,
+    "map_recall_within_2pp": true,
+    "map_rmse_20pct": true,
+    "zero_invalid_endpoints": true,
+    "zero_behind_camera_evidence": true,
+    "guard_precision_nondecrease": true,
+    "guard_visible_recall_within_2pp": true,
+    "off_bytes": true
+  },
+  "success": true,
+  "golden": {
+    "graph_off_ledger_bytes": true,
+    "graph_off_pose_bytes": true,
+    "graph_off_cells_bytes": true,
+    "graph_off_llm_bytes": true,
+    "dr_off_pose_bytes": true,
+    "dr_off_cells_bytes": true,
+    "dr_off_llm_bytes": true
+  },
+  "origin_eval_only": [
+    0.22680456372770658,
+    0.05000000599772155,
+    4.689800244275325e-09
+  ],
+  "visibility_counts": {
+    "visible": 104,
+    "contact_visible": 104,
+    "contact_near4": 88,
+    "contact_admitted": 103
+  },
+  "accepted_invalid_endpoints": 0,
+  "loop_counts": {
+    "member_scan": 284,
+    "temporal_separation": 678,
+    "search_boundary": 287,
+    "ambiguous_modes": 497,
+    "unobservable": 199,
+    "accepted": 198,
+    "refinement_failed": 22,
+    "low_probability": 40
+  },
+  "optimization": {
+    "accepted": true,
+    "reason": "converged",
+    "initial_cost": 794.7664011551494,
+    "final_cost": 122.4323399593261,
+    "nfev": 7,
+    "status": 2,
+    "message": "`ftol` termination condition is satisfied.",
+    "max_translation_change_m": 0.39242043134673843
+  },
+  "changed": true,
+  "submaps": 15,
+  "inserted_scans": 147,
+  "path_frame_count": 1521,
+  "prediction_hashes": {
+    "rbpf100_guard-poses.jsonl": "b37dc19060abbf65409f3969fada24f8f080c16ad4a3f5abc5b810d75e4588e4",
+    "off-poses.jsonl": "31f8e41326b9481fcdb00df73960555d798e28b28ec359f40902ff479d75fac8",
+    "graph-ledger.jsonl": "b9d5e44239e721422f191821c77aab4507e7f3bff9ee62962f359b5358147cfc",
+    "rbpf100_guard-grid.json": "76b7937f44e5f2a252d7d47395db9e4e705b1c5fd5770ecc348451fa670aa704",
+    "graph-llm.txt": "296ff8dbd4b9ca61896dad3fa0c5574c9d9c6399fa1e0c47dd403acf87e188e1",
+    "off-grid.json": "527ba2666490a29c85c08505721d5a18514a01bec1d856ad85f938c969e965e2",
+    "graph-grid.json": "466ebed0b499fc2615ec07ebfd534f457b78d6a86cb9de89f4ec6cb833edb002",
+    "submaps.json": "a660a01053fbcd467dca3404d65148143dda085ea3604e7d9f3f9c27d2f1e0e3",
+    "loops.jsonl": "4a5ae13971ff029403402c8f9270e4b4e9a178cc103855e0d755d3ce98a75a29",
+    "constraints.json": "9a56fd110ae14cef28b4dd4c01775fd98dd5951f14bf114bf924d293b01dee4c",
+    "graph-poses.jsonl": "66ebd5a082fcff50f0bda1f3beb9c6b72eff20debdbf303afcf926bcadfbe57a",
+    "optimization.json": "d4ea749768ffb265e87e07a4ed923d5ddcc562de5e70852687447d459f1ed0c5"
+  },
+  "scope": "offline global backend on final-particle ledger; local estimator unchanged; no new simulation",
+  "path_convention": "apply latest final-lineage scan local/global transform to saved online max-particle path",
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s912-r1/summary.json",
+      "sha256": "9c6bd25a304db2bbf3ac02d0ea1e8a2f417bcd6f1b019626574f048db8e8d543"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s912-r1/guarded-ledger.jsonl",
+      "sha256": "75832033c717b3bb4af6cc3f5e4136eea7a00c292ca0dbdadfd7141b00aefcee"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s912-r1/rbpf100-fixed-poses.jsonl",
+      "sha256": "b37dc19060abbf65409f3969fada24f8f080c16ad4a3f5abc5b810d75e4588e4"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s912-r1/gt_guard-grid.json",
+      "sha256": "bdd6f900962609faf1670b9c1fe275e1080fe33350611ab97a9185183e5fcd65"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s912-r1/projection-decisions.jsonl",
+      "sha256": "26fc23724c431a895e6d16c8765363399b8492f1300b7478c967510bea076d9a"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/frames.jsonl",
+      "sha256": "9b2656ad7f7861b3a5e8ffb32979f156064ebc0b4270842a50ff14f5fb4018e2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/commands.jsonl",
+      "sha256": "b8bbf600a47eae5976869343ba523320b94289922e30515872f33984fd14e20f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-odom-grid-v1-complete/s912-r1/observations.jsonl",
+      "sha256": "e08b40f17629d8ba62b4fe4f2c3b937a084391e20ed970983e85c1289a65fd87"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/results/map_error_oracle_v2/s912-r1/wall_samples.json",
+      "sha256": "354b2b2a18fdf1c294c609939e29a990d4c0935d81d47ef084c480c12935a747"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/inputs/static_map.json",
+      "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/eval_only/trajectory.jsonl",
+      "sha256": "ec74ae7347b619eb4204928a31c7834618f7b84bf788bdbac17154b402701e8d"
+    }
+  ]
+}
