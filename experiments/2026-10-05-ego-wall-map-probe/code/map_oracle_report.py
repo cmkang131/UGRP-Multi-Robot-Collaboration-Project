@@ -29,6 +29,15 @@ def verify(source):
     for name in CASES:
         directory = source/name
         s = load(directory/'summary.json')
+        earlier = e.base.ROOT/'outputs/self-map-oracle-diagnostic-v1-complete'/name
+        prior = load(earlier/'summary.json')
+        for c in e.CONDITIONS:
+            assert s['conditions'][c]['attribution'] == prior['conditions'][c]['attribution']
+            for filename in (f'{c}-gt-grid.json', f'{c}-false-cells.jsonl'):
+                assert e.base.sha(directory/filename) == e.base.sha(earlier/filename)
+            for scope in ('original', 'matched_gt_pose'):
+                for metric in ('precision_015', 'wall_coverage', 'wall_error_rmse_m', 'occupied_cells'):
+                    assert s['conditions'][c][scope][metric] == prior['conditions'][c][scope][metric]
         for f in s['sources']:
             assert e.base.sha(f['path']) == f['sha256'], f['path']
         samples = load(directory/'wall_samples.json')
@@ -77,7 +86,7 @@ def verify(source):
             count += 1
         assert max_origin < 1e-9 and max_rot < 1e-9
         records.append({'case': name, 'source_hashes': True, 'all_four_original_maps_exact': True,
-                        'all_four_gt_maps_rescored': True, 'false_cell_mass_conserved': True,
+                        'all_four_gt_maps_rescored': True, 'false_cell_mass_conserved': True, 'representative_phase_maps_attribution_unchanged': True,
                         'camera_labels_checked': count, 'camera_origin_max_difference_m': max_origin,
                         'camera_rotation_max_element_difference': max_rot})
     return records
@@ -121,6 +130,12 @@ def figures(source, out, summaries):
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     from matplotlib.patches import Rectangle
+    extent = [np.array([[-1.075,-3.175],[5.425,1.475]])]
+    for name in CASES:
+        for gpath in (e.base.ROOT/'outputs/self-map-prob-rbpf-v1-complete/rbpf100'/name/'grid.json', source/name/'rbpf100-gt-grid.json'):
+            extent.append(e.transform(points(load(gpath)), summaries[name]['origin_eval_only']))
+    bounds = np.vstack(extent)
+    low, high = bounds.min(0)-.2, bounds.max(0)+.2
     fig, axes = plt.subplots(3, 4, figsize=(14, 10), constrained_layout=True)
     for i,seed in enumerate((911,912,913)):
         for j,robot in enumerate(('r1','r2')):
@@ -140,7 +155,7 @@ def figures(source, out, summaries):
                 ax.scatter(pts[:,0],pts[:,1],s=5,c='#b94232',label='occupied')
                 label='RBPF100' if k==0 else 'GT pose, same scans'
                 q=s['conditions']['rbpf100']['original' if k==0 else 'matched_gt_pose']
-                ax.set(title=f'{name} {label}\nP {q["precision_015"]:.1%}, Rvis {q["recall_visible"]:.1%}',aspect='equal',xlim=(-2.5,6.),ylim=(-4.2,2.))
+                ax.set(title=f'{name} {label}\nP {q["precision_015"]:.1%}, Rvis {q["recall_visible"]:.1%}',aspect='equal',xlim=(low[0],high[0]),ylim=(low[1],high[1]))
                 ax.grid(alpha=.2)
                 ax.tick_params(labelsize=7)
                 ax.legend(fontsize=6,loc='lower left')
@@ -182,7 +197,9 @@ def main():
     raw=[p for p in sorted(args.source.rglob('*')) if p.is_file()]
     failed=e.base.ROOT/'outputs/self-map-oracle-diagnostic-v1'
     raw+=[p for p in sorted(failed.rglob('*')) if p.is_file()]
-    raw+=[e.base.ROOT/'outputs/self-map-oracle-diagnostic-v1.log',e.base.ROOT/'outputs/self-map-oracle-diagnostic-v1-complete.log']
+    for old in ('self-map-oracle-diagnostic-v1-complete', 'self-map-oracle-representative-only-report'):
+        raw += [p for p in sorted((e.base.ROOT/'outputs'/old).rglob('*')) if p.is_file()]
+    raw += [e.base.ROOT/'outputs'/f'self-map-oracle-diagnostic-{v}.log' for v in ('v1','v1-complete','v2-complete')]
     committed=[p for p in sorted(args.output.rglob('*')) if p.is_file()]
     e.base.dump(args.output/'manifest.json',{'replay_source_sha':summaries[CASES[0]]['source_sha'],
         'local_only': [{'path':str(p.resolve()),'bytes':p.stat().st_size,'sha256':e.base.sha(p)} for p in raw],
