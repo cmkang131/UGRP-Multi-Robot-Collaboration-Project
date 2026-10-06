@@ -1,5 +1,7 @@
 # S2 현실성 재검증 — 실행 전 등록 (2026-10-06)
 
+**최신:** v117 `ef820ab2`의 s1042는 hover·하강·SIM lifted=true에 도달했지만 pickup-site ROI clipped/unknown으로 probe gate 미통과다. [v117 완료](#v117s1042-완료-실행-sha-ef820ab2d367b1a25e14b0cc4df6be4b3e58bb3d)를 따른다. 이후 사용자 결정으로 #407을 병합하고 다음 **탐색 S2 DEV 전용** v118 freeze 프로필을 준비했다. [새 제한과 미실행 상태](#2026-10-06-사용자-결정-idle-robot-contacts). 아래 v116 이전 요약·사전 등록은 당시 기록이다.
+
 **후속 완료:** s1039의 직접 원인은 (a) 173mm 옆 이동에 의한 정렬/시야 초과다.
 35/.06초 정렬 옵션을 적용한 v115 `57f8c174` s1040과 동일 동작 v116 `46b8e7af` s1041은
 둘 다 정렬에 도달했으나 **CYAN_HOVER_UNCONFIRMED 2회**로 종료했다. full1029–1031은
@@ -522,3 +524,42 @@ main+열린 PR14개 및 raw에서 seed1042 사용 없음, bundle 최대116/workf
 - TensorBoard 새 snapshot `1006-s2-realism-hover-v117`: **완료 probe1개 + 새 오프라인 투영2개 =3기록/41scalar**. 세 개를 시행3회로 합산하지 않는다. 원본→event→기존live6006 API 수치가 모두 일치하고 영상 등록/HParams 열/핀 태그를 확인했다. 공용 view의 자기 새 키`s2_realism_hover_20261006`만 추가했고 기존 서버PID52016/logdir와 다른 키를 보존했다. 사용자 지시대로 browser UI 검증은 생략했다. [TensorBoard 수치](http://127.0.0.1:6006/?runFilter=%5E1006-s2-realism-hover-v117%2F#timeseries), 상세`hover-delivery-verification.json`.
 
 로컬 시험5개 통과 뒤에만 실행 소스가 커밋·push됐다. 사후에는 실행 코드를 바꾸지 않고 raw/source closure·등록 수치·영상만 검증했다. 최종 기록도 별도 commit/push하고 PR #406은 DRAFT·미병합으로 유지한다. 남은 문제는 pickup-site ROI이며 이 후속 요청에서 새 시야/ROI 방식이나 추가 실행은 도입하지 않았다.
+
+## 2026-10-06 사용자 결정: idle robot contacts
+
+사용자는 PR #407의 `idle_robot_contacts=freeze_v1`을 **혼자 cyan을 나르는 S2 DEV에만** 허용했다. `origin/claude/v7-roller-approx`의 `2d3ab0591ce5e3619a2ff735a9d9893b1199c1c2`를 현재 `codex/s2-realism`에 rebase 없이 병합했다. merge commit은 `e7e4e6cb`(부모 `e57814c8`, `2d3ab059`)다. 원격 두 PR은 DRAFT 그대로이고 main에는 병합하지 않았다. 충돌 없이 `--no-commit` 병합 후 변경 모듈 시험3파일27개 통과(2.19s)를 확인한 뒤 merge commit/push했다.
+
+### 근거와 범위
+
+[PR #407](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/407)의 [동등성 표](../2026-10-06-v7-roller-approx/README.md#동등성-표), `results-summary.json`, `work-record.json`을 확인했다. mesh+freeze는 **9/10 항목 통과**다. 단독 주행·cyan·옆 이동·접촉 깨움 항목은 통과했지만 **짝 빔1건은 실패**했다(y−16.85%, yaw차−.844°, 두 로봇 진행차+24.03%). 이 항목 수는 임무 성공률이 아니며 S2 전체 경로 동등성/실물 성공으로 확대하지 않는다. 이 근거는 #407의 다른 실행 자료이고 우리 S2 seed 분모에 합산하지 않는다. #407이 전체 후보를 미채택한 원래 기록은 그대로 보존하며, 이후의 사용자 결정만 이 절에 별도로 기록한다.
+
+- 허용: **S2 / solo / cyan / dev-pilot / FUNCTIONAL_DEV / dev_light**, active robot1대의 탐색 DEV.
+- 금지: **S3, 짝 운반, 본 연구, 사전 등록 실행**. `research_result=false`, `confirmation_sample=false`, `preregistered_run=false`를 모두 명시해야 한다. 누락/모순된 scope, 다른 bundle ID/schema, 추가 robot/pair task, sphere6 병용도 오류다.
+- `harness/idle_robot_contacts_contract.py`의 공용 번들 검증을 새 계약·실행기·physics backend가 호출한다. on 상태의 S2 외 번들은 world 생성 전에 `IDLE_CONTACTS_S2_SOLO_EXPLORATORY_DEV_ONLY`로 거부한다. off/미지정은 기존 동작/기록을 건드리지 않는다. PR #407의 과거 저수준 물리 진단 실행기는 근거 재현용으로 보존하며 연구 실행 admission으로 사용하지 않는다.
+- 전역 기본값은 **idle off / roller mesh** 그대로다. 새 S2 DEV 프로필에서만 freeze를 명시한다. `sphere6_v1`은 채택하지 않는다. 잠든 로봇의 정적/내부 접촉 readout이 사라지는 한계도 그대로 기록한다. 제어 입력·카메라·구동 계수·접촉 평가 기준을 변경하지 않는다.
+- on/off 결과는 별도 조건으로 보존하고 성공·실패·학습 자료를 합산하지 않는다. **비교 지표는 wall/SIM만**이다. 짝/연구의 동등성으로 확장하지 않으며 seed·경로·관측 수·호스트 부하가 다르면 인과적인 가속률로 표현하지 않는다.
+
+### 다음 번들과 현재 상태
+
+main+열린 PR14개에서 최대v117/7.10.0을 확인하고 **zone-s2-realism-v118 / workflow7.11.0**을 예약했다(`reservation-scan-v118.json`). `dev-profile-v118.json`은 **실행 seed/코호트 사전 등록이 아닌 다음 탐색 DEV의 설정 프로필**이다. `dev_runs=[]`이므로 이번 작업에서 새 seed를 예약하거나 probe를 승인/실행하지 않았다. 과거 사전 등록된 full1029–1031과 소비된1032–1042는 v118에서 거부한다. 다음 probe는 hover/ROI 후속 판단에 맞는 새 탐색 DEV 설정·미사용 seed·소스를 먼저 고정할 때 연결한다. 사전 등록된 본 실험을 이 프로필로 옮기지 않는다.
+
+v118 실행에는 기존 다섯 옵션과 함께 **`--idle-robot-contacts freeze_v1`을 명시해야 한다**. 옵션 누락/off는 execute 거부다. preview와 공용 구현의 기본값은 off이며, 실제 프로필은 on을 요청한다. 아직 새 seed가 없으므로 아래는 실행하지 않는 설정 점검이다.
+
+```sh
+.venv-sim-worker-mac/bin/python -m scripts.run_s2_realism_v118 \
+  --expected-source-sha <commit-SHA> --output /absolute/primary/outputs/next-s2-dev \
+  --stage-probe pick --min-wheel-cmd real_v1 --dead-reckoning v7_diag_v1 \
+  --stagnation-watch window120_v1 --alignment-pulse real_fine_v1 \
+  --hover-check real_pregrasp_v1 --idle-robot-contacts freeze_v1
+```
+
+새 backend는 world 생성에 `roller_collision=mesh, idle_robot_contacts=freeze_v1`을 실제 전달하고 적용된 world 기록을 검사한다. 생성 실패에도 임시 factory 연결을 복구한다. reset 후에는 `eval_only/idle-contacts-option.json`에 정책·적용값을 남긴다. `bundle.json`과 **`result.json.options.idle_robot_contacts`**에 freeze를 기록하며 결과에는 `result_condition=S2_DEV_idle_contacts_freeze_v1`, `pool_with_previous_s2=false`, `comparison_metrics=[wall_per_sim]`을 쓴다. result 원본 작성 경로를 재사용해 결과/manifest 해시도 일치한다. 오류 경로의 기록 전달까지 합성 테스트로 확인했다(실험 HOST_ERROR로 집계하지 않음).
+
+|조건|실행/비교 상태|wall/SIM|
+|---|---|---:|
+|off: v117/s1042/ef820ab2|기존 단독 probe,363.176558wall초/140.35SIM초|2.587649|
+|freeze: v118|**미실행**,다음 탐색 DEV부터 적용|미측정|
+
+#407의 0.819→0.362는 물리 timer,1.070→.647은 계측 포함 고정 input50 진단이다. S2 전체 실행과 분모가 달라 위 표에 직접 섞거나 S2 가속률로 사용하지 않는다. #407 결과는 이미 기존 TensorBoard `1006-v7-roller-84e62dd1`에 있고 이번에 중복 변환하지 않았다. 기존 S2 snapshot도 유지했다.
+
+`tests/test_s2_idle_contacts.py`는 scope 거부·기본off·세계 생성 전달/복구·reset 기록·result.json 옵션/조건·현재 admission없음·workflow 등록을 검사하며 **17개 통과(4.94s)**했다. CLI preview에서도 freeze 명시·seed 없음·허용 실행0개를 확인했다. [통합 검증 기록](idle-contacts-integration.json)을 남겼다. 실제 S2 SIM,새 wall 측정,모델 호출은 하지 않았다. 기존 v109–v117 계약/등록/raw는 수정하지 않았다. 공유 v7 소스는 #407 병합으로 바뀌었으므로 과거 재현은 원래 실행 SHA를 사용해야 한다. PR #406 DRAFT·미병합과 다른 작업 프로세스/자료를 유지한다.
