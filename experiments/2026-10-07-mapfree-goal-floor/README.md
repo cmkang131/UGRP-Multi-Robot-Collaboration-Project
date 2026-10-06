@@ -480,3 +480,60 @@ $PY -m pytest tests/test_floor_goal.py tests/test_floor_goal_v2.py tests/test_se
 - XML 색 표 JSON 생성에서 NumPy bool 직렬화 오류가 한 번 발생해 Python `bool`로 변환하고 회귀 시험했다.
   초기 불완전 출력도 보존했다. 다른 작업 잠금 때문에 한 번 렌더를 보류했고, null 확인 후에만 실행했다.
   확인 실패 이후 재튜닝/재렌더는 없었다. TensorBoard 변환 생략 요청을 유지한다.
+
+## 13. floor_color_v3 사전 등록 (구현·추가 렌더 전)
+
+v2 실제 녹화의 거짓 확인 18+13개와 정적 렌더의 스위치 FP를 구분한다. 31개 확인 track의 확인 시점까지
+121개 supporting component를 복원해 화면 중심/bbox/pixel 수, 자기 바닥 투영 hull 면적·회전 사각형 변을
+기록한다. 대표 RGB 31개는 모두 바닥 계열이며 스위치라는 전제를 검증 없이 채택하지 않는다. 모든 supporting
+crop을 검수하고 자기 스위치/다른 로봇 스위치/바닥/물체/미확인 분류와 근거를 남긴다.
+
+**이 절과 [v3-registration.json](v3-registration.json)을 v3 구현 전에 시험 후 커밋한다.** 새 옵션은
+`goal_detection=floor_color_v3`, 기본 off, v1/v2 bytes 보존이다. 아래 주 기준 5개를 모두 만족해야 성공이다.
+기존 4개 기준의 수치를 바꾸지 않고 기존 녹화 거짓 확인 0을 별도 항목으로 드러낸다.
+
+| 주 기준 | 고정 판정 |
+|---|---|
+| 정적 확인 frame precision | ≥.95; 기존 §8 TP/FP 정의 그대로 |
+| 정적 확인 recall | ≥.90; B visible ≥256 px, 1–255 px 별도 미판정 |
+| 관측 부분 중심 투영 오차 | TP component median ≤.10 m, P95 병기 |
+| 정적 음성 거짓 확인 | 0; 참 확인 수도 보고 |
+| 기존 녹화 거짓 확인 | 카메라 v3와 legacy 각각 0; 검출 FP도 별도 보고 |
+
+추가 격자는 기존 s1045 scene/hash와 camera v3/FOV/높이를 유지한다. B/A/C/pickup × 거리 .5/1.5 m ×
+좌우 ±.25 m × SEARCH/HIGH/close_floor 실제 명령 3개 × 원래 장면/r1 정면/r1 측면 3개 × 4시점 =
+**576장, 144묶음**. close_floor는 s1045 f13761의 명령 `{1:2000,3:807,4:1897,5:2187,6:1500}`이다.
+r1 정면은 기존 대상 x−.15 m, 측면은 대상 x−.15/y+.30 m, 방향은 π로 고정한다. 관측 간 자기 forward=.25,
+duration=1 s의 M1 명령 이동만 정적 배치에 반영한다. 움직이지 않는 다른 로봇과 자기 몸의 시차를 별도로 볼
+수 있게 순수 yaw 시점열을 바꾼다. 물리로 실행하지 않는다. 뷰 시각은 3/5/7/9 s다.
+
+좌측 72묶음/288장만 개발, 우측 72묶음/288장은 설정·소스·개발 결과 커밋 후 확인한다. 기존 288장은 사후
+비교, 기존 녹화 10건은 **v3 문턱 선정에는 쓰지 않는 확인 회귀 자료**다. 이전에 본 자료이므로 새로운 독립
+확증으로 부르지 않는다. 시점열은 분할하지 않는다. 추가 렌더는 `agent_lock status==null` 및 시뮬 프로세스
+부재 확인→`B render testset` 획득→finally 해제, 8분/250 MiB 한도, step/forward dynamics 금지, 원본 보존.
+
+v3의 표준 방법 및 우리 입력 제약:
+
+1. 자기 몸: [ROS robot_body_filter 공개 구현](https://github.com/ctu-vras/robot_body_filter)의 알려진 link 형상·
+   FK·shadow 제외 원리를 사용한다. 고정 자기 로봇 형상만 추출해 순수 기하 투영하고 자기 servo **명령**으로
+   갱신한다. 물리 관절/현재 sim model/data/GT segmentation/다른 로봇 pose는 읽지 않는다. primitive/mesh의
+   보수적 기하 envelope 및 2 mm/2 px margin을 사용하고, 과다 마스크와 누락도 GT ID로 평가만 한다.
+2. 바닥 일관성: [OpenCV 평면 homography](https://docs.opencv.org/4.13.0/d9/dab/tutorial_homography.html)의
+   calibrated ray-plane 원리와 [contour 면적/minAreaRect](https://docs.opencv.org/4.13.0/d3/dc0/group__imgproc__shape.html)를
+   사용한다. 사용자 허용 B 치수 **.6×1.4 m만** 알려 주며 위치·방향·polygon은 주지 않는다. 관측 footprint 면적,
+   짧은 변≥.03 m, 변의 B 치수 대비 상한×1.2, footprint solidity≥.25를 검사한다. 부분 가림을 전체 B로
+   채우지 않는다. 단일 영상에서 높은 물체가 반드시 비정상 크기가 되는 것은 아니므로 이것을 높이 인증으로
+   해석하지 않는다.
+3. 시간 일관성: [Deep SORT 확인 상태](https://github.com/nwojke/deep_sort/blob/master/deep_sort/track.py)의
+   연속 관측 확인 원리와 평면 시점 변환을 사용한다. 자기 DR로 옮긴 **최근** footprint의 겹침·중심 잔차로
+   one-to-one association하며 커진 union bbox를 통한 연쇄 연결을 금지한다. 간격≤3 s인 서로 다른 3회,
+   2 s 이상, 자기 이동 baseline≥.05 m가 필요하다. yaw만으로는 충분한 깊이 시차가 없으므로 확인하지 않는다.
+
+HSV는 v2 봉인값을 그대로 둔다. DEV에서 관측 면적 하한 [.005,.02] m² × 시간 overlap [.35,.65] ×
+중심 잔차 [.10,.20] m의 **8개 조합만** 비교한다. precision→recall→적은 거짓 확인→많은 참 확인→곱집합
+순서로 선택해 커밋·고정한다. 확인 이후 추가 조합/기준 변경/재튜닝은 하지 않는다. 전부 실패하면 실패로
+기록한다. 기존 정적/녹화 자료와 새 격자 결과를 합산하지 않는다. 현재 색이 비슷한 실제 바닥은 위 기하
+규칙으로도 구분되지 않을 수 있으며 실패를 자기 차체 마스크 효과로 포장하지 않는다.
+
+#398의 `orange_columns_v1`은 다른 로봇을 색으로 가리는 벽 observer 옵션이다. 해당 브랜치는 읽기만 했고,
+이번 자기 기하 마스크·B 평면 누적과 구현/성능 증거를 합산하지 않는다. 새 venv/패키지/모델 호출은 없다.

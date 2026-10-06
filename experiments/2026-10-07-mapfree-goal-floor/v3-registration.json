@@ -1,0 +1,116 @@
+{
+  "schema": "ugrp.floor_goal_static_render.v3",
+  "scene": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/scene.xml",
+  "scene_sha256": "f6d335be525889b1825decee74a60b5625fcf4439b0a35f88068b77d0be00b20",
+  "robot": "r3",
+  "camera": "r3__robot_cam",
+  "resolution": [
+    640,
+    480
+  ],
+  "camera_profile": "camera_v3",
+  "targets": [
+    "zone_B",
+    "zone_A",
+    "zone_C",
+    "pickup"
+  ],
+  "distances_m": [
+    0.5,
+    1.5
+  ],
+  "lateral_offsets_m": [
+    -0.25,
+    0.25
+  ],
+  "arm_poses": {
+    "search": {
+      "1": 2000,
+      "3": 740,
+      "4": 2320,
+      "5": 1320,
+      "6": 1500
+    },
+    "high": {
+      "1": 1500,
+      "3": 896,
+      "4": 2035,
+      "5": 1894,
+      "6": 1500
+    },
+    "close_floor": {
+      "1": 2000,
+      "3": 807,
+      "4": 1897,
+      "5": 2187,
+      "6": 1500
+    }
+  },
+  "occlusion": [
+    "original",
+    "r1_in_front",
+    "r1_side"
+  ],
+  "views_per_group": 4,
+  "view_times_s": [
+    3.0,
+    5.0,
+    7.0,
+    9.0
+  ],
+  "split": "negative lateral=development; positive lateral=confirmation; entire 3-view groups together",
+  "groups": 144,
+  "frames": 576,
+  "frame_positive_B_pixels": 256,
+  "threshold_search": {
+    "minimum_observed_area_m2": [
+      0.005,
+      0.02
+    ],
+    "temporal_overlap_min": [
+      0.35,
+      0.65
+    ],
+    "temporal_center_max_m": [
+      0.1,
+      0.2
+    ],
+    "selection": "max frame precision, then recall, then fewer false confirmations, then more true confirmations, then stable product order"
+  },
+  "criteria": {
+    "frame_precision_min": 0.95,
+    "frame_recall_min": 0.9,
+    "projection_median_max_m": 0.1,
+    "static_false_confirmed_regions_max": 0,
+    "recorded_false_confirmed_regions_max": 0
+  },
+  "render_limit_minutes": 8,
+  "physics_steps": 0,
+  "data_limit_mib": 250,
+  "predictions_use_gt": false,
+  "translation_command": {
+    "forward": 0.25,
+    "left": 0.0,
+    "turn": 0.0,
+    "duration_s": 1.0
+  },
+  "goal_dimensions_only_m": [
+    0.6,
+    1.4
+  ],
+  "fixed_v3_rules": {
+    "v2_HSV_preserved": true,
+    "self_model_padding_m": 0.002,
+    "self_mask_dilate_px": 2,
+    "max_B_side_scale": 1.2,
+    "min_rect_short_m": 0.03,
+    "min_footprint_solidity": 0.25,
+    "confirmation_views": 3,
+    "confirmation_min_s": 2.0,
+    "confirmation_baseline_m": 0.05,
+    "max_observation_gap_s": 3.0,
+    "association": "last patch, one-to-one, no union-box chaining"
+  },
+  "recordings_role": "all 10 prior recordings are confirmation-only for v3 options; previously seen regression evidence, not new blinded cohort",
+  "old_static_role": "previous 288 images are retrospective comparison only; no fitting"
+}
