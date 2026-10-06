@@ -37,7 +37,7 @@ DEV 보정이다. 약 7.2% 과주행의 기존 원인 판정(보정 범위 밖 �
 | 방향성 마찰 + 바퀴 토크 | 롤러 자유도를 줄여 빠름(Okada 2023) | 접촉 좌표축을 바퀴에 맞춰야 함. `geom friction`의 3개 값은 x/y 마찰이 아님. MuJoCo는 pair에서 5개 계수 지원. 이번에는 접촉 프레임 재작성 복잡성을 피함 |
 | 수동 롤러 hinge + 바퀴 actuator + 접촉 | 표준 강체/마찰 해법 그대로; 공중에서는 추진 불가 | 접촉 수/비용 증가, 롤러 단순 형상·베어링 측정 필요. **이번 후보** |
 
-v3의 기존 9개 capsule 롤러를 각각 자유 hinge에 붙이고 동일한 위치/크기/외관으로 접촉을 활성화한다.
+v3의 기존 9개 capsule 롤러를 각각 자유 hinge에 붙이고 동일한 중심/크기/재질로 접촉을 활성화한다. 기존 장식 롤러의 좌우 기울기는 공식 ABAB 도면과 반대여서 새 프로필에서만 바로잡는다.
 45도 기울어진 롤러가 수동 회전하고 바닥 마찰이 추진력을 만든다. 지지 실린더의 충돌은 끈다.
 차체 wrench·인위적인 제동 감쇠·실시간 위치 보정·weld를 사용하지 않는다. 정지 명령은 모터의 속도-토크 기울기로 저항한다.
 `kv=torque_cap/omega_no_load`인 bounded velocity actuator는 선형 DC 모터의 토크-속도 근사이다.
@@ -105,3 +105,13 @@ python3 scripts/ugrp_session.py run drive-friction-CASE -- \
 - 두 번째 호출은 초기 정지까지 실행 후 기록 코드가 `robot_mass_kg` property를 함수로 불러 HOST_ERROR.
   표준 NamespacedMasterPi API를 확인해 읽기만 고쳤으며 물리 수치는 바꾸지 않음.
   원본: `/Users/changmin/projects/ugrp/outputs/drive-friction-995ff901-forward{,-record}`. 실패 원본 보존.
+
+- `5f04f473` 무하중 7조건 완료: 직진 .08077 m/s, 옆 명령이 반대로 -.07026 m/s, 회전 .02219 rad/s.
+  이는 기존 장식 롤러를 그대로 물리화했을 때의 잘못된 handedness 진단이며 채택 결과가 아니다.
+  공식 Hiwonder top-view 도면과 WPILib 운동식으로 부호를 확인했다. FL/RR의 위쪽 roller 축은 forward-left이고
+  접지점에서는 `vx-vy=r*w`; FR/RL은 `vx+vy=r*w`여야 한다. 크기/마찰/모터 값은 유지하고 축/해당 그림 기울기만 반전한다.
+  이 변경은 새 프로필 내부에만 존재하며 과거 v3 source/번들/사진 자료를 수정하지 않는다.
+  [공식 배치 도면](https://wiki.hiwonder.com/projects/MasterPi/en/latest/assets/image4.CoSpVv9z.webp),
+  [WPILib 표준 mecanum 좌표계/운동학](https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/mecanum-drive-kinematics.html).
+- 접촉 제거 시 차체 기준점은 내부 모터 반작용으로 움직일 수 있어 **로봇 전체 질량중심** 변위를 함께 기록한다.
+  기준점 변위만을 공중 추진으로 오해하지 않는다. 접촉점 상대 속도와 힘도 기록한다.

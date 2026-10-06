@@ -78,12 +78,14 @@ def run_case(profile, case, loaded, output):
             d.qvel[:] = 0
             mujoco.mj_forward(m, d)
         start_t = float(d.time); start_xyz = c.base_xyz().copy(); start_yaw = c.base_rpy()[2]
+        start_com = d.subtree_com[c.robot_bid].copy()
         patterns = {'forward': FORWARD_PATTERN, 'left': LEFT_PATTERN, 'turn': YAW_LEFT_PATTERN,
                     'no_contact': FORWARD_PATTERN, 'rated_speed': FORWARD_PATTERN}
         cmd = patterns.get(case, np.zeros(4)) * (1. if case == 'rated_speed' else .2)
         drive_s = 1.5
         rows = []; wall0 = time.perf_counter()
         force6 = np.zeros(6)
+        jac = np.zeros((3, m.nv)); jacr = np.zeros((3, m.nv))
         for i in range(round((drive_s+1.)/dt)):
             t = i*dt; command = cmd if t < drive_s else np.zeros(4)
             if case == 'push':
@@ -96,7 +98,7 @@ def run_case(profile, case, loaded, output):
                     d.qfrc_applied[c.base_dadr+1] = 1. if t < drive_s else 0.
             world._physics_step_for(c, command)
             if i % max(1, round(.02/dt)) == 0:
-                tangential = normal = 0.; wheel_contacts = 0
+                tangential = normal = 0.; wheel_contacts = 0; slips = []
                 for j in range(d.ncon):
                     contact = d.contact[j]
                     names = [m.geom(int(g)).name for g in contact.geom]
@@ -104,8 +106,17 @@ def run_case(profile, case, loaded, output):
                                [f'r1__wheel_{w}' for w in ('fl','fr','rl','rr')]) for n in names):
                         mujoco.mj_contactForce(m, d, j, force6)
                         normal += abs(force6[0]); tangential += np.linalg.norm(force6[1:3]); wheel_contacts += 1
+                        velocity = []
+                        for geom in contact.geom:
+                            mujoco.mj_jac(m, d, jac, jacr, contact.pos, int(m.geom_bodyid[int(geom)]))
+                            velocity.append(jac @ d.qvel)
+                        relative = velocity[1]-velocity[0]
+                        if force6[0] > 1e-6:
+                            slips.append(float(np.linalg.norm(relative-(relative@contact.frame[:3])*contact.frame[:3])))
                 rows.append({'t': float(d.time-start_t), 'xyz': c.base_xyz().tolist(),
                     'yaw': c.base_rpy()[2], 'velocity': d.qvel[c.base_dadr:c.base_dadr+6].tolist(),
+                    'com_xyz': d.subtree_com[c.robot_bid].tolist(),
+                    'contact_slip_mps': float(np.mean(slips)) if slips else 0.,
                     'wheel_speed': [float(d.qvel[m.jnt_dofadr[m.joint(f'r1__wheel_{w}_joint').id]])
                                     for w in ('fl','fr','rl','rr')],
                     'wheel_normal_n': normal, 'wheel_tangent_n': tangential, 'wheel_contacts': wheel_contacts,
@@ -122,6 +133,8 @@ def run_case(profile, case, loaded, output):
         result.update(sim_s=float(d.time-start_t), wall_s=elapsed, wall_per_sim=elapsed/(d.time-start_t),
             commands=2, displacement_m=(c.base_xyz()-start_xyz).tolist(), yaw_change_rad=c.base_rpy()[2]-start_yaw,
             steady_velocity=np.mean([r['velocity'] for r in tail], axis=0).tolist() if tail else None,
+            com_displacement_m=(d.subtree_com[c.robot_bid]-start_com).tolist(),
+            steady_contact_slip_mps=float(np.mean([r['contact_slip_mps'] for r in tail])) if tail else None,
             steady_wheel_rad_s=np.mean([r['wheel_speed'] for r in tail], axis=0).tolist() if tail else None,
             wheel_contact_samples=sum(r['wheel_contacts'] > 0 for r in rows),
             max_base_external_force=max(np.linalg.norm(r['base_external_force']) for r in rows),

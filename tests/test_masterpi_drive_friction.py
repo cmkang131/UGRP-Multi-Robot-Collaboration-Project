@@ -44,3 +44,16 @@ def test_profile_rejects_non_v3_and_repeat_application():
 def test_parameters_require_physical_values(kw):
     with pytest.raises(ValueError):
         DriveParameters(**kw)
+
+
+def test_roller_handedness_matches_mecanum_kinematic_constraint():
+    import numpy as np
+    root = ET.fromstring(transform_xml(xml(), DriveParameters()))
+    # k=0 is on +x. Rotate wheel +pi/2 around its +y axle to put it on
+    # the ground. Traction along passive roller axis gives vx +/- vy=r*w.
+    rotate_to_floor = np.array([[0,0,1],[0,1,0],[-1,0,0]])
+    for wheel, lateral_sign in zip(('fl','fr','rl','rr'), (-1,1,1,-1)):
+        parent = root.find(f".//body[@name='r1__wheel_{wheel}_body']")
+        axis = np.array(list(map(float, parent.find('body/joint').get('axis').split())))
+        floor_axis = rotate_to_floor @ axis
+        assert floor_axis[1]/floor_axis[0] == pytest.approx(lateral_sign, abs=1e-4)

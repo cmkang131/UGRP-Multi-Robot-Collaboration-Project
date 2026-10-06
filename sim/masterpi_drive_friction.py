@@ -43,14 +43,14 @@ class DriveParameters:
                 'qualification': 'STRUCTURAL_ONLY_UNCALIBRATED',
                 'installed_motor_and_floor_verified': False,
                 'actuator_model': 'bounded affine torque-speed, zero-command electrical brake',
-                'roller_geometry': 'unchanged v3 visual capsules, 9 passive hinges/wheel',
+                'roller_geometry': 'v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel',
                 'roller_bearing': 'ideal frictionless', 'wheel_mass': 'legacy 50g, uniform-density split'}
         data['sha256'] = hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
         return data
 
 
 def transform_xml(xml: str, params: DriveParameters) -> str:
-    """Make the existing v3 rollers physical; retain all visible geometry/cameras.
+    """Make v3 rollers physical with official ABAB handedness; retain dimensions/cameras.
 
     Torque acts only at four wheel hinges. Isotropic sliding friction on freely
     rotating 45-degree rollers generates mecanum traction without a body wrench.
@@ -91,6 +91,11 @@ def transform_xml(xml: str, params: DriveParameters) -> str:
             inertial.set('diaginertia', f'{transverse} {hub_mass*hub_r**2/2} {transverse}')
             for visual, volume in zip(rollers, volumes):
                 ends = np.array(list(map(float, visual.get('fromto').split()))).reshape(2, 3)
+                # Hiwonder top-view ABAB diagram: FL/RR top axes point
+                # forward-left, FR/RL forward-right. Legacy decorative
+                # rollers have the opposite handedness. Mirror only the
+                # axle component; centres, sizes, count and materials stay.
+                ends[:, 1] *= -1
                 centre = ends.mean(axis=0)
                 axis = ends[1]-ends[0]; axis /= np.linalg.norm(axis)
                 child = ET.SubElement(body, 'body', name=visual.get('name')+'_body',
