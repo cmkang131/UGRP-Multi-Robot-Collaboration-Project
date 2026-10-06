@@ -1002,3 +1002,92 @@ dev_light에 따라 보수적 정지 지점은 위 두 종류를 기록만 했�
 TensorBoard 새 snapshot `1007-s2-realism-pulse-v122`: 완료 실행1+오프라인 보정감사1, **26개 scalar 원본/event/live API 일치**, 기존 viewer PID52016/logdir 유지. [대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-realism-pulse-v122%2F#timeseries), [영상](http://127.0.0.1:6007/video/286cb3ea73aabecc1c6a), [검증](pulse-delivery-verification.json). 사용자 요청대로 숫자만 대조하고 브라우저는 열지 않았다. 공유 view에는 자기 키만 추가했다.
 
 CI preflight는 [새 실행37493154746](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37493154746)에서 **24초 success**로 시간초과 수정 확인. 전체 CI는 기록 시 진행 중이며 미완료를 통과로 표현하지 않는다([조회](v122-ci-readback.json)). 세션 stopped, 소유PID32708/32712/32722/32728 모두 종료, one-shot launchd 해제, **agent_lock=null**. PR406 DRAFT 유지·병합 금지.
+
+## v123 — s1045/1046 visual-fix 감사와 S2 전용 관측 격리 (2026-10-07)
+
+**물리 실행 전 원인 분리.** `last_fix_t`는 합격 영수증이지 모든 시각 가중치 갱신 횟수가 아니다.
+기존 `zone_final_pair_scan`/`zone_pair_highpose_partial_fix`는 불합격 영수증을 되돌려도
+`vision_pf.apply_scan`의 가중치·분산 변화는 유지한다. 따라서 s1046이 32.85초 뒤 “명령만으로”
+갔다는 표현은 엄밀하지 않다. 문 앞/뒤 추정 체크포인트(162.65/209.6 s)까지 새 합격 fix는 0이지만
+부적합 벽 관측은 계속 PF에 들어갔다. 이후에는 새 fix가 있으며 마지막은 295.95 s다.
+
+| 기록 | HIGH 운반 구간 | 기록된 scan gate | 합격 fix / 초 | inlier 중앙 / support 중앙 |
+|---|---|---:|---:|---:|
+| 구 카메라 s1022 | 84.6–106.7, 165.7–189, 248–288.4, 347.5–349.2 s | 0 / 0 / 0 / 0 | 모두 0 | 관측 없음 |
+| v3 s1045 | 87.95–672.45 s | 10,977 | 313 / 0.5355 Hz | 0.01136 / 0 |
+| v3 s1046 | 67.5–307.85 s | 4,699 | 104 / 0.4327 Hz | 0 / 0 |
+
+구 카메라 s1022는 든 cyan으로 HIGH 시야가 가려졌고, 내려놓고 다시 본 구간에서 fix를 얻었다
+(다음 HIGH 진입 직전 영수증 134.35/219.85/314.45 s). 구 구동 결과는 폐기된 물리 baseline이며
+여기서는 **fix 빈도·재관측 동작 비교에만** 쓴다. 성공률을 합산하지 않는다.
+현재 `setdown_relook=off`는 그대로 유지한다. PR #405의 자기 지도/pose graph는 별도 오프라인 작업으로,
+이번 S2 공개 지도 PF 수정에 복사하거나 그 결과를 합산하지 않는다.
+
+- 관측은 벽–바닥 **96개 열 경계**뿐이다. 바닥 무늬·표식·학습 모델은 위치 랜드마크로 쓰지 않는다.
+  s1046 67.5–209.6 s에는 gate 2,734건, 합격 0. 67.5–162.65 s의 inlier 최댓값 0.538 < 0.66,
+  support 최댓값 0 < 0.10. 전체 HIGH에서는 fraction/support/rank 거절 4,583/4,595/3,563건
+  (중복 원인). 영상 도착 6,496, worker 5,523, 거절 frame 0; 미안정 구간 973회는 별도다.
+- **v3 변환은 적용됐다.** `camera_v3_derivation`의 rigid composition과 실제 column-model closure를 확인했다.
+  하지만 원래 짝 HIGH 보정 자세를 상속한 `RIGID_COMPOSITION_UNQUALIFIED`다. HIGH 예측 pitch −36.59168°,
+  s1046 실제 평가 카메라 약 −32.7°. 160 s에 예측 카메라 높이 0.179896 m, 평가 높이 0.187288 m.
+  관측 벽 경계와 공개 지도 투영의 중앙 절대 잔차는 **52.315 px**; 평가 카메라로만 투영하면 **0.550 px**,
+  inlier 0 → 0.9783. 224/290/296 s에도 51.52/52.76/53.41 px → 0.462/0.559/0.613 px.
+  이 GT 카메라 대입은 **원인 채점 전용**이며 제어기 보정값으로 저장·전달하지 않는다.
+- 다른 구간은 시야/검출 문제도 있다. s1046 68 s 검출 86열, 관측 중앙 row 105인데 실제 기하에서 벽 바닥은
+  row −105.90(위쪽 밖). 이때 바닥 구역의 색/음영 경계가 벽 후보로 검출된다. 평가 카메라로 바꿔도
+  잔차 211.54 px, inlier 0이다. 160 s처럼 실제 벽이 보이는 구간과 구분한다. v3 각도만의 영향과
+  v7/하중 자세 영향을 분리한 물리 ablation은 하지 않았다. 카메라 장착 각도를 바꾸지 않는다.
+
+### 표준 방법·실물 근거 (직접 확인한 출처)
+
+1. [robot_localization EKF 공개 코드](https://raw.githubusercontent.com/cra-ros-pkg/robot_localization/ros2/src/ekf.cpp)
+   `correct`는 innovation 검사를 통과한 경우에만 상태·공분산을 갱신한다. 이를 PF에 필요한 범위로 적용:
+   이미 등록된 잔차/support/rank 기준을 **측정 가중치 갱신 앞**에 놓는다. Mahalanobis EKF 자체를 복사하거나
+   기존 문턱을 낮추지 않는다. 희박한 prior에서 회복을 늦출 수 있으므로 S2 loaded HIGH에만 한정한다.
+2. [Maimone·Cheng·Matthies, JFR 2007 원문](https://www-robotics.jpl.nasa.gov/media/documents/rob-06-0081.R4.pdf),
+   [JPL Curiosity 설명](https://robotics.jpl.nasa.gov/what-we-do/flight-projects/mars-science-laboratory/surface-system-software-and-rover-navigation/):
+   주행 전후 지형 특징을 비교하는 VO로 명령과 실제 영상 이동의 불일치를 감지한다. 여기에는 stereo/IMU/encoder를
+   추가하지 않고 단안 RGB의 **정체 의심**만 적용한다. 절대 위치·미터 이동량·slip 비율을 주장하지 않는다.
+3. [CMU Lemus 2013](https://publications.ri.cmu.edu/slip-control-during-slope-descent-for-a-rover-with-plowing-capability):
+   단안 optical flow를 쓰는 slip 추정 연구. 성능 수치를 S2로 승계하지 않는다.
+4. [OpenCV LK 설명](https://docs.opencv.org/4.x/d4/dee/tutorial_optical_flow.html),
+   [공식 forward/backward 예제](https://raw.githubusercontent.com/opencv/opencv/4.x/samples/python/lk_track.py):
+   Shi–Tomasi 특징 → pyramidal LK → 역추적 오차 <1 px. RGB에서 이미지 테두리·가까운 하단·고채도 화물을 제외하고
+   6개 이상 추적점/2개 이상 공간 셀을 요구한다. 부족하면 `unknown_texture`다.
+5. [OpenCV pinhole/extrinsic](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html):
+   외부 보정 오차와 영상 잔차를 분리한다. 실물 근거는 `scripts/red_block/place.py:8,144–185`의 정지 후
+   새 영상 측정 및 `sim/real_stack_adapter.py:993–1002`의 운반 자세 복원→펄스→정지→관측 자세 복원이다.
+   이 실물 코드는 현재 S2 HIGH 카메라의 절대 pose 정확도나 optical-flow 막힘 검출을 보증하지 않는다.
+
+### 새 옵션과 실행 전 등록
+
+`visual_update=accepted_scan_v1`, `visual_stall=lk_pulse_v1`을 새 S2 wrapper에 추가한다. 둘 다 기본 off이고,
+공용 `sim/camera_robot_port.py`, 기존 제어기/번들, 카메라 각도·보정·measurement σ는 바꾸지 않는다.
+첫 옵션은 loaded HIGH 불합격 관측을 predict-only로 돌리고, 둘째는 자기 명령의 고정 펄스 모델로
+순이동 5 cm 또는 yaw 0.05 rad가 쌓인 정지 영상 쌍을 비교한다. 순 SE(2)를 합성해 방향 반전의
+경로 길이를 이동으로 세지 않는다. LK 중앙 ≤1 px·p90 ≤2 px이면 `VISUAL_STALL_SUSPECTED`를 기록한다.
+DEV에서는 이것도 기록만 하며, 위치 보정·이동 0 강제·성공 판정에 넣지 않는다.
+이 수치는 탐색 s1045/1046의 한계(1 cm 펄스가 <1 px일 수 있음)를 보고 정한 DEV 값이며 새 seed로 검증한다.
+**이 수정은 거절 관측의 오염을 막는 후보이지, 잘못된 HIGH 외부 보정을 복구한 방법이 아니다.**
+관측 불일치가 계속되면 새 물리 실행을 반복하지 않고 보정/관측 획득이 남은 문제로 보고한다.
+
+- 예약: main 및 열린 PR 15개 브랜치의 최대 v122 다음 **zone-s2-realism-v123 / workflow 7.16.0**.
+  [reservation-scan-v123.json](reservation-scan-v123.json)에 SHA·번호·seed 검사, 기존 번들 불변.
+- **새 seed1047 / r3 / P1-2 / B / door_1 / place 1회**, source를 커밋·push하고 이 등록을 고정한 뒤 실행.
+  탐색 자료 s1042–1046과 분리하며 seed 재사용·추가 진단 SIM 없음. 실패하더라도 이 1회 뒤 종료한다.
+- freeze ON, S2 solo DEV만. S3/짝/본 연구/본 연구 사전등록에서 오류. 이전 결과와 합산하지 않고 wall/SIM만 비교.
+  `dev_light`, unknown/불확실성/정체 의심은 would-stop 기록. 실제 낙하/이탈/기울기/실행 오류,
+  eval 외부 120 s/1 cm 정체 및 유한 상한은 기존 hard stop. ENOSPC는 HOST_ERROR로 raw 보존.
+- agent_lock acquire/release, `ugrp_session`, 낮추지 않은 우선순위, 한 번에 하나.
+  PR #406 DRAFT 유지·병합 금지. 옵션은 registration·bundle·result에 모두 보존한다.
+
+실행 전 검증: 관련 3파일 **16 passed**. 기본/명시적 off 명령·record bytes 일치, 실제 PF의 거절 scan이
+무관측 예측과 동일하고 합격 scan은 정상 갱신하는 시험, 영상/명령 window·옵션·seed/S2 입장 시험 통과.
+s1046 전체 자기 입력/명령 고정 재생에서 off 위치 **6,500개 모두 차이 0**. on은 HIGH 후보 4,705개를
+모두 차단하고 새 fix 0; 종료 평가 위치 오차 3.345608 → 3.702346 m.
+이는 과거 명령을 그대로 쓴 재생으로, 위치 개선을 입증하지 못했다. 새 제어 명령으로 닫힌 루프를 돌린 결과와 구분한다.
+RGB window 재생: s1045 757개(unknown743/changed14/정체0), s1046 134개(unknown86/changed45/정체3).
+s1046 정체 의심 221.4–222.15, 222.35–223.1, 267.2–269.55 s의 평가 이동은 0.108/0.070/1.303 mm,
+yaw 0.015/−0.026/0.146°. 이 채점값은 검출 후에만 결합했다. 무늬 부족으로 검출하지 못한 구간은 숨기지 않는다.
+근거: [gate 감사](v123-gates-audit.json), [카메라 투영](v123-geometry-audit.json),
+[flow 감사](v123-flow-summary.json), [고정 입력 재생](v123-replay-summary.json), [시험](v123-local-verification.json).
