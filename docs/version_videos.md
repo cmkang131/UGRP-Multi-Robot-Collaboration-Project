@@ -58,3 +58,5 @@ SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
 1. 대표 case를 위 규칙으로 고른다(paired 상대가 있으면 같은 셀·seed).
 2. `python3 scripts/render_pair_probe_video.py --case <이전 case> --label ... --case <새 case> --label ... --output <mp4>`. `--pf-track`으로 돌린 실행은 σ가 `trace.jsonl`의 PF에서 나오고, 없으면 `robots.json` 보고로 대신한다(영상 안에 출처가 적힌다). 정렬처럼 σ 게이트가 종료 원인이 아닌 단계는 `--gate none`.
 3. 파일 크기와 sha256을 확인하고 `experiments/<ID>/videos/`에 넣는다. 이 표에 행을 추가한다.
+
+- 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.
