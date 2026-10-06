@@ -925,3 +925,53 @@ agent_lock 해제(null), ugrp_session stopped, PGID19865 잔여0, 일회 launchd
 실행 후 변경은 기록뿐이며 제어/물리는 f0bb26e7 그대로다. 실행 전 관련24시험 통과;
 원격 CI run37485044909는 preflight가 **2분 시간 초과로 cancelled**, 후속 시험이 skip돼
 전체 CI 통과를 주장하지 않는다. PR #406 DRAFT·미병합 유지. raw 로컬 보존은 원격 백업이 아니다.
+
+## v122 — v7 펄스 보정과 전체 DEV 1회 (2026-10-07, 실행 전 등록)
+
+사용자 지시: s1042–1045를 탐색 자료로만 재분석하고 **새 seed1046 / P1-2 / place / r3→B / door_1**, `zone-s2-realism-v122` (workflow7.15.0)를 전체 DEV 한 번 실행한다. 이 문서와 [등록](registration-v122.json)은 실행 전에 커밋한다. main+열린 PR14개와 원본 출력에서 seed 및 번호를 [확인](reservation-scan-v122.json)했다. 기존 seed1029–1031과 소비된1042–1045는 사용하지 않는다. 이번 실행 뒤 추가 SIM은 없다. 같은 원인의 기존 실패s1045와 반복되면 원인을 기록하고 중단한다.
+
+조건: camera v3, drive v7, `setdown_relook=off`, `grasp_check=pickup_site_v1`(명목 옵션; 실제 검증은 `hold_check=inhand_rgb_v1`, site 비교 없음), `min_wheel_cmd=real_v1`, `dead_reckoning=v7_diag_v1`(새 옵션 ON에서는 superseded), `pulse_motion_model=v7_pulse_cal_v1`, `alignment_pulse=real_fine_v1`, `hover_check=real_pregrasp_v1`, `idle_robot_contacts=freeze_v1`, `dev_grasp_policy=log_only_v1`, `eval_camera_trace=pose_v1`, `stagnation_watch=window120_v1`. freeze는 사용자 승인 **S2 단독 DEV**에만 사용한다. S3·짝 운반·본 연구·연구 사전 등록에 금지한다. 이전 조건과 성공률을 합산하지 않고 wall/SIM만 별도 비교한다.
+
+### 오프라인 원인과 보정 범위
+
+실제 v121 Runtime 생성과 PF 경로 감사 결과, 1.56 공통 이득이 활성인 것은 아니었다. `v7_diag_v1` gain diag=[1.403796,0.415429,2.336931], 축별 tau=[0.318027,0.085276,0.021913]가 양 하중 상태에 적용된다. 문제는 이 보정이 양의 펄스 각1회뿐이고 loaded/reverse가 미확증인 점이다. [실제 경로·분리검사](v122-model-audit.json)에 저장했다.
+
+아래는 저장된 20Hz eval 궤적을 펄스 시작 body 좌표로 바꾼 값이다. 명령 종료 후 최대0.20초(다음 펄스 전까지)의 이동을 포함한다. GT는 이 완료 기록의 보정·채점에만 사용했다. 요청된35–40 중36–40 자료는 **0건**이며, 실제 coarse lateral65도 빠짐없이 별도 기재한다. 개별 raw는 수정하지 않았다. 원본 해시·5/50/95분위와 전체 분포는 [pulse-groups](v122-pulse-groups.json), 개별 펄스는 `/Users/changmin/projects/ugrp/outputs/s2-pulse-cal-20261007/offline/pulses.jsonl`.
+
+| 하중 | 축·출력·초 | n | Δ전진 중앙(cm) | Δ옆 중앙(cm) | Δyaw 중앙(°) |
+|---|---|---:|---:|---:|---:|
+| 0 | forward -35 / 0.06 | 2 | -0.705 | 0.033 | 0.143 |
+| 0 | forward 35 / 0.06 | 236 | 0.760 | 0.005 | -0.004 |
+| 0 | forward 35 / 0.10 | 115 | 1.285 | -0.008 | -0.029 |
+| 0 | left -35 / 0.06 | 24 | 0.013 | -0.707 | 0.095 |
+| 0 | left -65 / 0.65 | 110 | 0.065 | -16.681 | 0.568 |
+| 0 | left 35 / 0.06 | 18 | 0.026 | 0.689 | -0.100 |
+| 0 | left 65 / 0.65 | 110 | 0.067 | 16.794 | -0.539 |
+| 0 | turn -35 / 0.10 | 1 | -0.030 | -0.181 | -5.935 |
+| 0 | turn 35 / 0.10 | 2 | -0.024 | -0.251 | 5.688 |
+| 1 | forward -35 / 0.10 | 88 | -1.290 | 0.006 | -0.039 |
+| 1 | forward 35 / 0.10 | 196 | 1.296 | -0.001 | -0.016 |
+| 1 | left -65 / 0.65 | 339 | 0.059 | -16.548 | 1.523 |
+| 1 | left 65 / 0.65 | 333 | 0.080 | 16.552 | -1.509 |
+| 1 | turn -35 / 0.10 | 20 | 0.017 | 0.080 | -4.867 |
+| 1 | turn 35 / 0.10 | 18 | -0.020 | -0.052 | 5.049 |
+
+0/1 하중은 자기 집게·팔 명령으로 얻은 `LoadState` 분류이며 실제 접촉을 제어기에 전달하지 않는다. s1045 옆 펄스672회, 방향 반전538회 중 **527회**는 같은 경유점/새 fix 없음에서 오차 부호가 뒤집혔고, **525회**는 그때 실제 이동이 초기 남은 오차보다 컸다. 실제 during 이동 중앙15.33cm, coast 포함16.55cm 대 경유점 허용3.5cm. 운반 회전35/0.10초는 약4.9° 대 기존허용1.43°. 시각 오보정과 모델 오차가 공존하므로 3.839m 전체를 한 원인으로 단정하지 않는다.
+
+표준 방법 조사: [Borenstein & Feng UMBmark (1994 report, §§2–3,6)](https://websites.umich.edu/~ykoren/uploads/Umbmark.pdf)는 양방향 측정으로 체계 오차와 산포를 분리한다. 원 논문은 차동구동/엔코더이므로 메카넘에 휠직경 식을 이식하지 않았다. 양·음 방향과 하중을 분리해 자기 명령→정지 응답을 batch 식별했다. 실제 UMBmark 사각 주행은 수행하지 않았다.
+
+[Thrun, Burgard & Fox (2005), ch5 §§5.3–5.4](https://cs.pomona.edu/~ajc/other/Thrun%20et%20al_2005_Probabilistic%20robotics.pdf)와 [저자 페이지](https://robots.stanford.edu/probabilistic-robotics/): 명령과 실제 운동을 구분하고 운동량에 따른 분산을 둔다. 책의 비홀로노믹 v/ω 식은 메카넘을 제외하므로, [Nav2 공식 OmniMotionModel](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/motion_model/omni_motion_model.cpp)과 같이 옆 이동도 분리한다. 여기서는 펄스별 dx/dy/dyaw 평균곡선 최소제곱, Gaussian 잔차 분산, `variance_j=alpha_j,trans*(dx²+dy²)+alpha_j,rot*dyaw²` 비음수 최소제곱을 사용했다. 원 AMCL 구현/엔코더 오도메트리를 재현했다는 주장은 아니다. 고정 α·분산·곡선은 [보정값](../../configs/s2_motion_v7_pulse_cal_v1.json)에 있다.
+
+실물 근거: `scripts/masterpi_control.py`는 비영 출력35 미만을 거부한다. `scripts/red_block/place.py:144–185`는 35로 멀 때 긴 펄스, 가까울 때0.10/0.12초 후 정지·재관측한다. `physical_state_machine_reference.py`의35/60ms +120ms 관측과 기존 FinePulsePort를 재사용한다. 원 실물 미세 정렬이 메카넘 옆 이동이었다고 주장하지 않는다. [Fox et al. 1997](https://publications.ri.cmu.edu/storage/publications/pub_files/pub1/fox_dieter_1997_1/fox_dieter_1997_1.pdf)의 유한 후보 운동 예측을 참고해, 기존 A* 경유점에 대해 예상 오차를 줄이는 펄스 하나를 고른다. 전체 DWA 충돌 회피 구현은 아니다.
+
+새 옵션(기본off)은 **S2 인스턴스**의 PF 예측·navigation만 같은 고정 응답표로 연결한다. coarse65/0.65초는 남은 옆 거리가 예상 이동+3.5cm보다 클 때만 허용하고, 가까우면35/60ms(~7mm)로 바꾼다. 위치 허용3cm/경유점3.5cm는 유지하며, 회전허용은 최소 회전의 절반 이상인0.06rad(3.44°)로 둔다. 다음 명령은 정지 꼬리와160ms 추정 지연을 포함한 fresh pose를 기다린다. `sim/camera_robot_port.py`, 다른 제어기, 카메라/팔 자세는 변경하지 않는다. 옵션off는 기존 명령·record 바이트 일치 시험으로 고정한다.
+
+학습/보류 분할: unloaded는1042/43/45로 fit,1044 보류; loaded는1045 t<400초 fit, 이후 보류. 이미 본 자료의 사후 분할이므로 독립 확증이 아니다. loaded 양전진 endpoint x RMSE 2.157→0.543mm, loaded 좌우 yaw RMSE 1.13/1.12→0.319/0.315°. 일부 희소 unloaded 항목은 개선되지 않았다(예: +turn yaw 0.111→0.637°). loaded fine strafe는 **0개 관측**이므로 unloaded fine에 loaded/unloaded coarse 비율을 적용한 미확증 전이이며 분산 하한5mm/1°를 둔다. reverse는 양방향 대칭 전이 후 보류 자료로 따로 평가한다. 20Hz 궤적의10ms 보간은 새 고속 계측이 아니며, 정지 후100/140ms 이후의 꼬리는 미식별이다.
+
+### CI와 실행 경계
+
+[CI run37485044909](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37485044909)의 preflight fetch145.086초가2분 제한을 초과했다. 뒤의 경로시험10개는0.211초로 통과했고 full_suite=true였지만 job은 시간 제한 cancelled였다. [증거](v122-ci-timeout.json). [actions/checkout v4 공식 설정](https://github.com/actions/checkout/blob/v4/action.yml)에 따라 preflight에만 `filter: blob:none`을 추가해 과거 blob 전송을 줄이고, merge-base 비교용 전체 commit 이력은 유지하며 상한을5분으로 변경했다.
+
+실행은 시험 통과→source/seed 커밋·push→lock null 확인→agent_lock acquire→ugrp_session 순서다. freezeON/dev_light에서는 unknown·위치 불확실·보수적 가드를 기록만 한다. 낙하/이탈/기울기/실행 오류·120SIM초1cm미만 정체 및 유한 cap에서 중단한다. ENOSPC는 HOST_ERROR로 기록하고 부분raw를 보존한다. 모델 호출0. PR406은 DRAFT 유지·병합 금지. 새 seed 결과로 보정값을 다시 맞추거나 이번 실행을 재사용하지 않는다.
+
+실행 전 검증: 바뀐 범위3개 시험 파일에서 **19 passed, 280 subtests passed / 29.48초**. 기본off 명령·record 바이트 일치, 실제 PF 경로의 load 양 상태, 펄스 정지 꼬리/도착 해상도, fresh estimate 대기, 신규 seed/번들·freeze 제한, 실패 결과 저장 및 CI gate를 확인했다. [검증 기록](v122-local-verification.json). 여유48.15GiB, 사전 확인 잠금null.

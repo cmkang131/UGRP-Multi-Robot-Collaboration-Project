@@ -19,13 +19,16 @@ concurrency:
 jobs:
   ci-preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    # PR406: full-history fetch alone took 145s, before any preflight test.
+    # Preserve merge-base/path coverage, but omit historical file contents.
+    timeout-minutes: 5
     outputs:
       full_suite: ${{ steps.paths.outputs.full_suite }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          filter: blob:none
       - name: Reject missing sparse-checkout fixtures before installing dependencies
         run: python3 scripts/check_ci_fixtures.py
       - name: Check CI routing and required-gate failure cases without simulator dependencies
