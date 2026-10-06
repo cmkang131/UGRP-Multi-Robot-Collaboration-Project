@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-05 S1 혼합 배치와 v4 지도 연결](2026-10-05-s1-placement/README.md): 최종 v3 지도 조회와 색 상자·catalogue 화물의 정적 혼합 배치. v4 8종 오프라인 검사, 소스 `35034c5b`의 dev_s1lite·전체 s1 각 30 SIM초 정지·렌더 DEV screen PASS. 유한 바닥 침투를 기록했으며 실제 운반·S1 물리 졸업·S2 제어기 연결은 미검증.
+
 - [2026-10-05 S2 단독 cyan 최종 v3 후보 v106](2026-10-05-solo-cyan-v106/README.md): v98 벽 관측·입자 필터·partial-fix·호버 확인·blind close·하중 가림 재사용. own RGB/정적 지도/자기 명령만. 오프라인 26시험, 물리·렌더 0회. 조정자용 DEV 명령과 watchdog 포함; 하중 모델은 무하중 단독 보정 대용이며 정식 실행 차단.
 
 - [2026-10-05 시나리오 v4 (v3 여덟 종 + 최종 로봇 v3 지도로 지도 필드만 교체)](2026-10-05-scenarios-v4/README.md): 연구 시나리오 s1–s8의 `map_id`·`map_file_sha256`만 `*_v3` 지도로 바꿨다(지도 기하는 v2/final_v1과 같고 id·robot_model·version·parent 해시만 다름). 새 지도 없음, v2·v3 파일은 그대로. 오프라인 검증(validate·해시·기하 동일성·s7/s8 경로)만 했고 SIM·모델 호출 0회.
