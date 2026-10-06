@@ -5,7 +5,6 @@ import pytest
 
 from harness import zone_s2_realism_contract as c
 from scripts import run_s2_realism as runner
-from sim.s2_realism import make_scene, StopGuard, PhysicalStop
 
 
 def test_registered_bundle_options_closure_and_workflow():
@@ -25,7 +24,8 @@ def test_registered_bundle_options_closure_and_workflow():
 
 
 def test_camera_and_v7_compile_in_same_standard_scene_without_steps():
-    import mujoco
+    mujoco = pytest.importorskip("mujoco")
+    from sim.s2_realism import make_scene
     from sim.multi_masterpi_production import build_multi_robot_xml
     from sim.masterpi_drive_friction_v7 import transform_xml, DriveParameters
     from sim.zone_cargo_contact import apply
@@ -53,6 +53,8 @@ def test_probe_does_not_finish_at_first_high_or_before_check_return():
 
 
 def test_physical_abort_debounce_normal_release_and_tilt():
+    pytest.importorskip("mujoco")
+    from sim.s2_realism import StopGuard, PhysicalStop
     row=dict(t=0.,cyan_z_m=.1,cyan_min_z_m=.084,robot_tilt_deg=2.,finger_contacts=[True,True])
     g=StopGuard();g.check(row,release_allowed=False)
     g.check({**row,'t':.1,'finger_contacts':[False,False]},release_allowed=False)
@@ -66,6 +68,8 @@ def test_physical_abort_debounce_normal_release_and_tilt():
 
 
 def test_host_eval_cannot_steer_and_abort_retains_evaluation(tmp_path):
+    pytest.importorskip("mujoco")
+    from sim.s2_realism import PhysicalStop
     owners=[]
     class Backend:
         def __init__(self,*a,**kw):

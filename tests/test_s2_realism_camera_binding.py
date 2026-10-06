@@ -1,12 +1,12 @@
 from types import SimpleNamespace as NS
 import numpy as np
 import pytest
-from sim.s2_realism_camera_binding import bind_camera
 from sim import masterpi_camera_review_v3 as camera
 
 
 def test_runtime_camera_refresh_and_reconfigure_cannot_restore_old_mount(monkeypatch):
-    import mujoco
+    mujoco = pytest.importorskip("mujoco")
+    from sim.s2_realism_camera_binding import bind_camera
     from sim.masterpi_dynamics_v2 import MasterPiDynamicsV2
     from sim import masterpi_camera_profile as archived
     m=NS(cam_pos=np.zeros((1,3)),cam_quat=np.zeros((1,4)),cam_resolution=np.zeros((1,2)),
