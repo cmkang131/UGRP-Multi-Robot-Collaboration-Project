@@ -96,3 +96,127 @@ raw 어안 영상에 직접 homography를 적용하지 않는다. SAM/모델 호
   GT 전체 B 중심까지 거리를 관측 patch의 투영 오차로 대체하지 않는다.
 - `cases.json`의 개발 3건을 재생하고 소스/옵션 해시를 고정한 뒤 확인 7건을 재생한다. 개발 실패가 있어도
   이번 고정 후보를 자료에 맞춰 재튜닝하지 않는다. source/예측/mask/input RGB 해시를 저장하고 평가를 분리한다.
+
+## 5. 고정 후보 결과 (성공 아님)
+
+예측 소스 **`7e6c887d`**, 사전 등록 **`6bb14930`**. 개발 s1042·s911-r1/r2 →
+[`freeze.json`](freeze.json)의 코드/옵션 해시 봉인 → 확인 7건. 개발/확인 모두 같은 설정이며 튜닝 0회다.
+원본 전체 **779개 2 s 표본**을 재생했다. 이는 10개 녹화의 개발 진단이고 신규 확증 코호트가 아니다.
+
+**B가 실제 보인 양성 표본이 없다.** s1045 346개 + legacy 252개는 저장된 실제 camera pose를 이용한
+640×480 전체 광선/정적 벽 가림 검사에서 B 가시 픽셀 상한이 **매 프레임 0 px**다. 동적 물체의 가림은
+이를 늘릴 수 없다. s1042–1044 181개는 RGB 접촉표 수동 판독 음성이며 실제 camera pose가 없어 같은
+기하 보증은 없다. 축소 판독/단일 검수자 한계 때문에 작은 양성의 누락 가능성은 별도 남긴다.
+
+### 현행 카메라 v3 녹화 (구 녹화와 합산하지 않음)
+
+| 녹화·역할 | 표본 / B 가시 | TP / FP component | precision | B-frame recall | patch 투영 median / P95 (m) | own-odom 오차 (m) | 최초 참 확인 / 최초 거짓 확인 (s) |
+|---|---:|---:|---:|---:|---:|---:|---|
+| s1042 pick·개발 | 70 / 0¹ | 0 / 3 | 0% | N/A | N/A | N/A | 없음 / 없음 |
+| s1043 pick·확인 | 56 / 0¹ | 0 / 1 | 0% | N/A | N/A | N/A | 없음 / 없음 |
+| s1044 pick·확인 | 55 / 0¹ | 0 / 1 | 0% | N/A | N/A | N/A | 없음 / 없음 |
+| s1045 S2 full(place)·확인 | 346 / 0² | 0 / 12 | 0% | N/A | N/A | N/A | 없음 / **13.3** |
+
+¹ RGB 수동 음성. ² 실제 camera trace·정적 벽 가시성 상한 0. 시간은 녹화의 sim timestamp이며 재생 wall 시간이 아니다.
+s1045는 세 후보 중 **2개가 거짓 확인**됐다(13.3 s와 601.3 s). 같은 바닥·벽을 3회 이상 다른 시점에서
+보는 것만으로 목적지 의미를 검증할 수 없었다. s1045가 full `place` 단계까지 진행한 사실은 B 바닥이
+자기 카메라에 들어왔거나 목적지 도착을 검증했다는 뜻이 아니다.
+
+### 구 카메라·구 구동 녹화 (지도 튜닝 자료로 재사용하지 않음)
+
+| 녹화·역할 | 표본 / B 가시 | TP / FP component | precision | recall | 투영 median / P95 (m) | own-odom 오차 (m) | 최초 참/거짓 확인 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| s911-r1·개발 | 48 / 0 | 0 / 2 | 0% | N/A | N/A | N/A | 없음 / 없음 |
+| s911-r2·개발 | 48 / 0 | 0 / 0 | N/A | N/A | N/A | N/A | 없음 / 없음 |
+| s912-r1·확인 | 39 / 0 | 0 / 2 | 0% | N/A | N/A | N/A | 없음 / 없음 |
+| s912-r2·확인 | 39 / 0 | 0 / 2 | 0% | N/A | N/A | N/A | 없음 / 없음 |
+| s913-r1·확인 | 39 / 0 | 0 / 2 | 0% | N/A | N/A | N/A | 없음 / 없음 |
+| s913-r2·확인 | 39 / 0 | 0 / 0 | N/A | N/A | N/A | N/A | 없음 / 없음 |
+
+빈 분모는 0/100%로 채우지 않았다. **precision 문턱은 평가 가능한 8건 모두 실패, 2건 N/A**.
+recall·투영 정확도는 전부 판정 불가이며 전체 성공으로 판정한 녹화는 없다. 거짓 확인 0 기준은 9건에서
+만족하고 s1045에서 실패했다. 양성 GT mask가 필요한 자료에 대해 현재 evaluator는 추측으로 TP/오차를
+만들지 않고 `unscored`를 낸다. 이 코호트에서는 그런 미판정 프레임도 0개다.
+
+### 비슷한 색 오검출
+
+accepted component 25개를 모두 RGB 윤곽으로 검수했고 작은 로봇 패치 2개는 원본 해상도에서 확대 확인했다.
+[`false_components.json`](false_components.json)의 분류는 component의 지배적인 보이는 표면이다.
+광선/정적 지도만으로 물체를 바닥으로 오분류하지 않도록 시각 검수와 정적 ray 분류를 별도로 저장했다.
+
+| 코호트 | 바닥 체크무늬/pickup 계열 | 벽/벽 경계 | 로봇 | 별도 cargo | 합계 |
+|---|---:|---:|---:|---:|---:|
+| camera v3 4건 | 10 (58.8%) | 7 (41.2%) | 0 | 0 | 17 |
+| legacy 6건 | 3 (37.5%) | 3 (37.5%) | 2 (25.0%) | 0 | 8 |
+
+일반 바닥과 pickup의 파란 tint를 RGB만으로 확실히 구분하지 못해 묶어 표기했다. A/C 별도 구역을
+검출했다고 단정하지 않는다. cargo 오검출 0은 이 표본의 accepted component 기준이지 물체 배제 성능
+인증이 아니다. 중립색 둘레 연결과 반복 관측은 같은 색 바닥·벽·로봇 세부를 제거하기에 불충분했다.
+
+![B가 아닌 바닥·벽·로봇의 accepted component](false-positives.jpg)
+
+![s1045 자기 DR 경로와 관측 patch 후보](own-goal-candidates.png)
+
+그림의 hull은 관측 범위를 보여 주는 외곽선이다. 메모리에는 그 내부 전체를 채우지 않고 관측 pixel이
+실제로 투영된 0.1 m cell만 쌓았다. RGB는 원본 녹화의 평가용 복사 그림이며 원본을 수정하지 않았다.
+
+## 6. 옵션·사용 경계·남은 검증
+
+| 옵션/API | 기본값 | on 또는 동작 |
+|---|---|---|
+| `goal_detection` | `off` | `floor_color_v1`: 자기 색 patch와 후보 누적 |
+| `self_map` | `off` | goal on은 `odom_grid_v1` 필요; 이 재생은 기존 M1 DR |
+| `goal_detection_options` | §3 `FloorGoalOptions` | HSV/ROI/광선·연결/격자·association 문턱 명시; 이번 확인 중 변경 0 |
+| `camera_profile` | 호출 시 명시 필수 | `legacy` / `camera_v3`; RGB 녹화 보정과 일치해야 함 |
+| `observe_goal_rgb` | goal off면 아무 동작 없음 | RGB·self ID·frame ID·시각·commanded servo만 받음 |
+| `goal_target(static_B)` | 기존 static_B 동일 객체 반환 | on에서는 자기 후보 또는 `unknown`, static fallback 없음 |
+| `snapshot()['self_goal']` | off면 키 없음 | own-odom 중심/관측 범위/신뢰도/관측 수·시각·상태 |
+
+메모리의 상태 흐름은 `unknown → visually_seen → locally_confirmed_region`이다. `heard_candidate`는
+설계의 향후 대화 입력 경계로 남겼으며 이번 모듈에는 peer 지도/관측 주입 API가 없다. `locally_confirmed_region`
+역시 **검출 규칙상 반복 확인**이지 GT 목적지 인증이나 도착 성공 판정이 아니다. 실시간 executor·LLM 요청·
+이동 제어에는 연결하지 않은 오프라인 구현이다. 지도의 기존 pose correction과 함께 생성할 수 있지만 이번
+증거는 보정 off뿐이며, 나중의 pose-graph 수정으로 과거 B patch를 재배치하는 기능은 포함하지 않는다.
+
+검출기와 `SelfWallMemory`에만 새 option/API를 추가했다. 기존 정적 목적지 경로는 바꾸지 않았다.
+단위 시험의 정상 투영·양의 깊이 통과는 실제 B 투영 정확도를 대신하지 않는다. **현재 조건에서는 배포/제어
+사용 준비가 되지 않았다.** 다음에 필요한 증거는 실제 B가 보이는 자기 RGB와 독립 camera pose, 유사색
+음성 라벨이다. 구 자료에 HSV 문턱을 더 맞추지 않았다. 자기 지도 #405는 별도로 동결 상태를 유지한다.
+
+### 출처·환경
+
+- 색 분할/연결 영역: [OpenCV `inRange` 표준 예제](https://docs.opencv.org/4.13.0/da/d97/tutorial_threshold_inRange.html).
+  표준 hue wrap과 S/V floor를 사용한다. 여기서 정한 수치 문턱은 문헌 보편값이 아니다.
+- 투영: [OpenCV 평면 투영](https://docs.opencv.org/4.13.0/d9/dab/tutorial_homography.html),
+  [fisheye 보정](https://docs.opencv.org/4.13.0/db/d58/group__calib3d__fisheye.html).
+  `harness/markerless_box.py:_pixel_ground_point`와 같은 보정 광선·전방 평면 교차 원리다.
+- FK: `harness/visual_arm.py:camera_extrinsics`, K/D: `sim/masterpi_camera_profile.py`.
+  camera v3의 고정 mount는 #401의 `sim/masterpi_camera_review_v3.py` 및 각 녹화 `bundle.json.camera_v3`와
+  일치한다. 사용자 관찰 목표/기존 K/D이며 독립적으로 검증된 실물 hand-eye 보정이라고 주장하지 않는다.
+- DR: #405 `CommandOdometry`, `experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json`,
+  SHA-256 `126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72`.
+  v7 재보정/지도 튜닝을 하지 않았으며 위치 오차 보정 성공을 이 작업으로 주장하지 않는다.
+- [환경](environment.json): 기존 venv 사용, 새 설치 0. 그림만 기존 `outputs/self-map-plot-deps`를 재사용.
+  시뮬레이션·렌더러·모델 호출 0, timing 비교/잠금 0. TensorBoard 변환은 이 대화의 생략 요청을 유지했다.
+  초기 접촉표 도구가 시스템 Python의 PIL 부재로 한 번 실패해 기존 venv로 실행했다. 의존성을 설치하지 않았다.
+
+## 7. 재현·산출물·시험
+
+```sh
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+$PY -m pytest tests/test_floor_goal.py tests/test_floor_goal_evaluation.py tests/test_self_wall_memory.py -q
+$PY experiments/2026-10-07-mapfree-goal-floor/code/replay.py --cases experiments/2026-10-07-mapfree-goal-floor/cases.json --split development --output outputs/NEW-floor-goal-replay
+$PY experiments/2026-10-07-mapfree-goal-floor/code/replay.py --cases experiments/2026-10-07-mapfree-goal-floor/cases.json --split confirmation --output outputs/NEW-floor-goal-replay
+$PY experiments/2026-10-07-mapfree-goal-floor/code/evaluate.py --predictions outputs/NEW-floor-goal-replay --manual-visibility experiments/2026-10-07-mapfree-goal-floor/manual_visibility.json --false-labels experiments/2026-10-07-mapfree-goal-floor/false_components.json
+```
+
+- 로컬 관련 **28 passed**: off bytes 골든, 어안/광선, 옵션/입력 경계, 누적 확인, 가시성 상한의 벽 가림 검사.
+  `scripts/run_ci_tests.py`에 새 2개 시험을 등록했다. 전체 로컬 suite/물리 시험은 실행하지 않았다.
+- [결과 원장](results.json), [입력 코호트](cases.json), [고정 코드·옵션](freeze.json),
+  [수동 가시성 라벨](manual_visibility.json), [오검출 라벨](false_components.json)을 커밋한다.
+- 상세 예측/mask/누적 snapshot·평가는 이 worktree의 `outputs/mapfree-goal-floor-v1/`에 있고,
+  [artifact hash 목록](artifacts.json)이 경로·크기·SHA-256을 연결한다. raw는 로컬 보관이며 원격 백업으로
+  표현하지 않는다. 각 `manifest.json`은 사용한 모든 RGB·명령·프레임 인덱스 해시를 보존한다.
+  평가가 예측 파일을 변경하지 않았고 10건 모두 source/options/prediction hash가 봉인과 일치함을 확인했다.
+- 기존 미추적 4개 파일의 해시 불변, #405의 HEAD `f3eeb6bf`·DRAFT 유지. 새 DRAFT PR은 #405 위에 쌓는다.
+  양쪽 PR 모두 병합하지 않는다.
