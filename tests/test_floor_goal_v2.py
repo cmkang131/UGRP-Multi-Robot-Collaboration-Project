@@ -8,8 +8,11 @@ import sys
 
 import cv2
 import numpy as np
+import pytest
 
 from harness.floor_goal import FloorGoalMemory
+from harness.floor_goal_v2 import FloorGoalMemoryV2, FloorGoalV2Options, detect_floor_v2
+from harness.self_wall_memory import SelfWallMemory
 
 ROOT = Path(__file__).resolve().parents[1]
 HERE = ROOT/'experiments/2026-10-07-mapfree-goal-floor/code'
@@ -63,3 +66,69 @@ def test_v1_before_v2_golden_bytes():
                         'diagnostics': diag, 'snapshot': m.snapshot()})
     assert (json.dumps(records, sort_keys=True)+'\n').encode() == (
         ROOT/'tests/fixtures/floor_goal/v1_before_v2.json').read_bytes()
+
+
+def test_renderer_refuses_occupied_lock_before_loading_scene(tmp_path, monkeypatch):
+    monkeypatch.setattr(render, 'sha', lambda path: CONFIG['scene_sha256'])
+    monkeypatch.setattr(render.agent_lock, 'status', lambda root: {'owner': 'other'})
+    with pytest.raises(RuntimeError, match='LOCK_NOT_NULL'):
+        render.render(HERE.parent/'v2-registration.json', tmp_path/'never-created')
+    assert not (tmp_path/'never-created').exists()
+
+
+def v2_options():
+    return dict(hue_low=110, hue_high=116, saturation_min=100, min_pixels=128, minimum_solidity=.6)
+
+
+def synthetic_patch(hue=112, saturation=150, hollow=False, tiny=False):
+    hsv = np.full((480, 640, 3), (0, 0, 130), np.uint8)
+    hsv[280:420, 240:390] = (hue, saturation, 180)
+    if hollow:
+        hsv[285:415, 245:385] = (0, 0, 130)
+    if tiny:
+        hsv[280:420, 240:390] = (0, 0, 130)
+        hsv[300:308, 300:310] = (hue, saturation, 180)
+    return cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB)
+
+
+def test_v2_hue_area_and_solidity_rejections():
+    def detect(rgb):
+        return detect_floor_v2(rgb, servo=CONFIG['arm_poses']['search'], profile='camera_v3',
+                               options=FloorGoalV2Options(**v2_options()))
+    assert len(detect(synthetic_patch())[0]) == 1
+    assert not detect(synthetic_patch(104, 78))[0]  # Observed wall HSV example.
+    assert not detect(synthetic_patch(tiny=True))[0]
+    patches, _, diag = detect(synthetic_patch(hollow=True))
+    assert not patches and diag['solidity'] == 1
+
+
+def test_v2_requires_calibrated_parameters_and_keeps_private_memory():
+    with pytest.raises(ValueError, match='FROZEN_DEV_OPTIONS'):
+        SelfWallMemory('r3', self_map='odom_grid_v1', goal_detection='floor_color_v2')
+    m = SelfWallMemory('r3', self_map='odom_grid_v1', goal_detection='floor_color_v2',
+                       goal_detection_options=v2_options())
+    assert isinstance(m.self_goal, FloorGoalMemoryV2)
+    assert m.goal_target({'B': [4.6, -2.1]})['state'] == 'unknown'
+    with pytest.raises(ValueError, match='PEER'):
+        m.observe_goal_rgb(synthetic_patch(), robot_id='r1', frame_id=1, t=3.,
+                            commanded_servo=CONFIG['arm_poses']['search'], camera_profile='camera_v3')
+
+
+def test_static_scoring_positive_negative_small_and_center_error():
+    from v2_evaluate import frame_score
+    from harness.floor_goal import commanded_camera, floor_intersections, optical_rays
+    mask = np.zeros((480, 640), bool)
+    mask[300:320, 300:320] = True
+    origin, axes = commanded_camera(CONFIG['arm_poses']['search'], 'camera_v3')
+    truth = {'camera_xyz': origin.tolist(), 'camera_rotation': axes.T.tolist(), 'base_pose': [0, 0, 0]}
+    projected, _ = floor_intersections(optical_rays(640, 480)[mask], origin, axes)
+    patch = {'component': 1, 'center_body_m': projected[:, :2].mean(axis=0).tolist()}
+    score = frame_score([patch], mask.astype(np.uint16), truth, mask)
+    assert score['tp'] == 1 and score['fp'] == score['fn'] == 0
+    assert score['errors_m'][0] < .01
+    patch['center_body_m'][0] += .2
+    assert frame_score([patch], mask.astype(np.uint16), truth, mask)['errors_m'][0] > .19
+    assert frame_score([patch], mask.astype(np.uint16), truth, np.zeros_like(mask))['fp'] == 1
+    assert frame_score([], np.zeros_like(mask), truth, mask)['fn'] == 1
+    mask[305:] = False
+    assert frame_score([], np.zeros_like(mask), truth, mask)['unscored'] == 1

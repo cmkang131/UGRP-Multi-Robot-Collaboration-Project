@@ -171,14 +171,18 @@ class SelfWallMemory(Memory):
         self.self_walls = []
         self._self_wall_keys = set()
         self._sim_time = None
-        if goal_detection not in ("off", "floor_color_v1"):
+        if goal_detection not in ("off", "floor_color_v1", "floor_color_v2"):
             raise ValueError("UNKNOWN_GOAL_DETECTION")
         self.self_goal = None
         if goal_detection != "off":
             if self.self_map is None:
                 raise ValueError("GOAL_DETECTION_NEEDS_SELF_MAP")
-            from harness.floor_goal import FloorGoalMemory
-            self.self_goal = FloorGoalMemory(robot_id, options=goal_detection_options)
+            if goal_detection == "floor_color_v2":
+                from harness.floor_goal_v2 import FloorGoalMemoryV2
+                self.self_goal = FloorGoalMemoryV2(robot_id, options=goal_detection_options)
+            else:
+                from harness.floor_goal import FloorGoalMemory
+                self.self_goal = FloorGoalMemory(robot_id, options=goal_detection_options)
 
     def observe(self, observation, sim_time):
         super().observe(observation, sim_time)

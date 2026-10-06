@@ -147,6 +147,8 @@ def detect_floor(rgb, *, servo, profile, options=None):
 
 class FloorGoalMemory:
     """Own observed colour patches. No peer merge or static-world goal fallback."""
+    detector = staticmethod(detect_floor)
+
     def __init__(self, robot_id, *, options=None):
         self.robot_id = robot_id
         self.options = FloorGoalOptions(**(options or {}))
@@ -167,7 +169,7 @@ class FloorGoalMemory:
             self.seen.add(frame_id)
             self.last_t = t
             return [], None, {'unsettled': 1}
-        patches, labels, diagnostics = detect_floor(rgb, servo=servo, profile=profile, options=self.options)
+        patches, labels, diagnostics = self.detector(rgb, servo=servo, profile=profile, options=self.options)
         self.seen.add(frame_id)
         self.last_t = t
         for patch in patches:
