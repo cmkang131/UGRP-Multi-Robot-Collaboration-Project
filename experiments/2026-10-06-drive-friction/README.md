@@ -282,3 +282,64 @@ MasterPi에서 검증된 MuJoCo 모델이 아니다. 확인한 공개 자료와 
   하지만 캡처 화면은 빈 페이지였고 HParams 선택 후에도 열 테이블이 열리지 않아 **화면/HParams 검증은 미완료**다.
   기존 타 작업 서버 PID 52016·설정·다른 작업 탭은 변경하지 않고 UI 재시도를 중단했다.
   [대시보드](http://127.0.0.1:6006/?runFilter=%5E1006-drive-friction#timeseries), 정확한 7개 고정 링크는 검증 JSON의 `url`에 있다.
+
+## 재개 16:40: 실물 입력 dead zone 조사와 v3 사전 계획
+
+사용자 관측: 실물 속도는 모르며 바퀴 입력 **30 이하에서는 움직이지 않음**.
+전체 fetch 후 로컬/원격 486 refs, 도달 가능한 2664 commits를 `git log --all -G`로 검색했다.
+초기 소스 `2df573259de679e651bc1085e34f7da6ea713716`부터 아래 기록이 있다.
+
+- `docs/decision_log.md` 2026-08-29: <=30 실제 정지 관측, 35/.10 s 회전 후 영상 변화 기록.
+  이는 이번 재측정이나 정량 속도/토크 자료가 아니다. 낮은 값의 과거 명령 완료는 실제 이동 증거가 아니라고 명시한다.
+- `scripts/masterpi_control.py`: -100..100 바퀴 명령, 모터 1/3 부호 반전 후 I2C 0x7A의 31..34 register에 signed byte로 전달.
+  현재 안전 CLI는 비영점 35 미만을 거부하고 전후/회전 40, 옆 70 상한이다. 이 경로를 바꾸거나 실물을 구동하지 않는다.
+- `scripts/robot_actions.py`: 30 이하에서 움직이지 않아 기본 35라는 설명. `calibration/masterpi/chassis_trials.jsonl`의
+  108행은 모두 dx/dy 측정 null이며 실제 속도 데이터가 아니다. 해당 두 핵심 제어/보정 파일의 모든 브랜치 이력은 초기 import뿐이다.
+- [PR #385](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/385) `88c5803c` 확인:
+  Pi4 legacy I2C 제어 파일과 팔 dry-run·카메라/전압 진단이며 바퀴 속도/토크 측정 없음. raw는 Windows 로컬 경로라 Mac에서 회수하지 않았다.
+- `/Users/changmin/projects`의 다른 프로젝트/옛 worktree/이관 backup을 읽기 검색했다. 독립 실물 SDK/유효 속도 로그를 찾지 못했다.
+  가상환경·node_modules·가중치·Git object 바이너리는 일반 파일 검색에서 제외했고, Git 이력은 별도로 검색했다.
+  최초 import 이전 실물 SDK 원본 및 보드 firmware의 PWM→전압 변환은 **미확인**이다.
+
+### 공식 SDK의 단위와 역산 한계
+
+[공식 MasterPi SDK SHA 11b0cb04](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/mecanum.py)의
+`set_velocity` 주석은 mm/s지만, 운동학 합성 후 정수값을 `set_motor_duty`에 그대로 전달한다.
+[해당 전송 코드](https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/ros_robot_controller_sdk.py)는
+motor duty를 float로 패킷에 싣고 속도 피드백이나 mm/s 보정을 하지 않는다. 이 최신 Pi5 UART SDK는 우리 Pi4 I2C와 버전이 다르다.
+따라서 확인된 실물 ‘30’은 **±100 눈금의 바퀴 출력 명령**이고, 30 mm/s 실측값이 아니다.
+이를 30% PWM/전압으로 선형 해석하는 것은 유력한 모델 가정이며 firmware duty/전압 실측으로 확정한 것은 아니다.
+
+표준 모델은 [MuJoCo 공식 DC motor 문서 §1.1–1.2](https://mujoco.readthedocs.io/en/latest/_static/dcmotor.pdf)의
+준정적 전압→토크 식과 dry-friction joint constraint를 따른다.
+`tau = tau_full*(u - omega/omega0)`, `|tau_loss| <= tau_c` (정지), 회전 시 반대 방향 dry loss.
+이상적인 접지 마찰은 바퀴가 미끄러지지 않도록 하는 힘이며, 구름 출발 저항을 `mu*m*g`로 단정할 수 없다.
+바닥 sliding_mu를 올리는 대신 **모터/기어/롤러 저항의 등가값을 바퀴 joint frictionloss**로 둔다.
+이는 원인이 모터축 마찰이라고 식별한 것이 아니고 하중 의존성·정지/동마찰 차이는 아직 구분할 수 없다.
+
+30에서 정지, 역사 기록의 35에서 움직임을 같은 조건으로 근사하면 `0.30 <= tau_c/tau_full < 0.35`.
+단일 관측으로 `tau_c`, `tau_full`, 바닥 mu를 각각 역산하는 것은 **식별 불가능**하다.
+v3은 이 구간의 **하한 .30**을 명시적 후보로 고정한다(결과에 맞춰 고른 값 아님).
+v2의 미확인 토크 scale .1176798 Nm를 유지할 때 등가 joint loss는 **.03530394 Nm/바퀴**,
+4바퀴 직진의 등가 구동력 하한은 `4*tau_c/.0325 = 4.3451 N`이다. 실제 저항의 확정 측정값이 아니다.
+FUJI mesh·관성·.8 접촉 마찰·롤러 수·베어링·카메라·팔·모터 기울기는 v2 그대로다. 소프트웨어 명령 30 clamp는 넣지 않는다.
+
+[일반 TT 공식 자료](https://www.hiwonder.com/products/high-quality-tt-motor)는 150 rpm/1:42,
+[encoder TT](https://www.hiwonder.com/products/tt-motor-plastic)는 무부하 150 rpm/토크 1.2 kgf cm를 표기한다.
+장착품 동일성·정지 토크 표기는 **미확인**이므로 후자를 stall torque 확정값으로 사용하지 않는다.
+65 mm에서 원주 속도 `pi*.065*150/60 = .51051 m/s`는 조건부 무부하 상한 계산이다.
+v2 입력20의 .093 m/s는 선형 .2*.51051=.10210보다 낮아 모델 내부로는 설명되지만,
+실물은 입력20에서 정지한다는 관측과 충돌하므로 ‘실물에 맞는 속도’가 아니다.
+v3의 동일 Coulomb 저항이 주행에도 유지된다는 가정에서는 최대 `.7*.51051=.35736 m/s`; 실물 최대속도 예측으로 확정하지 않는다.
+
+### 유한 검증 순서 (물리 실행 전 고정)
+
+1. v2, v3 각각 무하중/cyan에서 20/30/35/50/100 직진 계단을 **매번 새 초기 상태**로 1.5 s + 정지 1 s 실행.
+   known v2 dead-zone 불일치는 비교 기준이며 수정 후보 실패 횟수에 합치지 않는다.
+2. v3의 입력20/30은 명령 중 전체 COM XY 이동 <=1 mm를 정지 진단 기준으로 사용한다(눈금 관측의 수치 근사, 실물 정밀도 아님).
+   35/50/100은 실제 이동 크기를 그대로 기록. MuJoCo soft friction의 미세 creep와 수치 경고/낙하를 구분한다.
+3. v3에서 관측 재현이 되면 입력50으로 옆/회전을 무하중/cyan에 각각 확인한다.
+   입력20이 멈췄다고 옆 회전이 해결됐다고 하지 않는다. 옆 이동 회전 기준은 이전 1°를 유지한다.
+4. 같은 후보 문제가 두 조건에서 반복되면 중단. 옆 이동이 기준을 만족하면 짝 빔을 통한 정지 로봇 밀림 비교로 진행.
+   파지 weld/정답 제어/모델 호출 없이 초기 상태 배치 진단만 허용한다. 원인을 분리하지 못하면 증상 재발로 보고한다.
+5. 새 profile `masterpi_drive_friction_v3`, 진단 workflow **3.0.0**. 기본값/과거 번들/실물 드라이버 변경 없음.

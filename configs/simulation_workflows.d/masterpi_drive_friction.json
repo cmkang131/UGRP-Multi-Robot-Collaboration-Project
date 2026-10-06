@@ -1,17 +1,22 @@
 {
   "schema": "ugrp.local_workflow_catalog.v1",
-  "workflows": [{
-    "id": "masterpi-drive-friction-probe",
-    "version": "2.0.0",
-    "purpose": "Opt-in public FUJI barrel-roller port vs capsule v1 and legacy body wrench; uncalibrated DEV only",
-    "entry": "scripts/probe_masterpi_drive_friction.py",
-    "runner": "scripts.probe_masterpi_drive_friction",
-    "docs": "experiments/2026-10-06-drive-friction/README.md",
-    "requires": "clean committed expected SHA; exclusive codex lock acquired by driver only when null; no model calls; no rendering; no legacy bundle admission",
-    "output_flag": "--output",
-    "output_kind": "directory",
-    "required_inputs": ["--expected-source-sha", "--drive-profile"],
-    "side_effect": "local_simulation",
-    "adapter": "managed_legacy_cli"
-  }]
+  "workflows": [
+    {
+      "id": "masterpi-drive-friction-probe",
+      "version": "3.0.0",
+      "purpose": "Observed legacy wheel-input threshold with native dry joint friction, compared to frozen FUJI v2",
+      "entry": "scripts/probe_masterpi_drive_friction.py",
+      "runner": "scripts.probe_masterpi_drive_friction",
+      "docs": "experiments/2026-10-06-drive-friction/README.md",
+      "requires": "clean committed expected SHA; exclusive codex lock acquired by driver only when null; no model calls; no rendering; no legacy bundle admission",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--drive-profile"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
 }

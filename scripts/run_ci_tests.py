@@ -367,6 +367,7 @@ TEST_PATTERNS = (
     "tests/test_masterpi_model_v3.py",
     "tests/test_masterpi_drive_friction.py",
     "tests/test_masterpi_drive_friction_v2.py",
+    "tests/test_masterpi_drive_friction_v3.py",
     "tests/test_zone_masterpi_v3_scene.py",
     "tests/test_zone_model_conventions.py",
     "tests/test_visual_arm_v3.py",

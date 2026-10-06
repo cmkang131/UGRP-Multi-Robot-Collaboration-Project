@@ -14,6 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
 PROFILE = 'masterpi_drive_friction_v1'
 PUBLIC_PROFILE = 'masterpi_drive_friction_v2'
+THRESHOLD_PROFILE = 'masterpi_drive_friction_v3'
+CONTACT_PROFILES = (PROFILE, PUBLIC_PROFILE, THRESHOLD_PROFILE)
 CASES = ('rest', 'forward', 'left', 'turn', 'push', 'no_contact', 'rated_speed')
 
 
@@ -21,12 +23,14 @@ def write(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False)+'\n')
 
 
-def run_case(profile, case, loaded, output):
+def run_case(profile, case, loaded, output, wheel_input=None):
     import mujoco
     import numpy as np
     from sim.masterpi_drive_friction import build_world
     if profile == PUBLIC_PROFILE:
         from sim.masterpi_drive_friction_v2 import build_world
+    elif profile == THRESHOLD_PROFILE:
+        from sim.masterpi_drive_friction_v3 import build_world
     from sim.zone_final_v3_scene import FinalV3Scene, build_world as legacy_world
     from harness.zone_pair_highpose import HIGH
     from sim.masterpi_dynamics_v2 import FORWARD_PATTERN, LEFT_PATTERN, YAW_LEFT_PATTERN
@@ -44,7 +48,7 @@ def run_case(profile, case, loaded, output):
               'qualification': 'staged DEV physics diagnostic, not student/hardware success',
               'model_calls': 0, 'physical_success': None, 'loadavg_start': os.getloadavg()}
     try:
-        world = (build_world(scene, drive_profile=profile, **kwargs) if profile in (PROFILE, PUBLIC_PROFILE) else
+        world = (build_world(scene, drive_profile=profile, **kwargs) if profile in CONTACT_PROFILES else
                  legacy_world(scene, 'cargo_noslip_v1', initial_sim_cap_s=30., **kwargs))
         scene.setup(world)
         c = world.robot('r1'); m, d = world.model, world.data
@@ -85,6 +89,11 @@ def run_case(profile, case, loaded, output):
         patterns = {'forward': FORWARD_PATTERN, 'left': LEFT_PATTERN, 'turn': YAW_LEFT_PATTERN,
                     'no_contact': FORWARD_PATTERN, 'rated_speed': FORWARD_PATTERN}
         cmd = patterns.get(case, np.zeros(4)) * (1. if case == 'rated_speed' else .2)
+        if wheel_input is not None:
+            from sim.masterpi_drive_friction_v3 import wheel_input_normalized
+            cmd = patterns.get(case, np.zeros(4)) * wheel_input_normalized(wheel_input)
+        result['wheel_input'] = wheel_input if wheel_input is not None else (100 if case == 'rated_speed' else 20)
+        result['normalized_wheel_command'] = cmd.tolist()
         drive_s = 1.5
         rows = []; own_contact_pairs = {}; wall0 = time.perf_counter()
         force6 = np.zeros(6)
@@ -95,7 +104,7 @@ def run_case(profile, case, loaded, output):
                 # One-newton lateral force is a declared diagnostic excitation,
                 # not an inferred beam force or MasterPi load specification.
                 d.xfrc_applied[c.robot_bid, 1] = 1. if t < drive_s else 0.
-                if profile not in (PROFILE, PUBLIC_PROFILE):
+                if profile not in CONTACT_PROFILES:
                     # Legacy stepping overwrites external xfrc; qfrc provides
                     # the identical declared world-y perturbation in both cases.
                     d.qfrc_applied[c.base_dadr+1] = 1. if t < drive_s else 0.
@@ -126,6 +135,7 @@ def run_case(profile, case, loaded, output):
                     'contact_slip_mps': float(np.mean(slips)) if slips else 0.,
                     'wheel_speed': [float(d.qvel[m.jnt_dofadr[m.joint(f'r1__wheel_{w}_joint').id]])
                                     for w in ('fl','fr','rl','rr')],
+                    'wheel_actuator_torque_nm': d.actuator_force[c.wheel_act].tolist(),
                     'wheel_normal_n': normal, 'wheel_tangent_n': tangential, 'wheel_contacts': wheel_contacts,
                     'own_wheel_contact_force_n': own_force,
                     'base_external_force': d.xfrc_applied[c.robot_bid].tolist(),
@@ -142,6 +152,8 @@ def run_case(profile, case, loaded, output):
             commands=2, displacement_m=(c.base_xyz()-start_xyz).tolist(), yaw_change_rad=c.base_rpy()[2]-start_yaw,
             steady_velocity=np.mean([r['velocity'] for r in tail], axis=0).tolist() if tail else None,
             com_displacement_m=(d.subtree_com[c.robot_bid]-start_com).tolist(),
+            peak_command_com_xy_m=max(float(np.linalg.norm(np.array(r['com_xyz'])[:2]-start_com[:2]))
+                                      for r in rows if r['t'] <= drive_s+.001),
             steady_contact_slip_mps=float(np.mean([r['contact_slip_mps'] for r in tail])) if tail else None,
             steady_wheel_rad_s=np.mean([r['wheel_speed'] for r in tail], axis=0).tolist() if tail else None,
             wheel_contact_samples=sum(r['wheel_contacts'] > 0 for r in rows),
@@ -170,7 +182,9 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--expected-source-sha', required=True)
-    p.add_argument('--drive-profile', choices=(PROFILE, PUBLIC_PROFILE, 'legacy_wrench'), required=True)
+    p.add_argument('--drive-profile', choices=(*CONTACT_PROFILES, 'legacy_wrench'), required=True)
+    p.add_argument('--wheel-inputs', nargs='+', type=int, choices=range(0,101),
+                   help='legacy signed Board magnitude in 0..100; separate reset for each input')
     p.add_argument('--cases', nargs='+', choices=CASES, default=list(CASES))
     p.add_argument('--loaded', action='store_true')
     args = p.parse_args()
@@ -193,10 +207,14 @@ def main():
     try:
         results = []
         for case in args.cases:
-            result = run_case(args.drive_profile, case, args.loaded, args.output/case)
-            results.append(result)
-            print(json.dumps({k: result.get(k) for k in ('case','status','steady_velocity','wall_per_sim')}, ensure_ascii=False), flush=True)
-            if result['status'] != 'MEASURED_DEV':
+            for level in args.wheel_inputs or [None]:
+                name = case if level is None else f'{case}-u{level:03}'
+                result = run_case(args.drive_profile, case, args.loaded, args.output/name, level)
+                results.append(result)
+                print(json.dumps({k: result.get(k) for k in ('case','wheel_input','status','steady_velocity','wall_per_sim')}, ensure_ascii=False), flush=True)
+                if result['status'] != 'MEASURED_DEV':
+                    break
+            if results[-1]['status'] != 'MEASURED_DEV':
                 break
         write(args.output/'results.json', results)
     finally:
