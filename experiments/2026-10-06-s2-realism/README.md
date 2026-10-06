@@ -1138,3 +1138,38 @@ S2 보존 버전 15개의 계획 입력을 추가했고, corner float 두 필드
 변경된 3시험 파일 **40 passed**, 의도적 MuJoCo 부재 fixture **1 skipped**, CI YAML 구문·배치 검증 통과.
 실제 시뮬레이션 0, 실행 source closure **362파일은 그대로**다. 원격 재실행 결과는 아직 미확인으로 남긴다.
 [CI 원인과 로컬 검증](v123-ci-diagnosis.json).
+
+### v3 외부 보정 재측정 계획 (2026-10-07, 실행 전 고정)
+
+기존 값은 엄밀히는 pre-v3 값 그대로가 아니라 v3 장착 변환을 합성한 값이다. 다만 팔/차체
+변형은 과거 짝 하중 보정에서 상속했다. 새 보정은 gate 완화 없이 **알려진 표적의 RGB 코너**로
+다시 구한다. 기존 카메라 장착·K/D·FOV·gate는 그대로 두며 구 데이터와 새 결과를 합산하지 않는다.
+
+- 표준 절차: [Zhang, A Flexible New Technique for Camera Calibration, PAMI 2000 / 원저자 기술보고서](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr98-71.pdf),
+  [OpenCV calibration/corner API](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html),
+  [OpenCV solvePnP](https://docs.opencv.org/4.x/d5/d1f/calib3d_solvePnP.html).
+  이 작업은 **내부 파라미터 재추정이 아니라 고정 K/D에서 외부 파라미터 추정**이다.
+  8×5 내부 코너, 알려진 칸 크기/표적 배치, `findChessboardCornersSB`, fisheye undistortPoints,
+  solvePnP ITERATIVE + refineLM. 자세당 표적 2배치로 fit, 별도 1배치로 검증한다.
+  fit/holdout RMS 각각 1 px 이하, 모든 점이 카메라 앞에 있어야 보정으로 채택한다.
+- 실물 재현: 차체를 수평 기준 지그에 고정하고 차체 기준점/바닥 높이(이번 SIM은 32.5 mm)와
+  표적 코너를 실측한다. 동일 PWM·그리퍼 하중에서 8초 정지 후 촬영한다. 표적은 위쪽 라벨을
+  위로 두고 ±12° 이내로 기울인다. 실물에서는 해당 기기의 K/D를 먼저 따로 검증해야 한다.
+  이번 산출물은 **SIM 고정 지그 보정**이며 실물 보정 완료 주장이 아니다. 자유 차체의
+  하중/바닥 기울기·동적 흔들림은 고정 보정으로 없앨 수 없으므로 과거 실행에 별도 평가한다.
+- 표적 배치에는 이전 보정/명령 FK로 대략적인 시야를 사용하지만 PnP 초기값·정답으로 쓰지 않는다.
+  PNG 코너와 알려진 표적 좌표 외에는 fit에 입력하지 않는다. 카메라 실제 좌표·접촉은 별도
+  `eval_only.json`에 쓰고 보정표를 동결한 뒤 평가한다. cargo weld OFF, 카메라 수정 없음.
+- `s2-camera-extrinsic-capture-v1`은 표준 Scene/CLI 관리 경로의 유한 보정 촬영이다.
+  무하중 21자세(검색 pan, 정렬 3자세, hover, 하강, VIA110/130, HIGH)·하중 5자세
+  (바닥 닫힘, hover, VIA110/130, HIGH) = 26자세/78장. loaded 중간 하강은 정지 없이 통과하므로
+  별도 loaded 관측 자세가 아니다. 선행 임무 seed1047은 장면 구성 참조일 뿐 재실행하지 않는다.
+  지그 생성은 calibration setup seed0이며 증거/확증 seed가 아니다. 360 SIM s 상한, agent_lock,
+  ugrp_session, 한 번에 하나, freeze ON은 S2 단독 DEV 보정에만 쓴다. 차체 고정 지그는
+  임무 실행에는 절대 적용하지 않고 운반 성공으로 계산하지 않는다.
+- 다음 번들은 **zone-s2-realism-v124 / workflow 7.17.0**으로 예약했다.
+  main+열린 PR 15개에서 최대 v123, 새 seed1048 미사용을 확인했다
+  ([예약](reservation-scan-v124.json)). full DEV seed1048의 최종 실행 등록/보정 해시는
+  촬영·오프라인 검증 뒤 별도 커밋으로 고정한다. 현재는 보정 촬영만 준비했다.
+촬영 전 변경 모듈 2개 시험: **22 passed**. 합성 fisheye 코너의 PnP 복원·미검출/holdout 불합격
+거절·26자세 범위·비접촉 표적·CLI 계획의 비실행을 확인했다. 지그 실제 렌더/파지는 아직 미검증이다.

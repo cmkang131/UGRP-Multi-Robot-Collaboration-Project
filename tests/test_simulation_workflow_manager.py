@@ -279,6 +279,7 @@ raise SystemExit(3 if a.fail else 0)
             'zone-s2-realism-v121',
             'zone-s2-realism-v122',
             'zone-s2-realism-v123',
+            's2-camera-extrinsic-capture-v1',
             'zone-s2-real-output-diag-v111',
             'zone-s2-real-output-diag-v112',
         )})
