@@ -6,6 +6,7 @@ PR405's coefficients are copied verbatim with provenance, never refitted here.
 import argparse
 import base64
 import copy
+import fcntl
 import hashlib
 import importlib.util
 import json
@@ -148,4 +149,17 @@ def replay(seed, variant, output):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--seed',type=int,required=True,choices=RUNS)
     p.add_argument('--variant',required=True,choices=CRITERIA['variants']);p.add_argument('--output',type=Path,required=True)
-    a=p.parse_args();replay(a.seed,a.variant,a.output)
+    a=p.parse_args()
+    a.output.mkdir(parents=True,exist_ok=True)
+    # Independent offline seeds can run concurrently; duplicate requests share
+    # an advisory writer lock and preserve the completed artifact verbatim.
+    with (a.output/f's{a.seed}-{a.variant}.writer-lock').open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        dest=a.output/f's{a.seed}-{a.variant}.json'
+        if dest.exists():
+            saved=json.loads(dest.read_text())
+            assert saved['seed']==a.seed and saved['variant']==a.variant
+            assert saved['criteria_sha256']==digest(HERE/'unloaded-sag-criteria.json')
+            if a.variant=='legacy':assert saved['baseline_mismatches']==0
+            print('preserved completed replay',dest.name,flush=True)
+        else:replay(a.seed,a.variant,a.output)
