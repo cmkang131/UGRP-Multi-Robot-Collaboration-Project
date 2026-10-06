@@ -75,16 +75,30 @@ def test_formal_wrong_passage_and_reserved_seed_are_refused():
 
 def test_graduation_seed_admission_preserves_dev_only_boundary():
     params = dict(robot_id='r3', pickup_slot='P2-1', destination='B', passage_id='door_1')
-    for seed in range(915, 929):
+    for seed in (*range(915, 929), *range(1015, 1029)):
         args = runner.parser().parse_args(['--expected-source-sha', 'a'*40, '--output', '/tmp/unused',
                                           '--seed', str(seed)])
         assert args.seed == seed
         assert c.validate(**params, seed=seed)['map_id'] == c.MAP_ID
-    for seed in (910, 929, 941):
+    for seed in (910, 929, 941, 1014, 1029):
         with pytest.raises(ValueError):
             c.validate(**params, seed=seed)
     with pytest.raises(ValueError, match='SOLO_CYAN_DEV_ONLY'):
         c.validate(**params, seed=915, admission='measured-sim')
+
+
+def test_door_probe_does_not_end_before_regrasp_after_fresh_relook():
+    # s921: fresh relook advances route_i to 2 while cyan is still on the floor.
+    state = SimpleNamespace(route_i=2, state='search', regrasp=True, beam_grasp_confirmed=False)
+    assert runner.stage_reached(state, 'door') is False
+    state.state = 'lift'
+    state.beam_grasp_confirmed = True
+    assert runner.stage_reached(state, 'door') is False
+    state.state = 'carry'
+    state.regrasp = False
+    assert runner.stage_reached(state, 'door') is True
+    state.beam_grasp_confirmed = False
+    assert runner.stage_reached(state, 'door') is False
 
 
 def row(t, xyz):

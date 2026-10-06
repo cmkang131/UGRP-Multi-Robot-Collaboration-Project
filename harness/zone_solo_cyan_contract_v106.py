@@ -16,7 +16,7 @@ CALIBRATION = 'experiments/2026-10-05-loaded-rest-calibration-v104/products_nois
 CALIBRATION_SHA = 'a75fc9325f8a8b89a158c2be0872cebfd4d11c8d2a7482c720eb9e1f99c41501'
 # Fixed pre-run S2 graduation list; controller, physics and calibration unchanged.
 # 911--914 remain historical DEV admissions, not new graduation samples.
-DEV_SEEDS = tuple(range(911, 929))
+DEV_SEEDS = (*range(911, 929), *range(1015, 1029))
 
 
 def validate(*, robot_id, pickup_slot, destination, passage_id, seed, admission='dev-pilot'):

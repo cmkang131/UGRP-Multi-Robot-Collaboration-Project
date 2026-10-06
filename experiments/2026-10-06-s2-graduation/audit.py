@@ -76,6 +76,8 @@ def audit(path):
     return dict(source=str(path), source_sha=bundle['source_sha'], task=bundle['task'], stage=stage,
         passed=bool(passed), failure_class=failure, result=result, independent=judged,
         false_positive=bool(mismatch and reported), false_negative=bool(mismatch and not reported),
+        stage_false_positive=bool(result.get('stage_reached') and not physical_stage),
+        stage_false_negative=bool(not result.get('stage_reached') and physical_stage),
         judge_disagreement=mismatch, artifact_files_checked=len(manifest), artifact_mismatches=bad,
         managed={k:managed[k] for k in ('exit_code','status','runtime_s','source_changed_during_run','finalization_errors')},
         would_stop=student['dev_light_would_stop'],
