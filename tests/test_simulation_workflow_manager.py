@@ -260,6 +260,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-pair-llm-v100": ["--condition", "no_comm", "--expected-source-sha", "0" * 40],
             "zone-final-environment-gaincal-v101": ["--check", "calibration-gain-v101", "--run-id", "fitA1", "--seed", "1101", "--expected-source-sha", "0" * 40],
             "zone-final-pair-loaded-gaincal-v102": ["--check", "calibration-loaded", "--run-id", "latA", "--seed", "1201", "--expected-source-sha", "0" * 40],
+            "zone-solo-cyan-v106": ["--expected-source-sha", "0" * 40],
         }
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
