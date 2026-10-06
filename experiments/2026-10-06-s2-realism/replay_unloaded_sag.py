@@ -160,6 +160,10 @@ if __name__=='__main__':
             saved=json.loads(dest.read_text())
             assert saved['seed']==a.seed and saved['variant']==a.variant
             assert saved['criteria_sha256']==digest(HERE/'unloaded-sag-criteria.json')
+            for path,sha in saved['source_hashes'].items():
+                assert digest(Path(saved['source_raw'])/path)==sha
+            if a.variant!='legacy':
+                assert saved['approximation']==approximation(a.variant)
             if a.variant=='legacy':assert saved['baseline_mismatches']==0
             print('preserved completed replay',dest.name,flush=True)
         else:replay(a.seed,a.variant,a.output)
