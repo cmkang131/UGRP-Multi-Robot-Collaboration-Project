@@ -1,6 +1,8 @@
 # MasterPi 구동 검토와 접촉 구동 후보 (2026-10-06)
 
-**DEV 구조 후보, 실물 보정 전.** 기본값·기존 번들·v102/v106·카메라·팔/물체 접촉은 변경하지 않는다.
+**NOT_READY — DEV 구조 후보, 실물 보정 전.** 접촉 추진은 확인했지만 옆 이동 때 회전 편향이
+무하중·cyan 하중에서 반복돼 두 번 막히면 중단하라는 요청에 따라 추가 물리 실행을 중단했다.
+기본값·기존 번들·v102/v106·카메라·팔/물체 접촉은 변경하지 않는다.
 별도 `masterpi_drive_friction_v1`과 `masterpi-drive-friction-probe` 1.0.0을 명시적으로 선택한다.
 새 RGB 번들 번호는 예약하지 않았다. draft PR만 만들며 병합하지 않는다.
 
@@ -75,7 +77,7 @@ python3 scripts/ugrp_session.py run drive-friction-CASE -- \
   --output /Users/changmin/projects/ugrp/outputs/drive-friction-NEW-ID
 ```
 
-실행/결과/실패·wall/SIM·TensorBoard 기록은 아래에 추가한다. 아직 실물·짝 빔·v106 완주 검증은 없다.
+실행/결과/실패·wall/SIM·TensorBoard 기록은 아래에 있다. 실물·짝 빔·v106 완주 검증은 없다.
 
 ## 다시 해야 하는 검증
 
@@ -115,3 +117,65 @@ python3 scripts/ugrp_session.py run drive-friction-CASE -- \
   [WPILib 표준 mecanum 좌표계/운동학](https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/mecanum-drive-kinematics.html).
 - 접촉 제거 시 차체 기준점은 내부 모터 반작용으로 움직일 수 있어 **로봇 전체 질량중심** 변위를 함께 기록한다.
   기준점 변위만을 공중 추진으로 오해하지 않는다. 접촉점 상대 속도와 힘도 기록한다.
+
+## 최종 후보의 측정과 판정
+
+실행 SHA **`f323a7b7cfda36ec15fc0b0e6faf2a2911e550d5`**, MuJoCo **3.12.0**,
+기존 Mac 환경. 무하중 7조건·기존 구동 6조건·cyan 30 g 하중 5조건 = **18개 짧은 진단**이다.
+조건별 한 번이며 통계적 코호트나 실물 성능 측정이 아니다. 속도는 명령 시작 뒤 1.0–1.5 s 평균,
+변위/회전은 1.5 s 명령과 1.0 s 정지 전체다. `steady`라는 필드명은 정상상태 수렴을 보장하지 않는다.
+같은 .2 정규화 명령이지만 actuator 환산이 다르므로 같은 속도에서의 성능 비교나 개선율로 해석하지 않는다.
+
+| 확인 | 기존 차체 힘 구동 | 새 접촉 구동 | 판정 범위 |
+|---|---:|---:|---|
+| 무하중 직진 속도 | .23474 m/s | .08084 m/s | 다른 명령→속도 곡선, 재보정 필요 |
+| 무하중 직진 접촉점 미끄럼 | .20247 m/s | .000581 m/s | 해당 명령의 접촉점 상대 접선 속도 |
+| 접촉·중력 제거 시 질량중심 이동 | +x .254945 m | 전체 약 2.76e-8 m | 새 프로필은 내부 바퀴 토크만으로 추진하지 않음 |
+| 정지 명령 + 옆 1 N 외력 | y .082269 m | y .00000229 m | 고정 외력 진단; 실제 빔 또는 실물 정지력 측정 아님 |
+| 무하중 옆 명령 | .17449 m/s, 총 -2.05° | .03407 m/s, 총 **-20.50°** | 새 프로필의 원치 않는 회전, **실패** |
+| 무하중 회전 명령 | .28775 rad/s | .29307 rad/s, y 속도 -.03476 m/s | 새 프로필의 원치 않는 병진, **미해결** |
+| cyan 직진 | 미실행 | .06836 m/s | 물체가 미리 잡힌 진단 상태 |
+| cyan 옆 명령 | 미실행 | .03055 m/s, 총 **-20.49°** | 같은 문제 재발, 추가 물리 중단 |
+| 최대 명령 직진 | 미실행 | .45856 m/s | 유사 TT 150 rpm 기준 원주 속도 .51051 m/s; 장착품/최대속도 일치 미확인 |
+| 직진 wall/SIM | .4764 | .7595 (cyan .8583) | 계측 포함, 렌더 제외; 반복 속도 벤치마크 아님 |
+
+정상 구동 때 새 프로필의 차체 외력 기록은 0이며, 접촉 제거 때 바퀴 접촉 수는 0이다.
+무하중 정지의 평균 x/y 속도는 각각 1.77e-6/-0.91e-6 m/s였다.
+18개에서 MuJoCo 경고·낙하는 없었으나 이는 구동 적합성 통과가 아니다.
+cyan 최저 높이는 약 .141 m로 초기 .143 m 부근을 유지했다. 집기/운반 성공으로 세지 않는다.
+
+옆 이동 때 앞 두 바퀴가 약 .02 rad/s로 거의 멎고 뒤 두 바퀴가 약 ±2.2 rad/s로 움직인다.
+이는 회전 편향과 함께 관찰됐지만 **근본 원인은 분리 검증하지 못했다**.
+기존 장식 capsule은 실제 배럴형 롤러의 바깥 윤곽을 정확히 만들지 않으며, 모터/바닥도 미보정이다.
+이 때문에 1 N을 잘 버틴 결과에도 접촉이 걸리는 효과가 섞였을 수 있다. 실물에 가까워졌다는 판정은 보류한다.
+임의로 마찰·토크를 올리거나 테스트 기대값을 맞추지 않았다. 짝 빔·loaded legacy·v106·추가 렌더는 중단 후 실행하지 않았다.
+
+## 원본, 재현, 검증 기록
+
+- 최신 원본: `/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-{empty,legacy,cyan}/`.
+  각 조건에 result/trace/실제 XML, 실행 루트에 SHA·명령·잠금 기록이 있다.
+  해당 `-record/`에는 표준 관리 실행의 환경/소스 기록이 있다. 모든 잠금은 자기 PID로 해제했다.
+- 과거 잘못된 형상 7개와 HOST_ERROR 1개도 보존했다. 총 26개 결과 행 중 25개는 유한 측정 완료,
+  1개는 기록 코드 오류이며 **성공률의 분모로 합산하지 않는다**.
+- 별도 시작 전 거부: 파일 직접 실행의 import 경로 오류(이후 `python -m scripts.sim_cli` 사용),
+  타 작업 잠금 1회, 잘못 옮겨 적은 전체 SHA 1회. 이들은 물리 결과 수에 넣지 않는다.
+  초기 잠금 거부의 관리 기록만 worktree `outputs/simulation-runs/`에 생겼고,
+  기본 `outputs/drive-friction-audit-20261006/early-lock-rejection-record/`에 복사·해시 확인했다. 원본은 보존했다.
+- [압축 요약](results.json), [원본 85파일 SHA-256](artifacts.sha256.json),
+  [관리 기록 14파일 SHA-256](managed-records.sha256.json), [TensorBoard 검증](tensorboard-verification.json).
+  raw/영상의 원격 백업은 하지 않았다. 모델 호출·학습·모델 산출물은 없다.
+- 변경 모듈 시험: `.venv-sim-worker-mac/bin/python -m pytest -q tests/test_masterpi_drive_friction.py`
+  **6 passed** (XML 계약·질량 합계·카메라 유지·축 부호·입력 거부). 실제 주행 적합성과 구분한다.
+  전체 시험은 로컬에서 돌리지 않았으며 GitHub CI 결과는 PR에 별도로 표시된다.
+- [summarize.py](summarize.py)는 완성된 JSON을 읽기만 해 기존 공식 exporter로 새 snapshot을 만든다.
+  26개 run / 424개 scalar를 원본→event→실행 중인 TensorBoard API까지 대조했고 원본 85개 해시가 일치했다.
+  snapshot은 `/Users/changmin/projects/ugrp/outputs/tensorboard/1006-drive-friction`이다.
+  기본 `outputs/tensorboard-view.json`의 `masterpi_drive_friction_20261006` 키에 고정 링크와 열 설정을 추가했다.
+- [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1006-drive-friction%2F#timeseries):
+  기존 타 작업 뷰어 PID 52016의 공용 logdir를 읽었다. 서버 재시작/종료 없음.
+  Chrome **강** 탭에서 고정 링크를 열었으나 이동 후와 한 번 새로고침 뒤 빈 화면이어서 UI 재시도를 중단했다.
+  **실제 화면 카드·HParams 열 적용은 미확인**이다. 성공/모델 응답시간은 측정하지 않아 지표를 만들지 않았고
+  렌더/영상도 없어 새 영상 등록 대상이 없다.
+
+채택 전 다음 작업은 실제 롤러 윤곽·접촉 위치와 장착 모터를 확인한 뒤 접촉 걸림/앞뒤 하중을 분리 진단하는 것이다.
+그 후에만 위 재보정 목록과 짝 빔/v106 검증을 새 버전으로 진행한다. 이번 PR은 **draft, 병합 금지**다.
