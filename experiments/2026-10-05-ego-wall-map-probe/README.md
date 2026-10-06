@@ -1722,3 +1722,70 @@ s913-r2 경로 RMSE 감소율도 17.0%로 20% 미달이다. s912-r2/s913-r2 벽 
 ```
 
 비교 생성기는 기존 `csm_result_report.py`를 `--development`/`--confirmation`에 v2 경로를 지정해 그대로 재사용했다.
+
+## 19. 자세 확률 모델 — 구현 전 사전 등록 (2026-10-06)
+
+**§17.1의 성공 기준을 그대로 적용한다.** 종료 ≤0.75 m 및 off 대비 ≥30% 감소,
+경로 median/P95 악화 없음·RMSE ≥20% 감소, 지도 precision 악화 없음·recall 감소 ≤2%p·
+벽 거리 RMSE ≥20% 감소, off 바이트 동일을 모두 만족해야 해당 건 성공이다.
+개발 s911/r1,r2 2건 → 설정 고정 → 확인 s912/s913 × r1/r2 4건 순서이며,
+이미 사용한 녹화의 재현 비교다. 조건·로봇을 합산하지 않고 v1/v2/prob/RBPF30/RBPF100을 나란히 기록한다.
+결과를 보고 계수·기준을 바꾸지 않는다. 기본 off, 기존 v1/v2 소스와 정적 지도 경로는 보존한다.
+
+### 19.1 근거와 적용 범위
+
+- [Olson 2009 §III-F, Eq.3](https://april.eecs.umich.edu/media/media/pdfs/olson2009icra.pdf):
+  정합 후보의 정규화된 posterior로 평균·공분산을 계산한다. 후보창 밖 모드는 누락될 수 있다.
+  prob는 v2의 수락/거부와 삽입 정책을 이어받고, 수락한 정합의 후보 모멘트 공분산을 사용한다.
+  벽 접선의 미관측 분산, submap anchor 분산과 기존 공분산 하한을 보존한다.
+  삽입은 끝점 위치 분산 `J Σ Jᵀ`에 따라 hit/miss log-odds를 같은 비율로 줄인다.
+  `w = σ_sensor²/(σ_sensor² + mean(trace(JΣJᵀ)/2))`는 분산 합에 따른 정보량 비율을 쓰는
+  **우리의 보수적 근사**이며, Olson 원문에 있는 지도 삽입 공식이라고 주장하지 않는다.
+- [Grisetti·Stachniss·Burgard 2007, IEEE TRO 23(1), Eq.9/15–20, Algorithm 1](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa13/optreadings/GrisettiStachnissBurgard_gMapping_T-RO2006.pdf):
+  입자별 과거 지도에서 scan matching → mode 주변에서 관측 우도×명령 이동 prior 평가 →
+  Gaussian 제안분포 모멘트 → 샘플 → 중요도 갱신 → 해당 입자의 지도 삽입을 따른다.
+  Gaussian 근사에서 정확한 중요도 비율 `likelihood × motion / proposal`(Eq.6)을 계산한다.
+  이는 Eq.19의 정규화 적분을 그대로 근사 가중치로 쓰는 대신 실제 제안밀도의 근사 오차를 보정한다.
+  실패 시 motion proposal로 돌아가며, `N_eff=1/Σw² < N/2`일 때만 systematic resampling한다.
+- [OpenSLAM 공개 구현](https://github.com/ros-perception/openslam_gmapping/blob/master/include/gmapping/gridfastslam/gridslamprocessor.hxx):
+  입자별 map 정합, normalize의 N_eff, resample/비resample 양쪽 registerScan을 확인했다.
+  이 코드의 optimize+likelihood 경로는 논문의 Gaussian proposal 전체와 같지 않으므로,
+  이번 개선 제안분포 구현 근거는 위 **논문 수식**이다.
+- 좁은 FOV·벽 접점은 laser 전방위 scan보다 접선 위치가 약하게 관측된다. prob는 단일 지도와
+  Gaussian 공분산으로 저렴하지만 여러 위치 가설을 표현하지 못한다. RBPF는 입자마다 지도·경로를
+  유지하므로 다중 가설이 가능하나 정합과 지도 메모리가 대략 입자 수에 비례하고 잘못된 벽 대응은
+  입자 고갈을 유발한다. 약 1500–1850 프레임 중 근거리·정착 통과 scan만 이용한다.
+
+### 19.2 고정 옵션·잡음 출처·실행 계획
+
+| 설정 | 사전 고정값/규칙 |
+|---|---|
+| `pose_correction` | 기본 `off`; 추가 `own_map_csm_prob_v1`, `own_map_rbpf_v1` |
+| RBPF `particles` | **30, 100 각각**; 두 값 모두 실행, 결과로 하나를 선택하지 않음 |
+| `seed` | 20261006 (각 녹화·조건에서 새 RNG) |
+| 저장 격자 | 0.10 m; 입자별 독립 log-odds 지도, 복제 후 쓰기 공유 금지 |
+| prob 정합 | §17 CSM 창·게이트·주기 그대로, 후보 posterior 모멘트 + 영공간/anchor 하한 |
+| RBPF 정합 | 최대 ±0.5 m/±8°, coarse 0.1 m/2° → mode 주변 0.05 m/1°(각 축 ±3 step) |
+| RBPF 관측 | §17 거리 σ·Huber·유효 접점 최대12·겹침60%/0.2 m·잔차0.15 m; 최소6접점 |
+| 주기/보류 | 1 s보다 이른 scan은 현재 추정으로 삽입, 독립 정합 정보로 재사용하지 않음 |
+| 거부/빈 지도 | 정합 실패는 motion proposal, 그 scan 삽입 제외; 빈 지도 bootstrap 삽입 |
+| 재표본화 | N_eff < N/2, systematic, 지도·이력은 부모별 복사; weights 균등 재설정 |
+| 출력 | 현재 최대 가중치 입자의 자세와 그 입자 지도(평균 자세와 다른 입자 지도 혼합 금지) |
+| 자원 | 조건별 별도 프로세스·순차 실행; prediction wall 초, peak RSS MiB, 호스트 부하 기록 |
+
+DR **평균**은 §16 M1 명령 적분을 유지해 v1/v2 비교에서 평균 모델 변경을 섞지 않는다.
+**과정 잡음**은 v7 명령 기반 특성을 근거로 새로 둔다. 출처는 PR #402의
+`e7b229b6d9809ddf18f345dd179d60d499fce3dd:sim/masterpi_drive_friction_v7.py`:
+시동 0.325(사용자 관측 0.30–0.35 중간), 운동 마찰 비율 0.1/1.2=1/12,
+명령 부호 이력의 hysteresis이며 외부 stall·하중별 시동 임계값은 미확인이다.
+시동 오차 Uniform(−0.025,+0.025), 미확인 마찰 손실 Uniform(−1/12,+1/12)를
+독립 명령율 오차로 두어 `σ_u=sqrt((0.025²+(1/12)²)/3)`으로 고정한다.
+각 축 rate 표준편차는 `abs(gain) @ [σ_u,σ_u,σ_u]`에 이동 중(명령 또는 잔류 속도)만 적용하고,
+1초 상관 시간의 확산 근사 `Q_body=diag(σ_rate²) dt`를 SE(2) Jacobian으로 전파한다.
+명령 적재 중에는 §17의 미설명 이동 0.02 m/√s를 유지한다. 이 값은 v7 실측 분산이 아닌
+**v7 구조에서 정한 보수적 사전 모델**이다. 정답 pose·관절·접촉으로 잡음을 맞추지 않는다.
+녹화는 v7 이전 v3 계열이므로 이번 결과는 v7 주행 성능 검증이 아니다.
+
+코드·시험 통과 후 소스를 먼저 커밋하고 재생한다. 예상 자원은 단일 CPU 프로세스,
+18개 on 재생(3조건×6건), 각 30분 상한, 저장 예산 1 GiB이며 초과/실패도 기록한다.
+GT는 예측 산출물 저장 뒤 평가에서만 읽는다. 시뮬레이션·모델 호출·TensorBoard 변환은 하지 않는다.
