@@ -3,6 +3,22 @@
   "scope": "entry points; sim_cli does not silently launch models, hardware or training",
   "workflows": [
     {
+      "id": "zone-s3-host-v107",
+      "version": "3.14.0",
+      "purpose": "S3 최종 v3 3대 고정 역할 혼합 주문 DEV, 모델 호출 없음",
+      "entry": "scripts/run_s3_host.py",
+      "runner": "scripts.run_s3_host",
+      "docs": "experiments/2026-10-06-s3-host/README.md",
+      "requires": "committed SHA; explicit S3 release after PR393; owned exclusive SIM lock; DEV only; no model calls",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    },
+    {
       "id": "zone-study-pilot",
       "purpose": "구역 연구 실어댑터 파일럿: 기본 dry-run, 4조건 pre-flight와 공유 영속 예산",
       "entry": "scripts/run_zone_study_pilot.py",
