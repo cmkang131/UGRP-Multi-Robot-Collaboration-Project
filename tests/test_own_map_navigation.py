@@ -136,12 +136,13 @@ def load_world():
 
 
 def test_2d_geometry_ray_occlusion_and_fov_no_engine_import():
+    before = set(sys.modules)
     m = load_world()
     r = [dict(center=[1,0],half=[.05,1],yaw=0.)]
     assert m.ray_hits([0,0],np.array([0.,math.pi]),r).tolist()==pytest.approx([.95,4.])
     uv,v,_ = m.project(np.array([[-1,0],[1,0]]),m.SEARCH)
     assert not v[0] and v[1]
-    assert 'mujoco' not in sys.modules
+    assert 'mujoco' not in set(sys.modules)-before
     actor_tree = ast.parse((ROOT/'harness/own_map_navigation.py').read_text())
     imports = [n.module or '' for n in ast.walk(actor_tree) if isinstance(n,ast.ImportFrom)]
     assert not any('grid_world' in x or 'sim.' in x for x in imports)

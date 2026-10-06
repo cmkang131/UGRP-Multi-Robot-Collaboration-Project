@@ -1,0 +1,130 @@
+{
+  "development": {
+    "static_map": {
+      "n": 16,
+      "B_true": 0,
+      "B_false": 0,
+      "first_B_distance_m_median": null,
+      "first_B_time_s_median": null,
+      "coverage_median": 0.3696180555555556,
+      "collisions": 16,
+      "door_attempts": 4,
+      "wrong_door_attempts": 0,
+      "candidate_passage_attempts": 0,
+      "false_candidate_passage_attempts": 0,
+      "end_distance_m_median": 8.116821442710007,
+      "end_time_s_median": 32.0,
+      "end_position_error_m_median": 0.3222881802434648,
+      "statuses": {
+        "collision": 16
+      },
+      "plans": {
+        "static_map": 178,
+        "static_no_path": 50
+      },
+      "door_reasons": {}
+    },
+    "own_frontier": {
+      "n": 16,
+      "B_true": 0,
+      "B_false": 0,
+      "first_B_distance_m_median": null,
+      "first_B_time_s_median": null,
+      "coverage_median": 0.27209576244184686,
+      "collisions": 9,
+      "door_attempts": 0,
+      "wrong_door_attempts": 0,
+      "candidate_passage_attempts": 0,
+      "false_candidate_passage_attempts": 0,
+      "end_distance_m_median": 2.801249797958941,
+      "end_time_s_median": 11.0,
+      "end_position_error_m_median": 0.1848326374428585,
+      "statuses": {
+        "collision": 9,
+        "search_exhausted": 7
+      },
+      "plans": {
+        "observation_required": 187,
+        "rotation_sweep_unknown": 126
+      },
+      "door_reasons": {
+        "jamb_reobserve": 178,
+        "free_connection_unknown": 169
+      }
+    },
+    "paired": {
+      "both_successful_pairs": 0,
+      "distance_ratio_median": null,
+      "time_ratio_median": null
+    }
+  },
+  "confirmation": {
+    "static_map": {
+      "n": 32,
+      "B_true": 0,
+      "B_false": 0,
+      "first_B_distance_m_median": null,
+      "first_B_time_s_median": null,
+      "coverage_median": 0.15840184455266723,
+      "collisions": 31,
+      "door_attempts": 0,
+      "wrong_door_attempts": 0,
+      "candidate_passage_attempts": 0,
+      "false_candidate_passage_attempts": 0,
+      "end_distance_m_median": 7.046094215523275,
+      "end_time_s_median": 27.0,
+      "end_position_error_m_median": 0.4575713862154127,
+      "statuses": {
+        "collision": 31,
+        "budget": 1
+      },
+      "plans": {
+        "static_map": 451,
+        "static_no_path": 14
+      },
+      "door_reasons": {}
+    },
+    "own_frontier": {
+      "n": 32,
+      "B_true": 0,
+      "B_false": 0,
+      "first_B_distance_m_median": null,
+      "first_B_time_s_median": null,
+      "coverage_median": 0.15106789828644204,
+      "collisions": 13,
+      "door_attempts": 0,
+      "wrong_door_attempts": 0,
+      "candidate_passage_attempts": 0,
+      "false_candidate_passage_attempts": 0,
+      "end_distance_m_median": 5.183750781416823,
+      "end_time_s_median": 71.0,
+      "end_position_error_m_median": 0.3511719956033782,
+      "statuses": {
+        "collision": 13,
+        "search_exhausted": 19
+      },
+      "plans": {
+        "observation_required": 470,
+        "rotation_sweep_unknown": 342
+      },
+      "door_reasons": {
+        "jamb_reobserve": 624,
+        "free_connection_unknown": 513
+      }
+    },
+    "paired": {
+      "both_successful_pairs": 0,
+      "distance_ratio_median": null,
+      "time_ratio_median": null
+    }
+  },
+  "checks": {
+    "boundary": true,
+    "B_confirmation": false,
+    "efficiency": false,
+    "coverage": false,
+    "safety": false
+  },
+  "criteria_passed": 1,
+  "scope": "2D model outcomes only; legacy wall error, unmeasured v7 process prior, idealized floor segmentation"
+}

@@ -78,7 +78,7 @@ HOST_ERROR/ENOSPC는 실패로 보존한다. 시간 측정은 modeled time이며
   FUEL 전체 계층 최적화나 entropy 기대값을 재현했다고 하지 않는다. 다중 로봇 map merge는 없다.
 - [Area Graph 2019](https://arxiv.org/abs/1910.01019): metric free에서 영역/통로 위상 요약의 근거.
   초록 확인; 공개 코드 재조회는 실패하여 구현 세부 인용은 하지 않는다. 이번 C는 벽 gap·다시 본 양 jamb·
-  free 연결·거리장 폭 하한의 최소 단계이며 논문의 전체 Voronoi/room segmentation 이식은 아니다.
+  free 연결·격자 오차를 뺀 폭 하한의 최소 단계이며 논문의 전체 Voronoi/room segmentation 이식은 아니다.
 - [Smac 논문 v2(2025)](https://arxiv.org/abs/2401.13078v2),
   [Nav2 footprint 검사 코드](https://api.nav2.org/nav2-humble/html/collision__checker_8cpp_source.html):
   unknown 차단·footprint 전체 충돌 검사와 cost-aware A* 근거. A*는 기존 `harness/map_goto.py`와 같은
@@ -158,3 +158,90 @@ static 0/16, own 0/16이다. static 충돌16, own 충돌9/관측 후 소진7이�
 모듈 옵션·센서 분포·footprint·점수·예산·성공 기준을 추가 튜닝하지 않고 [freeze.json](freeze.json)의
 소스/입력 해시로 동결한다. 확인은 새 시작 B/D와 seed2701/2702의 32쌍만 실행한다.
 기존 확인 녹화의 벽 통계/B 정적 확인값은 센서 모형 입력이며 이 2D 에피소드의 성능 평가와 분리한다.
+
+## 6. 확인 결과: 기준 미달 그대로 기록
+
+동결 커밋 `b5827069` 이후 새 시작점/seed 확인 32쌍을 실행했다. 실행 핵심 소스/설정은
+개발 최종 `fa3e038a`와 해시 동일하다. 확인 후 탐색/센서/지도/B/운동 설정 수정·재튜닝 **0회**다.
+[전체 96조건 표](results/tables.md), [원수치](results/results.json), [요약/판정](results/summary.json),
+[원본 해시](results/artifacts.json), [확인 track 진단](results/diagnosis.json)을 함께 둔다.
+
+| split | 2D 조건 | 참/거짓 B 확인 | 첫 확인 거리/시간 | 커버리지 중앙 | 충돌 | 잘못된 문 시도/전체 시도 | 종료 이동/시간 중앙 |
+|---|---|---:|---|---:|---:|---:|---:|
+| 개발16 | static_map | 0 / 0 | N/A | 36.96% | 16 | 0 / 4 | 8.12 m / 32 s |
+| 개발16 | own_frontier | 0 / 0 | N/A | 27.21% | 9 | 0 / 0 | 2.80 m / 11 s |
+| 확인32 | static_map | 0 / 0 | N/A | 15.84% | 31 | 0 / 0 | 7.05 m / 27 s |
+| 확인32 | own_frontier | 0 / 0 | N/A | 15.11% | 13 | 0 / 0 | 5.18 m / 71 s |
+
+거리·시간의 마지막 열은 **실패/소진까지** 값이다. B 발견 효율로 해석하지 않는다. 거리에는 50 ms 격자에서
+생성한 과정 잡음 이동이 포함되고 시간은 wall/실제 SIM 실행 시간이 아닌 modeled s다. 공통 성공쌍0이라
+B까지 거리·시간 비율은 N/A, 효율 기준은 실패다. 확인 static은 충돌31/40 m 예산1, own은 충돌13/소진19다.
+운반·다중 로봇 임무를 실행하지 않았다. static의 실패는 현행 물리 기준선 성공률을 뒤집는 결과가 아니다.
+
+| 사전 기준 | 확인값 | 판정 |
+|---|---|---|
+| off/입력 경계 | off 골든·own/peer·무엔진 시험 통과, 봉인 해시 동일 | 통과 |
+| B ≥80%, 거짓0 | 0/32, 거짓0 | 실패 |
+| 공통 성공쌍 거리·시간비 중앙≤2 | 공통 성공0; N/A | 실패 |
+| 커버리지 중앙≥40% | 15.11% | 실패 |
+| 잘못된 문/충돌0, 문 시도≥1 | 0/13, 시도0 | 실패 |
+
+**1/5, 전체 성공 아님.** 문을 시도하지 않아 생긴 0을 안전 성능으로 승격하지 않는다. 문 후보 진단은
+확인에서 `jamb_reobserve`624 / `free_connection_unknown`513 frame-candidate 사건이며 독립 표본 수가 아니다.
+`clearance_feasible`/가짜 passage 진입도0으로, 문 모듈의 긍정 동작은 합성 반례 단위시험 범위에 머문다.
+
+![확인 네 사례: 실제 물리가 아닌 2D 모델 궤적](results/confirmation-paths.png)
+
+### 왜 B 시간 누적만으로 이번 실패를 해결하지 못했는가
+
+자기 탐색 확인에서 B가 모사 시야에 들어온 프레임191, 검출162(센서 추출의 .7941 재표본 변동 포함)였으나
+**병진 명령0**이다. 참 B track30개 중26개는 ≥3회를 모았고 최다9회였다. 그 track 안의 자기 명령 기반
+병진 baseline 최댓값은 **0.00000422 m**, 동결 v3 확인 조건 .05 m에 못 미친다. 같은 장소의 반복 영상은
+새 시점이 아니므로 억지로 확인으로 올리지 않는다. 바닥 관측과 최초 자기 footprint의 연결이 unknown으로
+남아, 자기 탐색은 확인에서 `observation_required`470회, 회전 sweep unknown342회를 기록했다.
+후자의 no-op도 시간 예산에 들어간다. 이 실패는 v3 HSV recall을 다시 튜닝할 근거가 아니다.
+
+확인 종료 위치 오차 중앙은 static .458 m / own .351 m다. 이번은 **명령 DR만으로** B/C/E를 검사했으며
+#405의 RBPF/pose graph를 다시 튜닝하거나 이번 2D 모형에 연결하지 않았다. margin .02 m도 고정 기하
+여유이고 posterior의 확률적 안전 보장을 뜻하지 않는다. 따라서 **초기 near-floor free 연결 관측 계약과
+기존 자기 위치 보정의 연결**, 현행 v7 구동·카메라 v3의 벽/free 오류 실측 검증이 남는다. 이번에 새 물리
+자료를 만들거나 GT pose로 연결을 보완하지 않았다. 결과의 실패 수치를 숨기는 후속 변경은 하지 않았다.
+
+## 7. 옵션·입출력·재현·보존
+
+| 옵션 | 기본 | on 동작 |
+|---|---|---|
+| `exploration` | `off` | `own_frontier_v1`: 자기 reachable frontier와 관측 heading; `own_astar_v1` 필요 |
+| `door_detection` | `off` | `own_gap_v1`: 자기 wall gap, jamb 재관측, 관측 free ribbon, footprint 폭 하한 |
+| `partial_planning` | `off` | `own_astar_v1`: 관측 free만 A*, grid revision마다 재계획, static fallback 없음 |
+| 부모 `goal_detection` | `off` 유지 | `floor_color_v3` 동결 옵션/누적기 그대로; 2D에서는 검출 단계만 측정 분포로 대체 |
+
+API는 `NavigationOptions` → `OwnMapNavigator.update(legacy_output, grid=own_grid, pose=own_pose,
+ goal=own_goal_snapshot, footprint=...)`다. 전부 off이면 grid/pose를 요구하거나 읽지 않고 `legacy_output`을
+그대로 반환한다. door만 on이면 경로를 발행하지 않는다. on 출력은 자기 odom path·heading·관측 요청·
+문 판정이며 실시간 물리 executor/LLM에 자동 연결하지 않았다. 운반 탐색은 공통 행동 합의 요청으로 거부한다.
+
+```sh
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+$PY -m pytest tests/test_own_map_navigation.py tests/test_floor_goal_v3.py -q
+$PY experiments/2026-10-07-mapfree-explore/code/run_grid.py --split development --output outputs/NEW-explore-development
+$PY experiments/2026-10-07-mapfree-explore/code/run_grid.py --split confirmation --freeze experiments/2026-10-07-mapfree-explore/freeze.json --output outputs/NEW-explore-confirmation
+$PY experiments/2026-10-07-mapfree-explore/code/report.py --development outputs/NEW-explore-development --confirmation outputs/NEW-explore-confirmation --output outputs/NEW-explore-report
+```
+
+`grid_world.py`만 hidden geometry를 소유한다. actor observation에는 body floor/wall 점과 자체 frame ID만,
+B 추적에는 모사 검출 patch만 들어간다. GT 궤적·B 참/거짓은 `eval_only.jsonl`에 별도 기록한다.
+map JSON의 시간 사건 중 s2 막힘/s5 이동만 환경에서 적용하고, 다른 로봇/협동/화물 동역학은 모사하지 않는다.
+scene geometry는 등록 map 해시와 대조한다. 화물은 catalog landing footprint의 2D 직사각형 근사이며,
+낮은 물체도 완전 가림으로 처리한다. 카메라 벽 광선은 K-pinhole 수평 span 뒤 실제 fisheye 투영 유효성을
+검사하는 보수적 표본 근사다. 어떤 센서 실패율도 실물 수치로 바꾸어 부르지 않는다.
+
+전체 raw·첫 smoke/첫 개발 실패도 이 worktree `outputs/mapfree-explore-*`에 약53 MB 보존하며
+**GitHub raw 백업 아님**이다. 작은 통계 표본424,661 B와 그림94,801 B는 experiments에 커밋한다.
+배치/시작/seed 결과는 분리 표에 있으며 s1–s8의 벽 배치가 8개 독립 기하인 것처럼 합산하지 않는다.
+보고 그림 첫 생성은 모듈 검색 경로 누락으로 실패했으며 수치 산출은 완료됐다. report 전용 경로만 보완해
+새 `results-v2`에 그림을 만들고 확인했다. 봉인 추론/센서/실행 소스는 바꾸지 않았다.
+
+로컬 관련 시험 **21 passed**, `git diff --check` 통과. B v3 봉인10파일·사용자 기존 미추적4파일 바이트 불변.
+MuJoCo/렌더/모델 호출0, 새 venv/패키지 설치0, CPU timing benchmark/잠금0이다. CI에는 새 시험 파일을
+정확히 한 번 추가한다. PR #409는 #408 위 DRAFT이며 병합하지 않는다. TensorBoard는 앞선 사용자 결정대로 생략.

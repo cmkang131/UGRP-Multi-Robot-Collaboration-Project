@@ -1,0 +1,4429 @@
+[
+  {
+    "scenario": "s1",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 14.0,
+    "distance_m": 2.7068852704788706,
+    "coverage": 0.09375,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 4
+    },
+    "observations": 4,
+    "sensor_draws": {
+      "visible_wall_rays": 380,
+      "detected_wall_rays": 379,
+      "row_correct_draws": 323,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.052324788689517975,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 11.0,
+    "distance_m": 2.801249797958941,
+    "coverage": 0.20451388888888888,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 3,
+      "free_connection_unknown": 2
+    },
+    "plans": {
+      "observation_required": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 270,
+      "detected_wall_rays": 269,
+      "row_correct_draws": 236,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18965891059486234,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 23.0,
+    "distance_m": 6.0670960847701325,
+    "coverage": 0.44895833333333335,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_no_path": 4,
+      "static_map": 3
+    },
+    "observations": 7,
+    "sensor_draws": {
+      "visible_wall_rays": 403,
+      "detected_wall_rays": 382,
+      "row_correct_draws": 338,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.3203504754676756,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 4.871103297310189,
+    "coverage": 0.43993055555555555,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 21,
+      "free_connection_unknown": 40
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2125,
+      "detected_wall_rays": 2089,
+      "row_correct_draws": 1867,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.09905522193375989,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 75.0,
+    "distance_m": 20.42841354318772,
+    "coverage": 0.20674079221681724,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 25
+    },
+    "observations": 25,
+    "sensor_draws": {
+      "visible_wall_rays": 1760,
+      "detected_wall_rays": 1729,
+      "row_correct_draws": 1501,
+      "B_positive_frames": 6,
+      "B_detections": 6,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 1.149942171865777,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 11.0,
+    "distance_m": 2.801249797958941,
+    "coverage": 0.29881862404447534,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 2
+    },
+    "plans": {
+      "observation_required": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 179,
+      "detected_wall_rays": 178,
+      "row_correct_draws": 154,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18965891059486234,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 23.0,
+    "distance_m": 5.663633807179324,
+    "coverage": 0.5093815149409312,
+    "collisions": 1,
+    "door_attempts": 1,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 7
+    },
+    "observations": 7,
+    "sensor_draws": {
+      "visible_wall_rays": 310,
+      "detected_wall_rays": 306,
+      "row_correct_draws": 254,
+      "B_positive_frames": 2,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.3222881802434648,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 4.871103297310189,
+    "coverage": 0.3703961084086171,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 33,
+      "free_connection_unknown": 12
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2176,
+      "detected_wall_rays": 2141,
+      "row_correct_draws": 1908,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.09905522193375989,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 68.0,
+    "distance_m": 17.48933397023069,
+    "coverage": 0.11875,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 22
+    },
+    "observations": 22,
+    "sensor_draws": {
+      "visible_wall_rays": 2076,
+      "detected_wall_rays": 2048,
+      "row_correct_draws": 1817,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.8999153682455099,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 11.0,
+    "distance_m": 2.801249797958941,
+    "coverage": 0.24930555555555556,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 2,
+      "free_connection_unknown": 1
+    },
+    "plans": {
+      "observation_required": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 244,
+      "detected_wall_rays": 243,
+      "row_correct_draws": 210,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18965891059486234,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 23.0,
+    "distance_m": 6.0670960847701325,
+    "coverage": 0.4461805555555556,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_no_path": 4,
+      "static_map": 3
+    },
+    "observations": 7,
+    "sensor_draws": {
+      "visible_wall_rays": 420,
+      "detected_wall_rays": 400,
+      "row_correct_draws": 341,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.3203504754676756,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 4.871103297310189,
+    "coverage": 0.440625,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 17,
+      "free_connection_unknown": 27
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2134,
+      "detected_wall_rays": 2098,
+      "row_correct_draws": 1864,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.09905522193375989,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 90.0,
+    "distance_m": 27.911727818272034,
+    "coverage": 0.488169798190675,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 7,
+      "static_no_path": 23
+    },
+    "observations": 30,
+    "sensor_draws": {
+      "visible_wall_rays": 2829,
+      "detected_wall_rays": 2786,
+      "row_correct_draws": 2473,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.43357357552366294,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 11.0,
+    "distance_m": 2.801249797958941,
+    "coverage": 0.24321503131524008,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 3,
+      "free_connection_unknown": 5
+    },
+    "plans": {
+      "observation_required": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 264,
+      "detected_wall_rays": 261,
+      "row_correct_draws": 226,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18965891059486234,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 51.0,
+    "distance_m": 15.652502514658885,
+    "coverage": 0.45650661099512874,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_no_path": 17
+    },
+    "observations": 17,
+    "sensor_draws": {
+      "visible_wall_rays": 1204,
+      "detected_wall_rays": 1183,
+      "row_correct_draws": 1048,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.21405871664104947,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 4.871103297310189,
+    "coverage": 0.44467640918580376,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 34,
+      "free_connection_unknown": 38
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2110,
+      "detected_wall_rays": 2074,
+      "row_correct_draws": 1853,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.09905522193375989,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 77.0,
+    "distance_m": 20.705913548580565,
+    "coverage": 0.12430555555555556,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 25
+    },
+    "observations": 25,
+    "sensor_draws": {
+      "visible_wall_rays": 2353,
+      "detected_wall_rays": 2325,
+      "row_correct_draws": 2072,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.9576861097569732,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 11.0,
+    "distance_m": 2.801249797958941,
+    "coverage": 0.24930555555555556,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 3
+    },
+    "plans": {
+      "observation_required": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 243,
+      "detected_wall_rays": 242,
+      "row_correct_draws": 209,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18965891059486234,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 6.0,
+    "distance_m": 1.2602336690711253,
+    "coverage": 0.29305555555555557,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_no_path": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 43,
+      "detected_wall_rays": 41,
+      "row_correct_draws": 32,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18000636429085465,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 6.0,
+    "distance_m": 1.2602336690711253,
+    "coverage": 0.29305555555555557,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 1
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 43,
+      "detected_wall_rays": 41,
+      "row_correct_draws": 32,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18000636429085465,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 41.0,
+    "distance_m": 10.166546800649883,
+    "coverage": 0.19590135463702674,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 13
+    },
+    "observations": 13,
+    "sensor_draws": {
+      "visible_wall_rays": 884,
+      "detected_wall_rays": 869,
+      "row_correct_draws": 772,
+      "B_positive_frames": 2,
+      "B_detections": 2,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.3294183418480936,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 11.0,
+    "distance_m": 2.801249797958941,
+    "coverage": 0.2750955192775269,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 1
+    },
+    "plans": {
+      "observation_required": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 198,
+      "detected_wall_rays": 197,
+      "row_correct_draws": 166,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18965891059486234,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 23.0,
+    "distance_m": 5.663633807179324,
+    "coverage": 0.5001736714136853,
+    "collisions": 1,
+    "door_attempts": 1,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 7
+    },
+    "observations": 7,
+    "sensor_draws": {
+      "visible_wall_rays": 327,
+      "detected_wall_rays": 323,
+      "row_correct_draws": 274,
+      "B_positive_frames": 2,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.3222881802434648,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 4.871103297310189,
+    "coverage": 0.4320944772490448,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 19,
+      "free_connection_unknown": 30
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2137,
+      "detected_wall_rays": 2101,
+      "row_correct_draws": 1880,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.09905522193375989,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 74.0,
+    "distance_m": 19.834870814698498,
+    "coverage": 0.1741415557112824,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 24
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1700,
+      "detected_wall_rays": 1675,
+      "row_correct_draws": 1467,
+      "B_positive_frames": 8,
+      "B_detections": 7,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 1.141550875549502,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 11.0,
+    "distance_m": 2.801249797958941,
+    "coverage": 0.2690960056061668,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 1
+    },
+    "plans": {
+      "observation_required": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 189,
+      "detected_wall_rays": 188,
+      "row_correct_draws": 164,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18965891059486234,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 23.0,
+    "distance_m": 5.663633807179324,
+    "coverage": 0.45129642606867554,
+    "collisions": 1,
+    "door_attempts": 1,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 7
+    },
+    "observations": 7,
+    "sensor_draws": {
+      "visible_wall_rays": 349,
+      "detected_wall_rays": 345,
+      "row_correct_draws": 293,
+      "B_positive_frames": 2,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.3222881802434648,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 4.871103297310189,
+    "coverage": 0.22109320252277506,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "free_connection_unknown": 12,
+      "jamb_reobserve": 18
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2124,
+      "detected_wall_rays": 2094,
+      "row_correct_draws": 1872,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.09905522193375989,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 74.0,
+    "distance_m": 19.834870814698498,
+    "coverage": 0.17420259376095337,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 24
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1700,
+      "detected_wall_rays": 1675,
+      "row_correct_draws": 1467,
+      "B_positive_frames": 8,
+      "B_detections": 7,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 1.141550875549502,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "A",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 11.0,
+    "distance_m": 2.801249797958941,
+    "coverage": 0.19032597266035753,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "observation_required": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 218,
+      "detected_wall_rays": 217,
+      "row_correct_draws": 186,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.18965891059486234,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 23.0,
+    "distance_m": 5.663633807179324,
+    "coverage": 0.4504030844724851,
+    "collisions": 1,
+    "door_attempts": 1,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 7
+    },
+    "observations": 7,
+    "sensor_draws": {
+      "visible_wall_rays": 353,
+      "detected_wall_rays": 349,
+      "row_correct_draws": 297,
+      "B_positive_frames": 2,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.3222881802434648,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "C",
+    "seed": 1701,
+    "split": "development",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 4.871103297310189,
+    "coverage": 0.2082018927444795,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 20,
+      "free_connection_unknown": 2
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2126,
+      "detected_wall_rays": 2096,
+      "row_correct_draws": 1874,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.09905522193375989,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.6956630295994306,
+    "coverage": 0.09131944444444444,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 192,
+      "detected_wall_rays": 190,
+      "row_correct_draws": 149,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.22392827921316116,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.5318975381285225,
+    "coverage": 0.08159722222222222,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 1
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 192,
+      "detected_wall_rays": 192,
+      "row_correct_draws": 149,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35029243739834554,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 9.0,
+    "distance_m": 1.9048144619051763,
+    "coverage": 0.08993055555555556,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 288,
+      "detected_wall_rays": 283,
+      "row_correct_draws": 252,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.06785173004657777,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416828,
+    "coverage": 0.08576388888888889,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "free_connection_unknown": 29,
+      "jamb_reobserve": 2
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2049,
+      "detected_wall_rays": 2030,
+      "row_correct_draws": 1773,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35117199560337864,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 6.0,
+    "distance_m": 1.2273037933998376,
+    "coverage": 0.09131944444444444,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 126,
+      "detected_wall_rays": 126,
+      "row_correct_draws": 100,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.20455748589122694,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.9446736993075733,
+    "coverage": 0.09270833333333334,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 147,
+      "detected_wall_rays": 147,
+      "row_correct_draws": 125,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.34504499430387414,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 9.0,
+    "distance_m": 2.1441750774638138,
+    "coverage": 0.09305555555555556,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 162,
+      "detected_wall_rays": 157,
+      "row_correct_draws": 133,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.1587545206221215,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s1",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 12.0,
+    "distance_m": 3.454718384809645,
+    "coverage": 0.2552083333333333,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 4
+    },
+    "plans": {
+      "observation_required": 4
+    },
+    "observations": 4,
+    "sensor_draws": {
+      "visible_wall_rays": 343,
+      "detected_wall_rays": 330,
+      "row_correct_draws": 302,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.25798785220001286,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "scenario_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.6956630295994306,
+    "coverage": 0.13968033356497567,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 166,
+      "detected_wall_rays": 164,
+      "row_correct_draws": 130,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.22392827921316116,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.5318975381285225,
+    "coverage": 0.12334954829742877,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 4
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 176,
+      "detected_wall_rays": 176,
+      "row_correct_draws": 138,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35029243739834554,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 9.0,
+    "distance_m": 1.9048144619051763,
+    "coverage": 0.13898540653231412,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 239,
+      "detected_wall_rays": 234,
+      "row_correct_draws": 203,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.06785173004657777,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416828,
+    "coverage": 0.12682418346073662,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 15,
+      "free_connection_unknown": 26
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2033,
+      "detected_wall_rays": 2014,
+      "row_correct_draws": 1757,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35117199560337864,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 123.0,
+    "distance_m": 34.33329448033204,
+    "coverage": 0.32696316886726895,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 41
+    },
+    "observations": 41,
+    "sensor_draws": {
+      "visible_wall_rays": 3896,
+      "detected_wall_rays": 3837,
+      "row_correct_draws": 3450,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 2
+    },
+    "end_position_error_m": 2.4314667006767063,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.192461512446945,
+    "coverage": 0.49200833912439196,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 74,
+      "free_connection_unknown": 22
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2046,
+      "detected_wall_rays": 1988,
+      "row_correct_draws": 1750,
+      "B_positive_frames": 10,
+      "B_detections": 9,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.49059620604754456,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 27.0,
+    "distance_m": 7.046094215523275,
+    "coverage": 0.17060458651841556,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 9
+    },
+    "observations": 9,
+    "sensor_draws": {
+      "visible_wall_rays": 855,
+      "detected_wall_rays": 841,
+      "row_correct_draws": 764,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.4575713862154127,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s2",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416823,
+    "coverage": 0.5413481584433635,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 42,
+      "free_connection_unknown": 13
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1837,
+      "detected_wall_rays": 1796,
+      "row_correct_draws": 1637,
+      "B_positive_frames": 10,
+      "B_detections": 9,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.3511719956033782,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s2_unmapped_blockage_v4.json",
+      "scenario_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 15.0,
+    "distance_m": 3.6118422261103973,
+    "coverage": 0.125,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 5
+    },
+    "observations": 5,
+    "sensor_draws": {
+      "visible_wall_rays": 286,
+      "detected_wall_rays": 284,
+      "row_correct_draws": 248,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.21267330129354642,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.5318975381285225,
+    "coverage": 0.08923611111111111,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 1,
+      "free_connection_unknown": 1
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 187,
+      "detected_wall_rays": 187,
+      "row_correct_draws": 144,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35029243739834554,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 15.0,
+    "distance_m": 3.5958589467299658,
+    "coverage": 0.09479166666666666,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 5
+    },
+    "observations": 5,
+    "sensor_draws": {
+      "visible_wall_rays": 397,
+      "detected_wall_rays": 391,
+      "row_correct_draws": 348,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.19908894731476243,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416828,
+    "coverage": 0.09270833333333334,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "free_connection_unknown": 39,
+      "jamb_reobserve": 4
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2044,
+      "detected_wall_rays": 2025,
+      "row_correct_draws": 1768,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35117199560337864,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 84.0,
+    "distance_m": 22.94969659759861,
+    "coverage": 0.2611111111111111,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 28
+    },
+    "observations": 28,
+    "sensor_draws": {
+      "visible_wall_rays": 2571,
+      "detected_wall_rays": 2540,
+      "row_correct_draws": 2246,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 2.287652647314248,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.192461512446945,
+    "coverage": 0.4635416666666667,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 82,
+      "free_connection_unknown": 4
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1877,
+      "detected_wall_rays": 1824,
+      "row_correct_draws": 1609,
+      "B_positive_frames": 19,
+      "B_detections": 16,
+      "B_false_components": 3
+    },
+    "end_position_error_m": 0.49059620604754456,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 27.0,
+    "distance_m": 7.046094215523275,
+    "coverage": 0.14479166666666668,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 9
+    },
+    "observations": 9,
+    "sensor_draws": {
+      "visible_wall_rays": 855,
+      "detected_wall_rays": 841,
+      "row_correct_draws": 764,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.4575713862154127,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s3",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416823,
+    "coverage": 0.5163194444444444,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 20,
+      "free_connection_unknown": 18
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1541,
+      "detected_wall_rays": 1496,
+      "row_correct_draws": 1353,
+      "B_positive_frames": 19,
+      "B_detections": 16,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.3511719956033782,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s3_late_rendezvous_v4.json",
+      "scenario_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "budget",
+    "first_B": null,
+    "time_s": 135.0,
+    "distance_m": 40.37598668618292,
+    "coverage": 0.5271398747390397,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 31,
+      "static_no_path": 14
+    },
+    "observations": 45,
+    "sensor_draws": {
+      "visible_wall_rays": 4225,
+      "detected_wall_rays": 4166,
+      "row_correct_draws": 3766,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 3
+    },
+    "end_position_error_m": 1.7130692110170753,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.5318975381285225,
+    "coverage": 0.12247738343771747,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 5
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 172,
+      "detected_wall_rays": 172,
+      "row_correct_draws": 129,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35029243739834554,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 129.0,
+    "distance_m": 35.25622636139135,
+    "coverage": 0.31071677105080026,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 43
+    },
+    "observations": 43,
+    "sensor_draws": {
+      "visible_wall_rays": 3945,
+      "detected_wall_rays": 3889,
+      "row_correct_draws": 3407,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 3.2784563538710008,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416828,
+    "coverage": 0.1266527487821851,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 11,
+      "free_connection_unknown": 27
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2023,
+      "detected_wall_rays": 2004,
+      "row_correct_draws": 1747,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35117199560337864,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 30.0,
+    "distance_m": 7.8260755015901315,
+    "coverage": 0.10125260960334029,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 10
+    },
+    "observations": 10,
+    "sensor_draws": {
+      "visible_wall_rays": 917,
+      "detected_wall_rays": 908,
+      "row_correct_draws": 812,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.5950935112017394,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.9446736993075733,
+    "coverage": 0.0942936673625609,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 2
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 147,
+      "detected_wall_rays": 147,
+      "row_correct_draws": 125,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.34504499430387414,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 15.0,
+    "distance_m": 3.557943661310684,
+    "coverage": 0.1304801670146138,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 5
+    },
+    "observations": 5,
+    "sensor_draws": {
+      "visible_wall_rays": 477,
+      "detected_wall_rays": 469,
+      "row_correct_draws": 417,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.3141650219644424,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s4",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 12.0,
+    "distance_m": 3.454718384809645,
+    "coverage": 0.2640918580375783,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 4,
+      "free_connection_unknown": 1
+    },
+    "plans": {
+      "observation_required": 4
+    },
+    "observations": 4,
+    "sensor_draws": {
+      "visible_wall_rays": 341,
+      "detected_wall_rays": 328,
+      "row_correct_draws": 300,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.25798785220001286,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s4_narrow_door_standoff_v4.json",
+      "scenario_sha256": "57eda76a378a0df3bd5422d5c8383a07b2d6d46a91848d2ad905055abac43aca",
+      "map_path": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "map_sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 75.0,
+    "distance_m": 20.519978393247232,
+    "coverage": 0.32222222222222224,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 25
+    },
+    "observations": 25,
+    "sensor_draws": {
+      "visible_wall_rays": 2189,
+      "detected_wall_rays": 2162,
+      "row_correct_draws": 1921,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 1.3411157213514207,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.5318975381285225,
+    "coverage": 0.14756944444444445,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 1
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 176,
+      "detected_wall_rays": 176,
+      "row_correct_draws": 138,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35029243739834554,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 54.0,
+    "distance_m": 14.422678238884464,
+    "coverage": 0.3003472222222222,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 18
+    },
+    "observations": 18,
+    "sensor_draws": {
+      "visible_wall_rays": 1460,
+      "detected_wall_rays": 1440,
+      "row_correct_draws": 1264,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.5029536065984981,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416828,
+    "coverage": 0.15104166666666666,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 13,
+      "free_connection_unknown": 29
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2033,
+      "detected_wall_rays": 2014,
+      "row_correct_draws": 1757,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35117199560337864,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 123.0,
+    "distance_m": 34.33329448033204,
+    "coverage": 0.3284722222222222,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 41
+    },
+    "observations": 41,
+    "sensor_draws": {
+      "visible_wall_rays": 3895,
+      "detected_wall_rays": 3836,
+      "row_correct_draws": 3449,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 2
+    },
+    "end_position_error_m": 2.4314667006767063,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.192461512446945,
+    "coverage": 0.4954861111111111,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 76,
+      "free_connection_unknown": 36
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1882,
+      "detected_wall_rays": 1829,
+      "row_correct_draws": 1614,
+      "B_positive_frames": 19,
+      "B_detections": 16,
+      "B_false_components": 3
+    },
+    "end_position_error_m": 0.49059620604754456,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 27.0,
+    "distance_m": 7.046094215523275,
+    "coverage": 0.17152777777777778,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 9
+    },
+    "observations": 9,
+    "sensor_draws": {
+      "visible_wall_rays": 855,
+      "detected_wall_rays": 841,
+      "row_correct_draws": 764,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.4575713862154127,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s5",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416823,
+    "coverage": 0.5472222222222223,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 21,
+      "free_connection_unknown": 26
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1541,
+      "detected_wall_rays": 1496,
+      "row_correct_draws": 1353,
+      "B_positive_frames": 19,
+      "B_detections": 16,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.3511719956033782,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s5_moved_dropped_item_v4.json",
+      "scenario_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "map_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 47.0,
+    "distance_m": 12.60181450946748,
+    "coverage": 0.28308440430705106,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 15
+    },
+    "observations": 15,
+    "sensor_draws": {
+      "visible_wall_rays": 1066,
+      "detected_wall_rays": 1057,
+      "row_correct_draws": 928,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.528210150912796,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.5318975381285225,
+    "coverage": 0.1476207016325113,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 1
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 176,
+      "detected_wall_rays": 176,
+      "row_correct_draws": 138,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35029243739834554,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 134.0,
+    "distance_m": 36.60130213899867,
+    "coverage": 0.4459881903438694,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 44
+    },
+    "observations": 44,
+    "sensor_draws": {
+      "visible_wall_rays": 3721,
+      "detected_wall_rays": 3665,
+      "row_correct_draws": 3200,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 3.1885003260761335,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416828,
+    "coverage": 0.15109412990621743,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 13,
+      "free_connection_unknown": 29
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2033,
+      "detected_wall_rays": 2014,
+      "row_correct_draws": 1757,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35117199560337864,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 59.0,
+    "distance_m": 16.077597313716698,
+    "coverage": 0.140673845085099,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 19
+    },
+    "observations": 19,
+    "sensor_draws": {
+      "visible_wall_rays": 1805,
+      "detected_wall_rays": 1782,
+      "row_correct_draws": 1570,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 1.6835308836008545,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.192461512446945,
+    "coverage": 0.4862799583188607,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 52,
+      "free_connection_unknown": 25
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1877,
+      "detected_wall_rays": 1793,
+      "row_correct_draws": 1593,
+      "B_positive_frames": 19,
+      "B_detections": 16,
+      "B_false_components": 3
+    },
+    "end_position_error_m": 0.49059620604754456,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 27.0,
+    "distance_m": 7.046094215523275,
+    "coverage": 0.17158735672108372,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 9
+    },
+    "observations": 9,
+    "sensor_draws": {
+      "visible_wall_rays": 855,
+      "detected_wall_rays": 841,
+      "row_correct_draws": 764,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.4575713862154127,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s6",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416823,
+    "coverage": 0.5314345258770407,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 35,
+      "free_connection_unknown": 42
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1547,
+      "detected_wall_rays": 1501,
+      "row_correct_draws": 1354,
+      "B_positive_frames": 19,
+      "B_detections": 16,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.3511719956033782,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s6_novel_relation_v4.json",
+      "scenario_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 15.0,
+    "distance_m": 3.6946271396058115,
+    "coverage": 0.20742817098808689,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 5
+    },
+    "observations": 5,
+    "sensor_draws": {
+      "visible_wall_rays": 386,
+      "detected_wall_rays": 384,
+      "row_correct_draws": 349,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.2570986011097936,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.5318975381285225,
+    "coverage": 0.14891380518570427,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 1
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 176,
+      "detected_wall_rays": 176,
+      "row_correct_draws": 138,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35029243739834554,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 15.0,
+    "distance_m": 3.712973316517361,
+    "coverage": 0.1590749824807288,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 5
+    },
+    "observations": 5,
+    "sensor_draws": {
+      "visible_wall_rays": 420,
+      "detected_wall_rays": 412,
+      "row_correct_draws": 360,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.2366709859073937,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416828,
+    "coverage": 0.15241765942536792,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 13,
+      "free_connection_unknown": 29
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2033,
+      "detected_wall_rays": 2014,
+      "row_correct_draws": 1757,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35117199560337864,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 117.0,
+    "distance_m": 32.91254478649958,
+    "coverage": 0.3114926419060967,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 39
+    },
+    "observations": 39,
+    "sensor_draws": {
+      "visible_wall_rays": 3683,
+      "detected_wall_rays": 3629,
+      "row_correct_draws": 3263,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 2
+    },
+    "end_position_error_m": 2.824481973630409,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.192461512446945,
+    "coverage": 0.4775753328661528,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 64,
+      "free_connection_unknown": 21
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1877,
+      "detected_wall_rays": 1793,
+      "row_correct_draws": 1593,
+      "B_positive_frames": 19,
+      "B_detections": 16,
+      "B_false_components": 3
+    },
+    "end_position_error_m": 0.49059620604754456,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 27.0,
+    "distance_m": 7.046094215523275,
+    "coverage": 0.1723896285914506,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 9
+    },
+    "observations": 9,
+    "sensor_draws": {
+      "visible_wall_rays": 855,
+      "detected_wall_rays": 841,
+      "row_correct_draws": 764,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.4575713862154127,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s7",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416823,
+    "coverage": 0.5255781359495445,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 22,
+      "free_connection_unknown": 24
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1533,
+      "detected_wall_rays": 1498,
+      "row_correct_draws": 1349,
+      "B_positive_frames": 19,
+      "B_detections": 16,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.3511719956033782,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s7_trio_rendezvous_v4.json",
+      "scenario_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.6956630295994306,
+    "coverage": 0.13634770417104802,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 168,
+      "detected_wall_rays": 166,
+      "row_correct_draws": 132,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.22392827921316116,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "B",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.5318975381285225,
+    "coverage": 0.11847178408692605,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 6,
+      "free_connection_unknown": 1
+    },
+    "plans": {
+      "observation_required": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 178,
+      "detected_wall_rays": 178,
+      "row_correct_draws": 140,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35029243739834554,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 9.0,
+    "distance_m": 1.9048144619051763,
+    "coverage": 0.13459516298633017,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 3
+    },
+    "observations": 3,
+    "sensor_draws": {
+      "visible_wall_rays": 246,
+      "detected_wall_rays": 241,
+      "row_correct_draws": 210,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.06785173004657777,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "B",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416828,
+    "coverage": 0.12197686645636173,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 11,
+      "free_connection_unknown": 43
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 2035,
+      "detected_wall_rays": 2016,
+      "row_correct_draws": 1759,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.35117199560337864,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 8.0,
+    "distance_m": 1.3102394598851281,
+    "coverage": 0.10304942166140904,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 2
+    },
+    "observations": 2,
+    "sensor_draws": {
+      "visible_wall_rays": 190,
+      "detected_wall_rays": 188,
+      "row_correct_draws": 147,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.24084030627953631,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "D",
+    "seed": 2701,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 15.0,
+    "distance_m": 4.317361793438594,
+    "coverage": 0.4107956536978619,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 9,
+      "free_connection_unknown": 1
+    },
+    "plans": {
+      "observation_required": 5
+    },
+    "observations": 5,
+    "sensor_draws": {
+      "visible_wall_rays": 397,
+      "detected_wall_rays": 393,
+      "row_correct_draws": 347,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.4493178233677258,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "static_map",
+    "status": "collision",
+    "first_B": null,
+    "time_s": 15.0,
+    "distance_m": 3.6544670988548953,
+    "coverage": 0.15772870662460567,
+    "collisions": 1,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {},
+    "plans": {
+      "static_map": 5
+    },
+    "observations": 5,
+    "sensor_draws": {
+      "visible_wall_rays": 473,
+      "detected_wall_rays": 465,
+      "row_correct_draws": 413,
+      "B_positive_frames": 0,
+      "B_detections": 0,
+      "B_false_components": 0
+    },
+    "end_position_error_m": 0.2384817587787582,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "static_map": true
+    }
+  },
+  {
+    "scenario": "s8",
+    "start": "D",
+    "seed": 2702,
+    "split": "confirmation",
+    "condition": "own_frontier",
+    "status": "search_exhausted",
+    "first_B": null,
+    "time_s": 71.0,
+    "distance_m": 5.183750781416823,
+    "coverage": 0.5212057483350859,
+    "collisions": 0,
+    "door_attempts": 0,
+    "wrong_door_attempts": 0,
+    "candidate_passage_attempts": 0,
+    "false_candidate_passage_attempts": 0,
+    "door_reasons": {
+      "jamb_reobserve": 15,
+      "free_connection_unknown": 27
+    },
+    "plans": {
+      "observation_required": 23,
+      "rotation_sweep_unknown": 18
+    },
+    "observations": 24,
+    "sensor_draws": {
+      "visible_wall_rays": 1560,
+      "detected_wall_rays": 1525,
+      "row_correct_draws": 1373,
+      "B_positive_frames": 19,
+      "B_detections": 16,
+      "B_false_components": 1
+    },
+    "end_position_error_m": 0.3511719956033782,
+    "sources": {
+      "scenario_path": "configs/zone_study_scenarios_v4/s8_mixed_tiers_v4.json",
+      "scenario_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_path": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    },
+    "options": {
+      "exploration": "own_frontier_v1",
+      "door_detection": "own_gap_v1",
+      "partial_planning": "own_astar_v1",
+      "resolution_m": 0.1,
+      "range_m": 4.0,
+      "fov_deg": 54.5,
+      "gain_weight": 1.0,
+      "travel_weight": 0.35,
+      "repeat_weight": 0.75,
+      "pose_margin_m": 0.02
+    }
+  }
+]

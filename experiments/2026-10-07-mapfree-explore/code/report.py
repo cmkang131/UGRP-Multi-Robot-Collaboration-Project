@@ -96,10 +96,33 @@ def report(dev,confirmation,out):
             if p.is_file():
                 artifacts[str(p.resolve())] = {'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
     dump(out/'artifacts.json',artifacts)
+    dump(out/'diagnosis.json',diagnose_tracks(confirmation))
     return summary
 
 
+def diagnose_tracks(confirmation):
+    out = {}
+    for p in sorted(confirmation.glob('*own_frontier/actor.jsonl')):
+        truth = {r['frame']:r for r in map(json.loads,(p.parent/'eval_only.jsonl').read_text().splitlines())}
+        tracks,translation,rotation = {},0,0
+        for r in map(json.loads,p.read_text().splitlines()):
+            c = r.get('command',{})
+            translation += bool(c.get('forward',0) or c.get('left',0))
+            rotation += bool(c.get('turn',0))
+            for patch,is_true in zip(r['patches'],truth[r['frame']]['B_component_truth']):
+                if is_true:
+                    tracks.setdefault(patch['track_id'],[]).append((r['t'],r['pose_odom']))
+        rows = []
+        for tid,items in tracks.items():
+            a = items[0][1]
+            rows.append({'track_id':tid,'views':len(items),'span_s':items[-1][0]-items[0][0],
+                         'command_baseline_m':max(math.dist(v[1][:2],a[:2]) for v in items)})
+        out[p.parent.name] = {'translation_commands':translation,'rotation_commands':rotation,'true_B_tracks':rows}
+    return out
+
+
 def plot(confirmation,out):
+    sys.path.insert(0,str(ROOT))
     sys.path.insert(0,str(ROOT/'outputs/self-map-plot-deps'))
     import matplotlib
     matplotlib.use('Agg')
