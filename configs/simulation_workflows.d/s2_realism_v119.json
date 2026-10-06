@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s2-realism-v119",
+      "version": "7.12.0",
+      "purpose": "S2 fresh DEV probe: real-floor probable confirmation + freeze; no research",
+      "entry": "scripts/run_s2_realism_v119.py",
+      "runner": "scripts.run_s2_realism_v119",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed SHA; owned lock; registered DEV seed1043; all explicit options",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

@@ -17,6 +17,14 @@ def validate(bundle):
     identity = re.fullmatch(r'zone-s2-realism-v(\d+)', bundle.get('execution_bundle_id', ''))
     task = bundle.get('task', {})
     rid = task.get('robot_id')
+    # Later explicit user instruction authorizes one fresh-seed S2 DEV probe
+    # recorded before execution. This is not a research preregistration waiver.
+    dev_probe_registration = (identity is not None and int(identity[1]) >= 119
+        and bundle.get('preregistered_run') is True
+        and bundle.get('registration_kind') == 's2-dev-probe'
+        and bundle.get('user_authorization') == '2026-10-06-s1042-site-check'
+        and bundle.get('stage_probe') == 'pick'
+        and bundle['options'].get('site_check') == 'real_floor_v1')
     required = dict(scenario='S2', transport='solo', cargo='cyan', admission='dev-pilot',
                     cohort_role='FUNCTIONAL_DEV', active_robot_ids=[rid])
     allowed = (identity is not None and int(identity[1]) >= 118
@@ -27,7 +35,7 @@ def validate(bundle):
         and set(task) == {'robot_id','pickup_slot','destination','passage_id','seed'}
         and bundle.get('research_result') is False
         and bundle.get('confirmation_sample') is False
-        and bundle.get('preregistered_run') is False
+        and (bundle.get('preregistered_run') is False or dev_probe_registration)
         and bundle.get('dev_light') is True
         and bundle['options'].get('drive_profile') == 'masterpi_drive_friction_v7'
         and bundle['options'].get('roller_collision', 'mesh') == 'mesh')

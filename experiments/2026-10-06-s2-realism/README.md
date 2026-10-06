@@ -1,5 +1,7 @@
 # S2 현실성 재검증 — 실행 전 등록 (2026-10-06)
 
+**진행 중(v119):** s1042 ROI 원인을 저장 자료로 분리하고 `site_check=real_floor_v1`(기본 off)을 추가했다. 아래 **s1043 실행 전 기록**에 고정한 단독 DEV probe1회를 시험·commit·push 후 실행한다. freeze 사용 및 DEV seed 사전 기록은 2026-10-06 후속 사용자 지시이며 본 연구 사전 등록 예외가 아니다. 결과는 실행 후 별도 절에 남긴다.
+
 **최신:** v117 `ef820ab2`의 s1042는 hover·하강·SIM lifted=true에 도달했지만 pickup-site ROI clipped/unknown으로 probe gate 미통과다. [v117 완료](#v117s1042-완료-실행-sha-ef820ab2d367b1a25e14b0cc4df6be4b3e58bb3d)를 따른다. 이후 사용자 결정으로 #407을 병합하고 다음 **탐색 S2 DEV 전용** v118 freeze 프로필을 준비했다. [새 제한과 미실행 상태](#2026-10-06-사용자-결정-idle-robot-contacts). 아래 v116 이전 요약·사전 등록은 당시 기록이다.
 
 **후속 완료:** s1039의 직접 원인은 (a) 173mm 옆 이동에 의한 정렬/시야 초과다.
@@ -563,3 +565,34 @@ v118 실행에는 기존 다섯 옵션과 함께 **`--idle-robot-contacts freeze
 #407의 0.819→0.362는 물리 timer,1.070→.647은 계측 포함 고정 input50 진단이다. S2 전체 실행과 분모가 달라 위 표에 직접 섞거나 S2 가속률로 사용하지 않는다. #407 결과는 이미 기존 TensorBoard `1006-v7-roller-84e62dd1`에 있고 이번에 중복 변환하지 않았다. 기존 S2 snapshot도 유지했다.
 
 `tests/test_s2_idle_contacts.py`는 scope 거부·기본off·세계 생성 전달/복구·reset 기록·result.json 옵션/조건·현재 admission없음·workflow 등록을 검사하며 **17개 통과(4.94s)**했다. CLI preview에서도 freeze 명시·seed 없음·허용 실행0개를 확인했다. [통합 검증 기록](idle-contacts-integration.json)을 남겼다. 실제 S2 SIM,새 wall 측정,모델 호출은 하지 않았다. 기존 v109–v117 계약/등록/raw는 수정하지 않았다. 공유 v7 소스는 #407 병합으로 바뀌었으므로 과거 재현은 원래 실행 SHA를 사용해야 한다. PR #406 DRAFT·미병합과 다른 작업 프로세스/자료를 유지한다.
+
+## s1042 ROI 오프라인 원인과 s1043 실행 전 기록
+
+`analyze_site_roi.py` / [수치 원본](s1042-site-roi.json)은 s1042 RGB·발행 자세·eval 전용 궤적만 읽었다. MuJoCo 생성/step/render 없이 저장된 camera calibration과 OpenCV fisheye 투영을 사용했다. 95.45초/프레임1884의 cyan은 **19,774px**, bbox **[218,319,148,142]**였고 전부 유효 렌즈 안에 있었다(가장 가까운 렌즈 경계까지4px). 하지만 `SiteMemory`가 반 bbox만큼 사방 확장한 ROI는 **[144,248,440,532]**,84,064px이었다. 아래52행15,392px이480행 영상 밖이고, 영상 안5,336px도 렌즈 검은 가장자리다. 총 **20,728px(24.66%)**이 보이지 않는 임의 여백이어서 **집기 전 기준 생성부터 실패**했다. 집기 후120.15초에는 `before=null,samples=[]`로 끝나 동일 자세 재관측을 시도하지 않았다.
+
+정렬 발행 자세는 servo3/4/5/6=508/2432/1320/1500이다. eval 블록 중심은 차체 앞201.657mm·왼쪽−1.236mm·높이15.892mm였다. 이전 카메라 원점은[118.269,0,171.020]mm·광축pitch−52.301°,v3는[123.781,0,190.459]mm·−49.760°다. v3와 블록 중심 거리는191.154mm(이전176.124mm)다. v3의 투영하단460.434px은 이전396.488px보다63.946px 아래다. v3(+10° tool-relative 절대 mount)가 여유를 줄이지만 **이전 카메라도 같은 확장 규칙이면 렌즈 밖4,913px**을 요구한다. 따라서 카메라만의 회귀로 보지 않으며 mount/FOV/arm 정렬 자세를 바꾸지 않는다. 실제 관절·roll/pitch는 프레임별로 저장되지 않아 발행 자세의 기존 정지 보정값을 썼다.
+
+120.15초 HIGH 발행 자세896/2035/1894/1500에서는 원래 바닥 자리의 가상 블록 투영이 v3 y711.704–1261.901px(이전651.148–1097.067px)로 두 카메라 모두 유효0px이다. 실제 사진의 cyan7,959px은 들고 있는 블록의 하단 strip이며 원래 자리 면적이 아니다. 실제 집기 후 **원래 관찰 자세** 사진은 이 실행에 없으므로 새 옵션의 사후 확인을 s1042 성공으로 소급하지 않는다. 사전 배경의 ECC std도 **.430826 < 기존 기준2.0**이므로 여백 자르기만으로는 등록/비교가 성립하지 않는다.
+
+### 실물 근거와 최소 선택 옵션
+
+- `scripts/red_block/physical_state_machine_reference.py:4643–4793`: 정지한 집기 전 관찰 자세를 저장하고 집기 뒤 복귀한다. .45초 정지 후 최신 snapshot 최대9개에서 **바닥 기하와 맞는 색 물체가1회 이하**면 `FLOOR_CLEAR_PROBABLE`이다. 원래 자리만 좁게 맞추는 과거 방식 대신 전체 프레임의 바닥 물체를 보므로 옆으로 밀린 실패도 찾는다. 힘/전류 센서가 없어 **PROBABLE_HELD이며 확정 파지가 아니다**. apparent-size fallback은 바닥 증거에서 제외한다.
+- `scripts/red_block/pick.py:364–393`가 이 경로를 호출한다. `sim/real_stack_adapter.py:1151–1187`의 bilateral contact/z 검사는 **그 뒤 별도 SIM 평가**이며 실물 제어기가 받은 성공 증거가 아니다. docs/archive의 검증 요약은 과거 SIM 기록이며 다른 실물 확인 구현을 근거로 사용하지 않았다.
+- 새 `site_check=real_floor_v1`은 같은 자세·차체 정지·9개 고유 fresh frame·.45초 settle·1회 이하 기준·최대1회 재집기를 따른다. 기존 보정된 자기 fisheye RGB의 **floor-cuboid fit(`range_class=near`)**을 재사용한다. SDK의 pinhole/floor-ray 식을 SIM 보정 대신 넣지 않고 기존 학생 기하를 유지하는 차이가 있다. 큰 ROI/ECC·카메라 재배치·정답 좌표 입력·측정 관절·접촉 피드백은 없다.
+- 빈 바닥은 저대비이므로 사후 색 검사에 한해 기존 `CONTENT_ONLY` 중 fresh/JPEG/shape 검사를 통과하고 dark_fraction<.25인 영상을 사용한다. 위치 추정 게이트는 그대로다. black/stale/hash 오류·발행 차체 이동·관찰 자세 불일치는 unknown이다. 기준 cyan 자체가 렌즈 경계에서 잘리면 여전히 거부한다. 전체 바닥 fit과 별개로 **원래 bbox의 전후 cyan 면적**도 기록하지만 들고 있는 strip은 면적에 포함될 수 있어 판정식으로 쓰지 않는다.
+- 새 상태는 `probable_held_floor_clear`; 기존 `visual_grasp_confirmed`를 true로 만들지 않는다. `result.json`에 `probe_gate_passed`, `probe_failure`, `grasp_claim`과 두 옵션을 기록한다. DEV probe gate는 이 제한적인 RGB 확인과 독립 eval `lifted=true`를 모두 요구하며 inside/정식운반/실물 성공과 구분한다.
+- 기본 off는 이전 Runtime/SceneCheck를 그대로 사용한다. 기존 v109–v118 실행기·계약·raw를 수정하지 않았다. `idle_robot_contacts_contract`에는 **후속 사용자 지시의 seed 사전 기록 S2 DEV probe만** 명시적 예외를 추가했다(`registration_kind=s2-dev-probe`,사용자 지시ID,stage=pick,site_check 필요). S3·짝·연구·본 연구 사전 등록은 계속 거부한다. 과거 v118의 등록 없는 미실행 상태를 덮어쓰지 않는다.
+
+표준 방법 조사: [OpenCV fisheye](https://docs.opencv.org/4.13.0/db/d58/group__calib3d__fisheye.html)의 고정 K/D 투영과 [ECC 공식 설명](https://docs.opencv.org/4.13.0/dc/d6b/group__video__track.html)의 영상 등록을 확인했다. [시야/가림 제약을 다루는 공개 IBVS 논문](https://arxiv.org/abs/2309.03476)은 특징을 시야에 유지하도록 제어를 바꾸는 방법이다. 이번에는 실물의 동일 자세 바닥 확인을 재사용하므로 새 제어 법칙·학습·FOV 튜닝을 도입하지 않는다. 논문 결과를 우리 성공 증거로 사용하지 않는다.
+
+### s1043 실행 전 기록 (커밋 이전, 아직 미실행)
+
+main+열린 PR14개의 ID/버전과 명시적 seed 필드·이름·CLI 및 공용 raw를 확인해 **v119 / workflow7.12.0 / s1043**을 예약했다(`reservation-scan-v119.json`). 숫자 일부가 같은 파일해시·프레임번호·기하 수치는 seed 사용으로 세지 않았다. **seed1043,r3,P1-2→B/door_1,pick probe1회**만 허용한다. 사후 튜닝에 사용한 s1042는 재사용하지 않는다. 이 새 seed DEV 검증을 통계적 본 연구 확증으로 승격하지 않는다.
+
+실행 옵션은 camera v3,drive v7,setdown_relook=off,grasp_check=pickup_site_v1,min_wheel_cmd=real_v1,dead_reckoning=v7_diag_v1,stagnation_watch=window120_v1,alignment_pulse=real_fine_v1,hover_check=real_pregrasp_v1,**idle_robot_contacts=freeze_v1,site_check=real_floor_v1**이다. 모든 새 옵션의 전역 기본값은 off다. [registration-v119.json](registration-v119.json)과 README를 **관련 시험 통과→Co-Authored-By: Codex 커밋→push 후** 고정 SHA로 실행한다.
+
+변경 시험 `tests/test_s2_real_site.py`와 `tests/test_s2_idle_contacts.py` **22개 통과(10.74s)**. 저장 JPEG의 기존 ROI 실패/새 기준 수용, off 명령·기록 바이트,9fresh/정지/동일자세/밝은 저대비/검은영상·중복·이동 거부,바닥 검출 실패·재집기 한도,범위·등록 seed·result 옵션을 확인했다. 실제 사후 RGB 확인은 아직 실행 전이다. 시험 중 발견한 저대비 색 확인 경로를 고친 뒤 전부 재통과했으며 이 시험을 물리 성공으로 세지 않는다.
+
+raw 예정 `/Users/changmin/projects/ugrp/outputs/s2-realism-<SHA8>-s1043-P1-2-pick`. `ugrp_session run`→`launch_v119.zsh`→표준`sim_cli workflow run`이며 실행기 PID의 agent_lock을 acquire하고 finally/EXIT에서 release한다. 한 번에1개·nice0·dev_light·120SIM초/1cm 정체 eval 중단·실제 물리 실패 중단을 유지한다. case cap1800SIM초,wall cap10800초,시작 시 여유51.26GiB를 확인했다. ENOSPC는HOST_ERROR이고 부분 raw도 보존한다. 같은 원인이2회면 중단한다(기존 ROI 확인불가 s1042=1회; 동일 원인 재발이면 추가 seed 없음). 이 probe1회 뒤에는 결과에 관계없이 이번 실행을 끝내고 기록하며 full1029–1031은 이 등록에 포함하지 않는다.
+
+freeze 전후 결과는 합산하지 않는다. off s1042 wall/SIM=**2.587649**와 새 실행의 wall/SIM만 기술적으로 나란히 기록하며, seed·확인 동작이 달라 인과적인 가속률로 해석하지 않는다. 결과·전후 면적·재집기·시간·영상·TensorBoard는 종료 후 실제 값으로 기록한다. PR #406은 DRAFT·미병합으로 유지한다.
