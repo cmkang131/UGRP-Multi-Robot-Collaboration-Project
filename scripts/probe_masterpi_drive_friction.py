@@ -18,7 +18,8 @@ THRESHOLD_PROFILE = 'masterpi_drive_friction_v3'
 STRIBECK_PROFILE = 'masterpi_drive_friction_v4'
 KARNOPP_PROFILE = 'masterpi_drive_friction_v5'
 HARD_PROFILE = 'masterpi_drive_friction_v5_hard_v1'
-CONTACT_PROFILES = (PROFILE, PUBLIC_PROFILE, THRESHOLD_PROFILE, STRIBECK_PROFILE, KARNOPP_PROFILE, HARD_PROFILE)
+DEADZONE_PROFILE = 'masterpi_drive_friction_v6'
+CONTACT_PROFILES = (PROFILE, PUBLIC_PROFILE, THRESHOLD_PROFILE, STRIBECK_PROFILE, KARNOPP_PROFILE, HARD_PROFILE, DEADZONE_PROFILE)
 CASES = ('rest', 'forward', 'left', 'turn', 'push', 'no_contact', 'rated_speed')
 
 
@@ -26,7 +27,7 @@ def write(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False)+'\n')
 
 
-def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torque_audit=False):
+def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torque_audit=False, long_lane=False):
     import mujoco
     import numpy as np
     from sim.masterpi_drive_friction import build_world
@@ -40,14 +41,17 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
         from sim.masterpi_drive_friction_v5 import build_world
     elif profile == HARD_PROFILE:
         from sim.masterpi_drive_friction_v5_hard import build_world
+    elif profile == DEADZONE_PROFILE:
+        from sim.masterpi_drive_friction_v6 import build_world
     from sim.zone_final_v3_scene import FinalV3Scene, build_world as legacy_world
     from harness.zone_pair_highpose import HIGH
     from sim.masterpi_dynamics_v2 import FORWARD_PATTERN, LEFT_PATTERN, YAW_LEFT_PATTERN
 
     scene = FinalV3Scene.from_spec({'map': 'zone_wide_two_doors_final_v3', 'seed': 1601,
         'goal': {'B': {'cyan': 1}}, 'extra_boxes': {}, 'team_cargo': []}, 'local_contact_fine')
+    spawn_x = 2.5 if long_lane else 3.
     # Empty east room. Setup-only poses; diagnostic trajectories are prewritten.
-    scene.config['setup_only']['spawns']['r1'] = [3., -1., .0325, 0.]
+    scene.config['setup_only']['spawns']['r1'] = [spawn_x, -1., .0325, 0.]
     kwargs = dict(seed=1601, render=False, warehouse_layout=scene.engine_layout,
                   use_calibration_manifest=False)
     world = None
@@ -62,7 +66,7 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
         scene.setup(world)
         c = world.robot('r1'); m, d = world.model, world.data
         c.set_servo_pulses({**HIGH, 1:2000}, forward_only=True)
-        c.set_base_pose_for_test((3., -1., .0325), 0.)
+        c.set_base_pose_for_test((spawn_x, -1., .0325), 0.)
         item = next(iter(scene.config['setup_only']['objects'].values()))
         cargo = m.body(item['body_name']).id
         cargo_j = int(m.body_jntadr[cargo]); cargo_q = int(m.jnt_qposadr[cargo_j])
@@ -105,6 +109,7 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
         result['normalized_wheel_command'] = cmd.tolist()
         wheel_dofs = [m.jnt_dofadr[m.joint(f'r1__wheel_{w}_joint').id] for w in ('fl','fr','rl','rr')]
         result['drive_command_s'] = drive_s
+        result['diagnostic_lane'] = 'east_long_x2.5_v1' if long_lane else 'east_x3_v1'
         rows = []; audit_rows = []; own_contact_pairs = {}; wall0 = time.perf_counter()
         force6 = np.zeros(6)
         jac = np.zeros((3, m.nv)); jacr = np.zeros((3, m.nv))
@@ -207,6 +212,7 @@ def main():
                    help='legacy signed Board magnitude in 0..100; separate reset for each input')
     p.add_argument('--cases', nargs='+', choices=CASES, default=list(CASES))
     p.add_argument('--loaded', action='store_true')
+    p.add_argument('--long-lane', action='store_true', help='setup x2.5: clearance for 5 s at rated speed')
     p.add_argument('--torque-audit', action='store_true', help='read-only every-step torque breakdown for first .15 s')
     p.add_argument('--drive-seconds', type=float, default=1.5,
                    help='fixed command duration, 1.5 to 5 s; stop duration remains 1 s')
@@ -234,7 +240,7 @@ def main():
         for case in args.cases:
             for level in args.wheel_inputs or [None]:
                 name = case if level is None else f'{case}-u{level:03}'
-                result = run_case(args.drive_profile, case, args.loaded, args.output/name, level, args.drive_seconds, args.torque_audit)
+                result = run_case(args.drive_profile, case, args.loaded, args.output/name, level, args.drive_seconds, args.torque_audit, args.long_lane)
                 results.append(result)
                 print(json.dumps({k: result.get(k) for k in ('case','wheel_input','status','steady_velocity','wall_per_sim')}, ensure_ascii=False), flush=True)
                 if result['status'] != 'MEASURED_DEV':

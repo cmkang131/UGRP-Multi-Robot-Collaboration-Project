@@ -569,3 +569,41 @@ Ts/Tc/DV/모터곡선/접촉/roller/나머지 solimp/solref는 불변임을 단�
 이는 이상적 정지 마찰의 수치 근사이며 새 물성 측정도, 결과를 보며 숫자를 탐색한 것도 아니다.
 입력20/30/35/50/100 각5 s+정지1 s, 무하중부터 하나씩 실행한다.
 이 최소 수정이 실패하면 사용자 지정 dead-zone v6로 전환하며 이 solver 수치를 다시 탐색하지 않는다.
+
+### 최소 수정 결과 → v6 dead-zone 후보 (실행 전 고정)
+
+SHA `19621cfc`:5 s 입력20 최대0.0725 mm,30 최대2.0296 mm(1 mm 정지 기준 실패),
+35/50 마지막0.5 s 최소 전진속도0.1271/0.2132 m/s. 따라서 soft constraint 누출을 크게
+줄여도 정지 관측은 충족하지 못한다. 같은 solver 값을 다시 조정하지 않고 사용자가 지시한
+대체 후보로 전환한다. 입력100은 끝에서 x≈5.19 m에 도달해 동쪽 벽/차체 여유와 겹친다.
+이 사례는 5 s 지속 주행 판정에 사용할 수 없는 공간 부족 진단으로 보존한다.
+v6에서는 **명시적 --long-lane**으로 setup x만3.0→2.5 m로 옮긴다(벽/장면 물리는 불변).
+최대 이론 이동2.55 m와 정지 여유를 확보한다. 기존 짧은 비교는 이전 x3도 유지 가능하다.
+
+`masterpi_drive_friction_v6`, workflow6.0.0: 표준 대칭 piecewise-linear dead-zone
+`D(u)=sign(u)*max(abs(u)-b,0)/(1-b)`, `b=0.325`를 결과 확인 전에 고정한다.
+사용자의 <=30 정지/35 이상 출발 관측 구간의 중간값이고 측정된 정확한 문턱은 아니다.
+기울기는 D(±1)=±1을 보존하는 정규화이다. native wheel motor에 `T0*D(u)`를 준다.
+속도 저항 `B=T0/omega0`를 joint damping으로 두어 순 모터 곡선은
+`T0*(D(u)-omega/omega0)`이다. 이는 공식 준정적 DC 방정식의 구동원/역기전력 항 분해이다.
+|u|<=b이면 **능동 모터 토크0**이며, 이미 회전하거나 외력으로 밀릴 때 수동 속도 저항은 남는다.
+모터를 껐을 때 실제 보드가 coast인지 brake인지는 미확인이다. 이 구분을 토크 원본에 명시한다.
+150 rpm은 손실 포함 속도 끝점으로 쓰고 기존 Tc/Ts를 동시에 차감하지 않는다.
+기존 .1176798 Nm 토크 크기의 정지 정격/장착품 동일성은 여전히 미확인이다.
+65 mm 바퀴의 이상적 최고속도는0.5105 m/s이며 기존0.093 m/s와 동일한 사양값이 아니다.
+
+v6는 **물리적 정지 마찰 역산 모델이 아니라 관측 입력-출력 근사**다. 하중 의존 문턱,
+방향별 차이·온도·히스테리시스·기어 자체잠금은 재현하지 않는다. 바닥/롤러 마찰과 베어링,
+모양/질량/관성/카메라는 v2 그대로다. 바퀴축 native torque만 쓰며 차체 wrench/상태고정 없음.
+재보정 전 기존 운반/v106/학생 성공이나 실물 속도를 승계하지 않는다.
+
+근거·확인 범위:
+
+- [Tao & Kokotović1994](https://doi.org/10.1109/9.273339): 제목/서지 확인, IEEE 원문 본문은 접근 미확인.
+- [Wang, Su & Hong2004, Automatica Eq1](https://users.encs.concordia.ca/~cysu/publication/Robust%20adaptive%20control%20of%20a%20class%20of%20nonlinear%20systems%20with%20unknown%20dead-zone.pdf): 저자 공개 전문 확인. Tao 계열 정적 모델·양쪽 선형 가지/중간0을 그대로 사용. 적응 역보상 제어기는 구현하지 않음.
+- [Fezazi et al.2021 DC motor dead-zone](https://www.iieta.org/journals/jesa/paper/10.18280/jesa.540612): 공개 전문의 모터 손실 식별/보상 사례 확인. 해당400 W 모터 수치는 TT에 전용하지 않음.
+- [MathWorks 공식 DC motor](https://www.mathworks.com/help/simscape-electrical/ref/dcmotor.html): `T=Kt/R*(V-Kv*w)`와 정지토크/무부하속도 기반 매핑 확인. v6는 이 affine 식을 능동 source와 수동 damping으로 분리함.
+- [2026 dead-zone compensation preprint](https://arxiv.org/html/2607.28142v1): 공개 본문 확인, 모델 없이 보상하는 최근 접근은 검토만 함. 공개 실행 코드/저자 실험 재현은 미확인. 이번처럼 측정이 적은 후보에는 제어/학습을 추가하지 않음.
+
+동일 입력20/30/35/50/100, 무하중·cyan5 s 진단 후 옆/회전/접촉 제거, 짝 빔을 비교한다.
+입력 정지/지속 주행이 v6에서도 실패하면 숫자 재조정 없이 중단한다.
