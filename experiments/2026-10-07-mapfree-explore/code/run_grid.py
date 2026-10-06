@@ -88,7 +88,7 @@ class Actor:
         gain = np.asarray(motion_profiles()['motion']['gain'])
         if len(path)>1:
             # One short holonomic step; no waypoint from hidden truth.
-            target = np.array(path[min(2,len(path)-1)])
+            target = np.array(path[1])
             delta = inverse([target],pose)[0]
             delta *= min(1.,.12/max(1e-9,np.linalg.norm(delta)))
             requested = np.linalg.solve(gain,np.array([*delta,0.]))
@@ -145,6 +145,7 @@ def episode(index,start_id,seed,split,condition,out):
     status = 'budget'
     first = None
     door_reasons = {}
+    track_truth = {}
     if world.collision(world.pose[:2]):
         status = 'HOST_SETUP_ERROR'
     else:
@@ -164,10 +165,14 @@ def episode(index,start_id,seed,split,condition,out):
             observation,patches,truth = world.observe(step)
             accepted = actor.receive(observation,patches)
             for p,is_true in zip(accepted,truth):
+                evidence = track_truth.setdefault(p['track_id'],[])
+                evidence.append(bool(is_true))
                 if p['confirmed_t'] is not None:
                     # Evaluation matches the track's evidence, never tells actor whether B is true.
-                    first = {'time_s':actor.t,'distance_m':world.distance,'true':bool(is_true)}
-                    status = 'B_confirmed' if is_true else 'B_false_confirmed'
+                    correct = sum(evidence)>=2 and sum(evidence)>len(evidence)/2
+                    first = {'time_s':actor.t,'distance_m':world.distance,'true':correct,
+                             'true_views':sum(evidence),'total_views':len(evidence)}
+                    status = 'B_confirmed' if correct else 'B_false_confirmed'
                     break
             plan = actor.plan()
             for d in plan['doors']:

@@ -166,3 +166,20 @@ def test_json_serializable_native_cells_and_initial_static_baseline_path():
         assert actor.plan()['path_m']
     finally:
         sys.path.remove(str(EXP/'code'))
+
+
+def test_executor_does_not_shortcut_a_star_bend_or_read_truth():
+    sys.path.insert(0,str(EXP/'code'))
+    try:
+        import run_grid
+        actor = run_grid.Actor('own_frontier')
+        # A one-cell elbow must not be replaced with the diagonal to its second successor.
+        plan = {'status':'frontier','path_m':[[0.,0.],[.1,0.],[.1,.1]],'doors':[]}
+        cmd = actor.command(plan)
+        gain = np.asarray(run_grid.motion_profiles()['motion']['gain'])
+        expected = gain@np.array([cmd['forward'],cmd['left'],cmd['turn']])
+        assert abs(expected[1])<.001
+        assert actor.static_goal is None
+        assert not hasattr(actor,'world')
+    finally:
+        sys.path.remove(str(EXP/'code'))

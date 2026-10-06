@@ -160,7 +160,7 @@ class GridWorld:
         path = plan.get('path_m',[])
         if len(path)<2:
             return
-        local = inverse([path[min(2,len(path)-1)]],estimated_pose)[0]
+        local = inverse([path[1]],estimated_pose)[0]
         local *= min(1.,.12/max(1e-9,np.linalg.norm(local)))
         end = transform([local],self.pose)[0]
         radius = math.hypot(.12,.10)
