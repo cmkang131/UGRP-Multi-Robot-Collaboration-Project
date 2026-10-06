@@ -15,7 +15,8 @@ RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
 PROFILE = 'masterpi_drive_friction_v1'
 PUBLIC_PROFILE = 'masterpi_drive_friction_v2'
 THRESHOLD_PROFILE = 'masterpi_drive_friction_v3'
-CONTACT_PROFILES = (PROFILE, PUBLIC_PROFILE, THRESHOLD_PROFILE)
+STRIBECK_PROFILE = 'masterpi_drive_friction_v4'
+CONTACT_PROFILES = (PROFILE, PUBLIC_PROFILE, THRESHOLD_PROFILE, STRIBECK_PROFILE)
 CASES = ('rest', 'forward', 'left', 'turn', 'push', 'no_contact', 'rated_speed')
 
 
@@ -23,7 +24,7 @@ def write(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False)+'\n')
 
 
-def run_case(profile, case, loaded, output, wheel_input=None):
+def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5):
     import mujoco
     import numpy as np
     from sim.masterpi_drive_friction import build_world
@@ -31,6 +32,8 @@ def run_case(profile, case, loaded, output, wheel_input=None):
         from sim.masterpi_drive_friction_v2 import build_world
     elif profile == THRESHOLD_PROFILE:
         from sim.masterpi_drive_friction_v3 import build_world
+    elif profile == STRIBECK_PROFILE:
+        from sim.masterpi_drive_friction_v4 import build_world
     from sim.zone_final_v3_scene import FinalV3Scene, build_world as legacy_world
     from harness.zone_pair_highpose import HIGH
     from sim.masterpi_dynamics_v2 import FORWARD_PATTERN, LEFT_PATTERN, YAW_LEFT_PATTERN
@@ -94,7 +97,8 @@ def run_case(profile, case, loaded, output, wheel_input=None):
             cmd = patterns.get(case, np.zeros(4)) * wheel_input_normalized(wheel_input)
         result['wheel_input'] = wheel_input if wheel_input is not None else (100 if case == 'rated_speed' else 20)
         result['normalized_wheel_command'] = cmd.tolist()
-        drive_s = 1.5
+        wheel_dofs = [m.jnt_dofadr[m.joint(f'r1__wheel_{w}_joint').id] for w in ('fl','fr','rl','rr')]
+        result['drive_command_s'] = drive_s
         rows = []; own_contact_pairs = {}; wall0 = time.perf_counter()
         force6 = np.zeros(6)
         jac = np.zeros((3, m.nv)); jacr = np.zeros((3, m.nv))
@@ -136,6 +140,7 @@ def run_case(profile, case, loaded, output, wheel_input=None):
                     'wheel_speed': [float(d.qvel[m.jnt_dofadr[m.joint(f'r1__wheel_{w}_joint').id]])
                                     for w in ('fl','fr','rl','rr')],
                     'wheel_actuator_torque_nm': d.actuator_force[c.wheel_act].tolist(),
+                    'wheel_friction_limit_nm': m.dof_frictionloss[wheel_dofs].tolist(),
                     'wheel_normal_n': normal, 'wheel_tangent_n': tangential, 'wheel_contacts': wheel_contacts,
                     'own_wheel_contact_force_n': own_force,
                     'base_external_force': d.xfrc_applied[c.robot_bid].tolist(),
@@ -147,7 +152,9 @@ def run_case(profile, case, loaded, output, wheel_input=None):
         else:
             result['status'] = 'MEASURED_DEV'
         elapsed = time.perf_counter()-wall0
-        tail = [r for r in rows if 1. <= r['t'] <= 1.5]
+        tail = [r for r in rows if drive_s-.5 <= r['t'] <= drive_s]
+        result['tail_forward_min_mps'] = min(r['velocity'][0] for r in tail) if tail else None
+        result['tail_forward_progress_m'] = tail[-1]['com_xyz'][0]-tail[0]['com_xyz'][0] if tail else None
         result.update(sim_s=float(d.time-start_t), wall_s=elapsed, wall_per_sim=elapsed/(d.time-start_t),
             commands=2, displacement_m=(c.base_xyz()-start_xyz).tolist(), yaw_change_rad=c.base_rpy()[2]-start_yaw,
             steady_velocity=np.mean([r['velocity'] for r in tail], axis=0).tolist() if tail else None,
@@ -187,7 +194,11 @@ def main():
                    help='legacy signed Board magnitude in 0..100; separate reset for each input')
     p.add_argument('--cases', nargs='+', choices=CASES, default=list(CASES))
     p.add_argument('--loaded', action='store_true')
+    p.add_argument('--drive-seconds', type=float, default=1.5,
+                   help='fixed command duration, 1.5 to 5 s; stop duration remains 1 s')
     args = p.parse_args()
+    if not 1.5 <= args.drive_seconds <= 5:
+        p.error('drive-seconds must be within 1.5..5')
     if not args.output.is_absolute() or not args.output.resolve().is_relative_to(RAW_ROOT):
         p.error('raw output must be absolute below primary outputs/')
     source = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
@@ -209,7 +220,7 @@ def main():
         for case in args.cases:
             for level in args.wheel_inputs or [None]:
                 name = case if level is None else f'{case}-u{level:03}'
-                result = run_case(args.drive_profile, case, args.loaded, args.output/name, level)
+                result = run_case(args.drive_profile, case, args.loaded, args.output/name, level, args.drive_seconds)
                 results.append(result)
                 print(json.dumps({k: result.get(k) for k in ('case','wheel_input','status','steady_velocity','wall_per_sim')}, ensure_ascii=False), flush=True)
                 if result['status'] != 'MEASURED_DEV':

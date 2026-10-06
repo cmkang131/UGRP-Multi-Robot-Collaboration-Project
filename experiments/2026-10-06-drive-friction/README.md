@@ -402,3 +402,63 @@ v106/짝 실행기 도입에는 위의 v101/v102 gain·deadband·시간상수·�
   화면 캡처/내용 확인이 불가능했다. **카드 화면·run 선택·HParams 열 표시 검증은 미완료**이며 두 번 확인 뒤 UI 재시도를 중단했다.
   다른 작업 탭/서버를 변경하지 않았다. [대시보드](http://127.0.0.1:6006/?runFilter=%5E1006-drive-friction-v3%2F#timeseries),
   정확한 고정 링크와 데이터 대조 결과는 [검증 JSON](v3-tensorboard-verification.json)의 `url`/`readback`에 있다.
+
+## 이슈 #404 재개: 정지/운동 마찰 분리 v4 (실행 전 조사·계획)
+
+[추적 이슈 #404](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/404)의 사용자 관측은
+**입력30 이하 정지, 35 이상 지속 주행**이다. v3의 일정한 dry loss는 출발/운동 저항을 같게 놓았다.
+정지 후 재출발을 구분하는 표준 모델을 조사한 뒤 아래 v4 후보를 고정한다. 이전 실패가 오직 이 항목 때문이라고 미리 확정하지 않는다.
+
+| 방법·출처 | 확인 내용과 선택 |
+|---|---|
+| Karnopp (1985), [DOI](https://doi.org/10.1115/1.3140698) | 작은 속도 구간에서 붙음/미끄러짐을 구분하는 고전법. 서지는 확인, 출판사 원문 접근 실패로 원문 세부식은 **미확인**. 이번 코드의 직접 출처로 삼지 않음 |
+| Stribeck, [MuJoCo DC motor 기술 문서 식10](https://mujoco.readthedocs.io/en/latest/_static/dcmotor.pdf) | `g(w)=Tc+(Ts-Tc)*exp(-(w/ws)^2)`로 정지에서 큰 저항, 운동에서 낮은 저항. 이 식을 사용 |
+| LuGre (1995), [저자 기관 서지](https://lup.lub.lu.se/search/publication/0c411ed4-a01c-41e2-852c-6586fa9295e7), MuJoCo 기술 문서 §1.4/2.4 | bristle 상태·강성·감쇠로 미끄러지기 전 변형을 포함. 설치된 MuJoCo3.12의 `dcmotor lugre` 구현/공개 시험 확인. 장착품 강성·감쇠가 없어 이번에는 추가 상태를 식별한 척하지 않음. 1995 원문 파일 직접 열람은 미확인 |
+| [MuJoCo frictionloss](https://mujoco.readthedocs.io/en/3.12.0/computation/index.html#friction-loss) | 정지에서도 작용하는 native dry-friction constraint지만, 상수 하나로 두면 정지/운동의 다른 크기를 표현하지 못함 |
+| [공개 MuJoCo #1366](https://github.com/google-deepmind/mujoco/issues/1366) | 관절 속도로 `frictionloss`를 갱신하는 공개 제안. 이 갱신 경로를 그대로 사용하되 **상류에서 검증된 로봇 구현은 아님**을 명시 |
+| [공식 passive/actuator-bias callback](https://mujoco.readthedocs.io/en/3.12.0/APIreference/APIglobals.html#physics-callbacks) | 사용자 힘/바이어스 확장 가능. 전역 callback 수명과 별도 zero-speed regularization을 피하고, 기존 native constraint의 정지 처리 사용 |
+| [공식 model 변경 지침](https://mujoco.readthedocs.io/en/3.12.0/programming/simulation.html#model-changes) | 모델별 실수 파라미터 갱신. v4는 자기 world의 wheel DOF만 갱신하며 RK4는 거부하고 기존 implicit integrator 사용 |
+
+공개 MuJoCo 소스는 설치 버전3.12.0 SHA **`13827e9ee56f097f57acf69ae52b078f9839682d`**에 고정했다.
+[DC motor 엔진](https://github.com/google-deepmind/mujoco/blob/13827e9ee56f097f57acf69ae52b078f9839682d/src/engine/engine_forward.c),
+[공개 derivative 예제](https://github.com/google-deepmind/mujoco/blob/13827e9ee56f097f57acf69ae52b078f9839682d/test/engine/testdata/derivative/dcmotor.xml),
+[LuGre/모터 단위 시험](https://github.com/google-deepmind/mujoco/blob/13827e9ee56f097f57acf69ae52b078f9839682d/test/engine/engine_forward_test.cc)을 읽었다.
+참고 파일은 primary `outputs/drive-friction-v4-references-20261006/`에 URL·SHA256과 저장했다.
+
+### v4 파라미터의 근거와 한계
+
+[Hiwonder encoder TT 공식 사양](https://www.hiwonder.com/products/tt-motor-plastic)은 6 V, 무부하150 rpm,
+무부하 전류 **0.1 A**, 정지 전류 **1.2 A**, torque1.2 kgf cm를 표기한다. 앞서 빠졌던 두 전류를 이번에 확인했다.
+장착품 동일성과 torque가 stall rating인지 여부는 여전히 미확인이다.
+[Adafruit TT3777 공개 자료](https://www.adafruit.com/product/3777)도 선형 전압 구동·모터 간 편차, 6 V에서250 rpm/0.16 A와
+정지1.5 A/0.8 kgf cm를 제공한다. 기어비1:48로 Hiwonder1:42와 다른 제품이어서 이 수치를 MasterPi에 섞지 않는다.
+TT의 전체 실측 토크-속도 곡선은 찾지 못했으며 **공식 DC 식으로 사양 끝점을 잇는 근사 곡선**을 사용한다.
+
+- 모터 토크 scale `T0=.1176798 Nm`는 기존 미확인 후보 그대로. 결과를 통과시키기 위해 키우지 않는다.
+- 정지 저항 `Ts=.30*T0=.03530394 Nm`: 사용자 출발 문턱의 하한 대표값을 v3에서 유지.
+- 운동 저항 `Tc/T0=I0/Is=1/12`, 따라서 **Tc=.00980665 Nm**.
+  같은 전압에서 토크가 전류에 비례하고 무부하 손실을 모두 dry loss로 볼 때의 조건부 추론이다.
+  점성/브러시/기어 손실 분리·하중 의존성·실물 바닥 마찰계수는 식별하지 못했다.
+- Stribeck 전이속도 `ws=.1 rad/s`는 위 공식 derivative 예제의 값 그대로이며 장착품 실측값이 아니다.
+  이 값을 실행 전에 고정하고 결과를 보고 변경하지 않는다. 강성·micro damping은 사용하지 않는다.
+- native `dcmotor`의 전압 입력은 `u*6 V`, 식은 `T0*(u-w/we)`.
+  무부하150 rpm에는 손실이 이미 포함되므로 `we=(150*2*pi/60)/(1-1/12)=17.13596 rad/s`로 전기적 무토크 속도를 계산한다.
+  joint 운동 저항을 뺀 뒤 무부하150 rpm으로 돌아오게 해 손실 중복 차감을 피한다.
+  컴파일러가 만드는 K/R는 **등가 출력축 곡선**이며 실제 코일 저항/전류를 식별했다는 뜻이 아니다.
+- v2 공개 롤러·접촉·마찰 .8·관성·베어링·solver·가시 형상·카메라를 그대로 유지한다.
+  차체 힘/속도/위치를 보정하거나 입력30을 소프트웨어에서 잘라 버리지 않는다. 관절 속도는 물리 구성식 안에서만 사용한다.
+
+새 프로필 `masterpi_drive_friction_v4`, 진단 workflow **4.0.0**. 원격 브랜치 전체의 같은 workflow 최댓값3.0.0 확인 후 등록.
+기본값/기존 번들/실물 제어 코드는 유지한다. 후보 선택 이유는 모터·기어 강성 없이 관측 가능한 정지/운동 저항을 구분할 수 있어서다.
+공개 제안+표준 구성식의 구현이며, 이 조합의 MasterPi 물리 정확도는 아래 진단에서 따로 판단한다.
+
+### 이번 유한 확인 순서
+
+1. 새 초기 상태에서 v4 직진 입력20/30/50/100을 각각1.5 s+정지1 s, 입력35는 **5 s+정지1 s**로 무하중/cyan 비교.
+   20/30 명령 중 전체 COM XY 최대 이동 <=1 mm, 35 마지막 .5 s의 모든 기록에서 전진 속도 >.001 m/s이면
+   이번 유한 지속 주행 진단 통과로 판정한다. 실물 정밀도/무한 지속 보증이 아니며 35의 과거1.5 s보다 긴 재확인이다.
+2. 동일 문제의 두 조건 재발이면 즉시 중단. 통과하면 같은35와1.5 s로 접촉 제거·옆 이동·회전을 두 하중에서 확인한다.
+   옆 이동 회전 보류 기준은 이전과 같은1°이고, 접촉 제거는 질량중심과 접촉 힘으로 판단한다.
+3. 옆 이동 회전 문제가 사라질 때에만 짝 빔 밀림 비교로 넘어간다. weld/모델 호출 없이 정해진 명령의 DEV 물리 비교다.
+4. 모든 실행은 primary 잠금 null 확인 후 자기 PID acquire/release, 관리 세션, 절대 raw 경로.
+   새 실패도 보존하고 TensorBoard 수치 대조만 수행한다(사용자 요청으로 브라우저 확인 생략).
