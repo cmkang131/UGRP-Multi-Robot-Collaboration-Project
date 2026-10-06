@@ -1402,3 +1402,49 @@ MCL·정적 지도·상대 지도·실시간 정답 입력·전역 loop closure�
 [Cartographer 공식 구현](https://github.com/cartographer-project/cartographer/blob/master/cartographer/mapping/internal/2d/scan_matching/real_time_correlative_scan_matcher_2d.cc)의
 후보 생성·격자 조회·이동 prior 점수 구조를 참고한다. RGB 벽 접점·관측 축 제한·짧은 submap은 설계서 A의 적용 조건이다.
 위 기준과 설계는 자기 일관성이 전역 정확도나 공통 카메라 scale bias 제거를 보장한다고 가정하지 않는다.
+
+### 17.3 첫 구현·고정 설정 (재생 전)
+
+[보정 모듈](../../harness/self_map_csm.py)은 기존 `OdomGrid`를 상속하는 on 전용 경로다.
+기존 `harness/self_odom_grid.py`와 과거 재생기는 변경하지 않았다. `SelfWallMemory`의 생성자에서
+`pose_correction="own_map_csm_v1"`를 선택한다. `pose_correction_options`는 아래 `CSMOptions` 필드의
+명시적 대안 설정을 받지만 이번 비교는 모두 같은 기본값으로 고정한다.
+
+| 옵션/설정 | 기본값 | 근거·효과 |
+|---|---|---|
+| `pose_correction` | `off` | `own_map_csm_v1`는 `self_map=odom_grid_v1` 필요 |
+| `field_resolution_m` / 격자 해상도 | 0.05 / 0.10 m | 반 셀 탐색, 저장 격자는 이전과 동일 |
+| `translation_window_m` / `yaw_window_deg` | ±0.50 m / ±8° 상한 | 축별 3σ 창(최소 3 step); 경계 최적해 거부 |
+| `yaw_step_deg` | 1° | 4 m 끝점에서 약 0.07 m; 저장 격자 폭 이내 |
+| `submap_age_s` / `submap_radius_m` / `submap_keyframes` | 15 s / 6 m / 12개 | 과거 자기 keyframe만 동결; 오래되면 DR 불확실성을 유지한 새 anchor |
+| `keyframe_interval_s` / `min_points` | 1 s / 6개 | 고주파 반복을 독립 정보로 합산하지 않음; 같은 frame 및 2 cm 양자화 중복 형상 보류 |
+| `min_overlap` / `overlap_distance_m` | 60% / 0.20 m | 두 저장 셀 이내의 대응 비율 |
+| `max_residual_m` | 0.15 m | 전체 접점의 거리장 잔차 RMS 한도; 평가용 벽을 참조하지 않음 |
+| `mode_distance_m` / `mode_gap` | 0.15 m / 0.50 | 관측 축에서 분리된 후보의 센서 비용 차이가 작으면 다봉성 거부; prior로 모호성을 숨기지 않음 |
+| `hessian_ratio` | 최대 고유값의 3% (절대 0.5 이상) | yaw를 2 m 거리 변위로 정규화; 미관측 축의 보정 0, 해당 분산 유지 |
+| `effective_points` | 최대 12 | 0.10 m 접점 셀 중복 제거 후 센서 비용의 유효 표본 수 제한 |
+| 센서 오차 | 보정 하한 0.08 m, 2 px, fy=622.1655 px, 높이 하한 0.15 m | `σ²=.08²+.05²/12+(2r²/(fy·.15))²`; 먼 면의 가중치를 낮춤 |
+| 공분산 하한 | XY 0.10 m / yaw 2° | anchor 불확실성+하한보다 작게 축소하지 않음 |
+| 적재 불명 이동 바닥값 | 0.02 m/√s | 자기 명령으로 설명되지 않는 끌림을 허용하는 보수적 분산; 상대 명령 입력 없음 |
+| 거부 관측의 지도 삽입 | 보류 | 수락·새 submap bootstrap만 점유/빈 공간 갱신, GT 기반 사후 구제 없음 |
+
+센서 오차 식은 바닥 접점의 pinhole 깊이 미분 `δr≈r²·δv/(fy·h)`에 셀·보정 바닥값을 더한 근사다.
+fy는 기존 `sim/masterpi_camera_profile.py`의 고정 실측 보정값이다. 2 px·0.15 m 높이 하한·0.08 m 잔차 바닥값은
+독립 실측에서 추정한 확률이 아닌 보수적 **설계 설정**이며, 좁은 FOV·sag/scale bias를 해결했다고 보지 않는다.
+카메라 FK/offset과 감지는 §16에서 보존한 Cartesian 접점을 그대로 재사용한다.
+
+명령 평균은 §16의 M1 모델 그대로다. 공분산만 동일 M1 `noise_rel`, `noise_abs`, `scale_std`를 재사용하여
+50 ms마다 `FΣFᵀ+RQ Rᵀ`를 계산한다. 속도 잡음은 `(std·dt)²`, scale 오차는 1 s 상관시간의 rate 과정으로
+`(scale_std·|v|)²dt`를 더한다. 적재 프로필·횡속도·회전이 분산에 반영되며, 적재 상태에는 위 불명 이동 바닥값을 추가한다.
+이 공분산은 검증된 posterior 정확도 주장이 아니고 정합 창·prior·과신 억제용이다. 난수나 MCL 측정 갱신은 없다.
+
+센서 비용은 거리장 오차/σ의 Huber loss(전환 1.5σ), prior는 `δᵀΣ⁻¹δ`다. 모든 후보를 조회한다.
+관측 Hessian은 과거 면의 법선으로 구성하므로 선분 끝점이 직선 벽 접선 이동의 가짜 근거가 되지 않는다.
+현재 프레임은 정합이 끝난 뒤에만 삽입한다. 수락/거부 원장에 과거 frame ID·직전 개정 번호를 쓰며,
+`map_ledger.jsonl`의 자기 접점·고정 수락 자세·카메라 원점으로 격자를 재투영할 수 있다. 과거 자세 수정 API는 없다.
+
+[비교 재생기](code/own_map_csm_replay.py)는 §16의 `observations.jsonl`에서 `t/frame_id/camera/segments`만
+화이트리스트로 읽는다. 과거 DR pose도 보정기에 주지 않는다. 이미 제거된 정착/거리 관측 수는 이전 요약에 따로 보존한다.
+on은 정착·엄격한 4 m 경계를 다시 검사한다. off는 정확한 기존 float 접점으로 쌓아 과거 `poses.jsonl`·셀·LLM 문구를
+바이트 비교하고, 단위 시험에서는 기존 소스의 전체 메모리/격자 출력을 비교한다.
+예측 격자·자세·원장을 먼저 디스크에 고정한 뒤, 평가 함수가 정답을 읽는다. 재생 전 코드·계수를 커밋한다.
