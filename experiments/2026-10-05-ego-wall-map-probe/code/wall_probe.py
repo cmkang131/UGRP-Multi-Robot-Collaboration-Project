@@ -51,6 +51,35 @@ def is_loaded(servo) -> bool:
     return int(pulse) <= LOADED_GRIPPER_PULSE_MAX
 
 
+# OPTION ``load_rule`` (default ``s3`` = the behaviour before #405):
+#   ``s3``       servo[3] >= 900, the arm-pose rule every earlier tool used. Each tool read the key in its own
+#                way and ``legacy_str_key`` reproduces that: ``servo.get('3', 0)`` on an int-keyed dict is always
+#                0, i.e. never loaded (wall_probe.run, coverage, overlay, diag_rows); ``servo.get(3, 0)`` is the
+#                int-key form (self_top_for, score_harness, cue_study, map2d, height_invariance).
+#   ``gripper``  is_loaded(): the own commanded gripper pulse.
+LOAD_RULES = ('s3', 'gripper')
+LOAD_RULE_DEFAULT = 's3'
+_load_rule = LOAD_RULE_DEFAULT
+
+
+def set_load_rule(rule: str) -> None:
+    """Process-wide default of the tools that read the load state through :func:`loaded_for`."""
+    global _load_rule
+    if rule not in LOAD_RULES:
+        raise ValueError(f'load rule must be one of {LOAD_RULES}, got {rule!r}')
+    _load_rule = rule
+
+
+def loaded_for(servo, rule: str | None = None, legacy_str_key: bool = False) -> bool:
+    """Own-command load state under ``rule`` (default: the process-wide rule, ``s3`` unless set)."""
+    rule = _load_rule if rule is None else rule
+    if rule == 'gripper':
+        return is_loaded(servo)
+    if rule == 's3':
+        return servo.get('3' if legacy_str_key else 3, 0) >= 900
+    raise ValueError(f'load rule must be one of {LOAD_RULES}, got {rule!r}')
+
+
 # Frozen VIS3 detector parameters at the current final-environment wall height.
 FROZEN_DETECTOR = {'wall_height_m': .40, 'columns': 96, 'strip_half_px': 2}
 
@@ -121,7 +150,7 @@ def load_state(servo, load_table):
     return load_table.get(s3, 'unloaded')
 
 
-def self_top_for(und_bgr, cm, servo):
+def self_top_for(und_bgr, cm, servo, load_rule=None):
     """Per-column carried-object occlusion ceiling for one frame. Own image + own servo only.
 
     The single way every runner gets ``self_top``: it delegates to
@@ -130,12 +159,11 @@ def self_top_for(und_bgr, cm, servo):
     columns ``height_free_wall.detect`` uses. ``HEIGHT`` everywhere when nothing is
     carried or nothing occludes.
 
-    The load state is :func:`is_loaded` (own commanded gripper pulse, int or string key), not an arm
-    pose: the earlier ``servo.get('3', 0) >= 900`` read a missing string key (always unloaded, so the
-    self-mask was silently off) and, once the key was fixed, still marked the open-gripper search pose
-    as loaded.
+    The load state is :func:`loaded_for` under the ``load_rule`` option (default ``s3``: the earlier
+    ``servo[3] >= 900``, an arm pose that also marks the open-gripper search pose as loaded; ``gripper``:
+    the own commanded gripper pulse).
     """
-    return hfw.self_top_mask(und_bgr, cm, loaded=is_loaded(servo))
+    return hfw.self_top_mask(und_bgr, cm, loaded=loaded_for(servo, load_rule))
 
 
 def run(args):
@@ -170,7 +198,7 @@ def run(args):
         if bgr is None:
             continue
         und = mp.undistort(bgr)
-        loaded = is_loaded(servo)
+        loaded = loaded_for(servo, args.load_rule, legacy_str_key=True)
         b0 = mp.elevation_bias(SEED_BIAS['loaded' if loaded else 'unloaded'], servo)
         cm = mp.column_model(servo, b0, cols)
 
@@ -254,7 +282,7 @@ def run(args):
                'height_free_mask_off': agg('mask_off'), 'height_free_mask_on': agg('mask_on'),
                'frozen_vism3_detector_mean_cols': float(np.mean([r['frozen_det_cols'] for r in csv_rows])),
                'seed_bias_rad': SEED_BIAS, 'frozen_detector_params': FROZEN_DETECTOR,
-               'height_free_params': {k: v for k, v in hfw.PARAMS.items()},
+               'height_free_params': hfw.recorded_params(),
                'gt_use': 'scoring only; detector inputs are own RGB, own servo, fixed calibration'}
     (out_dir/'summary.json').write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2))
@@ -267,4 +295,6 @@ if __name__ == '__main__':
     ap.add_argument('--output', required=True)
     ap.add_argument('--every', type=int, default=2)
     ap.add_argument('--hit-m', type=float, default=.10)
+    ap.add_argument('--load-rule', choices=LOAD_RULES, default=LOAD_RULE_DEFAULT,
+                    help='own load state: s3 = the earlier servo[3] >= 900 (default), gripper = commanded gripper closed')
     run(ap.parse_args())

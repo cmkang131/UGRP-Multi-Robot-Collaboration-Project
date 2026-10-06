@@ -33,7 +33,10 @@ def main():
     ap.add_argument('--frame', type=int, default=1)
     ap.add_argument('--out', required=True)
     ap.add_argument('--scale', type=float, default=1.0)
+    ap.add_argument('--load-rule', choices=('s3', 'gripper'), default='s3',
+                    help='own load state: s3 = the earlier servo[3] >= 900 (default), gripper = commanded gripper closed')
     args = ap.parse_args()
+    rp.set_load_rule(args.load_rule)
 
     ep = Path(args.episode)
     static_map = json.loads((ep/'inputs'/'static_map.json').read_text())
@@ -44,7 +47,7 @@ def main():
     servo = {int(k): int(v) for k, v in row['commanded_servo'].items()}
     bgr = cv2.imread(str(ep/row['path']), cv2.IMREAD_COLOR)
     und = mp.undistort(bgr)
-    loaded = rp.is_loaded(servo)
+    loaded = rp.loaded_for(servo, legacy_str_key=True)
     b0 = mp.elevation_bias(rp.SEED_BIAS['loaded' if loaded else 'unloaded'], servo)
     cm = mp.column_model(servo, b0, cols)
 

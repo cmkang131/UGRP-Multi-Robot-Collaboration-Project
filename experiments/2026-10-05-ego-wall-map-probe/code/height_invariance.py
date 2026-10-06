@@ -46,7 +46,7 @@ HEIGHTS = (0.10, 0.40, 0.50)
 
 def camera_model(servo, bias_mode):
     """The frozen VIS3 column model for one frame. Robot-side inputs only."""
-    loaded = rp.is_loaded(servo)
+    loaded = rp.loaded_for(servo)
     key = 'auto' if bias_mode == 'auto' else bias_mode
     b0 = mp.elevation_bias(rp.SEED_BIAS[key if key != 'auto'
                                     else ('loaded' if loaded else 'unloaded')], servo)
@@ -233,7 +233,10 @@ def main():
     ap.add_argument('--min-cols', type=int, default=8, help='min visible contact columns')
     ap.add_argument('--n-frames', type=int, default=0, help='0 = one per distinct servo-3')
     ap.add_argument('--out', default=str(OUT_ROOT))
+    ap.add_argument('--load-rule', choices=('s3', 'gripper'), default='s3',
+                    help='own load state: s3 = the earlier servo[3] >= 900 (default), gripper = commanded gripper closed')
     args = ap.parse_args()
+    rp.set_load_rule(args.load_rule)
 
     ep = Path(args.episode).expanduser().resolve()
     out_dir = rr.check_output_dir(args.out, False)

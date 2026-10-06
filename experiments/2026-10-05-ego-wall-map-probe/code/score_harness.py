@@ -50,15 +50,14 @@ rendered from (``true_camera.TrueCamera``: recorded ``qpos`` -> ``mj_forward``, 
 ``model`` reproduces the previous scoring (``harness-full/``). ``diag_bias.py`` checks the
 ``true`` rows against a segmentation render, which needs no camera model at all.
 
-Load state (``--load-rule``). ``gripper`` (default) = own commanded gripper pulse closed
-(``wall_probe.is_loaded``). ``s3`` reproduces the earlier rule ``servo[3] >= 900``, which is an arm
-pose and marked the open-gripper search pose (s3 = 1072) as loaded.
-
-The earlier ``wall_probe.py`` read the load state with the string key ``'3'`` on an int-keyed dict, so
-its ``loaded`` flag was False on every frame (the self-mask silently off). ``--load-rule s3`` here reads
-the int key (what ``servo[3] >= 900`` was meant to be); of the 1848 frames of the v98 dev episode it marks
-669 as loaded, while the own gripper command is closed on 571. ``gripper`` (default)
-reads the load state through ``wall_probe.is_loaded``.
+OPTIONS. Every behaviour change of #405 is an explicit switch and its default is the behaviour before #405:
+``--load-rule s3|gripper`` (default ``s3``: ``servo[3] >= 900``, an arm pose that marks the open-gripper search
+pose (s3 = 1072) as loaded; ``gripper``: the own commanded gripper pulse closed, ``wall_probe.is_loaded``),
+``--detector-params '{"floor_patch_max_m": 0.81}'`` (floor-patch rule, off by default). ``--gt-camera true|model``
+is scoring only and is the one exception: ``true`` (default) is the corrected ground truth, ``model`` the earlier one.
+The earlier ``wall_probe.py`` read the load state with the string key ``'3'`` on an int-keyed dict (never loaded);
+``s3`` here reads the int key, as the earlier scorer did. Of the 1848 frames of the v98 dev episode ``s3`` marks 669
+as loaded, the own gripper command is closed on 571.
 """
 from __future__ import annotations
 
@@ -252,7 +251,7 @@ def run(args):
         # its `loaded` flag is False on every frame (669 of 1848 here are actually loaded).
         # Read them as ints; this only selects the elevation-bias entry and which carried-
         # object mask applies, both own-signal derived.
-        loaded = (servo.get(3, 0) >= 900) if args.load_rule == 's3' else wp.is_loaded(servo)
+        loaded = wp.loaded_for(servo, args.load_rule)
 
         # ---- ground truth (scoring only) -------------------------------------------------
         if truecam is not None:
@@ -443,7 +442,7 @@ def run(args):
         },
         'frozen_detector_params': wp.FROZEN_DETECTOR,
         'seed_bias_rad': wp.SEED_BIAS,
-        'height_free_params': {**hfw.PARAMS, **det_params},
+        'height_free_params': hfw.recorded_params(det_params),
         'detector_params_override': det_params,
         'gt_use': ('scoring only. Detector inputs are own undistorted RGB, own commanded servo, '
                    'fixed camera calibration and own load state.'),
@@ -462,8 +461,8 @@ if __name__ == '__main__':
     ap.add_argument('--max-range-m', type=float, default=cov.MAX_RANGE_M)
     ap.add_argument('--gt-camera', choices=('true', 'model'), default='true',
                     help='ground-truth camera: the rendered MuJoCo camera, or the detector FK model (legacy)')
-    ap.add_argument('--load-rule', choices=('gripper', 's3'), default='gripper',
-                    help='own load state: commanded gripper closed, or the legacy servo[3] >= 900')
+    ap.add_argument('--load-rule', choices=wp.LOAD_RULES, default=wp.LOAD_RULE_DEFAULT,
+                    help='own load state: s3 = servo[3] >= 900 (default, the earlier rule), gripper = commanded gripper closed')
     ap.add_argument('--detector-params', default='',
                     help='JSON overrides of height_free_wall.PARAMS, e.g. {"clamp_horizon": true}')
     ap.add_argument('--row-tol-px', type=float, default=3.,

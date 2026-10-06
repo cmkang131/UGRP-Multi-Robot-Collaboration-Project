@@ -54,7 +54,10 @@ def main():
     ap.add_argument('--robot', default='r1')
     ap.add_argument('--frame', type=int, default=1, help='index into frames.jsonl')
     ap.add_argument('--cols', default='0,24', help='column-index range to print')
+    ap.add_argument('--load-rule', choices=('s3', 'gripper'), default='s3',
+                    help='own load state: s3 = the earlier servo[3] >= 900 (default), gripper = commanded gripper closed')
     args = ap.parse_args()
+    rp.set_load_rule(args.load_rule)
     j_lo, j_hi = (int(x) for x in args.cols.split(','))
 
     ep = Path(args.episode)
@@ -74,7 +77,7 @@ def main():
     servo = {int(k): int(v) for k, v in row['commanded_servo'].items()}
     bgr = cv2.imread(str(ep/row['path']), cv2.IMREAD_COLOR)
     und = mp.undistort(bgr)
-    loaded = rp.is_loaded(servo)
+    loaded = rp.loaded_for(servo, legacy_str_key=True)
     b0 = mp.elevation_bias(rp.SEED_BIAS['loaded' if loaded else 'unloaded'], servo)
     cols = mp.column_positions(rp.FROZEN_DETECTOR['columns'], rp.FROZEN_DETECTOR['strip_half_px'])
     cm = mp.column_model(servo, b0, cols)

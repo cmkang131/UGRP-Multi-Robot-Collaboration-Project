@@ -85,9 +85,23 @@ PARAMS = {
     # it. Instead a uniform run must span at least this much floor-plane distance to not be floor: the
     # longest uniform patch a textured floor shows along one image column. The floor is a 0.571 m checker
     # (texrepeat 14 over 16 m, 2 cells per repeat; edges measured 0.54-0.59 m apart in recorded frames), so
-    # a column can stay inside one cell for at most its diagonal, 0.571*sqrt(2) = 0.81 m. 0 turns it off.
-    'floor_patch_max_m': 0.81,
+    # a column can stay inside one cell for at most its diagonal, 0.571*sqrt(2) = 0.81 m (FLOOR_PATCH_DIAGONAL_M).
+    # OPTION, OFF by default (0): the behaviour before #405. Switch on with ``floor_patch_max_m=FLOOR_PATCH_DIAGONAL_M``.
+    'floor_patch_max_m': 0.,
 }
+
+# The value the floor-patch option is meant to take on the recorded 0.571 m checker floor.
+FLOOR_PATCH_DIAGONAL_M = 0.81
+
+# Options added in #405 and their OFF values (= the behaviour before #405). ``recorded_params`` leaves an option out
+# of a run's recorded parameter dict while it is off, so a run with every option off records exactly what it
+# recorded before.
+OPTION_PARAMS_OFF = {'clamp_horizon': False, 'run_step_window': 1, 'floor_patch_max_m': 0.}
+
+
+def recorded_params(params: Mapping | None = None) -> dict:
+    p = {**PARAMS, **(params or {})}
+    return {k: v for k, v in p.items() if not (k in OPTION_PARAMS_OFF and v == OPTION_PARAMS_OFF[k])}
 
 
 class ColumnStrips:

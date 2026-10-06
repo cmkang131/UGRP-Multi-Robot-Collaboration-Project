@@ -293,9 +293,8 @@ def frame_record(ctx, idx: int) -> dict:
     ep, row = ctx['ep'], ctx['frames'][idx]
     t = float(row['sim_time'])
     servo = {int(k): int(v) for k, v in row['commanded_servo'].items()}
-    # own load state = own commanded gripper pulse (closed ~1500). The old `servo[3] >= 900` is an arm
-    # pose, true for the open-gripper search pose, and applied the carry elevation bias to unloaded frames.
-    loaded = rp.is_loaded(servo)
+    # option load_rule: s3 (default, the earlier servo[3] >= 900, an arm pose) or gripper (own commanded gripper pulse)
+    loaded = rp.loaded_for(servo)
     b0 = mp.elevation_bias(rp.SEED_BIAS['loaded' if loaded else 'unloaded'], servo)
 
     # ---- ground truth (drawing + statistics only) ---------------------------------------
@@ -415,7 +414,7 @@ def visible_columns_only(ctx, idx: int) -> int:
     """Number of ground-truth wall contacts that land inside the image (frame label)."""
     row = ctx['frames'][idx]
     servo = {int(k): int(v) for k, v in row['commanded_servo'].items()}
-    loaded = rp.is_loaded(servo)
+    loaded = rp.loaded_for(servo)
     gt_cm = mp.column_model(servo, mp.elevation_bias(
         rp.SEED_BIAS['loaded' if loaded else 'unloaded'], servo), ctx['cols'])
     gt = gt_columns(gt_cm, ctx['cols'], ctx['rects'],                # GROUND TRUTH
@@ -792,7 +791,10 @@ def main():
     ap.add_argument('--all-every', type=int, default=1, help='stride for --frames all')
     ap.add_argument('--hit-m', type=float, default=DEFAULT_HIT_M)
     ap.add_argument('--warn-m', type=float, default=DEFAULT_WARN_M)
+    ap.add_argument('--load-rule', choices=('s3', 'gripper'), default='s3',
+                    help='own load state: s3 = the earlier servo[3] >= 900 (default), gripper = commanded gripper closed')
     args = ap.parse_args()
+    rp.set_load_rule(args.load_rule)
 
     ctx = load_episode(Path(args.episode), args.robot)
     chosen = parse_frames(args.frames, ctx, args.all_every)

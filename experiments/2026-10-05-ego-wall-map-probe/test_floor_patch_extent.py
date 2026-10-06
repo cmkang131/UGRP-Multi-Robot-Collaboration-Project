@@ -6,7 +6,8 @@ When the camera is pitched down by more than its half field of view the horizon 
 ``above_is_vertical = run_top <= horizon`` can never hold and every wall is rejected (101 of 247
 wall-visible frames of the v98 dev episode). ``height_free_wall.PARAMS['floor_patch_max_m']`` replaces
 the test, on those columns only, with: a uniform run must span at least one floor-texture patch of
-floor-plane distance to not be floor.
+floor-plane distance to not be floor. It is an OPTION: the default is 0 (rule off, the detector as it was
+before #405); ``FLOOR_PATCH_DIAGONAL_M`` (0.81) is the recommended value to switch it on.
 
 Pinned here, with a 0.571 m checker floor (the recorded scene) rendered from the settled arm poses of
 the recorded episode:
@@ -37,6 +38,7 @@ WIDTH, HEIGHT = mp.WIDTH, mp.HEIGHT
 CELL_M = 16.0/14/2                       # recorded scene: 16 m plane, texrepeat 14, 2 cells per repeat
 L_DARK, L_BRIGHT, L_WALL = 92.8, 159.6, 60.0   # wall well away from both cells: contrast is not what is tested
 BIAS_RAD = -0.0187
+ON = hfw.FLOOR_PATCH_DIAGONAL_M            # the option, switched on
 _KINV = np.linalg.inv(mp.K)
 _UU = np.arange(WIDTH)[None, :] * np.ones((HEIGHT, 1))
 _VV = np.arange(HEIGHT)[:, None] * np.ones((1, WIDTH))
@@ -86,14 +88,17 @@ class FloorPatchExtentTest(unittest.TestCase):
         self.assertLess(POSE_740.horizon, -10)
         self.assertLess(POSE_508.horizon, -10)
 
-    def test_default_is_one_floor_patch_diagonal(self):
-        self.assertAlmostEqual(hfw.PARAMS['floor_patch_max_m'], CELL_M*2**.5, delta=0.01)
+    def test_recommended_value_is_one_floor_patch_diagonal(self):
+        self.assertAlmostEqual(hfw.FLOOR_PATCH_DIAGONAL_M, CELL_M*2**.5, delta=0.01)
+
+    def test_option_is_off_by_default(self):
+        self.assertEqual(hfw.PARAMS['floor_patch_max_m'], 0.)
 
     def test_wall_found_at_its_base_only_with_the_extent_test(self):
         img, base = POSE_740.render(plane_x=1.9)
         self.assertTrue(np.isfinite(base).sum() > 60)
-        off, off_faces = POSE_740.detect(img, floor_patch_max_m=0.)
-        on, on_faces = POSE_740.detect(img)
+        off, off_faces = POSE_740.detect(img)                      # default: option off
+        on, on_faces = POSE_740.detect(img, floor_patch_max_m=ON)
         self.assertEqual(int(np.isfinite(off).sum()), 0, 'horizon test alone must reject every row')
         self.assertEqual(off_faces, [])
         hit = np.isfinite(on) & np.isfinite(base)
@@ -109,7 +114,7 @@ class FloorPatchExtentTest(unittest.TestCase):
         # removes them, so the wall-face output must be empty.
         for name, scene in (('740', POSE_740), ('508', POSE_508)):
             img, _ = scene.render(plane_x=None)
-            cols, faces = scene.detect(img)
+            cols, faces = scene.detect(img, floor_patch_max_m=ON)
             self.assertEqual(faces, [], f'pose {name}: wall face reported on a bare checker floor')
             self.assertLessEqual(int(np.isfinite(cols).sum()), 8, f'pose {name}: isolated contacts {np.isfinite(cols).sum()}')
 

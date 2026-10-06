@@ -109,7 +109,7 @@ def run(args):
     for r in missed:
         idx = int(r['frame_index']) - 1
         servo = {int(k): int(v) for k, v in frames[idx]['commanded_servo'].items()}
-        loaded = wp.is_loaded(servo)
+        loaded = wp.loaded_for(servo, args.load_rule)
         und = mp.undistort(cv2.imread(str(ep/frames[idx]['path']), cv2.IMREAD_COLOR))
         cm = mp.column_model(servo, mp.elevation_bias(wp.SEED_BIAS['loaded' if loaded else 'unloaded'], servo), cols)
         gt_cm, gt_pose = cam.column_model(idx, cols)
@@ -158,4 +158,6 @@ if __name__ == '__main__':
     ap.add_argument('--variant', default='mask_off', choices=('mask_off', 'mask_on'))
     ap.add_argument('--params', default='', help='JSON overrides of height_free_wall.PARAMS (same as the scored run)')
     ap.add_argument('--max-range-m', type=float, default=6.)
+    ap.add_argument('--load-rule', choices=wp.LOAD_RULES, default=wp.LOAD_RULE_DEFAULT,
+                    help='must match the scored run: s3 = servo[3] >= 900 (default), gripper = commanded gripper closed')
     run(ap.parse_args())

@@ -506,7 +506,7 @@ def load_episode(ep_dir: Path, robot='r1'):
 def column_model_for(row):
     """The detector's own extrinsics: own commanded servo + own load state + fixed bias."""
     servo = {int(k): int(v) for k, v in row['commanded_servo'].items()}
-    loaded = wp.is_loaded(servo)                  # own gripper command, not the arm pose servo[3]
+    loaded = wp.loaded_for(servo)                 # option load_rule (default s3 = the earlier servo[3] >= 900)
     b0 = mp.elevation_bias(wp.SEED_BIAS['loaded' if loaded else 'unloaded'], servo)
     cols = mp.column_positions(wp.FROZEN_DETECTOR['columns'], wp.FROZEN_DETECTOR['strip_half_px'])
     return mp.column_model(servo, b0, cols), servo, loaded
@@ -1085,7 +1085,10 @@ def main():
                     help='ground truths to score against (both by default); neither '
                          'ever reaches a gate or a threshold')
     ap.add_argument('--jpeg-quality', type=int, default=82)
+    ap.add_argument('--load-rule', choices=('s3', 'gripper'), default='s3',
+                    help='own load state: s3 = the earlier servo[3] >= 900 (default), gripper = commanded gripper closed')
     args = ap.parse_args()
+    wp.set_load_rule(args.load_rule)
     return {'frames': stage_frames, 'render': stage_render,
             'calibrate': stage_calibrate, 'eval': stage_eval,
             'hmin': stage_hmin, 'coverage': stage_coverage}[args.stage](args)
