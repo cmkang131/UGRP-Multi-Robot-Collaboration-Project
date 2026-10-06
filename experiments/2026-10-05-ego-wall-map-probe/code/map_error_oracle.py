@@ -48,6 +48,31 @@ def sample_frame(row, pose):
     return occupied, free-set(occupied)
 
 
+def wall_surfaces(rects):
+    """All boundary witnesses of each ORIGINAL 0.1 m denominator cell.
+
+    wall_samples overwrites points when two faces occupy one bin. Visibility
+    must retain both faces; the old scoring representative remains unchanged.
+    """
+    representatives = base.wall_samples(rects)
+    indices = {tuple(np.floor(p/.1).astype(int)): i for i,p in enumerate(representatives)}
+    points, groups = [], []
+    for cx,cy,hx,hy in rects:
+        corners = np.array([[cx-hx,cy-hy],[cx+hx,cy-hy],[cx+hx,cy+hy],[cx-hx,cy+hy]])
+        for a,b in zip(corners,np.roll(corners,-1,axis=0)):
+            n = int(math.ceil(np.linalg.norm(b-a)/.1))
+            for p in np.linspace(a,b,n,endpoint=False):
+                points.append(p)
+                groups.append(indices[tuple(np.floor(p/.1).astype(int))])
+    return np.array(points), np.array(groups)
+
+
+def visible_groups(visible, groups, count):
+    result = np.zeros(count, bool)
+    np.logical_or.at(result, groups, visible)
+    return result
+
+
 def update_support(old, new, support, label=None):
     """Allocate only surviving positive log odds; miss/clamp preserve mass."""
     if new <= 0:
@@ -298,6 +323,7 @@ def run_case(name, out):
     rects = np.array([list(w['center_m'])+list(w['half_extents_m']) for w in walls])
     samples = base.wall_samples(rects)
     assert len(samples) == 349
+    surfaces, surface_groups = wall_surfaces(rects)
     observations = base.read_rows(source/'observations.jsonl')
     admitted = {r['frame_id'] for r in observations}
     geometry = SavedGeometry(episode/'scene.xml')
@@ -309,21 +335,23 @@ def run_case(name, out):
         assert label['sha256'] == f['sha256'] and abs(label['t']-f['sim_time']) < 1e-6
         geometry.at(states[round(label['t'], 6)]['qpos'])
         camera, rotation = camera_world(label)
-        contact = visible_targets(geometry, camera, rotation, np.column_stack([samples, np.full(len(samples), .005)]))
+        raw_contact = visible_targets(geometry, camera, rotation, np.column_stack([surfaces, np.full(len(surfaces), .005)]))
+        contact = visible_groups(raw_contact, surface_groups, len(samples))
         masks['contact_visible'] |= contact
-        masks['contact_near4'] |= contact & (np.linalg.norm(samples-camera[:2], axis=1) <= 4.)
+        masks['contact_near4'] |= visible_groups(raw_contact & (np.linalg.norm(surfaces-camera[:2], axis=1) <= 4.), surface_groups, len(samples))
         if fid in admitted:
             masks['contact_admitted'] |= contact
         masks['visible'] |= contact
-        unseen = np.flatnonzero(~masks['visible'])
+        unseen = np.flatnonzero(~masks['visible'][surface_groups])
         if len(unseen):
-            targets = np.column_stack([np.repeat(samples[unseen], len(HEIGHTS), axis=0), np.tile(HEIGHTS, len(unseen))])
+            targets = np.column_stack([np.repeat(surfaces[unseen], len(HEIGHTS), axis=0), np.tile(HEIGHTS, len(unseen))])
             body = visible_targets(geometry, camera, rotation, targets).reshape(-1, len(HEIGHTS)).any(1)
-            masks['visible'][unseen] |= body
+            masks['visible'] |= visible_groups(body, surface_groups[unseen], len(samples))
         trace.append({'frame_id': fid, 't': label['t'], **{k: int(v.sum()) for k, v in masks.items()}})
     out.mkdir(parents=True, exist_ok=False)
     write_rows(out/'visibility.jsonl', trace)
-    base.dump(out/'wall_samples.json', {'xy': samples.tolist(), **{k: v.tolist() for k, v in masks.items()}})
+    base.dump(out/'wall_samples.json', {'xy': samples.tolist(), 'surface_xy': surfaces.tolist(), 'surface_sample_index': surface_groups.tolist(),
+                                          **{k: v.tolist() for k, v in masks.items()}})
     evidence = Evidence(geometry, frames, labels, states)
     results, sources = {}, [source/'observations.jsonl', source/'summary.json', episode/'scene.xml', episode/'inputs/static_map.json',
                            episode/'eval_only/trajectory.jsonl', episode/f'eval_only/{robot}/camera_labels.jsonl', episode/f'robots/{robot}/frames.jsonl']

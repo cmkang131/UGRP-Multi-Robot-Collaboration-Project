@@ -117,3 +117,15 @@ def test_behind_camera_range_is_recorded_without_raycast():
     assert value == 1.
     assert evidence.records[0]['reason'] == 'behind_camera_projection'
     assert evidence.records[0]['optical_depth_m'] == pytest.approx(-2.08816532)
+
+
+def test_visibility_keeps_front_face_when_bin_representative_is_back_face():
+    rects = np.array([[0.,1.45,1.,.025]])
+    representatives = e.base.wall_samples(rects)
+    surfaces, groups = e.wall_surfaces(rects)
+    front = np.isclose(surfaces[:,1], 1.425)
+    visible = e.visible_groups(front, groups, len(representatives))
+    # The historical denominator deduplicated both faces and kept the back.
+    assert any(visible & np.isclose(representatives[:,1],1.475))
+    assert len(set(groups)) == len(representatives)
+    assert np.array_equal(np.floor(surfaces/.1).astype(int), np.floor(representatives[groups]/.1).astype(int))
