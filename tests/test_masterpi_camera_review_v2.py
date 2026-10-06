@@ -4,7 +4,6 @@ import cv2
 import numpy as np
 import pytest
 from sim import masterpi_camera_review_v2 as v2
-from sim.masterpi_model_v3 import build_v3_xml
 from scripts.review_masterpi_camera_v2 import metrics, plan, targets, JOINT_NAMES
 
 
@@ -19,6 +18,8 @@ def test_sdk_rectification_projects_original_brown_rays_to_output_pixels():
 
 
 def test_new_profile_does_not_edit_physics_or_original_intrinsic_xml():
+    pytest.importorskip("mujoco")
+    from sim.masterpi_model_v3 import build_v3_xml
     before = ET.fromstring(build_v3_xml())
     after = ET.fromstring(v2.transform_xml(ET.tostring(before, encoding='unicode'), profile_id=v2.PROFILE_ID))
     for a, b in zip(before.iter(), after.iter()):
@@ -40,6 +41,8 @@ def test_official_lift_is_horizontal_and_distinct_from_high():
 
 
 def test_diagnostic_targets_and_actuator_names_exist_and_fit_ranges():
+    pytest.importorskip("mujoco")
+    from sim.masterpi_model_v3 import build_v3_xml
     root = ET.fromstring(build_v3_xml())
     joints = {x.get('name'): x for x in root.iter('joint') if x.get('name')}
     actuators = {x.get('name') for x in root.find('actuator')}

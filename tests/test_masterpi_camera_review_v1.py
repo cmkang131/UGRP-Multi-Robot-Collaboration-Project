@@ -70,6 +70,7 @@ def test_unknown_profile_is_refused():
 
 
 def test_diagnostic_joint_names_and_transform_match_actual_v3_xml():
+    pytest.importorskip("mujoco")
     from scripts.review_masterpi_camera import JOINT_NAMES
     from sim.masterpi_model_v3 import build_v3_xml
     xml = build_v3_xml()
