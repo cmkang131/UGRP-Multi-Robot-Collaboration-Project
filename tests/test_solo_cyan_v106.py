@@ -47,7 +47,8 @@ class FakePose:
         self.provider = self
         self.failure = None
         self.loc = SimpleNamespace(_pf=SimpleNamespace(params=calibration['params']))
-        self.frames, self.commands = [], []
+        self.frames, self.commands, self.relooks = [], [], []
+        self.xy = (0., -.85)
         self.closed = False
 
     def init_prior(self, mean, std, source):
@@ -56,12 +57,15 @@ class FakePose:
     def on_command(self, row):
         self.commands.append(copy.deepcopy(row))
 
+    def begin_relocalization(self, now, servo):
+        self.relooks.append(now)
+
     def on_frame(self, now, rgb):
         self.frames.append(None if rgb is None else rgb.shape)
         return self.report(now)
 
     def report(self, now):
-        return SimpleNamespace(t_est=now-.16, x_m=0., y_m=-.85, yaw_rad=0., initialized=True,
+        return SimpleNamespace(t_est=now-.16, x_m=self.xy[0], y_m=self.xy[1], yaw_rad=0., initialized=True,
             std_xy_m=.01, std_yaw_rad=.01, last_fix_t=now-.16, observation_quality={},
             cov=((.0001, 0., 0.), (0., .0001, 0.), (0., 0., .0001)))
 
@@ -212,9 +216,13 @@ def test_command_only_full_sequence_no_success_claim(static, cal, monkeypatch):
     r.initial_commands(0., {'r3': {1: 2000, **pose_of('search')}})
     # Drive acceptance is tested separately; here exercise the real queued arm
     # path, all issued-command feedback, hover/blind checks and state transitions.
-    monkeypatch.setattr(r, 'drive', lambda *a, **kw: ([{'kind': 'hold'}], True))
+    def arrived(xy, now, **kwargs):
+        r.pose.xy = tuple(xy)
+        r.last_report.x_m, r.last_report.y_m = xy
+        return [{'kind': 'hold'}], True
+    monkeypatch.setattr(r, 'drive', arrived)
     monkeypatch.setattr(fg, 'gate', lambda: SimpleNamespace(assess=lambda *a, **kw: (fg.VALID, {})))
-    for i in range(2400):
+    for i in range(int(rt.CAP_S/.05)):
         now = i*.05
         obs = {'frame_id': i, 'sha256': 'a'*64, 'sim_time': now}
         r.on_frames(now, {'r3': (obs, np.zeros((1, 1, 3), np.uint8))})
@@ -291,4 +299,63 @@ def test_align_steps_view_down_before_cyan_leaves_frame_bottom(static, cal):
     r.vision.mask_bottom_row = lambda obs: 300
     r._control(2., True)
     assert r.align_view == 'inspect' and r.failure is None
+    r.close()
+
+
+def test_checkpoint_release_relook_before_route_advance(static, cal):
+    r = runtime(static, cal)
+    r.initial_commands(0., {'r3': {1:1500, **rt.high.HIGH}})
+    r.last_report = r.pose.report(1.)
+    r.state, r.receipt = 'carry', True
+    r.drive = lambda *a, **kw: ([{'kind':'hold'}], True)
+    r._control(1., True)
+    assert r.state == 'lower' and r.route_i == 0 and r.regrasp
+    assert r.relooked == {0}
+    r.close()
+
+
+def test_regrasp_unique_cyan_does_not_use_original_slot(static, cal):
+    r = runtime(static, cal)
+    r.last_obs = {'frame_id':1}
+    r.last_report = r.pose.report(1.)
+    r.last_report.x_m, r.last_report.y_m = 1.5, .05
+    assert r.detections() == []  # outside the original static pickup slot
+    r.regrasp = True
+    assert len(r.detections()) == 1
+    r.vision.detect = lambda *a: [dict(estimated_box_center_base_m=[.2, 0., .016])]*2
+    r.initial_commands(0., {'r3':{1:2000, **pose_of('search')}})
+    r.state, r.search_poses = 'search', []
+    r._control(1., True)
+    assert r.failure == 'CYAN_REGRASP_NOT_UNIQUELY_VISIBLE'
+    r.close()
+
+
+def test_stale_fix_at_relook_is_logged_and_dev_continues(static, cal):
+    r = runtime(static, cal)
+    r.initial_commands(0., {'r3':{1:2000, **pose_of('search')}})
+    r.last_report = r.pose.report(100.)
+    r.last_report.last_fix_t = 37.75
+    r.state, r.regrasp = 'relook_pickup', True
+    r.relook_index, r.relook_started = 0, 99.
+    r._control(100., True)
+    assert r.state == 'search' and not r.terminal and r.route_i == 0
+    assert r.soft_counts['REOBSERVATION_NO_FIX'] == 1
+    assert not [e for e in r.events if e['event']=='cyan_relook_result'][0]['fresh_fix']
+    r.close()
+
+
+def test_final_checkpoint_relooks_then_corrects_before_completion(static, cal):
+    r = runtime(static, cal)
+    r.initial_commands(0., {'r3':{1:2000, **pose_of('search')}})
+    r.state, r.regrasp = 'relook_pickup', True
+    r.route_i = r.relook_index = 2
+    r.relook_started = 99.
+    r.last_report = r.pose.report(100.)  # fresh but far from destination
+    r._control(100., True)
+    assert r.route_i == 2 and r.state == 'search' and not r.terminal
+    r.state = 'relook_pickup'
+    r.last_report.x_m, r.last_report.y_m = r.route[2]
+    r._control(100.1, True)
+    assert r.route_i == 3 and r.state == 'done'
+    assert r.record()['physical_success'] is None
     r.close()

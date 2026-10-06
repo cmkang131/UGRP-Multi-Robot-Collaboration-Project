@@ -1,6 +1,6 @@
 # S2 단독 cyan 최종 v3 운반 후보 — v106
 
-**구현·오프라인 검사만. 물리/렌더/모델 호출 0회. 최종 환경 성공 0회인 상태는 그대로다.**
+**DEV 실행 기록은 맨 아래 "실행 기록" 절. 최종 환경 성공 0회인 상태는 그대로다(DEV 기하 판정만 있음).**
 S2 계획(#389)의 첫 실행 후보이며, S2 졸업(6개 slot 파지·단독 6회·3대 동시 6회)을 뜻하지 않는다.
 원본·결과는 로컬 `outputs/`에 보존한다. Google Drive는 사용하지 않는다.
 
@@ -106,3 +106,58 @@ watchdog는 `/Users/changmin/projects/ugrp/outputs/v98-probe-tools/sim_watchdog.
 `zone_pair_highpose_blind_close.py`, `zone_pair_highpose_own_load_occlusion.py`, `zone_pair_highpose.py`,
 `zone_final_pair_vision.py`, `zone_color_boxes.py`, `zone_robot_model_runtime.py`, `sim/zone_final_v3_scene.py`.
 과거 pair DEV 성공을 이번 단독 후보의 성공 표본에 합산하지 않는다.
+
+## 실행 기록 (DEV, seed 911, r3, P1-2, B, door_1, v98-exact-v6, FUNCTIONAL_DEV)
+
+판정은 사후 `eval_only` 기하 판정(`PROVISIONAL_GEOMETRIC_JUDGE`)이며 `physical_success=null`, `research_result=false`다.
+제어기는 정답 좌표를 쓰지 않는다. 아래 위치 오차는 저장된 `poses`와 `eval_only/trajectory.jsonl`을 사후 대조한 값이다.
+
+| # | 실행 SHA | 결과 | 출력 |
+|---|---|---|---|
+| 1 | `457aeccc5315c53a88f84e15917a750518585514` | STAGE_FAILED / CYAN_ALIGN_VIEW_LOST, lifted=false (SIM 50.3 s) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-457aeccc-s911-P1-2-place` |
+| 2 | `25638624704fb8c2d348894b40e6d3b69e1ecc52` | STAGE_REACHED_UNQUALIFIED, lifted=true / inside=false (SIM 179.8 s, 명령 3794) | `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-25638624-s911-P1-2-place` |
+
+실행 1: 정렬 중 작은 cuboid가 p45 영상 아래쪽으로 벗어났다 → 25638624에서 아래쪽 행 440 근처에서 한 단계 낮은 시점으로 내리도록 고쳤다.
+실행 2: 집기·운반·놓기를 끝까지 했지만 cyan이 목적 구역 B 밖(마지막 위치 (2.283,-0.185), B 중심과 xy로 3.006 m)에 놓였다.
+
+### 실행 2 진단 (사후, 새 시뮬레이션 없음)
+
+| 시점 | 추정과 실제 xy 거리 |
+|---|---:|
+| 집기 직후 carry 시작 82.7 s | 0.090 m |
+| 문 앞 체크포인트 102.8 s | 0.241 m |
+| 문 뒤라고 판단한 체크포인트 122.8 s | 0.642 m |
+| 최종 lower 시작 159.7 s | 약 2.98 m |
+
+- 마지막 PF fix는 37.75 s(집기 전)였다. 운반 중에는 명령 예측만으로 이동했고, 문 앞에서 이미 0.24 m 틀렸다.
+- 차체 x 최댓값은 2.103 m로 칸막이(x=2.2)를 넘지 못했다. 틀린 추정으로 문이 아닌 벽 쪽으로 간 정황이다. 어떤 접촉 때문인지는 검증하지 않았다.
+- carry 구간 cyan 중심 z는 0.1413–0.1417 m로 일정했다(낙하 증거 없음).
+- **fix가 끊긴 원인:** HIGH 운반 자세에서 든 cyan이 자기 카메라 화면 전체를 채운다(82.7 s, 159.7 s 원본 JPEG를 직접 확인; 화면 전체가 균일한 cyan).
+  Codex가 hash를 확인한 8개 운반 영상(82.7/90/102.8/110/122.8/130/140/159.7 s)을 기존 OpenCV 관측기에 넣으면 유효 벽 열이 모두 0개였다(최소 6개 필요).
+  `zone_pair_own_load_occlusion_v1_v98` 규칙이 처리한 프레임은 0개였다(포화 cyan이 저대비 CONTENT_ONLY 규칙에 걸리지 않음).
+  따라서 HIGH에서 8초 정지하는 기존 체크포인트는 시야를 회복하지 못한다. 대기 시간을 늘리는 방식은 채택하지 않았다.
+
+### 수정: 문 앞·문 뒤·목적지 체크포인트에서 내려놓고 빈 카메라로 재관측한 뒤 재집기 (`solo-cyan-v106-v98-stack-dev-setdown-relook-v1`)
+
+각 정적 경로 체크포인트(3개)에 도착하면 기존 v98 `lower` → 놓기·열기·팔 회수 → `LOOK_P20` 팬 스캔(빈 자기 카메라) → 자기 RGB로 cyan 재탐색 → 기존 호버/blind/close/raise를 거친다.
+`begin_relocalization`은 예측 분포를 유지하고 오래된 fix 영수증만 무효화한다. 체크포인트당 한 번만 시도하므로 유한하다. 재관측 뒤 경로를 새 추정으로 다시 계산한다.
+마지막 체크포인트에서는 재관측한 추정이 체크포인트에 있으면(3 cm, 0.025 rad) 그 자리에 놓은 채 완료하고, 멀면 다시 집어 옮긴다. 완료 이벤트는 물리 성공이 아니다.
+
+- 입력 경계: 자기 RGB·정적 지도·자기 명령 이력·자기 PF 추정만 쓴다. 재집기에는 원래 pickup slot 위치를 강요하지 않고 자기 RGB에서 보이는 cyan이 정확히 하나일 때만 집는다(둘 이상이면 `CYAN_REGRASP_NOT_UNIQUELY_VISIBLE`로 종료, 기존 표적 영상 없음 실패와 같은 분류).
+- dev_light: fix를 못 얻으면 `REOBSERVATION_NO_FIX`를 기록만 하고 계속한다. 기존 종료(표적 영상 없음, 입력 오류, 시간 상한)는 유지한다.
+- 과거 hash 고정 모듈은 수정하지 않았다. 카메라 위치·FOV·로봇 외관·모델·지도·물리는 그대로다.
+- Codex 후보(미적용 패치)에서 한 가지를 줄였다: 집은 직후(index -1)의 재관측을 뺐다. 그때 오차는 0.09 m로 문 앞 재관측이 어차피 고치고, 재집기 한 번이 늘수록 파지 실패 위험만 커진다(체크포인트 3회 + 목적지 완료).
+- **카메라 pan/자세 변경 대안은 채택하지 않았다.** 카메라는 `r*__gripper` 본체에 고정되어 있고 pan(서보 6)은 팔 전체를 돌리므로, 든 cyan이 항상 렌즈 앞에 남는다. 카메라 배치/FOV는 바꾸지 않는다(AGENTS.md).
+- 한계: 단독 하중 모델은 여전히 무하중 대용값이고, 낙하·기울기·집게 이탈은 실행 중 감지하지 못한다.
+
+시험: `tests/test_solo_cyan_v106.py`에 체크포인트 진입, 원래 slot 밖 단일 cyan 재집기/다중 후보 거절, 오래된 fix의 기록 후 계속, 마지막 체크포인트 분기 시험을 추가했다. `tests/test_solo_cyan_v106.py tests/test_solo_cyan_v106_runner.py` 31 passed (로컬 11.3초, 속도 측정 아님).
+
+### 참고 자료 (2026-10-06 조사)
+
+- **확인: 저자 초록(전체 본문 미확인)** — Fox, Burgard, Thrun (1998), [Active Markov Localization for Mobile Robots](https://www.cs.cmu.edu/~dfox/abstracts/active-ras-special.abstract.html).
+  이동 방향과 센서 방향을 위치 불확실성이 줄도록 고른다는 원리. 우리는 센서 방향 대신 "들고 있는 물체가 시야를 가리지 않도록 내려놓는" 동작을 고정 일정으로 쓴다.
+- **확인: 공식 문서** — [robot_localization sensor_timeout](https://raw.githubusercontent.com/cra-ros-pkg/robot_localization/ros2/doc/state_estimation_nodes.rst). 관측이 없으면 보정 없이 예측만 한다. 가림을 fix로 바꾸지 않는다.
+- **확인: 공식 공개 코드(해당 부분만)** — [Nav2 AMCL amcl_node.cpp](https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_amcl/src/amcl_node.cpp) `nomotionUpdateCallback`의 `force_update_`. 정지 중 갱신을 강제해도 실제 측정(스캔)이 있어야 필터가 갱신된다 → 우리도 새 fix 영수증이 있어야 체크포인트를 통과로 인정한다.
+- **확인: 저장소 구현** — `harness/zone_pair_highpose_refix.py`의 v98 set-down 재관측·재집기 순서, `harness/zone_study_pose_delay_p03.py`·`vision_pose_source_p03.py`의 `begin_relocalization`(분포 보존, 영수증 무효화).
+- **채택하지 않음(미확인 포함)** — Di Giammarino et al. (ECCV 2024, Learning Where to Look), rvp-group actloc_benchmark, Bajpai et al. (ECMR 2025): 학습·SfM·VLM 경로라서 무모델 조건에 맞지 않는다. 본문/구현은 이번에 확인하지 않았다(미확인).
+- 외부 논문의 성공 수치를 이 후보의 성공 근거로 합산하지 않는다. 이 문서의 진단 초안은 Codex(2026-10-06 오프라인 감사, `/Users/changmin/projects/ugrp/outputs/solo-cyan-v106-pr391-20261006-codex-audit/`)가 작성했다.

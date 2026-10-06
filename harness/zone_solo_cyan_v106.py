@@ -29,7 +29,7 @@ from harness.zone_own_guards_v3 import SweepGuardV3
 from harness.zone_solo_cyan_vision_v106 import CyanVision, BlindCyan
 from harness.visual_arm_v3 import CONTROLLER_GEOMETRY_ID
 
-PROFILE = 'solo-cyan-v106-v98-stack-dev'
+PROFILE = 'solo-cyan-v106-v98-stack-dev-setdown-relook-v1'
 MOTION_PROXY = 'cyan30g_loaded_uses_v101_unloaded_single_robot_UNQUALIFIED'
 CONTROL_S = .1
 CAP_S = 900.
@@ -123,6 +123,11 @@ class Runtime:
         self.align_view = None
         self.last_visual_state = None
         self.soft_counts = {}
+        # HIGH's eye-in-hand image is filled by cyan (s911 recorded evidence).
+        # Reuse v98's release/re-look/re-grasp, rather than wait behind the load.
+        self.relooked = set()
+        self.regrasp = False
+        self.relook_index, self.relook_started = None, None
         self.controller = self.own = self
         self.policy = SimpleNamespace(own_image_ob=False)
         self.own_load_occlusion = occlusion.OwnLoadOcclusion(self)
@@ -212,8 +217,30 @@ class Runtime:
         self.scan_after = after
         self.set_state('scan', now)
 
+    def setdown_relook(self, now, index):
+        # One finite recovery per authored route checkpoint (3 per run).
+        # The normal lower/release path preserves own command/occlusion handling.
+        self.relooked.add(index)
+        self.relook_index, self.regrasp = index, True
+        self.event('cyan_setdown_relook', now, index=index,
+                   last_fix_t=self.last_report.last_fix_t, physical_success=None)
+        for p, duration, settle in high.lower_path():
+            self.queue({**p, 1: 1500}, now, duration=duration, settle=settle)
+        self.set_state('lower', now)
+
+    def estimated_at_checkpoint(self):
+        r = self.last_report
+        yaw = (r.yaw_rad+math.pi) % (2*math.pi)-math.pi
+        return (math.dist((r.x_m, r.y_m), self.route[self.route_i]) <= .03
+                and abs(yaw) <= .025)
+
     def detections(self):
         out = self.vision.detect(self.last_obs, self.servo)
+        if self.regrasp:
+            # This admitted scene has a single cyan. After the own release it
+            # is no longer in the original pickup slot. Keep the caller's
+            # unique-visible-candidate rule; do not invent a map object pose.
+            return out
         rep = self.last_report
         c, s = math.cos(rep.yaw_rad), math.sin(rep.yaw_rad)
         valid = []
@@ -287,6 +314,25 @@ class Runtime:
                     self.soft('REOBSERVATION_NO_FIX', now)
                 self.queue({**pose_of('search'), 1: 2000}, now)
                 self.set_state(self.scan_after, now)
+        elif self.state == 'relook_pickup':
+            fresh = r.last_fix_t is not None and r.last_fix_t >= self.relook_started
+            self.event('cyan_relook_result', now, index=self.relook_index,
+                       fresh_fix=fresh, last_fix_t=r.last_fix_t,
+                       observation_quality=r.observation_quality)
+            if not fresh:
+                self.soft('REOBSERVATION_NO_FIX', now)
+            self.path, self.path_goal = [], None  # re-plan on the corrected belief
+            # Only a fresh own-image receipt can advance a re-look checkpoint.
+            # A rejected fix is log-only in DEV: re-grasp and keep moving.
+            if fresh and self.estimated_at_checkpoint():
+                self.route_i += 1
+                if self.route_i == len(self.route):
+                    self.regrasp = False
+                    self.event('place_sequence_complete', now, physical_success=None)
+                    self.set_state('done', now)
+                    return [{'kind': 'hold'}]
+            self.search_poses = [pose_of(k) for k in ALIGN_VIEWS]
+            self.set_state('search', now)
         elif self.state == 'search_move':
             x0, x1 = self.slot['x_range_m']
             cy = self.slot['center_m'][1]
@@ -303,6 +349,8 @@ class Runtime:
                 self.set_state('align', now)
             elif self.search_poses:
                 self.queue(self.search_poses.pop(0), now)
+            elif self.regrasp:
+                return self.fail('CYAN_REGRASP_NOT_UNIQUELY_VISIBLE', now)
             elif self.search_i == 0:
                 self.search_i += 1
                 self.queue(pose_of('search'), now)
@@ -388,6 +436,7 @@ class Runtime:
                 self.queue({**p, 1: 1500}, now, duration=duration, settle=settle)
             self.set_state('lift', now)
         elif self.state == 'lift':
+            self.regrasp = False
             self.event('high_carry_pose', now, held_by='own command history')
             self.set_state('carry', now)
         elif self.state == 'carry':
@@ -396,6 +445,9 @@ class Runtime:
             commands, arrived = self.drive(self.route[self.route_i], now)
             if arrived:
                 self.event('carry_checkpoint', now, index=self.route_i, last_fix_t=r.last_fix_t)
+                if self.route_i not in self.relooked:
+                    self.setdown_relook(now, self.route_i)
+                    return commands
                 self.route_i += 1
                 if self.route_i == len(self.route):
                     for p, duration, settle in high.lower_path():
@@ -411,6 +463,17 @@ class Runtime:
             self.queue({**pose_of('search'), 1: 2000}, now)
             self.set_state('released', now)
         elif self.state == 'released':
+            if self.regrasp:
+                self.relook_started = now
+                # Keep the predicted PF belief; invalidate its old receipt.
+                # The delay wrapper rejects captures predating this request.
+                self.pose.begin_relocalization(now, self.servo)
+                self.blind = BlindCyan()
+                self.align_view, self.last_align_frame = None, None
+                self.align_streak = 0
+                self.target, self.target_t = None, None
+                self.scan(now, 'relook_pickup')
+                return [{'kind': 'hold'}]
             self.event('place_sequence_complete', now, physical_success=None)
             self.set_state('done', now)
         return [{'kind': 'hold'}]
@@ -433,6 +496,9 @@ class Runtime:
             'robot_id': self.robot_id, 'events': self.events, 'poses': self.pose_log,
             'commands': self.commands, 'provider': self.pose.record(), 'dev_light_would_stop': self.soft_counts,
             'occlusion': self.own_load_occlusion.export(), 'blind_window': self.blind.window,
+            'setdown_relook': {'profile': 'solo-cyan-setdown-relook-v1',
+                              'attempted_indexes': sorted(self.relooked),
+                              'limit': 'one per authored route checkpoint; DEV only'},
             'physical_success': None, 'in_run_drop_tilt_contact_detection': False,
             'controller_inputs': ['own_rgb', 'static_map', 'own_command_history']}
 
