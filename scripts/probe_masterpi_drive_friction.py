@@ -45,7 +45,7 @@ def timer_delta(before, after):
 
 
 def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torque_audit=False, long_lane=False, stall_audit=False,
-             world_options=None, profile_timers=False):
+             world_options=None, profile_timers=False, post_build=None, bump=False):
     import mujoco
     import numpy as np
     from sim.masterpi_drive_friction import build_world
@@ -72,6 +72,9 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
     spawn_x = 2.5 if long_lane else 3.
     # Empty east room. Setup-only poses; diagnostic trajectories are prewritten.
     scene.config['setup_only']['spawns']['r1'] = [spawn_x, -1., .0325, 0.]
+    if bump:
+        # Idle r2 0.7 m ahead on the same line: r1 reaches and pushes it (wake-by-contact check).
+        scene.config['setup_only']['spawns']['r2'] = [spawn_x+.7, -1., .0325, 0.]
     kwargs = dict(seed=1601, render=False, warehouse_layout=scene.engine_layout,
                   use_calibration_manifest=False)
     world = None
@@ -84,9 +87,13 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
         world = (build_world(scene, drive_profile=profile, **(world_options or {}), **kwargs) if profile in CONTACT_PROFILES else
                  legacy_world(scene, 'cargo_noslip_v1', initial_sim_cap_s=30., **kwargs))
         scene.setup(world)
+        if post_build is not None:
+            post_build(world)  # profiling ablation only; recorded below
         c = world.robot('r1'); m, d = world.model, world.data
         c.set_servo_pulses({**HIGH, 1:2000}, forward_only=True)
         c.set_base_pose_for_test((spawn_x, -1., .0325), 0.)
+        if bump:
+            world.robot('r2').set_base_pose_for_test((spawn_x+.7, -1., .0325), 0.)
         item = next(iter(scene.config['setup_only']['objects'].values()))
         cargo = m.body(item['body_name']).id
         cargo_j = int(m.body_jntadr[cargo]); cargo_q = int(m.jnt_qposadr[cargo_j])
@@ -118,6 +125,7 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
             d.qvel[:] = 0
             mujoco.mj_forward(m, d)
         start_t = float(d.time); start_xyz = c.base_xyz().copy(); start_yaw = c.base_rpy()[2]
+        r2_start = world.robot('r2').base_xyz().copy() if bump else None
         start_com = d.subtree_com[c.robot_bid].copy()
         patterns = {'forward': FORWARD_PATTERN, 'left': LEFT_PATTERN, 'turn': YAW_LEFT_PATTERN,
                     'no_contact': FORWARD_PATTERN, 'rated_speed': FORWARD_PATTERN}
@@ -216,6 +224,10 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
         result['tail_yaw_min_radps'] = min(r['velocity'][5] for r in tail) if tail else None
         result['tail_forward_min_mps'] = min(r['velocity'][0] for r in tail) if tail else None
         result['tail_forward_progress_m'] = tail[-1]['com_xyz'][0]-tail[0]['com_xyz'][0] if tail else None
+        if bump:
+            result['r2_displacement_m'] = (world.robot('r2').base_xyz()-r2_start).tolist()
+        if post_build is not None:
+            result['post_build'] = getattr(post_build, '__name__', 'post_build')
         result.update(sim_s=float(d.time-start_t), wall_s=elapsed, wall_per_sim=elapsed/(d.time-start_t),
             commands=2, displacement_m=(c.base_xyz()-start_xyz).tolist(), yaw_change_rad=c.base_rpy()[2]-start_yaw,
             steady_velocity=np.mean([r['velocity'] for r in tail], axis=0).tolist() if tail else None,

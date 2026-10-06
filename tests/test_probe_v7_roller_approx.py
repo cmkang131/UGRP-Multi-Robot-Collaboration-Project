@@ -80,3 +80,26 @@ def test_timer_snapshot_reads_every_mujoco_stage():
     after = timer_snapshot(data)
     assert {'step', 'forward', 'position', 'constraint', 'pos_collision', 'col_narrow'} <= set(before)
     assert after['step'][1] == before['step'][1]+1 and after['step'][0] >= before['step'][0]
+
+
+def bump(r1, r2, status='MEASURED_DEV'):
+    return {'status': status, 'displacement_m': [r1, 0, 0], 'r2_displacement_m': [r2, 0, 0]}
+
+
+def test_bump_comparison_requires_r2_to_be_pushed_in_both():
+    assert probe.compare_bump('b', bump(1.0, .4), bump(1.04, .43))['passed']
+    assert not probe.compare_bump('b', bump(1.0, .4), bump(1.06, .4))['passed']
+    assert not probe.compare_bump('b', bump(1.0, .4), bump(1.0, .46))['passed']
+    # a sleeping r2 that never wakes stays put: fails even if r1 matches
+    assert not probe.compare_bump('b', bump(1.0, .4), bump(1.0, .0))['passed']
+
+
+def test_ablation_zeroes_only_roller_dry_friction():
+    import mujoco
+    from types import SimpleNamespace
+    model = mujoco.MjModel.from_xml_string(
+        '<mujoco><worldbody><body><joint name="a_roller_0" type="hinge" frictionloss="1e-7"/><geom size=".1"/></body>'
+        '<body><joint name="wheel" type="hinge" frictionloss="2e-3"/><geom size=".1"/></body></worldbody></mujoco>')
+    probe.zero_roller_frictionloss(SimpleNamespace(model=model))
+    assert model.dof_frictionloss.tolist() == [0., 2e-3]
+    assert probe.post_build_for('mesh_nofl') is probe.zero_roller_frictionloss and probe.post_build_for('mesh') is None

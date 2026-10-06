@@ -22,8 +22,23 @@ PROFILE = 'masterpi_drive_friction_v7'
 VARIANTS = {'mesh': {'roller_collision': 'mesh'},
             'sphere6_v1': {'roller_collision': 'sphere6_v1'},
             'mesh_freeze': {'roller_collision': 'mesh', 'idle_robot_contacts': 'freeze_v1'},
-            'sphere6_freeze': {'roller_collision': 'sphere6_v1', 'idle_robot_contacts': 'freeze_v1'}}
+            'sphere6_freeze': {'roller_collision': 'sphere6_v1', 'idle_robot_contacts': 'freeze_v1'},
+            'mesh_nofl': {'roller_collision': 'mesh'}}   # ablation, see ABLATIONS
 BASE = 'mesh'   # every other variant is compared with this one
+# Cost-attribution ablation (profile phase only, not an option): zero the 108 roller-joint dry-friction rows at runtime.
+ABLATIONS = {'mesh_nofl': 'zero_roller_frictionloss'}
+
+def post_build_for(variant):
+    name = ABLATIONS.get(variant)
+    return globals()[name] if name else None
+
+
+def zero_roller_frictionloss(world):
+    m = world.model
+    for j in range(m.njnt):
+        if '_roller_' in m.joint(j).name:
+            m.dof_frictionloss[int(m.jnt_dofadr[j])] = 0.
+
 
 # (tag, case, loaded, wheel_input, drive_s, long_lane): same set-ups as the recorded v7 steps.
 EQUIVALENCE = (
@@ -33,6 +48,7 @@ EQUIVALENCE = (
     ('cyan-f035', 'forward', True, 35, 5., True), ('cyan-f100', 'forward', True, 100, 5., True),
     ('empty-left035', 'left', False, 35, 1.5, False),
 )
+BUMP = ('empty-bump050', 'forward', False, 50, 5., True)   # r1 pushes an idle r2 placed 0.7 m ahead
 PROFILE_CASES = (('rest', 'rest', False, 35, 1.5, False), ('empty-f050', 'forward', False, 50, 1.5, False),
                  ('cyan-f050', 'forward', True, 50, 1.5, False))
 
@@ -46,7 +62,10 @@ ACCEPT = {
     'beam_shift_rel': .10,                 # beam world-y shift relative to mesh
     'beam_yaw_diff_deg': .5,               # |beam yaw change difference|
     'beam_progress_difference_rel': .10,   # r1-r2 world-y progress difference relative to mesh
-    'speed_gain_min': 1.2,                 # mesh/sphere6 physics-only wall per SIM, forward u50 repeats
+    'bump_r1_rel': .05,                    # r1 x displacement when it pushes an idle r2
+    'bump_r2_rel': .10,                    # r2 x displacement
+    'bump_r2_min_m': .05,                  # r2 must actually be pushed (wake by contact) in both variants
+    'speed_gain_min': 1.2,                 # mesh / variant physics-only wall per SIM, forward u50 repeats (sphere6_v1 and mesh_freeze)
 }
 
 
@@ -110,6 +129,18 @@ def compare_beam(mesh, s6):
                  'progress_difference_relative': ps/pm-1. if pm else None})
 
 
+def compare_bump(tag, mesh, s6):
+    if mesh['status'] != 'MEASURED_DEV' or s6['status'] != 'MEASURED_DEV':
+        return _item(tag, False, {'status': [mesh['status'], s6['status']]})
+    r1m, r1v = mesh['displacement_m'][0], s6['displacement_m'][0]
+    r2m, r2v = mesh['r2_displacement_m'][0], s6['r2_displacement_m'][0]
+    ok = (r2m > ACCEPT['bump_r2_min_m'] and r2v > ACCEPT['bump_r2_min_m']
+          and _rel(r1v, r1m) <= ACCEPT['bump_r1_rel'] and _rel(r2v, r2m) <= ACCEPT['bump_r2_rel'])
+    return _item(tag, ok, {'rule': 'r2 pushed in both; r1 x within 5%, r2 x within 10%',
+                 'base_r1_x_m': r1m, 'variant_r1_x_m': r1v, 'base_r2_x_m': r2m, 'variant_r2_x_m': r2v,
+                 'r1_relative_difference': r1v/r1m-1. if r1m else None, 'r2_relative_difference': r2v/r2m-1. if r2m else None})
+
+
 def physics_only_wall_per_sim(result):
     step = result.get('profile', {}).get('step_total_s')
     return step/result['sim_s'] if step and result.get('sim_s') else None
@@ -128,10 +159,12 @@ def speed_summary(runs):
         for variant, row in out['variants'].items():
             row['gain_physics_only'] = base['physics_only_mean']/row['physics_only_mean']
             row['gain_diagnostic'] = base['diagnostic_mean']/row['diagnostic_mean']
+    out['gain_required'] = ACCEPT['speed_gain_min']
+    for variant, key in (('sphere6_v1', 'passed'), ('mesh_freeze', 'freeze_passed')):
+        if variant in out['variants']:
+            out[key] = bool(out['variants'][variant]['gain_physics_only'] >= ACCEPT['speed_gain_min'])
     if 'sphere6_v1' in out['variants']:
-        out['gain_required'] = ACCEPT['speed_gain_min']
         out['gain_physics_only'] = out['variants']['sphere6_v1']['gain_physics_only']
-        out['passed'] = bool(out['gain_physics_only'] >= ACCEPT['speed_gain_min'])
     return out
 
 
@@ -213,12 +246,22 @@ def main():
                     folder = args.output/variant
                     folder.mkdir(exist_ok=True)
                     result = run_case(PROFILE, case, loaded, folder/tag, level, drive_s, False, lane, False,
-                                      world_options=VARIANTS[variant], profile_timers=True)
+                                      world_options=VARIANTS[variant], profile_timers=True, post_build=post_build_for(variant))
                     result.update(variant=variant, tag=tag)
                     rows.append(result)
                     write(args.output/'results.json', rows)
                     print(json.dumps({k: result.get(k) for k in ('variant', 'tag', 'status', 'wall_per_sim', 'steady_velocity')}), flush=True)
             if args.phase == 'equivalence':
+                tag, case, loaded, level, drive_s, lane = BUMP
+                for variant in order:
+                    folder = args.output/variant
+                    folder.mkdir(exist_ok=True)
+                    result = run_case(PROFILE, case, loaded, folder/tag, level, drive_s, False, lane, False,
+                                      world_options=VARIANTS[variant], profile_timers=True, bump=True)
+                    result.update(variant=variant, tag=tag)
+                    rows.append(result)
+                    write(args.output/'results.json', rows)
+                    print(json.dumps({k: result.get(k) for k in ('variant', 'tag', 'status', 'wall_per_sim', 'displacement_m', 'r2_displacement_m')}), flush=True)
                 from scripts.probe_drive_pair_beam import run_pair_case
                 for variant in order[::-1]:
                     folder = args.output/variant
@@ -235,7 +278,7 @@ def main():
                 folder = args.output/variant
                 folder.mkdir(exist_ok=True)
                 result = run_case(PROFILE, 'forward', False, folder/f'empty-f050-r{k}', 50, 5., False, True, False,
-                                  world_options=VARIANTS[variant], profile_timers=True)
+                                  world_options=VARIANTS[variant], profile_timers=True, post_build=post_build_for(variant))
                 result.update(variant=variant, tag=f'empty-f050-r{k}')
                 rows.append(result)
                 write(args.output/'results.json', rows)
@@ -253,6 +296,7 @@ def main():
                 for tag, case, loaded, level, drive_s, lane in EQUIVALENCE:
                     a, b = by[(BASE, tag)], by[(variant, tag)]
                     checks.append(compare_left(tag, a, b) if case == 'left' else compare_forward(tag, level, a, b))
+                checks.append(compare_bump(BUMP[0], by[(BASE, BUMP[0])], by[(variant, BUMP[0])]))
                 checks.append(compare_beam(by[(BASE, 'pair-beam')], by[(variant, 'pair-beam')]))
                 report['variants'][variant] = {'checks': checks, 'all_passed': all(c['passed'] for c in checks)}
             write(args.output/'equivalence.json', report)
