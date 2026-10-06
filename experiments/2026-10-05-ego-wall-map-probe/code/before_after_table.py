@@ -9,6 +9,7 @@ Definitions (all on the ground-truth-VISIBLE columns of the ground-truth-VISIBLE
 
   zero-recall frames   visible frames in which no visible column reports a contact
   column recall        contacts on visible columns / visible columns
+  testable recall      the same over visible columns whose ground-truth contact has >= band_px rows above it
   correct              a contact on a visible column with |row error| <= row_tol_px (the detector window_px)
   precision            correct / contacts on visible columns
   correct recall       correct / visible columns
@@ -62,6 +63,7 @@ def summarize(run_dir: Path, variant: str):
         'visible_columns': rec['gt_visible_columns'],
         'zero_recall_frames': rec['visible_frames_with_zero_recall'],
         'column_recall': rec['column_recall'],
+        'testable_column_recall': v['recall_testable']['column_recall'],
         'contacts_on_visible': cor['detected_on_visible_columns'],
         'correct_on_visible': cor['correct_on_visible_columns'],
         'precision': cor['precision_on_visible_columns'], 'correct_column_recall': cor['correct_column_recall'],
@@ -81,7 +83,8 @@ ROWS = (
     ('벽이 보이는 프레임', lambda o: f"{o['visible_frames']}"),
     ('0검출 프레임 (보이는 프레임 중)', lambda o: f"{o['zero_recall_frames']} ({o['zero_recall_frames']/o['visible_frames']:.1%})"),
     ('열 recall (보이는 열 중 접촉 보고)', lambda o: f"{o['column_recall']:.3f}"),
-    ('정확한 접촉 (|행오차| ≤ 3 px) 비율 = precision', lambda o: f"{o['precision']:.3f}"),
+    ('열 recall, 시험 가능 열만 (정답 접촉 행 ≥ 10: 위쪽 band가 프레임에 들어가는 열)', lambda o: f"{o['testable_column_recall']:.3f}"),
+    ('정확한 접촉(행 오차 절댓값 ≤ 3 px) 비율 = precision', lambda o: f"{o['precision']:.3f}"),
     ('정확 열 recall', lambda o: f"{o['correct_column_recall']:.3f}"),
     ('정확한 접촉이 0인 보이는 프레임', lambda o: f"{o['zero_correct_frames']}"),
     ('거짓 검출: 안 보이는 프레임 중 접촉이 있는 프레임 / 접촉 수', lambda o: f"{o['fp_frames_with_contact']}/{o['fp_frames']} 프레임, {o['fp_contacts']} 접촉"),
