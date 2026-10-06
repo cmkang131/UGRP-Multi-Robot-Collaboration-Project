@@ -1,0 +1,77 @@
+{
+  "source_sha": "fa3e038a",
+  "hashes": {
+    "harness/own_map_navigation.py": "1e3e4d56fff9293051b91d920587266b056ca4c737f82862f1e701c92881f3c0",
+    "harness/self_map_prob.py": "8473142e17d7fa2274f68e7000d9d4ed7b38253ee4b7c6e8e6e52ff465f0934e",
+    "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+    "harness/floor_goal.py": "1bdf332989123e0ea2a079e5571b42c2c6acb64d50080aacea4307e00c9a59dd",
+    "harness/floor_goal_v3.py": "59885daf4704837b8c7473c7aaad62a6a6fb8729960197f81c810b5f307fe87d",
+    "experiments/2026-10-07-mapfree-explore/sensor-errors.npz": "2a28ff187d04dfe1573d87555071f36b6c633f8597f0e1578b8a824da9cf183b",
+    "experiments/2026-10-07-mapfree-explore/sensor-model.json": "6cb35c18e8b5c3a8303438182b12d9d6e3fc7ad4414155baf4d327300e0eb9bd",
+    "experiments/2026-10-07-mapfree-explore/code/build_sensor_model.py": "e9ec9df1bd988733c205fb6d0cae2df3c7d3a893b0f7a9ddab9badc135d9f1a2",
+    "experiments/2026-10-07-mapfree-explore/code/grid_world.py": "c18a51d89c5d7320d4d5f7e289add276efee37606458de3d0980f54c955b3576",
+    "experiments/2026-10-07-mapfree-explore/code/run_grid.py": "e2c080a6ca0a7f7114de1477e075b2e1ceb123ea449e734de7376d1388b476fc"
+  },
+  "options": {
+    "exploration": "own_frontier_v1",
+    "door_detection": "own_gap_v1",
+    "partial_planning": "own_astar_v1"
+  },
+  "development_results_sha256": "688b60e333219f27e99272c9a17177da6a4c0f73ab30d038e66ee7ee313537fc",
+  "development": {
+    "static_map": {
+      "n": 16,
+      "B_true": 0,
+      "B_false": 0,
+      "first_B_distance_m_median": null,
+      "first_B_time_s_median": null,
+      "coverage_median": 0.3696180555555556,
+      "collisions": 16,
+      "door_attempts": 4,
+      "wrong_door_attempts": 0,
+      "candidate_passage_attempts": 0,
+      "false_candidate_passage_attempts": 0,
+      "end_distance_m_median": 8.116821442710007,
+      "end_time_s_median": 32.0,
+      "end_position_error_m_median": 0.3222881802434648,
+      "statuses": {
+        "collision": 16
+      },
+      "plans": {
+        "static_map": 178,
+        "static_no_path": 50
+      },
+      "door_reasons": {}
+    },
+    "own_frontier": {
+      "n": 16,
+      "B_true": 0,
+      "B_false": 0,
+      "first_B_distance_m_median": null,
+      "first_B_time_s_median": null,
+      "coverage_median": 0.27209576244184686,
+      "collisions": 9,
+      "door_attempts": 0,
+      "wrong_door_attempts": 0,
+      "candidate_passage_attempts": 0,
+      "false_candidate_passage_attempts": 0,
+      "end_distance_m_median": 2.801249797958941,
+      "end_time_s_median": 11.0,
+      "end_position_error_m_median": 0.1848326374428585,
+      "statuses": {
+        "collision": 9,
+        "search_exhausted": 7
+      },
+      "plans": {
+        "observation_required": 187,
+        "rotation_sweep_unknown": 126
+      },
+      "door_reasons": {
+        "jamb_reobserve": 178,
+        "free_connection_unknown": 169
+      }
+    }
+  },
+  "confirmation_opened": false,
+  "tuning": "none; implementation contract fixes recorded, criteria unchanged"
+}
