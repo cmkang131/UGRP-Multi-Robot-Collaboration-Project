@@ -78,7 +78,7 @@ def likelihood(field,px,points):
     return 1.+np.sum(pz*pz*pz,axis=1)
 
 
-def install(pf,static_map):
+def install(pf,static_map,*,visibility=None):
     field=Field(static_map);previous=pf.update_obs;predict=pf.predict_to
     state=dict(odom=np.zeros(3),anchor=None,observation=None)
     audit=dict(option=OPTION,parameters=copy.deepcopy(PARAMS),scope='S2 loaded HIGH only',
@@ -110,6 +110,9 @@ def install(pf,static_map):
         signature=(obs.b_kind.tobytes(),obs.b_lo.tobytes())
         if signature==state['observation']:
             return previous(t,None,pose)
+        if visibility is not None:
+            obs=visibility.apply(pf,obs,pose,t)
+            if obs is None:return previous(t,None,pose)
         points=endpoints(pf.column_model_for(pose),obs)
         if not len(points):return previous(t,None,pose)
         state['anchor']=state['odom'].copy();state['observation']=signature
@@ -142,15 +145,27 @@ def install(pf,static_map):
 
 
 class Runtime(Previous):
-    def __init__(self,*args,measurement_model='off',**kwargs):
+    def __init__(self,*args,measurement_model='off',visibility_mask='off',**kwargs):
         if measurement_model not in ('off',OPTION):raise ValueError('unknown S2 measurement model')
+        if visibility_mask not in ('off','command_geometry_v1'):raise ValueError('unknown S2 visibility mask')
+        if visibility_mask!='off' and measurement_model!=OPTION:raise ValueError('visibility candidate requires S2 likelihood field')
         super().__init__(*args,**kwargs)
         self.measurement_model=measurement_model
+        self.visibility=None
+        if visibility_mask!='off':
+            from harness.zone_solo_cyan_visibility import Visibility
+            self.visibility=Visibility()
+            previous_frame=self.pose.provider.on_frame
+            def frame(now,rgb):
+                self.visibility.on_rgb(rgb)
+                return previous_frame(now,rgb)
+            self.pose.provider.on_frame=frame
         if measurement_model!='off':
             static=args[0] if args else kwargs['static']
-            self.soft_measurement=install(self.pose.provider.loc._pf,static)
+            self.soft_measurement=install(self.pose.provider.loc._pf,static,visibility=self.visibility)
             inner=self.pose.provider
             inner.runtime_contract['s2_measurement_model']=dict(option=OPTION,parameters=copy.deepcopy(PARAMS))
+            if self.visibility is not None:inner.runtime_contract['s2_visibility']=copy.deepcopy(self.visibility.audit)
             from harness.zone_solo_cyan_v106 import hp
             inner.identity_sha256=hp.base.digest(inner.runtime_contract)
             inner.source='owncam_pf_s2_likelihood_field:'+inner.identity_sha256[:8]
@@ -159,4 +174,5 @@ class Runtime(Previous):
     def record(self):
         out=super().record()
         if self.measurement_model!='off':out['soft_measurement']=copy.deepcopy(self.soft_measurement)
+        if self.visibility is not None:out['visibility_mask']=copy.deepcopy(self.visibility.audit)
         return out
