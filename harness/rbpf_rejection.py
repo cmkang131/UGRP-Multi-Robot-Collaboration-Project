@@ -30,6 +30,8 @@ def install(grid, *, rbpf_rejection='off'):
     if (rbpf_rejection != OPTION or not isinstance(grid, RaoBlackwellizedGrid)
             or not isinstance(grid.odom.driver, PulseOdometry) or not hasattr(grid, '_motion_gate')):
         raise ValueError('REJECTION_REQUIRES_PULSE_RBPF_MOTION_GATE')
+    if hasattr(grid, '_gmapping_insertion'):
+        raise ValueError('REJECTION_CONFLICTING_INSERTION_POLICY')
     if hasattr(grid, '_selective_state'):
         raise ValueError('REJECTION_ALREADY_INSTALLED')
     grid._selective_state = dict(previous=list(grid.odom.driver.pose), noise_frames=0,

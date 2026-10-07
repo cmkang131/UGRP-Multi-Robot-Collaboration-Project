@@ -75,3 +75,13 @@ GT 차체 자세로 옮긴 검출점의 최근접 실제 벽 거리를 total_wal
 
 raw `/Users/changmin/projects/ugrp/outputs/rbpf-insertion-v1/`; ENOSPC=HOST_ERROR.
 출력/입력 sha256 보존, 다른 worktree·PR406·사용자 미추적 파일 변경0.
+
+구현은 `harness.rbpf_insertion.install(grid, rbpf_insertion='gmapping_range_v1')`.
+motion gate 설치 뒤 호출한다. off는 원 객체/메서드 그대로 반환한다.
+별도 observer는 기존 RBPF observer를 유지하면서 실패 삽입 조건 한 곳과 판정 메타데이터만 바꾼다.
+egomap24 reject-skip과는 어느 설치 순서에서도 충돌 오류로 막는다.
+온라인 실행기/기존 기본값은 변경하지 않으며 이번 offline adapter에서만 명시적으로 연결했다.
+
+재생: 기존 venv Python으로 `code/replay.py off`, `code/replay.py on`,
+예측 봉인 후 `code/replay.py score`. 구현 전 motion gate6시험,
+구현 후 insertion7 + motion gate6 + rejection7 = **20시험 통과**.
