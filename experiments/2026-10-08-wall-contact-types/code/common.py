@@ -38,4 +38,3 @@ def first_box(origin,rays,lower,upper):
     entry=np.maximum(np.minimum(a,b).max(-1),0.)
     exit=np.maximum(a,b).min(-1)
     return np.where((exit>=entry)&(exit>0),entry,np.inf)
-
