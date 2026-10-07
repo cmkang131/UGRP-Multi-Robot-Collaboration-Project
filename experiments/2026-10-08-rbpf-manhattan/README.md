@@ -60,3 +60,28 @@ raw `outputs/rbpf-manhattan-v1/` (기본 checkout 절대 경로), ENOSPC=HOST_ER
 다른 worktree·PR406·사용자 미추적4파일 보존. TensorBoard 생략 요청 유지.
 
 구현 전 수치 명세: periodic Gaussian 합은 prior 예측 표준편차 ±8σ 이상(최소 좌우2모드)을 포함하여 절단한다. 성능 관문이 아닌 계산용 꼬리 근사이며, 집중도가 없을 때의 1e−12 검사도 수치 영점 검사다.
+
+
+## 실행 상태 — GitHub 장애로 중단 (관문 미판정)
+
+사전 등록 `afc34e46`, 구현/고정 재생 소스 `3191598b`.
+관련 시험 **19개 통과**(Manhattan6 + rejection7 + motion gate6), py_compile/diff 검사 통과.
+**yaw off 재생1회 완료**: egomap24 selective on의 전체 prediction JSON(자세/covariance,
+지도/판정/ledger)과 바이트 동일, SHA256 `c4be3683cb8633130d72481c24c71f1e50bf352a8b75ea00ee5e101f6d421201`.
+따라서 off 기준은 종료1.12721m/σ .51620m=2.18366배, 영역 P0/14·R0/137,
+7.379m 이동·2.313m² footprint·가시137/329표본·891자세 그대로다.
+
+GitHub가 두 번 연속 `remote rejected (Internal Server Error)`로 push를 거부했다.
+2026-10-07T15:12:40Z 및 15:13:19Z(KST 10월8일), request ID와 검증은
+[verification.json](results/verification.json)에 기록했다. 로컬 커밋은 보존했고 원격 PR405는
+`6ac68a60`/DRAFT임을 읽기 전용 확인했다. 세 번째 push/강제 push/원격 변경은 하지 않았다.
+
+사용자의 “같은 원인으로 두 번 막히면 멈추고 보고” 규칙으로 **on 재생 전 중단**했다.
+이는 알고리즘 관문 실패가 아니라 배포 장애다. on yaw 추이·지도 지표/관문은 **미판정**,
+물리 제안 없음, 물리/모델/잠금 acquire0. 실험 설정을 변경하지 않았다.
+실행 묶음에서 push 실패 후 shell이 다음 off 명령을 진행하여 off 검증만 완료했다.
+
+재개 시 남은 일: 이 로컬 커밋들의 정상 push 확인 → 동결 `code/replay.py on`1회 →
+`score` 평가(예측 봉인 후 GT) → 결과/그림 기록. off 디렉터리는 덮어쓰거나 재생하지 않는다.
+raw `/Users/changmin/projects/ugrp/outputs/rbpf-manhattan-v1/` 로컬 보존,
+[해시](results/raw-manifest.json). 원격 백업/새 물리 성공으로 보고하지 않는다.

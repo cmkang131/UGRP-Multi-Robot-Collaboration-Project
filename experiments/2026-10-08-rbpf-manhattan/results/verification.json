@@ -1,0 +1,49 @@
+{
+  "status": "BLOCKED_PUSH",
+  "inference_source_sha": "3191598b26ae0883672e41119186f381a12b7153",
+  "preregistration_sha": "afc34e46",
+  "remote_pr_head": "6ac68a604a169ed3e8a7a84d24bf3a75fad7dcc8",
+  "pr_draft": true,
+  "pytest": {
+    "passed": 19,
+    "failed": 0,
+    "files": [
+      "tests/test_rbpf_manhattan.py",
+      "tests/test_rbpf_rejection.py",
+      "tests/test_rbpf_motion_gate.py"
+    ]
+  },
+  "off_byte_verification": {
+    "equal": true,
+    "sha256": "c4be3683cb8633130d72481c24c71f1e50bf352a8b75ea00ee5e101f6d421201",
+    "baseline_sha256": "c4be3683cb8633130d72481c24c71f1e50bf352a8b75ea00ee5e101f6d421201"
+  },
+  "off_prediction_seal": {
+    "sha256": "c4be3683cb8633130d72481c24c71f1e50bf352a8b75ea00ee5e101f6d421201",
+    "gt_read": false,
+    "source_sha": "3191598b26ae0883672e41119186f381a12b7153",
+    "inputs": {
+      "own-contacts.jsonl": "fca96d1ebf83b615c76eaf29ec784db57ace0f5de5ceebf519fe2d76764ce81c",
+      "robots/r3/commands.jsonl": "3b90ec1182da8f731171bdba4d8d52b1de30da12142d2e11d4db61de1866a06c",
+      "artifacts.sha256.json": "2fd52845042223a86c22b1e87063aac9d4d780cf50db1e54364672794baa903c"
+    }
+  },
+  "on_replay": "NOT_RUN",
+  "gate": "UNASSESSED",
+  "physical_runs": 0,
+  "model_calls": 0,
+  "lock_acquires": 0,
+  "push_failures": [
+    {
+      "error": "remote rejected: Internal Server Error",
+      "request_id": "F7CD:2D36F3:5E243:93666:6AC66167",
+      "time_utc": "2026-10-07T15:12:40Z"
+    },
+    {
+      "error": "remote rejected: Internal Server Error",
+      "request_id": "F7EB:38A7D:615BB:970BF:6AC6618D",
+      "time_utc": "2026-10-07T15:13:19Z"
+    }
+  ],
+  "stop_reason": "User rule: stop after two blocks from same cause. No third push or on replay attempted."
+}
