@@ -26,10 +26,17 @@
   바꾸는 것은 원본 포트의 누락 수정이 아니라 baseline 임무 변경이다. 이번에는 하지 않는다.
 
 코드 원본은 기존 third_party의 revision/hash와 비교하고, 추가 Nav24파일은 로컬 raw references에
-보관했다. [출처 해시](references.json). Apache-2.0/BSD 저작권은 원문에 있으며 이번 진단은 runtime
+보관했다. 추가 [LineIterator](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_util/include/nav2_util/line_iterator.hpp)는
+같은 Bresenham tie/endpoint이므로 기존 raytrace_cells로 원본 외곽 검사도 평가용 대조한다.
+[출처 해시](references.json). Apache-2.0/BSD 저작권은 원문에 있으며 이번 진단은 runtime
 원본을 새로 복사/변경하지 않는다. 첫 web URL404/cache miss 이후 HTTPS 원문/정상 공식 문서로 확인했다.
 
 경로 존재 진단은 평가용 C-space 외접원 거리와 기존 A*를 사용한다. 원보다 사각이 작기 때문에
 원 경로가 양의 여유를 갖는 것은 사각 통과의 충분조건이다. .025m 격자·.002m 이하 선분 표본,
 거리함수의1-Lipschitz 성질로 `min sampled clearance − max spacing/2`를 연속 여유 하한으로 저장한다.
 경로 없음/원 시작 충돌은 사각 불가능의 필요충분조건이 아니다. 실제 환경이나 actor에 쓰지 않는다.
+
+s5의 padding 포함 외접원은 시작점에서 막혀 사각 경로 존재를 판정하지 못했다. 더 작은 몸체로
+기준을 바꾸지 않고, 이미 v3가 첫 거부 때 요청했던 twist의1초 기하 투영을 사각 SAT로 추가 검사한다.
+그 접속 뒤 외접원 경로가 있으면 원래 padding 사각의 충분조건이다. 새로운 제어 명령이나 실행은 아니다.
+사각 prefix의 연속 여유 하한은 sample SAT gap에서 `(이동+외접반경×회전)/2` 표본 간 최대치를 뺀다.

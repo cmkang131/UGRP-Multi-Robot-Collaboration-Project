@@ -43,3 +43,16 @@ def test_replay_own_pose_without_mutating_live_odometry_property():
     a.replay_observation(actor,log)
     assert actor.latest[(12,0)]
     assert actor.grid.odds[(12,0)]>0
+
+
+def test_oriented_prefix_clearance_certificate_and_original_outline():
+    import sys
+    sys.path.insert(0,str(ROOT/'experiments/2026-10-07-mapfree-stop-geometry/code'))
+    from report import rectangle_certificate,original_outline_collision
+    rects=[dict(center=[0.,0.],half=[.1,.2],yaw=0.)]
+    cert=rectangle_certificate([[.3,-.1,0],[.3,.1,.1]],rects,[-2,2,-2,2],a.HALF)
+    assert cert['continuous_clearance_lower_m']>0
+    assert rectangle_certificate([[.2,0,0],[.05,0,0]],rects,[-2,2,-2,2],a.HALF)['continuous_clearance_lower_m']<0
+    from harness.public_navigation.costmap import Costmap
+    raw=np.zeros((20,20),np.uint8);raw[10,11]=254
+    assert original_outline_collision(Costmap(raw,[-1,-1]),np.array([0,0,0]))
