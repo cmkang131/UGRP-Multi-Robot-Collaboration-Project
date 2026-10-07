@@ -32,6 +32,7 @@ TEST_PATTERNS = (
     "tests/test_wall_projection_guard.py",
     "tests/test_wall_confidence.py",
     "tests/test_wall_floor_boundary.py",
+    "tests/test_wall_parallax.py",
     "tests/test_wall_detector_evaluation.py",
     "tests/test_servo_camera_fk.py",
     "tests/test_camera_projection_audit.py",
