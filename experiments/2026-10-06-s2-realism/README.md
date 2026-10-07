@@ -2693,3 +2693,74 @@ Nav2 진행 검사와 거리·시간 한정 BackUp/DriveOnHeading을 따른다.
 - [Seegmiller 2011](https://publications.ri.cmu.edu/storage/publications/pub_files/2011/9/Seegmiller_IROS-2011_Optical_Flow_Odometry.pdf), II-C–F.
 - [robot_localization EKF](https://github.com/cra-ros-pkg/robot_localization/blob/ros2/src/ekf.cpp), [설정](https://github.com/cra-ros-pkg/robot_localization/blob/ros2/params/ekf.yaml): 명령은 control, VO는 측정; 기본 vx/vy/vyaw Q=.025/.025/.02.
 - [Nav2 SimpleProgressChecker](https://github.com/ros-navigation/navigation2/blob/main/nav2_controller/plugins/simple_progress_checker.cpp), [DriveOnHeading](https://github.com/ros-navigation/navigation2/blob/main/nav2_behaviors/include/nav2_behaviors/plugins/drive_on_heading.hpp): 거리·시간 검사, 회피 거리/시간 제한과 충돌 검사.
+
+### s2v24 결과 — 기준 실패, 새 full 미실행
+사전 등록 `0ef95343` → 구현 `5c984bd5` → NumPy 불리언 저장 수정 `f73a4ede`.
+`visual_odometry=ground_flow_ekf_v1`와 `stall_recovery=nav2_progress_v1`는 기본 off 탐색 옵션으로만 보존한다.
+기존 v126 번들과 실행은 그대로이고 새 번들·seed·시뮬레이션·렌더·모델 호출은 0이다.
+|시각 SIM s|실제 이동 cm|RGB coverage|광류 직접 누적 오차 cm (사후 분해)|EKF 오차 cm|XY σ cm|진행 상한 cm|
+|---:|---:|---:|---:|---:|---:|---:|
+|107.35|1.706|93.3%|1.087|16.009|15.50|46.28|
+|108.30|0.089|100.0%|0.097|2.555|17.19|36.87|
+|109.25|0.127|100.0%|0.333|9.679|15.89|41.37|
+|110.20|0.083|100.0%|0.320|0.849|15.56|31.95|
+|111.15|0.135|100.0%|0.347|3.824|17.29|38.34|
+|113.70|2.374|60.0%|4.059|4.501|12.03|30.83|
+
+문제 6회 중 coverage≥80%는 5회지만, **등록한 EKF 변위 오차≤3.5 cm는 2/6**(필요 5/6),
+중앙 오차 4.162 cm(기준≤1 cm)다. yaw RMS는 7.113→4.742°로 개선됐다.
+전체 하중 277펄스의 변위 RMS는 2.413→1.658 cm지만, 문제 6회를 제외한 271펄스는
+0.498→1.167 cm로 악화해 정상 이동 보존도 실패했다.
+|조건|운반 RMSE m|유효 시각 갱신|최장 공백 SIM s|집기 전 정지 최대 오차 m|
+|---|---:|---:|---:|---:|
+|baseline|2.023583|27|33.85|0.105661|
+|candidate|1.719476|26|33.15|0.105661|
+
+운반 RMSE는 15.0% 개선됐지만 갱신 수 기준(≥27)에 1회 미달한다.
+명령 odometry에서 측정 odometry로 바뀌면서 AMCL 운동 trigger 시각도 달라졌다.
+공통 후보 시각은 4개이고 해당 접점 배열은 100% 동일하다. 모든 5,202 원본 RGB 해시를
+확인했고 지연한 525프레임을 순서대로 전달했다. 벽 영상 삭제·마스크 변경은 없다.
+이것을 모든 31개 관측이 같은 시각에 수락됐다는 뜻으로 해석하지 않는다.
+**가장 큰 남은 문제는 광류 자체보다 현재 EKF 융합 단계의 오차 증폭**이다.
+같은 측정·fallback을 직접 누적한 사후 분해는 첫 펄스 1.087 cm, EKF 후 16.009 cm다.
+109.25초도 0.333→9.679 cm다. 큰 pitch nuisance 공분산 아래 constant-velocity 평활과
+축간 공분산 결합이 잘못된 속도를 유지하는 설정 문제로 해석한다.
+robot_localization 원문도 속도 상수 예측의 수렴 지연을 설명한다. ROS 전체 15상태 필터를
+복제한 것은 아니고, S2의 3축 differential velocity/Joseph update 어댑터임을 명시한다.
+광류 직접 누적은 5/6이 3.5 cm 이내지만 **사후 원인 분해이며 새 채택 후보가 아니다**.
+이번 결과를 보고 Q/R·기준·covariance를 재튜닝하거나 full로 넘어가지 않는다.
+회피의 실제 입력은 진행량 평균+2σ다. 6회 상한 30.83–46.28 cm가 3.5 cm보다 커서
+shadow 방향 차단 0회, 4번째 명령 전 차단 기준도 실패했다. 무관측을 0으로 만들거나
+신뢰구간을 사후 축소하지 않았다. 합성 관측에서는 2개 연속 유효 부족→방향 억제→
+−35/60 ms 반대 옆 펄스·거리/시간 한정→재계획 분기를 시험했다. 실제 회피는 미검증이다.
+실제 escape 중 미세 펄스는 RGB 진행량을 추가 측정하되 기존 미세 펄스의 PF 예측은 유지한다.
+관측된 이동 10 cm 또는 20펄스/10초 한도 뒤 재계획하고 실패 방향은 억제한다.
+**pitch/스케일:** 사전 입력 범위 ±0.9°, ±2.8°를 유지했다. 1 mm 이상 측정 161구간의
+중앙 스케일 비는 −0.9°=0.9519, +0.9°=1.0531, −2.8°=0.8634, +2.8°=1.1799다.
+전체 범위는 각각 0.707–1.246 / 0.755–1.395 / 0.355–1.761 / 0.295–2.741이고,
+작은 움직임/회전 혼합에서 비율이 불안정하므로 중앙값만으로 정확도를 주장하지 않는다.
+이 범위를 유한차분 Jacobian으로 R에 전파하고 프레임 공유·공통 pitch가 평균화되지 않게
+펄스 공분산을 보수적으로 합산했다. 그 결과 6회 XY σ=12.03–17.29 cm다.
+GT는 재생 종료 뒤에만 사용했다. 저장된 s1051 coarse 구간 카메라와 고정 보정
+(pitch −28.662°) 차이는 −0.503∼−0.171°이고, 이전에 언급된 0.9–2.8°와
+같은 수치라고 간주하지 않는다. 실제 카메라 기하로만 평가한 스케일 비 중앙 1.027,
+고정/실제 기하의 프레임 변위 차이 중앙 1.907 mm다. 이를 제어 보정으로 다시 넣지 않았다.
+**검증·보존:** 관련 3파일 17 passed/17.75초; 직렬화 수정 후 해당 파일 6 passed/0.67초.
+off 명령/record 바이트 동일, full 5,202프레임의 poses/amcl/visibility/contact는 기존과 정확히 같다.
+raw 해시·실행 당시 커밋 소스 해시·사전 기준 해시를 다시 확인했다.
+첫 후보 계산은 JSON 저장 불리언 오류로 결과 파일을 만들지 못해, 같은 수치 알고리즘으로
+수정 후 1회 재생했다. 첫 채점의 같은 직렬화 실패와 빈 summary는 보존하고
+완료 채점은 `scoring-v2/`에 별도로 썼다. 이는 물리 실패나 추가 후보 튜닝이 아니다.
+초기 TensorBoard offline-audit 경로의 schema 거부 스냅샷도 보존했고, 표준 generic 변환으로
+새 `1007-s2-flow-fusion-v2` 4뷰/29 scalar를 만들었다. 원본·event·live API·HParams 숫자 검증 완료.
+브라우저 UI 확인 주장은 하지 않는다(사용자 수치 대조 범위).
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1007-s2-flow-fusion-v2%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_updates%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_gap_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fsix_error_pass_count%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnonblocked_new_xy_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fadmission_pass%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries) · [기존 s1051 4배속 영상](http://127.0.0.1:6007/video/262b0aa5172ea4ce95c4).
+새 lifted/inside·실제 벽 하단 가시율·B 거리·would-stop·wall/SIM은 **N/A**다.
+이전 full s1051의 lifted=true/inside=false, wall/SIM=1.315929를 이 후보 결과에 승계하지 않는다.
+두 offline ugrp_session은 stopped. agent_lock은 획득하지 않았으며 종료 확인 시 null.
+다른 PR/프로세스/worktree와 원본 이미지·로그는 수정/종료/삭제하지 않았다.
+로컬 raw: `/Users/changmin/projects/ugrp/outputs/s2-flow-fusion-20261007/`.
+[분석·6회 표](flow-fusion-analysis.json), [result/options](flow-fusion-result.json),
+[원문 출처·해시](flow-fusion-sources.json), [채점기](score_flow_fusion.py),
+[층별 분해 재현](analyze_flow_layers.py), [TensorBoard 수치 검증](flow-fusion-delivery-verification.json).
+로컬 보존은 원격 raw 백업이 아니다. PR #406 DRAFT·병합 금지를 유지한다.

@@ -6,7 +6,9 @@ import numpy as np
 HERE=Path(__file__).resolve().parent
 SIX={107.35,108.30,109.25,110.20,111.15,113.70}
 
-def main(out):
+def main(out,destination=None):
+    destination=out if destination is None else destination
+    destination.mkdir(parents=True,exist_ok=True)
     criteria=json.loads((HERE/'flow-fusion-criteria.json').read_text());raw=Path(criteria['evaluation']['raw'])
     replay={k:json.loads((out/f'replay-{k}.json').read_text()) for k in ('baseline','candidate')}
     assert all(r['frames']==5202 and not r['gt_inputs'] for r in replay.values())
@@ -102,7 +104,8 @@ def main(out):
         full_dev='ADMITTED_NOT_YET_RUN' if all(gates.values()) else 'NOT_RUN_CRITERIA_FAILED',
         limits='Fixed-command exploratory replay. Recovery is shadow only; actual escape not proven. No new lifted/inside/wall-SIM/visibility/B-distance outcomes. Missing RGB motion intervals keep fixed command prediction.')
     for filename,obj in [('motion-score.json',motion),('pitch-scale-eval.json',pitch_result),('summary.json',result)]:
-        with (out/filename).open('x') as f:f.write(json.dumps(obj,indent=2)+'\n')
-    print(json.dumps({k:v for k,v in result.items() if k not in ('six','pitch')},indent=2))
+        data=json.dumps(obj,indent=2,default=lambda value:value.item())+'\n'
+        with (destination/filename).open('x') as f:f.write(data)
+    print(json.dumps({k:v for k,v in result.items() if k not in ('six','pitch')},indent=2,default=lambda value:value.item()))
 
-if __name__=='__main__':main(Path(sys.argv[1]))
+if __name__=='__main__':main(Path(sys.argv[1]),Path(sys.argv[2]) if len(sys.argv)>2 else None)
