@@ -3021,3 +3021,48 @@ s1052는 탐색/재생 자료다. PR405의2.2배가 v122 미사용 때문이라�
 사전 등록 **b69de99b** 뒤 v128 연결 완료: 관련2파일 **8 passed /20.08s**.
 기준 c26e9afd pulse predictor와 현재 predictor를 고정18프로파일×512입자에서 비교해
 px/logw/vel 바이트 및 RNG state 동일. [검증](v128-local-verification.json).
+
+
+### 시작 도크 정보 조사·전역 초기화 재생 사전 기준 (물리 실행 종료 뒤)
+
+**현재 입력 계약에서는 자기 도크 행을 모른다.** `sim/zone_arena.py:356–361`의
+행 배치는 setup_only이고 `actor_task:365–381`는 정적 지도/임무만 전달한다.
+`harness/zone_solo_cyan_v106.py:103–108`도 seeded row assignment unknown으로 명시한다.
+`docs/report/02-experiment-design.md:72–84`의 초기 위치는 **물품 pickup slot**이며 로봇
+자기 행 정보가 아니다. `docs/known_map_navigation.md:15`도 실제 시작 위치를 제외한다.
+옛 `docs/l1_l2_l3_task_spec.md:1–22`는 TBD 골격, `docs/archive/roadmap_2026-08-13_prekickoff_conflict_copy.md:95–108`는
+초기 상태 명세를 작성하라는 TODO여서 도크가 알려졌다는 근거로 쓰지 않는다.
+
+실물 `scripts/red_block/search.py:1–6,88–129,735–750`는 자기 영상으로 머리를 쓸어보고
+없으면 바퀴35의 제한된 회전으로 다음 구역을 본다. 자기 전역 도크 좌표를 받지 않는다.
+`sim/real_stack_adapter.py:1–5,83–102`는 이 실물 검색 코드를 import한다.
+`harness/real_odometry.py:1–6`은 보정 odometry 없음, `docs/real_trace_system.md:92–98`은
+명령 서보값/이동 명령과 실제 상태를 구분한다. real_traces 원위치 placeholder가 가리키는
+intact archive 경로는 현재 없지만 **기존 ZIP을 직접 읽어**344개 run/result/analysis metadata를 확인했다.
+32개 초기 world_state, 27개 commanded pose 기록에는 dock/행 입력이 없고, 11개의 pose는
+서보1/3/4/5/6 키(나머지 null), pose_semantics는 commanded_pose_only_no_joint_encoder_feedback다.
+initial_pose_age_s/stable는 전역 차체 pose가 아니다. 보관된 표본 범위의 결과이며 모든 실물
+운영자가 시작점을 몰랐다는 주장은 아니다. raw audit 해시를 최종 기록한다.
+
+표준 대조: [Nav2 AMCL 원본](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/amcl_node.cpp)
+`uniformPoseGenerator/globalLocalizationCallback`은 자유 공간 균일 XY와 ±π 균일 yaw,
+동일 가중치로 시작하며 `getMaxWeightHyp`는 전역 평균 대신 최대 가중치 군집을 보고한다.
+[Spin](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/bt_plugins/actions/Spin/)은
+정해진 각도 제자리 회전이다. [Fox/Burgard/Thrun 1998 저자 초록](https://www.cs.cmu.edu/~dfox/abstracts/active-ras-special.abstract.html)은
+동작/시선 선택으로 불확실성을 줄이는 능동 위치추정을 설명한다. 이번은 **Nav2 균일 초기화+
+최대 군집+유한 Spin**을 적용하고 Fox의 기대 엔트로피 최적화 전체를 구현했다고 주장하지 않는다.
+
+새 후보 `start_localization=amcl_global_active_v1`(기본off), S2 Runtime에만 적용.
+기존2000입자·지도 clearance free-space·측정 혼합 우도 유지, 전체 지도/yaw 균일 초기화,
+Nav20.5m/10° 인접 bin 군집의 최대 질량 pose. 수렴은 기존 Nav2 전체 입자0.5m 조건으로
+판정해 한 군집의 작은 공분산만으로 다른 모드를 숨기지 않는다. 기존 정지 pan 스캔 뒤
+미수렴이면 고정 v122 turn35/.10초 펄스·정지 관측으로 최대4×1.57rad 섹터를 본다.
+실제 회전을 안다고 주장하지 않고 command DR 목표/상한을 기록한다.120초 active 예산 뒤
+미해결은 dev_light would-stop으로 남기고 원래 경로를 계속한다. 지도 충돌 가드도 동일하게 기록한다.
+
+[재생 사전 기준](dock-global-criteria.json): s1052 첫 이동 전 **1.3≤t<12.0초**,
+최종 위치오차≤0.25m·최대≤0.5m·RMSE 개선·잘못된 수렴0·off 출력 동일.
+한 후보만 평가하며 미달이면 미채택·기본off 보존. 원본에는 새 body spin 영상이 없으므로
+고정 명령 재생은 **초기화/기존 정지 관측만** 평가하고 능동 회전 효과는 미검증으로 남긴다.
+새 행동의 shadow 명령은 별도 시험하고 원본 영상이 새 회전 뒤 영상인 것처럼 사용하지 않는다.
+물리/렌더/모델 호출0. 이 후보는 이미 완료한 v128 동일seed 비교에는 포함하지 않았다.
