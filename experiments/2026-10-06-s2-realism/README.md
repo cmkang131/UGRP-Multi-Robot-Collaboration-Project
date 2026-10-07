@@ -2908,3 +2908,7 @@ ugrp_session 단일 실행. SIM900초·wall10800초 cap. 불확실/보수 가드
 실제 낙하·집게 이탈·기울기·오류·eval 정체120초/1cm에서 중단한다.
 ENOSPC는 HOST_ERROR·부분raw 보존. 어떤 결과든1회 뒤 종료, 추가 튜닝/재실행 없음.
 PR406 DRAFT·병합 금지. 시뮬레이션은 아직 시작하지 않았다.
+
+사전 등록 커밋 **e8bff34f** 이후 v127 연결을 구현했다. 관련2파일 **8 passed / 20.64초**;
+기본off 동일, 새seed/정확옵션/관리자이탈/failed판정 유지, 실제 Runtime 생성과
+물리 없는 HOST_ERROR 결과 보존, 표준workflow 등록을 확인했다. [검증](v127-local-verification.json).
