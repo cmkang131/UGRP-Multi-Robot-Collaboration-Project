@@ -3445,3 +3445,73 @@ s2v30 구현 검증 중 HIGH/real_delivery 전용 기존 `visual_pose_supported`
 최종 VO는 고정 camera_models의 모든 자세 키와 기존 servo settle 시간으로 지원을
 판단한다. AMCL의 벽 관측 자세 범위는 바꾸지 않는다. 이는 파라미터 재튜닝이 아니라
 요청한 매 펄스 범위 수정이며 최종 재생은 `replay-candidate-allposes.json`으로 분리한다.
+
+## s2v30 결과 — 회복 차단 수정 통과, VO는 정상 펄스 기준 미달
+
+사전 기준 `a4db20e6`, 회복 수정/VO `fb6294ad`, 모든 보정 자세 지원 수정·최종 재생
+`69e83487`. [결과·옵션·출처·전체 산출물 해시](ground-vo-result.json),
+[재생](replay_ground_vo.py), [GT 분리 채점](score_ground_vo.py),
+[스케일 평가 전용](score_ground_vo_scale.py). 모든 runtime GT 입력0·새 물리0·모델0.
+
+**회복 버그:** 최대6회 제한을 차단 목록 길이에서 별도 횟수로 분리했다.
+성공·timeout·지원 역펄스 없음 이후 retry에서 방향 차단 clear→정적 지도 재계획,
+이전 slip 행 재소비 금지, 새 연속 slip만 재차단.
+저장된 상태별 차단 제안 **1,197→0**, 기존 PULSE_RESOLUTION_LIMIT1,194회 구간의
+마지막 상태에서 선택 불가→`left=0.35, 60ms`; 비용 .00189152→.00139407.
+회복은 실제로 .15443m 관측 뒤 timeout이었으며 성공으로 바꾸지 않았다.
+이는 독립 저장 상태에서 다음 명령 가능성 검사다. 이후 영상·경로·탈출을 만들어낸
+닫힌 루프 성공이 아니다. v129 frozen 등록/번들/기록은 그대로이며 새 소스 실행을
+그 번들이 거절하는 시험도 통과했다. 새 실행에는 새 등록이 필요하다.
+
+**VO:** `odom_source=ground_vo_v1` 기본 off. 보정표에 있는 정착 자세의 무하중/하중,
+전진/옆/회전/미세 펄스에서 LK+바닥 역투영 호모그래피+강건 SE2. 완전한 자기 영상
+변위를 PF에 한 번 적용한다. 명령은 누락/가림/동일 RGB의 fallback 예측이고, 측정으로
+다시 융합하지 않는다. 스케일 공분산은 측정 이동 방향의 크기에만 더하며 EKF는 없다.
+기존 off **5,202프레임 pose/AMCL/visibility/contact 정확 일치**, command/record byte 시험 통과.
+표적 카메라/FOV·공용 camera_robot_port·다른 제어기 변경0.
+
+|s1051 고정 명령 재생(강성 off)|기존 v122|slip-only 기존 재생|ground_vo_v1 최종|
+|---|---:|---:|---:|
+|운반 RMSE m|2.02358|1.78530|1.68237|
+|운반 시각 갱신|27|23|21|
+|최장 fix 공백 s|33.85|43.50|51.25|
+|정상 하중271펄스 RMS mm|4.977|4.977|7.253 **FAIL**|
+|무하중161펄스 RMS mm|.946|기존 범위 밖|3.091 **FAIL**|
+|문제6펄스 오차≤3.5cm|0/6|5/6|5/6|
+
+137/438펄스에서 완전 VO(하중118·무하중19), 301/438은 명령 fallback.
+interval 상태: measured700, texture 부족698, 시간/누락511, rigid consensus 실패225,
+분산 부족3. RGB 입력 해시 동일·벽 프레임 삭제0. 관측 불가를 0변위로 만들지 않는다.
+cyan 이미지 점유율 중앙 **6.012%**, 최대7.329%; 바닥 외형 선택 면적 중앙64.863%.
+이는 이미지 마스크 비율이며 숨겨진 바닥 전체의 정확한 가림률/GT 분할이라고 하지 않는다.
+기존 ±2.8° nuisance 가정의 스케일 σ 중앙14.45%, P95 24.96%;
+방사 이동 σ 중앙.556mm/P95 2.191mm. 이는 실제 측정 pitch 오차가 아니다.
+GT 카메라로 **평가만** 다시 투영한 같은 inlier의 고정/평가 기하 이동 크기 비율 중앙은
+무하중.724·하중1.015, 기하 차이 중앙2.040/1.770mm. 1mm 이상 구간의 비율이며
+실제 운동의 스케일 오차와 같지 않다(프레임별 카메라 움직임 포함, 큰 꼬리는 JSON 보존).
+보정값 재추정·GT 피드백은 하지 않았다.
+
+**판정:** 운반 RMSE 개선만 통과하고 정상 RMS 비악화는 실패했다. 따라서 미채택·기본 off.
+강성 on에서의 같은 조건 재생은 **NOT_EVALUABLE**: #405 `7d109118` 정적/짧은 SEARCH
+자료를 읽기 전용 복사했으나 S2 21자세·하중 real_delivery·정착/파지·v7 재보정과
+그 plant의 s1051 운반 영상이 없다. 강성 off 결과를 on 실패/성공으로 옮기지 않는다.
+PR405가 부른 절은 egomap19이며 사용자 명칭19b의 근거를 위 commit에 고정했다.
+남은 큰 문제는 정상 펄스에서 VO 측정이 이미 정확한 v122 예측보다 거칠다는 점과
+완전 측정 가능 비율31.3%다. 여기서 문턱/공분산 재튜닝하지 않았다.
+
+새 full DEV·seed·번들 등록 없음. lifted/inside·벽 하단 가시율·B 거리·정지 목록·wall/SIM은
+새 물리 결과가 없어 N/A, 과거 s1051 성공/실패를 승계하지 않음.
+`ugrp_session` 오프라인 세션3개 정상 종료, 물리 잠금 취득0.
+출력: `/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007/`.
+기존 영상은 그대로 보존하며 새 물리 영상은 없다.
+TensorBoard `1007-s2-ground-vo-v30` 3뷰·21 scalar 원본/이벤트/live API 대조, HParams 로드 통과.
+[수치 대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-ground-vo-v30%2F#timeseries).
+기존 사용자 범위대로 수치만 확인했으며 UI 표시/핀 실증은 주장하지 않는다.
+
+참고 원문: [Nav2 pinned recovery BT](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml),
+[Seegmiller·Wettergreen 2011, II-C–F·식5–9](https://publications.ri.cmu.edu/storage/publications/pub_files/2011/9/Seegmiller_IROS-2011_Optical_Flow_Odometry.pdf),
+[OpenCV 평면 호모그래피](https://docs.opencv.org/4.13.0/d9/dab/tutorial_homography.html),
+[robot_localization Moore·Stouch](https://docs.ros.org/en/kinetic/api/robot_localization/html/_downloads/robot_localization_ias13_revised.pdf).
+기존에 확보·확인한 원문을 재사용했고 재개 후 새 웹 검색0회다. 논문의 별도 그림자 엣지
+분할 전체를 재현한 것은 아니며 기존 S2 바닥 외형·cyan·자기 기하 마스크를 쓴다.
+최종 변경 모듈 시험은 **13 passed (1.02s)**이며 앞선 3파일15시험과 범위가 다르다.
