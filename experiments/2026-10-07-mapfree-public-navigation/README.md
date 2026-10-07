@@ -168,3 +168,59 @@ G/H×4701/4702 새 확인32건의 **(a) oracle static만 한 번** 실행했다.
 새 venv/로컬 설치0. upstream pursuit의 import에는 matplotlib가 필요하여 기존 로컬 plot dependency
 3.11.2를 재사용했고, 깨끗한 GitHub CI에서도 같은 원본을 import하도록 `requirements-test.txt`에
 `matplotlib==3.11.2`를 선언했다. 패키지 의존성만 추가했으며 확인 후 runtime 소스/설정 변경0이다.
+
+
+## 7. 평가 어댑터 v2 사전 등록 (구현 전, 2026-10-07)
+
+이 절 커밋 후에만 구현한다. §1 성공 기준 5개와 oracle static **참 B≥30/32·거짓0** 관문을
+그대로 쓴다. v1/기존 결과는 보존하고 새 `navigation=public_ros_v2`를 명시적으로 선택한다(기본 off).
+MuJoCo·모델 호출·패키지 설치·다른 worktree 수정 없이 순수 2D만 실행한다.
+
+### 수정 전 진단과 공개 원본 대조
+
+실패 10개 ID와 원 수치는 [failure-details.json](results/failure-details.json)에 있다.
+s1/H·s4/H 각2건은 beam_1 초기 겹침이다. S2 표준 `FinalV3Scene._resolve` →
+`zone_model_conventions.apply_spawn_layout` → `zone_start_dock.spawn_layout`은 **authored dock 행,
+동쪽 yaw0, v3 arm mount .0482 m만큼 뒤로 이동한 chassis x, seeded row assignment**를 쓴다.
+임의 H=(1.20,.65,-π/3)는 이 규칙을 따르지 않았다. 새 생성기는 도크 행 후보 모두에 동일한
+사각 footprint+padding/비용 지도 유효성 검사를 적용하고, 경로/B 성공 여부는 검사하지 않는다.
+
+s4/G 2건: 각 경로200회 존재, 충돌 예측1640 tick/진행 timeout15회, B가시0.
+s5/G 2건: 각 no_path169회/충돌 예측1687 tick, B170회 검출, track 병진≤8.28e-14 m.
+현재 어댑터는 실패 뒤 정지만 하며 Nav2 recovery를 이식하지 않았다.
+[Nav2 BT 원본](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml)은
+planner/controller contextual clear 1회, 전체 retry6, round-robin clear → spin1.57 rad → wait5 s →
+backup .30 m/.15 m/s다. NavFn은 경로 계획기여서 자체 recovery가 없다.
+[RPP 충돌 검사](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_regulated_pure_pursuit_controller/src/collision_checker.cpp)는
+carrot까지 예측하며 [RPP 추종](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_regulated_pure_pursuit_controller/src/regulated_pure_pursuit_controller.cpp)은
+곡률에 따라 감속한다. v2는 이 구조를 독립적인 2D 상태 어댑터로 포트한다. ROS 전체를 실행했다는 뜻은 아니다.
+clear는 관측 obstacle layer만 초기화하며 authored static/unknown을 free로 지우지 않고 현재 관측을 재적용한다.
+기존 explore_lite blacklist와 B v3 시간 누적 기준은 유지한다. static에도 기존 patch 재관측 요청을 적용한다.
+
+s8/H 2건은 t2.7 s can_1 접촉이다. 광선은 이미 벽뿐 아니라 모든 물체를 대상으로 한다.
+can_1 중심은 body(.2107,-.0350) m, SEARCH pixel(405.6,863.6), CLOSE(452.3,618.6)으로
+둘 다 영상 밖이다. 정적 지도 그 칸은 free0이었다. 숨은 물체 GT를 costmap에 넣지 않는다.
+새 어댑터는 관측 장애물/정적 층을 분리하고 실제 발행 속도로 footprint 충돌을 검사한다.
+범위는 원 사전 등록과 같은 **빈손 탐색**, .24×.20 m+padding .02 m이며 운반 footprint가 아니다.
+운반 성공/블록을 든 충돌 안전으로 확대 해석하지 않는다. 맹점 자체를 완전 검출로 숨기지 않는다.
+
+S2 DEV의 `harness/zone_solo_cyan_v106.py:CAP_S`는900 s이며 #406 v114 계약도 이 값을 상속한다.
+시나리오 S2 정식 예산은1800 s지만 운반·통신을 포함하므로 차용하지 않는다. 기존600 s는 DEV보다 짧다.
+새 예산은 **900 modeled s /300관측 /40 m**로 고정한다(관측2 s+이동1 s와 일치).
+늘린 예산이 정지 반복을 해결한다고 가정하지 않는다. 이전 결과의600 s는 그대로 남긴다.
+
+### 새 코호트·고정·중단
+
+- 이미 본 B/D2701–2702, E/F3701–3702, G/H4701–4702의 **96쌍**은 새 확인에 재사용하지 않는다.
+- 새 확인: s1–s8 × I/J ×5701/5702 =32쌍. 각 시나리오의 표준 도크3행을 seed5700+scenario로
+  섞은 뒤, 위 기하 유효성 검사를 통과한 첫2행을 I/J로 고정한다. 부족하면 HOST_SETUP_ERROR로 중단하며
+  임의 좌표/성공 경로로 대체하지 않는다. 정확한 좌표·거부 이유·source hash를 실행 전 manifest로 커밋한다.
+  oracle에서는 seed2개가 동일하며 8개 배치는3종 벽 지도를 공유한다. 독립32장 지도라고 하지 않는다.
+- 개발은 이미 본 A/C16 및 실패10의 원 좌표 재생뿐이다. 겹침4건은 진단 재생에서도 그대로 남긴다.
+  이는 수정 전후 비교이며 확인 분모/성공에 합산하지 않는다. 소스·설정은 개발 후 고정한다.
+- 새 (a)를 한 번 실행하고 실패하면 재튜닝/재시도 없이 (b)(c) 차단·보고한다.
+  통과한 경우만 (b) oracle frontier, 그 완료 뒤 (c) 현실 잡음 static/frontier를 실행한다.
+- 동일 원인으로 다시 막히면 원본/진단 근거와 함께 중단한다. ENOSPC는 HOST_ERROR로 보존한다.
+
+새 회복·검사·관측 주기는 자기 명령 DR/자기 관측만 사용한다. GT 접촉·B 진실은 평가 전용이며
+제어 복구에는 전달하지 않는다. 검출/잡음/B v3 봉인과 기존 off 골든 바이트는 변경하지 않는다.
