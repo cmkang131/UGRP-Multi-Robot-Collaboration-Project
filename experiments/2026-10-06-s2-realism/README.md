@@ -4604,3 +4604,35 @@ GT 여유86.10–96.45mm는 저장 명령 FK/동일 보수 구체 기준이며 �
 재변환하지 않았고 새 물리·영상0이다. [전달 검증·pin 링크](formal-stop-delivery.json),
 [native TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1008-s2-formal-stops-v41%2F#timeseries).
 공유 viewer는 자기 키만 추가, 기존 서버/프로세스/잠금 변경0. UI 화면 확인은 하지 않았다.
+
+## s2v42 — egomap33 좌회전 고정 보정 이식·재생 사전기록 (2026-10-08)
+
+출처는 PR #405 **762a952f0786cb56e9ab88c8a2bf34ca2f346b87**의
+`harness/self_pulse_rotation.py`·`harness/data/s2_pulse_v122_rotL_v1.json`이다.
+[읽기 전용 복사/해시](rotation-left-sources.json), [원본 방법·사전기록](references/egomap33_rotation_README.md).
+egomap32의 SEARCH·강성real_v1·무하중·v7에서 반복1–3으로 적합한 **1.1049453391322106**을
+그대로 사용한다. 반복4–5 확인 yaw RMS .434668→.209624°였으나 같은 자료 재사용이고 S2
+확증 결과는 아니다. 표준 근거는 [UMBmark §3.2–3.4](https://www.cs.columbia.edu/~allen/F17/NOTES/borenstein.pdf)의
+방향별 평균/산포 분리와 원점 통과 최소제곱이며, 완전 사각 UMBmark 실험의 이식은 아니다.
+
+S2 옵션은 **`rotation_calibration=s2_pulse_v122_rotL_v1`**, 기본off다. 기존 S2의
+`motion_model` 인자는 v7 초기 보정 dict이므로 이름을 덮어쓰지 않는다. 최종 v133 runtime에
+연결해 PF 예측·펄스 선택이 같은 보정 profile을 사용한다. 적용 조건은 자기 발행 팔 명령
+`{1:2000,3:740,4:2320,5:1320,6:1500}` + 명령 기반 무하중 + 명시적 강성real_v1,
+profile `0:turn:0.35:0.10`만이다. yaw mean curve와 endpoint만 원본과 같은 연산으로 곱한다.
+우회전/XY/분산/다른 자세/**하중 look_ahead 운반은 v122 그대로**다. 실시간 GT·관절·접촉
+입력0, 물리 파라미터 변경0, #405 worktree 파일 변경0, 현재 v133/과거 성공 번들 변경0.
+
+세 녹화의 명령 목록에서 적용 가능한 좌회전은 s1051 **1회**, s1053 **2회**, s1054 **0회**다.
+이 노출 수는 결과 전 확인한 적용 범위이며 운반 회전까지 근거를 확대하지 않는다.
+[고정 재생 기준](rotation-left-criteria.json): off/on에 같은 자기 RGB·발행 명령을 재생하고
+기존 주행 결정 시점에서 σ5cm/yaw5°/fix없음 판정을 그대로 계산한다. 예측6개를 봉인한 뒤
+GT 평가만 수행한다. yaw는 명령 응답 잔차와 펄스 후 보고 yaw 오차를 좌/우·하중별로 분리,
+운반 RMSE·단일군집 NEES 초과율·POSE_UNCERTAIN·무경고25cm초과를 모두 기록한다.
+
+물리 관문은 사전에 다음으로 고정한다: off pose 차이≤10⁻⁹, 미노출s1054 입자 궤적 byte 동일,
+세 실행 합산의 적용 CCW 잔차 RMS 감소·POSE 경고 수 감소·NEES 초과율 감소,
+무경고25cm초과 수 비증가·운반 프레임수 가중 RMSE 비증가. **모두 통과할 때만** 새 미사용
+seed를 별도 사전 커밋하고 새 번들의 full DEV1회(agent_lock/ugrp_session/freeze ON)를 실행한다.
+미달이면 물리0으로 보고하며 결과 후 문턱·기준을 바꾸지 않는다. 개별 seed 결과도 병기하고
+명령 고정 재생을 폐루프 성공으로 보고하지 않는다. 기존 would-stop·시각/충돌 문턱 변경0.
