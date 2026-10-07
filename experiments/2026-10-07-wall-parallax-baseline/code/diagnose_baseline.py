@@ -69,6 +69,23 @@ def baseline_history(history,gt_xy,origin,rotation,mode):
     return modified
 
 
+def triangulate_with_original_joint(history,modified,origin,rotation,k):
+    """Evaluation-only mean intervention with the entire original DR Sigma fixed.
+
+    Correlations cannot be recomputed from an intervened mean while retaining
+    old marginals. J Sigma J^T is otherwise the unchanged frozen implementation.
+    This temporary binding is confined to this single-threaded offline process.
+    """
+    original=geometry.joint_pose_covariance
+    def preserve_joint(pose0,cov0,pose1,cov1):
+        a,b=history[0],history[-1]
+        assert np.array_equal(cov0,a['cov']) and np.array_equal(cov1,b['cov'])
+        return original(a['pose'],a['cov'],b['pose'],b['cov'])
+    geometry.joint_pose_covariance=preserve_joint
+    try:return geometry.triangulate(modified,origin,rotation,k)
+    finally:geometry.joint_pose_covariance=original
+
+
 def capture_case(case):
     source.verify()
     events=[]
@@ -149,7 +166,7 @@ def diagnose_case(case):
     byframe={r['frame_id']:r for r in frames}
     rects=np.array([w['center_m']+w['half_extents_m'] for w in c.read(ep/'inputs/static_map.json')['obstacles'] if w.get('kind')=='wall'])
     annotations={a['frame_id']:a for a in c.read(TEXTURE/'new-annotations.json')['rows'] if a['case']==case}
-    out=RAW/'evaluation'/case;out.mkdir(parents=True,exist_ok=False)
+    out=RAW/'evaluation-joint-covariance'/case;out.mkdir(parents=True,exist_ok=False)
     baseline,details=summarize(frames,truth,rects,annotations,False)
     # Cross-check the old score to protect denominators and precision definitions.
     old=c.read(TEXTURE/'results'/f'{case}.json')
@@ -168,7 +185,7 @@ def diagnose_case(case):
             history=history_array(event['history']);row=byframe[event['frame_id']]
             origin,rotation=np.array(row['origin']),np.array(row['rotation'])
             modified=baseline_history(history,gt_xy,origin,rotation,mode)
-            value,reason=geometry.triangulate(modified,origin,rotation,c.old.mp.K)
+            value,reason=triangulate_with_original_joint(history,modified,origin,rotation,c.old.mp.K)
             counters[reason]+=1
             info=dict(frame_id=event['frame_id'],track_id=event['track_id'],original_reason=event['reason'],reason=reason,
                 original_body_baseline_m=float(np.linalg.norm(history[-1]['pose'][:2]-history[0]['pose'][:2])),
@@ -182,6 +199,7 @@ def diagnose_case(case):
             all_events.append(info)
         summary,points=summarize(predictions,truth,rects,annotations,True)
         summary.update(diagnostic=mode,case=case,counts=dict(counters),same_original_accepted=paired,
+            covariance_intervention='original_full_DR_joint_covariance_preserved',
             thresholds_unchanged=True,provenance=dict(**provenance(),track_history_sha256=rec['track_history_sha256'],
                 truth_sha256=c.sha(ep/'eval_only/trajectory.jsonl'),map_sha256=c.sha(ep/'inputs/static_map.json'),
                 annotation_sha256=c.sha(TEXTURE/'new-annotations.json')))

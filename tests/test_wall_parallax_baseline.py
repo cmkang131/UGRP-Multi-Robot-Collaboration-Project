@@ -82,3 +82,22 @@ def test_no_candidate_retains_recall_denominator_and_never_claims_operational_su
 
 def test_frozen_detector_and_original_thresholds_unchanged():
     d.source.verify()
+
+
+def test_correlated_uncertainty_is_preserved_when_mean_baseline_changes():
+    history,truth=synthetic()
+    common=np.diag([.01,.01,.001])
+    for row in history:
+        transition=np.eye(3)
+        transition[:2,2]=[-row['pose'][1],row['pose'][0]]
+        row['cov']=transition@common@transition.T
+    modified=d.baseline_history(history,truth,ORIGIN,R,'eval_gt_translation_only')
+    original=p.joint_pose_covariance
+    with pytest.raises(ValueError,match='INCONSISTENT_COMMAND_POSE_COVARIANCE'):
+        p.triangulate(modified,ORIGIN,R,K)
+    result,reason=d.triangulate_with_original_joint(history,modified,ORIGIN,R,K)
+    assert reason=='accepted' and p.joint_pose_covariance is original
+    np.testing.assert_allclose(result['xyz'],[1.5,.06,.12],atol=1e-10)
+    assert np.linalg.eigvalsh(result['covariance']).min()>-1e-10
+    # No intervention must be exactly identical, including propagated covariance.
+    assert d.triangulate_with_original_joint(history,history,ORIGIN,R,K)==p.triangulate(history,ORIGIN,R,K)
