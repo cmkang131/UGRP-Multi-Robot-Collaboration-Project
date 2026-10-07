@@ -82,3 +82,8 @@ JSON에 별도로 보존한다. (a)의 예: 벽 무늬 윗경계, 서로 떨어�
 [공식 API](https://www.open3d.org/docs/release/cpp_api/classopen3d_1_1t_1_1pipelines_1_1slam_1_1_model.html)는
 작은 weight의 표면 잡음 제거 목적을 명시한다. MIT 원본·해시는 `third_party/wall_support/`.
 추가 설치/venv 변경0. 논문의 수치나 전체 TSDF와 동등 성능은 주장하지 않는다.
+
+구현 소스 `ff716a23`의 첫 predict는 NumPy cell 정수의 JSON 직렬화 오류로 봉인 전에 실패했다.
+해당 미봉인 `outputs/wall-cell-attribution-v1/31001`은 그대로 보존하고 평가에 사용하지 않는다.
+뒤따른 score도 seal 부재에서 중단했으며 GT 평가는 시작되지 않았다. 정수 직렬화만 수정하고
+on snapshot JSON 검사를 추가했다. 알고리즘/문턱은 변경0; 재생은 새 `predictions/`에 저장한다.

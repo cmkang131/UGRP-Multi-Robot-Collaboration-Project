@@ -74,6 +74,6 @@ def validated_grid(legacy,ledger,*,robot_id,wall_validation='off'):
         semantics='distinct-view support count; NOT a calibrated wall probability',
         minimum_translation_m=r,angular_separation='atan2(resolution, min(view ranges))',
         candidates=sum(v>0 for v in grid.cells.values()),confirmed=len(retained),events=events,
-        cells=[dict(cell=list(k),weight=len(v),confirmed=k in retained,cameras=v) for k,v in sorted(views.items())])
+        cells=[dict(cell=[int(x) for x in k],weight=len(v),confirmed=k in retained,cameras=v) for k,v in sorted(views.items())])
     result['wall_validation']={k:v for k,v in evidence.items() if k not in ('events','cells')}
     return result,evidence

@@ -6,6 +6,7 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 EXP=Path(__file__).resolve().parents[1]
 RAW=Path('/Users/changmin/projects/ugrp/outputs/wall-cell-attribution-v1')
+PREDICTIONS=RAW/'predictions'
 EPISODES={'31001':Path('/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/new-seed'),
           '32002':Path('/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed')}
 sys.path.insert(0,str(ROOT))
@@ -22,7 +23,7 @@ def dump(p,v):
 
 def predict():
     for seed,ep in EPISODES.items():
-        out=RAW/seed
+        out=PREDICTIONS/seed
         if out.exists():raise FileExistsError(out)
         expected=load(ep/'artifacts.sha256.json')
         for name in ('grid.json','graph.json','frontend-covariances.jsonl'):
@@ -32,7 +33,7 @@ def predict():
         off,e=validated_grid(original,None,robot_id='r3')
         assert off is original and e is None
         on,support=validated_grid(original,ledger,robot_id='r3',wall_validation=OPTION)
-        out.mkdir()
+        out.mkdir(parents=True)
         # Off retains not just numeric values, but the original JSON bytes.
         (out/'off.json').write_bytes((ep/'grid.json').read_bytes())
         dump(out/'on.json',on);dump(out/'support.json',support)
@@ -56,7 +57,7 @@ def score():
     figure,axes=plt.subplots(2,2,figsize=(13,9),constrained_layout=True)
     all_results={}
     for si,(seed,ep) in enumerate(EPISODES.items()):
-        out=RAW/seed;seal=load(out/'seal.json')
+        out=PREDICTIONS/seed;seal=load(out/'seal.json')
         for name,digest in seal['files'].items():assert sha(out/name)==digest
         for name,digest in seal['input_hashes'].items():assert sha(ep/name)==digest
         expected=load(ep/'artifacts.sha256.json')

@@ -62,5 +62,6 @@ def test_memory_off_golden_and_confirmed_map_snapshot():
     c=New('r3',wall_validation=OPTION,**opts)
     c._graph_view=rebuild('r3',rows);c.pose_graph_result=dict(ledger=rows)
     s=c.snapshot()
+    json.dumps(s,allow_nan=False)  # all on-path output must be portable JSON
     assert s['self_map_support']['confirmed']>0
     assert 'walls none yet' not in s['self_map_text']
