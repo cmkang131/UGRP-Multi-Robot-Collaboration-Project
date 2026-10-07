@@ -2912,3 +2912,83 @@ PR406 DRAFT·병합 금지. 시뮬레이션은 아직 시작하지 않았다.
 사전 등록 커밋 **e8bff34f** 이후 v127 연결을 구현했다. 관련2파일 **8 passed / 20.64초**;
 기본off 동일, 새seed/정확옵션/관리자이탈/failed판정 유지, 실제 Runtime 생성과
 물리 없는 HOST_ERROR 결과 보존, 표준workflow 등록을 확인했다. [검증](v127-local-verification.json).
+
+### v127 / s1052 닫힌 루프 1회 결과 — 집기 전 도크 행 미식별, LOCAL_TIMEOUT
+
+실행 소스 **18e5e42ed6ade8727d39b8a6f8d2b8cf0aab4daf**, v127/7.20.0,
+seed1052/P1-2/B/place. 사전 이탈·seed 커밋 e8bff34f 이후1회 실행했다.
+**STAGE_FAILED / LOCAL_TIMEOUT / lifted=false / inside=false**. 블록은 원래 바닥에
+남았으므로 floor=true/stable=true를 내려놓기 성공으로 해석하지 않는다.
+SIM900초 case 상한으로 종료(total SIM901.30초, reset 포함). 모델 호출0, 새 물리1회,
+추가 실행0. 기존 s2v25 재생의 FAIL은 그대로다. [완료 요약](slip-full-summary.json).
+
+|지표|s1051 / v126 (기존)|s1052 / v127 (이번)|
+|---|---:|---:|
+|lifted / inside|true / false|false / false|
+|종료|STAGE_REACHED_UNQUALIFIED|STAGE_FAILED / LOCAL_TIMEOUT|
+|운반 구간|87.00–241.05 s|미도달|
+|운반 informative 갱신 / 최장 공백|27 / 33.85 s|N/A / N/A|
+|운반 XY RMSE (평가)|2.023583 m|N/A|
+|벽 하단 실제 가시율: 전체열 / 검출열 (운반1Hz)|32.7218% / 54.3706%|N/A / N/A|
+|cyan→B 영역 경계 / 중심|2.178372 / 2.649795 m|4.211072 / 4.646302 m|
+|would-stop: ARM_COLLISION_GUARD|7|7|
+|would-stop: POSE_UNCERTAIN|341|1074|
+|would-stop: VISUAL_STALL_SUSPECTED|1|0|
+|would-stop: CYAN_NOT_UNIQUELY_VISIBLE|0|37|
+|wall / total SIM / wall÷SIM|347.865758 / 264.35 / 1.315929|1095.577661 / 901.30 / 1.215553|
+|명령 / own RGB / 모델 호출|3818 / 5202 / 0|37014 / 18001 / 0|
+|slip 측정·대체 펄스|옵션off|0 / 0 (하중 미도달)|
+
+원본 posthoc의 visual_updates=0은 carry_window=null에서 나온 값이므로 표와 새 TB는
+**운반 미측정**으로 처리하고0회인 운반 실행으로 세지 않는다. seed·초기 행·경로·길이가
+다르므로 시간 비율이나 성공률을 합산하거나 slip의 속도/성능 효과로 해석하지 않는다.
+두 실행 모두 freeze ON이며, 이전 freeze OFF s1042의2.587649 wall/SIM과도 조건이 다르다.
+
+**가장 큰 남은 원인 하나: 초기 도크 행을 식별하지 못한 상태에서 prior 평균으로 이동.**
+표준 Scene은 seed별 로봇 도크 행 배치를 섞는다(`sim/zone_arena.py:356`,
+`sim/solo_cyan_v106.py:28`). s1051 실제 r3 y=−0.849995m, 이번은 **−2.249995m**다.
+기존 제어 prior는 공개 시작영역 mean `[−0.8982,−0.85,0]`, std `[0.15,2.8,0.174533]`로
+실제 행을 모른다는 계약이다(`harness/zone_solo_cyan_v106.py:103`).
+이를 실제 위치와 같다고 가정하거나 평가 좌표로 초기화하지 않았다.
+
+첫 바퀴 명령12.00초 전 실제 최대 이동은 **0.958mm**, 추정 최대 오차 **1.428671m**.
+11.95초 보고 mean `[−0.817525,−0.824242]`, σxy **1.221919m**, 마지막 갱신2.25초다.
+이미 넓고 행이 미식별인 prior의 평균이 틀린 것이며, 정지 동안1.429m가 새로 이동했다는
+뜻이 아니다. 2.25초 정지 관측은52열·KL0.02931인1회뿐으로 행을 구분하지 못했다.
+dev_light는 POSE_UNCERTAIN을 기록하고 진행했다.
+첫 탐색 도착22.80초에 추정 `[−0.483973,−0.876279]` 대 실제
+`[−0.598909,−2.241701]`(오차 **1.370252m**)로, cyan이 있는 행에 도착하지 않았다.
+탐색 관측74회·확인 불가37회가 반복됐으며 최종 위치오차 **1.255420m**다.
+전체 집기 전 informative 갱신은3회(2.25/19.70/34.50초), 이후866.80초 공백이다.
+이 값을 운반 fix 공백으로 쓰지 않는다. [상세/코드 근거](slip-full-search-diagnosis.json).
+
+**PR405 egomap15 참고와 옆 펄스 평가:** GT는 종료 후에만 읽었고 재보정하지 않았다.
+고정 프로파일의 종료+정지 꼬리 horizon에서 body-frame XY 변위 크기를 펄스마다 합산했다
+(전체 궤적 길이 또는 net 이동과 다른 정의). 이번 무하중 옆23펄스는 명령 **0.159127m** /
+실제 **0.156787m** = **1.014924배**, 순수 옆 성분 합계비 **1.020895배**다.
+펄스별 XY 비율 중앙1.029901, p95 1.393091, 최대1.483435; 0변위0개, XY RMS1.304mm.
+이 무하중 표본에서2배 과대는 없지만 **하중 옆 표본0개**라 운반 중 같은 현상을 배제할 수 없다.
+s1051의 운반 옆72개 합계비는6.104085/5.112716=1.193903배(벽 막힘6회 포함),
+최대 펄스비201.94배로 합계비가 막힘을 숨긴다. 사용자 제공 egomap15 1.54/0.69≈2.23배는
+프로토콜/하중/경로가 다른 참고이며 합산하지 않는다. 모든 profile/load별 분포는 요약과
+raw `s1051/1052-pulse-evaluation.json`에 있다. **slip 닫힌 루프 운반 효과는 이번에 검증하지 못했다.**
+
+**검증/운영:** 관련8시험 통과 뒤 실행 소스를 커밋·push했다. 입력27옵션/bundle/result 일치,
+source/inputs 실행중 변경false, 원본 manifest·source closure·RGB18001장 해시를 확인했다.
+최초 직접 셸은 상속 nice5 검사에서 물리 시작 전에 거부됐다(raw 생성/lock 획득0).
+기존 one-shot launchd 방식으로 driver/session/runner nice0을 확인한 후 실제1회만 실행했다.
+renice/상시서비스/재실행 없음. session stopped, 자체 PID61789/61797/61812/61818 종료,
+launchd 항목 제거, own lock release 및 종료 후 null 확인. 다른 작업의 잠금/프로세스는 건드리지 않았다.
+[검증/분석 소스 해시](slip-full-verification.json).
+
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place/`.
+분석: `/Users/changmin/projects/ugrp/outputs/s2-slip-full-analysis-20261007/`.
+4배속 MP4: `/Users/changmin/projects/ugrp/outputs/s2-slip-full-analysis-20261007/views/s1052-full/execution.mp4`
+(640×480,20fps,4501frame,225.05초; 원본18001장을4칸 간격 선택; 전체decode 통과).
+SHA256 `851d556f5ca1c080a23da6e36248cd3db8bab1ad91ff029d452aed655caaeb5f`.
+TensorBoard **1007-s2-slip-full-v127 / 2뷰26scalar** 원본=event=live API/HParams 일치,
+영상 등록·HTTP 재다운로드 SHA 확인. 기존 s1051은 참고뷰이며 새 실행으로 중복 계산하지 않는다.
+[대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-slip-full-v127%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Flifted%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Finside%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_updates%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_update_gap_sim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fremaining_to_b_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fsim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fcommands%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries) · [전달 검증](slip-full-delivery-verification.json).
+
+사용자 지시대로 수치만 대조했고 UI 확인은 주장하지 않는다. raw는 로컬 보존이며 원격 백업이 아니다.
+**이번1회로 종료, 추가 후보/튜닝/물리 실행 없음. PR406 DRAFT·병합 금지 유지.**
