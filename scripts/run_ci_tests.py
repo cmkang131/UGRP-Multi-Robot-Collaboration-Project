@@ -44,6 +44,7 @@ TEST_PATTERNS = (
     "tests/test_s2_projection_comparison.py",
     "tests/test_online_camera_pitch.py",
     "tests/test_self_pose_graph.py",
+    "tests/test_self_wall_robust.py",
     "tests/test_self_wall_memory.py",
     "tests/test_coela_runtime_self_walls.py",
     "tests/test_ci_fast_path.py",

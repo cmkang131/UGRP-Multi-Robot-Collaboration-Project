@@ -70,3 +70,20 @@ PR405 DRAFT, 병합/force/reset0. TensorBoard 생략 지시 유지, Drive0.
 원시 결과는 로컬 보관이며 Git 원격 백업은 코드·작은 결과·그림에 한정한다.
 
 출처와 원본 대조: [REFERENCES.md](REFERENCES.md).
+
+### 구현 경계 (자료 재생 전)
+
+기존 동결 파일은 수정하지 않았다. `harness.self_wall_memory_robust.SelfWallMemory`가
+기존 motion memory를 상속하여 새 옵션을 노출한다. 두 옵션 off는 기존 메서드로 그대로
+위임하고 snapshot/격자/graph 결과의 직렬화 bytes를 검사한다. on의 결과는
+`pose_graph_result` 및 `evidence_view`에만 저장하고 frontend/RNG/명령 모델에 되먹이지 않는다.
+command/관측을 받으면 최종 view를 무효화한다. 기존 LLM 문구는 좌표만 유지하며
+게이트 전 F 선분+신뢰도 export API는 만들지 않는다.
+
+`code/backend_replay.py`는 동일 후보 cache의 hash와 기존29개 동결 파일을 확인한 뒤
+두 조건을 봉인한다. `code/offline_score.py`는 두 봉인이 모두 있어야 GT를 읽는다.
+TSDF의 ray-cell 순회는 기존 0.1m Amanatides–Woo를 재사용(원본 superscaled ray mask와
+격자 경계 tie 차이 가능). 표면 법선은 기존 선분으로 계산하고 원본 kernel/weight 식은 유지한다.
+새 라이브러리/C++ 소스 복사0. 최초 합성 시험에서 bounded solver의 s≈1 끝자리 오차를
+과하게 요구한 검사1개가 실패하여, 해석해 대비 목적함수 차이<1e−6 검사로 고쳤다.
+optimizer/사전 문턱은 바꾸지 않았다. 실제 녹화 결과로 단위 시험을 맞춘 것이 아니다.
