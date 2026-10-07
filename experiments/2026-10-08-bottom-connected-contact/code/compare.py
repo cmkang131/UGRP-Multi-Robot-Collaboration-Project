@@ -34,7 +34,7 @@ def frozen():
 
 def predict(seed):
     if seed=='32002':frozen()
-    ep=EPISODES[seed];out=RAW/seed/'comparison'
+    ep=EPISODES[seed];out=RAW/seed/'comparison-complete'
     if out.exists():raise FileExistsError(out)
     oldseal=load(OLD_RAW/seed/'off/seal.json')
     assert sha(OLD_RAW/seed/'off/points.jsonl')==oldseal['files']['points.jsonl']
@@ -72,8 +72,8 @@ def predict(seed):
         segments=build_segment_map(ll,observations[condition],robot_id='r3',wall_map='segments_v1')
         dump(out/f'{condition}-grid.json',grid);dump(out/f'{condition}-segments.json',segments)
         dump(out/f'{condition}-ledger.json',ll)
-        for kind,base,support in [('grid',grid,grid_support(grid,ll,robot_id='r3')),
-                                  ('segments',segments,segment_support(segments,ll,robot_id='r3'))]:
+        for kind,base,support in [('grid',grid,grid_support(grid,[r for r in ll if r['segments']],robot_id='r3')),
+                                  ('segments',segments,segment_support(segments,[r for r in ll if r['segments']],robot_id='r3'))]:
             dump(out/f'{condition}-{kind}-selected.json',apply(base,support,wall_validation=SUPPORT,**CONFIG['operating_points'][kind]))
         dump(out/f'{condition}-observations.json',{f:o for f,o in observations[condition].items() if f in admit})
     (out/'historical-grid.json').write_bytes((ep/'grid.json').read_bytes())
@@ -94,7 +94,7 @@ def evaluator(seed):
 
 def score(seed):
     if seed=='32002':frozen()
-    out=RAW/seed/'comparison';seal=load(out/'seal.json');target=EXP/f'results/{seed}-comparison.json'
+    out=RAW/seed/'comparison-complete';seal=load(out/'seal.json');target=EXP/f'results/{seed}-comparison.json'
     if target.exists():raise FileExistsError(target)
     for name,h in seal['files'].items():assert sha(out/name)==h
     for name,h in seal['code_hashes'].items():assert sha(ROOT/name)==h

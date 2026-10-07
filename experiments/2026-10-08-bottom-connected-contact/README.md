@@ -40,3 +40,11 @@ PR405 DRAFT, TensorBoard 생략 유지. GT는 점/지도 평가에만 사용한�
 
 출처: [Ulrich & Nourbakhsh 2000 원문 §2–3](https://www.cs.cmu.edu/~illah/PAPERS/abod.pdf).
 기존 코드 `height_free_wall.py:307–368`, `surface_run_top:159–193`.
+
+## 개발 실행기 수정 (판정 전)
+
+사전 등록 `ce4f920b`, 구현 `0a77c5c1`. 첫 개발 예측은891프레임까지 끝났지만,
+기존 `validate_rows`가 빈 segments 원장을 거부하여 다중 시점 표 생성 전에 중단됐다.
+`comparison/` 부분 출력을 보존한다. 빈 프레임은 원장/삽입 시각 기록에 유지하고
+지지 계산에만 비어 있지 않은 원장을 전달한다(빈 관측은 증거0). 검출/문턱 변경0.
+빈 관측 회귀시험 추가 후 `comparison-complete/`에서 개발 재생을 완료한다.

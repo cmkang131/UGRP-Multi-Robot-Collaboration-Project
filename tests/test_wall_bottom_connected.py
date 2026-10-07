@@ -46,3 +46,18 @@ def test_public_option_off_matches_prior_rgb_bytes():
     assert set(new['columns'])<=set(old['columns'])
     before=dict(zip(old['columns'],old['points']))
     assert all(point==before[col] for col,point in zip(new['columns'],new['points']))
+
+
+def test_empty_observations_cannot_create_multiview_support():
+    from harness.self_pose_graph import rebuild
+    from harness.self_wall_pr import grid_support,segment_support,apply,OPTION as SUPPORT
+    from harness.self_wall_segments import build_segment_map
+    ll=[dict(robot_id='r3',frame_id=1,t=1.,pose=[0,0,0],camera=[0,0],segments=[],insertion_weights=[])]
+    observations={1:dict(points=[],covariances=[],pose_covariance=np.eye(3).tolist())}
+    grid=rebuild('r3',ll).export()
+    segments=build_segment_map(ll,observations,robot_id='r3',wall_map='segments_v1')
+    nonempty=[r for r in ll if r['segments']]
+    for kind,base,support in [('grid',grid,grid_support(grid,nonempty,robot_id='r3')),
+                              ('segments',segments,segment_support(segments,nonempty,robot_id='r3'))]:
+        result=apply(base,support,wall_validation=SUPPORT,min_views=1,min_angle_deg=30)
+        assert not result['cells' if kind=='grid' else 'segments']
