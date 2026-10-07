@@ -144,7 +144,7 @@ def extract(case,mode):
         'source_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         'contacts':len(contacts),'segments':sum(len(r['segments']) for r in contacts),
         'counts':dict(Counter(e['reason'] for e in events)),'command_dr_span':span.tolist(),
-        'sufficient':len(contacts)>=20 and (np.linalg.norm(span[:2])>=1 or span[2]>=math.pi/2),
+        'sufficient':bool(len(contacts)>=20 and (np.linalg.norm(span[:2])>=1 or span[2]>=math.pi/2)),
         'sources':[{'path':str(p),'sha256':base.sha(p)} for p in [episode/f'robots/{robot}/frames.jsonl',episode/f'robots/{robot}/commands.jsonl']],
         'prediction_hashes':{p.name:base.sha(p) for p in out.iterdir() if p.is_file()}}
     base.dump(out/'extract-summary.json',summary)
