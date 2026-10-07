@@ -89,3 +89,12 @@ RGB 기존 SEARCH 영상1장을4시점 반복한 API smoke는 graph2회·informa
 [출처와 명시적 어댑터 차이](REFERENCES.md), [인쇄 자료 전체 해시](prints.json).
 두 재질24면씩과 미터 단위 배치표는 raw `prints/`에 보관(사진1.60MB, speckle3.88MB).
 일반 로컬 실행 환경을 재사용하며 새 라이브러리/venv 없음. C++ 바이너리는 소스 해시로 로컬 빌드.
+
+## 정적 카메라 관문
+
+물리 소스 `f346fa4e`, 8 SIM s/41프레임. SEARCH pitch 오차 중앙0.11887°, P95 0.11888°(5표본),
+look_ahead 중앙0.12562°, P95 0.12563°(6표본): 사전0.3°/0.5° **통과**.
+`results/static.json`; 실제 값은 평가에만 썼으며 FK/모션/문턱 fitting0.
+최초 CLI에 짧은 SHA를 전달해 source admission이 거부됐다(물리/잠금 시작 전).
+원본 기록을 보존하고 전체 SHA로 재입장했다. 정적 실행1회, 모델/freeze0, 자기 lock 해제 확인.
+이후 탐색2건은 같은 코드/옵션을 유지한다.
