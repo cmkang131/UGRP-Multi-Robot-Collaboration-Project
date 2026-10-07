@@ -167,7 +167,7 @@ class PulseBuffer:
         pf=self.inner.loc._pf
         if moving and pf.load.loaded and self.supported(self.inner.servo):
             key=profile_key(row,True);p=self.profiles[key]
-            replace=np.linalg.norm(p['mean_delta'][:2])>=PARAMS['minimum_expected_m']
+            replace=bool(np.linalg.norm(p['mean_delta'][:2])>=PARAMS['minimum_expected_m'])
             if (p['axis'] in ('forward','left') and (replace or self.measure_small)
                     and self.last is not None and abs(row['t']-self.last[0])<1e-7):
                 self.pending=dict(t=float(row['t']),key=key,profile=copy.deepcopy(p),command=copy.deepcopy(row),

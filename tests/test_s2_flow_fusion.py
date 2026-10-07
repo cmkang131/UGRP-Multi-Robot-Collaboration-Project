@@ -68,6 +68,7 @@ def test_pulse_buffer_clock_and_no_double_count_or_wall_drop(monkeypatch):
     inner.on_command(dict(t=1.75,kind='mecanum',left=.65,duration_s=.65))
     for i in range(1,16):inner.on_frame(1.75+i*.05,rgb)
     row=b.audit['rows'][-1];assert row['coverage']==0 and np.allclose(row['delta'],[0,.167,0])
+    json.dumps(b.audit)  # result.json must not contain numpy.bool_ values
 
 
 def test_progress_requires_observed_consecutive_failure_and_emits_inverse(monkeypatch):
