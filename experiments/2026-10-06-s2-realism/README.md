@@ -1496,7 +1496,8 @@ augmented-MCL running average를 새 `1+sum(pz^3)` 값과 섞지 않으며, 그 
 `/Users/changmin/projects/ugrp/outputs/s2-soft-mcl-20261007/`.
 `s1045/s1046/s1047-amcl_likelihood_field_v1.json`에 각 시각의 추정·KL·가중치 범위·receipt,
 `residual-decomposition.json`에 평가 전용 분해를 보존한다. 저장 영상/명령은
-13,794/6,500/5,101개를 재생했으며 s1047 마지막 RGB 없는 pose1개는 기존과 같이 제외했다.
+13,794/6,500/5,101개를 재생했으며 세 실행 모두 저장 pose의 RGB 대응 누락은0이었다.
+이전 기록의 s1047 5,100개/말단 누락1 표기는 잘못됐으며 원본 manifest 재확인으로 정정한다.
 이전에 재현한 legacy 기준선의 원본 pose 최대 차이는 모두0이고 source hash도 재확인했다.
 
 |seed|soft update / 1초 독립|최장 공백(s), 기준≤30|carry RMSE(m): 원본 / 같은 보정 / AMCL|p90(m): 원본 / 같은 보정 / AMCL|판정|
@@ -1516,3 +1517,16 @@ soft update는 nonconstant likelihood가 입자 가중치를 바꿨다는 뜻이
 새 측정 모델은 별도 S2 Runtime/오프라인 재생 후보에만 있고 실행기/번들에는 입장시키지
 않았다. freeze 전후 wall/SIM 새 비교는 없다. 이전 lifted/inside 결과·영상과 합산하지
 않고 새 물리 성공을 주장하지 않는다. 기준 미달로 이 후보의 추가 시도는 종료한다.
+
+
+AMCL의 odometry update 주기는 허용된 자기 명령 운동 모델을 적분해 적용했다. 실제
+encoder/VO odometry가 아니므로 막힌 차체의 명령을 실제 이동으로 보증하지 않는다.
+정확히 같은 검출 열은 다시 곱하지 않지만 영상 잡음이 있는 정체 장면까지 독립 관측이라고
+보증하지 않으며, 그래서 receipt 수만으로 입장을 허용하지 않고 위치 정확도를 함께 채점했다.
+
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1007-s2-soft-mcl%2F#timeseries)
+새 snapshot `1007-s2-soft-mcl`: **12개 비교/진단, 111 scalar** 원본=event=live API 일치,
+HParams source/condition과 shared view의 자기 키 추가를 확인했다
+([전달 검증](soft-mcl-delivery-verification.json)). 사용자 지시대로 수치만 대조했으며
+브라우저 UI·기존 서버/PID52016·이전 snapshot·영상은 변경하지 않았다.
+이번 재생 프로세스는 모두 정상 종료했고 물리 잠금은 미획득, 종료 확인 status=null이다.
