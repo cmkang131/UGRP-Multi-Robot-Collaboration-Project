@@ -60,3 +60,21 @@ def test_registered_grid_is_fixed_and_contains_general_base_attitudes():
     assert len(grid)==21*9*5
     assert len({tuple(r['rpy']) for r in grid})==5
     assert {r['joint'] for r in grid}=={None,3,4,5,6}
+
+
+def test_native_camera_intrinsics_use_model_array_api_without_dynamics():
+    import mujoco
+    model=mujoco.MjModel.from_xml_string('<mujoco><worldbody><camera name="c" focalpixel="600 610" principalpixel="20 30" sensorsize="640 480" resolution="640 480"/></worldbody></mujoco>')
+    np.testing.assert_allclose(audit.native_intrinsic(model,0),[[600,0,300],[0,610,210],[0,0,1]],atol=1e-12)
+
+
+def test_evaluation_inverse_recovers_supplied_angles_without_calling_a_controller():
+    import sys
+    sys.path.insert(0,str(PATH.parent))
+    from recorded_frames import inverse_camera_chain
+    base=audit.transform([.3,-.2,.033],Rotation.from_euler('xyz',[.03,-.04,.8]).as_matrix())
+    for q in ({6:0.,5:1.8,4:-1.4,3:-.8},{6:.6,5:1.2,4:-.7,3:.3}):
+        camera=audit.chain(q,base)['camera_cv']
+        result,err=inverse_camera_chain(camera,base,q)
+        np.testing.assert_allclose(list(result.values()),list(q.values()),atol=1e-12)
+        assert max(err.values())<1e-12

@@ -101,6 +101,15 @@ def error(a,b):
         rotation_matrix_max=float(np.abs(a[:3,:3]-b[:3,:3]).max()))
 
 
+def native_intrinsic(model,camera_id):
+    # MuJoCo 3.12 exposes these as model arrays, not named camera view fields.
+    value=model.cam_intrinsic[camera_id]
+    size=model.cam_sensorsize[camera_id]
+    width,height=model.cam_resolution[camera_id]
+    return np.array([[value[0]*width/size[0],0,width/2-value[2]*width/size[0]],
+        [0,value[1]*height/size[1],height/2-value[3]*height/size[1]],[0,0,1.]])
+
+
 def static_compare():
     import mujoco
     from sim.masterpi_dynamics_v2 import MasterPiDynamicsV2,_quat_to_rpy
@@ -191,8 +200,7 @@ def projection_compare():
         equality.append(error(transform(co,cr),cam))
     c=model.camera('r3__robot_cam')
     # MuJoCo principal point uses OpenGL centered +right/+up. Convert to image +down.
-    native=np.array([[c.intrinsic[0]*640/c.sensorsize[0],0,320-c.intrinsic[2]*640/c.sensorsize[0]],
-        [0,c.intrinsic[1]*480/c.sensorsize[1],240-c.intrinsic[3]*480/c.sensorsize[1]],[0,0,1]])
+    native=native_intrinsic(model,c.id)
     intrinsic_error=float(np.abs(native-k).max())
     return dict(points=len(world),dlt_max_m=max(errors),world_body_camera_errors=equality,
         intrinsic_max_px=intrinsic_error,opencv_K=k.tolist(),model_K=native.tolist(),
