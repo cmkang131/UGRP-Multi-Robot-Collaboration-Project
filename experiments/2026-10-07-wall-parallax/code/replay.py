@@ -18,7 +18,7 @@ FILES=['harness/wall_parallax.py','harness/self_map_prob.py','harness/self_odom_
        'experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json',
        'experiments/2026-10-05-ego-wall-map-probe/calibration/s2_camera_v3_extrinsic_v1.json',
        'experiments/2026-10-05-ego-wall-map-probe/code/height_free_wall.py',
-       'experiments/2026-10-05-ego-wall-map-probe/code/markerless_probe.py',
+       'experiments/2026-09-26-markerless-probe/markerless_probe.py',
        'experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py',
        'experiments/2026-10-07-wall-floor-boundary/annotation-sample.json',
        'experiments/2026-10-07-wall-floor-boundary/code/evaluate.py',
@@ -87,6 +87,42 @@ def stats(values):
     return dict(n=len(v),median=float(np.median(v)) if len(v) else None,
                 p90=float(np.quantile(v,.9)) if len(v) else None,
                 rmse=float(np.sqrt(np.mean(v*v))) if len(v) else None)
+
+
+def recover_complete_receipt(case,option,source_sha):
+    """Metadata-only recovery after full prediction, never repeat extraction."""
+    import ast
+    out=c.OUT/option/case
+    assert not (out/'receipt.json').exists()
+    relative=str(c.Path(__file__).relative_to(c.ROOT))
+    previous=subprocess.check_output(['git','show',source_sha+':'+relative],text=True)
+    def extract_fn(text,name):
+        return next(ast.dump(n,include_attributes=False) for n in ast.parse(text).body
+                    if isinstance(n,ast.FunctionDef) and n.name==name)
+    assert extract_fn(previous,'predict')==extract_fn(c.Path(__file__).read_text(),'predict')
+    current=hashes()
+    historical={}
+    for p in FILES:
+        raw=subprocess.check_output(['git','show',source_sha+':'+p])
+        historical[p]=__import__('hashlib').sha256(raw).hexdigest()
+        if p!=relative:assert historical[p]==current[p]
+    cohort=c.read(c.EXP/'cohort.json')['cases'][case]
+    for path,digest in cohort['sources'].items():assert c.sha(path)==digest
+    rows=c.old.base.read_rows(out/'predictions.jsonl')
+    ledger=c.old.base.read_rows(out/'eligibility.jsonl')
+    assert [r['frame_id'] for r in rows]==cohort['eligible_frames']
+    counts=Counter(r['reason'] for r in ledger)
+    assert counts==cohort['counts']
+    for r in rows:counts.update(r['counts'])
+    c.dump(out/'receipt.json',dict(case=case,option=option,source_sha=source_sha,
+        source_hashes=current,prediction_source_hashes=historical,
+        metadata_source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+        recovery='complete_predictions_preserved_manifest_path_only_predict_AST_identical',
+        settings=settings(),cohort_sha256=c.sha(c.EXP/'cohort.json'),
+        predictions_sha256=c.sha(out/'predictions.jsonl'),eligibility_sha256=c.sha(out/'eligibility.jsonl'),
+        counts=dict(counts),frames=len(rows),physics=0,model_calls=0,
+        environment=dict(python=sys.version,opencv=cv2.__version__,numpy=np.__version__)))
+    print(case,'complete prediction receipt recovered; RGB not rerun',flush=True)
 
 
 def point_errors(points,pose,rects):
@@ -198,13 +234,19 @@ def main():
     p.add_argument('--split',choices=['development','confirmation'],required=True)
     p.add_argument('--wall-detector',choices=['off','parallax_v1'],default='off')
     p.add_argument('--freeze',type=c.Path)
+    p.add_argument('--recover-complete-predictions',help='original committed source SHA, metadata-only recovery')
     args=p.parse_args()
+    hashes()  # Verify all provenance paths BEFORE reading RGB or creating output.
     if args.split=='confirmation':
         f=c.read(args.freeze) if args.freeze else {}
         assert f.get('hashes')==hashes() and f.get('settings')==__import__('json').loads(__import__('json').dumps(settings()))
     cases=['s1042','s1043'] if args.split=='development' else ['s1044','s1045','s1046','s1047','s1050','s1051']
     # All own predictions in this split precede all truth scoring.
-    for case in cases:predict(case,args.wall_detector)
+    for case in cases:
+        out=c.OUT/args.wall_detector/case
+        if args.recover_complete_predictions and out.exists():
+            recover_complete_receipt(case,args.wall_detector,args.recover_complete_predictions)
+        else:predict(case,args.wall_detector)
     for case in cases:score(case,args.wall_detector)
 
 

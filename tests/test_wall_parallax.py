@@ -93,6 +93,7 @@ def test_annotation_recall_preserves_absent_points_and_deduplicates(monkeypatch)
     root=Path(__file__).resolve().parents[1]
     sys.path.insert(0,str(root/'experiments/2026-10-07-wall-parallax/code'))
     import replay as ev
+    assert len(ev.hashes())==len(ev.FILES)  # All provenance paths exist before RGB extraction.
     monkeypatch.setattr(ev.metric,'project',lambda uv,*a:(np.zeros((len(uv),2)),np.ones(len(uv)),np.ones(len(uv),bool)))
     annotation=dict(polylines=[[[0,50],[639,50]]],ignore=[])
     empty=ev.annotate([],[],annotation,ORIGIN,R)['all']
