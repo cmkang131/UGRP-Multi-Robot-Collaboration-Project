@@ -1,0 +1,61 @@
+{
+  "schema": "ugrp.s2.active_markov.publish_block.v1",
+  "status": "NOT_RUN_REMOTE_PUBLISH_ERROR",
+  "code_sha": "715a43da295b0011c3f68ff6aae1732b7d92b071",
+  "remote_sha_observed": "954b4ebe4dc72d761c1058c95edb25359c20baa3",
+  "criteria_sha256": "49035dbe2c12c85c64fd82f54bb4f04c095773347cf8009da9c5952f224decee",
+  "tests": {
+    "passed": 33,
+    "seconds": 6.6,
+    "files": [
+      "tests/test_s2_active_markov.py",
+      "tests/test_s2_kld_start.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "actual_runtime_constructor": "PASS; no simulator"
+  },
+  "physical_runs": 0,
+  "model_calls": 0,
+  "agent_lock_acquired": false,
+  "lock_status": null,
+  "final_error_m": null,
+  "sim_s": null,
+  "actions": null,
+  "thresholds_changed": false,
+  "full_dev_proposed": false,
+  "pr": {
+    "number": 406,
+    "state": "OPEN",
+    "draft": true
+  },
+  "publish_errors": [
+    {
+      "transport": "HTTPS origin",
+      "request_id": "F6F0:2D36F3:593B3:8BEAB:6AC66085",
+      "time_utc": "2026-10-07T15:08:54Z",
+      "error": "remote Internal Server Error"
+    },
+    {
+      "transport": "HTTPS origin",
+      "request_id": "F70E:34B61E:5E1E1:9190B:6AC660B1",
+      "time_utc": "2026-10-07T15:09:37Z",
+      "error": "remote Internal Server Error"
+    },
+    {
+      "transport": "HTTPS canonical same repository",
+      "request_id": "F751:D8E2:5F78F:936A0:6AC660F6",
+      "time_utc": "2026-10-07T15:10:48Z",
+      "error": "remote Internal Server Error"
+    },
+    {
+      "transport": "HTTPS origin",
+      "request_id": "F802:14A9D4:6A265:A0463:6AC661A0",
+      "time_utc": "2026-10-07T15:13:37Z",
+      "error": "remote Internal Server Error"
+    }
+  ],
+  "ssh_probe": "Host key verification failed; trust settings unchanged",
+  "pr_comment": "write failed; preregistration text saved locally",
+  "remaining": "publish fixed source, wait for null lock, one authorized seed1052 start-only run; no new thresholds",
+  "tensorboard": "no completed new run; no fabricated physical metrics or completion snapshot"
+}

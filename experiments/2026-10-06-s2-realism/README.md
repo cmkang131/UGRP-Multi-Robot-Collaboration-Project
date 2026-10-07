@@ -3856,3 +3856,22 @@ GT 위치/접촉은 별도 평가·기존 실제 물리 실패 중단에만 사�
 agent_lock이 비어야 acquire한다. 자기 지도 등 다른 물리 작업과 겹치지 않고, 종료 뒤 release한다.
 결과는 종료 오차·SIM/wall·선택/완료 행동 수·펄스 수·σ·정지 사유를 모두 기록한다.
 raw는 기본 체크아웃 outputs의 새 SHA/seed 경로. ENOSPC/실행 오류는 HOST_ERROR로 남기며 자동 재시도하지 않는다.
+
+### s2v34 현재 상태 — 원격 보존 오류, 물리 미실행
+
+로컬 코드/사전 등록 `715a43da`, 관련3파일 **33시험/6.60s PASS**,
+실제 Runtime 생성·100000입자·초기 팔/중앙 pan 명령의 무물리 점검 PASS.
+시행 전 시험에서 고정표 상수 이름 오기와 중앙 pan 명시 누락을 수정했으며,
+아직 물리 결과가 없고 사전 문턱은 바꾸지 않았다.
+
+HTTPS push가4회 `remote: Internal Server Error`로 실패했다(원격 이전 주소와 확인된 현재 주소 모두).
+SSH는 host key verification 실패로 사용하지 않았으며 신뢰 설정/remote 설정을 바꾸지 않았다.
+PR406 읽기는 OPEN/DRAFT·원격954b4ebe로 확인했으나 코멘트 쓰기도 실패했다.
+[오류·검증 기록](active-markov-publish-block.json), 로컬 PR 사전 기록 문안은
+`outputs/s2-active-markov-v34-prereg.md`에 보존했다.
+
+**NOT_RUN_REMOTE_PUBLISH_ERROR: 새 물리0**, 잠금 미획득/status=null.
+AGENTS.md의 DEV 실행 소스는 “커밋·push한 브랜치 SHA”라는 규칙에 따라 실행을 보류했다.
+종료 위치 오차·SIM 시간·행동 수는 N/A이며 성공/실패 물리 판정이나 TensorBoard 완료 이벤트를 만들지 않는다.
+남은 작업은 원격 보존 완료 후 잠금이 비었을 때 고정된 기준으로 seed1052 시작 구간1회 실행이다.
+25cm 통과 때만 full DEV 제안. 추가 물리 허가를 소모한 것으로 세지 않으며 자동 연구/운반은 하지 않는다.
