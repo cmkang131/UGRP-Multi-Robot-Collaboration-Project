@@ -288,6 +288,7 @@ raise SystemExit(3 if a.fail else 0)
             's2-camera-extrinsic-capture-v1',
             's2-stiff-camera-capture-v1',
             's2-stiff-start-capture-v1',
+            's2-active-markov-start-v1',
             'zone-s2-real-output-diag-v111',
             'zone-s2-real-output-diag-v112',
         )})

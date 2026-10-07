@@ -3824,3 +3824,35 @@ off/on 예측 JSON·입자 npz·결과·잠금 기록을 원본과 별도로 보
 전달: [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1007-s2-kld-v33%2F#timeseries)
 2뷰18scalar의 원본/event/live API 수치 일치, [전달 검증](kld-start-delivery.json).
 기존 viewer 유지·UI 표시 미검증. 새 영상 없음. PR406 DRAFT·병합 금지 유지.
+
+## s2v34 — 능동 시작 위치추정, 물리 1회 사전 등록 (2026-10-08)
+
+[고정 기준](active-markov-criteria.json), `start_localization=active_markov_v1` 기본off.
+기본off의 명령/기록 바이트는 이전 KLD Runtime과 같아야 한다.
+[Fox·Burgard·Thrun1998 §4.1 식4–8](https://www.cs.cmu.edu/~dfox/postscripts/ras-active.ps.gz)의
+`H(현재 믿음) − E[행동·관측 후 믿음의 H]` 최대 행동을 선택한다(요청한 단순화: 비용 가중0).
+미래 관측은 정적 벽 지도·고정 카메라·자기 명령 운동 모델로 예측하며 GT를 입력하지 않는다.
+공개 원문/해시는 앞선 기록을 재사용했다. 원 논문 전체 레이저 모델의 동일 구현이라는 주장은 하지 않는다.
+수치 근사: KLD 믿음의 결정적 systematic 대표512개, 고정 펄스 공분산의6점 cubature,
+기존 .5m/10° 상태 bin 및 중앙 카메라1열·8px 범주+unknown·hit/random 측정 모형.
+관측 불확실성과 이동 후 분포의 퍼짐을 조건부 엔트로피 계산에 포함한다.
+
+후보8개: 제자리 ±45/90/180°와 좌우 fine10펄스(약7cm).
+회전은 이미 측정된±.35/.10초 펄스를 반올림 횟수만큼 반복하므로 목표각과 차이가 난다.
+각 펄스는 .20초 응답 꼬리까지 기다린다. 새 모션 보정·상수 튜닝 없음.
+팔은 보정된 LOOK_P20 중앙으로 설정 후2초 정착한다. 행동 종료 뒤 .4초 정착하고,
+새 자기 RGB로 재관측한다. 이동 중 RGB는 위치 예측만 하고, 행동 끝의 새 정착 관측1회에
+기존 seen-view 표식을 지운다(짧은 옆이동이 기존25cm motion gate 아래여도 재관측 가능).
+능동 시작 동안에는 최초 차체 이동으로 KLD를 종료하지 않는다. 이후 운반 이관은 이번 범위 밖이다.
+
+**seed1052 시작 구간1회**, v3·v7·freezeON·강성real_v1·stiff_target_v1·KLD ON,
+기존 표준 Scene/reset 재사용, 운반·집기·모델 호출0, 자기 도크/행 prior0.
+종료는 새 관측 후 전체 위치σ≤10cm AND 방향σ≤5° 또는 초기 명령부터 **30 SIM초**(팔 정착 포함).
+최종 전체 평균 위치 오차≤25cm면 다음 full DEV **제안만**; 결과 후 문턱 변경·추가 물리 재시도0.
+GT 위치/접촉은 별도 평가·기존 실제 물리 실패 중단에만 사용한다. 예측 충돌/관측 unknown은 dev_light 기록만.
+실제 획득은 `s2-active-markov-start-v1` 표준 workflow와 `ugrp_session`으로 실행한다.
+숫자형 full 번들을 새로 만들지 않으며, 기존 불변 setup_bundle은 장면 구성용으로만 보존한다.
+별도 `run-configuration.json`에 새 옵션·소스·기준·보정표 해시를 봉인하고 기존 full 성공을 승계하지 않는다.
+agent_lock이 비어야 acquire한다. 자기 지도 등 다른 물리 작업과 겹치지 않고, 종료 뒤 release한다.
+결과는 종료 오차·SIM/wall·선택/완료 행동 수·펄스 수·σ·정지 사유를 모두 기록한다.
+raw는 기본 체크아웃 outputs의 새 SHA/seed 경로. ENOSPC/실행 오류는 HOST_ERROR로 남기며 자동 재시도하지 않는다.
