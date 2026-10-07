@@ -2057,3 +2057,39 @@ one-shot launchd job bootout, **agent_lock=null**. 다른 세션/프로세스는
 진행 중이었다. 데이터/영상은 로컬이며 원격 raw 백업으로 보고하지 않는다.
 
 [새 실행과 별도 baseline 수치 보기](http://127.0.0.1:6006/?runFilter=%5E%281007-s2-real-carry-full-v124%7C1007-s2-realism-full-v121-verified%29%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Flifted%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Finside%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fstationary_max_position_error_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fremaining_to_b_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fsim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fcommands%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries).
+
+## s2v19 — 정지 스캔 이탈 원인과 ROS AMCL 절차 (사전 기준, 2026-10-07)
+
+물리 실행 없이 s1047/s1049의1.30–12.00초215개 자기RGB·명령을 그대로 재생한다.
+`saved` 두 조건은 저장 pose와 최대차이0(기준1e-9 이내)를 확인했다. 평가GT는 Runtime
+종료 후에만 읽는다. option OFAT와 PF RNG seed 교환을 분리하며 이 자료는 탐색 전용이다.
+full 1.54338/1.94347m → camera_calibration off0.01050/0.02675m(스캔 끝오차).
+carry_pose/visibility_mask/visual_update를 각각 끄면 full과 pose가 동일하다. AMCL off는
+의존성상 mask-off 상태에서만 가능하므로 mask-off→measurement-off 한 항목 차이로
+비교했으며 역시 동일하다. 모두 unloaded라 기존 세 후보 측정 훅 범위 밖이다.
+RNG1047↔1049 교환은 크기를 바꾸지만 두 기록 모두 새 보정표에서 이탈한다.
+즉 통합 변화의 트리거는 새 외부 보정표이며, 그 표를 받는 기존 unloaded 측정 경로를
+조사한다. old 표가 물리적으로 옳다는 결론이나 보정 옵션을 끄는 수정으로 대체하지 않는다.
+
+Nav2 원본을 commit235fc5ce55bdf94d9be360fdbca39d89dc0e4f74에 고정해 읽었다.
+- [amcl_node.cpp](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/amcl_node.cpp): 첫 유효 센서 갱신은 허용하고 이후 odom dx/dy>0.25m 또는 yaw>0.2rad일 때만 센서 갱신·주기 resample. 포즈/명령 토큰 변경만으로 재허용하지 않는다.
+- [기본 likelihood_field](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/sensors/laser/likelihood_field_model.cpp): hit/random 혼합,1+sum(pz^3), beam skip 없음.
+- [likelihood_field_prob](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/sensors/laser/likelihood_field_model_prob.cpp): product likelihood, converged 후만 beam skip, 지나친 skip이면 전체빔 복구. beam skip이 모든 AMCL 모델의 기본 기능은 아니다.
+- [pf.c](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf.c): CDF 재표본화, 평균에서 모든 입자가 x/y0.5m 이내일 때 converged. 원본 SHA/로컬 보존본은stationary-amcl-sources.json.
+
+현재 unloaded는 정지 스캔215프레임 중50회 관측 가중,46회 반복 가중,5/6회 resample
+(s1049/1047),4개 명령 자세의 새 view를 센서 재갱신으로 취급한다. 새 표 이전도
+95회/88반복/5resample이어서 ROS의 정지 갱신 차단과 다르다. 현재 consistency rho=.5,
+command-token 재허용·roughening은 이번 새 옵션에서 원본 ROS 절차로 대체할 대상이다.
+단일 이상 관측/초기 전역 prior는 ROS도 정답을 보장하지 않으므로, 무조건 성공으로
+가정하지 않고 아래 기준을 구현/후보 재생 **전에** 고정한다.
+
+`stationary-amcl-criteria.json`: 두 seed 모두 전체 정지 구간 최대오차≤0.50m,
+끝오차≤0.30m, 문턱 미만 정지에서 최초 관측 외 반복 갱신/resample0.
+고정 Nav2 기본모델ros_motion_v1을 우선, beam-skip 모델ros_motion_prob_v1은 별도
+고정 비교 후보로만 둔다. 계수 튜닝/기준 완화 없음. 둘 다 미달이면 full DEV를 실행하지
+않는다. 센서는RGB 지면 교차점, odom은 자기 발행 고정 펄스 모델, N=2000은 기존 latent
+plant 크기를 보존하는 차이만 허용한다. 실행 중GT/추가 센서/카메라 변경 없음.
+CYAN_NOT_UNIQUELY_VISIBLE은 새 default-off 옵션으로 기존 두 시점 탐색을 다시 하고
+멈췄을 곳만 기록한다. 관측하지 못한 target을 발명하거나 파지 성공을 알리지 않는다.
+전역 유한 시간 상한/실제 물리 실패 정지는 유지한다. PR #406 DRAFT·병합 금지.
