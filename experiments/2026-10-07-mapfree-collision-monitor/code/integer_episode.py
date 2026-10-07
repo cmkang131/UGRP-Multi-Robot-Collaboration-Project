@@ -10,6 +10,36 @@ import numpy as np
 from harness.self_odom_grid import transform
 
 
+class _ZeroVelocityStop:
+    """v8 2D cmd_vel stop adapter, NOT a physical braking model.
+
+    The final zero-velocity output must not be smoothed into residual motion by
+    the legacy M1 integrator. Preserve active-command dynamics and all covariance.
+    Only own commands are inspected; no poses, contacts or geometry trigger this.
+    """
+    def __init__(self,odometry):
+        self.odometry=odometry
+        self.zero_commands=0
+
+    def command(self,row):
+        result=self.odometry.command(row)  # finish integration up to issue time
+        zero=row['kind'] in ('stop','hold') or (
+            row['kind'] in ('mecanum','drive') and
+            all(float(row.get(k,0.))==0. for k in ('forward','left','turn')))
+        if zero:
+            self.odometry._predictor.vel[:]=0.
+            self.zero_commands+=1
+        return result
+
+    def __getattr__(self,name):return getattr(self.odometry,name)
+
+
+def velocity_stop(odometry,*,navigation='off'):
+    if navigation=='off':return odometry
+    if navigation!='public_ros_v8':raise ValueError('EXPLICIT_V8_STOP_ADAPTER_REQUIRED')
+    return _ZeroVelocityStop(odometry)
+
+
 def observation_time(frame):
     return (30*frame+20)/10
 
@@ -24,7 +54,10 @@ def episode(runner,index,start_id,seed,split,condition,sensing,out):
     issued_passage,write,SETTINGS = runner.issued_passage,runner.write,runner.SETTINGS
     world = (RectangleOracleWorld if sensing=='oracle' else RectangleWorld)(index,start_pose(index,start_id,seed),seed,'development' if split=='development' else 'confirmation')
     actor = PublicActor(condition,*(static_inputs(world) if condition=='static_map' else (None,None)),navigation='public_ros_v3')
+    world.motion=velocity_stop(world.motion,navigation=actor.option)
+    actor.odom=velocity_stop(actor.odom,navigation=actor.option)
     logs,truth_logs,commands,contact_inputs = [],[],[],[]
+    wait_checks=[]
     track_truth = {}
     first = None
     status = 'budget'
@@ -35,11 +68,27 @@ def episode(runner,index,start_id,seed,split,condition,sensing,out):
             if actor.t>=900-1e-8 or world.distance>=40 :
                 status = 'budget'
                 break
-            hold = dict(t=actor.t,kind='stop')
-            actor.odom.command(hold)
-            world.advance(hold,observation_time(frame))
-            actor.odom.advance(observation_time(frame))
-            actor.t = actor.odom.t
+            # Keep zero cmd_vel and contact callbacks alive during the 2 s wait.
+            # Same integer observation schedule; no planner/recovery motion here.
+            before=world.pose.copy()
+            start_distance=world.distance
+            start_contacts=world.collisions
+            max_speed=0.
+            for tick in range(round(actor.t*10)+1,round(observation_time(frame)*10)+1):
+                hold=actor.wait_command()
+                commands.append(dict(frame=frame,tick=tick,t=actor.t,phase='observation_wait',
+                    pose_odom=list(actor.odom.pose),command=hold))
+                actor.odom.command(hold)
+                world.advance(hold,tick/10)
+                actor.odom.advance(tick/10)
+                actor.t=actor.odom.t
+                max_speed=max(max_speed,float(np.max(np.abs(world.motion._predictor.vel))))
+                sample=world.contact_sample(actor.t)
+                contact_inputs.append(sample)
+                actor.receive_contact(sample)
+            wait_checks.append(dict(frame=frame,t=actor.t,phase='observation_wait',
+                pose_delta=(world.pose-before).tolist(),distance_m=world.distance-start_distance,
+                max_abs_model_velocity=max_speed,new_contacts=world.collisions-start_contacts))
             observation,patches,truth = world.observe(frame)
             actor.steps = frame
             accepted = actor.receive(observation,patches)
@@ -92,6 +141,7 @@ def episode(runner,index,start_id,seed,split,condition,sensing,out):
                       ('eval_contacts',world.contact_events)]:
         (out/(name+'.jsonl')).write_text(''.join(json.dumps(r,allow_nan=False)+'\n' for r in rows))
     write(out/'monitor.json',getattr(actor,'monitor_log',[]))
+    write(out/'eval_wait_checks.json',wait_checks)
     write(out/'result.json',result)
     write(out/'eval_path.json',world.path)
     write(out/'own_grid.json',dict(resolution_m=.1,cells=[[*c,v] for c,v in sorted(actor.grid.odds.items())]))

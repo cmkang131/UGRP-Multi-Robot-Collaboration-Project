@@ -169,3 +169,14 @@ class MonitorActor(UnknownActor):
         filtered,info=self.monitor.filter(command,self.odom.pose,self.t)
         self.monitor_log.append(dict(t=self.t,**info))
         return filtered
+
+    def wait_command(self):
+        """Keep the final velocity filter alive while the controller is waiting.
+
+        No frontier/planner advancement or hidden sensor refresh during the wait.
+        A new active command must pass filter() again after the next observation.
+        """
+        command=command_from_twist(np.zeros(3),self.t)
+        filtered,info=self.monitor.filter(command,self.odom.pose,self.t)
+        self.monitor_log.append(dict(t=self.t,phase='observation_wait',**info))
+        return filtered
