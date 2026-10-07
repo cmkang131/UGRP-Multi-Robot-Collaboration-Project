@@ -2659,3 +2659,37 @@ raw `/Users/changmin/projects/ugrp/outputs/s2-blocked-pulse-20261007/`의 `resul
 TensorBoard **1007-s2-blocked-pulse-v2 / 5뷰36scalar**를 source→event→live API/HParams와 대조했고, 등록 영상은 HTTP 전체 재다운로드 SHA까지 일치했다. [대시보드](http://127.0.0.1:6006/?runFilter=1007-s2-blocked-pulse-v2&smoothing=0#timeseries), [전달 검증](blocked-pulse-delivery-verification.json). 수치 대조만 했으며 PID52016/공용logdir/다른view키는 유지했다. 첫 비공개 snapshot은 SSE 비율을 수기로 옮긴 불필요한 scalar를 제거한 v2로 대체했다(95.837803→정확95.837822%; raw `delivery-correction.json`). 이전 snapshot/원본을 보존했고, 최종 기본 보기는 v2만 가리킨다.
 
 `ugrp_session s2-blocked-pulse-offline` **stopped**, 물리 실행 없이 **agent_lock=null**. 다른 프로세스 종료/다른 PR·worktree 수정0. 전체 GitHub CI는 진행 중으로, 로컬15시험·재생 완료와 구분한다. PR406 DRAFT·병합 금지 유지.
+
+## s2v24 — RGB 실변위 융합·진행 부족 회피 사전 등록 (2026-10-07)
+
+명령 오도메트리는 센서 측정이 아니다. `visual_odometry=ground_flow_ekf_v1`,
+`stall_recovery=nav2_progress_v1` 두 옵션(기본 off)을 S2에만 구현한다.
+[사전 기준](flow-fusion-criteria.json)의 상수·판정은 s1051 후보 재생 전에 고정한다.
+문제 6회 중 5회 이상 RGB 구간 coverage ≥80%, 변위 오차 ≤3.5 cm, 중앙 오차 ≤1 cm,
+yaw RMSE 비악화, 전체 하중 변위 RMSE 개선·비문제 구간 비악화를 요구한다.
+운반 시각 갱신 ≥27회, 최장 공백 ≤33.85초, 운반 RMSE <2.0235827759 m,
+정지 스캔 최대 오차 ≤0.5 m, 같은 시각 측정 열 100% 보존도 모두 통과해야 한다.
+진행 부족은 2개 연속 유효 펄스·1.5초·95% 변위 상한 3.5 cm 기준으로 판단한다.
+4번째 문제 명령 전 해당 방향 차단이 재생에서 확인되어야 한다.
+미달이면 새 물리 실행·seed·번들 없이 결과를 보존한다. 본 연구 확증이 아니다.
+
+방법: Seegmiller 2011 II-C–F의 LK/바닥 평면/RANSAC SE2를 연속 프레임에 적용하고,
+robot_localization EKF의 differential velocity 관측·Kalman gain·Joseph 공분산을 사용한다.
+바닥 텍스처 미관측은 정지가 아니다. 명령과 광류 변위를 이중 합산하지 않도록
+완료 펄스(최대 0.75초)를 지연 처리하고 원래 벽 관측은 시간순으로 한 번만 처리한다.
+이는 ROS 전체 노드 이식이 아니라 S2의 유한 펄스·기존 160 ms 지연 인터페이스 어댑터다.
+종전 임의의 2차원 점 분산 조건 대신 SE2 Jacobian의 실제 rank를 검사한다.
+사용자 지적 pitch 0.9–2.8°를 사전 고정 nuisance 범위로 두고 광류 스케일 민감도를
+공분산에 전파한다. 저장된 실제 카메라 자세는 사후 평가에만 쓴다.
+
+Nav2 진행 검사와 거리·시간 한정 BackUp/DriveOnHeading을 따른다.
+옆 이동 반대 방향 회피는 mecanum에 필요한 확장이고, 명령 방향의 장애물 실측은 아니다.
+기존 자기 위치 추정·정적 지도의 충돌 검사로 회피를 제한한다.
+저장 명령 재생에서 반사실 회피 성공은 평가할 수 없으므로 차단·회피 분기는 shadow로,
+발행 경로는 합성 관측 시험으로 분리한다. 실제 회피는 위 기준 통과 후 새 DEV에서만 검증한다.
+공용 camera_robot_port·다른 제어기·카메라 mount/FOV는 변경하지 않는다.
+
+출처(원문 확인):
+- [Seegmiller 2011](https://publications.ri.cmu.edu/storage/publications/pub_files/2011/9/Seegmiller_IROS-2011_Optical_Flow_Odometry.pdf), II-C–F.
+- [robot_localization EKF](https://github.com/cra-ros-pkg/robot_localization/blob/ros2/src/ekf.cpp), [설정](https://github.com/cra-ros-pkg/robot_localization/blob/ros2/params/ekf.yaml): 명령은 control, VO는 측정; 기본 vx/vy/vyaw Q=.025/.025/.02.
+- [Nav2 SimpleProgressChecker](https://github.com/ros-navigation/navigation2/blob/main/nav2_controller/plugins/simple_progress_checker.cpp), [DriveOnHeading](https://github.com/ros-navigation/navigation2/blob/main/nav2_behaviors/include/nav2_behaviors/plugins/drive_on_heading.hpp): 거리·시간 검사, 회피 거리/시간 제한과 충돌 검사.
