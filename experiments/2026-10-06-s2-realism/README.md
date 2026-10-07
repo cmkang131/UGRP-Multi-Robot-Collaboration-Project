@@ -1986,3 +1986,74 @@ posthoc evaluator만 읽고 result/eval_only에 저장한다. AMCL 갱신 수를
 보존된s1047을 읽기만 하여167개1Hz프레임 hash/실제 투영과RMSE를 계산하는 경로를
 확인했다(`outputs/s2-real-carry-evaluator-check-20261007.json`). 이는 evaluator 검증이며
 새 운반 자세의 실행 결과가 아니다. 이전 raw/결과는 수정하지 않았다.
+
+### s1049 결과 — 집기 전 탐색에서 종료, 새 운반 자세는 미검증
+
+실행 SHA **a8ab38b81c87ff5645c2db1443fdfe619f03f0d6**, 번들 **zone-s2-realism-v124**,
+workflow7.17.0, seed1049/P1-2/place. 옵션21개는 원본 bundle/result와
+`full-real-carry-summary.json`에 전부 기록했다. source_changed_during_run=false,
+단독 DEV freeze ON, model_calls=0, 재실행0. PR #406은 DRAFT/미병합이다.
+
+| 항목 | 실제 기록 |
+|---|---:|
+| 종료 | STAGE_FAILED / CYAN_NOT_UNIQUELY_VISIBLE (제어74.10초) |
+| lifted / inside B | false / false |
+| floor / stable | true / true — 블록은 원래 바닥에 그대로, 내려놓기 성공 아님 |
+| 운반 진입 / 운반 시각 가중 갱신 | 0 / 0 |
+| 운반 최장 fix 공백·RMSE·실제 벽 하단 가시율 | N/A — 운반 표본 없음, 0이나 실패 임곗값으로 대체하지 않음 |
+| cyan 중심→B 구역 경계 / B 중심 | 4.21107m / 4.64630m |
+| 재파지 / 집기 확인 | 0 / 미도달(unconfirmed) |
+| wall / SIM / wall÷SIM | 164.91719초 / 77.10초 / 2.13900 |
+| 명령 / 모델 호출 | 1556 / 0 |
+| 멈췄을 지점 기록 | ARM_COLLISION_GUARD 7, REOBSERVATION_NO_FIX 1, POSE_UNCERTAIN 29 |
+
+**요청 대비 실행 경로 결함:** 위 보수적 가드는 계속 진행했으나, 기존
+`harness/zone_solo_cyan_v106.py:364`의 두 탐색 시점 소진 분기는
+CYAN_NOT_UNIQUELY_VISIBLE을 실제 terminal로 만들었다. 낙하·집게 이탈·기울기 같은
+물리 실패가 아니다. `result.visual_unknown_stops=false`는 기존 파지 확인 옵션의
+기록일 뿐 모든 시각 종료 분기를 감사한 보장이 아님을 이번 실행이 드러냈다.
+raw 상태/판정을 덮어쓰지 않고 이 dev_light 미적용 분기를 별도 요약과TensorBoard에
+actual_nonphysical_terminal=1로 명시했다. 최초 유효 파지 관측도 없이 좌표를 지어내
+blind 파지했다고 보고하지 않는다. 사용자 지시대로1회 뒤 멈췄으며 수정/추가 실행은 없다.
+
+남은 가장 큰 관측 원인 하나는 **무하중 초기 스캔의 잘못된 위치 수렴**이다.
+첫 바퀴 명령12.00초 전 차체의 실제 최대 변위는 **1.086mm**였는데, 추정은
+11.80초에 실제(-0.89735,-0.85066) 대신(-0.87028,1.15691)로 가서
+**2.00775m / yaw27.2528°** 오차였다. 실제로 이동하기 전 발생했으므로 이 구간의
+오차를 v7 구동 미끄러짐으로 설명할 수 없다. 이후 고정된 오위치에서 경로를 만들었고,
+마지막74.10초에는 위치오차1.35620m/yaw38.1656°인데 보고σ는0.02046m였다.
+마지막 fix_t=12.05초, 초기 partial fix9회(11.65–12.05초) 뒤 갱신 공백62.05초다.
+이것은 **운반 fix 공백이 아니라 집기 전 전체 위치 추정**의 진단이다.
+
+두 실제 탐색 state의198개 입력은 cyan0px였다. 이동 중45.10초에는4358px가
+보였으나`robots/r3/rgb/00876.jpg`에서 화면 아래로 잘린 부분 블록이며,
+이를 유효 정렬/파지 관측으로 간주하지 않는다. 새 보정표의 잔차와 벽 특징 모호성 중
+무엇이 초기 오수렴을 만들었는지는 이번 기록만으로 확정하지 않았고 다음 조사 과제로
+남긴다. 새 carry 자세의 가시성/AMCL/실제 운반 효과를 실패 또는 성공으로 판정하지 않는다.
+
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/`.
+관리 기록은 같은 경로의`-managed/manifest.json`, 추가 평가 요약은
+`outputs/s2-realism-a8ab38b8-s1049-summary.json`이다. 원본 result·record·궤적·입력목록·
+카메라·bundle의sha256은 커밋한`full-real-carry-summary.json`에 있다.
+`analyze_full_real_carry.py`를 실제1457프레임에서 실행해 모든sha256과수치를 검증했다.
+추정오차의GT는 종료 후 평가에서만 읽었고 제어/성공 전환에 전달하지 않았다.
+
+4배속 자기RGB 영상:
+`/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-analysis/views/s1049-full/execution.mp4`.
+SIM1.30–74.10초,640×480/20fps,18.35초(고정 출력fps에 따른 끝 padding 포함),
+마지막 정착3초에는 저장RGB가 없어 영상으로 만들지 않았다. 전체decode와HTTP Range,
+TensorBoard 영상등록을 확인했다. SHA는`full-real-carry-delivery-verification.json`.
+
+TensorBoard 새 snapshot `1007-s2-real-carry-full-v124`: 새 full 시도1개와 무하중
+보정1개, **24 scalar**의 source→event→실제 live API 일치 및 HParams를 확인했다.
+기존 s1045 조건은 별도 baseline 링크로 보존하며 성공률 합산/속도 개선을 주장하지
+않는다(s1045 freeze ON wall/SIM1.95975, 이번2.13900; 경로·종료 지점이 다름).
+공용view는 직전 재조회 뒤 자기`s2_real_carry_full_20261007`키만 더했다. 사용자 요청대로
+수치만 대조했고 브라우저 재개방은 생략했다. 기존 서버PID52016/전체logdir는 유지했다.
+
+정리: own session`s2-realism-v124-s1049` stopped, pgid89217/89234 잔여0,
+one-shot launchd job bootout, **agent_lock=null**. 다른 세션/프로세스는 건드리지 않았다.
+실행 소스 관련17시험 통과 후 커밋·push, 원격ci-preflight24초 통과; 전체 CI 일부는
+진행 중이었다. 데이터/영상은 로컬이며 원격 raw 백업으로 보고하지 않는다.
+
+[새 실행과 별도 baseline 수치 보기](http://127.0.0.1:6006/?runFilter=%5E%281007-s2-real-carry-full-v124%7C1007-s2-realism-full-v121-verified%29%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Flifted%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Finside%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fstationary_max_position_error_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fremaining_to_b_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fsim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fcommands%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries).
