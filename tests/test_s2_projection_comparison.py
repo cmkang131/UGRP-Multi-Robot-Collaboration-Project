@@ -71,3 +71,10 @@ def test_prediction_path_has_no_truth_or_simulator_construction():
     factory=s2_path.column_model_factory(a.old.mp,a.COLS)
     assert factory.__code__.co_firstlineno==f.lineno
     assert factory.__code__.co_filename.endswith('sources/vision_pose_source_highpose.py')
+
+
+def test_empty_annotation_frame_is_na_without_dropping_case_denominator():
+    from compare import maximum_or_none, gate
+    assert maximum_or_none(np.empty(0)) is None
+    assert maximum_or_none(np.array([.5,.6]))==.6
+    assert not gate(dict(median=.5),dict(median=None,p90=None),0,0,0)['passed']

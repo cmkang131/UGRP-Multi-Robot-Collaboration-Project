@@ -32,6 +32,11 @@ def stats(values):
     return out
 
 
+def maximum_or_none(values):
+    """No eligible columns is NA, never zero error or a dropped frame."""
+    return float(np.max(values)) if np.size(values) else None
+
+
 def run(case):
     ep=a.old.EPISODES[case]
     dest=OUT/case
@@ -138,7 +143,7 @@ def run(case):
             for j,e in zip(np.flatnonzero(use),err):
                 columns.append(dict(frame_id=f['frame_id'],column=int(a.COLS[j]),row=float(v[j]),condition=label,
                     range_m=float(ranges[j]),error_m=float(e),xy=points[j].tolist()))
-        fs['s2_delta_from_pr405_max_m']=float(np.max(np.linalg.norm(xy[fixed]-xy0[fixed],axis=1)))
+        fs['s2_delta_from_pr405_max_m']=maximum_or_none(np.linalg.norm(xy[fixed]-xy0[fixed],axis=1))
         frame_scores.append(fs)
     oldprior=a.load(ROOT/f'experiments/2026-10-07-wall-floor-boundary/results/off/{case}.json')['annotation_projection_error_m']
     assert oldprior['count']==count and abs(oldprior['median']-stats(metrics['pr405'])['median'])<1e-10
@@ -165,10 +170,13 @@ def run(case):
 
 
 def main():
+    global OUT
     p=argparse.ArgumentParser()
     p.add_argument('--split',choices=['development','confirmation'],required=True)
     p.add_argument('--freeze',type=Path)
+    p.add_argument('--output',type=Path,default=OUT)
     args=p.parse_args()
+    OUT=args.output
     if args.split=='confirmation':
         f=a.load(args.freeze) if args.freeze else {}
         assert f.get('hashes')==hashes() and f.get('criteria')==CRITERIA, 'FROZEN_SOURCE_REQUIRED'
