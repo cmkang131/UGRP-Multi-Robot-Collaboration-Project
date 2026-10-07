@@ -3017,3 +3017,7 @@ freeze ON/dev_light, agent_lock+ugrp_session, nice0, 모델0. 물리 실패/오�
 과제 명세·실물 운영 기록을 먼저 확인하며, 근거 없이 seed/GT 행을 사전정보로 넣지 않는다.
 s1052는 탐색/재생 자료다. PR405의2.2배가 v122 미사용 때문이라는 사용자 추정은
 여기서 별도 검증하지 않은 참고로 기록한다. PR406 DRAFT·병합 금지.
+
+사전 등록 **b69de99b** 뒤 v128 연결 완료: 관련2파일 **8 passed /20.08s**.
+기준 c26e9afd pulse predictor와 현재 predictor를 고정18프로파일×512입자에서 비교해
+px/logw/vel 바이트 및 RNG state 동일. [검증](v128-local-verification.json).
