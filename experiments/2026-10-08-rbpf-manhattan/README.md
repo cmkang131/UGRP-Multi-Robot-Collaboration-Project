@@ -58,3 +58,5 @@ pycircstat/FilterPy 원문 코드를 열어 수식·라이선스 확인, 식 재
 raw `outputs/rbpf-manhattan-v1/` (기본 checkout 절대 경로), ENOSPC=HOST_ERROR.
 시험→커밋된 소스 고정→off/on 한 번씩→결과. PR405 DRAFT, 강제 push/reset/삭제 없음.
 다른 worktree·PR406·사용자 미추적4파일 보존. TensorBoard 생략 요청 유지.
+
+구현 전 수치 명세: periodic Gaussian 합은 prior 예측 표준편차 ±8σ 이상(최소 좌우2모드)을 포함하여 절단한다. 성능 관문이 아닌 계산용 꼬리 근사이며, 집중도가 없을 때의 1e−12 검사도 수치 영점 검사다.
