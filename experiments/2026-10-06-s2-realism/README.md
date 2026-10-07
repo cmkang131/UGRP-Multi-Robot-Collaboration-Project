@@ -3875,3 +3875,10 @@ AGENTS.md의 DEV 실행 소스는 “커밋·push한 브랜치 SHA”라는 규�
 종료 위치 오차·SIM 시간·행동 수는 N/A이며 성공/실패 물리 판정이나 TensorBoard 완료 이벤트를 만들지 않는다.
 남은 작업은 원격 보존 완료 후 잠금이 비었을 때 고정된 기준으로 seed1052 시작 구간1회 실행이다.
 25cm 통과 때만 full DEV 제안. 추가 물리 허가를 소모한 것으로 세지 않으며 자동 연구/운반은 하지 않는다.
+
+### s2v35 재개 — 사용자 원격 장애 예외 (2026-10-08)
+
+사용자/감독 지시로 push 대기 로컬 커밋에서 DEV 실행을 허용한다. 사전 기준은 그대로다.
+ba21e386 실행은 결과 dict의 schema/full_dev 중복 키로 backend 생성 **이전** HOST_ERROR.
+raw `outputs/s2-active-markov-ba21e386-s1052-start-managed/console.log` 보존, 물리0·잠금 해제.
+JSON 구성 병합 버그만 수정하고 동일 사전 등록의 시작 물리1회를 진행한다.

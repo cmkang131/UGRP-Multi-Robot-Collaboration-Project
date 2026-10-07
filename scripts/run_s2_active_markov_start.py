@@ -50,7 +50,7 @@ def run(out,source):
         scene.robot_transform=lambda xml,**kw:transform_xml(transform(xml,**kw),servo_stiffness='real_v1')
         scene.manifest['s2_active_start']=configuration
         return scene
-    result=dict(schema='ugrp.s2.active_markov_start.result.v1',**configuration,
+    result=dict(configuration, schema='ugrp.s2.active_markov_start.result.v1',
         status='HOST_ERROR',physical_success=None,model_calls=0,full_dev=False,transport_attempted=False)
     try:
         omit=('drive_profile','stagnation_watch','idle_robot_contacts','dev_grasp_policy','eval_camera_trace','servo_stiffness','camera_pitch')

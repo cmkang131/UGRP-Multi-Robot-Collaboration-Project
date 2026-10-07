@@ -111,3 +111,18 @@ def test_episode_has_hard_30s_budget_and_no_eval_feedback(monkeypatch):
         def on_command(self,*a):pass
     b=Backend();assert episode(b,Runtime())==pytest.approx(30.)
     assert b.samples==601 and all(a['kind']=='hold' for a in b.issued)
+
+
+def test_result_configuration_override():
+    # Config and result share schema/full_dev keys: avoid duplicate **kwargs.
+    import ast
+    from scripts import run_s2_active_markov_start as driver
+    source = Path(driver.__file__).read_text()
+    module = ast.parse(source)
+    run = next(n for n in module.body if isinstance(n, ast.FunctionDef) and n.name == 'run')
+    assignment = next(n for n in run.body if isinstance(n, ast.Assign)
+                      and any(isinstance(t, ast.Name) and t.id == 'result' for t in n.targets))
+    config = dict(schema='config', full_dev=False, options={'start_localization': 'active_markov_v1'})
+    result = eval(compile(ast.Expression(assignment.value), '<result>', 'eval'), {'configuration': config})
+    assert result['schema'] == 'ugrp.s2.active_markov_start.result.v1'
+    assert result['options'] == config['options'] and not result['full_dev']
