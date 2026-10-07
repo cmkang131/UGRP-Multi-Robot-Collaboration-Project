@@ -101,3 +101,32 @@ def test_private_update_and_floor_only_measurement_keeps_other_runtime_unchanged
         assert len(m.Measurement(np.empty((0,2)),[dict(kind='door')]))==1
     finally:
         for r in rs:r.close()
+
+
+def test_paired_jamb_detector_with_fixed_camera_geometry():
+    from harness import vision_loc_protocol as vp
+    from harness.vision_pose_source_final import measured_column_model
+    mp=vp.load_vis3()[0].mp;K=np.linalg.inv(mp.K_INV)
+    pitch=np.deg2rad(10)
+    rot=np.array([[0.,-np.sin(pitch),np.cos(pitch)],[-1.,0.,0.],[0.,-np.cos(pitch),-np.sin(pitch)]])
+    columns=np.arange(24,616,6)
+    cm=measured_column_model(mp,dict(origin_m=[0.,0.,.2],rotation=rot.tolist()),columns)
+    t=(2.-cm.q0[:,0])/cm.d[:,0];points=cm.floor_point(t)
+    opening=abs(points[:,1])<.25
+    t[opening]=(4.-cm.q0[opening,0])/cm.d[opening,0]
+    obs=NS(columns=columns,b_kind=np.ones(len(columns)),b_lo=cm.rows(t))
+    image=np.full((480,640,3),120,np.uint8)
+    # Draw precisely the observed near-return jambs, with no hidden map/GT input
+    # to the detector. Synthetic fixture geometry is independent of inference.
+    jumps=np.diff(np.linalg.norm(cm.floor_point(t)-cm.origin[:2],axis=1))
+    indices=[np.flatnonzero(jumps>.25)[0],np.flatnonzero(jumps<-.25)[0]+1]
+    for index in indices:
+        xy=cm.floor_point(t)[index]
+        uv=m.project(cm,np.array([[*xy,0.],[*xy,.4]]),K)
+        cv2.line(image,tuple(np.rint(uv[0]).astype(int)),tuple(np.rint(uv[1]).astype(int)),(255,255,255),2)
+    detected=m.door_features(image,cm,obs,K,np.ones((480,640),bool))
+    assert len(detected)==1
+    assert detected[0]['center'][0]==pytest.approx(2.)
+    assert abs(detected[0]['width']-.5)<.1
+    blank=np.full_like(image,120)
+    assert m.door_features(blank,cm,obs,K,np.ones((480,640),bool))==[]

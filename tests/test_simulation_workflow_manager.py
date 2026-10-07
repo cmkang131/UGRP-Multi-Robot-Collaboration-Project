@@ -291,9 +291,12 @@ raise SystemExit(3 if a.fail else 0)
             's2-active-markov-start-v1',
             's2-load-wall-v1',
             'zone-s2-realism-v130',
+            'zone-s2-realism-v131',
             'zone-s2-real-output-diag-v111',
             'zone-s2-real-output-diag-v112',
         )})
+        samples['zone-s2-realism-v132'] = ['--expected-source-sha', '0'*40, '--mode', 'start']
+        samples['zone-s2-realism-v133'] = ['--expected-source-sha', '0'*40, '--mode', 'full']
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
             plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}

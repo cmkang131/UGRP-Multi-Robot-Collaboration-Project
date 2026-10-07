@@ -4307,3 +4307,42 @@ S20–150/V≥35, 성분300px, 선40px·양쪽 지지80%, 바닥평면 직선 �
 측정 시점/정착/AMCL 이동 trigger·KLD 정책은 그대로 유지한다. 바닥 외형 필터가 벽 관측을 모두
 지우더라도 독립 색 경계는 측정 가능하게 빈 벽 packet을 유지하며, 가짜 벽 endpoint는 만들지 않는다.
 공용 camera_robot_port·다른 제어기는 수정하지 않는다. off는 이전 명령/record byte 동일 시험으로 고정한다.
+
+### v39 재생 결과 및 조건부 물리 사전 등록
+
+예측 소스`da3d2eb8`, [원본 판정](landmarks-result.json), raw
+`/Users/changmin/projects/ugrp/outputs/s2-landmarks-da3d2eb8-replay`.
+
+| 고정 녹화 지표 | off | on |
+|---|---:|---:|
+| s1052 시작 최종 위치오차 m | 3.089585 | **.069680** |
+| 정답25cm·15° 입자 질량 | .117527 | **.961074** |
+| 문 장면8.25초 GT/동일 오답 우도비 | 1.181879 | 175125.013651 |
+| v131 s1051 운반 RMSE m | 1.154243 | 1.180939 |
+| 내려놓기 직전 오차 m | 2.709823 | 2.778084 |
+| 운반 갱신 / 최장 공백 s | 19 /45 | 20 /33.25 |
+
+시작 색 경계23개/6갱신, 문 검출0개다. 큰 우도비 증가는 **색 경계**의 추가 Gaussian에서 나왔다.
+문 개구부가 보이는 것과 현재 검출기가 문을 측정하는 것은 다르다. 문 추가 기여는0으로 기록한다.
+운반은 색 경계90개/특징 포함 갱신25회(전체 녹화), 문0개다. off pose·입자 궤적은 v38과 동일.
+시작 기준PASS, 운반 RMSE는2.31% 악화이며 숨기지 않는다. 운반 개선은 사전 필수 게이트가 아니므로
+사용자 순서대로 시작 물리만 먼저 허용한다. 결과 후 검출/우도/성공 문턱 변경0.
+
+[물리 등록](landmarks-physical-registration.json): origin/main과 열린15PR 참조의 최대131/7.24.0을
+[예약표](landmarks-reservation.json)에 확인했다. 시작`zone-s2-realism-v132 /7.25.0`,
+조건부 full`zone-s2-realism-v133 /7.26.0`; 각각 seed1052/1051 1회만 예약한다.
+시작은 재생과 같은 augmented/KLD + 보정된 일반 정지 wrist scan(추가 active-Markov 회전OFF)이다.
+마지막 SEARCH 관측 뒤 첫 nonzero 주행 명령 또는 pickup 탐색 전환을 **발행하기 전** 종료,
+상한30SIM초. 종료 조건은 명령/제어 상태만 보고 GT는 종료 후25cm 평가에만 쓴다.
+시작 물리가25cm 이내이고 정상 종료한 원본result 해시가 있어야 같은 소스의 full이 열린다.
+full은 v131 옵션 + best-cluster/명시 AMCL/새랜드마크만, 전역KLD·새 시작prior 추가0.
+freeze ON은 S2 단독 DEV 한정이고 S3·짝 운반·본 연구/정식 사전등록 코호트에는 금지한다.
+새 full은 해당 게이트 통과 뒤에만 실행하며 source/options/hash는 result에 보존한다.
+
+재생 전달: TensorBoard `1008-s2-landmarks-v39` 4뷰/32수치를 원본→event→live API로 대조했다
+([검증](landmarks-delivery.json)); UI 화면 검증은 하지 않았다. raw의
+`start-landmark-observations.png`는 own RGB 위 후보를 표시한다. 일부 벽-바닥 선도 색 경계 후보에
+남아 있으므로 23개는 정답 확인된 랜드마크 개수가 아닌 **검출 후보 개수**다. 문 미검출·운반 악화와 함께
+미검증 한계로 보존하고, 재생 이후 검출 파라미터는 바꾸지 않았다.
+freeze 공통 검증에는 새 start-only DEV의 명시적 사용자 승인·S2/solo/DEV·옵션 조합만 허용하는
+좁은 분기를 추가했다. 사전 등록 사실은 true로 보존하며 본 연구 제한을 우회하지 않는다.
