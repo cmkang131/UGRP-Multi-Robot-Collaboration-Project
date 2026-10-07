@@ -2879,3 +2879,32 @@ wall/SIM1.315929를 후보 결과에 승계하지 않는다. offline wall147.943
 사용자 수치 대조 범위로 브라우저 UI 확인은 주장하지 않는다. 기존 viewer PID52016/logdir와
 다른 view 키/PR/worktree/process는 유지했다. session stopped, 물리 잠금 미획득·status=null.
 PR406 DRAFT·병합 금지. 재튜닝/추가 후보/추가 재생 없이 종료한다.
+
+## s2v26 / v127 — 사전 기준 대비 의도적 이탈 (관리자 승인, 2026-10-07)
+
+**s2v25 재생 FAIL은 그대로 유지한다.** 갱신27→23·공백33.85→43.50초는 등록 기준
+실패다. 관리자는 고정 명령 열린 루프에서 추정 자세가 바뀌어도 다음 행동이 바뀌지 않는
+한계가 갱신 저하에 기여했을 가능성을 제시하고 **닫힌 루프 S2 full DEV 딱1회**를 승인했다.
+가능성은 검증할 가설이지 확정 원인이 아니다. 이번1회에만 기존 전 기준 통과 요구에서
+의도적으로 이탈하며 재생 결과를 소급 PASS로 바꾸지 않는다.
+[기계 판독 사전 등록](registration-v127.json).
+
+**새 seed1052 / P1-2 → door_1 → B/place / zone-s2-realism-v127 / workflow7.20.0**.
+main+열린15PR의 최대126/7.19.0과 seed 미사용을 확인했다
+([번호](v127-number-reservation.json), [seed](v127-seed-audit.json)).
+s1051의25개 채택 옵션 + `slip_detection=slip_detect_v1`만 켠다. freeze ON,
+nav2_observed_v1·고정 바닥 외형·실물 운반/blind 파지·무하중+sag·펄스 보정·관측 격리·
+RGB 정체 기록·dev_light 유지. `stall_recovery=off`, 이전 EKF/잡음/하중 재보정 off.
+slip 구현과 문턱/공분산은 adab260b에서 바꾸지 않는다. 옵션 기본 off, 새 번들 명시 on.
+
+lifted/inside, 운반 informative 갱신·공백, GT 평가 RMSE·실제 하단 가시율·B 거리,
+would-stop 목록, wall/SIM을 s1051과 나란히 보고한다. 성공률·인과 개선·연구 확증으로 합산하지 않는다.
+옆 펄스는 종료+정지 꼬리 horizon의 예측/실제 이동 합계비와 펄스별 분포를
+하중/profile/slip 대체 여부로 평가한다. 실제0은 별도 보고. PR405 egomap15
+1.54/0.69m(약2.23배)는 사용자 제공 참고이며 보정/합산에 쓰지 않는다. GT는 종료 후 평가만.
+
+시험 통과→이 문서/seed 먼저 커밋→실행 연결 시험/소스 커밋·push→lock acquire→
+ugrp_session 단일 실행. SIM900초·wall10800초 cap. 불확실/보수 가드는 기록만;
+실제 낙하·집게 이탈·기울기·오류·eval 정체120초/1cm에서 중단한다.
+ENOSPC는 HOST_ERROR·부분raw 보존. 어떤 결과든1회 뒤 종료, 추가 튜닝/재실행 없음.
+PR406 DRAFT·병합 금지. 시뮬레이션은 아직 시작하지 않았다.
