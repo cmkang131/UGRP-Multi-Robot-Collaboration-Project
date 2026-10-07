@@ -5,8 +5,22 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT))
 from harness.self_pulse_odom import PulseOdometry,MODEL_SHA256
+from harness.self_odom_grid import transform
 RAW=Path('/Users/changmin/projects/ugrp/outputs/active-wall-map-v1')
 def rows(p):return [json.loads(x) for x in p.read_text().splitlines()]
+def motion_only(case):
+ p=RAW/case;commands=sorted(rows(p/'robots/r3/commands.jsonl'),key=lambda x:x['t'])
+ driver=PulseOdometry(commands[0]['t']);cursor=0;pred=[];sigma=[]
+ stamps=[r['t'] for r in rows(p/'own-controller.jsonl')]
+ for t in stamps:
+  while cursor<len(commands) and commands[cursor]['t']<t-1e-8:driver.command(commands[cursor]);cursor+=1
+  driver.advance(t);pred.append(driver.pose);sigma.append(np.sqrt(np.linalg.eigvalsh(driver.covariance[:2,:2]).max()))
+ # GT is read only after command prediction is complete; no refit.
+ truth={round(r['t'],6):r for r in rows(p/'eval_only/trajectory.jsonl')};start=truth[min(truth)]
+ world=transform(np.asarray(pred)[:,:2],[*start['robot_xyz_m'][:2],start['robot_yaw_rad']])
+ error=np.linalg.norm(world-np.array([truth[round(t,6)]['robot_xyz_m'][:2] for t in stamps]),axis=1)
+ return dict(n=len(stamps),rmse_m=float(np.sqrt(np.mean(error**2))),end_error_m=float(error[-1]),
+             end_sigma_xy_m=float(sigma[-1]),over_3sigma=int((error>3*np.array(sigma)).sum()),qualification='Command-only v122 mean and covariance; GT evaluation only, no fit.')
 def audit(case):
  p=RAW/case; events=json.loads((p/'decisions.json').read_text()); commands=sorted(rows(p/'robots/r3/commands.jsonl'),key=lambda x:x['t'])
  driver=PulseOdometry(commands[0]['t']); cursor=0; prev=np.zeros(3); ancestry=np.arange(100); res=[]; stationary=[]; first_one=None; sig=[]; q=np.zeros(3)
@@ -28,6 +42,6 @@ def audit(case):
  diag=json.loads((ROOT/f'experiments/2026-10-07-active-wall-map/results/{case}-diagnostics.json').read_text())
  return dict(case=case,events=len(events),matches=len(stationary),resamples=len(res),stationary_matches=sum(x['still'] for x in stationary),stationary_resamples=sum(x['still'] and x['resampled'] for x in stationary),first_single_ancestor_t=first_one,last_ancestors=len(set(ancestry)),resample_events=res,sigma_xy_first=sig[0],sigma_xy_last=sig[-1],end_neff=1/np.square(final['weights']).sum(),end_unique_poses_1mm=len(np.unique(np.round(np.array(final['particle_poses'])[:,:2],3),axis=0)),command_noise_variance_sum=q.tolist(),motion_sha256=MODEL_SHA256,previous_diagnostic=diag['online_uncertainty'],hashes={name:hashlib.sha256((p/name).read_bytes()).hexdigest() for name in ('decisions.json','frontend-grid.json','robots/r3/commands.jsonl')})
 if __name__=='__main__':
- report={c:audit(c) for c in ['photo','speckle']}
+ report={c:{**audit(c),'motion_only':motion_only(c)} for c in ['photo','speckle']}
  out=Path(__file__).resolve().parents[1]/'results/egomap22-audit.json';out.write_text(json.dumps(report,indent=2,default=lambda x:x.item())+'\n')
  for c,r in report.items():print(c,{k:v for k,v in r.items() if k not in ('resample_events','hashes','previous_diagnostic')})

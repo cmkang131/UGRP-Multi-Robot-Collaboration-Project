@@ -26,9 +26,9 @@ photo [.000168,.000679,.005537], speckle [.000033,.000124,.001000] (m²,m²,rad�
 `rbpf_update=gmapping_motion_v1`, 기본 `off`.
 [Grisetti et al. TRO2007](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa13/optreadings/GrisettiStachnissBurgard_gMapping_T-RO2006.pdf)
 §III-C의 Neff<N/2 선택적 재표본화·기존 improved proposal은 유지한다.
-[OpenSLAM processScan](https://github.com/ros-perception/openslam_gmapping/blob/master/gridfastslam/gridslamprocessor.cpp#L338-L366)의
+[OpenSLAM processScan](https://github.com/ros-perception/openslam_gmapping/blob/c716f0192131029b31a49554f8c11353d29819a5/gridfastslam/gridslamprocessor.cpp#L338-L366)의
 누적 병진/절대 회전 및 first-scan 조건을 적용한다.
-[ROS slam_gmapping 기본값](https://github.com/ros-perception/slam_gmapping/blob/melodic-devel/gmapping/src/slam_gmapping.cpp#L213-L220)
+[ROS slam_gmapping 기본값](https://github.com/ros-perception/slam_gmapping/blob/eec86068ceb92ebc433b435fe482db14c562f268/gmapping/src/slam_gmapping.cpp#L213-L220)
 그대로 **linearUpdate=1.0m, angularUpdate=.5rad, temporalUpdate=-1, resampleThreshold=.5**.
 이동 정보만 자기 명령 DR로 대체한다. 표준식 재구현, 원본 코드 복사/새 의존성 없음
 (OpenSLAM BSD 계열, ROS wrapper BSD-3). 원문은 이번에 열어 확인했다.
@@ -81,3 +81,48 @@ on 처리 scan7/4, 보류115/681. 기존 speckle 마지막 저장 scan1개는 �
 최종 gate/active/workflow **31시험 통과**(중복 합산 아님). 정지 반복 불변·off bytes·
 active forecast 복사본 격리를 확인했다. 여유34.22GiB, 잠금 null/S2 물리 프로세스 없음 확인.
 기존 TensorBoard viewer는 건드리지 않는다. 디스크 보고의 잘못된 section 이름1회는 `fs`로 수정했다.
+
+## 결과 — 한 번의 기준선 완료, 관문0/1
+
+사전 등록 `29ae790f`, 구현/물리 소스 `85554a9605ad8b89cab36b1e40d06fcef136d33d`.
+180 SIM s/901 RGB, 최종 graph 저장 완료. wall454.18s는 취득 기록이며 속도 비교가 아니다.
+초기 CLI 파일 직접 실행은 `sim` import 오류로 **잠금·물리 생성 전** 종료됐다.
+모듈 실행으로 고친 뒤 실제 물리1회. 모델/freeze0, 자기 세션 종료·잠금 null 확인.
+
+|tape·SEARCH·motion gate on|결과 / 분모|
+|---|---|
+|실제 이동 / footprint union|7.379m / 2.313m²|
+|가시 벽 범위|137/329표본=41.64%, 길이 근사13.7m|
+|영역 P / R|14/17=82.35% / 20/137=14.60%|
+|전체 지도 P / R|14/25=56.00% / 20/329=6.08%|
+|벽 / 경로 RMSE, 종료 XY|.3909m / 1.6669m (891자세), 1.7415m|
+|자기 B 첫 확인 / 실제 도착|시작 후40.4s / 없음|
+|벽 접촉 / 기존 오통로 계획 지표|0 / 10건 (문 후보727프레임, feasible163행, 경로 근접44행)|
+|RBPF 처리 / 보류 / 삽입|55 / 836 / 7프레임|
+|재표본 / 남은 초기 조상 / 종료 σXY|21 / 1 / .00815m|
+|능동 재방문 발동 / 수락 loop|0 / 0|
+
+**영역 precision 통과만으로 성공이 아니다.** 17개 평가 셀·삽입7프레임뿐이고 recall,
+벽/경로RMSE와 오통로 계획 기준이 미달이다. 오통로10건은 GT 벽과 겹친 후보 경로를 세는
+기존 대리지표이며 실제 충돌10건을 뜻하지 않는다. 가시 분모는 egomap22와 같은 FOV/거리/
+벽-only 가림(물체·자기 가림 미반영). 전체 지표도 함께 보존했다.
+이 한 번은 요청한 고정 조건의 DEV 기준선이며 egomap22 대비 개선의 인과 비교가 아니다.
+
+잔여 핵심: **21회 재표본 모두 low_overlap으로 정합을 거부한 관측에서 발생**했다.
+기존 motion fallback도 sensor likelihood로 가중하는 경로를 유지했기 때문에 이동 gate만으로
+오측정/모델 불일치를 해결하지 못했다. t38.5에 초기 조상1개, 종료 오차1.74m에 σ .008m.
+Neff 문턱·모션 분산을 임의로 늘리지 않았고 추가 물리/후속 튜닝을 하지 않는다.
+
+모션만 별도 평가한 egomap22 photo는 DR RMSE .6403m/종료1.0062m,
+종료 σ .1926m·3σ 초과263/459였다. speckle은 .0968m/.1019m,
+σ .1064m·3σ 초과0/740이다. 즉 photo에는 명령 모션 모델의 불일치도 있고,
+speckle은 관측 갱신 후 과소 불확실성이 더 두드러진다. GT 평가만, 잡음 fitting0.
+[재현 진단](results/egomap22-audit.json), [기준선 진단](results/baseline-diagnostics.json).
+
+![GT 회색 벽·실제/추정 경로·비확률 TSDF 지원량](figures/baseline.png)
+
+시험 최종31개 통과. off byte/RNG/정지 gate/peer/복사 격리·원본 workflow 계획 검사.
+예전 PR405 전체 CI의 VIS3/역사적 pin 실패와 로컬 관련 시험 통과는 별개이며 DRAFT 유지.
+[확인한 원본 commit](results/source-references.json), [raw 해시](results/raw-manifest.json):
+943파일122,535,647bytes, `outputs/rbpf-motion-gate-v1/` 로컬 보존(원격 raw 백업 아님).
+코드·작은 결과·그림만 커밋한다. 새 라이브러리/venv/Drive/TensorBoard 변환 없음.
