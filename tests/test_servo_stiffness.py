@@ -64,3 +64,21 @@ def test_schedule_evaluation_return_cannot_change_actions(tmp_path):
     moves=[a for a in Backend.moves if a['kind']=='mecanum']
     assert len(moves)==8 and [a['left'] for a in moves]==[.65]*4+[-.65]*4
     assert len([a for i in range(551) for a in run.static_actions(i) if a['kind']=='mecanum'])==2
+
+
+def test_default_scene_wrapper_bytes_and_frozen_explore_vocabulary():
+    pytest.importorskip('mujoco')
+    from sim import wall_parallax_strafe as old
+    from sim import wall_servo_stiffness as new
+    from harness.self_pulse_odom import model,profile_key
+    bundle=dict(case='stiff-north',spawn=run.old.CASES['strafe-north']['spawn'],
+        map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_noslip_v1')
+    a,b=old.make_scene(bundle,15101),new.make_scene(bundle,15101)
+    assert a.config==b.config
+    source=Path('/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-north-host-retry1/scene.xml')
+    if source.exists():
+        text=source.read_text()
+        assert a.transform(text).encode()==b.transform(text).encode()
+    moves=[r for i in range(301) for r in run.explore_actions(i) if r['kind']=='mecanum']
+    assert len(moves)==12
+    assert all(profile_key(action,False) in model()['profiles'] for action in moves)

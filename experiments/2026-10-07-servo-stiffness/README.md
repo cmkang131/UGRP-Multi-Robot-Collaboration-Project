@@ -1,4 +1,4 @@
-# egomap19 — 시뮬 서보 강성과 v122 이동 모델 (사전 등록)
+# egomap19 — 시뮬 서보 강성과 v122 이동 모델
 
 2026-10-07 사용자 변경 지시: 명령각에서 처짐을 보정하는 `servo_sag_v1` 작업을 취소한다.
 취소 시 source 변경/새 미커밋 파일0, 기존 사용자 미추적4파일 보존. 사용자 판단은
@@ -128,3 +128,78 @@ RBPF100+positive_depth+pose_graph+기존 inverse_sensor_v1, source 사전 commit
 기존 `SelfWallMemory`는 그대로 두고 additive `self_wall_memory_motion.SelfWallMemory`에서
 `motion_model=s2_pulse_v122`만 선택 연결한다. off snapshot/pose/covariance bytes 동일,
 100입자 전파 평균/공분산 시험 통과. 외부 서보 보정 소프트웨어 추가0.
+
+## 옵션과 적용 범위
+
+|옵션|기본|적용 위치·범위|
+|---|---|---|
+|`servo_stiffness=real_v1`|off|`sim/servo_stiffness.py` XML 변환, 전용 `wall_servo_stiffness` Scene의 r3 회전 서보4개. off XML/장면 bytes 동일|
+|`motion_model=s2_pulse_v122`|off|`harness/self_pulse_odom.py` 명령 적분, additive `self_wall_memory_motion.SelfWallMemory`. 메모리에서 on은 RBPF와 조합; off는 기존 메모리/DR bytes 동일|
+|`camera_pose=servo_fk_v1`|off|기존 옵션 보존. 이번 비교에서는 기준 비증가 관문 실패로 지도에 선택하지 않음|
+|`wall_texture=tape_v1`|off|기존 무늬 고정, 새 북/남/탐색 녹화에서만 on|
+|지도 조합|기존 기본 off 유지|`odom_grid_v1` + `own_map_rbpf_v1`(100) + `positive_depth_v1` + `inverse_sensor_v1` + `own_submap_v1`|
+
+공용 S2 builder나 기존 `SelfWallMemory`를 교체하지 않는다. B는 지원하지 않는 명령을
+오류로 드러내는 제한된 finite-pulse 모델이며 임의 연속 구동의 일반 모션 모델이 아니다.
+설치/venv 변경0. [제조사·MuJoCo·v122 출처](REFERENCES.md), [복사 모델 SHA](copied-source.json).
+
+## v122 이동량 평가 (예측 봉인 뒤, 재적합 없음)
+
+동일89 eligible 프레임의 자기 횡축 범위와 경로 오차. GT는 채점에만 사용한다.
+왕복이라 종료 오차만 보면 중간의 큰 오차가 가려져 전체 경로 P90도 함께 기록한다.
+
+|새 강성 녹화|M1 폭 / 실제 폭 m (비율)|v122 폭 / 실제 폭 m (비율)|경로 P90 M1 → v122 m|
+|---|---|---|---|
+|북|1.53857 / .68889 (2.233배)|.67387 / .68889 (.978배)|.90452 → .01305|
+|남|1.57103 / .68875 (2.281배)|.67374 / .68875 (.978배)|.87566 → .01342|
+
+[분포·종료/yaw 오차](results/motion-diagnostic.json). #406의 s1052 수치와 별도 표본이다.
+v122는 이동량과 수락 시차점 오차를 개선했지만 주석 프레임에서 검출0이라는 시차 실패를 해결하지 못했다.
+
+## 조건부 짧은 지도 결과
+
+실행·추정 소스 `d3066419`, `stiff-explore` seed19103,30초(+reset1.3초),301RGB.
+정적·하중 관문과 바닥 투영2/2 통과 뒤 사전 등록한 경로1개만 취득했다.
+원 v3 무하중 보정표+바닥 검출+v122 및 위 지도 조합, 다른 로봇 지도/GT 추정 입력0.
+예측 원장·지도·자세의 해시를 봉인한 뒤 GT를 읽어 평가했다.
+
+|지표|결과|
+|---|---:|
+|삽입 scan / 점유 셀|147 /24|
+|지도 precision (벽 .15m 이내)|62.5% (15/24)|
+|정확한 벽 셀 precision|50.0%|
+|전체 벽 덮임|8.21%|
+|벽 거리 RMSE|.48171m|
+|경로 위치 오차 중앙 /P90 /RMSE|.13412 /.16653 /.13071m|
+|종료 위치 /yaw 오차|.13671m /.89324°|
+|루프 폐쇄 수락|0|
+
+루프 후보 제외: member_scan284·temporal_separation597. 나머지 거부1,324건은
+ambiguous_modes887·unobservable414·insufficient_points16·refinement_failed6·search_boundary1.
+좁은 관측과 잘못된 벽 셀이 남았으며 graph의 정확도 개선을 주장하지 않는다.
+RBPF의 경로 오차와 위 순수 v122 왕복 진단은 **서로 다른 경로/추정기**이므로 합산하지 않는다.
+이는 사전 작성한 짧은 경로의 DEV 지도이며 자율 탐색·전체 경기장 지도·S2 운반·실물 성공이 아니다.
+기존 §17/§19 지도 성공을 새로 선언하지 않고, 여기서 추가 튜닝을 멈춘다.
+
+![실제 벽(회색), 자기 지도(점유 믿음 음영), 추정/정답 경로](figures/short-map.png)
+
+출발 자세의 GT 변환은 그림/채점 정렬에만 사용했다. 파란 진하기는 신뢰도 가중 log-odds의
+점유 믿음이며 통계적으로 보정된 정답 확률이 아니다. [원 지표·거부 사유](results/short-map.json).
+
+## 검증·보존·남은 한계
+
+- 최종 관련3파일 **16 passed (2.15s)**: 강성 off XML/scene 동일, 기존 질량/접촉/타 로봇 불변,
+  명령 일정에 평가값 비사용, v122 평균/공분산·지원 명령·off 메모리 골든·100입자 전파·FK 규약.
+  전체 CI/실물 검증을 대신하지 않는다. 검증 명령:
+  `python -m pytest -q tests/test_servo_stiffness.py tests/test_self_pulse_odom.py tests/test_camera_frame_conventions.py`.
+- 최종 무결성 검사는 `code/closeout.py`. off 재생182행 bytes·동결17파일·8예측 receipt·지도 원장
+  해시·5녹화 artifact hashes·관리 manifest 소스/입력 불변·사용자 미추적4파일 보존 확인.
+  #406 `d4fee717`의 모델 JSON도 복사 원본과 같은 SHA이며 #406 파일 수정0.
+- 정적2+횡이동2+짧은 탐색1, 총 **182.5 SIM초**, 모델0·freeze0·자기 세션 종료·잠금 해제.
+  [실행 SHA/환경/부하/관리 기록](results/execution.json). wall 시간은 운영 기록이며 속도 비교가 아니다.
+- raw **1,968파일/55,684,094bytes**, [전체 해시 manifest](results/raw-manifest.json).
+  raw는 위 로컬 outputs에 보존하며 원격 백업이 아니다. Git에는 작은 결과·그림·소스만 보존한다.
+  TensorBoard는 사용자 생략 지시 유지. PR405 DRAFT·병합하지 않음.
+- LD의 0.3°는 위치 정밀도이며 **LFD deadband는 미확인**이다. `real_v1` 이름은 선택자일 뿐
+  실물 강성 일치 보증이 아니다. 실물 라벨/전압과 하중별 각도 오차 측정이 남았다.
+  S2에서 켜기 전 위 재보정 항목을 수행해야 하며 기존 S2 결과를 승계하지 않는다.
