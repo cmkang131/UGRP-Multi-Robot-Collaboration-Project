@@ -41,6 +41,8 @@ TEST_PATTERNS = (
     "tests/test_arena_wall_map.py",
     "tests/test_self_pulse_odom.py",
     "tests/test_self_pulse_rotation.py",
+    "tests/test_self_wall_segments.py",
+    "tests/test_active_wall_rotleft.py",
     "tests/test_camera_projection_audit.py",
     "tests/test_s2_projection_comparison.py",
     "tests/test_online_camera_pitch.py",

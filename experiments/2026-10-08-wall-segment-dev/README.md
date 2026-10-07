@@ -56,10 +56,20 @@ TensorBoard 생략 유지, Drive0. 단계마다 supervisor 확인.
 
 ## 출처
 
-- [Nguyen et al. 2005, IROS, DOI](https://doi.org/10.1109/IROS.2005.1545232): 비교 기준.
+- [Nguyen et al. 2005, IROS, DOI](https://doi.org/10.1109/IROS.2005.1545234): 비교 기준.
   세부 구현은 아래 공개 코드로 확인하며 이 논문의 수치를 우리 결과로 인용하지 않는다.
 - [공개 구현·라이선스](https://github.com/kam3k/laser_line_extraction/tree/34de3e9d7560c04bec29e97f07339407c0bca6a6):
   `src/line_extraction.cpp` 21–55,150–244,246–355 및 `src/line.cpp` 155–244.
 - [CI의 SLAM 적용, Julier & Uhlmann 2007](https://doi.org/10.1016/j.robot.2006.06.011):
   알려지지 않은 상관관계의 공분산 결합. ω=.5는 유효한 고정 convex weight이며 적합하지 않는다.
 - Manhattan 축 계산은 기존 `harness/rbpf_manhattan.py:19–35`의4중 원형평균 재사용.
+
+구현 연결: `harness.self_wall_memory_segments.SelfWallMemory(wall_map="segments_v1", ...)`의
+`observe_wall(..., wall_points=contact_points(rgb, servo))`/`snapshot()`에서 사용할 수 있다.
+기본off는 기존 memory에 위임하며, 이번 물리 실행기는 이 새 표현을 사용하지 않는다.
+원본 C++ iterator의 끝점 누락은 Python inclusive corner split으로 옮겼고,
+자세를 공유하는 프레임의 상관관계·카메라 잡음·extent gap 처리는
+[이식 차이](../../third_party/wall_segments/NOTICE.md)에 명시했다.
+문헌 DOI는 Crossref 제목 대조로 확인했다. Nguyen 원문 전문은 이 환경에서 열지 못했고
+알고리즘 세부/수치는 공개 코드로 확인했다. 초기 단위시험의 NumPy 2D cross API 오류와
+빈 관측 fixture 누락은 결과 개봉 전에 수정했으며, 이후 관련8시험 통과.
