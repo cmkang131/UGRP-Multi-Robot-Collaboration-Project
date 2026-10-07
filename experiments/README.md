@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-07 s4 마지막 개발·새32 확인](2026-10-07-mapfree-s4-final/README.md): PR #409. B/경로 중심은 free, 거부는0.1m 벽 경계2셀의 footprint 교차. 원 Nav2 bringup0.05m를 기본-off `public_ros_v5`로 적용, 개발 참 B6/6·거짓0 뒤 미개봉 oracle static32/32·충돌0·거짓0. frontier/현실 잡음은 미실행, 추가 개발 반복 종료.
+
 - [2026-10-07 s4·s5 정지 기하·원본 footprint 검사](2026-10-07-mapfree-stop-geometry/README.md): PR #409. 통로0.50m/최대 padded 회전폭0.3688m, 정지 costmap·실제 벽·footprint 그림2장. Nav2 edge 검사만 기본-off `public_ros_v4`로 적용, 기존 개발 유효 B2/6→4/6·거짓0. s5 회복·s4 동일 소진으로 중단, 새32 미개봉.
 
 - [2026-10-07 navigation 영속 장애물·진행 감시 v3](2026-10-07-mapfree-navigation-persistence/README.md): 원본 줄 대조와 opt-in 포트. 기존 실패10 B0→2(유효2/6), 접촉4·회복 소진4로 개발 관문 실패. 새32 미개봉, 튜닝 중단, #409 DRAFT.

@@ -163,3 +163,12 @@ PYTHONPATH=outputs/self-map-plot-deps /Users/changmin/projects/ugrp/.venv-sim-wo
 ```
 
 위 재현 명령은 설명이며 두 번째 개발 실행을 하지 않았다. 원 실행/진단 디렉터리가 있으면 중단한다.
+
+
+## 후속 마지막 개발 반복 (explore7)
+
+[원인 특정·그림·v5·새32 결과](../2026-10-07-mapfree-s4-final/README.md).
+s4 B/경로 중심89개는 free였고, 거부는 실제 벽 일부를 포함한0.1m 경계2셀과 footprint의 교차였다.
+frontier/정적 B 종료는 원본과 같아 유지하고, Nav2 bringup0.05m를 기본-off `public_ros_v5`로 적용했다.
+개발 유효 B4/6→6/6·거짓0·abort0, 이후 미개봉 I/J32 oracle static **32/32·거짓0·충돌0**.
+이전 v4 결과/코드는 보존했다. 이 트랙의 마지막 개발 반복이며 frontier/현실 잡음 성능은 미검증이다.
