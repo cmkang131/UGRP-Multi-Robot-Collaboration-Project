@@ -99,3 +99,72 @@ NavFn 원본/ROS wrapper를 확인하고 원본 public propagation 함수를 전
 [freeze.json](freeze.json)은 실행 소스/모든 재사용 원본·센서·B v3의 해시, 고정 설정,
 새 시작점, 개발 결과 해시를 묶는다. 변경 모듈 시험28개 통과(공개 코어10 + 기존v1/v2 18),
 v1/off golden 동일. 지금부터 새 G/H×4701/4702 확인32건의 (a)만 한 번 실행한다.
+
+## 5. 확인 결과: 선행 관문 실패, (b)(c) 미실행
+
+사전 등록 `3a8dfbe1` → 공개 코어 이식 `1482a5ce` → 개발 종료/고정 `8416b6b1` →
+G/H×4701/4702 새 확인32건의 **(a) oracle static만 한 번** 실행했다. 재튜닝/확인 재실행0.
+기존64쌍과 중복0. 아래 세 행은 서로 다른 코호트이므로 합산하거나 같은 조건의 향상으로 해석하지 않는다.
+
+| 코호트 / 실행 | 참/거짓 B | coverage 중앙 | 주행 충돌 | 시작 HOST_SETUP_ERROR | budget | 잘못된 문/발행 시도 | 참 B 거리/시간 중앙 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| 이전 E/F32 / oracle static v2 (보존 결과) | 8/0 | 25.34% | 8 | 0 | 16 | 0/12 | 6.061 m / 263 s |
+| 이미 본 A/C16 개발 / public oracle static | 13/0 | 47.22% | 1 | 0 | 2 | 0/26 | 2.760 m / 71 s |
+| 새 G/H32 확인 / public oracle static | **22/0** | **30.01%** | **2** | **4** | **4** | **0/24** | **2.760 m / 71 s** |
+
+**(a) 22/32=68.75% <30/32: 실패.** 시작 충돌4건을 제외하지 않는다. 확인 종료 pose 오차 최대
+5.78e-15 m이며 B 가시498/검출498 프레임이다. 이 oracle 결과를 센서 recall 개선으로 해석하지 않는다.
+개발 종료 pose 오차 최대 .027 m는 s5/C의 충돌 latch 뒤 남은 정착 시간에 command DR만 진행한 기록이며,
+추가 자세 잡음이나 GT 보정이 아니다. 원 평가기 구현을 고치지 않고 보존했다.
+
+(b) oracle frontier 및 (c) 현실 잡음 static/frontier는 **실행하지 않았다**. 실측 결과를 넣은 gate 함수도
+`ORACLE_STATIC_GATE_FAILED_STOP_B_C`로 거부하는 것을 확인했다. 기존 성공 기준5개는 변경하지 않았으며
+새 탐색 비교는 선행 관문 차단으로 **미평가**다. 공개 frontier 단위시험 통과를 임무 성능으로 보고하지 않는다.
+
+### 실패10건 분해 (seed2개는 oracle에서 동일 결과)
+
+| 설정 | 건수 | 관측된 사실 |
+|---|---:|---|
+| s1/H, s4/H | 4 | 등록 시작 footprint가 `beam_1`과 겹침. t=0 HOST_SETUP_ERROR, 대체/제외 안 함 |
+| s4/G | 2 | 초기 경로 존재, 200프레임 경로 존재. 각600 s budget, 충돌 예측 거부1640 tick, B 가시0. 끝 (1.981,1.035,.493), 실제 접촉0 |
+| s5/G | 2 | 초기 경로 존재, 뒤169프레임 no_path. 각600 s budget, 충돌 예측 거부1687 tick. B170/170검출이나 3회 이상 track의 병진 최대8.28e-14 m로 .05 m 조건 미달 |
+| s8/H | 2 | t=2.7 s `can_1` 실제 사각 접촉, B 가시0. 숨은 물체 위치를 actor에 주지 않음 |
+
+공개 글로벌 경로/사각 로컬 충돌 검사/좁은 시야 입력의 통합은 아직 평가기 자격을 통과하지 못했다.
+위치/검출 잡음0에서도 경로 정지와 관측 전 물체 접촉이 남는다. 이번에는 설정·센서·시작점을
+다시 고치지 않고 중단한다. 이전 구 녹화 벽 통계와 실측이 아닌 v7 과정 잡음의 한계도 그대로다.
+**현행 v7·카메라 v3 실녹화 재검증 필요**, 2D 성공도 물리/실물 성공이 아니다.
+
+![공개 코어 새 확인: s1/G 확인과 s4/G 정지](results/paths.png)
+
+[48건 전체 표](results/tables.md) · [분리 요약/선행 판정](results/summary.json) ·
+[확인 funnel](results/confirmation-funnel.json) · [실패별 정답 접촉/끝 자세(평가 전용)](results/failure-details.json).
+
+## 6. 옵션·재현·보존
+
+| 옵션/경로 | 기본/동작 |
+|---|---|
+| `navigation=off` | 기본. `navigation_output`은 기존 객체/bytes 그대로 반환. 기존 v1/v2 runner와 API 불변 |
+| `navigation=public_ros_v1` | 명시적으로 새 2D runner에서 선택; native NavFn + native frontier + pursuit/own-command adapter |
+| `--stage a` | oracle static, 확인 true≥30/32·false0 선행 관문 |
+| `--stage b --gate-a …` | 동일 소스/코호트의 통과한 a raw 필요; 이번 결과로는 실행 거부 |
+| `--stage c --gate-a … --gate-b …` | a 통과 및 b 완료 raw 필요; 이번 미실행 |
+| `--cohort development/confirmation` | 기존 A/C16 / 새 G/H32. 확인은 `--freeze` 필수 |
+| B / 문 / 운동 / 센서 | B `floor_color_v3`, 문 `own_gap_v1`, 기존 M1/v7 구조 사전·실측 검출 표본 보존 |
+
+```sh
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-mapfree-public-navigation/code/run_public.py \
+  --navigation public_ros_v1 --stage a --cohort confirmation \
+  --freeze experiments/2026-10-07-mapfree-public-navigation/freeze.json \
+  --output outputs/mapfree-public-navigation-confirmation-a-NEW
+```
+
+위는 재현 설명이며 이번 확인을 다시 실행하지 않았다. 원본 위치는
+`outputs/mapfree-public-navigation-{development-v1,confirmation-a-v1}`이다. 원본341파일(68,341,798 bytes)을
+[artifacts.json](results/artifacts.json)의 경로/크기/SHA256과 재대조했다. 로컬 보존이며 원격 raw 백업이 아니다.
+실행 소스/원본 공개 코드/B v3 봉인/사용자 미추적4파일 불변을 [verification.json](results/verification.json)에 기록했다.
+그림은 1 MiB 미만, 실험 전체 5 MiB 미만. 기존 결과와 원시 자료 삭제/덮어쓰기0.
+
+새 venv/로컬 설치0. upstream pursuit의 import에는 matplotlib가 필요하여 기존 로컬 plot dependency
+3.11.2를 재사용했고, 깨끗한 GitHub CI에서도 같은 원본을 import하도록 `requirements-test.txt`에
+`matplotlib==3.11.2`를 선언했다. 패키지 의존성만 추가했으며 확인 후 runtime 소스/설정 변경0이다.
