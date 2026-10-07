@@ -1,0 +1,55 @@
+{
+  "option": "floor_appearance_ulrich_v1",
+  "configuration": {
+    "process_size": [
+      320,
+      260
+    ],
+    "gaussian_kernel": 5,
+    "histogram_bins": 256,
+    "histogram_window": 5,
+    "hue_count_threshold": 60,
+    "intensity_count_threshold": 80,
+    "min_intensity": 0.0392156862745098,
+    "min_saturation": 0.1,
+    "reference_forward_m": [
+      0.0,
+      1.0
+    ],
+    "reference_half_width_m": 0.3,
+    "promotion_distance_m": 1.0,
+    "reject_angle_deg": 18.0,
+    "reference_queue_length": 10,
+    "max_range_m": 4.0,
+    "mode": "assistive_dynamic_only",
+    "morphology": "none"
+  },
+  "code_hashes": {
+    "harness/active_wall_vision.py": "debf83ea4229a3afa0d6844a755b7d811cd14e6e77ca2be475fd0fed5056f8fb",
+    "harness/self_wall_segment_points.py": "f6b73617f9ff1582df5005c2defbbe2bf8ee4e25ea32687f83469c2d270bf43f",
+    "harness/wall_floor_ulrich.py": "fe67bf483e678a538de873bc6933b906577c1df7de4b607511b806db43668c43",
+    "harness/wall_contact_detector.py": "f33bb66ff09562b575161bc62af4348f9235d3e7cab316fbe72b45f031bc9a9e",
+    "harness/wall_floor_boundary.py": "eaed7cacc997b799e830e6f4c3c96265d543c1e79811f637f73cf0ba56ebd5e8",
+    "harness/active_camera.py": "bbfdcf48d6c21e1fee2da8f400ca010df8f7b821fea8c51e949b63ffae4da3f1",
+    "harness/self_wall_segments.py": "d365e2afb03d3820d9ce969c82d18701683e781c47381b83dc7ce7e1959ee4c5",
+    "harness/wall_confidence.py": "f4a7f48fed7cf2c1a33881648305d7aa4ac412225d4b2b410d2b874df279cd1c",
+    "harness/self_pose_graph.py": "ef884c274d5b24858bd3b96423abc1b9d897d6ec6c32714a576635a830bf1ef5",
+    "experiments/2026-10-05-ego-wall-map-probe/code/height_free_wall.py": "021cfee672fa38bb1c4c8516890d1c686ad853757d096d668cd7fe847ce8097d",
+    "harness/self_wall_pr.py": "6b8488b259ac3a5367e4a45a0a2084894afc0e03f2413f0f8c95ecf1d1c09caf",
+    "harness/self_wall_validation.py": "6c4dd47688bd046729a244b1f123bd1803ae46fe60d13960cde5f4d5fd5d35c6",
+    "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+    "experiments/2026-09-26-markerless-probe/markerless_probe.py": "7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d",
+    "experiments/2026-10-08-wall-contact-types/code/diagnose.py": "c5d23d666d5825e6585245a54d969ec60240f69dd7abf2159562130c76bf4582",
+    "experiments/2026-10-08-wall-pr-operating-point/code/run.py": "5ffe27fb64fa569c0bcf65d6af6d30d1cf8596f8018be3abb3f97184beb91225",
+    "experiments/2026-10-08-wall-pr-operating-point/code/selection.py": "a7a8bd60e42737d7c00da3f07cbf12ca4021ed57c290c007cd4959dd20be11cd",
+    "experiments/2026-10-07-active-wall-map/code/score.py": "14ef5174aa33cf369d053f323a13bd674008270de6e5fca0faa1d02970588541",
+    "experiments/2026-10-05-ego-wall-map-probe/code/odom_grid_replay.py": "4f96b68b7bf838dc8824f6e037e253eaff32dd5bef576989c2f3e5a38674fc9a",
+    "experiments/2026-10-08-ulrich-floor-contact/code/recall.py": "c8b7926bd40170e62f951fc636fde36ed28dee8bb112b5ca3b82205e6d65bea2",
+    "experiments/2026-10-08-ulrich-floor-contact/code/common.py": "d4db2ccf65f94c3e98befc63f4e81d817f102711d996be0ad76b09cadb26e935",
+    "experiments/2026-10-08-ulrich-floor-contact/code/compare.py": "32db85f3da0dab2a319c170cd86dd6a5572af0b86ddf072c43bf2e0f8b310e3a"
+  },
+  "development_sha256": "9e396acbb58880d912986f8757ca040d07502888b9ff249798c89f501e4e3c3e",
+  "development_seed": "31001",
+  "held_seed": "32002",
+  "retuning": false
+}
