@@ -1,0 +1,61 @@
+{
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/new-seed",
+  "files": 937,
+  "bytes": 131477457,
+  "sealed_files": 934,
+  "sealed_manifest_sha256": "e81393e2f1ca6bb637e82b8330cec4da7bcfbce8ae3bdbef2ebfd7949a026610",
+  "raw_key_hashes": {
+    "result.json": "eba4accd3d8f1ba7fbaca944952542601b67a9c9b5192a7c1718c9e32e7809ea",
+    "bundle.json": "092f382abe749f73f983925a2c91289f06448946c38502ebed1c3b0feeb7ffcc",
+    "source-admission.json": "b2d2d271855b64320bbc6275d6d46ccb34beb6c4b98a598ef4abf529f2eadd40",
+    "lock.json": "76a4de94e32ce4bdadef79103890776fb2d83cceda772c6a970bbb72a76a3f35",
+    "own-controller.jsonl": "6c2e651eefb820b754cac055ca75b4e34f32c0626d85268ecb1eee81e0dee598",
+    "frontend-grid.json": "8c001089f94be3c56f8a5b102430721cd73faa71228344667e212f9d6cfbea9e",
+    "grid.json": "6f83fcbc4d8b9b42611e2d6d82b0038bb4ea6a60aef499f87f93773afcb941e4",
+    "eval_only/trajectory.jsonl": "bab865dfdccf368f205d80c22ae02cbecbdd6d5590ca29e4a2ee214129a9b097",
+    "eval_only/contacts.jsonl": "43e8580423ebcd21020b3e32bb53ed63a92b20b93a17a072f7d2c071bc3b89e6",
+    "artifacts.sha256.json": "e81393e2f1ca6bb637e82b8330cec4da7bcfbce8ae3bdbef2ebfd7949a026610"
+  },
+  "managed_manifest": {
+    "path": "/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/managed-seed31001/manifest.json",
+    "sha256": "1425e37582e15933594f5cb1cc2ec99dd8168c87e50ea39c8ada8d21a6aaa337"
+  },
+  "video": {
+    "path": "/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/wrist-map-4x.mp4",
+    "sha256": "d76fd0b9a3d3317207b4e7a7da4cbf9338b074dbf876bfe2e9b69a426c62cb6b",
+    "bytes": 1934844,
+    "frames": 901,
+    "fps": 20,
+    "duration_s": 45.05,
+    "playback_speed": 4,
+    "input_sha256": "670917d2d1cb26b8054527094e77f1766dfb7df3213cf50093603fea39b16a0d",
+    "online_snapshots": 47,
+    "semantics": "each frame uses only latest snapshot <= frame SIM time; no final-map backfill"
+  },
+  "preview": {
+    "path": "experiments/2026-10-08-active-frontier-audit/figures/wrist-map-4x-preview.mp4",
+    "sha256": "e5e7ccae66a9d7946a62d9af471bab83b3785b46099cef3964a5061dbf73637d",
+    "bytes": 542716,
+    "frames": 901,
+    "width": 960,
+    "height": 360,
+    "fps": 20,
+    "duration_s": 45.05,
+    "playback_speed": 4,
+    "full_decode": "ffmpeg -v error -i FILE -f null -: exit 0",
+    "derived_from": {
+      "path": "/Users/changmin/projects/ugrp/outputs/active-frontier-audit-v1/wrist-map-4x.mp4",
+      "sha256": "d76fd0b9a3d3317207b4e7a7da4cbf9338b074dbf876bfe2e9b69a426c62cb6b",
+      "bytes": 1934844,
+      "frames": 901,
+      "fps": 20,
+      "duration_s": 45.05,
+      "playback_speed": 4,
+      "input_sha256": "670917d2d1cb26b8054527094e77f1766dfb7df3213cf50093603fea39b16a0d",
+      "online_snapshots": 47,
+      "semantics": "each frame uses only latest snapshot <= frame SIM time; no final-map backfill"
+    },
+    "compression": "libx264 CRF32 scale960:360; original preserved"
+  },
+  "storage": "outputs raw is local only; compact preview and results committed"
+}

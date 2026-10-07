@@ -56,3 +56,9 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 |버전·소스|단일 case|결과|영상·원본|확인 범위/한계|
 |---|---|---|---|---|
 |`egomap29-active-recovery-v1` · `00e4cebd`|seed29001, 180 SIM초, tape/SEARCH/wide + recovery|4.225m / 1.523m², hold52.53%, 접촉0, B미도착; 지도/2σ 기준 미달|[손목 RGB와 online 지도 4배속](../experiments/2026-10-08-active-recovery/figures/wrist-map-4x.mp4), SHA256 `3f3d68c9e1f245f17739f2fc5bef9ccda4ca8ac30f641cd209f2e73959985dd4`; raw `outputs/active-recovery-v1/new-seed/`|20개 당시 snapshot, 최종 지도 역채움0. GT 벽/경로는 평가 표시만. 90.5초 frontier소진; 6회 recovery소진 분기 미발생. raw/결과 hash는 [manifest](../experiments/2026-10-08-active-recovery/results/physical-manifest.json). 단일 새 seed, 실물/일반화 아님.|
+
+## egomap31 PR409 costmap 재사용 (2026-10-08)
+
+|버전·소스|단일 case|결과|영상·원본|확인 범위/한계|
+|---|---|---|---|---|
+|`active-nav2` · `462473cb`|사전 지정 seed31001, 180 SIM초, tape/SEARCH/wide/recovery + navigation_map=public_ros_v8|8.053m / 2.390m², hold4.49%, frontier소진 없음, 접촉0, B미도착; 2σ/전체 지도 품질 미달|[손목 RGB와 online 지도 4배속](../experiments/2026-10-08-active-frontier-audit/figures/wrist-map-4x-preview.mp4), SHA256 `e5e7ccae66a9d7946a62d9af471bab83b3785b46099cef3964a5061dbf73637d`; raw `outputs/active-frontier-audit-v1/new-seed/`|47개 당시 snapshot, 최종 지도 역채움0. GT는 평가 표시만. 경기장 고정 영상 범위 밖의 거짓 벽은 [전체 지도/결과](../experiments/2026-10-08-active-frontier-audit/README.md)에 표시. 단일 새 seed이며 이전 seed29001과 paired/실물/일반화 아님. [원본·축소본 hash](../experiments/2026-10-08-active-frontier-audit/results/physical-manifest.json).|

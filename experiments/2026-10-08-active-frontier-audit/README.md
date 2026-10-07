@@ -9,7 +9,7 @@
 
 기존 삽입 수정 `insert_selective_v1`은 on이다. 901 RGB 중 시작 대기10개,
 891 검출 모두 geometry 있음. settling/range 거부0, 이동 관문 보류871,
-관문 통과20개 전부 삽입(bootstrap1/정합수락7/거부12 포함).
+관문 통과20개 전부 삽입(bootstrap1/정합수락7/명시거부10/점부족 미시도2).
 90.5초 전436개 중 보류416/삽입20, 이후455개는 정지하며 전부 이동 관문 보류.
 기존 GMapping 기준1m/0.5rad/시간관문off와 noise/weight/resampling은 이번에 바꾸지 않는다.
 
@@ -83,11 +83,11 @@ raytrace/mark하고 현재 footprint clear한 결과며 coarse grid 업샘플 �
 |벽 geometry 검출 있음 / 없음|891 / 0|
 |중복·정착·거리로 탈락|각0 (range segment0)|
 |GMapping 이동량 보류|871|
-|통과 후 bootstrap / 정합 수락 / 거부도 삽입|1 / 7 / 12|
+|통과 후 bootstrap / 정합 수락 / 명시거부 / 점부족 미시도 삽입|1 / 7 / 10 / 2|
 |최종 삽입|**20**|
 |90.5초 이전 보류 / 이후 정지 중 보류|416 / 455|
 
-거부12개=low_overlap4/high_residual5/search_boundary1/insufficient_match_points2.
+명시거부10개=low_overlap4/high_residual5/search_boundary1. 점부족2개는 정합 미시도(deferred)다.
 `insert_selective_v1`→`gmapping_range_v1` 삽입은 정상 적용되어 **통과20/20 삽입**.
 많은 hold로 실제 새 관측 위치가 늘지 않았고, 원본 motion gate1m/0.5rad가 계속 적용된 결과다.
 이번에는 프레임 수를 늘리려고 motion gate나 시간 갱신값을 바꾸지 않는다.
@@ -104,3 +104,79 @@ receive_rays·clear_current_footprint·UnknownCostmap·MonitorCore/NavFn/blackli
 실행 전 관련 시험 **17개 통과**, off 전체891 trace bytes 골든 동일.
 [preflight](results/preflight.json), [오프라인 원본 hash](results/offline-manifest.json).
 고정된 두 원인 감사/옵션 연결 완료 후 seed31001 물리1회로 진행한다.
+
+## 새 seed 물리 결과 — 설정 변경 없이 종료
+
+실행 소스 **462473cbc2730add0db5e8ab3e0965f1d9987d5e**를 push한 뒤
+seed31001 단독 1회, 180 SIM초/901 RGB/891 제어프레임을 완료했다.
+`agent_lock` 획득 PID49531, `ugrp_session egomap31-seed31001` 종료 및 잠금 해제 확인.
+모델0/freeze0/S2 동시 실행0. wall735.069초는 실행 기록이며 속도 비교 실험이 아니다.
+기존 seed29001과 새 seed31001은 paired 반복이 아니므로 옵션의 일반적 개선을 확증하지 않는다.
+
+|지표|기존 egomap30(기록상 egomap29), seed29001|새 egomap31, seed31001|
+|---|---:|---:|
+|이동 거리 / footprint union|4.225m / 1.5225m²|**8.053m / 2.3900m²**|
+|hold / 제어프레임|468/891 (52.53%)|**40/891 (4.49%)**|
+|frontier 소진|절대90.5초 (경과89.2초)|**180초 동안 없음**|
+|지도 삽입 / RGB|20/901|**47/901**|
+|종료 오차 / σXY / 오차÷σ|0.572m / 0.098m / 5.84|**0.261m / 0.069m / 3.79**|
+|경로 RMSE / 2σ 초과 프레임|0.470m / 815/891|0.231m / 112/891|
+|yaw 종료 오차 / RMSE|3.18° / 10.61°|−6.32° / 6.99°|
+|영역 precision (정확/평가 칸)|32.22% (29/90)|**56.76% (42/74)**|
+|영역 recall (덮은/가시 벽 표본)|21.62% (16/74)|**52.10% (62/119)**|
+|잠재 가시 범위 / 전체 벽 표본|74/329 (22.49%)|119/329 (36.17%)|
+|전체 지도 precision / 점유 칸|27.01% / 174|39.00% / 359|
+|전체 벽 덮임 / 전체 벽 표본|46/329 (13.98%)|**124/329 (37.69%)**|
+|전체 벽 RMSE|0.392m|**0.760m (악화)**|
+|B 자기 확인 / GT 도착|없음 / 미도착|절대73.3초 / **미도착**|
+|벽 접촉 / 거짓 문 경로 시도 proxy|0 / 2|0 / **7**|
+|loop 수락|0|0|
+
+영역은 실제 카메라 자세/FOV/거리/벽 가림으로 정의한 **잠재 가시 영역**이다.
+물체·자기 차체 가림은 반영하지 않아 실제 가시성/실제로 탐색한 전체 면적과 같지 않다.
+이동·footprint 면적 및 GT는 평가 전용이다. 지도는 completed graph, σ는 online RBPF 값이며
+loop 수락0으로 이 실행의 graph와 frontend 지표는 같다. 접촉은 저장된901프레임과 실행 중
+abort-only 안전 점검의 평가 결과다. 거짓 문은 경로 계획 proxy이며 실제 통과 횟수가 아니다.
+
+|새 실행 삽입 단계|개수|
+|---|---:|
+|RGB / 초기 팔·영상 대기|901 / 10|
+|geometry 있음 / 없음|891 / 0|
+|중복 / 정착 / 거리 segment 탈락|0 / 0 / 0|
+|`gmapping_motion_gate` 보류|**844**|
+|통과 / 삽입|**47 / 47**|
+|bootstrap / 정합 수락|1 / 22|
+|정합 거부 후 삽입|**24** = low_overlap8 + high_residual14 + search_boundary2|
+|점 부족으로 정합 미시도|0|
+|재표본 총횟수 / 거부 후 재표본 / 거부 후 CSM 가중치 갱신|15 / **0 / 0**|
+
+egomap26 삽입 수정은 전후 모두 on이며 거부 때문에 삽입이 막히지 않는다.
+이동 관문1m/0.5rad/시간off를 유지했다. 거부24개는 odometry proposal로 삽입되므로
+삽입 증가 자체가 정확도 보장을 뜻하지 않는다. [재현 집계](code/summarize_insertion.py),
+[단계별 원본 집계](results/physical-insertion.json).
+
+복구 시작18회(context clear10/clear3/spin3/backup1/wait1), 완료16회.
+spin2회는 목표 변경으로 끝났으며 성공으로 합산하지 않는다. navigation reset13회,
+`ABORTED_unreachable` blacklist2회 모두 같은 시각 다음 frontier 선택, frontier 선택35회.
+6회 retry 소진 분기는 발생0, 영구 실패 hold0. [복구 집계](results/physical-recovery.json).
+
+기존 회복 관문 **5/5** 통과, egomap27 2σ+영역P 개선 관문 **1/2**(2σ 미달),
+기존 품질 관문 **7/10**(거짓 문/precision/벽 RMSE 미달)이다. 결과 후 문턱 변경0.
+frontier 정지 문제는 이번 새 seed에서 재발하지 않았으나 과신과 잘못된 벽/문이 남는다.
+특히 전체 그림에 경기장 밖으로 뻗는 거짓 벽이 있어 RMSE가 악화됐다.
+작은 영역의 P/R 개선을 전체 지도 성공으로 보지 않으며 여기서 추가 튜닝·물리 실행 없이 종료한다.
+
+![새 seed 전체 지도와 경로](figures/new-seed.png)
+
+[손목 RGB | 당시 지도 4배속 미리보기](figures/wrist-map-4x-preview.mp4)
+(960×360, 901프레임, 45.05초, 542716 bytes).
+원본1280×480은 `outputs/active-frontier-audit-v1/wrist-map-4x.mp4` (1934844 bytes).
+각 시각 이전47개 snapshot만 사용하며 최종 지도 역채움0. 동영상은 경기장 고정 화면 범위라
+바깥 거짓 벽 일부가 잘릴 수 있으며 위 전체 지도에는 표시한다.
+시작/중간/끝 화면 및 원본·미리보기 전체 ffmpeg 디코딩/프레임 수를 확인했다.
+
+실행 전 **17시험 통과** 및 off891프레임 전체 bytes 동일, 실행 후 봉인934파일·고정20소스·
+기존 미추적4파일 hash 재확인. managed 실행의 dirty 표시는 이 기존 미추적4개 때문이며
+tracked 실행 소스는 clean, 실행 중 소스 변경0이다. raw937파일/131477457 bytes는 로컬 보존,
+원격 raw 백업을 뜻하지 않는다. [결과](results/comparison.json),
+[검증](results/physical-validation.json), [raw/영상 hash](results/physical-manifest.json).
