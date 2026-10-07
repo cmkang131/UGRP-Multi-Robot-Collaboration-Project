@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-08 Lorigo 창 히스토그램 경계](2026-10-08-lorigo-window-contact/README.md): PR #405, egomap40. 원문4종 비교 후 기본off lorigo_window_v1. 개발31001 P/R16.2/9.3%, 동결32002 단일평가39.8/24.8%로 관문0/2. 넓은 바닥 외형 변화와 픽셀 신뢰도 어댑터 불일치; 지도0/12칸·덮음0%. 재튜닝·물리0, 15시험·off bytes 동일. 다중시점 바닥 homography는 다음 제안만.
+
 - [2026-10-08 Ulrich 바닥 외형·시간 참조 큐](2026-10-08-ulrich-floor-contact/README.md): PR #405, egomap39. 기본off floor_appearance_ulrich_v1. 원문 H60/I80·1m/18°·최근10참조 OR, 미공개 수치는 별도 명시. 개발31001 검출P/R7.9/2.4%, 동결32002 1회7.8/.7%로 관문0/2. 테이프FP0이지만 체크 FP 지배. 32002 영역 칸P/R12.5/8.2%·덮음4.0%·56칸. 물리0·재튜닝0·17시험·off bytes 동일.
 
 - [2026-10-08 하단 연결 접점 규칙](2026-10-08-bottom-connected-contact/README.md): PR #405, egomap38. 기본off bottom_up_connected_v1, 새 외형 분포0. 개발31001/고정32002 검출P100/99.10%지만 R0.31/1.09%, 칸 덮음1.82/4.56%·6/12칸. egomap36 운영점과 선분은 빈 지도. 문턱변경0·물리0·12시험, 실패 보존.
