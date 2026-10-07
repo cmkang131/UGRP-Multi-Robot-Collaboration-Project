@@ -1530,3 +1530,63 @@ HParams source/condition과 shared view의 자기 키 추가를 확인했다
 ([전달 검증](soft-mcl-delivery-verification.json)). 사용자 지시대로 수치만 대조했으며
 브라우저 UI·기존 서버/PID52016·이전 snapshot·영상은 변경하지 않았다.
 이번 재생 프로세스는 모두 정상 종료했고 물리 잠금은 미획득, 종료 확인 status=null이다.
+
+### 사용자 실물 확인과 S2 파지 정책 고정 (2026-10-07)
+
+[사용자 확인 원문 — PR #406 코멘트](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/406#issuecomment-6028199927):
+실물 MasterPi의 집기 직전 hover에서는 블록이 보이지 않았고, **미리 보이는 자세에서 관측한
+뒤 마지막 접근·파지는 그 관측을 바탕으로 open-loop**였다. 사용자가 확인한 실물 절차이며
+이번에 새 실물 시험을 한 결과는 아니다. 이 작업의 적용 범위는 **단독 S2 DEV**다.
+코멘트의 S3 언급을 근거로 다른 제어기/PR까지 수정하지 않는다.
+
+현행 full DEV(v121–v123, 최신 실행 번들 v123)의 옵션/실제 호출 경로를 점검했다.
+이미 이 절차가 켜져 있어 새 중복 옵션이나 실행 번들을 만들 필요가 없다. 다음 full DEV도
+아래 명시 조합을 유지한다. CLI/Runtime의 옵션 기본값은 off이고 기존 명령·출력은 그대로다.
+**`hover_check=off`는 hover 확인을 끄는 뜻이 아니라 기존 hover 시각 게이트로 복귀한다.**
+
+```text
+hover_check=real_pregrasp_v1
+hold_check=inhand_rgb_v1
+site_check=off
+grasp_check=pickup_site_v1   # 확장 선택용 명목 옵션; 실제 site 비교는 InhandCheck가 대체
+dev_grasp_policy=log_only_v1
+idle_robot_contacts=freeze_v1
+```
+
+| 확인 항목 | 현행 S2 full DEV | 남아 있는 과거 게이트/위치 |
+|---|---|---|
+| hover의 cyan 존재 | 요구하지 않음. `real_pregrasp → hover → blind_descent → grasp`; 이전 frame/hash/관측 시각을 전달하고 `hover_visual_confirmation=false` 기록 | `zone_solo_cyan_v106.py:414–431`의 `CYAN_HOVER_UNCONFIRMED`는 `hover_check=off`의 이전 경로에만 남음 |
+| 들어 올린 뒤 in-hand | `InhandCheck.control`은 unknown에도 `GRASP_INHAND_UNCONFIRMED`/notification을 기록하고 carry 진행 | v120의 결과 판정 `INHAND_OR_LIFT_UNCONFIRMED`는 과거 probe 전용. v121–v123 full 실행기는 이 probe 판정기를 호출하지 않음 |
+| 원래 자리 ROI/바닥 비교 | `hold_check=inhand_rgb_v1`이 `scene_check`를 대체하여 **실행하지 않음**. `pickup_site_status=not_evaluated_inhand_selected`, retry0. 수행하지 않은 비교를 확인 성공으로 표시하지 않음 | `zone_solo_cyan_scene_runtime.py:84`, `zone_solo_cyan_real_site.py:106`의 `CYAN_SCENE_RETRY_EXHAUSTED`와 v119 site probe 판정은 과거 별도 경로에 남음 |
+| 실행 종료의 시각 성공 판정 | `run_s2_realism_v123.result_record`가 시각 상태를 보존하고 `visual_unknown_stops=false`; full 종료/실제 성공은 별도로 기록 | `dev_grasp_policy` 값 하나가 모든 과거 확인기를 바꾸는 것은 아님. 위 **전체 조합**과 실제 `InhandCheck` 선택이 필요 |
+
+`zone_s2_realism_contract_v123.require_execution`은 현재 NEW_OPTIONS 전체를 요구하므로
+hover/hold/dev 정책 중 하나가 off이거나 site 비교가 켜진 full 번들을 거절한다.
+`launch_v123.zsh`에도 위 값이 명시되어 있다. 따라서 프로파일 수정 없이 이미 요청된
+동작이며, 이번 변경은 이 사실을 문서화하고 회귀 시험으로 고정하는 것이다.
+
+**미리 보는 관측**은 여전히 필요하다: 정렬 위치에서 .45초 정지 후 최대9개 새 RGB 중4회,
+cyan≥500px/고유 검출/기존±3mm 정렬을 확인하고 그 이후 hover에서는 cyan을 다시 요구하지
+않는다(`zone_solo_cyan_real_hover.py:52–111`). reference 부재·명령 경로 이탈·시간창 위반은
+이전 관측을 사용할 수 없다는 별도 조건이다. 초기 탐색/정렬, 입력 프레임의 무결성·품질
+게이트(`INVALID_OWN_IMAGE`), 자기 명령 상태 검사도 남는다. 이들은 cyan이 hover/운반
+영상에 존재해야 한다는 판정과 구분한다. 이번 시험은 **cyan이 없는 유효한 RGB**를 사용하며
+검거나 균일한 영상의 수용 범위까지 변경한 시험은 아니다.
+
+실물 소스와 대조:
+- `sim/real_stack_adapter.py:75–95`는 `scripts/red_block`의 실물 모듈을 직접 가져온다.
+- `scripts/red_block/physical_state_machine_reference.py:250–254,4740–4758`은 정지한
+  pre-grasp 자세에서 reference를 먼저 얻는다. `:4796–4832`의 `execute_pick_to_hover`는
+  그 뒤 hover로 이동하고 새 시각 확인 없이 고정 descent→close→lift를 수행한다.
+- 같은 파일 `verify_grasp`에는 집은 뒤 바닥 재관측 코드도 있으나, 이것이 사용자 확인의
+  hover 가시성 또는 확정 파지 증거는 아니다. 현행 S2 full DEV는 그 비교 대신 in-hand
+  결과를 기록만 하며, 보이지 않음을 물리 파지 실패/성공으로 바꾸지 않는다.
+
+검증: `test_s2_real_pregrasp_policy.py`, `test_s2_real_hover.py`, `test_s2_full_dev.py`
+**10 passed**. 최신 full Runtime의 모든 옵션을 켜고 합성 사전 관측4개 후 cyan0px RGB를
+공급해 blind close→lift→carry, in-hand unknown 유지, would-stop 기록1회, 재집기0을
+확인했다. 위치 보고/검출은 합성 fixture이며 카메라 물리·위치 정확도·파지 성공 시험이 아니다.
+기존 off 명령/record byte 동일 시험도 통과했다. production 코드·설정·기존 번들·seed/raw는
+변경하지 않았다. 새 SIM/렌더/모델 호출0, 새 잠금/세션 없음. 새 실험 결과가 없으므로
+TensorBoard를 재변환하지 않는다. 다음 full DEV의 위치 추정 입장 기준 미달 상태를 이번
+파지 정책 확인만으로 해제하지 않는다. PR #406은 DRAFT·병합 금지를 유지한다.
