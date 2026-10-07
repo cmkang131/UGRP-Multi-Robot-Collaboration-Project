@@ -47,9 +47,9 @@ GT는 이 평가와 이후 봉인 예측 채점에서만 사용한다.
 
 37.3s의 +19.71° 등 창 밖 증거가 있어 전체 on을 한 번 실행한 뒤, **같은 결합에서 검색창만**
 `rbpf_search=correlative_20deg_v1`(기본off)로 한 번 비교한다. 추가 결과 기반 확대는 하지 않는다.
-[Cartographer trajectory_builder_2d.lua L35–40](https://github.com/cartographer-project/cartographer/blob/master/configuration_files/trajectory_builder_2d.lua#L35-L40)의
+[Cartographer trajectory_builder_2d.lua L35–40](https://github.com/cartographer-project/cartographer/blob/877157a0d91788a7700221d87232d412cb3c1ef4/configuration_files/trajectory_builder_2d.lua#L35-L40)의
 real-time correlative 기본 각도 **±20°**를 그대로 택한다. 원본의
-[후보 전체 탐색/평가 L77–137](https://github.com/cartographer-project/cartographer/blob/master/cartographer/mapping/internal/2d/scan_matching/real_time_correlative_scan_matcher_2d.cc#L77-L137)을 확인했다.
+[후보 전체 탐색/평가 L77–137](https://github.com/cartographer-project/cartographer/blob/877157a0d91788a7700221d87232d412cb3c1ef4/cartographer/mapping/internal/2d/scan_matching/real_time_correlative_scan_matcher_2d.cc#L77-L137)을 확인했다.
 고정 SHA/파일 해시는 [sources.json](results/sources.json). Apache2.0, C++ 복사/새 의존성0.
 
 기존 Olson식 coarse→fine 후보 검색·RBPF Gaussian proposal/importance 계산을 재사용하고
@@ -66,3 +66,6 @@ graph e/σ는 N/A. 물리는 관문과 관계없이0. 실패 시 추가 튜닝 �
 
 반드시 같이 보고: 종료오차/σ/eσ, yaw 추이, 영역 P/R 분자분모, 전체 덮임, 점유셀/삽입수,
 취득7.379m·2.313m²·가시137/329벽 표본·891자세. 결과가 작은 표본인지도 그대로 보인다.
+
+구현 시험: composition6 + rejection7 + Manhattan6 = **19개 통과**.
+새 off 경로는 기존 egomap26 on 전체 prediction JSON bytes와 비교하며, 이때 graph는 별도 산출물이다.

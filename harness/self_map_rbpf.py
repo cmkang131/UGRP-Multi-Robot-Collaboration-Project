@@ -62,15 +62,17 @@ def importance_increment(log_likelihood, pose, prior_mean, prior_cov, proposal_m
     return float(log_likelihood+log_normal(a, prior_cov)[0]-log_normal(b, proposal_cov)[0])
 
 
-def improved_proposal(field, points, camera, prior, covariance, rng, options):
+def improved_proposal(field, points, camera, prior, covariance, rng, options, *, yaw_window_deg=8.):
     """Scan-match mode, local product moments, sample, exact importance ratio.
 
     A failed match falls back to the motion proposal (Eq.8). Sensor failure does
     not silently reset weights: its likelihood still participates in weighting.
     """
+    if yaw_window_deg not in (8., 20.):
+        raise ValueError('UNREGISTERED_RBPF_YAW_WINDOW')
     sigma = sensor_sigma(points, camera, options)
     step = np.array([.1, .1, math.radians(2.)])
-    coarse = offsets_grid([5, 5, 4], step)
+    coarse = offsets_grid([5, 5, int(yaw_window_deg/2)], step)
     sensor = likelihood(field, points, prior+coarse, sigma)
     # MAP registration includes the motion prior as in the paper's Eq.21.
     cost = sensor+log_normal(coarse, covariance)
@@ -86,11 +88,13 @@ def improved_proposal(field, points, camera, prior, covariance, rng, options):
     distances = field.query(transform(points, prior+best))
     overlap = float(np.mean(distances <= options.overlap_distance_m))
     residual = float(np.sqrt(np.mean(distances**2)))
-    boundary = bool(np.any(abs(best) >= np.array([.5, .5, math.radians(8.)])))
+    boundary = bool(np.any(abs(best) >= np.array([.5, .5, math.radians(yaw_window_deg)])))
     reason = ('search_boundary' if boundary else 'low_overlap' if overlap < options.min_overlap else
               'high_residual' if residual > options.max_residual_m else 'improved_proposal')
     event = {'reason': reason, 'overlap': overlap, 'residual_m': residual, 'search_boundary': boundary,
              'candidates': len(coarse)+len(offsets)}
+    if yaw_window_deg != 8.:
+        event.update(yaw_window_deg=yaw_window_deg, best_offset=best.tolist())
     if reason == 'improved_proposal':
         delta, cov, weights = moments(offsets, log_product)
         # Numerical jitter only; no claimed confidence below machine precision.

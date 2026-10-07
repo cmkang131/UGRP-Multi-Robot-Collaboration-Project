@@ -79,7 +79,8 @@ def _proposals(self, points, camera, attempt):
         past = self.maps[i].occupied_points()
         past = past[np.linalg.norm(past-priors[i, :2], axis=1) <= 6.]
         if attempt and len(past) >= self.options.min_points:
-            pose, increment, pe = improved_proposal(GridField(past), points, camera,
+            proposal = getattr(self, '_selective_proposal', improved_proposal)
+            pose, increment, pe = proposal(GridField(past), points, camera,
                 priors[i], covs[i], self.rng, self.options)
             # A rejected particle contributes no sensor evidence.
             increments[i] = increment if pe['reason'] == 'improved_proposal' else 0.
@@ -171,7 +172,8 @@ def _observe(self, rec, segments, *, camera_xy, robot_id):
     attempt = rec['t_sim']-self.last_attempt >= 1.-1e-8 and len(points) >= self.options.min_points
     if attempt:
         self.last_attempt = rec['t_sim']
-    particle_events, update, rejection = _proposals(self, points, camera, attempt)
+    proposals = getattr(self, '_selective_proposals', _proposals)
+    particle_events, update, rejection = proposals(self, points, camera, attempt)
     for i, (grid, pe) in enumerate(zip(self.maps, particle_events)):
         pose = self.poses[i]
         pe['pose'] = pose.tolist()
