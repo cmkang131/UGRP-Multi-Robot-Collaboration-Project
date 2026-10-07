@@ -1,0 +1,32 @@
+{
+  "cohort": "already_seen_10_failure_diagnostic_not_confirmation",
+  "source_sha": "c2b5b12a90a3dd965b3793a0a3f3dde05c9487f5",
+  "before": {
+    "total": 10,
+    "true_B": 0,
+    "statuses": {
+      "HOST_SETUP_ERROR": 4,
+      "budget": 4,
+      "collision": 2
+    }
+  },
+  "after": {
+    "total": 10,
+    "true_B": 0,
+    "statuses": {
+      "HOST_SETUP_ERROR": 4,
+      "recovery_exhausted": 4,
+      "collision": 2
+    }
+  },
+  "stop_reason": "SAME_CAUSE_RECURRED: projected footprint deadlock and unobserved can collision; no more patching or evaluation",
+  "new_confirmation": {
+    "registered": 32,
+    "executed": 0,
+    "gate": "NOT_EVALUATED",
+    "stage_b": "NOT_RUN",
+    "stage_c": "NOT_RUN"
+  },
+  "development_A_C": "NOT_RUN: stop rule triggered by already-seen diagnostic first",
+  "criteria": "unchanged; fresh criteria not evaluated; no pass claim"
+}

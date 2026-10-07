@@ -1,5 +1,6 @@
 # 실험 인덱스
 
+- [2026-10-07 navigation 회복·유효 도크 평가 어댑터](2026-10-07-mapfree-navigation-recovery/README.md): Nav2 recovery 포트와 도크 기반 새32쌍 등록. 기존 실패10 재생 B0/10, 회복 소진4·맹점 충돌2 재발로 중단; 새 확인 미개봉, 기본 off, #409 DRAFT.
 - [2026-10-07 공개 navigation 코어 이식·선행 관문](2026-10-07-mapfree-public-navigation/README.md): NavFn/explore_lite 원본 + PythonRobotics pursuit, 기본 off. 새 G/H32 oracle static B22/32로 ≥30/32 관문 실패; frontier/현실 잡음 미실행, 재튜닝 중단, #409 DRAFT.
 
 - [2026-10-07 자기 지도 B/C/E: frontier·문·부분 경로](2026-10-07-mapfree-explore/README.md): 기본 off, MuJoCo/모델 없는 2D 개발16쌍→동결→확인32쌍. 확인 B 0/32, coverage15.11%, 충돌13, 문 시도0, 기준1/5로 미달. 구 벽 통계·v7 구조 사전 잡음의 모델 한계와 최초 관측 free 연결 실패를 기록; 물리 미실행, #409 DRAFT.
