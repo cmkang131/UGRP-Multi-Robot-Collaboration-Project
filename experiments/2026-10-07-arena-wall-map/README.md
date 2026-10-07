@@ -74,3 +74,11 @@ TensorBoard 생략 지시 유지, Drive 사용0. raw 로컬 보존과 Git 원격
 - [Coulter 1992 원문 안내](https://publications.ri.cmu.edu/implementation-of-the-pure-pursuit-path-tracking-algorithm):
   실제 추종은 pose feedback이 필요하다. 이번 고정 명령 취득을 pure-pursuit/publicROS의
   실제 관측 폐루프 실행으로 부르지 않는다. 경로는 calibrated SE(2) pulse rollout으로 작성한다.
+
+### 취득 전 명령 봉인
+
+관련3파일10시험 통과. 정방향261 pulse/143.8초, 역방향282 pulse/149.2초에 명령 기반
+8개 waypoint 도달, 각180초 종료까지 정지 관측한다. [정방향](forward-plan.json)·[역방향](reverse-plan.json).
+도면 대비 명령 예측 경로 중심의 벽 최소거리 .463/.475m, 취득 설계용 보수적 원반반경
+.32m를 뺀 여유 .143/.155m([기하 점검](results/planned-clearance.json)). 실제 충돌/완주의 보증은 아니다.
+워크플로 `arena-wall-map`1.0.0, 번들 `egomap20-arena-tour-v1`; 기존 egomap19는 변경하지 않는다.

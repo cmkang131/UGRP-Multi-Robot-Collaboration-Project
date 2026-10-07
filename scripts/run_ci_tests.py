@@ -38,6 +38,7 @@ TEST_PATTERNS = (
     "tests/test_servo_camera_fk.py",
     "tests/test_camera_frame_conventions.py",
     "tests/test_servo_stiffness.py",
+    "tests/test_arena_wall_map.py",
     "tests/test_self_pulse_odom.py",
     "tests/test_camera_projection_audit.py",
     "tests/test_s2_projection_comparison.py",
