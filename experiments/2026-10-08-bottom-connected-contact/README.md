@@ -1,0 +1,42 @@
+# egomap38 — 하단 연결 접점만 허용
+
+2026-10-08, egomap37 후속. 오프라인만: 물리/렌더/MuJoCo/모델/잠금0.
+PR405 DRAFT, TensorBoard 생략 유지. GT는 점/지도 평가에만 사용한다.
+
+## 실행 전 사전 등록
+
+- 옵션 `contact_rule=bottom_up_connected_v1`, 기본 `off`. egomap37의
+  `appearance_contact_v1`은 끈다. 새로운 바닥 외형 분포/색상 문턱을 학습하지 않는다.
+- 기존 검출기는 이미 아래부터 후보를 훑지만, 낮은 경계가 uniform band/vertical 조건을
+  통과하지 않으면 더 높은 경계를 고른다. 새 규칙은 **판정 전** 기존 luminance/chroma
+  surface-run 경계(기존 tol10, 양쪽3행 평균)에서 하단 연결을 끊는다.
+  열별 유효 영상 하단에서 처음 만나는 경계 응답의 연속 행 구간만 후보로 허용한다.
+  경계가 벽 조건을 통과하지 못해도 더 위를 찾지 않는다. 하단 self-mask 가림은 열을
+  무효화하고, remap의 무효 바깥 테두리만 제외한다. 내부 무효 틈을 뛰어넘지 않는다.
+  이는 semantic floor 분류기가 없는 기존 경계 검출기에 연결성 규칙만 적용한 것이다.
+  체크/색 구역의 경계도 연결을 끊을 수 있다. 이를 새로운 외형 필터로 보완하지 않는다.
+- Ulrich & Nourbakhsh 2000 §3의 열별 최하단 obstacle만 사용하는 거리 추정 규칙을
+  재사용한다. 원 논문의 HSI 외형 분류 전체를 구현했다고 주장하지 않는다.
+  Lorigo 1997의 하단 참조 설명은 Ulrich §2에서 확인; 원문 직접 확인은 미완료.
+- seed31001 개발 → 코드/설정/결과 해시 동결 커밋 → seed32002 on 1회 평가.
+  두 녹화는 과거에 이미 열람했으므로 독립 미개봉 확증 자료가 아니다. 사후 튜닝0.
+- own RGB891프레임씩, 원본 추정 pose/삽입시간47/64 고정. RBPF 재추정0.
+  egomap37 paired off/on처럼 양쪽에 동일한 저장된 정합 후 공분산으로 inverse sensor
+  가중치를 재계산한다. 원본 정합 전 공분산 지도와 차이는 별도 표기한다.
+- 조건은 contact off/on × 다중시점 off/egomap36 고정 운영점.
+  칸 N1/30°, 선분 N2/0°를 그대로 적용하며 재선정하지 않는다.
+- 점 P: GT 차체 pose로 놓은 실제 검출 열 접점이 실제 벽에서 .15m 이내인 비율.
+  점 R: 각 프레임·96열의 실제 카메라 floor trace에 대해 4m 이내 첫 벽 접점 중
+  영상/support/기존 self-mask 안에 있고 벽·상자·peer envelope에 가리지 않은 접점 분모.
+  같은 열의 검출이 GT 차체 변환 후 해당 접점 .15m 이내면 회수한다. 실제 카메라는
+  저장된 평가 로그에서만 읽는다. peer 세부 링크 가림은 없으므로 잠재가시 R로 표기한다.
+- 지도는 기존 .1m 격자/.15m 허용거리/329 GT 벽 표본 전체 R=덮음, 잠재가시 영역
+  P/R, 벽 RMSE·표본 수를 모두 기록. 선분 연속 .05m 보조 지표도 보존한다.
+  점 P≥.90 및 off 대비 비감소, 지도 P≥.90/R≥.70/RMSE≤.15m 기준 유지.
+  점 R의 tradeoff를 숨기지 않는다. 빈 출력 P/RMSE=NA, 관문 실패.
+- raw: `/Users/changmin/projects/ugrp/outputs/bottom-connected-contact-v1`, 새 출력만.
+  관련1–3시험 통과 후 커밋·push. 감독 파일은 단계마다 cat. 실패도 그대로 기록.
+  디스크 오류는 HOST_ERROR, raw 삭제/외부 자원/다른 worktree 수정0.
+
+출처: [Ulrich & Nourbakhsh 2000 원문 §2–3](https://www.cs.cmu.edu/~illah/PAPERS/abod.pdf).
+기존 코드 `height_free_wall.py:307–368`, `surface_run_top:159–193`.
