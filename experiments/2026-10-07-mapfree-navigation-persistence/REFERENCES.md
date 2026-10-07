@@ -1,7 +1,7 @@
 # 원본 줄 단위 대조 (v2 = 6ae4c5a7)
 
 원본 bytes·revision·SHA256·라이선스는 [SOURCES.json](../../third_party/mapfree_navigation_persistence/SOURCES.json).
-Nav2 Apache-2.0, m-explore BSD-3-Clause, Kobuki BSD-3-Clause(원본 파일 헤더) 보존. 새 venv/패키지 없음.
+Nav2 BT/progress Apache-2.0, Nav2 ObstacleLayer/raytrace와 m-explore·Kobuki BSD-3-Clause(원본 헤더) 보존. 새 venv/패키지 없음.
 ROS 서버 전체/BT scheduler를 실행하는 것이 아니라 필요한 상태기계·관측 층의 Python 포트다.
 
 | 항목 | 원본 | 기존 어댑터 | 적용할 차이 |
@@ -18,3 +18,35 @@ ROS 서버 전체/BT scheduler를 실행하는 것이 아니라 필요한 상태
 원본은 [Nav2 공식 SimpleProgressChecker 문서](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/controller_server/controller_server_plugins/simple_progress_checker/)와
 고정 공개 소스를 직접 확인했다. web raw cache miss는 HTTPS 다운로드로 원문을 확인했고 실패한 조회를 검증 완료로 세지 않았다.
 `clear`가 모든 알려진 장애물을 절대 지우지 않는다는 주장은 원 Nav2에는 맞지 않는다. 이번의 persistent 관측 재적용은 사용자 제약에 따른 차이다.
+
+## v3 포트 대응 줄
+
+아래는 이번 구현에서 해당 원본 분기를 옮긴 위치다. 기존 v1/v2는 바꾸지 않았다.
+
+| 원본 기능 | v3 Python 포트 |
+|---|---|
+| SimpleProgressChecker baseline/check/reset | `harness/public_navigation_persistent.py:52–66`, 실행 clock `243–258` |
+| RecoveryNode SUCCESS일 때 retry 증가 | 같은 파일 `110–151` |
+| RoundRobin 실패 child → 다음 child, finite 종료 | 같은 파일 `137–151` |
+| explore_lite makePlan/min_distance/timeout | 같은 파일 `170–203` |
+| reachedGoal ABORTED → blacklist/재선택 | 같은 파일 `96–103`; inherited `stack.py:29–34` |
+| planner 재시도·1 Hz / clear 서비스 | 같은 파일 `205–231,250–253,335–339,366–369` |
+| ObstacleLayer clear-before-mark / 영속 관측 | 같은 파일 `289–316,341–352` |
+| Nav2 Bresenham raytrace | 같은 파일 `29–49`; 아래 원본 |
+| Kobuki binary stop/고정 bumper point, Nav2 BackUp | 같은 파일 `237–241,318–333` |
+| 2D 환경 접촉 직전 정지·센서 출력 | `code/contact_world.py:18–38` (GT는 여기와 평가 로그만) |
+
+[Nav2 raytraceLine 원문](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_util/include/nav2_util/raytrace_line_2d.hpp#L60)의
+Bresenham tie 처리·endpoint 포함을 그대로 포트했다. 유한 costmap의 unsigned flattened offset은
+무한 자기 좌표 tuple로 바꿨다. min=0/max=unbounded이고 현재 관측된 floor support만 지운다.
+두 팔 자세의 합쳐진 카메라 입력에는 광선별 origin이 없으므로 own body 원점에서 support를 순회하며,
+현재 hit를 만나면 중단한다. 미관측 셀은 절대 clearing 증거로 만들지 않는다.
+
+**원본의 특이 분기:** pinned RoundRobin.cpp:45–60은 마지막 child의 SUCCESS에도 wrap=false이면
+status switch 전에 break하고 전체 FAILURE를 반환한다. 따라서 backup 성공 로그와 navigation action
+실패가 함께 나올 수 있다. 이 분기도 시험으로 고정했으며 결과를 본 뒤 수정하지 않는다. 최신 Nav2
+전체 배포의 성능/의도를 주장하는 것이 아니라 이 revision의 확인된 분기를 따른 것이다.
+
+접촉 입력은 새 조건이다. 모든 이진 접촉에서 fixed front centre를 표식으로 넣는 것은 방향을 알 수
+없는 센서의 근사이며, 물체 접점 정답이 아니다. 실제 충돌의 좌표/ID는 `eval_contacts.jsonl`에만 남는다.
+센서 장착/실물 적용과 ROS 서버 통합은 검증 범위 밖이다.

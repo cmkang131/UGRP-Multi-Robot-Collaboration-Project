@@ -47,3 +47,24 @@ actor는 자기 발행 명령을 정지한 뒤 Nav2의 .30 m BackUp 회복을 �
 raw는 `/Users/changmin/projects/ugrp/outputs/mapfree-navigation-persistence-v3/`, 덮어쓰기/삭제 없음.
 속도 비교가 아니므로 timing lock 불필요. 다른 worktree·PR #405 수정 없음. DRAFT 유지·병합 없음.
 TensorBoard/Drive는 이전 사용자 결정대로 생략한다.
+
+## 구현과 실행 계약
+
+| 옵션 | 기본 | 동작 |
+|---|---|---|
+| `navigation=off` | 기본 | 기존 출력 객체/bytes를 그대로 반환, v1/v2 파일·원 cohort bytes 검사 |
+| `navigation=public_ros_v3` | 명시 opt-in | 진행 감시/회복 포트, 영속 자기 장애물, binary bumper stop/backup |
+
+`harness/public_navigation_persistent.py`는 자기 관측·명령 DR·(t,pressed)만 받는다.
+정적 baseline만 기존 authored 정적 지도/B를 받고, 물체 배치 정답은 전달하지 않는다.
+`code/contact_world.py`는 충돌 직전 substep을 거부하는 2D 평가기다. 막힌 발행 명령의 DR 오차는 남긴다.
+`code/run_persistent.py`는 개발 관문/새32 관문 원본 episode bytes와 source hash를 확인하며 다음 단계를 막는다.
+
+실행 전 관련3파일 시험30개 통과. 초기 시험의 중복 frame/time fixture와 sparse checkout에서 빠진
+기존 `sensor-errors.npz`는 수정·Git 원본 SHA256 검증 후 재검사했다. 임계값 변경 없음.
+신규 venv/설치 없음. binary contact 추가 조건을 camera-only 이전 결과와 같은 관측이라고 합산하지 않는다.
+
+```sh
+PYTHONPATH=outputs/self-map-plot-deps /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest tests/test_navigation_persistent.py tests/test_navigation_recovery.py tests/test_public_navigation.py -q
+PYTHONPATH=outputs/self-map-plot-deps /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-mapfree-navigation-persistence/code/run_persistent.py --navigation public_ros_v3 --cohort diagnostic --stage a --output /Users/changmin/projects/ugrp/outputs/mapfree-navigation-persistence-v3/diagnostic
+```
