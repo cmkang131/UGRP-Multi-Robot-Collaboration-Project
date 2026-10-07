@@ -1437,3 +1437,7 @@ Nav2의 beam stride는 `(range_count−1)//(max_beams−1)`를 그대로 적용�
 프레임별 흔들림, GT 투영↔검출 행 차이를 대조한다. 평가 로그에는 차체 tilt 크기는 있지만
 roll/pitch 성분·관절 시계열은 없으므로 처짐과 차체 기울기를 유일하게 분리할 수 없으면
 식별 불가와 기여 상한으로 보고한다. GT 자세를 실행용 보정표로 바꾸지 않는다.
+
+AMCL 후보는 loaded HIGH에서 Nav2 기본 recovery alpha=0을 따른다. 이전 px likelihood의
+augmented-MCL running average를 새 `1+sum(pz^3)` 값과 섞지 않으며, 그 외 구간은 기존
+측정·회복을 유지한다. 예측/재표집/입자 수는 기존 S2 것을 재사용한다.
