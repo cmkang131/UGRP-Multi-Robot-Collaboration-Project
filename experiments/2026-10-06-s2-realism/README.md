@@ -3759,3 +3759,28 @@ GT에서 지도상 보이는 모든 열의 벽 하단을 정확히 질의한 평
 전달: [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1007-s2-v32-causes%2F#timeseries)
 2뷰12scalar의 원본/event/live API 수치 일치, [검증 기록](stiff-causes-delivery.json).
 기존 viewer 유지·UI 표시 미검증. 물리 잠금 미획득, status=null 확인.
+
+## s2v33 — KLD 전역 입자 예산, 오프라인 1후보 사전 등록
+
+[사전 기준·출처 해시](kld-start-criteria.json). `particle_sampling=kld_global_v1`, 기본off.
+[Fox2001 식7/Table1](https://papers.neurips.cc/paper/1998-kld-sampling-adaptive-particle-filters.pdf)과
+[Nav2 pf.c](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf.c)의
+`pf_init_model`(최대 입자로 균일 전역 초기화), `pf_resample_limit`, 다항 재표본화를 사용한다.
+기존 입자 복제만으로 없는 자세를 만들 수 없으므로 **첫 관측 전에** 최대 예산을 확보한다.
+bin=.5m/.5m/10°, 최대100000은 논문 설정; 최소2000은 기존 예산,
+epsilon=.05·confidence=.99(z=Φ⁻¹(.99))를 결과 전에 선택했다. cap에 닿으면 이론적 오차 보장을 주장하지 않는다.
+Nav2의 k≤1 처리·표본수>limit 종료를 따른다. 현재의 ESS≤N/2 선택적 재표본화,
+Augmented 복구 EMA·관측 우도·6뷰·카메라 표는 유지한다. 이는 Fox의 예측 전 샘플링이 아닌
+공개 Nav2의 관측 후 KLD 재표본화 경로다. KDE/sensor resetting은 함께 넣지 않는다.
+기존 운동 잠재변수는 기존 prior에서 독립 재표본화하고, 첫 차체 이동 때 가중2000개로
+인계하여 이후 추적은 고정 예산을 쓴다. 이번은 정지 재생만이므로 인계는 단위시험 범위다.
+
+새 강성on s1052의 동일214 RGB·동일 명령에 off/on 각1회. 재생 소스를 먼저 커밋한다.
+off pose/입자 바이트 동일, 최종 평균 위치 오차≤.25m 및 off보다 개선,
+정답25cm·15° 질량 증가·소멸 없음·거짓 resolved 없음이 통과 기준이다.
+10cm·5° 질량/개수, 입자수, unresolved 여부, 초기화+프레임 처리 wall/CPU도 함께 보고한다.
+기존 행/도크 prior와 GT 가설 선택은 금지; GT는 두 예측 파일 종료 뒤 평가에만 읽는다.
+계산 시간 비교는 agent_lock 하에 직렬 실행, 조건당300초 제한, 출력 직렬화·평가 시간 제외.
+명령 고정 재생이므로 행동 선택용 shadow pan 순위 계산은 양쪽 모두 제외한다.
+결과 후 문턱·예산 변경/추가 후보0. 기존 자료의 탐색 비교이며 새 확증·물리 성공이 아니다.
+**새 물리0, 통과해도 full DEV는 제안만**, 새 번들/seed 예약 없음. PR406 DRAFT 유지.
