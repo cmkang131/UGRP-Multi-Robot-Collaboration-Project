@@ -56,22 +56,29 @@ def predict(mode):
     receipt = dict(sha256=sha(out/'prediction.json'), gt_read=False,
         source_sha=subprocess.check_output(['git','rev-parse','HEAD'], cwd=ROOT, text=True).strip(),
         inputs={name:sha(RAW/name) for name in ('own-contacts.jsonl','robots/r3/commands.jsonl','artifacts.sha256.json')})
+    dump(out/'seal.json', receipt)
     if mode == 'off':
-        original = load(RAW/'frontend-poses.json')
-        p = [{k:r[k] for k in ('robot_id','t','pose')} for r in poses]
-        receipt['legacy_equal'] = dict(poses=p == original, grid=g.export() == load(RAW/'frontend-grid.json'),
-                                      decisions=g.decisions == load(RAW/'decisions.json'), ledger=g.ledger == load(RAW/'frontend-ledger.json'))
-        # Float-time serialization in acquisition can differ at roundoff level;
-        # do not silently waive any mismatch: record and fail before GT scoring.
-        dump(out/'seal.json', receipt)
-        assert all(receipt['legacy_equal'].values()), receipt['legacy_equal']
-    else:
-        dump(out/'seal.json', receipt)
+        verify_off()
     assert 'mujoco' not in sys.modules
     print(mode, 'sealed', receipt['sha256'], flush=True)
 
 
+def verify_off():
+    # Compare the public JSON bytes, not internal tuples against parsed lists.
+    p = load(OUT/'off/prediction.json')
+    values = {'poses':[{k:r[k] for k in ('robot_id','t','pose')} for r in p['poses']],
+              'grid':p['grid'], 'decisions':p['decisions'], 'ledger':p['ledger']}
+    originals = {'poses':'frontend-poses.json', 'grid':'frontend-grid.json',
+                 'decisions':'decisions.json', 'ledger':'frontend-ledger.json'}
+    checks = {k:(json.dumps(v,indent=2)+'\n').encode() == (RAW/originals[k]).read_bytes()
+              for k,v in values.items()}
+    dump(OUT/'off/byte-verification.json', dict(equal=checks, prediction_sha256=sha(OUT/'off/prediction.json')))
+    assert all(checks.values()), checks
+    print('off legacy JSON bytes', checks, flush=True)
+
+
 def score():
+    verify_off()
     predictions = {}
     for mode in ('off','on'):
         assert sha(OUT/mode/'prediction.json') == load(OUT/mode/'seal.json')['sha256']
@@ -135,6 +142,8 @@ def score():
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
-    parser.add_argument('mode',choices=['off','on','score'])
+    parser.add_argument('mode',choices=['off','on','score','verify-off'])
     args=parser.parse_args()
-    score() if args.mode=='score' else predict(args.mode)
+    if args.mode=='score': score()
+    elif args.mode=='verify-off': verify_off()
+    else: predict(args.mode)
