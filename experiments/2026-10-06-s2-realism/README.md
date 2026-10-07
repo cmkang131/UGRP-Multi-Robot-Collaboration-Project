@@ -3173,3 +3173,37 @@ HParams 수치 일치. 새4배속 영상 등록·HTTP206/전체 재다운로드 
 사용자 요청대로 수치만 대조했고 UI 확인을 주장하지 않는다. viewer PID52016 유지,
 공유 view 설정의 자기 키만 추가했다. raw는 로컬 보존으로 원격 백업과 구분한다.
 **전체 물리1회로 종료, 잠금 해제, PR406 DRAFT·병합 금지 유지.**
+
+
+## s2v28 — slip 진행 실패 → 반대 이동 → 재계획 (2026-10-07 사전 등록)
+
+사용자 지시: 도크 행 미지는 보류하고, v128/s1051에서 **slip_recovery=slip_recovery_v1**만
+추가한 full DEV 최대1회를 재생 통과 뒤 실행한다. 기본off, 기존 원본/번들/FAIL 보존.
+[사전 기준](slip-recovery-criteria.json). 새 seed 표본이 아닌 명시적 동일 seed 반복이다.
+
+표준 [Nav2 SimpleProgressChecker](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_controller/plugins/simple_progress_checker.cpp)는
+반경0.5m·시간10초이고 고정 연속 N회 기본값은 **없다**. 동일 방향의 완전한 slip 측정이
+이어지는 동안 이 시간/진행 조건을 적용하고 문턱에 도달한 실제 N을 보고한다. 정상·unknown·
+방향 변경은 연속 slip 증거를 끊는다. 명령 기반 PF가 갱신으로 점프해도 진행으로 세지 않고
+완료된 own RGB 변위의 SE2 합성만 진행 판정에 쓴다.
+
+[기본 BT](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml)는
+6 retries, Spin1.57rad·Wait5s·BackUp0.30m/0.15m/s를 사용한다.
+[BackUp 기본 port](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_behavior_tree/include/nav2_behavior_tree/plugins/action/back_up_action.hpp)의
+time_allowance는10초다. 이번은 사용자 순서대로 **정지→BackUp→재계획**을 적용한다.
+원본 BT 전체 순서/laser costmap/encoder feedback을 그대로 구현했다고 주장하지 않는다.
+메카넘에서는 막힌 발행 방향 반대의 후진/옆이동, 이미 보정된35 fine pulse와 정지 꼬리로
+속도≤0.15m/s·최대0.30m 또는10초까지만 시도한다. 더 큰 회전은 추가하지 않는다.
+회복 성공은 명령 합이 아니라 완전한 RGB 변위로 확인하고 unknown은 성공으로 채우지 않는다.
+static map+자기 추정 기반 가드는 dev_light 기록, 실제 낙하/이탈/기울기/오류 감시는 그대로다.
+팔·집게 명령과 운반 자세는 바꾸지 않는다. 실패 방향은 실제 벽 법선을 안다는 뜻이 아니며
+자기 추정의 국소 실패지점만 경로 keepout으로 쓰고 관측 지도/PF 벽으로 넣지 않는다.
+
+재생은 s1051-slip의 저장된 own RGB 유래 slip·명령·추정 pose만 읽고 GT는 쓰지 않는다.
+각 연속 구간은 **첫 다른 명령까지** 독립 prefix로 평가한다. 통과 기준: 적격 구간≥1,
+모든 적격 구간에서 시간 문턱 뒤 즉시 기존 막힌 이동 차단·반대 bounded pulse, 정상/unknown
+오발동0, off 출력 동일, 팔 명령 변경0, 회복 timeout/완료 뒤 재계획 시험 통과.
+그 뒤 원본 RGB를 새 회복 행동 뒤 영상으로 재사용하지 않으며 재생으로 물리 탈출·fix·RMSE
+개선을 주장하지 않는다. 통과 시에만 동일1051/P1-2/B/place full1회, freeze ON/dev_light,
+agent_lock·ugrp_session·모델0. SIM900s/wall10800s, ENOSPC=HOST_ERROR·부분raw 보존.
+이전 s1051·s1051-slip과3조건 표, 모든 실패·would-stop·wall/SIM을 그대로 기록한다.
