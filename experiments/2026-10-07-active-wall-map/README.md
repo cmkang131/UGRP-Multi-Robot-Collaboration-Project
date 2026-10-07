@@ -77,3 +77,15 @@ real_v1 강성에서 실제 pitch 오차는 평가 전용으로 재측정한다.
 
 사전 등록. 구현/오프라인/새 물리 결과 없음. TensorBoard 변환은 사용자 앞선 생략 지시 유지.
 raw: `/Users/changmin/projects/ugrp/outputs/active-wall-map-v1/`.
+
+## 구현 전/오프라인 검증 기록
+
+사전 등록 `85bc483d`(기존 pulse/강성 8시험 통과). 새3파일 21시험 통과: off bytes,
+94파일 원본 일치, FK 축, 유효 펄스/정지, 정보예측 복사본 격리, own-only, NavFn frontier 연결.
+첫 시험의 Python proxy deepcopy 재귀와 DoorMemory 인자 누락2개는 오프라인에서 수정했다.
+RGB 기존 SEARCH 영상1장을4시점 반복한 API smoke는 graph2회·information2회를 실행했다.
+이 smoke는 프레임 합성 시점/비실행 명령이라 새로운 탐색/지도 품질 근거가 아니다(`offline-acceptance.json`).
+
+[출처와 명시적 어댑터 차이](REFERENCES.md), [인쇄 자료 전체 해시](prints.json).
+두 재질24면씩과 미터 단위 배치표는 raw `prints/`에 보관(사진1.60MB, speckle3.88MB).
+일반 로컬 실행 환경을 재사용하며 새 라이브러리/venv 없음. C++ 바이너리는 소스 해시로 로컬 빌드.
