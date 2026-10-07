@@ -17,11 +17,13 @@ def main():
     commands=sorted(rows(RAW/'robots/r3/commands.jsonl'),key=lambda r:r['t'])
     truth=rows(RAW/'eval_only/trajectory.jsonl')
     times=np.array([r['t'] for r in truth]);actual=np.unwrap([r['robot_yaw_rad'] for r in truth])
-    odom=PulseOdometry(commands[0]['t']);cursor=0;dr=[]
+    odom=PulseOdometry(commands[0]['t']);cursor=0;dr=[];variance=[0.];cumulative_q=[]
+    def add_noise(delta,q):variance[0]+=float(q[2])
+    odom.step_callback=add_noise
     for t in times:
         while cursor<len(commands) and commands[cursor]['t']<t-1e-8:
             odom.command(commands[cursor]);cursor+=1
-        odom.advance(t);dr.append(odom.pose[2])
+        odom.advance(t);dr.append(odom.pose[2]);cumulative_q.append(variance[0])
     dr=np.unwrap(dr)
     prediction=json.loads(BASE.read_text());poses=prediction['poses']
     pt=np.array([p['t'] for p in poses]);est=np.unwrap([p['pose'][2] for p in poses])+actual[0]
@@ -47,24 +49,30 @@ def main():
         row['matching_reasons']=dict(Counter(d['reason'] for d in ds))
     # RBPF yaw propagation is additive; recreate pre-proposal yaw for each
     # recorded particle with stored resampling parent indices, no re-estimation.
-    cloud=np.zeros(100);last_dr=0.;scans=[]
+    cloud=np.zeros(100);last_dr=0.;scans=[];last_scan_q=0.;initial_var=math.radians(2.)**2
     for d in prediction['decisions']:
         cur=sample(dr,d['t']);prior=wrap(cloud+wrap(cur-last_dr));last_dr=cur
         pe=d.get('particle_events')
         if pe:
             j=d['selected_before_resampling'];target=wrap(sample(actual,d['t'])-actual[0])
             needed=degrees(wrap(target-prior[j]))
+            q=sample(cumulative_q,d['t'])
+            sigma=math.sqrt(initial_var+q-last_scan_q+(1e-10 if d['matching_attempted'] else 0.))
             scans.append(dict(t=d['t'],reason=d['reason'],matching_attempted=d['matching_attempted'],
                 prior_yaw_deg=degrees(prior[j]),needed_gt_yaw_correction_deg=needed,
+                prior_yaw_sigma_deg=degrees(sigma),needed_prior_sigma=abs(math.radians(needed))/sigma,
                 outside_rbpf_8deg=abs(needed)>8.,outside_graph_15deg=abs(needed)>15.,
                 selected_search_boundary=pe[j].get('search_boundary'),
                 overlap=pe[j].get('overlap'),residual_m=pe[j].get('residual_m'),
                 posterior_yaw_error_deg=degrees(wrap(d['pose'][2]-target))))
             cloud=np.array([e['pose'][2] for e in pe])
+            last_scan_q=q;initial_var=1e-10
             if d['resampled']:cloud=cloud[d['parent_indices']]
             assert abs(wrap(cloud[d['selected_after_resampling']]-d['pose'][2]))<1e-10
         else:cloud=prior
-    result=dict(turns=turns,scans=scans,rbpf_coarse_yaw_deg=8.,rbpf_fine_extension_max_deg=3.,
+    result=dict(turns=turns,scans=scans,turn_totals={str(sign):{k:sum(t[k] for t in turns if np.sign(t['u'])==sign)
+        for k in ('dr_delta_deg','gt_delta_deg','dr_excess_deg')} for sign in (-1,1)},
+        rbpf_coarse_yaw_deg=8.,rbpf_fine_extension_max_deg=3.,
         graph_loop_window_deg=15.,qualifications=[
         'Turn run = consecutive issued nonzero-turn commands of same sign, ends at next command timestamp (includes inter-command tail).',
         'Original commands/GT/prediction timestamps interpolated only for evaluation.',

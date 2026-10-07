@@ -100,13 +100,15 @@ def score():
             r.update(sigma_xy_m=float(sigma[-1]),error_sigma_ratio=float(error[-1]/sigma[-1]),over_2sigma=int((error>2*sigma).sum()),pose_n=len(poses),
                 resamples=g['resamples'],neff=float(1/np.sum(np.square(g['weights']))),
                 rejected_resamples=sum(d.get('resampled',False) for d in pred['decisions'] if d['status']=='rejected'),
-                rejected_sensor_updates=sum(d.get('sensor_weight_update',False) for d in pred['decisions'] if d['status']=='rejected'),
+                rejected_sensor_updates=(sum(d.get('sensor_weight_update',False) for d in pred['decisions'] if d['status']=='rejected')
+                    if any('sensor_weight_update' in d for d in pred['decisions']) else None),
                 reasons=dict(Counter(d['reason'] for d in pred['decisions'])))
         return r,dict(t=times,yaw_error_deg=np.degrees(yaw).tolist(),xy_error_m=error.tolist())
     for mode in MODES:
         pred=load(OUT/mode/'prediction.json');graph=load(OUT/mode/'graph.json')
         front,c=evaluate(pred);back,bc=evaluate(graph,True)
-        result['modes'][mode]=dict(frontend=front,graph=back,graph_diagnostics=graph['diagnostics'],seal=load(OUT/mode/'seal.json'))
+        diagnostic={k:graph['diagnostics'].get(k) for k in ('options','loop_counts','switch_counts','changed','optimization')}
+        result['modes'][mode]=dict(frontend=front,graph=back,graph_diagnostics=diagnostic,seal=load(OUT/mode/'seal.json'))
         curves[mode]=dict(frontend=c,graph=bc)
     baseline=result['modes']['off']['frontend']
     for mode in ('all','wide'):
