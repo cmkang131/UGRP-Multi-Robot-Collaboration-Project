@@ -3892,3 +3892,29 @@ JSON 구성 병합 버그만 수정하고 동일 사전 등록의 시작 물리1
 GT는 종료 평가만, 시작 도크 prior0·운반0·모델0. 잠금 해제, 세션 종료.
 사용자 감독 예외에 따라 로컬 SHA 실행·push 대기. 25cm 미달로 이 위치찾기 옵션의 full DEV는 제안하지 않는다.
 다음 s2v36은 별도 사용자 허가된 하중/벽 접촉 ablation이며 이 결과를 운반 성공에 합산하지 않는다.
+
+## s2v36 사전 등록 — 하중·팔 자세·벽 접촉 분리, 단독 운반 시선 올리기
+
+사용자 지적: 상자는30g이며 하중 오차로 묶인6회가 실제 하중 효과인지 다시 분리한다.
+기존 95.84%·10.37배는 벽 접촉과 하중이 섞인 상관이며 질량 효과로 해석하지 않는다.
+[고정 설계/기준](load-wall-criteria.json): SEARCH 무상자, HIGH/real_delivery/look_ahead 유·무상자 × far/near =14조건.
+문제6회와 같은 .65 옆 명령/.65초, 간격도 그대로. setup 진단 seed1051이며 학생 임무 실행 아님.
+강성real_v1·freezeON·v7 mesh롤러·v3 mount/FOV 유지. 원래 자료/번들 불변.
+단1회 초기 HIGH 집게 사이 수동 배치 뒤 정상 접촉만; 지그 clamp/weld/실시간 GT 보정 없음.
+실제 파지 이탈/낙하는 그 조건 종료, 같은 물리 원인2회면 전체 중단. HOST 실패는 별도 기록.
+
+`carry_pose=look_ahead_v1` 기본off 후보: HIGH에서 손목3만896→1050. 집게1500 유지,
+실물 servo_steps의 순서·기간을 재사용하며 내려놓기 전 HIGH로 복귀한다. 실물 정확 PWM 측정값이라는 주장은 하지 않는다.
+근거는 사용자의 “단독 운반 때 고개를 들어 벽·바닥이 보인다”는 관찰이다.
+보정은 [OpenCV solvePnP](https://docs.opencv.org/4.x/d5/d1f/calib3d_solvePnP.html)의 알려진 표적+RGB 코너와 고정K/D;
+강성ON free chassis에서 unloaded/loaded 새 자세를 각각 측정하고 holdout≤1px. GT는 검증에만.
+[MuJoCo mj_contactForce](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-contactforce)로
+손가락/상자/차체/롤러–벽 및 바닥 접촉 wrench·질량중심·기울기를 write-only 평가한다.
+[제조사 MasterPi](https://www.hiwonder.com/products/masterpi) 본체1.1kg, 기존65mm 휠 도면 근거를 보존한다.
+부품별 질량 분포는 미측정이라 임의로 재분배하지 않는다.
+
+free 동일자세 하중 차이≤10%, yaw차≤1°; near/free 진행≤20%면 막힘.
+새 자세 파지≥99%, pitch하중차≤.5°, 벽하단 가시율+10%p를 고정 비교한다.
+이 짧은 고정명령 진단의 가시 기회와 실제 전체 경로 PF fix 공백은 구분한다.
+안전·보정 통과 시에만 별도 등록 후 seed1051 full DEV를 고려한다. 결과 후 문턱 변경 없음.
+사용자 감독 예외로 push 대기 로컬 커밋 실행 허용. PR406 DRAFT·병합 금지.

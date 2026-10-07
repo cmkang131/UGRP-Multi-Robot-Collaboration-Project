@@ -17,6 +17,8 @@ OPTION = 'real_delivery_v1'
 # physical_state_machine_reference.DELIVERY_CARRY_POSE and real trace
 # 20260902T145131Z-real-19bb30fd / pick-b5f9a960 event67. No live hardware import.
 CARRY = {1: 1500, 3: 600, 4: 2200, 5: 1400, 6: 1500}
+LOOK_AHEAD = {1: 1500, **old.high.HIGH, 3: 1050}
+LOOK_AHEAD_OPTION = 'look_ahead_v1'
 REAL_COMMAND_WAIT_S = .15  # red_block.robot.Robot.move_servo
 
 
@@ -32,16 +34,19 @@ def transition(current, target, *, lowering=False):
 
 class Runtime(Previous):
     def __init__(self, *args, carry_pose='off', **kwargs):
-        if carry_pose not in ('off', OPTION):
+        if carry_pose not in ('off', OPTION, LOOK_AHEAD_OPTION):
             raise ValueError('unsupported carry_pose')
         if carry_pose != 'off' and kwargs.get('setdown_relook') != 'off':
             raise ValueError('real solo carry candidate requires setdown_relook=off')
         self.carry_pose = carry_pose
         super().__init__(*args, **kwargs)
 
+    def carry_target(self):
+        return LOOK_AHEAD if self.carry_pose == LOOK_AHEAD_OPTION else CARRY
+
     def set_state(self, state, now):
         if self.carry_pose != 'off' and state == 'carry' and self.state == 'lift':
-            for p, duration, settle in transition(self.servo, CARRY):
+            for p, duration, settle in transition(self.servo, self.carry_target()):
                 self.queue(p, now, duration=duration, settle=settle)
             return super().set_state('real_carry_transition', now)
         return super().set_state(state, now)
@@ -61,7 +66,7 @@ class Runtime(Previous):
         if not idle:
             return [{'kind': 'hold'}]
         expected = (old.high.at_high(self.servo) if self.state == 'real_carry_return'
-                    else at_carry(self.servo))
+                    else all(self.servo.get(s) == p for s,p in self.carry_target().items()))
         if not self.beam_grasp_confirmed or not expected:
             return self.fail('LOADED_COMMAND_STATE_LOST', now)
         if self.state == 'real_carry_transition':
@@ -102,4 +107,8 @@ class Runtime(Previous):
                 visual_stall='existing HIGH-only monitor not qualified at real carry',
                 approach='existing lift/check, real sequential carry transition, HIGH return/descent',
                 physical_success=None)
+            if self.carry_pose == LOOK_AHEAD_OPTION:
+                out['carry_pose'].update(option=LOOK_AHEAD_OPTION,
+                    commanded_servo=copy.deepcopy(LOOK_AHEAD),
+                    scope='S2 solo DEV user look-ahead candidate; calibration required')
         return out
