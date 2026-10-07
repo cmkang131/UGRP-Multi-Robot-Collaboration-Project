@@ -39,6 +39,14 @@ def write(p,value):
 def world_pose(pose):return np.r_[transform([pose[:2]],START)[0],pose[2]+START[2]]
 
 
+def replay_observation(actor,log):
+    # Evaluation replay uses the stored OWN DR, never world pose. No predictor
+    # is corrected: replace the unused live odometer with a read-only record.
+    actor.t=log['t']
+    actor.odom=SimpleNamespace(pose=np.asarray(log['pose_odom']))
+    actor.receive(log['observation'],[])
+
+
 def disk_margin(points,rects,bounds,radius):
     """Exact distance to OBB union minus circumscribed radius (outside obstacles)."""
     pts=np.asarray(points,float).reshape(-1,2)
@@ -225,7 +233,7 @@ def plot(case,world,records,costmaps,path):
 
 
 def main():
-    dest=OUT/'audit';dest.mkdir(exist_ok=False)
+    dest=OUT/'audit-v2';dest.mkdir(exist_ok=False)
     results=[];inputs={}
     for i in (4,5):
         for seed in (4701,4702):
@@ -240,8 +248,7 @@ def main():
             actor=PersistentActor('static_map',*static_inputs(world),navigation='public_ros_v3')
             records=[];costmaps=[]
             for log in logs:
-                actor.t=log['t'];actor.odom.pose=np.asarray(log['pose_odom'])
-                actor.receive(log['observation'],[])
+                replay_observation(actor,log)
                 if log['frame'] in (firstframe,logs[-1]['frame']):
                     stage='first_rejection' if log['frame']==firstframe else 'terminal'
                     record,cm=snapshot(actor,log,world,stage)

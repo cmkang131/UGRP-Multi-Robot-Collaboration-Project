@@ -33,3 +33,13 @@ def test_inflation_outer_radius_is_soft_not_required_door_width():
     assert cm.costs[11,15]==253
     assert 2*np.linalg.norm(HALF)<.5
     assert cm.pose_clear([.05,-.05,0])
+
+
+def test_replay_own_pose_without_mutating_live_odometry_property():
+    from harness.public_navigation_persistent import PersistentActor
+    actor=PersistentActor('own_frontier',navigation='public_ros_v3')
+    log=dict(t=2.,pose_odom=[1.,0.,0.],observation=dict(robot_id='r1',frame_id=0,
+        floor_xy=[[.05,.05]],wall_xy=[[.25,.05]],floor_source='floor_visible'))
+    a.replay_observation(actor,log)
+    assert actor.latest[(12,0)]
+    assert actor.grid.odds[(12,0)]>0
