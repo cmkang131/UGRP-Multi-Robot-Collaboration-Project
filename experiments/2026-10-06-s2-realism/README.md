@@ -3620,3 +3620,5 @@ HIGH/VIA/hover/descent/real_delivery)를 기존 공개 명령 port로 움직여6
 새 on 기록만 새 plant 판정에 쓰며, 자료 부족도 NOT_EVALUABLE로 남긴다.
 모든 조건 통과 때만 seed1052 full DEV1회, freezeON·관측 격리·RGB감시·dev_light·agent_lock.
 정적 표적 획득180SIM초/시작12SIM초, 한 번에 하나. 미달이면 full 없음.
+
+보정 취득 `bcefa435`: 22/22 PASS, 133.30SIM초/58.16wall초, holdout RMS 최대.2043px. GT 평가 pitch 차이 최대.2256°(보정에 미사용). 새 고정표 `s2_camera_stiff_target_v1.json`을 다음 시작 녹화 전에 봉인한다. 시작 녹화는 seed1052의 기존 정지 명령214프레임을 그대로 재발행하는12초 미만 진단이며, PF·도크 prior·주행·full 임무가 없다.
