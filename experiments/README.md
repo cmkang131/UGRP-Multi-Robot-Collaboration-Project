@@ -1,5 +1,8 @@
 # 실험 인덱스
 
+- [2026-10-07 public_ros_v6 camera raytrace](2026-10-07-mapfree-raytrace/RESULTS.md): PR #409. 기존 K/L32 개발에서 연결36→1,351–2,130칸·NavFn 경로0→29,960후보로 복구. 첫3.54cm footprint 연결이 unknown에 걸려 최종 경로0/32, 추가 튜닝·새 확인·현실 잡음 없이 중단.
+
+
 - [2026-10-07 동결 v5 frontier 오라클 새32쌍](2026-10-07-mapfree-frontier-oracle/RESULTS.md): PR #409. 새 K/L32에서 정적 B32/32, 자기 frontier0/32·coverage17.25%·기준1/5. 0.10m floor 표본→0.05m 자기 격자 단절, 목표 후보2,044개 모두 불통·첫 관측2s 종료. 튜닝 없이 중단, 현실 잡음 미실행.
 
 - [2026-10-07 s4 마지막 개발·새32 확인](2026-10-07-mapfree-s4-final/README.md): PR #409. B/경로 중심은 free, 거부는0.1m 벽 경계2셀의 footprint 교차. 원 Nav2 bringup0.05m를 기본-off `public_ros_v5`로 적용, 개발 참 B6/6·거짓0 뒤 미개봉 oracle static32/32·충돌0·거짓0. frontier/현실 잡음은 미실행, 추가 개발 반복 종료.
