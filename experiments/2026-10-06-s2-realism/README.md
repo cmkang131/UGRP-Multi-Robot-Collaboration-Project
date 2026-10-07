@@ -4346,3 +4346,51 @@ freeze ON은 S2 단독 DEV 한정이고 S3·짝 운반·본 연구/정식 사전
 미검증 한계로 보존하고, 재생 이후 검출 파라미터는 바꾸지 않았다.
 freeze 공통 검증에는 새 start-only DEV의 명시적 사용자 승인·S2/solo/DEV·옵션 조합만 허용하는
 좁은 분기를 추가했다. 사전 등록 사실은 true로 보존하며 본 연구 제한을 우회하지 않는다.
+
+### v39 물리 완료 — 시작25cm PASS, S2 단독 full DEV inside=true
+
+실행 소스`b2de2b30e2a0191d6b911125a9cc8ddb697614bb`,
+[전체 결과·해시](landmarks-physical-result.json). 시작`v132`/seed1052와 full`v133`/seed1051을
+각1회 순차 실행했다. 새 seed 대체/재시도0, 모델 호출0, GT 제어0, 결과 후 문턱 변경0.
+표준 `sim_cli workflow run`을 `ugrp_session run`으로 감싸고 각 드라이버가 agent_lock을
+acquire/finally release했다. 두 세션 종료와 각 lock.json의 status_after=null을 확인했다.
+
+시작: **최종7.6877cm**,6시각갱신,13.50 totalSIM/24.789wall초,wall/SIM1.83624.
+nonzero wheel 명령0·운반0. would-stop은 ARM_COLLISION_GUARD6/GLOBAL_START_UNRESOLVED1/
+POSE_UNCERTAIN1. 이 완료result의 SHA256을 full 번들 start_proof에 묶어 조건부 실행을 열었다.
+
+| seed1051 실시간 DEV 지표 | 기존 v131 | 새 v133 |
+|---|---:|---:|
+| lifted / inside / stable | true / false / true | **true / true / true** |
+| B 구역까지 상자 잔여거리 m | 2.336 | **0** |
+| 운반 갱신 수 / 최장 공백 s | 19 /45.00 | **28 /23.30** |
+| 운반 XY RMSE m (GT 평가만) | 1.154243 | **.217977** |
+| 내려놓기 직전 오차 m | 2.709823 | .139466 |
+| 실제 벽 하단 가시율 (1Hz·96열) | 60.98% | **99.42%** |
+| 바퀴-벽 접촉 연속구간 / 표본 | 54 /188 | **0 /0** |
+| wall / totalSIM s | 479.144 /271.25 | 612.940 /311.10 |
+| wall/SIM | 1.76643 | 1.97023 |
+
+새 full의 운반 창은81.85–289.10SIM초. B 중심까지 .138275m, 상자는 floor/stable 판정도 통과했다.
+wheel/body/finger/cargo–wall 양의 접촉력 표본 모두0이다. would-stop은
+**POSE_UNCERTAIN293·ARM_COLLISION_GUARD7**(기록만); 물리 실패0·regrasp0.
+시각 집기 확인은 `probable_held_inhand_rgb`; 원래 자리 차분은 effective verifier가 inhand이므로
+실행하지 않았고 `pickup_site_comparison=false`를 그대로 보존한다. 판단을 물리 성공으로 바꿔 쓰지 않았다.
+
+두 full 모두 freeze ON이다. 이 표의 시간 차이를 freeze 전/후 효과라고 해석하지 않는다.
+실제 운반 경로도 달라 단일 DEV 비교이며 이전 폐기 조건·연구 성공률과 합산하지 않는다.
+남은 한계: 운반 색 경계 **112후보**, 문 **0관측**. 시작 aliasing 해소는 색 경계가 기여했고,
+문 특징의 실녹화 유효성은 아직 확보하지 못했다. 일부 벽/바닥 접점이 색 경계로 남는 문제와
+POSE_UNCERTAIN293도 보존한다. 이번 결과 뒤에는 추가 수정·추가 물리를 하지 않았다.
+
+- 시작 raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1052-landmark-start`
+- full raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full`
+- 4배속 own RGB 영상: 위 full의 `execution.mp4` (640×480,20fps,76.7s,1,495,364bytes).
+  원본6137장/20Hz를80Hz 입력→20fps로 내보냈다. ffprobe·전체 디코딩·SHA256·native영상Range206 확인.
+- [TensorBoard](http://127.0.0.1:6006): `1008-s2-landmarks-v39` 재생32수치,
+  `1008-s2-landmarks-dev` 시작/full/v131 비교47수치 및 full-media 영상 등록.
+  원본/event/live API **79수치 일치**, UI 화면 확인은 미수행.
+  [전달 검증](landmarks-physical-delivery.json); shared viewer는 새 자기 키만 추가했다.
+- 관련 시험: landmarks/AMCL14 PASS, 실행허용/freeze/workflow37 PASS.
+  새 workflow plan 예시와 기존 v131 누락을 보완했다. 전체 CI 통과/본 연구·실물 성능 주장은 하지 않는다.
+  PR #406 DRAFT 유지·병합0, 원본 보존, 공용 camera_robot_port/#405/#408 수정0.
