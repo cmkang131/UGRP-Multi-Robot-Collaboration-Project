@@ -4394,3 +4394,38 @@ POSE_UNCERTAIN293도 보존한다. 이번 결과 뒤에는 추가 수정·추가
 - 관련 시험: landmarks/AMCL14 PASS, 실행허용/freeze/workflow37 PASS.
   새 workflow plan 예시와 기존 v131 누락을 보완했다. 전체 CI 통과/본 연구·실물 성능 주장은 하지 않는다.
   PR #406 DRAFT 유지·병합0, 원본 보존, 공용 camera_robot_port/#405/#408 수정0.
+
+
+## s2v40 사전 등록 — v133 첫 DEV 성공의 새 seed 재현 (2026-10-08)
+
+사용자 요청: **설정·문턱·제어 코드 변경0**, 새 미사용 seed **1053 →1054**를 각1회 full DEV.
+[seed 확인](reproduction-seed-audit.json): origin/main/열린15PR의 seed 기록과 공용 outputs 실행명을
+확인해 두 번호의 기존 사용0. P1-2/r3/B/door_1·상한900SIM초·dev_light·freeze ON을 그대로 둔다.
+[등록](reproduction-registration.json). 실패는 원인만 기록하며 수정·재시도·대체 seed0.
+ENOSPC는 HOST_ERROR이며 성공 문턱은 기존 lifted/inside/floor/stable 평가 그대로다.
+
+고정 제어/물리 소스 **027c567c45ec05968d7243212fbce1b4aa4d2d59**와 번들 **v133/7.26.0**.
+실제 첫 성공 실행 SHA는 b2de2b30이며 027c567c는 그 결과 문서만 더한 커밋이다.
+성공 raw bundle의 **436개 의존 파일 SHA256**을 현 파일 및027c567c git blob과 대조한다.
+옵션·6개 보정/모델 표·주기·cap·평가·실행 loop는 모두 기존 byte를 쓴다.
+기존 seed1051 전용 admission은 보존하고, 새 `zone-s2-v133-reproduction` 관리 어댑터가
+등록한 두 seed만 허용한다. 새 동작/새 제어 번들이 아니며 **v133 프로필을 재사용**한다.
+원래 start proof는 b2de2b30 source에 대해 원래 validator로 검증한다.
+새 번들 인스턴스 해시는 seed/provenance 때문에 다르므로 예전 해시와 같다고 주장하지 않는다.
+추가한 것은 새 seed 허가/출처 기록뿐이며 실행 소스 SHA와 사전등록 어댑터 SHA를 구분한다.
+
+출발 조건도 기존과 동일: `zone_solo_cyan_v106.py:103–108`의 공통 경기장 시작영역 prior
+(x=공통 시작x, y=모든 행 평균/행 범위 σ, yaw=0의 분포)는 유지한다.
+**자신의 도크/행 배정·GT 위치·seed→행 조회는 제어기에 주지 않는다**.
+경기장 전체 균일 초기화 또는 KLD 옵션으로 변경하지 않는다(기존 v133 full에는 없음).
+첫 nonzero base 명령 시각 이하 마지막 pose를 pose.t_est 시각의 저장된 eval 궤적과 비교해
+출발 오차를 계산한다. 주행을 못 한 경우 마지막 pose 및 endpoint를 명시한다. GT는 종료 후만 읽는다.
+운반 RMSE/최장 갱신 공백/벽 가시율은 기존 사후 평가기 그대로, 접촉은20Hz 양의 접촉력의
+wheel/body/finger/cargo–wall 표본·연속구간, B 거리는 상자→B **중심** 거리다.
+would-stop 목록과 실제 실패를 따로 보존하고 own RGB 영상 각1개를4배속으로 outputs에 남긴다.
+
+agent_lock이 null일 때 acquire → ugrp_session + 표준 sim_cli 관리 → finally release,
+두 실행은 순차 진행한다. 현재 ego-map 물리가 잠금을 보유하므로 물리는 시작하지 않았다.
+freeze는 S2 단독 DEV만이며 S3/짝 운반/본 연구에는 금지; 폐기된 조건과 합산0.
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s{1053,1054}-v133-reproduction`.
+사전등록 이후 결과에 따라 문턱/옵션/기준 변경0. PR #406 DRAFT·병합0.
