@@ -1388,3 +1388,52 @@ snapshot `1007-s2-unloaded-sag-replay-verified`: **12개 오프라인 비교·12
 미션 실행 수는 0이며 수치만 대조했다. 최초 export는 audit schema 누락으로 12개 모두
 거절돼 실패 manifest/파생 뷰를 보존했고, schema를 적은 새 파생 뷰·새 snapshot으로
 검증했다. 공용 view 파일에는 자기 키만 추가했고 기존 서버/자료는 유지했다.
+
+### AMCL likelihood-field 비교: 재생 결과 전 기준 (2026-10-07)
+
+[사전 고정 기준](soft-mcl-criteria.json). s1045–1047은 탐색/오프라인 검증 자료이며 확증 seed가
+아니다. 새 후보는 한 가지 `measurement_model=amcl_likelihood_field_v1`이고 기본 off다.
+무하중+PR405 고정 loaded-minus-unloaded 표(−1.55329°)를 이전 비교 그대로 사용한다.
+새 GT fit/보정표 튜닝은 없다. 카메라 v3·K/D·검출기·운동/명령/seed는 고정한다.
+
+각 seed carry에서 (1) 관측으로 실제 가중치가 바뀐 update의 최장 공백(양끝 포함)≤30 SIM s,
+1초 간격 독립 update≥6, (2) 지연 t_est 기준 xy RMSE가 **기존 원본과 동일 보정의 이전
+hard-receipt 재생 모두보다 감소**, xy 오차 p90은 두 baseline 모두보다 커지지 않아야 한다.
+세 seed 모두 통과해야 새 full DEV를 허용한다. GT는 이 사후 채점/입장 판정과 잔차 분해에만
+사용하고 측정식·보정값·PF에 전달하지 않는다. 사후 문턱 완화나 여러 후보 튜닝은 하지 않는다.
+가중치 변화 KL>1e-12는 부동소수 반올림/상수 likelihood 제외용이며 정확한 절대 위치 fix를
+뜻하지 않는다. 원래 hard fix, 확률 update, 업데이트 후 위치 정확도를 구분해 보고한다.
+
+현재 코드 감사: `zone_final_pair_scan`/`partial_fix`는 가중치 갱신 **후** residual/support/
+rank로 fix receipt를 거절한다. s1045/1046이 이 방식이며 이미 hit+outlier 혼합을 쓴다.
+s1047의 `visual_update=accepted_scan_v1`은 **갱신 전** 거절로 weight 변경도 막는다.
+따라서 전체 과거가 순수 hard gate였다고 단정하지 않는다.
+
+표준 근거:
+- [Probabilistic Robotics, 저자 공식 사이트](https://robots.stanford.edu/probabilistic-robotics/), Ch.6/8의
+  측정 mixture와 MCL: 측정 likelihood로 입자 가중치를 갱신하고 정규화/재표집한다.
+- [Nav2 공식 AMCL 설정](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/):
+  likelihood-field는 **hit/random** 두 성분이며 short/max는 별도 beam 모델이다.
+  단안 RGB의 미검출을 lidar max-range 반환으로 해석하지 않는다.
+- [고정한 Nav2 likelihood-field 구현](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/sensors/laser/likelihood_field_model.cpp):
+  endpoint에서 가장 가까운 occupied cell까지 거리 d,
+  `pz=0.5*exp(-d*d/(2*0.2*0.2))+0.5/range_max`,
+  `weight *= 1 + sum(pz^3)`를 그대로 따른다. residual 크기로 전체 scan을 거절하지 않는다.
+  [beam 모델](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/sensors/laser/beam_model.cpp)은
+  기대 ray range 대비 short/max/hit/random을 섞는 대안이며 이번 후보에는 혼합하지 않는다.
+
+필요한 RGB 어댑터: 검출된 wall/floor pixel을 **고정 보정표**의 ray로 바닥에 역투영하여
+2D endpoint를 만든다. 아래로 향하지 않는 ray/NaN/100m 이상은 측정 없음이다.
+정적 지도 장애물을 1cm occupancy grid로 만들고 표준 Euclidean distance transform,
+거리 cap2m, hit sigma0.2m, hit/random0.5/0.5, max_beams60, range_max100m를 고정한다.
+Nav2의 beam stride는 `(range_count−1)//(max_beams−1)`를 그대로 적용한다. 1cm는
+이번 metric 지도 raster 정의이며 px 잔차에 맞춰 고른 sigma가 아니다. 독립 관측 주기는
+자기 명령 오도메트리의 축별 이동>0.25m 또는 회전>0.2rad(AMCL 기본값), 최초 HIGH
+관측이며 정지 시 같은 장면을 반복 곱하지 않는다. 제어 입력은 여전히 자기 RGB/명령뿐이다.
+변경은 S2의 loaded HIGH 측정 업데이트에만 한정한다. 기존 motion/PF 초기화·주행·다른
+제어기 및 기본 off는 유지한다. ROS AMCL 전체 이식/KLD particle 수 변경 주장은 아니다.
+
+잔차 분해는 동일 저장 영상/열에서 K/D 역변환 수치 오차, 고정↔실제 카메라 높이/방향,
+프레임별 흔들림, GT 투영↔검출 행 차이를 대조한다. 평가 로그에는 차체 tilt 크기는 있지만
+roll/pitch 성분·관절 시계열은 없으므로 처짐과 차체 기울기를 유일하게 분리할 수 없으면
+식별 불가와 기여 상한으로 보고한다. GT 자세를 실행용 보정표로 바꾸지 않는다.
