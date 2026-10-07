@@ -3600,3 +3600,23 @@ hover 감사 float의 끝자리(최대2.8e−17m) exact 비교1건, workflow pla
 실행기/물리/번들/과거 원본은 바꾸지 않는다. 로컬 전체 suite 대신 실패 관련 파일만 확인한다.
 
 CI 수정 로컬 검증: 관련7파일44시험/73.93s PASS; 엔진 import를 차단한 offline 환경은 관련5파일의 의존성 분기만 별도 확인. 원격 전체 완료는 별도 기록한다.
+
+### 강성on 재보정 사전 등록
+
+[기준](stiff-camera-criteria.json): #405 `7d109118`의 강성 XML 변환을 바이트 그대로
+S2 파일로 복사한다(원본 수정0). 모든 무하중 정착 자세22개(LOOK_P20 pan들, SEARCH,
+HIGH/VIA/hover/descent/real_delivery)를 기존 공개 명령 port로 움직여6초 정착한다.
+구 지그의 차체 qpos/속도 재설정은 사용하지 않는다. 바닥 기준 위치·자세를 아는 평면 표적
+두 장 fit/한 장 holdout의 RGB 코너로 OpenCV solvePnP+LM, fixed K/D 그대로.
+[OpenCV Demo1](https://docs.opencv.org/4.13.0/d9/dab/tutorial_homography.html)을 확인했다.
+측정한 ground normal(pitch/roll)·높이만 적용하며 XY offset/yaw는 기존 고정 기하 유지.
+보정 입력은 표적 기하와 RGB뿐이고, 관절·차체·카메라 GT는 별도 평가에만 남긴다.
+새 `camera_pitch=stiff_target_v1` 기본off; 잘못된 plant/누락 자세는 거부한다.
+
+무하중표를 하중에 적용하는 경우 **강체 근사**이며 하중 보정 성공으로 표시하지 않는다.
+두 번 실패한 하중 지그 재시도0·weld0. 다음 관문은 강성on 시작12초 이하 고정 명령 영상,
+8.25초 검출≥6열, 기존 s2v29 위치 기준, 그리고 VO 정상 RMS 비악화·운반 RMSE 개선이다.
+기존off s1052 영상을 새 강성on 영상으로 부르지 않는다. #405의 이미 있는 on 자료와
+새 on 기록만 새 plant 판정에 쓰며, 자료 부족도 NOT_EVALUABLE로 남긴다.
+모든 조건 통과 때만 seed1052 full DEV1회, freezeON·관측 격리·RGB감시·dev_light·agent_lock.
+정적 표적 획득180SIM초/시작12SIM초, 한 번에 하나. 미달이면 full 없음.
