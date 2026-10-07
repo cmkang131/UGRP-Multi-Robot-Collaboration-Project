@@ -70,6 +70,33 @@ def finalfig():
     axes[0,0].legend(fontsize=7)
     fig.savefig(EXP/'figures/held-maps.png',dpi=140)
 
+
+def raster_diagnostic():
+    """Explain saved-map raster/continuous discrepancy; never select thresholds."""
+    evaluate=Evaluator('32002');values={}
+    for name in ('segments','segments-selected'):
+        value=load(RAW/'32002'/f'{name}.json')
+        lines=[np.array(s['endpoints_m']) for s in value['segments']]
+        keys=sorted(set(k for a,b in lines for k in ray_cells(a,b,.1)))
+        xy=(np.array(keys)+.5)*.1;closest=[]
+        for p in xy:
+            options=[]
+            for a,b in lines:
+                delta=b-a
+                q=a+float(np.clip((p-a)@delta/(delta@delta),0.,1.))*delta
+                options.append(q)
+            closest.append(min(options,key=lambda q:float(np.linalg.norm(p-q))))
+        closest=np.array(closest)
+        d=evaluate.metric.boundary_dist(transform(xy,evaluate.origin),evaluate.walls)
+        dl=evaluate.metric.boundary_dist(transform(closest,evaluate.origin),evaluate.walls)
+        bad=d>.15
+        values[name]=dict(cells=len(xy),false_cells=int(bad.sum()),
+            false_cells_nearest_line_within_tol=int((bad&(dl<=.15)).sum()),
+            maximum_center_to_line_m=float(np.linalg.norm(xy-closest,axis=1).max()),
+            false_cell_distance_range_m=[float(d[bad].min()),float(d[bad].max())],
+            nearest_line_distance_of_false_cells_range_m=[float(dl[bad].min()),float(dl[bad].max())])
+    dump(EXP/'results/raster-diagnostic.json',dict(note='Fixed maps only, after held scoring; no new operating points or metric changes. GT evaluation only.',values=values))
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('stage',choices=['dev','held']);a=p.parse_args()
-    devfig() if a.stage=='dev' else finalfig()
+    p=argparse.ArgumentParser();p.add_argument('stage',choices=['dev','held','raster-diagnostic']);a=p.parse_args()
+    {'dev':devfig,'held':finalfig,'raster-diagnostic':raster_diagnostic}[a.stage]()
