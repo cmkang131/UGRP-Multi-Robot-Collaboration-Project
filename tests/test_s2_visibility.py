@@ -85,3 +85,19 @@ def test_command_geometry_mask_and_preregistered_parameters():
         assert PARAMS['rows_px']==spec['visible_rows_px']
         assert PARAMS['cargo_padding_px']==spec['cargo_mask_padding_px']
     finally:src.close()
+
+
+def test_diagnostic_projection_and_wall_occlusion_have_known_geometry():
+    import importlib.util
+    path=c.ROOT/'experiments/2026-10-06-s2-realism/analyze_visibility.py'
+    spec=importlib.util.spec_from_file_location('visibility_geometry',path)
+    m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    cm=NS(origin=np.array([0.,0.,1.]),_rot=np.array([[0,0,1],[-1,0,0],[0,-1,0]]),columns=np.array([m.K[0,2]]))
+    static={'obstacles':[dict(kind='wall',center_m=[2,0],half_extents_m=[.1,1.],height_m=2.)]}
+    rows,points,depth=m.bottom_projection(cm,[0,0,0],m.wall_segments(static))
+    np.testing.assert_allclose(points,[[1.9,0,0]])
+    np.testing.assert_allclose(rows,[m.K[1,2]+m.K[1,1]/1.9])
+    rays=(points-cm.origin)/depth[:,None]
+    np.testing.assert_allclose(m.wall_depths(cm,[0,0,0],rays,static),depth)
+    static['obstacles'].append(dict(kind='wall',center_m=[1,0],half_extents_m=[.1,1.],height_m=2.))
+    assert m.wall_depths(cm,[0,0,0],rays,static)[0]<depth[0]
