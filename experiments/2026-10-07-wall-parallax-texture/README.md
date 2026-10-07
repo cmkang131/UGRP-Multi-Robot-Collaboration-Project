@@ -129,3 +129,16 @@ TAPE_SOURCE_SHA="$(git rev-parse HEAD)"
 
 왕복 종료 오차가 작아도 상대 이동량은2배 넘게 과대다. 무늬가 생겨도 이 오차는 별도이며,
 이번에는 M1 평균/v7 잡음 계수 재적합0·GT odometry 대체0·#406 파일 수정0이다.
+
+## 취득 전 렌더 확인
+
+구현 `1d981162`를 잠금+ugrp_session+관리 workflow에서 정적 렌더했다.
+북/남 양쪽에서 세로 방향·하단 연결·무주기 무늬·대비를 직접 확인했다.
+physics step0·모델0, 원 geom 위치/회전/크기/접촉/friction 및 body mass/inertia·dof·actuator 배열 동일.
+[렌더 확인 봉인](render-review.json), raw preview manifest로 추적하며 정상 종료 뒤 lock null 확인.
+
+![같은 북쪽 카메라 off](figures/north-off.png)
+
+![북쪽 tape_v1](figures/north-on.png)
+
+![남쪽 tape_v1](figures/south-on.png)
