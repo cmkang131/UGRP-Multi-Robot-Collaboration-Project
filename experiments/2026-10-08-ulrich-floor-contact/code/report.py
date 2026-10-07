@@ -76,6 +76,7 @@ def figures(seed):
         ax.axhline(80,c='red',ls='--',lw=.7,label='I threshold=80')
         refs=q['reference_frame_ids']
         ax.set(title=f'Validated references: n={len(refs)}, IDs {min(refs)}–{max(refs)}' if refs else 'No validated references',xlabel='intensity bin (256)',ylabel='smoothed count',xlim=(0,255));ax.legend(fontsize=7)
+        for ax in axes[ix]:ax.title.set_fontsize(9)
         for ax in axes[ix,:2]:ax.axis('off')
         saved.append(dict(category=category,frame_id=frameid,points=len(errors),false_points=len(bad),
             reference_pixels=q['reference_pixels'],border_censored=q['border_censored_columns'],rgb_sha256=f['sha256']))

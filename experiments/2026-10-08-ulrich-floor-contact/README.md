@@ -98,3 +98,75 @@ ENOSPC=HOST_ERROR, 원본/raw 삭제0, 다른 프로세스 변경0, 유료/원�
 
 원문·코드 대응과 미공개 수치의 한계는 [REFERENCES.md](REFERENCES.md), 상세 분모는
 `results/31001-comparison.json`, 유형은 `results/31001-diagnosis.json`에 기록했다.
+
+## 동결 후 32002 단일 평가 — 실패, 채택하지 않음
+
+동결 `9202b897`을 push한 뒤 on 예측1회·채점1회. 설정·문턱·참조 크기 변경0.
+검출 관문 P≥90%/R≥50%는 **두 seed 모두 실패(통과0/2)**.
+
+|32002 조건|검출 P / R|검출점 수|영역 칸 P / R|전체 칸 P / coverage|점유 칸|벽 RMSE m|
+|---|---:|---:|---:|---:|---:|---:|
+|egomap34 원본|—|—|63.6 / 76.0%|55.6 / 64.7%|381|.520|
+|paired off|91.0 / 59.7%|56,162|63.6 / 76.0%|55.7 / 64.7%|379|.522|
+|Ulrich on|7.8 / 0.7%|15,587|12.5 / 8.2%|12.5 / 4.0%|56|.368|
+
+영역/전체 분모는 각각146/329벽 표본. on 영역7/56칸이 정확하고12/146벽 표본을
+덮는다. 전체13/329표본 coverage3.951%. RMSE 감소를 개선으로 채택하지 않는다.
+바닥만 좁게 남은56칸이므로 작은 표본·범위에 의한 수치다. 원본 이동7.449m,
+footprint 면적2.2675m²는 고정이며 새 이동/지도 범위 확대가 아니다.
+
+|외형 실패 진단|31001 개발|32002 동결 후|
+|---|---:|---:|
+|검출 거짓점|22,571|14,371|
+|체크 바닥|19,756 (87.5%)|14,275 (99.3%)|
+|색 구역|2,815 (12.5%)|92 (.6%)|
+|기타|0|4|
+|테이프 off → on|2,201 → 0|3,180 → 0|
+|첫 학습 / 미학습 프레임|39.5s / 181|119.1s / 579|
+|학습 후 검출 P / R|7.9 / 3.0%|7.8 / 2.2%|
+|승격 / 방향 폐기|57 / 819|44 / 832|
+|학습 후 하단 기권 열 / 전체 열|42,291 / 68,160|13,855 / 29,952|
+|기권96열인 학습 후 프레임|202|31|
+|nonempty 검출 / 원본 삽입 중 nonempty|395 / 22 of47|207 / 14 of64|
+
+32002의 승격44참조에서 희소52,096표본도 모두 바닥이었다. 하단 기권은
+`border_censored_columns`라는 진단 키지만 **하단 비바닥 분류 또는 자기 가림**을
+포함하므로 전부 렌즈/검은 테두리 원인으로 단정하지 않는다. 그림 f605에서 두
+체크 색 사이의 Gaussian 혼합 밝기 선이 비바닥으로 남아 첫 접점이 된다.
+f670은 바닥 조명/외형이 학습 bin 밖으로 바뀌어 하단에서 기권한다.
+이는 egomap38의 edge 연산 재사용 문제가 아니라, 명시된 두 개의1D histogram과
+고정 count 문턱이 해당 영상의 바닥 외형 전체를 허용하지 못하는 실패다.
+119.1s 학습 지연도 recall을 낮추지만 학습 후R2.2%이므로 그것만으로 설명되지 않는다.
+유형은 기존 GT 기하·RGB 보조 규칙(egomap37)을 재사용한 평가용 분류이며 완전한
+사람 라벨/semantic rendering이 아니다. 논문 방법 전체의 보편적 실패로 일반화하지 않는다.
+
+![32002 체크·하단 실패: RGB, 분류, 참조 histogram](figures/32002-examples.jpg)
+![32002 고정 시간6분위](figures/32002-time-quantiles.jpg)
+![원본/off/on 지도: 회색 실제벽·남색 점유칸·초록 실제·주황 추정 경로](figures/maps.png)
+
+32002 원본901→초기대기10→geometry878/empty13, 이동보류814, 삽입64;
+bootstrap1/improved30/low_overlap7/high_residual19/search_boundary2/
+insufficient_match_points5. 거부 후 삽입28·거부 시 재표본0. 이번에는 그 시각과 자세를
+그대로 사용하며, on 삽입 감소64→14는 새 외형 접점이 빈 관측이 되기 때문이다.
+
+## 재현·검증 범위
+
+```python
+state = UlrichFloorState("r3")  # 로봇·episode마다 독립 상태
+observe(own_rgb, commanded_servo,
+        contact_rule="floor_appearance_ulrich_v1", contact_state=state,
+        frame_id=frame_id, odometry_pose=command_dr_pose)
+# 같은 프레임 contact_points 호출은 같은 state/pose로: 큐 중복 갱신 방지.
+# wall_detector=appearance_contact_v1과의 중복 적용은 오류. 기본 contact_rule="off".
+```
+
+`code/compare.py predict|score SEED`, `code/report.py audit|figures SEED`와 `maps`,
+`code/verify.py`를 사용했다. 예측은 봉인까지 GT 파싱0, score/audit만 GT 사용.
+held score 재실행0; 그림은 저장된 예측으로만 만들었다.
+관련3시험 **17 passed**: 명령 DR 큐/OR/두 색 연결/가림/캐시와 기존 off 골든.
+원본111개 삽입 시각의 off 관측 동일, paired off grid bytes는 egomap37과 동일,
+원본 grid/pose/카메라·RGB sha·미추적4파일 불변. 모델/물리/렌더/잠금0.
+[검증·분모](results/verification.json), [원본 목록·해시](results/raw-manifest.json).
+raw는 `/Users/changmin/projects/ugrp/outputs/ulrich-floor-contact-v1`에 로컬 보존한다.
+원격 raw 백업이 아니며 그림은 각1MiB/실험5MiB 미만. PR405 DRAFT, 병합0.
+기본off 유지, 실패 뒤 다른 후보 추가·문턱 재선택·물리 적용은 하지 않았다.
