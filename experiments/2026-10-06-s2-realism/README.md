@@ -1590,3 +1590,31 @@ cyan≥500px/고유 검출/기존±3mm 정렬을 확인하고 그 이후 hover�
 변경하지 않았다. 새 SIM/렌더/모델 호출0, 새 잠금/세션 없음. 새 실험 결과가 없으므로
 TensorBoard를 재변환하지 않는다. 다음 full DEV의 위치 추정 입장 기준 미달 상태를 이번
 파지 정책 확인만으로 해제하지 않는다. PR #406은 DRAFT·병합 금지를 유지한다.
+
+## s2v16 — 운반 벽 하단 visibility 사전 기준 (2026-10-07)
+
+**재생 전 고정:** `visibility-criteria.json`의 단일 후보를 s1045–s1047 저장 명령·RGB에
+적용한다. 각 seed 모두 최장 관측 갱신 공백(운반 양 끝 포함) ≤30 SIM초, 1초 간격 독립
+갱신 ≥6, 운반 xy RMSE가 원래 실행·같은 보정 hard receipt·s2v14 AMCL보다 개선되어야
+한다. p90은 원래 실행·같은 보정 hard receipt보다 나빠지지 않아야 한다. soft 갱신은
+절대 위치 fix를 보장하지 않는다. GT는 별도 채점/가림 원인 분석만 사용한다.
+미달이면 새 seed·번들·SIM을 만들지 않는다. 기존 기준을 결과에 맞춰 완화하지 않는다.
+
+후보 `visibility_mask=command_geometry_v1`(기본 off)은 S2 loaded HIGH의 기존 AMCL
+측정 앞에만 둔다. s2v14의 무하중+고정 처짐 보정·AMCL 계수·운동 모델은 유지한다.
+자기 PWM FK와 v3 고정 링크 형상의 보수적 box/ray 교차, 2mm 형상 여유를 사용한다.
+그리퍼는 고정 camera-to-wrist와 보정표를 연결하고, 개도는 open~명령 closure의 sweep으로
+처리한다(명령을 실제 관절로 취급하지 않음). 물린 블록의 위치/각도는 명령으로 알 수
+없고 전체 회전 외접구는 카메라까지 포함할 수 있어 쓸 수 없다. 블록은 허용된 자기 RGB의
+기존 cyan 분할(왜곡 보정 뒤, 2px 팽창)만 제외한다. 이는 실제 블록 위치 GT 마스크가
+아니며 검출 누락의 한계가 남는다. 자기 링크 형상 마스크와 색 마스크를 별도로 기록한다.
+prior 입자 가중치 ≥95%에서 예측 경계가 4–470행 안이고 자기 가림 밖인 공통 열만 쓰며,
+검출된 경계 자체의 광선도 마스크 밖이어야 한다. 최소6열, 나머지는 missing(가짜 원거리
+측정/음의 증거로 넣지 않음). 재생 통과 전 full 실행기의 옵션으로 허용하지 않는다.
+
+참고 절차: [ROS robot_self_filter SelfMask](https://docs.ros.org/en/noetic/api/robot_self_filter/html/classrobot__self__filter_1_1SelfMask.html)의
+INSIDE/OUTSIDE/SHADOW 광선-로봇 교차를 따른다. 본 작업은 관절 TF 센서 대신 허용된
+자기 명령 FK와 보수적 형상을 사용하므로 실제 가림의 확정 판정이 아닌 가림 가능성 제외다.
+벽 상단·문 기둥 등 선분 특징은 [PL-SLAM 원 논문](https://arxiv.org/abs/1705.09479)의
+point/line 결합과 비교 조사한다. stereo SLAM 전체를 단안 S2에 적용했다고 주장하지 않는다.
+하단이 시야 밖이면 가림 마스크나 확률 가중만으로 새 관측이 생기지는 않는다.
