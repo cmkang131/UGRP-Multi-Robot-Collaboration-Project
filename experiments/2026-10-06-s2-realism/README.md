@@ -4265,3 +4265,45 @@ off/on pose 최대차는 시작1.11e-15, 운반0. 시작 입자·가중치 **전
 off/on 4 snapshot의 **34수치 source/event/live API 일치**를 확인했다
 ([전달 검증/커널 호출 수](amcl-sensor-delivery.json)); UI는 미검증이다.
 raw 결과/이전 snapshot을 보존하며 연구·실물 성공 또는 wall/SIM 개선으로 합산하지 않는다.
+
+## s2v39 사전 등록 — 색 구역 경계·문 랜드마크 (2026-10-08)
+
+사용자/감독 결정: v38 점수식은 이미 원본 AMCL과 같았으며 문 장면 GT/오답 우도비1.18만으로
+벽 하단의 perceptual aliasing을 해소하지 못했다. 새 `sensor_landmarks=floor_zones_doors_v1`
+(기본off)만 비교한다. off/on 모두 best-cluster·명시 AMCL 센서ON, 나머지는 v38 재생 그대로다.
+도크/행 prior, 새 지도, live GT, #405/#408 수정, 카메라 mount/FOV 변경은 없다.
+
+- 기준은 [landmarks-criteria.json](landmarks-criteria.json)에 고정: s1052 시작 최종오차≤.25m,
+  off 기준재현 pose차≤1e-9m/rad. 정답25cm·15° 질량, 기존 고정 GT/오답 후보 우도비,
+  v131 s1051 운반71.85–249.25초 RMSE·내려놓기 직전오차를 보고한다. 결과 후 문턱 변경0.
+- 입력은 기존 자기 RGB/발행 명령/고정 보정표/허용된 static map뿐. 모든 예측 파일을 닫은 뒤 GT 평가.
+  시작6시점의 같은 오답 후보를 유지한다. 사전 등록 자료는 DEV 탐색 재생이며 새 확증으로 부르지 않는다.
+- 통과할 때만 seed1052 시작-only1회(agent_lock·ugrp_session), 다시25cm를 통과하면 seed1051
+  fullDEV1회. freeze/look_ahead/강성·보정/slip/회복/dev_light 유지. ENOSPC는HOST_ERROR.
+  미달이면 새 물리0. 실행 번들은 통과 뒤 번호 예약/등록하며 기존 번들·원본을 덮어쓰지 않는다.
+
+정적 지도 `zone_wide_door_geometry_v3` regions는 pickup(.12,.36,.70,.14), A(.95,.45,.10,.30),
+B(.20,.40,.95,.30), C(.70,.20,.85,.30)와 중심·직사각형 변을 공개한다.
+`sim/zone_arena.py:411–413`은 바로 이 rgba/기하를 렌더한다(새 상태 입력 아님).
+문은 passages.door_1 중심(2.2,.05), 폭.5m. pickup/B는 파랑 signature가 겹치므로 후보를 모두 유지한다.
+#408 동결 `floor_goal_v2/v3`를 읽기만 했으며, B 전용 H109–115/S77 조건을 전체 네 색에 무단 적용하지 않았다.
+
+### 표준과 RGB 어댑터의 구분
+
+[Thrun·Burgard·Fox, Probabilistic Robotics §6.6, pp177–180/Table6.4, §7.5](https://cs.pomona.edu/~ajc/other/Thrun%20et%20al_2005_Probabilistic%20robotics.pdf)
+의 특징별 Gaussian 거리·방위·signature와 미지 대응의 최대우도 선택을 따른다.
+문은 양쪽 바닥 접점으로 얻은 중심의 거리·방위·폭; 부분 바닥선은 중점을 지도 모서리로 날조하지 않고
+법선거리·방위와 유한 선분 범위를 쓴다. [Arras/Siegwart 선 특징](https://www.cs.cmu.edu/~motionplanning/papers/sbp_papers/integrated2/arras_feature_extract.pdf)
+은 선의 법선거리·각도 표현 근거이며, 해당 논문의 range 분할/공분산 학습 전체를 이식했다는 주장은 하지 않는다.
+[OpenCV HSV](https://docs.opencv.org/4.x/da/d97/tutorial_threshold_inRange.html),
+[HoughLinesP](https://docs.opencv.org/4.x/d9/db0/tutorial_hough_lines.html)를 색 분할/직선 추출에 쓴다.
+
+카메라 어댑터 수치는 표준 기본값이 아니라 결과 전 고정한 후보값이다: HSV 색차12(0–179),
+S20–150/V≥35, 성분300px, 선40px·양쪽 지지80%, 바닥평면 직선 잔차3cm, 길이12cm,
+동일선 중복제거·최대4개. 고정 자기 기하 그림자/own RGB cyan mask와 하향6m 이내 교차만 사용.
+문은 깊이차25cm·양쪽 유효 접점·중간의 더 먼 floor 반환·두 수직 엣지 지지45%를 모두 요구한다.
+바닥선σ=.1m/5°, 문σ=.2m/3°/.1m, 거짓 관측 random혼합5%를 고정한다.
+직접 관측한 특징만 곱하며 불검출은 부정 증거로 쓰지 않는다. RGB 어댑터·독립성 가정은 미검증 후보다.
+측정 시점/정착/AMCL 이동 trigger·KLD 정책은 그대로 유지한다. 바닥 외형 필터가 벽 관측을 모두
+지우더라도 독립 색 경계는 측정 가능하게 빈 벽 packet을 유지하며, 가짜 벽 endpoint는 만들지 않는다.
+공용 camera_robot_port·다른 제어기는 수정하지 않는다. off는 이전 명령/record byte 동일 시험으로 고정한다.
