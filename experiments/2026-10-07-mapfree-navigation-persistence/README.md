@@ -68,3 +68,42 @@ TensorBoard/Drive는 이전 사용자 결정대로 생략한다.
 PYTHONPATH=outputs/self-map-plot-deps /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest tests/test_navigation_persistent.py tests/test_navigation_recovery.py tests/test_public_navigation.py -q
 PYTHONPATH=outputs/self-map-plot-deps /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-07-mapfree-navigation-persistence/code/run_persistent.py --navigation public_ros_v3 --cohort diagnostic --stage a --output /Users/changmin/projects/ugrp/outputs/mapfree-navigation-persistence-v3/diagnostic
 ```
+
+## 결과 — 개발 관문 실패, 새 확인 미개봉
+
+사전 등록 `3eb966f7` → 시험30개 통과 → 구현 `0ccdf972` 커밋·push → 기존 실패10을 **1회** 재생했다.
+[10건 개별 전후 표](results/tables.md), [원 수치/이벤트 분석](results/failure-comparison.json),
+[중단 판정](results/summary.json)을 남긴다. oracle 두 seed는 동일 궤적이며 독립 표본으로 합산하지 않는다.
+
+| 기존 실패 묶음 / 각2seed | v2 → v3 B | 종료/확인 modeled s | v3 coverage | v3 주행 접촉 |
+|---|---:|---:|---:|---:|
+| s1/H·s4/H (총4건) | 0 → 0 | 0; 시작 겹침 `HOST_SETUP_ERROR` 유지 | 0% | 0 |
+| s4/G | 0 → 0 | 161 → 125; 회복 소진 | 39.5% | 0 |
+| s5/G | 0 → 0 | 131 → 104; 회복 소진 | 70.2% | 0 |
+| s8/H | 0 → 2 | 2.7 접촉 종료 → 74 B 확인 | 46.5% | 각2회, 총4회 |
+
+**B 0/10 → 2/10, 유효6건 중2, 거짓0. 개발 사전 기준6/6 미달.** 과거 성공22건과 더해 새24/32라고
+보고하지 않는다. 새 I/J32는 실행0, freeze 생성0, oracle static ≥30/32 관문·frontier oracle·현실 잡음
+모두 미평가다. 기존5개 성공 기준도 변경하지 않았다. 같은 정지/회복 소진이 재발하여 추가 수정·튜닝·재실행을 중단했다.
+
+- **s4:** follow6·spin1회가 footprint projection에서 거부됐다. backup은122.4s에 성공했으나 고정 원본
+  RoundRobin의 마지막 child 종료 분기가 `round_robin_exhausted`를 반환했다. 125s는 최종 관측 시각이다.
+  따라서 s4의 후진 후 도달 가능성은 이번 결과로 판단하지 않는다. 원본 분기를 결과 뒤에 고치지 않았다.
+- **s5:** follow6·spin1·backup1회가 예측 충돌로 거부됐다. B5/5 가시·검출에도 동일 track의3-view 병진은
+  **0.000026585 m**로 .05m 확인 기준 미달이다. .094m 앞선 이동은 다른 B track이어서 합치지 않았다.
+- **s8:** 처음 보지 못한 `can_1` 접촉을2.7s에 binary bumper로 받았다. 2.70·2.85s에 실제 기하 접촉2회가
+  각 실행에 기록됐다. 발행 stop/후진 뒤에도 v7 관성 상태가 즉시0이 되지 않아 회복 초기에 두 번째 접촉이 있다.
+  입력의 상승 에지는1회, 후진 완료/재계획은11s에1회이고 **완료 뒤 재접촉0**이다. 74s/1.477m에 참 B 확인,
+  종료 DR 오차0.027822m다. 관성·DR를 정답으로 보정하지 않았다. 총 충돌4회는 그대로 남겨 **충돌0 기준 미달**이다.
+- 개발 gate는 현재 `contact_replan` 수를 기하 contact event 수와도 비교하므로 s8의1회 bumper burst/2회
+  접촉에 보수적으로 실패한다. 감지 에지와 기하 접촉은 다른 단위임을 공개한다. 이 집계와 관계없이 유효 B2/6으로
+  관문은 실패이며, 결과를 본 뒤 gate를 완화하지 않았다.
+
+장애물 시야 밖 유지/clear 뒤 재적용/free ray 삭제/hit 우선·frontier ABORTED/timeout 다음 목표는 단위시험에서
+검증했다. **frontier 실험 성공은 아직 검증하지 않았다.** 정적 목표 B는 도달 불가 frontier처럼 다른 목표로
+대체하지 않는다. 원 native 탐색/계획 코어·B v3·벽/운동 잡음·원 cohort·v1/v2 bytes는 그대로다.
+
+원시93파일 **7,963,176bytes**는 [artifacts.json](results/artifacts.json)의 절대 경로·SHA256으로 로컬 보존한다.
+이는 raw 원격 백업이 아니다. 결과/출처/검증은 Git에 보존한다. runtime hash·이전 v2 모든 source hash·사용자
+미추적4파일 해시 불변, 실제 실패 자료의 `DEVELOPMENT_GATE_FAILED_STOP_CONFIRMATION` 차단을 검증했다.
+[검증 기록](results/verification.json). MuJoCo/렌더/모델 호출0, 실행 session은 종료됐다. PR #409 DRAFT 유지.

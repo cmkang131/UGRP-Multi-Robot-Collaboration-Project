@@ -1,5 +1,6 @@
 # 실험 인덱스
 
+- [2026-10-07 navigation 영속 장애물·진행 감시 v3](2026-10-07-mapfree-navigation-persistence/README.md): 원본 줄 대조와 opt-in 포트. 기존 실패10 B0→2(유효2/6), 접촉4·회복 소진4로 개발 관문 실패. 새32 미개봉, 튜닝 중단, #409 DRAFT.
 - [2026-10-07 navigation 회복·유효 도크 평가 어댑터](2026-10-07-mapfree-navigation-recovery/README.md): Nav2 recovery 포트와 도크 기반 새32쌍 등록. 기존 실패10 재생 B0/10, 회복 소진4·맹점 충돌2 재발로 중단; 새 확인 미개봉, 기본 off, #409 DRAFT.
 - [2026-10-07 공개 navigation 코어 이식·선행 관문](2026-10-07-mapfree-public-navigation/README.md): NavFn/explore_lite 원본 + PythonRobotics pursuit, 기본 off. 새 G/H32 oracle static B22/32로 ≥30/32 관문 실패; frontier/현실 잡음 미실행, 재튜닝 중단, #409 DRAFT.
 
