@@ -95,7 +95,11 @@ def main():
     p.add_argument('--execute',action='store_true')
     a=p.parse_args()
     receipts=verify_source(a.expected_source_sha)
-    assert a.output.resolve()==RAW/a.case and not a.output.exists()
+    assert not a.output.exists()
+    if a.output.resolve()!=RAW/a.case:
+        assert a.output.resolve()==RAW/(a.case+'-host-retry1')
+        prior=json.loads((RAW/a.case/'result.json').read_text())
+        assert prior['status']=='HOST_ERROR' and not (RAW/a.case/'robots').exists()
     if not a.execute:
         print(json.dumps(dict(case=a.case,admitted=True,execution_started=False)))
         return 0

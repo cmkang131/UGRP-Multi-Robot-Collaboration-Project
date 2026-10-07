@@ -63,7 +63,7 @@ class PhysicsBackend(Base):
         self.eval_rows=[]
         self.scene=make_scene(bundle,seed)
         try:
-            self.world=build_world(self.scene,roller_collision='mesh',idle_robot_contacts='off',
+            self.world=build_world(self.scene,drive_profile='masterpi_drive_friction_v7',roller_collision='mesh',idle_robot_contacts='off',
                 seed=seed,width=640,height=480,render=True,
                 warehouse_layout=self.scene.engine_layout,warehouse_cargo_ids=None)
             with self.world.physics_lock:

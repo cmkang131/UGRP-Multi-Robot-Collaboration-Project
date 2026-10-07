@@ -62,3 +62,12 @@ GT 경로는 횡방향 실제 이동량·명령 DR 차이의 사후 진단에만
 실패하면 바닥 투영/FK/S2/소실점/기존 및 새 시차 결과와 실물 측정 필요 항목을 한 표로 남긴다.
 시험은 변경 모듈과 기존 parallax/off golden만. 의존성 설치 0. PR DRAFT·병합 금지.
 TensorBoard 기존 사용자 면제 및 UGRP Drive 예외 유지.
+
+## 취득 어댑터 인수 기록
+
+`90c21ed3` 첫 north 호출은 `build_world` 필수 keyword `drive_profile` 누락으로
+생성자 호출 전에 HOST_ERROR. 물리 step/RGB 0, 잠금 해제, 원본 디렉터리 보존.
+검출/취득 설정 변경 없이 인자를 연결하고 signature 검사를 추가한다. 북쪽 출력만
+`strafe-north-host-retry1`에 재개한다(원래 run에 robots 자료가 없을 때만 허용).
+CLI 준비 단계의 잘못된 disk_report section/모듈 진입점/축약 SHA도 수정했고
+실행 전 여유46.19 GiB, sim slot0, lock null, 전체 SHA admission 통과를 확인했다.

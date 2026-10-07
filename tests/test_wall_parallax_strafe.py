@@ -39,3 +39,13 @@ def test_offline_scheduler_does_not_import_physics():
     tree=ast.parse(src)
     assert not any(isinstance(n,ast.ImportFrom) and n.module and n.module.startswith('sim.') for n in tree.body)
     assert 'idle_robot_contacts=\'off\'' in (run.ROOT/'sim/wall_parallax_strafe.py').read_text()
+
+
+def test_builder_signature_before_physics():
+    import inspect
+    from sim.masterpi_drive_friction_v7 import build_world
+    from sim import wall_parallax_strafe as backend
+    node=next(n for n in ast.walk(ast.parse(Path(backend.__file__).read_text()))
+              if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='build_world')
+    # Exercise Python call admission without constructing a MuJoCo world.
+    inspect.signature(build_world).bind(None,**{k.arg:None for k in node.keywords})
