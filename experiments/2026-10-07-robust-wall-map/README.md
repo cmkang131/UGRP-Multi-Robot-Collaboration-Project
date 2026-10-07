@@ -87,3 +87,11 @@ TSDF의 ray-cell 순회는 기존 0.1m Amanatides–Woo를 재사용(원본 supe
 새 라이브러리/C++ 소스 복사0. 최초 합성 시험에서 bounded solver의 s≈1 끝자리 오차를
 과하게 요구한 검사1개가 실패하여, 해석해 대비 목적함수 차이<1e−6 검사로 고쳤다.
 optimizer/사전 문턱은 바꾸지 않았다. 실제 녹화 결과로 단위 시험을 맞춘 것이 아니다.
+
+### GT 채점 전 저장 오류
+
+소스 `0618438f`의 정방향 graph 계산 뒤 TSDF cell index의 NumPy int64를 JSON에
+저장하지 못했다(HOST_ERROR). GT 읽기0. 기존9개 파일을 `forward/host-error.json`에
+hash 보존했다. cell index를 Python int로 직렬화하는 수정과 JSON roundtrip 시험을 추가했다.
+`--resume-evidence`는 이 봉인을 검사하고 **graph를 재실행/덮어쓰기하지 않고** 증거량
+저장부터 이어간다. 추정 수식/관문/후보/문턱/모션 변경0, 최초 실패도 보존한다.

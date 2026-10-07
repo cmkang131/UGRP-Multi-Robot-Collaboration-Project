@@ -71,6 +71,7 @@ def test_tsdf_one_update_per_scan_cap_and_angular_diversity_not_probability():
     segment = [[[1.,-.4],[1.,.4]]]
     single = row(0, segments=segment)
     one = build_evidence([single], robot_id='r1', wall_evidence='tsdf_weight_v1')
+    assert json.loads(json.dumps(one, allow_nan=False))==one
     duplicate = build_evidence([row(0, segments=segment*2)], robot_id='r1', wall_evidence='tsdf_weight_v1')
     assert one == duplicate
     assert all(c['observations']==1 and c['view_circular_variance'] < 1e-15 for c in one['cells'])

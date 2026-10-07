@@ -77,7 +77,7 @@ def build_evidence(rows, *, robot_id, wall_evidence='off', resolution_m=.1):
     for key, value in sorted(cells.items()):
         n = value['observations']
         diversity = 1-math.hypot(value['cos_sum'], value['sin_sum'])/n
-        exported.append(dict(cell=list(key), sdf_m=value['sdf_m'], weight=value['weight'],
+        exported.append(dict(cell=[int(k) for k in key], sdf_m=value['sdf_m'], weight=value['weight'],
                              support_score=value['weight']/MAX_WEIGHT, observations=n,
                              view_circular_variance=float(np.clip(diversity, 0., 1.))))
     return dict(schema='ugrp.self_map.tsdf_evidence_v1', robot_id=robot_id,
