@@ -3066,3 +3066,110 @@ Nav20.5m/10° 인접 bin 군집의 최대 질량 pose. 수렴은 기존 Nav2 전
 고정 명령 재생은 **초기화/기존 정지 관측만** 평가하고 능동 회전 효과는 미검증으로 남긴다.
 새 행동의 shadow 명령은 별도 시험하고 원본 영상이 새 회전 뒤 영상인 것처럼 사용하지 않는다.
 물리/렌더/모델 호출0. 이 후보는 이미 완료한 v128 동일seed 비교에는 포함하지 않았다.
+
+### v128 / s1051 matched full 결과 — slip 국소 이동 개선, B 밖 내려놓기
+
+사전 등록 **b69de99b**, 실행 소스 **45b0c173d34f53c2016e2560cdc70c9a908a8325**,
+**zone-s2-realism-v128 / 7.21.0 / seed1051 / P1-2→B/place**. 사용자 요청대로 기존
+s1051과 같은 seed·25옵션에 slip만 ON(`stall_recovery=off`)으로 실제1회 실행했다.
+**STAGE_REACHED_UNQUALIFIED / lifted=true / inside=false / floor=true / stable=true**.
+실제 낙하/집게 이탈 종료는 없었지만 B 밖에 놓여 임무 성공은 아니다. 재시도·모델 호출0.
+기존 s2v25 열린 루프 재생의 FAIL은 유지하며 같은 seed를 새 확증 분모로 세지 않는다.
+[전체 옵션·평가·원본 해시](slip-matched-summary.json).
+
+|지표|s1051 / v126, slip OFF|s1051 / v128, slip ON|
+|---|---:|---:|
+|lifted / inside|true / false|true / false|
+|운반 구간|87.00–241.05 s|87.00–735.65 s|
+|운반 informative 갱신 / 최장 공백|27 / 33.85 s|41 / 133.50 s|
+|운반 XY RMSE / 끝 위치오차 (평가)|2.023583 / 2.592097 m|1.887833 / 1.059998 m|
+|벽 하단 실제 가시율: 전체열 / 검출열 (운반1Hz)|32.7218% / 54.3706%|23.7593% / 28.8262%|
+|cyan→B 영역 경계 / 중심|2.178372 / 2.649795 m|0.536406 / 1.149410 m|
+|would-stop: ARM_COLLISION_GUARD|7|7|
+|would-stop: POSE_UNCERTAIN|341|912|
+|would-stop: VISUAL_STALL_SUSPECTED|1|113|
+|would-stop: CYAN_NOT_UNIQUELY_VISIBLE|0|0|
+|wall / total SIM / wall÷SIM|347.865758 / 264.35 / 1.315929|2056.663955 / 758.95 / 2.709881|
+|명령 / own RGB / 모델 호출|3818 / 5202 / 0|4960 / 15094 / 0|
+|slip 대체 / 정상 유지 / unknown 유지|off|470 / 2 / 47|
+|집기 확인 / 다시 집기|probable_held_inhand_rgb / 0|probable_held_inhand_rgb / 0|
+
+두 조건 모두 freeze ON이다. 닫힌 루프에서 길이·관측·행동이 달라진 전체 실행 결과이며,
+시간비를 freeze 전후 효과로 해석하지 않는다. 갱신41회는 정확한 절대 fix41회의 보장이 아니다.
+운반 시간이154.05→648.65초로 늘어 갱신 횟수 증가는 빈도 개선을 뜻하지 않으며,
+최장 공백133.50초는194.45–327.95초였다. 벽 가시율은 저장된 실제 카메라/화물 기하와
+고정 벽·보수적 자기 몸 경계를 이용한 **사후 평가**이며 제어 입력으로 전달하지 않았다.
+
+**동일 조건 확인:** 초기 Scene 동일, 첫2197명령과112.10초까지 RGB2217장 SHA 동일.
+최초 명령 차이는112.10초(기준 turn35/.10초, 후보 left65/.65초), RGB 차이는112.15초다.
+첫 slip 대체는107.35–108.10초, 광류/명령 진행비0.0958473이다. 다만 추정 pose 자체는
+slip 버퍼의 t_est95.00 대 기준95.04 때문에95.20초부터 작은 차이가 있어, 대체 직전까지
+모든 내부 상태가 같다고 주장하지 않는다. 기준18프로파일×512입자 predictor의
+px/logw/vel/RNG 동등성은 앞선 시험으로 확인했다. [동등성](slip-matched-equivalence.json).
+
+**가장 큰 남은 원인: 진행 부족을 측정해도 그 방향 명령을 계속 내보냄.**
+slip 대체470펄스 중 **469회 실제 이동<1cm**. 이470회의 XY 예측 RMS는 명령 모델
+**166.750→3.148mm**로 개선돼 국소 변위 대체는 작동했다. 그러나 단일변수 조건의
+`stall_recovery=off`이므로 방향 차단/탈출 행동은 없고 진행 부족 명령을 반복했다.
+모든 접촉 원인을 새로 확정한 주장은 아니다(새 접촉 렌더 없음). 끝 위치오차1.060m와
+B 밖 내려놓기도 남았다. [국소 효과](slip-matched-effect.json). 수정·추가 실행 없이 기록한다.
+
+운반 옆579펄스의 동일 종료+정지 꼬리 horizon에서, 명령 예측합87.186595m /
+실제합7.963245m = **10.948627배**, slip 적용합9.795362m / 실제 = **1.230072배**다.
+전체 운반 옆 예측 RMS는150.920→14.622mm. 대체470개만의 이동합 비율은3.81953배로
+실제 이동이 매우 작은 구간에서 광류 오차도 여전히 남는다. 무하중69옆펄스는 기준과
+동일하며 명령/실제0.998182배, RMS0.925mm. s1052의1.014924배와 같이 v122의 무하중
+모델에서2배 과대는 관측되지 않았다. PR405가 v122를 쓰지 않아2.2배였다는 해석은
+사용자 제공 가설로 남기며 다른 PR 코드/결과를 이번에 검증하거나 합산하지 않았다.
+
+**검증/운영:** 실행 전 관련8시험 통과 후 소스 커밋·push. 정확한27옵션 bundle/result,
+원본 manifest/source closure/RGB15094장 SHA, 실행중 소스·입력 불변 확인.
+agent_lock driver68682로 acquire 후 `ugrp_session s2-slip-matched-s1051` 단일 실행.
+시작 load3.25/3.79/3.42, 여유43.52GiB; 일회성 launchd nice0, renice 없음.
+자체 session/driver/managed/runner 종료, session stopped, launchd 제거, own lock release 및
+status=null 확인. 도크 분석은 물리 종료 뒤 시작했다. [검증](slip-matched-verification.json).
+
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-45b0c173-s1051-P1-2-place-slip-matched/`.
+분석: `/Users/changmin/projects/ugrp/outputs/s2-slip-matched-analysis-20261007/`.
+4배속 영상: `/Users/changmin/projects/ugrp/outputs/s2-slip-matched-analysis-20261007/views/s1051-slip/execution.mp4`
+(640×480,20fps,3774frame,188.70초; RGB15094장에서 stride4; 전체decode 통과).
+SHA256 `7695eebcb317904e939269f57a2cd1ffb83f1f7007dfcfc6ad5709c61cec824e`.
+
+### s1052 도크 후보 재생 결과 — 기준 미달, 기본 off·실험 후보만 보존
+
+사전 기준 **b506c16f**, 옵션 구현 **6fd34da9**. `start_localization=amcl_global_active_v1`은
+새 S2 Runtime의 명시적 기본-off 옵션이다. 완성 실행 번들에는 입장시키지 않았고,
+위 v128에는 적용하지 않았다. off일 때 기존 출력 동일과 균일 초기화·군집·유한 회전
+분기·dev_light 가드를 포함한 관련2파일 **8 passed /25.36s** 후 커밋·push했다.
+
+|s1052 첫 이동 전1.30–11.95초 / 214 RGB|기존 off|전역 초기화 후보|
+|---|---:|---:|
+|informative 갱신|1|1|
+|최종 / 최대 XY 오차|1.428663 / 1.428671 m|3.317731 / 3.332278 m|
+|XY RMSE|1.422832 m|3.319475 m|
+|잘못된 수렴 / 수렴 frame|0 / 0|0 / 0|
+|기존 pose 최대 차이(off 동등성)|0|비교 대상 아님|
+|사전 위치 기준|기준 자료|**3항목 FAIL**|
+
+넓은 전역 초기 분포를 기존 정지 관측1회만으로 식별하지 못했다. 마지막11군집,
+최대 군집 질량0.9885이나 전체 σxy2.214m·Nav2 전체 입자 수렴false라, 큰 군집 질량만으로
+자기 위치를 안다고 선언하지 않았다. 최종≤0.25m·최대≤0.5m·RMSE 개선은 모두 실패했다.
+전체 지도 균일화는 기존 서쪽 시작영역 prior보다 더 넓다는 차이도 있다.
+원본에는 새 body spin RGB가 없으므로 **능동 회전 후 식별 효과는 미검증**이다.
+새 시야를 합성하거나 기존 정지 영상을 회전 뒤 관측으로 쓰지 않았다. 미달 후보를 채택하지
+않고 추가 튜닝/물리 실행 없이 보존한다. [판정](dock-global-summary.json), [검증](dock-global-verification.json).
+
+원본 비교는 RGB·명령만으로 예측 파일을 먼저 완성하고 GT는 별도 점수 계산에만 읽었다.
+물리/렌더/모델 호출0. `s2-global-start-offline`·`s2-global-start-candidate` session stopped.
+Nav2 원본은 위 고정 commit의 `amcl_node.cpp`, `pf.c`, `pf_kdtree.c`, `spin.cpp`를 확인했고
+URL/해시는 검증 JSON에 보존했다. 레이저 대신 기존 RGB 측정, 고정2000입자, 정적 clearance
+free-space, 명령 DR 기반 유한 펄스가 우리 어댑터 차이이며 encoder feedback을 주장하지 않는다.
+[실물 archive metadata 감사](dock-real-archive-audit.json)는 기존 ZIP을 읽기만 했다.
+
+**전달:** TensorBoard **1007-s2-slip-matched-v128 / 4뷰44scalar**, 원본→event→live API와
+HParams 수치 일치. 새4배속 영상 등록·HTTP206/전체 재다운로드 SHA도 확인했다.
+[대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-slip-matched-v128%2F&smoothing=0#timeseries),
+[핀 링크·검증](slip-matched-delivery-verification.json). 기존 s1051은 참고뷰이며 새 분모가 아니다.
+사용자 요청대로 수치만 대조했고 UI 확인을 주장하지 않는다. viewer PID52016 유지,
+공유 view 설정의 자기 키만 추가했다. raw는 로컬 보존으로 원격 백업과 구분한다.
+**전체 물리1회로 종료, 잠금 해제, PR406 DRAFT·병합 금지 유지.**
