@@ -68,3 +68,64 @@ ENOSPC/기술 오류=HOST_ERROR로 보존, 같은 원인 두 번이면 중단. �
 원본 raw는 `/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/`에 새로 저장.
 기존 raw/사용자 미추적4파일 보존, 다른 worktree 수정0. 시험 후 commit/push·Codex trailer,
 PR #405 DRAFT·merge/force/reset 금지. 기존 venv 재사용. TensorBoard 기존 면제·Drive 예외 유지.
+
+## 구현·검증 상태
+
+사전 등록 commit `52aff865`(기존 관련15시험 통과 후 push). 새 scene wrapper
+[`sim/wall_parallax_texture.py`](../../sim/wall_parallax_texture.py)는 egomap15의 scene/물리 backend를
+재사용하며 transform에만 [`sim/wall_texture.py`](../../sim/wall_texture.py)를 연결한다.
+기존 S2 builder·카메라/DR·동결17파일·#406 복사본은 수정하지 않았다.
+
+|옵션/경로|기본값|선택 시 동작|
+|---|---|---|
+|`wall_texture=off`|off|입력 XML을 동일 객체로 반환. parse·자산 접근 없음|
+|`wall_texture=tape_v1`|명시 선택만|6개 기존 벽과 배치표 기하 일치 검사 후 시각 면24개 추가|
+|전용 CLI `--wall-texture tape_v1`|off|이번 코호트 실행은 명시 on만 허용하며, 다른 S2 workflow에 옵션을 주입하지 않음|
+|`wall_detector=parallax_v1`|기존 off 보존|이번 replay에서만 선택. 17파일·설정·관문 그대로|
+
+[벽별 실물 배치도/위치표](assets/README.md): 세로 테이프215개, 불규칙 조각570개,
+24면 PNG와 1:1 SVG, 약0.70MiB. `layout.json`에 각 면 원점·방향 및 모든 조각 꼭짓점을 저장했다.
+50mm 끝면은 중앙 테이프1개라서 서로 다른 폭이 1mm 래스터에서 우연히 일치할 수 있다.
+넓은12면은 모두 다른 무주기 배치이며, 테이프 실제 폭215개도 모두 다르다.
+첫 로컬 시험은 끝면 PNG까지 모두 달라야 한다는 과한 assertion1개가 실패했고,
+**물리 배치/seed/PNG는 바꾸지 않고** 위 규격으로 검사를 정정했다.
+
+관련 시험 `test_wall_texture.py`, `test_wall_parallax.py`, `test_wall_parallax_strafe.py`:
+**22 passed**. off 바이트, 기존 scene wrapper 출력, 원 충돌 기하, 배치 규격,
+이전과 같은8펄스/181frame, GT 평가 반환값 미사용, 동결/복사 소스 해시를 검사했다.
+새7시험을 원격 CI 목록에 연결했다(물리 import가 필요한 scene wrapper1개만 의존성 없는 CI에서 skip).
+MuJoCo 모델의 실제 dynamics 배열 대조는 잠금 후 preview에서 별도로 실행한다.
+
+관리 workflow `wall-parallax-texture` plan은 실행 없이 정상 구성됐다.
+렌더는 별도 preview용으로 egomap15 평가 카메라 pose를 재사용하되 **scene 시각 점검에만** 쓰고,
+새 취득/추정에 전달하지 않는다. `mj_forward` 정기구학만, `mj_step`0이며 K·해상도는 기존 카메라와 같다.
+preview를 직접 확인하고 manifest SHA를 `render-review.json`에 봉인·commit한 뒤에만
+새2건 취득기가 admission을 허용한다. [재생 어댑터](code/replay_texture.py)는 기존 평가의 경로만 바꾼다.
+
+실행 순서(소스 push·잠금 null 확인 필요):
+
+```sh
+TAPE_SOURCE_SHA="$(git rev-parse HEAD)"
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/ugrp_session.py run egomap16-preview -- \
+  /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.sim_cli workflow run wall-parallax-texture -- \
+  --case preview --wall-texture tape_v1 --expected-source-sha "$TAPE_SOURCE_SHA" \
+  --output /Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/preview --execute
+```
+
+렌더 봉인 뒤 위 명령의 case/output을 `tape-north`, 그 다음 `tape-south`로 바꿔 순차 실행한다.
+다른 작업의 live 잠금을 해제하거나 인수하지 않는다. 취득 자료가 있는 디렉터리는 덮어쓰지 않는다.
+
+## DR 척도 — PR #406 참고용 별도 표
+
+아래는 **기존 무늬 off egomap15** 평가이며 이번 on 결과로 재표기하지 않는다.
+[원본 결과/GT 평가 출처](../2026-10-07-wall-parallax-strafe/RESULTS.md).
+
+|녹화|실제 횡이동 최대 폭 m|명령 DR 폭 m|DR/실제|경로 오차 P90 m|종료 오차 m|
+|---|---:|---:|---:|---:|---:|
+|off north|.6883|1.5386|2.235|.9014|.0022|
+|off south|.6890|1.5710|2.280|.8728|.0055|
+|tape on north|미취득|미취득|—|—|—|
+|tape on south|미취득|미취득|—|—|—|
+
+왕복 종료 오차가 작아도 상대 이동량은2배 넘게 과대다. 무늬가 생겨도 이 오차는 별도이며,
+이번에는 M1 평균/v7 잡음 계수 재적합0·GT odometry 대체0·#406 파일 수정0이다.

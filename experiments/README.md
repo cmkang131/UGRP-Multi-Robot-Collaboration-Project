@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-07 사용자 결정: 실물 재현용 벽 테이프 무늬](2026-10-07-wall-parallax-texture/README.md): PR #405, `wall_texture=tape_v1` 기본 off. egomap15 경로·parallax_v1을 동결하고 자료의 표면만 변경하는 2건 사전 등록. 6벽/24면 배치표·실물 크기 SVG·PNG를 보존하며 실물 사진은 미확인 가정. 렌더·취득·관문은 실행 상태 기록과 구분한다.
+
 - [2026-10-07 동결 시차 검출기 최종 횡이동 진단](2026-10-07-wall-parallax-strafe/RESULTS.md): PR #405, 현행 v7·camera v3 전용 18초 녹화2건, 실제 횡이동 .689m. 178 eligible frame/16seed에서 north3점(P66.7%)/south0점, 주석R0·관문0/2. 동결 DR 이동 과대·특징 부족을 기록하고 전체 자기 지도 트랙 중단, 추가 튜닝/녹화/지도 재생0.
 
 - [2026-10-07 시차 벽점 독립 관문](2026-10-07-wall-parallax/RESULTS.md): PR #405, 기본-off parallax_v1(OpenCV LK/DLT·명령 DR와 상관 공분산). s1042–1047/1050–1051의4,361 eligible frame,530 seed에서 accepted0·recall0·관문0/8. 시차 부족/재투영 불일치 등 원인 기록, 튜닝·지도 재생 없이 중단.
