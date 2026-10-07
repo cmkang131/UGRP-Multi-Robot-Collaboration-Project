@@ -71,3 +71,10 @@ TensorBoard 기존 사용자 면제 및 UGRP Drive 예외 유지.
 `strafe-north-host-retry1`에 재개한다(원래 run에 robots 자료가 없을 때만 허용).
 CLI 준비 단계의 잘못된 disk_report section/모듈 진입점/축약 SHA도 수정했고
 실행 전 여유46.19 GiB, sim slot0, lock null, 전체 SHA admission 통과를 확인했다.
+
+## 최종 결과
+
+[RESULTS.md](RESULTS.md)에 두 새 녹화의 분리 표, 거부 사유, 실제/DR 횡이동 그림,
+재질 감사와 전체 시도/실물 측정 표를 보존했다. **관문0/2 → 자기 지도 트랙 전체 중단**.
+23시험 통과, 동결17파일 동일, 새 녹화362frame·accepted3/0·주석R0/0.
+추가 설정 변경·취득·지도 재생은 하지 않는다.

@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-07 동결 시차 검출기 최종 횡이동 진단](2026-10-07-wall-parallax-strafe/RESULTS.md): PR #405, 현행 v7·camera v3 전용 18초 녹화2건, 실제 횡이동 .689m. 178 eligible frame/16seed에서 north3점(P66.7%)/south0점, 주석R0·관문0/2. 동결 DR 이동 과대·특징 부족을 기록하고 전체 자기 지도 트랙 중단, 추가 튜닝/녹화/지도 재생0.
+
 - [2026-10-07 시차 벽점 독립 관문](2026-10-07-wall-parallax/RESULTS.md): PR #405, 기본-off parallax_v1(OpenCV LK/DLT·명령 DR와 상관 공분산). s1042–1047/1050–1051의4,361 eligible frame,530 seed에서 accepted0·recall0·관문0/8. 시차 부족/재투영 불일치 등 원인 기록, 튜닝·지도 재생 없이 중단.
 
 - [2026-10-07 온라인 camera pitch 최종 관문](2026-10-07-online-camera-pitch/RESULTS.md): PR #405, s1045–47/1050의30,512프레임을 실제 적재·팔·이동·가감속별로 분해. s1050도 같은 SEARCH/HIGH 오차가 남음. Lu/Phan MIT 소실점 `camera_pitch=online_vp_v1` 기본 off, 개발0/2·확인0/4, 고정2170점 중807점 무효. 재튜닝·지도 재생 없이 트랙 중단, 실물 마운트·관절·signed 차체 자세 측정 필요.
