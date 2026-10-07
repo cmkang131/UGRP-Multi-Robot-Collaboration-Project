@@ -4,6 +4,20 @@
 
 **영상은 stage probe를 다시 그린 것이다.** 위에서 본 그림은 정답 위치(평가용, 로봇 입력 아님)를 그린 도식이며 top 카메라 영상이 아니다(probe는 공용 top 카메라 프레임을 저장하지 않는다). 아래 곡선은 로봇이 추정한 yaw 불확실도 σ다. E2E 성공, 학생 성공, 성공률이 아니다.
 
+## 2026-10-08 자기 지도 감독 승인 DEV (egomap34)
+
+아래 기존 stage-probe 영상과 별개로 새 물리180초를 기록했다. 단 한 번 승인된 seed32002이며
+기존 seed31001과 paired가 아니다. egomap33 관문5/7 미달을 통과로 바꾸지 않는다.
+실행 소스 `9ff00833`, 번들 `egomap34-rotleft-dev-v1`: tape/SEARCH/강성/rotL.
+손목 RGB와 과거 snapshot만 사용한 자기 지도/경로, 평가용 회색 GT벽·초록 실제경로를 나란히 그렸다.
+종료0.202m·1.99σ, 영역P/R63.6/76.0%, B미도착·벽접촉0. 실물/전체 지도 성공 아님.
+
+[4배속 미리보기](../experiments/2026-10-08-wall-segment-dev/figures/wrist-map-4x-preview.mp4)
+(640×240,45.05초,901프레임, SHA256 `d123cf6bdf726702d09d7634f917567f8909aeb72f42362e23b7a089194a97e4`).
+원본1280×480은 `outputs/wall-segment-dev-v1/wrist-map-4x.mp4`,
+SHA256 `1c6e607ef9de55da36ecfb7e89097c1f764df6f02fee7349bc8fcc21b65c7688`.
+[전체 결과·해시](../experiments/2026-10-08-wall-segment-dev/README.md).
+
 ## 대표 케이스 선택 규칙
 
 1. **그 버전의 가장 전형적인 결과 1건.** 그 버전이 가장 자주 낸 판정(성공만 고르지 않는다. 그 버전의 기준선이 실패 위주면 전형적인 실패)을 낸 단계·셀에서 고른다. 사전 지정 seed(911)와 `nominal` 또는 그 코호트의 기준 셀을 우선한다.
