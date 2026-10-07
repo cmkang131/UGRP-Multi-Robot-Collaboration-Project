@@ -3882,3 +3882,13 @@ AGENTS.md의 DEV 실행 소스는 “커밋·push한 브랜치 SHA”라는 규�
 ba21e386 실행은 결과 dict의 schema/full_dev 중복 키로 backend 생성 **이전** HOST_ERROR.
 raw `outputs/s2-active-markov-ba21e386-s1052-start-managed/console.log` 보존, 물리0·잠금 해제.
 JSON 구성 병합 버그만 수정하고 동일 사전 등록의 시작 물리1회를 진행한다.
+
+### s2v35 시작 물리 완료 — 25cm 기준 FAIL
+
+소스73d53def, seed1052 시작만1회. 종료 오차 **3.3750m**,
+30.00 SIM초/207.35 wall초, 선택10·완료10행동,
+87바퀴 펄스, 갱신8회. 종료 `TIME_CAP`.
+[결과](active-markov-result.json), raw `/Users/changmin/projects/ugrp/outputs/s2-active-markov-73d53def-s1052-start`.
+GT는 종료 평가만, 시작 도크 prior0·운반0·모델0. 잠금 해제, 세션 종료.
+사용자 감독 예외에 따라 로컬 SHA 실행·push 대기. 25cm 미달로 이 위치찾기 옵션의 full DEV는 제안하지 않는다.
+다음 s2v36은 별도 사용자 허가된 하중/벽 접촉 ablation이며 이 결과를 운반 성공에 합산하지 않는다.
