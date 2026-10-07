@@ -2891,3 +2891,20 @@ confidence를 적용하면 옅은 지도 셀이 기존 graph의 확률 gate에 �
 개발 보조 명령의 시스템 Python/SciPy 누락과 넓은 glob의 `-managed` 폴더 혼입은 각각 1회 발생 후
 등록 venv/정확한 입력 경로로 확인했다. 추정기·계수·원본을 수정하지 않았고 같은 원인 두 번 실패는 없었다.
 기존 결과를 덮거나 확인 자료에 맞춘 튜닝은 하지 않았다.
+
+
+## 24. 벽 검출기 독립 관문 — floor_boundary_v1 (2026-10-07)
+
+[새 실험 README·문헌·거리별 결과·RGB 비교 그림](../2026-10-07-wall-floor-boundary/README.md).
+Ulrich–Nourbakhsh 2000 §4의 single-frame HSI histogram 기본법을 default-off `wall_detector=floor_boundary_v1`로
+독립 구현했다. 사전 기준 `dd8fb5dc`, 주석/평가기 `bf567b19`, 기존 기준값 `095195c3`를 먼저 커밋한 뒤
+구현 `e2b02e1c`, 개발2 후 무튜닝 동결 `d8709b5f`, 확인4를 수행했다.
+
+개발0/2·확인0/4 FAIL. 확인 pixel P0–1.47%, R0–1.58%, GT 투영+픽셀 일치 metric P/R 모두0%.
+기존 검출기의 주석 pixel P는94.3–98.8%이며 수동 접점을 투영해도 중앙0.457–0.665 m 오차가 남는다.
+따라서 §23의 낮은 GT 지도 precision을 픽셀 검출 단독 병목으로 단정할 수 없다. 원법은 체크 바닥/물체를
+obstacle로 분류해 wall-only 관문에 실패했다. 임계값·카메라 보정값·지도 옵션을 재튜닝하지 않는다.
+
+25시험 통과, off scan/segment/adapter bytes 동일. GT는 평가에만 사용했다. 관문 실패로 새 RGB를 쓴
+RBPF100+graph+confidence 재생 및 위에서 본 누적 지도 그림 갱신은 하지 않았다. §23 결과/그림은 보존한다.
+남은 과제는 실제 카메라/팔 자세와 보정표 적용의 분리 검증이며, 새 물리/렌더/모델 호출0회. PR DRAFT 유지.
