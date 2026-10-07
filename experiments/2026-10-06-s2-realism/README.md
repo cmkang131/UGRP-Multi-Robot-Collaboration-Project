@@ -3305,3 +3305,35 @@ source→event→live API/HParams 수치 일치. 새 영상 등록·HTTP206/재�
 [대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-slip-recovery-v129%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Flifted%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Finside%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_updates%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_update_gap_sim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fremaining_to_b_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fsim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fcommands%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries) · [전달 검증](slip-recovery-delivery-verification.json).
 사용자 지시대로 수치만 대조했고 브라우저 UI 확인을 주장하지 않는다. 기존 viewer PID52016 유지,
 공유 view의 자기 키만 추가했다. **추가 실행/튜닝 없음, PR406 DRAFT·병합 금지 유지.**
+
+## s2v29 — 시작 행 미지: Augmented MCL·다중 가설·능동 시선 (2026-10-07 사전 등록)
+
+**사용자 확인:** 실물 로봇은 시작 도크/행을 모른다. 시작 도크를 사전정보로 주는 방법은 금지한다.
+s2v28 slip 회복은 실패·기본off로 보존하며, 이번 작업은 도크 위치추정에만 한정한다.
+6fd34da9 후보의 s1052 오차 1.429→3.318m FAIL은 그대로 둔다.
+오프라인 감사에서 전역 2000입자 중 정답 25cm·15° 주변은 처음 **1개→2.25초 재샘플링 뒤 0개**였다.
+행별 질량은 여러 행에 남아 있었으며, 최대 연결군집98.85%를 단일 행의 확률로 해석하면 안 된다.
+3.75/5.25/6.75초 다른 정지 pan에는 각각38/36/18개 경계 접점이 있었지만 차체 운동 gate가 제외했다.
+
+[사전 기준](dock-augmented-criteria.json)을 구현·후보 평가 전에 고정한다. 기존 정확도 기준(마지막≤.25m,
+최대≤.5m, baseline RMSE 개선)을 유지하고 정답 근처 입자 생존·잘못된 확정 금지·off 동일성을 추가한다.
+통과할 때만 **seed1052 full DEV 1회**를 허용한다. 미달이면 물리 실행하지 않는다.
+탐색 재생으로 이미 본 s1052를 새 확증 표본으로 세지 않는다. GT는 예측 파일 완성 뒤 별도 평가만.
+
+**표준 원본과 필요한 RGB 어댑터:**
+- [Nav2 pf.c 고정 소스](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf.c)의
+  정규화 전 평균 우도, slow/fast EMA, `max(0,1-fast/slow)` 전역 무작위 주입과 주입 후 EMA 초기화를 따른다
+  (Probabilistic Robotics Table8.3/p258). [공식 설정](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/)의
+  예시 alpha=.001/.1을 쓴다. 원본 기본0과 예시값을 구분한다. RGB hit/random 측정식은 바꾸지 않는다.
+- [ROS AMCL pf.c](https://github.com/ros-planning/navigation/blob/f44bb1fc2810399165115cc98b530fe4b9397c18/amcl/src/amcl/pf/pf.c)의
+  선택 재샘플링(ESS>N/2이면 전체 가중 분포 복사)을 적용한다. 행별 강제 할당·정답 주변 재주입은 없다.
+  전역 수렴 전 여러 가설을 유지하고, 최대 연결군집을 확정 위치로 채택하지 않는다.
+- [Fox/Burgard/Thrun 1998 원문](https://www.cs.cmu.edu/~dfox/postscripts/ras-active.ps.gz)
+  §4.3 식13의 기대 엔트로피 감소로 센서 방향을 선택한다. 비용이 같은 정지 pan5개 중 선택하며,
+  기존 카메라·고정 지도·기존 sigma로 중앙 경계 한 광선의 이산 관측 분포를 계산한다.
+  레이저와 달리 카메라는 팔에 달렸으므로, 전역 탐색 중 **새 정지 명령 자세당 1회**만 관측한다.
+  같은 자세 반복으로 가중치를 계속 곱하지 않는다. 차체 운동 gate·기존 하중/운반 경로는 유지한다.
+  녹화되지 않은 새 시선의 효과는 주장하지 않는다. 선택 순서의 그림자 계산은 실제 관측과 별개다.
+
+새 `global_localization=augmented_active_v1`은 기본off S2 오버레이로만 구현한다.
+실패한 구 옵션·기존 번들·공용 camera_robot_port·다른 제어기·카메라 mount/FOV는 이번 범위 밖이다.
