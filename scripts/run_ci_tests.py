@@ -46,6 +46,7 @@ TEST_PATTERNS = (
     "tests/test_self_wall_pr.py",
     "tests/test_wall_contact_types.py",
     "tests/test_wall_bottom_connected.py",
+    "tests/test_wall_floor_ulrich.py",
     "tests/test_wall_cell_attribution.py",
     "tests/test_active_wall_rotleft.py",
     "tests/test_camera_projection_audit.py",

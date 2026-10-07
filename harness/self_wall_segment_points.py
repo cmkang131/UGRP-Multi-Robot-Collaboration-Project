@@ -7,14 +7,16 @@ from harness.active_camera import transform as camera_transform
 from harness.wall_projection_guard import filter_segments
 
 
-def contact_points(rgb,servo,*,wall_detector='off',contact_rule='off'):
+def contact_points(rgb,servo,*,wall_detector='off',contact_rule='off',
+            contact_state=None,frame_id=None,odometry_pose=None):
     mp,hfw,ewm=modules()
     origin,rotation=camera_transform(servo)
     cm=mp.ColumnModel(tuple(sorted(servo.items())),0.,mp.column_positions(96,2),camera_transform=(origin,rotation))
     und=mp.undistort(cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
     params={'floor_patch_max_m':.81,'run_step_window':3,'top_edge_px':4}
     from harness.wall_contact_detector import detect
-    scan=detect(hfw,und,cm,params=params,loaded=False,wall_detector=wall_detector,contact_rule=contact_rule)
+    scan=detect(hfw,und,cm,params=params,loaded=False,wall_detector=wall_detector,contact_rule=contact_rule,
+        contact_state=contact_state,frame_id=frame_id,odometry_pose=odometry_pose)
     grey=cv2.cvtColor(und,cv2.COLOR_BGR2GRAY).astype(float)
     basis=rotation@np.linalg.inv(mp.K)
     collected={}
