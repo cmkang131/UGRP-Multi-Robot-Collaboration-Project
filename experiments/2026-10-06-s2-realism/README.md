@@ -2819,3 +2819,63 @@ pitch ±2.8° 공통 보정 스케일 민감도는 크기에만 rank-one XY 공�
 동적 손목 회전이 순수 스케일이라는 주장은 하지 않으며 그 잔차는 이번 후보의 한계다.
 기존 Nav2형 연속 진행 검사/방향 회피는 선택 옵션으로 유지하고 재생은 shadow만 검증한다.
 모든 runtime 입력은 자기 RGB/명령/고정보정, GT는 재생 종료 후 별도 평가다.
+
+### s2v25 결과 — 국소 slip 대체 통과, 갱신/공백 실패로 종료
+
+사전 기준 **a598929a** → 구현/재생 **adab260b**. 관련3파일 **17 passed / 17.43초**,
+기본 off 명령/record 바이트 동일, off 전체5202 frame의 poses/amcl/visibility/contact도
+원본과 정확히 일치한다. 두 재생은 ugrp_session으로 완료했고 GT는 그 후 채점에만 읽었다.
+[판정](slip-detect-summary.json), [검증](slip-detect-verification.json), [result/options](slip-detect-result.json).
+
+|문제 펄스 SIM s|시각/명령 진행 비율|판정|적용 Δ전진/옆 cm|변위 오차 cm|pitch 크기 σ mm|
+|---:|---:|---|---:|---:|---:|
+|107.35|0.09585|대체|-0.732 / 1.606|1.105|1.190|
+|108.30|0.00784|대체|0.128 / 0.130|0.097|0.226|
+|109.25|0.01207|대체|-0.223 / 0.203|0.333|0.467|
+|110.20|-0.00283|대체|-0.277 / -0.046|0.320|0.436|
+|111.15|-0.01280|대체|0.173 / -0.215|0.347|0.469|
+|113.70|unknown|기존 유지|0.084 / 16.720|14.569|N/A|
+
+5/6 대체, 오차≤3.5cm **5/6**, 중앙오차 **0.340cm**, yaw RMS **7.113→5.140°**로
+해당 기준은 통과했다. 첫 펄스는 직접 VO로 Δ전진−0.732/옆1.606cm이며 이전 EKF의
+Δ전진−15.020/옆−2.739cm와 다르다. 113.70초는 시작 후3프레임 모두 texture unknown,
+0.15초 연결 한도를 넘겨 끝까지 유효 VO를 만들지 못했다. 명령값을 그대로 유지해
+오차14.569cm가 남았다. 결과를 본 뒤 연결 한도/비율 문턱을 바꾸거나 부분값을 채우지 않았다.
+
+전체 하중277펄스 RMS **24.132→10.071mm**, 그 외271펄스 RMS **4.977mm로 정확히 동일**.
+대체5개 외 profile은 변경0이다. 큰 병진35개 중 측정 정상1·slip5·unknown29이며,
+나머지242개는 범위 밖이다. 정상 이동을 유지했다는 말은 나머지를 모두 시각 측정했다는 뜻이 아니다.
+pitch ±2.8°의 σ는5개에서 **0.226–1.190mm**, 측정 방향의 크기 공분산에만 더했다.
+feature fit의 위치/yaw 공분산은 별도 유지한다. 알려진 동적 자세오차까지 없어졌다고 보장하지 않는다.
+
+|조건|운반 RMSE m|informative 갱신|최장 공백 s|초기 정지 최대 오차 m|
+|---|---:|---:|---:|---:|
+|baseline|2.023583|27|33.85|0.105661|
+|slip_detect_v1|1.785303|23|43.50|0.105661|
+
+**15개 기준 중13개 통과, 갱신 수·최장 공백 실패**다. 마지막 유효 갱신197.55초 이후
+201.20/209.90초의96/10열 우도는 상수(KL 약1.09e−17/−1.14e−16)여서 보정하지 못했다.
+운반 끝241.05초까지43.50초 공백이다. 광류로 이동량을 바꾸면서 AMCL 이동 trigger와
+입자 분포가 바뀌었으며, 전체 측정 후보31→29개·공통8시각의 접점 배열은100% 동일하다.
+원본 RGB5202장 해시 확인, 지연525 frame 순서 보존·벽 영상 누락0이다. 상수 우도가
+정보를 못 주는 원인을 새 gate/재샘플링 설정으로 추측해 고치지 않았다.
+[갱신/unknown 진단](slip-detect-diagnostics.json).
+
+기존 진행 검사 shadow는 **110.00초 방향 억제**, 네 번째 문제 명령110.20초부터 차단해
+사전 기준을 통과했다(고정 명령 중35회가 차단 대상). 실제 기록 명령은 변경하지 않았고
+실물/새 시뮬레이션 회피 성공이 아니다. 실제 회피의 도착/충돌 성능은 미검증이다.
+
+**미채택: 새 full·물리·렌더·모델 호출·seed·번들 예약0.** 기본off 탐색 후보로만 보존한다.
+실행기/번들에는 입장시키지 않는다. [v122 이후 위치 추정 시도 한 표](localization-attempts-v122.md)로
+전체 이력을 정리하고 이번 시도를 종료한다. 새로운 lifted/inside·벽 하단 가시율·B 거리·
+would-stop·wall/SIM은 N/A. 마지막 실제 s1051의 true/false, B까지2.178m,
+wall/SIM1.315929를 후보 결과에 승계하지 않는다. offline wall147.943초는 wall/SIM이 아니다.
+
+원본과 새 raw는 로컬 보존: `/Users/changmin/projects/ugrp/outputs/s2-slip-detect-20261007/`.
+새 TensorBoard **1007-s2-slip-detect / 3뷰22scalar**, source→event→live API/HParams 수치 대조 완료.
+[대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-slip-detect%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_updates%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_gap_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fsix_error_pass_count%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnonblocked_new_xy_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fadmission_pass%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries) · [검증](slip-detect-delivery-verification.json).
+
+기존 s1051 4배속 영상은 등록/HTTP 재다운로드 SHA까지 재확인했다. 새 영상/실행 증거가 아니다.
+사용자 수치 대조 범위로 브라우저 UI 확인은 주장하지 않는다. 기존 viewer PID52016/logdir와
+다른 view 키/PR/worktree/process는 유지했다. session stopped, 물리 잠금 미획득·status=null.
+PR406 DRAFT·병합 금지. 재튜닝/추가 후보/추가 재생 없이 종료한다.
