@@ -24,6 +24,19 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_own_map_navigation.py",  # Pure 2D B/C/E contracts, no engine.
+    "tests/test_own_map_navigation_v2.py",
+    "tests/test_public_navigation.py",
+    "tests/test_navigation_recovery.py",
+    "tests/test_navigation_persistent.py",
+    "tests/test_navigation_stop_geometry.py",
+    "tests/test_navigation_s4_final.py",
+    "tests/test_frontier_oracle_confirmation.py",
+    "tests/test_navigation_raytrace.py",
+    "tests/test_navigation_unknown.py",
+    "tests/test_navigation_monitor.py",
+    "tests/test_navigation_clock.py",
+    "tests/test_mapfree_environment.py",
     "tests/test_floor_goal*.py",  # Offline HSV floor-goal geometry, memory and evaluation boundaries.
     "tests/test_self_odom_grid.py",
     "tests/test_self_map_csm.py",

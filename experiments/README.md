@@ -1,6 +1,26 @@
 # 실험 인덱스
 
-- [2026-10-07 지도 없는 목적지 D: 자기 RGB 바닥 색 B](2026-10-07-mapfree-goal-floor/README.md): 기본 off의 `floor_color_v1`, HSV·어안 바닥 투영·자기 odom 후보 누적. 카메라 v3 4건과 legacy 6건을 분리 재생했으나 B 양성 표본이 없어 recall/투영 오차 N/A. v3 17개·legacy 8개 거짓 검출, s1045 거짓 누적 확인 2개를 기록했다. 구 녹화 자기 지도 튜닝은 동결, 시뮬레이션/모델 호출 0.
+- [2026-10-07 v8 정지/관측 대기 어댑터 수정](2026-10-07-mapfree-v8-stop/RESULTS.md): PR #409. 2D 최종0속도 뒤 M1 잔류 적분을 차단하고 대기10Hz callback 연결. 같은 개발32쌍에서 대기 접촉14→0, B24→28/32·coverage64.81%, 전체 접촉6/잘못된 문2/거짓 후보8. 관문4/5 실패, 기존12사건·v5–v8 표만 기록하고 트랙 종료; 새32쌍/잡음/MuJoCo/모델0.
+
+- [2026-10-07 public_ros_v8 기본 collision monitor·explore 설정](2026-10-07-mapfree-collision-monitor/RESULTS.md): PR #409. v7 M/N32 개발 한 번, B26→24/32·충돌2→16·거짓 후보14→10, 관문3/5 실패. B3s float 경계 수정은 분리 확인, 근거리 미관측·관측 대기 잔류 접촉이 남아 튜닝/새 확인/잡음 없이 중단.
+- [2026-10-07 public_ros_v7 footprint·unknown 원본 정책](2026-10-07-mapfree-unknown-footprint/RESULTS.md): 기존 확인32쌍 frontier26/32·거짓B0·coverage70.11%, 충돌2·거짓 후보14로4/5. 기존 수치 보존.
+
+- [2026-10-07 public_ros_v6 camera raytrace](2026-10-07-mapfree-raytrace/RESULTS.md): PR #409. 기존 K/L32 개발에서 연결36→1,351–2,130칸·NavFn 경로0→29,960후보로 복구. 첫3.54cm footprint 연결이 unknown에 걸려 최종 경로0/32, 추가 튜닝·새 확인·현실 잡음 없이 중단.
+
+
+- [2026-10-07 동결 v5 frontier 오라클 새32쌍](2026-10-07-mapfree-frontier-oracle/RESULTS.md): PR #409. 새 K/L32에서 정적 B32/32, 자기 frontier0/32·coverage17.25%·기준1/5. 0.10m floor 표본→0.05m 자기 격자 단절, 목표 후보2,044개 모두 불통·첫 관측2s 종료. 튜닝 없이 중단, 현실 잡음 미실행.
+
+- [2026-10-07 s4 마지막 개발·새32 확인](2026-10-07-mapfree-s4-final/README.md): PR #409. B/경로 중심은 free, 거부는0.1m 벽 경계2셀의 footprint 교차. 원 Nav2 bringup0.05m를 기본-off `public_ros_v5`로 적용, 개발 참 B6/6·거짓0 뒤 미개봉 oracle static32/32·충돌0·거짓0. frontier/현실 잡음은 미실행, 추가 개발 반복 종료.
+
+- [2026-10-07 s4·s5 정지 기하·원본 footprint 검사](2026-10-07-mapfree-stop-geometry/README.md): PR #409. 통로0.50m/최대 padded 회전폭0.3688m, 정지 costmap·실제 벽·footprint 그림2장. Nav2 edge 검사만 기본-off `public_ros_v4`로 적용, 기존 개발 유효 B2/6→4/6·거짓0. s5 회복·s4 동일 소진으로 중단, 새32 미개봉.
+
+- [2026-10-07 navigation 영속 장애물·진행 감시 v3](2026-10-07-mapfree-navigation-persistence/README.md): 원본 줄 대조와 opt-in 포트. 기존 실패10 B0→2(유효2/6), 접촉4·회복 소진4로 개발 관문 실패. 새32 미개봉, 튜닝 중단, #409 DRAFT.
+- [2026-10-07 navigation 회복·유효 도크 평가 어댑터](2026-10-07-mapfree-navigation-recovery/README.md): Nav2 recovery 포트와 도크 기반 새32쌍 등록. 기존 실패10 재생 B0/10, 회복 소진4·맹점 충돌2 재발로 중단; 새 확인 미개봉, 기본 off, #409 DRAFT.
+- [2026-10-07 공개 navigation 코어 이식·선행 관문](2026-10-07-mapfree-public-navigation/README.md): NavFn/explore_lite 원본 + PythonRobotics pursuit, 기본 off. 새 G/H32 oracle static B22/32로 ≥30/32 관문 실패; frontier/현실 잡음 미실행, 재튜닝 중단, #409 DRAFT.
+
+- [2026-10-07 자기 지도 B/C/E: frontier·문·부분 경로](2026-10-07-mapfree-explore/README.md): 기본 off, MuJoCo/모델 없는 2D 개발16쌍→동결→확인32쌍. 확인 B 0/32, coverage15.11%, 충돌13, 문 시도0, 기준1/5로 미달. 구 벽 통계·v7 구조 사전 잡음의 모델 한계와 최초 관측 free 연결 실패를 기록; 물리 미실행, #409 DRAFT.
+
+- [2026-10-07 지도 없는 목적지 D: 자기 RGB 바닥 색 B](2026-10-07-mapfree-goal-floor/README.md): v1/v2 보존, 기본 off의 v3 동결. 새 정적 확인 precision100%/recall79.41%(기준 실패), 기존 카메라 v3·legacy 녹화 거짓 확인0. 시간 누적 보완은 후속 검증 가설이며 기존 v3 코드/설정은 변경하지 않음; #408 DRAFT.
 
 - [2026-10-06 벽 접촉 행·거리 치우침 원인 규명과 놓친 프레임 수정 (높이 없는 벽 검출 탐침, #216)](2026-10-05-ego-wall-map-probe/README.md): 행 +15.3 px·거리 −0.46 m 치우침은 검출기가 아니라 적재 판정(`servo[3]≥900`이 열린 그리퍼 탐색 자세를 운반으로 분류, 편향 −2.62° vs −1.07°)과 채점 기하였다. 분할 렌더 기준으로 검출기 행은 경계 −0.5 px. 놓친 101/247프레임은 전부 지평선이 프레임 밖(horizon 게이트), 바닥 조각 길이 0.81 m 검사로 0프레임, 열 recall 0.59→0.90, 정확한 접촉 0.64, 거짓 검출 677프레임 중 1접촉, 확인 시드 s912·s913 재현. 예전 카메라 기준이며 카메라 v3(#401)에서는 다시 재야 한다. 물리 0회. 이어서 면 단위로 쟀다: 지도에 쌓이는 면이 0.15 m 안인 비율은 옛 검출기 4%, 분할 창 + 처짐 보정 77%, 정착 게이트까지 걸면 88%(지도 원점은 섀시 원점, 팔 축 오프셋 0.0482 m는 기록만이 기본이고 더한 경우의 점수도 같이 적었다). 처짐 보정·자기 지도 C·메모리 D·D의 실행기 연결(`self_wall_memory=on_v1`, 새 모듈 `harness/coela_runtime_self_walls.py`, `source_manifest.json`의 새 번들)은 모두 옵션(기본 꺼짐, 끈 상태는 #405 이전과 같은 출력). 벽 기록을 채우는 쪽과 카메라 v3 재측정은 못 했다. 모델 호출 0회.
 

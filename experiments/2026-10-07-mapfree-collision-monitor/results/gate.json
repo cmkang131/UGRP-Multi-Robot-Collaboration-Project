@@ -1,0 +1,74 @@
+{
+  "conditions": {
+    "static_map": {
+      "n": 32,
+      "true_B": 32,
+      "false_B": 0,
+      "coverage_median": 0.6320684006031083,
+      "first_B_time_s": 95.0,
+      "first_B_distance_m": 3.63804566156024,
+      "end_time_s": 95.0,
+      "end_distance_m": 3.63804566156024,
+      "collisions": 0,
+      "wrong_doors": 0,
+      "false_passage": 6,
+      "door_attempts": 44,
+      "statuses": {
+        "B_confirmed": 32
+      },
+      "max_end_pose_error_m": 4.47545209131181e-16
+    },
+    "own_frontier": {
+      "n": 32,
+      "true_B": 24,
+      "false_B": 0,
+      "coverage_median": 0.717953729441742,
+      "first_B_time_s": 137.0,
+      "first_B_distance_m": 3.8581276285614448,
+      "end_time_s": 137.0,
+      "end_distance_m": 3.8581276285614448,
+      "collisions": 16,
+      "wrong_doors": 0,
+      "false_passage": 10,
+      "door_attempts": 34,
+      "statuses": {
+        "B_confirmed": 24,
+        "exploration_finished": 8
+      },
+      "max_end_pose_error_m": 4.443059973708341e-16
+    }
+  },
+  "paired": {
+    "common_successes": 24,
+    "distance_ratio": 1.199744485710418,
+    "time_ratio": 1.69345513413506
+  },
+  "checks": {
+    "boundary": true,
+    "B_confirmation": false,
+    "efficiency": true,
+    "coverage": true,
+    "safety": false
+  },
+  "criteria_passed": 3,
+  "passed": false,
+  "criteria": {
+    "total_pairs": 32,
+    "B_fraction": 0.8,
+    "false_B": 0,
+    "distance_ratio": 2.0,
+    "time_ratio": 2.0,
+    "coverage_median": 0.4,
+    "collisions": 0,
+    "wrong_doors": 0,
+    "false_passage": 0,
+    "min_door_attempts": 1
+  },
+  "complete": true,
+  "pose_condition": "oracle_gt_pose_v1",
+  "noisy_runs": 0,
+  "physics": 0,
+  "model_calls": 0,
+  "split": "development",
+  "next_stage": "STOP_NO_TUNING"
+}

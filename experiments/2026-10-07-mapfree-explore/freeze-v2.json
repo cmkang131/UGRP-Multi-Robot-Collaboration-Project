@@ -1,0 +1,198 @@
+{
+  "hashes": {
+    "harness/own_map_navigation.py": "99345cfcbf28c6d2e09f2112cd18e357a4c695a9be281ee831c360f9c0fcae72",
+    "harness/self_map_prob.py": "8473142e17d7fa2274f68e7000d9d4ed7b38253ee4b7c6e8e6e52ff465f0934e",
+    "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+    "harness/floor_goal.py": "1bdf332989123e0ea2a079e5571b42c2c6acb64d50080aacea4307e00c9a59dd",
+    "harness/floor_goal_v3.py": "59885daf4704837b8c7473c7aaad62a6a6fb8729960197f81c810b5f307fe87d",
+    "experiments/2026-10-07-mapfree-explore/sensor-errors.npz": "2a28ff187d04dfe1573d87555071f36b6c633f8597f0e1578b8a824da9cf183b",
+    "experiments/2026-10-07-mapfree-explore/sensor-model.json": "6cb35c18e8b5c3a8303438182b12d9d6e3fc7ad4414155baf4d327300e0eb9bd",
+    "experiments/2026-10-07-mapfree-explore/code/build_sensor_model.py": "e9ec9df1bd988733c205fb6d0cae2df3c7d3a893b0f7a9ddab9badc135d9f1a2",
+    "experiments/2026-10-07-mapfree-explore/code/diagnose_environment.py": "fbe5ae4ac0935dda08d5e1a81e90dbcfa43cb4bf23a7d57711b4653e7c015481",
+    "experiments/2026-10-07-mapfree-explore/code/grid_world.py": "c18a51d89c5d7320d4d5f7e289add276efee37606458de3d0980f54c955b3576",
+    "experiments/2026-10-07-mapfree-explore/code/grid_world_v2.py": "9cf33fd72111dd883a255c05880ac19bca33df64297c06b9f32def87fcde32bd",
+    "experiments/2026-10-07-mapfree-explore/code/navigation_actor_v2.py": "a098cf5ff57836783b5e0f1bf01c0a8704dbbe0aab80cc06e4ec0a8458a1fe1c",
+    "experiments/2026-10-07-mapfree-explore/code/run_grid.py": "e2c080a6ca0a7f7114de1477e075b2e1ceb123ea449e734de7376d1388b476fc",
+    "experiments/2026-10-07-mapfree-explore/code/run_revision.py": "f8fd50491fe42e3b311e09c09660500321a2b7b4b9d3e85246545695fbf6132e",
+    "harness/own_map_navigation_v2.py": "59de7b57dbbf6bef4a49ba0b5aa4f3fc08666c00cb04ae1d902eb57bbe263e09"
+  },
+  "starts": {
+    "E": [
+      -0.55,
+      -1.65,
+      0.7853981633974483
+    ],
+    "F": [
+      1.35,
+      -0.65,
+      -1.5707963267948966
+    ]
+  },
+  "cohorts": {
+    "seen": [
+      [
+        "B",
+        "D"
+      ],
+      [
+        2701,
+        2702
+      ],
+      "confirmation"
+    ],
+    "development": [
+      [
+        "A",
+        "C"
+      ],
+      [
+        1701
+      ],
+      "development"
+    ],
+    "confirmation": [
+      [
+        "E",
+        "F"
+      ],
+      [
+        3701,
+        3702
+      ],
+      "confirmation"
+    ]
+  },
+  "algorithm": "v2",
+  "environment": "rect_footprint_v2",
+  "no_tuning_after_development": true,
+  "development": {
+    "noisy": {
+      "static_map": {
+        "n": 16,
+        "B_true": 0,
+        "B_false": 0,
+        "first_B_distance_m_median": null,
+        "first_B_time_s_median": null,
+        "coverage_median": 0.47889815950323134,
+        "collisions": 12,
+        "door_attempts": 4,
+        "wrong_door_attempts": 0,
+        "candidate_passage_attempts": 0,
+        "false_candidate_passage_attempts": 0,
+        "end_distance_m_median": 18.18050014808754,
+        "end_time_s_median": 67.0,
+        "end_position_error_m_median": 0.6815413281866891,
+        "statuses": {
+          "collision": 12,
+          "budget": 4
+        },
+        "plans": {
+          "static_map": 255,
+          "static_no_path": 115
+        },
+        "door_reasons": {}
+      },
+      "own_frontier": {
+        "n": 16,
+        "B_true": 1,
+        "B_false": 0,
+        "first_B_distance_m_median": 33.50738311741822,
+        "first_B_time_s_median": 134.0,
+        "coverage_median": 0.20420617316167944,
+        "collisions": 14,
+        "door_attempts": 5,
+        "wrong_door_attempts": 0,
+        "candidate_passage_attempts": 0,
+        "false_candidate_passage_attempts": 0,
+        "end_distance_m_median": 10.09251014816061,
+        "end_time_s_median": 55.0,
+        "end_position_error_m_median": 0.4731067788793275,
+        "statuses": {
+          "collision": 14,
+          "budget": 1,
+          "B_confirmed": 1
+        },
+        "plans": {
+          "frontier": 282,
+          "swept_footprint_unknown_or_occupied": 53,
+          "goal_reobserve": 33,
+          "observation_required": 1
+        },
+        "door_reasons": {
+          "jamb_reobserve": 159,
+          "free_connection_unknown": 434
+        }
+      },
+      "paired": {
+        "both_successful_pairs": 0,
+        "distance_ratio_median": null,
+        "time_ratio_median": null
+      },
+      "results_sha256": "99e6d453fca199454b5c008c04fa3736736d528d666d5f217fa7007efa4e6050"
+    },
+    "oracle": {
+      "static_map": {
+        "n": 16,
+        "B_true": 11,
+        "B_false": 0,
+        "first_B_distance_m_median": 2.7863909853183055,
+        "first_B_time_s_median": 80.0,
+        "coverage_median": 0.21623426472937837,
+        "collisions": 4,
+        "door_attempts": 14,
+        "wrong_door_attempts": 0,
+        "candidate_passage_attempts": 0,
+        "false_candidate_passage_attempts": 0,
+        "end_distance_m_median": 2.6621086193064807,
+        "end_time_s_median": 74.5,
+        "end_position_error_m_median": 3.176272072419637e-14,
+        "statuses": {
+          "collision": 4,
+          "B_confirmed": 11,
+          "budget": 1
+        },
+        "plans": {
+          "static_map": 551,
+          "swept_footprint_unknown_or_occupied": 161
+        },
+        "door_reasons": {}
+      },
+      "own_frontier": {
+        "n": 16,
+        "B_true": 4,
+        "B_false": 0,
+        "first_B_distance_m_median": 3.6196467640829306,
+        "first_B_time_s_median": 105.5,
+        "coverage_median": 0.1894175001129199,
+        "collisions": 1,
+        "door_attempts": 0,
+        "wrong_door_attempts": 0,
+        "candidate_passage_attempts": 0,
+        "false_candidate_passage_attempts": 0,
+        "end_distance_m_median": 12.208848438340075,
+        "end_time_s_median": 600.0,
+        "end_position_error_m_median": 1.4452579987182077e-14,
+        "statuses": {
+          "budget": 11,
+          "B_confirmed": 4,
+          "collision": 1
+        },
+        "plans": {
+          "frontier": 2327,
+          "swept_footprint_unknown_or_occupied": 615,
+          "goal_reobserve": 8
+        },
+        "door_reasons": {
+          "jamb_reobserve": 13,
+          "free_connection_unknown": 3100
+        }
+      },
+      "paired": {
+        "both_successful_pairs": 4,
+        "distance_ratio_median": 2.918660496497637,
+        "time_ratio_median": 2.776315789473684
+      },
+      "results_sha256": "92d5f2e315be234f705032747a245a71df9b79698f24cc5e079d12210809bc65"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+# 원본 줄 단위 대조 (v2 = 6ae4c5a7)
+
+원본 bytes·revision·SHA256·라이선스는 [SOURCES.json](../../third_party/mapfree_navigation_persistence/SOURCES.json).
+Nav2 BT/progress Apache-2.0, Nav2 ObstacleLayer/raytrace와 m-explore·Kobuki BSD-3-Clause(원본 헤더) 보존. 새 venv/패키지 없음.
+ROS 서버 전체/BT scheduler를 실행하는 것이 아니라 필요한 상태기계·관측 층의 Python 포트다.
+
+| 항목 | 원본 | 기존 어댑터 | 적용할 차이 |
+|---|---|---|---|
+| frontier timeout | [explore.cpp L204–236](https://github.com/hrnr/m-explore/blob/26d4183a4fe119a0f83685ce3e06370c0c4d21d9/explore/src/explore.cpp#L204): 최저 cost nonblacklist, centroid goal 변경/`min_distance` 감소 때 진행 갱신; timeout blacklist 후 makePlan | `stack.py:51–88`: standoff 거리로 갱신, 목표 유지 중 frontier cost/min_distance를 다시 안 읽음 | 원 frontier min_distance·목표 재선택으로 전환. 관측 free standoff라는 카메라 제약은 유지 |
+| ABORTED 후 다음 frontier | [explore.cpp L247–285](https://github.com/hrnr/m-explore/blob/26d4183a4fe119a0f83685ce3e06370c0c4d21d9/explore/src/explore.cpp#L247): 축별5cell blacklist, 즉시 재계획 | `public_navigation_recovery.py:91–93,96–98`: failed 영구 latch, runner가 탐색 전체 종료 | navigation action 실패만 반환하고 frontier manager는 blacklist 후 다음 목표. 정적 B는 frontier가 아니므로 임의 blacklist/목표 변경 안 함 |
+| 위치 진행 | [SimpleProgressChecker L70–106](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_controller/plugins/simple_progress_checker.cpp#L70) | `stack.py:53–58`: 목표 거리 조금이라도 감소하면 timer reset | 기준 위치와의 병진 거리>0.5 m, allowance10 active s. 회전/미세 진동으로 무한 reset하지 않음 |
+| recovery 성공/실패 | [RecoveryNode L46–112](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_behavior_tree/plugins/control/recovery_node.cpp#L46), [RoundRobin L42–112](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_behavior_tree/plugins/control/round_robin_node.cpp#L42) | `public_navigation_recovery.py:83–90,107–110,143–146`: 시도 시작에 retry++, timeout도 완료처럼 재시도, 실패 동작 다음은 context clear | 성공 회복만 retry++, 실패는 RoundRobin 다음 child, 전체 실패는 action ABORTED. 고정 header L93의 wrap_around=false 유지 |
+| planner/control clear | [BT XML L15–65](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml#L15) | v2 contextual clear/순서 있으나 실패 유형/회복 결과 혼합 | planner/controller context1회 분리, planner1Hz 재시도, action reset 경계 명시 |
+| obstacle 유지 | [ObstacleLayer L490–580](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_costmap_2d/plugins/obstacle_layer.cpp#L490): raytrace free 먼저, hits lethal 덮어쓰기 | `actor.py:receive`의 latest는 평시 지속되지만 `public_navigation_recovery.py:168–182` clear가 전체 관측 hit 삭제 | 자기 persistent layer, ray clear→mark, 현재 시야 밖 유지. clear 뒤 원 관측 층 재적용 |
+| 지우기 예외 | [ObstacleLayer L620,705–794,858](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_costmap_2d/plugins/obstacle_layer.cpp#L620) | v2가 현재 footprint 내 관측 hit도 다시 복원(L190), 회복 시작 footprint 자체 불통 가능 | footprint clearing은 파생 local costmap에만, 정적 벽 복원. 메모리는 free 관측 ray로만 삭제(사용자 요구를 위한 원 reset과의 차이) |
+| 접촉 역주행 | [Kobuki safety L225–247,298–347](https://github.com/yujinrobot/kobuki/blob/4f7f1beea87a970519f8d842be0eb40f0d5cde68/kobuki_safety_controller/include/kobuki_safety_controller/safety_controller.hpp#L225), [bumper2pc](https://github.com/yujinrobot/kobuki/blob/4f7f1beea87a970519f8d842be0eb40f0d5cde68/kobuki_bumper2pc/src/kobuki_bumper2pc.cpp) | runner/world는 collision label로 episode 영구 종료. 실제 감지 입력 없음 | 이번 사용자 허용 binary sensor만 추가. stop→고정 몸체 앞 bumper 접점→bounded Nav2 BackUp. Kobuki는 pressed 동안 -.1 m/s이고 여기서는 UGRP .30m/.15 BackUp까지 이어짐을 명시 |
+
+원본은 [Nav2 공식 SimpleProgressChecker 문서](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/controller_server/controller_server_plugins/simple_progress_checker/)와
+고정 공개 소스를 직접 확인했다. web raw cache miss는 HTTPS 다운로드로 원문을 확인했고 실패한 조회를 검증 완료로 세지 않았다.
+`clear`가 모든 알려진 장애물을 절대 지우지 않는다는 주장은 원 Nav2에는 맞지 않는다. 이번의 persistent 관측 재적용은 사용자 제약에 따른 차이다.
+
+## v3 포트 대응 줄
+
+아래는 이번 구현에서 해당 원본 분기를 옮긴 위치다. 기존 v1/v2는 바꾸지 않았다.
+
+| 원본 기능 | v3 Python 포트 |
+|---|---|
+| SimpleProgressChecker baseline/check/reset | `harness/public_navigation_persistent.py:52–66`, 실행 clock `243–258` |
+| RecoveryNode SUCCESS일 때 retry 증가 | 같은 파일 `110–151` |
+| RoundRobin 실패 child → 다음 child, finite 종료 | 같은 파일 `137–151` |
+| explore_lite makePlan/min_distance/timeout | 같은 파일 `170–203` |
+| reachedGoal ABORTED → blacklist/재선택 | 같은 파일 `96–103`; inherited `stack.py:29–34` |
+| planner 재시도·1 Hz / clear 서비스 | 같은 파일 `205–231,250–253,335–339,366–369` |
+| ObstacleLayer clear-before-mark / 영속 관측 | 같은 파일 `289–316,341–352` |
+| Nav2 Bresenham raytrace | 같은 파일 `29–49`; 아래 원본 |
+| Kobuki binary stop/고정 bumper point, Nav2 BackUp | 같은 파일 `237–241,318–333` |
+| 2D 환경 접촉 직전 정지·센서 출력 | `code/contact_world.py:18–38` (GT는 여기와 평가 로그만) |
+
+[Nav2 raytraceLine 원문](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_util/include/nav2_util/raytrace_line_2d.hpp#L60)의
+Bresenham tie 처리·endpoint 포함을 그대로 포트했다. 유한 costmap의 unsigned flattened offset은
+무한 자기 좌표 tuple로 바꿨다. min=0/max=unbounded이고 현재 관측된 floor support만 지운다.
+두 팔 자세의 합쳐진 카메라 입력에는 광선별 origin이 없으므로 own body 원점에서 support를 순회하며,
+현재 hit를 만나면 중단한다. 미관측 셀은 절대 clearing 증거로 만들지 않는다.
+
+**원본의 특이 분기:** pinned RoundRobin.cpp:45–60은 마지막 child의 SUCCESS에도 wrap=false이면
+status switch 전에 break하고 전체 FAILURE를 반환한다. 따라서 backup 성공 로그와 navigation action
+실패가 함께 나올 수 있다. 이 분기도 시험으로 고정했으며 결과를 본 뒤 수정하지 않는다. 최신 Nav2
+전체 배포의 성능/의도를 주장하는 것이 아니라 이 revision의 확인된 분기를 따른 것이다.
+
+접촉 입력은 새 조건이다. 모든 이진 접촉에서 fixed front centre를 표식으로 넣는 것은 방향을 알 수
+없는 센서의 근사이며, 물체 접점 정답이 아니다. 실제 충돌의 좌표/ID는 `eval_contacts.jsonl`에만 남는다.
+센서 장착/실물 적용과 ROS 서버 통합은 검증 범위 밖이다.

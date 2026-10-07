@@ -231,7 +231,11 @@ class RegisteredAsANewBundle(unittest.TestCase):
                       if name == "harness/self_wall_memory.py" else sha(name))
             self.assertEqual(actual, expected)
         for name, expected in self.manifest["additional_bundles"]["self-map-own-prob-v1"]["files_sha256"].items():
-            self.assertEqual(sha(name), expected)
+            # The later projection guard/pose graph are additive options; this
+            # manifest identifies the historical pre-guard probability bundle.
+            actual = (sha("tests/fixtures/self_wall_memory_before_projection_guard.py.txt")
+                      if name == "harness/self_wall_memory.py" else sha(name))
+            self.assertEqual(actual, expected, f"{name}: historical probability bundle changed")
 
 
 class SourceHookOfSelfWallMemory(unittest.TestCase):
