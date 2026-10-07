@@ -28,3 +28,24 @@ raw `/Users/changmin/projects/ugrp/outputs/mapfree-s4-final-v1/`, 기존 자료 
 CPU 속도 비교가 아니므로 timing lock 없음. 기존 venv/plot deps 재사용, 설치0. 사용자 미추적4파일 보존.
 시험 통과를 확인한 뒤 commit/push·Codex trailer, PR #409 DRAFT·병합/강제 push/reset/다른 worktree 수정0.
 TensorBoard 변환/Drive는 앞선 사용자 결정대로 생략한다.
+
+## v4 진단 및 마지막 후보 동결 전 결정
+
+[정지 셀 원장](results/diagnosis.json), [원본 줄 대조](REFERENCES.md).
+첫 거부110s에서 B는 raw/cost0이고 경로 중심89개 모두 lethal/inscribed/unknown0이다.
+frontier는 null이며 이번 실패는 static_map 모드다. +0.70s의 요청 footprint 외곽이
+lethal `(57,60)`, `(58,60)`에 걸린다. 셀 중심의 실제 벽 여유는 각각15.802/5.737mm이며
+각 cell polygon 일부가 wall_divider_1/wall_corridor_1과 실제로 겹친다. **벽 경계의 보수적
+격자화**이지 목표 셀의 벽/벽 너머 frontier/완전히 허구인 장애물이 아니다. footprint의 실제 벽
+교집합 면적은 현재·거부 자세 모두0이며, 이전 연속 여유 하한0.02836m를 유지한다.
+원장의 `actual_geometry_overlap_fraction`은 인접 벽별 면적의 합(벽 중첩 중복 가능)이며 union 비율이 아니다.
+
+![s4: 자유 B/경로, 거부 경계 셀2개, 회복 후 정지](figures/s4-blocked-cells.png)
+
+원본 explore_lite와 frontier ABORTED→다음 목표 동작이 이미 같고, static B에는 다른 frontier가 없다.
+따라서 RoundRobin 종료를 바꾸지 않는다. **`navigation=public_ros_v5`, 기본 off**는 원 Nav2
+bringup의0.05m 한 해상도만 적용한다. 고정 지도 raster 여유는 기존 cell-half 원리대로0.025m;
+shape·footprint padding0.02·inflation0.50/10·회복·센서·B·v7·예산·기준은 불변이다.
+기존 v1–v4 경로 bytes 보존. 단위시험24개 통과 후 커밋·push하고 개발10을 한 번 실행한다.
+첫 시험의 round-trip 부동소수점2.8e−17을 정확0으로 기대한 fixture만 절대허용1e−12로 수정했으며
+관문/실험 계수는 변경하지 않았다. 개발 결과를 본 뒤 해상도·회복을 추가 조정하지 않는다.
