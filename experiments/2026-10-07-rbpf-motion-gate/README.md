@@ -55,3 +55,29 @@ Neff 선택적 재표본화 기존 시험. egomap22 same-input on frontend 오�
   B 확인/GT 도착, 전체 P/R, 노출 분모를 함께 기록. 작은 범위로 성공을 주장하지 않는다.
 - raw `/Users/changmin/projects/ugrp/outputs/rbpf-motion-gate-v1/`, 예상≤300MiB;
   ENOSPC=HOST_ERROR. 디스크/잠금 확인, S2 동시 실행 금지. 실패 후 튜닝·두 번째 물리 없음.
+
+## 구현 후 same-input 재생 (물리 전 동결, 개선으로 해석하지 않음)
+
+|egomap22 입력|재표본 off→on|초기 조상 off→on|종료 σXY off→on m|frontend 경로 RMSE off→on m|3σ 초과 off→on|
+|---|---:|---:|---:|---:|---:|
+|photo|14→2|1→17|.00644→.18066|.5533→.5953|406→234 /459|
+|speckle|32→2|1→1|.00150→.00210|.1440→.2314|599→656 /740|
+
+on 처리 scan7/4, 보류115/681. 기존 speckle 마지막 저장 scan1개는 원 own-contact trace가
+중단 전에 기록되지 않아 on 입력에 포함하지 않았다(원 입력 한계). 전체 matched4/4.
+**재표본 횟수 감소가 올바른 posterior/위치 회복을 뜻하지 않는다.** speckle은 초기2회의
+재표본화로도 계보가 붕괴했다. 오정합·너무 집중된 likelihood/제안분포·보정 모델의 체계 오차는
+이번 motion gate가 해결하지 않는다. 관문/잡음/입자수 재튜닝 없이 사용자 지정 기준선1회 진행.
+`code/replay.py`는 own 예측을 저장·SHA 봉인한 뒤 GT 경로 평가를 한다. graph 재생/새 물리 아님.
+
+구현은 `harness/rbpf_motion_gate.py`의 opt-in 메서드 어댑터다. off는 원 객체/메서드를
+그대로 반환한다. ego-map/PR409 기존94파일·기존29파일 수정0. 원 GMapping과 달리
+입력 간격은 벽 접점이 존재하는 카메라 프레임이며, 누적량은 그 간격의 명령 DR 차이다.
+물리 어댑터는 egomap22 `scripts/run_active_wall_map.py`를 별도 파일로 재사용했다.
+새 옵션 연결·SEARCH/tape 고정 외에는 명령/추정 루프 그대로다. 30분 타이머가 graph 중에도
+작동하고 종료 저장은 재정합을 중복 실행하지 않는다. 이 저장/예산 보완은 정책 변경이 아니다.
+
+물리 전 검증: 기존 probability/active 23시험, 새 gate 포함28시험,
+최종 gate/active/workflow **31시험 통과**(중복 합산 아님). 정지 반복 불변·off bytes·
+active forecast 복사본 격리를 확인했다. 여유34.22GiB, 잠금 null/S2 물리 프로세스 없음 확인.
+기존 TensorBoard viewer는 건드리지 않는다. 디스크 보고의 잘못된 section 이름1회는 `fs`로 수정했다.

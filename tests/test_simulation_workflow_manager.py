@@ -202,6 +202,7 @@ raise SystemExit(3 if a.fail else 0)
         model.mkdir()
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
+            "rbpf-motion-gate": ["--case", "baseline", "--expected-source-sha", "0"*40],
             "active-wall-map": ["--case", "static", "--expected-source-sha", "0"*40],
             "arena-wall-map": ["--case", "forward", "--expected-source-sha", "0"*40],
             "wall-parallax-strafe": ["--case", "strafe-north", "--expected-source-sha", "0"*40],
