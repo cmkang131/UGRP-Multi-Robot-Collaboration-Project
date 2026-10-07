@@ -82,3 +82,13 @@ TensorBoard 생략 지시 유지, Drive 사용0. raw 로컬 보존과 Git 원격
 도면 대비 명령 예측 경로 중심의 벽 최소거리 .463/.475m, 취득 설계용 보수적 원반반경
 .32m를 뺀 여유 .143/.155m([기하 점검](results/planned-clearance.json)). 실제 충돌/완주의 보증은 아니다.
 워크플로 `arena-wall-map`1.0.0, 번들 `egomap20-arena-tour-v1`; 기존 egomap19는 변경하지 않는다.
+
+### 취득 종료·예측 전 기록
+
+취득 소스 `7d109118`, 정방향은35.9초 경과(360RGB)에 WALL_CONTACT로 물리 중단,
+역방향은180초(1801RGB) 정상 종료. 명령/옵션 변경·재시작0. 실제 순회 여부는 아직
+GT 채점하지 않았으며, 두 자료를 같은 동결 추정기로 먼저 봉인한 후 평가한다.
+관련 재생/집계 시험2파일7개 통과. 추정은 egomap19 `map_short.predict`를 그대로 호출하며,
+새 어댑터는 episode/output 경로만 바꾸고 같은 RGB 접점의 v122 DR 기준선을 별도로 저장한다.
+신뢰도 bin 정의는 [scikit-learn reliability diagram 공식 설명](https://scikit-learn.org/stable/modules/calibration.html)
+(평균 예측값 대 실제 양성 비율)을 따른다. fitting/설치0, Brier를 순수 보정 오차로 해석하지 않는다.

@@ -37,3 +37,20 @@ def test_gt_return_cannot_affect_recorded_commands(tmp_path):
     moves=[a for a in issued if a['kind']=='mecanum']
     assert moves==[{k:v for k,v in c.items() if k not in ('t','leg')} for c in expected]
     assert result['status']=='RECORDED' and result['frames']==1801 and result['model_calls']==0
+
+
+def test_calibration_has_empty_bins_and_rejects_nonfinite_scores():
+    import sys
+    import numpy as np
+    import pytest
+    sys.path.insert(0,str(run.EXP/'code'))
+    # Load by path; script module names must not shadow existing frozen replay modules.
+    spec=importlib.util.spec_from_file_location('arena_score',run.EXP/'code/score.py')
+    m=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    r=m.calibration([.55,.55,.95],[1.,0.,1.])
+    assert r['bins'][0]['n']==0 and r['bins'][0]['precision'] is None
+    assert r['bins'][5]['n']==2 and r['bins'][5]['precision']==.5
+    assert r['brier']==pytest.approx((.45**2+.55**2+.05**2)/3)
+    assert 'ece' not in m.calibration([.2],[0.],probability=False)
+    with pytest.raises(AssertionError):m.calibration([np.nan],[1.])
