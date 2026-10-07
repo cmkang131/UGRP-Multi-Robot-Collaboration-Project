@@ -51,3 +51,13 @@ agent_lock null에서만 단독 측정/물리, ugrp_session/표준 workflow, fre
 `outputs/pulse-rotation-audit-v1`, 여유10GiB 미만/ENOSPC=HOST_ERROR.
 원본/raw 삭제0, 초록 관련 시험 후 커밋·push. supervisor 단계별 확인.
 결과는 PR406 코멘트로 공유하되 그 소스/보정표 수정0.
+
+## 측정 전 검증
+
+사전 등록 `6fcde9b4`. 관련 시험8개(측정3/기존 odometry4/workflow plan1) 통과.
+off byte golden/기존 profile means·공분산 검사 포함, 물리와 평가 입력 분리 fake backend 확인.
+PR406 최신 읽기 전용 `da3d2eb8`의 v122 JSON은 복사본과 SHA256까지 동일하다.
+`self_pulse_odom.py:44–48,73–98`에서 .05초씩 response curve를 누적하며,
+원본 `fit_s2_pulse_calibration.py:32–43,95–102`는 profile 평균·산포를 별도로 산출한다.
+계수·드라이버·평가 코드 hash는 [freeze](freeze.json), PR406 근거는 [source audit](source-audit.json).
+물리 실행 전 여유46.66GiB, agent_lock null 확인. 실제 획득 직전에 재확인한다.
