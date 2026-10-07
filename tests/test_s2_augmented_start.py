@@ -92,3 +92,16 @@ def test_only_new_settled_pan_counts_and_tracking_restores_motion_gate(monkeypat
     del pf.s2_global_policy
     pf.update_obs(.2,object(),{**pose,6:970})
     assert audit['candidates']==2
+
+
+def test_global_policy_ends_at_first_base_motion_not_final_camera_view(monkeypatch):
+    monkeypatch.setattr(m.Previous,'on_command',lambda *a:None)
+    r=object.__new__(m.Runtime);r.global_localization=m.OPTION;r.global_policy=m.Policy()
+    pf=NS(s2_global_policy=r.global_policy,estimate=lambda:0)
+    r.global_previous_estimate=lambda:1;r.pose=NS(provider=NS(loc=NS(_pf=pf)))
+    r.on_command('r3',10.,dict(kind='look',pan_pulse=1500))
+    assert pf.s2_global_policy.active
+    r.on_command('r3',11.,dict(kind='hold'))
+    assert pf.s2_global_policy.active
+    r.on_command('r3',12.,dict(kind='mecanum',forward=.35))
+    assert not r.global_policy.active and not hasattr(pf,'s2_global_policy') and pf.estimate()==1

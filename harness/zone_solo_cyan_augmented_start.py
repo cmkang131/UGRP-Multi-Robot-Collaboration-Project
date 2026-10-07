@@ -244,6 +244,19 @@ class Runtime(Previous):
             # One independent view per pan. Do not append the repeated center.
             self.scan_queue=[{**LOOK_P20,6:p} for p in PANS]
 
+    def on_command(self,rid,now,action):
+        super().on_command(rid,now,action)
+        if (self.global_localization!='off' and self.global_policy.active
+                and action['kind'] in ('mecanum','drive')
+                and any(action.get(k,0) for k in ('forward','left','turn'))):
+            # The recorded initial window includes the settled search posture
+            # after the pan sweep. End the global policy at first base motion,
+            # not while the camera is still acquiring that final static view.
+            self.global_policy.active=False
+            pf=self.pose.provider.loc._pf
+            del pf.s2_global_policy
+            pf.estimate=self.global_previous_estimate
+
     def _control(self,now,idle):
         if self.global_localization!='off' and self.global_policy.active and idle and self.state=='scan':
             if self.global_scan_started is not None and now-self.global_scan_started>=120:
@@ -256,10 +269,6 @@ class Runtime(Previous):
                 # DEV uncertainty is log-only. No false resolved/dock claim.
                 if not self.pose.provider.loc._pf.estimate()['global_modes']['resolved']:
                     self.soft('GLOBAL_START_UNRESOLVED',now)
-                self.global_policy.active=False
-                # Return to unchanged carry/tracking update and resampling.
-                del self.pose.provider.loc._pf.s2_global_policy
-                self.pose.provider.loc._pf.estimate=self.global_previous_estimate
         return super()._control(now,idle)
 
     def record(self):
