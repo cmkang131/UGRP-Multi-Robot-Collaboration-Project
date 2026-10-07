@@ -28,3 +28,11 @@ raw `/Users/changmin/projects/ugrp/outputs/mapfree-stop-geometry-v1/`, 작은 �
 CPU timing 비교가 아니므로 lock 불필요. 기존 venv/plot deps 사용, 새 설치0. TensorBoard/Drive 생략은
 앞선 사용자 결정을 따른다. 시험 통과 후 커밋, Codex trailer, 강제 push/reset/삭제/다른 worktree 수정0.
 PR #409 DRAFT 유지·병합 금지. PR #405 카메라 투영 실패 결과는 건드리지 않는다.
+
+### 절차 오류 기록
+
+최초 기존 시험은 sparse checkout에 빠진 `sensor-errors.npz` 때문에11통과/1실패였다. 그 비동기
+시험 결과를 확인하기 전에 사전 등록 문서 `a9f3218e`를 커밋한 순서 오류가 있었다. 시험 후 커밋
+규칙을 지킨 것으로 소급 표시하지 않는다. tracked 원본 blob을 복원했고 SHA256
+`2a28ff187d04dfe1573d87555071f36b6c633f8597f0e1578b8a824da9cf183b` 일치, 기존12시험 재통과했다.
+수치/후보 변경 없이 새 진단3시험까지15통과를 확인했다. 이후 코드는 시험 통과를 읽은 뒤 커밋한다.
