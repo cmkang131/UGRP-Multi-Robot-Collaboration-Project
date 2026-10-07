@@ -56,3 +56,8 @@ RoundRobin/explore_lite, 센서/B/v7, footprint240×200mm+padding20mm, inflation
 v1–v3 byte 보존, 작은 regression 통과 후 구현 commit/push → 기존 개발10을 한 번만 재생.
 원6/6 개발 기준을 그대로 사용하고 s4 또는 s5가 다시 막히면 추가 변경 없이 멈춘다.
 새 I/J32는 개발 관문 실패 시 실행 금지. 작은 확인을 성공률에 합산하거나 s8의 접촉 gate를 완화하지 않는다.
+
+구현 후 관련3파일27시험 통과. 첫 v4 시험의 두 fixture 오류(내부 픽셀을 외곽이라고 기대,
+임의 noise 배열에서 차이가 반드시 생긴다고 기대)는 실제 s5 거부 셀의 작은 수치 반례와 외곽
+corner fixture로 고쳤다. estimator/임계값 변경 없음. v1–v3 원본 bytes와 off 객체 bytes 동일.
+이전 CI 목록에서 빠진 recovery/persistent 시험 및 새 진단 시험을 등록했다.

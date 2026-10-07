@@ -56,3 +56,41 @@ def test_oriented_prefix_clearance_certificate_and_original_outline():
     from harness.public_navigation.costmap import Costmap
     raw=np.zeros((20,20),np.uint8);raw[10,11]=254
     assert original_outline_collision(Costmap(raw,[-1,-1]),np.array([0,0,0]))
+
+
+def test_v4_opt_in_legacy_bytes_and_nav2_outline_cell_difference():
+    import pytest,subprocess
+    from harness.public_navigation_outline import OutlineActor,OutlineCostmap,navigation_output_v4
+    from harness.public_navigation.costmap import Costmap
+    # Triangle-edge rasterization of an oriented rectangle: filled pixel vs edge.
+    raw=np.zeros((25,25),np.uint8);raw[11,10]=254
+    cm=Costmap(raw,[-1,-1]);new=OutlineCostmap(raw,[-1,-1])
+    # General corner/unknown guards retain rejection.
+    assert not new.pose_clear([.15,.25,0.])
+    cm.raw[11,10]=255;cm.costs=cm.inflate()
+    assert not OutlineCostmap(cm.raw,cm.origin).pose_clear([.15,.25,0.])
+    payload=b'legacy off\x00\n'
+    assert navigation_output_v4(payload) is payload
+    with pytest.raises(ValueError):OutlineActor('own_frontier')
+    a=OutlineActor('own_frontier',navigation='public_ros_v4')
+    a.plan();assert isinstance(a.costmap,OutlineCostmap)
+    for name in ('harness/public_navigation_persistent.py','harness/public_navigation_recovery.py',
+                 'harness/public_navigation/costmap.py','experiments/2026-10-07-mapfree-navigation-persistence/code/run_persistent.py'):
+        assert (ROOT/name).read_bytes()==subprocess.check_output(['git','show','b494873c:'+name],cwd=ROOT)
+
+
+def test_v4_matches_nav2_boundary_raster_on_rotated_polygon():
+    from harness.public_navigation_outline import OutlineCostmap
+    from harness.public_navigation.costmap import Costmap
+    import report
+    rng=np.random.default_rng(409)
+    raw=np.where(rng.random((30,30))<.10,254,0).astype(np.uint8)
+    old=Costmap(raw,[-1.5,-1.5]);new=OutlineCostmap(raw,[-1.5,-1.5])
+    for angle in np.linspace(-np.pi,np.pi,31):
+        p=np.array([.31,.22,angle])
+        assert new.pose_clear(p)==(not report.original_outline_collision(old,p))
+    # Isolate the actual s5 first-rejection raster cell (full source in audit).
+    raw=np.zeros((10,10),np.uint8);raw[4,4]=254
+    pose=np.array([3.5218258383377905,.5006998370063818,-1.2604850427902354])
+    old=Costmap(raw,[2.9,0]);new=OutlineCostmap(raw,[2.9,0])
+    assert not old.pose_clear(pose) and new.pose_clear(pose)
