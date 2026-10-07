@@ -44,6 +44,9 @@ def model():
 def command_odometry(start_time=0., *, motion_model='off'):
     if motion_model == 'off':
         return V7CommandOdometry(start_time)
+    from harness.self_pulse_rotation import OPTION as ROTATION, RotationPulseOdometry
+    if motion_model == ROTATION:
+        return RotationPulseOdometry(start_time)
     if motion_model != OPTION:
         raise ValueError('UNKNOWN_MOTION_MODEL')
     return PulseOdometry(start_time)

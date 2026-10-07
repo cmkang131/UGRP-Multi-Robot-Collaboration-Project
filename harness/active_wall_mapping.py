@@ -11,6 +11,7 @@ from harness.self_wall_memory_robust import SelfWallMemory
 from harness.self_odom_grid import transform
 from harness.self_map_prob import wrap
 from harness.self_pulse_odom import model,response
+from harness.self_pulse_rotation import selected_model
 from harness.own_map_navigation import ObservedGrid,DoorMemory
 from harness.public_navigation_monitor import MonitorNavigator
 from harness.public_navigation_unknown import clear_current_footprint,from_observed_grid
@@ -42,7 +43,7 @@ def inverse(p):
     return a
 
 
-def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=()):
+def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=(),motion_model='off'):
     """Finite calibrated motion lattice approximates a 0.2s twist request.
 
     Select nearest endpoint in SE(2), yaw scaled by wheelbase .24m. Include zero.
@@ -53,7 +54,7 @@ def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=()):
     target=twist*.2
     scale=np.array([1.,1.,.24])
     best=(float(np.linalg.norm(target*scale)),None)
-    for key,p in model()['profiles'].items():
+    for key,p in selected_model(motion_model)['profiles'].items():
         if not key.startswith('0:') or p['times'][-1]>.2+1e-8:continue
         end=response(p,.2)
         if costmap is not None and not all(costmap.pose_clear(compose(pose,response(p,s))) for s in np.arange(0,.20001,.025)):
@@ -69,7 +70,7 @@ def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=()):
 
 
 class ActiveMapper:
-    def __init__(self,robot_id,start,servo,*,active_mapping='off',active_loop='off',seed=22001,navigation_map='off'):
+    def __init__(self,robot_id,start,servo,*,active_mapping='off',active_loop='off',seed=22001,navigation_map='off',motion_model='off'):
         if active_mapping!='frontier_rbpf_v1':raise ValueError('EXPLICIT_ACTIVE_MAPPING_REQUIRED')
         if active_loop not in ('off','information_gain_v1'):raise ValueError('UNKNOWN_ACTIVE_LOOP')
         if navigation_map not in ('off','public_ros_v8'):raise ValueError('UNKNOWN_NAVIGATION_MAP')
@@ -78,7 +79,10 @@ class ActiveMapper:
         self.navigation_map=navigation_map
         self.navigation_resolution=RESOLUTION if navigation_map=='public_ros_v8' else .1
         self.robot_id,self.active_loop,self.seed=robot_id,active_loop,seed
-        self.memory=SelfWallMemory(robot_id,**OPTIONS,self_map_options={'start_time':start})
+        selected_model(motion_model)  # validate without changing the default OPTIONS
+        self.motion_model=motion_model
+        memory_options=OPTIONS if motion_model=='off' else {**OPTIONS,'motion_model':motion_model}
+        self.memory=SelfWallMemory(robot_id,**memory_options,self_map_options={'start_time':start})
         self.memory.command(dict(t=start,kind='initial_servo_command',pulses=servo))
         self.navigator=MonitorNavigator()
         self.goal=FloorGoalMemoryV3(robot_id,options=json.loads((ROOT/'experiments/2026-10-07-mapfree-goal-floor/v3-selection.json').read_text())['selected']['options'])
@@ -231,7 +235,7 @@ class ActiveMapper:
             twist=np.array([0.,0.,.5])
             self.navigator.finished=False
             self.plan=None
-        cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=pose,core=self.navigator.core,points=wall)
+        cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=pose,core=self.navigator.core,points=wall,motion_model=self.motion_model)
         if self.navigator.target is None:self.bootstrap_turn+=abs(pulse['predicted_delta'][2])
         doors=self.doors.update(self.grid,pose)
         trace=dict(t=t,frame_id=frame_id,pose=pose.tolist(),local_pose=self.local_pose.tolist(),

@@ -185,7 +185,7 @@ class RecoveryMapper(ActiveMapper):
             twist=np.array([0.,0.,.5])
             self.navigator.finished=False
             self.plan=None
-        cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=pose,core=self.navigator.core,points=wall)
+        cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=pose,core=self.navigator.core,points=wall,motion_model=self.motion_model)
         if self.navigator.target is None:self.bootstrap_turn+=abs(pulse['predicted_delta'][2])
         doors=self.doors.update(self.grid,pose)
         trace=dict(t=t,frame_id=frame_id,pose=pose.tolist(),local_pose=self.local_pose.tolist(),
