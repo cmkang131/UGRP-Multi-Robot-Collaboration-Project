@@ -63,7 +63,7 @@ def geometry(servo,mode):
     return cm,np.zeros(3),reason
 
 
-def detections(episode,frame,cm,offset,body_settling):
+def detections(episode,frame,cm,offset,body_settling, *, wall_detector='off'):
     import cv2
     path = episode/frame['path']
     if base.sha(path) != frame['sha256']:
@@ -72,7 +72,7 @@ def detections(episode,frame,cm,offset,body_settling):
     und = mp.undistort(image)
     grey = cv2.cvtColor(und,cv2.COLOR_BGR2GRAY).astype(float)
     servo = {int(k):int(v) for k,v in frame['commanded_servo'].items()}
-    scan = hfw.detect(und,cm,params=PARAMS,loaded=wp.is_loaded(servo))
+    scan = hfw.detect(und,cm,params=PARAMS,loaded=wp.is_loaded(servo),wall_detector=wall_detector)
     linked = hfw.link_segments(scan,PARAMS)
     segs,features = [],[]
     for segment in linked:

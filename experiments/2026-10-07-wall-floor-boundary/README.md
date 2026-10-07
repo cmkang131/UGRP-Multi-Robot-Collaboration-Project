@@ -78,3 +78,17 @@ PR #405 DRAFT 유지·병합 없음, 다른 worktree 수정 없음. TensorBoard�
 Git 보존 요약은 [results/off](results/off). 각 JSON에 거리별 P/R·분모·ignore·입력/정답/주석 해시를 보존했다.
 기존 예측 hash를 확인한 다음에만 평가용 trajectory/static_map/주석을 열었다.
 시험: `test_wall_detector_evaluation.py` 3개 + 기존 `test_wall_confidence.py` 13개 통과.
+
+## 옵션·구현과 재생 동결
+
+|옵션|기본|적용 위치/조합|
+|---|---|---|
+|`wall_detector=off`|기본|`height_free_wall.detect`의 기존 연산·기존 면 연결·출력 그대로. frozen source와 scan/segment/adapter bytes 비교|
+|`wall_detector=floor_boundary_v1`|명시 ON|`harness/wall_floor_boundary.py`의 own RGB 분할/접점만 교체. 카메라 보정·정착 gate·positive depth·self mask 유지|
+|평가 CLI `--wall-detector`|`off`|`code/evaluate.py extract/score`, `--cases s1042 s1043` 개발 → 동일 코드 확인4건|
+|지도 조합|관문 뒤에만|`v3_confidence_replay.detections(..., wall_detector='floor_boundary_v1')` → 기존 segments/features → RBPF100+guard+graph+confidence API. 메모리 내부 검출기/정답 입력 추가 없음|
+
+지도 옵션은 기본값을 바꾸지 않는다. 지도 자체가 RGB를 해석하지 않으므로 검출 옵션은 **검출기/관측 어댑터**에만 있다.
+상수는 사전 등록 그대로이며 개발 자료를 보고 변경하지 않는다. 기존 검출기의 기록을 다시 덮어쓰지 않는다.
+추가 의존성/venv 변경 없음. 수치 시험은 HSI의 평균 intensity·무효 hue·다봉 histogram·원형 hue·평면 교점·
+support 부족/화면 밖 접점 보류·기본/off 골든·관문 빈 출력 거부를 포함한다. 기존 confidence 시험도 유지한다.

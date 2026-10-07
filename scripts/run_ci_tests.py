@@ -31,6 +31,8 @@ TEST_PATTERNS = (
     "tests/test_map_error_oracle.py",
     "tests/test_wall_projection_guard.py",
     "tests/test_wall_confidence.py",
+    "tests/test_wall_floor_boundary.py",
+    "tests/test_wall_detector_evaluation.py",
     "tests/test_self_pose_graph.py",
     "tests/test_self_wall_memory.py",
     "tests/test_coela_runtime_self_walls.py",

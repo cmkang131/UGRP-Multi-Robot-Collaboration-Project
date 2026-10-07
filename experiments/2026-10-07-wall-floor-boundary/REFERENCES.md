@@ -28,3 +28,9 @@ IPM은 원문 §3의 평면/비돌출 가정에 따른 ray-plane 교점이며 �
 
 [OpenCV GaussianBlur](https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html)와 기존 NumPy/OpenCV만 사용한다.
 새 라이브러리·venv·학습 가중치·모델 호출 없음. 새 파이프라인의 수치/회귀 시험과 독립 검출 관문은 README에 둔다.
+
+구현 세부: HSI hue는 원형 평균 필터, intensity histogram 양끝은 zero padding이다. 실제 undistortion의
+valid support를 흰 영상의 동일 remap으로 구하고 Gaussian 반경2 px만큼 줄인다(검은 물체를 padding으로
+오인해 제거하지 않음). 최하단 obstacle이 support 끝까지 닿으면 바닥 접점이 관측되지 않아 그 열은
+보류한다. 상단의 다른 후보를 대신 선택하지 않는다. 기존 자기 명령 기반 self-occlusion 제외는 재사용한다.
+벽 높이를 새로 가정하지 않고 높이 출력은 NaN; 면 연결과 신뢰도용 contrast/std만 기존 ABI에 제공한다.

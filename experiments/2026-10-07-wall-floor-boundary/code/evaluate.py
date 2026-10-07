@@ -99,25 +99,36 @@ def extract(case, detector='off'):
             # This import does not exist until baseline/annotation seal commit.
             from harness.wall_floor_boundary import detect
             result = detect(und, camera_origin=cm.origin, camera_rotation=cm._rot,
-                            intrinsic=old.mp.K, columns=COLS)
+                            intrinsic=old.mp.K, columns=COLS,
+                            valid_image=(old.mp.undistort(np.full_like(und,255))==255).all(axis=-1))
             uv, xy, ranges = result['uv'], result['xy'], result['ranges']
             ids = result['column_ids']
             reason = result['reason']
+            self_top = old.hfw.self_top_mask(und,cm,{**old.hfw.PARAMS,**old.PARAMS},old.wp.is_loaded(servo))
+            visible = uv[:,1] < np.asarray(self_top)[ids]-old.hfw.PARAMS['self_margin_px']-1
+            uv,xy,ranges,ids = uv[visible],xy[visible],ranges[visible],ids[visible]
             # Normalize the sparse result to the legacy full-column representation.
             full_uv, full_xy = np.full((len(COLS),2), np.nan), np.full((len(COLS),2), np.nan)
             full_ranges = np.full(len(COLS), np.nan)
             full_uv[ids], full_xy[ids], full_ranges[ids] = uv, xy, ranges
             uv, xy, ranges = full_uv, full_xy, full_ranges
         reasons[reason] += 1
-        predictions.append(dict(frame_id=f['frame_id'], t=f['sim_time'], reason=reason,
+        prediction = dict(frame_id=f['frame_id'], t=f['sim_time'], reason=reason,
             camera_origin=cm.origin.tolist(), camera_rotation=cm._rot.tolist(),
             points=[dict(column=int(i), u=float(uv[i,0]), v=float(uv[i,1]),
-                         xy=xy[i].tolist(), range_m=float(ranges[i])) for i in ids]))
+                         xy=xy[i].tolist(), range_m=float(ranges[i])) for i in ids])
+        if detector!='off':
+            prediction['detector_diagnostics'] = {k:result[k] for k in (
+                'reference_pixels','border_censored_columns','behind_camera_rejected','beyond_range_rejected')}
+        predictions.append(prediction)
         if len(predictions)%200 == 0:
             print(case, detector, len(predictions), '/', len(valid), flush=True)
     old.rows(dest/'predictions.jsonl', predictions)
     old.base.dump(dest/'prediction-manifest.json', dict(case=case, detector=detector,
         source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+        source_hashes={str(p.relative_to(ROOT)):old.base.sha(p) for p in [Path(__file__),
+            ROOT/'harness/wall_floor_boundary.py',Path(old.hfw.__file__),Path(old.mp.__file__)] if p.exists()},
+        environment=dict(python=sys.version,numpy=np.__version__,opencv=cv2.__version__),
         frames=len(predictions), reasons=dict(reasons), prediction_sha256=old.base.sha(dest/'predictions.jsonl'),
         inputs=[dict(path=str(p),sha256=old.base.sha(p)) for p in [ep/'robots/r3/frames.jsonl', ep/'robots/r3/commands.jsonl']],
         eligibility_source=dict(path=str(old.OUT/case/'v3_unloaded_extrinsic_v1/extraction.jsonl'),
@@ -186,10 +197,25 @@ def score(case, detector='off'):
     print(case, detector, 'all P', result['all_points']['all']['metric_precision'], 'annotated', result['annotated']['all'],flush=True)
 
 
+def gate_checks(old_result, result, *, off_golden, own_only, positive_depth):
+    """Preregistered thresholds; absent precision never silently becomes 100%."""
+    a,b=result['all_points']['all'],result['annotated']['all']
+    previous=old_result['annotated']['all']
+    def above(value,threshold):
+        return value is not None and value>=threshold
+    return dict(all_point_precision=above(a['metric_precision'],.90),
+        metric_precision=above(b['metric_precision'],.90),metric_recall=above(b['metric_recall'],.70),
+        pixel_precision=above(b['pixel_precision'],.90),pixel_recall=above(b['pixel_recall'],.70),
+        metric_precision_nondecrease=above(b['metric_precision'],previous['metric_precision'] or 0),
+        pixel_precision_nondecrease=above(b['pixel_precision'],previous['pixel_precision'] or 0),
+        annotation_support=b['positive']>=50,metric_tp_support=b['metric_tp_pred']>=30,
+        off_golden=bool(off_golden),own_only=bool(own_only),positive_depth=bool(positive_depth))
+
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('stage',choices=['extract','score'])
-    parser.add_argument('--detector',default='off',choices=['off','floor_boundary_v1'])
+    parser.add_argument('--wall-detector','--detector',dest='detector',default='off',choices=['off','floor_boundary_v1'])
     parser.add_argument('--cases',nargs='+',default=list(old.EPISODES),choices=list(old.EPISODES))
     args=parser.parse_args()
     for case in args.cases:

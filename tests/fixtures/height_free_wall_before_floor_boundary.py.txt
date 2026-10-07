@@ -255,8 +255,7 @@ def self_top_mask(und_bgr, cm, params: Mapping | None = None, loaded: bool = Tru
                                   int(p['strip_half_px']), bool(loaded))
 
 
-def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bool = True,
-           *, wall_detector: str = 'off'):
+def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bool = True):
     """Per-column floor contacts whose upper surface is not the ground plane.
 
     A row is accepted as a wall contact when the usual floor-contact evidence holds
@@ -277,21 +276,6 @@ def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bo
     is not in frame, ``c`` contrast against the floor below, ``s`` band std, ``r`` range
     in metres, ``b`` bearing in radians.
     """
-    if wall_detector not in ('off', 'floor_boundary_v1'):
-        raise ValueError('UNKNOWN_WALL_DETECTOR')
-    if wall_detector == 'floor_boundary_v1':
-        from harness.wall_floor_boundary import detect as floor_detect, to_scan
-        valid_image = (mp.undistort(np.full_like(und_bgr,255)) == 255).all(axis=-1)
-        result = floor_detect(und_bgr, camera_origin=cm.origin, camera_rotation=cm._rot,
-                              intrinsic=mp.K, columns=cm.columns, valid_image=valid_image)
-        scan = to_scan(result, und_bgr, cm, int((params or {}).get('candidates', PARAMS['candidates'])))
-        # Preserve the existing command-based self-occlusion exclusion at the ABI.
-        if self_top is None:
-            self_top = self_top_mask(und_bgr, cm, {**PARAMS, **(params or {})}, loaded)
-        hidden = scan['vb'][:,0] >= np.asarray(self_top)-PARAMS['self_margin_px']-1
-        for array in scan.values():
-            array[hidden] = np.nan
-        return scan
     p = {**PARAMS, **(params or {})}
     cols = np.asarray(cm.columns, int)
     n_c, n_k = len(cols), int(p['candidates'])

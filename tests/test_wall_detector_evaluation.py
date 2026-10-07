@@ -39,3 +39,15 @@ def test_precision_recall_have_separate_distance_denominators_and_empty_is_na():
     assert ev.finalize(counts['2-3m'])['pixel_recall']==1
     assert ev.finalize(counts['3-4m'])['metric_precision'] is None
     assert ev.finalize(counts['3-4m'])['metric_recall']==0
+
+
+def test_no_empty_or_pixel_only_success_can_unlock_mapping():
+    import copy
+    baseline=dict(all_points={'all':{'metric_precision':.1}},annotated={'all':dict(
+        metric_precision=.1,metric_recall=.2,pixel_precision=.9,pixel_recall=.9,positive=100,metric_tp_pred=20)})
+    candidate=copy.deepcopy(baseline)
+    checks=ev.gate_checks(baseline,candidate,off_golden=True,own_only=True,positive_depth=True)
+    assert not all(checks.values()) and not checks['metric_tp_support']
+    candidate['annotated']['all'].update(metric_precision=None,pixel_precision=None,metric_recall=0,metric_tp_pred=0)
+    checks=ev.gate_checks(baseline,candidate,off_golden=True,own_only=True,positive_depth=True)
+    assert not checks['metric_precision'] and not checks['pixel_precision_nondecrease']
