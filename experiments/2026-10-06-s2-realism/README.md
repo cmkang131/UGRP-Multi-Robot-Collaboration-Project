@@ -2495,3 +2495,39 @@ TensorBoard **1007-s2-floor-contact**의5뷰53scalar·HParams를 source→event�
 전용 ugrp_session stopped, PID34247/34251/34261/34267 잔여0, one-shot launchd job bootout,
 **agent_lock=null** 확인. 다른 작업/PR/프로세스 수정·종료0, 모델 호출0. PR #406 DRAFT,
 병합 금지 유지. CI 전체 완료는 별도 상태이며 로컬 시험/재생/물리 결과와 합치지 않는다.
+
+
+## s2v22 하중 운동·벽 높이 일관성 — 재생 전 고정 (2026-10-07)
+
+[사전 기준](load-height-criteria.json)을 후보 보정/재생 전에 커밋한다. A를 먼저 처리한다.
+v122는 하중 전진·회전·큰 옆 이동을 s1045에서 따로 fit했다. 무하중 전용이라는
+가설은 사실이 아니며, loaded fine strafe는 실측0개의 전이 모델이다. 이번 보정은
+**s1050만** 사용한다. 자기 명령으로 하중을 나누고, 기존 응답시간을 온전히 가진
+단일축 펄스 전부를 사용한다(최소3개). GT에 따른 충돌/나쁜 표본 제거는 없다.
+프로파일별 평균곡선 최소제곱과 잔차의 하중별 Nav2 Omni α1–5 NNLS를 고정한다.
+미관측 항목은 기존 평균을 유지하고 표시한다. s1051은 새 계수에 사용하지 않는다.
+
+A의 평가: s1051 하중 펄스 endpoint xy RMSE 감소·yaw RMSE 비악화. B는 기존 외형
+필터를 **대체**하는 `wall_height_v1`이며 둘을 중첩하지 않는다. 바닥 접점에서
+정적지도 벽 높이0.40m의 상단을 투영하고, 독립 Canny(100/200, Gaussian5) edge가
+반경3px에 있는지 확인한다. 상단이 밖/미검출이면 모름이다. 이는 95% 입자 사전
+가시성 문턱이 아니며 자기RGB+고정카메라+지도 높이만 쓴다. 반경3px은 구현 고정값,
+논문의 보편 임계값이 아니다. 기존 검출기도 높이를 가정한 band를 찾으므로 그
+예측값을 독립 상단 관측으로 재사용하지 않는다.
+
+baseline/A/B/AB 네 조건 전체5202 frame·고정 명령 재생을 한다. A·B·AB 각각
+운반 RMSE<2.023582776m, informative 갱신≥1, 초기 정지 오차≤0.5m를 요구한다.
+B는 기존27회 입력 접점에서 바닥 비율 감소와 진짜벽≥90% 보존도 요구한다.
+기본off 동일·A 국소 운동 기준까지 모두 통과한 경우만 새 seed full DEV1회.
+30초 fix공백은 기존 목표로 별도 보고한다. 결과 뒤 후보/계수/문턱 튜닝·재시도는 없다.
+s1050/51은 이미 관찰한 DEV자료이며 독립 확증/본 연구라고 부르지 않는다.
+
+표준 대조: [Nav2 OmniMotionModel](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/motion_model/omni_motion_model.cpp)의 이동방향/직교방향/회전 분산을 α1–5로
+분리한다. α는 평균 바이어스를 고치지 않으므로 응답 평균을 별도로 식별한다.
+메카넘에는 differential α1–4보다 Omni α5가 적합하다. 원본의 입력은 측정 odom,
+여기는 고정 명령 응답이라는 차이는 남는다. [SciPy NNLS](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.nnls.html)로 비음수 계수를 맞춘다.
+[Criminisi·Reid·Zisserman, Single View Metrology §2.1](https://www-2.cs.cmu.edu/~ph/869/papers/Criminisi99.pdf)의 바닥·수직 대응/높이 기하를
+이미 있는 외부 보정으로 사용한다. [OpenCV Canny](https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html)는 관측 edge 검출이다.
+기하가 증명하는 것은 대응점의 높이이며 같은 픽셀 근처의 임의 edge가 진짜 벽 상단인지
+의미적으로 보장하지 않는다. 원문2000판 PDF 다운로드는 timeout, 저자 페이지와1999
+논문 원문은 확인했다. 실시간 GT 입력·공용 카메라 포트·다른 제어기 변경은 없다.

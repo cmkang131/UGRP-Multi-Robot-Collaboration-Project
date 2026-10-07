@@ -1,0 +1,69 @@
+{
+  "schema": "ugrp.s2.load_height.criteria.v1",
+  "physics_runs_before_gate": 0,
+  "model_calls": 0,
+  "train": {
+    "seed": 1050,
+    "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place",
+    "selection": "all completed single-axis pulses with >= original response horizon; load class from own commands; no GT-based rejection; no s1051 fit",
+    "min_profile_samples": 3,
+    "method": "per-profile ordinary least squares mean response; residual NNLS of Nav2 Omni alpha1..5, independently for own-command load states; unobserved profiles keep old fixed means; preserve response horizons",
+    "noise_floor": "existing 0.5 mm xy and 0.001 rad yaw",
+    "hashes": {
+      "student_record.json": "a8a64e226f92022bf36ea432630b18cdc0acda0de9e30bbeb28471d7192fe55e",
+      "eval_only/trajectory.jsonl": "d5e96832527697a99cb904873670d8536c7186b2fe98b86c10dbc9956b6f1043",
+      "bundle.json": "4d35ba088574ea15fc1dedaa8d0ea6c5282ca1aef73628d5421ddba8ec3a9688",
+      "robots/r3/frames.jsonl": "100c0646e69ea5003792f85e34ef83335ca1aa29a9441dcd1e80239e866612ea"
+    }
+  },
+  "evaluation": {
+    "seed": 1051,
+    "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place",
+    "carry_window_sim_s": [
+      87.0,
+      241.05
+    ],
+    "frames": 5202,
+    "baseline_rmse_m": 2.0235827759068257,
+    "baseline_max_gap_sim_s": 33.85,
+    "gt": "fixed calibration labels only on s1050; s1051 scoring only after predictions",
+    "hashes": {
+      "student_record.json": "a3c622edc12b1e141711bbbacf109afc015559454b077249d2bc79974cbf563c",
+      "eval_only/trajectory.jsonl": "86f135c2039c650990c77286a7023212934581968f9dc51ffe522fcf5bf2a3e2",
+      "bundle.json": "38c8696c13e063d1d60feceda794ebc5a92da604985462f0cd1d746023e5a43e",
+      "robots/r3/frames.jsonl": "00144a3d2f50b5c0d30296a4d65dc88e4b4f42caed48601fa3307852e5c59bbf"
+    }
+  },
+  "factorial": [
+    "baseline",
+    "load_only",
+    "height_only",
+    "load_height"
+  ],
+  "height": {
+    "option": "wall_height_v1",
+    "replaces": "floor_appearance_v1; mutually exclusive, no stack",
+    "method": "calibrated single-view metrology: project observed ground contact plus fixed map wall height; independent Canny top-edge support",
+    "gaussian_kernel": 5,
+    "canny_thresholds": [
+      100,
+      200
+    ],
+    "support_radius_px": 3,
+    "missing_or_outside": "unknown, no wall measurement",
+    "static_wall_height_m": 0.4
+  },
+  "admission": {
+    "default_off_exact": true,
+    "load_endpoint_xy_rmse_less_than_baseline": true,
+    "load_endpoint_yaw_rmse_not_worse_than_baseline": true,
+    "each_candidate_carry_rmse_strictly_less_than_baseline": true,
+    "each_candidate_updates_min": 1,
+    "each_candidate_stationary_max_m": 0.5,
+    "height_floor_fraction_less_than_baseline": true,
+    "height_true_wall_retention_min": 0.9
+  },
+  "no_retuning": true,
+  "full_rule": "one fresh preregistered S2 solo DEV full only if every gate passes; otherwise no SIM; gap 30s is reported historical target, not extra admission",
+  "limitations": "s1050 and s1051 already inspected development data; forward holdout of new constants, not independent confirmation; no camera/FOV or common port changes"
+}
