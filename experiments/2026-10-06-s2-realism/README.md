@@ -2625,3 +2625,37 @@ raw `/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/`는 로컬 �
 발행 이유: [carry 분기](../../harness/zone_solo_cyan_v106.py#L447), [펄스 선택](../../harness/zone_solo_cyan_pulse_cal.py#L102). 경로는95초 추정 위치에서1회 생성됐고, [drive](../../harness/zone_solo_cyan_pulse_cal.py#L162)는 목적지가 같으면 A*를 다시 하지 않는다. 펄스별 현재 RGB 장애물/진행 부족 제약은 없고 위치 불확실은 dev_light 기록이다. ARM_COLLISION_GUARD는 [팔 자세 전환](../../harness/zone_solo_cyan_v106.py#L215)의 가드여서 이 옆 이동을 검사한 증거가 아니다. 기존 LK 알림은6회 중1회(110.20초)만 stationary; 3회 texture unknown,2회 changed로 놓쳤다.
 
 새 후보는 S2 Runtime 한 파일과 오프라인 어댑터에만 추가했다. `ground_flow_noise_v1`는 완료된 큰 병진 펄스의 자기 RGB만 처리하며, 160ms 기존 지연 큐 **안쪽**의 capture clock에서 동작한다. 동일 RGB를 기존 벽 관측 경로에 그대로 전달한다. 기본off wire/record, 합성 강체/회전/오점, 관측 지연/unknown, 기존 pulse/floor **15 passed/27.04초**. 결과 전 고정된3px/95% 등 기존 관측 gate는 변경하지 않았다.
+
+### s2v23 결과 — 벽 막힘은 확정, 공분산 증가만으로 해결하지 못함
+
+고정 실행 소스 **7038d90a**로 baseline/candidate 각각5202frame 완료. baseline은 poses/amcl/visibility/contact 원본과 정확히 같고, 원본 입력 해시·커밋된 후보 해시·평가 분리를 [검증](blocked-pulse-verification.json)했다. [판정](blocked-pulse-summary.json)의13개 기준 중10개 통과, **6회 coverage·운반 RMSE·갱신 수** 실패다. 결과 뒤 파라미터/특징수/문턱 변경이나 두 번째 후보 재생은 하지 않았다.
+
+|조건|하중 endpoint xy/yaw RMS|평균 Gaussian NLL↓|운반 RMSE m|운반 informative 갱신|최장 공백 s|
+|---|---|---:|---:|---:|---:|
+|baseline|24.132mm / 1.192°|59.9262|2.023583|27|33.85|
+|ground_flow_noise_v1|24.132mm / 1.192°|44.5762|2.051483|26|33.85|
+
+평균 응답은 의도대로 동일하다. NLL은 **완료 펄스의 RGB를 읽은 뒤**의 조건부 공분산 적합도이며, 펄스 전 예측 정확도나 미래 성공으로 해석하지 않는다. 정상/기타271펄스의 공분산 증가는0; 다만 큰 병진35회 중 VO 측정은3회, texture unknown29·rigid consensus unknown2·spatial support unknown1이다. 작은 병진/회전242회는 등록 범위 밖으로 변경하지 않았다. 이 때문에 “나머지 펄스를 정확히 판독했다”는 뜻은 아니다.
+
+|문제 펄스 s|자기 RGB 결과|tracks/inliers|측정 병진 크기 mm|측정 yaw°|증가 뒤 옆 3σ cm|실제 옆 예측오차 크기 cm|
+|---:|---|---|---:|---:|---:|---:|
+|107.35|spatial support unknown|14/11|N/A|N/A|0.921|15.055|
+|108.30|measured|23/18|1.136|0.297|4.588|16.669|
+|109.25|measured|25/23|1.931|0.352|4.589|16.630|
+|110.20|measured|23/23|1.893|0.002|4.561|16.639|
+|111.15|rigid consensus unknown|24/0|N/A|N/A|0.921|16.604|
+|113.70|texture unknown|0/0|N/A|N/A|0.921|14.534|
+
+GT 평가로 measured3회의 VO 병진 오차는1.921–3.058mm, yaw0.057–0.126°다. 따라서 **자기 영상에서 진행 부족을 읽을 수 있는 경우는 있었으나**, nominal Q에 원문 sqrt(alpha) scaling을 적용한 3σ 폭4.56–4.59cm는16.63–16.67cm 평균 bias보다 작다. 2D Mahalanobis `d²≤9`에 들어간 문제 펄스는 **0/6(기준≥5/6)**. 나머지3회는 unknown을 정지로 바꾸지 않고 기존 분산을 그대로 썼다. 평균16.72cm를 유지한 채 분산만 키우는 이번 후보는 이 벽 막힘의 해결책으로 **미채택**한다.
+
+관측 보존은 통과: 전체31개 AMCL 후보 시각과 입력 local endpoint 배열, visibility/floor filter audit가 **모두 동일**하다(운반 후보27개). 192.75초의66접점도 삭제되지 않았다. 다만 PF 분포가 달라지면서 KL이1.24e−8→4.57e−16으로 줄어 informative 갱신 하나가 사라졌다. 즉 이번 갱신27→26은 새 gate가 영상을 거절해서 생긴 손실은 아니다. 초기 정지 최대0.105661m는 두 조건 동일. 30초 공백 목표도 여전히 미달이다.
+
+**새 full DEV/시뮬레이션/렌더/모델 호출0**, seed/번들 예약0. 후보는 기본off이며 새 실행 번들에 채택하지 않았다. 새 lifted/inside·운반 실제 가시율·B 거리·would-stop 목록·wall/SIM은 N/A다. 마지막 물리 s1051(v126)의 lifted=true/inside=false·B까지2.178m·wall/SIM1.315929와 합산하지 않는다. 오프라인 두 재생 wall143.50초는 시뮬레이션 wall/SIM 속도가 아니다.
+
+raw `/Users/changmin/projects/ugrp/outputs/s2-blocked-pulse-20261007/`의 `result.json`에 원본25옵션+후보 옵션을 보존했다. `six-pulses.json`, `motion-score.json`, 전체 재생2개·검증·참고 원문/해시는 로컬 보관이며 원격 백업이라고 하지 않는다. 원본은 변경/삭제하지 않았다. [참고 자료 다운로드 검증](blocked-pulse-sources.json).
+
+영상은 **새 실행이 아닌 저장된 s1051의95–115초** 자기 RGB401프레임을 4배속80fps/H.264로 묶었다: `/Users/changmin/projects/ugrp/outputs/s2-blocked-pulse-20261007/s1051-north-wall-4x.mp4`(5.0125초). [영상](http://127.0.0.1:6007/video/262b0aa5172ea4ce95c4), 원본 프레임 SHA와 ffprobe는 raw `video-provenance.json`에 있다.
+
+TensorBoard **1007-s2-blocked-pulse-v2 / 5뷰36scalar**를 source→event→live API/HParams와 대조했고, 등록 영상은 HTTP 전체 재다운로드 SHA까지 일치했다. [대시보드](http://127.0.0.1:6006/?runFilter=1007-s2-blocked-pulse-v2&smoothing=0#timeseries), [전달 검증](blocked-pulse-delivery-verification.json). 수치 대조만 했으며 PID52016/공용logdir/다른view키는 유지했다. 첫 비공개 snapshot은 SSE 비율을 수기로 옮긴 불필요한 scalar를 제거한 v2로 대체했다(95.837803→정확95.837822%; raw `delivery-correction.json`). 이전 snapshot/원본을 보존했고, 최종 기본 보기는 v2만 가리킨다.
+
+`ugrp_session s2-blocked-pulse-offline` **stopped**, 물리 실행 없이 **agent_lock=null**. 다른 프로세스 종료/다른 PR·worktree 수정0. 전체 GitHub CI는 진행 중으로, 로컬15시험·재생 완료와 구분한다. PR406 DRAFT·병합 금지 유지.
