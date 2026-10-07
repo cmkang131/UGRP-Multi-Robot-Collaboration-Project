@@ -28,3 +28,57 @@ seed31001 (`outputs/active-frontier-audit-v1/new-seed`)과 seed32002
 off/on 결과를 개봉한다. 구현 기본off bytes 동일, 기존 옵션·pose·추정기는 보존한다.
 raw는 `/Users/changmin/projects/ugrp/outputs/wall-cell-attribution-v1`.
 관련 시험만 초록 후 커밋·push, PR405 DRAFT, TensorBoard 생략 유지.
+
+## 진단 결과와 다음 비교 사전 등록
+
+진단 소스 `70195c95`, 관련2시험 통과. 모든 free/occupied 셀의 재생 값이 원본과 정확히 같다.
+분모는 최종 거짓 셀219/169개. 대표 원인(최대 잔존 증거)의 비율:
+
+|원인|seed31001|seed32002|
+|---|---:|---:|
+|(a) 검출/선분 연결 오류|95 / 43.38%|87 / 51.48%|
+|(b) 자세 오차|111 / 50.68%|58 / 34.32%|
+|(c) 거리·카메라 투영|7 / 3.20%|7 / 4.14%|
+|(d) 물체 확인|0 / 0%|0 / 0%|
+|셀 경계 양자화|6 / 2.74%|17 / 10.06%|
+|미판별|0|0|
+
+이는 순서를 고정한 **조작적 원인 분해**이며 유일한 인과 분해가 아니다. 혼합 셀의 분율도
+JSON에 별도로 보존한다. (a)의 예: 벽 무늬 윗경계, 서로 떨어진 무늬를 연결한 선분이
+바닥 접점으로 취급됨. RGB에 접점 역투영을 겹친42/49프레임 전체 contact sheet를 확인했다.
+(d)=0은 이 잔존 거짓 셀에서 확인된 물체가 없다는 뜻이며 완전한 semantic GT가 아니다.
+움직인 cyan은 기록된 OBB, 고정 peer는 보수적 envelope로 후보를 검사했다. peer의 실제
+관절 상태는 저장되지 않아 정확한 가림 판정은 불가하다. 그 후보에 걸린 잔존 증거는0이었다.
+바닥/벽 무늬는 RGB와 벽-바닥 접점 선 대조로 확인했다. (a)는 순수 픽셀 검출과 선분 연결을
+분리하지 않는다. 거리별 분율 표는 `results/*-diagnosis.json`에 보존한다.
+
+### 선택: 다중 관측 support-weight 문턱 (구현·on 결과 전 고정)
+
+새 seed에서는(a)가 가장 크며 기존 seed에서도43.4%다. 따라서 한 번의 잘못된 접점을
+벽으로 확정하지 않는 **Open3D TSDF의 support-weight 추출 문턱**을 이식한다.
+3D TSDF 전체를 새로 만들거나 기존 RGB 검출기를 재튜닝하지 않는다.
+
+- `wall_validation=multiview_weight_v1`, 기본 `off`.
+- Open3D v0.19.0: 관측별 `weight += 1`, 추출 기본 `weight_threshold=3.0`,
+  실제 코드의 비교는 **weight > 3**(즉 단위 증거4회). 문턱3을 결과 후 바꾸지 않는다.
+- 우리 sparse 2D 벽 관측에 필요한 이식 차이: TSDF의 zero-crossing 후보 대신 기존
+  양수 occupancy 셀을 후보로 하고, 동일 프레임/셀은1회만 센다. 서로 다른 위치·방향의
+  지지를 위해 이전 채택 시점 모두와 카메라 이동≥격자1칸(.1m) **또는** 셀에 대한
+  방위차≥atan2(.1m, 두 거리 중 작은 값)를 요구한다. 이는 우리 격자에서1칸 시차라는
+  기하 기준이며 Open3D의 기본값이라고 주장하지 않는다. 제자리 동일 RGB 중복은 가산0.
+- 기존 hit/miss·clamp·가중치는 바꾸지 않는다. raytrace로 log-odds≤0이 되면 지지 이력도
+  초기화한다(재등장 물체에 오래된 지지를 재사용하지 않는 2D occupancy 적응).
+  지지 미달 양수 셀은 **unknown**으로 내보내며 free로 바꾸지 않는다.
+- RBPF/prob/graph와 조합 가능한 **지도 출력 검증 옵션**. off는 입력 객체/bytes 그대로.
+  on은 own ledger의 추정 pose만 사용하고 frontend/RNG/탐색/정합에 피드백하지 않는다.
+  따라서 이번은 고정 자세의 지도 표현 비교이며 폐루프 재검증으로 확대하지 않는다.
+- 두 녹화 off/on 1회. 기존 영역/전체P/R·329표본·벽RMSE·거리별 결과·남은 셀·프레임을
+  함께 보고한다. **기존 egomap20 절대관문 P≥.90, R≥.70, 벽RMSE≤.15m 그대로**.
+  각 녹화별3항목, 결과 후 문턱 변경/재튜닝0. 미달이면 한계 기록 후 종료한다.
+
+출처: [Open3D Model.h v0.19.0](https://github.com/isl-org/Open3D/blob/v0.19.0/cpp/open3d/t/pipelines/slam/Model.h#L97)
+97–106행(기본 추출 문턱), [VoxelBlockGridImpl.h](https://github.com/isl-org/Open3D/blob/v0.19.0/cpp/open3d/t/geometry/kernel/VoxelBlockGridImpl.h#L265)
+265–266행(단위 지지), 1029–1039·1101–1120행(strict support 문턱+TSDF 영교차).
+[공식 API](https://www.open3d.org/docs/release/cpp_api/classopen3d_1_1t_1_1pipelines_1_1slam_1_1_model.html)는
+작은 weight의 표면 잡음 제거 목적을 명시한다. MIT 원본·해시는 `third_party/wall_support/`.
+추가 설치/venv 변경0. 논문의 수치나 전체 TSDF와 동등 성능은 주장하지 않는다.
