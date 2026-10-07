@@ -2593,3 +2593,16 @@ v122는 loaded forward(+35/100ms)70, coarse left(−/+65/650ms)188/195, turn(−
 raw `/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/`는 로컬 보관이며 원격 백업이 아니다. 기존 raw·번들·영상은 보존했다. TensorBoard **1007-s2-load-height / 7뷰41scalar** source→event→live API와 HParams를 대조하고 기존PID52016/logdir를 유지했다. 수치 대조만 했고 새 영상은 없다. [대시보드](http://127.0.0.1:6006/?runFilter=1007-s2-load-height&smoothing=0#timeseries), [전달 검증](load-height-delivery-verification.json). 공용view는 직전 다시 읽어 자기 키만 추가했다.
 
 오프라인 ugrp_session `s2-load-height-offline` stopped; 물리 잠금은 획득할 실행이 없었고 **status=null** 확인. 다른 프로세스·PR·worktree 변경0, Google Drive 사용0. PR406 DRAFT·병합 금지, CI 전체 상태는 로컬 시험/재생과 별도다. 출처 원문과 다운로드 해시는 [참고 자료](load-height-sources.json), Nav2 pin `235fc5ce55bdf94d9be360fdbca39d89dc0e4f74`다.
+
+
+## s2v23 — 북쪽 벽 막힘 6회, 자기 RGB 운동 불확실성 후보 사전 등록
+
+2026-10-07 사용자 요청. 기존 s1051의 하중 xy 제곱오차95.84%를 만든6회만 접촉/영상/분기부터 분해한다. 이전 기록의 “힘 로그 없음”은 맞지만 **접촉 geom/dist 로그는 존재**한다. 따라서 접촉 유무는 이번에 평가 전용으로 확정하고 힘·실제 바퀴 회전/미끄럼 속도는 미측정으로 남긴다.
+
+[고정 기준](blocked-pulse-criteria.json)을 후보 평가 전에 커밋한다. `visual_progress=ground_flow_noise_v1` 기본off. 자기RGB의 바닥 특징을 LK로 추적하고 고정 카메라 보정으로 지면에 투영한 뒤 RANSAC 강체운동으로 병진/yaw를 분리한다. 명령 응답과 RGB 운동의 innovation으로 **해당 펄스의 운동 공분산만 증가**시키고 평균 이동·명령·벽 관측은 바꾸지 않는다. 부족한 바닥 특징은 unknown이며 정지로 간주하지 않는다. 시각 확인/기존 RGB 정체 알림은 dev_light 기록만 유지한다.
+
+표준: [Seegmiller 등 IROS2011 §§II-C–F](https://publications.ri.cmu.edu/storage/publications/pub_files/2011/9/Seegmiller_IROS-2011_Optical_Flow_Odometry.pdf)의 LK→평면 역투영→RANSAC/SVD 강체운동을 사용한다. 원문의 별도 그림자 분할 대신 기존 고정 바닥 색 표·자기 기하/블록 마스크를 쓰는 입력 어댑터 차이는 남긴다. [Popescu 등 2026 §4.1 식13–15](https://arxiv.org/html/2608.02316v1#S4.SS1.SSS1)의 innovation 공분산 대비 nominal Q scaling을 적용한다. 원문은 다족 InEKF이며 여기는 **펄스별 M=1 상대 SE2·입자 공분산 증가**로 제한한 어댑터다. 실시간 평균 재학습이나 GT 접촉 분류를 사용하지 않는다.
+
+[Nav2 collision_monitor 원본](https://github.com/ros-navigation/navigation2/blob/main/nav2_collision_monitor/src/collision_monitor_node.cpp)은 자기 센서 obstacle points와 stop/slowdown polygon을 사용한다. 현재 단안 벽 접점에는 바닥 오인이 남으므로 이를 신뢰 가능한 거리 센서처럼 취급해 정지 명령을 만들지는 않는다. [공식 설정](https://ros-navigation.github.io/mkdocs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/collision_monitor/configuring_collision_monitor_node/)과 대조했다.
+
+채택 기준: off 명령/기록·5202 frame pose 동일; 하중 endpoint 평균 xy/yaw 오차 비악화와 Gaussian NLL 개선; 문제6회 xy 3σ 범위 포함≥5/6, 나머지 하중 펄스의 과도한 공분산 증가 비율≤10%; 운반 RMSE<2.023583m·갱신≥27·공백≤33.85s·정지오차≤0.5m; RGB 원본 해시·벽 필터 동일·공통 관측 열100% 보존. 30초는 기존 목표로 별도 보고한다. 이 후보는 bias 자체를 고치지 않으므로 RMSE만 좋아도 나머지 기준이 실패하면 미채택한다. 사후 문턱/특징수 조정·다른 후보 재시도 없이, 전체 통과 때만 새 seed S2 full DEV1회. 사전 등록 본 연구가 아닌 DEV이며 freeze ON은 S2 solo DEV 한정이다.
