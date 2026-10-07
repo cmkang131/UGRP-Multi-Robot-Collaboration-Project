@@ -3930,3 +3930,28 @@ HOST_ERROR, 이동 펄스0·유효 조건0; 원본 `outputs/s2-load-wall-34ceb0d
 추가 평가 버그: ray가 RGB에서 숨기는 group5 카메라 렌즈를 장애물로 셌다.
 새 ray는 RGB와 동일한 group4/5 제외. 이전4조건 clear 수치는 무효로 표시하고,
 보존 RGB·실제 카메라 투영을 오프라인으로 평가한다. 이동/접촉 결과는 영향을 받지 않는다.
+
+### s2v36 ablation 완료 및 full DEV 사전 등록
+
+[14조건 결과](load-wall-result.json): far 옆 펄스 평균 SEARCH170.112mm, HIGH empty/loaded169.827/169.119mm,
+look_ahead169.787/168.984mm, real_delivery169.984/169.055mm. 하중 차이는0.42–0.55%, yaw차0.10–0.38°.
+near는 모든 자세/하중에서0.300–0.744mm; **무상자도 막힌다**.
+벽 접촉은7조건 모두 wheel만(평균 법선력2.53–2.99N), finger/cargo/body–wall0.
+단독 상자0.03kg/로봇1.1kg. 이것은 벽으로 계속 미는 제어 문제이며, 하중 보정값을 새로 맞추지 않는다.
+팔 질량 분포/롤러 결함을 이 실험에서 확인하지 못했으므로 sim 질량/기하/마찰 수정0.
+
+파지6조건 모두 양쪽 접촉100%·낙하0·weld0. 새 자세 보정은 empty/loaded −16.433/−16.514°,
+차0.081°, holdout0.243/0.215px. [새 고정표](../../configs/calibration/s2_camera_look_ahead_v1.json).
+near loaded 벽하단 실제 가시율 real_delivery21.46%→look_ahead78.54%, far0%→100%.
+이전4조건의 ray clear는 숨겨진 camera group5 포함 오류로 무효이며 in_view만 유효;
+loaded real_delivery/look_ahead 비교는 수정된 동일 ray/RGB 그룹의 새 기록이다.
+이는 짧은7.15초 진단이며 운반 fix 공백133초와 직접 같은 지표가 아니다.
+
+표준 catalog `zone-s2-realism-v130`/7.23.0 예약: main+열린 PR 전체 원격의 contract 최댓값129/7.22.0 확인.
+[실행 사전 등록](registration-v130.json): **seed1051 P1-2→B full DEV1회**, 결과 뒤 문턱 변경/재실행0.
+강성ON+기존22자세stiff_target_v1+새 loaded/unloaded look_ahead PnP표, carry_pose=look_ahead_v1.
+채택한 s1051 옵션들(nav2_observed, floor_appearance, pulse, isolation, RGB stall, blind grasp, freeze),
+slip_detect_v1·회복 후 차단 해제 수정ON. KLD/active-start/ground_vo/하중 재학습OFF.
+초기 도크 정보0. 기존모델은 그대로 두며 GT는 평가에만, 모든 확인류 dev_light 기록만.
+고정 보정표는 PF 벽열 모델·관측 자기 가림·광류·블록 투영이 공유하는 instance calibration에 적용한다.
+목적은 B 진입 실측이며 이 새 조건의 결과를 앞선 s1051 성공률과 합산하지 않는다.

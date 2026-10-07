@@ -290,6 +290,7 @@ raise SystemExit(3 if a.fail else 0)
             's2-stiff-start-capture-v1',
             's2-active-markov-start-v1',
             's2-load-wall-v1',
+            'zone-s2-realism-v130',
             'zone-s2-real-output-diag-v111',
             'zone-s2-real-output-diag-v112',
         )})
