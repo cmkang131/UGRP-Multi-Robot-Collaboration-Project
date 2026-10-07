@@ -62,3 +62,9 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 |버전·소스|단일 case|결과|영상·원본|확인 범위/한계|
 |---|---|---|---|---|
 |`active-nav2` · `462473cb`|사전 지정 seed31001, 180 SIM초, tape/SEARCH/wide/recovery + navigation_map=public_ros_v8|8.053m / 2.390m², hold4.49%, frontier소진 없음, 접촉0, B미도착; 2σ/전체 지도 품질 미달|[손목 RGB와 online 지도 4배속](../experiments/2026-10-08-active-frontier-audit/figures/wrist-map-4x-preview.mp4), SHA256 `e5e7ccae66a9d7946a62d9af471bab83b3785b46099cef3964a5061dbf73637d`; raw `outputs/active-frontier-audit-v1/new-seed/`|47개 당시 snapshot, 최종 지도 역채움0. GT는 평가 표시만. 경기장 고정 영상 범위 밖의 거짓 벽은 [전체 지도/결과](../experiments/2026-10-08-active-frontier-audit/README.md)에 표시. 단일 새 seed이며 이전 seed29001과 paired/실물/일반화 아님. [원본·축소본 hash](../experiments/2026-10-08-active-frontier-audit/results/physical-manifest.json).|
+
+## egomap32 양방향 회전 측정 (2026-10-08)
+
+|버전·소스|단일 case|결과|영상·원본|확인 범위/한계|
+|---|---|---|---|---|
+|`pulse-rotation-audit` · `60d4e833`|사전 지정 seed32001, 60 SIM초, SEARCH/강성on, 좌우·단발/연속 각5회|CCW 예측5.369→실측 연속5.906°/펄스; CW5.935→5.945°. 양방향 재적합 기준 미달/런타임 후보 미채택|[손목4배속](../experiments/2026-10-08-pulse-rotation-audit/figures/wrist-4x.mp4), SHA256 `681b550464de116b45ccd1a8591dd676ece1a9fe27b44c1b4405c336917c5223`; raw `outputs/pulse-rotation-audit-v1/measurement/`|61프레임1Hz→4fps/15.25초. 기구 진단이며 지도/탐색 성공·실물/독립 seed 확증 아님. [측정·원본 hash](../experiments/2026-10-08-pulse-rotation-audit/README.md).|

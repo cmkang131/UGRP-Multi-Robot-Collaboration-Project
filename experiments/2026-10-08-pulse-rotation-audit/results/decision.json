@@ -1,0 +1,339 @@
+{
+  "direction_asymmetry_old_deg": 0.5656376935971918,
+  "direction_asymmetry_new_continuous_abs_deg": 0.0391275130415103,
+  "old_profile_training_n_per_direction": 1,
+  "old_profile_residual_variance_rad2": 0,
+  "old_profile_prediction_sigma_deg": 0.057295779513082325,
+  "single_pulse_std_deg": {
+    "-1": 0.29891926797245993,
+    "1": 0.3484046270185716
+  },
+  "tail_range_deg": [
+    -0.9162831794689081,
+    0.5062584529682431
+  ],
+  "wall_contact_sample_pairs": 0,
+  "contacts_frames": 1201,
+  "model_gain_only_eligible": false,
+  "motion_option_implemented": false,
+  "offline_on_replay_executed": false,
+  "new_exploration_physics_executed": false,
+  "not_adopted_reason": "Preregistered both-direction lower CI > 1 and held-out RMSE improvement fails for CW. No post-result one-direction exception.",
+  "sim_defect": "Not identified: no wheel/roller geometry or contact ablation, no real hardware comparison.",
+  "baseline_egomap31_frontend": {
+    "endpoint_error_m": 0.2610670624655977,
+    "sigma_xy_m": 0.06893946593598191,
+    "error_sigma_ratio": 3.786902885323016,
+    "over_2sigma": 112,
+    "n": 891,
+    "path_rmse_m": 0.23126306427250545,
+    "yaw_end_deg": -6.323829159972602,
+    "yaw_rmse_deg": 6.99471274393554,
+    "full_map": {
+      "occupied_cells": 359,
+      "precision_015": 0.38997214484679665,
+      "precision_cell": 0.21727019498607242,
+      "wall_coverage": 0.3768996960486322,
+      "wall_error_rmse_m": 0.7599465402186876
+    },
+    "region": {
+      "precision": 0.5675675675675675,
+      "precision_correct": 42,
+      "precision_cells": 74,
+      "recall": 0.5210084033613446,
+      "recalled_samples": 62,
+      "visible_samples": 119,
+      "total_samples": 329
+    },
+    "occupied_cells": 359,
+    "mapped_frames": 47,
+    "resamples": 15,
+    "rejected_resamples": 0,
+    "rejected_csm_updates": 0
+  },
+  "baseline_egomap31_completed": {
+    "case": "new-seed",
+    "acquisition": {
+      "status": "RECORDED",
+      "source_sha": "462473cbc2730add0db5e8ab3e0965f1d9987d5e",
+      "case": "new-seed",
+      "model_calls": 0,
+      "freeze": false,
+      "loadavg_start": [
+        6.62646484375,
+        8.083984375,
+        7.98291015625
+      ],
+      "start_sim_s": 1.3,
+      "frames": 901,
+      "total_sim_s": 181.3,
+      "prediction_view": "completed_graph",
+      "wall_s": 735.0691099170072,
+      "loadavg_end": [
+        10.51953125,
+        13.1513671875,
+        12.86865234375
+      ]
+    },
+    "full_map": {
+      "occupied_cells": 359,
+      "precision_015": 0.38997214484679665,
+      "precision_cell": 0.21727019498607242,
+      "wall_coverage": 0.3768996960486322,
+      "wall_error_rmse_m": 0.7599465402186876
+    },
+    "wall_sample_count": 329,
+    "prediction_view": "completed_graph",
+    "observed_region": {
+      "precision": 0.5675675675675675,
+      "precision_correct": 42,
+      "precision_cells": 74,
+      "recall": 0.5210084033613446,
+      "recalled_samples": 62,
+      "visible_samples": 119,
+      "visible_wall_fraction": 0.3617021276595745,
+      "sampled_wall_length_proxy_m": 11.9,
+      "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+    },
+    "coverage": {
+      "travelled_m": 8.053481752822126,
+      "footprint_union_m2": 2.3900000000000006,
+      "footprint_cells_005m": 956,
+      "frames": 901,
+      "mapped_frames": 47,
+      "occupied_cells": 359
+    },
+    "path": {
+      "n": 891,
+      "rmse_m": 0.23126306427250545,
+      "end_m": 0.2610670624655977,
+      "missing_gt_samples": 0
+    },
+    "b": {
+      "first_own_confirmation_s": 73.3,
+      "reached_gt": false,
+      "first_gt_reach_s": null
+    },
+    "wall_contacts": 0,
+    "wrong_door_attempts": [
+      {
+        "t": 57.1,
+        "door": "r3:opening_043"
+      },
+      {
+        "t": 58.3,
+        "door": "r3:opening_053"
+      },
+      {
+        "t": 72.7,
+        "door": "r3:opening_027"
+      },
+      {
+        "t": 87.7,
+        "door": "r3:opening_035"
+      },
+      {
+        "t": 95.5,
+        "door": "r3:opening_018"
+      },
+      {
+        "t": 97.9,
+        "door": "r3:opening_062"
+      },
+      {
+        "t": 179.1,
+        "door": "r3:opening_092"
+      }
+    ],
+    "door_exposure": {
+      "candidate_frames": 744,
+      "feasible_rows": 27,
+      "selected_path_rows": 14
+    },
+    "loop_counts": {
+      "member_scan": 84,
+      "temporal_separation": 11,
+      "low_probability": 96,
+      "ambiguous_modes": 34,
+      "search_boundary": 10
+    },
+    "switch_counts": {},
+    "calibration": {
+      "occupancy_ece_diagnostic": {
+        "n": 359,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.1,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.2,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.3,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.4,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.5,
+            "n": 330,
+            "score": 0.5217159529858395,
+            "precision": 0.3878787878787879
+          },
+          {
+            "lo": 0.6,
+            "n": 22,
+            "score": 0.6456343112405153,
+            "precision": 0.36363636363636365
+          },
+          {
+            "lo": 0.7,
+            "n": 7,
+            "score": 0.7317614452774758,
+            "precision": 0.5714285714285714
+          },
+          {
+            "lo": 0.8,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.9,
+            "n": 0,
+            "score": null,
+            "precision": null
+          }
+        ],
+        "gap": 0.1434332853748209
+      },
+      "support_score_gap": {
+        "n": 359,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 199,
+            "score": 0.031076448287160732,
+            "precision": 0.2914572864321608
+          },
+          {
+            "lo": 0.1,
+            "n": 76,
+            "score": 0.15235698690944066,
+            "precision": 0.5131578947368421
+          },
+          {
+            "lo": 0.2,
+            "n": 26,
+            "score": 0.24044483476235876,
+            "precision": 0.38461538461538464
+          },
+          {
+            "lo": 0.3,
+            "n": 28,
+            "score": 0.3589300474336052,
+            "precision": 0.6071428571428571
+          },
+          {
+            "lo": 0.4,
+            "n": 30,
+            "score": 0.4430561879999719,
+            "precision": 0.5333333333333333
+          },
+          {
+            "lo": 0.5,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.6,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.7,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.8,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.9,
+            "n": 0,
+            "score": null,
+            "precision": null
+          }
+        ],
+        "gap": 0.25805950728071336
+      },
+      "qualification": "TSDF support is NOT probability"
+    },
+    "criteria": {
+      "recorded": true,
+      "no_contact": true,
+      "no_wrong_door": false,
+      "distance": true,
+      "area": true,
+      "visible_samples": true,
+      "precision": false,
+      "recall": true,
+      "wall_rmse": false,
+      "path_rmse": true
+    },
+    "passed": false
+  },
+  "initial_short_sha_host_error": {
+    "physical_started": false,
+    "lock_acquired": false,
+    "source_changed": false,
+    "record": "/Users/changmin/projects/ugrp/outputs/pulse-rotation-audit-v1/managed-measurement/manifest.json"
+  },
+  "source_sha": "60d4e83368f70cc0ce553d432e032d7cc25f4341",
+  "source_tests_passed": 8,
+  "measurement_runs": 1,
+  "preexisting_untracked_hashes_unchanged": true,
+  "frozen_files_verified": 9,
+  "sealed_files_verified": 83,
+  "managed_source_unchanged": true,
+  "raw": {
+    "path": "/Users/changmin/projects/ugrp/outputs/pulse-rotation-audit-v1/measurement",
+    "files": 86,
+    "bytes": 6297142
+  },
+  "hashes": {
+    "result.json": "e1eab9abf0aa821ce482797a1971feebcd87b66c85620ac4913fda0c94c95bae",
+    "schedule.json": "60e37b2ba97dd91308981e170e0b69ea300967a354419eeec6ff0478bcb875cd",
+    "bundle.json": "b38cd5d36d3ce873e727cd01da7b9d3a42c4c3283bacd52bf2e6ccc933347e0e",
+    "artifacts.sha256.json": "8777ab0d8f8de3e83fe6f46356fc8c84021eb41350036f839f68fdd2e29abdb7",
+    "source-admission.json": "95304f47d71f05e02e3881844fa6a9a4540c0f62088c4ff71359c08ac8de2509",
+    "lock.json": "6291cd2c437fe8bf94cb47baa10c52e8cab9e2914f2fd567aa58b4c7c3b9a9b4",
+    "eval_only/trajectory.jsonl": "bb886e705cfc1c48c7774147061cc0841e4c15b548bfbaa15f0d76fd480a1728",
+    "eval_only/wheels.jsonl": "12a068b2035362279815dbd20fa3bf712ec9d054abcd6d2415dd53e08e78ca36",
+    "robots/r3/commands.jsonl": "6c7076b9aaffc46269a3d05a85d010866181f883bb383d8f504e8552638bcc8d"
+  }
+}
