@@ -2606,3 +2606,22 @@ raw `/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/`는 로컬 �
 [Nav2 collision_monitor 원본](https://github.com/ros-navigation/navigation2/blob/main/nav2_collision_monitor/src/collision_monitor_node.cpp)은 자기 센서 obstacle points와 stop/slowdown polygon을 사용한다. 현재 단안 벽 접점에는 바닥 오인이 남으므로 이를 신뢰 가능한 거리 센서처럼 취급해 정지 명령을 만들지는 않는다. [공식 설정](https://ros-navigation.github.io/mkdocs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/collision_monitor/configuring_collision_monitor_node/)과 대조했다.
 
 채택 기준: off 명령/기록·5202 frame pose 동일; 하중 endpoint 평균 xy/yaw 오차 비악화와 Gaussian NLL 개선; 문제6회 xy 3σ 범위 포함≥5/6, 나머지 하중 펄스의 과도한 공분산 증가 비율≤10%; 운반 RMSE<2.023583m·갱신≥27·공백≤33.85s·정지오차≤0.5m; RGB 원본 해시·벽 필터 동일·공통 관측 열100% 보존. 30초는 기존 목표로 별도 보고한다. 이 후보는 bias 자체를 고치지 않으므로 RMSE만 좋아도 나머지 기준이 실패하면 미채택한다. 사후 문턱/특징수 조정·다른 후보 재시도 없이, 전체 통과 때만 새 seed S2 full DEV1회. 사전 등록 본 연구가 아닌 DEV이며 freeze ON은 S2 solo DEV 한정이다.
+
+### 6회 분기·물리 원인 확정 (평가 전용)
+
+기준 커밋 **e1fa6bc8**, 먼저 pulse 시험6 passed/17.19초. 아래6회는 모두 **carry → drive → select_pulse**, `left=+0.65, 0.65초`, 예측 옆16.720cm/yaw−1.520°다. 목표는 문 앞 `[1.65,0.05]`(문 자체는 x2.2)이며 재정렬/회복/문 통과 중이 아니다. 전진·옆·yaw 비용을 비교해 각각 감소한다고 판단해 발행됐다. 실제 위치는 x0.178–0.193/y1.332–1.350으로 **북쪽 외벽 안쪽 y1.425**에 붙어 있었다.
+
+|SIM s|실제 시작 x,y m|당시 추정 x,y m|추정 목표 옆 오차 cm|실제 이동거리 cm|실제 yaw°|벽–바퀴 표본; 최소 dist mm|
+|---:|---|---|---:|---:|---:|---|
+|107.35|0.178, 1.335|0.937, -0.544|89.84|1.706|+10.016|13/16; -0.922|
+|108.30|0.185, 1.350|1.083, -0.462|75.31|0.089|+0.171|13/16; -0.386|
+|109.25|0.186, 1.350|1.188, -0.380|62.65|0.127|+0.295|13/16; -0.486|
+|110.20|0.188, 1.350|1.404, -0.374|47.51|0.083|-0.111|13/16; -0.585|
+|111.15|0.187, 1.350|1.528, -0.296|32.86|0.135|+0.473|13/16; -0.489|
+|113.70|0.193, 1.332|1.766, -0.277|22.50|2.374|-14.106|13/16; -0.862|
+
+6회 모두 북쪽벽–앞왼쪽/뒤왼쪽 롤러 접촉. 블록–벽0, 문틀/분리벽–로봇/블록0, 기타 팔/차체–북쪽벽0. 양손가락 접촉은96/96 표본, 최대 차체 기울기0.3054°, weld0. 양 끝 영상12장을 직접 대조했다. 접촉이 생긴 동안 wheel command는 유지되지만 **실제 휠 회전속도/접촉 힘은 저장되지 않아 slip 속도나 힘의 방향은 미확정**이다. 평가용 접촉으로 제어를 정지시키지 않는다. [전수 표·영상 해시](blocked-six-audit.json), raw `six-pulses.json`/`six-before-after.jpg`.
+
+발행 이유: [carry 분기](../../harness/zone_solo_cyan_v106.py#L447), [펄스 선택](../../harness/zone_solo_cyan_pulse_cal.py#L102). 경로는95초 추정 위치에서1회 생성됐고, [drive](../../harness/zone_solo_cyan_pulse_cal.py#L162)는 목적지가 같으면 A*를 다시 하지 않는다. 펄스별 현재 RGB 장애물/진행 부족 제약은 없고 위치 불확실은 dev_light 기록이다. ARM_COLLISION_GUARD는 [팔 자세 전환](../../harness/zone_solo_cyan_v106.py#L215)의 가드여서 이 옆 이동을 검사한 증거가 아니다. 기존 LK 알림은6회 중1회(110.20초)만 stationary; 3회 texture unknown,2회 changed로 놓쳤다.
+
+새 후보는 S2 Runtime 한 파일과 오프라인 어댑터에만 추가했다. `ground_flow_noise_v1`는 완료된 큰 병진 펄스의 자기 RGB만 처리하며, 160ms 기존 지연 큐 **안쪽**의 capture clock에서 동작한다. 동일 RGB를 기존 벽 관측 경로에 그대로 전달한다. 기본off wire/record, 합성 강체/회전/오점, 관측 지연/unknown, 기존 pulse/floor **15 passed/27.04초**. 결과 전 고정된3px/95% 등 기존 관측 gate는 변경하지 않았다.
