@@ -68,3 +68,26 @@ raw `/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/`, TensorBoard 생
 관문을 새 plant hash에서 다시 확인해야 한다. 종전 table/RMS·s1052 pulse 비율을 그대로 승계하지 않는다.
 intrinsic/FOV/mount는 바꾸지 않지만 camera-body transform은 새 실제 평형에서 확인해야 한다.
 초음파는 제안만 유지, 판독 활성화/제어 연결0.
+
+## 정적 진단 결과 (다음 취득 전 봉인)
+
+사전 등록 `c83d15ce`, 구현/실행 `00c30a0b`. 관련3파일14시험 통과, 마지막 변경2파일6시험 통과.
+off/on 각55초(+reset1.3초),551RGB, 모델0·freeze0. 두 실행 모두 들기와 좌우 운반 펄스에서
+블록 높이>.06m 유지. 이는 고정 fixture1개 기계 진단이며 S2 전체 운반 재검증이 아니다.
+
+|정착 자세|off pitch 중앙 °|real_v1 pitch 중앙 °|on 정적 관문|
+|---|---:|---:|---|
+|SEARCH|−.932141|−.118867|통과|
+|HIGH|−1.498378|−.140957|통과|
+|hover|−1.481522|−.124709|통과|
+|하중 HIGH(별도)|−2.555106|−.249495|통과|
+
+[각 관절 오차/P95/peak-to-peak·블록 높이](results/static-summary.json).
+운반 중 최소 블록 높이 off .14031m/on .14169m. 새 강성에서 camera pitch가 명령FK에 가까워졌지만
+아직0이 아니며 바닥/시차 관문 결과를 대신하지 않는다. 파라미터는 고정하고 북/남 취득으로 진행한다.
+
+운영 기록: 첫 `launchctl submit`은 종료 뒤 재시작하는 legacy 동작이었다. off 정상 녹화 후
+4번의 재호출은 관리자의 `output already exists`에서 모두 거부(추가 physics0/raw 덮어쓰기0).
+해당 job 제거, on job 재시작 비활성화·종료 후 제거. 이후 `RunAtLoad=true/KeepAlive=false`
+일회성 plist로만 실행한다. 원 stdout/stderr 보존. nice0·각 own lock release/null 확인.
+원본 실행은 각각1회이며 재호출을 새 물리 표본으로 세지 않는다.
