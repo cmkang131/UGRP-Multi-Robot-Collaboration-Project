@@ -2210,3 +2210,39 @@ CI 보충: 실행 SHA의 ci-preflight는 통과했지만
 ubuntu-simulation-runtime CI 목록에 해당 파일을 명시해 실제 검증을 유지한다.
 제어기/실행 번들은 바꾸지 않았다. 설치 환경4시험 통과와 MuJoCo import를 차단한
 단일 시험의 의도된1 skip을 따로 확인한다. 수정 뒤 원격 CI 결과는 아직 확정하지 않는다.
+
+## s2v20 — 예측 가시성 차단 제거 (사전 등록, 2026-10-07)
+
+Nav2 commit `235fc5ce55bdf94d9be360fdbca39d89dc0e4f74`의 원본3파일을 다시
+내려받아 `observed-amcl-sources.json`에 해시를 고정했다.
+[기본 likelihood field](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/sensors/laser/likelihood_field_model.cpp)는
+센서의 NaN/최대 range만 제외하고 각 입자에서 관측 endpoint의 최근접 벽 거리를
+hit/random 혼합으로 가중한다. 예측 벽 하단의 시야 내 확률95% 같은 선행 조건은 없다.
+기본 field는 `1+sum(pz^3)`이며 max/short 성분이나 beam skip을 쓰지 않는다.
+[beam model](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/sensors/laser/beam_model.cpp)은
+hit/short/max/random 혼합이다. RGB 검출 부재를 laser max return으로 만들 수 없어
+이번에 채택하지 않는다. [prob 모델](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/sensors/laser/likelihood_field_model_prob.cpp)의
+beam skip은 수렴 후 빔별 입자 지지를 계산하고 과도한 skip이면 전체빔으로 복귀한다.
+표준 기본 field를 유지하며 s2v19에서 실패한 product 모델로 바꾸지 않는다.
+
+기존 `Visibility.apply`는 `weights @ (in_view & clear & cargo_clear) >= .95`
+조건을 likelihood 전에 적용한다. 새 default-off `visibility_policy=nav2_observed_v1`은
+이 입자 사전분포 조건을 **제거**한다(95% 수치 완화 아님). 자기 명령 고정 형상과 자기
+RGB cyan으로 실제 검출 픽셀의 자기 가림만 전처리하고 나머지는 기존 고정 Nav2 혼합
+우도에 맡긴다. 전처리는 로봇 장착 센서 adapter 차이이며 ROS 자체의 RGB 알고리즘은
+아니다. 최소6열 차단도 새 경로에는 두지 않고 실제 유효 endpoint가 있으면 원본 field가
+처리한다. 운동/카메라 보정/공용 제어기는 수정하지 않는다.
+
+후보 구현·재생 **전** `observed-amcl-criteria.json`을 커밋한다. 같은 전체5117프레임·
+명령·RNG를 재생하여 off는 저장 pose와1e-9 이내 일치해야 한다. 새 옵션은 운반 가중
+갱신>0회 및 RMSE<2.1909388707m, 초기 정지 최대오차≤0.50m이면1회 DEV를 허용한다.
+최장 갱신 공백은 보고한다. 이번 사용자 지시의 갱신/RMSE 개선 기준에 따르며 옛30초는
+참고 기준이다. 계수 조정·실시간GT·결과를 본 뒤 판정 변경은 없다. 통과 시에만 신규
+ID/seed 예약·선커밋 후 freeze ON/agent_lock/ugrp_session full1회; 미달이면 SIM을
+실행하지 않는다. 이 저장 재생은 탐색이며 새 확증 자료가 아니다.
+
+PR #405 `5ba7dd29`의 wall-floor-boundary 결과는 수동 접점 투영에도 중앙
+0.457–0.665m 편향이 남았다고 보고한다(기존 검출 pixel precision94.3–98.8%).
+이번에는 s1050의1Hz 운반 표본에서 고정 보정/저장 실제 카메라를 같은 픽셀에 적용해
+접점·거리·pitch 차이를 **평가만** 한다. 다른 녹화 수치를 합산하거나 PR405를 수정하지
+않으며 투영 보정은 별도 작업으로 남긴다. 이 단계 물리·렌더·모델 호출0회.
