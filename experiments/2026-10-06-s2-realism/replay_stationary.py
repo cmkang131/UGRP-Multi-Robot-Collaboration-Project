@@ -35,7 +35,7 @@ def replay(seed,variant,out,*,rng_seed=None,candidate=False):
     cls=Runtime
     if candidate:
         from harness.zone_solo_cyan_amcl_update import Runtime as cls
-        kwargs['amcl_update']='ros_motion_v1'
+        kwargs['amcl_update']=candidate
     _,undo=install('v98-exact-v6')
     runtime=cls(c.hp.resolve(c.MAP_ID)[0],ROOT/c.CALIBRATION,c.CALIBRATION_SHA,
                 seed=seed if rng_seed is None else rng_seed,**kwargs)
@@ -82,8 +82,11 @@ def replay(seed,variant,out,*,rng_seed=None,candidate=False):
         baseline_max_delta=delta,first_wheel_t=first_wheel,max_error_m=max(p['eval_xy_error_m'] for p in poses),
         end_error_m=poses[-1]['eval_xy_error_m'],stats=stats,audits=audits,poses=poses,amcl=amcl,
         source_hashes={n:hashlib.sha256((raw/n).read_bytes()).hexdigest() for n in ('bundle.json','student_record.json','robots/r3/frames.jsonl','eval_only/trajectory.jsonl')})
+    result['replay_code_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    if candidate:result['candidate_module_sha256']=hashlib.sha256((ROOT/'harness/zone_solo_cyan_amcl_update.py').read_bytes()).hexdigest()
     out.mkdir(exist_ok=True,parents=True)
-    dest=out/f's{seed}-{variant}-rng{result["rng_seed"]}{"-candidate" if candidate else ""}.json'
+    suffix='-'+candidate if candidate else ''
+    dest=out/f's{seed}-{variant}-rng{result["rng_seed"]}{suffix}.json'
     assert not dest.exists();dest.write_text(json.dumps(result)+'\n')
     print(json.dumps({k:result[k] for k in ('seed','rng_seed','variant','candidate','frames','baseline_max_delta','max_error_m','end_error_m')}),flush=True)
 
@@ -91,5 +94,7 @@ def replay(seed,variant,out,*,rng_seed=None,candidate=False):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--seed',type=int,choices=RUNS,required=True)
     p.add_argument('--variant',required=True);p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--rng-seed',type=int);p.add_argument('--candidate',action='store_true');a=p.parse_args()
+    p.add_argument('--rng-seed',type=int)
+    p.add_argument('--candidate',nargs='?',const='ros_motion_v1',choices=('ros_motion_v1','ros_motion_prob_v1'))
+    a=p.parse_args()
     replay(a.seed,a.variant,a.output,rng_seed=a.rng_seed,candidate=a.candidate)

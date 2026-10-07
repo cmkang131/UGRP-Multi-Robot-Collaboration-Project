@@ -2093,3 +2093,33 @@ plant 크기를 보존하는 차이만 허용한다. 실행 중GT/추가 센서/
 CYAN_NOT_UNIQUELY_VISIBLE은 새 default-off 옵션으로 기존 두 시점 탐색을 다시 하고
 멈췄을 곳만 기록한다. 관측하지 못한 target을 발명하거나 파지 성공을 알리지 않는다.
 전역 유한 시간 상한/실제 물리 실패 정지는 유지한다. PR #406 DRAFT·병합 금지.
+
+
+새 full 사전 등록: main+열린 PR16개, 총17 refs의 최대 ID124 다음 **zone-s2-realism-v125 /
+workflow7.18.0**, 미사용 **seed1050/P1-2/B/place**를 예약한다. 전체 ref의seed1050
+검색 hit0, 원본 실행 폴더0. `reservation-scan-v125.json`에 ref/SHA/ID를 보존한다.
+full은 ros_motion_v1의 재생 통과를 검증하는 번들에서만1회 허용한다. 새 보정표와
+carry_pose·freeze·visibility·pulse·RGB LK·blind 파지/log-only 기존 조합을 유지한다.
+`dev_search=repeat_views_v1`은 초기·재집기 검색 소진 및 정렬 중 cyan소실을
+기존 두 시점 검색으로 되돌려 기록만 한다. source code/옵션은 실행 전에 commit/push,
+agent_lock·ugrp_session·한 번씩·정상 우선순위, ENOSPC HOST_ERROR, 유한 상한 유지.
+
+
+후보 재생 판정(기준commit e8e383a1 이후): 기본 ros_motion_v1의 s1047/1049 정지
+최대오차0.15944/0.15438m, 끝0.15915/0.15335m, 최초 관측1회·resample1회,
+이후 정지 반복 갱신0으로 두 seed 모두 통과했다. `ros_motion_prob_v1`은 최초 product
+관측 한 번부터3.04705/2.64664m 이탈하여 미달이다. 아직 converged가 아니므로 원본
+조건대로 beam skip이 비활성이며, beam skip이 초기 모호한 관측의 만능 해결책은 아니다.
+숫자/각 replay 해시/선택 정책은stationary-amcl-summary.json, 전체raw는
+`outputs/s2-stationary-audit-20261007/`. 표준모델의 계수는 튜닝하지 않았다.
+최종 후보 파일 해시로 primary/secondary 둘 다 재생했고 앞 재생과 수치가 같았다.
+기본 ROS field만 채택한다. 초기 정상 s1047 끝0.0105m보다는 덜 정확하지만 사전
+0.30m 이내이며 반복 가중으로 얻은 과신과 구분한다. 실주행은 아직 미검증이다.
+
+새 옵션 `amcl_update`는 기본off이며 `ros_motion_v1`/`ros_motion_prob_v1` 중 고정
+표준모델을 선택한다. loaded·unloaded 모두 같은 update 문턱을 사용하고, 이동 문턱
+미달에는 기존update(None)도 호출하지 않아 은닉 resample/roughening을 막는다.
+기존 frozen PF·공용 camera_robot_port·타 제어기는 수정하지 않았다. 원본 ROS와 다른
+RGB/명령odom/고정N 경계를 기록하고 전체 AMCL ROS/KLD 재현이라고 주장하지 않는다.
+
+실행 전 시험: 새test_s2_amcl_update의8개와 변경 없는real_carry_dev4개·likelihood_field6개를 확인했다. 중간 실패는 각도0.2rad 경계의 modulo 반올림(ROS atan2 정규화로 수정), 새 테스트의 fixture 배치 오류(시험만 수정)였다. 최종 후보 재생4개는최종 AMCL파일sha와일치하며 기본off·정지불변·beam fallback·재탐색·실제명령상태실패·새번들/seed거절을검증했다.
