@@ -65,3 +65,19 @@ GT 진단 수치로 이 단계에 진입하지 않는다. 실패 시 멈추고 �
   ENOSPC=HOST_ERROR, 같은 원인 두 번 중단. wall-time 성능 측정/물리 실행이 없어 잠금 없음.
   결과/그림/해시는 로컬+Git, raw 원격 백업으로 주장하지 않는다. TensorBoard 기존 사용자 면제 유지.
 - 관련 시험 통과 후 commit/push, `Co-Authored-By: Codex <noreply@openai.com>`, PR #405 DRAFT·병합 금지.
+
+## 평가 어댑터 정정 사전 기록 — 결과 생성 전
+
+`206269b1` capture에서 두 녹화의 prediction/eligibility가 원본과 바이트 동일했다.
+첫 GT 진단은 `INCONSISTENT_COMMAND_POSE_COVARIANCE`로 중단됐다(동일 원인 1회).
+기존 `joint_pose_covariance`는 입력 평균 XY 차이에서 F를 다시 계산해 cross=C₀Fᵀ를 만든다.
+평균만 GT로 바꾸고 두 주변 공분산을 고정하면 이 cross가 원래 DR 공동 분포와 달라져
+PSD가 깨진다. GT 지표 결과는 아직 생성되지 않았으며 중단 파일은 그대로 보존한다.
+
+“DR 공분산 그대로”를 **원래 DR 평균에서 계산한 전체 6×6 공동 공분산(상관항 포함)**으로
+명확히 한다. 평가 어댑터에서만 그 행렬을 고정해 frozen 삼각측량에 공급하고, GT 평균에서
+계산하는 Jacobian으로 JΣJᵀ를 전파한다. GT 공분산/임의 noise/고유값 추가 floor는 넣지 않는다.
+기하 수락·검사·평균 계산·detector 17파일·최종 관문은 그대로다. 이는 일반적인 상관 입력의
+불확실성 전파 [JCGM 100:2008 §5.2.2 Eq.13](https://www.iso.org/sites/JCGM/GUM/JCGM100/C045315e-html/C045315e_FILES/MAIN_C045315e/05_e.html)
+에서 **입력 공분산 전체를 보존**하는 적용이다(문헌이 이 GT 개입 자체를 권고한다는 뜻 아님).
+정정 시험·커밋 뒤 새 `evaluation-joint-covariance/`에 진단 1회. 같은 원인으로 다시 막히면 중단한다.
