@@ -48,7 +48,23 @@ def own_inputs(episode,robot):
     return fs,cs
 
 
-def geometry(servo,mode, *, camera_pose='off'):
+def geometry(servo,mode, *, camera_pose='off', camera_pitch='off', own_bgr=None):
+    if camera_pitch == 'off':
+        return _base_geometry(servo,mode,camera_pose=camera_pose)
+    if camera_pose != 'off' or mode != 'v3_unloaded_extrinsic_v1':
+        raise ValueError('ONLINE_PITCH_REQUIRES_V3_UNLOADED_TABLE')
+    cm,offset,reason = _base_geometry(servo,mode,camera_pose=camera_pose)
+    if cm is None:
+        return cm,offset,reason
+    from harness.online_camera_pitch import correct_rotation
+    und = None if own_bgr is None else mp.undistort(own_bgr)
+    rot,meta = correct_rotation(und,mp.K,cm._rot,camera_pitch=camera_pitch)
+    if meta['accepted']:
+        cm = mp.ColumnModel(tuple(sorted(servo.items())),0.,cm.columns,camera_transform=(cm.origin,rot))
+    return cm,offset,meta
+
+
+def _base_geometry(servo,mode, *, camera_pose='off'):
     cols = mp.column_positions(96,2)
     if camera_pose != 'off':
         if mode != 'off':
