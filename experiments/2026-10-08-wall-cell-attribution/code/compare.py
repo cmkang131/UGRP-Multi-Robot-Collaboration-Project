@@ -84,6 +84,9 @@ def score():
             cleared=sum(e['cleared_support'] for e in support['events']),
             frames_adding_support=sum(e['new_support']>0 for e in support['events']))
         false=load(RAW/f'{seed}-false-cells.json')
+        # Include every false cell, even the distant ghost projections outside arena.
+        all_xy=np.array([c['world'] for c in false]+[[x-hx,y-hy] for x,y,hx,hy in walls]+[[x+hx,y+hy] for x,y,hx,hy in walls])
+        lower,upper=all_xy.min(0)-.35,all_xy.max(0)+.35
         for i,condition in enumerate(('off','on')):
             grid=load(out/f'{condition}.json')
             cells=np.array([c for c in grid['cells'] if c[2]>0]).reshape(-1,3)
@@ -109,7 +112,7 @@ def score():
             precision='NA' if q['precision_015'] is None else f'{q["precision_015"]:.1%}'
             rmse='NA' if q['wall_error_rmse_m'] is None else f'{q["wall_error_rmse_m"]:.3f}'
             ax.set_title(f'{seed} {condition}: P {precision} / R {q["wall_coverage"]:.1%}\nRMSE {rmse}m, cells {len(cells)}, scans {summary["inserted_frames"]}')
-            ax.set_aspect('equal');ax.set_xlim(-1.6,6.6);ax.set_ylim(-4.2,2.8)
+            ax.set_aspect('equal');ax.set_xlim(lower[0],upper[0]);ax.set_ylim(lower[1],upper[1])
             ax.set_xlabel('world x (evaluation only), m');ax.set_ylabel('world y, m')
         axes[si,0].legend(fontsize=7,loc='lower left')
         summary['absolute_gate_pass_count']=sum(summary['conditions']['on']['absolute_gate'].values())
