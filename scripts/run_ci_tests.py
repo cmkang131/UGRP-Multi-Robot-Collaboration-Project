@@ -43,6 +43,7 @@ TEST_PATTERNS = (
     "tests/test_self_pulse_rotation.py",
     "tests/test_self_wall_segments.py",
     "tests/test_self_wall_validation.py",
+    "tests/test_self_wall_pr.py",
     "tests/test_wall_cell_attribution.py",
     "tests/test_active_wall_rotleft.py",
     "tests/test_camera_projection_audit.py",
