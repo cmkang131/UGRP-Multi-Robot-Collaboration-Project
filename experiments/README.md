@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-07 v8 정지/관측 대기 어댑터 수정](2026-10-07-mapfree-v8-stop/RESULTS.md): PR #409. 2D 최종0속도 뒤 M1 잔류 적분을 차단하고 대기10Hz callback 연결. 같은 개발32쌍에서 대기 접촉14→0, B24→28/32·coverage64.81%, 전체 접촉6/잘못된 문2/거짓 후보8. 관문4/5 실패, 기존12사건·v5–v8 표만 기록하고 트랙 종료; 새32쌍/잡음/MuJoCo/모델0.
+
 - [2026-10-07 public_ros_v8 기본 collision monitor·explore 설정](2026-10-07-mapfree-collision-monitor/RESULTS.md): PR #409. v7 M/N32 개발 한 번, B26→24/32·충돌2→16·거짓 후보14→10, 관문3/5 실패. B3s float 경계 수정은 분리 확인, 근거리 미관측·관측 대기 잔류 접촉이 남아 튜닝/새 확인/잡음 없이 중단.
 - [2026-10-07 public_ros_v7 footprint·unknown 원본 정책](2026-10-07-mapfree-unknown-footprint/RESULTS.md): 기존 확인32쌍 frontier26/32·거짓B0·coverage70.11%, 충돌2·거짓 후보14로4/5. 기존 수치 보존.
 

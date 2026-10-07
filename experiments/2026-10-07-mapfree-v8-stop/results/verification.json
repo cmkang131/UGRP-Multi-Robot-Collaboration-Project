@@ -1,0 +1,102 @@
+{
+  "source_sha": "4f81c20654f374761fe9dd316cb559eda0571176",
+  "tests": {
+    "command": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_navigation_stop.py tests/test_navigation_monitor.py tests/test_navigation_clock.py",
+    "passed": 13,
+    "exit_code": 0
+  },
+  "source_paths_verified": 150,
+  "raw_files_verified": 707,
+  "raw_bytes_verified": 186973389,
+  "user_untracked_sha256": {
+    "analyze_wall_detection.py": "26c818f1cd4673c7f4a1b6ab535b4e70ac68167f1f56989f10c8c6bebe0c3dd0",
+    "create_wall_visualizations.py": "e2b77c1f678d1ba27658dffecf99bcf7bfd7c12c056d41869a7a38cc482f8efa",
+    "create_wall_visualizations_v2.py": "8e6fa7f6598336bc6f7c61ad956d1902be9925443d7656cea2801362195d83c8",
+    "parameter_probe.py": "43f91584406ba91a73032514b8409357fc9c7ac2c3cbc3e72d26bce5257e103b"
+  },
+  "off_golden": "passed in targeted tests",
+  "mujoco_calls": 0,
+  "model_calls": 0,
+  "gate": {
+    "conditions": {
+      "static_map": {
+        "n": 32,
+        "true_B": 32,
+        "false_B": 0,
+        "coverage_median": 0.5390625,
+        "first_B_time_s": 104.0,
+        "first_B_distance_m": 2.965153590895344,
+        "end_time_s": 104.0,
+        "end_distance_m": 2.965153590895344,
+        "collisions": 0,
+        "wrong_doors": 0,
+        "false_passage": 14,
+        "door_attempts": 36,
+        "statuses": {
+          "B_confirmed": 32
+        },
+        "max_end_pose_error_m": 6.280369834735101e-16
+      },
+      "own_frontier": {
+        "n": 32,
+        "true_B": 28,
+        "false_B": 0,
+        "coverage_median": 0.6480902777777777,
+        "first_B_time_s": 144.5,
+        "first_B_distance_m": 3.510073573763937,
+        "end_time_s": 152.0,
+        "end_distance_m": 3.744299707593197,
+        "collisions": 6,
+        "wrong_doors": 2,
+        "false_passage": 8,
+        "door_attempts": 42,
+        "statuses": {
+          "B_confirmed": 28,
+          "exploration_finished": 4
+        },
+        "max_end_pose_error_m": 4.47545209131181e-16
+      }
+    },
+    "paired": {
+      "common_successes": 28,
+      "distance_ratio": 1.117354367768495,
+      "time_ratio": 1.3362854251012146
+    },
+    "checks": {
+      "boundary": true,
+      "B_confirmation": true,
+      "efficiency": true,
+      "coverage": true,
+      "safety": false
+    },
+    "criteria_passed": 4,
+    "passed": false,
+    "criteria": {
+      "total_pairs": 32,
+      "B_fraction": 0.8,
+      "false_B": 0,
+      "distance_ratio": 2.0,
+      "time_ratio": 2.0,
+      "coverage_median": 0.4,
+      "collisions": 0,
+      "wrong_doors": 0,
+      "false_passage": 0,
+      "min_door_attempts": 1
+    },
+    "complete": true,
+    "pose_condition": "oracle_gt_pose_v1",
+    "noisy_runs": 0,
+    "physics": 0,
+    "model_calls": 0,
+    "split": "development",
+    "next_stage": "STOP_TRACK_FINAL",
+    "observation_wait_stop_verified": true
+  },
+  "new_confirmation_opened": false,
+  "noise_runs": 0,
+  "prior_source_modified_only": [
+    "experiments/2026-10-07-mapfree-collision-monitor/code/integer_episode.py",
+    "harness/public_navigation_monitor.py"
+  ],
+  "remote_raw_backup": false
+}
