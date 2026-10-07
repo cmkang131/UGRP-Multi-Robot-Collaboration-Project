@@ -1,0 +1,106 @@
+{
+  "reports": {
+    "baseline": {
+      "points": {
+        "n": 6475,
+        "median": 0.019752023144084772,
+        "p90": 0.10147171391404,
+        "rmse": 0.18202667339444495,
+        "precision": 0.9003861003861003
+      },
+      "annotated": {
+        "all": {
+          "predicted": 433,
+          "tp": 385,
+          "positive": 458,
+          "covered": 385,
+          "precision": 0.8891454965357968,
+          "recall": 0.8406113537117904
+        },
+        "0-2m": {
+          "predicted": 431,
+          "tp": 385,
+          "positive": 458,
+          "covered": 385,
+          "precision": 0.8932714617169374,
+          "recall": 0.8406113537117904
+        },
+        "2-3m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": null,
+          "recall": null
+        },
+        "3-4m": {
+          "predicted": 2,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": 0.0,
+          "recall": null
+        }
+      }
+    },
+    "candidate": {
+      "points": {
+        "n": 5,
+        "median": 0.41934193164465394,
+        "p90": 0.49484171148764866,
+        "rmse": 0.4036291479357406,
+        "precision": 0.2
+      },
+      "annotated": {
+        "all": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 458,
+          "covered": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "0-2m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 458,
+          "covered": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "2-3m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": null,
+          "recall": null
+        },
+        "3-4m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": null,
+          "recall": null
+        }
+      }
+    }
+  },
+  "numerical_checks": {
+    "precision": false,
+    "annotated_precision": false,
+    "recall": false,
+    "median": false,
+    "p90": false,
+    "baseline_nondecrease": false,
+    "labels": true,
+    "annotated_tp": false
+  },
+  "numerical_gate_passed": false,
+  "own_only": true,
+  "adopted": false,
+  "operational_gate_passed": false,
+  "physics": 0,
+  "model_calls": 0
+}
