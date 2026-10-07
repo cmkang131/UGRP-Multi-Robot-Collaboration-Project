@@ -9,8 +9,17 @@ OPTION='appearance_contact_v1'
 
 def detect(hfw,und_bgr,cm,*,params,loaded=False,wall_detector='off',contact_rule='off',
            contact_state=None,frame_id=None,odometry_pose=None):
-    if contact_rule not in ('off','bottom_up_connected_v1','floor_appearance_ulrich_v1'):
+    if contact_rule not in ('off','bottom_up_connected_v1','floor_appearance_ulrich_v1','lorigo_window_v1'):
         raise ValueError('UNKNOWN_CONTACT_RULE')
+    if contact_rule=='lorigo_window_v1':
+        from harness.wall_floor_lorigo import detect as lorigo, to_scan, Diagnostics
+        if wall_detector!='off':raise ValueError('CONTACT_RULE_REQUIRES_ORIGINAL_DETECTOR')
+        if contact_state is not None and not isinstance(contact_state,Diagnostics):raise ValueError('LORIGO_DIAGNOSTICS_REQUIRED')
+        import numpy as np
+        valid=(hfw.mp.undistort(np.full_like(und_bgr,255))==255).all(-1)
+        result=lorigo(und_bgr,cm,valid,hfw.self_top_mask(und_bgr,cm,params,loaded))
+        if contact_state is not None:contact_state.last_result=result
+        return to_scan(result,und_bgr,cm,int(params.get('candidates',hfw.PARAMS['candidates'])))
     if contact_rule=='floor_appearance_ulrich_v1':
         from harness.wall_floor_ulrich import UlrichFloorState, to_scan
         if wall_detector!='off':raise ValueError('CONTACT_RULE_REQUIRES_ORIGINAL_DETECTOR')
