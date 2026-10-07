@@ -4185,3 +4185,47 @@ v131 운반3548보고는 모두 군집1개이므로 평균 변경 효과가 없�
 off/on 4개 새 snapshot의 **34수치 source/event/live API 일치**를 확인했다
 ([전달 검증](best-cluster-delivery.json), UI 미검증/수치 검증 범위). 기존 raw·snapshot 불변.
 기록에 실행 중 CPU 경과시간은 있지만, 공용 잠금 없는 오프라인 처리이며 성능 비교/물리 wall/SIM 주장은 하지 않는다.
+
+## s2v38 — 원본 AMCL likelihood_field 선택자, 재생 전 사전 등록 (2026-10-08)
+
+사용자 가설은 넓은 posterior와 약한 우도 구별력이다. 먼저 실제 코드를 대조했으며,
+기존 `measurement_model=amcl_likelihood_field_v1`/`amcl_update=ros_motion_v1` 경로가
+이미 같은 hit/random·cubic 점수식을 사용함을 확인했다. 이번 명시적 옵션
+`sensor_model=amcl_likelihood_field_v1`(기본off)은 독립 원본 순서 커널을 선택한다.
+점수를 날카롭게 만들거나 likelihood_field_prob(로그 곱/ceil stride)로 바꾸지 않는다.
+[사전 기준](amcl-sensor-criteria.json), [원본 해시/행](amcl-sensor-sources.json).
+
+검증한 원본:
+[ROS navigation f44bb1fc AMCLLaser::LikelihoodFieldModel 215–302행](https://github.com/ros-planning/navigation/blob/f44bb1fc2810399165115cc98b530fe4b9397c18/amcl/src/amcl/sensors/amcl_laser.cpp#L215),
+[Nav2 235fc5ce sensorFunction 50–139행](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/sensors/laser/likelihood_field_model.cpp#L50),
+[Nav2 기본값 963·973·988·993·995행](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/amcl_node.cpp#L963).
+ROS 생성 API 페이지는 접근 거절되어 고정 commit의 GitHub raw를 직접 읽고 보존했다.
+Nav2 재다운로드 SHA256은 이전 보존본과 동일하다.
+
+| 항목 | 원본 Nav2 / ROS 행 | 기존 S2 경로 | 새 sensor_model on / 차이 |
+|---|---|---|---|
+| 기본값 | node963,973,988,993,995 | likelihood_field.py19–21: σ=0.2m, z_hit/z_rand=0.5/0.5, max_beams60, max거리2m | 모두 동일; 튜닝0 |
+| 빔 stride | Nav2 68–73 / ROS246–250: 정수 `(count-1)/(max_beams-1)`, 최소1 | endpoints59–60 동일 | 같은 규칙. **96열은 stride1→96개**, 60개 강제 상한이 아님 |
+| 유효성 | Nav2 91–99 / ROS257–263: max-range·NaN 건너뜀 | 미검출·가림은 결측, 자기 RGB→지면 투영의 유한/전방 접점만 허용 | 동일 RGB 어댑터; 불명확한 열에 가짜 max-range를 만들지 않음 |
+| 거리/좌표 | Nav2 82–117 / ROS237–281: 센서 외부 보정, 최근접 점유 셀 거리; 지도 밖2m | Field24–50: 정적 벽 1cm 격자 EDT; 카메라 외부 보정 포함 차체 좌표 접점 | 같은 고정 지도·접점; 레이저를 RGB로 바꾼 부분은 계속 명시 |
+| 빔 점수 | Nav2 65–66,121–123 / ROS243–244,284–286 | likelihood77: `pz=.5*exp(-d²/(2*.2²))+.5/100` | 원본 그대로, range_max100m 유지 |
+| 빔 합산 | Nav2 85,132 / ROS240,295: `p=1; p+=pz³` | likelihood78: `1+numpy.sum(pz³)` | 빔 순서대로 `p+=pz³`; 입자 축만 벡터화, 반올림 순서만 차이 |
+| 입자 가중치 | Nav2135 / ROS298: `weight*=p` | amcl_update103–106,119 / augmented_start82–84,96: prior×score를 로그 공간에서 정규화 | 같은 상태/갱신 함수를 유지; prior×p와 수치 시험 대조 |
+| random 분모 | Nav2 66 / ROS244: 메시지의 range_max | RGB 어댑터 고정100m, .5/100=.005 | 동일. 원본의 센서별 range_max를 100m라는 RGB 어댑터 값으로 정한 차이는 남음 |
+
+max_beams=60을 “96개 중60개 선택”으로 바꾸면 원본 default 모델과 달라지므로 그렇게 하지 않는다.
+원본의 d는 **미터 단위 최근접 지도 벽 거리**, 화면 row 잔차1.2px/16px 자체가 아니다.
+새 옵션은 private `bind`로 해당 PF의 endpoint/likelihood 함수만 연결하며 기존 전역 함수·봉인 소스·
+관측 가드·마스크·바닥 외형 필터·모션/리샘플링 정책을 변경하지 않는다. 기본off command/record는 바이트 동일.
+원본 scalar loop/가중치 곱·stride·invalid 건너뜀·instance 격리 포함 관련2파일 **12 PASS**.
+
+**결과 전 고정:** s1052 강성 보정 정지 영상214장(KLD/augmented on)과 v131 s1051 전체5340장을
+sensor off/on 각1회 재생한다. **best_cluster는 양쪽 모두on**으로 고정하며 off는 s2v37 on 녹화
+재생 pose를1e-9 이내 재현해야 한다. GT25cm/15° 근처 질량, 시작 최종 XY 오차,
+운반71.85≤t<249.25 RMSE/내려놓기 직전 오차를 보고한다.
+GT/오답 우도비는 기존 `s2-start-likelihood-208f10f1-final`의 같은6개 접점 집합,
+첫 시점 GT 가설과 기존 고정 오답[-0.15,0.05,−π/2]를 평가에만 사용한다.
+on마다 새로운 오답 최고점을 고르지 않으며 정답은 runtime 입력에 전달하지 않는다.
+시작 오차 **≤25cm**와 off 재현을 통과할 때만 seed1052 시작 물리1회→그 결과도≤25cm일 때만
+seed1051 v131+best_cluster+sensor full DEV1회, 모두 agent_lock/ugrp_session·freeze ON·dev_light.
+미달이면 물리0·새 번들 인수0. 결과 후 σ·z_rand·stride·관문 변경 금지.
