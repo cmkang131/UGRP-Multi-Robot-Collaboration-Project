@@ -70,7 +70,8 @@ def correct_rotation(undistorted_bgr, intrinsics, nominal_rotation, *, camera_pi
     lines = cv2.createLineSegmentDetector(0).detect(grey)[0]
     if lines is None:
         return abstain('no_lines')
-    lines = lines[:, 0]
+    # OpenCV 4 returns N x 1 x 4, OpenCV 5 returns N x 4. Same endpoints.
+    lines = np.asarray(lines).reshape(-1, 4)
     lines = lines[np.linalg.norm(lines[:, :2] - lines[:, 2:], axis=1) >= PARAMETERS['length_px']]
     meta['lines'] = len(lines)
     if len(lines) < 2:
@@ -81,7 +82,14 @@ def correct_rotation(undistorted_bgr, intrinsics, nominal_rotation, *, camera_pi
         # Upstream retries parallel pairs indefinitely; never invoke on this input.
         return abstain('all_parallel')
     principal = np.array([k[0, 2] * scale, k[1, 2]])
-    detector = VPDetection(PARAMETERS['length_px'], principal, k[1, 1], PARAMETERS['seed'])
+    class VPFromLines(VPDetection):
+        def _VPDetection__detect_lines(self, img):
+            # Feed exactly the original LSD/filter result after API normalization.
+            # Keep all upstream hypothesis, voting and ranking code unchanged.
+            self._VPDetection__lines = lines
+            return lines
+
+    detector = VPFromLines(PARAMETERS['length_px'], principal, k[1, 1], PARAMETERS['seed'])
     with np.errstate(divide='ignore', invalid='ignore'):
         vps = np.asarray(detector.find_vps(image), float)
     if vps.shape != (3, 3) or not np.isfinite(vps).all():

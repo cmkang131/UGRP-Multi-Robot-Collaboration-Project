@@ -113,11 +113,14 @@ def run(case,option):
 
 
 def main():
+    global OUT
     p=argparse.ArgumentParser()
     p.add_argument('--split',choices=['development','confirmation'],required=True)
     p.add_argument('--camera-pitch',choices=['off','online_vp_v1'],default='off')
     p.add_argument('--freeze',type=Path)
+    p.add_argument('--output',type=Path,default=OUT)
     args=p.parse_args()
+    OUT=args.output
     if args.split=='confirmation':
         frozen=a.load(args.freeze) if args.freeze else {}
         assert frozen.get('hashes')==hashes() and frozen.get('criteria')==CRITERIA

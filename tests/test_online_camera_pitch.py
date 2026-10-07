@@ -89,3 +89,27 @@ def test_evaluation_load_and_motion_labels_are_not_command_truth():
     v,dv,w=kinematics(rows)
     assert v[2]==pytest.approx(2.) and dv[2]==pytest.approx(1.)
     assert not w.any()
+
+
+def test_real_lsd_to_upstream_voting_on_projected_manhattan_lines():
+    import cv2
+    image=np.zeros((480,640,3),np.uint8)
+    k=np.array([[450.,0.,320.],[0.,450.,240.],[0.,0.,1.]])
+    true=a.rotation(np.radians([20.,-20.,0.]))
+    camera=np.array([0.,0.,.4])
+    # Fixed wireframe fixture: no renderer, labels or external images.
+    for x in [1.,1.5,2.,3.]:
+        for y in [-1.,-.5,0.,.5,1.]:
+            pairs=[([x,y,0.],[x,y,1.]),([x,y,0.],[x+1.,y,0.]),([x,y,0.],[x,y+.5,0.])]
+            for first,second in pairs:
+                points=(np.array([first,second])-camera)@true
+                if np.any(points[:,2]<=0):continue
+                uv=points@k.T
+                uv=np.rint(uv[:,:2]/uv[:,2:]).astype(int)
+                cv2.line(image,tuple(uv[0]),tuple(uv[1]),(255,255,255),2)
+    result,meta=p.correct_rotation(image,k,true,camera_pitch=p.OPTION)
+    assert meta['lines']>=10
+    assert 'vps' in meta and np.isfinite(result).all()
+    # Exercise actual OpenCV return format through the pinned full algorithm.
+    assert meta['accepted'],meta
+    assert abs(np.degrees(a.angles(result)[1])+20.) < 3.
