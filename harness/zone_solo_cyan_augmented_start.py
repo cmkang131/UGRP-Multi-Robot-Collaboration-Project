@@ -28,12 +28,14 @@ PANS = (1500, 1230, 970, 1770, 2030)
 def install_global_update(pf,static,*,preset,visibility=None,pose_supported=None):
     field=Field(static);predict=pf.predict_to
     state=dict(odom=np.zeros(3),anchor=None,converged=False)
-    audit=dict(option=preset,scope='S2 all calibrated stationary arm poses, unloaded and loaded',
+    audit=dict(option=preset,scope='S2 initial global scan, then unchanged AMCL tracking',
         parameters={**copy.deepcopy(PARAMS),'do_beamskip':preset=='ros_motion_prob_v1',
-                    'resample_interval':1,'recovery_alpha_slow':0.,'recovery_alpha_fast':0.},
+                    'resample_interval':1,'recovery_alpha_slow':ALPHA_SLOW,
+                    'recovery_alpha_fast':ALPHA_FAST,'selective_resampling_ess_fraction':.5},
         beam=copy.deepcopy(BEAM),global_localization=OPTION,absolute_fix=False,candidates=0,updates=0,resamples=0,rows=[],skips=Counter(),
         adaptations='RGB endpoints; own pulse odometry; fixed N with latent-state ancestry; no KLD size change',
-        force_update_on_posture_change=False,gt_inputs=False)
+        force_update_on_posture_change='new settled pose once per motion epoch during initial global scan only',
+        tracking_after_global=dict(recovery_alpha_slow=0.,recovery_alpha_fast=0.,selective_resampling=False),gt_inputs=False)
     def predict_to(t):
         while pf.t<t-1e-9:
             before=float(pf.t);predict(min(t,before+.05));dt=float(pf.t)-before

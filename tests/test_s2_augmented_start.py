@@ -82,6 +82,8 @@ def test_only_new_settled_pan_counts_and_tracking_restores_motion_gate(monkeypat
     pf._gains=lambda a,b:{};pf.s2_global_policy=m.Policy()
     monkeypatch.setattr(m,'endpoints',lambda *a:np.array([[0.,0.]]))
     audit=m.install_global_update(pf,static,preset='ros_motion_v1')
+    assert audit['parameters']['recovery_alpha_slow']==.001
+    assert audit['parameters']['recovery_alpha_fast']==.1
     pose={3:1072,4:2400,5:1482,6:1500}
     pf.update_obs(0.,object(),pose);pf.update_obs(.05,object(),pose)
     pf.update_obs(.1,object(),{**pose,6:1230})
