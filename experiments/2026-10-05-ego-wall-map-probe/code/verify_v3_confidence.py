@@ -61,6 +61,27 @@ def verify():
             assert summary['success'][name]==all(checks.values())
             assert not checks['guard_visible_recall_verified']
         receipt['cases'][case]=case_receipt
+    receipt['old_fixed_pose_cases']={}
+    for case in [f's{s}-r{r}' for s in (911,912,913) for r in (1,2)]:
+        directory=run.OUT/'old'/case
+        comparison=run.load(directory/'map-comparison.json')
+        for source in comparison['sources']:
+            assert run.base.sha(source['path'])==source['sha256']
+        diagnostic=run.load(directory/'summary.json')
+        assert diagnostic['unmatched']==0
+        assert run.base.sha(directory/'own-features.jsonl')==diagnostic['feature_hash']
+        ledger=run.base.read_rows(directory/'weighted-fixed-pose-ledger.jsonl')
+        original=run.base.read_rows(run.ROOT/'outputs/own-submap-v1-complete'/case/'graph-ledger.jsonl')
+        assert len(ledger)==len(original)
+        for a,b in zip(ledger,original):
+            assert all(a[k]==b[k] for k in ('t','frame_id','pose','camera','segments'))
+        assert rebuild(case[-2:],ledger).export()['cells']==run.load(directory/'weighted-fixed-pose-grid.json')['cells']
+        receipt['old_fixed_pose_cases'][case]={'rebuild_exact':True,'poses_unchanged':True,'unmatched_features':0}
+    for source in run.load(run.RESULTS/'references.json'):
+        assert run.base.sha(source['path'])==source['sha256']
+    for name,digest in run.load(run.RESULTS/'runtime-source-hashes.json')['sha256'].items():
+        assert run.base.sha(run.ROOT/name)==digest
+    receipt['reference_hashes_and_frozen_runtime']=True
     testlog=run.OUT/'verification/tests-lazy-off.log'
     assert '49 passed' in testlog.read_text()
     receipt['tests']={'path':str(testlog),'sha256':run.base.sha(testlog),'passed':49,

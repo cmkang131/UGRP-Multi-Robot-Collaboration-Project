@@ -2723,3 +2723,171 @@ v3 GT-pose 지도조차 precision/recall이 s1042 **16.6%/4.9%**, s1043 **0%/0%*
 수치 경로/계수는 개발 소스 c3dc8779와 동일하다. frozen 기존 RBPF의 원장·격자·의사결정·난수 상태
 bytes와 기본/명시적 off를 포함한 관련 **49개 시험 통과** 후 고정한다. 개발 큐 드라이버 정리는
 해당 예측 자식의 완료 뒤 수행했고, 과학 계산 중단·미완료 결과 재사용은 없다.
+
+개발 예측 봉인 뒤 별도 `eval_only/supervisor.jsonl`도 점검했다. 유효 벽 관측 시 차체 tilt 중앙/P90/최대는
+s1042 **0.057/0.127/0.277°**, s1043 **0.059/0.120/0.264°**다. 기울기 크기는 저장돼 있지만 방향·실제 팔
+관절·카메라 transform은 없다. 따라서 +0.686 m 편향을 차체 기울기 때문이라고 확정하지 않는다.
+명령 정착 gate 0.25 s와 보정표의 8 s 정지 지그, 실제 팔/카메라 자세 차이 및 잘못된 접점은 남은 가설이다.
+이 평가 로그를 confidence나 estimator 입력에 전달하지 않았다.
+[개발 진단과 출처](results/v3_confidence_v1/development-camera-diagnostic.json)를 별도로 보존했다.
+
+녹화의 접촉 구성도 분리했다: s1042는 idle freeze off, s1043–s1047은 기존 S2 DEV의
+`idle_robot_contacts=freeze_v1` 기록이다. 원본을 재생한 것이며 이번 작업에서 freeze를 켜거나 새 물리를
+실행한 것은 아니다. 일반 무동결 주행/실물 성능으로 확장하지 않는다.
+[원본 번들·접촉 옵션 해시](results/v3_confidence_v1/recording-contact-profiles.json)를 보존했다.
+
+확인 재생의 수치 모듈은 `d312e4c1`로 고정했고, 추가한 표/그림/평가 진단만 결과를 읽는다.
+[고정 시점](results/v3_confidence_v1/development-fixed.json)과
+[import된 실행 소스 해시](results/v3_confidence_v1/runtime-source-hashes.json)를 보존했다.
+기존 M1 이동 평균과 v7 구조적 잡음 모델도 고정했다. **현행 v7에서 새로 식별한 이동 평균이 아니다.**
+따라서 현행 결과 악화는 검출/투영뿐 아니라 명령 DR 평균의 전달 문제도 포함할 수 있다.
+
+### 23.8 현행 v7·카메라 v3 재생 결과
+
+아래 precision과 recall은 %, 벽 RMSE는 m이다. precision 허용 거리 0.15 m, 전체 벽 표본 **349개**,
+점유 기준 log-odds>0를 유지했다. `old camera`는 v3 RGB에 기존 FK+sag 투영을 적용한 비교 조건이며
+**구 녹화라는 뜻이 아니다**. 모든 RBPF 행은 100입자+positive-depth+자기 pose graph다.
+개발 2건과 확인 재생 4건, 구 녹화와 현행 녹화는 합산하지 않는다.
+
+| 녹화 | DR/off | RBPF old camera | +v3 | +v3+confidence | GT+v3+guard |
+|---|---|---|---|---|---|
+|s1042 개발|27.2 / 20.9 / 1.112|9.4 / 6.6 / 0.597|23.5 / 17.5 / 0.799|19.5 / 23.5 / 1.100|16.6 / 4.9 / 0.593|
+|s1043 개발|6.2 / 4.6 / 0.930|0.0 / 0.0 / 0.836|8.8 / 2.9 / 1.059|8.5 / 3.2 / 0.769|0.0 / 0.0 / 0.770|
+|s1044 확인|13.3 / 6.6 / 0.888|17.4 / 7.4 / 0.783|13.1 / 5.2 / 0.884|8.9 / 6.0 / 1.028|0.5 / 0.6 / 0.725|
+|s1045 확인|13.6 / 11.2 / 0.785|32.5 / 22.1 / 0.519|12.2 / 6.6 / 0.929|8.4 / 8.3 / 1.809|12.0 / 10.9 / 0.654|
+|s1046 확인|2.1 / 2.3 / 0.896|0.5 / 0.0 / 0.796|11.3 / 4.6 / 0.948|3.8 / 1.4 / 1.102|10.4 / 8.0 / 0.708|
+|s1047 확인|2.0 / 1.7 / 0.896|5.5 / 4.3 / 0.763|10.8 / 3.4 / 0.969|13.4 / 10.0 / 0.575|6.9 / 4.0 / 0.740|
+
+관측 탈락 효과를 분리한 v3의 **동일 유효 관측** DR/GT 기준선:
+
+| 녹화 | v3 DR (P/R/RMSE) | v3 GT+confidence (P/R/RMSE) |
+|---|---|---|
+|s1042|14.4 / 12.0 / 1.253|17.8 / 7.2 / 0.593|
+|s1043|4.2 / 2.3 / 0.715|0.0 / 0.0 / 0.769|
+|s1044|6.8 / 1.4 / 0.634|0.6 / 0.6 / 0.732|
+|s1045|15.5 / 13.5 / 1.440|15.3 / 13.8 / 0.646|
+|s1046|6.8 / 4.3 / 0.616|10.1 / 8.0 / 0.712|
+|s1047|0.0 / 0.0 / 0.689|6.8 / 4.0 / 0.741|
+
+전체 경로의 종료/중앙/P95/RMSE 위치 오차(m). 종료 위치와 지도 품질은 합산하지 않는다.
+v3+confidence는 지도 가중치가 정합에 간접 영향을 준 새 RBPF 실행이다. 구 자료의 고정 자세 삽입 비교와 다르다.
+
+| 녹화 | 조건 | 종료 | 경로 중앙 | P95 | 경로 RMSE |
+|---|---|---|---|---|---|
+|s1042|DR/off|2.891|1.843|2.891|1.997|
+|s1042|RBPF+guard+graph, old camera|1.214|1.094|3.086|1.367|
+|s1042|+v3|2.303|1.481|2.303|1.616|
+|s1042|+v3+confidence|3.317|2.468|3.317|2.414|
+|s1043|DR/off|2.525|1.618|2.525|1.828|
+|s1043|RBPF+guard+graph, old camera|0.820|0.674|0.820|0.658|
+|s1043|+v3|1.746|1.371|1.746|1.370|
+|s1043|+v3+confidence|2.579|1.938|2.579|1.938|
+|s1044|DR/off|2.688|1.105|2.689|1.713|
+|s1044|RBPF+guard+graph, old camera|0.509|0.509|1.154|0.611|
+|s1044|+v3|2.032|1.202|2.094|1.434|
+|s1044|+v3+confidence|3.093|1.349|3.093|1.993|
+|s1045|DR/off|3.247|3.776|4.224|3.670|
+|s1045|RBPF+guard+graph, old camera|0.622|1.412|2.074|1.462|
+|s1045|+v3|1.259|1.208|1.328|1.205|
+|s1045|+v3+confidence|2.139|3.019|3.231|2.934|
+|s1046|DR/off|3.310|2.133|3.520|2.371|
+|s1046|RBPF+guard+graph, old camera|1.608|1.029|1.893|1.123|
+|s1046|+v3|2.613|1.993|4.412|2.609|
+|s1046|+v3+confidence|1.789|2.474|3.321|2.590|
+|s1047|DR/off|0.724|1.670|2.654|1.780|
+|s1047|RBPF+guard+graph, old camera|3.192|0.971|2.338|1.312|
+|s1047|+v3|2.060|1.802|2.438|1.814|
+|s1047|+v3+confidence|1.070|1.547|2.369|1.632|
+
+§17·§19 원래 7개 기준을 모두 만족한 녹화 수(항목별 값은 각 JSON에 보존):
+
+| 조건 | 개발 통과 | 확인 재생 통과 |
+|---|---|---|
+|RBPF+guard+graph, old camera|0/2|1/4|
+|+v3|0/2|0/4|
+|+v3+confidence|0/2|0/4|
+
+실제 camera-pose GT가 없어서 **가시 recall 기준은 전 건 NA/검증 미달**이다. 따라서 이를 포함한
+전체 성공으로 판정할 수 없다. 비양수 깊이/광선 끝점은 전 조건 0이며 off 골든은 시험으로 확인했다.
+하중·미등록·정착 관측은 삽입에서 제외했지만, 전체 벽 349개와 전체 경로 시간의 평가 분모는 유지했다.
+
+판정: **v3 보정과 v3+confidence는 개발 0/2, 확인 0/4**로 기준 미달이다. 기존 카메라 조건도
+확인 1/4에 그쳤다. 신뢰도 적용 후 루프 수락은 6건 모두 0이었고, v3 무가중 대비 종료 오차는
+s1042–s1045에서 악화, s1046–s1047에서 감소했다. 확인 precision은 s1047만 증가했다.
+GT+v3에서도 precision 0–16.6%, 전체 recall 0–10.9%로 남아 자세 보정만으로 해결할 수 없다.
+
+남은 우선 검증 대상은 **접점 픽셀과 자유 주행 중 명령 자세의 카메라→바닥 변환 분리**다.
+수평 지그 재투영 RMS를 실제 바닥 거리 정확도로 대체하지 않는다. 실제 camera/base/arm GT는
+별도 평가 로그에만 저장하여 투영·검출을 구분해야 하며 estimator에는 넣지 않는다. 이번에는 보정표·
+검출기·graph gate를 추가 조정하지 않았다. 구/현행 지도와 calibration curve의 높은 신뢰도 거짓 벽은
+현재 가중치가 잘 보정된 정답 확률이 아님을 보여 준다.
+
+### 23.9 삽입·정합·관측 제한
+
+| 녹화 | 전체 RGB | 검사 tick | 무하중 보정 | 하중 미지원 | 정착 보류 | 유효 벽 프레임 |
+|---|---|---|---|---|---|---|
+|s1042|2722|1361|863|152|346|736|
+|s1043|2173|1087|586|146|355|416|
+|s1044|2129|1065|736|76|253|548|
+|s1045|13794|6897|558|5947|392|414|
+|s1046|6500|3250|351|2501|398|197|
+|s1047|5101|2551|375|1772|404|207|
+
+루프 표의 각 칸은 **수락 / 실제 정합 거부**다. 회원 scan·시간 인접 제외는 실제 거부에 합산하지 않고
+각 prediction JSON에 이유별 횟수를 보존했다. 수락은 참 루프를 GT로 입증한 수가 아니다.
+
+| 녹화 | old camera | +v3 | +v3+confidence |
+|---|---|---|---|
+|s1042|581 / 51327|31 / 45973|0 / 45942|
+|s1043|412 / 19051|14 / 13190|0 / 13204|
+|s1044|772 / 32900|26 / 24297|0 / 24323|
+|s1045|346 / 15737|42 / 12851|0 / 12854|
+|s1046|37 / 4048|2 / 2082|0 / 2084|
+|s1047|80 / 4491|0 / 2376|0 / 2365|
+
+RBPF frontend 수락·보류·거부는 loop closure와 다른 사건이다. `frontend_counts`와 각 scan/입자의
+`frontend-decisions.jsonl`에 이유·자세·삽입 여부를 보존했다. 전체 graph 후보의 진단도 로컬에 보존했다.
+confidence를 적용하면 옅은 지도 셀이 기존 graph의 확률 gate에 걸릴 수 있다. 기존 gate를 완화해
+성공률을 맞추지 않았고, 가중 삽입이 위치 개선을 자동으로 보장한다고 해석하지 않는다.
+
+![구 녹화: GT 벽·추정 지도·경로](results/v3_confidence_v1/old-topdown.png)
+
+![현행 녹화: GT 벽·신뢰도 가중 지도·경로](results/v3_confidence_v1/current-topdown.png)
+
+![신뢰도별 precision: 구/현행 및 GT/추정 자세 분리](results/v3_confidence_v1/confidence-calibration.png)
+
+곡선은 5개 사전 고정 신뢰도 구간의 0.05 m 선분 표본 precision이다. 반복 프레임을 독립 벽으로
+세지 않으며 각 bin의 검출/표본 수는 [calibration-curves.json](results/v3_confidence_v1/calibration-curves.json)에 있다.
+빈 bin은 NA다. evidence weight가 정답 확률로 보정됐다는 증거가 아니며 곡선으로 계수를 다시 맞추지 않았다.
+
+### 23.10 검증·보존·재현
+
+- 관련 3파일 **49 passed**: 기본/명시적 off 및 frozen RBPF 원장·격자·판정·RNG bytes,
+  무하중 표 합성·미등록/하중 거부, 가중치 단조성, free carving, 입자 지도 독립성,
+  가중 원장→graph 격자 일치. `test_wall_confidence.py`를 CI에 등록하고 8개 shard 중 1회 포함을 확인했다.
+- 같은 입력/수치 소스로 개발 2 → 고정 `d312e4c1` → 확인 4를 완료했다. 보고서 생성·source receipt·CI 등록은
+  추정 수치에 영향을 주지 않는다. 큐만 중지/정리하고 독립 비교 조건을 병렬화했으며 과학 계산 자식은 끝까지 실행했다.
+- [검증 기록](results/v3_confidence_v1/verification.json)은 입력·예측 해시, 무하중 exact lookup,
+  전 끝점 양의 깊이/4 m gate, 원장→최종 grid 정확 일치 및 가중치 factor product를 확인한다.
+  [manifest](results/v3_confidence_v1/manifest.json)는 로컬 원장·입자 판정·격자·경로·GT 채점·그림의 위치/해시를 보존한다.
+- 전체 raw는 이 worktree의 `outputs/self-map-v3-confidence-v1/`에 보존한다. Git 요약·그림과 구분하며
+  raw 원격 백업이라고 주장하지 않는다. 사용자가 남긴 미추적 Python 4파일의 해시도 처음과 동일하다.
+- [환경](results/v3_confidence_v1/environment.json): 기존 Python/NumPy/SciPy/OpenCV와 기존 그림 의존성을
+  사용했다. 새 venv·패키지 설치 없음. 이번 작업에서 물리·MuJoCo 기하학·렌더·모델 호출은 모두 0회다.
+  TensorBoard는 사용자 요청대로 생략했다. PR #405는 DRAFT, 기본 off 유지, 병합하지 않는다.
+
+재현은 기존 입력을 등록된 절대 경로에 두고 아래 단계를 따른다(예: s1044). 기존 출력이 있으면 중단하여
+증거를 덮어쓰지 않는다. 결과 자료를 옮기거나 지우는 대신 새 작업용 출력 위치를 별도로 정해야 한다.
+
+```sh
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py extract --case s1044 --camera off
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py extract --case s1044 --camera v3_unloaded_extrinsic_v1
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py predict --case s1044 --camera off
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py predict --case s1044 --camera v3_unloaded_extrinsic_v1
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py predict --case s1044 --camera v3_unloaded_extrinsic_v1 --confidence
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_report.py score s1044
+```
+
+개발 보조 명령의 시스템 Python/SciPy 누락과 넓은 glob의 `-managed` 폴더 혼입은 각각 1회 발생 후
+등록 venv/정확한 입력 경로로 확인했다. 추정기·계수·원본을 수정하지 않았고 같은 원인 두 번 실패는 없었다.
+기존 결과를 덮거나 확인 자료에 맞춘 튜닝은 하지 않았다.
