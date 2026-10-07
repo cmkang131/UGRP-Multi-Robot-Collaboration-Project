@@ -56,3 +56,14 @@ def test_fit_uses_only_qualified_training_groups():
     data.append(dict(group='SEARCH',seed=1,exclude=['wall_contact'],predicted=[.02],actual=[0.]))
     assert m.fit(data,[1,2])['SEARCH']['gain']==pytest.approx(.9)
     assert m.fit(data,[1,3])=={}
+
+
+def test_scoring_keeps_missing_covariance_in_fixed_denominator(monkeypatch):
+    spec=importlib.util.spec_from_file_location('score_bias',Path(__file__).resolve().parents[1]/'experiments/2026-10-06-s2-realism/score_bias_tempering.py')
+    m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    monkeypatch.setattr(m,'decisions',lambda r:[{'t':1.},{'t':2.}])
+    p=dict(t=1.,t_est=1.,x=.3,y=0.,std_xy_m=.01,std_yaw_rad=.01,last_fix_t=1.,observation_quality={'diagnostics':{'pose_estimate':{'cluster_count':1,'selected_cluster_cov':np.diag([.00005,.00005,.0001]).tolist()}}})
+    q=copy.deepcopy(p);q['t']=q['t_est']=2.;q['observation_quality']={'diagnostics':{}}
+    score,_=m.metrics([p,q],{},lambda t:np.zeros(2),0,3,{1.,2.})
+    assert score['primary_n']==2 and score['nees_available']==1
+    assert score['all_misses']==2 and score['unavailable_times']==[2.]
