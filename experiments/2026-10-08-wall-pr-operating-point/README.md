@@ -81,3 +81,34 @@ confidence는 지지수/방위 다양성/공분산 같은 증거이며 calibrate
 raw: `/Users/changmin/projects/ugrp/outputs/wall-pr-operating-point-v1`.
 원본·실패 보존, TensorBoard 생략 유지, Google Drive0. 관련1–3개 시험파일 초록 후
 커밋·push, Co-Authored-By: Codex. PR405 DRAFT/병합0, force/reset/삭제0.
+
+## 개발 결과와 운영점 동결 — 32002 실행 전
+
+사전 등록 `e48ece04`, 실행 코드 `0f0e5830`. 실제 원장47프레임/RGB901프레임의
+자기 관측으로만 예측을 봉인한 뒤 31001 GT 평가로 아래 점을 골랐다.
+개발 GT는 문턱 선택에만 사용했고, 32002 예측·평가는 아직 실행하지 않았다.
+[freeze.json](freeze.json)의 코드/개발 결과 해시·두 운영점을 먼저 커밋하며,
+보류 실행기는 해당 파일이 HEAD와 byte 동일하지 않으면 실행을 거부한다.
+
+|표현|적격점/후보|고정 N / A|전체 P|전체 R=덮임|벽 RMSE|표본수|
+|---|---:|---:|---:|---:|---:|---|
+|칸|9/40|1 / 30°|40/43=93.02%|51/329=15.50%|.0891m|43칸|
+|선분|0/40|2 / 0° (미달 진단점)|65/144=45.14%|62/329=18.84%|.2038m|5선분·13.75m·144칸|
+
+N=1이어도 A≥30° 조건상 서로 다른 방위의 시점이 둘 이상 필요하다.
+동률 N=2보다 N=1이 선택된 것은 사전 동률 규칙 때문이다.
+선분은 P≥90%인 후보가 **없다**. 성공 운영점으로 표현하지 않고 사전 등록한
+fallback 진단점만 보류용에 적용한다. 선분의 연속 .05m 표본에서는
+P128/282=45.39%, R66/329=20.06%, RMSE.2014m다.
+전체 80점과 영역 분모는 [CSV](results/development-curve.csv),
+[전체 결과](results/development.json)에 보존한다.
+
+![31001 개발 곡선: 각 색은 각도 조건, 별은 고정점](figures/development-pr.png)
+
+**삽입 관문은 이번에 바꾸지 않았다.** 31001 RGB901 → 초기 대기10 → 검출891(빈 검출0)
+→ 이동 관문 보류844 → 삽입47이다. 삽입 판정은 bootstrap1/improved22/
+low_overlap8/high_residual14/search_boundary2. 거부24도 삽입됐고 거부 시 가중치·재표본0.
+egomap26 `gmapping_range_v1` 삽입 수정과 `insert_selective_v1`은 모두 on이며,
+이동 관문1m/.5rad·temporal off 그대로다. 따라서 47프레임은 이번 출력 필터가
+검출/삽입 프레임을 줄인 결과가 아니다. 지도 양성칸을 unknown으로 내보내는 필터이며
+free 증거·자세·제어 궤적을 바꾸지 않는다.
