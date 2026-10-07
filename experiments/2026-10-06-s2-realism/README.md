@@ -4108,3 +4108,42 @@ native media 등록·HTTP raw range206 검증. 이전raw·bundle·snapshot 불�
 로컬은 변경 시험3파일만 검증하며, 원격 전체 CI 완료/물리 성공과 구분한다. 병합0.
 CI 수정 검증: `test_s2_slip_matched.py`, `test_s2_slip_recovery_full.py`, `test_ci_sharding.py`
 **74 PASS/59.14초**. 실행 관련13시험과 별도이며, 원격 전체 CI 재완료는 아직 확인하지 않았다.
+
+## s2v37 — AMCL 최대 군집 pose 추출, 재생 전 사전 등록 (2026-10-08)
+
+사용자 판단: s2v36 시작 우도 최대점은 정답에서5.2cm인데 전체 가중평균은3m 이상이다.
+`pose_estimate=amcl_best_cluster_v1`(기본off)으로 Nav2의 최대 **군집 질량** 평균을
+보고/경로 계획의 PoseReport에 연결한다. 최고우도 개별 입자를 고르거나 GT 근처 군집을 고르지 않는다.
+[사전 기준](best-cluster-criteria.json), [검증한 원본/해시](best-cluster-sources.json).
+
+- Nav2 고정소스 `235fc5ce55bdf94d9be360fdbca39d89dc0e4f74`:
+  [pf_kdtree.c 77–79,118–120,349–439행](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf_kdtree.c#L349):
+  0.5m/10° floor bin, 27이웃 연결 군집. yaw seam wrap·작은 가중치 bin 제거 없음.
+  NumPy dense-grid 연결 성분은 같은 partition; 극단적으로 큰 격자는 기존 dictionary 구현.
+  정확히 같은 군집 질량의 tie도 kd-tree leaf split 할당/역순 방문 순서를 재현한다.
+- [pf.c 459–590,625–641행](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf.c#L625):
+  군집 질량·XY 평균·원형 yaw, `pf_get_cluster_stats` 반환.
+  [amcl_node.cpp 598–610,781–862행](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/amcl_node.cpp#L781):
+  최대 질량 가설 선택→`publishAmclPose`; **평균은 선택 군집, 공분산은 전체 필터**.
+  `handleMapMessage`(1300–1322행)는 지도/자유공간 갱신이며 pose 선택 함수가 아니다.
+- 출력 어댑터는 `FailClosedLoc.estimate`→`VisionPoseSource.report`→지연 PoseReport→
+  `Runtime.last_report`/`OwnPose`/경로 계획에 적용. PF prediction·measurement·resampling·RNG는 불변.
+  Active Markov의 직접 PF 호출은 전체 σ 종료 검사/입자 기반 행동 순위뿐이라 변경하지 않는다.
+  군집≥2/최대질량<0.5는 `POSE_CLUSTER_UNCERTAIN` 기록만; 이 과반수 표시는 S2 진단 규칙이며
+  Nav2 기본 파라미터라고 주장하지 않는다. 전체 공분산의 기존 `POSE_UNCERTAIN`도 유지한다.
+
+결과를 보기 전 고정: s1052 강성 보정 정지 RGB214장(기존 KLD on, Augmented on)과
+v131 seed1051 전체 녹화를 각각off/on 1회 재생한다. own RGB·자기 명령만 입력하며 GT는 파일 저장 후 채점한다.
+입자 궤적 바이트/AMCL 갱신 동일, off가 기존 기록을1e-9 이내 재현해야 하며,
+**s1052 시작 최종 오차≤0.25m**일 때만 seed1052 시작 구간 물리1회를 허용한다.
+그 물리도≤0.25m일 때만 v131+새옵션 seed1051 full DEV1회. 모두 agent_lock/ugrp_session, freeze ON.
+운반71.85≤t<249.25의 RMSE/내려놓기 직전 오차는 보고하되 새로운 관문을 사후 추가하지 않는다.
+실패하면 물리0회, 문턱/군집 격자/우도 변경 없음. default off 바이트 동일성과 제어 pose 연결 포함
+관련2시험 파일 통과 후 이 사전 등록/구현을 먼저 커밋한다.
+
+§6.4 우도 구별력 비교(기록만): 우리 `sigma_hit=0.2m`, `z_hit=0.5`, `z_rand=0.5`는
+위 Nav2 `amcl_node.cpp`988,993,995행 기본값과 같다. Nav2 likelihood_field_model.cpp
+70–140행처럼 `1+sum(pz³)`를 쓴다. RGB 접점의 1.2px/16px 잔차는 직접 σ 단위가 아니고
+바닥 투영→최근접 점유 셀 거리(m)로 변환된다. 우리 고정 range_max100m는 z_rand/100=0.005,
+Nav2는 해당 LaserScan의 range_max로 나눈다. 벽 선을 따라 평행한 오답도 최근접 거리가 작을 수 있다.
+기존 점수7.427/6.284=1.182배 구별력은 그대로 기록하며 sigma/z_rand/문 모델은 이번에 수정하지 않는다.
