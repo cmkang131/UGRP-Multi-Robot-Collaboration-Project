@@ -1,0 +1,439 @@
+{
+  "seed": "32002",
+  "source_sha": "16f7e7901d5a5d3ce73ce12528731ed93734ba4c",
+  "option": "bottom_up_connected_v1",
+  "conditions": {
+    "off": {
+      "points": {
+        "points": 56162,
+        "correct": 51106,
+        "precision": 0.9099747160001425,
+        "wall_rmse_m": 0.22631687249797267,
+        "visible_contacts": 74309,
+        "recalled_contacts": 44359,
+        "recall": 0.5969532627272605
+      },
+      "inserted_points": {
+        "points": 4313,
+        "correct": 3876,
+        "precision": 0.8986784140969163,
+        "wall_rmse_m": 0.24790662588529935
+      },
+      "nonempty_frames": 878,
+      "inserted_nonempty_frames": 64,
+      "selected": {
+        "grid": {
+          "full": {
+            "occupied_cells": 23,
+            "precision_015": 0.6521739130434783,
+            "precision_cell": 0.5652173913043478,
+            "wall_coverage": 0.1094224924012158,
+            "wall_error_rmse_m": 0.1131457972971657
+          },
+          "correct_cells": 15,
+          "sample_count": 23,
+          "covered_samples": 36,
+          "region": {
+            "precision": 0.631578947368421,
+            "correct": 12,
+            "n": 19,
+            "recall": 0.17123287671232876,
+            "recalled": 25,
+            "visible": 146,
+            "total": 329
+          },
+          "size": {
+            "occupied_cells": 23
+          }
+        },
+        "segments": {
+          "full": {
+            "occupied_cells": 131,
+            "precision_015": 0.7022900763358778,
+            "precision_cell": 0.6717557251908397,
+            "wall_coverage": 0.3009118541033435,
+            "wall_error_rmse_m": 0.09893762829013074
+          },
+          "correct_cells": 92,
+          "sample_count": 131,
+          "covered_samples": 99,
+          "region": {
+            "precision": 0.6285714285714286,
+            "correct": 66,
+            "n": 105,
+            "recall": 0.4520547945205479,
+            "recalled": 66,
+            "visible": 146,
+            "total": 329
+          },
+          "continuous": {
+            "full": {
+              "occupied_cells": 257,
+              "precision_015": 0.9961089494163424,
+              "precision_cell": 0.6809338521400778,
+              "wall_coverage": 0.40425531914893614,
+              "wall_error_rmse_m": 0.08170079815967075
+            },
+            "correct_cells": 256,
+            "sample_count": 257,
+            "covered_samples": 133,
+            "region": {
+              "precision": 0.9951219512195122,
+              "correct": 204,
+              "n": 205,
+              "recall": 0.6095890410958904,
+              "recalled": 89,
+              "visible": 146,
+              "total": 329
+            }
+          },
+          "size": {
+            "segments": 4,
+            "length_m": 12.522645372152155,
+            "raster_cells": 131,
+            "continuous_samples": 257
+          }
+        }
+      },
+      "grid": {
+        "full": {
+          "occupied_cells": 379,
+          "precision_015": 0.5567282321899736,
+          "precision_cell": 0.28232189973614774,
+          "wall_coverage": 0.6474164133738601,
+          "wall_error_rmse_m": 0.5216823805128001
+        },
+        "correct_cells": 211,
+        "sample_count": 379,
+        "covered_samples": 213,
+        "region": {
+          "precision": 0.6358024691358025,
+          "correct": 103,
+          "n": 162,
+          "recall": 0.7602739726027398,
+          "recalled": 111,
+          "visible": 146,
+          "total": 329
+        },
+        "size": {
+          "occupied_cells": 379
+        }
+      },
+      "segments": {
+        "full": {
+          "occupied_cells": 139,
+          "precision_015": 0.7194244604316546,
+          "precision_cell": 0.6906474820143885,
+          "wall_coverage": 0.3617021276595745,
+          "wall_error_rmse_m": 0.0962350520390641
+        },
+        "correct_cells": 100,
+        "sample_count": 139,
+        "covered_samples": 119,
+        "region": {
+          "precision": 0.6548672566371682,
+          "correct": 74,
+          "n": 113,
+          "recall": 0.5205479452054794,
+          "recalled": 76,
+          "visible": 146,
+          "total": 329
+        },
+        "continuous": {
+          "full": {
+            "occupied_cells": 272,
+            "precision_015": 0.9963235294117647,
+            "precision_cell": 0.6985294117647058,
+            "wall_coverage": 0.46504559270516715,
+            "wall_error_rmse_m": 0.0794648682468252
+          },
+          "correct_cells": 271,
+          "sample_count": 272,
+          "covered_samples": 153,
+          "region": {
+            "precision": 0.9954545454545455,
+            "correct": 219,
+            "n": 220,
+            "recall": 0.678082191780822,
+            "recalled": 99,
+            "visible": 146,
+            "total": 329
+          }
+        },
+        "size": {
+          "segments": 5,
+          "length_m": 13.176388846198563,
+          "raster_cells": 139,
+          "continuous_samples": 272
+        }
+      },
+      "map_gates": {
+        "grid": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": true
+        }
+      },
+      "selected_gates": {
+        "grid": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": true
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": true
+        }
+      }
+    },
+    "on": {
+      "points": {
+        "points": 893,
+        "correct": 885,
+        "precision": 0.9910414333706606,
+        "wall_rmse_m": 0.18510284791993084,
+        "visible_contacts": 74309,
+        "recalled_contacts": 808,
+        "recall": 0.01087351464829294
+      },
+      "inserted_points": {
+        "points": 90,
+        "correct": 90,
+        "precision": 1.0,
+        "wall_rmse_m": 0.0031535042740684274
+      },
+      "nonempty_frames": 108,
+      "inserted_nonempty_frames": 9,
+      "selected": {
+        "grid": {
+          "full": {
+            "occupied_cells": 0,
+            "precision_015": null,
+            "precision_cell": null,
+            "wall_coverage": 0.0,
+            "wall_error_rmse_m": null
+          },
+          "correct_cells": 0,
+          "sample_count": 0,
+          "covered_samples": 0,
+          "region": {
+            "precision": null,
+            "correct": 0,
+            "n": 0,
+            "recall": 0.0,
+            "recalled": 0,
+            "visible": 146,
+            "total": 329
+          },
+          "size": {
+            "occupied_cells": 0
+          }
+        },
+        "segments": {
+          "full": {
+            "occupied_cells": 0,
+            "precision_015": null,
+            "precision_cell": null,
+            "wall_coverage": 0.0,
+            "wall_error_rmse_m": null
+          },
+          "correct_cells": 0,
+          "sample_count": 0,
+          "covered_samples": 0,
+          "region": {
+            "precision": null,
+            "correct": 0,
+            "n": 0,
+            "recall": 0.0,
+            "recalled": 0,
+            "visible": 146,
+            "total": 329
+          },
+          "continuous": {
+            "full": {
+              "occupied_cells": 0,
+              "precision_015": null,
+              "precision_cell": null,
+              "wall_coverage": 0.0,
+              "wall_error_rmse_m": null
+            },
+            "correct_cells": 0,
+            "sample_count": 0,
+            "covered_samples": 0,
+            "region": {
+              "precision": null,
+              "correct": 0,
+              "n": 0,
+              "recall": 0.0,
+              "recalled": 0,
+              "visible": 146,
+              "total": 329
+            }
+          },
+          "size": {
+            "segments": 0,
+            "length_m": 0.0,
+            "raster_cells": 0,
+            "continuous_samples": 0
+          }
+        }
+      },
+      "grid": {
+        "full": {
+          "occupied_cells": 12,
+          "precision_015": 1.0,
+          "precision_cell": 1.0,
+          "wall_coverage": 0.04559270516717325,
+          "wall_error_rmse_m": 0.025001159658242633
+        },
+        "correct_cells": 12,
+        "sample_count": 12,
+        "covered_samples": 15,
+        "region": {
+          "precision": 1.0,
+          "correct": 11,
+          "n": 11,
+          "recall": 0.06164383561643835,
+          "recalled": 9,
+          "visible": 146,
+          "total": 329
+        },
+        "size": {
+          "occupied_cells": 12
+        }
+      },
+      "segments": {
+        "full": {
+          "occupied_cells": 0,
+          "precision_015": null,
+          "precision_cell": null,
+          "wall_coverage": 0.0,
+          "wall_error_rmse_m": null
+        },
+        "correct_cells": 0,
+        "sample_count": 0,
+        "covered_samples": 0,
+        "region": {
+          "precision": null,
+          "correct": 0,
+          "n": 0,
+          "recall": 0.0,
+          "recalled": 0,
+          "visible": 146,
+          "total": 329
+        },
+        "continuous": {
+          "full": {
+            "occupied_cells": 0,
+            "precision_015": null,
+            "precision_cell": null,
+            "wall_coverage": 0.0,
+            "wall_error_rmse_m": null
+          },
+          "correct_cells": 0,
+          "sample_count": 0,
+          "covered_samples": 0,
+          "region": {
+            "precision": null,
+            "correct": 0,
+            "n": 0,
+            "recall": 0.0,
+            "recalled": 0,
+            "visible": 146,
+            "total": 329
+          }
+        },
+        "size": {
+          "segments": 0,
+          "length_m": 0.0,
+          "raster_cells": 0,
+          "continuous_samples": 0
+        }
+      },
+      "map_gates": {
+        "grid": {
+          "precision": true,
+          "recall": false,
+          "wall_rmse": true
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        }
+      },
+      "selected_gates": {
+        "grid": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        }
+      }
+    }
+  },
+  "detector_gate": true,
+  "historical_grid": {
+    "full": {
+      "occupied_cells": 381,
+      "precision_015": 0.5564304461942258,
+      "precision_cell": 0.28346456692913385,
+      "wall_coverage": 0.6474164133738601,
+      "wall_error_rmse_m": 0.5204405801986803
+    },
+    "correct_cells": 212,
+    "sample_count": 381,
+    "covered_samples": 213,
+    "region": {
+      "precision": 0.6358024691358025,
+      "correct": 103,
+      "n": 162,
+      "recall": 0.7602739726027398,
+      "recalled": 111,
+      "visible": 146,
+      "total": 329
+    },
+    "size": {
+      "occupied_cells": 381
+    }
+  },
+  "paired_covariance": "saved post-observation covariance for BOTH off/on, not original pre-scan covariance",
+  "frames": 891,
+  "original_insertions": 64,
+  "source_seal_sha256": "5e3f85ac1a590fbf7604a0d6bcc95f61e0a7fe4153f613f1db451b225a17ab43",
+  "code_hashes": {
+    "harness/active_wall_vision.py": "fa2d1b36e78441023d258ba46878f6bb59bc099408250adf380beea1f35071a6",
+    "harness/self_wall_segment_points.py": "8c8625fc0a9e241391371dbbca630daaf5628f01e6e9a3311c42a0dcd0b3429a",
+    "harness/wall_bottom_connected.py": "713e7a597e2bf3ad79e5cc25d33d12f46011a8414125a23b323d00bb4854b671",
+    "harness/wall_contact_detector.py": "ee99cfd1a16372d612d5175c39c2eb74c3c97fd34fe6822f2696858c3756b324",
+    "harness/wall_floor_boundary.py": "eaed7cacc997b799e830e6f4c3c96265d543c1e79811f637f73cf0ba56ebd5e8",
+    "harness/active_camera.py": "bbfdcf48d6c21e1fee2da8f400ca010df8f7b821fea8c51e949b63ffae4da3f1",
+    "harness/self_wall_segments.py": "d365e2afb03d3820d9ce969c82d18701683e781c47381b83dc7ce7e1959ee4c5",
+    "harness/wall_confidence.py": "f4a7f48fed7cf2c1a33881648305d7aa4ac412225d4b2b410d2b874df279cd1c",
+    "harness/self_pose_graph.py": "ef884c274d5b24858bd3b96423abc1b9d897d6ec6c32714a576635a830bf1ef5",
+    "experiments/2026-10-05-ego-wall-map-probe/code/height_free_wall.py": "021cfee672fa38bb1c4c8516890d1c686ad853757d096d668cd7fe847ce8097d",
+    "harness/self_wall_pr.py": "6b8488b259ac3a5367e4a45a0a2084894afc0e03f2413f0f8c95ecf1d1c09caf",
+    "harness/self_wall_validation.py": "6c4dd47688bd046729a244b1f123bd1803ae46fe60d13960cde5f4d5fd5d35c6",
+    "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+    "experiments/2026-09-26-markerless-probe/markerless_probe.py": "7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d",
+    "experiments/2026-10-08-wall-contact-types/code/diagnose.py": "c5d23d666d5825e6585245a54d969ec60240f69dd7abf2159562130c76bf4582",
+    "experiments/2026-10-08-wall-pr-operating-point/code/run.py": "5ffe27fb64fa569c0bcf65d6af6d30d1cf8596f8018be3abb3f97184beb91225",
+    "experiments/2026-10-08-wall-pr-operating-point/code/selection.py": "a7a8bd60e42737d7c00da3f07cbf12ca4021ed57c290c007cd4959dd20be11cd",
+    "experiments/2026-10-07-active-wall-map/code/score.py": "14ef5174aa33cf369d053f323a13bd674008270de6e5fca0faa1d02970588541",
+    "experiments/2026-10-05-ego-wall-map-probe/code/odom_grid_replay.py": "4f96b68b7bf838dc8824f6e037e253eaff32dd5bef576989c2f3e5a38674fc9a",
+    "experiments/2026-10-08-bottom-connected-contact/code/recall.py": "c8b7926bd40170e62f951fc636fde36ed28dee8bb112b5ca3b82205e6d65bea2",
+    "experiments/2026-10-08-bottom-connected-contact/code/common.py": "0c94a80163ca66d4c0b94e80e06ba9328cb0c5a5186b70e9d66bfc1442a88660",
+    "experiments/2026-10-08-bottom-connected-contact/code/compare.py": "77aa2ac9153c5c4419fb99c06c08ec7ca600f41597b3a70a45b456d1b2091584"
+  },
+  "physics": 0
+}
