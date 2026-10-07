@@ -60,7 +60,8 @@ def _observe(self, rec, segments, *, camera_xy, robot_id):
     # of the old one-second attempt scheduler. No proposal/noise changes.
     if ready and not unsettled and near:
         self.last_attempt=-math.inf
-    result=RaoBlackwellizedGrid._observe(self,rec,segments,camera_xy=camera_xy,robot_id=robot_id)
+    observer=getattr(self, '_admitted_scan_observer', RaoBlackwellizedGrid._observe)
+    result=observer(self,rec,segments,camera_xy=camera_xy,robot_id=robot_id)
     if not unsettled and near:
         self.decisions[-1]['motion_gate']=dict(state)
         state['processed']+=1
