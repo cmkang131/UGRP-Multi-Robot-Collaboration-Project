@@ -3987,3 +3987,27 @@ raw는 로컬 보존이며 GitHub raw백업이라고 주장하지 않는다.
 PR406 본문에 v130/7.23.0 예약·14조건·full 실패·사후 DEV 옵션 수정·출처를 갱신, OPEN/DRAFT 확인.
 잠금status=null, 자신이 시작한 시작/ablation/full 세션 모두 종료.
 최종 물리 source f10a5f9d와 사후 수정 bd046020을 구분하며, 후자의 새로운 파지 경로 물리 검증은 남아 있다.
+
+## s2v36 후속 사전 등록 — v131 재실행과 공통 관측 우도 진단
+
+사용자 2026-10-08 지시: 기준1267949b의 seed1051 full DEV를 **새로1회** 허용.
+[v131 등록](registration-v131.json), workflow7.24.0: 기존v130 옵션/보정/900초 한도 동일,
+`pregrasp_policy=log_only_v1`만 명시적으로 추가. 기본off 유지. slip_detect·회복 후 방향 차단 해제ON.
+look_ahead·stiff_target·freezeON, 확인 불확실은 기록만. 이전v130 실패는 그대로 보존·합산하지 않는다.
+별도 write-only20Hz 평가 로그에 벽 접촉을 저장: 접촉 표본수·접촉 geom pair수와
+연속 표본을 한 번으로 센 접촉 episode수를 구별한다. 제어기에는 전달하지 않는다.
+agent_lock status=null일 때만 내부 acquire 후 ugrp_session 실행, 종료 release. ENOSPC는 HOST_ERROR.
+
+B는 물리0/모델0의 평가 전용 진단이다. 기존 stiff s1052의 여섯 관측(2.25,3.75,5.25,6.75,8.25,11.6초)을 고정.
+정적 지도 bounds의10cm XY격자 ×5도 yaw격자 및 정확한 GT yaw 절편을 평가한다.
+벽으로부터 기존 로봇 clearance 이상인 자유공간만 비교하며 정확한 GT 자세는 별도 질의한다.
+동일 Nav2 `1+sum(pz^3)`/기존σ0.2m 그대로, 관측별 값과 여섯 log합을 보존.
+GT 인접25cm·15도 밖의 최대 봉우리, 정답 점수 대비 배수·위치/방향을 기록한다.
+4px 이내 실제 벽하단, ±4px 양쪽 지면이며 실제하단과10px 초과면 바닥 후보(기존 감사 정의),
+나머지 unknown으로 평가만 분류한다. 실제 카메라 투영·이상적인 벽하단·8열 간격 thinning은
+원인 분리용 반사실 평가이며 제어기 입력/보정/추가 실행 채택이 아니다. 결과 후 기준 변경 없음.
+[Thrun/Burgard/Fox 원문 ch6 §6.1,6.3,6.4,6.7](https://roboticsjtu.github.io/CS7355/Probabilistic-Robotics-en.pdf),
+[저자 공식 페이지](https://robots.stanford.edu/probabilistic-robotics/),
+[고정 Nav2 원문](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/sensors/laser/likelihood_field_model.cpp)을 대조한다.
+검사 항목: map↔scene 벽/문 연결, 평면 endpoint 전제, nearest-wall가 가림·높이를 무시하는 한계,
+열/시점 상관, 곱 우도 대신 Nav2 cubic 가산을 쓰는 실제 구현. 원인이 확실해도 이번 A 조건은 변경하지 않는다.
