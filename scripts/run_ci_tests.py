@@ -33,6 +33,7 @@ TEST_PATTERNS = (
     "tests/test_navigation_s4_final.py",
     "tests/test_frontier_oracle_confirmation.py",
     "tests/test_navigation_raytrace.py",
+    "tests/test_navigation_unknown.py",
     "tests/test_mapfree_environment.py",
     "tests/test_floor_goal*.py",  # Offline HSV floor-goal geometry, memory and evaluation boundaries.
     "tests/test_self_odom_grid.py",
