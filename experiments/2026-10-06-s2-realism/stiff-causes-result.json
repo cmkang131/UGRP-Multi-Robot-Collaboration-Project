@@ -1,0 +1,1145 @@
+{
+  "schema": "ugrp.s2.stiff_causes.v1",
+  "scope": "saved results only; exploratory diagnosis, not confirmation",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "filter_updates": 0,
+  "controller_changed": false,
+  "gt_use": "evaluation-only pose queries; no particle selection, control or fitting",
+  "localization": {
+    "updates": 6,
+    "truth_neighborhood": [
+      {
+        "t": 0.0,
+        "count": 1,
+        "mass": 0.0005,
+        "distinct_poses": 1
+      },
+      {
+        "t": 2.25,
+        "count": 1,
+        "mass": 0.0013359141144749379,
+        "distinct_poses": 1
+      },
+      {
+        "t": 3.75,
+        "count": 11,
+        "mass": 0.005500000000000001,
+        "distinct_poses": 1
+      },
+      {
+        "t": 5.25,
+        "count": 11,
+        "mass": 0.015064460774038554,
+        "distinct_poses": 1
+      },
+      {
+        "t": 6.75,
+        "count": 57,
+        "mass": 0.0285,
+        "distinct_poses": 1
+      },
+      {
+        "t": 8.25,
+        "count": 57,
+        "mass": 0.04726778140304056,
+        "distinct_poses": 1
+      },
+      {
+        "t": 11.6,
+        "count": 57,
+        "mass": 0.0718903542868414,
+        "distinct_poses": 1
+      },
+      {
+        "t": 11.95,
+        "count": 57,
+        "mass": 0.0718903542868414,
+        "distinct_poses": 1
+      }
+    ],
+    "final_modes": {
+      "resolved": false,
+      "bin_count": 506,
+      "leading_bins": [
+        {
+          "bin": [
+            2,
+            -4,
+            9
+          ],
+          "weight": 0.1931962326961352
+        },
+        {
+          "bin": [
+            10,
+            1,
+            -18
+          ],
+          "weight": 0.12706188702366053
+        },
+        {
+          "bin": [
+            -2,
+            -5,
+            -1
+          ],
+          "weight": 0.07189035428684147
+        },
+        {
+          "bin": [
+            0,
+            0,
+            -10
+          ],
+          "weight": 0.07146871123715207
+        },
+        {
+          "bin": [
+            3,
+            -5,
+            -1
+          ],
+          "weight": 0.0652425891289346
+        },
+        {
+          "bin": [
+            1,
+            -4,
+            7
+          ],
+          "weight": 0.04605994622160826
+        },
+        {
+          "bin": [
+            9,
+            -3,
+            10
+          ],
+          "weight": 0.02547293559345086
+        },
+        {
+          "bin": [
+            4,
+            -5,
+            -2
+          ],
+          "weight": 0.016850975131814376
+        },
+        {
+          "bin": [
+            -1,
+            -5,
+            0
+          ],
+          "weight": 0.013305238849704283
+        },
+        {
+          "bin": [
+            3,
+            1,
+            -17
+          ],
+          "weight": 0.012327247698579374
+        }
+      ],
+      "global_std_xy_m": 2.27112194621823,
+      "circular_yaw_std_rad": 1.909595197754876,
+      "known_own_dock": false
+    },
+    "hypotheses": [
+      {
+        "bin": [
+          2,
+          -4,
+          9
+        ],
+        "weight": 0.1931962326961352,
+        "pose": [
+          1.3535056541386532,
+          -1.807968174970368,
+          1.581372785371654
+        ],
+        "distinct_poses": 1,
+        "eval_position_error_m": 2.293221545898356
+      },
+      {
+        "bin": [
+          10,
+          1,
+          -18
+        ],
+        "weight": 0.12706188702366053,
+        "pose": [
+          5.11638495724674,
+          0.8277876639347266,
+          -2.9883607096974933
+        ],
+        "distinct_poses": 2,
+        "eval_position_error_m": 6.755128747489644
+      },
+      {
+        "bin": [
+          -2,
+          -5,
+          -1
+        ],
+        "weight": 0.07189035428684147,
+        "pose": [
+          -0.8273084881397603,
+          -2.0720248196896187,
+          -0.10811622791656587
+        ],
+        "distinct_poses": 1,
+        "eval_position_error_m": 0.19140727398327045
+      },
+      {
+        "bin": [
+          0,
+          0,
+          -10
+        ],
+        "weight": 0.07146871123715207,
+        "pose": [
+          0.11733599095462287,
+          0.15124528831066716,
+          -1.684990157596466
+        ],
+        "distinct_poses": 1,
+        "eval_position_error_m": 2.6069539324891995
+      },
+      {
+        "bin": [
+          3,
+          -5,
+          -1
+        ],
+        "weight": 0.0652425891289346,
+        "pose": [
+          1.9404440081604102,
+          -2.0819499068732057,
+          -0.06122649065522667
+        ],
+        "distinct_poses": 1,
+        "eval_position_error_m": 2.842066830458169
+      }
+    ],
+    "score_order": [
+      "exact_GT_eval_only",
+      [
+        2,
+        -4,
+        9
+      ],
+      [
+        10,
+        1,
+        -18
+      ],
+      [
+        -2,
+        -5,
+        -1
+      ],
+      [
+        0,
+        0,
+        -10
+      ],
+      [
+        3,
+        -5,
+        -1
+      ]
+    ],
+    "views": [
+      {
+        "t": 2.25,
+        "points": 38,
+        "eval_truth": [
+          -0.898358796414632,
+          -2.250196410206956,
+          -0.0043012558666286164
+        ],
+        "likelihood": [
+          5.617189926587047,
+          4.158069510939326,
+          4.427635685559634,
+          3.6676126521699532,
+          4.733266972875706,
+          4.38488819804612
+        ],
+        "metrics": [
+          {
+            "endpoint_distance_median_m": 0.0,
+            "endpoint_within_20cm_fraction": 1.0,
+            "detected_columns_with_visible_map_bottom": 38,
+            "bottom_abs_residual_median_px": 0.6426542939589126
+          },
+          {
+            "endpoint_distance_median_m": 0.09,
+            "endpoint_within_20cm_fraction": 0.8421052631578947,
+            "detected_columns_with_visible_map_bottom": 38,
+            "bottom_abs_residual_median_px": 2.1363757085179884
+          },
+          {
+            "endpoint_distance_median_m": 0.07,
+            "endpoint_within_20cm_fraction": 0.8421052631578947,
+            "detected_columns_with_visible_map_bottom": 38,
+            "bottom_abs_residual_median_px": 3.806158328799256
+          },
+          {
+            "endpoint_distance_median_m": 0.1,
+            "endpoint_within_20cm_fraction": 0.631578947368421,
+            "detected_columns_with_visible_map_bottom": 38,
+            "bottom_abs_residual_median_px": 3.36369892206325
+          },
+          {
+            "endpoint_distance_median_m": 0.055,
+            "endpoint_within_20cm_fraction": 0.868421052631579,
+            "detected_columns_with_visible_map_bottom": 38,
+            "bottom_abs_residual_median_px": 1.9004893203822064
+          },
+          {
+            "endpoint_distance_median_m": 0.06,
+            "endpoint_within_20cm_fraction": 0.7368421052631579,
+            "detected_columns_with_visible_map_bottom": 0,
+            "bottom_abs_residual_median_px": null
+          }
+        ],
+        "ideal_eval_points": 96,
+        "ideal_eval_likelihood": [
+          13.334975060315287,
+          6.9326817573836745,
+          9.219111766099457,
+          10.601173361593004,
+          7.337081847696373,
+          4.65654492616857
+        ]
+      },
+      {
+        "t": 3.75,
+        "points": 95,
+        "eval_truth": [
+          -0.8980742121867769,
+          -2.2503325380107038,
+          -0.004696500392800117
+        ],
+        "likelihood": [
+          13.084853221602927,
+          11.396206731585176,
+          5.060343849990792,
+          10.251913706592516,
+          7.115858196824415,
+          7.890530579911175
+        ],
+        "metrics": [
+          {
+            "endpoint_distance_median_m": 0.0,
+            "endpoint_within_20cm_fraction": 1.0,
+            "detected_columns_with_visible_map_bottom": 95,
+            "bottom_abs_residual_median_px": 0.9430221714542881
+          },
+          {
+            "endpoint_distance_median_m": 0.0,
+            "endpoint_within_20cm_fraction": 0.968421052631579,
+            "detected_columns_with_visible_map_bottom": 95,
+            "bottom_abs_residual_median_px": 4.411245885745757
+          },
+          {
+            "endpoint_distance_median_m": 0.22,
+            "endpoint_within_20cm_fraction": 0.43157894736842106,
+            "detected_columns_with_visible_map_bottom": 95,
+            "bottom_abs_residual_median_px": 5.59172726110495
+          },
+          {
+            "endpoint_distance_median_m": 0.05,
+            "endpoint_within_20cm_fraction": 0.8631578947368421,
+            "detected_columns_with_visible_map_bottom": 95,
+            "bottom_abs_residual_median_px": 3.4242463723686285
+          },
+          {
+            "endpoint_distance_median_m": 0.15,
+            "endpoint_within_20cm_fraction": 0.8631578947368421,
+            "detected_columns_with_visible_map_bottom": 95,
+            "bottom_abs_residual_median_px": 6.076085630607423
+          },
+          {
+            "endpoint_distance_median_m": 0.11,
+            "endpoint_within_20cm_fraction": 0.7684210526315789,
+            "detected_columns_with_visible_map_bottom": 0,
+            "bottom_abs_residual_median_px": null
+          }
+        ],
+        "ideal_eval_points": 96,
+        "ideal_eval_likelihood": [
+          13.335452342643366,
+          10.751195385704921,
+          5.9486311807405,
+          10.877822540700482,
+          6.825878289912052,
+          7.801331921963593
+        ]
+      },
+      {
+        "t": 5.25,
+        "points": 44,
+        "eval_truth": [
+          -0.8977414041792757,
+          -2.2506542080333323,
+          -0.00408230487129409
+        ],
+        "likelihood": [
+          6.527587712183856,
+          6.005911373859961,
+          3.297060011838372,
+          6.024150666292249,
+          4.024140053703283,
+          5.022830478920041
+        ],
+        "metrics": [
+          {
+            "endpoint_distance_median_m": 0.0,
+            "endpoint_within_20cm_fraction": 0.9772727272727273,
+            "detected_columns_with_visible_map_bottom": 44,
+            "bottom_abs_residual_median_px": 0.6606409970770812
+          },
+          {
+            "endpoint_distance_median_m": 0.0,
+            "endpoint_within_20cm_fraction": 0.9545454545454546,
+            "detected_columns_with_visible_map_bottom": 44,
+            "bottom_abs_residual_median_px": 6.119719756818142
+          },
+          {
+            "endpoint_distance_median_m": 2.0,
+            "endpoint_within_20cm_fraction": 0.4090909090909091,
+            "detected_columns_with_visible_map_bottom": 44,
+            "bottom_abs_residual_median_px": 13.797273777832174
+          },
+          {
+            "endpoint_distance_median_m": 0.05,
+            "endpoint_within_20cm_fraction": 1.0,
+            "detected_columns_with_visible_map_bottom": 44,
+            "bottom_abs_residual_median_px": 5.0368549565437775
+          },
+          {
+            "endpoint_distance_median_m": 0.135,
+            "endpoint_within_20cm_fraction": 1.0,
+            "detected_columns_with_visible_map_bottom": 44,
+            "bottom_abs_residual_median_px": 12.362389185279056
+          },
+          {
+            "endpoint_distance_median_m": 0.1,
+            "endpoint_within_20cm_fraction": 1.0,
+            "detected_columns_with_visible_map_bottom": 0,
+            "bottom_abs_residual_median_px": null
+          }
+        ],
+        "ideal_eval_points": 96,
+        "ideal_eval_likelihood": [
+          13.343088859892623,
+          12.744700565447207,
+          3.4258540118383722,
+          9.339576924138271,
+          4.994034301244763,
+          9.217226098953187
+        ]
+      },
+      {
+        "t": 6.75,
+        "points": 90,
+        "eval_truth": [
+          -0.8977491584876109,
+          -2.2504854114253092,
+          -0.002625158885124571
+        ],
+        "likelihood": [
+          10.839854934958849,
+          6.854984669286735,
+          7.628738583569333,
+          5.377373200555333,
+          5.7639610290179855,
+          3.6769491027661454
+        ],
+        "metrics": [
+          {
+            "endpoint_distance_median_m": 0.0358113883008419,
+            "endpoint_within_20cm_fraction": 0.9333333333333333,
+            "detected_columns_with_visible_map_bottom": 90,
+            "bottom_abs_residual_median_px": 1.0869354202718142
+          },
+          {
+            "endpoint_distance_median_m": 0.11,
+            "endpoint_within_20cm_fraction": 0.7444444444444445,
+            "detected_columns_with_visible_map_bottom": 90,
+            "bottom_abs_residual_median_px": 1.6305545709112863
+          },
+          {
+            "endpoint_distance_median_m": 0.12946221994724902,
+            "endpoint_within_20cm_fraction": 0.8333333333333334,
+            "detected_columns_with_visible_map_bottom": 90,
+            "bottom_abs_residual_median_px": 2.217224038568574
+          },
+          {
+            "endpoint_distance_median_m": 0.175,
+            "endpoint_within_20cm_fraction": 0.5888888888888889,
+            "detected_columns_with_visible_map_bottom": 90,
+            "bottom_abs_residual_median_px": 3.5306276619789116
+          },
+          {
+            "endpoint_distance_median_m": 0.16,
+            "endpoint_within_20cm_fraction": 0.6111111111111112,
+            "detected_columns_with_visible_map_bottom": 90,
+            "bottom_abs_residual_median_px": 1.832538518374676
+          },
+          {
+            "endpoint_distance_median_m": 0.25,
+            "endpoint_within_20cm_fraction": 0.35555555555555557,
+            "detected_columns_with_visible_map_bottom": 0,
+            "bottom_abs_residual_median_px": null
+          }
+        ],
+        "ideal_eval_points": 96,
+        "ideal_eval_likelihood": [
+          13.207142426988963,
+          3.8675882943893045,
+          7.408979234405992,
+          7.283052291168392,
+          5.5539920601498025,
+          1.7347310586673936
+        ]
+      },
+      {
+        "t": 8.25,
+        "points": 91,
+        "eval_truth": [
+          -0.8971868704277671,
+          -2.250391968312741,
+          -0.004145233928338708
+        ],
+        "likelihood": [
+          7.422409091085321,
+          3.229484031351979,
+          6.60537052239875,
+          4.001466101193591,
+          3.798017522199567,
+          5.006684013935601
+        ],
+        "metrics": [
+          {
+            "endpoint_distance_median_m": 0.09,
+            "endpoint_within_20cm_fraction": 0.6813186813186813,
+            "detected_columns_with_visible_map_bottom": 91,
+            "bottom_abs_residual_median_px": 1.188744209953029
+          },
+          {
+            "endpoint_distance_median_m": 2.0,
+            "endpoint_within_20cm_fraction": 0.2857142857142857,
+            "detected_columns_with_visible_map_bottom": 91,
+            "bottom_abs_residual_median_px": 15.485855628835964
+          },
+          {
+            "endpoint_distance_median_m": 0.16,
+            "endpoint_within_20cm_fraction": 0.5494505494505495,
+            "detected_columns_with_visible_map_bottom": 91,
+            "bottom_abs_residual_median_px": 1.2915344824176032
+          },
+          {
+            "endpoint_distance_median_m": 0.24,
+            "endpoint_within_20cm_fraction": 0.34065934065934067,
+            "detected_columns_with_visible_map_bottom": 91,
+            "bottom_abs_residual_median_px": 3.9342963459419025
+          },
+          {
+            "endpoint_distance_median_m": 1.16,
+            "endpoint_within_20cm_fraction": 0.26373626373626374,
+            "detected_columns_with_visible_map_bottom": 91,
+            "bottom_abs_residual_median_px": 15.641639565511213
+          },
+          {
+            "endpoint_distance_median_m": 0.18,
+            "endpoint_within_20cm_fraction": 0.5934065934065934,
+            "detected_columns_with_visible_map_bottom": 0,
+            "bottom_abs_residual_median_px": null
+          }
+        ],
+        "ideal_eval_points": 96,
+        "ideal_eval_likelihood": [
+          13.337361471955681,
+          2.0454240119979104,
+          7.105030666357445,
+          6.6267833727350585,
+          4.8862570537951875,
+          5.039099120073441
+        ]
+      },
+      {
+        "t": 11.6,
+        "points": 49,
+        "eval_truth": [
+          -0.8966239916485008,
+          -2.2504403613529966,
+          -0.005225398869248378
+        ],
+        "likelihood": [
+          6.6376636600312695,
+          5.285611597677236,
+          4.632157237360648,
+          4.929236176829052,
+          5.659246932876078,
+          4.631603030433021
+        ],
+        "metrics": [
+          {
+            "endpoint_distance_median_m": 0.01,
+            "endpoint_within_20cm_fraction": 0.9795918367346939,
+            "detected_columns_with_visible_map_bottom": 49,
+            "bottom_abs_residual_median_px": 0.4222499510172071
+          },
+          {
+            "endpoint_distance_median_m": 0.06,
+            "endpoint_within_20cm_fraction": 0.8775510204081632,
+            "detected_columns_with_visible_map_bottom": 49,
+            "bottom_abs_residual_median_px": 1.558829421927598
+          },
+          {
+            "endpoint_distance_median_m": 0.12,
+            "endpoint_within_20cm_fraction": 0.8163265306122449,
+            "detected_columns_with_visible_map_bottom": 49,
+            "bottom_abs_residual_median_px": 4.468815321729608
+          },
+          {
+            "endpoint_distance_median_m": 0.02,
+            "endpoint_within_20cm_fraction": 0.7142857142857143,
+            "detected_columns_with_visible_map_bottom": 49,
+            "bottom_abs_residual_median_px": 2.777471872424485
+          },
+          {
+            "endpoint_distance_median_m": 0.06,
+            "endpoint_within_20cm_fraction": 0.8571428571428571,
+            "detected_columns_with_visible_map_bottom": 49,
+            "bottom_abs_residual_median_px": 2.1692020941789423
+          },
+          {
+            "endpoint_distance_median_m": 0.08,
+            "endpoint_within_20cm_fraction": 0.673469387755102,
+            "detected_columns_with_visible_map_bottom": 0,
+            "bottom_abs_residual_median_px": null
+          }
+        ],
+        "ideal_eval_points": 96,
+        "ideal_eval_likelihood": [
+          13.336406907299525,
+          6.827190164391029,
+          9.178335275574048,
+          10.78698599795641,
+          7.0591447296567695,
+          4.551352303193534
+        ]
+      }
+    ],
+    "observed_log_score": [
+      12.453817639757272,
+      10.413362471441234,
+      9.755159565324476,
+      10.086826703194642,
+      9.728647710610742,
+      9.603581341721595
+    ],
+    "observed_score_relative_to_GT": [
+      1.0,
+      0.12996953939657224,
+      0.06729575807326993,
+      0.09376243934728548,
+      0.06553506545403788,
+      0.057830653990233266
+    ],
+    "initial_tight_10cm_5deg_count": 0,
+    "initial_best_observed_score_relative_to_GT": 0.12996953939657224,
+    "initial_truth_near_score_ranks": [
+      2
+    ],
+    "final_mean_position_error_m": 3.1810337404301063,
+    "ideal_eval_log_score": [
+      15.533639591660645,
+      10.845528641333146,
+      11.416132219824476,
+      13.23696170720007,
+      10.777173717518522,
+      9.497146465044642
+    ],
+    "ideal_eval_score_relative_to_GT": [
+      1.0,
+      0.009204056664430329,
+      0.016285056483281362,
+      0.10059246904960471,
+      0.008595934894656166,
+      0.0023899254007145494
+    ],
+    "scoring_limit": "Fixed hypothesis score products are diagnostic; resampling/prior multiplicities mean they are not posterior odds.",
+    "amcl_resamples": 2,
+    "injected": 0,
+    "static_walls": [
+      {
+        "id": "wall_north",
+        "center_m": [
+          2.1750000000000003,
+          1.45
+        ],
+        "half_extents_m": [
+          3.25,
+          0.025
+        ],
+        "height_m": 0.4,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_south",
+        "center_m": [
+          2.1750000000000003,
+          -3.15
+        ],
+        "half_extents_m": [
+          3.25,
+          0.025
+        ],
+        "height_m": 0.4,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_west",
+        "center_m": [
+          -1.05,
+          -0.85
+        ],
+        "half_extents_m": [
+          0.025,
+          2.3
+        ],
+        "height_m": 0.4,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_east",
+        "center_m": [
+          5.4,
+          -0.85
+        ],
+        "half_extents_m": [
+          0.025,
+          2.3
+        ],
+        "height_m": 0.4,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_divider_1",
+        "center_m": [
+          2.2,
+          -1.675
+        ],
+        "half_extents_m": [
+          0.025,
+          1.475
+        ],
+        "height_m": 0.4,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_divider_2",
+        "center_m": [
+          2.2,
+          0.875
+        ],
+        "half_extents_m": [
+          0.025,
+          0.575
+        ],
+        "height_m": 0.4,
+        "kind": "wall"
+      }
+    ]
+  },
+  "vo": {
+    "pulses": 16,
+    "intervals": 112,
+    "interval_status": {
+      "unknown_texture": 10,
+      "unknown_frame": 92,
+      "unknown_rigid_consensus": 6,
+      "measured": 4
+    },
+    "first_reject": {
+      "unknown_texture": 10,
+      "unknown_rigid_consensus": 6
+    },
+    "missing_interval_rgb": 0,
+    "exact_endpoint_missing": 16,
+    "texture_tracks": [
+      4,
+      3,
+      5,
+      3,
+      4,
+      1,
+      4,
+      2,
+      3,
+      2
+    ],
+    "texture_cells": [
+      4,
+      3,
+      4,
+      3,
+      3,
+      1,
+      3,
+      2,
+      2,
+      2
+    ],
+    "rigid_tracks": [
+      9,
+      7,
+      12,
+      7,
+      6,
+      9
+    ],
+    "rigid_cells": [
+      6,
+      6,
+      5,
+      3,
+      4,
+      5
+    ],
+    "floor_fraction_range": [
+      0.3124641927083333,
+      0.755654296875
+    ],
+    "cyan_fraction_max": 9.765625e-06,
+    "rows": [
+      {
+        "case": "stiff-north",
+        "t": 6.3,
+        "end": 7.05,
+        "first_reject": {
+          "t": 6.4,
+          "from_t": 6.3,
+          "status": "unknown_texture",
+          "tracks": 4,
+          "cells": 4
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          7.0,
+          7.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-north",
+        "t": 7.3,
+        "end": 8.05,
+        "first_reject": {
+          "t": 7.4,
+          "from_t": 7.3,
+          "status": "unknown_rigid_consensus",
+          "tracks": 9,
+          "cells": 6
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          8.0,
+          8.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-north",
+        "t": 8.3,
+        "end": 9.05,
+        "first_reject": {
+          "t": 8.5,
+          "from_t": 8.4,
+          "status": "unknown_rigid_consensus",
+          "tracks": 7,
+          "cells": 6
+        },
+        "measured_intervals": 1,
+        "end_bracket_s": [
+          9.0,
+          9.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-north",
+        "t": 9.3,
+        "end": 10.05,
+        "first_reject": {
+          "t": 9.4,
+          "from_t": 9.3,
+          "status": "unknown_rigid_consensus",
+          "tracks": 12,
+          "cells": 5
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          10.0,
+          10.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-north",
+        "t": 12.3,
+        "end": 13.05,
+        "first_reject": {
+          "t": 12.4,
+          "from_t": 12.3,
+          "status": "unknown_texture",
+          "tracks": 3,
+          "cells": 3
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          13.0,
+          13.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-north",
+        "t": 13.3,
+        "end": 14.05,
+        "first_reject": {
+          "t": 13.5,
+          "from_t": 13.4,
+          "status": "unknown_texture",
+          "tracks": 5,
+          "cells": 4
+        },
+        "measured_intervals": 1,
+        "end_bracket_s": [
+          14.0,
+          14.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-north",
+        "t": 14.3,
+        "end": 15.05,
+        "first_reject": {
+          "t": 14.4,
+          "from_t": 14.3,
+          "status": "unknown_texture",
+          "tracks": 3,
+          "cells": 3
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          15.0,
+          15.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-north",
+        "t": 15.3,
+        "end": 16.05,
+        "first_reject": {
+          "t": 15.4,
+          "from_t": 15.3,
+          "status": "unknown_texture",
+          "tracks": 4,
+          "cells": 3
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          16.0,
+          16.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-south",
+        "t": 6.3,
+        "end": 7.05,
+        "first_reject": {
+          "t": 6.4,
+          "from_t": 6.3,
+          "status": "unknown_texture",
+          "tracks": 1,
+          "cells": 1
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          7.0,
+          7.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-south",
+        "t": 7.3,
+        "end": 8.05,
+        "first_reject": {
+          "t": 7.4,
+          "from_t": 7.3,
+          "status": "unknown_texture",
+          "tracks": 4,
+          "cells": 3
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          8.0,
+          8.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-south",
+        "t": 8.3,
+        "end": 9.05,
+        "first_reject": {
+          "t": 8.5,
+          "from_t": 8.4,
+          "status": "unknown_rigid_consensus",
+          "tracks": 7,
+          "cells": 3
+        },
+        "measured_intervals": 1,
+        "end_bracket_s": [
+          9.0,
+          9.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-south",
+        "t": 9.3,
+        "end": 10.05,
+        "first_reject": {
+          "t": 9.4,
+          "from_t": 9.3,
+          "status": "unknown_texture",
+          "tracks": 2,
+          "cells": 2
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          10.0,
+          10.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-south",
+        "t": 12.3,
+        "end": 13.05,
+        "first_reject": {
+          "t": 12.4,
+          "from_t": 12.3,
+          "status": "unknown_texture",
+          "tracks": 3,
+          "cells": 2
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          13.0,
+          13.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-south",
+        "t": 13.3,
+        "end": 14.05,
+        "first_reject": {
+          "t": 13.5,
+          "from_t": 13.4,
+          "status": "unknown_rigid_consensus",
+          "tracks": 6,
+          "cells": 4
+        },
+        "measured_intervals": 1,
+        "end_bracket_s": [
+          14.0,
+          14.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-south",
+        "t": 14.3,
+        "end": 15.05,
+        "first_reject": {
+          "t": 14.4,
+          "from_t": 14.3,
+          "status": "unknown_rigid_consensus",
+          "tracks": 9,
+          "cells": 5
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          15.0,
+          15.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      },
+      {
+        "case": "stiff-south",
+        "t": 15.3,
+        "end": 16.05,
+        "first_reject": {
+          "t": 15.4,
+          "from_t": 15.3,
+          "status": "unknown_texture",
+          "tracks": 2,
+          "cells": 2
+        },
+        "measured_intervals": 0,
+        "end_bracket_s": [
+          16.0,
+          16.1
+        ],
+        "exact_end_available": false,
+        "complete": false
+      }
+    ],
+    "not_executed": "GroundBuffer upstream admission not exercised by direct observed_pulse replay"
+  },
+  "hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/replay-start-on.json": "9d33b44249278b9a5c126fa976d3a1ccb595108d0aca6460e35bd171909bd649",
+    "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/replay-stiff-vo-final.json": "b02f1260e048ad15d53dbe167c78f74a51325890bd8f60ad5d83bb4aa8c7925e",
+    "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start/eval_only/trajectory.jsonl": "bbb4a30203c62466ef08a7c76d0e700d32f6940b60b29d29cda0c49963ede581",
+    "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start/setup_bundle.json": "227038b62aace41f5e5092c42fa07e2591c0f633cd15f43c77d2095ecee28be4",
+    "/Users/changmin/projects/ugrp-wt/drive-friction/configs/calibration/s2_camera_stiff_target_v1.json": "9d066ecf12d67284a05b54054e9bb5f64aa9090791dbcb0807b7445e46a40734",
+    "/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/stiff-north/bundle.json": "aeebb7a9a17d1576659965255eff8b2ce04c37e4340aadd2553c8150b2fd1f2c",
+    "/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/stiff-north/robots/r3/frames.jsonl": "e77ba4579ebc6e20783c3075633c27f16655b882bce71ccfbc2b637ec74c5ef7",
+    "/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/stiff-north/robots/r3/commands.jsonl": "32829c28044c1192e1fd261a44ada0ae9b44e3bd916deeeb32612c608e8dd6fa",
+    "/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/stiff-south/bundle.json": "cf8f92f022b0f0b6f15225f1941b6edb054d9bf748ab91c270b986e12f20ea8f",
+    "/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/stiff-south/robots/r3/frames.jsonl": "be13ae9c244d958e224b53289c504b2ebbb8ab914bfd14179f0aee87b5a1618f",
+    "/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/stiff-south/robots/r3/commands.jsonl": "55195d365ea9fc61d5e449c376a73ddf23a321667e915df8b8c8f01f4f3f0d0d",
+    "/Users/changmin/projects/ugrp-wt/drive-friction/experiments/2026-10-06-s2-realism/diagnose_stiff_causes.py": "e2b49d686c9461cb761ac0e232f780cf767d80b3e752dd155a3cff89ea90d17a"
+  }
+}
