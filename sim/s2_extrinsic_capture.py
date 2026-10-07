@@ -28,7 +28,7 @@ def board_xml(xml):
     return ET.tostring(root,encoding='unicode')
 
 
-def capture(out, source_sha, states='all'):
+def capture(out, source_sha, states='all', pose_set='default'):
     import cv2
     import mujoco
     from PIL import Image
@@ -69,7 +69,7 @@ def capture(out, source_sha, states='all'):
             hardware_procedure='Level chassis clamp at surveyed floor height; surveyed board corners; identical commanded pose/load; wait 8 s',
             cargo_weld=False,load='cyan 30 g, fingers only',intrinsics_K=target.K.tolist(),fisheye_D=target.D.tolist()))
         loaded=False
-        for state,pose in target.poses():
+        for state,pose in target.capture_poses(pose_set):
             if states!='all' and state!=states:continue
             if state=='loaded' and not loaded:
                 # Manual placement in a fixed grasp station, then pre-authored
@@ -144,7 +144,7 @@ def capture(out, source_sha, states='all'):
                 raise RuntimeError('CALIBRATION_GRIP_LOSS')  # abort only; never correct a command/fit
         write(out/'result.json',dict(status='CAPTURE_COMPLETED',classification='S2_DEV_calibration_not_transport',
             source_sha=source_sha,states=states,observations=len(rows),detected=sum(r['status']=='detected' for r in rows),
-            wall_s=time.monotonic()-start,sim_s=float(world.data.time),options=dict(idle_robot_contacts='freeze_v1'),
+            wall_s=time.monotonic()-start,sim_s=float(world.data.time),options=dict(idle_robot_contacts='freeze_v1',pose_set=pose_set),
             fixture=True,model_calls=0,source_sha256={p:c.old.hp.base.sha(c.ROOT/p) for p in source_closure(c.ROOT,
                 ['scripts/capture_s2_extrinsics.py','sim/s2_extrinsic_capture.py'])}))
     finally:

@@ -1920,3 +1920,31 @@ TensorBoard 새 snapshot `1007-s2-real-carry`: **12뷰·108스칼라**의 원본
 공용 view 파일은 쓰기 직전 다시 읽고 자기`s2_real_carry_20261007`키만 추가했고, 기존
 snapshot/서버PID52016과 과거 영상은 보존했다. 자료는 로컬이며 raw 원격 백업으로
 보고하지 않는다. 소스·요약·README는 GitHub PR #406에 보존한다.
+
+## s2v18 — 사용자 승인 새 자세 full DEV 1회 (실행 전, 2026-10-07)
+
+사용자는 옛 HIGH 궤적의 기하 공백을 새 자세의 실제 fix 예측/실행 거절 근거로 쓰지
+말고 dev_light로 실제 한 번 운반하라고 지시했다. 이 결정은 s2v17의 full 입장 제한을
+**이번 S2 탐색 DEV 1회에 한해 대체**한다. 이전 자료·기준·실패 판정은 바꾸지 않는다.
+새 seed **1049**, slot **P1-2**, 목적지B/door_1, stage place를 실행 전에 등록한다.
+main+열린 PR16개 전체 번호/seed 조회: `reservation-scan-v124-full.json`.
+이 브랜치의 미사용 예약 **zone-s2-realism-v124 / workflow7.17.0**을 등록한다.
+1048은 과거 번호 예약만 있었으며 사용하지 않는다. 다른 seed의 결과와 합산하지 않는다.
+
+조합: freeze_v1, carry_pose=real_delivery_v1, 무하중 RGB-PnP 표+고정 처짐−0.02711rad,
+visibility_mask=command_geometry_v1, 기존 AMCL likelihood-field 측정,
+v7_pulse_cal_v1, accepted_scan_v1 관측 격리, lk_pulse_v1 RGB 정체 기록,
+real_pregrasp_v1 blind 파지/inhand_rgb_v1 확인은 log_only_v1, setdown_relook=off.
+새 옵션은 기본 off, 구 번들/제어기는 그대로 둔다. 관측 부재·unknown·σ·가드류는
+멈췄을 곳만 기록한다. 실제 낙하/집게 이탈/기울기/실행 오류 및 유한 시간 상한은 중단한다.
+평가 전용120초/1cm 정체 감시 유지. case1800초/기존 Runtime900초/wall10800초 유한 상한,
+ENOSPC는 HOST_ERROR, raw 보존·seed 재사용 없음. 이번 실행 뒤 원인 하나를 지목하고 수정하지 않는다.
+
+무하중 표에 없는600/2200/1400 자세만 기존 정지 체커보드2fit+1holdout 절차로
+보충한다(`--pose-set real_carry_v1 --states unloaded`). agent_lock/ugrp_session으로
+짧게 capture하고 기존21자세 표는 보존한다. 하중 파지 지그 재시도·weld 없음.
+고정 표적 기하+검출 RGB corner의 solvePnP, 재투영 RMS≤1px 기준은 기존 그대로다.
+[OpenCV 공식 PnP 절차](https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html)를 따른다.
+새 보정 자세의 처짐은 실측이 아닌 이전 고정 근사로 명시하고 mount/FOV/K/D는 유지한다.
+새 운반 자세를 provider/LF/가림 mask/LK에서 명령으로 인식하도록 S2 인스턴스에만 연결한다.
+GT는 별도 결과 평가에만 사용한다. 단독 DEV freeze 제한과 no-model 조건은 유지한다.

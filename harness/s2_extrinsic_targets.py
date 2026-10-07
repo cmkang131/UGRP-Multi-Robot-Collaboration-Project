@@ -43,6 +43,15 @@ def poses():
     return [('unloaded', p) for p in empty] + [('loaded', p) for p in loaded]
 
 
+def capture_poses(pose_set='default'):
+    if pose_set == 'default':
+        return poses()
+    if pose_set == 'real_carry_v1':
+        # Single empty-gripper pose, no loaded jig retry or grasping.
+        return [('unloaded', {3:600,4:2200,5:1400,6:1500})]
+    raise ValueError('unsupported calibration pose set')
+
+
 def nominal(pose):
     cal = inherited()
     for state in ('unloaded', 'loaded'):

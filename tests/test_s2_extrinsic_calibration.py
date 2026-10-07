@@ -52,6 +52,9 @@ def test_pose_coverage_and_board_fit_holdout_separation():
         boards=t.boards(pose)
         assert [b['role'] for b in boards]==['fit','fit','holdout']
         assert min(np.asarray(b['object_points_floor_m'])[:,2].min() for b in boards)>0
+    assert t.capture_poses() == poses
+    assert t.capture_poses('real_carry_v1') == [('unloaded', {3:600,4:2200,5:1400,6:1500})]
+    with pytest.raises(ValueError):t.capture_poses('loaded')
 
 
 def test_calibration_jig_board_has_no_contacts_or_welds():
