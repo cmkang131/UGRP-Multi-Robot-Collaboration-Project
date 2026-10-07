@@ -1,0 +1,135 @@
+{
+  "source_ref": "dc65cf6fc2d9a3764a4289badd1d3a2fb834dc18",
+  "source_path": "experiments/2026-10-06-s2-realism/s1050-projection-summary.json",
+  "source_sha256": "2e1cd74da273176c038f459bb6844f749c02fee7e163dbba37a9bf58a6c95ede",
+  "type": "verified prior PR406 audit; not a new replay and never pooled",
+  "schema": "ugrp.s2.projection_audit.v1",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "gt_usage": "evaluation only; no controller instance",
+  "sample_hz": 1.0,
+  "frames": 166,
+  "carry_window": [
+    71.0,
+    236.8
+  ],
+  "detected_columns": 7195,
+  "visible_detected_columns": 5171,
+  "finite_compared_columns": 5171,
+  "within_3px_visible_fraction": 0.9885902146586734,
+  "all_valid_detected_nearest_wall_error_m": {
+    "n": 7195,
+    "median": 0.016323623959693556,
+    "p10": 0.00390922668011271,
+    "p90": 0.9879850797394364,
+    "rmse": 0.4119850396901855
+  },
+  "visible_metrics": {
+    "total_endpoint_error_m": {
+      "n": 5171,
+      "median": 0.015293076949607874,
+      "p10": 0.004120185314426546,
+      "p90": 0.03373200688524029,
+      "rmse": 0.021103152902047145
+    },
+    "pixel_only_error_m": {
+      "n": 5171,
+      "median": 0.0016243732690184027,
+      "p10": 0.0005475641935344802,
+      "p90": 0.0038993995842421573,
+      "rmse": 0.0038305389928514426
+    },
+    "calibration_only_error_m": {
+      "n": 5171,
+      "median": 0.013484311988213343,
+      "p10": 0.005256020753180234,
+      "p90": 0.028781647154671623,
+      "rmse": 0.01866105220981479
+    },
+    "true_pixel_actual_camera_error_m": {
+      "n": 5171,
+      "median": 1.8881953058541512e-15,
+      "p10": 2.482534153247273e-16,
+      "p90": 6.952771691715043e-15,
+      "rmse": 4.1594954621762565e-15
+    },
+    "signed_radial_error_m": {
+      "n": 5171,
+      "median": 0.01525795570029198,
+      "p10": 0.004022535309802733,
+      "p90": 0.0337222082357036,
+      "rmse": 0.02106768865935993
+    },
+    "pixel_residual_px": {
+      "n": 5171,
+      "median": -0.407258125275213,
+      "p10": -0.9202561995263352,
+      "p90": 1.4894498604758724,
+      "rmse": 1.0981421964981268
+    }
+  },
+  "frame_median_total_error_m": {
+    "n": 75,
+    "median": 0.021990556662819377,
+    "p10": 0.0046118785707307975,
+    "p90": 0.04141344136304417,
+    "rmse": 0.025620089747481506
+  },
+  "frame_median_calibration_only_error_m": {
+    "n": 75,
+    "median": 0.01967462952841481,
+    "p10": 0.005590620930511234,
+    "p90": 0.03395149595853561,
+    "rmse": 0.021254581892060687
+  },
+  "pitch_fixed_minus_actual_deg": {
+    "n": 166,
+    "median": 0.23720923570190516,
+    "p10": 0.07818915602101909,
+    "p90": 0.33055605059299664,
+    "rmse": 0.24271880509720645
+  },
+  "height_fixed_minus_actual_m": {
+    "n": 166,
+    "median": 0.0029896737438753207,
+    "p10": 0.0024288057560415965,
+    "p90": 0.0031956919532553085,
+    "rmse": 0.002922424281058952
+  },
+  "origin_delta_m": {
+    "n": 166,
+    "median": 0.003248853917291408,
+    "p10": 0.0025145375492196297,
+    "p90": 0.0036237930433715565,
+    "rmse": 0.00320538484693997
+  },
+  "source_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/result.json": "8c47e6846f61821d130c0907ba37e9568dedb1031efc1332e2d8357e65f78645",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/bundle.json": "4d35ba088574ea15fc1dedaa8d0ea6c5282ca1aef73628d5421ddba8ec3a9688",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/robots/r3/frames.jsonl": "100c0646e69ea5003792f85e34ef83335ca1aa29a9441dcd1e80239e866612ea",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/eval_only/trajectory.jsonl": "d5e96832527697a99cb904873670d8536c7186b2fe98b86c10dbc9956b6f1043",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/eval_only/camera-pose.jsonl": "2b42c8e030186641293d96d54f0efb5fab5ae821a4b0c5501c0dc8e1847f8d18"
+  },
+  "columns": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-observed-amcl-20261007/projection/columns.json",
+    "sha256": "c49bec332c59e9ee2b50747baa241bd4eb8d5ece2ce6512e96d021ff962e1a85"
+  },
+  "additional_outside_summary": {
+    "n": 2024,
+    "median": 0.9102286648516098,
+    "rmse": 0.776451181820602,
+    "source": "same saved columns.json; no new evaluation sample"
+  },
+  "raw_summary": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-observed-amcl-20261007/projection/summary.json",
+    "sha256": "f239234725146d8110404cb9f32acd59622e8f8ba40a8ee8f94549e2b80b357a"
+  },
+  "stored_columns_reduction": {
+    "n": 5171,
+    "median": 0.015293076949607874,
+    "p05": 0.0028870904189359685,
+    "p90": 0.03373200688524029,
+    "p95": 0.040093150174729496,
+    "rmse": 0.021103152902047145
+  }
+}
