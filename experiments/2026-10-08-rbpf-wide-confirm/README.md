@@ -61,3 +61,8 @@ wall 상한30분; 물리 낙하/기울기/접촉/비유한값은 기존 abort, �
 
 다음 후보만 기록: egomap27의35.7–39.9초 DR112.75° vs GT124.98°(12.22° 부족).
 이번에는 v122 계수·회전 응답·잡음·검색창·모든 판정값을 수정하지 않는다.
+
+실행 준비: 사전 등록 `2f4a55c8` 전 composition6 통과. 연결 후 runner2 + composition6 +
+workflow plan1 = **9시험 통과**. wide 설치가 egomap27 재생 설치와 bytes 동일하고,
+정보이득 가상 탐색이 실제 필터/RNG를 바꾸지 않음을 확인했다. 기본 off bytes 검사도 통과.
+추정·탐색·물리 조건의 고정 해시는 [freeze.json](freeze.json); 기존 제어 모듈 수정0.
