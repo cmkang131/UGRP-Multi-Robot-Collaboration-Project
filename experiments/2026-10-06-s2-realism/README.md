@@ -4429,3 +4429,54 @@ agent_lock이 null일 때 acquire → ugrp_session + 표준 sim_cli 관리 → f
 freeze는 S2 단독 DEV만이며 S3/짝 운반/본 연구에는 금지; 폐기된 조건과 합산0.
 raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s{1053,1054}-v133-reproduction`.
 사전등록 이후 결과에 따라 문턱/옵션/기준 변경0. PR #406 DRAFT·병합0.
+
+
+### v40 재현 완료 — 두 새 seed 모두 S2 DEV 성공
+
+사전등록/행정 어댑터 SHA **ebb24028e13c45115bdcdd116f76fce92be5c968**, 실행 프로필 소스
+**027c567c/v133**, [전체 결과·옵션·해시](reproduction-result.json).
+성공 당시 b2de2b30와027c567c의 차이는 결과 문서뿐이며, 두 새 실행 모두 원본 bundle의
+436개 의존 파일이 현 파일·027c567c git blob과 동일했다. 원본 옵션 전체·6보정표·제어/물리
+loop·문턱을 유지하고 seed와 실행 provenance만 변경했다. 물리2회/재시도0/모델0/수정0.
+
+| 개별 DEV 지표 | s1053 | s1054 |
+|---|---:|---:|
+| 첫 주행 직전 위치 오차 m (GT 평가만) | .060119 | .031858 |
+| lifted / inside / floor / stable | true / true / true / true | true / true / true / true |
+| 상자→B 중심 거리 m | .120569 | .244974 |
+| 운반 XY RMSE m | .111519 | .215839 |
+| 운반 갱신 / 최장 공백 s | 28 /20.65 | 28 /24.25 |
+| 내려놓기 직전 위치오차 m | .105331 | .191110 |
+| 벽 하단 실제 가시율 (1Hz·96열) | 99.8589% | 99.9446% |
+| 바퀴/차체/집게/상자–벽 접촉 구간·표본 | 모두0 | 모두0 |
+| wall / totalSIM s | 545.351848 /308.25 | 717.083562 /432.30 |
+| wall/SIM | 1.769187 | 1.658764 |
+| 발행 명령 / 모델 호출 | 3958 /0 | 8920 /0 |
+
+s1053 would-stop: **ARM_COLLISION_GUARD7, POSE_UNCERTAIN200, GRASP_INHAND_UNCONFIRMED1**.
+s1054 would-stop: **ARM_COLLISION_GUARD7, POSE_UNCERTAIN312, CYAN_NOT_UNIQUELY_VISIBLE5**.
+이 판정은 dev_light로 기록만 했으며 시각 불확실성을 성공 확인으로 바꾸지 않았다.
+실제 물리 실패·실행 오류0. 두 실행은 기존 posthoc DEV 판정으로 성공했으며 실물/정식 연구
+졸업 성공률로 확장하지 않는다. 폐기한 조건과 합산하지 않는다. S2 solo DEV freeze 범위 그대로다.
+
+s1054의 탐색이 길었다. 운반 진입은 s1053 **94.8** 대 s1054 **203.7** SIM초이며,
+운반 창은 각각94.8–286.25 /203.7–410.3초. 시작 오차가 작은 것과 집기 대상을 빨리 찾는 것은
+별도 결과다. 두 성공 뒤 추가 진단 물리·튜닝·보완 수정은 하지 않았다.
+
+각각 `ugrp_session`의 s2v40-s1053/s2v40-s1054가 종료됐고 driver PID65383/68425가
+agent_lock을 acquire/finally release, 각 lock.json의 status_after=null이다. 다음 실행 전에도
+null을 확인했으며 다른 작업과 물리 동시 실행0. 단계 사이 감독 파일은 지시 없음이었다.
+
+- s1053 raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction`
+- s1054 raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction`
+- 각 raw의 `execution.mp4`: own RGB4배속/640×480/20fps, **76.0초·1,382,679bytes** /
+  **107.0초·1,856,004bytes**. 입력 프레임20Hz 연속성·ffprobe·전체 디코딩·SHA256 확인.
+  원본 프레임/로그/과거 번들 모두 보존. raw 로컬 보관이며 원격 백업으로 표현하지 않는다.
+- 관련 시험 **5 PASS**(재현 profile/변경 차단/기존 admission/start 경계), 실행 전 통과 후 등록 커밋.
+  결과 후에는 원본/options/436file 해시·평가 정의·잠금·영상 불변식을 다시 확인했다.
+
+- TensorBoard `1008-s2-v133-reproduction`: 새 두 실행 **40수치**를 원본→event→live API로 대조,
+  기존 s1051 snapshot은 재변환 없이 비교 링크에 포함했다. 영상 페이지200/MP4 Range206 각각 확인.
+  [전달 검증](reproduction-delivery.json), [TensorBoard](http://127.0.0.1:6006). UI 화면 확인은 미수행.
+  공유 viewer는 새 자기 키만 추가했다. 관리 workflow의 read-only plan 시험 예시1개도 추가해
+  해당 시험1 PASS(총 관련6 PASS); 실행/제어 코드는 사전등록 뒤 수정0.
