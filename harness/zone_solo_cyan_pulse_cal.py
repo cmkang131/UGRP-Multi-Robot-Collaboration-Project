@@ -42,6 +42,11 @@ def install(pf, model):
         if (len(ts)<2 or ts[0]!=0 or np.any(np.diff(ts)<=0) or curve.shape!=(len(ts),3)
             or not np.isfinite(curve).all() or not np.isfinite(var).all() or np.any(var<0)):
             raise ValueError('invalid fixed pulse response')
+        if 'prediction_covariance' in p:
+            cov=np.asarray(p['prediction_covariance'])
+            if (cov.shape!=(3,3) or not np.isfinite(cov).all() or not np.allclose(cov,cov.T)
+                    or np.linalg.eigvalsh(cov).min() < -1e-12):
+                raise ValueError('invalid measured pulse covariance')
     old_command=pf.command
     active=None
 
@@ -61,7 +66,13 @@ def install(pf, model):
                 fraction=max(0.,min(b,p['times'][-1])-min(a,p['times'][-1]))/p['times'][-1]
                 pf.vel=delta/dt
                 if pf.initialized and fraction>0:
-                    if model.get('noise_model') == 'nav2_omni_v1':
+                    if 'prediction_covariance' in p:
+                        # Explicit measured profile only; retain radial scale
+                        # covariance instead of converting it to axis noise.
+                        noise=pf.rng.multivariate_normal(np.zeros(3),np.asarray(p['prediction_covariance'])*fraction,size=pf.n)
+                        noise[:,:2]=noise[:,:2]@np.array([[c,s],[-s,c]]).T
+                        d=delta+noise
+                    elif model.get('noise_model') == 'nav2_omni_v1':
                         from harness.zone_solo_cyan_load_height import omni_noise
                         noise=omni_noise(p,model['noise_alpha_1_to_5'][str(int(p['loaded']))],
                             pf.rng.normal(size=(pf.n,3)),fraction)
