@@ -186,6 +186,7 @@ class ColumnModel:
     servo: tuple
     bias_rad: float
     columns: np.ndarray
+    camera_transform: tuple | None = None
     origin: np.ndarray = field(init=False)
     q0: np.ndarray = field(init=False)
     d: np.ndarray = field(init=False)
@@ -194,8 +195,12 @@ class ColumnModel:
     gamma: np.ndarray = field(init=False)
 
     def __post_init__(self):
-        o, r_bc = camera_in_base(dict(self.servo))
-        rot = r_bc @ bias_rotation(self.bias_rad).T        # corrected optical -> base
+        if self.camera_transform is None:
+            o, r_bc = camera_in_base(dict(self.servo))
+            rot = r_bc @ bias_rotation(self.bias_rad).T        # corrected optical -> base
+        else:
+            # Explicit fixed optical->floor-heading calibration, composed once.
+            o, rot = (np.asarray(v, float) for v in self.camera_transform)
         self.origin = o
         self._rot = rot
         u = self.columns.astype(float)
