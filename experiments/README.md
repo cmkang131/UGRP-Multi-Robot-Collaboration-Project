@@ -1,5 +1,8 @@
 # 실험 인덱스
 
+- [2026-10-07 public_ros_v8 기본 collision monitor·explore 설정](2026-10-07-mapfree-collision-monitor/RESULTS.md): PR #409. v7 M/N32 개발 한 번, B26→24/32·충돌2→16·거짓 후보14→10, 관문3/5 실패. B3s float 경계 수정은 분리 확인, 근거리 미관측·관측 대기 잔류 접촉이 남아 튜닝/새 확인/잡음 없이 중단.
+- [2026-10-07 public_ros_v7 footprint·unknown 원본 정책](2026-10-07-mapfree-unknown-footprint/RESULTS.md): 기존 확인32쌍 frontier26/32·거짓B0·coverage70.11%, 충돌2·거짓 후보14로4/5. 기존 수치 보존.
+
 - [2026-10-07 public_ros_v6 camera raytrace](2026-10-07-mapfree-raytrace/RESULTS.md): PR #409. 기존 K/L32 개발에서 연결36→1,351–2,130칸·NavFn 경로0→29,960후보로 복구. 첫3.54cm footprint 연결이 unknown에 걸려 최종 경로0/32, 추가 튜닝·새 확인·현실 잡음 없이 중단.
 
 
