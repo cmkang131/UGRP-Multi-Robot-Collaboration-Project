@@ -2649,7 +2649,7 @@ TensorBoard는 앞선 사용자 요청대로 생략하고 raw/그림/표를 로�
   위치 추정 오차로 분류하지 않는다.
 - s1042 v3 extraction: 전체 2,722프레임 중 736프레임 근거리 벽 관측. 검사 tick 1,361개 중
   정착 보류 346, 유효 무하중 보정 863, 하중 보정 없음 152. 자기 명령 DR XY 범위 (2.239,3.972)m로
-  §23.3 충분성 조건 충족. 전용 물리 녹화 조건이 발생하지 않았으므로 시뮬레이션을 새로 실행하지 않는다.
+  §23.3의 사전 등록한 수량/이동 범위 조건은 충족했다. 아래 GT 진단처럼 이것이 정확한 벽 관측을 보장하지는 않는다.
 - 현행 trajectory는 `robot_xyz_m`/yaw만 저장하며 실제 카메라 자세·관절은 없다. 정확한 가시 벽 recall은
   **NA/검증 미달**로 남긴다. 고정 보정표+GT XY로 만든 추정 가시성을 실제 가시 GT로 바꾸지 않는다.
 - 개발 도구 오류: NumPy 2.5의 2D `cross` 제거를 [공식 문서](https://numpy.org/devdocs/reference/generated/numpy.cross.html)
@@ -2657,3 +2657,69 @@ TensorBoard는 앞선 사용자 요청대로 생략하고 raw/그림/표를 로�
   extraction 종료 뒤 NumPy bool의 JSON 변환 오류(1회)는 [Python JSON 형식](https://docs.python.org/3/library/json.html)에
   맞는 bool로 수정했다. s1042의 완성된 contacts/events/poses 파일은 보존하고 길이·timestamp·해시 확인 후
   빠진 요약만 봉인했다. 검출·모델 계수·성공 기준은 변경하지 않았고 같은 오류 재시도 실패는 없었다.
+
+### 23.5 구 녹화: 고정 자세 삽입 비교 (현행 검증과 합산 금지)
+
+아래는 **precision % / 전체 벽 recall % / 벽 RMSE m**. §22의 graph 자세를 고정한 삽입 비교다.
+기존 online RBPF cloud의 직전 시각 공분산을 사용하므로 최종 입자 계보의 정확한 사전분포 재생이라고
+주장하지 않는다. 새 RBPF·루프 폐쇄 추정을 수행한 것은 현행 표뿐이다. GT 행에서는 pose 공분산=0.
+
+| 녹화 | 기존 graph | +confidence, 동일 자세 | GT+guard | GT+guard+confidence |
+|---|---|---|---|---|
+|s911-r1 개발|55.9 / 22.6 / 0.225|56.7 / 22.9 / 0.213|66.8 / 33.8 / 0.185|67.6 / 33.8 / 0.187|
+|s911-r2 개발|55.7 / 21.8 / 0.273|60.7 / 22.1 / 0.269|61.6 / 25.5 / 0.236|61.2 / 25.5 / 0.236|
+|s912-r1 확인 재생|65.2 / 34.4 / 0.210|65.8 / 34.4 / 0.212|70.8 / 33.8 / 0.180|71.3 / 33.8 / 0.182|
+|s912-r2 확인 재생|36.2 / 15.2 / 0.347|40.2 / 20.3 / 0.343|64.0 / 24.9 / 0.229|63.6 / 24.9 / 0.231|
+|s913-r1 확인 재생|63.0 / 34.4 / 0.209|62.3 / 34.4 / 0.214|68.0 / 33.8 / 0.187|69.2 / 33.8 / 0.188|
+|s913-r2 확인 재생|41.1 / 20.1 / 0.410|45.5 / 20.3 / 0.389|57.7 / 24.6 / 0.422|60.7 / 24.6 / 0.367|
+
+s913-r1 precision은 0.7%p 낮아졌고, GT 삽입도 s911-r2/s912-r2에서 낮아졌다. confidence의 보편적인
+오류 제거/precision 비감소 가설을 지지하지 않는다. 위치 오차는 고정했으므로 개선했다고 보고하지 않는다.
+
+### 23.6 옵션·구현 경계
+
+| 옵션 | 기본 | 적용 위치와 조합 |
+|---|---|---|
+|`wall_camera_calibration=off`|off|기존 FK+sag·arm-axis offset 경로 그대로|
+|`wall_camera_calibration=v3_unloaded_extrinsic_v1`|off|`wall_camera_calibration.camera_transform` + detector `ColumnModel(camera_transform=...)`; replay `--camera`로 선택. 같은 origin/rotation으로 positive-depth 검사 및 자기 지도 camera ray를 구성. 하중·미등록 명령은 삽입 보류|
+|`wall_confidence=inverse_sensor_v1`|off|`SelfWallMemory`→각 RBPF 입자 grid. `observe_wall(wall_features=...)` 또는 Cartesian `observe_contacts_confident(features=...)`; 기본 off에서는 특징을 읽지 않음|
+|`pose_correction=own_map_rbpf_v1` + particles=100|off|기존 명령 DR 평균(M1 calibration) + v7 구조적 잡음 + 각 입자 자기 지도. 현행 v7 자료에 평균 gain을 새로 맞추지 않음|
+|`wall_projection_guard=positive_depth_v1`|off|검출 접점을 카메라 고유 좌표로 투영하여 z>0·ray t>0 통과한 면만 정합/삽입|
+|`pose_graph=own_submap_v1`|off|기존 offline graph. `insertion_weights`를 submap·최종 재구성에 동일하게 전달. frontend로 GT/global pose를 되먹이지 않음|
+
+신뢰도=0은 해당 선분 hit/free 모두 기여 0. 같은 프레임/셀 중 strongest evidence만 유지하고 hit가 free보다
+우선한다. 다음 프레임의 free ray는 기존 occupied log-odds를 감소시킨다. pose confidence를 별도 적용하는
+기존 prob와의 중복 계수는 이번 v1에서 지원하지 않고 명시적으로 거부한다. 기존 옵션은 변경하지 않았다.
+
+그림의 색은 검출 하나의 정답 확률이 아니라 **신뢰도로 완화한 누적 점유 사후확률**이다.
+채점의 점유 기준은 기존 `log_odds > 0` 그대로다. 매우 옅은 양의 셀도 점유로 세므로 가짜 줄의 색이
+옅어졌다는 이유로 precision이 좋아졌다고 보고하지 않는다. 미세한 양의 증거만 남고 반대 free 증거가
+없으면 그 칸은 여전히 점유다. 성능을 높여 보이기 위한 점유 임계값 변경은 하지 않았다.
+
+RBPF의 정합/importance sampling은 기존 거리장 우도를 유지한다. 새 계수는 각 입자의 **지도 삽입**과
+그 지도에서 만든 graph submap 확률장에 적용된다. 거리장의 binary 점유 판정도 기존 그대로여서 지도
+가중치가 자세 추정에 주는 영향은 간접적이다. 측정 우도 자체를 RGB confidence로 재학습하지 않았다.
+
+### 23.7 개발 2건 종료·확인 설정 고정
+
+s1042/s1043의 모든 예측을 봉인한 뒤 GT 채점을 했다. 종료 오차(옛 카메라 graph / v3 graph /
+v3+confidence graph)는 각각 **1.214 / 2.303 / 3.317 m**, **0.820 / 1.746 / 2.579 m**다.
+v3 GT-pose 지도조차 precision/recall이 s1042 **16.6%/4.9%**, s1043 **0%/0%**다.
+계수를 바꾸지 않고 이 실패 그대로 확인 s1044–s1047로 진행한다. §17·§19 기준은 유지한다.
+
+독립 수학 점검에서 direct pinhole floor 교점과 새 ColumnModel의 차이는 최대 **1.83e-14 m**,
+평가용 static map의 여섯 벽 XY/반경은 녹화 scene.xml과 일치했다. s1043의 1,332개 접점 끝점에서
+같은 방위 첫 GT 벽까지 거리와의 차이(평가 전용)는 중앙 **+0.686 m**, P10/P90 **+0.539/+0.914 m**다.
+이것은 픽셀 의미 정답이 아니며 잘못 잡은 접점과 보정 전달 오차를 구분하지 못한다.
+
+#406의 0.305 px는 **수평 정지 지그**에서 얻은 재투영 오차다. 표 자체의 한계는 free chassis의
+높이·기울기·과도 운동을 온라인 보정하지 않는다는 것이다. 무하중 21자세를 잘 복사했다는 사실이
+자유 주행 중 바닥 거리 정확도를 보장하지 않는다. 현재 녹화에는 실제 카메라/차체 roll·pitch GT가
+없어 이 원인을 확정할 수 없다. 관측 수는 충분하고 투영/검출 편향이 발견된 상태이므로, 사전 등록한
+§23.3 조건대로 추가 물리 녹화는 실행하지 않는다. 새 벽 순회 녹화에 앞서 자유 차체에서 보정 전달을
+검증할 필요가 남는다. 보정표를 GT에 맞춰 재조정하거나 실시간 GT로 대체하지 않았다.
+
+확인 전에 기본-off가 OpenCV를 새로 import하지 않도록 옵션 검증의 eager import만 제거했다.
+수치 경로/계수는 개발 소스 c3dc8779와 동일하다. frozen 기존 RBPF의 원장·격자·의사결정·난수 상태
+bytes와 기본/명시적 off를 포함한 관련 **49개 시험 통과** 후 고정한다. 개발 큐 드라이버 정리는
+해당 예측 자식의 완료 뒤 수행했고, 과학 계산 중단·미완료 결과 재사용은 없다.

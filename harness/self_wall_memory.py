@@ -111,8 +111,8 @@ class SelfWallMemory(Memory):
                  wall_projection_guard="off", pose_graph="off", pose_graph_options=None,
                  wall_confidence="off", **kwargs):
         super().__init__(robot_id, **kwargs)
-        from harness.wall_confidence import VALUES as CONFIDENCE_VALUES
-        if wall_confidence not in CONFIDENCE_VALUES:
+        # Keep the disabled memory path free of the optional OpenCV mapper.
+        if wall_confidence not in ("off", "inverse_sensor_v1"):
             raise ValueError("UNKNOWN_WALL_CONFIDENCE")
         if wall_confidence != "off" and pose_correction != "own_map_rbpf_v1":
             raise ValueError("WALL_CONFIDENCE_NEEDS_RBPF")

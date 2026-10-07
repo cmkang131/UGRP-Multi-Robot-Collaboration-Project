@@ -123,3 +123,26 @@ def test_empty_detector_frame_is_valid_no_evidence(monkeypatch,tmp_path):
     cm,offset,_=replay.geometry(servo,'v3_unloaded_extrinsic_v1')
     segs,features,decision=replay.detections(tmp_path,{'path':'unused.jpg','sha256':'ok','commanded_servo':servo},cm,offset,1.)
     assert segs==features==[] and decision['accepted_segments']==0
+
+
+def test_rbpf_disabled_matches_frozen_estimator_bytes():
+    import types
+    from harness.self_map_rbpf import RaoBlackwellizedGrid
+    old=types.ModuleType('before_confidence_rbpf')
+    sys.modules[old.__name__]=old
+    exec((Path(__file__).parent/'fixtures/self_map_rbpf_before_confidence.py.txt').read_text(),old.__dict__)
+    grids=[old.RaoBlackwellizedGrid('r1',settle_s=None),RaoBlackwellizedGrid('r1',settle_s=None),
+           RaoBlackwellizedGrid('r1',settle_s=None,wall_confidence='off')]
+    for i in range(4):
+        for g in grids:
+            g.odom.command({'t':float(i),'kind':'drive','forward':.02,'turn':.01,'duration_s':.2})
+            g.observe_contacts(t=float(i)+.3,frame_id=i,camera_xy=[0.,0.],segments=[SEG.tolist()],robot_id='r1')
+        blobs=[json.dumps([g.export(),g.decisions,g.histories,g.rng.bit_generator.state]).encode() for g in grids]
+        assert blobs[0]==blobs[1]==blobs[2]
+
+
+def test_disabled_memory_does_not_import_optional_opencv():
+    import subprocess
+    program="import sys; sys.modules['cv2']=None; from harness.self_wall_memory import SelfWallMemory; SelfWallMemory('r1')"
+    result=subprocess.run([sys.executable,'-c',program],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
