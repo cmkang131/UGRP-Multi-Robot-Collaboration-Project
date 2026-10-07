@@ -3955,3 +3955,28 @@ slip_detect_v1·회복 후 차단 해제 수정ON. KLD/active-start/ground_vo/�
 초기 도크 정보0. 기존모델은 그대로 두며 GT는 평가에만, 모든 확인류 dev_light 기록만.
 고정 보정표는 PF 벽열 모델·관측 자기 가림·광류·블록 투영이 공유하는 instance calibration에 적용한다.
 목적은 B 진입 실측이며 이 새 조건의 결과를 앞선 s1051 성공률과 합산하지 않는다.
+
+### v130 seed1051 결과 — 운반 전 비물리 종료, 재실행0
+
+소스f10a5f9d, `outputs/s2-realism-f10a5f9d-s1051-P1-2-lookahead`,
+[결과](look-ahead-full-result.json): lifted=false/inside=false, B까지4.211m.
+49.65 SIM초/81.397 wall초, wall/SIM1.639. arm guard7·POSE_UNCERTAIN33회는 기록만.
+그러나 `REAL_PREGRASP_UNCONFIRMED`가 **잘못된 필수 종료 분기**로 남아46.65초에 멈췄다.
+RGB cyan19370px/6프레임, 단일 검출 중심 전진 오차3.04156mm·옆0.77605mm;
+고정 확인 문턱3mm를0.04156mm 넘었다. 실제 낙하·집게 이탈 실패가 아니다.
+운반 상태 미진입이므로 운반 fix수/공백/RMSE/실제 경로 벽가시율은 **N/A**.
+이번 시작/팔 강성 조건도 달라 이전full wall/SIM1.32와 속도 향상/악화로 단정하지 않는다.
+
+필수 분기를 고치는 새 `pregrasp_policy=log_only_v1`(기본off)을 추가했다.
+기존 마지막 접근 RGB anchor/명령 이력을 유지, 확인 실패는 would-stop으로 기록하고 blind 파지 진행.
+accepted=false·visual_confirmed=false·visual_confirmed_at_s=null을 보존하며 성공 증거를 만들어내지 않는다.
+타임스탬프는 명령 창의 시작일 뿐 새 시각 확인이 아니다. 기존 기본/off 출력 바이트 동일 및
+확인0회에서 파지 도달·허위 성공 없음 **관련2파일9시험 PASS/19.75초**.
+등록한 full1회는 실패로 보존, 이 사후 수정으로 추가 물리는 돌리지 않았다. v130 옵션/원본도 소급 수정하지 않는다.
+남은 작업은 새 번들에서 이 DEV 옵션을 명시한 전체 운반 검증이다. 잠금 해제·세션 종료·모델0.
+
+전달: TensorBoard `1008-s2-v36-verified`에16뷰·89수치를 source/event/live API와 대조했다(UI 미검증, 사용자 수치 확인 범위).
+첫 변환의 공통 분석SHA 라벨은 실행별SHA로 바로잡은 새 snapshot을 만들고 이전 snapshot은 보존했다.
+영상 `outputs/s2-realism-f10a5f9d-s1051-P1-2-lookahead-4x.mp4` (908프레임,80fps,11.35초),
+native TensorBoard `1008-s2-v36-video`에 등록. [검증](look-ahead-delivery.json).
+raw는 로컬 보존이며 GitHub raw백업이라고 주장하지 않는다.

@@ -15,11 +15,14 @@ SETTLE_S, SAMPLE_S, MAX_SAMPLES, MIN_HITS, MIN_AREA = .45, .025, 9, 4, 500
 
 
 class Runtime(Previous):
-    def __init__(self, *args, hover_check='off', **kwargs):
+    def __init__(self, *args, hover_check='off', pregrasp_policy='off', **kwargs):
         if hover_check not in ('off', OPTION):
             raise ValueError('unsupported hover_check')
+        if pregrasp_policy not in ('off','log_only_v1') or (pregrasp_policy!='off' and hover_check!=OPTION):
+            raise ValueError('pregrasp policy requires explicit real pregrasp path')
         super().__init__(*args, **kwargs)
         self.hover_check = hover_check
+        self.pregrasp_policy = pregrasp_policy
         self.pending_hover = None
         self.pregrasp = None
         self.pregrasp_history = []
@@ -83,20 +86,35 @@ class Runtime(Previous):
                 self.queue(target,now,duration=duration,settle=settle)
                 self.set_state('hover',now)
             elif hits+MAX_SAMPLES-len(ref['samples']) < MIN_HITS:
+                if self.pregrasp_policy=='log_only_v1':
+                    # User DEV rule: preserve the last approach anchor, not a
+                    # fabricated visual success or a renewed observation time.
+                    self.soft('REAL_PREGRASP_UNCONFIRMED',now)
+                    ref['dev_light_blind']=True;ref['evidence']=copy.deepcopy(row)
+                    ref['anchor_observed_at_s']=self.target_t
+                    if self.scene_check is not None:self.scene_check.remember(self,now)
+                    target,duration,settle=self.pending_hover;self.pending_hover=None
+                    self.queue(target,now,duration=duration,settle=settle)
+                    self.set_state('hover',now)
+                    return [{'kind':'hold'}]
                 return self.fail('REAL_PREGRASP_UNCONFIRMED',now)
             return [{'kind':'hold'}]
         hover,path=old.grasp_postures()
-        if not ref['accepted'] or not old.blind.at_posture(self.servo,hover) or self.servo.get(1)!=2000:
+        authorized = ref['accepted'] or (self.pregrasp_policy=='log_only_v1' and ref.get('dev_light_blind'))
+        if not authorized or not old.blind.at_posture(self.servo,hover) or self.servo.get(1)!=2000:
             return self.fail('REAL_PREGRASP_ANCHOR_INVALID',now)
         # Transfer the earlier RGB anchor to the unchanged command envelope.
         # This timestamp starts command timing; it is NOT a fresh visual receipt.
         evidence=ref['evidence']
         self.blind.window=dict(confirmed_at_s=now,frame_id=evidence['frame_id'],sha256=evidence['sha256'],
-            visual_confirmed_at_s=ref['confirmed_at_s'],source=OPTION,pan=hover[6],
+            visual_confirmed_at_s=ref.get('confirmed_at_s'),source=OPTION,pan=hover[6],
             envelope=old.blind._envelope(hover,path),limits=old.blind.limits())
+        if ref.get('dev_light_blind'):
+            self.blind.window.update(source='dev_pregrasp_log_only_v1',visual_confirmed=False,
+                anchor_observed_at_s=ref['anchor_observed_at_s'])
         self.blind.disarmed=None
         self.event('cyan_real_hover_transfer',now,visual_frame_id=evidence['frame_id'],
-            visual_confirmed_at_s=ref['confirmed_at_s'],hover_visual_confirmation=False,physical_success=None)
+            visual_confirmed_at_s=ref.get('confirmed_at_s'),hover_visual_confirmation=False,physical_success=None)
         for pose in path:
             self.queue(pose,now,duration=old.blind.DESCENT_STEP_S,settle=0.)
         self.arm.until += old.blind.HOVER_SETTLE_S
@@ -109,4 +127,5 @@ class Runtime(Previous):
             out['hover_check']=dict(option=self.hover_check,settle_s=SETTLE_S,max_samples=MAX_SAMPLES,
                 min_hits=MIN_HITS,min_area_px=MIN_AREA,references=copy.deepcopy(self.pregrasp_history),
                 physical_success=None,hover_visual_confirmation=False)
+            if self.pregrasp_policy!='off':out['hover_check']['pregrasp_policy']=self.pregrasp_policy
         return out

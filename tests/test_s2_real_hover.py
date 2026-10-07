@@ -21,8 +21,8 @@ def image(now, index, visible=True):
         image=base64.b64encode(data).decode(),sha256=hashlib.sha256(data).hexdigest())
 
 
-def controller(static,cal,cls=Runtime,hover_check=OPTION):
-    r=cls(static,None,None,**({'hover_check':hover_check} if cls is Runtime else {}),
+def controller(static,cal,cls=Runtime,hover_check=OPTION,**kwargs):
+    r=cls(static,None,None,**kwargs,**({'hover_check':hover_check} if cls is Runtime else {}),
         provider_factory=lambda *a,**k:FakePose(cal),vision_factory=FakeVision)
     r.initial_commands(0.,{'r3':{1:2000,**rt.pose_of('inspect')}})
     r.state='align';r.align_view='inspect';r.last_report=r.pose.report(0.)
@@ -139,3 +139,18 @@ def test_v117_one_fresh_probe_defaults_and_closure():
     assert 'harness/zone_solo_cyan_real_hover.py' in b['source_sha256']
     assert any(w['id']==c.BUNDLE_ID and w['version']=='7.10.0' for w in catalog(c.ROOT)[0]['workflows'])
     with pytest.raises(ValueError):c.bundle('a'*40,seed=1041,stage_probe='pick',pickup_slot='P1-2')
+
+
+def test_dev_unknown_records_and_descends_without_claiming_visual_success(static,cal):
+    r=controller(static,cal,pregrasp_policy='log_only_v1')
+    try:
+        for i in range(160):
+            tick(r,i*.05,i,visible=r.state=='align')
+            if r.state=='grasp':break
+        assert r.state=='grasp' and r.failure is None
+        assert r.soft_counts['REAL_PREGRASP_UNCONFIRMED']==1
+        assert r.pregrasp['accepted'] is False
+        assert r.blind.window['visual_confirmed_at_s'] is None
+        assert r.blind.window['visual_confirmed'] is False
+        assert r.blind.window['source']=='dev_pregrasp_log_only_v1'
+    finally:r.close()
