@@ -17,6 +17,15 @@ PR409 `origin/claude/mapfree-explore` **ed2fa0e9**의 아래 v3/v7/v8 파일은 
 로컬 원본은 `third_party/mapfree_navigation{,_recovery,_persistence}/`.
 `PersistentNavigator.action_failed`(L96–103)는 static_mode에서 failed=True, 탐색 모드에서만 abort+reset.
 `PersistentNavigator.update`(L205–224)는 관측 B 접근을 static_goal 인자로 받으면 static_mode=True로
-전환한다. `ActiveMapper.receive`(L213–215)는 clear 요청을 플래그 해제로만 소비했다.
+전환한다. `ActiveMapper.receive`(L212–214)는 clear 요청을 플래그 해제로만 소비했다.
 `ActiveMapper.graph`(L132–137)는 목표·복구 action 상태를 주기적으로 reset한다.
 이 연결 차이만 별도 옵션으로 분리하고 원본 v3~v8는 보존한다.
+
+새 코드 대응: `active_wall_recovery.py`의 `ExplorationRecoveryNavigator.failure/phase_result`는
+RecoveryNode/RoundRobin의 반복·성공 계수, `action_failed`는 explore_lite ABORTED callback,
+`RecoveryMapper.clear_navigation/_rays`는 resetMaps와 현재 관측/epoch,
+`graph`는 같은 action 상태를 유지하는 자기 지도 TF 연결이다. 조상 navigator의 충돌 검사,
+NavFn/frontier 및 행동 수치(1.57rad/.30m/.15m/s/5s/10s/6회)는 그대로 재사용한다.
+
+줄 번호: 새 옵션 factory L23–26, blacklist L40–55, retry L57–67, wrap/success L69–85,
+실제 reset L106–115, graph 상태/TF 보존 L121–141.
