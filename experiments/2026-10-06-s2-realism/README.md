@@ -3622,3 +3622,64 @@ HIGH/VIA/hover/descent/real_delivery)를 기존 공개 명령 port로 움직여6
 정적 표적 획득180SIM초/시작12SIM초, 한 번에 하나. 미달이면 full 없음.
 
 보정 취득 `bcefa435`: 22/22 PASS, 133.30SIM초/58.16wall초, holdout RMS 최대.2043px. GT 평가 pitch 차이 최대.2256°(보정에 미사용). 새 고정표 `s2_camera_stiff_target_v1.json`을 다음 시작 녹화 전에 봉인한다. 시작 녹화는 seed1052의 기존 정지 명령214프레임을 그대로 재발행하는12초 미만 진단이며, PF·도크 prior·주행·full 임무가 없다.
+
+### s2v32 결과 — 시작 검출 회복, 전역 가설 미해결·VO 인수 미달
+
+[기준](stiff-camera-criteria.json), [결과/원본 해시](stiff-camera-result.json),
+[22자세 고정표](../../configs/calibration/s2_camera_stiff_target_v1.json),
+[GT 없는 시작 재생](replay_stiff_start.py), [VO 재생](replay_stiff_vo.py),
+[평가 전용 채점](score_stiff_checks.py). 실행 소스: 표적 `bcefa435`, 시작 `8386e299`,
+최종 VO `9b51c11c`. VO 초기 탐색 출력도 보존하고 같은 코드를 커밋 뒤 별도 final 출력에 재생했다.
+
+**보정:** 강성 real_v1 + freezeON, 새 자유 차체·정상 서보 명령·정지 표적22/22 성공.
+새 옵션 `camera_pitch=stiff_target_v1` 기본off. 기존 K/D/mount/FOV 불변,
+카메라 ground normal과 높이만 RGB PnP로 측정하고 고정 XY offset/yaw는 유지했다.
+두 표적 fit/독립 표적 holdout; holdout RMS 최대 **.204284px**, 실제 카메라와
+pitch 차이 최대 **.225573°**(후자 GT 검증 전용, fit 입력0).
+LOOK_P20 pan2030은 보정−10.11212°/실제−10.16688°; SEARCH −18.27205/−18.22068°,
+real_delivery −27.23625/−27.23236°. 차체 clamp/qpos 재설정·하중 지그 재시도·weld0.
+무하중표의 하중 사용은 **강체 근사**, 하중 보정이나 정확도 입증으로 승계하지 않는다.
+PF·벽 검출/투영·cyan 투영·ground VO가 같은 instance calibration dict를 사용한다.
+공용 camera_robot_port·다른 제어기·#405 수정0. default/explicit off byte 시험 통과.
+
+**시작 검출 효과 분리:** 기존 s1052는 강성off이다. 다음 두 열은 **새 강성on 동일214장**이며
+보정 옵션만 다르다. 과거0열→85열은 plant 변경 효과가 포함되고, 85→91열이 같은 영상의 보정 효과다.
+시작 도크/행 prior0; 표준 seed1052 Scene 초기화는 평가/설정 경계에만 있고 PF는 전역 균일 초기화다.
+
+|지표|기존 s2v29(off plant)|새 on plant + 기존 보정|새 on plant + 새 보정|
+|---|---:|---:|---:|
+|8.25초 검출/96열|0|85|**91**|
+|정지 갱신|5|6|6|
+|최종 위치 오차(m)|3.357254|2.963104|3.181034|
+|정지 RMSE(m)|3.288994|3.186049|3.315506|
+|full 인수|FAIL|참고|**FAIL**|
+
+새 보정의 6뷰 검출:2.25/3.75/5.25/6.75/8.25/11.60초에38/95/44/90/91/49열.
+관측 빈칸은 해소됐지만 최종 전역 가설은 **미해결**이다. 정답25cm·15° 근처 입자는
+1→11→57개(복제 포함), 질량 .05%→7.189%; 가장 큰 다른 bin19.320%, 점유bin506,
+전체XY σ2.271m. 큰 평균 위치 오차는 미해결 다중 분포의 요약값이며 자신 있게 잘못 확정한 것이 아니다.
+GT 위치로 군집을 선택하거나 prior를 넣지 않았다. 남은 가장 큰 원인은 가설을 구분할 측정의 부족이다.
+이번 범위에서 추가 시선/벽 특징/우도 상수 변경은 하지 않는다.
+
+**VO 재평가:** 새 보정 + ground_vo_v1을 #405 강성on `stiff-north/south`의 무하중
+SEARCH16펄스에 적용했다. 이 자료는10Hz·다른 도장/정지로봇 조건이므로 S2 운반 증거와 합산하지 않는다.
+완전 VO **0/16**, 모두 명령 fallback; 정상 RMS **1.635867→1.635867mm**로 수치상 비악화이나
+실측 VO 성공이 아니다. 0.75초 예측 종료점이 모든0.1초 프레임격자 사이에 있어 끝 영상이 없다.
+또112 interval 중 measured4/texture부족10/rigid consensus실패6/chain 단절후unknown92였다.
+따라서 종료점 누락만 고치면 된다고도 단정하지 않는다. 임의 프레임 보간/재튜닝은 없다.
+강성on S2 운반 영상은 없으므로 운반 RMSE 개선은 **NOT_EVALUABLE**.
+기존 s2v30의 off-plant 정상RMS 실패는 그대로 보존하고 새 보정으로 통과 처리하지 않았다.
+
+**판정/자원:** 시작 검출 관문만 통과, 시작 위치 관문 FAIL·VO 운반 관문 미평가 → **full DEV 없음**.
+새 full seed/번들0, lifted/inside·운반 fix/공백·가시율·B거리·정지목록·wall/SIM은 N/A.
+정적 보정133.30SIM/58.16wall초, 정지 시작11.95SIM/9.72wall초; 성능 코호트 비교가 아니다.
+두 획득 모두 agent_lock+ugrp_session, 순차1개씩 종료·release/null 확인. 모델0·낙하 실험0.
+raw `/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/`, 원본 PNG/JPG/실패·명령 보존.
+로컬/원격 백업을 혼동하지 않으며 새 full 영상은 없다.
+
+CI 수정 `e17a27a5`: 로컬 실패 관련44시험 통과, 엔진 없는 조건15통과/6제외,
+해당6건은 Ubuntu runtime job에 재배치했다. 최종 변경 범위27시험/4.16s 통과.
+실행 코드 `8386e299`의 [원격 CI 기록](stiff-camera-ci.json): offline shard8/8·집계·Ubuntu runtime SUCCESS. 별도 multi-object-scenes는 CANCELLED여서 전체 CI green으로 표시하지 않는다. 후속 기록/재생 스크립트 커밋의 CI 상태는 별도다.
+PR406 DRAFT/병합 금지 유지. 최신 실행 지침·실패 기록을 갱신했고 기본 동작은 변경하지 않았다.
+
+전달: [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1007-s2-stiff-cal-v32%2F#timeseries) 4뷰18scalar·HParams를 원본/event/live API 대조했다. [전달 검증](stiff-camera-delivery.json). 수치만 확인, UI 표시 실증은 주장하지 않음. 기존 viewer 유지.
