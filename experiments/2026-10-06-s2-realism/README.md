@@ -2992,3 +2992,28 @@ TensorBoard **1007-s2-slip-full-v127 / 2뷰26scalar** 원본=event=live API/HPar
 
 사용자 지시대로 수치만 대조했고 UI 확인은 주장하지 않는다. raw는 로컬 보존이며 원격 백업이 아니다.
 **이번1회로 종료, 추가 후보/튜닝/물리 실행 없음. PR406 DRAFT·병합 금지 유지.**
+
+
+## s2v27 — s1051 동일 seed·동일 구성 slip 단일변수 DEV (2026-10-07 사전 등록)
+
+사용자가 **s1051 seed를 의도적으로 재사용한 동일 조건1회**를 지시했다. 이전 새 seed 규칙의
+이번 실행 한정 명시적 예외다. 새 확증 표본/성공률 분모로 세거나 기존 결과와 합산하지 않는다.
+기존 slip 재생 갱신/공백 기준 FAIL은 유지한다. s1052는 시작 행이 달라 운반 미도달이었다.
+기준 s1051/c26e9afd/v126/P1-2→B/place, 후보 **v128/7.21.0/seed1051**.
+유일한 행동 차이는 **slip_detection=slip_detect_v1**. 기존25옵션 동일, 추가 stall_recovery=off.
+초기 prior·재위치추정은 변경하지 않는다. 공용303소스 중302개 해시 동일; pulse predictor만
+명시적 측정 공분산/미사용 noise 옵션 분기가 추가됐고 기존 else는 동일하다. 기준 소스와
+기존 프로파일 출력 동등성을 시험한다. [등록](registration-v128.json), [번호 감사](v128-number-reservation.json).
+새 raw: outputs/s2-realism-<sha8>-s1051-P1-2-place-slip-matched. 이전 번들/원본 불변.
+
+lifted/inside, 운반 informative 갱신/공백, XY RMSE(평가), 벽 하단 실제 가시율(전체/검출열),
+B 영역/중심 거리, would-stop 종류별 수, wall/SIM, slip measured/replaced/unknown,
+옆펄스 명령/실제 비율을 나란히 보고한다. 초기 Scene과 slip 적용 전 명령/RGB 동등성을
+확인하고 차이가 있으면 단일변수 비교 한계로 기록한다. 결과와 무관하게1회 뒤 종료한다.
+freeze ON/dev_light, agent_lock+ugrp_session, nice0, 모델0. 물리 실패/오류/정체 감시 및
+900SIM초 상한은 유지. ENOSPC=HOST_ERROR·부분raw 보존. 추가 실행/튜닝 없음.
+
+도크 정보 분석·새 기본-off 초기화 옵션은 이번 실행과 분리하고 **물리 실행 전후에만** 한다.
+과제 명세·실물 운영 기록을 먼저 확인하며, 근거 없이 seed/GT 행을 사전정보로 넣지 않는다.
+s1052는 탐색/재생 자료다. PR405의2.2배가 v122 미사용 때문이라는 사용자 추정은
+여기서 별도 검증하지 않은 참고로 기록한다. PR406 DRAFT·병합 금지.
