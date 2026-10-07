@@ -48,8 +48,17 @@ def own_inputs(episode,robot):
     return fs,cs
 
 
-def geometry(servo,mode):
+def geometry(servo,mode, *, camera_pose='off'):
     cols = mp.column_positions(96,2)
+    if camera_pose != 'off':
+        if mode != 'off':
+            raise ValueError('CAMERA_POSE_AND_TABLE_OPTIONS_CONFLICT')
+        from harness.servo_camera_fk import transform_from_commands
+        rigid,reason = transform_from_commands(servo,camera_pose=camera_pose)
+        if rigid is None:
+            return None,None,reason
+        cm = mp.ColumnModel(tuple(sorted(servo.items())),0.,cols,camera_transform=rigid)
+        return cm,np.zeros(3),reason
     if mode == 'off':
         cm = mp.column_model(servo,wp.detector_bias(servo,wp.is_loaded(servo),True),cols)
         return cm,np.array([ewm.ARM_AXIS_OFFSET_M,0.,0.]),'legacy'

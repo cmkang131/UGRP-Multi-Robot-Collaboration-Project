@@ -53,3 +53,21 @@ agent_lock/ugrp_session/한 번에 하나를 따른다. 현재 남은 로그로 
 시험 통과 후에만 commit/push, Codex trailer, DRAFT 유지·병합/강제 push/reset 없음.
 raw `/Users/changmin/projects/ugrp/outputs/camera-pose-projection-v1/`, 원본 보존, ENOSPC=HOST_ERROR.
 PR #406 재사용 가능성만 기록하며 그 파일/브랜치는 수정하지 않는다. TensorBoard/Drive는 이전 결정대로 생략.
+
+## 구현·조합
+
+[REFERENCES](REFERENCES.md)의 표준 TF chain을 `harness/servo_camera_fk.py`에 구현했다.
+명령 변화에 따른 카메라 geometry를 매 frame 다시 계산한다. 이 옵션은 **명령 FK 후보**이며 측정 자세 보정이 아니다.
+실제 pitch 불일치는 확인했지만 관절·차체 원인 분리는 불가하므로, 명령 FK가 그것을 해결하는지는 관문으로 판단한다.
+
+| 옵션/API | 기본 및 적용 |
+|---|---|
+| `camera_pose=off` | 기본. 기존 `geometry(servo, mode)`의 행렬·offset·기존 검출 scan/면/JSON bytes 불변 |
+| `camera_pose=servo_fk_v1` | `geometry(servo,'off',camera_pose=...)` → 새 v3 fixed chain과 자기 PWM으로 `ColumnModel` 생성 |
+| `wall_camera_calibration=v3_unloaded_extrinsic_v1` + FK | 두 모델 동시 선택은 오류. PnP 표와 명령 FK를 더하거나 보정 계수로 섞지 않음 |
+| closed/unknown load, 범위 밖 명령 | 미지원으로 보류. 이번 관문은 기존 무하중/정착 프레임만 비교 |
+| 기존 검출기·메모리 조합 | 검출은 기존 `wall_detector=off`. 통과 때 생성한 ColumnModel의 segments/camera transform을 기존 SelfWallMemory RBPF100+guard+graph+confidence에 전달 |
+
+`code/audit.py`는 실제 camera 로그를 읽는 **평가 전용**, `code/evaluate_fk.py`는 자기 transform 예측을
+저장·hash한 뒤에만 GT 차체/벽/주석으로 채점한다. runtime FK는 sim/평가/모델 모듈을 import하지 않는다.
+공유 `visual_arm.py`, PR #406 파일, 실패 검출기, PnP table은 수정하지 않았다. 새 venv/의존성 설치0.
