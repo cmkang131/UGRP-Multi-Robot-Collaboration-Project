@@ -44,7 +44,9 @@ def collect(seed,opt):
     states=[e for e in record['events'] if e['event']=='state'];st=[q['t'] for q in states]
     accepted={round(q['t'],6) for q in pred['amcl']['rows'] if q.get('accepted')}
     # Features and acceptance are recorded own-RGB results, never GT-derived.
-    landmarks=sorted(q['t'] for q in record['sensor_landmarks']['rows'] if q['features'] and round(q['t'],6) in accepted)
+    # The old v42 ON replay did not save feature packets. Do not splice baseline
+    # feature timestamps into its changed update schedule and invent landmark age.
+    landmarks=sorted(q['t'] for q in record['sensor_landmarks']['rows'] if q['features'] and round(q['t'],6) in accepted) if opt=='off' else []
     out=[];excluded=[]
     for decision in decisions(record):
         p=ps[round(decision['t'],6)];m=p['observation_quality']['diagnostics'].get('pose_estimate',{})
@@ -81,11 +83,14 @@ def grouped(samples):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);a=p.parse_args()
-    a.output.mkdir(parents=True,exist_ok=False);result=dict(criteria=read(CRITERIA),criteria_sha256=sha(CRITERIA),physics=0,controller_changes=0,conditions={})
+    a.output.mkdir(parents=True,exist_ok=False);result=dict(criteria=read(CRITERIA),criteria_sha256=sha(CRITERIA),physics=0,controller_changes=0,conditions={},on_landmark_age='unavailable: v42 on saved no feature packets; fix age remains available',hashes={})
     for opt in ('off','on'):
         allrows=[];runs=[]
         for seed in RUNS:
             sample,excluded=collect(seed,opt);allrows.extend(sample)
+            result['hashes'][str(REPLAY/f's{seed}-{opt}.json')]=sha(REPLAY/f's{seed}-{opt}.json')
+            for name in ('student_record.json','eval_only/trajectory.jsonl'):
+                source=OUTPUTS/RUNS[seed]/name;result['hashes'][str(source)]=sha(source)
             (a.output/f's{seed}-{opt}-rows.json').write_text(json.dumps(sample)+'\n')
             runs.append(dict(seed=seed,all=summarize(sample),groups=grouped(sample),excluded_times=excluded,
                 misses=[q for q in sample if q['miss']]))

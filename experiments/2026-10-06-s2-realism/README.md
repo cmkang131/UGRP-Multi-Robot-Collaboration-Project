@@ -4769,3 +4769,33 @@ TensorBoard 새 스냅샷 `1008-s2-rotation-v42`에 여섯 off/on 재생과 하�
 무경고 XY>25cm=0, 운반 RMSE 증가≤10⁻⁹m, off pose 직렬화 동일을 모두 요구한다.
 GT는 평가만, 결과 후 문턱 변경0. 세 holdout 모두 통과할 때만 감독 파일 재확인 후
 새 seed를 별도 사전등록하고 lock/session 하에 full DEV1회. 미달이면 물리0이다.
+
+### v44 1차 진단·표준 후보 선택 (적합/holdout 결과 전)
+
+기준off 1,602시점의 평균 오차는 x +9.724cm /y −3.387cm /yaw −1.294°다.
+XY 평균편향²은 MSE의28.27%; 평균 제거 전/후 NEES 초과율80.09/73.03%이며,
+x 잔여분산 .009444m² 대 보고 .000790m²(11.96배)다. seed별 평균 제거 후에도
+73.23/50.62/69.98%다. 따라서 **편향도 있고 잔여 공분산 불일치도 있다**. 평균 제거 뒤
+남은 시간변동 편향/모델 오차와 순수 확률 잡음을 NEES 하나로 식별할 수는 없다.
+47건(on)은 s1051 운반187.25–205.65초,44건(off)은187.25–204.45초에 모였다.
+on 재생에는 특징 packet이 저장되지 않아 랜드마크 경과시간을 재구성하지 않는다.
+전체 fix 나이는 따로 기록하며 off의 feature 기록을 on에 섞지 않는다.
+
+표준 대조: [Nav2 OmniMotionModel,59–85행](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/motion_model/omni_motion_model.cpp#L59)은
+이동²/회전²의 α1–5로 전진·옆·yaw 분산을 만든다. 기존 최대군집 pose/전체 공분산 보고
+자체는 AMCL 방식이며 이번에 임의 σ 배수나 GT 평균 빼기를 추가하지 않는다.
+[Censi et al.2013](https://www.diag.uniroma1.it/~labrob/pub/papers/TRO13.pdf)은 외부GT 없이
+자기 센서 이동과 구동 자료의 MLE 및 식별 가능성 검사를 제시한다. 여기서는 그 원칙과
+Gaussian likelihood를 쓰며 논문의 차동구동 wheel-radius/외부 보정 동시 알고리즘을
+그대로 구현했다고 주장하지 않는다. [출처·원본 해시](consistency-sources.json).
+
+[적합 고정 절차](consistency-fit-criteria.json): 후보 `motion_noise=nav2_omni_mle_v1`,
+기본off. 각 펄스의 **첫 measured RGB 구간 하나**만 선택해 공유 영상 중복을 피한다.
+측정 공분산+기존±2.8° 공통 pitch의 radial 전파를 R로 두고,
+Σ=Q(α)+R의 logdet+Mahalanobis Gaussian 음의 로그우도를 최소화한다. 잔차 평균을
+빼거나 GT로 잡음을 늘리지 않는다. S2 기존 pulse 시간곡선의 구간/전체 시간 비율로 Q를
+배분하는 방식은 그대로다. rank5·수치 수렴이 없으면 미식별로 거절한다.
+자기 로그의 대상은 하중 큰 옆이동뿐이라 **그 profile만 적용**한다. 전진/회전/무하중/
+fine에는 측정 근거가 없으며 v122 유지. 정상 평균·slip 대체·관측·정지 문턱 변경0.
+2개 적합/1개 확인3fold 모두 기존 관문을 통과해야 물리로 간다. 부분 RGB 자료의 선택
+편향·공통 카메라 오차 가능성은 남고, α 증가가 편향 원인을 고쳤다는 뜻은 아니다.
