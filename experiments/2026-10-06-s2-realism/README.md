@@ -2365,3 +2365,28 @@ PR405 구현과 같은 값으로 고정한다. 기존 벽 검출 접점의 위/�
 분리나 새 확증 결과로 주장하지 않는다. 통과 시만 새 seed에 고정 표를 적용한
 S2 full DEV1회를 한다. 실물은 현장 카메라의 바닥 표본으로 다시 준비해야 한다.
 같은 색의 벽을 놓칠 수 있는 원 방법의 한계를 보존하며 결과 뒤 문턱을 조정하지 않는다.
+
+
+### 재생 통과와 새 full 사전 등록
+
+기준 `3621b05d`, 구현 `e89883e3`의 full5117frame 재생: contact_filter off는
+이전 nav2_observed의 poses/amcl/visibility와 **전체 동일**. on은 RMSE2.125893m
+(원래 mask의2.190939m, observed의2.199598m보다 개선), informative20회,
+최장공백39.25초, 초기 정지최대8.876cm로 등록4조건을 통과했다.
+30초 공백 목표는 여전히 미달이다. 수치를 보고 문턱·상수·참조를 바꾸지 않았다.
+1Hz 분류 접점에서는 바닥727/2024(35.92%)와 진짜벽13/5168(0.252%)를 제거했다.
+부분 개선이며 남은 바닥 오검출1297열을 해결했다고 주장하지 않는다.
+
+main+열린PR16refs의 RUNNABLE_ID와 별도 BUNDLE_ID를 모두 조사한 최댓값125 다음
+**zone-s2-realism-v126 / workflow7.19.0 / 미사용seed1051 / P1-2→B / place**를
+예약한다(`registration-v126.json`). 단순 검색의 DOI `s10514`는 seed1051이 아니며
+정확한 토큰·raw경로 일치는0이다. 기존1050 이하 seed는 재사용하지 않는다.
+freeze ON은 S2 단독 DEV에만 한정(S3·짝 운반·본 연구·본 연구 사전등록 코호트 금지).
+이 문단의 seed 사전 기록은 DEV 실행 계획이며 본 연구 승인이 아니다.
+기존 v125의23개 옵션 전부와 `visibility_policy=nav2_observed_v1`,
+`contact_filter=floor_appearance_v1`를 명시해 result/bundle에 보존한다.
+실물식 blind 파지, v3 무하중 보정+고정 sag, real_delivery_v1, pulse 보정,
+관측 격리·RGB 정체 감시, eval120초/1cm 감시를 유지한다.
+unknown·불확실성은 dev_light 기록만, 실제 물리 실패/오류/유한cap만 종료한다.
+1회만 실행, 모델0, 원본 합산0. ENOSPC는 HOST_ERROR로 남기고 seed를 재사용하지 않는다.
+원시 출력은 primary outputs/s2-realism-<실행SHA8>-s1051-P1-2-place에 둔다.

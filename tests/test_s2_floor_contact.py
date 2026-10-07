@@ -56,3 +56,23 @@ def test_hsi_grey_black_invalid_hue_and_frozen_table_validation(static,cal):
         with pytest.raises(ValueError):validate({**cfg,**change})
     for kw in [dict(contact_filter='bad'),dict(contact_filter='floor_appearance_v1',floor_appearance=cfg)]:
         with pytest.raises(ValueError):Runtime(static,None,None,**kw)
+
+
+def test_v126_admits_only_fixed_floor_table_and_fresh_full_dev(tmp_path):
+    from harness import zone_s2_realism_contract_v126 as c
+    from scripts import run_s2_realism_v126 as runner
+    b=c.bundle('a'*40,seed=1051,stage_probe='place',**c.NEW_OPTIONS);c.require_execution(b)
+    assert b['options']['idle_robot_contacts']=='freeze_v1'
+    for key in ('contact_filter','visibility_policy'):
+        bad=copy.deepcopy(b);bad['options'][key]='off'
+        with pytest.raises(ValueError):c.require_execution(bad)
+    for seed in (1050,1049):
+        bad=copy.deepcopy(b);bad['task']['seed']=seed
+        with pytest.raises(ValueError):c.require_execution(bad)
+    bad=copy.deepcopy(b);bad['floor_appearance']['intensity_floor_bins'][0]^=True
+    with pytest.raises(ValueError):c.require_execution(bad)
+    for key,value in [('scenario','S3'),('transport','pair'),('research_result',True)]:
+        bad=copy.deepcopy(b);bad[key]=value
+        with pytest.raises(ValueError):c.require_execution(bad)
+    args=runner.parser().parse_args(['--expected-source-sha','a'*40,'--output',str(tmp_path)])
+    assert args.visibility_policy==args.contact_filter=='off'
