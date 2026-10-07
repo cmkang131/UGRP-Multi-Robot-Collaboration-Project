@@ -30,6 +30,7 @@ def test_one_dev_seed_exact_options_and_explicit_failed_replay_deviation(tmp_pat
 
 
 def test_runtime_uses_slip_with_frozen_baseline_and_preserves_result_failure(tmp_path):
+    pytest.importorskip("mujoco", reason="Engine import closure; exercised in ubuntu-simulation-runtime")
     from harness.zone_solo_cyan_slip_recovery import Runtime
     from harness.zone_solo_cyan_slip_detect import SlipBuffer
     from harness.zone_solo_cyan_contract_v106 import MAP_ID,CALIBRATION,CALIBRATION_SHA

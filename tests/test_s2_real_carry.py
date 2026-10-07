@@ -102,6 +102,7 @@ def test_real_provider_does_not_reuse_high_calibration(static):
 
 
 def test_geometry_opportunity_is_not_a_fix():
+    pytest.importorskip("mujoco", reason="Engine import closure; exercised in ubuntu-simulation-runtime")
     path=Path('experiments/2026-10-06-s2-realism/analyze_real_carry.py')
     spec=importlib.util.spec_from_file_location('carry_geometry',path)
     m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)

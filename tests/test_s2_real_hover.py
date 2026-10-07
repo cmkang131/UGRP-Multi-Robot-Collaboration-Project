@@ -113,8 +113,9 @@ def test_offline_projection_checks_actual_lens_not_rectangle():
                 replay=m.project(row,dict(origin_m=v['camera_origin_floor_heading_m'],rotation=v['camera_rotation']))
                 # Cross-platform BLAS differs at ~6e-14 px. Keep integer lens
                 # coverage/bboxes and every other field exact; only floating
-                # projection coordinates get a sub-nanopixel tolerance.
-                float_keys=('corner_uv','corner_bbox_xyxy')
+                # projected pixel/metric coordinates get a roundoff tolerance.
+                float_keys=('corner_uv','corner_bbox_xyxy','positive_depth_min_m',
+                            'block_center_floor_heading_m')
                 for key in float_keys:
                     np.testing.assert_allclose(replay[key],v[key],rtol=0,atol=1e-10)
                 assert {k:x for k,x in replay.items() if k not in float_keys}=={k:x for k,x in v.items() if k not in float_keys}

@@ -28,6 +28,7 @@ def test_default_and_off_actions_record_identical(static, cal):
 
 
 def test_ray_box_shadow_parallel_inside_and_behind():
+    pytest.importorskip("mujoco", reason="Engine import closure; exercised in ubuntu-simulation-runtime")
     r=np.array([[0,0,1],[1,0,1],[0,0,-1]])
     d=box_depth(np.zeros(3),r,np.array([0,0,2]),np.eye(3),np.array([.5,.5,.5]))
     np.testing.assert_equal(d,[1.5,np.inf,np.inf])
@@ -73,6 +74,7 @@ def test_clear_columns_update_but_shadow_and_cargo_are_unknown():
 
 
 def test_command_geometry_mask_and_preregistered_parameters():
+    pytest.importorskip("mujoco", reason="Engine import closure; exercised in ubuntu-simulation-runtime")
     src,pf,vl=make_provider()
     try:
         cm=pf.column_model_for(rt.high.HIGH);v=Visibility()

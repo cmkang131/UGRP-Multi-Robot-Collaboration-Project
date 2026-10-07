@@ -3589,3 +3589,14 @@ Augmented 마지막3.357254m/RMSE3.288994m·갱신5회. 기존 실패 재현, of
 새 웹 검색0·#405 수정0. 이어지는 사용자 요청의 강성on 재보정은 이 미완료 조건을 처리하는 별도 작업이다.
 
 완료 검증: 관련2파일 **16시험/1.60s 통과**, [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1007-s2-start-view-v31%2F#timeseries) 2뷰11scalar·HParams 원본/event/live API 수치 일치. [전달 기록](start-view-delivery.json). UI 확인·새 영상 없음.
+
+## s2v32 — CI 의존성 분리와 강성on 카메라 재보정 (2026-10-07)
+
+CI run37616106371의 실패8건: MuJoCo 없는 offline shard의 엔진 import6건,
+hover 감사 float의 끝자리(최대2.8e−17m) exact 비교1건, workflow plan 표본 v124–129
+누락1건이다. 해당 엔진 의존 시험만 `pytest.importorskip`으로 표시하고, MuJoCo가 설치된
+기존 Ubuntu runtime job에 파일5개를 명시하여 누락 없이 검증한다. 순수 시험은 계속 offline에서 돈다.
+저장된 projection의 정수/가시율/결론은 exact, 계산 float 두 필드만 기존1e−10 허용 범위에 포함했다.
+실행기/물리/번들/과거 원본은 바꾸지 않는다. 로컬 전체 suite 대신 실패 관련 파일만 확인한다.
+
+CI 수정 로컬 검증: 관련7파일44시험/73.93s PASS; 엔진 import를 차단한 offline 환경은 관련5파일의 의존성 분기만 별도 확인. 원격 전체 완료는 별도 기록한다.
