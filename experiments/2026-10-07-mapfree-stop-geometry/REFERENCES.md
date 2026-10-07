@@ -25,7 +25,7 @@
   **정적 B 목적지 Nav2 action은 exploration manager가 아니다.** B를 blacklist하고 다른 frontier로
   바꾸는 것은 원본 포트의 누락 수정이 아니라 baseline 임무 변경이다. 이번에는 하지 않는다.
 
-코드 원본은 기존 third_party의 revision/hash와 비교하고, 추가 Nav24파일은 로컬 raw references에
+코드 원본은 기존 third_party의 revision/hash와 비교하고, 추가 Nav2 소스5파일은 로컬 raw references에
 보관했다. 추가 [LineIterator](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_util/include/nav2_util/line_iterator.hpp)는
 같은 Bresenham tie/endpoint이므로 기존 raytrace_cells로 원본 외곽 검사도 평가용 대조한다.
 [출처 해시](references.json). Apache-2.0/BSD 저작권은 원문에 있으며 이번 진단은 runtime

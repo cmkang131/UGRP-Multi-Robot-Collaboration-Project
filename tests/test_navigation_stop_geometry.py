@@ -69,6 +69,7 @@ def test_v4_opt_in_legacy_bytes_and_nav2_outline_cell_difference():
     assert not new.pose_clear([.15,.25,0.])
     cm.raw[11,10]=255;cm.costs=cm.inflate()
     assert not OutlineCostmap(cm.raw,cm.origin).pose_clear([.15,.25,0.])
+    assert not new.pose_clear([-2.,0.,0.])
     payload=b'legacy off\x00\n'
     assert navigation_output_v4(payload) is payload
     with pytest.raises(ValueError):OutlineActor('own_frontier')
@@ -77,6 +78,11 @@ def test_v4_opt_in_legacy_bytes_and_nav2_outline_cell_difference():
     for name in ('harness/public_navigation_persistent.py','harness/public_navigation_recovery.py',
                  'harness/public_navigation/costmap.py','experiments/2026-10-07-mapfree-navigation-persistence/code/run_persistent.py'):
         assert (ROOT/name).read_bytes()==subprocess.check_output(['git','show','b494873c:'+name],cwd=ROOT)
+    import ast
+    tree=ast.parse((ROOT/'harness/public_navigation_outline.py').read_text())
+    imports=[n.module or '' for n in ast.walk(tree) if isinstance(n,ast.ImportFrom)]
+    imports += [alias.name for n in ast.walk(tree) if isinstance(n,ast.Import) for alias in n.names]
+    assert not any(any(x in name for x in ('mujoco','audit','report','world','openai','genai')) for name in imports)
 
 
 def test_v4_matches_nav2_boundary_raster_on_rotated_polygon():

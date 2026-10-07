@@ -107,3 +107,12 @@ PYTHONPATH=outputs/self-map-plot-deps /Users/changmin/projects/ugrp/.venv-sim-wo
 이는 raw 원격 백업이 아니다. 결과/출처/검증은 Git에 보존한다. runtime hash·이전 v2 모든 source hash·사용자
 미추적4파일 해시 불변, 실제 실패 자료의 `DEVELOPMENT_GATE_FAILED_STOP_CONFIRMATION` 차단을 검증했다.
 [검증 기록](results/verification.json). MuJoCo/렌더/모델 호출0, 실행 session은 종료됐다. PR #409 DRAFT 유지.
+
+## 후속 s4·s5 정지 기하 진단 (explore6)
+
+[진단·그림2장·v4 결과](../2026-10-07-mapfree-stop-geometry/README.md).
+통로0.50m > padding 포함 최대 회전폭0.3688m. s4/s5 첫 거부 투영은 연속 기하에서 양의 여유가
+있으나 raster 벽과 겹쳤다. filled footprint와 Nav2 원본 외곽 검사 차이만 기본-off `public_ros_v4`로
+분리했다. 동일 개발10에서 s5 두 건은101s B 확인·접촉0, s4 두 건은125s 동일 회복 소진이었다.
+유효 참 B2/6→4/6·거짓0, 관문 미달. s4의 원본 RoundRobin 종료 및 정적 B 임무를 바꾸지 않고
+추가 튜닝 중단, 미개봉 I/J32 실행0. v3 코드/결과는 바이트 그대로 보존했다.
