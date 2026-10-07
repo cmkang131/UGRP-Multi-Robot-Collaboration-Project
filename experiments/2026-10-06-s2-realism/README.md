@@ -3207,3 +3207,19 @@ static map+자기 추정 기반 가드는 dev_light 기록, 실제 낙하/이탈
 개선을 주장하지 않는다. 통과 시에만 동일1051/P1-2/B/place full1회, freeze ON/dev_light,
 agent_lock·ugrp_session·모델0. SIM900s/wall10800s, ENOSPC=HOST_ERROR·부분raw 보존.
 이전 s1051·s1051-slip과3조건 표, 모든 실패·would-stop·wall/SIM을 그대로 기록한다.
+
+사전 기준 커밋 **6306b26d** 후 재생: 적격3구간 모두 **11회 연속 slip**,
+117.60 /359.85 /470.05초에서10.25초 진행 부족으로 정지→반대35 fine pulse를 제안했다.
+기존 방향 다음 이동0/3, 반대·bounded3/3. 정상/unknown·기본off·회복 완료/timeout 재계획
+관련 **11 passed /0.91s**. [재생 PASS](slip-recovery-replay.json)는 첫 변경 명령까지만의
+정책 검증으로 물리 탈출/위치 개선이 아니다. 새 회복 영상을 원본으로 대체하지 않았다.
+
+main+열린15PR 최대128/7.21.0 확인 후 **v129/7.22.0** 예약
+([번호](v129-number-reservation.json)). **seed1051/P1-2→B/place**를 위 기준에 따라 다시
+등록한다([정확한28옵션](registration-v129.json)). 이전v128의27옵션 모두 동일하고
+`slip_recovery=slip_recovery_v1`만 추가, 도크 전역 초기화는 포함하지 않는다.
+연결 시험 통과 후 실행 소스 커밋·push→잠금→full DEV1회. 아직 새 물리는 시작하지 않았다.
+
+실행 연결·기본off·freeze 제한·HOST_ERROR 보존 포함 **9 passed /28.14s**.
+위임 검증의 v128 ID/v129 schema 불일치를 wrapper에서 바로잡았으며 freeze 가드는 유지했다.
+[로컬 검증](v129-local-verification.json). 물리 실행 소스는 다음 커밋으로 고정한다.
