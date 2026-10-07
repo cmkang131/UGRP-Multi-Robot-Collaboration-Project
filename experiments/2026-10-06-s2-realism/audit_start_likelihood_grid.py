@@ -89,7 +89,7 @@ def main(out):
         xs=np.arange(x0,x1+1e-9,.1);ys=np.arange(y0,y1+1e-9,.1);ya=np.deg2rad(np.arange(-180,180,5))
         xx,yy,aa=np.meshgrid(xs,ys,ya,indexing='ij');grid=np.c_[xx.ravel(),yy.ravel(),aa.ravel()]
         free=pf._map_logprior(grid)==0;px=grid[free]
-        result=dict(schema='ugrp.s2.start_likelihood_grid.v1',physics_runs=0,filter_updates=0,model_calls=0,gt_usage='evaluation-only grid scores/counterfactuals',
+        result=dict(schema='ugrp.s2.start_likelihood_grid.v1',physics_runs=0,filter_updates=0,model_calls=0,source_sha=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),gt_usage='evaluation-only grid scores/counterfactuals',
             grid=dict(xy_m=.1,yaw_deg=5,total=len(grid),free=len(px)),parameters=PARAMS,views=summary,variants={})
         archive=dict(poses=px);maps={};false=(np.linalg.norm(px[:,:2]-truth[:2],axis=1)>.25)|(abs(np.arctan2(np.sin(px[:,2]-truth[2]),np.cos(px[:,2]-truth[2])))>np.deg2rad(15))
         for key in ('raw','actual_camera','true_only','no_floor','thin','ideal'):
@@ -100,11 +100,22 @@ def main(out):
                 best_position_error_m=float(np.linalg.norm(px[best,:2]-truth[:2])),grid_points_above_GT=int((log>exact).sum()),
                 false_best_pose=px[wrong].tolist(),false_best_over_GT=float(np.exp(log[wrong]-exact)),
                 truth_evaluation_tolerance='25cm and15deg',point_count=sum(len(v[key]) for v in views))
+            weights=np.exp(log-log.max());weights/=weights.sum();mean=weights@px[:,:2]
+            result['variants'][key].update(grid_uniform_prior_near_GT_mass=float(weights[~false].sum()),grid_uniform_prior_mean_xy=mean.tolist(),grid_uniform_prior_mean_error_m=float(np.linalg.norm(mean-truth[:2])),grid_uniform_prior_sigma_xy_m=float(np.sqrt(weights@np.sum((px[:,:2]-mean)**2,axis=1))))
             print(key,result['variants'][key],flush=True)
         # Per-view attribution at the same aggregate raw false peak, not changing it for each ablation.
         wrong=np.array(result['variants']['raw']['false_best_pose'])
         for v,s in zip(views,summary):
             m=likelihood(field,np.vstack([truth,wrong]),v['raw']);s['GT_false_likelihood']=m.tolist()
+            pose={int(k):x for k,x in s['pose'].items()};uv=np.array(s['uv'])
+            cm=pf.column_model_for(pose,columns=uv[:,0]);rays=geo.pixel_rays(cm,uv[:,0],uv[:,1]);depth=-cm.origin[2]/rays[:,2]
+            s['GT_false_geometry']=[]
+            for hypothesis in (truth,wrong):
+                first=geo.wall_depths(cm,hypothesis,rays,static)
+                expected,_,_=geo.bottom_projection(cm,hypothesis,segments)
+                s['GT_false_geometry'].append(dict(ray_intersects_wall_before_endpoint=int((first<depth-1e-6).sum()),
+                    median_bottom_residual_px=float(np.median(abs(expected-uv[:,1]))),
+                    detected_in_view=int(((expected>=4)&(expected<=470)).sum())))
             for label in s['class_endpoint_errors']:
                 selected=np.array(s['labels'])==label;part=likelihood(field,np.vstack([truth,wrong]),v['raw'][selected])-1
                 s['class_endpoint_errors'][label]['GT_false_additive_score']=part.tolist()
@@ -117,7 +128,7 @@ def main(out):
         xml=ET.parse(RAW/'scene.xml');walls=[]
         for o in static['obstacles']:
             if o['kind']!='wall':continue
-            el=xml.find('.//geom[@name="'+o['id']+'"]');assert el is not None
+            el=xml.find('.//geom[@name="zone_'+o['id']+'"]');assert el is not None
             pos=np.fromstring(el.get('pos'),sep=' ');size=np.fromstring(el.get('size'),sep=' ')
             error=max(np.max(abs(pos-np.r_[o['center_m'],o['height_m']/2])),np.max(abs(size-np.r_[o['half_extents_m'],o['height_m']/2])))
             walls.append(dict(id=o['id'],map_scene_max_abs_m=float(error),pos=pos.tolist(),size=size.tolist()))
@@ -130,6 +141,7 @@ def main(out):
         for ax,(key,data) in zip(axes.flat,maps.items()):
             im=ax.imshow(data.T,origin='lower',extent=[xs[0],xs[-1],ys[0],ys[-1]],aspect='equal',cmap='coolwarm');ax.plot(*truth[:2],'g*',ms=14,label='exact GT (evaluation)');ax.plot(*wrong[:2],'kx',ms=9,label='raw false peak');ax.set_title(key+' : log score / GT');fig.colorbar(im,ax=ax,shrink=.65)
         axes.flat[-1].axis('off');axes.flat[0].legend(fontsize=7);fig.savefig(out/'likelihood-grid.png',dpi=150);plt.close(fig)
+        result['evaluation_stationarity_max_m']=float(max(np.linalg.norm(np.array(g['robot_xyz_m'][:2])-truth[:2]) for g in gtrows))
         result['sources']={str(p):sha(p) for p in [source,RAW/'scene.xml',RAW/'eval_only/trajectory.jsonl',RAW/'eval_only/camera-pose.jsonl',RAW/'robots/r3/frames.jsonl',Path(__file__)]}
         result['artifacts']={str(p):sha(p) for p in out.iterdir() if p.is_file()}
         (out/'result.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
