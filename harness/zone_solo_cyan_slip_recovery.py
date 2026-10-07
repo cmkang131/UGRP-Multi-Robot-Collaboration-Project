@@ -103,6 +103,7 @@ class Runtime(Previous):
             self.slip_cursor = 0
             self.slip_backup = None
             self.slip_blocks = []
+            self.slip_attempts = 0
             self.slip_recovery_rows = []
             self.slip_replan = False
             self.slip_exhausted_logged = False
@@ -122,7 +123,7 @@ class Runtime(Previous):
                 continue
             trigger = self.slip_progress.observe(row)
             if trigger is not None:
-                if len(self.slip_blocks) >= PARAMS['max_recovery_attempts']:
+                if self.slip_attempts >= PARAMS['max_recovery_attempts']:
                     if not self.slip_exhausted_logged:
                         self.soft('SLIP_RECOVERY_EXHAUSTED', now)
                         self.slip_exhausted_logged = True
@@ -131,6 +132,7 @@ class Runtime(Previous):
                 world = rot(r.yaw_rad) @ np.array(trigger['direction'])
                 block = dict(xy=[r.x_m, r.y_m], direction=world.tolist())
                 self.slip_blocks.append(block)
+                self.slip_attempts += 1
                 self.slip_backup = dict(started=now, delta=np.zeros(3),
                     body_direction=np.array(trigger['direction']), world_direction=world,
                     start_yaw=r.yaw_rad, pulses=0)
@@ -145,12 +147,21 @@ class Runtime(Previous):
             return False
         r = self.last_report
         world = rot(r.yaw_rad) @ d
-        # Local directional inhibition expires spatially, not on an unverified
-        # command-distance claim. Static likelihood map remains untouched.
+        # Temporary inhibition is cleared on the post-recovery retry, or is
+        # irrelevant outside this local radius. The static map is untouched.
         return any(math.dist([r.x_m, r.y_m], b['xy']) < .5 and
                    np.dot(world, b['direction']) > .95 for b in self.slip_blocks)
 
     def _replan_slip(self, xy, now):
+        if self.slip_replan:
+            # Nav2 clear/retry semantics: an expired local failure receipt
+            # must not veto the only progress command after BackUp. This does
+            # not assert that the wall disappeared or that BackUp succeeded.
+            self._slip_event(now, 'clear_direction_blocks', count=len(self.slip_blocks),
+                             attempts=self.slip_attempts, fresh_slip_required=True)
+            self.slip_blocks.clear()
+            self.slip_progress.reset()
+            self.path, self.path_goal = [], None
         r = self.last_report
         keep = [rect('slip_failed_target_' + str(i),
                      np.array(b['xy']) + .1 * np.array(b['direction']), [.04, .04],

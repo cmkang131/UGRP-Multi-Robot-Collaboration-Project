@@ -23,7 +23,7 @@ def runtime_stub(rows):
     r.last_report=NS(x_m=0.,y_m=0.,yaw_rad=0.)
     r.flow=NS(audit=dict(rows=rows),measure_small=False)
     r.slip_progress=m.SlipProgress();r.slip_cursor=0;r.slip_backup=None
-    r.slip_blocks=[];r.slip_recovery_rows=[];r.slip_replan=False;r.slip_exhausted_logged=False
+    r.slip_blocks=[];r.slip_attempts=0;r.slip_recovery_rows=[];r.slip_replan=False;r.slip_exhausted_logged=False
     r.pulse_profiles=profiles();r.path=[];r.path_goal=None;r.map={};r.cal_rows=[]
     r.soft=lambda *args:None
     return r
@@ -64,7 +64,7 @@ def test_unknown_normal_turn_and_unmeasured_pulse_break_streak():
         assert p.start is None
 
 
-def test_runtime_stop_backup_timeout_replan_and_direction_filter(monkeypatch):
+def test_runtime_stop_backup_timeout_clear_replan_and_fresh_slip(monkeypatch):
     r=runtime_stub([slip(t) for t in range(11)])
     monkeypatch.setattr(m,'plan_path',lambda *a,**k:dict(waypoints_m=[[0,0],[.5,0]]))
     def base(self,*a,**k):
@@ -79,10 +79,19 @@ def test_runtime_stop_backup_timeout_replan_and_direction_filter(monkeypatch):
     assert r.flow.measure_small
     a,done=r.drive([.5,0],21.1)
     assert not r.flow.measure_small and r.slip_backup is None and not done
-    assert a[0]['forward']==.35 and a[0]['left']==0
+    assert a[0]['left']==.65 and a[0]['forward']==0
+    assert r.slip_blocks==[] and r.slip_attempts==1
+    assert not r._forbidden(a[0])
     assert any(x['event']=='replan' for x in r.slip_recovery_rows)
     end=next(x for x in r.slip_recovery_rows if x['event']=='backup_end')
     assert end['timeout'] and not end['measured_success'] and end['progress_m']==0
+    events=[x['event'] for x in r.slip_recovery_rows]
+    assert events.index('backup_end')<events.index('clear_direction_blocks')<events.index('replan')
+    r.drive([.5,0],22)
+    assert r.slip_backup is None  # consumed pre-recovery rows cannot reblock
+    r.flow.audit['rows'].extend(slip(t) for t in range(23,34))
+    assert r.drive([.5,0],34)==([dict(kind='hold')],False)
+    assert r.slip_attempts==2 and len(r.slip_blocks)==1
 
 
 def test_unknown_backup_never_invents_distance_and_complete_rgb_can_finish(monkeypatch):
@@ -98,6 +107,16 @@ def test_unknown_backup_never_invents_distance_and_complete_rgb_can_finish(monke
     assert r.slip_backup is None
     end=next(x for x in r.slip_recovery_rows if x['event']=='backup_end')
     assert end['measured_success'] and end['progress_m']==pytest.approx(.31)
+    assert r.slip_blocks==[] and r.slip_attempts==1
+
+
+def test_clearing_blocks_does_not_reset_retry_budget(monkeypatch):
+    r=runtime_stub([slip(t) for t in range(11)])
+    r.slip_attempts=m.PARAMS['max_recovery_attempts']
+    codes=[];r.soft=lambda code,t:codes.append(code)
+    r._consume_slip(11)
+    assert r.slip_backup is None and r.slip_blocks==[]
+    assert codes==['SLIP_RECOVERY_EXHAUSTED']
 
 
 def test_inverse_profile_is_calibrated_loaded_bounded_and_registration_fixed(static):
