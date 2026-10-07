@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-07 시차 벽점 독립 관문](2026-10-07-wall-parallax/RESULTS.md): PR #405, 기본-off parallax_v1(OpenCV LK/DLT·명령 DR와 상관 공분산). s1042–1047/1050–1051의4,361 eligible frame,530 seed에서 accepted0·recall0·관문0/8. 시차 부족/재투영 불일치 등 원인 기록, 튜닝·지도 재생 없이 중단.
+
 - [2026-10-07 온라인 camera pitch 최종 관문](2026-10-07-online-camera-pitch/RESULTS.md): PR #405, s1045–47/1050의30,512프레임을 실제 적재·팔·이동·가감속별로 분해. s1050도 같은 SEARCH/HIGH 오차가 남음. Lu/Phan MIT 소실점 `camera_pitch=online_vp_v1` 기본 off, 개발0/2·확인0/4, 고정2170점 중807점 무효. 재튜닝·지도 재생 없이 트랙 중단, 실물 마운트·관절·signed 차체 자세 측정 필요.
 
 - [2026-10-07 S2 투영 경로 동일 프레임 비교](2026-10-07-s2-projection-comparison/RESULTS.md): PR #405, #406 `dc65cf6f` 원문 경로를 s1042–1047에 적용. 공통21자세 표/무하중 원점·회전 동일, 중앙 오차 개선0(개발0/2·확인0/4). s1050의1.53cm는 별도 real-carry 자세/하중 조건임을 확인, 새 옵션·지도 재생 없이 중단.

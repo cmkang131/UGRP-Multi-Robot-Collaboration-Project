@@ -2988,3 +2988,24 @@ s1050도 SEARCH −0.869°/HIGH −2.798°다. 기존1.53cm는 다른 real CARRY
 RBPF/graph/누적 지도 재생·그림 갱신0, 물리/렌더/모델 호출0. 기존 실패 후보도 보존한다.
 **자기 지도 트랙 중단**: 실물 마운트 높이·각도/유격, 팔 자세·하중별 실측 관절,
 signed 차체 pitch/roll·영상 동기 측정이 필요하다. PR #406 수정0, #405 DRAFT 유지·병합 없음.
+
+## 28. egomap14 — 사용자 제안 시차 벽점, 독립 관문 실패
+
+기존 pitch/바닥 투영 트랙은 그대로 중단 상태로 보존하고, 새 접근을24f2f6f7에 사전 등록했다.
+기본-off `wall_detector=parallax_v1`는 OpenCV LK/DLT + ORB-SLAM2 시차/양의 깊이/재투영 검사,
+자기 명령 M1 평균/V7 구조 사전 공분산을 사용한다. 공통 pose 상관과 pixel/pitch nuisance를
+JΣJᵀ로 전파해 깊이σ·역깊이σ·역분산 confidence를 출력한다. GT는 결과 평가에만 읽는다.
+ROI의 기존 horizon/range 제한은 남고 깊이만 시차로 계산하며, 전체 ORB/PL-SLAM은 아니다.
+
+개발2→동결6a417edf→확인6,8건4,361 eligible frame에서530 seed/accepted0으로 **관문0/8**.
+recall0, precision/거리오차/실제 confidence calibration은 NA다. 같은 프레임 바닥 투영은
+P0–10.34%, 중앙0.489–0.600m이며 이전 s1042–1047 전체 point 지표와 정확히 일치한다.
+시차 부족4,530·재투영 불일치1,074·뒤 교점351 등 거부 사유를 분리했고, 명령 camera 이동
+window 중앙0.087–0.152m가 있어도 충분한 각도 시차/대응 일치가 보장되지 않음을 기록했다.
+
+[방법/라이선스·사전 기준](../2026-10-07-wall-parallax/README.md),
+[8건 비교표·진단 그림·실패와 기록 복구](../2026-10-07-wall-parallax/RESULTS.md).
+17시험 통과,17 frozen source hash·원 prediction8개·frame 분모 확인. metadata/직렬화
+HOST_ERROR2건은 원본을 보존하고 RGB 재계산 없이 복구했다. 설정 튜닝·물리/모델·지도 재생0.
+실제 누적 지도/2D 지도 그림은 갱신하지 않는다. 이 고정 LK/corner/10view/DR 조합의 실패이며
+시차 접근 일반이 불가능하다는 판정은 아니다. PR #405 DRAFT 유지.
