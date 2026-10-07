@@ -31,6 +31,8 @@ def bundle(source_sha,**kwargs):
 
 def require_execution(value):
     previous.idle.validate(value)
+    if value['options'].get('carry_pose', 'off') != 'off':
+        raise ValueError('real carry pose is an offline candidate, not admitted in v123')
     if any(value['options'].get(k)!=v for k,v in NEW_OPTIONS.items()):raise ValueError('v123 requires all explicit S2 options')
     plan=old.hp.base.read(ROOT/PLAN)
     if old.hp.base.sha(ROOT/PULSE_MODEL)!=plan['pulse_model_sha256']:raise ValueError('pulse model differs from registration')
