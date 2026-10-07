@@ -82,6 +82,11 @@ class GraphOptions:
 def insert_row(grid, row, pose):
     hit, miss = grid.hit, grid.miss
     weight = row.get('insertion_weight', 1.)
+    if 'insertion_weights' in row:
+        from harness.wall_confidence import weighted_insert
+        weighted_insert(grid, transform([row['camera']], pose)[0], [transform(s, pose) for s in row['segments']],
+                        [w*weight for w in row['insertion_weights']])
+        return
     grid.hit, grid.miss = hit*weight, miss*weight
     grid.insert(transform([row['camera']], pose)[0], [transform(s, pose) for s in row['segments']])
     grid.hit, grid.miss = hit, miss

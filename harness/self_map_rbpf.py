@@ -154,8 +154,13 @@ class RaoBlackwellizedGrid(OdomGrid):
     observe = CorrectedOdomGrid.observe
     observe_contacts = CorrectedOdomGrid.observe_contacts
 
-    def __init__(self, robot_id, *, correction_options=None, **kwargs):
+    def __init__(self, robot_id, *, correction_options=None, wall_confidence='off', **kwargs):
         super().__init__(robot_id, **kwargs)
+        from harness.wall_confidence import VALUES
+        if wall_confidence not in VALUES:
+            raise ValueError('UNKNOWN_WALL_CONFIDENCE')
+        self.wall_confidence = wall_confidence
+        self._wall_features = None
         if self.resolution_m != .1:
             raise ValueError('RBPF_REQUIRES_010M_GRID')
         self.rbpf_options = RBPFOptions(**(correction_options or {}))
@@ -173,6 +178,21 @@ class RaoBlackwellizedGrid(OdomGrid):
         self.decisions, self.ledger = [], []
         self.last_attempt = -math.inf
         self.resamples, self.revision = 0, 0
+
+    def observe_confident(self, record, *, features, camera_xy, robot_id):
+        """Own detector features are scoped to exactly one observation."""
+        self._wall_features = features
+        try:
+            return self.observe(record, camera_xy=camera_xy, robot_id=robot_id)
+        finally:
+            self._wall_features = None
+
+    def observe_contacts_confident(self, *, features, **kwargs):
+        self._wall_features = features
+        try:
+            return self.observe_contacts(**kwargs)
+        finally:
+            self._wall_features = None
 
     def propagate(self, body_delta, body_variance):
         c, s = np.cos(self.poses[:, 2]), np.sin(self.poses[:, 2])
@@ -234,6 +254,18 @@ class RaoBlackwellizedGrid(OdomGrid):
         if not local:
             event['reason'] = 'no_near_geometry'
             return []
+        confidence_rows = None
+        if self.wall_confidence != 'off':
+            from harness.wall_confidence import confidence
+            if self._wall_features is None or len(self._wall_features) != len(segments):
+                raise ValueError('WALL_CONFIDENCE_FEATURES_REQUIRED')
+            indices = [i for i,s in enumerate(segments) if np.linalg.norm(np.asarray(s)-camera, axis=1).max() < cutoff]
+            # Predictive cloud (including pending command noise), before this
+            # scan's proposal. No truth, peer pose or posterior look-ahead.
+            cov, yaw = self.odom.covariance, self.odom.pose[2]
+            confidence_rows = [confidence(s, camera, self._wall_features[i], cov, yaw, self.resolution_m)
+                               for i,s in zip(indices,local)]
+            event['wall_confidence'] = confidence_rows
         points = sample_segments(local)
         attempt = rec['t_sim']-self.last_attempt >= 1.-1e-8 and len(points) >= self.options.min_points
         if attempt:
@@ -271,9 +303,17 @@ class RaoBlackwellizedGrid(OdomGrid):
             pe.update(inserted=eligible, pose=self.poses[i].tolist())
             if eligible:
                 pose = self.poses[i]
-                grid.insert(transform([camera], pose)[0], [transform(s, pose) for s in local])
+                if confidence_rows is None:
+                    grid.insert(transform([camera], pose)[0], [transform(s, pose) for s in local])
+                else:
+                    from harness.wall_confidence import weighted_insert
+                    weighted_insert(grid, transform([camera], pose)[0], [transform(s, pose) for s in local],
+                                    [c['weight'] for c in confidence_rows])
                 self.histories[i].append({'t': rec['t_sim'], 'frame_id': rec['view_index'], 'pose': pose.tolist(),
                                           'camera': camera.tolist(), 'segments': [s.tolist() for s in local]})
+                if confidence_rows is not None:
+                    self.histories[i][-1].update(insertion_weights=[c['weight'] for c in confidence_rows],
+                                                wall_confidence=confidence_rows)
                 inserted.append(i)
             particle_events.append(pe)
         self.log_weights -= logsumexp(self.log_weights)
@@ -300,6 +340,8 @@ class RaoBlackwellizedGrid(OdomGrid):
 
     def export(self):
         out = super().export()
+        if self.wall_confidence != 'off':
+            out['wall_confidence'] = self.wall_confidence
         out.update(pose_correction='own_map_rbpf_v1', options=asdict(self.rbpf_options),
                    covariance=self.odom.covariance.tolist(), weights=self.weights.tolist(),
                    particle_poses=self.poses.tolist(), selected_particle=self.best, resamples=self.resamples,

@@ -108,8 +108,15 @@ class SelfWallMemory(Memory):
     def __init__(self, robot_id, *, self_walls_enabled=False, self_walls_text=False, self_walls_text_height=False,
                  snapshot_records=12, text_max_obs=6, text_min_gap_s=2.0, self_walls_source=None,
                  self_map="off", self_map_options=None, pose_correction="off", pose_correction_options=None,
-                 wall_projection_guard="off", pose_graph="off", pose_graph_options=None, **kwargs):
+                 wall_projection_guard="off", pose_graph="off", pose_graph_options=None,
+                 wall_confidence="off", **kwargs):
         super().__init__(robot_id, **kwargs)
+        from harness.wall_confidence import VALUES as CONFIDENCE_VALUES
+        if wall_confidence not in CONFIDENCE_VALUES:
+            raise ValueError("UNKNOWN_WALL_CONFIDENCE")
+        if wall_confidence != "off" and pose_correction != "own_map_rbpf_v1":
+            raise ValueError("WALL_CONFIDENCE_NEEDS_RBPF")
+        self.wall_confidence = wall_confidence
         if self_map not in ("off", "odom_grid_v1"):
             raise ValueError("UNKNOWN_SELF_MAP")
         if pose_correction not in ("off", "own_map_csm_v1", "own_map_csm_v2", "own_map_csm_prob_v1", "own_map_rbpf_v1"):
@@ -154,6 +161,7 @@ class SelfWallMemory(Memory):
             else:
                 from harness.self_map_rbpf import RaoBlackwellizedGrid
                 self.self_map = RaoBlackwellizedGrid(robot_id, correction_options=pose_correction_options,
+                                                     wall_confidence=wall_confidence,
                                                      **(self_map_options or {}))
         if self_walls_source is not None and not self_walls_enabled:
             raise ValueError("SELF_WALLS_SOURCE_NEEDS_SELF_WALLS_ENABLED")
@@ -192,7 +200,8 @@ class SelfWallMemory(Memory):
             self._graph_view = self.pose_graph_result = None
             self.self_map.odom.command(row)
 
-    def observe_wall(self, record, *, camera_xy, robot_id, camera_origin=None, camera_rotation=None):
+    def observe_wall(self, record, *, camera_xy, robot_id, camera_origin=None, camera_rotation=None,
+                     wall_features=None):
         """Own C record and camera geometry, no peer/GT.
 
         positive_depth_v1 requires command-calibrated 3D origin and optical-to-
@@ -223,6 +232,13 @@ class SelfWallMemory(Memory):
                     self.self_map.seen.add(key)
                     return []
                 record = {**rec, "seg": [rec["seg"][e["segment"]] for e in event["segments"] if e["accepted"]]}
+                if self.wall_confidence != "off":
+                    if wall_features is None or len(wall_features) != len(rec["seg"]):
+                        raise ValueError("WALL_CONFIDENCE_FEATURES_REQUIRED")
+                    wall_features = [wall_features[e["segment"]] for e in event["segments"] if e["accepted"]]
+            if self.wall_confidence != "off":
+                return self.self_map.observe_confident(record, features=wall_features,
+                                                       camera_xy=camera_xy, robot_id=robot_id)
             return self.self_map.observe(record, camera_xy=camera_xy, robot_id=robot_id)
         return []
 
