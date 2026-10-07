@@ -47,3 +47,60 @@ https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39
 raw `outputs/active-frontier-audit-v1`, 물리500MiB+진단200MiB, wall상한30분,
 ENOSPC=HOST_ERROR. 사전 등록/시험/소스 commit 후 실행. push500은 로컬SHA 진행 예외,
 종료 때 재시도. PR405 DRAFT/병합금지. supervisor 단계마다 확인.
+
+
+## 오프라인 판정 (새 물리 전)
+
+사전 등록 `a5b50425`. 원본891 trace 전체bytes 재현, GT는 봉인 후 분류만.
+90.5초 당시 현재 footprint는 free, free 연결영역924칸/전체free937칸, unknown2968칸,
+frontier2개가 남았다. 즉 미탐색 경계 자체가 모두 사라진 것이 아니라 **후보 목표/경로가 탈락**했다.
+
+|후보(자기 좌표 m)|raw/cost|탈락 단계|inflation만 제거한 평가 경로|
+|---|---|---|---:|
+|[4.6795,1.8466]|free/253|목표 inflation|36점|
+|[5.4505,4.0348]|free/0|NavFn 경로 없음|59점|
+
+점유48칸 중 GT벽과0.15m 초과38칸(위치/검출오차 합친 평가 정의)이었다.
+이 거짓 칸만 제거하는 **GT 평가 전용** ablation에서 도달 가능 frontier0→1로 바뀌었다.
+거짓 점유/inflation이 차단에 기여하지만, GT로 지우는 동작은 제어에 연결하지 않았다.
+
+|동일 자기 관측 재구축|기존 .10m|PR409 기본 .05m|
+|---|---:|---:|
+|free / unknown / 점유 칸|937 / 2968 / 48|3313 / 12269 / 96|
+|시작 free 연결 영역|924칸|3265칸|
+|frontier / 도달 가능|2 / 0|5 / **5**|
+|도달 경로 점 개수|0|151,166,9,115,196|
+
+위 칸 수는 해상도가 다르므로 면적 증가로 해석하지 않는다. 원시 자기 관측을 각 해상도에서
+raytrace/mark하고 현재 footprint clear한 결과며 coarse grid 업샘플 아님.
+실제 거리/지도품질 증거는 새 물리에서 따로 평가한다. [그림](figures/costmaps.png),
+[전체 진단](results/costmap-audit.json), [삽입 단계별 계수](results/insertion-audit.json).
+
+|삽입 단계|프레임 수|
+|---|---:|
+|촬영|901|
+|초기 팔/영상 대기(제어 미입력)|10|
+|벽 geometry 검출 있음 / 없음|891 / 0|
+|중복·정착·거리로 탈락|각0 (range segment0)|
+|GMapping 이동량 보류|871|
+|통과 후 bootstrap / 정합 수락 / 거부도 삽입|1 / 7 / 12|
+|최종 삽입|**20**|
+|90.5초 이전 보류 / 이후 정지 중 보류|416 / 455|
+
+거부12개=low_overlap4/high_residual5/search_boundary1/insufficient_match_points2.
+`insert_selective_v1`→`gmapping_range_v1` 삽입은 정상 적용되어 **통과20/20 삽입**.
+많은 hold로 실제 새 관측 위치가 늘지 않았고, 원본 motion gate1m/0.5rad가 계속 적용된 결과다.
+이번에는 프레임 수를 늘리려고 motion gate나 시간 갱신값을 바꾸지 않는다.
+
+## 옵션 연결
+
+`navigation_map=off`(기존 .1m) / `public_ros_v8`(PR409 .05m), 기본off.
+변경은 ActiveMapper navigation grid 생성/graph 재생/clear와 frontier 좌표 단위 전달뿐이다.
+receive_rays·clear_current_footprint·UnknownCostmap·MonitorCore/NavFn/blacklist는 기존 함수를
+그대로 호출한다. SLAM/RBPF .1m는 불변. PR409 파일4개 diff0와 원본 라이선스 유지.
+실행기는 `active-nav2` workflow, seed31001 사전 고정.
+
+
+실행 전 관련 시험 **17개 통과**, off 전체891 trace bytes 골든 동일.
+[preflight](results/preflight.json), [오프라인 원본 hash](results/offline-manifest.json).
+고정된 두 원인 감사/옵션 연결 완료 후 seed31001 물리1회로 진행한다.

@@ -106,7 +106,7 @@ class RecoveryMapper(ActiveMapper):
     def clear_navigation(self,t):
         before=sum(self.latest.values())
         self.navigation_epoch=t
-        self.grid=ObservedGrid(self.robot_id,.1)
+        self.grid=ObservedGrid(self.robot_id,self.navigation_resolution)
         self.latest={}
         if self.frames:self._rays(self.frames[-1],self.pose)
         self.navigator.clear_requested=False

@@ -69,16 +69,21 @@ def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=()):
 
 
 class ActiveMapper:
-    def __init__(self,robot_id,start,servo,*,active_mapping='off',active_loop='off',seed=22001):
+    def __init__(self,robot_id,start,servo,*,active_mapping='off',active_loop='off',seed=22001,navigation_map='off'):
         if active_mapping!='frontier_rbpf_v1':raise ValueError('EXPLICIT_ACTIVE_MAPPING_REQUIRED')
         if active_loop not in ('off','information_gain_v1'):raise ValueError('UNKNOWN_ACTIVE_LOOP')
+        if navigation_map not in ('off','public_ros_v8'):raise ValueError('UNKNOWN_NAVIGATION_MAP')
+        # Reuse PR409 v5-v8's native navigation resolution, independent of SLAM.
+        from harness.public_navigation_resolution import RESOLUTION
+        self.navigation_map=navigation_map
+        self.navigation_resolution=RESOLUTION if navigation_map=='public_ros_v8' else .1
         self.robot_id,self.active_loop,self.seed=robot_id,active_loop,seed
         self.memory=SelfWallMemory(robot_id,**OPTIONS,self_map_options={'start_time':start})
         self.memory.command(dict(t=start,kind='initial_servo_command',pulses=servo))
         self.navigator=MonitorNavigator()
         self.goal=FloorGoalMemoryV3(robot_id,options=json.loads((ROOT/'experiments/2026-10-07-mapfree-goal-floor/v3-selection.json').read_text())['selected']['options'])
         self.goal.detector=goal_detector()
-        self.grid=ObservedGrid(robot_id,.1)
+        self.grid=ObservedGrid(robot_id,self.navigation_resolution)
         self.latest={}
         self.doors=DoorMemory(robot_id)
         self.map_to_odom=np.zeros(3)
@@ -122,7 +127,7 @@ class ActiveMapper:
         self.map_to_odom=compose(corrected[self.poses[-1]['t']],inverse(local))
         change=compose(self.map_to_odom,inverse(previous_tf))
         self.navigator.blacklist=[transform([p],change)[0] for p in self.navigator.blacklist]
-        self.grid=ObservedGrid(self.robot_id,.1)
+        self.grid=ObservedGrid(self.robot_id,self.navigation_resolution)
         self.latest={}
         for row in self.frames:
             self._rays(row,corrected[row['t']])
@@ -145,9 +150,9 @@ class ActiveMapper:
         uncertain=math.sqrt(float(np.linalg.eigvalsh(cov[:2,:2]).max()))>=.15 or math.sqrt(cov[2,2])>=math.radians(5)
         candidates=[]
         pose=self.pose
-        for row in self.navigator.core.frontiers(costmap.raw,costmap.origin,.1,pose[:2]):
+        for row in self.navigator.core.frontiers(costmap.raw,costmap.origin,costmap.resolution,pose[:2]):
             if len(candidates)>=2:break
-            if self.navigator.blocked(row[:2],.1):continue
+            if self.navigator.blocked(row[:2],costmap.resolution):continue
             path=self.navigator.plan_to(costmap,pose,row[:2])
             if path:candidates.append(('frontier',path))
         if uncertain:

@@ -202,6 +202,7 @@ raise SystemExit(3 if a.fail else 0)
         model.mkdir()
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
+            "active-nav2": ["--case", "new-seed", "--expected-source-sha", "0"*40],
             "active-recovery": ["--case", "new-seed", "--expected-source-sha", "0"*40],
             "rbpf-wide-confirm": ["--case", "new-seed", "--expected-source-sha", "0"*40],
             "rbpf-motion-gate": ["--case", "baseline", "--expected-source-sha", "0"*40],

@@ -1,0 +1,52 @@
+{
+  "input": "/Users/changmin/projects/ugrp/outputs/active-recovery-v1/new-seed",
+  "input_result_sha": "d3462063",
+  "rgb_frames": 901,
+  "initial_wait_frames": 10,
+  "observed_frames": 891,
+  "empty_geometry_frames": 0,
+  "duplicate_skipped_frames": 0,
+  "unsettled_rejections": 0,
+  "out_of_range_segments": 0,
+  "motion_deferred": 871,
+  "inserted": 20,
+  "reason_counts": {
+    "bootstrap": 1,
+    "gmapping_motion_gate": 871,
+    "improved_proposal": 7,
+    "low_overlap": 4,
+    "insufficient_match_points": 2,
+    "high_residual": 5,
+    "search_boundary": 1
+  },
+  "composition": "insert_selective_v1",
+  "insertion_policy": "gmapping_range_v1",
+  "motion_gate": {
+    "previous": [
+      3.4344557973266245,
+      0.6734403253210524,
+      -0.3157819247392859
+    ],
+    "linear": 0.01292341377316757,
+    "angular": 0.00029378953563696797,
+    "processed": 20,
+    "skipped": 871,
+    "linear_update_m": 1.0,
+    "angular_update_rad": 0.5,
+    "temporal_update_s": -1.0,
+    "resample_threshold": 0.5
+  },
+  "before_exhaustion": {
+    "frames": 436,
+    "inserted": 20,
+    "motion_deferred": 416
+  },
+  "after_exhaustion": {
+    "frames": 455,
+    "inserted": 0,
+    "motion_deferred": 455
+  },
+  "all_admitted_inserted": true,
+  "rejected_but_inserted": 12,
+  "new_noise_or_gate_tuning": false
+}
