@@ -40,3 +40,19 @@ PR #409 DRAFT 유지·병합 금지. PR #405 카메라 투영 실패 결과는 �
 첫 진단 실행은 live odometry의 read-only `pose` property에 저장 DR를 할당해 AttributeError로
 첫 snapshot 이전 중단됐다. 평가 재생 전용 record로 바꾸고 실제 관측 입력을 통과시키는 회귀 시험을
 추가했다. 제어기/센서/기하/관문 수정은 아니며 최초 `audit/`와 오류 기록은 보존, 재생은 `audit-v2/`다.
+
+## 원본 차이 한 건: v4 구현 전 고정
+
+`d0c77eaa` 복원과 `95441095` 기하 증명에서 첫 follow1초 구간의 사각 연속 여유 하한은
+s4 0.02836m/s5 0.03129m였지만 raster 비용 지도는 각각0.70s/0.95s부터 거부했다.
+원 Nav2 외곽 LineIterator를 대조하면 s4의7개 거부 표본은 그대로, s5의2개는0개다.
+폭0.50m > padded 최대 회전 폭0.36878m이며 s4는 padding을 포함한 B 경로도 확인했다.
+몸체/문 치수 불가능이 아니므로 치수·padding·inflation 반경을 변경하지 않는다.
+
+**`navigation=public_ros_v4`, 기본 off**: filled polygon 대신 Nav2 FootprintCollisionChecker의
+외곽 LineIterator와 최대 비용 판정만 이식한다. static/own obstacle memory, 예측 horizon/주기,
+RoundRobin/explore_lite, 센서/B/v7, footprint240×200mm+padding20mm, inflation0.5m/10은 불변.
+카메라 미관측 셀/맵 밖은 기존 입력 경계대로 통과시키지 않는 차이를 명시한다. 원본 전체 ROS 실행은 아니다.
+v1–v3 byte 보존, 작은 regression 통과 후 구현 commit/push → 기존 개발10을 한 번만 재생.
+원6/6 개발 기준을 그대로 사용하고 s4 또는 s5가 다시 막히면 추가 변경 없이 멈춘다.
+새 I/J32는 개발 관문 실패 시 실행 금지. 작은 확인을 성공률에 합산하거나 s8의 접촉 gate를 완화하지 않는다.
