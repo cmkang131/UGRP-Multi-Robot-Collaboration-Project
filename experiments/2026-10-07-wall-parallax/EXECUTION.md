@@ -8,6 +8,10 @@
   모든 다른 source bytes가 원346db610과 같음을 검사해 **저장된 예측을 재사용**한다.
   원 prediction/source hash·metadata 복구 source를 구별한다. s1042 재계산/원본 삭제0,
   나머지 개발 s1043만 처음 계산한다. 실패1회와 그 출력/관리 session 정상 정리를 보존한다.
+- 개발2건 예측 후 평가 요약의 NumPy int64 TP가 JSON 직렬화되지 않는 별도 HOST_ERROR1회가
+  발생했다. TP를 Python int로 저장하는 평가기 수정만 적용했다. predict AST/다른 runtime hash
+  동등 검증 뒤 score-only로 평가하며, 앞서 쓴 평가 파일도 보존하고 새 SHA 하위 경로에 저장한다.
+  검출/설정 조정·RGB 재계산0이다. NumPy 입력의 실제 JSON 직렬화 회귀 시험을 추가했다.
 - 첫 합성 LK 시험에서35px 반복무늬의20px 이동이 역방향 correspondence로 alias되는 것을
   확인했다. 알고리즘을 조정하지 않고 이 자료는 behind-camera 거부 반례로 유지하고,
  5px 이동의 정상 삼각측량 시험도 병기했다. 실제 녹화 결과를 본 임계값 조정이 아니다.

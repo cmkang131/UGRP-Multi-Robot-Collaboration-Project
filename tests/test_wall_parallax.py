@@ -101,6 +101,10 @@ def test_annotation_recall_preserves_absent_points_and_deduplicates(monkeypatch)
     point=dict(uv=[float(ev.COLS[10]),50.],range_m=1.)
     same=ev.annotate([point,point],[0.,0.],annotation,ORIGIN,R)['all']
     assert same==dict(predicted=2,tp=2,positive=96,covered=1)
+    # Real NumPy error arrays previously yielded non-JSON np.int64 TP counts.
+    counts=ev.annotate([point,point],np.zeros(2),annotation,ORIGIN,R)
+    import json
+    json.dumps(ev.finalize_annotation(counts),allow_nan=False)
 
 
 @pytest.mark.parametrize('pixel_step',[5.,20.])

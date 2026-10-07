@@ -146,7 +146,7 @@ def annotate(points,errors,annotation,origin,rotation):
         pred=[p for p in assigned if lo<=p[1]<hi]
         labels=positive&(label_ranges>=lo)&(label_ranges<hi)
         covered={p[0] for p in assigned if p[3] and labels[p[0]]}
-        bins[name]=dict(predicted=len(pred),tp=sum(p[3] for p in pred),
+        bins[name]=dict(predicted=len(pred),tp=int(sum(p[3] for p in pred)),
                        positive=int(labels.sum()),covered=len(covered))
     return bins
 
@@ -159,7 +159,22 @@ def finalize_annotation(counts):
 def score(case,option):
     out=c.OUT/option/case
     receipt=c.read(out/'receipt.json')
-    assert receipt['source_hashes']==hashes() and receipt['predictions_sha256']==c.sha(out/'predictions.jsonl')
+    assert receipt['predictions_sha256']==c.sha(out/'predictions.jsonl')
+    current=hashes()
+    changed=[p for p,h in receipt['source_hashes'].items() if current[p]!=h]
+    if changed:
+        # Scoring-only repair is allowed without rerunning or rewriting prediction.
+        import ast
+        relative=str(c.Path(__file__).relative_to(c.ROOT))
+        assert changed==[relative]
+        previous=subprocess.check_output(['git','show',receipt['source_sha']+':'+relative],text=True)
+        def predict_ast(text):
+            return next(ast.dump(n,include_attributes=False) for n in ast.parse(text).body
+                        if isinstance(n,ast.FunctionDef) and n.name=='predict')
+        assert predict_ast(previous)==predict_ast(c.Path(__file__).read_text())
+    eval_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+    eval_out=out/('evaluation-'+eval_sha[:8])
+    eval_out.mkdir(exist_ok=False)
     # Truth and labels are first opened here, after independent prediction seal.
     ep=c.EPISODES[case]
     truth=c.old.current_truth(ep)
@@ -172,7 +187,7 @@ def score(case,option):
     annotation_counts={mode:{} for mode in data}
     paired,dr_errors=[],[]
     frames=c.old.base.read_rows(out/'predictions.jsonl')
-    with (out/'evaluated-points.jsonl').open('w') as detail:
+    with (eval_out/'evaluated-points.jsonl').open('w') as detail:
         for row in frames:
             pose=truth[round(row['t'],6)]
             for mode in data:
@@ -222,8 +237,9 @@ def score(case,option):
         dr_start_alignment_error=stats(dr_errors),confidence_bins=confidence,
         depth_sigma_m=stats([r['depth_sigma_m'] for r in data['candidate'] if r['depth_sigma_m'] is not None]),
         predictions_sha256=receipt['predictions_sha256'],source_sha=receipt['source_sha'],
+        evaluation_source_sha=eval_sha,evaluation_source_hashes=current,
         evaluation_sources={str(p):c.sha(p) for p in [ep/'eval_only/trajectory.jsonl',ep/'inputs/static_map.json']})
-    c.dump(out/'result.json',result)
+    c.dump(eval_out/'result.json',result)
     c.dump(c.EXP/'results'/f'{case}.json',result)
     assert c.sha(out/'predictions.jsonl')==receipt['predictions_sha256']
     print(case,'P',a['precision'],'R',b['recall'],'median',a['median'],'PASS',result['passed'],flush=True)
@@ -234,6 +250,7 @@ def main():
     p.add_argument('--split',choices=['development','confirmation'],required=True)
     p.add_argument('--wall-detector',choices=['off','parallax_v1'],default='off')
     p.add_argument('--freeze',type=c.Path)
+    p.add_argument('--stage',choices=['both','score'],default='both')
     p.add_argument('--recover-complete-predictions',help='original committed source SHA, metadata-only recovery')
     args=p.parse_args()
     hashes()  # Verify all provenance paths BEFORE reading RGB or creating output.
@@ -242,11 +259,12 @@ def main():
         assert f.get('hashes')==hashes() and f.get('settings')==__import__('json').loads(__import__('json').dumps(settings()))
     cases=['s1042','s1043'] if args.split=='development' else ['s1044','s1045','s1046','s1047','s1050','s1051']
     # All own predictions in this split precede all truth scoring.
-    for case in cases:
-        out=c.OUT/args.wall_detector/case
-        if args.recover_complete_predictions and out.exists():
-            recover_complete_receipt(case,args.wall_detector,args.recover_complete_predictions)
-        else:predict(case,args.wall_detector)
+    if args.stage!='score':
+        for case in cases:
+            out=c.OUT/args.wall_detector/case
+            if args.recover_complete_predictions and out.exists():
+                recover_complete_receipt(case,args.wall_detector,args.recover_complete_predictions)
+            else:predict(case,args.wall_detector)
     for case in cases:score(case,args.wall_detector)
 
 
