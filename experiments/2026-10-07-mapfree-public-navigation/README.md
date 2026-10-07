@@ -75,3 +75,18 @@ progress timeout30 modeled s, frontier potential1/gain1/minimum.1 m를 사전 �
 frontier 목표 지속/진행 timeout/ABORTED blacklist를 확인했다. arbitrary free 원판 초기화는 하지 않는다.
 [Nav2 RPP](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_regulated_pure_pursuit_controller/src/regulated_pure_pursuit_controller.cpp)는
 경로 추종 heading·충돌 처리 참고이며 전체 Nav2 서버를 실행하는 것은 아니다.
+
+## 3. 구현/출처 검증 (확인 이전)
+
+원본20개 파일·라이선스·해시는 [SOURCES.json](../../third_party/mapfree_navigation/SOURCES.json),
+실행 원본과 포트/어댑터 경계는 [third-party 설명](../../third_party/mapfree_navigation/README.md)에 있다.
+원본 NavFn/frontier C++는 바이트 그대로 컴파일하며 PythonRobotics pursuit 함수를 직접 호출한다.
+ROS 전체 배포를 이식한 것은 아니다. 비용 지도·진행 감시·명령 adapter는 원문에 대응하는 별도 코드다.
+Python/venv 변경 없음, 기존 C++17 compiler와 numpy/scipy/OpenCV 및 기존 plot dependency를 사용한다.
+B v3 봉인10파일과 기존 평가기의 센서/잡음/충돌 구현도 그대로다.
+
+단위시험 첫 회에서 (1) 작은 4 m U자 우회+inflation의 NavFn convenience iteration budget 소진,
+(2) 두 방향 모두 들어가는 시험 통로를 한 방향 불통으로 잘못 기대한 fixture가 드러났다.
+NavFn 원본/ROS wrapper를 확인하고 원본 public propagation 함수를 전체 격자 칸 수 예산으로 호출한다.
+탐색 코어·cost는 바꾸지 않는다. 사각 시험은 벽까지 .13 m 여유(half .12/.14 m)인 실제 반례로 바로잡았다.
+확인 데이터를 열기 전이며 두 원인과 수정 모두 시험에 남겼다. 나머지 공개 코드/센서 임계값은 바꾸지 않았다.

@@ -26,6 +26,7 @@ from scripts.check_ci_fixtures import check_fixtures
 TEST_PATTERNS = (
     "tests/test_own_map_navigation.py",  # Pure 2D B/C/E contracts, no engine.
     "tests/test_own_map_navigation_v2.py",
+    "tests/test_public_navigation.py",
     "tests/test_mapfree_environment.py",
     "tests/test_floor_goal*.py",  # Offline HSV floor-goal geometry, memory and evaluation boundaries.
     "tests/test_self_odom_grid.py",
