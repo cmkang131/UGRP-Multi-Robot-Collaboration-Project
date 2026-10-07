@@ -10,6 +10,10 @@ TIMES=(0.,.95,1.90,2.85,3.80,6.35)
 ACTION=dict(kind='mecanum',forward=0.,left=.65,turn=0.,duration_s=.65)
 
 
+def arm_action(sid,pulse):
+    return dict(kind='look',pan_pulse=pulse) if sid==6 else dict(kind='arm',servo_id=sid,pulse=pulse)
+
+
 def poses():
     from harness.zone_pair_highpose import HIGH
     from harness.zone_solo_cyan_v106 import pose_of
@@ -50,6 +54,7 @@ def measurement(world,robot,cargo):
         cargo_xyz=cargo_xyz.tolist(),bilateral=len(fingers)==2,contacts=contacts,
         wheel_torque_nm=d.actuator_force[robot.wheel_act].tolist(),
         camera=camera_row(world,'r3',float(d.time)),
+        qpos_eval_only=d.qpos.tolist(),
         active_welds=sum(int(d.eq_active[i]) for i in range(m.neq) if m.eq_type[i]==mujoco.mjtEq.mjEQ_WELD))
 
 
@@ -67,7 +72,8 @@ def visibility(world,row,static,geo):
         # Evaluate actual collision geometry along the wall-foot ray; RGB policy never sees this.
         target=rz@points[k]+base;target[2]+=.001
         v=target-origin;length=np.linalg.norm(v);gid=np.array([-1],dtype=np.int32)
-        dist=mujoco.mj_ray(world.model,world.data,origin,v/length,None,1,-1,gid)
+        groups=np.ones(6,dtype=np.uint8);groups[4:]=0  # identical robot RGB render groups
+        dist=mujoco.mj_ray(world.model,world.data,origin,v/length,groups,1,-1,gid)
         name=world.model.geom(int(gid[0])).name if gid[0]>=0 else 'none'
         if dist<0 or dist>=length-.012 or ('wall' in name or 'divider' in name):clear+=1
         else:occluders[name]=occluders.get(name,0)+1
@@ -157,7 +163,7 @@ def run_case(out,wall,name,loaded,sha,geo):
         if loaded and not measurement(world,robot,cargo)['bilateral']:raise RuntimeError('STAGING_GRIP_ABSENT')
         for p,duration,settle in transition({1:1500,**HIGH},target) if loaded else []:
             for sid,pulse in p.items():
-                action=dict(kind='look',pan_pulse=pulse,duration_s=duration) if sid==6 else dict(kind='arm',servo_id=sid,pulse=pulse,duration_s=duration)
+                action=arm_action(sid,pulse)
                 port.apply(action,float(d.time));commands.append(dict(t=float(d.time),**action))
             step(duration+settle)
         step(2.)
@@ -208,7 +214,7 @@ def run_case(out,wall,name,loaded,sha,geo):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--execute',action='store_true');p.add_argument('--expected-source-sha',required=True);p.add_argument('--output',type=Path)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--execute',action='store_true');p.add_argument('--expected-source-sha',required=True);p.add_argument('--output',type=Path);p.add_argument('--resume-from',type=Path)
     a=p.parse_args()
     if not a.execute:print(json.dumps(dict(execution_started=False,cases=cases(),pulse=ACTION,times=TIMES)));return
     from scripts.run_final_environment_checks import check_source,write
@@ -216,11 +222,20 @@ def main():
     check_source(a.expected_source_sha)
     if not a.output or not a.output.is_absolute() or a.output.exists():raise ValueError('new absolute output required')
     held=agent_lock.acquire(agent_lock.DEFAULT_ROOT,owner='codex',branch='codex/s2-realism',purpose='s2v36 controlled pose/load/wall ablation',pid=os.getpid(),expected_minutes=15,timing_sensitive=True)
-    a.output.mkdir();results=[];failures={}
+    a.output.mkdir();results=[];failures={};done=set()
+    if a.resume_from:
+        old=json.loads((a.resume_from/'configuration.json').read_text())
+        if old['criteria_sha256']!=hashlib.sha256(PLAN.read_bytes()).hexdigest():raise ValueError('resume criteria changed')
+        for path in sorted(a.resume_from.glob('*/result.json')):
+            row=json.loads(path.read_text())
+            if row['status']=='MEASURED':
+                row['preserved_raw']=str(path.parent);row['visibility_original_invalid_camera_group']=True
+                results.append(row);done.add((row['wall'],row['pose'],row['loaded']))
     try:
         path=ROOT/'experiments/2026-10-06-s2-realism/analyze_visibility.py';spec=importlib.util.spec_from_file_location('posthoc_visibility',path);geo=importlib.util.module_from_spec(spec);spec.loader.exec_module(geo)
         write(a.output/'configuration.json',dict(source_sha=a.expected_source_sha,criteria=json.loads(PLAN.read_text()),criteria_sha256=hashlib.sha256(PLAN.read_bytes()).hexdigest(),options=dict(servo_stiffness='real_v1',idle_robot_contacts='freeze_v1',drive_profile='masterpi_drive_friction_v7',camera='v3',roller_collision='mesh'),loadavg_start=os.getloadavg()))
         for wall,name,loaded in cases():
+            if (wall,name,loaded) in done:continue
             result=run_case(a.output/f'{wall}-{name}-{"loaded" if loaded else "empty"}',wall,name,loaded,a.expected_source_sha,geo);results.append(result)
             if result['status']!='MEASURED':
                 cause=result['error'];failures[cause]=failures.get(cause,0)+1

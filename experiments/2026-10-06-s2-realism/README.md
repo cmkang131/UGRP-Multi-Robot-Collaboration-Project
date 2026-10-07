@@ -3922,3 +3922,11 @@ free 동일자세 하중 차이≤10%, yaw차≤1°; near/free 진행≤20%면 �
 실행34ceb0d5: 첫 SEARCH setup의 평가 기록에서 `base_rpy()` tuple에 tolist 호출 오류.
 HOST_ERROR, 이동 펄스0·유효 조건0; 원본 `outputs/s2-load-wall-34ceb0d5` 보존.
 표준 Robot API의 tuple 그대로 list 변환하고 테스트로 고정, 설계/문턱은 변경하지 않는다.
+
+중간 b161a388: far SEARCH/HIGH empty/HIGH loaded/look_ahead empty의 4조건 완료.
+다음 look_ahead loaded는 팔 raw action에 허용하지 않는 duration_s를 넣어 HOST_ERROR(이동 펄스0).
+표준 port의 `arm/look` 필드만 발행하도록 수정; 기간은 기존 제어기처럼 명령 간 대기로 유지.
+완료4조건은 재실행하지 않고 `--resume-from`으로 원본·SHA를 연결, 미완료10조건만 실행한다.
+추가 평가 버그: ray가 RGB에서 숨기는 group5 카메라 렌즈를 장애물로 셌다.
+새 ray는 RGB와 동일한 group4/5 제외. 이전4조건 clear 수치는 무효로 표시하고,
+보존 RGB·실제 카메라 투영을 오프라인으로 평가한다. 이동/접촉 결과는 영향을 받지 않는다.

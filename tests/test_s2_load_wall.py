@@ -53,7 +53,15 @@ def test_measurement_accepts_robot_tuple_rpy(monkeypatch):
     import sim.s2_eval_camera_trace as camera
     monkeypatch.setattr(camera,'camera_row',lambda *a:{'evaluation_only':True})
     robot=NS(robot_bid=0,robot_mass_kg=1.1,wheel_act=np.arange(4),base_xyz=lambda:np.zeros(3),base_rpy=lambda:(0.,0.,0.))
-    world=NS(model=NS(body_mass=np.array([1.1,.03]),neq=0),data=NS(time=1.,ncon=0,subtree_com=np.zeros((2,3)),xpos=np.ones((2,3)),actuator_force=np.zeros(4)))
+    world=NS(model=NS(body_mass=np.array([1.1,.03]),neq=0),data=NS(time=1.,ncon=0,subtree_com=np.zeros((2,3)),xpos=np.ones((2,3)),actuator_force=np.zeros(4),qpos=np.zeros(2)))
     r=d.measurement(world,robot,1)
     assert r['rpy']==[0.,0.,0.] and not r['bilateral']
     assert r['robot_plus_box_com']==pytest.approx([.03/1.13]*3)
+
+
+def test_transition_actions_obey_real_port_contract():
+    from sim.camera_robot_port import validate_raw_action
+    from harness.zone_solo_cyan_real_carry import transition,CARRY,LOOK_AHEAD
+    for target in [CARRY,LOOK_AHEAD]:
+        for servo,_,_ in transition({1:1500,**rt.high.HIGH},target):
+            for sid,pulse in servo.items():validate_raw_action(d.arm_action(sid,pulse))
