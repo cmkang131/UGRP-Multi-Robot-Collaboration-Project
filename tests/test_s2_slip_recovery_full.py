@@ -2,14 +2,16 @@
 import copy,json
 from pathlib import Path
 import pytest
+from tests.test_s2_slip_matched import assert_changed_shared_source
 from harness import zone_s2_realism_contract_v129 as c
 from scripts import run_s2_realism_v129 as runner
 
 
 def test_one_dev_seed_exact_options_and_explicit_failed_replay_deviation(tmp_path):
     b=c.bundle('a'*40,seed=1051,stage_probe='place',**c.NEW_OPTIONS)
-    # Frozen v129 first rejects the later shared carry change; recovery pin also stays frozen.
-    with pytest.raises(ValueError,match='shared behavior changed.*zone_solo_cyan_real_carry'):c.require_execution(b)
+    # Frozen shared source guard stays closed, independent of first changed path.
+    with pytest.raises(ValueError,match='shared behavior changed') as error:c.require_execution(b)
+    assert_changed_shared_source(error)
     assert b['replay_admission_pass'] is False and b['options']['slip_recovery']=='slip_recovery_v1'
     assert b['recovery_replay_admission_pass'] is True
     assert b['options']['idle_robot_contacts']=='freeze_v1'
@@ -53,8 +55,9 @@ def test_runtime_uses_slip_with_frozen_baseline_and_preserves_result_failure(tmp
         if r is not None:r.close()
         undo()
     def no_world(*a,**k):raise RuntimeError('synthetic error, no physics')
-    with pytest.raises(ValueError,match='shared behavior changed.*zone_solo_cyan_real_carry'):
+    with pytest.raises(ValueError,match='shared behavior changed') as error:
         runner.run(b,tmp_path/'synthetic',backend_factory=no_world)
+    assert_changed_shared_source(error)
     assert not (tmp_path/'synthetic/result.json').exists()
 
 

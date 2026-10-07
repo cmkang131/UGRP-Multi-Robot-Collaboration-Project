@@ -36,9 +36,18 @@ def audit_measurements(root,condition):
     result=[]
     for seed in RUNS:
         r,at,begin,end=truth(seed);qs=read(root/'replay'/f's{seed}-{condition}-measurement.json')['measurements'];events=[]
+        reports=read(root/'replay'/f's{seed}-{condition}.json')['poses']
+        reports=sorted(reports,key=lambda p:p['t_est']);report_times=np.array([p['t_est'] for p in reports])
         for q in qs:
             event={k:v for k,v in q.items() if k not in ('prior','posterior','resampled')}
             event['carry']=begin<=q['t']<end
+            # PoseReport is delayed 0.16s; retain actual report neighbors too.
+            j=int(np.searchsorted(report_times,q['t']))
+            for name,index in [('reported_before',j-1),('reported_after',j)]:
+                if 0<=index<len(reports):
+                    p=reports[index];event[name]={k:p[k] for k in ('t','t_est','x','y','yaw','std_xy_m','std_yaw_rad','last_fix_t')}
+                    event[name]['xy_trace']=p['std_xy_m']**2
+                    event[name]['yaw_variance']=p['std_yaw_rad']**2
             for stage in ('prior','posterior','resampled'):
                 a=q[stage];e=np.array(a['mean'][:2])-at(q['t']);c=np.array(a['cov'])[:2,:2]
                 event[stage]={**a,'error_m':float(np.linalg.norm(e)),
