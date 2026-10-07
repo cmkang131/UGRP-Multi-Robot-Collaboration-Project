@@ -3439,3 +3439,9 @@ PR405 강성 on pitch 중앙: SEARCH −0.119°, HIGH −0.141°, hover −0.125
 없으면 **NOT_EVALUABLE**, full DEV 금지. 기존 off 영상의 카메라 숫자만 바꾸지 않는다.
 GT는 재생 종료 뒤 채점만; #405 원본 수정0, 카메라 mount/FOV 변경0, 모델0.
 자료/기준 미달시 새 번들·seed를 예약하거나 물리 실행하지 않는다. ENOSPC는 HOST_ERROR.
+
+s2v30 구현 검증 중 HIGH/real_delivery 전용 기존 `visual_pose_supported`를 VO까지
+공유한 범위 누락을 발견했다. 첫 후보 재생은 `replay-candidate.json`에 보존한다.
+최종 VO는 고정 camera_models의 모든 자세 키와 기존 servo settle 시간으로 지원을
+판단한다. AMCL의 벽 관측 자세 범위는 바꾸지 않는다. 이는 파라미터 재튜닝이 아니라
+요청한 매 펄스 범위 수정이며 최종 재생은 `replay-candidate-allposes.json`으로 분리한다.

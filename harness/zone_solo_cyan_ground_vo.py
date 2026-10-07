@@ -18,10 +18,16 @@ from harness.zone_solo_cyan_floor_contact import floor_pixels
 from harness.zone_solo_cyan_scene_change import cyan
 from harness.zone_solo_cyan_visibility import K
 from harness.zone_solo_cyan_pulse_cal import profile_key
+from harness.vision_pose_source_final import camera_key
 
 OPTION = 'ground_vo_v1'
 PARAMS = dict(max_track_gap_s=.15, finite_difference_rad=.0001,
               minimum_complete_coverage=1., identical_rgb_fallback=True)
+
+
+def camera_supported(inner, pose):
+    state='loaded' if inner.loc._pf.load.loaded else 'unloaded'
+    return all(k in pose for k in (3,4,5,6)) and camera_key(pose) in inner.calibration['camera_models'][state]
 
 
 def plane_homography(cm, delta):
@@ -123,7 +129,7 @@ class GroundBuffer(PulseBuffer):
                 self.pending['events'].append(('command',(copy.deepcopy(row),)));return
         if moving:
             pf=self.inner.loc._pf;key=profile_key(row,pf.load.loaded);p=self.profiles.get(key)
-            supported=self.supported(self.inner.servo)
+            supported=self.supported(self.inner.servo) and pf.settled(row['t'])
             reason='unsupported_profile' if p is None else ('unsupported_camera_pose' if not supported else 'missing_before_frame')
             if p is not None and supported and self.last is not None and abs(row['t']-self.last[0])<1e-7:
                 self.pending=dict(t=float(row['t']),key=key,profile=copy.deepcopy(p),command=copy.deepcopy(row),
@@ -160,7 +166,8 @@ class Runtime(Previous):
             old=self.flow;inner=self.pose.provider
             # Replace the old buffer, never nest two buffers/measurements.
             inner.on_command,inner.on_frame,inner.report=old.command0,old.frame0,old.report0
-            self.flow=GroundBuffer(inner,old.profiles,old.supported,old.table,calibration=ground_vo_calibration)
+            self.flow=GroundBuffer(inner,old.profiles,lambda pose:camera_supported(inner,pose),
+                                   old.table,calibration=ground_vo_calibration)
             from harness.zone_solo_cyan_v106 import hp
             inner.runtime_contract['s2_ground_vo']=dict(option=OPTION,calibration=copy.deepcopy(ground_vo_calibration),
                 parameters=copy.deepcopy(PARAMS),gt_inputs=False,command_is_measurement=False)

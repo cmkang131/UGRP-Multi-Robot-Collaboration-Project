@@ -70,7 +70,7 @@ def test_all_load_axis_profiles_buffer_causally_and_restore(monkeypatch):
     key='0:turn:0.35:0.65';profiles={key:p['profile']};events=[];applied=[]
     def command(row):events.append(('command',row['t']));applied.append(copy.deepcopy(profiles[key]))
     inner=NS(on_command=command,on_frame=lambda t,im:events.append(('frame',t)),report=lambda t:t,
-        servo={},loc=NS(_pf=NS(load=NS(loaded=False),column_model_for=lambda x:None)))
+        servo={},loc=NS(_pf=NS(load=NS(loaded=False),column_model_for=lambda x:None,settled=lambda t:True)))
     buf=m.GroundBuffer(inner,profiles,lambda pose:True,{},calibration=dict(pitch_scale_bound_deg=.3))
     buf.last=(1.,np.array([0.]));cmd=dict(kind='mecanum',t=1.,forward=0,left=0,turn=.35,duration_s=.65)
     inner.on_command(cmd)
@@ -81,3 +81,14 @@ def test_all_load_axis_profiles_buffer_causally_and_restore(monkeypatch):
     assert events==[('command',1.),('frame',1.75)] and applied==[replacement]
     assert profiles[key]==p['profile'] and inner.report(1.75)==1.75
     assert buf.pending is None and buf.audit['wall_frames_dropped']==0
+
+
+def test_camera_support_uses_all_fixed_calibrated_poses_not_high_only():
+    search={3:740,4:2320,5:1320,6:1500}
+    inner=NS(loc=NS(_pf=NS(load=NS(loaded=False))),calibration=dict(camera_models={
+        'unloaded':{'740,2320,1320,1500':{}},'loaded':{'600,2200,1400,1500':{}}}))
+    assert m.camera_supported(inner,search)
+    inner.loc._pf.load.loaded=True
+    assert not m.camera_supported(inner,search)
+    assert m.camera_supported(inner,{3:600,4:2200,5:1400,6:1500})
+    assert not m.camera_supported(inner,{})
