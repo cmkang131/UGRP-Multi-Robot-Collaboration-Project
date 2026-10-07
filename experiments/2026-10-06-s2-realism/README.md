@@ -3413,3 +3413,29 @@ raw/소스/검증은 `/Users/changmin/projects/ugrp/outputs/s2-dock-augmented-20
 [검증·핀 링크](dock-augmented-delivery-verification.json). 최초 변환은 파생 뷰 schema 누락으로 실패해
 그 snapshot을 보존하고 새 뷰/새 snapshot으로 고쳤다. 브라우저 UI 확인·새 영상·물리 시간 비교는 없다.
 기존 viewer PID52016을 재사용했다. 오프라인 세션2개 stopped, 이번 작업 물리 잠금 미획득·현재null.
+
+## s2v30 사전 등록 — 회복 차단 해제와 ground VO (2026-10-07)
+
+중단된 조사 재개: 2710a477 작업 트리 clean, 미커밋 변경 없음, 잠금 null.
+[고정 기준·출처·PR405 읽기 전용 복사 해시](ground-vo-criteria.json)를 재생 전에 커밋한다.
+기존 s1051 자료는 강성 **off**다. 이를 강성 on 자료로 바꾸어 해석하지 않는다.
+회복 종료(성공/시간초과/지원 역펄스 없음)→일시 방향 차단 삭제→정적 지도 재계획;
+새 slip 증거만 다시 차단한다. 차단 개수와 회복 시도 횟수는 분리(최대6회).
+Nav2 원본은 RoundRobin의 ClearLocal/Global, Spin, Wait, BackUp 순서이고,
+각 planner/controller 실패에도 clear→retry가 있다. 항상 BackUp→clear인 원본이라고
+인용하지 않는다. 사용자가 지시한 S2의 회복 완료→clear→replan 적용이다.
+
+VO는 고정 K/왜곡/카메라 높이·pitch로 바닥을 역투영하는 평면 호모그래피와
+LK 대응점의 강건 SE(2) 정합(Seegmiller 2011 II-C–F)을 사용한다. 매 지원 펄스에
+실측 변위를 한 번 전파하며 명령은 누락/가림/완전 동일 RGB 시 예측 대체에만 쓴다.
+robot_localization의 예측/측정 분리를 따른 S2 PF 어댑터이며 EKF 재현이라고 부르지 않는다.
+픽셀 정합 공분산 + pitch 스케일의 방사 방향 공분산, 바닥/블록 면적·fallback 사유 기록.
+정상 펄스 RMS 비악화(수치허용1e-10m), 운반 RMSE 엄격 개선, RGB/벽 관측 보존,
+회복 교착 해소를 판정한다. 이전 s1051 재생은 탐색/회귀 검사이며 확증으로 재명명하지 않는다.
+
+PR405 강성 on pitch 중앙: SEARCH −0.119°, HIGH −0.141°, hover −0.125°,
+하중 HIGH −0.249°. 그러나 S2 21자세/하중 real_delivery 외부 보정, 정착시간/파지 안전,
+하중·자세별 v7 평균/공분산은 별도 재보정 대상이다. 이 조건과 해당 plant의 재생 근거가
+없으면 **NOT_EVALUABLE**, full DEV 금지. 기존 off 영상의 카메라 숫자만 바꾸지 않는다.
+GT는 재생 종료 뒤 채점만; #405 원본 수정0, 카메라 mount/FOV 변경0, 모델0.
+자료/기준 미달시 새 번들·seed를 예약하거나 물리 실행하지 않는다. ENOSPC는 HOST_ERROR.
