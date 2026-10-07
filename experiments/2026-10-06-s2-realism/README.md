@@ -1,6 +1,8 @@
 # S2 현실성 재검증 — 실행 전 등록 (2026-10-06)
 
-**최신 완료(v121):** `f0bb26e7`의 s1045는 pick→carry→place까지 진행했지만 **lifted=true/inside=false**다. B 밖 바닥에 안정적으로 놓였고 최종 위치 추정 오차3.839m를 확인했다. 팔 가드5회·위치 불확실519회는 기록만 했다. 추가 실행 없이 종료·잠금 해제했다. [완료 기록](#v121s1045-전체-dev-완료--b-밖에-놓음), [사전 기록](#v121-전체-dev-사전-기록--s1045-2026-10-07)을 따른다.
+**최신 작업(s2v17, 2026-10-07):** 사용자는 실물 **단독 운반 중 벽·바닥이 보였고 블록 가림이 작았다**고 확인했다. s2v16의 관측 부재는 SIM/실물 불일치로 재분류한다. 현재 실물600/2200/1400과 SIM HIGH896/2035/1894의 명령 차이는 확정했으며, mount/실물 처짐은 미측정이다. 아래 s2v17 절에 근거·기준·기하 평가를 따로 기록하고 이전 수치/raw는 보존한다.
+
+**이전 실행 완료(v121):** `f0bb26e7`의 s1045는 pick→carry→place까지 진행했지만 **lifted=true/inside=false**다. B 밖 바닥에 안정적으로 놓였고 최종 위치 추정 오차3.839m를 확인했다. 팔 가드5회·위치 불확실519회는 기록만 했다. 추가 실행 없이 종료·잠금 해제했다. [완료 기록](#v121s1045-전체-dev-완료--b-밖에-놓음), [사전 기록](#v121-전체-dev-사전-기록--s1045-2026-10-07)을 따른다.
 
 **이전 완료(v120):** 문헌 조사와 s1042·1043 오프라인 비교 뒤 새 s1044를 1회 실행했다. `97c05e41`에서 lifted=true였지만 두 들기 자세의 cyan이 각각 0/9로 **hold unknown·probe 미통과**다. 추가 실행·튜닝 없이 중단했고 잠금·세션·일회 실행기를 정리했다. [v120 완료](#v120s1044-완료--추가-실행-중단), [조사·사전 등록](#v120-레퍼런스-조사사전-등록--s1044-실행-전)을 따른다.
 
@@ -1794,3 +1796,127 @@ TensorBoard: 새 snapshot `1007-s2-visibility`, 15뷰·132스칼라의 원본→
 재생한 fix/RMSE는 유효한 비교가 아니다. 실제 새 자세 영상의 fix 공백≤30초·운반 RMSE
 개선까지 입증된 경우에만 새 seed full DEV를 허용한다. 기하만 통과해도 충분하지 않다.
 미달/입증 불가이면 새 시뮬레이션·seed 예약 없이 보고한다. GT는 별도 기하 평가에만 쓴다.
+
+### 확정한 불일치와 아직 측정하지 못한 항목
+
+`real-carry-evidence.json`에 ZIP 전체/선택 member와 코드의 SHA256을 남겼다.
+원본 `/Users/changmin/projects/ugrp/outputs/experiment-archives-20260907/real_traces-20260907.zip`
+(SHA256 `22fba4801d67464203c5607259e0aae31bac99730e9e9d3233f130ca0ffd949c`)을
+읽기 전용으로 검증했다. 원본을 다시 풀거나 변경하지 않았다.
+
+| 항목 | SIM / 실물 근거 | 판정 |
+|---|---|---|
+| 운반 servo3/4/5 | HIGH=896/2035/1894, 현재 실물 delivery=600/2200/1400; 실물−SIM=-296/+165/-494 PWM | **발행 자세 차이 확정** |
+| 고정 기하의 카메라 높이/optical pitch | 같은 v3 mount에서 HIGH=0.193199 m/-30.05°, 실물 명령=0.227007 m/-27.08° | 명령 차이 효과 +33.808 mm/+2.97°; 실물 각도 실측 아님 |
+| v3 mount | 공구축 위+10°, 렌즈 위치(52.982,0,28.152)mm, 기존 K/D 그대로 | +10°는 사용자 가시성 목표 후보, **실측 장착각 아님**; 실물과의 차이는 미확정 |
+| 하중/기구 처짐 | HIGH 무하중 PnP 약-29.90°/0.19315m 대비 저장 loaded HIGH 약-32.7°/0.1872m | 총 차이 약-2.8°/-6mm; 실물 처짐 측정 없고 관절/차체 분리 불가 |
+| 벽까지 거리 | s2v16 위쪽 이탈 열의 벽 하단 거리 중앙값1.701/3.230/2.797m, 실제 HIGH 중앙열 바닥 최대 약0.965m | SIM 먼 벽 하단이 위 밖; 실물 같은 거리/장면의 대조 자료 없음 |
+
+실물 근거는 `sim/real_stack_adapter.py:75–95`가 직접 가져오는 스택이다.
+`pick.py:396–399` → `physical_state_machine_reference.py:111`의
+`DELIVERY_CARRY_POSE={1:1500,3:600,4:2200,5:1400}`;
+`place.py:203–218`도 차체 이동 전에 servo5=1400으로 되돌린다. `robot.py:209–212`의
+`move_pose`는 `poses.py:64–80`의 `servo_steps` 순서/시간을 쓰며, `move_servo`는
+이동 시간+0.15초 기다린다. adapter가 HIGH로 운반 명령을 바꾸는 경로는 없다.
+`poses.py`의 옛 POSE_CARRY=960/2410/1215는 현재 delivery 호출의 목표가 아니다.
+`docs/archive`에서는 이를 대체할 실측 carry PWM/장착각 기록을 찾지 못했다.
+
+- 2026-09-02 `real-19bb30fd/pick-b5f9a960` event65: 마지막 JPEG는
+  `{1:1500,3:600,4:2200,5:1900,6:1667}`. event67: servo5 **1900→1400,0.625초**,
+  event68: 발행 상태600/2200/1400 확인. member SHA256
+  `0386e4fc17272d14a2017f710559cf1ba662cd8f39ae6e937bc370bdd5aa4424`.
+- 2026-08-31 `real-d4872c04/pick-b99f23a8` event73: 마지막 JPEG의servo5=1900;
+  event75: **1900→1500,0.5초**. member SHA256
+  `a30ca75bfb74c9f4da77ba607eb87f9f81f0b2119dc973773eac1bf3a51ec2f5`.
+  더 옛1500 후보를 결과를 본 뒤 선택하지 않는다. 최신1400 기록+현재 코드를 고정한다.
+- 9월2일 `real-da601e70/pick-255314b9`는 집게를 다시 여는 실패 경로로, 운반 근거에서 제외한다.
+
+이 ZIP의 해당 pick span에는 최종 운반 명령 **이후** JPEG가 없다. 앞서 v3 검토에서 비교한
+실물 집기 뒤 영상의1900 자세와 SIM HIGH도 서로 다른 자세였다. 그 영상의 블록 면적은
+실물 **운반 자세**의 mount 보정값이 될 수 없다. 사용자의 이번 실제 단독 운반 관찰은
+독립적인 정성 근거로 기록하고, 발행 PWM을 실제 관절각/물리 성공으로 부르지 않는다.
+실물 기록의 pan1667을 S2 세계 방향에 복사하지 않고, 기존 S2 neutral pan1500을 유지한다.
+
+### 적용 방법·참고 자료와 범위
+
+보정 문제는 고정 장착 변환과 팔 자세 변환을 구분하는 eye-in-hand 절차로 다룬다.
+[OpenCV calibrateHandEye 공식 문서](https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html)처럼
+고정 표적의 여러 자세2D–3D 대응(PnP)과 그리퍼→베이스 변환을 결합해야 장착 변환을
+식별할 수 있다. 블록이 조금 보인다는 한 시야로 장착각·관절 처짐·파지 깊이를 함께
+추정하지 않는다. 이 작업에서는 그런 실측 자료가 없으므로 **mount/FOV/K/D는 그대로**다.
+현재 real stack의 명령 순서/시간을 그대로 재사용하는 것이 확인된 자세 차이를 고치는
+최소 수정이다. 웹 표준 절차를 수행한 실제 보정 결과라고 주장하지 않는다.
+
+`harness/zone_solo_cyan_real_carry.py`의 `carry_pose=real_delivery_v1`(기본 off)은
+S2 Runtime 후보로 구현했다. 기존 lift/in-hand 기록 뒤에 실물 순차 서보 명령으로
+운반 자세에 들어가고, 운반 도착 뒤 HIGH로 되돌린 다음 기존 하강 경로를 따른다.
+**전체 실물 pick/place 궤적 복제는 아니며**, 운반 목표 자세와 그 전환 순서/시간만
+현재 실물 코드에 일치한다. 실제 파지 유지·충돌·속도 성능은 미검증이다. gripper1500은
+닫힘 명령일 뿐 접촉 증거가 아니고, dev_light 시각 unknown 기록 정책도 그대로다.
+기본 off는 이전 Runtime의 명령·record JSON byte 동일 시험으로 고정했다.
+
+새 자세를 HIGH인 것처럼 가장하지 않는다. 현재 공용 provider의 loaded 관측은 HIGH만
+보정되어 있어 새 자세는 predict-only다. 새 자세의 고정 카메라 보정, loaded 운동 모델,
+HIGH 전용 LK 정체 감시 역시 별도 검증이 필요하다. 이를 누락한 채 full에 넣지 않도록
+v123 번들 검증기는 non-off carry_pose를 명시적으로 거절한다. 새 CLI/실행 번들/번호는
+등록하지 않았다. S2 외 제어기, 공용 camera_robot_port, paired HIGH, PR405는 수정하지 않았다.
+
+기준 커밋`fb147a91` → 후보 커밋`6e4c7bb7` 순서로 push한 뒤 계산한다.
+시험 `test_s2_real_carry.py`+`test_s2_real_pregrasp_policy.py` **8개 통과**:
+기본 off byte 동일, 실물 목표/순서/시간, 실제 Runtime의 carry 전환·HIGH 복귀·하강,
+명령 상태 오류, v123 미허용, 새 자세에 HIGH 보정 미적용, 기하 공백 집계,
+기존 real_pregrasp+unknown 기록 후 carry 진행. 첫 시험의 fixture camera_profile 누락과
+추가 옵션을 v123 검증기가 무시하는 문제를 각각 고쳐 통과 후에만 커밋했다.
+
+### 전체 저장 시각의 기하 평가 — full DEV 미실행
+
+s1045/46/47의 운반 구간 **11690/4807/3356 frame**, 총19853시각을 계산했다.
+분모는 각각1122240/461472/322176열(프레임당96열)이다. 원래 HIGH 명령인 것을
+매 frame 확인했다. 두 자세 모두 같은 저장 평가 궤적·지도·K/D·mount를 사용했고,
+새 자세의 블록 위치를 옛 GT로 옮겨 놓지 않았다. 새 cargo 가림·실제 픽셀 검출·prior
+오차를 무시한 **낙관적 기하 관측 기회**이며 제어 입력이나 보정 fitting에 GT를 쓰지 않았다.
+명령 기반 자기 형상 가림을 더해도 이 하단 가시 열 집계는 같았다.
+
+| seed | HIGH nominal 가시율 / 공백 초 | REAL nominal 가시율 / 공백 초 | HIGH+고정 처짐 가시율 / 공백 초 | REAL+고정 처짐 가시율 / 공백 초 |
+|---|---|---|---|---|
+| 1045 | 8.85% / 481.05 | 42.06% / 104.80 | 6.90% / 483.25 | 24.91% / 316.65 |
+| 1046 | 36.88% / 41.45 | 45.31% / 40.35 | 33.81% / 44.80 | 40.53% / 40.00 |
+| 1047 | 6.95% / 87.85 | 19.33% / 73.45 | 5.58% / 87.85 | 11.14% / 85.40 |
+
+공백은 **6열 이상 실제 하단이 기하상 보일 기회** 사이의 최장 시간이며, carry 시작/끝도
+포함했다. 문맥상 fix라고 부르지 않는다. 1열만 요구한 더 낙관적인 REAL nominal 공백도
+98.55/39.75/71.35초로 모두30초를 넘는다. 따라서 보정/게이트를 완벽하게 가정해도
+이 저장 경로·고정 mount·지정 자세 조합의 관측 기회가 기준에 미달한다. 새 폐루프 경로가
+같을 것이라는 주장은 아니며, 이 경로를 보정 학습/확증 seed로 재사용하지 않는다.
+
+nominal HIGH→REAL의 중앙열 바닥 범위는0.346–1.188m→0.326–1.736m다.
+이전 고정 처짐−1.5533°를 더하면 REAL의 최대거리는1.472m, HIGH는1.062m로 줄어든다.
+이 처짐은 새 실물 자세의 측정값이 아니며 민감도 비교일 뿐이다. 명령 차이만 고쳐도
+하단 가시 비율은 개선되지만 실물 관찰과의 전체 불일치가 해소됐다고 확정할 수 없다.
+특히 mount 각도와 실제 loaded 자세·파지 위치의 대응 자료가 남아 있다.
+
+**판정: 기준 미달, full DEV 0회.** 새 자세의 실제 fix 공백/운반 RMSE는 null(미측정)로
+기록했다. HIGH JPEG에 새 자세 보정만 대입한 허위 재생은 하지 않았다. 현재 보정표21자세에
+600/2200/1400은 무하중/하중 모두 없으며 기존 provider도 loaded HIGH 밖에서는 관측을
+쓰지 않는다. 새 옵션을 실행 번들에 허용하지 않고 기본 off 상태의 S2 후보로 남긴다.
+추가 자세/mount 후보 탐색, 물리·정지 렌더, 새 seed·번들·영상 생성은 모두0이다.
+
+raw/파생 기록: `/Users/changmin/projects/ugrp/outputs/s2-real-carry-20261007/`의
+`geometry.json`, `rows.jsonl`, `geometry.log`; `real-carry-summary.json`은 geometry.json과
+byte 동일하다. `archive-evidence-v2.json`은 ZIP에서 읽은 선택 사건의 파생본이고, 최초
+`archive-evidence.json`은 event 키를 잘못 조회해 선택 명령이 비었던 중간 기록으로 보존했다.
+최종 검증 근거는 커밋한`real-carry-evidence.json`의 kind/명령·pose·is_robot=true/dry_run=false다.
+원본 실행/프레임/ZIP과 과거 결과는 그대로 보존했다.
+
+계산은 오프라인이며 agent_lock status=null을 확인했고 acquire/release·새 ugrp_session은
+필요하지 않았다. 물리·학습·wall/SIM 비교를 실행하지 않아 새 wall/SIM 수치는 없다.
+기존 TensorBoard 서버/다른 작업의 프로세스·잠금은 변경하지 않았다. PR #406 DRAFT 유지,
+병합하지 않는다. 후보6e4c7bb7의 ci-preflight는 통과했고 전체 CI 일부는 실행 중이다.
+
+TensorBoard 새 snapshot `1007-s2-real-carry`: **12뷰·108스칼라**의 원본→event→live API
+수치 일치 및 HParams/source SHA를 확인했다. 실제 fix/RMSE/물리 성공을 생성하지 않고
+`GEOMETRY_NOT_FIX`로 표시한다. 사용자 수치 대조 범위대로 브라우저는 열지 않았다.
+[새 기하 수치 보기](http://127.0.0.1:6006/?runFilter=%5E1007-s2-real-carry%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fvisible_bottom_fraction%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_opportunity_gap_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ffull_dev_runs%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries) / `real-carry-delivery-verification.json`.
+공용 view 파일은 쓰기 직전 다시 읽고 자기`s2_real_carry_20261007`키만 추가했고, 기존
+snapshot/서버PID52016과 과거 영상은 보존했다. 자료는 로컬이며 raw 원격 백업으로
+보고하지 않는다. 소스·요약·README는 GitHub PR #406에 보존한다.

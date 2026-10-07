@@ -1,0 +1,169 @@
+{
+  "schema": "ugrp.s2.real-carry.evidence.v1",
+  "archive": "/Users/changmin/projects/ugrp/outputs/experiment-archives-20260907/real_traces-20260907.zip",
+  "archive_sha256": "22fba4801d67464203c5607259e0aae31bac99730e9e9d3233f130ca0ffd949c",
+  "rows": [
+    {
+      "member": "real_traces/20260831T055135Z-real-d4872c04/skills/20260831T055210Z-pick-b99f23a8/events.jsonl",
+      "member_sha256": "a30ca75bfb74c9f4da77ba607eb87f9f81f0b2119dc973773eac1bf3a51ec2f5",
+      "final_servo_command": {
+        "duration_s": 0.5,
+        "event_seq": 75,
+        "from_pulse": 1900,
+        "servo": 5,
+        "to_pulse": 1500,
+        "wall_time_s": 1788155548.1542614
+      },
+      "final_commanded_pose": {
+        "event_seq": 76,
+        "pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1500,
+          "6": 1571
+        },
+        "reason": "move_servo"
+      },
+      "final_camera": {
+        "commanded_pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1571
+        },
+        "event_seq": 73,
+        "frame_seq": 20,
+        "sampled_jpeg": "frames/frame-000020.jpg",
+        "shape": [
+          480,
+          640,
+          3
+        ]
+      },
+      "claim": "issued pose history only, not measured joints or physical transport success",
+      "real_flags": {
+        "is_robot": true,
+        "dry_run": false
+      }
+    },
+    {
+      "member": "real_traces/20260902T144448Z-real-da601e70/skills/20260902T144743Z-pick-255314b9/events.jsonl",
+      "member_sha256": "9d8f07f68d4eedb54eaa594bec3dd2e57f9ffdac1180a91663378147609c3b00",
+      "final_servo_command": {
+        "duration_s": 0.55,
+        "event_seq": 56,
+        "from_pulse": 1500,
+        "servo": 1,
+        "to_pulse": 2000,
+        "wall_time_s": 1788360480.8088682
+      },
+      "final_commanded_pose": {
+        "event_seq": 57,
+        "pose": {
+          "1": 2000,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1522
+        },
+        "reason": "move_servo"
+      },
+      "final_camera": {
+        "commanded_pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1522
+        },
+        "event_seq": 55,
+        "frame_seq": 9,
+        "sampled_jpeg": "frames/frame-000009-red.jpg",
+        "shape": [
+          480,
+          640,
+          3
+        ]
+      },
+      "claim": "issued pose history only, not measured joints or physical transport success",
+      "real_flags": {
+        "is_robot": true,
+        "dry_run": false
+      }
+    },
+    {
+      "member": "real_traces/20260902T145131Z-real-19bb30fd/skills/20260902T145421Z-pick-b5f9a960/events.jsonl",
+      "member_sha256": "0386e4fc17272d14a2017f710559cf1ba662cd8f39ae6e937bc370bdd5aa4424",
+      "final_servo_command": {
+        "duration_s": 0.625,
+        "event_seq": 67,
+        "from_pulse": 1900,
+        "servo": 5,
+        "to_pulse": 1400,
+        "wall_time_s": 1788360878.817466
+      },
+      "final_commanded_pose": {
+        "event_seq": 68,
+        "pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1400,
+          "6": 1667
+        },
+        "reason": "move_servo"
+      },
+      "final_camera": {
+        "commanded_pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1667
+        },
+        "event_seq": 65,
+        "frame_seq": 14,
+        "sampled_jpeg": "frames/frame-000014.jpg",
+        "shape": [
+          480,
+          640,
+          3
+        ]
+      },
+      "claim": "issued pose history only, not measured joints or physical transport success",
+      "real_flags": {
+        "is_robot": true,
+        "dry_run": false
+      }
+    }
+  ],
+  "source_hashes": {
+    "scripts/red_block/physical_state_machine_reference.py": "f17768202e6d818d01ac14cb304a1df3c4816f9ad1e0e3422bc2cdc267ffb5cc",
+    "scripts/red_block/pick.py": "db44c3cf0bf25850e10c49f71fdf1fc439d60fb570e9a1a2d6b260302d894d08",
+    "scripts/red_block/place.py": "b305c7897de1d44be776d4853a8318448bc7077ae043701e375c55f6aed62d20",
+    "scripts/red_block/poses.py": "91a8876714171a0fcabbd40cbfb49d7d83fb91ad0cc50e7a15d10ae18491cc4e",
+    "scripts/red_block/robot.py": "7c2bd75b5c6dc5de23fef3dc91dc66b230299d34a0c13212037e0112a9004cf9",
+    "sim/real_stack_adapter.py": "a9e7737ef9e5dcbea1c1f37ddf17e8ed255bf851c7e07f7d242e4a04fe71fb44",
+    "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+    "harness/zone_pair_highpose.py": "a6f9f15838064328208720c53bd9f9f27a2bd2d178884a2e332ab527944101b2",
+    "configs/calibration/s2_camera_v3_extrinsic_v1.json": "dc3157dbf77d5df5ab7ee63145e5c2cf7f5e8c0fbfc2231dd60712e26bc77b8c"
+  },
+  "user_confirmation": {
+    "date": "2026-10-07",
+    "scope": "real MasterPi SOLO carry only",
+    "observed": "walls and floor visible; block did not substantially occlude camera",
+    "metric_camera_calibration": false
+  },
+  "selected_pose": {
+    "1": 1500,
+    "3": 600,
+    "4": 2200,
+    "5": 1400,
+    "6": 1500
+  },
+  "selection": "current real stack plus 2026-09-02 issued pose; pan stays neutral S2",
+  "real_mount_measured": false,
+  "real_loaded_sag_measured": false
+}
