@@ -3980,3 +3980,10 @@ accepted=false·visual_confirmed=false·visual_confirmed_at_s=null을 보존하�
 영상 `outputs/s2-realism-f10a5f9d-s1051-P1-2-lookahead-4x.mp4` (908프레임,80fps,11.35초),
 native TensorBoard `1008-s2-v36-video`에 등록. [검증](look-ahead-delivery.json).
 raw는 로컬 보존이며 GitHub raw백업이라고 주장하지 않는다.
+
+### 원격 보존 마무리 (2026-10-08)
+
+종료 시 정상 push 성공: 원격954b4ebe→bd046020, 이전 대기 커밋 전체 포함.
+PR406 본문에 v130/7.23.0 예약·14조건·full 실패·사후 DEV 옵션 수정·출처를 갱신, OPEN/DRAFT 확인.
+잠금status=null, 자신이 시작한 시작/ablation/full 세션 모두 종료.
+최종 물리 source f10a5f9d와 사후 수정 bd046020을 구분하며, 후자의 새로운 파지 경로 물리 검증은 남아 있다.
