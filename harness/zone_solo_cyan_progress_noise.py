@@ -56,7 +56,7 @@ def rigid_ransac(before,after):
     return rot,delta,inside
 
 
-def pair(before,after,cm,pose,table):
+def pair(before,after,cm,pose,table,*,metric_observation=False):
     """Metric displacement and covariance from own RGB; no particle/map position."""
     from harness import vision_loc_protocol as vp
     from harness.zone_solo_cyan_scene_change import cyan
@@ -99,11 +99,14 @@ def pair(before,after,cm,pose,table):
     if fit is None:return {**unknown,'status':'unknown_rigid_consensus'}
     rot,delta,inside=fit;a,b,p,q=a[inside],b[inside],p[inside],q[inside]
     cells=len(set((int(x)//cw,int(y)//ch) for x,y in p))
-    if cells<PARAMS['min_cells'] or np.linalg.svd(b-b.mean(0),compute_uv=False)[-1]<PARAMS['pose_translation_span_m']:
+    if cells<PARAMS['min_cells'] or (not metric_observation and
+            np.linalg.svd(b-b.mean(0),compute_uv=False)[-1]<PARAMS['pose_translation_span_m']):
         return {**unknown,'status':'unknown_spatial_support','inliers':len(a),'cells':cells}
     rotated=b@rot.T;residual=a-(rotated+delta)
     jac=np.zeros((2*len(a),3));jac[::2,0]=1;jac[1::2,1]=1
     jac[::2,2]=-rotated[:,1];jac[1::2,2]=rotated[:,0]
+    if metric_observation and np.linalg.matrix_rank(jac)!=3:
+        return {**unknown,'status':'unknown_information_rank'}
     # One-pixel localisation uncertainty propagated through fixed ground rays.
     pixel_var=[]
     for uv in (p,q):
@@ -112,9 +115,11 @@ def pair(before,after,cm,pose,table):
         pixel_var.append(float(np.mean(dx*dx+dy*dy))*PARAMS['feature_pixel_sigma']**2)
     sigma2=max(float(np.sum(residual**2)/(2*len(a)-3)),sum(pixel_var))
     cov=sigma2*np.linalg.inv(jac.T@jac)
-    return dict(status='measured',tracks=unknown['tracks'],inliers=len(a),cells=cells,
+    result=dict(status='measured',tracks=unknown['tracks'],inliers=len(a),cells=cells,
         delta=[float(delta[0]),float(delta[1]),float(math.atan2(rot[1,0],rot[0,0]))],
         covariance=cov.tolist(),fit_rms_m=float(np.sqrt(np.mean(residual**2))))
+    if metric_observation:result.update(before_uv=p.tolist(),after_uv=q.tolist())
+    return result
 
 
 def scaled_variance(predicted,variance,observed,covariance):
