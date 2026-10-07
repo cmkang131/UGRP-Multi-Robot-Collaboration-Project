@@ -49,3 +49,18 @@ def test_builder_signature_before_physics():
               if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='build_world')
     # Exercise Python call admission without constructing a MuJoCo world.
     inspect.signature(build_world).bind(None,**{k.arg:None for k in node.keywords})
+
+
+def test_replay_adapter_preserves_original_configuration():
+    import importlib.util
+    path=run.EXP/'code/replay_strafe.py'
+    spec=importlib.util.spec_from_file_location('strafe_replay',path)
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.verify()
+    assert set(module.c.EPISODES)==set(run.CASES)
+    a=json.loads((run.EXP/'new-annotations.json').read_text())
+    assert len(a['rows'])==12
+    assert all(r['status']=='sealed_before_parallax_predictions' for r in a['rows'])
+    cohort=json.loads((run.EXP/'cohort.json').read_text())
+    for r in a['rows']:assert r['frame_id'] in cohort['cases'][r['case']]['eligible_frames']
