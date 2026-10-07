@@ -48,3 +48,60 @@ GT를 평가에서만 읽는다. off 전체 재생은 기존 frontend 출력과 
 freeze/모델0. 기존 지도 성공 기준은 egomap23 그대로, 소스 commit/push 후 실행한다.
 raw `outputs/rbpf-rejection-v1/` (기본 checkout 절대 경로), ENOSPC=HOST_ERROR.
 TensorBoard 생략 유지, PR405 DRAFT, 다른 worktree/PR406 수정·다른 프로세스 조작 없음.
+
+## 결과 — 물리 관문 미달, 추가 실행0
+
+평가·기록 완료: 2026-10-08 KST.
+
+사전 등록 `c0ae679f`, 구현 `4ffb1e5b`, JSON 검증기 수정 `6cc1dc42`.
+입력은 egomap23 그대로이며 on/off 각각 한 번 재생. 추정기/계수/문턱 재튜닝 없음.
+예측 저장·SHA 봉인 뒤 GT 평가. graph를 재최적화하지 않은 **frontend 동일 시각 비교**다.
+
+|지표|off (egomap23 그대로)|on|
+|---|---:|---:|
+|종료 XY 오차 / σXY m|1.74149 / .008149|1.12721 / .516201|
+|과신 e/σ / e/(2σ)|213.703 / 106.851|2.184 / 1.092|
+|경로 RMSE m / 2σ 초과|1.66688 / 729/891|1.50424 / 567/891|
+|재표본 / 거부 프레임 재표본|21 / 21|1 / 0|
+|남은 초기 조상100개 중|1|62|
+|영역 precision (정답 셀/평가 셀)|82.35% (14/17)|0% (0/14)|
+|영역 recall (덮은/가시 벽 표본)|14.60% (20/137)|0% (0/137)|
+|전체 지도 precision / recall|56.00% (14/25) / 6.08% (20/329)|13.04% (3/23) / 1.52% (5/329)|
+|벽 RMSE m / 삽입 프레임|.39095 / 7|.25997 / 7|
+|실제 취득 거리 / footprint union|7.379m / 2.313m²|동일 녹화|
+|가시 벽 범위 / 입력 표본|137/329=41.64%, 13.7m 근사 / 901RGB·891자세|동일 녹화|
+
+**e≤2σ 관문 실패**(1.12721>1.03240m). 비율 감소/거부 재표본0은 충족하지만
+물리 진입은 AND 조건이므로 **새 물리0회**, agent_lock acquire0, 모델0.
+오프라인 재생의 B/접촉은 새로운 제어 성능이 아니다. 원 녹화 B 실제 도착 없음,
+자기 확인 시작 후40.4s, 벽 접촉0은 그대로 참고만 한다.
+
+남은 원인: 관측 갱신으로 인한 입자 붕괴는 크게 줄었으나 모션 평균 편향은 남는다.
+명령만 적분한 종료 오차1.75637m, yaw 오차−113.40°(평가만).
+on 정합 수락은 t8.9/12.1/13.7 세 번뿐이며 t13.7의 Neff49.464 때만 재표본했다.
+그 뒤 거부48회=search_boundary37 + low_overlap10 + high_residual1.
+끝 부근 yaw 오차도 약−105.56°이고 기존 국소 탐색 범위는 ±.5m/±8°다.
+이는 누적 편향을 국소 정합이 회복하지 못하는 양상과 일치한다. 잡음 계수로 편향을 fitting하지 않았다.
+남은 초기 조상62개는 정확한 posterior/지도라는 보장이 아니다. 지도 삽입은
+두 조건 모두 동일한 초반7프레임(t3.3–36.1)에 머물고, 선택 입자/지도는 달라졌다.
+on은 전체 정답 셀3개도 평가 가시 영역 밖이라 영역 P/R=0이며 이를 숨기지 않는다.
+거부 생략과 공식 잡음의 개별 효과는 이번 묶음 비교로 분리할 수 없다.
+
+![동일 891시각의 XY 오차와 2σ](figures/uncertainty.png)
+
+## 코드·검증·재현
+
+- `harness/rbpf_rejection.py:20` 공식 잡음식, `:50` RGB 간 Δ의 Q, `:71` 두 단계 거부 처리,
+  `:190` 수락 관측에서만 재표본 호출. 실제 `<N/2`는 기존 `harness/self_map_rbpf.py:209–213`.
+- `harness/rbpf_motion_gate.py:63`에는 optional observer 위임만 추가. 기본 경로는 그대로다.
+- **관련 시험29개 통과**: rejection7 + motion gate6 + probability16. off 골든/RNG,
+  낮은 Neff라도 거부 시 불변, 혼합 거부, 정확히 N/2 경계, 공식 잡음식, 중복 시각,
+  forecast 복사본 격리. pytest에선 빈 peer 관측이 먼저 형식 검사에 걸리는 시험 입력1건만 고쳤다.
+- off 실제 녹화 재생도 `frontend-poses/grid/decisions/ledger` **4종 JSON bytes 모두 동일**.
+  첫 검증은 내부 tuple과 JSON list의 Python 비교가 달라 grid=False였으나 저장 byte는 처음부터 동일했다.
+  검증기를 출력 byte 비교로 수정했고 예측 재실행/덮어쓰기 없이 `verify-off`로 확인했다.
+- `code/replay.py off`, `on`, `score`; `code/diagnose.py`. 기존 출력 디렉터리가 있으면 재생 덮어쓰기 거부.
+  on/off 예측 raw 8.31MB, 소스·입력·예측 해시는 [raw manifest](results/raw-manifest.json),
+  [비교 수치](results/comparison.json), [수락/거부 진단](results/diagnosis.json), [원문 SHA](results/sources.json).
+- raw `/Users/changmin/projects/ugrp/outputs/rbpf-rejection-v1/` 로컬 보존. 작은 표/그림/코드만 Git에 보존.
+  PR405 DRAFT 유지. 전체 CI/물리 성공 주장 없음. 조건 미달로 이 단계 종료, 후속 튜닝 없음.

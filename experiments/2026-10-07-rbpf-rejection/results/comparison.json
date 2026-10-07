@@ -1,0 +1,142 @@
+{
+  "qualification": "same-input frontend; graph covariance not invented; physical path unchanged",
+  "source_frames": 901,
+  "acquisition_coverage": {
+    "travelled_m": 7.378768056526994,
+    "footprint_union_m2": 2.3125000000000004,
+    "footprint_cells_005m": 925,
+    "frames": 901,
+    "mapped_frames": 7,
+    "occupied_cells": 25
+  },
+  "b": {
+    "first_own_confirmation_s": 41.7,
+    "reached_gt": false,
+    "first_gt_reach_s": null
+  },
+  "wall_contacts": 0,
+  "modes": {
+    "off": {
+      "endpoint_error_m": 1.7414917622606245,
+      "sigma_xy_m": 0.008149128752020748,
+      "error_sigma_ratio": 213.7028160008866,
+      "error_2sigma_ratio": 106.8514080004433,
+      "path_rmse_m": 1.666881045395152,
+      "over_2sigma": 729,
+      "pose_n": 891,
+      "resamples": 21,
+      "ancestors": 1,
+      "rejected_resamples": 21,
+      "sensor_updates": null,
+      "reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 836,
+        "improved_proposal": 3,
+        "low_overlap": 47,
+        "insufficient_match_points": 3,
+        "search_boundary": 1
+      },
+      "occupied_cells": 25,
+      "inserted_frames": 7,
+      "full_map": {
+        "occupied_cells": 25,
+        "precision_015": 0.56,
+        "precision_cell": 0.12,
+        "wall_coverage": 0.060790273556231005,
+        "wall_error_rmse_m": 0.3909477703910535
+      },
+      "observed_region": {
+        "precision_correct": 14,
+        "precision_cells": 17,
+        "precision": 0.8235294117647058,
+        "recalled_samples": 20,
+        "visible_samples": 137,
+        "total_samples": 329,
+        "recall": 0.145985401459854,
+        "visible_wall_fraction": 0.41641337386018235
+      },
+      "seal": {
+        "sha256": "2a8d8e1a5a2efc6654a083f08f64abeac65fcd71e764eed727c96bfb655887fd",
+        "gt_read": false,
+        "source_sha": "4ffb1e5b84fedf5e36e8f248679f29b62d0fd197",
+        "inputs": {
+          "own-contacts.jsonl": "fca96d1ebf83b615c76eaf29ec784db57ace0f5de5ceebf519fe2d76764ce81c",
+          "robots/r3/commands.jsonl": "3b90ec1182da8f731171bdba4d8d52b1de30da12142d2e11d4db61de1866a06c",
+          "artifacts.sha256.json": "2fd52845042223a86c22b1e87063aac9d4d780cf50db1e54364672794baa903c"
+        },
+        "legacy_equal": {
+          "poses": true,
+          "grid": false,
+          "decisions": true,
+          "ledger": true
+        }
+      }
+    },
+    "on": {
+      "endpoint_error_m": 1.1272063538786696,
+      "sigma_xy_m": 0.5162014871357724,
+      "error_sigma_ratio": 2.183655766148906,
+      "error_2sigma_ratio": 1.091827883074453,
+      "path_rmse_m": 1.5042380619390727,
+      "over_2sigma": 567,
+      "pose_n": 891,
+      "resamples": 1,
+      "ancestors": 62,
+      "rejected_resamples": 0,
+      "sensor_updates": 3,
+      "reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 836,
+        "improved_proposal": 3,
+        "low_overlap": 10,
+        "insufficient_match_points": 3,
+        "search_boundary": 37,
+        "high_residual": 1
+      },
+      "occupied_cells": 23,
+      "inserted_frames": 7,
+      "full_map": {
+        "occupied_cells": 23,
+        "precision_015": 0.13043478260869565,
+        "precision_cell": 0.0,
+        "wall_coverage": 0.015197568389057751,
+        "wall_error_rmse_m": 0.25997154504859454
+      },
+      "observed_region": {
+        "precision_correct": 0,
+        "precision_cells": 14,
+        "precision": 0.0,
+        "recalled_samples": 0,
+        "visible_samples": 137,
+        "total_samples": 329,
+        "recall": 0.0,
+        "visible_wall_fraction": 0.41641337386018235
+      },
+      "seal": {
+        "sha256": "c4be3683cb8633130d72481c24c71f1e50bf352a8b75ea00ee5e101f6d421201",
+        "gt_read": false,
+        "source_sha": "6cc1dc420bad3727a541946a27bee7e4a531cb75",
+        "inputs": {
+          "own-contacts.jsonl": "fca96d1ebf83b615c76eaf29ec784db57ace0f5de5ceebf519fe2d76764ce81c",
+          "robots/r3/commands.jsonl": "3b90ec1182da8f731171bdba4d8d52b1de30da12142d2e11d4db61de1866a06c",
+          "artifacts.sha256.json": "2fd52845042223a86c22b1e87063aac9d4d780cf50db1e54364672794baa903c"
+        }
+      }
+    }
+  },
+  "gate": {
+    "within_2sigma": false,
+    "ratio_improves": true,
+    "no_rejected_resamples": true
+  },
+  "physical_admitted": false,
+  "legacy_byte_verification": {
+    "equal": {
+      "poses": true,
+      "grid": true,
+      "decisions": true,
+      "ledger": true
+    },
+    "prediction_sha256": "2a8d8e1a5a2efc6654a083f08f64abeac65fcd71e764eed727c96bfb655887fd"
+  }
+}

@@ -99,6 +99,7 @@ def score():
     visible = old.in_view(samples, cameras, rects)
     acquisition = load(ROOT/'experiments/2026-10-07-rbpf-motion-gate/results/baseline.json')
     result = dict(qualification='same-input frontend; graph covariance not invented; physical path unchanged',
+                  legacy_byte_verification=load(OUT/'off/byte-verification.json'),
                   source_frames=acquisition['coverage']['frames'],
                   acquisition_coverage=acquisition['coverage'], b=acquisition['b'],
                   wall_contacts=acquisition['wall_contacts'], modes={})
