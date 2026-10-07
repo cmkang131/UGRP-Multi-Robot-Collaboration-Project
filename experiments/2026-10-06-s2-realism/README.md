@@ -2123,3 +2123,90 @@ agent_lock·ugrp_session·한 번씩·정상 우선순위, ENOSPC HOST_ERROR, �
 RGB/명령odom/고정N 경계를 기록하고 전체 AMCL ROS/KLD 재현이라고 주장하지 않는다.
 
 실행 전 시험: 새test_s2_amcl_update의8개와 변경 없는real_carry_dev4개·likelihood_field6개를 확인했다. 중간 실패는 각도0.2rad 경계의 modulo 반올림(ROS atan2 정규화로 수정), 새 테스트의 fixture 배치 오류(시험만 수정)였다. 최종 후보 재생4개는최종 AMCL파일sha와일치하며 기본off·정지불변·beam fallback·재탐색·실제명령상태실패·새번들/seed거절을검증했다.
+
+### s1050 결과 — 정지 이탈 해소, 들기·내려놓기 도달, B 밖
+
+실행/사전 등록 SHA **97fcb5d2be8cf714d0866e7b53ed461e1c59ccbf**, 번들
+**zone-s2-realism-v125**, workflow7.18.0, seed1050/P1-2/place. freeze ON의
+단독 S2 DEV 1회다. 옵션23개를 원본 result/bundle과 `full-amcl-summary.json`에
+보존했다. 실행 중 소스/입력 변경 false, 모델 호출0, 추가 물리 실행0.
+이전 cohort와 합산하지 않는다. default-off 및 기존 출력 byte 동일 시험은 위와 같다.
+
+| 항목 | 결과 |
+|---|---:|
+| 종료 | STAGE_REACHED_UNQUALIFIED, controller done, failure=null |
+| lifted / inside B / floor / stable | true / false / true / true |
+| 초기 정지 스캔 실제 최대 이동 / 추정 최대·끝 오차 | 0.691mm / 0.08876m · 0.08639m |
+| 초기 정지 센서 갱신 / 재샘플링 | 최초1회 / 1회, 반복0 |
+| 운반 구간 | 71.00–236.80 SIM초 |
+| 운반 시각 가중 갱신 / 최장 공백 | 0회 / 165.80초 |
+| 운반 위치 RMSE / 끝 오차 | 2.19094m / 4.06164m, 평가 전용 |
+| 실제 벽 하단 가시율, 전체96열 / 검출 열 | 37.186% / 71.869%, 1Hz 166프레임 |
+| cyan 중심→B 구역 경계 / 중심 | 3.54802m / 4.28841m |
+| 파지 확인 / 재파지 | probable_held_inhand_rgb / 0회 |
+| 원래 자리 확인 | not_evaluated_inhand_selected (실물 blind 파지 + 기록용 in-hand 선택) |
+| 멈췄을 지점 | ARM_COLLISION_GUARD 7, POSE_UNCERTAIN 349, VISUAL_STALL_SUSPECTED 3 |
+| wall / SIM / wall÷SIM | 674.33213초 / 260.10초 / 2.59259 |
+| 발행 명령 / 모델 호출 | 3798 / 0 |
+
+**남은 가장 큰 원인 하나: 가시성 마스크의 사전 확률 조건이 운반 관측을 전부 차단한다.**
+`command_geometry_v1`은 자기 가림 외에 PF 입자의 예측 벽 하단이 화면 안일 확률을
+95% 이상 요구한다(`harness/zone_solo_cyan_visibility.py:apply`). 운반 중3129회,
+검출133331열 중 유지0열이다. 벽이 검출된1900프레임 **전부**에서
+prior_view_columns=0이고 검출점의 자기 가림/짐 가림 제거는 모두0이다.
+나머지1229프레임은 검출0이며, 사전 시야 조건을 만족하는 열이 생기는239프레임은
+모두 검출0프레임에 속한다. 따라서 이번 미갱신은 정지 motion 문턱이 아니라
+관측 전에 적용한 prior 가시성 조건에서 직접 발생했다.
+실제 카메라/짐의 저장 기하로는 검출7195열 중5171열의 실제 벽 하단이 보였다.
+이 가시율은 평가용 기하와 보수적 명령 기반 차체 bound의1Hz 표본이며, 모든
+검출이 올바른 벽 경계라는 뜻이나 실제 관절 가림의 정밀 실측은 아니다.
+
+전체 시각 갱신은2.25/19.70/28.25/38.15초의4회뿐이다. 운반 진입 오차0.09872m가
+운반 끝4.06164m로 증가했고 마지막 추정(4.3724,-2.0966)m과 실제
+(2.0945,1.1922)m이 달랐다. 마지막σ=0.51944m다. 제어기가 B 도착으로 판단해
+내렸지만 실제 cyan은(2.10994,1.39143)m에 놓였다. 벽 하단이 실제 보이는데도
+사전 위치 분포 때문에 관측을 잃는 문제를 다음 단계로 남긴다. 이번에는 mask 조건
+완화·추가 구현·두 번째 실행을 하지 않았다. ROS 기본 field 선택은 초기 정지 이탈을
+해소했으나 전체 위치 추정/배송을 해결했다는 주장이 아니다.
+
+`dev_search=repeat_views_v1`의 로그 후 재탐색 분기는 관련 시험에서 확인했다.
+새 full은 첫 search에서 cyan을 찾았으므로 해당 재시도 분기의 실주행 발동은0회다.
+기록된 보수적 정지359회를 통과해 내려놓기까지 진행했고 실제 물리 실패 종료는 없었다.
+표준 cubic field는 beam skip을 사용하지 않으며, product/beam-skip 비교 후보는
+오프라인 기준 미달로 실행하지 않았다. 시각 가중 갱신 횟수를 완전한 절대 pose fix
+횟수로 해석하지 않는다.
+
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/`.
+`analyze_amcl_full.py`는 종료된 기록만 읽어5117 입력 프레임의sha256, 초기 오차,
+운반 RMSE와 마스크 제거 횟수를 대조했다. 관리manifest·result·평가·record의 원본은
+그대로 두고 별도 `full-amcl-summary.json`에 출처 해시를 기록했다.
+4배속 자기RGB 영상은
+`/Users/changmin/projects/ugrp/outputs/s2-amcl-v125-analysis/views/s1050-full/execution.mp4`
+(640×480/20fps/64.10초). SIM1.30–257.10초 입력이며 마지막 정착3초는 저장RGB가
+없다. 전체 decode·등록·HTTP Range 검증을 기록한다.
+
+wall/SIM 비교는 조건별 기술 통계만 한다: freeze ON s1045=1.95975,
+s1049=2.13900, s1050=2.59259. 경로·종료 단계·추정기 부하가 달라 가속/퇴행의
+통제 비교가 아니다. freeze OFF 이전 조건과 결과/성공률을 합산하지 않는다.
+own session `s2-realism-v125-s1050` stopped, PID852/853/863/874 잔여0,
+one-shot launchd job bootout, **agent_lock=null**을 확인했다.
+
+전달: TensorBoard 새 snapshot `1007-s2-amcl-v125`, 오프라인22뷰와 full1뷰의
+**182 scalar**를 source→event→실제 live API까지 대조했다. HParams와 MP4
+등록/HTTP206/전체 decode도 통과했다(`amcl-delivery-verification.json`). 기존
+서버PID52016/공용logdir를 유지했고, 공용view를 다시 읽어 자기
+`s2_amcl_update_20261007`키만 추가했다. 사용자 수치 대조 범위대로 브라우저 UI는
+재개방하지 않았다(NUMERIC_ONLY). 기존 baseline은 별도 필터로 남겼다.
+[새 수치 보기](http://127.0.0.1:6006/?runFilter=1007-s2-amcl-v125&smoothing=0#timeseries)
+(전체 pin 링크는 전달 검증 JSON/dashboard_url).
+
+CI 보충: 실행 SHA의 ci-preflight는 통과했지만
+[offline shard4](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37563839425/job/112607188262)는
+840.77초에1 failed/1571 passed/13 skipped였다. 시간 초과가 아니라
+`test_real_pose_rgb_measurement_visibility_and_lk_are_live`의 고정 XML 형상 builder가
+`sim.masterpi_dynamics_v2`를 통해 미설치 MuJoCo를 import한 문제다.
+[pytest 공식 선택 의존성 절차](https://docs.pytest.org/en/stable/how-to/skipping.html#skipping-on-a-missing-import-dependency)와
+기존 sim 선택시험처럼 이 시험만 importorskip으로 선언하고, MuJoCo가 설치되는
+ubuntu-simulation-runtime CI 목록에 해당 파일을 명시해 실제 검증을 유지한다.
+제어기/실행 번들은 바꾸지 않았다. 설치 환경4시험 통과와 MuJoCo import를 차단한
+단일 시험의 의도된1 skip을 따로 확인한다. 수정 뒤 원격 CI 결과는 아직 확정하지 않는다.

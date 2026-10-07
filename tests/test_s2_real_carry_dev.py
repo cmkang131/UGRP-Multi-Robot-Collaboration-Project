@@ -69,6 +69,9 @@ def test_new_table_covers_real_pose_and_sag_is_fixed_not_gt(static):
 
 
 def test_real_pose_rgb_measurement_visibility_and_lk_are_live(static):
+    # The fixed XML geometry builder imports MuJoCo even though this test
+    # never constructs/steps a world. Run it in the simulator CI job.
+    pytest.importorskip('mujoco')
     b,r=full(static)
     try:
         r.initial_commands(0.,{'r3':dict(CARRY)})
