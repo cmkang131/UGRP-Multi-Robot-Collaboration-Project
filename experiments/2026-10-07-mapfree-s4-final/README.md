@@ -49,3 +49,15 @@ shape·footprint padding0.02·inflation0.50/10·회복·센서·B·v7·예산·�
 기존 v1–v4 경로 bytes 보존. 단위시험24개 통과 후 커밋·push하고 개발10을 한 번 실행한다.
 첫 시험의 round-trip 부동소수점2.8e−17을 정확0으로 기대한 fixture만 절대허용1e−12로 수정했으며
 관문/실험 계수는 변경하지 않았다. 개발 결과를 본 뒤 해상도·회복을 추가 조정하지 않는다.
+
+## 개발 통과·새32 실행 전 동결
+
+고정 구현 `86cdf6d1`을 push한 뒤 개발10을1회 실행했다. 시작 겹침4는 HOST_SETUP_ERROR,
+유효6은 모두 참 B·거짓0·navigation_action_aborted0이었다. s4 두 건은179s/접촉0,
+s5 두 건은107s/접촉0, s8 두 건은71s/접촉 각1 및 contact_replan 각1이다.
+원 `verify_development`가 저장10개 원본과 source hash를 읽고 통과했다. s8 접촉2회는
+그대로 남으며 본 탐색 기준의 충돌0 성공으로 해석하지 않는다.
+
+[freeze.json](freeze.json)에 수치 소스·설정·원 I/J32 manifest·개발 source/results hash를 고정했다.
+해상도/관문 재튜닝 없이 같은 후보로 미개봉 I/J×5701/5702 oracle static32를1회 실행한다.
+이번 요청 범위는 그 정적 기준선 확인까지이며 후속 frontier/noisy를 자동 실행하지 않는다.
