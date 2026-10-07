@@ -47,3 +47,21 @@ def test_unsupported_and_interrupt_are_explicit():
     d.command(dict(t=.65,kind='hold'))
     d.advance(1.)
     assert d.pose[1]>0 and d.pose[2]<0
+
+
+def test_memory_off_bytes_and_rbpf_pulse_propagation():
+    from harness.self_wall_memory import SelfWallMemory as Old
+    from harness.self_wall_memory_motion import SelfWallMemory as New
+    kwargs=dict(self_map='odom_grid_v1',pose_correction='own_map_rbpf_v1',pose_correction_options={'particles':100})
+    a,b=Old('r3',**kwargs),New('r3',**kwargs)
+    row=dict(t=0.,kind='mecanum',forward=0.,left=.65,turn=0.,duration_s=.65)
+    for m in (a,b):
+        m.command(row)
+        m.self_map.odom.advance(1.)
+    assert json.dumps(a.snapshot(),sort_keys=True)==json.dumps(b.snapshot(),sort_keys=True)
+    n=New('r3',**kwargs,motion_model=p.OPTION)
+    n.command(row)
+    n.self_map.odom.advance(1.)
+    prof=p.model()['profiles'][p.profile_key(row,False)]
+    np.testing.assert_allclose(n.self_map.poses,np.tile(prof['mean_delta'],(100,1)),atol=1e-13)
+    assert np.linalg.eigvalsh(n.self_map.pending_cov).min()>0

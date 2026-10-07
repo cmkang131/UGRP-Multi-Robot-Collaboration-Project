@@ -10,7 +10,7 @@ ROOT=old.ROOT
 EXP=ROOT/'experiments/2026-10-07-servo-stiffness'
 RAW=Path('/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1')
 write,sha=old.write,old.sha
-CASES=('static-off','static-on','stiff-north','stiff-south')
+CASES=('static-off','static-on','stiff-north','stiff-south','stiff-explore')
 
 
 def arm(pose):
@@ -34,14 +34,24 @@ def static_actions(tick):
     return []
 
 
+def explore_actions(tick):
+    if tick==0:return arm(old.PULSES)
+    if tick in (50,60,70,80,150,160,170,180):
+        return [dict(kind='mecanum',forward=0.,left=.65 if tick<100 else -.65,turn=0.,duration_s=.65)]
+    if tick in (110,120,210,220):
+        return [dict(kind='mecanum',forward=.35 if tick<200 else -.35,left=0.,turn=0.,duration_s=.10)]
+    return []
+
+
 def acquire_case(case,out,source,backend_factory,*,servo_stiffness='off'):
     static=case.startswith('static-')
-    direction='strafe-north' if static else case.replace('stiff-','strafe-')
+    exploration=case=='stiff-explore'
+    direction='strafe-north' if static or exploration else case.replace('stiff-','strafe-')
     spec=old.CASES[direction]
-    cap=55. if static else 18.
-    bundle=dict(source_sha=source,execution_bundle_id='egomap19-servo-stiffness-v1',
+    cap=55. if static else 30. if exploration else 18.
+    bundle=dict(source_sha=source,execution_bundle_id='egomap19-short-map-v1' if exploration else 'egomap19-servo-stiffness-v1',
         check='servo-stiffness',case=case,map_id='zone_wide_two_doors_final_v3',
-        contact_profile='cargo_noslip_v1',task=dict(robot_id='r3',seed=19101 if static else spec['seed'],
+        contact_profile='cargo_noslip_v1',task=dict(robot_id='r3',seed=19101 if static else 19103 if exploration else spec['seed'],
         destination='B',pickup_slot='P1-2'),spawn=spec['spawn'],initial_servo=old.PULSES,
         options=dict(servo_stiffness=servo_stiffness,wall_texture='off' if static else 'tape_v1',
             drive_profile='masterpi_drive_friction_v7',camera_profile='camera_v3',
@@ -60,7 +70,7 @@ def acquire_case(case,out,source,backend_factory,*,servo_stiffness='off'):
         result['start_sim_s']=start
         backend.set_deadline(start+cap)
         for i in range(round(cap*10)+1):
-            for action in (static_actions(i) if static else old.actions(direction,i)):
+            for action in (static_actions(i) if static else explore_actions(i) if exploration else old.actions(direction,i)):
                 backend.issue('r3',action)
             backend.capture()
             backend.eval_sample()
@@ -95,6 +105,10 @@ def main():
     assert a.servo_stiffness==('off' if a.case=='static-off' else 'real_v1')
     if a.case.startswith('stiff-'):
         assert json.loads((EXP/'results/static-summary.json').read_text())['static_gate_passed']
+    if a.case=='stiff-explore':
+        assert json.loads((EXP/'results/static-summary.json').read_text())['loaded_qualification']=='passed'
+        assert all(json.loads((EXP/'results/pulse'/(case+'-floor.json')).read_text())['gate']['passed']
+                   for case in ('stiff-north','stiff-south'))
     if not a.execute:
         print(json.dumps(dict(admitted=True,physics_started=False)))
         return 0
