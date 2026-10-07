@@ -2563,3 +2563,77 @@ prob 조합은 API·작은 가중 삽입/원장 시험 범위다. 기본 off 및
 중단됐고, CONTRIBUTING의 기존 `.venv-sim-worker-mac/bin/python`으로 바로잡아 통과했다(동일 원인 1회).
 실험 소스·설정·결과는 바꾸지 않았고 환경에 패키지를 설치하지 않았다. 최종 산출물 106개 로컬 파일과
 32개 Git 요약/로그/그림의 manifest 해시, 문헌 파일 해시도 일치했다.
+
+## 23. v7·카메라 v3 재검증 / inverse_sensor_v1 사전 등록 (2026-10-07)
+
+이 절은 구현·새 결과 확인 **전** 등록이다. PR #409 탐색 평가기는 oracle 정적 지도 22/32로
+사전 gate 30/32 미달하여 중단했고, 그 결과를 자기 지도 성능과 합산하지 않는다.
+PR #405의 §17.1·§19 성공 기준과 §21 positive-depth / §22 graph 비교 기준을 **그대로 재사용**한다.
+즉 각 확인 녹화에서 종료 오차 ≤0.75 m 및 DR 대비 ≥30% 감소, 경로 중앙/P95 비증가 및 RMSE ≥20%
+감소, 지도 precision 비감소·전체 recall 하락 ≤2%p·벽 RMSE ≥20% 감소, 양의 깊이 위반 0,
+RBPF+guard 대비 precision 비감소·가시 recall 하락 ≤2%p, 모든 off 골든 바이트 일치를 요구한다.
+새 장면의 전체 벽 표본 수는 동일 0.1 m 표면 샘플링으로 다시 계산한다(구 장면 349와 섞지 않음).
+새 confidence 조건도 같은 기준이며, 가중치만 넣었다는 이유로 통과로 판정하지 않는다.
+
+### 23.1 고정 범위·분할·보정 출처
+
+- 현재 브랜치 `claude/ego-wall-map`, 시작 `f3eeb6bf`. 다른 worktree는 수정하지 않는다.
+- PR #406 `codex/s2-realism`의 고정 snapshot **dc1ed79bb561ec83d26085256ee6a3e1642adc41**에서
+  `configs/calibration/s2_camera_v3_extrinsic_v1.json`만 출처·해시와 함께 복사한다(0991248b 이후).
+  무하중 **21개 명령 자세**, 독립 holdout RMS 최대 **0.304978 px**. 입력은 명령 servo3–6의 정확 일치만,
+  보간하지 않는다. `optical_to_actual_chassis`와 고정 `chassis_to_floor`를 한 번 합성하며 옛 arm offset을
+  재가산하지 않는다. **loaded 표는 비어 있고 전체 표는 PARTIAL_NO_LOADED_CALIBRATION**이므로
+  무하중 명령(servo1>1600)만 허용한다. 하중/미등록 자세는 관측 삽입을 보류하고 자기 명령 DR은 계속한다.
+  이 제한을 숨긴 운반 카메라 보정/실물 검증 성공 주장은 하지 않는다. 실제 측정 자세·camera-pose GT는 평가 전용이다.
+- `wall_camera_calibration=v3_unloaded_extrinsic_v1` / `wall_confidence=inverse_sensor_v1` 모두 기본 `off`.
+  기존 v1/v2/prob/RBPF, positive-depth, graph off 경로와 출력은 보존한다. confidence v1의 온라인 조합은
+  RBPF(30/100)로 한정하고 각 입자 지도에 삽입한다. DR·GT는 동일 관측의 평가용 가중 재구성만 별도 표기한다.
+- 현행 자료는 s1042/s1043 개발 2건 → 설정·소스 고정 → s1044–s1047 확인 재생 4건, 각각 r3 자기 RGB·명령.
+  이미 다른 연구에서 본 녹화라 새 통계적 확증으로 부르지 않는다. RGB 매 2프레임, 기존 정착·4 m·양의 깊이
+  gate 유지. 구 녹화 s911–s913 r1/r2는 §22 고정 pose 원장 기반 **삽입 진단**으로 분리하며 새 RBPF 추정으로
+  부르지 않는다. 개발/확인 구분은 기존대로 s911 2건 / 나머지 4건. 구 자료에 v3 보정은 적용하지 않는다.
+- 현행 각 건은 DR(off), RBPF100+guard+graph(옛 카메라), +v3 보정, +v3 보정+confidence 및 평가 전용 GT+guard를
+  나란히 기록한다. v3 조건의 DR/GT 기준선은 **같은 유효 무하중 관측 집합**도 별도로 채점해 관측 탈락과
+  자세 개선을 분리한다. 종료·경로 오차는 전체 명령 이력, 지도 품질은 삽입된 관측 전체로 평가한다.
+  GT 파일을 열기 전에 예측 격자·경로·원장·해시를 저장한다. 위치 정렬은 첫 GT SE(2)만, ICP 없음.
+
+### 23.2 신뢰도 모델·진단 (결과에 맞춘 재튜닝 금지)
+
+[Thrun 등, Probabilistic Robotics 9장 Table 9.2 정정 원문](https://robots.stanford.edu/probabilistic-robotics/corrections1/pg288.pdf)의
+hit/free/unknown 역센서 모델과 [Elfes 1989](https://doi.org/10.1109/2.30720),
+[Elfes의 위치·센서 불확실성 설명](https://arxiv.org/abs/1304.1098)을 따른다. 기존 grid는 이미 광선 내부를
+free(-log odds), 끝점을 occupied(+log odds)로 갱신한다. 새 옵션은 각 증분에 같은 관측 가중치 w∈[0,1]을
+곱한다. 같은 프레임/셀에서는 가장 큰 증거 한 번만 사용하고 끝점 hit가 free보다 우선한다.
+입자별 원장에 가중치를 보존하여 재표본화·graph submap·최종 재구성에서도 같은 증거를 사용한다.
+
+w는 표준 모델의 **새 센서용 보수적 evidence tempering 계수**, 논문에 실린 특정 숫자 또는 검출 정답 확률은 아니다.
+다음 고정 요소를 곱하고 GT로 계수를 학습하지 않는다.
+1. 거리: σ_pixel=1 px(접점 양자화·검출 위치 불확실성), σ_r=(r²+h²)σ_pixel/(h f_y),
+   w_range=δ²/(δ²+σ_r²), δ=격자 0.1 m. r=h cot(각)의 Jacobian에서 유도한다.
+   [Szulc & Iwanowski 2026의 homography 오차 분석](https://arxiv.org/abs/2604.10805)도 거리 제곱 증가를 설명한다.
+2. 입사각: 벽 선분 법선과 카메라→선분 중심 방향의 내적 제곱(cos²). 길이 0이면 가중치 0.
+3. 영상: 대비 c²/(c²+s²+6²), 선명도 g²/(g²+s²+6²). c는 기존 detector band contrast,
+   s는 band 표준편차, g는 접점 위/아래 1 px 밝기 차. 6은 기존 검출기의 최소 contrast이다.
+4. 자세: 현재 own RBPF cloud 공분산 Σ를 SE(2) endpoint Jacobian J로 전파하여
+   w_pose=δ²/(δ²+trace(JΣJᵀ)/2). 정합 전 예측 cloud를 사용한다. GT oracle에서는 Σ=0을 명시한다.
+5. 정착: 기존 팔 정착 gate 통과가 필수. 몸체는 자기 이동 명령이 유효한 동안 0.5,
+   명령 만료/stop 뒤 0.25 s까지 0.5→1 선형 증가. 실제 속도·접촉·관절을 읽지 않는다.
+
+먼저 구 자료 GT pose 원장으로 검출별 range/incidence/RGB/settling 가중치와 GT 벽 0.15 m 일치율을
+저장한다. 비스듬한 가짜 벽 표본(가장 가까운 GT 벽 방향과 >10° 차이)의 신뢰도 분포를 별도로 비교한다.
+결과를 보고 계수를 바꾸지 않는다. 5개 고정 구간 [0,.2),…,[.8,1]의 precision·표본 수 곡선(빈 구간 NA)을
+구/현행 별도로 그린다. 전체 신뢰도와 pose 요소 제외 점수를 구분한다. 위에서 본 지도는 실제 벽 회색,
+자기 지도 점유 사후확률에 따른 색 진하기, 추정/GT 로봇 경로를 함께 표시한다.
+
+### 23.3 전용 녹화 조건·자원·검증
+
+현행 유효 관측이 **20개 삽입 프레임 이상이고, 자기 명령 DR 경로의 XY 범위 ≥1 m 또는 yaw 범위 ≥90°**인
+녹화가 하나도 없으면 운반 자료만으로 부족하다고 기록한다. 이 경우에만 별도 벽 관측 녹화 1–2개를 추가
+사전 등록하고, 표준 실행 경로·agent_lock·ugrp_session으로 한 번에 하나 실행한다. freeze 옵션과 모델 호출은
+사용하지 않는다. 실행 기하·카메라/구동 버전·번호·소스·예산을 별도 봉인하기 전 물리를 실행하지 않는다.
+같은 원인으로 두 번 막히면 중단하고 원인·남은 범위를 보고한다. ENOSPC는 HOST_ERROR이며 원본 삭제 금지.
+
+검증은 변경 모듈 시험 1–3파일, off 골든, 카메라 frame 합성·loaded/미등록 거부, confidence 단조성·free carving,
+입자 지도 독립성·가중 원장 재구성 일치, prediction/GT 분리와 산출물 해시를 포함한다. 모든 커밋은 시험 통과 뒤,
+Codex 공동 작성 trailer를 붙인다. 기존 venv 재사용, 새 라이브러리 설치 없음. PR #405 DRAFT 유지·병합 없음.
+TensorBoard는 앞선 사용자 요청대로 생략하고 raw/그림/표를 로컬과 Git 허용 크기 내에 보존한다.
