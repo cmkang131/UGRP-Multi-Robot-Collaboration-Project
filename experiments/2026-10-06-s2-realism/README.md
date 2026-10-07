@@ -3223,3 +3223,85 @@ main+열린15PR 최대128/7.21.0 확인 후 **v129/7.22.0** 예약
 실행 연결·기본off·freeze 제한·HOST_ERROR 보존 포함 **9 passed /28.14s**.
 위임 검증의 v128 ID/v129 schema 불일치를 wrapper에서 바로잡았으며 freeze 가드는 유지했다.
 [로컬 검증](v129-local-verification.json). 물리 실행 소스는 다음 커밋으로 고정한다.
+
+### v129 / s1051 recovery full 결과 — 반복 명령 차단 후 경로 추종 교착
+
+실행 소스 **d4fee717587ecc3b549aff948252b156b6c05d83**, 기준 사전 등록6306b26d,
+v129/7.22.0/seed1051/P1-2→B/place. 28옵션은 v128의27옵션+`slip_recovery`만 다르다.
+**PHYSICAL_FAILURE / STAGNATION_120S_LT_1CM / lifted=true / inside=false**.
+낙하/집게 이탈을 관측해 중단한 것이 아니라 등록된 eval 정체 감시로 종료했다.
+운반 중 종료되어 floor=false·stable=true이며 내려놓기에는 도달하지 못했다.
+실제1회·추가 실행0·모델0. [3조건 완료 요약](slip-recovery-full-summary.json).
+
+|지표|s1051 / v126 원본|s1051-slip / v128|s1051-recovery / v129|
+|---|---:|---:|---:|
+|lifted / inside|true / false|true / false|true / false|
+|종료|B 밖 내려놓기|B 밖 내려놓기|운반 중 eval 정체 중단|
+|운반 구간|87.00–241.05s|87.00–735.65s|87.00–252.20s|
+|운반 informative 갱신 / 최장 공백|27 /33.85s|41 /133.50s|10 /123.05s|
+|운반 XY RMSE / 끝 위치오차 (평가)|2.023583 /2.592097m|1.887833 /1.059998m|1.997254 /2.142861m|
+|실제 벽 하단 가시율: 전체열 / 검출열 (운반1Hz)|32.7218% /54.3706%|23.7593% /28.8262%|27.8865% /62.3707%|
+|cyan→B 영역 경계 / 중심|2.178372 /2.649795m|0.536406 /1.149410m|4.894993 /5.554584m|
+|would-stop ARM_COLLISION_GUARD|7|7|7|
+|would-stop POSE_UNCERTAIN (raw 호출 수)|341|912|2487|
+|would-stop VISUAL_STALL_SUSPECTED|1|113|2|
+|would-stop PULSE_RESOLUTION_LIMIT|0|0|1194|
+|would-stop CYAN_NOT_UNIQUELY_VISIBLE|0|0|0|
+|wall / total SIM / wall÷SIM|347.865758 /264.35 /1.315929|2056.663955 /758.95 /2.709881|381.992106 /252.20 /1.514640|
+|명령 / own RGB / 모델 호출|3818 /5202 /0|4960 /15094 /0|3475 /5018 /0|
+|slip 대체 / 그중 실제 이동<1cm|off|470 /469|11 /10|
+|집기 확인 / 다시 집기|probable_held_inhand_rgb /0|동일 /0|동일 /0|
+
+동일 seed의 진단 반복이며 독립 확증이나 성공률 분모로 합산하지 않는다. 세 조건 모두
+freeze ON이다. 이번 wall/SIM이 낮아도 조기 정체 종료/다른 행동·영상 길이의 영향을 포함하며
+속도 개선으로 결론내리지 않는다. 운반 말기 대부분이 정지라 갱신 빈도도 직접 비교하지 않는다.
+이번 POSE_UNCERTAIN raw 수에는 차단 전 제안과 차단 후 selector 재호출에서 중복 기록된
+호출이 포함돼 독립적인2487회 불확실 사건이라는 뜻이 아니다. raw 수는 그대로 보존했다.
+
+**실제 동작:** 연속11개 slip·RGB 진행2.75cm가10.25초 지속된 뒤117.80초에 hold,
+117.90–127.50초에 반대옆 −35/.06초25펄스를 냈다.127.90초에10초 회복 예산이 끝났고
+RGB 진행은 **0.154431m**, 실제 GT 평가의 순이동은 **0.182144m**(원래 body 옆 −0.182063m)다.
+목표0.30m 미도달이라 회복 measured_success=false·timeout=true 그대로다. 순이동 GT는
+종료 후 점수에만 썼으며, 실제 이동을 성공 신호/방향 선택에 넘기지 않았다.
+같은 시각 A*는 경유점 `[1.0375,−0.5875] → [1.65,0.05]`를 반환했다.
+
+**가장 큰 남은 원인: 방향 차단과 단조 비용 감소 selector 사이의 교착.**
+마지막 추정 `[1.039110,−0.630318]`, 다음 경유점 거리 **0.042848m**로 경유점 통과 허용
+0.035m 밖이다. 유일하게 비용을0.0018915→0.0013941로 줄이는 +35 fine 옆 펄스의
+실패 방향 내적은 **0.956733>0.95**, 실패 위치와 거리 **0.296956<0.5m**여서 차단됐다.
+남은 보정 프로파일 중 비용을 줄이는 것이 없어 selector는 hold를 반환했다.
+차단 제안1197회, PULSE_RESOLUTION_LIMIT1194회, 재계획1회. 마지막 이동132.45초 뒤
+132.85–252.20초 실제 순이동은 **0.661mm**,252.20초에 등록 정체 감시가 종료했다.
+129.15초 이후123.05초 시각 갱신 공백은 이 hold 구간을 포함한다.
+
+막힌 옆 펄스를 계속 실행하던 문제는 끊었으나, **대체 펄스 없음이 회복 실패로 전파되어
+다음 회복/재계획을 부르는 Nav2식 상태 전이까지 이 어댑터가 연결하지 못했다.**
+차단 후 hold에는 새 slip 측정이 없어서 회복도 재발동하지 않았다. 이는 새 후보의 한계이며
+가시성 문턱/모션 보정 문제로 돌리지 않는다. 사전 prefix PASS는 첫 차단·반대 명령만의
+검증이었고 재계획 후 지속 진행을 보장하지 않았다. full 결과는 **FAIL·미채택**, 기본off
+실험 후보로 남기며 이 실행을 근거로 문턱을 바꾸거나 추가 실행하지 않는다.
+[상세 수치·평가 근거](slip-recovery-diagnosis.json).
+
+**동일 조건/보존:** v128과 초기 Scene 동일, 첫2209명령 동일.117.80초에 최초로 기존
+left65/.65 대신 hold가 나갔다.117.80초까지 RGB2331장 SHA 동일,117.85초부터 차이.
+팔/그리퍼/운반 자세는 변경하지 않았으며 낙하·기울기·이탈 감시도 유지했다.
+도크 행 미지/전역 초기화는 이번 소스·번들에서 바꾸지 않았고 사용자 확인 대기다.
+
+**운영:** 관련9시험 통과 뒤 소스 commit·push, source/inputs 실행중 변경false,
+manifest/source closure/RGB5018장 SHA 확인. agent_lock driver82237, 시작 load3.14/3.79/4.13,
+여유43.30GiB, nice0 일회성 launchd, `ugrp_session s2-slip-recovery-s1051` 단일 실행.
+종료 뒤 자체 PID82233/82237/82248/82254 종료, session stopped, launchd 제거,
+own lock release·status=null 확인. [검증](slip-recovery-full-verification.json).
+
+raw: `/Users/changmin/projects/ugrp/outputs/s2-realism-d4fee717-s1051-P1-2-place-slip-recovery/`.
+분석: `/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/`.
+4배속 영상: `/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/views/s1051-recovery/execution.mp4`
+(640×480,20fps,1255frame,62.75초,5018 RGB에서 stride4; 전체decode 통과).
+SHA256 `889bf700a3b8a83a0a2413c658dac51b02718b24fc0209126373e1d181240117`.
+raw는 로컬 보존이며 원격 백업이 아니다. 이전 번들/원본/재생 판정은 변경하지 않았다.
+
+TensorBoard **1007-s2-slip-recovery-v129 /4뷰50scalar**: 3조건 실행과 prefix 재생을 분리,
+source→event→live API/HParams 수치 일치. 새 영상 등록·HTTP206/재다운로드 SHA도 확인했다.
+[대시보드](http://127.0.0.1:6006/?runFilter=%5E1007-s2-slip-recovery-v129%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Flifted%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Finside%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_updates%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_update_gap_sim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fremaining_to_b_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fsim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fcommands%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries) · [전달 검증](slip-recovery-delivery-verification.json).
+사용자 지시대로 수치만 대조했고 브라우저 UI 확인을 주장하지 않는다. 기존 viewer PID52016 유지,
+공유 view의 자기 키만 추가했다. **추가 실행/튜닝 없음, PR406 DRAFT·병합 금지 유지.**

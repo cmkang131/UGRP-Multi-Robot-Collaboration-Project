@@ -1,4 +1,4 @@
-# S2 위치 추정 시도 v122 이후 — s2v27 결과까지
+# S2 위치 추정 시도 v122 이후 — s2v28 결과까지
 
 2026-10-07. 서로 다른 seed/자세/옵션/궤적의 수치를 합산하지 않는다.
 `v122–v126`은 실행 번들 번호, `s2v14–25`는 개발 기록 번호다.
@@ -40,3 +40,4 @@ LOCAL_TIMEOUT, lifted/inside=false/false, 운반·slip대체0으로 효과 미�
 |---|---|---|---|---|
 |v128/s2v27, s1051 matched full|v126 동일 seed/구성 + slip만 ON|41회;133.50s|운반 RMSE1.887833m; B까지0.536406m; 대체470펄스 RMS166.750→3.148mm|lifted true / inside false. 진행<1cm469회 반복; recovery off. [비교](slip-matched-summary.json)|
 |s2v27, s1052 정지 재생|Nav2 전역 균일 초기화·최대 군집 + 유한 Spin 후보|기존/후보 모두1회; 운반 없음|최종오차1.428663→3.317731m, RMSE1.422832→3.319475m|사전 기준FAIL, 기본off. 새 Spin 영상 없음·실행 없음. [판정](dock-global-summary.json)|
+|v129/s2v28, s1051 recovery full|v128 그대로 + progress timeout→inverse BackUp→replan|10회;123.05s|반대 실제18.21cm, slip 반복469→10; RMSE1.997254m, B까지4.894993m|lifted true / inside false, STAGNATION_120S_LT_1CM. 방향 차단 후 대체 펄스 없음1194회, hold 교착. 기본off·미채택. [진단](slip-recovery-diagnosis.json)|
