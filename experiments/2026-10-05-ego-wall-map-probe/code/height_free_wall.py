@@ -256,7 +256,7 @@ def self_top_mask(und_bgr, cm, params: Mapping | None = None, loaded: bool = Tru
 
 
 def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bool = True,
-           *, wall_detector: str = 'off'):
+           *, wall_detector: str = 'off', contact_rule: str = 'off'):
     """Per-column floor contacts whose upper surface is not the ground plane.
 
     A row is accepted as a wall contact when the usual floor-contact evidence holds
@@ -277,6 +277,10 @@ def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bo
     is not in frame, ``c`` contrast against the floor below, ``s`` band std, ``r`` range
     in metres, ``b`` bearing in radians.
     """
+    if contact_rule not in ('off', 'bottom_up_connected_v1'):
+        raise ValueError('UNKNOWN_CONTACT_RULE')
+    if contact_rule != 'off' and wall_detector != 'off':
+        raise ValueError('CONTACT_RULE_REQUIRES_ORIGINAL_DETECTOR')
     if wall_detector not in ('off', 'floor_boundary_v1'):
         raise ValueError('UNKNOWN_WALL_DETECTOR')
     if wall_detector == 'floor_boundary_v1':
@@ -333,6 +337,14 @@ def detect(und_bgr, cm, params: Mapping | None = None, self_top=None, loaded: bo
         above_is_vertical |= (horizon[None, :] < 0) & (extent >= float(p['floor_patch_max_m']))
 
     accept = ok & (contrast >= p['min_contrast_below']) & (std <= p['max_band_std']) & above_is_vertical
+
+    if contact_rule == 'bottom_up_connected_v1':
+        from harness.wall_bottom_connected import candidate_mask
+        support = (mp.undistort(np.full_like(und_bgr, 255)) == 255).all(axis=-1)
+        half = int(p['strip_half_px'])
+        valid = np.stack([support[:, max(0, u-half):min(WIDTH, u+half+1)].all(axis=1)
+                          for u in cols], axis=1)
+        accept &= candidate_mask(run_top, rows, valid, self_top)
 
     out = {k: np.full((n_c, n_k), np.nan) for k in ('vb', 'vt', 'h', 'h_lb', 'c', 's', 'r', 'b')}
     for j in range(n_c):
