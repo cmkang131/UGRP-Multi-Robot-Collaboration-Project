@@ -2,7 +2,7 @@
 
 Nav2는 기존 v7과 동일 commit `235fc5ce55bdf94d9be360fdbca39d89dc0e4f74`,
 m-explore `26d4183a4fe119a0f83685ce3e06370c0c4d21d9` 고정.
-새 원본7파일은 `third_party/mapfree_navigation_monitor/SOURCES.json`에 URL/SHA256,
+새 원본9파일은 `third_party/mapfree_navigation_monitor/SOURCES.json`에 URL/SHA256,
 Apache-2.0 전문과 저작권 보존. 기존 ROS navigation/m-explore BSD-3 원본도 유지.
 새 venv/의존성 설치 없음. 문서의 rolling값 대신 아래 commit의 코드·배포 설정을 적용한다.
 
@@ -21,3 +21,19 @@ Apache-2.0 전문과 저작권 보존. 기존 ROS navigation/m-explore BSD-3 원
 
 [공식 collision monitor 설명](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/collision_monitor/configuring_collision_monitor_node/)
 확인. 좁은 카메라 시야에 없는 장애물을 감지한다고 보장하지 않는다.
+
+## 구현 파일 대조
+
+- `harness/public_navigation_monitor.cpp`: 기존 v7 ABI를 별도 DSO에 포함하고
+  FrontierSearch(3,1,.75)만 별도 symbol로 공급. 원 kinematics.cpp를 직접 컴파일.
+  polygon.getCollisionTime와 geometry_utils.isPointInsidePolygon 본문을 ROS 자료형만
+  평면 배열로 바꿔 포트. polygon/getData/timeout/APROACH 원문과 순서·부등호 유지.
+- `harness/public_navigation_monitor.py`: own-camera 점의 own-odom 저장/현재 base 역변환,
+  sensor-timeout STOP, TTC 비례 속도; `.33Hz` 탐색 timer를1Hz planner와 별개로 서비스.
+  기존 2s 관측 대기에는 controller 콜백이 없으므로 만료 timer는 다음 관측/행동 콜백에서
+  실행한다(ROS executor 전체 재현이 아닌 유한 2D 어댑터 한계). 새 관측/접촉/clear에는 즉시
+  costmap invalidation, 그 외5Hz 갱신. 타인 지도·GT 물체를 점으로 채우지 않음.
+- `code/integer_episode.py`: old run_persistent.episode의 관측/행동 end 시간 계산만 정수
+  tick으로 교체, 선택적 monitor 로그 추가. B·접촉·false passage 채점 식은 그대로.
+- `code/run_monitor.py`: 기존 seed/world draw split은 원래대로 유지하고 결과 evidence
+  split만 development로 표기. 모듈·센서·정적 기준선·GT pose bridge는 고정 v7 합성 재사용.

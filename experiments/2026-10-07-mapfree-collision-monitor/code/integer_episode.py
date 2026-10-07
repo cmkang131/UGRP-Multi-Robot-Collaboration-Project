@@ -96,4 +96,3 @@ def episode(runner,index,start_id,seed,split,condition,sensing,out):
     write(out/'eval_path.json',world.path)
     write(out/'own_grid.json',dict(resolution_m=.1,cells=[[*c,v] for c,v in sorted(actor.grid.odds.items())]))
     return result
-
