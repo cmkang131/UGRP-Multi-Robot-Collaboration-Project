@@ -462,3 +462,14 @@ v1/off golden 동일, 소스 봉인 비교·JSON 표 분모·그림 확인·diff
 추가 패키지/venv 변경0. CPU 속도 측정 없이 modeled time만 보고해 잠금은 사용하지 않았다.
 raw는 `outputs/` 로컬 보존이며 GitHub 원격 백업으로 표현하지 않는다. TensorBoard는 앞선 요청대로 생략.
 성공 기준/센서/잡음 튜닝으로 실패를 덮지 않았으며 PR #409는 DRAFT로 유지한다.
+
+## 후속 explore8: 동결 public_ros_v5 frontier 오라클 (2026-10-07)
+
+선행 정적32/32 뒤 새 K/L32쌍을 먼저 등록·커밋하고 각 조건1회 실행했다.
+새 정적32/32와 달리 자기 frontier는0/32, coverage중앙17.25%, 기존 기준1/5다.
+모든 실행은 첫 관측 직후2s·이동0m에 종료했다. 관측 표본0.10m와 자기 격자0.05m 사이
+unknown 틈으로 출발 연결36칸만 남고, frontier 주변2,044후보 전부 NavFn 경로가 없었다.
+GT pose·완전 가시 검출 조건이므로 자세/검출 잡음의 성능으로 해석하지 않는다.
+설정 변경·추가 튜닝·현실 잡음 실행 없이 중단했다.
+[사전 등록](../2026-10-07-mapfree-frontier-oracle/README.md),
+[원 기준 판정·64회 표·연결 진단 그림](../2026-10-07-mapfree-frontier-oracle/RESULTS.md).

@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-07 동결 v5 frontier 오라클 새32쌍](2026-10-07-mapfree-frontier-oracle/RESULTS.md): PR #409. 새 K/L32에서 정적 B32/32, 자기 frontier0/32·coverage17.25%·기준1/5. 0.10m floor 표본→0.05m 자기 격자 단절, 목표 후보2,044개 모두 불통·첫 관측2s 종료. 튜닝 없이 중단, 현실 잡음 미실행.
+
 - [2026-10-07 s4 마지막 개발·새32 확인](2026-10-07-mapfree-s4-final/README.md): PR #409. B/경로 중심은 free, 거부는0.1m 벽 경계2셀의 footprint 교차. 원 Nav2 bringup0.05m를 기본-off `public_ros_v5`로 적용, 개발 참 B6/6·거짓0 뒤 미개봉 oracle static32/32·충돌0·거짓0. frontier/현실 잡음은 미실행, 추가 개발 반복 종료.
 
 - [2026-10-07 s4·s5 정지 기하·원본 footprint 검사](2026-10-07-mapfree-stop-geometry/README.md): PR #409. 통로0.50m/최대 padded 회전폭0.3688m, 정지 costmap·실제 벽·footprint 그림2장. Nav2 edge 검사만 기본-off `public_ros_v4`로 적용, 기존 개발 유효 B2/6→4/6·거짓0. s5 회복·s4 동일 소진으로 중단, 새32 미개봉.
