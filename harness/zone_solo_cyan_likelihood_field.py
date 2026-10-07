@@ -78,7 +78,7 @@ def likelihood(field,px,points):
     return 1.+np.sum(pz*pz*pz,axis=1)
 
 
-def install(pf,static_map,*,visibility=None):
+def install(pf,static_map,*,visibility=None,pose_supported=high.at_high):
     field=Field(static_map);previous=pf.update_obs;predict=pf.predict_to
     state=dict(odom=np.zeros(3),anchor=None,observation=None)
     audit=dict(option=OPTION,parameters=copy.deepcopy(PARAMS),scope='S2 loaded HIGH only',
@@ -95,7 +95,7 @@ def install(pf,static_map,*,visibility=None):
         return out
 
     def update(t,obs,pose):
-        scope=bool(pf.load.loaded and high.at_high(pose))
+        scope=bool(pf.load.loaded and pose_supported(pose))
         if not scope:
             state['anchor']=None;state['observation']=None
             return previous(t,obs,pose)
@@ -162,7 +162,8 @@ class Runtime(Previous):
             self.pose.provider.on_frame=frame
         if measurement_model!='off':
             static=args[0] if args else kwargs['static']
-            self.soft_measurement=install(self.pose.provider.loc._pf,static,visibility=self.visibility)
+            self.soft_measurement=install(self.pose.provider.loc._pf,static,visibility=self.visibility,
+                                          pose_supported=self.visual_pose_supported)
             inner=self.pose.provider
             inner.runtime_contract['s2_measurement_model']=dict(option=OPTION,parameters=copy.deepcopy(PARAMS))
             if self.visibility is not None:inner.runtime_contract['s2_visibility']=copy.deepcopy(self.visibility.audit)

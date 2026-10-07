@@ -1948,3 +1948,41 @@ ENOSPC는 HOST_ERROR, raw 보존·seed 재사용 없음. 이번 실행 뒤 원�
 새 보정 자세의 처짐은 실측이 아닌 이전 고정 근사로 명시하고 mount/FOV/K/D는 유지한다.
 새 운반 자세를 provider/LF/가림 mask/LK에서 명령으로 인식하도록 S2 인스턴스에만 연결한다.
 GT는 별도 결과 평가에만 사용한다. 단독 DEV freeze 제한과 no-model 조건은 유지한다.
+
+실행 전 연결 완료: 무하중 추가 보정은 source`b6a54e3e`,
+`outputs/s2-real-carry-cal-b6a54e3e-20261007/`에서3/3장 검출,
+fit RMS0.1225px·holdout0.1894px, SIM10.5초/wall38.397초였다. 새 immutable 표
+`configs/calibration/s2_camera_v3_unloaded_sag_v1.json`은 기존21자세를 그대로 두고
+실물 carry1자세를 더한다. loaded는 무하중 표 복사+고정 광학 right-axis 회전−0.02711rad,
+높이 보정0이며 실측 loaded 보정이 아니다. PF·벽 투영·CyanVision은 같은 인스턴스 표를
+사용한다. 새 pose의 own-command8초 settle 뒤 관측이 활성화되고 HIGH/새 carry 외
+loaded transit은 predict-only다. 기존 pulse 모델은 HIGH에서 새 자세로 전달한 근사임을
+bundle/result에 명시한다. 공유 camera_robot_port와 다른 제어기는 바꾸지 않았다.
+
+가시성은 이전 고정 AMCL 후보의 측정 입구에 적용한다. 가시성/자기/cargo mask에서
+모름인 열은 PF 가중을 바꾸지 않으며 loaded valid view의 잔차 hard veto 대신 기존
+AMCL hit/random soft weight를 사용한다. `accepted_scan_v1` 표시는 이 조합에서
+기존 hard gate와 동일한 채택 건수를 뜻하지 않고, 실제 적용 순서를 bundle/record에
+명시한다. LK도 real carry 명령을 인식하며 정체 의심은 기록만 한다.
+시험3파일(`test_s2_real_carry_dev`, `test_s2_likelihood_field`, `test_s2_visual_fix`)
+**17 passed**: off 명령/record byte 동일, 표/처짐 provenance, 인스턴스 격리, 새 pose의
+실제 provider 관측·가시성 mask·soft update·LK 호출, 예전 seed/불완전옵션/S3·짝·연구 거절.
+
+실행 환경 기록: 도구 셸이 nice=10을 상속해 첫 calibration launcher는 SIM 시작 전에
+정상 우선순위 검사에서 종료했다. launchd를 통해 세션·드라이버·실행기 nice=0을 확인하고
+보정1회 완료했다. `launchctl submit`의 재시작 속성으로 뒤따른3회 시작 시도는
+기존 output 거절로 SIM 없이 끝났으며 해당 job을 제거했다(원본 유지). full DEV에는
+**RunAtLoad=true/KeepAlive=false**인 한 번만 실행하는 명시적 plist를 쓰며 완료 후
+bootout한다. renice/nice/taskpolicy는 사용하지 않는다. agent_lock와ugrp_session은
+기존 launcher가 관리한다. 보정 종료 후 lock=null·세션 stopped를 확인했다.
+
+실행 후 평가 규칙: 운반 pose RMSE는 지연된 t_est에 평가 궤적을 보간해 계산한다. 실제
+벽 하단 가시율은 운반 중1 SIM초 간격, 실제 카메라/블록 평가 기하와 정적 벽·자기 명령
+형상 경계로 집계하고 전96열/검출열 분모를 둘 다 기록한다. GT는 Runtime이 닫힌 뒤
+posthoc evaluator만 읽고 result/eval_only에 저장한다. AMCL 갱신 수를 절대3-DOF fix
+보장으로 부르지 않는다. B 남은 거리는 cyan 중심→B 구역 경계 및B 중심을 구분한다.
+
+실행 전 최종 검증: 같은 관련3시험17개가31.83초에 통과했다. 새 posthoc evaluator는
+보존된s1047을 읽기만 하여167개1Hz프레임 hash/실제 투영과RMSE를 계산하는 경로를
+확인했다(`outputs/s2-real-carry-evaluator-check-20261007.json`). 이는 evaluator 검증이며
+새 운반 자세의 실행 결과가 아니다. 이전 raw/결과는 수정하지 않았다.
