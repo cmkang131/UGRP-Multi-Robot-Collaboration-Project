@@ -4053,3 +4053,58 @@ Thrun ch6 대조(문턱/모델 변경0):
 두 번째는 plotting 의존성 미설치. 두 진단 중간산출물을 보존하고 접두사 수정·기존환경의
 cached matplotlib 설치 후 동일 격자/문턱 재계산 완료. 모델/물리 실행 실패에 합산하지 않는다.
 출력 스코어 동일성/좌표 변환 시험1개 PASS, A 관련11시험 PASS. B 제어 수정0.
+
+### v131 seed1051 full DEV 결과 — 물리 파지/내려놓기, B 밖
+
+소스 **b5fbe149**, 번들 `zone-s2-realism-v131`/7.24.0,
+raw `/Users/changmin/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead`.
+[전체 결과](look-ahead-dev-result.json): `lifted=true`, `inside=false`, floor/stable=true.
+상태기계는done(`STAGE_REACHED_UNQUALIFIED`)이나 **목적지 성공은false**. B 경계까지 **2.336m**.
+총271.25 SIM초/479.144 wall초, wall/SIM **1.766**. 모델호출0·재집기0, 실제 낙하/파지이탈 판정0.
+파지 확인 `REAL_PREGRASP_UNCONFIRMED`는1회 기록하고 실제 blind 파지→운반→내려놓기까지 진행했다.
+옵션 전부 raw result/options·사전 등록에 저장; 기준1267949b에서 제어 옵션 차이는pregrasp policy 하나.
+
+운반71.85~249.25초: 시각 가중치 갱신19회, 최장공백 **45.00초**, XY RMSE **1.154m**,
+종료 오차 **2.710m**. 이는 AMCL 비상수 우도 갱신이며 완전한 absolute fix19회라는 주장은 아니다.
+실제카메라/상자+정적벽+명령 자기몸 기하의1Hz 평가178프레임: 전체17088열 중
+벽하단 clear10421(**60.98%**), 아래밖6546(38.31%), 벽가림121(0.71%).
+검출열3888개 중 clear3831(**98.53%**); 자기몸 가림은 보수적 명령기하 경계이며 정확 관절 GT가 아니다.
+이전real_delivery의24%/133초보다 가시 기회/공백이 좋아졌지만 자세·강성·닫힌 경로가 달라 인과효과로 합산하지 않는다.
+
+| 벽 접촉(운반 구간, 양의 법선력만) | 연속 episode | 20Hz 표본 | 표본시간 합 | 최대 법선력 합 |
+|---|---:|---:|---:|---:|
+| 바퀴–분리벽1 | 54 | 188 | 9.40초 | 8.733N |
+| 손가락–분리벽1 | 20 | 123 | 6.15초 | 1.064N |
+| 상자–분리벽1/2 | 35 | 707 | 35.35초 | 3.628N |
+| 차체–벽 | 0 | 0 | 0초 | 0N |
+
+episode는 인접20Hz 양의접촉 표본만 연결하며 하나의 충돌 시도 수가 아니다. 바퀴 contact manifold geom-pair 표본은1581개.
+write-only `eval_only/wall-contacts.jsonl`·`wall-contact-summary.json` 보존, 제어/정지/전환 입력0.
+would-stop 전부: **ARM_COLLISION_GUARD7, POSE_UNCERTAIN381, REAL_PREGRASP_UNCONFIRMED1, VISUAL_STALL_SUSPECTED3**.
+
+남은 가장 큰 증거: 내려놓기 직전 추정[4.389,−2.110]m인데 실제 경로 오차2.710m로 B 도착을 잘못 판단했다.
+슬립 진단 coarse28펄스 중 **27 unknown_preserved /1 slip_replaced**, 회복 동작0.
+unknown27의 첫 탈락은 texture22/rigid consensus5. 후속unknown_frame308개는 마지막 성공 추적부터의
+시간 공백으로 연쇄 발생할 수 있어 “RGB 파일308개 누락”으로 읽지 않는다. 따라서 벽 접촉에도 명령 예측을
+유지한 구간이 많았다는 증거이며, 새 자세에서 광류가 왜 부족한지는 추가 분해 전 원인을 확정하지 않는다.
+이번 결과 뒤 제어/문턱 수정0·추가 물리0. 등록한1회만 종료했고 agent_lock release/status=null·세션 정리 확인.
+
+[전달 검증](look-ahead-dev-delivery.json): TensorBoard **22수치** source/event/live API 일치(UI 미검증, 수치 확인 범위),
+`1008-s2-v36-likelihood`·`1008-s2-v36-full-v131`·`1008-s2-v36-v131-video` 신규 snapshot.
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1008-s2-v36-%28likelihood%7Cfull-v131%7Cv131-video%29%2F#timeseries).
+4배속 영상 `outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead-4x.mp4`: 5340프레임/80fps/66.75초,
+native media 등록·HTTP raw range206 검증. 이전raw·bundle·snapshot 불변, 원본 GitHub 백업 주장은 하지 않는다.
+관련 실행11시험 + 오프라인 점수/접촉2시험 PASS. 결과 후 문턱 변경 없음.
+
+후속 CI 원인/최소 수정: 실행SHA b5fbe149의 run37650297077에서 preflight SUCCESS,
+`offline-regression-checks`는 duration coverage477/533<90%로 실패,
+`ubuntu-simulation-runtime`은 v128/v129의 현재 shared carry 소스 해시 불일치를 옛 시험이
+실행 가능/`recovery differs`로 기대해4개 실패했다. 옛 번들/등록/생산 해시 가드는 **변경하지 않는다**.
+시험은 현재 소스에서 정확히 `shared behavior changed ... zone_solo_cyan_real_carry`로 실행 전
+거절·원본 결과 생성0을 검증하도록 갱신했다. Runtime 자체 wiring 검사는 그대로 유지한다.
+완료된 원격 JUnit artifact만 받아 기존 측정과 파일별 max로 duration표를 보완했다:
+현재491/534(91.95%) coverage, 새로 측정된16파일. 추정 시간을 만들어 넣지 않았다.
+[출처/변경표](ci-v131-duration-refresh.json), raw `outputs/s2-v36-followup-delivery/ci-durations-37650297077`.
+로컬은 변경 시험3파일만 검증하며, 원격 전체 CI 완료/물리 성공과 구분한다. 병합0.
+CI 수정 검증: `test_s2_slip_matched.py`, `test_s2_slip_recovery_full.py`, `test_ci_sharding.py`
+**74 PASS/59.14초**. 실행 관련13시험과 별도이며, 원격 전체 CI 재완료는 아직 확인하지 않았다.

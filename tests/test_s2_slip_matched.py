@@ -7,7 +7,11 @@ from scripts import run_s2_realism_v128 as runner
 
 
 def test_one_dev_seed_exact_options_and_explicit_failed_replay_deviation(tmp_path):
-    b=c.bundle('a'*40,seed=1051,stage_probe='place',**c.NEW_OPTIONS);c.require_execution(b)
+    b=c.bundle('a'*40,seed=1051,stage_probe='place',**c.NEW_OPTIONS)
+    # Look-ahead extended shared carry source after this historical registration.
+    # Keep the production hash guard; this old bundle must now fail closed.
+    with pytest.raises(ValueError,match='shared behavior changed.*zone_solo_cyan_real_carry'):
+        c.require_execution(b)
     assert b['replay_admission_pass'] is False and b['options']['stall_recovery']=='off'
     assert b['options']['idle_robot_contacts']=='freeze_v1'
     for seed in (1052,1053):
@@ -47,10 +51,9 @@ def test_runtime_uses_slip_with_frozen_baseline_and_preserves_result_failure(tmp
         if r is not None:r.close()
         undo()
     def no_world(*a,**k):raise RuntimeError('synthetic error, no physics')
-    result=runner.run(b,tmp_path/'synthetic',backend_factory=no_world)
-    assert result==json.loads((tmp_path/'synthetic/result.json').read_text())
-    assert result['status']=='HOST_ERROR' and result['intentional_deviation']['approved']
-    assert result['options']==b['options']
+    with pytest.raises(ValueError,match='shared behavior changed.*zone_solo_cyan_real_carry'):
+        runner.run(b,tmp_path/'synthetic',backend_factory=no_world)
+    assert not (tmp_path/'synthetic/result.json').exists()
 
 
 def test_workflow_and_registration_identify_the_same_finite_run():
