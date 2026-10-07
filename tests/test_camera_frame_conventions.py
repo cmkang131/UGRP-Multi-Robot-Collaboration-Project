@@ -63,7 +63,8 @@ def test_registered_grid_is_fixed_and_contains_general_base_attitudes():
 
 
 def test_native_camera_intrinsics_use_model_array_api_without_dynamics():
-    import mujoco
+    import pytest
+    mujoco=pytest.importorskip('mujoco')
     model=mujoco.MjModel.from_xml_string('<mujoco><worldbody><camera name="c" focalpixel="600 610" principalpixel="20 30" sensorsize="640 480" resolution="640 480"/></worldbody></mujoco>')
     np.testing.assert_allclose(audit.native_intrinsic(model,0),[[600,0,300],[0,610,210],[0,0,1]],atol=1e-12)
 
@@ -78,3 +79,23 @@ def test_evaluation_inverse_recovers_supplied_angles_without_calling_a_controlle
         result,err=inverse_camera_chain(camera,base,q)
         np.testing.assert_allclose(list(result.values()),list(q.values()),atol=1e-12)
         assert max(err.values())<1e-12
+
+
+def test_column_floor_trace_is_the_same_pinhole_ray_plane_intersection():
+    import sys
+    sys.path.insert(0,str(ROOT/'experiments/2026-10-05-ego-wall-map-probe/code'))
+    import v3_confidence_replay as replay
+    cm,offset,_=replay.geometry({1:2000,3:740,4:2320,5:1320,6:1500},'off',camera_pose='servo_fk_v1')
+    dist=np.linspace(.05,2.,len(cm.columns))
+    v=cm.rows(dist)
+    rays=np.column_stack([cm.columns,v,np.ones(len(v))])@replay.mp.K_INV.T@cm._rot.T
+    points=cm.origin-rays*(cm.origin[2]/rays[:,2,None])
+    np.testing.assert_allclose(points[:,:2],cm.q0+dist[:,None]*cm.d,atol=1e-12)
+
+
+def test_static_gravity_moment_sign_for_negative_y_hinge():
+    import sys
+    sys.path.insert(0,str(PATH.parent))
+    from gravity_check import gravity_moment
+    value=gravity_moment(np.array([0.,-1.,0.]),np.zeros(3),np.array([[1.,0.,0.]]),np.array([1.]),np.array([0.,0.,-10.]))
+    assert value==-10.
