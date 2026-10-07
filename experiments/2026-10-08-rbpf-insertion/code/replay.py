@@ -124,7 +124,8 @@ def score():
                  error_2sigma_ratio=float(errors[-1]/(2*sigma[-1])), path_rmse_m=float(np.sqrt(np.mean(errors**2))),
                  over_2sigma=int((errors>2*sigma).sum()), pose_n=len(poses), resamples=g['resamples'], ancestors=len(set(ancestry)),
                  rejected_resamples=sum(d.get('resampled',False) for d in rejected),
-                 sensor_updates=sum(d.get('sensor_weight_update',False) for d in decisions) if mode=='on' else None,
+                 sensor_updates=sum(any(e['reason'] in ('improved_proposal','low_overlap','search_boundary','high_residual')
+                                        for e in d.get('particle_events',[])) for d in decisions),
                  reasons=dict(Counter(d['reason'] for d in decisions)),
                  occupied_cells=len(cells), inserted_frames=len(p['ledger']), full_map=quality,
                  observed_region=dict(precision_correct=int(correct[region].sum()), precision_cells=int(region.sum()),

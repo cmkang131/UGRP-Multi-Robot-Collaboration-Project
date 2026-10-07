@@ -31,12 +31,13 @@ def main():
  counts={k:Counter() for k in ('all','after_36_1')}
  byrange={k:[Counter() for _ in BINS] for k in counts}
  errors=[defaultdict(list) for _ in BINS]
- check120=[]
+ check120=[];seen=set()
  for row in rows(RAW/'own-contacts.jsonl'):
   d=decisions[row['frame_id']];ranges=np.linalg.norm(np.asarray(row['segments'])-row['camera'],axis=2).max(1)
+  key=(row['t'],row['frame_id']);duplicate=key in seen;seen.add(key)
   groups=['all']+(['after_36_1'] if row['t']>36.1+1e-8 else [])
   for key in groups:
-   c=counts[key];c['frames']+=1;c['detected_frames']+=bool(len(ranges));c[d['reason']]+=1;c['inserted']+=bool(d['inserted']);c['duplicate']+=0
+   c=counts[key];c['frames']+=1;c['detected_frames']+=bool(len(ranges));c[d['reason']]+=1;c['inserted']+=bool(d['inserted']);c['duplicate']+=duplicate
    c['admitted']+=d['reason']!='gmapping_motion_gate';c['segments']+=len(ranges)
    for distance in ranges:
     b=byrange[key][bin_id(distance)];b['segments']+=1;b[d['reason']]+=1;b['inserted']+=bool(d['inserted'])
@@ -65,6 +66,7 @@ def main():
   J=(r*r+h*h)/h
   theory.append(dict(range_m=r,pitch_013deg_m=J*dp,pixel_1px_m=J/mp.FY,pixel_quantization_sd_m=J/mp.FY/math.sqrt(12),combined_1px_rss_m=J*math.hypot(dp,1/mp.FY),pitch_exact_max_m=max(abs(h/math.tan(math.atan2(h,r)+sign*dp)-r) for sign in [-1,1])))
  result=dict(input_frames=len(frames),own_frames=len(decisions),warmup_frames=len(frames)-len(decisions),stage_counts=counts,
+  grid_rejected=load(RAW/'frontend-grid.json')['rejected'],
   range_segments={k:[dict(bin=name,**values) for name,values in zip(BINS,values)] for k,values in byrange.items()},
   projection_by_endpoint_range=[dict(bin=name,**{key:stats(a) for key,a in b.items()}) for name,b in zip(BINS,errors)],
   theory=dict(height_m=h,pitch_error_deg=.13,width_px=mp.WIDTH,height_px=mp.HEIGHT,fy=mp.FY,rows=theory),
