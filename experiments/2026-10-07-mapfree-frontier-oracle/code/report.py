@@ -168,7 +168,7 @@ def main():
              'door_attempts','false_candidate_passage_attempts']
     import csv
     with (out/'episodes.csv').open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=columns,extrasaction='ignore')
+        writer=csv.DictWriter(f,fieldnames=columns,extrasaction='ignore',lineterminator='\n')
         writer.writeheader()
         writer.writerows(rows)
     totals=Counter()
