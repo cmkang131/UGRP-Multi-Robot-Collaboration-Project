@@ -49,3 +49,10 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 1. 대표 case를 위 규칙으로 고른다(paired 상대가 있으면 같은 셀·seed).
 2. `python3 scripts/render_pair_probe_video.py --case <이전 case> --label ... --case <새 case> --label ... --output <mp4>`. `--pf-track`으로 돌린 실행은 σ가 `trace.jsonl`의 PF에서 나오고, 없으면 `robots.json` 보고로 대신한다(영상 안에 출처가 적힌다). 정렬처럼 σ 게이트가 종료 원인이 아닌 단계는 `--gate none`.
 3. 파일 크기와 sha256을 확인하고 `experiments/<ID>/videos/`에 넣는다. 이 표에 행을 추가한다.
+
+
+## egomap29 자기 지도 탐색 복구 (2026-10-08)
+
+|버전·소스|단일 case|결과|영상·원본|확인 범위/한계|
+|---|---|---|---|---|
+|`egomap29-active-recovery-v1` · `00e4cebd`|seed29001, 180 SIM초, tape/SEARCH/wide + recovery|4.225m / 1.523m², hold52.53%, 접촉0, B미도착; 지도/2σ 기준 미달|[손목 RGB와 online 지도 4배속](../experiments/2026-10-08-active-recovery/figures/wrist-map-4x.mp4), SHA256 `3f3d68c9e1f245f17739f2fc5bef9ccda4ca8ac30f641cd209f2e73959985dd4`; raw `outputs/active-recovery-v1/new-seed/`|20개 당시 snapshot, 최종 지도 역채움0. GT 벽/경로는 평가 표시만. 90.5초 frontier소진; 6회 recovery소진 분기 미발생. raw/결과 hash는 [manifest](../experiments/2026-10-08-active-recovery/results/physical-manifest.json). 단일 새 seed, 실물/일반화 아님.|

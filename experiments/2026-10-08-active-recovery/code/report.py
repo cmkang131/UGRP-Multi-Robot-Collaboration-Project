@@ -76,4 +76,85 @@ def score():
     print(json.dumps(dict(frontend=front,egomap27_gate=gate),indent=2))
 
 
-if __name__=='__main__':score()
+# Movie renderer reused from egomap28, chronological snapshots unchanged; bundle seed label.
+
+def movie():
+    metrics_module().verify(EP)  # sealed acquisition only
+    import cv2
+    seed=load(EP/'bundle.json')['task']['seed']
+    frames=rows(EP/'robots/r3/frames.jsonl');truth=rows(EP/'eval_only/trajectory.jsonl')
+    cov=rows(EP/'frontend-covariances.jsonl');snapshots=rows(EP/'online-maps.jsonl')
+    origin=[*truth[0]['robot_xyz_m'][:2],truth[0]['robot_yaw_rad']]
+    walls=[r for r in load(EP/'inputs/static_map.json')['obstacles'] if r.get('kind')=='wall']
+    # Same fixed arena extent throughout movie; no final map/trajectory used to frame early views.
+    mins=np.min([np.array(r['center_m'])-r['half_extents_m'] for r in walls],axis=0)-.4
+    maxs=np.max([np.array(r['center_m'])+r['half_extents_m'] for r in walls],axis=0)+.4
+    scale=min(580/(maxs[0]-mins[0]),360/(maxs[1]-mins[1]))
+    center=(mins+maxs)/2
+    def pixel(xy):
+        z=(np.asarray(xy)-center)*scale
+        return np.rint(np.c_[320+z[...,0].ravel(),250-z[...,1].ravel()]).astype(int)
+    def label(im,text,y,color=(40,40,40)):
+        cv2.putText(im,text,(16,y),cv2.FONT_HERSHEY_SIMPLEX,.48,color,1,cv2.LINE_AA)
+    base=np.full((480,640,3),250,np.uint8)
+    for r in walls:
+        lo=np.array(r['center_m'])-r['half_extents_m'];hi=np.array(r['center_m'])+r['half_extents_m']
+        a,b=pixel([lo,hi]);cv2.rectangle(base,tuple(a),tuple(b),(175,175,175),-1)
+    label(base,'Online FRONTEND map (own RGB + commands)',22)
+    label(base,'Gray: GT walls (evaluation only)',43)
+    label(base,'Blue: TSDF support, NOT probability',64)
+    label(base,'Orange: estimate   Green: actual (evaluation)',455)
+    output=RAW/'wrist-map-4x.mp4'
+    if output.exists():raise FileExistsError(output)
+    encoder=subprocess.Popen(['ffmpeg','-nostdin','-v','error','-f','rawvideo','-pixel_format','bgr24',
+        '-video_size','1280x480','-framerate','20','-i','pipe:0','-an','-c:v','libx264','-preset','fast','-crf','22',
+        '-pix_fmt','yuv420p','-movflags','+faststart',str(output)],stdin=subprocess.PIPE)
+    index=-1;layer=base.copy();map_count=0;insertions=0;checks=[]
+    gt_times=np.array([r['t'] for r in truth]);gt_xy=np.array([r['robot_xyz_m'][:2] for r in truth])
+    own_times=np.array([r['t'] for r in cov]);own_xy=transform([r['pose'][:2] for r in cov],origin)
+    try:
+        for i,frame in enumerate(frames):
+            t=frame['sim_time']
+            while index+1<len(snapshots) and snapshots[index+1]['t']<=t+1e-8:
+                index+=1;s=snapshots[index];layer=base.copy()
+                evidence=build_evidence([dict(r,robot_id='r3') for r in s['ledger']],robot_id='r3',wall_evidence='tsdf_weight_v1')
+                support={tuple(r['cell']):r['support_score'] for r in evidence['cells']}
+                cells=[c for c in s['grid']['cells'] if c[2]>0];map_count=len(cells);insertions=len(s['ledger'])
+                if cells:
+                    xy=transform((np.array(cells)[:,:2]+.5)*.1,origin)
+                    for c,uv in zip(cells,pixel(xy)):
+                        value=support.get(tuple(c[:2]),0.)
+                        color=(int(240-40*value),int(210-160*value),int(170-160*value))
+                        cv2.circle(layer,tuple(uv),max(2,round(.04*scale)),color,-1)
+            right=layer.copy()
+            for xy,mask,color in [(gt_xy,gt_times<=t+1e-8,(45,145,45)),(own_xy,own_times<=t+1e-8,(0,120,245))]:
+                p=pixel(xy[mask])
+                if len(p)>1:cv2.polylines(right,[p],False,color,2,cv2.LINE_AA)
+                if len(p):cv2.circle(right,tuple(p[-1]),4,color,-1)
+            label(right,f't={t-frames[0]["sim_time"]:.1f}s | {map_count} cells | {insertions} scans',85)
+            left=cv2.imread(str(EP/frame['path']));assert left.shape==(480,640,3)
+            cv2.rectangle(left,(0,0),(640,32),(25,25,25),-1)
+            label(left,f'Own wrist RGB | seed {seed} | 4x | {t-frames[0]["sim_time"]:.1f}s',22,(245,245,245))
+            pair=np.concatenate([left,right],axis=1);encoder.stdin.write(pair.tobytes())
+            if i in (0,len(frames)//2,len(frames)-1):
+                checks.append(pair)
+            if i%200==0:print('video',i,'/',len(frames),flush=True)
+    finally:
+        encoder.stdin.close();code=encoder.wait()
+    assert code==0
+    probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(output)]))
+    assert probe['streams'][0]['r_frame_rate']=='20/1'
+    assert abs(float(probe['format']['duration'])-len(frames)/20)<.05
+    (EXP/'figures').mkdir(exist_ok=True)
+    cv2.imwrite(str(EXP/'figures/video-check.jpg'),np.concatenate(checks,axis=0),[cv2.IMWRITE_JPEG_QUALITY,80])
+    dump(EXP/'results/video.json',dict(path=str(output),sha256=sha(output),bytes=output.stat().st_size,
+        frames=len(frames),fps=20,duration_s=float(probe['format']['duration']),playback_speed=4,
+        input_sha256=sha(EP/'robots/r3/frames.jsonl'),online_snapshots=len(snapshots),
+        semantics='each frame uses only latest snapshot <= frame SIM time; no final-map backfill'))
+
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser()
+    p.add_argument('mode',choices=['score','movie'],nargs='?',default='score')
+    a=p.parse_args()
+    score() if a.mode=='score' else movie()

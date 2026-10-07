@@ -1,4 +1,8 @@
-# egomap29 — 자기 지도 탐색 recovery 연결 (구현 전 사전 등록)
+# egomap29 — 자기 지도 탐색 recovery 연결
+
+**최신 판정:** 아래 오프라인 중단 기록은 이력으로 보존한다. 사용자/감독의 명시적 재개 지시로
+소스 `00e4cebd` 그대로 seed29001 물리1회를 완료했다. 복구 기준5/5, 지도·2σ 기준 미달.
+[새 물리 결과](#감독-지시에-따른-단일-물리-확인)를 참조한다.
 
 2026-10-08 사용자 요청. egomap28 seed28001 녹화로 원인을 재현한 뒤,
 `active_recovery=nav2_frontier_v1`(기본off)만 추가한다. 기존 wide/추정/무늬/SEARCH/모션은 동결.
@@ -126,3 +130,92 @@ spin/backup이 각각10초 timeout되고, 180초 종료까지 성공 recovery는
 새 소스·실험은 DRAFT 후보이며 물리 채택·확증 성공으로 보고하지 않는다.
 
 ![정지 지점 costmap](figures/stop-costmap.png)
+
+
+## 감독 지시에 따른 단일 물리 확인
+
+2026-10-08 사용자/감독 결정: 고정 자세 재생은 대안 회전·후진을 반영하지 못하므로
+소진→blacklist 관문을 판정할 수 없다. 이전 두 assertion 실패는 동일 원인 중단 대상이 아닌
+**오프라인 검사의 한계**로 분류하고 dev_light 물리로 확인하도록 명시적으로 승인했다.
+이 변경은 실행 전 raw `physical-resume-authorization.json`에 저장했다. 성능 문턱을 낮춘 것이
+아니며 이전 실패/판정 파일은 보존한다. 재생의 명령 변화도 실제 이동 성공으로 승격하지 않는다.
+
+실행 소스 **`00e4cebd749c56765936312d22d82c82cf4ebbce`**, 사전 등록 seed **29001**,
+180 SIM초 **1회**. 코드/문턱/추정/SEARCH/tape/v122/강성/wide 변경0, 복구 옵션만 egomap28과 다름
+(새 seed 차이도 명시). 실행 전 관련 시험9개 통과, source-admission/freeze 해시 확인.
+표준 `active-recovery` workflow + `ugrp_session egomap29-seed29001`, 배타 잠금 PID44906으로
+단독 실행했고 종료 후 session stopped/lock null 확인. S2 실행·파일 조작0, 모델0, freeze0.
+wall479.11초, RGB901, 제어891프레임. 새 seed는 paired 비교가 아니므로 옵션 효과의 일반화 아님.
+
+|지표|egomap28 seed28001|egomap29 seed29001 + recovery|
+|---|---:|---:|
+|이동 거리 m / footprint union m²|1.090 / 0.485|**4.225 / 1.523**|
+|hold 요청 / 제어 프레임|695/891 = 78.00%|**468/891 = 52.53%**|
+|종료 위치 오차 m / σXY m / eσ|0.6474 / 0.1204 / 5.377|0.5725 / 0.0981 / **5.837**|
+|경로 위치 RMSE m / 2σ 밖 프레임|0.5785 / 706/891|0.4700 / 815/891|
+|영역 precision|15/86 = 17.44%|29/90 = **32.22%**|
+|영역 recall|31/101 = 30.69%|16/74 = **21.62%**|
+|전체 벽 precision / 덮임|38/154 = 24.68% / 62/329 = 18.84%|47/174 = 27.01% / 46/329 = **13.98%**|
+|잠재 가시 벽 표본 / 전체|101/329 = 30.70%|**74/329 = 22.49%**|
+|지도 삽입 / 점유 셀 / RGB|22 / 154 / 901|**20 / 174 / 901**|
+|벽 RMSE m|0.4125|0.3921|
+|점유 ECE(진단) / support gap|0.3142 / 0.1635|0.2736 / 0.1794|
+|B 자기 확인 / GT 도착|37.1초 / 아니오|없음 / **아니오**|
+|벽 접촉 / 잘못된 문 계획 proxy|0 / 5|**0 / 2**|
+
+영역은 실제 카메라 FOV/4m/벽 가림으로 산출한 **잠재 가시 영역**이며 물체·자기 차체 가림은
+분모에 모델링하지 않았다. 표본은 0.1m 벽 표본, 면적은 실제 사각 footprint의0.05m 격자 합집합.
+GT는 봉인 뒤 평가에만 사용. σ는 frontend 공분산이며 graph 공분산으로 부르지 않는다.
+이번 완료 graph와 frontend 경로/점유 결과가 같고 루프 수락0이다. TSDF support는 확률이 아니며
+점유 ECE 역시 진단용이다. 접촉은901개 저장 접촉 표본에 r3-wall 쌍0 + 실행 중 abort 안전 확인.
+
+### 실제 recovery / blacklist / 남은 정지
+
+|항목|새 실행 관측|
+|---|---:|
+|복구 시작|context clear6 + clear2 + spin2 = **10**|
+|완료 성공 / 실패 이벤트|**8 / 0** (context clear6 + clear2)|
+|실제 navigation reset|**8**|
+|spin 종료|2회 모두 frontier 재선택으로 중단; 성공으로 계수하지 않음|
+|blacklist|**4** (`ABORTED_unreachable`)|
+|frontier 선택|**25**|
+|6회 복구 소진 ABORT / `recovery_exhausted` 프레임|**0 / 0**|
+|탐색 소진|절대90.5초(경과89.2초), 마지막90.8초455/455 hold|
+
+45.7초·64.9초의 도달 불가 frontier를 blacklist한 뒤 같은 시각에 다른 frontier를 선택했다.
+90.5초에는 나머지 후보2개가 도달 불가로 blacklist되고 `exploration_finished_no_frontier`가 됐다.
+이후 상태는 영구 `failed`가 아닌 탐색 소진이다. **6회 성공 recovery 소진 분기는 이번 물리에도
+발생하지 않았으므로 그 분기의 물리 검증 완료를 주장하지 않는다.** 회전 복구2개 역시 완료
+전 재선택되어 clear-spin-backup-wait 전체 순환 성공을 주장하지 않는다.
+
+사전 등록한 탐색 회복 기준(거리·면적 증가/hold 감소/접촉0/180초 기록) **5/5** 통과.
+기존 egomap27 기준은 P 개선만 통과, **종료2σ 미달(1/2)**. 기존 실용 지도 기준은 **5/10**이며
+P/R·벽/경로 RMSE·잘못된 문 proxy 미달. 후반 탐색 소진과 과신/가시 범위 부족이 남았다.
+결과 후 문턱·옵션 변경/새 물리/재튜닝0.
+
+### 거짓 점유 1칸 — 다음 후보 기록만
+
+`ActiveMapper._rays` L106–113은 이미 PR409의 `receive_rays` 다음
+`clear_current_footprint`를 호출한다. `public_navigation_raytrace.py` L23–59는 관측 광선의
+모든 칸 free→현재 끝점 occupied 순서이며, `public_navigation_unknown.py` L54–80은 현재
+사각 footprint를 free로 지운다. 따라서 **footprint/raytrace clearing 미구현으로 단정하지 않는다**.
+egomap28에서 막힌 것은 현재 footprint가 아닌 **연속 위치→격자 중심 이동 중의 swept footprint**다.
+후속 후보는 이 연결과 기존 clearing 적용 범위/관측 광선의 관계를 Nav2 원본과 대조하는 것뿐이며,
+이번에는 미래 footprint를 지우거나 padding·해상도·센서 문턱을 바꾸지 않았다.
+출처는 [고정 원본 대조](REFERENCES.md), 소스 hash는 이전 사전 등록 그대로.
+
+### 산출물과 확인 범위
+
+- [물리/기준선 비교](results/comparison.json), [복구 상세](results/physical-recovery.json),
+  [지도·신뢰도](figures/new-seed.png), [영상 확인 이미지](figures/video-check.jpg).
+- [4배속 손목 RGB | 지도 영상](figures/wrist-map-4x.mp4):1280×480/20fps/901프레임/**45.05초**.
+  각 시점까지 저장된 online frontend snapshot만 사용(20개), 최종 지도 역채움0.
+  ffprobe 재생시간·fps/전체 decode 확인, 시작·중간·끝 이미지 육안 확인.
+  [영상 hash/크기](results/video.json); raw `outputs/active-recovery-v1/wrist-map-4x.mp4`에도 보존.
+- 평가 재현: 기존 `code/report.py score`, `code/summarize_recovery.py`; 영상은 `code/report.py movie`.
+  평가식은 기존 그대로, report의 추가는 egomap28 영상 함수 재사용/실제 seed 표시뿐.
+- [실행 승인/봉인 확인](results/physical-validation.json), [새 raw 목록](results/physical-manifest.json).
+  raw `outputs/active-recovery-v1/new-seed/`, 공통 실행 기록 `managed-seed29001/` 모두 로컬 보존.
+  Git에는 소스/요약/1MiB 미만 그림·영상과 해시를 보존하며 raw 원격 백업은 아님.
+
+![새 seed 지도](figures/new-seed.png)
