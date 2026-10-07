@@ -61,8 +61,15 @@ def install(pf, model):
                 fraction=max(0.,min(b,p['times'][-1])-min(a,p['times'][-1]))/p['times'][-1]
                 pf.vel=delta/dt
                 if pf.initialized and fraction>0:
-                    sd=np.sqrt(np.asarray(p['prediction_variance'])*fraction)
-                    d=delta+pf.rng.normal(size=(pf.n,3))*sd
+                    if model.get('noise_model') == 'nav2_omni_v1':
+                        from harness.zone_solo_cyan_load_height import omni_noise
+                        noise=omni_noise(p,model['noise_alpha_1_to_5'][str(int(p['loaded']))],
+                            pf.rng.normal(size=(pf.n,3)),fraction)
+                        noise[:,:2]=noise[:,:2]@np.array([[c,s],[-s,c]]).T
+                        d=delta+noise
+                    else:
+                        sd=np.sqrt(np.asarray(p['prediction_variance'])*fraction)
+                        d=delta+pf.rng.normal(size=(pf.n,3))*sd
                     c,s=np.cos(pf.px[:,2]),np.sin(pf.px[:,2])
                     pf.px[:,0]+=c*d[:,0]-s*d[:,1]
                     pf.px[:,1]+=s*d[:,0]+c*d[:,1]
