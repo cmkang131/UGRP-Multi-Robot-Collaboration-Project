@@ -22,6 +22,20 @@ def verify(ep):
         assert hashlib.sha256((ep/name).read_bytes()).hexdigest()==digest,name
 
 
+def prediction(case, partial=False):
+    ep=RAW/case
+    if not partial:
+        verify(ep)
+        return ep
+    view=RAW/(case+'-partial')
+    receipt=load(view/'prediction.json')
+    assert receipt['input_root']==str(ep)
+    for root,hashes in ((ep,receipt['input_hashes']),(view,receipt['files'])):
+        for name,digest in hashes.items():
+            assert hashlib.sha256((root/name).read_bytes()).hexdigest()==digest,name
+    return view
+
+
 def static():
     ep=RAW/'static'
     verify(ep)
@@ -93,10 +107,10 @@ def calibration(scores,labels):
     return dict(n=len(scores),bins=bins,gap=sum(b['n']*abs(b['score']-b['precision']) for b in bins if b['n'])/len(scores) if len(scores) else None)
 
 
-def evaluate(case):
+def evaluate(case, partial=False):
     ep=RAW/case
-    verify(ep)
-    acquisition=load(ep/'result.json')
+    view=prediction(case,partial)
+    acquisition=load(view/'result.json')
     sys.path.insert(0,str(ROOT/'experiments/2026-10-05-ego-wall-map-probe/code'))
     import odom_grid_replay as metrics
     from scipy.spatial import cKDTree
@@ -106,8 +120,8 @@ def evaluate(case):
     static=load(ep/'inputs/static_map.json')
     rects=np.array([w['center_m']+w['half_extents_m'] for w in static['obstacles'] if w.get('kind')=='wall'])
     samples=metrics.wall_samples(rects)
-    graph=load(ep/'graph.json')
-    cells=np.array([c for c in load(ep/'grid.json')['cells'] if c[2]>0]).reshape(-1,3)
+    graph=load(view/'graph.json')
+    cells=np.array([c for c in load(view/'grid.json')['cells'] if c[2]>0]).reshape(-1,3)
     xy=transform((cells[:,:2]+.5)*.1,origin)
     q,cover=metrics.quality(xy,rects,samples)
     cams=rows(ep/'eval_only/camera.jsonl')
@@ -115,7 +129,9 @@ def evaluate(case):
     region=in_view(xy,cams,rects)
     distances=metrics.boundary_dist(xy,rects)
     correct=distances<=.15
-    path=graph['poses']
+    path=[p for p in graph['poses'] if round(p['t'],6) in truth]
+    unscored=len(graph['poses'])-len(path)
+    assert partial or unscored==0
     estimate=transform(np.array([p['pose'][:2] for p in path]).reshape(-1,2),origin)
     gt=np.array([truth[round(p['t'],6)][:2] for p in path]).reshape(-1,2)
     errors=np.linalg.norm(estimate-gt,axis=1)
@@ -135,14 +151,17 @@ def evaluate(case):
     # Wrong-door attempts: a selected door is near the current commanded path,
     # whose GT start-aligned path intersects true walls with the physical rectangle.
     wrong=[];last=None
-    from harness.public_navigation.costmap import Costmap
+    door_exposure=dict(candidate_frames=sum(bool(r.get('doors')) for r in traces),
+                       feasible_rows=0,selected_path_rows=0)
     for trace in traces:
         if not trace.get('doors') or len(trace['path'])<2:continue
         p=transform(np.asarray(trace['path']),origin)
         for door in trace['doors']:
             if not door.get('payload_clearance_feasible',False):continue
+            door_exposure['feasible_rows']+=1
             center=transform([door['center_m']],origin)[0]
             if np.linalg.norm(p-center,axis=1).min()>.3:continue
+            door_exposure['selected_path_rows']+=1
             bad=bool((metrics.boundary_dist(p,rects)<.12).any())
             if bad and door['id']!=last:wrong.append(dict(t=trace['t'],door=door['id']));last=door['id']
     b=static['regions']['zone_B']
@@ -158,16 +177,19 @@ def evaluate(case):
         wall_rmse=q['wall_error_rmse_m'] is not None and q['wall_error_rmse_m']<=.15,
         path_rmse=rmse is not None and rmse<=.25)
     result=dict(case=case,acquisition=acquisition,full_map=q,wall_sample_count=len(samples),
+        prediction_view='partial_frontend_unfinished_graph' if partial else 'completed_graph',
         observed_region=dict(precision=area_p,precision_correct=int(correct[region].sum()),precision_cells=int(region.sum()),
             recall=recall,recalled_samples=int(cover[visible].sum()),visible_samples=int(visible.sum()),
             visible_wall_fraction=float(visible.mean()),sampled_wall_length_proxy_m=float(visible.sum())*.1,
             qualification='actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled'),
         coverage=dict(travelled_m=travelled,footprint_union_m2=coverage_area,footprint_cells_005m=len(visited),
             frames=acquisition['frames'],mapped_frames=len(graph['ledger']),occupied_cells=len(cells)),
-        path=dict(n=len(errors),rmse_m=rmse,end_m=float(errors[-1]) if len(errors) else None),
+        path=dict(n=len(errors),rmse_m=rmse,end_m=float(errors[-1]) if len(errors) else None,
+                  missing_gt_samples=unscored),
         b=dict(first_own_confirmation_s=min(confirmed) if confirmed else None,reached_gt=bool(inside.any()),
                first_gt_reach_s=actual[int(np.flatnonzero(inside)[0])]['t'] if inside.any() else None),
-        wall_contacts=contact,wrong_door_attempts=wrong,loop_counts=graph['diagnostics'].get('loop_counts'),
+        wall_contacts=contact,wrong_door_attempts=wrong,door_exposure=door_exposure,
+        loop_counts=graph['diagnostics'].get('loop_counts'),
         switch_counts=graph['diagnostics'].get('switch_counts'),
         calibration=dict(occupancy_ece_diagnostic=calibration(belief,correct),support_score_gap=calibration(score,correct),
                          qualification='TSDF support is NOT probability'),criteria=criteria,passed=all(criteria.values()))
@@ -182,7 +204,7 @@ def evaluate(case):
     if len(xy):dots=ax.scatter(xy[:,0],xy[:,1],c=score,s=12,cmap='Blues',vmin=0,vmax=1);fig.colorbar(dots,ax=ax,label='TSDF support (not probability)')
     ax.plot(actual_path[:,0],actual_path[:,1],'--',color='green',label='Actual path (evaluation)')
     if len(estimate):ax.plot(estimate[:,0],estimate[:,1],color='orange',label='Own estimated path')
-    ax.set(aspect='equal',xlabel='m',ylabel='m',title=f'{case}: {travelled:.2f} m / {coverage_area:.2f} m² / {int(visible.sum())} wall samples')
+    ax.set(aspect='equal',xlabel='m',ylabel='m',title=f'{case}{" (partial frontend)" if partial else ""}: {travelled:.2f} m / {coverage_area:.2f} m² / {int(visible.sum())} wall samples')
     ax.legend(fontsize=8)
     for label,c in [('occupancy',result['calibration']['occupancy_ece_diagnostic']),('support',result['calibration']['support_score_gap'])]:
         valid=[b for b in c['bins'] if b['n']]
@@ -199,5 +221,6 @@ def evaluate(case):
 if __name__=='__main__':
     p=argparse.ArgumentParser()
     p.add_argument('case',choices=['static','photo','speckle'])
+    p.add_argument('--partial',action='store_true')
     a=p.parse_args()
-    static() if a.case=='static' else evaluate(a.case)
+    static() if a.case=='static' else evaluate(a.case,a.partial)
