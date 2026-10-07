@@ -46,3 +46,14 @@ def test_look_ahead_only_lifts_wrist_and_keeps_grip(static,cal):
         assert (3,1050) in arms and (1,2000) not in arms
         assert r.record()['carry_pose']['option']==LOOK_AHEAD_OPTION
     finally:r.close()
+
+
+def test_measurement_accepts_robot_tuple_rpy(monkeypatch):
+    from types import SimpleNamespace as NS
+    import sim.s2_eval_camera_trace as camera
+    monkeypatch.setattr(camera,'camera_row',lambda *a:{'evaluation_only':True})
+    robot=NS(robot_bid=0,robot_mass_kg=1.1,wheel_act=np.arange(4),base_xyz=lambda:np.zeros(3),base_rpy=lambda:(0.,0.,0.))
+    world=NS(model=NS(body_mass=np.array([1.1,.03]),neq=0),data=NS(time=1.,ncon=0,subtree_com=np.zeros((2,3)),xpos=np.ones((2,3)),actuator_force=np.zeros(4)))
+    r=d.measurement(world,robot,1)
+    assert r['rpy']==[0.,0.,0.] and not r['bilateral']
+    assert r['robot_plus_box_com']==pytest.approx([.03/1.13]*3)

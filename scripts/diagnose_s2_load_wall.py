@@ -45,7 +45,7 @@ def measurement(world,robot,cargo):
             contacts.append(dict(geoms=names,category=kind,distance_m=float(con.dist),force_contact_frame=force.tolist()))
             if kind=='grasp':fingers.add(next(n for n in names if n.startswith('r3__')))
     mass=robot.robot_mass_kg;com=d.subtree_com[robot.robot_bid].copy();cargo_xyz=d.xpos[cargo].copy();boxmass=m.body_mass[cargo]
-    return dict(t=float(d.time),xyz=robot.base_xyz().tolist(),rpy=robot.base_rpy().tolist(),
+    return dict(t=float(d.time),xyz=robot.base_xyz().tolist(),rpy=list(robot.base_rpy()),
         robot_com=com.tolist(),robot_plus_box_com=((mass*com+boxmass*cargo_xyz)/(mass+boxmass)).tolist(),
         cargo_xyz=cargo_xyz.tolist(),bilateral=len(fingers)==2,contacts=contacts,
         wheel_torque_nm=d.actuator_force[robot.wheel_act].tolist(),

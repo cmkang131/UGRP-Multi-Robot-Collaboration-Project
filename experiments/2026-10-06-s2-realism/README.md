@@ -3918,3 +3918,7 @@ free 동일자세 하중 차이≤10%, yaw차≤1°; near/free 진행≤20%면 �
 이 짧은 고정명령 진단의 가시 기회와 실제 전체 경로 PF fix 공백은 구분한다.
 안전·보정 통과 시에만 별도 등록 후 seed1051 full DEV를 고려한다. 결과 후 문턱 변경 없음.
 사용자 감독 예외로 push 대기 로컬 커밋 실행 허용. PR406 DRAFT·병합 금지.
+
+실행34ceb0d5: 첫 SEARCH setup의 평가 기록에서 `base_rpy()` tuple에 tolist 호출 오류.
+HOST_ERROR, 이동 펄스0·유효 조건0; 원본 `outputs/s2-load-wall-34ceb0d5` 보존.
+표준 Robot API의 tuple 그대로 list 변환하고 테스트로 고정, 설계/문턱은 변경하지 않는다.
