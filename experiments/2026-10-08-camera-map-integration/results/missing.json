@@ -1,0 +1,50 @@
+{
+  "total_wall_cells": 249,
+  "original_samples": 329,
+  "missing_cells": 105,
+  "covered_cells": 144,
+  "exact_cell_missing": 185,
+  "causes": {
+    "a_not_potentially_visible": {
+      "cells": 79,
+      "fraction_missing": 0.7523809523809524,
+      "fraction_all": 0.3172690763052209
+    },
+    "c_detection_not_inserted": {
+      "cells": 3,
+      "fraction_missing": 0.02857142857142857,
+      "fraction_all": 0.012048192771084338
+    },
+    "d_inserted_pose_displaced": {
+      "cells": 17,
+      "fraction_missing": 0.1619047619047619,
+      "fraction_all": 0.06827309236947791
+    },
+    "e_free_evidence_or_cell_boundary": {
+      "cells": 6,
+      "fraction_missing": 0.05714285714285714,
+      "fraction_all": 0.024096385542168676
+    }
+  },
+  "frame_reasons": {
+    "bootstrap": 1,
+    "gmapping_motion_gate": 814,
+    "improved_proposal": 30,
+    "search_boundary": 2,
+    "high_residual": 19,
+    "insufficient_match_points": 5,
+    "low_overlap": 7
+  },
+  "rgb_frames": 901,
+  "detector_frames": 891,
+  "nonempty_frames": 878,
+  "inserted_frames": 64,
+  "potential_visible_wall_cells": 92,
+  "visibility_scope": "true camera and wall-only occlusion; object/self silhouettes unavailable, potential visibility",
+  "detection_scope": "projected face within .15 m at GT chassis pose; includes projection failure in b",
+  "evaluation_inputs": {
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/eval_only/camera.jsonl": "189436ec15c8eafda5a44d323e01a8d7d4f1eb3e828d5792b1d294e16cac0870",
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/eval_only/trajectory.jsonl": "c06c2d964971d4ee1eaaa90760f8f04bea15555a64ea481849a903f18f211ee0",
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/inputs/static_map.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+  }
+}
