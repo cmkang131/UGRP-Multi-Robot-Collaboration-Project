@@ -127,3 +127,14 @@ def test_evaluation_unique_match_denominator():
     pred=dict(id='own:1',first_t=1.,endpoints=[[2,-.4],[2,.4]],width_m=.8)
     r=m.metrics([pred,dict(pred,id='duplicate')],[d],[0,0,0],[0])
     assert r['tp']==1 and r['fp']==1 and r['precision']==.5 and r['recall_visible']==1.
+
+
+def test_unconfirmed_gap_on_mission_path_requests_view_before_crossing():
+    from harness.public_navigation_unknown import from_observed_grid
+    s=DoorSystem('r3','room_doors_v1');s.grid=grid();n=DoorNavigator(s);p=np.array([-1.,0.,0.])
+    d=dict(id='own:1',endpoints=[[0,-.4],[0,.4]],width_m=.8,first_t=0.,confirmed_t=None)
+    s.memory.tracks=[d];cm=from_observed_grid(s.grid,p,{},set())
+    target,key,heading=n.choose(cm,p,1,[1,0])
+    assert key=='own:1' and target[0]<0 and heading==pytest.approx(0)
+    n.viewed.add(key)
+    assert n.choose(cm,p,2,[1,0])==(None,None,None)

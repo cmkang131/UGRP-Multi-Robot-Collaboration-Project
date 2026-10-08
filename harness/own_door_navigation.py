@@ -53,6 +53,17 @@ def door_route(graph,start,goal):
     return None
 
 
+def crosses(path,door):
+    c,tangent,normal=geometry(door)
+    for a,b in zip(path,path[1:]):
+        a,b=np.asarray(a),np.asarray(b)
+        da,db=np.dot(a-c,normal),np.dot(b-c,normal)
+        if da*db<=0 and abs(da-db)>1e-9:
+            hit=a+(b-a)*da/(da-db)
+            if abs(np.dot(hit-c,tangent))<=door['width_m']/2:return True
+    return False
+
+
 class DoorNavigator(StartRecoveryNavigator):
     def __init__(self,system):
         super().__init__();self.system=system;self.mission=None;self.local_id=None
@@ -83,15 +94,20 @@ class DoorNavigator(StartRecoveryNavigator):
     def choose(self,costmap,pose,t,goal):
         s=self.system;doors=s.memory.snapshot(s.tf)
         graph,region=topology(s.grid,doors,pose);s.last_topology=graph
+        blockers=set()
         if goal is not None:
             route=door_route(graph,region(pose[:2]),region(goal))
             if route:
                 edge,at=route[0];target=np.array(edge['plus'] if at==edge['a'] else edge['minus'])
                 if self.plan_to(costmap,pose,target):return target,edge['door'],None
-            elif route==[] and self.plan_to(costmap,pose,goal):return np.asarray(goal),None,None
+            elif route==[]:
+                path=self.plan_to(costmap,pose,goal)
+                blockers={d['id'] for d in doors if d['confirmed_t'] is None and crosses(path,d)}
+                if path and not blockers:return np.asarray(goal),None,None
         candidates=[]
         for d in doors:
             if d['confirmed_t'] is not None or d['id'] in self.viewed:continue
+            if blockers and d['id'] not in blockers:continue
             c,_,n=geometry(d)
             # Xiang Eq2: perpendicular, 1m stand-off, closer reachable solution.
             views=sorted((c-n,c+n),key=lambda p:float(np.linalg.norm(p-pose[:2])))
@@ -105,6 +121,8 @@ class DoorNavigator(StartRecoveryNavigator):
         if candidates:
             _,key,target,heading=min(candidates,key=lambda p:(p[0],p[1]))
             return target,key,heading
+        # A failed/unreachable confirmation view does not authorize crossing.
+        if blockers:return None,None,None
         return (None,None,None) if goal is None else (np.asarray(goal),None,None)
 
     def update(self,costmap,pose,t,static_goal=None):
