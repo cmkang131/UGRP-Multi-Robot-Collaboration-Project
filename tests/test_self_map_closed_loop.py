@@ -102,3 +102,14 @@ def test_managed_workflow_and_frozen_bundle():
     b=bundle('a'*40)
     assert b['task']['seed']==43001 and b['case_cap_s']==360.
     assert b['options']['wall_texture']=='tape_v1' and b['options']['camera_pose']=='SEARCH'
+
+
+def test_egomap34_exact_detector_bytes_and_explicit_source_admission():
+    import hashlib
+    from test_wall_contact_types import test_active_detector_off_nonempty_real_rgb_frozen_bytes
+    test_active_detector_off_nonempty_real_rgb_frozen_bytes()
+    root=Path(__file__).parents[1]
+    manifest=json.loads((root/'experiments/2026-10-08-own-map-closed-loop/detector-off-admission.json').read_text())
+    for name,r in manifest['files'].items():
+        assert hashlib.sha256((root/name).read_bytes()).hexdigest()==r['current_sha256']
+        assert hashlib.sha256((root/r['original_fixture']).read_bytes()).hexdigest()==r['original_sha256']

@@ -110,7 +110,14 @@ def main():
     receipts=base.verify_source(args.expected_source_sha)
     assert args.output.resolve()==RAW/'new-seed' and not args.output.exists()
     frozen=json.loads((base.EXP/'freeze.json').read_text())
-    assert all(base.old.sha(ROOT/p)==h for p,h in frozen['hashes'].items())
+    admission=json.loads((ROOT/'experiments/2026-10-08-own-map-closed-loop/detector-off-admission.json').read_text())
+    for p,h in frozen['hashes'].items():
+        if p in admission['files']:
+            a=admission['files'][p]
+            assert a['original_sha256']==h==base.old.sha(ROOT/a['original_fixture'])
+            assert base.old.sha(ROOT/p)==a['current_sha256']
+        else:assert base.old.sha(ROOT/p)==h,p
+    receipts['default_off_detector_admission']=admission
     receipts['egomap34_estimator_hashes']=frozen['hashes']
     nav=json.loads((ROOT/'experiments/2026-10-07-active-wall-map/navigation-source.json').read_text())
     assert all(base.old.sha(ROOT/p)==h for p,h in nav['files'].items())

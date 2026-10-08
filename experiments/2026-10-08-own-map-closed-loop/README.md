@@ -98,3 +98,9 @@ push 장애는 로컬SHA 진행 후 재시도. PR405 DRAFT·병합0, 원본/미�
 60초 자기 B 기억 없음 유지. 단순 프레임 합산으로 표본 수를 부풀리지 않는다.
 오프라인 source `56ad5051`; 입력·예측 해시는 results/utility-tempered.json.
 6예측을 봉인한 뒤 평가기 static map cache 경로1곳을 수정했으며 예측 재실행0·문턱 변경0.
+
+물리 전 source preflight에서 egomap34 이후 추가된 검출기 off dispatcher2파일의
+whole-file 해시 차이를 발견했다(물리 시작0). `9ff00833`과 줄 단위 비교 결과는
+off 옵션 인자/dispatch만 추가됐으며 원 검출은 동일했다. 옛 전체파일을 보존한 fixture의
+해시=egomap34 freeze를 확인하고 실제 RGB의 비어 있지 않은 검출 bytes 동일 시험 후
+`detector-off-admission.json`에 두 해시만 명시적으로 연결했다. 다른 freeze는 그대로다.
