@@ -63,6 +63,36 @@ def audit(out,option):
     print(json.dumps({k:v for k,v in result.items() if k not in ('support','updates','inputs')}))
     return result
 
+def compare(out):
+    criteria=read(Path(__file__).with_name('tracking-recovery-criteria.json'))
+    baseline=read(out/'baseline'/'prediction.json');off=read(out/'off'/'prediction.json');on=read(out/'on'/'prediction.json')
+    assert not any(r['partial'] for r in (baseline,off,on))
+    a=read(out/'off-audit.json');b=read(out/'on-audit.json')
+    gates=dict(baseline_reproduced=baseline['max_delta']<=1e-9,
+        off_particle_bytes_identical=baseline['cloud_sha256']==off['cloud_sha256'],
+        off_pose_bytes_identical=json.dumps(baseline['poses']).encode()==json.dumps(off['poses']).encode(),
+        postcontact_reconverged=b['reconverged_t'] is not None,
+        carry_end_xy=b['carry_end_error_m']<=criteria['recovery_xy_m'],
+        postcontact_rmse_improved=b['windows']['post_contact']['rmse_m']<a['windows']['post_contact']['rmse_m'],
+        carry_rmse_nonincrease=b['windows']['carry']['rmse_m']<=a['windows']['carry']['rmse_m'])
+    result=dict(schema='ugrp.s2.tracking_recovery.result.v1',criteria=criteria,
+        criteria_sha256=sha(Path(__file__).with_name('tracking-recovery-criteria.json')),
+        source_sha='fe779a28',physics_runs=0,model_calls=0,gt_use='posthoc only',
+        replay_script_sha256=sha(Path(__file__).with_name('replay_tracking_recovery.py')),
+        options={'off':'off','on':'augmented_mcl_v1'},gates=gates,physical_admitted=all(gates.values()),
+        runs={k:{n:v for n,v in x.items() if n not in ('support','updates')} for k,x in [('off',a),('on',b)]},
+        hashes={str(p.relative_to(out)):sha(p) for p in [out/'baseline'/'prediction.json',out/'off'/'prediction.json',out/'on'/'prediction.json',out/'off-audit.json',out/'on-audit.json']},
+        cohort_comparison=[dict(condition='v133 prior',success=6,trials=6),dict(condition='v139 no prior',success=2,trials=3),
+            dict(condition='s2v55 tracking recovery offline',success=None,trials=0,reason='physical gated on replay')])
+    (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    print(json.dumps(gates))
+    return result
+
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--option',required=True)
-    a=p.parse_args();audit(a.output,a.option)
+    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--option',choices=('baseline','off','on'));p.add_argument('--compare',action='store_true')
+    a=p.parse_args()
+    if a.compare:compare(a.output)
+    elif a.option:audit(a.output,a.option)
+    else:p.error('--option or --compare required')
