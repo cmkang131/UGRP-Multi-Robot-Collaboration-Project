@@ -59,3 +59,22 @@
    비교·구조 참고만, 코드를 복사하지 않음(저장소 파일별 라이선스 혼재, 새 의존성0).
 4. 기존 탐색/회복·경로 원본은 egomap47 README 및 PR409에 pin된 NavFn/explore_lite/Nav2를 그대로 재사용.
    새 문 API는 자기 관측만, 다른 로봇 지도/배열 전송/모델호출0. 문 confidence는 확인 근거 점수이며 calibration된 확률 아님.
+
+## 구현·오프라인 재생 경계 (개발 결과 열람 전)
+
+`harness/own_door_memory.py`: `candidates`는 원문 §2 CP와 Type I/II, `floor_connection`은
+직접 바닥 표본+광선/현재 벽의 확인 검증, `DoorMemory.observe`는 관측ID/시각·첫 기하 보존/중복 연관.
+`harness/own_door_navigation.py`: `topology`/`door_route`는 cut→연결성→BFS,
+`DoorNavigator.choose`는 Eq2 정면1m 접근/확인문 반대편 .4m 경유, `action_failed`는 최종 mission 보존.
+`attach`/`attach_return` 두 옵션off는 받은 객체 자체 반환. 기존 receive에 명시적 opt-in hook만 추가했다.
+GT/static 파일 import0, 로봇ID/프레임 중복 검사, loss 이전 own door snapshot 보존.
+명시적 변경: range4m·FOV종단 CP배제·.05m 이하 선분 배제는 기존 카메라/격자 유효 범위;
+CP 연결점은 .05m 격자 허용내 관측 끝점, 원문의 정확한 무잡음 교점 가정에 대한 수치 허용이다.
+
+`code/offline.py predict`는 GT를 읽지 않고 저장 자기 자세/관측만 재생한 뒤 해시 봉인한다.
+`score`는 별도 호출에서 출발 GT변환·실제 카메라·문으로만 평가한다. ray 가림은 벽만 모델링하므로
+가시문 분모는 **잠재 가시성**이며 로봇/블록 가림 미모델링 한계를 함께 기록한다.
+원래 graph 좌표 문 후보는 자기 map→odom 역변환만 적용한다. GT로 후보를 맞추지 않는다.
+고정 경로에 없는 새로운 능동 확인 시점은 생성하지 않으며, 실제 회전 감소·귀환 도착은 미측정이다.
+시험15개 통과(새 문10 + 기존 귀환5). NumPy 버전의 2D cross 제거는 스칼라 determinant로 대응,
+수학/임계값 변경0. 기본off trace/입자/RNG 골든 byte 동일.

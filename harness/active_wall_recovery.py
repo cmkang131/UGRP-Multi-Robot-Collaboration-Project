@@ -158,6 +158,9 @@ class RecoveryMapper(ActiveMapper):
         pose=self.pose
         if self.navigator.clear_requested:self.clear_navigation(t)
         costmap=from_observed_grid(self.grid,pose,self.latest,set())
+        if getattr(self,'door_system',None) is not None:
+            self.door_system.prepare(grid=self.grid,pose=pose,local_pose=self.local_pose,observation=observation,
+                t=t,frame_id=frame_id,sigma=math.sqrt(float(np.linalg.eigvalsh(grid.odom.covariance[:2,:2]).max())))
         self.choose_information(t,costmap)
         goal=None
         if patches:

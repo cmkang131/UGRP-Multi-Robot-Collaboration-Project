@@ -150,6 +150,9 @@ class RememberedGoal:
                 wall_origins_xy=np.tile(observation['camera'],(len(wall),1))),pose)
             clear_current_footprint(self.grid,self.latest,set(),pose)
             cm=from_observed_grid(self.grid,pose,self.latest,set())
+            if getattr(self,'door_system',None) is not None:
+                self.door_system.prepare(grid=self.grid,pose=pose,local_pose=pose,observation=observation,
+                    t=t,frame_id=frame_id,sigma=belief['global_std_xy_m'])
             target=None if self.goal is None else self.goal['center_m']
             self.declared=bool(self.stage=='return' and self.streak>=5 and np.linalg.norm(pose[:2]-target)<=.20)
             if self.declared:
@@ -168,6 +171,9 @@ class RememberedGoal:
                 pose=pose.tolist(),local_pose=pose.tolist(),sigma_xy=belief['global_std_xy_m'],belief=belief,
                 stable_resolved=self.streak>=5,goal=self.goal,remembered_B=self.goal,declared_goal=self.declared,
                 command=cmd,pulse=pulse,path=(self.plan or {}).get('path_m',[]))
+        if getattr(self,'door_system',None) is not None:
+            trace['doors']=self.door_system.update(None,None)
+            trace['room_topology']=self.door_system.last_topology
         self.inputs.append(dict(t=float(t),frame_id=frame_id,points=points['points'],features=features,servo=servo,
             stage=self.stage,delta=delta.tolist() if self.stage!='explore' else None))
         return cmd,trace
