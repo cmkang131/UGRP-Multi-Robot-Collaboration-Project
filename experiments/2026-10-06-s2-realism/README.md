@@ -5298,3 +5298,59 @@ footprint 내부만 지우며 미관측/가림은 unknown, 관측된 장애물�
 새 스캔 영상이 없으므로 보류 뒤 새 경로 성공/실패를 재생으로 날조하지 않는다.
 실제 명령 출력에서도 인증을 재검사해 미확인 횡이동이 누출되면 실행 오류로 기록한다.
 12개 관련 시험 통과(한 시험의 초기 open-grip 기대를 closed-grip 보존 검사로 바로잡음).
+
+### v48 재생 및 full2회 결과 — 접촉0, 운반 유지 실패/미채택
+
+[전체 결과·해시·옵션](look-before-move-result.json), [후처리](evaluate_look_before_move.py).
+재생 소스/물리 소스 **88f5fbbb**, v135/7.28.0. 재생은 s1051/1053/1054의
+114/119/156 횡이동을 모두 보류(총389/389), 미확인 통과0, off 명령 직렬화 바이트 동일.
+새 방향 영상은 기록에 없어 주행 후 성공을 재생으로 판정하지 않았다. 기존 성공 행동
+변경은100%로 작지 않으며, 사용자 v48의 명시적2회 DEV 지시로 닫힌 루프를 확인했다.
+
+| 항목 | 기존v133 s1054 | v135 s1054 | v135 새s1055 |
+|---|---:|---:|---:|
+| lifted / inside / stable | true/true/true | false/false/true | false/false/true |
+| 로봇 간 접촉 points / time samples |35/10|0/0|0/0|
+| 실제 횡이동 / 미확인 횡이동 |156/미인증|0/0|0/0|
+| 새 스캔 / 회전·전진 대안 명령 |해당없음|3/145|4/147|
+| 횡이동 통로 free 확인 최대 비율 |해당없음|7.03%|2.29%|
+| POSE_UNCERTAIN / ARM_COLLISION_GUARD |기존v41 결과 참조|741/7|92/7|
+| NEES95% 초과 / 유효 기회 |기존v45 holdout 별도|635/735=86.39%|656/748=87.70%|
+| 무경고25cm초과 |기존v45 holdout 별도|0|0|
+| 전체 명령 기회/공분산 누락 |기존1602분모와 별도|739/4|748/0|
+| B영역까지 상자 잔여 |0m|4.211m|4.211m|
+| 실행 SIM / wall |431.00/717.084s|176.45/176.803s|184.40/184.776s|
+| wall / total SIM |1.659|0.9947|0.9950|
+| 종료 |성공|STAGNATION_120S_LT_1CM|동일|
+
+stable=true는 **집지 않은 상자가 출발 바닥에 안정됨**이며 내려놓기 성공이 아니다.
+두 실행 모두 운반 진입0이므로 운반 RMSE/fix공백/벽하단 가시율은N/A(0으로 만들지 않음).
+새seed에는 동일seed baseline이 없고, s1054의 −254.55SIM초/−540.280wall초는 조기실패
+시간 차이이므로 속도 개선·완주 소요시간 감소로 해석하지 않는다. 모두 freeze ON;
+freeze 전/후 효과나 이전3성공과의 합산은 하지 않는다. 모델 호출0·GT 제어0.
+
+같은 실패의 **새 어댑터 결함**: 우회 경로는 XY3.5cm 안에서 이전 제어기로 복귀하지만
+최종 heading을 맞추는 전이가 빠졌다. s1054/1055의 추정 잔여는1.591/1.482cm였으나
+추정 yaw4.733/3.539°가 기존 도착 .06rad=3.438°를 넘었다. 기존 선택기는 fine-left를
+제안→unknown veto→우회가 이미 XY 도착으로 판단해 반환하는 순환이다. 마지막 실제
+이동57.70/65.65초 이후 정체, 평가 바깥120초/<1cm 감시가 종료했다. HOST·하중·낙하
+실패로 바꾸지 않고 raw의 PHYSICAL_FAILURE/STAGNATION 분류를 그대로 남긴다.
+
+또한 측면 로봇은 검출되지만 **그 시야로 전체 sweep가 비었음을 확인하지 못했다**.
+비검출을 free로 바꾸거나3초/여유/색 문턱을 낮추지 않았다. 다음 권고는 Nav2 rotation
+shim의 `rotate_to_goal_heading`(고정 커밋 원본130–145행)처럼 XY 도착 뒤 최종 yaw 정렬 전이를
+정확히 연결하고, 전체 sweep를 관측하는 고정 보정 시선 계획을 먼저 오프라인 검증하는 것.
+이번 결과 후 코드/문턱 수정·추가 물리0. 같은 원인2회 종료 규칙에 따라 여기서 중단한다.
+agent_lock 세 실행 각각 acquire/finally release·ugrp_session 종료, 마지막 status=null.
+
+4배속 자기 RGB 영상은 각 raw의 `execution-4x.mp4`(원본 해시 보존, 전 구간 디코딩 확인).
+TensorBoard가 인식하는 `execution.mp4`는 같은 inode의 hardlink이며 추가 영상 복사0.
+진단 영상은 제어 관측이 끝나는23초까지이며 그 뒤 무관측 안정3초를 합성하지 않았다.
+첫 `-videos` snapshot은 비표준 파일명 때문에 영상0건이었고 보존했다. 표준 alias를
+등록한 별도 `-media` snapshot을 사용한다. 원본 frame/trace 삭제·덮어쓰기0.
+
+[TensorBoard 검증](look-before-move-delivery.json):6파생뷰50수치 원본/event/native live API
+일치, 새 영상3개 전체 디코딩·HTTP Range206 확인. 기존 공용 viewer는 재시작하지 않았고
+[timeseries](http://127.0.0.1:6006/?runFilter=%5E1008-s2-look-before-move-v48%2F&smoothing=0#timeseries)
+와 기존v47 peer baseline을 함께 보는 pinned URL/HParams 열을 자기 설정 키에만 추가했다.
+UI는 재개방하지 않았으며 숫자/파일/서버 판독 검증과 화면 표시 검증을 구분한다.
