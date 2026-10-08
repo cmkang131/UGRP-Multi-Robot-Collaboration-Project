@@ -6183,3 +6183,42 @@ raw `/Users/changmin/projects/ugrp/outputs/s2-sensor-consistency-v56-20261008/`�
 공유 view 설정은 자기 키만 추가했다. Chrome 강 연결이 도중 끊겨 브라우저 inventory가
 비었으므로 **이번 UI 화면/열 재적용은 미확인**이다. 성공으로 표시하지 않았다.
 원본4배속 영상은 기존 snapshot에 그대로 있으며, 이번 오프라인 작업의 새 영상 등록은 없다.
+
+## s2v57 — 조사 먼저: 상관 관측과 관측 퇴화 (코드 변경 전)
+
+s2v55/56 관문 실패를 유지한다. 아래 조사·선택은 새 후보 코드/재생 결과를 보기 전에 기록했다.
+
+### 참고 자료와 적용 경계
+
+| 공개 방법 / 원문 | 실제 처리 | S2에 해당하는 부분·한계 |
+|---|---|---|
+| [Nav2 AMCL 설정](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/) / [Jazzy likelihood_field_model_prob.cpp](https://api.nav2.org/nav2-jazzy/html/likelihood__field__model__prob_8cpp_source.html), 원본 코드68–73,89–92,165–175,197–228행 | max_beams60, ceil(count/60) 간격; 수렴 후에만 지도 거리<.5m인 입자 비율>.3의 빔 채택, .9 이상 불일치면 전체 복원. do_beamskip 기본 false | 다수 입자와 맞지 않는 장애물 관측을 제외한다. 의미적으로 같은 바닥선을 묶는 알고리즘은 아니다. 확산/오답 모드와 같은 방향의 선만 있는 문제는 보장하지 않는다. |
+| [Thrun/Burgard/Fox 2005](https://cs.pomona.edu/~ajc/other/Thrun%20et%20al_2005_Probabilistic%20robotics.pdf), §6.1 식6.2, §6.3.4 p167, §6.4 표6.3, §6.6 식6.39 | 관측 곱은 조건부 독립 가정. 인접 잡음 상관에는 작은 등간격 부분집합(예:360중8) 또는 α<1로 정보량을 줄임. α의 공통 기본값은 없음 | **동일 경계 중복 묶기 추천은 이 독립성 위반 완화 원칙의 응용**이지, 책이나 Nav2에 동일한 semantic grouping 코드가 있는 것은 아니다. 이번에는 새로운 묶기 문턱을 발명하지 않는다. |
+| [Zhang/Kaess/Singh, ICRA2016](https://www.cs.cmu.edu/~kaess/pub/Zhang16icra.html), [원문](https://frc.ri.cmu.edu/~zhangji/publications/ICRA_2016.pdf) §IV,식15–18,Algorithm1/Fig4 | 가중 Jacobian의 고유방향으로 퇴화 축을 분리하고, 관측으로 구속되는 방향만 갱신. 퇴화 문턱은 구별된 보정 장면에서 산출 | Y±.5m 우도가 동일한 부분 선은 해당 축의 정보가 없다. 이 논문은 MCL 중복 제거법도 능동 관측법도 아니다. 문헌 공통 고유값 문턱이 없으므로 이번에 임의로 이식하지 않는다. |
+| [Burgard/Fox/Thrun, IJCAI1997 Active Mobile Robot Localization](https://publications.ri.cmu.edu/storage/publications/pub_files/pub1/burgard_w_1997_1/burgard_w_1997_1.pdf) §3; [Fox/Burgard/Thrun1998 Active Markov Localization](https://doi.org/10.1016/S0921-8890(98)00049-9) | 예상 belief 엔트로피 감소로 이동/센서 방향 선택 | **Y를 구별하는 문·교차 경계를 보라는 추천은 이 능동 관측 원리**에 해당한다. 단순히 문을 목표로 삼는 것은 원문 정책 전체와 같지 않다. 고정 녹화에는 새 방향의 영상이 없어 그 행동 성공을 재생으로 만들어낼 수 없다. |
+
+### 이번 하나의 후보와 변경 없는 관문
+
+`sensor_beamskip=nav2_prob_v1`(기본 off)을 선택한다. 공개 구현·기본값이 명확하고 현재
+자기 RGB 벽 접점 어댑터에 이식 가능한 **Nav2 probability likelihood field의 subsampling +
+converged-only beam skip** 한 방법이다. pz=.5 exp(−d²/(2·.2²))+.5/100,
+log likelihood 합/exp를 원본대로 사용한다(가우시안 정규화·α 추가 없음).
+96열은 유효성 검사 전에 stride2로48열을 선택한다. 카메라의 미검출/가림은 range=max로
+조작하지 않으며, skip 비율 분모는 실제 유효 RGB 빔이다(레이저 배열의 빈 슬롯 제외에
+해당하는 기존 카메라 어댑터 경계). 수렴 판정은 기존 Nav2 .5m 입자 범위 판정을 재사용한다.
+벽 likelihood만 교체하며 바닥/문 특징 likelihood·검출기·운동·초기 KLD·재표본화는 v133/v139
+그대로다. s2v56 후보 위에 쌓지 않는다. **바닥 중복 원인을 직접 제거하는 후보는 아니다**:
+원문에 없는 의미적 묶기를 표준 구현으로 주장하지 않고, 검증된 robust wall 관측이 이를
+상쇄하는지 제한적으로 시험한다. 불충분하면 이를 실패 원인으로 남긴다.
+
+[s2v56 사전등록](sensor-consistency-criteria.json)의 seed9개와 gates/evaluation을 바이트 그대로
+재사용한다: NEES95% 초과≤20%, 무경고>25cm=0, 운반RMSE 비악화, 정답근처 입자 존재율·
+질량중앙값 비감소, off 바이트 동일. baseline9개는 이미 원본 pose 바이트 동일이 검증된
+s2v56의 봉인 자료를 해시 대조 후 재사용하고 새 명시적 off s1060 전체 재생도 한다.
+후보 코드/시험 통과 커밋 후 on9개를 재생한다. GT는 봉인 후 평가만. 튜닝·관문 변경0.
+하나라도 미달이면 물리0, 1062–1064 미등록·미사용, 원인과 선택지3개로 중단한다.
+전부 통과할 때만 별도 사전등록·잠금·자기지도 우선 조건으로 물리를 진행한다.
+
+PR #405 egomap50의 확인된 문 엔티티와 관측 확보 주제는 겹친다. 사용자 전달 사항 및
+읽기 전용 `experiments/2026-10-08-own-map-return-repeat/README.md:173`의 후속 문 기반 이동
+기록을 확인했다. 완료된 문 검출 성능은 여기서 검증하지 않았으며 코드 복사·의존·결과 합산0.
