@@ -58,11 +58,12 @@ def frozen_bundle(case, source):
     return bundle
 
 
-def acquire(case,out,source,backend_factory):
+def acquire(case,out,source,backend_factory,*,bundle_override=None,mapper_factory=None):
     from harness.active_camera import SEARCH
     from harness.active_wall_recovery import make_mapper
     from harness.active_wall_vision import observe
-    bundle=frozen_bundle(case,source)
+    bundle=frozen_bundle(case,source) if bundle_override is None else bundle_override
+    if mapper_factory is not None:make_mapper=mapper_factory
     seed=bundle['task']['seed']
     cap=bundle['case_cap_s']
     last_snapshot=None
