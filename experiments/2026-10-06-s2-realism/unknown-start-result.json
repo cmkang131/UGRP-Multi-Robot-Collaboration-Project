@@ -1,0 +1,677 @@
+{
+  "schema": "ugrp.s2_unknown_start_v54_results.v1",
+  "source_sha": "329eb4b604915c936630a06bede0caf41bf83483",
+  "execution_bundle_id": "zone-s2-realism-v139",
+  "registration_sha": "329eb4b604915c936630a06bede0caf41bf83483",
+  "scope": "S2 DEV unknown-start only; GT posthoc evaluation, no new tuning, not formal E2E or research cohort",
+  "physics_runs": 3,
+  "retries": 0,
+  "excluded_runs": [],
+  "post_result_threshold_changes": 0,
+  "post_result_controller_changes": 0,
+  "counts": {
+    "success": 2,
+    "trials": 3,
+    "failed": 1,
+    "wrong_first_mode": 0,
+    "never_converged": 0
+  },
+  "baseline": {
+    "condition": "v133 start area prior PRESENT",
+    "seeds": [
+      1051,
+      1053,
+      1054,
+      1056,
+      1057,
+      1058
+    ],
+    "success": 6,
+    "trials": 6,
+    "pool_with_unknown_start": false,
+    "source": "baseline-v52-result.json"
+  },
+  "runs": [
+    {
+      "seed": 1059,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1059-v139-unknown-start",
+      "source_sha": "329eb4b604915c936630a06bede0caf41bf83483",
+      "bundle_sha256": "3750f1d01b5b4fe6f5b97b76036a27907cb8e1514f7a45ed01774ab6abac32a5",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1",
+        "start_prior": "none_v1",
+        "global_localization": "augmented_active_v1",
+        "particle_sampling": "kld_global_v1"
+      },
+      "known_start_information": false,
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "failure_category": null,
+      "failure_reason": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "sim_s": 295.25,
+      "total_sim_s": 296.55,
+      "wall_s": 415.9755899159936,
+      "wall_per_sim": 1.4027165399291641,
+      "commands": 3825,
+      "model_calls": 0,
+      "first_convergence": {
+        "released_t": 12.1,
+        "estimate_t": 11.94,
+        "std_xy_m": 0.01715756037705292,
+        "actual_xy_error_m": 0.045512808231349504,
+        "actual_yaw_error_deg": 0.7323272503813076,
+        "wrong_mode": false,
+        "actual_traveled_before_release_m": 0.2044014363614024,
+        "actual_traveled_before_estimate_m": 0.19838631754234948
+      },
+      "nees": {
+        "valid": 447,
+        "above_chi2_95": 294,
+        "exceed_fraction": 0.6577181208053692
+      },
+      "nees_all_covariances": {
+        "valid": 468,
+        "above_chi2_95": 308,
+        "exceed_fraction": 0.6581196581196581
+      },
+      "decision_count": 468,
+      "unflagged_gt_25cm": 0,
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 6,
+        "GLOBAL_START_UNRESOLVED": 1,
+        "POSE_UNCERTAIN": 101
+      },
+      "global_handoff": {
+        "t": 10.5,
+        "before": 2001,
+        "after": 2000
+      },
+      "actual_distance_until_end_m": 10.506594935242266,
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1059,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.07385943453111883,
+        "robot_remaining_to_B_region_m": 0.0,
+        "final_cargo_xy_m": [
+          4.531411951400055,
+          -2.1274024754084055
+        ],
+        "final_robot_xy_m": [
+          4.327252535747509,
+          -2.1331570116254737
+        ],
+        "carry_window": [
+          84.05,
+          274.55
+        ],
+        "visual_updates": 29,
+        "max_update_gap_sim_s": 19.600000000000023,
+        "carry_xy_rmse_m": 0.11908025755080145,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 0.1949434280216961,
+        "carry_end_error_m": 0.07993271274634535,
+        "carry_pose_samples": 3810,
+        "visibility_measurement": {
+          "attempts": 29,
+          "less_than_six_columns": 2,
+          "detected_columns": 1394,
+          "kept_columns": 1394
+        },
+        "status": "COMPLETE"
+      },
+      "wall_visibility_fraction": 0.999561403508772,
+      "detected_wall_visibility_fraction": 0.9990214067278288,
+      "wall_positive_force_points": {},
+      "wall_contact_range_s": null,
+      "wall_pairs": {},
+      "peer_contact_points": 0,
+      "peer_contact_range_s": null,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v54 unknown-start full DEV seed 1059",
+          "pid": 96604,
+          "acquired_unix": 1791458146.155046,
+          "expected_end_unix": 1791460846.155046,
+          "loadavg_at_acquire": [
+            2.97998046875,
+            3.98779296875,
+            3.8798828125
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v54 unknown-start full DEV seed 1059",
+          "pid": 96604,
+          "acquired_unix": 1791458146.155046,
+          "expected_end_unix": 1791460846.155046,
+          "loadavg_at_acquire": [
+            2.97998046875,
+            3.98779296875,
+            3.8798828125
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      },
+      "pose_error_snapshots": [
+        {
+          "t": 84.05,
+          "t_est": 83.89,
+          "xy_error_m": 0.09322217603769883,
+          "yaw_error_deg": -4.09054086984798,
+          "std_xy_m": 0.03240027621008095
+        },
+        {
+          "t": 274.55,
+          "t_est": 274.39,
+          "xy_error_m": 0.07948321574507074,
+          "yaw_error_deg": -3.515143529425792,
+          "std_xy_m": 0.033935421446071645
+        }
+      ],
+      "hashes": {
+        "result.json": "b9b0af21a558636c876d7fd5e9010da96d2deeaabe5adf02a95bf466e30de2aa",
+        "student_record.json": "3e248476816df411d18f9c78bf961abdaa0f1fce86709daad059bff8c2c71bd4",
+        "bundle.json": "5c5da05fb54759c0e1689c3bc39ab0b707c1b3fd1fd5b99dd4d25fae0eb23f84",
+        "lock.json": "e9b84c8762ea8b8a9255bff23b7c39163df4b35e86a3479ca78d379a36e2217c",
+        "eval_only/trajectory.jsonl": "dc124bf2359d8b7285b0c092361e3e3d6f2de45f4c2106fea1bdf812ee5a8b4a",
+        "eval_only/contacts.jsonl": "6642e2c687620f9733385decaa7f8fda2fd9e612fbecfe32581e33d19aec9dfe",
+        "eval_only/wall-contacts.jsonl": "daf2d87a14b6ca0830a97102a2b1514732ddc36fcc02e99a32a4f0f8fda62988",
+        "eval_only/unknown_start.json": "a39aa8b9bab0db7a5b00a7f5ade911a76b1664636542853f5095f2f06987610a",
+        "eval_only/metrics.json": "c8b4225e1f31bbad3830087110f668ed5344fdff427770a9a22bc9330e9e6f79"
+      },
+      "verified_source_files": 444,
+      "excluded": false
+    },
+    {
+      "seed": 1060,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1060-v139-unknown-start",
+      "source_sha": "329eb4b604915c936630a06bede0caf41bf83483",
+      "bundle_sha256": "3ba79980c5929d129c9fb450c90527c1ee749590ce7346bf7a9c73913224789e",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1",
+        "start_prior": "none_v1",
+        "global_localization": "augmented_active_v1",
+        "particle_sampling": "kld_global_v1"
+      },
+      "known_start_information": false,
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "failure_category": "other",
+      "failure_reason": "운반 위치 추정 오차가 1.718 m까지 커져 B 밖 안정 배치; 분리벽 바퀴 접촉 동반. 초기 잘못된 모드 또는 낙하로 분류하지 않음.",
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "sim_s": 291.5,
+      "total_sim_s": 292.8,
+      "wall_s": 400.0332972089527,
+      "wall_per_sim": 1.3662339385551663,
+      "commands": 3851,
+      "model_calls": 0,
+      "first_convergence": {
+        "released_t": 91.95,
+        "estimate_t": 91.79,
+        "std_xy_m": 0.04255923959521885,
+        "actual_xy_error_m": 0.15766619952014838,
+        "actual_yaw_error_deg": 4.328559407140214,
+        "wrong_mode": false,
+        "actual_traveled_before_release_m": 2.721926807348805,
+        "actual_traveled_before_estimate_m": 2.7204065181744763
+      },
+      "nees": {
+        "valid": 438,
+        "above_chi2_95": 438,
+        "exceed_fraction": 1.0
+      },
+      "nees_all_covariances": {
+        "valid": 439,
+        "above_chi2_95": 438,
+        "exceed_fraction": 0.9977220956719818
+      },
+      "decision_count": 439,
+      "unflagged_gt_25cm": 0,
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 6,
+        "POSE_CLUSTER_UNCERTAIN": 30,
+        "GLOBAL_START_UNRESOLVED": 1,
+        "POSE_UNCERTAIN": 290
+      },
+      "global_handoff": {
+        "t": 10.5,
+        "before": 2001,
+        "after": 2000
+      },
+      "actual_distance_until_end_m": 10.137733211651838,
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1060,
+        "cargo_remaining_to_B_region_m": 1.1532592264692325,
+        "cargo_distance_to_B_center_m": 1.8678562710324795,
+        "robot_remaining_to_B_region_m": 0.9993766884887478,
+        "final_cargo_xy_m": [
+          4.833060697548989,
+          -0.24674077353076754
+        ],
+        "final_robot_xy_m": [
+          4.7008475150275615,
+          -0.40062331151125224
+        ],
+        "carry_window": [
+          82.05,
+          270.8
+        ],
+        "visual_updates": 28,
+        "max_update_gap_sim_s": 18.400000000000006,
+        "carry_xy_rmse_m": 0.8224304812359435,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 1.5005160577069587,
+        "carry_end_error_m": 1.718490599154059,
+        "carry_pose_samples": 3775,
+        "visibility_measurement": {
+          "attempts": 28,
+          "less_than_six_columns": 0,
+          "detected_columns": 1797,
+          "kept_columns": 1797
+        },
+        "status": "COMPLETE"
+      },
+      "wall_visibility_fraction": 0.9976728723404256,
+      "detected_wall_visibility_fraction": 0.9999103782039792,
+      "wall_positive_force_points": {
+        "wheel": 475,
+        "body": 57
+      },
+      "wall_contact_range_s": [
+        185.55,
+        207.85
+      ],
+      "wall_pairs": {
+        "zone_wall_divider_2 / r3__v3_wheel_fl_roller_2_body_contact": 319,
+        "zone_wall_divider_2 / r3__v3_wheel_fl_roller_3_body_contact": 156,
+        "zone_wall_divider_2 / r3__front_plate": 57
+      },
+      "peer_contact_points": 0,
+      "peer_contact_range_s": null,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v54 unknown-start full DEV seed 1060",
+          "pid": 97394,
+          "acquired_unix": 1791458585.9563851,
+          "expected_end_unix": 1791461285.956386,
+          "loadavg_at_acquire": [
+            2.63525390625,
+            3.15283203125,
+            3.4755859375
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v54 unknown-start full DEV seed 1060",
+          "pid": 97394,
+          "acquired_unix": 1791458585.9563851,
+          "expected_end_unix": 1791461285.956386,
+          "loadavg_at_acquire": [
+            2.63525390625,
+            3.15283203125,
+            3.4755859375
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      },
+      "pose_error_snapshots": [
+        {
+          "t": 82.05,
+          "t_est": 81.89,
+          "xy_error_m": 0.1722400210048485,
+          "yaw_error_deg": -10.339245560058481,
+          "std_xy_m": 0.052660791836911705
+        },
+        {
+          "t": 184.55,
+          "t_est": 184.39,
+          "xy_error_m": 0.27380785743903263,
+          "yaw_error_deg": -1.283262365026891,
+          "std_xy_m": 0.05155391548626854
+        },
+        {
+          "t": 185.55,
+          "t_est": 185.39,
+          "xy_error_m": 0.2790112697062182,
+          "yaw_error_deg": -1.456469736535314,
+          "std_xy_m": 0.05184031508964167
+        },
+        {
+          "t": 207.85,
+          "t_est": 207.69,
+          "xy_error_m": 0.6283015300327718,
+          "yaw_error_deg": -35.76104946604388,
+          "std_xy_m": 0.05573672252564733
+        },
+        {
+          "t": 270.8,
+          "t_est": 270.64,
+          "xy_error_m": 1.7185033062629302,
+          "yaw_error_deg": -50.02873558580114,
+          "std_xy_m": 0.12746379949875072
+        }
+      ],
+      "hashes": {
+        "result.json": "7b88e92005bc6d4394ef101d4f8018b5e0386c8dff7243baa254d787441e96a7",
+        "student_record.json": "45574be70f020e518a556a39b3cd798c0a127d3904be215bd2f4351a8d369132",
+        "bundle.json": "b584dfefedc21a1882681b21e02196105f4f66e5e9afc9c08cd6dac93ab7c7c8",
+        "lock.json": "c36dc71c2e1d0de2f674a015fb627f8374df45a105fcf6e00fb59ceb802f9607",
+        "eval_only/trajectory.jsonl": "6bb9f31aedb58b86db57da99dd29a79f60a9047a30a87e5f3a4c25dcd56935da",
+        "eval_only/contacts.jsonl": "8c6e72723fe46b2f80c1aeabba38d7f1d127f0c1c3c2c972f85794efe5d292f1",
+        "eval_only/wall-contacts.jsonl": "db3a990b2e58211a6239f4740294017e5898abbb15011fa17dca3aeca0fc28eb",
+        "eval_only/unknown_start.json": "9cc1e8a4cddd74719fce42445d53959cc0cbfa95abf61d8eee765eeb6d060243",
+        "eval_only/metrics.json": "85f2458eb17d64af3dc17d50083e59c7278d18169bee1e2287a948bd3b3e5bbb"
+      },
+      "verified_source_files": 444,
+      "excluded": false
+    },
+    {
+      "seed": 1061,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1061-v139-unknown-start",
+      "source_sha": "329eb4b604915c936630a06bede0caf41bf83483",
+      "bundle_sha256": "445f59cc231e79e3ffc6335fe38bf24b30844b02ef2d1c08fbd9f81763a6a7e3",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1",
+        "start_prior": "none_v1",
+        "global_localization": "augmented_active_v1",
+        "particle_sampling": "kld_global_v1"
+      },
+      "known_start_information": false,
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "failure_category": null,
+      "failure_reason": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "sim_s": 307.9,
+      "total_sim_s": 309.2,
+      "wall_s": 428.1675474170479,
+      "wall_per_sim": 1.384759208981397,
+      "commands": 3901,
+      "model_calls": 0,
+      "first_convergence": {
+        "released_t": 13.95,
+        "estimate_t": 13.79,
+        "std_xy_m": 0.04725289929281283,
+        "actual_xy_error_m": 0.031170986150183478,
+        "actual_yaw_error_deg": 2.176734003585505,
+        "wrong_mode": false,
+        "actual_traveled_before_release_m": 0.12381185968497797,
+        "actual_traveled_before_estimate_m": 0.11807989779461876
+      },
+      "nees": {
+        "valid": 471,
+        "above_chi2_95": 379,
+        "exceed_fraction": 0.8046709129511678
+      },
+      "nees_all_covariances": {
+        "valid": 496,
+        "above_chi2_95": 382,
+        "exceed_fraction": 0.7701612903225806
+      },
+      "decision_count": 496,
+      "unflagged_gt_25cm": 0,
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 6,
+        "POSE_CLUSTER_UNCERTAIN": 30,
+        "GLOBAL_START_UNRESOLVED": 1,
+        "POSE_UNCERTAIN": 106
+      },
+      "global_handoff": {
+        "t": 10.5,
+        "before": 2001,
+        "after": 2000
+      },
+      "actual_distance_until_end_m": 10.745291502079013,
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1061,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.17498182047960334,
+        "robot_remaining_to_B_region_m": 0.04723134915156352,
+        "final_cargo_xy_m": [
+          4.455642138515964,
+          -2.198891078091566
+        ],
+        "final_robot_xy_m": [
+          4.252768650848436,
+          -2.2064409601980897
+        ],
+        "carry_window": [
+          79.25,
+          287.2
+        ],
+        "visual_updates": 29,
+        "max_update_gap_sim_s": 22.349999999999994,
+        "carry_xy_rmse_m": 0.1287171723159154,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 0.17782925369457173,
+        "carry_end_error_m": 0.17980966974685061,
+        "carry_pose_samples": 4159,
+        "visibility_measurement": {
+          "attempts": 29,
+          "less_than_six_columns": 1,
+          "detected_columns": 1157,
+          "kept_columns": 1157
+        },
+        "status": "COMPLETE"
+      },
+      "wall_visibility_fraction": 0.9908854166666666,
+      "detected_wall_visibility_fraction": 0.9930935937127887,
+      "wall_positive_force_points": {},
+      "wall_contact_range_s": null,
+      "wall_pairs": {},
+      "peer_contact_points": 0,
+      "peer_contact_range_s": null,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v54 unknown-start full DEV seed 1061",
+          "pid": 98310,
+          "acquired_unix": 1791459024.712966,
+          "expected_end_unix": 1791461724.712966,
+          "loadavg_at_acquire": [
+            2.3095703125,
+            2.6123046875,
+            3.07177734375
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v54 unknown-start full DEV seed 1061",
+          "pid": 98310,
+          "acquired_unix": 1791459024.712966,
+          "expected_end_unix": 1791461724.712966,
+          "loadavg_at_acquire": [
+            2.3095703125,
+            2.6123046875,
+            3.07177734375
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      },
+      "pose_error_snapshots": [
+        {
+          "t": 79.25,
+          "t_est": 79.09,
+          "xy_error_m": 0.03111299292825205,
+          "yaw_error_deg": 1.1796367330234763,
+          "std_xy_m": 0.04448872918159945
+        },
+        {
+          "t": 287.2,
+          "t_est": 287.04,
+          "xy_error_m": 0.1799406390812215,
+          "yaw_error_deg": -0.4369437406665593,
+          "std_xy_m": 0.04855088059290864
+        }
+      ],
+      "hashes": {
+        "result.json": "bc764ff17a3c1008c1f6fc64692844d99c2c54ccb15de6fa57f2d454a8603470",
+        "student_record.json": "136d2d703138858ba15bf0e8447eebfb76b6d1cbb31e8276d6a8f30ba67dec15",
+        "bundle.json": "c16096df0d1d91bb166bba34fa679e570bfe98e0a322dfdf6c7165ba2463426b",
+        "lock.json": "84a13c5b986a11c1e1855a617d5574255b4af04e86a4d336dda3dcda1e601800",
+        "eval_only/trajectory.jsonl": "5b2a1093b5e9793687c582575e01c754cd30b94a810e31218b24b572ac431606",
+        "eval_only/contacts.jsonl": "43618bc6d41a7f63f70f9278a477821e9eba1f0a78f3c3f493a945be9e90f593",
+        "eval_only/wall-contacts.jsonl": "c73f802b15c8de37a103102dbec19a1b78b8f996b41fdd70f816b635e1c541f2",
+        "eval_only/unknown_start.json": "7d634a29d0cde091519cab792796d5997cbbbe12a93ac78297db9824163c198f",
+        "eval_only/metrics.json": "907dbc553c741d6f04bd8f0661c7c01ebb43be655a229f5f92f94c9fde993033"
+      },
+      "verified_source_files": 444,
+      "excluded": false
+    }
+  ],
+  "validation": {
+    "source_files_verified": 444,
+    "bundle_options_exact": true,
+    "model_calls": 0,
+    "weld_active_rows": 0,
+    "lock_acquired_and_released": 3,
+    "all_locks_null_after_release": true
+  }
+}

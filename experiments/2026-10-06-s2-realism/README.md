@@ -5882,3 +5882,67 @@ egomap49 잠금/PID는 변경·종료하지 않는다. 각 실행 raw는
 off의 실제 v133 옵션+PF/RNG/명령/record 바이트 동일, on의 도크/Gaussian 호출 금지,
 100000 자유공간 표본·첫이동2000 인계, 등록 옵션 변조 거절, 평가 경계·workflow를 검사했다.
 이것은 오프라인 회귀 시험이며 새 물리 성공 근거가 아니다.
+
+### s2v54 결과 — 시작 위치 모름 2/3, prior 있음 6/6과 분리
+사전등록·고정 실행 SHA **329eb4b604915c936630a06bede0caf41bf83483**, v139.
+egomap49 잠금이 null이 된 뒤 seed1059→1060→1061을 agent_lock/ugrp_session으로 각1회 직렬 실행했다.
+새 물리3회·모델0·재시도0·제외0·결과 후 제어/상수/문턱 변경0. raw와 실패도 모두 보존한다.
+[전체 결과·옵션·원본 해시](unknown-start-result.json), [영상/TensorBoard 검증](unknown-start-delivery.json).
+
+| 조건 | seed | 성공/전체 | 해석 |
+|---|---|---:|---|
+| v133 시작 영역 prior 있음 | 1051/1053/1054/1056/1057/1058 | 6/6 | 기존 DEV 기술 집계; 시작 위치 모름 결과가 아님 |
+| v139 시작 위치 모름 | 1059/1060/1061 | **2/3 (66.7%)** | 새3개 DEV; 위6개와 합산하지 않음 |
+
+서로 다른 seed·전역추정 조합이므로 prior 제거의 인과 효과나 정식 E2E 성공률로 확대하지 않는다.
+
+| seed | lifted/inside/stable/success | 첫 수렴 SIM시각 s | 수렴 전 이동 m | 첫 XY오차 cm / yaw° | 첫 잘못된 모드 | 실패 분류 |
+|---:|---|---:|---:|---|---|---|
+| 1059 | true/true/true/true | 12.10 | 0.204 | 4.55 / 0.73 | false | 없음 |
+| 1060 | true/false/true/false | 91.95 | 2.722 | 15.77 / 4.33 | false | 기타: 운반 위치 표류→B 밖 배치 |
+| 1061 | true/true/true/true | 13.95 | 0.124 | 3.12 / 2.18 | false | 없음 |
+
+시각은 기록된 절대 SIM시각(reset1.30s), std_xy≤.05m 최초 보고 기준이다.
+세 실행 모두10.50s에2001→2000입자를 인계하며 GLOBAL_START_UNRESOLVED를1회 기록했다.
+인계 자체를 수렴으로 세지 않았다. 특히 s1060은2.722m 움직이고 운반에 들어간 뒤91.95s에야
+σ기준을 처음 통과했다. 첫오차≤25cm는 이후 계속 정확했다는 뜻이 아니다.
+
+| seed | NEES95% 초과/유효 (주 비교) | 전체 유효 공분산 초과/전체 | 무경고>25cm | 운반 RMSE m | 갱신/최장공백 s | B 영역 잔여/중심거리 m | wall/SIM |
+|---:|---|---|---:|---:|---|---|---:|
+| 1059 | 294/447 (65.77%) | 308/468 | 0 | 0.119 | 29/19.60 | 0.000/0.074 | 1.403 |
+| 1060 | 438/438 (100.00%) | 438/439 | 0 | 0.822 | 28/18.40 | 1.153/1.868 | 1.366 |
+| 1061 | 379/471 (80.47%) | 382/496 | 0 | 0.129 | 29/22.35 | 0.000/0.175 | 1.385 |
+
+NEES는 단일군집·일치 공분산 drive행을 주 비교로 사용하고 다봉 포함 전체도 별도 보고한다.
+세 실행 모두 바닥 정착2초, 실제 벽 하단 가시율(평가 기하)은99.96/99.77/99.09%; 로봇 간 접촉0.
+높은 NEES와 would-stop이 남아 있으므로 DEV 성공을 보수 정지가 켜진 정식 실행 통과로 승계하지 않는다.
+
+| seed | SIM(과제)/wall 초 | would-stop — DEV 기록만 |
+|---:|---|---|
+| 1059 | 295.25/415.976 | ARM_COLLISION_GUARD 6, GLOBAL_START_UNRESOLVED 1, POSE_UNCERTAIN 101 |
+| 1060 | 291.50/400.033 | ARM_COLLISION_GUARD 6, POSE_CLUSTER_UNCERTAIN 30, GLOBAL_START_UNRESOLVED 1, POSE_UNCERTAIN 290 |
+| 1061 | 307.90/428.168 | ARM_COLLISION_GUARD 6, POSE_CLUSTER_UNCERTAIN 30, GLOBAL_START_UNRESOLVED 1, POSE_UNCERTAIN 106 |
+
+실패1건(s1060)은 사전 분류상 **기타(운반 위치 표류)**다. 첫 모드오류/전역 미수렴/낙하나
+집게 이탈로 분류하지 않았다.185.55–207.85s에 분리벽과 바퀴475점·차체57점의 양의 힘 접촉이
+있었다. 해당 접촉 시작→끝에서 XY오차.279→.628m, yaw오차−1.46→−35.76°,
+배치 직전에는 XY1.718m/yaw−50.03°였다. B영역에서1.153m 떨어진 곳에 안정 배치했다.
+접촉과 오차 악화의 시간적 동반은 확인했으며, 별도 반사실 실험 없이 단일 원인의 기여율을 주장하지 않는다.
+s1059/s1061 벽 접촉0. 제외/HOST_ERROR/중단 실행0, 실패도 전체3개 분모에 포함했다.
+
+실행별 raw·4배속(20fps, 4프레임 간격) 영상:
+
+- s1059: `/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1059-v139-unknown-start/motion.mp4`
+- s1060: `/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1060-v139-unknown-start/motion.mp4`
+- s1061: `/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1061-v139-unknown-start/motion.mp4`
+
+세 영상 전체 디코딩·SHA256·HTTP206 PASS. 첫 s1059 setpts 영상의 추가 꼬리.125s는
+`execution.mp4`에 보존하고 대표영상은 정확한 stride 방식 `motion.mp4`로 새로 만들었다.
+첫 TensorBoard 변환의 schema 누락 실패(이벤트0)는 그대로 두고 새 r2 스냅샷5뷰를 등록했다.
+원본/event/native API **78수치 일치**, Chrome 강에서5뷰 선택·7개 고정 카드와1/0/1 확인.
+공유 HParams에 condition/offline S2열이 없어 전체 열 적용은 미완료(seed만 적용); 서버는 변경하지 않았다.
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1008-s2-unknown-start-v54-r2%2F#timeseries).
+
+관련24시험 사전13.00s·최종12.22s PASS, 실행 SHA의 GitHub CI33/33 PASS. 번들·옵션·고정 소스444파일과
+실행별 평가9파일 해시를 대조했다. 잠금3회 각각 release 후null, 세 ugrp_session 정상 종료.
+그 뒤 자기지도 egomap49가 다시 획득한 잠금은 건드리지 않았다. raw는 로컬 보관이며 원격백업 주장이 아니다.
