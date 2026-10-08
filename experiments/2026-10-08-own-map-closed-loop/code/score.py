@@ -20,7 +20,7 @@ def evaluate(mode):
     region = static['regions']['zone_B']
     from harness.self_map_relocalize import GridField
     from harness.public_navigation.costmap import Costmap
-    f = GridField(load(RAW/'maps/static-0.json'))
+    f = GridField(load(CACHE/'maps/static-0.json'))
     oracle = Costmap(f.raw, f.grid_origin, f.grid_resolution)
     out = []; details = {}
     for v in predictions:

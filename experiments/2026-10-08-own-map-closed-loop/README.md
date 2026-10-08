@@ -70,3 +70,31 @@ raw `/Users/changmin/projects/ugrp/outputs/own-map-closed-loop-v1`.
 바뀐 모듈1–3시험 파일만 실행, 기본off pose/입자/RNG/명령 bytes 동일. 초록 후 커밋·push,
 push 장애는 로컬SHA 진행 후 재시도. PR405 DRAFT·병합0, 원본/미추적4파일 보존.
 단계마다 SUPERVISOR 확인. TensorBoard 생략 유지, Drive0. 실물 검증이 아닌 MuJoCo DEV1회.
+
+## 구현 연결(실행 전 고정)
+
+`harness/self_map_closed_loop.py`는 off에서 기존 explorer 객체를 그대로 반환한다.
+탐색은 egomap34 클래스/설정 그대로, 재위치 이후에만 새 상태기계를 쓴다.
+`contact_points`의 원래 열/픽셀을 S2 `Sensor`에 전달하며 egomap42 캐시와 실제 RGB
+일치 시험을 했다. 구역 색 vocabulary만 고정 공유하고 위치·범위는 전달하지 않는다.
+0.1m 자기 snapshot을 v8의0.05m navigation cell로2×2 복제한다. AMCL snapshot은
+고정하고 navigation clear는 기존 recovery처럼 obstacle layer만 초기화한다.
+입자 생성/우도/재표본은 기존 AMCL/KLD 그대로이며 최종 지도로 snapshot을 교체하지 않는다.
+`sim.own_map_closed_loop`는 기존 물리 backend에 평가 파일용 접촉 표본만 추가한다.
+평가값 반환·행동 피드백0; 현재 wall contact 실제 실패 중단은 유지한다.
+
+## LM on6조건 결과(물리와 별개)
+
+|지도/잃은 시각|거짓수렴 off→감쇠|정답수렴 off→감쇠|종료XY m off→감쇠|감쇠 종료σXY m|
+|---|---:|---|---:|---:|
+|own/60s|253→93|1→1|3.727→0.195|0.069|
+|own/90s|108→117|1→1|0.208→0.239|0.067|
+|own/120s|116→101|1→1|0.140→0.161|0.058|
+|static/60s|22→12|1→1|0.111→0.093|0.070|
+|static/90s|16→12|1→1|0.098→0.088|0.072|
+|static/120s|39→0|0→0|1.085→1.078|0.180|
+
+자기3/3·정적2/3 유지, **거짓수렴0 관문 미달**. 중첩3쌍이며 독립6녹화가 아니다.
+60초 자기 B 기억 없음 유지. 단순 프레임 합산으로 표본 수를 부풀리지 않는다.
+오프라인 source `56ad5051`; 입력·예측 해시는 results/utility-tempered.json.
+6예측을 봉인한 뒤 평가기 static map cache 경로1곳을 수정했으며 예측 재실행0·문턱 변경0.
