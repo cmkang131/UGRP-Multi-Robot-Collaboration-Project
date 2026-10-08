@@ -116,7 +116,9 @@ class Memory:
             scope='own RGB appearance and fixed ground plane; current footprint cleared; no peer truth')
 
 
-def attach(runtime,*,look_before_move='off',floor_table=None):
+def attach(runtime,*,look_before_move='off',floor_table=None,final_approach='off'):
+    if final_approach not in ('off','staging_rgb_monitor_v1'):raise ValueError('unknown final_approach')
+    if final_approach!='off' and look_before_move=='off':raise ValueError('final approach requires navigation guard')
     if look_before_move=='off':return runtime  # exact identity, no wrapper or RNG
     if look_before_move!=OPTION:raise ValueError('unknown look_before_move')
     if floor_table is None:raise ValueError('fixed floor appearance table required')
@@ -125,6 +127,12 @@ def attach(runtime,*,look_before_move='off',floor_table=None):
         denied=0,allowed=0,unconfirmed_lateral_issued=0,alternate_forward_or_turn=0,
         gt_inputs=False,communication_inputs=False,free_from_no_detection=False)
     runtime.look_before_move_audit=audit
+    monitor=None
+    if final_approach!='off':
+        from harness.zone_solo_cyan_staged_approach import Monitor,FINAL_STATES,moving
+        monitor=Monitor();runtime.final_approach_monitor=monitor
+        audit['final_approach']=monitor.audit
+    def final_stage():return monitor is not None and runtime.state in FINAL_STATES
     from harness.zone_solo_cyan_goal_heading import install as install_goal_heading
     install_goal_heading(runtime,audit)
     old_step,old_frames,old_command,old_record=runtime.step,runtime.on_frames,runtime.on_command,runtime.record
@@ -146,12 +154,17 @@ def attach(runtime,*,look_before_move='off',floor_table=None):
         try:cm=runtime.pose.provider.loc._pf.column_model_for(runtime.servo)
         except (KeyError,ValueError):pass
         memory.add(now,rgb,cm,dict(runtime.servo),obs['sha256'])
+        if monitor is not None and final_stage():
+            monitor.observe(now,rgb,cm,dict(runtime.servo),obs['sha256'])
 
     def command(rid,now,a):
         p=None
         if a['kind'] in ('drive','mecanum') and any(a.get(k,0) for k in ('forward','left','turn')):
             p=profile_for(a)
-        if lateral(a):
+        if final_stage() and moving(a):
+            if monitor.assess(now)['stop']:
+                raise RuntimeError('reactive STOP command escaped own RGB monitor')
+        elif lateral(a):
             clear=p is not None and memory.assess(now,p)['clear']
             if not clear:
                 audit['unconfirmed_lateral_issued']+=1
@@ -198,6 +211,25 @@ def attach(runtime,*,look_before_move='off',floor_table=None):
         nonlocal phase,deadline,restore,side,scanned_origin,last_wait,detour
         rid=runtime.robot_id
         if runtime.terminal:return old_step(now)
+        if final_stage():
+            # Nav2 staging navigation has ended. No unknown-space look/route
+            # wrapper changes the established v133 final-approach controller.
+            phase=None;detour=False
+            check=monitor.assess(now)
+            active=runtime.cal_until is not None and now<runtime.cal_until-1e-8
+            proposals=[(rid,dict(kind='hold'))] if check['stop'] and active else old_step(now)
+            if active or any(moving(a) for _,a in proposals):
+                check.update(state=runtime.state,proposals=copy.deepcopy(proposals),issued=not check['stop'])
+                monitor.audit['checks'].append(check)
+                if check['stop']:
+                    monitor.audit['stopped']+=1
+                    if runtime.cal_rows and abs(runtime.cal_rows[-1]['t']-now)<1e-8:
+                        runtime.cal_rows[-1]['final_approach_withheld']=True
+                    runtime.cal_until=None;runtime.cal_settled_at=now
+                    runtime.soft(check['reason'],now)
+                    return [(rid,dict(kind='hold'))]
+                monitor.audit['passed']+=1
+            return proposals
         if phase is not None:
             if now<deadline-1e-8:return []
             if phase=='observe':

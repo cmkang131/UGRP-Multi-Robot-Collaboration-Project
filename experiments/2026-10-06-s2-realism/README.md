@@ -5461,3 +5461,52 @@ provider가 없고 iab도 unavailable여서 UI 표시는 확인하지 못했다(
 최종 검증: 변경 모듈2파일의11시험 PASS(14.96s), 두 후처리 재실행 결과 바이트 동일,
 원본 입력 해시·동일seed 옵션·실패 판정·잠금 해제·32수치/2영상 수 불변식 PASS,
 평가 스크립트py_compile·git diff --check PASS. 전체 로컬 회귀는 돌리지 않았다.
+
+## s2v50 — staging 계획과 최종 접근 분리 (2026-10-08, 결과 전 사전등록)
+
+v48/49의 unknown sweep를 최종 집기까지 적용한 정체를 단계 분리로 다룬다.
+[사전등록](staged-approach-registration.json): 같은 s1054/1055 각각1회, 둘 다
+접촉0·lifted/inside/stable/success=true이면 기존 성공 s1053 회귀1회. v136 옵션에
+`final_approach=staging_rgb_monitor_v1`만 추가(기본off). 900SIM초·dev_light·freeze·
+보정표/문턱 고정, NEES/무경고25cm 정보용. 추가 튜닝 없이 실패 원인만 기록한다.
+agent_lock/ugrp_session 필수, GT 평가 전용, ENOSPC=HOST_ERROR. main+15개 열린PR에서
+최대v136/7.29.0을 확인하여 **v137/7.30.0** 예약. 재생 기준과 센서 상수는 결과 전에 고정.
+
+### 원문 대조와 이식 범위
+
+- [Nav2 Costmap2D](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/):
+  `track_unknown_space=true`는 미관측을 unknown으로 **보존**한다. 그 자체가 lethal을
+  뜻하지 않으며 계획기의 unknown 허용 정책과 별도다. S2의 이동 단계에서는 기존
+  unknown sweep veto를 유지한다. Nav2 기본값 전체를 바꿔 끼운다고 주장하지 않는다.
+- [Docking 절차](https://docs.nav2.org/jazzy/tutorials/general_tutorials/using_docking/):
+  staging까지 내비게이션→표적 첫 검출→별도 최종 접근 제어. 고정 원본
+  [docking_server.cpp](https://github.com/ros-navigation/navigation2/blob/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_docking/opennav_docking/src/docking_server.cpp#L238)
+  238–243행 staging 이동,249행 첫 검출,266–274행 approachDock 순서다. 도킹 자체에도
+  선택적 costmap 충돌검사가 있으므로 'Nav2 도킹은 모든 충돌을 무시'라는 해석은 틀리다.
+- [Collision Monitor](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/collision_monitor/configuring_collision_monitor_node/):
+  센서 point가 stop zone에 들어오면0속도. [고정 원본](https://github.com/ros-navigation/navigation2/blob/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_collision_monitor/src/collision_monitor_node.cpp#L448)
+  448–465행 sensor 수집/invalid source 정지,544–567행 관측점 STOP. 같은 커밋
+  polygon.cpp172행 `points>=min_points`,439행 기본4; source_timeout 기본2초를 따른다.
+  빈 관측과 끊긴 센서는 구분한다. costmap source의 treat_unknown_as_obstacle 옵션은
+  별도이며 이번 경로는 센서 RGB source이므로 미관측 셀을 점으로 만들지 않는다.
+  원본4파일은 outputs/s2-staged-approach-v50-20261008/sources/manifest.json에 해시 보존.
+
+S2에서는 기존 상태 기계를 staging 경계로 사용한다: search_move(접근 위치 이동)와
+carry(운반 중 경유점 이동)는 기존 unknown veto/우회/최종 yaw latch 그대로. 자기 cyan
+검출 뒤 align 및 이어지는 real_pregrasp/hover/blind_descent/grasp/lift, 재집기 relook_pickup,
+배치 lower/released에서는 v133 기존 제어 제안을 그대로 사용한다. 시작 도크 정답이나
+새 staging GT는 주지 않는다. unknown은 free로 바꾸지 않고 해당 단계의 입력에서 제외한다.
+
+반응형 정지는 기존 PR398/v48 orange HSV(5,100,60)–(25,255,255), open3/dilate5를
+재사용하고 자기 PWM+고정 기하로 자기 몸을 마스킹한다. 단안RGB에는 실제 거리점이 없어
+**전체 영상 평면을 보수적 stop zone**으로 쓰는 어댑터다(ROS 거리점 polygon과 단위가 다름).
+관측된 외관 픽셀4개 이상이면 제안/진행 중 base pulse를hold로 바꾸고, 유효RGB2초 초과도
+별도정지. 비검출을 빈 통로/상대 로봇 부재라고 확정하지 않는다. 색 기반 후보에는 로봇
+신원 확정 능력이 없고 주황 바닥/물체 오탐·가려진 로봇 미탐이 가능하다. 이번 데이터 후
+색/영역/개수/시간 문턱은 변경하지 않는다. 상대 위치·연락·초음파·GT 입력은0이며 네 조건
+동일한 자기RGB 경로다. default off는 새 wrapper/관측/RNG를 추가하지 않는다.
+
+재생 관문: 두 v136 align 정체 프레임에서 관측 로봇 후보가 없을 때 원래 제안이 그대로
+발행되는지, search_move unknown 차단은 유지되는지, v48 측면 양성 관측은STOP되는지,
+기존 성공 tape에서 off명령/record 바이트가 같은지. 고정 녹화 반사실 확인이며 새 시야나
+닫힌 루프 운반 성공으로 해석하지 않는다. 모두 확인 후에만 위 full DEV를 진행한다.
