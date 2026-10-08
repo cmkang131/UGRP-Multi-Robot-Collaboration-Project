@@ -5591,3 +5591,59 @@ align 제안 546/550개 모두 보존, v133 세 성공 최종 접근 명령 2254
 동일, off 전체 tape 명령·기록 동일. search_move 미관측 차단 유지·Monitor 생성0.
 관련 시험15개 PASS(42.64초), py_compile/diff check PASS. 이는 제안 wrapper 검증이며
 PF 재계산·새 물리 성공 근거는 아니다. 다음 실행 소스 커밋을 고정해 두 DEV를 순차 시행한다.
+
+### s2v51 결과 — 0/2, 추가 수정·s1053 없음
+
+실행 SHA **d5fd85dd39793721588fc2eeb5e9a3cc495b65d9**, v138/7.31.0 조건A.
+[결과·옵션·raw 해시](staging-only-result.json). 같은 고정SHA와 등록보정으로 s1054→s1055를
+agent_lock/ugrp_session에서 직렬 실행, 각각 release 후 null 확인. 새 물리2회·모델호출0.
+두 성공 전제 미달로 s1053 회귀0회. 결과 후 제어 코드·문턱 변경0, 바닥선 오인 수정0.
+
+| 지표 | s1054 | s1055 |
+|---|---:|---:|
+| lifted / inside / stable / success | true / false / true / false | true / false / true / false |
+| 종료 | B 밖 안정 내려놓기 | PHYSICAL_FAILURE: STAGNATION_120S_LT_1CM |
+| 로봇 간 접촉점 / 미인증 이동 횡이동 | 0 / 0 | 0 / 0 |
+| 최종 접근 횡이동 포함 실제 횡 명령 | 20 | 24 |
+| SIM / wall 초 | 302.95 / 469.291 | 380.00 / 589.200 |
+| wall/SIM(실행기 원값) | 1.54245 | 1.54524 |
+| 운반 RMSE / 마지막 위치오차 m | 1.1977 / 3.0812 | 0.5481 / 0.6218 |
+| 운반 시각 가중 갱신 / 최대 공백 s | 23 / 30.65 | 22 / 122.20 |
+| 상자→B 구역 / B 중심 m | 2.4054 / 3.0839 | 1.4589 / 2.0134 |
+| NEES95% 초과(정보용) | 634/734 = 86.38% | 509/601 = 84.69% |
+| 무경고 25cm 초과(정보용) | 0 | 75 |
+| would-stop | ARM_COLLISION_GUARD7, POSE_UNCERTAIN743, VISUAL_STALL_SUSPECTED35 | ARM_COLLISION_GUARD7, POSE_UNCERTAIN2708, GRASP_INHAND_UNCONFIRMED1, VISUAL_STALL_SUSPECTED1 |
+
+`stable=true`는 s1055에서는 들고 정지한 물체의 안정 판정이며 `floor=false`다. 안정 배치
+성공으로 읽지 않는다. NEES는 펄스/guard 결정 기회 중 공분산이 유효한 행만 사용
+(s1054 738기회 중734, s1055 601/601), 기존 20%는 **정보용**이며 성공 문턱을 바꾸지 않았다.
+wall/SIM은 초기화/마지막 정착의 별도 시간축이 있는 실행기 원값을 보존한다.
+
+실패 원인(추가 땜질 없음):
+- s1054: 분리벽2–왼손가락 접촉365점(187.25–204.75s), 분리벽1–오른손가락598점
+  (252.30–277.05s). 내려놓기 직전 추정(4.3829,−2.1034)m, 평가 GT(2.1471,0.0167)m로
+  3.081m 차이. 운반 우회 전진409회는 0.35/0.10s, 고정 예측1.294cm로 slip의5cm 적용
+  범위 밖이다. 전체 slip 측정행0이며 명령 예측이 실제 막힘을 반영하지 못했다.
+- s1055: 앞선 왼손가락–분리벽175점 및 왼앞 바퀴–분리벽54점 후, 261.2s 마지막 이동.
+  최종 자기 추정으로 몸 기준 목표(1.587514,0.140075)m, 방향오차−5.042459°를 재생하면
+  `abs(error)>5°`가 회전 후보만 남기지만 기존 비용함수에서 선택 후보=None
+  (비용2.540104→동일). hold2399회로120초 정체. 최종 접근 외관 감시로 막힌 것이 아니다.
+  평가 정답은 접촉/오차 계산에만 사용했고, 이 후보 선택 재생의 입력은 자기 추정·등록표뿐이다.
+
+권고만: 운반 우회의 집게·상자 여유와 짧은 전진의 자기 RGB 진행 확인을 조사하고,
+우회 회전/병진 선택을 표준 분리 제어와 대조해 먼저 오프라인 검증한다. 이번에는
+해당 동작이나5cm/5° 기준을 바꾸지 않는다. 조건A는 최종 접근 정체는 해소했지만
+전체 운반 성공은 **0/2**, 과거v133 3/3와 합산하지 않는다.
+
+4배속 자기RGB 영상(20Hz→4x, 전체 디코딩/sha256 확인):
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1054-v138-staging-only/execution.mp4` (75초)
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1055-v138-staging-only/execution.mp4` (95초)
+새 TensorBoard `1008-s2-staging-only-v51` 및 `-media`에 실패 두 건·영상2개를 등록했다.
+[전달 대조](staging-only-delivery.json): 원본/event/native live API 수치30개 일치,
+영상 HTTP206·전체 디코딩 PASS. 기존v49 실패 비교는 별도 run으로 유지한다.
+
+최종 검증: [검사 기록](staging-only-validation.json), 바뀐 모듈15시험 PASS 후 사전등록·실행.
+고정 소스 해시·평가 입력 해시 전부 일치, 두 잠금 해제, 영상2개 디코딩·등록 PASS.
+Chrome 강 프로필에서 v51/v49 4run·7pin·성공0·명령4558/5803 화면 확인.
+공용 HParams는 과거23열만 제공해 S2 offline 열의 전체 적용은 미완료(서버 재시작 없음).
+원본/event/live API30수치는 대조 완료. 결과·소스만 GitHub에 보존하며 raw는 로컬 보관이다.
