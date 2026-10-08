@@ -72,13 +72,18 @@ augmented_start의 belief_report·Policy, kld_start의 sample_limit/assign/resam
 - 재위치 쓸모: 정적 기준선 정답 수렴≥2/3이어야 비교가 유효하다. 자기 지도는
   수렴 건수 열세 없음, 공통 수렴 건의 XY 중앙오차≤정적의2배, 수렴시간 중앙값≤2배,
   거짓 수렴0. 공통 수렴0이면 비율은 미정이며 통과가 아니다.
-- 목표 칸은 **원본 자기 추정의 종료 칸(9,33), 중심(.95,3.35)m**로 지정한다.
-  정적 지도 같은 목표는 원본 설정의 프레임 변환(3.25,.75,π)으로 (2.30,−2.60)m.
-  이 고정 좌표 대응은 목표 지정/평가용이며 현재 pose prior로 주지 않는다.
+- **감독11:2x 지시 반영(평가 전): 목표는 '탐색 중 본 B 바닥 구역으로 돌아가라'.**
+  이전 커밋의 종료 칸 목표를 폐기한다. 자기 지도 목표는 기존 floor_color_v3의
+  `own-controller.jsonl.goal`에서 **처음 locally_confirmed_region이 된 후보**의
+  그 시각 중심을 사용하고 관측ID·시각·RGB해시를 연결한다(동률은후보ID순).
+  기존 자기 카메라 검출을 재사용하며 GT 정렬로 자기 목표를 만드는 행위는 금지한다.
+  정적 기준선 목표는 같은 개체 B의 정적지도 region 중심이다. 미관측이면
+  '목표 미관측'으로 별도 집계하며 GT 위치로 채우지 않는다.
 - 기존 public_ros_v8 NavFn/costmap으로 각 내부 수렴시 처음 목표 경로를 요청한다.
   허용 unknown을 유지하고, 경로의 실제 벽/footprint 충돌은 평가에서만 별도 센다.
-  목표 선언은 자기 추정이 목표≤.20m이고 내부 수렴할 때; 같은 시각 GT≤.20m이면
-  '녹화상 올바른 도달 선언', 아니면 거짓 선언이다. 올바른 도달률 열세 없음·거짓0을 고정한다.
+  목표 선언은 자기 추정이 자기 조건의 목표≤.20m이고 내부 수렴할 때; 같은 시각
+  GT 차체 중심이 정적 B region 안이면 '녹화상 올바른 도달 선언', 아니면 거짓 선언이다.
+  부분 관측 중심과 정적 영역 중심 차이도 보고한다. 올바른 도달률 열세 없음·거짓0을 고정한다.
 - **한계:** 녹화 명령은 두 조건 모두 같고 새 경로를 따라 움직이지 않는다.
   따라서 경로 있음/녹화상 선언은 반사실적 폐루프 목표 도달 성공이 아니다.
   실제 목표 도달률은 오프라인만으로 검증 불가로 남긴다. 둘 다0인 선언률을
@@ -95,7 +100,6 @@ augmented_start의 belief_report·Policy, kld_start의 sample_limit/assign/resam
 - Nav2 AMCL 원본 `235fc5ce55bdf94d9be360fdbca39d89dc0e4f74`의 pf.c 및
   likelihood_field_model.cpp, PR406의 기존 이식/라이선스/변경점 명시를 계승.
   웹 blob 열람은 cache miss였고 실제 재사용 코드는 위 고정 Git 객체에서 확인했다.
-- 신뢰도: 기존 `self_wall_evidence.py`의 Cartographer TSDF 관측 support(확률 아님),
-  출처 [egomap21](../2026-10-07-robust-own-map/README.md).
+- 신뢰도: 기존 `harness/self_wall_evidence.py`의 Cartographer TSDF 관측 support(확률 아님).
 - 경로: 기존 `harness/public_navigation_monitor.py`, `UnknownNavigator.plan_to`,
   NavFn C++와 ROS inflation. 새로운 제어기/경로 추종은 만들지 않는다.
