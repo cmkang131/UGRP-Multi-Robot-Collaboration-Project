@@ -298,6 +298,12 @@ raise SystemExit(3 if a.fail else 0)
         samples['zone-s2-realism-v132'] = ['--expected-source-sha', '0'*40, '--mode', 'start']
         samples['zone-s2-realism-v133'] = ['--expected-source-sha', '0'*40, '--mode', 'full']
         samples['zone-s2-v133-reproduction'] = ['--expected-registration-sha', '0'*40, '--seed', '1053']
+        samples['zone-s2-v133-baseline-v52'] = ['--expected-registration-sha', '0'*40, '--seed', '1056']
+        samples['zone-s2-side-scan-v134'] = ['--expected-source-sha', '0'*40]
+        samples['s2-loaded-rotation-v1'] = ['--expected-source-sha', '0'*40]
+        for name in ('zone-s2-look-before-move-v135', 'zone-s2-goal-heading-v136',
+                     'zone-s2-staged-approach-v137', 'zone-s2-staging-only-v138'):
+            samples[name] = ['--expected-source-sha', '0'*40, '--seed', '1054']
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
             plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}

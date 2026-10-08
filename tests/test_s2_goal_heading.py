@@ -2,6 +2,9 @@ import copy,json,math
 from pathlib import Path
 from types import SimpleNamespace as NS
 import pytest
+from tests.s2_ci_inputs import portable_s2_inputs
+
+pytestmark = pytest.mark.usefixtures("portable_s2_inputs")
 from harness.zone_solo_cyan_goal_heading import install
 from harness import zone_solo_cyan_look_before_move as look
 

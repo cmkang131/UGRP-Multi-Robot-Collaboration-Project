@@ -2,6 +2,9 @@ import copy,json,math
 from types import SimpleNamespace as NS
 import numpy as np
 import pytest
+from tests.s2_ci_inputs import portable_s2_inputs
+
+pytestmark = pytest.mark.usefixtures("portable_s2_inputs")
 from harness import zone_solo_cyan_staged_approach as stage
 from harness import zone_solo_cyan_look_before_move as look
 

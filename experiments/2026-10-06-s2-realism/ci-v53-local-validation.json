@@ -1,0 +1,137 @@
+{
+  "scope": "s2v53 B2 only; zero simulation, zero agent_lock calls; B1 unchanged",
+  "main_merged": "1526de04893c4e16411364b20fefefc41908c938",
+  "previous_source": "079843ed04cdb87242f2f15d45600a4b2bf3c90b",
+  "ci_before_run": 37745792131,
+  "targeted": {
+    "passed": 140,
+    "seconds": 155.48
+  },
+  "raw_isolation": {
+    "passed": 34,
+    "seconds": 152.1,
+    "guard": "developer outputs reads raise AssertionError"
+  },
+  "physical_runs": 0,
+  "lock_acquire_calls": 0,
+  "runtime_changed": false,
+  "common_ci_files_identical_to_main": true,
+  "workflow_samples_added": 7,
+  "path_inventory": [
+    {
+      "path": "scripts/audit_s2_formal_stops.py",
+      "line": 13,
+      "text": "OUTPUTS = Path('/Users/changmin/projects/ugrp/outputs')",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/capture_s2_stiff_start.py",
+      "line": 9,
+      "text": "RAW = Path('/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place')",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/diagnose_s2_load_wall.py",
+      "line": 8,
+      "text": "TEMPLATE=Path('/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start/setup_bundle.json')",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/diagnose_s2_real_output.py",
+      "line": 88,
+      "text": "if not args.output.is_absolute() or not args.output.is_relative_to('/Users/changmin/projects/ugrp/outputs'):",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/diagnose_s2_real_output_v112.py",
+      "line": 97,
+      "text": "if not args.output.is_absolute() or not args.output.is_relative_to('/Users/changmin/projects/ugrp/outputs'):",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/probe_masterpi_drive_friction.py",
+      "line": 14,
+      "text": "RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/probe_v7_roller_approx.py",
+      "line": 19,
+      "text": "RAW_ROOT = Path('/Users/changmin/projects/ugrp/outputs')",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/review_masterpi_camera.py",
+      "line": 21,
+      "text": "PRIMARY = Path('/Users/changmin/projects/ugrp')",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_active_markov_start.py",
+      "line": 6,
+      "text": "TEMPLATE=Path('/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start/setup_bundle.json')",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_goal_heading.py",
+      "line": 19,
+      "text": "root=Path('/Users/changmin/projects/ugrp/outputs').resolve()",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_landmarks_dev.py",
+      "line": 103,
+      "text": "root=Path('/Users/changmin/projects/ugrp/outputs').resolve()",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_loaded_rotation.py",
+      "line": 159,
+      "text": "if not a.output.is_absolute() or not a.output.resolve().is_relative_to('/Users/changmin/projects/ugrp/outputs') or a.output.exists():",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_look_before_move.py",
+      "line": 40,
+      "text": "root=Path('/Users/changmin/projects/ugrp/outputs').resolve()",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_side_scan.py",
+      "line": 50,
+      "text": "root=Path('/Users/changmin/projects/ugrp/outputs').resolve()",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_staged_approach.py",
+      "line": 28,
+      "text": "root=Path('/Users/changmin/projects/ugrp/outputs').resolve()",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_staging_only.py",
+      "line": 28,
+      "text": "root=Path('/Users/changmin/projects/ugrp/outputs').resolve()",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_v133_baseline_v52.py",
+      "line": 77,
+      "text": "primary = Path('/Users/changmin/projects/ugrp/outputs').resolve()",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    },
+    {
+      "path": "scripts/run_s2_v133_reproduction.py",
+      "line": 77,
+      "text": "primary = Path('/Users/changmin/projects/ugrp/outputs').resolve()",
+      "status": "unchanged; physical/output provenance outside offline test execution"
+    }
+  ],
+  "log_hashes": {
+    "targeted.log": "eb59ac183001a7008af00c9725dad81e5d18e1dcd18b699a261f8d15eaf24fe6",
+    "targeted.xml": "bbf2e35a097fbb06b09424796db3869929d1737f0f1c9cb3ad7f7ba4e722e892",
+    "raw-isolation.log": "bf063b9d4c73df16b9c38ffcd24680603cdb71a93bf5613c066b4954ec79efa8",
+    "raw-isolation.xml": "4ba5bd27b2715fe13a6687b37d20dadd2ba8bfd16e8a0b4bdd1d8ee71b3b9d8d",
+    "ci-failed-before.log": "ebf24a4a5f8ac137885a49f085ec7865af539ead28ca7f3cdc61b44ceea849d1"
+  }
+}

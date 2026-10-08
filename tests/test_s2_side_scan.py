@@ -3,6 +3,9 @@ import json
 from types import SimpleNamespace as NS
 import numpy as np
 import pytest
+from tests.s2_ci_inputs import portable_s2_inputs
+
+pytestmark = pytest.mark.usefixtures("portable_s2_inputs")
 from harness import zone_solo_cyan_side_scan as m
 from harness import zone_s2_side_scan_contract as c
 

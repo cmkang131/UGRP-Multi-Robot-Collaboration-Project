@@ -1,0 +1,206 @@
+{
+  "execution_bundle_id": "zone-s2-realism-v132",
+  "source_sha": "b2de2b30e2a0191d6b911125a9cc8ddb697614bb",
+  "status": "STAGE_REACHED_UNQUALIFIED",
+  "cohort_role": "FUNCTIONAL_DEV",
+  "stage_probe": "start",
+  "research_result": false,
+  "physical_success": null,
+  "loadavg_start": [
+    6.8916015625,
+    8.68017578125,
+    8.65869140625
+  ],
+  "model_calls": 0,
+  "commands_issued": 454,
+  "in_run_drop_tilt_contact_detection": true,
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1",
+    "carry_pose": "real_delivery_v1",
+    "camera_calibration": "v3_unloaded_sag_v1",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "visibility_mask": "command_geometry_v1",
+    "amcl_update": "ros_motion_v1",
+    "dev_search": "repeat_views_v1",
+    "visibility_policy": "nav2_observed_v1",
+    "contact_filter": "floor_appearance_v1",
+    "slip_detection": "slip_detect_v1",
+    "stall_recovery": "off",
+    "sensor_landmarks": "floor_zones_doors_v1",
+    "sensor_model": "amcl_likelihood_field_v1",
+    "pose_estimate": "amcl_best_cluster_v1",
+    "global_localization": "augmented_active_v1",
+    "particle_sampling": "kld_global_v1",
+    "servo_stiffness": "real_v1",
+    "camera_pitch": "stiff_target_v1"
+  },
+  "stage_reached": true,
+  "failure": null,
+  "controller_state": "search_move",
+  "reset_sim_s": 1.3,
+  "check_sim_s": 12.2,
+  "evaluation": {
+    "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+    "success": false,
+    "lifted": false,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "qualification": "post-run DEV only; no study/physical hardware success claim"
+  },
+  "total_sim_s": 13.5,
+  "pickup_site_status": "unconfirmed",
+  "regrasp_count": 0,
+  "wall_s": 24.78922533299192,
+  "wall_per_sim": 1.8362389135549568,
+  "loadavg_end": [
+    7.2890625,
+    8.638671875,
+    8.64453125
+  ],
+  "mode": "start",
+  "pool_with_previous_s2": false,
+  "dev_light": true,
+  "run_limit": 1,
+  "conservative_stops": {
+    "ARM_COLLISION_GUARD": 6,
+    "GLOBAL_START_UNRESOLVED": 1,
+    "POSE_UNCERTAIN": 1
+  },
+  "transport": "solo",
+  "start_error_m": 0.07687675580097862,
+  "start_within_25cm": true,
+  "start_pose": {
+    "t": 10.5,
+    "t_est": 10.34,
+    "x": -0.9247815420758504,
+    "y": -2.3201274017432554,
+    "yaw": 0.03647243641436703,
+    "std_xy_m": 2.002661334190028,
+    "std_yaw_rad": 1.4135211559558811,
+    "last_fix_t": 10.1,
+    "observation_quality": {
+      "accepted": false,
+      "informative_columns": 52,
+      "diagnostics": {
+        "amcl_update": {
+          "t": 10.1,
+          "accepted": true,
+          "informative": true,
+          "settled": true,
+          "visual_weight_update": true,
+          "absolute_fix": false,
+          "reason": "soft_weight_update",
+          "model": "ros_motion_v1",
+          "columns": 56,
+          "kl": 0.0312703643696116,
+          "odom": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "pose_estimate": {
+          "cluster_count": 3,
+          "maximum_cluster_weight": 0.6839655778635537,
+          "uncertain": false,
+          "selected_cluster_cov": [
+            [
+              0.0012146227184429799,
+              0.0009717904679650369,
+              0.0
+            ],
+            [
+              0.0009717904679650369,
+              0.0008913354136569999,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.7598203134439597
+            ]
+          ],
+          "overall_mean_xy": [
+            0.10967073447514446,
+            -1.4357096331708237
+          ]
+        }
+      },
+      "last_fix_quality": {
+        "t": 10.1,
+        "accepted": true,
+        "informative": true,
+        "settled": true,
+        "visual_weight_update": true,
+        "absolute_fix": false,
+        "reason": "soft_weight_update",
+        "model": "ros_motion_v1",
+        "columns": 56,
+        "kl": 0.0312703643696116,
+        "odom": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "delta": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "informative": true,
+      "partial": false,
+      "observed_rank": null,
+      "weakest_direction_xy_yaw": null,
+      "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+    },
+    "last_scan_gate": {
+      "t": 10.1,
+      "accepted": true,
+      "informative": true,
+      "settled": true,
+      "visual_weight_update": true,
+      "absolute_fix": false,
+      "reason": "soft_weight_update",
+      "model": "ros_motion_v1",
+      "columns": 56,
+      "kl": 0.0312703643696116,
+      "odom": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "transport_attempted": false,
+  "gt_use": "posthoc scoring only",
+  "visual_updates": 6
+}

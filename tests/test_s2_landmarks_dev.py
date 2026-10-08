@@ -2,6 +2,9 @@ import copy
 import json
 from types import SimpleNamespace as NS
 import pytest
+from tests.s2_ci_inputs import portable_s2_inputs
+
+pytestmark = pytest.mark.usefixtures("portable_s2_inputs")
 from harness import zone_s2_landmarks_contract as c
 from scripts.run_s2_landmarks_dev import start_only_class
 

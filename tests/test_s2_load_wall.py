@@ -49,6 +49,7 @@ def test_look_ahead_only_lifts_wrist_and_keeps_grip(static,cal):
 
 
 def test_measurement_accepts_robot_tuple_rpy(monkeypatch):
+    pytest.importorskip("mujoco", reason="Evaluation contact-force reader imports the optional engine")
     from types import SimpleNamespace as NS
     import sim.s2_eval_camera_trace as camera
     monkeypatch.setattr(camera,'camera_row',lambda *a:{'evaluation_only':True})

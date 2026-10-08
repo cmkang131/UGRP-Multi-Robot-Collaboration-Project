@@ -5742,3 +5742,67 @@ s1057→s1058을 시작했으며 각 실행의 `lock.json`에서 acquire/release
 Chrome 강 기존 TensorBoard 탭 재사용을 시도했으나 새 필터 링크/새로고침 뒤 빈 화면으로
 카드·HParams UI 적용 확인은 미완료다. 원본/event/native API97수치와 영상3개는 검증 완료,
 공용 서버 재시작·타 작업 변경0.
+
+## s2v53 — B2 CI portability만 수정 (물리0, 잠금0)
+
+사용자 범위: main을 merge(rebase 없음), CI의 로컬 raw 의존/누락 workflow sample/선택 엔진/부동소수 비교만 수정.
+B1 시작 prior(`zone_solo_cyan_v106.py:106`)·제어 동작·모든 off 기본값은 그대로다.
+실패 실행37745792131의 JUnit/로그에서 16실패를 확인: raw FileNotFound12, workflow sample1,
+durations coverage1, optional mujoco1, yaw의1.49e-8 엄격0비교1. 로컬 raw는 삭제/변경하지 않는다.
+
+- 작은 JSON을 [tests/fixtures/s2_ci](../../tests/fixtures/s2_ci/README.md)에 출처/hash와 보존.
+  테스트 전용 fixture가 등록 입력 경로만 저장소 상대로 연결; 실행기·원래 등록·검증 함수는 유지.
+- 철회/보류 v134–v138은 실행하지 않는다. 역사적 번들 해시를 보존하려고 workflow 삭제 대신
+  명시적 읽기 전용 sample을 추가했다. loaded-rotation/v52도 추가해 누락7개를 채움.
+- `test_s2_load_wall`의 엔진 의존 평가 함수만 `pytest.importorskip`; 나머지는 계속 검사.
+- best-cluster yaw0 비교는 abs1e-6; 제어기 문턱 변경이 아니다.
+- 기존 `refresh_ci_durations.py`에 run37745792131의 8개 JUnit을 입력. 현재 main 목록479/481개
+  측정 확보(나머지2개는 기존 중앙값 fallback). 결과를 보고 시간값을 임의 조정하지 않았다.
+- 공용 tests.yml timeout/filter/engine step 및 run_ci_tests glob 변경은 #406에서 main 바이트로
+  되돌리고 `codex/ci-s2-tests`의 별도 DRAFT로 분리한다(S2 시험 파일에 의존하는 stacked PR).
+
+### B1 구성 가능성 — 조사만, 변경/실행0
+
+`scripts/run_s2_landmarks_dev.py:39–48`은 start에 `stiff_runtime(KLDStart)`, full에
+`LookAheadCarry`를 고른다. full MRO는 slip/flow/real_carry→v106이며 augmented/KLD는 없다.
+`zone_s2_landmarks_contract.py:43`는 등록 options와 정확히 일치해야 한다. CLI에도 두 옵션이 없다.
+따라서 **v133 full에 global_localization=augmented_active_v1 + particle_sampling=kld_global_v1을
+단순 설정으로 더하는 것은 현재 불가**다. KLD는 augmented 옵션을 요구하고 augmented는
+ros_motion_v1/경쟁 start prior off를 요구한다. 장래에는 full carry와 global-start 계층의
+명시적 합성·새 번들/등록·검증이 필요하다. 본 작업은 prior·클래스·런타임을 바꾸지 않는다.
+
+### 남겨 둔 개발자 로컬 경로18곳 (main 대비 실행·감사 Python 파일 검색)
+
+모두 명시 물리/캡처/과거 감사 출력 경계이며 이번 테스트에서는 실행하지 않는다.
+12실패를 일으킨 입력 경로는 등록 JSON을 테스트 fixture로 대체해 해결한다.
+아래 실행기 기본 경로를 일반화하는 작업은 범위 밖으로 두었다.
+
+| 위치 | 이번 처리 |
+|---|---|
+| `scripts/audit_s2_formal_stops.py:13` | 유지·목록화(실행 안 함) |
+| `scripts/capture_s2_stiff_start.py:9` | 유지·목록화(실행 안 함) |
+| `scripts/diagnose_s2_load_wall.py:8` | 유지·목록화(실행 안 함) |
+| `scripts/diagnose_s2_real_output.py:88` | 유지·목록화(실행 안 함) |
+| `scripts/diagnose_s2_real_output_v112.py:97` | 유지·목록화(실행 안 함) |
+| `scripts/probe_masterpi_drive_friction.py:14` | 유지·목록화(실행 안 함) |
+| `scripts/probe_v7_roller_approx.py:19` | 유지·목록화(실행 안 함) |
+| `scripts/review_masterpi_camera.py:21` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_active_markov_start.py:6` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_goal_heading.py:19` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_landmarks_dev.py:103` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_loaded_rotation.py:159` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_look_before_move.py:40` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_side_scan.py:50` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_staged_approach.py:28` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_staging_only.py:28` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_v133_baseline_v52.py:77` | 유지·목록화(실행 안 함) |
+| `scripts/run_s2_v133_reproduction.py:77` | 유지·목록화(실행 안 함) |
+
+표준 근거: [pytest importorskip](https://docs.pytest.org/en/stable/how-to/skipping.html#skipping-on-a-missing-import-dependency),
+[pytest approx](https://docs.pytest.org/en/stable/reference/reference.html#pytest-approx).
+저장소의 기존 `test_s2_slip_full.py` 선택 엔진 검사와 workflow의 explicit sample 관례를 따랐다.
+
+로컬 검증: 변경 관련140시험 PASS(155.48초), 개발자 raw 읽기를 강제로 거절한
+fixture 격리34시험 PASS(152.10초). [검증·로그 해시](ci-v53-local-validation.json).
+시험은 오프라인·명령/정적 평가만, 시뮬0·agent_lock acquire/release0.
+두 공용 CI 파일은 main 바이트와 동일, B1 제어기 파일은 작업 전 HEAD와 동일하다.

@@ -40,7 +40,7 @@ def test_nav2_cluster_mean_but_overall_covariance_and_pan():
     assert out['best_cluster']['cluster_count'] == 2
     assert out['best_cluster']['maximum_cluster_weight'] == pytest.approx(.7)
     assert out['best_cluster']['selected_cluster_cov'][2][2] == pytest.approx(-2*math.log(.7))
-    assert out['std_yaw_rad'] == 0
+    assert out['std_yaw_rad'] == pytest.approx(0., abs=1e-6)
 
 
 def test_low_weight_bridges_are_not_pruned_and_yaw_seam_is_not_joined():

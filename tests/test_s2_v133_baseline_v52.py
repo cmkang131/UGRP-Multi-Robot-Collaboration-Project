@@ -1,5 +1,8 @@
 import copy
 import pytest
+from tests.s2_ci_inputs import portable_s2_inputs
+
+pytestmark = pytest.mark.usefixtures("portable_s2_inputs")
 from scripts import run_s2_v133_baseline_v52 as r
 
 
