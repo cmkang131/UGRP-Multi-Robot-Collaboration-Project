@@ -6044,3 +6044,43 @@ seed만 적용했고 서버는 변경하지 않았다. 기존 성공/실패4배�
 [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1008-s2-tracking-recovery-v55%2F#timeseries).
 raw `/Users/changmin/projects/ugrp/outputs/s2-tracking-recovery-20261008/`에는 전체 off/on/baseline
 pose, particle snapshots, 관측 전후 ESS·가중치, 접촉 평가를 보존한다. 로컬 보존을 원격 백업으로 표시하지 않는다.
+
+## s2v56 특징별 우도·ESS 감사 및 고정 후보 사전등록 (2026-10-08)
+
+물리0, 자기 RGB/발행 명령 고정 재생9건: v133 prior 있음 s1051/1053/1054/1056/1057/1058,
+v139 prior 없음 s1059/1060/1061. 두 조건의 성공률은 합산하지 않는다. 원본/기본 off는
+그대로 보존한다. GT는 예측 파일 봉인 후 평가에만 읽고 상수 적합에도 쓰지 않는다.
+M2의 수치 검산: 기존 바닥선 최대 hit/random 비는 약13,063배(σ거리.1m·σ각5°,
+혼합.95/.05). 밀도>1 자체는 오류가 아니고, 단순 로그 변환만으로 posterior는 바뀌지 않는다.
+감사에서는 벽·각 바닥선·문 우도를 따로 저장하고 prior→각 특징 단독→전체→재표본화의
+정답 근처 질량/ESS를 비교한다. 124.8s 소실을 관측 순간과 사이의 예측으로 구분한다.
+
+후보 **sensor_consistency=pr_field_temper_ess_v1**, 기본 off:
+- 벽의 `1+Σpz³`와 랜드마크 밀도 곱 대신 모든 관측을 Gaussian hit+uniform random
+  밀도의 곱(로그 합)으로 계산한다. 벽은 PR2005 Table6.3의 정규화 Gaussian 그대로,
+  landmark는 기존 Table6.4/ML 대응·σ·기하 그대로이며 hit/random 혼합만 기존 AMCL .5/.5로 통일한다.
+- 프레임 결합 로그우도에 **α=.5**를 곱한다. 기존 s2v45/egomap43 고정값 재사용이며
+  문헌의 보편적 기본값이라고 주장하지 않는다. 부분표본·σ·카메라·대응 문턱 변경0.
+- tracking에서 **ESS≤N/2일 때만** 기존 sampler를 호출한다. 초기 KLD/augmented 정책은
+  기존 선택적 재표본화를 유지한다. s2v55 tracking recovery 후보는 켜지 않는다.
+
+**결과 보기 전 관문:** [기계 판독 기준](sensor-consistency-criteria.json).
+9건 **각각** NEES95% 초과≤20%, 무경고XY>25cm=0, 운반RMSE 비악화(기존 s2v44 기준).
+추가로 운반 1초 스냅샷의 정답10cm·5° 입자 존재 비율 및 질량 중앙값 비감소.
+NEES는 원본 drive 결정 시각의 전체 보고 XY 공분산(2자유도 χ²=5.991464547107979),
+GT는 지연 보정 t_est에 맞춘다. 공분산 누락은 제외하지 않고 관문 실패로 친다.
+알람은 기존 σxy>.05m 또는 σyaw>5° 또는 fix 없음, 제어 문턱 변경0.
+원본9건 pose 필드 JSON 바이트 일치 및 s1060 명시적 off의 전체 PF입자/가중치 해시를 검증한다.
+한 결합 후보만 비교하며 결과 후 수치/조건 변경·후보 재선택은 하지 않는다.
+모두 통과할 때만1062–1064를 별도 실행 사전등록한다. 이번에는 새 seed/번들 등록 없음.
+raw 예산1GiB, ENOSPC=HOST_ERROR, raw 유지. 고정명령 재생은 닫힌 루프 성공이 아니다.
+
+출처: [Thrun et al. 2005 원문](https://cs.pomona.edu/~ajc/other/Thrun%20et%20al_2005_Probabilistic%20robotics.pdf)
+§6.3.4 p167(독립성 위반, likelihood^α 및 부분표본), Table6.3 p172(벽 likelihood field 곱),
+§6.6(특징 측정). [ROS1 pf.c](https://github.com/ros-planning/navigation/blob/f44bb1fc/amcl/src/amcl/pf/pf.c)
+380–394행 ESS>N/2 skip(로컬 원문 `outputs/s2-dock-augmented-20261007/ros1-pf.c` 대조).
+α=.5 출처는 s2v45 `2fa4bf9a0e8097bcd4d1e1933b7d04e4d54dd965`
+`harness/zone_solo_cyan_bias_tempering.py`, egomap43 vendor provenance도 같은 원본을 지정한다.
+#405 파일은 읽기만 했고 변경하지 않았다. 센서별 공간이 달라 밀도의 단위/최댓값이 같은 것은
+아니며, 이번 통일은 **곱 측정모델 및 hit/random 혼합의 정의**다. 여전히 ML 대응과 근사
+독립성이 남아 있어 이 후보의 성공을 사전에 가정하지 않는다.
