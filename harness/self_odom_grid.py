@@ -12,6 +12,7 @@ import math
 from pathlib import Path
 
 import numpy as np
+from harness.grid_acceleration import enabled as scalar_rays_enabled, dda as scalar_dda
 
 from harness.owncam_localizer import DEFAULT_PARAMS, OwnCamLocalizer
 
@@ -112,6 +113,7 @@ def transform(points, pose):
 
 def ray_cells(start, end, resolution):
     """Amanatides-Woo 2D cell traversal, including start and endpoint cells."""
+    if scalar_rays_enabled():return scalar_dda(start,end,resolution)
     a, b = np.asarray(start, float) / resolution, np.asarray(end, float) / resolution
     cell, target = np.floor(a).astype(int), np.floor(b).astype(int)
     delta = b - a

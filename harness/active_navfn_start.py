@@ -12,7 +12,10 @@ OPTION='navfn_recovery_v1'
 RECOVERY=('clear','spin','wait','backup')  # pinned Nav2 BT XML
 
 
-def make_mapper(*args,navigation_start='off',frontier_observation='off',**kwargs):
+def make_mapper(*args,navigation_start='off',frontier_observation='off',map_acceleration='off',**kwargs):
+    if map_acceleration!='off':
+        from harness.grid_acceleration import install
+        return install(make_mapper(*args,navigation_start=navigation_start,frontier_observation=frontier_observation,**kwargs),map_acceleration=map_acceleration)
     if navigation_start=='off':return legacy_mapper(*args,frontier_observation=frontier_observation,**kwargs)
     if navigation_start!=OPTION:raise ValueError('UNKNOWN_NAVIGATION_START')
     if kwargs.pop('active_recovery','off')!='nav2_frontier_v1':raise ValueError('START_REQUIRES_FROZEN_RECOVERY')

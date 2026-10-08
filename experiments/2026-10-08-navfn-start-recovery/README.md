@@ -140,3 +140,74 @@ RGB·발행 명령/설정으로 재생하여 cProfile1회. 초기화/151 RGB 중
 측정된 상위1–2개 병목만 표준 캐시/벡터화 등으로 옵션화(기본off); 새 임계/해상도/관측주기 변경0.
 채택 조건은 같은 재생의 지도·pose·행동 출력 **bytes 동일**, 아니면 수치 최대차를 공개하고 미채택.
 물리 결과를 가속 결과로 바꾸거나 완료로 재분류하지 않는다.
+
+## 감독 추가 성능 진단·결과 불변 가속
+
+결과/프로파일 조건 사전등록 **b6a27e12** 후, 봉인된 첫30 SIM초를 1회 cProfile.
+141/141 제어 trace가 원래 물리 기록과 동일. 렌더/물리 스텝은 호출하지 않았다.
+후보 선택 전 상위 호출: `self_odom_grid.ray_cells` 누적10.851초/103,848호출,
+`public_navigation_persistent.raytrace_cells` 5.101초/4,322,573 generator호출.
+작은 2원소 배열에 대해 매 칸 `array_equal/where/argmin`·generator를 반복한 비용이 컸다.
+정보이득 forecast2회6.957초·graph3회7.878초도 있으나 삽입/ray 하위 호출과 중첩하므로 합산 금지.
+
+|단계|cProfile 총초|제어프레임당 ms (141)|비고|
+|---|---:|---:|---|
+|렌더링|측정 불가|측정 불가|저장 JPEG decode만0.180초; 실제 renderer0회|
+|벽 검출|2.238|15.871|같은 RGB·SEARCH·observe|
+|RBPF 정합/갱신, 삽입 제외|1.269|9.000|100입자 고정|
+|점유 지도 삽입|12.292|87.176|실제/가상 입자 및 graph 삽입 포함|
+|pose graph, 위 삽입 제외|7.333|52.007|초기3회; 후반 전체graph 프로파일 아님|
+|NavFn 경로 / frontier 검색|0.00336 / 0.00127|0.024 / 0.009|native planner 자체는 지배 병목 아님|
+|기타 제어|17.958|127.364|navigation ray clearing·dense costmap·정보이득·B검출 등|
+|360° 관측 상태 프레임 **교차 분류**|32.173 / 91프레임|353.546 (91분모)|위 행들과 중첩; 회전 명령 자체의 시간으로 해석 금지|
+
+|프로파일 구간|프레임|RBPF 대표 지도 전체칸 최소–최대|입자|총초/프레임당ms|관측회전 프레임|
+|---|---:|---:|---:|---:|---:|
+|0–10s|41|64–739|100|9.110 / 222.201|41|
+|10–20s|50|739–902|100|17.987 / 359.736|24|
+|20–30s|50|902–1513|100|14.175 / 283.494|26|
+
+칸 수는 증가하지만 graph·정보이득 호출이 달라 시간이 단조 증가하지 않는다.
+입자100은 바꾸지 않았으므로 입자 수별 scaling을 측정했다고 주장하지 않는다.
+실제360초 run은 host/SIM5.01이었고 마지막 graph에서 상한을 맞았으나,
+초기30초 replay만으로 전체5.01의 원인 비율/가속 배수를 일반화할 수 없다.
+
+### 표준 방식과 옵션
+
+`map_acceleration=scalar_rays_v1` (기본off): **같은 셀·방문 순서·부동소수 연산 순서를 유지**하면서
+두 광선 traversal의 작은 배열 반복을 스칼라 비교·덧셈으로 바꾼다. 알고리즘·관측주기·해상도·문턱 변경0.
+- [Amanatides & Woo1987 원문 p2–3](https://physique.cmaisonneuve.qc.ca/svezina/projet/ray_tracer/download/A_Fast_Voxel_Traversal_Algorythm_For_Ray_Tracing.pdf):
+  tMax/tDelta 스칼라 DDA. 논문 `<` 동률 규약 대신 기존 `argmin`의 x우선 동률과 유한 끝점 보호를
+  그대로 유지하여 기존 셀 정의를 보존한다. 저자 사이트 PDF는 fetch 실패, 위 원문 mirror로 확인.
+- [Nav2 Jazzy costmap_2d.hpp](https://github.com/ros-navigation/navigation2/blob/jazzy/nav2_costmap_2d/include/nav2_costmap_2d/costmap_2d.hpp):
+  `raytraceLine`/`bresenham2D`의 정수 error 누적·dominant-axis·끝점 포함을 그대로 사용.
+  기존 BSD-3 port와 출처/라이선스는 `public_navigation_persistent.py` 및
+  `third_party/mapfree_navigation_persistence/SOURCES.json` 및 원본
+  `navigation2/nav2_util/include/nav2_util/raytrace_line_2d.hpp`에 보존. 새 파일에도 BSD 고지 포함.
+- 구현 `harness/grid_acceleration.py`; `self_odom_grid.ray_cells`와
+  `public_navigation_persistent.raytrace_cells`의 기본off 분기만 추가.
+  `active_navfn_start.make_mapper(...,map_acceleration=...)` 또는 `install(mapper,...)`로 선택.
+  ContextVar로 한 mapper receive에만 적용하므로 다른 로봇/스레드·off 호출은 영향없음.
+  새 라이브러리/venv·렌더·물리 실행0. 이번 물리 source c37f2b23에는 **미적용**.
+
+|같은151 RGB/141제어 프레임·30 SIM초, profiler OFF 각1회|off|on|
+|---|---:|---:|
+|측정 wall초|29.222|19.179|
+|wall/SIM|0.974|0.639|
+|지도 삽입초|6.900|1.016|
+|graph초(하위 삽입 제외)|4.898|3.132|
+|원래 물리 trace 일치|141/141|141/141|
+|지도·pose·행동 직렬화 SHA256|af0969c41610a963723a99f281efd032a48b5e7018d0613bba84d158333a4b69|동일|
+
+**이30초 오프라인 구간에서 결과 불변1.524배**. 매 프레임 지도 export·누적pose·trace를 동일
+JSON 규격으로 직렬화한 해시가 일치하며 pose/map 최대 차0. 기본off도 원래 trace와 동일.
+속도는 profiler를 끈 두 실행만 비교; 각각 timing_sensitive 배타잠금, 끝나면 release.
+초기 구간·순서off→on 각1회라 캐시/호스트 변동과 후반 비용은 미확정이다.
+전체360초 재생이나 새 물리 속도 개선/완료는 검증하지 않았다.
+원인/다음 추천: 광선 반복 비용은 줄었고 후반 graph 전량 재계산은 남아 있으므로,
+다음에는 변경 없는 submap의 probability/distance field 캐시를 동일출력 검증으로 평가한다(이번 미구현).
+
+[성능·동일성·파일 해시](results/performance.json).
+cProfile 원본/호출표·프레임별 측정: `outputs/navfn-start-recovery-v1/profile/`.
+변경 모듈3시험 파일 **20 passed**; 경계/동률/음수·thread 격리·off 바이트·4후보·회복 검증 포함.
+기존 freeze.json은 물리 c37f2b23의 동결 해시로 보존; 새 가속 파일 해시는 performance.json에 별도 기록.

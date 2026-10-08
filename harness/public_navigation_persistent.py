@@ -6,6 +6,7 @@ No world/scene/truth/model inputs. Contact port is strictly (t, pressed).
 """
 import math
 import numpy as np
+from harness.grid_acceleration import enabled as scalar_rays_enabled, bresenham as scalar_bresenham
 
 from harness.public_navigation.actor import PublicActor
 from harness.public_navigation.costmap import from_grid
@@ -32,6 +33,9 @@ def raytrace_cells(start, end):
     Tuple coordinates replace flattened unsigned offsets (unbounded own grid).
     Copyright Willow Garage 2008/2013, BSD-3; notice in vendored header.
     """
+    if scalar_rays_enabled():
+        yield from scalar_bresenham(start,end)
+        return
     point = np.array(start, int)
     delta = np.array(end, int)-point
     a = 0 if abs(delta[0]) >= abs(delta[1]) else 1
