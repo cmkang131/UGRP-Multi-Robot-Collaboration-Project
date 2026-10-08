@@ -1,0 +1,82 @@
+{
+  "schema": "ugrp.s2.staging_only_replay.v1",
+  "recorded_stalls": [
+    {
+      "seed": 1054,
+      "proposals": 546,
+      "original_final_commands_preserved": 546,
+      "navigation_unknown_veto": true,
+      "monitor_created": false,
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1054-v136-goal-heading",
+      "student_record_sha256": "65d843d6390faea4441cda56932f7a0d20219384bb8c1c980d282e724daa6517"
+    },
+    {
+      "seed": 1055,
+      "proposals": 550,
+      "original_final_commands_preserved": 550,
+      "navigation_unknown_veto": true,
+      "monitor_created": false,
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1055-v136-goal-heading",
+      "student_record_sha256": "80c44bd10fa32f8b029f74670906e156d2ea65d029fdc17737c35457f414379f"
+    }
+  ],
+  "success_final_tapes": [
+    {
+      "seed": 1051,
+      "final_command_count": 2254,
+      "command_bytes_equal": true,
+      "sha256": "55102d5eb7c69696019345c66f44c4042c0c7558689b2315c1ebe6a7a0ce9917",
+      "student_record_sha256": "3efeffaf5aaca44ea926173ba22f303184f5bcdde1267a0eedc58c879c589bea"
+    },
+    {
+      "seed": 1053,
+      "final_command_count": 2204,
+      "command_bytes_equal": true,
+      "sha256": "32fcd797c04b5d6f71e02e29e55480712266637ec91ac0725918cda74ceb9d6f",
+      "student_record_sha256": "8e3e92e1209131d7c66e6d92e4ae6778a86a6c559b696070aded41bc04632430"
+    },
+    {
+      "seed": 1054,
+      "final_command_count": 2231,
+      "command_bytes_equal": true,
+      "sha256": "cac2de9bb76d8ad8bf5527b3ed79baacb297e4c348ec69ed99ecfb14b378b32b",
+      "student_record_sha256": "6a1dbf2b8f9b01fcfb5985b7d3bfd4f75a6160c8b5d25ebd57c34ac0716dfca8"
+    }
+  ],
+  "off": [
+    {
+      "seed": 1051,
+      "commands": 4023,
+      "command_bytes_equal": true,
+      "record_bytes_equal": true,
+      "command_sha256": "0e11a2ab88320da7c10a6a3fb1760368f4a5aa9a77ba9678daaf72727145d798",
+      "scope": "off adapter exact identity over existing tapes; PF not recomputed"
+    },
+    {
+      "seed": 1053,
+      "commands": 3959,
+      "command_bytes_equal": true,
+      "record_bytes_equal": true,
+      "command_sha256": "ff4aab36621c179d2a700074a681f81318f9cd8ef5dece45bb6abaeb4005625d",
+      "scope": "off adapter exact identity over existing tapes; PF not recomputed"
+    },
+    {
+      "seed": 1054,
+      "commands": 8921,
+      "command_bytes_equal": true,
+      "record_bytes_equal": true,
+      "command_sha256": "2f67e89f9ed57630f2ce9d01574218827ff23d9baff36d585ac0531495649752",
+      "scope": "off adapter exact identity over existing tapes; PF not recomputed"
+    }
+  ],
+  "gate_pass": true,
+  "physics_runs": 0,
+  "gt_inputs": false,
+  "scope": "saved v133 controller proposals through condition A guard; no PF recomputation or new closed-loop success claim",
+  "raw_record": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-staging-only-v51-20261008/replay.json",
+    "sha256": "25993bc48c0957579db9d99a3e1f45be495712d7c2b3ed0bb3d500027011ac2e"
+  },
+  "preregistration_commit": "a9905cbb",
+  "validation": "15 changed-module tests passed; py_compile and diff check passed"
+}

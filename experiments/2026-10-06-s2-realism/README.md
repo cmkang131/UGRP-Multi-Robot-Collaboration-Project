@@ -5585,3 +5585,9 @@ v133 자체의 영상 판독·팔·파지·dev_light·실제 물리 실패 처�
 한 번에 하나만 실행한다. 잠금이 있으면 기다리고 타 작업은 건드리지 않는다. 실행 소스와
 seed를 먼저 커밋·push(서버 오류면 로컬SHA 진행), GT는 종료 후 평가에만 사용한다.
 ENOSPC=HOST_ERROR. 결과 뒤 문턱 변경·추가 땜질0; 실패 원인·권고만 남긴다.
+
+사전등록 a9905cbb 후 [고정 제안 재생](staging-only-replay.json) PASS: v136의 두 정체
+align 제안 546/550개 모두 보존, v133 세 성공 최종 접근 명령 2254/2204/2231개 바이트
+동일, off 전체 tape 명령·기록 동일. search_move 미관측 차단 유지·Monitor 생성0.
+관련 시험15개 PASS(42.64초), py_compile/diff check PASS. 이는 제안 wrapper 검증이며
+PF 재계산·새 물리 성공 근거는 아니다. 다음 실행 소스 커밋을 고정해 두 DEV를 순차 시행한다.
