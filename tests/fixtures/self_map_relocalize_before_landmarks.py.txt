@@ -39,13 +39,7 @@ class GridField(field.Field):
 
 
 class Relocalizer:
-    def __init__(self, grid, *, seed, sensor_landmarks='off', landmark_map=None):
-        if sensor_landmarks not in ('off', 'floor_zones_doors_v1'):
-            raise ValueError('UNKNOWN_SENSOR_LANDMARKS')
-        if sensor_landmarks != 'off' and landmark_map is None:
-            raise ValueError('EXPLICIT_LANDMARK_MAP_REQUIRED')
-        self.sensor_landmarks = sensor_landmarks
-        self.landmark_map = landmark_map
+    def __init__(self, grid, *, seed):
         self.field = GridField(grid)
         self.rng = np.random.default_rng(seed)
         self.n = kld.PARAMS['max_samples']
@@ -67,7 +61,7 @@ class Relocalizer:
         w = np.exp(self.logw-self.logw.max())
         return w/w.sum()
 
-    def step(self, *, t, points, delta, servo, features=None):
+    def step(self, *, t, points, delta, servo):
         delta = np.asarray(delta, float)
         points = np.asarray(points, float).reshape(-1, 2)
         if delta.shape != (3,) or not np.isfinite(delta).all() or not np.isfinite(points).all():
@@ -82,21 +76,13 @@ class Relocalizer:
             self.odom += [c*delta[0]-s*delta[1], s*delta[0]+c*delta[1], delta[2]]
         change = None if self.anchor is None else self.odom-self.anchor
         changed = change is None or motion.moved(change)
-        use_landmarks = self.sensor_landmarks != 'off'
-        features = (features or []) if use_landmarks else []
-        update = bool((len(points) or len(features)) and (changed or self.policy.new_view(servo)))
+        update = bool(len(points) and (changed or self.policy.new_view(servo)))
         audit = None
         if update:
             prior = self._weights()
             # Bound temporary arrays; same pinned likelihood for every particle.
-            chunks = np.array_split(self.px, max(1, math.ceil(self.n/4096)))
-            if use_landmarks:
-                from harness.own_map_amcl_vendor.landmarks import landmark_likelihood
-                # PR406 install.score: exact product, including floor-only packets.
-                ll = np.concatenate([np.log(field.likelihood(self.field, p, points)*
-                    landmark_likelihood(self.landmark_map, p, features)) for p in chunks])
-            else:
-                ll = np.concatenate([np.log(field.likelihood(self.field, p, points)) for p in chunks])
+            ll = np.concatenate([np.log(field.likelihood(self.field, p, points))
+                                 for p in np.array_split(self.px, max(1, math.ceil(self.n/4096)))])
             self.logw = np.log(np.maximum(prior, 1e-300))+ll
             self.logw -= self.logw.max()
             audit = self.policy.measure(self, prior, ll, servo, changed)

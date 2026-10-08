@@ -21,7 +21,7 @@ def test_pinned_function_bodies_and_default_constants():
         data=(folder/(name+'.py')).read_bytes()
         assert hashlib.sha256(data).hexdigest()==info['copy_sha256']
         source=data.decode();lines=source.splitlines(keepends=True)
-        digests={hashlib.sha256(''.join(lines[n.lineno-1:n.end_lineno]).encode()).hexdigest()
+        digests={hashlib.sha256(''.join(lines[min([n.lineno]+[d.lineno for d in getattr(n,'decorator_list',[])])-1:n.end_lineno]).encode()).hexdigest()
                  for n in ast.parse(source).body if hasattr(n,'end_lineno')}
         assert all(x['sha256'] in digests for x in info['selected'])
     assert kld.PARAMS['max_samples']==100000 and kld.PARAMS['min_samples']==2000

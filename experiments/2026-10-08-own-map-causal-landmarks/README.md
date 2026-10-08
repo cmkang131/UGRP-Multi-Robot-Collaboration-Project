@@ -67,3 +67,22 @@ PR406 `codex/s2-realism` **6a9e93f1a463ed2e356b044487c6b025ad018b63**의
 F 구현은 유지, 상대 배열 전송/merge0. 새 출력만 추가, 원본/과거실패 보존.
 ENOSPC=HOST_ERROR. 바뀐 모듈 시험만, 초록 후 커밋·push, PR405 DRAFT/병합0.
 단계 사이 SUPERVISOR 확인. TensorBoard 생략 유지. push 오류는 로컬 진행 후 재시도.
+
+## 구현·재생 전 고정
+
+`Relocalizer(..., sensor_landmarks='floor_zones_doors_v1', landmark_map=...)`에만
+측정 우도 곱을 추가한다. 기본off는 기존 함수의 출력·입자·logw·RNG bytes 동일.
+랜드마크가 있고 벽이 없어도 S2 원본처럼 측정하며 이동/새시야 관문은 유지한다.
+S2 함수·상수의 원본 행/해시는
+[provenance.json](../../harness/own_map_amcl_vendor/provenance.json)에 있다.
+
+자기 landmark map은 모든 prefix 관측을 부분 선분/문 후보로 보존한다. 중복 관측을
+추가 우도항으로 세지 않고 원본 최대우도 대응의 대안으로만 쓴다. 평균/병합/새 문턱0.
+관측 pose 공분산은 출처에 보존하고 S2 원본 고정 센서 σ는 바꾸지 않는다.
+카메라·검출 벽열 어댑터 외의 원본 floor_features/door_features/landmark_likelihood는 동일.
+
+명령 기반 자기 가림의 원본 `fixed_robot()`은 고정 XML 문자열을 만드는 과정에서
+MuJoCo 패키지를 import한다. 모델/data 생성·렌더·step/forward/kinematics는 하지 않는다.
+재생 준비에서 해당 진입점을 예외로 차단하고 시험에서도 native 호출0을 검증했다.
+초기 시험의 import 자체 금지 assertion 1개를 실행 금지 검증으로 정확히 바꿨다
+(실제 물리/렌더 실행은0). 모델/검출기·통계 문턱 변경은 없다.
