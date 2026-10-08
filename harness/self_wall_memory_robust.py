@@ -8,7 +8,7 @@ from harness.self_pose_graph import rebuild
 
 
 class SelfWallMemory(Previous):
-    def __init__(self, *args, loop_rejection='off', wall_evidence='off', wall_export='off', **kwargs):
+    def __init__(self, *args, loop_rejection='off', wall_evidence='off', wall_export='off', map_update='off', **kwargs):
         if wall_export not in ('off', 'segments_confidence_v1'):
             raise ValueError('UNKNOWN_WALL_EXPORT')
         if loop_rejection not in LOOP_VALUES or wall_evidence not in EVIDENCE_VALUES:
@@ -22,6 +22,9 @@ class SelfWallMemory(Previous):
             raise ValueError('WALL_EXPORT_REQUIRES_OWN_POSE_LEDGER')
         self.wall_export = wall_export
         self._export_observations = {}
+        from harness.self_camera_grid import install
+        install(self.self_map, map_update=map_update)
+        self.map_update = map_update
 
     def command(self, row):
         super().command(row)
@@ -44,12 +47,18 @@ class SelfWallMemory(Previous):
         from harness.self_wall_export import export_walls
         view = self._graph_view if self._graph_view is not None else self.self_map
         rows = self.pose_graph_result['ledger'] if self.pose_graph_result else self.self_map.ledger
+        if self.map_update != 'off':
+            view = self.self_map.camera_map
+            rows = view.ledger
         return export_walls(view.export(), [dict(r, robot_id=self.robot_id) for r in rows],
             robot_id=self.robot_id, wall_export=self.wall_export, observations=self._export_observations,
             pose_covariance=self.self_map.odom.covariance, now=self.self_map.odom.t)
 
     def snapshot(self):
         result = super().snapshot()
+        if self.map_update != 'off':
+            result['self_map_text'] = self.self_map.camera_map.text().replace(
+                'drift uncorrected', 'online own pose; independent camera integration')
         if self.wall_export != 'off':
             from harness.self_wall_export import memory_text
             exported = self.export_wall_memory()
