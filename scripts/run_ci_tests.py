@@ -105,6 +105,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_edge_fit.py",  # v98 HIGH beam-edge consensus fit (recorded own frames)
     "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
     "tests/test_highpose_own_load_occlusion.py",  # v98 own-load occlusion rule: held beam blocking the own camera is no observation, not INVALID_OWN_IMAGE
+    "tests/test_s2_*.py",  # Include real-site, freeze-scope and in-hand S2 option regressions.
     "tests/test_solo_cyan_v106*.py",  # S2 v3 cyan: own RGB/commands, synthetic backend only
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
@@ -365,6 +366,19 @@ TEST_PATTERNS = (
     "tests/test_pick_match*.py",
     "tests/test_replay_pick_match.py",
     "tests/test_masterpi_model_v3.py",
+    "tests/test_masterpi_camera_review_v1.py",
+    "tests/test_masterpi_camera_review_v2.py",
+    "tests/test_masterpi_camera_review_v3.py",
+    "tests/test_masterpi_drive_friction.py",
+    "tests/test_masterpi_drive_friction_v2.py",
+    "tests/test_masterpi_drive_friction_v3.py",
+    "tests/test_masterpi_drive_friction_v4.py",
+    "tests/test_masterpi_drive_friction_v5.py",
+    "tests/test_drive_torque_audit.py",
+    "tests/test_masterpi_drive_friction_v5_hard.py",
+    "tests/test_masterpi_drive_friction_v6.py",
+    "tests/test_masterpi_drive_friction_v7.py",
+    "tests/test_probe_drive_pair_beam.py",
     "tests/test_zone_masterpi_v3_scene.py",
     "tests/test_zone_model_conventions.py",
     "tests/test_visual_arm_v3.py",

@@ -19,13 +19,16 @@ concurrency:
 jobs:
   ci-preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    # PR406: full-history fetch alone took 145s, before any preflight test.
+    # Preserve merge-base/path coverage, but omit historical file contents.
+    timeout-minutes: 5
     outputs:
       full_suite: ${{ steps.paths.outputs.full_suite }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          filter: blob:none
       - name: Reject missing sparse-checkout fixtures before installing dependencies
         run: python3 scripts/check_ci_fixtures.py
       - name: Check CI routing and required-gate failure cases without simulator dependencies
@@ -312,7 +315,10 @@ jobs:
           python -m pip check
 
       - name: Check demo input and output boundaries
-        run: python -m pytest -q tests/test_sim_quickstart.py tests/test_simulation_recovery_optional.py
+        run: python -m pytest -q tests/test_sim_quickstart.py tests/test_simulation_recovery_optional.py tests/test_s2_idle_contacts.py tests/test_s2_real_carry_dev.py
+
+      - name: Verify S2 static geometry and runtime construction with engine dependencies
+        run: python -m pytest -q tests/test_s2_visibility.py tests/test_s2_real_carry.py tests/test_s2_slip_full.py tests/test_s2_slip_matched.py tests/test_s2_slip_recovery_full.py
 
       - name: Preserve dispatch and ACT scene physics across standard and research adapters
         run: python -m pytest -q tests/test_dispatch_scene_parity.py
