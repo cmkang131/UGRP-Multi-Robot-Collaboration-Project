@@ -81,3 +81,62 @@ SHA256 `ca244d2332d3b040bfee2fd6cf392144faab0eb5f492afaf95984c811a50a2af`.
 원본 대비 변경은 위 표의 adapter 경계이며 목표유지·도착관측·B의 progress-failure 관측 주기는 그대로다.
 clear/spin/wait/backup은 기존 `.30m/.15m/s`, `1.57rad`, `5s`, `retry6`를 사용한다.
 [재생 수치와 입력 해시](results/replay.json). 설정·소스 해시는 `freeze.json`에 실행 전 고정한다.
+
+## DEV 결과 — 새 seed47001, 1회 (재실행 없음)
+
+실행 소스 **c37f2b23b74d044163b43e139599207f248ae3c1**, 기록360.0 SIM초/1801 RGB.
+마지막 프레임의 graph 정합 중 **HOST_BUDGET_30_MINUTES**: HOST_ERROR, 최종 graph 미완료.
+1802.37 host초(정리 포함), 물리 새 실행1·모델0·freeze0, 잠금 해제 확인.
+1790개 완성 제어 기록/1800개 GT 평가 기록; 마지막 pose의 대응 GT1개는 채점 제외.
+아래 egomap47 값은 **partial frontend**이며 egomap46의 completed graph와 동급 완료 결과가 아니다.
+
+|조건 (각 n=1)|seed/예산|지도 view|덮음 (전체329표본)|영역 P/R|영역 P 분자/칸·R 분자/시야표본|전체 점유칸|벽 RMSE(m)|문 통과|hold|
+|---|---|---|---|---|---|---:|---:|---:|---:|
+|egomap46 A|46001/360s|completed graph|122/329=37.1%|78.8/66.4%|67/85·71/107|285|0.503|1|59.6%|
+|egomap46 B|46001/360s|completed graph|238/329=72.3%|71.6/74.3%|192/268·130/175|683|0.447|2|8.5%|
+|egomap47 B+start|47001/360s|partial frontend|229/329=69.6%|73.3/67.2%|178/243·117/174|843|0.639|1|6.2% (111/1790)|
+
+관문: 덮음≥80% **실패**, 영역P≥63.6% **통과**, 완료 조건도 실패 → **미통과**, 재튜닝0.
+시야 표본174/329=52.9%, 전체 P39.7%; 영역 P만으로 전체 지도가 정확하다고 해석하지 않는다.
+이동9.429m·footprint 합집합2.540m², 종료 위치오차0.490m/σXY0.102m=4.79σ,
+경로 RMSE0.230m. B 자기 확인 경과65.8초, 실제 B 도달없음. 벽/로봇 접촉0/0.
+문은 중앙 문을 경과103.6초에 오른쪽→왼쪽1회(팽창 footprint 여유0.0568m).
+거짓 문 경로 시도31회는 남아 있다. 새 seed와 미완료 view 차이가 있어 개선의 확증 비교는 아니다.
+
+소진 이벤트0. planner_failed27→context_clear22, 일반clear2/spin1/wait1/backup1;
+회복 성공27, progress-no-progress11→blacklist11·다음 관측 주기, sensor sweep12/12 완료.
+따라서 오프라인4/4 계획 복구와 실제 회복 분기는 작동했지만, 전체 덮음 목표 달성은 아니다.
+삽입 수정on: 마지막 미완성 프레임 포함 검출·정합 결정1784개 중 motion_gate1580,
+bootstrap1·정합수락118·low_overlap20·high_residual57·search_boundary1·insufficient_points7.
+삽입204=1784−1580; 완성 제어1790개 중 검출선분 있음1783개. 원본 원장/실패 모두 보존.
+
+|경과초|egomap46 A 덮음|egomap46 B 덮음|egomap47 덮음|egomap47 점유칸/삽입스캔|
+|---:|---:|---:|---:|---:|
+|120|33.1%|52.9%|56.5%|427/67|
+|180|37.1%|52.9%|66.6%|662/114|
+|240|37.1%|55.3%|68.4%|721/151|
+|360|37.1%|68.1%|69.6%|843/204|
+
+모든 곡선은 해당 시점 **이전 online frontend**만 사용; egomap47 360초 값은356.0초 snapshot.
+360초 RGB는 존재하나 마지막 제어/graph 완료로 간주하지 않는다.
+원인: 시작 연결 버그는 제거됐지만 시야가 전체 벽의52.9%에 머물고 자세/검출 잔차가 남았으며,
+마지막 graph 재계산은 호스트 상한에 도달했다. 물리/문턱 변경 없이 계산 병목부터 확인한다.
+
+![봉인 후 지도/신뢰도](figures/new-seed.png)
+![시점 이전 지도만 사용한 덮음](figures/coverage.png)
+
+[수치](results/comparison.json), [원본/소스 해시](results/raw.json), [영상 해시](results/video.json).
+4배속90.05초·1801프레임·20fps, ffprobe와 전체 ffmpeg decode 통과:
+`/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1/wrist-map-4x.mp4`.
+
+## 감독 추가 지시 — 오프라인 성능 진단 사전등록
+
+17:2x/17:3x supervisor 지시: 물리 추가0. 봉인된 egomap47 **첫30 SIM초**를 같은
+RGB·발행 명령/설정으로 재생하여 cProfile1회. 초기화/151 RGB 중141 제어 프레임이며 GT 입력0.
+렌더링은 저장 JPEG 읽기만 하므로 렌더 시간은 **측정 불가**로 표시하고 실제 물리 wall/SIM과
+재생 wall/SIM을 구분한다. 프레임별 검출/RBPF/삽입/graph/NavFn/관측회전 계산 및 칸/입자 수를 기록.
+짧은 초기 구간만으로 후반 graph 비용을 단정하지 않으며 필요하면 저장 ledger의 크기별
+동일 graph 호출을 별도 마이크로벤치로 기록한다. 속도 측정은 agent_lock null일 때만 잠금 하 수행.
+측정된 상위1–2개 병목만 표준 캐시/벡터화 등으로 옵션화(기본off); 새 임계/해상도/관측주기 변경0.
+채택 조건은 같은 재생의 지도·pose·행동 출력 **bytes 동일**, 아니면 수치 최대차를 공개하고 미채택.
+물리 결과를 가속 결과로 바꾸거나 완료로 재분류하지 않는다.
