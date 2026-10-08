@@ -42,6 +42,8 @@ TEST_PATTERNS = (
     "tests/test_self_pulse_odom.py",
     "tests/test_self_pulse_rotation.py",
     "tests/test_self_wall_segments.py",
+    "tests/test_self_wall_export.py",
+    "tests/test_self_map_relocalize.py",
     "tests/test_self_wall_validation.py",
     "tests/test_self_wall_pr.py",
     "tests/test_wall_contact_types.py",

@@ -103,3 +103,22 @@ augmented_start의 belief_report·Policy, kld_start의 sample_limit/assign/resam
 - 신뢰도: 기존 `harness/self_wall_evidence.py`의 Cartographer TSDF 관측 support(확률 아님).
 - 경로: 기존 `harness/public_navigation_monitor.py`, `UnknownNavigator.plan_to`,
   NavFn C++와 ROS inflation. 새로운 제어기/경로 추종은 만들지 않는다.
+
+## 구현 연결 (결과 전)
+
+`harness.self_wall_memory_robust.SelfWallMemory(..., wall_export="segments_confidence_v1")`의
+`export_wall_memory()`가 전체 로컬 JSON을 반환하고 `snapshot()`에는
+`self_wall_export_text` 요약만 추가한다. 기존 자기 지도 옵션들은 그대로 필요하다.
+`observe_wall(..., observation_id=..., frame_sha256=...)`로 실제 RGB 출처를 연결한다.
+제공하지 않은 해시/std는 null이며 만들어내지 않는다. 선분 ID는 지도 revision별 ID라
+관측이 바뀌었는데 같은 의미인 척하지 않는다. 원본 관측 ID는 유지된다.
+
+저장 녹화에서는 `export_walls(grid, ledger, robot_id=..., wall_export=...,
+observations=..., pose_covariance=..., now=...)`를 직접 사용한다. 기존 Hough 요약의
+지지 셀과 현재 양의 점유칸 주변 반대각선 거리 안의 과거 ray endpoint를 출처로
+연결한다. 이 근접 연결 자체가 참 벽 검증은 아니며 전부 명시적 후보이다.
+
+PR406 원본 함수·행별 해시: [provenance.json](../../harness/own_map_amcl_vendor/provenance.json),
+[이식 경계](../../harness/own_map_amcl_vendor/NOTICE.md). 새 외부 의존성/venv0.
+기존14 기억 시험과 새8 시험(실제 비어 있지 않은 off snapshot/RNG·출처·peer 격리,
+KLD 원본 정의/상수·이동 관문·균등 prior·B 관측 목표)만 실행한다.
