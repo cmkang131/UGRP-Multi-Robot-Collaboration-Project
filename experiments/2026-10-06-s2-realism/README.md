@@ -5260,3 +5260,41 @@ orange 로봇이 실제 보인다. 양성은 **한 정착 시점의16프레임**
 음성은 로봇 미검출이지 footprint 범위가 비었다는 증거가 아니다. 검사/색 문턱 수정0.
 agent_lock acquire/release 확인, 종료null. 최초 축약SHA 호출은 소스 검사에서 거부되어
 물리/잠금0; 동일 설정 전체SHA로 실행했다. HOST 사전검사와 실제 진단1회를 구분한다.
+
+### v48 횡이동 전 자기 RGB 확인 — 구현/재생/full 사전등록
+
+`look_before_move=rgb_sweep_v1` 기본off: off는 원래 runtime 객체/메서드를 그대로 반환한다.
+기존 v133의436파일은 그대로이며 v45 전진 보정+우도0.5 감쇠는 별도 명시한다.
+[full 등록](look-before-move-full-registration.json): **1054(동일 seed 비교),1055(새 seed)**
+각1회, v135/7.28.0, freeze/강성/look_ahead/slip+회복 수정/관측 격리/실물 blind/dev_light는
+기존 성공 번들의 옵션을 그대로 복사한다. main+열린15PR/현재 raw 이름에1055 사용 없음.
+1054는 fit1051+1053 고정 표, 새1055는 이미 봉인된 fit1053+1054 표를 사용하며 재적합0.
+900 SIM초 상한, ENOSPC=HOST_ERROR. 접촉0·lifted/inside/stable 유지, 시간 증가량과
+NEES≤20%·무경고25cm초과0을 그대로 보고하며 결과 후 문턱 변경0. 시작 도크 prior0.
+
+출처: [Nav2 Smac collision checker](https://github.com/ros-navigation/navigation2/blob/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_smac_planner/src/collision_checker.cpp#L128)
+128–131/155–169행의 unknown 불통과 원칙을 **횡이동 sweep**에 적용한다.
+[Ulrich/Nourbakhsh AAAI2000](https://cdn.aaai.org/AAAI/2000/AAAI00-133.pdf) §3–6의
+바닥 외형 HSI 분류+열별 최하단 장애물 규칙을 사용한다. 기존 floor_appearance_v1의
+고정 RGB 학습표를 재사용하고 주황색 로봇/cyan/자기 몸 투영은 바닥 증거에서 제외한다.
+단순 미검출은 free가 아니다. 평면·외형 방식이므로 바닥과 같은 색 장애물/오버행은
+보장하지 않으며, 2cm 여유는 로컬 sweep 여유이지 v47의 전역2σ 간격 달성 주장이 아니다.
+
+최근3초·.25초 표본의 정착 영상만, 고정 카메라/자기 팔 명령으로 바닥을 투영한다.
+전체 펄스 궤적을2.5cm 격자로 덮고 half-cell diagonal 여유를 더한다. 현재 자기
+footprint 내부만 지우며 미관측/가림은 unknown, 관측된 장애물이 free보다 우선한다.
+자기 상대 좌표 연결은 자기 발행 명령의 고정 펄스 모델이며 GT/상대 위치/통신0.
+모든 횡이동(정렬 포함)을 검사하고 미확인이면 LOOK_P20 측면2300/700으로2초 정착,
+.75초 관측 후 원래 팔 자세로2초 복귀한다. 집게 명령은 그대로 보존한다.
+동일 정지 위치/방향에서 스캔은1회이고, 계속 막히면 정렬은 대기한다. 경로 주행은
+[Nav2 Rotation Shim](https://github.com/ros-navigation/navigation2/blob/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_rotation_shim_controller/src/nav2_rotation_shim_controller.cpp)
+의 경로 방향 `atan2(y,x)` 정렬→전진 원칙을 기존 이산 turn/forward vocabulary에 적용한다.
+연속 속도 제어/전체 Nav2 costmap을 이식한 것은 아니며, 횡이동 인증이 없을 때 기존
+정적 경로의 다음 지점을 향해 회전·전진한다. 목표/지도/모션 이득/성공 문턱은 바꾸지 않는다.
+기존5° 회전·3.5cm waypoint 판정을 재사용하고 마지막 지점 이후 기존 yaw 정렬로 복귀한다.
+
+[재생기](replay_look_before_move.py)는3성공 녹화의 실제 자기 RGB·자기 명령만 읽어
+각 횡이동의 통과/보류를 셈한다. off 명령 직렬화 바이트 동일을 확인한다. 옛 녹화에는
+새 스캔 영상이 없으므로 보류 뒤 새 경로 성공/실패를 재생으로 날조하지 않는다.
+실제 명령 출력에서도 인증을 재검사해 미확인 횡이동이 누출되면 실행 오류로 기록한다.
+12개 관련 시험 통과(한 시험의 초기 open-grip 기대를 closed-grip 보존 검사로 바로잡음).
