@@ -57,3 +57,27 @@ freeze·모델 호출0. push 장애 시 로컬SHA로 진행하되 마지막 재�
 원본·4배속 영상: `/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1/`.
 단계 사이 지정 supervisor 파일 확인. 과거 egomap46의 “다음 실행 없음”은 해당 단계 지시이며,
 이번 사용자 egomap47의 새1회 실행 승인을 따른다. TensorBoard 생략 유지.
+
+## 실행 전 오프라인 결과
+
+사전등록 `0ff2b9cc`. egomap46 A의 경과149.0초 자기 snapshot(원본736프레임 일치)은
+SHA256 `ca244d2332d3b040bfee2fd6cf392144faab0eb5f492afaf95984c811a50a2af`.
+작은 테스트 fixture `tests/fixtures/navfn_start_costmap.npz`도 같은 바이트다.
+
+|후보 크기(칸)|기존 경로 점 수|새 옵션 경로 점 수|입력 costmap 변경|
+|---:|---:|---:|---|
+|175|0|124|없음|
+|169|0|95|없음|
+|110|0|180|없음|
+|72|0|63|없음|
+
+**계획 수락0/4→4/4**, GT/물리0. 추가한 전역 시작-sweep 거부만 제거했으며 그 sweep의 충돌 결과는
+4개 모두 여전히 false다. 지역 충돌 검사를 무시한 물리 통과로 해석하지 않는다.
+시험: 시작 inflated/lethal 비용1셀만 계획 복사본에서 clear, off A/B trace bytes 동일,
+지역 충돌 시0속도·context clear, 계획 실패 시 회복 후 blacklist, frozen B 번들 차이 검사.
+`tests/test_active_navfn_start.py tests/test_active_frontier_cycle.py`: **17 passed**.
+기존 소스 수정0, 새 모듈 factory 옵션off는 기존 클래스로 직접 위임한다.
+구현 연결은 `harness/active_navfn_start.py`; 네이티브 NavFn/비용/클러스터와 v8 파라미터는 재사용.
+원본 대비 변경은 위 표의 adapter 경계이며 목표유지·도착관측·B의 progress-failure 관측 주기는 그대로다.
+clear/spin/wait/backup은 기존 `.30m/.15m/s`, `1.57rad`, `5s`, `retry6`를 사용한다.
+[재생 수치와 입력 해시](results/replay.json). 설정·소스 해시는 `freeze.json`에 실행 전 고정한다.
