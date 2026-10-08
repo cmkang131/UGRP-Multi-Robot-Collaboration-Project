@@ -59,3 +59,23 @@ def test_frozen_registration_parameters():
     assert c['parameters']==dict(z_hit=.5,z_rand=.5,wall_sigma_m=.2,alpha=.5,ess_fraction=.5)
     assert c['gates']['nees_exceed_fraction_lte']==.2
     assert c['gates']['unflagged_gt_25cm_lte']==0
+
+
+def test_evaluation_keeps_missing_support_and_singular_covariance_explicit(monkeypatch):
+    import importlib
+    monkeypatch.syspath_prepend(str(Path('experiments/2026-10-06-s2-realism').resolve()))
+    e=importlib.import_module('evaluate_sensor_consistency')
+    p=np.zeros((4,3));w=np.full(4,.25)
+    a=e.cloud_metrics(p,w,np.array([1.,0.,0.]))
+    assert a['mass_10cm_5deg']==0 and a['nees_xy'] is None and a['ess']==4
+    p[:,:2]=[[1,0],[-1,0],[0,1],[0,-1]]
+    a=e.cloud_metrics(p,w,np.array([1.,0.,0.]))
+    assert a['nees_xy']==pytest.approx(2.) and a['mass_10cm_5deg']==.25
+
+
+def test_same_interior_map_line_has_no_along_line_position_information():
+    mapped=MapFeatures(dict(regions={'B':dict(center_m=[0,0],half_extents_m=[1,3],rgba=[0,0,1,1])}))
+    f=dict(kind='floor_line',hue=mapped.edges[1]['hue'],endpoints=[[1,-.5],[1,.5]],normal=[-1,0])
+    px=np.array([[0.,-.5,0.],[0.,0.,0.],[0.,.5,0.]])
+    density=m.feature_density(mapped,px,[f])
+    assert np.all(density==density[0])  # no invented constraint along a partial line
