@@ -5204,3 +5204,20 @@ PR#398의 `orange_columns_v1`도 RGB 색 열을 관측에서 제외하는 마스
 8개 원본 RGB(6 scan+SEARCH+접촉 직전)도 열어 보았으며 r1은 보이지 않는다.
 따라서 검출 문턱을 낮추거나 GT 등록좌표를 넣는 방법으로 재생 통과를 만들 수 없다.
 자기 RGB 측면 스캔으로 실제 상대 관측을 먼저 확보하는 것이 다음 필요 단계다.
+
+### 현재 판정과 남은 작업
+
+[진단 수치·원본 해시](peer-contact-diagnosis.json), [상태/기준/출처](peer-clearance-result.json).
+**관측 입력 부족으로 간격 관문은 UNKNOWN, 후보 구현·새 제어 재생·DEV 물리2회는 미완료**다.
+기준을 낮추거나 설정의 peer 좌표로 대신하지 않았다. `peer_clearance=nav2_padding_v1`은
+사전등록한 설계명이며 아직 실행 옵션으로 등록하지 않았다(빈 입력을 받아 아무것도 피하지 않는
+구현을 완료로 보고하지 않음). 질문한 측면 관측 진단 예외에 대한 응답이 필요하다.
+v45 결합의 과거 NEES는1051/1053/1054 각각0/0/30.87%, 무경고25cm초과0/0/0이고
+공분산 coverage493/493·447/486·622/623이다. 이를 새 회피 성능으로 합산하지 않는다.
+
+감사 시험5개 통과, 기존 번들436파일 SHA 모두 동일. 생산 코드 변경0이므로 새off 재생을
+수행했다고 주장하지 않는다. 잠금 미획득·status null, 새seed/번들/물리0, PR#406 DRAFT 유지.
+[TensorBoard 전달](peer-clearance-delivery.json): 새3뷰15수치 원본/event/live API 일치.
+[native TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1008-s2-peer-clearance-v47-verified%2F#timeseries),
+UI/새영상은 없음. 첫 내보내기는 파생 뷰 schema 누락으로 실패했고 manifest를 보존한 뒤
+schema를 넣어 별도 `-verified` snapshot으로 완료했다. raw/GitHub 원격 백업을 혼동하지 않는다.
