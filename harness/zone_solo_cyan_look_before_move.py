@@ -117,7 +117,7 @@ class Memory:
 
 
 def attach(runtime,*,look_before_move='off',floor_table=None,final_approach='off'):
-    if final_approach not in ('off','staging_rgb_monitor_v1'):raise ValueError('unknown final_approach')
+    if final_approach not in ('off','staging_rgb_monitor_v1','staging_v133_v1'):raise ValueError('unknown final_approach')
     if final_approach!='off' and look_before_move=='off':raise ValueError('final approach requires navigation guard')
     if look_before_move=='off':return runtime  # exact identity, no wrapper or RNG
     if look_before_move!=OPTION:raise ValueError('unknown look_before_move')
@@ -130,9 +130,13 @@ def attach(runtime,*,look_before_move='off',floor_table=None,final_approach='off
     monitor=None
     if final_approach!='off':
         from harness.zone_solo_cyan_staged_approach import Monitor,FINAL_STATES,moving
-        monitor=Monitor();runtime.final_approach_monitor=monitor
-        audit['final_approach']=monitor.audit
-    def final_stage():return monitor is not None and runtime.state in FINAL_STATES
+        if final_approach=='staging_rgb_monitor_v1':
+            monitor=Monitor();runtime.final_approach_monitor=monitor
+            audit['final_approach']=monitor.audit
+        else:
+            audit['final_approach']=dict(option=final_approach,robot_appearance_monitor='off',
+                controller='v133',final_states=sorted(FINAL_STATES),unknown_space_veto=False)
+    def final_stage():return final_approach!='off' and runtime.state in FINAL_STATES
     from harness.zone_solo_cyan_goal_heading import install as install_goal_heading
     install_goal_heading(runtime,audit)
     old_step,old_frames,old_command,old_record=runtime.step,runtime.on_frames,runtime.on_command,runtime.record
@@ -162,7 +166,7 @@ def attach(runtime,*,look_before_move='off',floor_table=None,final_approach='off
         if a['kind'] in ('drive','mecanum') and any(a.get(k,0) for k in ('forward','left','turn')):
             p=profile_for(a)
         if final_stage() and moving(a):
-            if monitor.assess(now)['stop']:
+            if monitor is not None and monitor.assess(now)['stop']:
                 raise RuntimeError('reactive STOP command escaped own RGB monitor')
         elif lateral(a):
             clear=p is not None and memory.assess(now,p)['clear']
@@ -215,6 +219,7 @@ def attach(runtime,*,look_before_move='off',floor_table=None,final_approach='off
             # Nav2 staging navigation has ended. No unknown-space look/route
             # wrapper changes the established v133 final-approach controller.
             phase=None;detour=False
+            if monitor is None:return old_step(now)  # s2v51 condition A, no new gate
             check=monitor.assess(now)
             active=runtime.cal_until is not None and now<runtime.cal_until-1e-8
             proposals=[(rid,dict(kind='hold'))] if check['stop'] and active else old_step(now)

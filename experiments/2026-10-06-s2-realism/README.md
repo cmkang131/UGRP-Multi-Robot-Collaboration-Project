@@ -5560,3 +5560,28 @@ HTTP Range206 확인(새 변환0), 원본 해시·외관 감사 반복 동일·�
 PASS, 평가 py_compile·git diff --check PASS. 브라우저 연결 목록이 비어 있어 화면 표시와
 HParams 실제 적용은 미검증이며 URL/열 설정만 보존했다. 소스/요약 원격 push와 raw 로컬
 보관을 구분한다. 별도 광류/모션 보정·다른 제어기·다른 worktree 변경은0이다.
+
+## s2v51 — 조건A: 이동 guard + 기존 최종 접근 (2026-10-08, 결과 전)
+
+사용자 지시대로 가장 단순한 조합만 확인한다. [사전등록](staging-only-registration.json):
+같은 s1054/s1055 각각full DEV1회, 둘 다 접촉0·lifted/inside/stable/success=true일 때만
+기존 성공s1053 회귀1회. NEES/무경고25cm는 정보용, 나머지 v136 옵션·보정·900SIM초·
+문턱 그대로. main+열린15PR에서 최대v137/7.30을 확인해 **v138/7.31.0**을 예약했다.
+
+`look_before_move=rgb_sweep_v1` + 새 선택값 `final_approach=staging_v133_v1`(기본off).
+search_move/carry 등 이동 구간은 v136의 unknown veto·우회·stateful 최종 yaw를 유지한다.
+v50에서 구분한 align/집기/최종배치 단계는 v133 제안을 바로 반환한다. 외관 Monitor는
+**생성/호출하지 않으며** RGB source-timeout/점수/unknown sweep 게이트를 덧붙이지 않는다.
+v133 자체의 영상 판독·팔·파지·dev_light·실제 물리 실패 처리는 그대로다.
+최종 접근의 미인증 횡이동은 이번 사용자 승인 조건A이며 이동 구간 차단과 구분해 기록한다.
+
+표준 staging 분리 출처는 위 v50의 Nav2 원문과 pinned 소스 분석을 그대로 참조한다.
+바닥선 오탐 검출기/색 문턱/정지영역은 수정하지 않는다. 다음 후보인 blob 접점 위·아래
+높이 검사와 복수 재질 분류도 이번 범위 밖이다. off는 기존 경로 바이트 동일.
+
+재생 기준: 두 v136 align 기록의 원래 제안 모두 통과, 세v133 성공 tape의 최종 접근
+제안 바이트 동일, search_move 미관측 차단 유지, 외관 감시 생성0, default off 동일.
+고정 제안 재생과 새 물리 성공은 구분한다. 재생 확인 후 agent_lock/ugrp_session으로
+한 번에 하나만 실행한다. 잠금이 있으면 기다리고 타 작업은 건드리지 않는다. 실행 소스와
+seed를 먼저 커밋·push(서버 오류면 로컬SHA 진행), GT는 종료 후 평가에만 사용한다.
+ENOSPC=HOST_ERROR. 결과 뒤 문턱 변경·추가 땜질0; 실패 원인·권고만 남긴다.

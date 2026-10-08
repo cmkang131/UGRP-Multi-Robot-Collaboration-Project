@@ -78,3 +78,32 @@ def test_contract_runtime_and_conditional_regression():
     r=runtime_factory(b)(legacy.hp.resolve(legacy.MAP_ID)[0],legacy.ROOT/legacy.CALIBRATION,legacy.CALIBRATION_SHA,**b['task'])
     try:assert r.final_approach_monitor.audit['option']==stage.OPTION
     finally:r.close()
+
+def test_condition_a_never_constructs_or_calls_appearance_monitor(monkeypatch):
+    def forbidden(*a,**kw):raise AssertionError('appearance monitor must remain off')
+    monkeypatch.setattr(stage,'Monitor',forbidden)
+    r=look.attach(Base(),look_before_move=look.OPTION,final_approach='staging_v133_v1',floor_table={})
+    before=json.dumps(Base().step(1),sort_keys=True)
+    for state in stage.FINAL_STATES:
+        r.state=state;actions=r.step(1)
+        assert json.dumps(actions,sort_keys=True)==before
+        r.on_command('r3',1,actions[0][1])
+    assert not hasattr(r,'final_approach_monitor') and r.look_before_move_audit['unconfirmed_lateral_issued']==0
+    r.state='search_move';assert not any(look.lateral(a) for _,a in r.step(2))
+
+def test_condition_a_registered_runtime_keeps_exact_v136_other_options():
+    from harness import zone_s2_staging_only_contract as c
+    from harness import zone_solo_cyan_contract_v106 as legacy
+    from scripts.run_s2_staging_only import runtime_factory
+    b=c.bundle('b'*40,1054,look_before_move=look.OPTION,final_approach='staging_v133_v1');c.require_execution(b)
+    base=c.old.bundle('b'*40,1054,look_before_move=look.OPTION)
+    assert {k:v for k,v in b['options'].items() if k!='final_approach'}==base['options']
+    for seed in (1053,):
+        with pytest.raises(ValueError):c.require_execution(c.bundle('b'*40,seed,look_before_move=look.OPTION,final_approach='staging_v133_v1'))
+    with pytest.raises(ValueError):c.require_execution(c.bundle('b'*40,1054,look_before_move=look.OPTION))
+    r=runtime_factory(b)(legacy.hp.resolve(legacy.MAP_ID)[0],legacy.ROOT/legacy.CALIBRATION,legacy.CALIBRATION_SHA,**b['task'])
+    try:
+        assert not hasattr(r,'final_approach_monitor')
+        assert r.look_before_move_audit['final_approach']['robot_appearance_monitor']=='off'
+        assert r.goal_heading['xy_tolerance_m']==.03 and r.goal_heading['yaw_tolerance_rad']==.06
+    finally:r.close()
