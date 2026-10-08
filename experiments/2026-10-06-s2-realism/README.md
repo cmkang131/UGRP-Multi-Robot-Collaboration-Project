@@ -5806,3 +5806,12 @@ ros_motion_v1/경쟁 start prior off를 요구한다. 장래에는 full carry와
 fixture 격리34시험 PASS(152.10초). [검증·로그 해시](ci-v53-local-validation.json).
 시험은 오프라인·명령/정적 평가만, 시뮬0·agent_lock acquire/release0.
 두 공용 CI 파일은 main 바이트와 동일, B1 제어기 파일은 작업 전 HEAD와 동일하다.
+
+원격 첫 확인: `2b1dd1eb`의 run37756904667은 31검사 PASS, shard6이
+25분 제한에 취소되어 aggregate FAIL이었다. 로그는 91%까지 실패 표시 없이 진행했고
+취소된 shard에는 JUnit이 남지 않았다. #411 run37757116894도 shard6 시간 초과였다.
+회수한 완료 shard JUnit(각7개)을 기존 run37745792131과 함께
+`refresh_ci_durations.py`에 넣어 파일별 측정 최대값으로 다시 분배했다.
+479/481파일·총9413초이며 시간 미측정2개는 기존 median fallback을 유지한다.
+공용 timeout/필터/실행 스크립트는 바꾸지 않았다. 배분 검사68 PASS(1.70초),
+로그·JUnit은 `outputs/s2-ci-v53-20261008/`에 보존; 원격 재검증 결과는 PR #406에 기록한다.
