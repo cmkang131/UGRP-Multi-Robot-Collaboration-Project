@@ -5221,3 +5221,30 @@ v45 결합의 과거 NEES는1051/1053/1054 각각0/0/30.87%, 무경고25cm초과
 [native TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1008-s2-peer-clearance-v47-verified%2F#timeseries),
 UI/새영상은 없음. 첫 내보내기는 파생 뷰 schema 누락으로 실패했고 manifest를 보존한 뒤
 schema를 넣어 별도 `-verified` snapshot으로 완료했다. raw/GitHub 원격 백업을 혼동하지 않는다.
+
+## s2v48 — 측면 관측 진단 사전등록 (2026-10-08)
+
+사용자가 v47 질문에 **seed1054 자기 RGB 측면 스캔 물리1회**를 승인했다. 재생 관문보다
+먼저 실행하는 명시적 예외이며, 접근 전 첫 옆이동 제안을 보류하고 정면/양측면 관측 후
+종료한다. 집기·운반0, 45 SIM초/15분 wall 상한, agent_lock/ugrp_session, dev_light.
+[고정 사전등록](look-before-move-registration.json): v133+v45 결합, fit1051/1053의
+s1054 holdout 고정 상수를 사용한다. GT는 채점에만, 상대 위치/숨은 채널/도크 prior0.
+공통 RUNNABLE_ID와 main/열린15PR의 S2 ID/7.x 버전을 확인하고 **v134/7.27.0** 진단,
+**v135/7.28.0** 후속 full을 예약했다. 원본 v133과436소스 파일은 변경하지 않는다.
+
+`side_scan=side_scan_v1` 기본off. Active Markov의2초 팔 정착 시간과 arm/look 명령 형식을
+재사용한다. LOOK_P20의 pan1500/2300/700은 기존 강성 보정표에 모두 있어 새 보정이나
+mount/FOV 수정이 없다. 각0.75초 관측, 정면→이동측→반대측→정면 순서.
+PR398 `orange_columns_v1`의 HSV[5,100,60]–[25,255,255], opening3/dilation5를
+그대로 재사용하고 connected components로 기록한다. 색 후보는 **로봇 ID/거리/빈 공간을
+의미하지 않는다**. 검출 여부·후보 bbox·원본 RGB해시를 저장하며, 판독 문턱 사후 조정0.
+
+후속 설계는 관측하지 않은 공간을 free로 표시하지 않는 Nav2 costmap 원칙을 따른다.
+`look_before_move=rgb_sweep_v1` 기본off, 최근3초 자기 RGB의 바닥 증거와 고정 카메라
+기하로 확인된 footprint+.02m 범위만 횡이동에 허용한다. unknown은 관측 행동/우회를
+요구하며 진단의 단순 주황색 미검출로 통과시키지 않는다. 네 통신 조건에 동일 입력만 쓴다.
+먼저 진단 검출률 기록→옵션 구현→3녹화의 미확인 횡이동/동작 변경 감사→같은seed+새seed
+full2회 순서다. 물리 성공·접촉0·시간 증가량·기존 POSE 기준은 따로 판정하며 실패도 남긴다.
+legacy `preregistered_run=false`는 본 연구 코호트가 아님을 나타내며 별도
+`dev_preregistration`과 새 계약이 이 **사전등록된 DEV 진단1회**만 허용한다.
+진단 관련6시험 통과(기본off 명령/record 동일, 횡이동 보류, 정착 후 관측, 실제 보정표 존재).
