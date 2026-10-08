@@ -5677,3 +5677,68 @@ v133과 같으며 접촉/GT는 종료 후 평가에만 쓴다. 실패는 원인�
 dev_light, agent_lock null 확인 후 acquire/release, ugrp_session으로 한 번에 하나.
 타 작업 잠금/프로세스에 손대지 않는다. 매 실행 전 supervisor 확인, ENOSPC=HOST_ERROR.
 4배속 ownRGB 영상과 TensorBoard에 실패도 남기고 PR406 DRAFT·병합 금지를 유지한다.
+
+### s2v52 결과 — 새 seed 3/3, 기존 3/3, 총 6/6 DEV 성공
+
+사전등록·관리 어댑터 SHA **2eb830e3ebf6d9a641dba10d6221d411b821a010** 이후
+고정 실행 소스 **027c567c45ec05968d7243212fbce1b4aa4d2d59**, v133/7.26.0으로
+1056→1057→1058 각각 full DEV 1회. 기존 성공 번들과 런타임436파일·모든 options가
+동일함을 실행 전후 확인했다. 제어 코드/보정/문턱 변경0·모델호출0.
+[6건 결과·옵션·접촉 시점·평가 입력 해시](baseline-v52-result.json).
+
+| 구분 | seed | lifted/inside/stable/success | 로봇 접촉 사건/점 | 벽 접촉점 | SIM / wall 초 | wall/SIM |
+|---|---:|---|---:|---:|---:|---:|
+| 이미 본 성공 | 1051 | true/true/true/true | 0/0 | 0 | 309.80 / 612.940 | 1.97023 |
+| 이미 본 성공 | 1053 | true/true/true/true | 0/0 | 0 | 306.95 / 545.352 | 1.76919 |
+| 이미 본 성공 | 1054 | true/true/true/true | 1/35 | 0 | 431.00 / 717.084 | 1.65876 |
+| 새 사전등록 | 1056 | true/true/true/true | 0/0 | 0 | 294.50 / 399.331 | 1.35000 |
+| 새 사전등록 | 1057 | true/true/true/true | 0/0 | 0 | 260.50 / 470.493 | 1.79715 |
+| 새 사전등록 | 1058 | true/true/true/true | 0/0 | 0 | 285.75 / 413.907 | 1.44193 |
+
+전부 `floor=true`, 정착창2초. **새3/3 + 이미 본3/3 = 총6건 중 성공6건**.
+이는 소표본 DEV 기술 집계이며 기존3건은 개발 중 이미 선택·관측한 성공이다.
+새3건과 기존3건을 분리해 읽으며 정식 E2E/본 연구 성공률이나 충돌 안전 보장으로 확장하지 않는다.
+실패0건, 따라서 실패 원인 분류 없음. **로봇 간 접촉이 실패 원인이 된 실행0건**이다.
+
+접촉은 기존 s1054의 r1–r3 **1사건(24.10–24.55s), 10표본/35접촉점**뿐이다.
+접촉 전 자기 추정시각23.89s 위치오차5.87cm/yaw+1.73°, 직후 보고24.60s
+(추정시각24.44s, 아직 접촉 중인 지연 표본) 4.55cm/−12.41°.
+접촉 종료1초 뒤 보고25.55s(추정시각25.39s)는 **3.73cm/−18.33°**다.
+XY가 작아도 yaw 교란은 남았으며 이 실행은 최종 배치에 성공했다.
+새1056/1057/1058 및 기존1051/1053은 접촉 없어 접촉 후 오차는 N/A.
+벽 접촉은 eval 접촉 로그의 양의 힘 접촉점으로 집계하며 여섯 건 모두0.
+
+| seed | NEES95% 초과 / 유효 행 (정보용) | 무경고25cm 초과 | would-stop 전체 목록 |
+|---:|---:|---:|---|
+| 1051 | 445/493 (90.26%) | 44 | ARM_COLLISION_GUARD 7, POSE_UNCERTAIN 293 |
+| 1053 | 248/486 (51.03%) | 0 | ARM_COLLISION_GUARD 7, POSE_UNCERTAIN 200, GRASP_INHAND_UNCONFIRMED 1 |
+| 1054 | 590/623 (94.70%) | 0 | ARM_COLLISION_GUARD 7, POSE_UNCERTAIN 312, CYAN_NOT_UNIQUELY_VISIBLE 5 |
+| 1056 | 364/427 (85.25%) | 2 | ARM_COLLISION_GUARD 7, POSE_UNCERTAIN 318 |
+| 1057 | 138/362 (38.12%) | 0 | ARM_COLLISION_GUARD 7, POSE_UNCERTAIN 302, REAL_PREGRASP_UNCONFIRMED 1, GRASP_INHAND_UNCONFIRMED 1 |
+| 1058 | 238/437 (54.46%) | 0 | ARM_COLLISION_GUARD 7, POSE_UNCERTAIN 274, GRASP_INHAND_UNCONFIRMED 1 |
+
+NEES·25cm 문턱은 바꾸지 않았고 성공 판정의 추가 게이트가 아니다.
+결정 시점은 펄스 선택·운반 checkpoint·탐색 진입, NEES는 단일 군집과 보고 trace가
+맞는 XY 공분산 행만 사용한다. 기존3건은 결정1617행 중 NEES1602행,
+새3건은 결정1241행 중 NEES1226행이다. 높은 NEES와 경고는 남은 문제이며 이번엔 수정하지 않는다.
+
+s1056 종료 후 egomap46 잠금을 기다렸고 s1057 최초 launcher는 acquire 거절로
+raw 생성/물리0회였다. 이를 실패 seed로 세지 않았다. 상대 잠금이 null이 된 뒤
+s1057→s1058을 시작했으며 각 실행의 `lock.json`에서 acquire/release PID 일치와
+종료 후 null을 확인했다. 자기 세션 모두 종료, 타 작업 종료/잠금 해제0.
+
+새 raw (각 폴더에 결과·입력·명령·GT 평가·4배속 `execution.mp4` 보존):
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1056-v133-reproduction`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1057-v133-reproduction`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1058-v133-reproduction`
+
+[전달·영상 검증](baseline-v52-delivery.json): 20Hz ownRGB를4배속 MP4로 만들고
+전체 디코딩·sha256·시간축 확인. 새 TensorBoard `1008-s2-v133-baseline-v52`에
+기존/새6뷰, `-media`에 새영상3개 등록. 원본/event/native live API **97수치 일치**,
+영상3개 HTTP206 확인. raw는 로컬 보관이며 GitHub에는 코드·사전등록·결과·해시를 보존한다.
+
+최종 검증: [검사 기록](baseline-v52-validation.json), 관련6시험 PASS 후 사전등록·실행,
+평가 입력36해시·고정 소스436파일·옵션 직렬화 바이트 일치. 결과 문서의 JSON/assert·compile·diff check PASS.
+Chrome 강 기존 TensorBoard 탭 재사용을 시도했으나 새 필터 링크/새로고침 뒤 빈 화면으로
+카드·HParams UI 적용 확인은 미완료다. 원본/event/native API97수치와 영상3개는 검증 완료,
+공용 서버 재시작·타 작업 변경0.
