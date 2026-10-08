@@ -1,0 +1,138 @@
+{
+  "source_sha": "e068a70fe978ffa9218916e4c4ae4fb292e69064",
+  "acquisition": {
+    "status": "RECORDED",
+    "source_sha": "e068a70fe978ffa9218916e4c4ae4fb292e69064",
+    "model_calls": 0,
+    "freeze": false,
+    "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+    "loadavg_start": [
+      3.24951171875,
+      3.62744140625,
+      5.525390625
+    ],
+    "start_sim_s": 1.3,
+    "frames": 620,
+    "total_sim_s": 125.1,
+    "stage": "declared",
+    "declared_goal": true,
+    "loss_t": 91.3,
+    "wall_s": 273.0668672089814,
+    "loadavg_end": [
+      2.52978515625,
+      3.26953125,
+      4.888671875
+    ]
+  },
+  "physical_attempts": 1,
+  "seed": 43001,
+  "phases": {
+    "explore": 440,
+    "relocalize": 13,
+    "return": 156,
+    "declared": 1
+  },
+  "loss_t": 91.3,
+  "goal": {
+    "entity": {
+      "kind": "floor_zone",
+      "id": "B"
+    },
+    "center_m": [
+      -0.9999999999999994,
+      2.812244897959184
+    ],
+    "source": "own",
+    "detector": "floor_color_v3",
+    "candidate_id": 2,
+    "obs_id": "r3-obs-000228",
+    "t_sim": 46.7,
+    "frame_sha256": "ed2ed37250ce27ee49b107b5454c9671408072aa7a6f74bc5097b55299a1f2e8",
+    "observations": 11,
+    "first_t": 44.7,
+    "bounds_m": [
+      [
+        -1.4500000000000002,
+        2.15
+      ],
+      [
+        -0.65,
+        3.5500000000000003
+      ]
+    ],
+    "confidence": 0.6225755029193318,
+    "partial_extent": true
+  },
+  "goal_center_error_m": 0.3520589592890466,
+  "goal_center_inside_B": false,
+  "internally_converged_frames": 157,
+  "correct_convergence": false,
+  "convergence_after_loss_s": null,
+  "false_convergence_frames": 157,
+  "post_loss_frames": 169,
+  "declarations": [
+    {
+      "t": 125.1,
+      "pose_error_m": 0.6032323437693873,
+      "actual_inside_B": true
+    }
+  ],
+  "correct_B_arrival": true,
+  "false_B_declarations": 0,
+  "arrival_after_loss_s": 33.8,
+  "actual_B_frames": 42,
+  "final_xy_m": 0.6032323437693873,
+  "final_yaw_deg": -5.85572578893675,
+  "final_sigma_xy_m": 0.0690897044836006,
+  "final_error_sigma_ratio": 8.731146677759677,
+  "path_rmse_m": 0.45507265042537665,
+  "travelled_m": 5.77752094872983,
+  "footprint_union_m2": 2.0425000000000004,
+  "hold_frames": 26,
+  "command_frames": 610,
+  "contact_sample_frames": {
+    "wall": 0,
+    "robot": 0
+  },
+  "contact_samples": 620,
+  "contact_scope": "5Hz samples; not exhaustive continuous collision count",
+  "insertion_scans": 27,
+  "decision_frames": 434,
+  "decision_counts": {
+    "bootstrap/bootstrap": 1,
+    "deferred/gmapping_motion_gate": 407,
+    "rejected/high_residual": 7,
+    "accepted/improved_proposal": 12,
+    "rejected/low_overlap": 4,
+    "deferred/insufficient_match_points": 2,
+    "rejected/search_boundary": 1
+  },
+  "map": {
+    "coordinate_frame": "r3/own_start",
+    "frozen_before_loss": true,
+    "occupied_cells": 263,
+    "observed_cells": 1306,
+    "observed_area_m2": 13.060000000000002,
+    "whole": {
+      "occupied_cells": 263,
+      "precision_015": 0.3231939163498099,
+      "precision_cell": 0.17490494296577946,
+      "wall_coverage": 0.19756838905775076,
+      "wall_error_rmse_m": 0.4688848678887419
+    },
+    "coverage": 0.19756838905775076,
+    "covered_samples": 65,
+    "total_wall_samples": 329,
+    "potential_visible_samples": 107,
+    "region_P": 0.31451612903225806,
+    "region_R": 0.38317757009345793,
+    "region_precision_cells": 124,
+    "region_correct_cells": 39,
+    "region_recalled_samples": 41,
+    "visibility_scope": "prefix true-camera FOV/range and walls; object occlusion unmodelled"
+  },
+  "thresholds_unchanged": true,
+  "offline_independent": false,
+  "real_hardware": 0,
+  "retuning": 0
+}

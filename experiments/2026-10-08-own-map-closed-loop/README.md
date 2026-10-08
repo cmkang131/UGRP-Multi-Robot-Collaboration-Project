@@ -104,3 +104,93 @@ whole-file 해시 차이를 발견했다(물리 시작0). `9ff00833`과 줄 단�
 off 옵션 인자/dispatch만 추가됐으며 원 검출은 동일했다. 옛 전체파일을 보존한 fixture의
 해시=egomap34 freeze를 확인하고 실제 RGB의 비어 있지 않은 검출 bytes 동일 시험 후
 `detector-off-admission.json`에 두 해시만 명시적으로 연결했다. 다른 freeze는 그대로다.
+
+## 거짓 수렴 진단(평가 전용)
+
+원인 요약: **관측 우도의 과집중 증거가 있고, 부정확한 색 경계 기억도 많다. B를 다른
+진짜 색 구역으로 연관해서 이탈했다는 단독 원인은 이번 자료로 확인되지 않았다.**
+60초 자기의 최저 posterior ESS는3.109→69.752, 재표본32→28회. 감쇠 후 재표본 직후
+고유 자세 최솟값327, 고유 비율 중앙44.5%로, 재표본 직후 ESS=N을 다양성 회복으로
+해석하지 않는다. posterior와 resampled를 별도로 저장했다.
+
+'B 미관측'은 **floor_color_v3의 B 후보가 미확인**이라는 뜻이다. 60초 이전 색 선612개를
+원 취득 GT 자세로 평가하니 B 경계0.15m 이내인 부분선4개는 이미 있었고,517/612개는
+어떤 실제 바닥 색 경계에도0.15m 안으로 대응되지 않았다(벽/물체의 바닥 투영 등 포함할 수
+있으므로 이 숫자만으로 의미 객체 오검출로 확정하지 않는다). 미래 센서 업데이트237개
+중 실제 B 경계에 가까운13개에서12개는 B 취득 경계로,1개는 실제 바닥 경계가 아닌 기억으로
+대응했다. 서로 다른 **정답 구역** 사이 오연관0개(off/on 동일). 거짓수렴 시의 대응84→50개
+역시 정답 구역 간 오연관0개. 따라서 입자 집중과 부정확한 부분 특징을 함께 원인 후보로
+남기고, B 경계 오연관 하나로 단정하지 않는다. 이 분류는 GT로 만든 **사후 평가**이며
+수정/문턱/제어에는 쓰지 않았다. 상세: results/association-diagnosis.json 및 raw의
+`offline/correspondence-evaluation.json`.
+
+### 소스 대조
+
+- [PR406 고정 구현 2fa4bf9a](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/2fa4bf9a0e8097bcd4d1e1933b7d04e4d54dd965/harness/zone_solo_cyan_bias_tempering.py#L65):
+  원 joint score의 `np.power(score,.5)`만 이식. `moments` 원문·상수는 vendor에 복사하고
+  정의별 hash/원본 행은 `harness/own_map_amcl_vendor/provenance.json`에 보존.
+- S2 s2v45의 근거: Thrun/Burgard/Fox, *Probabilistic Robotics* (2005),
+  §6.3.4 p167·§6.7 p183, 상관 관측의 우도 감쇠. α=.5는 S2 사전등록값.
+- 기존 KLD/augmented injection/랜드마크 ML 연관과 문턱은 변경0.
+  새 전역 초기화는 자기 관측 free에 uniform, yaw[-π,π); 이전 자세/GT prior0.
+
+## DEV 물리1회 결과 — B 도착과 정답 재위치 성공을 분리
+
+소스 `e068a70fe978ffa9218916e4c4ae4fb292e69064`, seed43001, 실행 번들
+`egomap43-own-B-dev-v1`. **실제 MuJoCo 실행1회**; S2와 동시 실행0, 모델0·freeze0.
+관리 wrapper는 `python -m scripts.sim_cli workflow run own-map-goal-dev`로 실행했다.
+최초 직접 파일 실행의 import 오류는 물리 시작 이전이며 재녹화가 아니다.
+agent_lock(pid19495)·ugrp_session 종료 및 잠금null 확인. 60분/1GiB 예산 내 완료.
+
+|측정|결과|
+|---|---:|
+|전체 시간 / loss 이후 도달 선언 / wall 시간|123.8 SIM초 / 33.8초 / 273.07초|
+|B 도달 선언의 GT 차체 중심이 B 안 / 거짓 선언|**1/1 / 0**|
+|정답 재위치 수렴(XY≤.25m·yaw≤10°,5프레임)|**0/1**|
+|내부 수렴 / 거짓 수렴|157/169 suffix프레임 / 157프레임|
+|종료XY / σXY / 오차÷σ|0.6032m / 0.0691m / 8.73σ|
+|종료yaw / 전 경로XY RMSE|−5.86° / 0.4551m|
+|이동 / 실제 footprint union / hold|5.778m / 2.0425m² / 26/610=4.26%|
+|벽 / 다른 로봇 접촉|0 / 0 (620개5Hz 평가 표본)|
+|삽입 스캔 / 점유칸 / 관측칸|27 / 263 / 1306(13.06m²)|
+|snapshot 영역P/R|31.45%(39/124칸) / 38.32%(41/107벽표본)|
+|잠재가시 벽 / 전체덮음|107/329 / 65/329=19.76%|
+|snapshot 전체P / 벽RMSE|32.32%(85/263칸) / 0.4689m|
+
+B 기억은 자기 `r3-obs-000228`,경과45.4초(RGB hash는 result에 보존)에서 처음 확인했다.
+경과90초에 **시작 위치 모름 uniform100000입자**로 재초기화; 이전 pose prior0.
+벽 snapshot은 마지막 삽입t87.9의27스캔, 랜드마크는 loss t91.3 직전까지의1227부분선·문0.
+loss프레임 배제, snapshot/랜드마크/목표 이후 관측누설0. 지도 셀/ledger는 실행 끝까지 동일.
+마지막 삽입~loss 사이의 명령 DR/입자/관문 계수는 달라지므로 metadata 전체가 아닌
+AMCL이 읽는 셀·해상도·로봇ID와 ledger를 hash/내용으로 확인했다.
+
+B 기억 중심의 평가 오차는0.3521m이며 실제B 바깥이다. 내부 수렴 후에도 GT 위치 오차가
+남았다. 따라서 **B 도착1회는 관측된 사실이나, 정확한 자기 지도/재위치의 확증은 아니다.**
+실제 첫 B 진입은 경과115.6초이고 loss 이전 B 진입0프레임이다. 정답을 주입하거나
+도착 판정으로 제어를 돌린 것이 아니라 자기 추정 거리≤.20m에서 정지한 뒤 채점했다.
+다음 후보를 이번 결과에 맞춰 수정하지 않았으며 추가 물리 실행0.
+
+탐색 RGB440프레임 중 유효 벽 판정434, 빈6. egomap26 삽입 수정은 on 유지.
+관문보류407, bootstrap1, 정합수락12, 명시거부12(high_residual7/low_overlap4/search_boundary1),
+점부족2; 삽입27=bootstrap1+수락12+거부12+점부족2. 문턱/옵션 사후변경0.
+
+## 결과물·검증·한계
+
+![chronological wrist/map checks](figures/video-check.jpg)
+
+- 영상: `/Users/changmin/projects/ugrp/outputs/own-map-closed-loop-v1/wrist-map-4x.mp4`
+  (620프레임,1280×480,20fps,31.00초,4배속). ffprobe+전체decode 및 시작/중간/끝 그림 확인.
+  회색 실제벽·녹색 실제경로는 평가 오버레이; 파란 자기지도·주황 추정·자홍 기억한B.
+  각 시각 이전 snapshot만 사용하고 최종지도 역주입0.
+- raw: `outputs/own-map-closed-loop-v1`; 물리 raw79,070,678bytes,
+  결과/원본/video 전체hash `results/raw-manifest.json`. **로컬 보관이며 원격 raw백업 아님.**
+- 바뀐3시험 파일 **15passed**; off pose/particles/logweights/RNG bytes golden,
+  원본 S2 정의hash, 손실프레임배제·uniform초기화·미관측목표·5프레임선언·DEVtimeout,
+  기존RGB 측정일치·egomap34 검출off동일·관리workflow 확인.
+- 오프라인6조건 hash/인과분할·물리1회 causal snapshot·목표관측ID·영상검증:
+  `code/verify.py` 통과. 검사기 초기 metadata/관리상태 키 가정은 실제 스키마에 맞춰 정정;
+  예측·물리 원본 변경0. 단위시험과 실제 도착/실패는 별도 판정.
+- 한 이전 녹화의 중첩3쌍과 새DEV1회뿐이며 일반화/실물/연구 코호트 성공률로 쓰지 않는다.
+  바닥 선의0.15m GT 대응은 기하 사후 분류이며 의미 객체 확정이 아니다.
+  접촉0은 저장5Hz 표본(별도 native wall-contact abort 유지), 연속 전접촉 무발생 증명 아님.
+- PR405 DRAFT 유지·병합0. PR406 수정0, 추가 패키지/유료자원0, TensorBoard생략 유지.
