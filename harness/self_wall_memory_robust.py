@@ -8,7 +8,7 @@ from harness.self_pose_graph import rebuild
 
 
 class SelfWallMemory(Previous):
-    def __init__(self, *args, loop_rejection='off', wall_evidence='off', wall_export='off', map_update='off', **kwargs):
+    def __init__(self, *args, loop_rejection='off', wall_evidence='off', wall_export='off', map_update='off', graph_acceleration='off', **kwargs):
         if wall_export not in ('off', 'segments_confidence_v1'):
             raise ValueError('UNKNOWN_WALL_EXPORT')
         if loop_rejection not in LOOP_VALUES or wall_evidence not in EVIDENCE_VALUES:
@@ -25,6 +25,8 @@ class SelfWallMemory(Previous):
         from harness.self_camera_grid import install
         install(self.self_map, map_update=map_update)
         self.map_update = map_update
+        from harness.self_graph_cache import install as install_graph_cache
+        install_graph_cache(self,graph_acceleration=graph_acceleration)
 
     def command(self, row):
         super().command(row)

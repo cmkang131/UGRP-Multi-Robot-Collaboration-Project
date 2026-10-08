@@ -134,7 +134,7 @@ def make_submaps(robot_id, rows, options):
     return submaps, constraints
 
 
-def match_loop(submap, row, initial, options):
+def match_loop(submap, row, initial, options, *, prepared=None):
     """Hess Alg.1 exhaustive probability score, continuous refinement, gates.
 
     Additional mode/normal observability gates reflect our narrow-FOV contacts.
@@ -145,7 +145,7 @@ def match_loop(submap, row, initial, options):
     event = {'accepted':False, 'reason':'insufficient_points', 'points':len(points)}
     if len(points) < o.min_points or not submap['grid'].cells:
         return event
-    field = ProbabilityField(submap['grid'])
+    field = ProbabilityField(submap['grid']) if prepared is None else prepared.probability()
     steps = np.array([o.translation_step_m]*2+[math.radians(o.yaw_step_deg)])
     limits = np.array([o.translation_window_m]*2+[math.radians(o.yaw_window_deg)])
     counts = np.floor(limits/steps+1e-8).astype(int)
@@ -177,7 +177,7 @@ def match_loop(submap, row, initial, options):
                         bounds=(initial-limits,initial+limits),max_nfev=o.max_nfev,
                         diff_step=1e-4,xtol=1e-8,ftol=1e-8,gtol=1e-8)
     candidate = fit.x
-    distance = DistanceField(submap['segments'], .05, 1.)
+    distance = DistanceField(submap['segments'], .05, 1.) if prepared is None else prepared.distance()
     world = transform(points,candidate)
     d = distance.query(world)
     overlap, residual = float(np.mean(d<=o.overlap_m)), float(np.sqrt(np.mean(d*d)))
@@ -262,7 +262,7 @@ def validate_rows(rows, robot_id):
             raise ValueError('POSE_GRAPH_INVALID_WEIGHT')
 
 
-def apply_pose_graph(rows, poses, *, robot_id, pose_graph='off', options=None):
+def apply_pose_graph(rows, poses, *, robot_id, pose_graph='off', options=None, cache=None):
     """Off returns original objects without inspecting input or loading a graph.
 
     On requires an explicit own-robot id per scan/pose. Call only after positive-
@@ -283,6 +283,7 @@ def apply_pose_graph(rows, poses, *, robot_id, pose_graph='off', options=None):
         return copy.deepcopy(rows), copy.deepcopy(poses), {'options':asdict(o),'submaps':[], 'constraints':[], 'loops':[],
             'loop_counts':{},'optimization':{'accepted':False,'reason':'empty_ledger'}, 'changed':False}
     submaps, constraints = make_submaps(robot_id,rows,o)
+    if cache is not None:cache.prepare(submaps,robot_id)
     events = []
     for i,submap in enumerate(submaps):
         for j,row in enumerate(rows):
@@ -293,11 +294,11 @@ def apply_pose_graph(rows, poses, *, robot_id, pose_graph='off', options=None):
                 event['reason'] = 'temporal_separation'
             else:
                 initial = between(submap['pose'],row['pose'])
-                pts = submap['grid'].occupied_points()
+                pts = submap['grid'].occupied_points() if cache is None else submap['_prepared'].occupied
                 if not len(pts) or np.min(np.linalg.norm(pts-initial[:2],axis=1))>o.candidate_distance_m:
                     event['reason'] = 'outside_candidate_radius'
                 else:
-                    event.update(match_loop(submap,row,initial,o))
+                    event.update(match_loop(submap,row,initial,o) if cache is None else cache.match(submap,row,initial,o))
             events.append(event)
             if event['accepted']:
                 constraints.append({'kind':'loop','submap':i,'scan':j,'relative_pose':event['relative_pose'],

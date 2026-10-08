@@ -20,3 +20,29 @@ egomap47 HOST_ERROR를 소급 완료로 바꾸지 않는다. 누락된 마지막
 프레임1.52배를 실제 물리 전체에 무조건 곱하지 않는다. raw 예산512MiB, ENOSPC=HOST_ERROR.
 기존 가속도 포함하는 조건은 별도 표기. 새 의존성/venv0. 바뀐 모듈 시험만, 초록 후 커밋/push.
 단계 사이 supervisor 확인, 잠금 점유 시 대기, 다른 프로세스/브랜치 수정0. TensorBoard 생략 유지.
+
+## 프로파일·선택 (구현 후 동일성/시간 측정 전)
+
+기준 cProfile1회 완료36.756초, 204 scans+21 submaps=225 pose 노드, 402제약(내부398+loop4).
+정합3751회28.559초(77.7%, field 생성 포함), probability field3623회6.550초,
+distance field64회0.150초. make_submaps1.811초, legacy/robust rebuild각0.893/0.906초.
+legacy optimize0.084초/nfev6, switchable optimize0.169초/nfev12;
+LSMR16호출 누적0.143초. 최종 graph 한 번이30분인 것이 아니라 전체실행30분 상한이 마지막 계산을 잘랐다.
+
+선택 `graph_acceleration=match_cache_v1` 기본off:
+- [Cartographer ConstraintBuilder2D](https://github.com/cartographer-project/cartographer/blob/master/cartographer/mapping/internal/constraints/constraint_builder_2d.cc)
+  151–171 `DispatchScanMatcherConstruction`은 submap matcher를 재사용한다.
+- [PoseGraph2D](https://github.com/cartographer-project/cartographer/blob/master/cartographer/mapping/internal/2d/pose_graph_2d.cc)
+  292–378은 새 node/완성 submap에 제약을 추가하고 기존 제약을 유지한다.
+- [SciPy least_squares](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.least_squares.html)의
+  jac_sparsity/LSMR는 이미 사용 중. solver·수렴 허용오차·초깃값은 변경하지 않는다.
+
+우리 RBPF의 과거 lineage는 바뀔 수 있으므로 ID만 캐시하지 않는다: **submap grid/resolution/선분**,
+**scan 선분/initial relative pose/모든 GraphOptions**의 정확한 내용이 같을 때만 정합 결과를 재사용한다.
+해시/키 불일치는 재계산; 후보 필터·검색 범위·수락 기준 불변. submap별 occupied/확률/거리 field 재사용,
+성공과 거부 모두 캐시, 반환 deep-copy, 로봇별 별도 인스턴스. LRU8192쌍/64fields는 메모리 상한이며
+eviction은 재계산만 유발하고 결과는 바꾸지 않는다. 최적화 자체/field 외 그래프 재구축은 그대로.
+원문 전략의 독립 Python 구현; 외부 코드 복사/새 solver/venv0. 기본off는 기존 분기로 동작.
+
+동일성 검증은 최종 graph off/cold-on/repeat-warm-on 모두, warm은 같은 입력 재계산의 상한 이득으로만 표기.
+기록된35회 graph 호출에서 반복 입력 수를 별도 감사해 warm 최선값을360초 전체 속도라고 주장하지 않는다.

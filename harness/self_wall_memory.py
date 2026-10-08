@@ -256,7 +256,7 @@ class SelfWallMemory(Memory):
         if poses is None:
             poses = [{"robot_id":self.robot_id,"t":r["t"],"pose":r["pose"]} for r in rows]
         rows, path, diagnostics = apply_pose_graph(rows, poses, robot_id=self.robot_id,
-            pose_graph=self.pose_graph, options=self.pose_graph_options)
+            pose_graph=self.pose_graph, options=self.pose_graph_options, cache=getattr(self,"graph_cache",None))
         self._graph_view = rebuild(self.robot_id, rows)
         if path:
             self._graph_view.odom._predictor.px[0] = path[-1]["pose"]

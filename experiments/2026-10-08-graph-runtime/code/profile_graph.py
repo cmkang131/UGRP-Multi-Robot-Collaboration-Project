@@ -31,13 +31,13 @@ def memory():
     return m,poses
 
 
-def run(name,profile=False,acceleration='off'):
+def run(name,profile=False,acceleration='off',state=None):
     import harness.self_pose_graph as g
     import harness.self_loop_rejection as rejection
     import harness.self_wall_memory_robust as robust
     out=RAW/name;out.mkdir(parents=True,exist_ok=False)
-    m,poses=memory();durations={};calls={};reports={};undo=[]
-    if acceleration!='off':
+    m,poses=memory() if state is None else state;durations={};calls={};reports={};undo=[]
+    if acceleration!='off' and not hasattr(m,'graph_cache'):
         from harness.self_graph_cache import install
         install(m,graph_acceleration=acceleration)
     def wrap(obj,fn,label):
