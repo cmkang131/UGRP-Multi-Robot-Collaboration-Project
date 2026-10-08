@@ -125,6 +125,8 @@ def attach(runtime,*,look_before_move='off',floor_table=None):
         denied=0,allowed=0,unconfirmed_lateral_issued=0,alternate_forward_or_turn=0,
         gt_inputs=False,communication_inputs=False,free_from_no_detection=False)
     runtime.look_before_move_audit=audit
+    from harness.zone_solo_cyan_goal_heading import install as install_goal_heading
+    install_goal_heading(runtime,audit)
     old_step,old_frames,old_command,old_record=runtime.step,runtime.on_frames,runtime.on_command,runtime.record
     phase=None;deadline=0.;restore=None;side=0;scanned_origin=None;last_wait=-math.inf;detour=False
 
@@ -171,7 +173,13 @@ def attach(runtime,*,look_before_move='off',floor_table=None):
         if not runtime.path:detour=False;return []
         r=runtime.last_report
         error=rot(r.yaw_rad).T@(np.array(runtime.path[0])-[r.x_m,r.y_m])
-        if np.linalg.norm(error)<=.035:
+        if len(runtime.path)==1 and (runtime.goal_heading['phase']!='position' or
+                np.linalg.norm(error)<=runtime.goal_heading['xy_tolerance_m']):
+            # The normal step calls drive(), whose stateful goal checker now
+            # latches XY and completes final yaw instead of requesting a strafe.
+            detour=False
+            return old_step(now)
+        if len(runtime.path)>1 and np.linalg.norm(error)<=.035:
             runtime.path.pop(0)
             if not runtime.path:runtime.path_goal=None
             detour=False;return []

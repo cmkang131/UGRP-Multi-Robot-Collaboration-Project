@@ -5354,3 +5354,45 @@ TensorBoard가 인식하는 `execution.mp4`는 같은 inode의 hardlink이며 �
 [timeseries](http://127.0.0.1:6006/?runFilter=%5E1008-s2-look-before-move-v48%2F&smoothing=0#timeseries)
 와 기존v47 peer baseline을 함께 보는 pinned URL/HParams 열을 자기 설정 키에만 추가했다.
 UI는 재개방하지 않았으며 숫자/파일/서버 판독 검증과 화면 표시 검증을 구분한다.
+
+## s2v49 — XY 도착 후 최종 방향 정렬 latch 버그 수정 (2026-10-08)
+
+사용자 지시의 좁은 전이 수정이며 `look_before_move=rgb_sweep_v1` ON 경로에만 적용한다.
+기본off는 runtime/메서드 그대로 반환; v133 기존436파일은 수정하지 않는다.
+[사전등록](goal-heading-registration.json): s1054·s1055 같은 조건 각각1회, 둘 다
+접촉0·미확인횡이동0·success/lifted/inside/stable=true면 기존 성공 s1053 회귀1회만 추가.
+v135 옵션·카메라·질량·보정표·900SIM초·dev_light 모두 그대로이며 NEES/무경고25cm는
+정보용이다. 이전 NEES95% 경계5.991464547107979를 바꾸지 않는다. 실행은agent_lock/
+ugrp_session 순차, ENOSPC=HOST_ERROR, GT는 평가에만. main+열린15PR 최대135/7.28을
+확인하여 **v136/7.29.0**을 예약했다. 이미 사용한 seed의 반복은 이번 사용자 명시 지시다.
+
+[Nav2 SimpleGoalChecker 고정 원본](https://github.com/ros-navigation/navigation2/blob/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_controller/plugins/simple_goal_checker.cpp#L157)
+113–116행 reset,157–167행 XY 도착→check_xy=false(stateful),141–142행 yaw 판정을 따른다.
+원본stateful=true·buffer0에서는 회전 중 위치 재진입을 하지 않는다. 원본의 기본 허용값
+.25m/.25rad를 이식하지 않고 **기존 S2의 목표3cm/.06rad, 중간 waypoint3.5cm**를 유지한다.
+[Rotation Shim](https://github.com/ros-navigation/navigation2/blob/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_rotation_shim_controller/src/nav2_rotation_shim_controller.cpp#L130)
+130–145행의 XY 도착 후 최종 yaw 제자리 정렬을 기존 .35/.10s 회전 펄스로 구현한다.
+마지막 waypoint에서 XY latch→heading→reached를 분리하고, 새 목표/단계에서만 초기화한다.
+heading 단계는 각도만 최소화한다. 불필요한 XY 비용을 넣으면 yaw 경계 바로 밖에서도
+작은 회전 병진비용 때문에 필요한 펄스를 거부하므로 기존 주행용 비용함수를 사용하지 않는다.
+제자리 명령의 실제 병진 drift는 평가로 남기며 실시간 정답 보정은 하지 않는다.
+
+11개 관련 시험 통과: 실제 두 yaw 반례, 회전 중4cm drift에도 XY 재진입 없음,
+목표 변경 reset, 기존 경계 유지, 실 runtime 경로/옵션 동등성과 조건부 회귀 admission.
+[재생기](replay_goal_heading.py)는 두 정체 tape의 자기 추정 pose에서 실제 runtime.step을
+호출해 회전 전이를 확인한다. 이후 고정 명령 모델의 yaw를 넣는 확인은 컴포넌트 시험이며
+새 물리·새 시야·운반 성공으로 보고하지 않는다. off는3기존 성공 tape의 명령/record
+바이트와 메서드 identity를 대조하며 PF 전체를 다시 적합했다고 주장하지 않는다.
+
+### v49 상태 기계 trace 및 오프라인 전이 확인
+
+| 녹화 / 시각 | 우회 XY≤3.5cm | 목표 XY≤3cm | yaw≤.06rad | 기존 다음 후보 | 수정 후 다음 후보 |
+|---|---|---|---|---|---|
+|s1054 /63.05s|1.5906cm, true|true|4.7333°, false|left+.35/.06s→unknown veto→동일 search_move|XY latch→turn−.35/.10s|
+|s1055 /71.00s|1.4818cm, true|true|3.5386°, false|left+.35/.06s→unknown veto→동일 search_move|XY latch→turn−.35/.10s|
+
+두 기록 모두 해당 정체의 반복 veto기회574회. [재생 결과](goal-heading-replay.json):
+실 runtime.step에서 방향 회전 전이2/2 확인. 고정 펄스 모델만 적용한 yaw 예측은
+−1.2014°/−2.3960°로 기존 문턱 안이며, 별도4cm X변화 주입 시험에서도 XY로 재진입하지
+않고 reached를 반환했다. 이 예측은 새 물리 결과가 아니다. off 성공 tape s1051/1053/1054
+4,023/3,959/8,921개 명령과 record 바이트 동일·원래 메서드 identity 유지.

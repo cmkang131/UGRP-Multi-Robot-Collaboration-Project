@@ -1,0 +1,189 @@
+{
+  "schema": "ugrp.s2.goal_heading_replay.v1",
+  "runs": [
+    {
+      "seed": 1054,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-88f5fbbb-s1054-v135-look-before-move",
+      "t": 63.05,
+      "recorded_state": "search_move",
+      "recorded_waypoint": [
+        -0.47,
+        -0.85
+      ],
+      "detour_xy_exit": true,
+      "goal_xy_ok": true,
+      "goal_yaw_ok": false,
+      "distance_m": 0.015905538563516407,
+      "yaw_rad": 0.08261211626731663,
+      "old_candidate": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.35,
+        "turn": 0.0,
+        "duration_s": 0.06
+      },
+      "old_next": "unknown veto -> detour XY done -> same search_move",
+      "new_candidate": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.0,
+        "turn": -0.35,
+        "duration_s": 0.1
+      },
+      "new_next": "XY latched -> final heading rotation",
+      "repeated_old_veto_opportunities": 574,
+      "new_transition_observed": true,
+      "fixed_command_prediction_yaw_rad": -0.020969255210265964,
+      "stateful_component_arrived_with_4cm_drift": true,
+      "goal_trace": [
+        {
+          "t": 63.05,
+          "event": "xy_latched",
+          "state": "search_move",
+          "goal": [
+            -0.47,
+            -0.85
+          ],
+          "distance_m": 0.015905538563516407,
+          "xy_tolerance_m": 0.03,
+          "yaw_rad": 0.08261211626731663
+        },
+        {
+          "t": 63.05,
+          "event": "rotate",
+          "state": "search_move",
+          "distance_m": 0.015905538563516407,
+          "yaw_rad": 0.08261211626731663,
+          "xy_rechecked": false,
+          "action": {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.0,
+            "turn": -0.35,
+            "duration_s": 0.1
+          }
+        },
+        {
+          "t": 63.45,
+          "event": "goal_reached",
+          "state": "search_move",
+          "distance_m": 0.036686450748836225,
+          "yaw_rad": -0.020969255210265964,
+          "xy_rechecked": false
+        }
+      ],
+      "source_hashes": {
+        "student_record.json": "509dfe73a30fa2e21712539270d99d5539b81ebefcaede4aa3c166cd9c63e859"
+      },
+      "gt_inputs": false,
+      "physics_runs": 0
+    },
+    {
+      "seed": 1055,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-88f5fbbb-s1055-v135-look-before-move",
+      "t": 71.0,
+      "recorded_state": "search_move",
+      "recorded_waypoint": [
+        -0.47,
+        -0.85
+      ],
+      "detour_xy_exit": true,
+      "goal_xy_ok": true,
+      "goal_yaw_ok": false,
+      "distance_m": 0.014818146088164083,
+      "yaw_rad": 0.06176017581013053,
+      "old_candidate": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.35,
+        "turn": 0.0,
+        "duration_s": 0.06
+      },
+      "old_next": "unknown veto -> detour XY done -> same search_move",
+      "new_candidate": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.0,
+        "turn": -0.35,
+        "duration_s": 0.1
+      },
+      "new_next": "XY latched -> final heading rotation",
+      "repeated_old_veto_opportunities": 574,
+      "new_transition_observed": true,
+      "fixed_command_prediction_yaw_rad": -0.04182119566745206,
+      "stateful_component_arrived_with_4cm_drift": true,
+      "goal_trace": [
+        {
+          "t": 71.0,
+          "event": "xy_latched",
+          "state": "search_move",
+          "goal": [
+            -0.47,
+            -0.85
+          ],
+          "distance_m": 0.014818146088164083,
+          "xy_tolerance_m": 0.03,
+          "yaw_rad": 0.06176017581013053
+        },
+        {
+          "t": 71.0,
+          "event": "rotate",
+          "state": "search_move",
+          "distance_m": 0.014818146088164083,
+          "yaw_rad": 0.06176017581013053,
+          "xy_rechecked": false,
+          "action": {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.0,
+            "turn": -0.35,
+            "duration_s": 0.1
+          }
+        },
+        {
+          "t": 71.4,
+          "event": "goal_reached",
+          "state": "search_move",
+          "distance_m": 0.03257096986307306,
+          "yaw_rad": -0.04182119566745206,
+          "xy_rechecked": false
+        }
+      ],
+      "source_hashes": {
+        "student_record.json": "3113f4848952ec660bd234bff4cdf52d2f2773ebb0a6aa297dd6aa56ebf1bd40"
+      },
+      "gt_inputs": false,
+      "physics_runs": 0
+    }
+  ],
+  "off": [
+    {
+      "seed": 1051,
+      "commands": 4023,
+      "command_bytes_equal": true,
+      "record_bytes_equal": true,
+      "command_sha256": "0e11a2ab88320da7c10a6a3fb1760368f4a5aa9a77ba9678daaf72727145d798",
+      "scope": "off adapter exact identity over existing tapes; PF not recomputed"
+    },
+    {
+      "seed": 1053,
+      "commands": 3959,
+      "command_bytes_equal": true,
+      "record_bytes_equal": true,
+      "command_sha256": "ff4aab36621c179d2a700074a681f81318f9cd8ef5dece45bb6abaeb4005625d",
+      "scope": "off adapter exact identity over existing tapes; PF not recomputed"
+    },
+    {
+      "seed": 1054,
+      "commands": 8921,
+      "command_bytes_equal": true,
+      "record_bytes_equal": true,
+      "command_sha256": "2f67e89f9ed57630f2ce9d01574218827ff23d9baff36d585ac0531495649752",
+      "scope": "off adapter exact identity over existing tapes; PF not recomputed"
+    }
+  ],
+  "physics_runs": 0,
+  "gt_inputs": false,
+  "full_admitted": true,
+  "scope": "real runtime.step at saved own pose; post-turn arrival is fixed motion-model component check, not simulated success"
+}

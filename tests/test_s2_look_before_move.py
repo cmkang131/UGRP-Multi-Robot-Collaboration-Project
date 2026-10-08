@@ -20,6 +20,7 @@ class Base:
     def on_command(self,*a):pass
     def on_frames(self,*a):pass
     def soft(self,*a):pass
+    def drive(self,*a,**kw):return [],False
 
 def test_off_is_identical_object_and_bound_methods_bytes():
     r=Base();before=(r.step,r.record,r.on_command,r.on_frames)
