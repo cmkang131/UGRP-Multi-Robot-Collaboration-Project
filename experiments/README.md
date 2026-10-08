@@ -1,8 +1,8 @@
 # 실험 인덱스
 
-- [2026-10-08 인과적 자기 지도·랜드마크](2026-10-08-own-map-causal-landmarks/README.md): egomap42 사전등록. egomap41 미래 관측 누설 정정; 잃기 전 snapshot/목표·색 경계/문 기억만, 이후 영상 재위치. 판정 유지·오프라인만.
+- [2026-10-08 인과적 자기 지도·랜드마크](2026-10-08-own-map-causal-landmarks/README.md): egomap42 누설 수정: prefix27/34/38스캔·미래 목표 제거. S2 landmark off 자기/정적수렴0/3·0/3→on3/3·2/3, 거짓수렴/도달 조건 미달로 전체관문실패. 16시험·물리0.
 
-- [2026-10-08 자기 지도 기억·쓸모 진단](2026-10-08-own-map-utility/README.md): PR #405, egomap41 사용자 목표 변경. egomap34 고정·검출기 개선 중단. 기본off F export: 381칸/64스캔→41선분·출처·std·903byte 자기 LLM 요약, 상대 전송0. AMCL/KLD unknown-start3쌍은 자기/정적 수렴0/3, 종료XY .159–.241m/.053–2.169m. B는 관측 ID로 지정, 녹화상 도달0·실제 도달 미검증; 물리 보류. 22시험·off bytes 동일.
+- [2026-10-08 자기 지도 기억·쓸모 진단](2026-10-08-own-map-utility/README.md): PR #405, egomap41 사용자 목표 변경(**재위치 비교는 미래 관측 누설로 무효**, egomap42 정정). egomap34 고정·검출기 개선 중단. 기본off F export: 381칸/64스캔→41선분·출처·std·903byte 자기 LLM 요약, 상대 전송0. AMCL/KLD unknown-start3쌍은 자기/정적 수렴0/3, 종료XY .159–.241m/.053–2.169m. B는 관측 ID로 지정, 녹화상 도달0·실제 도달 미검증; 물리 보류. 22시험·off bytes 동일.
 
 - [2026-10-08 Lorigo 창 히스토그램 경계](2026-10-08-lorigo-window-contact/README.md): PR #405, egomap40. 원문4종 비교 후 기본off lorigo_window_v1. 개발31001 P/R16.2/9.3%, 동결32002 단일평가39.8/24.8%로 관문0/2. 넓은 바닥 외형 변화와 픽셀 신뢰도 어댑터 불일치; 지도0/12칸·덮음0%. 재튜닝·물리0, 15시험·off bytes 동일. 다중시점 바닥 homography는 다음 제안만.
 
