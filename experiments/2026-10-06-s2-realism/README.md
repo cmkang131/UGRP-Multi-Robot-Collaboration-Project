@@ -6222,3 +6222,10 @@ s2v56의 봉인 자료를 해시 대조 후 재사용하고 새 명시적 off s1
 PR #405 egomap50의 확인된 문 엔티티와 관측 확보 주제는 겹친다. 사용자 전달 사항 및
 읽기 전용 `experiments/2026-10-08-own-map-return-repeat/README.md:173`의 후속 문 기반 이동
 기록을 확인했다. 완료된 문 검출 성능은 여기서 검증하지 않았으며 코드 복사·의존·결과 합산0.
+
+후보는 `harness/zone_solo_cyan_beamskip.py`의 런타임별 attach 옵션으로 격리했다.
+실행 번들에는 아직 등록/채택하지 않는다. 관련 `test_s2_beamskip.py`와
+`test_s2_amcl_update.py` **15시험 PASS(9.45s)**: off 객체/record 바이트 무변경,
+96→48 stride, invalid 제외 순서, 수렴 전 skip 금지, >.3 엄격 비교와 .9 fallback,
+바닥 특징 함수·재표본화 함수 identity, 실제 v133 어댑터 연결을 확인했다.
+raw 예산1GiB, 출력은 `outputs/s2-beamskip-v57-20261008/`; ENOSPC는 HOST_ERROR로 보존한다.
