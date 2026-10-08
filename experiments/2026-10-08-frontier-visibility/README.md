@@ -71,3 +71,78 @@ Yamauchi 전체 탐색기/DFS로 갈아끼우는 것이 아니라 **관측/목�
 
 raw `/Users/changmin/projects/ugrp/outputs/frontier-visibility-v1/`, 예산 1GiB,
 여유10GiB 이상, 물리 wall 상한30분. ENOSPC=HOST_ERROR. push 서버 오류는 로컬 SHA 진행 후 재시도.
+
+## 실행 결과 — 미채택, 사후 변경 없음
+
+사전등록 **d19fe326**, 실행 소스 **675aa13c433412462dd4dc11b5f38a9982b5074d**.
+`agent_lock` null 확인→pid31818 단독 acquire→등록 workflow/ugrp_session 실행→release/null 확인.
+새 물리 **MuJoCo DEV 1회**, 180초/901 RGB, wall391.917초(속도 비교 실험 아님),
+free36.32GiB로 시작, ENOSPC 없음. 실물 하드웨어·확증 코호트 결과가 아니다.
+
+|지표|egomap34 seed32002, off|egomap45 seed45001, on|
+|---|---:|---:|
+|전체 벽 덮음(329 표본)|64.7% (213/329)|**47.7% (157/329)**|
+|영역 P(맞은 칸/영역 점유칸)|63.6% (103/162)|92.9% (91/98)|
+|영역 R(덮은/시야 벽 표본)|76.0% (111/146)|60.2% (68/113)|
+|실제 시야 벽 표본/전체|146/329 (44.4%)|113/329 (34.3%)|
+|전체 P / 점유칸 수|55.6% / 381|52.1% / 303|
+|벽 RMSE|0.520m|0.662m|
+|경로 RMSE / 종료 오차|0.218 / 0.202m|0.168 / 0.149m|
+|종료 오차 / σXY|1.99σ|1.51σ (σ=.09875m)|
+|이동 거리 / footprint 합집합 면적|7.449m / 2.2675m²|2.887m / 1.0675m²|
+|hold (발행 명령)|21/891 (2.36%)|410/891 (46.02%)|
+|문 오른쪽→왼쪽 통과|0|0|
+|B 최초 자기 확인 / GT 도달|72.1s / 아님|22.9s / 아님|
+|벽 / 다른 로봇 접촉 이벤트|0 / 0|0 / 0|
+|360° 센서 sweep 완료 / 시작|해당 없음|2 / 4|
+|frontier 소진 시각|없음|154.5s (시작 후153.2s)|
+
+[전체 비교/판정](results/comparison.json), [지도+신뢰도 곡선](figures/new-seed.png),
+[영상 시점 검수](figures/video-check.jpg).
+영역은 실제 카메라 FOV·4m·벽 가림 기준 **잠재 시야**다(물체/자기 가림 미모델링).
+원래 전체 P/R은 유지한다. **영역 P92.9%는 작은 분모98칸에서의 값**으로,
+덮음·이동·영역 R이 함께 악화되어 탐색 개선으로 해석하지 않는다. seed가 다른 1쌍뿐이다.
+
+운용 사전 기준 **2/5 통과**: 정상180초·접촉0 통과, 문 통과/시야 표본 증가/덮음 증가 실패.
+재튜닝·추가 물리·시간 연장0. 기본off 및 egomap34 채택 구성 유지.
+기존 평가 함수가 저장한 `new-seed.json.criteria`는 egomap22의 역사적 설명 지표이고,
+이번 판정은 `comparison.json.operational_gate`의 실행 전 고정한 5개만 사용한다.
+
+### 실패 원인 / 삽입 감사
+
+초기3.3–15.3초 및41.5–53.5초 sweep은 각각12초에 완료(추정 회전6.299rad).
+78.1–108.1초와124.3–154.3초 sweep은 각각2.385/1.789rad만 진행한 뒤
+고정30초 제한으로 미완료. 회전 swept-footprint 충돌 예측으로 **259프레임(51.8초 상당)**
+0속도를 냈다. 사각 차체의 회전 여유는 직선 이동 경로 존재와 같지 않다.
+이것이 실제 벽인지 거짓 점유인지 이번 기록만으로 단정하지 않는다.
+3회 progress failure→blacklist 이후 마지막 재검색은 도달 불가 후보10개를 거부하고
+154.5초부터 남은 구간을 hold했다. **목표 교체만 고치면 해결된다는 가설은 지지되지 않았다.**
+이번 실행은 끝까지 기록했지만 로컬 충돌예측은 실제 hold로 작동했다는 사실을 명시한다.
+그 회전 가드를 결과 후 완화하거나 성공으로 재분류하지 않았다.
+
+|지도 삽입 단계(제어891프레임)|기존32002|새45001|
+|---|---:|---:|
+|벽 geometry 있음 / 없음|878 / 13|886 / 5|
+|GMapping 이동 관문 보류|814|830|
+|bootstrap / 정합 수락|1 / 30|1 / 29|
+|거부 low_overlap / high_residual / search_boundary|7 / 19 / 2|12 / 10 / 1|
+|점 부족 정합 미시도(삽입됨)|5|3|
+|최종 삽입|64|56|
+
+`insert_selective_v1`은 두 조건 모두 on. 관문 통과 후 위 행을 합친64/56개가 모두 삽입됐다.
+GMapping 관문/입자수/Manhattan/회전 검색창/검출기는 변경하지 않았다.
+
+## 재현·검증·보존
+
+- `python -m pytest tests/test_active_frontier_cycle.py tests/test_active_wall_recovery.py tests/test_active_wall_rotleft.py -q`: **16 passed**.
+  새 factory off의 trace·지도·navigation events bytes 동일, lifecycle/회전 wrap/미완료/충돌0속도/
+  active-loop 목표 지속/graph TF 및 seed·옵션만 변경을 검사했다. 별도 광역 시험 없음.
+- baseline891 trace 재현과 저장 costmap68개, post-seal 원본 SHA 검증 완료.
+- `scripts.run_active_wall_rotleft.acquire`에는 bundle/factory 선택적 인자만 추가;
+  기존 기본 호출 경로·기본 bundle은 그대로다. 물리 호출부를 새로 복제하지 않았다.
+- 새 runner는 `scripts.sim_cli workflow run active-frontier-cycle` 관리 경로,
+  `ugrp_session egomap45-dev` 정상 종료. [동결 해시](freeze.json), [raw/video 해시](results/raw.json), [영상 검증](results/video.json).
+- 영상 `outputs/frontier-visibility-v1/wrist-map-4x.mp4`: **901프레임, 20fps, 45.05초, 4배속**.
+  현재 시각 이하 online snapshot56개만 표시, 미래 최종 지도 소급 사용0. 시작/중간/종료 RGB·지도를 직접 확인.
+- 영상/원본은 기본 체크아웃의 로컬 outputs에 보존하며 GitHub raw 백업으로 표현하지 않는다.
+  그림은 각각1MiB 미만으로 experiments에 보존. 원본/다른 worktree/PR406 변경0.
