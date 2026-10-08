@@ -82,3 +82,11 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 |버전·소스|단일 case|결과|영상·원본|확인 범위/한계|
 |---|---|---|---|---|
 |`pulse-rotation-audit` · `60d4e833`|사전 지정 seed32001, 60 SIM초, SEARCH/강성on, 좌우·단발/연속 각5회|CCW 예측5.369→실측 연속5.906°/펄스; CW5.935→5.945°. 양방향 재적합 기준 미달/런타임 후보 미채택|[손목4배속](../experiments/2026-10-08-pulse-rotation-audit/figures/wrist-4x.mp4), SHA256 `681b550464de116b45ccd1a8591dd676ece1a9fe27b44c1b4405c336917c5223`; raw `outputs/pulse-rotation-audit-v1/measurement/`|61프레임1Hz→4fps/15.25초. 기구 진단이며 지도/탐색 성공·실물/독립 seed 확증 아님. [측정·원본 hash](../experiments/2026-10-08-pulse-rotation-audit/README.md).|
+
+## 2026-10-08 자기 문 후보 오프라인 표시 (egomap50)
+
+새 물리 결과가 아니라 egomap49 첫 등록 실패 seed49001의 보존 RGB/자기 지도에 문 후보를 표시했다.
+[결과·영상 해시](../experiments/2026-10-08-own-door-navigation/README.md),
+원본 `outputs/own-door-navigation-v1/49001/wrist-map-doors-4x.mp4` (1280×480·157.55초·4배속).
+SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
+후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
