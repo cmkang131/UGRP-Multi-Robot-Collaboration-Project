@@ -5396,3 +5396,68 @@ heading 단계는 각도만 최소화한다. 불필요한 XY 비용을 넣으면
 −1.2014°/−2.3960°로 기존 문턱 안이며, 별도4cm X변화 주입 시험에서도 XY로 재진입하지
 않고 reached를 반환했다. 이 예측은 새 물리 결과가 아니다. off 성공 tape s1051/1053/1054
 4,023/3,959/8,921개 명령과 record 바이트 동일·원래 메서드 identity 유지.
+
+### v49 순차 full DEV 결과 — 전이 수정 확인, 이후 align 정체 2/2
+
+실행 소스 **4436222c8deb5f83d4b152e190e123b4fc838494**, v136/7.29.0.
+[전체 결과·번들·해시](goal-heading-result.json), [평가 재현기](evaluate_goal_heading.py).
+두 실행의 options/task/bias_calibration은 각각 v135 같은 seed와 JSON 값이 완전히 같다.
+사전등록 후 같은 소스 SHA를 고정해 agent_lock·ugrp_session으로 한 번씩 순차 실행했다.
+
+| 실제 상태 trace / 지표 | s1054 | s1055 |
+|---|---:|---:|
+| XY latch 시각 / 거리 / yaw |51.30s /1.846cm /94.57°|59.25s /1.422cm /89.40°|
+| 제자리 최종 방향 회전 수 |17|16|
+| reached 시각 / XY / yaw |58.10s /2.505cm /−1.181°|65.65s /3.922cm /−2.265°|
+| 다음 상태 |search→align(58.20s)|search→align(65.75s)|
+| 회전 중 XY 재진입 |0|0 (3cm 밖에서도 latch 유지)|
+| lifted / inside / stable / success |false/false/true/false|false/false/true/false|
+| 로봇 간 접촉 points / samples / episodes |0/0/0|0/0/0|
+| 실제 횡이동 / 미확인 횡이동 |0/0|0/0|
+| 종료 SIM / wall |170.80s /199.894s|179.00s /206.216s|
+| wall / total SIM |1.1615|1.1437|
+| v135 같은 seed 대비 SIM / wall 차이 |−5.65s /+23.091s|−5.40s /+21.441s|
+| POSE_UNCERTAIN / ARM_COLLISION_GUARD |166/7|92/7|
+| LATERAL_SPACE_UNKNOWN_OR_OCCUPIED |109|110|
+| NEES95% 초과 / 유효 기회 (정보용) |606/706=85.84%|630/722=87.26%|
+| 총 결정 기회 / 공분산 누락 |710/4|722/0|
+| 무경고25cm 초과 (정보용) |0|0|
+| B영역까지 상자 잔여 / B중심 거리 |4.211m /4.646m|4.211m /4.646m|
+| 최종 상태 / 종료 이유 |align /STAGNATION_120S_LT_1CM|동일|
+
+기존 search_move의 누락 전이는 **실제 두 실행에서 해소**됐다. s1055의3.922cm는
+정렬 회전 중 위치가 벗어나도 되돌리지 않는 stateful 규칙이 실제 적용됐다는 기록이다.
+이 추정 거리·yaw는 제어기가 알고 있던 값이며 정답 위치와 같다고 주장하지 않는다.
+남은 동일 원인은 **집기 align 단계 횡이동 공간 인증 실패**다. 마지막 요청은 두 실행
+모두 left−.35/.06s, sweep152점 중 free0/occupied0/unknown152, 사용 가능한 최근
+source_images0이었다. 발행하지 않고 반복 대기하다 실행기 밖120초/<1cm 정체 감시가
+종료했다. 이는 최종 방향 전이 누락과 다른 단계이며, 이번 결과 뒤 추가 코드/문턱 수정은 없다.
+보수적 POSE/ARM 경고는dev_light 기록만; unknown을free로 간주하거나 사용자 지정의
+미확인 횡이동 차단을 우회하지 않았다. raw PHYSICAL_FAILURE 분류도 그대로 보존한다.
+
+stable=true는 출발점 바닥에 둔 **미파지 상자**의 안정 상태이며 배치 성공이 아니다.
+운반 진입0이므로 운반RMSE/갱신공백/벽하단가시율은N/A. 시간 차이는 조기 실패끼리의
+비교이며 완주 속도 개선이 아니다. freeze 전후/기존v133 성공3건과 합산하지 않는다.
+두 full 성공 조건을 만족하지 못해 조건부 s1053 회귀는 **미실행**. 같은 align 원인2회로
+추가 물리는 종료했다. 다음 검토 대상은 align에서 필요한 전체 횡이동 sweep를 실제
+자기 RGB로 확인하는 시선/우회 연결이며, 이번에는 고치지 않았다.
+
+raw(각 result.json·student_record·bundle·eval_only·자기RGB 보존):
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1054-v136-goal-heading`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1055-v136-goal-heading`
+
+두 세션 모두 종료, 각 lock.json의release와status_after=null 확인. GT는 실행 종료 후
+접촉/성공/NEES 평가에만 사용했고 모델 호출0이다. controller 성공을 새로 주장하지 않는다.
+4배속 실패 영상은 각 raw의 `execution.mp4`(20Hz 입력→80Hz 재생→20fps 출력),
+3,416/3,580장 전 구간 디코딩·원본 frame manifest/영상 sha256 확인. 제어 관측 종료 뒤
+무관측 구간은 합성하지 않았다. **새 성공 실행 영상은 없다.**
+
+[TensorBoard 검증](goal-heading-delivery.json): 새 파생2뷰32수치 원본/event/native live API
+일치, 영상2개HTTP Range206 확인. 기존v48 실패와 새v49 실패를 분리해 보는
+[대시보드](http://127.0.0.1:6006/?runFilter=%5E1008-s2-%28goal-heading-v49%7Clook-before-move-v48%29%2F&smoothing=0#timeseries)를
+등록했다. 공용 설정에는 자기 키만 추가했고 기존 서버/스냅샷은 보존했다. 브라우저
+provider가 없고 iab도 unavailable여서 UI 표시는 확인하지 못했다(숫자 검증과 구분).
+
+최종 검증: 변경 모듈2파일의11시험 PASS(14.96s), 두 후처리 재실행 결과 바이트 동일,
+원본 입력 해시·동일seed 옵션·실패 판정·잠금 해제·32수치/2영상 수 불변식 PASS,
+평가 스크립트py_compile·git diff --check PASS. 전체 로컬 회귀는 돌리지 않았다.
