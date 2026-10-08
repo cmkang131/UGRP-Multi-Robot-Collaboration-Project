@@ -22,11 +22,12 @@ def bundle(source):
     return b
 
 
-def acquire(out,source,backend_factory):
+def acquire(out,source,backend_factory,*,bundle_override=None,mapper_factory=None,controller_factory=None,progress_label='egomap43'):
     from harness.active_camera import SEARCH
     from harness.active_wall_recovery import make_mapper
     from harness.active_wall_vision import observe
-    b=bundle(source);cap=b['case_cap_s'];seed=b['task']['seed']
+    b=bundle(source) if bundle_override is None else bundle_override
+    cap=b['case_cap_s'];seed=b['task']['seed']
     out.mkdir(parents=True,exist_ok=False);dump(out/'bundle.json',b)
     result=dict(status='HOST_ERROR',source_sha=source,model_calls=0,freeze=False,
         qualification='one MuJoCo DEV attempt, not real hardware or confirmation cohort',loadavg_start=list(os.getloadavg()))
@@ -36,10 +37,11 @@ def acquire(out,source,backend_factory):
         backend.reset(5.)
         start=backend.now;result['start_sim_s']=start;backend.set_deadline(start+cap)
         for action in arm(SEARCH):backend.issue('r3',action)
-        explorer=make_mapper('r3',start,SEARCH,active_mapping='frontier_rbpf_v1',active_loop='information_gain_v1',
+        factory=make_mapper if mapper_factory is None else mapper_factory
+        explorer=factory('r3',start,SEARCH,active_mapping='frontier_rbpf_v1',active_loop='information_gain_v1',
             seed=seed,active_recovery='nav2_frontier_v1',navigation_map='public_ros_v8',motion_model='s2_pulse_v122_rotL_v1')
         base.install_profile(explorer.memory.self_map,profile='egomap27_wide')
-        controller=attach(explorer,map_utility=OPTION,seed=seed)
+        controller=attach(explorer,map_utility=OPTION,seed=seed) if controller_factory is None else controller_factory(explorer,seed=seed)
         for tick in range(round(cap*5)+1):
             t=backend.now;obs,rgb=backend.capture()['r3']
             if tick>=10:
@@ -67,7 +69,7 @@ def acquire(out,source,backend_factory):
                     controller.command(command)
             backend.eval_sample()
             if tick%25==0:
-                print('egomap43 SIM',round(t-start,2),'stage',controller.stage,'frames',tick+1,flush=True)
+                print(progress_label,'SIM',round(t-start,2),'stage',controller.stage,'frames',tick+1,flush=True)
                 dump(out/'progress.json',dict(sim_s=t-start,frames=tick+1,stage=controller.stage))
             if controller.declared:break
             if monotonic()-started>3600:raise TimeoutError('HOST_BUDGET_60_MINUTES')

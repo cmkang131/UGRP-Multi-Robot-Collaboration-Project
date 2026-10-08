@@ -94,6 +94,7 @@ def score():
 def movie():
     verified()
     import cv2
+    seed=load(EP/'bundle.json')['task']['seed']
     frames=rows(EP/'robots/r3/frames.jsonl');trace=rows(EP/'own-controller.jsonl');truth=rows(EP/'eval_only/trajectory.jsonl');snapshots=rows(EP/'online-maps.jsonl')
     origin=[*truth[0]['robot_xyz_m'][:2],truth[0]['robot_yaw_rad']]
     walls=[r for r in load(EP/'inputs/static_map.json')['obstacles'] if r.get('kind')=='wall']
@@ -146,7 +147,7 @@ def movie():
             label(right,f'status: {current.get("status","settle")} | declared: {current.get("declared_goal",False)}',459)
             left=cv2.imread(str(EP/f['path']));assert left.shape==(480,640,3)
             cv2.rectangle(left,(0,0),(640,32),(25,25,25),-1)
-            label(left,f'Own wrist RGB | seed 43001 | 4x | {t-frames[0]["sim_time"]:.1f}s',22,(245,245,245))
+            label(left,f'Own wrist RGB | seed {seed} | 4x | {t-frames[0]["sim_time"]:.1f}s',22,(245,245,245))
             pair=np.concatenate([left,right],axis=1);encoder.stdin.write(pair.tobytes())
             if i in (0,len(frames)//2,len(frames)-1):checks.append(pair)
             if i%250==0:print('video',i,'/',len(frames),flush=True)

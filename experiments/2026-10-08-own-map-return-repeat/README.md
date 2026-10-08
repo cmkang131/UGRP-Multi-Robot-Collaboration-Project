@@ -71,3 +71,13 @@ PR405 DRAFT·병합0, #406 및 다른 worktree 수정0. 실물/다른 장면 확
 기존 방법/출처: [egomap43](../2026-10-08-own-map-closed-loop/README.md),
 [NavFn 시작·회복 egomap47](../2026-10-08-navfn-start-recovery/README.md),
 [결과 불변 가속 egomap48](../2026-10-08-graph-runtime/README.md).
+
+## 실행 소스 연결(첫 물리 전)
+
+`remembered_goal_360_v1` 기본off는 기존 객체를 그대로 반환한다. 탐색은 egomap47 actor,
+귀환도 같은 StartCycleNavigator를 사용한다. egomap43의 선언/60초 DEV 전환·PF는 변경0.
+부모 상태기의 loss 시각/네비게이터 생성만 hook으로 분리했고, 기존egomap43 trace·입자·RNG
+byte 동일 시험을 원본78084cf1 fixture와 수행했다. 바뀐3시험 파일16passed.
+기존 egomap47 freeze 이후 추가된 active_navfn_start의 map_acceleration dispatcher1곳은
+줄 대조와 egomap48 trace141/141 동일 근거로 두 SHA를 명시적으로 허용(freeze.json).
+그 외 egomap47 고정 소스는 모두 같은 SHA다. 이 검사는 물리 시작 전에 완료했다.

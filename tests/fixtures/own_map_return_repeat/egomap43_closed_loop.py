@@ -74,12 +74,6 @@ class RememberedGoal:
         if self.stage=='explore':self.explorer.command(row)
         else:self.odom.command(row)
 
-    def loss_due(self,t):
-        return (t-self.started>=90 and self.goal is not None) or t-self.started>=180
-
-    def make_navigator(self):
-        return ExplorationRecoveryNavigator()
-
     def lose(self,t,frame_id):
         if self.last_snapshot is None:raise ValueError('NO_CAUSAL_SNAPSHOT')
         self.snapshot=copy.deepcopy(self.last_snapshot)
@@ -92,7 +86,7 @@ class RememberedGoal:
         # No previous estimate or world alignment enters this constructor.
         self.odom=RotationPulseOdometry(t)
         self.previous=np.zeros(3)
-        self.navigator=self.make_navigator()
+        self.navigator=ExplorationRecoveryNavigator()
         self.grid=ObservedGrid(self.robot_id,RESOLUTION);self.latest={}
         # Replicate 0.1m map cells at the frozen v8 0.05m navigation resolution.
         factor=round(self.snapshot['grid']['resolution_m']/RESOLUTION)
@@ -111,7 +105,7 @@ class RememberedGoal:
     def receive(self,*,robot_id,t,frame_id,rgb,servo,observation,frame_sha256):
         if robot_id!=self.robot_id:raise ValueError('PEER_INPUT_FORBIDDEN')
         # Loss frame is excluded from both the prefix map and the suffix observations.
-        if self.stage=='explore' and self.loss_due(t):
+        if self.stage=='explore' and ((t-self.started>=90 and self.goal is not None) or t-self.started>=180):
             self.lose(t,frame_id)
             cmd=dict(t=float(t),kind='hold')
             return cmd,dict(t=float(t),frame_id=frame_id,stage=self.stage,status='unknown_start_reset',
