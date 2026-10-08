@@ -5815,3 +5815,70 @@ fixture 격리34시험 PASS(152.10초). [검증·로그 해시](ci-v53-local-val
 479/481파일·총9413초이며 시간 미측정2개는 기존 median fallback을 유지한다.
 공용 timeout/필터/실행 스크립트는 바꾸지 않았다. 배분 검사68 PASS(1.70초),
 로그·JUnit은 `outputs/s2-ci-v53-20261008/`에 보존; 원격 재검증 결과는 PR #406에 기록한다.
+
+## s2v54 — 시작 prior 제거, 전역 위치추정 full DEV 사전 등록
+
+2026-10-08 사용자 결정 A. v133의 `spawn_x±.15m`, 전체 도크 행 y 범위,
+동쪽 yaw±10° prior를 쓰는 기존 결과6/6은 **시작 영역 prior 있음** 조건이다.
+새 결과만 **시작 위치 모름** 조건으로 보고하며 합산하지 않는다.
+[등록](unknown-start-registration.json), [번호·seed 조회](unknown-start-reservation.json).
+main+열린17 PR에서 최대v138을 확인하여 **zone-s2-realism-v139 / 7.32.0**을 예약했다.
+새 seed **1059→1060→1061**, 각각 full DEV1회, P1-2→B·900 SIM초 상한.
+기존 실행/등록과 primary outputs 이름에 이3개 seed가 없음을 확인했다.
+결과를 본 뒤 상수·문턱·seed·경로를 바꾸거나 재시도/대체하지 않는다.
+
+### 실행 설정과 표준 근거 (결과 전 고정)
+
+- `start_prior=none_v1`, `global_localization=augmented_active_v1`,
+  `particle_sampling=kld_global_v1`을 함께 명시. 세 옵션 기본off.
+- 새 초기화 생성자에서 도크/행/spawn 계산과 `init_prior`/Gaussian 호출 자체를 생략한다.
+  지도 자유공간 전체 rejection sampling, yaw[-π,π) 균일분포만 사용한다.
+  기존 v106 파일·기존 번들을 보존하기 위해 생성자의 나머지 상태 초기화만 새 어댑터에
+  그대로 복사했다. on에서만 이 생성자를 거치고 off에서는 원래 생성자로 위임한다.
+- 기존 Augmented/KLD 클래스와 look-ahead carry 클래스의 cooperative MRO를 결합한다.
+  αslow=.001, αfast=.1, ESS≤N/2, bin=.5m/.5m/10°, ε=.05, confidence=.99,
+  min2000/max100000 및 최초 차체 명령에서 weighted2000 인계를 **그대로** 둔다.
+  기존 능동 손목 pan 순위·120초 scan 상한을 재사용하며 새 회전 탐색/튜닝은 넣지 않는다.
+  아직 모호해도 dev_light는 기록 후 계속한다. 인계가 수렴 증거는 아니다.
+- v133의 best-cluster→AMCL field→floor/door landmark 어댑터를 마지막에 설치한다.
+  look_ahead, 강성/카메라 보정, slip_detect·회복, freeze, blind 파지, 관측 격리,
+  RGB 정체 감시와 나머지 옵션/물리/성공 판정은 v133 그대로다.
+  v134–v138 look-before-move, s2v45 보정/감쇠, ground_vo는 켜지 않는다.
+- 정적 지도·고정 보정·자기 RGB·명령만 제어에 전달한다. seed→도크 대응,
+  실제 시작 좌표/접촉/성공 판정을 초기화나 행동에 전달하지 않는다.
+
+[Thrun/Burgard/Fox 2005 Table8.3 Augmented MCL](https://robots.stanford.edu/probabilistic-robotics/),
+[Fox2003 IJRR KLD-sampling 저자 원문](https://rse-lab.cs.washington.edu/papers/adaptive-ijrr-2003.pdf),
+[고정 Nav2 pf.c](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf.c).
+Nav2의 uniform init/EMA/random injection/KLD 종료식을 기존 구현 그대로 사용한다.
+RGB 측정과 명령 odometry, 첫 이동 뒤 고정 입자 추적은 이 저장소의 기존 어댑터이며
+ROS 전체 구현 또는 실물 위치추정 인수를 완료했다는 주장은 하지 않는다.
+
+### 판정·보고 (결과 후 변경 금지)
+
+성공은 기존 `sim.solo_cyan_v106.evaluate()`의 lifted/inside/floor/stable 및
+최종1.95초 이상 조건을 포함한 success 그대로다. σ/NEES는 성공의 추가 게이트가 아니다.
+최초 전역 수렴은 **보고 std_xy≤.05m**인 첫 initialized pose의 전달시각이다.
+그 pose의 t_est에서 GT XY/yaw 오차를 사후 계산하고 **XY>.25m이면 잘못된 모드**로 표기한다.
+수렴 전 실제 이동은 평가 궤적 XY의 호 길이를 첫 전달시각까지 적분한다(t_est까지 값도 병기).
+미수렴이면 수렴시각/첫오차는 null, 종료까지 이동거리를 별도 기록한다.
+
+모든 drive 결정에서 실제 보고 공분산과 POSE_UNCERTAIN 발생 여부를 저장한다.
+NEES95% 경계5.991464547107979, 주 비교는 기존과 같은 단일군집·일치 공분산 행,
+추가로 전체 유효 보고 공분산의 비율과 각각 분모를 표시한다.
+무경고 XY>.25m 횟수와 would-stop 전체 목록, 운반 RMSE/갱신 공백도 사후 보고한다.
+GT는 평가 모듈에서만 읽고 실패 원인은 물리 실패/잘못된 모드/전역 미수렴/기타로 분류한다.
+제외·HOST_ERROR·부분 실행(ENOSPC 포함)을 모두 표시하며 분모에서 조용히 빼지 않는다.
+
+| 조건 | seed | 성공수 | 범위 |
+|---|---|---|---|
+| v133 시작 영역 prior 있음 | 1051/1053/1054/1056/1057/1058 | 6/6 | 기존 DEV, 알려진6건 |
+| v139 시작 위치 모름 | 1059/1060/1061 | 미실행 | 이번 새 DEV3건, 성공 승계 없음 |
+
+agent_lock이 null일 때만 순서대로 `ugrp_session run`을 사용한다.
+egomap49 잠금/PID는 변경·종료하지 않는다. 각 실행 raw는
+`outputs/s2-realism-<sha8>-s<seed>-v139-unknown-start/`에 보존하고 최소 영상1개를4배속으로 만든다.
+사전 실행 시험: 변경2모듈군24시험 PASS(12.14초).
+off의 실제 v133 옵션+PF/RNG/명령/record 바이트 동일, on의 도크/Gaussian 호출 금지,
+100000 자유공간 표본·첫이동2000 인계, 등록 옵션 변조 거절, 평가 경계·workflow를 검사했다.
+이것은 오프라인 회귀 시험이며 새 물리 성공 근거가 아니다.
