@@ -5946,3 +5946,26 @@ s1059/s1061 벽 접촉0. 제외/HOST_ERROR/중단 실행0, 실패도 전체3개 
 관련24시험 사전13.00s·최종12.22s PASS, 실행 SHA의 GitHub CI33/33 PASS. 번들·옵션·고정 소스444파일과
 실행별 평가9파일 해시를 대조했다. 잠금3회 각각 release 후null, 세 ugrp_session 정상 종료.
 그 뒤 자기지도 egomap49가 다시 획득한 잠금은 건드리지 않았다. raw는 로컬 보관이며 원격백업 주장이 아니다.
+
+### s2v55 사전등록 — 운반 중 Augmented MCL 복구 (물리 관문 전)
+
+s1060 원본은 v139/329eb4b6 실패 그대로 보존한다. 접촉 검출/GT는 평가 전용이며 제어 입력으로
+추가하지 않는다. 기존 `augmented_active_v1`은 첫 차체 명령에서 global policy를 제거하고 이후
+recovery alpha=0인 추적으로 인계했다. 새 **`localization_recovery=augmented_mcl_v1`**은 기본 off이며,
+초기 전역/KLD/시선 선택을 유지하고 인계 이후 매 기존 motion-gated 관측에서 복구를 계속한다.
+
+표준 근거: [Nav2 pf.c 고정 원본](https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf.c#L249-L280)
+249–280행 unnormalised sensor total/N와 EMA, 325–328행 `max(0,1-w_fast/w_slow)`,
+341–397행 multinomial/map-free injection, 401–404행 EMA 초기화, 408–415행 정규화/군집 통계.
+원본의 Probabilistic Robotics p258(Table8.3) 주석도 확인했다. 책 전체 원문 검토를 주장하지 않는다.
+[Nav2 설정 문서](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/)의
+실제 기본 alpha는 **0/0(비활성)**이고, 설명에서 권장하는 slow=.001/fast=.1을 사용자 지시대로 사용한다.
+resample_interval=1, ROS1 selective ESS 조기반환은 쓰지 않는다. RGB 측정 모델과 정지 갱신 문턱은 그대로다.
+적응 차이: 기존 tracking 예산2000을 유지하여 KLD min=max=2000, 잠재 운동변수는 기존 표본 계보를 따른다.
+입자 수가 바뀌는 전역 인계에서 EMA를0으로 시작한다. GT 접촉 기반 초기화·공분산 임의 팽창·새 튜닝은 없다.
+
+[고정 관문](tracking-recovery-criteria.json): baseline 원본 오차≤1e-9, off 바이트/입자 해시 동일;
+마지막 양의 힘 접촉 이후 기존 운반 종료까지 **σxy≤.05m 및 평가 XY≤.25m 재수렴**,
+운반 끝 XY≤.25m, 접촉 후 RMSE 감소, 전체 운반 RMSE 비악화. 결과 후 문턱 변경 금지.
+이미 본 s1060은 개발 재생이며 새 확증 성공에 합산하지 않는다. 통과할 때만1062–1064를 별도 실행
+사전등록·커밋하고 잠금 하 물리3회를 진행한다. 아직 이 세 seed의 실행 등록은 하지 않았다.
