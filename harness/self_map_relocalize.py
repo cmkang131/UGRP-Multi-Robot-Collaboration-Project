@@ -39,11 +39,16 @@ class GridField(field.Field):
 
 
 class Relocalizer:
-    def __init__(self, grid, *, seed, sensor_landmarks='off', landmark_map=None):
+    def __init__(self, grid, *, seed, sensor_landmarks='off', landmark_map=None, likelihood_tempering='off'):
         if sensor_landmarks not in ('off', 'floor_zones_doors_v1'):
             raise ValueError('UNKNOWN_SENSOR_LANDMARKS')
         if sensor_landmarks != 'off' and landmark_map is None:
             raise ValueError('EXPLICIT_LANDMARK_MAP_REQUIRED')
+        from harness.own_map_amcl_vendor.tempering import TEMPER
+        if likelihood_tempering not in ('off', TEMPER):
+            raise ValueError('UNKNOWN_LIKELIHOOD_TEMPERING')
+        self.likelihood_tempering = likelihood_tempering
+        self.tempering_audit = []
         self.sensor_landmarks = sensor_landmarks
         self.landmark_map = landmark_map
         self.field = GridField(grid)
@@ -90,7 +95,21 @@ class Relocalizer:
             prior = self._weights()
             # Bound temporary arrays; same pinned likelihood for every particle.
             chunks = np.array_split(self.px, max(1, math.ceil(self.n/4096)))
-            if use_landmarks:
+            if self.likelihood_tempering != 'off':
+                from harness.own_map_amcl_vendor.tempering import ALPHA, moments
+                from harness.own_map_amcl_vendor.landmarks import landmark_likelihood
+                wall = np.concatenate([field.likelihood(self.field,p,points) for p in chunks])
+                land = np.concatenate([landmark_likelihood(self.landmark_map,p,features) for p in chunks]) if use_landmarks else np.ones(self.n)
+                # S2 instrument.likelihood lines 70-75: temper the joint score, not the prior.
+                value = np.power(wall*land, ALPHA)
+                ll = np.log(value)
+                post = prior*np.exp(ll-ll.max())
+                post /= post.sum()
+                a,b = np.log(wall),np.log(land)
+                consistency = dict(t=float(t),alpha=ALPHA,prior=moments(self.px,prior),
+                    posterior=moments(self.px,post),wall_count=len(points),features=len(features),
+                    log_score_correlation=float(np.corrcoef(a,b)[0,1]) if np.std(a)>1e-12 and np.std(b)>1e-12 else None)
+            elif use_landmarks:
                 from harness.own_map_amcl_vendor.landmarks import landmark_likelihood
                 # PR406 install.score: exact product, including floor-only packets.
                 ll = np.concatenate([np.log(field.likelihood(self.field, p, points)*
@@ -100,6 +119,10 @@ class Relocalizer:
             self.logw = np.log(np.maximum(prior, 1e-300))+ll
             self.logw -= self.logw.max()
             audit = self.policy.measure(self, prior, ll, servo, changed)
+            if self.likelihood_tempering != 'off':
+                if audit['resampled']:
+                    consistency['resampled'] = moments(self.px,self._weights())
+                self.tempering_audit.append(consistency)
             self.anchor = self.odom.copy()
             self.updates += 1
         mean, cov, report = augmented.belief_report(self.px, self._weights())
