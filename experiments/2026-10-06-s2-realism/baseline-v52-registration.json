@@ -1,0 +1,93 @@
+{
+  "schema": "ugrp.s2.v133_baseline_v52.registration.v1",
+  "seeds": [
+    1056,
+    1057,
+    1058
+  ],
+  "runs_per_seed": 1,
+  "order": [
+    1056,
+    1057,
+    1058
+  ],
+  "frozen_source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+  "baseline_execution_sha": "b2de2b30e2a0191d6b911125a9cc8ddb697614bb",
+  "baseline_bundle": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full/bundle.json",
+    "sha256": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c"
+  },
+  "execution_bundle_id": "zone-s2-realism-v133",
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1",
+    "carry_pose": "look_ahead_v1",
+    "camera_calibration": "v3_unloaded_sag_v1",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "visibility_mask": "command_geometry_v1",
+    "amcl_update": "ros_motion_v1",
+    "dev_search": "repeat_views_v1",
+    "visibility_policy": "nav2_observed_v1",
+    "contact_filter": "floor_appearance_v1",
+    "slip_detection": "slip_detect_v1",
+    "stall_recovery": "off",
+    "slip_recovery": "slip_recovery_v1",
+    "servo_stiffness": "real_v1",
+    "camera_pitch": "stiff_target_v1",
+    "pregrasp_policy": "log_only_v1",
+    "sensor_landmarks": "floor_zones_doors_v1",
+    "sensor_model": "amcl_likelihood_field_v1",
+    "pose_estimate": "amcl_best_cluster_v1"
+  },
+  "task_except_seed": {
+    "robot_id": "r3",
+    "pickup_slot": "P1-2",
+    "destination": "B",
+    "passage_id": "door_1"
+  },
+  "threshold_changes": false,
+  "control_changes": false,
+  "unknown_start": "same public arena start region prior as v133; no seed-to-row or current dock identity supplied; fixed spawn x/all-row spread retained",
+  "success": "unchanged posthoc lifted AND inside AND floor AND stable; no tuning/retry after outcome",
+  "initial_error": "last saved pose with t <= first nonzero base command t, compared with saved evaluation trajectory at pose.t_est; if no base command, last saved pose with endpoint label",
+  "carry_metrics": "unchanged scripts/evaluate_s2_real_carry.py after close",
+  "wall_contacts": "positive force20Hz samples and contiguous episodes by wheel/body/finger/cargo vs wall",
+  "video": "own RGB20Hz at4x; execution.mp4 per run",
+  "dev_light": true,
+  "freeze_scope": "S2 solo DEV only; no S3/pair/research use; results not pooled with discarded conditions",
+  "gt_use": "posthoc only; no control input",
+  "failure": "record cause only; no fixes/retry; ENOSPC HOST_ERROR; actual physical failure terminates existing loop",
+  "lock": "exclusive agent_lock; wait until null; ugrp_session sequential",
+  "raw_template": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s{seed}-v133-reproduction",
+  "administrative_version": "s2v52",
+  "existing_seeds": [
+    1051,
+    1053,
+    1054
+  ],
+  "seed_audit": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-v133-baseline-v52-20261008/seed-audit.json",
+    "sha256": "e04fbbcf34c8c23ffb67a0da483e54e59a708ec6079ab9643e62d7c9d64d138e"
+  },
+  "pooling_scope": "descriptive v133 baseline count: existing three seen successful DEV runs plus three new preregistered seeds; separate new/seen strata; no v135-v138 pooling; not unbiased research success rate",
+  "post_v133_options": "absent/off; do not enable forward_scale, likelihood_tempering, look_before_move, final_approach",
+  "contact_metrics": "all recorded pair contact points/samples/episodes with robot IDs; evaluate XY/yaw error before and after each episode; wall positive-force samples/points by wheel/body/finger/cargo; contacts never runtime inputs",
+  "pose_metrics": "all recorded pulse decision/checkpoint times: NEES XY with one-cluster matching covariance trace; chi2_95=5.991464547107979, unflagged XY>0.25m; preserve denominators, information only",
+  "cohort_policy": "each of three fixed seeds once; no fixes/retry/substitute seeds after failure; classify cause only",
+  "prior_look_before_move": "v135-v138 deferred; retain prior records unchanged"
+}

@@ -5647,3 +5647,33 @@ wall/SIM은 초기화/마지막 정착의 별도 시간축이 있는 실행기 �
 Chrome 강 프로필에서 v51/v49 4run·7pin·성공0·명령4558/5803 화면 확인.
 공용 HParams는 과거23열만 제공해 S2 offline 열의 전체 적용은 미완료(서버 재시작 없음).
 원본/event/live API30수치는 대조 완료. 결과·소스만 GitHub에 보존하며 raw는 로컬 보관이다.
+
+## s2v52 — v133 기준선 새3 seed 사전등록 (2026-10-08, 결과 전)
+
+look-before-move v135–v138은 사용자 판단에 따라 보류하고 기존 기록만 유지한다.
+이번에는 **v133 그대로**, 신규 제어/보정/회피 옵션0, 결과 후 문턱 변경0·수정0.
+[등록](baseline-v52-registration.json), [seed 확인](baseline-v52-seed-audit.json):
+main+열린15PR의 S2 기록/공용raw 이름에서 미사용 **1056→1057→1058**, 각full DEV1회.
+예시1055는 v135/v136/v138에서 이미 관측해 제외했다. seed 결과를 보고 골라 바꾸지 않는다.
+
+기존 s1051(b2de2b30)·s1053/s1054(027c567c)의 v133 3/3와 새3건을 나란히 적고,
+`새 seed k/3`, `기존에 본 성공3/3`, `합계(3+k)/6`를 모두 표기한다. 기존3건은 개발 중
+알려진 성공 실행이므로 합계는 **DEV 기술 집계**이며 독립 본 연구 성공률이 아니다.
+v135–v138 또는 폐기된 구 카메라/구동 결과는 합산하지 않는다.
+
+물리/제어 소스는027c567c와 성공 번들의436개 고정 해시를 검증하고, 기존 실행 어댑터의
+seed admission/등록파일 경로·잠금 목적 문자열만 새로 둔다. 번들 **zone-s2-realism-v133,
+7.26.0** 유지, 새 제어 버전이 아니다. 관리 경로`zone-s2-v133-baseline-v52`.
+새 옵션은 키도 추가하지 않아 v133 옵션 바이트를 보존한다. `forward_scale`,
+`likelihood_tempering`, `look_before_move`, `final_approach`는 적용되지 않는다.
+기존 freeze/강성/실물식 파지/slip/랜드마크 등 v133에서 이미 켠 값은 그대로다.
+
+평가 전용으로 lifted/inside/floor/stable/success, 로봇 간 접촉점·표본·episode와
+접촉 전/직후/후1초의 위치·yaw 오차, 벽 접촉 범주별 양의 힘 표본, 시간,
+NEES95% 경계5.991464547107979·무경고25cm 초과·would-stop을 기록한다.
+NEES는 단일 군집/보고trace 일치 행에만 계산하고 분모를 밝힌다. 시간·문턱·판정은
+v133과 같으며 접촉/GT는 종료 후 평가에만 쓴다. 실패는 원인만 분류, 패치·재시도0.
+
+dev_light, agent_lock null 확인 후 acquire/release, ugrp_session으로 한 번에 하나.
+타 작업 잠금/프로세스에 손대지 않는다. 매 실행 전 supervisor 확인, ENOSPC=HOST_ERROR.
+4배속 ownRGB 영상과 TensorBoard에 실패도 남기고 PR406 DRAFT·병합 금지를 유지한다.

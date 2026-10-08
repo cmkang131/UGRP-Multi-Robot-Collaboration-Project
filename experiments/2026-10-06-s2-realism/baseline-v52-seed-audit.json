@@ -1,0 +1,118 @@
+{
+  "refs": [
+    "origin/main",
+    "origin/claude/mapfree-explore",
+    "origin/claude/mapfree-goal-floor",
+    "origin/claude/v7-roller-approx",
+    "origin/codex/s2-realism",
+    "origin/claude/ego-wall-map",
+    "origin/codex/drive-friction-model",
+    "origin/codex/robot-camera-review",
+    "origin/codex/s3-door-yield",
+    "origin/codex/owncam-robot-mask",
+    "origin/codex/main-study-prereg-draft",
+    "origin/codex/s4-llm-host",
+    "origin/codex/s3-three-robot-host",
+    "origin/codex/s2-graduation",
+    "origin/codex/real-robot-link",
+    "origin/codex/integ-target-backend"
+  ],
+  "open_prs": [
+    {
+      "headRefName": "claude/mapfree-explore",
+      "number": 409,
+      "title": "Add offline own-map exploration with standard Nav2 costmap policies"
+    },
+    {
+      "headRefName": "claude/mapfree-goal-floor",
+      "number": 408,
+      "title": "Add offline B-floor memory with geometric v3 guards and frozen evaluation"
+    },
+    {
+      "headRefName": "claude/v7-roller-approx",
+      "number": 407,
+      "title": "sim: v7 \ub864\ub7ec \uadfc\uc0ac\u00b7sleeping \uac00\uc18d \uc9c4\ub2e8\uacfc \ubbf8\ucc44\ud0dd \uacb0\uacfc (DRAFT)"
+    },
+    {
+      "headRefName": "codex/s2-realism",
+      "number": 406,
+      "title": "S2 DEV: \uc9c0\ub3c4 \uc0c9 \uacbd\uacc4 \ub79c\ub4dc\ub9c8\ud06c\ub85c \uc2dc\uc791 \uc704\uce58 \ucd94\uc815\uacfc \ub2e8\ub3c5 B \uc6b4\ubc18"
+    },
+    {
+      "headRefName": "claude/ego-wall-map",
+      "number": 405,
+      "title": "feat: \ub85c\ubd07\ubcc4 \uc790\uae30 \uc9c0\ub3c4 \uba54\ubaa8\ub9ac\uc640 \ud655\ub960\uc801 \uc704\uce58 \ubcf4\uc815 (\uc624\ud504\ub77c\uc778)"
+    },
+    {
+      "headRefName": "codex/drive-friction-model",
+      "number": 402,
+      "title": "sim: v7 DEV \ud6c4\ubcf4\uc640 \uc9dd \ube54 \ubc00\ub9bc \ube44\uad50 (\uae30\ubcf8\uac12 \uc720\uc9c0)"
+    },
+    {
+      "headRefName": "codex/robot-camera-review",
+      "number": 401,
+      "title": "Camera v3 review and optional pickup-site grasp verification"
+    },
+    {
+      "headRefName": "codex/s3-door-yield",
+      "number": 399,
+      "title": "S3: door_1 \uc608\uc57d\u00b7\uc591\ubcf4 \uba85\uc2dc \uc635\uc158 (\uc624\ud504\ub77c\uc778, v108)"
+    },
+    {
+      "headRefName": "codex/owncam-robot-mask",
+      "number": 398,
+      "title": "S3: \uc790\uae30 RGB \ub85c\ubd07 \ubcbd \uc624\uc778 \uc9c4\ub2e8\uacfc \uc120\ud0dd \ub9c8\uc2a4\ud06c (\uae30\ubcf8 OFF)"
+    },
+    {
+      "headRefName": "codex/main-study-prereg-draft",
+      "number": 397,
+      "title": "docs: \ubcf8 \uc5f0\uad6c \uc0ac\uc804 \ub4f1\ub85d \ucd08\uc548 \u2014 3\uc870\uac74\u00b7s1\u2013s8(v4)"
+    },
+    {
+      "headRefName": "codex/s4-llm-host",
+      "number": 395,
+      "title": "S4: \ud55c \ud638\uc2a4\ud2b8\uc5d0 LLM claim\u00b7\uc9dd \uc815\uc9c0 \ud310\ub2e8 \uc5f0\uacb0 (\uc624\ud504\ub77c\uc778)"
+    },
+    {
+      "headRefName": "codex/s3-three-robot-host",
+      "number": 394,
+      "title": "S3: \ucd5c\uc885 v3 3\ub300 \ud63c\ud569 \uc8fc\ubb38 \ud638\uc2a4\ud2b8 (LLM \uc5c6\uc74c, v107)"
+    },
+    {
+      "headRefName": "codex/s2-graduation",
+      "number": 393,
+      "title": "S2 \uc878\uc5c5 \uc810\uac80: \uc0c8 seed\u00b76\uacf3 slot \uace0\uc815, v106 \uc81c\uc5b4 \uc720\uc9c0"
+    },
+    {
+      "headRefName": "codex/real-robot-link",
+      "number": 385,
+      "title": "Windows SIM-to-REAL arm connection boundary (dry-run verified)"
+    },
+    {
+      "headRefName": "codex/integ-target-backend",
+      "number": 339,
+      "title": "T13: \ud45c\uc801 backend \uac80\ud1a0 \uc218\uc815\u00b7\ucd5c\uc885 v3 \ud658\uacbd \uacc4\uc57d (v86, \uc2e4\ud589 \ucc28\ub2e8)"
+    }
+  ],
+  "pattern": "(s105[6-8]([^0-9]|$)|seed[=: _-]+105[6-8]([^0-9]|$)|\"seed\"[ :]+105[6-8]([^0-9]|$))",
+  "record_hits": {},
+  "raw_names": {
+    "1055": [
+      "s2-realism-88f5fbbb-s1055-v135-look-before-move",
+      "s2-realism-4436222c-s1055-v136-goal-heading",
+      "s2-realism-d5fd85dd-s1055-v138-staging-only"
+    ],
+    "1056": [],
+    "1057": [],
+    "1058": []
+  },
+  "selected": [
+    1056,
+    1057,
+    1058
+  ],
+  "rejected_example": {
+    "1055": "already observed in v135/v136/v138; not used as fresh seed"
+  },
+  "scope": "S2 records on main/open PRs plus primary output immediate names; no outcomes read for new seeds"
+}
