@@ -4,6 +4,8 @@ import math
 import numpy as np
 from .motion import converged
 
+ALPHA_SLOW, ALPHA_FAST = .001, .1
+
 
 def pose_key(pose):
     return tuple(int(pose[k]) for k in (3, 4, 5, 6))

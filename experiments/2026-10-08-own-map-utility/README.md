@@ -122,3 +122,12 @@ PR406 원본 함수·행별 해시: [provenance.json](../../harness/own_map_amcl
 [이식 경계](../../harness/own_map_amcl_vendor/NOTICE.md). 새 외부 의존성/venv0.
 기존14 기억 시험과 새8 시험(실제 비어 있지 않은 off snapshot/RNG·출처·peer 격리,
 KLD 원본 정의/상수·이동 관문·균등 prior·B 관측 목표)만 실행한다.
+
+### 채점 전 어댑터 오류 기록
+
+실행 소스 `33534bd0`의 첫 own-0 시도는 두 번째 센서 갱신에서
+`AttributeError: augmented.ALPHA_SLOW`로 중단했다. AST 복사에서 원본의 tuple 대입
+`ALPHA_SLOW, ALPHA_FAST = .001, .1`을 누락한 이식 오류다. 완성 예측/GT채점0.
+원본 대입을 바이트 그대로 복원하고 두 번째 센서 갱신·두 상수 검사로 회귀 고정한다.
+사전등록 수치/자료/판정은 변경0, 실패 로그 `own-0.log`는 보존하고 재시도 로그를
+분리한다. 유효 코호트는 수정 소스에서 동일3쌍1회씩이며 물리0이다.

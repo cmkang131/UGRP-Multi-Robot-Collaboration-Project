@@ -6,7 +6,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import numpy as np
 from harness.self_map_relocalize import Relocalizer, GridField
-from harness.own_map_amcl_vendor import kld, field
+from harness.own_map_amcl_vendor import kld, field, augmented
 
 
 def grid():
@@ -26,6 +26,7 @@ def test_pinned_function_bodies_and_default_constants():
         assert all(x['sha256'] in digests for x in info['selected'])
     assert kld.PARAMS['max_samples']==100000 and kld.PARAMS['min_samples']==2000
     assert field.PARAMS['sigma_hit_m']==.2
+    assert (augmented.ALPHA_SLOW,augmented.ALPHA_FAST)==(.001,.1)
 
 
 def test_unknown_start_motion_gate_and_map_immutability():
@@ -46,6 +47,8 @@ def test_kld_selective_resampling_preserves_uninformative_belief():
     p._weights=lambda:np.ones(20)/20
     policy=kld.Policy();r=policy.measure(p,p._weights(),np.zeros(20),{3:1,4:2,5:3,6:4},True)
     assert not r['resampled'] and r['samples_after']==20
+    second=policy.measure(p,p._weights(),np.ones(20)*-.2,{3:1,4:2,5:3,6:4},True)
+    assert second['w_fast']<second['w_slow'] and not second['resampled']
     params={**kld.PARAMS,'max_samples':100,'min_samples':20}
     r=kld.resample(p,parameters=params)
     assert r['samples']==100 and r['occupied_bins']==1
