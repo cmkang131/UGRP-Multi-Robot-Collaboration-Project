@@ -4,5 +4,27 @@
   "passed": 8,
   "scope": "changed preparation module only; no simulation",
   "baseline_tape_layout_equals_ego_source": true,
-  "ego_source_sha": "e52c6d6011479be0731acd53c43ff853b6897ae3"
+  "ego_source_sha": "e52c6d6011479be0731acd53c43ff853b6897ae3",
+  "ci_registration": {
+    "included_in_remote_suite": true,
+    "command": "python -m pytest -q tests/test_zone_heldout_maps.py tests/test_ci_sharding.py",
+    "passed": 76,
+    "test_files": 2
+  },
+  "stationary": {
+    "source_sha": "365f9d891ffd57b35a96923bc1d31b9efe65a754",
+    "maps_loaded": 3,
+    "camera_images": 21,
+    "integration_steps": 0,
+    "controller_commands": 0,
+    "robot_wall_contacts": 0,
+    "session_exited": true,
+    "own_lock_released": true,
+    "visual_check": [
+      "H1 NE TOP",
+      "H2 NE TOP",
+      "H2 r3 own"
+    ],
+    "envelope_contains_compiled_initial_collision_geoms": true
+  }
 }

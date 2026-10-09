@@ -36,7 +36,7 @@
 
 실행 소스 **b431ec86749a5f89ee136c6d44a5d7f81dd8bf27** (전체 SHA는 `static-summary.json`). 2.5cm 격자에서 4-neighbor BFS로 작성 장애물을 팽창해 탐색하고, 모든 경로 선분의 연속 swept AABB를 다시 확인했다. 시작/목표를 가장 가까운 격자로 무조건 옮기지 않고 실제 endpoint↔격자 연결도 같은 충돌 검사로 확인한다. 막힌 문 두 개를 모두 봉쇄한 음성 대조는 경로를 거부한다.
 
-MasterPi v3 공식 외형(길이 0.185m·폭 0.162m, `sim/masterpi_geometry_v3.py`)보다 큰, 전방 팔 공간을 포함한 무하중 body-frame envelope `x=[-0.100,0.300]`, `y=[-0.130,0.130]m`에 각 방향 **25mm 여유**를 더한다. 최종 0.450×0.310m 직사각형이다. 방향은 표준 시작에서 0, 기존 ego 시작에서 π로 고정한 mecanum 평행 이동이다. 임의 팔 자세/짐·제자리 회전/동적 다른 로봇·화물은 이 증거 범위가 아니다. 초기 컴파일 충돌 geom AABB와 envelope의 포함 관계도 정지 장면 확인에 기록한다.
+MasterPi v3 공식 외형(길이 0.185m·폭 0.162m, `sim/masterpi_geometry_v3.py`)보다 큰, 전방 팔 공간을 포함한 무하중 body-frame envelope `x=[-0.100,0.300]`, `y=[-0.130,0.130]m`에 각 방향 **25mm 여유**를 더한다. 최종 0.450×0.310m 직사각형이다. 방향은 표준 시작에서 0, 기존 ego 시작에서 π로 고정한 mecanum 평행 이동이다. 임의 팔 자세/짐·제자리 회전/동적 다른 로봇·화물은 이 증거 범위가 아니다. 초기 컴파일 충돌 geom의 body-frame AABB는 x=[-0.0919,0.2692], y=±0.07996m 이내로, 선택한 envelope에 포함됨을 세 로봇·세 장면에서 확인했다. SEARCH 등 다른 팔 자세의 외형을 새로 인증한 것은 아니다.
 
 | 시작 집합 | 목표 | H1 | H2 |
 |---|---|---:|---:|
@@ -45,6 +45,9 @@ MasterPi v3 공식 외형(길이 0.185m·폭 0.162m, `sim/masterpi_geometry_v3.p
 | H1 기존 좁은 문 / 넓은 문 개별 봉쇄 | 서쪽 중간 시작→B | 2/2 | 해당 없음 |
 
 색 구역 중심과 가운데 슬롯은 동일한 좌표지만 서로 다른 목표 이름이다. 따라서 48개 query 통과는 48개 독립 목표/연구 표본이나 성공률이 아니다. 같은 정적 경로를 역순으로 쓰면 시작점으로도 연결되지만 실제 자기 지도 귀환을 실행하거나 검증하지 않았다.
+
+![H1 MuJoCo 정지 TOP](H1-stationary-top.png)
+![H2 MuJoCo 정지 TOP](H2-stationary-top.png)
 
 ## 하네스 호환과 격리
 
@@ -56,10 +59,10 @@ MasterPi v3 공식 외형(길이 0.185m·폭 0.162m, `sim/masterpi_geometry_v3.p
 
 ## 검증 기록과 재현
 
-- 관련 시험 파일 하나: `tests/test_zone_heldout_maps.py`, **8 passed**. 경계/색/시작 불변, 단서 비감소, 전체 도달성, 봉쇄 음성 대조, 56cm와 rigid reuse, off 동일성/원본 생성기 hash.
+- 맵 관련 시험 파일 하나: `tests/test_zone_heldout_maps.py`, **8 passed**. CI 시험 목록 연결 뒤 바뀐 CI 분할 모듈 시험을 함께 확인해 **2개 파일 76 passed**. 경계/색/시작 불변, 단서 비감소, 전체 도달성, 봉쇄 음성 대조, 56cm와 rigid reuse, off 동일성/원본 생성기 hash.
 - `static-summary.json`: 목표별 경로 길이, 단서 수, raw 위치/해시. 전체 XY 경로는 로컬 raw `outputs/hardmaps1-static-frozen-b431ec86/static.json`에 보존한다. 선행 작성 확인 `outputs/hardmaps1-static-v1`은 실행 전 개발 검사이며 별도 보존한다.
 - `reservation.json`: main과 열린 PR 17개 브랜치 map ID 충돌 검사·SHA·RUNNABLE_ID 조회. 신규 map ID 2개만 예약했고 실행 bundle/workflow 번호는 만들지 않았다.
-- MuJoCo 정지 장면: S2 공용 잠금 사용 중이므로 대기 중. 기존 PID/프로세스/우선순위를 변경하지 않는다.
+- MuJoCo **3.12.0** 정지 장면: 소스 `365f9d891ffd57b35a96923bc1d31b9efe65a754`에서 기준/H1/H2 **3/3 로드**, 각각 TOP 4개+자기 카메라 3개 렌더. 벽 위치/크기/충돌 활성, 고정 TOP 위치/FOV, weld OFF, 초기 로봇–벽 접촉 0을 확인했다. 적분·명령·모델 호출 모두 0. 공용 잠금 획득 뒤 전체 약 3.17초였으며 성능 벤치마크가 아니다. 세션 종료·자기 잠금 해제를 확인했고 S2의 다음 실행은 그대로 이어졌다. `stationary.json`, `stationary-lock.json`, `stationary-artifact-hashes.json`과 raw `outputs/hardmaps1-stationary-v1`(약 6.48MB)을 보존했다.
 - PNG는 각각 17KiB 미만. raw/무늬 PNG/XML은 기본 checkout의 `outputs/`에 보존하며 원격 백업이라고 부르지 않는다. UGRP 예외에 따라 Drive를 사용하지 않는다.
 
 ```sh
@@ -68,10 +71,16 @@ MasterPi v3 공식 외형(길이 0.185m·폭 0.162m, `sim/masterpi_geometry_v3.p
 # 공용 잠금이 비었을 때만: 표준 Scene의 정지 XML 로드/forward/렌더, mj_step 0회
 python3 scripts/ugrp_session.py run hardmaps1-stationary-NEW -- \
   /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.prepare_zone_heldout \
-  --stationary --output /Users/changmin/projects/ugrp/outputs/hardmaps1-stationary-NEW
+  --stationary --wait-lock-seconds 3600 --output /Users/changmin/projects/ugrp/outputs/hardmaps1-stationary-NEW
 ```
 
 `--write-maps`는 초기 저작 시에만 쓰며 기존 지도 파일이 있으면 거부한다. 모든 실행 출력 경로도 덮어쓰기를 거부한다. 정지 확인은 0 SIM초의 초기 장면이며 운전·물리 안정성·완주 시험이 아니다.
+
+## TensorBoard
+
+[고정 카드 링크](http://127.0.0.1:6006/?runFilter=hardmaps1&smoothing=0#timeseries)와 전체 pinned URL은 `tensorboard.json`/공용 `outputs/tensorboard-view.json`의 `hardmaps1_heldout_preparation_20261009`에 저장했다. 기존 공용 server의 logdir가 기본 checkout `outputs/tensorboard`임을 확인했고 서버는 변경하지 않았다.
+
+새 snapshot `hardmaps1-preparation-v1`에 기준/H1/H2 세 run을 추가했다. 정지 로드 결과는 기존 변환을 중복하지 않고 별도 `hardmaps1-stationary-v1` snapshot의 세 run으로 기록했다. scalar API의 실제 값(48/48, 경계 24.4, 테이프 215/262/251)을 원본과 대조했고 Chrome **강** 프로필에서 세 run 선택·고정 카드 표시를 확인했다. HParams는 공용 experiment의 새 offline 열 미노출 한계가 있어 사용 가능한 case/outcome/policy/commands/model_calls 열을 적용했다. 새 지표는 Time Series에서 확인한다. 영상은 생성하지 않아 신규 video 0개다. 로봇 성공·runtime·응답 지연은 측정하지 않았으므로 값을 만들지 않았다.
 
 ## 참고 자료
 
