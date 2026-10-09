@@ -1,11 +1,16 @@
 # MasterPi 구동 검토와 접촉 구동 후보 (2026-10-06)
 
-**v1/v2 NOT_READY — DEV 구조 후보, 실물 보정 전.** 접촉 추진은 확인했지만 옆 이동 때 회전 편향이
-무하중·cyan 하중에서 반복돼 두 번 막히면 중단하라는 요청에 따라 추가 물리 실행을 중단했다.
+**v7 DEV 후보 채택 — 실물 보정 전.** 현재 진단 workflow는 **7.1.0**이며,
+`masterpi_drive_friction_v7`을 명시적으로 선택한다. 무하중·cyan의 20/30 정지와
+35/50/100의 5초 지속 주행을 확인했다. 옆 이동 yaw −2.49°와 실물 측정·카메라 보정은 남은 과제다.
 기본값·기존 번들·v102/v106·카메라·팔/물체 접촉은 변경하지 않는다.
-별도 `masterpi_drive_friction_v1/v2`를 명시적으로 선택한다. 현재 진단 workflow는 2.0.0이다.
-공개 FUJI 모델 이식 v2도 옆 이동 회전이 2.05°/2.20° 남아 추가 물리를 중단했다(아래 재개 기록).
-새 RGB 번들 번호는 예약하지 않았다. draft PR만 만들며 병합하지 않는다.
+v1/v2 NOT_READY와 workflow 2.0.0은 아래에 보존한 과거 판정이며 현재 채택 상태가 아니다.
+새 RGB 번들 번호는 예약하지 않았다. 이번 PR 수정에서는 시뮬레이션과 PR 병합을 하지 않는다.
+
+독립 리뷰의 제어기 경로 점검에서는 **50개 중 45개가 v7에서 멎는 호환성 문제**가 지적됐다.
+이는 새 물리 실행 50회의 결과가 아니며 v7 채택이 기존 제어기의 통과를 보장하지 않는다.
+특히 v7 구동과 기존 `_fast_drive_kernel` 가속 경로를 함께 설치하면
+`sim.exact_speedups.install_drive_kernel`이 **RuntimeError**를 내므로 동시 사용은 지원하지 않는다.
 
 ## 현재 모델과 결과 해석
 
@@ -880,6 +885,9 @@ dt0.00025s 동일. 아래는 HIGH 준비 종료 대비0.5s 비대칭 구동+1s �
 |준비 포함 빔 최대 기울기|0.11106°|0.10538°|
 |준비 포함 wall/SIM|1.03636|1.74467|
 
+위 wall/SIM은 **조건별 n=1이며 호스트 loadavg가 다른 측정**이다.
+부하를 통제한 속도 비교나 일반적인 성능 차이의 근거로 해석하지 않는다.
+
 낙하·10° 기울기 초과·집게 이탈·수치 경고는 두 조건 모두0, 활성weld0.
 각33.5 SIM초(준비32초+구동/정지1.5초), 실측 wall34.7181/58.4466초.
 wall에는 world 생성/준비/계측도 포함되므로 앞선 단독 주행의 적분 구간 wall/SIM과 직접
@@ -914,3 +922,9 @@ API 일치. 공용 view에는 자기 `masterpi_drive_pair_v7_20261006` key만 �
 S2·v102/v106 및 카메라 보정이 포함된 새 운반 검증은 다음 범위다.
 
 후처리 소스 로컬 보존: `/Users/changmin/projects/ugrp/outputs/drive-friction-pair-audit-20261006/postprocess-source.py`, SHA256 `62a804e167af88c7eb14d05d656e4a897f075f6d6afc834a8dcb56fcaecff331`.
+
+## PR #402 독립 리뷰 반영 (2026-10-09)
+
+- main `5c56807c69a5ec2ba64ace42b489e5a382433e1a`을 merge하고 workflow 계획 시험의 누락된 v7 인자를 #407과 동일하게 추가했다.
+- 로컬 `tests/test_simulation_workflow_manager.py`: **18 passed**. 시뮬레이션·모델 호출 0, 물리 소스·카메라 변경 없음. 원본 실행 결과 재검증은 하지 않았다.
+- 참고: [Git merge 공식 절차](https://git-scm.com/docs/git-merge)의 `--no-commit`으로 시험 전 커밋을 막고, [pytest 파일 지정 실행](https://docs.pytest.org/en/stable/how-to/usage.html)을 사용했다. 새 알고리즘/논문 이식 없이 기존 #407 시험 입력과 저장된 loadavg를 근거로 수정했다.
