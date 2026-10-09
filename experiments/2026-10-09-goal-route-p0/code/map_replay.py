@@ -109,14 +109,14 @@ def evaluate(seed):
  if seed==49002:
   import matplotlib;matplotlib.use('Agg')
   import matplotlib.pyplot as plt
-  fig,axes=plt.subplots(1,2,figsize=(10,4.5),layout='constrained')
+  fig,axes=plt.subplots(1,2,figsize=(10,4.5),sharex=True,sharey=True,layout='constrained')
   for ax,name in zip(axes,['off','hygiene']):
    g=load(dest/(name+'.json'));cells=np.array([r for r in g['cells'] if r[2]>0]).reshape(-1,3);xy=transform((cells[:,:2]+.5)*g['resolution_m'],origin)
    ax.scatter(samples[:,0],samples[:,1],s=7,c='0.7',label='GT wall (evaluation)');ax.scatter(xy[:,0],xy[:,1],s=8,c='#155998',label='Own occupied cells')
    ax.plot(all_gt[:,0],all_gt[:,1],c='#dd9e32',lw=.8,label='GT path');ax.plot(path[:,0],path[:,1],c='#249254',lw=.8,label='Estimated path')
    q=reports[name];ax.set_title(f"49002 {name}: P {q['precision_015']:.1%}, coverage {q['wall_coverage']:.1%}\n{q['occupied_cells']} cells, RMSE {q['wall_error_rmse_m']:.3f} m")
    ax.set_aspect('equal');ax.set(xlabel='World x (m), aligned once at start',ylabel='y (m)');ax.legend(fontsize=6)
-  figure=EXP/'figures/hygiene-49002.png';figure.parent.mkdir(exist_ok=True);fig.savefig(figure,dpi=145);plt.close(fig)
+  figure=EXP/'figures/hygiene-49002.png';figure.parent.mkdir(exist_ok=True);fig.savefig(figure,dpi=145,bbox_inches='tight',pad_inches=.15);plt.close(fig)
 
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('mode',choices=['predict','evaluate']);p.add_argument('--seed',type=int,required=True);a=p.parse_args()
