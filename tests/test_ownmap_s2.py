@@ -87,3 +87,31 @@ def test_gate_requires_seven_and_does_not_skip_failed_own_convergence():
     assert not gates(pairs[:-1])['passed']
     pairs[0]['own_grid_v1'].update(correct_convergence=False,post_convergence_rmse_m=None)
     assert not gates(pairs)['passed']
+
+
+def test_observed_partial_edges_and_doors_are_retained_not_completed():
+    source=dict(robot_id='r3',t=1.)
+    edge=dict(a=[1.,2.],b=[1.,3.],normal=[1.,0.],hue=105.,source=source,partial_extent=True)
+    lm=dict(robot_id='r3',frame='r3/own_start',world_alignment=None,future_observations=0,before_t=2.,
+        edges=[edge],doors=[dict(center=[2.,3.],width=.6,source=source)])
+    a=m.convert(grid(),landmarks=lm,option=m.OPTION)
+    assert a['observed_floor_edges']==[edge] and a['regions']=={}
+    assert len(a['passages'])==1 and a['passages'][0]['center_m']==[2.,3.]
+    with pytest.raises(ValueError):
+        m.convert(grid(),landmarks={**lm,'world_alignment':[1,2,3]},option=m.OPTION)
+    lm['edges'][0]['source']={'robot_id':'r2','t':1.}
+    with pytest.raises(ValueError):m.convert(grid(),landmarks=lm,option=m.OPTION)
+
+
+def test_tiled_likelihood_matches_original_on_partial_edges_and_doors():
+    from harness.zone_solo_cyan_landmarks import landmark_likelihood
+    rng=np.random.default_rng(6);edges=[]
+    for i in range(21):
+        a=rng.normal(size=2);d=rng.normal(size=2);normal=np.array([-d[1],d[0]])/np.linalg.norm(d)
+        edges.append(dict(a=a,b=a+d,normal=normal,hue=float(100+i)))
+    mapped=SimpleNamespace(edges=edges,doors=[dict(center=np.array([1.,2.]),width=.5)])
+    px=rng.normal(size=(273,3))
+    fs=[dict(kind='floor_line',endpoints=[[.5,.3],[1.,.4]],normal=[0.,1.],hue=105.),
+        dict(kind='floor_line',endpoints=[[-1.,-.3],[-.5,-.4]],normal=[0.,-1.],hue=10.),
+        dict(kind='door',center=[1.,1.],width=.5)]
+    np.testing.assert_allclose(m.bounded_landmark_likelihood(mapped,px,fs),landmark_likelihood(mapped,px,fs),rtol=2e-12,atol=1e-15)

@@ -42,3 +42,9 @@
 이 행들은 지도 저장 형식 확인이며 위치추정 성능 결과가 아니다. partial_extent bounding box는
 여전히 경계로 쓰지 않는다. 관측된 partial edge를 원래 프레임·hue·normal·출처 그대로 받으며
 기존 S2 ML correspondence의 후보로만 사용한다(같은 관측을 독립 likelihood로 중복 곱하지 않음).
+
+입력 정정 뒤 시험 13개 PASS. snapshot partial edge/door 보존, GT/peer/future 정보 거부,
+273개 합성 pose에서 기존 floor+door likelihood와 tiled 구현의 2e-12 상대오차 일치를 확인했다.
+6천 edge × 10만 입자의 모든 후보를 한 번에 저장하지 않도록 128-particle tile로 계산한다.
+후보 제거·재표본화·sigma·likelihood tempering·중복 관측 가중치 조절은 없다.
+실제 7개 입력 hash/geometry 일치, 49001의 6360 edge가 실제 측정 closure에 연결됨을 확인했다.

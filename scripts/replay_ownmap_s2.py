@@ -20,7 +20,7 @@ from harness import zone_solo_cyan_contract_v106 as contract
 from harness import zone_pair_highpose_frame_gate as gate
 from harness.zone_pair_highpose_exact_speedups import install
 
-PLAN = Path(__file__).resolve().parents[1]/'experiments/2026-10-09-ownmap-s2/registration.json'
+PLAN = Path(__file__).resolve().parents[1]/'experiments/2026-10-09-ownmap-s2/registration-v2.json'
 FIELDS = ('t_est', 'x', 'y', 'yaw', 'std_xy_m', 'std_yaw_rad', 'last_fix_t')
 
 
@@ -52,7 +52,13 @@ def inputs(pair):
     grid = read(own/'frontend-grid.json')
     if last is None or any(last['grid'][k] != grid[k] for k in ('frame', 'resolution_m', 'cells')):
         raise ValueError('FINAL_ONLINE_GRID_DIFFERS_FROM_FRONTEND')
-    return adapter.convert(last['grid'], read(own/'remembered-goal.json'), option=adapter.OPTION)
+    landmarks = None
+    if pair.get('landmark_snapshot'):
+        snapshot = read(pair['landmark_snapshot'])
+        if any(snapshot['grid'][k] != grid[k] for k in ('frame', 'resolution_m', 'cells')):
+            raise ValueError('LANDMARK_SNAPSHOT_GRID_MISMATCH')
+        landmarks = snapshot['landmarks']
+    return adapter.convert(last['grid'], read(own/'remembered-goal.json'), landmarks=landmarks, option=adapter.OPTION)
 
 
 def run(pair, option, output):

@@ -20,7 +20,7 @@ OPTION = 'own_grid_v1'
 FRAME = 'own start chassis: x forward, y left, metres'
 
 
-def convert(grid, goal=None, *, option='off'):
+def convert(grid, goal=None, *, landmarks=None, option='off'):
     """Return None when disabled; never inspect an off input."""
     if option == 'off':
         return None
@@ -63,14 +63,86 @@ def convert(grid, goal=None, *, option='off'):
             'entity', 'center_m', 'bounds_m', 'partial_extent', 'source', 'detector',
             'frame_sha256', 'first_t', 't_sim', 'observations') if k in goal}
         regions[goal['entity']['id']]['boundary_observed'] = False
+    edges, doors = observed_landmarks(landmarks)
+    missing = ['complete_floor_regions', 'pickup_slots', 'delivery_slots', 'wall_height', 'unobserved_space']
+    if not edges: missing.append('observed_floor_edges')
+    if not doors: missing.append('door_entities')
     return dict(schema='ugrp.ownmaps2a.static.v1', map_id='ownmaps2a', frame=FRAME,
         bounds_m=[float(lo[0]), float(hi[0]), float(lo[1]), float(hi[1])],
         obstacles=obstacles, occupancy_grid=dict(resolution_m=res, cells=cells.tolist()),
-        regions={}, observed_regions=regions, observed_floor_edges=[], passages=[],
+        regions={}, observed_regions=regions, observed_floor_edges=edges,
+        observed_doors=doors, passages=[dict(kind='door', id=f'own-door-{i}', center_m=d['center'],
+            width_m=d['width'], source=d['source']) for i,d in enumerate(doors)],
         pickup_slots=[], zone_slots={}, landmarks={'tags': [], 'door_posts': []}, terrain=[],
-        missing=['verified_floor_boundaries', 'complete_floor_regions', 'door_entities',
-                 'pickup_slots', 'delivery_slots', 'wall_height', 'unobserved_space'],
+        missing=missing,
         gt_inputs=False, start_prior='none_v1', transport_admitted=False)
+
+
+def observed_landmarks(record):
+    if record is None:
+        return [], []
+    if (record.get('robot_id') != 'r3' or record.get('frame') != 'r3/own_start'
+            or record.get('world_alignment') is not None or record.get('future_observations') != 0):
+        raise ValueError('CAUSAL_OWN_LANDMARK_FRAME_REQUIRED')
+    edges, doors = copy.deepcopy(record['edges']), copy.deepcopy(record['doors'])
+    for feature in edges+doors:
+        source = feature['source']
+        if source['robot_id'] != 'r3' or not float(source['t']) < float(record['before_t'])-1e-8:
+            raise ValueError('FUTURE_OR_PEER_LANDMARK')
+    for e in edges:
+        a, b, normal = [np.asarray(e[k], float) for k in ('a', 'b', 'normal')]
+        if (any(v.shape != (2,) or not np.isfinite(v).all() for v in (a, b, normal))
+                or np.linalg.norm(a-b) <= 0 or not np.isclose(np.linalg.norm(normal), 1.)
+                or not 0 <= float(e['hue']) < 180):
+            raise ValueError('INVALID_PARTIAL_EDGE')
+    for d in doors:
+        c = np.asarray(d['center'], float)
+        if c.shape != (2,) or not np.isfinite(c).all() or not math.isfinite(d['width']) or d['width'] <= 0:
+            raise ValueError('INVALID_OBSERVED_DOOR')
+    return edges, doors
+
+
+def mapped_landmarks(static):
+    return SimpleNamespace(edges=[{**e, **{k:np.array(e[k],float) for k in ('a','b','normal')}}
+        for e in static['observed_floor_edges']], doors=[{**d,'center':np.array(d['center'],float)}
+        for d in static['observed_doors']], hues=sorted({e['hue'] for e in static['observed_floor_edges']}))
+
+
+def bounded_landmark_likelihood(mapped, px, features):
+    """Same ML score as S2, tiled to avoid 6000 x 100000 candidate allocation.
+
+    No pruning, averaging, feature selection, exponent/uncertainty change or
+    learned parameter. Every same-signature partial edge participates in max.
+    Door scoring calls the unchanged S2 implementation directly.
+    """
+    from harness.zone_solo_cyan_landmarks import PARAMS, gaussian, wrap, landmark_likelihood
+    px=np.asarray(px,float); result=np.ones(len(px))
+    for f in features:
+        if f['kind'] != 'floor_line':
+            result *= landmark_likelihood(mapped, px, [f]); continue
+        edges=[e for e in mapped.edges if min(abs(e['hue']-f['hue']),180-abs(e['hue']-f['hue'])) <= PARAMS['hue_tolerance']]
+        best=np.zeros(len(px))
+        if edges:
+            a=np.array([e['a'] for e in edges]); b=np.array([e['b'] for e in edges]); vec=b-a
+            vv=np.sum(vec*vec,axis=1)
+            angles=np.arctan2([e['normal'][1] for e in edges],[e['normal'][0] for e in edges])
+            endpoints=np.array(f['endpoints']); normal=np.array(f['normal'])
+            for begin in range(0,len(px),128):
+                p=px[begin:begin+128]; c,s=np.cos(p[:,2]),np.sin(p[:,2])
+                world=np.stack((p[:,0,None]+c[:,None]*endpoints[:,0]-s[:,None]*endpoints[:,1],
+                    p[:,1,None]+s[:,None]*endpoints[:,0]+c[:,None]*endpoints[:,1]),axis=-1)
+                squared=np.zeros((len(p),len(edges)))
+                for j in (0,1):
+                    delta=world[:,j,None,:]-a
+                    frac=np.clip(np.sum(delta*vec,axis=-1)/vv,0,1)
+                    closest=a+frac[:,:,None]*vec
+                    squared+=np.sum((world[:,j,None,:]-closest)**2,axis=-1)
+                distance=np.sqrt(squared/2)
+                da=wrap(p[:,2,None]+np.arctan2(normal[1],normal[0])-angles)
+                scores=gaussian(distance,PARAMS['sigma_line_m'])*gaussian(da,PARAMS['sigma_line_angle_rad'])
+                best[begin:begin+len(p)]=np.max(scores,axis=1)
+        result *= (1-PARAMS['random_fraction'])*best+PARAMS['random_fraction']/(PARAMS['max_range_m']*2*np.pi)
+    return result
 
 
 class GridField:
@@ -205,6 +277,11 @@ def build_runtime(bundle, static, calibration, calibration_sha, *, option='off')
         pf = rt.pose.provider.loc._pf
         selected = closure(pf.update_obs)['selected']
         selected = replace_cell(selected, 'field', field)
+        mapped = mapped_landmarks(static)
+        measure = replace_cell(selected.__globals__['endpoints'], 'mapped', mapped)
+        score = replace_cell(selected.__globals__['likelihood'], 'mapped', mapped)
+        score = bind(score, landmark_likelihood=bounded_landmark_likelihood)
+        selected = bind(selected, endpoints=measure, likelihood=score)
         pf.update_obs = replace_cell(pf.update_obs, 'selected', selected)
         rt.own_map_field = field
     else:

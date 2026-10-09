@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 from scipy.spatial import cKDTree
 
-from harness.ownmap_s2 import GridField
+from harness.ownmap_s2 import GridField, mapped_landmarks, bounded_landmark_likelihood
 from harness.zone_solo_cyan_likelihood_field import Field
 from harness.zone_solo_cyan_landmarks import MapFeatures, landmark_likelihood
 from harness.zone_solo_cyan_amcl_sensor import likelihood
@@ -157,6 +157,7 @@ def diagnostics(static, own, anchor, truth, measurements):
     partial = TreeField(support)
     ownfield = GridField(own)
     mapped = MapFeatures(static)
+    ownmapped = mapped_landmarks(own)
     tarr = truth_arrays(truth)
     sampled = []; missing_floor = missing_door = total_floor = total_door = 0
     for row in measurements:
@@ -170,14 +171,16 @@ def diagnostics(static, own, anchor, truth, measurements):
         floor = sum(f['kind'] == 'floor_line' for f in features)
         door = sum(f['kind'] == 'door' for f in features)
         total_floor += floor; total_door += door
-        missing_floor += floor if not own['observed_floor_edges'] else 0
+        missing_floor += sum(not any(min(abs(e['hue']-f['hue']),180-abs(e['hue']-f['hue']))<=12 for e in ownmapped.edges) for f in features if f['kind']=='floor_line')
         missing_door += door if not own['passages'] else 0
         a = float(likelihood(ownfield, local[None, :], pts)[0])
         b = float(likelihood(partial, pose[None, :], pts)[0])
         c = float(likelihood(gt_field, pose[None, :], pts)[0])
         d = float(landmark_likelihood(mapped, pose[None, :], features)[0])
+        e = float(bounded_landmark_likelihood(ownmapped, local[None, :], features)[0])
         sampled.append(dict(t=t, own_wall_score=a, observed_support_gt_wall_score=b,
             full_gt_wall_score=c, full_gt_landmark_log_score=float(np.log(max(d, 1e-300))),
+            own_landmark_log_score=float(np.log(max(e,1e-300))),
             wall_endpoints=len(pts), floor_features=floor, door_features=door))
     wall_error = gt_field.distances(occupied_world)
     return dict(gt_use='EVALUATION_ONLY; not localization/control; no adoption or success claims',
