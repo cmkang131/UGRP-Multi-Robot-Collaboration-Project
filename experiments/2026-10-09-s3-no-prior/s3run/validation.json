@@ -28,5 +28,31 @@
     "failed": 0,
     "wall_s": 42.76
   },
-  "frozen_catalog_sha256": "fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813"
+  "frozen_catalog_sha256": "fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813",
+  "physical_runs_scope": "Initial host-render regression above only; completed smoke is recorded separately below.",
+  "smoke": {
+    "source_sha": "3daa830f65f6ed72b94a95b376accc4949b7b7e6",
+    "physical_runs": 1,
+    "status": "DEV_NOT_DELIVERED",
+    "correct_first_convergence_n": 0,
+    "robots": 3,
+    "delivered_orders": 0,
+    "orders": 2,
+    "host_errors": 0,
+    "raw_files_verified": 2569,
+    "raw_bytes_verified": 82280565,
+    "raw_all_hashes_match": true,
+    "tensorboard_scalar_values_verified": 24,
+    "tensorboard_ui_verified": true,
+    "video_4x_browser_playback_verified": true,
+    "copied_evidence_matches_raw": [
+      "smoke-report.json",
+      "raw-verification.json",
+      "video-verification.json",
+      "smoke-tensorboard-verification.json",
+      "launch-verification.json"
+    ],
+    "posthoc_scripts_syntax_and_successful_execution": true,
+    "no_further_physical_runs": true
+  }
 }

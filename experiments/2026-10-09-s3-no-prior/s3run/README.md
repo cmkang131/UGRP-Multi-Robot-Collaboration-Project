@@ -39,3 +39,50 @@ heading 적용 범위를 구분한다: 세 S2 계열 startup localizer에 동일
 실행 직전 디스크 갱신: 여유12.23GiB로 감소하여 raw 상한을2.125GiB로 사전 조정했다. 옛 실행 실측 비율의1800초 투영1,721,403,567bytes+추가eval허용536,870,912bytes=2.103GiB보다 크다. 이는 추정이며 보장하지 않는다.10GiB 또는raw 상한에 도달하면 ENOSPC HOST_ERROR로 기록하고 자동 재시도하지 않는다. 기존raw 삭제0.
 
 실행 소스 검증: S3/공통 heading/workflow 관련3개 파일41 passed(115.19s). raw 예산 조정 뒤 계약 시험1 passed(42.76s). 실제 S3 factory의 각 localizer에 `path_tangent_v1` 적용, 자기 추정 stub에서 회전→전진 생성, result 적용값 및v142 누락 옵션off 보존을 확인했다. 기존 호스트 첫 렌더 mount 회귀는2 passed. 시험은 물리 실행 성공 근거가 아니다. CI는 기다리지 않는다.
+
+## v146 단일 스모크 결과
+
+실행 SHA **3daa830f65f6ed72b94a95b376accc4949b7b7e6**, seed14201, `DEV_NOT_DELIVERED`. 시뮬레이션1회, 자동 추가시행0, 문턱/seed 사후 변경0. raw는 `/Users/changmin/projects/ugrp/outputs/s3-host-heading-3daa830f-s14201-v146`. [전체 평가](smoke-report.json), [원 결과](v146-result.json).
+
+| 로봇 | 첫 위치 찾기(기존 σxy/yaw + 인증) | 마지막 XY/yaw 오차 | 마지막 σxy / posterior 모드 | 접근·집기·문 통과·B 놓기 | 종결 |
+|---|---|---|---|---|---|
+| r1 | 실패; 수렴 시각 없음(42.25s 관측) | 4.259257m /179.3442° | 1.478844m /2 | 모두 미진입 | pair look_around2회 실패·3번째 진행 중 공동 종료 |
+| r2 | 실패; 수렴 시각 없음(42.25s 관측) | 0.059274m /1.0596° | 0.212761m /2 | 모두 미진입 | LOOK_RECOVERY_EXHAUSTED |
+| r3 | 실패; 수렴 시각 없음(42.25s 관측) | 0.019804m /0.9958° | 0.084268m /2 | 모두 미진입 | 문 예약 대기 중 공동 종료 |
+
+**정확 수렴0/3, 허위 σ 수렴0, 로봇별 임무 성공0/3, 배달0/2화물**(r1/r2 공동 빔1+cyan1). 마지막 point estimate 정확 영역은r2/r3 2대지만 수렴 성공으로 세지 않는다. 마지막 관측43.55 절대 SIM초(시작1.30부터42.25초), 전체 판정45.25 SIM초에는 종료 뒤3초 정착을 포함한다. r1은 반대 방향 오위치가 새 실제 v3 렌더에서도 반복됐다. 입자 표본 원인의 단일 요인 증거는 위 저장 입력 재생에 한정한다. 별도 표본 회복 후보나 문턱을 사후 채택하지 않았다.
+
+### 적용값과 물리 검증 범위
+
+- host v3 binding on, diagnostic controller extrinsic off. 실제 렌더 기록 각846개/자기 RGB 각846개가 시각별1:1 대응한다. 세 로봇 **첫 프레임 및 전 프레임의 local mount pos/quat가 S2 fixture와 정확히 동일**하다. local position `[0.052982009925558314,0,0.028152173913043477]`, quaternion `[0.4545194776720437,0.5416752204197018,-0.5416752204197018,-0.4545194776720437]`. 월드 카메라 pose/qpos도 eval_only에 보존했다.
+- bundle/result의 `heading_mode=path_tangent_v1`, 세 localizer의 기록 옵션과10.50s의 `rotate_path` 결정 각1건이 일치한다. 초기 handoff가 첫 제안을 보류했고 이후 pair 관측/문 예약에 머물러 **실제 차체 이동 명령0**이다. 따라서 물리 회전→전진 성능 검증으로 보고하지 않는다. 공통 명령 생성은 회귀시험 범위다.
+- [실제 v7 적용 기록](v146-v7-speedups.json)과runtime-bundle/result 모두 `relay-cache-v1`, enabled=true. 제어기 입력은 자기 RGB·정적 지도·자기 발행 명령, GT는 평가만, weld/dock prior/top camera off다.
+- 심판 높이는 실제 world COM 계약으로906개 표본을 평가했고, student/trial 직렬화도 완료했다. 기존 HOST_ERROR2종은 이 실행에서 발생하지 않았다.
+
+### 멈췄을 지점과 실제 종료
+
+| dev_light 로그 코드 | r1 | r2 | r3 | 첫 절대 SIM시각 |
+|---|---:|---:|---:|---:|
+| ARM_COLLISION_GUARD |6|5|5|1.40s|
+| POSE_CLUSTER_UNCERTAIN |30|0|30|2.45s|
+| GLOBAL_START_UNRESOLVED |1|1|1|8.90s|
+| POSE_UNCERTAIN |1|1|1|10.50s|
+| 합계 |38|7|37|총82건|
+
+이82건은 로그 후 진행했다. 그러나 `ZoneOwnExecutor._step_look_around`의 `SWEEP_TRANSITION_BLOCKED`가 별도 실제 실패로 처리되는 기존 dev_light 사각이 남아 있다(`harness/zone_own_executor.py:751`, `zone_pair_highpose_relook.py`). r1 실패2건(23.95/34.95s), r2 실패3건(20.55/31.55/42.55s), 마지막r2 `LOOK_RECOVERY_EXHAUSTED`1건(43.55s)으로 공동 종료했다. 실제 충돌/낙하로 분류하지 않는다. 같은 보수적 재관측 원인이v142와 반복되어 **추가 물리 실행을 하지 않는다**.
+
+문 REQUEST는r1/r2/r3 각1회, 대기0.05/0.05/33.05robot-s. 로봇 간 충돌 episode0, 등록된120초 교착 episode0(실행이120초보다 짧으므로 교착 부재 보장은 아님). 원인 계수는 실제 오위치1대, σ 미수렴3대, pair guard 실패5job, 최종 재관측 소진1회, 배달 미완료2화물, HOST_ERROR0이다. 범주가 겹치므로 합산 성공률로 쓰지 않는다.
+
+wall **159.570026s / SIM45.25s =3.526409 wall/SIM**, reset1.3초 제외. 발행 명령r1/r2/r3=1104/1060/1114, 총3278, 모델/HTTP호출0. v142의6.00533과는 렌더/관측/실패 주체가 달라 속도 개선의 독립 인과 효과로 주장하지 않는다.
+
+### 실행·보존·표시 검증
+
+원본2569개/82,280,565bytes 전체 해시 일치, manifest SHA256 `e1be8bfe17b61fe36d6ac2d5d247cb526b1ad3a7fe3418a716a3dadf26cba2f0`. [검증](raw-verification.json). 원본 manifest/영상/로그를 덮어쓰지 않고 파생 영상은 별도views에 저장했다.
+
+Codex 상위 프로세스가nice5여서 직접 실행은 하지 않았다. Terminal 자동화 도구가 해당 앱 접근을 거부하여 CLI에서launchd 기본 우선순위로 실행했고 실제 세 실행 프로세스 모두nice0을 확인했다. nice/renice 호출0, 타 작업 프로세스 종료0. `launchctl submit`의 종료 후 재시작으로 launcher가6회 더 호출됐지만 동일 output 존재 검사에서 **시뮬레이터 구성 전에 모두 거부**됐다. 원 실행/원본은1개다. 자기 job 제거·자기 프로세스 종료·agent_lock 해제를 확인했다. 향후에는KeepAlive=false인 명시적 one-shot 또는nice0 foreground shell을 쓴다. [실행기 기록](launch-verification.json), [잠금](v146-lock.json).
+
+[4배속 대표 영상](http://127.0.0.1:6007/video/1002e122b82730be398a): `/Users/changmin/projects/ugrp/outputs/s3run-20261009/views/v146/execution.mp4`,212frames/20fps/10.6s, SHA256 `4f5ea09cf9a182b91625bb098ada0b31a9f447990bcfbcb918a4fd9c91d91b25`. 실제 브라우저에서1920×480 로딩·끝까지 재생·오류없음 확인. [영상 검증](video-verification.json).
+
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1009-s3-v146%2F&smoothing=0#timeseries): 새snapshot `1009-s3-v146`,24개 원본/이벤트 스칼라 대조,9개 pin·실제 run 선택·시간159.57/45.25 표시·HParams 8열 확인. 기존r1 진단 및v142 snapshot은 보존했다. 전체 pinned URL은 [표시 검증](smoke-tensorboard-verification.json), [화면](smoke-tensorboard-ui.png). 원본은 로컬 보존이며 원격raw 백업으로 표현하지 않는다.
+
+다음 물리 실행 제안: v146 저장 입력에서 표준 입자 다양성 유지 방법과pair look-sweep의dev_light 일관성을 먼저 오프라인 검증한 뒤, 사전 등록한 동일seed 혼합1회만 다시 제안한다.
