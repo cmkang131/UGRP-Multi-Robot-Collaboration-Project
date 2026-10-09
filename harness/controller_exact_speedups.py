@@ -231,10 +231,11 @@ class IncrementalGridFieldMemo(GridFieldMemo):
             self.changed_cells += int(changed.sum())
             owner.resolution, owner.origin, owner.distance = resolution, origin, distance.copy()
         else:
-            # Preserve original construction, including original float64 bytes.
+            # The original EDT already computes nearest indices internally.
+            # Return both in one pass; retain the original sqrt then multiply.
             from scipy.ndimage import distance_transform_edt
-            self.function(owner, points, resolution)
-            nearest = distance_transform_edt(~occupied, return_distances=False, return_indices=True)
+            raw_distance, nearest = distance_transform_edt(~occupied, return_indices=True)
+            owner.resolution, owner.origin, owner.distance = resolution, origin, raw_distance*resolution
             squares = np.sum((np.indices(occupied.shape, dtype=np.int64)-nearest)**2, axis=0)
             distance = owner.distance.copy()
             self.full_rebuilds += 1

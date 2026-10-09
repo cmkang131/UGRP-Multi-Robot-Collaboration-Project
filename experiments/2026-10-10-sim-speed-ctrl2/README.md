@@ -15,6 +15,7 @@ main `77eba22c`/PR #423 이후의 저장 입력 개발 진단이다. **새 ABBA 
 - 정확한 거리장은 최근접 장애물 witness로 추가/삭제의 영향을 추적한다.
   제거한 장애물을 최근접으로 쓰던 모든 칸을 갱신하며, 영향이 큰 경우 원래 전체 EDT로 fallback한다.
   원래 거리는 무한 범위이므로 임의의 dirty halo로 잘라 갱신하지 않는다.
+  전체 rebuild도 EDT 한 번에서 거리와 witness를 함께 얻어 계산을 중복하지 않는다.
   확률장은 같은 geometry에서 값이 바뀐 칸만 원래 scalar sigmoid로 계산한다.
 - `UGRP_CONTROLLER_SCAN_SPEEDUPS=exact-v2`가 후보 기본이며 `off`는 #423 경로다.
   부모 `UGRP_CONTROLLER_EXACT_SPEEDUPS=off`는 모든 가속을 끈다. 실행 기록에 설치·fallback·통계를 남긴다.
@@ -78,5 +79,7 @@ raw는 기본 checkout outputs 아래에, 작은 표·해시·실패 기록은 �
   거리 lookup cache와 likelihood-field 구성. 이 파일 자체는 dirty-cell 증분 EDT 구현이 아니다.
 - [OctoMap DynamicEDT3D](https://github.com/OctoMap/octomap/blob/devel/dynamicEDT3D/include/dynamicEDT3D/dynamicEDT3D.h):
   obstacle witness/정수 제곱거리·추가/삭제 갱신의 공개 구현. 우리의 2D 증분은 float64 전체 EDT와 바이트 대조한다.
+- [SciPy 1.17.1 EDT 원문](https://github.com/scipy/scipy/blob/v1.17.1/scipy/ndimage/_morphology.py):
+  feature transform으로 거리와 최근접 index를 함께 반환한다. 동일 sqrt/multiply 순서를 유지한다.
 - Thrun, Burgard, Fox, *Probabilistic Robotics* 4·6·8장: PF·likelihood field·occupancy grid의 표준 근거.
   판본 원문은 이번 실행에서 별도로 확인하지 않았으며 장별 내용은 #423의 기존 참고 범위를 승계한다.
