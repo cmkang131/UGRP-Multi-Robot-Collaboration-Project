@@ -238,12 +238,17 @@ class TraversalReturn:
             target = self.graph.goal['center_m']
         else:
             return np.zeros(3), 'await_node_match'
-        d = np.asarray(target)-pose[:2]
-        angle = float(wrap(math.atan2(d[1],d[0])-pose[2]))
-        # Alignment within the camera FOV; reuse egomap50 frontal tolerance.
-        if abs(angle) > math.radians(10):
-            return np.array([0.,0.,float(np.clip(angle/.1,-.5,.5))]), 'traversal_rotate_forward'
-        return np.array([min(.12,float(np.linalg.norm(d))/.2),0.,0.]), 'traversal_forward'
+        return heading_twist(pose, target)
+
+def heading_twist(pose, target):
+    """Existing egomap51 rotate-then-forward law, shared without new gains."""
+    d = np.asarray(target)-pose[:2]
+    angle = float(wrap(math.atan2(d[1],d[0])-pose[2]))
+    # Alignment within the camera FOV; reuse egomap50 frontal tolerance.
+    if abs(angle) > math.radians(10):
+        return np.array([0.,0.,float(np.clip(angle/.1,-.5,.5))]), 'traversal_rotate_forward'
+    return np.array([min(.12,float(np.linalg.norm(d))/.2),0.,0.]), 'traversal_forward'
+
 
 
 def attach(controller, *, return_policy='off'):

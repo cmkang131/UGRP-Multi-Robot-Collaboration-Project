@@ -781,6 +781,23 @@
         "--expected-source-sha"
       ],
       "output_kind": "directory"
+    },
+    {
+      "id": "goal-route-continuous-dev",
+      "purpose": "egomap56 연속 추적 자기 목표/경로 P1 DEV, 잠금 하 한 실행",
+      "entry": "scripts/run_goal_route_continuous.py",
+      "docs": "experiments/2026-10-09-goal-route-continuous/README.md",
+      "requires": "explicit --execute, frozen source, S3 retest queue admission, agent_lock; no model calls",
+      "version": "1.0.0",
+      "runner": "scripts.run_goal_route_continuous",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--seed",
+        "--expected-source-sha"
+      ],
+      "output_kind": "directory"
     }
   ]
 }
