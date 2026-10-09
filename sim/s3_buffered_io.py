@@ -15,6 +15,8 @@ class PhysicsBackend(Previous):
             raise ValueError('unknown S3 I/O option')
         self.host_timing = {}
         super().__init__(bundle, out, **kwargs)
+        if self.io_mode == 'off':
+            return
         render = self.world.render_rgb
         def timed_render(*args, **kwargs):
             with self.measure('render_rgb'):
@@ -47,22 +49,32 @@ class PhysicsBackend(Previous):
                 stream.flush()
 
     def capture(self):
+        if self.io_mode == 'off':
+            return super().capture()
         with self.measure('capture_including_render_io'):
             return super().capture()
 
     def advance_to(self, t):
+        if self.io_mode == 'off':
+            return super().advance_to(t)
         with self.measure('physics_advance'):
             return super().advance_to(t)
 
     def eval_sample(self):
+        if self.io_mode == 'off':
+            return super().eval_sample()
         with self.measure('eval_sample_including_io'):
             return super().eval_sample()
 
     def evaluate(self, *args, **kwargs):
+        if self.io_mode == 'off':
+            return super().evaluate(*args, **kwargs)
         self.flush()  # referee is a post-loop reader of these same streams
         return super().evaluate(*args, **kwargs)
 
     def close(self):
+        if self.io_mode == 'off':
+            return super().close()
         try:
             self.flush()
             super().close()

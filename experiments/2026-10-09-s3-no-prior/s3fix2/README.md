@@ -27,3 +27,12 @@
 |1070|0.033573→0.019901|0.086722→0.117925|미수렴→미수렴|0→0|
 
 첫 σ수렴4/6→2/6, posterior 인증3/6→1/6. 후보 미수렴4개의 실제 XY오차.0199–.0595m로 작은 점오차와 넓은 posterior를 구분한다. 14초 이후 전체 운반 성공/허위수렴0이라는 주장은 아니다.
+
+## 오프라인 구현 검증 (물리 실행 전)
+
+- `zone_s3_pair_heading`은 기존 접근 driver의 상태·정적 경로·자기 추정을 유지하고 발행 직전 공통 heading selector의 측정 펄스로 바꾼다. 펄스 전체 시간+coast+지연된 자기 포즈까지 기다린다. 기본 off는 원래 인스턴스를 반환한다. **아직 새 혼합 실행 전체 경로에 연결·인수한 결과는 아니다.**
+- 원본 v147의 비영(非零) 차체 명령2개를 재생했다. 원래 단일 축 계약 오류2/2→변환 후0/2. 이 비교는 정적 최종 접근 목표를 carrot으로 한 계약 단위 반사실 재생이며, 새로운 물리 이동·운반 성공이 아니다. [입력 해시와 명령](command-replay.json), [실행 스크립트](command_replay.py).
+- 순수 posterior summary를 particle/weight/label/offset 내용 해시로 memoize한다. 배열의 in-place 변경, 가중치 변경, pan offset 변경은 캐시를 무효화하고 시각·건강 상태·감사 기록은 매 호출 갱신한다. 필터 분포·RNG·KLD 문턱은 바꾸지 않는다. 전체 원본 재생 해시 비교와 cProfile 채택 판정은 잠금 후 진행한다.
+- JSONL은 같은 JSON 인코딩/행 순서의64KiB buffer로 기록하고 referee 읽기 및 close 전에 flush한다. 후속 실제 smoke의 render/capture/physics/eval/JSONL 타이머는 제어기로 전달하지 않으며, nested timer를 단순 합산하지 않는다. 기록 버퍼의 바이트 동일성과 read-before-evaluate 회귀를 고정했다.
+- 변경 모듈 시험 `tests/test_s3_pair_heading.py tests/test_s3_exact_cache.py`: **10 PASS**. 실제 `GuardedDriver`의 넓은σ DEV 경로에서도 단일 축 heading 펄스가 생성되고, 기존 σ를 줄여 보고하지 않는다. 버퍼 off 위임 보강 후 해당4개 추가 확인.
+- [S2 원본 수치·해시](s2-error-comparison.json):6개 전부 실제 XY오차 감소, σ4/6→2/6·인증3/6→1/6. 이전 재생을 재집계했으며 새 물리나 새 확증 코호트로 합산하지 않는다.
