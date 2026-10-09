@@ -81,3 +81,41 @@ def test_real_stack_default_off_record_and_first_commands_identical():
         m.attach(r,active_localization=m.OPTION)
         assert r.record()['active_localization']['gt_inputs'] is False
     finally:r.close()
+
+
+def test_new_admission_is_only_v139_plus_active_and_old_seeds_unchanged():
+    from harness import zone_s2_active_observation_contract as c
+    from harness import zone_s2_unknown_start_contract as old
+    assert old.registration()['seeds']==[1059,1060,1061]
+    b=c.bundle('a'*40,1060,active_localization=m.OPTION)
+    c.require_execution(b)
+    frozen=old.bundle('a'*40,1060,**old.NEW_OPTIONS)
+    assert {k:v for k,v in b['options'].items() if k!='active_localization'}==frozen['options']
+    assert b['task']==frozen['task'] and b['case_cap_s']==900
+    with pytest.raises(ValueError):c.require_execution(c.bundle('a'*40,1060))
+    with pytest.raises(ValueError):c.bundle('a'*40,1054)
+
+
+def test_active_action_scheduling_preserves_grip_and_resumes(monkeypatch):
+    from pathlib import Path
+    from scripts.run_s2_landmarks_dev import runtime_factory
+    from harness import zone_solo_cyan_contract_v106 as c
+    b=json.loads(Path('tests/fixtures/s2_ci/v133-bundle.json').read_text())
+    r=runtime_factory(b)(c.hp.resolve(c.MAP_ID)[0],c.ROOT/c.CALIBRATION,c.CALIBRATION_SHA,**b['task'])
+    try:
+        r.initial_commands(0.,{'r3':{1:1500,3:740,4:2320,5:1320,6:1500}})
+        r.state='carry';r.next_control=0.;r.last_report=NS(x_m=0.,y_m=0.,std_xy_m=.01)
+        m.attach(r,active_localization=m.OPTION)
+        state=m.closure(r.step)['state'];state['pending']=dict(t=99.,ess=10.,n=2000,trigger=True)
+        a=m.actions(r.pulse_profiles,True)[0]
+        a.update(expected_reduction_nats=1.,clearance_m=1.)
+        stay=dict(name='stay',expected_reduction_nats=0.,clearance_m=1.,added_s=0.)
+        monkeypatch.setattr(m,'rank',lambda *args:[a,stay])
+        issued=[]
+        for t in np.arange(100.,100.+a['added_s']+.01,.05):issued.extend(r.step(float(t)))
+        assert sum(q['kind']=='mecanum' for _,q in issued)==a['pulses']+a['return_pulses']
+        assert all(q['kind'] in ('mecanum','hold') for _,q in issued)
+        assert r.state=='carry' and r.servo[1]==1500 and state['event'] is None
+        assert r.record()['active_localization']['added_s']==pytest.approx(a['added_s'])
+        assert r.path==[] and r.path_goal is None
+    finally:r.close()
