@@ -81,3 +81,16 @@ S2에서 y=-1.675, half-length=1.475이다. 즉 아래쪽 1.025m 구간은 mappi
 추가 평가 스크립트는 봉인 결과만 읽는다. 공통 벽 coverage, 상한 없는 벽 거리, 원본 GT
 궤적의 grid support, 실제 후보/기준 feature 수, 자기 벽+관측지원 GT 벽의 true-pose 점수를
 평가 전용으로 남긴다. 마지막 두 항목을 새 수렴/운반 성공으로 세지 않는다.
+
+## 평가·표시 시도의 한계
+
+추가 mode-score v1은 report 전달 시각으로 pose를 골라 센서 시각과 어긋났다. 주 평가는
+처음부터 t_est를 사용하므로 영향이 없다. v1 JSON은 로컬에 보존하고 결론에는 쓰지 않는다.
+정확히 같은 t_est가 없는 v2는 7개 모두 unavailable로 남긴다. mode jump 사이를 보간해
+임의의 pose를 만들지 않는다. 벽 coverage/GT true-pose 혼합 점수/실제 feature 수 진단은 별개다.
+
+TensorBoard 첫 helper 호출은 `main(argv)`를 지원하지 않는 기존 CLI를 함수처럼 호출해 실패했다.
+이벤트는 생성되지 않았고 `tensorboard-inputs/`를 보존했다. 기존 `scripts/export_offline_audit.py`
+CLI를 subprocess로 호출하는 방식으로 수정해 새 derived 디렉터리에서 14/14 변환·검증했다.
+표준 변환기·기존 snapshot은 변경하지 않았다. 공용 HParams의 첫 experiment schema 선택 때문에
+새 custom 열이 표시되지 않는 제한은 delivery/README에 남기며 Time Series로 결과를 보여준다.

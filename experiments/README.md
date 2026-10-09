@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-09 ownmaps2a S2 자기 지도 교체](2026-10-09-ownmap-s2/README.md): 기본 off 어댑터, 기존 RGB/명령 7쌍 오프라인 재생. 기준 7/7 → 자기 지도 1/7 정상 최초 수렴, 관문 NOT_READY. 분리벽 1.025m 환경 차이·미관측 영역·색 단서 누락을 분리해 기록. 물리·모델·튜닝 0, DRAFT #414.
+
 - [2026-10-05 S1 혼합 배치와 v4 지도 연결](2026-10-05-s1-placement/README.md): 최종 v3 지도 조회와 색 상자·catalogue 화물의 정적 혼합 배치. v4 8종 오프라인 검사, 소스 `35034c5b`의 dev_s1lite·전체 s1 각 30 SIM초 정지·렌더 DEV screen PASS. 유한 바닥 침투를 기록했으며 실제 운반·S1 물리 졸업·S2 제어기 연결은 미검증.
 
 - [2026-10-05 S2 단독 cyan 최종 v3 후보 v106](2026-10-05-solo-cyan-v106/README.md): v98 벽 관측·입자 필터·partial-fix·호버 확인·blind close·하중 가림 재사용, 내려놓기 재관측·재집기. own RGB/정적 지도/자기 명령만. `setdown-relook-v3`, 하중 이동은 v102, 방향 결합 보정은 s911 탐색 모델. 소스 `dfec1f19`의 s912–914/3 slot에서 DEV 사후 잠정 기하 판정 3/3. `STAGE_REACHED_UNQUALIFIED`, `physical_success=null`, `research_result=false`; 정식 stop-ON·S2 전체 졸업·실물 성공은 미검증.
