@@ -21,7 +21,7 @@ def parser():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--execute', action='store_true')
     p.add_argument('--admission', choices=('dev-pilot',), default='dev-pilot')
-    p.add_argument('--seed', type=int, choices=(911, 912, 913, 914), default=911)
+    p.add_argument('--seed', type=int, choices=contract.DEV_SEEDS, default=911)
     p.add_argument('--robot-id', choices=('r1', 'r2', 'r3'), default='r3')
     p.add_argument('--pickup-slot', default='P1-2')
     p.add_argument('--destination', choices=('A', 'B', 'C'), default='B')
@@ -37,7 +37,11 @@ def stage_reached(runtime, stage):
     if stage == 'pick':
         return any(e['event'] == 'high_carry_pose' for e in runtime.events)
     if stage == 'door':
-        return runtime.route_i >= 2
+        # A fresh relook can advance route_i before the floor-resting box is
+        # regrasped. Wait for the existing HIGH sequence to finish; own command
+        # state only, with actual lifting still checked by the post-run judge.
+        return (runtime.route_i >= 2 and runtime.state == 'carry'
+                and not runtime.regrasp and runtime.beam_grasp_confirmed)
     return runtime.state == 'done'
 
 
