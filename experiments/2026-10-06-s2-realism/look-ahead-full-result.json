@@ -1,0 +1,181 @@
+{
+  "schema": "ugrp.s2.look_ahead_full.summary.v1",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-f10a5f9d-s1051-P1-2-lookahead",
+  "source_sha": "f10a5f9d0637966b9c2e4434bba898309bfb12a9",
+  "execution_bundle_id": "zone-s2-realism-v130",
+  "status": "STAGE_FAILED",
+  "failure": "REAL_PREGRASP_UNCONFIRMED",
+  "evaluation": {
+    "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+    "success": false,
+    "lifted": false,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "qualification": "post-run DEV only; no study/physical hardware success claim"
+  },
+  "posthoc_evaluation": {
+    "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+    "seed": 1051,
+    "cargo_remaining_to_B_region_m": 4.2110717163209905,
+    "cargo_distance_to_B_center_m": 4.646302293222006,
+    "robot_remaining_to_B_region_m": 4.413812613478476,
+    "final_cargo_xy_m": [
+      0.12500000000032135,
+      -0.8499999999988193
+    ],
+    "final_robot_xy_m": [
+      -0.08085878533296573,
+      -0.8616524450945618
+    ],
+    "carry_window": null,
+    "visual_updates": 0,
+    "max_update_gap_sim_s": null,
+    "carry_xy_rmse_m": null,
+    "actual_visibility": null,
+    "status": "NO_CARRY_PHASE"
+  },
+  "wall_s": 81.39716145899729,
+  "sim_s": 49.65,
+  "wall_per_sim": 1.6394191633232083,
+  "would_stop": {
+    "ARM_COLLISION_GUARD": 7,
+    "POSE_UNCERTAIN": 33
+  },
+  "actual_nonphysical_stop": "REAL_PREGRASP_UNCONFIRMED",
+  "pregrasp_audit": {
+    "scope": "saved RGB fixed-calibration offline only",
+    "source_sha": "f10a5f9d0637966b9c2e4434bba898309bfb12a9",
+    "frame": {
+      "robot_id": "r3",
+      "frame_id": 898,
+      "sim_time": 46.15,
+      "sha256": "0a6188ee81c1ce37e06b7717deb7e682ad0ab6b39a9839a3ef2f7b2a8c8e4456",
+      "camera": "robot_cam",
+      "actuator_state": {
+        "motor_commands": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "servo_pulses": {
+          "1": 2000,
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1500
+        }
+      },
+      "path": "robots/r3/rgb/00897.jpg",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 508,
+        "4": 2432,
+        "5": 1320,
+        "6": 1500
+      }
+    },
+    "grasp_radius_m": 0.2032,
+    "tolerance_m": 0.003,
+    "detections": [
+      {
+        "kind": "cyan",
+        "range_class": "near",
+        "pixel_centroid": [
+          283.32934586289036,
+          383.59672451552666
+        ],
+        "pixel_bbox": [
+          209,
+          312,
+          145,
+          145
+        ],
+        "area_px": 19101.5,
+        "solidity": 0.9875148632580262,
+        "floor_hypothesis_projection_iou": 0.9823692851730235,
+        "estimated_box_center_base_m": [
+          0.20624156363503038,
+          0.0007760536304457117,
+          0.016
+        ],
+        "estimated_yaw_mod_pi_rad": 3.0892327760299634
+      }
+    ],
+    "offsets_m": [
+      [
+        0.0030415636350303865,
+        0.0007760536304457117
+      ]
+    ]
+  },
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1",
+    "carry_pose": "look_ahead_v1",
+    "camera_calibration": "v3_unloaded_sag_v1",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "visibility_mask": "command_geometry_v1",
+    "amcl_update": "ros_motion_v1",
+    "dev_search": "repeat_views_v1",
+    "visibility_policy": "nav2_observed_v1",
+    "contact_filter": "floor_appearance_v1",
+    "slip_detection": "slip_detect_v1",
+    "stall_recovery": "off",
+    "slip_recovery": "slip_recovery_v1",
+    "servo_stiffness": "real_v1",
+    "camera_pitch": "stiff_target_v1"
+  },
+  "lock": {
+    "acquired": {
+      "owner": "codex",
+      "branch": "codex/s2-realism",
+      "purpose": "s2v36 one seed1051 full look-ahead DEV",
+      "pid": 34153,
+      "acquired_unix": 1791387873.098324,
+      "expected_end_unix": 1791390273.098324,
+      "loadavg_at_acquire": [
+        9.25732421875,
+        8.6484375,
+        9.85546875
+      ],
+      "timing_sensitive": true
+    },
+    "released": {
+      "owner": "codex",
+      "branch": "codex/s2-realism",
+      "purpose": "s2v36 one seed1051 full look-ahead DEV",
+      "pid": 34153,
+      "acquired_unix": 1791387873.098324,
+      "expected_end_unix": 1791390273.098324,
+      "loadavg_at_acquire": [
+        9.25732421875,
+        8.6484375,
+        9.85546875
+      ],
+      "timing_sensitive": true,
+      "pid_alive": true
+    },
+    "status_after": null
+  },
+  "reruns": 0,
+  "source_result_sha256": "c854bf508b0b13ad6f7205e77567799b5b97feb7365c33c062fd5d9ab148c782",
+  "later_fix": "pregrasp_policy=log_only_v1 default off, tested but not rerun/admitted into historical v130"
+}

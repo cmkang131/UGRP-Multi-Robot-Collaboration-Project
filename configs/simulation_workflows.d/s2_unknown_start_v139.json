@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-s2-unknown-start-v139",
+    "version": "7.32.0",
+    "purpose": "s2v54 no starting area or dock prior, existing Augmented MCL and KLD, three fresh full DEV runs",
+    "entry": "scripts/run_s2_unknown_start.py",
+    "runner": "scripts.run_s2_unknown_start",
+    "docs": "experiments/2026-10-06-s2-realism/README.md",
+    "requires": "three registered seeds, explicit no-prior options, exclusive agent_lock",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha", "--seed"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

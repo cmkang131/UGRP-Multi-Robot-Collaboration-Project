@@ -1,0 +1,16 @@
+{
+  "execution_bundle_id": "zone-s2-real-output-diag-v111",
+  "cohort": "EXPLORATORY_NOT_CONFIRMATORY",
+  "runs": [{"seed": 1034, "axis": "forward"}, {"seed": 1035, "axis": "turn"}, {"seed": 1036, "axis": "left"}],
+  "min_wheel_cmd": "real_v1",
+  "request_duration_s": 0.1,
+  "effective_duration_s": {"forward": 0.1, "turn": 0.1, "left": 0.65},
+  "effective_speed": {"forward": 0.35, "turn": 0.35, "left": 0.65},
+  "settle_after_s": 4.0,
+  "refit_if": "main-axis error >25%, or xy error >1 cm, or yaw error >2 degrees",
+  "fit_scope": "offline command response from unloaded exploratory trajectories; loaded transfer is an unvalidated proxy",
+  "reserved_fresh_probe": 1037,
+  "full_seeds_only_after_probe_pass": [1029, 1030, 1031],
+  "enospc": "HOST_ERROR", "model_calls": 0,
+  "retention": "preserve all raw while this task/PR remains open"
+}

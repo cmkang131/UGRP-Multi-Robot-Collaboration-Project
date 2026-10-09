@@ -1,0 +1,714 @@
+{
+  "schema": "ugrp.s2.real-carry.geometry.v1",
+  "criteria_sha256": "8d35f91d46ad03c3e7b412dc433e02aa9d7aafa38c0a9bf092c41a5d09ed5eb8",
+  "script_sha256": "f8edf15e8c22cdaefe6163896a70e660e9241cb6cf0f08df36d55217574a2fdb",
+  "source_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/student_record.json": "c1dbbd376409029e6e25fe573e1a8eea1835f02427094ac34cea7ef2fe117d5c",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/frames.jsonl": "b28472fdda75a2bef4ea5fe25cde4a244800c03d0f4b2345c011a27d9342e739",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/trajectory.jsonl": "90a43f3a354ba171cbacb8a99ea11c62a729d9399d3aeb21e295d9542d43692c",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/camera-pose.jsonl": "1ba65659c32701d5851a35e80f2c9a98dca952cc81287eb64309d9f88f125d2e",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/student_record.json": "fb07da15655e262c64e9f561b384aae1f1dea7b7adf2d289b139864ebc8a1db7",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/robots/r3/frames.jsonl": "e3ec694af3b6d7299117be62e63f027089f79275c3daccb06b3a47594cd5a3fe",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/trajectory.jsonl": "00d8b9bffe358b2748df045807f2eef6a50948e969b7904f13236c9a11ebdcb4",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/camera-pose.jsonl": "83d6eca192116b73487501a3b94cdad1dd25564088588a72b2fad927c368ccb6",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/student_record.json": "e6b5d7600b2b71a7e0e429f2e94fad1b1ac66cd4f5057b9ba7e8eda6ec43e2b0",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/robots/r3/frames.jsonl": "6ca5e07d2491090e910fe207c9ffdb5afdb174ea80c441f6866a10d3552323e8",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/trajectory.jsonl": "93d4b5f98e3efa0b3de659e5bb1258b4ab60f431cea31f151f28d90fa1de1f66",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/camera-pose.jsonl": "a1815c76f7e88fa0dc7238aa952df1127f1c225cdcc8279104a057cc93bb3c81"
+  },
+  "physics_runs": 0,
+  "render_runs": 0,
+  "model_calls": 0,
+  "GT_usage": "posthoc geometric evaluation only",
+  "actual_new_pose_fix_gap_s": null,
+  "actual_new_pose_carry_rmse_m": null,
+  "actual_new_pose_replay": "unavailable: saved HIGH pixels cannot supply a different view",
+  "full_dev_admitted": false,
+  "criteria": {
+    "schema": "ugrp.s2.real-carry.criteria.v1",
+    "option": "carry_pose=real_delivery_v1",
+    "default": "off",
+    "scope": "S2 solo DEV only; not paired transport or formal research",
+    "commanded_servo": {
+      "1": 1500,
+      "3": 600,
+      "4": 2200,
+      "5": 1400,
+      "6": 1500
+    },
+    "selection": "current real pick/place stack and 2026-09-02 archived real issued command, chosen before new analysis; servo6 neutral S2 heading, not archived pan1667",
+    "camera_mount_and_intrinsics": "unchanged v3; no real measured mount evidence",
+    "seeds": [
+      1045,
+      1046,
+      1047
+    ],
+    "geometry_variants": [
+      "HIGH_nominal",
+      "REAL_nominal",
+      "HIGH_fixed_sag",
+      "REAL_fixed_sag"
+    ],
+    "fixed_sag_delta_rad": -0.02711,
+    "fixed_sag_scope": "previously frozen sensitivity assumption, not a measured REAL_DELIVERY calibration; no height adjustment or refit",
+    "sampling": "every saved RGB timestamp during original carry; evaluation trajectory only",
+    "columns": 96,
+    "visible_rows_px": [
+      4,
+      470
+    ],
+    "minimum_columns": 6,
+    "max_opportunity_gap_sim_s": 30.0,
+    "optimistic_visibility": "static walls only; also report self-command proxy occlusion; unknown new-pose cargo never placed using old held GT",
+    "new_fix_replay": "not identifiable from saved HIGH RGB at a different carry pose; do not relabel old pixels, synthesize ground-truth observations, or claim an opportunity as a fix",
+    "full_dev_requires": "all seeds gap<=30s AND genuine new-pose image replay max fix gap<=30s and carry RMSE improvement against original and same-calibration baseline; geometry alone does not qualify",
+    "candidate_budget": 1,
+    "runtime_admitted": false,
+    "evaluation_truth": "posthoc geometry only, no control/calibration fitting",
+    "simulation": "no new simulation unless all admission requirements pass"
+  },
+  "posture_geometry": {
+    "HIGH_nominal": {
+      "height_m": 0.19319937749756314,
+      "pitch_deg": -30.050000000000015,
+      "floor_x_range_m": [
+        1.1882603127830595,
+        0.3460986417720453
+      ]
+    },
+    "REAL_nominal": {
+      "height_m": 0.22700718628363312,
+      "pitch_deg": -27.080000000000005,
+      "floor_x_range_m": [
+        1.7360833184880244,
+        0.3260984652133194
+      ]
+    },
+    "HIGH_fixed_sag": {
+      "height_m": 0.19319937749756314,
+      "pitch_deg": -31.603288582599667,
+      "floor_x_range_m": [
+        1.062225301287446,
+        0.33784664491876565
+      ]
+    },
+    "REAL_fixed_sag": {
+      "height_m": 0.22700718628363312,
+      "pitch_deg": -28.633288582599665,
+      "floor_x_range_m": [
+        1.4721767638931247,
+        0.3155632925271268
+      ]
+    }
+  },
+  "summaries": [
+    {
+      "seed": 1045,
+      "carry_window": [
+        87.95,
+        672.45
+      ],
+      "variants": {
+        "HIGH_nominal": {
+          "inside": {
+            "visible_columns": 99312,
+            "total_columns": 1122240,
+            "visible_fraction": 0.08849443969204449,
+            "frames": 11690,
+            "qualifying_frames": 1265,
+            "max_opportunity_gap_sim_s": 481.05,
+            "longest_gap_endpoints": [
+              87.95,
+              569.0
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 99312,
+            "total_columns": 1122240,
+            "visible_fraction": 0.08849443969204449,
+            "frames": 11690,
+            "qualifying_frames": 1265,
+            "max_opportunity_gap_sim_s": 481.05,
+            "longest_gap_endpoints": [
+              87.95,
+              569.0
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 99312,
+            "total_columns": 1122240,
+            "visible_fraction": 0.08849443969204449,
+            "frames": 11690,
+            "qualifying_frames": 1265,
+            "max_opportunity_gap_sim_s": 481.05,
+            "longest_gap_endpoints": [
+              87.95,
+              569.0
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 11690,
+            "qualifying_frames": 1271,
+            "max_opportunity_gap_sim_s": 480.90000000000003,
+            "longest_gap_endpoints": [
+              87.95,
+              568.85
+            ]
+          }
+        },
+        "REAL_nominal": {
+          "inside": {
+            "visible_columns": 472048,
+            "total_columns": 1122240,
+            "visible_fraction": 0.42063016823495863,
+            "frames": 11690,
+            "qualifying_frames": 7245,
+            "max_opportunity_gap_sim_s": 104.80000000000001,
+            "longest_gap_endpoints": [
+              136.6,
+              241.4
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 472048,
+            "total_columns": 1122240,
+            "visible_fraction": 0.42063016823495863,
+            "frames": 11690,
+            "qualifying_frames": 7245,
+            "max_opportunity_gap_sim_s": 104.80000000000001,
+            "longest_gap_endpoints": [
+              136.6,
+              241.4
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 472048,
+            "total_columns": 1122240,
+            "visible_fraction": 0.42063016823495863,
+            "frames": 11690,
+            "qualifying_frames": 7245,
+            "max_opportunity_gap_sim_s": 104.80000000000001,
+            "longest_gap_endpoints": [
+              136.6,
+              241.4
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 11690,
+            "qualifying_frames": 7430,
+            "max_opportunity_gap_sim_s": 98.54999999999998,
+            "longest_gap_endpoints": [
+              136.65,
+              235.2
+            ]
+          }
+        },
+        "HIGH_fixed_sag": {
+          "inside": {
+            "visible_columns": 77434,
+            "total_columns": 1122240,
+            "visible_fraction": 0.06899950099800399,
+            "frames": 11690,
+            "qualifying_frames": 997,
+            "max_opportunity_gap_sim_s": 483.25000000000006,
+            "longest_gap_endpoints": [
+              87.95,
+              571.2
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 77434,
+            "total_columns": 1122240,
+            "visible_fraction": 0.06899950099800399,
+            "frames": 11690,
+            "qualifying_frames": 997,
+            "max_opportunity_gap_sim_s": 483.25000000000006,
+            "longest_gap_endpoints": [
+              87.95,
+              571.2
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 77434,
+            "total_columns": 1122240,
+            "visible_fraction": 0.06899950099800399,
+            "frames": 11690,
+            "qualifying_frames": 997,
+            "max_opportunity_gap_sim_s": 483.25000000000006,
+            "longest_gap_endpoints": [
+              87.95,
+              571.2
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 11690,
+            "qualifying_frames": 1017,
+            "max_opportunity_gap_sim_s": 483.05,
+            "longest_gap_endpoints": [
+              87.95,
+              571.0
+            ]
+          }
+        },
+        "REAL_fixed_sag": {
+          "inside": {
+            "visible_columns": 279557,
+            "total_columns": 1122240,
+            "visible_fraction": 0.24910625178214998,
+            "frames": 11690,
+            "qualifying_frames": 4207,
+            "max_opportunity_gap_sim_s": 316.65000000000003,
+            "longest_gap_endpoints": [
+              87.95,
+              404.6
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 279557,
+            "total_columns": 1122240,
+            "visible_fraction": 0.24910625178214998,
+            "frames": 11690,
+            "qualifying_frames": 4207,
+            "max_opportunity_gap_sim_s": 316.65000000000003,
+            "longest_gap_endpoints": [
+              87.95,
+              404.6
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 279557,
+            "total_columns": 1122240,
+            "visible_fraction": 0.24910625178214998,
+            "frames": 11690,
+            "qualifying_frames": 4207,
+            "max_opportunity_gap_sim_s": 316.65000000000003,
+            "longest_gap_endpoints": [
+              87.95,
+              404.6
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 11690,
+            "qualifying_frames": 4317,
+            "max_opportunity_gap_sim_s": 316.6,
+            "longest_gap_endpoints": [
+              87.95,
+              404.55
+            ]
+          }
+        }
+      },
+      "actual_HIGH": {
+        "height_m_median": 0.1871717140743751,
+        "pitch_deg_median": -32.728547832099395,
+        "pitch_deg_std": 0.029582591455206593
+      }
+    },
+    {
+      "seed": 1046,
+      "carry_window": [
+        67.5,
+        307.85
+      ],
+      "variants": {
+        "HIGH_nominal": {
+          "inside": {
+            "visible_columns": 170210,
+            "total_columns": 461472,
+            "visible_fraction": 0.3688414465016296,
+            "frames": 4807,
+            "qualifying_frames": 3163,
+            "max_opportunity_gap_sim_s": 41.44999999999999,
+            "longest_gap_endpoints": [
+              178.15,
+              219.6
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 170205,
+            "total_columns": 461472,
+            "visible_fraction": 0.36883061160807157,
+            "frames": 4807,
+            "qualifying_frames": 3163,
+            "max_opportunity_gap_sim_s": 41.44999999999999,
+            "longest_gap_endpoints": [
+              178.15,
+              219.6
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 170205,
+            "total_columns": 461472,
+            "visible_fraction": 0.36883061160807157,
+            "frames": 4807,
+            "qualifying_frames": 3163,
+            "max_opportunity_gap_sim_s": 41.44999999999999,
+            "longest_gap_endpoints": [
+              178.15,
+              219.6
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 4807,
+            "qualifying_frames": 3189,
+            "max_opportunity_gap_sim_s": 40.69999999999999,
+            "longest_gap_endpoints": [
+              178.55,
+              219.25
+            ]
+          }
+        },
+        "REAL_nominal": {
+          "inside": {
+            "visible_columns": 210946,
+            "total_columns": 461472,
+            "visible_fraction": 0.45711549129741347,
+            "frames": 4807,
+            "qualifying_frames": 3650,
+            "max_opportunity_gap_sim_s": 40.349999999999994,
+            "longest_gap_endpoints": [
+              178.9,
+              219.25
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 209102,
+            "total_columns": 461472,
+            "visible_fraction": 0.453119582553221,
+            "frames": 4807,
+            "qualifying_frames": 3650,
+            "max_opportunity_gap_sim_s": 40.349999999999994,
+            "longest_gap_endpoints": [
+              178.9,
+              219.25
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 209102,
+            "total_columns": 461472,
+            "visible_fraction": 0.453119582553221,
+            "frames": 4807,
+            "qualifying_frames": 3650,
+            "max_opportunity_gap_sim_s": 40.349999999999994,
+            "longest_gap_endpoints": [
+              178.9,
+              219.25
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 4807,
+            "qualifying_frames": 3678,
+            "max_opportunity_gap_sim_s": 39.75,
+            "longest_gap_endpoints": [
+              179.35,
+              219.1
+            ]
+          }
+        },
+        "HIGH_fixed_sag": {
+          "inside": {
+            "visible_columns": 156020,
+            "total_columns": 461472,
+            "visible_fraction": 0.33809201858400945,
+            "frames": 4807,
+            "qualifying_frames": 3069,
+            "max_opportunity_gap_sim_s": 44.8,
+            "longest_gap_endpoints": [
+              67.5,
+              112.3
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 156015,
+            "total_columns": 461472,
+            "visible_fraction": 0.3380811836904514,
+            "frames": 4807,
+            "qualifying_frames": 3069,
+            "max_opportunity_gap_sim_s": 44.8,
+            "longest_gap_endpoints": [
+              67.5,
+              112.3
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 156015,
+            "total_columns": 461472,
+            "visible_fraction": 0.3380811836904514,
+            "frames": 4807,
+            "qualifying_frames": 3069,
+            "max_opportunity_gap_sim_s": 44.8,
+            "longest_gap_endpoints": [
+              67.5,
+              112.3
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 4807,
+            "qualifying_frames": 3101,
+            "max_opportunity_gap_sim_s": 44.400000000000006,
+            "longest_gap_endpoints": [
+              67.5,
+              111.9
+            ]
+          }
+        },
+        "REAL_fixed_sag": {
+          "inside": {
+            "visible_columns": 187429,
+            "total_columns": 461472,
+            "visible_fraction": 0.40615465293668956,
+            "frames": 4807,
+            "qualifying_frames": 3394,
+            "max_opportunity_gap_sim_s": 40.0,
+            "longest_gap_endpoints": [
+              179.25,
+              219.25
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 187019,
+            "total_columns": 461472,
+            "visible_fraction": 0.4052661916649331,
+            "frames": 4807,
+            "qualifying_frames": 3394,
+            "max_opportunity_gap_sim_s": 40.0,
+            "longest_gap_endpoints": [
+              179.25,
+              219.25
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 187019,
+            "total_columns": 461472,
+            "visible_fraction": 0.4052661916649331,
+            "frames": 4807,
+            "qualifying_frames": 3394,
+            "max_opportunity_gap_sim_s": 40.0,
+            "longest_gap_endpoints": [
+              179.25,
+              219.25
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 4807,
+            "qualifying_frames": 3410,
+            "max_opportunity_gap_sim_s": 39.849999999999994,
+            "longest_gap_endpoints": [
+              179.35,
+              219.2
+            ]
+          }
+        }
+      },
+      "actual_HIGH": {
+        "height_m_median": 0.18717123265390992,
+        "pitch_deg_median": -32.69690869557795,
+        "pitch_deg_std": 0.14811279896684892
+      }
+    },
+    {
+      "seed": 1047,
+      "carry_window": [
+        70.1,
+        237.9
+      ],
+      "variants": {
+        "HIGH_nominal": {
+          "inside": {
+            "visible_columns": 22390,
+            "total_columns": 322176,
+            "visible_fraction": 0.06949617600317838,
+            "frames": 3356,
+            "qualifying_frames": 743,
+            "max_opportunity_gap_sim_s": 87.85,
+            "longest_gap_endpoints": [
+              150.05,
+              237.9
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 22390,
+            "total_columns": 322176,
+            "visible_fraction": 0.06949617600317838,
+            "frames": 3356,
+            "qualifying_frames": 743,
+            "max_opportunity_gap_sim_s": 87.85,
+            "longest_gap_endpoints": [
+              150.05,
+              237.9
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 22390,
+            "total_columns": 322176,
+            "visible_fraction": 0.06949617600317838,
+            "frames": 3356,
+            "qualifying_frames": 743,
+            "max_opportunity_gap_sim_s": 87.85,
+            "longest_gap_endpoints": [
+              150.05,
+              237.9
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 3356,
+            "qualifying_frames": 770,
+            "max_opportunity_gap_sim_s": 86.95000000000002,
+            "longest_gap_endpoints": [
+              150.95,
+              237.9
+            ]
+          }
+        },
+        "REAL_nominal": {
+          "inside": {
+            "visible_columns": 62275,
+            "total_columns": 322176,
+            "visible_fraction": 0.19329496920937625,
+            "frames": 3356,
+            "qualifying_frames": 1535,
+            "max_opportunity_gap_sim_s": 73.44999999999999,
+            "longest_gap_endpoints": [
+              152.5,
+              225.95
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 62275,
+            "total_columns": 322176,
+            "visible_fraction": 0.19329496920937625,
+            "frames": 3356,
+            "qualifying_frames": 1535,
+            "max_opportunity_gap_sim_s": 73.44999999999999,
+            "longest_gap_endpoints": [
+              152.5,
+              225.95
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 62275,
+            "total_columns": 322176,
+            "visible_fraction": 0.19329496920937625,
+            "frames": 3356,
+            "qualifying_frames": 1535,
+            "max_opportunity_gap_sim_s": 73.44999999999999,
+            "longest_gap_endpoints": [
+              152.5,
+              225.95
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 3356,
+            "qualifying_frames": 1591,
+            "max_opportunity_gap_sim_s": 71.35,
+            "longest_gap_endpoints": [
+              153.9,
+              225.25
+            ]
+          }
+        },
+        "HIGH_fixed_sag": {
+          "inside": {
+            "visible_columns": 17981,
+            "total_columns": 322176,
+            "visible_fraction": 0.05581110945570123,
+            "frames": 3356,
+            "qualifying_frames": 655,
+            "max_opportunity_gap_sim_s": 87.85,
+            "longest_gap_endpoints": [
+              150.05,
+              237.9
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 17981,
+            "total_columns": 322176,
+            "visible_fraction": 0.05581110945570123,
+            "frames": 3356,
+            "qualifying_frames": 655,
+            "max_opportunity_gap_sim_s": 87.85,
+            "longest_gap_endpoints": [
+              150.05,
+              237.9
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 17981,
+            "total_columns": 322176,
+            "visible_fraction": 0.05581110945570123,
+            "frames": 3356,
+            "qualifying_frames": 655,
+            "max_opportunity_gap_sim_s": 87.85,
+            "longest_gap_endpoints": [
+              150.05,
+              237.9
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 3356,
+            "qualifying_frames": 684,
+            "max_opportunity_gap_sim_s": 86.70000000000002,
+            "longest_gap_endpoints": [
+              151.2,
+              237.9
+            ]
+          }
+        },
+        "REAL_fixed_sag": {
+          "inside": {
+            "visible_columns": 35897,
+            "total_columns": 322176,
+            "visible_fraction": 0.11142046583234008,
+            "frames": 3356,
+            "qualifying_frames": 1096,
+            "max_opportunity_gap_sim_s": 85.4,
+            "longest_gap_endpoints": [
+              152.5,
+              237.9
+            ]
+          },
+          "map_clear": {
+            "visible_columns": 35897,
+            "total_columns": 322176,
+            "visible_fraction": 0.11142046583234008,
+            "frames": 3356,
+            "qualifying_frames": 1096,
+            "max_opportunity_gap_sim_s": 85.4,
+            "longest_gap_endpoints": [
+              152.5,
+              237.9
+            ]
+          },
+          "self_clear": {
+            "visible_columns": 35897,
+            "total_columns": 322176,
+            "visible_fraction": 0.11142046583234008,
+            "frames": 3356,
+            "qualifying_frames": 1096,
+            "max_opportunity_gap_sim_s": 85.4,
+            "longest_gap_endpoints": [
+              152.5,
+              237.9
+            ]
+          },
+          "at_least_one_column": {
+            "frames": 3356,
+            "qualifying_frames": 1142,
+            "max_opportunity_gap_sim_s": 83.85,
+            "longest_gap_endpoints": [
+              154.05,
+              237.9
+            ]
+          }
+        }
+      },
+      "actual_HIGH": {
+        "height_m_median": 0.18711857490348088,
+        "pitch_deg_median": -32.71989570653302,
+        "pitch_deg_std": 0.03195796007928121
+      }
+    }
+  ],
+  "limitation": "opportunities only; no image detection, pose prior/gate, cargo in new grasp, calibration or physical carrying stability measured",
+  "rows_sha256": "dd0f86380c72a8204a22e06156acfcc3c37973a48fadfc79f4aefa174acde174"
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "ugrp.s2.stationary_amcl.admission.v1",
+  "exploration_seeds": [
+    1047,
+    1049
+  ],
+  "window": "initial RGB through first wheel command, 1.30\u201312.00 SIM s; GT delayed-timestamp scoring only",
+  "baseline_replay_max_delta": 1e-09,
+  "max_stationary_error_m": 0.5,
+  "end_stationary_error_m": 0.3,
+  "require_both_seeds": true,
+  "require_no_repeat_stationary_measurement_or_resampling": true,
+  "primary_preset": "ros_motion_v1",
+  "secondary_diagnostic_preset": "ros_motion_prob_v1",
+  "preset_selection": "Primary if it passes both; otherwise secondary only if it passes both. No fitted parameters or threshold relaxation.",
+  "parameters": {
+    "update_min_d_m": 0.25,
+    "update_min_a_rad": 0.2,
+    "z_hit": 0.5,
+    "z_rand": 0.5,
+    "sigma_hit_m": 0.2,
+    "max_occ_dist_m": 2.0,
+    "max_beams": 60,
+    "resample_interval": 1,
+    "recovery_alpha_slow": 0.0,
+    "recovery_alpha_fast": 0.0,
+    "beam_skip_distance": 0.5,
+    "beam_skip_threshold": 0.3,
+    "beam_skip_error_threshold": 0.9
+  },
+  "adaptations": [
+    "Own issued calibrated pulse odometry instead of unavailable wheel encoder odometry; no GT",
+    "Static RGB floor-boundary endpoints instead of lidar; unchanged K/D/extrinsic table",
+    "Fixed N=2000 retained for coupled latent motion states; ROS CDF multinomial resampling with min=max N, no custom roughening/injection",
+    "One camera frame identity: no additional force_update for pan/posture/command token alone"
+  ],
+  "physical_admission": "Only after replay reproduces old drift and an unchanged standard preset passes both fixed criteria. One fresh full DEV; freeze ON; pre-register seed and bundle before run.",
+  "dev_search_option": "CYAN_NOT_UNIQUELY_VISIBLE logs then repeats existing two-view search; never invent a blind target; retain global timeout and physical stops"
+}

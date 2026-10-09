@@ -23,6 +23,7 @@
 - [문서 찾아보기](docs/README.md) · [실험 인덱스](experiments/README.md) · [지도 목록](maps/README.md)
 
 - [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — 무하중·cyan에서20/30 정지·35/50/100의5초 주행을 재현한 **v7을 DEV 후보로 채택**. 옆 회전−2.49°는 알려진 특성이며 실물 측정·자기 카메라 방향 보정 검증은 #404 TODO. 짝 빔 비교는 아래 기록, PR #402 DRAFT·기본값 유지.
+- S2 realism PR #406 DRAFT: `f0bb26e7` / v121 s1045 full DEV 완료, lifted=true·inside=false(B 밖 배치), 최종 위치 오차3.839m. 가드5·위치 불확실519회는 기록만, freeze ON·모델0·잠금 해제. [기록](experiments/2026-10-06-s2-realism/README.md).
 
 ## 현재 검증 범위
 

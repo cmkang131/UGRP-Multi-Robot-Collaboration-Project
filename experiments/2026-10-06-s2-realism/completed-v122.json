@@ -1,0 +1,477 @@
+{
+  "seed": 1046,
+  "slot": "P1-2",
+  "stage": "place",
+  "role": "fresh_full_dev",
+  "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place",
+  "source_sha": "e619ee571ea6d03ad33f92793e91492d968f4d30",
+  "bundle": "zone-s2-realism-v122",
+  "status": "STAGE_REACHED_UNQUALIFIED",
+  "failure": null,
+  "controller_state": "done",
+  "lifted": true,
+  "inside": false,
+  "floor": true,
+  "stable": true,
+  "success": false,
+  "independent_geometry": {
+    "lifted": true,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "success": false
+  },
+  "hold_status": "probable_held_inhand_rgb",
+  "pickup_site_status": "not_evaluated_inhand_selected",
+  "regrasp_count": 0,
+  "wall_s": 618.4274714999774,
+  "sim_s": 329.25,
+  "wall_per_sim": 1.8782914851935533,
+  "commands": 4019,
+  "model_calls": 0,
+  "frames": 6500,
+  "would_stop": {
+    "ARM_COLLISION_GUARD": 7,
+    "POSE_UNCERTAIN": 278
+  },
+  "would_stop_events": [
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 1.4,
+      "code": "ARM_COLLISION_GUARD",
+      "occurrence": 1
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 15.6,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 1
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 101.7,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 51
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 174.25,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 101
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 233.2,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 151
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 253.2,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 201
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 275.95,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 251
+    }
+  ],
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1"
+  },
+  "site_before_area_px": null,
+  "site_after_area_px": null,
+  "pool_results": false,
+  "additional_runs": false,
+  "navigation": {
+    "scope": "post-run eval-only, no refitting after fresh seed",
+    "pulse_count": 529,
+    "lateral_pulses": 143,
+    "lateral_sign_reversals": 3,
+    "final_pose": {
+      "t": 326.25,
+      "estimate_t": 326.09,
+      "estimate_xy": [
+        4.41384494569056,
+        -2.079538877427389
+      ],
+      "eval_xy": [
+        2.097828398649429,
+        0.33482592984463255
+      ],
+      "error_m": 3.3456075784171087,
+      "estimate_yaw": 0.0027660348928391087,
+      "eval_yaw": 1.6736747410836004,
+      "std_xy_m": 0.03165243350964691
+    },
+    "groups": {
+      "0:forward:0.35:0.10": {
+        "n": 32,
+        "actual_median": [
+          0.012077517149834668,
+          -2.5106434288371256e-05,
+          -3.58371737372133e-05
+        ],
+        "rmse": [
+          0.001432967051987748,
+          0.00047994678419426505,
+          0.0015635165911939888
+        ],
+        "mean_error": [
+          -0.0012400336217673075,
+          0.00039133702019259105,
+          0.0005771315743694467
+        ],
+        "distance_quantiles": [
+          0.01094969251125014,
+          0.012078941146973707,
+          0.012530975553687129
+        ],
+        "transferred": false
+      },
+      "0:left:0.35:0.06": {
+        "n": 4,
+        "actual_median": [
+          0.00012128883526422929,
+          0.006368719800854181,
+          -0.008922905234631932
+        ],
+        "rmse": [
+          0.0005181298536852231,
+          0.001358397627130764,
+          0.009295381200089142
+        ],
+        "mean_error": [
+          0.00019752299313830876,
+          -0.0007808654302865173,
+          -0.00711252756135211
+        ],
+        "distance_quantiles": [
+          0.004664911249433385,
+          0.006372212329177413,
+          0.007349118436208374
+        ],
+        "transferred": false
+      },
+      "1:forward:-0.35:0.10": {
+        "n": 43,
+        "actual_median": [
+          -0.011622873805832984,
+          0.00015939804498062425,
+          2.89274892719682e-05
+        ],
+        "rmse": [
+          0.0020085867656826056,
+          0.0005125738770992325,
+          0.005626822721633867
+        ],
+        "mean_error": [
+          0.0015584115184674612,
+          0.00022014602921035205,
+          0.0010493280102850328
+        ],
+        "distance_quantiles": [
+          0.010015948017618764,
+          0.011632570818119232,
+          0.012269850422883356
+        ],
+        "transferred": true
+      },
+      "1:forward:0.35:0.10": {
+        "n": 325,
+        "actual_median": [
+          0.011536521373443442,
+          7.018757373888299e-05,
+          -0.00034775460839397976
+        ],
+        "rmse": [
+          0.004571987416750921,
+          0.0004169401863181901,
+          0.004583498513818509
+        ],
+        "mean_error": [
+          -0.0028732625053187895,
+          1.7259255565322592e-05,
+          0.0008015948570625136
+        ],
+        "distance_quantiles": [
+          0.0016790560310477726,
+          0.011544543983684026,
+          0.012207212962450672
+        ],
+        "transferred": false
+      },
+      "1:left:-0.35:0.06": {
+        "n": 105,
+        "actual_median": [
+          -5.000165921255242e-05,
+          -0.005544465024141872,
+          0.004604227508664807
+        ],
+        "rmse": [
+          0.0007353260969839928,
+          0.0038851519175236763,
+          0.012608953326942375
+        ],
+        "mean_error": [
+          -0.00018960351055049738,
+          0.0027338094804372336,
+          0.008672162318585502
+        ],
+        "distance_quantiles": [
+          3.201789164863134e-05,
+          0.005553825781588762,
+          0.008165323022572354
+        ],
+        "transferred": true
+      },
+      "1:left:-0.65:0.65": {
+        "n": 15,
+        "actual_median": [
+          -2.7844846196253137e-05,
+          -0.00031213421446801907,
+          0.0002689379791767088
+        ],
+        "rmse": [
+          0.005545087641412709,
+          0.15236765606890534,
+          0.20461774821989223
+        ],
+        "mean_error": [
+          -0.0005608438978601972,
+          0.14590018482575035,
+          0.0664986039066406
+        ],
+        "distance_quantiles": [
+          7.733679439550644e-05,
+          0.0006249331754793163,
+          0.12051240287665393
+        ],
+        "transferred": false
+      },
+      "1:left:0.35:0.06": {
+        "n": 15,
+        "actual_median": [
+          -8.202950582561034e-06,
+          0.006598291563293919,
+          -0.003655291466629282
+        ],
+        "rmse": [
+          0.0008038298598664599,
+          0.0006512246824509083,
+          0.0032529298839114127
+        ],
+        "mean_error": [
+          1.286583668604449e-05,
+          -0.00017560171907926407,
+          0.0007117299825560603
+        ],
+        "distance_quantiles": [
+          0.005879575412823991,
+          0.0066158508531648785,
+          0.007509623237015263
+        ],
+        "transferred": true
+      },
+      "1:left:0.65:0.65": {
+        "n": 8,
+        "actual_median": [
+          0.0022449578490348716,
+          0.16933193685260167,
+          -0.031982530500384264
+        ],
+        "rmse": [
+          0.0014104111101181248,
+          0.002245892614785605,
+          0.007182972275271489
+        ],
+        "mean_error": [
+          0.001174960042054037,
+          0.002138115775126813,
+          -0.005752563751255298
+        ],
+        "distance_quantiles": [
+          0.1683414247573868,
+          0.1693467963239127,
+          0.17027022130733951
+        ],
+        "transferred": false
+      },
+      "1:turn:-0.35:0.10": {
+        "n": 12,
+        "actual_median": [
+          0.00015252456902188586,
+          0.000992706281625004,
+          -0.08488342077228819
+        ],
+        "rmse": [
+          0.0006505384834275085,
+          0.0015020377308049625,
+          0.013934221311009453
+        ],
+        "mean_error": [
+          -6.126558245949467e-05,
+          0.00039462082891303954,
+          0.0008109491751109796
+        ],
+        "distance_quantiles": [
+          0.0005910346667271898,
+          0.0012129291136480373,
+          0.004244759062928225
+        ],
+        "transferred": false
+      },
+      "1:turn:0.35:0.10": {
+        "n": 6,
+        "actual_median": [
+          -0.00012559181491451454,
+          -0.00038210595973512014,
+          0.08321558905667717
+        ],
+        "rmse": [
+          0.0013666259239551786,
+          0.002051664643359027,
+          0.011458304673478106
+        ],
+        "mean_error": [
+          -0.0004159178418852067,
+          0.001031516605072423,
+          -0.007582835260864326
+        ],
+        "distance_quantiles": [
+          0.0007275912651654003,
+          0.0013116419111368735,
+          0.003975980780551087
+        ],
+        "transferred": false
+      }
+    },
+    "checkpoints": [
+      {
+        "robot_id": "r3",
+        "event": "carry_checkpoint",
+        "t": 162.65,
+        "index": 0,
+        "last_fix_t": 32.85
+      },
+      {
+        "robot_id": "r3",
+        "event": "carry_checkpoint",
+        "t": 209.6,
+        "index": 1,
+        "last_fix_t": 32.85
+      },
+      {
+        "robot_id": "r3",
+        "event": "carry_checkpoint",
+        "t": 307.85,
+        "index": 2,
+        "last_fix_t": 295.95
+      }
+    ]
+  },
+  "source_verification": {
+    "source_files": 356,
+    "source_closure_all_match": true,
+    "raw_manifest_verified": true,
+    "all_rgb_hashes_match": true,
+    "independent_geometry_helper": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-preflight-20261006/summarize_v117_completed.py",
+      "sha256": "be7d28966ec47eea2b0aa03d92eda4b5fbdafe06ef2791a1712132f1b77f619c"
+    }
+  },
+  "freeze_comparison": {
+    "s1042_off": 2.587649147958559,
+    "s1043_on": 1.4678958407175282,
+    "s1044_on": 1.6030484665762137,
+    "s1045_on": 1.9597499036918773,
+    "s1046_on": 1.8782914851935533,
+    "scope": "wall/SIM only; different seeds/stages/models, not causal speedup"
+  },
+  "raw_manifest": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-analysis/s1046-raw-sha256.json",
+    "sha256": "fdb174c9c0c40a83d4c4e69a8b5c9f24c7315611668bda08ff09dd7f4898777d"
+  },
+  "remaining_failure": {
+    "classification": "localization drift and unqualified loaded fine yaw transfer; subsequent doorway obstruction inferred",
+    "final_yaw_error_deg": -95.7360168163955,
+    "last_fix_before_door_s": 32.85,
+    "door_checkpoint_s": 209.6,
+    "door_checkpoint_pose_error_m": 0.7710010921660789,
+    "free_loaded_forward_bias_m_per_pulse": -0.0012502295673099378,
+    "free_loaded_negative_fine_yaw_bias_deg_per_pulse": 0.5205116506776855,
+    "failure_analysis": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-analysis/s1046-failure-analysis.json",
+      "sha256": "908f2e17741f644444dc8fe535371b6ad491f675b20526721ee42eff67043091"
+    },
+    "new_tuning": false,
+    "same_mission_failure_repeated": true
+  },
+  "cleanup_verified": {
+    "own_lock_released": true,
+    "lock_after": null,
+    "session_stopped": true,
+    "session_status": "s2-pulse-s1046: stopped",
+    "remaining_owned_processes": [],
+    "owned_pids": [
+      32708,
+      32712,
+      32722,
+      32728
+    ],
+    "launchd_job_unloaded": true
+  },
+  "video": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-analysis/views/s1046-full/execution.mp4",
+    "sha256": "34a95ea928fc5872017886e0184d51d4df22b5d33b944654b39d178236b066da",
+    "bytes": 914643,
+    "playback_speed": 4,
+    "full_decode_passed": true,
+    "registration_id": "286cb3ea73aabecc1c6a",
+    "width": 640,
+    "height": 480,
+    "r_frame_rate": "20/1",
+    "duration": "81.250000",
+    "nb_frames": "1625"
+  },
+  "tensorboard": {
+    "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-realism-pulse-v122",
+    "records": 2,
+    "scalars": 26,
+    "source_event_live_api_match": true
+  },
+  "stop_interval_audit": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-analysis/s1046-stop-intervals.json",
+    "sha256": "e38f6ab005c82ab184947361176ae953ced9fbeb015e635c1df46779fac14452"
+  },
+  "ci_preflight": {
+    "run_id": 37493154746,
+    "conclusion": "success",
+    "elapsed_s": 24,
+    "full_suite_complete": false
+  }
+}

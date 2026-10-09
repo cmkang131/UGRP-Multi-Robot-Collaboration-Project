@@ -1,0 +1,128 @@
+{
+  "id": "s2-v7-real-primitive-diag-v1",
+  "option": "v7_diag_v1",
+  "gain": [
+    [
+      1.4037962607307124,
+      0.007453611453857745,
+      0.17665682996979937
+    ],
+    [
+      -0.0015899763729828509,
+      0.41542921372136726,
+      -0.001213445091089043
+    ],
+    [
+      -0.0013856659282396183,
+      -0.01752269406216456,
+      2.33693143134679
+    ]
+  ],
+  "tau_s": 0.14173888496180784,
+  "tau_axis_s": [
+    0.31802706617953375,
+    0.08527645313235974,
+    0.021913135573530005
+  ],
+  "tau_stop_s": 0.07016157398176756,
+  "fit_source_sha": "1b6b092188268738cc74417bec5e6d72e4b3136a",
+  "diagnostic_bundle": "zone-s2-real-output-diag-v112",
+  "source_records": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1038-forward/trajectory.jsonl",
+      "sha256": "c47d4e23e55d43e6023d9074ccdce81f39a594a69cc001b45a8b1a8e09c31b9c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1038-forward/result.json",
+      "sha256": "97327f1a3a6e565447d460b077232c059a48430852ecd741fd54d38c59f9b238"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1035-turn/trajectory.jsonl",
+      "sha256": "cbaef467fb39a889c43e18f178719d6d612051caa3ba8301a4bf5a72564f7db7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1035-turn/result.json",
+      "sha256": "6a07b4120d62084785d5a57a5547f13b4e2396d86ec8583c281809f1cb18ae50"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1036-left/trajectory.jsonl",
+      "sha256": "85355ce1b26a6f19aeaacf6b5f22170ea13bbee4c2695795dff488d9ae569bbb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1036-left/result.json",
+      "sha256": "9dbc07f9ff520574e99688bc4fd9b36e3a25268ccd8de28fd4ce77bcd43d9035"
+    }
+  ],
+  "training_replay": [
+    {
+      "seed": 1038,
+      "case": "forward",
+      "observed": [
+        0.016640343350768343,
+        -5.745821073754753e-05,
+        -7.252568935586357e-05
+      ],
+      "predicted": [
+        0.016579059865356058,
+        -5.05241743491877e-05,
+        -6.885688176297307e-05
+      ],
+      "endpoint_error": [
+        -6.128348541228554e-05,
+        6.934036388359826e-06,
+        3.6688075928905035e-06
+      ],
+      "max_xy_error_m": 0.0023343367286499024,
+      "max_yaw_error_rad": 0.000276083929075724
+    },
+    {
+      "seed": 1035,
+      "case": "turn",
+      "observed": [
+        0.0021384360020327313,
+        7.391283879511868e-05,
+        0.11596814156148895
+      ],
+      "predicted": [
+        0.0020842642907504968,
+        6.4621293534309e-05,
+        0.11612742146359184
+      ],
+      "endpoint_error": [
+        -5.4171711282234494e-05,
+        -9.291545260809678e-06,
+        0.00015927990210289067
+      ],
+      "max_xy_error_m": 0.0010653848147708935,
+      "max_yaw_error_rad": 0.007857862064905602
+    },
+    {
+      "seed": 1036,
+      "case": "left",
+      "observed": [
+        0.0027665560276181065,
+        0.1715193075249239,
+        -0.0071062911585966166
+      ],
+      "predicted": [
+        0.0027889739733510306,
+        0.17156734978217517,
+        -0.007886493425849664
+      ],
+      "endpoint_error": [
+        2.24179457329241e-05,
+        4.804225725127398e-05,
+        -0.0007802022672530476
+      ],
+      "max_xy_error_m": 0.0015470334042552351,
+      "max_yaw_error_rad": 0.009639653203411862
+    }
+  ],
+  "converged": true,
+  "weighted_rms": 0.000254942836846179,
+  "near_bound": [],
+  "condition_number": 5.650498232673564,
+  "qualification": "EXPLORATORY FIT ONLY; one positive pulse per axis; no heldout, loaded, negative, or longer-pulse qualification",
+  "loaded_use": "same fixed coefficients as an explicit unqualified 30g proxy; no live load or GT adaptation",
+  "method": "bounded batch least-squares of 3x3 gain + per-output spin-up lag + stop lag; owncam 50ms recursion"
+}

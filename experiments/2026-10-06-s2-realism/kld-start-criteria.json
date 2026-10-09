@@ -1,0 +1,62 @@
+{
+  "schema": "ugrp.s2.kld_start.criteria.v1",
+  "option": "particle_sampling=kld_global_v1",
+  "default": "off",
+  "base_sha": "7154a72d",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start",
+  "seed": 1052,
+  "camera_pitch": "stiff_target_v1",
+  "servo_stiffness": "real_v1",
+  "parameters": {
+    "min_samples": 2000,
+    "max_samples": 100000,
+    "epsilon": 0.05,
+    "confidence": 0.99,
+    "bins_m_m_deg": [
+      0.5,
+      0.5,
+      10.0
+    ]
+  },
+  "parameters_basis": "Fox eq7 and 0.5m/10deg bins, 100000 cap; epsilon .05 chosen before replay; minimum preserves existing 2000 budget; Normal quantile at .99, not z=.99",
+  "replay": {
+    "conditions": [
+      "off",
+      "on"
+    ],
+    "runs_per_condition": 1,
+    "frames": 214,
+    "commands_fixed": true,
+    "active_rankings": false,
+    "wall_budget_per_condition_s": 300,
+    "timing": "init and frame processing incl RGB I/O; excludes serialization and scoring; sequential, agent_lock",
+    "cpu_time": true
+  },
+  "gates": {
+    "off_pose_and_cloud_bytes_equal": true,
+    "truth_25cm_15deg_mass_strictly_increases": true,
+    "final_position_error_m_max": 0.25,
+    "final_position_error_improves": true,
+    "no_false_resolved": true,
+    "truth_neighborhood_survives": true
+  },
+  "report_extra": "tight 10cm/5deg count/mass, particle population, resolved flag; no substitution of best GT-selected mode for mean",
+  "physical_runs": 0,
+  "if_pass": "propose full DEV only; no execution",
+  "retuning_after_results": false,
+  "gt_use": "separate scoring after both prediction files close; no PF input",
+  "sources": [
+    {
+      "title": "Fox 2001 KLD-Sampling, eq7/Table1",
+      "url": "https://papers.neurips.cc/paper/1998-kld-sampling-adaptive-particle-filters.pdf",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-kld-start-20261007/fox2001-kld.pdf",
+      "sha256": "4d6bfa53465fdaa59604cbf14aebfd974fa1f3c0b2778c86123a0774505410d5"
+    },
+    {
+      "title": "Nav2 pf.c max initialization and KLD multinomial resampling",
+      "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf.c",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-dock-localization-20261007/pf.c",
+      "sha256": "6699fe3107b141597114de730cd2c9cb64e0703e592e3bb23ad7de6b69c49867"
+    }
+  ]
+}

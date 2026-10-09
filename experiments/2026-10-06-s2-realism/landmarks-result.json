@@ -1,0 +1,1115 @@
+{
+  "schema": "ugrp.s2.landmarks.result.v1",
+  "criteria": {
+    "recordings": {
+      "start1052": {
+        "seed": 1052,
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start",
+        "baseline_poses": "/Users/changmin/projects/ugrp/outputs/s2-amcl-sensor-78c71681-replay/start1052-on.json",
+        "window": [
+          1.3,
+          12.0
+        ],
+        "configuration": "stiff_target_v1 + real_v1 + augmented_active_v1 + kld_global_v1; static saved RGB; no known dock + best_cluster on"
+      },
+      "carry1051": {
+        "seed": 1051,
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead",
+        "baseline_poses": "/Users/changmin/projects/ugrp/outputs/s2-amcl-sensor-78c71681-replay/carry1051-on.json",
+        "window": [
+          71.85,
+          249.25
+        ],
+        "configuration": "exact v131 options and commands + best_cluster on"
+      }
+    },
+    "conditions": [
+      "off",
+      "on"
+    ],
+    "runs_per_condition": 1,
+    "physical_sequence": "if all offline gates pass, seed1052 start only once; if final error <=.25m, seed1051 full once; agent_lock and ugrp_session mandatory",
+    "gt_use": "scoring only after off/on predictions close",
+    "retuning_after_results": false,
+    "performance_comparison": false,
+    "physics_before_admission": 0,
+    "schema": "ugrp.s2.landmarks.criteria.v1",
+    "base_sha": "55c4fb9ea023da1594f16da94b152a4dbd383ea9",
+    "option": "sensor_landmarks=floor_zones_doors_v1",
+    "default": "off",
+    "pose_estimate": "amcl_best_cluster_v1 in BOTH off and on",
+    "parameters": {
+      "hue_tolerance": 12,
+      "saturation_min": 20,
+      "saturation_max": 150,
+      "value_min": 35,
+      "min_component_px": 300,
+      "min_line_px": 40,
+      "hough_votes": 30,
+      "hough_gap_px": 8,
+      "side_offset_px": 5,
+      "side_support": 0.8,
+      "min_segment_m": 0.12,
+      "max_range_m": 6.0,
+      "max_ground_fit_m": 0.03,
+      "max_floor_lines": 4,
+      "sigma_line_m": 0.1,
+      "sigma_line_angle_rad": 0.08726646259971647,
+      "sigma_range_m": 0.2,
+      "sigma_bearing_rad": 0.05235987755982989,
+      "sigma_width_m": 0.1,
+      "random_fraction": 0.05,
+      "door_depth_jump_m": 0.25,
+      "door_width_m": [
+        0.2,
+        1.0
+      ],
+      "door_edge_support": 0.45,
+      "canny": [
+        30,
+        80
+      ]
+    },
+    "gates": {
+      "start_final_error_m_max": 0.25,
+      "baseline_pose_max_delta": 1e-09
+    },
+    "carry_metrics": "report RMSE and pre-setdown error; no extra posthoc gate",
+    "physics_policy": "exclusive agent_lock + ugrp_session; no concurrent ego-map physics; dev_light",
+    "likelihood_probe": {
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-start-likelihood-208f10f1-final/result.json",
+      "sha256": "f00a775693d658519cbe63ad33a80b4d0d9c85ff5b6c389d1cc9c15a636c600e",
+      "fixed_false_pose": [
+        -0.15000000000000024,
+        0.05000000000000293,
+        -1.5707963267948966
+      ],
+      "GT_pose": "first view truth; same fixed stationary hypothesis as original score; evaluation only",
+      "report": "per-view GT/false and product over 6 views; compare same points/poses, no reselecting false peak"
+    },
+    "sensor_model": "amcl_likelihood_field_v1 in BOTH off and on",
+    "detector_development": "own RGB inspection only; no truth used for extraction or threshold selection; synthetic tests",
+    "association": "Gaussian point range/bearing/width for paired jambs; Gaussian normal-distance/angle for partial floor edge; ML same hue candidates, no blue-region identity prior",
+    "missing": "not negative evidence; no fabricated max range; independent color edges allowed when wall filter returns empty",
+    "random_component": "fixed .05 mixture; uniform over 6m and 2pi (door also 1m width); adapter constants are not book defaults"
+  },
+  "gt_use": "evaluation only after all predictions close",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "recordings": {
+    "start1052": {
+      "conditions": [
+        {
+          "option": "off",
+          "frames": 214,
+          "final_error_m": 3.089584966217964,
+          "window_xy_rmse_m": 3.330367870028895,
+          "window_end_error_m": 3.089584966217964,
+          "window_visual_updates": 6,
+          "window_max_fix_gap_s": 3.3499999999999996,
+          "final_cluster": {
+            "cluster_count": 15,
+            "maximum_cluster_weight": 0.999096313912043,
+            "uncertain": false,
+            "selected_cluster_cov": [
+              [
+                4.01150902403369,
+                0.9903157205476117,
+                0.0
+              ],
+              [
+                0.9903157205476117,
+                1.5402409539539053,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                4.703931749297772
+              ]
+            ],
+            "overall_mean_xy": [
+              1.8788450959279754,
+              -0.8914786943466531
+            ]
+          },
+          "truth_near_mass": 0.1175267538644471,
+          "truth_near_count": 2471
+        },
+        {
+          "option": "on",
+          "frames": 214,
+          "final_error_m": 0.06967977515247137,
+          "window_xy_rmse_m": 1.4374095702459864,
+          "window_end_error_m": 0.06967977515247137,
+          "window_visual_updates": 6,
+          "window_max_fix_gap_s": 3.3499999999999996,
+          "final_cluster": {
+            "cluster_count": 3,
+            "maximum_cluster_weight": 0.961074369287227,
+            "uncertain": false,
+            "selected_cluster_cov": [
+              [
+                0.0014727605296420468,
+                0.001149907756720852,
+                0.0
+              ],
+              [
+                0.001149907756720852,
+                0.001073858412349644,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.07958175607346726
+              ]
+            ],
+            "overall_mean_xy": [
+              -0.7912628344518668,
+              -2.207404775414061
+            ]
+          },
+          "truth_near_mass": 0.9610743692872106,
+          "truth_near_count": 1869
+        }
+      ],
+      "baseline_frames_equal": true,
+      "baseline_max_pose_delta": 0.0,
+      "off_on_max_pose_delta": 3.0669950995198665,
+      "particle_trajectory_bytes_equal": false,
+      "landmark_counts": {
+        "attempts": 6,
+        "updates": 6,
+        "floor_lines": 23,
+        "doors": 0,
+        "feature_updates": 6
+      }
+    },
+    "carry1051": {
+      "conditions": [
+        {
+          "option": "off",
+          "frames": 5340,
+          "final_error_m": 2.710096663941036,
+          "window_xy_rmse_m": 1.1542425384384933,
+          "window_end_error_m": 2.709823108977634,
+          "window_visual_updates": 19,
+          "window_max_fix_gap_s": 45.0,
+          "final_cluster": {
+            "cluster_count": 1,
+            "maximum_cluster_weight": 0.9999999999999453,
+            "uncertain": false,
+            "selected_cluster_cov": [
+              [
+                0.045320698910335584,
+                0.05605531050353274,
+                0.0
+              ],
+              [
+                0.05605531050353274,
+                0.10204724989418879,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.018839740063460796
+              ]
+            ],
+            "overall_mean_xy": [
+              4.389339140430301,
+              -2.109819678865964
+            ]
+          }
+        },
+        {
+          "option": "on",
+          "frames": 5340,
+          "final_error_m": 2.778129941387364,
+          "window_xy_rmse_m": 1.180938930731812,
+          "window_end_error_m": 2.778084484040735,
+          "window_visual_updates": 20,
+          "window_max_fix_gap_s": 33.25,
+          "final_cluster": {
+            "cluster_count": 1,
+            "maximum_cluster_weight": 0.9999999999999453,
+            "uncertain": false,
+            "selected_cluster_cov": [
+              [
+                0.036596046998203825,
+                0.03226167790164469,
+                0.0
+              ],
+              [
+                0.03226167790164469,
+                0.03343008684861968,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.010410596635554773
+              ]
+            ],
+            "overall_mean_xy": [
+              4.328502753412555,
+              -2.3322970917708767
+            ]
+          }
+        }
+      ],
+      "baseline_frames_equal": true,
+      "baseline_max_pose_delta": 0.0,
+      "off_on_max_pose_delta": 0.36218148942926975,
+      "particle_trajectory_bytes_equal": false,
+      "landmark_counts": {
+        "attempts": 649,
+        "updates": 30,
+        "floor_lines": 90,
+        "doors": 0,
+        "feature_updates": 25
+      }
+    }
+  },
+  "likelihood_probe": [
+    {
+      "option": "off",
+      "views": [
+        {
+          "t": 2.25,
+          "valid_beams": 38,
+          "GT": 5.617189926587047,
+          "false": 5.1926477906626936,
+          "GT_over_false": 1.0817583154181487
+        },
+        {
+          "t": 3.75,
+          "valid_beams": 95,
+          "GT": 13.07968057968184,
+          "false": 12.706320428083718,
+          "GT_over_false": 1.029383813647019
+        },
+        {
+          "t": 5.25,
+          "valid_beams": 44,
+          "GT": 6.527587712183856,
+          "false": 6.516132936309973,
+          "GT_over_false": 1.001757910095734
+        },
+        {
+          "t": 6.75,
+          "valid_beams": 90,
+          "GT": 10.792453395564227,
+          "false": 10.772881197468507,
+          "GT_over_false": 1.0018168025560625
+        },
+        {
+          "t": 8.25,
+          "valid_beams": 91,
+          "GT": 7.427104450678328,
+          "false": 6.284148961786209,
+          "GT_over_false": 1.181879120918745
+        },
+        {
+          "t": 11.6,
+          "valid_beams": 49,
+          "GT": 6.635682730143154,
+          "false": 6.0433936478324295,
+          "GT_over_false": 1.0980060404509906
+        }
+      ],
+      "six_view_GT_over_false": 1.4502285775158084
+    },
+    {
+      "option": "on",
+      "views": [
+        {
+          "t": 2.25,
+          "valid_beams": 38,
+          "GT": 5.61718992658705,
+          "false": 5.192647790662694,
+          "GT_over_false": 1.0817583154181492
+        },
+        {
+          "t": 3.75,
+          "valid_beams": 95,
+          "GT": 13.079680579681826,
+          "false": 12.706320428083712,
+          "GT_over_false": 1.0293838136470184
+        },
+        {
+          "t": 5.25,
+          "valid_beams": 44,
+          "GT": 6.527587712183862,
+          "false": 6.516132936309977,
+          "GT_over_false": 1.0017579100957341
+        },
+        {
+          "t": 6.75,
+          "valid_beams": 90,
+          "GT": 10.792453395564223,
+          "false": 10.7728811974685,
+          "GT_over_false": 1.001816802556063
+        },
+        {
+          "t": 8.25,
+          "valid_beams": 91,
+          "GT": 7.427104450678322,
+          "false": 6.284148961786207,
+          "GT_over_false": 1.1818791209187443
+        },
+        {
+          "t": 11.6,
+          "valid_beams": 49,
+          "GT": 6.635682730143161,
+          "false": 6.0433936478324295,
+          "GT_over_false": 1.0980060404509917
+        }
+      ],
+      "six_view_GT_over_false": 1.4502285775158095
+    }
+  ],
+  "gates": {
+    "start_error_within_25cm": true,
+    "baseline_reproduced": true
+  },
+  "physical_start_admitted": true,
+  "source_sha": "da3d2eb8922f3bf7e75469aff4f83119fc4e0f50",
+  "hashes": {
+    "start1052-on-landmarks.json": "04a3ba007b4f8ffa2fbff18f2aff8e96d44b17c267dc23a44628c1f53d57b7c1",
+    "start1052-on.json": "eadf9105bda9dcc4a1cc4be79bacce4c47552fcddb26793125d5e9704fb5d1b9",
+    "start1052-on-clouds.npz": "417ff432cf0f3c72b2979ccb6c8f139d49b04ec6b97e4499e75bf1e4c476a2bd",
+    "carry1051-on.json": "925b0d2f92082b6c2c13630a85f972ccd917ef4117cb8948fedd856ef22b4fc4",
+    "start1052-off-clouds.npz": "7acb0937e011c4c2030c2f4130af5e2c857d7599f12145da4a6d42d4ed6068f2",
+    "carry1051-on-landmarks.json": "f146795ca24cdc41477939dcbc8148e809d6272cbd53d2d89d36fd0252344fad",
+    "start1052-off-landmarks.json": "cc9caf0ceaab9b39473d797dc90666a56c692e009ab760864688c7f324269a3c",
+    "carry1051-off-landmarks.json": "cc9caf0ceaab9b39473d797dc90666a56c692e009ab760864688c7f324269a3c",
+    "start1052-off.json": "3cbc64ed32c503667c9a951c789f7c92ad0b44b0aa2f8820da8f0aabe4b3205f",
+    "carry1051-off.json": "a2c116fa75648c4a55577e23080103c80b1cf2489c71b40fba46368d83134380"
+  },
+  "sources": {
+    "/Users/changmin/projects/ugrp-wt/drive-friction/experiments/2026-10-06-s2-realism/landmarks-criteria.json": "aaaeb3f11bba24bab8ef828c60e6dfc44128486b0877f7515af3f31ca70ce2ef",
+    "/Users/changmin/projects/ugrp/outputs/s2-start-likelihood-208f10f1-final/result.json": "f00a775693d658519cbe63ad33a80b4d0d9c85ff5b6c389d1cc9c15a636c600e"
+  },
+  "landmark_probe": {
+    "views": [
+      {
+        "t": 2.25,
+        "features": [
+          {
+            "kind": "floor_line",
+            "hue": 104.0,
+            "endpoints": [
+              [
+                3.109798297351274,
+                1.245653654075893
+              ],
+              [
+                3.0934938380915007,
+                -0.7798550845008244
+              ]
+            ],
+            "normal": [
+              0.9999676038458182,
+              -0.008049301761814955
+            ],
+            "pixels": [
+              [
+                0.0,
+                155.0
+              ],
+              [
+                474.0,
+                155.0
+              ]
+            ],
+            "support_px": 474.0
+          },
+          {
+            "kind": "floor_line",
+            "hue": 108.0,
+            "endpoints": [
+              [
+                2.7768869459088945,
+                -0.5465027468812811
+              ],
+              [
+                1.1417294737899004,
+                -0.5585356011924519
+              ]
+            ],
+            "normal": [
+              -0.007358635926672453,
+              0.9999729248721182
+            ],
+            "pixels": [
+              [
+                403.0,
+                156.0
+              ],
+              [
+                639.0,
+                251.0
+              ]
+            ],
+            "support_px": 254.40322325002094
+          },
+          {
+            "kind": "floor_line",
+            "hue": 107.0,
+            "endpoints": [
+              [
+                2.7765962580873715,
+                1.052969670700748
+              ],
+              [
+                2.769991679494933,
+                0.17421179644968665
+              ]
+            ],
+            "normal": [
+              -0.9999717574847786,
+              0.007515599297651421
+            ],
+            "pixels": [
+              [
+                25.0,
+                161.0
+              ],
+              [
+                256.0,
+                161.0
+              ]
+            ],
+            "support_px": 231.0
+          },
+          {
+            "kind": "floor_line",
+            "hue": 105.0,
+            "endpoints": [
+              [
+                3.01717408878599,
+                -0.8809586231853996
+              ],
+              [
+                1.70733097157455,
+                -0.8718583655592093
+              ]
+            ],
+            "normal": [
+              -0.006947425904782853,
+              -0.999975866345432
+            ],
+            "pixels": [
+              [
+                468.0,
+                154.0
+              ],
+              [
+                638.0,
+                199.0
+              ]
+            ],
+            "support_px": 175.85505395068975
+          }
+        ],
+        "wall_GT_over_false": 1.0817583154181492,
+        "feature_GT_over_false": 30.49638615270694,
+        "joint_GT_over_false": 32.989719310893626
+      },
+      {
+        "t": 3.75,
+        "features": [
+          {
+            "kind": "floor_line",
+            "hue": 107.0,
+            "endpoints": [
+              [
+                2.345706660498972,
+                -0.5621755685433618
+              ],
+              [
+                0.5706679741714067,
+                -0.5484158105755623
+              ]
+            ],
+            "normal": [
+              0.007751574473798738,
+              0.9999699560952704
+            ],
+            "pixels": [
+              [
+                144.0,
+                162.0
+              ],
+              [
+                591.0,
+                342.0
+              ]
+            ],
+            "support_px": 481.8806906278773
+          },
+          {
+            "kind": "floor_line",
+            "hue": 105.0,
+            "endpoints": [
+              [
+                2.7502169685616185,
+                -0.8755030121201673
+              ],
+              [
+                0.7651551056826743,
+                -0.867062962761737
+              ]
+            ],
+            "normal": [
+              -0.004251743096364425,
+              -0.9999909612994722
+            ],
+            "pixels": [
+              [
+                193.0,
+                154.0
+              ],
+              [
+                639.0,
+                265.0
+              ]
+            ],
+            "support_px": 459.60526541805416
+          },
+          {
+            "kind": "floor_line",
+            "hue": 107.0,
+            "endpoints": [
+              [
+                0.45108181873815106,
+                -0.2231678853602815
+              ],
+              [
+                0.44958388725599013,
+                -0.4543962729280256
+              ]
+            ],
+            "normal": [
+              0.9999790174662279,
+              -0.0064780110587598465
+            ],
+            "pixels": [
+              [
+                333.0,
+                476.0
+              ],
+              [
+                623.0,
+                398.0
+              ]
+            ],
+            "support_px": 300.3065100859454
+          },
+          {
+            "kind": "floor_line",
+            "hue": 104.0,
+            "endpoints": [
+              [
+                3.107485575503193,
+                -0.057510652528176026
+              ],
+              [
+                3.119340978540402,
+                -0.8078147414174416
+              ]
+            ],
+            "normal": [
+              0.9998751907677137,
+              0.01579882550154447
+            ],
+            "pixels": [
+              [
+                1.0,
+                160.0
+              ],
+              [
+                188.0,
+                154.0
+              ]
+            ],
+            "support_px": 187.09623192357455
+          }
+        ],
+        "wall_GT_over_false": 1.0293838136470184,
+        "feature_GT_over_false": 331352.83835571725,
+        "joint_GT_over_false": 341089.24840937223
+      },
+      {
+        "t": 5.25,
+        "features": [
+          {
+            "kind": "floor_line",
+            "hue": 105.0,
+            "endpoints": [
+              [
+                1.440006046511136,
+                -0.8809233520988099
+              ],
+              [
+                0.5344984519111102,
+                -0.8681034832667475
+              ]
+            ],
+            "normal": [
+              -0.0141562415363259,
+              -0.999899795392301
+            ],
+            "pixels": [
+              [
+                88.0,
+                198.0
+              ],
+              [
+                462.0,
+                270.0
+              ]
+            ],
+            "support_px": 380.8674310045426
+          },
+          {
+            "kind": "floor_line",
+            "hue": 107.0,
+            "endpoints": [
+              [
+                1.1916998881146454,
+                -0.5504591922338543
+              ],
+              [
+                0.47889785526318995,
+                -0.5513782803318376
+              ]
+            ],
+            "normal": [
+              -0.0012894005510753783,
+              0.9999991687227641
+            ],
+            "pixels": [
+              [
+                0.0,
+                231.0
+              ],
+              [
+                357.0,
+                340.0
+              ]
+            ],
+            "support_px": 373.2693397534815
+          },
+          {
+            "kind": "floor_line",
+            "hue": 107.0,
+            "endpoints": [
+              [
+                0.45056489338840006,
+                -0.2568918155897136
+              ],
+              [
+                0.44930402084989807,
+                -0.5185883276145341
+              ]
+            ],
+            "normal": [
+              0.9999883932949929,
+              -0.004818015701358279
+            ],
+            "pixels": [
+              [
+                74.0,
+                477.0
+              ],
+              [
+                357.0,
+                345.0
+              ]
+            ],
+            "support_px": 312.27071588607214
+          }
+        ],
+        "wall_GT_over_false": 1.0017579100957341,
+        "feature_GT_over_false": 301578.1217783516,
+        "joint_GT_over_false": 302108.2690032783
+      },
+      {
+        "t": 6.75,
+        "features": [
+          {
+            "kind": "floor_line",
+            "hue": 105.0,
+            "endpoints": [
+              [
+                3.2097692141880647,
+                1.2596464831201521
+              ],
+              [
+                3.11605494463457,
+                -0.17349053523293703
+              ]
+            ],
+            "normal": [
+              0.997868840422052,
+              -0.0652516460692703
+            ],
+            "pixels": [
+              [
+                298.0,
+                150.0
+              ],
+              [
+                639.0,
+                162.0
+              ]
+            ],
+            "support_px": 341.2110783664563
+          },
+          {
+            "kind": "floor_line",
+            "hue": 107.0,
+            "endpoints": [
+              [
+                2.7880609792954543,
+                1.1165467307231765
+              ],
+              [
+                2.798184205787289,
+                0.6134773787205485
+              ]
+            ],
+            "normal": [
+              -0.9997975954266599,
+              -0.020118851335717267
+            ],
+            "pixels": [
+              [
+                304.0,
+                157.0
+              ],
+              [
+                426.0,
+                161.0
+              ]
+            ],
+            "support_px": 122.06555615733703
+          },
+          {
+            "kind": "floor_line",
+            "hue": 108.0,
+            "endpoints": [
+              [
+                2.7896606433940407,
+                0.03861896331486168
+              ],
+              [
+                2.8544098728820493,
+                -0.19779689844283466
+              ]
+            ],
+            "normal": [
+              -0.9644814046463995,
+              -0.26415075258516363
+            ],
+            "pixels": [
+              [
+                563.0,
+                166.0
+              ],
+              [
+                638.0,
+                167.0
+              ]
+            ],
+            "support_px": 75.0066663703967
+          },
+          {
+            "kind": "floor_line",
+            "hue": 109.0,
+            "endpoints": [
+              [
+                2.733886840251364,
+                -0.03054372435794625
+              ],
+              [
+                2.8098101171774092,
+                -0.2007691246821917
+              ]
+            ],
+            "normal": [
+              -0.913278036697558,
+              -0.4073367497364481
+            ],
+            "pixels": [
+              [
+                584.0,
+                168.0
+              ],
+              [
+                639.0,
+                168.0
+              ]
+            ],
+            "support_px": 55.0
+          }
+        ],
+        "wall_GT_over_false": 1.001816802556063,
+        "feature_GT_over_false": 1.0299457200930762,
+        "joint_GT_over_false": 1.0318169281099472
+      },
+      {
+        "t": 8.25,
+        "features": [
+          {
+            "kind": "floor_line",
+            "hue": 107.0,
+            "endpoints": [
+              [
+                0.44214221634005574,
+                1.0653341953355666
+              ],
+              [
+                0.44693163686370396,
+                0.4310212730968523
+              ]
+            ],
+            "normal": [
+              0.9999714957079503,
+              0.007550349104829448
+            ],
+            "pixels": [
+              [
+                0.0,
+                246.0
+              ],
+              [
+                308.0,
+                390.0
+              ]
+            ],
+            "support_px": 340.0
+          },
+          {
+            "kind": "floor_line",
+            "hue": 108.0,
+            "endpoints": [
+              [
+                2.868776966178752,
+                2.1856655999024803
+              ],
+              [
+                2.8035164723942763,
+                1.7068363994352362
+              ]
+            ],
+            "normal": [
+              -0.9908396944793338,
+              0.13504332580361178
+            ],
+            "pixels": [
+              [
+                395.0,
+                149.0
+              ],
+              [
+                474.0,
+                155.0
+              ]
+            ],
+            "support_px": 79.22752047110903
+          },
+          {
+            "kind": "floor_line",
+            "hue": 108.0,
+            "endpoints": [
+              [
+                2.8601147299289886,
+                2.309212623748814
+              ],
+              [
+                2.751785277622304,
+                1.8445865669699917
+              ]
+            ],
+            "normal": [
+              -0.9738798296989436,
+              0.22706403789582474
+            ],
+            "pixels": [
+              [
+                377.0,
+                148.0
+              ],
+              [
+                443.0,
+                154.0
+              ]
+            ],
+            "support_px": 66.27216610312357
+          },
+          {
+            "kind": "floor_line",
+            "hue": 106.0,
+            "endpoints": [
+              [
+                3.119413723184089,
+                1.2965999088741367
+              ],
+              [
+                3.1851430129846188,
+                1.091879709540916
+              ]
+            ],
+            "normal": [
+              0.9521282766387056,
+              0.30569878119647176
+            ],
+            "pixels": [
+              [
+                581.0,
+                156.0
+              ],
+              [
+                639.0,
+                158.0
+              ]
+            ],
+            "support_px": 58.034472514187634
+          }
+        ],
+        "wall_GT_over_false": 1.1818791209187443,
+        "feature_GT_over_false": 148175.06338131233,
+        "joint_GT_over_false": 175125.01365118465
+      },
+      {
+        "t": 11.6,
+        "features": [
+          {
+            "kind": "floor_line",
+            "hue": 104.0,
+            "endpoints": [
+              [
+                3.0696643405481234,
+                1.2217329724261707
+              ],
+              [
+                3.055461681851576,
+                -0.7622477501947313
+              ]
+            ],
+            "normal": [
+              0.9999743777232375,
+              -0.007158484268604451
+            ],
+            "pixels": [
+              [
+                0.0,
+                66.0
+              ],
+              [
+                477.0,
+                66.0
+              ]
+            ],
+            "support_px": 477.0
+          },
+          {
+            "kind": "floor_line",
+            "hue": 107.0,
+            "endpoints": [
+              [
+                0.44748349036466295,
+                -0.010959308404879934
+              ],
+              [
+                0.44734613588662675,
+                -0.2031506619594304
+              ]
+            ],
+            "normal": [
+              0.9999997446194648,
+              -0.0007146754545309601
+            ],
+            "pixels": [
+              [
+                288.0,
+                412.0
+              ],
+              [
+                638.0,
+                412.0
+              ]
+            ],
+            "support_px": 350.0
+          },
+          {
+            "kind": "floor_line",
+            "hue": 107.0,
+            "endpoints": [
+              [
+                2.5877197160992584,
+                -0.5349299757115431
+              ],
+              [
+                1.121035990274314,
+                -0.5570605743007967
+              ]
+            ],
+            "normal": [
+              -0.015087151612264484,
+              0.999886182450897
+            ],
+            "pixels": [
+              [
+                414.0,
+                71.0
+              ],
+              [
+                638.0,
+                166.0
+              ]
+            ],
+            "support_px": 243.31255619059203
+          },
+          {
+            "kind": "floor_line",
+            "hue": 105.0,
+            "endpoints": [
+              [
+                3.119951688486873,
+                0.11115503252567356
+              ],
+              [
+                3.1137147036156287,
+                -0.7429659780505078
+              ]
+            ],
+            "normal": [
+              0.9999733398120223,
+              -0.0073020315796331215
+            ],
+            "pixels": [
+              [
+                254.0,
+                65.0
+              ],
+              [
+                456.0,
+                65.0
+              ]
+            ],
+            "support_px": 202.0
+          }
+        ],
+        "wall_GT_over_false": 1.0980060404509917,
+        "feature_GT_over_false": 270890.8912333923,
+        "joint_GT_over_false": 297439.8348774173
+      }
+    ],
+    "product_joint_ratio": 1.827086989964685e+23
+  }
+}

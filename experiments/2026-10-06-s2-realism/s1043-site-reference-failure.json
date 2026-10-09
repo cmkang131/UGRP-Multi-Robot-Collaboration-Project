@@ -1,0 +1,144 @@
+{
+  "seed": 1043,
+  "reference_failure": {
+    "robot_id": "r3",
+    "event": "cyan_scene_reference_unavailable",
+    "t": 68.1,
+    "reason": "real floor reference is clipped or unsupported",
+    "physical_success": null
+  },
+  "frame_id": 1337,
+  "image": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/robots/r3/rgb/01336.jpg",
+  "sha256": "ab3508b5b979e315eaf6023f24e6a6103e0f7bec798b4d59c3e61dc17b5bd949",
+  "commanded_servo": {
+    "1": 2000,
+    "3": 508,
+    "4": 2432,
+    "5": 1320,
+    "6": 1500
+  },
+  "fit": {
+    "kind": "cyan",
+    "range_class": "near",
+    "pixel_centroid": [
+      285.95838120771094,
+      392.8952976722413
+    ],
+    "pixel_bbox": [
+      213,
+      322,
+      148,
+      142
+    ],
+    "area_px": 19582.5,
+    "solidity": 0.9880670064079923,
+    "floor_hypothesis_projection_iou": 0.9847989700930877,
+    "estimated_box_center_base_m": [
+      0.2005814381746769,
+      0.00014331534595042345,
+      0.016
+    ],
+    "estimated_yaw_mod_pi_rad": 3.141592653589793
+  },
+  "cyan_area_px": 19854,
+  "support_pixels": 19854,
+  "cyan_bbox_xyxy": [
+    213,
+    322,
+    360,
+    463
+  ],
+  "outside_lens_pixels": 47,
+  "lens_edge_pixels": 170,
+  "min_lens_distance_px": 0.0,
+  "cause_family": "PICKUP_SITE_REFERENCE_AT_LENS_BOUNDARY",
+  "same_family_prior_seed": 1042,
+  "occurrences_in_family": 2,
+  "specific_difference": "s1042: artificial expanded padding; s1043: actual cyan support intersects lens boundary",
+  "stop_additional_simulation": true,
+  "offline_eval_projection": {
+    "camera_origin_floor_heading_m": [
+      0.12378124288690266,
+      2.8735129141152287e-08,
+      0.19045894931852472
+    ],
+    "camera_rotation": [
+      [
+        7.085145517359771e-10,
+        -0.7633504558513464,
+        0.6459845830602645
+      ],
+      [
+        -0.9999999999999846,
+        -1.1772092061018518e-07,
+        -1.3801227808442537e-07
+      ],
+      [
+        1.8139763524020922e-07,
+        -0.6459845830602537,
+        -0.7633504558513339
+      ]
+    ],
+    "optical_forward_floor_heading": [
+      0.6459845830602645,
+      -1.3801227808442537e-07,
+      -0.7633504558513339
+    ],
+    "block_center_floor_heading_m": [
+      0.20044705833585708,
+      0.00047639689621343725,
+      0.015892244579783645
+    ],
+    "corner_uv": [
+      [
+        350.1995579040329,
+        462.69916213338166
+      ],
+      [
+        360.94966043797456,
+        428.1269765146806
+      ],
+      [
+        224.31099536793656,
+        465.04513459591743
+      ],
+      [
+        213.3765659169491,
+        430.86935823028267
+      ],
+      [
+        343.84229766132756,
+        369.6028056704763
+      ],
+      [
+        352.0921266463445,
+        322.0172284466608
+      ],
+      [
+        226.59506356938374,
+        371.6747707064568
+      ],
+      [
+        217.59372864452504,
+        324.3370205115863
+      ]
+    ],
+    "corner_bbox_xyxy": [
+      213.3765659169491,
+      322.0172284466608,
+      360.94966043797456,
+      465.04513459591743
+    ],
+    "positive_depth_min_m": 0.1593195476319964,
+    "rectangular_ray_pixels": 19785,
+    "valid_ray_pixels": 19581,
+    "in_valid_image": true,
+    "valid_bbox_xyxy": [
+      214,
+      323,
+      360,
+      463
+    ]
+  },
+  "eval_projection_limits": "settled commanded calibration; no measured roll/pitch or occlusion"
+}

@@ -1,0 +1,76 @@
+{
+  "checks": [
+    {
+      "run": "1007-s2-stiff-cal-v32/calibration",
+      "source_view": "calibration",
+      "scalars": {
+        "offline/poses": 22.0,
+        "offline/holdout_rms_max_px": 0.20428436994552612,
+        "offline/pitch_error_max_deg": 0.2255728393793106,
+        "result/model_calls": 0.0
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "1007-s2-stiff-cal-v32/start-off",
+      "source_view": "start-off",
+      "scalars": {
+        "offline/final_error_m": 2.963104009628296,
+        "offline/rmse_m": 3.186049222946167,
+        "offline/columns_8p25": 85.0,
+        "offline/updates": 6.0,
+        "result/model_calls": 0.0
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "1007-s2-stiff-cal-v32/start-on",
+      "source_view": "start-on",
+      "scalars": {
+        "offline/final_error_m": 3.1810338497161865,
+        "offline/rmse_m": 3.3155057430267334,
+        "offline/columns_8p25": 91.0,
+        "offline/updates": 6.0,
+        "result/model_calls": 0.0
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "1007-s2-stiff-cal-v32/vo",
+      "source_view": "vo",
+      "scalars": {
+        "offline/pulses": 16.0,
+        "offline/complete_vo": 0.0,
+        "offline/normal_rms_m": 0.0016358671709895134,
+        "result/model_calls": 0.0
+      },
+      "hparams_loaded": true
+    }
+  ],
+  "viewer": {
+    "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-stiff-cal-v32",
+    "url": "http://127.0.0.1:6006/?runFilter=%5E1007-s2-stiff-cal-v32%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ffinal_error_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Frmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fupdates%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fpitch_error_max_deg%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcomplete_vo%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+    "pinned_tags": [
+      "offline/final_error_m",
+      "offline/rmse_m",
+      "offline/updates",
+      "offline/pitch_error_max_deg",
+      "offline/complete_vo",
+      "result/model_calls"
+    ],
+    "hparams_visible_columns": [
+      "policy",
+      "condition",
+      "source_sha",
+      "seed",
+      "offline/final_error_m",
+      "offline/rmse_m"
+    ],
+    "scope": "s2v32 stiff calibration/start diagnostics, PR405 VO offline; full task 0",
+    "verification": {
+      "scalars": 18,
+      "source_event_live_api_match": true,
+      "browser": "NUMERIC_ONLY"
+    }
+  }
+}

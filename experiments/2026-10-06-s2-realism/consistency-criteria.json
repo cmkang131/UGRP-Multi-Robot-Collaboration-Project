@@ -1,0 +1,22 @@
+{
+  "version": "s2v44-prereg-v1",
+  "seeds": [1051, 1053, 1054],
+  "baseline": "v133; rotation_calibration off; sealed v42 off predictions",
+  "rotation_on": "diagnosis only, to locate the previously reported 47 misses; baseline has 44",
+  "primary_universe": "1602 existing single-cluster matching-XY-covariance decision times; retain the same times off/on",
+  "phase_bins": ["SEARCH", "approach", "carry", "place"],
+  "motion_bins": ["turn", "forward", "lateral", "stationary"],
+  "motion_definition": "most recent nonzero own wheel command ending within 1s of report t_est; otherwise stationary",
+  "landmark_age_edges_s": [0, 1, 5, 15, 30],
+  "chi2_95_xy": 5.991464547107979,
+  "chi2_95_yaw": 3.841458820694124,
+  "bias_diagnostic": "component mean and population variance; centered NEES is retrospective explanation only, never a controller correction",
+  "bias_majority_rule": "bias squared contributes >=50% of XY MSE",
+  "residual_inconsistency_rule": "demeaned XY NEES exceedance >20%",
+  "holdouts": [{"fit": [1053,1054],"check":1051},{"fit":[1051,1054],"check":1053},{"fit":[1051,1053],"check":1054}],
+  "fit_gt_allowed": false,
+  "gt_use": "evaluation only; no GT offset, covariance fit, motion fit, sensor association or action selection",
+  "admission_each_holdout": {"xy_nees_exceedance_rate_max":0.2,"unflagged_xy_above_25cm_max":0,"carry_rmse_increase_m_max":1e-9,"off_pose_serialization_identical":true},
+  "physical": "only all holdouts pass, then supervisor check and separate unused-seed registration before one full DEV with agent_lock and ugrp_session",
+  "threshold_change_after_results": false
+}
