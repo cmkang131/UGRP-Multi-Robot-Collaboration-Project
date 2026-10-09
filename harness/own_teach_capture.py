@@ -156,5 +156,6 @@ def attach(controller,*,teach_capture='off'):
     if teach_capture=='off':return controller
     if teach_capture!=OPTION:raise ValueError('UNKNOWN_TEACH_CAPTURE')
     if type(controller) is not Return360:raise ValueError('FROZEN_RETURN360_REQUIRED')
+    if 'receive' in controller.__dict__:raise ValueError('ATTACH_TEACH_BEFORE_RECEIVE_WRAPPER')
     controller.__class__=Teach360;controller.traversal_graph=TeachGraph(controller.robot_id);controller.traversal=None
     return controller

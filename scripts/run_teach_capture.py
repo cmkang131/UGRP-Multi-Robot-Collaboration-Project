@@ -10,6 +10,12 @@ RAW=Path('/Users/changmin/projects/ugrp/outputs/teach-capture-v1')
 SEEDS=old.SEEDS
 
 
+def make_controller(explorer,*,seed):
+    # The scalar wrapper captures a bound receive method. Install it last.
+    c=old.attach(explorer,map_utility=old.OPTION,seed=seed)
+    return old.scalar_grid(attach(c,teach_capture=OPTION),map_acceleration='scalar_rays_v1')
+
+
 def bundle(seed,source):
     b=old.bundle(seed,source)
     b.update(execution_bundle_id=f'egomap53-teach-{seed}-v1',check='own-teach-capture',
@@ -43,7 +49,7 @@ def main():
     lock=acquire(DEFAULT_ROOT,owner='codex',branch='claude/ego-wall-map',purpose=f'egomap53 teach/repeat seed{a.seed}',pid=os.getpid(),expected_minutes=60)
     collected=[]
     def controller(explorer,*,seed):
-        c=attach(old.controller(explorer,seed=seed),teach_capture=OPTION);collected.append(c);return c
+        c=make_controller(explorer,seed=seed);collected.append(c);return c
     try:
         def timeout(*_):raise TimeoutError('HOST_BUDGET_60_MINUTES')
         signal.signal(signal.SIGALRM,timeout);signal.setitimer(signal.ITIMER_REAL,3600)

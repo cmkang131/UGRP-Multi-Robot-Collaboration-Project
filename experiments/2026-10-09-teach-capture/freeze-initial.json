@@ -83,12 +83,12 @@
     "scripts/run_own_map_return_repeat.py": "4769fbd0dd3003a1928bd08863c3bd119ba225e2d38bf462362842bd15898bfa",
     "sim/own_map_closed_loop.py": "1d19fcd86227956da8c1bc68399e779f952d8fe57d184aa86e87bc22d3c8427a",
     "tests/test_self_map_return_repeat.py": "61f20e30324bbab042e0b70ce78de31fa81a332a5843cb32dfc8ea3a782d94a5",
-    "harness/own_teach_capture.py": "b30e7dbda3cfa2f730cc69823ff7d73d0db2176febf1d0192d728629a0213a94",
+    "harness/own_teach_capture.py": "895848c6a5fe1e5e38abeaf56c03d6d8d5a6a649347f9554eae253f35af64f16",
     "harness/own_traversal_graph.py": "e8363c68d1cd64b4183d3ce6098f6d72d7f339f3e0227cd124476f33c6f2de41",
     "harness/own_traversal_reconnection.py": "29a53de86676076ec21b9aafb997c26a70a4c09fe9d9fff0da4d5db05b7a6f8f",
-    "scripts/run_teach_capture.py": "28d6869e1aaa636257cccc32411ba3e36982f7133982b8e1e7541a41536dbab0",
+    "scripts/run_teach_capture.py": "d97f60c0e296b09d14e9c343c562d4eb70378105609e9fba4db998ec672395f7",
     "configs/simulation_workflows.d/own-teach-capture.json": "0ffdaff407e9f30e978ea25c6f3cb3951cedb244325548e3a96ad6aff67858ca",
-    "tests/test_own_teach_capture.py": "1c2c762cafa8e72006794702ed4bb8a240196ed27bc2076a793bc30946ec1642"
+    "tests/test_own_teach_capture.py": "968819b3e57b27efd4ce643d37d97e9cdc2b26bb02ea2fcdf4c1d0a01d4bf643"
   },
   "prior_default_off_admissions": {
     "harness/active_navfn_start.py": [
@@ -168,7 +168,7 @@
       }
     ]
   },
-  "test_count": 27,
+  "test_count": 26,
   "source_options": {
     "teach_capture": "vtr_keyframes_v1",
     "min_distance": 0.05,
@@ -176,6 +176,5 @@
     "max_creation_distance": 2.0,
     "rotation_threshold_min": 3.0,
     "rotation_threshold_max": 20.0
-  },
-  "adapter_fix": "install teach before scalar receive wrapper; no thresholds/options changed; seed49001 not retried"
+  }
 }

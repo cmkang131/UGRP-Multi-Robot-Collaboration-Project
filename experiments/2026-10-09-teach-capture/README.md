@@ -23,3 +23,9 @@
 - 표: 도착/실행수(eg49 0/6과 별도 조건), B연결, 첫정합, uncertain엣지/노드, 회전시간비(실제 발행 회전 명령 지속시간/유효 명령시간; explore/return 분리), 벽/로봇 접촉episode, 귀환소요, 종료오차/σ. 탐색 명령 byte동일 오프라인 시험으로 추가 회전0 확인; 물리 동역학 차이로 비율이 달라지면 그대로 보고.
 - 한 번에 한 물리, agent_lock null일 때만 acquire·ugrp_session·dev_light·NI0/NO_BG_NICE. s2v58/hardmaps 사용 중이면 대기. 처음2회 최대2시간+대기, 통과 시 추가 최대4시간. raw6GiB 예산/여유10GiB 확인. 벽 검출/문턱 재튜닝·freeze·모델·유료/원격 자원0. PR405 DRAFT, #406/다른worktree수정0.
 - raw `/Users/changmin/projects/ugrp/outputs/teach-capture-v1/seed<seed>`, 성과/실패와 미실행 사유 모두 기록. 등록 순서 첫 완료 실행을4배속 손목RGB|자기지도/teach그래프로 저장(성공/실패 명시). 성공 만들기 위한 추가 실행0. TensorBoard 생략 유지.
+
+## 49001 실행 어댑터 오류 — 재실행하지 않음
+
+소스 `081fcfdb`에서 물리 시작 뒤 trace 293개/RGB 303개, 마지막t=61.7s에 teach 필드0을 확인해 자기 세션만 중단했다. `grid_acceleration.install`이 인스턴스 `receive`에 기존 bound method를 포착했으므로 나중의 class 교체가 무효였다. [Python descriptor 원문](https://docs.python.org/3/howto/descriptor.html#invocation-from-an-instance)의 인스턴스 dict 우선순위와 일치한다. 이는 알고리즘 관문 실패와 구분하는 **HOST_ERROR/유효 teach 시험 아님**이며 물리 시도 분모에서 제외하지 않는다. 세션 종료가 드라이버 finally 산출물까지 남기지 못해 `result.json`은 없고 `interruption.json`+별도 부분 원장 해시를 보존했다. 죽은 자기 PID78824 잠금만 stale release.
+
+수정은 `Return360→Teach360→scalar wrapper` 순서뿐. 이미 래핑된 객체에는 실행 전 명시적 오류를 내고, 실제 driver factory를 통해 teach 필드/누적 프레임·탐색 명령 byte동일을 검증했다. 변경3시험27통과. 최초 freeze는 `freeze-initial.json`에 보존, 나머지 seed49002에만 수정 SHA를 적용한다. 49001 재실행0, 최초 두 슬롯 모두 성공해야 하는 관문은 그대로이므로 나머지4개 추가 실행은 불가하다. 미완료 49002는 계획대로1회 진행한다.

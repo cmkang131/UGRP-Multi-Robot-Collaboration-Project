@@ -87,15 +87,24 @@ def test_capture_does_not_change_explore_commands_trace_or_rng(monkeypatch):
             return cmd,trace
     records=[]
     for option in ('off',OPTION):
-        c=attach(Return360(Explorer(),seed=49001),teach_capture=option)
+        from scripts.run_teach_capture import make_controller
+        from scripts.run_own_map_return_repeat import controller as old_controller
+        c=old_controller(Explorer(),seed=49001) if option=='off' else make_controller(Explorer(),seed=49001)
         monkeypatch.setattr(c.sensor,'measure',lambda *a:[])
         result=[]
         for i in range(1,8):
             cmd,trace=c.receive(robot_id='r3',t=float(i),frame_id=i,rgb=np.zeros((48,64,3),np.uint8),servo=SEARCH,
                 observation=dict(segments=sample(i)['segments'],camera=[0,0]),frame_sha256='a'*64)
+            if option!= 'off':assert trace['teach']['nodes']>0 and c.traversal_graph.frames==i
             trace.pop('teach',None);result.append(dict(command=cmd,trace=trace))
         records.append(json.dumps(dict(result=result,inputs=c.inputs,events=c.events),sort_keys=True,default=lambda x:x.tolist()).encode())
     assert records[0]==records[1]
+
+
+def test_wrong_wrapper_order_rejected_before_physics():
+    from scripts.run_own_map_return_repeat import controller
+    c=controller(SimpleNamespace(robot_id='r3',started=0.),seed=49001)
+    with pytest.raises(ValueError,match='BEFORE_RECEIVE_WRAPPER'):attach(c,teach_capture=OPTION)
 
 
 def test_registered_driver_bundle_and_workflow():
