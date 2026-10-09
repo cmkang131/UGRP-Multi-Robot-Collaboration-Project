@@ -43,7 +43,8 @@ S2 backend 구성은 해당 원본 run_s2_landmarks_dev의 동일 class/scene �
   카메라 갱신의 별도 forward를 증거 없이 제거하지 않는다.
 - 선행 #415 고정 입력 12초 n=2 결과 1.253→1.058은 별도 조건이며 여기 측정과 합산하지 않는다.
 
-검증 결과는 실행 후 추가한다. 실물·새 연구 성과 아님. raw는 primary outputs에 보존한다.
+최종 결과는 [30초 ABBA·프로파일 표](results/results.md), [기계 판독 요약](results/summary.json),
+[실행·환경·재개 감사](results/run-audit.json)에 보존했다. 실물·새 연구 성과 아님. raw는 primary outputs에 보존한다.
 
 ## 보존한 진단·보완
 
@@ -56,3 +57,30 @@ S2 backend 구성은 해당 원본 run_s2_landmarks_dev의 동일 class/scene �
   오류 바이트까지 비교한다. 예상 밖 예외는 여전히 실패한다. 판정 규칙 수정0, 성공으로 바꾸지 않는다.
 - 공통 캐시는 사용자 정의 DriveParameters 하위 클래스에 대해 원래 객체/계산으로
   fallback한다. 실제 enabled=false와 이유를 기록하여 기존 확장 동작을 보존한다.
+
+## 최종 검증과 재개 기록
+
+- 실행 소스 `725f45b155fda3f7dc93beba782b848ca3b4a6dd`, 각 조건 n=2.
+  S2 1.083963→0.887058(−18.17%), S3 1.871652→1.674306(−10.54%),
+  egomap 1.199962→0.997754(−16.85%) wall/SIM. 시작/끝 1·5·15분 부하와 개별 반복을 표에 함께 기록했다.
+- 매 반복 120,000스텝 상태 체인·최종 상태 동일, 경로별 625/1,825/172개 행동 파일 직접 bytes 차이0.
+  가속 모드 출처 2파일만 의도적으로 다르며 실제 mode/enabled/module SHA/입력 bundle 연결을 검증했다.
+- wall은 동기 명령·물리·렌더·eval_sample 루프이며 양쪽 동일한 매 스텝 상태 해시 비용을 포함한다.
+  생성/reset 및 루프 뒤 최종 referee·보고 직렬화는 제외한다. n=2의 로컬 개발 측정으로 전체 온라인 임무 시간의 보장은 아니다.
+- v2는 감독 세션 종료로 17:07–17:08 대기 중단, 물리 실행0이다. 실제 원본 manifest는
+  `running`/exit_code=null 상태로 남아 있었으며 그 bytes/해시를 보존했다.
+  [host-interruption.json](results/host-interruption.json)에 “감독 세션 종료로 대기 중단” 사유를 별도 기록했다.
+  v1의 process_failed 기록도 유지했다. v3는 소스·설정·명령이 새 출력 경로 외 동일하다.
+  heading 잠금 종료 후 획득, v3 process_completed/exit0 및 자신의 잠금 정상 release를 확인했다.
+- 로컬 변경 시험 14개 통과, 기존 v7 회귀 4개 통과. 완료 후 runtime 소스는 고정 SHA와 동일하며
+  보고 자료만 추가한다. CI 완료 대기·병합 없음. 새 코호트의 활성 경로는 루트 README 안내를 따른다.
+- [TensorBoard 검증](results/tensorboard.json): primary `outputs/tensorboard/1009-simspeed-core-725f45b1`,
+  16개 뷰(ABBA12+프로파일2+진단2), 원본·이벤트·live scalar 132개 일치(허용오차1e-6), 새 영상0.
+  기존 공유 서버 logdir/PID 확인 후 그대로 사용했다. Time Series 12실행 선택·6카드 고정,
+  HParams 6열(case/outcome/policy/wall/commands/model_calls) 재적용을 실제 화면에서 확인했다.
+  공유 legacy HParams는 runFilter를 적용하지 않아 수치 비교는 필터된 Time Series로 확인했다.
+  모델 호출0, 응답시간은 측정하지 않았다. screenshot은 primary outputs에 해시와 함께 보존했다.
+
+후처리는 [finalize_results.py](code/finalize_results.py), 이벤트 검증은
+[verify_tensorboard.py](code/verify_tensorboard.py)에 정확한 당시 명령을 보존했다.
+이 스크립트들은 기존 출력 덮어쓰기를 거부하는 1회 기록 도구다. 재생 시 새 뷰 경로/키를 먼저 지정한다.
