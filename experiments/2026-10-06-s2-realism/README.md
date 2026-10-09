@@ -6332,3 +6332,67 @@ ENOSPC는 HOST_ERROR, raw예산4GiB, 모델 호출0. 이번 오프라인 관문�
 셸/드라이버 nice0 검사 및 NO_BG_NICE를 사용한다. 이전 감독 중단은 결과 없는 호스트 실행 중단이며
 새 물리 결과로 합산하지 않는다. 재생 실행 첫 시도는 PYTHONPATH 누락으로 import 전에 실패했고,
 PYTHONPATH=.로 수정한 동일소스 재호출에서 완료했다. 조건·문턱 변경은 없다.
+
+### s2v58 물리 결과 — 새 seed3/3, 재현1/1 성공; 일관성·실제 회전 상한은 미해결
+
+실행 SHA `e532f52e3df512e5fac8cef7654dc2ba06fa61b1`, 번들v140. 4건 모두 lifted/inside/floor/stable/success=true.
+재시도·제외·결과 후 제어 변경·문턱 변경0. 1060은 기존 실패의 재현, 1062–1064만 새 표본이다.
+기존 v139(no-prior)2/3와 합산하지 않는다. 모델 호출0, 모든 실행 nice0·agent_lock·ugrp_session, 각 finally 해제.
+
+| 조건/seed | 성공 | 운반 RMSE m | 정답 입자 유지율 / 질량 중앙값 | NEES 초과 | 무경고>25cm | 능동 횟수 / 시간 / 비율 | SIM / wall초 | wall/SIM |
+|---|---:|---:|---:|---:|---:|---|---|---:|
+| v139 off s1059 | 1 | 0.119 | 83.2% / 45.525% | 65.8% | 0 | 0 / 0.0s / 0.0% | 295.25 / 415.98 | 1.403 |
+| v139 off s1060 | 0 | 0.822 | 21.3% / 0.000% | 99.8% | 0 | 0 / 0.0s / 0.0% | 291.50 / 400.03 | 1.366 |
+| v139 off s1061 | 1 | 0.129 | 74.5% / 1.725% | 77.0% | 0 | 0 / 0.0s / 0.0% | 307.90 / 428.17 | 1.385 |
+| v140 on s1060 | 1 | 0.167 | 53.5% / 0.050% | 99.8% | 0 | 2 / 14.4s / 4.5% | 319.95 / 473.86 | 1.475 |
+| v140 on s1062 | 1 | 0.175 | 48.5% / 0.000% | 90.2% | 0 | 0 / 0.0s / 0.0% | 287.20 / 420.76 | 1.458 |
+| v140 on s1063 | 1 | 0.207 | 27.4% / 0.000% | 92.4% | 30 | 0 / 0.0s / 0.0% | 286.30 / 430.24 | 1.496 |
+| v140 on s1064 | 1 | 0.153 | 52.4% / 1.400% | 85.4% | 25 | 2 / 21.6s / 7.4% | 290.70 / 470.58 | 1.612 |
+
+정답 입자 유지율은 운반 중1초 표본에서 **10cm·5° 안 입자가 하나라도 존재한 비율**이다. 질량 중앙값과 구분한다.
+NEES/무경고는 기존 경로 drive 결정 시점(능동 회전 자체 결정은 분모에 없음), 입자 평가는 별도1초 시계열.
+추가 시간은 능동 회전·복귀·대기가 점유한 SIM시간이며, 바뀐 전체 경로의 인과적 시간차를 뜻하지 않는다.
+
+**효과와 한계:** s1060은 RMSE0.822→0.167m, 정답 입자 유지21.3→53.5%, B 중심 거리1.868→0.120m로 개선.
+91.95/272.70초의 두 회전 과정에서 갱신6+6회, 총48개 floor_line(문0)을 관측했다. 끝 자세의 별도
+정착 대기 구간에는 추가 갱신0회: 기존 AMCL 이동 문턱을 바꾸거나 강제 갱신하지 않았다.
+93.0/93.45/95.95초에 평가용 GT 자세로 대응한 pickup Y 경계는 잔차4.7/3.8/3.6cm, 방향1.9/0.8/2.4°.
+다른 선은 0.6–2.3m 또는 약90° 불일치도 남는다. 모든 대응·영상은 원본과 features-s1060.json에 보존했다.
+새 s1062/1063은 능동0회(현재 시점보다 이득 없음 또는 벽 여유 부족), s1064는 -90° 후보2회/갱신26회.
+따라서 새3/3를 모두 능동 동작의 인과 효과로 표현하지 않는다.
+
+**상한 검증과 편차:** 횟수최대2≤5, 간격최소28.95≥20초, 추가 시간최대7.43%≤10%, 평행이동 명령0.
+네 능동 회전 중 평가용 벽 접촉 표본0, 차체 이동최대6.86mm. 명령 모델은 ≤90°지만 실제 s1064는
+90.053°/91.156°로 초과(최대1.156°). 이를 숨기거나 허용오차를 넓히지 않는다. 운반 성공은 사전등록evaluate대로
+유지하되 **실제 각도 상한까지 완전 준수했다고 주장하지 않는다**. [별도 평가](active-observation-bounds.json).
+NEES85.4–99.8%, 무경고>25cm 총55건(s1063:30/s1064:25)도 남아 정식 E2E·본 연구 자격은 아니다.
+다음 선택지(이번엔 구현/재실행 없음): (1) 자기 RGB yaw로 회전 종료 상한 제어, (2) 하중 회전 모델의 독립 물리 보정,
+(3) 특징 대응/상관 관측과 보고 공분산의 일관성 감사. 문턱 완화로 숨기지 않는다.
+
+| on seed | 운반 갱신/최장 공백 s | 실제 벽 하단 가시율 | B 중심 거리 m | would-stop |
+|---|---|---:|---:|---|
+| 1060 | 37 / 24.95 | 99.99% | 0.120 | ARM_COLLISION_GUARD:6, POSE_CLUSTER_UNCERTAIN:30, GLOBAL_START_UNRESOLVED:1, POSE_UNCERTAIN:124 |
+| 1062 | 27 / 21.55 | 99.94% | 0.229 | ARM_COLLISION_GUARD:6, GLOBAL_START_UNRESOLVED:1, POSE_UNCERTAIN:317, GRASP_INHAND_UNCONFIRMED:1 |
+| 1063 | 26 / 22.35 | 99.99% | 0.261 | ARM_COLLISION_GUARD:6, GLOBAL_START_UNRESOLVED:1, POSE_UNCERTAIN:150, GRASP_INHAND_UNCONFIRMED:1 |
+| 1064 | 52 / 17.25 | 99.97% | 0.153 | ARM_COLLISION_GUARD:6, GLOBAL_START_UNRESOLVED:1, POSE_UNCERTAIN:10, GRASP_INHAND_UNCONFIRMED:1 |
+
+[전체 수치·옵션·해시](active-observation-result.json). 원본 경로:
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1060-v140-active-observation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1062-v140-active-observation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1063-v140-active-observation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1064-v140-active-observation`
+
+4배속 비교 영상(전체 디코드 검증, 원본 프레임 불변):
+- 성공on: `/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1060-v140-active-observation/motion.mp4` (79.25s, sha256 c4c07f5bfe136b2437beb4e231e5400794fd06ee73cf57a2d401fb89ee419e81).
+- 실패off(v139 기존 기록): `/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1060-v139-unknown-start/motion.mp4` (72.15s, sha256 8fe3a4da29c17338c4803b2d9e68094316978040566a93e316699389d2216e59). 이번on 실패 영상은 존재하지 않는다.
+
+새 TensorBoard `1009-s2-active-v58-r2`의 4뷰/80태그/4,768 수치를 source→event→native API 대조.
+기존v139 뷰는 재변환하지 않았다. 초기 파생 요약에서 s1064를 능동0회로 잘못 서술한 문장만 v2에서 정정했고,
+수치 행은 처음부터2회였다. 원본 파생v1/초기snapshot은 철회 표시와 함께 보존한다.
+Chrome 표시 시도는 `Sky Computer Use native pipe startup failed`와 빈 browser inventory로 막혔다.
+수치 API 검증은 완료, UI/HParams 표시 검증은 미완료이며 다른 프로필·서버를 건드리지 않았다.
+[대시보드](http://127.0.0.1:6006/?runFilter=%5E%28%3F%3A1009-s2-active-v58-r2%2Fs.%2A-active%7C1008-s2-unknown-start-v54-r2%2Fs.%2A-unknown-start%29&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fsuccess%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnees_rate%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Factive_count%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Factive_added_fraction%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries). 관련 시험은 active9+workflow18=27개 통과.
+
+추가 검산: s1060 첫 능동 명령(91.95초) 이전 명령2,020개·pose1,813개는 v139 원본과 JSON 바이트 동일.
+새 수치4,768개+기존baseline15개 대조, 성공/실패 영상 두 건의 `/raw/` Range 요청 HTTP206 확인.
+Chrome UI는 위 연결 장애로 미확인이다. S2 네 잠금 해제 후 자기지도 트랙의 새 잠금은 별개로 보존했다.
