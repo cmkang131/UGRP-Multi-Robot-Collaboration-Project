@@ -14,6 +14,7 @@
 - **[Ubuntu 설치·무료 데모](docs/ubuntu_quickstart.md)** — 새 팀원은 여기서 시작
 - [개발·테스트·실험·PR 절차](CONTRIBUTING.md) · [로봇 입력과 작업 규칙](AGENTS.md)
 - [TensorBoard로 학습·실험 기록 보기](docs/tensorboard.md)
+- [S3 동료 로봇의 벽 오인 오프라인 진단·선택 마스크](experiments/2026-10-06-owncam-robot-mask/README.md) — 저장 RGB 16장, 기본 OFF, DRAFT 후보
 - [Pair executor dev v2 드라이버·사전 기록·잠금/실행 절차](experiments/2026-09-27-zone-pair-dev/README.md) — tags_temporary, dev, 연구 결과 아님; 물리 실행은 코디네이터가 별도 수행
 - [2026-09-24 ACT 학습·행동 개선 후보](experiments/2026-09-24-action-act/refinement.md) — 첫 6회 실패 포함 비교와 후속 학습·실시간 추론·영상 접근 보정; 기본 채택 전 후보
 - [학습 모델 다운로드·검증·배포](docs/model_artifacts.md) — GitHub Release 가중치와 저장소의 버전·해시 목록
@@ -21,7 +22,11 @@
 - [연구 제어기 검증·사용 기준](docs/research_controller_validation.md) — RGB 기준선, ACT 완료 거부와 명시적 혼합 제어기를 구분하고 유한한 전체 시험으로 채택 여부 판정
 - [문서 찾아보기](docs/README.md) · [실험 인덱스](experiments/README.md) · [지도 목록](maps/README.md)
 
+- [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — 무하중·cyan에서20/30 정지·35/50/100의5초 주행을 재현한 **v7을 DEV 후보로 채택**. 옆 회전−2.49°는 알려진 특성이며 실물 측정·자기 카메라 방향 보정 검증은 #404 TODO. 짝 빔 비교는 아래 기록, PR #402 DRAFT·기본값 유지.
+
 ## 현재 검증 범위
+
+- [S2 손목 카메라 검토·공식 자료와 새 도면 후보](experiments/2026-10-06-robot-camera-review/README.md): 실물 기록1.35%·7.92%, v3 들기5.63%; #403 중간 내려놓기 OFF 및 원래 자리 재관측 파지 확인·재집기 옵션 구현(오프라인). 기본값·기존 번들 유지, #404 확정 뒤 새 카메라+구동 S2 재검증 필요.
 
 2026-09-20 main에 포함된 기록 기준이다. 실험별 실행 SHA와 조건이 다르며 아래 결과를 현재 main에서 새로 실행한 결과로 해석하지 않는다.
 

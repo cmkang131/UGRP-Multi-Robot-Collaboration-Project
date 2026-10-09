@@ -1,0 +1,3430 @@
+{
+  "source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-7d1025f3-v6-stall/forward-u035/torque-audit.json",
+    "sha256": "5423dd49710a96276388985b8d9af20090a2df8786e9e55df1ad072182c71c00"
+  },
+  "source_sha": "7d1025f3a2ba8fee31c68ad52f1461976124e561",
+  "units": "Nm at output wheel hinge, gear1",
+  "state_alignment": "force/Jacobian snapshots pre integration, velocity pre/post recorded separately",
+  "wheel_order": [
+    "fl",
+    "fr",
+    "rl",
+    "rr"
+  ],
+  "samples": 600,
+  "tail_interval_s": [
+    4.5,
+    5.0
+  ],
+  "tail_samples": 50,
+  "tail_mean": {
+    "actuator_generalized_nm": [
+      0.004358511111111105,
+      0.004358511111111105,
+      0.004358511111111105,
+      0.004358511111111105
+    ],
+    "wheel_speed_loss_nm": [
+      1.84762518659749e-06,
+      -3.731226856673754e-06,
+      -4.509146960898983e-07,
+      -1.4235539621690113e-06
+    ],
+    "passive_nm": [
+      1.84762518659749e-06,
+      -3.731226856673754e-06,
+      -4.509146960898983e-07,
+      -1.4235539621690113e-06
+    ],
+    "bias_nm": [
+      -4.0730994965709757e-13,
+      -3.778549695354627e-13,
+      1.476283539858514e-12,
+      1.3084416883302197e-12
+    ],
+    "inertia_nm": [
+      -3.0591370441779843e-05,
+      2.884501651400778e-05,
+      1.8230447965895976e-05,
+      -1.9935718170578695e-05
+    ],
+    "constraint_nm": [
+      -0.004390950107146793,
+      -0.004325934868118279,
+      -0.004339829746972836,
+      -0.004377023274011073
+    ],
+    "applied_nm": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "contact_torques": {
+      "roller_normal_nm": [
+        -0.00476141876196197,
+        -0.003864713984598175,
+        -0.003818423834281798,
+        -0.004994042088511646
+      ],
+      "roller_friction_nm": [
+        0.000370468654815177,
+        -0.0004612208835201036,
+        -0.0005214059126910375,
+        0.000617018814500572
+      ],
+      "support_normal_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "support_friction_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "other_contact_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "constraint_terms_nm": {
+      "mjCNSTR_CONTACT_ELLIPTIC": [
+        -0.004390950107146793,
+        -0.004325934868118279,
+        -0.004339829746972836,
+        -0.004377023274011073
+      ],
+      "mjCNSTR_FRICTION_DOF": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mjCNSTR_LIMIT_JOINT": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "maximum_wheel_balance_error_nm": 5.204170427930421e-18,
+  "maximum_constraint_projection_error": 4.266928471793538e-20,
+  "roller_bearing_scope": "hinge torque and signed dissipation stored separately; not added to wheel generalized torque",
+  "tail_mean_signed_roller_bearing_dissipation_w": 3.477078442345441e-10,
+  "snapshots": [
+    {
+      "contact_reactions": [
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            3.2934755390065877,
+            -0.05962700943741888,
+            -0.10704574675017625,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5591775300066963,
+            -0.9298992866467272,
+            -0.0002793826743339566
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            3.2870981750957,
+            -0.0267962619295074,
+            -0.08432642550701057,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5597224361127693,
+            -1.0692945151028737,
+            -0.0002789842627641732
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            2.0998618117049617,
+            0.13677176914570524,
+            -0.06407628212974978,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.4410348412631553,
+            -0.9395164414160276,
+            -0.00020069814723022456
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            2.116850232777239,
+            -0.09698772789248433,
+            -0.12084544199566696,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.440385072354488,
+            -1.0597974951698912,
+            -0.00020280953013501312
+          ]
+        }
+      ],
+      "t": 0.0,
+      "wheel_dofs": [
+        6,
+        16,
+        26,
+        36
+      ],
+      "pre_wheel_rad_s": [
+        0.0010622970734139954,
+        -0.0010523443528361479,
+        -0.0009009359314719911,
+        0.0012850686682285275
+      ],
+      "post_wheel_rad_s": [
+        0.005884748951801462,
+        0.000924994612179773,
+        0.0031446660386285426,
+        0.004029901086117769
+      ],
+      "wheel_qacc": [
+        19.674370782873105,
+        8.061250713166107,
+        16.50341502566135,
+        11.194013078391766
+      ],
+      "actuator_force_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_gear": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "actuator_ctrl": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_generalized_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "passive_nm": [
+        -7.95844152468962e-06,
+        7.883878441807524e-06,
+        6.749567618659273e-06,
+        -9.627385885983523e-06
+      ],
+      "bias_nm": [
+        8.923764505119891e-14,
+        8.576125920534139e-14,
+        -1.6583956430338276e-14,
+        4.8308579359002124e-14
+      ],
+      "inertia_nm": [
+        0.0017252752491314389,
+        0.0006748895804875627,
+        0.0014408201939566992,
+        0.0009561030627794131
+      ],
+      "constraint_nm": [
+        -0.0026252774203657406,
+        -0.0036915054089795914,
+        -0.002924440484789651,
+        -0.0033927806623974006
+      ],
+      "applied_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "constraint_terms_nm": {
+        "mjCNSTR_FRICTION_DOF": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_LIMIT_JOINT": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_CONTACT_ELLIPTIC": [
+          -0.0026252774203657406,
+          -0.0036915054089795914,
+          -0.002924440484789651,
+          -0.0033927806623974006
+        ]
+      },
+      "friction_limit_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "friction_rows": [],
+      "constraint_projection_error": 3.8963515573697816e-20,
+      "wheel_balance_error_nm": 2.168404344971009e-18,
+      "contact_torques": {
+        "roller_normal_nm": [
+          0.0008239809152662174,
+          -0.0009745142260478866,
+          -0.0008549479193988124,
+          0.0005104093195315051
+        ],
+        "roller_friction_nm": [
+          -0.0034492583356319577,
+          -0.0027169911829317047,
+          -0.0020694925653908388,
+          -0.003903189981928906
+        ],
+        "support_normal_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "support_friction_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "other_contact_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "roller_bearings": [
+        {
+          "joint": "r1__v3_wheel_fl_roller_0_passive",
+          "omega_rad_s": 0.010904623479720332,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.1662772716801906e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.2934554168864701e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_1_passive",
+          "omega_rad_s": 0.010592703336975165,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.1329166174825036e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.2529231138277188e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_2_passive",
+          "omega_rad_s": 0.00933573676687732,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -9.984808394207267e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0916963822567527e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_3_passive",
+          "omega_rad_s": 0.007794084729116678,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -8.335972250691197e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 8.985684990905723e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_4_passive",
+          "omega_rad_s": 0.0067662401969724685,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -7.236666328859135e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 7.726316554923173e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_5_passive",
+          "omega_rad_s": 0.006811548015412661,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -7.285124195354462e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 7.781353927903476e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_6_passive",
+          "omega_rad_s": 0.00788050227114513,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -8.42839801424891e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 9.092598111182945e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_7_passive",
+          "omega_rad_s": 0.012983941423369777,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.3886656249126614e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.5689691562177932e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_8_passive",
+          "omega_rad_s": 0.010726244301827158,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.1471991640036896e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.2702505489632439e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_0_passive",
+          "omega_rad_s": -0.016643619321047316,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.7800775027889913e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.4838081796051859e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_1_passive",
+          "omega_rad_s": -0.016165060091294155,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.728894373554693e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.449417559154573e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_2_passive",
+          "omega_rad_s": -0.015097587606901679,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.6147254708863673e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.370940878308342e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_3_passive",
+          "omega_rad_s": -0.013819102559354104,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.4779882368213222e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.273743526559794e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_4_passive",
+          "omega_rad_s": -0.012818176826678311,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.3709366788440487e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.1952075911680273e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_5_passive",
+          "omega_rad_s": -0.01284762903887458,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.3740866679976485e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.1975491102206784e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_6_passive",
+          "omega_rad_s": -0.013915693097577755,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.4883188410461357e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.2812089588127291e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_7_passive",
+          "omega_rad_s": -0.012623372382986334,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 1.3501018471304384e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.5205302308432903e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_8_passive",
+          "omega_rad_s": -0.01639229914630922,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.7531981696091856e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.46580868101923e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_0_passive",
+          "omega_rad_s": -0.0034467776140071015,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.68641649959624e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.559353920929092e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_1_passive",
+          "omega_rad_s": -0.003256218515409497,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.4826086872315435e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.36920733833865e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_2_passive",
+          "omega_rad_s": -0.0032745525838203215,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.5022174406421863e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.387535488948631e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_3_passive",
+          "omega_rad_s": -0.003363511863915142,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.597361657838287e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.476363971688961e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_4_passive",
+          "omega_rad_s": -0.003452815313988213,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.6928739735973274e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.5653658555106734e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_5_passive",
+          "omega_rad_s": -0.0035561549887290563,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.803398389352909e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.668143647788695e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_6_passive",
+          "omega_rad_s": -0.003593865872414663,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.843731140519689e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.7055925988331767e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_7_passive",
+          "omega_rad_s": -0.014092557176910362,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.5072349050703428e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.294826964282954e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_8_passive",
+          "omega_rad_s": -0.0034404683090826123,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.6796685371863353e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.553070707285155e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_0_passive",
+          "omega_rad_s": -0.001282315372673552,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.3714689709888384e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.3538824135424007e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_1_passive",
+          "omega_rad_s": -0.00184465216134606,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.9729024976741568e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.9365093091095597e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_2_passive",
+          "omega_rad_s": -0.0028944657577808864,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.0957048936484733e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.0061007755398707e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_3_passive",
+          "omega_rad_s": -0.003951074306358012,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 4.225774664108902e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.058811167110708e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_4_passive",
+          "omega_rad_s": -0.004547038131115283,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 4.863173162874701e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.642042824776623e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_5_passive",
+          "omega_rad_s": -0.004404021373946528,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 4.710213096288705e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.5027743047697214e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_6_passive",
+          "omega_rad_s": -0.0035894716747474644,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.839031434128125e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.701230488215445e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_7_passive",
+          "omega_rad_s": 0.015010153536107676,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -1.605374174188488e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.3644050458137753e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_8_passive",
+          "omega_rad_s": -0.0015707627978708292,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.6799708433440718e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.653582486321746e-10
+        }
+      ],
+      "wheel_speed_loss_nm": [
+        -7.95844152468962e-06,
+        7.883878441807524e-06,
+        6.749567618659273e-06,
+        -9.627385885983523e-06
+      ],
+      "roller_bearing_dissipation_w": -7.334453017329399e-09
+    },
+    {
+      "contact_reactions": [
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            3.443889740709596,
+            -0.06725202834126984,
+            0.04361338253221915,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5681541870452156,
+            -0.9381921828572976,
+            -0.0002789185008701322
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            3.350908023513256,
+            0.0367058382003762,
+            -0.035811048332010154,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5674963968171878,
+            -1.0630240204700745,
+            -0.00027895699303416414
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            1.963999218193997,
+            0.05954475686429536,
+            -0.014058113514886032,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.448707306326152,
+            -0.933128945920138,
+            -0.00020176378379941555
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            2.0386524290310386,
+            -8.671506027190911e-06,
+            0.019934986231940482,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.4493756839321246,
+            -1.0680958284693651,
+            -0.00020158596156896443
+          ]
+        }
+      ],
+      "t": 0.5,
+      "wheel_dofs": [
+        6,
+        16,
+        26,
+        36
+      ],
+      "pre_wheel_rad_s": [
+        0.5808110405859614,
+        0.5942271716793937,
+        0.5603826335663142,
+        0.6124407239597418
+      ],
+      "post_wheel_rad_s": [
+        0.581450537079502,
+        0.5932770716531443,
+        0.5612177425117351,
+        0.6112757288526144
+      ],
+      "wheel_qacc": [
+        2.6113686370633395,
+        -3.8769824997028763,
+        3.409814986953336,
+        -4.754122777804088
+      ],
+      "actuator_force_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_gear": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "actuator_ctrl": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_generalized_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "passive_nm": [
+        -0.004351278770393537,
+        -0.004451788785404225,
+        -0.004198234686231723,
+        -0.004588239778641159
+      ],
+      "bias_nm": [
+        1.608779082173939e-11,
+        4.672260842109033e-11,
+        1.7239443900196605e-10,
+        1.600910029542213e-10
+      ],
+      "inertia_nm": [
+        0.0002429683140906953,
+        -0.0003464829396670065,
+        0.00031521330043165184,
+        -0.00042703469674336517
+      ],
+      "constraint_nm": [
+        0.00023573598946091784,
+        -0.0002532052186512785,
+        0.0001549370479467083,
+        -0.00019730586912230778
+      ],
+      "applied_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "constraint_terms_nm": {
+        "mjCNSTR_FRICTION_DOF": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_LIMIT_JOINT": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_CONTACT_ELLIPTIC": [
+          0.00023573598946091784,
+          -0.0002532052186512785,
+          0.0001549370479467083,
+          -0.00019730586912230778
+        ]
+      },
+      "friction_limit_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "friction_rows": [],
+      "constraint_projection_error": 1.5246593050577406e-20,
+      "wheel_balance_error_nm": 2.710505431213761e-19,
+      "contact_torques": {
+        "roller_normal_nm": [
+          -0.001168595091412886,
+          0.0009001552712317866,
+          0.000608187023156537,
+          -0.0008411312317766609
+        ],
+        "roller_friction_nm": [
+          0.001404331080873804,
+          -0.001153360489883065,
+          -0.0004532499752098286,
+          0.000643825362654353
+        ],
+        "support_normal_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "support_friction_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "other_contact_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "roller_bearings": [
+        {
+          "joint": "r1__v3_wheel_fl_roller_0_passive",
+          "omega_rad_s": -0.008399413379892449,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 8.983386669547155e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -8.228834887657735e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_1_passive",
+          "omega_rad_s": -0.007596328602271147,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 8.124467033198477e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.507305820173529e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_2_passive",
+          "omega_rad_s": -0.005624504267953143,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 6.015550655537366e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.677205752175782e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_3_passive",
+          "omega_rad_s": -0.00415543284571506,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 4.444341330045726e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.2596597106413153e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_4_passive",
+          "omega_rad_s": -0.0035078783676405156,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 3.751765312764991e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.620157948953866e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_5_passive",
+          "omega_rad_s": -0.0037562448431516216,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 4.01739958796451e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.8664962231127986e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_6_passive",
+          "omega_rad_s": -0.004457234365850514,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 4.7671257472675645e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.5546437801970466e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_7_passive",
+          "omega_rad_s": 0.014648713630874848,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.566717255191217e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.7962211793096807e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_8_passive",
+          "omega_rad_s": -0.00764265104843531,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 8.174010069902462e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.549299003595852e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_0_passive",
+          "omega_rad_s": 0.04546711419727442,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -4.862823736719138e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 7.073809358305394e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_1_passive",
+          "omega_rad_s": 0.04391820660644465,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -4.69716412247595e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 6.7600743664287305e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_2_passive",
+          "omega_rad_s": 0.03964399791376646,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -4.240026609937431e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 5.920942670724168e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_3_passive",
+          "omega_rad_s": 0.03468179761240985,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -3.70930664149839e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 4.995760863726539e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_4_passive",
+          "omega_rad_s": 0.031374285922298545,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -3.3555598370197924e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 4.408342774580197e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_5_passive",
+          "omega_rad_s": 0.03123684257775179,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -3.340859921045005e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 4.384439075325035e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_6_passive",
+          "omega_rad_s": 0.03430489118823111,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -3.6689955388833004e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 4.92764046619827e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_7_passive",
+          "omega_rad_s": -0.01728301482318397,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 1.8484624812472894e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.1679325258822526e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_8_passive",
+          "omega_rad_s": 0.04361222979621862,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -4.664439122837817e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 6.69870503179457e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_0_passive",
+          "omega_rad_s": 0.017284488284104137,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.8486200716478285e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.1681445913493945e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_1_passive",
+          "omega_rad_s": 0.017328416449769922,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.8533183009170816e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.1744690142397934e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_2_passive",
+          "omega_rad_s": 0.01788978017686756,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.9133575821703255e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.2556530476180246e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_3_passive",
+          "omega_rad_s": 0.018275515129544135,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.9546129184078368e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.311828498035485e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_4_passive",
+          "omega_rad_s": 0.017534086099772767,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.875315194135708e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.204134574917584e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_5_passive",
+          "omega_rad_s": 0.017372194455346036,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.8580004701820603e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.180775924843331e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_6_passive",
+          "omega_rad_s": 0.01906237546389468,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -2.0387696364867677e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.4274075594377557e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_7_passive",
+          "omega_rad_s": -0.20137590206171319,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 2.1537665933670138e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.1834003123296405e-08
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_8_passive",
+          "omega_rad_s": 0.018696011350456565,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -1.9995860608725555e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.3734288977754357e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_0_passive",
+          "omega_rad_s": -0.0005754379407935491,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 6.154455427627287e-10,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 6.189870499207082e-11
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_1_passive",
+          "omega_rad_s": 0.00010382796321029068,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -1.1104665271772836e-10,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.1093135523999832e-11
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_2_passive",
+          "omega_rad_s": 0.002817951516817538,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -3.0138709629663447e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -2.928941540450511e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_3_passive",
+          "omega_rad_s": 0.0050681544391717286,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -5.420520335033745e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.145799993047526e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_4_passive",
+          "omega_rad_s": 0.006556215248630406,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -7.012039294103932e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -6.552314904663934e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_5_passive",
+          "omega_rad_s": 0.006815799392235723,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -7.28967115121342e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -6.792821789193032e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_6_passive",
+          "omega_rad_s": 0.005632262103860412,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -6.023847858749287e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.684568958606743e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_7_passive",
+          "omega_rad_s": 0.20328792530804562,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -2.174216169267262e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 2.2457027729482207e-08
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_8_passive",
+          "omega_rad_s": 0.0005523013663652801,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -5.907003867741615e-10,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.874379404668827e-11
+        }
+      ],
+      "wheel_speed_loss_nm": [
+        -0.004351278770393537,
+        -0.004451788785404225,
+        -0.004198234686231723,
+        -0.004588239778641159
+      ],
+      "roller_bearing_dissipation_w": 1.0427599801744466e-07
+    },
+    {
+      "contact_reactions": [
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.6928462332755487,
+            0.01946191013303572,
+            0.0033305653959543728,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5716121789194686,
+            -0.94100520901772,
+            -9.512042257389837e-05
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fl_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            2.6640175687657472,
+            -0.03220297721907755,
+            0.0441810913952102,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5804684820860633,
+            -0.9296009418354432,
+            -0.00024358403270528448
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            1.0480386796086172,
+            0.015963285489241696,
+            0.029047144175922274,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.572017897730113,
+            -1.0597103695977004,
+            -0.00012988073838593418
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fr_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            2.2855460852190213,
+            -0.06929882374036861,
+            -0.050722458150294684,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5806038582085993,
+            -1.0708907668004477,
+            -0.00022151958881911704
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.3679208159275717,
+            0.011719826310487944,
+            -0.019885510346798044,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.45304441874055,
+            -0.929604796241602,
+            -5.205796855400598e-05
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rl_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            1.6599192130925629,
+            0.04752786018077926,
+            0.025711410353960514,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.4619184953653046,
+            -0.9410573382015982,
+            -0.00016691796333541788
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.343820082727808,
+            -0.0013897904764283884,
+            0.012379788024224977,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.453035230538578,
+            -1.0707100222664827,
+            -5.2138782146441114e-05
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rr_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            1.7302710375756967,
+            -0.017280736518992822,
+            0.012624899492863073,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.461758504368535,
+            -1.0594314005217456,
+            -0.00016984193151830347
+          ]
+        }
+      ],
+      "t": 1.0,
+      "wheel_dofs": [
+        6,
+        16,
+        26,
+        36
+      ],
+      "pre_wheel_rad_s": [
+        0.09033163210802803,
+        0.09507327373801491,
+        0.07094403990241757,
+        0.11451460686815096
+      ],
+      "post_wheel_rad_s": [
+        0.09011827866548078,
+        0.09444571834983954,
+        0.07057967470161443,
+        0.11405882314519755
+      ],
+      "wheel_qacc": [
+        -0.8729653395976626,
+        -2.5636747111330997,
+        -1.4893811130364085,
+        -1.86252075901346
+      ],
+      "actuator_force_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_gear": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "actuator_ctrl": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_generalized_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "passive_nm": [
+        -0.00067674008519211,
+        -0.0007122631781081141,
+        -0.0005314935032948184,
+        -0.0008579123724346625
+      ],
+      "bias_nm": [
+        3.2758381077191423e-10,
+        -2.2811418379231618e-10,
+        -7.499811882638596e-11,
+        4.858044799771477e-10
+      ],
+      "inertia_nm": [
+        -8.301671843146469e-05,
+        -0.00023339323850838728,
+        -0.00013707251853898691,
+        -0.00017174720852245796
+      ],
+      "constraint_nm": [
+        -0.003764787416766648,
+        -0.003879641399625561,
+        -0.003964090201353395,
+        -0.0036723454613944197
+      ],
+      "applied_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "constraint_terms_nm": {
+        "mjCNSTR_FRICTION_DOF": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_LIMIT_JOINT": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_CONTACT_ELLIPTIC": [
+          -0.003764787416766648,
+          -0.003879641399625561,
+          -0.003964090201353395,
+          -0.0036723454613944197
+        ]
+      },
+      "friction_limit_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "friction_rows": [],
+      "constraint_projection_error": 1.5246593050577406e-20,
+      "wheel_balance_error_nm": 2.6020852139652106e-18,
+      "contact_torques": {
+        "roller_normal_nm": [
+          -0.005287895228484053,
+          -0.0031808357199827326,
+          -0.004155141170493196,
+          -0.004473641547453942
+        ],
+        "roller_friction_nm": [
+          0.0015231078117174046,
+          -0.000698805679642828,
+          0.00019105096913980135,
+          0.0008012960860595222
+        ],
+        "support_normal_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "support_friction_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "other_contact_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "roller_bearings": [
+        {
+          "joint": "r1__v3_wheel_fl_roller_0_passive",
+          "omega_rad_s": -0.25768802070167973,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.7560390534119687e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 9.85802153991458e-08
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_1_passive",
+          "omega_rad_s": -0.2575825170002478,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.754910664437448e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 9.851078895003676e-08
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_2_passive",
+          "omega_rad_s": -0.25889474737421114,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.7689453027099936e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 9.937599249091117e-08
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_3_passive",
+          "omega_rad_s": -0.2606208413622543,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.7874063178086107e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0051968115466043e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_4_passive",
+          "omega_rad_s": -0.2617293301346659,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.7992618877288435e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.012575127519655e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_5_passive",
+          "omega_rad_s": -0.26235391876863545,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.805942022346083e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0167440876346933e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_6_passive",
+          "omega_rad_s": -0.26171911262550074,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.7991526088643813e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0125069977817793e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_7_passive",
+          "omega_rad_s": 0.06275839950121478,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -6.712170766960712e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0924621712093667e-08
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_8_passive",
+          "omega_rad_s": 0.061085772209670465,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -6.533279015425412e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.052418295261038e-08
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_0_passive",
+          "omega_rad_s": -0.287630295615555,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.076279314429658e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.192459060048385e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_1_passive",
+          "omega_rad_s": -0.2881615306215538,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.081961008204501e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1962987022606062e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_2_passive",
+          "omega_rad_s": -0.2882924133353458,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.083360832184075e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1972456187124344e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_3_passive",
+          "omega_rad_s": -0.2879929899306553,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.0801584225626053e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.195079875830156e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_4_passive",
+          "omega_rad_s": -0.2875172400951603,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.075070156826743e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1916427002724911e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_5_passive",
+          "omega_rad_s": -0.28705479713514953,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.070124211515453e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1883063038678245e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_6_passive",
+          "omega_rad_s": -0.2865649151386324,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.064884798715866e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1847769321252832e-07
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_7_passive",
+          "omega_rad_s": -0.06569140547800001,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 7.025863230968144e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1641251534353139e-08
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_8_passive",
+          "omega_rad_s": -0.06175466798893379,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 6.60481912370411e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0683603244817187e-08
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_0_passive",
+          "omega_rad_s": -0.28845035281053255,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.085050035122205e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1983887745813664e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_1_passive",
+          "omega_rad_s": -0.28910169451822676,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.0920163006809735e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.2031087820729456e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_2_passive",
+          "omega_rad_s": -0.2894091472549735,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.095304586055067e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.2053399193501125e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_3_passive",
+          "omega_rad_s": -0.28939002831206356,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.0951001040881665e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.205201117159562e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_4_passive",
+          "omega_rad_s": -0.2881642537118926,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.081990132349656e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1963183996709213e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_5_passive",
+          "omega_rad_s": -0.2875310978010211,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.075218368522572e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1917427503314174e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_6_passive",
+          "omega_rad_s": -0.2877936504707164,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 3.078026436236731e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.1936391079536119e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_7_passive",
+          "omega_rad_s": -0.2157648456354648,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.3076600119225863e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 7.286779074438703e-08
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_8_passive",
+          "omega_rad_s": -0.2155853721643341,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.3057404974098795e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 7.276579729894736e-08
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_0_passive",
+          "omega_rad_s": -0.26292152102663224,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.812012673149269e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0205399164854988e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_1_passive",
+          "omega_rad_s": -0.2624091822435866,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.8065330792946285e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0171133582067413e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_2_passive",
+          "omega_rad_s": -0.2618792886629329,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.800865732405715e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0135752988833648e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_3_passive",
+          "omega_rad_s": -0.26155709094354435,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.7974197456844964e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0114269453977161e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_4_passive",
+          "omega_rad_s": -0.26164473915383224,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.798357165630745e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0120111472237881e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_5_passive",
+          "omega_rad_s": -0.26207952992785544,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.8030073637657154e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.0149115886566075e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_6_passive",
+          "omega_rad_s": -0.2625949491619788,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 2.8085199038296874e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.018355131749531e-07
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_7_passive",
+          "omega_rad_s": 0.2164502946526032,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -2.3149910638481367e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 7.325796042728861e-08
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_8_passive",
+          "omega_rad_s": 0.21750084300097725,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -2.326226946167122e-07,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 7.385790164196501e-08
+        }
+      ],
+      "wheel_speed_loss_nm": [
+        -0.00067674008519211,
+        -0.0007122631781081141,
+        -0.0005314935032948184,
+        -0.0008579123724346625
+      ],
+      "roller_bearing_dissipation_w": 3.422440551928866e-06
+    },
+    {
+      "contact_reactions": [
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.6478098623291075,
+            0.020406991777239116,
+            -0.0013292011945442658,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5716260667800652,
+            -0.9410096158451258,
+            -8.058046593823398e-05
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fl_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            2.6759797106301404,
+            -0.016064634381124997,
+            0.0345995447022692,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.58046926157377,
+            -0.9296024419579626,
+            -0.00024429747377071286
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.9425551391690006,
+            0.01398521101452324,
+            0.023482739292306855,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.572011721677498,
+            -1.0597121647494103,
+            -0.00010957593030363338
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fr_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            2.3766476000348553,
+            -0.07170602236101063,
+            -0.0639659259917369,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5806054949607016,
+            -1.0708873071897933,
+            -0.00023166078805562668
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.414590778173679,
+            0.0266505929341753,
+            -0.007184923718714526,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.4532321677169966,
+            -0.9297974041726387,
+            -4.780561971952238e-05
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rl_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            1.6496565554402929,
+            0.012037004826268898,
+            -0.02043764841284906,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.4619137724779665,
+            -0.9410549952982608,
+            -0.00017029064924555014
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.2119468446157515,
+            -0.0016883411155267309,
+            -0.010825292632391438,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.4528491367842538,
+            -1.0709027513576221,
+            -3.0487010452838297e-05
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rr_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            1.8722502544762345,
+            -0.06171051699880127,
+            0.04331088519345591,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.4617621818694,
+            -1.059428972104588,
+            -0.00018689611381886425
+          ]
+        }
+      ],
+      "t": 1.5,
+      "wheel_dofs": [
+        6,
+        16,
+        26,
+        36
+      ],
+      "pre_wheel_rad_s": [
+        -0.0008391433253421811,
+        0.001341956923097029,
+        0.0009419070638400811,
+        -2.939653934368858e-05
+      ],
+      "post_wheel_rad_s": [
+        -0.0001236130922208944,
+        0.0006478448833981119,
+        0.0003375600697476616,
+        0.00061633524848619
+      ],
+      "wheel_qacc": [
+        2.920399766872432,
+        -2.8336456376629506,
+        -2.4672382894316307,
+        2.6354904122488314
+      ],
+      "actuator_force_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_gear": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "actuator_ctrl": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_generalized_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "passive_nm": [
+        6.286634174851678e-06,
+        -1.005357726045243e-05,
+        -7.056512228893258e-06,
+        2.202308989171137e-07
+      ],
+      "bias_nm": [
+        1.1724649029432044e-13,
+        -3.409633686501934e-13,
+        -8.774925230881081e-14,
+        -8.278794316751714e-14
+      ],
+      "inertia_nm": [
+        0.0002552050020005182,
+        -0.0002477648512163908,
+        -0.00021518249198986884,
+        0.00023010345431923843
+      ],
+      "constraint_nm": [
+        -0.004109592743168193,
+        -0.004596222385408009,
+        -0.004566637090959833,
+        -0.004128627887773569
+      ],
+      "applied_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "constraint_terms_nm": {
+        "mjCNSTR_FRICTION_DOF": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_LIMIT_JOINT": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_CONTACT_ELLIPTIC": [
+          -0.004109592743168193,
+          -0.004596222385408009,
+          -0.004566637090959833,
+          -0.004128627887773569
+        ]
+      },
+      "friction_limit_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "friction_rows": [],
+      "constraint_projection_error": 3.8963515573697816e-20,
+      "wheel_balance_error_nm": 2.6020852139652106e-18,
+      "contact_torques": {
+        "roller_normal_nm": [
+          -0.005177345937702078,
+          -0.003295055386941553,
+          -0.0036801902898378706,
+          -0.005174069509360524
+        ],
+        "roller_friction_nm": [
+          0.0010677531945338852,
+          -0.001301166998466456,
+          -0.0008864468011219625,
+          0.0010454416215869558
+        ],
+        "support_normal_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "support_friction_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "other_contact_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "roller_bearings": [
+        {
+          "joint": "r1__v3_wheel_fl_roller_0_passive",
+          "omega_rad_s": -0.017719018783901218,
+          "dry_torque_nm": -5.968298385227744e-08,
+          "damping_torque_nm": 1.8950942160057377e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.217318118510948e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_1_passive",
+          "omega_rad_s": -0.017342263060597236,
+          "dry_torque_nm": -5.725654248857365e-08,
+          "damping_torque_nm": 1.8547992312332662e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -6.712938598506987e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_2_passive",
+          "omega_rad_s": -0.016795981440550972,
+          "dry_torque_nm": -5.70256776912606e-08,
+          "damping_torque_nm": 1.7963730197660427e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -6.560837451342851e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_3_passive",
+          "omega_rad_s": -0.015735058444999873,
+          "dry_torque_nm": -7.466675556008325e-08,
+          "damping_torque_nm": 1.6829046016207293e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -9.100797399978152e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_4_passive",
+          "omega_rad_s": -0.01437797223898027,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.5377607733413914e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.3166619562484376e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_5_passive",
+          "omega_rad_s": -0.013092242660353304,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.4002487182146574e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.2169247581775076e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_6_passive",
+          "omega_rad_s": -0.013483739547571585,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.4421203080357426e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.247668561737566e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_7_passive",
+          "omega_rad_s": -0.01269752424483504,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.3580325777317973e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.1855960619215438e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_8_passive",
+          "omega_rad_s": -0.013886775459452213,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.4852260259517665e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.278976022662499e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_0_passive",
+          "omega_rad_s": 0.001556843569902836,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -1.6650838742996148e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.639161123069092e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_1_passive",
+          "omega_rad_s": 0.0014579188693830904,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -1.5592813859894839e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.536548328436365e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_2_passive",
+          "omega_rad_s": 0.0019843434995543414,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -2.122305943933346e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -2.0801921038942492e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_3_passive",
+          "omega_rad_s": 0.002927490104751641,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -3.1310252743619388e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.03936481927772e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_4_passive",
+          "omega_rad_s": 0.0038905430482201273,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -4.161034940886261e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.9991480852595995e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_5_passive",
+          "omega_rad_s": 0.004369255404237686,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -4.673030005671453e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.468853389607004e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_6_passive",
+          "omega_rad_s": 0.004116456434674818,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -4.402655065121093e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.2214216873963783e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_7_passive",
+          "omega_rad_s": 0.01100436435318992,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -1.1769448122882128e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.0474295169080507e-09
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_8_passive",
+          "omega_rad_s": 0.009848340728507309,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -1.0533051394925358e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -9.495720604444315e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_0_passive",
+          "omega_rad_s": 0.004770075794752239,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -5.101717628267929e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.858361830565312e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_1_passive",
+          "omega_rad_s": 0.004590066890172229,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -4.909193517277626e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.683858251066583e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_2_passive",
+          "omega_rad_s": 0.005505632463342794,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -5.888414231048719e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.564219785568003e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_3_passive",
+          "omega_rad_s": 0.005599419256386653,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -5.9887215963733876e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.65338796609467e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_4_passive",
+          "omega_rad_s": 0.005254632500889899,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -5.6199633744503215e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.324654952438346e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_5_passive",
+          "omega_rad_s": 0.005061803090161018,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -5.413727405402129e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.13969518430259e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_6_passive",
+          "omega_rad_s": 0.004987124704184683,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -5.333856968415529e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.067850869857802e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_7_passive",
+          "omega_rad_s": 0.0072433669210427145,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -7.746965519866715e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.185824382016103e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_8_passive",
+          "omega_rad_s": 0.008034667023646257,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -8.59328114595047e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.902839619467577e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_0_passive",
+          "omega_rad_s": -0.004184597314158993,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 4.475533472305428e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.288250418829048e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_1_passive",
+          "omega_rad_s": -0.0039037768371544173,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 4.175188815415701e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.012198761532041e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_2_passive",
+          "omega_rad_s": -0.004681870019916919,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 5.007379304150009e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.772940313725484e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_3_passive",
+          "omega_rad_s": -0.007084656453511922,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 7.577220630093e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.040400579726277e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_4_passive",
+          "omega_rad_s": -0.009812944025742813,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.04951937192308e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -9.465306234169405e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_5_passive",
+          "omega_rad_s": -0.011207331972684604,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.1986527164578445e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.0643157273248118e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_6_passive",
+          "omega_rad_s": -0.010527084397129613,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.125898504635605e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.0073742188265945e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_7_passive",
+          "omega_rad_s": -0.0076207663154757395,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 8.150603790267951e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.529465322111322e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_8_passive",
+          "omega_rad_s": -0.00930584299515717,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 9.952836243507297e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -9.026640929121408e-10
+        }
+      ],
+      "wheel_speed_loss_nm": [
+        6.286634174851678e-06,
+        -1.005357726045243e-05,
+        -7.056512228893258e-06,
+        2.202308989171137e-07
+      ],
+      "roller_bearing_dissipation_w": -2.5123766534838575e-08
+    },
+    {
+      "contact_reactions": [
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.6816619833542161,
+            0.03361064282365513,
+            0.002494636234620727,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.571649263927067,
+            -0.9410124921269597,
+            -8.368024202628273e-05
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fl_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            2.640123672203262,
+            0.016890044356282885,
+            0.018855496763279838,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.580481406076943,
+            -0.9296088472072278,
+            -0.00024294097044900032
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.8980148787223021,
+            0.009958348304862016,
+            0.029215706475106764,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.572039243087314,
+            -1.05970177449366,
+            -0.00010555175872828306
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_fr_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            2.4241016237028186,
+            -0.08148749506986802,
+            -0.05887193794578367,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.5806268963655166,
+            -1.0708642193623306,
+            -0.00023396711967013737
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rl_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.4146142277225378,
+            0.02160384351682216,
+            -0.006601634765660095,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.453222901323604,
+            -0.9298065126450497,
+            -4.801581616593886e-05
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rl_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            1.6481385601749445,
+            0.0006127394537269941,
+            -0.022077555578898782,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.4619129189617053,
+            -0.9410639514859978,
+            -0.00017021064327120894
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rr_roller_7_body_contact"
+          ],
+          "force_contact_frame": [
+            0.18371607178914906,
+            -0.00032540164642454276,
+            -0.007419600140800713,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.452882823178855,
+            -1.0709154587678826,
+            -2.6327927509628597e-05
+          ]
+        },
+        {
+          "geoms": [
+            "floor",
+            "r1__v3_wheel_rr_roller_8_body_contact"
+          ],
+          "force_contact_frame": [
+            1.9010763455795086,
+            -0.06254170749013412,
+            0.0445849328701067,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "frame": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "position": [
+            2.4617802826128736,
+            -1.0594479935829466,
+            -0.00018864370013468856
+          ]
+        }
+      ],
+      "t": 4.5,
+      "wheel_dofs": [
+        6,
+        16,
+        26,
+        36
+      ],
+      "pre_wheel_rad_s": [
+        0.002233005444794439,
+        -0.0015253405570579365,
+        0.003134667091731406,
+        -0.0024534211881192245
+      ],
+      "post_wheel_rad_s": [
+        0.002624842800666649,
+        -0.0019163088853402625,
+        0.0024936858669467334,
+        -0.0018082966725869246
+      ],
+      "wheel_qacc": [
+        1.5999107647503976,
+        -1.5954728909213145,
+        -2.6159776305388327,
+        2.633778759446134
+      ],
+      "actuator_force_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_gear": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "actuator_ctrl": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "actuator_generalized_nm": [
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105,
+        0.004358511111111105
+      ],
+      "passive_nm": [
+        -1.6729071087052045e-05,
+        1.1427437703061591e-05,
+        -2.348407556912375e-05,
+        1.838036604801225e-05
+      ],
+      "bias_nm": [
+        -2.7610171093872538e-12,
+        -3.0548202856195417e-12,
+        1.5479770243409519e-12,
+        2.57999177577517e-12
+      ],
+      "inertia_nm": [
+        0.0001373914851584858,
+        -0.00013889325987016094,
+        -0.00023053214712091003,
+        0.00023037667943677352
+      ],
+      "constraint_nm": [
+        -0.004204390557626584,
+        -0.004508831811739148,
+        -0.004565559181114915,
+        -0.004146514795142349
+      ],
+      "applied_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "constraint_terms_nm": {
+        "mjCNSTR_FRICTION_DOF": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_LIMIT_JOINT": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mjCNSTR_CONTACT_ELLIPTIC": [
+          -0.004204390557626584,
+          -0.004508831811739148,
+          -0.004565559181114915,
+          -0.004146514795142349
+        ]
+      },
+      "friction_limit_nm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "friction_rows": [],
+      "constraint_projection_error": 3.8963515573697816e-20,
+      "wheel_balance_error_nm": 3.469446951953614e-18,
+      "contact_torques": {
+        "roller_normal_nm": [
+          -0.0048885371752629015,
+          -0.003554726916405308,
+          -0.0036447502260834284,
+          -0.005342762098966936
+        ],
+        "roller_friction_nm": [
+          0.0006841466176363166,
+          -0.0009541048953338403,
+          -0.0009208089550314864,
+          0.0011962473038245867
+        ],
+        "support_normal_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "support_friction_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "other_contact_nm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "roller_bearings": [
+        {
+          "joint": "r1__v3_wheel_fl_roller_0_passive",
+          "omega_rad_s": -0.008897877379550998,
+          "dry_torque_nm": -3.595236842703068e-08,
+          "damping_torque_nm": 9.516506620578677e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -2.3522305677656553e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_1_passive",
+          "omega_rad_s": -0.008893203067615678,
+          "dry_torque_nm": -2.4142847075249495e-08,
+          "damping_torque_nm": 9.51150732483862e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.3011947555168118e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_2_passive",
+          "omega_rad_s": -0.008502997845032792,
+          "dry_torque_nm": -3.4202555572254075e-08,
+          "damping_torque_nm": 9.094172894873506e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -2.1349652379802568e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_3_passive",
+          "omega_rad_s": -0.007903194124422188,
+          "dry_torque_nm": -6.157230569398774e-08,
+          "damping_torque_nm": 8.452667529632501e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.1981481223196495e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_4_passive",
+          "omega_rad_s": -0.0073763940577516365,
+          "dry_torque_nm": -9.337074123200947e-08,
+          "damping_torque_nm": 7.889241432784607e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -6.305452271667e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_5_passive",
+          "omega_rad_s": -0.007147342595728382,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 7.644265056755076e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.097903244223239e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_6_passive",
+          "omega_rad_s": -0.007352708307313191,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 7.863908919057359e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.285698634686285e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_7_passive",
+          "omega_rad_s": 0.006083011472283407,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -6.505935795663017e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 6.90169261649259e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fl_roller_8_passive",
+          "omega_rad_s": 0.00733008239242218,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": -7.83970992645809e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 8.414367123394367e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_0_passive",
+          "omega_rad_s": 0.008234005843414863,
+          "dry_torque_nm": 6.746581096033648e-08,
+          "damping_torque_nm": -8.806479093859481e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.830012813593833e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_1_passive",
+          "omega_rad_s": 0.008229166408582445,
+          "dry_torque_nm": 5.583301501324159e-08,
+          "damping_torque_nm": -8.80130319497281e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -3.870317830330274e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_2_passive",
+          "omega_rad_s": 0.00783491605280617,
+          "dry_torque_nm": 6.619931774872924e-08,
+          "damping_torque_nm": -8.379642391966807e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -4.5301230262073925e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_3_passive",
+          "omega_rad_s": 0.007235994615475793,
+          "dry_torque_nm": 9.371844801766461e-08,
+          "damping_torque_nm": -7.739080651179067e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -6.221462393059045e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_4_passive",
+          "omega_rad_s": 0.00658068702717332,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -7.038212484920901e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -6.575049748980818e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_5_passive",
+          "omega_rad_s": 0.005888919855126595,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -6.298349864672717e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -5.927445088946666e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_6_passive",
+          "omega_rad_s": 0.006005954494593595,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -6.423521394220245e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -6.037727622332893e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_7_passive",
+          "omega_rad_s": -0.007710249416712064,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 8.246308247524516e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 8.882119181079554e-10
+        },
+        {
+          "joint": "r1__v3_wheel_fr_roller_8_passive",
+          "omega_rad_s": -0.009963473157738467,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": 1.0656188462147664e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": 1.171791493921177e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_0_passive",
+          "omega_rad_s": 0.009357206720373275,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -1.0007771056634751e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -9.071323230763752e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_1_passive",
+          "omega_rad_s": 0.00902710602990017,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -9.654719955530072e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -8.783178148254441e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_2_passive",
+          "omega_rad_s": 0.010825457863225613,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -1.157810307241845e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.0324720402952959e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_3_passive",
+          "omega_rad_s": 0.013749991563344506,
+          "dry_torque_nm": 1.0350008163511126e-07,
+          "damping_torque_nm": -1.4705966396681446e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.2209183354030496e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_4_passive",
+          "omega_rad_s": 0.015385083388482776,
+          "dry_torque_nm": 7.924330305024781e-08,
+          "damping_torque_nm": -1.6454738774118684e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -9.660072972313572e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_5_passive",
+          "omega_rad_s": 0.016288679473383246,
+          "dry_torque_nm": 7.168119583042252e-08,
+          "damping_torque_nm": -1.74211578151415e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -8.838243674445026e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_6_passive",
+          "omega_rad_s": 0.0162179269147348,
+          "dry_torque_nm": 7.96675564680816e-08,
+          "damping_torque_nm": -1.7345486150532115e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.0107347815849805e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_7_passive",
+          "omega_rad_s": 0.02184500860402748,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -2.3363793423877915e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.8259970740204573e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rl_roller_8_passive",
+          "omega_rad_s": 0.021681871089381695,
+          "dry_torque_nm": 1.0695254850836002e-07,
+          "damping_torque_nm": -2.3189313694391046e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.816143659266084e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_0_passive",
+          "omega_rad_s": -0.0072285215757970315,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 7.731088044791592e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.172244677429966e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_1_passive",
+          "omega_rad_s": -0.007060678808035881,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 7.551575927184072e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.018383406020647e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_2_passive",
+          "omega_rad_s": -0.0077913346980698,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 8.33303102240179e-09,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -7.683776684952478e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_3_passive",
+          "omega_rad_s": -0.009713421992596458,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.0388752368453439e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -9.379649011139696e-10
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_4_passive",
+          "omega_rad_s": -0.012839922392634595,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.3732624225418298e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.1969365932402448e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_5_passive",
+          "omega_rad_s": -0.014379523955418284,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.5379267333689993e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.316780190327422e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_6_passive",
+          "omega_rad_s": -0.013606131335345703,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 1.4552104216546787e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.257212580478705e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_7_passive",
+          "omega_rad_s": -0.02293048039546271,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 2.4524733168157243e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.8901094036993403e-09
+        },
+        {
+          "joint": "r1__v3_wheel_rr_roller_8_passive",
+          "omega_rad_s": -0.024556698744083665,
+          "dry_torque_nm": -1.0695254850836002e-07,
+          "damping_torque_nm": 2.626401513631792e-08,
+          "dry_loss_limit_nm": 1.0695254850836002e-07,
+          "dissipation_w": -1.981444006119179e-09
+        }
+      ],
+      "wheel_speed_loss_nm": [
+        -1.6729071087052045e-05,
+        1.1427437703061591e-05,
+        -2.348407556912375e-05,
+        1.838036604801225e-05
+      ],
+      "roller_bearing_dissipation_w": -2.4584599594709872e-08
+    }
+  ],
+  "interpretation": "After stall motor speed loss nearly0, wheel joint dry loss0, support cylinder contact0. Roller normal reaction mostly balances4.35851mNm drive. Contact offset moments are external geometry/load resistance, not motor Coulomb loss.",
+  "v7_parameter_rule": "bk=I0/Is=0.1/1.2; T0=.1176798Nm; Tc=T0*bk; B=(T0-Tc)/(150rpm). No fit to35 or4.4mNm contact reaction. Installed motor/torque rating and Coulomb-only I0 split unconfirmed."
+}

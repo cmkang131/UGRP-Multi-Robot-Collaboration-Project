@@ -1,0 +1,40 @@
+{
+  "option": "roller_collision=sphere6_v1",
+  "method_source": {
+    "paper": "Schoenbach et al., Integration of the TIAGo Robot into Isaac Sim with Mecanum Drive Modeling and Learned S-Curve Velocity Profiles, arXiv:2510.10273v1",
+    "section": "III-A, Fig. 3b: each roller collider modeled with six spheres",
+    "paper_cites": "Wiedemann et al., ICRA 2024, DOI 10.1109/ICRA57147.2024.10611459 (method origin; full text NOT read)",
+    "paper_claim_scope": "computationally cheaper than mesh or low-poly colliders; no speed number or MasterPi evidence is quoted here"
+  },
+  "values_source": {
+    "repository": "https://github.com/AIS-Bonn/tiago_isaac",
+    "commit": "812ef55cdca2502dec6044ecddb08991ff41982d",
+    "license": "AGPL-3.0 (repository). No file is copied; only the six sphere centres and radii below are transcribed.",
+    "wheel_file": "wheels/mecanum_wheel.usd",
+    "wheel_file_git_blob": "c435b6cea45bd2f0cd3d0ea447f79f4ee429e7c0",
+    "wheel_file_sha256": "f0741c537142a0b21395a34820e6f826ca6d5404654d22bc7480e4c0b281cacc",
+    "roller_file": "wheels/roller_link.usd",
+    "roller_file_git_blob": "1541794567dde4d550a8d0de18d4b58eb2bf1ac4",
+    "roller_file_sha256": "3d130b25464731038e45225b3c90d67da6fed3fae384886a61134cd41c43c4ca",
+    "used_by": "tiago_dual_functional.usd payloads ./wheels/mecanum_wheel.usd for all four wheels; mecanum_wheel.usd payloads roller_link.usd for 15 rollers",
+    "read_with": "system usdcat (USDC to ASCII); prims collision_sphere_00..05, physics:approximation=boundingSphere, mesh point radius 50 x xformOp:scale",
+    "friction": "PhysicsMaterial dynamic/static 0.8 (same as FUJI value already used by v2)",
+    "units": "mecanum_wheel.usd metersPerUnit=1; roller_link.usd layer does not author it. Meters is confirmed by the unit test that compares each radius with the FUJI STL radial profile."
+  },
+  "tiago_wheel_radius_m": 0.1025,
+  "scale_to_masterpi": "official MasterPi wheel diameter 0.065 m / TIAGo wheel diameter 0.205 m = 65/205 (same scale as the v2 FUJI mesh)",
+  "spheres_tiago_m": [
+    {"name": "collision_sphere_05", "axis_x_m": -0.02, "radius_m": 0.01185},
+    {"name": "collision_sphere_04", "axis_x_m": -0.012, "radius_m": 0.0126},
+    {"name": "collision_sphere_03", "axis_x_m": -0.005, "radius_m": 0.0129},
+    {"name": "collision_sphere_02", "axis_x_m": 0.005, "radius_m": 0.0129},
+    {"name": "collision_sphere_01", "axis_x_m": 0.012, "radius_m": 0.0126},
+    {"name": "collision_sphere_00", "axis_x_m": 0.02, "radius_m": 0.01185}
+  ],
+  "sphere_axis": "all centres lie on the roller hinge axis (local x); same axis as the FUJI STL long axis and the v2 passive hinge",
+  "unconfirmed": [
+    "installed MasterPi roller shape (the 65/205 scaling is a similarity assumption, as for v2)",
+    "whether six spheres reproduce mesh traction on MasterPi; decided only by the equivalence table in the experiment README",
+    "full text of the ICRA 2024 source paper"
+  ]
+}
