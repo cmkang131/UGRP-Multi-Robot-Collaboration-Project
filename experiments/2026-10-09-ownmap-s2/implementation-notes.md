@@ -20,3 +20,25 @@
 - 평가 프레임 변환은 mapping-run 첫 eval trajectory chassis pose의 강체 SE(2)뿐이다.
   평가-only oracle의 관측지원 거리 0.4m는 사용자 제시 20–40cm 오차 규모를 사용하며,
   coverage는 0.2/0.4m 모두 표시한다. 이 설정은 첫 본 replay 이전에 고정했다.
+
+## 입력 목록 정정 (비교 outcome 개봉 전)
+
+자기 branch의 `RememberedGoal.lose()`를 추가 추적하여 `snapshot.json.landmarks`를 발견했다.
+이는 기존 grid/remembered-goal 파일 밖에 저장된 실제 own 관측이며 누락하면 지도 교체 검증이
+불필요하게 약한 입력을 사용한다. 첫 baseline 재생 중 발견해 소유 세션만 중단했다. 비교 후보는
+아직 시작하지 않았고 전체 baseline/후보 outcome은 채점하지 않았다. 원래 시도 raw는 보존한다.
+`registration-v2.json`은 관문·pair 배정 그대로, snapshot 파일의 해시/존재 여부만 추가한다.
+엄격한 실행 전 등록으로 소급하지 않고 DEV 사전 관문 + 입력 목록 정정으로 명시한다.
+
+| 자기 지도 | 실제 저장 floor edges | observed doors | snapshot |
+|---|---:|---:|---|
+| 49001 | 6360 | 0 | 있음 |
+| 49002 | 6452 | 0 | 있음 |
+| 49003 | 0 | 0 | 없음, 만들어 채우지 않음 |
+| 49004 | 0 | 0 | 없음, 만들어 채우지 않음 |
+| 49005 | 6163 | 1 | 있음 |
+| 49006 | 6364 | 0 | 있음 |
+
+이 행들은 지도 저장 형식 확인이며 위치추정 성능 결과가 아니다. partial_extent bounding box는
+여전히 경계로 쓰지 않는다. 관측된 partial edge를 원래 프레임·hue·normal·출처 그대로 받으며
+기존 S2 ML correspondence의 후보로만 사용한다(같은 관측을 독립 likelihood로 중복 곱하지 않음).
