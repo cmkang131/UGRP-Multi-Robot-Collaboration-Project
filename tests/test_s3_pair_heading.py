@@ -148,7 +148,7 @@ def test_host_pair_ports_match_s2_heading_primitive_and_native_expiry(tmp_path, 
     robots={r:SimpleNamespace(servo_command_pulses={1:2000,3:740,4:2320,5:1320,6:1500},
         set_motor_commands=lambda motors:None) for r in ('r1','r2','r3')}
     world=SimpleNamespace(robot=lambda rid:robots[rid],data=SimpleNamespace(time=0.))
-    backend=SimpleNamespace(world=world,out=tmp_path,ports={r:CameraRobotPort(world,r,
+    backend=SimpleNamespace(world=world,out=tmp_path,commands={},ports={r:CameraRobotPort(world,r,
         allow_reverse=True,allow_mecanum=True) for r in robots})
     original=dict(backend.ports)
     assert attach(backend) is backend and backend.ports==original and not list(tmp_path.iterdir())
@@ -172,3 +172,91 @@ def test_rgb_alignment_heading_uses_final_distance_and_preserves_nonarrival(prof
     assert final['turn'] and final['duration_s']==.10
     unresolved,p,s=project(profiles,(0.,0.,0.))
     assert p is None and unresolved is not None and not heading.moving(unresolved)
+
+
+def test_coupled_exception_requires_pair_role_own_grasp_and_live_carry_enum():
+    from harness.zone_s3_coupled_motion import authorized, HEADING_EXCEPTIONS
+    pf=SimpleNamespace(load=SimpleNamespace(loaded=True))
+    peers={'r2':dict(alive=True,state='carry')}
+    ep=SimpleNamespace(own=SimpleNamespace(robot_id='r1',pose=SimpleNamespace(localizer=
+        SimpleNamespace(pose=SimpleNamespace(provider=SimpleNamespace(loc=SimpleNamespace(_pf=pf)))))),
+        controller=SimpleNamespace(state='carry'),status=SimpleNamespace(channel=
+        SimpleNamespace(partner_view=lambda *a:peers)))
+    assert list(HEADING_EXCEPTIONS)==['coupled_beam_carry'] and authorized(ep,1.)
+    for state in ('approach','align','wait_carry'):
+        ep.controller.state=state;assert not authorized(ep,1.)
+    ep.controller.state='carry';peers['r2']['alive']=False;assert not authorized(ep,1.)
+    peers['r2']['alive']=True;pf.load.loaded=False;assert not authorized(ep,1.)
+    pf.load.loaded=True;ep.own.robot_id='r3';assert not authorized(ep,1.)
+
+
+def test_coupled_native_port_keeps_legacy_mixture_only_when_both_grips_closed():
+    from sim.s3_motion_ports import PairPhasePort
+    from sim.camera_robot_port import CameraRobotPort
+    robot=SimpleNamespace(servo_command_pulses={1:2000,3:740,4:2320,5:1320,6:1500},
+        set_motor_commands=lambda motors:None)
+    world=SimpleNamespace(robot=lambda rid:robot,data=SimpleNamespace(time=0.))
+    closed={'r1':True,'r2':False}
+    port=PairPhasePort(world,'r1',allow_reverse=True,allow_mecanum=True,
+        min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1',coupled=lambda:all(closed.values()))
+    old=CameraRobotPort(world,'r1',allow_reverse=True,allow_mecanum=True)
+    action=dict(kind='mecanum',forward=.005,left=.02,turn=.001,duration_s=.15)
+    with pytest.raises(ValueError,match='one axis'):port.apply(action,1.)
+    closed['r2']=True
+    assert port.apply(action,1.)==old.apply(action,1.)
+    assert port._motor_commands==old._motor_commands
+    port.tick(1.15);old.tick(1.15)
+    assert port._motor_commands==old._motor_commands
+
+
+def test_actual_coupled_predictor_keeps_posterior_and_legacy_continuous_command():
+    import copy
+    import numpy as np
+    from harness.zone_s3_motion_runtime import solo_factory
+    from harness.zone_s3_coupled_motion import attach_prediction
+    from harness.zone_final_pair_vision import grasp_postures
+    args=(contract.hp.resolve(contract.old.solo.MAP_ID)[0],contract.ROOT/contract.old.solo.CALIBRATION,
+          contract.old.solo.CALIBRATION_SHA)
+    runtime=solo_factory(contract.controller_config())(*args,seed=14201,robot_id='r1')
+    try:
+        pf=runtime.pose.provider.loc._pf
+        px,w=pf.px.copy(),pf.logw.copy();rng=copy.deepcopy(pf.rng.bit_generator.state)
+        attach_prediction(runtime,runtime.pose.provider.calibration['params'])
+        np.testing.assert_array_equal(pf.px,px);np.testing.assert_array_equal(pf.logw,w)
+        assert pf.rng.bit_generator.state==rng
+        _,path=grasp_postures()
+        pf.command(dict(t=0.,kind='initial_servo_command',pulses={**path[-1],1:2000,6:1500}))
+        pf.command(dict(t=.1,kind='arm',servo_id=1,pulse=1420))
+        assert pf.load.loaded and not runtime.flow.supported(runtime.pose.provider.servo)
+        action=dict(t=.2,kind='mecanum',forward=.005,left=.02,turn=.001,duration_s=.15)
+        pf.command(action);np.testing.assert_array_equal(pf.cmd,[.005,.02,.001])
+        pf.predict_to(.35)
+        assert pf.t==pytest.approx(.35) and pf.vel[1]>0
+        pf.command(dict(t=.35,kind='hold'))
+        pf.command(dict(t=.5,kind='arm',servo_id=1,pulse=2000))
+        assert not pf.load.loaded
+        pulse=dict(t=.6,kind='mecanum',forward=.35,left=0.,turn=0.,duration_s=.1)
+        pf.command(pulse);pf.predict_to(.8)
+        assert pf.t==pytest.approx(.8) and pf.vel[0]>0
+        assert [r['mode'] for r in runtime.s3_coupled_motion['transitions']]==[
+            'coupled_continuous','heading_pulse']
+    finally:
+        runtime.close()
+
+
+def test_v148_bundle_and_standard_workflow_plan_do_not_execute(monkeypatch,capsys):
+    import json
+    from harness import zone_s3_motion_contract as c
+    from scripts import run_s3_motion as runner
+    from harness.zone_s3_coupled_motion import HEADING_EXCEPTIONS
+    b=c.bundle('a'*40);c.verify(b)
+    assert b['execution_bundle_id']=='zone-s3-motion-v148'
+    assert b['heading_exceptions']==HEADING_EXCEPTIONS
+    assert b['options']['heading_mode']=='path_tangent_v1'
+    assert b['options']['pair_heading']==heading.OPTION
+    assert b['s3_camera_binding']=='v3_persistent_v1'
+    assert b['runtime_speedups_required']=='relay-cache-v1'
+    assert not b['convergence_thresholds_changed']
+    monkeypatch.setattr(runner,'run',lambda *a,**kw:pytest.fail('plan executed'))
+    assert runner.main(['--expected-source-sha','a'*40,'--output','/nonexistent/plan'])==0
+    assert not json.loads(capsys.readouterr().out)['execution_started']

@@ -44,7 +44,10 @@ def attach(ep):
             return old_apply(action,now)
         pf=own.pose.provider.loc._pf
         if pf.load.loaded:
-            return old_apply(action,now)  # coupled loaded scope still requires its own contract
+            from harness.zone_s3_coupled_motion import authorized
+            if not authorized(ep, now):
+                raise ValueError('coupled motion requires own grasp and live pair carry GO')
+            return old_apply(action,now)  # preserve the approved paired schedule bytes
         if action.get('left',0.):
             proof=decisions[-1] if decisions else {}
             if (proof.get('state')!='align' or abs(proof.get('t',-math.inf)-now)>1e-8

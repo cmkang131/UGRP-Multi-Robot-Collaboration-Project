@@ -83,6 +83,9 @@ def attach_pair(pair, *, pair_heading='off'):
         return pair
     if pair_heading != OPTION:
         raise ValueError('unknown pair heading option')
+    from harness.zone_s3_coupled_motion import attach_prediction, HEADING_EXCEPTIONS
+    for own in pair.actors.values():
+        attach_prediction(own.pose.localizer, pair.team.params)
     start = pair.team.start
     def submit(*args, **kwargs):
         result = start(*args, **kwargs)
@@ -97,7 +100,9 @@ def attach_pair(pair, *, pair_heading='off'):
     record = pair.record
     def recorded():
         return {**record(), 'pair_heading': dict(option=pair_heading,
-            scope='unloaded approach; coupled carry not altered',
+            scope='heading for solo/approach; coupled beam carry preserves legacy schedule',
+            exceptions=copy.deepcopy(HEADING_EXCEPTIONS),
+            prediction={r:copy.deepcopy(a.pose.localizer.s3_coupled_motion) for r,a in pair.actors.items()},
             decisions={ep.own.robot_id: copy.deepcopy(ep.controller.driver.s3_heading_audit)
                 for session in pair.team.sessions for ep in session['endpoints'].values()},
             alignment={ep.own.robot_id:copy.deepcopy(ep.s3_alignment_audit)
