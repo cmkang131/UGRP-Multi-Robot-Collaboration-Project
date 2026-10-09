@@ -17,6 +17,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from harness import opencv_wall_observation as ow  # noqa: E402
+from harness import opencv_wall_observation_robot_mask as mask  # noqa: E402
 from harness import own_image_gates, vision_loc_protocol as vp  # noqa: E402
 from harness.vision_pose_source_final import measured_column_model  # noqa: E402
 
@@ -51,10 +52,11 @@ def evaluate(manifest=FIXTURE, output=None):
     gates = own_image_gates.load()
     result = {'schema': 'ugrp.owncam_robot_mask_offline.v1', 'scope': 'exploratory saved RGB, not PF/physical validation',
               'manifest_sha256': digest(raw), 'legacy_function_sha256': digest(inspect.getsource(ow.observations).encode()),
-              'gates': gates, 'mask': ow.ROBOT_MASK_CONFIG, 'opencv_version': cv2.__version__,
+              'gates': gates, 'mask': mask.ROBOT_MASK_CONFIG, 'opencv_version': cv2.__version__,
               'numpy_version': np.__version__, 'model_calls': 0, 'simulation_calls': 0,
               'source_files_sha256': {p: digest((ROOT/p).read_bytes()) for p in
-                  ('harness/opencv_wall_observation.py', 'scripts/diagnose_owncam_robot_mask.py')}, 'frames': []}
+                  ('harness/opencv_wall_observation.py', 'harness/opencv_wall_observation_robot_mask.py',
+                   'scripts/diagnose_owncam_robot_mask.py')}, 'frames': []}
     if output is not None:
         output = Path(output)
         output.mkdir(parents=True, exist_ok=False)
@@ -66,8 +68,8 @@ def evaluate(manifest=FIXTURE, output=None):
         vp.check_frame(bgr)
         camera = measured_column_model(vl.mp, f['camera_record'], vl.mp.column_positions(96, 2))
         before = ow.observations(vl, bgr, camera, gates['values'])
-        off = ow.masked_observations(vl, bgr, camera, gates['values'], robot_mask=None)
-        after = ow.masked_observations(vl, bgr, camera, gates['values'], robot_mask=ow.ROBOT_MASK)
+        off = mask.masked_observations(vl, bgr, camera, gates['values'], robot_mask=None)
+        after = mask.masked_observations(vl, bgr, camera, gates['values'], robot_mask=mask.ROBOT_MASK)
         # Only now read the manual labels: they cannot influence either observer.
         polygons = f['peer_polygons_undistorted']
         bad_before, bad_after = peer_hits(before, polygons), peer_hits(after, polygons)
@@ -82,7 +84,7 @@ def evaluate(manifest=FIXTURE, output=None):
             'false_edges_before': [[int(before.columns[j]), float(before.b_lo[j])] for j in bad_before]})
         if output is not None:
             img = vl.mp.undistort(bgr)
-            excluded = ow.robot_occluded_columns(img)
+            excluded = mask.robot_occluded_columns(img)
             img[:, excluded] = (.6*img[:, excluded] + .4*np.array([180, 0, 0])).astype(np.uint8)
             for polygon in polygons:
                 cv2.polylines(img, [np.asarray(polygon, np.int32)], True, (255, 255, 255), 1)

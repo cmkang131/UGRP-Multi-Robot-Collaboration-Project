@@ -4,12 +4,14 @@ import hashlib
 import inspect
 import json
 from types import SimpleNamespace
+from pathlib import Path
 
 import cv2
 import numpy as np
 import pytest
 
-from harness import opencv_wall_observation as ow
+from harness import opencv_wall_observation as legacy
+from harness import opencv_wall_observation_robot_mask as ow
 from harness import vision_loc_protocol as vp
 from harness import zone_pair_highpose_opencv_exact as exact
 from harness.vision_loc_client import FrameRejected, WorkerFailure
@@ -30,27 +32,33 @@ def synthetic():
     return proxy, image
 
 
+def test_legacy_module_matches_s2_v133_frozen_source():
+    # PR #406 configs/s2_v133_full_template.json, source_sha256.
+    assert hashlib.sha256(Path(legacy.__file__).read_bytes()).hexdigest() == (
+        'ef8d9bcab34afe9bc52b3987e226b8efef237a6d587444750009d2663f1dae79')
+
+
 def test_legacy_function_source_stays_exact_for_existing_acceleration():
-    assert hashlib.sha256(inspect.getsource(ow.observations).encode()).hexdigest() == exact.PINNED[
+    assert hashlib.sha256(inspect.getsource(legacy.observations).encode()).hexdigest() == exact.PINNED[
         'opencv_wall_observation.observations']
 
 
 def test_off_does_not_compute_mask_or_change_observation_bytes(monkeypatch):
     vl, image = synthetic()
-    original = ow.observations(vl, image, None)
+    original = legacy.observations(vl, image, None)
     monkeypatch.setattr(ow, 'robot_occluded_columns', lambda _: pytest.fail('off computed mask'))
     assert obs_bytes(ow.masked_observations(vl, image, None)) == obs_bytes(original)
     observer = ow.OpenCVObserver(vl, lambda: None)
     assert obs_bytes(observer.observe(image)) == obs_bytes(original)
     assert observer.record() == {'backend': 'opencv_classical_wall_band_v1', 'learned_segmentation': False,
         'model_calls': 0, 'frames': 1, 'closed': False, 'opencv_version': cv2.__version__,
-        'detector': ow.DETECTOR, 'own_image_gates': ow.LEGACY}
+        'detector': legacy.DETECTOR, 'own_image_gates': legacy.LEGACY}
 
 
 def test_withheld_columns_clear_both_edges_without_fabrication_or_input_mutation():
     vl, image = synthetic()
     saved = image.copy()
-    base = ow.observations(vl, image, None)
+    base = legacy.observations(vl, image, None)
     observer = ow.OpenCVObserver(vl, lambda: None, robot_mask=ow.ROBOT_MASK)
     result = observer.observe(image)
     assert result.informative.tolist() == [True, False, True]
@@ -68,7 +76,7 @@ def test_withheld_columns_clear_both_edges_without_fabrication_or_input_mutation
 
 @pytest.mark.parametrize('value', ['on', False, True, 'orange_columns_v2'])
 def test_unknown_options_rejected_before_observation(value, monkeypatch):
-    monkeypatch.setattr(ow, 'observations', lambda *args: pytest.fail('unknown option ran observer'))
+    monkeypatch.setattr(legacy, 'observations', lambda *args: pytest.fail('unknown option ran observer'))
     with pytest.raises(ValueError, match='unknown robot_mask'):
         ow.masked_observations(None, None, None, robot_mask=value)
     with pytest.raises(ValueError, match='unknown robot_mask'):
@@ -98,9 +106,9 @@ def test_no_colour_and_large_dark_gaps_are_explicit_limits():
 
 def test_mask_does_not_mutate_a_memoized_legacy_observation(monkeypatch):
     vl, image = synthetic()
-    base = ow.observations(vl, image, None)
+    base = legacy.observations(vl, image, None)
     raw = obs_bytes(base)
-    monkeypatch.setattr(ow, 'observations', lambda *args: base)
+    monkeypatch.setattr(legacy, 'observations', lambda *args: base)
     masked = ow.masked_observations(vl, image, None, robot_mask=ow.ROBOT_MASK)
     assert masked.informative.tolist() == [True, False, True]
     assert obs_bytes(base) == raw

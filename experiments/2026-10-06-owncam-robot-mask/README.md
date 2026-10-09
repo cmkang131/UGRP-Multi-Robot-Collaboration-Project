@@ -58,15 +58,15 @@ S3 #394의 관측 위험만 다루며 S3 실행기·다른 PR·worktree·프로�
 ## 2단계: 명시적 옵션
 
 ```python
-from harness.opencv_wall_observation import OpenCVObserver, masked_observations
+from harness.opencv_wall_observation_robot_mask import OpenCVObserver, masked_observations
 
 # 기존 호출은 그대로 OFF. 새 옵션을 명시할 때만 적용한다.
 observer = OpenCVObserver(vl, camera_callback, gates, robot_mask='orange_columns_v1')
 obs = masked_observations(vl, own_bgr, camera, gates, robot_mask='orange_columns_v1')
 ```
 
-`observations()`의 소스는 원래 바이트 그대로다. 기본 `OpenCVObserver.observe()`는 기존 함수를
-직접 호출하고 `record()`의 OFF 형식도 그대로다. 알 수 없는 옵션은 즉시 거절한다.
+`harness/opencv_wall_observation.py` 전체는 main 및 S2 v133의 고정 해시와 바이트 동일하다.
+마스크는 별도 모듈에 있고 기본 `OpenCVObserver.observe()`는 기존 클래스에 위임하며 `record()`의 OFF 형식도 그대로다. 알 수 없는 옵션은 즉시 거절한다.
 옵션 ON의 기록에는 프로필·수치·RGB 전용·미등록 후보 상태를 남긴다.
 기존 exact 가속의 소스 지문과 memo 호환도 시험했다. 제어기/실행 번들 기본값은 바꾸지 않았다.
 
@@ -131,3 +131,11 @@ EventAccumulator와 기존 서버 API에서 오인 **4→0**, 추가 제외 **0�
 4. Bescos et al., [DynaSLAM (2018) 논문](https://arxiv.org/abs/1806.05620), [공개 코드](https://github.com/BertaBescos/DynaSLAM).
 5. [VDO-SLAM 공개 README](https://github.com/halajun/VDO_SLAM#5-processing-your-own-data): OMD 색 분할 설명 확인. 세부 MATLAB 파일은 직접 확인하지 못했으므로 동일 구현 주장에 사용하지 않음.
 6. Soares et al., [VAR-SLAM (2025) 논문 §IV-A](https://arxiv.org/html/2510.16205v1), [공개 코드](https://github.com/iit-DLSLab/VAR-SLAM): 필터와 강건 추정 결합·깊이로 배경 보존하는 방법 확인.
+
+## PR #398 독립 리뷰 반영 (2026-10-09)
+
+- 최신 main `5c56807c69a5ec2ba64ace42b489e5a382433e1a`을 merge했다. 마스크 코드·명시적 observer를 `harness/opencv_wall_observation_robot_mask.py`로 분리하고 진단/시험 import를 변경했다.
+- 기존 `harness/opencv_wall_observation.py` 전체를 main 바이트로 복원했다. SHA-256 `ef8d9bcab34afe9bc52b3987e226b8efef237a6d587444750009d2663f1dae79`는 #406 `configs/s2_v133_full_template.json`의 source_sha256과 같으며 회귀 시험에도 고정했다.
+- 로컬 `tests/test_opencv_wall_robot_mask.py`: **14 passed**. OFF 관측 바이트·record, 저장 프레임, exact memo 호환을 유지한다. 새 모듈은 기존 관측을 호출 시점에 참조하고 OFF observer는 기존 클래스에 위임한다. 시뮬레이션·렌더·모델 호출 0, v7/camera v3/sphere6 source.json 변경 없음.
+- 기존 result.json/validation.json은 10월 6일 소스의 기록으로 보존했다. 이번은 모듈 분리 회귀 검사이며 새 실험/TensorBoard 재변환은 없다.
+- 참고: [Python 공식 모듈 문서](https://docs.python.org/3/tutorial/modules.html), [pytest 지정 파일 실행](https://docs.pytest.org/en/stable/how-to/usage.html). 표준 모듈 분리와 기존 클래스 위임으로 고정 소스를 보존하며 기존 HSV 알고리즘·문턱은 그대로다.
