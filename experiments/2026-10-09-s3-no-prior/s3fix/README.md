@@ -38,3 +38,59 @@
 S3 r1 최선 추정 오차4.259→.052m/yaw179.35→2.16°지만 수렴 인증0→0. S2 첫 σ수렴4/6→2/6, posterior 인증3/6→1/6, 전체 허위 첫수렴0→0; 입자 다양성과 매 관측 재표본화 묶음은 점 추정 정확도를 개선했으나 σ 수렴은 늦췄다. 둘을 분리한 인과 검증은 하지 않았다. 모든14재생의 무작위 주입0개로 주입 효과는 주장하지 않는다. 능동 head는 순위만 오프라인 검증했고 새 시야 효과는 물리 스모크 대상이다. 사후 수치/seed/문턱/ON 옵션 변경0. [원본 경로·해시·정밀 수치](replay-summary.json).
 
 스모크 전 DEV 감사에서 진행 재관측 횟수 소진과 도착 영상확인 veto도 같은 log-only 정책에 포함했다. 고정 지도 경로가 막혔을 때는 기존 S2 DEV와 같이 현재 추정에서 목적지 직행을 시도하고 충돌 가드를 기록한다. 물리 충돌을 피한다고 보장하지 않으며 eval_only로 판정한다. 누적 소진 횟수는 지우지 않는다. GO/명령 오류는 계속 정지한다.
+
+## v147 단일 스모크 결과
+
+실행 SHA `0a6908215e7788f697d3d7c616846e9f6b82e608`, seed14201, workflow7.40.0, **물리 시뮬레이터1회**. 실제 종료는 **HOST_ERROR**(`ValueError: calibrated motion requires one axis`), S3 통과 아님. 추가 시뮬레이션/seed/튜닝0. 관련 시험 마지막10 passed(26.41초), 코드 push 후 agent_lock·nice0으로 실행했다. ordinary foreground 관리 실행기를 썼고 다른 작업 프로세스를 종료하지 않았다. lock 해제와 자기 세션 종료를 확인했다.
+
+### 첫 위치와 단계
+
+13.50 절대SIM초(첫프레임 뒤12.20초)에 초기 관측을 마치고 임무 제어로 넘겼다. 아래는 그 시각의 **현재 최선 추정**이며 수렴 선언이 아니다. 고정 σ/후방분포 인증은 셋 모두 미통과, 첫 인증 시각 없음, 허위 σ수렴0이다. GT는 종료 뒤 평가에만 썼다.
+
+|로봇|초기 XY오차m / yaw오차°|σxy m / σyaw°|최선 모드 질량|첫 위치 인증|도달 단계 / B배달|
+|---|---|---|---|---|---|
+|r1|0.026297 / 2.011|1.840407 / 67.561|0.749531|실패(다중모드2개)|pair 접근 진입(22.50초); 목표 접근·집기·문 통과·놓기 미도달 / 실패|
+|r2|0.039537 / 1.612|0.208610 / 7.346|0.996000|실패(다중모드2개)|pair 접근 진입(22.50초); 목표 접근·집기·문 통과·놓기 미도달 / 실패|
+|r3|0.003887 / 0.576|0.058307 / 1.368|0.999875|실패(다중모드2개)|초기 관측 후 문 예약 대기; 접근·집기·문 통과·놓기 미진입 / 실패|
+
+- 최선 위치의 평가 정확성3/3, 정확한 **인증 수렴0/3**, 로봇 임무0/3, 주문 B0/2. r1의 두 모드 질량이 약75%/25%이므로 작은 점 오차가 넓은 σ를 틀렸다고 증명하지 않는다. r2/r3도 잔여 모드가 남는다. 결과를 보고 σ/인증 문턱을 낮추지 않았다.
+- 마지막 오차는 r1/r2/r3=0.027524/0.040873/0.008016m, σxy=1.840407/0.261974/0.058307m. 세 로봇 모두7방향을 실제 명령하고 자기 RGB를 받았다. r1은 augmented 주입727개, r2/r3는0개다. 저장 재생(주입0)과 새 능동 관측(주입 발생)의 결과를 구분하며 입자 수/재표본화/능동 시야의 개별 기여를 분리했다고 주장하지 않는다.
+- r1/r2의 초기 `look_around`는 `LOOKED_POSE_UNCERTAIN`·unconfirmed로 마치고 실제 pair API가 접수되어 접근에 진입했다. r2가23.20/23.30초에 비영 차체 명령2회를 냈다. 나머지 비영 차체 명령0. 최대 초기 위치 변위4.335/2.504/3.658mm는 팔 움직임에 따른 정착도 포함하므로 성공 주행거리로 세지 않는다.
+
+### would_stop과 실제 정지
+
+기존 localizer89 + 새 pair 훅421 + 기존 pair CommandGuard1 = **511회 검사 발생**. 같은 상황의 연속 검사/서로 다른 훅을 포함하며 독립 실패511건을 뜻하지 않는다. 중첩 record에 복제된 event는 더하지 않았다.
+
+|코드|횟수|
+|---|---:|
+|SWEEP_TRANSITION_BLOCKED|375|
+|SELF_UNCERTAIN|4|
+|POSE_UNCERTAIN|45|
+|PAIR_COLLISION_GUARD|1|
+|ARM_COLLISION_GUARD|23|
+|POSE_CLUSTER_UNCERTAIN|60|
+|GLOBAL_START_UNRESOLVED|3|
+
+`LOOK_RECOVERY_EXHAUSTED` 자체는 이번 실행에서 발생0; 소진을 강제로 만든 실제 pair 회귀에서 계속 진행을 검증했다. 원본 σ, gate, posterior 인증은 수정하지 않고 검사와 veto를 분리했다. GO 실패·실제 입력/명령 오류는 계속 정지한다. 기존 감시 범위를 넘어 새 집게 이탈 감지기를 구현했다고 주장하지 않는다.
+
+실제 종료 원인은 **혼합 축 pair 명령 ↔ 단일 축 S2 PF 보정 계약 불일치1건**이다. r2 첫 명령은 `(forward=.1157591675, left=.0210799025, turn=0, duration=.15)`이고 둘째에는 turn까지 포함된다. 저장된2명령을 `zone_solo_cyan_pulse_cal.profile_key`에 그대로 재입력하면 같은 ValueError를 물리0회로 재현한다. 기준상 실제 실행 오류이므로 DEV에서 계속 넘기지 않는다. 첫 명령은 이미 발행됐고 지연 입력 처리 중 예외가 드러났다. `commands_complete=false`를 보존한다.
+
+기존 공통 `path_tangent_v1`은 bundle/result와 세 localizer에 실제 적용됐지만, `heading_scope`에 명시된 별도 coupled pair controller는 기존 연속 혼합 명령을 유지했다. **pair 주행까지 heading/pulse 호환을 검증한 것은 아니다.** DEV가 앞 가드를 통과시키며 이 잠재 통합 오류가 처음 노출됐다. 이번 요청의 단일 실행을 반복하지 않았으며, 이 새 오류를 수정 완료로 표시하지 않는다. 다음 후보는 단일 selector만 바꾸는 것으로 충분한지부터 접근·정렬·loaded carry 전 명령 어휘/시간 계약을 저장 입력으로 검사해야 한다. 참고 표준은 [공통 heading 구현의 Nav2 RPP 근거](../../2026-10-09-s2-heading/README.md) 및 `harness/zone_solo_cyan_path_heading.py`의 회전→전진·측정 pulse·coast·새 영상 피드백이다.
+
+인과 실패 집계는 HOST_ERROR1건. 미완료 평가 기준(위치 인증3·배달3)은 원인6건과 구분한다. 문 REQUEST episode는 각각1, 대기0.05/0.05/9.85 robot-s, 충돌 episode0·120초 교착 episode0. 관측창이22.1초여서 긴 교착 부재를 보장하지 않는다. 낙하·기울기·집게 이탈·GO 실패가 실제 종료 원인은 아니었다.
+
+### 시간·적용값·보존
+
+wall **170.610534초 / SIM22.10초 = 7.719934 wall/SIM**. reset1.30초를 제외한 1.30→23.40 구간이며 오류 종료로 추가 정착 없음. 명령2490, 모델/HTTP0. v146의45.25초 종료와 관측 수/입자/실패 시점이 달라 속도 효과 비교로 쓰지 않는다. disk29.16GiB, raw 예산3GiB+10GiB reserve 확인. 별도 disk_report의 잘못된 section 이름 호출은 수정 후 `--sections fs`로 실제 여유 공간을 기록했다; 관리 실행기의 자체 디스크 검사도 통과했다.
+
+호스트 실제 render_camera **로봇별443프레임 전부**를 S2 첫 프레임 보정 fixture와 대조해 local_position/local_quat 동일, 촬영 시각 대응도 동일했다. `v3_persistent_v1` 호스트 바인딩 유지, 제어기 외부 파라미터 맞춤 없음. #420 `relay-cache-v1` 적용enabled/physics_changed=false. no dock prior/weld/top/GT control 유지. 공통 장면 누락 조사표는 [기존 호스트/S4/자기 지도 표](../s3next/README.md)에 있다.
+
+원본 `/Users/changmin/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147`, 전체1360파일/44,068,436bytes 해시 일치. manifest SHA256 `d45be5056969043fc64aa914bfb97313b34882af1142e60e7c3ef1deb7eff30c`. raw 로컬 보관은 원격 백업이 아니다. 새 실험 기록/파생 결과만 Git 보존, 원본 덮어쓰기·삭제0.
+
+- [정밀 결과/명령 계약 재현](smoke-report.json), [원본 해시](raw-verification.json), [영상 검증](video-verification.json), [TensorBoard 검증](tensorboard-verification.json), [오프라인 event 재로딩](tb-offline-readback.json).
+- [대표 영상4배속](http://127.0.0.1:6007/video/55e09581104f18e7687e): 자기 RGB3개 병렬, 새 렌더0. 로컬 `/Users/changmin/projects/ugrp/outputs/s3fix-20261009-replay-v2/views/v147/execution.mp4`,1920×480,111프레임/20fps/5.55초. 모든 프레임 디코딩·브라우저 끝까지 재생·Range206 확인.
+- [TensorBoard v146/v147 비교](http://127.0.0.1:6006/?runFilter=%5E1009-s3-v14%5B67%5D%2F&smoothing=0#timeseries), [같은 원본14회 오프라인 비교](http://127.0.0.1:6006/?runFilter=%5E1009-s3fix-replay%2F&smoothing=0#timeseries). 새 snapshot은 각각26scalar/14runs를 원본과 재로딩 대조,8pins와 HParams 지정 열 확인. 기존 서버/다른 공용 설정 키는 유지했다.
+
+다음 물리 실행 제안: pair 전 단계의 heading·단일 축 측정 pulse 계약을 먼저 오프라인 연결·검증한 뒤 새 번들 동일seed 혼합DEV1회만 제안한다(이번에는 추가 실행 없음).
+
+보고서 추가 뒤 off 바이트/새 번들 계약2 passed(24.28초),8 deselected. 실행 원본/설정은0a690821 그대로이며 보고서 커밋을 새 실행 SHA로 소급하지 않는다. PR#416 본문에 최신 실패와 다음 제안을 반영하고 CI를 기다리지 않는다.
