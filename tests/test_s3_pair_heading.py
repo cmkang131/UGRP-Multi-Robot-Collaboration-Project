@@ -99,6 +99,17 @@ def test_actual_pair_submission_attaches_heading_before_any_control():
         endpoints=pair.team.sessions[0]['endpoints']
         assert all(hasattr(ep.controller.driver,'s3_heading_audit') for ep in endpoints.values())
         assert pair.record()['pair_heading']['option']==heading.OPTION
+        ep=endpoints['r2'];ctl=ep.controller;ctl.state='align';ep.own.now=.2
+        from harness.zone_final_pair_vision import GRASP_RADIUS_M
+        ob=ctl._align.__func__.__globals__['ob']
+        cmd=ob.align_command(dict(grip_base_m=[GRASP_RADIUS_M,.04],axis_heading_rad=0.))
+        ctl.drive(cmd,.2)
+        assert ep.port.commands[-1]['left']==.35 and ep.port.commands[-1]['duration_s']==.06
+        count=len(ep.port.commands)
+        ctl.tick(.25);assert len(ep.port.commands)==count
+        ctl.tick(.3);assert ep.port.commands[-1]==dict(kind='hold')
+        with pytest.raises(ValueError,match='alignment proof'):
+            ep.port.apply(dict(kind='mecanum',forward=0.,left=.35,turn=0.,duration_s=.06),1.)
     finally:
         runtime.close()
 
@@ -128,3 +139,36 @@ def test_all_new_options_off_preserve_own_particles_commands_and_pose_bytes():
         assert old.pose.provider.identity_sha256==new.pose.provider.identity_sha256
     finally:
         old.close();new.close()
+
+
+def test_host_pair_ports_match_s2_heading_primitive_and_native_expiry(tmp_path, profiles):
+    from sim.s3_motion_ports import attach
+    from sim.camera_robot_port import CameraRobotPort
+    from sim.s2_align_pulse import FinePulsePort
+    robots={r:SimpleNamespace(servo_command_pulses={1:2000,3:740,4:2320,5:1320,6:1500},
+        set_motor_commands=lambda motors:None) for r in ('r1','r2','r3')}
+    world=SimpleNamespace(robot=lambda rid:robots[rid],data=SimpleNamespace(time=0.))
+    backend=SimpleNamespace(world=world,out=tmp_path,ports={r:CameraRobotPort(world,r,
+        allow_reverse=True,allow_mecanum=True) for r in robots})
+    original=dict(backend.ports)
+    assert attach(backend) is backend and backend.ports==original and not list(tmp_path.iterdir())
+    action,_,_=heading.approach_proposal(profiles,(0.,0.,0.),(1.,1.),(1.,1.),0.)
+    with pytest.raises(ValueError):original['r2'].apply(action,0.)  # old port capped turn at .15
+    attach(backend,pair_heading=heading.OPTION)
+    for rid in ('r1','r2'):
+        port=backend.ports[rid];assert isinstance(port,FinePulsePort)
+        ack=port.apply(action,0.)
+        assert all(abs(v)==.35 for v in ack['actuator_state']['motor_commands'])
+        port.tick(action['duration_s'])
+        assert not any(port._motor_commands)
+    assert backend.ports['r3'] is original['r3']
+
+
+def test_rgb_alignment_heading_uses_final_distance_and_preserves_nonarrival(profiles):
+    from harness.zone_s3_pair_alignment import project
+    far,p,s=project(profiles,(.3,.2,0.))
+    assert far['turn'] and not far['forward'] and not far['left']
+    final,p,s=project(profiles,(0.,.04,0.))
+    assert final['left'] and final['duration_s']==.06
+    unresolved,p,s=project(profiles,(0.,0.,0.))
+    assert p is None and unresolved is not None and not heading.moving(unresolved)

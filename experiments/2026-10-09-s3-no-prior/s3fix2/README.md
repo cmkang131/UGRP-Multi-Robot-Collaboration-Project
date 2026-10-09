@@ -36,3 +36,11 @@
 - JSONL은 같은 JSON 인코딩/행 순서의64KiB buffer로 기록하고 referee 읽기 및 close 전에 flush한다. 후속 실제 smoke의 render/capture/physics/eval/JSONL 타이머는 제어기로 전달하지 않으며, nested timer를 단순 합산하지 않는다. 기록 버퍼의 바이트 동일성과 read-before-evaluate 회귀를 고정했다.
 - 변경 모듈 시험 `tests/test_s3_pair_heading.py tests/test_s3_exact_cache.py`: **10 PASS**. 실제 `GuardedDriver`의 넓은σ DEV 경로에서도 단일 축 heading 펄스가 생성되고, 기존 σ를 줄여 보고하지 않는다. 버퍼 off 위임 보강 후 해당4개 추가 확인.
 - [S2 원본 수치·해시](s2-error-comparison.json):6개 전부 실제 XY오차 감소, σ4/6→2/6·인증3/6→1/6. 이전 재생을 재집계했으며 새 물리나 새 확증 코호트로 합산하지 않는다.
+
+### 접근·집기 전 전체 명령 연결 보강
+
+추가 정적 계약 문제: 기존 r1/r2 `CameraRobotPort`는 forward≤.15/left≤.10/turn≤.15인 반면 S2 측정 heading 펄스는 turn/forward±.35 및 final lateral±.35/.06s이다. 제어기만 바꾸면 다음 호스트 상한 오류가 확정적이다. 새 `sim/s3_motion_ports.py` 옵션은 r1/r2에도 S2와 같은 `FinePulsePort(real_v1, real_fine_v1)`를 사용한다. 기존 v147과 옵션off 포트는 바꾸지 않는다.
+
+`zone_s3_motion_runtime`의 실제 pair API 제출 경로에서 접근 driver 및 집기 전 RGB 정렬을 연결했다. 정렬은 기존 RGB 도착 판정만 사용하고, 아직 정렬되지 않았으나 펄스 해상도상 이동을 고르지 못한 경우는 `None(정렬 완료)`로 바꾸지 않는다. 최종0.10m lateral에는 동일 시각의 자기 RGB 오류/명령 근거를 요구한다. no-view 탐색·후진은 단일 turn/forward 펄스로 바꾸며 혼합 축을 묵시적으로 허용하지 않는다. 네이티브 만료·전체 coast·지연 자기 관측을 기다리고 GO/abort 확인은 기존 endpoint 바깥 루프에 유지한다.
+
+관련 최종 시험은 heading/실제 pair session/RGB 정렬/호스트 포트10 PASS와 내용 캐시/버퍼4 PASS(2파일)다. **공동 loaded carry의 기존 연속 혼합 축 schedule은 아직 새 pulse 계약에 이관하지 않았으며, 새 실행 번들은 runnable로 등록하지 않았다.** 2.15m loaded lateral에 대한 결정3 적용 범위를 확인한 뒤 이관 방식을 확정해야 한다. 알려진 다음 단계 계약 오류를 남긴 채 허용된1회 smoke를 소모하지 않는다.

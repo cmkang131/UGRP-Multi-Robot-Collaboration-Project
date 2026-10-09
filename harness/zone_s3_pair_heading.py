@@ -87,6 +87,8 @@ def attach_pair(pair, *, pair_heading='off'):
             for ep in session['endpoints'].values():
                 if not hasattr(ep.controller.driver, 's3_heading_audit'):
                     attach_driver(ep.controller.driver, ep.own.pose.localizer, pair_heading=pair_heading)
+                    from harness.zone_s3_pair_alignment import attach
+                    attach(ep)
         return result
     pair.team.start = submit
     record = pair.record
@@ -94,6 +96,8 @@ def attach_pair(pair, *, pair_heading='off'):
         return {**record(), 'pair_heading': dict(option=pair_heading,
             scope='unloaded approach; coupled carry not altered',
             decisions={ep.own.robot_id: copy.deepcopy(ep.controller.driver.s3_heading_audit)
+                for session in pair.team.sessions for ep in session['endpoints'].values()},
+            alignment={ep.own.robot_id:copy.deepcopy(ep.s3_alignment_audit)
                 for session in pair.team.sessions for ep in session['endpoints'].values()})}
     pair.record = recorded
     return pair
