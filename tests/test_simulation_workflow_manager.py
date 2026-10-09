@@ -305,6 +305,7 @@ raise SystemExit(3 if a.fail else 0)
         samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
         samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
         samples['v7-exact-speed-benchmark'] = ['--suite', 's2', '--expected-source-sha', '0'*40]
+        samples['zone-path-heading-v145'] = ['--expected-source-sha', '0'*40, '--seed', '1066']
         samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
                                            '--heading-mode', 'path_tangent_v1']
         samples['zone-s2-side-scan-v134'] = ['--expected-source-sha', '0'*40]

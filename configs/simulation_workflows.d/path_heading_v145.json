@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-path-heading-v145", "version": "7.38.0",
+    "purpose": "New DEV default: rotate to path heading then forward; explicit off replays baseline",
+    "entry": "scripts/run_path_heading.py", "runner": "scripts.run_path_heading",
+    "docs": "experiments/2026-10-09-s2-heading/default-on/README.md",
+    "requires": "committed source; exclusive agent_lock; existing physical and camera settings",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha", "--seed"],
+    "side_effect": "local_simulation", "adapter": "managed_legacy_cli"
+  }]
+}

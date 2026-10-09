@@ -1,4 +1,4 @@
-"""Opt-in path-heading pursuit using the unchanged calibrated pulse vocabulary.
+"""Shared S2/S3/S4/own-map path pursuit with calibrated finite pulses.
 
 Nav2 RPP rotateToHeading / path carrot bearing, adapted to MasterPi's minimum
 PWM: full measured pulse + coast + fresh feedback replaces continuous ramps.
@@ -13,8 +13,9 @@ import numpy as np
 from harness.zone_solo_cyan_pulse_cal import Runtime as PulseRuntime
 from harness.zone_solo_cyan_pulse_cal import action_of, profile_key, select_pulse
 from harness.zone_solo_cyan_v106 import ENVELOPE
+from harness.path_heading_policy import DEFAULT, VISUAL_LOCK
 
-OPTION = 'path_tangent_v1'
+OPTION = DEFAULT
 PARAMS = dict(final_alignment_m=.10, heading_tolerance_rad=.06,
               turn_raw_limit=.35, turn_duration_s=.10,
               lateral_raw_limit=.35, lateral_duration_s=.06,
@@ -64,6 +65,19 @@ def select(profiles, loaded, body_error, yaw, goal_distance):
     return p, score
 
 
+def select_waypoint(profiles, loaded, own_pose, waypoint, goal, *,
+                    heading_mode=DEFAULT, goal_yaw=0.):
+    """One selector for authored/own-map paths; inputs share the own pose frame."""
+    x, y, yaw = map(float, own_pose)
+    c, s = math.cos(yaw), math.sin(yaw)
+    error = np.array([[c, s], [-s, c]]) @ (np.asarray(waypoint)-[x, y])
+    if heading_mode == 'off':
+        return select_pulse(profiles, loaded, error, wrap(yaw))
+    if heading_mode != DEFAULT:
+        raise ValueError('unknown heading_mode')
+    return select(profiles, loaded, error, wrap(yaw-goal_yaw), math.dist((x, y), goal))
+
+
 class _HeadingPulse(PulseRuntime):
     def drive(self, xy, now, *, tolerance=.03):
         if getattr(self, 'heading_mode', 'off') == 'off':
@@ -90,10 +104,8 @@ class _HeadingPulse(PulseRuntime):
             self.path_goal = tuple(xy)
         while len(self.path) > 1 and math.dist(here, self.path[0]) < .035:
             self.path.pop(0)
-        c, s = math.cos(yaw), math.sin(yaw)
-        error = np.array([[c, s], [-s, c]]) @ (np.array(self.path[0])-here)
         loaded = self.pose.provider.loc._pf.load.loaded
-        p, score = select(self.pulse_profiles, loaded, error, yaw, distance)
+        p, score = select_waypoint(self.pulse_profiles, loaded, (*here, yaw), self.path[0], xy)
         self.heading_rows.append(dict(t=now, state=self.state, goal=list(xy),
                                      waypoint=list(self.path[0]), **copy.deepcopy(score)))
         if p is None:
@@ -107,18 +119,36 @@ class _HeadingPulse(PulseRuntime):
 
 
 def runtime_class(previous):
+    if issubclass(previous, _HeadingPulse):
+        return previous  # historical v143 factory already injected this layer
     class Runtime(previous, _HeadingPulse):
-        def __init__(self, *args, heading_mode='off', **kwargs):
+        def __init__(self, *args, heading_mode=DEFAULT, heading_visual_lock='off', **kwargs):
             if heading_mode not in ('off', OPTION):
                 raise ValueError('unknown heading_mode')
             if heading_mode != 'off' and kwargs.get('pulse_motion_model') != 'v7_pulse_cal_v1':
                 raise ValueError('path heading requires measured pulse motion')
+            if heading_visual_lock not in ('off', VISUAL_LOCK):
+                raise ValueError('unknown heading_visual_lock')
+            if heading_visual_lock != 'off' and heading_mode == 'off':
+                raise ValueError('visual lock is an explicit heading comparison option')
             super().__init__(*args, **kwargs)
             # Default off does not even add instance state or change records.
             if heading_mode != 'off':
                 self.heading_mode, self.heading_rows = heading_mode, []
                 self.heading_align_until = None
                 self.heading_align_settled = -math.inf
+                if heading_visual_lock != 'off':
+                    self.heading_visual_lock = heading_visual_lock
+
+        def detections(self):
+            # Search still establishes the target through the original slot
+            # gate. Once aligning to that single cyan, local visual servoing
+            # must not discard a visible target solely on global PF drift.
+            # The existing control loop rejects zero/multiple RGB candidates.
+            if (getattr(self, 'heading_visual_lock', 'off') == VISUAL_LOCK
+                    and self.state == 'align' and self.target is not None):
+                return self.vision.detect(self.last_obs, self.servo)
+            return super().detections()
 
         def drive(self, xy, now, **kwargs):
             if getattr(self, 'heading_mode', 'off') == 'off':
@@ -178,5 +208,7 @@ def runtime_class(previous):
             if getattr(self, 'heading_mode', 'off') != 'off':
                 out['heading_mode'] = dict(option=OPTION, parameters=copy.deepcopy(PARAMS),
                                            decisions=copy.deepcopy(self.heading_rows))
+                if getattr(self, 'heading_visual_lock', 'off') != 'off':
+                    out['heading_mode']['visual_lock'] = self.heading_visual_lock
             return out
     return Runtime
