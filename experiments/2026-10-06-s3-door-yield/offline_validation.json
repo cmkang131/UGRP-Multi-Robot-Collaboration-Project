@@ -1,0 +1,58 @@
+{
+  "base_sha": "e4b72aaffb0d756560397b7f0a30995da12da89f",
+  "prereg_reference_sha": "782830b5d030310805b1a9816b1f8fb95a0a2e39",
+  "branch": "codex/s3-door-yield",
+  "execution_bundle_id": "zone-s3-door-yield-v108",
+  "workflow_version": "3.15.0",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "results": [
+    {
+      "junit": "pytest-1.xml",
+      "tests": 64,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "junit": "pytest-final.xml",
+      "tests": 32,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    }
+  ],
+  "unique_tests": 64,
+  "source_sha256": {
+    "harness/zone_s3_door_yield.py": "cbacafe4b2bd260ef53270900389993ce606c5f4aaceba8005ba381d255a220a",
+    "harness/zone_s3_door_contract.py": "9a67bcce987f0436b5fedcf5df4109eec74f6623d51961b38e10fe7d3ef89dda",
+    "scripts/run_s3_door_yield.py": "65f9a4deb72eb17390d647afe7c01948333ae4b52e6a6ba4d0114458dcbad888",
+    "scripts/run_s3_host.py": "2f28ae3fd2dc061a0a8b036ab361b26004c3b295b1b1d1d321611cd81e40d9f4",
+    "tests/test_s3_host_door_yield.py": "97f36157de027ecda6a95de0d9d9e3e00ebccf790533f6fb5796871ccef51c2c",
+    "tests/test_s3_host_runner.py": "5647006563dfa9e0d64d8d2ec250fe12b221f6bb0b9f47edcefa77dbbf288d25",
+    "tests/fixtures/s3_runner_e4b72aaf.py": "832aba4bc0cafd7b6bf5d2aef1f24e7b73c8ad0d9870e9579669c73b2586ce05",
+    "configs/simulation_workflows.json": "2b55d007e5471eac3bc36a40312e0faefc4ffd189a5757ced0f6fccdd2ad909c"
+  },
+  "unchanged_from_base": {
+    "harness/zone_s3_host.py": "b37105555a4f38d2fdf9c0aedcc211108d064877a2666fb3f3c10c8ca63d43e4",
+    "harness/zone_s3_contract.py": "6d4cf6680c2048358997c18047e419e23cd15ace43cca3efd16aa3181d76037c",
+    "harness/zone_pair_highpose_runtime.py": "7afddee58987b9bdb86a12d4af3dd61a8bb0b7dd7937da4f5b1d36a531174598",
+    "harness/zone_solo_cyan_v106.py": "d3e09e93d77a211ab8a23087439582d4cf21dd4151811bf837a2a28956c18e97",
+    "sim/zone_s3_host.py": "e24165d517a8b1c23cd7dd327a3e3d354ca81ca2634a0b1d1ffc881260240e45"
+  },
+  "evidence_sha256": {
+    "unchanged_from_394.json": "2dac1911250e528839fe7becac3058eef79ac87cebb6adfd8a70ac8247022716",
+    "pytest-1.xml": "526a1c6805a5b6416b346b7eb9be0406d6956528440ff72ea3627c4ec9bf6f43",
+    "pytest-final.xml": "fbdef6f9aa04ac5a98bc8da68e59ab903fc7b618b5ddd4bccd62978557cd6a40",
+    "pytest-1.log": "695d1685892292e663b9cc0246c5de12a2238b0a579ec2c5a63939793fe39819",
+    "pytest-final.log": "ee12a981e4db88741fdd354208559992395ec8efc5f657dca3cf4f4f16ec28cc"
+  },
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/s3-door-offline-20261006",
+  "simulation_runs": 0,
+  "mujoco_compile_reset_step_render": 0,
+  "real_model_calls": 0,
+  "physical_success": null,
+  "independent_review": false,
+  "merge_allowed": false,
+  "tensorboard": "not applicable: no new experiment results"
+}
