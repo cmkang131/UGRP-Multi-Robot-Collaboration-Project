@@ -75,3 +75,9 @@ virtual clone의 ledger 목록은 별도 복사하고 clone 안에서만 history
 [Python copy/deepcopy](https://docs.python.org/3/library/copy.html)의 memo/공유 객체 원칙을 따르며,
 forecast와 실제 entropy·resample·propagate 함수 원문 SHA까지 함께 guard한다.
 첫 v1 managed session은 잠금 대기 중 자기 프로세스만 종료했다(재생/물리0); 기록은 유지한다.
+
+CI에서 과거 v91 synthetic fixture가 현재 AST closure에 새 모듈을 섞어 Git archive가
+실패했다. 고정 acquisition SHA의 코드·설정으로 정적 bundle을 생성하도록 바꾸고,
+v87 역사 검사는 기록 당시 Git blob/closure를 검증하도록 바로잡았다. 오래된 receipt와
+등록 파일은 수정하지 않았다. 관련 3개 검사 70.78초 통과; 넓은 로컬 재실행은 하지 않았다.
+v3는 측정 전 잠금 대기에서 종료했고 원본 queue-state와 별도 interruption 기록을 남겼다.
