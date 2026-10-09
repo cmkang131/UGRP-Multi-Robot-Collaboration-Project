@@ -224,3 +224,18 @@ CI의 v88 두 문은 현재 source receipt를 고정 과거 bytes와 혼합했�
   [Cartographer 공식 fast correlative scan matcher](https://github.com/cartographer-project/cartographer/blob/master/cartographer/mapping/internal/2d/scan_matching/fast_correlative_scan_matcher_2d.cc):
   잔여 graph scan matching의 표준 branch-and-bound를 조사했다. 공식 구현의 uint8
   확률 양자화·정수 합산은 원래 float64 점수/동점/분기 bytes 경계와 다르므로 이번 후보에 적용하지 않았다.
+
+
+v14는 CI 수정 전 잠금 대기에서만 종료했다(프레임/물리/모델0).
+`outputs/speedctrl-20261009-v14/interruption-provenance.json`과 모든 기존 기록을 보존한다.
+CI의 나머지 실패는 review355의 같은 역사 source/bytes 혼합15개,
+새 workflow 두 개의 read-only plan 예시 누락1개, 초기 기록의 플랫폼 의존 camera-matrix
+파생 해시1개였다. 원래 Git SHA 전체 bytes와 현재 source/행동 필드를 검증하고,
+새 workflow는 실행 없는 예시를 추가한다. 초기 기록은 모든 호스트에서 현재 off와
+원래 Git producer를 **같은 수치 환경에서 전체 canonical bytes로 비교**한다.
+Mac arm64 고정 reference도 해당 플랫폼에서 추가 비교한다. 숫자 tolerance나
+camera/provider 해시 임의 치환을 쓰지 않으며 기존 frozen SHA를 유지한다.
+[Git archive](https://git-scm.com/docs/git-archive)의 명명한 commit tree를 사용하고,
+[NumPy 호환성 정책](https://numpy.org/doc/stable/reference/random/compatibility.html)의
+동일 build·환경·기계 조건을 따른다. 플랫폼 간 바이트 일치를 새로 주장하지 않는다.
+공통 가속 모듈은 수정하지 않았다.
