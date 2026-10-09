@@ -44,3 +44,31 @@ def test_standard_workflow_is_registered():
     from sim.workflow_manager import plan
     p=plan(Path(__file__).parents[1],'own-teach-return-dev',['--seed','54001','--output','/tmp/no-physics','--expected-source-sha','a'*40])
     assert 'scripts.run_teach_return_dev' in p['command']
+
+
+def test_report_keeps_host_errors_in_denominator_and_counts_calls_once():
+    import importlib.util
+    path=Path(__file__).parents[1]/'experiments/2026-10-09-teach-return-dev/code/report.py'
+    spec=importlib.util.spec_from_file_location('eg54_score',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    r=[dict(seed=s,started=True,arrived=i==0,false_declarations=0,gate=i==0,final_xy_m=None if i==3 else float(i),
+        match_attempts=0 if i==3 else 2,match_accepted=1 if i==0 else 0,over_3sigma=None,
+        failure_class='HOST_ERROR' if i==3 else 'success' if i==0 else 'entry_localization',
+        contacts=dict(wall=dict(episodes=0),robot=dict(episodes=0))) for i,s in enumerate(SEEDS)]
+    out=m.summarize(r)
+    assert out['arrivals_new']==1 and out['physical_attempts_new']==4 and out['total_attempts_with_prior']==6
+    assert out['end_error_samples']==3 and out['end_error_median_m']==1 and out['end_error_max_m']==2
+    assert out['match_accepted']==1 and out['match_attempts']==6 and out['match_success_fraction']==pytest.approx(1/6)
+    assert out['failure_classes']['HOST_ERROR']==1 and out['prior_HOST_ERROR']==2
+
+
+def test_preflight_requires_the_frozen_offline_proof(tmp_path,monkeypatch):
+    import hashlib
+    import scripts.run_teach_return_dev as m
+    monkeypatch.setattr(m,'EXP',tmp_path);monkeypatch.setattr(m,'RAW',tmp_path)
+    monkeypatch.setattr(m.old.base,'verify_source',lambda s:{})
+    p=tmp_path/'offline-transition/result.json';p.parent.mkdir()
+    p.write_text(json.dumps(dict(passed=True,errors=0,repeat_entered=True,gt_inputs=0)))
+    (tmp_path/'freeze.json').write_text(json.dumps(dict(files={},offline_transition_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))
+    assert m.preflight('source')['nice']==0
+    p.write_text(p.read_text()+'\n')
+    with pytest.raises(AssertionError,match='OFFLINE_GATE_CHANGED'):m.preflight('source')

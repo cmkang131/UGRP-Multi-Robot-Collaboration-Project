@@ -37,6 +37,7 @@ def preflight(source):
     freeze=json.loads((EXP/'freeze.json').read_text())
     for p,h in freeze['files'].items():assert old.base.old.sha(ROOT/p)==h,('FROZEN_SOURCE_CHANGED',p)
     gate=RAW/'offline-transition/result.json';result=json.loads(gate.read_text())
+    assert old.base.old.sha(gate)==freeze['offline_transition_sha256'],'OFFLINE_GATE_CHANGED'
     assert result['passed'] and result['errors']==0 and result['repeat_entered'] and result['gt_inputs']==0
     assert os.getpriority(os.PRIO_PROCESS,0)==0,'NICE_MUST_BE_ZERO'
     return dict(receipt,freeze=freeze,offline_transition_sha256=old.base.old.sha(gate),nice=0)
