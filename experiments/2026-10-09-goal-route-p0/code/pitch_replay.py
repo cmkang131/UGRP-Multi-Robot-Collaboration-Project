@@ -8,7 +8,8 @@ DECOMP=BASE/'camera-pose-projection-v1/decomposition'
 def generate():
  from harness.ultrasonic_map import expected_range,static_boxes
  from harness.ultrasonic_model import noisy_reading,reading_rng,DEFAULT_SPEC
- dest=OUT/'pitch';dest.mkdir(parents=True,exist_ok=False)
+ dest=OUT/'pitch';dest.mkdir(parents=True,exist_ok=True)
+ if any(dest.iterdir()):raise FileExistsError(dest)
  own=load(DECOMP/'own-nominal.json');receipt={}
  for case,code in CASES.items():
   ep=BASE/f's2-realism-{code}-{case}-P1-2-place';truth=rows(ep/'eval_only/trajectory.jsonl');ts=np.array([r['t'] for r in truth])
@@ -20,7 +21,7 @@ def generate():
    expected=expected_range(static,pose,boxes=boxes)
    tick=round(r['t']/DEFAULT_SPEC.period_s)
    measurement=noisy_reading(r['t'],expected.range_m,reading_rng(55000+int(case[1:]),'r3',tick))
-   measurements.append(dict(frame_id=r['frame_id'],**asdict(measurement)))
+   measurements.append(dict(frame_id=r['frame_id'],**measurement.as_dict()))
   dump(dest/(case+'-readings.json'),measurements)
   receipt[case]=dict(readings=sha(dest/(case+'-readings.json')),truth=sha(ep/'eval_only/trajectory.jsonl'),static_map=sha(ep/'inputs/static_map.json'),n=len(measurements))
  dump(dest/'synthetic-sensor.json',dict(inputs=receipt,noise=asdict(DEFAULT_SPEC),qualification='Synthetic static-map ultrasound only; no dynamic object echo and no actual sensor execution. GT consumed only by this emulator.'))

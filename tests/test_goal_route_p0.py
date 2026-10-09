@@ -67,3 +67,10 @@ def test_ultrasound_recovers_known_pitch_sign_without_truth_input(bias):
         camera_origin=origin,nominal_ray=nominal,wall_normal=[1,0],pitch_bias=p.PITCH)
     assert result['accepted']
     assert math.degrees(result['pitch_offset_rad'])==pytest.approx(bias,abs=1e-7)
+
+
+def test_synthetic_sensor_invalid_uses_native_json_protocol():
+    from harness.ultrasonic_model import invalid,NO_ECHO
+    reading=invalid(1.,NO_ECHO).as_dict()
+    assert json.loads(json.dumps(reading,allow_nan=False))['range_m'] is None
+    assert not p.pitch_sample(None,reading=reading,camera_origin=None,nominal_ray=None,wall_normal=None,pitch_bias=p.PITCH)['accepted']
