@@ -14,6 +14,9 @@ WORKFLOW = 'configs/simulation_workflows.d/solo_cyan_v106.json'
 MAP_ID = 'zone_wide_door_geometry_v3'
 CALIBRATION = 'experiments/2026-10-05-loaded-rest-calibration-v104/products_noise/calibration_dev_pilot_loaded_v102_rest_noise.json'
 CALIBRATION_SHA = 'a75fc9325f8a8b89a158c2be0872cebfd4d11c8d2a7482c720eb9e1f99c41501'
+# Fixed pre-run S2 graduation list; controller, physics and calibration unchanged.
+# 911--914 remain historical DEV admissions, not new graduation samples.
+DEV_SEEDS = (*range(911, 929), *range(1015, 1029))
 
 
 def validate(*, robot_id, pickup_slot, destination, passage_id, seed, admission='dev-pilot'):
@@ -21,7 +24,7 @@ def validate(*, robot_id, pickup_slot, destination, passage_id, seed, admission=
     from harness.zone_solo_cyan_v106 import passage_route
     if admission != 'dev-pilot':
         raise ValueError('SOLO_CYAN_DEV_ONLY')
-    if robot_id not in ('r1', 'r2', 'r3') or seed not in (911, 912, 913, 914):
+    if robot_id not in ('r1', 'r2', 'r3') or seed not in DEV_SEEDS:
         raise ValueError('DEV robot/seed not registered')
     static = hp.resolve(MAP_ID)[0]
     if pickup_slot not in pickup_slots(static) or destination not in ('A', 'B', 'C'):
