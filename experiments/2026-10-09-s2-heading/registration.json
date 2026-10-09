@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.s2_heading_matched_dev.v1",
+  "baseline_sha": "99d81d8c9cbc8dee1cc21462d25a1c81f65de9f5",
+  "baseline_bundle": "zone-s2-realism-v141",
+  "seeds": [1066, 1068, 1065],
+  "denominator": 3,
+  "fresh": false,
+  "graduation": false,
+  "heading_mode": "path_tangent_v1",
+  "queue_after": ["s2v59", "S3", "egomap54", "simspeed"],
+  "simultaneous_simulations": 1,
+  "nice": 0,
+  "limits": {"sim_s": 900, "wall_s": 10800, "minimum_free_gib": 10, "raw_budget_gib": 5},
+  "failures": {"ENOSPC": "HOST_ERROR", "missing": "UNCLASSIFIED"},
+  "tuning_between_runs": false,
+  "evaluation": ["existing_success_judge", "lateral_command_time_fraction", "carry_box_yaw_and_relative_yaw", "wall_contact_sample_time", "door_crossing", "wall_per_sim"],
+  "lateral_denominator": "actual issued nonzero base-command time; expiry and early hold respected; also report total SIM denominator",
+  "decision": "Recommend to S3 supervisor only if success count is at least baseline and seed1066 remains successful; no new drop/tilt failure or active rotation limit violation. Report contact, box yaw and speed tradeoffs individually.",
+  "video": "three 4x own wrist RGB | evaluation-only top trajectory videos",
+  "gt_use": "post-run evaluation and video only"
+}
