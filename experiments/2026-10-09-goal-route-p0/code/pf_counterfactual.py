@@ -15,11 +15,25 @@ from unittest.mock import patch
 import cv2,numpy as np
 from scripts import replay_ownmap_s2 as old
 from harness import vision_pose_source_highpose as high
+from harness import zone_solo_cyan_v106 as navigation
 RAW=Path('/Users/changmin/projects/ugrp/outputs/goal-route-p0-v1')
 
 
+def build(bundle,geometry):
+    # This unused task route is not a PF input. The S2 constructor only admits
+    # door_1, absent in two_doors. Preserve the original route; never invoke it.
+    original=old.contract.hp.resolve(old.contract.MAP_ID)[0]
+    task=bundle['task']
+    route=navigation.passage_route(original,task['passage_id'],task['destination'])
+    with patch.object(high.contract,'resolve',lambda *a:(geometry,None,None)), \
+         patch.object(navigation,'passage_route',lambda *a:route):
+        return old.adapter.build_runtime(bundle,geometry,old.contract.ROOT/old.contract.CALIBRATION,
+            old.contract.CALIBRATION_SHA,option='off')
+
+
 def predict(pair,condition):
-    out=RAW/'pf'/pair['id']/condition;out.mkdir(parents=True,exist_ok=False)
+    out=RAW/'pf'/pair['id']/condition;out.mkdir(parents=True,exist_ok=True)
+    if any(out.iterdir()):raise FileExistsError(out)
     raw=Path(pair['raw']);bundle=old.read(raw/'bundle.json');record=old.read(raw/'student_record.json')
     frames=old.rows(raw/'robots/r3/frames.jsonl')
     for name in ('bundle.json','student_record.json','robots/r3/frames.jsonl'):
@@ -35,9 +49,7 @@ def predict(pair,condition):
     try:
         # Only the exact-static-map admission lookup is rebound in this process.
         # Numeric PF, priors, likelihood, camera, motion and seed are untouched.
-        with patch.object(high.contract,'resolve',lambda *a:(geometry,None,None)):
-            runtime=old.adapter.build_runtime(bundle,geometry,old.contract.ROOT/old.contract.CALIBRATION,
-                old.contract.CALIBRATION_SHA,option='off')
+        runtime=build(bundle,geometry)
         runtime.initial_commands(init['t'],{'r3':{int(k):v for k,v in init['pulses'].items()}})
         for i,f in enumerate(frames):
             data=(raw/f['path']).read_bytes();assert hashlib.sha256(data).hexdigest()==f['sha256']

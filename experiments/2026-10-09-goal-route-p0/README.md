@@ -57,3 +57,5 @@ T1쉬운조건과T2문통과를합산해성공률을부풀리지않는다. 전�
 P0-2는최초내부수렴선언때정지(수렴안하면기록끝),선택규칙에GT사용0. 기준same-map의최초선언까지원본7필드byte동일을확인하고다른지도조건을실행한다. P0-4는카메라명령/보정+자기접점+합성거리만입력,원뿔plane echo역산과pitch±5°root solve(결과전에고정). 실제카메라pitch는오차채점에만사용한다.
 
 누적 삽입은 Cartographer ProbabilityGrid처럼 한 셀당 한 키프레임 묶음에서 strongest hit/miss 한 번(hit 우선)만 반영한다. 각 관측의 ray 원점은 개별 DR로 deskew하며 기존 키프레임의 frozen insertion_weights는 그대로 쓴다. 추가 관측은 기존 confidence와 저장된 자기 covariance를 사용한다. 옵션 모듈 시험6개 통과(off객체/bytes 동일,시퀀스,범위/2노드/swept-free,누적중복 방지,pitch 양·음 부호).
+
+P0-2 초기 다른지도 constructor는 원본 S2의 door_1 작업경로 admission 때문에 프레임0에서 거부됐다. 추정 관문 실패가 아니다. 사용하지 않는 task route만 원본 정적 지도에서 가져오고, PF/likelihood/landmark의 입력은 다른 지도 전체로 유지했다. control/drive는 원본 어댑터의 금지 함수 그대로다. 두 지도 실제 constructor 시험2개 통과. 경기장 ID alias는 보정 admission만 위한 것으로 실제 map_id/hash를 예측 receipt에 따로 남긴다.
