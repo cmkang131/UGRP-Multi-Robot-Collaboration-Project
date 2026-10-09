@@ -62,3 +62,13 @@ def test_scene_relocation_requires_all_asset_bytes_and_geometry(tmp_path):
     other.write_bytes(b'asset')
     right.write_text(right.read_text().replace('size="1"','size="2"'))
     with pytest.raises(AssertionError): b.scene_receipt(left,right)
+
+
+def test_original_s3_evaluator_failure_is_preserved():
+    from harness.zone_study_contract import ContractViolation
+    def fail(*a): raise ContractViolation('invalid item identity, kind, height or speed')
+    assert b.referee_result(fail, [], {}) == {
+        'status':'EVALUATOR_ERROR', 'type':'ContractViolation',
+        'message':'invalid item identity, kind, height or speed'}
+    def unexpected(*a): raise RuntimeError('different failure')
+    with pytest.raises(RuntimeError): b.referee_result(unexpected, [], {})

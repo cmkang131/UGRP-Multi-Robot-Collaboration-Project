@@ -105,3 +105,16 @@ def test_shared_build_entry_applies_before_constructor_settle(monkeypatch):
     assert seen == [True, False]
     assert on.v7_speedups_record['enabled'] and not off.v7_speedups_record['enabled']
     assert on.drive_profile_record == off.drive_profile_record
+
+
+def test_custom_parameters_keep_original_behavior(monkeypatch):
+    class Custom(DriveParameters):
+        def command_step(self, command, previous_direction):
+            return 'custom result'
+    monkeypatch.delenv('UGRP_V7_EXACT_SPEEDUPS', raising=False)
+    original = Custom()
+    world = SimpleNamespace(drive_parameters=original)
+    receipt = configure(world)
+    assert not receipt['enabled'] and receipt['fallback'] == 'custom_parameters_not_cached'
+    assert world.drive_parameters is original
+    assert world.drive_parameters.command_step(None,None) == 'custom result'

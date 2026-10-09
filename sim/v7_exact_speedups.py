@@ -56,12 +56,16 @@ def configure(world, mode=None):
     mode = os.environ.get(ENV, DEFAULT) if mode is None else mode
     if mode not in MODES:
         raise ValueError(f'{ENV} must be one of {MODES}, got {mode!r}')
-    if mode != 'off':
+    from sim.masterpi_drive_friction_v7 import DriveParameters
+    supported = type(world.drive_parameters) is DriveParameters
+    enabled = mode != 'off' and supported
+    if enabled:
         world.drive_parameters = CachedParameters(world.drive_parameters)
     world.v7_speedups_record = {
-        'schema': 'ugrp.v7_exact_speedups.v1', 'mode': mode, 'enabled': mode != 'off',
+        'schema': 'ugrp.v7_exact_speedups.v1', 'mode': mode, 'enabled': enabled,
+        'fallback': None if supported else 'custom_parameters_not_cached',
         'module_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        'cache_maxsize': 256 if mode != 'off' else 0,
+        'cache_maxsize': 256 if enabled else 0,
         'physics_changed': False, 'log_buffering': False,
     }
     return dict(world.v7_speedups_record)

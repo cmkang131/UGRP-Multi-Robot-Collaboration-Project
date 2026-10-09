@@ -44,3 +44,15 @@ S2 backend 구성은 해당 원본 run_s2_landmarks_dev의 동일 class/scene �
 - 선행 #415 고정 입력 12초 n=2 결과 1.253→1.058은 별도 조건이며 여기 측정과 합산하지 않는다.
 
 검증 결과는 실행 후 추가한다. 실물·새 연구 성과 아님. raw는 primary outputs에 보존한다.
+
+## 보존한 진단·보완
+
+- `97b408b2`의 v1: S2 ABBA 완료(625파일 차이0); S3 off 30초 물리·601프레임 완료 뒤
+  원본 v142와 동일한 `ContractViolation: invalid item identity, kind, height or speed`로
+  사후 referee가 실패하여 드라이버 종료. raw `outputs/simspeed-core-20261009-v1`,
+  관리 기록 `outputs/simspeed-core-20261009-v1-managed/manifest.json` 보존. S3 시간 결과는
+  실패 당시 미게시되어 통계에 포함하지 않는다. S2 수치도 최종 후보 전체 비교와 합산하지 않는다.
+- benchmark는 이 특정 기존 referee 예외를 `EVALUATOR_ERROR` 판정으로 저장하여 양쪽
+  오류 바이트까지 비교한다. 예상 밖 예외는 여전히 실패한다. 판정 규칙 수정0, 성공으로 바꾸지 않는다.
+- 공통 캐시는 사용자 정의 DriveParameters 하위 클래스에 대해 원래 객체/계산으로
+  fallback한다. 실제 enabled=false와 이유를 기록하여 기존 확장 동작을 보존한다.

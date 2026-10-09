@@ -138,6 +138,16 @@ def scene_receipt(actual, reference):
     return {'identical_after_asset_path_relocation': True, 'assets': assets}
 
 
+def referee_result(evaluate, orders, static):
+    # The saved v142 run already failed in this evaluator. Preserve the exact
+    # failure as a judgment, without changing its contract or physics evidence.
+    from harness.zone_study_contract import ContractViolation
+    try:
+        return evaluate(orders, static)
+    except ContractViolation as exc:
+        return {'status': 'EVALUATOR_ERROR', 'type': type(exc).__name__, 'message': str(exc)}
+
+
 def worker(args):
     held = json.loads((args.output.parent/'lock.json').read_text())
     # Parent owns the exclusive lock; workers are strictly serial direct children.
@@ -219,7 +229,7 @@ def worker(args):
             from harness.zone_s3_no_prior_contract import inputs
             # Same post-loop referee as the original host.
             orders = inputs()[2]['orders']
-            judgment = backend.evaluate(orders, backend.scene.config['static_map'])
+            judgment = referee_result(backend.evaluate, orders, backend.scene.config['static_map'])
         else:
             from sim.solo_cyan_v106 import evaluate
             judgment = evaluate(backend.eval_rows, backend.scene.config['static_map'], bundle['task']['destination'])
