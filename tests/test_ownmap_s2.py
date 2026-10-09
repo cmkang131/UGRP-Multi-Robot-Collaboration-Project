@@ -115,3 +115,28 @@ def test_tiled_likelihood_matches_original_on_partial_edges_and_doors():
         dict(kind='floor_line',endpoints=[[-1.,-.3],[-.5,-.4]],normal=[0.,-1.],hue=10.),
         dict(kind='door',center=[1.,1.],width=.5)]
     np.testing.assert_allclose(m.bounded_landmark_likelihood(mapped,px,fs),landmark_likelihood(mapped,px,fs),rtol=2e-12,atol=1e-15)
+
+
+def test_real_constructor_under_registered_speedups_uses_only_own_geometry():
+    from harness import zone_s2_unknown_start_contract as c
+    from harness import zone_solo_cyan_contract_v106 as base
+    from harness.zone_pair_highpose_exact_speedups import install
+    from harness.zone_solo_cyan_bias_tempering import closure
+    from harness import vision_pose_source_highpose as high
+    bundle=c.bundle('0'*40,1059,**c.NEW_OPTIONS)
+    original=high.HighPoseSource.__init__
+    static=m.convert(grid(),option=m.OPTION)
+    _,undo=install('v98-exact-v6');runtime=None
+    try:
+        runtime=m.build_runtime(bundle,static,base.ROOT/base.CALIBRATION,base.CALIBRATION_SHA,option=m.OPTION)
+        pf=runtime.pose.provider.loc._pf
+        assert pf.n==100000 and runtime.own_map_field.free(pf.px[:,:2]).all()
+        assert runtime.route==[] and runtime.slot is None
+        selected=closure(pf.update_obs)['selected']
+        assert closure(selected)['field'] is runtime.own_map_field
+        assert not closure(selected.__globals__['endpoints'])['mapped'].edges
+        with pytest.raises(RuntimeError):runtime.step(1.)
+    finally:
+        if runtime is not None:runtime.close()
+        undo()
+    assert high.HighPoseSource.__init__ is original

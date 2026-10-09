@@ -48,3 +48,20 @@
 6천 edge × 10만 입자의 모든 후보를 한 번에 저장하지 않도록 128-particle tile로 계산한다.
 후보 제거·재표본화·sigma·likelihood tempering·중복 관측 가중치 조절은 없다.
 실제 7개 입력 hash/geometry 일치, 49001의 6360 edge가 실제 측정 closure에 연결됨을 확인했다.
+
+## 재생 인프라 수정 (상수/입력/관문 변경 없음)
+
+`78103a8c` 첫 baseline 5846프레임은 pose 7필드가 저장 기록과 정확히 일치했다(최대 차이0).
+첫 own 생성자는 등록된 exact-speedup이 HighPoseSource.__init__을 감싼 상태에서 private binding을
+시도해 실패했다(`cannot bind an undeclared frozen dependency`). r2 세션을 중단하고 원본·실패를
+보존했다. `inspect.unwrap`으로 원 생성자만 private-bind한 뒤 동일 ExpectedMemo를 다시 부착한다.
+실제 등록 speedups+실제 고정 calibration을 사용하는 생성자 회귀를 추가했다. 보정/튜닝 없음.
+
+## 제공된 소스의 환경 차이 (비교 채점 전 확인)
+
+7개 pair 모두 mapping `zone_wide_two_doors_final_v3`와 S2 `zone_wide_door_geometry_v3`의
+`scene.xml` 분리벽이 다르다. `wall_divider_1`은 mapping에서 y=-1.1625, half-length=.9625,
+S2에서 y=-1.675, half-length=1.475이다. 즉 아래쪽 1.025m 구간은 mapping에서 실제로 열린 곳이다.
+바닥 regions는 동일하다. 자기 지도에서 이 벽이 없는 것을 전부 미관측 실패로 해석하면 안 된다.
+벽/영역 해시와 원본은 r2의 `source-environment-audit.json`에 기록했다. 비교는 요청한 기록 그대로
+계속하되 **동일 물리 경기장 통제 실험으로 표현하지 않는다**. 운반 통합 전 동일 장면 비교가 남는다.

@@ -9,6 +9,7 @@ No module globals are patched and the full transport controller is disabled.
 from __future__ import annotations
 
 import copy
+import inspect
 import math
 from dataclasses import asdict
 from types import SimpleNamespace
@@ -223,11 +224,16 @@ def build_runtime(bundle, static, calibration, calibration_sha, *, option='off')
         contract = SimpleNamespace(**vars(high.contract))
         contract.resolve = lambda map_id: (static, None, None)
         contract.admitted_calibration = lambda *a: copy.deepcopy(admitted)
-        source_init = bind(high.HighPoseSource.__init__, contract=contract)
+        original_init = inspect.unwrap(high.HighPoseSource.__init__)
+        expected_memo_enabled = original_init is not high.HighPoseSource.__init__
+        source_init = bind(original_init, contract=contract)
 
         class Source(high.HighPoseSource):
             def __init__(self, *a, **kw):
                 source_init(self, *a, **kw)
+                if expected_memo_enabled:
+                    from harness.zone_pair_highpose_exact_speedups import ExpectedMemo
+                    self.loc._pf.expected = ExpectedMemo(self.loc._pf)
                 from harness import vision_loc_protocol as vp
                 legacy.partial.install(self.loc._pf, vp.load_vis3()[0])
                 pf = self.loc._pf
