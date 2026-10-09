@@ -102,6 +102,10 @@ class RememberedGoal:
                 for dy in range(factor):
                     cell=(int(x)*factor+dx,int(y)*factor+dy)
                     self.grid.odds[cell]=v;self.latest[cell]=v>0
+                    if v < 0:
+                        # Negative snapshot log odds are inverse-sensor ray evidence.
+                        # Preserve their snapshot provenance, not a fictitious RGB floor hit.
+                        self.grid.floor_frames[cell]={('snapshot_ray_free',self.snapshot['frame_id'])}
         self.loss_t=float(t);self.stage='relocalize'
         self.events.append(dict(t=float(t),frame_id=frame_id,reason='unknown_start_reset',
             particles=self.pf.n,goal_observed=self.goal is not None,snapshot_t=self.snapshot['t'],
@@ -110,6 +114,13 @@ class RememberedGoal:
 
     def receive(self,*,robot_id,t,frame_id,rgb,servo,observation,frame_sha256):
         if robot_id!=self.robot_id:raise ValueError('PEER_INPUT_FORBIDDEN')
+        if self.stage=='declared':
+            cmd=dict(t=float(t),kind='hold')
+            belief=copy.deepcopy(self.last_belief)
+            return cmd,dict(t=float(t),frame_id=frame_id,stage='declared',status='declared',
+                pose=belief['pose'],local_pose=belief['pose'],belief=belief,
+                sigma_xy=belief['global_std_xy_m'],stable_resolved=True,goal=self.goal,
+                remembered_B=self.goal,declared_goal=True,command=cmd,pulse=None,path=[])
         # Loss frame is excluded from both the prefix map and the suffix observations.
         if self.stage=='explore' and self.loss_due(t):
             self.lose(t,frame_id)

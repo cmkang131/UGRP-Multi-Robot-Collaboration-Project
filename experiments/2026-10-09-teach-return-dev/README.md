@@ -48,3 +48,7 @@
 자료: `results/offline-transition.json`,raw `outputs/teach-return-dev-v1/offline-transition/trace.json`. GT/물리/모델호출0. 이 검사는 새 확증 표본으로 합산하지 않는다. 물리는 S2v59→S3스모크 정상 release 뒤 시작한다.
 
 로컬 변경/기본off 시험은21개(3파일의 최신 통과 결과;마지막 변경 파일6개 재검사 포함). offline proof의 SHA도 freeze에 넣어 다른 결과로 바뀌면 물리 전 거부한다. 물리 소스84파일 고정,보고기 분모/HOST_ERROR 포함·직접 정합 호출 계산도 사전에 검사했다. 원격CI 대기0.
+
+## 사용자 결정으로 중단(egomap55 전환)
+
+2026-10-09 감독이 seed54001을 SIGINT로 중단했다. 원본 `result.json`의HOST_ERROR는finally기본상태이므로알고리즘실패결과로해석하지않는다. 사용자설계변경(강제loss제거)으로중단한1회는결과분모에서제외,54002–54004는미실행3회. **새코호트유효결과0/4,도착률미측정**. 원본은삭제/덮어쓰기없이보존. 사전등록의기존eg53 HOST_ERROR2건은그대로별도보존하며이번사용자취소와합치지않는다. 새실행은P0이후감독확인전금지.

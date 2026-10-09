@@ -64,6 +64,24 @@ def test_only_own_confirmed_B_and_internal_five_frames_declare(monkeypatch):
     assert c.stage=='declared' and cmd['kind']=='hold'
     assert json.dumps(c.snapshot,sort_keys=True)==frozen
     assert c.inputs[0]['delta']==[0,0,0]
+    old_inputs=len(c.inputs);old_events=len(c.events)
+    monkeypatch.setattr(m,'own_measurement',lambda *a:pytest.fail('terminal state read camera'))
+    monkeypatch.setattr(c.pf,'step',lambda **kw:pytest.fail('terminal state updated PF'))
+    for i in range(6):  # including the sixth frame after the arrival declaration
+        cmd,r=c.receive(t=3.2+i*.2,frame_id=8+i,**args)
+        assert cmd==dict(t=3.2+i*.2,kind='hold') and r['declared_goal'] and c.declared
+        assert c.stage=='declared' and r['pose']==[.5,.5,0.]
+    assert len(c.inputs)==old_inputs and len(c.events)==old_events
+
+
+def test_snapshot_free_ray_provenance_survives_resolution_restore():
+    c=fixture();c.lose(2.,2)
+    for x,y,value in c.snapshot['grid']['cells']:
+        for dx in range(2):
+            for dy in range(2):
+                key=(int(x)*2+dx,int(y)*2+dy)
+                assert c.grid.state(key)==(1 if value>0 else -1 if value<0 else 0)
+                if value<0:assert c.grid.floor_frames[key]=={('snapshot_ray_free',1)}
 
 
 def test_unobserved_goal_and_dev_light_timeout_not_success(monkeypatch):

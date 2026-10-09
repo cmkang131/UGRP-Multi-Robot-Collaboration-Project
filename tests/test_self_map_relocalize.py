@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 import numpy as np
+import pytest
 from harness.self_map_relocalize import Relocalizer, GridField
 from harness.own_map_amcl_vendor import kld, field, augmented
 
@@ -40,6 +41,13 @@ def test_unknown_start_motion_gate_and_map_immutability():
     r=pf.step(t=.2,points=[[1,0]],delta=[0,0,0],servo=servo)
     assert not r['updated'] and r['reason']=='motion_gate'
     assert before==json.dumps(g)
+
+
+def test_raster_budget_rejects_before_allocation(monkeypatch):
+    def forbidden(*a,**kw):raise AssertionError('allocated raster before budget check')
+    monkeypatch.setattr(np,'full',forbidden)
+    with pytest.raises(ValueError,match='GRID_RASTER_BUDGET'):
+        GridField(dict(resolution_m=.1,cells=[[0,0,-1],[1000000,1000000,1]]))
 
 
 def test_kld_selective_resampling_preserves_uninformative_belief():

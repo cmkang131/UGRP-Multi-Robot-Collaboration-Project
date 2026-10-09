@@ -9,6 +9,7 @@ from scipy.ndimage import distance_transform_edt
 from harness.own_map_amcl_vendor import field, motion, augmented, kld
 from harness.rbpf_rejection import motion_variance
 
+GRID_RASTER_BUDGET = 20_000_000  # ownmap_s2.GridField: fine-resolution cell limit
 
 class GridField(field.Field):
     def __init__(self, grid):
@@ -23,7 +24,10 @@ class GridField(field.Field):
         indices = cells[:, :2].astype(int)
         self.lo = indices.min(0)-10
         hi = indices.max(0)+11
-        raw = np.full(tuple((hi-self.lo)[::-1]), 255, np.uint8)
+        shape = tuple(int(v) for v in (hi-self.lo)[::-1])
+        if math.prod(shape)*factor**2 > GRID_RASTER_BUDGET:
+            raise ValueError('GRID_RASTER_BUDGET')
+        raw = np.full(shape, 255, np.uint8)
         for (x, y), c in zip(indices-self.lo, cells):
             raw[y, x] = 254 if c[2] > 0 else 0 if c[2] < 0 else 255
         self.raw, self.grid_origin, self.grid_resolution = raw, self.lo*resolution, resolution
