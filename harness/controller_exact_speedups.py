@@ -84,6 +84,8 @@ class PosteriorMemo:
 def key(value):
     if type(value) is np.ndarray and not value.dtype.hasobject:
         return ('array', value.dtype.str, value.shape, value.tobytes())
+    if isinstance(value, np.generic) and not value.dtype.hasobject:
+        return ('scalar', value.dtype.str, value.tobytes())
     if is_dataclass(value):
         return ('dataclass', type(value), key(astuple(value)))
     if isinstance(value, (tuple, list)):
@@ -232,9 +234,10 @@ class Installation:
                 saved_key = saved = None
                 def extract(px, weights, labels, old):
                     nonlocal saved_key, saved
-                    current = (revision(px, weights, labels), old.get('pan_yaw_offset', 0.))
+                    offset = old.get('pan_yaw_offset', 0.)
+                    current = (revision(px, weights, labels), key(offset))
                     if current != saved_key:
-                        saved = function(px, weights, labels, {'pan_yaw_offset': current[1]})
+                        saved = function(px, weights, labels, {'pan_yaw_offset': offset})
                         saved.pop('pan_yaw_offset')
                         saved_key = current
                         audit['misses'] += 1

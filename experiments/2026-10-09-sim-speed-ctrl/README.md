@@ -81,3 +81,10 @@ CI에서 과거 v91 synthetic fixture가 현재 AST closure에 새 모듈을 섞
 v87 역사 검사는 기록 당시 Git blob/closure를 검증하도록 바로잡았다. 오래된 receipt와
 등록 파일은 수정하지 않았다. 관련 3개 검사 70.78초 통과; 넓은 로컬 재실행은 하지 않았다.
 v3는 측정 전 잠금 대기에서 종료했고 원본 queue-state와 별도 interruption 기록을 남겼다.
+
+측정 전 원본 runner와 비교하여 자기 지도 JSONL 기록을 명령 기억보다 먼저 하도록
+맞췄다. own-inputs/return-navigation/frontend-poses/active-events를 포함한 제어기 산출물을
+모두 보존하고 원본처럼 비유한 JSON을 거부한다. 순서 반례 검사4개 통과(0.17초).
+S3 extract의 pan offset도 부호 있는 0을 구분하는 비트 key로 바꿨다. 관련 검사7개
+통과(0.68초). 최종 후보는 물리/렌더/관측/RNG 변경0이며 전체 재생 증명은 아직 대기다.
+v5 역시 S3 우선 gate 대기에서만 종료했으며 실행/측정은 없었다.

@@ -59,6 +59,34 @@ def test_option_validation(monkeypatch):
         mode('typo')
 
 
+def test_s3_extract_does_not_alias_signed_zero_offsets(monkeypatch):
+    import sys
+    from types import ModuleType
+    from harness.controller_exact_speedups import Installation, install
+    s3 = ModuleType('harness.zone_s3_exact_cache')
+    def attach(function, audit):
+        return memo_extract(function, audit)
+    monkeypatch.setitem(attach.__globals__, 'memo_extract', lambda *args: None)
+    monkeypatch.setitem(attach.__globals__, 'memo_summary', lambda *args: None)
+    s3.attach = attach
+    monkeypatch.setitem(sys.modules, s3.__name__, s3)
+    monkeypatch.setattr(Installation, 'guard', lambda *args: True)
+    monkeypatch.setattr(Installation, 'optional', lambda self, name: s3 if name == s3.__name__ else None)
+    installed = install('exact-v1')
+    try:
+        def extract(p, w, labels, old):
+            offset = old['pan_yaw_offset']
+            return {'pan_yaw_offset': offset, 'sign': float(np.copysign(1., offset))}
+        audit = {'hits': 0, 'misses': 0}
+        cached = s3.attach(extract, audit)
+        a = np.zeros(1)
+        assert cached(a, a, a, {'pan_yaw_offset': 0.})['sign'] == 1.
+        assert cached(a, a, a, {'pan_yaw_offset': -0.})['sign'] == -1.
+        assert audit == {'hits': 0, 'misses': 2}
+    finally:
+        installed.close()
+
+
 def test_forecast_clone_keeps_append_and_particle_mutations_isolated():
     from types import SimpleNamespace
     from harness.controller_exact_speedups import ForecastCopy

@@ -39,7 +39,7 @@ def write(path, value):
             return item.item()
         raise TypeError(type(item).__name__)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, allow_nan=True, default=default) + '\n')
+    path.write_text(json.dumps(value, indent=2, allow_nan=False, default=default) + '\n')
 
 
 def sha(path):
@@ -255,8 +255,6 @@ def egomap(raw, out, timer):
                     own_range=ranges[obs['frame_id']])
                 generated.append(command)
                 traces.append(trace)
-                for issued_command in issued[round(now, 9)]:
-                    controller.command(issued_command)
             with timer.span('record_io'):
                 append('own-controller.jsonl', trace)
                 append('own-contacts.jsonl', dict(t=now, frame_id=obs['frame_id'], **detection))
@@ -267,6 +265,11 @@ def egomap(raw, out, timer):
                     append('online-maps.jsonl', dict(t=now, frame_id=obs['frame_id'],
                         view='online_frontend', grid=g.export(), ledger=g.ledger))
                     last_snapshot = revision
+            # The original runner records the observation BEFORE issuing and
+            # remembering its command. Keep that boundary for archival parity.
+            with timer.span('controller_other'):
+                for issued_command in issued[round(now, 9)]:
+                    controller.command(issued_command)
             state.append(dict(t=now, poses=hashlib.sha256(g.poses.tobytes()).hexdigest(),
                 weights=hashlib.sha256(g.weights.tobytes()).hexdigest(),
                 pending_cov=hashlib.sha256(g.pending_cov.tobytes()).hexdigest(), rng=g.rng.bit_generator.state))
@@ -281,7 +284,9 @@ def egomap(raw, out, timer):
         for name, value in [('commands', generated), ('traces', traces), ('state', state),
             ('route-map', controller.snapshot()), ('frontend-grid', g.export()), ('frontend-ledger', g.ledger),
             ('decisions', g.decisions), ('graphs', explorer.graphs), ('navigation', explorer.navigator.events),
-            ('heading-decisions', controller.heading_host.rows), ('utility-events', controller.events)]:
+            ('heading-decisions', controller.heading_host.rows), ('utility-events', controller.events),
+            ('own-inputs', controller.inputs), ('return-navigation', controller.navigator.events),
+            ('frontend-poses', explorer.poses), ('active-events', explorer.events)]:
             write(out / (name + '.json'), value)
         write(out / 'all-particle-maps.json', [sorted((x, y, v) for (x, y), v in m.cells.items()) for m in g.maps])
     return dict(frames=len(trend), available_frames=len(frames), start=start, end=frames[-1]['sim_time'],
