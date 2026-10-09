@@ -96,3 +96,27 @@ v5 역시 S3 우선 gate 대기에서만 종료했으며 실행/측정은 없었
 재생은 result.json을 보존하고 workflow를 실패 처리한다. 관련 5개 검사0.20초 통과.
 S3 원본의 Unicode 기록 형식도 유지한다. native 소스는 같은 기록 SHA에서 새 export에
 추가하고 양쪽 측정 전에 동일한 build를 준비한다. 과거 export와 실패 로그는 보존한다.
+
+## 第一 round: 전체 S3 저장 입력 (v8)
+
+439/439 프레임 양쪽 완료. 프로파일 창 포함 제어 재생 wall/input-SIM은
+2.854897→2.522566(62.522251→55.244186 wall초/21.9 SIM초)이다.
+physics/render0이므로 온라인4.270629와 직접 비교하지 않는다. 명령268,794 bytes와
+입자/가중치/RNG/포즈5,109,822 bytes는 직접 비교와 SHA-256 모두 같았다.
+record.json13,023,004 bytes는 실제 inference_wall_ms가 달라 전체 bytes gate는 실패했다.
+그 값은 새 비교에서 timing-provenance.json으로 분리·보존한다. 성능값을 0으로 만들거나
+원본을 수정하지 않는다. 비교 경계는 기록의 수치 상태와 실제 시간계측 출처의 분리이며,
+기존 전체 원본 record의 바이트 일치를 주장하지 않는다.
+
+남은 S3 비용은 OwnCam estimate의 반복된 동일 입자 모멘트와 OpenCV refine의
+스칼라 정수 np.clip이다. 창 프로파일에서 각각4.086초/2603회,
+클립 관련 약2.4초/70만회가 보였다(inclusive, 서로 단순 합산하지 않음).
+같은 px/logw 모멘트만 재사용하고 t/since_tag_s는 매번 원문 식으로 갱신한다.
+정수64 bit+Python 정수 경계의 clamp만 표준 min/max로 대체한다.
+배열·부동소수·NaN·out/기타 dtype은 원래 NumPy 호출이다.
+[NumPy clip](https://numpy.org/doc/stable/reference/generated/numpy.clip.html)의 표준 정의를
+따르며 역전 경계도 원문과 일치한다. 변경 모듈15개 검사0.83초 통과.
+
+자기 지도의 추가 vendor도 같은 SHA의 third_party 전체로 새 export에 포함했다.
+두 adapter의 실제 actor/controller 초기화와 필요한 native build가 완료됐고
+이 확인의 관측 프레임/물리 실행은0이다. 이전 export와 모든 실패는 보존했다.

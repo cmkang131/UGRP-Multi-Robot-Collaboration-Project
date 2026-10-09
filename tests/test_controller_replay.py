@@ -51,6 +51,17 @@ def test_profile_windows_toggle_only_at_boundaries():
         timer.profiler.disable()
 
 
+def test_timing_split_preserves_state_and_original_measurements():
+    from scripts.profile_controller_replay import split_timing
+    original={'provider':{'pose':[1.,2.], 'inference_wall_ms':{'p50':19.}},
+              'other':[{'inference_wall_ms':{'p99':40.}, 'particles':[3.,4.]}]}
+    result, timing=split_timing(original)
+    assert result=={'provider':{'pose':[1.,2.]},'other':[{'particles':[3.,4.]}]}
+    assert timing=={'/provider/inference_wall_ms':{'p50':19.},
+                    '/other/0/inference_wall_ms':{'p99':40.}}
+    assert original['provider']['inference_wall_ms']=={'p50':19.}
+
+
 def test_egomap_records_observation_before_remembering_issued_command(tmp_path, monkeypatch):
     import importlib
     import json

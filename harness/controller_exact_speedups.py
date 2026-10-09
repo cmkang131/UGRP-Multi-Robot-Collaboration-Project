@@ -119,6 +119,51 @@ class PureMemo:
         return result
 
 
+class MethodSummaryMemo:
+    """Audited OwnCam moments depend on px/logw; timestamps stay live."""
+    def __init__(self, function, maxsize=4):
+        self.function, self.maxsize = function, maxsize
+        self.entries = OrderedDict()
+        self.hits = self.misses = 0
+
+    def __call__(self, owner):
+        if not owner.initialized or any(type(a) is not np.ndarray or a.dtype.hasobject
+                                        for a in (owner.px, owner.logw)):
+            return self.function(owner)
+        identity = id(owner)
+        if identity not in self.entries:
+            self.entries[identity] = [owner, ArrayRevision(), None, None]
+            if len(self.entries) > self.maxsize:
+                self.entries.popitem(last=False)
+        self.entries.move_to_end(identity)
+        entry = self.entries[identity]
+        revision = entry[1](owner.px, owner.logw)
+        if revision != entry[2]:
+            result = self.function(owner)
+            entry[2], entry[3] = revision, copy.deepcopy(result)
+            self.misses += 1
+        else:
+            self.hits += 1
+        result = copy.deepcopy(entry[3])
+        result['t'] = round(owner.t, 4)
+        result['since_tag_s'] = None if owner.last_tag_t is None else round(owner.t-owner.last_tag_t, 3)
+        return result
+
+
+class IntegerClipNumpy:
+    """Exact int64 scalar clamp; arrays/floats/other signatures use NumPy."""
+    def __getattr__(self, name):
+        return getattr(np, name)
+
+    @staticmethod
+    def clip(value, lower, upper, *args, **kwargs):
+        if (not args and not kwargs and type(value) in (int, np.int64)
+                and type(lower) is int and type(upper) is int
+                and all(-(1 << 63) <= x < (1 << 63) for x in (value, lower, upper))):
+            return np.int64(min(max(int(value), lower), upper))
+        return np.clip(value, lower, upper, *args, **kwargs)
+
+
 def memo(function, *, selected=None, maxsize=4):
     if mode(selected) == 'off':
         return function
@@ -203,6 +248,18 @@ class Installation:
         # Common S2/S3 pure posterior calculations. Sources containing the
         # existing per-runtime S3 cache retain that cache and its audit bytes.
         from harness import zone_solo_cyan_augmented_start as global_start
+        from harness.owncam_localizer import OwnCamLocalizer
+        if self.guard(OwnCamLocalizer.estimate,
+                '9c6516fb0df8a7b5a0eb11954b87a544fcad82dc6d7d75a8af70a4a687f24327', 'owncam_moments'):
+            cached = MethodSummaryMemo(OwnCamLocalizer.estimate)
+            self.replace(OwnCamLocalizer, 'estimate', lambda owner, cache=cached: cache(owner))
+            self.caches['owncam_moments'] = cached
+            self.record['applied'].append('owncam_moments')
+        from harness import zone_pair_highpose_opencv_exact as opencv
+        if self.guard(opencv.install,
+                '939633d488b4d2d2ceb7cec4cc30270deecd162c18dfe2a1ef3fe8b6b35f80d3', 'opencv_integer_clip'):
+            self.aliases(opencv.install, bind(opencv.install, np=IntegerClipNumpy()))
+            self.record['applied'].append('opencv_integer_clip')
         if self.guard(global_start.belief_report,
                 '7c0acfa9ce86e0a26348a6e56f193533f87c5c89428e7ce16a4430d9c4fd0207', 'posterior_summary'):
             summary = memo(global_start.belief_report, selected=DEFAULT)

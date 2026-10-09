@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from harness.controller_exact_speedups import ArrayRevision, PosteriorMemo, PureMemo, mode
+from harness.controller_exact_speedups import ArrayRevision, PosteriorMemo, PureMemo, MethodSummaryMemo, IntegerClipNumpy, mode
 
 
 def test_snapshot_in_place_noncontiguous_signed_zero_and_nan_payloads():
@@ -57,6 +57,38 @@ def test_option_validation(monkeypatch):
     assert mode() == 'off'
     with pytest.raises(ValueError):
         mode('typo')
+
+
+def test_owncam_moments_keep_live_metadata_and_inplace_updates():
+    from types import SimpleNamespace
+    from harness.owncam_localizer import OwnCamLocalizer
+    original = OwnCamLocalizer.estimate
+    rng = np.random.default_rng(10)
+    owner = SimpleNamespace(initialized=True,px=rng.normal(size=(100,3)),
+                            logw=rng.normal(size=100),t=1.3,last_tag_t=None)
+    cached = MethodSummaryMemo(original)
+    for mutate in (lambda:None,lambda:setattr(owner,'t',2.4),
+                   lambda:setattr(owner,'last_tag_t',1.5),lambda:owner.px.__setitem__((0,0),4.),
+                   lambda:owner.logw.__setitem__(0,2.)):
+        mutate()
+        assert cached(owner) == original(owner)
+    cached(owner)['cov'][0][0]=999
+    assert cached(owner)==original(owner)
+    owner.initialized=False
+    assert cached(owner)==original(owner)
+    assert cached.hits>0
+
+
+def test_integer_clip_matches_numpy_bits_and_preserves_float_fallback():
+    proxy = IntegerClipNumpy()
+    for kind in (int,np.int64):
+        for v in (-999,0,1,478,999):
+            for low,high in ((1,478),(478,1),(-10,10)):
+                a,b=proxy.clip(kind(v),low,high),np.clip(kind(v),low,high)
+                assert type(a) is type(b) and a.tobytes()==b.tobytes()
+    for value in (-0.,0.,np.nan,np.inf,np.array([-0.,np.nan,1.])):
+        a,b=proxy.clip(value,-.5,.5),np.clip(value,-.5,.5)
+        assert a.tobytes()==b.tobytes()
 
 
 def test_s3_extract_does_not_alias_signed_zero_offsets(monkeypatch):
@@ -121,7 +153,7 @@ def test_common_install_off_and_restore(monkeypatch):
         for a, b in zip(actual[:2], expected[:2]):
             assert a.tobytes() == b.tobytes()
         assert actual[2] == expected[2]
-        assert on.snapshot()['applied'] == ['posterior_summary']
+        assert on.snapshot()['applied'] == ['owncam_moments','opencv_integer_clip','posterior_summary']
     finally:
         on.close()
     assert start.belief_report is previous

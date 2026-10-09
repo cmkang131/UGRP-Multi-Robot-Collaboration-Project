@@ -27,7 +27,26 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 CATEGORIES = ('physics', 'render', 'pf_update', 'posterior_summary', 'scan_match',
-              'map_insert', 'path_plan', 'graph', 'record_io', 'controller_other', 'setup_proof')
+              'map_insert', 'path_plan', 'graph', 'vision', 'record_io', 'controller_other', 'setup_proof')
+
+
+def split_timing(value):
+    """Preserve actual latency telemetry separately; never change numeric state."""
+    telemetry = {}
+    def visit(item, path=''):
+        if isinstance(item, dict):
+            result = {}
+            for key, child in item.items():
+                pointer = path + '/' + str(key).replace('~', '~0').replace('/', '~1')
+                if key == 'inference_wall_ms':
+                    telemetry[pointer] = child
+                else:
+                    result[key] = visit(child, pointer)
+            return result
+        if isinstance(item, (list, tuple)):
+            return [visit(child, path + '/' + str(index)) for index, child in enumerate(item)]
+        return item
+    return visit(value), telemetry
 
 
 def write(path, value, *, ensure_ascii=True):
@@ -122,9 +141,18 @@ def verify_inputs(raw, robots):
 def attach_timers(timer, kind):
     if kind == 's3':
         from harness import zone_solo_cyan_augmented_start as a, zone_solo_cyan_best_cluster as b
+        from harness import owncam_localizer as own, zone_solo_cyan_amcl_sensor as sensor
+        from harness import zone_solo_cyan_landmarks as landmarks, opencv_wall_observation as vision
         timer.aliases(a.belief_report, 'posterior_summary')
         timer.aliases(b.extract, 'posterior_summary')
         timer.aliases(b.connected_labels, 'posterior_summary')
+        timer.method(own.OwnCamLocalizer, 'estimate', 'posterior_summary')
+        timer.method(own.OwnCamLocalizer, 'predict_to', 'pf_update')
+        timer.method(a.Policy, 'measure', 'pf_update')
+        timer.aliases(sensor.likelihood, 'pf_update')
+        timer.aliases(landmarks.landmark_likelihood, 'pf_update')
+        timer.aliases(vision.observe, 'vision')
+        timer.aliases(vision.observations, 'vision')
     else:
         from harness import self_map_rbpf as r, self_pose_graph as g, wall_confidence as w
         from harness.self_odom_grid import OdomGrid
@@ -206,7 +234,11 @@ def s3(raw, out, timer):
         with timer.span('record_io'):
             write(out / 'commands.json', generated)
             write(out / 'state.json', dict(states=states, poses={r: x.pose_log for r, x in rt.localizers.items()}))
-            write(out / 'record.json', rt.record(), ensure_ascii=False)
+            record, telemetry = split_timing(rt.record())
+            write(out / 'record.json', record, ensure_ascii=False)
+            write(out / 'timing-provenance.json', dict(schema='ugrp.replay_timing_provenance.v1',
+                scope='actual local provider latency, excluded from behavior bytes only',
+                fields=telemetry), ensure_ascii=False)
         rt.close()
         undo()
     return dict(frames=len(trend), available_frames=len(frames['r1']), start=first,
