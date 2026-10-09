@@ -11,6 +11,7 @@ main `77eba22c`/PR #423 이후의 저장 입력 개발 진단이다. **새 ABBA 
   지도 칸 합계와 비용의 동반 증가는 관찰됐지만 지도 면적에 대한 선형 비례는 증명하지 않았다.
   기존 8192 pair/64 field 캐시를 바꾸면 실행 진단 카운터까지 달라진다.
   별도의 유한 순수 결과 캐시로 원래 카운터·lazy field 생성·후보·동점 순서를 유지한다.
+  pair 항목은 128MiB 추정 상한과 weak owner 참조, 각 field cache는 64MiB 상한을 둔다.
 - 정확한 거리장은 최근접 장애물 witness로 추가/삭제의 영향을 추적한다.
   제거한 장애물을 최근접으로 쓰던 모든 칸을 갱신하며, 영향이 큰 경우 원래 전체 EDT로 fallback한다.
   원래 거리는 무한 범위이므로 임의의 dirty halo로 잘라 갱신하지 않는다.
@@ -34,6 +35,8 @@ main `77eba22c`/PR #423 이후의 저장 입력 개발 진단이다. **새 ABBA 
 
 [plan.json](plan.json)의 S3 v148, ego59 55001/55003을 각각 **A→B→B→A**로 직렬 재생한다.
 A는 #423 exact-v1/scan off/plain 기록, B는 exact-v1/scan exact-v2/gzip-v1 기록이다.
+속도 ABBA는 cProfile 없이 구간 타이머만 사용하며, 이후 별도 B 전체 재생에서 cProfile을 얻는다.
+profile 재생도 ABBA B와 논리 바이트를 직접 비교한다. profiler overhead를 속도 표에 혼합하지 않는다.
 이 비교는 정합과 저장 변경을 함께 측정한다. 직렬화·버퍼 flush·gzip footer·파일 hash까지
 실행 wall에 포함한다. 구간 계측으로 저장 쓰기 비용과 정합 효과를 구분한다.
 물리/렌더는 실행하지 않으며 **controller-only wall/input-SIM**이다. 온라인 ≤1.5 달성 주장과 구분한다.

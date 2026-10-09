@@ -163,6 +163,7 @@ def main():
     p.add_argument('--expected-source-sha',required=True)
     p.add_argument('--budget-s',type=float,default=21600.)
     p.add_argument('--profile',action='store_true')
+    p.add_argument('--diagnostic-profile',action='store_true',help='separate profiled B replay after unprofiled ABBA')
     p.add_argument('--local-submap-m',type=float,default=0.)
     p.add_argument('--execute',action='store_true')
     args=p.parse_args()
@@ -202,6 +203,16 @@ def main():
             write(args.output/(case['id']+'-comparison.json'),entry)
             if not proof['verified']:
                 raise RuntimeError('BEHAVIOR_BYTES_DIFFER: default-on adoption refused')
+        if args.diagnostic_profile:
+            profile_args=argparse.Namespace(**{**vars(args),'profile':True})
+            for case in plan['cases']:
+                output=args.output/(case['id']+'-profile')
+                invoke(case,output,profile_args,scan='exact-v2',storage='gzip-v1')
+                entry=next(c for c in report['cases'] if c['id']==case['id'])
+                entry['diagnostic_profile']=dict(result=json.loads((output/'result.json').read_text()),
+                    proof=compare_runs([args.output/(case['id']+'-2-B'),output],case['kind']))
+                if not entry['diagnostic_profile']['proof']['verified']:
+                    raise RuntimeError('PROFILE_BEHAVIOR_BYTES_DIFFER')
         if args.local_submap_m:
             for case in plan['cases']:
                 if case['kind']!='egomap':continue

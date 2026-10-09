@@ -91,6 +91,11 @@ def test_loop_result_cache_owner_mutation_lazy_fields_and_output_isolation():
     assert q.builds==1 and len(cache.entries)<=2
     p.grid.cells.clear()
     assert cache(submap,row,initial,None,prepared=p)=={'reason':'empty'}
+    import gc, weakref
+    owner=weakref.ref(p)
+    del p
+    gc.collect()
+    assert owner() is None  # cached pairs must not keep expired submap owners alive
 
 
 def test_scan_options_are_explicit_and_local_policy_defaults_off(monkeypatch):

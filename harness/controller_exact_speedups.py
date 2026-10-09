@@ -178,6 +178,7 @@ class IncrementalGridFieldMemo(GridFieldMemo):
     def __init__(self, cls, maxsize=16):
         super().__init__(cls, maxsize)
         self.updates = self.changed_cells = self.full_rebuilds = 0
+        self.bytes, self.max_bytes = 0, 64*1024*1024
 
     def __call__(self, owner, points, resolution=.05):
         if (type(owner) is not self.cls or type(points) is not np.ndarray or
@@ -188,6 +189,8 @@ class IncrementalGridFieldMemo(GridFieldMemo):
         origin = np.floor((points.min(0)-1.)/resolution)*resolution
         size = np.ceil((points.max(0)+1.-origin)/resolution).astype(int)+1
         if np.any(size <= 0) or np.any(size > 4096) or np.prod(size) > 4_000_000:
+            return self.function(owner, points, resolution)
+        if int(np.prod(size))*25 > self.max_bytes:
             return self.function(owner, points, resolution)
         indices = np.rint((points-origin)/resolution).astype(int)
         occupied = np.zeros(tuple(size), bool)
@@ -235,15 +238,19 @@ class IncrementalGridFieldMemo(GridFieldMemo):
             squares = np.sum((np.indices(occupied.shape, dtype=np.int64)-nearest)**2, axis=0)
             distance = owner.distance.copy()
             self.full_rebuilds += 1
+        if old is not None:
+            self.bytes -= old['bytes']
+        size_bytes = sum(a.nbytes for a in (occupied,nearest,squares,distance))
         self.entries[geometry] = dict(occupied=occupied, nearest=nearest,
-            squares=squares, distance=distance)
+            squares=squares, distance=distance, bytes=size_bytes)
+        self.bytes += size_bytes
         self.entries.move_to_end(geometry)
-        if len(self.entries) > self.maxsize:
-            self.entries.popitem(last=False)
+        while len(self.entries) > self.maxsize or self.bytes > self.max_bytes:
+            self.bytes -= self.entries.popitem(last=False)[1]['bytes']
 
     def extra_stats(self):
         return dict(incremental_updates=self.updates, changed_distance_cells=self.changed_cells,
-                    full_rebuilds=self.full_rebuilds)
+                    full_rebuilds=self.full_rebuilds, array_bytes=self.bytes,max_array_bytes=self.max_bytes)
 
 
 class ProbabilityFieldMemo(GridFieldMemo):
@@ -251,15 +258,19 @@ class ProbabilityFieldMemo(GridFieldMemo):
     def __init__(self, cls, maxsize=32):
         super().__init__(cls, maxsize)
         self.updates = self.changed_cells = 0
+        self.bytes, self.max_bytes = 0, 64*1024*1024
 
     def __call__(self, owner, grid):
         cells = grid.cells
         if (type(owner) is not self.cls or type(cells) is not dict or not cells or
+                any(type(k) is not tuple or len(k)!=2 or any(type(i) not in (int,np.int64,np.int32) for i in k) for k in cells) or
                 any(type(v) is not float or not math.isfinite(v) or abs(v) > 600 for v in cells.values())):
             return self.function(owner, grid)
         keys = np.array(list(cells))
         lower = keys.min(0)-2
         shape = tuple(keys.max(0)-lower+3)
+        if np.prod(shape)*8+len(cells)*64 > self.max_bytes:
+            return self.function(owner,grid)
         geometry = key((grid.resolution_m, lower, tuple(int(x) for x in shape)))
         old = self.entries.get(geometry)
         changed = [(k, v) for k, v in cells.items() if old is not None and
@@ -278,13 +289,18 @@ class ProbabilityFieldMemo(GridFieldMemo):
         else:
             self.function(owner, grid)
             self.misses += 1
-        self.entries[geometry] = dict(cells=dict(cells), values=owner.values.copy())
+        if old is not None:
+            self.bytes -= old['bytes']
+        size_bytes = owner.values.nbytes+len(cells)*64
+        self.entries[geometry] = dict(cells=dict(cells), values=owner.values.copy(), bytes=size_bytes)
+        self.bytes += size_bytes
         self.entries.move_to_end(geometry)
-        if len(self.entries) > self.maxsize:
-            self.entries.popitem(last=False)
+        while len(self.entries) > self.maxsize or self.bytes > self.max_bytes:
+            self.bytes -= self.entries.popitem(last=False)[1]['bytes']
 
     def extra_stats(self):
-        return dict(incremental_updates=self.updates, changed_probability_cells=self.changed_cells)
+        return dict(incremental_updates=self.updates, changed_probability_cells=self.changed_cells,
+                    estimated_bytes=self.bytes,max_estimated_bytes=self.max_bytes)
 
 
 class GraphLoopMemo:
