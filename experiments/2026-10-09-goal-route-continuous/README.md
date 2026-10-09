@@ -56,3 +56,9 @@ P1 표준 single-door 지도는 기존 two-door FinalV3Scene registry와 다르�
 바뀐2시험파일 **25 passed**, `offline-smoke.json`의150RGB프레임 오류0(탐색→접근 포함). 기본off기존객체/출력 그대로,공통으로추출한기존heading100입력float bytes동일. `freeze.json`에 실행의존파일SHA를 고정했다. P1-a `StationaryPitch`는 자기센서입력·명령정착·자세별인과적중앙값·60초상한·hold출력과 기존프런트엔드보정 API를 제공한다. 실제60초보정/효과검증은미실행이며 이번P1-b는off다.
 
 S3의 새 지시(s3next.txt)를 읽어 **공통heading push 후 S3 재시험**이 아직 선행대기임을 확인했다. 현재 물리0/9,잠금은S2 heading이사용중. 순서승인완료사실이기록된 queue-admission.json 없이는 실행기가물리를 시작하지 않는다.
+
+### 실행 전 설계 누락 보완: 자기 초음파 여유
+
+물리0/9인 상태에서 §3.2의 "오도메트리+전면초음파 여유" 연결을 보완한다. **sensors.ultrasonic_front=on_v1**,기존OwnUltrasonicRig/OwnRangeInput을재사용해r3의시각·거리·상태만5Hz로받고(무엇에맞았는지없음),기존Nav2 1.2초충돌시간과CAD전면offset/footprint로would-stop을기록한다. P1-a pitch보정은계속off,초음파로지도/pose/목표를맞추지않는다. sensors-off과별도조건표시. 일반adapter의dev_light기본false에서는정지,이번9회실행기만명시dev_light=true. 결과를본수정이아닌실행전설계연결완료다.
+
+관측채널 보완 후 바뀐2시험 **26 passed**. range 입력은 정확히 {t,range_m,valid,status} 4필드,off일때센서접근0. 명시 dev_light와 일반모드의정지계약을구분했다. 물리는계속0/9,사후문턱변경0.

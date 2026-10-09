@@ -36,4 +36,29 @@ def make_scene(bundle,seed):
 
 
 class PhysicsBackend(Base):
-    __init__=bind(Base.__init__,make_scene=make_scene)
+    _initialize=bind(Base.__init__,make_scene=make_scene)
+
+    def __init__(self,bundle,out,*,seed):
+        self.range_rig=None;self.range_seed=seed
+        self._initialize(bundle,out,seed=seed)
+
+    def reset(self,cap):
+        elapsed=super().reset(cap)
+        if self.bundle.get('sensors',{}).get('ultrasonic_front','off')=='on_v1':
+            from harness.ultrasonic_input import OwnRangeInput,bundle_record
+            from sim.ultrasonic_input import OwnUltrasonicRig,sensor_seed
+            from scripts.run_active_wall_rotleft import dump
+            channel=OwnRangeInput(('r3',),'on_v1',noise_seeds={'r3':sensor_seed(self.range_seed,'r3')},out_dir=self.out)
+            self.range_rig=OwnUltrasonicRig(self.world.model,self.world.data,('r3',),episode_seed=self.range_seed,range_input=channel)
+            dump(self.out/'sensors.json',dict(**bundle_record(self.bundle['sensors']),controller_use='egomap56 front clearance DEV would-stop; pitch off',poll_hz=5))
+        return elapsed
+
+    def own_range(self):
+        if self.range_rig is None:return None
+        self.range_rig.tick(self.now)
+        report=self.range_rig.provider('r3').report(self.now)
+        return dict(t=report.t_meas,range_m=report.range_m if report.valid else None,valid=report.valid,status=report.status)
+
+    def close(self):
+        if self.range_rig is not None:self.range_rig.close()
+        super().close()

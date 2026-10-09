@@ -26,12 +26,12 @@ def bundle(seed,source):
         route_hygiene='off',scan_accumulation='off',place_gate='off',
         navigation_start='navfn_recovery_v1',frontier_observation='yamauchi_cycle_v1',
         map_acceleration='scalar_rays_v1',graph_acceleration='match_cache_v1')
-    b['sensors']={'ultrasonic_front':'off'}
+    b['sensors']={'ultrasonic_front':'on_v1'}
     b['schedule']=dict(leg_cap_s=270.,maximum_legs=3,host_cap_s=3600.,forced_loss=False)
     return b
 
 
-def controller(explorer):return install(attach(explorer,goal_route=OPTION),map_acceleration='scalar_rays_v1')
+def controller(explorer):return install(attach(explorer,goal_route=OPTION,dev_light=True),map_acceleration='scalar_rays_v1')
 
 
 def run(out,source,seed,backend_factory):
@@ -59,7 +59,7 @@ def run(out,source,seed,backend_factory):
                 detection=observe(rgb,SEARCH,body_settling=.7)
                 frame_hash=base.old.sha(out/f'robots/r3/rgb/{tick:05d}.jpg')
                 cmd,trace=c.receive(robot_id='r3',t=t,frame_id=obs['frame_id'],rgb=rgb,servo=SEARCH,
-                    observation=detection,frame_sha256=frame_hash)
+                    observation=detection,frame_sha256=frame_hash,own_range=backend.own_range())
                 backend._append('own-controller.jsonl',trace)
                 backend._append('own-contacts.jsonl',dict(t=t,frame_id=obs['frame_id'],**detection))
                 g=explorer.memory.self_map

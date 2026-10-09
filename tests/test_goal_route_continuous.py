@@ -85,6 +85,7 @@ def test_localization_only_on_existing_uncertainty_or_repeat_not_forced_loss(mon
     c.explorer.memory=SimpleNamespace(self_map=g)
     calls=[]
     monkeypatch.setattr(c.graph,'match',lambda *args:(calls.append(args) or {'status':'rejected','reason':'unobservable'}))
+    c.dev_light=True
     c._localize(sample(2),360);assert calls==[]
     g.odom.covariance=np.diag([.15**2,.01,.0001]);c._localize(sample(3),361)
     assert len(calls)==1 and c.events[-1]['reason']=='would_stop_tracking_uncertain' and not c.events[-1]['reset']
@@ -157,3 +158,18 @@ def test_evaluation_shortest_path_respects_wall_and_door():
         {'center_m':[2,0],'half_extents_m':[.05,1]}, {'center_m':[0,-.4],'half_extents_m':[.05,.6]}]}
     dist=report.shortest(static,[-1,0],[1,0])
     assert dist is not None and dist>2
+
+
+def test_own_range_channel_contains_no_hit_identity_and_off_no_reads():
+    from sim.goal_route_continuous import PhysicsBackend
+    b=PhysicsBackend.__new__(PhysicsBackend);b.range_rig=None
+    assert b.own_range() is None
+    class Rig:
+        def tick(self,t):self.tick_time=t
+        def provider(self,rid):
+            assert rid=='r3'
+            return SimpleNamespace(report=lambda t:SimpleNamespace(t_meas=t,range_m=1.2,valid=True,status='ok'))
+    b.range_rig=Rig();b.world=SimpleNamespace(data=SimpleNamespace(time=3.2))
+    reading=b.own_range()
+    assert reading==dict(t=3.2,range_m=1.2,valid=True,status='ok')
+    assert set(reading)=={'t','range_m','valid','status'}

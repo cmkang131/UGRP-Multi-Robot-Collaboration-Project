@@ -25,10 +25,10 @@ OPTION='continuous_v1'
 PITCH='stationary_ultrasonic_v1'
 
 
-def attach(explorer, *, goal_route='off', heading_mode='path_tangent_v1'):
+def attach(explorer, *, goal_route='off', heading_mode='path_tangent_v1',dev_light=False):
     if goal_route=='off':return explorer
     if goal_route!=OPTION:raise ValueError('UNKNOWN_GOAL_ROUTE')
-    return GoalRoute(explorer,heading_mode=heading_mode)
+    return GoalRoute(explorer,heading_mode=heading_mode,dev_light=dev_light)
 
 
 def box_detector():
@@ -115,17 +115,17 @@ class StationaryPitch:
 
 
 class GoalRoute:
-    def __init__(self,explorer,*,heading_mode='path_tangent_v1'):
+    def __init__(self,explorer,*,heading_mode='path_tangent_v1',dev_light=False):
         if heading_mode not in ('off','path_tangent_v1'):raise ValueError('UNKNOWN_HEADING_MODE')
         self.explorer=explorer;self.robot_id=explorer.robot_id;self.started=explorer.started
-        self.heading_mode=heading_mode;self.stage='explore';self.done=False;self.declared=False
+        self.dev_light=dev_light;self.heading_mode=heading_mode;self.stage='explore';self.done=False;self.declared=False
         self.entities={};self.reached={};self.active=None;self.leg_start=self.started
         self.graph=TeachGraph(self.robot_id);self.navigator=MissionNavigator()
         self.sensor=Sensor(HUES);self.detect_boxes=box_detector()
         self.events=[];self.cues=[];self.matches=[];self.inputs=[];self.last_command=None
         self.box_track=None;self.box_count=0;self.streak=0;self.route=None;self.cursor=0
         self.last_localize=-math.inf;self.match_nodes=set();self.offsets=[]
-        self.last_trace=None;self.labels=None;self.current_patches=[]
+        self.last_trace=None;self.labels=None;self.current_patches=[];self.tracking_blocked=False
         original=explorer.goal.detector
         def capture(*args,**kwargs):
             patches,labels,diag=original(*args,**kwargs)
@@ -163,6 +163,7 @@ class GoalRoute:
     def _localize(self,sample,t):
         cov=self.explorer.memory.self_map.odom.covariance
         uncertain=math.sqrt(float(np.linalg.eigvalsh(cov[:2,:2]).max()))>=.15 or math.sqrt(max(0,cov[2,2]))>=math.radians(5)
+        if not uncertain:self.tracking_blocked=False
         wanted=None
         if self.stage=='return' and self.route:
             nearest=min(self.route['nodes'],key=lambda i:math.dist(sample['pose'][:2],self.graph.nodes[i]['pose'][:2]))
@@ -174,8 +175,11 @@ class GoalRoute:
         e=self.graph.match(sample,wanted);e['trigger']='tracking_uncertainty' if uncertain else 'repeat_node'
         self.matches.append(e)
         if e['status']!='accepted':
-            if uncertain:self.event(t,'would_stop_tracking_uncertain',reason_detail=e.get('reason'),reset=False)
+            if uncertain:
+                self.tracking_blocked=True
+                self.event(t,'would_stop_tracking_uncertain' if self.dev_light else 'tracking_uncertain_stop',reason_detail=e.get('reason'),reset=False)
             return
+        self.tracking_blocked=False
         if wanted is not None:self.match_nodes.add(wanted)
         g=self.explorer.memory.self_map
         delta=compose(e['pose'],inverse(sample['pose']))
@@ -227,7 +231,7 @@ class GoalRoute:
         while self.cursor<len(points) and math.dist(pose[:2],points[self.cursor]['pose'][:2])<=.05:self.cursor+=1
         return points[self.cursor]['pose'][:2] if self.cursor<len(points) else self.graph.nodes[0]['pose'][:2]
 
-    def receive(self,*,robot_id,t,frame_id,rgb,servo,observation,frame_sha256):
+    def receive(self,*,robot_id,t,frame_id,rgb,servo,observation,frame_sha256,own_range=None):
         if robot_id!=self.robot_id:raise ValueError('PEER_INPUT_FORBIDDEN')
         if self.done:
             trace=copy.deepcopy(self.last_trace);cmd=dict(t=float(t),kind='hold')
@@ -243,7 +247,7 @@ class GoalRoute:
         features=self.sensor.measure(cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR),servo,points)
         if features:
             self.cues.append(dict(t=t,frame_id=frame_id,pose=pose.tolist(),features=features,source='own'))
-        self.inputs.append(dict(t=t,frame_id=frame_id,sha256=frame_sha256))
+        self.inputs.append(dict(t=t,frame_id=frame_id,sha256=frame_sha256,own_range=copy.deepcopy(own_range)))
         b=remembered_goal(trace['goal'],t=t,frame_id=frame_id,frame_sha256=frame_sha256)
         if b is not None and 'B' not in self.reached:
             self._entity('B',b['center_m'],t,frame_id,frame_sha256,observation=b)
@@ -296,13 +300,22 @@ class GoalRoute:
             cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=self.explorer.pose,core=n.core,points=wall,
                 motion_model=self.explorer.motion_model,translation_policy='forward_only_v1')
             trace['pulse']=pulse
-        if not self.done and cmd['kind']=='hold' and 'twist' in locals() and np.linalg.norm(twist)>0:
+        if self.dev_light and not self.done and cmd['kind']=='hold' and 'twist' in locals() and np.linalg.norm(twist)>0:
             trial,trial_pulse=pulse_command(twist,t,motion_model=self.explorer.motion_model,
                 translation_policy='forward_only_v1' if self.heading_mode!='off' else 'off')
             if trial['kind']!='hold':
                 self.event(t,'would_stop_collision_guard',stage=self.stage,dev_light=True)
                 cmd=trial;trace['pulse']=trial_pulse
-        if self.done:cmd=dict(t=float(t),kind='hold')
+        if own_range is not None and own_range['valid'] and 0<=t-own_range['t']<=.2+1e-9:
+            from harness.ultrasonic_model import DEFAULT_SPEC
+            from harness.public_navigation.costmap import HALF
+            # Same 1.2s Nav2 time-before-collision, static sensor/footprint CAD.
+            speed=max(0.,trace.get('pulse',{}).get('predicted_delta',[0,0,0])[0]/.2)
+            clearance=DEFAULT_SPEC.face_x_m+own_range['range_m']-HALF[0]
+            if speed>0 and clearance<=1.2*speed:
+                self.event(t,'would_stop_ultrasonic_margin' if self.dev_light else 'ultrasonic_stop',clearance_m=clearance)
+                if not self.dev_light:cmd=dict(t=float(t),kind='hold')
+        if self.done or (self.tracking_blocked and not self.dev_light):cmd=dict(t=float(t),kind='hold')
         trace.update(stage=self.stage,command=cmd,local_pose=pose.tolist(),pose=self.explorer.pose.tolist(),
             remembered_entities=copy.deepcopy(self.entities),reached=copy.deepcopy(self.reached),
             declared_goal='B' in self.reached,declared_return=self.declared,tracking_reset=False,
