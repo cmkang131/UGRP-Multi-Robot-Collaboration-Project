@@ -15,5 +15,13 @@
     }
   ],
   "unique_test_cases": 60,
-  "ci_waited": false
+  "ci_waited": false,
+  "scope": "pre-smoke candidate b73ce193; post-smoke source amendment is separately listed",
+  "post_smoke": {
+    "command": "pytest tests/test_s3_stage_sweep.py tests/test_s3_continue.py -q",
+    "passed": 11,
+    "offline_sweep_cases": 58,
+    "unexpected_errors": 0,
+    "additional_physics": 0
+  }
 }

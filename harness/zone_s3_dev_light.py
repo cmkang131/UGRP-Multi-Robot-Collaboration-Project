@@ -2,7 +2,8 @@
 
 Log the original conservative verdict, then use the current finite own
 estimate. No global patches, no GT, no modified uncertainty thresholds.
-Unknown failures, command/input errors and every pair GO barrier stay hard.
+Unknown failures, command/input errors and pair GO disagreements stay hard.
+An alive partner's pre-GO approach wait may renew in DEV, never inventing GO.
 """
 import copy
 import math
@@ -244,6 +245,19 @@ def attach_endpoint(ep, audit):
     ctl._light_repeat_exceeded = lambda reason, now: False
     original_fail = ctl.fail
     def fail(reason, now):
+        # Waiting for readiness is not a failed mutual GO receipt. Keep the
+        # predicate/barrier intact and renew only this DEV observation window.
+        # Once any GO was consumed, or the peer is silent/aborted, fail closed.
+        if (reason == 'BARRIER_APPROACH_TIMEOUT' and ctl.state == 'wait_approach'
+                and finite_pose(own.last_report) and ep.status.grant is None
+                and ep.status.failure is None):
+            peers = ep.status.channel.partner_view(own.robot_id, now)
+            if peers and all(p['alive'] and p['state'] != 'abort' for p in peers.values()):
+                audit.note(own, now, reason, 'pair.pre_go_wait',
+                           original_wait_s=now-ctl.state_t, resumed_action='wait for real mutual GO')
+                ctl.state_t = now
+                ctl.port.hold(now)
+                return None
         if reason not in SOFT or not finite_pose(own.last_report):
             return original_fail(reason, now)
         audit.note(own, now, reason, 'controller.fail')

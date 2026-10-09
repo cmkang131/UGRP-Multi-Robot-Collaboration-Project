@@ -480,6 +480,25 @@ def sweep(out, monkeypatch):
         for rid,action in p.runtime.solo.step(p.host.now):p.issue(rid,action,p.host.now)
         return dict(door={r:c.state for r,c in p.runtime.clients.items()})
     p.case('door_clear_solo_handoff','r1+r2+r3',door_pass)
+    # v149 reached this time boundary with an alive, still-approaching peer.
+    # Exercise the real inherited wait method, two renewed windows and native
+    # hold. No readiness/GO is fabricated and the state must not advance.
+    from scripts.run_m2_pair import APPROACH_WAIT_S
+    for rid,ep in p.eps.items():
+        def pre_go_wait(ep=ep):
+            for repeat in range(2):
+                now=p.host.now+APPROACH_WAIT_S+.1
+                p.refresh(now);p.bus(now,'aligning')
+                ctl=ep.controller;ctl.state='wait_approach'
+                ctl.state_t=now-APPROACH_WAIT_S-.1;ctl.next_look=now+1.
+                ctl._wait_approach(now,True)
+                rows=p.drain(ep,now)
+                assert rows and all(a['kind']=='hold' for a in rows)
+                assert ctl.state=='wait_approach' and ctl.failure is None
+                assert ep.status.grant is None and not ep.terminal
+                assert ctl.sync_for('approach').authorize(now)['phase']=='WAIT'
+            return dict(repeated_windows=2,advanced_without_GO=False)
+        p.case('alive_peer_pre_GO_wait_timeout_continues',rid,pre_go_wait)
     # Actual endpoint failure path, not merely an authorization predicate.
     def missed_go():
         p.bus(p.host.now,'start_ready')
@@ -491,6 +510,15 @@ def sweep(out, monkeypatch):
         p.issue('r1',dict(kind='hold'),p.host.now+.05)
         return dict(hard_stop='PARTNER_MISSED_GO')
     p.case('missed_GO_stays_hard_stop','r1',missed_go)
+    def consumed_go_timeout():
+        p.bus(p.host.now,'aligning')
+        ep=p.eps['r2'];ep.status.grant=('approach_go_0',p.host.now)
+        ep.controller.state='wait_approach'
+        ep.controller.fail('BARRIER_APPROACH_TIMEOUT',p.host.now)
+        assert ep.controller.failure=='BARRIER_APPROACH_TIMEOUT'
+        p.drain(ep,p.host.now)
+        return dict(hard_stop='BARRIER_APPROACH_TIMEOUT',already_consumed_GO=True)
+    p.case('consumed_GO_timeout_stays_hard','r2',consumed_go_timeout)
     # Reset on a used port must remove active expiry and restore ALL capabilities.
     p.host.world.data.time=round(p.host.now+2.,4)
     p.host.reset(5.)
