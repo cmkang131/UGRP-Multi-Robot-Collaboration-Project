@@ -112,3 +112,32 @@ def test_calibrated_homography_measures_rotation_without_command_or_truth(monkey
     assert result['status']=='measured' and result['inliers']>=6
     assert abs(result['delta_yaw']-yaw)<=3*result['sigma_yaw']
     assert result['delta_yaw']>0
+
+
+def test_six_seed_admission_no_prior_fixed_slots_and_old_bundles_unchanged():
+    from pathlib import Path
+    from harness import zone_s2_graduation59_contract as c
+    from harness import zone_s2_active_observation_contract as old
+    assert old.registration()['seeds']==[1060,1062,1063,1064]
+    plan=json.loads(c.PLAN.read_text())
+    assert plan['seeds']==list(range(1065,1071)) and plan['denominator']==6
+    assert plan['limits']['active_abs_actual_deg']==90
+    for row in plan['runs']:
+        b=c.bundle('a'*40,row['seed'],**c.NEW_OPTIONS);c.require_execution(b)
+        assert b['task']['pickup_slot']==row['slot']
+        assert b['options']['start_prior']=='none_v1' and b['dev_light']
+        assert b['options']['idle_robot_contacts']=='freeze_v1'
+    with pytest.raises(ValueError):c.bundle('a'*40,1064)
+    with pytest.raises(ValueError):c.require_execution(c.bundle('a'*40,1065))
+
+
+def test_graduation_factory_builds_exact_stack_without_physics():
+    from scripts.run_s2_graduation59 import runtime_factory
+    from harness import zone_s2_graduation59_contract as g
+    from harness import zone_solo_cyan_contract_v106 as c
+    b=g.bundle('a'*40,1065,**g.NEW_OPTIONS)
+    r=runtime_factory(b,{},[])(c.hp.resolve(c.MAP_ID)[0],c.ROOT/c.CALIBRATION,c.CALIBRATION_SHA,**b['task'])
+    try:
+        assert r.record()['active_rotation_guard']['parameters']['max_abs_deg']==90
+        assert r.record()['active_localization']['gt_inputs'] is False
+    finally:r.close()

@@ -6425,3 +6425,45 @@ LK 특징은 자기RGB 전체에서 찾고 자기 cyan/검은 경계를 제외�
 카메라가 차체 중심에서 벗어나 생기는 이동도H에 포함한다. 복수 회전 해는 명령에 가까운 하나로 고르지 않고
 전체 yaw 범위를 불확실성에 포함한다. OpenCV 기본 RANSAC3px/.995/2000, 기존LK·inlier 조건과 ±2.8°/±0.9° pitch
 여유를 유지한다. 옵션명은 `rgb_homography_bound_v1`; 상한90°·4구간 관문·PF/NEES는 불변이다.
+
+### s2v59 오프라인 관문 결과 · 여섯 full DEV 사전등록
+
+후보2 `409f668a` 재생 통과: s1060 첫 구간16펄스/40.262° 전체 유지; 나머지1/7/1펄스 뒤
+RGB 합의/양의 깊이 검사 불가로 취소(실제 prefix5.176°/34.919°/4.682°). 총4구간90° 위반0.
+원본91.156°는 삭제하지 않는다. **새 차단 뒤 실제 궤적은 아직 미검증**이며 아래6건에서 별도 측정한다.
+[전체 재생](rotation-envelope-offline-result.json), 원본 후보1 실패도 outputs에 보존한다.
+
+[번호/seed 조회](graduation59-reservation.json): origin/main·열린PR 전체에서 S2 최대v140, 1065–1070은
+관련등록/코드와 primary raw 경로에 사용 흔적0. 새 `zone-s2-realism-v141` / workflow7.34.0.
+[기계 판독 사전등록](graduation59-registration.json). 시작 도크/행/영역 정보0, v140와 같은
+no-prior·Augmented MCL·KLD·look_ahead·freeze·slip/회복·blind파지·dev_light, RGB 회전 guard만 추가.
+원 졸업의 여섯 slot 순서를 그대로 사용한다. 결과 보기 전 이 목록·심판·상한을 커밋·push한다.
+
+|순서|새 seed|slot|full 실행 방식|
+|---:|---:|---|---|
+|1|1065|P1-1|단독|
+|2|1066|P2-1|단독|
+|3|1067|P1-2|동시 쌍 A|
+|4|1068|P2-2|동시 쌍 B|
+|5|1069|P1-3|단독|
+|6|1070|P2-3|단독|
+
+성공은 기존 evaluate lifted/inside/floor/stable/success와 정상 place 종료. 상승z>60mm,
+마지막2초 전 구간 cuboid 전체B안·바닥 오차<8mm·중심z<40mm·움직임≤8mm·정착≥1.95초를 유지한다.
+8꼭짓점 별도 심판으로 거짓 성공/실패를 양방향 비교한다. 누락·비단조 시간은 판정 불가/졸업 차단.
+6건 모두 분모6에 남기고 실패를 교체·제외하지 않는다. HOST/ENOSPC도 포함, 재튜닝·임계값 변경0.
+900SIM/10800wall 상한, raw예산8GiB·실행 전22.03GiB 여유·10GiB 미만이면 HOST_ERROR.
+NEES와 무경고>25cm는 기존 경계로 **수치만** 보고한다. 졸업 전체 조건의 3대 스모크 등은 이번 범위 밖이며
+이6건만으로 정식 stop-ON·본 연구·실물·전체 졸업을 선언하지 않는다.
+
+감독파일 2026-10-09 15:00 추가 사용자 승인: 위3/4번만 **한 parent agent_lock 안 동시2개** 예외.
+`sim/final_pair_highpose_clock.py:advance_to`는 정수 substep, 실행기 on_frames/step/advance는 SIM시각,
+`harness/zone_study_pose_delay_p03.py:delay_contract`는 wall과 무관한 .16SIM초 고정지연이다.
+worker timeout은 별도HOST 경계로 남으며 발생 시 숨기지 않는다. timing_sensitive=false, nice0, 우선순위 조작0.
+처리량 사전 기준: 쌍(SIM합/쌍wall) ÷ 단독4건(SIM합/wall합)≥1.3, 그리고 결과 동일일 때만 효과 있음.
+6건 뒤 s1067 단독 A/A 추가1회(새 표본·졸업분모 아님)로 evaluation/명령/trajectory 바이트를 비교한다.
+CPU/SIM은 자기+회수 자식CPU, 시작·끝 loadavg와 memory_pressure를 기록한다. 표본이 작음을 명시한다.
+동시 쌍 외 자기지도 시뮬과 동시 실행은 계속 금지한다. 결과 전 고정된 이 예외 외 병렬 물리는 없다.
+
+실행 전 바뀐 모듈/관리 시험27개 PASS. source factory·6seed/slot·default-off identity·RGB 회전 부호·불확실성 누적·
+영상 불가 취소·상한 선제 차단을 확인했다. 동시 쌍의 재현 바이트 검증은 실행 후 결과이며 아직 성공으로 쓰지 않는다.
