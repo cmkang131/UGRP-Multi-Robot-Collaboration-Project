@@ -50,3 +50,7 @@
 [재생 원장](equality-summary.json)의 두 독립 프로세스는 구현 `3ad3bdc88c6e3eec745ab19c63822ce840699bc2`에서 로봇별442프레임을 처리하고 원본 혼합 명령 오류에서 똑같이 종료했다. 캐시 전후 생성 명령 SHA-256 `95c7bb1babc22263fd45c83e16f352b6ba746a5f97a9cf8ecf93bcca838d4065`, 포즈 전체·최종 입자/가중치·RNG 상태 SHA-256 `6138376fcdab9317a77c4ef47ac1625beaa71b4f4d04311f0b0160e06762bb8a`가 같다. 원본 v147의 오류도 보존하는 가속 전용 비교이며, heading 수정의 물리 인수가 아니다. 다른 비시간측정 실행과 겹친 정확성 검증이므로 시간 수집을 명시적으로 끄고 `profiled_wall_s=null`로 남겼다. 물리 실행0, 속도 개선 주장0.
 
 TensorBoard 새 snapshot `1009-s3fix2-verified`에 계약/동일성 두 기록을 추가하고 기존 `1009-s3fix-replay`와 함께 열었다. EventAccumulator의10개 스칼라, UI의 계약2→0·해시 동일1/1, 고정 카드8개, HParams `case/policy/seed/source_sha` 선택을 확인했다([표시 검증](tensorboard-verification.json), [고정 링크](tensorboard-link.json)). 새로운 물리 영상은 없으며 v147 대표 영상은 기존 snapshot에 보존한다. cProfile와 새 smoke는 아직 완료하지 않았다.
+
+### would_stop 기록 비용의 측정 전 구분
+
+[원본 계수](would-stop-accounting.json)의511회는 검사 훅 호출 수다. 새 pair 훅421회에서 materialized audit row는18개이며 `Audit.note`는 메모리 리스트에 추가하고 호출마다 파일을 쓰지 않는다(직접 disk write0). 따라서 “511회 동기 파일 쓰기 때문에 느려졌다”는 가설은 코드/원장과 맞지 않는다. 실제 summary·복사·직렬화 비용의 시간 비중은 cProfile 전에는 확정하지 않는다. 호스트의 매 프레임 JSONL은 별개이며 해당 버퍼 후보를 시험했다.
