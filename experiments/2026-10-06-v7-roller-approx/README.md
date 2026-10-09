@@ -5,7 +5,7 @@
 v7은 FUJI 공개 모델의 convex barrel mesh 롤러를 바퀴당 9개 쓴다. S2 한 실행이 2.9 wall초/SIM초로
 예전 wrench 구동(약 1.5)보다 느려서, TIAGo 논문과 같은 **롤러 충돌 근사**가 쓸 만한지 확인한다.
 기본값·기존 번들·v102/v106·카메라·팔/물체 접촉은 바꾸지 않는다. 새 동작은 모두 명시적 옵션이며 기본은 기존 그대로다.
-새 RGB 번들 ID는 예약하지 않았다. 새 진단 workflow `masterpi-v7-roller-approx-probe` 1.0.0
+새 RGB 번들 ID는 예약하지 않았다. 새 진단 workflow `masterpi-v7-roller-approx-probe` 1.0.1
 (원격 브랜치의 같은 id 없음, 기존 `masterpi-drive-friction-probe` 7.1.0은 그대로).
 
 ## 옵션 이름과 기본값
@@ -205,3 +205,10 @@ perturbation 한 건이며 물리 실패 없이 끝나도 동등성은 실패할
 
 후속 제약: freeze 접촉 readout 누락과 짝 빔 오차, sphere6 견인력/옆 회전 오차는 해결되지 않았다.
 채택 실패를 우회하는 추가 튜닝·기준 완화·기본 번들 반영은 하지 않았다.
+
+## PR #407 독립 리뷰 반영 (2026-10-09)
+
+- 최신 main을 merge하고 freeze/sphere6/probe 시험 3개를 `scripts/run_ci_tests.py`에 등록했다. workflow 안내를 1.0.1로 바로잡았다.
+- 로컬 해당 3파일: **26 passed, 1 deselected**. 시뮬레이션 0 지시에 따라 실제 `mj_step`을 호출하는 `test_timer_snapshot_reads_every_mujoco_stage`만 로컬에서 제외했고 CI에는 전체를 등록했다. XML 컴파일·mock step·기본 OFF 바이트 동일 검사는 통과했다.
+- `--shard-count 8 --list-shards`: coverage_verified=true, 새 파일이 각각 정확히 1번 포함된다. v7 소스·sphere6 source.json·camera v3는 수정하지 않았다.
+- 참고: [pytest 선택 실행 공식 문서](https://docs.pytest.org/en/stable/how-to/usage.html), [Git merge 공식 문서](https://git-scm.com/docs/git-merge). 기존 CI의 TEST_PATTERNS 등록 방식을 그대로 사용하며 새 물리 방법은 도입하지 않았다.
