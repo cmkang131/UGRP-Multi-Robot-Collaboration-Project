@@ -33,7 +33,7 @@
     "evaluation_only": true
   },
   "deadlock": {
-    "rule": "after startup, door waiting persists >=120 SIM s with no reservation-state change; diagnostic, not controller feedback",
+    "rule": "after startup: reservation state unchanged, another robot waiting, and USING owners stationary (<1cm XY envelope and <5deg yaw range) in final 120 SIM s of that reservation interval; posthoc only",
     "window_s": 120
   },
   "delivery": {
@@ -70,5 +70,6 @@
     14202,
     14203
   ],
-  "execution_admission": "14201 only; other catalog seeds are inactive and not authorized by this smoke contract"
+  "execution_admission": "14201 only; other catalog seeds are inactive and not authorized by this smoke contract",
+  "success": "per robot: command completion, at least one posthoc-correct convergence, its cargo delivered B, no own failure or robot collision"
 }

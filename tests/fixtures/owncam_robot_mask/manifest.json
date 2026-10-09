@@ -1,0 +1,1133 @@
+{
+  "schema": "ugrp.owncam_robot_mask_fixture.v1",
+  "source_run_sha": "24144281",
+  "base_sha": "b07f33aba278fda7434acaed0974c3d38f7b9ef0",
+  "selection": "18 equally spaced recorded frames per r1/r2 in one completed DEV run; 20/36 unmeasured unloaded postures excluded, all remaining 16 included. Exploratory, not held-out.",
+  "calibration": {
+    "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/dev_pilot_calibration.json",
+    "sha256": "a75fc9325f8a8b89a158c2be0872cebfd4d11c8d2a7482c720eb9e1f99c41501",
+    "scope": "Fixed measured floor camera record, unloaded posture lookup; pan rotation omitted because it leaves image-row geometry unchanged."
+  },
+  "annotation": "Manual visible robot silhouette polygons in undistorted own RGB, evaluation only; approximate outlines. No simulator labels, no hidden wall-row inference.",
+  "frames": [
+    {
+      "id": 0,
+      "file": "frame_00.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r1/rgb/00000.jpg",
+      "sha256": "7181385f39b85bab6dbff89b7890c5fa7cb15ea1bef8348ad1c764c830ccbb7e",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.13112119732740324,
+          3.2514999083116226e-08,
+          0.20978038848447886
+        ],
+        "rotation": [
+          [
+            9.307606936070369e-10,
+            -0.36764868966562436,
+            0.929964752550948
+          ],
+          [
+            -0.9999999999999817,
+            -1.7035145419686424e-07,
+            -6.634523298639546e-08
+          ],
+          [
+            1.82812585936981e-07,
+            -0.9299647525509325,
+            -0.3676486896656184
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": false,
+      "peer_polygons_undistorted": []
+    },
+    {
+      "id": 1,
+      "file": "frame_01.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r1/rgb/00668.jpg",
+      "sha256": "c248ad1789ccdf3dd6ceb87fbcabd0c16e72b43b606eda018144ee176fa1d6d7",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.13112119732740324,
+          3.2514999083116226e-08,
+          0.20978038848447886
+        ],
+        "rotation": [
+          [
+            9.307606936070369e-10,
+            -0.36764868966562436,
+            0.929964752550948
+          ],
+          [
+            -0.9999999999999817,
+            -1.7035145419686424e-07,
+            -6.634523298639546e-08
+          ],
+          [
+            1.82812585936981e-07,
+            -0.9299647525509325,
+            -0.3676486896656184
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": true,
+      "peer_polygons_undistorted": [
+        [
+          [
+            588,
+            45
+          ],
+          [
+            620,
+            40
+          ],
+          [
+            622,
+            0
+          ],
+          [
+            639,
+            0
+          ],
+          [
+            639,
+            86
+          ],
+          [
+            611,
+            82
+          ],
+          [
+            611,
+            72
+          ],
+          [
+            588,
+            76
+          ]
+        ]
+      ]
+    },
+    {
+      "id": 2,
+      "file": "frame_02.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r1/rgb/01336.jpg",
+      "sha256": "d96186f6d9239c62173e5a364519a931d52ea5b1c25310be961010de8876853d",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.13112119732740324,
+          3.2514999083116226e-08,
+          0.20978038848447886
+        ],
+        "rotation": [
+          [
+            9.307606936070369e-10,
+            -0.36764868966562436,
+            0.929964752550948
+          ],
+          [
+            -0.9999999999999817,
+            -1.7035145419686424e-07,
+            -6.634523298639546e-08
+          ],
+          [
+            1.82812585936981e-07,
+            -0.9299647525509325,
+            -0.3676486896656184
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": true,
+      "peer_polygons_undistorted": [
+        [
+          [
+            354,
+            0
+          ],
+          [
+            398,
+            0
+          ],
+          [
+            398,
+            32
+          ],
+          [
+            383,
+            32
+          ],
+          [
+            383,
+            41
+          ],
+          [
+            402,
+            53
+          ],
+          [
+            400,
+            76
+          ],
+          [
+            375,
+            80
+          ],
+          [
+            368,
+            68
+          ],
+          [
+            342,
+            66
+          ],
+          [
+            337,
+            79
+          ],
+          [
+            315,
+            78
+          ],
+          [
+            310,
+            57
+          ],
+          [
+            320,
+            44
+          ],
+          [
+            320,
+            24
+          ],
+          [
+            352,
+            24
+          ]
+        ]
+      ]
+    },
+    {
+      "id": 3,
+      "file": "frame_03.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r1/rgb/02004.jpg",
+      "sha256": "7be0dc4856d5f521f86366596ff1ed2355410e120f6bc78394ae9d6e926d9db8",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.13112119732740324,
+          3.2514999083116226e-08,
+          0.20978038848447886
+        ],
+        "rotation": [
+          [
+            9.307606936070369e-10,
+            -0.36764868966562436,
+            0.929964752550948
+          ],
+          [
+            -0.9999999999999817,
+            -1.7035145419686424e-07,
+            -6.634523298639546e-08
+          ],
+          [
+            1.82812585936981e-07,
+            -0.9299647525509325,
+            -0.3676486896656184
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": true,
+      "peer_polygons_undistorted": [
+        [
+          [
+            318,
+            0
+          ],
+          [
+            345,
+            0
+          ],
+          [
+            345,
+            28
+          ],
+          [
+            356,
+            35
+          ],
+          [
+            370,
+            45
+          ],
+          [
+            370,
+            77
+          ],
+          [
+            354,
+            80
+          ],
+          [
+            346,
+            69
+          ],
+          [
+            309,
+            69
+          ],
+          [
+            303,
+            80
+          ],
+          [
+            291,
+            74
+          ],
+          [
+            291,
+            41
+          ],
+          [
+            305,
+            41
+          ],
+          [
+            308,
+            26
+          ],
+          [
+            318,
+            26
+          ]
+        ]
+      ]
+    },
+    {
+      "id": 4,
+      "file": "frame_04.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r1/rgb/02672.jpg",
+      "sha256": "0de852ae422ad523de8c1c1c733d11764af6961bbbfd815dc25e50c4d803a6db",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 1072,
+        "4": 2400,
+        "5": 1482,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.16248636142688935,
+          3.1576722896289524e-08,
+          0.20373374520719637
+        ],
+        "rotation": [
+          [
+            2.1890169279613234e-09,
+            -0.2388102417570183,
+            0.9710662533689168
+          ],
+          [
+            -0.9999999999999788,
+            -1.7800730477971993e-07,
+            -4.1522347661817667e-08
+          ],
+          [
+            1.827728484396067e-07,
+            -0.9710662533689006,
+            -0.23881024175701462
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": true,
+      "peer_polygons_undistorted": [
+        [
+          [
+            269,
+            51
+          ],
+          [
+            302,
+            51
+          ],
+          [
+            310,
+            97
+          ],
+          [
+            321,
+            112
+          ],
+          [
+            321,
+            147
+          ],
+          [
+            340,
+            158
+          ],
+          [
+            340,
+            205
+          ],
+          [
+            320,
+            206
+          ],
+          [
+            313,
+            199
+          ],
+          [
+            255,
+            199
+          ],
+          [
+            251,
+            206
+          ],
+          [
+            231,
+            206
+          ],
+          [
+            231,
+            153
+          ],
+          [
+            250,
+            150
+          ],
+          [
+            256,
+            127
+          ],
+          [
+            258,
+            107
+          ],
+          [
+            268,
+            96
+          ]
+        ]
+      ]
+    },
+    {
+      "id": 5,
+      "file": "frame_05.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r1/rgb/03340.jpg",
+      "sha256": "d63c2b7a020edf04b0a40093bb03b36f66b671f9c8b1e9046c391c38e01daadd",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 1269,
+        "4": 2052,
+        "5": 2494,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.20383523044768412,
+          2.974102865356448e-09,
+          0.044357453988593296
+        ],
+        "rotation": [
+          [
+            5.1028311276681395e-09,
+            -0.829285293269429,
+            0.5588254668203948
+          ],
+          [
+            -0.9999999999999811,
+            -1.0554465377694942e-07,
+            -1.4749470615744985e-07
+          ],
+          [
+            1.8129623107939576e-07,
+            -0.558825466820385,
+            -0.829285293269416
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": false,
+      "peer_polygons_undistorted": []
+    },
+    {
+      "id": 11,
+      "file": "frame_11.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r1/rgb/07349.jpg",
+      "sha256": "567bbfcb3a13076e05c425668364983e610c87b1ee545d815f2143fa0ee9c61e",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 770,
+        "4": 1982,
+        "5": 1876,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.18979394265326904,
+          2.5903661739748475e-08,
+          0.17208950099582887
+        ],
+        "rotation": [
+          [
+            3.832613822716586e-09,
+            -0.6290232041161221,
+            0.7773865246346207
+          ],
+          [
+            -0.9999999999999867,
+            -1.4347939776039958e-07,
+            -1.1116639402810683e-07
+          ],
+          [
+            1.8146519175895838e-07,
+            -0.7773865246346076,
+            -0.6290232041161125
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": false,
+      "peer_polygons_undistorted": []
+    },
+    {
+      "id": 15,
+      "file": "frame_15.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r1/rgb/10022.jpg",
+      "sha256": "96e65b46f3ee419dd34c3aa1bd81e8396eb9fbb177c8e5622c81ed08ec52a7e1",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.20522336301786073,
+          1.58191666060296e-08,
+          0.11532233901628945
+        ],
+        "rotation": [
+          [
+            4.904038461633606e-09,
+            -0.8297037086092846,
+            0.5582040450587951
+          ],
+          [
+            -0.9999999999999846,
+            -1.0528735820942982e-07,
+            -1.477117083365431e-07
+          ],
+          [
+            1.813287814672423e-07,
+            -0.5582040450587852,
+            -0.8297037086092717
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": false,
+      "peer_polygons_undistorted": []
+    },
+    {
+      "id": 17,
+      "file": "frame_17.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r1/rgb/11359.jpg",
+      "sha256": "b6c1aae04f83f6caf0ad74038bb4801ebd1ff82860d9b67545249beabb0452a9",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.13112119732740324,
+          3.2514999083116226e-08,
+          0.20978038848447886
+        ],
+        "rotation": [
+          [
+            9.307606936070369e-10,
+            -0.36764868966562436,
+            0.929964752550948
+          ],
+          [
+            -0.9999999999999817,
+            -1.7035145419686424e-07,
+            -6.634523298639546e-08
+          ],
+          [
+            1.82812585936981e-07,
+            -0.9299647525509325,
+            -0.3676486896656184
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": true,
+      "peer_polygons_undistorted": [
+        [
+          [
+            271,
+            0
+          ],
+          [
+            302,
+            0
+          ],
+          [
+            302,
+            44
+          ],
+          [
+            310,
+            56
+          ],
+          [
+            326,
+            55
+          ],
+          [
+            337,
+            67
+          ],
+          [
+            335,
+            104
+          ],
+          [
+            319,
+            106
+          ],
+          [
+            313,
+            96
+          ],
+          [
+            261,
+            96
+          ],
+          [
+            257,
+            107
+          ],
+          [
+            239,
+            103
+          ],
+          [
+            240,
+            67
+          ],
+          [
+            253,
+            57
+          ],
+          [
+            263,
+            55
+          ],
+          [
+            267,
+            39
+          ]
+        ]
+      ]
+    },
+    {
+      "id": 18,
+      "file": "frame_18.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r2/rgb/00000.jpg",
+      "sha256": "3515e2b7e47d1f7b70d05e23e1472fdf0f0b34b972bcf0ea44830f38a968494d",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.13112119732740324,
+          3.2514999083116226e-08,
+          0.20978038848447886
+        ],
+        "rotation": [
+          [
+            9.307606936070369e-10,
+            -0.36764868966562436,
+            0.929964752550948
+          ],
+          [
+            -0.9999999999999817,
+            -1.7035145419686424e-07,
+            -6.634523298639546e-08
+          ],
+          [
+            1.82812585936981e-07,
+            -0.9299647525509325,
+            -0.3676486896656184
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": false,
+      "peer_polygons_undistorted": []
+    },
+    {
+      "id": 19,
+      "file": "frame_19.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r2/rgb/00668.jpg",
+      "sha256": "70d2dbc40ebaa4f8b758a9c26f7aef3eddfc513281b7078847d3f0f4321f0003",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.13112119732740324,
+          3.2514999083116226e-08,
+          0.20978038848447886
+        ],
+        "rotation": [
+          [
+            9.307606936070369e-10,
+            -0.36764868966562436,
+            0.929964752550948
+          ],
+          [
+            -0.9999999999999817,
+            -1.7035145419686424e-07,
+            -6.634523298639546e-08
+          ],
+          [
+            1.82812585936981e-07,
+            -0.9299647525509325,
+            -0.3676486896656184
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": false,
+      "peer_polygons_undistorted": []
+    },
+    {
+      "id": 21,
+      "file": "frame_21.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r2/rgb/02004.jpg",
+      "sha256": "8697279b0cc506a18442c451a1c9783845cc29a193fcfbc3dc87b7b66c9fe10d",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.13112119732740324,
+          3.2514999083116226e-08,
+          0.20978038848447886
+        ],
+        "rotation": [
+          [
+            9.307606936070369e-10,
+            -0.36764868966562436,
+            0.929964752550948
+          ],
+          [
+            -0.9999999999999817,
+            -1.7035145419686424e-07,
+            -6.634523298639546e-08
+          ],
+          [
+            1.82812585936981e-07,
+            -0.9299647525509325,
+            -0.3676486896656184
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": true,
+      "peer_polygons_undistorted": [
+        [
+          [
+            324,
+            0
+          ],
+          [
+            347,
+            0
+          ],
+          [
+            347,
+            31
+          ],
+          [
+            358,
+            40
+          ],
+          [
+            375,
+            49
+          ],
+          [
+            373,
+            77
+          ],
+          [
+            358,
+            79
+          ],
+          [
+            350,
+            68
+          ],
+          [
+            316,
+            68
+          ],
+          [
+            311,
+            78
+          ],
+          [
+            297,
+            76
+          ],
+          [
+            298,
+            44
+          ],
+          [
+            313,
+            39
+          ],
+          [
+            318,
+            29
+          ]
+        ],
+        [
+          [
+            448,
+            0
+          ],
+          [
+            478,
+            0
+          ],
+          [
+            478,
+            14
+          ],
+          [
+            487,
+            16
+          ],
+          [
+            484,
+            31
+          ],
+          [
+            472,
+            32
+          ],
+          [
+            467,
+            24
+          ],
+          [
+            452,
+            24
+          ],
+          [
+            449,
+            30
+          ],
+          [
+            436,
+            29
+          ],
+          [
+            437,
+            16
+          ],
+          [
+            446,
+            11
+          ]
+        ]
+      ]
+    },
+    {
+      "id": 22,
+      "file": "frame_22.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r2/rgb/02672.jpg",
+      "sha256": "c8d462461f42ec95eaa1b92682a2c2d27abbad7ed23535a85e6d2ebd159f826d",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 770,
+        "4": 1982,
+        "5": 1876,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.18979394265326904,
+          2.5903661739748475e-08,
+          0.17208950099582887
+        ],
+        "rotation": [
+          [
+            3.832613822716586e-09,
+            -0.6290232041161221,
+            0.7773865246346207
+          ],
+          [
+            -0.9999999999999867,
+            -1.4347939776039958e-07,
+            -1.1116639402810683e-07
+          ],
+          [
+            1.8146519175895838e-07,
+            -0.7773865246346076,
+            -0.6290232041161125
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": false,
+      "peer_polygons_undistorted": []
+    },
+    {
+      "id": 29,
+      "file": "frame_29.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r2/rgb/07349.jpg",
+      "sha256": "777b7f74358942d328e0bb92ad746687298a52b34132178056ed530c123cf347",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 770,
+        "4": 1982,
+        "5": 1876,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.18979394265326904,
+          2.5903661739748475e-08,
+          0.17208950099582887
+        ],
+        "rotation": [
+          [
+            3.832613822716586e-09,
+            -0.6290232041161221,
+            0.7773865246346207
+          ],
+          [
+            -0.9999999999999867,
+            -1.4347939776039958e-07,
+            -1.1116639402810683e-07
+          ],
+          [
+            1.8146519175895838e-07,
+            -0.7773865246346076,
+            -0.6290232041161125
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": false,
+      "peer_polygons_undistorted": []
+    },
+    {
+      "id": 33,
+      "file": "frame_33.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r2/rgb/10022.jpg",
+      "sha256": "8d1b5d909914e24d3fe1a490800202f509e5ad569b8e3f9b8e3301ae7478db30",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.20522336301786073,
+          1.58191666060296e-08,
+          0.11532233901628945
+        ],
+        "rotation": [
+          [
+            4.904038461633606e-09,
+            -0.8297037086092846,
+            0.5582040450587951
+          ],
+          [
+            -0.9999999999999846,
+            -1.0528735820942982e-07,
+            -1.477117083365431e-07
+          ],
+          [
+            1.813287814672423e-07,
+            -0.5582040450587852,
+            -0.8297037086092717
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": false,
+      "peer_polygons_undistorted": []
+    },
+    {
+      "id": 35,
+      "file": "frame_35.jpg",
+      "source_path": "/Users/changmin/projects/ugrp/outputs/v98-dev-case-carry-24144281-s912-v105light8b/zone_wide_door_geometry_v3/robots/r2/rgb/11359.jpg",
+      "sha256": "f1bc0426269fc30b504429b73f947b0fe2f7ff3df478007bcf70dfe28d5b0cc2",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "camera_record": {
+        "origin_m": [
+          0.13112119732740324,
+          3.2514999083116226e-08,
+          0.20978038848447886
+        ],
+        "rotation": [
+          [
+            9.307606936070369e-10,
+            -0.36764868966562436,
+            0.929964752550948
+          ],
+          [
+            -0.9999999999999817,
+            -1.7035145419686424e-07,
+            -6.634523298639546e-08
+          ],
+          [
+            1.82812585936981e-07,
+            -0.9299647525509325,
+            -0.3676486896656184
+          ]
+        ],
+        "frame": "optical_to_floor_heading"
+      },
+      "peer_visible": true,
+      "peer_polygons_undistorted": [
+        [
+          [
+            273,
+            0
+          ],
+          [
+            301,
+            0
+          ],
+          [
+            301,
+            43
+          ],
+          [
+            311,
+            55
+          ],
+          [
+            326,
+            54
+          ],
+          [
+            337,
+            69
+          ],
+          [
+            335,
+            104
+          ],
+          [
+            317,
+            105
+          ],
+          [
+            313,
+            97
+          ],
+          [
+            260,
+            98
+          ],
+          [
+            256,
+            107
+          ],
+          [
+            240,
+            102
+          ],
+          [
+            240,
+            68
+          ],
+          [
+            252,
+            58
+          ],
+          [
+            263,
+            56
+          ],
+          [
+            267,
+            37
+          ]
+        ]
+      ]
+    }
+  ]
+}

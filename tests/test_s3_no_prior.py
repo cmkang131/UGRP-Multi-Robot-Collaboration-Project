@@ -80,3 +80,27 @@ def test_default_cli_does_not_construct_or_execute(monkeypatch, capsys):
     assert json.loads(capsys.readouterr().out)['no_prior'] == 'off'
     with pytest.raises(ValueError, match='explicit'):
         runner.main(['--expected-source-sha', 'a'*40, '--output', '/nonexistent/s3-plan', '--execute'])
+
+
+def test_posthoc_does_not_accept_wrong_mode_or_unfinished_commands(tmp_path):
+    from scripts.evaluate_s3_no_prior import metrics
+    result = dict(status='DEV_NOT_DELIVERED', evaluation={'orders': {
+        'order-1': {'complete': True}, 'order-5': {'complete': True}}}, wall_s=10, check_sim_s=1)
+    student = dict(localizers={}, pair={'robots': {}})
+    for rid in m.ROBOTS:
+        path = tmp_path/f'eval_only/{rid}'
+        path.mkdir(parents=True)
+        (path/'trajectory.jsonl').write_text('\n'.join(json.dumps(dict(t=t, robot_xyz_m=[0, 0, 0],
+            robot_yaw_rad=0)) for t in (0., 1.))+'\n')
+        student['localizers'][rid] = dict(state='search' if rid == 'r3' else 'done', poses=[
+            dict(t=.5, t_est=.34, x=1. if rid == 'r1' else 0., y=0., yaw=0., std_xy_m=.04)])
+        student['pair']['robots'][rid] = {'jobs': [dict(kind='pair_carry', confirmation='unconfirmed')]}
+    (tmp_path/'result.json').write_text(json.dumps(result))
+    (tmp_path/'student_record.json').write_text(json.dumps(student))
+    q = metrics(tmp_path)
+    assert q['robots']['r1']['first_convergence']['wrong_mode'] is True
+    assert q['robots']['r1']['success'] is False
+    assert q['robots']['r2']['success'] is True
+    assert q['robots']['r3']['delivery_complete'] is True
+    assert q['robots']['r3']['success'] is False
+    assert q['door_deadlocks'] == []
