@@ -1,0 +1,33 @@
+{
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1009-simspeed-offline",
+  "url": "http://127.0.0.1:6006/?smoothing=0&runFilter=%5E1009-simspeed-offline%2F&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22gate%2Fbytes_identical%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Frows%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fmatched_rows%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhotspot_1_percent%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhotspot_2_percent%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhotspot_3_percent%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D#timeseries",
+  "pinned_metrics": [
+    "gate/bytes_identical",
+    "offline/rows",
+    "offline/matched_rows",
+    "offline/hotspot_1_percent",
+    "offline/hotspot_2_percent",
+    "offline/hotspot_3_percent",
+    "result/model_calls"
+  ],
+  "default_runs": [
+    "1009-simspeed-offline/queued-cancelled",
+    "1009-simspeed-offline/raw-byte-check",
+    "1009-simspeed-offline/relay-profile",
+    "1009-simspeed-offline/saved-egomap49",
+    "1009-simspeed-offline/saved-teach-mismatch",
+    "1009-simspeed-offline/setup-error",
+    "1009-simspeed-offline/source-guard"
+  ],
+  "hparams_visible_columns": [
+    "case",
+    "policy",
+    "outcome",
+    "result/model_calls"
+  ],
+  "scope": "Saved RGB/controller and relay diagnostic only; no physics speed comparison. Raw trace 51 rows byte identical; teach mismatch and prephysics failures preserved.",
+  "verification": {
+    "event_and_live_scalars": 36,
+    "new_videos": 0
+  }
+}

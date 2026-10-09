@@ -1,0 +1,78 @@
+{
+  "head_sha": "6f070bf847703e1080a0003b862a590a88f95582",
+  "base_sha": "4851b313a6280f7f089b8320c18c479ccf421fc1",
+  "run_id": 37891574488,
+  "primary_failure": "registered VIS3 source hash mismatch",
+  "actual_source_hashes": {
+    "4851b313": "7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d",
+    "HEAD": "7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d"
+  },
+  "registered_expected": "015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+  "jobs": [
+    {
+      "id": 113696616473,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37891574488/job/113696616473",
+      "failures": [
+        "FAILED tests/test_pair_llm_case.py::test_messages_route_between_r1_and_r2_and_only_to_the_partner - AssertionError: assert ('HOST_ERROR' == 'COLLECTED_UNQUALIFIED'",
+        "FAILED tests/test_pair_llm_case.py::test_the_language_report_is_recorded_for_every_message_and_is_not_a_gate - assert (0 == 4)",
+        "FAILED tests/test_pair_llm_case.py::test_an_english_message_is_delivered_but_flagged - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_an_english_message_is_del0/peer_nl/llm/language.jsonl'",
+        "FAILED tests/test_pair_llm_case.py::test_no_comm_has_no_channel_and_a_message_is_refused_at_validation - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_no_comm_has_no_channel_an0/no_comm/llm/requests.jsonl'",
+        "FAILED tests/test_pair_llm_case.py::test_a_released_claim_is_what_lets_team_start_run_and_the_blind_controller_stays_gated - assert (0 == 2)",
+        "FAILED tests/test_pair_llm_case.py::test_with_an_available_pose_the_claim_starts_the_scripted_pair_skill - assert 0 == 2",
+        "FAILED tests/test_pair_llm_case.py::test_a_model_that_never_claims_keeps_the_scripted_start_closed - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_a_model_that_never_claims0/no_comm/llm/claim_gate.json'",
+        "FAILED tests/test_pair_llm_case.py::test_rule_arm_uses_the_unmodified_runtime_and_the_llm_arms_the_gated_one - AssertionError: assert ([] == [<class 'test...>.Recording'>]",
+        "FAILED tests/test_pair_llm_case.py::test_every_arm_has_the_same_case_cap_and_a_larger_one_is_refused - KeyError: 'case_sim_s'",
+        "FAILED tests/test_pair_llm_case.py::test_dev_light_early_end_and_physics_profile_are_the_same_in_every_arm - AssertionError: assert ('HOST_ERROR' == 'COLLECTED_UNQUALIFIED'",
+        "FAILED tests/test_pair_llm_case.py::test_the_ledger_preserves_every_request_and_response_byte_for_byte - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/peer0/peer_nl/llm/wire_wall.jsonl'",
+        "FAILED tests/test_pair_llm_case.py::test_audit_c_the_wire_carries_exactly_two_images_own_frame_and_map_figure - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/peer0/peer_nl/llm/map_figure.png'",
+        "FAILED tests/test_pair_llm_case.py::test_each_request_image_is_the_senders_own_camera - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/peer0/peer_nl/llm/requests.jsonl'",
+        "FAILED tests/test_pair_llm_case.py::test_sim_cost_is_charged_and_wall_time_is_recorded_apart - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/peer0/peer_nl/llm/inputs.jsonl'",
+        "FAILED tests/test_pair_llm_case.py::test_success_comes_only_from_the_separate_evaluator - assert (False is True)",
+        "FAILED tests/test_pair_llm_case.py::test_a_host_error_keeps_partial_records_and_classifies_enospc - AssertionError: assert ('HOST_ERROR' == 'HOST_ERROR'",
+        "FAILED tests/test_vision_loc_v6.py::test_plan_and_configs_regenerate_byte_for_byte - assert b'{\\n \"amendm...ae96b04\"\\n}\\n' == b'{\\n \"amendm...ae96b04\"\\n}\\n'",
+        "FAILED tests/test_wall_parallax.py::test_annotation_recall_preserves_absent_points_and_deduplicates - AttributeError: module 'replay' has no attribute 'hashes'",
+        "FAILED tests/test_zone_final_environment_floor_light.py::test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts - AssertionError: experiments/2026-09-26-markerless-probe/markerless_probe.py",
+        "FAILED tests/test_zone_final_pair_review_fixes.py::test_transform_chain_pinned_against_v3_robot_xml[False] - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "FAILED tests/test_zone_final_pair_review_fixes.py::test_transform_chain_pinned_against_v3_robot_xml[True] - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "21 failed, 1347 passed, 38 skipped, 294 subtests passed in 928.26s (0:15:28)"
+      ]
+    },
+    {
+      "id": 113696616526,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37891574488/job/113696616526",
+      "failures": [
+        "FAILED tests/test_highpose_belief_expansion.py::test_relocalization_keeps_the_belief_unless_the_arrival_path_armed_it - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "FAILED tests/test_highpose_belief_expansion.py::test_clear_disarms_a_request_that_was_never_consumed - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "FAILED tests/test_highpose_belief_expansion.py::test_rejected_arrival_expands_the_real_provider_belief_through_the_real_delayed_pose_source - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "FAILED tests/test_highpose_refix.py::test_record_1f7fb800_checkpoint_continues_on_a_voided_dr_receipt_with_the_real_predictor - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "FAILED tests/test_highpose_refix.py::test_look_move_plan_on_the_registered_route - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "FAILED tests/test_pair_llm_cli.py::test_v103_loaded_calibration_reaches_both_runtime_providers_without_overrides[rule] - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "FAILED tests/test_pair_llm_cli.py::test_v103_loaded_calibration_reaches_both_runtime_providers_without_overrides[no_comm] - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "FAILED tests/test_pair_llm_cli.py::test_v103_loaded_calibration_reaches_both_runtime_providers_without_overrides[peer_nl] - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "FAILED tests/test_pair_llm_status.py::test_high_recovery_keeps_own_refusal_counts_and_reports_the_latest_own_job_state - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_high_recovery_keeps_own_r0/no_comm/llm/inputs.jsonl'",
+        "FAILED tests/test_pair_llm_status.py::test_high_runtime_refuses_a_model_look_while_its_own_bounded_recovery_is_running - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_high_runtime_refuses_a_mo0/no_comm/llm/dispatch.jsonl'",
+        "FAILED tests/test_pair_llm_status.py::test_a_look_around_while_a_job_runs_is_refused_by_the_executor_and_disturbs_nothing - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_a_look_around_while_a_job0/no_comm/llm/dispatch.jsonl'",
+        "FAILED tests/test_pair_llm_status.py::test_in_the_loop_the_sim_cost_includes_the_images_and_the_split_is_recorded - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_in_the_loop_the_sim_cost_0/no_comm/llm/requests.jsonl'",
+        "FAILED tests/test_pair_llm_status.py::test_a_partner_submission_mismatch_gives_identical_own_status_in_both_llm_arms - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_a_partner_submission_mism0/no_comm-True/llm/inputs.jsonl'",
+        "FAILED tests/test_pair_llm_status.py::test_a_waiting_robots_job_that_ends_without_a_partner_submission_is_queue_empty_in_both_arms - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_a_waiting_robots_job_that0/no_comm-False/llm/inputs.jsonl'",
+        "FAILED tests/test_pair_llm_status.py::test_dispatch_rows_and_executor_events_name_both_clocks_and_the_reset_offset - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_dispatch_rows_and_executo0/no_comm/llm/dispatch.jsonl'",
+        "FAILED tests/test_pair_llm_status.py::test_in_the_loop_the_outcome_sequence_of_own_status_is_the_same_at_every_reset_origin - AssertionError: assert ('HOST_ERROR' == 'COLLECTED_UNQUALIFIED'",
+        "FAILED tests/test_review_352.py::test_v88_full_bytes_are_preserved[bundle-calibration-unloaded] - AssertionError: assert 'aed9f0ad252a...c2c602269ddff' == '1f4685fe5240...c38f55aaf3d94'",
+        "FAILED tests/test_review_352.py::test_v88_full_bytes_are_preserved[bundle-calibration-loaded] - AssertionError: assert '3e99ef958bfe...83f3a9acf7993' == '10605b2b433f...4f470ca7721d3'",
+        "FAILED tests/test_review_352.py::test_v88_full_bytes_are_preserved[bundle-calibration-fine] - AssertionError: assert 'b46f22a2073c...2b4247a55b4b2' == 'ab0bb9a4ba91...019f71fae6bd5'",
+        "FAILED tests/test_review_352.py::test_v88_full_bytes_are_preserved[plan-calibration-unloaded] - AssertionError: assert '7f7651fbab82...561a7b08958b6' == '7f6d665104d9...d86e54e8d8d36'",
+        "FAILED tests/test_review_352.py::test_v88_full_bytes_are_preserved[plan-calibration-loaded] - AssertionError: assert '0ffb8f2b733a...4750734180e6c' == 'ac640e5b194d...2984fd7b8c5dd'",
+        "FAILED tests/test_review_352.py::test_v88_full_bytes_are_preserved[plan-calibration-fine] - AssertionError: assert 'a9571f1d0800...2403ef648110d' == 'fea4037700fa...8280848a8c176'",
+        "ERROR tests/test_highpose_refix.py::test_predict_restores_the_live_pf_bit_for_bit_and_forecasts_the_same_model - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "ERROR tests/test_highpose_refix.py::test_predict_with_the_rest_of_the_stop_forecasts_the_same_model - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "ERROR tests/test_highpose_refix.py::test_mutation_without_restore_is_detected - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "ERROR tests/test_highpose_refix.py::test_leg_plan_matches_the_v3_door_schedule - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "ERROR tests/test_highpose_refix.py::test_budget_derivation_uses_the_registered_particle_count - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "ERROR tests/test_highpose_relook.py::test_closed_loop_r2_is_admitted_after_the_extended_dock_look - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "ERROR tests/test_highpose_relook.py::test_closed_loop_mutation_five_pans_refuses_r2_then_one_relook_admits_it - harness.vision_loc_protocol.ProtocolError: ../2026-09-26-markerless-probe/markerless_probe.py: sha256 7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d differs from the registered VIS3 student 015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+        "22 failed, 1251 passed, 23 skipped, 7 errors, 26 subtests passed in 837.71s (0:13:57)"
+      ]
+    }
+  ],
+  "scope": "pinned markerless source mismatch proven inherited; remaining failures not independently reproduced at base"
+}

@@ -1,0 +1,76 @@
+{
+  "scope": "command relay replay only; physics=0; concurrent diagnostic, not wall/SIM measurement",
+  "calls": 144000,
+  "top10": [
+    {
+      "function": "/Users/changmin/projects/ugrp-wt/sim-speed/sim/masterpi_drive_friction_v7.py:52:command_step",
+      "calls": 144000,
+      "self_s": 2.426739903,
+      "cumulative_s": 7.252145176000001,
+      "percent": 33.46183035764618
+    },
+    {
+      "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/lib/_arraysetops_impl.py:806:_isin",
+      "calls": 144000,
+      "self_s": 1.9021023840000002,
+      "cumulative_s": 3.5607311590000004,
+      "percent": 26.227708712251875
+    },
+    {
+      "function": "~:0:<method 'reduce' of 'numpy.ufunc' objects>",
+      "calls": 720000,
+      "self_s": 0.480835775,
+      "cumulative_s": 0.480835775,
+      "percent": 6.630148172470764
+    },
+    {
+      "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:66:_wrapreduction",
+      "calls": 288000,
+      "self_s": 0.27206818,
+      "cumulative_s": 0.51197242,
+      "percent": 3.7514936288058984
+    },
+    {
+      "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/_core/numeric.py:97:zeros_like",
+      "calls": 144000,
+      "self_s": 0.235216254,
+      "cumulative_s": 0.314976745,
+      "percent": 3.2433498039814506
+    },
+    {
+      "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/lib/_arraysetops_impl.py:958:isin",
+      "calls": 144000,
+      "self_s": 0.18477147100000002,
+      "cumulative_s": 3.8473903220000003,
+      "percent": 2.547776797130756
+    },
+    {
+      "function": "~:0:<built-in method numpy.asarray>",
+      "calls": 720000,
+      "self_s": 0.161891843,
+      "cumulative_s": 0.161891843,
+      "percent": 2.2322941902656344
+    },
+    {
+      "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:86:_wrapreduction_any_all",
+      "calls": 144000,
+      "self_s": 0.143036127,
+      "cumulative_s": 0.252751122,
+      "percent": 1.9722964998316652
+    },
+    {
+      "function": "~:0:<method 'all' of 'numpy.ndarray' objects>",
+      "calls": 288000,
+      "self_s": 0.115544251,
+      "cumulative_s": 0.390925754,
+      "percent": 1.5932165292966256
+    },
+    {
+      "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/_core/getlimits.py:399:__init__",
+      "calls": 144000,
+      "self_s": 0.11210610500000001,
+      "cumulative_s": 0.11210610500000001,
+      "percent": 1.545808622889105
+    }
+  ]
+}

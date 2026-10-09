@@ -1,0 +1,78 @@
+{
+  "scope": "saved RGB/controller only; no physics/render; concurrent diagnostic, not timing",
+  "frames": 51,
+  "identical_traces": 0,
+  "profile_total_s": 15.350653143000011,
+  "top10": [
+    {
+      "function": "/Users/changmin/projects/ugrp-wt/sim-speed/harness/own_map_navigation.py:88:cell",
+      "calls": 650272,
+      "self_s": 1.119256755,
+      "cumulative_s": 1.720923918,
+      "percent": 7.291264707589252
+    },
+    {
+      "function": "/Users/changmin/projects/ugrp-wt/sim-speed/harness/floor_goal.py:85:floor_intersections",
+      "calls": 102,
+      "self_s": 1.0539155930000002,
+      "cumulative_s": 1.6050453370000002,
+      "percent": 6.865607496841865
+    },
+    {
+      "function": "~:0:<method 'reduce' of 'numpy.ufunc' objects>",
+      "calls": 140020,
+      "self_s": 0.9781564850000001,
+      "cumulative_s": 0.9781564850000001,
+      "percent": 6.372083818766013
+    },
+    {
+      "function": "/Users/changmin/projects/ugrp-wt/sim-speed/harness/own_map_navigation.py:135:dense",
+      "calls": 102,
+      "self_s": 0.8478583580000001,
+      "cumulative_s": 1.464779544,
+      "percent": 5.523272202828898
+    },
+    {
+      "function": "/Users/changmin/projects/ugrp-wt/sim-speed/harness/own_map_navigation.py:89:<genexpr>",
+      "calls": 1950816,
+      "self_s": 0.5620351600000001,
+      "cumulative_s": 0.5620351600000001,
+      "percent": 3.6613110514863756
+    },
+    {
+      "function": "/Users/changmin/projects/ugrp-wt/sim-speed/experiments/2026-10-05-ego-wall-map-probe/code/height_free_wall.py:132:window",
+      "calls": 204,
+      "self_s": 0.5364905990000001,
+      "cumulative_s": 0.5503926720000001,
+      "percent": 3.494904053933646
+    },
+    {
+      "function": "~:0:<method 'cumsum' of 'numpy.ndarray' objects>",
+      "calls": 816,
+      "self_s": 0.44298302900000003,
+      "cumulative_s": 0.44298302900000003,
+      "percent": 2.8857601358936504
+    },
+    {
+      "function": "/Users/changmin/projects/ugrp-wt/sim-speed/harness/grid_acceleration.py:60:dda",
+      "calls": 32664,
+      "self_s": 0.433988019,
+      "cumulative_s": 0.528302149,
+      "percent": 2.8271632155137394
+    },
+    {
+      "function": "/Users/changmin/projects/ugrp-wt/sim-speed/harness/own_map_amcl_vendor/visibility.py:109:box_depth",
+      "calls": 180,
+      "self_s": 0.401620737,
+      "cumulative_s": 0.766890575,
+      "percent": 2.616310415320285
+    },
+    {
+      "function": "/Users/changmin/projects/ugrp-wt/sim-speed/harness/wall_confidence.py:44:weighted_insert",
+      "calls": 1127,
+      "self_s": 0.379055283,
+      "cumulative_s": 1.3323713540000002,
+      "percent": 2.469310455189664
+    }
+  ]
+}

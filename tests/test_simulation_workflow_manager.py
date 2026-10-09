@@ -202,6 +202,7 @@ raise SystemExit(3 if a.fail else 0)
         model.mkdir()
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
+            "egomap-sim-speed-replay": ["--source", str(model), "--expected-source-sha", "0"*40],
             "active-nav2": ["--case", "new-seed", "--expected-source-sha", "0"*40],
             "pulse-rotation-audit": ["--expected-source-sha", "0"*40],
             "active-recovery": ["--case", "new-seed", "--expected-source-sha", "0"*40],
@@ -293,6 +294,23 @@ raise SystemExit(3 if a.fail else 0)
         self.assertEqual(plans["zone-cargo-perception-eval"]["command"][-2:], ["--output", "<record>/artifacts"])
         self.assertEqual(plans["zone-rgb-outcome-eval"]["command"][-2:], ["--out", "<record>/artifacts"])
         self.assertTrue(all(not plan["execution_started"] for plan in plans.values()))
+
+    def test_simspeed_plan_is_read_only_and_requires_fixed_source(self):
+        source = self.root / "saved"
+        source.mkdir()
+        (source / "commands.jsonl").write_text('{"t": 1.3}\n')
+        before = sorted(self.root.rglob('*'))
+        with mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
+            with self.assertRaisesRegex(ValueError, "requires --source"):
+                wm.plan(PROJECT, "egomap-sim-speed-replay", [])
+            with self.assertRaisesRegex(ValueError, "requires --expected-source-sha"):
+                wm.plan(PROJECT, "egomap-sim-speed-replay", ["--source", str(source)])
+            plan = wm.plan(PROJECT, "egomap-sim-speed-replay",
+                           ["--source", str(source), "--expected-source-sha", "0"*40])
+        self.assertFalse(plan["execution_started"])
+        self.assertNotIn("--execute", plan["command"])
+        self.assertEqual([item['path'] for item in plan['inputs']], [str(source.resolve())])
+        self.assertEqual(sorted(self.root.rglob('*')), before)
 
     def test_act_workflows_require_explicit_suite_and_training_shape(self):
         with self.assertRaisesRegex(ValueError, "act-map-suite requires --spec"):

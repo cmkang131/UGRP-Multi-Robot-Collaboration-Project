@@ -45,7 +45,7 @@ raw: `/Users/changmin/projects/ugrp/outputs/simspeed-20261009/` (로컬, 원격 
   `081fcfdb`의 `ADAPTER_CAPTURE_BYPASSED` 중단 기록이며 현재 `4851b313`과 teach adapter가 다르다.
   실패 프로파일/원본은 보존하고 수정·성공 재분류하지 않았다.
 
-상위 10개 표와 최종 물리 비교는 실행 완료 후 추가한다.
+상위 10개는 [오프라인 표](results/offline-profiles.md)에 있다. 최종 물리 비교는 잠금 해제 후 추가한다.
 
 ## 고정 검증 계획
 
@@ -68,4 +68,23 @@ raw: `/Users/changmin/projects/ugrp/outputs/simspeed-20261009/` (로컬, 원격 
 
 `tests/test_v7_exact_speedups.py`: 7 passed (물리 없음). 기본 off 무변경,
 입력 경계/NaN/잘못된 state 거부, 비연속 배열, 파라미터 분리, 반환값 오염, 완료 로그 바이트를 검사했다.
-물리 A/B·대시보드·CI 상태는 아직 미완료이다.
+workflow 계획의 필수 입력/소스 SHA·자식 실행 0·입력 보존 검사까지 **관련 8 passed**.
+새 workflow의 공통 catalog 시험 샘플도 추가했다. 처음 작성한 계획 시험의 Mac 임시 경로
+`/var`/`/private/var` 기대값 불일치는 `resolve()`로 바로잡은 뒤 다시 통과했다.
+
+오프라인 스냅샷 `outputs/tensorboard/1009-simspeed-offline`은 7개 진단을 포함한다.
+원본→event→실제 서버 **36개 수치 일치**, 영상 신규 등록 0, Chrome 강 프로필 화면에서
+7개 run 선택·7개 pinned card·bytes=1·rows=51 및 지정 HParams 열을 확인했다.
+[화면 설정·주소](results/tensorboard-offline-view.json), [수치 검증](results/tensorboard-offline-verification.json).
+HParams 전역 표의 run 필터는 적용되지 않으므로 자기 수치 확인은 필터된 Time Series에서 했다.
+
+CI `37891574488`/`6f070bf8`의 실패를 [첫 두 shard](results/ci-failures-6f070bf8.json)와
+[추가 네 shard](results/ci-more-failures-6f070bf8.json)에 남겼다. VIS3 markerless source의
+실제 SHA는 base `4851b313`과 같아서 해당 봉인 불일치는 상속된 문제임을 확인했다.
+나머지 실패 전부를 base에서 재실행한 것은 아니며, 봉인 해시를 속도 작업에서 고치지 않는다.
+DRAFT 유지, 전체 CI 통과/병합을 주장하지 않는다.
+
+`managed-abba-v2`는 연구 PID 3349의 정상 잠금을 3600초 기다린 뒤 물리 0으로 종료했다.
+[대기 종료 기록](results/queue-timeout.json)을 보존하고 더 긴 유한 대기로 재등록한다.
+앞선 짧은 SHA 거절·자기 대기 실행 중단·sparse texture 누락도 원본을 보존했다.
+누락 PNG 24개는 저장소 원본 및 layout 해시로 복원했다. 물리 A/B는 아직 미완료이다.
