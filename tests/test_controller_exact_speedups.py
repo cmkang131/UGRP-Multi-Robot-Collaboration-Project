@@ -3,6 +3,105 @@ import pytest
 from harness.controller_exact_speedups import ArrayRevision, PosteriorMemo, PureMemo, MethodSummaryMemo, IntegerClipNumpy, mode
 
 
+def test_incremental_distance_field_matches_original_bytes_add_remove_and_owned_result():
+    from scipy.ndimage import distance_transform_edt
+    from harness.controller_exact_speedups import IncrementalGridFieldMemo
+    class Field:
+        def __init__(self, points, resolution=.05):
+            self.resolution = resolution
+            self.origin = np.floor((points.min(0)-1.)/resolution)*resolution
+            size = np.ceil((points.max(0)+1.-self.origin)/resolution).astype(int)+1
+            grid = np.ones(tuple(size), bool)
+            ij = np.rint((points-self.origin)/resolution).astype(int)
+            grid[ij[:,0],ij[:,1]] = False
+            self.distance = distance_transform_edt(grid)*resolution
+    original = Field.__init__
+    cache = IncrementalGridFieldMemo(Field, maxsize=2)
+    rng = np.random.default_rng(312)
+    points = np.vstack([[[0.,0.],[4.,4.]], rng.integers(1,79,(35,2))*.05])
+    for i in range(60):
+        baseline = Field(points)
+        actual = object.__new__(Field)
+        cache(actual, points)
+        assert actual.origin.tobytes() == baseline.origin.tobytes()
+        assert actual.distance.tobytes() == baseline.distance.tobytes()
+        actual.distance[:] = -1
+        # Alternate additions/deletions, including deletion of a nearest witness.
+        if i % 2:
+            points = np.delete(points, 2+rng.integers(len(points)-2), axis=0)
+        else:
+            points = np.vstack([points, rng.integers(1,79,(1,2))*.05])
+    assert cache.updates > 0 and cache.changed_cells > 0
+    # Expanding geometry rebuilds rather than applying a finite, unsafe halo.
+    points = np.vstack([points, [[9.,-7.]]])
+    baseline = Field(points); actual = object.__new__(Field); cache(actual, points)
+    assert actual.distance.tobytes() == baseline.distance.tobytes()
+    assert Field.__init__ is original and len(cache.entries) <= 2
+
+
+def test_incremental_probability_changes_only_cells_and_preserves_bits():
+    import math
+    from types import SimpleNamespace
+    from harness.controller_exact_speedups import ProbabilityFieldMemo
+    class Field:
+        def __init__(self, grid):
+            keys = np.array(list(grid.cells)); self.resolution = grid.resolution_m
+            self.lower = keys.min(0)-2; size = keys.max(0)-self.lower+3
+            self.values = np.full(tuple(size), .5)
+            for k,v in grid.cells.items():
+                self.values[tuple(np.array(k)-self.lower)] = 1/(1+math.exp(-v))
+    cache = ProbabilityFieldMemo(Field, maxsize=2)
+    grid = SimpleNamespace(resolution_m=.05, cells={(i,j):float(i-j)/10 for i in range(10) for j in range(10)})
+    for change in (None, (3,4), (6,7), (3,4)):
+        if change is not None: grid.cells[change] += .3
+        baseline = Field(grid); actual = object.__new__(Field); cache(actual, grid)
+        assert baseline.lower.tobytes() == actual.lower.tobytes()
+        assert baseline.values.tobytes() == actual.values.tobytes()
+        actual.values[:] = 999
+    del grid.cells[(5,5)]
+    baseline = Field(grid); actual = object.__new__(Field); cache(actual, grid)
+    assert baseline.values.tobytes() == actual.values.tobytes()
+    assert cache.updates > 0 and cache.changed_cells > 0
+
+
+def test_loop_result_cache_owner_mutation_lazy_fields_and_output_isolation():
+    from types import SimpleNamespace as S
+    from harness.controller_exact_speedups import GraphLoopMemo
+    calls=[]
+    def original(submap,row,initial,options,*,prepared=None):
+        calls.append(1)
+        if not submap['grid'].cells: return {'reason':'empty'}
+        if prepared._probability is None:
+            prepared._probability=S(resolution=.05,lower=np.zeros(2),values=np.array([[.6,.8]]))
+            prepared.builds += 1
+        return {'score':float(prepared._probability.values.sum()),'pose':initial.tolist()}
+    class Prepared:
+        def __init__(self):
+            self._probability=self._distance=None; self.segments=np.zeros((1,2,2))
+            self.grid=S(cells={(0,0):1.}); self.builds=0
+    p=Prepared(); submap={'grid':p.grid}; row={'segments':[[[0.,0.],[1.,1.]]]}; initial=np.zeros(3)
+    cache=GraphLoopMemo(original,maxsize=2)
+    expected=cache(submap,row,initial,None,prepared=p)
+    cache(submap,row,initial,None,prepared=p)['pose'][0]=999
+    assert cache(submap,row,initial,None,prepared=p)==expected and p.builds==1 and len(calls)==1
+    p._probability.values[0,0] += .1
+    assert cache(submap,row,initial,None,prepared=p)['score'] != expected['score']
+    q=Prepared()
+    cache({'grid':q.grid},row,initial,None,prepared=q)
+    assert q.builds==1 and len(cache.entries)<=2
+    p.grid.cells.clear()
+    assert cache(submap,row,initial,None,prepared=p)=={'reason':'empty'}
+
+
+def test_scan_options_are_explicit_and_local_policy_defaults_off(monkeypatch):
+    from harness.controller_exact_speedups import scan_options
+    monkeypatch.delenv('UGRP_CONTROLLER_SCAN_SPEEDUPS',raising=False)
+    monkeypatch.delenv('UGRP_CONTROLLER_LOCAL_SUBMAP_M',raising=False)
+    assert scan_options()==('exact-v2',0.)
+    monkeypatch.setenv('UGRP_CONTROLLER_LOCAL_SUBMAP_M','nan')
+    with pytest.raises(ValueError):scan_options()
+
+
 def test_snapshot_in_place_noncontiguous_signed_zero_and_nan_payloads():
     bits = np.array([0, 0x7ff8000000000001], dtype=np.uint64)
     a = bits.view(np.float64)

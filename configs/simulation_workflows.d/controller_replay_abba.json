@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "controller-replay-abba",
+    "version": "1.0.0",
+    "purpose": "Serial ABBA saved own-input comparison with lossless byte proof",
+    "entry": "scripts/benchmark_controller_replay.py",
+    "runner": "scripts.benchmark_controller_replay",
+    "docs": "experiments/2026-10-10-sim-speed-ctrl2/README.md",
+    "requires": "Committed clean source; explicit completed S3 smoke return; exclusive timing lock",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--plan", "--priority-receipt", "--expected-source-sha"],
+    "side_effect": "offline_evaluation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

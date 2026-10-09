@@ -46,10 +46,93 @@ def test_borrowed_lock_requires_our_live_ancestor(monkeypatch):
     held=dict(pid=123,pid_alive=True,owner='codex',branch='codex/sim-speed-ctrl',timing_sensitive=True)
     monkeypatch.setattr(agent_lock,'status',lambda root:held)
     monkeypatch.setattr(replay,'source_check',lambda expected:None)
+    monkeypatch.setattr(replay.subprocess,'check_output',lambda *a,**k:'codex/sim-speed-ctrl\n')
     monkeypatch.setattr(replay,'ancestor',lambda pid,parent:False)
     with pytest.raises(AssertionError):replay.acquire_slot('a'*40,'test',lock_owner_pid=123)
     monkeypatch.setattr(replay,'ancestor',lambda pid,parent:True)
     assert replay.acquire_slot('a'*40,'test',lock_owner_pid=123)==(held,False)
+
+
+def test_lossless_stream_unicode_determinism_and_direct_decoded_bytes(tmp_path):
+    from harness.lossless_recording import RecordStream, logical_equal, logical_open
+    a,b,c=(tmp_path/x/'record.jsonl' for x in ('a','b','c'))
+    receipts=[]
+    lines=('{"name":"운반","value":-0.0}\n','{"cells":[[1,2,0.3]]}\n')*200
+    for path,storage in ((a,'off'),(b,'gzip-v1'),(c,'gzip-v1')):
+        stream=RecordStream(path,storage=storage)
+        for line in lines:
+            stream.write(line)
+        assert stream.tell()==sum(len(line.encode('utf-8')) for line in lines)
+        stream.close();receipts.append(stream.receipt())
+    assert logical_equal(a,b) and logical_equal(b,c)
+    assert b.with_name(b.name+'.gz').read_bytes()==c.with_name(c.name+'.gz').read_bytes()
+    assert receipts[0]['logical_sha256']==receipts[1]['logical_sha256']
+    assert receipts[1]['stored_bytes'] < receipts[1]['logical_bytes']
+    with pytest.raises(FileExistsError):RecordStream(a)
+    b.write_bytes(b'conflict')
+    with pytest.raises(ValueError,match='ambiguous'):logical_open(b)
+
+
+def test_abba_rejects_load_confounding_and_checks_both_crossovers(tmp_path):
+    import json
+    from scripts.benchmark_controller_replay import load_assessment
+    paths=[tmp_path/str(i) for i in range(4)]
+    for path,load in zip(paths,(4.8,2.9,2.9,4.8)):
+        path.mkdir();(path/'trend.json').write_text(json.dumps([{'loadavg':[load,load,load]}]))
+    assert not load_assessment(paths)['comparable']
+    for path,load in zip(paths,(2.8,2.9,3.,2.9)):
+        (path/'trend.json').write_text(json.dumps([{'loadavg':[load,load,load]}]))
+    assert load_assessment(paths)['comparable']
+    for path,load in zip(paths,(2.,5.,2.,5.)):
+        (path/'trend.json').write_text(json.dumps([{'loadavg':[load,load,load]}]))
+    assert not load_assessment(paths)['comparable']  # aggregate equality alone is insufficient
+
+
+def test_abba_direct_proof_rejects_corrupted_behavior_or_missing_callback(tmp_path):
+    import json
+    from harness.lossless_recording import RecordStream
+    from scripts.benchmark_controller_replay import S3_FILES, compare_runs
+    paths=[tmp_path/str(i) for i in range(4)]
+    for i,path in enumerate(paths):
+        path.mkdir()
+        (path/'result.json').write_text(json.dumps(dict(input_sha256={'frame':'a'},failure=None,frames=2,available_frames=2)))
+        for name in S3_FILES:
+            stream=RecordStream(path/name,storage='gzip-v1' if i in (1,2) else 'off')
+            stream.write('{"rng":"state","particles":"bits"}\n');stream.close()
+    assert compare_runs(paths,'s3')['verified']
+    (paths[3]/'state.json').write_text('{"rng":"different"}\n')
+    assert not compare_runs(paths,'s3')['verified']
+
+
+def test_abba_requires_current_s3_final_result_and_explicit_return(tmp_path):
+    import json
+    from scripts.benchmark_controller_replay import priority_check, sha
+    result=tmp_path/'result.json';result.write_text('{"status":"DEV_FINISHED"}\n')
+    receipt=tmp_path/'receipt.json'
+    data=dict(result_path=str(result),result_sha256=sha(result),released_for_speedctrl=False,
+              coordination_url='https://github.com/example/repo/pull/1#issuecomment-2')
+    receipt.write_text(json.dumps(data))
+    with pytest.raises(ValueError,match='EXPLICIT_S3'):priority_check(receipt,tmp_path)
+    data['released_for_speedctrl']=True;receipt.write_text(json.dumps(data))
+    assert priority_check(receipt,tmp_path)==data
+    with pytest.raises(ValueError,match='CURRENT_S3'):priority_check(receipt,tmp_path/'old')
+    result.write_text('{}')
+    with pytest.raises(ValueError,match='HASH'):priority_check(receipt,tmp_path)
+
+
+def test_local_accuracy_uses_saved_spawn_frame_only_after_replay(tmp_path):
+    import json
+    from scripts.benchmark_controller_replay import trajectory_accuracy
+    raw=tmp_path/'raw';out=tmp_path/'out'
+    (raw/'eval_only').mkdir(parents=True);out.mkdir()
+    (raw/'eval_only/setup.json').write_text(json.dumps({'spawns':{'r3':[3.,2.,0.,0.]}}))
+    truth=dict(t=1.,robot_xyz_m=[4.,2.,0.],robot_yaw_rad=.1)
+    (raw/'eval_only/trajectory.jsonl').write_text(json.dumps(truth)+'\n')
+    (out/'frontend-poses.json').write_text(json.dumps([dict(t=1.,pose=[1.,0.,.1])]))
+    r=trajectory_accuracy(out,raw)
+    assert r['xy_rmse_m']==r['yaw_rmse_rad']==0. and r['samples']==1
+    (out/'frontend-poses.json').write_text(json.dumps([dict(t=2.,pose=[1.,0.,.1])]))
+    with pytest.raises(ValueError,match='TIMESTAMP_MISSING'):trajectory_accuracy(out,raw)
 
 
 def test_native_selection_preserves_first_arm_commands_and_finite_window(tmp_path):

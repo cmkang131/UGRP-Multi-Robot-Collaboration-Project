@@ -24,10 +24,16 @@ import time
 import re
 import uuid
 from unittest.mock import patch
+from harness.lossless_recording import RecordStream
 
 ROOT = Path(__file__).resolve().parents[1]
 CATEGORIES = ('physics', 'render', 'pf_update', 'posterior_summary', 'scan_match',
-              'map_insert', 'path_plan', 'graph', 'vision', 'record_io', 'controller_other', 'setup_proof')
+              'map_insert', 'path_plan', 'graph', 'vision', 'record_io', 'controller_other', 'setup_proof',
+              'belief_report', 'cache_key', 'pose_estimate', 'flow_observation',
+              'floor_detection', 'wall_detection', 'raytrace', 'costmap_build',
+              'grid_export', 'frontier_forecast', 'controller_receive', 'controller_step',
+              'command_feedback', 'frame_hash_decode', 'state_proof', 'trend_record',
+              'visibility_geometry', 'likelihood_lookup')
 
 
 def split_timing(value):
@@ -49,7 +55,7 @@ def split_timing(value):
     return visit(value), telemetry
 
 
-def write(path, value, *, ensure_ascii=True):
+def write(path, value, *, ensure_ascii=True, storage='off', receipts=None):
     import numpy as np
     def default(item):
         if isinstance(item, np.ndarray):
@@ -58,7 +64,14 @@ def write(path, value, *, ensure_ascii=True):
             return item.item()
         raise TypeError(type(item).__name__)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, ensure_ascii=ensure_ascii, allow_nan=False, default=default) + '\n')
+    text = json.dumps(value, indent=2, ensure_ascii=ensure_ascii, allow_nan=False, default=default) + '\n'
+    stream = RecordStream(path, storage=storage)
+    try:
+        stream.write(text)
+    finally:
+        stream.close()
+    if receipts is not None:
+        receipts.append(stream.receipt())
 
 
 def sha(path):
@@ -93,17 +106,19 @@ def acquire_slot(expected, purpose, *, lock_owner_pid=None, wait_s=7200):
     """Atomic finite wait, or borrow this queue driver's verified ancestor lock."""
     from scripts import agent_lock
     source_check(expected)
+    branch = subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()
+    assert branch.startswith('codex/'), 'CODEX_WORK_BRANCH_REQUIRED'
     if lock_owner_pid is not None:
         held = agent_lock.status(agent_lock.DEFAULT_ROOT)
         assert held and held['pid'] == lock_owner_pid and held['pid_alive']
-        assert held['owner'] == 'codex' and held['branch'] == 'codex/sim-speed-ctrl'
+        assert held['owner'] == 'codex' and held['branch'] == branch
         assert held['timing_sensitive'] and ancestor(os.getpid(), lock_owner_pid)
         return held, False
     deadline = time.monotonic() + wait_s
     announced = False
     while True:
         try:
-            held = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch='codex/sim-speed-ctrl',
+            held = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch=branch,
                 purpose=purpose, pid=os.getpid(), expected_minutes=90, timing_sensitive=True)
             break
         except RuntimeError as exc:
@@ -171,6 +186,37 @@ class Timers:
             if selected != self.profile_active:
                 (self.profiler.enable if selected else self.profiler.disable)()
                 self.profile_active = selected
+
+
+def detail_timers(timer, kind):
+    """Disjoint nested costs, including pure helpers outside existing timers."""
+    def functions(module_name, names, category):
+        module = importlib.import_module(module_name)
+        for name in names:
+            if hasattr(module, name):
+                timer.aliases(getattr(module, name), category)
+    if kind == 's3':
+        functions('harness.zone_s3_exact_cache', ['key'], 'cache_key')
+        from harness import controller_exact_speedups as acceleration
+        timer.method(acceleration.ArrayRevision, '__call__', 'cache_key')
+        functions('harness.zone_solo_cyan_flow_fusion', ['pulse_observation','pitch_uncertainty'], 'flow_observation')
+        from harness.zone_solo_cyan_visibility import Visibility
+        timer.method(Visibility, 'depth_image', 'visibility_geometry')
+        from harness.zone_solo_cyan_likelihood_field import Field
+        timer.method(Field, 'distances', 'likelihood_lookup')
+    else:
+        from harness import own_map_navigation as nav, public_navigation_unknown as unknown
+        from harness import active_wall_mapping as active
+        timer.method(nav.ObservedGrid, 'dense', 'costmap_build')
+        from harness.self_odom_grid import OdomGrid
+        timer.method(OdomGrid, 'export', 'grid_export')
+        functions('harness.public_navigation_unknown', ['from_observed_grid'], 'costmap_build')
+        for cls in vars(active).values():
+            if isinstance(cls, type) and cls.__module__ == active.__name__ and hasattr(cls, '_rays'):
+                timer.method(cls, '_rays', 'raytrace')
+        functions('harness.active_information_gain', ['forecast'], 'frontier_forecast')
+        functions('harness.floor_goal_v3', ['detect_floor_v3'], 'floor_detection')
+        functions('harness.wall_contact_detector', ['detect'], 'wall_detection')
 
 
 def verify_inputs(raw, robots):
@@ -283,6 +329,8 @@ def s3(raw, out, timer):
     trial.begin(first)
     for own in rt.localizers.values():
         pf = own.pose.provider.loc._pf
+        own.pose.provider.loc.estimate = timer.wrapper(own.pose.provider.loc.estimate, 'pose_estimate')
+        own.pose.provider.report = timer.wrapper(own.pose.provider.report, 'belief_report')
         for name in ('apply_scan', 'predict_to'):
             if hasattr(pf, name):
                 setattr(pf, name, timer.wrapper(getattr(pf, name), 'pf_update'))
@@ -293,29 +341,37 @@ def s3(raw, out, timer):
             timer.profile_frame(index, len(frames['r1']))
             now = row['sim_time']
             with timer.span('record_io'):
-                batch = {r: frame(raw, frames[r][index]) for r in ROBOTS}
+                with timer.span('frame_hash_decode'):
+                    batch = {r: frame(raw, frames[r][index]) for r in ROBOTS}
             with timer.span('controller_other'):
-                rt.on_frames(now, batch)
-                actions = rt.step(now)
+                with timer.span('controller_receive'):
+                    rt.on_frames(now, batch)
+                with timer.span('controller_step'):
+                    actions = rt.step(now)
                 generated.append((now, actions))
                 for r, action in issued[round(now, 9)]:
-                    rt.on_command(r, now, action)
-            for rid, own in rt.localizers.items():
-                pf = own.pose.provider.loc._pf
-                states.append(dict(t=now, rid=rid, particles=hashlib.sha256(pf.px.tobytes()).hexdigest(),
-                                   weights=hashlib.sha256(pf.logw.tobytes()).hexdigest(), rng=pf.rng.bit_generator.state))
-            trend.append(dict(t=now, particles=[len(x.pose.provider.loc._pf.px) for x in rt.localizers.values()],
-                              timers=timer.snapshot()))
+                    with timer.span('command_feedback'):
+                        rt.on_command(r, now, action)
+            with timer.span('state_proof'):
+                for rid, own in rt.localizers.items():
+                    pf = own.pose.provider.loc._pf
+                    states.append(dict(t=now, rid=rid, particles=hashlib.sha256(pf.px.tobytes()).hexdigest(),
+                                       weights=hashlib.sha256(pf.logw.tobytes()).hexdigest(), rng=pf.rng.bit_generator.state))
+            with timer.span('trend_record'):
+                trend.append(dict(t=now, loadavg=os.getloadavg(), particles=[len(x.pose.provider.loc._pf.px) for x in rt.localizers.values()],
+                                  timers=timer.snapshot()))
             if index % 100 == 0:
                 print(json.dumps(dict(kind='s3', frame=index, sim=now)), flush=True)
     except Exception as exc:
         failure = dict(type=type(exc).__name__, message=str(exc))
     finally:
         with timer.span('record_io'):
-            write(out / 'commands.json', generated)
-            write(out / 'state.json', dict(states=states, poses={r: x.pose_log for r, x in rt.localizers.items()}))
+            storage = getattr(timer, 'record_storage', 'off')
+            receipts = getattr(timer, 'record_receipts', None)
+            write(out / 'commands.json', generated, storage=storage, receipts=receipts)
+            write(out / 'state.json', dict(states=states, poses={r: x.pose_log for r, x in rt.localizers.items()}), storage=storage, receipts=receipts)
             record, telemetry = split_timing(rt.record())
-            write(out / 'record.json', record, ensure_ascii=False)
+            write(out / 'record.json', record, ensure_ascii=False, storage=storage, receipts=receipts)
             write(out / 'timing-provenance.json', dict(schema='ugrp.replay_timing_provenance.v1',
                 scope='actual local provider latency, excluded from behavior bytes only',
                 fields=telemetry), ensure_ascii=False)
@@ -354,58 +410,71 @@ def egomap(raw, out, timer):
     timer.method(type(explorer.memory), 'finalize_pose_graph', 'graph')
     generated, state, traces, trend = [], [], [], []
     streams = {}
+    storage = getattr(timer, 'record_storage', 'off')
+    receipts = getattr(timer, 'record_receipts', None)
     last_snapshot = None
     def append(name, value):
         if name not in streams:
-            streams[name] = (out / name).open('x', buffering=65536)
+            streams[name] = RecordStream(out / name, storage=storage)
         streams[name].write(json.dumps(value, ensure_ascii=False, allow_nan=False) + '\n')
-    for index, row in enumerate(frames):
-        timer.profile_frame(index, len(frames))
-        now = row['sim_time']
-        with timer.span('record_io'):
-            obs, rgb = frame(raw, row)
-        if index >= 10:
-            with timer.span('controller_other'):
-                detection = observe(rgb, SEARCH, body_settling=.7)
-                command, trace = controller.receive(robot_id='r3', t=now, frame_id=obs['frame_id'], rgb=rgb,
-                    servo=SEARCH, observation=detection, frame_sha256=row['sha256'],
-                    own_range=ranges[obs['frame_id']])
-                generated.append(command)
-                traces.append(trace)
+    try:
+        for index, row in enumerate(frames):
+            timer.profile_frame(index, len(frames))
+            now = row['sim_time']
             with timer.span('record_io'):
-                append('own-controller.jsonl', trace)
-                append('own-contacts.jsonl', dict(t=now, frame_id=obs['frame_id'], **detection))
-                append('frontend-covariances.jsonl', dict(t=now, frame_id=obs['frame_id'],
-                    pose=list(g.odom.pose), covariance=g.odom.covariance.tolist()))
-                revision = (g.revision, g.best, g.resamples)
-                if revision != last_snapshot:
-                    append('online-maps.jsonl', dict(t=now, frame_id=obs['frame_id'],
-                        view='online_frontend', grid=g.export(), ledger=g.ledger))
-                    last_snapshot = revision
-            # The original runner records the observation BEFORE issuing and
-            # remembering its command. Keep that boundary for archival parity.
-            with timer.span('controller_other'):
-                for issued_command in issued[round(now, 9)]:
-                    controller.command(issued_command)
-            state.append(dict(t=now, poses=hashlib.sha256(g.poses.tobytes()).hexdigest(),
-                weights=hashlib.sha256(g.weights.tobytes()).hexdigest(),
-                pending_cov=hashlib.sha256(g.pending_cov.tobytes()).hexdigest(), rng=g.rng.bit_generator.state))
-        trend.append(dict(t=now, cells=sum(len(m.cells) for m in g.maps), particles=len(g.poses),
-                          ledger=len(g.ledger), record_bytes=sum(s.tell() for s in streams.values()),
-                          timers=timer.snapshot()))
-        if index % 100 == 0:
-            print(json.dumps(dict(kind='egomap', frame=index, sim=now, cells=trend[-1]['cells'])), flush=True)
+                with timer.span('frame_hash_decode'):
+                    obs, rgb = frame(raw, row)
+            if index >= 10:
+                with timer.span('controller_other'):
+                    with timer.span('vision'):
+                        detection = observe(rgb, SEARCH, body_settling=.7)
+                    with timer.span('controller_receive'):
+                        command, trace = controller.receive(robot_id='r3', t=now, frame_id=obs['frame_id'], rgb=rgb,
+                            servo=SEARCH, observation=detection, frame_sha256=row['sha256'],
+                            own_range=ranges[obs['frame_id']])
+                    generated.append(command)
+                    traces.append(trace)
+                with timer.span('record_io'):
+                    append('own-controller.jsonl', trace)
+                    append('own-contacts.jsonl', dict(t=now, frame_id=obs['frame_id'], **detection))
+                    append('frontend-covariances.jsonl', dict(t=now, frame_id=obs['frame_id'],
+                        pose=list(g.odom.pose), covariance=g.odom.covariance.tolist()))
+                    revision = (g.revision, g.best, g.resamples)
+                    if revision != last_snapshot:
+                        append('online-maps.jsonl', dict(t=now, frame_id=obs['frame_id'],
+                            view='online_frontend', grid=g.export(), ledger=g.ledger))
+                        last_snapshot = revision
+                # The original runner records the observation BEFORE issuing and
+                # remembering its command. Keep that boundary for archival parity.
+                with timer.span('controller_other'):
+                    with timer.span('command_feedback'):
+                        for issued_command in issued[round(now, 9)]:
+                            controller.command(issued_command)
+                with timer.span('state_proof'):
+                    state.append(dict(t=now, poses=hashlib.sha256(g.poses.tobytes()).hexdigest(),
+                        weights=hashlib.sha256(g.weights.tobytes()).hexdigest(),
+                        pending_cov=hashlib.sha256(g.pending_cov.tobytes()).hexdigest(), rng=g.rng.bit_generator.state))
+            with timer.span('trend_record'):
+                trend.append(dict(t=now, loadavg=os.getloadavg(), cells=sum(len(m.cells) for m in g.maps), particles=len(g.poses),
+                                  ledger=len(g.ledger), record_bytes=sum(s.tell() for s in streams.values()),
+                                  timers=timer.snapshot()))
+            if index % 100 == 0:
+                print(json.dumps(dict(kind='egomap', frame=index, sim=now, cells=trend[-1]['cells'])), flush=True)
+    finally:
+        with timer.span('record_io'):
+            for stream in streams.values():
+                stream.close()
+                if receipts is not None:
+                    receipts.append(stream.receipt())
     with timer.span('record_io'):
-        for stream in streams.values():
-            stream.close()
         for name, value in [('commands', generated), ('traces', traces), ('state', state),
             ('route-map', controller.snapshot()), ('frontend-grid', g.export()), ('frontend-ledger', g.ledger),
             ('decisions', g.decisions), ('graphs', explorer.graphs), ('navigation', explorer.navigator.events),
             ('heading-decisions', controller.heading_host.rows), ('utility-events', controller.events),
             ('own-inputs', controller.inputs), ('return-navigation', controller.navigator.events),
             ('frontend-poses', explorer.poses), ('active-events', explorer.events)]:
-            write(out / (name + '.json'), value)
-        write(out / 'all-particle-maps.json', [sorted((x, y, v) for (x, y), v in m.cells.items()) for m in g.maps])
+            write(out / (name + '.json'), value, storage=storage, receipts=receipts)
+        write(out / 'all-particle-maps.json', [sorted((x, y, v) for (x, y), v in m.cells.items()) for m in g.maps], storage=storage, receipts=receipts)
     return dict(frames=len(trend), available_frames=len(frames), start=start, end=frames[-1]['sim_time'],
                 failure=None, trend=trend, input_selection=input_selection)
 
@@ -425,9 +494,14 @@ def worker(args):
     speedups = importlib.util.module_from_spec(spec)
     sys.modules[name] = speedups
     spec.loader.exec_module(speedups)
+    os.environ[speedups.SCAN_ENV] = args.scan_speedups
+    os.environ[speedups.LOCAL_ENV] = str(args.local_submap_m)
     installed = speedups.install(args.speedups)
     timer = Timers()
+    timer.record_storage, timer.record_receipts = args.record_storage, []
     attach_timers(timer, kind)
+    if args.detail_timers:
+        detail_timers(timer, kind)
     profiler = cProfile.Profile() if args.profile else None
     timer.profiler = profiler
     timer.profile_window = args.profile_window_frames
@@ -460,11 +534,14 @@ def worker(args):
         with (out / 'profile.txt').open('w') as stream:
             pstats.Stats(profiler, stream=stream).sort_stats('cumulative').print_stats(80)
     write(out / 'trend.json', result.pop('trend'))
+    write(out / 'record-storage.json', dict(schema='ugrp.lossless-records.v1',
+        files=timer.record_receipts, decoded_bytes_identical_claim=False,
+        scope='storage hashes only; direct decoded comparison performed separately'))
     write(out / 'result.json', dict(**result, kind=kind, profile=args.profile, wall_s=wall,
         wall_per_input_sim=wall / (result['end'] - result['start']), timers=timer.snapshot(),
         measured_online_wall_per_sim=False, physics_runs=0, render_calls=0,
         archived_setup_ids=archived_ids,
-        speedups=installed.snapshot(),
+        speedups=installed.snapshot(), detail_timers=args.detail_timers, record_storage=args.record_storage,
         loadavg_start=load, loadavg_end=os.getloadavg(), input_sha256=inputs,
         source_adapter=str(args.adapter), implementation_sha=subprocess.check_output(
             ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
@@ -484,6 +561,10 @@ def main():
     p.add_argument('--profile', action='store_true')
     p.add_argument('--profile-window-frames', type=int, default=100)
     p.add_argument('--speedups', choices=('off', 'exact-v1'), default='off')
+    p.add_argument('--scan-speedups', choices=('off', 'exact-v2'), default='exact-v2')
+    p.add_argument('--local-submap-m', type=float, default=0.)
+    p.add_argument('--record-storage', choices=('off', 'gzip-v1'), default='off')
+    p.add_argument('--detail-timers', action='store_true')
     p.add_argument('--lock-owner-pid', type=int)
     p.add_argument('--execute', action='store_true')
     a = p.parse_args()
