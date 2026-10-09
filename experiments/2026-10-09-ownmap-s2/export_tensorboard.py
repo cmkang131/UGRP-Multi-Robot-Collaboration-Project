@@ -1,12 +1,11 @@
-import json,hashlib,sys,urllib.parse,urllib.request
+import json,hashlib,sys,subprocess,urllib.parse,urllib.request
 from pathlib import Path
 import numpy as np
-from scripts.tensorboard_tools.offline_audit import main as export_main
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
 
 raw=Path(sys.argv[1]);evaluation=Path(sys.argv[2]);snapshot=Path(sys.argv[3])
 result=json.loads((evaluation/'result.json').read_text());series=json.loads((evaluation/'series.json').read_text())
-derived=evaluation/'tensorboard-inputs';derived.mkdir()
+derived=evaluation/('tensorboard-inputs-'+snapshot.name);derived.mkdir()
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 args=[];expected={}
 for row in result['pairs']:
@@ -34,7 +33,8 @@ for row in result['pairs']:
     texts={'provenance/no_new_video':'No new render/video. Original S2 frames were SHA256-verified; originals retained.','provenance/input_paths':{'raw':pred['raw'],'map_raw':pred['map_raw']}},evaluation=m)
   (dest/'result.json').write_text(json.dumps(view,ensure_ascii=False,indent=2)+'\n')
   args+=['--source',str(dest)];expected[name]={**metric,'result/wall_s':pred['wall_s'],'result/commands':pred['commands'],'result/model_calls':0,'evaluation/reported_success':int(m['correct_convergence'])}
-export_main(args+['--output',str(snapshot)])
+entry=Path(__file__).resolve().parents[2]/'scripts/export_offline_audit.py'
+subprocess.run([sys.executable,str(entry),*args,'--output',str(snapshot)],check=True)
 verification=[]
 for name,metrics in expected.items():
  acc=EventAccumulator(str(snapshot/name),size_guidance={'scalars':0});acc.Reload()
