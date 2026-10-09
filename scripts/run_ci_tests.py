@@ -387,6 +387,7 @@ TEST_PATTERNS = (
     "tests/test_navigation_temporal.py",
     "tests/test_ugrp_session.py",
     "tests/test_sim_speed_tools.py",
+    "tests/test_v7_exact_speedups.py",
     "tests/test_sim_speed_review2.py",
     "tests/test_sim_speed_review3.py",
     "tests/test_sim_speed_review4.py",

@@ -781,6 +781,23 @@
         "--expected-source-sha"
       ],
       "output_kind": "directory"
+    },
+    {
+      "id": "egomap-sim-speed-replay",
+      "purpose": "고정 own 명령의 결과 불변 속도 비교: 단일 잠금 ABBA와 cProfile",
+      "entry": "scripts/benchmark_egomap_sim_speed.py",
+      "docs": "experiments/2026-10-09-sim-speed/README.md",
+      "requires": "explicit --execute; clean pushed source; shared agent_lock; recorded source; bounded prefix only",
+      "version": "1.0.0",
+      "runner": "scripts.benchmark_egomap_sim_speed",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--source",
+        "--expected-source-sha"
+      ],
+      "output_kind": "directory"
     }
   ]
 }
