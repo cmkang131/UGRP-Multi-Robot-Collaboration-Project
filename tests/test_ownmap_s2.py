@@ -1,0 +1,89 @@
+import copy
+import math
+from types import SimpleNamespace
+
+import numpy as np
+import pytest
+
+from harness import ownmap_s2 as m
+
+
+def grid():
+    return dict(frame=m.FRAME, resolution_m=.1,
+        cells=[[0, 0, 2], [1, 0, -2], [2, 0, 0], [0, 1, -1], [1, 1, -2]],
+        pose_xyyaw=[999, 999, 999], particle_poses=[[888, 888, 888]])
+
+
+def test_off_never_reads_input():
+    assert m.convert(None) is None
+    with pytest.raises(ValueError):
+        m.convert(None, option='bad')
+
+
+def test_own_frame_missing_data_and_grid_cell_centers():
+    a = m.convert(grid(), option=m.OPTION); f = m.GridField(a)
+    assert a['map_id'] == 'ownmaps2a' and a['regions'] == {} and a['passages'] == []
+    assert a['landmarks']['tags'] == [] and a['pickup_slots'] == []
+    assert 'pose_xyyaw' not in str(a) and '999' not in str(a)
+    assert f.distances(np.array([[.05, .05]]))[0] == 0
+    assert f.distances(np.array([[100, 100]]))[0] == 2
+    assert f.distances(np.array([[.15, .05]]))[0] == pytest.approx(.06)
+    px = f.uniform(np.random.default_rng(10), 1000)
+    assert f.free(px[:, :2]).all()
+    assert not f.free(np.array([[.25, .05], [.35, .05], [.05, .05]])).any()
+    assert px[:, 2].min() < -3 and px[:, 2].max() > 3
+
+
+def test_partial_region_never_fabricates_boundary():
+    goal = dict(entity=dict(kind='floor_zone', id='B'), source='own',
+                center_m=[3, 4], bounds_m=[[2, 3], [4, 5]], partial_extent=True)
+    original = copy.deepcopy(goal)
+    a = m.convert(grid(), goal, option=m.OPTION)
+    assert a['observed_regions']['B']['bounds_m'] == goal['bounds_m']
+    assert a['observed_floor_edges'] == [] and a['regions'] == {}
+    assert goal == original
+
+
+@pytest.mark.parametrize('change', [dict(frame='world'), dict(resolution_m=float('nan')),
+    dict(cells=[[0, 0, 1], [0, 0, -1]]), dict(cells=[[.5, 0, 1], [1, 0, -1]])])
+def test_invalid_input_refused(change):
+    with pytest.raises(ValueError):
+        m.convert({**grid(), **change}, option=m.OPTION)
+
+
+def test_warning_rule_has_yaw_and_missing_fix():
+    r = dict(std_xy_m=.02, std_yaw_rad=.01, last_fix_t=1.)
+    assert not m.warned(r)
+    assert m.warned({**r, 'last_fix_t': None})
+    assert m.warned({**r, 'std_yaw_rad': math.radians(6)})
+    with pytest.raises(RuntimeError):
+        m._forbid_control()
+
+
+def test_evaluation_alignment_rotates_covariance_without_fit():
+    from scripts.evaluate_ownmap_s2 import anchored_pose
+    p,c=anchored_pose(np.array([1.,0.,.1]),np.diag([.04,.01,.09]),np.array([3.,4.,math.pi/2]))
+    np.testing.assert_allclose(p,[3.,5.,math.pi/2+.1])
+    np.testing.assert_allclose(c,np.diag([.01,.04]),atol=1e-12)
+
+
+def test_wrong_mode_not_hidden_by_posthoc_trajectory_alignment():
+    from scripts.evaluate_ownmap_s2 import score
+    r=dict(t=1.,t_est=1.,x=1.,y=0.,yaw=0.,std_xy_m=.01,std_yaw_rad=.01,last_fix_t=1.,
+        cov=np.diag([.0001,.0001,.0001]).tolist(),pose_uncertain=False)
+    truth=[dict(t=1.,robot_xyz_m=[0,0,0],robot_yaw_rad=0.)]
+    out,_=score([r],truth,np.zeros(3),[1.])
+    assert out['wrong_mode'] and not out['correct_convergence']
+    assert out['post_convergence_rmse_m']==1. and out['unflagged_gt25cm']==1
+    assert out['nees_all']==dict(valid=1,exceed=1,exceed_fraction=1.)
+
+
+def test_gate_requires_seven_and_does_not_skip_failed_own_convergence():
+    from scripts.evaluate_ownmap_s2 import gates
+    ok=dict(correct_convergence=True,post_convergence_rmse_m=.1,wrong_mode=False,
+        unflagged_gt25cm=0,nees_all=dict(valid=1,exceed=0),first_convergence_missing_gt=False,missing_decision_reports=0)
+    pairs=[dict(pair_id=str(i),baseline_identity=True,off=copy.deepcopy(ok),own_grid_v1=copy.deepcopy(ok)) for i in range(7)]
+    assert gates(pairs)['passed']
+    assert not gates(pairs[:-1])['passed']
+    pairs[0]['own_grid_v1'].update(correct_convergence=False,post_convergence_rmse_m=None)
+    assert not gates(pairs)['passed']
