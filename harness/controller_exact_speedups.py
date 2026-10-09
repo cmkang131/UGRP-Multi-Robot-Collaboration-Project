@@ -152,14 +152,17 @@ class MethodSummaryMemo:
 
 class IntegerClipNumpy:
     """Exact int64 scalar clamp; arrays/floats/other signatures use NumPy."""
+    def __init__(self):
+        self.fast_calls = 0
+
     def __getattr__(self, name):
         return getattr(np, name)
 
-    @staticmethod
-    def clip(value, lower, upper, *args, **kwargs):
+    def clip(self, value, lower, upper, *args, **kwargs):
         if (not args and not kwargs and type(value) in (int, np.int64)
                 and type(lower) is int and type(upper) is int
                 and all(-(1 << 63) <= x < (1 << 63) for x in (value, lower, upper))):
+            self.fast_calls += 1
             return np.int64(min(max(int(value), lower), upper))
         return np.clip(value, lower, upper, *args, **kwargs)
 
@@ -256,10 +259,24 @@ class Installation:
             self.caches['owncam_moments'] = cached
             self.record['applied'].append('owncam_moments')
         from harness import zone_pair_highpose_opencv_exact as opencv
-        if self.guard(opencv.install,
-                '939633d488b4d2d2ceb7cec4cc30270deecd162c18dfe2a1ef3fe8b6b35f80d3', 'opencv_integer_clip'):
-            self.aliases(opencv.install, bind(opencv.install, np=IntegerClipNumpy()))
+        from harness.vision_loc_protocol import load_vis3
+        vl, _ = load_vis3()
+        clip = IntegerClipNumpy()
+        # The detector factory owns the nested scalar step's globals. Binding
+        # install() alone does not affect it. Cover the frozen detector too,
+        # when the older geometry cache declines the current observation API.
+        detector_sha = hashlib.sha256(inspect.getsource(vl.mp.detect_boundaries).encode()).hexdigest()
+        expected_detector = ('e63238453c1a632548a775bcf14a532a25992ae3004b925783aeb1199b2ae725'
+            if detector_sha == 'e63238453c1a632548a775bcf14a532a25992ae3004b925783aeb1199b2ae725'
+            else '59459639ec2b7576ef97ff06e0724b2056e6174ef135b8240cd7bb0c85aca4e6')
+        if self.guard(vl.mp.detect_boundaries, expected_detector, 'markerless_integer_clip'):
+            self.replace(vl.mp, 'detect_boundaries', bind(vl.mp.detect_boundaries, np=clip))
+            self.record['applied'].append('markerless_integer_clip')
+        if self.guard(opencv.make_detect_boundaries,
+                '632ba220968ace4e2b8ba5973ee7d6048ef64e7ef8e1da402f9c68c945813e87', 'opencv_factory'):
+            self.replace(opencv, 'make_detect_boundaries', bind(opencv.make_detect_boundaries, np=clip))
             self.record['applied'].append('opencv_integer_clip')
+        self.integer_clip = clip
         if self.guard(global_start.belief_report,
                 '7c0acfa9ce86e0a26348a6e56f193533f87c5c89428e7ce16a4430d9c4fd0207', 'posterior_summary'):
             summary = memo(global_start.belief_report, selected=DEFAULT)
@@ -337,7 +354,8 @@ class Installation:
         return self
 
     def snapshot(self):
-        return {**self.record, 'caches': {name: dict(hits=c.hits, misses=c.misses,
+        return {**self.record, 'integer_clip_fast_calls': getattr(getattr(self, 'integer_clip', None), 'fast_calls', 0),
+            'caches': {name: dict(hits=c.hits, misses=c.misses,
             entries=len(c.entries), max_entries=c.maxsize) for name, c in self.caches.items()}}
 
     def close(self):

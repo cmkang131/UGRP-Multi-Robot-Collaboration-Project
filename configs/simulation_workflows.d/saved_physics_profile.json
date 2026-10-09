@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "saved-physics-profile", "version": "1.0.0",
+    "purpose": "Bounded saved-command native cost decomposition",
+    "entry": "scripts/profile_saved_physics.py", "runner": "scripts.profile_saved_physics",
+    "docs": "experiments/2026-10-09-sim-speed-ctrl/README.md",
+    "requires": "Committed source; completed input manifest; exclusive slot; S3 first",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--kind", "--raw", "--adapter", "--expected-source-sha"],
+    "side_effect": "local_simulation", "adapter": "managed_legacy_cli"
+  }]
+}

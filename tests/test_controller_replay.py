@@ -21,6 +21,49 @@ def test_managed_catalog_plans_without_execution(tmp_path):
         '--adapter', str(tmp_path), '--output', str(tmp_path / 'new'), '--expected-source-sha', 'a' * 40])
     assert result['execution_started'] is False
     assert not (tmp_path / 'new').exists()
+    result = plan(root, 'saved-physics-profile', ['--kind', 's3', '--raw', str(tmp_path),
+        '--adapter', str(tmp_path), '--output', str(tmp_path / 'native'), '--expected-source-sha', 'a' * 40])
+    assert result['execution_started'] is False
+    assert not (tmp_path / 'native').exists()
+
+
+def test_atomic_slot_wait_handles_status_to_acquire_race(monkeypatch):
+    from scripts import profile_controller_replay as replay, agent_lock
+    calls=[]
+    def acquire(*args, **kwargs):
+        calls.append(kwargs)
+        if len(calls)==1:raise RuntimeError('lock held: another task')
+        return {'pid':kwargs['pid']}
+    monkeypatch.setattr(agent_lock,'acquire',acquire)
+    monkeypatch.setattr(replay,'source_check',lambda expected:None)
+    monkeypatch.setattr(replay.time,'sleep',lambda seconds:None)
+    held,owned=replay.acquire_slot('a'*40,'test')
+    assert owned and held['pid']==replay.os.getpid() and len(calls)==2
+
+
+def test_borrowed_lock_requires_our_live_ancestor(monkeypatch):
+    from scripts import profile_controller_replay as replay, agent_lock
+    held=dict(pid=123,pid_alive=True,owner='codex',branch='codex/sim-speed-ctrl',timing_sensitive=True)
+    monkeypatch.setattr(agent_lock,'status',lambda root:held)
+    monkeypatch.setattr(replay,'source_check',lambda expected:None)
+    monkeypatch.setattr(replay,'ancestor',lambda pid,parent:False)
+    with pytest.raises(AssertionError):replay.acquire_slot('a'*40,'test',lock_owner_pid=123)
+    monkeypatch.setattr(replay,'ancestor',lambda pid,parent:True)
+    assert replay.acquire_slot('a'*40,'test',lock_owner_pid=123)==(held,False)
+
+
+def test_native_selection_preserves_first_arm_commands_and_finite_window(tmp_path):
+    import json
+    from scripts.profile_saved_physics import selection
+    path=tmp_path/'robots/r3';path.mkdir(parents=True)
+    frames=[dict(sim_time=t) for t in (1.3,1.5,1.7,1.9)]
+    (path/'frames.jsonl').write_text(''.join(json.dumps(x)+'\n' for x in frames))
+    commands=[dict(kind='initial_servo_command',t=0.),dict(kind='arm',t=1.3,servo_id=3,pulse=777),
+              dict(kind='hold',t=1.7),dict(kind='drive',t=1.9)]
+    (path/'commands.jsonl').write_text(''.join(json.dumps(x)+'\n' for x in commands))
+    robots,reference,times,schedule=selection(tmp_path,'egomap',.4)
+    assert robots==('r3',) and times==[1.3,1.5,1.7]
+    assert schedule=={1.3:[('r3',dict(kind='arm',servo_id=3,pulse=777))],1.7:[('r3',dict(kind='hold'))]}
 
 
 def test_numpy_graph_evidence_serializes_without_losing_numeric_values(tmp_path):

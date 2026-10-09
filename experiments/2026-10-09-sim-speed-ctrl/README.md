@@ -124,3 +124,27 @@ record.json13,023,004 bytes는 실제 inference_wall_ms가 달라 전체 bytes g
 v9는 추가 타이머의 Observer API 이름 오류로 worker 초기화에서 실패했다(프레임0/물리0).
 실제 OpenCVObserver 메서드 경계로 수정하고 import 표면까지 포함한 관련7개 검사0.76초
 통과했다. 각 실패의 managed manifest·로그·부분 출력은 primary outputs에 유지한다.
+
+## 완전 S3 재생과 슬롯 경계 (10/10)
+
+`bdaf46815620b919a8f61b69d301ca88547f1589`, raw `outputs/speedctrl-20261009-v10`의
+S3 439/439 프레임에서 cProfile 포함 제어기-only wall/SIM은 off 2.873118 → on 2.332310이다.
+명령 268,794 B, timing 분리 후 제어 기록 13,022,104 B, 입자/가중치/RNG 상태 5,109,822 B는
+직접 바이트·SHA 비교로 동일하다. 실제 inference_wall_ms는 `timing-provenance.json`에 각각 보존한다.
+원본 전체 기록의 타이밍 바이트까지 같다고 주장하지 않는다. 물리·렌더 0이며 전체 online 목표는 미달/미검증이다.
+원본 egomap58 55001 off 1,351/1,351 프레임은 403.028187 wall /270 SIM =1.492697이다.
+원본 heading/decisions/frontend-ledger/navigation/return-navigation/utility-events/own-inputs JSON과 의미값이 같다.
+
+v10 후속 on은 다른 작업이 status 확인과 acquire 사이에 잠금을 잡아 실행 전 거부됐다(재생/물리0).
+기록은 보존했다. 원자적 acquire의 유한 대기와 같은 작업 큐의 살아 있는 조상 PID 잠금 상속을 추가한다.
+상속은 owner/branch/timing_sensitive/실제 프로세스 조상 관계가 모두 맞아야 하며 자식은 잠금을 해제하지 않는다.
+후속 큐는 S3 먼저, 순차 재생이며 연구 슬롯 종료까지 기다린다. 다른 작업을 종료하거나 잠금을 빼앗지 않는다.
+
+cProfile에서 기존 scalar clip 가속은 install()의 private globals만 바꿔 실제 detector까지 전달되지 않은 것으로 확인했다.
+소스 해시가 고정된 원래 detector와 geometry-cache factory에 직접 private np를 연결하고,
+실제 fast-path 호출 수를 provenance에 기록한다. 정수 clamp 결과/type는 유지하고 float/array는 NumPy 그대로다.
+설치 복원·실제 detector globals와 신규 factory 연결을 회귀로 검사한다.
+
+네이티브 비용용 `saved-physics-profile`도 표준 관리 계층에 등록한다. 원본 backend/발행 명령/장면 자산을 쓰고
+최대30 SIM초의 물리·렌더·저장 I/O만 측정한다. 제어/모델0, 원본 RGB SHA·장면 XML 자산 해시를 비교하며
+실패도 기록한다. 이 구간 비용과 전체 저장 입력 제어기 비용을 합한 추정치를 실제 online 측정으로 부르지 않는다.

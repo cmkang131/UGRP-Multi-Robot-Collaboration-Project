@@ -73,6 +73,54 @@ def rows(path):
     return [json.loads(row) for row in path.read_text().splitlines()]
 
 
+def source_check(expected):
+    assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip() == expected
+    assert not subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True).strip(), 'DIRTY_SOURCE'
+
+
+def ancestor(pid, parent):
+    """A managed CLI may add an intermediate subprocess/session."""
+    for _ in range(64):
+        if pid == parent:
+            return True
+        if pid <= 1:
+            return False
+        pid = int(subprocess.check_output(['ps', '-o', 'ppid=', '-p', str(pid)], text=True))
+    return False
+
+
+def acquire_slot(expected, purpose, *, lock_owner_pid=None, wait_s=7200):
+    """Atomic finite wait, or borrow this queue driver's verified ancestor lock."""
+    from scripts import agent_lock
+    source_check(expected)
+    if lock_owner_pid is not None:
+        held = agent_lock.status(agent_lock.DEFAULT_ROOT)
+        assert held and held['pid'] == lock_owner_pid and held['pid_alive']
+        assert held['owner'] == 'codex' and held['branch'] == 'codex/sim-speed-ctrl'
+        assert held['timing_sensitive'] and ancestor(os.getpid(), lock_owner_pid)
+        return held, False
+    deadline = time.monotonic() + wait_s
+    announced = False
+    while True:
+        try:
+            held = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch='codex/sim-speed-ctrl',
+                purpose=purpose, pid=os.getpid(), expected_minutes=90, timing_sensitive=True)
+            break
+        except RuntimeError as exc:
+            if not str(exc).startswith('lock held:') or time.monotonic() >= deadline:
+                raise
+            if not announced:
+                print('Waiting for the exclusive host slot (finite; no process interruption)', flush=True)
+                announced = True
+            time.sleep(2)
+    try:
+        source_check(expected)
+    except BaseException:
+        agent_lock.release(agent_lock.DEFAULT_ROOT, owner='codex')
+        raise
+    return held, True
+
+
 class Timers:
     """Nested measurements form a partition; inclusive values are separate."""
     def __init__(self, clock=time.perf_counter):
@@ -399,6 +447,7 @@ def main():
     p.add_argument('--profile', action='store_true')
     p.add_argument('--profile-window-frames', type=int, default=100)
     p.add_argument('--speedups', choices=('off', 'exact-v1'), default='off')
+    p.add_argument('--lock-owner-pid', type=int)
     p.add_argument('--execute', action='store_true')
     a = p.parse_args()
     assert a.profile_window_frames > 0
@@ -408,14 +457,14 @@ def main():
     assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip() == a.expected_source_sha
     assert int(subprocess.check_output(['ps', '-o', 'ni=', '-p', str(os.getpid())])) == 0
     from scripts import agent_lock
-    held = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch='codex/sim-speed-ctrl',
-        purpose='speedctrl saved-input replay; physics0', pid=os.getpid(), expected_minutes=60, timing_sensitive=True)
+    held, owned = acquire_slot(a.expected_source_sha, 'speedctrl saved-input replay; physics0',
+                               lock_owner_pid=a.lock_owner_pid)
     try:
         complete = worker(a)
     finally:
-        released = agent_lock.release(agent_lock.DEFAULT_ROOT, owner='codex')
+        released = agent_lock.release(agent_lock.DEFAULT_ROOT, owner='codex') if owned else None
         if a.output.exists():
-            write(a.output / 'lock.json', dict(acquired=held, released=released))
+            write(a.output / 'lock.json', dict(acquired=held, released=released, borrowed=not owned))
     if not complete:
         raise RuntimeError('INCOMPLETE_REPLAY: failure preserved in result.json')
 

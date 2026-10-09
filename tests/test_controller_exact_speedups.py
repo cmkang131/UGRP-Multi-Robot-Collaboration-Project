@@ -153,7 +153,17 @@ def test_common_install_off_and_restore(monkeypatch):
         for a, b in zip(actual[:2], expected[:2]):
             assert a.tobytes() == b.tobytes()
         assert actual[2] == expected[2]
-        assert on.snapshot()['applied'] == ['owncam_moments','opencv_integer_clip','posterior_summary']
+        assert on.snapshot()['applied'] == ['owncam_moments','markerless_integer_clip','opencv_integer_clip','posterior_summary']
+        from harness.vision_loc_protocol import load_vis3
+        from harness import zone_pair_highpose_opencv_exact as opencv
+        vl, _ = load_vis3()
+        # Regression: install()'s private np does not reach the detector's
+        # nested step. Test both the frozen and subsequent cached detector.
+        cached_detector = opencv.make_detect_boundaries(vl.mp, opencv.GeometryCache())
+        for detector in (vl.mp.detect_boundaries, cached_detector):
+            assert detector.__globals__['np'] is on.integer_clip
+            assert detector.__globals__['np'].clip(np.int64(500), 1, 478) == 478
+        assert on.snapshot()['integer_clip_fast_calls'] == 2
     finally:
         on.close()
     assert start.belief_report is previous
