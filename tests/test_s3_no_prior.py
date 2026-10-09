@@ -63,6 +63,11 @@ def test_three_real_localizers_never_call_dock_prior(monkeypatch):
         for rid in ('r1', 'r2'):
             assert runtime.pair.actors[rid].last_report.t_est == runtime.localizers[rid].last_report.t_est
             assert len(runtime.localizers[rid].pose_log) == 2
+        # S2 explicitly stores None here. Both runtime and trial call this
+        # serializer, including failed runs; absence must be JSON-serializable.
+        yaw = runtime.pair.team._carry_yaw_record()
+        assert all(q['availability_frames'] == {} for q in yaw.values())
+        json.dumps(runtime.record())
     finally:
         runtime.close()
 
@@ -116,3 +121,38 @@ def test_posthoc_does_not_accept_wrong_mode_or_unfinished_commands(tmp_path):
     assert q['robots']['r3']['delivery_complete'] is True
     assert q['robots']['r3']['success'] is False
     assert q['door_deadlocks'] == []
+
+
+def test_carry_yaw_record_preserves_existing_statistics(monkeypatch):
+    from harness import owncam_carry_v6e
+    inner = SimpleNamespace(loc=SimpleNamespace(pair_matched=3, pair_unmatched=2),
+        carry_yaw_fallback={'level_frames': {'visual': 7}},
+        beam_edge=SimpleNamespace(stats={'accepted': 4}, total_rad=.12))
+    monkeypatch.setattr(owncam_carry_v6e, '_inner', lambda _: inner)
+    team = SimpleNamespace(executors={'r1': SimpleNamespace(pose=None)})
+    row = m.carry_yaw_record(team)['r1']
+    assert row == dict(partner_plan_matched=3, partner_plan_unmatched=2,
+        availability_frames={'visual': 7}, beam_edge={'accepted': 4, 'total_rad': .12})
+    row['availability_frames']['visual'] = 0
+    assert inner.carry_yaw_fallback['level_frames']['visual'] == 7
+
+
+def test_referee_height_uses_world_inertial_position_without_clamping(monkeypatch):
+    from sim.zone_s3_no_prior import referee_truth
+    from scripts.run_zone_study_integration import StudyTeamHost
+    from harness.zone_study_referee import Referee, ContractViolation
+    row = dict(kind='long_beam', x=1.275, y=.05, yaw=0., z=-.000543678,
+        held=False, speed=0.)
+    monkeypatch.setattr(StudyTeamHost, 'referee_truth', lambda _: {'beam_1': copy.deepcopy(row)})
+    body = SimpleNamespace(xipos=[1.275, .05, .015456322])
+    host = SimpleNamespace(objects={'beam_1': {'body_name': 'cargo_beam_1'}},
+        world=SimpleNamespace(data=SimpleNamespace(body=lambda _: body)))
+    corrected = referee_truth(host)
+    assert corrected['beam_1'] == {**row, 'z': .015456322}
+    referee = Referee(c.inputs()[2]['orders'], c.hp.resolve(c.old.solo.MAP_ID)[0])
+    referee.observe(0., corrected)
+    # A truly underground/nonfinite COM is still rejected by the same contract.
+    for bad in (-.001, float('nan')):
+        body.xipos[2] = bad
+        with pytest.raises(ContractViolation):
+            referee.observe(1., referee_truth(host))

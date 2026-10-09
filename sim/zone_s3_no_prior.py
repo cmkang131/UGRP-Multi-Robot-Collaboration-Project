@@ -12,6 +12,23 @@ class PhysicalStop(RuntimeError):
     pass
 
 
+HEIGHT_REFERENCE = 'world_body_center_of_mass_v1'
+
+
+def referee_truth(host):
+    """Evaluation only: body origins need not be inside cargo (beam origin is at floor).
+
+    Use MuJoCo's world inertial-frame position for height, including body rotation.
+    Do not clamp penetration, change referee thresholds, or feed truth to control.
+    Footprint x/y/yaw retain their original geometric reference.
+    """
+    from scripts.run_zone_study_integration import StudyTeamHost
+    rows = StudyTeamHost.referee_truth(host)
+    for item, row in rows.items():
+        row['z'] = float(host.world.data.body(host.objects[item]['body_name']).xipos[2])
+    return rows
+
+
 def make_scene(bundle, seed):
     from harness import zone_s3_no_prior_contract as contract
     from sim.zone_environment_scene_provider import scenario_scene
@@ -78,7 +95,9 @@ class PhysicsBackend(OldBackend):
         return elapsed
 
     def eval_sample(self):
-        super().eval_sample()
+        BaseBackend.eval_sample(self)
+        self._append('eval_only/referee_truth.jsonl', dict(t=self.now,
+            items=referee_truth(self), height_reference=HEIGHT_REFERENCE))
         from harness.zone_s2_realism_contract import SAFETY
         import numpy as np
         if not np.isfinite(self.world.data.qpos).all() or not np.isfinite(self.world.data.qvel).all():

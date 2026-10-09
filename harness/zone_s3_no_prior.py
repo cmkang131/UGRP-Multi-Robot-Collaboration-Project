@@ -14,6 +14,21 @@ from harness.zone_final_pair_binding import bind
 ROBOTS = old.ROBOTS
 
 
+def carry_yaw_record(team):
+    """S2 providers have no carry-yaw fallback; serialize absence as empty data."""
+    from harness import owncam_carry_v6e as carry
+    out = {}
+    for rid, executor in team.executors.items():
+        inner = carry._inner(executor.pose)
+        edge = getattr(inner, 'beam_edge', None)
+        fallback = getattr(inner, 'carry_yaw_fallback', None)
+        out[rid] = dict(partner_plan_matched=int(getattr(inner.loc, 'pair_matched', 0)),
+            partner_plan_unmatched=int(getattr(inner.loc, 'pair_unmatched', 0)),
+            availability_frames=dict((fallback or {}).get('level_frames') or {}),
+            **({'beam_edge': {**edge.stats, 'total_rad': edge.total_rad}} if edge is not None else {}))
+    return out
+
+
 def public_tasks(orders):
     rows = {o['kind']: copy.deepcopy(o) for o in orders}
     if (len(orders) != 2 or set(rows) != {'cyan', 'long_beam'}
@@ -76,6 +91,8 @@ class PairRuntime(old.pair.Runtime):
         planner(static, task['sheet'], task['target'])
 
         class SlotTeam(old.pair.Team):
+            _carry_yaw_record = carry_yaw_record
+
             def __init__(self, *args):
                 super().__init__(*args)
                 self.start = MethodType(bind(self.start.__func__, make_plan=planner), self)

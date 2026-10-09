@@ -109,3 +109,14 @@ s2v59 6개는 원본별 사후 배달 **3/6**(1066/1067/1069 성공, 1065 검색
 실행 뒤에는 원인 분류·원본 복구·기록만 했으며 제어기/기본 off 경로를 바꾸지 않았다. 실행 직전 변경 모듈 시험 6 passed, 그 앞 main 통합 3개 파일 92 passed. 문서/증거 최종 커밋은 JSON·해시·diff 검사 후 push하며 CI 완료를 기다리지 않는다. 독립 검토/후속 수정 전 PR #416은 draft로 유지한다.
 
 최종 전달 확인: [TensorBoard 검증](tensorboard-verification.json)에서 27개 scalar 재로딩, 성공0·wall271.7412·명령3356·호출0을 대조했다. Chrome 강 프로필에서 새 run/핀7개·HParams 지정4열을 확인했고 S2 6개를 별도 비교한 뒤 S3 화면을 남겼다. 기존 서버는 변경하지 않았다. 영상 등록 및 원본 Range HTTP206도 확인했다.
+
+
+## 10/9 s3diag — 오프라인 진단 계획과 HOST 계약 수정
+
+감독 지시로 물리 실행은 금지한다. s14201의 원본 RGB·발행 명령만 재생하고 GT는 재생 후 평가/가림 분석에만 쓴다. 비교는 (a) 타 로봇 가림, (b) 시작 위치·yaw 가설 및 단서, (c) 관측 길이·pan 순서, (d) 지도·경기장 동일성을 분리한다. 추가로 영상에서 검출된 바닥 선의 지도 적합도를 확인한다. 문턱은 바꾸지 않으며 동일 입력/난수 기준선을 검증한 뒤 한 요인씩 바꾼다. 반복 물리 실험·CI 완료 대기는 하지 않는다.
+
+HOST_ERROR 수정은 S3 no-prior 어댑터에 한정한다. `SlotTeam`은 S2 provider의 `carry_yaw_fallback=None`을 빈 availability 기록으로 직렬화하고 기존 통계는 보존한다. 평가 높이는 바닥에 놓인 beam의 body 원점(`xpos`) 대신 세계 좌표계 질량중심(`xipos`)을 사용하며 `height_reference=world_body_center_of_mass_v1`을 각 eval 행에 남긴다. 좌표/속도/접촉과 기존 심판 문턱은 그대로다. 음수·비유한 COM은 여전히 거부한다. 과거 원본의 beam roll/pitch/COM은 기록되지 않았으므로 원본 높이에 임의 상수를 더해 심판 완료를 복원하지 않는다.
+
+검증: `python -m pytest -q tests/test_s3_no_prior.py` **8 passed**. 실제 3개 provider 생성, None 기록, 기존 통계 보존, 음수 body 원점/정상 COM의 회귀와 비정상 COM 거부, 기본 off 동결 바이트를 확인했다. 물리 실행은 0회다.
+
+방법 출처: [MuJoCo xipos 정의](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html#mjdata)는 body COM의 세계 위치를 명시한다. [Fox/Burgard/Thrun 1999](https://arxiv.org/abs/1106.0222) 및 [선행 AAAI98 동적 환경 필터](https://www.ri.cmu.edu/pub_files/pub1/fox_dieter_1998_3/fox_dieter_1998_3.pdf)는 지도에 없는 장애물 관측 거부의 근거이며, 타 로봇 가림의 영향이 측정된 경우에만 적용 후보로 사용한다. 영상 마스크의 GT는 진단 oracle일 뿐 제어 입력으로 승격하지 않는다.
