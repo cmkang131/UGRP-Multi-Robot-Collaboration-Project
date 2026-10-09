@@ -27,7 +27,7 @@
 egomap49 seed49001. 각각 30 SIM초 고정 발행 명령, ABBA(off/on/on/off), 조건별 n=2.
 각 source SHA를 Git에서 별도 export하고 4개 공통 모듈만 overlay한다. 다른 worktree 수정0.
 S2 backend 구성은 해당 원본 run_s2_landmarks_dev의 동일 class/scene 변환을 사용한다.
-원본 scene.xml 직접 bytes, 연속 프레임/샘플수/파일존재/영상 SHA를 먼저 확인한다.
+원본 scene.xml은 Git export에 따른 asset 절대 경로만 SHA로 치환하고 asset bytes와 나머지 XML 동일을 확인한다. on/off scene.xml은 직접 bytes 비교한다. 연속 프레임/샘플수/파일존재/영상 SHA를 먼저 확인한다.
 매 물리 스텝 mjSTATE_INTEGRATION과 relay state 누적 해시, 최종 상태, 산출물 직접 bytes를 비교한다.
 기존 v98-exact-v6는 원본 bundle에 있는 S2/S3에서 양쪽 동일하게 유지한다.
 전체 온라인 제어기·임무 성공 검증이 아니며, 컨트롤러/모델 호출0이다.

@@ -76,6 +76,8 @@ def export_adapter(revision, output):
 def load_adapter(root):
     # Fresh child interpreter: all adapter dependencies from its immutable export.
     sys.path.insert(0, str(root))
+    for package in ('sim', 'scripts', 'harness'):
+        importlib.import_module(package).__path__ = [str(root/package)]
     for name in OVERLAY:
         parent_name, _, leaf = name.rpartition('.')
         parent = importlib.import_module(parent_name)
@@ -118,6 +120,24 @@ def backend_factory(kind, bundle):
     return Backend
 
 
+def scene_receipt(actual, reference):
+    """Relocated Git exports change asset path spelling, never their bytes."""
+    import xml.etree.ElementTree as ET
+    a, b = ET.fromstring(actual.read_bytes()), ET.fromstring(reference.read_bytes())
+    assets = []
+    for node in a.iter():
+        if node.get('file'):
+            path = Path(node.get('file'))
+            digest = sha(path)
+            assets.append({'name': node.get('name'), 'sha256': digest})
+            node.set('file', 'sha256:'+digest)
+    for node in b.iter():
+        if node.get('file'):
+            node.set('file', 'sha256:'+sha(Path(node.get('file'))))
+    assert ET.tostring(a) == ET.tostring(b), 'ADAPTER_SCENE_DIFF'
+    return {'identical_after_asset_path_relocation': True, 'assets': assets}
+
+
 def worker(args):
     held = json.loads((args.output.parent/'lock.json').read_text())
     # Parent owns the exclusive lock; workers are strictly serial direct children.
@@ -156,7 +176,7 @@ def worker(args):
         backend = backend_factory(kind, bundle)(bundle, args.output, seed=seed)
         backend.reset(5.)
         assert backend.now == start
-        assert (args.output/'scene.xml').read_bytes() == (args.source/'scene.xml').read_bytes(), 'ADAPTER_SCENE_DIFF'
+        write(args.output/'scene-proof.json', scene_receipt(args.output/'scene.xml', args.source/'scene.xml'))
         backend.set_deadline(times[-1])
         if kind == 's2':
             # Replay the recorded command-derived release flag; never infer it from GT.
@@ -214,9 +234,9 @@ def worker(args):
             profile.dump_stats(str(args.output)+'.prof')
             stats = pstats.Stats(profile)
             info['profile_total_s'] = stats.total_tt
-            info['top10'] = [dict(function=f'{k[0]}:{k[1]}:{k[2]}', calls=v[1], self_s=v[2],
+            info['top10_python'] = [dict(function=f'{k[0]}:{k[1]}:{k[2]}', calls=v[1], self_s=v[2],
                 cumulative_s=v[3], percent=100*v[2]/stats.total_tt)
-                for k,v in sorted(stats.stats.items(), key=lambda x:x[1][2], reverse=True)[:10]]
+                for k,v in sorted(((k,v) for k,v in stats.stats.items() if k[0] != '~'), key=lambda x:x[1][2], reverse=True)[:10]]
         write(Path(str(args.output)+'.measurement.json'), info)
     finally:
         if profile: profile.disable()
@@ -226,6 +246,8 @@ def worker(args):
 
 def validate(root):
     data = json.loads((root/'state-chain.json').read_text())
+    assert all(len(data[k]) == 64 and all(c in '0123456789abcdef' for c in data[k])
+               for k in ('chain_sha256', 'final_sha256'))
     assert data['sim_s'] > 0 and data['steps'] == round(data['sim_s']/data['dt'])
     assert abs(data['end']-data['start']-data['sim_s']) < 1e-8
     assert data['frames'] == round(data['sim_s']/data['period'])+1
@@ -309,7 +331,7 @@ def main():
             inputs_before = {str(f.relative_to(source)):sha(f) for f in [source/'bundle.json', source/'scene.xml',
                 *sorted(source.glob('robots/*/commands.jsonl')), *sorted(source.glob('robots/*/frames.jsonl'))]}
             sequence = [('A1','off'),('B1','relay-cache-v1'),('B2','relay-cache-v1'),('A2','off')]
-            if args.profile: sequence += [('profile-off','off'),('profile-on','relay-cache-v1')]
+            if args.profile and row['kind'] == 'egomap': sequence += [('profile-off','off'),('profile-on','relay-cache-v1')]
             for name, mode in sequence:
                 cmd = [sys.executable, str(Path(__file__)), '--worker', '--output', str(case/name),
                        '--source', str(source), '--adapter-root', str(snapshot), '--path-kind', row['kind'],

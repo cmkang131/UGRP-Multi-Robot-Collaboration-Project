@@ -86,3 +86,22 @@ def test_non_v7_provenance_unchanged(tmp_path):
     write(tmp_path/'result.json', {'x': 1})
     assert (tmp_path/'result.json').read_bytes() == b'{\n  "x": 1\n}\n'
     assert not (tmp_path/'v7-speedups.json').exists()
+
+
+def test_shared_build_entry_applies_before_constructor_settle(monkeypatch):
+    from sim import masterpi_drive_friction_v7 as v7
+    from sim.session_scenes import Scene
+    seen = []
+    def fake_init(world, **kwargs):
+        seen.append(isinstance(world.drive_parameters, CachedParameters))
+        world.physical_params, world.calibration_parameters = {}, {}
+        world.scene_xml = '<mujoco/>'
+    monkeypatch.setattr(v7.MultiMasterPiProductionV2, '__init__', fake_init)
+    monkeypatch.delenv('UGRP_V7_EXACT_SPEEDUPS', raising=False)
+    scene = Scene.__new__(Scene)
+    scene.robot_transform = lambda xml, **kw: xml
+    on = v7.build_world(scene, drive_profile=v7.PROFILE)
+    off = v7.build_world(scene, drive_profile=v7.PROFILE, exact_speedups='off')
+    assert seen == [True, False]
+    assert on.v7_speedups_record['enabled'] and not off.v7_speedups_record['enabled']
+    assert on.drive_profile_record == off.drive_profile_record

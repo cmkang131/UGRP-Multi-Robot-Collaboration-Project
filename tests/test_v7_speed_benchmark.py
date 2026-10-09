@@ -23,7 +23,7 @@ def test_catalog_fragment_plan_only(tmp_path):
 def fixture(root):
     root.mkdir()
     state = dict(sim_s=.2, steps=800, dt=.00025, start=1.3, end=1.5, period=.2,
-                 frames=2, robots=['r3'], chain_sha256='fixed')
+                 frames=2, robots=['r3'], chain_sha256='a'*64, final_sha256='b'*64)
     b.write(root/'state-chain.json', state)
     (root/'scene.xml').write_text('<mujoco/>')
     b.write(root/'judgement.json', {'success':False})
@@ -48,3 +48,17 @@ def test_comparison_rejects_shared_missing_evidence_and_byte_difference(tmp_path
     assert not b.compare(a,bdir)['identical']
     for root in (a,bdir): (root/'eval_only/contacts.jsonl').write_text('{}\n')
     with pytest.raises(AssertionError): b.compare(a,bdir)
+
+
+def test_scene_relocation_requires_all_asset_bytes_and_geometry(tmp_path):
+    a, other = tmp_path/'a.bin', tmp_path/'b.bin'
+    a.write_bytes(b'asset'); other.write_bytes(b'asset')
+    left, right = tmp_path/'left.xml', tmp_path/'right.xml'
+    left.write_text(f'<mujoco><mesh file="{a}"/><geom size="1"/></mujoco>')
+    right.write_text(f'<mujoco><mesh file="{other}"/><geom size="1"/></mujoco>')
+    assert b.scene_receipt(left,right)['identical_after_asset_path_relocation']
+    other.write_bytes(b'different')
+    with pytest.raises(AssertionError): b.scene_receipt(left,right)
+    other.write_bytes(b'asset')
+    right.write_text(right.read_text().replace('size="1"','size="2"'))
+    with pytest.raises(AssertionError): b.scene_receipt(left,right)
