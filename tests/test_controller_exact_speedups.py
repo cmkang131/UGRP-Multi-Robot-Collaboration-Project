@@ -59,6 +59,70 @@ def test_option_validation(monkeypatch):
         mode('typo')
 
 
+def test_grid_constructor_retains_class_subclasses_and_owned_state():
+    from harness.controller_exact_speedups import GridFieldMemo, Installation
+    class Field:
+        def __init__(self, points, resolution=.05):
+            self.resolution = resolution
+            self.origin = points.min(0)
+            self.distance = (points-self.origin)**2
+    original = Field.__init__
+    cached = GridFieldMemo(Field, maxsize=2)
+    installation = Installation('off')
+    installation.replace(Field, '__init__', cached.bound())
+    points = np.array([[0., -0.], [1., 2.]])
+    try:
+        a = Field(points)
+        a.distance[:] = 999
+        b = Field(points)
+        reference = object.__new__(Field)
+        original(reference, points)
+        assert isinstance(b, Field) and type(b) is Field
+        assert b.origin.tobytes() == reference.origin.tobytes()
+        assert b.distance.tobytes() == reference.distance.tobytes()
+        class Child(Field):
+            def __init__(self, points):
+                super().__init__(points)
+                self.marker = 'subclass'
+        assert Child(points).marker == 'subclass'
+        assert cached.hits == cached.misses == 1
+        points[1, 0] = 3.
+        c = Field(points)
+        assert c.distance[1, 0] == 9. and b.distance[1, 0] == 1.
+        with pytest.raises(AttributeError):
+            b.__init__(None, resolution=.125)
+        assert b.resolution == .125
+    finally:
+        installation.close()
+    assert Field.__init__ is original
+
+
+def test_nearest_query_matches_scipy_bytes_edges_nonfinite_and_fallbacks():
+    from scipy.ndimage import map_coordinates
+    from harness.controller_exact_speedups import NearestCoordinates
+    query = NearestCoordinates(map_coordinates)
+    bits = np.array([0, 1 << 63, 0x7ff8000000000001, 0x7ff0000000000001], np.uint64)
+    values = np.arange(12, dtype=float).reshape(3, 4)
+    values[0, :] = bits.view(np.float64)
+    edges = np.array([-np.inf, -.5, np.nextafter(0., -np.inf), -0., 0.,
+                      np.nextafter(.5, 0.), .5, np.nextafter(.5, 1.), 1., 2., 3., np.inf, np.nan])
+    coordinates = np.stack(np.meshgrid(edges, edges), axis=0).reshape(2, -1)
+    rng = np.random.default_rng(17)
+    for v, c in [(values, coordinates), (values.T, coordinates),
+                 (np.ones((1, 1)), coordinates), (values, rng.uniform(-1, 4, (2, 3000))),
+                 (values, np.empty((2, 0)))]:
+        with np.errstate(all='raise'):
+            actual = query(v, c, order=0, mode='constant', cval=.5)
+        expected = map_coordinates(v, c, order=0, mode='constant', cval=.5)
+        assert actual.dtype == expected.dtype and actual.tobytes() == expected.tobytes()
+    before = query.fast_calls
+    for order, v in [(1, np.ones((3, 4))), (0, np.ones((3, 4), np.float32))]:
+        actual = query(v, coordinates, order=order, mode='constant', cval=.5)
+        expected = map_coordinates(v, coordinates, order=order, mode='constant', cval=.5)
+        assert actual.dtype == expected.dtype and actual.tobytes() == expected.tobytes()
+    assert query.fast_calls == before == 5
+
+
 def test_owncam_moments_keep_live_metadata_and_inplace_updates():
     from types import SimpleNamespace
     from harness.owncam_localizer import OwnCamLocalizer

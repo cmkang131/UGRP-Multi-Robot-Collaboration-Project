@@ -82,3 +82,7 @@ v107/v108 중 기존 v3 물리를 쓰는 경로를 v7로 바꾸는 변경은 포
 `controller-speedups.json`과 `runtime-bundle.json`에 기록한다.
 분포·RNG·물리·관측/렌더 주기는 그대로이며 지원 소스가 달라지면 해당 항목은 적용하지 않는다.
 현재 가속 후보의 측정·동등성 인수는 [speedctrl 기록](experiments/2026-10-09-sim-speed-ctrl/README.md)에 남긴다.
+근거는 [Thrun 등, Probabilistic Robotics 4·6·8장](https://mitpress.mit.edu/9780262201629/probabilistic-robotics/),
+[AMCL 거리장 구현](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/map/map_cspace.cpp),
+[Olson 2009 스캔 정합](https://april.eecs.umich.edu/media/pdfs/olson2009icra.pdf)이다.
+원문 열람 범위와 정확한 계산 재사용 경계는 위 실험 기록의 참고 자료에 적었다.

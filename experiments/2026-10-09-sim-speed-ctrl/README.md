@@ -2,7 +2,7 @@
 
 감독 요청(2026-10-09): main `6813f8a15930bbf3a039887219c76a7acb863648` 기반,
 S3 v148와 자기 지도 저장 입력의 비용 분해·결과 불변 가속. v7 물리/롤러 근사 변경0.
-현재 S3 v149 smoke를 우선하며 연구 잠금/진행 코호트의 소스는 수정하지 않는다.
+S3 smoke를 우선하며 연구 잠금/진행 코호트의 소스는 수정하지 않는다.
 원본·raw는 primary outputs에 보존하고 Google Drive는 사용하지 않는다.
 
 ## 원본 확인
@@ -13,10 +13,11 @@ S3 v148와 자기 지도 저장 입력의 비용 분해·결과 불변 가속. v
 | `outputs/goal-route-preflight-v1/seed55001` | `1f5269db3eb06f0db529941e3e3a95519c099cd0` | 1.3–271.3 (270초) | 3.102169 |
 | `outputs/goal-route-preflight-v1/seed55003` | 동일 | 1.3–493.5 (492.2초) | 6.373242 |
 | `outputs/goal-route-motion-audit-v1/seed55001` | `5b33094635804662a8a604718aead132c420b5ba` | 1.3–271.3 (270초) | 2.446377 |
+| `outputs/goal-route-motion-audit-v1/seed55003` | 동일 | 1.3–493.3 (492초) | 7.345273 |
 
-3.1/6.4 원본은 **egomap58**, egomap59 55003은 시작 시 미발견이다.
+3.1/6.4 원본은 **egomap58**이다. egomap59 55003도 후속 원본 조사에서 확인했다.
 기존 온라인 수치와 새 저장 입력 재생을 혼합하지 않는다. S3 원본은 HOST_ERROR이며
-자기 지도는 DEV budget_exhausted; 임무 성공이나 확증 연구 근거가 아니다.
+자기 지도는 DEV budget_exhausted 또는 HOST_BUDGET HOST_ERROR; 임무 성공이나 확증 연구 근거가 아니다.
 
 ## 실행·검증 계획
 
@@ -44,6 +45,11 @@ agent_lock 안에서 cProfile와 구간 타이머로 입력 전체를 재생한�
 - [Python cProfile](https://docs.python.org/3/library/profile.html),
   [functools.lru_cache](https://docs.python.org/3/library/functools.html#functools.lru_cache):
   프로파일 자체 오버헤드를 별도로 표시하고 순수 계산만 유한 캐시로 재사용한다.
+- [Thrun의 Stanford 강의 일정](https://robots.stanford.edu/cs226-06/schedule.html):
+  4·8장의 particle filter/Monte Carlo localization 대응을 저자 자료로 확인했다.
+- [SciPy 1.17.1 NI_GeometricTransform 원문](https://github.com/scipy/scipy/blob/v1.17.1/scipy/ndimage/src/ni_interpolation.c#L452-L570):
+  order0의 `floor(x+0.5)`, constant 경계, `+0` 누산을 그대로 따른다.
+  이 확인된 SciPy 버전·float64·order0만 NumPy 조회를 쓰고 다른 조건은 원래 함수다.
 
 새 결과·실패·남은 인수는 이 기록의 results에 추가한다. 원본을 덮어쓰지 않는다.
 
@@ -155,3 +161,31 @@ cProfile에서 기존 scalar clip 가속은 install()의 private globals만 바�
   변경 시험20개가 통과했다. 이 추가 가속의 전체 입력 바이트 검증·시간은 후속 결과 전까지 미확인이다.
 - v11은 타 작업 잠금 대기에서 자체 큐만 종료했으며 입력 소비·물리0이다. 다음 큐의 acquire는 원자적이고
   0.25초 간격의 유한 대기로 작업 사이의 1초 반환 구간을 소비한다. 타 작업에 신호를 보내지 않는다.
+
+## v12 완료 범위와 후속 수정
+
+`47bb794e46b2b105e0a073201059c885384b00ba`, `outputs/speedctrl-20261009-v12`:
+S3 profiler 없는 전체439프레임 제어 재생은 2.644480→1.959431 wall/input-SIM이다.
+네이티브 S3 전체21.9 SIM초는 1.699622이며 RGB1,317장 모두 원본 SHA와 같다.
+물리0.958·렌더0.576·기록0.102 wall/SIM이다. 이 별도 비용을 제어 재생에 합한 값은
+온라인 실측이 아니다. 전체 ≤1.5 목표는 미달/미검증이다.
+egomap58 55001 전체1,351프레임은 1.492697→1.462015 제어기-only,
+별도30 SIM초 네이티브 표본은1.022873(RGB151/151 일치)이다.
+55003 off 전체2,462프레임은2133.704018 wall /492.2 SIM =4.335035이다.
+
+기준 실행 뒤 GridField 클래스 API 문제를 수정하기 위해 자체 큐만 종료했다.
+off 계산 산출물은 완전하지만 관리 CLI는 종료 시 EPERM으로 manifest 최종화에 실패했다.
+원본 관리 기록은 덮어쓰지 않는다. 자체 PID와 자식 종료를 확인한 뒤 죽은 자체 잠금을
+stale release했다. 공통 관리자는 자식 종료가 확인된 EPERM만 그룹 종료로 처리하고
+살아 있는 자식의 권한 오류는 계속 거부한다. 정상 종료 receipt·살아 있는 PID 반례2개 통과.
+프로세스 신호는 [Python os.killpg](https://docs.python.org/3.12/library/os.html#os.killpg)와
+기존 `scripts/ugrp_session.py`의 그룹 처리 경계를 따르며 다른 작업의 프로세스를 종료하지 않는다.
+
+GridField 자체를 callable로 대체하지 않고 원문 클래스·subclass·isinstance API를 유지하며
+생성된 resolution/origin/distance만 소유한 복사본으로 재사용한다. miss는 실제 인스턴스에
+원래 생성자를 호출하므로 실패 시 부분 상태도 유지한다. 추가로 확률 지도 최근접 조회만
+SciPy 원문과 같은 좌표·경계·누산으로 벡터화한다. 보간 차수1·탐색·센서식은 유지한다.
+클래스/배열 소유권·subclass fallback·경계 ±0/NaN payload/비유한 좌표·dtype/차수 fallback을
+포함한 가속·재생22개 검사 통과. 과거 bundle7개와 원래 초기 기록1개는 고정 Git SHA의
+소스·manifest·정적 자료를 별도 export하여 원래 기대 바이트를 검증했다. 원래 receipt/fixture는 유지했다.
+이 후속 수정의 전체 저장 입력 동등성과 속도는 다음 고정 SHA 재생에서 확인한다.

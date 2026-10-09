@@ -79,8 +79,31 @@ def test_explicit_off_record_matches_pre_change_frozen_bytes():
     try:
         left, right = json.dumps(x.record()).encode(), json.dumps(y.record()).encode()
         assert left == right
-        portable = right.decode().replace(str(legacy.ROOT), '$ROOT').encode()
-        assert hashlib.sha256(portable).hexdigest() == (FIX/'off-initial-record.sha256').read_text().strip()
+        from tests.pinned_source_bundle import json_at
+        # The fixture's provider identity includes source hashes. Reproduce
+        # its original source rather than importing today's shared backend.
+        code = '''import json,hashlib
+from scripts.run_s2_graduation59 import runtime_factory
+from harness import zone_s2_graduation59_contract as before
+from harness import zone_solo_cyan_contract_v106 as legacy
+a=before.bundle('a'*40,1066,**before.NEW_OPTIONS)
+args=(legacy.hp.resolve(legacy.MAP_ID)[0],legacy.ROOT/legacy.CALIBRATION,legacy.CALIBRATION_SHA)
+x=runtime_factory(a,{},[])(*args,**a['task'])
+try:
+ portable=json.dumps(x.record()).replace(str(legacy.ROOT),'$ROOT').encode()
+ print(json.dumps(hashlib.sha256(portable).hexdigest()))
+finally:x.close()
+'''
+        companions = {str((legacy.ROOT/p).with_name('input_manifest_dev.json').relative_to(legacy.ROOT))
+                      for p in a['source_sha256']
+                      if (legacy.ROOT/p).with_name('input_manifest_dev.json').is_file()}
+        from harness.vision_loc_protocol import VIS3_DIR, FROZEN_FILES
+        companions.update(str((VIS3_DIR/p).resolve().relative_to(legacy.ROOT))
+                          for p in (*FROZEN_FILES, 'prereg_v3.json', 'selected_config_v3.json'))
+        digest = json_at('d89912703432117e47b5306bbe50ec9c31a0663c', code,
+                         tuple(a['source_sha256']) + tuple(sorted(companions))
+                         + tuple(str(p.relative_to(legacy.ROOT)) for p in (before.PLAN, before.old.PLAN)))
+        assert digest == (FIX/'off-initial-record.sha256').read_text().strip()
         assert not hasattr(y, 'heading_mode')
         assert x.pose.provider.loc._pf.rng.bit_generator.state == y.pose.provider.loc._pf.rng.bit_generator.state
     finally:

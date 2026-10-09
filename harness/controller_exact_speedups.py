@@ -119,6 +119,69 @@ class PureMemo:
         return result
 
 
+class GridFieldMemo:
+    """Cache only audited constructor attributes; retain the public class API."""
+    def __init__(self, cls, maxsize=32):
+        self.cls, self.function, self.maxsize = cls, cls.__init__, maxsize
+        self.entries = OrderedDict()
+        self.hits = self.misses = 0
+
+    def __call__(self, owner, *args, **kwargs):
+        if type(owner) is not self.cls:
+            return self.function(owner, *args, **kwargs)
+        try:
+            current = (key(args), key(tuple(sorted(kwargs.items()))))
+        except TypeError:
+            return self.function(owner, *args, **kwargs)
+        if current in self.entries:
+            self.hits += 1
+            self.entries.move_to_end(current)
+            for name, value in copy.deepcopy(self.entries[current]).items():
+                setattr(owner, name, value)
+            return None
+        # A miss uses the actual owner, preserving exception-time side effects.
+        self.function(owner, *args, **kwargs)
+        self.misses += 1
+        self.entries[current] = copy.deepcopy({name: getattr(owner, name)
+            for name in ('resolution', 'origin', 'distance')})
+        if len(self.entries) > self.maxsize:
+            self.entries.popitem(last=False)
+
+    def bound(self):
+        @wraps(self.function)
+        def initialize(owner, *args, **kwargs):
+            return self(owner, *args, **kwargs)
+        return initialize
+
+
+class NearestCoordinates:
+    """SciPy 1.17.1's float64/order0/constant path, with owned output."""
+    def __init__(self, original):
+        self.original = original
+        self.fast_calls = 0
+
+    def __call__(self, values, coordinates, *args, **kwargs):
+        if (args or set(kwargs) != {'order', 'mode', 'cval'}
+                or type(kwargs['order']) is not int or kwargs['order'] != 0
+                or kwargs['mode'] != 'constant' or kwargs['cval'] != .5
+                or type(values) is not np.ndarray or values.dtype != np.dtype('float64')
+                or values.ndim != 2 or min(values.shape) == 0
+                or type(coordinates) is not np.ndarray or coordinates.dtype != np.dtype('float64')
+                or coordinates.ndim != 2 or coordinates.shape[0] != 2):
+            return self.original(values, coordinates, *args, **kwargs)
+        self.fast_calls += 1
+        x, y = coordinates
+        inside = (x >= 0) & (x <= values.shape[0]-1) & (y >= 0) & (y <= values.shape[1]-1)
+        result = np.full(x.shape, .5)
+        ix = np.floor(x[inside]+.5).astype(np.intp)
+        iy = np.floor(y[inside]+.5).astype(np.intp)
+        # NI_GeometricTransform starts t=+0 and adds its sole order0 value.
+        # Preserve signed-zero/NaN behavior rather than simply copying a cell.
+        with np.errstate(invalid='ignore'):
+            result[inside] = np.add(0., values[ix, iy])
+        return result
+
+
 class MethodSummaryMemo:
     """Audited OwnCam moments depend on px/logw; timestamps stay live."""
     def __init__(self, function, maxsize=4):
@@ -346,12 +409,24 @@ class Installation:
                     self.caches[name] = cached
                     self.record['applied'].append(name)
             field = rbpf.GridField
-            if self.guard(field.__init__, 'f3c4b4f4fdd15cc68bcf2b3c953c2e0508e013588b2b8012efe8172f9607db52', 'grid_field') and self.guard(
+            if self.guard(field, '4afaf15e52fcb1894461853bbfac03d6cc103e171cd4e3d2970ea869c4f14e81', 'grid_field_class') and self.guard(field.__init__, 'f3c4b4f4fdd15cc68bcf2b3c953c2e0508e013588b2b8012efe8172f9607db52', 'grid_field') and self.guard(
                     field.query, '6d5691dda6f25897a3879849254bb7715fab8ab9269630662167261540a2db87', 'field_query'):
-                cached = PureMemo(field, maxsize=32)
-                self.aliases(field, cached)
+                cached = GridFieldMemo(field, maxsize=32)
+                self.replace(field, '__init__', cached.bound())
                 self.caches['grid_field'] = cached
                 self.record['applied'].append('grid_field')
+            graph = self.optional('harness.self_pose_graph')
+            if graph and self.guard(graph.ProbabilityField.query,
+                    'c53abd7fbb32e9b0d65980743e4b3503635c9c08e486ef007d42d2b3632a4526', 'probability_query'):
+                import scipy
+                self.record['nearest_lookup_scipy'] = scipy.__version__
+                if scipy.__version__ == '1.17.1':
+                    self.nearest_lookup = NearestCoordinates(graph.map_coordinates)
+                    self.replace(graph.ProbabilityField, 'query', bind(graph.ProbabilityField.query,
+                        map_coordinates=self.nearest_lookup))
+                    self.record['applied'].append('nearest_probability_lookup')
+                else:
+                    self.record['fallback'].append('nearest_probability_lookup:scipy_version')
             information = self.optional('harness.active_information_gain')
             guards = [] if not information else [
                 (information.forecast, 'cbbe99d7810a015859b0e7ec1d85b9148e88616778c86effa2ee16a81e0327b1', 'forecast_copy'),
@@ -366,6 +441,7 @@ class Installation:
 
     def snapshot(self):
         return {**self.record, 'integer_clip_fast_calls': getattr(getattr(self, 'integer_clip', None), 'fast_calls', 0),
+            'nearest_lookup_fast_calls': getattr(getattr(self, 'nearest_lookup', None), 'fast_calls', 0),
             'caches': {name: dict(hits=c.hits, misses=c.misses,
             entries=len(c.entries), max_entries=c.maxsize) for name, c in self.caches.items()}}
 

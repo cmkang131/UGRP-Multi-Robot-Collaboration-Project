@@ -208,7 +208,8 @@ def attach_timers(timer, kind):
         for f, category in [(r.improved_proposal, 'scan_match'), (w.weighted_insert, 'map_insert'),
                             (g.match_loop, 'scan_match')]:
             timer.aliases(f, category)
-        timer.aliases(r.GridField, 'scan_match')
+        assert isinstance(r.GridField, type), 'GRID_FIELD_PUBLIC_CLASS_API'
+        timer.method(r.GridField, '__init__', 'scan_match')
         timer.method(OdomGrid, 'insert', 'map_insert')
         timer.method(r.RaoBlackwellizedGrid, 'propagate', 'pf_update')
         old = r.CloudOdometry.covariance
