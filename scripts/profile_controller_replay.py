@@ -8,10 +8,11 @@ from __future__ import annotations
 import argparse
 import base64
 from collections import defaultdict
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 import cProfile
 import hashlib
 import importlib
+import importlib.util
 import io
 import json
 import os
@@ -20,6 +21,9 @@ import pstats
 import subprocess
 import sys
 import time
+import re
+import uuid
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 CATEGORIES = ('physics', 'render', 'pf_update', 'posterior_summary', 'scan_match',
@@ -112,9 +116,11 @@ def attach_timers(timer, kind):
         for f, category in [(r.improved_proposal, 'scan_match'), (w.weighted_insert, 'map_insert'),
                             (g.match_loop, 'scan_match')]:
             timer.aliases(f, category)
-        timer.method(r.GridField, '__init__', 'scan_match')
+        timer.aliases(r.GridField, 'scan_match')
         timer.method(OdomGrid, 'insert', 'map_insert')
         timer.method(r.RaoBlackwellizedGrid, 'propagate', 'pf_update')
+        old = r.CloudOdometry.covariance
+        r.CloudOdometry.covariance = property(timer.wrapper(old.fget, 'posterior_summary'))
         timer.method(MonitorNavigator, 'update', 'path_plan')
 
 
@@ -210,7 +216,7 @@ def egomap(raw, out, timer):
     base.base.install_profile(explorer.memory.self_map, profile='egomap27_wide')
     controller = base.controller(explorer)
     g = explorer.memory.self_map
-    timer.method(type(g), '_observe', 'pf_update')
+    g._observe = timer.wrapper(g._observe, 'pf_update')
     timer.method(type(explorer.memory), 'finalize_pose_graph', 'graph')
     generated, state, traces, trend = [], [], [], []
     for index, row in enumerate(frames):
@@ -254,6 +260,12 @@ def worker(args):
     inputs = verify_inputs(args.raw, ('r1', 'r2', 'r3') if kind == 's3' else ('r3',))
     # Import adapter before wrapping all references to shared pure functions.
     importlib.import_module('harness.zone_s3_motion_runtime' if kind == 's3' else 'scripts.run_goal_route_continuous')
+    name = 'harness.controller_exact_speedups'
+    spec = importlib.util.spec_from_file_location(name, ROOT / 'harness/controller_exact_speedups.py')
+    speedups = importlib.util.module_from_spec(spec)
+    sys.modules[name] = speedups
+    spec.loader.exec_module(speedups)
+    installed = speedups.install(args.speedups)
     timer = Timers()
     attach_timers(timer, kind)
     profiler = cProfile.Profile() if args.profile else None
@@ -261,7 +273,16 @@ def worker(args):
     started = time.perf_counter()
     if profiler:
         profiler.enable()
-    result = (s3 if kind == 's3' else egomap)(args.raw, out, timer)
+    # Pair channel IDs are external setup randomness, not the PF stream.
+    # Supply the archived IDs in their original record order in both arms.
+    archived_ids = []
+    if kind == 's3':
+        for value in re.findall(r'pair-([0-9a-f]{32})', (args.raw / 'student_record.json').read_text()):
+            if value not in archived_ids:
+                archived_ids.append(value)
+    ids = iter(archived_ids)
+    with patch('uuid.uuid4', side_effect=lambda: uuid.UUID(hex=next(ids))) if kind == 's3' else nullcontext():
+        result = (s3 if kind == 's3' else egomap)(args.raw, out, timer)
     if profiler:
         profiler.disable()
         profiler.dump_stats(out / 'profile.pstats')
@@ -272,9 +293,12 @@ def worker(args):
     write(out / 'result.json', dict(**result, kind=kind, profile=args.profile, wall_s=wall,
         wall_per_input_sim=wall / (result['end'] - result['start']), timers=timer.snapshot(),
         measured_online_wall_per_sim=False, physics_runs=0, render_calls=0,
+        archived_setup_ids=archived_ids,
+        speedups=installed.snapshot(),
         loadavg_start=load, loadavg_end=os.getloadavg(), input_sha256=inputs,
         source_adapter=str(args.adapter), implementation_sha=subprocess.check_output(
             ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()))
+    installed.close()
 
 
 def main():
@@ -285,6 +309,7 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--expected-source-sha', required=True)
     p.add_argument('--profile', action='store_true')
+    p.add_argument('--speedups', choices=('off', 'exact-v1'), default='off')
     p.add_argument('--execute', action='store_true')
     a = p.parse_args()
     if not a.execute:

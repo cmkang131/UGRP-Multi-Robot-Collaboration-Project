@@ -75,3 +75,10 @@ cache를 기본 사용한다. `UGRP_V7_EXACT_SPEEDUPS=off` 또는 Python
 v107/v108 중 기존 v3 물리를 쓰는 경로를 v7로 바꾸는 변경은 포함하지 않는다.
 
 [경로별 바이트 동등성·속도·끄기 방법](experiments/2026-10-09-sim-speed-core/README.md).
+
+새 공통 host reset은 `UGRP_CONTROLLER_EXACT_SPEEDUPS=exact-v1`(기본)으로
+순수 posterior 계산과 지원되는 자기 지도 계산을 재사용한다. `off`로 끈다.
+실제 적용 항목·지원되지 않은 adapter·소스 해시·유한 캐시 통계는
+`controller-speedups.json`과 `runtime-bundle.json`에 기록한다.
+분포·RNG·물리·관측/렌더 주기는 그대로이며 지원 소스가 달라지면 해당 항목은 적용하지 않는다.
+현재 가속 후보의 측정·동등성 인수는 [speedctrl 기록](experiments/2026-10-09-sim-speed-ctrl/README.md)에 남긴다.

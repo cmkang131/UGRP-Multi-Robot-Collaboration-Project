@@ -46,3 +46,25 @@ agent_lock 안에서 cProfile와 구간 타이머로 입력 전체를 재생한�
   프로파일 자체 오버헤드를 별도로 표시하고 순수 계산만 유한 캐시로 재사용한다.
 
 새 결과·실패·남은 인수는 이 기록의 results에 추가한다. 원본을 덮어쓰지 않는다.
+
+## 공통 후보
+
+`harness/controller_exact_speedups.py` 한 곳에서 host reset 시 설치한다.
+`UGRP_CONTROLLER_EXACT_SPEEDUPS=exact-v1` 기본, `off`는 원본 계산이다.
+별도 runtime 출처 파일 2개에 실제 항목·fallback·모듈 SHA·캐시 한도를 남긴다.
+자기 지도 adapter가 없는 main에서는 없는 모듈을 기록하고 기존 S2/S3 순수 요약만 적용한다.
+자기 지도/신규 S3 branch는 다음 새 실행 전에 main merge 후 같은 공통 reset을 사용한다.
+현재 고정 코호트의 source/admission을 갱신하거나 과거 성공을 승계하지 않는다.
+
+- 사후분포: 소유한 배열 snapshot의 비트 비교. 제자리 변경은 무효화하고 mutable 결과는 복사한다.
+  PR416의 S3 v148 요약 경계를 재사용하며 audit option/hit/miss/health/시각 행은 유지한다.
+- 지도: 동일 입력의 likelihood field/후보 격자/센서 σ를 유한 LRU로 재사용한다.
+  query·필터식·search window·후보 순서·동점 처리·sampling/RNG는 바꾸지 않는다.
+- virtual information-gain forecast: 읽기 전용 과거 원장·진단과 history 행의 중복 deepcopy를 생략한다.
+  history 목록·cells·particle/covariance 배열은 계속 복사하여 virtual rollout 변경을 격리한다.
+  지원 함수의 원문 SHA가 같을 때만 설치한다. 기존 함수를 그대로 재호출하며 arithmetic을 바꾸지 않는다.
+- 아직 소비하지 않는 프레임이라는 증거가 없으므로 렌더 생략은 적용하지 않았다.
+  KLD/입자 수 변경0, 새로운 관측 skip0, 로그 bytes/형식 변경0이다.
+
+잠금 대기 중 후보를 준비했으며 프로파일에서 비용을 확인한 뒤 채택 범위를 정한다.
+이 절의 후보 코드·초록 단위검사는 wall/SIM ≤1.5 또는 전체 재생 동등성의 완료 증거가 아니다.

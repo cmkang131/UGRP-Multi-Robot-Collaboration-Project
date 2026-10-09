@@ -56,6 +56,10 @@ class PhysicsBackend:
 
     def reset(self, cap):
         import mujoco
+        from harness.controller_exact_speedups import install as controller_speedups
+        if not hasattr(self, '_controller_speedups'):
+            self._controller_speedups = controller_speedups()
+        write(self.out / 'controller-speedups.json', self._controller_speedups.snapshot())
         from sim.v7_exact_speedups import write_receipt
         write_receipt(self)
         # Include the world constructor's standard 0.30 s settle in reset.
@@ -155,3 +159,9 @@ class PhysicsBackend:
         finally:
             for stream in self.streams.values():
                 stream.close()
+            speedups = getattr(self, '_controller_speedups', None)
+            if speedups is not None:
+                try:
+                    write(self.out / 'controller-speedups.json', speedups.snapshot())
+                finally:
+                    speedups.close()
