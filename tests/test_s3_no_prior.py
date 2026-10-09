@@ -51,6 +51,18 @@ def test_three_real_localizers_never_call_dock_prior(monkeypatch):
             assert runtime.localizers[rid].pose.provider.loc._pf.n == 2000
             assert len(runtime.localizers[rid].commands) == 2
         assert runtime.localizers['r3'].pose.provider.loc._pf.n == 100000
+        # Exercise the real own-frame path on both sides of the startup handoff.
+        # Synthetic pixels test transport/filter ownership, not localization accuracy.
+        from tests.test_solo_cyan_v106 import observation
+        runtime.on_frames(.2, {r: observation(.2, 1, rid=r) for r in m.ROBOTS})
+        for rid, action in runtime.step(.2):
+            runtime.on_command(rid, .2, action)
+        assert all(v == 0 for v in runtime.wait_robot_s.values())
+        runtime.boot_finished_at = .2
+        runtime.on_frames(.4, {r: observation(.4, 2, rid=r) for r in m.ROBOTS})
+        for rid in ('r1', 'r2'):
+            assert runtime.pair.actors[rid].last_report.t_est == runtime.localizers[rid].last_report.t_est
+            assert len(runtime.localizers[rid].pose_log) == 2
     finally:
         runtime.close()
 

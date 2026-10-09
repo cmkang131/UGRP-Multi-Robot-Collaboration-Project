@@ -208,6 +208,13 @@ class Runtime(door.Runtime):
             self.boot_finished_at = now
         return [(r, {'kind': 'hold'}) for r in ROBOTS] if self.failures else rows
 
+    def on_command(self, rid, now, action):
+        if self.boot_finished_at is None:
+            # Initial observation is outside the door critical section. Count
+            # its own commands, but never inflate reservation wait time with it.
+            return old.Runtime.on_command(self, rid, now, action)
+        return super().on_command(rid, now, action)
+
     def record(self):
         result = super().record()
         result.update(profile='s3-no-prior-mixed-v142', startup=self.boot_records,
