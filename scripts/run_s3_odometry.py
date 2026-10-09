@@ -7,12 +7,37 @@ import re
 from pathlib import Path
 import shutil
 import subprocess
+import math
+import time
 
 from harness import zone_s3_odometry_contract as contract
 from harness.zone_final_pair_binding import bind
 from scripts import run_s3_no_prior as old
 from scripts.run_final_environment_checks import check_source, write
 from scripts.run_s3_host import artifact_manifest
+
+
+def acquire_lock(branch, wait_seconds=0.):
+    """Wait at atomic acquire, not before the expensive bundle construction."""
+    from scripts import agent_lock
+    if not math.isfinite(wait_seconds) or wait_seconds < 0:
+        raise ValueError('finite nonnegative lock wait required')
+    deadline=time.monotonic()+wait_seconds
+    previous=None
+    while True:
+        try:
+            return agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch=branch,
+                purpose='S3 v150 one mixed DEV smoke; calibrated motion; pre-GO re-wait', pid=os.getpid(),
+                expected_minutes=180, timing_sensitive=True)
+        except RuntimeError:
+            remaining=deadline-time.monotonic()
+            if remaining <= 0:
+                raise
+            held=agent_lock.status(agent_lock.DEFAULT_ROOT)
+            if held != previous:
+                print(json.dumps(dict(waiting_for_lock=held)),flush=True)
+                previous=held
+            time.sleep(min(.5,remaining))
 
 def require_heading_source(bundle):
     dependency = bundle['preregistration'].get('heading_dependency_sha')
@@ -36,6 +61,7 @@ def main(argv=None):
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--execute', action='store_true')
     p.add_argument('--release-s3-simulation', action='store_true')
+    p.add_argument('--wait-for-lock-seconds', type=float, default=0.)
     a = p.parse_args(argv)
     b = contract.bundle(a.expected_source_sha, seed=a.seed)
     if not a.execute:
@@ -56,12 +82,11 @@ def main(argv=None):
         raise ValueError('new registered primary output required')
     if shutil.disk_usage(primary).free < b['raw_budget_bytes']+10*1024**3:
         raise OSError(errno.ENOSPC, 'raw budget plus 10 GiB reserve required')
-    held = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch=branch,
-        purpose='S3 v150 one mixed DEV smoke; calibrated motion; pre-GO re-wait', pid=os.getpid(),
-        expected_minutes=180, timing_sensitive=True)
+    held = acquire_lock(branch,a.wait_for_lock_seconds)
     from harness.zone_pair_highpose_exact_speedups import install
     undo = None
     try:
+        check_source(a.expected_source_sha)  # source can change during a wait
         _, undo = install('v98-exact-v6')
         result = run(b, a.output)
         print(json.dumps(result, ensure_ascii=False), flush=True)

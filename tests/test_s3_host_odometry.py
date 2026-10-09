@@ -84,3 +84,22 @@ def test_v150_config_actual_ports_and_pre_go_wait(tmp_path,monkeypatch):
             assert own.pulse_profiles==model['profiles']
             assert model.get('pulse_odometry',{}).get('option','off')==b['options']['pulse_odometry']
     finally:r.close()
+
+
+def test_smoke_wait_retries_atomic_acquire_without_releasing_other_owner(monkeypatch):
+    from scripts import run_s3_odometry as run,agent_lock
+    clock=[0.];calls=[];winner={'pid':123,'branch':'our branch'}
+    def acquire(*a,**kw):
+        calls.append(kw)
+        if len(calls)<3:raise RuntimeError('other owner')
+        return winner
+    monkeypatch.setattr(agent_lock,'acquire',acquire)
+    monkeypatch.setattr(agent_lock,'status',lambda *a:{'owner':'other','pid':999})
+    monkeypatch.setattr(agent_lock,'release',lambda *a,**kw:pytest.fail('must not release another owner'))
+    monkeypatch.setattr(run.time,'monotonic',lambda:clock[0])
+    monkeypatch.setattr(run.time,'sleep',lambda dt:clock.__setitem__(0,clock[0]+dt))
+    assert run.acquire_lock('our branch',2.)==winner and len(calls)==3
+    assert all(c['pid']==run.os.getpid() for c in calls)
+    monkeypatch.setattr(agent_lock,'acquire',lambda *a,**kw:(_ for _ in ()).throw(RuntimeError('busy')))
+    with pytest.raises(RuntimeError,match='busy'):run.acquire_lock('our branch',.1)
+    with pytest.raises(ValueError):run.acquire_lock('our branch',float('inf'))

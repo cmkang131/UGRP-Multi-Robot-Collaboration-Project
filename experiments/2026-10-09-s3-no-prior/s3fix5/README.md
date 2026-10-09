@@ -50,3 +50,11 @@
 `zone-s3-odometry-v150` / `7.43.0`, seed14201, 회전 보정off, pre-GO DEV 재대기on, 기존 heading/v3 호스트 마운트/공동 파지 옆걸음 예외 유지. 전체 main/열린 PR의 최대149 다음150을 예약했다. 기존1800 SIM초/10800 wall초 유한 cap을 유지하고 raw 예산4GiB+여유10GiB를 확인한다. 기존 v149와 차이는 pre-GO timeout 후 재대기이며, 같은 물리 궤적의 첫277초를 보정 성공으로 보고하지 않는다. 로컬 최소 회귀 초록→commit/push→agent_lock 순서의 물리1회이며 추가 시도0.
 
 실행 전 변경 시험12개 PASS(선택 제외16), v150 실제 구성의 합성 sweep 58건/native 명령3165건/오류0. pre-GO 재대기2창 및 실제 GO 실패 hard stop을 함께 확인했다. root workflow 카탈로그는 main 바이트 동일이며 새 항목은 조각 파일만 추가했다. [검증/해시](preflight.json), [합성 사례](sweep-cases.json).
+
+### 물리 시작 전 잠금 경쟁 수정
+
+첫 v150 CLI 시도(소스 `0ec20647`)는 잠금 반환 확인 후 번들을 구성하는 동안 egomap55004가 먼저 취득해 거부됐다. MuJoCo 생성/새 raw/물리 실행 모두0회이며 실패 workflow receipt는 원위치에 보존한다. 실행기는 번들 검증을 끝낸 뒤 원자적 `agent_lock.acquire` 자체를 유한 대기하며, 취득 뒤 source SHA를 다시 확인한다. 다른 작업의 release/신호 호출은 없다. [Python lock acquire](https://docs.python.org/3/library/threading.html#threading.Lock.acquire)의 취득 성공을 경계로 사용하는 표준 방식이다. 상태 조회는 취득 보장이 아니다. 해당 변경 시험 파일5개 PASS(56.63s); 물리 횟수는 여전히0이다.
+
+[추가 사후 검산](secondary-checks.json): v149 전진254회와 보정 training83회의 발행 arm pose는 같다. 추가0.20–0.35초 tail의 전진 합은 −0.00901m여서 빠진 양의 전진 거리를 설명하지 못한다. 같은 발행 pose를 같은 실제 관절/하중 증거로 해석하지 않는다.
+
+오프라인 TensorBoard snapshot `1009-s3-odometry-replay`의 off/on 각13 scalar를 원본과 대조하고 Chrome 강 프로필에서 두 실행·핀·HParams 열을 확인했다. 물리 결과는 아직 포함하지 않는다.
