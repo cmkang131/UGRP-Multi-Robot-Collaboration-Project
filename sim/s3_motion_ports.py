@@ -21,7 +21,7 @@ class PairPhasePort(FinePulsePort):
         return super().apply(action, sim_time)
 
 
-def attach(backend, *, pair_heading='off'):
+def attach(backend, *, pair_heading='off', lifecycle='explicit_attach'):
     if pair_heading == 'off':
         return backend
     if pair_heading != OPTION:
@@ -31,9 +31,14 @@ def attach(backend, *, pair_heading='off'):
             coupled=lambda: all(backend.commands.get(r, {}).get(1, 2000) <= 1600 for r in ('r1','r2')),
             allow_reverse=True,
             allow_mecanum=True, min_wheel_cmd='real_v1', alignment_pulse='real_fine_v1')
+    # IntegerClock.reset rebuilds ALL ports. Restore the same solo capability
+    # as S2 after that rebuild too, as sim.s2_real_output_reset does.
+    backend.ports['r3'] = FinePulsePort(backend.world, 'r3', allow_reverse=True,
+        allow_mecanum=True, min_wheel_cmd='real_v1', alignment_pulse='real_fine_v1')
     write(backend.out/'eval_only/pair-motion-ports.json', dict(option=pair_heading,
         ports={r:type(p).__name__ for r,p in backend.ports.items()},
         min_wheel_cmd='real_v1', alignment_pulse='real_fine_v1',
+        applied_after=lifecycle,
         scope='S2 heading pulse; both issued grips closed permits unchanged pair continuous commands', state_feedback=False))
     return backend
 
@@ -44,8 +49,13 @@ class PhysicsBackend(Previous):
         if mode not in ('off',OPTION):
             raise ValueError('unknown S3 pair motion port option')
         super().__init__(bundle, *args, **kwargs)
+
+    def reset(self, cap):
+        elapsed = super().reset(cap)
         try:
-            attach(self, pair_heading=mode)
+            attach(self, pair_heading=self.bundle.get('options', {}).get('pair_heading', 'off'),
+                lifecycle='IntegerClock.reset and grid snap')
         except Exception:
             self.close()
             raise
+        return elapsed

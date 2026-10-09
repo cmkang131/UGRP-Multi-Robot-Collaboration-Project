@@ -54,3 +54,8 @@ TensorBoard 새 snapshot `1009-s3fix2-verified`에 계약/동일성 두 기록�
 ### would_stop 기록 비용의 측정 전 구분
 
 [원본 계수](would-stop-accounting.json)의511회는 검사 훅 호출 수다. 새 pair 훅421회에서 materialized audit row는18개이며 `Audit.note`는 메모리 리스트에 추가하고 호출마다 파일을 쓰지 않는다(직접 disk write0). 따라서 “511회 동기 파일 쓰기 때문에 느려졌다”는 가설은 코드/원장과 맞지 않는다. 실제 summary·복사·직렬화 비용의 시간 비중은 cProfile 전에는 확정하지 않는다. 호스트의 매 프레임 JSONL은 별개이며 해당 버퍼 후보를 시험했다.
+
+
+### 후속 완료 기록
+
+사용자 공동 운반 예외 결정 이후 공통 PR #422를 먼저 분리·merge했고, cProfile 및 v148 혼합 DEV1회를 완료했다. reset 포트 HOST_ERROR, 속도 목표 미달, 후속 오프라인 수정과 원본은 [s3fix3 결과](../s3fix3/README.md)에 있다. 위의 미실행/대기 문구는 해당 기록 시점이며 결과를 소급해 덮어쓰지 않는다.

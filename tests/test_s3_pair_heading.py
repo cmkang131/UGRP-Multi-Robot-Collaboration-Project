@@ -161,7 +161,55 @@ def test_host_pair_ports_match_s2_heading_primitive_and_native_expiry(tmp_path, 
         assert all(abs(v)==.35 for v in ack['actuator_state']['motor_commands'])
         port.tick(action['duration_s'])
         assert not any(port._motor_commands)
-    assert backend.ports['r3'] is original['r3']
+    assert isinstance(backend.ports['r3'],FinePulsePort)
+    backend.ports['r3'].apply(action,0.)
+
+
+@pytest.mark.parametrize('enabled',[False,True])
+def test_saved_v148_command_after_real_integer_clock_port_rebuild(tmp_path,monkeypatch,enabled):
+    import json
+    from pathlib import Path
+    from sim.s3_motion_ports import PhysicsBackend, Previous, attach, PairPhasePort
+    from sim.final_pair_highpose_clock import IntegerClock
+    from sim.final_environment_checks import PhysicsBackend as BaseBackend
+    from sim.camera_robot_port import CameraRobotPort
+    from sim.s2_align_pulse import FinePulsePort
+    saved=json.loads((Path(__file__).parent/'fixtures/path_heading/s3-v148-reset.json').read_text())
+    robots={r:SimpleNamespace(servo_command_pulses={1:2000,3:740,4:2320,5:1320,6:1500},
+        set_motor_commands=lambda motors:None) for r in ('r1','r2','r3')}
+    backend=PhysicsBackend.__new__(PhysicsBackend)
+    backend.world=SimpleNamespace(robot=lambda rid:robots[rid],data=SimpleNamespace(time=1.3000000000000178))
+    backend.dt=.00025;backend.out=tmp_path
+    backend.commands={r:dict(robot.servo_command_pulses) for r,robot in robots.items()}
+    backend.bundle={'options':{'pair_heading':heading.OPTION if enabled else 'off'}}
+    backend.ports={r:CameraRobotPort(backend.world,r,allow_reverse=True,allow_mecanum=True) for r in robots}
+    rows=[];backend._append=lambda path,row:rows.append((path,row))
+    monkeypatch.setattr(BaseBackend,'reset',lambda self,cap:self.now)  # no physics, issued reset clock only
+    monkeypatch.setattr(Previous,'reset',IntegerClock.reset)
+    # Reproduce the old constructor-only binding being lost by the REAL reset.
+    attach(backend,pair_heading=heading.OPTION)
+    IntegerClock.reset(backend,5.)
+    assert all(type(p) is CameraRobotPort for p in backend.ports.values())
+    with pytest.raises(ValueError,match='turn must be between'):
+        backend.issue(saved['robot'],saved['action'])
+    assert backend.reset(5.)==1.3
+    if not enabled:
+        assert all(type(p) is CameraRobotPort for p in backend.ports.values())
+        with pytest.raises(ValueError,match='turn must be between'):
+            backend.issue(saved['robot'],saved['action'])
+        return
+    assert all(isinstance(backend.ports[r],PairPhasePort) for r in ['r1','r2'])
+    assert isinstance(backend.ports['r3'],FinePulsePort)
+    backend.issue(saved['robot'],saved['action'])
+    assert rows[-1][1]=={'t':1.3,**saved['action']}
+    assert backend.ports['r2']._motor_commands==(-.35,.35,-.35,.35)
+    assert backend.ports['r2']._drive_expires_at==pytest.approx(1.4)
+    backend.ports['r2'].tick(1.40025)  # native substep after floating-point expiry
+    assert not any(backend.ports['r2']._motor_commands)
+    backend.issue('r3',saved['action'])
+    assert backend.ports['r3']._motor_commands==(-.35,.35,-.35,.35)
+    receipt=json.loads((tmp_path/'eval_only/pair-motion-ports.json').read_text())
+    assert receipt['applied_after']=='IntegerClock.reset and grid snap'
 
 
 def test_rgb_alignment_heading_uses_final_distance_and_preserves_nonarrival(profiles):
