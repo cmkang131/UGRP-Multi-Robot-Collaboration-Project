@@ -38,7 +38,7 @@ def digest(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':'),allow_nan=True).encode()).hexdigest()
 
 
-def replay(raw, out, accelerated=False):
+def replay(raw, out, accelerated=False, *, measure=True):
     out.mkdir(parents=True, exist_ok=False)
     bundle=read(raw/'bundle.json'); scenario,mapped,sheet=contract.inputs()
     frames={r:lines(raw/f'robots/{r}/frames.jsonl') for r in ROBOTS}
@@ -48,7 +48,9 @@ def replay(raw, out, accelerated=False):
         for row in commands[r][1:]:
             issued[round(row['t'],9)].append((r,{k:v for k,v in row.items() if k!='t'}))
     _,undo=install('v98-exact-v6'); rt=None; generated=[]; count=0; failure=None
-    profile=cProfile.Profile(); start=time.monotonic(); profile.enable()
+    profile=cProfile.Profile() if measure else None
+    start=time.monotonic() if measure else None
+    if profile: profile.enable()
     try:
         rt=Runtime(contract.hp.resolve(bundle['map_id'])[0],sheet['orders'],contract.ROOT/bundle['calibration'],
             bundle['calibration_sha256'],seed=bundle['seed'],config=bundle['controller_config'])
@@ -76,10 +78,12 @@ def replay(raw, out, accelerated=False):
     except Exception:
         failure=traceback.format_exc()
     finally:
-        profile.disable();wall=time.monotonic()-start
-        profile.dump_stats(str(out/'profile.pstats'))
-        with (out/'profile.txt').open('w') as stream:
-            pstats.Stats(profile,stream=stream).strip_dirs().sort_stats('cumulative').print_stats(100)
+        wall=None
+        if profile:
+            profile.disable();wall=time.monotonic()-start
+            profile.dump_stats(str(out/'profile.pstats'))
+            with (out/'profile.txt').open('w') as stream:
+                pstats.Stats(profile,stream=stream).strip_dirs().sort_stats('cumulative').print_stats(100)
         if rt:
             state={r:dict(poses=own.pose_log,particles=hashlib.sha256(own.pose.provider.loc._pf.px.tobytes()).hexdigest(),
                 weights=hashlib.sha256(own.pose.provider.loc._pf.logw.tobytes()).hexdigest(),
@@ -87,7 +91,7 @@ def replay(raw, out, accelerated=False):
             (out/'state.json').write_text(json.dumps(state,allow_nan=True)+'\n')
             report=dict(source=bundle['source_sha'],implementation_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
                 replay_script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),raw=str(raw),accelerated=accelerated,simulation_runs=0,
-                frames=count,profiled_wall_s=wall,error=failure,generated_sha256=digest(generated),
+                frames=count,profiled_wall_s=wall,timing_measured=measure,error=failure,generated_sha256=digest(generated),
                 state_sha256=digest(state),robots={r:digest(s) for r,s in state.items()})
             (out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
             (out/'commands.json').write_text(json.dumps(generated)+'\n')
