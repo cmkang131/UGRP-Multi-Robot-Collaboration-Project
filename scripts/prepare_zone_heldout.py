@@ -239,6 +239,7 @@ def main():
     p.add_argument('--write-maps', action='store_true')
     p.add_argument('--output', type=Path)
     p.add_argument('--stationary', action='store_true', help='explicit stationary compile/forward/render, no stepping')
+    p.add_argument('--wait-lock-seconds', type=int, default=0, help='finite wait for another task; never steals/releases its lock')
     args = p.parse_args()
     values = hm.authored_maps()
     if args.write_maps:
@@ -269,16 +270,29 @@ def main():
     write(out/'static.json', report)
     if args.stationary:
         from scripts.agent_lock import DEFAULT_ROOT, acquire, release
-        lock = acquire(DEFAULT_ROOT, owner='codex', branch='codex/hard-maps',
-                       purpose='hardmaps1 stationary compile/forward/render only; no stepping',
-                       pid=os.getpid(), expected_minutes=2)
+        wait_until = time.monotonic()+max(0, args.wait_lock_seconds)
+        while True:
+            try:
+                lock = acquire(DEFAULT_ROOT, owner='codex', branch='codex/hard-maps',
+                               purpose='hardmaps1 stationary compile/forward/render only; no stepping',
+                               pid=os.getpid(), expected_minutes=2)
+                break
+            except RuntimeError as error:
+                if not str(error).startswith('lock held:') or time.monotonic() >= wait_until:
+                    raise
+                time.sleep(1)
         write(out/'lock.json', lock)
+        started = time.monotonic()
+        receipt = []
         try:
-            started = time.monotonic()
-            receipt = [stationary(v, out/v['map_id']) for v in (base,*values)]
+            for value in (base,*values):
+                receipt.append(stationary(value, out/value['map_id']))
+        except Exception as error:
+            write(out/'failure.json', dict(map_id=value['map_id'], type=type(error).__name__, message=str(error)))
+            raise
+        finally:
             write(out/'stationary.json', dict(source_sha=source_sha(), maps=receipt,
                   check_wall_s=time.monotonic()-started, qualification='stationary loading, not timing benchmark'))
-        finally:
             release(DEFAULT_ROOT, owner='codex')
     write(out/'artifact-hashes.json', {str(f.relative_to(out)): hm.sha(f) for f in sorted(out.rglob('*')) if f.is_file()})
     print(json.dumps(dict(output=str(out), reachable_pairs=[r['reachable_pairs'] for r in reports])))
