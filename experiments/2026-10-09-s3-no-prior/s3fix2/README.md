@@ -32,9 +32,9 @@
 
 - `zone_s3_pair_heading`은 기존 접근 driver의 상태·정적 경로·자기 추정을 유지하고 발행 직전 공통 heading selector의 측정 펄스로 바꾼다. 펄스 전체 시간+coast+지연된 자기 포즈까지 기다린다. 기본 off는 원래 인스턴스를 반환한다. **아직 새 혼합 실행 전체 경로에 연결·인수한 결과는 아니다.**
 - 원본 v147의 비영(非零) 차체 명령2개를 재생했다. 원래 단일 축 계약 오류2/2→변환 후0/2. 이 비교는 정적 최종 접근 목표를 carrot으로 한 계약 단위 반사실 재생이며, 새로운 물리 이동·운반 성공이 아니다. [입력 해시와 명령](command-replay.json), [실행 스크립트](command_replay.py).
-- 순수 posterior summary를 particle/weight/label/offset 내용 해시로 memoize한다. 배열의 in-place 변경, 가중치 변경, pan offset 변경은 캐시를 무효화하고 시각·건강 상태·감사 기록은 매 호출 갱신한다. 필터 분포·RNG·KLD 문턱은 바꾸지 않는다. 전체 원본 재생 해시 비교와 cProfile 채택 판정은 잠금 후 진행한다.
+- 순수 posterior summary를 particle/weight/label/offset 내용 해시로 memoize한다. 배열의 in-place 변경, 가중치 변경, pan offset 변경은 캐시를 무효화하고 시각·건강 상태·감사 기록은 매 호출 갱신한다. 필터 분포·RNG·KLD 문턱은 바꾸지 않는다. 전체 원본 재생 해시 비교는 통과했다. cProfile 채택 판정은 잠금 후 진행한다.
 - JSONL은 같은 JSON 인코딩/행 순서의64KiB buffer로 기록하고 referee 읽기 및 close 전에 flush한다. 후속 실제 smoke의 render/capture/physics/eval/JSONL 타이머는 제어기로 전달하지 않으며, nested timer를 단순 합산하지 않는다. 기록 버퍼의 바이트 동일성과 read-before-evaluate 회귀를 고정했다.
-- 변경 모듈 시험 `tests/test_s3_pair_heading.py tests/test_s3_exact_cache.py`: **10 PASS**. 실제 `GuardedDriver`의 넓은σ DEV 경로에서도 단일 축 heading 펄스가 생성되고, 기존 σ를 줄여 보고하지 않는다. 버퍼 off 위임 보강 후 해당4개 추가 확인.
+- 변경 모듈 시험 `tests/test_s3_pair_heading.py tests/test_s3_exact_cache.py`: **14 PASS (2파일)**. 실제 `GuardedDriver`의 넓은σ DEV 경로에서도 단일 축 heading 펄스가 생성되고, 기존 σ를 줄여 보고하지 않는다. 버퍼 off 위임 보강 후 해당4개 추가 확인.
 - [S2 원본 수치·해시](s2-error-comparison.json):6개 전부 실제 XY오차 감소, σ4/6→2/6·인증3/6→1/6. 이전 재생을 재집계했으며 새 물리나 새 확증 코호트로 합산하지 않는다.
 
 ### 접근·집기 전 전체 명령 연결 보강
@@ -44,3 +44,9 @@
 `zone_s3_motion_runtime`의 실제 pair API 제출 경로에서 접근 driver 및 집기 전 RGB 정렬을 연결했다. 정렬은 기존 RGB 도착 판정만 사용하고, 아직 정렬되지 않았으나 펄스 해상도상 이동을 고르지 못한 경우는 `None(정렬 완료)`로 바꾸지 않는다. 최종0.10m lateral에는 동일 시각의 자기 RGB 오류/명령 근거를 요구한다. no-view 탐색·후진은 단일 turn/forward 펄스로 바꾸며 혼합 축을 묵시적으로 허용하지 않는다. 네이티브 만료·전체 coast·지연 자기 관측을 기다리고 GO/abort 확인은 기존 endpoint 바깥 루프에 유지한다.
 
 관련 최종 시험은 heading/실제 pair session/RGB 정렬/호스트 포트10 PASS와 내용 캐시/버퍼4 PASS(2파일)다. **공동 loaded carry의 기존 연속 혼합 축 schedule은 아직 새 pulse 계약에 이관하지 않았으며, 새 실행 번들은 runnable로 등록하지 않았다.** 2.15m loaded lateral에 대한 결정3 적용 범위를 확인한 뒤 이관 방식을 확정해야 한다. 알려진 다음 단계 계약 오류를 남긴 채 허용된1회 smoke를 소모하지 않는다.
+
+### 전체 저장 입력의 정확 캐시 동일성
+
+[재생 원장](equality-summary.json)의 두 독립 프로세스는 구현 `3ad3bdc88c6e3eec745ab19c63822ce840699bc2`에서 로봇별442프레임을 처리하고 원본 혼합 명령 오류에서 똑같이 종료했다. 캐시 전후 생성 명령 SHA-256 `95c7bb1babc22263fd45c83e16f352b6ba746a5f97a9cf8ecf93bcca838d4065`, 포즈 전체·최종 입자/가중치·RNG 상태 SHA-256 `6138376fcdab9317a77c4ef47ac1625beaa71b4f4d04311f0b0160e06762bb8a`가 같다. 원본 v147의 오류도 보존하는 가속 전용 비교이며, heading 수정의 물리 인수가 아니다. 다른 비시간측정 실행과 겹친 정확성 검증이므로 시간 수집을 명시적으로 끄고 `profiled_wall_s=null`로 남겼다. 물리 실행0, 속도 개선 주장0.
+
+TensorBoard 새 snapshot `1009-s3fix2-verified`에 계약/동일성 두 기록을 추가하고 기존 `1009-s3fix-replay`와 함께 열었다. EventAccumulator의10개 스칼라, UI의 계약2→0·해시 동일1/1, 고정 카드8개, HParams `case/policy/seed/source_sha` 선택을 확인했다([표시 검증](tensorboard-verification.json), [고정 링크](tensorboard-link.json)). 새로운 물리 영상은 없으며 v147 대표 영상은 기존 snapshot에 보존한다. cProfile와 새 smoke는 아직 완료하지 않았다.
