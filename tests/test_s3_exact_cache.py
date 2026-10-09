@@ -40,3 +40,21 @@ def test_cluster_memo_retains_fresh_time_health_and_pan_offset():
     w[:]=[.1,.1,.8]
     assert fast(px,w,labels,old)==extract(px,w,labels,old)
     assert audit['misses']==3
+
+
+def test_buffered_jsonl_preserves_bytes_and_flushes_before_referee(tmp_path, monkeypatch):
+    from sim.s3_buffered_io import PhysicsBackend, Previous, OPTION
+    fast=PhysicsBackend.__new__(PhysicsBackend)
+    fast.out=tmp_path/'fast';fast.streams={};fast.io_mode=OPTION;fast.host_timing={}
+    old=Previous.__new__(Previous);old.out=tmp_path/'old';old.streams={}
+    rows=[dict(t=i/20,text='로봇',items=[None,True,float(i)]) for i in range(201)]
+    for row in rows:
+        fast._append('eval_only/referee_truth.jsonl',row)
+        old._append('eval_only/referee_truth.jsonl',row)
+    def evaluate(self,*a,**k):
+        return (self.out/'eval_only/referee_truth.jsonl').read_bytes()
+    monkeypatch.setattr(Previous,'evaluate',evaluate)
+    assert fast.evaluate([], {})==evaluate(old)
+    assert fast.host_timing['jsonl_append']['calls']==len(rows)
+    for obj in (fast,old):
+        for stream in obj.streams.values():stream.close()
