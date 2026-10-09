@@ -25,7 +25,15 @@ def evaluate(raw,evaluation):
             out.append(dict(pair_id=p['id'],available=False));continue
         packets=read(path/'measurements.json')['rows']
         packet=next(q for q in reversed(packets) if q['t']<=first['t']+1e-8 and (q['wall_count'] or q['features']))
-        pose=next(q for q in rows(path/'poses.jsonl') if abs(q['t']-packet['t'])<1e-8)
+        # Reports are released with latency: compare the estimate timestamp,
+        # not its delivery timestamp, to the captured sensor packet.
+        pose=next((q for q in rows(path/'poses.jsonl') if abs(q['t_est']-packet['t'])<1e-8),None)
+        if pose is None:
+            out.append(dict(pair_id=p['id'],available=False,packet_t=packet['t'],
+                reason='NO_EXACT_ESTIMATE_TIMESTAMP; do not interpolate across possible mode jumps',
+                scope='post-outcome diagnostic unavailable; primary metrics unchanged'))
+            continue
+        assert pose['initialized']
         own=read(path/'own-map.json');field=GridField(own);mapped=mapped_landmarks(own)
         truth=truth_arrays(rows(Path(p['raw'])/'eval_only/trajectory.jsonl'))
         assert truth[0][0]<=packet['t']<=truth[0][-1]
@@ -54,12 +62,14 @@ def evaluate(raw,evaluation):
         contrasts={k:float(np.log(max(v[0],1e-300))-np.log(max(v[1],1e-300))) for k,v in components.items()}
         assert all(np.isfinite(list(contrasts.values())))
         out.append(dict(pair_id=p['id'],available=True,wrong_mode=r['own_grid_v1']['wrong_mode'],
-            declaration_t=first['t'],packet_t=packet['t'],wall_points=len(walls),
+            declaration_t=first['t'],packet_t=packet['t'],report_t=pose['t'],estimate_t=pose['t_est'],wall_points=len(walls),
             floor_features=sum(f['kind']=='floor_line' for f in features),
             selected_over_true_log_score=contrasts,
             positive_means='this packet favors the sealed selected pose over GT pose; not posterior evidence',
             scope='POST_OUTCOME_EVALUATION_ONLY; same saved packet, no PF, no parameter selection'))
-    write(evaluation/'mode-score-diagnostic.json',dict(scope=__doc__,pairs=out))
+    dest=evaluation/'mode-score-diagnostic-v2.json'
+    if dest.exists():raise ValueError('NEW_DIAGNOSTIC_OUTPUT_REQUIRED')
+    write(dest,dict(scope=__doc__,supersedes='v1 used report delivery time instead of estimate time; retained, not used for conclusions',pairs=out))
     return out
 
 
