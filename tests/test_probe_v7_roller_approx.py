@@ -82,7 +82,7 @@ def test_timer_delta_reports_per_call_microseconds():
 
 
 def test_timer_snapshot_reads_every_mujoco_stage():
-    import mujoco
+    mujoco = pytest.importorskip('mujoco')
     from scripts.probe_masterpi_drive_friction import timer_snapshot
     model = mujoco.MjModel.from_xml_string('<mujoco><worldbody><geom type="plane" size="1 1 .1"/></worldbody></mujoco>')
     data = mujoco.MjData(model)
@@ -106,7 +106,7 @@ def test_bump_comparison_requires_r2_to_be_pushed_in_both():
 
 
 def test_ablation_zeroes_only_roller_dry_friction():
-    import mujoco
+    mujoco = pytest.importorskip('mujoco')
     from types import SimpleNamespace
     model = mujoco.MjModel.from_xml_string(
         '<mujoco><worldbody><body><joint name="a_roller_0" type="hinge" frictionloss="1e-7"/><geom size=".1"/></body>'

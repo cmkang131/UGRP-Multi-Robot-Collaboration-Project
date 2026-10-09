@@ -212,3 +212,5 @@ perturbation 한 건이며 물리 실패 없이 끝나도 동등성은 실패할
 - 로컬 해당 3파일: **26 passed, 1 deselected**. 시뮬레이션 0 지시에 따라 실제 `mj_step`을 호출하는 `test_timer_snapshot_reads_every_mujoco_stage`만 로컬에서 제외했고 CI에는 전체를 등록했다. XML 컴파일·mock step·기본 OFF 바이트 동일 검사는 통과했다.
 - `--shard-count 8 --list-shards`: coverage_verified=true, 새 파일이 각각 정확히 1번 포함된다. v7 소스·sphere6 source.json·camera v3는 수정하지 않았다.
 - 참고: [pytest 선택 실행 공식 문서](https://docs.pytest.org/en/stable/how-to/usage.html), [Git merge 공식 문서](https://git-scm.com/docs/git-merge). 기존 CI의 TEST_PATTERNS 등록 방식을 그대로 사용하며 새 물리 방법은 도입하지 않았다.
+
+추가 CI 의존성 확인: `requirements-test.txt`는 MuJoCo를 설치하지 않는다. 등록한 probe의 timer/ablation 시험이 이를 직접 import해 **2 failed, 9 passed**를 재현했다. 기존 v7 시험과 같은 `pytest.importorskip('mujoco')`를 두 native 시험 내부에 적용했다. MuJoCo import를 차단한 CI 조건 대조는 세 파일 **9 passed, 4 skipped**(native 모듈 2개·시험 2개), 설치된 로컬 probe는 **10 passed, 1 deselected**다. native 타이머의 실제 step은 계속 실행하지 않았다. [pytest 선택 의존성 공식 문서](https://docs.pytest.org/en/stable/how-to/skipping.html#skipping-on-a-missing-import-dependency)를 따르며 CI 의존성/물리 소스는 바꾸지 않았다.
