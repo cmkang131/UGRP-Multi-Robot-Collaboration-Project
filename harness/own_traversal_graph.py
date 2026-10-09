@@ -249,6 +249,9 @@ class TraversalReturn:
 def attach(controller, *, return_policy='off'):
     if return_policy == 'off':
         return controller
+    if return_policy == 'traversal_graph_reconnect_v1':
+        from harness.own_traversal_reconnection import attach as reconnect
+        return reconnect(controller, return_policy=return_policy)
     if return_policy != OPTION:
         raise ValueError('UNKNOWN_RETURN_POLICY')
     from harness.self_map_return_repeat import Return360
