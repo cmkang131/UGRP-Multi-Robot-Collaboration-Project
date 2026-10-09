@@ -132,6 +132,7 @@ def test_egomap_records_observation_before_remembering_issued_command(tmp_path, 
         json.dumps({'t':frames[-1]['sim_time'], 'kind':'hold'})+'\n')
     (raw / 'bundle.json').write_text(json.dumps({'task':{'seed':1}}))
     (raw / 'own-inputs.json').write_text(json.dumps([{'frame_id':10, 'own_range':None}]))
+    (raw / 'own-controller.jsonl').write_text(json.dumps({'frame_id':10})+'\n')
     grid = S(odom=S(pose=(0.,0.,0.),covariance=np.eye(3)), maps=[S(cells={})],
              poses=np.zeros((1,3)),weights=np.ones(1),pending_cov=np.zeros((3,3)),
              rng=np.random.default_rng(1),revision=0,best=0,resamples=0,ledger=[],decisions=[],
@@ -163,3 +164,21 @@ def test_egomap_records_observation_before_remembering_issued_command(tmp_path, 
     assert json.loads((out/'online-maps.jsonl').read_text())['ledger']==[]
     assert json.loads((out/'frontend-covariances.jsonl').read_text())['pose']==[0.,0.,0.]
     assert json.loads((out/'frontend-ledger.json').read_text())==['issued']
+
+
+def test_host_budget_replay_uses_completed_inputs_without_fabricating_range():
+    from scripts.profile_controller_replay import recorded_control_prefix
+    frames = [dict(frame_id=i, sim_time=i*.2, sha256=str(i)) for i in range(13)]
+    inputs = [dict(frame_id=i, own_range={'valid':False}) for i in (10,11)]
+    original = dict(status='HOST_ERROR', failure=dict(type='TimeoutError', message='HOST_BUDGET_60_MINUTES'))
+    selected, audit = recorded_control_prefix(frames, inputs, [10,11], original)
+    assert selected == frames[:12] and inputs[-1]['own_range'] == {'valid':False}
+    assert audit['excluded_interrupted_captures'] == [frames[-1]]
+    assert audit['completed_controller_inputs'] == 2
+    assert 'terminal state not reconstructed' in audit['scope']
+    with pytest.raises(ValueError, match='NON_PREFIX'):
+        recorded_control_prefix(frames, [inputs[-1]], [11], original)
+    with pytest.raises(ValueError, match='INCOMPLETE_CONTROLLER_CALLBACK'):
+        recorded_control_prefix(frames, inputs, [10], original)
+    with pytest.raises(ValueError, match='UNEXPLAINED_CAPTURE'):
+        recorded_control_prefix(frames, inputs, [10,11], dict(status='RECORDED'))

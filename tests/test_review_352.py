@@ -56,9 +56,7 @@ def plan(argv, entry=run.main):
     return json.loads(captured.getvalue())
 
 
-@pytest.mark.parametrize("check", tuple(BASE_BYTES))
-@pytest.mark.parametrize("artifact", ("bundle", "plan"))
-def test_v88_full_bytes_are_preserved(tmp_path, check, artifact):
+def baseline_writer(tmp_path, check, artifact):
     from tests.pinned_source_bundle import bundle_at, json_at
     revision = '2523269857596ffdd1a8cda9814a6e92f399f1da'
     paths = tuple(c.bundle(excitation.MAP_ID, check)['source_sha256'])
@@ -70,6 +68,13 @@ def test_v88_full_bytes_are_preserved(tmp_path, check, artifact):
                 'assert run.main(' + repr(args(tmp_path, excitation.MAP_ID, check)) + ')==0\n'
                 'print(output.getvalue())')
         value = json_at(revision, code, paths)
+    return value
+
+
+@pytest.mark.parametrize("check", tuple(BASE_BYTES))
+@pytest.mark.parametrize("artifact", ("bundle", "plan"))
+def test_v88_full_bytes_are_preserved(tmp_path, check, artifact):
+    value = baseline_writer(tmp_path, check, artifact)
     raw = (json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n").encode()
     assert hashlib.sha256(raw).hexdigest() == BASE_BYTES[check][artifact]
 

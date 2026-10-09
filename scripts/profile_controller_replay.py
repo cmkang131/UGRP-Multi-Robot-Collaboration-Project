@@ -180,10 +180,41 @@ def verify_inputs(raw, robots):
     used = ['bundle.json']
     for rid in robots:
         used += [f'robots/{rid}/frames.jsonl', f'robots/{rid}/commands.jsonl']
-    used += ['student_record.json'] if len(robots) > 1 else ['own-inputs.json']
+    used += ['student_record.json'] if len(robots) > 1 else ['own-inputs.json', 'own-controller.jsonl']
     for name in used:
         assert name in manifest and sha(raw / name) == manifest[name], ('INPUT_HASH', name)
     return {name: manifest[name] for name in used}
+
+
+def recorded_control_prefix(captured, inputs, completed_ids, original):
+    """Replay completed logged callbacks, never invent a missing sensor input.
+
+    The archived runner logs own-inputs inside receive(), after estimation.
+    HOST_BUDGET can therefore leave a captured, interrupted tail whose partial
+    terminal state cannot be reconstructed from the completed callback ledger.
+    """
+    ids = [x['frame_id'] for x in captured]
+    logged = [x['frame_id'] for x in inputs]
+    if not logged or len(set(ids)) != len(ids) or len(set(logged)) != len(logged):
+        raise ValueError('INVALID_CONTROLLER_INPUT_LEDGER')
+    if logged != completed_ids or logged[-1] not in ids:
+        raise ValueError('INCOMPLETE_CONTROLLER_CALLBACK_LEDGER')
+    end = ids.index(logged[-1]) + 1
+    if ids[10:end] != logged:
+        raise ValueError('NON_PREFIX_CONTROLLER_INPUT_LEDGER')
+    excluded = captured[end:]
+    failure = original.get('failure') or {}
+    if excluded and not (len(excluded) == 1 and original.get('status') == 'HOST_ERROR'
+                         and failure.get('type') == 'TimeoutError'
+                         and str(failure.get('message', '')).startswith('HOST_BUDGET')):
+        raise ValueError('UNEXPLAINED_CAPTURE_WITHOUT_COMPLETED_CALLBACK')
+    audit = dict(captured_frames=len(captured), replay_frames=end,
+        setup_frames=10, completed_controller_inputs=len(logged),
+        excluded_interrupted_captures=[{k: x[k] for k in ('frame_id', 'sim_time', 'sha256')} for x in excluded],
+        scope=('completed recorded callback prefix; interrupted terminal state not reconstructed'
+               if excluded else 'all captured frames and completed callbacks'),
+        original_status=original.get('status'))
+    return captured[:end], audit
 
 
 def attach_timers(timer, kind):
@@ -301,12 +332,17 @@ def egomap(raw, out, timer):
     from scripts.run_own_map_return_repeat import actor
     from scripts import run_goal_route_continuous as base
     bundle = json.loads((raw / 'bundle.json').read_text())
-    frames = rows(raw / 'robots/r3/frames.jsonl')
+    captured = rows(raw / 'robots/r3/frames.jsonl')
+    inputs = json.loads((raw / 'own-inputs.json').read_text())
+    with (raw / 'own-controller.jsonl').open() as stream:
+        completed_ids = [json.loads(line)['frame_id'] for line in stream if line.strip()]
+    original = json.loads((raw / 'result.json').read_text()) if (raw / 'result.json').exists() else {}
+    frames, input_selection = recorded_control_prefix(captured, inputs, completed_ids, original)
     commands = rows(raw / 'robots/r3/commands.jsonl')
     issued = defaultdict(list)
     for row in commands[1:]:
         issued[round(row['t'], 9)].append(row)
-    ranges = {x['frame_id']: x.get('own_range') for x in json.loads((raw / 'own-inputs.json').read_text())}
+    ranges = {x['frame_id']: x['own_range'] for x in inputs}
     start = bundle.get('start_sim_s', frames[0]['sim_time'])
     explorer = actor('r3', start, SEARCH, active_mapping='frontier_rbpf_v1', active_loop='information_gain_v1',
                      seed=bundle['task']['seed'], active_recovery='nav2_frontier_v1',
@@ -371,7 +407,7 @@ def egomap(raw, out, timer):
             write(out / (name + '.json'), value)
         write(out / 'all-particle-maps.json', [sorted((x, y, v) for (x, y), v in m.cells.items()) for m in g.maps])
     return dict(frames=len(trend), available_frames=len(frames), start=start, end=frames[-1]['sim_time'],
-                failure=None, trend=trend)
+                failure=None, trend=trend, input_selection=input_selection)
 
 
 def worker(args):

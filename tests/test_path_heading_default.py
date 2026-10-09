@@ -91,7 +91,8 @@ args=(legacy.hp.resolve(legacy.MAP_ID)[0],legacy.ROOT/legacy.CALIBRATION,legacy.
 x=runtime_factory(a,{},[])(*args,**a['task'])
 try:
  portable=json.dumps(x.record()).replace(str(legacy.ROOT),'$ROOT').encode()
- print(json.dumps(hashlib.sha256(portable).hexdigest()))
+ import cv2
+ print(json.dumps(dict(record=json.loads(portable),opencv_version=cv2.__version__)))
 finally:x.close()
 '''
         companions = {str((legacy.ROOT/p).with_name('input_manifest_dev.json').relative_to(legacy.ROOT))
@@ -100,10 +101,26 @@ finally:x.close()
         from harness.vision_loc_protocol import VIS3_DIR, FROZEN_FILES
         companions.update(str((VIS3_DIR/p).resolve().relative_to(legacy.ROOT))
                           for p in (*FROZEN_FILES, 'prereg_v3.json', 'selected_config_v3.json'))
-        digest = json_at('d89912703432117e47b5306bbe50ec9c31a0663c', code,
+        original = json_at('d89912703432117e47b5306bbe50ec9c31a0663c', code,
                          tuple(a['source_sha256']) + tuple(sorted(companions))
                          + tuple(str(p.relative_to(legacy.ROOT)) for p in (before.PLAN, before.old.PLAN)))
-        assert digest == (FIX/'off-initial-record.sha256').read_text().strip()
+        frozen_bytes = (FIX/'off-initial-record.json').read_bytes()
+        assert hashlib.sha256(frozen_bytes).hexdigest() == (FIX/'off-initial-record.sha256').read_text().strip()
+        frozen = json.loads(frozen_bytes)
+        def portable_environment(value, reference):
+            if isinstance(value, dict):
+                result = {k: portable_environment(v, reference[k]) for k,v in value.items()}
+                if 'opencv_version' in value:
+                    assert value['opencv_version'] == original['opencv_version']
+                    result['opencv_version'] = reference['opencv_version']
+                return result
+            if isinstance(value, list):
+                return [portable_environment(v, r) for v,r in zip(value,reference,strict=True)]
+            return value
+        normalized = portable_environment(original['record'], frozen)
+        # Only checkout paths and verified OpenCV environment metadata are
+        # portable. Every source identity and numeric field remains checked.
+        assert json.dumps(normalized,sort_keys=True).encode() == json.dumps(frozen,sort_keys=True).encode()
         assert not hasattr(y, 'heading_mode')
         assert x.pose.provider.loc._pf.rng.bit_generator.state == y.pose.provider.loc._pf.rng.bit_generator.state
     finally:

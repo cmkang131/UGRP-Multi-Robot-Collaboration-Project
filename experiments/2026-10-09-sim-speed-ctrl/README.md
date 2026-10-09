@@ -189,3 +189,38 @@ SciPy 원문과 같은 좌표·경계·누산으로 벡터화한다. 보간 차�
 포함한 가속·재생22개 검사 통과. 과거 bundle7개와 원래 초기 기록1개는 고정 Git SHA의
 소스·manifest·정적 자료를 별도 export하여 원래 기대 바이트를 검증했다. 원래 receipt/fixture는 유지했다.
 이 후속 수정의 전체 저장 입력 동등성과 속도는 다음 고정 SHA 재생에서 확인한다.
+
+
+## v13 완료 재생과 기록 경계
+
+공통 가속 모듈 `06b498a2348e42fae46114c055e6745a81dc44f1d276ba54665e6ef46de7b8b9`,
+source `ee554da0a44ad5829e54663992989b8565f6045b`, raw `outputs/speedctrl-20261009-v13`.
+완료된 다섯 off/on 쌍(S3 profiled/unprofiled, egomap58 두 seed, egomap59 55001)은
+동일 입력 해시·완전 프레임·행동 산출물 직접 바이트 gate를 통과했다.
+S3 unprofiled 2.644480→1.974557, egomap58 55003 profiled 4.335035→4.084480이다.
+전체 online ≤1.5는 미달/미검증이며 새 임무 완주를 실행하지 않았다.
+
+마지막 egomap59 55003 off는 2,461번째 캡처에 대응하는 own-inputs가 없어 실패했다.
+원본 HOST_BUDGET은 own-inputs를 쓰기 전 위치추정 중간에서 중단될 수 있다.
+따라서 마지막 프레임을 미소비라고 단정하거나 거리 입력을 만들어 넣지 않는다.
+완료된 own-controller 2,450개와 setup 10개, 총 2,460프레임/491.8 SIM초만
+별도 새 재생으로 측정한다. 중단 순간의 원본 부분 상태는 재구성 불가이며 전체 원본
+terminal 산출물 동등성을 주장하지 않는다. 실패 raw와 492.0초 캡처 구간은 그대로 보존한다.
+캡처·완료 callback·센서 입력 manifest를 교차 검사하고 예상하지 못한 누락은 거부한다.
+관련 재생 검사11개와 실제 네 원본의 메타데이터 검증을 통과했다.
+
+CI의 v88 두 문은 현재 source receipt를 고정 과거 bytes와 혼합했던 오류였다.
+원래 Git SHA의 모든 필드는 원래 bytes로 검증하고 현재 값은 현재 source 해시와
+행동 필드·schedule bytes를 검증한다. path-heading 원래 기록은 source/numeric 값을
+유지하고 실제 OpenCV 버전 descriptor만 환경 이동 대상으로 비교한다.
+원래 frozen SHA는 변경하지 않는다. 세 CI shard의 25분 시간 제한 취소는 실패 검사와
+구분하며, JUnit 회수를 위해 유한 제한을 45분으로 조정했다.
+
+### 추가 참고 자료
+
+- [Python signal 예외 경계](https://docs.python.org/3.12/library/signal.html#note-on-signal-handlers-and-exceptions):
+  타이머 handler 예외는 계산 중간에 발생할 수 있어 완료 callback ledger를 재생 경계로 삼았다.
+- [Hess et al., Real-Time Loop Closure in 2D LIDAR SLAM (2016)](https://research.google/pubs/real-time-loop-closure-in-2d-lidar-slam/),
+  [Cartographer 공식 fast correlative scan matcher](https://github.com/cartographer-project/cartographer/blob/master/cartographer/mapping/internal/2d/scan_matching/fast_correlative_scan_matcher_2d.cc):
+  잔여 graph scan matching의 표준 branch-and-bound를 조사했다. 공식 구현의 uint8
+  확률 양자화·정수 합산은 원래 float64 점수/동점/분기 bytes 경계와 다르므로 이번 후보에 적용하지 않았다.
