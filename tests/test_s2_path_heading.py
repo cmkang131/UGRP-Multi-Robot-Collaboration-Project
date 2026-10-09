@@ -13,6 +13,7 @@ from harness import zone_s2_heading_contract as contract
 from harness import zone_s2_graduation59_contract as baseline
 from harness.zone_solo_cyan_pulse_cal import Runtime as Pulse, action_of
 from scripts.run_s2_heading import runtime_factory
+from harness.zone_final_pair_vision import GRASP_RADIUS_M
 
 
 def profiles():
@@ -37,6 +38,15 @@ def test_intermediate_waypoint_never_enables_strafe_and_final_only_fine():
     assert p['axis'] == 'turn' and abs(p['u']) == .35 and p['duration_s'] == .10
     p, _ = m.select(profiles(), True, [.5, 0], 0, .5)
     assert p['axis'] == 'forward' and p['u'] > 0
+
+
+@pytest.mark.parametrize('error',[.01,.02])
+def test_final_manipulation_uses_its_existing_tolerance(error):
+    before,_=m.select(profiles(),False,[0.,error],0.,error)
+    assert before is None  # default navigation radius stays byte-equivalent
+    p,score=m.select(profiles(),False,[0.,error],0.,error,position_tolerance_m=.003)
+    assert p['axis']=='turn' and p['duration_s']==.1
+    assert score['phase']=='rotate_path' and m.command_reason(action_of(p)) is None
 
 
 def stub(cls, loaded=False):
@@ -130,10 +140,11 @@ def test_contract_refuses_unregistered_seed_off_execution_and_unknown_mode():
     with pytest.raises(ValueError): contract.require_execution(contract.bundle('a'*40,1066))
 
 
-def test_far_visual_alignment_replaces_strafe_and_waits_for_coast_and_estimate():
+@pytest.mark.parametrize('target',[[.6,.4],[GRASP_RADIUS_M,.01],[GRASP_RADIUS_M,.02]])
+def test_far_visual_alignment_replaces_strafe_and_waits_for_coast_and_estimate(target):
     class Previous(Pulse):
         def __init__(self, **kw):
-            self.state='align'; self.target=[.6,.4]; self.robot_id='r3'
+            self.state='align'; self.target=target; self.robot_id='r3'
             self.last_report=NS(t_est=10.,yaw_rad=0.)
             self.pose=NS(provider=NS(loc=NS(_pf=NS(load=NS(loaded=False)))))
             self.pulse_profiles=profiles();self.fine_rows=[]
@@ -186,7 +197,9 @@ def test_heading_issue_boundary_omits_short_and_mixed_without_changing_off():
     class Previous(Pulse):
         def __init__(self, **kw):
             from harness.zone_final_pair_vision import GRASP_RADIUS_M
-            self.state='align';self.target=[GRASP_RADIUS_M, .015];self.robot_id='r3'
+            # No current visual target: the output guard must omit rather than
+            # invent a recovery direction. Targeted align replacement is above.
+            self.state='align';self.target=None;self.robot_id='r3'
             self.last_report=NS(t_est=10.,yaw_rad=0.)
             self.proposal=None;self.fine_until=10.06
         def step(self, now):

@@ -45,7 +45,7 @@ def wrap(angle):
     return math.atan2(math.sin(angle), math.cos(angle))
 
 
-def select(profiles, loaded, body_error, yaw, goal_distance):
+def select(profiles, loaded, body_error, yaw, goal_distance, *, position_tolerance_m=.03):
     """Rotate on the spot, then positive body-forward; trim only near FINAL goal.
 
     Distance to an intermediate waypoint never enables strafe. Finite turn
@@ -62,7 +62,9 @@ def select(profiles, loaded, body_error, yaw, goal_distance):
     # arrival radius. Never alternate final-yaw and path-yaw at each tick.
     fine_lateral = any(p['axis'] == 'left' and abs(p['u']) <= PARAMS['lateral_raw_limit']
                        for p in pool.values())
-    position_heading = final and not fine_lateral and goal_distance > .03
+    if not math.isfinite(position_tolerance_m) or position_tolerance_m <= 0:
+        raise ValueError('positive finite task position tolerance required')
+    position_heading = final and not fine_lateral and goal_distance > position_tolerance_m
     if position_heading:
         heading_error = bearing
     turns = {k: p for k, p in pool.items() if p['axis'] == 'turn'
@@ -220,19 +222,25 @@ def runtime_class(previous):
             rows = super().step(now)
             if self.state != 'align' or self.target is None:
                 return self._heading_admit(now, rows)
-            from harness.zone_final_pair_vision import GRASP_RADIUS_M
+            from harness.zone_final_pair_vision import GRASP_RADIUS_M, ALIGN_TOL_X_M, ALIGN_TOL_Y_M
             error = np.array(self.target)-[GRASP_RADIUS_M, 0.]
             distance = float(np.linalg.norm(error))
-            if distance <= PARAMS['final_alignment_m']:
+            near = distance <= PARAMS['final_alignment_m']
+            if near and all(command_reason(action) is None for _,action in rows):
                 return self._heading_admit(now, rows)
             result = []
             for rid, action in rows:
                 if action['kind'] != 'mecanum' or not any(action.get(k,0) for k in ('forward','left','turn')):
                     result.append((rid, action)); continue
+                if near and command_reason(action) is None:
+                    result.append((rid, action)); continue
                 # Preserve the visual detector/view state machine; replace only
-                # its far approach proposal BEFORE the host issues any command.
+                # its far approach or illegal fine proposal BEFORE actuator
+                # issue. Manipulation keeps its existing 3 mm position bound;
+                # the navigation 3 cm arrival radius must not create a dead zone.
                 p, score = select(self.pulse_profiles, self.pose.provider.loc._pf.load.loaded,
-                                  error, self.last_report.yaw_rad, distance)
+                                  error, self.last_report.yaw_rad, distance,
+                                  position_tolerance_m=min(ALIGN_TOL_X_M,ALIGN_TOL_Y_M))
                 issued = dict(kind='hold') if p is None else action_of(p)
                 self.heading_rows.append(dict(t=now, state='align', target_base_m=list(self.target),
                     replaced_proposal=copy.deepcopy(action), issued=issued, **score))
