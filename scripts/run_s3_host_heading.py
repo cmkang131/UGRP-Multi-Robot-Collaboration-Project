@@ -1,4 +1,4 @@
-"""Single committed S3 v144 smoke with host v3 binding and heading enabled."""
+"""Single committed S3 v146 smoke with host v3 binding and heading enabled."""
 import argparse
 import errno
 import json
@@ -49,13 +49,13 @@ def main(argv=None):
         raise ValueError('own S3 branch and nice zero required')
     from scripts import agent_lock
     primary = agent_lock.DEFAULT_ROOT.parent
-    expected = primary/f's3-host-heading-{a.expected_source_sha[:8]}-s{a.seed}-v144'
+    expected = primary/f's3-host-heading-{a.expected_source_sha[:8]}-s{a.seed}-v146'
     if not a.output.is_absolute() or a.output.resolve() != expected.resolve() or a.output.exists():
         raise ValueError('new registered primary output required')
     if shutil.disk_usage(primary).free < b['raw_budget_bytes']+10*1024**3:
         raise OSError(errno.ENOSPC, 'raw budget plus 10 GiB reserve required')
     held = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch=branch,
-        purpose='S3 v144 one host-corrected mixed heading smoke', pid=os.getpid(),
+        purpose='S3 v146 one host-corrected mixed heading smoke', pid=os.getpid(),
         expected_minutes=180, timing_sensitive=True)
     from harness.zone_pair_highpose_exact_speedups import install
     undo = None

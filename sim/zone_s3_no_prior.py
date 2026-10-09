@@ -98,6 +98,11 @@ class PhysicsBackend(OldBackend):
         self.spec = self.scene.spec
         placements_match(inputs()[0], self)
         write(self.out/'eval_only/drive-v7.json', self.world.drive_profile_record)
+        if self.bundle.get('runtime_speedups_required'):
+            # BaseBackend.reset already writes the actual-world receipt.
+            applied = self.world.v7_speedups_record
+            if (applied['mode'] != self.bundle['runtime_speedups_required'] or not applied['enabled']):
+                raise ValueError('required exact v7 speedups are not applied')
         return elapsed
 
     def eval_sample(self):

@@ -11,14 +11,17 @@ from harness.zone_solo_cyan_unknown_start import Runtime as UnknownStart
 from harness.zone_solo_cyan_best_cluster import runtime_class as best_runtime
 from harness.zone_solo_cyan_amcl_sensor import runtime_class as sensor_runtime
 from harness.zone_solo_cyan_landmarks import runtime_class as landmark_runtime
+from harness.zone_solo_cyan_path_heading import runtime_class as heading_runtime
+from harness.path_heading_policy import mode_for_bundle
 from scripts import run_s2_landmarks_dev as previous
 from scripts.run_final_environment_checks import check_source, write
 
 
 def runtime_factory(b):
-    Runtime = landmark_runtime(sensor_runtime(best_runtime(UnknownStart)))
+    Runtime = landmark_runtime(sensor_runtime(best_runtime(heading_runtime(UnknownStart))))
     omit = ('drive_profile', 'stagnation_watch', 'idle_robot_contacts', 'dev_grasp_policy', 'eval_camera_trace')
     options = {k: v for k, v in b['options'].items() if k not in omit}
+    options['heading_mode'] = mode_for_bundle(b)
     keys = ('motion_model', 'pulse_calibration', 'extrinsic_calibration', 'floor_appearance',
             'stiff_camera_table', 'look_ahead_calibration')
     return lambda *a, **kw: Runtime(*a, **kw, **options, **{k: b[k] for k in keys})

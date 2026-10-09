@@ -264,7 +264,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-host-v107": ["--expected-source-sha", "0" * 40],
             "zone-s3-door-yield-v108": ["--expected-source-sha", "0" * 40],
             "zone-s3-no-prior-v142": ["--expected-source-sha", "0" * 40],
-            "zone-s3-host-heading-v144": ["--expected-source-sha", "0" * 40],
+            "zone-s3-host-heading-v146": ["--expected-source-sha", "0" * 40],
             "v7-exact-speed-benchmark": ["--suite", str(source), "--expected-source-sha", "0" * 40],
             "masterpi-drive-friction-probe": ["--expected-source-sha", "0" * 40, "--drive-profile", "masterpi_drive_friction_v7"],
             "masterpi-v7-roller-approx-probe": ["--expected-source-sha", "0" * 40, "--phase", "profile"],
@@ -307,6 +307,10 @@ raise SystemExit(3 if a.fail else 0)
         samples['zone-s2-unknown-start-v139'] = ['--expected-source-sha', '0'*40, '--seed', '1059']
         samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
         samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
+        samples['v7-exact-speed-benchmark'] = ['--suite', 's2', '--expected-source-sha', '0'*40]
+        samples['zone-path-heading-v145'] = ['--expected-source-sha', '0'*40, '--seed', '1066']
+        samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
+                                           '--heading-mode', 'path_tangent_v1']
         samples['zone-s2-side-scan-v134'] = ['--expected-source-sha', '0'*40]
         samples['s2-loaded-rotation-v1'] = ['--expected-source-sha', '0'*40]
         for name in ('zone-s2-look-before-move-v135', 'zone-s2-goal-heading-v136',

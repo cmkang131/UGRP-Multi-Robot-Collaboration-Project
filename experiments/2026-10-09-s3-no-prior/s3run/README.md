@@ -27,3 +27,15 @@ seed14201·원래 관측 정책·v141 입자 및 σ 문턱 유지, **추가 회�
 원본/분석 raw: `/Users/changmin/projects/ugrp/outputs/s3run-20261009`; 원본 replay 도구와 corrected baseline은 `../s3diag/` 및 해당 raw 폴더. `r1-support-analysis.json`에 입력 경로·명령·seed·simulation_runs=0·GT 경계가 있다. 큰 particle cloud는 로컬 raw에 보존하며 삭제하지 않았다.
 
 검증: 호스트 렌더 회귀2 passed, 새 물리 실행0. TensorBoard `1009-s3run-r1` 3조건/18스칼라를 EventAccumulator로 대조했고, 기존6006 서버의 실제 UI에서3개 run·6개 pin과4.2625/4.2626/0.0321m 값을 확인했다. HParams 열은case/family/outcome/evaluation로 적용했다. [대시보드](http://127.0.0.1:6006/?runFilter=%5E1009-s3run-r1%2F#timeseries), 전체 pinned URL은 `tensorboard-verification.json`에 보존한다.
+
+## 실행 전 고정: v146 / workflow7.39.0
+
+18:47:53 fetch에서 #419 공통 기본 on `d89912703432117e47b5306bbe50ec9c31a0663c` 확인 후 merge했다. main#420 `1ba3668b`의 exact relay cache도 포함한다. [번호 예약](reservation.json)은 main/열린 PR 전부의 최대v145/7.38.0 확인이다. 미실행·미승인 준비 번들v144를 퇴역하고 **v146**을 새로 등록한다. v144 물리 결과는 없으며 그 사전 기록은s3next와Git이력에 보존한다.
+
+[실행 등록](registration.json): seed14201 혼합 주문1회,1800 SIM초/10800wall초,dev_light,host v3 persistent binding on,공통 heading 기본 on,heading visual lock off,추가 입자 회복off,기존 수렴 문턱. 원본 예산2.125GiB+10GiB reserve,agent_lock 획득 후 실행. host는 실제 적용된 `relay-cache-v1`/enabled를 확인한다. 결과의 heading 및speed 적용값은 공통 writer가 기록한다.
+
+heading 적용 범위를 구분한다: 세 S2 계열 startup localizer에 동일한 기본 on을 연결하고 실제 회전→전진 생성과 기록을 시험한다. **r3의 단독 경로 주행**이 그 제어기를 계속 사용하며, r1/r2 handoff 이후의 공동 빔 자세·GO 합의는 #419의 명시적 설계대로 기존 공동 제어기를 유지한다. 공동 빔의 독립 로봇 회전을 검증했다고 보고하지 않는다. 과거v142의 옵션 누락은 명시적 off로 해석해 기존 재생을 보존한다. 새로운 물리 실행에는 v146의 명시적 on을 쓴다.
+
+실행 직전 디스크 갱신: 여유12.23GiB로 감소하여 raw 상한을2.125GiB로 사전 조정했다. 옛 실행 실측 비율의1800초 투영1,721,403,567bytes+추가eval허용536,870,912bytes=2.103GiB보다 크다. 이는 추정이며 보장하지 않는다.10GiB 또는raw 상한에 도달하면 ENOSPC HOST_ERROR로 기록하고 자동 재시도하지 않는다. 기존raw 삭제0.
+
+실행 소스 검증: S3/공통 heading/workflow 관련3개 파일41 passed(115.19s). raw 예산 조정 뒤 계약 시험1 passed(42.76s). 실제 S3 factory의 각 localizer에 `path_tangent_v1` 적용, 자기 추정 stub에서 회전→전진 생성, result 적용값 및v142 누락 옵션off 보존을 확인했다. 기존 호스트 첫 렌더 mount 회귀는2 passed. 시험은 물리 실행 성공 근거가 아니다. CI는 기다리지 않는다.

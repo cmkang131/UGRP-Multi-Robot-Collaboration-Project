@@ -32,7 +32,7 @@ def test_new_host_heading_contract_keeps_v142_and_physical_mount_boundary(monkey
     new.verify(b)
     assert c.bundle('a'*40) == baseline
     assert 's3_camera_binding' not in baseline
-    assert b['execution_bundle_id'] == 'zone-s3-host-heading-v144'
+    assert b['execution_bundle_id'] == 'zone-s3-host-heading-v146'
     assert b['s3_camera_binding'] == 'v3_persistent_v1' and b['eval_render_camera']
     assert b['options']['heading_mode'] == 'path_tangent_v1'
     assert b['options']['localization_certification'] == 'posterior_consensus_v1'
@@ -66,6 +66,7 @@ def test_three_real_localizers_never_call_dock_prior(monkeypatch):
         runtime.initial_commands(0., commands)
         clouds = []
         for rid, own in runtime.localizers.items():
+            assert not hasattr(own, 'heading_mode')  # historical v142 omitted option
             pf = own.pose.provider.loc._pf
             clouds.append(pf.px)
             assert pf.n == 100000 and np.ptp(pf.px[:, 2]) > 6.2
@@ -99,6 +100,56 @@ def test_three_real_localizers_never_call_dock_prior(monkeypatch):
         json.dumps(runtime.record())
     finally:
         runtime.close()
+
+
+def test_new_s3_runtime_applies_shared_heading_and_records_result(tmp_path):
+    from harness import zone_s3_host_heading_contract as new
+    from harness.path_heading_policy import DEFAULT
+    from scripts.run_final_environment_checks import write
+    b = new.bundle('a'*40)
+    static = c.hp.resolve(c.old.solo.MAP_ID)[0]
+    runtime = m.Runtime(static, c.inputs()[2]['orders'], c.ROOT/c.old.solo.CALIBRATION,
+        c.old.solo.CALIBRATION_SHA, seed=14201, config=b['controller_config'])
+    try:
+        assert b['options']['heading_mode'] == DEFAULT
+        for own in runtime.localizers.values():
+            assert own.record()['heading_mode']['option'] == DEFAULT
+            assert own.record()['start_prior']['dock_prior_calls'] == 0
+            # Only the test substitutes an own estimate and skips startup.
+            # Exercise the actual cooperative drive chain (no simulator).
+            own.start_prior = 'off'
+            own.last_report = SimpleNamespace(initialized=True, x_m=.3, y_m=-2.15, yaw_rad=0.,
+                std_xy_m=.01, std_yaw_rad=.01, last_fix_t=0.)
+            action, arrived = own.drive((.3, -.85), 1.)
+            assert not arrived and action[0]['turn'] > 0
+            assert action[0]['forward'] == action[0]['left'] == 0
+            own.last_report.yaw_rad = np.pi/2
+            action, arrived = own.drive((.3, -.85), 2.)
+            assert not arrived and action[0]['forward'] > 0
+            assert action[0]['turn'] == action[0]['left'] == 0
+        # This does not assert independent heading control during coupled carry.
+        assert b['heading_scope']['r1+r2'].endswith('coupled beam controller retained')
+        write(tmp_path/'bundle.json', b)
+        write(tmp_path/'result.json', dict(status='HOST_ERROR'))
+        assert json.loads((tmp_path/'result.json').read_text())['heading_mode'] == DEFAULT
+    finally:
+        runtime.close()
+
+
+def test_new_host_requires_actual_speedups_after_standard_reset(monkeypatch, tmp_path):
+    from sim.zone_s3_no_prior import PhysicsBackend
+    from sim.solo_cyan_v106 import PhysicsBackend as SoloBackend
+    from scripts import run_zone_study_integration
+    monkeypatch.setattr(SoloBackend, 'reset', lambda self, cap: 1.3)
+    monkeypatch.setattr(run_zone_study_integration, 'placements_match', lambda *args: None)
+    host = SimpleNamespace(out=tmp_path, scene=SimpleNamespace(spec={}),
+        world=SimpleNamespace(drive_profile_record={}, v7_speedups_record={
+            'mode': 'relay-cache-v1', 'enabled': True}),
+        bundle={'runtime_speedups_required': 'relay-cache-v1'})
+    assert PhysicsBackend.reset(host, 5.) == 1.3
+    host.world.v7_speedups_record['enabled'] = False
+    with pytest.raises(ValueError, match='not applied'):
+        PhysicsBackend.reset(host, 5.)
 
 
 def test_pose_port_refuses_prior_and_cross_robot_frame():

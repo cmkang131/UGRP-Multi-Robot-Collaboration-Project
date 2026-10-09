@@ -1,0 +1,1 @@
+Saved own RGB / own estimate counterexample from s1068 v143 b60acdca at187.9SIMs. No evaluation pose is in this fixture. The cyan is visible but the original map-slot filter rejects it. The JSON retains its original frame path and SHA. The off-record hash was captured before default migration (d9b2a39e); only the checkout root is normalized to $ROOT for portable tests.

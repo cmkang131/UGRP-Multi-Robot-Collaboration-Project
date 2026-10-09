@@ -49,6 +49,9 @@ def solo_factory(config):
     g = plain['options'].pop('active_rotation_guard')
     certification = plain['options'].pop('localization_certification', 'off')
     mount = plain['options'].pop('recorded_camera_mount', 'off')
+    # The original v142 controller config predates heading. Preserve its
+    # omitted-option replay; new host bundles explicitly select the shared on.
+    plain['options'].setdefault('heading_mode', 'off')
     factory = runtime_factory(plain)
     return lambda *args, **kw: recorded_camera(certify(guard(active(factory(*args, **kw), active_localization=a),
         active_rotation_guard=g), localization_certification=certification), recorded_camera_mount=mount)
