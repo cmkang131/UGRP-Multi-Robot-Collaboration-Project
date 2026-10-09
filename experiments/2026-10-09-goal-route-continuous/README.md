@@ -62,3 +62,7 @@ S3의 새 지시(s3next.txt)를 읽어 **공통heading push 후 S3 재시험**�
 물리0/9인 상태에서 §3.2의 "오도메트리+전면초음파 여유" 연결을 보완한다. **sensors.ultrasonic_front=on_v1**,기존OwnUltrasonicRig/OwnRangeInput을재사용해r3의시각·거리·상태만5Hz로받고(무엇에맞았는지없음),기존Nav2 1.2초충돌시간과CAD전면offset/footprint로would-stop을기록한다. P1-a pitch보정은계속off,초음파로지도/pose/목표를맞추지않는다. sensors-off과별도조건표시. 일반adapter의dev_light기본false에서는정지,이번9회실행기만명시dev_light=true. 결과를본수정이아닌실행전설계연결완료다.
 
 관측채널 보완 후 바뀐2시험 **26 passed**. range 입력은 정확히 {t,range_m,valid,status} 4필드,off일때센서접근0. 명시 dev_light와 일반모드의정지계약을구분했다. 물리는계속0/9,사후문턱변경0.
+
+### 18:25 KST 선행 의존성 확인
+
+구현 `5714ea66`은 원격과 동일하고 PR #405는 DRAFT다. #419의 최신 `fddc2f67`은 S2 비교 결과 기록이며 공통 heading 기본 on 변경은 아직 없다. S3 #416의 `7f2675ac`도 해당 변경 대기를 명시한다. 잠금은 null이지만 사용자가 지정한 **S3 재시험 다음** 순서를 건너뛰지 않는다. 따라서 P1-b는 **시작 0/등록 9, 결과 미측정**이며 실패율·성공률을 계산하지 않는다. 준비된 유한 실행기는 완료 증거를 담은 `queue-admission.json` 없이는 시작하지 않는다. 공통 변경 병합·바뀐 시험 검증 후 S3 종료 증거를 확인해야 다음 단계로 진행할 수 있다. CI 대기나 관문 미달로 중단한 것이 아니다.
