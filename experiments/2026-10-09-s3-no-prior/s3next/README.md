@@ -8,7 +8,7 @@
 
 `harness/zone_s3_recorded_camera.py`는 예전 영상의 마운트 오류를 분리하는 **진단 전용**이며 실행 보정이 아니다. 새 물리 호스트는 해당 옵션이 off가 아니면 world 구성 전에 거부한다. 제어기의 v3 외부 파라미터·K/D·카메라 외관·지도·문턱은 바꾸지 않는다.
 
-첫 렌더 검사는 실제 공통 `_render_rgb_direct()`의 mount sync→renderer update→render 경로를 호출하고 S2와 S3의 local pos/quat, world pose, intrinsic, resolution 기록이 같은지 비교한다. 회귀는 정적 MuJoCo 모델+renderer double이며 물리 step0·실제 OpenGL 영상 시험은 아니다. 실제 스모크에서는 렌더 스레드의 같은 physics lock 안에서 `eval_only/<robot>/render_camera.jsonl`을 남기고 첫 프레임 및 모든 렌더의 local pos/quat를 S2 v3 상수와 대조한다. world pose는 로봇·관절 자세에 따라 달라지므로 서로 다른 시작의 세계좌표가 같다는 요구가 아니다. 이 기록과 측정 qpos는 평가 전용으로 제어기에 전달하지 않는다.
+첫 렌더 검사는 실제 공통 `_render_rgb_direct()`의 mount sync→renderer update→render 경로를 호출하고 S2와 S3의 local pos/quat, world pose, intrinsic, resolution 기록이 같은지 비교한다. 회귀는 정적 MuJoCo 모델+renderer double이며 물리 step0·실제 OpenGL 영상 시험은 아니다. S2 v141 s1065의 실제 첫 camera-pose 기록을 작은 fixture로 보존해 local pos/quat 바이트 값도 대조한다. 실제 스모크에서는 렌더 스레드의 같은 physics lock 안에서 `eval_only/<robot>/render_camera.jsonl`을 남기고 첫 프레임 및 모든 렌더의 local pos/quat를 S2 v3 상수와 대조한다. world pose는 로봇·관절 자세에 따라 달라지므로 서로 다른 시작의 세계좌표가 같다는 요구가 아니다. 이 기록과 측정 qpos는 평가 전용으로 제어기에 전달하지 않는다.
 
 ## 공통 렌더 경로 점검
 
@@ -40,8 +40,10 @@
 - 시작 prior 없음·own RGB/정적 지도/자기 명령만, top RGB·GT 제어·weld 금지.
 - 혼합 주문은 r1+r2의 beam_1→B와 r3의 cyan_1→B. 원본과 같은 시작 배치를 사용하되 새 실행 번들/출력 폴더에 기록한다.
 - #419 공통 heading 기본 on 소스를 merge해 세 로봇의 주행 경로에 적용된 범위를 검증하고 실행 source SHA를 고정한다. 공개되지 않은 구현을 복제하거나 heading off로 먼저 실행하지 않는다.
-- dev_light 보수 가드는 기록만, 실제 낙하/기울기/GO 실패/집게 이탈/실행 오류는 정지한다. 기존 SIM1800초·wall10800초·raw6GiB, ENOSPC=HOST_ERROR를 유지한다.
+- dev_light 보수 가드는 기록만, 실제 낙하/기울기/GO 실패/집게 이탈/실행 오류는 정지한다. 기존 SIM1800초·wall10800초를 유지한다. 실행 전 raw 상한은3GiB로 등록한다(현재 여유13.23GiB, 원본43.27MB/45.25초로부터1800초 약1.72GB+평가 로그 예산0.5GiB; 실제 크기 보장은 아님). 10GiB 여유와 ENOSPC=HOST_ERROR를 유지하고 기존 raw는 지우지 않는다.
 - 로봇별 수렴·오차·배송·실패, 문 양보/교착, 충돌, wall/SIM을 eval_only로 판정한다. 결과를 본 뒤 기준 변경/재실행하지 않는다. 같은 원인2회면 원인 분류와 표준 방법 조사 후 보고한다.
 - 새 실행의 첫 RGB 마운트 값, 4배속 대표 영상, 원본 해시 및 TensorBoard를 남긴다.
 
 참고: [S2 바인딩](../../../sim/s2_realism_camera_binding.py), [MuJoCo 카메라 좌표](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html#mjdata), [Nav2 AMCL PF](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/pf/pf.c). 기존 s3diag 출처와 요인 비교는 [이전 진단](../s3diag/README.md)을 따른다.
+
+예약: 새 번들 `zone-s3-host-heading-v144`, workflow `7.37.0`, seed14201, 첫 실행만 허용. 원격 main·열린 PR 최대143/7.36.0을 조회한 뒤 #416 본문과 #419 조정 코멘트에 예약했다. 최신 main의 공통 exact-speed 변경도 `21af8635`로 merge·13 PASS·push했으며 초기화/관측 동등성과 실제 성공은 구분한다.

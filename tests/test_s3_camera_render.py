@@ -1,5 +1,7 @@
 """Actual shared render-call path; deterministic renderer double, no SIM steps."""
 from types import SimpleNamespace, MethodType
+from pathlib import Path
+import json
 import threading
 
 import numpy as np
@@ -54,6 +56,7 @@ def test_first_render_camera_pose_equals_s2_and_remains_bound():
     for controller in s2.controllers.values():
         bind_camera(controller)
     recorded = []
+    reference = json.loads((Path(__file__).parent/'fixtures/s3_camera/s2-v141-first-camera.json').read_text())['first']
     attach(s3, camera_binding='v3_persistent_v1', audit=lambda rid, row: recorded.append((rid, row)))
     for repeat in range(2):
         for rid in s3.controllers:
@@ -67,6 +70,8 @@ def test_first_render_camera_pose_equals_s2_and_remains_bound():
             assert name == rid and row['render_index'] == repeat
             assert row['local_position_m'] == pytest.approx(v3.POSITION_M, abs=1e-14)
             assert row['local_quat_wxyz'] == pytest.approx(v3.QUAT_WXYZ, abs=1e-14)
+            assert row['local_position_m'] == reference['camera_local_position_m']
+            assert row['local_quat_wxyz'] == reference['camera_local_quaternion']
             assert {k: v for k, v in row.items() if k not in ('robot_id', 'render_index')} == s2_at_render[-1][1]
             assert s2_at_render[-1] == s3_at_render[-1]
     assert len(recorded) == 6

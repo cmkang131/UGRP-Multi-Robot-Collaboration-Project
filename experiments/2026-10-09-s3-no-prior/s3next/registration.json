@@ -1,0 +1,96 @@
+{
+  "schema": "ugrp.s3_host_heading_smoke.v144",
+  "execution_bundle_id": "zone-s3-host-heading-v144",
+  "workflow_version": "7.37.0",
+  "seeds": [
+    14201
+  ],
+  "run_limit": 1,
+  "case_cap_s": 1800,
+  "wall_cap_s": 10800,
+  "raw_budget_bytes": 3221225472,
+  "start_prior": "none_v1",
+  "forbidden_inputs": [
+    "dock_prior",
+    "shared_top_camera",
+    "peer_pose",
+    "GT_control"
+  ],
+  "weld": "off",
+  "controller_base": "99d81d8c9cbc8dee1cc21462d25a1c81f65de9f5",
+  "cargo": {
+    "r1+r2": "beam_1 -> B",
+    "r3": "cyan_1 -> B"
+  },
+  "localization": {
+    "own_convergence_std_xy_m_lte": 0.05,
+    "posthoc_correct_xy_m_lte": 0.25,
+    "posthoc_correct_yaw_deg_lte": 15,
+    "source": "S2 v139 preregistration unchanged; evaluated separately for each robot",
+    "own_convergence_std_yaw_deg_lte": 5,
+    "posterior_all_particles_range_m": 0.5,
+    "posterior_connected_modes_eq": 1,
+    "threshold_change": false
+  },
+  "collision": {
+    "rule": "any robot-robot geometry contact with dist_m < 0; episodes merged across gaps <=1 SIM s",
+    "evaluation_only": true
+  },
+  "deadlock": {
+    "rule": "after startup: reservation state unchanged, another robot waiting, and USING owners stationary (<1cm XY envelope and <5deg yaw range) in final 120 SIM s of that reservation interval; posthoc only",
+    "window_s": 120
+  },
+  "delivery": {
+    "rule": "existing S3 post-run referee order completion in zone B, each order separately; pair shared outcome counts one cargo",
+    "control_feedback": false
+  },
+  "failure_rule": "classify only; same root cause twice stops additional trials",
+  "video": {
+    "source": "three own camera recordings",
+    "playback": 4,
+    "capture_hz": 20,
+    "output_fps": 20,
+    "stride": 4
+  },
+  "differences_from_s2": [
+    "all three robots active; idle contacts off",
+    "mixed pair beam; loaded pair command model remains separately unqualified",
+    "same v3 runtime render binding and controller calibration as S2"
+  ],
+  "references": [
+    {
+      "title": "Active Mobile Robot Localization, Burgard et al. IJCAI 1997",
+      "url": "https://publications.ri.cmu.edu/storage/publications/pub_files/pub1/burgard_w_1997_1/burgard_w_1997_1.pdf",
+      "use": "reuse entropy-ranked own-camera observations and uniform global belief; no custom pose prior"
+    },
+    {
+      "title": "OpenCV homography tutorial",
+      "url": "https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html",
+      "use": "reuse S2 RGB rotation guard without changing the 90-degree bound"
+    }
+  ],
+  "scenario_catalog_seeds": [
+    14201,
+    14202,
+    14203
+  ],
+  "execution_admission": "14201 only; other catalog seeds are inactive and not authorized by this smoke contract",
+  "success": "per robot: command completion, at least one posthoc-correct convergence, its cargo delivered B, no own failure or robot collision",
+  "heading_mode": "path_tangent_v1",
+  "host_camera_binding": "v3_persistent_v1",
+  "eval_render_camera": true,
+  "recorded_camera_mount": "off",
+  "localization_certification": "posterior_consensus_v1",
+  "particle_recovery_changes": false,
+  "heading_dependency": "merge #419 common heading default on before execution",
+  "storage_plan": {
+    "free_bytes_at_plan": 14202273792,
+    "original_bytes": 43274173,
+    "original_sim_s": 45.25,
+    "projected_1800_bytes": 1721403567,
+    "extra_eval_trace_allowance_bytes": 536870912,
+    "reserve_bytes": 10737418240,
+    "all_previous_raw_preserved": true,
+    "estimate_is_not_guarantee": true
+  }
+}

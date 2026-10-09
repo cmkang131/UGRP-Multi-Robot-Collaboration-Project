@@ -24,6 +24,31 @@ def test_new_scenario_and_source_contract():
         c.verify(bad)
 
 
+def test_new_host_heading_contract_keeps_v142_and_physical_mount_boundary(monkeypatch, capsys):
+    from harness import zone_s3_host_heading_contract as new
+    from scripts import run_s3_host_heading as runner
+    baseline = c.bundle('a'*40)
+    b = new.bundle('a'*40)
+    new.verify(b)
+    assert c.bundle('a'*40) == baseline
+    assert 's3_camera_binding' not in baseline
+    assert b['execution_bundle_id'] == 'zone-s3-host-heading-v144'
+    assert b['s3_camera_binding'] == 'v3_persistent_v1' and b['eval_render_camera']
+    assert b['options']['heading_mode'] == 'path_tangent_v1'
+    assert b['options']['localization_certification'] == 'posterior_consensus_v1'
+    assert b['options'].get('recorded_camera_mount', 'off') == 'off'
+    assert not b['particle_recovery_changed'] and not b['convergence_thresholds_changed']
+    assert b['preregistration']['run_limit'] == 1
+    monkeypatch.setattr(runner, 'run', lambda *a, **k: pytest.fail('plan started runtime'))
+    assert runner.main(['--expected-source-sha', 'a'*40, '--output', '/nonexistent/s3-next-plan']) == 0
+    assert json.loads(capsys.readouterr().out)['execution_started'] is False
+    for key, bad in [('s3_camera_binding', 'off'), ('eval_render_camera', False)]:
+        changed = copy.deepcopy(b)
+        changed[key] = bad
+        with pytest.raises(ValueError):
+            new.verify(changed)
+
+
 def test_three_real_localizers_never_call_dock_prior(monkeypatch):
     from sim import zone_model_conventions
     def forbidden(*a, **k):
