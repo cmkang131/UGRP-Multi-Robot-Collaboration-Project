@@ -1,0 +1,29 @@
+{
+  "repository": "https://github.com/DaiGuard/fuji_mecanum",
+  "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+  "license": "MIT, Copyright (c) 2022 DaiGuard",
+  "mesh_original_path": "mesh/collision/roller.stl",
+  "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+  "mesh_modified": false,
+  "source_radius_m": 0.1025,
+  "roller_ring_radius_m": 0.0895,
+  "roller_count": 15,
+  "roller_angle_deg": 45,
+  "roller_mass_kg": 0.3,
+  "roller_inertia_kg_m2": [
+    0.00024,
+    0.00076,
+    0.00076
+  ],
+  "hub_mass_kg": 2.0,
+  "hub_inertia_kg_m2": [
+    0.042025,
+    0.024279,
+    0.024279
+  ],
+  "roller_damping": 0.001,
+  "roller_frictionloss": 0.0001,
+  "roller_sliding_friction": 0.8,
+  "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+  "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+}
