@@ -120,3 +120,6 @@ HOST_ERROR 수정은 S3 no-prior 어댑터에 한정한다. `SlotTeam`은 S2 pro
 검증: `python -m pytest -q tests/test_s3_no_prior.py` **8 passed**. 실제 3개 provider 생성, None 기록, 기존 통계 보존, 음수 body 원점/정상 COM의 회귀와 비정상 COM 거부, 기본 off 동결 바이트를 확인했다. 물리 실행은 0회다.
 
 방법 출처: [MuJoCo xipos 정의](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html#mjdata)는 body COM의 세계 위치를 명시한다. [Fox/Burgard/Thrun 1999](https://arxiv.org/abs/1106.0222) 및 [선행 AAAI98 동적 환경 필터](https://www.ri.cmu.edu/pub_files/pub1/fox_dieter_1998_3/fox_dieter_1998_3.pdf)는 지도에 없는 장애물 관측 거부의 근거이며, 타 로봇 가림의 영향이 측정된 경우에만 적용 후보로 사용한다. 영상 마스크의 GT는 진단 oracle일 뿐 제어 입력으로 승격하지 않는다.
+
+
+완료한 [s3diag 오프라인 원인별 표와 전/후 비교](s3diag/README.md): HOST 두 계약 수정, 전체3356명령 일치·직렬화 오류0, 회귀11 passed. S3의 런타임 v3 마운트 바인딩 누락(20.21mm·2.541°)을 확인했다. 기록 마운트만 맞춘 전체 재생에서 r2/r3 최종 오차0.065/0.074m이나 정확 수렴은 여전히0/3이며, r1 반대-yaw 모드가 남는다. 물리0회·문턱/원본 변경0·CI 대기0. 새 옵션은 기본 off다.
