@@ -31,8 +31,15 @@ CATEGORIES = ('physics', 'render', 'pf_update', 'posterior_summary', 'scan_match
 
 
 def write(path, value):
+    import numpy as np
+    def default(item):
+        if isinstance(item, np.ndarray):
+            return item.tolist()
+        if isinstance(item, np.generic):
+            return item.item()
+        raise TypeError(type(item).__name__)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, allow_nan=True) + '\n')
+    path.write_text(json.dumps(value, indent=2, allow_nan=True, default=default) + '\n')
 
 
 def sha(path):
