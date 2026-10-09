@@ -156,13 +156,23 @@ def test_time_denominator_respects_early_hold_and_ignores_arm():
     assert q['lateral_fraction_moving']==pytest.approx(2/7)
 
 
-def test_queue_requires_all_predecessors_even_between_free_lock_intervals():
+def test_queue_requires_s2_and_s3_even_between_free_lock_intervals():
     from scripts.run_s2_heading import queue_receipt
     names=['s2v59 preregistered six-seed DEV and one pair throughput',
-           'S3 v142 single mixed no-prior smoke',
-           *[f'egomap54 teach/repeat seed{s}' for s in (54001,54002,54003,54004)],
-           'simspeed bounded ABBA (research first)']
+           'S3 v142 single mixed no-prior smoke']
     records=[dict(purpose=p,released_unix=i+1) for i,p in enumerate(names)]
     for n in range(len(records)):
         with pytest.raises(ValueError):queue_receipt(records[:n])
-    assert len(queue_receipt(records)['egomap54'])==4
+    assert queue_receipt(records)['egomap54']=='cancelled_by_supervisor'
+
+
+def test_evaluation_heading_and_lateral_speed_use_actual_translation():
+    from scripts.evaluate_s2_heading import motion_metrics, contact_summary
+    # Equal-duration forward, sideward, then stationary; stationary is excluded.
+    rows=[dict(t=float(i),robot_xyz_m=xy,robot_yaw_rad=0.) for i,xy in
+          enumerate(([0.,0.,0.],[1.,0.,0.],[1.,1.,0.],[1.,1.,0.]))]
+    m=motion_metrics(rows)
+    assert m['moving_s']==2.
+    assert m['direction_within_20deg_fraction']==pytest.approx(.5)
+    assert m['lateral_speed_fraction']==pytest.approx(.5)
+    assert contact_summary([dict(t=0),dict(t=1),dict(t=2)],[True,True,False])==dict(samples=2,sampled_s=2.,episodes=1)

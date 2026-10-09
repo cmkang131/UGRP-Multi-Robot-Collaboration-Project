@@ -2,8 +2,8 @@
   "tests": [
     "tests/test_s2_path_heading.py"
   ],
-  "passed": 18,
-  "wall_s": 22.21,
+  "passed": 19,
+  "wall_s": 15.94,
   "scope": "offline; no physics",
   "previous_dependency_tests_passed": 13,
   "previous_failed_heading_sign_tests": 2,
@@ -13,6 +13,11 @@
   "v1_error": "missing plan for legacy DEV direct fallback; preserved",
   "v2_error": "duplicate dict key in replay report; preserved",
   "workflow_plan": "passed; no execution",
-  "queue_receipt": "s2v59 + S3 + all four egomap54 + simspeed release receipts required",
-  "posthoc_scoring": "three saved baseline result/trajectory/contact files scored; no new simulation"
+  "queue_receipt": "s2v59 + S3; egomap54 cancelled_by_supervisor; simspeed offline excluded (heading2)",
+  "posthoc_scoring": "three saved baseline result/trajectory/contact files scored; no new simulation",
+  "previous_heading_tests": {
+    "passed": 18,
+    "wall_s": 22.21
+  },
+  "motion_scoring": "synthetic known forward/lateral/stationary segments and contact duration checked"
 }

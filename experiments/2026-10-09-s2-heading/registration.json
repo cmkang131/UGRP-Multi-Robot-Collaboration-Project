@@ -2,20 +2,60 @@
   "schema": "ugrp.s2_heading_matched_dev.v1",
   "baseline_sha": "99d81d8c9cbc8dee1cc21462d25a1c81f65de9f5",
   "baseline_bundle": "zone-s2-realism-v141",
-  "seeds": [1066, 1068, 1065],
+  "seeds": [
+    1066,
+    1068,
+    1065
+  ],
   "denominator": 3,
   "fresh": false,
   "graduation": false,
   "heading_mode": "path_tangent_v1",
-  "queue_after": ["s2v59", "S3", "egomap54", "simspeed"],
+  "queue_after": [
+    "s2v59",
+    "S3"
+  ],
   "simultaneous_simulations": 1,
   "nice": 0,
-  "limits": {"sim_s": 900, "wall_s": 10800, "minimum_free_gib": 10, "raw_budget_gib": 5},
-  "failures": {"ENOSPC": "HOST_ERROR", "missing": "UNCLASSIFIED"},
+  "limits": {
+    "sim_s": 900,
+    "wall_s": 10800,
+    "minimum_free_gib": 10,
+    "raw_budget_gib": 5
+  },
+  "failures": {
+    "ENOSPC": "HOST_ERROR",
+    "missing": "UNCLASSIFIED"
+  },
   "tuning_between_runs": false,
-  "evaluation": ["existing_success_judge", "lateral_command_time_fraction", "carry_box_yaw_and_relative_yaw", "wall_contact_sample_time", "door_crossing", "wall_per_sim"],
+  "evaluation": [
+    "existing_success_judge",
+    "lateral_command_time_fraction",
+    "carry_box_yaw_and_relative_yaw",
+    "wall_contact_sample_time",
+    "door_crossing",
+    "wall_per_sim",
+    "direction_within_20deg_time_fraction",
+    "actual_lateral_speed_fraction",
+    "robot_contact_sample_time"
+  ],
   "lateral_denominator": "actual issued nonzero base-command time; expiry and early hold respected; also report total SIM denominator",
   "decision": "Recommend to S3 supervisor only if success count is at least baseline and seed1066 remains successful; no new drop/tilt failure or active rotation limit violation. Report contact, box yaw and speed tradeoffs individually.",
-  "video": "three 4x own wrist RGB | evaluation-only top trajectory videos",
-  "gt_use": "post-run evaluation and video only"
+  "video": "one 4x own wrist RGB | evaluation-only top trajectory video, prespecified seed1066 regardless outcome (heading2)",
+  "gt_use": "post-run evaluation and video only",
+  "queue_cancelled": {
+    "egomap54": {
+      "status": "cancelled_by_supervisor",
+      "reason": "User removed forced loss; supervisor SIGINT seed54001 at 5m38s, remaining54002-54004 permanently cancelled",
+      "source": "supervisor-ego.md 2026-10-09 16:55; direct user heading2 instruction"
+    }
+  },
+  "queue_revision_reason": "heading2 user instruction: egomap54 cancelled; simspeed offline excluded. No control threshold/config change; no heading physical run started before revision.",
+  "motion_reporting": {
+    "min_speed_m_s": 0.01,
+    "heading_tolerance_deg": 20,
+    "direction_denominator": "time with finite-difference actual translation speed >=0.01m/s",
+    "lateral_speed_denominator": "integral actual speed over same moving intervals; numerator integral abs body lateral velocity",
+    "scope": "evaluation only; applied identically to baseline and new runs"
+  }
 }

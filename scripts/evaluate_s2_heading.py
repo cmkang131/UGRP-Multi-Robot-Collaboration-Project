@@ -23,12 +23,34 @@ def intervals(record, final_time):
             for i,e in enumerate(states) if e['state']=='carry']
 
 
+def contact_summary(rows, mask):
+    durations=[max(0.,rows[i+1]['t']-r['t']) if i+1<len(rows) else 0 for i,r in enumerate(rows)]
+    return dict(samples=sum(mask),sampled_s=sum(d for d,m in zip(durations,mask) if m),
+        episodes=sum(m and (i==0 or not mask[i-1]) for i,m in enumerate(mask)))
+
+
+def motion_metrics(truth):
+    """Evaluation-only finite-difference velocity; frozen reporting threshold."""
+    t=np.array([r['t'] for r in truth]);dt=np.diff(t)
+    xy=np.array([r['robot_xyz_m'][:2] for r in truth]);v=np.diff(xy,axis=0)/dt[:,None]
+    yaw=np.unwrap([r['robot_yaw_rad'] for r in truth]);yaw=(yaw[:-1]+yaw[1:])/2
+    speed=np.linalg.norm(v,axis=1);moving=speed>=.01
+    angle=(np.arctan2(v[:,1],v[:,0])-yaw+math.pi)%(2*math.pi)-math.pi
+    lateral=-np.sin(yaw)*v[:,0]+np.cos(yaw)*v[:,1]
+    elapsed=float(dt[moving].sum());distance=float((speed[moving]*dt[moving]).sum())
+    return dict(min_speed_m_s=.01,moving_s=elapsed,path_m=distance,
+        direction_within_20deg_fraction=float(dt[moving&(abs(angle)<=math.radians(20))].sum()/elapsed) if elapsed else None,
+        lateral_speed_fraction=float((abs(lateral[moving])*dt[moving]).sum()/distance) if distance else None,
+        definition='actual velocity vs midpoint chassis yaw, time fraction within +/-20deg; integral abs(body lateral velocity) / integral speed; speed>=0.01m/s; GT evaluation only')
+
+
 def score(raw):
     raw=Path(raw)
     result=json.loads((raw/'result.json').read_text())
     record=json.loads((raw/'student_record.json').read_text())
     truth=read_rows(raw/'eval_only/trajectory.jsonl')
     walls=read_rows(raw/'eval_only/wall-contacts.jsonl')
+    all_contacts=read_rows(raw/'eval_only/contacts.jsonl')
     times=np.array([r['t'] for r in truth])
     if len(times)<2 or np.any(np.diff(times)<=0):
         raise ValueError('missing/nonmonotonic evaluation trajectory')
@@ -49,9 +71,11 @@ def score(raw):
     contacts={}
     for category in ('body','wheel','finger','cargo','any'):
         mask=[bool(r['contacts']) if category=='any' else any(c['category']==category for c in r['contacts']) for r in walls]
-        durations=[max(0.,walls[i+1]['t']-r['t']) if i+1<len(walls) else 0 for i,r in enumerate(walls)]
-        contacts[category]=dict(samples=sum(mask),sampled_s=sum(d for d,m in zip(durations,mask) if m),
-            episodes=sum(m and (i==0 or not mask[i-1]) for i,m in enumerate(mask)))
+        contacts[category]=contact_summary(walls,mask)
+    def robot_pair(c):
+        a,b=c['geom1'].split('__')[0],c['geom2'].split('__')[0]
+        return a!=b and 'r3' in (a,b) and a in ('r1','r2','r3') and b in ('r1','r2','r3')
+    peers=contact_summary(all_contacts,[any(robot_pair(c) for c in r['contacts']) for r in all_contacts])
     static=json.loads((raw/'inputs/static_map.json').read_text())
     door=next(p for p in static['passages'] if p['id']=='door_1')
     x,y=door['center_m']; half_width=door.get('width_m',.5)/2
@@ -77,13 +101,13 @@ def score(raw):
         success=result['evaluation']['success'],evaluation=result['evaluation'],
         status=result['status'],failure=result.get('failure') or record.get('failure'),
         commands=command_time(record['commands'],times[-1]),carry_angles=angles,
-        wall_contacts=contacts,door=crossings,active_observations=active,
+        wall_contacts=contacts,robot_contacts=peers,motion=motion_metrics(truth),door=crossings,active_observations=active,
         active_actual_90deg_exceeded=any(a['max_abs_deg']>90 for a in active),
         wall_per_sim=result['wall_per_sim'],wall_s=result['wall_s'],sim_s=result['total_sim_s'],
         commands_issued=result['commands_issued'],model_calls=result['model_calls'],
         carry_visibility=result.get('posthoc_evaluation',{}).get('actual_visibility'),
         provenance={str(p.relative_to(raw)):hashlib.sha256(p.read_bytes()).hexdigest() for p in
-            (raw/'result.json',raw/'student_record.json',raw/'eval_only/trajectory.jsonl',raw/'eval_only/wall-contacts.jsonl')},
+            (raw/'result.json',raw/'student_record.json',raw/'eval_only/trajectory.jsonl',raw/'eval_only/wall-contacts.jsonl',raw/'eval_only/contacts.jsonl')},
         scope='post-run evaluation only; simulated plant, no hardware success claim')
 
 

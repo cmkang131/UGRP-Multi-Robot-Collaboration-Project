@@ -24,15 +24,7 @@ def queue_receipt(records):
     later=[r for r in records if r['released_unix']>s2['released_unix']]
     s3=next((r for r in later if r.get('purpose')=='S3 v142 single mixed no-prior smoke'),None)
     if s3 is None:raise ValueError('S3_NOT_RELEASED')
-    ego=[]
-    for seed in (54001,54002,54003,54004):
-        row=next((r for r in later if r.get('purpose')==f'egomap54 teach/repeat seed{seed}'
-                  and r['released_unix']>s3['released_unix']),None)
-        if row is None:raise ValueError(f'EGOMAP54_SEED_{seed}_NOT_RELEASED')
-        ego.append(row)
-    speed=next((r for r in later if r.get('purpose')=='simspeed bounded ABBA (research first)'),None)
-    if speed is None:raise ValueError('SIMSPEED_NOT_RELEASED')
-    return dict(s2=s2,s3=s3,egomap54=ego,simspeed=speed)
+    return dict(s2=s2,s3=s3,egomap54='cancelled_by_supervisor')
 
 
 def runtime_factory(b, clouds, index):

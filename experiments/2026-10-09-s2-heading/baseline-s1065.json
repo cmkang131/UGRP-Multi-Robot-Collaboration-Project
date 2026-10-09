@@ -77,7 +77,21 @@
     "result.json": "7a3df5064f98309c9020fd216a78167abc6e422a9557a6c86d66cfcc2f719fc1",
     "student_record.json": "b703299a2efd105506db07b0f601d23ae1279c1ada12096d9ac6064213ba0209",
     "eval_only/trajectory.jsonl": "5e742ad7367cc99cdae48db236ae7bc9a595b37d819ca703550569cccc553397",
-    "eval_only/wall-contacts.jsonl": "223d514e4ae7a5bb988117162ffba57a6195bdd23c8b18d5431efa2d7f44cc60"
+    "eval_only/wall-contacts.jsonl": "223d514e4ae7a5bb988117162ffba57a6195bdd23c8b18d5431efa2d7f44cc60",
+    "eval_only/contacts.jsonl": "7a2900215b40f64d6d0f86b4a571567a523fd8a2b836eb571cc6e56aea729f28"
   },
-  "scope": "post-run evaluation only; simulated plant, no hardware success claim"
+  "scope": "post-run evaluation only; simulated plant, no hardware success claim",
+  "motion": {
+    "min_speed_m_s": 0.01,
+    "moving_s": 226.5500000000011,
+    "path_m": 13.129562854597804,
+    "direction_within_20deg_fraction": 0.48179209887442476,
+    "lateral_speed_fraction": 0.15080208397184328,
+    "definition": "actual velocity vs midpoint chassis yaw, time fraction within +/-20deg; integral abs(body lateral velocity) / integral speed; speed>=0.01m/s; GT evaluation only"
+  },
+  "robot_contacts": {
+    "samples": 330,
+    "sampled_s": 16.500000000000107,
+    "episodes": 53
+  }
 }
