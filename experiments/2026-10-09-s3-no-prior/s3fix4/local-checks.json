@@ -1,18 +1,19 @@
 {
   "checks": [
     {
-      "command": "pytest tests/test_s3_stage_sweep.py tests/test_s3_pair_heading.py -q",
-      "passed": 17
-    },
-    {
-      "command": "pytest tests/test_s3_stage_sweep.py tests/test_s3_exact_cache.py -q",
-      "passed": 8
+      "command": "pytest tests/test_s3_stage_sweep.py tests/test_s3_pair_heading.py tests/test_s3_exact_cache.py -q",
+      "passed": 24
     },
     {
       "command": "pytest tests/test_simulation_workflow_manager.py -k \"catalog_has_registered or every_catalog_workflow\" -q",
       "passed": 2
+    },
+    {
+      "command": "pytest tests/test_s2_path_heading.py tests/test_path_heading_default.py -q",
+      "passed": 34,
+      "scope": "common PR422 before merge; unchanged source"
     }
   ],
-  "unique_test_cases": 26,
+  "unique_test_cases": 60,
   "ci_waited": false
 }

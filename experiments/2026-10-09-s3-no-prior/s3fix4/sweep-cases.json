@@ -73,6 +73,38 @@
       "state": "align"
     },
     {
+      "case": "pair_final_alignment_0.01",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1,
+      "lateral_error_m": 0.01,
+      "stalled": false
+    },
+    {
+      "case": "pair_final_alignment_0.01",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1,
+      "lateral_error_m": 0.01,
+      "stalled": false
+    },
+    {
+      "case": "pair_final_alignment_0.02",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1,
+      "lateral_error_m": 0.02,
+      "stalled": false
+    },
+    {
+      "case": "pair_final_alignment_0.02",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1,
+      "lateral_error_m": 0.02,
+      "stalled": false
+    },
+    {
       "case": "hover_blind_descent_to_close",
       "robot": "r1",
       "result": "pass",
@@ -94,11 +126,11 @@
       "grants": {
         "r1": [
           "close_go_0",
-          13.3
+          15.3
         ],
         "r2": [
           "close_go_0",
-          13.3
+          15.3
         ]
       }
     },
@@ -157,7 +189,7 @@
       "issued": 1,
       "go": {
         "phase": "GO",
-        "go_at_s": 34.5
+        "go_at_s": 36.5
       },
       "state": "carry",
       "authorized": true
@@ -169,7 +201,7 @@
       "issued": 1,
       "go": {
         "phase": "GO",
-        "go_at_s": 34.5
+        "go_at_s": 36.5
       },
       "state": "carry",
       "authorized": true
@@ -179,7 +211,7 @@
       "robot": "r1",
       "result": "expected_rejection",
       "error": "ValueError: coupled motion requires own grasp and live pair carry GO",
-      "traceback": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 146, in case\n    detail = operation() or {}\n             ^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 341, in <lambda>\n    p.case('reject_unmatched_lift_enum','r1',lambda:me.port.apply(\n                                                    ^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_pair_alignment.py\", line 49, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 146, in case\n    detail = operation() or {}\n             ^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 352, in <lambda>\n    p.case('reject_unmatched_lift_enum','r1',lambda:me.port.apply(\n                                                    ^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
       "issued": 0
     },
     {
@@ -262,6 +294,22 @@
       "result": "pass",
       "issued": 1,
       "state": "align"
+    },
+    {
+      "case": "solo_final_alignment_0.01",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 6,
+      "lateral_error_m": 0.01,
+      "stalled": false
+    },
+    {
+      "case": "solo_final_alignment_0.02",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 6,
+      "lateral_error_m": 0.02,
+      "stalled": false
     },
     {
       "case": "solo_blind_descent_close",
@@ -365,6 +413,6 @@
   ],
   "errors": [],
   "error_count": 0,
-  "commands": 3145,
+  "commands": 3161,
   "returns": "not implemented by existing S3 delivery host"
 }

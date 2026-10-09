@@ -240,6 +240,17 @@ def sweep(out, monkeypatch):
             assert len(rows)==1 and rows[0]['duration_s']>=.1
             return dict(state=ep.controller.state)
         p.case('final_rgb_alignment', rid, alignment)
+    for error in (.01,.02):
+        p.refresh(p.host.now+1.)
+        for rid,ep in p.eps.items():
+            def small_align(ep=ep,error=error):
+                ob=ep.controller._align.__func__.__globals__['ob']
+                cmd=ob.align_command(dict(grip_base_m=[GRASP_RADIUS_M,error],axis_heading_rad=0.))
+                ep.controller.drive(cmd,p.host.now)
+                rows=p.drain(ep,p.host.now)
+                assert len(rows)==1 and rows[0]['turn'] and rows[0]['duration_s']==.1
+                return dict(lateral_error_m=error,stalled=False)
+            p.case('pair_final_alignment_'+str(error),rid,small_align)
     # The complete fixed open descent and close queue, with a synthetic valid
     # hover observation at the perception boundary only. The blind controller,
     # own-issued history, two-party barrier and arm sequencer are production.
@@ -413,6 +424,25 @@ def sweep(out, monkeypatch):
         if arm:p.solo_arm(max(p.host.now,solo.arm.until)+.05)
         return dict(state=solo.state)
     p.case('solo_search_to_align','r3',lambda:solo_step('search','align'))
+    for error in (.01,.02):
+        def small_solo(error=error):
+            from harness.owncam_pair_beam_v2 import pose_of
+            p.refresh(p.host.now+1.)
+            solo.state='align';solo.state_t=p.host.now;solo.next_control=p.host.now
+            solo.arm.events.clear();solo.arm.until=p.host.now
+            solo.heading_align_until=None;solo.heading_align_settled=-float('inf')
+            solo.fine_until=None;solo.fine_observe_after=-float('inf')
+            solo.detections=lambda:[dict(estimated_box_center_base_m=[GRASP_RADIUS_M,error,.016])]
+            for k,v in pose_of('inspect').items():
+                p.issue('r3',dict(kind='look',pan_pulse=v) if k==6 else dict(kind='arm',servo_id=k,pulse=v),p.host.now)
+            rows=solo.step(p.host.now)
+            for rid,action in rows:p.issue(rid,action,p.host.now)
+            assert any(a.get('turn') and a['duration_s']==.1 for _,a in rows),rows
+            return dict(lateral_error_m=error,stalled=False)
+        p.case('solo_final_alignment_'+str(error),'r3',small_solo)
+    solo.detections=lambda:[dict(estimated_box_center_base_m=[GRASP_RADIUS_M,0.,.016])]
+    solo.heading_align_until=None;solo.heading_align_settled=-float('inf')
+    solo.fine_until=None;solo.fine_observe_after=-float('inf')
     def solo_blind_setup():
         solo.blind=BlindCyan();solo.target=[GRASP_RADIUS_M,0.];solo.target_t=p.host.now
         for k,v in {**grasp_postures()[0],1:2000}.items():

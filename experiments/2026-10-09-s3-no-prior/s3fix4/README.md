@@ -16,6 +16,10 @@
 
 ## 실행 전 오프라인 결과
 
-단계 검사 **49건 / 실제 native issue 3145건 / 예상 밖 오류0**. 동시 GO 첫 carry 오류1건을 기존 승인 조건에서 재현한 뒤 수정했다. 고정 시야·합성 단계 진입으로 생성한 명령이며 실제 파지/운반 성공이 아니다. GO 미소비는 실제 endpoint에서 `PARTNER_MISSED_GO`로 계속 정지한다. reset 재시도는 세 로봇 모두 검사했고 최종 record도 strict JSON 직렬화를 통과했다. [검사별 결과](sweep-cases.json), [원본/소스 해시](sweep-green.json).
+단계 검사 **55건 / 실제 native issue 3161건 / 예상 밖 오류0**. 동시 GO 첫 carry 오류1건을 기존 승인 조건에서 재현한 뒤 수정했다. 고정 시야·합성 단계 진입으로 생성한 명령이며 실제 파지/운반 성공이 아니다. GO 미소비는 실제 endpoint에서 `PARTNER_MISSED_GO`로 계속 정지한다. reset 재시도는 세 로봇 모두 검사했고 최종 record도 strict JSON 직렬화를 통과했다. [검사별 결과](sweep-cases.json), [원본/소스 해시](sweep-green.json).
 
-저장 v147 원본442프레임/로봇 재생에서 명령 SHA `95c7bb1babc22263fd45c83e16f352b6ba746a5f97a9cf8ecf93bcca838d4065`, 포즈/입자/가중치/RNG SHA `6138376fcdab9317a77c4ef47ac1625beaa71b4f4d04311f0b0160e06762bb8a`가 기존 off/v1 결과와 동일하다. 비교창 끝의 옛 혼합 축 오류도 그대로이며 새 오류가 아니다. [동일성](replay-equality.json). 로컬 변경 시험 고유26개 PASS, CI 대기0. 잠금 내 새 cProfile과 물리 결과는 아직 미완료다.
+저장 v147 원본442프레임/로봇 재생에서 명령 SHA `95c7bb1babc22263fd45c83e16f352b6ba746a5f97a9cf8ecf93bcca838d4065`, 포즈/입자/가중치/RNG SHA `6138376fcdab9317a77c4ef47ac1625beaa71b4f4d04311f0b0160e06762bb8a`가 기존 off/v1 결과와 동일하다. 비교창 끝의 옛 혼합 축 오류도 그대로이며 새 오류가 아니다. [동일성](replay-equality.json). 로컬 S3 변경 시험26개 및 공통 PR422 시험34개 PASS, CI 대기0. 잠금 내 새 cProfile과 물리 결과는 아직 미완료다.
+
+## 대기 중 추가 경계 검사 — 물리 전
+
+첫 후보3d04ff32는 물리0이며 잠금 대기 실행기를 자체 종료하고 추가 검사했다. 최종 RGB 옆오차1cm/2cm에서 경로용3cm 반경 때문에 pair 명령이0이었고, solo step은 최종10cm 안의 불법0.06초 제안을 반복 생략했다. 공통 PR422 `256a1b0c6633609f2fb91584e01f77f133afb642`에서 호출자의 기존 position 허용치를 받으며, 실제 solo step도 현재 RGB 목표가 있으면 적법한 펄스로 대체한다. S3 pair는 기존 ALIGN_TOL_X/Y(3mm)를 넘긴다. 경로3cm·집기3mm·σ/인증 문턱 모두 그대로이며 모델 보정/seed 교체0. 단독과 pair 각1cm/2cm를 실제 native 포트까지 통과시키는6건을 sweep에 추가했다. 최소 펄스보다 작은 오차의 양자화 한계·실제 파지는 별도 관찰 대상이다.

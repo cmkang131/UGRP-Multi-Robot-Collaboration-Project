@@ -8,12 +8,14 @@ from harness.zone_final_pair_binding import bind
 from harness.zone_solo_cyan_path_heading import select
 from harness.zone_solo_cyan_pulse_cal import action_of, profile_key
 from harness.zone_s3_pair_heading import moving, validate_pulse
+from harness.zone_final_pair_vision import ALIGN_TOL_X_M, ALIGN_TOL_Y_M
 
 
 def project(profiles, errors):
     ex,ey,ea=map(float,errors)
     distance=math.hypot(ex,ey)
-    p,score=select(profiles,False,np.array([ex,ey]),-ea,distance)
+    p,score=select(profiles,False,np.array([ex,ey]),-ea,distance,
+        position_tolerance_m=min(ALIGN_TOL_X_M,ALIGN_TOL_Y_M))
     action=(dict(kind='mecanum',forward=0.,left=0.,turn=0.,duration_s=.1)
         if p is None else action_of(p))
     validate_pulse(action,profiles,loaded=False,goal_distance=distance,alignment=True)

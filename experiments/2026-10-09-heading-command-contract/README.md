@@ -13,3 +13,9 @@
 표준 근거: [Nav2 RPP](https://github.com/ros-navigation/navigation2/blob/main/nav2_regulated_pure_pursuit_controller/README.md)의 경로 추종/진행 방향 정렬과 도착 시 orientation을 구분하는 구조를 유지한다. REAL의 `.10s` 및 단일 축 제약은 이 프로젝트 `sim/s2_real_output.py`의 계약이며 Nav2의 수치로 주장하지 않는다. 변경이 필요한 이유와 불허 펄스 생략은 사용자 결정에 따른 출력 경계 수정이다.
 
 로컬 검증 결과: 관련2파일의 고유 시험30개 통과(29개 통과 후 새 fixture의 읽기 전용 `terminal` 속성 대입 오류를 제거하고 해당1개 재검증). 프로그램 실패를 숨긴 skip/xfail0, 새 물리0, CI 대기0. 기존 북향 경로 모델 재생은 unloaded/loaded 모두 완료하고, heading off 초기 record SHA·명령·RNG 동일성을 유지했다.
+
+## s3fix4 단계 probe 후속
+
+S3 RGB 집기 정렬은 기존3mm 허용치를 쓰는데 공통 회전/전진 fallback은 경로용3cm 반경에서 방향 정렬로 돌아가, 옆방향1cm/2cm 입력에서 명령0으로 멈췄다. `select(..., position_tolerance_m=.03)`로 호출자의 기존 허용치를 받는다. 기본3cm 호출은 그대로이며 S3가 자체3mm 조건을 명시한다. 성공/위치 수렴 문턱이나 calibration을 바꾸지 않는다. 회귀 두 입력 모두 turn .35/0.10초로 진행하며 물리0. 최소 보정 펄스보다 작은 오차의 양자화 한계와 실제 파지 성공은 별도 인수 대상이다.
+
+단독 cyan의 실제 `step()`도 최종0.10m 안에서는 불법0.06초 제안을 단순 생략하던 경로가 있어 같은 공통 selector로 대체한다. 기존 RGB 검출·view 전환·도착 판정·full pulse/coast/지연 관측 대기를 유지한다. 큰 오차와1cm·2cm의 실제 step 회귀를 함께 검사한다. 유효한 기존 명령과 heading off 경로는 그대로다.
