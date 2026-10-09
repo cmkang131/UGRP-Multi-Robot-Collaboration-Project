@@ -309,6 +309,7 @@ TEST_PATTERNS = (
     "tests/test_dispatch_translation_skew_fallback.py",
     "tests/test_dispatch_pair_prefetch.py",
     "tests/test_communication_observer.py",
+    "tests/test_speech_bubble_overlay.py",
     "tests/test_dispatch_solo_cadence.py",
     "tests/test_fine_gain_schedule.py",
     "tests/test_dispatch_coarse_handoff.py",
