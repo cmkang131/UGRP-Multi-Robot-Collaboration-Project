@@ -23,6 +23,8 @@ RESET_CAP_S = 5.
 
 def write(path, value):
     path = Path(path)
+    from sim.v7_exact_speedups import result_record
+    value = result_record(path, value)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + '\n')
 

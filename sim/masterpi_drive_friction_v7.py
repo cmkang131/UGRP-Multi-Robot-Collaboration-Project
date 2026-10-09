@@ -219,7 +219,8 @@ class HysteresisWorld(FrictionWorld):
             woken=[]
             if freeze and not hasattr(self,'_freeze_state'):self._freeze_state={}
             for rid,c in self.controllers.items():
-                previous=self.drive_input_state.get(rid,np.zeros(4,dtype=int))
+                previous=self.drive_input_state.get(rid)
+                if previous is None:previous=np.zeros(4,dtype=int)
                 effective,state=self.drive_parameters.command_step(c.motor_command,previous)
                 self.drive_input_state[rid]=state
                 c.motor_state[:]=c.motor_command
@@ -232,7 +233,7 @@ class HysteresisWorld(FrictionWorld):
             for c in self.controllers.values():c._presentation_dirty=True
 
 
-def build_world(scene, *, drive_profile, params=None, roller_collision='mesh', idle_robot_contacts='off', **kwargs):
+def build_world(scene, *, drive_profile, params=None, roller_collision='mesh', idle_robot_contacts='off', exact_speedups=None, **kwargs):
     if drive_profile != PROFILE:
         raise ValueError('explicit '+PROFILE+' required')
     if roller_collision not in ROLLER_COLLISION_MODES:
@@ -247,6 +248,8 @@ def build_world(scene, *, drive_profile, params=None, roller_collision='mesh', i
         raise ValueError('requires standard v3 Scene adapter')
     world = HysteresisWorld.__new__(HysteresisWorld)
     world.drive_parameters = params or DriveParameters()
+    from sim.v7_exact_speedups import configure
+    configure(world, exact_speedups)
 
     def transform(xml):
         xml = apply(scene.transform(xml), 'cargo_noslip_v1')
