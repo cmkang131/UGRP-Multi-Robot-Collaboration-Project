@@ -97,7 +97,7 @@ v5 역시 S3 우선 gate 대기에서만 종료했으며 실행/측정은 없었
 S3 원본의 Unicode 기록 형식도 유지한다. native 소스는 같은 기록 SHA에서 새 export에
 추가하고 양쪽 측정 전에 동일한 build를 준비한다. 과거 export와 실패 로그는 보존한다.
 
-## 第一 round: 전체 S3 저장 입력 (v8)
+## 첫 측정: 전체 S3 저장 입력 (v8)
 
 439/439 프레임 양쪽 완료. 프로파일 창 포함 제어 재생 wall/input-SIM은
 2.854897→2.522566(62.522251→55.244186 wall초/21.9 SIM초)이다.
@@ -120,3 +120,7 @@ record.json13,023,004 bytes는 실제 inference_wall_ms가 달라 전체 bytes g
 자기 지도의 추가 vendor도 같은 SHA의 third_party 전체로 새 export에 포함했다.
 두 adapter의 실제 actor/controller 초기화와 필요한 native build가 완료됐고
 이 확인의 관측 프레임/물리 실행은0이다. 이전 export와 모든 실패는 보존했다.
+
+v9는 추가 타이머의 Observer API 이름 오류로 worker 초기화에서 실패했다(프레임0/물리0).
+실제 OpenCVObserver 메서드 경계로 수정하고 import 표면까지 포함한 관련7개 검사0.76초
+통과했다. 각 실패의 managed manifest·로그·부분 출력은 primary outputs에 유지한다.

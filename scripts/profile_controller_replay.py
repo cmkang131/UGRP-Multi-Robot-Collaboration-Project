@@ -151,7 +151,7 @@ def attach_timers(timer, kind):
         timer.method(a.Policy, 'measure', 'pf_update')
         timer.aliases(sensor.likelihood, 'pf_update')
         timer.aliases(landmarks.landmark_likelihood, 'pf_update')
-        timer.aliases(vision.observe, 'vision')
+        timer.method(vision.OpenCVObserver, 'observe', 'vision')
         timer.aliases(vision.observations, 'vision')
     else:
         from harness import self_map_rbpf as r, self_pose_graph as g, wall_confidence as w

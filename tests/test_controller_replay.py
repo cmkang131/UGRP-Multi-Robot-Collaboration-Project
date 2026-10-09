@@ -62,6 +62,17 @@ def test_timing_split_preserves_state_and_original_measurements():
     assert original['provider']['inference_wall_ms']=={'p50':19.}
 
 
+def test_s3_timer_surface_exists_without_starting_a_simulation(monkeypatch):
+    from scripts.profile_controller_replay import attach_timers
+    timer=Timers()
+    seen=[]
+    monkeypatch.setattr(timer,'aliases',lambda function,category:seen.append((function,category)))
+    monkeypatch.setattr(timer,'method',lambda cls,name,category:seen.append((getattr(cls,name),category)))
+    attach_timers(timer,'s3')
+    assert all(callable(function) for function,category in seen)
+    assert {'vision','pf_update','posterior_summary'} <= {category for function,category in seen}
+
+
 def test_egomap_records_observation_before_remembering_issued_command(tmp_path, monkeypatch):
     import importlib
     import json
