@@ -262,6 +262,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-final-pair-loaded-gaincal-v102": ["--check", "calibration-loaded", "--run-id", "latA", "--seed", "1201", "--expected-source-sha", "0" * 40],
             "zone-solo-cyan-v106": ["--expected-source-sha", "0" * 40],
             "masterpi-drive-friction-probe": ["--expected-source-sha", "0" * 40, "--drive-profile", "masterpi_drive_friction_v7"],
+            "masterpi-v7-roller-approx-probe": ["--expected-source-sha", "0" * 40, "--phase", "profile"],
         }
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
