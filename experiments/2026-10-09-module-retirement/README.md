@@ -39,3 +39,7 @@
 - [Git merge-tree 공식 문서](https://git-scm.com/docs/git-merge-tree): worktree/index를 바꾸지 않는 실제 merge 계산과 충돌 출력.
 
 새 알고리즘이나 최신 논문이 필요한 문제라는 근거가 없어 표준 도구를 사용했다. 미확인 논문 인용은 없다.
+
+## 제출
+
+[Draft PR #417](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/417), 제목 `cleanup: 쓰지 않는 모듈 퇴역`. 최초 게시 HEAD `ffd62d89258c041764bd6014714a9cbb72bb703d`의 로컬·원격·PR SHA 일치와 OPEN/DRAFT 상태를 확인했다. 이 게시 기록의 후속 커밋은 문서만 바꾸며 검증한 코드/시험은 그대로다. 병합·자동 병합 예약·CI 대기는 하지 않았다.
