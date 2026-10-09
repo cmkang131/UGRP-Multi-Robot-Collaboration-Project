@@ -20,6 +20,7 @@ SOFT = hp.hp_contract.DEV_LIGHT_SOFT_STOPS | frozenset({
     'PREGRASP_RELOOK_TIMEOUT', 'PREGRASP_NO_SAFE_VIEW',
     'PREGRASP_RELATIVE_OR_GLOBAL_UNCERTAIN', 'DOOR_POSE_NOT_LOCALIZED',
     'APPROACH_POSE_UNCERTAIN', 'APPROACH_LOST', 'APPROACH_ARRIVAL_UNCONFIRMED',
+    'APPROACH_ARRIVAL_NOT_CONFIRMED_BY_VIEW', 'APPROACH_NO_PATH', 'APPROACH_BLOCKED',
     'POSE_NOT_INITIALIZED', 'BEAM_RELATIVE_UNCERTAIN',
 })
 
@@ -113,7 +114,25 @@ def attach_actor(own, audit):
 
 
 def attach_driver(driver, own, audit):
+    exhausted = driver.monitor.exhausted
+    def progress_exhausted():
+        if exhausted() and finite_pose(own.last_report):
+            audit.note(own, own.now, 'POSE_UNCERTAIN_PROGRESS', 'approach.progress',
+                       failed_looks=driver.monitor.look_failures)
+            return False
+        return exhausted()
+    driver.monitor.exhausted = progress_exhausted
     class Continuing(type(driver)):
+        def _plan(self, est, now):
+            if super()._plan(est, now):
+                return True
+            if not finite_pose(own.last_report):
+                return False
+            audit.note(own, now, 'PAIR_COLLISION_GUARD', 'approach.plan')
+            self.path = [list(self.goal)]
+            self.plan_at, self.plan_fails = now, 0
+            return True
+
         def _drive_guard(self, now):
             if not finite_pose(own.last_report):
                 return super()._drive_guard(now)
@@ -136,15 +155,15 @@ def attach_driver(driver, own, audit):
 
         def _finish(self, now, outcome):
             if outcome in ('lost', 'pose_uncertain', 'sweep_transition_blocked',
-                           'progress_unconfirmed') and finite_pose(own.last_report):
+                           'progress_unconfirmed', 'blocked', 'no_path') and finite_pose(own.last_report):
                 audit.note(own, now, 'APPROACH_'+outcome.upper(), 'approach.finish')
                 self.outcome = None
                 self.looks_without_fix = 0
                 self.arm_target = dict(self.drive_pose)
                 self._set('posture_back', now)
                 return [{'kind': 'hold'}]
-            if outcome == 'arrival_unconfirmed' and finite_pose(own.last_report):
-                audit.note(own, now, 'APPROACH_ARRIVAL_UNCONFIRMED', 'approach.finish')
+            if outcome in ('arrival_unconfirmed', 'arrival_not_confirmed_by_view') and finite_pose(own.last_report):
+                audit.note(own, now, 'APPROACH_'+outcome.upper(), 'approach.finish')
                 # Estimated arrival is a stage transition, never eval success.
                 return super()._finish(now, 'arrived')
             return super()._finish(now, outcome)

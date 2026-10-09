@@ -71,11 +71,19 @@ def test_real_pair_admission_sweep_and_driver_progress_with_large_sigma(std):
     driver = GuardedDriver(loc, ex.map, ex.params, loaded=False, goal_xy=(-.5, -.85),
         door_xy=ex.door_xy, initial_servo=dict(d.servo), seed=5, gate=ex.gate, guard=ex.guard)
     dev.attach_driver(driver, ex, audit)
+    driver.monitor.look_failures = 100
     driver.state='drive'; driver.state_since=d.t
     rows = driver.tick(d.t)
     assert any(c['kind']=='mecanum' and any(c.get(k,0) for k in ('forward','left','turn')) for c in rows)
     assert ex.last_report.std_xy_m == pytest.approx(std)
     assert any(r['code']=='SELF_UNCERTAIN' for r in audit.rows)
+    assert any(r['code']=='POSE_UNCERTAIN_PROGRESS' for r in audit.rows)
+    assert driver.monitor.look_failures == 100
+    driver._finish(d.t, 'arrival_not_confirmed_by_view')
+    assert driver.outcome == 'arrived'
+    assert any(r['code']=='APPROACH_ARRIVAL_NOT_CONFIRMED_BY_VIEW' for r in audit.rows)
+    driver._finish(d.t, 'execution_error')
+    assert driver.outcome == 'execution_error'
 
 
 def test_augmented_recovery_is_not_disabled_by_high_ess(monkeypatch):

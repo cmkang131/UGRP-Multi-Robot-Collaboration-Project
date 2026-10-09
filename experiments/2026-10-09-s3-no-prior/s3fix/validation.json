@@ -19,5 +19,17 @@
     "scripted provider remains diagnostic outside admission assertion",
     "three robot initial command fixture includes r3"
   ],
-  "physics_runs_before_commit": 0
+  "physics_runs_before_commit": 0,
+  "final_pre_smoke": {
+    "passed": 10,
+    "failed": 0,
+    "wall_s": 26.41,
+    "file": "tests/test_s3_continue.py",
+    "includes": [
+      "large sigma motion",
+      "exhausted progress counter retained and continued",
+      "arrival veto logged and continued",
+      "execution error and pair GO stay hard"
+    ]
+  }
 }

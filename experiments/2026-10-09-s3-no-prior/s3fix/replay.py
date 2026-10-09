@@ -72,7 +72,9 @@ def replay(raw, out, rid, seed, candidate):
         commands=lines(raw/f'robots/{rid}/commands.jsonl');by=collections.defaultdict(list)
         for row in commands[1:]:by[round(row['t'],9)].append(row)
         first=commands[0]
-        own.initial_commands(first['t'],{rid:{int(k):v for k,v in first['pulses'].items()}})
+        # Raw MuJoCo reset time can be 1.3000000000000007 while capture logs
+        # use 1.3. Match the existing replay clock normalization, not a delay.
+        own.initial_commands(round(first['t'],9),{rid:{int(k):v for k,v in first['pulses'].items()}})
         pf=own.pose.provider.loc._pf;last_updates=0
         for frame in lines(raw/f'robots/{rid}/frames.jsonl'):
             now=frame['sim_time']
