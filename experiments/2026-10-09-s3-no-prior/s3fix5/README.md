@@ -58,3 +58,31 @@
 [추가 사후 검산](secondary-checks.json): v149 전진254회와 보정 training83회의 발행 arm pose는 같다. 추가0.20–0.35초 tail의 전진 합은 −0.00901m여서 빠진 양의 전진 거리를 설명하지 못한다. 같은 발행 pose를 같은 실제 관절/하중 증거로 해석하지 않는다.
 
 오프라인 TensorBoard snapshot `1009-s3-odometry-replay`의 off/on 각13 scalar를 원본과 대조하고 Chrome 강 프로필에서 두 실행·핀·HParams 열을 확인했다. 물리 결과는 아직 포함하지 않는다.
+
+## v150 단일 DEV smoke 결과 (10/10 KST)
+
+실행 SHA **`4c9eb3aa4730c6f6b72b4bb5a36b7ee2d418673a`**, seed14201, 한 번만 실행했다. egomap55004의 정상 반환 뒤 자기 PID56533/nice0 잠금을 취득·해제했다. 추가 물리0, CI 대기0, 원본/기준 변경0. 보정 후보는 사전 기준에 따라off였으며 기본off 모델의 성능 개선을 주장하지 않는다.
+
+|로봇|첫 위치 전환: 오차 / σ(m), 경과시간|후속 정확 인증|최종 단계|집기 / B 배달|
+|---|---|---|---|---|
+|r1|0.02630 / 1.84041, 12.2s|36.95 SIM초, 오차0.02551m|접근 후 wait_approach|없음 / 실패|
+|r2|0.03954 / 0.20861, 12.2s|없음; 첫 인증은112.3초·오차0.32010m의 허위 인증|approach 재관측/팔 복귀|없음 / 실패|
+|r3|0.00389 / 0.05831, 12.2s|없음|문 예약 대기|없음 / 실패|
+
+첫 전환의 점 추정 정확성3/3과 σ·posterior 인증까지 정확한 수렴1/3을 구별한다. 점 추정이 맞았다는 이유로 σ/인증을 변경하지 않았다. 마지막 유한 추정은 r1/r2/r3 오차0.17246/0.40904/0.00745m, σ0.02470/0.08188/0.05831m다. r2 마지막 프레임은 비유한 값이므로 유한 오차로 채우지 않았다.
+
+- pre-GO: r1의 `BARRIER_APPROACH_TIMEOUT`을275.9 SIM초에1회 would_stop으로 기록하고 **실제 상호 GO를 기다리는 상태**로 갱신했다. GO를 합성하지 않았다. v149 종료 구간을 넘겼지만 집기·공동 운반·놓기·귀환은 미도달이다. cyan/beam 모두 held0/6285표본, 최대COM높이0.01589/0.01650m로 실제 들기0이다.
+- 실제 종료: **HOST_ERROR 1실행, 결함2종**. r2의315.5초 pose 마지막행에 x/y/yaw/σxy/σyaw NaN5개가 생겼고, `zone_own_driver._arm_step`→`zone_own_sweep.check`가 None pose의`.x`를 읽어 중단했다. 이어 strict JSON 기록기가 NaN을 거부해 원본 student_record가 저장되지 않았다. NaN을 처음 만든 계산 원인은 아직 미분리이며 회전 보정off에서 발생했다. 이번 motion-only 범위에서 guard/속도 공통 경로를 추가 수정하지 않았다.
+- would_stop **6496회**: ARM_COLLISION_GUARD23, POSE_CLUSTER_UNCERTAIN60, GLOBAL_START_UNRESOLVED3, POSE_UNCERTAIN2562, SWEEP_TRANSITION_BLOCKED431, SELF_UNCERTAIN4, PAIR_COLLISION_GUARD80, PAIR_REOBSERVE_TIMEOUT3325, APPROACH_ARRIVAL_UNCONFIRMED1, APPROACH_TIMEOUT1, APPROACH_LOST2, BARRIER_APPROACH_TIMEOUT1, APPROACH_SWEEP_TRANSITION_BLOCKED3. 이는 각 가드 hook 호출 수이며 물리 실패/독립 실행/I/O 수가 아니다.
+- 문 REQUEST 각1회, 대기 r1/r2/r3=0.05/0.05/302.0 robot-s, 사전120초 창 교착0, robot-robot 충돌 episode0. 실제 문 통과·공동 운반 성공을 뜻하지 않는다.
+- wall **1039.258861s / 제어 SIM314.2s = 3.307635**, 목표≤3 미달. reset1.3초는 분모 제외. 명령1909/3874/6626=12409, 모델/HTTP0, 응답시간0. 렌더207.56s, 물리advance336.73s, capture237.15s(렌더 포함), JSONL append2.90s. 중첩 timer를 더하지 않고 이번 기록을 cProfile 분해로 부르지 않는다.
+
+### 기록 복구와 전달 검증
+
+저장 자기 RGB와 실제 발행 명령만 소스4c9eb3aa에 재생해 **12409명령 모두 JSON 동일**,6284성공프레임 뒤 원본 마지막315.5초에 같은 AttributeError를 재현했다. GT는 이 재생이 끝난 뒤 평가기에만 입력했다. 복구된 student record의 NaN은 원형 그대로 별도 파일에 보존하고, strict 파생 요약에서만 null과 필드 경로로 표현한다. 원본에 student_record를 추가하거나 manifest를 재봉인하지 않았다. [명령 일치](recovery-command-equality.json), [traceback](recovery-result.json), [결과 요약](smoke-summary.json).
+
+원본 `/Users/changmin/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150`의18887파일/450830386바이트 SHA를 전부 대조했다. 자기 카메라 기록 모두 S2 v3 마운트와 일치한다. [원본 검증](raw-verification.json), [4배속 영상](http://127.0.0.1:6007/video/7708c54a02eb3a0a2273), [영상 해시](video-verification.json). 영상1572프레임/20fps/78.6초,1920×480, 새 렌더0이며 브라우저 실제 로딩·Range206을 확인했다.
+
+TensorBoard `1010-s3-v150-report`의31 scalar를 원본과 대조하고 v149와 별도 실행으로 표시했다. 성공0·wall1039.2589·SIM314.2·명령12409를 화면에서 확인하고, 핀9개·HParams case/policy/seed/source_sha를 적용했다. 원본 영상 등록은 보존된 `1010-s3-v150-result` manifest를 사용한다. 잘못된 오프라인 변환 진입점의 실패2개와 응답시간 태그 추가 전 snapshot도 덮어쓰지 않고 보존했다. 기존 다른 작업의 서버는 재시작하지 않았다. [화면/값 검증](tensorboard-verification.json), [대시보드 설정과 링크](tensorboard-link.json).
+
+다음 물리 제안: **먼저 r2 재관측에서 NaN이 처음 생기는 계산과 None 포즈 계약을 저장 재생 회귀로 고친 뒤, 별도 승인된 한 회에서 집기 이후 진입을 재검증한다.** 전진 접촉 편향과 과신, 자기 지도 소비자의 공유 모델 연결은 미해결이며 이 결과를 S3 통과로 보고하지 않는다.

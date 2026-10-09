@@ -1,0 +1,22 @@
+{
+  "snapshot": "1009-s3-odometry-replay",
+  "default_runs": [
+    "1009-s3-odometry-replay/off",
+    "1009-s3-odometry-replay/on"
+  ],
+  "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffinal_error_m%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffinal_sigma_m%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fover_3sigma_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffalse_certificates%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fphysical_runs%22%7D%5D&smoothing=0&runFilter=%5E1009-s3-odometry-replay%2F#timeseries",
+  "pinned_tags": [
+    "offline/final_error_m",
+    "offline/final_sigma_m",
+    "offline/over_3sigma_fraction",
+    "offline/false_certificates",
+    "offline/physical_runs"
+  ],
+  "hparams_visible_columns": [
+    "case",
+    "policy",
+    "seed",
+    "source_sha"
+  ],
+  "scope": "offline same-input comparison; candidate rejected for worse >3sigma fraction; physical smoke pending"
+}
