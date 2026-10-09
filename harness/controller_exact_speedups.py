@@ -195,6 +195,17 @@ class ForecastCopy:
     @staticmethod
     def deepcopy(value, memo=None):
         memo = {} if memo is None else dict(memo)
+        maps = value.maps if hasattr(value, 'maps') else (value,) if hasattr(value, 'cells') else ()
+        for grid in maps:
+            cells = grid.cells
+            # deepcopy already shares Python immutable keys/values. Copying
+            # just this dict retains independent writes without walking every
+            # coordinate tuple. Unknown/mutable cell schemas use deepcopy.
+            if type(cells) is dict and all(type(k) is tuple and len(k) == 2
+                    and type(k[0]) in (int, np.int64) and type(k[1]) in (int, np.int64)
+                    and type(v) in (float, int, np.float64, np.int64) for k, v in cells.items()):
+                if id(cells) not in memo:
+                    memo[id(cells)] = dict(cells)
         if hasattr(value, 'maps') and hasattr(value, 'histories'):
             if hasattr(value, 'decisions'):
                 memo[id(value.decisions)] = value.decisions

@@ -137,6 +137,27 @@ def test_forecast_clone_keeps_append_and_particle_mutations_isolated():
     assert np.array_equal(grid.poses, np.ones((1, 3)))
 
 
+def test_forecast_cells_preserve_bits_aliases_and_mutable_schema_fallback():
+    import copy
+    from types import SimpleNamespace
+    from harness.controller_exact_speedups import ForecastCopy
+    bits=np.array([0x8000000000000000,0x7ff8000000000001],np.uint64).view(np.float64)
+    cells={(np.int64(1),np.int64(2)):bits[0],(3,4):bits[1]}
+    value=SimpleNamespace(maps=[SimpleNamespace(cells=cells),SimpleNamespace(cells=cells)],histories=[])
+    actual,reference=ForecastCopy.deepcopy(value),copy.deepcopy(value)
+    assert actual.maps[0].cells is actual.maps[1].cells
+    assert actual.maps[0].cells is not cells
+    for k,v in reference.maps[0].cells.items():
+        assert type(actual.maps[0].cells[k]) is type(v)
+        assert actual.maps[0].cells[k].tobytes()==v.tobytes()
+    actual.maps[0].cells[(5,6)]=7.
+    assert (5,6) not in cells
+    mutable=SimpleNamespace(cells={(0,0):[1.]})
+    clone=ForecastCopy.deepcopy(mutable)
+    clone.cells[(0,0)].append(2.)
+    assert mutable.cells[(0,0)]==[1.]
+
+
 def test_common_install_off_and_restore(monkeypatch):
     from harness.controller_exact_speedups import install
     from harness import zone_solo_cyan_augmented_start as start

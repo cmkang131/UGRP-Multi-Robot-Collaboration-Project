@@ -148,3 +148,10 @@ cProfile에서 기존 scalar clip 가속은 install()의 private globals만 바�
 네이티브 비용용 `saved-physics-profile`도 표준 관리 계층에 등록한다. 원본 backend/발행 명령/장면 자산을 쓰고
 최대30 SIM초의 물리·렌더·저장 I/O만 측정한다. 제어/모델0, 원본 RGB SHA·장면 XML 자산 해시를 비교하며
 실패도 기록한다. 이 구간 비용과 전체 저장 입력 제어기 비용을 합한 추정치를 실제 online 측정으로 부르지 않는다.
+
+- 추가: cProfile의 virtual forecast deepcopy 비용을 줄이기 위해, 셀 키가 불변 정수 좌표이고 값이 불변 숫자인
+  사전만 별도 dict로 복사한다. 셀 사전의 쓰기와 입자 배열은 독립이고 기존 alias는 유지한다.
+  mutable/미확인 schema는 원래 deepcopy를 쓴다. ±0/NaN payload/타입·alias·가변 값 fallback 회귀를 포함해
+  변경 시험20개가 통과했다. 이 추가 가속의 전체 입력 바이트 검증·시간은 후속 결과 전까지 미확인이다.
+- v11은 타 작업 잠금 대기에서 자체 큐만 종료했으며 입력 소비·물리0이다. 다음 큐의 acquire는 원자적이고
+  0.25초 간격의 유한 대기로 작업 사이의 1초 반환 구간을 소비한다. 타 작업에 신호를 보내지 않는다.
