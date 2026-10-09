@@ -6467,3 +6467,85 @@ CPU/SIM은 자기+회수 자식CPU, 시작·끝 loadavg와 memory_pressure를 �
 
 실행 전 바뀐 모듈/관리 시험27개 PASS. source factory·6seed/slot·default-off identity·RGB 회전 부호·불확실성 누적·
 영상 불가 취소·상한 선제 차단을 확인했다. 동시 쌍의 재현 바이트 검증은 실행 후 결과이며 아직 성공으로 쓰지 않는다.
+
+### s2v59 결과 — 미사용 6seed 3/6, 졸업 미통과
+
+실행 소스·사전등록 SHA `99d81d8c9cbc8dee1cc21462d25a1c81f65de9f5`, v141.
+push 확인 후 등록된 1065–1070을 모두 실행했다. 실패3건을 분모6에 유지했고 제외/교체/HOST오류0.
+기존 v133(prior 있음)·v140 결과와 합산하지 않는다. **S2 solo DEV 3/6(50%)로 졸업 미통과**이며
+stop-ON·본 연구·실물·3대 스모크의 성능을 주장하지 않는다. 모든 options·원본·해시는
+[전체 결과](graduation59-result.json), [접촉 평가](graduation59-contact-evaluation.json)에 있다.
+
+|seed / slot|lifted / inside / stable / success|SIM / wall s|wall/SIM / CPU/SIM|운반 RMSE m / fix 공백 s|B 중심 거리 m|NEES 초과 / 무경고>25cm|능동 횟수 / 추가시간% / 실제최대°|
+|---|---|---|---|---|---|---|---|
+|1065 / P1-1|0/0/1/0|900.00 / 1480.80|1.643 / 1.702|운반 없음|4.475|98.78% / 37|0 / 0.00% / 0.000|
+|1066 / P2-1|1/1/1/1|284.45 / 548.68|1.920 / 2.017|0.075 / 20.35|0.165|54.28% / 0|1 / 0.74% / 5.104|
+|1067 / P1-2|1/1/1/1|306.20 / 777.45|2.528 / 2.595|0.172 / 19.95|0.194|87.05% / 22|2 / 3.17% / 40.581|
+|1068 / P2-2|1/0/1/0|294.70 / 764.00|2.581 / 2.645|1.479 / 29.30|3.518|100.00% / 0|2 / 1.49% / 10.107|
+|1069 / P1-3|1/1/1/1|314.05 / 467.36|1.482 / 1.583|0.118 / 18.00|0.155|77.64% / 0|1 / 1.05% / 34.821|
+|1070 / P2-3|1/0/1/0|300.70 / 519.48|1.720 / 1.789|1.724 / 26.55|3.505|83.63% / 183|1 / 0.70% / 6.582|
+
+**실패 원인(이번엔 수정0):**
+- s1065/P1-1: 초기 수렴 오차6.80cm 뒤 22.65초부터 r2 접촉(330개 50ms 표본/53개 연속 구간).
+  22.39초 오차1.45cm→25.04초24.22cm, yaw 잔차−1.88°→77.10°. 30초 XY오차1.068m.
+  35.6초 이후 유효 시각 갱신이 끊겨 cyan 탐색 반복, 900SIM 상한에서 미집기. 첫 전역 수렴 실패가 아니다.
+- s1068/P2-2: 173.85초 상자-분리벽 접촉부터 표류, 208.25초부터 바퀴-벽 접촉519표본.
+  140초 XY오차0.131m→종료3.212m, B중심3.518m 밖에서 안정 배치.
+- s1070/P2-3: 176.10초부터 바퀴-분리벽 접촉334표본, 이후271.25초 상자-벽 접촉.
+  140초 XY오차0.117m→종료3.310m, B중심3.505m 밖에서 안정 배치.
+
+접촉 수는 50ms 채점 표본/연속 구간을 분리했다. 접촉 GT를 제어에 주지 않았다.
+성공 s1066도 로봇 접촉8표본/1구간이 있었으며 나머지 성공1067/1069는 로봇·벽 접촉0.
+실패1065의 원본30초 영상은 다른 로봇과 벽, 실패1068/1070의250초 영상은 가까운 분리벽/벽을 보인다.
+접촉 전후 추정과 실제 궤적 수치는 평가 전용이며, 접촉 제거의 인과 효과를 재실행 없이 확정하지 않는다.
+
+**판정 대조:** 전체 trajectory의 8꼭짓점·마지막2초 독립 심판은 6/6 유효,
+`evaluation.success` 거짓 양성0/거짓 음성0. 단, 제어 경로 `done`/place 완료지만 B밖인 것은2건(1068/1070);
+이것을 성공으로 세지 않는다. 물리 성공 필드는 런타임에 전달하지 않는다.
+NEES95% 경계 초과54.28–100%, 무경고>25cm 총242건을 그대로 기록; 공분산/문턱 변경0.
+
+**실제 회전 상한:** 새6건 능동7회, 최대40.581°, 90° 위반0. 추가21.60SIM초/전체2400.10초=0.900%,
+seed별 최대3.168%≤10%; 최대2회≤5. 7회 중6회는 RGB homography consensus 불가로 일찍 취소됐고
+1회만 계획된 관측/복귀를 마쳤다. 따라서 회전 제한 통과를 충분한 능동 관측 효과로 해석하지 않는다.
+기존4구간 오프라인 prefix 위반0도 별도 증거이며, 원본91.156° 실패는 보존한다.
+
+**동시2개 비교:** SIM합600.90 / 그룹wall800.498=0.750658 SIM/wall,
+단독4개 SIM합1799.20 / 그룹wall합3106.845=0.579108. 비율 **1.296230 < 1.3 → 효과 없음**.
+반올림하여 통과시키지 않는다. 추가 s1067 단독의 evaluation·명령·평가 궤적 파일 바이트는 동시s1067과 모두 동일.
+이 반복은 졸업 분모/성공 수에 포함하지 않는다. 동시1067 wall777.45초/단독446.84초.
+한 쌍과 서로 다른seed·slot의 단독4건, 부하 변화가 있는 작은 표본이므로 일반적인 속도 결론은 아니다.
+자기+회수 자식CPU/SIM과 loadavg·memory_pressure 시작/끝 원문은 각 resources와 결과JSON에 보존.
+CPU 측정은 번들 admission 뒤 실행/후처리 구간, 그룹wall은 자식 시작 전체 구간이다.
+모든 프로세스 nice0, 우선순위 변경0, 코호트 종료 후 own lock 해제/status_after=null과 세션 종료 확인.
+
+|seed|would-stop (dev_light 기록만)|
+|---|---|
+|1065|ARM_COLLISION_GUARD:4, POSE_CLUSTER_UNCERTAIN:30, POSE_UNCERTAIN:1003, CYAN_NOT_UNIQUELY_VISIBLE:36|
+|1066|ARM_COLLISION_GUARD:5, POSE_CLUSTER_UNCERTAIN:30, GLOBAL_START_UNRESOLVED:1, POSE_UNCERTAIN:131, PATH_COLLISION_GUARD:1|
+|1067|ARM_COLLISION_GUARD:5, POSE_CLUSTER_UNCERTAIN:30, POSE_UNCERTAIN:214|
+|1068|ARM_COLLISION_GUARD:6, GLOBAL_START_UNRESOLVED:1, POSE_UNCERTAIN:261, VISUAL_STALL_SUSPECTED:3|
+|1069|ARM_COLLISION_GUARD:6, POSE_CLUSTER_UNCERTAIN:30, GLOBAL_START_UNRESOLVED:1, REAL_PREGRASP_UNCONFIRMED:1, GRASP_INHAND_UNCONFIRMED:1, POSE_UNCERTAIN:124|
+|1070|ARM_COLLISION_GUARD:6, POSE_CLUSTER_UNCERTAIN:30, GLOBAL_START_UNRESOLVED:1, POSE_UNCERTAIN:269, GRASP_INHAND_UNCONFIRMED:1|
+
+원본(실행 중·과거 자료 불변):
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1066-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1067-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1068-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1069-v141-graduation`
+- `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1070-v141-graduation`
+
+4배속 대표 영상(원본 RGB, 전체 디코드·해시 검증):
+- 성공1066: `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1066-v141-graduation/motion.mp4` (70.40s).
+- 실패1065: `/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation/motion.mp4` (225.05s).
+
+감독16:30의 `heading_mode=path_tangent_v1` 제안은 **다음 S2 작업**으로 분리한다.
+현재 east-facing mecanum pursuit의 옆걸음·진행 방향 시야 문제는 위 벽 접촉 실패와 함께 기록했고,
+이 고정 코호트 중 제어 경로를 바꾸거나 새로운 후보의 실행 결과로 대체하지 않았다.
+
+새 TensorBoard `1009-s2-grad-v59`:6뷰/118수치 source→event→native API 일치, 과거baseline 재변환0.
+기존 강 프로필 S2 탭에서6개 성공값·명령 표·pin7개·seed열 표시 확인(기존 추가 열 유지).
+미디어 별도 snapshot `1009-s2-grad-v59-media`, 두 영상 Range HTTP206·전체 디코드·실제 브라우저 재생 확인.
+[전달 검증·영상 해시](graduation59-delivery.json), [대시보드](http://127.0.0.1:6006/?runFilter=%5E%28%3F%3A1009-s2-grad-v59%2Fs.%2A-grad%7C1009-s2-active-v58-r2%2Fs.%2A-active%29&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fgraduation_sample_success%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcommands%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_actual_active_rotation_deg%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Factive_added_fraction%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnees_rate%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries).
+실행 전 관련27시험 PASS, 결과 기록 전 회전 옵션 모듈9시험 PASS(47.97s), git diff --check 통과.
+새 원본은 primary outputs 로컬 보존이며 raw의 원격 백업을 완료했다고 주장하지 않는다. PR #406 DRAFT·병합0.

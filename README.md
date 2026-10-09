@@ -14,6 +14,7 @@
 - **[Ubuntu 설치·무료 데모](docs/ubuntu_quickstart.md)** — 새 팀원은 여기서 시작
 - [개발·테스트·실험·PR 절차](CONTRIBUTING.md) · [로봇 입력과 작업 규칙](AGENTS.md)
 - [TensorBoard로 학습·실험 기록 보기](docs/tensorboard.md)
+- [S3 동료 로봇의 벽 오인 오프라인 진단·선택 마스크](experiments/2026-10-06-owncam-robot-mask/README.md) — 저장 RGB 16장, 기본 OFF, DRAFT 후보
 - [Pair executor dev v2 드라이버·사전 기록·잠금/실행 절차](experiments/2026-09-27-zone-pair-dev/README.md) — tags_temporary, dev, 연구 결과 아님; 물리 실행은 코디네이터가 별도 수행
 - [2026-09-24 ACT 학습·행동 개선 후보](experiments/2026-09-24-action-act/refinement.md) — 첫 6회 실패 포함 비교와 후속 학습·실시간 추론·영상 접근 보정; 기본 채택 전 후보
 - [학습 모델 다운로드·검증·배포](docs/model_artifacts.md) — GitHub Release 가중치와 저장소의 버전·해시 목록
@@ -56,3 +57,21 @@
 ## 저장과 변경
 
 변경은 작업 브랜치와 PR로 남기고 사용자 승인 뒤 main에 반영한다. 실행 코드는 실험 전에 커밋하며 실패도 보존한다. Git에는 소스·설정·fixture·요약·모델 목록과 해시를, 배포한 학습 가중치와 추론 자산은 GitHub Releases에 보관한다. 현재 제공하는 모델과 미발견 모델은 [모델 목록](configs/model_artifacts.json)을 확인한다. raw 영상·대량 로그·학습 데이터는 별도 보관이며 모델 배포가 이 자료 전체의 백업을 뜻하지 않는다. 인증정보·가상환경은 커밋하지 않으며 UGRP는 Google Drive를 사용하지 않는다.
+
+## v7 공통 실행 가속
+
+새 소스에서 `masterpi_drive_friction_v7.build_world`를 만드는 모든 경로는 exact relay
+cache를 기본 사용한다. `UGRP_V7_EXACT_SPEEDUPS=off` 또는 Python
+`build_world(..., exact_speedups='off')`로 끈다. 물리·제어·임계값·로그 버퍼링은 바꾸지 않는다.
+실제 적용 모드와 모듈 SHA는 각 실행의 `v7-speedups.json`, `runtime-bundle.json`에 남고,
+공통 결과 writer는 `result.json.runtime_speedups`에도 기록한다. 자체 writer를 쓰는
+자기 지도 실행도 공통 backend reset이 runtime bundle을 기록한다. 봉인 입력 bundle은 유지한다.
+
+`codex/s2-realism`, `codex/s2-heading`, `claude/ego-wall-map`,
+`codex/s3-three-robot-host`의 후속(`codex/s3-no-prior-smoke`), `codex/ownmap-s2`는
+**다음 코호트 시작 시 main을 merge**하면 공통 v7 가속을 받는다. 진행 중 코호트의
+고정 checkout을 갱신하지 않는다. 기존 봉인 코호트에 새 SHA를 소급 적용하지 말고,
+다음 코호트의 기존 소스 고정 절차로 새 source SHA/해시를 기록한다.
+v107/v108 중 기존 v3 물리를 쓰는 경로를 v7로 바꾸는 변경은 포함하지 않는다.
+
+[경로별 바이트 동등성·속도·끄기 방법](experiments/2026-10-09-sim-speed-core/README.md).

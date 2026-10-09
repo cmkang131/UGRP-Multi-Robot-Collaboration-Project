@@ -56,6 +56,8 @@ class PhysicsBackend:
 
     def reset(self, cap):
         import mujoco
+        from sim.v7_exact_speedups import write_receipt
+        write_receipt(self)
         # Include the world constructor's standard 0.30 s settle in reset.
         self.set_deadline(cap)
         self.scene.setup(self.world)  # standard reset, no altered camera/GT re-stage

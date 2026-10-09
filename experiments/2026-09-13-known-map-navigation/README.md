@@ -74,3 +74,5 @@ python -m scripts.report_known_map_cohort /path/to/outputs/known-map-heldout-NEW
 ```
 
 GitHub [이슈 #35](https://github.com/kcm0127-dotcom/ugrp/issues/35). 작업 브랜치는 `codex/known-map-navigation`이며 #34 위에 쌓는다. main 병합은 사용자 승인 대상이며 이번 구현/검증에서 수행하지 않는다. 실행한 로컬 세션과 자식 프로세스는 모두 종료했다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

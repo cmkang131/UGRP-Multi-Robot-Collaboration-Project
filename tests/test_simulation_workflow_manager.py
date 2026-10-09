@@ -261,6 +261,8 @@ raise SystemExit(3 if a.fail else 0)
             "zone-final-environment-gaincal-v101": ["--check", "calibration-gain-v101", "--run-id", "fitA1", "--seed", "1101", "--expected-source-sha", "0" * 40],
             "zone-final-pair-loaded-gaincal-v102": ["--check", "calibration-loaded", "--run-id", "latA", "--seed", "1201", "--expected-source-sha", "0" * 40],
             "zone-solo-cyan-v106": ["--expected-source-sha", "0" * 40],
+            "zone-s3-host-v107": ["--expected-source-sha", "0" * 40],
+            "zone-s3-door-yield-v108": ["--expected-source-sha", "0" * 40],
             "masterpi-drive-friction-probe": ["--expected-source-sha", "0" * 40, "--drive-profile", "masterpi_drive_friction_v7"],
             "masterpi-v7-roller-approx-probe": ["--expected-source-sha", "0" * 40, "--phase", "profile"],
         }
@@ -302,6 +304,7 @@ raise SystemExit(3 if a.fail else 0)
         samples['zone-s2-unknown-start-v139'] = ['--expected-source-sha', '0'*40, '--seed', '1059']
         samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
         samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
+        samples['v7-exact-speed-benchmark'] = ['--suite', 's2', '--expected-source-sha', '0'*40]
         samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
                                            '--heading-mode', 'path_tangent_v1']
         samples['zone-s2-side-scan-v134'] = ['--expected-source-sha', '0'*40]
