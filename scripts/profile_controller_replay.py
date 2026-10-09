@@ -30,7 +30,7 @@ CATEGORIES = ('physics', 'render', 'pf_update', 'posterior_summary', 'scan_match
               'map_insert', 'path_plan', 'graph', 'record_io', 'controller_other', 'setup_proof')
 
 
-def write(path, value):
+def write(path, value, *, ensure_ascii=True):
     import numpy as np
     def default(item):
         if isinstance(item, np.ndarray):
@@ -39,7 +39,7 @@ def write(path, value):
             return item.item()
         raise TypeError(type(item).__name__)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, allow_nan=False, default=default) + '\n')
+    path.write_text(json.dumps(value, indent=2, ensure_ascii=ensure_ascii, allow_nan=False, default=default) + '\n')
 
 
 def sha(path):
@@ -100,10 +100,10 @@ class Timers:
     def profile_frame(self, index, count):
         if getattr(self, 'profiler', None) is not None:
             window = self.profile_window
-            if index < window or index >= count - window:
-                self.profiler.enable()
-            else:
-                self.profiler.disable()
+            selected = index < window or index >= count - window
+            if selected != self.profile_active:
+                (self.profiler.enable if selected else self.profiler.disable)()
+                self.profile_active = selected
 
 
 def verify_inputs(raw, robots):
@@ -206,7 +206,7 @@ def s3(raw, out, timer):
         with timer.span('record_io'):
             write(out / 'commands.json', generated)
             write(out / 'state.json', dict(states=states, poses={r: x.pose_log for r, x in rt.localizers.items()}))
-            write(out / 'record.json', rt.record())
+            write(out / 'record.json', rt.record(), ensure_ascii=False)
         rt.close()
         undo()
     return dict(frames=len(trend), available_frames=len(frames['r1']), start=first,
@@ -318,6 +318,7 @@ def worker(args):
     started = time.perf_counter()
     if profiler:
         profiler.enable()
+        timer.profile_active = True
     # Pair channel IDs are external setup randomness, not the PF stream.
     # Supply the archived IDs in their original record order in both arms.
     archived_ids = []
@@ -326,8 +327,15 @@ def worker(args):
             if value not in archived_ids:
                 archived_ids.append(value)
     ids = iter(archived_ids)
-    with timer.span('setup_proof'), (patch('uuid.uuid4', side_effect=lambda: uuid.UUID(hex=next(ids))) if kind == 's3' else nullcontext()):
-        result = (s3 if kind == 's3' else egomap)(args.raw, out, timer)
+    try:
+        with timer.span('setup_proof'), (patch('uuid.uuid4', side_effect=lambda: uuid.UUID(hex=next(ids))) if kind == 's3' else nullcontext()):
+            result = (s3 if kind == 's3' else egomap)(args.raw, out, timer)
+    except Exception as exc:
+        source_frames = rows(args.raw / ('robots/r1/frames.jsonl' if kind == 's3' else 'robots/r3/frames.jsonl'))
+        result = dict(frames=None, available_frames=len(source_frames),
+                      start=source_frames[0]['sim_time'], end=source_frames[-1]['sim_time'],
+                      failure=dict(type=type(exc).__name__, message=str(exc)), trend=[],
+                      partial_outputs=True)
     wall = time.perf_counter() - started
     if profiler:
         profiler.disable()
@@ -346,6 +354,7 @@ def worker(args):
         cprofile_scope='initialization, first/last window and final serialization',
         cprofile_window_frames=args.profile_window_frames))
     installed.close()
+    return result['failure'] is None and result['frames'] == result['available_frames']
 
 
 def main():
@@ -370,11 +379,13 @@ def main():
     held = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch='codex/sim-speed-ctrl',
         purpose='speedctrl saved-input replay; physics0', pid=os.getpid(), expected_minutes=60, timing_sensitive=True)
     try:
-        worker(a)
+        complete = worker(a)
     finally:
         released = agent_lock.release(agent_lock.DEFAULT_ROOT, owner='codex')
         if a.output.exists():
             write(a.output / 'lock.json', dict(acquired=held, released=released))
+    if not complete:
+        raise RuntimeError('INCOMPLETE_REPLAY: failure preserved in result.json')
 
 
 if __name__ == '__main__':

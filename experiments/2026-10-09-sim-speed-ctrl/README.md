@@ -88,3 +88,11 @@ v3는 측정 전 잠금 대기에서 종료했고 원본 queue-state와 별도 i
 S3 extract의 pan offset도 부호 있는 0을 구분하는 비트 key로 바꿨다. 관련 검사7개
 통과(0.68초). 최종 후보는 물리/렌더/관측/RNG 변경0이며 전체 재생 증명은 아직 대기다.
 v5 역시 S3 우선 gate 대기에서만 종료했으며 실행/측정은 없었다.
+
+최초 실행 실패는 숨기지 않는다. v6 CLI 파일 호출은 package root 없이 시작해 worker에
+도달하지 못했다. v7 S3는 profiler를 이미 켠 상태에서 재활성화하여 439 중0프레임에서
+실패했고, 자기 지도는 export의 third_party 표준 native 탐색 소스 누락으로 초기화에
+실패했다. 유효 성능/동등성 결과가 아니다. profiler는 창 경계에서만 toggle하며 불완전
+재생은 result.json을 보존하고 workflow를 실패 처리한다. 관련 5개 검사0.20초 통과.
+S3 원본의 Unicode 기록 형식도 유지한다. native 소스는 같은 기록 SHA에서 새 export에
+추가하고 양쪽 측정 전에 동일한 build를 준비한다. 과거 export와 실패 로그는 보존한다.

@@ -32,6 +32,23 @@ def test_numpy_graph_evidence_serializes_without_losing_numeric_values(tmp_path)
         'covariance': [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]], 'node': 2}
     with pytest.raises(ValueError):
         write(tmp_path / 'invalid.json', {'covariance': np.array([np.nan])})
+    write(tmp_path / 'unicode.json', {'label':'운반'}, ensure_ascii=False)
+    assert '운반' in (tmp_path / 'unicode.json').read_text()
+
+
+def test_profile_windows_toggle_only_at_boundaries():
+    import cProfile
+    timer = Timers()
+    timer.profiler = cProfile.Profile()
+    timer.profile_window = 2
+    timer.profiler.enable()
+    timer.profile_active = True
+    try:
+        for index in range(10):
+            timer.profile_frame(index, 10)
+            assert timer.profile_active == (index < 2 or index >= 8)
+    finally:
+        timer.profiler.disable()
 
 
 def test_egomap_records_observation_before_remembering_issued_command(tmp_path, monkeypatch):
