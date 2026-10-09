@@ -63,6 +63,8 @@ class PhysicsBackend(OldBackend):
             self.world = build_world(self.scene, drive_profile=PROFILE, idle_robot_contacts='off',
                 roller_collision='mesh', seed=seed, width=640, height=480, render=True,
                 warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None)
+            from sim.s3_camera_binding import attach
+            attach(self.world, camera_binding=bundle.get('s3_camera_binding', 'off'))
             self.dt = float(self.world.model.opt.timestep)
             if not math.isfinite(self.dt) or self.dt <= 0 or abs(.05/self.dt-round(.05/self.dt)) > 1e-7:
                 raise ValueError('SIM timestep must divide .05 seconds')

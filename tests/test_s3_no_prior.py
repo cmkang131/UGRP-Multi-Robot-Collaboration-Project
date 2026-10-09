@@ -121,6 +121,9 @@ def test_posthoc_does_not_accept_wrong_mode_or_unfinished_commands(tmp_path):
     assert q['robots']['r3']['delivery_complete'] is True
     assert q['robots']['r3']['success'] is False
     assert q['door_deadlocks'] == []
+    student['localizers']['r2']['poses'][0]['convergence_certificate'] = {'qualified': False}
+    (tmp_path/'student_record.json').write_text(json.dumps(student))
+    assert metrics(tmp_path)['robots']['r2']['first_convergence'] is None
 
 
 def test_carry_yaw_record_preserves_existing_statistics(monkeypatch):
@@ -156,3 +159,81 @@ def test_referee_height_uses_world_inertial_position_without_clamping(monkeypatc
         body.xipos[2] = bad
         with pytest.raises(ContractViolation):
             referee.observe(1., referee_truth(host))
+
+
+def test_convergence_certificate_rejects_small_covariance_with_distant_mode():
+    from harness.zone_s3_localization_certification import attach, certificate
+    from harness.owncam_pose_source import PoseReport
+    from dataclasses import replace
+    runtime = object()
+    assert attach(runtime) is runtime  # default off is an identity operation
+    report = PoseReport(t_est=13.75, initialized=True, std_xy_m=.028,
+        std_yaw_rad=.012, last_fix_t=13.75,
+        observation_quality={'diagnostics': {'pose_estimate': {'cluster_count': 2}}})
+    particles = np.array([[0., 0., 0.]]*2000+[[3.5, 0., 0.]])
+    before = particles.tobytes()
+    row = certificate(report, particles)
+    assert row['covariance_ok'] and not row['qualified'] and not row['all_particles_compact']
+    assert particles.tobytes() == before and report.std_xy_m == .028
+    one = replace(report, observation_quality={'diagnostics': {'pose_estimate': {'cluster_count': 1}}})
+    assert certificate(one, particles[:2000])['qualified']
+    # One connected but broad global component, absent diagnostics and yaw
+    # ambiguity cannot be certified either.
+    assert not certificate(one, particles)['qualified']
+    assert not certificate(replace(one, observation_quality=None), particles[:2000])['qualified']
+    assert not certificate(replace(one, std_yaw_rad=.2), particles[:2000])['qualified']
+
+    log = []
+    fake = SimpleNamespace(last_report=one, pose_log=log,
+        pose=SimpleNamespace(provider=SimpleNamespace(loc=SimpleNamespace(_pf=SimpleNamespace(px=particles[:2000])))),
+        on_frames=lambda now, _: log.append({'t': now}), record=lambda: {'poses': copy.deepcopy(log)})
+    attach(fake, localization_certification='posterior_consensus_v1')
+    fake.on_frames(14., {})
+    assert fake.record()['poses'][0]['convergence_certificate']['qualified']
+    assert fake.record()['localization_certification']['distribution_changed'] is False
+
+
+def test_recorded_camera_rigid_composition_round_trip_and_off_identity():
+    from harness.zone_solo_cyan_camera_v3 import camera_calibration
+    from harness.zone_s3_recorded_camera import calibration_for_recorded_mount, attach
+    original = dict(camera_models={'unloaded': {'pose': dict(frame='optical_to_actual_chassis',
+        origin_m=[.1, -.2, .3], rotation=np.eye(3).tolist(),
+        chassis_to_floor={'origin_m': [0., 0., .0325], 'rotation': np.eye(3).tolist()})}})
+    before = copy.deepcopy(original)
+    back = calibration_for_recorded_mount(camera_calibration(original))
+    row = back['camera_models']['unloaded']['pose']
+    assert np.allclose(row['origin_m'], [.1, -.2, .3], atol=1e-14)
+    assert np.allclose(row['rotation'], np.eye(3), atol=1e-14)
+    assert original == before and row['chassis_to_floor'] == original['camera_models']['unloaded']['pose']['chassis_to_floor']
+    runtime = object()
+    assert attach(runtime) is runtime
+
+
+def test_persistent_v3_binding_survives_real_legacy_refresh_without_physics(monkeypatch):
+    import mujoco
+    from contextlib import nullcontext
+    from sim.masterpi_dynamics_v2 import MasterPiDynamicsV2
+    from sim import masterpi_camera_review_v3 as v3, masterpi_camera_profile as old
+    from sim.s3_camera_binding import attach
+    # Real legacy methods, fake arrays: constructor/renderer/physics never run.
+    monkeypatch.setattr(mujoco, 'mj_forward', lambda *a: None)
+    model = SimpleNamespace(cam_pos=np.zeros((3, 3)), cam_quat=np.zeros((3, 4)),
+        cam_resolution=np.zeros((3, 2)), cam_sensorsize=np.zeros((3, 2)),
+        cam_intrinsic=np.zeros((3, 4)))
+    controllers = {}
+    for i, rid in enumerate(m.ROBOTS):
+        robot = MasterPiDynamicsV2.__new__(MasterPiDynamicsV2)
+        robot.model, robot.data, robot.robot_cam_cid = model, object(), i
+        robot.width, robot.height, robot.renderer = 640, 480, None
+        robot._configure_measured_robot_camera()
+        controllers[rid] = robot
+    world = SimpleNamespace(controllers=controllers, physics_lock=nullcontext())
+    before = model.cam_pos.tobytes(), model.cam_quat.tobytes()
+    assert attach(world) is world and before == (model.cam_pos.tobytes(), model.cam_quat.tobytes())
+    assert np.allclose(model.cam_pos, old.CAMERA_LOCAL_POS_M)
+    attach(world, camera_binding='v3_persistent_v1')
+    for robot in controllers.values():
+        robot._configure_measured_robot_camera()
+        robot._sync_real_camera_mount()
+    assert np.allclose(model.cam_pos, v3.POSITION_M, atol=1e-14)
+    assert np.allclose(model.cam_quat, v3.QUAT_WXYZ, atol=1e-14)

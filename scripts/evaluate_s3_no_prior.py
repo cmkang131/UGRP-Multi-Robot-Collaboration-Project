@@ -46,6 +46,9 @@ def metrics(out):
             for pose in local.get('poses', []):
                 if pose['std_xy_m'] > .05 or not pose.get('initialized', True):
                     continue
+                certificate = pose.get('convergence_certificate')
+                if certificate is not None and certificate.get('qualified') is not True:
+                    continue
                 at = pose['t_est']
                 xy = [np.interp(at, times, gt_xy[:, j]) for j in (0, 1)]
                 yaw = float(np.interp(at, times, gt_yaw))

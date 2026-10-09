@@ -42,12 +42,16 @@ def solo_factory(config):
     from scripts.run_s2_unknown_start import runtime_factory
     from harness.zone_solo_cyan_active_observation import attach as active
     from harness.zone_solo_cyan_rotation_envelope import attach as guard
+    from harness.zone_s3_localization_certification import attach as certify
+    from harness.zone_s3_recorded_camera import attach as recorded_camera
     plain = copy.deepcopy(config)
     a = plain['options'].pop('active_localization')
     g = plain['options'].pop('active_rotation_guard')
+    certification = plain['options'].pop('localization_certification', 'off')
+    mount = plain['options'].pop('recorded_camera_mount', 'off')
     factory = runtime_factory(plain)
-    return lambda *args, **kw: guard(active(factory(*args, **kw), active_localization=a),
-                                   active_rotation_guard=g)
+    return lambda *args, **kw: recorded_camera(certify(guard(active(factory(*args, **kw), active_localization=a),
+        active_rotation_guard=g), localization_certification=certification), recorded_camera_mount=mount)
 
 
 class OwnPosePort:
