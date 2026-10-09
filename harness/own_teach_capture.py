@@ -10,7 +10,7 @@ import copy
 import math
 import numpy as np
 from harness.own_traversal_graph import TraversalGraph,TraversalReturn,own_sample,BAD_STATUS,OPTIONS
-from harness.own_traversal_reconnection import ReconnectedGraph
+from harness.own_traversal_reconnection import match_nearest_nodes
 from harness.self_map_return_repeat import Return360
 from harness.self_pose_graph import between,wrap
 
@@ -104,7 +104,7 @@ class TeachGraph(TraversalGraph):
         self.pending=[dense(s)];self.candidate=None
 
     # Existing local matcher, same nearest-five and acceptance rules as egomap52.
-    match=ReconnectedGraph.match
+    match=match_nearest_nodes
 
     def snapshot(self):
         out=super().snapshot()

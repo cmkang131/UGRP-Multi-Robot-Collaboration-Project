@@ -24,6 +24,22 @@ def compact(s):
     return {k:copy.deepcopy(s[k]) for k in ('t','frame_id','pose','frame_sha256')}
 
 
+def match_nearest_nodes(graph,sample,node_id=None):
+    """Shared adapter; no zero-argument super tied to a different graph class."""
+    if node_id is not None:return TraversalGraph.match(graph,sample,node_id)
+    candidates=sorted(range(len(graph.nodes)),key=lambda i:(math.dist(sample['pose'][:2],graph.nodes[i]['pose'][:2]),i))[:K]
+    trials=[]
+    for i in candidates:
+        e=TraversalGraph.match(graph,sample,i)
+        e.update(node_distance_m=math.dist(sample['pose'][:2],graph.nodes[i]['pose'][:2]),
+            node_heading_difference_deg=math.degrees(float(wrap(sample['pose'][2]-graph.nodes[i]['pose'][2]))))
+        trials.append(e)
+    winner=next((e for e in trials if e['status']=='accepted'),None)
+    if winner is None:
+        winner=trials[0] if trials else dict(status='rejected',reason='empty_graph')
+    return dict(winner,candidate_attempts=trials,candidates_checked=len(trials))
+
+
 class ReconnectedGraph(TraversalGraph):
     def __init__(self,robot_id):
         super().__init__(robot_id)
@@ -112,18 +128,7 @@ class ReconnectedGraph(TraversalGraph):
         return out
 
     def match(self,sample,node_id=None):
-        if node_id is not None:return super().match(sample,node_id)
-        candidates=sorted(range(len(self.nodes)),key=lambda i:(math.dist(sample['pose'][:2],self.nodes[i]['pose'][:2]),i))[:K]
-        trials=[]
-        for i in candidates:
-            e=super().match(sample,i)
-            e.update(node_distance_m=math.dist(sample['pose'][:2],self.nodes[i]['pose'][:2]),
-                node_heading_difference_deg=math.degrees(float(wrap(sample['pose'][2]-self.nodes[i]['pose'][2]))))
-            trials.append(e)
-        winner=next((e for e in trials if e['status']=='accepted'),None)
-        if winner is None:
-            winner=trials[0] if trials else dict(status='rejected',reason='empty_graph')
-        return dict(winner,candidate_attempts=trials,candidates_checked=len(trials))
+        return match_nearest_nodes(self,sample,node_id)
 
 
 class PartialReturn(TraversalReturn):

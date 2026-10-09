@@ -1,5 +1,6 @@
 # 실험 인덱스
 
+- [2026-10-09 연속 teach keyframe 기록](2026-10-09-teach-capture/README.md): egomap53, VT&R3 카메라 임계·기본off. 물리2회 모두 어댑터 HOST_ERROR로 유효 귀환0;49002 teach768노드/767엣지·B연결 있음·1790명령 기존 byte동일. 오류수정23시험·정합4/4 byte동일,추가4회 미실행·실패4배속 영상.
 - [2026-10-09 복구 구간 정합·재연결](2026-10-09-traversal-reconnection/README.md): egomap52, 기존 CSM/cache·기본off. 동일6건: 복구2/41·재방문32/3698 수락, 성분47→38; B경로0/4·첫정합1/4로 관문미달·물리0. 26시험/off동일, 실패진단4배속·선택지3개 기록.
 - [2026-10-09 지나온 경로로 자기 B 귀환](2026-10-09-own-traversal-return/README.md): egomap51, 기본off traversal graph. 기존6건7,718프레임→1,029노드/982엣지, B노드4/4·연결0/4·첫정합1/4. 복구 제외로47성분, 관문미달·물리0;18시험/off동일·실패진단4배속.
 - [2026-10-08 자기 문 확인·위상 이동](2026-10-08-own-door-navigation/README.md): egomap50, 기본off 두 옵션. 개발3+기존6녹화11,966프레임, 후보P0.42%·잠재가시R30.0%·확인0, 관문미달로 물리0. B blacklist 분기4→0·중간목표4 유지;16시험/off byte동일, 기존 실패4배속 문 overlay.

@@ -107,6 +107,31 @@ def test_wrong_wrapper_order_rejected_before_physics():
     with pytest.raises(ValueError,match='BEFORE_RECEIVE_WRAPPER'):attach(c,teach_capture=OPTION)
 
 
+def test_actual_driver_first_return_calls_real_csm_and_retries_without_sweep(monkeypatch):
+    from pathlib import Path
+    from scripts.run_teach_capture import make_controller
+    f=json.loads((Path(__file__).parent/'fixtures/own_map_tempering/golden.json').read_text())
+    c=make_controller(SimpleNamespace(robot_id='r3',started=0.),seed=49002)
+    c.last_snapshot=dict(t=359.8,frame_id=1799,grid=f['grid'],ledger=[dict(t=359.8)])
+    c.goal=confirmed(1,1)
+    c.traversal_graph.observe(sample(1),c.goal,[observed(1)])
+    c.lose(360.,1801);c.stage='return';c.streak=5
+    monkeypatch.setattr(legacy,'own_measurement',lambda *a:dict(points=[],columns=[],uv=[]))
+    monkeypatch.setattr(c.sensor,'measure',lambda *a:[])
+    monkeypatch.setattr(c.pf,'step',lambda **kw:dict(pose=[0,0,0],covariance=np.eye(3).tolist(),resolved=True,global_std_xy_m=.1))
+    monkeypatch.setattr(legacy,'pulse_command',lambda *a,**kw:(dict(t=a[1],kind='hold'),{}))
+    def receive(t,i,segments):
+        return c.receive(robot_id='r3',t=t,frame_id=i,rgb=np.zeros((2,2,3),np.uint8),servo=SEARCH,
+            observation=dict(segments=segments,floor_xy=[],camera=[0,0]),frame_sha256='x'*64)
+    # Neither the graph matcher nor return adapter is mocked.
+    cmd,r=receive(360.2,1802,[])
+    assert r['teach']['match']['reason']=='insufficient_points'
+    assert r['status']=='teach_localization_wait' and cmd['kind']=='hold' and not r['declared_goal']
+    _,r=receive(360.4,1803,sample(2)['segments'])
+    assert r['teach']['match']['status']=='accepted' and r['declared_goal']
+    assert c.traversal.sweep_start is None and c.traversal.at_goal_node
+
+
 def test_registered_driver_bundle_and_workflow():
     from scripts.run_teach_capture import bundle,SEEDS
     from sim.workflow_manager import plan
