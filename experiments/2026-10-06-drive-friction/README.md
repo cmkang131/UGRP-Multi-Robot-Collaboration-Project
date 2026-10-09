@@ -9,8 +9,8 @@ v1/v2 NOT_READY와 workflow 2.0.0은 아래에 보존한 과거 판정이며 현
 
 독립 리뷰의 제어기 경로 점검에서는 **50개 중 45개가 v7에서 멎는 호환성 문제**가 지적됐다.
 이는 새 물리 실행 50회의 결과가 아니며 v7 채택이 기존 제어기의 통과를 보장하지 않는다.
-특히 v7 구동과 기존 `_fast_drive_kernel` 가속 경로를 함께 설치하면
-`sim.exact_speedups.install_drive_kernel`이 **RuntimeError**를 내므로 동시 사용은 지원하지 않는다.
+특히 기존 `_fast_drive_kernel` 가속 경로가 설치된 상태로 v7의 물리 스텝에 들어가면
+`HysteresisWorld._physics_step_for`가 **RuntimeError**를 내므로 동시 사용은 지원하지 않는다.
 
 ## 현재 모델과 결과 해석
 
