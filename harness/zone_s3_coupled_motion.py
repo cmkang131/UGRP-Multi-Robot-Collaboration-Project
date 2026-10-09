@@ -7,7 +7,7 @@ import copy
 
 HEADING_EXCEPTIONS = {
     'coupled_beam_carry': dict(robots=['r1', 'r2'], required_robots=2,
-        controller_state='carry', partner_enum='carry',
+        controller_state='carry', partner_enum='carry or matching consumed carry GO',
         motion='unchanged registered pair schedule, including lateral',
         entry='existing two-party GO and own commanded grasp',
         exit='own commanded release', gt_inputs=False),
@@ -20,7 +20,25 @@ def authorized(endpoint, now):
     if endpoint.controller.state != 'carry' or not endpoint.own.pose.localizer.pose.provider.loc._pf.load.loaded:
         return False
     peers = endpoint.status.channel.partner_view(endpoint.own.robot_id, now)
-    return bool(peers) and all(p['alive'] and p['state'] == 'carry' for p in peers.values())
+    if not peers or not all(p['alive'] for p in peers.values()):
+        return False
+    if all(p['state']=='carry' for p in peers.values()):
+        return True
+    # carry_go_N deliberately normalizes to 'lift'. At the first carry tick,
+    # the first actor still sees this preceding enum from the second actor.
+    # Require its actual matching GO consumption, as PairExecution.check does;
+    # generic lift/readiness, a different segment or a missed GO never qualifies.
+    grant = getattr(endpoint.status, 'grant', None)
+    if not grant or grant[0] != f'carry_go_{endpoint.controller.seg}':
+        return False
+    consumed, at = grant
+    if now < at:
+        return False
+    latest = endpoint.status.channel.latest
+    return all(p['state']=='carry' or (
+        latest.get(rid, {}).get('state')==consumed
+        and abs(latest[rid]['sent_at_s']-at)<=1e-8)
+        for rid,p in peers.items())
 
 
 def attach_prediction(runtime, pair_params):
