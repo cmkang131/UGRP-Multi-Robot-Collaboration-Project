@@ -21,10 +21,12 @@ def test_off_does_not_touch_consumers_or_arrays():
 
 
 def test_s3_actual_factory_binds_measurement_and_same_pulse_dictionary():
-    from harness.zone_s3_sweep_contract import inputs, ROOT, hp
-    from harness.zone_s3_sweep_contract import bundle
+    from harness.zone_s3_consistency_contract import inputs, ROOT, hp
+    from harness.zone_s3_consistency_contract import bundle
     from harness.zone_s3_consistent_runtime import Runtime
     b = bundle('0'*40)
+    assert b['options']['pose_validity'] == 'defer_unmeasured_v1'
+    assert b['options']['observation_consistency'] == b['preregistration']['observation_consistency']
     b['controller_config']['options']['observation_consistency'] = 'effective_sqrt_alpha_v1'
     rt = Runtime(hp.resolve(b['map_id'])[0], inputs()[2]['orders'], ROOT/b['calibration'],
         b['calibration_sha256'], seed=b['seed'], config=b['controller_config'])
