@@ -24,6 +24,7 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_opencv_wall_robot_mask.py",
     "tests/test_zone_heldout_maps.py",
     "tests/test_ci_fast_path.py",
     "tests/test_owncam_memory_v3.py",
@@ -380,6 +381,9 @@ TEST_PATTERNS = (
     "tests/test_masterpi_drive_friction_v7_sphere6.py",
     "tests/test_probe_v7_roller_approx.py",
     "tests/test_probe_drive_pair_beam.py",
+    "tests/test_masterpi_camera_review_v1.py",
+    "tests/test_masterpi_camera_review_v2.py",
+    "tests/test_masterpi_camera_review_v3.py",
     "tests/test_zone_masterpi_v3_scene.py",
     "tests/test_zone_model_conventions.py",
     "tests/test_visual_arm_v3.py",
