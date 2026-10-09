@@ -146,10 +146,12 @@ class ForecastCopy:
     def deepcopy(value, memo=None):
         memo = {} if memo is None else dict(memo)
         if hasattr(value, 'maps') and hasattr(value, 'histories'):
-            for attribute in ('decisions', 'ledger'):
-                if hasattr(value, attribute):
-                    evidence = getattr(value, attribute)
-                    memo[id(evidence)] = evidence
+            if hasattr(value, 'decisions'):
+                memo[id(value.decisions)] = value.decisions
+            # ledger aliases the selected particle's mutable history LIST.
+            # Preserve that alias in the clone, but copy the list before append.
+            if hasattr(value, 'ledger'):
+                memo[id(value.ledger)] = list(value.ledger)
             for history in value.histories:
                 for row in history:
                     memo[id(row)] = row
@@ -199,10 +201,12 @@ class Installation:
         # Common S2/S3 pure posterior calculations. Sources containing the
         # existing per-runtime S3 cache retain that cache and its audit bytes.
         from harness import zone_solo_cyan_augmented_start as global_start
-        summary = memo(global_start.belief_report, selected=DEFAULT)
-        self.aliases(global_start.belief_report, summary)
-        self.caches['posterior_summary'] = summary.exact_cache
-        self.record['applied'].append('posterior_summary')
+        if self.guard(global_start.belief_report,
+                '7c0acfa9ce86e0a26348a6e56f193533f87c5c89428e7ce16a4430d9c4fd0207', 'posterior_summary'):
+            summary = memo(global_start.belief_report, selected=DEFAULT)
+            self.aliases(global_start.belief_report, summary)
+            self.caches['posterior_summary'] = summary.exact_cache
+            self.record['applied'].append('posterior_summary')
 
         s3 = self.optional('harness.zone_s3_exact_cache')
         if s3 and self.guard(s3.attach,
@@ -261,8 +265,13 @@ class Installation:
                 self.caches['grid_field'] = cached
                 self.record['applied'].append('grid_field')
             information = self.optional('harness.active_information_gain')
-            if information and self.guard(information.forecast,
-                    'cbbe99d7810a015859b0e7ec1d85b9148e88616778c86effa2ee16a81e0327b1', 'forecast_copy'):
+            guards = [] if not information else [
+                (information.forecast, 'cbbe99d7810a015859b0e7ec1d85b9148e88616778c86effa2ee16a81e0327b1', 'forecast_copy'),
+                (information.trajectory_entropy, '45d8d24fe076c8dc6051a808e151fdb2a732bb1cddc805e1fb0b105fa0575ab8', 'trajectory_entropy'),
+                (information.entropy, '3af1b4d0d27002fbf30cae46bd93d1b91cb94ec21993e985714b679348429219', 'entropy'),
+                (rbpf.RaoBlackwellizedGrid.resample_if_needed, 'e66873c4b0a2406622df2e99fb1acf4ca562486b932c49ce70c0a41fd944aaa5', 'rbpf_resample'),
+                (rbpf.RaoBlackwellizedGrid.propagate, '1033fbc6eb86c1dec8d8d09149140be3b67d5c7f537bf11cf18a08636d3bc70d', 'rbpf_propagate')]
+            if guards and all(self.guard(function, expected, name) for function, expected, name in guards):
                 self.aliases(information.forecast, bind(information.forecast, copy=ForecastCopy))
                 self.record['applied'].append('forecast_evidence_copy')
         return self

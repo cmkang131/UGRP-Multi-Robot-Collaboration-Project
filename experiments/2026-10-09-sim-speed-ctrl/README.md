@@ -68,3 +68,10 @@ agent_lock 안에서 cProfile와 구간 타이머로 입력 전체를 재생한�
 
 잠금 대기 중 후보를 준비했으며 프로파일에서 비용을 확인한 뒤 채택 범위를 정한다.
 이 절의 후보 코드·초록 단위검사는 wall/SIM ≤1.5 또는 전체 재생 동등성의 완료 증거가 아니다.
+
+측정 시작 전 정적 검토에서 `ledger is histories[best]`의 alias를 확인했다.
+virtual clone의 ledger 목록은 별도 복사하고 clone 안에서만 history와 alias를 유지하도록 수정했다.
+기존 행은 읽기 전용이고 append·cells/입자 변경은 원본에 도달하지 않는 회귀를 확인했다.
+[Python copy/deepcopy](https://docs.python.org/3/library/copy.html)의 memo/공유 객체 원칙을 따르며,
+forecast와 실제 entropy·resample·propagate 함수 원문 SHA까지 함께 guard한다.
+첫 v1 managed session은 잠금 대기 중 자기 프로세스만 종료했다(재생/물리0); 기록은 유지한다.

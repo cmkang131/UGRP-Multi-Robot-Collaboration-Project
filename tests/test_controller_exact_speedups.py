@@ -63,13 +63,16 @@ def test_forecast_clone_keeps_append_and_particle_mutations_isolated():
     from types import SimpleNamespace
     from harness.controller_exact_speedups import ForecastCopy
     row = dict(frame_id=1, pose=[1., 2., 3.])
-    grid = SimpleNamespace(maps=[SimpleNamespace(cells={(0, 0): 1.})], histories=[[row]],
-                           poses=np.ones((1, 3)), decisions=[{'reason': 'accepted'}], ledger=[row])
+    history = [row]
+    grid = SimpleNamespace(maps=[SimpleNamespace(cells={(0, 0): 1.})], histories=[history],
+                           poses=np.ones((1, 3)), decisions=[{'reason': 'accepted'}], ledger=history)
     cloned = ForecastCopy.deepcopy(grid)
     cloned.histories[0].append(dict(frame_id=2))
     cloned.maps[0].cells[(0, 0)] = -1.
     cloned.poses[:] = 0.
     assert grid.histories == [[row]]
+    assert grid.ledger is grid.histories[0] and len(grid.ledger) == 1
+    assert cloned.ledger is cloned.histories[0] and len(cloned.ledger) == 2
     assert grid.maps[0].cells == {(0, 0): 1.}
     assert np.array_equal(grid.poses, np.ones((1, 3)))
 
