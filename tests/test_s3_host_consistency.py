@@ -83,3 +83,58 @@ def test_ownmap_private_proposal_and_calibration_are_isolated():
         assert p['mean_curve'] == base[key]['mean_curve']
         assert p['mean_delta'] == base[key]['mean_delta']
         assert np.all(np.asarray(p['prediction_variance']) >= base[key]['prediction_variance'])
+
+
+def test_archived_replay_includes_controller_pose_feedback(tmp_path, monkeypatch):
+    """The frontend alone misses GoalRoute._localize's whole-cloud correction."""
+    import hashlib
+    import importlib.util
+    import sys
+    import types
+    from pathlib import Path
+    from PIL import Image
+    root = Path(__file__).resolve().parents[1]
+    script = root/'experiments/2026-10-09-s3-no-prior/s3fix6/replay_ownmap.py'
+    spec = importlib.util.spec_from_file_location('consistency_replay_test', script)
+    replay = importlib.util.module_from_spec(spec); spec.loader.exec_module(replay)
+    raw = tmp_path/'raw'; (raw/'robots/r3').mkdir(parents=True)
+    Image.new('RGB', (2, 2)).save(raw/'frame.jpg')
+    digest = hashlib.sha256((raw/'frame.jpg').read_bytes()).hexdigest()
+    frames = [dict(sim_time=float(i), frame_id=i, path='frame.jpg', sha256=digest) for i in range(12)]
+    ob = dict(segments=[])
+    covariance = np.eye(3)
+    odom = SimpleNamespace(pose=[0., 0., 0.], covariance=covariance)
+    grid = SimpleNamespace(odom=odom, poses=np.zeros((1,3)), weights=np.ones(1), rng=np.random.default_rng(1))
+    explorer = SimpleNamespace(memory=SimpleNamespace(self_map=grid))
+    issued = []
+    class Controller:
+        def command(self, row): issued.append(row['t'])
+        def receive(self, **kw):
+            assert issued == ([] if kw['t'] == 10. else [10.])
+            # Stand-in for the real causal route match, after frontend update.
+            odom.pose[0] += 1.
+            return dict(t=kw['t'],kind='hold'), {}
+    controller = Controller()
+    def module(name, **attributes):
+        m=types.ModuleType(name);m.__dict__.update(attributes)
+        monkeypatch.setitem(sys.modules,name,m)
+    import harness, scripts, sim
+    for package in (harness,scripts,sim):
+        monkeypatch.setattr(package,'__path__',list(package.__path__))
+    module('harness.active_camera', SEARCH={})
+    module('harness.active_wall_vision', observe=lambda *a,**k:ob)
+    module('scripts.run_own_map_return_repeat', actor=lambda *a,**k:explorer)
+    module('scripts.run_active_wall_rotleft', install_profile=lambda *a,**k:None)
+    module('scripts.run_goal_route_continuous', controller=lambda *a,**k:controller)
+    data={'bundle.json':dict(task=dict(seed=1)),
+        'own-inputs.json':[dict(frame_id=i,own_range=None) for i in (10,11)]}
+    line_data={'robots/r3/frames.jsonl':frames,
+        'robots/r3/commands.jsonl':[dict(t=0.,kind='initial_servo_command',pulses={}),dict(t=10.,kind='hold'),dict(t=11.,kind='hold')],
+        'own-contacts.jsonl':[dict(t=float(i),frame_id=i,**ob) for i in (10,11)],
+        'own-controller.jsonl':[dict(command=dict(t=float(i),kind='hold')) for i in (10,11)],
+        'frontend-covariances.jsonl':[dict(t=float(i),frame_id=i,pose=[float(i-9),0.,0.],covariance=covariance.tolist()) for i in (10,11)]}
+    for name,value in data.items(): (raw/name).write_text(json.dumps(value))
+    for name,value in line_data.items(): (raw/name).write_text(''.join(json.dumps(r)+'\n' for r in value))
+    replay.replay(raw,tmp_path/'out',root,'off')
+    result=json.loads((tmp_path/'out/result.json').read_text())
+    assert result['frames']==2 and result['original_frontend_equal'] and result['original_proposals_equal']

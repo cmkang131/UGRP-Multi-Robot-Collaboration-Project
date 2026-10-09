@@ -93,3 +93,23 @@ RGB-derived contacts reproduce the raw exactly; full-run parity is required.
 This isolates the filter and avoids truncation when a counterfactual planner
 would finish early. S3 uses the complete runtime with saved issued commands.
 Neither replay is a new closed-loop physical success.
+
+### Replay completeness correction, before any candidate results
+
+The initial frontend-only off replay matched its first424 rows, then differed
+at88.1s: `GoalRoute._localize` applies a causal own-image graph match to every
+particle and rotates pending covariance. The isolated frontend omitted this
+feedback. Its full1341-row result is invalid for candidate comparison and is
+preserved under `outputs/s3fix6-20261010/replays/55001-off`. Full RGB contact
+records still matched. The replay now calls the complete original controller,
+including route matching and map feedback, and requires both all frontend
+poses/covariances and command proposals to match. No candidate results have
+been inspected; candidates and selection rule are unchanged.
+
+Timing-slot correction: after the failed frontend-only replay released its
+lock, a full-path probe was mistakenly started without acquiring the lock.
+On detecting speedctrl PID72922's timing-sensitive slot, only our probe
+PID72986 was stopped immediately; no other process or lock was changed.
+The startup overlap was disclosed on PR423 ([comment6084754741](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/423#issuecomment-6084754741)). Its incomplete local directory
+and managed log are retained. All subsequent heavy probes/replays wait at
+atomic acquire; no speed claim uses this overlap.
