@@ -1820,3 +1820,5 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
   [물리 인계](../../PHYSICS_HANDOFF.md), [실행 버전 관리](../../docs/execution_versioning.md)
 - [재사용 OpenCV 검출기](../2026-09-26-markerless-probe/markerless_probe.py),
   [새 관측 어댑터](../../harness/opencv_wall_observation.py), [새 제어기](../../harness/zone_pair_highpose_runtime.py)
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

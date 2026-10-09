@@ -72,3 +72,5 @@ python3 scripts/eval_partial_fix_gate.py --outputs <outputs> --run <run> ... --o
 ```
 원본 JSON: `outputs/llm-eye-20261005/partial-fix/dev_split.json` sha256 e90c6d02709790c2f4636fbb1eb922fe3f5c71ad7f622ca6e79a24ff530c045f, `confirm_split.json` sha256 abec837c5328310bd3ad45523f9f150edde162a24a83c5aac4883ff8a0dd547a.
 보정 JSON은 실행 폴더의 `dev_pilot_calibration.json`을 DEV 승인 검사 없이 읽는다(실행 폴더에 sibling manifest가 없음). 등록된 무적재 모션 채움만 `harness/zone_pair_highpose_contract.dev_pilot_admission()`에서 적용한다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.
