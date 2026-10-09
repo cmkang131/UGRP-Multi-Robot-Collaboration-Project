@@ -3,6 +3,7 @@ import argparse
 import errno
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -13,7 +14,17 @@ from scripts import run_s3_no_prior as old
 from scripts.run_final_environment_checks import check_source, write
 from scripts.run_s3_host import artifact_manifest
 
-run = bind(old.run, contract=contract)
+def require_heading_source(bundle):
+    dependency = bundle['preregistration'].get('heading_dependency_sha')
+    if not isinstance(dependency, str) or not re.fullmatch('[0-9a-f]{40}', dependency):
+        raise ValueError('common heading default-on dependency is not admitted yet')
+    subprocess.run(['git', 'merge-base', '--is-ancestor', dependency, bundle['source_sha']],
+        cwd=contract.ROOT, check=True)
+
+
+def run(bundle, out, **kwargs):
+    require_heading_source(bundle)  # refuse before any simulator/output construction
+    return bind(old.run, contract=contract)(bundle, out, **kwargs)
 
 
 def main(argv=None):
@@ -31,6 +42,7 @@ def main(argv=None):
         return 0
     if not a.release_s3_simulation:
         raise ValueError('explicit coordinator S3 release required')
+    require_heading_source(b)
     check_source(a.expected_source_sha)
     branch = subprocess.check_output(['git', 'branch', '--show-current'], cwd=contract.ROOT, text=True).strip()
     if branch != 'codex/s3-no-prior-smoke' or os.getpriority(os.PRIO_PROCESS, 0) != 0:

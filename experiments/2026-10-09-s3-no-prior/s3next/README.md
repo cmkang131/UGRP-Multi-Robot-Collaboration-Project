@@ -47,3 +47,5 @@
 참고: [S2 바인딩](../../../sim/s2_realism_camera_binding.py), [MuJoCo 카메라 좌표](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html#mjdata), [Nav2 AMCL PF](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/pf/pf.c). 기존 s3diag 출처와 요인 비교는 [이전 진단](../s3diag/README.md)을 따른다.
 
 예약: 새 번들 `zone-s3-host-heading-v144`, workflow `7.37.0`, seed14201, 첫 실행만 허용. 원격 main·열린 PR 최대143/7.36.0을 조회한 뒤 #416 본문과 #419 조정 코멘트에 예약했다. 최신 main의 공통 exact-speed 변경도 `21af8635`로 merge·13 PASS·push했으며 초기화/관측 동등성과 실제 성공은 구분한다.
+
+실행기 `require_heading_source`는 등록된 공통 heading 기본 on 커밋이 없거나 실행 SHA의 조상이 아니면 world/출력 폴더 구성 전에 거부한다. source를 채우기 전에는 계획 조회만 가능하다. 누락 의존성 거부 시험1 PASS(43.03초); 실제 통합 검증은 merge 뒤 수행한다.

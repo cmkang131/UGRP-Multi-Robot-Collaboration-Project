@@ -39,6 +39,10 @@ def test_new_host_heading_contract_keeps_v142_and_physical_mount_boundary(monkey
     assert b['options'].get('recorded_camera_mount', 'off') == 'off'
     assert not b['particle_recovery_changed'] and not b['convergence_thresholds_changed']
     assert b['preregistration']['run_limit'] == 1
+    pending = copy.deepcopy(b)
+    pending['preregistration']['heading_dependency_sha'] = None
+    with pytest.raises(ValueError, match='not admitted yet'):
+        runner.require_heading_source(pending)
     monkeypatch.setattr(runner, 'run', lambda *a, **k: pytest.fail('plan started runtime'))
     assert runner.main(['--expected-source-sha', 'a'*40, '--output', '/nonexistent/s3-next-plan']) == 0
     assert json.loads(capsys.readouterr().out)['execution_started'] is False
