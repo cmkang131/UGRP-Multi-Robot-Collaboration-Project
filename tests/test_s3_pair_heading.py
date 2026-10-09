@@ -30,7 +30,7 @@ def test_saved_mixed_command_is_replaced_before_pulse_model(profiles,left,turn):
 def test_lateral_is_only_final_task_alignment_not_intermediate_waypoint(profiles):
     action,p,score=heading.approach_proposal(profiles,(0.,0.,0.),(.01,.05),(2.,0.),0.)
     assert action.get('left',0)==0
-    lateral=next(p for p in profiles.values() if not p['loaded'] and p['axis']=='left')
+    lateral=next(p for p in profiles.values() if not p['loaded'] and p['axis']=='left' and p['duration_s']>=.10)
     from harness.zone_solo_cyan_pulse_cal import action_of
     a=action_of(lateral)
     for distance,alignment in [(.101,True),(.05,False)]:
@@ -104,7 +104,7 @@ def test_actual_pair_submission_attaches_heading_before_any_control():
         ob=ctl._align.__func__.__globals__['ob']
         cmd=ob.align_command(dict(grip_base_m=[GRASP_RADIUS_M,.04],axis_heading_rad=0.))
         ctl.drive(cmd,.2)
-        assert ep.port.commands[-1]['left']==.35 and ep.port.commands[-1]['duration_s']==.06
+        assert ep.port.commands[-1]['turn']==.35 and ep.port.commands[-1]['duration_s']==.10
         count=len(ep.port.commands)
         ctl.tick(.25);assert len(ep.port.commands)==count
         ctl.tick(.3);assert ep.port.commands[-1]==dict(kind='hold')
@@ -169,6 +169,6 @@ def test_rgb_alignment_heading_uses_final_distance_and_preserves_nonarrival(prof
     far,p,s=project(profiles,(.3,.2,0.))
     assert far['turn'] and not far['forward'] and not far['left']
     final,p,s=project(profiles,(0.,.04,0.))
-    assert final['left'] and final['duration_s']==.06
+    assert final['turn'] and final['duration_s']==.10
     unresolved,p,s=project(profiles,(0.,0.,0.))
     assert p is None and unresolved is not None and not heading.moving(unresolved)

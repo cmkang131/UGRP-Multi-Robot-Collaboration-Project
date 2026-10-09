@@ -32,7 +32,9 @@ def test_intermediate_waypoint_never_enables_strafe_and_final_only_fine():
     p, _ = m.select(profiles(), True, [0, .04], 0, 1.)
     assert p['axis'] == 'turn'
     p, _ = m.select(profiles(), True, [0, .04], 0, .04)
-    assert p['axis'] == 'left' and abs(p['u']) == .35 and p['duration_s'] == .06
+    # Fine .06 s strafe is not a REAL command: use the shared turn/forward
+    # approach until the existing positional tolerance, then final heading.
+    assert p['axis'] == 'turn' and abs(p['u']) == .35 and p['duration_s'] == .10
     p, _ = m.select(profiles(), True, [.5, 0], 0, .5)
     assert p['axis'] == 'forward' and p['u'] > 0
 
@@ -176,3 +178,53 @@ def test_evaluation_heading_and_lateral_speed_use_actual_translation():
     assert m['direction_within_20deg_fraction']==pytest.approx(.5)
     assert m['lateral_speed_fraction']==pytest.approx(.5)
     assert contact_summary([dict(t=0),dict(t=1),dict(t=2)],[True,True,False])==dict(samples=2,sampled_s=2.,episodes=1)
+
+
+def test_heading_issue_boundary_omits_short_and_mixed_without_changing_off():
+    fixture=json.loads((legacy.ROOT/'tests/fixtures/path_heading/command-contract.json').read_text())
+    saved=[fixture['ownmap']['command'], *(r['saved'] for r in fixture['s3'])]
+    class Previous(Pulse):
+        def __init__(self, **kw):
+            from harness.zone_final_pair_vision import GRASP_RADIUS_M
+            self.state='align';self.target=[GRASP_RADIUS_M, .015];self.robot_id='r3'
+            self.last_report=NS(t_est=10.,yaw_rad=0.)
+            self.proposal=None;self.fine_until=10.06
+        def step(self, now):
+            return [('r3', self.proposal)]
+    on=m.runtime_class(Previous)(heading_mode=m.OPTION,pulse_motion_model='v7_pulse_cal_v1')
+    off=m.runtime_class(Previous)(heading_mode='off')
+    for row in saved:
+        action={k:v for k,v in row.items() if k!='t'}
+        on.proposal=off.proposal=action
+        assert on.step(10.)==[('r3',dict(kind='hold'))]
+        assert on.fine_until is None
+        assert off.step(10.)[0][1] is action
+    assert [r['reason'] for r in on.heading_rows]==[
+        'duration_outside_real_contract','mixed_axes','mixed_axes']
+
+
+def test_saved_ownmap_and_s3_proposals_replay_through_one_selector_and_real_port():
+    from harness.own_map_heading import command
+    from sim.s2_real_output import RealPrimitivePort
+    fixture=json.loads((legacy.ROOT/'tests/fixtures/path_heading/command-contract.json').read_text())
+    port=object.__new__(RealPrimitivePort)
+    port.min_wheel_cmd='real_v1';port.robot_id='r3'
+    motors=[];port._set_motors=motors.append;port._actuator_state=lambda:{}
+    row=fixture['ownmap']
+    bad={k:v for k,v in row['command'].items() if k!='t'}
+    with pytest.raises(ValueError,match='one axis and bounded duration'):
+        port.apply(bad,row['t'])
+    plan=dict(coordinate_frame='r3/own_odom',status='goal_approach',path_m=row['path'])
+    issued=command(plan,row['pose'],profiles(),robot_id='r3')
+    assert issued['duration_s']>=.10 and m.command_reason(issued) is None
+    port.apply(issued,row['t'])
+    for row in fixture['s3']:
+        before={k:v for k,v in row['saved'].items() if k!='t'}
+        with pytest.raises(ValueError,match='one axis and bounded duration'):
+            port.apply(before,row['t'])
+        goal=row['static_goal']
+        p,_=m.select_waypoint(profiles(),False,row['own_estimate'],goal[:2],goal[:2],goal_yaw=goal[2])
+        issued=action_of(p)
+        assert issued==row['projected'] and m.command_reason(issued) is None
+        port.apply(issued,row['t'])
+    assert len(motors)==3

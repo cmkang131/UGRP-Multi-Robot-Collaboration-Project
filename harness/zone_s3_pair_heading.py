@@ -8,7 +8,7 @@ controller tick. No mixed-axis pulse is admitted by weakening the PF contract.
 import copy
 import math
 
-from harness.zone_solo_cyan_path_heading import select_waypoint
+from harness.zone_solo_cyan_path_heading import select_waypoint, command_reason
 from harness.zone_solo_cyan_pulse_cal import action_of, profile_key
 
 OPTION = 'pair_heading_pulse_v1'
@@ -26,6 +26,9 @@ def validate_pulse(action, profiles, *, loaded, goal_distance, alignment):
         raise ValueError('uncalibrated pair heading pulse '+key)
     if action.get('left', 0.) and (not alignment or goal_distance > .10):
         raise ValueError('lateral pair motion outside final 0.10 m alignment')
+    reason = command_reason(action)
+    if reason is not None:
+        raise ValueError('shared heading contract: '+reason)
 
 
 def approach_proposal(profiles, pose, waypoint, goal, goal_yaw):
