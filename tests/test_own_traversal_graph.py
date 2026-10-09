@@ -132,3 +132,25 @@ def test_evaluation_geometry_continuous_corner_and_footprint():
     assert m.footprint_hits([.2,0,0],walls)
     assert not m.footprint_hits([.3,0,0],walls)
     assert m.geometry([[-1,0,0],[1,0,0]],walls)['center_crossing_segments']==1
+
+
+def test_early_stop_uses_own_covariance_log_without_snapshot(tmp_path,monkeypatch):
+    import importlib.util
+    from pathlib import Path
+    path=Path(__file__).parents[1]/'experiments/2026-10-09-own-traversal-return/code/offline.py'
+    spec=importlib.util.spec_from_file_location('replay51',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    ep=tmp_path/'seed49003';(ep/'robots/r3').mkdir(parents=True)
+    im=np.zeros((48,64,3),np.uint8)
+    import cv2
+    cv2.imwrite(str(ep/'robots/r3/0.png'),im)
+    frame=dict(frame_id=1,t=1.,stage='explore',pose=[0,0,0],local_pose=[0,0,0],status='following',remembered_B=None)
+    data={'own-controller.jsonl':[frame],'own-contacts.jsonl':[dict(t=1.,frame_id=1,segments=[],camera=[0,0])],
+        'frontend-covariances.jsonl':[dict(frame_id=1,covariance=np.eye(3).tolist())],
+        'robots/r3/frames.jsonl':[dict(frame_id=1,path='robots/r3/0.png',sha256=m.sha(ep/'robots/r3/0.png'))]}
+    for name,items in data.items():(ep/name).write_text(''.join(json.dumps(r)+'\n' for r in items))
+    (ep/'navigation.json').write_text('[]');(ep/'artifacts.sha256.json').write_text('{}')
+    monkeypatch.setattr(m,'BASE',tmp_path);monkeypatch.setattr(m,'RAW',tmp_path/'out');m.predict(49003)
+    p=m.load(tmp_path/'out/49003/prediction.json')
+    assert p['graph']['frames']==1 and p['graph']['goal_node'] is None
+    assert p['graph']['nodes'][0]['covariance']==np.eye(3).tolist()
+    assert 'frontend-covariances.jsonl' in p['inputs'] and p['query'] is None

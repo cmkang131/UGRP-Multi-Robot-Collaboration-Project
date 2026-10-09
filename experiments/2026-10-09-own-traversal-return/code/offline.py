@@ -27,14 +27,16 @@ def predict(seed):
     ep=BASE/f'seed{seed}';out=RAW/str(seed)
     assert not (out/'prediction.json').exists(),'ONE_REPLAY_ONLY'
     assert os.getpriority(os.PRIO_PROCESS,0)==0,'NICE_MUST_BE_ZERO'
-    manifest=load(ep/'artifacts.sha256.json');names=['own-controller.jsonl','own-contacts.jsonl','prefix-poses.json','navigation.json','robots/r3/frames.jsonl']
+    cov_file='prefix-poses.json' if (ep/'prefix-poses.json').exists() else 'frontend-covariances.jsonl'
+    manifest=load(ep/'artifacts.sha256.json');names=['own-controller.jsonl','own-contacts.jsonl',cov_file,'navigation.json','robots/r3/frames.jsonl']
     hashes={p:sha(ep/p) for p in names}
     for p,h in hashes.items():
         if p in manifest:assert h==manifest[p]
     trace=rows(ep/'own-controller.jsonl');prefix={r['frame_id']:r for r in trace if r.get('stage')=='explore' and r.get('pose') is not None}
     suffix=next((r for r in trace if r.get('stage')=='return'),None)
     frame={r['frame_id']:r for r in rows(ep/'robots/r3/frames.jsonl')}
-    cov={r['frame_id']:r['covariance'] for r in load(ep/'prefix-poses.json')}
+    covariance_rows=load(ep/cov_file) if cov_file.endswith('.json') else rows(ep/cov_file)
+    cov={r['frame_id']:r['covariance'] for r in covariance_rows}
     nav=load(ep/'navigation.json');bad=[e for e in nav if e['reason'] in ('controller_no_progress','navigation_action_aborted')]
     g=TraversalGraph('r3');query=None;counts=Counter();rgb_hashes={}
     for line in (ep/'own-contacts.jsonl').open():

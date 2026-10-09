@@ -13,15 +13,24 @@
     "harness/self_map_return_repeat.py": "749a2cd651127e8a3199aa2db95d27ea5a5d1d0118b43908b0070b4eb2a4f093",
     "harness/self_map_closed_loop.py": "c6173e16d3bb1bd4b329f75a555ed893c22af525f5e5262ebefd34fe0fd63c09",
     "harness/active_wall_mapping.py": "6f103c1c31c8d850a02257219f9826076db85169f85370b8143315542b14c77e",
-    "experiments/2026-10-09-own-traversal-return/code/offline.py": "762167bbc52051155cad0e4fe946276192877b9ec80c28371cf12a7b6c0ca3d4",
-    "tests/test_own_traversal_graph.py": "e3503258ee8ad12b1dda81ddfb775c550de399f5d0765abc9785b41b81550a24"
+    "experiments/2026-10-09-own-traversal-return/code/offline.py": "ea246f00459c56d652fcfe9b9bac1ac744bb85de183f219288859227ad92a08a",
+    "tests/test_own_traversal_graph.py": "582afd1368fde0c7c011b5216d38f210ffec657871d19391395ad5ffb260ecfd"
   },
   "tests": {
     "command": "python -m pytest -q tests/test_own_traversal_graph.py tests/test_self_map_return_repeat.py",
-    "passed": 17
+    "passed": 18
   },
   "options": {
     "return_policy": "traversal_graph_v1"
   },
-  "physical_before_gate": false
+  "physical_before_gate": false,
+  "initial_source_files": {
+    "harness/own_traversal_graph.py": "af88264f1e81377c384d8e32605cbcf4f992e95a05a1bd8436f49d677e0b4746",
+    "harness/self_map_return_repeat.py": "749a2cd651127e8a3199aa2db95d27ea5a5d1d0118b43908b0070b4eb2a4f093",
+    "harness/self_map_closed_loop.py": "c6173e16d3bb1bd4b329f75a555ed893c22af525f5e5262ebefd34fe0fd63c09",
+    "harness/active_wall_mapping.py": "6f103c1c31c8d850a02257219f9826076db85169f85370b8143315542b14c77e",
+    "experiments/2026-10-09-own-traversal-return/code/offline.py": "762167bbc52051155cad0e4fe946276192877b9ec80c28371cf12a7b6c0ca3d4",
+    "tests/test_own_traversal_graph.py": "e3503258ee8ad12b1dda81ddfb775c550de399f5d0765abc9785b41b81550a24"
+  },
+  "adapter_note": "Early-stop absent prefix-poses uses original frontend-covariances. First two predictions retained; no graph/threshold changes."
 }
