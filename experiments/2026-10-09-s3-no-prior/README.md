@@ -1,6 +1,6 @@
-# S3 no-prior 연결과 첫 3대 DEV 스모크 — 실행 전 계획
+# S3 no-prior 연결과 첫 3대 DEV 스모크
 
-계획 고정: `6f675569` (2026-10-09). 사용자/감독 지시 `s3go`. v141 의존 merge는 `eaf02cfe`. 아래 연결 구현은 오프라인 검증 중이며 **물리 실행·수렴/배달 검증 전**이다.
+계획 고정: `6f675569` (2026-10-09). 사용자/감독 지시 `s3go`. v141 의존 merge는 `eaf02cfe`. 계획을 먼저 커밋한 뒤 단일 스모크를 수행했다. 결과는 아래 10/9 실행 결과에 기록하며 최초 계획·판정 기준은 유지한다.
 
 ## 선행 상태와 소스
 
@@ -61,3 +61,51 @@
 추가 확인: main merge 후보 `0122221a`의 3개 시험 파일은 92 passed. 실제 provider에 합성 자기 프레임을 전달해 초기 관측→pair handoff를 확인한 파일은 6 passed(위치 정확성/물리 성공 검증 아님). 초기 관측 명령 시간을 문 대기 시간에 더하지 않도록 분리했고 같은 6개 시험이 통과했다. [검증 기록](offline-verification.json).
 
 s2v59 완료 4건까지의 추가 재점검: s1067 사후 배달 성공, s1068은 controller done이나 inside B=false(배달 실패), 운반 말기 위치 오차 3.215m다. 아직 S2 졸업 통과가 아니며 S3의 동일 위치 추정 유지/허위 완료 위험을 명시한다. 새 S3 결과와 합산하지 않는다. 단일 통합 DEV smoke 범위는 유지하며 추가 후보 튜닝이나 반복 코호트는 시작하지 않는다.
+
+
+## 단일 실행 결과 (2026-10-09, v142 seed 14201)
+
+실행 소스 **`6c6571244e33a6e9e39b00afcd38d805035aed7d`**, 계획 `6f675569`.
+표준 `sim_cli workflow run zone-s3-no-prior-v142`와 `ugrp_session`으로 한 번 실행했다.
+s2v59·선행 속도 측정의 잠금 해제 뒤 PID 31519, nice=0으로 자기 잠금을 취득·해제했다.
+시뮬레이션 **1회**, 재시도/튜닝/추가 seed 없음. 원본 상태는 **HOST_ERROR**이며 S3 통과가 아니다.
+
+| 로봇 | 결과 / B 도착 | 자체 σ 수렴 (제어 시작 후) | 정확한 수렴 XY≤0.25m·yaw≤15° | 문 REQUEST / 대기 |
+|---|---|---|---|---|
+| r1 | LOOK_RECOVERY_EXHAUSTED / 빔 미도착 | 없음 | 없음 (42.25 s 관측) | 1회 / 0.05 robot-s |
+| r2 | r1 실패로 미완료 / 공동 빔 미도착 | 12.65 s, 실제 XY **2.057m** 오차 | 없음 | 1회 / 0.05 robot-s |
+| r3 | r1 실패로 미완료 / cyan 미도착 | 없음 | 없음 (42.25 s 관측) | 1회 / 33.05 robot-s |
+
+- wall **271.741248 s**, SIM **45.25 s**(제어 42.25 + 정착 3.0), wall/SIM **6.00533**. reset 1.3 SIM초는 분모에서 제외했다. 발행 명령 r1/r2/r3=1060/1182/1114, 총 **3356**(초기/최종 hold 제외), 모델/HTTP 호출 0, 모델 응답시간 합계 0.
+- 세 로봇 모두 10.5 SIM초에 초기 관측 단계를 넘었지만 이는 위치 수렴이 아니다. r1의 잘못된 자기 추정에 따른 정적 벽 arm sweep guard가 막혔다. **단일 실행 내부**의 같은 SWEEP_TRANSITION_BLOCKED가 3회(20.55/31.55/42.55 SIM초), 최종 LOOK_RECOVERY_EXHAUSTED 1회(43.55 SIM초)다. 보수적 pair guard가 여전히 정지시키므로 dev_light 통합도 미완료다. 물리 충돌로 분류하지 않는다. 사용자 반복 원인 중단 규칙에 따라 추가 실행을 하지 않는다.
+- 실패 개수의 분모를 분리한다: 제어 종료 원인 LOCALIZATION/LOOK 1건, 정확한 수렴 없음 3로봇, HOST_ERROR 원인 **2종**(심판 높이 계약 1건·None 기록 직렬화 1건), 기록 파일 누락 2개, B 미도착 주문 2개. 내부 재시도 3회를 독립 smoke 3회로 세지 않는다.
+- robot-robot 음수 접촉 episode **0**, 활성 weld 표본 **0**. 사전 등록 120초 창의 교착 **0건**이나 실행이 그 창보다 짧고 문 통과도 없어서 교착 해소/실제 양보 통과는 미검증이다. r3 예약 대기만 관측했다. 벽/화물 모든 접촉을 포함한 무충돌 판정은 아니다.
+- 원래 referee는 빔 z<0을 거부했다(첫 1.35 SIM초, 905/906 표본, 최솟값 -0.000543678m). 원본 높이를 clamp하지 않았다. **별도 eval_only**에서 기존 landing_fits로 B footprint 필요조건을 대조하니 두 화물 모두 906/906 표본에서 B 밖, XY 이동은 사실상 0이다. 완전한 referee 판정은 여전히 무효다.
+- student_record/trial 저장은 `harness/zone_pair_executor.py:625`의 `carry_yaw_fallback=None`에 `.get`을 호출하며 같은 원인으로 실패했다. [traceback](record-errors.json)을 보존했다. 새 S3에 연결한 S2 provider의 optional carry 상태와 기존 pair 기록 계약이 맞지 않는다.
+
+### 원본 보존·오프라인 복구
+
+원본: `/Users/changmin/projects/ugrp/outputs/s3-no-prior-6c657124-s14201-v142`.
+파생 복구: `/Users/changmin/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009`.
+[결과](summary.json), [재생 검증](replay-verification.json), [파일 해시](postrun-artifacts.json).
+원본 2561개 파일 SHA-256을 재확인했다. 저장된 자기 JPEG/발행 명령만 같은 소스에 재생해 각 846프레임·3356명령이 모두 일치했다. GT는 재생 제어기에 입력하지 않고 복구 후 정확성 평가에만 썼다. 이 재생은 MuJoCo 생성/step/렌더 없는 오프라인 계산이며 새 simulation이 아니다. 위치·문 지표는 **원본 학생 기록이 아닌 명령 일치 재생에서 복구한 값**이다.
+
+대표 4배속 영상: `/Users/changmin/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009/s14201-mixed-4x/execution.mp4`.
+[영상 검증](video-verification.json): 212프레임/20fps, 자기 카메라 3개, 원본 4프레임 간격, 전 프레임 재디코딩 통과. 마지막 3초 정착에는 촬영이 없으므로 영상에 포함하지 않는다.
+TensorBoard snapshot: `/Users/changmin/projects/ugrp/outputs/tensorboard/1009-s3-v142`.
+`outputs/tensorboard-view.json`의 `s3_no_prior_v142_20261009`에 해당 실행·핀·영상 링크를 추가했다. 다른 실행은 수정하지 않았다.
+
+### 선행 S2 최종 재점검과 후속 판단
+
+s2v59 6개는 원본별 사후 배달 **3/6**(1066/1067/1069 성공, 1065 검색 실패, 1068/1070 controller done이나 B 밖)이다. 1067 별도 직렬 재생은 이 6개 분모에 더하지 않는다. 1070은 자체 첫 수렴도 XY0.637m·yaw74.24° 오차였다. S2 조건부 진행 결정은 이력으로 유지하되 **졸업 통과로 승격하지 않는다**. 새 S3의 실패와 함께 전역 위치 가설·추정 유지·단독→pair 관측/가드 연결을 재점검해야 하며 본 결과로 S3 반복 코호트를 시작하지 않는다.
+
+### 표준 방법 조사와 미수정 항목
+
+- [Fox 2001 KLD sampling](https://dada.cs.washington.edu/research/tr/2001/08/UW-CSE-01-08-02.pdf)은 샘플 근사 오차를 다루므로 작은 posterior 분산만으로 실제 위치 정답을 보장하지 않는다. [Nav2 AMCL 공식 문서](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/)의 회복·센서 갱신 설정과 위 능동 위치 추정 논문을 기준으로 모호한 가설을 구별하는 관측을 검토해야 한다. 이 실행 뒤 파라미터를 튜닝하지 않았다.
+- [MuJoCo 공식 soft contact 설명](https://mujoco.readthedocs.io/en/stable/computation/index.html#soft-contact-model)은 접촉의 작은 침투를 허용한다. 이번 음수 높이와 strict z≥0 계약 불일치는 별도 호스트 결함이다. 향후 높이 기준점/허용 오차 계약을 명시적으로 버전화해야 하며 사후로 원본을 보정해 성공 처리하지 않는다.
+- [Python dict.get 문서](https://docs.python.org/3/library/stdtypes.html#dict.get): 기본값은 키가 없을 때 적용되므로 이미 존재하는 None에는 적용되지 않는다. optional pair 상태의 명시적 None 처리가 필요한 기록 결함으로 분류했다. 기존 frozen pair 파일은 수정하지 않았다.
+- 남은 구현 차이: legacy `in_run_drop_tilt_contact_detection=false` 메타데이터는 opt-in backend의 실제 drop/tilt 중단 구현과 불일치한다. 원래 번들/소스를 보존하고 이 한계를 명시한다. 수치가 없는 학생 기록을 일괄 LOCALIZATION으로 세는 기존 평가 helper도 이번 결과에는 사용하지 않았다.
+
+실행 뒤에는 원인 분류·원본 복구·기록만 했으며 제어기/기본 off 경로를 바꾸지 않았다. 실행 직전 변경 모듈 시험 6 passed, 그 앞 main 통합 3개 파일 92 passed. 문서/증거 최종 커밋은 JSON·해시·diff 검사 후 push하며 CI 완료를 기다리지 않는다. 독립 검토/후속 수정 전 PR #416은 draft로 유지한다.
+
+최종 전달 확인: [TensorBoard 검증](tensorboard-verification.json)에서 27개 scalar 재로딩, 성공0·wall271.7412·명령3356·호출0을 대조했다. Chrome 강 프로필에서 새 run/핀7개·HParams 지정4열을 확인했고 S2 6개를 별도 비교한 뒤 S3 화면을 남겼다. 기존 서버는 변경하지 않았다. 영상 등록 및 원본 Range HTTP206도 확인했다.
