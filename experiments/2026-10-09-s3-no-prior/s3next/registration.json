@@ -92,5 +92,14 @@
     "reserve_bytes": 10737418240,
     "all_previous_raw_preserved": true,
     "estimate_is_not_guarantee": true
+  },
+  "r1_pre_smoke_decision": {
+    "cause": "finite initial support and early resampling favor an approximate 180-degree alias; camera-corrected saved input",
+    "evidence": "../s3run/r1-support-analysis.json",
+    "seed_changed_for_smoke": false,
+    "observation_order_changed_for_smoke": false,
+    "particle_recovery_changes": false,
+    "threshold_change": false,
+    "reason": "correct support remains (593 copies of 9 unique poses), so uniform reinjection is not yet demonstrated as the appropriate remedy; first observe real host-v3 frames and active motion with unchanged v141 filter"
   }
 }
