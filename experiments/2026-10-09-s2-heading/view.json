@@ -1,0 +1,46 @@
+{
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1009-s2-heading-dev",
+  "source_sha": "b60acdca6e1c0c477d650b47717b84edb3f08a06",
+  "url": "http://127.0.0.1:6006/?runFilter=%5E1009-s2-heading-dev%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22evaluation%2Freported_success%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fdirection_within_20deg_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flateral_speed_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fwall_contact_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Frobot_contact_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D#timeseries",
+  "default_runs": [
+    "1009-s2-heading-dev/s1066-baseline",
+    "1009-s2-heading-dev/s1066-heading",
+    "1009-s2-heading-dev/s1068-baseline",
+    "1009-s2-heading-dev/s1068-heading",
+    "1009-s2-heading-dev/s1065-baseline",
+    "1009-s2-heading-dev/s1065-heading"
+  ],
+  "pinned_metrics": [
+    "evaluation/reported_success",
+    "offline/direction_within_20deg_fraction",
+    "offline/lateral_speed_fraction",
+    "offline/wall_contact_s",
+    "offline/robot_contact_s",
+    "result/wall_s",
+    "result/commands",
+    "result/model_calls"
+  ],
+  "hparams_visible_columns": [
+    "outcome",
+    "result/wall_s",
+    "result/commands",
+    "result/model_calls"
+  ],
+  "scope": "3 matched existing-seed DEV comparisons, success1/3 in both; no hardware or fresh confirmation claim",
+  "videos": [
+    {
+      "url": "http://127.0.0.1:6007/video/63dceac77fc57ed37436",
+      "page_status": 200,
+      "range_status": 206,
+      "content_range": "bytes 0-63/1886669"
+    }
+  ],
+  "verification": {
+    "verified_scalar_pairs": 114,
+    "ui_six_runs_selected": true,
+    "ui_eight_cards_pinned": true,
+    "hparams_four_columns_reapplied": true,
+    "video_playback_verified": true
+  },
+  "display_limitation": "Legacy shared HParams ignores runFilter; own six runs and metrics verified in Time Series; requested four HParams columns reapplied."
+}
