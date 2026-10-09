@@ -76,3 +76,28 @@ def test_actual_pair_driver_replaces_transit_mixture_and_keeps_dev_sigma(profile
     assert len(movement)==1 and profile_key(movement[0],False) in profiles
     assert sum(bool(movement[0].get(k)) for k in ('forward','left','turn'))==1
     assert movement[0]['left']==0 and est['std_xy_m']==.28
+
+
+def test_actual_pair_submission_attaches_heading_before_any_control():
+    from dataclasses import replace
+    from harness.zone_s3_motion_runtime import Runtime
+    from tests.test_solo_cyan_v106 import observation
+    from harness.zone_s3_dev_light import OPTION as DEV
+    config=contract.controller_config()
+    config['options'].update(s3_dev_light=DEV,pair_heading=heading.OPTION)
+    runtime=Runtime(contract.hp.resolve(contract.old.solo.MAP_ID)[0],contract.inputs()[2]['orders'],
+        contract.ROOT/contract.old.solo.CALIBRATION,contract.old.solo.CALIBRATION_SHA,seed=14201,config=config)
+    try:
+        runtime.initial_commands(0.,{r:{1:2000,3:740,4:2320,5:1320,6:1500} for r in runtime.localizers})
+        runtime.boot_finished_at=.1
+        runtime.on_frames(.2,{r:observation(.2,1,rid=r) for r in runtime.localizers})
+        pair=runtime.pair.producer
+        for own in pair.actors.values():
+            own.last_report=replace(own.last_report,x_m=-.9,y_m=-.85,yaw_rad=0.,std_xy_m=.28,std_yaw_rad=.01)
+        for rid,partner in [('r1','r2'),('r2','r1')]:
+            assert runtime.links[rid].submit(rid,'cargoX','B',partner,now=.2)['accepted']
+        endpoints=pair.team.sessions[0]['endpoints']
+        assert all(hasattr(ep.controller.driver,'s3_heading_audit') for ep in endpoints.values())
+        assert pair.record()['pair_heading']['option']==heading.OPTION
+    finally:
+        runtime.close()
