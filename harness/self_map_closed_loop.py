@@ -139,6 +139,22 @@ class RememberedGoal:
                 reason='internally_resolved' if self.streak>=5 else 'would_stop_unresolved'
                 self.stage='return' if self.goal else 'goal_unobserved'
                 self.events.append(dict(t=float(t),reason=reason,next_stage=self.stage))
+            traversal=getattr(self,'traversal',None)
+            if traversal is not None and self.stage=='return':
+                sample=dict(t=float(t),frame_id=frame_id,pose=belief['pose'],covariance=belief['covariance'],
+                    segments=observation['segments'],camera=observation['camera'])
+                match=traversal.localize(sample)
+                if match is not None and match['status']=='accepted':
+                    from harness.self_pose_graph import compose
+                    from harness.active_wall_mapping import inverse
+                    correction=compose(match['pose'],inverse(belief['pose']))
+                    self.pf.px=compose(correction,self.pf.px)
+                    # Rigid local frame correction does not shrink PF uncertainty.
+                    c,s=math.cos(correction[2]),math.sin(correction[2])
+                    R=np.array([[c,-s,0],[s,c,0],[0,0,1]])
+                    belief={**belief,'pose':match['pose'],'covariance':(R@np.asarray(belief['covariance'])@R.T).tolist()}
+            pose=np.asarray(belief['pose'])
+            self.last_belief=belief
             if self.navigator.clear_requested:
                 self.grid=ObservedGrid(robot_id,RESOLUTION);self.latest={}
                 self.navigator.clear_requested=False
@@ -155,18 +171,26 @@ class RememberedGoal:
                     t=t,frame_id=frame_id,sigma=belief['global_std_xy_m'])
             target=None if self.goal is None else self.goal['center_m']
             self.declared=bool(self.stage=='return' and self.streak>=5 and np.linalg.norm(pose[:2]-target)<=.20)
+            if traversal is not None:
+                self.declared=self.declared and traversal.at_goal_node
             if self.declared:
                 self.stage='declared';cmd=dict(t=float(t),kind='hold');pulse=None
                 self.events.append(dict(t=float(t),reason='own_B_arrival_declaration',pose=pose.tolist(),goal=self.goal))
             else:
                 if self.stage=='relocalize':twist=np.array([0.,0.,.5])
+                elif traversal is not None:
+                    twist,status=traversal.twist(pose,t)
+                    self.plan=dict(status=status,path_m=[] if traversal.route is None else [r['pose'][:2] for r in traversal.route['samples']])
                 else:
                     if self.plan is None or t-self.last_plan_t>=1.-1e-8:
                         self.plan=self.navigator.update(cm,pose,t,static_goal=target)
                         self.last_plan_t=t
                     if not self.navigator.phase and not self.navigator.failed and not self.navigator.finished:self.navigator.active_t+=.1
                     twist=issued_twist(self.navigator.command(cm,pose,self.plan,t))
-                cmd,pulse=pulse_command(twist,t,costmap=cm,pose=pose,core=self.navigator.core,points=wall,motion_model=MOTION)
+                if traversal is not None:
+                    cmd,pulse=pulse_command(twist,t,costmap=cm,pose=pose,core=self.navigator.core,points=wall,motion_model=MOTION,translation_policy='forward_only_v1')
+                else:
+                    cmd,pulse=pulse_command(twist,t,costmap=cm,pose=pose,core=self.navigator.core,points=wall,motion_model=MOTION)
             trace=dict(t=float(t),frame_id=frame_id,stage=self.stage,status=(self.plan or {}).get('status',self.stage),
                 pose=pose.tolist(),local_pose=pose.tolist(),sigma_xy=belief['global_std_xy_m'],belief=belief,
                 stable_resolved=self.streak>=5,goal=self.goal,remembered_B=self.goal,declared_goal=self.declared,

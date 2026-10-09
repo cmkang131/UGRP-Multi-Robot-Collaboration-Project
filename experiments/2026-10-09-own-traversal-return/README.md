@@ -28,3 +28,9 @@
 ## 상태
 
 사전등록만 완료 예정. 오프라인 결과/물리 결과는 아직 없음.
+
+## 구현 동결 (평가 전)
+
+API: `self_map_return_repeat.attach(explorer, map_utility='remembered_goal_360_v1', return_policy='traversal_graph_v1')`. 기존 탐색 정책은 유지하고 귀환에서만 경로 그래프를 사용한다. 새 옵션 외 `translation_policy=forward_only_v1`은 해당 귀환 내부에서만 선택; 다른 호출 기본 off. `.05m` waypoint 도착/`.12m/s` 전진은 기존 follower 값, 정면 정렬 10°는 egomap50 frontal 관측 허용값을 재사용하며 카메라 반시야각 이내다. 새 수치 적합 없음. 기존 도착 수치에 더해 B 노드 정합·경로 수행을 요구하며, 정합 실패/단절을 B blacklist→일반 frontier로 바꾸지 않는다.
+
+17개 관련 시험 통과(현재까지), 기존 egomap43 trace/particles/RNG 골든 bytes 동일. 회전/이동 명령의 실제 횡축 결합은 모션 모델 그대로다. 기본 off의 반환 객체는 접근하지 않으며 추가 출력 키도 없다. 실제 suffix 실행은 오프라인 관문 통과 후에만 허용한다.

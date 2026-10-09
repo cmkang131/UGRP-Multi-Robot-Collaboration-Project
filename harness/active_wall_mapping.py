@@ -43,19 +43,21 @@ def inverse(p):
     return a
 
 
-def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=(),motion_model='off'):
+def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=(),motion_model='off',translation_policy='off'):
     """Finite calibrated motion lattice approximates a 0.2s twist request.
 
     Select nearest endpoint in SE(2), yaw scaled by wheelbase .24m. Include zero.
     Every candidate is projected using its actual calibration curve, not M1 gain.
     """
     twist=np.asarray(twist,float)
+    if translation_policy not in ('off','forward_only_v1'):raise ValueError('UNKNOWN_TRANSLATION_POLICY')
     if twist.shape!=(3,) or not np.isfinite(twist).all():raise ValueError('FINITE_TWIST_REQUIRED')
     target=twist*.2
     scale=np.array([1.,1.,.24])
     best=(float(np.linalg.norm(target*scale)),None)
     for key,p in selected_model(motion_model)['profiles'].items():
         if not key.startswith('0:') or p['times'][-1]>.2+1e-8:continue
+        if translation_policy=='forward_only_v1' and p['axis']!='turn' and not (p['axis']=='forward' and p['u']>0):continue
         end=response(p,.2)
         if costmap is not None and not all(costmap.pose_clear(compose(pose,response(p,s))) for s in np.arange(0,.20001,.025)):
             continue

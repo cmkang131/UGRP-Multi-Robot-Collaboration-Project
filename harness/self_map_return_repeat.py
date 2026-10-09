@@ -5,10 +5,16 @@ from harness.active_navfn_start import StartCycleNavigator
 OPTION='remembered_goal_360_v1'
 
 
-def attach(explorer,*,map_utility='off',seed=49001):
-    if map_utility=='off':return explorer
+def attach(explorer,*,map_utility='off',seed=49001,return_policy='off'):
+    if map_utility=='off':
+        if return_policy!='off':raise ValueError('RETURN_POLICY_REQUIRES_MAP_UTILITY')
+        return explorer
     if map_utility!=OPTION:raise ValueError('UNKNOWN_MAP_UTILITY')
-    return Return360(explorer,seed=seed)
+    controller=Return360(explorer,seed=seed)
+    if return_policy!='off':
+        from harness.own_traversal_graph import attach as attach_traversal
+        return attach_traversal(controller,return_policy=return_policy)
+    return controller
 
 
 class Return360(RememberedGoal):
