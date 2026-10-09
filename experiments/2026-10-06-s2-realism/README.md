@@ -6289,3 +6289,29 @@ Native TensorBoard는 후보9뷰만 새 snapshot `1008-s2-beamskip-v57`으로 �
 재변환하지 않았다. 18뷰33,637값을 원본 요약→event→서버 API로 대조했고 Chrome 강의
 s1060 off/on·핀5개·seed열·RMSE/NEES 표시를 확인했다. 스크린샷 저장 호출은 timeout으로 미완료다.
 [TensorBoard 비교](http://127.0.0.1:6006/?runFilter=%5E%28%3F%3A1008-s2-beamskip-v57%2Fs.%2A-on%7C1008-s2-sensor-consistency-v56%2Fs.%2A-off%29#timeseries).
+
+## s2v58 — 구별 특징 능동 관측: 조사·사전등록 (결과 전)
+
+사용자 2026-10-09 선택: 능동 관측. 감독의 “너무 심하게는 하지 말고”를 적용해
+20 SIM초 간격, 실행당 최대5회, ±45/90° 제자리 회전만 허용한다. 이동/우회·팔 자세 변경은 없다.
+추가 시간은 각 동작 시작 전에 왕복 펄스·정착·관측 시간을 예약해 실행 전체의10% 이하로 제한한다.
+하중 시 같은35 회전 펄스만 쓰고, 자기 명령 팔/상자 형상·추정 불확실성으로 벽 위험을 검사해 위험 후보는 제외한다.
+
+### 참고 자료와 적용 경계
+- [Burgard/Fox/Thrun 1997, Active Mobile Robot Localization](https://publications.ri.cmu.edu/storage/publications/pub_files/pub1/burgard_w_1997_1/burgard_w_1997_1.pdf), §3.2–3.3: 행동 후 기대 엔트로피를 최소화한다. §4의 센서 방향 선택에 대응한다.
+- [Fox/Burgard/Thrun 1998, Active Markov Localization for Mobile Robots](https://doi.org/10.1016/S0921-8890(98)00049-9): 같은 계열의 확장 논문. 이번 DOI 원문 접속은 실패했으므로 수식 확인은 위 공개1997 원문으로 한정한다.
+- [Zhang/Kaess/Singh 2016](https://www.cs.cmu.edu/~kaess/pub/Zhang16icra.html): 퇴화 축의 검출·분리. 임의 주축비 문턱을 만들지 않고, 기존 [ROS AMCL pf.c](https://github.com/ros-planning/navigation/blob/f44bb1fc/amcl/src/amcl/pf/pf.c)의 선택적 재샘플링 기준 ESS<N/2만 트리거로 사용한다. 주축비는 기록만 한다.
+- 구현 적응: 현재 PF를 기존512 결정론적 가중 표본으로 요약하고, 정적 지도의 바닥 경계 교차·문 관측을 유한 관측 범주로 계산한다. 동일 색 코너를 지도 ID로 구별하지 않는다. 거리/방위 잡음·random 성분과 상태 bin은 기존 값을 쓴다. 새 검출기·관측 우도·재샘플링 수정은 없다.
+
+`active_localization=discriminating_views_v1` 기본off. 기존 시작 전용 `start_localization=active_markov_v1`과 구분한다.
+v139(no prior)+새 옵션만 비교하며 미채택s2v55–57은 켜지 않는다. ESS2.17/100k는 s2v57 후보 첫 갱신 수치로,
+원본v139 수치와 합치지 않는다. 자기지도 egomap50/51 문 엔티티는 참고만 하며 코드 의존하지 않는다.
+
+[동결 사전등록](active-observation-registration.json): 동일9건의 봉인된 v56 baseline 입자·명령 자료로
+ESS 시점/선택 후보/기대 정보량/안전·시간 제한을 검증한다. s1060에서124.8초 전 실제 허용 후보가 있어야 한다.
+기록에 없는 새 시점의 RGB·fix·RMSE 개선은 오프라인에서 주장하지 않는다. off는 같은 함수·난수 상태·출력을 보존한다.
+관문 통과 후 s1060 재현1회→새1062/1063/1064 각1회, 잠금+ugrp_session, dev_light, GT평가만.
+1062–64의 과거 계획은 미실행이며 새 실제 실행으로 등록한다. 성공 판정은 기존evaluate 그대로다.
+같은 실제 물리 실패2회면 남은 실행은 제외 사유를 남기고 멈춘다. 물리 전 소스 SHA를 고정한다.
+ENOSPC는 HOST_ERROR, raw예산4GiB, 모델 호출0. 이번 오프라인 관문은 행동 선택 타당성으로,
+기존s2v56의 위치정확도 관문 통과로 표현하지 않는다.
