@@ -92,3 +92,23 @@ def test_default_off_actual_v140_runtime_bytes_and_rng():
         assert data==json.dumps(r.record()).encode()
         assert rng==r.pose.provider.loc._pf.rng.bit_generator.state
     finally:r.close()
+
+
+def test_calibrated_homography_measures_rotation_without_command_or_truth(monkeypatch):
+    import cv2
+    from harness import vision_loc_protocol as vp
+    K=np.array([[500.,0,320],[0,500.,240],[0,0,1.]])
+    monkeypatch.setattr(vp,'load_vis3',lambda:(NS(mp=NS(K_INV=np.linalg.inv(K),undistort=lambda x:x)),))
+    rng=np.random.default_rng(2)
+    image=np.zeros((480,640,3),np.uint8)+40
+    for x,y in rng.integers([30,30],[610,450],size=(150,2)):
+        cv2.rectangle(image,(x-3,y-3),(x+3,y+3),(220,220,220),-1)
+    cm=NS(_rot=np.array([[0.,0.,1.],[-1.,0.,0.],[0.,-1.,0.]]))
+    yaw=math.radians(4.);c,s=math.cos(yaw),math.sin(yaw)
+    body=np.array([[c,-s,0],[s,c,0],[0,0,1.]])
+    h=K@cm._rot.T@body.T@cm._rot@np.linalg.inv(K)
+    moved=cv2.warpPerspective(image,h,(640,480))
+    result=m.yaw_measurement(image,moved,cm,{}, {})
+    assert result['status']=='measured' and result['inliers']>=6
+    assert abs(result['delta_yaw']-yaw)<=3*result['sigma_yaw']
+    assert result['delta_yaw']>0

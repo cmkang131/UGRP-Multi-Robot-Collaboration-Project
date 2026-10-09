@@ -1,8 +1,8 @@
 """Own-RGB feedback envelope for optional S2 active rotations, default off.
 
 Nav2 Spin (jazzy spin.cpp 110--139) accumulates measured relative yaw and
-reserves stopping distance. Here the feedback is calibrated ground-plane LK
-and rigid SE2 (existing Seegmiller pipeline), not TF, PF yaw or issued yaw.
+reserves stopping distance. Feedback is calibrated RGB homography rotation,
+not TF, PF yaw or issued yaw. See the recorded rejected ground-LK candidate.
 Finite PWM pulses cannot decelerate continuously: reserve a complete pulse
 including its coast, and cancel this optional action if it will not fit.
 The confidence envelope is an empirical safeguard, not a formal plant bound.
@@ -10,14 +10,17 @@ The confidence envelope is an empirical safeguard, not a formal plant bound.
 import copy
 import math
 import numpy as np
+import cv2
 
 from harness.zone_solo_cyan_bias_tempering import closure
-from harness.zone_solo_cyan_progress_noise import pair, PARAMS as FLOW
-from harness.zone_solo_cyan_flow_fusion import pitch_uncertainty
+from harness.zone_solo_cyan_progress_noise import PARAMS as FLOW
+from harness.zone_solo_cyan_flow_fusion import pitch_camera, PARAMS as PITCH
 from harness.zone_solo_cyan_pulse_cal import profile_key
 
-OPTION = 'ground_yaw_bound_v1'
+OPTION = 'rgb_homography_bound_v1'
 PARAMS = dict(max_abs_deg=90., confidence_sigma=3.,
+              homography_ransac_px=3., homography_confidence=.995,
+              homography_max_iterations=2000,
               frame_max_age_s=FLOW['before_max_age_s'],
               uncertainty_accumulation='sum of interval sigma, no independence assumption',
               unknown_action='cancel optional rotation; hold, then mission replan',
@@ -26,16 +29,72 @@ PARAMS = dict(max_abs_deg=90., confidence_sigma=3.,
 
 
 def yaw_measurement(before, after, cm, pose, table):
-    obs = pair(before, after, cm, pose, table, metric_observation=True)
-    if obs['status'] != 'measured':
-        return obs
-    # Reuse the existing conservative +/-2.8deg common and +/-0.9deg
-    # independent pitch model; unlike slip's radial-only correction, retain
-    # its yaw component here. No camera/pose truth or online calibration.
-    uncertain = pitch_uncertainty(obs, cm)
-    return dict(status='measured', delta_yaw=float(obs['delta'][2]),
-                sigma_yaw=math.sqrt(max(0., uncertain['covariance'][2][2])),
-                inliers=obs['inliers'], cells=obs['cells'])
+    """Calibrated homography rotation, all cheirality-valid solutions bounded.
+
+    OpenCV tutorial demos 3/4: R,t,n decomposition also accounts for the eye
+    camera's lever-arm translation. Never assume an optical-centre rotation.
+    A floor colour classifier is NOT used to suppress feature corners.
+    Ambiguous rotation solutions widen the interval instead of picking the
+    one nearest the command or a ground-truth heading.
+    """
+    from harness import vision_loc_protocol as vp
+    from harness.zone_solo_cyan_scene_change import cyan
+    vl=vp.load_vis3()[0];K=np.linalg.inv(vl.mp.K_INV)
+    images=[vl.mp.undistort(cv2.cvtColor(x,cv2.COLOR_RGB2BGR)) for x in (before,after)]
+    gray=[cv2.cvtColor(x,cv2.COLOR_BGR2GRAY) for x in images]
+    masks=[cv2.erode(((g>10)&~cyan(im)).astype(np.uint8),np.ones((7,7),np.uint8))*255
+           for im,g in zip(images,gray)]
+    points=cv2.goodFeaturesToTrack(gray[0],maxCorners=FLOW['max_corners'],
+        qualityLevel=FLOW['quality'],minDistance=FLOW['min_distance_px'],mask=masks[0],blockSize=7)
+    unknown=dict(status='unknown_texture')
+    if points is None:return unknown
+    cfg=dict(winSize=(FLOW['lk_window_px'],)*2,maxLevel=FLOW['lk_pyramid_levels'],
+        criteria=(cv2.TERM_CRITERIA_EPS|cv2.TERM_CRITERIA_COUNT,30,.01))
+    nxt,ok,_=cv2.calcOpticalFlowPyrLK(gray[0],gray[1],points,None,**cfg)
+    if nxt is None:return unknown
+    back,ok2,_=cv2.calcOpticalFlowPyrLK(gray[1],gray[0],nxt,None,**cfg)
+    if back is None:return unknown
+    p,q=points[:,0],nxt[:,0];xy=np.rint(q).astype(int)
+    inside=(xy[:,0]>=0)&(xy[:,0]<640)&(xy[:,1]>=0)&(xy[:,1]<480)
+    good=inside&ok.ravel().astype(bool)&ok2.ravel().astype(bool)&(abs(p-back[:,0]).max(1)<FLOW['fb_max_px'])
+    good[inside]&=masks[1][xy[inside,1],xy[inside,0]]>0
+    p,q=p[good],q[good]
+    if len(p)<FLOW['min_tracks']:return {**unknown,'tracks':len(p)}
+    h,inliers=cv2.findHomography(p,q,cv2.RANSAC,PARAMS['homography_ransac_px'],
+        maxIters=PARAMS['homography_max_iterations'],confidence=PARAMS['homography_confidence'])
+    if h is None or inliers is None:return dict(status='unknown_homography')
+    use=inliers.ravel().astype(bool);p,q=p[use],q[use]
+    if len(p)<FLOW['min_inliers'] or use.mean()<FLOW['min_inlier_fraction']:
+        return dict(status='unknown_homography_consensus',inliers=len(p))
+    cw,ch=FLOW['cell_size_px'];cells=len(set((int(x)//cw,int(y)//ch) for x,y in p))
+    if cells<FLOW['min_cells']:return dict(status='unknown_spatial_support')
+    _,rotations,translations,normals=cv2.decomposeHomographyMat(h,K)
+    a=cv2.undistortPoints(p[:,None,:],K,None);b=cv2.undistortPoints(q[:,None,:],K,None)
+    possible=cv2.filterHomographyDecompByVisibleRefpoints(rotations,normals,a,b)
+    # Pure rotations have a zero normal and no planar cheirality restriction.
+    ids=[i for i,n in enumerate(normals) if np.linalg.norm(n)<1e-8]
+    if possible is not None:ids+=list(np.asarray(possible).ravel())
+    ids=sorted(set(ids))
+    if not ids:return dict(status='unknown_homography_cheirality')
+    angles=[]
+    for i in ids:
+        # Fixed mount common uncertainty; differential pitch conservatively
+        # enters below as an additional interval, not a discarded direction.
+        for pitch in (-PITCH['pitch_common_bound_deg'],0.,PITCH['pitch_common_bound_deg']):
+            rotation=pitch_camera(cm,math.radians(pitch))._rot
+            body=rotation@rotations[i].T@rotation.T
+            angles.append(math.atan2(body[1,0],body[0,0]))
+    angles=np.unwrap(angles);lo,hi=float(min(angles)),float(max(angles))
+    reproj=cv2.perspectiveTransform(p[:,None,:],h)[:,0]
+    residual=float(np.sqrt(np.mean(np.sum((reproj-q)**2,axis=1))))
+    # 1px feature error, observed reprojection error and differential pitch.
+    # Correlation is not divided by sqrt(feature count).
+    pixel_sigma=max(FLOW['feature_pixel_sigma'],residual)/min(K[0,0],K[1,1])
+    pitch_sigma=math.radians(PITCH['pitch_independent_bound_deg'])*math.sqrt(2/3)
+    sigma=math.hypot(pixel_sigma,pitch_sigma)+(hi-lo)/(2*PARAMS['confidence_sigma'])
+    return dict(status='measured',delta_yaw=(hi+lo)/2,sigma_yaw=sigma,
+        inliers=len(p),cells=cells,solutions=len(ids),solution_yaws_deg=np.degrees(angles).tolist(),
+        reprojection_rms_px=residual)
 
 
 class RotationEnvelope:
@@ -129,7 +188,7 @@ def attach(runtime, *, active_rotation_guard='off'):
         try:
             measurement = yaw_measurement(anchor[1], last[1], state['cm'],
                                            state['pose'], runtime.flow.table)
-        except (ValueError, np.linalg.LinAlgError, FloatingPointError):
+        except (ValueError, np.linalg.LinAlgError, FloatingPointError, cv2.error):
             measurement = dict(status='unknown_numeric')
         audit['events'][-1]['observations'].append(dict(t=now, from_t=anchor[0], **measurement))
         if not state['guard'].update(measurement):
