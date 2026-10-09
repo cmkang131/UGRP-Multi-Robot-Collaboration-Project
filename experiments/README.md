@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-10-09 연속 목표 RouteMap P1](2026-10-09-goal-route-continuous/README.md): egomap56/57, main+공통v145 heading host 연결·38시험/off동일. 등록55001–55009 전부tape/scene 기하 HOST_ERROR, 유효물리0·제외0·재실행0. 구간거리/시간/귀환 미측정,기존고정테이프표와단일문기하 차이 기록.
+
 - [2026-10-09 목표 지향 RouteMap P0](2026-10-09-goal-route-p0/README.md): egomap55,물리0. 버그3건·23시험/off동일. 경기장대조7/7→7/7,위생0/6(제외0),합성pitch3/3(664/25395),색게이트거짓1/1. 누적32002 반영64→876·덮음64.7→74.2%이나RMSE악화. P1-b 9seed 등록만,감독확인대기.
 
 - [2026-10-09 teach/repeat 새 DEV 사전등록](2026-10-09-teach-return-dev/README.md): egomap54,54001–54004 각1회 사전등록. 저장49002 handoff24프레임 예외0·23명령/belief byte동일,첫정합unobservable. 21시험/off동일,seed54001은사용자설계변경으로중단(결과분모제외),나머지3개미실행. eg53 HOST_ERROR2건 별도 보존.
