@@ -1,6 +1,6 @@
 # S3 no-prior 연결과 첫 3대 DEV 스모크 — 실행 전 계획
 
-고정일: 2026-10-09. 사용자/감독 지시 `s3go`. **아직 구현·물리 실행·수렴/배달 검증 전**이다.
+계획 고정: `6f675569` (2026-10-09). 사용자/감독 지시 `s3go`. v141 의존 merge는 `eaf02cfe`. 아래 연결 구현은 오프라인 검증 중이며 **물리 실행·수렴/배달 검증 전**이다.
 
 ## 선행 상태와 소스
 
@@ -33,4 +33,24 @@
 
 ## 남은 구현 전 확인
 
-기존 S3의 pair provider도 시작 prior를 쓰는지 확인하고 모든 로봇 경로에서 제거해야 한다. v140 solo만 바꾸고 pair의 dock prior를 남긴 실행은 이 계획을 충족하지 않는다. 첫 화물 구성과 CI 대기 정책은 감독에게 확인 요청했으며, 실행 전 README에 최종 결정을 명시한다.
+기존 pair에도 dock prior가 있음을 확인했다. 새 pair 생성자는 prior 호출 없이 각 로봇의 S2 위치 필터를 그대로 연결한다. 기존 v107/v108 코드와 일반 provider 등록은 수정하지 않는다. 첫 구성은 혼합 빔 1개(r1/r2)와 cyan 1개(r3), 모두 B로 고정했다. 감독이 #399와 #394를 각각 06:35/06:40 UTC에 병합한 원격 상태를 확인했으며 이 작업에서는 병합 명령을 실행하지 않았다.
+
+
+## v142 실행 계약 및 구현 차이
+
+- 새 `zone-s3-no-prior-v142` / workflow `7.35.0`: main과 열린 PR 전체의 최대 v141/7.34.0을 확인한 뒤 예약. [registration.json](registration.json)에서 **seed 14201 한 번만** 허용한다. 시나리오 카탈로그의 14202/14203은 공통 리더 순환 검증용 비활성 목록이며 추가 실행 허가는 아니다.
+- 세 개의 분리된 v141 전역 필터(최대 100000 입자)가 자기 RGB로 초기 능동 pan 관측을 수행한다. 첫 주행 제안까지의 시작 관측은 문 예약 밖에서 수행하며, 그 첫 제안은 발행하지 않는다. r1/r2는 같은 필터·자기 서보 이력을 pair로 이어서 사용하고 r3는 S2 단독 운반을 이어 간다. GT나 peer pose를 필터 초기화에 쓰지 않는다.
+- S2의 v7 wheel/카메라/servo stiffness/fine pulse를 재사용하되 모든 로봇이 움직이므로 idle robot freeze는 off다. 기존 pair의 v98 명령/하중 모델은 v7 빔 운반에서 **미검증**이다. 첫 smoke에서 정지/미끄러짐/파지 실패가 나면 해당 차이를 원인 후보로 보존하며 성공을 가정하지 않는다.
+- raw 6 GiB, wall 10800 s, SIM 1800 s. 실행 전 최소 16 GiB(예산+10 GiB) 여유 공간, 실행 중 10 GiB 경계와 raw 예산을 검사한다. ENOSPC를 HOST_ERROR로 기록하고 원본을 삭제하지 않는다.
+- 수렴은 S2의 자체 σxy≤0.05m를 재사용하고, 사후 정확성은 XY≤0.25m·yaw≤15°를 별도로 판정한다. 문 상태 불변+대기 120 s를 사후 교착 후보로, 음의 robot-robot 접촉 간격을 충돌로 세며 1초 이하 간격은 같은 episode다.
+- 실제 로봇 기울기는 기존 S2 한계, 한 번 0.08m 이상 오른 화물이 gripper 해제 명령 없이 0.035m 이하로 내려오면 낙하로 실행만 중단한다. 이 별도 물리 감독은 위치/목적지/행동을 제어기로 반환하지 않는다. 배달은 제어 종료 후 기존 referee로 판정한다.
+- 최초 오프라인 검사에서 scenario 1-seed 리더 순환 거부와 pair 생성자 dependency/등록 wrapper 연결 오류를 발견해 수정했다. 물리 smoke 실패로 합산하지 않는다.
+
+## 표준 방법과 확인한 출처
+
+[Active Mobile Robot Localization (Burgard/Fox/Thrun, IJCAI 1997)](https://publications.ri.cmu.edu/storage/publications/pub_files/pub1/burgard_w_1997_1/burgard_w_1997_1.pdf)의 전역 균등 belief 및 기대 불확실성 감소 관측 선택을 구현한 기존 S2 경로를 그대로 사용한다. [OpenCV homography 문서](https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html)를 확인했으며 기존 v141 자기 영상 회전 상한을 변경하지 않는다. 문 통행은 #399의 고정 enum 순서를 재사용한다. 새로운 위치 추정 알고리즘이나 GT 기반 보정은 추가하지 않는다.
+
+
+## s2v59 병행 결과 재점검 (2026-10-09 15:54 KST)
+
+완료 원본 `outputs/s2-realism-99d81d8c-s1065-v141-graduation/result.json`은 STAGE_FAILED, 미들기·미배달이다. 시작 자체 수렴 6.95 s, 그 추정의 사후 XY 오차 0.068 m·yaw 1.20°로 초기 전역 위치 추정 실패는 아니었다. 최종 search, POSE_UNCERTAIN 1003·CYAN_NOT_UNIQUELY_VISIBLE 36, 능동 회전 event 0이며 이후 검색/위치 추정 유지 문제가 남는다. s1066은 사후 배달 성공, s1067/1068은 아직 결과 없음(완료로 합산 금지). S3의 cyan도 P1-1이므로 같은 탐색 실패 위험을 명시한다. S2 전체 졸업으로 승격하지 않고, 예정된 S3 1회는 통합 실패 분류용 DEV로만 유지한다. 결과를 보고 S2/S3 파라미터를 바꾸지 않았다.
