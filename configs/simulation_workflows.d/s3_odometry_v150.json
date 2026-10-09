@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-odometry-v150",
+      "version": "7.43.0",
+      "purpose": "S3 공통 회전 보정·pre-GO 재대기 DEV1회",
+      "entry": "scripts/run_s3_odometry.py",
+      "runner": "scripts.run_s3_odometry",
+      "docs": "experiments/2026-10-09-s3-no-prior/s3fix5/README.md",
+      "requires": "committed SHA; explicit option; own exclusive SIM lock; one finite smoke",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

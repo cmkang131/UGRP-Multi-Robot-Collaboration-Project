@@ -66,3 +66,21 @@ def test_actual_provider_records_same_table_for_planning_prediction_and_noise(st
         assert np.linalg.norm(pf.px[:,:2].mean(0)-p['mean_delta'][:2])<.00005
         before=pf.px.copy();pf.predict_to(.4);assert np.array_equal(before,pf.px)
     finally:r.close()
+
+
+def test_v150_config_actual_ports_and_pre_go_wait(tmp_path,monkeypatch):
+    from harness import zone_s3_odometry_contract as contract
+    from tests import s3_stage_probe as probe
+    monkeypatch.setattr(probe,'contract',contract)
+    report=probe.sweep(tmp_path,monkeypatch)
+    assert report['error_count']==0,report['errors']
+    b=contract.bundle('a'*40);contract.verify(b)
+    from harness.zone_s3_motion_runtime import Runtime as S3
+    r=S3(contract.hp.resolve(b['map_id'])[0],contract.inputs()[2]['orders'],
+        contract.ROOT/b['calibration'],b['calibration_sha256'],seed=14201,config=b['controller_config'])
+    try:
+        for own in r.localizers.values():
+            model=own.record()['pulse_motion_model']['model']
+            assert own.pulse_profiles==model['profiles']
+            assert model.get('pulse_odometry',{}).get('option','off')==b['options']['pulse_odometry']
+    finally:r.close()
