@@ -65,3 +65,19 @@ S2에서 y=-1.675, half-length=1.475이다. 즉 아래쪽 1.025m 구간은 mappi
 바닥 regions는 동일하다. 자기 지도에서 이 벽이 없는 것을 전부 미관측 실패로 해석하면 안 된다.
 벽/영역 해시와 원본은 r2의 `source-environment-audit.json`에 기록했다. 비교는 요청한 기록 그대로
 계속하되 **동일 물리 경기장 통제 실험으로 표현하지 않는다**. 운반 통합 전 동일 장면 비교가 남는다.
+
+## 최종 봉인과 CI 선택 의존성
+
+`b9a76350`의 r3 14조건/82,326 frame-instance가 모두 완료되었다. 기준 7조건의 pose 7필드는
+최대 수치 차이0 및 직렬화 해시 동일, 모든 예측 출력 해시 일치, 최종 HOST_ERROR 0이다.
+재생이 끝나고 세션 종료를 확인한 뒤에만 아래 시험/평가 보조 스크립트를 추가했다.
+
+원격 CI 37890979958은 6/8 shard의 실제 speedup 생성자 시험에서 MuJoCo 미설치로 실패했다.
+기존 S2 시험과 [pytest 공식 선택 의존성 처리](https://docs.pytest.org/en/stable/how-to/skipping.html#skipping-on-a-missing-import-dependency)를 확인해
+해당 시험 안에서만 `importorskip('mujoco')`를 사용한다. 설치된 Mac 환경에서는 그대로 실제
+생성자를 검사하고, 미설치 환경에서도 다른 13개 시험은 실행한다. 시뮬레이터 world/step을
+생성하는 시험이 아니며, 필터·센서·관문·등록 입력은 변경하지 않았다.
+
+추가 평가 스크립트는 봉인 결과만 읽는다. 공통 벽 coverage, 상한 없는 벽 거리, 원본 GT
+궤적의 grid support, 실제 후보/기준 feature 수, 자기 벽+관측지원 GT 벽의 true-pose 점수를
+평가 전용으로 남긴다. 마지막 두 항목을 새 수렴/운반 성공으로 세지 않는다.

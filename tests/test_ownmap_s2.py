@@ -118,6 +118,10 @@ def test_tiled_likelihood_matches_original_on_partial_edges_and_doors():
 
 
 def test_real_constructor_under_registered_speedups_uses_only_own_geometry():
+    # The exact-speedup installer imports the optional drive kernel even when
+    # this test never creates or steps a physics world. Lightweight CI has no
+    # MuJoCo; keep the other thirteen adapter/evaluator tests active there.
+    pytest.importorskip('mujoco', reason='registered speedup installer imports optional MuJoCo')
     from harness import zone_s2_unknown_start_contract as c
     from harness import zone_solo_cyan_contract_v106 as base
     from harness.zone_pair_highpose_exact_speedups import install
