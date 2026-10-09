@@ -16,6 +16,25 @@ from scripts import run_s2_active_observation as previous
 from scripts.run_final_environment_checks import check_source, write
 
 
+def queue_receipt(records):
+    """A momentarily free lock never permits overtaking the assigned queue."""
+    s2=next((r for r in reversed(records) if r.get('purpose') ==
+             's2v59 preregistered six-seed DEV and one pair throughput'),None)
+    if s2 is None:raise ValueError('S2V59_NOT_RELEASED')
+    later=[r for r in records if r['released_unix']>s2['released_unix']]
+    s3=next((r for r in later if r.get('purpose')=='S3 v142 single mixed no-prior smoke'),None)
+    if s3 is None:raise ValueError('S3_NOT_RELEASED')
+    ego=[]
+    for seed in (54001,54002,54003,54004):
+        row=next((r for r in later if r.get('purpose')==f'egomap54 teach/repeat seed{seed}'
+                  and r['released_unix']>s3['released_unix']),None)
+        if row is None:raise ValueError(f'EGOMAP54_SEED_{seed}_NOT_RELEASED')
+        ego.append(row)
+    speed=next((r for r in later if r.get('purpose')=='simspeed bounded ABBA (research first)'),None)
+    if speed is None:raise ValueError('SIMSPEED_NOT_RELEASED')
+    return dict(s2=s2,s3=s3,egomap54=ego,simspeed=speed)
+
+
 def runtime_factory(b, clouds, index):
     if b['options'].get('heading_mode', 'off') == 'off':
         from scripts.run_s2_graduation59 import runtime_factory as original
@@ -59,6 +78,11 @@ def main():
     expected = agent_lock.DEFAULT_ROOT.parent / f's2-heading-{a.expected_source_sha[:8]}-s{a.seed}-v143'
     if not a.output.is_absolute() or a.output.resolve() != expected.resolve() or a.output.exists():
         raise ValueError('new primary output required')
+    predecessors=queue_receipt([json.loads(s) for s in
+        (agent_lock.DEFAULT_ROOT/'released.jsonl').read_text().splitlines()])
+    import shutil
+    if shutil.disk_usage(a.output.parent).free < 10*1024**3:
+        raise OSError(28,'ENOSPC preflight: less than 10 GiB')
     held = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch='codex/s2-heading',
         purpose=f'heading matched DEV s{a.seed}', pid=os.getpid(), expected_minutes=45, timing_sensitive=True)
     undo = None
@@ -72,7 +96,7 @@ def main():
         released = agent_lock.release(agent_lock.DEFAULT_ROOT, owner='codex')
         if a.output.exists():
             write(a.output/'lock.json', dict(acquired=held, released=released,
-                status_after=agent_lock.status(agent_lock.DEFAULT_ROOT)))
+                status_after=agent_lock.status(agent_lock.DEFAULT_ROOT),predecessors=predecessors))
 
 
 if __name__ == '__main__':

@@ -154,3 +154,15 @@ def test_time_denominator_respects_early_hold_and_ignores_arm():
     assert q['lateral_s']==pytest.approx(.04)
     assert q['moving_s']==pytest.approx(.14)
     assert q['lateral_fraction_moving']==pytest.approx(2/7)
+
+
+def test_queue_requires_all_predecessors_even_between_free_lock_intervals():
+    from scripts.run_s2_heading import queue_receipt
+    names=['s2v59 preregistered six-seed DEV and one pair throughput',
+           'S3 v142 single mixed no-prior smoke',
+           *[f'egomap54 teach/repeat seed{s}' for s in (54001,54002,54003,54004)],
+           'simspeed bounded ABBA (research first)']
+    records=[dict(purpose=p,released_unix=i+1) for i,p in enumerate(names)]
+    for n in range(len(records)):
+        with pytest.raises(ValueError):queue_receipt(records[:n])
+    assert len(queue_receipt(records)['egomap54'])==4
