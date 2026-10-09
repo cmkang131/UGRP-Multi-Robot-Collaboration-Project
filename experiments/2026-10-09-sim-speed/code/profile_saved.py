@@ -9,13 +9,13 @@ import sys
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 RAW = Path('/Users/changmin/projects/ugrp/outputs/simspeed-20261009')
-SOURCE = Path('/Users/changmin/projects/ugrp/outputs/teach-capture-v1/seed49001')
+SOURCE = Path('/Users/changmin/projects/ugrp/outputs/own-map-return-repeat-v1/seed49001')
 
 
 def main():
     import numpy as np
     from PIL import Image
-    from scripts.run_teach_capture import old, make_controller
+    from scripts import run_own_map_return_repeat as old
     from harness.active_camera import SEARCH
     from harness.active_wall_vision import observe
     frames = [json.loads(line) for line in (SOURCE/'robots/r3/frames.jsonl').read_text().splitlines()][:61]
@@ -24,8 +24,8 @@ def main():
         active_loop='information_gain_v1', seed=49001, active_recovery='nav2_frontier_v1',
         navigation_map='public_ros_v8', motion_model='s2_pulse_v122_rotL_v1')
     old.base.install_profile(explorer.memory.self_map, profile='egomap27_wide')
-    controller = make_controller(explorer, seed=49001)
-    out = RAW/'saved-profile'
+    controller = old.controller(explorer, seed=49001)
+    out = RAW/'saved-egomap49-profile'
     out.mkdir(parents=True, exist_ok=False)
     prof = cProfile.Profile()
     matches = []
@@ -44,7 +44,7 @@ def main():
                 controller.command(expected[frame['frame_id']]['command'])
                 line = json.dumps(trace, ensure_ascii=False, allow_nan=False)+'\n'
                 stream.write(line)
-            matches.append(trace == expected[frame['frame_id']])
+            matches.append(line == json.dumps(expected[frame['frame_id']], ensure_ascii=False, allow_nan=False)+'\n')
     prof.dump_stats(out/'cpu.prof')
     stats = pstats.Stats(prof)
     top = sorted(stats.stats.items(), key=lambda item: item[1][2], reverse=True)[:10]
