@@ -200,7 +200,7 @@ class Probe:
         return value
 
 
-def sweep(out, monkeypatch):
+def sweep(out, monkeypatch, *, invalid_pose_cases=False):
     p = Probe(out, monkeypatch)
     from harness.zone_s3_pair_heading import approach_proposal
     from harness.zone_s3_coupled_motion import authorized
@@ -534,4 +534,48 @@ def sweep(out, monkeypatch):
         assert all(o.s3_exact_cache['option']=='posterior_content_v2' for o in p.runtime.localizers.values())
         return dict(cache='posterior_content_v2',nonfinite=False)
     p.case('final_record_serialization','r1+r2+r3',serialize)
+    if invalid_pose_cases:
+        from harness.zone_own_guards import OwnPose
+        from harness.zone_own_sweep import SweepRecheck
+        from harness.zone_s3_pose_validity import finite_record
+        now=max(p.host.now,*(o.pose.provider.loc._pf.t for o in p.runtime.localizers.values()))+20.
+        for rid in ROBOTS:
+            now += 50.
+            for label,pose in [('none',None),('nan',OwnPose(float('nan'),0.,0.,.01,.01))]:
+                now += 11.
+                def missing_pose(rid=rid,pose=pose):
+                    own=p.runtime.localizers[rid]
+                    recheck=(type(p.eps[rid].command_guard.recheck)() if rid in p.eps else SweepRecheck())
+                    assert recheck.check(now,own.guard,own.servo,{6:1500},pose,loaded=False)=='wait'
+                    p.issue(rid,dict(kind='hold'),now)
+                    assert recheck.check(now+10.,own.guard,own.servo,{6:1500},pose,loaded=False)=='blocked'
+                    p.issue(rid,dict(kind='hold'),now+10.)
+                    return dict(no_motion=True,expected='bounded wait; no pose dereference')
+                p.case('invalid_pose_'+label,rid,missing_pose)
+            def unmeasured_camera(rid=rid):
+                own=p.runtime.localizers[rid]
+                t=now+20.
+                # Exact recorded v150 failure posture, through production
+                # issue/on_command/port and delayed own-input provider.
+                for sid,pulse in {3:1072,4:2400,5:1482,6:1630}.items():
+                    p.issue(rid,dict(kind='look',pan_pulse=pulse) if sid==6 else
+                        dict(kind='arm',servo_id=sid,pulse=pulse),t)
+                old_fix=own.pose.provider.loc._pf.last_scan_t
+                own.pose.on_frame(t+2.,observation(t+2.,p.fid+100,rid=rid)[1])
+                report=own.pose.report(t+2.2)
+                assert own.pose.provider.failure is None
+                assert report.initialized and all(__import__('math').isfinite(v) for v in
+                    (report.x_m,report.y_m,report.yaw_rad,report.std_xy_m,report.std_yaw_rad))
+                assert own.pose_validity_audit['count']>0
+                assert own.pose.provider.loc._pf.last_scan_t==old_fix
+                p.issue(rid,dict(kind='hold'),t+2.2)
+                return dict(prediction_only=True,new_visual_fix=False)
+            p.case('unmeasured_posture_prediction',rid,unmeasured_camera)
+        def invalid_record():
+            original=dict(pose=[float('nan'),float('inf'),None])
+            value=finite_record(original)
+            json.dumps(value,allow_nan=False)
+            assert value['nonfinite_record_fields']==['$.pose[0]','$.pose[1]']
+            return dict(explicit_invalid_fields=2)
+        p.case('invalid_report_strict_serialization','r1+r2+r3',invalid_record)
     return p.finish()

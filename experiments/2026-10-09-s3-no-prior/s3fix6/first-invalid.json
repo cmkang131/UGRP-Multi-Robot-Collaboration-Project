@@ -1,0 +1,82 @@
+{
+  "replay": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/first-invalid",
+  "pose_row": {
+    "t": 315.5,
+    "t_est": 315.34,
+    "x": null,
+    "y": null,
+    "yaw": null,
+    "std_xy_m": null,
+    "std_yaw_rad": null,
+    "last_fix_t": null,
+    "observation_quality": {
+      "accepted": false,
+      "failure": {
+        "t": 315.3,
+        "reason": "UNMEASURED_V3_CAMERA_POSTURE: unloaded:1072,2400,1482,1630"
+      },
+      "last_fix_quality": null,
+      "informative": false,
+      "partial": false,
+      "observed_rank": null,
+      "weakest_direction_xy_yaw": null,
+      "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+    },
+    "last_scan_gate": {
+      "t": 300.4,
+      "accepted": true,
+      "informative": true,
+      "settled": true,
+      "visual_weight_update": true,
+      "absolute_fix": false,
+      "reason": "soft_weight_update",
+      "model": "ros_motion_v1",
+      "columns": 46,
+      "kl": 0.014445393063063236,
+      "odom": [
+        3.180132532174255,
+        0.24257364755708688,
+        9.02198373530737
+      ],
+      "delta": [
+        0.0032633558784604944,
+        0.005422780126685345,
+        0.23796782685650264
+      ]
+    },
+    "convergence_certificate": {
+      "option": "posterior_consensus_v1",
+      "estimate_t": 315.34,
+      "qualified": false,
+      "covariance_ok": false,
+      "all_particles_compact": true,
+      "connected_modes": null,
+      "gt_inputs": false,
+      "qualification": "posterior certificate only; accuracy requires eval_only",
+      "released_t": 315.5
+    }
+  },
+  "command_equality": {
+    "r1": {
+      "expected": 1909,
+      "generated": 1909,
+      "json_equal": true
+    },
+    "r2": {
+      "expected": 3874,
+      "generated": 3874,
+      "json_equal": true
+    },
+    "r3": {
+      "expected": 6626,
+      "generated": 6626,
+      "json_equal": true
+    }
+  },
+  "first_cause": {
+    "t": 315.3,
+    "reason": "UNMEASURED_V3_CAMERA_POSTURE: unloaded:1072,2400,1482,1630"
+  },
+  "floating_point_trace": "invalid/divide/overflow=raise; no floating point exception before provider CalibrationError",
+  "new_physics_runs": 0
+}

@@ -72,3 +72,24 @@ Do not wait for CI or merge PR #416.
 * Nav2 probability model: log accumulation and convergence-gated beam skip:
   https://api.nav2.org/nav2-rolling/html/likelihood__field__model__prob_8cpp_source.html
 * Existing independent alpha fit and provenance: ../s3fix5/README.md.
+
+## First invalid report (before candidate comparison)
+
+Exact archived replay reproduced all 12,409 issued commands. With NumPy
+invalid/divide/overflow set to raise, no floating arithmetic fault occurred.
+At 315.3 s the provider rejected the issued, unmeasured camera posture
+`unloaded:1072,2400,1482,1630`; fail-closed reporting created an uninitialized
+NaN/inf pose, released at315.5 s, and the sweep dereferenced its None conversion.
+This is a camera-availability/invalid-pose integration bug, not weight collapse.
+[Trace evidence](first-invalid.json). B skips only such unavailable measurements,
+retains normal command prediction without a fresh fix, and records would_stop.
+It never changes a camera extrinsic or supplies a saved/GT pose. Unknown provider
+failures remain hard and records explicitly carry null plus invalid-field paths.
+The None/NaN sweep takes the unchanged bounded wait, never nominal geometry.
+
+Own-map replay uses the actual frontend observation and issued-command boundary
+without navigation/virtual forecast work. The first50 off poses/covariances and
+RGB-derived contacts reproduce the raw exactly; full-run parity is required.
+This isolates the filter and avoids truncation when a counterfactual planner
+would finish early. S3 uses the complete runtime with saved issued commands.
+Neither replay is a new closed-loop physical success.
