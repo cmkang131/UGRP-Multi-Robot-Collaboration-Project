@@ -27,7 +27,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 CATEGORIES = ('physics', 'render', 'pf_update', 'posterior_summary', 'scan_match',
-              'map_insert', 'path_plan', 'graph', 'record_io', 'controller_other')
+              'map_insert', 'path_plan', 'graph', 'record_io', 'controller_other', 'setup_proof')
 
 
 def write(path, value):
@@ -98,6 +98,7 @@ def verify_inputs(raw, robots):
     used = ['bundle.json']
     for rid in robots:
         used += [f'robots/{rid}/frames.jsonl', f'robots/{rid}/commands.jsonl']
+    used += ['student_record.json'] if len(robots) > 1 else ['own-inputs.json']
     for name in used:
         assert name in manifest and sha(raw / name) == manifest[name], ('INPUT_HASH', name)
     return {name: manifest[name] for name in used}
@@ -219,6 +220,12 @@ def egomap(raw, out, timer):
     g._observe = timer.wrapper(g._observe, 'pf_update')
     timer.method(type(explorer.memory), 'finalize_pose_graph', 'graph')
     generated, state, traces, trend = [], [], [], []
+    streams = {}
+    last_snapshot = None
+    def append(name, value):
+        if name not in streams:
+            streams[name] = (out / name).open('x', buffering=65536)
+        streams[name].write(json.dumps(value, ensure_ascii=False, allow_nan=False) + '\n')
     for index, row in enumerate(frames):
         now = row['sim_time']
         with timer.span('record_io'):
@@ -233,19 +240,33 @@ def egomap(raw, out, timer):
                 traces.append(trace)
                 for issued_command in issued[round(now, 9)]:
                     controller.command(issued_command)
+            with timer.span('record_io'):
+                append('own-controller.jsonl', trace)
+                append('own-contacts.jsonl', dict(t=now, frame_id=obs['frame_id'], **detection))
+                append('frontend-covariances.jsonl', dict(t=now, frame_id=obs['frame_id'],
+                    pose=list(g.odom.pose), covariance=g.odom.covariance.tolist()))
+                revision = (g.revision, g.best, g.resamples)
+                if revision != last_snapshot:
+                    append('online-maps.jsonl', dict(t=now, frame_id=obs['frame_id'],
+                        view='online_frontend', grid=g.export(), ledger=g.ledger))
+                    last_snapshot = revision
             state.append(dict(t=now, poses=hashlib.sha256(g.poses.tobytes()).hexdigest(),
                 weights=hashlib.sha256(g.weights.tobytes()).hexdigest(),
                 pending_cov=hashlib.sha256(g.pending_cov.tobytes()).hexdigest(), rng=g.rng.bit_generator.state))
         trend.append(dict(t=now, cells=sum(len(m.cells) for m in g.maps), particles=len(g.poses),
-                          ledger=len(g.ledger), timers=timer.snapshot()))
+                          ledger=len(g.ledger), record_bytes=sum(s.tell() for s in streams.values()),
+                          timers=timer.snapshot()))
         if index % 100 == 0:
             print(json.dumps(dict(kind='egomap', frame=index, sim=now, cells=trend[-1]['cells'])), flush=True)
     with timer.span('record_io'):
+        for stream in streams.values():
+            stream.close()
         for name, value in [('commands', generated), ('traces', traces), ('state', state),
             ('route-map', controller.snapshot()), ('frontend-grid', g.export()), ('frontend-ledger', g.ledger),
             ('decisions', g.decisions), ('graphs', explorer.graphs), ('navigation', explorer.navigator.events),
             ('heading-decisions', controller.heading_host.rows), ('utility-events', controller.events)]:
             write(out / (name + '.json'), value)
+        write(out / 'all-particle-maps.json', [sorted((x, y, v) for (x, y), v in m.cells.items()) for m in g.maps])
     return dict(frames=len(trend), available_frames=len(frames), start=start, end=frames[-1]['sim_time'],
                 failure=None, trend=trend)
 
@@ -281,14 +302,14 @@ def worker(args):
             if value not in archived_ids:
                 archived_ids.append(value)
     ids = iter(archived_ids)
-    with patch('uuid.uuid4', side_effect=lambda: uuid.UUID(hex=next(ids))) if kind == 's3' else nullcontext():
+    with timer.span('setup_proof'), (patch('uuid.uuid4', side_effect=lambda: uuid.UUID(hex=next(ids))) if kind == 's3' else nullcontext()):
         result = (s3 if kind == 's3' else egomap)(args.raw, out, timer)
+    wall = time.perf_counter() - started
     if profiler:
         profiler.disable()
         profiler.dump_stats(out / 'profile.pstats')
         with (out / 'profile.txt').open('w') as stream:
             pstats.Stats(profiler, stream=stream).sort_stats('cumulative').print_stats(80)
-    wall = time.perf_counter() - started
     write(out / 'trend.json', result.pop('trend'))
     write(out / 'result.json', dict(**result, kind=kind, profile=args.profile, wall_s=wall,
         wall_per_input_sim=wall / (result['end'] - result['start']), timers=timer.snapshot(),
