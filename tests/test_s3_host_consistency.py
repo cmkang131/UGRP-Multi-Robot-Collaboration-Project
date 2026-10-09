@@ -72,13 +72,13 @@ def test_ownmap_private_proposal_and_calibration_are_isolated():
     original = functools.partial(proposal, yaw_window_deg=20.)
     grid = SimpleNamespace(_selective_proposal=original,
         odom=SimpleNamespace(driver=SimpleNamespace(profiles=profiles)))
-    c.attach_ownmap(grid, observation_consistency='effective_sqrt_alpha_v1')
+    c.attach_ownmap(grid, observation_consistency='effective_sqrt_v1')
     args = (None, np.zeros((48, 2)), None, np.zeros((1, 3)), None, None, None)
     before, after = original(*args), grid._selective_proposal(*args)
     assert all(np.array_equal(x, [-48.]) for x in before)
     assert all(np.allclose(x, [-48/np.sqrt(12)]) for x in after)
     assert profiles == base
-    assert grid.odom.driver.profiles is not profiles
+    assert grid.odom.driver.profiles is profiles
     for key, p in grid.odom.driver.profiles.items():
         assert p['mean_curve'] == base[key]['mean_curve']
         assert p['mean_delta'] == base[key]['mean_delta']
@@ -138,3 +138,53 @@ def test_archived_replay_includes_controller_pose_feedback(tmp_path, monkeypatch
     replay.replay(raw,tmp_path/'out',root,'off')
     result=json.loads((tmp_path/'out/result.json').read_text())
     assert result['frames']==2 and result['original_frontend_equal'] and result['original_proposals_equal']
+
+
+def test_ownmap_alpha_reaches_actual_cloud_covariance():
+    """Recorded consumer source: command -> callback -> own-scan GMapping Q."""
+    import math
+    from pathlib import Path
+    from types import MethodType
+    from harness.zone_s2_realism_contract_v122 import PULSE_MODEL
+    asset = json.loads((Path(__file__).parent/'fixtures/ownmap_motion_consumer_5b330946.json').read_text())
+    model = json.loads(Path(PULSE_MODEL).read_text())
+    namespace = dict(np=np, math=math, AXES=('forward', 'left', 'turn'),
+        wrap=lambda x: (x+np.pi)%(2*np.pi)-np.pi,
+        model=lambda: copy.deepcopy(model),
+        CSMOptions=lambda: SimpleNamespace(floor=lambda: np.eye(3)*1e-6))
+    for row in asset['snippets']:
+        exec(compile(row['source'], row['path']+':'+row['name'], 'exec'), namespace)
+    namespace['RaoBlackwellizedGrid'] = SimpleNamespace(propagate=namespace['propagate'])
+
+    def consumer(option):
+        g = SimpleNamespace(poses=np.zeros((2, 3)), pending_cov=np.repeat((np.eye(3)*1e-6)[None], 2, 0),
+            best=0, weights=np.full(2, .5), _selective_state=dict(previous=[0.,0.,0.], noise_frames=0),
+            _selective_proposal=functools.partial(proposal, yaw_window_deg=20.))
+        odom = object.__new__(namespace['CloudOdometry'])
+        odom.owner=g; odom.driver=namespace['PulseOdometry'](); g.odom=odom
+        odom.driver.step_callback=MethodType(namespace['_command_propagate'], g)
+        odom.advance=MethodType(namespace['_advance'], odom)
+        c.attach_ownmap(g, observation_consistency=option)
+        return g
+
+    for axis, u, loaded in [('forward', .35, False), ('turn', .35, False),
+                             ('left', .65, False), ('forward', .35, True)]:
+        pair=[consumer(option) for option in ('effective_sqrt_v1','effective_sqrt_alpha_v1')]
+        for g in pair:
+            g.odom.command(dict(t=0.,kind='initial_servo_command',pulses={'1':1400 if loaded else 2000}))
+            g.odom.command(dict(t=0.,kind='mecanum',duration_s=.65 if axis=='left' else .10,**{axis:u}))
+            g.odom.advance(.2)
+        before,after=pair
+        assert np.array_equal(before.poses,after.poses)
+        assert before.odom.driver.profiles == after.odom.driver.profiles
+        delta=after.pending_cov-before.pending_cov
+        assert np.linalg.eigvalsh(delta).min() >= -1e-15
+        if axis=='forward' and not loaded:
+            assert np.any(delta>0), 'Q must reach the cloud, not only driver covariance'
+            assert after.observation_consistency_audit['motion_noise_augmented'] == 1
+        if loaded or axis=='left':
+            assert np.array_equal(before.pending_cov,after.pending_cov)
+        pending=after.pending_cov.copy()
+        after.odom.advance(.2)
+        assert np.array_equal(pending,after.pending_cov), 'do not double-count Q'
+        assert namespace['_advance'].__globals__['motion_variance'] is namespace['motion_variance']

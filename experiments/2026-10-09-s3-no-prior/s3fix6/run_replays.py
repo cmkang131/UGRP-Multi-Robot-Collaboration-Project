@@ -8,14 +8,21 @@ RAW=Path('/Users/changmin/projects/ugrp/outputs')
 HERE=Path(__file__).parent
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--retain-from',type=Path);a=p.parse_args()
     assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()==a.expected_source_sha
     assert os.getpriority(os.PRIO_PROCESS,0)==0
     a.output.mkdir(parents=True,exist_ok=False)
     cases=[('55001',RAW/'goal-route-motion-audit-v1/seed55001','ownmap'),('55002',RAW/'goal-route-motion-audit-v1/seed55002','ownmap'),
         ('v149',RAW/'s3-sweep-b73ce193-s14201-v149','s3'),('v150',RAW/'s3-odometry-4c9eb3aa-s14201-v150','s3')]
     completed=[]
-    for option in OPTIONS:
+    if a.retain_from:
+        from replay_equivalence import retained_proof
+        proof=retained_proof(ROOT,a.retain_from)
+        (a.output/'retained-source-proof.json').write_text(json.dumps(proof,indent=2)+'\n')
+        for key in proof['receipts']:
+            (a.output/key).symlink_to((a.retain_from/key).resolve(),target_is_directory=True)
+        (a.output/'corrected-source.json').write_text(json.dumps(dict(source_sha=a.expected_source_sha))+'\n')
+    for option in (OPTIONS[-1:] if a.retain_from else OPTIONS):
         for case,raw,kind in cases:
             key=case+'-'+option;out=a.output/key
             command=[sys.executable,str(HERE/f'replay_{kind}.py'),'--raw',str(raw),'--output',str(out),'--option',option]

@@ -113,3 +113,32 @@ PID72986 was stopped immediately; no other process or lock was changed.
 The startup overlap was disclosed on PR423 ([comment6084754741](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/423#issuecomment-6084754741)). Its incomplete local directory
 and managed log are retained. All subsequent heavy probes/replays wait at
 atomic acquire; no speed claim uses this overlap.
+
+### C3 own-map consumer correction (before corrected replay)
+
+The first C3/55001 result was identical to C1 because the GMapping
+`_command_propagate` intentionally discards pulse-table Q. Editing that table
+had not changed cloud covariance. That result and the interrupted55002 arm
+are preserved in `replays-v2` but excluded as C3 evidence. Only our managed
+queue was stopped; speedctrl's owner yielded its slot and remains paused.
+
+C3 now applies the same independently fitted alpha1--alpha4 at the existing
+GMapping own-observation delta boundary, taking the elementwise maximum of
+its diagonal Q and existing diagonal GMapping Q. This preserves the old floor
+and avoids counting pulse Q twice. Callback scope comes from issued unloaded
+forward/turn profiles only; loaded/lateral intervals keep original Q. Means,
+RNG order, coefficients, thresholds, N and selection rule are unchanged.
+The actual archived PulseOdometry -> callback -> GMapping advance functions
+are a regression fixture, proving Q reaches particle pending covariance and
+that repeated-time advance, unsupported scope and other instances stay intact.
+OpenSLAM's existing delta-based noise boundary was checked directly:
+https://raw.githubusercontent.com/ros-perception/openslam_gmapping/master/gridfastslam/motionmodel.cpp
+
+The12 complete B/C1/C2 arms retain source105ffc70. Their replay scripts and
+runtime dependency bytes must match; the only shared-module change is an
+own-map C3-only branch/helper, checked by AST equivalence outside that branch.
+Corrected C3 runs use a new committed source recorded per receipt. A fresh
+`replays-v3` comparison view references immutable old results and new C3
+results; it does not overwrite or silently relabel invalid results. This is
+a consumer wiring repair after detecting missing treatment, not parameter
+tuning. No physical run has been made for s3fix6 yet.

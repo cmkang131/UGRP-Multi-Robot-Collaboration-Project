@@ -74,6 +74,55 @@ def _closure(function, name):
     return cells[name]
 
 
+def _ownmap_alpha(grid, audit):
+    """Add independent alpha Q at the actual GMapping own-scan boundary.
+
+    That consumer intentionally discards per-pulse Q. Preserve its original
+    mean/F propagation and noise interval; do not add the same Q twice.
+    """
+    from types import MethodType
+    advance = getattr(grid.odom.advance, '__func__', None)
+    callback = grid.odom.driver.step_callback
+    if (advance is None or 'motion_variance' not in advance.__globals__
+            or not hasattr(grid, '_selective_state') or not callable(callback)):
+        raise ValueError('explicit GMapping motion covariance boundary required')
+    original = advance.__globals__['motion_variance']
+    cal = json.loads(ALPHA_ASSET.read_text())
+    if cal['runtime_gt'] is not False:
+        raise ValueError('independent calibration required')
+    a1, a2, a3, a4 = cal['alpha_1_to_4']
+    scopes = set()
+
+    def propagate(delta, variance):
+        if np.any(delta):
+            active = grid.odom.driver.active
+            if active is None:
+                raise ValueError('own-map pulse scope unavailable')
+            p = active[1]
+            scopes.add((bool(p['loaded']), p['axis']))
+        return callback(delta, variance)
+
+    def motion_variance(delta):
+        base = original(delta)
+        audit['motion_noise_calls'] += 1
+        supported = bool(scopes) and scopes <= {(False, 'forward'), (False, 'turn')}
+        scopes.clear()
+        if not supported:
+            audit['motion_noise_scope_skipped'] += 1
+            return base
+        x, y, yaw = delta
+        trans2, rot2 = x*x+y*y, yaw*yaw
+        result = np.maximum(base, [(a3*trans2+a4*rot2)/2]*2+[a1*rot2+a2*trans2])
+        audit['motion_noise_augmented'] += int(np.any(result > base))
+        return result
+
+    audit.update(alpha_asset_sha256=hashlib.sha256(ALPHA_ASSET.read_bytes()).hexdigest(),
+        motion_noise_boundary='GMapping own-observation delta', motion_noise_calls=0,
+        motion_noise_augmented=0, motion_noise_scope_skipped=0)
+    grid.odom.driver.step_callback = propagate
+    grid.odom.advance = MethodType(_bind(advance, motion_variance=motion_variance), grid.odom)
+
+
 def attach_s3(runtime, *, observation_consistency='off'):
     option = observation_consistency
     if option == 'off':
@@ -136,7 +185,6 @@ def attach_ownmap(grid, *, observation_consistency='off'):
     grid._selective_proposal = functools.partial(_bind(proposal.func, likelihood=likelihood),
         *proposal.args, **proposal.keywords)
     if option == 'effective_sqrt_alpha_v1':
-        grid.odom.driver.profiles = alpha_profiles(grid.odom.driver.profiles, option=option)
-        audit['alpha_asset_sha256'] = hashlib.sha256(ALPHA_ASSET.read_bytes()).hexdigest()
+        _ownmap_alpha(grid, audit)
     grid.observation_consistency_audit = audit
     return grid
