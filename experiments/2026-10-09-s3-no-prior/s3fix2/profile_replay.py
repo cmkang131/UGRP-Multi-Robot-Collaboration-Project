@@ -13,6 +13,7 @@ import json
 import os
 from pathlib import Path
 import pstats
+import subprocess
 import time
 import traceback
 
@@ -84,7 +85,8 @@ def replay(raw, out, accelerated=False):
                 weights=hashlib.sha256(own.pose.provider.loc._pf.logw.tobytes()).hexdigest(),
                 rng=own.pose.provider.loc._pf.rng.bit_generator.state) for r,own in rt.localizers.items()}
             (out/'state.json').write_text(json.dumps(state,allow_nan=True)+'\n')
-            report=dict(source=bundle['source_sha'],raw=str(raw),accelerated=accelerated,simulation_runs=0,
+            report=dict(source=bundle['source_sha'],implementation_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+                replay_script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),raw=str(raw),accelerated=accelerated,simulation_runs=0,
                 frames=count,profiled_wall_s=wall,error=failure,generated_sha256=digest(generated),
                 state_sha256=digest(state),robots={r:digest(s) for r,s in state.items()})
             (out/'result.json').write_text(json.dumps(report,indent=2)+'\n')

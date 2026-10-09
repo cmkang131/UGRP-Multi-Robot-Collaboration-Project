@@ -101,3 +101,30 @@ def test_actual_pair_submission_attaches_heading_before_any_control():
         assert pair.record()['pair_heading']['option']==heading.OPTION
     finally:
         runtime.close()
+
+
+def test_all_new_options_off_preserve_own_particles_commands_and_pose_bytes():
+    import json
+    import numpy as np
+    from harness.zone_s3_continue import solo_factory as before
+    from harness.zone_s3_motion_runtime import solo_factory as after
+    from tests.test_solo_cyan_v106 import observation
+    config=contract.controller_config()
+    args=(contract.hp.resolve(contract.old.solo.MAP_ID)[0],contract.ROOT/contract.old.solo.CALIBRATION,contract.old.solo.CALIBRATION_SHA)
+    old=before(config)(*args,seed=14201,robot_id='r1')
+    config['options'].update(pair_heading='off',s3_exact_cache='off',s3_io='off')
+    new=after(config)(*args,seed=14201,robot_id='r1')
+    try:
+        outputs=[]
+        for own in (old,new):
+            own.initial_commands(0.,{'r1':{1:2000,3:740,4:2320,5:1320,6:1500}})
+            own.on_frames(.05,{'r1':observation(.05,1,rid='r1')})
+            outputs.append(json.dumps(dict(commands=own.step(.05),poses=own.pose_log),sort_keys=True))
+        assert outputs[0]==outputs[1]
+        a,b=(o.pose.provider.loc._pf for o in (old,new))
+        np.testing.assert_array_equal(a.px,b.px)
+        np.testing.assert_array_equal(a.logw,b.logw)
+        assert a.rng.bit_generator.state==b.rng.bit_generator.state
+        assert old.pose.provider.identity_sha256==new.pose.provider.identity_sha256
+    finally:
+        old.close();new.close()
