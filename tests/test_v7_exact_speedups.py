@@ -5,6 +5,8 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
+pytest.importorskip('mujoco')  # CI excludes native simulation dependencies.
+
 from sim.masterpi_drive_friction_v7 import DriveParameters
 from sim.v7_exact_speedups import CachedParameters, install
 
