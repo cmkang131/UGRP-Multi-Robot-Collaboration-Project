@@ -302,6 +302,8 @@ raise SystemExit(3 if a.fail else 0)
         samples['zone-s2-unknown-start-v139'] = ['--expected-source-sha', '0'*40, '--seed', '1059']
         samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
         samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
+        samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
+                                           '--heading-mode', 'path_tangent_v1']
         samples['zone-s2-side-scan-v134'] = ['--expected-source-sha', '0'*40]
         samples['s2-loaded-rotation-v1'] = ['--expected-source-sha', '0'*40]
         for name in ('zone-s2-look-before-move-v135', 'zone-s2-goal-heading-v136',
