@@ -1,0 +1,747 @@
+{
+  "schema": "ugrp.s2.dock_augmented.result.v1",
+  "registration_commit": "59870709",
+  "source_sha": "dff991e59a921372a800124d865a4cbbeb45d69f",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place",
+  "criteria": {
+    "schema": "ugrp.s2.dock_augmented.criteria.v1",
+    "option": "augmented_active_v1",
+    "default": "off",
+    "user_confirmation": "2026-10-07 real robot does not know its starting dock or row; no dock prior permitted",
+    "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place",
+    "window_sim_s": [
+      1.3,
+      12.0
+    ],
+    "parameters": {
+      "particles": 2000,
+      "prior": "uniform static free space and uniform yaw; no row list",
+      "alpha_slow": 0.001,
+      "alpha_fast": 0.1,
+      "selective_resampling_ess_fraction": 0.5,
+      "observation": "unchanged Nav2 cubic hit/random field; one settled calibrated camera pose per motion epoch while global start unresolved",
+      "active_pans": [
+        1500,
+        1230,
+        970,
+        1770,
+        2030
+      ],
+      "active_sensor_model": "central floor-boundary ray; fixed existing sigma_px; 8px discretization; hit/random mixture; out-of-view is unknown",
+      "active_objective": "Fox 1998 expected entropy reduction, equal-cost sensing; no pose-mean collapse",
+      "active_budget_s": 120,
+      "resolved": "Nav2 all-particle XY convergence 0.5m AND global circular yaw std <=5deg"
+    },
+    "replay_gate": {
+      "default_off_pose_bytes_equal": true,
+      "true_neighborhood_survives": "at least one particle within 0.25m and 15deg throughout stationary scan; evaluation only",
+      "position_error_final_m_at_most": 0.25,
+      "position_error_max_m_at_most": 0.5,
+      "position_rmse_below_baseline_m": 1.4228315035553356,
+      "no_false_resolved": true,
+      "repeated_identical_view_no_update": true
+    },
+    "candidate_count": 1,
+    "no_retuning_on_s1052": true,
+    "active_validation_limit": "Recorded pan views only. Shadow action rankings are model predictions, not newly executed observations. No synthetic RGB, render, or physical run unless all replay gates pass.",
+    "physical_if_pass": {
+      "seed": 1052,
+      "runs": 1,
+      "mode": "S2 full DEV",
+      "freeze": "freeze_v1",
+      "slip_recovery": "off; v129 failed",
+      "start_dock_prior": false
+    },
+    "failure_policy": "retain replay FAIL and default off; no physical run",
+    "host_error": "ENOSPC is HOST_ERROR, not a robot failure",
+    "gt_use": "separate scoring only after prediction files complete"
+  },
+  "results": [
+    {
+      "filename": "replay-off.json",
+      "option": "off",
+      "prediction_sha256": "49e15d24e075d4f7078c783a08195c8e733ac191ef083af2fa2b89dcf2edefc4",
+      "final_error_m": 1.4286631182531535,
+      "max_error_m": 1.4286714267713458,
+      "rmse_m": 1.4228409575884817,
+      "updates": 1,
+      "resamples": 1,
+      "final_xy": [
+        -0.817524648749063,
+        -0.824241682735191
+      ],
+      "final_modes": null,
+      "false_resolved": 0,
+      "baseline_max_delta": 0.0,
+      "clouds": [
+        {
+          "t": 0.0,
+          "event": "initial",
+          "true_near_count": 88,
+          "true_near_mass": 0.08374112729581397,
+          "row_mass": [
+            0.3511208411211947,
+            0.32169008642977726,
+            0.3271890724490215
+          ]
+        },
+        {
+          "t": 2.25,
+          "event": "after_update",
+          "true_near_count": 170,
+          "true_near_mass": 0.08500000000000002,
+          "row_mass": [
+            0.33800000000000024,
+            0.32800000000000024,
+            0.33400000000000024
+          ]
+        },
+        {
+          "t": 11.95,
+          "event": "final",
+          "true_near_count": 170,
+          "true_near_mass": 0.08500000000000002,
+          "row_mass": [
+            0.33800000000000024,
+            0.32800000000000024,
+            0.33400000000000024
+          ]
+        }
+      ],
+      "update_rows": [
+        {
+          "t": 2.25,
+          "accepted": true,
+          "informative": true,
+          "settled": true,
+          "visual_weight_update": true,
+          "absolute_fix": false,
+          "reason": "soft_weight_update",
+          "model": "ros_motion_v1",
+          "columns": 52,
+          "kl": 0.02931177291813543,
+          "odom": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta": null,
+          "converged_after": false
+        }
+      ],
+      "active_rankings": [],
+      "frame_count": 214
+    },
+    {
+      "filename": "old-replay.json",
+      "option": "amcl_global_active_v1",
+      "prediction_sha256": "f0ed912aedd38001b99b291b1777af44ea99b783b1df1df8146d0883505e73b9",
+      "final_error_m": 3.3177311160043077,
+      "max_error_m": 3.332277661805239,
+      "rmse_m": 3.319469162640262,
+      "updates": 1,
+      "resamples": 1,
+      "final_xy": [
+        2.157912130185547,
+        -0.9577059230695724
+      ],
+      "final_modes": {
+        "cluster_count": 11,
+        "maximum_cluster_weight": 0.9884999999999465,
+        "global_std_xy_m": 2.214006012080652,
+        "all_particles_converged": false
+      },
+      "false_resolved": 0,
+      "baseline_max_delta": 2.97543677893461,
+      "clouds": [],
+      "update_rows": [
+        {
+          "t": 2.25,
+          "accepted": true,
+          "informative": true,
+          "settled": true,
+          "visual_weight_update": true,
+          "absolute_fix": false,
+          "reason": "soft_weight_update",
+          "model": "ros_motion_v1",
+          "columns": 52,
+          "kl": 0.06528230473148883,
+          "odom": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta": null,
+          "converged_after": false
+        }
+      ],
+      "active_rankings": null,
+      "frame_count": 214
+    },
+    {
+      "filename": "replay-candidate.json",
+      "option": "augmented_active_v1",
+      "prediction_sha256": "a0c46a4605147743d374eb019b4c4a0529964b127c0e8d60966e2182ebefb999",
+      "final_error_m": 3.3572535397996517,
+      "max_error_m": 3.3572535397996517,
+      "rmse_m": 3.288994450655045,
+      "updates": 5,
+      "resamples": 1,
+      "final_xy": [
+        2.1990738357607063,
+        -0.9536192148347331
+      ],
+      "final_modes": {
+        "resolved": false,
+        "bin_count": 781,
+        "leading_bins": [
+          {
+            "bin": [
+              9,
+              -4,
+              11
+            ],
+            "weight": 0.020721175650463334
+          },
+          {
+            "bin": [
+              5,
+              1,
+              -18
+            ],
+            "weight": 0.019177010139184644
+          },
+          {
+            "bin": [
+              1,
+              -4,
+              5
+            ],
+            "weight": 0.014509785137642579
+          },
+          {
+            "bin": [
+              6,
+              -6,
+              16
+            ],
+            "weight": 0.014350408633087845
+          },
+          {
+            "bin": [
+              2,
+              -1,
+              -2
+            ],
+            "weight": 0.010983753040142208
+          },
+          {
+            "bin": [
+              1,
+              -5,
+              6
+            ],
+            "weight": 0.010117619724430971
+          },
+          {
+            "bin": [
+              7,
+              -1,
+              -13
+            ],
+            "weight": 0.009061056101282184
+          },
+          {
+            "bin": [
+              6,
+              -1,
+              16
+            ],
+            "weight": 0.008714291352769424
+          },
+          {
+            "bin": [
+              6,
+              -5,
+              0
+            ],
+            "weight": 0.00847613359823565
+          },
+          {
+            "bin": [
+              7,
+              -6,
+              10
+            ],
+            "weight": 0.008302772362288015
+          }
+        ],
+        "global_std_xy_m": 2.053884905756367,
+        "circular_yaw_std_rad": 2.2819657355340977,
+        "known_own_dock": false
+      },
+      "false_resolved": 0,
+      "baseline_max_delta": 3.0165984845097693,
+      "clouds": [
+        {
+          "t": 0.0,
+          "event": "initial",
+          "true_near_count": 1,
+          "true_near_mass": 0.0005,
+          "row_mass": [
+            0.35050000000000026,
+            0.32400000000000023,
+            0.32550000000000023
+          ]
+        },
+        {
+          "t": 2.25,
+          "event": "after_update",
+          "true_near_count": 1,
+          "true_near_mass": 0.0004464948934825297,
+          "row_mass": [
+            0.359776363650578,
+            0.31698067846714284,
+            0.3232429578822739
+          ]
+        },
+        {
+          "t": 3.75,
+          "event": "after_update",
+          "true_near_count": 1,
+          "true_near_mass": 0.0009318479207443859,
+          "row_mass": [
+            0.36165187698235435,
+            0.32605193459384446,
+            0.31229618842380064
+          ]
+        },
+        {
+          "t": 5.25,
+          "event": "after_update",
+          "true_near_count": 8,
+          "true_near_mass": 0.004,
+          "row_mass": [
+            0.36850000000000027,
+            0.33100000000000024,
+            0.3005000000000002
+          ]
+        },
+        {
+          "t": 6.75,
+          "event": "after_update",
+          "true_near_count": 8,
+          "true_near_mass": 0.0035804641608505904,
+          "row_mass": [
+            0.3777021456156813,
+            0.3215236697708545,
+            0.30077418461346067
+          ]
+        },
+        {
+          "t": 11.6,
+          "event": "after_update",
+          "true_near_count": 8,
+          "true_near_mass": 0.0027252633032140237,
+          "row_mass": [
+            0.37861772983850417,
+            0.32321583702964796,
+            0.2981664331318517
+          ]
+        },
+        {
+          "t": 11.95,
+          "event": "final",
+          "true_near_count": 8,
+          "true_near_mass": 0.0027252633032140237,
+          "row_mass": [
+            0.37861772983850417,
+            0.32321583702964796,
+            0.2981664331318517
+          ]
+        }
+      ],
+      "update_rows": [
+        {
+          "t": 2.25,
+          "accepted": true,
+          "informative": true,
+          "settled": true,
+          "visual_weight_update": true,
+          "absolute_fix": false,
+          "reason": "soft_weight_update",
+          "model": "ros_motion_v1",
+          "columns": 52,
+          "kl": 0.06528230473148883,
+          "odom": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta": null,
+          "global_localization": {
+            "w_avg": 0.0006309677382735874,
+            "w_slow": 0.0006309677382735874,
+            "w_fast": 0.0006309677382735874,
+            "injection_probability": 0.0,
+            "ess": 1714.398169262282,
+            "resampled": false,
+            "injected": 0,
+            "pose": [
+              1072,
+              2400,
+              1482,
+              1500
+            ]
+          },
+          "converged_after": false
+        },
+        {
+          "t": 3.75,
+          "accepted": true,
+          "informative": true,
+          "settled": true,
+          "visual_weight_update": true,
+          "absolute_fix": false,
+          "reason": "soft_weight_update",
+          "model": "ros_motion_v1",
+          "columns": 38,
+          "kl": 0.120481491117326,
+          "odom": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "global_localization": {
+            "w_avg": 0.000733445822366739,
+            "w_slow": 0.0006310702163576805,
+            "w_fast": 0.0006412155466829026,
+            "injection_probability": 0.0,
+            "ess": 1287.5716120013785,
+            "resampled": false,
+            "injected": 0,
+            "pose": [
+              1072,
+              2400,
+              1482,
+              1230
+            ]
+          },
+          "converged_after": false
+        },
+        {
+          "t": 5.25,
+          "accepted": true,
+          "informative": true,
+          "settled": true,
+          "visual_weight_update": true,
+          "absolute_fix": false,
+          "reason": "soft_weight_update",
+          "model": "ros_motion_v1",
+          "columns": 36,
+          "kl": 0.14318785561823555,
+          "odom": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "global_localization": {
+            "w_avg": 0.0009306342741531468,
+            "w_slow": 0.000631369780415476,
+            "w_fast": 0.000670157419429927,
+            "injection_probability": 0.0,
+            "ess": 624.3177894426057,
+            "resampled": true,
+            "injected": 0,
+            "pose": [
+              1072,
+              2400,
+              1482,
+              970
+            ]
+          },
+          "converged_after": false
+        },
+        {
+          "t": 6.75,
+          "accepted": true,
+          "informative": true,
+          "settled": true,
+          "visual_weight_update": true,
+          "absolute_fix": false,
+          "reason": "soft_weight_update",
+          "model": "ros_motion_v1",
+          "columns": 18,
+          "kl": 0.026662827609589723,
+          "odom": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "global_localization": {
+            "w_avg": 0.0005608956573950989,
+            "w_slow": 0.0006312993062924556,
+            "w_fast": 0.0006592312432264442,
+            "injection_probability": 0.0,
+            "ess": 1879.964339577088,
+            "resampled": false,
+            "injected": 0,
+            "pose": [
+              1072,
+              2400,
+              1482,
+              1770
+            ]
+          },
+          "converged_after": false
+        },
+        {
+          "t": 11.6,
+          "accepted": true,
+          "informative": true,
+          "settled": true,
+          "visual_weight_update": true,
+          "absolute_fix": false,
+          "reason": "soft_weight_update",
+          "model": "ros_motion_v1",
+          "columns": 62,
+          "kl": 0.09442734347561893,
+          "odom": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "global_localization": {
+            "w_avg": 0.0007824105172709933,
+            "w_slow": 0.0006314504175034341,
+            "w_fast": 0.0006715491706308992,
+            "injection_probability": 0.0,
+            "ess": 1395.1373943900726,
+            "resampled": false,
+            "injected": 0,
+            "pose": [
+              740,
+              2320,
+              1320,
+              1500
+            ]
+          },
+          "converged_after": false
+        }
+      ],
+      "active_rankings": [
+        {
+          "t": 2.45,
+          "rankings": [
+            {
+              "pan": 1500,
+              "expected_information_nats": 0.9598856696569171,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1230,
+              "expected_information_nats": 0.95474977649853,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 2030,
+              "expected_information_nats": 0.9497952571811491,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1770,
+              "expected_information_nats": 0.9488369541757085,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 970,
+              "expected_information_nats": 0.9447518635205113,
+              "hypothetical": true,
+              "actual_observation": false
+            }
+          ]
+        },
+        {
+          "t": 3.95,
+          "rankings": [
+            {
+              "pan": 1500,
+              "expected_information_nats": 0.9672784611124012,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1230,
+              "expected_information_nats": 0.9638221044753686,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 970,
+              "expected_information_nats": 0.9498007798166241,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1770,
+              "expected_information_nats": 0.9493152957467063,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 2030,
+              "expected_information_nats": 0.9324469612579482,
+              "hypothetical": true,
+              "actual_observation": false
+            }
+          ]
+        },
+        {
+          "t": 5.45,
+          "rankings": [
+            {
+              "pan": 1500,
+              "expected_information_nats": 0.9669808093470267,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1230,
+              "expected_information_nats": 0.9537026739947793,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1770,
+              "expected_information_nats": 0.9350513738344226,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 970,
+              "expected_information_nats": 0.9196766189394889,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 2030,
+              "expected_information_nats": 0.8939573087318802,
+              "hypothetical": true,
+              "actual_observation": false
+            }
+          ]
+        },
+        {
+          "t": 6.95,
+          "rankings": [
+            {
+              "pan": 1500,
+              "expected_information_nats": 0.9690202525601042,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1230,
+              "expected_information_nats": 0.9568254270336778,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1770,
+              "expected_information_nats": 0.937296152718352,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 970,
+              "expected_information_nats": 0.9220651425703124,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 2030,
+              "expected_information_nats": 0.8950628332929796,
+              "hypothetical": true,
+              "actual_observation": false
+            }
+          ]
+        },
+        {
+          "t": 11.8,
+          "rankings": [
+            {
+              "pan": 1500,
+              "expected_information_nats": 0.950457561790566,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1230,
+              "expected_information_nats": 0.9502319508828538,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 970,
+              "expected_information_nats": 0.9319270496333716,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 1770,
+              "expected_information_nats": 0.9133357682871832,
+              "hypothetical": true,
+              "actual_observation": false
+            },
+            {
+              "pan": 2030,
+              "expected_information_nats": 0.8741652600886566,
+              "hypothetical": true,
+              "actual_observation": false
+            }
+          ]
+        }
+      ],
+      "frame_count": 214
+    }
+  ],
+  "gates": {
+    "default_off_pose_bytes_equal": true,
+    "true_neighborhood_survives": true,
+    "position_error_final": false,
+    "position_error_max": false,
+    "position_rmse_improves": false,
+    "no_false_resolved": true,
+    "repeated_identical_view_no_update": true
+  },
+  "admission_pass": false,
+  "physics_runs": 0,
+  "gt_use": "scoring only after all own-RGB prediction files complete",
+  "active_views_executed": false,
+  "active_scope": "shadow rankings of fixed recorded pan frames; no new conditional views",
+  "retuned": false
+}

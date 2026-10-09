@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "s2-active-markov-start-v1",
+    "version": "1.0.0",
+    "purpose": "S2 seed1052 Active Markov start localization only, no pickup or transport",
+    "entry": "scripts/run_s2_active_markov_start.py",
+    "runner": "scripts.run_s2_active_markov_start",
+    "docs": "experiments/2026-10-06-s2-realism/README.md",
+    "requires": "committed source, exclusive agent_lock, one 30 SIM s start-only run",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

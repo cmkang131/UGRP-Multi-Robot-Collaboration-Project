@@ -1,0 +1,626 @@
+{
+  "verdict": "NOT_READY",
+  "rows": [
+    {
+      "run": "v4-empty-forward-u020",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-7dce794b-low-empty/forward-u020/result.json",
+        "sha256": "270b457308940ab250b537a6fda1be842c38a6996396a9f43aa97317142eca0d"
+      },
+      "profile": "masterpi_drive_friction_v4",
+      "case": "forward",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        2.755859375,
+        4.21923828125,
+        4.67236328125
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "wheel_input": 20,
+      "normalized_wheel_command": [
+        0.2,
+        0.2,
+        0.2,
+        0.2
+      ],
+      "drive_command_s": 1.5,
+      "tail_forward_min_mps": 1.9074407863076386e-05,
+      "tail_forward_progress_m": 1.081927529256177e-05,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.4692912500031525,
+      "wall_per_sim": 0.9877165000013873,
+      "commands": 2,
+      "displacement_m": [
+        4.153203901013924e-05,
+        -6.769477048251815e-06,
+        -2.1684674411659444e-07
+      ],
+      "yaw_change_rad": -0.00016438185934307005,
+      "steady_velocity": [
+        2.1246049294226754e-05,
+        1.444460409846757e-08,
+        2.723681212394348e-07,
+        -0.00010135628073775372,
+        5.165202260932846e-05,
+        -7.802354313702832e-05
+      ],
+      "com_displacement_m": [
+        4.1837004830291846e-05,
+        -9.286094409644008e-06,
+        -3.056184942062945e-07
+      ],
+      "peak_command_com_xy_m": 0.000155848606267899,
+      "steady_contact_slip_mps": 4.2768897476417366e-06,
+      "steady_wheel_rad_s": [
+        0.0009933998036514055,
+        0.0003297184688027044,
+        0.0006266404346741026,
+        0.0004183929119189894
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978377,
+      "stop_drift_m": 3.914715129976945e-05,
+      "warnings": {},
+      "own_wheel_contact_pairs_max_n": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v4",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 0.8,
+          "nominal_voltage": 6.0,
+          "no_load_current_a": 0.1,
+          "stall_current_a": 1.2,
+          "start_resistance_fraction": 0.3,
+          "stribeck_rad_s": 0.1
+        },
+        "qualification": "STRIBECK_CANDIDATE_UNIDENTIFIED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "MuJoCo native dcmotor, normalized Board input times 6V hypothesis",
+        "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+        "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+        "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+        "public_model": {
+          "repository": "https://github.com/DaiGuard/fuji_mecanum",
+          "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+          "license": "MIT, Copyright (c) 2022 DaiGuard",
+          "mesh_original_path": "mesh/collision/roller.stl",
+          "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+          "mesh_modified": false,
+          "source_radius_m": 0.1025,
+          "roller_ring_radius_m": 0.0895,
+          "roller_count": 15,
+          "roller_angle_deg": 45,
+          "roller_mass_kg": 0.3,
+          "roller_inertia_kg_m2": [
+            0.00024,
+            0.00076,
+            0.00076
+          ],
+          "hub_mass_kg": 2.0,
+          "hub_inertia_kg_m2": [
+            0.042025,
+            0.024279,
+            0.024279
+          ],
+          "roller_damping": 0.001,
+          "roller_frictionloss": 0.0001,
+          "roller_sliding_friction": 0.8,
+          "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+          "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+        },
+        "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+        "friction_model": "Stribeck magnitude in native joint frictionloss, gamma=2; not LuGre state",
+        "implementation_source": "https://github.com/google-deepmind/mujoco/issues/1366",
+        "implementation_scope": "published hook proposal plus official Stribeck equation; not a validated MasterPi model",
+        "static_loss_nm": 0.03530394,
+        "kinetic_loss_nm": 0.009806650000000002,
+        "electrical_zero_torque_rad_s": 17.1359599286716,
+        "no_load_rpm_includes_loss": true,
+        "current_ratio_source": "Hiwonder encoder TT: I0=0.1 A, Is=1.2 A at nominal 6V",
+        "current_ratio_assumption": "all no-load mechanical loss is Coulomb; I0/Is only, no absolute current identification",
+        "unconfirmed": [
+          "installed motor identity",
+          "stall torque scale",
+          "Board PWM-voltage transfer",
+          "Stribeck speed",
+          "viscous versus dry loss split",
+          "load dependence"
+        ],
+        "stribeck_speed_source": "MuJoCo 3.12.0 test/engine/testdata/derivative/dcmotor.xml: 0.1 rad/s",
+        "sha256": "39486d9443bf7d26e24448879c0b946f93463c836925e4d950983aef97a4d7a5",
+        "xml_sha256": "683237a866da49637b92fff8c5f30ebe161dc4d3374a8c824319393f88537f06"
+      },
+      "xml_sha256": "683237a866da49637b92fff8c5f30ebe161dc4d3374a8c824319393f88537f06",
+      "total_wall_s": 5.014105875001405,
+      "loadavg_end": [
+        2.775390625,
+        4.19873046875,
+        4.662109375
+      ],
+      "rest_diagnostic_pass": true
+    },
+    {
+      "run": "v4-empty-forward-u030",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-7dce794b-low-empty/forward-u030/result.json",
+        "sha256": "25319ff19503470ac4dda56971fca3284f7a64729ceef1065e428a88f49e2378"
+      },
+      "profile": "masterpi_drive_friction_v4",
+      "case": "forward",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        2.775390625,
+        4.19873046875,
+        4.662109375
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "wheel_input": 30,
+      "normalized_wheel_command": [
+        0.3,
+        0.3,
+        0.3,
+        0.3
+      ],
+      "drive_command_s": 1.5,
+      "tail_forward_min_mps": 0.10069823908442682,
+      "tail_forward_progress_m": 0.053302561335275556,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.433026291997521,
+      "wall_per_sim": 0.973210516799133,
+      "commands": 2,
+      "displacement_m": [
+        0.1588897810410108,
+        -0.002371419473080172,
+        8.370539617691408e-06
+      ],
+      "yaw_change_rad": -0.01572656883177686,
+      "steady_velocity": [
+        0.11097550395030119,
+        -0.0018696296657604958,
+        -2.6548275093328627e-05,
+        0.0012991401980575867,
+        0.0015208902571691419,
+        0.0030821971110256575
+      ],
+      "com_displacement_m": [
+        0.15887258982664454,
+        -0.0026109282894011265,
+        1.3395068574673097e-05
+      ],
+      "peak_command_com_xy_m": 0.15635295341966074,
+      "steady_contact_slip_mps": 0.0006212125525807035,
+      "steady_wheel_rad_s": [
+        3.43073921625878,
+        3.4423612800604526,
+        3.424707516552687,
+        3.465743166616899
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978377,
+      "stop_drift_m": 0.002530603552056158,
+      "warnings": {},
+      "own_wheel_contact_pairs_max_n": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v4",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 0.8,
+          "nominal_voltage": 6.0,
+          "no_load_current_a": 0.1,
+          "stall_current_a": 1.2,
+          "start_resistance_fraction": 0.3,
+          "stribeck_rad_s": 0.1
+        },
+        "qualification": "STRIBECK_CANDIDATE_UNIDENTIFIED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "MuJoCo native dcmotor, normalized Board input times 6V hypothesis",
+        "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+        "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+        "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+        "public_model": {
+          "repository": "https://github.com/DaiGuard/fuji_mecanum",
+          "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+          "license": "MIT, Copyright (c) 2022 DaiGuard",
+          "mesh_original_path": "mesh/collision/roller.stl",
+          "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+          "mesh_modified": false,
+          "source_radius_m": 0.1025,
+          "roller_ring_radius_m": 0.0895,
+          "roller_count": 15,
+          "roller_angle_deg": 45,
+          "roller_mass_kg": 0.3,
+          "roller_inertia_kg_m2": [
+            0.00024,
+            0.00076,
+            0.00076
+          ],
+          "hub_mass_kg": 2.0,
+          "hub_inertia_kg_m2": [
+            0.042025,
+            0.024279,
+            0.024279
+          ],
+          "roller_damping": 0.001,
+          "roller_frictionloss": 0.0001,
+          "roller_sliding_friction": 0.8,
+          "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+          "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+        },
+        "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+        "friction_model": "Stribeck magnitude in native joint frictionloss, gamma=2; not LuGre state",
+        "implementation_source": "https://github.com/google-deepmind/mujoco/issues/1366",
+        "implementation_scope": "published hook proposal plus official Stribeck equation; not a validated MasterPi model",
+        "static_loss_nm": 0.03530394,
+        "kinetic_loss_nm": 0.009806650000000002,
+        "electrical_zero_torque_rad_s": 17.1359599286716,
+        "no_load_rpm_includes_loss": true,
+        "current_ratio_source": "Hiwonder encoder TT: I0=0.1 A, Is=1.2 A at nominal 6V",
+        "current_ratio_assumption": "all no-load mechanical loss is Coulomb; I0/Is only, no absolute current identification",
+        "unconfirmed": [
+          "installed motor identity",
+          "stall torque scale",
+          "Board PWM-voltage transfer",
+          "Stribeck speed",
+          "viscous versus dry loss split",
+          "load dependence"
+        ],
+        "stribeck_speed_source": "MuJoCo 3.12.0 test/engine/testdata/derivative/dcmotor.xml: 0.1 rad/s",
+        "sha256": "39486d9443bf7d26e24448879c0b946f93463c836925e4d950983aef97a4d7a5",
+        "xml_sha256": "683237a866da49637b92fff8c5f30ebe161dc4d3374a8c824319393f88537f06"
+      },
+      "xml_sha256": "683237a866da49637b92fff8c5f30ebe161dc4d3374a8c824319393f88537f06",
+      "total_wall_s": 4.883773749999818,
+      "loadavg_end": [
+        2.6328125,
+        4.1455078125,
+        4.640625
+      ],
+      "rest_diagnostic_pass": false
+    },
+    {
+      "run": "v5-empty-forward-u020",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-7e6e9cf8-low-empty/forward-u020/result.json",
+        "sha256": "ed96ffabf12a4e70ca84bb220f6bb2463662392bddad4f9057a7aeca6f523a5f"
+      },
+      "profile": "masterpi_drive_friction_v5",
+      "case": "forward",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.76123046875,
+        4.1162109375,
+        4.50537109375
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "wheel_input": 20,
+      "normalized_wheel_command": [
+        0.2,
+        0.2,
+        0.2,
+        0.2
+      ],
+      "drive_command_s": 1.5,
+      "tail_forward_min_mps": 1.907440786307111e-05,
+      "tail_forward_progress_m": 1.081927529256177e-05,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.4951486670033773,
+      "wall_per_sim": 0.9980594668014786,
+      "commands": 2,
+      "displacement_m": [
+        4.153203901013924e-05,
+        -6.769477048251815e-06,
+        -2.1684674411659444e-07
+      ],
+      "yaw_change_rad": -0.00016438185934307336,
+      "steady_velocity": [
+        2.1246049294226605e-05,
+        1.444460409795608e-08,
+        2.723681212403119e-07,
+        -0.00010135628073774616,
+        5.165202260931371e-05,
+        -7.802354313702541e-05
+      ],
+      "com_displacement_m": [
+        4.1837004830291846e-05,
+        -9.286094409644008e-06,
+        -3.056184942062945e-07
+      ],
+      "peak_command_com_xy_m": 0.000155848606267899,
+      "steady_contact_slip_mps": 4.2768897476416874e-06,
+      "steady_wheel_rad_s": [
+        0.0009933998036514304,
+        0.0003297184688026885,
+        0.0006266404346741001,
+        0.00041839291191900734
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978377,
+      "stop_drift_m": 3.914715129976945e-05,
+      "warnings": {},
+      "own_wheel_contact_pairs_max_n": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v5",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 0.8,
+          "nominal_voltage": 6.0,
+          "no_load_current_a": 0.1,
+          "stall_current_a": 1.2,
+          "start_resistance_fraction": 0.3,
+          "stribeck_rad_s": 0.1,
+          "zero_band_rad_s": 0.1
+        },
+        "qualification": "KARNOPP_BAND_CANDIDATE_UNIDENTIFIED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "MuJoCo native dcmotor, normalized Board input times 6V hypothesis",
+        "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+        "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+        "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+        "public_model": {
+          "repository": "https://github.com/DaiGuard/fuji_mecanum",
+          "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+          "license": "MIT, Copyright (c) 2022 DaiGuard",
+          "mesh_original_path": "mesh/collision/roller.stl",
+          "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+          "mesh_modified": false,
+          "source_radius_m": 0.1025,
+          "roller_ring_radius_m": 0.0895,
+          "roller_count": 15,
+          "roller_angle_deg": 45,
+          "roller_mass_kg": 0.3,
+          "roller_inertia_kg_m2": [
+            0.00024,
+            0.00076,
+            0.00076
+          ],
+          "hub_mass_kg": 2.0,
+          "hub_inertia_kg_m2": [
+            0.042025,
+            0.024279,
+            0.024279
+          ],
+          "roller_damping": 0.001,
+          "roller_frictionloss": 0.0001,
+          "roller_sliding_friction": 0.8,
+          "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+          "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+        },
+        "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+        "friction_model": "Karnopp zero-velocity band with Stribeck sliding and native soft static constraint",
+        "implementation_source": "https://github.com/google-deepmind/mujoco/issues/1366",
+        "implementation_scope": "published hook proposal plus official Stribeck equation; not a validated MasterPi model",
+        "static_loss_nm": 0.03530394,
+        "kinetic_loss_nm": 0.009806650000000002,
+        "electrical_zero_torque_rad_s": 17.1359599286716,
+        "no_load_rpm_includes_loss": true,
+        "current_ratio_source": "Hiwonder encoder TT: I0=0.1 A, Is=1.2 A at nominal 6V",
+        "current_ratio_assumption": "all no-load mechanical loss is Coulomb; I0/Is only, no absolute current identification",
+        "unconfirmed": [
+          "installed motor identity",
+          "stall torque scale",
+          "Board PWM-voltage transfer",
+          "Stribeck speed",
+          "viscous versus dry loss split",
+          "load dependence",
+          "numerical zero-band sensitivity"
+        ],
+        "stribeck_speed_source": "MuJoCo 3.12.0 test/engine/testdata/derivative/dcmotor.xml: 0.1 rad/s",
+        "static_branch": "native constraint bounded by Ts for abs(w)<=DV; not explicit qvel reset",
+        "zero_band_source": "unchanged v4 reference 0.1 rad/s used as numerical DV; unmeasured",
+        "karnopp_source": "https://www.mathworks.com/matlabcentral/fileexchange/155462-karnopp-s-model-stick-slip-friction-dynamics-in-simulink",
+        "adaptation": "single-body force cancellation delegated to coupled native joint constraint; soft sticking approximation",
+        "sha256": "54c5a10b8c0937fc9b76896344386e3eddfe21de88842c28cdefafda9defc25d",
+        "xml_sha256": "b90db52bd4147f7b1545e0e1d16b0da0bc57dba3b403ea44b8cc5b4d6af44a5a"
+      },
+      "xml_sha256": "b90db52bd4147f7b1545e0e1d16b0da0bc57dba3b403ea44b8cc5b4d6af44a5a",
+      "total_wall_s": 5.003400250003324,
+      "loadavg_end": [
+        3.7802734375,
+        4.1142578125,
+        4.501953125
+      ],
+      "rest_diagnostic_pass": true
+    },
+    {
+      "run": "v5-empty-forward-u030",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-7e6e9cf8-low-empty/forward-u030/result.json",
+        "sha256": "05c96d6faaa372980a83c86a8f83e26169b7afa8ccfcc6bcdb1cc673284f0c89"
+      },
+      "profile": "masterpi_drive_friction_v5",
+      "case": "forward",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.7802734375,
+        4.1142578125,
+        4.501953125
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "wheel_input": 30,
+      "normalized_wheel_command": [
+        0.3,
+        0.3,
+        0.3,
+        0.3
+      ],
+      "drive_command_s": 1.5,
+      "tail_forward_min_mps": 0.10422222428253983,
+      "tail_forward_progress_m": 0.05291476394733685,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.4528080409945687,
+      "wall_per_sim": 0.981123216397953,
+      "commands": 2,
+      "displacement_m": [
+        0.1489617564557748,
+        -0.008495357078235344,
+        5.940686201591494e-06
+      ],
+      "yaw_change_rad": -0.05957513310708889,
+      "steady_velocity": [
+        0.1101951242113058,
+        -0.006516443125314148,
+        7.678315993506783e-05,
+        -0.001928765965790182,
+        -7.829501354682425e-05,
+        -0.0051274154212107735
+      ],
+      "com_displacement_m": [
+        0.14891339400192205,
+        -0.009413969624966656,
+        1.2773809629107458e-05
+      ],
+      "peak_command_com_xy_m": 0.14663897103600174,
+      "steady_contact_slip_mps": 0.0004944650034922948,
+      "steady_wheel_rad_s": [
+        3.418334151084332,
+        3.4110577198151746,
+        3.4676533228055257,
+        3.392252821286143
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978377,
+      "stop_drift_m": 0.002572418467387696,
+      "warnings": {},
+      "own_wheel_contact_pairs_max_n": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v5",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 0.8,
+          "nominal_voltage": 6.0,
+          "no_load_current_a": 0.1,
+          "stall_current_a": 1.2,
+          "start_resistance_fraction": 0.3,
+          "stribeck_rad_s": 0.1,
+          "zero_band_rad_s": 0.1
+        },
+        "qualification": "KARNOPP_BAND_CANDIDATE_UNIDENTIFIED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "MuJoCo native dcmotor, normalized Board input times 6V hypothesis",
+        "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+        "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+        "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+        "public_model": {
+          "repository": "https://github.com/DaiGuard/fuji_mecanum",
+          "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+          "license": "MIT, Copyright (c) 2022 DaiGuard",
+          "mesh_original_path": "mesh/collision/roller.stl",
+          "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+          "mesh_modified": false,
+          "source_radius_m": 0.1025,
+          "roller_ring_radius_m": 0.0895,
+          "roller_count": 15,
+          "roller_angle_deg": 45,
+          "roller_mass_kg": 0.3,
+          "roller_inertia_kg_m2": [
+            0.00024,
+            0.00076,
+            0.00076
+          ],
+          "hub_mass_kg": 2.0,
+          "hub_inertia_kg_m2": [
+            0.042025,
+            0.024279,
+            0.024279
+          ],
+          "roller_damping": 0.001,
+          "roller_frictionloss": 0.0001,
+          "roller_sliding_friction": 0.8,
+          "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+          "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+        },
+        "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+        "friction_model": "Karnopp zero-velocity band with Stribeck sliding and native soft static constraint",
+        "implementation_source": "https://github.com/google-deepmind/mujoco/issues/1366",
+        "implementation_scope": "published hook proposal plus official Stribeck equation; not a validated MasterPi model",
+        "static_loss_nm": 0.03530394,
+        "kinetic_loss_nm": 0.009806650000000002,
+        "electrical_zero_torque_rad_s": 17.1359599286716,
+        "no_load_rpm_includes_loss": true,
+        "current_ratio_source": "Hiwonder encoder TT: I0=0.1 A, Is=1.2 A at nominal 6V",
+        "current_ratio_assumption": "all no-load mechanical loss is Coulomb; I0/Is only, no absolute current identification",
+        "unconfirmed": [
+          "installed motor identity",
+          "stall torque scale",
+          "Board PWM-voltage transfer",
+          "Stribeck speed",
+          "viscous versus dry loss split",
+          "load dependence",
+          "numerical zero-band sensitivity"
+        ],
+        "stribeck_speed_source": "MuJoCo 3.12.0 test/engine/testdata/derivative/dcmotor.xml: 0.1 rad/s",
+        "static_branch": "native constraint bounded by Ts for abs(w)<=DV; not explicit qvel reset",
+        "zero_band_source": "unchanged v4 reference 0.1 rad/s used as numerical DV; unmeasured",
+        "karnopp_source": "https://www.mathworks.com/matlabcentral/fileexchange/155462-karnopp-s-model-stick-slip-friction-dynamics-in-simulink",
+        "adaptation": "single-body force cancellation delegated to coupled native joint constraint; soft sticking approximation",
+        "sha256": "54c5a10b8c0937fc9b76896344386e3eddfe21de88842c28cdefafda9defc25d",
+        "xml_sha256": "b90db52bd4147f7b1545e0e1d16b0da0bc57dba3b403ea44b8cc5b4d6af44a5a"
+      },
+      "xml_sha256": "b90db52bd4147f7b1545e0e1d16b0da0bc57dba3b403ea44b8cc5b4d6af44a5a",
+      "total_wall_s": 4.92511845799163,
+      "loadavg_end": [
+        3.6376953125,
+        4.0791015625,
+        4.48681640625
+      ],
+      "rest_diagnostic_pass": false
+    }
+  ],
+  "remaining": [
+    "lateral/yaw coupling",
+    "roller contact envelope and source-to-MasterPi adaptation",
+    "installed motor/floor measurements",
+    "paired beam and v106 replay"
+  ],
+  "stopped_reason": "Input30 rest criterion fails twice across fixed v4 and v5; no further physics per user instruction",
+  "model_calls": 0,
+  "raw_remote_backup": false,
+  "physics_source_shas": [
+    "7dce794b527ccbda830ef798eaf6ad0de0c43101",
+    "7e6e9cf8b6ac11d231942687c5955e1ddeb1da69"
+  ],
+  "user_observation": "input <=30 remains at rest; input >=35 continues driving",
+  "failure_count": 2,
+  "failure_scope": "same input30 rest criterion violation; exact numerical/contact cause not isolated",
+  "missing_cases": [
+    "v4/v5 input35 sustained drive",
+    "v4/v5 input50/100",
+    "v4/v5 cyan load",
+    "v4/v5 contact ablation",
+    "v4/v5 side/turn",
+    "paired beam comparison"
+  ],
+  "browser_verification": "skipped per user instruction"
+}

@@ -25,10 +25,10 @@ OPTION='continuous_v1'
 PITCH='stationary_ultrasonic_v1'
 
 
-def attach(explorer, *, goal_route='off', heading_mode='path_tangent_v1',dev_light=False):
+def attach(explorer, *, goal_route='off', heading_mode='path_tangent_v1',heading_host='off',dev_light=False):
     if goal_route=='off':return explorer
     if goal_route!=OPTION:raise ValueError('UNKNOWN_GOAL_ROUTE')
-    return GoalRoute(explorer,heading_mode=heading_mode,dev_light=dev_light)
+    return GoalRoute(explorer,heading_mode=heading_mode,heading_host=heading_host,dev_light=dev_light)
 
 
 def box_detector():
@@ -115,10 +115,13 @@ class StationaryPitch:
 
 
 class GoalRoute:
-    def __init__(self,explorer,*,heading_mode='path_tangent_v1',dev_light=False):
+    def __init__(self,explorer,*,heading_mode='path_tangent_v1',heading_host='off',dev_light=False):
         if heading_mode not in ('off','path_tangent_v1'):raise ValueError('UNKNOWN_HEADING_MODE')
         self.explorer=explorer;self.robot_id=explorer.robot_id;self.started=explorer.started
         self.dev_light=dev_light;self.heading_mode=heading_mode;self.stage='explore';self.done=False;self.declared=False
+        from harness.goal_route_heading import Host,OPTION as HOST
+        if heading_host not in ('off',HOST):raise ValueError('UNKNOWN_HEADING_HOST')
+        self.heading_host=Host(self.robot_id,explorer.motion_model) if heading_host==HOST and heading_mode!='off' else None
         self.entities={};self.reached={};self.active=None;self.leg_start=self.started
         self.graph=TeachGraph(self.robot_id);self.navigator=MissionNavigator()
         self.sensor=Sensor(HUES);self.detect_boxes=box_detector()
@@ -263,7 +266,7 @@ class GoalRoute:
             self._select(t);self._arrival(t,frame_id,pose,box_visible);self._select(t)
         if t-self.leg_start>=270:
             self.done=True;self.stage='budget_exhausted';self.event(t,'leg_budget_exhausted',reached=list(self.reached),active=self.active)
-        target=None;nav=self.navigator
+        target=None;nav=self.navigator;shared_used=False
         if self.stage=='approach':target=np.asarray(self.entities[self.active]['center_m'])
         elif self.stage=='return':
             target=np.asarray(self._return_target(pose))
@@ -281,26 +284,48 @@ class GoalRoute:
             path=plan.get('path_m',[])
             # The taught edge itself is the path during repeat; no unverified
             # spatial shortcut or global replan across a temporal corner.
-            if self.stage=='return':twist,_=heading_twist(pose,target)
+            if self.heading_host is not None:
+                if self.stage=='return':
+                    local_path=[target];end=self.graph.nodes[0]['pose'][:2]
+                else:
+                    local_path=transform(path,inverse(self.explorer.map_to_odom)) if path else []
+                    end=target
+                if self.stage=='return' or (path and not nav.phase):
+                    shared_used=True
+                    cmd,pulse=self.heading_host.command(t=t,pose=pose,path=local_path,goal=end,costmap=costmap,
+                        core=nav.core,points=wall,map_pose=self.explorer.pose,dev_light=self.dev_light)
+                else:
+                    cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=self.explorer.pose,core=nav.core,points=wall,
+                        motion_model=self.explorer.motion_model,translation_policy='forward_only_v1')
+            elif self.stage=='return':twist,_=heading_twist(pose,target)
             elif self.heading_mode!='off' and not nav.phase and path:
                 future=next((p for p in path if math.dist(p,self.explorer.pose[:2])>.05),path[-1])
                 twist,_=heading_twist(self.explorer.pose,future)
-            cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=self.explorer.pose,core=nav.core,points=wall,
-                motion_model=self.explorer.motion_model,translation_policy='forward_only_v1' if self.heading_mode!='off' else 'off')
+            if self.heading_host is None:
+                cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=self.explorer.pose,core=nav.core,points=wall,
+                    motion_model=self.explorer.motion_model,translation_policy='forward_only_v1' if self.heading_mode!='off' else 'off')
             trace.update(path=path,status=plan['status'],pulse=pulse)
             if nav.clear_requested:self.explorer.clear_navigation(t);nav.clear_requested=False
         elif self.heading_mode!='off' and not self.done:
             # Reuse the same heading law in frontier traversal, not S2's
             # map-specific final east alignment. Recovery reverse becomes hold.
             path=trace.get('path',[]);n=self.explorer.navigator
-            if not n.phase and path:
+            if self.heading_host is not None and not n.phase and path:
+                shared_used=True
+                local_path=transform(path,inverse(self.explorer.map_to_odom))
+                cmd,pulse=self.heading_host.command(t=t,pose=pose,path=local_path,goal=local_path[-1],costmap=costmap,
+                    core=n.core,points=wall,map_pose=self.explorer.pose,dev_light=self.dev_light)
+            elif not n.phase and path:
                 target=next((p for p in path if math.dist(p,self.explorer.pose[:2])>.05),path[-1])
                 twist,_=heading_twist(self.explorer.pose,target)
             else:twist=np.zeros(3) if cmd['kind']=='hold' else issued_twist(cmd)
-            cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=self.explorer.pose,core=n.core,points=wall,
-                motion_model=self.explorer.motion_model,translation_policy='forward_only_v1')
+            if self.heading_host is None or n.phase or not path:
+                cmd,pulse=pulse_command(twist,t,costmap=costmap,pose=self.explorer.pose,core=n.core,points=wall,
+                    motion_model=self.explorer.motion_model,translation_policy='forward_only_v1')
             trace['pulse']=pulse
-        if self.dev_light and not self.done and cmd['kind']=='hold' and 'twist' in locals() and np.linalg.norm(twist)>0:
+        if self.heading_host is not None and trace.get('pulse',{}).get('blocked'):
+            self.event(t,'would_stop_collision_guard' if self.dev_light else 'collision_guard_stop',stage=self.stage,dev_light=self.dev_light)
+        if self.dev_light and not shared_used and not self.done and cmd['kind']=='hold' and 'twist' in locals() and np.linalg.norm(twist)>0:
             trial,trial_pulse=pulse_command(twist,t,motion_model=self.explorer.motion_model,
                 translation_policy='forward_only_v1' if self.heading_mode!='off' else 'off')
             if trial['kind']!='hold':

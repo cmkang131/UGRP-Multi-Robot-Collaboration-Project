@@ -1,0 +1,42 @@
+{
+  "schema": "ugrp.s2.stiff_camera.criteria.v1",
+  "option": "camera_pitch=stiff_target_v1",
+  "default": "off",
+  "servo_stiffness": "real_v1",
+  "stiffness_source_commit": "7d109118516e0f80484f17eaa96f1c0c706e4ebe",
+  "stiffness_source_sha256": "66dc724652d07edbe35ef185b4fa7d5f42cfc6ec535cec9e73353ee22a52bbea",
+  "method": "fixed K/D + surveyed planar checkerboard corners + solvePnP/refineLM; ground normal and height only; retain fixed horizontal camera offset/yaw",
+  "reference": "https://docs.opencv.org/4.13.0/d9/dab/tutorial_homography.html",
+  "calibration": {
+    "poses": 22,
+    "settle_s": 6,
+    "fit_boards": 2,
+    "heldout_boards": 1,
+    "fit_rms_px_max": 1,
+    "holdout_rms_px_max": 1,
+    "source_gt": false,
+    "free_chassis": true,
+    "command_port": "unchanged CameraRobotPort",
+    "loaded_capture": false,
+    "sim_cap_s": 180,
+    "output": "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/capture"
+  },
+  "loaded_scope": "unloaded rigid approximation only; no loaded accuracy inherited; VO gate must pass before full",
+  "replay": {
+    "legacy_off": "s1052 old RGB diagnostic only, cannot represent stiffness-on plant",
+    "new_stiff_start": "fixed own command prefix of seed1052, stationary <=12 SIM s; no dock prior",
+    "detector_recovery": "8.25 s view >=6/96 valid columns; no gate changes",
+    "global_localization": "augmented_active_v1 uniform global, existing s2v29 gates retained",
+    "ground_vo": "normal pulse RMS nonincrease and carry RMSE strict improvement; no GT fit; stiffness-on records only for new-plant qualification"
+  },
+  "full_if_pass": {
+    "seed": 1052,
+    "runs": 1,
+    "dev_light": true,
+    "agent_lock": true,
+    "freeze": "freeze_v1"
+  },
+  "host_error": "ENOSPC is HOST_ERROR",
+  "failure_policy": "record failed/unevaluable gates; no full DEV or repeated loaded jig",
+  "models": 0
+}

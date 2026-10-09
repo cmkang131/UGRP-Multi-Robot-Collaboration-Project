@@ -1,0 +1,1708 @@
+{
+  "version": "s2v47-diagnosis-v1",
+  "controller_code_changed": false,
+  "new_physics": 0,
+  "gt_use": "evaluation only; peer live positions not recorded; anchor distances are conditional references",
+  "runs": [
+    {
+      "seed": 1051,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full",
+      "controller_inputs": [
+        "own_rgb",
+        "static_map",
+        "own_command_history"
+      ],
+      "peer_actual_trajectory_available": false,
+      "peer_estimates_and_sigma_available": false,
+      "registered_anchor_caveat": "setup positions only; passive motion unmeasured, especially after impact; never controller input",
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_interval": null,
+      "contact_pairs": [],
+      "peers": {
+        "r1": {
+          "registered_anchor": [
+            -0.8982,
+            -2.25,
+            0.0
+          ],
+          "commands": [
+            {
+              "t": 1.3000000000000178,
+              "kind": "initial_servo_command",
+              "pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            }
+          ],
+          "drive_commands": 0,
+          "estimate": null,
+          "sigma": null,
+          "actual_trajectory": null,
+          "own_rgb_frames": 0
+        },
+        "r2": {
+          "registered_anchor": [
+            -0.8982,
+            0.55,
+            0.0
+          ],
+          "commands": [
+            {
+              "t": 1.3000000000000178,
+              "kind": "initial_servo_command",
+              "pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            }
+          ],
+          "drive_commands": 0,
+          "estimate": null,
+          "sigma": null,
+          "actual_trajectory": null,
+          "own_rgb_frames": 0
+        }
+      },
+      "first_plan": {
+        "schema": "ugrp.map_goto.v1",
+        "planner": "grid A* (8-connected, no corner cutting, clearance-weighted)",
+        "start_m": [
+          -0.7237460214474597,
+          -0.40543832580019074
+        ],
+        "goal_m": [
+          -0.47,
+          -0.85
+        ],
+        "waypoints_m": [
+          [
+            -0.7237460214474597,
+            -0.40543832580019074
+          ],
+          [
+            -0.4624999999999997,
+            -0.6625000000000085
+          ],
+          [
+            -0.47,
+            -0.85
+          ]
+        ],
+        "length_m": 0.5541607694439383,
+        "regions_touched": [
+          "pickup"
+        ],
+        "resources": [],
+        "envelope": {
+          "x_m": [
+            -0.18,
+            0.28
+          ],
+          "y_m": [
+            -0.18,
+            0.18
+          ]
+        },
+        "margin_m": 0.02,
+        "grid_m": 0.025,
+        "obstacles": [
+          {
+            "id": "wall_north",
+            "center_m": [
+              2.1750000000000003,
+              1.45
+            ],
+            "half_extents_m": [
+              3.25,
+              0.025
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_south",
+            "center_m": [
+              2.1750000000000003,
+              -3.15
+            ],
+            "half_extents_m": [
+              3.25,
+              0.025
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_west",
+            "center_m": [
+              -1.05,
+              -0.85
+            ],
+            "half_extents_m": [
+              0.025,
+              2.3
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_east",
+            "center_m": [
+              5.4,
+              -0.85
+            ],
+            "half_extents_m": [
+              0.025,
+              2.3
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_divider_1",
+            "center_m": [
+              2.2,
+              -1.675
+            ],
+            "half_extents_m": [
+              0.025,
+              1.475
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_divider_2",
+            "center_m": [
+              2.2,
+              0.875
+            ],
+            "half_extents_m": [
+              0.025,
+              0.575
+            ],
+            "source": "authored static obstacle"
+          }
+        ],
+        "point_keepouts": [],
+        "blocked_regions": [],
+        "penalized_regions": {},
+        "escape_start_m": 0.1,
+        "map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+        "scope": "authored static map + supplied RGB obstacle estimates; not physical passage proof",
+        "plan_sha256": "c3cc774d20992064e662664256be2d630f1f8c7bfc7b36f2ca41f9e535dd1a5a"
+      },
+      "registered_anchor_minima": {
+        "r1": {
+          "t": 12.85,
+          "center_distance_m": 1.2291909554337452,
+          "envelope_separating_axis_gap_m": 0.8680334887195031,
+          "initial_path_min_center_m": 1.464020232100636
+        },
+        "r2": {
+          "t": 101.65,
+          "center_distance_m": 1.233507559089047,
+          "envelope_separating_axis_gap_m": 0.5386288551338565,
+          "initial_path_min_center_m": 0.9712345674659041
+        }
+      },
+      "timeline": [],
+      "source_hashes": {
+        "student_record.json": "3efeffaf5aaca44ea926173ba22f303184f5bcdde1267a0eedc58c879c589bea",
+        "eval_only/setup.json": "68643bd183252fa9ef67951bd359f9b6ac5c5b69a35a8cb671eb7d0ce8eb861a",
+        "eval_only/trajectory.jsonl": "c66c183fe432f3a481476ddab73fb936a13c30875d8313bd7c40bf7f4489b8fb",
+        "eval_only/contacts.jsonl": "171e724c11406497b3b230ec924f587aa86825e781a02a2aa3b43f1a82b054f6",
+        "eval_only/camera-pose.jsonl": "d9d48685f839a338735a163eac2f69d9558580d2d6aa9a1cc5d878432c1629f6",
+        "robots/r1/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+        "robots/r2/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23"
+      }
+    },
+    {
+      "seed": 1053,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction",
+      "controller_inputs": [
+        "own_rgb",
+        "static_map",
+        "own_command_history"
+      ],
+      "peer_actual_trajectory_available": false,
+      "peer_estimates_and_sigma_available": false,
+      "registered_anchor_caveat": "setup positions only; passive motion unmeasured, especially after impact; never controller input",
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_interval": null,
+      "contact_pairs": [],
+      "peers": {
+        "r1": {
+          "registered_anchor": [
+            -0.8982,
+            -0.85,
+            0.0
+          ],
+          "commands": [
+            {
+              "t": 1.3000000000000178,
+              "kind": "initial_servo_command",
+              "pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            }
+          ],
+          "drive_commands": 0,
+          "estimate": null,
+          "sigma": null,
+          "actual_trajectory": null,
+          "own_rgb_frames": 0
+        },
+        "r2": {
+          "registered_anchor": [
+            -0.8982,
+            0.55,
+            0.0
+          ],
+          "commands": [
+            {
+              "t": 1.3000000000000178,
+              "kind": "initial_servo_command",
+              "pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            }
+          ],
+          "drive_commands": 0,
+          "estimate": null,
+          "sigma": null,
+          "actual_trajectory": null,
+          "own_rgb_frames": 0
+        }
+      },
+      "first_plan": {
+        "schema": "ugrp.map_goto.v1",
+        "planner": "grid A* (8-connected, no corner cutting, clearance-weighted)",
+        "start_m": [
+          -0.8882566566875747,
+          -2.190736490876192
+        ],
+        "goal_m": [
+          -0.47,
+          -0.85
+        ],
+        "waypoints_m": [
+          [
+            -0.8882566566875747,
+            -2.190736490876192
+          ],
+          [
+            -0.4624999999999997,
+            -1.8625000000000043
+          ],
+          [
+            -0.47,
+            -0.85
+          ]
+        ],
+        "length_m": 1.5501223501525567,
+        "regions_touched": [
+          "pickup"
+        ],
+        "resources": [],
+        "envelope": {
+          "x_m": [
+            -0.18,
+            0.28
+          ],
+          "y_m": [
+            -0.18,
+            0.18
+          ]
+        },
+        "margin_m": 0.02,
+        "grid_m": 0.025,
+        "obstacles": [
+          {
+            "id": "wall_north",
+            "center_m": [
+              2.1750000000000003,
+              1.45
+            ],
+            "half_extents_m": [
+              3.25,
+              0.025
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_south",
+            "center_m": [
+              2.1750000000000003,
+              -3.15
+            ],
+            "half_extents_m": [
+              3.25,
+              0.025
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_west",
+            "center_m": [
+              -1.05,
+              -0.85
+            ],
+            "half_extents_m": [
+              0.025,
+              2.3
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_east",
+            "center_m": [
+              5.4,
+              -0.85
+            ],
+            "half_extents_m": [
+              0.025,
+              2.3
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_divider_1",
+            "center_m": [
+              2.2,
+              -1.675
+            ],
+            "half_extents_m": [
+              0.025,
+              1.475
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_divider_2",
+            "center_m": [
+              2.2,
+              0.875
+            ],
+            "half_extents_m": [
+              0.025,
+              0.575
+            ],
+            "source": "authored static obstacle"
+          }
+        ],
+        "point_keepouts": [],
+        "blocked_regions": [],
+        "penalized_regions": {},
+        "escape_start_m": 0.1,
+        "map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+        "scope": "authored static map + supplied RGB obstacle estimates; not physical passage proof",
+        "plan_sha256": "fda64e7c4d3ae1a8e9b7ae900a1aeaf8ec07ab284aeb3b4faf90b3730e848415"
+      },
+      "registered_anchor_minima": {
+        "r1": {
+          "t": 53.65,
+          "center_distance_m": 0.49266845214830257,
+          "envelope_separating_axis_gap_m": 0.01360144754911441,
+          "initial_path_min_center_m": 0.4282
+        },
+        "r2": {
+          "t": 108.75,
+          "center_distance_m": 1.0849098498720502,
+          "envelope_separating_axis_gap_m": 0.5837596437972569,
+          "initial_path_min_center_m": 1.464020232100636
+        }
+      },
+      "timeline": [],
+      "source_hashes": {
+        "student_record.json": "8e3e92e1209131d7c66e6d92e4ae6778a86a6c559b696070aded41bc04632430",
+        "eval_only/setup.json": "6ce2fd4f9c79891b54cf7b5f122db78b51a2b8185cae8ea7bc45a4e986ed30a0",
+        "eval_only/trajectory.jsonl": "7abb90985dc9106a800696cda652948bc2aa3ec2b1b93c61ea0fb592bfcba197",
+        "eval_only/contacts.jsonl": "2d8acb60496ec3e8f3b6d8f5539b0526e5890b1c9fb79bf4d3bb6b6e18132dd5",
+        "eval_only/camera-pose.jsonl": "8aa52310a599e3cf5721b7d1b7a14f1da1a9e8a1dfafbe95730e1ae46d5cf4cc",
+        "robots/r1/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+        "robots/r2/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23"
+      }
+    },
+    {
+      "seed": 1054,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction",
+      "controller_inputs": [
+        "own_rgb",
+        "static_map",
+        "own_command_history"
+      ],
+      "peer_actual_trajectory_available": false,
+      "peer_estimates_and_sigma_available": false,
+      "registered_anchor_caveat": "setup positions only; passive motion unmeasured, especially after impact; never controller input",
+      "peer_contact_points": 35,
+      "peer_contact_samples": 10,
+      "peer_contact_interval": [
+        24.1,
+        24.55
+      ],
+      "contact_pairs": [
+        "r1__base_lower_collision / r3__v3_wheel_rl_roller_6_body_contact",
+        "r1__base_top / r3__v3_wheel_rl_roller_6_body_contact",
+        "r3__base_lower_collision / r1__v3_wheel_fr_roller_0_body_contact",
+        "r3__base_lower_collision / r1__v3_wheel_fr_roller_1_body_contact",
+        "r3__base_top / r1__v3_wheel_fr_roller_1_body_contact",
+        "r3__rear_cage_collision / r1__v3_wheel_fr_roller_1_body_contact",
+        "r3__rear_cage_collision / r1__v3_wheel_fr_roller_2_body_contact"
+      ],
+      "peers": {
+        "r1": {
+          "registered_anchor": [
+            -0.8982,
+            -0.85,
+            0.0
+          ],
+          "commands": [
+            {
+              "t": 1.3000000000000178,
+              "kind": "initial_servo_command",
+              "pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            }
+          ],
+          "drive_commands": 0,
+          "estimate": null,
+          "sigma": null,
+          "actual_trajectory": null,
+          "own_rgb_frames": 0
+        },
+        "r2": {
+          "registered_anchor": [
+            -0.8982,
+            0.55,
+            0.0
+          ],
+          "commands": [
+            {
+              "t": 1.3000000000000178,
+              "kind": "initial_servo_command",
+              "pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            }
+          ],
+          "drive_commands": 0,
+          "estimate": null,
+          "sigma": null,
+          "actual_trajectory": null,
+          "own_rgb_frames": 0
+        }
+      },
+      "first_plan": {
+        "schema": "ugrp.map_goto.v1",
+        "planner": "grid A* (8-connected, no corner cutting, clearance-weighted)",
+        "start_m": [
+          -0.8752901862315332,
+          -2.264945892098699
+        ],
+        "goal_m": [
+          -0.47,
+          -0.85
+        ],
+        "waypoints_m": [
+          [
+            -0.8752901862315332,
+            -2.264945892098699
+          ],
+          [
+            -0.7374999999999999,
+            -2.212500000000003
+          ],
+          [
+            -0.47,
+            -0.85
+          ]
+        ],
+        "length_m": 1.5359446307329543,
+        "regions_touched": [
+          "pickup"
+        ],
+        "resources": [],
+        "envelope": {
+          "x_m": [
+            -0.18,
+            0.28
+          ],
+          "y_m": [
+            -0.18,
+            0.18
+          ]
+        },
+        "margin_m": 0.02,
+        "grid_m": 0.025,
+        "obstacles": [
+          {
+            "id": "wall_north",
+            "center_m": [
+              2.1750000000000003,
+              1.45
+            ],
+            "half_extents_m": [
+              3.25,
+              0.025
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_south",
+            "center_m": [
+              2.1750000000000003,
+              -3.15
+            ],
+            "half_extents_m": [
+              3.25,
+              0.025
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_west",
+            "center_m": [
+              -1.05,
+              -0.85
+            ],
+            "half_extents_m": [
+              0.025,
+              2.3
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_east",
+            "center_m": [
+              5.4,
+              -0.85
+            ],
+            "half_extents_m": [
+              0.025,
+              2.3
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_divider_1",
+            "center_m": [
+              2.2,
+              -1.675
+            ],
+            "half_extents_m": [
+              0.025,
+              1.475
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_divider_2",
+            "center_m": [
+              2.2,
+              0.875
+            ],
+            "half_extents_m": [
+              0.025,
+              0.575
+            ],
+            "source": "authored static obstacle"
+          }
+        ],
+        "point_keepouts": [],
+        "blocked_regions": [],
+        "penalized_regions": {},
+        "escape_start_m": 0.1,
+        "map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+        "scope": "authored static map + supplied RGB obstacle estimates; not physical passage proof",
+        "plan_sha256": "0735aef855a17f4046f2654e250f59c38502a6d3dfbd1f81c23326f878ef37a4"
+      },
+      "registered_anchor_minima": {
+        "r1": {
+          "t": 24.8,
+          "center_distance_m": 0.16806557603522443,
+          "envelope_separating_axis_gap_m": -0.3304515563062812,
+          "initial_path_min_center_m": 0.4201785545494616
+        },
+        "r2": {
+          "t": 218.35,
+          "center_distance_m": 0.9118873237987681,
+          "envelope_separating_axis_gap_m": 0.42282259328950267,
+          "initial_path_min_center_m": 1.464020232100636
+        }
+      },
+      "timeline": [
+        {
+          "t": 22.35,
+          "r3_eval_pose": [
+            -0.7596582184400716,
+            -1.270901769762968,
+            -0.07019668185995744
+          ],
+          "r3_report": {
+            "t": 22.35,
+            "t_est": 22.19,
+            "x": -0.7469876923745273,
+            "y": -1.3427462008642184,
+            "yaw": -0.05850292536131202,
+            "std_xy_m": 0.08922990770899093,
+            "std_yaw_rad": 0.03380218282377254
+          },
+          "r3_last_command": {
+            "t": 21.95,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.65,
+            "turn": 0.0,
+            "duration_s": 0.65
+          },
+          "r1_registered_anchor": [
+            -0.8982,
+            -0.85,
+            0.0
+          ],
+          "r1_actual_pose": null,
+          "r1_estimate": null,
+          "r1_sigma": null,
+          "r1_command": "no drive; initial servo only",
+          "estimated_distance_to_registered_anchor_m": 0.5154260183998681,
+          "evaluated_distance_to_registered_anchor_m": 0.4431163786494441,
+          "r3_report_xy_error_at_its_time_m": 0.033688929724534696
+        },
+        {
+          "t": 22.65,
+          "r3_eval_pose": [
+            -0.7538443785005813,
+            -1.1962117421633602,
+            -0.07011265738767339
+          ],
+          "r3_report": {
+            "t": 22.65,
+            "t_est": 22.49,
+            "x": -0.742160314399345,
+            "y": -1.2637798660719675,
+            "yaw": -0.06357880768828718,
+            "std_xy_m": 0.08992716700069799,
+            "std_yaw_rad": 0.034018207482427225
+          },
+          "r3_last_command": {
+            "t": 22.6,
+            "kind": "hold"
+          },
+          "r1_registered_anchor": [
+            -0.8982,
+            -0.85,
+            0.0
+          ],
+          "r1_actual_pose": null,
+          "r1_estimate": null,
+          "r1_sigma": null,
+          "r1_command": "no drive; initial servo only",
+          "estimated_distance_to_registered_anchor_m": 0.44222410726789485,
+          "evaluated_distance_to_registered_anchor_m": 0.3751014740977066,
+          "r3_report_xy_error_at_its_time_m": 0.033156820576377255
+        },
+        {
+          "t": 23.1,
+          "r3_eval_pose": [
+            -0.7501437424255671,
+            -1.1511519960691972,
+            -0.07213557639123785
+          ],
+          "r3_report": {
+            "t": 23.1,
+            "t_est": 22.94,
+            "x": -0.755008260126049,
+            "y": -1.2420491670783482,
+            "yaw": -0.05129669465077045,
+            "std_xy_m": 0.1028600678752254,
+            "std_yaw_rad": 0.03652984277898337
+          },
+          "r3_last_command": {
+            "t": 22.9,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.65,
+            "turn": 0.0,
+            "duration_s": 0.65
+          },
+          "r1_registered_anchor": [
+            -0.8982,
+            -0.85,
+            0.0
+          ],
+          "r1_actual_pose": null,
+          "r1_estimate": null,
+          "r1_sigma": null,
+          "r1_command": "no drive; initial servo only",
+          "estimated_distance_to_registered_anchor_m": 0.4173804305126869,
+          "evaluated_distance_to_registered_anchor_m": 0.33557887320778784,
+          "r3_report_xy_error_at_its_time_m": 0.05514323540539952
+        },
+        {
+          "t": 23.85,
+          "r3_eval_pose": [
+            -0.7399414840877704,
+            -1.0191622735252066,
+            -0.08766866284239667
+          ],
+          "r3_report": {
+            "t": 23.85,
+            "t_est": 23.69,
+            "x": -0.7459911581961548,
+            "y": -1.0769596938254513,
+            "yaw": -0.060435967916286824,
+            "std_xy_m": 0.10488052181583138,
+            "std_yaw_rad": 0.03737009485817294
+          },
+          "r3_last_command": {
+            "t": 23.85,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.65,
+            "turn": 0.0,
+            "duration_s": 0.65
+          },
+          "r1_registered_anchor": [
+            -0.8982,
+            -0.85,
+            0.0
+          ],
+          "r1_actual_pose": null,
+          "r1_estimate": null,
+          "r1_sigma": null,
+          "r1_command": "no drive; initial servo only",
+          "estimated_distance_to_registered_anchor_m": 0.2732731859231904,
+          "evaluated_distance_to_registered_anchor_m": 0.23164980604990426,
+          "r3_report_xy_error_at_its_time_m": 0.05752212237748594
+        },
+        {
+          "t": 24.1,
+          "r3_eval_pose": [
+            -0.7346477589386454,
+            -0.9701784762804831,
+            -0.07188738232398367
+          ],
+          "r3_report": {
+            "t": 24.1,
+            "t_est": 23.94,
+            "x": -0.7454854279380189,
+            "y": -1.0657176034912148,
+            "yaw": -0.06160533524186983,
+            "std_xy_m": 0.10503762735104846,
+            "std_yaw_rad": 0.03746409076430084
+          },
+          "r3_last_command": {
+            "t": 23.85,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.65,
+            "turn": 0.0,
+            "duration_s": 0.65
+          },
+          "r1_registered_anchor": [
+            -0.8982,
+            -0.85,
+            0.0
+          ],
+          "r1_actual_pose": null,
+          "r1_estimate": null,
+          "r1_sigma": null,
+          "r1_command": "no drive; initial servo only",
+          "estimated_distance_to_registered_anchor_m": 0.26430252548181793,
+          "evaluated_distance_to_registered_anchor_m": 0.20295862070207832,
+          "r3_report_xy_error_at_its_time_m": 0.05950706129119065
+        },
+        {
+          "t": 24.6,
+          "r3_eval_pose": [
+            -0.7389976840594434,
+            -0.9052969934359305,
+            0.2446131692383036
+          ],
+          "r3_report": {
+            "t": 24.6,
+            "t_est": 24.44,
+            "x": -0.7472700192006136,
+            "y": -0.9616526492040028,
+            "yaw": -0.05591214597118964,
+            "std_xy_m": 0.10740631267881634,
+            "std_yaw_rad": 0.034135871973251394
+          },
+          "r3_last_command": {
+            "t": 24.5,
+            "kind": "hold"
+          },
+          "r1_registered_anchor": [
+            -0.8982,
+            -0.85,
+            0.0
+          ],
+          "r1_actual_pose": null,
+          "r1_estimate": null,
+          "r1_sigma": null,
+          "r1_command": "no drive; initial servo only",
+          "estimated_distance_to_registered_anchor_m": 0.18773964200023194,
+          "evaluated_distance_to_registered_anchor_m": 0.1685322962636246,
+          "r3_report_xy_error_at_its_time_m": 0.045478156655964365
+        },
+        {
+          "t": 25.05,
+          "r3_eval_pose": [
+            -0.7281990503559683,
+            -0.9016684078102358,
+            0.25603058042150945
+          ],
+          "r3_report": {
+            "t": 25.05,
+            "t_est": 24.89,
+            "x": -0.739049268374067,
+            "y": -0.9343016010506002,
+            "yaw": -0.055514444159846896,
+            "std_xy_m": 0.10761601457166435,
+            "std_yaw_rad": 0.034291149212751754
+          },
+          "r3_last_command": {
+            "t": 24.9,
+            "kind": "hold"
+          },
+          "r1_registered_anchor": [
+            -0.8982,
+            -0.85,
+            0.0
+          ],
+          "r1_actual_pose": null,
+          "r1_estimate": null,
+          "r1_sigma": null,
+          "r1_command": "no drive; initial servo only",
+          "estimated_distance_to_registered_anchor_m": 0.1800991818881038,
+          "evaluated_distance_to_registered_anchor_m": 0.17767933826283075,
+          "r3_report_xy_error_at_its_time_m": 0.031161330654024065
+        }
+      ],
+      "source_hashes": {
+        "student_record.json": "6a1dbf2b8f9b01fcfb5985b7d3bfd4f75a6160c8b5d25ebd57c34ac0716dfca8",
+        "eval_only/setup.json": "6ce2fd4f9c79891b54cf7b5f122db78b51a2b8185cae8ea7bc45a4e986ed30a0",
+        "eval_only/trajectory.jsonl": "629f1d6bf90715d98ff06750c73fe1ce26e1b1a66e6b1ba9f1cf33c5240589ae",
+        "eval_only/contacts.jsonl": "b0a967d562308015cbc252a593e9366ea53b310835582a216bc0800d547188f7",
+        "eval_only/camera-pose.jsonl": "c8b0712366637d5da7ce3362228798480da21ea8fc59319356f0a055855accd1",
+        "robots/r1/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+        "robots/r2/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23"
+      },
+      "contact_pulse": {
+        "selection": {
+          "t": 23.85,
+          "state": "search_move",
+          "waypoint": [
+            -0.47,
+            -0.85
+          ],
+          "issued": {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.65,
+            "turn": 0.0,
+            "duration_s": 0.65
+          },
+          "profile_key": "0:left:0.65:0.65",
+          "predicted_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "prediction_variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "transfer": null,
+          "score": {
+            "before": 0.12768189044828623,
+            "after": 0.07384239521858983,
+            "body_error_m": [
+              0.2617791015330741,
+              0.24321497491793972
+            ],
+            "yaw_rad": -0.06043596791628669
+          }
+        },
+        "profile": {
+          "loaded": false,
+          "axis": "left",
+          "u": 0.65,
+          "duration_s": 0.65,
+          "settle_s": 0.1,
+          "times": [
+            0.0,
+            0.01,
+            0.02,
+            0.03,
+            0.04,
+            0.05,
+            0.06,
+            0.07,
+            0.08,
+            0.09,
+            0.1,
+            0.11,
+            0.12,
+            0.13,
+            0.14,
+            0.15,
+            0.16,
+            0.17,
+            0.18,
+            0.19,
+            0.2,
+            0.21,
+            0.22,
+            0.23,
+            0.24,
+            0.25,
+            0.26,
+            0.27,
+            0.28,
+            0.29,
+            0.3,
+            0.31,
+            0.32,
+            0.33,
+            0.34,
+            0.35,
+            0.36,
+            0.37,
+            0.38,
+            0.39,
+            0.4,
+            0.41,
+            0.42,
+            0.43,
+            0.44,
+            0.45,
+            0.46,
+            0.47,
+            0.48,
+            0.49,
+            0.5,
+            0.51,
+            0.52,
+            0.53,
+            0.54,
+            0.55,
+            0.56,
+            0.57,
+            0.58,
+            0.59,
+            0.6,
+            0.61,
+            0.62,
+            0.63,
+            0.64,
+            0.65,
+            0.66,
+            0.67,
+            0.68,
+            0.69,
+            0.7,
+            0.71,
+            0.72,
+            0.73,
+            0.74,
+            0.75
+          ],
+          "mean_curve": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.737998101590446e-06,
+              0.0007509646214701204,
+              -0.00012230984421714053
+            ],
+            [
+              3.475996203183307e-06,
+              0.001501929242940248,
+              -0.0002446196884342571
+            ],
+            [
+              5.213994304772031e-06,
+              0.002252893864410361,
+              -0.0003669295326513971
+            ],
+            [
+              6.951992406349013e-06,
+              0.0030038584858803805,
+              -0.0004892393768685231
+            ],
+            [
+              8.689990507947006e-06,
+              0.0037548231073504055,
+              -0.0006115492210856178
+            ],
+            [
+              -4.1800403476539986e-05,
+              0.005626943619360978,
+              -0.000759904033158882
+            ],
+            [
+              -9.229079746100408e-05,
+              0.007499064131370973,
+              -0.0009082588452320521
+            ],
+            [
+              -0.00014278119144547205,
+              0.009371184643380999,
+              -0.0010566136573052476
+            ],
+            [
+              -0.0001932715854299727,
+              0.011243305155391948,
+              -0.001204968469378522
+            ],
+            [
+              -0.0002437619794144369,
+              0.013115425667401953,
+              -0.001353323281451711
+            ],
+            [
+              -0.00026615813751380856,
+              0.015484852026438983,
+              -0.0016141470127257395
+            ],
+            [
+              -0.0002885542956131829,
+              0.017854278385476267,
+              -0.0018749707439998018
+            ],
+            [
+              -0.0003109504537125653,
+              0.020223704744513755,
+              -0.0021357944752738844
+            ],
+            [
+              -0.0003333466118119474,
+              0.02259313110355105,
+              -0.0023966182065479477
+            ],
+            [
+              -0.0003557427699113133,
+              0.02496255746258808,
+              -0.0026574419378219954
+            ],
+            [
+              -0.00035707348006166746,
+              0.027499938736910853,
+              -0.002883602338995168
+            ],
+            [
+              -0.00035840419021201654,
+              0.030037320011234908,
+              -0.003109762740168481
+            ],
+            [
+              -0.0003597349003623681,
+              0.0325747012855578,
+              -0.0033359231413416816
+            ],
+            [
+              -0.00036106561051271616,
+              0.03511208255988054,
+              -0.0035620835425148587
+            ],
+            [
+              -0.00036239632066306253,
+              0.03764946383420432,
+              -0.003788243943688145
+            ],
+            [
+              -0.0003543436079317646,
+              0.04025098866904967,
+              -0.003990335121125061
+            ],
+            [
+              -0.0003462908952004578,
+              0.042852513503895046,
+              -0.004192426298561983
+            ],
+            [
+              -0.00033823818246915674,
+              0.04545403833874074,
+              -0.004394517475998932
+            ],
+            [
+              -0.0003301854697378527,
+              0.04805556317358668,
+              -0.004596608653435873
+            ],
+            [
+              -0.0003221327570065501,
+              0.050657088008432334,
+              -0.0047986998308728185
+            ],
+            [
+              -0.0003118697818434228,
+              0.053282914604287974,
+              -0.004971389505787535
+            ],
+            [
+              -0.00030160680668028876,
+              0.05590874120014375,
+              -0.005144079180702273
+            ],
+            [
+              -0.0002913438315171739,
+              0.05853456779599937,
+              -0.005316768855616986
+            ],
+            [
+              -0.0002810808563540426,
+              0.06116039439185468,
+              -0.005489458530531675
+            ],
+            [
+              -0.0002708178811909178,
+              0.06378622098770993,
+              -0.005662148205446368
+            ],
+            [
+              -0.00025254031392633555,
+              0.06642141938756249,
+              -0.005839488329177241
+            ],
+            [
+              -0.0002342627466617503,
+              0.06905661778741412,
+              -0.006016828452908028
+            ],
+            [
+              -0.0002159851793971753,
+              0.07169181618726579,
+              -0.006194168576638857
+            ],
+            [
+              -0.00019770761213258923,
+              0.07432701458711868,
+              -0.006371508700369751
+            ],
+            [
+              -0.00017943004486801304,
+              0.07696221298697024,
+              -0.006548848824100552
+            ],
+            [
+              -0.00016333603088642299,
+              0.07960380833989077,
+              -0.006721275481620554
+            ],
+            [
+              -0.00014724201690483803,
+              0.08224540369281168,
+              -0.00689370213914058
+            ],
+            [
+              -0.00013114800292325608,
+              0.08488699904573277,
+              -0.007066128796660622
+            ],
+            [
+              -0.00011505398894166268,
+              0.0875285943986536,
+              -0.007238555454180638
+            ],
+            [
+              -9.895997496007803e-05,
+              0.09017018975157418,
+              -0.00741098211170065
+            ],
+            [
+              -7.716053115859202e-05,
+              0.09281405854936614,
+              -0.0075779940688281994
+            ],
+            [
+              -5.5361087357088544e-05,
+              0.09545792734715942,
+              -0.007745006025955847
+            ],
+            [
+              -3.356164355559764e-05,
+              0.09810179614495154,
+              -0.007912017983083422
+            ],
+            [
+              -1.176219975409925e-05,
+              0.10074566494274344,
+              -0.008079029940210982
+            ],
+            [
+              1.0037244047399039e-05,
+              0.10338953374053646,
+              -0.008246041897338621
+            ],
+            [
+              3.435265021641849e-05,
+              0.10603562748762979,
+              -0.008419575192838568
+            ],
+            [
+              5.866805638543809e-05,
+              0.10868172123472321,
+              -0.00859310848833853
+            ],
+            [
+              8.298346255444466e-05,
+              0.11132781498181694,
+              -0.00876664178383852
+            ],
+            [
+              0.00010729886872346795,
+              0.11397390872891087,
+              -0.008940175079338489
+            ],
+            [
+              0.00013161427489249424,
+              0.11662000247600457,
+              -0.009113708374838464
+            ],
+            [
+              0.0001559294526606847,
+              0.11926547889628777,
+              -0.009269036665244035
+            ],
+            [
+              0.0001802446304288845,
+              0.12191095531657124,
+              -0.00942436495564963
+            ],
+            [
+              0.00020455980819708208,
+              0.12455643173685449,
+              -0.009579693246055197
+            ],
+            [
+              0.00022887498596527742,
+              0.1272019081571374,
+              -0.009735021536460744
+            ],
+            [
+              0.0002531901637334656,
+              0.12984738457742023,
+              -0.009890349826866292
+            ],
+            [
+              0.00028296272038299695,
+              0.13249251865827813,
+              -0.010044898374420935
+            ],
+            [
+              0.000312735277032511,
+              0.13513765273913508,
+              -0.010199446921975516
+            ],
+            [
+              0.0003425078336820362,
+              0.13778278681999206,
+              -0.010353995469530117
+            ],
+            [
+              0.00037228039033156395,
+              0.14042792090085032,
+              -0.010508544017084792
+            ],
+            [
+              0.00040205294698108547,
+              0.1430730549817072,
+              -0.010663092564639388
+            ],
+            [
+              0.00043018052664908855,
+              0.14572033098710363,
+              -0.01082295894437724
+            ],
+            [
+              0.0004583081063171005,
+              0.14836760699250037,
+              -0.01098282532411513
+            ],
+            [
+              0.0004864356859851078,
+              0.1510148829978973,
+              -0.011142691703853014
+            ],
+            [
+              0.0005145632656531146,
+              0.15366215900329394,
+              -0.011302558083590894
+            ],
+            [
+              0.0005426908453211198,
+              0.15630943500869027,
+              -0.011462424463328734
+            ],
+            [
+              0.0005551961569149416,
+              0.15805825780258667,
+              -0.01139077943413045
+            ],
+            [
+              0.0005677014685087894,
+              0.15980708059648396,
+              -0.011319134404932091
+            ],
+            [
+              0.0005802067801026062,
+              0.16155590339038034,
+              -0.011247489375733761
+            ],
+            [
+              0.0005927120916964386,
+              0.16330472618427666,
+              -0.01117584434653548
+            ],
+            [
+              0.000605217403290276,
+              0.16505354897817356,
+              -0.01110419931733708
+            ],
+            [
+              0.0006007627916352197,
+              0.16574364456418636,
+              -0.010830235034522682
+            ],
+            [
+              0.0005963081799801712,
+              0.1664337401501991,
+              -0.010556270751708235
+            ],
+            [
+              0.0005918535683251174,
+              0.1671238357362118,
+              -0.010282306468893759
+            ],
+            [
+              0.0005873989566700782,
+              0.16781393132222466,
+              -0.010008342186079296
+            ],
+            [
+              0.0005829443450150198,
+              0.16850402690823743,
+              -0.009734377903264832
+            ]
+          ],
+          "mean_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "residual_variance": [
+            2.1985704257160255e-06,
+            5.391553144465104e-06,
+            4.755518045965083e-05
+          ],
+          "n": 79,
+          "source_seeds": [
+            1042,
+            1043,
+            1045
+          ],
+          "transfer": null,
+          "prediction_variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ]
+        },
+        "predicted_registered_anchor_min_center_m": 0.17325099832342652,
+        "own_2sigma_m": 0.20976104363166276,
+        "peer_sigma_known": false,
+        "radius_sum_m": 0.6657326790837296,
+        "criterion_lower_bound_with_peer_sigma_zero_m": 0.8754937227153923
+      },
+      "camera": {
+        "scope": "evaluation only; peer registered anchor, not measured live peer pose",
+        "horizontal_pinhole_angles_deg": [
+          -24.908958880635357,
+          29.626203540958944
+        ],
+        "scan_samples": 215,
+        "scan_prism_outside": 215,
+        "scan_closest_center_angle": {
+          "t": 8.15,
+          "registered_center_angle_deg": -47.15101715621336
+        },
+        "contact_center_angle": {
+          "t": 23.85,
+          "registered_center_angle_deg": -149.05788217666174
+        },
+        "frames_to_inspect": [
+          {
+            "robot_id": "r3",
+            "frame_id": 20,
+            "sim_time": 2.25,
+            "sha256": "4aa920e7eee591cf81ab5e7f5267386c42507f57277464f9186b06dcf1ed8fb0",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 1072,
+                "4": 2400,
+                "5": 1482,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00019.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1072,
+              "4": 2400,
+              "5": 1482,
+              "6": 1500
+            }
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 50,
+            "sim_time": 3.75,
+            "sha256": "2a3287b4bd142485bb4c8dd562b01282e8faa19a0c7fb489d0eb9bc46f4f723b",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 1072,
+                "4": 2400,
+                "5": 1482,
+                "6": 1230
+              }
+            },
+            "path": "robots/r3/rgb/00049.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1072,
+              "4": 2400,
+              "5": 1482,
+              "6": 1230
+            }
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 80,
+            "sim_time": 5.25,
+            "sha256": "2c50b70da158f7a51126321fd9a7134b7d50aa9c35bb9e3acc9a31ca625da973",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 1072,
+                "4": 2400,
+                "5": 1482,
+                "6": 970
+              }
+            },
+            "path": "robots/r3/rgb/00079.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1072,
+              "4": 2400,
+              "5": 1482,
+              "6": 970
+            }
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 110,
+            "sim_time": 6.75,
+            "sha256": "f5c10d91275ae313141657ae661668760b5291e1ab4470a3a0a3e327cfc9e5d6",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 1072,
+                "4": 2400,
+                "5": 1482,
+                "6": 1770
+              }
+            },
+            "path": "robots/r3/rgb/00109.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1072,
+              "4": 2400,
+              "5": 1482,
+              "6": 1770
+            }
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 140,
+            "sim_time": 8.25,
+            "sha256": "8789d4b65bf1fa83aa4d2286257c9665ba5d901e7e26c986ec7f6e04492a3a8f",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 1072,
+                "4": 2400,
+                "5": 1482,
+                "6": 2030
+              }
+            },
+            "path": "robots/r3/rgb/00139.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1072,
+              "4": 2400,
+              "5": 1482,
+              "6": 2030
+            }
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 170,
+            "sim_time": 9.75,
+            "sha256": "0fc35c867517ee3e42d33efd7293e59727b56fbb0798f0e315c16f55a2084981",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 1072,
+                "4": 2400,
+                "5": 1482,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00169.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1072,
+              "4": 2400,
+              "5": 1482,
+              "6": 1500
+            }
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 205,
+            "sim_time": 11.5,
+            "sha256": "d56eef4c958adf27ade822a022ffe94c050ecd100a146cb6c6078997ddf8f6be",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00204.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 452,
+            "sim_time": 23.85,
+            "sha256": "449ea29405577ac777065d01ed30d4f0a36eb6ea202e2426a165e8df8a653df7",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00451.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-peer-clearance-v47-20261008/diagnosis.json",
+  "raw_sha256": "a34a9b2ef545f799117f2b8a98363d4592a45368c720c4b5c565b6104d231339"
+}

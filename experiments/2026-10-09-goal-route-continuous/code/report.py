@@ -21,6 +21,22 @@ def rows(p):return [json.loads(s) for s in p.read_text().splitlines()] if p.exis
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
+def legs(result,events,trace,gt):
+    """Unchanged 270s clocks, split at actual own arrival events, no reset on sight."""
+    begin=result['start_sim_s'];rows_out=[]
+    endings=[(e['t'],e['entity'],'arrived') for e in events if e['reason']=='goal_reached']
+    endings.append((gt[-1]['t'] if gt else result.get('total_sim_s',begin),'return_start' if len(endings)==2 else 'unfinished',result.get('stage',result['status'])))
+    for end,name,status in endings:
+        def length(rows,key):
+            points=np.array([r[key][:2] for r in rows if begin-1e-8<=r['t']<=end+1e-8]).reshape(-1,2)
+            return float(np.linalg.norm(np.diff(points,axis=0),axis=1).sum())
+        rows_out.append(dict(leg=len(rows_out)+1,target=name,start_sim_s=begin,end_sim_s=end,sim_s=end-begin,
+            own_tracked_path_m=length(trace,'local_pose'),actual_path_m=length(gt,'robot_xyz_m'),
+            status=status,budget_failed=any(e['reason']=='leg_budget_exhausted' and begin<=e['t']<=end+1e-8 for e in events)))
+        begin=end
+    return rows_out
+
+
 def shortest(static,start,target):
     """Evaluation-only 5cm 8-neighbor Dijkstra, same Nav2 inflation formula."""
     rect=np.array([r['center_m']+r['half_extents_m'] for r in static['obstacles']])
@@ -93,6 +109,7 @@ def score(seed):
     matches=graph['matches'];accepted=sum(r['status']=='accepted' for r in matches)
     failures='success' if declarations and all(d['inside'] for d in declarations) else ('physical_or_host' if result['status']!='RECORDED' else 'unobserved_B' if 'B' not in graph['entities'] else 'approach_or_localization')
     summary.update(arrived_B=any(d['inside'] for d in declarations),false_declarations=sum(not d['inside'] for d in declarations),
+        legs=legs(result,events,trace,gt),
         declarations=declarations,returned_start=bool(result.get('declared_return')),
         return_GT_distance_m=float(np.linalg.norm(actual[-1]-actual[0])) if result.get('declared_return') else None,
         reached_entities=graph['reached'],failure=failures,final_error_m=float(error[-1]),path_rmse_m=float(np.sqrt(np.mean(error**2))),
@@ -121,6 +138,16 @@ def aggregate():
             error_n=len(errs),error_median=None if not errs else float(np.median(errs)),error_max=max(errs) if errs else None)
     dump(EXP/'results/summary.json',summary);return summary
 
+
+def append_readme(report):
+    p=EXP/'README.md';s=p.read_text();seed=report['seed'];marker=f'|{seed}/'
+    if marker in s:return
+    detail='; '.join(f"{v['leg']}:{v['target']} 자기{v['own_tracked_path_m']:.2f}/GT{v['actual_path_m']:.2f}m,{v['sim_s']:.1f}s,예산실패{int(v['budget_failed'])}" for v in report.get('legs',[])) or '자료 없음(HOST_ERROR 포함)'
+    s+=f"|{seed}/{report['condition']}|{int(report['arrived_B'])}/{report['false_declarations']}|{int(report.get('returned_start',False))}|{report['status']}/{report.get('failure','')}|{detail}|\n"
+    p.write_text(s)
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--seed',type=int,choices=SEEDS);a=p.parse_args()
-    print(json.dumps(score(a.seed) if a.seed else aggregate(),ensure_ascii=False,indent=2))
+    p=argparse.ArgumentParser();p.add_argument('--seed',type=int,choices=SEEDS);p.add_argument('--append-readme',action='store_true');a=p.parse_args()
+    report=score(a.seed) if a.seed else aggregate()
+    if a.append_readme:append_readme(report)
+    print(json.dumps(report,ensure_ascii=False,indent=2))

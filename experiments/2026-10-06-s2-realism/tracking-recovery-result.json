@@ -1,0 +1,696 @@
+{
+  "schema": "ugrp.s2.tracking_recovery.result.v1",
+  "criteria": {
+    "schema": "ugrp.s2.tracking_recovery.preregistration.v1",
+    "stage": "s2v55",
+    "seed": 1060,
+    "source_execution_sha": "329eb4b604915c936630a06bede0caf41bf83483",
+    "option": "localization_recovery=augmented_mcl_v1",
+    "parameters": {
+      "alpha_slow": 0.001,
+      "alpha_fast": 0.1,
+      "resample_interval": 1,
+      "tracking_particles": 2000
+    },
+    "recovery_xy_m": 0.25,
+    "convergence_std_xy_m": 0.05,
+    "gates": [
+      "baseline reproduces stored poses within 1e-9",
+      "default and explicit off preserve command/record bytes and particle trajectory hash",
+      "after last recorded positive-force wall contact, reconverge by recorded carry end: std_xy <= 0.05 and evaluated XY error <= 0.25m",
+      "carry-end evaluated XY error <= 0.25m",
+      "post-contact XY RMSE strictly improves versus off",
+      "whole-carry XY RMSE does not increase versus off"
+    ],
+    "no_threshold_changes_after_on_result": true,
+    "gt": "evaluation only after sealed own-RGB/command replay",
+    "physical_condition": "only if all offline gates pass; then preregister fresh seeds 1062-1064 before execution",
+    "seeds_1062_1064_registered_for_execution": false
+  },
+  "criteria_sha256": "917761850ccb5da608c5e2a53efcd2a1748a6fc806ff794cc4360fef13944266",
+  "source_sha": "fe779a2824d3df2547ca67f1619f7ba1234de2cd",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "gt_use": "posthoc only",
+  "replay_script_sha256": "edd7b5feaa787e89ef0400e08cc224fe64b804ff4ca8553c51c597e4e4a018e6",
+  "options": {
+    "off": "off",
+    "on": "augmented_mcl_v1"
+  },
+  "gates": {
+    "baseline_reproduced": true,
+    "off_particle_bytes_identical": true,
+    "off_pose_bytes_identical": true,
+    "postcontact_reconverged": false,
+    "carry_end_xy": false,
+    "postcontact_rmse_improved": false,
+    "carry_rmse_nonincrease": false
+  },
+  "physical_admitted": false,
+  "runs": {
+    "off": {
+      "option": "off",
+      "physics_runs": 0,
+      "gt_use": "posthoc only after prediction sealed",
+      "contact": {
+        "start": 185.55,
+        "end": 207.85,
+        "samples": 198,
+        "points": {
+          "wheel": 475,
+          "body": 57
+        },
+        "geom_pairs": {
+          "zone_wall_divider_2|r3__v3_wheel_fl_roller_2_body_contact": 319,
+          "zone_wall_divider_2|r3__v3_wheel_fl_roller_3_body_contact": 156,
+          "zone_wall_divider_2|r3__front_plate": 57
+        },
+        "max_force_n": 2.9349705671413875,
+        "net_xy_m": 0.07655615406940776,
+        "xy_delta_m": [
+          0.05713996326796922,
+          -0.050949674421276014
+        ],
+        "yaw_delta_deg": 41.41358660673064,
+        "path_length_m": 0.13235405904712527,
+        "commanded_pulses": {
+          "1:forward:0.35:0.10": 33,
+          "1:turn:0.35:0.10": 1,
+          "1:left:-0.35:0.06": 1,
+          "1:left:-0.65:0.65": 1
+        }
+      },
+      "trajectory": [
+        {
+          "t": 82.05,
+          "t_est": 81.89,
+          "actual": [
+            -0.07354552903906449,
+            -0.8896451174699971,
+            0.22864066386163576
+          ],
+          "estimated": [
+            -0.07910891753408444,
+            -1.0617952657249554,
+            0.04818678666641013
+          ],
+          "error_xy_m": 0.1722400210048485,
+          "error_yaw_deg": -10.339245560058481,
+          "std_xy": 0.052660791836911705,
+          "last_fix": 39.65
+        },
+        {
+          "t": 91.95,
+          "t_est": 91.79,
+          "actual": [
+            -0.14138578193468293,
+            -0.5555791274036228,
+            0.16846341393336176
+          ],
+          "estimated": [
+            -0.11773734636133937,
+            -0.7114617177274324,
+            0.09291580041059128
+          ],
+          "error_xy_m": 0.15766619952014835,
+          "error_yaw_deg": -4.328559407140214,
+          "std_xy": 0.04255923959521885,
+          "last_fix": 91.4
+        },
+        {
+          "t": 184.55,
+          "t_est": 184.39,
+          "actual": [
+            2.0446846963722822,
+            0.25360874159958813,
+            -0.10973300295600302
+          ],
+          "estimated": [
+            2.2869965603465903,
+            0.12611088525427525,
+            -0.1321301563926516
+          ],
+          "error_xy_m": 0.2738078574390326,
+          "error_yaw_deg": -1.283262365026891,
+          "std_xy": 0.05155391548626854,
+          "last_fix": 183.4
+        },
+        {
+          "t": 185.55,
+          "t_est": 185.39,
+          "actual": [
+            2.067145419940153,
+            0.25108616841943915,
+            -0.10663371429704381
+          ],
+          "estimated": [
+            2.3148239066794027,
+            0.1226235052459269,
+            -0.1320539066552394
+          ],
+          "error_xy_m": 0.2790112697062182,
+          "error_yaw_deg": -1.456469736535314,
+          "std_xy": 0.05184031508964167,
+          "last_fix": 183.4
+        },
+        {
+          "t": 191.15,
+          "t_est": 190.99,
+          "actual": [
+            2.094708978510451,
+            0.2271135599488016,
+            0.15470726813441663
+          ],
+          "estimated": [
+            2.4943522990843183,
+            0.09980955094403798,
+            -0.13216610958007421
+          ],
+          "error_xy_m": 0.4194294867888901,
+          "error_yaw_deg": -16.43663379770265,
+          "std_xy": 0.05420425129728517,
+          "last_fix": 183.4
+        },
+        {
+          "t": 207.85,
+          "t_est": 207.69,
+          "actual": [
+            2.1288064555148534,
+            0.21042322724895565,
+            0.5817668839226845
+          ],
+          "estimated": [
+            2.742213345975203,
+            0.07442764137468375,
+            -0.04238117322834131
+          ],
+          "error_xy_m": 0.6283015300327718,
+          "error_yaw_deg": -35.76104946604388,
+          "std_xy": 0.05573672252564733,
+          "last_fix": 191.15
+        },
+        {
+          "t": 270.8,
+          "t_est": 270.64,
+          "actual": [
+            4.700825679379413,
+            -0.4009657707693509,
+            0.8727854095093361
+          ],
+          "estimated": [
+            4.3937714538673385,
+            -2.0918150592134164,
+            -0.00038074707254788666
+          ],
+          "error_xy_m": 1.7185033062629302,
+          "error_yaw_deg": -50.02873558580114,
+          "std_xy": 0.12746379949875072,
+          "last_fix": 261.3
+        }
+      ],
+      "windows": {
+        "carry": {
+          "rmse_m": 0.8224304812359435,
+          "updates": 28,
+          "max_gap_s": 18.400000000000006
+        },
+        "post_contact": {
+          "rmse_m": 1.3608495998536347,
+          "updates": 14,
+          "max_gap_s": 9.5
+        }
+      },
+      "reconverged_t": null,
+      "reconverged_error_m": null,
+      "carry_end_error_m": 1.7185033062629302,
+      "recovery": {
+        "updates": 0,
+        "injected": 0,
+        "injection_events": 0,
+        "max_probability": 0
+      },
+      "inputs": {
+        "student_record.json": "45574be70f020e518a556a39b3cd798c0a127d3904be215bd2f4351a8d369132",
+        "eval_only/trajectory.jsonl": "6bb9f31aedb58b86db57da99dd29a79f60a9047a30a87e5f3a4c25dcd56935da",
+        "eval_only/wall-contacts.jsonl": "db3a990b2e58211a6239f4740294017e5898abbb15011fa17dca3aeca0fc28eb"
+      },
+      "prediction_sha": "0e6c26bfee0a2e6f031f9d2c0eae3c958ded9080af266fb90b88c0e9f05abcee",
+      "max_delta": 0.0
+    },
+    "on": {
+      "option": "on",
+      "physics_runs": 0,
+      "gt_use": "posthoc only after prediction sealed",
+      "contact": {
+        "start": 185.55,
+        "end": 207.85,
+        "samples": 198,
+        "points": {
+          "wheel": 475,
+          "body": 57
+        },
+        "geom_pairs": {
+          "zone_wall_divider_2|r3__v3_wheel_fl_roller_2_body_contact": 319,
+          "zone_wall_divider_2|r3__v3_wheel_fl_roller_3_body_contact": 156,
+          "zone_wall_divider_2|r3__front_plate": 57
+        },
+        "max_force_n": 2.9349705671413875,
+        "net_xy_m": 0.07655615406940776,
+        "xy_delta_m": [
+          0.05713996326796922,
+          -0.050949674421276014
+        ],
+        "yaw_delta_deg": 41.41358660673064,
+        "path_length_m": 0.13235405904712527,
+        "commanded_pulses": {
+          "1:forward:0.35:0.10": 33,
+          "1:turn:0.35:0.10": 1,
+          "1:left:-0.35:0.06": 1,
+          "1:left:-0.65:0.65": 1
+        }
+      },
+      "trajectory": [
+        {
+          "t": 82.05,
+          "t_est": 81.89,
+          "actual": [
+            -0.07354552903906449,
+            -0.8896451174699971,
+            0.22864066386163576
+          ],
+          "estimated": [
+            4.111853739124398,
+            -1.4764527318314244,
+            -3.0761861908519577
+          ],
+          "error_xy_m": 4.226335316821868,
+          "error_yaw_deg": 170.64736920341662,
+          "std_xy": 0.021132857489695147,
+          "last_fix": 39.65
+        },
+        {
+          "t": 91.95,
+          "t_est": 91.79,
+          "actual": [
+            -0.14138578193468293,
+            -0.5555791274036228,
+            0.16846341393336176
+          ],
+          "estimated": [
+            4.139003282667482,
+            -1.8196809456693757,
+            -3.0917202148713607
+          ],
+          "error_xy_m": 4.463147314542573,
+          "error_yaw_deg": 173.20523763184403,
+          "std_xy": 0.023260675879879334,
+          "last_fix": 91.4
+        },
+        {
+          "t": 184.55,
+          "t_est": 184.39,
+          "actual": [
+            2.0446846963722822,
+            0.25360874159958813,
+            -0.10973300295600302
+          ],
+          "estimated": [
+            1.7365046697250848,
+            -2.6250316107834397,
+            3.029359238937496
+          ],
+          "error_xy_m": 2.895089844407622,
+          "error_yaw_deg": 179.8567369627572,
+          "std_xy": 0.011716973250022439,
+          "last_fix": 149.0
+        },
+        {
+          "t": 185.55,
+          "t_est": 185.39,
+          "actual": [
+            2.067145419940153,
+            0.25108616841943915,
+            -0.10663371429704381
+          ],
+          "estimated": [
+            1.7086066276130327,
+            -2.6220792731199434,
+            3.0294383481825173
+          ],
+          "error_xy_m": 2.8954498303475376,
+          "error_yaw_deg": 179.68369342896625,
+          "std_xy": 0.01224207443887324,
+          "last_fix": 149.0
+        },
+        {
+          "t": 191.15,
+          "t_est": 190.99,
+          "actual": [
+            2.094708978510451,
+            0.2271135599488016,
+            0.15470726813441663
+          ],
+          "estimated": [
+            1.528612299124938,
+            -2.6028685342747258,
+            3.029387979579092
+          ],
+          "error_xy_m": 2.8860464486970905,
+          "error_yaw_deg": 164.70707221344475,
+          "std_xy": 0.01599910624181862,
+          "last_fix": 149.0
+        },
+        {
+          "t": 207.85,
+          "t_est": 207.69,
+          "actual": [
+            2.1288064555148534,
+            0.21042322724895565,
+            0.5817668839226845
+          ],
+          "estimated": [
+            1.273994609630625,
+            -2.564093121916638,
+            3.0998971461593507
+          ],
+          "error_xy_m": 2.903212748603033,
+          "error_yaw_deg": 144.27823629033222,
+          "std_xy": 0.022246772378233918,
+          "last_fix": 191.15
+        },
+        {
+          "t": 270.8,
+          "t_est": 270.64,
+          "actual": [
+            4.700825679379413,
+            -0.4009657707693509,
+            0.8727854095093361
+          ],
+          "estimated": [
+            -0.27996564381664835,
+            -0.2940206427849796,
+            3.0541782520772953
+          ],
+          "error_xy_m": 4.981939327774352,
+          "error_yaw_deg": 124.98460333918969,
+          "std_xy": 0.12155978894855692,
+          "last_fix": 261.3
+        }
+      ],
+      "windows": {
+        "carry": {
+          "rmse_m": 3.572293120311108,
+          "updates": 25,
+          "max_gap_s": 42.150000000000006
+        },
+        "post_contact": {
+          "rmse_m": 3.8746096438054507,
+          "updates": 14,
+          "max_gap_s": 9.5
+        }
+      },
+      "reconverged_t": null,
+      "reconverged_error_m": null,
+      "carry_end_error_m": 4.981939327774352,
+      "recovery": {
+        "updates": 35,
+        "injected": 196,
+        "injection_events": 1,
+        "max_probability": 0.09909873302202887
+      },
+      "inputs": {
+        "student_record.json": "45574be70f020e518a556a39b3cd798c0a127d3904be215bd2f4351a8d369132",
+        "eval_only/trajectory.jsonl": "6bb9f31aedb58b86db57da99dd29a79f60a9047a30a87e5f3a4c25dcd56935da",
+        "eval_only/wall-contacts.jsonl": "db3a990b2e58211a6239f4740294017e5898abbb15011fa17dca3aeca0fc28eb"
+      },
+      "prediction_sha": "737ed2dbf1acee1c00695b15f5be93e7e447d32dc4aa19bcb63c5acf51298358",
+      "max_delta": 34.400000000000006
+    }
+  },
+  "hashes": {
+    "baseline/prediction.json": "38a9601c10e745b18f7dc70e3459e7669e96b9bcc728c930b0bac7d2966403fa",
+    "off/prediction.json": "0e6c26bfee0a2e6f031f9d2c0eae3c958ded9080af266fb90b88c0e9f05abcee",
+    "on/prediction.json": "737ed2dbf1acee1c00695b15f5be93e7e447d32dc4aa19bcb63c5acf51298358",
+    "off-audit.json": "17e82f8921f9b236402ee594036822253807ad74af9a960c89332ababa5743c7",
+    "on-audit.json": "6657b5a2687d126c8a93f589645470a49645de93d051ec16f20453fdca89bd74"
+  },
+  "cohort_comparison": [
+    {
+      "condition": "v133 prior",
+      "success": 6,
+      "trials": 6
+    },
+    {
+      "condition": "v139 no prior",
+      "success": 2,
+      "trials": 3
+    },
+    {
+      "condition": "s2v55 tracking recovery offline",
+      "success": null,
+      "trials": 0,
+      "reason": "physical gated on replay"
+    }
+  ],
+  "particle_diagnosis": {
+    "off": [
+      {
+        "key": "p0159",
+        "kind": "periodic",
+        "t": 123.84,
+        "n": 2000,
+        "near_count": 1,
+        "near_mass": 0.0005,
+        "wide_count": 1973,
+        "wide_mass": 0.9865000000000004,
+        "nearest_xy": 0.09986349551316367,
+        "ess": 2000.000000000059
+      },
+      {
+        "key": "p0160",
+        "kind": "periodic",
+        "t": 124.84,
+        "n": 2000,
+        "near_count": 0,
+        "near_mass": 0.0,
+        "wide_count": 1967,
+        "wide_mass": 0.9835000000000004,
+        "nearest_xy": 0.10091881358103044,
+        "ess": 2000.000000000059
+      },
+      {
+        "key": "p0235",
+        "kind": "periodic",
+        "t": 185.84,
+        "n": 2000,
+        "near_count": 0,
+        "near_mass": 0.0,
+        "wide_count": 195,
+        "wide_mass": 0.09750000000000003,
+        "nearest_xy": 0.22347034234585927,
+        "ess": 2000.000000000059
+      },
+      {
+        "key": "p0236",
+        "kind": "periodic",
+        "t": 186.84,
+        "n": 2000,
+        "near_count": 0,
+        "near_mass": 0.0,
+        "wide_count": 0,
+        "wide_mass": 0.0,
+        "nearest_xy": 0.25222907644188164,
+        "ess": 2000.000000000059
+      }
+    ],
+    "on": [
+      {
+        "key": "p0032",
+        "kind": "periodic",
+        "t": 16.84,
+        "n": 2000,
+        "near_count": 493,
+        "near_mass": 0.24687026398809916,
+        "wide_count": 1803,
+        "wide_mass": 0.9028541297576933,
+        "nearest_xy": 0.024327610338678855,
+        "ess": 1997.0006708129447
+      },
+      {
+        "key": "p0033",
+        "kind": "periodic",
+        "t": 17.84,
+        "n": 2000,
+        "near_count": 493,
+        "near_mass": 0.2491157150075701,
+        "wide_count": 1797,
+        "wide_mass": 0.9080343607882424,
+        "nearest_xy": 0.01915376298380765,
+        "ess": 1979.0000000000953
+      },
+      {
+        "key": "p0036",
+        "kind": "periodic",
+        "t": 18.84,
+        "n": 2000,
+        "near_count": 126,
+        "near_mass": 0.06300000000000003,
+        "wide_count": 439,
+        "wide_mass": 0.21950000000000008,
+        "nearest_xy": 0.013821696291782896,
+        "ess": 2000.000000000059
+      },
+      {
+        "key": "p0039",
+        "kind": "periodic",
+        "t": 19.84,
+        "n": 2000,
+        "near_count": 0,
+        "near_mass": 0.0,
+        "wide_count": 0,
+        "wide_mass": 0.0,
+        "nearest_xy": 5.732269661043115,
+        "ess": 2000.000000000059
+      }
+    ]
+  },
+  "recovery_ema_diagnosis": [
+    {
+      "t": 15.05,
+      "w_avg": 0.00026855264690964003,
+      "w_slow": 0.00026855264690964003,
+      "w_fast": 0.00026855264690964003,
+      "injection_probability": 0.0,
+      "ess": 1837.0482734322568,
+      "resampled": true,
+      "samples_before": 2000,
+      "samples": 2000,
+      "occupied_bins": 2,
+      "limit": 2000,
+      "capped": true,
+      "injected": 0,
+      "samples_after": 2000
+    },
+    {
+      "t": 16.65,
+      "w_avg": 9.910549790074454e-10,
+      "w_slow": 0.00026828409525378536,
+      "w_fast": 0.00024169748132417393,
+      "injection_probability": 0.09909873302202887,
+      "ess": 1525.7571321362193,
+      "resampled": true,
+      "samples_before": 2000,
+      "samples": 2000,
+      "occupied_bins": 196,
+      "limit": 2000,
+      "capped": true,
+      "injected": 196,
+      "samples_after": 2000
+    },
+    {
+      "t": 17.95,
+      "w_avg": 2.5653815638466093e-10,
+      "w_slow": 2.5653815638466093e-10,
+      "w_fast": 2.5653815638466093e-10,
+      "injection_probability": 0.0,
+      "ess": 1.6679444082376813,
+      "resampled": true,
+      "samples_before": 2000,
+      "samples": 2000,
+      "occupied_bins": 4,
+      "limit": 2000,
+      "capped": true,
+      "injected": 0,
+      "samples_after": 2000
+    },
+    {
+      "t": 19.55,
+      "w_avg": 0.00015819512018659792,
+      "w_slow": 1.5845140180482621e-07,
+      "w_fast": 1.581974290300054e-05,
+      "injection_probability": 0.0,
+      "ess": 1539.0065484362804,
+      "resampled": true,
+      "samples_before": 2000,
+      "samples": 2000,
+      "occupied_bins": 1,
+      "limit": 2000,
+      "capped": true,
+      "injected": 0,
+      "samples_after": 2000
+    },
+    {
+      "t": 50.05,
+      "w_avg": 0.0005000020625026502,
+      "w_slow": 6.709059991182904e-07,
+      "w_fast": 6.269743043098723e-05,
+      "injection_probability": 0.0,
+      "ess": 1999.9999999999982,
+      "resampled": true,
+      "samples_before": 2000,
+      "samples": 2000,
+      "occupied_bins": 4,
+      "limit": 2000,
+      "capped": true,
+      "injected": 0,
+      "samples_after": 2000
+    },
+    {
+      "t": 183.4,
+      "w_avg": 1.5471344045504023e-15,
+      "w_slow": 6.623182970698497e-07,
+      "w_fast": 1.5939588826491463e-05,
+      "injection_probability": 0.0,
+      "ess": 2000.000000000059,
+      "resampled": true,
+      "samples_before": 2000,
+      "samples": 2000,
+      "occupied_bins": 2,
+      "limit": 2000,
+      "capped": true,
+      "injected": 0,
+      "samples_after": 2000
+    },
+    {
+      "t": 191.15,
+      "w_avg": 2.95032281115816e-15,
+      "w_slow": 6.616559787757302e-07,
+      "w_fast": 1.434562994413735e-05,
+      "injection_probability": 0.0,
+      "ess": 1875.9512647565382,
+      "resampled": true,
+      "samples_before": 2000,
+      "samples": 2000,
+      "occupied_bins": 2,
+      "limit": 2000,
+      "capped": true,
+      "injected": 0,
+      "samples_after": 2000
+    },
+    {
+      "t": 208.9,
+      "w_avg": 3.821692589576136e-15,
+      "w_slow": 6.609943228007761e-07,
+      "w_fast": 1.2911066950105784e-05,
+      "injection_probability": 0.0,
+      "ess": 1930.9419389360803,
+      "resampled": true,
+      "samples_before": 2000,
+      "samples": 2000,
+      "occupied_bins": 2,
+      "limit": 2000,
+      "capped": true,
+      "injected": 0,
+      "samples_after": 2000
+    }
+  ],
+  "raw_directory": "/Users/changmin/projects/ugrp/outputs/s2-tracking-recovery-20261008",
+  "admission": "failed; seeds 1062-1064 not registered/consumed; no new bundle",
+  "validation": {
+    "tests_passed": 13,
+    "pytest_seconds": 1.39,
+    "off_full_replay_frames": 5771,
+    "baseline_max_delta": 0,
+    "threshold_changes": 0
+  }
+}

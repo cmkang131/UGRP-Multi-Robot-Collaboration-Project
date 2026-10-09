@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-s2-heading-v143", "version": "7.36.0",
+    "purpose": "Three matched S2 DEV path-heading comparisons; not graduation",
+    "entry": "scripts/run_s2_heading.py", "runner": "scripts.run_s2_heading",
+    "docs": "experiments/2026-10-09-s2-heading/README.md",
+    "requires": "committed source, exclusive agent_lock, after s2v59/S3/egomap54/simspeed queue",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha", "--seed"],
+    "side_effect": "local_simulation", "adapter": "managed_legacy_cli"
+  }]
+}

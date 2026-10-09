@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s2-realism-v129",
+      "version": "7.22.0",
+      "purpose": "One recovery-only matched S2 DEV after prefix replay",
+      "entry": "scripts/run_s2_realism_v129.py",
+      "runner": "scripts.run_s2_realism_v129",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed replay PASS; matched seed1051; frozen v128 baseline plus slip recovery only; live lock",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

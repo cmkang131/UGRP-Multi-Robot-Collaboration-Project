@@ -1,0 +1,1372 @@
+{
+  "scope": "offline geometry, not a physical counterfactual or runtime input",
+  "method": "OpenCV fisheye projection + analytic pixel-ray/cuboid intersection + actual raw-remap valid mask",
+  "limitation": "settled commanded calibration; per-frame measured joints/roll/pitch not logged; no scene occlusion",
+  "calibration": {
+    "path": "experiments/2026-10-05-loaded-rest-calibration-v104/products_noise/calibration_dev_pilot_loaded_v102_rest_noise.json",
+    "sha256": "a75fc9325f8a8b89a158c2be0872cebfd4d11c8d2a7482c720eb9e1f99c41501"
+  },
+  "sources": [
+    "https://docs.opencv.org/4.13.0/db/d58/group__calib3d__fisheye.html"
+  ],
+  "runs": [
+    {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick",
+      "seed": 1040,
+      "source_sha": "57f8c174bb32648bef495a8ae9335dd1815745e3",
+      "frames": [
+        {
+          "t": 103.6,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02046.jpg",
+          "sha256": "7212f29e753c6695bd78a5c9e30c6932ceed4e1d06112e872a296ba7c230f3e0",
+          "area_px": 19867,
+          "bbox_xyxy": [
+            224,
+            315,
+            370,
+            457
+          ]
+        },
+        {
+          "t": 103.65,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02047.jpg",
+          "sha256": "a55818eaf19f0ab87341ba1fc62bc542bbdf0f47fac5ac7d8e4bf1041d68a130",
+          "area_px": 19834,
+          "bbox_xyxy": [
+            224,
+            315,
+            371,
+            457
+          ]
+        },
+        {
+          "t": 103.7,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02048.jpg",
+          "sha256": "e6b6badcf52d93a1dd50d56db6bb0a7f87ee4a54b76c139b115fb463a648ed52",
+          "area_px": 19870,
+          "bbox_xyxy": [
+            225,
+            315,
+            371,
+            457
+          ]
+        },
+        {
+          "t": 103.75,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02049.jpg",
+          "sha256": "c40318c5f27d2cc7c901b31f4d0969ca20b46a715daad07e05bea437a875e425",
+          "area_px": 19968,
+          "bbox_xyxy": [
+            226,
+            316,
+            373,
+            457
+          ]
+        },
+        {
+          "t": 103.8,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02050.jpg",
+          "sha256": "2be7d152f88ad6d6e0cc29a10eaab9cff3a72ad370efbb4d41c7300c3411bd45",
+          "area_px": 20221,
+          "bbox_xyxy": [
+            226,
+            322,
+            375,
+            463
+          ]
+        },
+        {
+          "t": 103.85,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02051.jpg",
+          "sha256": "ec9dd130a29be0841c41ce1287159d1cea0aa4cc430f89d2510907f501f76648",
+          "area_px": 18870,
+          "bbox_xyxy": [
+            226,
+            333,
+            377,
+            463
+          ]
+        },
+        {
+          "t": 103.9,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02052.jpg",
+          "sha256": "c8822e9b853775e3d6a5fa0c209e2d815b1418e649b51c4a6a4e105a76dc7029",
+          "area_px": 16824,
+          "bbox_xyxy": [
+            226,
+            349,
+            379,
+            464
+          ]
+        },
+        {
+          "t": 103.95,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02053.jpg",
+          "sha256": "b915556c81f20a6497dbc16fd1021ecfa345e3afd8ffa172e4eb67e0ac03958c",
+          "area_px": 14103,
+          "bbox_xyxy": [
+            226,
+            368,
+            379,
+            464
+          ]
+        },
+        {
+          "t": 104.0,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02054.jpg",
+          "sha256": "8d250d9e2cd65849390339d05744cc5514da6bc509a011ecf45f5d5a37e10b5f",
+          "area_px": 11498,
+          "bbox_xyxy": [
+            227,
+            387,
+            382,
+            464
+          ]
+        },
+        {
+          "t": 104.05,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02055.jpg",
+          "sha256": "6e77779d6bd913d5a17c81cc409df55b9b49dfacebc6b768e3102e217df36c2a",
+          "area_px": 8717,
+          "bbox_xyxy": [
+            226,
+            407,
+            383,
+            464
+          ]
+        },
+        {
+          "t": 104.1,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02056.jpg",
+          "sha256": "d64bc01688285d07d79b191ba4f4c4fe7e1fcf1cae585ba930f88f7c81388154",
+          "area_px": 5544,
+          "bbox_xyxy": [
+            225,
+            428,
+            394,
+            464
+          ]
+        },
+        {
+          "t": 104.15,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02057.jpg",
+          "sha256": "6695589c0f6da3de86c8b0666aeb4576126ca9e5e6b8cdc5c254613f20af3083",
+          "area_px": 2657,
+          "bbox_xyxy": [
+            224,
+            446,
+            389,
+            464
+          ]
+        },
+        {
+          "t": 104.2,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02058.jpg",
+          "sha256": "dee92cc55b0fd496b03711321d2260cac01791ea8be496f8ad73cf1a3b94e3d5",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.25,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02059.jpg",
+          "sha256": "0373b6b82b38f52cf74fb452a7e5e6671163f60a1ff628cbb6bb2f7b4798035f",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.3,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02060.jpg",
+          "sha256": "ea21514bfd20f58e1ae481daa2d9b1668a28f4e94899cfde0cd1d1a70b1975b4",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.35,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02061.jpg",
+          "sha256": "261c4aac8114226f58f0fb2c4643a4601b64db0b02f68d3cfa306c8c7caa9e1e",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.4,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02062.jpg",
+          "sha256": "fb0222108839d43a74afcc42f1e8700fe3c4ff57decab971e18d91e9d564e0fc",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.45,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02063.jpg",
+          "sha256": "f683e55ed7fa8dcd3bd7f1a94130e43da258ceda831877087f1e07574eb3c322",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.5,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02064.jpg",
+          "sha256": "58f7b7e2ad57a28a0ffeb0d1975bff24edf804da3df15262ff2fa65458306559",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.55,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02065.jpg",
+          "sha256": "b0c0164060bf60dd7ed9b8468daef7fb4728f0be6571def902e47417198e184e",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.6,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02066.jpg",
+          "sha256": "1bfc54155048a68e9738bd2a298a6483c39c1a5aa10d1c50e1fd3665f9bab848",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.65,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02067.jpg",
+          "sha256": "7f48ae8b8f282e54c667633af2ea5781cb492b3f3e8c5a64266a31fcf9593f24",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.7,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02068.jpg",
+          "sha256": "a526e335268933186b0d3efaac61b7b1fed87e825f604bb70798add479d92c4f",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.75,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02069.jpg",
+          "sha256": "f6cbfbd8fccccc9d905fecaa415f3971b9e17ce535524f0f18158da705c8f61d",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.8,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02070.jpg",
+          "sha256": "004b5108f430b53d10de887f73f24d835eea936dc3b944beae2f9e9e31aca823",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.85,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02071.jpg",
+          "sha256": "13e819157de700d91c8bc4e9fc93415d84989ca91848544fcd433970897c2491",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 104.9,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-s1040-P1-2-pick/robots/r3/rgb/02072.jpg",
+          "sha256": "c162b6cf540e37ebd73b2f9e2b421ec26dabbf9b38103802facd6c6266f3d14d",
+          "area_px": 0,
+          "bbox_xyxy": null
+        }
+      ],
+      "poses": [
+        {
+          "label": "aligned",
+          "t": 103.6,
+          "eval_sample_t": 103.6,
+          "commanded_servo": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1500
+          },
+          "variants": {
+            "previous": {
+              "camera_origin_floor_heading_m": [
+                0.11826890679800747,
+                2.5204991823022277e-08,
+                0.1710197116234488
+              ],
+              "camera_rotation": [
+                [
+                  7.085145517359771e-10,
+                  -0.7912372706964707,
+                  0.6115092652289104
+                ],
+                [
+                  -0.9999999999999846,
+                  -1.1148693769512922e-07,
+                  -1.4309530661319626e-07
+                ],
+                [
+                  1.8139763524020922e-07,
+                  -0.6115092652289001,
+                  -0.7912372706964577
+                ]
+              ],
+              "optical_forward_floor_heading": [
+                0.6115092652289104,
+                -1.4309530661319626e-07,
+                -0.7912372706964577
+              ],
+              "block_center_floor_heading_m": [
+                0.20255422975166765,
+                -0.0026253556816703146,
+                0.015892244579783672
+              ],
+              "corner_uv": [
+                [
+                  364.45882792268725,
+                  393.25610380932994
+                ],
+                [
+                  378.41356045428824,
+                  346.3813157813734
+                ],
+                [
+                  228.9123147748112,
+                  394.0968242610766
+                ],
+                [
+                  218.15954133243662,
+                  347.28503670431195
+                ],
+                [
+                  357.81702642546776,
+                  295.0036752453085
+                ],
+                [
+                  368.43384605725254,
+                  236.2466897671688
+                ],
+                [
+                  233.40440489720868,
+                  295.5032057849012
+                ],
+                [
+                  225.1432850064712,
+                  236.67741656740114
+                ]
+              ],
+              "corner_bbox_xyxy": [
+                218.15954133243662,
+                236.2466897671688,
+                378.41356045428824,
+                394.0968242610766
+              ],
+              "positive_depth_min_m": 0.15118778928865545,
+              "rectangular_ray_pixels": 23790,
+              "valid_ray_pixels": 23790,
+              "in_valid_image": true,
+              "valid_bbox_xyxy": [
+                219,
+                237,
+                378,
+                394
+              ]
+            },
+            "v3": {
+              "camera_origin_floor_heading_m": [
+                0.12378124288690266,
+                2.8735129141152287e-08,
+                0.19045894931852472
+              ],
+              "camera_rotation": [
+                [
+                  7.085145517359771e-10,
+                  -0.7633504558513464,
+                  0.6459845830602645
+                ],
+                [
+                  -0.9999999999999846,
+                  -1.1772092061018518e-07,
+                  -1.3801227808442537e-07
+                ],
+                [
+                  1.8139763524020922e-07,
+                  -0.6459845830602537,
+                  -0.7633504558513339
+                ]
+              ],
+              "optical_forward_floor_heading": [
+                0.6459845830602645,
+                -1.3801227808442537e-07,
+                -0.7633504558513339
+              ],
+              "block_center_floor_heading_m": [
+                0.20255422975166765,
+                -0.0026253556816703146,
+                0.015892244579783672
+              ],
+              "corner_uv": [
+                [
+                  358.7215162697167,
+                  457.40055803384064
+                ],
+                [
+                  370.81249502314057,
+                  421.95245947013586
+                ],
+                [
+                  233.32172672144145,
+                  458.30578545105055
+                ],
+                [
+                  224.01490734069543,
+                  422.994008518011
+                ],
+                [
+                  353.4610694174199,
+                  364.8707640621872
+                ],
+                [
+                  363.0154274865115,
+                  316.8157216136211
+                ],
+                [
+                  236.7872853281548,
+                  365.4629498510949
+                ],
+                [
+                  229.36029832330576,
+                  317.4099406644033
+                ]
+              ],
+              "corner_bbox_xyxy": [
+                224.01490734069543,
+                316.8157216136211,
+                370.81249502314057,
+                458.30578545105055
+              ],
+              "positive_depth_min_m": 0.16090342578295774,
+              "rectangular_ray_pixels": 19643,
+              "valid_ray_pixels": 19643,
+              "in_valid_image": true,
+              "valid_bbox_xyxy": [
+                225,
+                317,
+                370,
+                458
+              ]
+            }
+          },
+          "eval_pose": {
+            "t": 103.6,
+            "cyan_xyz_m": [
+              0.12499999999963549,
+              -0.8499999999988704,
+              0.015892244579783672
+            ],
+            "cyan_rotation": [
+              1.0,
+              -2.5587639647988005e-15,
+              3.8062911018691816e-12,
+              2.5587638610280067e-15,
+              1.0,
+              2.7262968273017768e-11,
+              -3.806291101869251e-12,
+              -2.7262968273017755e-11,
+              1.0
+            ],
+            "robot_xyz_m": [
+              -0.07754437101116939,
+              -0.8467005675349356,
+              0.03195829121534944
+            ],
+            "robot_yaw_rad": -0.0033279609401797934,
+            "box_half_m": [
+              0.017,
+              0.02,
+              0.016
+            ]
+          }
+        },
+        {
+          "label": "settled_hover",
+          "t": 104.9,
+          "eval_sample_t": 104.9,
+          "commanded_servo": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1500
+          },
+          "variants": {
+            "previous": {
+              "camera_origin_floor_heading_m": [
+                0.20522336301786073,
+                1.58191666060296e-08,
+                0.11532233901628945
+              ],
+              "camera_rotation": [
+                [
+                  4.904038461633606e-09,
+                  -0.8297037086092846,
+                  0.5582040450587951
+                ],
+                [
+                  -0.9999999999999846,
+                  -1.0528735820942982e-07,
+                  -1.477117083365431e-07
+                ],
+                [
+                  1.813287814672423e-07,
+                  -0.5582040450587852,
+                  -0.8297037086092717
+                ]
+              ],
+              "optical_forward_floor_heading": [
+                0.5582040450587951,
+                -1.477117083365431e-07,
+                -0.8297037086092717
+              ],
+              "block_center_floor_heading_m": [
+                0.2039148894009716,
+                -0.004457116468223371,
+                0.015892244579783672
+              ],
+              "corner_uv": [
+                [
+                  426.76749838418385,
+                  676.5684537674713
+                ],
+                [
+                  490.30253916361306,
+                  736.3321086975388
+                ],
+                [
+                  197.93961242672182,
+                  675.921512386787
+                ],
+                [
+                  158.3399115238941,
+                  729.596511512049
+                ],
+                [
+                  419.01334918077293,
+                  495.17729854063845
+                ],
+                [
+                  464.50319896591003,
+                  461.9364414161855
+                ],
+                [
+                  204.46719304804708,
+                  496.80676883670054
+                ],
+                [
+                  174.62823376226152,
+                  464.9352857431017
+                ]
+              ],
+              "corner_bbox_xyxy": [
+                158.3399115238941,
+                461.9364414161855,
+                490.30253916361306,
+                736.3321086975388
+              ],
+              "positive_depth_min_m": 0.0589178919385996,
+              "rectangular_ray_pixels": 3566,
+              "valid_ray_pixels": 0,
+              "in_valid_image": false,
+              "valid_bbox_xyxy": null
+            },
+            "v3": {
+              "camera_origin_floor_heading_m": [
+                0.21200094070151618,
+                1.930401188083055e-08,
+                0.13435741852924693
+              ],
+              "camera_rotation": [
+                [
+                  4.904038461633606e-09,
+                  -0.8041421614715646,
+                  0.5944370312689495
+                ],
+                [
+                  -0.9999999999999846,
+                  -1.1173208663672542e-07,
+                  -1.4289897618326048e-07
+                ],
+                [
+                  1.813287814672423e-07,
+                  -0.594437031268939,
+                  -0.8041421614715523
+                ]
+              ],
+              "optical_forward_floor_heading": [
+                0.5944370312689495,
+                -1.4289897618326048e-07,
+                -0.8041421614715523
+              ],
+              "block_center_floor_heading_m": [
+                0.2039148894009716,
+                -0.004457116468223371,
+                0.015892244579783672
+              ],
+              "corner_uv": [
+                [
+                  415.48013481752326,
+                  747.42635021766
+                ],
+                [
+                  471.30934482362017,
+                  834.2283577378182
+                ],
+                [
+                  205.7254804135364,
+                  743.8462277287417
+                ],
+                [
+                  171.2884927555464,
+                  822.5970432905008
+                ],
+                [
+                  402.83048734845806,
+                  561.4980492522935
+                ],
+                [
+                  436.8111836240766,
+                  546.7969415659469
+                ],
+                [
+                  214.9420758398051,
+                  563.0122113671894
+                ],
+                [
+                  192.94507391015011,
+                  549.698927020661
+                ]
+              ],
+              "corner_bbox_xyxy": [
+                171.2884927555464,
+                546.7969415659469,
+                471.30934482362017,
+                834.2283577378182
+              ],
+              "positive_depth_min_m": 0.06739450037986687,
+              "rectangular_ray_pixels": 0,
+              "valid_ray_pixels": 0,
+              "in_valid_image": false,
+              "valid_bbox_xyxy": null
+            }
+          },
+          "eval_pose": {
+            "t": 104.9,
+            "cyan_xyz_m": [
+              0.12500000000073733,
+              -0.8500000000007935,
+              0.015892244579783672
+            ],
+            "cyan_rotation": [
+              1.0,
+              1.218091155258376e-15,
+              6.134335312580237e-12,
+              -1.2180909915744678e-15,
+              1.0,
+              -2.6683234594825118e-11,
+              -6.134335312580269e-12,
+              2.668323459482511e-11,
+              1.0
+            ],
+            "robot_xyz_m": [
+              -0.07894285688655338,
+              -0.847091541427622,
+              0.03192840996369202
+            ],
+            "robot_yaw_rad": 0.007594071543603693,
+            "box_half_m": [
+              0.017,
+              0.02,
+              0.016
+            ]
+          }
+        }
+      ],
+      "first_zero_t": 104.2,
+      "source_sha256": {
+        "result.json": "601dfbe9e98021a5d05784820bbe369e51079814ec58c058dbf95567f9865a89",
+        "student_record.json": "8e089d836257202f0db45883bd729c08c9abd64a0fc3556fe353d5e5dd9e14c0",
+        "eval_only/trajectory.jsonl": "fde9cbcb655d3f81e85e382141728bdbcae984720dfefe9462dac3042c6d960e",
+        "robots/r3/frames.jsonl": "6229b66866813769e6a34cf390e59b932743a9f90edffb22866a845114f3e1a8"
+      }
+    },
+    {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick",
+      "seed": 1041,
+      "source_sha": "46b8e7af8151f3d54f5fd098f85e0a1ad50b8f97",
+      "frames": [
+        {
+          "t": 83.75,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01649.jpg",
+          "sha256": "5711e44313a86d28a0c7faff914678cbe52e47ab1ab6c72f94367d3d9abb8df5",
+          "area_px": 19846,
+          "bbox_xyxy": [
+            208,
+            317,
+            355,
+            463
+          ]
+        },
+        {
+          "t": 83.8,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01650.jpg",
+          "sha256": "8fae661a4431c2740f91c1777a20e51bb8ea1ee064cdf408992267b9360c836c",
+          "area_px": 19847,
+          "bbox_xyxy": [
+            208,
+            317,
+            355,
+            463
+          ]
+        },
+        {
+          "t": 83.85,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01651.jpg",
+          "sha256": "9c010b3ab6948544e4c0814ba5011dd7ab53b6dda17c1a0a3b498d30479b8b7a",
+          "area_px": 19896,
+          "bbox_xyxy": [
+            208,
+            319,
+            356,
+            463
+          ]
+        },
+        {
+          "t": 83.9,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01652.jpg",
+          "sha256": "3395a1fa72aee61c05ae21539b0c398c187a793819f7ccf7a7706a831e605dd5",
+          "area_px": 20063,
+          "bbox_xyxy": [
+            208,
+            320,
+            356,
+            463
+          ]
+        },
+        {
+          "t": 83.95,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01653.jpg",
+          "sha256": "a5252aacb9efc67d249a26e8821bb3eb8e85536c1f9d960c14b69a1d416c0f86",
+          "area_px": 19480,
+          "bbox_xyxy": [
+            208,
+            326,
+            357,
+            463
+          ]
+        },
+        {
+          "t": 84.0,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01654.jpg",
+          "sha256": "d5ea964a45863aa6ae981c9b374099394e6c22d6f4d90bdfd5575b41c3efae13",
+          "area_px": 17938,
+          "bbox_xyxy": [
+            207,
+            338,
+            358,
+            463
+          ]
+        },
+        {
+          "t": 84.05,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01655.jpg",
+          "sha256": "618d4a56ac0390f405c6f773df853076ad515bb4f3a040cba65a26784f87bec5",
+          "area_px": 15698,
+          "bbox_xyxy": [
+            206,
+            355,
+            359,
+            464
+          ]
+        },
+        {
+          "t": 84.1,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01656.jpg",
+          "sha256": "d3ae7dc7e350302ee3f19bd292f99c2c56d857e383eb0a3360a861183e607303",
+          "area_px": 12998,
+          "bbox_xyxy": [
+            206,
+            374,
+            360,
+            464
+          ]
+        },
+        {
+          "t": 84.15,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01657.jpg",
+          "sha256": "bdc6a6a4f314da06fea1d0b22521f22c0ebcd977e397505078442b011da70d0a",
+          "area_px": 10287,
+          "bbox_xyxy": [
+            206,
+            394,
+            361,
+            464
+          ]
+        },
+        {
+          "t": 84.2,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01658.jpg",
+          "sha256": "48445401a5442f75a4a40a62417f1c001a564364ac4ae0e1aab4e566d03bb11d",
+          "area_px": 7335,
+          "bbox_xyxy": [
+            206,
+            414,
+            364,
+            464
+          ]
+        },
+        {
+          "t": 84.25,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01659.jpg",
+          "sha256": "0c31c7539ff07b3c5a016336714ce7588c5880a72dbeb3bc49a9ede0241d2be7",
+          "area_px": 4016,
+          "bbox_xyxy": [
+            206,
+            436,
+            366,
+            464
+          ]
+        },
+        {
+          "t": 84.3,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01660.jpg",
+          "sha256": "8897f5f8bcfb8b2dc26c15521648287d96d901b4df17db965574d2bd7324c77b",
+          "area_px": 1041,
+          "bbox_xyxy": [
+            204,
+            454,
+            370,
+            464
+          ]
+        },
+        {
+          "t": 84.35,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01661.jpg",
+          "sha256": "9fcdb2457f43b49c229ab9c1b3d8613a2fc8fd24085a9c2b6c1295b53a1d4147",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.4,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01662.jpg",
+          "sha256": "68cefe3a53c29b9b980472a78dc63d72e8407acb17060bfd7564f2ef20fcf92d",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.45,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01663.jpg",
+          "sha256": "0cbeb13ad390ff78bf7129acfe6bcf4770a4d808bdb10e23b2d80839a64bcbe1",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.5,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01664.jpg",
+          "sha256": "d81e0fae07c050f67be77cfea1844fd1fcfd726f5dd0b30a3de29a3ea024e931",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.55,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01665.jpg",
+          "sha256": "6f5a4340192f8f78d74829ac62f7a810048651e242e93e02372faaa14deaea33",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.6,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01666.jpg",
+          "sha256": "fedbbea95baa5928b4647307a2ee63bfaae818612e580cf884cc7e02aeb69751",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.65,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01667.jpg",
+          "sha256": "419cb01bf504c65b99d83ad79c0f8a01278e193adc8f9bebd592c0c3c7543279",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.7,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01668.jpg",
+          "sha256": "613672ed38b0876a12a6f21c27d1b2dde20c4e63e1884669000c315c242fdf2d",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.75,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01669.jpg",
+          "sha256": "94096c99d19e5fbba59fda8fad2cc7ab4784068b16c194e42e2447d0cd25bfe9",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.8,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01670.jpg",
+          "sha256": "4124beb94bd58ea24df83bb234402eb5452c1a1fed5476480207a46b8192debb",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.85,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01671.jpg",
+          "sha256": "517b3697aa9d44ddcd7ce82e182e3397fbc9dc2a0901836dc7dfcaf95e69099e",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.9,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01672.jpg",
+          "sha256": "7f953ded8f953620b36547887efd102ed8ab47582d05f2a1f25b6df54741b1d7",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 84.95,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01673.jpg",
+          "sha256": "10c0269e8ca7da5eec907d71542c9cc063d7b98cd72b725170386c7485b754b5",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 85.0,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01674.jpg",
+          "sha256": "ea4b390377f57104f7927f5dbe130ea43571e805db440ada7bc50358d566796a",
+          "area_px": 0,
+          "bbox_xyxy": null
+        },
+        {
+          "t": 85.05,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-46b8e7af-s1041-P1-2-pick/robots/r3/rgb/01675.jpg",
+          "sha256": "a0bd2aeaee84cba361890eab533a456401896f988a88e52a3b90d96fa7095b41",
+          "area_px": 0,
+          "bbox_xyxy": null
+        }
+      ],
+      "poses": [
+        {
+          "label": "aligned",
+          "t": 83.75,
+          "eval_sample_t": 83.75,
+          "commanded_servo": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1500
+          },
+          "variants": {
+            "previous": {
+              "camera_origin_floor_heading_m": [
+                0.11826890679800747,
+                2.5204991823022277e-08,
+                0.1710197116234488
+              ],
+              "camera_rotation": [
+                [
+                  7.085145517359771e-10,
+                  -0.7912372706964707,
+                  0.6115092652289104
+                ],
+                [
+                  -0.9999999999999846,
+                  -1.1148693769512922e-07,
+                  -1.4309530661319626e-07
+                ],
+                [
+                  1.8139763524020922e-07,
+                  -0.6115092652289001,
+                  -0.7912372706964577
+                ]
+              ],
+              "optical_forward_floor_heading": [
+                0.6115092652289104,
+                -1.4309530661319626e-07,
+                -0.7912372706964577
+              ],
+              "block_center_floor_heading_m": [
+                0.20132501672280276,
+                0.0011339115984088802,
+                0.015892244579783672
+              ],
+              "corner_uv": [
+                [
+                  350.07741856123425,
+                  399.59184611424547
+                ],
+                [
+                  361.5848753490629,
+                  353.6659504424739
+                ],
+                [
+                  214.21351656070829,
+                  395.35795663741374
+                ],
+                [
+                  200.79710776024558,
+                  348.79847796411894
+                ],
+                [
+                  348.3510845430544,
+                  300.3193826430494
+                ],
+                [
+                  357.66170194157417,
+                  241.95634280449886
+                ],
+                [
+                  223.56854054534512,
+                  296.8521896292919
+                ],
+                [
+                  213.80686160081865,
+                  238.2083297224421
+                ]
+              ],
+              "corner_bbox_xyxy": [
+                200.79710776024558,
+                238.2083297224421,
+                361.5848753490629,
+                399.59184611424547
+              ],
+              "positive_depth_min_m": 0.15009253164000652,
+              "rectangular_ray_pixels": 23915,
+              "valid_ray_pixels": 23915,
+              "in_valid_image": true,
+              "valid_bbox_xyxy": [
+                201,
+                239,
+                361,
+                399
+              ]
+            },
+            "v3": {
+              "camera_origin_floor_heading_m": [
+                0.12378124288690266,
+                2.8735129141152287e-08,
+                0.19045894931852472
+              ],
+              "camera_rotation": [
+                [
+                  7.085145517359771e-10,
+                  -0.7633504558513464,
+                  0.6459845830602645
+                ],
+                [
+                  -0.9999999999999846,
+                  -1.1772092061018518e-07,
+                  -1.3801227808442537e-07
+                ],
+                [
+                  1.8139763524020922e-07,
+                  -0.6459845830602537,
+                  -0.7633504558513339
+                ]
+              ],
+              "optical_forward_floor_heading": [
+                0.6459845830602645,
+                -1.3801227808442537e-07,
+                -0.7633504558513339
+              ],
+              "block_center_floor_heading_m": [
+                0.20132501672280276,
+                0.0011339115984088802,
+                0.015892244579783672
+              ],
+              "corner_uv": [
+                [
+                  345.3538206175266,
+                  463.3323334835556
+                ],
+                [
+                  355.291865390937,
+                  428.86442499518176
+                ],
+                [
+                  219.7275957481525,
+                  459.36142518335384
+                ],
+                [
+                  208.11506486420404,
+                  424.23500661439505
+                ],
+                [
+                  344.53741864857534,
+                  370.055870654579
+                ],
+                [
+                  352.895360017767,
+                  322.52265075103753
+                ],
+                [
+                  227.56986096439712,
+                  366.6964414259183
+                ],
+                [
+                  218.79407991279413,
+                  318.81143568340383
+                ]
+              ],
+              "corner_bbox_xyxy": [
+                208.11506486420404,
+                318.81143568340383,
+                355.291865390937,
+                463.3323334835556
+              ],
+              "positive_depth_min_m": 0.15974641985960644,
+              "rectangular_ray_pixels": 19732,
+              "valid_ray_pixels": 19710,
+              "in_valid_image": true,
+              "valid_bbox_xyxy": [
+                209,
+                319,
+                355,
+                463
+              ]
+            }
+          },
+          "eval_pose": {
+            "t": 83.75,
+            "cyan_xyz_m": [
+              0.12500000000011696,
+              -0.8500000000012766,
+              0.015892244579783672
+            ],
+            "cyan_rotation": [
+              1.0,
+              2.287704587355673e-15,
+              -8.2887076145423e-12,
+              -2.287704790629971e-15,
+              1.0,
+              -2.452424525067162e-11,
+              8.288707614542245e-12,
+              2.4524245250671638e-11,
+              1.0
+            ],
+            "robot_xyz_m": [
+              -0.07618677774669762,
+              -0.8575451026383281,
+              0.03199157962525826
+            ],
+            "robot_yaw_rad": 0.031853222869476165,
+            "box_half_m": [
+              0.017,
+              0.02,
+              0.016
+            ]
+          }
+        },
+        {
+          "label": "settled_hover",
+          "t": 85.05,
+          "eval_sample_t": 85.05,
+          "commanded_servo": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1500
+          },
+          "variants": {
+            "previous": {
+              "camera_origin_floor_heading_m": [
+                0.20522336301786073,
+                1.58191666060296e-08,
+                0.11532233901628945
+              ],
+              "camera_rotation": [
+                [
+                  4.904038461633606e-09,
+                  -0.8297037086092846,
+                  0.5582040450587951
+                ],
+                [
+                  -0.9999999999999846,
+                  -1.0528735820942982e-07,
+                  -1.477117083365431e-07
+                ],
+                [
+                  1.813287814672423e-07,
+                  -0.5582040450587852,
+                  -0.8297037086092717
+                ]
+              ],
+              "optical_forward_floor_heading": [
+                0.5582040450587951,
+                -1.477117083365431e-07,
+                -0.8297037086092717
+              ],
+              "block_center_floor_heading_m": [
+                0.20140228137069263,
+                0.0007343718624091113,
+                0.015892244579783672
+              ],
+              "corner_uv": [
+                [
+                  396.31380364290584,
+                  699.4224883734173
+                ],
+                [
+                  449.2071499784721,
+                  778.3073706357156
+                ],
+                [
+                  164.7258683240751,
+                  688.9000674437365
+                ],
+                [
+                  106.63360514886355,
+                  758.6066418065851
+                ],
+                [
+                  394.8683350806796,
+                  512.1083628017034
+                ],
+                [
+                  433.20682452754045,
+                  485.47786544122954
+                ],
+                [
+                  179.1631812758587,
+                  505.19610386097304
+                ],
+                [
+                  140.58224771832792,
+                  476.0052547872417
+                ]
+              ],
+              "corner_bbox_xyxy": [
+                106.63360514886355,
+                476.0052547872417,
+                449.2071499784721,
+                778.3073706357156
+              ],
+              "positive_depth_min_m": 0.05722164531495455,
+              "rectangular_ray_pixels": 54,
+              "valid_ray_pixels": 0,
+              "in_valid_image": false,
+              "valid_bbox_xyxy": null
+            },
+            "v3": {
+              "camera_origin_floor_heading_m": [
+                0.21200094070151618,
+                1.930401188083055e-08,
+                0.13435741852924693
+              ],
+              "camera_rotation": [
+                [
+                  4.904038461633606e-09,
+                  -0.8041421614715646,
+                  0.5944370312689495
+                ],
+                [
+                  -0.9999999999999846,
+                  -1.1173208663672542e-07,
+                  -1.4289897618326048e-07
+                ],
+                [
+                  1.813287814672423e-07,
+                  -0.594437031268939,
+                  -0.8041421614715523
+                ]
+              ],
+              "optical_forward_floor_heading": [
+                0.5944370312689495,
+                -1.4289897618326048e-07,
+                -0.8041421614715523
+              ],
+              "block_center_floor_heading_m": [
+                0.20140228137069263,
+                0.0007343718624091113,
+                0.015892244579783672
+              ],
+              "corner_uv": [
+                [
+                  388.2581066006859,
+                  774.12247774957
+                ],
+                [
+                  435.5224749907626,
+                  883.8863567442877
+                ],
+                [
+                  174.25704494183296,
+                  761.6987354995418
+                ],
+                [
+                  122.73895273190148,
+                  860.4277575181619
+                ],
+                [
+                  381.40197116068725,
+                  576.1329170663214
+                ],
+                [
+                  409.6297036938483,
+                  566.3753364721728
+                ],
+                [
+                  192.755220203529,
+                  570.1631773345389
+                ],
+                [
+                  164.26314578731376,
+                  558.5640211734938
+                ]
+              ],
+              "corner_bbox_xyxy": [
+                122.73895273190148,
+                558.5640211734938,
+                435.5224749907626,
+                883.8863567442877
+              ],
+              "positive_depth_min_m": 0.06558815058598913,
+              "rectangular_ray_pixels": 0,
+              "valid_ray_pixels": 0,
+              "in_valid_image": false,
+              "valid_bbox_xyxy": null
+            }
+          },
+          "eval_pose": {
+            "t": 85.05,
+            "cyan_xyz_m": [
+              0.12499999999940399,
+              -0.8499999999990308,
+              0.015892244579783672
+            ],
+            "cyan_rotation": [
+              1.0,
+              -1.763003682372546e-15,
+              -1.4861604722752112e-12,
+              1.763003724793828e-15,
+              1.0,
+              2.854421362858835e-11,
+              1.4861604722751607e-12,
+              -2.854421362858835e-11,
+              1.0
+            ],
+            "robot_xyz_m": [
+              -0.07625797626921381,
+              -0.8576580174717465,
+              0.031993208261040434
+            ],
+            "robot_yaw_rad": 0.034386127025605465,
+            "box_half_m": [
+              0.017,
+              0.02,
+              0.016
+            ]
+          }
+        }
+      ],
+      "first_zero_t": 84.35,
+      "source_sha256": {
+        "result.json": "1b46cce3df3283b30c09e7ce6beeb2b47a698a8c740c92b945d63506daf5e01c",
+        "student_record.json": "2c5e41c0cd0348cc5883320b18da884237b5a9bff32f0c6f667c570fcc217440",
+        "eval_only/trajectory.jsonl": "f7ec77302c9e77ec48975d869eeae2fdf032bc7c62eb23d2b24daf39d78d9e1d",
+        "robots/r3/frames.jsonl": "60d391b7adb65284d5248f700d8ff72a5f61c28e61701f51ce988fb017c623d9"
+      }
+    }
+  ]
+}

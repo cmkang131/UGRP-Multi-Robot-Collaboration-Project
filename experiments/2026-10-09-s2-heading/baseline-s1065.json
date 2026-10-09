@@ -1,0 +1,97 @@
+{
+  "seed": 1065,
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation",
+  "source_sha": "99d81d8c9cbc8dee1cc21462d25a1c81f65de9f5",
+  "condition": "off_v141",
+  "success": false,
+  "evaluation": {
+    "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+    "success": false,
+    "lifted": false,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "qualification": "post-run DEV only; no study/physical hardware success claim"
+  },
+  "status": "STAGE_FAILED",
+  "failure": null,
+  "commands": {
+    "moving_s": 106.40999999999961,
+    "lateral_s": 11.010000000000014,
+    "forward_s": 95.2999999999996,
+    "turn_s": 0.10000000000000142,
+    "lateral_fraction_moving": 0.10346771919932388,
+    "elapsed_sim_s": 900.0,
+    "lateral_fraction_sim": 0.01223333333333335
+  },
+  "carry_angles": [],
+  "wall_contacts": {
+    "body": {
+      "samples": 0,
+      "sampled_s": 0,
+      "episodes": 0
+    },
+    "wheel": {
+      "samples": 0,
+      "sampled_s": 0,
+      "episodes": 0
+    },
+    "finger": {
+      "samples": 25,
+      "sampled_s": 1.2500000000000568,
+      "episodes": 10
+    },
+    "cargo": {
+      "samples": 0,
+      "sampled_s": 0,
+      "episodes": 0
+    },
+    "any": {
+      "samples": 25,
+      "sampled_s": 1.2500000000000568,
+      "episodes": 10
+    }
+  },
+  "door": {
+    "robot": {
+      "crossings": [],
+      "passed_center": false,
+      "definition": "center crossed divider west-to-east within authored opening; full clearance assessed separately by contact logs"
+    },
+    "cargo": {
+      "crossings": [],
+      "passed_center": false,
+      "definition": "center crossed divider west-to-east within authored opening; full clearance assessed separately by contact logs"
+    }
+  },
+  "active_observations": [],
+  "active_actual_90deg_exceeded": false,
+  "wall_per_sim": 1.6429636484800114,
+  "wall_s": 1480.8031363750342,
+  "sim_s": 901.3,
+  "commands_issued": 36798,
+  "model_calls": 0,
+  "carry_visibility": {},
+  "provenance": {
+    "result.json": "7a3df5064f98309c9020fd216a78167abc6e422a9557a6c86d66cfcc2f719fc1",
+    "student_record.json": "b703299a2efd105506db07b0f601d23ae1279c1ada12096d9ac6064213ba0209",
+    "eval_only/trajectory.jsonl": "5e742ad7367cc99cdae48db236ae7bc9a595b37d819ca703550569cccc553397",
+    "eval_only/wall-contacts.jsonl": "223d514e4ae7a5bb988117162ffba57a6195bdd23c8b18d5431efa2d7f44cc60",
+    "eval_only/contacts.jsonl": "7a2900215b40f64d6d0f86b4a571567a523fd8a2b836eb571cc6e56aea729f28"
+  },
+  "scope": "post-run evaluation only; simulated plant, no hardware success claim",
+  "motion": {
+    "min_speed_m_s": 0.01,
+    "moving_s": 226.5500000000011,
+    "path_m": 13.129562854597804,
+    "direction_within_20deg_fraction": 0.48179209887442476,
+    "lateral_speed_fraction": 0.15080208397184328,
+    "definition": "actual velocity vs midpoint chassis yaw, time fraction within +/-20deg; integral abs(body lateral velocity) / integral speed; speed>=0.01m/s; GT evaluation only"
+  },
+  "robot_contacts": {
+    "samples": 330,
+    "sampled_s": 16.500000000000107,
+    "episodes": 53
+  }
+}

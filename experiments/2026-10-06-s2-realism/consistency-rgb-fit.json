@@ -1,0 +1,99 @@
+{
+  "gt_inputs": false,
+  "samples": {
+    "1051": 5,
+    "1053": 6,
+    "1054": 5
+  },
+  "folds": [
+    {
+      "option": "nav2_omni_mle_v1",
+      "fit_seeds": [
+        1053,
+        1054
+      ],
+      "holdout": 1051,
+      "fit_gt_inputs": false,
+      "base_sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+      "profiles": [
+        "1:left:-0.65:0.65",
+        "1:left:0.65:0.65"
+      ],
+      "samples": 11,
+      "fit_admitted": true,
+      "reason": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+      "rank": 5,
+      "alpha": [
+        0.0024855738876853827,
+        0.007859294568045653,
+        0.002977622377040742,
+        0.0,
+        0.0
+      ],
+      "nll": -159.28223877571452,
+      "iterations": 18
+    },
+    {
+      "option": "nav2_omni_mle_v1",
+      "fit_seeds": [
+        1051,
+        1054
+      ],
+      "holdout": 1053,
+      "fit_gt_inputs": false,
+      "base_sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+      "profiles": [
+        "1:left:-0.65:0.65",
+        "1:left:0.65:0.65"
+      ],
+      "samples": 10,
+      "fit_admitted": true,
+      "reason": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+      "rank": 5,
+      "alpha": [
+        0.0,
+        0.00234315827195036,
+        0.0039902225895443455,
+        0.0,
+        0.0
+      ],
+      "nll": -142.99689742392007,
+      "iterations": 34
+    },
+    {
+      "option": "nav2_omni_mle_v1",
+      "fit_seeds": [
+        1051,
+        1053
+      ],
+      "holdout": 1054,
+      "fit_gt_inputs": false,
+      "base_sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+      "profiles": [
+        "1:left:-0.65:0.65",
+        "1:left:0.65:0.65"
+      ],
+      "samples": 11,
+      "fit_admitted": true,
+      "reason": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+      "rank": 5,
+      "alpha": [
+        3.0318046303607592e-05,
+        0.014649702892138676,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "nll": -151.90169709795086,
+      "iterations": 14
+    }
+  ],
+  "input_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full/student_record.json": "3efeffaf5aaca44ea926173ba22f303184f5bcdde1267a0eedc58c879c589bea",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full/bundle.json": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction/student_record.json": "8e3e92e1209131d7c66e6d92e4ae6778a86a6c559b696070aded41bc04632430",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction/bundle.json": "5446bc4130b50f854754305f05108c5cfdce52ea021c38a480ea735103576b01",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction/student_record.json": "6a1dbf2b8f9b01fcfb5985b7d3bfd4f75a6160c8b5d25ebd57c34ac0716dfca8",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction/bundle.json": "07ee558ad6da458d369ebdc463f36a1aba9984a217ea455de917b7b1aefe3156"
+  }
+}

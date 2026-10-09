@@ -1,0 +1,485 @@
+{
+  "schema": "ugrp.zone_arena.v1",
+  "map_id": "zone_hardmaps1_h1_final_v3",
+  "version": 1,
+  "frame": "world metres; x east, y north",
+  "bounds_m": [
+    -1.05,
+    5.4,
+    -3.15,
+    1.45
+  ],
+  "top_cameras": [
+    {
+      "name": "cctv_top",
+      "position_m": [
+        0.55,
+        -2.0,
+        2.5
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fov_y_deg": 55.0
+    },
+    {
+      "name": "cctv_top_east",
+      "position_m": [
+        3.8499999999999996,
+        -2.0,
+        2.5
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fov_y_deg": 55.0
+    },
+    {
+      "name": "cctv_top_north",
+      "position_m": [
+        0.55,
+        0.2999999999999998,
+        2.5
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fov_y_deg": 55.0
+    },
+    {
+      "name": "cctv_top_north_east",
+      "position_m": [
+        3.8499999999999996,
+        0.2999999999999998,
+        2.5
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fov_y_deg": 55.0
+    }
+  ],
+  "obstacles": [
+    {
+      "id": "wall_north",
+      "center_m": [
+        2.1750000000000003,
+        1.45
+      ],
+      "half_extents_m": [
+        3.25,
+        0.025
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    },
+    {
+      "id": "wall_south",
+      "center_m": [
+        2.1750000000000003,
+        -3.15
+      ],
+      "half_extents_m": [
+        3.25,
+        0.025
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    },
+    {
+      "id": "wall_west",
+      "center_m": [
+        -1.05,
+        -0.85
+      ],
+      "half_extents_m": [
+        0.025,
+        2.3
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    },
+    {
+      "id": "wall_east",
+      "center_m": [
+        5.4,
+        -0.85
+      ],
+      "half_extents_m": [
+        0.025,
+        2.3
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    },
+    {
+      "id": "wall_divider_1",
+      "center_m": [
+        2.2,
+        -1.1625
+      ],
+      "half_extents_m": [
+        0.025,
+        0.9625
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    },
+    {
+      "id": "wall_divider_2",
+      "center_m": [
+        2.2,
+        0.875
+      ],
+      "half_extents_m": [
+        0.025,
+        0.575
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    },
+    {
+      "id": "wall_h1_east_lower",
+      "center_m": [
+        3.75,
+        -2.825
+      ],
+      "half_extents_m": [
+        0.02499999999999991,
+        0.32499999999999996
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    },
+    {
+      "id": "wall_h1_east_middle",
+      "center_m": [
+        3.75,
+        -0.85
+      ],
+      "half_extents_m": [
+        0.02499999999999991,
+        0.85
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    },
+    {
+      "id": "wall_h1_east_upper",
+      "center_m": [
+        3.75,
+        1.125
+      ],
+      "half_extents_m": [
+        0.02499999999999991,
+        0.32499999999999996
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    },
+    {
+      "id": "wall_h1_east_cross",
+      "center_m": [
+        4.575,
+        -0.85
+      ],
+      "half_extents_m": [
+        0.8250000000000002,
+        0.025000000000000022
+      ],
+      "height_m": 0.4,
+      "kind": "wall"
+    }
+  ],
+  "terrain": [],
+  "regions": {
+    "pickup": {
+      "center_m": [
+        0.7,
+        -0.85
+      ],
+      "half_extents_m": [
+        1.15,
+        1.95
+      ],
+      "rgba": ".12 .36 .70 .14"
+    },
+    "zone_A": {
+      "center_m": [
+        4.6,
+        0.4
+      ],
+      "half_extents_m": [
+        0.3,
+        0.7
+      ],
+      "rgba": ".95 .45 .10 .30"
+    },
+    "zone_B": {
+      "center_m": [
+        4.6,
+        -2.1
+      ],
+      "half_extents_m": [
+        0.3,
+        0.7
+      ],
+      "rgba": ".20 .40 .95 .30"
+    },
+    "zone_C": {
+      "center_m": [
+        3.0,
+        -0.85
+      ],
+      "half_extents_m": [
+        0.3,
+        0.7
+      ],
+      "rgba": ".70 .20 .85 .30"
+    }
+  },
+  "zone_slots": {
+    "A": [
+      {
+        "slot_id": "A1",
+        "center_m": [
+          4.6,
+          0.0
+        ],
+        "half_extents_m": [
+          0.06,
+          0.06
+        ]
+      },
+      {
+        "slot_id": "A2",
+        "center_m": [
+          4.6,
+          0.4
+        ],
+        "half_extents_m": [
+          0.06,
+          0.06
+        ]
+      },
+      {
+        "slot_id": "A3",
+        "center_m": [
+          4.6,
+          0.8
+        ],
+        "half_extents_m": [
+          0.06,
+          0.06
+        ]
+      }
+    ],
+    "B": [
+      {
+        "slot_id": "B1",
+        "center_m": [
+          4.6,
+          -2.5
+        ],
+        "half_extents_m": [
+          0.06,
+          0.06
+        ]
+      },
+      {
+        "slot_id": "B2",
+        "center_m": [
+          4.6,
+          -2.1
+        ],
+        "half_extents_m": [
+          0.06,
+          0.06
+        ]
+      },
+      {
+        "slot_id": "B3",
+        "center_m": [
+          4.6,
+          -1.7000000000000002
+        ],
+        "half_extents_m": [
+          0.06,
+          0.06
+        ]
+      }
+    ],
+    "C": [
+      {
+        "slot_id": "C1",
+        "center_m": [
+          3.0,
+          -1.25
+        ],
+        "half_extents_m": [
+          0.06,
+          0.06
+        ]
+      },
+      {
+        "slot_id": "C2",
+        "center_m": [
+          3.0,
+          -0.85
+        ],
+        "half_extents_m": [
+          0.06,
+          0.06
+        ]
+      },
+      {
+        "slot_id": "C3",
+        "center_m": [
+          3.0,
+          -0.44999999999999996
+        ],
+        "half_extents_m": [
+          0.06,
+          0.06
+        ]
+      }
+    ]
+  },
+  "box_kinds": [
+    "cyan",
+    "green",
+    "red",
+    "yellow"
+  ],
+  "approach_convention": "boxes are grasped and placed with the robot facing east (+x)",
+  "passages": [
+    {
+      "id": "door_narrow",
+      "kind": "door",
+      "center_m": [
+        2.2,
+        0.05
+      ],
+      "half_extents_m": [
+        0.025,
+        0.25
+      ],
+      "width_m": 0.5,
+      "lanes": 1,
+      "axis": "x",
+      "connects": [
+        "pickup side (west)",
+        "zone side (east)"
+      ]
+    },
+    {
+      "id": "door_wide",
+      "kind": "door",
+      "center_m": [
+        2.2,
+        -2.625
+      ],
+      "half_extents_m": [
+        0.025,
+        0.5
+      ],
+      "width_m": 1.0,
+      "lanes": 2,
+      "axis": "x",
+      "connects": [
+        "pickup side (west)",
+        "zone side (east)"
+      ]
+    },
+    {
+      "id": "door_A",
+      "kind": "door",
+      "center_m": [
+        3.75,
+        0.4
+      ],
+      "half_extents_m": [
+        0.025,
+        0.4
+      ],
+      "width_m": 0.8,
+      "lanes": 1,
+      "axis": "x",
+      "connects": [
+        "central_C",
+        "dead_end_A"
+      ]
+    },
+    {
+      "id": "door_B",
+      "kind": "door",
+      "center_m": [
+        3.75,
+        -2.1
+      ],
+      "half_extents_m": [
+        0.025,
+        0.4
+      ],
+      "width_m": 0.8,
+      "lanes": 1,
+      "axis": "x",
+      "connects": [
+        "central_C",
+        "dead_end_B"
+      ]
+    }
+  ],
+  "wall_profile": {
+    "id": "walls_v3",
+    "version": 3,
+    "height_m": 0.4,
+    "rule": "smallest 0.05 m step >= max(kinematic max wrist-camera z + 0.05 m, highest robot geom z + 0.03 m)",
+    "kinematic_max_camera_z_m": 0.321,
+    "max_work_posture_camera_z_m": 0.239,
+    "robot_top_max_z_m": 0.367,
+    "evidence": "experiments/2026-09-26-zone-env-v3/camera_height.json",
+    "sha256": "27300b0067d2d46d68498b8fddeaf7c19f8c489ed9bdaa3f5d47f5aacb6e833d"
+  },
+  "base_map": {
+    "map_id": "zone_wide_two_doors",
+    "version": 1,
+    "static_map_sha256": "48bd355f6c1782356c8f71b1419f653972985a09622c37aec7ca75a5edde7e0f"
+  },
+  "robot_model": "masterpi_v3",
+  "parent_scene": {
+    "map_id": "zone_wide_two_doors_final_v1",
+    "sha256": "646916804ff80cac6e09909343cdbd96fb79333db58e32cc74d3a17e93152a86"
+  },
+  "heldout": {
+    "suite": "hardmaps1",
+    "split": "held_out",
+    "status": "prepared_only",
+    "development_use": false,
+    "controller_trials": 0,
+    "reference_map": "zone_wide_two_doors_final_v3",
+    "reference_file_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+    "rooms": [
+      "west_pickup",
+      "central_C",
+      "dead_end_A",
+      "dead_end_B"
+    ],
+    "route_alternatives": [
+      "door_narrow",
+      "door_wide"
+    ]
+  }
+}

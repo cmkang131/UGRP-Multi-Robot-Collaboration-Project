@@ -1,0 +1,141 @@
+{
+  "handover_head": "f051e1968c8424ad11eb4a121f1e58f2af1a6bdb",
+  "execution_source": "84e62dd1",
+  "unit_command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_masterpi_drive_friction_v7_sphere6.py tests/test_masterpi_drive_friction_v7_freeze.py tests/test_probe_v7_roller_approx.py",
+  "unit_result": "27 passed in 2.07s",
+  "launch": "python3 scripts/ugrp_session.py run v7-roller-codex-84e62dd1 -- zsh experiments/2026-10-06-v7-roller-approx/launch_remaining.zsh <84e62dd1 full SHA>",
+  "new_completed_measurements": 42,
+  "inherited_completed_measurements": 42,
+  "raw_verified_files": 360,
+  "tensorboard_verified_scalars": 1124,
+  "default_changed": false,
+  "physics_code_changed_since_handover": false,
+  "merged": false,
+  "source_lookup": {
+    "TIAGo_arxiv": "https://arxiv.org/html/2510.10273v1",
+    "TIAGo_USD_commit": "812ef55cdca2502dec6044ecddb08991ff41982d",
+    "two_USD_hashes_reverified": true,
+    "sphere_radius_max_rounding_error_m": 1.43e-09,
+    "USD_parent_scale": 0.976,
+    "applied_scale": "65/205 as requested; roller-local layout, not composed TIAGo assembly"
+  },
+  "analysis_tools": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-analysis/analysis-tools/finish_v7_roller.py",
+      "sha256": "d405762ffd601af8436652e24f5f76005949babba11a2c1ccc606738e487b4e0"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-analysis/analysis-tools/verify_v7_tensorboard_api.py",
+      "sha256": "ba6ffa35aa64d865ac0eba68a70f8609ea77eb3972a75fa61a44ce3ebe247692"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-analysis/analysis-tools/write_v7_sections.py",
+      "sha256": "68082e70bcc4c7ed77ef054b910dfafec9cf882ab4fb58e7d062856ae9c24084"
+    }
+  ],
+  "bounds": "DEV profile and equivalence diagnostics; no S2 adoption or hardware success; raw local only",
+  "repeated_mesh_trace_exact": [
+    {
+      "case": "cyan-f035",
+      "trace_sha256": "7b2ac946719c6059367e7d9ddecbdc6f2cbeccaed8e9c2ffb83ec2e454a3b6c7",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/cyan-f035/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/cyan-f035/trace.json"
+    },
+    {
+      "case": "cyan-f100",
+      "trace_sha256": "8002c57e4c3e0c49eeade58ddd6da85df9c62dc3c332474301cdc7e75b2e0b8c",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/cyan-f100/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/cyan-f100/trace.json"
+    },
+    {
+      "case": "empty-bump050",
+      "trace_sha256": "67fcf7ba3aedeb0395157ace4575d76705664f27136ca3aa7d6473dd9dc4ed74",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/empty-bump050/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/empty-bump050/trace.json"
+    },
+    {
+      "case": "empty-f020",
+      "trace_sha256": "b47a429a456f2b65bb6eeb16980ab0991155990715485ca4343473a2134ded88",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/empty-f020/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/empty-f020/trace.json"
+    },
+    {
+      "case": "empty-f030",
+      "trace_sha256": "b47a429a456f2b65bb6eeb16980ab0991155990715485ca4343473a2134ded88",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/empty-f030/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/empty-f030/trace.json"
+    },
+    {
+      "case": "empty-f035",
+      "trace_sha256": "bc6212c36a5c4878bb56e83bc78d95eeece43f9f5ee1cd737c31aebab517daa3",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/empty-f035/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/empty-f035/trace.json"
+    },
+    {
+      "case": "empty-f050",
+      "trace_sha256": "0154b214cf3bbe98e730877ada2e7196987b23f74229c3c16d3993d0f7333d2d",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/empty-f050/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/empty-f050/trace.json"
+    },
+    {
+      "case": "empty-f100",
+      "trace_sha256": "4cd5cc684407a9ac949c4bb5ab6188dda21867718559f5da068525ac54611671",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/empty-f100/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/empty-f100/trace.json"
+    },
+    {
+      "case": "empty-left035",
+      "trace_sha256": "21e13fc2a18871dd33e959d64ebf5ce790d1e86c2cbc73a8e5c22d2b3508c23e",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/empty-left035/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/empty-left035/trace.json"
+    },
+    {
+      "case": "pair-beam",
+      "trace_sha256": "8f402be46a98c9224ede39a1ff2f78d436a2d53a3f705788baa4bc3448e2a2f9",
+      "old_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/pair-beam/trace.json",
+      "new_path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/pair-beam/trace.json"
+    }
+  ],
+  "beam_command_traces_equal_across_variants": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/pair-beam/staging-commands.json",
+      "sha256": "57a6aab83f71a6efd05756da26df34b705ebd343c93d3d1ebd8ab8cb08069dc3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh_freeze/pair-beam/staging-commands.json",
+      "sha256": "57a6aab83f71a6efd05756da26df34b705ebd343c93d3d1ebd8ab8cb08069dc3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/sphere6_v1/pair-beam/staging-commands.json",
+      "sha256": "57a6aab83f71a6efd05756da26df34b705ebd343c93d3d1ebd8ab8cb08069dc3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh/pair-beam/drive-commands.json",
+      "sha256": "176b9eb7ade1f59b30d8994bd8cff3dd9188547df73d1cedc15e89f28d3b5f4d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/mesh_freeze/pair-beam/drive-commands.json",
+      "sha256": "176b9eb7ade1f59b30d8994bd8cff3dd9188547df73d1cedc15e89f28d3b5f4d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-f051e196-equivalence/sphere6_v1/pair-beam/drive-commands.json",
+      "sha256": "176b9eb7ade1f59b30d8994bd8cff3dd9188547df73d1cedc15e89f28d3b5f4d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/pair-beam/staging-commands.json",
+      "sha256": "57a6aab83f71a6efd05756da26df34b705ebd343c93d3d1ebd8ab8cb08069dc3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/sphere6_freeze/pair-beam/staging-commands.json",
+      "sha256": "57a6aab83f71a6efd05756da26df34b705ebd343c93d3d1ebd8ab8cb08069dc3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/mesh/pair-beam/drive-commands.json",
+      "sha256": "176b9eb7ade1f59b30d8994bd8cff3dd9188547df73d1cedc15e89f28d3b5f4d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v7-roller-approx-84e62dd1-equivalence/sphere6_freeze/pair-beam/drive-commands.json",
+      "sha256": "176b9eb7ade1f59b30d8994bd8cff3dd9188547df73d1cedc15e89f28d3b5f4d"
+    }
+  ]
+}

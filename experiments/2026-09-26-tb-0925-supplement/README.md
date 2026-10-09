@@ -47,3 +47,5 @@
   감사·사전 등록 초안이라 변환할 실행/평가 행이 없다.
 - r3-regrasp-pose(#162): 이미 변환된 v61 실행의 사후 재분석이며 새 실행 행이 없다.
 - action-act-followup, host-scheduling, settled-view v46: 2026-09-25 기록에 완료된 물리 A/B 행이 없다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

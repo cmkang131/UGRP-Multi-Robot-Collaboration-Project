@@ -1,0 +1,55 @@
+{
+  "schema": "ugrp.s2.rotation_left.criteria.v1",
+  "registered_before_full_replay": true,
+  "option": "rotation_calibration=s2_pulse_v122_rotL_v1",
+  "default": "off",
+  "gain_source": "PR405 762a952f, egomap32 repeats1-3 fit /4-5 check; no S2 fitting",
+  "scope": "servo_stiffness real_v1 + commanded exact SEARCH + own load=false + turn+.35/duration.10",
+  "loaded_and_other_pose": "v122 unchanged",
+  "recordings": {
+    "1051": {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full",
+      "hashes": {
+        "bundle.json": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+        "student_record.json": "3efeffaf5aaca44ea926173ba22f303184f5bcdde1267a0eedc58c879c589bea",
+        "robots/r3/frames.jsonl": "e834c379be876b35738f3719aa7e462fb4ea13fab898b8f1804600480d54e442"
+      }
+    },
+    "1053": {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction",
+      "hashes": {
+        "bundle.json": "5446bc4130b50f854754305f05108c5cfdce52ea021c38a480ea735103576b01",
+        "student_record.json": "8e3e92e1209131d7c66e6d92e4ae6778a86a6c559b696070aded41bc04632430",
+        "robots/r3/frames.jsonl": "1b57c198767693c6fe32d7e4c373bcf4ff9b463b3c53a41bea4b032ede0e8614"
+      }
+    },
+    "1054": {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction",
+      "hashes": {
+        "bundle.json": "07ee558ad6da458d369ebdc463f36a1aba9984a217ea455de917b7b1aefe3156",
+        "student_record.json": "6a1dbf2b8f9b01fcfb5985b7d3bfd4f75a6160c8b5d25ebd57c34ac0716dfca8",
+        "robots/r3/frames.jsonl": "5adbc8cc5ed27f2a95d31ec3426c7fa1bb3290211d8e995ac504a3e56700ff08"
+      }
+    }
+  },
+  "comparison": "fixed own commands and RGB, same decision times; no closed-loop claim",
+  "metrics": {
+    "yaw": "command pulse endpoint and post-pulse reported yaw residual, CCW/CW/load separately",
+    "carry_rmse": "all recorded carry frames: start inclusive, next state real_carry_return exclusive; count-weighted RMS",
+    "NEES": "same v41 single-cluster matching covariance criterion, chi2_2_95=5.9914645471",
+    "warnings": "same original drive-decision times, unchanged sigma5cm/yaw5deg/no-fix predicate",
+    "large_error": "no warning but XY error>25cm, same v41 reference"
+  },
+  "gates": [
+    "off source poses reproduce within1e-9",
+    "s1054 with zero eligible turns particle trajectory bytes identical",
+    "pooled eligible CCW command residual RMS strictly decreases",
+    "pooled POSE_UNCERTAIN count strictly decreases",
+    "pooled available warning NEES exceedance rate strictly decreases",
+    "pooled no-warning XY>25cm count does not increase",
+    "count-weighted carry RMSE does not increase"
+  ],
+  "result_threshold_changes_forbidden": true,
+  "physics": "only if all gates pass: register one unused seed and new bundle, one full DEV, agent_lock/ugrp_session, freeze ON, no dock-row prior",
+  "GT": "separate posthoc score after all six prediction files sealed"
+}

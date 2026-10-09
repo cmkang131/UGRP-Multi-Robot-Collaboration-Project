@@ -6,6 +6,8 @@ from scripts import run_active_wall_rotleft as base
 from scripts.run_own_map_return_repeat import actor
 from harness.goal_route_continuous import attach,OPTION
 from harness.grid_acceleration import install
+from harness.path_heading_policy import DEFAULT,result_record as heading_result
+from harness.goal_route_heading import OPTION as HEADING_HOST
 
 ROOT=base.ROOT
 EXP=ROOT/'experiments/2026-10-09-goal-route-continuous'
@@ -16,22 +18,32 @@ SEEDS=tuple(range(55001,55010))
 def bundle(seed,source):
     if seed not in SEEDS:raise ValueError('PREREGISTERED_SEED_REQUIRED')
     b=base.frozen_bundle('new-seed',source)
-    b.update(execution_bundle_id=f'egomap56-goal-route-{seed}-v1',case=f'seed{seed}',
+    b.update(execution_bundle_id=f'egomap57-goal-route-{seed}-v1',case=f'seed{seed}',
         map_id='zone_wide_door_geometry_v3',check='goal-route-continuous',case_cap_s=810.,
         preregistration='acf9cc7e',admission='user_authorized_P1_9_DEV; no forced loss; fixed gates')
     b['task']['seed']=seed
     b['condition']='T1' if seed<55004 else 'T2'
     if seed>=55004:b['spawn']=[-.898,[-2.25,-.85,.55][(seed-55004)//2],0.]
-    b['options'].update(goal_route=OPTION,heading_mode='path_tangent_v1',pitch_calibration='off',
+    b['options'].update(goal_route=OPTION,heading_mode=DEFAULT,heading_host=HEADING_HOST,pitch_calibration='off',
         route_hygiene='off',scan_accumulation='off',place_gate='off',
         navigation_start='navfn_recovery_v1',frontier_observation='yamauchi_cycle_v1',
         map_acceleration='scalar_rays_v1',graph_acceleration='match_cache_v1')
     b['sensors']={'ultrasonic_front':'on_v1'}
+    b['heading_contract']=dict(shared_version='zone-s2-realism-v145',main_sha='6813f8a15930bbf3a039887219c76a7acb863648',
+        command_factory='harness.own_map_heading.command',selector='harness.zone_solo_cyan_path_heading.select_waypoint',
+        mode=DEFAULT,host=HEADING_HOST,motion_model='s2_pulse_v122_rotL_v1',return_shortcuts=False)
+    b['runtime_speedups_requested']='relay-cache-v1'
     b['schedule']=dict(leg_cap_s=270.,maximum_legs=3,host_cap_s=3600.,forced_loss=False)
     return b
 
 
-def controller(explorer):return install(attach(explorer,goal_route=OPTION,dev_light=True),map_acceleration='scalar_rays_v1')
+def controller(explorer):return install(attach(explorer,goal_route=OPTION,heading_host=HEADING_HOST,dev_light=True),map_acceleration='scalar_rays_v1')
+
+
+def result_metadata(out,value,b):
+    from sim.v7_exact_speedups import result_record
+    return result_record(out/'result.json',heading_result(out/'result.json',{
+        **value,'heading_contract':b['heading_contract']}))
 
 
 def run(out,source,seed,backend_factory):
@@ -44,6 +56,8 @@ def run(out,source,seed,backend_factory):
     backend=explorer=c=None;started=monotonic();last_snapshot=None
     try:
         backend=backend_factory(b,out,seed=seed);backend.reset(5.)
+        from sim.v7_exact_speedups import write_receipt
+        write_receipt(backend)
         start=backend.now;result['start_sim_s']=start;backend.set_deadline(start+b['case_cap_s'])
         for action in arm(SEARCH):backend.issue('r3',action)
         explorer=actor('r3',start,SEARCH,active_mapping='frontier_rbpf_v1',active_loop='information_gain_v1',
@@ -89,6 +103,7 @@ def run(out,source,seed,backend_factory):
         if backend is not None:backend.close()
         if c is not None:
             base.dump(out/'route-map.json',c.snapshot());base.dump(out/'utility-events.json',c.events)
+            base.dump(out/'heading-decisions.json',c.heading_host.rows if c.heading_host is not None else [])
             base.dump(out/'own-inputs.json',c.inputs);base.dump(out/'return-navigation.json',c.navigator.events)
         if explorer is not None:
             g=explorer.memory.self_map
@@ -96,13 +111,26 @@ def run(out,source,seed,backend_factory):
                 ('decisions',g.decisions),('navigation',explorer.navigator.events),('active-events',explorer.events),('graphs',explorer.graphs)]:
                 base.dump(out/(name+'.json'),value)
         result.update(wall_s=monotonic()-started,loadavg_end=list(os.getloadavg()))
-        base.dump(out/'result.json',result)
+        result=result_metadata(out,result,b);base.dump(out/'result.json',result)
         base.dump(out/'artifacts.sha256.json',{str(p.relative_to(out)):base.old.sha(p) for p in sorted(out.rglob('*')) if p.is_file() and p.name!='artifacts.sha256.json'})
     return result
 
 
 def preflight(source):
-    receipts=base.verify_source(source)
+    # Result rows must be written between slots without changing cohort code.
+    git=lambda *a:subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
+    assert git('branch','--show-current')=='claude/ego-wall-map'
+    assert git('rev-parse','HEAD')==source,'COHORT_SOURCE_HEAD_CHANGED'
+    mutable={str((EXP/'README.md').relative_to(ROOT))}
+    changed=git('diff','HEAD','--name-only').splitlines()
+    assert all(p in mutable or p.startswith(str((EXP/'results').relative_to(ROOT))+'/') for p in changed),'COHORT_CODE_CHANGED'
+    unknown=git('ls-files','--others','--exclude-standard').splitlines()
+    assert all(p in base.old.USER_FILES or p.startswith(str((EXP/'results').relative_to(ROOT))+'/') for p in unknown)
+    assert all(base.old.sha(ROOT/p)==h for p,h in base.old.USER_FILES.items())
+    remote=git('rev-parse','origin/claude/ego-wall-map')
+    subprocess.run(['git','merge-base','--is-ancestor',remote,source],cwd=ROOT,check=True)
+    receipts=dict(source_sha=source,remote_sha=remote,push_pending=remote!=source,mutable_reports=changed,
+                  preserved_untracked=base.old.USER_FILES)
     frozen=json.loads((EXP/'freeze.json').read_text())
     assert all(base.old.sha(ROOT/p)==h for p,h in frozen['files'].items()),'FROZEN_SOURCE_CHANGED'
     # Exact queue evidence is recorded once before the first physics slot.

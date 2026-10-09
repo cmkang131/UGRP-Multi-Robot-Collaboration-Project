@@ -17,7 +17,8 @@ def modules():
     import markerless_probe as mp
     import height_free_wall as hfw
     import ego_wall_map as ewm
-    return mp,hfw,ewm
+    from harness.wall_column_calibration import adapter
+    return adapter(mp),hfw,ewm
 
 
 def observe(rgb,servo,*,body_settling=1.,wall_detector='off',contact_rule='off',

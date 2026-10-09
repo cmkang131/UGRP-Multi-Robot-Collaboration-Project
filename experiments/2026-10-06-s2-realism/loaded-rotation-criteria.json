@@ -1,0 +1,84 @@
+{
+  "schema": "ugrp.s2.loaded_rotation.criteria.v1",
+  "registered_before_acquisition": true,
+  "identifier": "s2-loaded-rotation-v1",
+  "supervisor": "2026-10-08 04:57: loaded look_ahead measurement after weak SEARCH-only replay; no full DEV first",
+  "parent_bundle": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full/bundle.json",
+    "sha256": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c"
+  },
+  "setup_seed": 1051,
+  "initial_xyz_m": [
+    3.0,
+    -1.0,
+    0.0325
+  ],
+  "staging": "s2v36 free-base, one-time manual placement at HIGH, ordinary contact grip and sequential servo transition; no clamp/weld/ongoing resets",
+  "options": {
+    "servo_stiffness": "real_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "camera": "v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "carry_pose": "look_ahead_v1",
+    "min_wheel_cmd": "real_v1",
+    "alignment_pulse": "real_fine_v1",
+    "rotation_calibration": "off"
+  },
+  "schedule": {
+    "source": "PR405 762a952f scripts/run_pulse_rotation_audit.py schedule()",
+    "duration_s": 60,
+    "repeats": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "fit": [
+      1,
+      2,
+      3
+    ],
+    "check": [
+      4,
+      5
+    ],
+    "modes": [
+      "single",
+      "continuous10"
+    ],
+    "turn": [
+      -0.35,
+      0.35
+    ],
+    "duration_per_pulse_s": 0.1,
+    "cycle_s": 0.2
+  },
+  "safety": {
+    "grip_absent_max_s": 0.3,
+    "cargo_height_min_m": 0.06,
+    "body_tilt_limit_deg": 15,
+    "wall_contacts_allowed": 0,
+    "active_welds_allowed": 0
+  },
+  "fit": {
+    "source": "PR405 egomap32 exact fit(records)",
+    "inputs": "post-seal measured yaw endpoints, per-pulse normalization; no live controller input",
+    "direction_admission": "95% gain CI excludes1 (either sign), single/continuous gain gap<=.05, held-out normalized RMS strictly reduces",
+    "adaptation": "CI excludes1 instead of lower>1 because loaded direction may overpredict; fixed before acquisition",
+    "others": "unadmitted direction, XY, noise, other postures unchanged"
+  },
+  "replay": {
+    "recordings": [
+      1051,
+      1053,
+      1054
+    ],
+    "baseline": "unchanged v133, SEARCH correction off",
+    "gate": "same prior gates except unexposed1054 identity replaced with off pose identity; calibrated direction RMS, warnings, NEES improve; carry RMSE and unflagged>25cm nonincrease"
+  },
+  "failure": "stop at physical failure; no repeated measurement or refit after heldout; ENOSPC=HOST_ERROR",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-loaded-rotation-v42-20261008",
+  "model_calls": 0,
+  "diagnostic_not_task_success": true
+}

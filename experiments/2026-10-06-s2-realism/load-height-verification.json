@@ -1,0 +1,37 @@
+{
+  "schema": "ugrp.s2.load_height.verification.v1",
+  "preregistration_sha": "b0f5cf74",
+  "runtime_sha": "e178f2ef62f17c45820bb5399092bea6868c8110",
+  "tests": {
+    "command": "python -m pytest -q tests/test_s2_load_height.py tests/test_s2_pulse_cal.py tests/test_s2_floor_contact.py",
+    "passed": 14,
+    "wall_s": 25.98
+  },
+  "default_off_full_replay_exact": true,
+  "frame_count_each": 5202,
+  "candidate_variants": 4,
+  "source_hashes_unchanged": true,
+  "model_calibration_seed": 1050,
+  "model_evaluation_seed": 1051,
+  "train_test_fit_separate": true,
+  "post_outcome_retuning": false,
+  "gt_in_runtime": false,
+  "physics_runs": 0,
+  "model_calls": 0,
+  "full_dev": "NOT_RUN_CRITERIA_FAILED",
+  "new_bundle": null,
+  "new_seed": null,
+  "new_video": null,
+  "agent_lock": null,
+  "offline_session": "stopped",
+  "artifacts": {
+    "load-height-summary.json": "8035b5ec7e8d73de5180976aefb34683e5ed2ff03b18b9972dd0c577de26cd2b",
+    "load-motion-summary.json": "310ff95be2ed4e00b80d58b009390fa67e60a80f0f30d9fb7dedfcede7784d26",
+    "load-drift-summary.json": "18ce0d990d5338f67381e55d806093dde92df2261fbdba75335744495fc542fd",
+    "height-observability.json": "818bb2c36019b9d23a9aba40d563fddebbbd713ff1741ad245640ad56249d3c2",
+    "load-height-delivery-verification.json": "3b586af08898a9d54c2b2829207277aa526ecdd415b54f02c08e75a612fe5d47",
+    "load-height-sources.json": "2ecfeca22a899c500a289b21200cbf87c94e83a10f29033ed0c0d937c722f60f"
+  },
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007",
+  "raw_backup": "local only"
+}

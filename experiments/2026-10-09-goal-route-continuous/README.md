@@ -66,3 +66,23 @@ S3의 새 지시(s3next.txt)를 읽어 **공통heading push 후 S3 재시험**�
 ### 18:25 KST 선행 의존성 확인
 
 구현 `5714ea66`은 원격과 동일하고 PR #405는 DRAFT다. #419의 최신 `fddc2f67`은 S2 비교 결과 기록이며 공통 heading 기본 on 변경은 아직 없다. S3 #416의 `7f2675ac`도 해당 변경 대기를 명시한다. 잠금은 null이지만 사용자가 지정한 **S3 재시험 다음** 순서를 건너뛰지 않는다. 따라서 P1-b는 **시작 0/등록 9, 결과 미측정**이며 실패율·성공률을 계산하지 않는다. 준비된 유한 실행기는 완료 증거를 담은 `queue-admission.json` 없이는 시작하지 않는다. 공통 변경 병합·바뀐 시험 검증 후 S3 종료 증거를 확인해야 다음 단계로 진행할 수 있다. CI 대기나 관문 미달로 중단한 것이 아니다.
+
+
+## egomap57 — main 병합·공통 heading host 연결 (실행 전)
+
+사용자 승인 main `6813f8a1`(#419/#420)을 merge한다(rebase0). 공통 `own_map_heading.command` → `zone_solo_cyan_path_heading.select_waypoint`를 새 host에 연결하며 v145의 .06rad/.10m/측정 pulse·coast 규칙을 그대로 쓴다. 자기 pose/계획만 전달하고 S2 정적 지도/PF factory를 자기 제어에 넣지 않는다. rotL 보정 자료는 eg56 그대로. 기존10° ego heading은 역사적 host=off 경로에만 보존,새 주행 알고리즘/이득0. 공통 명령은 본 적 있는 시간순 경로를 따르며 귀환 지름길0. graph 최단화/재방문 shortcut0.
+
+번들 `egomap57-goal-route-<seed>-v1`에 heading_mode/host/shared v145 출처와 실제 result에 동일 적용값을 기록한다. #420의 기본 relay-cache-v1 실제 적용 여부·모듈해시는 v7-speedups/runtime-bundle/result에 기록한다. 원 결과동일성 근거는 main의 #420 기록을 참조하며 이번에 속도 시험/물리 추가0. 캐시 해제 환경변수는 이번 실행에서 사용하지 않는다.
+
+55001–55009·T1/T2·270초 구간예산·판정은 eg56 등록 그대로. P1-a off,실패P0옵션off,추적 연속,새 문턱0. **S3 v146 스모크 종료 기록 + 잠금 반환** 이후9회 순차(dev_light). 매 회차 직후 아래에 B/귀환/실패와 각 구간 자기 경로 길이·실제 이동거리(평가만)·SIM초·270초 예산실패를 추가한다. 미관측/미도달/HOST_ERROR도9분모,제외/재시도0.
+
+실행 전 통합시험 첫회32 PASS/6 FAIL: egomap9의 ColumnModel 확장이 VIS3 원본 해시를 바꾼 과거 충돌이었다. VIS3 원본을 main 바이트로 복원하고 카메라 인자를 `wall_column_calibration`의 인스턴스 어댑터로 분리했다(검사 완화0). 보존49002 RGB의 벽 검출출력106354문자 byte동일,원본 VIS3 전체해시 검사통과. 바닥/벽 검출 설정변경0.
+
+S3 v146 `3daa830f`는45.25SIM초 `DEV_NOT_DELIVERED`로 종료했고 `lock.json.status_after=null`을 확인했다. 이는 선행 실행 완료 증거이며 자기 지도 성공 근거가 아니다. 출력과해시를 `outputs/goal-route-continuous-v1/queue-admission.json`에 기록했다.
+
+최종 관련3파일 **38 PASS**,원형off/명령선택/기록/구간보고 검사 통과. 394 실행의존 파일을 freeze로 고정하며 회차별 README·평가결과 추가만 허용한다. 여유29.91GiB 확인,시뮬 동시0·nice0·등록9회만. CI대기0.
+
+### 회차별 결과 (현재 시작0/9)
+
+|seed/조건|B 도착·거짓 선언|귀환|종료 상태/원인|구간 길이·SIM초·예산실패|
+|---|---|---|---|---|

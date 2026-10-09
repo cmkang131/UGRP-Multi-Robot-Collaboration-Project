@@ -1,0 +1,415 @@
+{
+  "schema": "ugrp.s2.kld_start.result.v1",
+  "criteria": {
+    "schema": "ugrp.s2.kld_start.criteria.v1",
+    "option": "particle_sampling=kld_global_v1",
+    "default": "off",
+    "base_sha": "7154a72d",
+    "raw": "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start",
+    "seed": 1052,
+    "camera_pitch": "stiff_target_v1",
+    "servo_stiffness": "real_v1",
+    "parameters": {
+      "min_samples": 2000,
+      "max_samples": 100000,
+      "epsilon": 0.05,
+      "confidence": 0.99,
+      "bins_m_m_deg": [
+        0.5,
+        0.5,
+        10.0
+      ]
+    },
+    "parameters_basis": "Fox eq7 and 0.5m/10deg bins, 100000 cap; epsilon .05 chosen before replay; minimum preserves existing 2000 budget; Normal quantile at .99, not z=.99",
+    "replay": {
+      "conditions": [
+        "off",
+        "on"
+      ],
+      "runs_per_condition": 1,
+      "frames": 214,
+      "commands_fixed": true,
+      "active_rankings": false,
+      "wall_budget_per_condition_s": 300,
+      "timing": "init and frame processing incl RGB I/O; excludes serialization and scoring; sequential, agent_lock",
+      "cpu_time": true
+    },
+    "gates": {
+      "off_pose_and_cloud_bytes_equal": true,
+      "truth_25cm_15deg_mass_strictly_increases": true,
+      "final_position_error_m_max": 0.25,
+      "final_position_error_improves": true,
+      "no_false_resolved": true,
+      "truth_neighborhood_survives": true
+    },
+    "report_extra": "tight 10cm/5deg count/mass, particle population, resolved flag; no substitution of best GT-selected mode for mean",
+    "physical_runs": 0,
+    "if_pass": "propose full DEV only; no execution",
+    "retuning_after_results": false,
+    "gt_use": "separate scoring after both prediction files close; no PF input",
+    "sources": [
+      {
+        "title": "Fox 2001 KLD-Sampling, eq7/Table1",
+        "url": "https://papers.neurips.cc/paper/1998-kld-sampling-adaptive-particle-filters.pdf",
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-kld-start-20261007/fox2001-kld.pdf",
+        "sha256": "4d6bfa53465fdaa59604cbf14aebfd974fa1f3c0b2778c86123a0774505410d5"
+      },
+      {
+        "title": "Nav2 pf.c max initialization and KLD multinomial resampling",
+        "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf.c",
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-dock-localization-20261007/pf.c",
+        "sha256": "6699fe3107b141597114de730cd2c9cb64e0703e592e3bb23ad7de6b69c49867"
+      }
+    ]
+  },
+  "conditions": [
+    {
+      "option": "off",
+      "final_error_m": 3.1810337404301063,
+      "rmse_m": 3.3155057387138536,
+      "near_truth": [
+        {
+          "t": 0.0,
+          "n": 2000,
+          "count": 1,
+          "mass": 0.0005,
+          "tight_count": 0,
+          "tight_mass": 0.0
+        },
+        {
+          "t": 2.45,
+          "n": 2000,
+          "count": 1,
+          "mass": 0.0013359141144749379,
+          "tight_count": 0,
+          "tight_mass": 0.0
+        },
+        {
+          "t": 3.95,
+          "n": 2000,
+          "count": 11,
+          "mass": 0.005500000000000001,
+          "tight_count": 0,
+          "tight_mass": 0.0
+        },
+        {
+          "t": 5.45,
+          "n": 2000,
+          "count": 11,
+          "mass": 0.015064460774038554,
+          "tight_count": 0,
+          "tight_mass": 0.0
+        },
+        {
+          "t": 6.95,
+          "n": 2000,
+          "count": 57,
+          "mass": 0.0285,
+          "tight_count": 0,
+          "tight_mass": 0.0
+        },
+        {
+          "t": 8.45,
+          "n": 2000,
+          "count": 57,
+          "mass": 0.04726778140304056,
+          "tight_count": 0,
+          "tight_mass": 0.0
+        },
+        {
+          "t": 11.8,
+          "n": 2000,
+          "count": 57,
+          "mass": 0.0718903542868414,
+          "tight_count": 0,
+          "tight_mass": 0.0
+        },
+        {
+          "t": 11.95,
+          "n": 2000,
+          "count": 57,
+          "mass": 0.0718903542868414,
+          "tight_count": 0,
+          "tight_mass": 0.0
+        }
+      ],
+      "final_modes": {
+        "resolved": false,
+        "bin_count": 506,
+        "leading_bins": [
+          {
+            "bin": [
+              2,
+              -4,
+              9
+            ],
+            "weight": 0.1931962326961352
+          },
+          {
+            "bin": [
+              10,
+              1,
+              -18
+            ],
+            "weight": 0.12706188702366053
+          },
+          {
+            "bin": [
+              -2,
+              -5,
+              -1
+            ],
+            "weight": 0.07189035428684147
+          },
+          {
+            "bin": [
+              0,
+              0,
+              -10
+            ],
+            "weight": 0.07146871123715207
+          },
+          {
+            "bin": [
+              3,
+              -5,
+              -1
+            ],
+            "weight": 0.0652425891289346
+          },
+          {
+            "bin": [
+              1,
+              -4,
+              7
+            ],
+            "weight": 0.04605994622160826
+          },
+          {
+            "bin": [
+              9,
+              -3,
+              10
+            ],
+            "weight": 0.02547293559345086
+          },
+          {
+            "bin": [
+              4,
+              -5,
+              -2
+            ],
+            "weight": 0.016850975131814376
+          },
+          {
+            "bin": [
+              -1,
+              -5,
+              0
+            ],
+            "weight": 0.013305238849704283
+          },
+          {
+            "bin": [
+              3,
+              1,
+              -17
+            ],
+            "weight": 0.012327247698579374
+          }
+        ],
+        "global_std_xy_m": 2.27112194621823,
+        "circular_yaw_std_rad": 1.909595197754876,
+        "known_own_dock": false
+      },
+      "updates": 6,
+      "resamples": 2,
+      "wall_s": 2.791001832985785,
+      "cpu_s": 3.38136,
+      "false_resolved": false
+    },
+    {
+      "option": "on",
+      "final_error_m": 3.0903083128524984,
+      "rmse_m": 3.3303625061454274,
+      "near_truth": [
+        {
+          "t": 0.0,
+          "n": 100000,
+          "count": 44,
+          "mass": 0.0004400000000000001,
+          "tight_count": 4,
+          "tight_mass": 4e-05
+        },
+        {
+          "t": 2.45,
+          "n": 100000,
+          "count": 43,
+          "mass": 0.0008103277912614385,
+          "tight_count": 4,
+          "tight_mass": 0.00012596293946651833
+        },
+        {
+          "t": 3.95,
+          "n": 45977,
+          "count": 99,
+          "mass": 0.0021532505383126347,
+          "tight_count": 26,
+          "tight_mass": 0.0005655001413750353
+        },
+        {
+          "t": 5.45,
+          "n": 45977,
+          "count": 99,
+          "mass": 0.00492351791955003,
+          "tight_count": 26,
+          "tight_mass": 0.0016570888962903142
+        },
+        {
+          "t": 6.95,
+          "n": 38221,
+          "count": 862,
+          "mass": 0.02255304675440203,
+          "tight_count": 384,
+          "tight_mass": 0.010046832892912274
+        },
+        {
+          "t": 8.45,
+          "n": 38221,
+          "count": 862,
+          "mass": 0.06109763011173604,
+          "tight_count": 384,
+          "tight_mass": 0.031731256293059285
+        },
+        {
+          "t": 11.8,
+          "n": 21025,
+          "count": 2471,
+          "mass": 0.1175267538644471,
+          "tight_count": 1489,
+          "tight_mass": 0.070820451843044
+        },
+        {
+          "t": 11.95,
+          "n": 21025,
+          "count": 2471,
+          "mass": 0.1175267538644471,
+          "tight_count": 1489,
+          "tight_mass": 0.070820451843044
+        }
+      ],
+      "final_modes": {
+        "resolved": false,
+        "bin_count": 1955,
+        "leading_bins": [
+          {
+            "bin": [
+              -2,
+              -5,
+              0
+            ],
+            "weight": 0.1123900118906097
+          },
+          {
+            "bin": [
+              10,
+              1,
+              -18
+            ],
+            "weight": 0.04223543400713524
+          },
+          {
+            "bin": [
+              -1,
+              0,
+              -9
+            ],
+            "weight": 0.029964328180737677
+          },
+          {
+            "bin": [
+              8,
+              -4,
+              8
+            ],
+            "weight": 0.02121284185493476
+          },
+          {
+            "bin": [
+              -1,
+              0,
+              -10
+            ],
+            "weight": 0.017598097502972688
+          },
+          {
+            "bin": [
+              6,
+              0,
+              -10
+            ],
+            "weight": 0.017502972651605265
+          },
+          {
+            "bin": [
+              4,
+              1,
+              -18
+            ],
+            "weight": 0.013032104637336478
+          },
+          {
+            "bin": [
+              -2,
+              -5,
+              -1
+            ],
+            "weight": 0.012889417360285349
+          },
+          {
+            "bin": [
+              2,
+              -4,
+              8
+            ],
+            "weight": 0.012889417360285349
+          },
+          {
+            "bin": [
+              5,
+              -1,
+              -9
+            ],
+            "weight": 0.012366230677764541
+          }
+        ],
+        "global_std_xy_m": 2.35688695545352,
+        "circular_yaw_std_rad": 2.1681574349113903,
+        "known_own_dock": false
+      },
+      "updates": 6,
+      "resamples": 3,
+      "wall_s": 43.686705000000075,
+      "cpu_s": 44.042538,
+      "false_resolved": false
+    }
+  ],
+  "gates": {
+    "off_pose_and_cloud_bytes_equal": true,
+    "truth_mass_increases": true,
+    "final_position_error": false,
+    "final_error_improves": true,
+    "truth_neighborhood_survives": true,
+    "no_false_resolved": true
+  },
+  "admission_pass": false,
+  "physical_runs": 0,
+  "model_calls": 0,
+  "gt_use": "scoring only after prediction files close",
+  "hashes": {
+    "/Users/changmin/projects/ugrp-wt/drive-friction/experiments/2026-10-06-s2-realism/kld-start-criteria.json": "7e3a6163f4e59bb478a4c6c71cb08372cb77259655e168511aae78ad40b7d182",
+    "/Users/changmin/projects/ugrp/outputs/s2-kld-start-20261007/replay/off.json": "52bd63ac01c9e2a39c9af44e875c81a94c4d25511fb7f0b76524f4db7fb62c6e",
+    "/Users/changmin/projects/ugrp/outputs/s2-kld-start-20261007/replay/on.json": "f85781bea886d4e9fec4869d752968017f99614880e6eee18de3671b3ba0bbdf",
+    "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start/eval_only/trajectory.jsonl": "bbb4a30203c62466ef08a7c76d0e700d32f6940b60b29d29cda0c49963ede581"
+  }
+}

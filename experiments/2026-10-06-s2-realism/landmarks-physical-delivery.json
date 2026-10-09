@@ -1,0 +1,370 @@
+{
+  "viewer": {
+    "schema": "ugrp.s2.landmarks_dev.viewer.v1",
+    "active_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+    "url": "http://127.0.0.1:6006/?runFilter=%5E1008-s2-landmarks-dev%2F%28start1052%7Cfull1051%7Cv131-baseline%29%24&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22evaluation%2Freported_success%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Finside%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_xy_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_update_gap_sim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcargo_remaining_to_B_region_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fsim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fcommands%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+    "pinned_tags": [
+      "evaluation/reported_success",
+      "offline/inside",
+      "offline/carry_xy_rmse_m",
+      "offline/max_update_gap_sim_s",
+      "offline/cargo_remaining_to_B_region_m",
+      "result/wall_s",
+      "result/sim_s",
+      "result/commands",
+      "result/model_calls"
+    ],
+    "hparams_visible_columns": [
+      "case",
+      "condition",
+      "seed",
+      "source_sha",
+      "evaluation/reported_success",
+      "offline/carry_xy_rmse_m"
+    ],
+    "verification": {
+      "source_event_live_api_match": true,
+      "scalars": 47,
+      "browser": "NUMERIC_ONLY_UI_NOT_VERIFIED"
+    },
+    "video": {
+      "url": "http://127.0.0.1:6007/video/3e77a12851e4580a41a8",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full/execution.mp4",
+      "range_status": 206,
+      "speed": 4
+    },
+    "scope": "separate physical DEV start/full and v131 baseline; same seed1051, no research pooling; both freeze ON"
+  },
+  "checks": [
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "offline/start_error_m",
+      "source": 0.07687675580097862,
+      "event": 0.07687675207853317,
+      "live": 0.07687675207853317
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "offline/visual_updates",
+      "source": 6,
+      "event": 6.0,
+      "live": 6.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "offline/wall_per_sim",
+      "source": 1.8362389135549568,
+      "event": 1.8362388610839844,
+      "live": 1.8362388610839844
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "offline/would_stop/ARM_COLLISION_GUARD",
+      "source": 6,
+      "event": 6.0,
+      "live": 6.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "offline/would_stop/GLOBAL_START_UNRESOLVED",
+      "source": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "offline/would_stop/POSE_UNCERTAIN",
+      "source": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "result/wall_s",
+      "source": 24.78922533299192,
+      "event": 24.78922462463379,
+      "live": 24.78922462463379
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "result/sim_s",
+      "source": 13.5,
+      "event": 13.5,
+      "live": 13.5
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "result/commands",
+      "source": 454,
+      "event": 454.0,
+      "live": 454.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/start1052",
+      "tag": "evaluation/reported_success",
+      "source": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/cargo_remaining_to_B_region_m",
+      "source": 0.0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/visual_updates",
+      "source": 28,
+      "event": 28.0,
+      "live": 28.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/max_update_gap_sim_s",
+      "source": 23.30000000000001,
+      "event": 23.299999237060547,
+      "live": 23.299999237060547
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/carry_xy_rmse_m",
+      "source": 0.21797712620042028,
+      "event": 0.2179771214723587,
+      "live": 0.2179771214723587
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/carry_end_error_m",
+      "source": 0.13946582942989463,
+      "event": 0.1394658237695694,
+      "live": 0.1394658237695694
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/wall_bottom_clear_fraction",
+      "source": 0.9942407852564102,
+      "event": 0.9942407608032227,
+      "live": 0.9942407608032227
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/wheel_wall_episodes",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/lifted",
+      "source": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/inside",
+      "source": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/wall_per_sim",
+      "source": 1.9702348280296162,
+      "event": 1.9702348709106445,
+      "live": 1.9702348709106445
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/would_stop/ARM_COLLISION_GUARD",
+      "source": 7,
+      "event": 7.0,
+      "live": 7.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "offline/would_stop/POSE_UNCERTAIN",
+      "source": 293,
+      "event": 293.0,
+      "live": 293.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "result/wall_s",
+      "source": 612.9400550000137,
+      "event": 612.9400634765625,
+      "live": 612.9400634765625
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "result/sim_s",
+      "source": 311.1,
+      "event": 311.1000061035156,
+      "live": 311.1000061035156
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "result/commands",
+      "source": 4022,
+      "event": 4022.0,
+      "live": 4022.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/full1051",
+      "tag": "evaluation/reported_success",
+      "source": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/cargo_remaining_to_B_region_m",
+      "source": 2.3363827609139154,
+      "event": 2.3363828659057617,
+      "live": 2.3363828659057617
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/visual_updates",
+      "source": 19,
+      "event": 19.0,
+      "live": 19.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/max_update_gap_sim_s",
+      "source": 45.0,
+      "event": 45.0,
+      "live": 45.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/carry_xy_rmse_m",
+      "source": 1.1542425384384931,
+      "event": 1.1542425155639648,
+      "live": 1.1542425155639648
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/carry_end_error_m",
+      "source": 2.709823108977631,
+      "event": 2.7098231315612793,
+      "live": 2.7098231315612793
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/wall_bottom_clear_fraction",
+      "source": 0.6098431647940075,
+      "event": 0.6098431944847107,
+      "live": 0.6098431944847107
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/wheel_wall_episodes",
+      "source": 54,
+      "event": 54.0,
+      "live": 54.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/lifted",
+      "source": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/inside",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/wall_per_sim",
+      "source": 1.7664278032258154,
+      "event": 1.766427755355835,
+      "live": 1.766427755355835
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/would_stop/ARM_COLLISION_GUARD",
+      "source": 7,
+      "event": 7.0,
+      "live": 7.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/would_stop/POSE_UNCERTAIN",
+      "source": 381,
+      "event": 381.0,
+      "live": 381.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/would_stop/REAL_PREGRASP_UNCONFIRMED",
+      "source": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "offline/would_stop/VISUAL_STALL_SUSPECTED",
+      "source": 3,
+      "event": 3.0,
+      "live": 3.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "result/wall_s",
+      "source": 479.1435416250024,
+      "event": 479.1435546875,
+      "live": 479.1435546875
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "result/sim_s",
+      "source": 271.25,
+      "event": 271.25,
+      "live": 271.25
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "result/commands",
+      "source": 3798,
+      "event": 3798.0,
+      "live": 3798.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-dev/v131-baseline",
+      "tag": "evaluation/reported_success",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    }
+  ],
+  "media_manifest": "/Users/changmin/projects/ugrp/outputs/tensorboard/1008-s2-landmarks-dev/full1051-media/manifest.json"
+}

@@ -98,6 +98,8 @@ def test_rbpf_weighted_ledger_graph_rebuild_and_particle_isolation():
 def test_calibrated_column_model_has_same_off_geometry():
     sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'experiments/2026-09-26-markerless-probe'))
     import markerless_probe as mp
+    from harness.wall_column_calibration import adapter
+    mp=adapter(mp)
     servo={1:2000,3:1072,4:2400,5:1482,6:1500}
     cols=mp.column_positions(96,2)
     old=mp.column_model(servo,0.,cols)

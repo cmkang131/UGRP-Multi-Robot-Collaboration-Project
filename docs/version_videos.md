@@ -43,6 +43,7 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 
 | 버전 | 실행 소스(SHA) · 번들 | 대표 case (paired) | 결과 (sim 시간) | 영상 · sha256 | 무엇을 보여주나 | 일반화하지 못하는 것 |
 |---|---|---|---|---|---|---|
+| **S2 path heading v143** | `b60acdca` · v143/7.36.0 |1066,실행 전 첫 seed로 지정(v141와 같은 seed)|DEV 성공423.95SIM초,전체1/3|로컬 `s2-heading-b60acdca-s1066-v143/motion.mp4`, `c8c90783…a78498a`|저장 손목RGB와 평가용 실제 경로,4배속104.95초|3회 비교 DEV이며 나머지1068/1065 실패. S3 기본채택 보류,실물/E2E 성공 아님. [원자료·해시](../experiments/2026-10-09-s2-heading/README.md#비교-dev-최종-결과)|
 | **b-v6c** 운반 | `b604499d`(clean, probe 0.4.1) · v76 | 운반 leg 1, nominal, seed 911 | 실패 `SELF_POSE_UNCERTAIN`(yaw), 8.8 s에 σ가 게이트 52.4 mrad에 닿음 | `carry_L1_nominal_s911_v6c_topdown.mp4` `56063b7e…ffcc0` | 운반 명령 2.7 s 만에 σ가 게이트에 닿는 기준선 실패 | 한 케이스. 33건이 같은 원인이라는 것은 v6c-carry 기록의 결과이며 이 영상이 보이는 것이 아님 |
 | **b-v6d** 정렬 | `052e3eba`(source_dirty, probe 0.4.0) · v76 (병합 트리 `4714263a`는 v80) | 정렬 yaw+/opp, seed 911. b-v6c(`b5234b7a`)와 paired | b-v6c `ALIGN_RELOOK_NO_FIX`(stage 20.5 s) → b-v6d 통과(36.1 s) | `align_yawp-opp_s911_v6c_vs_v6d_topdown.mp4` `efc276c5…d0ab2` | 같은 셀에서 실패가 통과로 바뀜. σ는 게이트보다 아래(원인 아님) | 운반 raw 없음(v6d는 운반 미측정). 정렬 영상은 위치 그림에서 차이가 거의 안 보여 **제출용으로는 약함**. 이 셀 하나이며 v6d 정렬 25/25는 v6d 기록을 따름 |
 | **b-v6e-base**(예전 `b-v6e`) 운반 | `d08818ef`(source_dirty, probe 0.6.0) · v80 | 운반 leg 1, lat−/opp, seed 911 (같은 leg 5건이 모두 같은 결과) | 실패 `SELF_POSE_UNCERTAIN`(yaw), 28.6 s에 σ가 게이트에 닿음(σ 최댓값 52.6 mrad) | 아래 b-v6e yaw 수정과 같은 영상의 왼쪽 열 | 운반 leg 1 전 구간에서 σ가 서서히 올라 게이트에 닿음 | 한 케이스. cal L1·L2 5건씩 모두 같은 원인이나 PF seed는 독립 반복이 아님 |
@@ -59,6 +60,15 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 각 행의 원자료 경로·`result.json`/`trace.jsonl`/`robots.json` sha256·소스 manifest 상태는 [실험 기록의 원자료 표](../experiments/2026-09-29-version-videos/README.md#원자료와-해시)에 있다. 영상 sha256은 앞·뒤 8자리만 줄여 적었고 전체 값은 같은 실험 기록에 있다.
 
 ## 새 영상을 추가하는 방법
+
+2026-10-06 S2 현실성 후속은 위의 정답 도식과 달리 **저장된 자기 RGB**를 4배속으로 인코딩했다.
+`zone-s2-realism-v115` 소스 `57f8c174`, s1040/P1-2의 정렬 도달→hover 시야 미확인 실패를 선택했다.
+동일 제어의 v116/`46b8e7af` s1041도 같은 실패였으며, seed 재사용 금지에 따라 paired seed 비교는 아니다.
+영상은 사용자 지정대로 로컬
+`/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-analysis/views/s1040-probe/execution.mp4`에 둔다.
+SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
+26.15초, 575008bytes. [원자료·판정·한계](../experiments/2026-10-06-s2-realism/README.md#v115v116-최신-완료-기록).
+집기/운반 성공이나 실물 검증을 보여주는 영상은 아니다.
 
 1. 대표 case를 위 규칙으로 고른다(paired 상대가 있으면 같은 셀·seed).
 2. `python3 scripts/render_pair_probe_video.py --case <이전 case> --label ... --case <새 case> --label ... --output <mp4>`. `--pf-track`으로 돌린 실행은 σ가 `trace.jsonl`의 PF에서 나오고, 없으면 `robots.json` 보고로 대신한다(영상 안에 출처가 적힌다). 정렬처럼 σ 게이트가 종료 원인이 아닌 단계는 `--gate none`.
@@ -90,3 +100,4 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 원본 `outputs/own-door-navigation-v1/49001/wrist-map-doors-4x.mp4` (1280×480·157.55초·4배속).
 SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
+- 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.

@@ -1,0 +1,2401 @@
+{
+  "source_sha": "7495b8d952410aa8bb5965752929e207f04e9c06",
+  "source_scene_sha256": "c9d9e69111ba68d71b83515dc3ec13d68afcbdb4ff82103a1cabea8d2797a8c4",
+  "profile": {
+    "id": "masterpi-camera-user-observation-target-review-v3",
+    "runtime_admitted": false,
+    "default_changed": false,
+    "status": "USER_OBSERVATION_TARGET_NOT_REAL_CALIBRATED",
+    "source_label": "사용자 실물 관찰 기반 목표",
+    "user_decision_kst": "2026-10-06T16:40:00+09:00",
+    "target_max_full_image_fraction": 0.1,
+    "position_m": [
+      0.052982009925558314,
+      0.0,
+      0.028152173913043477
+    ],
+    "quat_wxyz": [
+      0.4545194776720437,
+      0.5416752204197018,
+      -0.5416752204197018,
+      -0.4545194776720437
+    ],
+    "optical_tool_pitch_deg": 10.0,
+    "position_source": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+    "angle_source": "user visibility target; NOT official angle or measured fit",
+    "angle_selection": "single pre-run 10deg candidate; analytic projection on previous DEV HIGH gives ~5.62% full image",
+    "intrinsics_source": "ugrp1-icspring-fisheye-centered-mount-provisional-20260831",
+    "intrinsics_status": "archived ugrp1 measured-K/D claim; original checkerboard and serial linkage unavailable",
+    "processing": "unchanged archived 640x480 fisheye K/D and raw remap; not SDK sample Brown5",
+    "official_fov_deg": 170,
+    "official_fov_axis": "UNSPECIFIED; cannot substitute for vertical fovy",
+    "evidence": "recovered real post-lift red 9 frames ~1.35%, blue 8 frames ~7.92%; PROBABLE_HELD only",
+    "calibration_limit": "no independent 3D/joint/held-state measurements; no unique mount or FOV fit",
+    "setdown_relook_candidate": {
+      "name": "solo_cyan_setdown_relook",
+      "value": "off_candidate",
+      "implemented": false,
+      "requires_new_bundle": true,
+      "requires": [
+        "explicit runtime camera binding and ray calibration",
+        "loaded localization",
+        "grasp/loss verification without visible cargo",
+        "loaded drive/slip/placement tests"
+      ]
+    }
+  },
+  "scope": "Single arm-only contact fixture. No chassis transport, S2, or real hardware validation.",
+  "mj_step_calls": 76800,
+  "sim_s": 19.200000000000664,
+  "wall_s": 16.055424458012567,
+  "model_calls": 0,
+  "hardware_calls": 0,
+  "chassis_commands": 0,
+  "arm_stages": 6,
+  "weld": false,
+  "mujoco": "3.12.0",
+  "loadavg": [
+    3.13232421875,
+    3.4736328125,
+    3.55126953125
+  ],
+  "final_cargo_world_m": [
+    -0.7871171468174272,
+    0.5485942573413384,
+    0.21220956176443095
+  ],
+  "stats": {
+    "static_HIGH/baseline": {
+      "frames": 3,
+      "phase": "static_HIGH",
+      "variant": "baseline",
+      "full_fraction": {
+        "min": 0.6033170572916666,
+        "mean": 0.6086328125,
+        "max": 0.6133626302083334
+      },
+      "valid_fraction": {
+        "min": 0.733489881952805,
+        "mean": 0.739930625916346,
+        "max": 0.7456680930868289
+      },
+      "last": {
+        "phase": "static_HIGH",
+        "t": 0.0,
+        "variant": "baseline",
+        "image": "static-270-baseline.png",
+        "sha256": "efd985eb992a92c20149383bb3cca7cdeefe4b84c9e27d6850a19924fe8f2fbc",
+        "cyan_pixels": 185339,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.6033170572916666,
+        "valid_fraction": 0.733489881952805,
+        "cargo_centre_gripper_m": [
+          0.09669152803361475,
+          3.6048959604340148e-06,
+          -0.0023852105281252176
+        ],
+        "corner_down_angles_deg": [
+          -8.270960466994694,
+          79.8247962087565
+        ],
+        "camera_world_m": [
+          3.7381832073949255,
+          -1.0533235242243377,
+          0.17289958167191827
+        ],
+        "optical_pitch_world_deg": -32.59082346953766,
+        "cargo_world_m": [
+          3.7506202541529134,
+          -1.0529521784130735,
+          0.14155798350234866
+        ],
+        "cargo_rotation_world": [
+          0.9358853662572534,
+          -0.02262064119697765,
+          -0.35157771234446167,
+          0.02028999352262401,
+          0.9997409498744333,
+          -0.010312580036941072,
+          0.351719913266763,
+          0.0025178832387617385,
+          0.9361018976989725
+        ],
+        "qpos_sha256": "592865d1e7c7e01da084598da0b13c071280f4ce840aa13c7176dd581f48e73c"
+      }
+    },
+    "static_HIGH/drawing_v1": {
+      "frames": 3,
+      "phase": "static_HIGH",
+      "variant": "drawing_v1",
+      "full_fraction": {
+        "min": 0.20890299479166666,
+        "mean": 0.21337999131944443,
+        "max": 0.21750325520833333
+      },
+      "valid_fraction": {
+        "min": 0.253302818272482,
+        "mean": 0.25873831348662385,
+        "max": 0.263752637287974
+      },
+      "last": {
+        "phase": "static_HIGH",
+        "t": 0.0,
+        "variant": "drawing_v1",
+        "image": "static-270-drawing_v1.png",
+        "sha256": "1843a6bc4142c149392aef10434ee17adf96dd014b9f23927165bec6efa17ce8",
+        "cyan_pixels": 64175,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.20890299479166666,
+        "valid_fraction": 0.253302818272482,
+        "cargo_centre_gripper_m": [
+          0.09669152803361475,
+          3.6048959604340148e-06,
+          -0.0023852105281252176
+        ],
+        "corner_down_angles_deg": [
+          11.47536433053475,
+          60.42854983637102
+        ],
+        "camera_world_m": [
+          3.7368169500635218,
+          -1.0533639218025455,
+          0.1930589844473645
+        ],
+        "optical_pitch_world_deg": -40.05000000000002,
+        "cargo_world_m": [
+          3.7506202541529134,
+          -1.0529521784130735,
+          0.14155798350234866
+        ],
+        "cargo_rotation_world": [
+          0.9358853662572534,
+          -0.02262064119697765,
+          -0.35157771234446167,
+          0.02028999352262401,
+          0.9997409498744333,
+          -0.010312580036941072,
+          0.351719913266763,
+          0.0025178832387617385,
+          0.9361018976989725
+        ],
+        "qpos_sha256": "592865d1e7c7e01da084598da0b13c071280f4ce840aa13c7176dd581f48e73c"
+      }
+    },
+    "static_HIGH/sdk_sample_v2": {
+      "frames": 3,
+      "phase": "static_HIGH",
+      "variant": "sdk_sample_v2",
+      "full_fraction": {
+        "min": 0.22430013020833334,
+        "mean": 0.2348307291666667,
+        "max": 0.24421875
+      },
+      "valid_fraction": {
+        "min": 0.22436001797354763,
+        "mean": 0.23489342858445286,
+        "max": 0.24428395600388125
+      },
+      "last": {
+        "phase": "static_HIGH",
+        "t": 0.0,
+        "variant": "sdk_sample_v2",
+        "image": "static-270-sdk_sample_v2.png",
+        "sha256": "223d960a888491598b111f63b39f021e01b36d5465158cee0f3dab560efe49ab",
+        "cyan_pixels": 68905,
+        "full_pixels": 307200,
+        "valid_pixels": 307118,
+        "full_fraction": 0.22430013020833334,
+        "valid_fraction": 0.22436001797354763,
+        "cargo_centre_gripper_m": [
+          0.09669152803361475,
+          3.6048959604340148e-06,
+          -0.0023852105281252176
+        ],
+        "corner_down_angles_deg": [
+          11.47536433053475,
+          60.42854983637102
+        ],
+        "camera_world_m": [
+          3.7368169500635218,
+          -1.0533639218025455,
+          0.1930589844473645
+        ],
+        "optical_pitch_world_deg": -40.05000000000002,
+        "cargo_world_m": [
+          3.7506202541529134,
+          -1.0529521784130735,
+          0.14155798350234866
+        ],
+        "cargo_rotation_world": [
+          0.9358853662572534,
+          -0.02262064119697765,
+          -0.35157771234446167,
+          0.02028999352262401,
+          0.9997409498744333,
+          -0.010312580036941072,
+          0.351719913266763,
+          0.0025178832387617385,
+          0.9361018976989725
+        ],
+        "qpos_sha256": "592865d1e7c7e01da084598da0b13c071280f4ce840aa13c7176dd581f48e73c"
+      }
+    },
+    "static_HIGH/user_v3": {
+      "frames": 3,
+      "phase": "static_HIGH",
+      "variant": "user_v3",
+      "full_fraction": {
+        "min": 0.020100911458333332,
+        "mean": 0.02431423611111111,
+        "max": 0.028173828125
+      },
+      "valid_fraction": {
+        "min": 0.023204160855693164,
+        "mean": 0.02831119534539367,
+        "max": 0.03299838286070749
+      },
+      "last": {
+        "phase": "static_HIGH",
+        "t": 0.0,
+        "variant": "user_v3",
+        "image": "static-270-user_v3.png",
+        "sha256": "751856ba0fb04256014001252ef30bb46944276113a2a2c825247f1db6e9bb6b",
+        "cyan_pixels": 6175,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.020100911458333332,
+        "valid_fraction": 0.023204160855693164,
+        "cargo_centre_gripper_m": [
+          0.09669152803361475,
+          3.6048959604340148e-06,
+          -0.0023852105281252176
+        ],
+        "corner_down_angles_deg": [
+          21.475364330534735,
+          70.42854983637102
+        ],
+        "camera_world_m": [
+          3.7368169500635218,
+          -1.0533639218025455,
+          0.1930589844473645
+        ],
+        "optical_pitch_world_deg": -30.05000000000002,
+        "cargo_world_m": [
+          3.7506202541529134,
+          -1.0529521784130735,
+          0.14155798350234866
+        ],
+        "cargo_rotation_world": [
+          0.9358853662572534,
+          -0.02262064119697765,
+          -0.35157771234446167,
+          0.02028999352262401,
+          0.9997409498744333,
+          -0.010312580036941072,
+          0.351719913266763,
+          0.0025178832387617385,
+          0.9361018976989725
+        ],
+        "qpos_sha256": "592865d1e7c7e01da084598da0b13c071280f4ce840aa13c7176dd581f48e73c"
+      }
+    },
+    "static_official_lift_rigid_cargo/baseline": {
+      "frames": 3,
+      "phase": "static_official_lift_rigid_cargo",
+      "variant": "baseline",
+      "full_fraction": {
+        "min": 0.6043196614583334,
+        "mean": 0.6093630642361112,
+        "max": 0.6137109375
+      },
+      "valid_fraction": {
+        "min": 0.7346500899955897,
+        "mean": 0.7408643549918746,
+        "max": 0.746216410586501
+      },
+      "last": {
+        "phase": "static_official_lift_rigid_cargo",
+        "t": 0.0,
+        "variant": "baseline",
+        "image": "static-lift-270-baseline.png",
+        "sha256": "ad6a360b561d3b8de5cabe1212ec6b0452ebfb49fa4a456dd79c6bc9778b7a36",
+        "cyan_pixels": 185647,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.6043196614583334,
+        "valid_fraction": 0.7346500899955897,
+        "cargo_centre_gripper_m": [
+          0.096691528033615,
+          3.604895960385344e-06,
+          -0.0023852105281252185
+        ],
+        "corner_down_angles_deg": [
+          -8.270960466994255,
+          79.82479620875593
+        ],
+        "camera_world_m": [
+          3.6164253436461045,
+          -1.0542158469793252,
+          0.2281340515789628
+        ],
+        "optical_pitch_world_deg": 7.4591765304623285,
+        "cargo_world_m": [
+          3.645865515649465,
+          -1.0503605749553617,
+          0.21214884105083756
+        ],
+        "cargo_rotation_world": [
+          0.4870492231786957,
+          -0.12606163582904908,
+          -0.8642288575216257,
+          0.05627831828422345,
+          0.9920018249414323,
+          -0.11298287571118415,
+          0.8715594099613233,
+          0.006390875133614506,
+          0.4902482550941899
+        ],
+        "qpos_sha256": "c6eb712bad2bfed8f3736d8426dfa5a8b23bf7e10a24e55be7e52cb6b8983c20"
+      }
+    },
+    "static_official_lift_rigid_cargo/drawing_v1": {
+      "frames": 3,
+      "phase": "static_official_lift_rigid_cargo",
+      "variant": "drawing_v1",
+      "full_fraction": {
+        "min": 0.20921875,
+        "mean": 0.21347547743055553,
+        "max": 0.21750325520833333
+      },
+      "valid_fraction": {
+        "min": 0.2536524700114034,
+        "mean": 0.25888797502638944,
+        "max": 0.26384799685313437
+      },
+      "last": {
+        "phase": "static_official_lift_rigid_cargo",
+        "t": 0.0,
+        "variant": "drawing_v1",
+        "image": "static-lift-270-drawing_v1.png",
+        "sha256": "85788aed7c4f95101f51ceb1c17b25ec9baa7f406b328d2032e711a390446960",
+        "cyan_pixels": 64272,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.20921875,
+        "valid_fraction": 0.2536524700114034,
+        "cargo_centre_gripper_m": [
+          0.096691528033615,
+          3.604895960385344e-06,
+          -0.0023852105281252185
+        ],
+        "corner_down_angles_deg": [
+          11.475364330534603,
+          60.42854983637046
+        ],
+        "camera_world_m": [
+          3.6025258032166114,
+          -1.0560343137994876,
+          0.24268622549200627
+        ],
+        "optical_pitch_world_deg": -1.2722218725854067e-14,
+        "cargo_world_m": [
+          3.645865515649465,
+          -1.0503605749553617,
+          0.21214884105083756
+        ],
+        "cargo_rotation_world": [
+          0.4870492231786957,
+          -0.12606163582904908,
+          -0.8642288575216257,
+          0.05627831828422345,
+          0.9920018249414323,
+          -0.11298287571118415,
+          0.8715594099613233,
+          0.006390875133614506,
+          0.4902482550941899
+        ],
+        "qpos_sha256": "c6eb712bad2bfed8f3736d8426dfa5a8b23bf7e10a24e55be7e52cb6b8983c20"
+      }
+    },
+    "static_official_lift_rigid_cargo/sdk_sample_v2": {
+      "frames": 3,
+      "phase": "static_official_lift_rigid_cargo",
+      "variant": "sdk_sample_v2",
+      "full_fraction": {
+        "min": 0.22452473958333333,
+        "mean": 0.23490234375,
+        "max": 0.24421875
+      },
+      "valid_fraction": {
+        "min": 0.22458468731888068,
+        "mean": 0.234965062288762,
+        "max": 0.24428395600388125
+      },
+      "last": {
+        "phase": "static_official_lift_rigid_cargo",
+        "t": 0.0,
+        "variant": "sdk_sample_v2",
+        "image": "static-lift-270-sdk_sample_v2.png",
+        "sha256": "49547345b77ddbe7a25e86934c8b76dc8884033ee1bf7e2aaf58f5073a2af2e4",
+        "cyan_pixels": 68974,
+        "full_pixels": 307200,
+        "valid_pixels": 307118,
+        "full_fraction": 0.22452473958333333,
+        "valid_fraction": 0.22458468731888068,
+        "cargo_centre_gripper_m": [
+          0.096691528033615,
+          3.604895960385344e-06,
+          -0.0023852105281252185
+        ],
+        "corner_down_angles_deg": [
+          11.475364330534603,
+          60.42854983637046
+        ],
+        "camera_world_m": [
+          3.6025258032166114,
+          -1.0560343137994876,
+          0.24268622549200627
+        ],
+        "optical_pitch_world_deg": -1.2722218725854067e-14,
+        "cargo_world_m": [
+          3.645865515649465,
+          -1.0503605749553617,
+          0.21214884105083756
+        ],
+        "cargo_rotation_world": [
+          0.4870492231786957,
+          -0.12606163582904908,
+          -0.8642288575216257,
+          0.05627831828422345,
+          0.9920018249414323,
+          -0.11298287571118415,
+          0.8715594099613233,
+          0.006390875133614506,
+          0.4902482550941899
+        ],
+        "qpos_sha256": "c6eb712bad2bfed8f3736d8426dfa5a8b23bf7e10a24e55be7e52cb6b8983c20"
+      }
+    },
+    "static_official_lift_rigid_cargo/user_v3": {
+      "frames": 3,
+      "phase": "static_official_lift_rigid_cargo",
+      "variant": "user_v3",
+      "full_fraction": {
+        "min": 0.020387369791666665,
+        "mean": 0.024353298611111112,
+        "max": 0.028095703125
+      },
+      "valid_fraction": {
+        "min": 0.02350215949681936,
+        "mean": 0.028385363896073965,
+        "max": 0.03297851628463241
+      },
+      "last": {
+        "phase": "static_official_lift_rigid_cargo",
+        "t": 0.0,
+        "variant": "user_v3",
+        "image": "static-lift-270-user_v3.png",
+        "sha256": "d7568ce108747bf4497bca2a96533705656594166f6f29cc8104003d7e8aed12",
+        "cyan_pixels": 6263,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.020387369791666665,
+        "valid_fraction": 0.02350215949681936,
+        "cargo_centre_gripper_m": [
+          0.096691528033615,
+          3.604895960385344e-06,
+          -0.0023852105281252185
+        ],
+        "corner_down_angles_deg": [
+          21.475364330534596,
+          70.42854983637046
+        ],
+        "camera_world_m": [
+          3.6025258032166114,
+          -1.0560343137994876,
+          0.24268622549200627
+        ],
+        "optical_pitch_world_deg": 9.999999999999991,
+        "cargo_world_m": [
+          3.645865515649465,
+          -1.0503605749553617,
+          0.21214884105083756
+        ],
+        "cargo_rotation_world": [
+          0.4870492231786957,
+          -0.12606163582904908,
+          -0.8642288575216257,
+          0.05627831828422345,
+          0.9920018249414323,
+          -0.11298287571118415,
+          0.8715594099613233,
+          0.006390875133614506,
+          0.4902482550941899
+        ],
+        "qpos_sha256": "c6eb712bad2bfed8f3736d8426dfa5a8b23bf7e10a24e55be7e52cb6b8983c20"
+      }
+    },
+    "close/baseline": {
+      "frames": 11,
+      "phase": "close",
+      "variant": "baseline",
+      "full_fraction": {
+        "min": 0.5815234375,
+        "mean": 0.7869886363636364,
+        "max": 0.8234375
+      },
+      "valid_fraction": {
+        "min": 0.7069163497947782,
+        "mean": 0.957062549734167,
+        "max": 1.0
+      },
+      "last": {
+        "phase": "close",
+        "t": 2.0000000000002514,
+        "variant": "baseline",
+        "image": "dynamic-0011-baseline.png",
+        "sha256": "59b2f5abf6d80dbbd38f22b068bcb23e3053dc2d3a37da1440896fb2ed76f7c3",
+        "cyan_pixels": 247532,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.8057682291666667,
+        "valid_fraction": 0.9800857441423401,
+        "cargo_centre_gripper_m": [
+          0.09217148181664582,
+          -1.1129943694384886e-07,
+          0.00020821621666894028
+        ],
+        "corner_down_angles_deg": [
+          -18.454775827638564,
+          88.81366594323282
+        ],
+        "camera_world_m": [
+          -0.6942664317302474,
+          0.5499986101040624,
+          0.04439137997866007
+        ],
+        "optical_pitch_world_deg": -56.00775833592304,
+        "cargo_world_m": [
+          -0.6950032904432915,
+          0.5499984993289597,
+          0.01588874134673092
+        ],
+        "cargo_rotation_world": [
+          0.9999999951924672,
+          1.0772841066335296e-05,
+          9.746286734006047e-05,
+          -1.0772854566358034e-05,
+          0.9999999999419629,
+          1.3798954904026073e-07,
+          -9.746286584786457e-05,
+          -1.3903950167234622e-07,
+          0.9999999952504848
+        ],
+        "qpos_sha256": "aaa3ac51d6b202bb7cc1fd50b4717ef9e8e2717f79f7f62e33ee187d926bdbc4"
+      }
+    },
+    "close/drawing_v1": {
+      "frames": 11,
+      "phase": "close",
+      "variant": "drawing_v1",
+      "full_fraction": {
+        "min": 0.14614583333333334,
+        "mean": 0.240846650094697,
+        "max": 0.2626595052083333
+      },
+      "valid_fraction": {
+        "min": 0.17668538098132938,
+        "mean": 0.29203288893608703,
+        "max": 0.31860822714648424
+      },
+      "last": {
+        "phase": "close",
+        "t": 2.0000000000002514,
+        "variant": "drawing_v1",
+        "image": "dynamic-0011-drawing_v1.png",
+        "sha256": "de76bab1c901c95fee1600100d737ec4e4043406552460d6cf6f816d978c33c4",
+        "cyan_pixels": 76476,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.2489453125,
+        "valid_fraction": 0.3018964633521271,
+        "cargo_centre_gripper_m": [
+          0.09217148181664582,
+          -1.1129943694384886e-07,
+          0.00020821621666894028
+        ],
+        "corner_down_angles_deg": [
+          9.761638839527674,
+          64.3618353055945
+        ],
+        "camera_world_m": [
+          -0.687508975834664,
+          0.5499985576881119,
+          0.06343361202060058
+        ],
+        "optical_pitch_world_deg": -63.46693486638491,
+        "cargo_world_m": [
+          -0.6950032904432915,
+          0.5499984993289597,
+          0.01588874134673092
+        ],
+        "cargo_rotation_world": [
+          0.9999999951924672,
+          1.0772841066335296e-05,
+          9.746286734006047e-05,
+          -1.0772854566358034e-05,
+          0.9999999999419629,
+          1.3798954904026073e-07,
+          -9.746286584786457e-05,
+          -1.3903950167234622e-07,
+          0.9999999952504848
+        ],
+        "qpos_sha256": "aaa3ac51d6b202bb7cc1fd50b4717ef9e8e2717f79f7f62e33ee187d926bdbc4"
+      }
+    },
+    "close/sdk_sample_v2": {
+      "frames": 11,
+      "phase": "close",
+      "variant": "sdk_sample_v2",
+      "full_fraction": {
+        "min": 0.0625,
+        "mean": 0.29450757575757575,
+        "max": 0.3458333333333333
+      },
+      "valid_fraction": {
+        "min": 0.06251668739702655,
+        "mean": 0.2945862087950797,
+        "max": 0.3459256702635469
+      },
+      "last": {
+        "phase": "close",
+        "t": 2.0000000000002514,
+        "variant": "sdk_sample_v2",
+        "image": "dynamic-0011-sdk_sample_v2.png",
+        "sha256": "763d8f445843d6529ff3f05e0c0e13d2266fd078f833d3b2179f79c92f89f774",
+        "cyan_pixels": 96640,
+        "full_pixels": 307200,
+        "valid_pixels": 307118,
+        "full_fraction": 0.3145833333333333,
+        "valid_fraction": 0.31466732656503366,
+        "cargo_centre_gripper_m": [
+          0.09217148181664582,
+          -1.1129943694384886e-07,
+          0.00020821621666894028
+        ],
+        "corner_down_angles_deg": [
+          9.761638839527674,
+          64.3618353055945
+        ],
+        "camera_world_m": [
+          -0.687508975834664,
+          0.5499985576881119,
+          0.06343361202060058
+        ],
+        "optical_pitch_world_deg": -63.46693486638491,
+        "cargo_world_m": [
+          -0.6950032904432915,
+          0.5499984993289597,
+          0.01588874134673092
+        ],
+        "cargo_rotation_world": [
+          0.9999999951924672,
+          1.0772841066335296e-05,
+          9.746286734006047e-05,
+          -1.0772854566358034e-05,
+          0.9999999999419629,
+          1.3798954904026073e-07,
+          -9.746286584786457e-05,
+          -1.3903950167234622e-07,
+          0.9999999952504848
+        ],
+        "qpos_sha256": "aaa3ac51d6b202bb7cc1fd50b4717ef9e8e2717f79f7f62e33ee187d926bdbc4"
+      }
+    },
+    "close/user_v3": {
+      "frames": 11,
+      "phase": "close",
+      "variant": "user_v3",
+      "full_fraction": {
+        "min": 0.0,
+        "mean": 0.05233842329545455,
+        "max": 0.06865234375
+      },
+      "valid_fraction": {
+        "min": 0.0,
+        "mean": 0.06255226264047023,
+        "max": 0.08230325136384045
+      },
+      "last": {
+        "phase": "close",
+        "t": 2.0000000000002514,
+        "variant": "user_v3",
+        "image": "dynamic-0011-user_v3.png",
+        "sha256": "2f296dc7b323aee141f47e312e720b247e954f84d7b5d55640cc0dc5abd21743",
+        "cyan_pixels": 17308,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.056341145833333335,
+        "valid_fraction": 0.06730795974237024,
+        "cargo_centre_gripper_m": [
+          0.09217148181664582,
+          -1.1129943694384886e-07,
+          0.00020821621666894028
+        ],
+        "corner_down_angles_deg": [
+          19.761638839527677,
+          74.3618353055945
+        ],
+        "camera_world_m": [
+          -0.687508975834664,
+          0.5499985576881119,
+          0.06343361202060058
+        ],
+        "optical_pitch_world_deg": -53.46693486638561,
+        "cargo_world_m": [
+          -0.6950032904432915,
+          0.5499984993289597,
+          0.01588874134673092
+        ],
+        "cargo_rotation_world": [
+          0.9999999951924672,
+          1.0772841066335296e-05,
+          9.746286734006047e-05,
+          -1.0772854566358034e-05,
+          0.9999999999419629,
+          1.3798954904026073e-07,
+          -9.746286584786457e-05,
+          -1.3903950167234622e-07,
+          0.9999999952504848
+        ],
+        "qpos_sha256": "aaa3ac51d6b202bb7cc1fd50b4717ef9e8e2717f79f7f62e33ee187d926bdbc4"
+      }
+    },
+    "hover/baseline": {
+      "frames": 21,
+      "phase": "hover",
+      "variant": "baseline",
+      "full_fraction": {
+        "min": 0.80560546875,
+        "mean": 0.8057446676587302,
+        "max": 0.805859375
+      },
+      "valid_fraction": {
+        "min": 0.9798950250120193,
+        "mean": 0.9800632286894552,
+        "max": 0.9802049435987905
+      },
+      "last": {
+        "phase": "hover",
+        "t": 6.000000000001587,
+        "variant": "baseline",
+        "image": "dynamic-0032-baseline.png",
+        "sha256": "0e0e2391d1131cdaea5ff79d7651bc07776ac3cb1a37f39ab85f79211406351b",
+        "cyan_pixels": 247482,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.80560546875,
+        "valid_fraction": 0.9798950250120193,
+        "cargo_centre_gripper_m": [
+          0.09217086700361808,
+          4.866090428129638e-08,
+          0.00020454918329230963
+        ],
+        "corner_down_angles_deg": [
+          -18.443608349517685,
+          88.82170727350908
+        ],
+        "camera_world_m": [
+          -0.6932484256906623,
+          0.5499952053969684,
+          0.11360538002276616
+        ],
+        "optical_pitch_world_deg": -56.925331212747714,
+        "cargo_world_m": [
+          -0.6944452031147671,
+          0.5499952721848477,
+          0.08511716540528398
+        ],
+        "cargo_rotation_world": [
+          0.9998646518235125,
+          -6.012964830154109e-06,
+          0.016452294602592465,
+          6.018249512997643e-06,
+          0.9999999999818535,
+          -2.7170215239841275e-07,
+          -0.016452294600660177,
+          3.7067939198728376e-07,
+          0.999864651841556
+        ],
+        "qpos_sha256": "7cebf3de24bad7f126d53c3f3093821fba351bfcc2ea26030a1990d8496082ce"
+      }
+    },
+    "hover/drawing_v1": {
+      "frames": 21,
+      "phase": "hover",
+      "variant": "drawing_v1",
+      "full_fraction": {
+        "min": 0.2489453125,
+        "mean": 0.24899987599206352,
+        "max": 0.24901041666666668
+      },
+      "valid_fraction": {
+        "min": 0.3018964633521271,
+        "mean": 0.30196609097113314,
+        "max": 0.30197990297164246
+      },
+      "last": {
+        "phase": "hover",
+        "t": 6.000000000001587,
+        "variant": "drawing_v1",
+        "image": "dynamic-0032-drawing_v1.png",
+        "sha256": "256e91b7837c5616b44e82dcc45c38019bba1caf12280a1c8d1f522487db8e8e",
+        "cyan_pixels": 76496,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.24901041666666668,
+        "valid_fraction": 0.30197990297164246,
+        "cargo_centre_gripper_m": [
+          0.09217086700361808,
+          4.866090428129638e-08,
+          0.00020454918329230963
+        ],
+        "corner_down_angles_deg": [
+          9.76110125668358,
+          64.36439586173876
+        ],
+        "camera_world_m": [
+          -0.686186894333108,
+          0.5499950583798613,
+          0.13253695645441263
+        ],
+        "optical_pitch_world_deg": -64.38450774320899,
+        "cargo_world_m": [
+          -0.6944452031147671,
+          0.5499952721848477,
+          0.08511716540528398
+        ],
+        "cargo_rotation_world": [
+          0.9998646518235125,
+          -6.012964830154109e-06,
+          0.016452294602592465,
+          6.018249512997643e-06,
+          0.9999999999818535,
+          -2.7170215239841275e-07,
+          -0.016452294600660177,
+          3.7067939198728376e-07,
+          0.999864651841556
+        ],
+        "qpos_sha256": "7cebf3de24bad7f126d53c3f3093821fba351bfcc2ea26030a1990d8496082ce"
+      }
+    },
+    "hover/sdk_sample_v2": {
+      "frames": 21,
+      "phase": "hover",
+      "variant": "sdk_sample_v2",
+      "full_fraction": {
+        "min": 0.3145833333333333,
+        "mean": 0.3145833333333333,
+        "max": 0.3145833333333333
+      },
+      "valid_fraction": {
+        "min": 0.31466732656503366,
+        "mean": 0.31466732656503366,
+        "max": 0.31466732656503366
+      },
+      "last": {
+        "phase": "hover",
+        "t": 6.000000000001587,
+        "variant": "sdk_sample_v2",
+        "image": "dynamic-0032-sdk_sample_v2.png",
+        "sha256": "14e7e6accced7a4e1b6b5bfee616af8f9ca511f6ca9ca565d37f8f813d108021",
+        "cyan_pixels": 96640,
+        "full_pixels": 307200,
+        "valid_pixels": 307118,
+        "full_fraction": 0.3145833333333333,
+        "valid_fraction": 0.31466732656503366,
+        "cargo_centre_gripper_m": [
+          0.09217086700361808,
+          4.866090428129638e-08,
+          0.00020454918329230963
+        ],
+        "corner_down_angles_deg": [
+          9.76110125668358,
+          64.36439586173876
+        ],
+        "camera_world_m": [
+          -0.686186894333108,
+          0.5499950583798613,
+          0.13253695645441263
+        ],
+        "optical_pitch_world_deg": -64.38450774320899,
+        "cargo_world_m": [
+          -0.6944452031147671,
+          0.5499952721848477,
+          0.08511716540528398
+        ],
+        "cargo_rotation_world": [
+          0.9998646518235125,
+          -6.012964830154109e-06,
+          0.016452294602592465,
+          6.018249512997643e-06,
+          0.9999999999818535,
+          -2.7170215239841275e-07,
+          -0.016452294600660177,
+          3.7067939198728376e-07,
+          0.999864651841556
+        ],
+        "qpos_sha256": "7cebf3de24bad7f126d53c3f3093821fba351bfcc2ea26030a1990d8496082ce"
+      }
+    },
+    "hover/user_v3": {
+      "frames": 21,
+      "phase": "hover",
+      "variant": "user_v3",
+      "full_fraction": {
+        "min": 0.056341145833333335,
+        "mean": 0.05637586805555556,
+        "max": 0.056380208333333334
+      },
+      "valid_fraction": {
+        "min": 0.06730795974237024,
+        "mean": 0.06735261223716756,
+        "max": 0.06735961284016545
+      },
+      "last": {
+        "phase": "hover",
+        "t": 6.000000000001587,
+        "variant": "user_v3",
+        "image": "dynamic-0032-user_v3.png",
+        "sha256": "ecaab9bc0915f1cc1f0d389b7a22e126a896b47bbdeaf1379889e1cb311fd38e",
+        "cyan_pixels": 17320,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.056380208333333334,
+        "valid_fraction": 0.06735961284016545,
+        "cargo_centre_gripper_m": [
+          0.09217086700361808,
+          4.866090428129638e-08,
+          0.00020454918329230963
+        ],
+        "corner_down_angles_deg": [
+          19.761101256683578,
+          74.36439586173876
+        ],
+        "camera_world_m": [
+          -0.686186894333108,
+          0.5499950583798613,
+          0.13253695645441263
+        ],
+        "optical_pitch_world_deg": -54.384507743210406,
+        "cargo_world_m": [
+          -0.6944452031147671,
+          0.5499952721848477,
+          0.08511716540528398
+        ],
+        "cargo_rotation_world": [
+          0.9998646518235125,
+          -6.012964830154109e-06,
+          0.016452294602592465,
+          6.018249512997643e-06,
+          0.9999999999818535,
+          -2.7170215239841275e-07,
+          -0.016452294600660177,
+          3.7067939198728376e-07,
+          0.999864651841556
+        ],
+        "qpos_sha256": "7cebf3de24bad7f126d53c3f3093821fba351bfcc2ea26030a1990d8496082ce"
+      }
+    },
+    "via110/baseline": {
+      "frames": 21,
+      "phase": "via110",
+      "variant": "baseline",
+      "full_fraction": {
+        "min": 0.8049544270833333,
+        "mean": 0.8054727802579364,
+        "max": 0.80560546875
+      },
+      "valid_fraction": {
+        "min": 0.9791281751755212,
+        "mean": 0.9797544453356023,
+        "max": 0.9798950250120193
+      },
+      "last": {
+        "phase": "via110",
+        "t": 9.99999999999937,
+        "variant": "baseline",
+        "image": "dynamic-0053-baseline.png",
+        "sha256": "857ea094c7c93b40d9311080b2998cad55b51f316ad3cf0caae92df11dfca8fb",
+        "cyan_pixels": 247282,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.8049544270833333,
+        "valid_fraction": 0.9791281751755212,
+        "cargo_centre_gripper_m": [
+          0.09216932084267317,
+          1.345293816113583e-07,
+          0.00019925374879472944
+        ],
+        "corner_down_angles_deg": [
+          -18.429289752387863,
+          88.83369452982369
+        ],
+        "camera_world_m": [
+          -0.695692550029768,
+          0.5499916448640183,
+          0.12870316369632423
+        ],
+        "optical_pitch_world_deg": -49.987124586773405,
+        "cargo_world_m": [
+          -0.6934445163570994,
+          0.5499916873922365,
+          0.10027745251096505
+        ],
+        "cargo_rotation_world": [
+          0.9945701735970396,
+          -2.3759329070125564e-05,
+          -0.10406809898642694,
+          2.4156185732734755e-05,
+          0.9999999997049802,
+          2.553066473971974e-06,
+          0.10406809889506566,
+          -5.053092094191843e-06,
+          0.9945701738775565
+        ],
+        "qpos_sha256": "45d8f325376b2b78579eb24deb4a84416ee8543b184866dcaa59bb4c4e17bb6e"
+      }
+    },
+    "via110/drawing_v1": {
+      "frames": 21,
+      "phase": "via110",
+      "variant": "drawing_v1",
+      "full_fraction": {
+        "min": 0.24898763020833334,
+        "mean": 0.24899321056547608,
+        "max": 0.24901041666666668
+      },
+      "valid_fraction": {
+        "min": 0.30196003639556734,
+        "mean": 0.3019689290534297,
+        "max": 0.30197990297164246
+      },
+      "last": {
+        "phase": "via110",
+        "t": 9.99999999999937,
+        "variant": "drawing_v1",
+        "image": "dynamic-0053-drawing_v1.png",
+        "sha256": "46f862784782f9ca334c7a5f97f832d0f52862cdbd9c904d43883f17b80a5d20",
+        "cyan_pixels": 76490,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.24899088541666667,
+        "valid_fraction": 0.3019679830259974,
+        "cargo_centre_gripper_m": [
+          0.09216932084267317,
+          1.345293816113583e-07,
+          0.00019925374879472944
+        ],
+        "corner_down_angles_deg": [
+          9.762547124894478,
+          64.36925971526453
+        ],
+        "camera_world_m": [
+          -0.6909696421735563,
+          0.5499914702521861,
+          0.14834912899899774
+        ],
+        "optical_pitch_world_deg": -57.4463011172352,
+        "cargo_world_m": [
+          -0.6934445163570994,
+          0.5499916873922365,
+          0.10027745251096505
+        ],
+        "cargo_rotation_world": [
+          0.9945701735970396,
+          -2.3759329070125564e-05,
+          -0.10406809898642694,
+          2.4156185732734755e-05,
+          0.9999999997049802,
+          2.553066473971974e-06,
+          0.10406809889506566,
+          -5.053092094191843e-06,
+          0.9945701738775565
+        ],
+        "qpos_sha256": "45d8f325376b2b78579eb24deb4a84416ee8543b184866dcaa59bb4c4e17bb6e"
+      }
+    },
+    "via110/sdk_sample_v2": {
+      "frames": 21,
+      "phase": "via110",
+      "variant": "sdk_sample_v2",
+      "full_fraction": {
+        "min": 0.3145833333333333,
+        "mean": 0.3145833333333333,
+        "max": 0.3145833333333333
+      },
+      "valid_fraction": {
+        "min": 0.31466732656503366,
+        "mean": 0.31466732656503366,
+        "max": 0.31466732656503366
+      },
+      "last": {
+        "phase": "via110",
+        "t": 9.99999999999937,
+        "variant": "sdk_sample_v2",
+        "image": "dynamic-0053-sdk_sample_v2.png",
+        "sha256": "be38eb216977f7fbf827ea6ec2a36593087c2b8fa0bec2cd1ddc3e10ac3b01a9",
+        "cyan_pixels": 96640,
+        "full_pixels": 307200,
+        "valid_pixels": 307118,
+        "full_fraction": 0.3145833333333333,
+        "valid_fraction": 0.31466732656503366,
+        "cargo_centre_gripper_m": [
+          0.09216932084267317,
+          1.345293816113583e-07,
+          0.00019925374879472944
+        ],
+        "corner_down_angles_deg": [
+          9.762547124894478,
+          64.36925971526453
+        ],
+        "camera_world_m": [
+          -0.6909696421735563,
+          0.5499914702521861,
+          0.14834912899899774
+        ],
+        "optical_pitch_world_deg": -57.4463011172352,
+        "cargo_world_m": [
+          -0.6934445163570994,
+          0.5499916873922365,
+          0.10027745251096505
+        ],
+        "cargo_rotation_world": [
+          0.9945701735970396,
+          -2.3759329070125564e-05,
+          -0.10406809898642694,
+          2.4156185732734755e-05,
+          0.9999999997049802,
+          2.553066473971974e-06,
+          0.10406809889506566,
+          -5.053092094191843e-06,
+          0.9945701738775565
+        ],
+        "qpos_sha256": "45d8f325376b2b78579eb24deb4a84416ee8543b184866dcaa59bb4c4e17bb6e"
+      }
+    },
+    "via110/user_v3": {
+      "frames": 21,
+      "phase": "via110",
+      "variant": "user_v3",
+      "full_fraction": {
+        "min": 0.056357421875,
+        "mean": 0.05636114211309525,
+        "max": 0.056380208333333334
+      },
+      "valid_fraction": {
+        "min": 0.06735563952495044,
+        "mean": 0.06735961284016545,
+        "max": 0.06736358615538046
+      },
+      "last": {
+        "phase": "via110",
+        "t": 9.99999999999937,
+        "variant": "user_v3",
+        "image": "dynamic-0053-user_v3.png",
+        "sha256": "10519563b66a9a0b59deca11738b29b829f85b3ba94bb7197f1868fc6762635b",
+        "cyan_pixels": 17313,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.056357421875,
+        "valid_fraction": 0.06735961284016545,
+        "cargo_centre_gripper_m": [
+          0.09216932084267317,
+          1.345293816113583e-07,
+          0.00019925374879472944
+        ],
+        "corner_down_angles_deg": [
+          19.762547124894486,
+          74.36925971526453
+        ],
+        "camera_world_m": [
+          -0.6909696421735563,
+          0.5499914702521861,
+          0.14834912899899774
+        ],
+        "optical_pitch_world_deg": -47.44630111723595,
+        "cargo_world_m": [
+          -0.6934445163570994,
+          0.5499916873922365,
+          0.10027745251096505
+        ],
+        "cargo_rotation_world": [
+          0.9945701735970396,
+          -2.3759329070125564e-05,
+          -0.10406809898642694,
+          2.4156185732734755e-05,
+          0.9999999997049802,
+          2.553066473971974e-06,
+          0.10406809889506566,
+          -5.053092094191843e-06,
+          0.9945701738775565
+        ],
+        "qpos_sha256": "45d8f325376b2b78579eb24deb4a84416ee8543b184866dcaa59bb4c4e17bb6e"
+      }
+    },
+    "via130/baseline": {
+      "frames": 21,
+      "phase": "via130",
+      "variant": "baseline",
+      "full_fraction": {
+        "min": 0.80494140625,
+        "mean": 0.805361328125,
+        "max": 0.8054720052083333
+      },
+      "valid_fraction": {
+        "min": 0.9791281751755212,
+        "mean": 0.9796547340442538,
+        "max": 0.9797797988707838
+      },
+      "last": {
+        "phase": "via130",
+        "t": 13.999999999990047,
+        "variant": "baseline",
+        "image": "dynamic-0074-baseline.png",
+        "sha256": "b36f2eb3cab3e81c7cf8f8d54252c0f92995fd7d3f8ea732a3d2a35c026c6b69",
+        "cyan_pixels": 247336,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.8051302083333334,
+        "valid_fraction": 0.9793784940340672,
+        "cargo_centre_gripper_m": [
+          0.0921674848937768,
+          2.3116270599171034e-07,
+          0.00019293056526935223
+        ],
+        "corner_down_angles_deg": [
+          -18.412172415334698,
+          88.84798986580647
+        ],
+        "camera_world_m": [
+          -0.6991654108604258,
+          0.5499871328637098,
+          0.14806483688289962
+        ],
+        "optical_pitch_world_deg": -40.104348047638894,
+        "cargo_world_m": [
+          -0.6920778523362318,
+          0.5499869430257237,
+          0.12044386077976948
+        ],
+        "cargo_rotation_world": [
+          0.9620753390040255,
+          -4.1980613070962765e-05,
+          -0.27278387107363655,
+          4.7143390786693274e-05,
+          0.9999999988122177,
+          1.2371994863645066e-05,
+          0.27278387023024464,
+          -2.4762747786928778e-05,
+          0.9620753398403974
+        ],
+        "qpos_sha256": "05953727fec345459d4fa288e7108b1f0fd07b3b00ca34520ac1c846ddf67996"
+      }
+    },
+    "via130/drawing_v1": {
+      "frames": 21,
+      "phase": "via130",
+      "variant": "drawing_v1",
+      "full_fraction": {
+        "min": 0.24893229166666667,
+        "mean": 0.24894252232142858,
+        "max": 0.24899088541666667
+      },
+      "valid_fraction": {
+        "min": 0.3019441431347073,
+        "mean": 0.30195000850478654,
+        "max": 0.3019679830259974
+      },
+      "last": {
+        "phase": "via130",
+        "t": 13.999999999990047,
+        "variant": "drawing_v1",
+        "image": "dynamic-0074-drawing_v1.png",
+        "sha256": "9c103089a3beaaec0cc82932e135f14b7afc4232002693d11eb0a6154b7901c9",
+        "cyan_pixels": 76472,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.24893229166666667,
+        "valid_fraction": 0.3019481164499223,
+        "cargo_centre_gripper_m": [
+          0.0921674848937768,
+          2.3116270599171034e-07,
+          0.00019293056526935223
+        ],
+        "corner_down_angles_deg": [
+          9.764291437503498,
+          64.37506490351926
+        ],
+        "camera_world_m": [
+          -0.6978844816286703,
+          0.5499870645452742,
+          0.1682298816788126
+        ],
+        "optical_pitch_world_deg": -47.5635245781006,
+        "cargo_world_m": [
+          -0.6920778523362318,
+          0.5499869430257237,
+          0.12044386077976948
+        ],
+        "cargo_rotation_world": [
+          0.9620753390040255,
+          -4.1980613070962765e-05,
+          -0.27278387107363655,
+          4.7143390786693274e-05,
+          0.9999999988122177,
+          1.2371994863645066e-05,
+          0.27278387023024464,
+          -2.4762747786928778e-05,
+          0.9620753398403974
+        ],
+        "qpos_sha256": "05953727fec345459d4fa288e7108b1f0fd07b3b00ca34520ac1c846ddf67996"
+      }
+    },
+    "via130/sdk_sample_v2": {
+      "frames": 21,
+      "phase": "via130",
+      "variant": "sdk_sample_v2",
+      "full_fraction": {
+        "min": 0.3145833333333333,
+        "mean": 0.3145833333333333,
+        "max": 0.3145833333333333
+      },
+      "valid_fraction": {
+        "min": 0.31466732656503366,
+        "mean": 0.31466732656503366,
+        "max": 0.31466732656503366
+      },
+      "last": {
+        "phase": "via130",
+        "t": 13.999999999990047,
+        "variant": "sdk_sample_v2",
+        "image": "dynamic-0074-sdk_sample_v2.png",
+        "sha256": "3e3f6219c694cb96b2cdafe127ffdf3cab952ccf022c5057def3fdf923fa3444",
+        "cyan_pixels": 96640,
+        "full_pixels": 307200,
+        "valid_pixels": 307118,
+        "full_fraction": 0.3145833333333333,
+        "valid_fraction": 0.31466732656503366,
+        "cargo_centre_gripper_m": [
+          0.0921674848937768,
+          2.3116270599171034e-07,
+          0.00019293056526935223
+        ],
+        "corner_down_angles_deg": [
+          9.764291437503498,
+          64.37506490351926
+        ],
+        "camera_world_m": [
+          -0.6978844816286703,
+          0.5499870645452742,
+          0.1682298816788126
+        ],
+        "optical_pitch_world_deg": -47.5635245781006,
+        "cargo_world_m": [
+          -0.6920778523362318,
+          0.5499869430257237,
+          0.12044386077976948
+        ],
+        "cargo_rotation_world": [
+          0.9620753390040255,
+          -4.1980613070962765e-05,
+          -0.27278387107363655,
+          4.7143390786693274e-05,
+          0.9999999988122177,
+          1.2371994863645066e-05,
+          0.27278387023024464,
+          -2.4762747786928778e-05,
+          0.9620753398403974
+        ],
+        "qpos_sha256": "05953727fec345459d4fa288e7108b1f0fd07b3b00ca34520ac1c846ddf67996"
+      }
+    },
+    "via130/user_v3": {
+      "frames": 21,
+      "phase": "via130",
+      "variant": "user_v3",
+      "full_fraction": {
+        "min": 0.056318359375,
+        "mean": 0.05632750496031747,
+        "max": 0.056357421875
+      },
+      "valid_fraction": {
+        "min": 0.06733179963366033,
+        "mean": 0.06733861103117181,
+        "max": 0.06735961284016545
+      },
+      "last": {
+        "phase": "via130",
+        "t": 13.999999999990047,
+        "variant": "user_v3",
+        "image": "dynamic-0074-user_v3.png",
+        "sha256": "94320a3831cb13bff4959667a9c275ed3afe604e9b3342049bc54148ba8540b7",
+        "cyan_pixels": 17301,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.056318359375,
+        "valid_fraction": 0.06733179963366033,
+        "cargo_centre_gripper_m": [
+          0.0921674848937768,
+          2.3116270599171034e-07,
+          0.00019293056526935223
+        ],
+        "corner_down_angles_deg": [
+          19.764291437503484,
+          74.37506490351926
+        ],
+        "camera_world_m": [
+          -0.6978844816286703,
+          0.5499870645452742,
+          0.1682298816788126
+        ],
+        "optical_pitch_world_deg": -37.56352457810148,
+        "cargo_world_m": [
+          -0.6920778523362318,
+          0.5499869430257237,
+          0.12044386077976948
+        ],
+        "cargo_rotation_world": [
+          0.9620753390040255,
+          -4.1980613070962765e-05,
+          -0.27278387107363655,
+          4.7143390786693274e-05,
+          0.9999999988122177,
+          1.2371994863645066e-05,
+          0.27278387023024464,
+          -2.4762747786928778e-05,
+          0.9620753398403974
+        ],
+        "qpos_sha256": "05953727fec345459d4fa288e7108b1f0fd07b3b00ca34520ac1c846ddf67996"
+      }
+    },
+    "HIGH/baseline": {
+      "frames": 12,
+      "phase": "HIGH",
+      "variant": "baseline",
+      "full_fraction": {
+        "min": 0.8046484375,
+        "mean": 0.8047127278645831,
+        "max": 0.8051302083333334
+      },
+      "valid_fraction": {
+        "min": 0.978822229903965,
+        "mean": 0.9788914318106267,
+        "max": 0.9793784940340672
+      },
+      "last": {
+        "phase": "HIGH",
+        "t": 16.19999999998634,
+        "variant": "baseline",
+        "image": "dynamic-0086-baseline.png",
+        "sha256": "ff7acc3f39d1af92170709ed499d8d6419a6314fa6c59c883b0da5aab630d998",
+        "cyan_pixels": 247188,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.8046484375,
+        "valid_fraction": 0.978822229903965,
+        "cargo_centre_gripper_m": [
+          0.0921664301205592,
+          2.8872316455959967e-07,
+          0.00018919728811673552
+        ],
+        "corner_down_angles_deg": [
+          -18.402014827797405,
+          88.85637496540507
+        ],
+        "camera_world_m": [
+          -0.7006000705190738,
+          0.5499858827235298,
+          0.16748785856797957
+        ],
+        "optical_pitch_world_deg": -35.194357420751565,
+        "cargo_world_m": [
+          -0.6911777284685765,
+          0.5499855593648869,
+          0.140572838511285
+        ],
+        "cargo_rotation_world": [
+          0.9352936688456281,
+          -5.704875200331436e-05,
+          -0.3538725049544322,
+          6.779356158056466e-05,
+          0.9999999975406044,
+          1.7967310211365993e-05,
+          0.35387250305910706,
+          -4.079498894317298e-05,
+          0.9352936704129091
+        ],
+        "qpos_sha256": "00feaabacc6c405004953eaf94f49de539b94a5395a64a3e8990266f6eb4ba50"
+      }
+    },
+    "HIGH/drawing_v1": {
+      "frames": 12,
+      "phase": "HIGH",
+      "variant": "drawing_v1",
+      "full_fraction": {
+        "min": 0.24891927083333334,
+        "mean": 0.24899061414930557,
+        "max": 0.24902994791666666
+      },
+      "valid_fraction": {
+        "min": 0.3019401698194923,
+        "mean": 0.3020305627406339,
+        "max": 0.30207923585201785
+      },
+      "last": {
+        "phase": "HIGH",
+        "t": 16.19999999998634,
+        "variant": "drawing_v1",
+        "image": "dynamic-0086-drawing_v1.png",
+        "sha256": "31f152028912340a3066cab59ba84b609899fa3aa212c329de1312ea62788fb8",
+        "cyan_pixels": 76500,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.2490234375,
+        "valid_fraction": 0.30207526253680284,
+        "cargo_centre_gripper_m": [
+          0.0921664301205592,
+          2.8872316455959967e-07,
+          0.00018919728811673552
+        ],
+        "corner_down_angles_deg": [
+          9.765275400958501,
+          64.37844640589364
+        ],
+        "camera_world_m": [
+          -0.7010497811688228,
+          0.5499859187937305,
+          0.18768854102310495
+        ],
+        "optical_pitch_world_deg": -42.65353395121311,
+        "cargo_world_m": [
+          -0.6911777284685765,
+          0.5499855593648869,
+          0.140572838511285
+        ],
+        "cargo_rotation_world": [
+          0.9352936688456281,
+          -5.704875200331436e-05,
+          -0.3538725049544322,
+          6.779356158056466e-05,
+          0.9999999975406044,
+          1.7967310211365993e-05,
+          0.35387250305910706,
+          -4.079498894317298e-05,
+          0.9352936704129091
+        ],
+        "qpos_sha256": "00feaabacc6c405004953eaf94f49de539b94a5395a64a3e8990266f6eb4ba50"
+      }
+    },
+    "HIGH/sdk_sample_v2": {
+      "frames": 12,
+      "phase": "HIGH",
+      "variant": "sdk_sample_v2",
+      "full_fraction": {
+        "min": 0.3145833333333333,
+        "mean": 0.31458333333333327,
+        "max": 0.3145833333333333
+      },
+      "valid_fraction": {
+        "min": 0.31466732656503366,
+        "mean": 0.31466732656503366,
+        "max": 0.31466732656503366
+      },
+      "last": {
+        "phase": "HIGH",
+        "t": 16.19999999998634,
+        "variant": "sdk_sample_v2",
+        "image": "dynamic-0086-sdk_sample_v2.png",
+        "sha256": "fafe659c4c020e4c8e8bb1fe1f8a2fdceb70d812f300df6c04aa569e82f92fc3",
+        "cyan_pixels": 96640,
+        "full_pixels": 307200,
+        "valid_pixels": 307118,
+        "full_fraction": 0.3145833333333333,
+        "valid_fraction": 0.31466732656503366,
+        "cargo_centre_gripper_m": [
+          0.0921664301205592,
+          2.8872316455959967e-07,
+          0.00018919728811673552
+        ],
+        "corner_down_angles_deg": [
+          9.765275400958501,
+          64.37844640589364
+        ],
+        "camera_world_m": [
+          -0.7010497811688228,
+          0.5499859187937305,
+          0.18768854102310495
+        ],
+        "optical_pitch_world_deg": -42.65353395121311,
+        "cargo_world_m": [
+          -0.6911777284685765,
+          0.5499855593648869,
+          0.140572838511285
+        ],
+        "cargo_rotation_world": [
+          0.9352936688456281,
+          -5.704875200331436e-05,
+          -0.3538725049544322,
+          6.779356158056466e-05,
+          0.9999999975406044,
+          1.7967310211365993e-05,
+          0.35387250305910706,
+          -4.079498894317298e-05,
+          0.9352936704129091
+        ],
+        "qpos_sha256": "00feaabacc6c405004953eaf94f49de539b94a5395a64a3e8990266f6eb4ba50"
+      }
+    },
+    "HIGH/user_v3": {
+      "frames": 12,
+      "phase": "HIGH",
+      "variant": "user_v3",
+      "full_fraction": {
+        "min": 0.056318359375,
+        "mean": 0.05633680555555557,
+        "max": 0.05636067708333333
+      },
+      "valid_fraction": {
+        "min": 0.06733179963366033,
+        "mean": 0.06735928173056421,
+        "max": 0.06738742604667056
+      },
+      "last": {
+        "phase": "HIGH",
+        "t": 16.19999999998634,
+        "variant": "user_v3",
+        "image": "dynamic-0086-user_v3.png",
+        "sha256": "8c5724e75638a5270712923ca31ecef5b9ce68c0851268adb6d8679eafc299c7",
+        "cyan_pixels": 17307,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.056337890625,
+        "valid_fraction": 0.06736358615538046,
+        "cargo_centre_gripper_m": [
+          0.0921664301205592,
+          2.8872316455959967e-07,
+          0.00018919728811673552
+        ],
+        "corner_down_angles_deg": [
+          19.765275400958494,
+          74.37844640589361
+        ],
+        "camera_world_m": [
+          -0.7010497811688228,
+          0.5499859187937305,
+          0.18768854102310495
+        ],
+        "optical_pitch_world_deg": -32.65353395121418,
+        "cargo_world_m": [
+          -0.6911777284685765,
+          0.5499855593648869,
+          0.140572838511285
+        ],
+        "cargo_rotation_world": [
+          0.9352936688456281,
+          -5.704875200331436e-05,
+          -0.3538725049544322,
+          6.779356158056466e-05,
+          0.9999999975406044,
+          1.7967310211365993e-05,
+          0.35387250305910706,
+          -4.079498894317298e-05,
+          0.9352936704129091
+        ],
+        "qpos_sha256": "00feaabacc6c405004953eaf94f49de539b94a5395a64a3e8990266f6eb4ba50"
+      }
+    },
+    "official_lift/baseline": {
+      "frames": 16,
+      "phase": "official_lift",
+      "variant": "baseline",
+      "full_fraction": {
+        "min": 0.8045345052083334,
+        "mean": 0.8048671468098958,
+        "max": 0.8052180989583333
+      },
+      "valid_fraction": {
+        "min": 0.9787427635996646,
+        "mean": 0.9793303175870851,
+        "max": 0.9796764926751934
+      },
+      "last": {
+        "phase": "official_lift",
+        "t": 19.200000000000664,
+        "variant": "baseline",
+        "image": "dynamic-0102-baseline.png",
+        "sha256": "000571d48ae9356f079565e10874f7f44ee34994c04156c43e858ed2daf181db",
+        "cyan_pixels": 247252,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.8048567708333333,
+        "valid_fraction": 0.9794222005014324,
+        "cargo_centre_gripper_m": [
+          0.0921641826055379,
+          3.562730718944542e-07,
+          0.00018922255045166996
+        ],
+        "corner_down_angles_deg": [
+          -18.402581749997495,
+          88.86673114507474
+        ],
+        "camera_world_m": [
+          -0.8119456312973445,
+          0.5480685037333834,
+          0.22622223387603516
+        ],
+        "optical_pitch_world_deg": 6.079753419043082,
+        "cargo_world_m": [
+          -0.7871171468174272,
+          0.5485942573413384,
+          0.21220956176443095
+        ],
+        "cargo_rotation_world": [
+          0.46964700754479594,
+          -0.021218226887521126,
+          -0.8825992721229543,
+          0.010059499821014575,
+          0.9997748626314538,
+          -0.018682358352455644,
+          0.8827969725636637,
+          -0.00010439352583813642,
+          0.4697547172029488
+        ],
+        "qpos_sha256": "de0d2f9758c8dea705708249b9354b048c3505e112f8e79c76a3987719d6c20b"
+      }
+    },
+    "official_lift/drawing_v1": {
+      "frames": 16,
+      "phase": "official_lift",
+      "variant": "drawing_v1",
+      "full_fraction": {
+        "min": 0.24888671875,
+        "mean": 0.24908162434895834,
+        "max": 0.24946614583333335
+      },
+      "valid_fraction": {
+        "min": 0.30193222318906227,
+        "mean": 0.3022617600197076,
+        "max": 0.3026633131886252
+      },
+      "last": {
+        "phase": "official_lift",
+        "t": 19.200000000000664,
+        "variant": "drawing_v1",
+        "image": "dynamic-0102-drawing_v1.png",
+        "sha256": "a9c53ccd5430db1f16afbfc01aa129f38414c1788ad92d78b313b72aacd39228",
+        "cyan_pixels": 76506,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.24904296875,
+        "valid_fraction": 0.3022620083519086,
+        "cargo_centre_gripper_m": [
+          0.0921641826055379,
+          3.562730718944542e-07,
+          0.00018922255045166996
+        ],
+        "corner_down_angles_deg": [
+          9.759722610354247,
+          64.38102303234852
+        ],
+        "camera_world_m": [
+          -0.8256061797687422,
+          0.547779226593136,
+          0.2411076477271625
+        ],
+        "optical_pitch_world_deg": -1.3794231083570063,
+        "cargo_world_m": [
+          -0.7871171468174272,
+          0.5485942573413384,
+          0.21220956176443095
+        ],
+        "cargo_rotation_world": [
+          0.46964700754479594,
+          -0.021218226887521126,
+          -0.8825992721229543,
+          0.010059499821014575,
+          0.9997748626314538,
+          -0.018682358352455644,
+          0.8827969725636637,
+          -0.00010439352583813642,
+          0.4697547172029488
+        ],
+        "qpos_sha256": "de0d2f9758c8dea705708249b9354b048c3505e112f8e79c76a3987719d6c20b"
+      }
+    },
+    "official_lift/sdk_sample_v2": {
+      "frames": 16,
+      "phase": "official_lift",
+      "variant": "sdk_sample_v2",
+      "full_fraction": {
+        "min": 0.3145833333333333,
+        "mean": 0.3145833333333333,
+        "max": 0.3145833333333333
+      },
+      "valid_fraction": {
+        "min": 0.31466732656503366,
+        "mean": 0.31466732656503366,
+        "max": 0.31466732656503366
+      },
+      "last": {
+        "phase": "official_lift",
+        "t": 19.200000000000664,
+        "variant": "sdk_sample_v2",
+        "image": "dynamic-0102-sdk_sample_v2.png",
+        "sha256": "dc6bbfb68251dec487e1663ad99c415455d769665ba8e5828a6f476351ad1f75",
+        "cyan_pixels": 96640,
+        "full_pixels": 307200,
+        "valid_pixels": 307118,
+        "full_fraction": 0.3145833333333333,
+        "valid_fraction": 0.31466732656503366,
+        "cargo_centre_gripper_m": [
+          0.0921641826055379,
+          3.562730718944542e-07,
+          0.00018922255045166996
+        ],
+        "corner_down_angles_deg": [
+          9.759722610354247,
+          64.38102303234852
+        ],
+        "camera_world_m": [
+          -0.8256061797687422,
+          0.547779226593136,
+          0.2411076477271625
+        ],
+        "optical_pitch_world_deg": -1.3794231083570063,
+        "cargo_world_m": [
+          -0.7871171468174272,
+          0.5485942573413384,
+          0.21220956176443095
+        ],
+        "cargo_rotation_world": [
+          0.46964700754479594,
+          -0.021218226887521126,
+          -0.8825992721229543,
+          0.010059499821014575,
+          0.9997748626314538,
+          -0.018682358352455644,
+          0.8827969725636637,
+          -0.00010439352583813642,
+          0.4697547172029488
+        ],
+        "qpos_sha256": "de0d2f9758c8dea705708249b9354b048c3505e112f8e79c76a3987719d6c20b"
+      }
+    },
+    "official_lift/user_v3": {
+      "frames": 16,
+      "phase": "official_lift",
+      "variant": "user_v3",
+      "full_fraction": {
+        "min": 0.056279296875,
+        "mean": 0.056374918619791665,
+        "max": 0.056555989583333334
+      },
+      "valid_fraction": {
+        "min": 0.06731987968801528,
+        "mean": 0.06751929044536892,
+        "max": 0.06767350474215171
+      },
+      "last": {
+        "phase": "official_lift",
+        "t": 19.200000000000664,
+        "variant": "user_v3",
+        "image": "dynamic-0102-user_v3.png",
+        "sha256": "576cdf00969ac299d1fc4fcaa2830a0a62e4bee57fe2864668dd00745e68276c",
+        "cyan_pixels": 17309,
+        "full_pixels": 307200,
+        "valid_pixels": 251679,
+        "full_fraction": 0.056344401041666665,
+        "valid_fraction": 0.06753046539441114,
+        "cargo_centre_gripper_m": [
+          0.0921641826055379,
+          3.562730718944542e-07,
+          0.00018922255045166996
+        ],
+        "corner_down_angles_deg": [
+          19.759722610354256,
+          74.38102303234852
+        ],
+        "camera_world_m": [
+          -0.8256061797687422,
+          0.547779226593136,
+          0.2411076477271625
+        ],
+        "optical_pitch_world_deg": 8.620576887523393,
+        "cargo_world_m": [
+          -0.7871171468174272,
+          0.5485942573413384,
+          0.21220956176443095
+        ],
+        "cargo_rotation_world": [
+          0.46964700754479594,
+          -0.021218226887521126,
+          -0.8825992721229543,
+          0.010059499821014575,
+          0.9997748626314538,
+          -0.018682358352455644,
+          0.8827969725636637,
+          -0.00010439352583813642,
+          0.4697547172029488
+        ],
+        "qpos_sha256": "de0d2f9758c8dea705708249b9354b048c3505e112f8e79c76a3987719d6c20b"
+      }
+    }
+  },
+  "matched_qpos_verified": true,
+  "images_verified": 432,
+  "unique_dynamic_frames": 102,
+  "evidence_hashes": {
+    "static-lift-270-drawing_v1.png": "85788aed7c4f95101f51ceb1c17b25ec9baa7f406b328d2032e711a390446960",
+    "fixture.json": "c76f943840f19423505fffc09587c0378a645f2d43d0ce706f4c8d35c45419dd",
+    "dynamic-0016-drawing_v1.png": "5d69b7d0f80a9e29db7c8bd9337027b88e765a39dfe2a7b85bd73f5858ccb1a3",
+    "dynamic-0003-drawing_v1.png": "25ff25a7787065da8adb8ed20bbb00f28e38ed494d8ab0d9a6dcd4925fd8aa8b",
+    "dynamic-0098-drawing_v1.png": "f672f02711a82a0b06db238fec025313b724f0c146299cc86b591ce1d79ed002",
+    "dynamic-0060-sdk_sample_v2.png": "5d3e7ab8ec6d53a5b17f9b7d0566be806fa898ec9ef3006f20cb90bc841cb464",
+    "dynamic-0100-drawing_v1.png": "856a756d1c23fce28d9cf516218af1f8e54aebb55a2551d2f1a8ba03ac0f094a",
+    "dynamic-0074-user_v3.png": "94320a3831cb13bff4959667a9c275ed3afe604e9b3342049bc54148ba8540b7",
+    "dynamic-0072-drawing_v1.png": "28480c6899ec8939f1025de49b3f05044440e2e6a06536a58df9cb71b6ce2840",
+    "dynamic-0067-drawing_v1.png": "1207bafc396794d9d9a397168b9bd4ec7a262fe05e68a671a36b63e5654d7b0c",
+    "dynamic-0071-baseline.png": "f724006ff2d599e50e9df42386a509d55a806440207dac66733cb609ffe69e48",
+    "dynamic-0006-sdk_sample_v2.png": "16548d5876731de90604d6553ae65fa89d75cac271133378f6477a9ceb76bfbe",
+    "dynamic-0024-baseline.png": "cdf01cb44c3f5148565bda4602b7ae73edee226d7e1b35a2110710877d1b7dbf",
+    "dynamic-0089-user_v3.png": "d31c95cffd1e6273de5d5c7167253424de77609dbbef1343f13e9ecf998f43a2",
+    "dynamic-0048-sdk_sample_v2.png": "8999c4435a03d017d401e84c54fbcb99e0106f240568d22f72e5440cdad862b3",
+    "dynamic-0004-user_v3.png": "1c254a7c8345458306f44ef15a353b4597fae0d63d1fd0df2be5e043b9004ed7",
+    "dynamic-0101-baseline.png": "5f6c6af43dc2d0dab6ec90aa6e756c21afe35a323c23ab2e6e5be8512efc86b6",
+    "dynamic-0089-baseline.png": "7020281a9be66950ae786d3b609c1f19a6b2f94b0029638da4f87c3eb4f289cb",
+    "dynamic-0098-sdk_sample_v2.png": "b896f909b02c43ce9a043ffe11a028177a453891c07ee6cf76bbe4f7bec880bf",
+    "dynamic-0076-baseline.png": "ca911685dd96ba02f00cb2c51bdf4e9acee4483215a2988064b17942a58b65b7",
+    "dynamic-0023-baseline.png": "a1cf16c2560aeb489866383651a77a43d3a516f71aab322b4162c1c2c50588f5",
+    "dynamic-0018-user_v3.png": "608dcedcc3035a3b810a2348e3b315cdb9744da8bf3de0b8b67941a247d2f57f",
+    "dynamic-0084-sdk_sample_v2.png": "df0a3921a2ed668cd3b0790c014a2570091daa318e753110798e7baa98df46bf",
+    "static-270-baseline.png": "efd985eb992a92c20149383bb3cca7cdeefe4b84c9e27d6850a19924fe8f2fbc",
+    "dynamic-0095-user_v3.png": "614086fd6ac84f279456ec5e6433a41d505fd5160549c123d2945d4a47598296",
+    "dynamic-0068-user_v3.png": "ad0c10f990eebf2af39620bf5eabfdee1ad9346f4cc655b636cde7e85d283e6e",
+    "summary.json": "6d3a340a23680bff61bf2f25b0cfc54a5240494125076847ea1fa464c3bcd37f",
+    "dynamic-0054-sdk_sample_v2.png": "be38eb216977f7fbf827ea6ec2a36593087c2b8fa0bec2cd1ddc3e10ac3b01a9",
+    "dynamic-0036-user_v3.png": "7afaaf1bdf315cef5524d01ca5e1d51fc92bc9fcf7c22c4920aac5c22d8da1d6",
+    "dynamic-0063-baseline.png": "e1204b1144de3b140a7221b7c0bcaed9e0af7665a55dbdd0dac7fd8b0d808a92",
+    "dynamic-0036-baseline.png": "ca1ff31912410083ae4f1c373d46c2e03b50369937f9ce376c5291e87ee71429",
+    "dynamic-0085-drawing_v1.png": "bca6a475ec9205a525c2ce5a7f3d486cd54583158320b7daab9652c79f38116c",
+    "dynamic-0090-drawing_v1.png": "7a952a45312d746b622d6814d0285cee1deb60a3f46623d849aac6629aa1032b",
+    "dynamic-0032-sdk_sample_v2.png": "14e7e6accced7a4e1b6b5bfee616af8f9ca511f6ca9ca565d37f8f813d108021",
+    "dynamic-0046-user_v3.png": "ab7a85c7dd39197984d71e9db8f656a0b042178ccbfad7df31047596bdc5ff11",
+    "dynamic-0064-baseline.png": "50d424fb2cb2410ec119609baccff3444f68e41ed229a94a86adbfa6e4805cea",
+    "dynamic-0031-baseline.png": "ff86e5fd067474d27e565aabef675fcdb228b7ca7d03396fd8a6e4aeb47558bd",
+    "dynamic-0023-user_v3.png": "0bc7aa72091aa204cc5c5fc4a7b65a5e1e4954c693ba1633684cbac1c51494a3",
+    "dynamic-0065-sdk_sample_v2.png": "8277394089c39f4856ae56d62b91c2eb2c4e838a7dc5f416a15eb8cfa9f370f3",
+    "dynamic-0004-drawing_v1.png": "603c79fbe96f98165e5df1089f30a78ab55de1023100c6e97d8a2aef4a717a53",
+    "dynamic-0011-drawing_v1.png": "de76bab1c901c95fee1600100d737ec4e4043406552460d6cf6f816d978c33c4",
+    "dynamic-0053-user_v3.png": "10519563b66a9a0b59deca11738b29b829f85b3ba94bb7197f1868fc6762635b",
+    "dynamic-0052-baseline.png": "a2b6c1d23c4f60890e2aa8358de2bd20ebc4755fe792139c03d473d213300bff",
+    "dynamic-0007-baseline.png": "e03cd9db547450c1c7aaaa2e7d6c66efd7deea651a7955c8221de8c62eda867a",
+    "dynamic-0055-baseline.png": "ed17ae9015b44807276fb7ba62b319a4bdf943fc8d6337debb97129f84a102d5",
+    "dynamic-0080-user_v3.png": "f29744c9e0507c5b6e74508aa7d43578a4209703af5327a9202d77642f8d8a28",
+    "dynamic-0060-drawing_v1.png": "0cc949f8450f8c89b1239a698f3b6ae01f32e793eb022b914f7a9efb664bd43f",
+    "dynamic-0075-drawing_v1.png": "74628fbbb2b339bb6ade2d1c1f0a697a2004bc352680f3cdd4d6881743185f13",
+    "dynamic-0003-sdk_sample_v2.png": "45d38e7069dd9cfe23fc840fbcbdf5bae50cfc220d508bb549e9fc96f58d05af",
+    "dynamic-0061-user_v3.png": "94396277914315eb1600562a239cbe956c3281705d05f2cb275709017fdeb810",
+    "dynamic-0051-sdk_sample_v2.png": "a40f07446feba1c823962fe8bb15277d4ecfaa37dc7330adfb37e980476503e2",
+    "dynamic-0068-drawing_v1.png": "f2098aec444422d795e3522a7bc6451e0a39cca382fb49c42429db628c535bd1",
+    "static-270-user_v3.png": "751856ba0fb04256014001252ef30bb46944276113a2a2c825247f1db6e9bb6b",
+    "dynamic-0011-user_v3.png": "2f296dc7b323aee141f47e312e720b247e954f84d7b5d55640cc0dc5abd21743",
+    "dynamic-0081-sdk_sample_v2.png": "312cd080d935468c62a423b20a92d8a4ab22efbf4f416e416826f187cfea31d5",
+    "static-105-user_v3.png": "7c298df6816096a75213fdf47dcc4216ab6c161edb4bc914818c48faa3f90948",
+    "dynamic-0019-drawing_v1.png": "ef4966d480312e7d67416358727554e5d3df3e0f99738177633e2f2b666e29e8",
+    "dynamic-0040-baseline.png": "0697b111c223b9bafdf2116ee98789dfdcda5eaa8f09993eee7e8471756e6a04",
+    "dynamic-0015-baseline.png": "812947bee8abcf8d0c09ea904ee95e2d2237342bb8aa742964b97cc80d02cf07",
+    "dynamic-0097-drawing_v1.png": "93af0b7cc8e09bdc3021353177e5ed353d8a8dfffa542f493c24e4be07458912",
+    "dynamic-0082-drawing_v1.png": "a1e95627a84d5580ca66a9883d4ee17c0cc9c3195ff723b97826677a37935e54",
+    "dynamic-0037-sdk_sample_v2.png": "c8b13c94f030f488f115af48f734074345713a048622d47a664586c73226020c",
+    "dynamic-0047-baseline.png": "a355116d9e771b845d797ab7a3dd612f83ea3690eded1d4349bfa5fdfe66ab1b",
+    "dynamic-0012-baseline.png": "59b2f5abf6d80dbbd38f22b068bcb23e3053dc2d3a37da1440896fb2ed76f7c3",
+    "dynamic-0079-sdk_sample_v2.png": "3cc5324f7607058ebdc4cb5365c79c330e1b589d7e0c11a2151363c78d7a5428",
+    "dynamic-0078-user_v3.png": "00ae172739c94647a01b3ed690ba95a2dde51f2efa35c9e49aa8f36e570f3200",
+    "dynamic-0085-user_v3.png": "b6eb090740bc7aee9db75051add7c21da231e2abc6e813a63000dcc07248e6a9",
+    "dynamic-0008-user_v3.png": "af01b4e0ecddf1e8aed2c5b1db59efe6756bcc9e552a2d454bc5e0e0ecc46413",
+    "dynamic-0069-drawing_v1.png": "3e49baf663cca9a654c61c7a08e9fc59eccbf63e55b2b97f56db88926845849d",
+    "dynamic-0061-sdk_sample_v2.png": "3924f0c7af509d5ab83b8d568e1f89d4a7ebfb40ac8c0163c62613019c65c1ef",
+    "dynamic-0049-sdk_sample_v2.png": "ef4e0372884507f236f1aa4e15ef89bd6ebc38728f9d378af251488749a02839",
+    "dynamic-0007-sdk_sample_v2.png": "84330a378d975a90142d859c9c89c536016efd127a369a8f173613a7aa3fa9fb",
+    "dynamic-0030-baseline.png": "5d287b153ec3e0cafad07533d5ee6702caf0cbe6feec4951a1de63baebe95983",
+    "dynamic-0065-baseline.png": "3b904b077371e330c83da6dbae31cb23ae3a3f0db6c2bfd59738a9ae87fac745",
+    "dynamic-0056-user_v3.png": "2347e6f9017cd36e95f9cd316dcac0a5c037b51b0c558f7d2a878bfdde5a33d8",
+    "dynamic-0083-drawing_v1.png": "ed57fa3a3a598221f2afb367fd39f15d4d3f0686f4feb1e3d4d34ff4d4cf76e9",
+    "dynamic-0096-drawing_v1.png": "bfb46bfbe522b52b6f4011d9354fa375b295a973b772eecfb08e32457dd65d4d",
+    "dynamic-0018-drawing_v1.png": "74dcb9a03122005f9460f4b6ffcb3a01bf8d3d55f2e85b7aca5d358d12be91b0",
+    "dynamic-0037-baseline.png": "0c3bc613d7594e3c018810013538dabd00cb1e2bf8484b73b67a777d44a30ecd",
+    "dynamic-0062-baseline.png": "c665d67e6661d528bca9db11479f46190cba86717543ae61949b6c29b0358154",
+    "dynamic-0099-sdk_sample_v2.png": "0b488f56f52b996b8939b5cb1e392db66245238b87977da8c6831dbfa4abe46b",
+    "dynamic-0026-user_v3.png": "0740f39bfdb09e7fd0c215e49432788d0d5a61c4921491ee3c296f2dc37f8189",
+    "dynamic-0010-drawing_v1.png": "06fa66151579e3ebd447d0c3af719fb3a92f0dcd38c21fdfa94b4fca61adffb6",
+    "dynamic-0005-drawing_v1.png": "3c78f3d0864dc4611076cb24b03453cd3f765ee4c805a1ddb622b1e83b78674b",
+    "dynamic-0085-sdk_sample_v2.png": "c33175b9fd66a36b7a3e4158d86c27c515e8265ce0bc1cd30f2b2cde2ed6e804",
+    "dynamic-0055-sdk_sample_v2.png": "297228cefad723de608311892468c5edced8aa3be7ff6d2c52a62f17be56b35b",
+    "dynamic-0022-baseline.png": "a7f6f050672c89bd0098840da329f46c348597941999f730f7f02e2de4f09b06",
+    "dynamic-0077-baseline.png": "5a05d49f47afb21f66b701c261ad2a6920d5f0933d43c287fc38ff7d16be24c5",
+    "dynamic-0088-baseline.png": "f68735ff5034568dfbe31af8c1e8876f5e5b1c6e757fdc93a2b041357c2b75c9",
+    "dynamic-0074-drawing_v1.png": "9c103089a3beaaec0cc82932e135f14b7afc4232002693d11eb0a6154b7901c9",
+    "dynamic-0061-drawing_v1.png": "84058c4312322e58041c97939fae84f8d43f9b978cf482f1116c8d5550a8c659",
+    "dynamic-0033-sdk_sample_v2.png": "3a6d718d95d2d2ac7aeb1aff87751828d3ff8ae03de8cfa2ce284d0150012245",
+    "dynamic-0100-baseline.png": "d82bb7f43b0c53fd8a5bb9cd4460c28f5ddf4c0f50389742b89de3a9f1699bfd",
+    "dynamic-0014-user_v3.png": "14b8881681c97bd94c1bea6a1f95f079a37a2ad0242dad2bb621fe035ffd6ea0",
+    "dynamic-0099-user_v3.png": "a8b25e13a646bf1aee672d48d2c47fb5da709b4435a9880e8b5953dae4fb81de",
+    "dynamic-0025-baseline.png": "0610328a71c38d7f36b3f0527ec2aa034d55ae214695b2118caa930b3f7c8e48",
+    "dynamic-0070-baseline.png": "61a335386d5adb2ab94884cce15995be25cbf6c882ab64f182cd66059c0a4725",
+    "dynamic-0064-user_v3.png": "ae1f9d572e2e94f37aac8a533d5f247d84d2e23c0f0c4f4ea6b44cb59ae16e4e",
+    "dynamic-0064-sdk_sample_v2.png": "762592b1d71f604483e500b61662a1b4779d365872b78df2c3093504251b419f",
+    "dynamic-0001-user_v3.png": "ec5af53b60cb34f5cf44a70dd88a7cd57068b35642e5087c9270007a957b3a33",
+    "static-lift-270-sdk_sample_v2.png": "49547345b77ddbe7a25e86934c8b76dc8884033ee1bf7e2aaf58f5073a2af2e4",
+    "dynamic-0071-user_v3.png": "acb2bb351d082c4ab9580b7794a741ea62766f5de77594a68cda47ba94196421",
+    "dynamic-0013-baseline.png": "ba4a542c82444e799138218f38896d0ddbfeeb575d30e642f2950dbc1375e887",
+    "dynamic-0046-baseline.png": "c60777b9bad31763acbe2cbb5ecda7f86cc4f0578ec89f29a4de89b0c4ae6ba3",
+    "dynamic-0091-drawing_v1.png": "27bf029ea3e4eec80600d0ca7882b3740f26bd4a5afab5389392938805955259",
+    "dynamic-0084-drawing_v1.png": "5db5e4759850f9396c30014e4119bb92cfa4775004cd2ee7abd2bd1bdcf9dead",
+    "dynamic-0014-baseline.png": "55b0ebf57106ec63ad581e2f1473d514eedead519a4f2efb8144ef1dcdeb276e",
+    "dynamic-0041-baseline.png": "28e5f56faee007baf57325872c7034aa7e67140b02f789c1010a204338bb199a",
+    "dynamic-0002-sdk_sample_v2.png": "da5305802b12f54227d13ad304d6d3940b8a73edc67f1562117dab6d7681fcdf",
+    "dynamic-0101-drawing_v1.png": "ee1bf531991a00e03db90c65080fce683c1d7caaa698e1031e780e6022e5c0db",
+    "dynamic-0043-user_v3.png": "07eae6e7bd992b26f780601bef196d8e195818722180bb13a1560a944600be57",
+    "dynamic-0099-drawing_v1.png": "6fe29db588ff8d1b4c419688e56c9cf83b6daada95c1ac09b7b1755cb3b96891",
+    "dynamic-0050-sdk_sample_v2.png": "f1b245ba18f97bbcf6aa789f469e4aabdc113a498edf33c22045943c5852af7f",
+    "dynamic-0002-drawing_v1.png": "00030caf107c962c17f2723cb323e9582f7634705e6987b795060936f73f9d70",
+    "dynamic-0017-drawing_v1.png": "0b2f90cabaa350960b502d124faa9ffd6c06fe7726e82c72e3532f7aeaefe617",
+    "dynamic-0080-sdk_sample_v2.png": "5fbf456b51aa5ea379af63ae145b2887915d5c51c62b4d7c25f17c751dd1c603",
+    "dynamic-0033-user_v3.png": "e3308bb70a2fb0f7723d917e7c8a8bddaacc55b0e5c146dac7c58e4aaf43107e",
+    "dynamic-0102-sdk_sample_v2.png": "dc6bbfb68251dec487e1663ad99c415455d769665ba8e5828a6f476351ad1f75",
+    "static-270-drawing_v1.png": "1843a6bc4142c149392aef10434ee17adf96dd014b9f23927165bec6efa17ce8",
+    "dynamic-0001-baseline.png": "6d4a66fbd5814667d61a699add659f7ca94321c63d22f8fe6648f9cbc2880dc6",
+    "dynamic-0054-baseline.png": "857ea094c7c93b40d9311080b2998cad55b51f316ad3cf0caae92df11dfca8fb",
+    "dynamic-0090-user_v3.png": "f524ad4a0d117d847aeeba3cfa04abe399555b808db24344b2ba9f19d8f5d065",
+    "dynamic-0066-drawing_v1.png": "3914f28fa35f30a6e7ef427e8f63dedb6705ee344887cb8a514ee0513a88cc37",
+    "dynamic-0073-drawing_v1.png": "2191536912c52e2f53be85583e3198271be2a321a0867039ddbafdec9f94c602",
+    "static-lift-270-baseline.png": "ad6a360b561d3b8de5cabe1212ec6b0452ebfb49fa4a456dd79c6bc9778b7a36",
+    "dynamic-0078-sdk_sample_v2.png": "a1e42173d744b109e8f5fcb19af2b614e2f1acc7407b3466c91506212e320a97",
+    "dynamic-0006-baseline.png": "060f44dfff695e1a334ff2143c854831bb77b2d8bdf068f34a622d6caf2e9e81",
+    "dynamic-0053-baseline.png": "857ea094c7c93b40d9311080b2998cad55b51f316ad3cf0caae92df11dfca8fb",
+    "dynamic-0036-sdk_sample_v2.png": "73f3871a2880090f97d2c8bd6bfb650fa5656c5c2c93177ac93f9dd97d3a617d",
+    "dynamic-0093-user_v3.png": "2d94a497676162bf124a7a2dc10124b5bc7b475c4cff08b0bd1767ec74f0e804",
+    "dynamic-0093-drawing_v1.png": "bf9e6c07bc0c600c843a416fb0988c30d3f424bc1f234f4853dbab0e3167d93b",
+    "dynamic-0086-drawing_v1.png": "31f152028912340a3066cab59ba84b609899fa3aa212c329de1312ea62788fb8",
+    "dynamic-0008-drawing_v1.png": "ac570c7f38b8540e0bab9031630b32fe66f3aa8f58012712602feb5d279fe0aa",
+    "dynamic-0062-sdk_sample_v2.png": "93c8d61da7c6652a1386aa77f32e1342b26a43a4fa527ad1d07c7731da64afb0",
+    "dynamic-0040-user_v3.png": "5290b0e0d266aeeb14586d8bacf1770e3ed2914aba1aafdb0d864745816bc821",
+    "dynamic-0004-sdk_sample_v2.png": "1bf68dae323db3ae0a2890130872414bd943b96b8f03397347f4681d19f67935",
+    "dynamic-0059-baseline.png": "6239c4ae6b19672c3b09f383f6f9437cf18d94e73a6b4bed2826d3ee2133bf8d",
+    "dynamic-0030-user_v3.png": "ca49a4225c260b01f754b8ff049864d4279c30ea07e0544d8779b5ab2db27e1d",
+    "dynamic-0079-drawing_v1.png": "99796780e945815bf937834f76cabcc67c3fd9905e4e210383c9b0e981036e48",
+    "dynamic-0086-sdk_sample_v2.png": "fafe659c4c020e4c8e8bb1fe1f8a2fdceb70d812f300df6c04aa569e82f92fc3",
+    "dynamic-0064-drawing_v1.png": "bbc99282d07ee960b63b636344dafe595fe33f19089b33c44e91958f0b4a1bbf",
+    "dynamic-0071-drawing_v1.png": "02eeab41e809974e480275def689c31f2b487d9484c0d979a3ceda182436c339",
+    "dynamic-0056-sdk_sample_v2.png": "4f9fd828112bdc9e292ff1115babf64b4c41fe799d526a41b587b9bac487e95a",
+    "dynamic-0018-sdk_sample_v2.png": "eb6c4aa9bbf293af479419144fb55e8e7138fb7196017dd10a5d30322b3fb18e",
+    "dynamic-0002-user_v3.png": "b0caaae07cc9a893c7d57300214cddc94621758d68cee8d7c1e0f18641f82e7c",
+    "dynamic-0030-sdk_sample_v2.png": "40cb4f59ed8bea2e007eff0c7a87dc913c2560b4fff96dd3d36374671e5aff32",
+    "dynamic-0015-drawing_v1.png": "25e7842ced0db6ced391e960e689142bddcfe51c80ea5c3a73c3270f336b6426",
+    "dynamic-0072-user_v3.png": "5676787423c3ca925d9850f738a407576b1ea124d98a2dedb021f124546b3034",
+    "dynamic-0019-baseline.png": "99db27e4f2c7e1dd47a051baf1b4ad9749a1113e2ee89922dd1d283a4995f95f",
+    "static-lift-180-user_v3.png": "8b55da92eb274c6bae137ec2883849652921db50c9167482d20b222cc2591ce4",
+    "dynamic-0067-sdk_sample_v2.png": "85c3ff912aec1b5112dd5b07dc25d0dceb5c74f2e527adfa0b74dca10e3dc14a",
+    "dynamic-0017-user_v3.png": "8f97b0bc0e670e4c9bec91734509baaf6a815111be1d429e6019a4c43c97a968",
+    "dynamic-0029-sdk_sample_v2.png": "2a8ed75292eda206df9fa2ac62aac498427ea5a6f211cb4bce40ee3cee8183e8",
+    "dynamic-0067-user_v3.png": "fdcd2c227ce19fe80f475c14226b042f04ee461e0f07afa05ff29e04fbe53c2b",
+    "dynamic-0081-drawing_v1.png": "ec6f861e2d9e5ac94bffafc514478b94f8abbf83caaf06ec80441809a6bd27ae",
+    "dynamic-0094-drawing_v1.png": "fe1634bd53df83dfd7a98223f7ed496097ef0c65582d769eb8d924f5b03a08b4",
+    "dynamic-0085-baseline.png": "268a0bea6c48ee772221fbdfca6e605f18044257491111ef0b05825456d27633",
+    "dynamic-0039-user_v3.png": "abfea27965cd13317dd155196efb25e3f1f65c3474129ceedbeb9c781e294404",
+    "dynamic-0001-sdk_sample_v2.png": "7ceb51884448c40bf29c506660d37dc96256c7c8277742b0423a6db7c50cee2b",
+    "dynamic-0049-user_v3.png": "52a26068848188aec3f1b680937fbb6b064555b5bd6eae8a5b2c1f9f58cc1a33",
+    "dynamic-0082-baseline.png": "e7b1a257b00012417a6186e9b7629e67b52cd5c9c798a9a868e503c36662ac4e",
+    "dynamic-0028-baseline.png": "13c0ff47b3f60873f1c2b33f8ef2c8c482ea673347b992e78ffaa6c351f6aec9",
+    "dynamic-0055-user_v3.png": "0a680592eb69c8d246806ba03e3b3cc22e3e893e53eaa71df00648dffdde90ed",
+    "dynamic-0053-sdk_sample_v2.png": "be38eb216977f7fbf827ea6ec2a36593087c2b8fa0bec2cd1ddc3e10ac3b01a9",
+    "dynamic-0076-drawing_v1.png": "62a07831b4f9aede6f981331d96e16de144fb73d66e6870ab8f7b1037020cc52",
+    "dynamic-0063-drawing_v1.png": "8a87077c04c8e83b43c415c54885648aa6ef544752d08f33364706ee2b285214",
+    "dynamic-0025-user_v3.png": "0a5d78f574f8eab0aa572b980bd0b83904a4b6dabd26784685817c72c7f5ee97",
+    "dynamic-0083-sdk_sample_v2.png": "a687b4ba05420992b5d79b234d31492c7af82c09324b418aa4a5de36efb44241",
+    "dynamic-0086-user_v3.png": "8c5724e75638a5270712923ca31ecef5b9ce68c0851268adb6d8679eafc299c7",
+    "dynamic-0097-baseline.png": "3fcf1f0e657016c38119f1a97ff87a9b7bc22a84926383ae91ab7199219df9ef",
+    "dynamic-0068-baseline.png": "029d685ca2145473b4db5ef1939df21fa3231aeadea98edb64faee17605d90cc",
+    "dynamic-0101-sdk_sample_v2.png": "5128dc12035cc6b1e14031eb30f019eed625eeff00aba86d8fe0cd24297bd783",
+    "dynamic-0089-drawing_v1.png": "f79ed6f2e87ef7be27ad53d77a79b56f85fe885c88ee97ed2a173d01b71a22f7",
+    "dynamic-0090-baseline.png": "e0a59c28a45e0a190eb2ef8fabefd6d3fb061c7ac6db7777156322903330f29c",
+    "dynamic-0012-drawing_v1.png": "d1a68d7de67733a7ca62494c8daa5f6021081126501c9b942b590c7233d02efe",
+    "dynamic-0007-drawing_v1.png": "3edb3afcd3f2c9b2e03c99a3f8636ab7e4d97e6661f57186c6b2fbe27cab4906",
+    "dynamic-0035-sdk_sample_v2.png": "6d26a95f85ee728bf04e773ec328811a9b12a71b26cd279591094138c360e346",
+    "dynamic-0062-drawing_v1.png": "0dec1fed9c30833c8e87136ea03aff9e58dacf372ecb20d1493b448687373870",
+    "dynamic-0077-drawing_v1.png": "fb96cc387470e56384eb02b5910880a2ef68058852293531ee1ea83f78fbb454",
+    "dynamic-0063-sdk_sample_v2.png": "374dc577202f6f4c32ce8bfac9f958b78562af1b555b2afca1cd5e8c867ab9e3",
+    "static-270-sdk_sample_v2.png": "223d960a888491598b111f63b39f021e01b36d5465158cee0f3dab560efe49ab",
+    "dynamic-0005-sdk_sample_v2.png": "ca36a0c536f0e2e9316ba9503e05f6903bc89dc07bcf197d999b83c2b041fab4",
+    "dynamic-0018-baseline.png": "763855842be5fb9fa64a3aec77a5bb11cd8ce28c56667cfbb27df27de07e6fe6",
+    "dynamic-0100-user_v3.png": "911224547b6ac00c1695e90498d9c8aacb1c5c64f4a046557558c38ac12caaff",
+    "dynamic-0062-user_v3.png": "47ad1a19105a0f99c1a016dca9f052114f1e4867fab95d23a3eaed815fb6b089",
+    "dynamic-0006-drawing_v1.png": "171058cacccf8e3e5ce5d06e396afed5b674b480ba100eda7ee0fd41e300e2ec",
+    "dynamic-0013-drawing_v1.png": "be6417e69736a1489c20b4c8cdb635527892cd84c50da0472b194cd19e300f1d",
+    "dynamic-0088-drawing_v1.png": "d4b9567bcb37317f35538c581c40598275508e23427dbc33c7498a9539b199e8",
+    "dynamic-0012-user_v3.png": "2f296dc7b323aee141f47e312e720b247e954f84d7b5d55640cc0dc5abd21743",
+    "dynamic-0087-sdk_sample_v2.png": "d71cc094f10a6feed66dc6b415c707965e05e8c2e7e04dd9c01363aa03984db4",
+    "dynamic-0095-drawing_v1.png": "627e8904eb31c01b1c0ff726df5d026e4e168d4c95af41c1201637ea47755d49",
+    "dynamic-0080-drawing_v1.png": "1f61078667fe830033debf1d8b3ad3f561ef749addba10e982301e469f9a5b84",
+    "dynamic-0019-sdk_sample_v2.png": "3ef45bfde2155ffc1a03fa28a74fdb2e08398cea100695ada75c4775cf069d03",
+    "dynamic-0057-sdk_sample_v2.png": "f3efa7afb62b102b000e5eb86af31760e2e5aad339397860896e4890eda32a34",
+    "dynamic-0083-user_v3.png": "8ca79f10d5420f9a55d2eb594c37664deb2f61c311f8b234816bdc1bb6f5d4f9",
+    "dynamic-0031-sdk_sample_v2.png": "288dd53956296e65ea6c664cca080baa2d5d3682187a20c918eb36d25daf6ef3",
+    "dynamic-0020-user_v3.png": "7f0219d8fbac6853023d1da18bae9079698ab4087fd046ac0b968ce2bc6bf266",
+    "dynamic-0050-user_v3.png": "57eb68b87169139849970dfcd3318107ef8ad66be2936d1c51f5e324169b3576",
+    "dynamic-0058-baseline.png": "8c7537d817cca6a6e17d0ae6579b03669c99db5fa37a36fc5465d16144277a30",
+    "dynamic-0028-sdk_sample_v2.png": "c00a1dbd7ba159fcb271135cb6e9687946337f75d7d8300f8476d99379fc0b37",
+    "dynamic-0066-sdk_sample_v2.png": "10ff4e20f0fda9405398ab48ff22997474a96718ba1ddfc16f166911b274bc80",
+    "dynamic-0035-user_v3.png": "6b5ce2a140b00b7cfd5b66a75f87fc95198a22162a7fa6273fc0589fd107a27d",
+    "dynamic-0070-drawing_v1.png": "3c819b4b269b52a2701fcedcb18c0a72e3b81de481456ccff8ba2e748ef34e82",
+    "dynamic-0065-drawing_v1.png": "5ba32d89d50647858d74f69893c378447d252c4576c17292e1348b22d21c6941",
+    "dynamic-0045-user_v3.png": "dbe8e8a3127fee78cdb4bd8463f53134ae86619cc1ff700f5aa14bc2e3557f90",
+    "dynamic-0102-drawing_v1.png": "a9c53ccd5430db1f16afbfc01aa129f38414c1788ad92d78b313b72aacd39228",
+    "dynamic-0091-baseline.png": "7a4a263c459b8b0b7d6807d7c511cd564bddcd80509cdef9fad4a694b2f15349",
+    "dynamic-0014-drawing_v1.png": "40902b3529aeeb64a95528075ec13233e62b095279419500eb4dc574ef47b4e4",
+    "dynamic-0001-drawing_v1.png": "75083ffee51fff8ac06953eb3e6bd315bbc2f41f4184be026906c23b2b29a58f",
+    "dynamic-0069-baseline.png": "2f538e208fe49e5a514cef553af1d7d56425b9392f6194601e811ea4cb715ae3",
+    "dynamic-0096-baseline.png": "9d92d1c9f7b05512cd5caed99fe143a1cad9356e698c23706ccc77bb9e4b6187",
+    "dynamic-0096-user_v3.png": "fc68f30d9b7d9e7dc531f15902e30db4c2c6f349b8dcd1bb9b49f779b9919f06",
+    "dynamic-0052-sdk_sample_v2.png": "8951b724a04221b1793ac804ccf95a6a312c38994bc4014da54ee1b3761d76e9",
+    "dynamic-0077-user_v3.png": "79bb3d153206a01ece7c8fbe4343c6fc88319949630a4d3f148eda57a809ae72",
+    "dynamic-0009-drawing_v1.png": "2e7a6f3a8fb9183d6ffe9820a03b4e265f5dd76dc0cb03ee0d1ea5abcc789505",
+    "dynamic-0082-sdk_sample_v2.png": "65d5d55cea40bf7d5e95cae5940ffcfbc0eaa339b39f7ec64075a8067fe6bb97",
+    "dynamic-0087-drawing_v1.png": "97cbb8ad1a0cdab32a9c2ce321c2c3d27327c4cafea31905aac4e93251a53db1",
+    "dynamic-0092-drawing_v1.png": "e3fb4f93a3365b225fe926fa7315621124a3a712538186324b74fc2377e813e9",
+    "dynamic-0007-user_v3.png": "e8a9feaa78d0f36e7ed341fff361b5052f1f9467c92c1cbbe0f691044165edc9",
+    "dynamic-0029-baseline.png": "b2e78851e3f919d1fd63376e1919635227651891007f22a2b52aa2e28548e0db",
+    "dynamic-0083-baseline.png": "34ba8ab28db17c6ede98d58a2bb49f98cf248dc0d9aeb38d14cded1d6ea74213",
+    "dynamic-0059-user_v3.png": "64cba27ca92b789ced2327eb08375a76908011d5efe38ac578da0c2560e6a32d",
+    "dynamic-0078-drawing_v1.png": "95d7ee1fd3a8e615279b263fc50adb9153b4d1d6d3227706c0e285b24bf1abb3",
+    "dynamic-0100-sdk_sample_v2.png": "f4309ced8905043aecb6382eee6be614d25f628f2103923ecd2280a51b01da4f",
+    "dynamic-0034-sdk_sample_v2.png": "e6f9ebece93cf4a2b4f152b63cc2d345f568db93e28fe895d4437216b4cfa821",
+    "dynamic-0029-user_v3.png": "12e0d0420629407aaa06f66e019c6c77aac7ff53aa566d63a6430a5e3169443f",
+    "dynamic-0084-baseline.png": "4042491719bf28963f824444573c12e28ae4769ca6f21ef56d4a9fdf9ec5bf92",
+    "dynamic-0032-user_v3.png": "ecaab9bc0915f1cc1f0d389b7a22e126a896b47bbdeaf1379889e1cb311fd38e",
+    "dynamic-0044-drawing_v1.png": "8eb05d70a4727355d76d977c19e213bc21bbe659faf4497284ab2562341dd693",
+    "dynamic-0051-drawing_v1.png": "e51a595b9f52836f650fd044cb646e0cc81b716f88763a89e8b52049c820e5b1",
+    "dynamic-0048-baseline.png": "34633005dccd89f33e622ed2eb8ab2d52d70b82f70a69baed565dbdfc4771681",
+    "dynamic-0097-sdk_sample_v2.png": "4c35c090dba10b7cffa5da75ce81c44756f7bd94c02180ee263ab9765c73f0ef",
+    "dynamic-0042-user_v3.png": "35c3dafaffd10c8718f468db740f842747be51fc00fa7e9cca010ade42b8b776",
+    "dynamic-0047-sdk_sample_v2.png": "57f752629dfba3ae57be75a16c1fcf66e1d2f0ef9b4bcc3068712792b2175c71",
+    "dynamic-0009-sdk_sample_v2.png": "25ce2427ac9f73febbf8045773371ec11f781804e247dcb0e4a5cbbd94faf31b",
+    "dynamic-0020-drawing_v1.png": "73fa10951f5381cac76e906ace151d5b57ea84e1f37b7f1cf3e0c5a37507cb6c",
+    "dynamic-0035-drawing_v1.png": "7ca4b8a1fe439c90f3ab6605aaf932332b8db74d157c82967f404c52c23e1b7e",
+    "dynamic-0021-sdk_sample_v2.png": "e6c146447045a45594fc4670c22836634f5b1196118c5dc0994f5fa4e66e9f30",
+    "dynamic-0091-user_v3.png": "08050941cdbaa4553e72bb22d0b08479b7b2ac7a8d2ce2e383854a406ad39a40",
+    "dynamic-0070-user_v3.png": "13fe6465652d00464e86292864355534263d7de8cdfb54b7d40b131e04eb3c62",
+    "static-lift-105-drawing_v1.png": "477e39a50a751001ea364f5e3172e404305a3ce9cabce3b5298045477e2b4c3a",
+    "dynamic-0008-baseline.png": "80a16952031d0aa1637f6846d9ebfd2017cf14011ba0a71641bdbd9b454b5384",
+    "dynamic-0028-drawing_v1.png": "38d2e483edaf55e36bc3c5955029ae8a5ba8206b9e8c46e2dfbfa8f3e9bf5cc8",
+    "dynamic-0073-sdk_sample_v2.png": "2b3a8ff57815d6870dae1ba2bb323f465e6740081daf534cac961d4a94ca6197",
+    "dynamic-0015-sdk_sample_v2.png": "09b4cfbf5a0e256b35e4dba1bc5f3ceb95f17e2a407d7d5a26dc6c500a2163ed",
+    "dynamic-0059-drawing_v1.png": "37279e3b267a31aa5801466527f869b224eb29c3d99652a4a8ed82bbae17376d",
+    "dynamic-0094-baseline.png": "7e55496c7a4158d6ab938e3d9694424af53ddfb07a2dc905f210db0810548f6c",
+    "dynamic-0042-sdk_sample_v2.png": "087180013bcdd411fa24aacfcc3df13d3cf8b62387316a303a9d2edcc3482c31",
+    "dynamic-0039-baseline.png": "2c45ac8064df918ded807dd7a9535bce7b824e0b6d63ffa39256afdd4d11c55d",
+    "dynamic-0093-baseline.png": "8aa63cbabf467c7ae4ebc079a530e1f32e4415f645f59877fe274c3dec0c2383",
+    "dynamic-0092-sdk_sample_v2.png": "fbf96068e8e80d79374a73dc957463ddf89663a2cc44ba5e25ef9b4424277166",
+    "dynamic-0056-drawing_v1.png": "98abdd3196b7e741039ac208f88feb00d2e7276b7b8fb53d36416ec957d95d43",
+    "dynamic-0043-drawing_v1.png": "6089d31213750b3bcef807531837c3d81966771358a12e09d3e1bb44e3016567",
+    "dynamic-0065-user_v3.png": "b9b1971b661e3089fb51c66221468ad8ea54d286eee3147b8f18c968064ec5c1",
+    "dynamic-0098-user_v3.png": "f8c5bbf7e125292652ad48f19a0f8c398d445859234c60bfa75e7bf82b19182a",
+    "dynamic-0015-user_v3.png": "e876f140f7b4535c4662c2ff9f4ad9b078f5131e9cfc909be71c83605b2e2bba",
+    "dynamic-0032-drawing_v1.png": "256e91b7837c5616b44e82dcc45c38019bba1caf12280a1c8d1f522487db8e8e",
+    "dynamic-0027-drawing_v1.png": "a961a6d5b40e53c6659e3bf66f8072483dfe04b73895193956c10b858bd714f6",
+    "dynamic-0024-sdk_sample_v2.png": "01262c263c49ba61b1c8532536cf65cfefa9a0f41c78d540f941436a70646893",
+    "static-105-baseline.png": "5d994aeeba18f310942cf667140c9b24f9bcdf4c056ab8f145abfc7a04d64aea",
+    "dynamic-0076-sdk_sample_v2.png": "ad18a1a30a445658ed73769312de0d1515aa9d5b0eb63f138557db010cdfcc96",
+    "dynamic-0079-baseline.png": "aa93d90c5e1709e166263d1f70e419c610e3901ba97a7bb96d51be677c60f880",
+    "dynamic-0009-user_v3.png": "a83a77222007c3b95a77232cb2550156f01443c57a201f180acccdd7d63c3f1c",
+    "dynamic-0086-baseline.png": "ff7acc3f39d1af92170709ed499d8d6419a6314fa6c59c883b0da5aab630d998",
+    "dynamic-0038-sdk_sample_v2.png": "2c3949bd3d93544a63575515d86c3ffa65f28b73ce44f2e8648ec42a3ee7339d",
+    "dynamic-0084-user_v3.png": "9abcb94dd0e87980451a651ff9a6a7a6aac4110d354f7e6cc9ab44a78ae7df3e",
+    "dynamic-0081-baseline.png": "14a5d7116a4b1d6db3fe11f71c076e107d72dba0b27410e4858d2ecdee876d53",
+    "dynamic-0079-user_v3.png": "df2404f2e290490259085b27fb70ec10ee1d427a9867c0b0d59817de3b5f3c7e",
+    "dynamic-0027-user_v3.png": "e2ab002167cf2cd7b0d5625195cf555b057cacc99c655673f550d545e8af763d",
+    "dynamic-0057-user_v3.png": "84443a4f63771eb29bacf9c649c9b2552a946ce4fe69d10b3e83627289151517",
+    "dynamic-0010-sdk_sample_v2.png": "819ca0109c35ec37151681a643e7e12fbbc74e5e9149c860c9b441dd88b2b35b",
+    "dynamic-0010-user_v3.png": "16943f67071f5d91fa884395d524f836650219b9634ff94590717ac034191420",
+    "dynamic-0096-sdk_sample_v2.png": "a03570968a3ad7a9f7c80846db254dc63f0982d37846b07cdec8a3d350dce8d8",
+    "static-lift-105-sdk_sample_v2.png": "05ee3e38d6bbe47a790fae536b789bf8812d058575da0b7dbca6e2c37ca95131",
+    "dynamic-0009-baseline.png": "a26e8882290de3eeabace7f9dafe76e5516b9f5427d76113b3810516062ed868",
+    "dynamic-0102-user_v3.png": "576cdf00969ac299d1fc4fcaa2830a0a62e4bee57fe2864668dd00745e68276c",
+    "dynamic-0060-user_v3.png": "92ff5a4593f520e1b3430537865e8e56cc820c6c1908d84772b7d8d873466a08",
+    "dynamic-0008-sdk_sample_v2.png": "acd6ad752272ca72982386815e28e426448ec9127e0cabe19d9959515befc7b0",
+    "dynamic-0046-sdk_sample_v2.png": "a35a1865ae41541e030e61d10b1f8730c72d9f0ba5e490d9ec84e6025b9afa94",
+    "dynamic-0020-sdk_sample_v2.png": "64f1751ca35cdc813ae42372be11c08a9f73a5b6eb830795472b913e972d7b0d",
+    "dynamic-0042-drawing_v1.png": "83f0bb4ddbf58b597f2d4851558a61a4f2e8c142dc6715fa905a5096d704cb56",
+    "dynamic-0057-drawing_v1.png": "a0ef397299760feea63cdc57a118d2547c44d60ecbd88326abfea8f0cf213bce",
+    "dynamic-0052-user_v3.png": "2a28c01170e0608bf1343d8ae1eba42095b65ceb1969b02370147a9ca3a8ff02",
+    "dynamic-0049-baseline.png": "6e71dd598d752a9a98e3266059d196b1d1af5c3a830cfc63c03e8cf02369513e",
+    "dynamic-0022-user_v3.png": "91a89c1947e9c467f6dfb51d2f4a8de9bf3bab7159736be6b6318d05e6767f30",
+    "dynamic-0072-sdk_sample_v2.png": "ce6c94cb35cb7f43e87a13ac322169309d30f72534797f70a07a0af5781853dc",
+    "dynamic-0026-drawing_v1.png": "4663bf3f07c41795a040fb93174fdd0ee231265cfc6164a033d49404cb6c39e3",
+    "dynamic-0033-drawing_v1.png": "2d075a8e26a1adeb2e3ee853acf72b0883341c0862d525716b626ff838f9c5e7",
+    "dynamic-0014-sdk_sample_v2.png": "92b50fbcf0d3d75321b36d8a319e5e276ad0ec7e0aa6bcd0864ce840ec02b1c5",
+    "dynamic-0081-user_v3.png": "4fc155be1c7562c74bf121a3747987ed052f57c15f27ac3cdfa5775f50e751b1",
+    "static-180-sdk_sample_v2.png": "555c5f7916c2064a21c5dce3abbf89e04a2725b0fc88a29d62754a12a0dfe7d5",
+    "static-lift-105-baseline.png": "2d736e851e53f0639c0a73248b93fe280ae6041fd5a55275b212c49843f6c5d7",
+    "dynamic-0029-drawing_v1.png": "ae3d6d9066a524f9ded7587a77784ff23342b71d3938043682b2b3f6271d5cc1",
+    "dynamic-0069-user_v3.png": "74ed30f92a19f24ce9ae916a79aaccf88db0deb5ce070afd0fc7a4d804ed8282",
+    "dynamic-0080-baseline.png": "35466da927f0a19476986d93f0838bbd494cab37ebb014a9804bb50d5c37c8e7",
+    "dynamic-0094-user_v3.png": "dc5ea39e02d876dcba41b9c47d24f9b143acf9da8c93085e47d5c6dbf390b5bd",
+    "lock-release.json": "c95f1b6330278480a7e7247aaf781fc7026e63f08f4751285db744851010782a",
+    "dynamic-0043-sdk_sample_v2.png": "832f618e79bc7ab5a9940de60c735b92fc4ded98a0c15347d1d8f4bb23ad5520",
+    "evaluation.jsonl": "dccc5bfa5a5df638db4ded21089732055f18fb7f56242d1610c855a586dc8edb",
+    "dynamic-0087-baseline.png": "cb2085e3248153cf848cbd67210facae64b11e4c738645ed0267801264e40169",
+    "dynamic-0019-user_v3.png": "f1f734da22e7ce63604c4df92a26fc008e99a272287e2dc0c1a2d939741db69c",
+    "dynamic-0078-baseline.png": "88383aaead0973dbcd07e0a8b12d22270c6e1082d1c6a4b45d118d8233170cb9",
+    "dynamic-0093-sdk_sample_v2.png": "962cb43418f02aea36e073891aaeef5a386ae6d5773ea268cfae3abf8383cfa2",
+    "static-105-drawing_v1.png": "206c89711098f6f3f51193e4df50bcee496e96aa648744947132523783f782eb",
+    "dynamic-0058-drawing_v1.png": "a90498e6878ef7c1f73f42763baeef4c6691787dee28d58f09da9cbd10d2dbda",
+    "dynamic-0047-user_v3.png": "99683844dd1514a56b0a15ecbd7be851bc5e34e124d9bbd5b66b69f10bcf38f4",
+    "dynamic-0025-sdk_sample_v2.png": "3ad09611e783c631fe4d82f8aee946e1649a16c9419071b2c667d72fc185a264",
+    "dynamic-0037-user_v3.png": "ba60f749bf3364cf6b45a60702bfb5581a34d3c7493eff4492af5a60ea580751",
+    "static-180-user_v3.png": "fe25684fc27a6299162dd1491960b7af432c211ae2b0a29a0644264668c2b567",
+    "dynamic-0039-sdk_sample_v2.png": "de5f7e2927d3c4eabf3461acbe7340b40ee27970323957f5700e866eecdf7998",
+    "dynamic-0092-baseline.png": "51a6d3197051c012f6e45f6e222192d87a5e43115145c5a6631fd1068ef1965d",
+    "dynamic-0038-baseline.png": "c1efcada5a5a60307a4f6e750978bcf20d7795b8a923969cea4c70eba3a19eb6",
+    "dynamic-0077-sdk_sample_v2.png": "489e8029c59c0d79a49854dd76b037042cf80a5fc9a4719491fed30ed8010efb",
+    "dynamic-0050-drawing_v1.png": "f9dc4f89f2f901c8c02142a7c8c4c17f3b510762f796f1866b001a22a02c1adb",
+    "dynamic-0045-drawing_v1.png": "efff2d50d129659fe0c42eeeba55512f8fa5e799a12ce0f921cfeaff47b569fe",
+    "dynamic-0095-baseline.png": "8cde0071c99229e68914a27ae54310b6adca346cfc64aa388c913a3a3bb06396",
+    "dynamic-0005-user_v3.png": "791656a00db8971e9fb65faa85244381951e2b8af0944ac05ffe2c36bbebf3b8",
+    "dynamic-0088-user_v3.png": "3462c5dd4d73b56f2cbd8ba2892f380b0cb022d0922cbe6460dab406dc18d900",
+    "dynamic-0034-drawing_v1.png": "c0d1ced29a57e3d95ac52c5529cf8df4ea65962a45b4851f3f054e4c8a66cd33",
+    "dynamic-0021-drawing_v1.png": "c3a3b8dc89c57b9bc87eae3e2a5f92ccda07c13605733fd9dcefe56a633991bf",
+    "dynamic-0075-user_v3.png": "94320a3831cb13bff4959667a9c275ed3afe604e9b3342049bc54148ba8540b7",
+    "dynamic-0011-sdk_sample_v2.png": "763d8f445843d6529ff3f05e0c0e13d2266fd078f833d3b2179f79c92f89f774",
+    "dynamic-0095-sdk_sample_v2.png": "60f5dc1f26ae811396ab88a3c60e2ea2876f65b5091b5099fec2c3656dc2f9cb",
+    "dynamic-0060-baseline.png": "32528494b6e9a8b3bfe8a38e507409a1cd4ac2b07450c5492bdda27c02beca07",
+    "dynamic-0035-baseline.png": "a4f331b2354d0345ddf292b37af750250d5549918e177a217c1d2cf089985e92",
+    "dynamic-0006-user_v3.png": "64c593075e9808a9cc0ed89a68b9a85b5256df51304d913d0d48bbe8328dee6f",
+    "dynamic-0067-baseline.png": "aef2f10aadc25e14c4038a0d9b929fd5f578b9ca32bdd4df305a1433b18c11bf",
+    "dynamic-0032-baseline.png": "0e0e2391d1131cdaea5ff79d7651bc07776ac3cb1a37f39ab85f79211406351b",
+    "dynamic-0098-baseline.png": "fe63599de1e1dcc8742e13d52ff2949a37ec0afa614f21a249baa30df53fcd07",
+    "dynamic-0045-sdk_sample_v2.png": "f9e4a4f615793a9726c374bea98793efaff89a00c1bf8fd3d6bfb696b5f2c20a",
+    "dynamic-0076-user_v3.png": "ebd28e04a61e612630f0ed51841eb6f49471ce00d3fff5c1995922fa1a40fe65",
+    "dynamic-0023-sdk_sample_v2.png": "6434d827a29ae6c084ad4558274c4d62a23ee3324efcd3804d94af35874e9046",
+    "dynamic-0028-user_v3.png": "3e2eb6bd3a87002d61e4eb5882ad7848b17521483691b9d68b2af6024f57732d",
+    "dynamic-0058-user_v3.png": "1b61129736f864fd6299f4f70e26591dbc0dba072616afb7cfa5eb96c31996a9",
+    "dynamic-0036-drawing_v1.png": "43d1150ab89cc577e296cda3a1c139396f1c0a40b3f6c8bea6758a2722be05c4",
+    "dynamic-0023-drawing_v1.png": "bcfc88ea09245c046bdbda374c8542bd606b492b23233113bb9a1ac7f655311a",
+    "lock-acquire.json": "25182c50678dab061bd3c319a6e6985d945bb159397099b905ee56843c580012",
+    "dynamic-0044-user_v3.png": "0a2dcbeca4bd2d54168a34042b070e76543ae7a7adf4bf400a065ef85a804f2c",
+    "static-lift-180-drawing_v1.png": "0bc5f87f3348a03087f5aa4c0f516b0523aa94cea834b0e7a7ff888f19b55475",
+    "dynamic-0072-baseline.png": "a99b07a60f4ad0690611f67fa08d91556c9031b8da82e54197daa9fb6c1eb68e",
+    "dynamic-0027-baseline.png": "a9b429c14d37dd6504ab22089a800f1bee8540afd44aaf77b0fbef41df11ea3c",
+    "dynamic-0071-sdk_sample_v2.png": "3815b4aa802fdd1698c47cb6a4bbab11642d6554667cc9954c954f94b66e49be",
+    "dynamic-0102-baseline.png": "000571d48ae9356f079565e10874f7f44ee34994c04156c43e858ed2daf181db",
+    "dynamic-0034-user_v3.png": "9a8714a4abb856b01789c27f77674fec1c4e66e50b2a1434d6a4ff703f598edf",
+    "dynamic-0075-baseline.png": "95723d1900212563db3ff5ce8461ef734aa13ce728b1074651ca47ebcecf3b3f",
+    "dynamic-0020-baseline.png": "949e614c26e5f83d5fdb382715f51dde3f1be2fa8167ff8310c776554fa1b746",
+    "dynamic-0017-sdk_sample_v2.png": "c21f6526b72228c4cb6b2f2a03f94d1bd1507d119bb8f649e88494363beee77b",
+    "dynamic-0052-drawing_v1.png": "129519ffdfd181b667cbea551f232e3cf3ed1e135125998684bd827208ece968",
+    "dynamic-0047-drawing_v1.png": "9953276f2b585135cbbe15dfb828a29564f427c16f2207b4a0c8e71f8fe04bf1",
+    "dynamic-0059-sdk_sample_v2.png": "03ca88e90caf2bd3f8574cf9ce2d6ee6b24b5e50b26fc447b6ee80cb4bec0a87",
+    "dynamic-0097-user_v3.png": "12f1c38e863cbc426e6d95e0579743e8ee6bf19d068f89d15834026a9901248b",
+    "dynamic-0089-sdk_sample_v2.png": "58f0f7c71048de2a256f1262e26594d7003bc48755aa5f2fb60ed32aefea1bb8",
+    "dynamic-0048-drawing_v1.png": "1d8c77cfbccf66de873a3d0529973733949cfe6a0343dbea470c0ad48fa62e99",
+    "dynamic-0040-sdk_sample_v2.png": "96e3b71b0627b17f592d15b8c20a40fe744fb7915fbdc45bc543282b90e5384b",
+    "dynamic-0082-user_v3.png": "c80943895feadef191edec3be3dd104b2d95053695700a794d79584a6e0d6481",
+    "dynamic-0043-baseline.png": "830625ec420d4d0c6a42a846ccc47dc5b6c66674f3d355132aadaae1cdee23a1",
+    "dynamic-0016-baseline.png": "1bc5d9ecde9c8a4f161d4263d9c82c678239c9f43963a3977cde244bbda9d0b6",
+    "dynamic-0090-sdk_sample_v2.png": "cb198102321ac56ba6754cf0a16f3e5c81499dd8187fdb533c27d54473bbf085",
+    "dynamic-0044-baseline.png": "d2b4ad1fc82386b343bf26d01fa3170e76434c8d29cbb9049f60e41f1c811895",
+    "dynamic-0011-baseline.png": "59b2f5abf6d80dbbd38f22b068bcb23e3053dc2d3a37da1440896fb2ed76f7c3",
+    "dynamic-0039-drawing_v1.png": "334ca1e3d5a31fb7bb32c5545531c58d3d05e016f13283a5b7a2ecc57ba911a0",
+    "dynamic-0051-user_v3.png": "19b00dae389a05e8c8586d33bc7297f00420ab10c7101cb6cca2112a97ec7236",
+    "dynamic-0026-sdk_sample_v2.png": "4e5cc8cfeb0b0ef858a0c3b3d06b5100fabd37e0edcc7ece418e88902f6563b7",
+    "dynamic-0068-sdk_sample_v2.png": "ea943dd02019b5c55756dff1a10aaa240fc712b94765eaa92ad928df52a068d5",
+    "dynamic-0021-user_v3.png": "c79cec44eb313ebba71dd9e500f7a3110fdb481980dda4b52090e6fb674d0003",
+    "dynamic-0051-baseline.png": "23a21010565dd96be519725d205919e7d87e4a3bd1f7516b76d16885ead42d35",
+    "dynamic-0004-baseline.png": "f6283767c19c87008fa2fc3295b2f65532341497d2dcb033364e6790ee2236b0",
+    "dynamic-0074-sdk_sample_v2.png": "3e3f6219c694cb96b2cdafe127ffdf3cab952ccf022c5057def3fdf923fa3444",
+    "dynamic-0056-baseline.png": "e5a829a85054c49a277627426131b5a0cd71fe26983afc98cef00d80a97532d6",
+    "dynamic-0003-baseline.png": "76cc743a55fff3b90c59904391c8a36b551ab9b5b2c53adf23b1b5d2cdb725bc",
+    "static-180-baseline.png": "10c4957f71d3c10422458e300e53822b596e504080ccfc465a93fefb394f70b2",
+    "dynamic-0024-drawing_v1.png": "82e043da3108bec08f116b2beb43ccfcd4687db39ccdeef0c283982210bb1c60",
+    "dynamic-0031-drawing_v1.png": "f1950848792e4b4e031b097de5e2fbdc0e750be300b4e9785eabb049eba03838",
+    "dynamic-0013-user_v3.png": "d1140f268939280f428b8e735af38d6d61afc8c371db02ed2bea21ea5795011e",
+    "dynamic-0063-user_v3.png": "f8d201cd7a1a8b7503a3e41f541817bc16fb45c49a654e56658fc88d71986b08",
+    "dynamic-0012-sdk_sample_v2.png": "77158d80522d13ed7635a05d4b897c51b3966446997cce0a8b6df7cd50d1bdc3",
+    "dynamic-0101-user_v3.png": "2e0988c95d4492d13e1c343d6f410fa62306be7ff15b4000298912bb4a0e0f35",
+    "dynamic-0040-drawing_v1.png": "657c7b610e00ee840766d83abeb2eb805a2094e5ce7c129bf2c3e0971cdfef95",
+    "dynamic-0055-drawing_v1.png": "233cfddb9b6f2fca469833ac908a3b2704517a0e5209a642ebdcd9d5547cfb9d",
+    "dynamic-0030-drawing_v1.png": "ce0bbfc66ee948333b1691d22875aab6debe45ac4e5280394e6054b3d8ccb16c",
+    "dynamic-0025-drawing_v1.png": "4887adca6deec56c125a8be450c55ee8a696987e39459727b4ac988def305d35",
+    "dynamic-0021-baseline.png": "86c94daed1d4711140d76ae022d9d8a0c1aaf00e18b12fc06bde8171cca0e3f6",
+    "dynamic-0074-baseline.png": "b36f2eb3cab3e81c7cf8f8d54252c0f92995fd7d3f8ea732a3d2a35c026c6b69",
+    "dynamic-0094-sdk_sample_v2.png": "340d62779a73c66f001372066dfbcfb42784379bfe7d6077216596ded14705d4",
+    "dynamic-0024-user_v3.png": "f331e20f253972c361d395c165b9d29434d9ff65baea4e3fe15b597ddf12943a",
+    "static-lift-270-user_v3.png": "d7568ce108747bf4497bca2a96533705656594166f6f29cc8104003d7e8aed12",
+    "dynamic-0044-sdk_sample_v2.png": "e85e378df9e632a5dac22f22271745da93e24c9dd74c7200458c1d3d30931d11",
+    "dynamic-0026-baseline.png": "06a1fffb5ab49b612bf42110614e7c5606399320bd7d2a103ace75267ce26735",
+    "dynamic-0073-baseline.png": "e2570fb94c988aaad3aca1827187bf7caf65082de054ea750aa8ed543c3d6978",
+    "dynamic-0054-user_v3.png": "10519563b66a9a0b59deca11738b29b829f85b3ba94bb7197f1868fc6762635b",
+    "dynamic-0022-sdk_sample_v2.png": "f029ca73e4c933af2940036ebd5a0d5512863675a1b4d2bab906b85cce1afe10",
+    "dynamic-0054-drawing_v1.png": "e5c0e336e4b45eb149f798b3f200c1d4fe22dc408123e798d4040cdd8b98ef53",
+    "dynamic-0041-drawing_v1.png": "7648b0cf7e0c54decb8b362be2647b7b8b4ead18023c9f4bd9df2316f3a57d28",
+    "static-lift-105-user_v3.png": "b8bcef4efe68c9253cb9fa1805f31a79262d72ea32f98a55306e63eac6cfc52c",
+    "dynamic-0087-user_v3.png": "8c5724e75638a5270712923ca31ecef5b9ce68c0851268adb6d8679eafc299c7",
+    "dynamic-0066-user_v3.png": "f812f74653d03e9622b0f1bd1757506c6b9622d09564749fe2cad684ca8b1e35",
+    "dynamic-0099-baseline.png": "2e237696c9364f8f8e2864bf70aec937344f1d3b16b4048125696774d4b4196c",
+    "dynamic-0033-baseline.png": "0e0e2391d1131cdaea5ff79d7651bc07776ac3cb1a37f39ab85f79211406351b",
+    "dynamic-0066-baseline.png": "3b3e97ab42ba5208b9e40425abc407c2d026eea58cf7462d87ac90d026bca571",
+    "dynamic-0070-sdk_sample_v2.png": "c95a7f92a98181678a141de7e3fabb988a021e7f9b8df4f4f4307c7d5b752f8c",
+    "dynamic-0016-user_v3.png": "411401dfded0d2e3264a777762044e15c1af3f64e6a54bccc108fcfb738dc713",
+    "dynamic-0034-baseline.png": "6a3cdc941924c0cd22d8da4b2d1d92c59afca03cd1259d4c56da90444b1bf65e",
+    "dynamic-0061-baseline.png": "0275a669630c7fdffa1edbf4ccd17ec62f99ee3aa81e25970fb9931a5969a9c2",
+    "dynamic-0049-drawing_v1.png": "81a33ad0ded2a0ff6e63649d84f6018ff13e779dbd8cd960b2fe7804a134e262",
+    "dynamic-0048-user_v3.png": "950f40b649bc070bb130c0eab895d4b43fc274ad6c04066eb435b78ab745d401",
+    "dynamic-0058-sdk_sample_v2.png": "0d3af1f09518c8a86acf4b968ba357a10366a9722f17d9708b96fdff501c8a64",
+    "dynamic-0016-sdk_sample_v2.png": "f4129bf0fb808ac1f93aee1d174e231a38d68766e9512a192f24b4918a24d6c0",
+    "static-lift-180-baseline.png": "e72e5990fc5c67a4b8491801c3abb4e82bea16f3950821713d8d1a70413c0fc6",
+    "dynamic-0038-user_v3.png": "4dc8075c3cffd0c70e2017980bde949ffb8631f946ca6c336482b12948404bfb",
+    "dynamic-0088-sdk_sample_v2.png": "1870505da4c8d6ed8b761cecbb123687c0e9646a3c286bfb52aac3bf284a7128",
+    "dynamic-0038-drawing_v1.png": "2ec3fcc9b869456e6cdc67943cd76f2cd6c416d01ed7ec685223d39d7dff3db0",
+    "dynamic-0041-sdk_sample_v2.png": "35ac716f92742e862885a1773df86695c6ac4a4db571b402958cf8cb17a15992",
+    "scene.xml": "76611e4badbb7bc8a49f46aeda0907cd98407f0af4914894e105fd5ed1ff3cab",
+    "dynamic-0002-baseline.png": "7634300f9b0706604d190bf003e24f0c6b92c4df75accb8f9b71a50547f8db02",
+    "dynamic-0057-baseline.png": "ef33a75e6e2910313a1a5290d71479074721af588b9eecafd360d486369ff016",
+    "static-105-sdk_sample_v2.png": "aa7598f4f51a9f0cc39a13418aa5850e67b2c9180f7980afffce105d25d1b526",
+    "dynamic-0091-sdk_sample_v2.png": "6212550b2718c6698ee7e40f653ae9a54822a24075a56b1984186cf1246dea94",
+    "dynamic-0005-baseline.png": "a518db86e5f704ba7941569fe0c0150ca82976c1860bc4b14e37653316127d32",
+    "dynamic-0050-baseline.png": "e37b0073ed31e6d732c18f7aaf83f0fbcfbdf5d58e4957a88e7924b991a0bd01",
+    "dynamic-0022-drawing_v1.png": "75204132efdea2b471a385a6fa7a1f093ef1efdfb4cee6fdfbffa39587ea87ae",
+    "dynamic-0037-drawing_v1.png": "00149b0553ccdb277e01034626d0ea159560de02e187bc7fcb09d17d908e78d6",
+    "static-180-drawing_v1.png": "ac0a48c3247b5a40ccc16cc03e62e562dfdb7d029d188cbaa3db56b7be53f4fe",
+    "dynamic-0073-user_v3.png": "da82c34a1cd3918ea55a570a9a1eaf2c40e9ea5598c749578d8b7c197cbce84d",
+    "dynamic-0069-sdk_sample_v2.png": "7e56462e2aa5e20499ac593da913a94e2fa1ac3afcd593e91b04ec2f6cd595d5",
+    "dynamic-0027-sdk_sample_v2.png": "063d53a6b7fc7b664be73db56c4b3bba5d455fcec2498e6c33fa4442c1d6792d",
+    "dynamic-0046-drawing_v1.png": "eba87894fc4588ad6f62812ed08b783a06bb19acfa0e68b20296e9437a9239de",
+    "dynamic-0053-drawing_v1.png": "46f862784782f9ca334c7a5f97f832d0f52862cdbd9c904d43883f17b80a5d20",
+    "dynamic-0003-user_v3.png": "734109f5078019a162cbd1a2a3ac3ad337b2cf99e09ce3dc30324c083905d9d8",
+    "dynamic-0075-sdk_sample_v2.png": "6ade130cb27032006ec71d16d9932682839dd317ec797185ee31a739d94d47d0",
+    "dynamic-0010-baseline.png": "13f5d8bc98c94a1a756c9d66a5e90c4a26ed665ab68a4c8ab29cf8b315e85df9",
+    "dynamic-0045-baseline.png": "5651ff336302d855829d5e3250d155b031217124659d2c5f9c283fdc0eb57273",
+    "dynamic-0017-baseline.png": "7525fc98cc11c4b6838205ef98e669812c61d846e39f19156b217189b6aa2b3c",
+    "dynamic-0042-baseline.png": "06ea4e9ed1850804d444c1dddba54dd6c2b06327c9195648b98d77a821b7683b",
+    "dynamic-0092-user_v3.png": "53e9e06ef2bfe280ee27c24d961185c07cfb339da9e1af2a8d0cb5f43dff8db4",
+    "dynamic-0031-user_v3.png": "54263955f1d7f8894f6cd7e4376eae6f427280e315f7932708323dc924a9aaa8",
+    "dynamic-0013-sdk_sample_v2.png": "3b51b6459cd22fbe77d2ff060504cc0c9435fa9a4df765e5b6bdcc51a02cba7a",
+    "static-lift-180-sdk_sample_v2.png": "0fed268892e41462e2bdb0389aafa2bf19aae689e1780e55bacf99812b76b440",
+    "dynamic-0041-user_v3.png": "f8bdd06835d5c912a6c0c5e21b966bf7f0d6eab59c1db46c5d670ab6aacdf1b7"
+  },
+  "verdict": "User <=10% full-image visibility target met in this fixture; not real calibration or mission success"
+}

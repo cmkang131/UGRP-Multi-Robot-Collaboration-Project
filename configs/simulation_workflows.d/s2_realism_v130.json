@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s2-realism-v130",
+      "version": "7.23.0",
+      "purpose": "One seed1051 full S2 DEV with stiff calibrated look-ahead carry and slip recovery",
+      "entry": "scripts/run_s2_look_ahead.py",
+      "runner": "scripts.run_s2_look_ahead",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed source, owned exclusive lock, calibrated look-ahead; S2 DEV only",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

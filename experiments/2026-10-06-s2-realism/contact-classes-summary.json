@@ -1,0 +1,315 @@
+{
+  "schema": "ugrp.s2.contact_classes.v1",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "gt_usage": "evaluation only",
+  "sample_hz": 1,
+  "sampled_frames": 166,
+  "nonempty_frames": 104,
+  "contacts": 7195,
+  "classes": [
+    {
+      "category": "true_wall_bottom",
+      "n": 5168,
+      "fraction": 0.7182765809589993,
+      "nonvisible_n": 0,
+      "error_m": {
+        "n": 5168,
+        "median": 0.007890825122968348,
+        "p10": 0.0032385219461921635,
+        "p90": 0.0232442305634581,
+        "rmse": 0.013771938163036743
+      },
+      "mae_contribution_m": 0.008225244367060259,
+      "sse_fraction": 0.0008026365693664396,
+      "nonvisible_error_m": {
+        "n": 0,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "rmse": null
+      }
+    },
+    {
+      "category": "floor_color_boundary",
+      "n": 2024,
+      "fraction": 0.28130646282140376,
+      "nonvisible_n": 2024,
+      "error_m": {
+        "n": 2024,
+        "median": 0.9102286648516098,
+        "p10": 0.18938189714516185,
+        "p90": 1.0008523433320973,
+        "rmse": 0.776451181820602
+      },
+      "mae_contribution_m": 0.1948340746744514,
+      "sse_fraction": 0.9991832125133775,
+      "nonvisible_error_m": {
+        "n": 2024,
+        "median": 0.9102286648516098,
+        "p10": 0.18938189714516185,
+        "p90": 1.0008523433320973,
+        "rmse": 0.776451181820602
+      }
+    },
+    {
+      "category": "object_or_other_robot",
+      "n": 0,
+      "fraction": 0.0,
+      "nonvisible_n": 0,
+      "error_m": {
+        "n": 0,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "rmse": null
+      },
+      "mae_contribution_m": 0.0,
+      "sse_fraction": 0.0,
+      "nonvisible_error_m": {
+        "n": 0,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "rmse": null
+      }
+    },
+    {
+      "category": "doorframe_pillar",
+      "n": 0,
+      "fraction": 0.0,
+      "nonvisible_n": 0,
+      "error_m": {
+        "n": 0,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "rmse": null
+      },
+      "mae_contribution_m": 0.0,
+      "sse_fraction": 0.0,
+      "nonvisible_error_m": {
+        "n": 0,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "rmse": null
+      }
+    },
+    {
+      "category": "self_body_shadow",
+      "n": 0,
+      "fraction": 0.0,
+      "nonvisible_n": 0,
+      "error_m": {
+        "n": 0,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "rmse": null
+      },
+      "mae_contribution_m": 0.0,
+      "sse_fraction": 0.0,
+      "nonvisible_error_m": {
+        "n": 0,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "rmse": null
+      }
+    },
+    {
+      "category": "unknown",
+      "n": 3,
+      "fraction": 0.0004169562195969423,
+      "nonvisible_n": 0,
+      "error_m": {
+        "n": 3,
+        "median": 0.07342960649073094,
+        "p10": 0.07323496753664047,
+        "p90": 0.07934864866166196,
+        "rmse": 0.07589768220663377
+      },
+      "mae_contribution_m": 3.161144176417561e-05,
+      "sse_fraction": 1.4150917256089609e-05,
+      "nonvisible_error_m": {
+        "n": 0,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "rmse": null
+      }
+    }
+  ],
+  "unknown_times": [
+    119.0,
+    120.0
+  ],
+  "manual_review": {
+    "schema": "ugrp.s2.contact_manual_review.v1",
+    "scope": "evaluation only, never runtime input",
+    "review": "104 nonempty contact frames sheets00-06; 25 ambiguous contacts enlarged; three wall-face artifacts remain unknown",
+    "overrides": [
+      {
+        "t": 92.0,
+        "column": 8,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 92.0,
+        "column": 14,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 102.0,
+        "column": 47,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 131.0,
+        "column": 145,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 132.0,
+        "column": 145,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 133.0,
+        "column": 145,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 134.0,
+        "column": 145,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 135.0,
+        "column": 145,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 136.0,
+        "column": 145,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 137.0,
+        "column": 145,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 138.0,
+        "column": 145,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "unknown"
+      },
+      {
+        "t": 157.0,
+        "column": 283,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 186.0,
+        "column": 145,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 186.0,
+        "column": 152,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 186.0,
+        "column": 178,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 186.0,
+        "column": 198,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 193.0,
+        "column": 440,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 194.0,
+        "column": 434,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 195.0,
+        "column": 434,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 195.0,
+        "column": 440,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 196.0,
+        "column": 440,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      },
+      {
+        "t": 196.0,
+        "column": 447,
+        "category": "true_wall_bottom",
+        "reason": "enlarged own RGB confirms wall-floor edge/junction; slanted edge and strip/subpixel bias",
+        "previous": "floor_color_boundary"
+      }
+    ]
+  },
+  "limitations": "104 contact images and25 ambiguous enlarged patches reviewed; no dense semantic truth for other robots/shadows. Three wall-face artifacts unknown. No detected object/self/pillar boundary in this sample. Median errors are not additive; use SSE share and weighted MAE contribution.",
+  "source_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/robots/r3/frames.jsonl": "100c0646e69ea5003792f85e34ef83335ca1aa29a9441dcd1e80239e866612ea",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/eval_only/trajectory.jsonl": "d5e96832527697a99cb904873670d8536c7186b2fe98b86c10dbc9956b6f1043",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/eval_only/camera-pose.jsonl": "2b42c8e030186641293d96d54f0efb5fab5ae821a4b0c5501c0dc8e1847f8d18"
+  }
+}

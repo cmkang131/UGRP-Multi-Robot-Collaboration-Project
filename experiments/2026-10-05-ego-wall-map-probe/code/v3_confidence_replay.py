@@ -14,6 +14,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE))
 import odom_grid_replay as base
 import markerless_probe as mp
+from harness.wall_column_calibration import adapter
+mp=adapter(mp)
 import height_free_wall as hfw
 import wall_probe as wp
 import ego_wall_map as ewm

@@ -173,3 +173,43 @@ def test_own_range_channel_contains_no_hit_identity_and_off_no_reads():
     reading=b.own_range()
     assert reading==dict(t=3.2,range_m=1.2,valid=True,status='ok')
     assert set(reading)=={'t','range_m','valid','status'}
+
+
+def test_shared_v145_host_exact_command_and_coast_without_static_map(monkeypatch):
+    from harness.goal_route_heading import Host
+    from harness.own_map_heading import command
+    h=Host('r3','s2_pulse_v122_rotL_v1')
+    cm=SimpleNamespace(pose_clear=lambda p:True);core=SimpleNamespace(collision_time=lambda *a:99.)
+    args=dict(pose=[0.,0.,0.],path=[[0.,.3]],goal=[0.,2.],costmap=cm,core=core,points=[],map_pose=[0.,0.,0.],dev_light=True)
+    got,info=h.command(t=1.,**args)
+    expected=command(h.rows[-1]['plan'],args['pose'],h.profiles,robot_id='r3')
+    assert got==dict(t=1.,**expected) and got['turn']>0 and got['left']==got['forward']==0
+    assert h.command(t=1.1,**args)[0]['kind']=='hold'
+    assert h.command(t=1.2,**args)[0]['kind']=='mecanum'
+    # Dense reversed teach nodes cannot enable a lateral shortcut near a node.
+    h=Host('r3','s2_pulse_v122_rotL_v1');args.update(path=[[-.06,0]],goal=[-2.,0])
+    cmd,_=h.command(t=1,**args);assert cmd['turn']!=0 and cmd['forward']==cmd['left']==0
+
+
+def test_shared_application_is_recorded_in_bundle_and_host_error_result(tmp_path):
+    from scripts.run_goal_route_continuous import bundle,result_metadata
+    b=bundle(55001,'a'*40);(tmp_path/'bundle.json').write_text(json.dumps(b))
+    receipt={'mode':'relay-cache-v1','enabled':True};(tmp_path/'v7-speedups.json').write_text(json.dumps(receipt))
+    r=result_metadata(tmp_path,{'status':'HOST_ERROR'},b)
+    assert r['heading_mode']==b['options']['heading_mode']=='path_tangent_v1'
+    assert r['heading_contract']==b['heading_contract']
+    assert r['heading_contract']['host']=='shared_v145' and not r['heading_contract']['return_shortcuts']
+    assert r['runtime_speedups']==receipt
+
+
+def test_leg_report_splits_on_arrival_not_detection_and_marks_270s():
+    import importlib.util
+    path=Path(__file__).parents[1]/'experiments/2026-10-09-goal-route-continuous/code/report.py'
+    spec=importlib.util.spec_from_file_location('goal_legs_report',path);r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
+    events=[dict(t=10,reason='own_entity_confirmed'),dict(t=20,reason='goal_reached',entity='B'),dict(t=290,reason='leg_budget_exhausted')]
+    trace=[dict(t=t,local_pose=[x,0,0]) for t,x in [(0,0),(10,1),(20,2),(290,4)]]
+    gt=[dict(t=p['t'],robot_xyz_m=p['local_pose']) for p in trace]
+    v=r.legs(dict(start_sim_s=0,status='RECORDED',stage='budget_exhausted'),events,trace,gt)
+    assert len(v)==2 and [p['sim_s'] for p in v]==[20,270]
+    assert [p['budget_failed'] for p in v]==[False,True]
+    assert [p['own_tracked_path_m'] for p in v]==[2,2]
