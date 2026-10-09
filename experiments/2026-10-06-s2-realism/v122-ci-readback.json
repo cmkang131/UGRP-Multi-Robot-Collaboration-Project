@@ -1,0 +1,84 @@
+{
+  "run_id": 37493154746,
+  "source_sha": "e619ee571ea6d03ad33f92793e91492d968f4d30",
+  "overall_status": "in_progress",
+  "overall_conclusion": "",
+  "preflight": {
+    "completedAt": "2026-10-06T16:07:39Z",
+    "conclusion": "success",
+    "databaseId": 112370794492,
+    "name": "ci-preflight",
+    "startedAt": "2026-10-06T16:07:15Z",
+    "status": "completed",
+    "steps": [
+      {
+        "completedAt": "2026-10-06T16:07:17Z",
+        "conclusion": "success",
+        "name": "Set up job",
+        "number": 1,
+        "startedAt": "2026-10-06T16:07:16Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-06T16:07:37Z",
+        "conclusion": "success",
+        "name": "Run actions/checkout@v4",
+        "number": 2,
+        "startedAt": "2026-10-06T16:07:17Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-06T16:07:37Z",
+        "conclusion": "success",
+        "name": "Reject missing sparse-checkout fixtures before installing dependencies",
+        "number": 3,
+        "startedAt": "2026-10-06T16:07:37Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-06T16:07:37Z",
+        "conclusion": "success",
+        "name": "Check CI routing and required-gate failure cases without simulator dependencies",
+        "number": 4,
+        "startedAt": "2026-10-06T16:07:37Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-06T16:07:37Z",
+        "conclusion": "success",
+        "name": "Select full or docs-only CI from every changed path",
+        "number": 5,
+        "startedAt": "2026-10-06T16:07:37Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-06T16:07:38Z",
+        "conclusion": "success",
+        "name": "Post Run actions/checkout@v4",
+        "number": 10,
+        "startedAt": "2026-10-06T16:07:37Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-06T16:07:38Z",
+        "conclusion": "success",
+        "name": "Complete job",
+        "number": 11,
+        "startedAt": "2026-10-06T16:07:38Z",
+        "status": "completed"
+      }
+    ],
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37493154746/job/112370794492"
+  },
+  "completed_passed": 25,
+  "pending": [
+    "offline-regression-shard (5/8)",
+    "offline-regression-shard (1/8)",
+    "offline-regression-shard (4/8)",
+    "offline-regression-shard (7/8)",
+    "offline-regression-shard (3/8)",
+    "offline-regression-shard (2/8)",
+    "offline-regression-shard (0/8)"
+  ],
+  "failures": []
+}

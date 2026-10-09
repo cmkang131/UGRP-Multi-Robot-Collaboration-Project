@@ -1,0 +1,96 @@
+{
+  "failure": "CYAN_ALIGN_VIEW_LOST",
+  "stage": "align before grasp",
+  "last_pulse": {
+    "t": 127.8,
+    "forward": 0.0,
+    "left": -0.65,
+    "turn": 0.0,
+    "duration_s": 0.65
+  },
+  "frames": [
+    {
+      "t": 127.75,
+      "robot_xyz_m": [
+        -0.12418401192587547,
+        -0.8260899762195922,
+        0.03201058825266945
+      ],
+      "cyan_xyz_m": [
+        0.12500000000073305,
+        -0.8499999999997113,
+        0.015892244579783672
+      ],
+      "robot_yaw_rad": -0.03436723819428756,
+      "frame_id": 2530,
+      "frame_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1039-P1-2-pick/robots/r3/rgb/02529.jpg",
+      "frame_sha256": "5c364ad95248b5e68644d640c14c685ed7c4d2e841520885712bdb354356326e",
+      "full_frame_cyan_area_px": 16110
+    },
+    {
+      "t": 128.45,
+      "robot_xyz_m": [
+        -0.12596546241175272,
+        -0.9847205860184578,
+        0.03202902411072975
+      ],
+      "cyan_xyz_m": [
+        0.12499999999920092,
+        -0.8500000000001718,
+        0.015892244579783672
+      ],
+      "robot_yaw_rad": -0.01563764285507752,
+      "frame_id": 2544,
+      "frame_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1039-P1-2-pick/robots/r3/rgb/02543.jpg",
+      "frame_sha256": "a5d90e15c7f85b9882b54f2305aab895e89d1ae4473775005ca0e194669cabd0",
+      "full_frame_cyan_area_px": 0
+    },
+    {
+      "t": 129.0,
+      "robot_xyz_m": [
+        -0.12728726571650256,
+        -0.9992706275720837,
+        0.0320252271273429
+      ],
+      "cyan_xyz_m": [
+        0.12500000000084338,
+        -0.8500000000003154,
+        0.015892244579783672
+      ],
+      "robot_yaw_rad": -0.011130991587609182,
+      "frame_id": 2555,
+      "frame_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1039-P1-2-pick/robots/r3/rgb/02554.jpg",
+      "frame_sha256": "5bb14c3c0dc0daf8b94f1c5c55fa562e0692dce0151824558bf608307fbc76df",
+      "full_frame_cyan_area_px": 0
+    },
+    {
+      "t": 131.8,
+      "robot_xyz_m": [
+        -0.12727970615974382,
+        -0.9992620011573197,
+        0.0320249126125642
+      ],
+      "cyan_xyz_m": [
+        0.1250000000005927,
+        -0.8500000000010404,
+        0.015892244579783672
+      ],
+      "robot_yaw_rad": -0.011113780788990871,
+      "frame_id": 2611,
+      "frame_path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1039-P1-2-pick/robots/r3/rgb/02610.jpg",
+      "frame_sha256": "7812d5a26fb1b0effc72066f9b8eb1e9f157825ffbb3cd1b8dea6279008b60b0",
+      "full_frame_cyan_area_px": 0
+    }
+  ],
+  "displacement": {
+    "window": [
+      127.8,
+      129.0
+    ],
+    "robot_xy_displacement_m": 0.17298642102998874,
+    "cyan_xy_displacement_m": 1.3108054936039567e-12
+  },
+  "interpretation": "Temporal evidence: lateral pulse then target-view loss; underlying physical/vision cause not isolated by ablation. This is not a drop or host error.",
+  "pickup_site_comparison": "NOT_REACHED; these areas are failure-window full-frame masks, not before/after pickup-site measurements",
+  "mask_input": "BGR (same as SceneCheck.decode)"
+}

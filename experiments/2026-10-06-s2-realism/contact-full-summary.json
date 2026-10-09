@@ -1,0 +1,405 @@
+{
+  "schema": "ugrp.s2.contact_full.v1",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place",
+  "source_sha": "c26e9afd5454e41d7192311924853dc00147b0d7",
+  "seed": 1051,
+  "execution_bundle_id": "zone-s2-realism-v126",
+  "physics_runs": 1,
+  "additional_physics_runs": 0,
+  "model_calls": 0,
+  "status": "STAGE_REACHED_UNQUALIFIED",
+  "failure": null,
+  "evaluation": {
+    "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+    "success": false,
+    "lifted": true,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "qualification": "post-run DEV only; no study/physical hardware success claim"
+  },
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1",
+    "carry_pose": "real_delivery_v1",
+    "camera_calibration": "v3_unloaded_sag_v1",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "visibility_mask": "command_geometry_v1",
+    "amcl_update": "ros_motion_v1",
+    "dev_search": "repeat_views_v1",
+    "visibility_policy": "nav2_observed_v1",
+    "contact_filter": "floor_appearance_v1"
+  },
+  "posthoc_evaluation": {
+    "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+    "seed": 1051,
+    "cargo_remaining_to_B_region_m": 2.178372040792117,
+    "cargo_distance_to_B_center_m": 2.649794874801724,
+    "robot_remaining_to_B_region_m": 2.3799496062273113,
+    "final_cargo_xy_m": [
+      2.140484001405085,
+      -1.1140010490973407
+    ],
+    "final_robot_xy_m": [
+      1.9389399171438302,
+      -1.100741895139411
+    ],
+    "carry_window": [
+      87.0,
+      241.05
+    ],
+    "visual_updates": 27,
+    "max_update_gap_sim_s": 33.85000000000002,
+    "carry_xy_rmse_m": 2.0235827759068257,
+    "actual_visibility": {
+      "sample_hz": 1.0,
+      "sample_frames": 155,
+      "all_columns": {
+        "above": 5090,
+        "clear": 4869,
+        "below": 4781,
+        "cargo_gt": 140
+      },
+      "detected_columns": {
+        "above": 3487,
+        "clear": 4155
+      },
+      "all_clear_fraction": 0.32721774193548386,
+      "detected_clear_fraction": 0.5437058361685423,
+      "method": "saved actual camera/cargo + static walls, conservative command-body bounds, undistorted rows4..470; not live perception input"
+    },
+    "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+    "update_times": [
+      96.35,
+      97.95,
+      99.25,
+      100.85,
+      102.15,
+      103.75,
+      105.05,
+      106.7,
+      108.05,
+      109.7,
+      111.4,
+      113.0,
+      115.15,
+      116.7,
+      150.35,
+      158.75,
+      167.15,
+      184.35,
+      186.05,
+      187.75,
+      189.2,
+      190.95,
+      192.75,
+      194.6,
+      196.5,
+      198.45,
+      207.2
+    ],
+    "carry_xy_p90_m": 2.2967761910424884,
+    "carry_end_error_m": 2.5920966525542695,
+    "carry_pose_samples": 3081,
+    "visibility_measurement": {
+      "attempts": 480,
+      "less_than_six_columns": 453,
+      "detected_columns": 1868,
+      "kept_columns": 1868
+    },
+    "status": "COMPLETE"
+  },
+  "wall_s": 347.86575812500087,
+  "sim_s": 264.35,
+  "wall_per_sim": 1.3159287237563868,
+  "commands": 3818,
+  "would_stop": {
+    "ARM_COLLISION_GUARD": 7,
+    "POSE_UNCERTAIN": 341,
+    "VISUAL_STALL_SUSPECTED": 1
+  },
+  "hold_status": "probable_held_inhand_rgb",
+  "pickup_site_status": "not_evaluated_inhand_selected",
+  "regrasp_count": 0,
+  "frames_verified": 5202,
+  "measurement_contacts": [
+    {
+      "t": 96.35,
+      "points": 26,
+      "floor_color": 26,
+      "wall": 0,
+      "ambiguous": 0,
+      "kl": 0.03997972541247874,
+      "removed": 27
+    },
+    {
+      "t": 97.95,
+      "points": 30,
+      "floor_color": 30,
+      "wall": 0,
+      "ambiguous": 0,
+      "kl": 0.04139466817499883,
+      "removed": 17
+    },
+    {
+      "t": 99.25,
+      "points": 45,
+      "floor_color": 45,
+      "wall": 0,
+      "ambiguous": 0,
+      "kl": 0.04183275380206242,
+      "removed": 18
+    },
+    {
+      "t": 100.85,
+      "points": 47,
+      "floor_color": 47,
+      "wall": 0,
+      "ambiguous": 0,
+      "kl": 0.020711215050839022,
+      "removed": 20
+    },
+    {
+      "t": 102.15,
+      "points": 44,
+      "floor_color": 44,
+      "wall": 0,
+      "ambiguous": 0,
+      "kl": 0.010984591652906049,
+      "removed": 23
+    },
+    {
+      "t": 103.75,
+      "points": 57,
+      "floor_color": 57,
+      "wall": 0,
+      "ambiguous": 0,
+      "kl": 0.006732031891583631,
+      "removed": 16
+    },
+    {
+      "t": 105.05,
+      "points": 65,
+      "floor_color": 65,
+      "wall": 0,
+      "ambiguous": 0,
+      "kl": 0.033065106427856206,
+      "removed": 13
+    },
+    {
+      "t": 106.7,
+      "points": 57,
+      "floor_color": 57,
+      "wall": 0,
+      "ambiguous": 0,
+      "kl": 0.04087336409736504,
+      "removed": 21
+    },
+    {
+      "t": 108.05,
+      "points": 40,
+      "floor_color": 23,
+      "wall": 9,
+      "ambiguous": 8,
+      "kl": 0.009676355278883457,
+      "removed": 29
+    },
+    {
+      "t": 109.7,
+      "points": 22,
+      "floor_color": 6,
+      "wall": 10,
+      "ambiguous": 6,
+      "kl": 0.032204225230829886,
+      "removed": 45
+    },
+    {
+      "t": 111.4,
+      "points": 39,
+      "floor_color": 25,
+      "wall": 9,
+      "ambiguous": 5,
+      "kl": 0.07201459805634347,
+      "removed": 26
+    },
+    {
+      "t": 113.0,
+      "points": 33,
+      "floor_color": 12,
+      "wall": 16,
+      "ambiguous": 5,
+      "kl": 0.012364659223309236,
+      "removed": 15
+    },
+    {
+      "t": 115.15,
+      "points": 38,
+      "floor_color": 20,
+      "wall": 12,
+      "ambiguous": 6,
+      "kl": 0.04018366727380229,
+      "removed": 20
+    },
+    {
+      "t": 116.7,
+      "points": 32,
+      "floor_color": 8,
+      "wall": 20,
+      "ambiguous": 4,
+      "kl": 0.02614529481772844,
+      "removed": 14
+    },
+    {
+      "t": 150.35,
+      "points": 17,
+      "floor_color": 0,
+      "wall": 13,
+      "ambiguous": 4,
+      "kl": 0.023353010822890513,
+      "removed": 0
+    },
+    {
+      "t": 158.75,
+      "points": 36,
+      "floor_color": 19,
+      "wall": 10,
+      "ambiguous": 7,
+      "kl": 0.013335914133704399,
+      "removed": 36
+    },
+    {
+      "t": 167.15,
+      "points": 19,
+      "floor_color": 0,
+      "wall": 8,
+      "ambiguous": 11,
+      "kl": 0.0030188529242028274,
+      "removed": 0
+    },
+    {
+      "t": 184.35,
+      "points": 92,
+      "floor_color": 0,
+      "wall": 91,
+      "ambiguous": 1,
+      "kl": 0.02971264835073023,
+      "removed": 0
+    },
+    {
+      "t": 186.05,
+      "points": 86,
+      "floor_color": 0,
+      "wall": 86,
+      "ambiguous": 0,
+      "kl": 0.047499498854678024,
+      "removed": 0
+    },
+    {
+      "t": 187.75,
+      "points": 80,
+      "floor_color": 0,
+      "wall": 79,
+      "ambiguous": 1,
+      "kl": 0.05630561997089014,
+      "removed": 0
+    },
+    {
+      "t": 189.2,
+      "points": 74,
+      "floor_color": 11,
+      "wall": 63,
+      "ambiguous": 0,
+      "kl": 0.022045490711571546,
+      "removed": 15
+    },
+    {
+      "t": 190.95,
+      "points": 51,
+      "floor_color": 15,
+      "wall": 36,
+      "ambiguous": 0,
+      "kl": 2.2305035036776944e-05,
+      "removed": 25
+    },
+    {
+      "t": 192.75,
+      "points": 66,
+      "floor_color": 26,
+      "wall": 40,
+      "ambiguous": 0,
+      "kl": 1.236861267375218e-08,
+      "removed": 22
+    },
+    {
+      "t": 194.6,
+      "points": 88,
+      "floor_color": 17,
+      "wall": 71,
+      "ambiguous": 0,
+      "kl": 2.0211676168814552e-10,
+      "removed": 6
+    },
+    {
+      "t": 196.5,
+      "points": 95,
+      "floor_color": 0,
+      "wall": 95,
+      "ambiguous": 0,
+      "kl": 1.0090006544234843e-08,
+      "removed": 1
+    },
+    {
+      "t": 198.45,
+      "points": 96,
+      "floor_color": 0,
+      "wall": 96,
+      "ambiguous": 0,
+      "kl": 0.0038135759825579547,
+      "removed": 0
+    },
+    {
+      "t": 207.2,
+      "points": 84,
+      "floor_color": 0,
+      "wall": 84,
+      "ambiguous": 0,
+      "kl": 0.002715742964044967,
+      "removed": 0
+    }
+  ],
+  "total_update_points": 1459,
+  "floor_update_points": 553,
+  "wall_update_points": 848,
+  "ambiguous_update_points": 58,
+  "gt_usage": "posthoc score only, actual Runtime already closed; RGB mask replay has no GT inputs",
+  "source_changed_during_run": false,
+  "source_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/result.json": "205ee8cf22e6f754a17e528e195c38b01c9e4689a7abc530840503770ae71902",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/bundle.json": "38c8696c13e063d1d60feceda794ebc5a92da604985462f0cd1d746023e5a43e",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/student_record.json": "a3c622edc12b1e141711bbbacf109afc015559454b077249d2bc79974cbf563c",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/frames.jsonl": "00144a3d2f50b5c0d30296a4d65dc88e4b4f42caed48601fa3307852e5c59bbf",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/eval_only/trajectory.jsonl": "86f135c2039c650990c77286a7023212934581968f9dc51ffe522fcf5bf2a3e2",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/eval_only/camera-pose.jsonl": "98e5ed566e51e229e2057c72cbc724570cde9ec7244d2676deec195d9944357f"
+  },
+  "contact_audit": {
+    "attempts": 28,
+    "removed": 418,
+    "kept": 1536
+  }
+}

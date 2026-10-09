@@ -1,0 +1,82 @@
+{
+  "schema": "ugrp.s2.slip_detect.criteria.v1",
+  "evaluation": {
+    "seed": 1051,
+    "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place",
+    "carry_window_sim_s": [
+      87.0,
+      241.05
+    ],
+    "frames": 5202,
+    "baseline_rmse_m": 2.0235827759068257,
+    "baseline_max_gap_sim_s": 33.85,
+    "gt": "s1051 scoring only after predictions; no fitting; actual camera pitch evaluation only",
+    "hashes": {
+      "student_record.json": "a3c622edc12b1e141711bbbacf109afc015559454b077249d2bc79974cbf563c",
+      "eval_only/trajectory.jsonl": "86f135c2039c650990c77286a7023212934581968f9dc51ffe522fcf5bf2a3e2",
+      "bundle.json": "38c8696c13e063d1d60feceda794ebc5a92da604985462f0cd1d746023e5a43e",
+      "robots/r3/frames.jsonl": "00144a3d2f50b5c0d30296a4d65dc88e4b4f42caed48601fa3307852e5c59bbf"
+    }
+  },
+  "physics_runs_before_gate": 0,
+  "model_calls": 0,
+  "options": {
+    "slip_detection": "slip_detect_v1",
+    "stall_recovery": "nav2_progress_v1"
+  },
+  "default": "off",
+  "fit": "none; frozen floor/camera/pulse calibration; no GT fitting",
+  "parameters": {
+    "progress_ratio_threshold": 0.5,
+    "minimum_expected_m": 0.05,
+    "max_track_gap_s": 0.15,
+    "pitch_scale_bound_deg": 2.8,
+    "finite_difference_rad": 0.0001,
+    "pitch_distribution": "uniform +/- bound",
+    "minimum_complete_coverage": 1.0
+  },
+  "method": "MER slip-check progress/command ratio, threshold 0.5. Compare signed VO projection onto commanded travel direction against fixed predicted displacement. Complete pure visual pulse only. Preserve measured XY direction and yaw; replace command response only for detected positive slip. No velocity EKF. Missing pairs bridge to last accepted keyframe up to 0.15 s, no command fill or invented zero; incomplete pulse stays unchanged.",
+  "covariance": "Pixel/fit SE2 covariance propagated by composition; common pitch adds rank-one radial XY scale covariance at pulse level, zero pitch yaw or cross-yaw covariance. Fixed +/-2.8deg known calibration perturbation; no actual camera state. Full covariance retained by S2 predictor; mean direction never changed by scale uncertainty.",
+  "admission": {
+    "default_off_exact": true,
+    "six_replacements_min": 5,
+    "six_endpoint_error_at_most_035_min_count": 5,
+    "six_endpoint_error_median_max_m": 0.01,
+    "six_yaw_rmse_not_worse": true,
+    "all_loaded_endpoint_xy_rmse_strictly_better": true,
+    "nonblocked_endpoint_xy_rmse_not_worse": true,
+    "normal_profiles_exact": true,
+    "carry_rmse_strictly_better": true,
+    "carry_updates_min": 27,
+    "max_gap_s": 33.85,
+    "initial_stationary_max_m": 0.5,
+    "raw_rgb_hashes_exact": true,
+    "matched_wall_observation_columns_retention": 1.0,
+    "shadow_failed_direction_inhibited_before_fourth_blocked_attempt": true
+  },
+  "no_retuning": true,
+  "full_rule": "Only if every gate passes reserve fresh seed/bundle and run one full DEV under agent_lock/ugrp_session/freeze/dev_light. Failure: no physics, summarize v122 onward in one table and stop.",
+  "scope": "S2-only; own RGB/commands and immutable calibration. No encoders/motor current available: command model substitutes no-slip wheel odometry, detects execution discrepancy not wheel friction uniquely. GT scoring only after replay. Previous EKF/noise options off. Existing Nav2-style recovery remains optional; replay shadow is not actual escape evidence.",
+  "sources": [
+    {
+      "url": "https://robotics.jpl.nasa.gov/media/documents/rob-06-0081.R4.pdf",
+      "title": "Maimone, Cheng, Matthies 2007 Two Years of Visual Odometry on the Mars Exploration Rovers",
+      "used": "pp1,17: reliable VO replaces initial estimate; unknown preserves it; 40cm commanded vs under20cm visual is >50% slip. 0.5 is this candidate configuration, not universal physical cutoff."
+    },
+    {
+      "url": "https://arxiv.org/pdf/2207.13629",
+      "title": "Kilic et al. 2022 Proprioceptive Slip Detection",
+      "used": "Eq1, commanded/traversed distance or kinematic/body velocity discrepancy and slip-ratio convention; their inertial method not imported"
+    },
+    {
+      "url": "https://www.vagostudio.com/giulio/wp-content/uploads/2013/11/TM06.pdf",
+      "title": "Reina, Ojeda, Milella, Borenstein 2006",
+      "used": "Cross-sensor deterministic slip checks. Encoder/gyro/current methods are not executable with current S2 observations; not falsely cited as our RGB implementation."
+    },
+    {
+      "url": "https://iris.poliba.it/handle/11589/262359",
+      "title": "Ojeda et al. 2006 Current-based slippage detection",
+      "used": "Author repository abstract verified in web; full text not verified. Requires motor current/terrain information; not implemented."
+    }
+  ]
+}

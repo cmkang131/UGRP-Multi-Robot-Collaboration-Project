@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s2-realism-v128",
+      "version": "7.21.0",
+      "purpose": "One same-seed matched closed-loop slip S2 DEV despite failed replay gates",
+      "entry": "scripts/run_s2_realism_v128.py",
+      "runner": "scripts.run_s2_realism_v128",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed intentional deviation; live lock; matched seed1051; exact s1051 options plus slip on; recovery off",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

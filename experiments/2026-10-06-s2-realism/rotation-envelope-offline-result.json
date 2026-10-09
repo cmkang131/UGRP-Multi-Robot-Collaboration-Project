@@ -1,0 +1,735 @@
+{
+  "parameters": {
+    "max_abs_deg": 90.0,
+    "confidence_sigma": 3.0,
+    "homography_ransac_px": 3.0,
+    "homography_confidence": 0.995,
+    "homography_max_iterations": 2000,
+    "frame_max_age_s": 0.06,
+    "uncertainty_accumulation": "sum of interval sigma, no independence assumption",
+    "unknown_action": "cancel optional rotation; hold, then mission replan",
+    "pulse_reserve": "max fixed full pulse curve plus 3sigma, observed pulse plus uncertainty",
+    "gt_inputs": false
+  },
+  "runs": [
+    {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1060-v140-active-observation",
+      "seed": 1060,
+      "events": [
+        {
+          "t": 91.95,
+          "name": "turn+45",
+          "checks": [
+            {
+              "t": 91.95,
+              "yaw_deg": -8.411725694171526e-16,
+              "uncertainty_deg": 2.2219315909237847,
+              "reserve_deg": 5.907644756027025,
+              "upper_deg": 8.12957634695081,
+              "permitted": true
+            },
+            {
+              "t": 92.15,
+              "yaw_deg": 8.010134738166052,
+              "uncertainty_deg": 4.458068899422495,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 22.714475684253312,
+              "permitted": true
+            },
+            {
+              "t": 92.35,
+              "yaw_deg": 12.782311116245666,
+              "uncertainty_deg": 6.684527921034739,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 29.71311108394517,
+              "permitted": true
+            },
+            {
+              "t": 92.55,
+              "yaw_deg": 17.596395452950528,
+              "uncertainty_deg": 8.995183741432562,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 36.83785124104785,
+              "permitted": true
+            },
+            {
+              "t": 92.75,
+              "yaw_deg": 22.627103217814586,
+              "uncertainty_deg": 11.30255254798224,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 44.17592781246159,
+              "permitted": true
+            },
+            {
+              "t": 92.95,
+              "yaw_deg": 27.55306971330007,
+              "uncertainty_deg": 13.73596961378561,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 51.535311373750446,
+              "permitted": true
+            },
+            {
+              "t": 93.15,
+              "yaw_deg": 32.66460729656934,
+              "uncertainty_deg": 15.962253840656777,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 58.87313318389088,
+              "permitted": true
+            },
+            {
+              "t": 93.35,
+              "yaw_deg": 37.53452306058644,
+              "uncertainty_deg": 18.40431727713216,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 66.18511238438337,
+              "permitted": true
+            },
+            {
+              "t": 95.45,
+              "yaw_deg": 41.921786755421934,
+              "uncertainty_deg": 20.630470232265896,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 62.55225698768783,
+              "permitted": true
+            },
+            {
+              "t": 95.65,
+              "yaw_deg": 37.4394966862449,
+              "uncertainty_deg": 22.855422500174218,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 60.29491918641913,
+              "permitted": true
+            },
+            {
+              "t": 95.85,
+              "yaw_deg": 32.170065085625126,
+              "uncertainty_deg": 25.32875519076447,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 57.498820276389594,
+              "permitted": true
+            },
+            {
+              "t": 96.05,
+              "yaw_deg": 28.11009120748895,
+              "uncertainty_deg": 27.724926627434613,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 55.835017834923555,
+              "permitted": true
+            },
+            {
+              "t": 96.25,
+              "yaw_deg": 22.98512508366053,
+              "uncertainty_deg": 30.108335691151723,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 53.09346077481225,
+              "permitted": true
+            },
+            {
+              "t": 96.45,
+              "yaw_deg": 19.12908460398748,
+              "uncertainty_deg": 32.444244539636834,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 51.57332914362431,
+              "permitted": true
+            },
+            {
+              "t": 96.65,
+              "yaw_deg": 13.555845561015964,
+              "uncertainty_deg": 34.937729429055956,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 48.49357499007192,
+              "permitted": true
+            },
+            {
+              "t": 96.85,
+              "yaw_deg": 9.168564724898395,
+              "uncertainty_deg": 37.16303464216825,
+              "reserve_deg": 10.246272046664764,
+              "upper_deg": 46.331599367066644,
+              "permitted": true
+            }
+          ],
+          "observations": [
+            {
+              "t": 91.95,
+              "from_t": 91.95,
+              "status": "measured",
+              "delta_yaw": -1.4681230913789873e-17,
+              "sigma_yaw": 0.012926674005231932,
+              "inliers": 90,
+              "cells": 12,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -8.227521473693282e-16,
+                -8.512856662334625e-16,
+                -8.595929914649773e-16
+              ],
+              "reprojection_rms_px": 0.0
+            },
+            {
+              "t": 92.15,
+              "from_t": 91.95,
+              "status": "measured",
+              "delta_yaw": 0.13980322470937154,
+              "sigma_yaw": 0.013009319519995555,
+              "inliers": 36,
+              "cells": 4,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                8.00290552338149,
+                8.01736395295062,
+                8.012553258392664
+              ],
+              "reprojection_rms_px": 1.184638500213623
+            },
+            {
+              "t": 92.35,
+              "from_t": 92.15,
+              "status": "measured",
+              "delta_yaw": 0.083290190283387,
+              "sigma_yaw": 0.01295301352928842,
+              "inliers": 43,
+              "cells": 7,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                4.7676489473911525,
+                4.776703808768073,
+                4.774326330856651
+              ],
+              "reprojection_rms_px": 0.7004695534706116
+            },
+            {
+              "t": 92.55,
+              "from_t": 92.35,
+              "status": "measured",
+              "delta_yaw": 0.08402162214418715,
+              "sigma_yaw": 0.013442850648770916,
+              "inliers": 48,
+              "cells": 6,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                4.730076909116337,
+                4.8198441081504955,
+                4.898091764293386
+              ],
+              "reprojection_rms_px": 1.1280860900878906
+            },
+            {
+              "t": 92.75,
+              "from_t": 92.55,
+              "status": "measured",
+              "delta_yaw": 0.08780241420252252,
+              "sigma_yaw": 0.013423727577367997,
+              "inliers": 48,
+              "cells": 6,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                4.945270549238164,
+                5.036727774745453,
+                5.116144980489952
+              ],
+              "reprojection_rms_px": 0.9728942513465881
+            },
+            {
+              "t": 92.95,
+              "from_t": 92.75,
+              "status": "measured",
+              "delta_yaw": 0.08597433418914803,
+              "sigma_yaw": 0.014157046624162771,
+              "inliers": 50,
+              "cells": 7,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                4.714481020605896,
+                4.931833998230971,
+                5.137451970365066
+              ],
+              "reprojection_rms_px": 0.6112248301506042
+            },
+            {
+              "t": 93.15,
+              "from_t": 92.95,
+              "status": "measured",
+              "delta_yaw": 0.08921316066748264,
+              "sigma_yaw": 0.012951996614706099,
+              "inliers": 58,
+              "cells": 6,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                5.10718494732189,
+                5.115890219216657,
+                5.112347072234674
+              ],
+              "reprojection_rms_px": 0.6097967028617859
+            },
+            {
+              "t": 93.35,
+              "from_t": 93.15,
+              "status": "measured",
+              "delta_yaw": 0.0849960643768736,
+              "sigma_yaw": 0.014207349169687605,
+              "inliers": 46,
+              "cells": 7,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                4.649783918465502,
+                4.875713243248819,
+                5.090047609568698
+              ],
+              "reprojection_rms_px": 0.30301928520202637
+            },
+            {
+              "t": 95.45,
+              "from_t": 93.35,
+              "status": "measured",
+              "delta_yaw": 0.07657219662809114,
+              "sigma_yaw": 0.012951232906695085,
+              "inliers": 45,
+              "cells": 8,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                4.383042330625547,
+                4.391485059045444,
+                4.389421120955156
+              ],
+              "reprojection_rms_px": 0.31562259793281555
+            },
+            {
+              "t": 95.65,
+              "from_t": 95.45,
+              "status": "measured",
+              "delta_yaw": -0.07823071973658353,
+              "sigma_yaw": 0.012944247591571754,
+              "inliers": 49,
+              "cells": 6,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -4.479269392192486,
+                -4.485310746161569,
+                -4.480621168669779
+              ],
+              "reprojection_rms_px": 0.5377907156944275
+            },
+            {
+              "t": 95.85,
+              "from_t": 95.65,
+              "status": "measured",
+              "delta_yaw": -0.09196893113945001,
+              "sigma_yaw": 0.014389266316003334,
+              "inliers": 50,
+              "cells": 8,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -5.018030500953315,
+                -5.275707956238542,
+                -5.520832700286243
+              ],
+              "reprojection_rms_px": 0.9369035363197327
+            },
+            {
+              "t": 96.05,
+              "from_t": 95.85,
+              "status": "measured",
+              "delta_yaw": -0.07085991171843925,
+              "sigma_yaw": 0.013940360337378927,
+              "inliers": 49,
+              "cells": 7,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -3.8857340323898155,
+                -4.064821892365235,
+                -4.234213723882531
+              ],
+              "reprojection_rms_px": 0.9457715153694153
+            },
+            {
+              "t": 96.25,
+              "from_t": 96.05,
+              "status": "measured",
+              "delta_yaw": -0.08944753291397735,
+              "sigma_yaw": 0.013866111861246345,
+              "inliers": 45,
+              "cells": 5,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -4.963488651035086,
+                -5.131100558779258,
+                -5.286443596621754
+              ],
+              "reprojection_rms_px": 0.9354612231254578
+            },
+            {
+              "t": 96.45,
+              "from_t": 96.25,
+              "status": "measured",
+              "delta_yaw": -0.06730060246047619,
+              "sigma_yaw": 0.013589766810844837,
+              "inliers": 42,
+              "cells": 6,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -3.742063222111725,
+                -3.860654639105938,
+                -3.9700177372343735
+              ],
+              "reprojection_rms_px": 0.7676522135734558
+            },
+            {
+              "t": 96.65,
+              "from_t": 96.45,
+              "status": "measured",
+              "delta_yaw": -0.09727137130055069,
+              "sigma_yaw": 0.014506507056363449,
+              "inliers": 43,
+              "cells": 6,
+              "solutions": 2,
+              "solution_yaws_deg": [
+                -5.301685744476181,
+                -5.532691261872799,
+                -5.7505202136714475,
+                -5.836013953693842,
+                -5.84479234146685,
+                -5.83956774846283
+              ],
+              "reprojection_rms_px": 0.7777872681617737
+            },
+            {
+              "t": 96.85,
+              "from_t": 96.65,
+              "status": "measured",
+              "delta_yaw": -0.07657249579990132,
+              "sigma_yaw": 0.012946300943534538,
+              "inliers": 44,
+              "cells": 7,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -4.386898133087947,
+                -4.390654458306077,
+                -4.383907213929059
+              ],
+              "reprojection_rms_px": 0.5388508439064026
+            }
+          ],
+          "admitted_pulses": 16,
+          "first_blocked": null,
+          "prefix_end": 98.95,
+          "old_end": 98.95,
+          "new_return_unknown": false,
+          "admitted_prefix_max_actual_deg": 40.26193446674976,
+          "old_max_actual_deg": 40.26193446674976,
+          "prefix_violation": false
+        },
+        {
+          "t": 272.7,
+          "name": "turn-45",
+          "checks": [
+            {
+              "t": 272.7,
+              "yaw_deg": 6.191531996797736e-15,
+              "uncertainty_deg": 2.2219315909237847,
+              "reserve_deg": 5.8148013254707624,
+              "upper_deg": 8.036732916394541,
+              "permitted": true
+            }
+          ],
+          "observations": [
+            {
+              "t": 272.7,
+              "from_t": 272.7,
+              "status": "measured",
+              "delta_yaw": 1.080626190866995e-16,
+              "sigma_yaw": 0.012926674005231932,
+              "inliers": 105,
+              "cells": 13,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                6.1890967789279e-15,
+                6.189282982104608e-15,
+                6.193967214667572e-15
+              ],
+              "reprojection_rms_px": 0.0
+            },
+            {
+              "t": 272.9,
+              "from_t": 272.7,
+              "status": "unknown_homography_consensus",
+              "inliers": 29
+            }
+          ],
+          "admitted_pulses": 1,
+          "first_blocked": {
+            "t": 272.9,
+            "reason": "unknown_homography_consensus"
+          },
+          "prefix_end": 272.9,
+          "old_end": 280.1,
+          "new_return_unknown": true,
+          "admitted_prefix_max_actual_deg": 5.175561879811004,
+          "old_max_actual_deg": 45.71477837394963,
+          "prefix_violation": false
+        }
+      ],
+      "physics_runs": 0,
+      "gt": "posthoc admitted-prefix evaluation only",
+      "counterfactual_post_stop_trajectory": false,
+      "violations": 0,
+      "all_events_have_admitted_motion": true
+    },
+    {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-e532f52e-s1064-v140-active-observation",
+      "seed": 1064,
+      "events": [
+        {
+          "t": 189.45,
+          "name": "turn-90",
+          "checks": [
+            {
+              "t": 189.45,
+              "yaw_deg": 1.2912334264984444e-14,
+              "uncertainty_deg": 2.2219315909237847,
+              "reserve_deg": 5.8148013254707624,
+              "upper_deg": 8.036732916394534,
+              "permitted": true
+            },
+            {
+              "t": 189.65,
+              "yaw_deg": -4.4277262419623415,
+              "uncertainty_deg": 4.446549949370527,
+              "reserve_deg": 6.652344600409097,
+              "upper_deg": 15.526620791741966,
+              "permitted": true
+            },
+            {
+              "t": 189.85,
+              "yaw_deg": -9.034524468799741,
+              "uncertainty_deg": 6.8891415031481325,
+              "reserve_deg": 7.049389780615006,
+              "upper_deg": 22.973055752562882,
+              "permitted": true
+            },
+            {
+              "t": 190.05,
+              "yaw_deg": -14.090654831830085,
+              "uncertainty_deg": 9.114833002260886,
+              "reserve_deg": 7.281821862143097,
+              "upper_deg": 30.487309696234068,
+              "permitted": true
+            },
+            {
+              "t": 190.25,
+              "yaw_deg": -18.736277153036635,
+              "uncertainty_deg": 11.339837584190867,
+              "reserve_deg": 7.281821862143097,
+              "upper_deg": 37.357936599370596,
+              "permitted": true
+            },
+            {
+              "t": 190.45,
+              "yaw_deg": -24.09430763200593,
+              "uncertainty_deg": 13.56504938531107,
+              "reserve_deg": 7.583242280089498,
+              "upper_deg": 45.24259929740649,
+              "permitted": true
+            },
+            {
+              "t": 190.65,
+              "yaw_deg": -28.666666191459186,
+              "uncertainty_deg": 15.790451783951418,
+              "reserve_deg": 7.583242280089498,
+              "upper_deg": 52.040360255500104,
+              "permitted": true
+            }
+          ],
+          "observations": [
+            {
+              "t": 189.45,
+              "from_t": 189.45,
+              "status": "measured",
+              "delta_yaw": 2.253627470420605e-16,
+              "sigma_yaw": 0.012926674005231932,
+              "inliers": 140,
+              "cells": 14,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                1.296091062088247e-14,
+                1.2923357880148411e-14,
+                1.286375790908642e-14
+              ],
+              "reprojection_rms_px": 0.0
+            },
+            {
+              "t": 189.65,
+              "from_t": 189.45,
+              "status": "measured",
+              "delta_yaw": -0.07727840129919819,
+              "sigma_yaw": 0.012942304985069023,
+              "inliers": 28,
+              "cells": 7,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -4.425039474439396,
+                -4.430413009485313,
+                -4.425187516681228
+              ],
+              "reprojection_rms_px": 0.38696804642677307
+            },
+            {
+              "t": 189.85,
+              "from_t": 189.65,
+              "status": "measured",
+              "delta_yaw": -0.08040379703334925,
+              "sigma_yaw": 0.014210421631607779,
+              "inliers": 27,
+              "cells": 8,
+              "solutions": 2,
+              "solution_yaws_deg": [
+                -4.81819204073579,
+                -4.827458189691221,
+                -4.825171168930851,
+                -4.3861382639835815,
+                -4.596134956093952,
+                -4.795204067753615
+              ],
+              "reprojection_rms_px": 0.6781414747238159
+            },
+            {
+              "t": 190.05,
+              "from_t": 189.85,
+              "status": "measured",
+              "delta_yaw": -0.08824612224493568,
+              "sigma_yaw": 0.012948548264388666,
+              "inliers": 26,
+              "cells": 8,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -5.055297991772912,
+                -5.059890271219313,
+                -5.052370454841375
+              ],
+              "reprojection_rms_px": 0.3691490888595581
+            },
+            {
+              "t": 190.25,
+              "from_t": 190.05,
+              "status": "measured",
+              "delta_yaw": -0.08108140530919586,
+              "sigma_yaw": 0.012944551942212697,
+              "inliers": 37,
+              "cells": 10,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -4.643717739132391,
+                -4.648695312212745,
+                -4.642549330200352
+              ],
+              "reprojection_rms_px": 0.281112939119339
+            },
+            {
+              "t": 190.45,
+              "from_t": 190.25,
+              "status": "measured",
+              "delta_yaw": -0.09351527328022297,
+              "sigma_yaw": 0.0129457574945936,
+              "inliers": 40,
+              "cells": 10,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -5.354750268772874,
+                -5.3613106891657125,
+                -5.355033448231714
+              ],
+              "reprojection_rms_px": 0.4610341787338257
+            },
+            {
+              "t": 190.65,
+              "from_t": 190.45,
+              "status": "measured",
+              "delta_yaw": -0.07980271144420417,
+              "sigma_yaw": 0.01294686634601782,
+              "inliers": 64,
+              "cells": 11,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                -4.571822512000014,
+                -4.575829367169818,
+                -4.56888775173669
+              ],
+              "reprojection_rms_px": 0.7461314797401428
+            },
+            {
+              "t": 190.85,
+              "from_t": 190.65,
+              "status": "unknown_homography_cheirality"
+            }
+          ],
+          "admitted_pulses": 7,
+          "first_blocked": {
+            "t": 190.85,
+            "reason": "unknown_homography_cheirality"
+          },
+          "prefix_end": 190.85,
+          "old_end": 200.25,
+          "new_return_unknown": true,
+          "admitted_prefix_max_actual_deg": 34.91942336107881,
+          "old_max_actual_deg": 90.05288148568519,
+          "prefix_violation": false
+        },
+        {
+          "t": 218.4,
+          "name": "turn-90",
+          "checks": [
+            {
+              "t": 218.4,
+              "yaw_deg": 9.79956612737316e-15,
+              "uncertainty_deg": 2.2219315909237847,
+              "reserve_deg": 5.8148013254707624,
+              "upper_deg": 8.036732916394538,
+              "permitted": true
+            }
+          ],
+          "observations": [
+            {
+              "t": 218.4,
+              "from_t": 218.4,
+              "status": "measured",
+              "delta_yaw": 1.7103469418957167e-16,
+              "sigma_yaw": 0.012926674005231932,
+              "inliers": 122,
+              "cells": 14,
+              "solutions": 1,
+              "solution_yaws_deg": [
+                9.79507232098297e-15,
+                9.804059933763353e-15,
+                9.797335002706553e-15
+              ],
+              "reprojection_rms_px": 0.0
+            },
+            {
+              "t": 218.6,
+              "from_t": 218.4,
+              "status": "unknown_homography_consensus",
+              "inliers": 25
+            }
+          ],
+          "admitted_pulses": 1,
+          "first_blocked": {
+            "t": 218.6,
+            "reason": "unknown_homography_consensus"
+          },
+          "prefix_end": 218.6,
+          "old_end": 229.2,
+          "new_return_unknown": true,
+          "admitted_prefix_max_actual_deg": 4.682312887110104,
+          "old_max_actual_deg": 91.15608432750746,
+          "prefix_violation": false
+        }
+      ],
+      "physics_runs": 0,
+      "gt": "posthoc admitted-prefix evaluation only",
+      "counterfactual_post_stop_trajectory": false,
+      "violations": 0,
+      "all_events_have_admitted_motion": true
+    }
+  ],
+  "passed": true
+}

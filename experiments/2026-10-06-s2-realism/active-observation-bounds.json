@@ -1,0 +1,50 @@
+{
+  "schema": "ugrp.s2.active_observation.bounds_audit.v1",
+  "gt_use": "posthoc only; no runtime bounds override",
+  "active_rotations": [
+    {
+      "seed": 1060,
+      "t": 91.95,
+      "name": "turn+45",
+      "max_yaw_deg": 40.26193446674976,
+      "above_90_deg": false,
+      "max_translation_m": 0.003716271378718574,
+      "wall_contact_samples": 0,
+      "contact_records": []
+    },
+    {
+      "seed": 1060,
+      "t": 272.7,
+      "name": "turn-45",
+      "max_yaw_deg": 45.71477837394963,
+      "above_90_deg": false,
+      "max_translation_m": 0.004188823184559552,
+      "wall_contact_samples": 0,
+      "contact_records": []
+    },
+    {
+      "seed": 1064,
+      "t": 189.45,
+      "name": "turn-90",
+      "max_yaw_deg": 90.05288148568519,
+      "above_90_deg": true,
+      "max_translation_m": 0.006858298575807207,
+      "wall_contact_samples": 0,
+      "contact_records": []
+    },
+    {
+      "seed": 1064,
+      "t": 218.4,
+      "name": "turn-90",
+      "max_yaw_deg": 91.15608432750746,
+      "above_90_deg": true,
+      "max_translation_m": 0.005908578068426555,
+      "wall_contact_samples": 0,
+      "contact_records": []
+    }
+  ],
+  "actual_yaw_above_90_events": 2,
+  "command_bound": "calibrated predicted rotation <=90deg for all candidates; actual plant differs",
+  "counts_not_reclassified": "predeclared transport success retained; actual angular-bound deviation reported separately, no exclusion/tuning",
+  "ui": "Native pipe startup failed; no browsers available on both inventory calls; no profile opened or changed"
+}

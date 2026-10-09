@@ -1,0 +1,74 @@
+{
+  "schema": "ugrp.s2.slip_recovery.criteria.v1",
+  "option": "slip_recovery_v1",
+  "default": "off",
+  "source_run": "/Users/changmin/projects/ugrp/outputs/s2-realism-45b0c173-s1051-P1-2-place-slip-matched",
+  "source_sha": "45b0c173d34f53c2016e2560cdc70c9a908a8325",
+  "student_sha256": "9a099856762bf090e4761d93df131cdb9931ee0bdc7070d3ca27d650ec76707d",
+  "parameters": {
+    "required_movement_radius_m": 0.5,
+    "movement_time_allowance_s": 10.0,
+    "backup_distance_m": 0.3,
+    "backup_speed_limit_m_s": 0.15,
+    "backup_time_allowance_s": 10.0,
+    "loaded_wheel_magnitude": 0.35,
+    "consecutive_count": "not a Nav2 default: report N reached when time allowance expires",
+    "max_recovery_attempts": 6
+  },
+  "scope": "S2 loaded carry only, original slip detector/predictor/pose prior unchanged",
+  "input": "own RGB-derived completed slip records, issued commands, estimated pose, static map, fixed pulse table; no GT",
+  "replay_gate": {
+    "off_outputs_exact": true,
+    "eligible_streaks_at_least": 1,
+    "eligible_streak_trigger_fraction": 1.0,
+    "blocked_next_translation_fraction": 0.0,
+    "inverse_backup_fraction": 1.0,
+    "unknown_or_normal_triggers": 0,
+    "backup_bounded": true,
+    "replan_after_backup_test": true,
+    "arm_commands_changed": 0
+  },
+  "replay_limit": "independent recorded prefixes ending at first changed command; later original images are not counterfactual recovery views; new physical progress/fix/RMSE require closed loop",
+  "physical": {
+    "if_replay_pass": true,
+    "full_runs": 1,
+    "seed": 1051,
+    "slot": "P1-2",
+    "stage": "place",
+    "baseline": "v128 all options same plus slip_recovery=slip_recovery_v1",
+    "freeze": "freeze_v1",
+    "dev_light": true,
+    "max_sim_s": 900,
+    "max_wall_s": 10800,
+    "raw_pattern": "/Users/changmin/projects/ugrp/outputs/s2-realism-<sha8>-s1051-P1-2-place-slip-recovery",
+    "error": "ENOSPC=HOST_ERROR, retain partial raw, no retry"
+  },
+  "dock_initialization": "deferred pending user confirmation; do not modify",
+  "references": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_controller/plugins/simple_progress_checker.cpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/simple_progress_checker.cpp",
+      "sha256": "e655e411727f42f709821a238cc3167d98aacc9080b91080b7044b1df0ccb5ec"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_behaviors/include/nav2_behaviors/plugins/drive_on_heading.hpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/drive_on_heading.hpp",
+      "sha256": "d97b7a20232e30df679baa9dc92cd86d84a345fc6b55d7863c6489e101dc9fa3"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_behavior_tree/include/nav2_behavior_tree/plugins/action/back_up_action.hpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/back_up_action.hpp",
+      "sha256": "002473481fcc765738b864af73c976def0f754617c0d81b0f05afe0b7fb67cd4"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/navigate_to_pose_w_replanning_and_recovery.xml",
+      "sha256": "000f8e0020db54aee652837987ad4f2d82e633a588994bfcf7d26163c67fc7e6"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_bringup/params/nav2_params.yaml",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/nav2_params.yaml",
+      "sha256": "0f37f0ca0104c8399fc55faafabb4aa1baf9c6b04d7b59b2132e57bb39c55c6a"
+    }
+  ]
+}

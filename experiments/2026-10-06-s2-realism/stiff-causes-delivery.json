@@ -1,0 +1,67 @@
+{
+  "checks": [
+    {
+      "run": "1007-s2-v32-causes/views__belief__22c9e66b",
+      "source_view": "belief",
+      "scalars": {
+        "result/model_calls": 0.0,
+        "offline/truth_mass": 0.07189035415649414,
+        "offline/top_mass": 0.19319623708724976,
+        "offline/truth_score_over_top": 7.69411039352417,
+        "offline/tight_particles": 0.0
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "1007-s2-v32-causes/views__vo-gates__fe520582",
+      "source_view": "vo-gates",
+      "scalars": {
+        "result/model_calls": 0.0,
+        "offline/measured_intervals": 4.0,
+        "offline/texture_reject": 10.0,
+        "offline/rigid_reject": 6.0,
+        "offline/chain_reject": 92.0,
+        "offline/missing_end": 16.0,
+        "offline/missing_rgb": 0.0
+      },
+      "hparams_loaded": true
+    }
+  ],
+  "viewer": {
+    "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-v32-causes",
+    "url": "http://127.0.0.1:6006/?runFilter=%5E1007-s2-v32-causes%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ftruth_mass%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ftruth_score_over_top%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ftexture_reject%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Frigid_reject%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fchain_reject%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmissing_end%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+    "pinned_tags": [
+      "offline/truth_mass",
+      "offline/truth_score_over_top",
+      "offline/texture_reject",
+      "offline/rigid_reject",
+      "offline/chain_reject",
+      "offline/missing_end",
+      "result/model_calls"
+    ],
+    "hparams_visible_columns": [
+      "policy",
+      "condition",
+      "source_sha"
+    ],
+    "scope": "s2v32 offline causal diagnosis; physics 0; controller unchanged",
+    "verification": {
+      "scalars": 12,
+      "source_event_live_api_match": true,
+      "browser": "NUMERIC_ONLY"
+    }
+  },
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-v32-causes-20261007",
+  "source_sha": "6bd0a46f",
+  "new_physics": 0,
+  "lock_acquired": false,
+  "lock_status_observed": null,
+  "tests": {
+    "files": [
+      "tests/test_s2_augmented_start.py",
+      "tests/test_s2_ground_vo.py"
+    ],
+    "passed": 14,
+    "seconds": 0.99
+  }
+}

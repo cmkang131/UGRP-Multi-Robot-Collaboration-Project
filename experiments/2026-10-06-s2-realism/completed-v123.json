@@ -1,0 +1,304 @@
+{
+  "seed": 1047,
+  "slot": "P1-2",
+  "stage": "place",
+  "role": "fresh_full_dev",
+  "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place",
+  "source_sha": "1a2dbf5e306732163a5019a1d52589e0ce3b2e22",
+  "bundle": "zone-s2-realism-v123",
+  "status": "STAGE_REACHED_UNQUALIFIED",
+  "failure": null,
+  "controller_state": "done",
+  "lifted": true,
+  "inside": false,
+  "floor": true,
+  "stable": true,
+  "success": false,
+  "independent_geometry": {
+    "lifted": true,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "success": false
+  },
+  "hold_status": "probable_held_inhand_rgb",
+  "pickup_site_status": "not_evaluated_inhand_selected",
+  "regrasp_count": 0,
+  "wall_s": 410.40798541600816,
+  "sim_s": 259.3,
+  "wall_per_sim": 1.5827535110528659,
+  "commands": 3679,
+  "model_calls": 0,
+  "frames": 5101,
+  "would_stop": {
+    "ARM_COLLISION_GUARD": 7,
+    "POSE_UNCERTAIN": 348
+  },
+  "would_stop_events": [
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 1.4,
+      "code": "ARM_COLLISION_GUARD",
+      "occurrence": 1
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 12.0,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 1
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 95.65,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 51
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 115.65,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 101
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 143.25,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 151
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 163.25,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 201
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 199.1,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 251
+    },
+    {
+      "robot_id": "r3",
+      "event": "dev_light_would_stop",
+      "t": 219.1,
+      "code": "POSE_UNCERTAIN",
+      "occurrence": 301
+    }
+  ],
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1"
+  },
+  "visual_update": {
+    "option": "accepted_scan_v1",
+    "scope": "S2 loaded HIGH only",
+    "counts": {
+      "candidates": 3048,
+      "accepted": 0,
+      "rejected": 3048
+    },
+    "calibration_unchanged": true
+  },
+  "visual_stall_summary": {
+    "status_counts": {
+      "unknown_texture": 77,
+      "changed_view": 26
+    },
+    "would_stop": 0,
+    "control_feedback": false
+  },
+  "site_before_area_px": null,
+  "site_after_area_px": null,
+  "pool_results": false,
+  "additional_runs": false,
+  "navigation": {
+    "final_pose_error_m": 0.6197718290234954,
+    "final_estimate": {
+      "t": 256.3,
+      "t_est": 256.14,
+      "x": 4.379715423867086,
+      "y": -2.0810922098901017,
+      "yaw": 0.03985788179230276,
+      "std_xy_m": 0.2640505177205522,
+      "std_yaw_rad": 0.0929837693817337,
+      "last_fix_t": 34.45,
+      "observation_quality": {
+        "accepted": false,
+        "informative_columns": 44,
+        "diagnostics": {
+          "fit": 0.92617,
+          "n_terms": 39,
+          "w_slow": 0.72104,
+          "w_fast": 0.80797,
+          "w_diff": 0.0,
+          "gain": [
+            -0.0032,
+            -0.0006,
+            -0.0028
+          ],
+          "ess_pre": 1352.6
+        },
+        "last_fix_quality": {
+          "accepted": true,
+          "informative": true,
+          "settled": true,
+          "ambiguous": false,
+          "inlier_fraction": 1.0,
+          "posterior_support": 1.0,
+          "likelihood_span": 0.9199274032087523,
+          "saturated": false,
+          "geometric_curvature": 3.452329158160139,
+          "reason": "informative",
+          "t": 34.45
+        },
+        "informative": true,
+        "partial": false,
+        "observed_rank": null,
+        "weakest_direction_xy_yaw": null,
+        "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+      },
+      "last_scan_gate": {
+        "accepted": true,
+        "informative": false,
+        "old_informative": false,
+        "settled": true,
+        "ambiguous": true,
+        "inlier_fraction": 0.20512820512820512,
+        "posterior_support": 0.0,
+        "saturated": false,
+        "geometric_curvature": 0.0,
+        "eigenvalues": [
+          -686.5430322651841,
+          393.2003571027896,
+          1140.4343476854224
+        ],
+        "observed_rank": 2,
+        "weakest_direction_xy_yaw": [
+          0.9544017515094444,
+          -0.2973371000771771,
+          -0.02660724776071229
+        ],
+        "partial": false,
+        "rule": "v98_partial_fix_second_eigenvalue_v1",
+        "reason": "residual_or_geometry_inconsistent"
+      }
+    },
+    "final_eval_pose": [
+      3.796073581362141,
+      -2.2896091629863937,
+      0.06592185090580895
+    ],
+    "carry_start": 70.1,
+    "unique_fixes": 470,
+    "carry_fixes": 0,
+    "last_fix": 34.45,
+    "max_between_accepted_fixes_s": 1.1500000000000004,
+    "last_fix_age_s": 221.69,
+    "max_fix_gap_including_tail_s": 221.69,
+    "checkpoints": [
+      {
+        "robot_id": "r3",
+        "event": "carry_checkpoint",
+        "t": 130.45,
+        "index": 0,
+        "last_fix_t": 34.45
+      },
+      {
+        "robot_id": "r3",
+        "event": "carry_checkpoint",
+        "t": 172.85,
+        "index": 1,
+        "last_fix_t": 34.45
+      },
+      {
+        "robot_id": "r3",
+        "event": "carry_checkpoint",
+        "t": 237.9,
+        "index": 2,
+        "last_fix_t": 34.45
+      }
+    ]
+  },
+  "source_verification": {
+    "source_files": 362,
+    "source_closure_all_match": true,
+    "raw_manifest_verified": true,
+    "all_rgb_hashes_match": true,
+    "independent_geometry_helper": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-preflight-20261006/summarize_v117_completed.py",
+      "sha256": "be7d28966ec47eea2b0aa03d92eda4b5fbdafe06ef2791a1712132f1b77f619c"
+    }
+  },
+  "freeze_comparison": {
+    "s1042_off": 2.587649147958559,
+    "s1043_on": 1.4678958407175282,
+    "s1044_on": 1.6030484665762137,
+    "s1045_on": 1.9597499036918773,
+    "s1046_on": 1.8782914851935533,
+    "s1047_on": 1.5827535110528659,
+    "scope": "wall/SIM only; different seeds/stages/models, not causal speedup"
+  },
+  "raw_manifest": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-analysis/s1047-raw-sha256.json",
+    "sha256": "ba730a0afeecdfefb71a31af9e11fc8567971a3fb2bac332297c5699d3a13ed2"
+  },
+  "cleanup_verified": {
+    "own_lock_released": true,
+    "lock_after": null,
+    "session_stopped": true,
+    "session_status": "s2-visual-s1047: stopped",
+    "remaining_owned_processes": [],
+    "owned_pids": [
+      41828,
+      41832,
+      41842,
+      41848
+    ],
+    "launchd_job_unloaded": true
+  },
+  "video": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-analysis/views/s1047-full/execution.mp4",
+    "sha256": "4ce34a1ae8cc2f43eb06f25c7e15659895a8a296f59d651f8bfcd5770ad246aa",
+    "bytes": 821821,
+    "playback_speed": 4,
+    "full_decode_passed": true,
+    "registration_id": "a56d6f76604dfdd1bdef",
+    "width": 640,
+    "height": 480,
+    "r_frame_rate": "20/1",
+    "duration": "63.750000",
+    "nb_frames": "1275"
+  },
+  "tensorboard": {
+    "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-realism-visual-v123",
+    "records": 2,
+    "scalars": 29,
+    "source_event_live_api_match": true
+  },
+  "outcome_failure": "PLACED_OUTSIDE_B",
+  "remaining_cause": "No accepted loaded HIGH visual fix; inherited extrinsic/false wall edges remain; command-model drift is uncorrected. Door obstruction did not recur.",
+  "stop_decision": "No more simulations; one authorized full DEV completed; calibration/observation acquisition unresolved."
+}

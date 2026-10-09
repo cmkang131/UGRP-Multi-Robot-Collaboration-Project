@@ -1,0 +1,1174 @@
+{
+  "schema": "ugrp.s2.blocked_pulse.audit.v1",
+  "source_raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "gt_scope": "evaluation only; never imported by candidate/replay",
+  "source_hashes": {
+    "student_record.json": "a3c622edc12b1e141711bbbacf109afc015559454b077249d2bc79974cbf563c",
+    "eval_only/contacts.jsonl": "adedbdf9dc98c44d2b6bc98a4127d19ec045e08187b205ec7890bdba05fe1fe7",
+    "eval_only/supervisor.jsonl": "e9688eb0393f0d51b256aa60ae3bdd035a0fbd3745d2b50ea7b90b4111123fca",
+    "eval_only/trajectory.jsonl": "86f135c2039c650990c77286a7023212934581968f9dc51ffe522fcf5bf2a3e2",
+    "robots/r3/frames.jsonl": "00144a3d2f50b5c0d30296a4d65dc88e4b4f42caed48601fa3307852e5c59bbf"
+  },
+  "rows": [
+    {
+      "t": 107.35,
+      "horizon_s": 0.75,
+      "controller": {
+        "t": 107.35,
+        "state": "carry",
+        "waypoint": [
+          1.6500000000000001,
+          0.05
+        ],
+        "issued": {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.65,
+          "turn": 0.0,
+          "duration_s": 0.65
+        },
+        "profile_key": "1:left:0.65:0.65",
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "prediction_variance": [
+          2.0194436059117676e-06,
+          9.421889165666689e-06,
+          3.57533593911417e-05
+        ],
+        "transfer": null,
+        "score": {
+          "before": 0.9753102219130282,
+          "after": 0.7134224315613263,
+          "body_error_m": [
+            0.234789824145822,
+            0.8983686401329355
+          ],
+          "yaw_rad": -0.6205496975100582
+        }
+      },
+      "contacts": {
+        "wall_wheel": {
+          "samples": 13,
+          "contacts": 225,
+          "first_t": 107.4,
+          "last_t": 108.0,
+          "min_distance_m": -0.0009220925184709738,
+          "geom_pairs": [
+            [
+              "r3__v3_wheel_fl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_8_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_8_body_contact",
+              "zone_wall_north"
+            ]
+          ]
+        },
+        "wall_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "divider_robot_or_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "other_wall_robot": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        }
+      },
+      "contact_samples": 16,
+      "finger_both_count": 16,
+      "supervisor_samples": 16,
+      "max_tilt_deg": 0.30541194794521537,
+      "weld_count": 0,
+      "frames": [
+        {
+          "t": 107.35,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02121.jpg",
+          "sha256": "8569c11c12ddaf55568c89ddbfb74167d95d39d61dce5970ee94f0f7a702c44f"
+        },
+        {
+          "t": 108.1,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02136.jpg",
+          "sha256": "cc879371182c0132d125252dbf26795a42b4b972751a95e9a4c76f1b593ad193"
+        }
+      ],
+      "evaluation": {
+        "start_xy": [
+          0.1781688040266514,
+          1.33530951403895
+        ],
+        "end_xy": [
+          0.18475275076896344,
+          1.3510464837957286
+        ],
+        "actual_delta": [
+          0.003708054083528956,
+          0.016650853033553344,
+          0.17481335188037356
+        ],
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ]
+      },
+      "estimate": {
+        "t": 107.35,
+        "t_est": 107.19,
+        "x": 0.9365990329399805,
+        "y": -0.5443496742613345,
+        "yaw": -0.6205496975100582,
+        "last_fix_t": 106.7,
+        "std_xy_m": 0.7463941776555556
+      }
+    },
+    {
+      "t": 108.3,
+      "horizon_s": 0.75,
+      "controller": {
+        "t": 108.3,
+        "state": "carry",
+        "waypoint": [
+          1.6500000000000001,
+          0.05
+        ],
+        "issued": {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.65,
+          "turn": 0.0,
+          "duration_s": 0.65
+        },
+        "profile_key": "1:left:0.65:0.65",
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "prediction_variance": [
+          2.0194436059117676e-06,
+          9.421889165666689e-06,
+          3.57533593911417e-05
+        ],
+        "transfer": null,
+        "score": {
+          "before": 0.7172060986483746,
+          "after": 0.5050287360112783,
+          "body_error_m": [
+            0.12675977479838135,
+            0.753085933604208
+          ],
+          "yaw_rad": -0.6700993424319353
+        }
+      },
+      "contacts": {
+        "wall_wheel": {
+          "samples": 13,
+          "contacts": 313,
+          "first_t": 108.35,
+          "last_t": 108.95,
+          "min_distance_m": -0.00038574782959455156,
+          "geom_pairs": [
+            [
+              "r3__v3_wheel_fl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_8_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_8_body_contact",
+              "zone_wall_north"
+            ]
+          ]
+        },
+        "wall_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "divider_robot_or_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "other_wall_robot": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        }
+      },
+      "contact_samples": 16,
+      "finger_both_count": 16,
+      "supervisor_samples": 16,
+      "max_tilt_deg": 0.26463071178214564,
+      "weld_count": 0,
+      "frames": [
+        {
+          "t": 108.3,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02140.jpg",
+          "sha256": "f336d13fa65fc2e57ffece42659f69a06a28955b7442c5493e40794cc8e4ee35"
+        },
+        {
+          "t": 109.05,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02155.jpg",
+          "sha256": "0d43deeb271b6d3a99120b6ee1f319971d21c6c5a54a3c8746d37f40b0efa64f"
+        }
+      ],
+      "evaluation": {
+        "start_xy": [
+          0.18520947438103716,
+          1.350311840186975
+        ],
+        "end_xy": [
+          0.18593830759780683,
+          1.3508179395629605
+        ],
+        "actual_delta": [
+          0.0007263619471074683,
+          0.0005096398316793021,
+          0.0029843805916634895
+        ],
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ]
+      },
+      "estimate": {
+        "t": 108.3,
+        "t_est": 108.14,
+        "x": 1.0829363126350182,
+        "y": -0.4615126961977463,
+        "yaw": -0.6700993424319353,
+        "last_fix_t": 108.05,
+        "std_xy_m": 0.7204014348191636
+      }
+    },
+    {
+      "t": 109.25,
+      "horizon_s": 0.75,
+      "controller": {
+        "t": 109.25,
+        "state": "carry",
+        "waypoint": [
+          1.6500000000000001,
+          0.05
+        ],
+        "issued": {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.65,
+          "turn": 0.0,
+          "duration_s": 0.65
+        },
+        "profile_key": "1:left:0.65:0.65",
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "prediction_variance": [
+          2.0194436059117676e-06,
+          9.421889165666689e-06,
+          3.57533593911417e-05
+        ],
+        "transfer": null,
+        "score": {
+          "before": 0.5444427243810819,
+          "after": 0.3751673366702976,
+          "body_error_m": [
+            0.07846722793817273,
+            0.626528701466331
+          ],
+          "yaw_rad": -0.696281307371402
+        }
+      },
+      "contacts": {
+        "wall_wheel": {
+          "samples": 13,
+          "contacts": 306,
+          "first_t": 109.3,
+          "last_t": 109.9,
+          "min_distance_m": -0.0004864777082416172,
+          "geom_pairs": [
+            [
+              "r3__v3_wheel_fl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_8_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_8_body_contact",
+              "zone_wall_north"
+            ]
+          ]
+        },
+        "wall_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "divider_robot_or_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "other_wall_robot": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        }
+      },
+      "contact_samples": 16,
+      "finger_both_count": 16,
+      "supervisor_samples": 16,
+      "max_tilt_deg": 0.27181962356991696,
+      "weld_count": 0,
+      "frames": [
+        {
+          "t": 109.25,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02159.jpg",
+          "sha256": "efa8fbda7c3676bfb444112f8b167841341746ce040a04929654ca5ba0dcf485"
+        },
+        {
+          "t": 110.0,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02174.jpg",
+          "sha256": "52ee989673cebaf9ff173ccfd89e1c820e78efc0579172161ebe44895c09955e"
+        }
+      ],
+      "evaluation": {
+        "start_xy": [
+          0.1858268018578399,
+          1.3498792827172543
+        ],
+        "end_xy": [
+          0.18673280811443577,
+          1.3507736568762099
+        ],
+        "actual_delta": [
+          0.0009004403217636697,
+          0.000899977610910774,
+          0.005157112930955829
+        ],
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ]
+      },
+      "estimate": {
+        "t": 109.25,
+        "t_est": 109.09,
+        "x": 1.1879612860211117,
+        "y": -0.3803667580170699,
+        "yaw": -0.696281307371402,
+        "last_fix_t": 108.05,
+        "std_xy_m": 0.6889723425076713
+      }
+    },
+    {
+      "t": 110.2,
+      "horizon_s": 0.75,
+      "controller": {
+        "t": 110.2,
+        "state": "carry",
+        "waypoint": [
+          1.6500000000000001,
+          0.05
+        ],
+        "issued": {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.65,
+          "turn": 0.0,
+          "duration_s": 0.65
+        },
+        "profile_key": "1:left:0.65:0.65",
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "prediction_variance": [
+          2.0194436059117676e-06,
+          9.421889165666689e-06,
+          3.57533593911417e-05
+        ],
+        "transfer": null,
+        "score": {
+          "before": 0.4215456096270136,
+          "after": 0.3046458803677419,
+          "body_error_m": [
+            -0.11890500998829828,
+            0.4751256553746842
+          ],
+          "yaw_rad": -0.7703653594991202
+        }
+      },
+      "contacts": {
+        "wall_wheel": {
+          "samples": 13,
+          "contacts": 278,
+          "first_t": 110.25,
+          "last_t": 110.85,
+          "min_distance_m": -0.0005845414324678888,
+          "geom_pairs": [
+            [
+              "r3__v3_wheel_fl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_8_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_8_body_contact",
+              "zone_wall_north"
+            ]
+          ]
+        },
+        "wall_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "divider_robot_or_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "other_wall_robot": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        }
+      },
+      "contact_samples": 16,
+      "finger_both_count": 16,
+      "supervisor_samples": 16,
+      "max_tilt_deg": 0.25116619864940554,
+      "weld_count": 0,
+      "frames": [
+        {
+          "t": 110.2,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02178.jpg",
+          "sha256": "45f866c6442eeab91fe8cd9a508f9569c5d6fdb7a8e35dab7ea90f0ffab15dbd"
+        },
+        {
+          "t": 110.95,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02193.jpg",
+          "sha256": "f518594bcca932602caf751b7125c0c7f31e958e946d4835515f543b1308284c"
+        }
+      ],
+      "evaluation": {
+        "start_xy": [
+          0.18750095603444517,
+          1.3501063822572874
+        ],
+        "end_xy": [
+          0.18767195919042298,
+          1.350916517103845
+        ],
+        "actual_delta": [
+          0.00017017275555503237,
+          0.000810309682916527,
+          -0.0019445508212223793
+        ],
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ]
+      },
+      "estimate": {
+        "t": 110.2,
+        "t_est": 110.04,
+        "x": 1.4044566146717559,
+        "y": -0.3737820615801074,
+        "yaw": -0.7703653594991202,
+        "last_fix_t": 109.7,
+        "std_xy_m": 0.5582944806110348
+      }
+    },
+    {
+      "t": 111.15,
+      "horizon_s": 0.75,
+      "controller": {
+        "t": 111.15,
+        "state": "carry",
+        "waypoint": [
+          1.6500000000000001,
+          0.05
+        ],
+        "issued": {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.65,
+          "turn": 0.0,
+          "duration_s": 0.65
+        },
+        "profile_key": "1:left:0.65:0.65",
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "prediction_variance": [
+          2.0194436059117676e-06,
+          9.421889165666689e-06,
+          3.57533593911417e-05
+        ],
+        "transfer": null,
+        "score": {
+          "before": 0.3311590045630411,
+          "after": 0.2638886059423904,
+          "body_error_m": [
+            -0.16248270732807785,
+            0.3285871266625062
+          ],
+          "yaw_rad": -0.7993482012595385
+        }
+      },
+      "contacts": {
+        "wall_wheel": {
+          "samples": 13,
+          "contacts": 323,
+          "first_t": 111.2,
+          "last_t": 111.8,
+          "min_distance_m": -0.0004894464636471252,
+          "geom_pairs": [
+            [
+              "r3__v3_wheel_fl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_8_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_8_body_contact",
+              "zone_wall_north"
+            ]
+          ]
+        },
+        "wall_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "divider_robot_or_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "other_wall_robot": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        }
+      },
+      "contact_samples": 16,
+      "finger_both_count": 16,
+      "supervisor_samples": 16,
+      "max_tilt_deg": 0.25058934654515486,
+      "weld_count": 0,
+      "frames": [
+        {
+          "t": 111.15,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02197.jpg",
+          "sha256": "d62d434ae87311e18ff331554468d2b0d17d2252b228b2b3703e91b6426ac579"
+        },
+        {
+          "t": 111.9,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02212.jpg",
+          "sha256": "bf837109b4c88f137029b7fac8f42fa73736d8fc5ed41a04979f681984cf7385"
+        }
+      ],
+      "evaluation": {
+        "start_xy": [
+          0.18716859467687608,
+          1.3495836210609833
+        ],
+        "end_xy": [
+          0.1878681894469728,
+          1.3507417039897978
+        ],
+        "actual_delta": [
+          0.0006889246972440349,
+          0.0011644619675563023,
+          0.008262360703685582
+        ],
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ]
+      },
+      "estimate": {
+        "t": 111.15,
+        "t_est": 110.99,
+        "x": 1.527714029525021,
+        "y": -0.2955665947599337,
+        "yaw": -0.7993482012595385,
+        "last_fix_t": 109.7,
+        "std_xy_m": 0.5181460584825801
+      }
+    },
+    {
+      "t": 113.7,
+      "horizon_s": 0.75,
+      "controller": {
+        "t": 113.7,
+        "state": "carry",
+        "waypoint": [
+          1.6500000000000001,
+          0.05
+        ],
+        "issued": {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.65,
+          "turn": 0.0,
+          "duration_s": 0.65
+        },
+        "profile_key": "1:left:0.65:0.65",
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "prediction_variance": [
+          2.0194436059117676e-06,
+          9.421889165666689e-06,
+          3.57533593911417e-05
+        ],
+        "transfer": null,
+        "score": {
+          "before": 0.1985847807219654,
+          "after": 0.16089260918733872,
+          "body_error_m": [
+            -0.2645848549487897,
+            0.22499187185758274
+          ],
+          "yaw_rad": -0.5253502051971015
+        }
+      },
+      "contacts": {
+        "wall_wheel": {
+          "samples": 13,
+          "contacts": 242,
+          "first_t": 113.75,
+          "last_t": 114.35,
+          "min_distance_m": -0.0008620672426009612,
+          "geom_pairs": [
+            [
+              "r3__v3_wheel_fl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_fl_roller_8_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_0_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_1_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_2_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_3_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_4_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_5_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_6_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_7_body_contact",
+              "zone_wall_north"
+            ],
+            [
+              "r3__v3_wheel_rl_roller_8_body_contact",
+              "zone_wall_north"
+            ]
+          ]
+        },
+        "wall_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "divider_robot_or_cargo": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        },
+        "other_wall_robot": {
+          "samples": 0,
+          "contacts": 0,
+          "first_t": null,
+          "last_t": null,
+          "min_distance_m": null,
+          "geom_pairs": []
+        }
+      },
+      "contact_samples": 16,
+      "finger_both_count": 16,
+      "supervisor_samples": 16,
+      "max_tilt_deg": 0.23897881327067352,
+      "weld_count": 0,
+      "frames": [
+        {
+          "t": 113.7,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02248.jpg",
+          "sha256": "a88eb2245242e5745650ddc8e9a5431851a562e72fc909214ce4887d68f4fafe"
+        },
+        {
+          "t": 114.45,
+          "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/robots/r3/rgb/02263.jpg",
+          "sha256": "44aca2e1bb90bd06aa363d4f2a4af477448cad51eb37d99143d5afd7126fad36"
+        }
+      ],
+      "evaluation": {
+        "start_xy": [
+          0.19323209044231013,
+          1.3320084297149695
+        ],
+        "end_xy": [
+          0.17897696917130052,
+          1.3509875882682407
+        ],
+        "actual_delta": [
+          -0.009240771065744207,
+          0.021863784941128256,
+          -0.24619007351008715
+        ],
+        "predicted_delta": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ]
+      },
+      "estimate": {
+        "t": 113.7,
+        "t_est": 113.54,
+        "x": 1.7660681266947893,
+        "y": -0.2773448912627374,
+        "yaw": -0.5253502051971015,
+        "last_fix_t": 113.0,
+        "std_xy_m": 0.3011123517372701
+      }
+    }
+  ]
+}

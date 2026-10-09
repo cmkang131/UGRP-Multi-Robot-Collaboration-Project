@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s2-realism-v125",
+      "version": "7.18.0",
+      "purpose": "S2 full DEV after offline stationary AMCL admission, real carry and dev_light repeated search",
+      "entry": "scripts/run_s2_realism_v125.py",
+      "runner": "scripts.run_s2_realism_v125",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed SHA; live owned lock; offline admission; seed1050; all options",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

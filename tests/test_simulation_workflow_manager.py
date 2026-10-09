@@ -263,7 +263,52 @@ raise SystemExit(3 if a.fail else 0)
             "zone-solo-cyan-v106": ["--expected-source-sha", "0" * 40],
             "zone-s3-host-v107": ["--expected-source-sha", "0" * 40],
             "zone-s3-door-yield-v108": ["--expected-source-sha", "0" * 40],
+            "masterpi-drive-friction-probe": ["--expected-source-sha", "0" * 40, "--drive-profile", "masterpi_drive_friction_v7"],
+            "masterpi-v7-roller-approx-probe": ["--expected-source-sha", "0" * 40, "--phase", "profile"],
         }
+        # Explicit samples for preserved S2 bundles; planning never executes.
+        samples.update({name: ["--expected-source-sha", "0" * 40] for name in (
+            'zone-s2-realism-v109',
+            'zone-s2-realism-v110',
+            'zone-s2-realism-v113',
+            'zone-s2-realism-v114',
+            'zone-s2-realism-v115',
+            'zone-s2-realism-v116',
+            'zone-s2-realism-v117',
+            'zone-s2-realism-v118',
+            'zone-s2-realism-v119',
+            'zone-s2-realism-v120',
+            'zone-s2-realism-v121',
+            'zone-s2-realism-v122',
+            'zone-s2-realism-v123',
+            'zone-s2-realism-v124',
+            'zone-s2-realism-v125',
+            'zone-s2-realism-v126',
+            'zone-s2-realism-v127',
+            'zone-s2-realism-v128',
+            'zone-s2-realism-v129',
+            's2-camera-extrinsic-capture-v1',
+            's2-stiff-camera-capture-v1',
+            's2-stiff-start-capture-v1',
+            's2-active-markov-start-v1',
+            's2-load-wall-v1',
+            'zone-s2-realism-v130',
+            'zone-s2-realism-v131',
+            'zone-s2-real-output-diag-v111',
+            'zone-s2-real-output-diag-v112',
+        )})
+        samples['zone-s2-realism-v132'] = ['--expected-source-sha', '0'*40, '--mode', 'start']
+        samples['zone-s2-realism-v133'] = ['--expected-source-sha', '0'*40, '--mode', 'full']
+        samples['zone-s2-v133-reproduction'] = ['--expected-registration-sha', '0'*40, '--seed', '1053']
+        samples['zone-s2-v133-baseline-v52'] = ['--expected-registration-sha', '0'*40, '--seed', '1056']
+        samples['zone-s2-unknown-start-v139'] = ['--expected-source-sha', '0'*40, '--seed', '1059']
+        samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
+        samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
+        samples['zone-s2-side-scan-v134'] = ['--expected-source-sha', '0'*40]
+        samples['s2-loaded-rotation-v1'] = ['--expected-source-sha', '0'*40]
+        for name in ('zone-s2-look-before-move-v135', 'zone-s2-goal-heading-v136',
+                     'zone-s2-staged-approach-v137', 'zone-s2-staging-only-v138'):
+            samples[name] = ['--expected-source-sha', '0'*40, '--seed', '1054']
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
             plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}

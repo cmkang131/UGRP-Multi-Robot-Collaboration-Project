@@ -46,6 +46,17 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 
 ## 새 영상을 추가하는 방법
 
+2026-10-06 S2 현실성 후속은 위의 정답 도식과 달리 **저장된 자기 RGB**를 4배속으로 인코딩했다.
+`zone-s2-realism-v115` 소스 `57f8c174`, s1040/P1-2의 정렬 도달→hover 시야 미확인 실패를 선택했다.
+동일 제어의 v116/`46b8e7af` s1041도 같은 실패였으며, seed 재사용 금지에 따라 paired seed 비교는 아니다.
+영상은 사용자 지정대로 로컬
+`/Users/changmin/projects/ugrp/outputs/s2-realism-57f8c174-analysis/views/s1040-probe/execution.mp4`에 둔다.
+SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
+26.15초, 575008bytes. [원자료·판정·한계](../experiments/2026-10-06-s2-realism/README.md#v115v116-최신-완료-기록).
+집기/운반 성공이나 실물 검증을 보여주는 영상은 아니다.
+
 1. 대표 case를 위 규칙으로 고른다(paired 상대가 있으면 같은 셀·seed).
 2. `python3 scripts/render_pair_probe_video.py --case <이전 case> --label ... --case <새 case> --label ... --output <mp4>`. `--pf-track`으로 돌린 실행은 σ가 `trace.jsonl`의 PF에서 나오고, 없으면 `robots.json` 보고로 대신한다(영상 안에 출처가 적힌다). 정렬처럼 σ 게이트가 종료 원인이 아닌 단계는 `--gate none`.
 3. 파일 크기와 sha256을 확인하고 `experiments/<ID>/videos/`에 넣는다. 이 표에 행을 추가한다.
+
+- 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.

@@ -21,7 +21,12 @@
 - [연구 제어기 검증·사용 기준](docs/research_controller_validation.md) — RGB 기준선, ACT 완료 거부와 명시적 혼합 제어기를 구분하고 유한한 전체 시험으로 채택 여부 판정
 - [문서 찾아보기](docs/README.md) · [실험 인덱스](experiments/README.md) · [지도 목록](maps/README.md)
 
+- [MasterPi 바퀴 마찰 구동 후보·사양/논문/공개 코드 조사](experiments/2026-10-06-drive-friction/README.md) — 무하중·cyan에서20/30 정지·35/50/100의5초 주행을 재현한 **v7을 DEV 후보로 채택**. 옆 회전−2.49°는 알려진 특성이며 실물 측정·자기 카메라 방향 보정 검증은 #404 TODO. 짝 빔 비교는 아래 기록, PR #402 DRAFT·기본값 유지.
+- S2 realism PR #406 DRAFT: `f0bb26e7` / v121 s1045 full DEV 완료, lifted=true·inside=false(B 밖 배치), 최종 위치 오차3.839m. 가드5·위치 불확실519회는 기록만, freeze ON·모델0·잠금 해제. [기록](experiments/2026-10-06-s2-realism/README.md).
+
 ## 현재 검증 범위
+
+- [S2 손목 카메라 검토·공식 자료와 새 도면 후보](experiments/2026-10-06-robot-camera-review/README.md): 실물 기록1.35%·7.92%, v3 들기5.63%; #403 중간 내려놓기 OFF 및 원래 자리 재관측 파지 확인·재집기 옵션 구현(오프라인). 기본값·기존 번들 유지, #404 확정 뒤 새 카메라+구동 S2 재검증 필요.
 
 2026-09-20 main에 포함된 기록 기준이다. 실험별 실행 SHA와 조건이 다르며 아래 결과를 현재 main에서 새로 실행한 결과로 해석하지 않는다.
 

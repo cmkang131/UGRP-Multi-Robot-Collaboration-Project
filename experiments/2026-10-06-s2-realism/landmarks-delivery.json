@@ -1,0 +1,255 @@
+{
+  "viewer": {
+    "schema": "ugrp.s2.landmarks.viewer.v1",
+    "active_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+    "url": "http://127.0.0.1:6006/?runFilter=%5E1008-s2-landmarks-v39%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ffinal_error_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ftruth_near_mass%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fdoor_scene_GT_false_ratio%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fwindow_xy_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fwindow_end_error_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+    "pinned_tags": [
+      "offline/final_error_m",
+      "offline/truth_near_mass",
+      "offline/door_scene_GT_false_ratio",
+      "offline/window_xy_rmse_m",
+      "offline/window_end_error_m",
+      "result/model_calls"
+    ],
+    "hparams_visible_columns": [
+      "case",
+      "condition",
+      "seed",
+      "source_sha",
+      "offline/final_error_m",
+      "offline/window_xy_rmse_m"
+    ],
+    "verification": {
+      "source_event_live_api_match": true,
+      "scalars": 32,
+      "browser": "NUMERIC_ONLY_UI_NOT_VERIFIED"
+    },
+    "scope": "recorded RGB/commands; physical execution recorded separately"
+  },
+  "checks": [
+    {
+      "run": "1008-s2-landmarks-v39/start1052-off",
+      "tag": "offline/final_error_m",
+      "source": 3.089584966217964,
+      "event": 3.089585065841675,
+      "live": 3.089585065841675
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-off",
+      "tag": "offline/window_xy_rmse_m",
+      "source": 3.330367870028895,
+      "event": 3.3303678035736084,
+      "live": 3.3303678035736084
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-off",
+      "tag": "offline/window_end_error_m",
+      "source": 3.089584966217964,
+      "event": 3.089585065841675,
+      "live": 3.089585065841675
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-off",
+      "tag": "offline/window_visual_updates",
+      "source": 6,
+      "event": 6.0,
+      "live": 6.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-off",
+      "tag": "offline/window_max_fix_gap_s",
+      "source": 3.3499999999999996,
+      "event": 3.3499999046325684,
+      "live": 3.3499999046325684
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-off",
+      "tag": "offline/truth_near_mass",
+      "source": 0.1175267538644471,
+      "event": 0.11752675473690033,
+      "live": 0.11752675473690033
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-off",
+      "tag": "offline/door_scene_GT_false_ratio",
+      "source": 1.1818791209187443,
+      "event": 1.1818791627883911,
+      "live": 1.1818791627883911
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-off",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-off",
+      "tag": "evaluation/reported_success",
+      "source": 1.0,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-on",
+      "tag": "offline/final_error_m",
+      "source": 0.06967977515247137,
+      "event": 0.06967977434396744,
+      "live": 0.06967977434396744
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-on",
+      "tag": "offline/window_xy_rmse_m",
+      "source": 1.4374095702459864,
+      "event": 1.437409520149231,
+      "live": 1.437409520149231
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-on",
+      "tag": "offline/window_end_error_m",
+      "source": 0.06967977515247137,
+      "event": 0.06967977434396744,
+      "live": 0.06967977434396744
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-on",
+      "tag": "offline/window_visual_updates",
+      "source": 6,
+      "event": 6.0,
+      "live": 6.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-on",
+      "tag": "offline/window_max_fix_gap_s",
+      "source": 3.3499999999999996,
+      "event": 3.3499999046325684,
+      "live": 3.3499999046325684
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-on",
+      "tag": "offline/truth_near_mass",
+      "source": 0.9610743692872106,
+      "event": 0.9610743522644043,
+      "live": 0.9610743522644043
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-on",
+      "tag": "offline/door_scene_GT_false_ratio",
+      "source": 175125.01365118465,
+      "event": 175125.015625,
+      "live": 175125.015625
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-on",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/start1052-on",
+      "tag": "evaluation/reported_success",
+      "source": 1.0,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-off",
+      "tag": "offline/final_error_m",
+      "source": 2.710096663941036,
+      "event": 2.710096597671509,
+      "live": 2.710096597671509
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-off",
+      "tag": "offline/window_xy_rmse_m",
+      "source": 1.1542425384384933,
+      "event": 1.1542425155639648,
+      "live": 1.1542425155639648
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-off",
+      "tag": "offline/window_end_error_m",
+      "source": 2.709823108977634,
+      "event": 2.7098231315612793,
+      "live": 2.7098231315612793
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-off",
+      "tag": "offline/window_visual_updates",
+      "source": 19,
+      "event": 19.0,
+      "live": 19.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-off",
+      "tag": "offline/window_max_fix_gap_s",
+      "source": 45.0,
+      "event": 45.0,
+      "live": 45.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-off",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-off",
+      "tag": "evaluation/reported_success",
+      "source": 1.0,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-on",
+      "tag": "offline/final_error_m",
+      "source": 2.778129941387364,
+      "event": 2.778130054473877,
+      "live": 2.778130054473877
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-on",
+      "tag": "offline/window_xy_rmse_m",
+      "source": 1.180938930731812,
+      "event": 1.180938959121704,
+      "live": 1.180938959121704
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-on",
+      "tag": "offline/window_end_error_m",
+      "source": 2.778084484040735,
+      "event": 2.7780845165252686,
+      "live": 2.7780845165252686
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-on",
+      "tag": "offline/window_visual_updates",
+      "source": 20,
+      "event": 20.0,
+      "live": 20.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-on",
+      "tag": "offline/window_max_fix_gap_s",
+      "source": 33.25,
+      "event": 33.25,
+      "live": 33.25
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-on",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1008-s2-landmarks-v39/carry1051-on",
+      "tag": "evaluation/reported_success",
+      "source": 1.0,
+      "event": 1.0,
+      "live": 1.0
+    }
+  ]
+}

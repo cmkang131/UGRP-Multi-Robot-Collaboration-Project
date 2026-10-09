@@ -1,0 +1,60 @@
+{
+  "scope": "saved RGB audit and static command-pose reconstruction; not REAL or mission success",
+  "model_calls": 0,
+  "commands": 0,
+  "reports": {
+    "saved-1320": {
+      "condition": "recorded_dynamic_baseline",
+      "frames": 1320,
+      "valid_fraction": 0.9998490140218294,
+      "full_fraction": 0.823525390625,
+      "aggregation": "median",
+      "source_sha": "fae1fc4a37f3ec22613f0c19eedb8932ffa404e6"
+    },
+    "static-old": {
+      "condition": "baseline",
+      "frames": 3,
+      "valid_fraction": 0.739930625916346,
+      "full_fraction": 0.6086328125,
+      "aggregation": "mean",
+      "source_sha": "ff6a3aaad37110929150ec40637857dd8d2b903c"
+    },
+    "static-drawing": {
+      "condition": "masterpi-camera-drawing-mount-review-v1",
+      "frames": 3,
+      "valid_fraction": 0.25873831348662385,
+      "full_fraction": 0.21337999131944443,
+      "aggregation": "mean",
+      "source_sha": "ff6a3aaad37110929150ec40637857dd8d2b903c"
+    },
+    "render-error": {
+      "condition": "first_attempt_joint_name_error",
+      "frames": 0,
+      "source_sha": "965f2f31",
+      "render_completed": 0,
+      "error": "Invalid shoulder_pitch name; released lock. Corrected from model joint table."
+    }
+  },
+  "paired_qpos_hashes_equal": true,
+  "limits": "Baseline static render does not match dynamic raw. No claim of 99.98 to 26 percent improvement on hardware.",
+  "evidence_hashes": {
+    "comparison.json": "305cb522197902b7c7881fc5e8901c2fe86ee9e97cea8eb324d9b10516bb67c9",
+    "frames-audit/frames.jsonl": "a44546c455bdaa508e171e638bf0cd8216232e64f6dd124b8d30c512b69fd1a0",
+    "frames-audit/summary.json": "07a0881c9f0e595f6b7ea0abd7152b48f9b8e51cfe92c7e44b0dece226d729bf",
+    "references/masterpi-drawing.jpg": "58f8d736a2d284d1f2b7e83ca816088ad6b16658a25eea104eabdbf55dadf11a",
+    "render-v1/baseline.xml": "c9d9e69111ba68d71b83515dc3ec13d68afcbdb4ff82103a1cabea8d2797a8c4",
+    "render-v1/lock-acquire.json": "d70afa6545f76a1eab4817284bf64249d27ad5deac95c93cf4b71caf8f9e3653",
+    "render-v1/lock-release.json": "ee9717539ec8edc89fa98391d9775ba78d31b1c4d656f06e23f2eabbc5a48688",
+    "render-v1-r2/baseline-t105.png": "5d994aeeba18f310942cf667140c9b24f9bcdf4c056ab8f145abfc7a04d64aea",
+    "render-v1-r2/baseline-t180.png": "10c4957f71d3c10422458e300e53822b596e504080ccfc465a93fefb394f70b2",
+    "render-v1-r2/baseline-t270.png": "efd985eb992a92c20149383bb3cca7cdeefe4b84c9e27d6850a19924fe8f2fbc",
+    "render-v1-r2/baseline.xml": "c9d9e69111ba68d71b83515dc3ec13d68afcbdb4ff82103a1cabea8d2797a8c4",
+    "render-v1-r2/lock-acquire.json": "fd82f0f3579ec694444f2bbbc319768bd441217b863f4985042031f7bbca8bdd",
+    "render-v1-r2/lock-release.json": "dd6758b8f1da216ee99795809d1c185d7d36e05713b630aa1bf2536e81ad2e10",
+    "render-v1-r2/masterpi-camera-drawing-mount-review-v1-t105.png": "206c89711098f6f3f51193e4df50bcee496e96aa648744947132523783f782eb",
+    "render-v1-r2/masterpi-camera-drawing-mount-review-v1-t180.png": "ac0a48c3247b5a40ccc16cc03e62e562dfdb7d029d188cbaa3db56b7be53f4fe",
+    "render-v1-r2/masterpi-camera-drawing-mount-review-v1-t270.png": "1843a6bc4142c149392aef10434ee17adf96dd014b9f23927165bec6efa17ce8",
+    "render-v1-r2/masterpi-camera-drawing-mount-review-v1.xml": "c86f84bea98d4015735a852f0db3f4bd52de88d297f44131ecdfd91c3ed728f0",
+    "render-v1-r2/render-summary.json": "6ead5ed0a5a75b256a3f37378406ddbbf499ac7cb8373b30a6a8975b214729cb"
+  }
+}

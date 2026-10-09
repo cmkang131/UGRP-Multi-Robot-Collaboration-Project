@@ -1,0 +1,141 @@
+{
+  "schema": "ugrp.s2.look_ahead_calibration.v1",
+  "option": "look_ahead_v1",
+  "servo_stiffness": "real_v1",
+  "fit_uses_gt": false,
+  "pose_key": "1050,2035,1894,1500",
+  "camera_models": {
+    "unloaded": {
+      "frame": "optical_to_actual_chassis",
+      "origin_m": [
+        0.19684253553427858,
+        -8.659910289978856e-05,
+        0.17401167050346028
+      ],
+      "rotation": [
+        [
+          -0.00029450968147570755,
+          -0.2828957387945232,
+          0.9591506212456669
+        ],
+        [
+          -0.9999999410904421,
+          -8.578673192882746e-05,
+          -0.0003323548543607835
+        ],
+        [
+          0.00017630416929048653,
+          -0.95915066262425,
+          -0.282895696864237
+        ]
+      ],
+      "chassis_to_floor": {
+        "origin_m": [
+          0,
+          0,
+          0.0325
+        ],
+        "rotation": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    },
+    "loaded": {
+      "frame": "optical_to_actual_chassis",
+      "origin_m": [
+        0.1969079647658467,
+        1.5852935816124486e-05,
+        0.17344295812764707
+      ],
+      "rotation": [
+        [
+          -0.0006624993322333905,
+          -0.28424793685763194,
+          0.958750578350185
+        ],
+        [
+          -0.9999997442752567,
+          -6.991592681737657e-05,
+          -0.0007117311177441965
+        ],
+        [
+          0.00026934003708811716,
+          -0.9587508046953299,
+          -0.28424781784914666
+        ]
+      ],
+      "chassis_to_floor": {
+        "origin_m": [
+          0,
+          0,
+          0.0325
+        ],
+        "rotation": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    }
+  },
+  "quality": {
+    "unloaded": {
+      "fit": {
+        "rms_px": 0.13413635224095483,
+        "max_px": 0.288113630632137,
+        "points": 80
+      },
+      "holdout": {
+        "rms_px": 0.24321461699415076,
+        "max_px": 0.4332203841393953,
+        "points": 40
+      }
+    },
+    "loaded": {
+      "fit": {
+        "rms_px": 0.12973605101278546,
+        "max_px": 0.2614124244017777,
+        "points": 80
+      },
+      "holdout": {
+        "rms_px": 0.21458777504761278,
+        "max_px": 0.3369172226098577,
+        "points": 40
+      }
+    }
+  },
+  "pitch_difference_deg": 0.08078706036653216,
+  "bilateral_fraction": 1.0,
+  "origin": "surveyed known boards, free chassis, RGB solvePnP; GT audit separate",
+  "raw": {
+    "unloaded": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-b161a388/far-look_ahead-empty",
+    "loaded": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/far-look_ahead-loaded"
+  },
+  "admission_pass": true
+}
