@@ -25,6 +25,7 @@ def main():
     for option in (OPTIONS[-1:] if a.retain_from else OPTIONS):
         for case,raw,kind in cases:
             key=case+'-'+option;out=a.output/key
+            if a.retain_from and key in proof['receipts']:continue
             command=[sys.executable,str(HERE/f'replay_{kind}.py'),'--raw',str(raw),'--output',str(out),'--option',option]
             if kind=='ownmap':command+=['--adapter',str(RAW/'s3fix6-20261010/egomap-adapter-5b330946')]
             deadline=time.monotonic()+10800

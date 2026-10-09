@@ -123,6 +123,49 @@ def _ownmap_alpha(grid, audit):
     grid.odom.advance = MethodType(_bind(advance, motion_variance=motion_variance), grid.odom)
 
 
+def _s3_alpha(runtime, audit):
+    """Transform the profile actually selected by the final pulse predictor.
+
+    Slip/rotation adapters may install or temporarily select another table.
+    A dictionary captured by an older command wrapper is not the consumer.
+    """
+    pf = runtime.pose.provider.loc._pf
+    predict = pf.predict_to
+    seen = set()
+    while 'active' not in predict.__code__.co_freevars:
+        if id(predict) in seen:
+            raise ValueError('cyclic pulse prediction boundary')
+        seen.add(id(predict))
+        links = {'predict', 'pulse_predict'} & set(predict.__code__.co_freevars)
+        if len(links) != 1:
+            raise ValueError('unsupported composed pulse prediction boundary')
+        predict = _closure(predict, next(iter(links))).cell_contents
+    active = _closure(predict, 'active')
+    model = _closure(predict, 'model').cell_contents
+    if model.get('noise_model') is not None:
+        raise ValueError('explicit pulse variance predictor required')
+    cache = {}
+    original = pf.command
+
+    def command(row):
+        value = original(row)
+        item = active.cell_contents
+        if (item is not None and row['kind'] in ('drive', 'mecanum')
+                and float(row['t']) == item[0]):
+            started, profile = item
+            if not profile['loaded'] and profile['axis'] in ('forward', 'turn'):
+                key = id(profile)
+                if key not in cache:
+                    corrected = alpha_profiles({'selected': profile}, option='effective_sqrt_alpha_v1')['selected']
+                    cache[key] = (profile, corrected)  # keep identities alive
+                active.cell_contents = (started, cache[key][1])
+                audit['motion_noise_commands'] += 1
+        return value
+
+    pf.command = command
+    audit.update(motion_noise_boundary='final pulse predictor active profile', motion_noise_commands=0)
+
+
 def attach_s3(runtime, *, observation_consistency='off'):
     option = observation_consistency
     if option == 'off':
@@ -151,6 +194,7 @@ def attach_s3(runtime, *, observation_consistency='off'):
         runtime.pulse_profiles.update(profiles)
         runtime.pulse_model['profiles'] = copy.deepcopy(profiles)
         audit['alpha_asset_sha256'] = hashlib.sha256(ALPHA_ASSET.read_bytes()).hexdigest()
+        _s3_alpha(runtime, audit)
     old_record = runtime.record
     runtime.record = lambda: {**old_record(), 'observation_consistency': copy.deepcopy(audit)}
     runtime.observation_consistency_audit = audit

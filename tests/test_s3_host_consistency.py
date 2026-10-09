@@ -51,6 +51,27 @@ def test_s3_actual_factory_binds_measurement_and_same_pulse_dictionary():
             assert profiles is own.pulse_profiles
             assert own.observation_consistency_audit['scores'] == 1
             assert own.pulse_profiles['0:forward:0.35:0.10']['prediction_variance'][2] > 1e-6
+            # Real slip factory has a second, authoritative pulse predictor.
+            # Prove the final predictor consumes Q, not an obsolete dictionary.
+            active = c._closure(pf.command, 'active').cell_contents
+            start = np.tile([2., 0., 0.], (pf.n, 1))
+            pf.initialized = True; pf.t = 0.; pf.px = start.copy()
+            pf.logw = np.zeros(pf.n)
+            pf.rng = SimpleNamespace(normal=lambda size: np.ones(size))
+            original_profile = own.flow.profiles['0:forward:0.35:0.10']
+            original_copy = copy.deepcopy(original_profile)
+            own.pose.provider.on_command(dict(t=0.,kind='mecanum',forward=.35,left=0.,turn=0.,duration_s=.10))
+            transformed = active.cell_contents[1]
+            assert transformed is not original_profile
+            assert transformed['mean_curve'] == original_copy['mean_curve']
+            pf.predict_to(.05)
+            changed = pf.px.copy()
+            assert own.flow.profiles['0:forward:0.35:0.10'] == original_copy
+            assert own.observation_consistency_audit['motion_noise_commands'] == 1
+            pf.t=0.; pf.px=start.copy(); pf.logw=np.zeros(pf.n)
+            active.cell_contents=(0.,original_profile)
+            pf.predict_to(.05)
+            assert not np.array_equal(changed,pf.px), 'alpha Q must change actual prediction'
     finally:
         rt.close()
 

@@ -142,3 +142,26 @@ Corrected C3 runs use a new committed source recorded per receipt. A fresh
 results; it does not overwrite or silently relabel invalid results. This is
 a consumer wiring repair after detecting missing treatment, not parameter
 tuning. No physical run has been made for s3fix6 yet.
+
+### S3 C3 active-predictor correction (before corrected S3 replay)
+
+The first S3 C3/v149 result still equaled C1 exactly. Its old pulse table
+survived in a command closure, but slip initialization had installed a second
+predictor using `flow.profiles`. The previous dictionary-identity test could
+not prove actual consumption. That result and interrupted C3/v150 remain in
+replays-v3 and are excluded as C3 evidence. Only our managed queue was stopped.
+
+The shared module now follows the final AMCL predictor to its actual active
+pulse cell. After the existing provider command selects a profile, C3 replaces
+that selected immutable profile with the same independently calibrated alpha-Q
+copy; loaded/lateral profiles and all means remain unchanged. This also retains
+temporary rotation/slip selections instead of overriding their mean models.
+The provider-command regression on all three real S3 factory instances now
+checks changed particle propagation, not merely dictionary presence. Actual
+own-map consumer regression remains in the same test file. No coefficients,
+seeds, thresholds or candidates are added after results.
+
+The next comparison view retains12 B/C1/C2 arms at105ffc70 and the two valid
+own-map C3 arms atbfce6a01. Dependency bytes and consumer-scoped AST equality
+are checked against both source commits. Only the two affected S3 C3 arms are
+rerun on the next committed source; every receipt declares its own source.
