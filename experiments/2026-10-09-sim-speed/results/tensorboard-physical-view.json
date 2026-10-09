@@ -1,0 +1,33 @@
+{
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1009-simspeed-abba-86420cb2",
+  "url": "http://127.0.0.1:6006/?smoothing=0&runFilter=%5E1009-simspeed-abba-86420cb2%2F%28A1%7CA2%7CB1%7CB2%29%24&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22gate%2Fbytes_identical%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fwall_per_sim%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fload_start_1m%22%7D%5D#timeseries",
+  "pinned_metrics": [
+    "gate/bytes_identical",
+    "offline/wall_per_sim",
+    "result/wall_s",
+    "result/commands",
+    "result/model_calls",
+    "offline/load_start_1m"
+  ],
+  "default_runs": [
+    "1009-simspeed-abba-86420cb2/A1",
+    "1009-simspeed-abba-86420cb2/A2",
+    "1009-simspeed-abba-86420cb2/B1",
+    "1009-simspeed-abba-86420cb2/B2"
+  ],
+  "hparams_visible_columns": [
+    "case",
+    "outcome",
+    "policy",
+    "result/wall_s",
+    "result/commands",
+    "result/model_calls"
+  ],
+  "scope": "12 SIM seconds fixed-input ABBA, n=2 per option; instrumented physics/render/eval prefix, no online controller/full mission claim. bytes_identical is artifact equality, not robot success. Profile and prephysics queue timeout preserved but excluded from speed averages.",
+  "verification": {
+    "event_and_live_scalars": 51,
+    "scalar_tolerance": 1e-06,
+    "new_videos": 0
+  },
+  "model_response_time": "not measured, model calls 0; no invented latency scalar"
+}

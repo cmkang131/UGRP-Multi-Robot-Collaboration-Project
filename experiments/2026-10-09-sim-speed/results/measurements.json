@@ -1,0 +1,258 @@
+[
+  {
+    "mode": "off",
+    "profile": true,
+    "sim_s": 12.0,
+    "wall_s": 16.966987082967535,
+    "wall_per_sim": 1.4139155902472946,
+    "construction_and_reset_s": 2.2062934580026194,
+    "load_start": [
+      4.98486328125,
+      4.7080078125,
+      5.17236328125
+    ],
+    "load_end": [
+      4.30810546875,
+      4.5654296875,
+      5.109375
+    ],
+    "nice": 0,
+    "receipt": {
+      "mode": "off",
+      "installed": false
+    },
+    "steps": 48000,
+    "frames": 61,
+    "forward_callers": {
+      "wall_parallax_strafe.py:21:apply": 61
+    },
+    "forward_seconds": {
+      "wall_parallax_strafe.py:21:apply": 0.013924086932092905
+    },
+    "scope": "saved-command prefix; full physics/render/evaluation, no online controller",
+    "profile_total_s": 16.961839079000004,
+    "top10": [
+      {
+        "function": "~:0:<built-in method mujoco._functions.mj_step>",
+        "calls": 48000,
+        "self_s": 10.808932646,
+        "cumulative_s": 10.808932646,
+        "percent": 63.725004085095044
+      },
+      {
+        "function": "/Users/changmin/projects/ugrp-wt/sim-speed/sim/masterpi_drive_friction_v7.py:52:command_step",
+        "calls": 144000,
+        "self_s": 1.279565383,
+        "cumulative_s": 3.8813180640000002,
+        "percent": 7.543789190785305
+      },
+      {
+        "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/lib/_arraysetops_impl.py:806:_isin",
+        "calls": 144000,
+        "self_s": 0.9968104090000001,
+        "cumulative_s": 1.909272791,
+        "percent": 5.876782608049407
+      },
+      {
+        "function": "~:0:<built-in method mujoco._render.mjr_render>",
+        "calls": 61,
+        "self_s": 0.46176245800000004,
+        "cumulative_s": 0.46176245800000004,
+        "percent": 2.722360799730117
+      },
+      {
+        "function": "/Users/changmin/projects/ugrp-wt/sim-speed/sim/masterpi_drive_friction_v7.py:212:_physics_step_for",
+        "calls": 48000,
+        "self_s": 0.30996582,
+        "cumulative_s": 15.130348344000002,
+        "percent": 1.8274304959287129
+      },
+      {
+        "function": "~:0:<built-in method mujoco._render.mjr_readPixels>",
+        "calls": 61,
+        "self_s": 0.305190876,
+        "cumulative_s": 0.305190876,
+        "percent": 1.7992793975851864
+      },
+      {
+        "function": "~:0:<method 'update' of '_hashlib.HASH' objects>",
+        "calls": 48000,
+        "self_s": 0.269503213,
+        "cumulative_s": 0.269503213,
+        "percent": 1.5888796712714053
+      },
+      {
+        "function": "~:0:<method 'reduce' of 'numpy.ufunc' objects>",
+        "calls": 720589,
+        "self_s": 0.26362879,
+        "cumulative_s": 0.26362879,
+        "percent": 1.5542464986971354
+      },
+      {
+        "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:66:_wrapreduction",
+        "calls": 288000,
+        "self_s": 0.157381656,
+        "cumulative_s": 0.292369445,
+        "percent": 0.9278572639853068
+      },
+      {
+        "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/_core/numeric.py:97:zeros_like",
+        "calls": 144000,
+        "self_s": 0.12430645200000001,
+        "cumulative_s": 0.167993041,
+        "percent": 0.7328595173025811
+      }
+    ],
+    "name": "profile"
+  },
+  {
+    "mode": "off",
+    "profile": false,
+    "sim_s": 12.0,
+    "wall_s": 15.612637332989834,
+    "wall_per_sim": 1.3010531110824861,
+    "construction_and_reset_s": 2.119961875025183,
+    "load_start": [
+      4.30810546875,
+      4.5654296875,
+      5.109375
+    ],
+    "load_end": [
+      4.9189453125,
+      4.67626953125,
+      5.13525390625
+    ],
+    "nice": 0,
+    "receipt": {
+      "mode": "off",
+      "installed": false
+    },
+    "steps": 48000,
+    "frames": 61,
+    "forward_callers": {
+      "wall_parallax_strafe.py:21:apply": 61
+    },
+    "forward_seconds": {
+      "wall_parallax_strafe.py:21:apply": 0.014198289776686579
+    },
+    "scope": "saved-command prefix; full physics/render/evaluation, no online controller",
+    "name": "A1"
+  },
+  {
+    "mode": "relay-cache-buffered-v1",
+    "profile": false,
+    "sim_s": 12.0,
+    "wall_s": 12.403065583028365,
+    "wall_per_sim": 1.033588798585697,
+    "construction_and_reset_s": 1.8708910829736851,
+    "load_start": [
+      4.9189453125,
+      4.67626953125,
+      5.13525390625
+    ],
+    "load_end": [
+      4.1982421875,
+      4.5283203125,
+      5.07373046875
+    ],
+    "nice": 0,
+    "receipt": {
+      "mode": "relay-cache-buffered-v1",
+      "installed": true,
+      "cache_maxsize": 256,
+      "physics_changed": false,
+      "log_fields_changed": false
+    },
+    "steps": 48000,
+    "frames": 61,
+    "forward_callers": {
+      "wall_parallax_strafe.py:21:apply": 61
+    },
+    "forward_seconds": {
+      "wall_parallax_strafe.py:21:apply": 0.01349391764961183
+    },
+    "scope": "saved-command prefix; full physics/render/evaluation, no online controller",
+    "cache": {
+      "hits": 155996,
+      "misses": 4,
+      "maxsize": 256,
+      "currsize": 4
+    },
+    "name": "B1"
+  },
+  {
+    "mode": "relay-cache-buffered-v1",
+    "profile": false,
+    "sim_s": 12.0,
+    "wall_s": 12.988051584048662,
+    "wall_per_sim": 1.0823376320040552,
+    "construction_and_reset_s": 1.7935570830013603,
+    "load_start": [
+      4.1982421875,
+      4.5283203125,
+      5.07373046875
+    ],
+    "load_end": [
+      3.85986328125,
+      4.44482421875,
+      5.03759765625
+    ],
+    "nice": 0,
+    "receipt": {
+      "mode": "relay-cache-buffered-v1",
+      "installed": true,
+      "cache_maxsize": 256,
+      "physics_changed": false,
+      "log_fields_changed": false
+    },
+    "steps": 48000,
+    "frames": 61,
+    "forward_callers": {
+      "wall_parallax_strafe.py:21:apply": 61
+    },
+    "forward_seconds": {
+      "wall_parallax_strafe.py:21:apply": 0.014633632206823677
+    },
+    "scope": "saved-command prefix; full physics/render/evaluation, no online controller",
+    "cache": {
+      "hits": 155996,
+      "misses": 4,
+      "maxsize": 256,
+      "currsize": 4
+    },
+    "name": "B2"
+  },
+  {
+    "mode": "off",
+    "profile": false,
+    "sim_s": 12.0,
+    "wall_s": 14.458172791986726,
+    "wall_per_sim": 1.2048477326655604,
+    "construction_and_reset_s": 2.0082367089926265,
+    "load_start": [
+      3.85986328125,
+      4.44482421875,
+      5.03759765625
+    ],
+    "load_end": [
+      3.54150390625,
+      4.333984375,
+      4.9833984375
+    ],
+    "nice": 0,
+    "receipt": {
+      "mode": "off",
+      "installed": false
+    },
+    "steps": 48000,
+    "frames": 61,
+    "forward_callers": {
+      "wall_parallax_strafe.py:21:apply": 61
+    },
+    "forward_seconds": {
+      "wall_parallax_strafe.py:21:apply": 0.013742330833338201
+    },
+    "scope": "saved-command prefix; full physics/render/evaluation, no online controller",
+    "name": "A2"
+  }
+]

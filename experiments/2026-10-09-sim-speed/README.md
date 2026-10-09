@@ -4,6 +4,14 @@
 `4851b313a6280f7f089b8320c18c479ccf421fc1` 위 후보이며 DRAFT 유지, 병합하지 않는다.
 물리·제어·임계값·카메라·기본값 변경 없음. 새 RGB 실행 번들 없음.
 
+실행 소스 `86420cb258186d12ce2e99a23cb3cbb2a0f7e715`의 **12 SIM초 고정 입력 ABBA**에서
+wall/SIM **1.252950 → 1.057963**, wall **15.56% 감소**, 조건별 n=2를 확인했다.
+각 실행 81개 파일(1,761,162 bytes) 및 48,000스텝 전체 integration-state 누적 해시가 동일했다.
+**기본 OFF 후보이며, 전체 egomap53 온라인 제어/teach/return의 속도나 완주를 검증한 결과는 아니다.**
+[전후 시간·부하·Python 상위 10개·forward 표](results/physical-results.md),
+[바이트 비교와 파일별 해시](results/comparison.json), [환경·실행 검증](results/environment-and-verification.json).
+해시 검사와 별개로 81개 파일×3쌍을 [직접 bytes equality](results/direct-byte-verification.json)로도 확인했다.
+
 ## 조사와 적용 범위
 
 - [MuJoCo 공식 simulation loop](https://mujoco.readthedocs.io/en/stable/programming/simulation.html#simulation-loop):
@@ -45,7 +53,7 @@ raw: `/Users/changmin/projects/ugrp/outputs/simspeed-20261009/` (로컬, 원격 
   `081fcfdb`의 `ADAPTER_CAPTURE_BYPASSED` 중단 기록이며 현재 `4851b313`과 teach adapter가 다르다.
   실패 프로파일/원본은 보존하고 수정·성공 재분류하지 않았다.
 
-상위 10개는 [오프라인 표](results/offline-profiles.md)에 있다. 최종 물리 비교는 잠금 해제 후 추가한다.
+상위 10개는 [오프라인 표](results/offline-profiles.md)에 있다. 동기 물리 프로파일은 위 최종 결과 표와 분모가 다르다.
 
 ## 고정 검증 계획
 
@@ -85,6 +93,27 @@ CI `37891574488`/`6f070bf8`의 실패를 [첫 두 shard](results/ci-failures-6f0
 DRAFT 유지, 전체 CI 통과/병합을 주장하지 않는다.
 
 `managed-abba-v2`는 연구 PID 3349의 정상 잠금을 3600초 기다린 뒤 물리 0으로 종료했다.
-[대기 종료 기록](results/queue-timeout.json)을 보존하고 더 긴 유한 대기로 재등록한다.
+[대기 종료 기록](results/queue-timeout.json)을 보존하고 더 긴 유한 대기로 재등록했다.
 앞선 짧은 SHA 거절·자기 대기 실행 중단·sparse texture 누락도 원본을 보존했다.
-누락 PNG 24개는 저장소 원본 및 layout 해시로 복원했다. 물리 A/B는 아직 미완료이다.
+누락 PNG 24개는 저장소 원본 및 layout 해시로 복원했다.
+
+`managed-abba-v3`에서 연구가 잠금을 반환한 뒤 profile→A1→B1→B2→A2를 모두 완료했다.
+종료 코드 0, 입력 3,196개 파일과 실행 소스 변경 0, nice 0, 자신이 시작한 세션 종료·잠금 해제 확인.
+전후 부하 평균은 표에 1/5/15분 값을 모두 기록했다(ABBA 1분 부하 범위 3.54–4.92).
+계측용 매 스텝 상태 해시는 두 조건에 동일하게 적용했다. wall 비율은 이 계측을 포함한 짧은 재생의 값이며,
+감독의 온라인 wall/SIM 약 2.3과 직접 비교하거나 전체 작업으로 외삽하지 않는다.
+cache+buffer를 함께 비교했으므로 각각의 기여를 분리해 측정한 것은 아니다.
+
+Python self time 상위는 `command_step` 7.54%, `_isin` 5.88%, `_physics_step_for` 1.83%.
+분모는 C 확장·렌더 대기를 포함한 cProfile 전체 16.961839초이다. 같은 프로파일의 `mj_step`은 63.73%이며,
+온라인 제어기가 빠진 이 재생을 감독의 native sample과 같은 분모로 해석하지 않는다.
+별도 `mj_forward`는 `wall_parallax_strafe.py:21:apply`의 61회(약 0.014초)였고 모두 유지했다.
+
+최종 TensorBoard `outputs/tensorboard/1009-simspeed-abba-86420cb2`는 물리 5개와 대기 종료 진단 1개를 담는다.
+프로파일/대기 종료는 속도 평균에서 제외했다. 원본→event→실제 서버 **51개 수치 확인**(float32 허용오차 1e-6),
+A1/A2/B1/B2 선택·6개 pinned card·실제 wall/SIM 네 값·지정 HParams 열을 화면에서 확인했다.
+[대시보드 주소·설정](results/tensorboard-physical-view.json), [수치·화면 검증](results/tensorboard-physical-verification.json).
+모델 호출 0, 새 영상 0이며 측정하지 않은 모델 응답 시간을 만들지 않았다. 기존 서버와 스냅샷은 유지했다.
+
+원본 cProfile·공통 실행 manifest의 위치/해시는 [raw 인덱스](results/raw-index.json)에 있다.
+raw는 로컬 보관이며 이 작은 결과 기록의 GitHub push를 raw 원격 백업으로 표현하지 않는다.
