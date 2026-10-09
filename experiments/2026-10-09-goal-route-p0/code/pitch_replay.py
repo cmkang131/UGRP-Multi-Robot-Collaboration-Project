@@ -29,10 +29,10 @@ def generate():
 
 
 def predict_pitch():
- dest=OUT/'pitch';manifest=load(dest/'synthetic-sensor.json');nominals=load(DECOMP/'own-nominal.json')
+ sensor=OUT/'pitch';dest=OUT/'pitch-solver-fix';dest.mkdir(parents=True,exist_ok=False);manifest=load(sensor/'synthetic-sensor.json');nominals=load(DECOMP/'own-nominal.json')
  for case in CASES:
-  assert sha(dest/(case+'-readings.json'))==manifest['inputs'][case]['readings']
-  readings={r['frame_id']:r for r in load(dest/(case+'-readings.json'))}
+  assert sha(sensor/(case+'-readings.json'))==manifest['inputs'][case]['readings']
+  readings={r['frame_id']:r for r in load(sensor/(case+'-readings.json'))}
   contact_path=ROOT/f'outputs/self-map-v3-confidence-v1/{case}/v3_unloaded_extrinsic_v1/contacts.jsonl'
   contacts={r['frame_id']:r for r in rows(contact_path)};records=[];history=defaultdict(list)
   for own in nominals[case]:
@@ -64,7 +64,7 @@ def predict_pitch():
 
 
 def evaluate_pitch():
- dest=OUT/'pitch';seal=load(dest/'prediction-seal.json');reports=[]
+ dest=OUT/'pitch-solver-fix';seal=load(dest/'prediction-seal.json');reports=[]
  for case in CASES:
   assert sha(dest/(case+'-prediction.json'))==seal['files'][case]
   pred=load(dest/(case+'-prediction.json'));truth={r['frame_id']:r for r in rows(DECOMP/(case+'-frames.jsonl'))};groups=defaultdict(list)
@@ -79,6 +79,6 @@ def evaluate_pitch():
     single_frame_median_error_deg=float(np.median([v['error_deg'] for v in values])),causal_median_error_deg=float(np.median([v['causal_error_deg'] for v in values])),causal_p95_error_deg=float(np.quantile([v['causal_error_deg'] for v in values],.95))))
   reports.append(dict(case=case,frames=len(pred),eligible=sum(p['accepted'] for p in pred),exclusions=dict(Counter(p['reason'] for p in pred if not p['accepted'])),groups=stats,passed=bool(stats) and all(s['passed'] for s in stats)))
  summary=dict(sequences=reports,passed=sum(r['passed'] for r in reports),denominator=3,qualification='Per-command-pose causal median of own-range plane solutions. Actual camera is post-seal evaluation only; synthetic echoes are not a physical calibration result.')
- dump(EXP/'results/pitch.json',summary);print(summary,flush=True)
+ dump(EXP/'results/pitch-solver-fix.json',summary);print(summary,flush=True)
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('mode',choices=['generate','predict','evaluate']);a=p.parse_args();{'generate':generate,'predict':predict_pitch,'evaluate':evaluate_pitch}[a.mode]()

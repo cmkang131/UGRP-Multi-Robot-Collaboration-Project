@@ -57,13 +57,14 @@ def test_accumulation_flushes_only_at_keyframe_no_duplicate_hit_or_rejected_scan
 
 
 @pytest.mark.parametrize('bias',[-.87,.87])
-def test_ultrasound_recovers_known_pitch_sign_without_truth_input(bias):
+@pytest.mark.parametrize('distance',[2.,3.8])
+def test_ultrasound_recovers_known_pitch_sign_without_truth_input(bias,distance):
     from harness.ultrasonic_model import DEFAULT_SPEC
-    origin=np.array([.1,0,.23]);true_ray=np.array([2.,0,0])-origin
+    origin=np.array([.1,0,.23]);true_ray=np.array([distance,0,0])-origin
     a=math.radians(bias);c,s=math.cos(a),math.sin(a)
     # Inverse of the estimator's positive elevation rotation.
     nominal=true_ray@np.array([[c,0,-s],[0,1,0],[s,0,c]])
-    result=p.pitch_sample(None,reading=dict(valid=True,range_m=2-DEFAULT_SPEC.face_x_m),
+    result=p.pitch_sample(None,reading=dict(valid=True,range_m=distance-DEFAULT_SPEC.face_x_m),
         camera_origin=origin,nominal_ray=nominal,wall_normal=[1,0],pitch_bias=p.PITCH)
     assert result['accepted']
     assert math.degrees(result['pitch_offset_rad'])==pytest.approx(bias,abs=1e-7)

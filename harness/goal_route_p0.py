@@ -167,14 +167,18 @@ def pitch_sample(legacy,*,reading,camera_origin,nominal_ray,wall_normal,pitch_bi
     if scale is None:return dict(accepted=False,reason='no_plane_echo')
     plane=float(n@np.array([spec.face_x_m,spec.mount_y_m])+reading['range_m']/scale)
     origin=np.asarray(camera_origin);ray=np.asarray(nominal_ray)
-    def residual(angle):
+    def rotated_ray(angle):
         c,s=math.cos(angle),math.sin(angle)
-        rotated=ray@np.array([[c,0,s],[0,1,0],[-s,0,c]])  # positive elevation/pitch
-        if rotated[2]>=0:return float('nan')
-        p=origin-origin[2]/rotated[2]*rotated
-        return float(n@p[:2]-plane)
+        return ray@np.array([[c,0,s],[0,1,0],[-s,0,c]])  # positive elevation/pitch
+    def residual(angle):
+        rotated=rotated_ray(angle)
+        # Algebraic ray/plane constraint stays finite across the horizon.
+        # Division by ray.z at the bracket endpoints incorrectly rejected
+        # valid downward roots whenever the +5 degree endpoint looked up.
+        return float((n@origin[:2]-plane)*rotated[2]-origin[2]*(n@rotated[:2]))
     low,high=map(math.radians,(-5,5))
     if not np.isfinite([residual(low),residual(high)]).all() or residual(low)*residual(high)>0:
         return dict(accepted=False,reason='pitch_root_outside_bounds')
     angle=brentq(residual,low,high,xtol=1e-12)
+    if rotated_ray(angle)[2]>=0:return dict(accepted=False,reason='nonpositive_ground_depth')
     return dict(accepted=True,pitch_offset_rad=angle,reason='own_range_plane_root')

@@ -61,3 +61,5 @@ P0-2는최초내부수렴선언때정지(수렴안하면기록끝),선택규칙�
 P0-2 초기 다른지도 constructor는 원본 S2의 door_1 작업경로 admission 때문에 프레임0에서 거부됐다. 추정 관문 실패가 아니다. 사용하지 않는 task route만 원본 정적 지도에서 가져오고, PF/likelihood/landmark의 입력은 다른 지도 전체로 유지했다. control/drive는 원본 어댑터의 금지 함수 그대로다. 두 지도 실제 constructor 시험2개 통과. 경기장 ID alias는 보정 admission만 위한 것으로 실제 map_id/hash를 예측 receipt에 따로 남긴다.
 
 P0 지도평가의 영역은 평가 GT 경로±1m이며 전체 P/R도 항상 병기한다. 2.5m/4m 분모는 기존 in_view의 실제 카메라 FOV·벽 가림 기반 potential visibility(물체 가림 미모델링). pitch는 자기 서보 명령 자세별로 유효 range-plane root의 인과적 중앙값을 유지하며, 각 자세의 최종값과 같은 표본의 평가 실제 편향 중앙값을 비교한다(±.27° 불변). 단일프레임·인과적 오차분포도 함께 보고한다. 초음파 합성 난수seed=55000+S2기록번호,기존노이즈/드롭아웃/양자화 그대로.
+
+P0-4 첫 계산에서 지평선 양쪽으로 ±5° 구간을 잡으면 upward 끝점의 나눗셈이 NaN이 되어 내부의 유효 root까지 거부하는 수치버그를 발견했다. 범위·조건은 유지하고 분모를 곱한 연속 평면 방정식으로 풀고, 얻은 해의 양의 깊이를 확인한다. 2m/3.8m·±.87° 합성 단위시험으로 회귀 고정. 첫 결과(1/3,유효7개)는 `results/pitch.json`/raw `pitch/`에 보존하고 버그수정 재계산은 `pitch-solver-fix/`로 분리. 결과로 threshold 재적합0.
