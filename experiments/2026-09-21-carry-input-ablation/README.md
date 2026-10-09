@@ -54,3 +54,5 @@ python scripts/audit_carry_input_ablation.py --out outputs/ablation-final-NEW \
 고정하고 기존 36회 프로토콜 그대로 진행한다. 원본은
 `/Users/changmin/.codex/worktrees/carry-input-physics/ugrp/outputs/colab-input-final-20260921`,
 소유 세션은 `carry-input-final-pipeline`이다. 전체 실행과 독립 audit 전 성공률을 확정하지 않는다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.
