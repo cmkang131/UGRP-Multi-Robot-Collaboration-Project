@@ -90,6 +90,14 @@ class Timers:
     def snapshot(self):
         return {k: dict(self.total[k]) for k in CATEGORIES}
 
+    def profile_frame(self, index, count):
+        if getattr(self, 'profiler', None) is not None:
+            window = self.profile_window
+            if index < window or index >= count - window:
+                self.profiler.enable()
+            else:
+                self.profiler.disable()
+
 
 def verify_inputs(raw, robots):
     manifest = json.loads((raw / 'artifacts.sha256.json').read_text())
@@ -167,6 +175,7 @@ def s3(raw, out, timer):
     failure = None
     try:
         for index, row in enumerate(frames['r1']):
+            timer.profile_frame(index, len(frames['r1']))
             now = row['sim_time']
             with timer.span('record_io'):
                 batch = {r: frame(raw, frames[r][index]) for r in ROBOTS}
@@ -227,6 +236,7 @@ def egomap(raw, out, timer):
             streams[name] = (out / name).open('x', buffering=65536)
         streams[name].write(json.dumps(value, ensure_ascii=False, allow_nan=False) + '\n')
     for index, row in enumerate(frames):
+        timer.profile_frame(index, len(frames))
         now = row['sim_time']
         with timer.span('record_io'):
             obs, rgb = frame(raw, row)
@@ -290,6 +300,8 @@ def worker(args):
     timer = Timers()
     attach_timers(timer, kind)
     profiler = cProfile.Profile() if args.profile else None
+    timer.profiler = profiler
+    timer.profile_window = args.profile_window_frames
     load = os.getloadavg()
     started = time.perf_counter()
     if profiler:
@@ -318,7 +330,9 @@ def worker(args):
         speedups=installed.snapshot(),
         loadavg_start=load, loadavg_end=os.getloadavg(), input_sha256=inputs,
         source_adapter=str(args.adapter), implementation_sha=subprocess.check_output(
-            ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()))
+            ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+        cprofile_scope='initialization, first/last window and final serialization',
+        cprofile_window_frames=args.profile_window_frames))
     installed.close()
 
 
@@ -330,9 +344,11 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--expected-source-sha', required=True)
     p.add_argument('--profile', action='store_true')
+    p.add_argument('--profile-window-frames', type=int, default=100)
     p.add_argument('--speedups', choices=('off', 'exact-v1'), default='off')
     p.add_argument('--execute', action='store_true')
     a = p.parse_args()
+    assert a.profile_window_frames > 0
     if not a.execute:
         print(json.dumps(dict(execution_started=False, physics_runs=0, raw=str(a.raw))))
         return
