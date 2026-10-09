@@ -14,6 +14,7 @@
 - **[Ubuntu 설치·무료 데모](docs/ubuntu_quickstart.md)** — 새 팀원은 여기서 시작
 - [개발·테스트·실험·PR 절차](CONTRIBUTING.md) · [로봇 입력과 작업 규칙](AGENTS.md)
 - [TensorBoard로 학습·실험 기록 보기](docs/tensorboard.md)
+- [S3 동료 로봇의 벽 오인 오프라인 진단·선택 마스크](experiments/2026-10-06-owncam-robot-mask/README.md) — 저장 RGB 16장, 기본 OFF, DRAFT 후보
 - [Pair executor dev v2 드라이버·사전 기록·잠금/실행 절차](experiments/2026-09-27-zone-pair-dev/README.md) — tags_temporary, dev, 연구 결과 아님; 물리 실행은 코디네이터가 별도 수행
 - [2026-09-24 ACT 학습·행동 개선 후보](experiments/2026-09-24-action-act/refinement.md) — 첫 6회 실패 포함 비교와 후속 학습·실시간 추론·영상 접근 보정; 기본 채택 전 후보
 - [학습 모델 다운로드·검증·배포](docs/model_artifacts.md) — GitHub Release 가중치와 저장소의 버전·해시 목록
