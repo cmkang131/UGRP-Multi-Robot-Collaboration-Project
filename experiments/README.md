@@ -1,5 +1,5 @@
 # 실험 인덱스
-- [2026-10-10 S3 정렬 소유권·끝점 v162](2026-10-10-s3-alignment-ownership/README.md): 기본 off A/B/C 통합 후보, 평가 전용 GT 투영과 바깥 tick 회귀, Oracle x86 10조건 사전 등록.
+- [2026-10-10 S3 정렬 소유권·끝점 v162](2026-10-10-s3-alignment-ownership/README.md): 기본 off A/B/C, x86 10조건 정렬·집기·상승9/10·실제 운반4/10; pair 운반0/6·c3 정렬 잔여, raw/TensorBoard 검증.
 
 - [2026-10-10 S3 차체·팔 coarse/fine v161](2026-10-10-s3-coarse-fine/README.md): 기본 off, 자기 RGB·정지 차체 팔 보정, x86 10조건 정렬·집기·상승·운반2/10(cyan c0/c5), pair0/6; HOST_ERROR0, 자세 복귀 충돌·끝점 가림·회전 진동 잔존, 미채택.
 
