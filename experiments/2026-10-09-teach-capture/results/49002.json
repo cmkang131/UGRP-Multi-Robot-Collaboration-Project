@@ -1,0 +1,176 @@
+{
+  "seed": 49002,
+  "acquisition": {
+    "status": "HOST_ERROR",
+    "source_sha": "4851b313a6280f7f089b8320c18c479ccf421fc1",
+    "model_calls": 0,
+    "freeze": false,
+    "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+    "loadavg_start": [
+      4.38671875,
+      8.72412109375,
+      7.86279296875
+    ],
+    "start_sim_s": 1.3,
+    "frames": 1824,
+    "total_sim_s": 365.9,
+    "failure": {
+      "type": "TypeError",
+      "message": "super(type, obj): obj must be an instance or subtype of type"
+    },
+    "enospc": false,
+    "wall_s": 2168.8946352910134,
+    "loadavg_end": [
+      7.5615234375,
+      7.62939453125,
+      7.1572265625
+    ]
+  },
+  "started": true,
+  "arrived": false,
+  "false_declarations": 0,
+  "final_xy_m": 0.19079068413775577,
+  "final_sigma_xy_m": 0.10888397239744083,
+  "final_error_sigma_ratio": 1.7522384602331063,
+  "final_nees_xy": 9.24482990146919,
+  "over_3sigma": false,
+  "goal_observed": true,
+  "failure_class": "other",
+  "excluded": false,
+  "thresholds_unchanged": true,
+  "goal": {
+    "entity": {
+      "kind": "floor_zone",
+      "id": "B"
+    },
+    "center_m": [
+      -1.747014925373134,
+      2.7567164179104475
+    ],
+    "source": "own",
+    "detector": "floor_color_v3",
+    "candidate_id": 9,
+    "obs_id": "r3-obs-000107",
+    "t_sim": 22.5,
+    "frame_sha256": "39a757f0162de16856f26dcb14e933931d86e25d25767d6e0006a06483a19a7e",
+    "observations": 11,
+    "first_t": 20.5,
+    "bounds_m": [
+      [
+        -2.15,
+        1.9500000000000002
+      ],
+      [
+        -1.35,
+        3.5500000000000003
+      ]
+    ],
+    "confidence": 0.8843585908010421,
+    "partial_extent": true
+  },
+  "target_assignment": {
+    "t": 361.3,
+    "frame_id": 1801,
+    "reason": "remembered_target_assigned",
+    "target": 9,
+    "first_detection_t": 20.5,
+    "first_confirmation_t": 22.5
+  },
+  "loss_t": 361.3,
+  "correct_convergence": false,
+  "false_convergence_frames": 0,
+  "post_loss_frames": 22,
+  "declarations": [],
+  "final_yaw_deg": -5.2279970585843145,
+  "final_sigma_definition": "sqrt_trace_cov_xy",
+  "post_loss_over_3sigma": 0,
+  "path_rmse_m": 0.38579341732812744,
+  "error_samples": 1812,
+  "missing_gt_trace_samples": 0,
+  "final_error_t": 365.7,
+  "last_truth_t": 365.7,
+  "sim_s": 364.4,
+  "wall_s": 2168.8946352910134,
+  "arrival_after_loss_s": null,
+  "contacts": {
+    "wall": {
+      "frames": 0,
+      "episodes": 0
+    },
+    "robot": {
+      "frames": 0,
+      "episodes": 0
+    }
+  },
+  "contact_samples": 1823,
+  "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+  "command_frames": 1813,
+  "hold_frames": 27,
+  "return_statuses": {
+    "unknown_start_reset": 1,
+    "relocalize": 22
+  },
+  "return_navigation": {},
+  "travelled_m": 13.76895671243571,
+  "map": {
+    "quality": {
+      "occupied_cells": 702,
+      "precision_015": 0.3319088319088319,
+      "precision_cell": 0.15384615384615385,
+      "wall_coverage": 0.5623100303951368,
+      "wall_error_rmse_m": 0.5708221674879748
+    },
+    "occupied_cells": 702,
+    "inserted_scans": 155,
+    "visible_samples": 175,
+    "total_wall_samples": 329,
+    "covered_samples": 185,
+    "coverage": 0.5623100303951368
+  },
+  "insertion_gate_counts": {
+    "bootstrap/bootstrap": 1,
+    "deferred/gmapping_motion_gate": 1626,
+    "rejected/low_overlap": 17,
+    "rejected/high_residual": 41,
+    "accepted/improved_proposal": 95,
+    "deferred/insufficient_match_points": 1
+  },
+  "valid_teach_trial": false,
+  "nodes": 768,
+  "edges": 767,
+  "uncertain_edges": 28,
+  "B_route": true,
+  "B_node": 84,
+  "B_first_keyframe_t": 20.5,
+  "first_match": null,
+  "rotation": {
+    "explore": {
+      "command_duration_s": 358.0,
+      "rotation_active_s": 75.79999999999997,
+      "rotation_fraction": 0.2117318435754189,
+      "turn_interval_fraction": 0.4234636871508379,
+      "sensor_sweep_fraction": 0.27932960893854747,
+      "frames": 1790
+    },
+    "suffix": {
+      "command_duration_s": 4.399999999999977,
+      "rotation_active_s": 1.8000000000000005,
+      "rotation_fraction": 0.40909090909091134,
+      "turn_interval_fraction": 0.8181818181818276,
+      "sensor_sweep_fraction": 0.0,
+      "frames": 23
+    },
+    "all": {
+      "command_duration_s": 362.4,
+      "rotation_active_s": 77.59999999999987,
+      "rotation_fraction": 0.21412803532008795,
+      "turn_interval_fraction": 0.4282560706401766,
+      "sensor_sweep_fraction": 0.27593818984547464,
+      "frames": 1813
+    }
+  },
+  "node_matches": {},
+  "gate": false,
+  "prediction_seal": "d730e36d2cc0b770f7670d7c5f43bd68291ef7b689130219a54d6b797d91a78a",
+  "teach_frames": 1813
+}

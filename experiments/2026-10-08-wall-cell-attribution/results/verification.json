@@ -1,0 +1,72 @@
+{
+  "records": {
+    "31001": {
+      "off_bytes_identical": true,
+      "free_cells_exact": true,
+      "retained_log_odds_exact": true,
+      "all_pose_metadata_unchanged": true,
+      "false_cell_accounting_exact": true,
+      "rgb": 901,
+      "inserted_frames": 47,
+      "decision_frames": 891,
+      "reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 844,
+        "low_overlap": 8,
+        "improved_proposal": 22,
+        "high_residual": 14,
+        "search_boundary": 2
+      },
+      "source_sha": "a8d11d91e6b6769fd632adaa2857f46945bb97b4",
+      "raw_false_cell_sha256": "8a8ba1e8fc324eda9ea5887c76027b26b9b3f6ffabfb38bb7ee1dd5507ffe017",
+      "absolute_gate": {
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false
+      }
+    },
+    "32002": {
+      "off_bytes_identical": true,
+      "free_cells_exact": true,
+      "retained_log_odds_exact": true,
+      "all_pose_metadata_unchanged": true,
+      "false_cell_accounting_exact": true,
+      "rgb": 901,
+      "inserted_frames": 64,
+      "decision_frames": 878,
+      "reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 814,
+        "improved_proposal": 30,
+        "search_boundary": 2,
+        "high_residual": 19,
+        "insufficient_match_points": 5,
+        "low_overlap": 7
+      },
+      "source_sha": "a8d11d91e6b6769fd632adaa2857f46945bb97b4",
+      "raw_false_cell_sha256": "0e82f5a65afe0830fef3dabdfe52ca0ecf028ab53e6fcececee9bc0d48ce0020",
+      "absolute_gate": {
+        "precision": true,
+        "recall": false,
+        "wall_rmse": true
+      }
+    }
+  },
+  "physics": 0,
+  "models": 0,
+  "lock_acquired": false,
+  "tests": 10,
+  "note": "Two sealed predictions, fixed thresholds. Earlier unsealed JSON failure retained. Map figure extent expanded only; no metric change.",
+  "raw_manifest_sha256": "7339bd053d6d5e2a40e7c0eb9e208bceffdc06d4327524e80edc9abc1c5302a6",
+  "raw_path": "/Users/changmin/projects/ugrp/outputs/wall-cell-attribution-v1",
+  "figures": {
+    "contact-examples.jpg": {
+      "sha256": "d19c2dc68f9090ea17683ead5e811ed435b56412c89045919324fb24706b1b61",
+      "bytes": 88748
+    },
+    "maps.png": {
+      "sha256": "0a9399dbb94d84da284860ad7afe0abb16c94974208587c036aa5cb2248380c9",
+      "bytes": 184831
+    }
+  }
+}

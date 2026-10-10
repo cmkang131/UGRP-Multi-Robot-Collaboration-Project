@@ -181,16 +181,22 @@ def _mujoco_view(array):
     return type(base).__name__ == 'PyCapsule' and base is not array
 
 
+def _fresh_local_cache(function, parameters):
+    return functools.lru_cache(**parameters)(function)
+
+
 class CheckpointPickler:
     """cloudpickle.Pickler with recreate-on-load reducers (subclassed lazily so cloudpickle stays optional)."""
 
-    def __new__(cls, file, *, out, renderers, streams):
+    def __new__(cls, file, *, out, renderers, streams, local_caches=False):
         import cloudpickle
         import mujoco
 
         class _Pickler(cloudpickle.Pickler):
             def reducer_override(self, obj):
                 kind = type(obj)
+                if local_caches and isinstance(obj,functools._lru_cache_wrapper) and '<locals>' in obj.__qualname__:
+                    return _fresh_local_cache,(obj.__wrapped__,obj.cache_parameters())
                 if kind is _LOCK:
                     if obj.locked():
                         raise RuntimeError('lock held at the checkpoint boundary')
@@ -255,6 +261,17 @@ def walk_graph(roots, visit, limit=5_000_000):
             continue
         queue.extend(gc.get_referents(obj))
     return len(seen)
+
+
+def restore_stream_aliases(roots, streams):
+    """Reconnect registered streams also held by a sensor writer, opt-in only."""
+    def visit(obj):
+        if not hasattr(obj,'__dict__') or isinstance(obj,(type,types.ModuleType)):
+            return
+        for key,value in list(vars(obj).items()):
+            if isinstance(value,Slot) and value.kind=='stream':
+                setattr(obj,key,streams[value.key])
+    return walk_graph(roots,visit)
 
 
 def module_table():
@@ -419,7 +436,7 @@ class DevCheckpoint:
                                            'count': len(self.saved), 'last': self.saved[-1]}
 
     # -- restore -------------------------------------------------------------------------------------------------
-    def restore(self, out, result):
+    def restore(self, out, result, *, stream_aliases=False):
         row, path, source = self.resume['row'], Path(self.resume['file']), Path(self.resume['source_case_dir'])
         data = path.read_bytes()
         if sha256_bytes(data) != row['sha256']:
@@ -473,6 +490,8 @@ class DevCheckpoint:
             if not isinstance(backend.streams.get(relative), Slot):
                 raise ValueError(f'{relative}: stream missing from the restored backend')
             backend.streams[relative] = target.open('a', buffering=1)
+        if stream_aliases:
+            restore_stream_aliases([backend,runtime,host],backend.streams)
         leftovers = []
         walk_graph([backend, runtime, host], lambda o: leftovers.append(repr(o)) if isinstance(o, Slot) else None)
         if leftovers:

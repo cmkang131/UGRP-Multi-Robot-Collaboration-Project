@@ -1,0 +1,1191 @@
+[
+  {
+    "case": "s1042",
+    "episode": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick",
+    "metadata": {
+      "drive-v7.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/eval_only/drive-v7.json",
+        "sha256": "9192f2805a7fb2e01613aa681dd5a558b7664f3ce1fa2020c28f7052dcafc7e3",
+        "record": {
+          "profile": "masterpi_drive_friction_v7",
+          "parameters": {
+            "no_load_rpm": 150.0,
+            "torque_cap_nm": 0.1176798,
+            "sliding_mu": 0.8,
+            "start_fraction": 0.325,
+            "no_load_current_a": 0.1,
+            "stall_current_a": 1.2
+          },
+          "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+          "installed_motor_and_floor_verified": false,
+          "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+          "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+          "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+          "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+          "public_model": {
+            "repository": "https://github.com/DaiGuard/fuji_mecanum",
+            "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+            "license": "MIT, Copyright (c) 2022 DaiGuard",
+            "mesh_original_path": "mesh/collision/roller.stl",
+            "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+            "mesh_modified": false,
+            "source_radius_m": 0.1025,
+            "roller_ring_radius_m": 0.0895,
+            "roller_count": 15,
+            "roller_angle_deg": 45,
+            "roller_mass_kg": 0.3,
+            "roller_inertia_kg_m2": [
+              0.00024,
+              0.00076,
+              0.00076
+            ],
+            "hub_mass_kg": 2.0,
+            "hub_inertia_kg_m2": [
+              0.042025,
+              0.024279,
+              0.024279
+            ],
+            "roller_damping": 0.001,
+            "roller_frictionloss": 0.0001,
+            "roller_sliding_friction": 0.8,
+            "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+            "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+          },
+          "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+          "zero_command": "input relay resets; passive DC speed loss remains",
+          "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+          "reset_rule": "world.reset clears all input relay states before normal scene reset",
+          "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+          "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+          "kinetic_fraction": 0.08333333333333334,
+          "kinetic_torque_nm": 0.009806650000000002,
+          "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+          "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+          "speed_loss_nm_s": 0.006867418019757396,
+          "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+          "unconfirmed": [
+            "installed TT and stall torque",
+            "PWM transfer",
+            "Coulomb versus viscous no-load split",
+            "load-dependent start threshold",
+            "external stall/re-stick",
+            "brake versus coast"
+          ],
+          "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+          "xml_sha256": "13e70a9a0664fc0537a2f2c92eba3c695964c91587470e6e1ca32323f0356ede"
+        }
+      },
+      "camera-v3.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/eval_only/camera-v3.json",
+        "sha256": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+        "record": {
+          "id": "masterpi-camera-user-observation-target-review-v3",
+          "runtime_admitted": false,
+          "default_changed": false,
+          "status": "USER_OBSERVATION_TARGET_NOT_REAL_CALIBRATED",
+          "source_label": "사용자 실물 관찰 기반 목표",
+          "user_decision_kst": "2026-10-06T16:40:00+09:00",
+          "target_max_full_image_fraction": 0.1,
+          "position_m": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat_wxyz": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "optical_tool_pitch_deg": 10.0,
+          "position_source": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "angle_source": "user visibility target; NOT official angle or measured fit",
+          "angle_selection": "single pre-run 10deg candidate; analytic projection on previous DEV HIGH gives ~5.62% full image",
+          "intrinsics_source": "ugrp1-icspring-fisheye-centered-mount-provisional-20260831",
+          "intrinsics_status": "archived ugrp1 measured-K/D claim; original checkerboard and serial linkage unavailable",
+          "processing": "unchanged archived 640x480 fisheye K/D and raw remap; not SDK sample Brown5",
+          "official_fov_deg": 170,
+          "official_fov_axis": "UNSPECIFIED; cannot substitute for vertical fovy",
+          "evidence": "recovered real post-lift red 9 frames ~1.35%, blue 8 frames ~7.92%; PROBABLE_HELD only",
+          "calibration_limit": "no independent 3D/joint/held-state measurements; no unique mount or FOV fit",
+          "setdown_relook_candidate": {
+            "name": "solo_cyan_setdown_relook",
+            "value": "off_candidate",
+            "implemented": false,
+            "requires_new_bundle": true,
+            "requires": [
+              "explicit runtime camera binding and ray calibration",
+              "loaded localization",
+              "grasp/loss verification without visible cargo",
+              "loaded drive/slip/placement tests"
+            ]
+          }
+        }
+      },
+      "output-option.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/eval_only/output-option.json",
+        "sha256": "c83d6fcf751eb4f6f840b2303976616f0e2391b5d68cd6c4d57b2f921c1b8a9d",
+        "record": {
+          "min_wheel_cmd": "real_v1",
+          "ports": {
+            "r1": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r2": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r3": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            }
+          },
+          "applied_after": "IntegerClock.reset and grid snap"
+        }
+      },
+      "speedups.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/speedups.json",
+        "sha256": "ebe4120784620c7663d0d2aaf3d17547ffac211a166c07100de6a5915b697776",
+        "record": {
+          "schema": "ugrp.run_speedups.v1",
+          "speedups": {
+            "schema": "ugrp.v98_exact_speedups.v1",
+            "set": "v98-exact-v6",
+            "items": [
+              "expected_memo",
+              "drive_kernel",
+              "schedule_memo",
+              "pf_geometry_shared",
+              "opencv_exact"
+            ],
+            "note": "execution infrastructure only; same commands/frames/events (harness.zone_pair_highpose_exact_speedups)",
+            "drive_kernel": [],
+            "schedule_memo": true,
+            "pf_geometry_shared": {
+              "installed": true,
+              "source_sha256": "9be748c247b33ab5256fdd99be125fb62e6c02178d0cf4060adb0f1f6f1638ea"
+            },
+            "expected_memo": [
+              {
+                "hits": 3233,
+                "misses": 1486
+              }
+            ],
+            "opencv_exact": {
+              "installed": true,
+              "source_sha256": {
+                "markerless_probe.detect_boundaries": "59459639ec2b7576ef97ff06e0724b2056e6174ef135b8240cd7bb0c85aca4e6",
+                "opencv_wall_observation.observations": "b37ceeec6dbee32d10bc8e071655ddd813e8ac1cd1fabb5732ca3bfe34e458cb"
+              },
+              "cache": {
+                "hits": 1725,
+                "misses": 11
+              },
+              "memo": {
+                "hits": 0,
+                "misses": 1736
+              }
+            }
+          },
+          "runner_rc": 0
+        }
+      }
+    }
+  },
+  {
+    "case": "s1043",
+    "episode": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick",
+    "metadata": {
+      "drive-v7.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/eval_only/drive-v7.json",
+        "sha256": "ae5ee1640f9e94ea82314c7fc958c44ad2070ffc40378d8403b5bda514af8cbc",
+        "record": {
+          "profile": "masterpi_drive_friction_v7",
+          "parameters": {
+            "no_load_rpm": 150.0,
+            "torque_cap_nm": 0.1176798,
+            "sliding_mu": 0.8,
+            "start_fraction": 0.325,
+            "no_load_current_a": 0.1,
+            "stall_current_a": 1.2
+          },
+          "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+          "installed_motor_and_floor_verified": false,
+          "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+          "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+          "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+          "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+          "public_model": {
+            "repository": "https://github.com/DaiGuard/fuji_mecanum",
+            "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+            "license": "MIT, Copyright (c) 2022 DaiGuard",
+            "mesh_original_path": "mesh/collision/roller.stl",
+            "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+            "mesh_modified": false,
+            "source_radius_m": 0.1025,
+            "roller_ring_radius_m": 0.0895,
+            "roller_count": 15,
+            "roller_angle_deg": 45,
+            "roller_mass_kg": 0.3,
+            "roller_inertia_kg_m2": [
+              0.00024,
+              0.00076,
+              0.00076
+            ],
+            "hub_mass_kg": 2.0,
+            "hub_inertia_kg_m2": [
+              0.042025,
+              0.024279,
+              0.024279
+            ],
+            "roller_damping": 0.001,
+            "roller_frictionloss": 0.0001,
+            "roller_sliding_friction": 0.8,
+            "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+            "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+          },
+          "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+          "zero_command": "input relay resets; passive DC speed loss remains",
+          "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+          "reset_rule": "world.reset clears all input relay states before normal scene reset",
+          "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+          "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+          "kinetic_fraction": 0.08333333333333334,
+          "kinetic_torque_nm": 0.009806650000000002,
+          "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+          "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+          "speed_loss_nm_s": 0.006867418019757396,
+          "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+          "unconfirmed": [
+            "installed TT and stall torque",
+            "PWM transfer",
+            "Coulomb versus viscous no-load split",
+            "load-dependent start threshold",
+            "external stall/re-stick",
+            "brake versus coast"
+          ],
+          "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+          "idle_robot_contacts": "freeze_v1",
+          "idle_robot_contacts_method": "MuJoCo native sleeping islands (flag sleep); robot trees allowed, other free bodies never; manual wake on command/ctrl change",
+          "idle_robot_contacts_source": "https://mujoco.readthedocs.io/en/3.12.0/programming/simulation.html#sleeping-islands",
+          "idle_robot_contacts_caveat": "contacts of a sleeping robot with static geometry and inside its island are skipped, so contact-based readouts are empty; velocities below sleep_tolerance are zeroed when it falls asleep",
+          "idle_robot_contacts_sha256": "1deb84708607410e4a599c4157f7029ae15ce0d7db4d8d46ca5ae49954066568",
+          "xml_sha256": "326b2bb2c43cc5700eb05138211f329d20fd1cf1b5c2f47c8dc26b57ddef07af"
+        }
+      },
+      "camera-v3.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/eval_only/camera-v3.json",
+        "sha256": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+        "record": {
+          "id": "masterpi-camera-user-observation-target-review-v3",
+          "runtime_admitted": false,
+          "default_changed": false,
+          "status": "USER_OBSERVATION_TARGET_NOT_REAL_CALIBRATED",
+          "source_label": "사용자 실물 관찰 기반 목표",
+          "user_decision_kst": "2026-10-06T16:40:00+09:00",
+          "target_max_full_image_fraction": 0.1,
+          "position_m": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat_wxyz": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "optical_tool_pitch_deg": 10.0,
+          "position_source": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "angle_source": "user visibility target; NOT official angle or measured fit",
+          "angle_selection": "single pre-run 10deg candidate; analytic projection on previous DEV HIGH gives ~5.62% full image",
+          "intrinsics_source": "ugrp1-icspring-fisheye-centered-mount-provisional-20260831",
+          "intrinsics_status": "archived ugrp1 measured-K/D claim; original checkerboard and serial linkage unavailable",
+          "processing": "unchanged archived 640x480 fisheye K/D and raw remap; not SDK sample Brown5",
+          "official_fov_deg": 170,
+          "official_fov_axis": "UNSPECIFIED; cannot substitute for vertical fovy",
+          "evidence": "recovered real post-lift red 9 frames ~1.35%, blue 8 frames ~7.92%; PROBABLE_HELD only",
+          "calibration_limit": "no independent 3D/joint/held-state measurements; no unique mount or FOV fit",
+          "setdown_relook_candidate": {
+            "name": "solo_cyan_setdown_relook",
+            "value": "off_candidate",
+            "implemented": false,
+            "requires_new_bundle": true,
+            "requires": [
+              "explicit runtime camera binding and ray calibration",
+              "loaded localization",
+              "grasp/loss verification without visible cargo",
+              "loaded drive/slip/placement tests"
+            ]
+          }
+        }
+      },
+      "output-option.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/eval_only/output-option.json",
+        "sha256": "c83d6fcf751eb4f6f840b2303976616f0e2391b5d68cd6c4d57b2f921c1b8a9d",
+        "record": {
+          "min_wheel_cmd": "real_v1",
+          "ports": {
+            "r1": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r2": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r3": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            }
+          },
+          "applied_after": "IntegerClock.reset and grid snap"
+        }
+      },
+      "speedups.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/speedups.json",
+        "sha256": "e357aae260c32fc616a11a7ea7433fee46d9723108fb3af0fbe453c556d86644",
+        "record": {
+          "schema": "ugrp.run_speedups.v1",
+          "speedups": {
+            "schema": "ugrp.v98_exact_speedups.v1",
+            "set": "v98-exact-v6",
+            "items": [
+              "expected_memo",
+              "drive_kernel",
+              "schedule_memo",
+              "pf_geometry_shared",
+              "opencv_exact"
+            ],
+            "note": "execution infrastructure only; same commands/frames/events (harness.zone_pair_highpose_exact_speedups)",
+            "drive_kernel": [],
+            "schedule_memo": true,
+            "pf_geometry_shared": {
+              "installed": true,
+              "source_sha256": "9be748c247b33ab5256fdd99be125fb62e6c02178d0cf4060adb0f1f6f1638ea"
+            },
+            "expected_memo": [
+              {
+                "hits": 2119,
+                "misses": 926
+              }
+            ],
+            "opencv_exact": {
+              "installed": true,
+              "source_sha256": {
+                "markerless_probe.detect_boundaries": "59459639ec2b7576ef97ff06e0724b2056e6174ef135b8240cd7bb0c85aca4e6",
+                "opencv_wall_observation.observations": "b37ceeec6dbee32d10bc8e071655ddd813e8ac1cd1fabb5732ca3bfe34e458cb"
+              },
+              "cache": {
+                "hits": 1052,
+                "misses": 11
+              },
+              "memo": {
+                "hits": 126,
+                "misses": 1063
+              }
+            }
+          },
+          "runner_rc": 0
+        }
+      }
+    }
+  },
+  {
+    "case": "s1044",
+    "episode": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick",
+    "metadata": {
+      "drive-v7.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/eval_only/drive-v7.json",
+        "sha256": "66289cb13533777ef1c2a816b153650689d903cf89cc9279f32e5eac516d70b6",
+        "record": {
+          "profile": "masterpi_drive_friction_v7",
+          "parameters": {
+            "no_load_rpm": 150.0,
+            "torque_cap_nm": 0.1176798,
+            "sliding_mu": 0.8,
+            "start_fraction": 0.325,
+            "no_load_current_a": 0.1,
+            "stall_current_a": 1.2
+          },
+          "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+          "installed_motor_and_floor_verified": false,
+          "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+          "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+          "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+          "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+          "public_model": {
+            "repository": "https://github.com/DaiGuard/fuji_mecanum",
+            "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+            "license": "MIT, Copyright (c) 2022 DaiGuard",
+            "mesh_original_path": "mesh/collision/roller.stl",
+            "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+            "mesh_modified": false,
+            "source_radius_m": 0.1025,
+            "roller_ring_radius_m": 0.0895,
+            "roller_count": 15,
+            "roller_angle_deg": 45,
+            "roller_mass_kg": 0.3,
+            "roller_inertia_kg_m2": [
+              0.00024,
+              0.00076,
+              0.00076
+            ],
+            "hub_mass_kg": 2.0,
+            "hub_inertia_kg_m2": [
+              0.042025,
+              0.024279,
+              0.024279
+            ],
+            "roller_damping": 0.001,
+            "roller_frictionloss": 0.0001,
+            "roller_sliding_friction": 0.8,
+            "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+            "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+          },
+          "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+          "zero_command": "input relay resets; passive DC speed loss remains",
+          "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+          "reset_rule": "world.reset clears all input relay states before normal scene reset",
+          "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+          "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+          "kinetic_fraction": 0.08333333333333334,
+          "kinetic_torque_nm": 0.009806650000000002,
+          "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+          "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+          "speed_loss_nm_s": 0.006867418019757396,
+          "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+          "unconfirmed": [
+            "installed TT and stall torque",
+            "PWM transfer",
+            "Coulomb versus viscous no-load split",
+            "load-dependent start threshold",
+            "external stall/re-stick",
+            "brake versus coast"
+          ],
+          "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+          "idle_robot_contacts": "freeze_v1",
+          "idle_robot_contacts_method": "MuJoCo native sleeping islands (flag sleep); robot trees allowed, other free bodies never; manual wake on command/ctrl change",
+          "idle_robot_contacts_source": "https://mujoco.readthedocs.io/en/3.12.0/programming/simulation.html#sleeping-islands",
+          "idle_robot_contacts_caveat": "contacts of a sleeping robot with static geometry and inside its island are skipped, so contact-based readouts are empty; velocities below sleep_tolerance are zeroed when it falls asleep",
+          "idle_robot_contacts_sha256": "1deb84708607410e4a599c4157f7029ae15ce0d7db4d8d46ca5ae49954066568",
+          "xml_sha256": "b12e13431106e74a437b346ae5bc002f20ab36625b71ba6a781c1928a04875f3"
+        }
+      },
+      "camera-v3.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/eval_only/camera-v3.json",
+        "sha256": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+        "record": {
+          "id": "masterpi-camera-user-observation-target-review-v3",
+          "runtime_admitted": false,
+          "default_changed": false,
+          "status": "USER_OBSERVATION_TARGET_NOT_REAL_CALIBRATED",
+          "source_label": "사용자 실물 관찰 기반 목표",
+          "user_decision_kst": "2026-10-06T16:40:00+09:00",
+          "target_max_full_image_fraction": 0.1,
+          "position_m": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat_wxyz": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "optical_tool_pitch_deg": 10.0,
+          "position_source": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "angle_source": "user visibility target; NOT official angle or measured fit",
+          "angle_selection": "single pre-run 10deg candidate; analytic projection on previous DEV HIGH gives ~5.62% full image",
+          "intrinsics_source": "ugrp1-icspring-fisheye-centered-mount-provisional-20260831",
+          "intrinsics_status": "archived ugrp1 measured-K/D claim; original checkerboard and serial linkage unavailable",
+          "processing": "unchanged archived 640x480 fisheye K/D and raw remap; not SDK sample Brown5",
+          "official_fov_deg": 170,
+          "official_fov_axis": "UNSPECIFIED; cannot substitute for vertical fovy",
+          "evidence": "recovered real post-lift red 9 frames ~1.35%, blue 8 frames ~7.92%; PROBABLE_HELD only",
+          "calibration_limit": "no independent 3D/joint/held-state measurements; no unique mount or FOV fit",
+          "setdown_relook_candidate": {
+            "name": "solo_cyan_setdown_relook",
+            "value": "off_candidate",
+            "implemented": false,
+            "requires_new_bundle": true,
+            "requires": [
+              "explicit runtime camera binding and ray calibration",
+              "loaded localization",
+              "grasp/loss verification without visible cargo",
+              "loaded drive/slip/placement tests"
+            ]
+          }
+        }
+      },
+      "output-option.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/eval_only/output-option.json",
+        "sha256": "c83d6fcf751eb4f6f840b2303976616f0e2391b5d68cd6c4d57b2f921c1b8a9d",
+        "record": {
+          "min_wheel_cmd": "real_v1",
+          "ports": {
+            "r1": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r2": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r3": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            }
+          },
+          "applied_after": "IntegerClock.reset and grid snap"
+        }
+      },
+      "speedups.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-97c05e41-s1044-P1-2-pick/speedups.json",
+        "sha256": "d262ab421f6f7085f4d6dd3cb6003b9886b5c0c0f886db1489e006fb49a9ead4",
+        "record": {
+          "schema": "ugrp.run_speedups.v1",
+          "speedups": {
+            "schema": "ugrp.v98_exact_speedups.v1",
+            "set": "v98-exact-v6",
+            "items": [
+              "expected_memo",
+              "drive_kernel",
+              "schedule_memo",
+              "pf_geometry_shared",
+              "opencv_exact"
+            ],
+            "note": "execution infrastructure only; same commands/frames/events (harness.zone_pair_highpose_exact_speedups)",
+            "drive_kernel": [],
+            "schedule_memo": true,
+            "pf_geometry_shared": {
+              "installed": true,
+              "source_sha256": "9be748c247b33ab5256fdd99be125fb62e6c02178d0cf4060adb0f1f6f1638ea"
+            },
+            "expected_memo": [
+              {
+                "hits": 2672,
+                "misses": 1204
+              }
+            ],
+            "opencv_exact": {
+              "installed": true,
+              "source_sha256": {
+                "markerless_probe.detect_boundaries": "59459639ec2b7576ef97ff06e0724b2056e6174ef135b8240cd7bb0c85aca4e6",
+                "opencv_wall_observation.observations": "b37ceeec6dbee32d10bc8e071655ddd813e8ac1cd1fabb5732ca3bfe34e458cb"
+              },
+              "cache": {
+                "hits": 1360,
+                "misses": 10
+              },
+              "memo": {
+                "hits": 117,
+                "misses": 1370
+              }
+            }
+          },
+          "runner_rc": 0
+        }
+      }
+    }
+  },
+  {
+    "case": "s1045",
+    "episode": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place",
+    "metadata": {
+      "drive-v7.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/drive-v7.json",
+        "sha256": "4098a5fead58ac11aee64429c0698668b720d3472c8ee8efce69ef596b3c9f6c",
+        "record": {
+          "profile": "masterpi_drive_friction_v7",
+          "parameters": {
+            "no_load_rpm": 150.0,
+            "torque_cap_nm": 0.1176798,
+            "sliding_mu": 0.8,
+            "start_fraction": 0.325,
+            "no_load_current_a": 0.1,
+            "stall_current_a": 1.2
+          },
+          "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+          "installed_motor_and_floor_verified": false,
+          "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+          "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+          "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+          "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+          "public_model": {
+            "repository": "https://github.com/DaiGuard/fuji_mecanum",
+            "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+            "license": "MIT, Copyright (c) 2022 DaiGuard",
+            "mesh_original_path": "mesh/collision/roller.stl",
+            "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+            "mesh_modified": false,
+            "source_radius_m": 0.1025,
+            "roller_ring_radius_m": 0.0895,
+            "roller_count": 15,
+            "roller_angle_deg": 45,
+            "roller_mass_kg": 0.3,
+            "roller_inertia_kg_m2": [
+              0.00024,
+              0.00076,
+              0.00076
+            ],
+            "hub_mass_kg": 2.0,
+            "hub_inertia_kg_m2": [
+              0.042025,
+              0.024279,
+              0.024279
+            ],
+            "roller_damping": 0.001,
+            "roller_frictionloss": 0.0001,
+            "roller_sliding_friction": 0.8,
+            "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+            "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+          },
+          "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+          "zero_command": "input relay resets; passive DC speed loss remains",
+          "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+          "reset_rule": "world.reset clears all input relay states before normal scene reset",
+          "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+          "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+          "kinetic_fraction": 0.08333333333333334,
+          "kinetic_torque_nm": 0.009806650000000002,
+          "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+          "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+          "speed_loss_nm_s": 0.006867418019757396,
+          "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+          "unconfirmed": [
+            "installed TT and stall torque",
+            "PWM transfer",
+            "Coulomb versus viscous no-load split",
+            "load-dependent start threshold",
+            "external stall/re-stick",
+            "brake versus coast"
+          ],
+          "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+          "idle_robot_contacts": "freeze_v1",
+          "idle_robot_contacts_method": "MuJoCo native sleeping islands (flag sleep); robot trees allowed, other free bodies never; manual wake on command/ctrl change",
+          "idle_robot_contacts_source": "https://mujoco.readthedocs.io/en/3.12.0/programming/simulation.html#sleeping-islands",
+          "idle_robot_contacts_caveat": "contacts of a sleeping robot with static geometry and inside its island are skipped, so contact-based readouts are empty; velocities below sleep_tolerance are zeroed when it falls asleep",
+          "idle_robot_contacts_sha256": "1deb84708607410e4a599c4157f7029ae15ce0d7db4d8d46ca5ae49954066568",
+          "xml_sha256": "f6d335be525889b1825decee74a60b5625fcf4439b0a35f88068b77d0be00b20"
+        }
+      },
+      "camera-v3.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/camera-v3.json",
+        "sha256": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+        "record": {
+          "id": "masterpi-camera-user-observation-target-review-v3",
+          "runtime_admitted": false,
+          "default_changed": false,
+          "status": "USER_OBSERVATION_TARGET_NOT_REAL_CALIBRATED",
+          "source_label": "사용자 실물 관찰 기반 목표",
+          "user_decision_kst": "2026-10-06T16:40:00+09:00",
+          "target_max_full_image_fraction": 0.1,
+          "position_m": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat_wxyz": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "optical_tool_pitch_deg": 10.0,
+          "position_source": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "angle_source": "user visibility target; NOT official angle or measured fit",
+          "angle_selection": "single pre-run 10deg candidate; analytic projection on previous DEV HIGH gives ~5.62% full image",
+          "intrinsics_source": "ugrp1-icspring-fisheye-centered-mount-provisional-20260831",
+          "intrinsics_status": "archived ugrp1 measured-K/D claim; original checkerboard and serial linkage unavailable",
+          "processing": "unchanged archived 640x480 fisheye K/D and raw remap; not SDK sample Brown5",
+          "official_fov_deg": 170,
+          "official_fov_axis": "UNSPECIFIED; cannot substitute for vertical fovy",
+          "evidence": "recovered real post-lift red 9 frames ~1.35%, blue 8 frames ~7.92%; PROBABLE_HELD only",
+          "calibration_limit": "no independent 3D/joint/held-state measurements; no unique mount or FOV fit",
+          "setdown_relook_candidate": {
+            "name": "solo_cyan_setdown_relook",
+            "value": "off_candidate",
+            "implemented": false,
+            "requires_new_bundle": true,
+            "requires": [
+              "explicit runtime camera binding and ray calibration",
+              "loaded localization",
+              "grasp/loss verification without visible cargo",
+              "loaded drive/slip/placement tests"
+            ]
+          }
+        }
+      },
+      "output-option.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/output-option.json",
+        "sha256": "c83d6fcf751eb4f6f840b2303976616f0e2391b5d68cd6c4d57b2f921c1b8a9d",
+        "record": {
+          "min_wheel_cmd": "real_v1",
+          "ports": {
+            "r1": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r2": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r3": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            }
+          },
+          "applied_after": "IntegerClock.reset and grid snap"
+        }
+      },
+      "speedups.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/speedups.json",
+        "sha256": "05599975a69a713adbfeca6e51ec0d4afd036692fd23c6489b21f766c9554806",
+        "record": {
+          "schema": "ugrp.run_speedups.v1",
+          "speedups": {
+            "schema": "ugrp.v98_exact_speedups.v1",
+            "set": "v98-exact-v6",
+            "items": [
+              "expected_memo",
+              "drive_kernel",
+              "schedule_memo",
+              "pf_geometry_shared",
+              "opencv_exact"
+            ],
+            "note": "execution infrastructure only; same commands/frames/events (harness.zone_pair_highpose_exact_speedups)",
+            "drive_kernel": [],
+            "schedule_memo": true,
+            "pf_geometry_shared": {
+              "installed": true,
+              "source_sha256": "9be748c247b33ab5256fdd99be125fb62e6c02178d0cf4060adb0f1f6f1638ea"
+            },
+            "expected_memo": [
+              {
+                "hits": 24138,
+                "misses": 11613
+              }
+            ],
+            "opencv_exact": {
+              "installed": true,
+              "source_sha256": {
+                "markerless_probe.detect_boundaries": "59459639ec2b7576ef97ff06e0724b2056e6174ef135b8240cd7bb0c85aca4e6",
+                "opencv_wall_observation.observations": "b37ceeec6dbee32d10bc8e071655ddd813e8ac1cd1fabb5732ca3bfe34e458cb"
+              },
+              "cache": {
+                "hits": 12669,
+                "misses": 11
+              },
+              "memo": {
+                "hits": 135,
+                "misses": 12680
+              }
+            }
+          },
+          "runner_rc": 0
+        }
+      }
+    }
+  },
+  {
+    "case": "s1046",
+    "episode": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place",
+    "metadata": {
+      "drive-v7.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/drive-v7.json",
+        "sha256": "3d34274ec542057b4348f68306f87c841f9b8e93904baf6961795bebdd6c178c",
+        "record": {
+          "profile": "masterpi_drive_friction_v7",
+          "parameters": {
+            "no_load_rpm": 150.0,
+            "torque_cap_nm": 0.1176798,
+            "sliding_mu": 0.8,
+            "start_fraction": 0.325,
+            "no_load_current_a": 0.1,
+            "stall_current_a": 1.2
+          },
+          "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+          "installed_motor_and_floor_verified": false,
+          "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+          "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+          "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+          "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+          "public_model": {
+            "repository": "https://github.com/DaiGuard/fuji_mecanum",
+            "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+            "license": "MIT, Copyright (c) 2022 DaiGuard",
+            "mesh_original_path": "mesh/collision/roller.stl",
+            "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+            "mesh_modified": false,
+            "source_radius_m": 0.1025,
+            "roller_ring_radius_m": 0.0895,
+            "roller_count": 15,
+            "roller_angle_deg": 45,
+            "roller_mass_kg": 0.3,
+            "roller_inertia_kg_m2": [
+              0.00024,
+              0.00076,
+              0.00076
+            ],
+            "hub_mass_kg": 2.0,
+            "hub_inertia_kg_m2": [
+              0.042025,
+              0.024279,
+              0.024279
+            ],
+            "roller_damping": 0.001,
+            "roller_frictionloss": 0.0001,
+            "roller_sliding_friction": 0.8,
+            "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+            "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+          },
+          "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+          "zero_command": "input relay resets; passive DC speed loss remains",
+          "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+          "reset_rule": "world.reset clears all input relay states before normal scene reset",
+          "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+          "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+          "kinetic_fraction": 0.08333333333333334,
+          "kinetic_torque_nm": 0.009806650000000002,
+          "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+          "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+          "speed_loss_nm_s": 0.006867418019757396,
+          "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+          "unconfirmed": [
+            "installed TT and stall torque",
+            "PWM transfer",
+            "Coulomb versus viscous no-load split",
+            "load-dependent start threshold",
+            "external stall/re-stick",
+            "brake versus coast"
+          ],
+          "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+          "idle_robot_contacts": "freeze_v1",
+          "idle_robot_contacts_method": "MuJoCo native sleeping islands (flag sleep); robot trees allowed, other free bodies never; manual wake on command/ctrl change",
+          "idle_robot_contacts_source": "https://mujoco.readthedocs.io/en/3.12.0/programming/simulation.html#sleeping-islands",
+          "idle_robot_contacts_caveat": "contacts of a sleeping robot with static geometry and inside its island are skipped, so contact-based readouts are empty; velocities below sleep_tolerance are zeroed when it falls asleep",
+          "idle_robot_contacts_sha256": "1deb84708607410e4a599c4157f7029ae15ce0d7db4d8d46ca5ae49954066568",
+          "xml_sha256": "56c557cced83bd32d7295de0466a0f659fdd70073805a870f6d1805d329a715c"
+        }
+      },
+      "camera-v3.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/camera-v3.json",
+        "sha256": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+        "record": {
+          "id": "masterpi-camera-user-observation-target-review-v3",
+          "runtime_admitted": false,
+          "default_changed": false,
+          "status": "USER_OBSERVATION_TARGET_NOT_REAL_CALIBRATED",
+          "source_label": "사용자 실물 관찰 기반 목표",
+          "user_decision_kst": "2026-10-06T16:40:00+09:00",
+          "target_max_full_image_fraction": 0.1,
+          "position_m": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat_wxyz": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "optical_tool_pitch_deg": 10.0,
+          "position_source": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "angle_source": "user visibility target; NOT official angle or measured fit",
+          "angle_selection": "single pre-run 10deg candidate; analytic projection on previous DEV HIGH gives ~5.62% full image",
+          "intrinsics_source": "ugrp1-icspring-fisheye-centered-mount-provisional-20260831",
+          "intrinsics_status": "archived ugrp1 measured-K/D claim; original checkerboard and serial linkage unavailable",
+          "processing": "unchanged archived 640x480 fisheye K/D and raw remap; not SDK sample Brown5",
+          "official_fov_deg": 170,
+          "official_fov_axis": "UNSPECIFIED; cannot substitute for vertical fovy",
+          "evidence": "recovered real post-lift red 9 frames ~1.35%, blue 8 frames ~7.92%; PROBABLE_HELD only",
+          "calibration_limit": "no independent 3D/joint/held-state measurements; no unique mount or FOV fit",
+          "setdown_relook_candidate": {
+            "name": "solo_cyan_setdown_relook",
+            "value": "off_candidate",
+            "implemented": false,
+            "requires_new_bundle": true,
+            "requires": [
+              "explicit runtime camera binding and ray calibration",
+              "loaded localization",
+              "grasp/loss verification without visible cargo",
+              "loaded drive/slip/placement tests"
+            ]
+          }
+        }
+      },
+      "output-option.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/output-option.json",
+        "sha256": "c83d6fcf751eb4f6f840b2303976616f0e2391b5d68cd6c4d57b2f921c1b8a9d",
+        "record": {
+          "min_wheel_cmd": "real_v1",
+          "ports": {
+            "r1": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r2": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r3": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            }
+          },
+          "applied_after": "IntegerClock.reset and grid snap"
+        }
+      },
+      "speedups.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/speedups.json",
+        "sha256": "2e46b3d172a725817c3b64e862cf9f347da9fccaaf745e6743da03d4a5d0b6a0",
+        "record": {
+          "schema": "ugrp.run_speedups.v1",
+          "speedups": {
+            "schema": "ugrp.v98_exact_speedups.v1",
+            "set": "v98-exact-v6",
+            "items": [
+              "expected_memo",
+              "drive_kernel",
+              "schedule_memo",
+              "pf_geometry_shared",
+              "opencv_exact"
+            ],
+            "note": "execution infrastructure only; same commands/frames/events (harness.zone_pair_highpose_exact_speedups)",
+            "drive_kernel": [],
+            "schedule_memo": true,
+            "pf_geometry_shared": {
+              "installed": true,
+              "source_sha256": "9be748c247b33ab5256fdd99be125fb62e6c02178d0cf4060adb0f1f6f1638ea"
+            },
+            "expected_memo": [
+              {
+                "hits": 13115,
+                "misses": 2578
+              }
+            ],
+            "opencv_exact": {
+              "installed": true,
+              "source_sha256": {
+                "markerless_probe.detect_boundaries": "59459639ec2b7576ef97ff06e0724b2056e6174ef135b8240cd7bb0c85aca4e6",
+                "opencv_wall_observation.observations": "b37ceeec6dbee32d10bc8e071655ddd813e8ac1cd1fabb5732ca3bfe34e458cb"
+              },
+              "cache": {
+                "hits": 5377,
+                "misses": 11
+              },
+              "memo": {
+                "hits": 135,
+                "misses": 5388
+              }
+            }
+          },
+          "runner_rc": 0
+        }
+      }
+    }
+  },
+  {
+    "case": "s1047",
+    "episode": "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place",
+    "metadata": {
+      "drive-v7.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/drive-v7.json",
+        "sha256": "4e948173fd0922abc56c5260785871072725b036a7095333afff189266a92b57",
+        "record": {
+          "profile": "masterpi_drive_friction_v7",
+          "parameters": {
+            "no_load_rpm": 150.0,
+            "torque_cap_nm": 0.1176798,
+            "sliding_mu": 0.8,
+            "start_fraction": 0.325,
+            "no_load_current_a": 0.1,
+            "stall_current_a": 1.2
+          },
+          "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+          "installed_motor_and_floor_verified": false,
+          "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+          "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+          "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+          "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+          "public_model": {
+            "repository": "https://github.com/DaiGuard/fuji_mecanum",
+            "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+            "license": "MIT, Copyright (c) 2022 DaiGuard",
+            "mesh_original_path": "mesh/collision/roller.stl",
+            "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+            "mesh_modified": false,
+            "source_radius_m": 0.1025,
+            "roller_ring_radius_m": 0.0895,
+            "roller_count": 15,
+            "roller_angle_deg": 45,
+            "roller_mass_kg": 0.3,
+            "roller_inertia_kg_m2": [
+              0.00024,
+              0.00076,
+              0.00076
+            ],
+            "hub_mass_kg": 2.0,
+            "hub_inertia_kg_m2": [
+              0.042025,
+              0.024279,
+              0.024279
+            ],
+            "roller_damping": 0.001,
+            "roller_frictionloss": 0.0001,
+            "roller_sliding_friction": 0.8,
+            "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+            "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+          },
+          "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+          "zero_command": "input relay resets; passive DC speed loss remains",
+          "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+          "reset_rule": "world.reset clears all input relay states before normal scene reset",
+          "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+          "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+          "kinetic_fraction": 0.08333333333333334,
+          "kinetic_torque_nm": 0.009806650000000002,
+          "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+          "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+          "speed_loss_nm_s": 0.006867418019757396,
+          "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+          "unconfirmed": [
+            "installed TT and stall torque",
+            "PWM transfer",
+            "Coulomb versus viscous no-load split",
+            "load-dependent start threshold",
+            "external stall/re-stick",
+            "brake versus coast"
+          ],
+          "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+          "idle_robot_contacts": "freeze_v1",
+          "idle_robot_contacts_method": "MuJoCo native sleeping islands (flag sleep); robot trees allowed, other free bodies never; manual wake on command/ctrl change",
+          "idle_robot_contacts_source": "https://mujoco.readthedocs.io/en/3.12.0/programming/simulation.html#sleeping-islands",
+          "idle_robot_contacts_caveat": "contacts of a sleeping robot with static geometry and inside its island are skipped, so contact-based readouts are empty; velocities below sleep_tolerance are zeroed when it falls asleep",
+          "idle_robot_contacts_sha256": "1deb84708607410e4a599c4157f7029ae15ce0d7db4d8d46ca5ae49954066568",
+          "xml_sha256": "4cc0555c13c6d8615df498cda008eb1f1f252e4efa36aa7e9a48f3950764eb3b"
+        }
+      },
+      "camera-v3.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/camera-v3.json",
+        "sha256": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+        "record": {
+          "id": "masterpi-camera-user-observation-target-review-v3",
+          "runtime_admitted": false,
+          "default_changed": false,
+          "status": "USER_OBSERVATION_TARGET_NOT_REAL_CALIBRATED",
+          "source_label": "사용자 실물 관찰 기반 목표",
+          "user_decision_kst": "2026-10-06T16:40:00+09:00",
+          "target_max_full_image_fraction": 0.1,
+          "position_m": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat_wxyz": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "optical_tool_pitch_deg": 10.0,
+          "position_source": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "angle_source": "user visibility target; NOT official angle or measured fit",
+          "angle_selection": "single pre-run 10deg candidate; analytic projection on previous DEV HIGH gives ~5.62% full image",
+          "intrinsics_source": "ugrp1-icspring-fisheye-centered-mount-provisional-20260831",
+          "intrinsics_status": "archived ugrp1 measured-K/D claim; original checkerboard and serial linkage unavailable",
+          "processing": "unchanged archived 640x480 fisheye K/D and raw remap; not SDK sample Brown5",
+          "official_fov_deg": 170,
+          "official_fov_axis": "UNSPECIFIED; cannot substitute for vertical fovy",
+          "evidence": "recovered real post-lift red 9 frames ~1.35%, blue 8 frames ~7.92%; PROBABLE_HELD only",
+          "calibration_limit": "no independent 3D/joint/held-state measurements; no unique mount or FOV fit",
+          "setdown_relook_candidate": {
+            "name": "solo_cyan_setdown_relook",
+            "value": "off_candidate",
+            "implemented": false,
+            "requires_new_bundle": true,
+            "requires": [
+              "explicit runtime camera binding and ray calibration",
+              "loaded localization",
+              "grasp/loss verification without visible cargo",
+              "loaded drive/slip/placement tests"
+            ]
+          }
+        }
+      },
+      "output-option.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/output-option.json",
+        "sha256": "c83d6fcf751eb4f6f840b2303976616f0e2391b5d68cd6c4d57b2f921c1b8a9d",
+        "record": {
+          "min_wheel_cmd": "real_v1",
+          "ports": {
+            "r1": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r2": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            },
+            "r3": {
+              "type": "RealPrimitivePort",
+              "option": "real_v1"
+            }
+          },
+          "applied_after": "IntegerClock.reset and grid snap"
+        }
+      },
+      "speedups.json": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/speedups.json",
+        "sha256": "02d945beb629811d79b58a2bd15e5004e5ceb1016b4189fda7378918e947319a",
+        "record": {
+          "schema": "ugrp.run_speedups.v1",
+          "speedups": {
+            "schema": "ugrp.v98_exact_speedups.v1",
+            "set": "v98-exact-v6",
+            "items": [
+              "expected_memo",
+              "drive_kernel",
+              "schedule_memo",
+              "pf_geometry_shared",
+              "opencv_exact"
+            ],
+            "note": "execution infrastructure only; same commands/frames/events (harness.zone_pair_highpose_exact_speedups)",
+            "drive_kernel": [],
+            "schedule_memo": true,
+            "pf_geometry_shared": {
+              "installed": true,
+              "source_sha256": "9be748c247b33ab5256fdd99be125fb62e6c02178d0cf4060adb0f1f6f1638ea"
+            },
+            "expected_memo": [
+              {
+                "hits": 2936,
+                "misses": 1774
+              }
+            ],
+            "opencv_exact": {
+              "installed": true,
+              "source_sha256": {
+                "markerless_probe.detect_boundaries": "59459639ec2b7576ef97ff06e0724b2056e6174ef135b8240cd7bb0c85aca4e6",
+                "opencv_wall_observation.observations": "b37ceeec6dbee32d10bc8e071655ddd813e8ac1cd1fabb5732ca3bfe34e458cb"
+              },
+              "cache": {
+                "hits": 3983,
+                "misses": 11
+              },
+              "memo": {
+                "hits": 129,
+                "misses": 3994
+              }
+            }
+          },
+          "runner_rc": 0
+        }
+      }
+    }
+  }
+]

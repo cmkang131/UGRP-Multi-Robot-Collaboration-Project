@@ -1,0 +1,250 @@
+{
+  "seed": "32002",
+  "source_sha": "c015f76dadcb6b316efa1e4dfeeccddb05323262",
+  "option": "appearance_contact_v1",
+  "conditions": {
+    "off": {
+      "points": {
+        "points": 56162,
+        "correct": 51106,
+        "precision": 0.9099747160001425,
+        "wall_rmse_m": 0.22631687249797267
+      },
+      "inserted_points": {
+        "points": 4313,
+        "correct": 3876,
+        "precision": 0.8986784140969163,
+        "wall_rmse_m": 0.24790662588529935
+      },
+      "nonempty_frames": 878,
+      "inserted_nonempty_frames": 64,
+      "grid": {
+        "full": {
+          "occupied_cells": 379,
+          "precision_015": 0.5567282321899736,
+          "precision_cell": 0.28232189973614774,
+          "wall_coverage": 0.6474164133738601,
+          "wall_error_rmse_m": 0.5216823805128001
+        },
+        "correct_cells": 211,
+        "sample_count": 379,
+        "covered_samples": 213,
+        "region": {
+          "precision": 0.6358024691358025,
+          "correct": 103,
+          "n": 162,
+          "recall": 0.7602739726027398,
+          "recalled": 111,
+          "visible": 146,
+          "total": 329
+        },
+        "size": {
+          "occupied_cells": 379
+        }
+      },
+      "segments": {
+        "full": {
+          "occupied_cells": 139,
+          "precision_015": 0.7194244604316546,
+          "precision_cell": 0.6906474820143885,
+          "wall_coverage": 0.3617021276595745,
+          "wall_error_rmse_m": 0.0962350520390641
+        },
+        "correct_cells": 100,
+        "sample_count": 139,
+        "covered_samples": 119,
+        "region": {
+          "precision": 0.6548672566371682,
+          "correct": 74,
+          "n": 113,
+          "recall": 0.5205479452054794,
+          "recalled": 76,
+          "visible": 146,
+          "total": 329
+        },
+        "continuous": {
+          "full": {
+            "occupied_cells": 272,
+            "precision_015": 0.9963235294117647,
+            "precision_cell": 0.6985294117647058,
+            "wall_coverage": 0.46504559270516715,
+            "wall_error_rmse_m": 0.0794648682468252
+          },
+          "correct_cells": 271,
+          "sample_count": 272,
+          "covered_samples": 153,
+          "region": {
+            "precision": 0.9954545454545455,
+            "correct": 219,
+            "n": 220,
+            "recall": 0.678082191780822,
+            "recalled": 99,
+            "visible": 146,
+            "total": 329
+          }
+        },
+        "size": {
+          "segments": 5,
+          "length_m": 13.176388846198563,
+          "raster_cells": 139,
+          "continuous_samples": 272
+        }
+      },
+      "map_gates": {
+        "grid": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": true
+        }
+      }
+    },
+    "on": {
+      "points": {
+        "points": 74479,
+        "correct": 26862,
+        "precision": 0.36066542246807826,
+        "wall_rmse_m": 0.48822133401584544
+      },
+      "inserted_points": {
+        "points": 5282,
+        "correct": 2475,
+        "precision": 0.46857251041272246,
+        "wall_rmse_m": 0.4147479816515537
+      },
+      "nonempty_frames": 889,
+      "inserted_nonempty_frames": 64,
+      "grid": {
+        "full": {
+          "occupied_cells": 280,
+          "precision_015": 0.2642857142857143,
+          "precision_cell": 0.1357142857142857,
+          "wall_coverage": 0.22188449848024316,
+          "wall_error_rmse_m": 0.7382457175846672
+        },
+        "correct_cells": 74,
+        "sample_count": 280,
+        "covered_samples": 73,
+        "region": {
+          "precision": 0.27927927927927926,
+          "correct": 62,
+          "n": 222,
+          "recall": 0.3013698630136986,
+          "recalled": 44,
+          "visible": 146,
+          "total": 329
+        },
+        "size": {
+          "occupied_cells": 280
+        }
+      },
+      "segments": {
+        "full": {
+          "occupied_cells": 50,
+          "precision_015": 0.14,
+          "precision_cell": 0.12,
+          "wall_coverage": 0.0486322188449848,
+          "wall_error_rmse_m": 0.5002753861718291
+        },
+        "correct_cells": 7,
+        "sample_count": 50,
+        "covered_samples": 16,
+        "region": {
+          "precision": 0.14,
+          "correct": 7,
+          "n": 50,
+          "recall": 0.0547945205479452,
+          "recalled": 8,
+          "visible": 146,
+          "total": 329
+        },
+        "continuous": {
+          "full": {
+            "occupied_cells": 101,
+            "precision_015": 0.1782178217821782,
+            "precision_cell": 0.1485148514851485,
+            "wall_coverage": 0.060790273556231005,
+            "wall_error_rmse_m": 0.47874364802946917
+          },
+          "correct_cells": 18,
+          "sample_count": 101,
+          "covered_samples": 20,
+          "region": {
+            "precision": 0.1782178217821782,
+            "correct": 18,
+            "n": 101,
+            "recall": 0.07534246575342465,
+            "recalled": 11,
+            "visible": 146,
+            "total": 329
+          }
+        },
+        "size": {
+          "segments": 8,
+          "length_m": 4.489446983669753,
+          "raster_cells": 50,
+          "continuous_samples": 101
+        }
+      },
+      "map_gates": {
+        "grid": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        }
+      }
+    }
+  },
+  "detector_gate": false,
+  "historical_grid": {
+    "full": {
+      "occupied_cells": 381,
+      "precision_015": 0.5564304461942258,
+      "precision_cell": 0.28346456692913385,
+      "wall_coverage": 0.6474164133738601,
+      "wall_error_rmse_m": 0.5204405801986803
+    },
+    "correct_cells": 212,
+    "sample_count": 381,
+    "covered_samples": 213,
+    "region": {
+      "precision": 0.6358024691358025,
+      "correct": 103,
+      "n": 162,
+      "recall": 0.7602739726027398,
+      "recalled": 111,
+      "visible": 146,
+      "total": 329
+    },
+    "size": {
+      "occupied_cells": 381
+    }
+  },
+  "paired_covariance": "saved post-observation covariance for BOTH off/on, not original pre-scan covariance",
+  "frames": 891,
+  "original_insertions": 64,
+  "source_seal_sha256": "35d9791916b0320ffc5272f598a884e82b1aaa818899e52c7d31f74d7da7ef56",
+  "code_hashes": {
+    "harness/active_wall_vision.py": "91bdae06fafb3493e9b8adca0aad37fca09da20cf4b0259e2d771f5fb8f9e94c",
+    "harness/self_wall_segment_points.py": "40c006b33bb383302ff466be76807980a14faf326bc66c3b2e36da0b6da18a10",
+    "harness/wall_contact_detector.py": "8c6e861d02f940b3a2017ac90ea19c59f45f4525ea6c025504eeedaf1f3c6c3f",
+    "harness/wall_floor_boundary.py": "eaed7cacc997b799e830e6f4c3c96265d543c1e79811f637f73cf0ba56ebd5e8",
+    "harness/active_camera.py": "bbfdcf48d6c21e1fee2da8f400ca010df8f7b821fea8c51e949b63ffae4da3f1",
+    "harness/self_wall_segments.py": "d365e2afb03d3820d9ce969c82d18701683e781c47381b83dc7ce7e1959ee4c5",
+    "harness/wall_confidence.py": "f4a7f48fed7cf2c1a33881648305d7aa4ac412225d4b2b410d2b874df279cd1c",
+    "harness/self_pose_graph.py": "ef884c274d5b24858bd3b96423abc1b9d897d6ec6c32714a576635a830bf1ef5",
+    "experiments/2026-10-05-ego-wall-map-probe/code/height_free_wall.py": "24b6bb522824b1ba4bc2a8fa21aa7c3545900eb77411d1a3cb578e5a9c540591",
+    "experiments/2026-10-08-wall-contact-types/code/common.py": "be866365f7b8551a9fdaa756d85eb0db5811b6cb09343db8332eb673a7764b5a",
+    "experiments/2026-10-08-wall-contact-types/code/compare.py": "0fb0a75d0edcd58b6dddab49b85560e50069848850aee10f3817eeb3401351ee"
+  },
+  "physics": 0
+}

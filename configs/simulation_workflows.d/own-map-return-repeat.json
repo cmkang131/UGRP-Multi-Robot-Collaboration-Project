@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "own-map-return-repeat", "version": "1.0.0",
+    "purpose": "egomap49 six preregistered own-observed B return trials, one seed per invocation",
+    "entry": "scripts/run_own_map_return_repeat.py", "runner": "scripts.run_own_map_return_repeat",
+    "docs": "experiments/2026-10-08-own-map-return-repeat/README.md",
+    "requires": "Frozen committed SHA, exclusive lock, seeds49001-49006, no GT control/model/freeze",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--seed", "--expected-source-sha"], "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

@@ -1,0 +1,33 @@
+{
+  "preregistration": "5ee4e580",
+  "source_sha": "cc6fd198",
+  "tests": {
+    "passed": 19,
+    "command": "python -m pytest -q tests/test_rbpf_composition.py tests/test_rbpf_rejection.py tests/test_rbpf_manhattan.py"
+  },
+  "runs": {
+    "off": 1,
+    "all": 1,
+    "wide": 1
+  },
+  "physical_runs": 0,
+  "model_calls": 0,
+  "lock_acquire": 0,
+  "off_bytes": {
+    "equal": true,
+    "reference": "/Users/changmin/projects/ugrp/outputs/rbpf-insertion-v1/on/prediction.json",
+    "sha256": "5e0453ea1c9936109ff6b5ef83880b6f6be8e46a520a89094cc8895217664949"
+  },
+  "source_files": {
+    "harness/self_map_rbpf.py": "8352c8fe9efcdbf5962efa2dd58835940325dad52f0a02db05cfdaca3703e37c",
+    "harness/rbpf_rejection.py": "a193179075364de53c61e0e2cd6198a5a2bbf02122a482f8f96de02bf718ecd3",
+    "harness/rbpf_composition.py": "adf0eaa11e266c98e27cb9d8aa515dd7db71f9c0b60d2cd7a735242594f17bc9"
+  },
+  "untracked_preserved": {
+    "analyze_wall_detection.py": "26c818f1cd4673c7f4a1b6ab535b4e70ac68167f1f56989f10c8c6bebe0c3dd0",
+    "create_wall_visualizations.py": "e2b77c1f678d1ba27658dffecf99bcf7bfd7c12c056d41869a7a38cc482f8efa",
+    "create_wall_visualizations_v2.py": "8e6fa7f6598336bc6f7c61ad956d1902be9925443d7656cea2801362195d83c8",
+    "parameter_probe.py": "43f91584406ba91a73032514b8409357fc9c7ac2c3cbc3e72d26bce5257e103b"
+  },
+  "raw_prediction_seals_verified": true
+}

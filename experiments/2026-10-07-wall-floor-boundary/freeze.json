@@ -1,0 +1,36 @@
+{
+  "source_sha": "e2b02e1c35a70dfca390d1e81086eb4cb0508d26",
+  "configuration": {
+    "gaussian_kernel": 5,
+    "histogram_bins": 256,
+    "histogram_window": 5,
+    "hue_count_threshold": 60,
+    "intensity_count_threshold": 80,
+    "min_intensity": 0.0392156862745098,
+    "min_saturation": 0.1,
+    "reference_forward_m": [
+      0.3,
+      1.0
+    ],
+    "reference_half_width_m": 0.3,
+    "minimum_reference_pixels": 1024,
+    "max_range_m": 4.0
+  },
+  "files": {
+    "harness/wall_floor_boundary.py": "eaed7cacc997b799e830e6f4c3c96265d543c1e79811f637f73cf0ba56ebd5e8",
+    "experiments/2026-10-05-ego-wall-map-probe/code/height_free_wall.py": "24b6bb522824b1ba4bc2a8fa21aa7c3545900eb77411d1a3cb578e5a9c540591",
+    "experiments/2026-10-07-wall-floor-boundary/code/evaluate.py": "cf66d75b1890b02df4337dbd7be83a4801962444263eb1335933e05a9e340ef4",
+    "experiments/2026-10-07-wall-floor-boundary/annotation-sample.json": "e545f71d93b41388ddfd9c93c430a05317cd6ddafcc7f17a7f6d40b413dd674f"
+  },
+  "development": [
+    "s1042",
+    "s1043"
+  ],
+  "confirmation": [
+    "s1044",
+    "s1045",
+    "s1046",
+    "s1047"
+  ],
+  "decision": "No retuning after development failure; identical code/parameters, confirmation replay only; no mapping before gate"
+}

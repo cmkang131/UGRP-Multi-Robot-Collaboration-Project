@@ -1,0 +1,588 @@
+{
+  "source": "60d4e83368f70cc0ce553d432e032d7cc25f4341",
+  "base_model_sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+  "method": "bilateral rotation-only UMBmark-inspired diagnostic; not full square UMBmark",
+  "physical": {
+    "status": "RECORDED",
+    "source_sha": "60d4e83368f70cc0ce553d432e032d7cc25f4341",
+    "model_calls": 0,
+    "freeze": false,
+    "loadavg_start": [
+      6.19775390625,
+      7.21875,
+      8.193359375
+    ],
+    "seed": 32001,
+    "start_sim_s": 1.3,
+    "total_sim_s": 61.3,
+    "samples": 1201,
+    "frames": 61,
+    "blocks": 20,
+    "pulses": 110,
+    "wall_s": 92.65322708300664,
+    "loadavg_end": [
+      6.4130859375,
+      7.0498046875,
+      8.02880859375
+    ]
+  },
+  "summary": [
+    {
+      "sign": -1,
+      "mode": "single",
+      "n": 5,
+      "predicted_deg_per_pulse": -5.934775421842247,
+      "actual_mean_deg_per_pulse": -5.862316788085924,
+      "actual_std_deg_per_pulse": 0.29891926797245993,
+      "mean_gain": 0.9877908381352315,
+      "mean_tail_after_horizon_deg": -0.08030609184496293
+    },
+    {
+      "sign": -1,
+      "mode": "continuous",
+      "n": 5,
+      "predicted_deg_per_pulse": -5.934775421842247,
+      "actual_mean_deg_per_pulse": -5.945090177181248,
+      "actual_std_deg_per_pulse": 0.0507264560732704,
+      "mean_gain": 1.0017380194878207,
+      "mean_tail_after_horizon_deg": -0.03844758731055532
+    },
+    {
+      "sign": 1,
+      "mode": "single",
+      "n": 5,
+      "predicted_deg_per_pulse": 5.369137728245055,
+      "actual_mean_deg_per_pulse": 5.836788424906091,
+      "actual_std_deg_per_pulse": 0.3484046270185716,
+      "mean_gain": 1.0870997765993036,
+      "mean_tail_after_horizon_deg": -0.11339751331618335
+    },
+    {
+      "sign": 1,
+      "mode": "continuous",
+      "n": 5,
+      "predicted_deg_per_pulse": 5.369137728245055,
+      "actual_mean_deg_per_pulse": 5.905962664139738,
+      "actual_std_deg_per_pulse": 0.03299990350733743,
+      "mean_gain": 1.099983454153289,
+      "mean_tail_after_horizon_deg": -0.41853116369373744
+    }
+  ],
+  "fit": {
+    "directions": {
+      "-1": {
+        "gain": 0.9885957712706761,
+        "ci95": [
+          0.8960651636369062,
+          1.081126378904446
+        ],
+        "train_n": 6,
+        "check_n": 4,
+        "independent_repeat_n": 3,
+        "mode_gains": {
+          "single": 0.9809746188201354,
+          "continuous": 0.996216923721217
+        },
+        "relative_mode_gap": 0.015418136860417807,
+        "check_rmse_deg_per_pulse_off": 0.0463144367531852,
+        "check_rmse_deg_per_pulse_on": 0.09976575361498424,
+        "systematic_error_deg_per_pulse": 0.06768153636785845,
+        "residual_std_deg_per_pulse": 0.26773942442745285
+      },
+      "1": {
+        "gain": 1.1049453391322106,
+        "ci95": [
+          1.0138920052057299,
+          1.1959986730586913
+        ],
+        "train_n": 6,
+        "check_n": 4,
+        "independent_repeat_n": 3,
+        "mode_gains": {
+          "single": 1.1113270595654052,
+          "continuous": 1.098563618699016
+        },
+        "relative_mode_gap": 0.011551196619747054,
+        "check_rmse_deg_per_pulse_off": 0.434668038519325,
+        "check_rmse_deg_per_pulse_on": 0.2096242565799855,
+        "systematic_error_deg_per_pulse": 0.5634659797382238,
+        "residual_std_deg_per_pulse": 0.2696595496889007
+      }
+    },
+    "gates": {
+      "-1": {
+        "under_gain_ci_lower_gt1": false,
+        "single_continuous_agree": true,
+        "check_rmse_improves": false
+      },
+      "1": {
+        "under_gain_ci_lower_gt1": true,
+        "single_continuous_agree": true,
+        "check_rmse_improves": true
+      }
+    },
+    "eligible": false
+  },
+  "records": [
+    {
+      "repeat": 1,
+      "mode": "single",
+      "sign": 1,
+      "pulses": 1,
+      "start_tick": 40,
+      "end_tick": 44,
+      "split": "fit",
+      "start_s": 3.3,
+      "end_s": 3.5,
+      "actual_deg": 6.413728597958596,
+      "predicted_deg": 5.369137728245055,
+      "error_deg": 1.0445908697135415,
+      "gain": 1.1945546794633957,
+      "tail_after_horizon_deg": 0.30270779442490114,
+      "drift_xy_m": 0.0010573698700361135,
+      "wheel_speed_at_horizon_rad_s": [
+        -0.12386061119194845,
+        0.7989668063558726,
+        -0.0738763530729024,
+        0.7409976291344236
+      ]
+    },
+    {
+      "repeat": 1,
+      "mode": "single",
+      "sign": -1,
+      "pulses": 1,
+      "start_tick": 80,
+      "end_tick": 84,
+      "split": "fit",
+      "start_s": 5.3,
+      "end_s": 5.5,
+      "actual_deg": -5.666995151740401,
+      "predicted_deg": -5.934775421842247,
+      "error_deg": 0.2677802701018459,
+      "gain": 0.9548794602882003,
+      "tail_after_horizon_deg": 0.0006817587021551676,
+      "drift_xy_m": 0.0002878330800374983,
+      "wheel_speed_at_horizon_rad_s": [
+        0.10697983200428281,
+        -0.217262237880285,
+        -0.021303917642289623,
+        -0.09716192247046572
+      ]
+    },
+    {
+      "repeat": 1,
+      "mode": "continuous",
+      "sign": 1,
+      "pulses": 10,
+      "start_tick": 120,
+      "end_tick": 160,
+      "split": "fit",
+      "start_s": 7.3,
+      "end_s": 9.3,
+      "actual_deg": 58.8354670551032,
+      "predicted_deg": 53.691377282450546,
+      "error_deg": 5.144089772652656,
+      "gain": 1.0958084897988647,
+      "tail_after_horizon_deg": -0.9162831794689081,
+      "drift_xy_m": 0.0026117824876063745,
+      "wheel_speed_at_horizon_rad_s": [
+        0.07123364206518394,
+        -0.390260410487037,
+        -0.22056266109030298,
+        -0.08231394175602401
+      ]
+    },
+    {
+      "repeat": 1,
+      "mode": "continuous",
+      "sign": -1,
+      "pulses": 10,
+      "start_tick": 196,
+      "end_tick": 236,
+      "split": "fit",
+      "start_s": 11.100000000000001,
+      "end_s": 13.100000000000001,
+      "actual_deg": -59.05569068770271,
+      "predicted_deg": -59.347754218422466,
+      "error_deg": 0.29206353071975855,
+      "gain": 0.9950787770393998,
+      "tail_after_horizon_deg": -0.13211005340842308,
+      "drift_xy_m": 0.0056195904706155715,
+      "wheel_speed_at_horizon_rad_s": [
+        0.023924062644070883,
+        -0.20217433114244224,
+        0.02697911966519623,
+        -0.20749983466514194
+      ]
+    },
+    {
+      "repeat": 2,
+      "mode": "continuous",
+      "sign": -1,
+      "pulses": 10,
+      "start_tick": 272,
+      "end_tick": 312,
+      "split": "fit",
+      "start_s": 14.9,
+      "end_s": 16.9,
+      "actual_deg": -59.4221178422538,
+      "predicted_deg": -59.347754218422466,
+      "error_deg": -0.07436362383133144,
+      "gain": 1.0012530149592123,
+      "tail_after_horizon_deg": 0.5062584529682431,
+      "drift_xy_m": 0.004367821283383764,
+      "wheel_speed_at_horizon_rad_s": [
+        -0.4296496871423684,
+        0.012123954641014144,
+        -0.27424297373609036,
+        -0.149448229460542
+      ]
+    },
+    {
+      "repeat": 2,
+      "mode": "continuous",
+      "sign": 1,
+      "pulses": 10,
+      "start_tick": 348,
+      "end_tick": 388,
+      "split": "fit",
+      "start_s": 18.7,
+      "end_s": 20.7,
+      "actual_deg": 58.6459332489343,
+      "predicted_deg": 53.691377282450546,
+      "error_deg": 4.954555966483753,
+      "gain": 1.0922784293727401,
+      "tail_after_horizon_deg": 0.4000670913255676,
+      "drift_xy_m": 0.003575980017454089,
+      "wheel_speed_at_horizon_rad_s": [
+        -0.2764650849728449,
+        0.026817260702368156,
+        -0.428446601312065,
+        0.20152899423493986
+      ]
+    },
+    {
+      "repeat": 2,
+      "mode": "single",
+      "sign": -1,
+      "pulses": 1,
+      "start_tick": 424,
+      "end_tick": 428,
+      "split": "fit",
+      "start_s": 22.5,
+      "end_s": 22.7,
+      "actual_deg": -6.292170581123493,
+      "predicted_deg": -5.934775421842247,
+      "error_deg": -0.3573951592812463,
+      "gain": 1.0602205026943219,
+      "tail_after_horizon_deg": -0.7112570371942359,
+      "drift_xy_m": 0.0001047327750191206,
+      "wheel_speed_at_horizon_rad_s": [
+        -0.03414434917890235,
+        0.11702216699314019,
+        0.17706062239513584,
+        -0.09577807314878624
+      ]
+    },
+    {
+      "repeat": 2,
+      "mode": "single",
+      "sign": 1,
+      "pulses": 1,
+      "start_tick": 464,
+      "end_tick": 468,
+      "split": "fit",
+      "start_s": 24.5,
+      "end_s": 24.7,
+      "actual_deg": 5.906681354637109,
+      "predicted_deg": 5.369137728245055,
+      "error_deg": 0.5375436263920541,
+      "gain": 1.1001173100038457,
+      "tail_after_horizon_deg": 0.4899151686648553,
+      "drift_xy_m": 0.001286135738870848,
+      "wheel_speed_at_horizon_rad_s": [
+        -0.23168112261957483,
+        0.064447420657663,
+        -0.38321425641748186,
+        0.2274575274983794
+      ]
+    },
+    {
+      "repeat": 3,
+      "mode": "single",
+      "sign": 1,
+      "pulses": 1,
+      "start_tick": 504,
+      "end_tick": 508,
+      "split": "fit",
+      "start_s": 26.5,
+      "end_s": 26.7,
+      "actual_deg": 5.580194179201063,
+      "predicted_deg": 5.369137728245055,
+      "error_deg": 0.21105645095600867,
+      "gain": 1.039309189228974,
+      "tail_after_horizon_deg": -0.5206356577650535,
+      "drift_xy_m": 0.000627910346398748,
+      "wheel_speed_at_horizon_rad_s": [
+        0.34983413890715465,
+        -0.21965194773201155,
+        0.18853681011249576,
+        -0.022198967189999946
+      ]
+    },
+    {
+      "repeat": 3,
+      "mode": "single",
+      "sign": -1,
+      "pulses": 1,
+      "start_tick": 544,
+      "end_tick": 548,
+      "split": "fit",
+      "start_s": 28.5,
+      "end_s": 28.7,
+      "actual_deg": -5.506426438810522,
+      "predicted_deg": -5.934775421842247,
+      "error_deg": 0.4283489830317242,
+      "gain": 0.9278238934778836,
+      "tail_after_horizon_deg": 0.1397382337075382,
+      "drift_xy_m": 0.00046156588623265604,
+      "wheel_speed_at_horizon_rad_s": [
+        -0.006967798609159044,
+        -0.3140754825898579,
+        -0.4227697873249995,
+        0.09473397252719415
+      ]
+    },
+    {
+      "repeat": 3,
+      "mode": "continuous",
+      "sign": 1,
+      "pulses": 10,
+      "start_tick": 584,
+      "end_tick": 624,
+      "split": "fit",
+      "start_s": 30.5,
+      "end_s": 32.5,
+      "actual_deg": 59.46878085699153,
+      "predicted_deg": 53.691377282450546,
+      "error_deg": 5.777403574540983,
+      "gain": 1.1076039369254431,
+      "tail_after_horizon_deg": -0.7690791587761903,
+      "drift_xy_m": 0.004423047995112069,
+      "wheel_speed_at_horizon_rad_s": [
+        0.18770958783456188,
+        -0.22583394668761927,
+        -0.03245584330007097,
+        -0.029189290391999415
+      ]
+    },
+    {
+      "repeat": 3,
+      "mode": "continuous",
+      "sign": -1,
+      "pulses": 10,
+      "start_tick": 660,
+      "end_tick": 700,
+      "split": "fit",
+      "start_s": 34.3,
+      "end_s": 36.3,
+      "actual_deg": -58.89190288176262,
+      "predicted_deg": -59.347754218422466,
+      "error_deg": 0.45585133665984756,
+      "gain": 0.992318979165039,
+      "tail_after_horizon_deg": -0.638303155997371,
+      "drift_xy_m": 0.004329476667048705,
+      "wheel_speed_at_horizon_rad_s": [
+        0.2688070888506793,
+        -0.14765739692070534,
+        0.2586155411699609,
+        -0.12157143035624192
+      ]
+    },
+    {
+      "repeat": 4,
+      "mode": "continuous",
+      "sign": -1,
+      "pulses": 10,
+      "start_tick": 736,
+      "end_tick": 776,
+      "split": "check",
+      "start_s": 38.099999999999994,
+      "end_s": 40.099999999999994,
+      "actual_deg": -60.13814186690613,
+      "predicted_deg": -59.347754218422466,
+      "error_deg": -0.7903876484836658,
+      "gain": 1.0133179032449102,
+      "tail_after_horizon_deg": -0.15757541191304572,
+      "drift_xy_m": 0.001968340822429051,
+      "wheel_speed_at_horizon_rad_s": [
+        0.15216587924159522,
+        0.3563480895327862,
+        0.44270241887567463,
+        0.06601135300136694
+      ]
+    },
+    {
+      "repeat": 4,
+      "mode": "continuous",
+      "sign": 1,
+      "pulses": 10,
+      "start_tick": 812,
+      "end_tick": 852,
+      "split": "check",
+      "start_s": 41.9,
+      "end_s": 43.9,
+      "actual_deg": 59.27558550882453,
+      "predicted_deg": 53.691377282450546,
+      "error_deg": 5.584208226373981,
+      "gain": 1.1040056804093052,
+      "tail_after_horizon_deg": -0.06438966402256546,
+      "drift_xy_m": 0.00413782080019754,
+      "wheel_speed_at_horizon_rad_s": [
+        0.15519085512984035,
+        0.20626177749308458,
+        0.3622402621148732,
+        -3.449980103075961e-05
+      ]
+    },
+    {
+      "repeat": 4,
+      "mode": "single",
+      "sign": -1,
+      "pulses": 1,
+      "start_tick": 888,
+      "end_tick": 892,
+      "split": "check",
+      "start_s": 45.699999999999996,
+      "end_s": 45.9,
+      "actual_deg": -5.938231433044621,
+      "predicted_deg": -5.934775421842247,
+      "error_deg": -0.003456011202374043,
+      "gain": 1.0005823322630971,
+      "tail_after_horizon_deg": -0.038943424913267244,
+      "drift_xy_m": 0.0009034636150333183,
+      "wheel_speed_at_horizon_rad_s": [
+        0.243959978705451,
+        -0.39081488563072003,
+        -0.044785598702136366,
+        -0.07876850247626879
+      ]
+    },
+    {
+      "repeat": 4,
+      "mode": "single",
+      "sign": 1,
+      "pulses": 1,
+      "start_tick": 928,
+      "end_tick": 932,
+      "split": "check",
+      "start_s": 47.699999999999996,
+      "end_s": 47.9,
+      "actual_deg": 5.695587276604909,
+      "predicted_deg": 5.369137728245055,
+      "error_deg": 0.3264495483598546,
+      "gain": 1.0608011127452597,
+      "tail_after_horizon_deg": -0.6194062744137079,
+      "drift_xy_m": 0.0006637724986417757,
+      "wheel_speed_at_horizon_rad_s": [
+        0.009469994413647608,
+        0.19597602343212264,
+        0.559089444053468,
+        -0.33378172658823413
+      ]
+    },
+    {
+      "repeat": 5,
+      "mode": "single",
+      "sign": 1,
+      "pulses": 1,
+      "start_tick": 968,
+      "end_tick": 972,
+      "split": "check",
+      "start_s": 49.699999999999996,
+      "end_s": 49.9,
+      "actual_deg": 5.587750716128774,
+      "predicted_deg": 5.369137728245055,
+      "error_deg": 0.21861298788371908,
+      "gain": 1.0407165915550418,
+      "tail_after_horizon_deg": -0.21956859749191188,
+      "drift_xy_m": 0.0002572287832753188,
+      "wheel_speed_at_horizon_rad_s": [
+        0.09143698258903417,
+        -0.4993246400017443,
+        -0.24080421072647404,
+        -0.1512149969114258
+      ]
+    },
+    {
+      "repeat": 5,
+      "mode": "single",
+      "sign": -1,
+      "pulses": 1,
+      "start_tick": 1008,
+      "end_tick": 1012,
+      "split": "check",
+      "start_s": 51.699999999999996,
+      "end_s": 51.9,
+      "actual_deg": -5.907760335710586,
+      "predicted_deg": -5.934775421842247,
+      "error_deg": 0.027015086131660482,
+      "gain": 0.9954480019526544,
+      "tail_after_horizon_deg": 0.2082500104729951,
+      "drift_xy_m": 0.0004846312506504043,
+      "wheel_speed_at_horizon_rad_s": [
+        0.000315079421967771,
+        -0.06396062554937947,
+        -0.25931844193177817,
+        0.20008403429815538
+      ]
+    },
+    {
+      "repeat": 5,
+      "mode": "continuous",
+      "sign": 1,
+      "pulses": 10,
+      "start_tick": 1048,
+      "end_tick": 1088,
+      "split": "check",
+      "start_s": 53.699999999999996,
+      "end_s": 55.699999999999996,
+      "actual_deg": 59.07236653713338,
+      "predicted_deg": 53.691377282450546,
+      "error_deg": 5.380989254682831,
+      "gain": 1.1002207342600923,
+      "tail_after_horizon_deg": -0.7429709075265909,
+      "drift_xy_m": 0.0032780282805863416,
+      "wheel_speed_at_horizon_rad_s": [
+        -0.18219181344343552,
+        -0.09914878466928573,
+        -0.361797716477488,
+        0.08117299064537362
+      ]
+    },
+    {
+      "repeat": 5,
+      "mode": "continuous",
+      "sign": -1,
+      "pulses": 10,
+      "start_tick": 1124,
+      "end_tick": 1164,
+      "split": "check",
+      "start_s": 57.5,
+      "end_s": 59.5,
+      "actual_deg": -59.746655580437164,
+      "predicted_deg": -59.347754218422466,
+      "error_deg": -0.3989013620146977,
+      "gain": 1.0067214230305428,
+      "tail_after_horizon_deg": 0.22949223179782002,
+      "drift_xy_m": 0.0038093137708003857,
+      "wheel_speed_at_horizon_rad_s": [
+        -0.14937271870948424,
+        0.08932028211621815,
+        0.3364052734595329,
+        -0.37716306592783955
+      ]
+    }
+  ]
+}

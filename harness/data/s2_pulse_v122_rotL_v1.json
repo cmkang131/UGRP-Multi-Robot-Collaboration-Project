@@ -1,0 +1,28 @@
+{
+  "option": "s2_pulse_v122_rotL_v1",
+  "profile": "0:turn:0.35:0.10",
+  "gain": 1.1049453391322106,
+  "base_model_sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+  "cw_gain": 1.0,
+  "training_repeats": [
+    1,
+    2,
+    3
+  ],
+  "check_repeats": [
+    4,
+    5
+  ],
+  "condition": "unloaded SEARCH, servo_stiffness real_v1",
+  "measurement_source": "60d4e83368f70cc0ce553d432e032d7cc25f4341",
+  "method": "egomap32 unchanged per-pulse normalized zero-intercept least squares; left only",
+  "sources": {
+    "experiments/2026-10-08-pulse-rotation-audit/code/fit.py": "484243887e952701be999b6922273dcd476e501d6eca2c93719d416ded7ea106",
+    "experiments/2026-10-08-pulse-rotation-audit/results/measurement.json": "72df0eb6b1bda7b2211a8add5873a4030f7d3d7eca4e40c6ff15db069e2928db"
+  },
+  "raw_manifest": {
+    "path": "/Users/changmin/projects/ugrp/outputs/pulse-rotation-audit-v1/measurement/artifacts.sha256.json",
+    "sha256": "8777ab0d8f8de3e83fe6f46356fc8c84021eb41350036f839f68fdd2e29abdb7"
+  },
+  "scope": "runtime own issued commands only; no live GT; CW/loaded/XY/variance unchanged"
+}

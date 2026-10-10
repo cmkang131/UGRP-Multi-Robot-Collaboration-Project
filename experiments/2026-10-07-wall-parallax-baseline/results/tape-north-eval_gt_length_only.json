@@ -1,0 +1,298 @@
+{
+  "reports": {
+    "baseline": {
+      "points": {
+        "n": 6475,
+        "median": 0.019752023144084772,
+        "p90": 0.10147171391404,
+        "rmse": 0.18202667339444495,
+        "precision": 0.9003861003861003
+      },
+      "annotated": {
+        "all": {
+          "predicted": 433,
+          "tp": 385,
+          "positive": 458,
+          "covered": 385,
+          "precision": 0.8891454965357968,
+          "recall": 0.8406113537117904
+        },
+        "0-2m": {
+          "predicted": 431,
+          "tp": 385,
+          "positive": 458,
+          "covered": 385,
+          "precision": 0.8932714617169374,
+          "recall": 0.8406113537117904
+        },
+        "2-3m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": null,
+          "recall": null
+        },
+        "3-4m": {
+          "predicted": 2,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": 0.0,
+          "recall": null
+        }
+      }
+    },
+    "candidate": {
+      "points": {
+        "n": 5,
+        "median": 0.38824816200043843,
+        "p90": 0.46165785454265756,
+        "rmse": 0.376158626612436,
+        "precision": 0.2
+      },
+      "annotated": {
+        "all": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 458,
+          "covered": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "0-2m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 458,
+          "covered": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "2-3m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": null,
+          "recall": null
+        },
+        "3-4m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": null,
+          "recall": null
+        }
+      }
+    }
+  },
+  "numerical_checks": {
+    "precision": false,
+    "annotated_precision": false,
+    "recall": false,
+    "median": false,
+    "p90": false,
+    "baseline_nondecrease": false,
+    "labels": true,
+    "annotated_tp": false
+  },
+  "numerical_gate_passed": false,
+  "own_only": false,
+  "adopted": false,
+  "operational_gate_passed": false,
+  "physics": 0,
+  "model_calls": 0,
+  "diagnostic": "eval_gt_length_only",
+  "case": "tape-north",
+  "counts": {
+    "insufficient_views": 23,
+    "zero_baseline": 266,
+    "accepted": 5,
+    "reprojection": 61,
+    "low_parallax": 75
+  },
+  "same_original_accepted": [
+    {
+      "frame_id": 53,
+      "track_id": 0,
+      "original_reason": "accepted",
+      "reason": "accepted",
+      "original_body_baseline_m": 0.03987155160606989,
+      "gt_body_baseline_m": 0.03896779462236984,
+      "old_error_m": 0.09833115844190568,
+      "new_error_m": 0.11225998092053682,
+      "original_xyz": [
+        1.5228945299460865,
+        -0.6043026974781283,
+        -0.09386929062697179
+      ],
+      "new_xyz": [
+        1.4912106698267067,
+        -0.5906094008566566,
+        -0.08651200573672202
+      ]
+    },
+    {
+      "frame_id": 53,
+      "track_id": 3,
+      "original_reason": "accepted",
+      "reason": "accepted",
+      "original_body_baseline_m": 0.03987155160606989,
+      "gt_body_baseline_m": 0.03896779462236984,
+      "old_error_m": 0.41934193164465394,
+      "new_error_m": 0.38824816200043843,
+      "original_xyz": [
+        1.4929657155285285,
+        0.04856691193093832,
+        -0.08736710808135302
+      ],
+      "new_xyz": [
+        1.4618793533393284,
+        0.04745630544077284,
+        -0.080138370523952
+      ]
+    },
+    {
+      "frame_id": 53,
+      "track_id": 5,
+      "original_reason": "accepted",
+      "reason": "accepted",
+      "original_body_baseline_m": 0.03987155160606989,
+      "gt_body_baseline_m": 0.03896779462236984,
+      "old_error_m": 0.531022380091173,
+      "new_error_m": 0.4967690867585724,
+      "original_xyz": [
+        1.6002641567179692,
+        0.46037383335360027,
+        -0.11243609761589042
+      ],
+      "new_xyz": [
+        1.5666640014741617,
+        0.44987910200184533,
+        -0.10462009684446208
+      ]
+    },
+    {
+      "frame_id": 53,
+      "track_id": 6,
+      "original_reason": "accepted",
+      "reason": "accepted",
+      "original_body_baseline_m": 0.03987155160606989,
+      "gt_body_baseline_m": 0.03896779462236984,
+      "old_error_m": 0.44057070858236214,
+      "new_error_m": 0.40899100621878526,
+      "original_xyz": [
+        1.5139135247466806,
+        0.08638096110245083,
+        -0.09222535297582271
+      ],
+      "new_xyz": [
+        1.4823476175919625,
+        0.08441064627936573,
+        -0.08488539548227741
+      ]
+    },
+    {
+      "frame_id": 53,
+      "track_id": 7,
+      "original_reason": "accepted",
+      "reason": "accepted",
+      "original_body_baseline_m": 0.03987155160606989,
+      "gt_body_baseline_m": 0.03896779462236984,
+      "old_error_m": 0.39112460360121093,
+      "new_error_m": 0.36067222589904524,
+      "original_xyz": [
+        1.463461665815591,
+        0.2212734047130456,
+        -0.09381918432135342
+      ],
+      "new_xyz": [
+        1.433045940284447,
+        0.2162375110869145,
+        -0.08644381868797664
+      ]
+    }
+  ],
+  "covariance_intervention": "original_full_DR_joint_covariance_preserved",
+  "thresholds_unchanged": true,
+  "provenance": {
+    "source_sha": "0f65ed58cc1f3cdb8dab548cc769120c795c2160",
+    "source_hashes": {
+      "experiments/2026-10-07-wall-parallax-baseline/code/diagnose_baseline.py": "824413d7f8934b9d1eb2d2b1c3936403cbd2c843d7f59d734dbfa84853f48d08",
+      "experiments/2026-10-07-wall-parallax-baseline/README.md": "77c29322d2a212535ff27628cd97c2197c420172b805eb05134ba4d7029388c1",
+      "experiments/2026-10-07-wall-parallax-baseline/results/model-source-comparison.json": "13e14a7c784f2771bb793cacd4d567db1070deae1d18b7a4e6080dc6e9def071"
+    },
+    "frozen_hashes": {
+      "harness/wall_parallax.py": "7184dd8664d70f01472cc26094a871825ff52e4bd95d86ecb2b31c06ee645555",
+      "harness/self_map_prob.py": "8473142e17d7fa2274f68e7000d9d4ed7b38253ee4b7c6e8e6e52ff465f0934e",
+      "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+      "harness/wall_camera_calibration.py": "b0edb1493f9aa9aa15c3db1845315f5e2d9da973b52f0eaf2d2788680c98f883",
+      "harness/owncam_localizer.py": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+      "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+      "experiments/2026-10-05-ego-wall-map-probe/calibration/s2_camera_v3_extrinsic_v1.json": "dc3157dbf77d5df5ab7ee63145e5c2cf7f5e8c0fbfc2231dd60712e26bc77b8c",
+      "experiments/2026-10-05-ego-wall-map-probe/code/height_free_wall.py": "24b6bb522824b1ba4bc2a8fa21aa7c3545900eb77411d1a3cb578e5a9c540591",
+      "experiments/2026-09-26-markerless-probe/markerless_probe.py": "7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d",
+      "experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py": "503b6f9008cf4c50300ca0a0aa14120f89381ef6d38c98414bc126d10bb34cd1",
+      "experiments/2026-10-07-wall-floor-boundary/annotation-sample.json": "e545f71d93b41388ddfd9c93c430a05317cd6ddafcc7f17a7f6d40b413dd674f",
+      "experiments/2026-10-07-wall-floor-boundary/code/evaluate.py": "cf66d75b1890b02df4337dbd7be83a4801962444263eb1335933e05a9e340ef4",
+      "experiments/2026-10-07-wall-parallax/README.md": "a971321216d51e52e2033cb3363a6249304138b6b401ddacd58f3857156c747f",
+      "experiments/2026-10-07-wall-parallax/cohort.json": "53dcf1189b23d11585bbadcbaefe9a33bfbee30611ee2413eb21845f24ecff3b",
+      "experiments/2026-10-07-wall-parallax/new-annotations.json": "4b1699365661b4c20822c45c5a295a274bfceb61998487d99b3d459fc4d83154",
+      "experiments/2026-10-07-wall-parallax/code/common.py": "c4a9fbea14ea56feb855fb0acf0565fef1e9a3d4a97b1d1031964f6e8dee9d1b",
+      "experiments/2026-10-07-wall-parallax/code/replay.py": "022f03abe06775bed7791c1174f011d6181ba84251f970c41f1ed16613c51a97"
+    },
+    "settings": {
+      "parameters": {
+        "history": 10,
+        "detect_interval": 5,
+        "fb_px": 1.0,
+        "roi_px": 3.0,
+        "max_gap_s": 0.5,
+        "parallax_cos": 0.9998,
+        "reprojection_chi2": 5.991,
+        "pixel_sigma": 1.0,
+        "common_pitch_sigma_deg": 3.0,
+        "range_m": 4.0,
+        "cell_m": 0.1
+      },
+      "lk": {
+        "winSize": [
+          15,
+          15
+        ],
+        "maxLevel": 2,
+        "criteria": [
+          3,
+          10,
+          0.03
+        ]
+      },
+      "feature": {
+        "maxCorners": 500,
+        "qualityLevel": 0.3,
+        "minDistance": 7,
+        "blockSize": 7
+      },
+      "criteria": {
+        "precision": 0.9,
+        "annotated_precision": 0.9,
+        "recall": 0.7,
+        "median_m": 0.1,
+        "p90_m": 0.25,
+        "positive_labels": 50,
+        "annotated_tp": 30,
+        "baseline_nondecrease": true
+      }
+    },
+    "environment": {
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "numpy": "2.5.2",
+      "opencv": "5.0.0"
+    },
+    "track_history_sha256": "ace13cb814f9de4b7e37ced9f3b6a8d143208c9d31c99e23608ba90268cd06f2",
+    "truth_sha256": "c60f50b163b637b3334a0e039e374fab1234910fac8fbc1c74923d3975036c58",
+    "map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+    "annotation_sha256": "a7be5de093c0ad57dd20d6698e3455dd2b1d267ecfab235e39e1e8618613f52e"
+  }
+}

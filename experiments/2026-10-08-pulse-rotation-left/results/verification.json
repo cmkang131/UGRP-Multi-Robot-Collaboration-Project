@@ -1,0 +1,106 @@
+{
+  "source_sha": "762a952f0786cb56e9ab88c8a2bf34ca2f346b87",
+  "execution_freeze_unchanged": true,
+  "tests_passed_before_execution": 11,
+  "test_files": [
+    "tests/test_self_pulse_rotation.py",
+    "tests/test_self_pulse_odom.py",
+    "tests/test_active_wall_nav2.py"
+  ],
+  "preserved_untracked": {
+    "analyze_wall_detection.py": "26c818f1cd4673c7f4a1b6ab535b4e70ac68167f1f56989f10c8c6bebe0c3dd0",
+    "create_wall_visualizations.py": "e2b77c1f678d1ba27658dffecf99bcf7bfd7c12c056d41869a7a38cc482f8efa",
+    "create_wall_visualizations_v2.py": "8e6fa7f6598336bc6f7c61ad956d1902be9925443d7656cea2801362195d83c8",
+    "parameter_probe.py": "43f91584406ba91a73032514b8409357fc9c7ac2c3cbc3e72d26bce5257e103b"
+  },
+  "checks": {
+    "off": {
+      "frames": 891,
+      "insertions": 47,
+      "reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 844,
+        "low_overlap": 8,
+        "improved_proposal": 22,
+        "high_residual": 14,
+        "search_boundary": 2
+      },
+      "grid_rejected": {
+        "unsettled": 0,
+        "range_segments": 0
+      },
+      "rejected_insertions": 24,
+      "rejected_resamples": 0,
+      "rejected_weight_updates": 0,
+      "frontend_graph_metrics_identical": true
+    },
+    "on": {
+      "frames": 891,
+      "insertions": 50,
+      "reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 841,
+        "low_overlap": 11,
+        "improved_proposal": 15,
+        "high_residual": 22,
+        "search_boundary": 1
+      },
+      "grid_rejected": {
+        "unsettled": 0,
+        "range_segments": 0
+      },
+      "rejected_insertions": 34,
+      "rejected_resamples": 0,
+      "rejected_weight_updates": 0,
+      "frontend_graph_metrics_identical": true
+    }
+  },
+  "seals": {
+    "off": {
+      "source_sha": "762a952f0786cb56e9ab88c8a2bf34ca2f346b87",
+      "mode": "off",
+      "gt_parsed": false,
+      "physical_runs": 0,
+      "files": {
+        "navigation.json": "f50b5809a1ea81c797e4d0ebee1776d006c0c31c16853f1b47f5abb8774c7620",
+        "prediction.json": "2b085f0fcb9e22b17a1d707b2c834e0a99dc67868a5cd6a5566855c87cd677b3",
+        "traces.jsonl": "6c2e651eefb820b754cac055ca75b4e34f32c0626d85268ecb1eee81e0dee598",
+        "graph.json": "4e423eecf7563ad427e36772819702fc623e67abbfa15e42d0386cfc6d50c16d",
+        "golden.json": "f95fe61eeaa79de6268c6af63b1299302f8c08e75e7b6fae7febeff9d0b711ee"
+      },
+      "recorded_commands_only": true,
+      "inputs": {
+        "own-controller.jsonl": "6c2e651eefb820b754cac055ca75b4e34f32c0626d85268ecb1eee81e0dee598",
+        "own-contacts.jsonl": "3e24a125d311718c2a389756fe59eb83562b41e96d3b669b57e689fe017ecfa7",
+        "robots/r3/frames.jsonl": "670917d2d1cb26b8054527094e77f1766dfb7df3213cf50093603fea39b16a0d"
+      }
+    },
+    "on": {
+      "source_sha": "762a952f0786cb56e9ab88c8a2bf34ca2f346b87",
+      "mode": "on",
+      "gt_parsed": false,
+      "physical_runs": 0,
+      "files": {
+        "navigation.json": "1fdae144a3f58847aacbec26fd54843a438f91cf737ba0826373c070b8c58834",
+        "prediction.json": "8c08580154f94abbf1f7cb540a93bbdcbb7bf08730f2a298cebe6ac48509c13d",
+        "traces.jsonl": "ba8938275b97e19cf93f8964928a0abb1fcba830eaab1ba71fd976e45939b0e3",
+        "graph.json": "41bd5ff92c6a98ca874bcd1219cb51b32e32ebf8d99130e1f85ec7082c4be0de"
+      },
+      "recorded_commands_only": true,
+      "inputs": {
+        "own-controller.jsonl": "6c2e651eefb820b754cac055ca75b4e34f32c0626d85268ecb1eee81e0dee598",
+        "own-contacts.jsonl": "3e24a125d311718c2a389756fe59eb83562b41e96d3b669b57e689fe017ecfa7",
+        "robots/r3/frames.jsonl": "670917d2d1cb26b8054527094e77f1766dfb7df3213cf50093603fea39b16a0d"
+      }
+    }
+  },
+  "result_hashes": {
+    "results/calibration.json": "415b7e1ec9359c534d74382450a37e208809635ad307ec8085e3ef35dee39c39",
+    "results/replay.json": "ebac28a85c08aa97e4fb7bed37b26d69d9fbb406d1e663308dae85f839062543",
+    "figures/replay-errors.png": "cf6ed17eb6e414b73487601c9aceaa3da41b734929bb41bd9eb2f7c6bcfb8c40",
+    "code/verify.py": "85291db924656e7e87e201566e8bd5bffb0a3d1e29060768e468fc05de507748"
+  },
+  "physical_runs": 0,
+  "gate_passed": 5,
+  "gate_total": 7
+}

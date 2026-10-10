@@ -1,0 +1,16 @@
+{
+  "base": "experiments/2026-10-08-wall-segment-dev/freeze.json",
+  "reason": "egomap37-40 added default-off detector dispatch only; original bodies and off RGB bytes verified",
+  "files": {
+    "harness/active_wall_vision.py": {
+      "original_sha256": "0ef6fdd4443595404cf4c521169bc5c94f1cdd4040ae42d527422733e5a49147",
+      "current_sha256": "debf83ea4229a3afa0d6844a755b7d811cd14e6e77ca2be475fd0fed5056f8fb",
+      "original_fixture": "tests/fixtures/wall_contact_types/active_wall_vision_before.py.txt"
+    },
+    "harness/self_wall_segment_points.py": {
+      "original_sha256": "c274e0cafda6791e675cb1e55f63fba97454bc7a2d9470adf90d71974223f296",
+      "current_sha256": "f6b73617f9ff1582df5005c2defbbe2bf8ee4e25ea32687f83469c2d270bf43f",
+      "original_fixture": "tests/fixtures/wall_contact_types/segment_points_before.py.txt"
+    }
+  }
+}
