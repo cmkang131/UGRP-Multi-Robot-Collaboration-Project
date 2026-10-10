@@ -132,7 +132,7 @@ def enter_pair(rt,now,option):
         attach_endpoint(ep,option)
     return endpoints
 
-def run(b,out,*,backend_factory=None):
+def run(b,out,*,backend_factory=None,solo_configure=None):
     from sim.s3_motion_ports import PhysicsBackend
     from harness.zone_s3_recovery_runtime import Runtime
     out.mkdir(parents=True,exist_ok=False);write(out/'bundle.json',b);write(out/'environment.json',environment_record())
@@ -148,7 +148,7 @@ def run(b,out,*,backend_factory=None):
         rt.initial_commands(start,host.commands)
         if b['case']=='cyan':
             from harness.zone_s3_visual_pose_servo import attach_solo
-            attach_solo(rt.localizers['r3'],b['servo_option'])
+            (solo_configure or attach_solo)(rt.localizers['r3'],b['servo_option'])
         # Stage probe skips mission dispatch/approach. New map-uniform own RGB
         # filters are retained; neither saved GT nor Gaussian pose seeds enter.
         rt.boot_finished_at=start

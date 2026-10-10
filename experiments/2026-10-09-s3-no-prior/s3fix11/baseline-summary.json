@@ -1,0 +1,2673 @@
+[
+  {
+    "name": "s3fix11-base-cyan-c0-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14201,
+    "condition": 0,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 384.6223989350001,
+    "robots": {
+      "r3": {
+        "hover": 5.15,
+        "descent": 6.45,
+        "close": 8.1,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 4.15,
+            "state": "real_pregrasp",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 5.15,
+            "state": "hover",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 6.45,
+            "state": "blind_descent",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 807,
+              "4": 1897,
+              "5": 2187,
+              "6": 1500
+            }
+          },
+          {
+            "t": 7.65,
+            "state": "grasp",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            }
+          },
+          {
+            "t": 8.55,
+            "state": "lift",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            }
+          },
+          {
+            "t": 29.75,
+            "state": "real_carry_transition",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 896,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            }
+          },
+          {
+            "t": 30.35,
+            "state": "carry",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 1050,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": true,
+        "failure": null,
+        "moving_commands": 63,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 0,
+        "beam_visible": 0,
+        "last_beam": null,
+        "local_would_stop": {
+          "REAL_PREGRASP_UNCONFIRMED": 1,
+          "ARM_COLLISION_GUARD": 14,
+          "GRASP_INHAND_UNCONFIRMED": 1,
+          "POSE_UNCERTAIN": 28,
+          "PATH_COLLISION_GUARD": 1,
+          "POSE_CLUSTER_UNCERTAIN": 24
+        },
+        "lift": 8.55,
+        "carry": 30.35,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": {
+      "lift_threshold_m": 0.06,
+      "lift_with_both_fingers_samples": 1061,
+      "first_contact_lift_t": 9.35,
+      "max_xy_displacement_while_contact_lifted_m": 0.5866345304282057,
+      "max_com_z_m": 0.16018412435272447,
+      "qualification": "actual two-finger contact and lift; continuous cargo displacement is reported, no new success threshold"
+    },
+    "frame_analysis": {
+      "r3": {
+        "rows": 26,
+        "detected": 26,
+        "tolerance_hit": 6,
+        "end_visible_count": 0,
+        "reasons": {
+          "unique_fit": 26
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 0,
+        "last": {
+          "t": 4.1,
+          "frame": "robots/r3/rgb/00035.jpg",
+          "frame_sha256": "f77f4c5a9a429cf075fb59fb59c95b0cdb70d9ea3384cb5e75ab7183265732b3",
+          "visible": true,
+          "end_visible": null,
+          "reason": "unique_fit",
+          "errors_m_m_rad": [
+            -0.002153406224997545,
+            0.00037671799662036863,
+            0
+          ],
+          "pixel_error_xy": [
+            -1.317203450657587,
+            6.735414560811819
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              286.3090516315405,
+              380.1546856760779
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [],
+          "eval_delta_forward_m": -5.688447890685504e-05,
+          "eval_delta_left_m": -8.340100920097056e-06,
+          "eval_delta_yaw_rad": -0.00017644242942603698,
+          "eval_interval_s": 0.40000000000000036
+        },
+        "command_frames": 3,
+        "data_sha256": "93e914c5d5c35a56bafc818050443819ce63632753cde77de83b4e4af2986ae6",
+        "coverage": "all RGB alignment frames"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3636,
+      "all_hashes_match": true,
+      "manifest_sha256": "a11fd8962ba145622a185ba8b876c479ab08bce72f988879c97d8e4828d79b82"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-cyan-c0-7a4bda7a/evaluation/report.json",
+    "report_sha256": "1c46f0a06e36d521286aafdbf70f419647679f2d2a4fa00a50a51ae562a47fc1"
+  },
+  {
+    "name": "s3fix11-base-cyan-c1-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14202,
+    "condition": 1,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 382.321675101,
+    "robots": {
+      "r3": {
+        "hover": 5.55,
+        "descent": 6.85,
+        "close": 8.5,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 4.55,
+            "state": "real_pregrasp",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 5.55,
+            "state": "hover",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 6.85,
+            "state": "blind_descent",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 807,
+              "4": 1897,
+              "5": 2187,
+              "6": 1500
+            }
+          },
+          {
+            "t": 8.05,
+            "state": "grasp",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            }
+          },
+          {
+            "t": 9.05,
+            "state": "lift",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            }
+          },
+          {
+            "t": 30.25,
+            "state": "real_carry_transition",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 896,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            }
+          },
+          {
+            "t": 30.85,
+            "state": "carry",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 1050,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": true,
+        "failure": null,
+        "moving_commands": 63,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 0,
+        "beam_visible": 0,
+        "last_beam": null,
+        "local_would_stop": {
+          "REAL_PREGRASP_UNCONFIRMED": 1,
+          "ARM_COLLISION_GUARD": 14,
+          "GRASP_INHAND_UNCONFIRMED": 1,
+          "POSE_UNCERTAIN": 59,
+          "PATH_COLLISION_GUARD": 1,
+          "POSE_CLUSTER_UNCERTAIN": 24
+        },
+        "lift": 9.05,
+        "carry": 30.85,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": {
+      "lift_threshold_m": 0.06,
+      "lift_with_both_fingers_samples": 1051,
+      "first_contact_lift_t": 9.85,
+      "max_xy_displacement_while_contact_lifted_m": 0.582529257679573,
+      "max_com_z_m": 0.15911018192516455,
+      "qualification": "actual two-finger contact and lift; continuous cargo displacement is reported, no new success threshold"
+    },
+    "frame_analysis": {
+      "r3": {
+        "rows": 34,
+        "detected": 34,
+        "tolerance_hit": 10,
+        "end_visible_count": 0,
+        "reasons": {
+          "unique_fit": 34
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 1,
+        "last": {
+          "t": 4.5,
+          "frame": "robots/r3/rgb/00043.jpg",
+          "frame_sha256": "a497424a0047c1eaed89a44ff2faa6967aa169e445e136a1047640727b6fc60c",
+          "visible": true,
+          "end_visible": null,
+          "reason": "unique_fit",
+          "errors_m_m_rad": [
+            -0.0003136441477859797,
+            0.0010592598218574743,
+            0
+          ],
+          "pixel_error_xy": [
+            -3.729697294922005,
+            0.9845568123167254
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              283.8965577872761,
+              374.4038279275828
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [],
+          "eval_delta_forward_m": -0.0001360476845826995,
+          "eval_delta_left_m": -1.8140275574350495e-06,
+          "eval_delta_yaw_rad": -0.00016755198606072455,
+          "eval_interval_s": 0.40000000000000036
+        },
+        "command_frames": 4,
+        "data_sha256": "b9ba1cec82b53390d19da373182df9c7967c8c26866f05ce174bdbaa1fae760e",
+        "coverage": "all RGB alignment frames"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3636,
+      "all_hashes_match": true,
+      "manifest_sha256": "ce48c033a64a393af367fa337cb202341b64a4a024bdcadb01655bebb1cb5542"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-cyan-c1-7a4bda7a/evaluation/report.json",
+    "report_sha256": "b152124c081de5b31dfdcfc62c5b6297b13debe2ab60971449a0a6a3b3040771"
+  },
+  {
+    "name": "s3fix11-base-cyan-c2-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14203,
+    "condition": 2,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 362.1386020900004,
+    "robots": {
+      "r3": {
+        "hover": 5.55,
+        "descent": 6.85,
+        "close": 8.5,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 4.55,
+            "state": "real_pregrasp",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 5.55,
+            "state": "hover",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 6.85,
+            "state": "blind_descent",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 807,
+              "4": 1897,
+              "5": 2187,
+              "6": 1500
+            }
+          },
+          {
+            "t": 8.05,
+            "state": "grasp",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            }
+          },
+          {
+            "t": 9.05,
+            "state": "lift",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            }
+          },
+          {
+            "t": 30.25,
+            "state": "real_carry_transition",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 896,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            }
+          },
+          {
+            "t": 30.85,
+            "state": "carry",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 1050,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": true,
+        "failure": null,
+        "moving_commands": 63,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 0,
+        "beam_visible": 0,
+        "last_beam": null,
+        "local_would_stop": {
+          "REAL_PREGRASP_UNCONFIRMED": 1,
+          "ARM_COLLISION_GUARD": 14,
+          "GRASP_INHAND_UNCONFIRMED": 1,
+          "POSE_UNCERTAIN": 59,
+          "PATH_COLLISION_GUARD": 1
+        },
+        "lift": 9.05,
+        "carry": 30.85,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": {
+      "lift_threshold_m": 0.06,
+      "lift_with_both_fingers_samples": 1051,
+      "first_contact_lift_t": 9.85,
+      "max_xy_displacement_while_contact_lifted_m": 0.5929638193648988,
+      "max_com_z_m": 0.15946947826821326,
+      "qualification": "actual two-finger contact and lift; continuous cargo displacement is reported, no new success threshold"
+    },
+    "frame_analysis": {
+      "r3": {
+        "rows": 34,
+        "detected": 34,
+        "tolerance_hit": 7,
+        "end_visible_count": 0,
+        "reasons": {
+          "unique_fit": 34
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 0,
+        "last": {
+          "t": 4.5,
+          "frame": "robots/r3/rgb/00043.jpg",
+          "frame_sha256": "ddec473afb6a645a3cd4d7815bdff6c4040d89f666754bfa79869e733cb4889d",
+          "visible": true,
+          "end_visible": null,
+          "reason": "unique_fit",
+          "errors_m_m_rad": [
+            -0.0014854011409752566,
+            -0.0008711834233686116,
+            0
+          ],
+          "pixel_error_xy": [
+            3.091433143673555,
+            4.626778334915571
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              290.71768822587165,
+              378.04604945018167
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [],
+          "eval_delta_forward_m": 3.209320086092685e-05,
+          "eval_delta_left_m": 1.3033564111014587e-06,
+          "eval_delta_yaw_rad": -4.358847600021841e-05,
+          "eval_interval_s": 0.40000000000000036
+        },
+        "command_frames": 4,
+        "data_sha256": "36da3dd8f5b1054ce3754e8fa3a873fe7cb8e32a7a4afb0b61fd4285641cfbb8",
+        "coverage": "all RGB alignment frames"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3636,
+      "all_hashes_match": true,
+      "manifest_sha256": "ba5a91185e134e695dfa6f68d5297f7acbb53bb4e5b0a423d11b078293da8df6"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-cyan-c2-7a4bda7a/evaluation/report.json",
+    "report_sha256": "324a91e8fa26c9f6a676315aca67a7b8b0a954951b4688b7257d3c0a612b7408"
+  },
+  {
+    "name": "s3fix11-base-cyan-c3-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14204,
+    "condition": 3,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 384.0230098100001,
+    "robots": {
+      "r3": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 149,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 0,
+        "beam_visible": 0,
+        "last_beam": null,
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 110
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": {
+      "lift_threshold_m": 0.06,
+      "lift_with_both_fingers_samples": 0,
+      "first_contact_lift_t": null,
+      "max_xy_displacement_while_contact_lifted_m": 0.0,
+      "max_com_z_m": 0.015892244579783874,
+      "qualification": "actual two-finger contact and lift; continuous cargo displacement is reported, no new success threshold"
+    },
+    "frame_analysis": {
+      "r3": {
+        "rows": 1190,
+        "detected": 1190,
+        "tolerance_hit": 0,
+        "end_visible_count": 0,
+        "reasons": {
+          "unique_fit": 1190
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 145,
+        "last": {
+          "t": 62.3,
+          "frame": "robots/r3/rgb/01199.jpg",
+          "frame_sha256": "fc02040730d19f585496bcbdf8cb1e9b44249aafd052979abba081470048aa2e",
+          "visible": true,
+          "end_visible": null,
+          "reason": "unique_fit",
+          "errors_m_m_rad": [
+            0.03334537911817076,
+            0.020204310448456008,
+            0
+          ],
+          "pixel_error_xy": [
+            -64.35537487753578,
+            -95.38032236063992
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              223.27088020466232,
+              278.0389487546262
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [],
+          "eval_delta_forward_m": -6.431978246839458e-05,
+          "eval_delta_left_m": 1.5174832707800307e-05,
+          "eval_delta_yaw_rad": 0.001834734302492813,
+          "eval_interval_s": 0.05000000000000426
+        },
+        "command_frames": 149,
+        "data_sha256": "f5fda9ec86137b67520586f8391b31e080db34329fdf875c3ceeff4d3a5159a4",
+        "coverage": "all RGB alignment frames"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3636,
+      "all_hashes_match": true,
+      "manifest_sha256": "4cf79b244d31e3056afdc227eca9c101ea61a0698ae4ae71d154648e3671d6cf"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-cyan-c3-7a4bda7a/evaluation/report.json",
+    "report_sha256": "72d56448dcade064a4a84334f9b8a8bfff82d90ac87dac7a5261a76e5ad46340"
+  },
+  {
+    "name": "s3fix11-base-cyan-c4-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14205,
+    "condition": 4,
+    "status": "HOST_ERROR",
+    "sim_s": 9.0,
+    "wall_s": 334.8472210570003,
+    "robots": {
+      "r3": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 22,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 0,
+        "beam_visible": 0,
+        "last_beam": null,
+        "local_would_stop": {},
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": {
+      "lift_threshold_m": 0.06,
+      "lift_with_both_fingers_samples": 0,
+      "first_contact_lift_t": null,
+      "max_xy_displacement_while_contact_lifted_m": 0.0,
+      "max_com_z_m": 0.015892244579783874,
+      "qualification": "actual two-finger contact and lift; continuous cargo displacement is reported, no new success threshold"
+    },
+    "frame_analysis": {
+      "r3": {
+        "rows": 170,
+        "detected": 170,
+        "tolerance_hit": 0,
+        "end_visible_count": 0,
+        "reasons": {
+          "unique_fit": 170
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 18,
+        "last": {
+          "t": 11.3,
+          "frame": "robots/r3/rgb/00179.jpg",
+          "frame_sha256": "dd0bf4892d5db325a30690cb58af295b7a73bff6e596027151f6e807eaf33d93",
+          "visible": true,
+          "end_visible": null,
+          "reason": "unique_fit",
+          "errors_m_m_rad": [
+            0.024330764403994926,
+            -0.0009859740823313524,
+            0
+          ],
+          "pixel_error_xy": [
+            3.0518541480491876,
+            -71.26111741195001
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              290.6781092302473,
+              302.1581537033161
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [],
+          "eval_delta_forward_m": 0.00014641135644074903,
+          "eval_delta_left_m": -0.0004288683146177333,
+          "eval_delta_yaw_rad": 0.04722601981108571,
+          "eval_interval_s": 0.049999999999998934
+        },
+        "command_frames": 22,
+        "data_sha256": "d6229f37bf15f2342199702d160868dc58d385f45d7f772b07c1c833377c4c1c",
+        "coverage": "all RGB alignment frames"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 578,
+      "all_hashes_match": true,
+      "manifest_sha256": "0dd0cb73717a60ad6a7d0bbcb40852dab69bd1754965d32096fadd5e959eccf0"
+    },
+    "wall_comparison_excluded": true,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-cyan-c4-7a4bda7a/evaluation/report.json",
+    "report_sha256": "23daa828065b9c3e051e5c76408f69a6123654aa1fcc21048170d8a94ece7dbd"
+  },
+  {
+    "name": "s3fix11-base-cyan-c5-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14206,
+    "condition": 5,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 577.4143941009997,
+    "robots": {
+      "r3": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 149,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 0,
+        "beam_visible": 0,
+        "last_beam": null,
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 389
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": {
+      "lift_threshold_m": 0.06,
+      "lift_with_both_fingers_samples": 0,
+      "first_contact_lift_t": null,
+      "max_xy_displacement_while_contact_lifted_m": 0.0,
+      "max_com_z_m": 0.015892244579783874,
+      "qualification": "actual two-finger contact and lift; continuous cargo displacement is reported, no new success threshold"
+    },
+    "frame_analysis": {
+      "r3": {
+        "rows": 1190,
+        "detected": 1190,
+        "tolerance_hit": 0,
+        "end_visible_count": 0,
+        "reasons": {
+          "unique_fit": 1190
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 146,
+        "last": {
+          "t": 62.3,
+          "frame": "robots/r3/rgb/01199.jpg",
+          "frame_sha256": "dcb61c573f2a9206bdae02d1ffc18decd41808b8cd72e7b6f45942c32e230a38",
+          "visible": true,
+          "end_visible": null,
+          "reason": "unique_fit",
+          "errors_m_m_rad": [
+            0.03928381618105972,
+            -0.015207425349355125,
+            0
+          ],
+          "pixel_error_xy": [
+            47.194251364126046,
+            -110.74026555212419
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              334.82050644632415,
+              262.6790055631419
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [],
+          "eval_delta_forward_m": 1.3369581534152312e-05,
+          "eval_delta_left_m": 2.6449363107406122e-05,
+          "eval_delta_yaw_rad": 0.00013330150446119737,
+          "eval_interval_s": 0.05000000000000426
+        },
+        "command_frames": 149,
+        "data_sha256": "820bc4b4195fdd37819a2db01ba1bebfb8ab1e9d5b02afdec1f7b782b7b62ff7",
+        "coverage": "all RGB alignment frames"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3636,
+      "all_hashes_match": true,
+      "manifest_sha256": "c438b9635ebfc28f2feb879f62aae084d7d24a10b0fe535c935590158bb120ac"
+    },
+    "wall_comparison_excluded": true,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-cyan-c5-7a4bda7a/evaluation/report.json",
+    "report_sha256": "ce2bf82dd4a09d4c98fcbf249bfedba5088fcb0d1aa29b5acfb2e853ba7ab3a8"
+  },
+  {
+    "name": "s3fix11-base-pair-c0-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14201,
+    "condition": 0,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 335.7725799340001,
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r1",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9123,
+          "axis_heading_rad": 0.18920691550923327,
+          "near_end_base_m": [
+            0.19674845972753646,
+            0.006763037389226542
+          ],
+          "grip_base_m": [
+            0.2262130709474408,
+            0.012405438089273246
+          ],
+          "visible_length_m": 0.21543387013085102,
+          "lateral_spread_m": 0.011533986812493176,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0247,
+            "far_m": 0.0583,
+            "length_m": 0.0337,
+            "points": 3146,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 143
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r2",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 7955,
+          "axis_heading_rad": 0.2612171275626765,
+          "near_end_base_m": [
+            0.214970068993089,
+            0.001311955741819931
+          ],
+          "grip_base_m": [
+            0.2439523598705341,
+            0.009059653173648458
+          ],
+          "visible_length_m": 0.20350599038651263,
+          "lateral_spread_m": 0.011633743910014928,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0274,
+            "far_m": 0.0609,
+            "length_m": 0.0335,
+            "points": 2648,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {},
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": null,
+    "frame_analysis": {
+      "r1": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 139,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r1/rgb/01197.jpg",
+          "frame_sha256": "47bd1062fe8f5de7f4e5d2ea778e805119e5c561cf2f37478a7f55ab9d6005cd",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.023013070947440817,
+            0.012405438089273246,
+            0.18920691550923327
+          ],
+          "pixel_error_xy": [
+            -40.901164048445224,
+            -67.64758182006585
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              246.72509103375288,
+              305.77168929520025
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.0004111709908721469,
+          "eval_delta_left_m": -0.00043137672234398923,
+          "eval_delta_yaw_rad": 0.10259849201062052,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "dd4f54e47ee97d562826f194dce142741f181b27952511a058f4f044038d33dd",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 141,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r2/rgb/01197.jpg",
+          "frame_sha256": "70fcd26c2e742452a3deec37b625ee088440f3fc6fdaca700a0266f51b75b216",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.040752359870534105,
+            0.009059653173648458,
+            0.2612171275626765
+          ],
+          "pixel_error_xy": [
+            -28.46864491202217,
+            -114.13651683116757
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              259.15761017017593,
+              259.28275428409853
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.00043459220411672626,
+          "eval_delta_left_m": 2.7233381210404865e-05,
+          "eval_delta_yaw_rad": 0.09913367633324421,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "a95d486bd6bf56897186d9daacdc25ec7cbcb44d4d120d44377b3fbd682b8358",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "88c4b7b4e492a4a5ddcbfa0792712920916944fa5799bb4c2ac227ca63f6f80e"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-pair-c0-7a4bda7a/evaluation/report.json",
+    "report_sha256": "b6edf5e0e16321db55b028a9381e5a7419c1eebd087378db8b27cf1bc064a2fc"
+  },
+  {
+    "name": "s3fix11-base-pair-c1-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14202,
+    "condition": 1,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 338.7449512180001,
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r1",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9807,
+          "axis_heading_rad": 0.07616625475948793,
+          "near_end_base_m": [
+            0.1840299771422973,
+            -0.015419802598249762
+          ],
+          "grip_base_m": [
+            0.2139429997275301,
+            -0.013137023630554289
+          ],
+          "visible_length_m": 0.2198083234891666,
+          "lateral_spread_m": 0.011579835195494326,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0203,
+            "far_m": 0.0541,
+            "length_m": 0.0338,
+            "points": 3511,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 205
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r2",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9604,
+          "axis_heading_rad": 0.29712548659771937,
+          "near_end_base_m": [
+            0.19141793681428382,
+            0.009634804986209413
+          ],
+          "grip_base_m": [
+            0.2201033973501726,
+            0.018417990845791814
+          ],
+          "visible_length_m": 0.22516780073746814,
+          "lateral_spread_m": 0.011540325956479153,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0237,
+            "far_m": 0.0573,
+            "length_m": 0.0336,
+            "points": 3253,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {},
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": null,
+    "frame_analysis": {
+      "r1": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 139,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r1/rgb/01197.jpg",
+          "frame_sha256": "6cd3bdea2159109926964168cad75c6bdb866354d276d18542388a2c15570bc6",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.010742999727530095,
+            -0.013137023630554289,
+            0.07616625475948793
+          ],
+          "pixel_error_xy": [
+            44.66099325422471,
+            -32.92971613593346
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              332.2872483364228,
+              340.48955497933264
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": -0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.00024808232376230863,
+          "eval_delta_left_m": 8.895973630976747e-05,
+          "eval_delta_yaw_rad": -0.09903815719618893,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "ca1132c043558533814b2423b081be87311ea7ae5830ade1974990e1e17d404b",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 139,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r2/rgb/01197.jpg",
+          "frame_sha256": "396524e07673d243eccc349b7c2e1ea6a7f3082464a3cc062a9b9c557bb1836b",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.0169033973501726,
+            0.018417990845791814,
+            0.29712548659771937
+          ],
+          "pixel_error_xy": [
+            -61.60441743346729,
+            -50.6654892742942
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              226.0218376487308,
+              322.7537818409719
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.0003238703490678358,
+          "eval_delta_left_m": -0.00046322088748977067,
+          "eval_delta_yaw_rad": 0.10209843170390664,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "4e242b33627b165540ee75f378ad2e0cdcc06be8d80328345563b981e1fb38a6",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "0f33ae430c69ff29492cba6c0f33d47abc551eb5fa2f4890c3b1127f685f947e"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-pair-c1-7a4bda7a/evaluation/report.json",
+    "report_sha256": "29ec7dbc531ef90401523f3a3d1d20d0ffcef361db3ac2f554ff671ceb879afe"
+  },
+  {
+    "name": "s3fix11-base-pair-c2-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14203,
+    "condition": 2,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 342.52628536600014,
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r1",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 8259,
+          "axis_heading_rad": 0.3009783197978894,
+          "near_end_base_m": [
+            0.20917433584971415,
+            0.012992318609631784
+          ],
+          "grip_base_m": [
+            0.23782574341137513,
+            0.02188595930034983
+          ],
+          "visible_length_m": 0.2108087910922296,
+          "lateral_spread_m": 0.011507222587339248,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0268,
+            "far_m": 0.0604,
+            "length_m": 0.0336,
+            "points": 2777,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 169
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r2",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 10006,
+          "axis_heading_rad": 0.26773465365809745,
+          "near_end_base_m": [
+            0.18164857027998949,
+            -0.0012453212662009092
+          ],
+          "grip_base_m": [
+            0.21057975013991873,
+            0.006691103112095946
+          ],
+          "visible_length_m": 0.22820155157558594,
+          "lateral_spread_m": 0.01154270366519896,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0192,
+            "far_m": 0.0529,
+            "length_m": 0.0337,
+            "points": 3578,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {},
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": null,
+    "frame_analysis": {
+      "r1": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 141,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r1/rgb/01197.jpg",
+          "frame_sha256": "344491c8d2ccb298341695a3f04a1c7d7b3b8afe33d72ef1ecf82ca40441b22a",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.03462574341137514,
+            0.02188595930034983,
+            0.3009783197978894
+          ],
+          "pixel_error_xy": [
+            -69.38187627848268,
+            -98.70716512051467
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              218.24437880371542,
+              274.7121059947514
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.00011489259646657502,
+          "eval_delta_left_m": -9.229636272199248e-05,
+          "eval_delta_yaw_rad": 0.09971438648223069,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "78bea4987576b9b5acf5ea7b0b2331017f1c7eef40c487c0ec0439718ad7676a",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 135,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r2/rgb/01197.jpg",
+          "frame_sha256": "5ea366ebe42214fa6b245371022316ec9df2f5970dcd5b0baeb74e7508e5d308",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.007379750139918734,
+            0.006691103112095946,
+            0.26773465365809745
+          ],
+          "pixel_error_xy": [
+            -23.103496791407906,
+            -22.56412746020868
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              264.5227582907902,
+              350.8551436550574
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.0002687736867955143,
+          "eval_delta_left_m": -6.457749136374295e-05,
+          "eval_delta_yaw_rad": 0.09829460200653138,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "6e1a631a00cc79e7ff2dc9e265064f1d83740f2d5a405f7d583a668fad16cda5",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "aa97a5e6eedd74e81014e372897dc46b9fc96386331495905b2a2ef7aaf1ee77"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-pair-c2-7a4bda7a/evaluation/report.json",
+    "report_sha256": "a76382b149022cb067aafbdaa6a4eba9f07105aa411bb11d632f33decf6ab18f"
+  },
+  {
+    "name": "s3fix11-base-pair-c3-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14204,
+    "condition": 3,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 340.14046957400024,
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r1",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9071,
+          "axis_heading_rad": 0.24023213510468153,
+          "near_end_base_m": [
+            0.19928173011687025,
+            -0.0035725257381351654
+          ],
+          "grip_base_m": [
+            0.22842021320359088,
+            0.0035653173117571476
+          ],
+          "visible_length_m": 0.2151681665831498,
+          "lateral_spread_m": 0.011608697451952563,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0245,
+            "far_m": 0.0583,
+            "length_m": 0.0338,
+            "points": 3080,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 87
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r2",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 7599,
+          "axis_heading_rad": 0.10666452506663496,
+          "near_end_base_m": [
+            0.22484659115626865,
+            -0.026004452803826506
+          ],
+          "grip_base_m": [
+            0.25467609308559125,
+            -0.022810581383662574
+          ],
+          "visible_length_m": 0.1893491105408508,
+          "lateral_spread_m": 0.012449406492356754,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0288,
+            "far_m": 0.0623,
+            "length_m": 0.0334,
+            "points": 2377,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {},
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": null,
+    "frame_analysis": {
+      "r1": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 141,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r1/rgb/01197.jpg",
+          "frame_sha256": "422e5d4de6bc766218fa8250279301d66de0196658074243cfdb7db1445934e4",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.025220213203590885,
+            0.0035653173117571476,
+            0.24023213510468153
+          ],
+          "pixel_error_xy": [
+            -11.828364858635041,
+            -73.66097545166014
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              275.79789022356306,
+              299.75829566360596
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.00029644387654632475,
+          "eval_delta_left_m": -0.00042732068429883143,
+          "eval_delta_yaw_rad": 0.09945184000573765,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "bba3f705aafc08be67e8f9b77172a6ffd23f2450f92b38939d3f80e3adc35f27",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 141,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r2/rgb/01197.jpg",
+          "frame_sha256": "bf1ac5ef7a0f366228699a4d05a909ef3f747ec04a7c97357f3b205657098f31",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.05147609308559126,
+            -0.022810581383662574,
+            0.10666452506663496
+          ],
+          "pixel_error_xy": [
+            68.04777905986765,
+            -140.28584095255297
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              355.67403414206575,
+              233.13343016271313
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": -0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.00048443700264805804,
+          "eval_delta_left_m": -0.00018630130926315755,
+          "eval_delta_yaw_rad": -0.0981504089960481,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "c87c5876988e9d58eaee7cdc24ea59f0094d26c8e8deaf9e01f4e209cbed4dea",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "bab029ec52fbf7ddef4a7395faa4ef4468155e8b9f246090e91b9565a46e983f"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-pair-c3-7a4bda7a/evaluation/report.json",
+    "report_sha256": "925772aa0d5e14a71818347995a7adf78a07a5a0f2f318c872f0625a6ae0284b"
+  },
+  {
+    "name": "s3fix11-base-pair-c4-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14205,
+    "condition": 4,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 343.691286969,
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r1",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9882,
+          "axis_heading_rad": 0.14841191645310978,
+          "near_end_base_m": [
+            0.18595783226663032,
+            -0.0010446723303585586
+          ],
+          "grip_base_m": [
+            0.21562804680356204,
+            0.0033913584779706944
+          ],
+          "visible_length_m": 0.22172941686427283,
+          "lateral_spread_m": 0.011529517049246821,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0222,
+            "far_m": 0.0558,
+            "length_m": 0.0337,
+            "points": 3484,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 69
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r2",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9385,
+          "axis_heading_rad": 0.17966836200951525,
+          "near_end_base_m": [
+            0.19346789149298188,
+            -0.003627974175300778
+          ],
+          "grip_base_m": [
+            0.22298498184372956,
+            0.0017331243339413808
+          ],
+          "visible_length_m": 0.21725003981825564,
+          "lateral_spread_m": 0.011532676353935702,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0238,
+            "far_m": 0.0574,
+            "length_m": 0.0337,
+            "points": 3224,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {},
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": null,
+    "frame_analysis": {
+      "r1": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 139,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r1/rgb/01197.jpg",
+          "frame_sha256": "81bb6c4450cdb71cf3a303123ba80f852ab06aa5de89fa9866ca39ccdbaee572",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.012428046803562048,
+            0.0033913584779706944,
+            0.14841191645310978
+          ],
+          "pixel_error_xy": [
+            -11.607093695971969,
+            -37.50704324894423
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              276.01916138622613,
+              335.91222786632187
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.0005346204342005958,
+          "eval_delta_left_m": -0.0005407791977930532,
+          "eval_delta_yaw_rad": 0.10316739341420933,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "ef43953c7b60eaa8360d31aeba95a7d062122785e43ce6a139bec02b33a773ca",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 138,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r2/rgb/01197.jpg",
+          "frame_sha256": "ce3e93b1cede520778671d84f99b6add10ef226bb79c63ff182c6e193e9590ee",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.019784981843729565,
+            0.0017331243339413808,
+            0.17966836200951525
+          ],
+          "pixel_error_xy": [
+            -5.902129075442929,
+            -58.61688579085643
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              281.72412600675517,
+              314.80238532440967
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.0008019749314144538,
+          "eval_delta_left_m": -0.0004538075527120133,
+          "eval_delta_yaw_rad": 0.09828463527223441,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "a4369edb5632072f979dfcb5458cb998203c306e74e67dd997679572f0350999",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "39015e2451a6bd55a86377b1d342e784e99a307810b919d827957a2f52221555"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-pair-c4-7a4bda7a/evaluation/report.json",
+    "report_sha256": "9b0c1afb20727f67e0acf33eea3e0bd4f29b7602366fa4aeb7672deb34f11720"
+  },
+  {
+    "name": "s3fix11-base-pair-c5-7a4bda7a",
+    "source_sha": "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "seed": 14206,
+    "condition": 5,
+    "status": "DEV_STAGE_FINISHED",
+    "sim_s": 60.0,
+    "wall_s": 339.26384752199965,
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r1",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9908,
+          "axis_heading_rad": 0.17793618229219849,
+          "near_end_base_m": [
+            0.18300807219595552,
+            -0.0004683491612376472
+          ],
+          "grip_base_m": [
+            0.21253440464594434,
+            0.00484161242551018
+          ],
+          "visible_length_m": 0.22360068384832943,
+          "lateral_spread_m": 0.011549922332570317,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.02,
+            "far_m": 0.0537,
+            "length_m": 0.0337,
+            "points": 3570,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 4
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r2",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 8177,
+          "axis_heading_rad": 0.0758969470322544,
+          "near_end_base_m": [
+            0.21202975835515392,
+            -0.02172649854956254
+          ],
+          "grip_base_m": [
+            0.24194339462564918,
+            -0.019451775472677964
+          ],
+          "visible_length_m": 0.199279785613935,
+          "lateral_spread_m": 0.011995772387420355,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0269,
+            "far_m": 0.0606,
+            "length_m": 0.0336,
+            "points": 2710,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {},
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "cyan_physics": null,
+    "frame_analysis": {
+      "r1": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 135,
+        "reasons": {
+          "BAND_VISIBLE": 135,
+          "BAND_CLIPPED": 9
+        },
+        "forward_reversals": 16,
+        "turn_reversals": 117,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r1/rgb/01197.jpg",
+          "frame_sha256": "8925c6580b0aa82823b67874192e7d7522db69bf31569d53dc0b02f84d50b0a2",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.009334404645944344,
+            0.00484161242551018,
+            0.17793618229219849
+          ],
+          "pixel_error_xy": [
+            -16.656497830641,
+            -28.38759363897242
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              270.9697572515571,
+              345.0316774762937
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.00025958407976683017,
+          "eval_delta_left_m": -0.0003971677305167948,
+          "eval_delta_yaw_rad": 0.10253825590661114,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "1bf226d7fd9bda29ac3c2f8ad1c82d1c130402e0ed73e441721b8a40be118cf4",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 141,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r2/rgb/01197.jpg",
+          "frame_sha256": "5c7ce0cb7b01287829e73e61670a977e20bfd52a6d83b48b3190a167cc9ce320",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.038743394625649186,
+            -0.019451775472677964,
+            0.0758969470322544
+          ],
+          "pixel_error_xy": [
+            60.46673415339097,
+            -109.48202354285195
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              348.0929892355891,
+              263.93724757241415
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": -0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.0004885812072210005,
+          "eval_delta_left_m": -7.715614415876325e-05,
+          "eval_delta_yaw_rad": -0.09807208590058637,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "59edb68aea48d9bd6f5b4fe2433dfe83d2ab9771e480ba0e8ccaa21003f8a3c5",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "physical_stop": null,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "1ddf5708bd67f8eca7816a6e402381f445366723cf08a1fddf73c15c60f1bcf0"
+    },
+    "wall_comparison_excluded": false,
+    "report_path": "outputs/s3fix11-base-evaluation-r1/reports/s3fix11-base-pair-c5-7a4bda7a/evaluation/report.json",
+    "report_sha256": "28a5cbb6bd911fc8c5e51ec0f72d278f5f56fb2ca5ca95fbd76a2df8af69ea99"
+  }
+]

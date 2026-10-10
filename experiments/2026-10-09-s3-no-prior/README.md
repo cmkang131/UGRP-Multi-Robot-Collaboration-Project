@@ -137,3 +137,5 @@ HOST_ERROR 수정은 S3 no-prior 어댑터에 한정한다. `SlotTeam`은 S2 pro
 [전체 기록·프레임 표·입자 조사](s3fix8/README.md): 최종 소스9a57581f, r1/r2 B/N 각60 SIM초에서 hover0, r3 B/N은6.75/7.55 SIM초로 hover→하강→닫기 도달(상승/배송 미검증). 시야 잘림/후퇴 진동으로 새 servo 후보 미채택, 전체 스모크0. 자기 지도55001 입자100→500만 늘리면 >3σ48.55→16.33%, RMSE.308→.277m, CPU1.90배; 한 입력 진단이며 S3 자동 채택 없음.
 
 - [s3fix10 Oracle 단계 probe](s3fix10/README.md): Mac 실행 금지, v154 파생v155 정렬 B/N·r3 상승/운반을 같은 Oracle ARM/OSMesa에서 병렬 진단.
+
+- [s3fix11 Oracle x86 묶음](s3fix11/README.md): 기준12개 전체 판정(r1/r2 각각 정렬0/6, r3 접촉 상승·운반3/6, 스케줄링 HOST_ERROR1) 후 코드·선별 회귀 완료. 새 경로 확인1회와 보정6개를 최대10개 큐로 일괄 실행·회수했다. 18profile 중1개가 사전3mm 기준을 초과해 모델 기각·후보0/12. 문턱 변경 없이 raw·TensorBoard·기각 표본을 보존했다.
