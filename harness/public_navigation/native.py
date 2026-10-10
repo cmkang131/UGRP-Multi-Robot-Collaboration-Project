@@ -28,6 +28,11 @@ def build():
 
 
 class PublicCore:
+    def __reduce__(self):
+        # A stateless library handle cannot be pickled; reload the same hashed
+        # native source on resume. All planner inputs/outputs live in Python.
+        return type(self), ()
+
     def __init__(self):
         self.lib = ctypes.CDLL(str(build()))
         array = np.ctypeslib.ndpointer(dtype=np.uint8,flags='C_CONTIGUOUS')

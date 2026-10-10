@@ -58,6 +58,9 @@ def enter_return(c,t):
 def checkpoint_save(backend,c,*,tick,start,source,out):
     from scripts.dev_pair_checkpoint import DevCheckpoint
     cp=DevCheckpoint(checkpoint_dir=out/'checkpoints')
+    if backend.range_rig is not None:
+        for writer in backend.range_rig.input._writers.values():
+            backend.streams[str(writer.path.relative_to(out))]=writer._fh
     save=bind(DevCheckpoint.save,code_identity=lambda:dict(head=source,dirty=False,branch='claude/ego-wall-map'))
     save(cp,tick,backend=backend,runtime=c,start=start,commands={},result={},reasons=['first_own_B_confirmation'])
     return cp.saved[-1]
@@ -69,7 +72,7 @@ def checkpoint_load(path,out):
     cp=DevCheckpoint(resume=dict(row=row,file=str(path),source_case_dir=row['case_dir'],labels={'egomap60':True,'host':'oracle-x86'}))
     out.mkdir(parents=True,exist_ok=False)
     result={'loadavg_start':list(os.getloadavg())}
-    backend,c,start,tick,_=cp.restore(out,result)
+    backend,c,start,tick,_=cp.restore(out,result,stream_aliases=True)
     # Stream prefixes are inherited; RGB prefix remains in the retained source.
     return backend,c,start,tick,row
 

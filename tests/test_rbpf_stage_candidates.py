@@ -120,3 +120,24 @@ def test_registered_selection_requires_both_seeds_and_all_safety_gates():
     r=m.select(rows)
     assert r['selected']=='a' and not r['gates']['b']['overconfidence'] and not r['gates']['c']['false']
     assert m.select([r for r in rows if r['seed']==60011])['selected'] is None
+
+
+def test_checkpoint_registered_sensor_stream_alias_and_stateless_native_core(tmp_path):
+    import io,pickle
+    from scripts import dev_pair_checkpoint as cp
+    from harness.public_navigation.native import PublicCore
+    p=tmp_path/'sensor.jsonl'
+    with p.open('w') as stream:
+        writer=types.SimpleNamespace(_fh=stream)
+        raw=io.BytesIO()
+        cp.CheckpointPickler(raw,out=tmp_path,renderers={},streams={'sensor.jsonl':stream}).dump(writer)
+        cp._LOAD['out']=tmp_path
+        try:resumed=pickle.loads(raw.getvalue())
+        finally:cp._LOAD['out']=None
+        assert isinstance(resumed._fh,cp.Slot)
+        cp.restore_stream_aliases([resumed],{'sensor.jsonl':stream})
+        assert resumed._fh is stream
+    # No simulator/model/steps: only the vendor path-planning library.
+    a=PublicCore();b=pickle.loads(pickle.dumps(a))
+    costs=np.zeros((20,20),np.uint8)
+    assert a.lib is not b.lib and a.plan(costs,[3,3],[14,14]).tobytes()==b.plan(costs,[3,3],[14,14]).tobytes()

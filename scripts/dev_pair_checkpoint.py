@@ -257,6 +257,17 @@ def walk_graph(roots, visit, limit=5_000_000):
     return len(seen)
 
 
+def restore_stream_aliases(roots, streams):
+    """Reconnect registered streams also held by a sensor writer, opt-in only."""
+    def visit(obj):
+        if not hasattr(obj,'__dict__') or isinstance(obj,(type,types.ModuleType)):
+            return
+        for key,value in list(vars(obj).items()):
+            if isinstance(value,Slot) and value.kind=='stream':
+                setattr(obj,key,streams[value.key])
+    return walk_graph(roots,visit)
+
+
 def module_table():
     """Repository modules loaded now (some by path via sys.path inserts, e.g. VIS3 / markerless_probe)."""
     from harness import zone_pair_highpose_contract as contract
@@ -419,7 +430,7 @@ class DevCheckpoint:
                                            'count': len(self.saved), 'last': self.saved[-1]}
 
     # -- restore -------------------------------------------------------------------------------------------------
-    def restore(self, out, result):
+    def restore(self, out, result, *, stream_aliases=False):
         row, path, source = self.resume['row'], Path(self.resume['file']), Path(self.resume['source_case_dir'])
         data = path.read_bytes()
         if sha256_bytes(data) != row['sha256']:
@@ -473,6 +484,8 @@ class DevCheckpoint:
             if not isinstance(backend.streams.get(relative), Slot):
                 raise ValueError(f'{relative}: stream missing from the restored backend')
             backend.streams[relative] = target.open('a', buffering=1)
+        if stream_aliases:
+            restore_stream_aliases([backend,runtime,host],backend.streams)
         leftovers = []
         walk_graph([backend, runtime, host], lambda o: leftovers.append(repr(o)) if isinstance(o, Slot) else None)
         if leftovers:
