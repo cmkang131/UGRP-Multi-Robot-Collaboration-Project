@@ -208,6 +208,7 @@ def run_one(args):
         raise
     finally:
         elapsed = time.monotonic()-started
+        finished_at = time.time()  # same interval, before receipt/source verification
         cpu_end = resource.getrusage(resource.RUSAGE_SELF)
         cpu_user = cpu_end.ru_utime-cpu_start.ru_utime
         cpu_sys = cpu_end.ru_stime-cpu_start.ru_stime
@@ -229,7 +230,7 @@ def run_one(args):
             archive_manifest_sha256=args.archive_manifest_sha256,
             adapter_fingerprint=before, adapter_unchanged=unchanged,
             kind=args.kind, mode=args.render_mode, requested_sim_s=args.sim_s,
-            sim_s=sim, started_at=started_at, ended_at=time.time(), wall_s=elapsed,
+            sim_s=sim, started_at=started_at, ended_at=finished_at, wall_s=elapsed,
             wall_per_sim=elapsed/sim if sim else None, cpu_user_s=cpu_user, cpu_sys_s=cpu_sys,
             cpu_per_sim=(cpu_user+cpu_sys)/sim if sim else None,
             cpu_scope="RUSAGE_SELF including all in-process renderer threads; same interval as wall",
@@ -486,6 +487,47 @@ def stop_owned(process):
             os.killpg(process.pid, signal.SIGKILL); process.wait(timeout=15)
 
 
+def spawn_registered(children, row, cmd, log):
+    """Defer interruption across OS spawn -> handle -> ownership registration."""
+    watched = (signal.SIGINT,signal.SIGTERM,signal.SIGHUP)
+    previous = {s:signal.getsignal(s) for s in watched}
+    pending = []
+    def defer(signum,frame): pending.append((signum,frame))
+    try:
+        for signum in watched: signal.signal(signum,defer)
+        with log.open('x') as stream:
+            proc = subprocess.Popen(cmd,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,start_new_session=True)
+            children.append((row,proc,log))
+    finally:
+        for signum,handler in previous.items(): signal.signal(signum,handler)
+    if pending:
+        signum,frame = pending[0]
+        handler = previous[signum]
+        if callable(handler): handler(signum,frame)
+        raise InterruptedError('HOST_INTERRUPTED:'+signal.Signals(signum).name)
+    return proc
+
+
+def cleanup_children(children, output):
+    """Attempt every owned stop before writing any receipt; collect all errors."""
+    errors = []
+    watched = (signal.SIGINT,signal.SIGTERM,signal.SIGHUP)
+    previous = {s:signal.getsignal(s) for s in watched}
+    try:
+        for signum in watched: signal.signal(signum,signal.SIG_IGN)
+        for row,proc,_ in children:
+            try: stop_owned(proc)
+            except BaseException as e: errors.append(dict(pid=proc.pid,operation='stop',error=repr(e)))
+        for row,proc,_ in children:
+            try: write(output/(Path(row['output']).name+'-EXIT.json'),dict(pid=proc.pid,EXIT=proc.returncode))
+            except BaseException as e: errors.append(dict(pid=proc.pid,operation='receipt',error=repr(e)))
+    finally:
+        for signum,handler in previous.items(): signal.signal(signum,handler)
+    if errors:
+        print(json.dumps(dict(cleanup_errors=errors)),file=sys.stderr,flush=True)
+        if sys.exc_info()[0] is None: raise RuntimeError('CHILD_CLEANUP_FAILED')
+
+
 def paired_cohort(args):
     runs, children = [], []
     initial = admit_concurrent()
@@ -510,9 +552,7 @@ def paired_cohort(args):
                 '--archive-manifest-sha256',args.archive_manifest_sha256,
                 '--expected-source-sha',args.expected_source_sha]
             log = args.output/(name+'.log')
-            with log.open('x') as stream:
-                proc = subprocess.Popen(cmd,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,start_new_session=True)
-            children.append((row,proc,log))
+            proc = spawn_registered(children,row,cmd,log)
             write(args.output/(name+'-launch.json'),dict(pid=proc.pid,admission=admission,command=cmd))
         ready_deadline = time.monotonic()+120
         while not all((args.output/(Path(r['output']).name+'-ready.json')).exists() for r in runs):
@@ -553,9 +593,7 @@ def paired_cohort(args):
             adopted=False,default='eager'))
         return int(bool(failures) or any(not r['eligible'] for r in pairs) or any(not v['ok'] for v in early.values()))
     finally:
-        for row,proc,_ in children:
-            stop_owned(proc)
-            write(args.output/(Path(row['output']).name+'-EXIT.json'),dict(pid=proc.pid,EXIT=proc.returncode))
+        cleanup_children(children,args.output)
 
 
 @interruptible

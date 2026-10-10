@@ -318,3 +318,37 @@ def test_early_append_observer_preserves_buffered_original_and_sees_commands(tmp
     probe.write(tmp_path/'evaluation-progress.json',dict(sim_time=3.,robots={'r1':dict(max_position_delta_m=.1)}))
     log=tmp_path/'log';log.write_text('')
     assert probe.early_state(tmp_path,'s3',log)['ok']
+
+
+def test_signal_during_popen_defers_until_child_is_registered(tmp_path,monkeypatch):
+    from scripts import benchmark_lazy_camera as probe
+    children=[];signals={s:lambda *_:None for s in (probe.signal.SIGINT,probe.signal.SIGTERM,probe.signal.SIGHUP)}
+    def interrupted(*_):
+        assert len(children)==1
+        raise InterruptedError('owned before unwind')
+    signals[probe.signal.SIGTERM]=interrupted
+    monkeypatch.setattr(probe.signal,'getsignal',lambda s:signals[s])
+    monkeypatch.setattr(probe.signal,'signal',lambda s,h:signals.__setitem__(s,h))
+    proc=SimpleNamespace(pid=123)
+    def popen(*a,**kw):signals[probe.signal.SIGTERM](probe.signal.SIGTERM,None);return proc
+    monkeypatch.setattr(probe.subprocess,'Popen',popen)
+    with pytest.raises(InterruptedError,match='owned before unwind'):
+        probe.spawn_registered(children,dict(output='one'),['unused'],tmp_path/'log')
+    assert children[0][1] is proc
+
+
+def test_cleanup_attempts_all_children_before_enospc_receipts(tmp_path,monkeypatch):
+    from scripts import benchmark_lazy_camera as probe
+    children=[(dict(output=str(tmp_path/f'run{i}')),SimpleNamespace(pid=i,returncode=0),None) for i in (1,2,3)]
+    stopped=[];attempted=[]
+    def stop(proc):
+        stopped.append(proc.pid)
+        if proc.pid==1:raise OSError('first stop failed')
+    def receipt(path,row):
+        assert stopped==[1,2,3]
+        attempted.append(row['pid'])
+        if row['pid']==1:raise OSError('ENOSPC')
+    monkeypatch.setattr(probe,'stop_owned',stop)
+    monkeypatch.setattr(probe,'write',receipt)
+    with pytest.raises(RuntimeError,match='CHILD_CLEANUP'):probe.cleanup_children(children,tmp_path)
+    assert stopped==[1,2,3] and attempted==[1,2,3]

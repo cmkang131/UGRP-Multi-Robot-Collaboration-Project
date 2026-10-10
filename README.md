@@ -88,7 +88,9 @@ v107/v108 중 기존 v3 물리를 쓰는 경로를 v7로 바꾸는 변경은 포
 [Oracle 지연 렌더 비교](experiments/2026-10-10-sim-speed-ctrl3/README.md)는
 `UGRP_CAMERA_RENDER=lazy-v1` 선택 시 소비 시점에 카메라를 생성한다. 기본은
 `eager`이며 기존 JPEG·프레임 원장을 모두 보존한다. 기록 대상이거나 실제 읽는
-프레임은 생략하지 않는다. Mac 물리·렌더 없이 Oracle에서만 동등성과 ABBA를 검증한다.
+프레임은 생략하지 않는다. Mac 물리·렌더 없이 Oracle에서 A4/B4를 동시에 비교하고
+원본·행동 동등성, wall/SIM·CPU/SIM·부하 평균을 분리한다. JSON 키 순서와
+명시된 실측 추론 지연만 분리하며 명령·SIM 시각·원본 JPEG는 직접 비교한다.
 근거는 [Thrun 등, Probabilistic Robotics 4·6·8장](https://mitpress.mit.edu/9780262201629/probabilistic-robotics/),
 [AMCL 거리장 구현](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/map/map_cspace.cpp),
 [Olson 2009 스캔 정합](https://april.eecs.umich.edu/media/pdfs/olson2009icra.pdf)이다.
