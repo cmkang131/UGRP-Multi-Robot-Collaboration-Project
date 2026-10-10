@@ -2,6 +2,7 @@
 import argparse
 import copy
 import importlib.util
+import json
 from pathlib import Path
 
 from harness import pf_resampling_diversity as diversity
@@ -26,6 +27,10 @@ def replay_s3(raw, out, option):
         for own in rt.localizers.values(): diversity.attach_s3(own,resampling_diversity=option)
         return rt
     bind(prior.replay,Runtime=runtime)(raw,out,option)
+    path=out/'result.json'
+    result=json.loads(path.read_text())
+    result.update(observation_consistency='off',resampling_diversity=option)
+    path.write_text(json.dumps(result,indent=2)+'\n')
 
 
 def replay_ownmap(raw,out,adapter,option):

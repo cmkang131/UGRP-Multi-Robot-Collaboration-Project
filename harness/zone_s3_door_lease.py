@@ -140,8 +140,10 @@ def attach(runtime, *, static=None, door_lease='off', dev_light=False):
     # The base calls exchange twice initially/after producer stepping. Lease
     # decisions occur once per clock tick so revoke cannot be bypassed at t=t.
     last = None
+    status_events=[]
+    previous_states=None
     def exchange(now):
-        nonlocal last
+        nonlocal last, previous_states
         if last == now: return
         last = now
         signals = [c.offer(now) for c in clients.values()]
@@ -149,6 +151,11 @@ def attach(runtime, *, static=None, door_lease='off', dev_light=False):
         for c in clients.values():
             c.grant = board.epoch if board.owner == c.team else -1
             c.state = 'USING' if c.request and c.permits() else 'REQUEST' if c.request else 'CLEAR'
+        states={r:c.state for r,c in clients.items()}
+        if states != previous_states:
+            status_events.append(dict(sim_s=now,epoch=board.epoch,signals=[dict(robot_id=r,
+                resource='door_1',round=board.round,state=state) for r,state in states.items()]))
+            previous_states=states
     runtime.exchange = exchange
     record = runtime.record
     def recorded():
@@ -158,7 +165,8 @@ def attach(runtime, *, static=None, door_lease='off', dev_light=False):
             timeout_releases=True, expiry_proves_clear=False, gt_inputs=False,
             dev_light_nominal_geometry=dev_light, uncertainty_veto_logged=dev_light,
             owner=None if board.owner is None else list(board.owner), epoch=board.epoch,
-            wait_robot_s=dict(runtime.wait_robot_s), events=copy.deepcopy(board.events),
+            wait_robot_s=dict(runtime.wait_robot_s), events=copy.deepcopy(status_events),
+            lease_events=copy.deepcopy(board.events),
             final_states={r:c.state for r,c in clients.items()}, failure=runtime.door_failure)
         return out
     runtime.record = recorded

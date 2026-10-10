@@ -120,6 +120,10 @@ def test_actual_s3_factory_rgb_tick_and_door_port_sweep(tmp_path, monkeypatch):
         assert p.runtime.clients['r3'].permits()
         for rid in probe.ROBOTS:
             p.issue(rid,dict(kind='hold'),2.)
+        protocol=p.runtime.record()['door_yield']
+        assert protocol['events'] and 'lease_events' in protocol
+        assert all({s['robot_id'] for s in e['signals']}==set(probe.ROBOTS)
+                   for e in protocol['events'])
         for own in p.runtime.localizers.values():
             selected_update = pf._closure(own.pose.provider.loc._pf.update_obs,'selected').cell_contents
             assert selected_update.__globals__['resample'].__module__ == pf.__name__

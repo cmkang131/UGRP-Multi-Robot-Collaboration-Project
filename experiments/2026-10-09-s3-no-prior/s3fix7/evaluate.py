@@ -50,7 +50,10 @@ def main():
                     previous_receipt_sha256=sha(previous/'result.json'),equal=same,
                     scope='same prior admitted finite-pose replay; original NaN exception remains documented in s3fix6')
     source=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-    files=source_closure(Path.cwd(),['harness/zone_s3_recovery_runtime.py'])
+    # Only consumers used by this PF-only replay are sealed. Door/RGB mission
+    # integration is separately swept and belongs to the later smoke source.
+    files=source_closure(Path.cwd(),['harness/zone_s3_consistent_runtime.py',
+        'harness/pf_resampling_diversity.py'])
     value.update(source_sha=source,physics_runs=0,replay_receipts=receipts,
         preregistration_sha256=sha(HERE/'README.md'),
         runtime_source_sha256={p:sha(Path(p)) for p in sorted(files)})
