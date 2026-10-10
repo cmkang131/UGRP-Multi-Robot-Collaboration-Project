@@ -9,5 +9,24 @@
     "tests/test_pair_llm_s4_host.py",
     "tests/test_pair_llm_s4_routing.py",
     "tests/test_s4_live_stage.py"
-  ]
+  ],
+  "post_run_workflow_plan_regression": {
+    "tests": 1,
+    "passed": 1,
+    "physics": false,
+    "real_model": false,
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/s4live1-local-validation/workflow-plan.xml",
+    "junit_sha256": "fa716996193b36f2fbe7be7bd8af69701dacfe309af290eb52815966bcfc509b",
+    "reason": "CI found missing new workflow sample; explicit plan fixture added"
+  },
+  "source_ci": {
+    "sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+    "failed_job": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38041406901/job/114182316223",
+    "s4_workflow_fixture_failure": "fixed locally, remote recheck pending",
+    "inherited_s3_failures": [
+      "test_three_real_localizers_never_call_dock_prior: ModuleNotFoundError mujoco",
+      "test_persistent_v3_binding_survives_real_legacy_refresh_without_physics: ModuleNotFoundError mujoco"
+    ],
+    "s3_runtime_modified": false
+  }
 }
