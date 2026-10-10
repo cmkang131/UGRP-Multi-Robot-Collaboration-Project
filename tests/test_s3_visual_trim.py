@@ -35,6 +35,18 @@ def test_measurement_sequence_is_fixed_bounded_and_passes_actual_motor_port():
         p.apply(row,i*.5)
         assert p._drive_expires_at==pytest.approx(i*.5+row['duration_s'])
     assert len(rows)*.5<=60
+    assert len(rows[:6])*.5+2.35<=10  # separate path check, never calibration input
+
+
+def test_measurement_setup_uses_same_issued_inspect_and_free_east_room():
+    from scripts.run_s3_x86_pulse_measure import measurement_setup
+    from harness.owncam_pair_beam_v2 import pose_of
+    for i in range(6):
+        data=measurement_setup(i)
+        for rid,row in data['robots'].items():
+            assert row['frame']['commanded_servo']=={1:2000,**pose_of('inspect')}
+            x,y,z=row['pose']['robot_xyz_m']
+            assert 2.4<x<5.1 and y==-1 and z==.0325
 
 
 def model():
@@ -59,6 +71,22 @@ def test_measured_selector_off_identity_and_full_pose_legal_actions():
         assert row['after']<row['before'] and row['thresholds_changed'] is False
         assert row['goal_distance_m']<=.10
     assert selector(profiles,[0,0,0])[1] is None
+    assert Selector(profiles,angle_required=False)(profiles,[0,0,1.])[1] is None
+
+
+def test_solo_callback_keeps_fresh_rgb_waits_and_native_legal_lateral():
+    from harness.zone_s3_measured_visual_servo import attach_solo,OPTION
+    marker=object();assert attach_solo(marker) is marker
+    profiles=model()['profiles']
+    own=SimpleNamespace(pulse_profiles={},pulse_model={'profiles':{}},
+        pose=SimpleNamespace(provider=SimpleNamespace(loc=SimpleNamespace(_pf=SimpleNamespace(pulse_calibration={'profiles':{}})))),
+        state='align',target=[.2032,.015],fine_rows=[{'t':1.}],robot_id='r3',last_obs={'frame_id':4},
+        step=lambda now:[('r3',dict(kind='mecanum',forward=.35,left=0.,turn=0.,duration_s=.1))],record=lambda:{})
+    attach_solo(own,model(),option=OPTION)
+    row=own.step(1.)[0][1]
+    assert row['left'] and command_reason(row) is None
+    assert own.heading_align_settled==1.5
+    assert own.record()['visual_pose_servo']['option']==OPTION
 
 
 def test_measured_selector_reaches_actual_pair_apply_with_shared_predictor(tmp_path,monkeypatch):
@@ -96,7 +124,7 @@ def test_all_six_measurements_required_and_holdout_can_veto(tmp_path):
         raw=tmp_path/str(i);(raw/'eval_only').mkdir(parents=True);runs.append(raw)
         (raw/'result.json').write_text(json.dumps(dict(status='COLLECTED_UNQUALIFIED',host='oracle-x86',condition=i)))
         (raw/'eval_only/contacts.jsonl').write_text('')
-        rows=[dict(action=a,times=[0,.5],curve=[[0,0,0],profiles[profile_key(a,False)]['mean_delta']]) for a in sequence() for rid in ('r1','r2')]
+        rows=[dict(action=a,times=[0,.5],curve=[[0,0,0],profiles[profile_key(a,False)]['mean_delta']]) for a in sequence() for rid in ('r1','r2','r3')]
         (raw/'pulse-responses.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in rows))
     result=fit(runs,profiles);assert result['qualified'] and len(result['profiles'])==18
     with pytest.raises(ValueError,match='all six'):fit(runs[:5],profiles)
@@ -104,3 +132,14 @@ def test_all_six_measurements_required_and_holdout_can_veto(tmp_path):
     rows[0]['curve'][-1][0]+=.01
     path.write_text(''.join(json.dumps(r)+'\n' for r in rows))
     assert not fit(runs,profiles)['qualified']
+
+
+def test_cohort_submits_all_frozen_conditions_with_same_source():
+    import json
+    from scripts.run_s3_x86_cohort import commands,PLAN
+    plan=json.loads(PLAN.read_text());sha='a'*40
+    for phase,n in [('measure',6),('candidate',12)]:
+        rows=commands(plan,phase,sha,'model.json','b'*64)
+        assert len(rows)==n and len({r['name'] for r,args in rows})==n
+        assert all(args[args.index('--expected-source-sha')+1]==sha for r,args in rows)
+        assert all(r['seed']==14201+r['condition'] for r,args in rows)

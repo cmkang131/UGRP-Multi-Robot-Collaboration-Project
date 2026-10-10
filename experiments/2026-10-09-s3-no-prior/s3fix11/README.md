@@ -132,3 +132,62 @@ ORACLE_HOST=oracle-x86 "$S/oracle_run.sh" "$WT" "$NAME" -- \
 09:21:03UTC 완료 슬롯 확인 후 보류2개를 같은PID로 재개했다. 대기260초씩이며
 해당 wall은 대기 포함·속도 비교 제외다. 기준 전체 종료 후 post-run 평가를 최대10 worker로
 한꺼번에 처리하고, 원본 SHA/프레임별 오차/4배속 영상을 회수한다.
+
+## 기준 전체 raw 판정과 후속 최종 동결 (보정0회 시점)
+
+기준12개 전체 평가 완료: pair는 r1/r2 모두6조건 hover0. 각144/144회 검출했고
+회전 반전117–141회였다. cyan c0/c1/c2는 양손가락 접촉 상승1,061/1,051/1,051표본,
+운반 변위0.5866/0.5825/0.5930m, c3/c5는1,190/1,190검출에도 반전145/146회·hover0.
+c4는 제가 한도 조정을 위해 일시 정지한 동안 기존 render Future.result(timeout=30s)의
+wall기한을 넘긴 HOST_ERROR다. 정책 실패로 합치지 않으며 스케줄링 유발 실패로 기록한다.
+이제 용량 초과는 프로세스 일시 정지가 아니라 시작 전 유한 큐로 처리한다.
+
+**아직 보정/후보 물리 실행0회**인 이 시점에 다음 라운드를 한 묶음으로 확정한다.
+세 로봇의 같은 회전진동을 함께 다룬다. 앞의 'r1/r2만 보정, r3 unchanged, 후보6개'
+계획을 이 절로 교체한다(실행 중 조건 변경 아님). 보정 명령/길이/6seed/분할/합격문턱은
+그대로이며 r3도 동일 고정 시퀀스를 측정한다. 세 초기 위치는 정적 벽 여유를 확보한
+(2.8,-1),(3.7,-1),(4.6,-1), yaw조건은 그대로. train/holdout 각18표본/profile.
+GT는 고정 응답 측정에만 쓰고 학생의 행동에는 전달하지 않는다.
+
+후보는 pair6개와 cyan6개, 총12조건을 **한 번에 큐에 제출, 최대10개 동시** 실행한다.
+남은2개는 빈 슬롯에서 자동 시작하며 실행 중 사람/에이전트의 결과 판정이나 수정은 없다.
+최종10cm 안에서만 측정 pulse/full-pose PBVS를 쓰고, cyan에는 기존처럼 yaw성공 조건을
+추가하지 않는다. pair의 원래 yaw조건과 모든 위치/접촉 판정은 유지한다.
+
+고정 목록은 [batch-plan.json](batch-plan.json)이다. 앞의 후보 이름6개 대신 아래12개를
+사용한다. 공통 child명령의 `--case`만 표와 같이 다르고, SOURCE_SHA/모델SHA는 한 묶음에서 같다.
+
+| 이름 | case | C | seed |
+|---|---|---:|---:|
+|s3fix11-candidate-pair-c0-r1|pair|0|14201|
+|s3fix11-candidate-pair-c1-r1|pair|1|14202|
+|s3fix11-candidate-pair-c2-r1|pair|2|14203|
+|s3fix11-candidate-pair-c3-r1|pair|3|14204|
+|s3fix11-candidate-pair-c4-r1|pair|4|14205|
+|s3fix11-candidate-pair-c5-r1|pair|5|14206|
+|s3fix11-candidate-cyan-c0-r1|cyan|0|14201|
+|s3fix11-candidate-cyan-c1-r1|cyan|1|14202|
+|s3fix11-candidate-cyan-c2-r1|cyan|2|14203|
+|s3fix11-candidate-cyan-c3-r1|cyan|3|14204|
+|s3fix11-candidate-cyan-c4-r1|cyan|4|14205|
+|s3fix11-candidate-cyan-c5-r1|cyan|5|14206|
+
+전체 제출 명령(보정 후처리와 후보 시작 사이에 자격 판정만 있으며 튜닝 없음):
+
+```sh
+# phase=measure, name=s3fix11-measure-batch-r1; 이후 qualified면 candidate로 같은 방식
+ORACLE_HOST=oracle-x86 "$S/oracle_run.sh" "$WT" "s3fix11-$PHASE-batch-r1" -- \
+  .venv-sim/bin/python -m scripts.run_s3_x86_cohort --expected-source-sha "$SHA" \
+  --phase "$PHASE" --output "outputs/s3fix11-$PHASE-batch-r1/cohort" --execute
+# candidate에서만 --model "$MODEL" --model-sha256 "$MODEL_SHA" 추가
+```
+
+[Python Future/Executor 공식 문서](https://docs.python.org/3/library/concurrent.futures.html):
+전체 작업을 bounded executor에 제출하고 완료 결과를 모은다. Future 대기는 wall timeout이므로
+실행 중 SIGSTOP은 정상 스케줄링 수단으로 쓰지 않는다. baseline c4 원본은 보존한다.
+
+새 포트의 실제 실행 경로는 묶음 전 딱1회 `s3fix11-pathcheck-r1`, seed14201/C0으로
+확인한다. 명령은 위 보정 개별 명령에 `--path-check` 추가. 첫6고정명령만 실행하여
+3SIM초(초기화/settle 포함5.35초), 보정 train/holdout에는 넣지 않는다. 소스·시험 완료 후
+실행하고 HOST_ERROR면 경로 오류만 한 묶음으로 고친 뒤 ≤10초 확인을 다시1회 한다.
+경로 통과 후 조건6개는 동일 코드에서 동시에 시작한다. 모델 선택 규칙은 변경하지 않는다.

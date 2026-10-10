@@ -14,7 +14,8 @@ HORIZON,BEAM=6,128
 
 
 class Selector:
-    def __init__(self,profiles):
+    def __init__(self,profiles,*,angle_required=True):
+        self.angle_required=angle_required
         self.pool=[copy.deepcopy(profiles[k]) for k in sorted(profiles)
             if profiles[k].get('s3_trim_measured') and not profiles[k]['loaded']]
         if len(self.pool)!=18 or any(command_reason(action_of(p)) for p in self.pool):
@@ -29,7 +30,9 @@ class Selector:
             np.arctan2(np.sin(ea-poses[:,2]),np.cos(ea-poses[:,2]))))
 
     def cost(self,errors):
-        return np.sum(np.maximum(np.abs(errors)/self.scale-1.,0.)**2,axis=-1)
+        terms=np.maximum(np.abs(errors)/self.scale-1.,0.)**2
+        if not self.angle_required:terms[...,2]=0.
+        return np.sum(terms,axis=-1)
 
     def __call__(self,profiles,errors):
         if not all(math.isfinite(v) for v in errors): raise ValueError('finite own RGB fit required')
@@ -59,17 +62,33 @@ class Selector:
             thresholds_changed=False,error_source='own RGB fit')
 
 
-def attach_endpoint(ep,model=None,*,option='off'):
-    if option=='off': return ep
-    if option!=OPTION or not model or not model.get('qualified'):raise ValueError('qualified trim model required')
-    own=ep.own.pose.localizer;profiles=own.pulse_profiles
+def augment(own,model):
+    if not model or not model.get('qualified'):raise ValueError('qualified trim model required')
+    profiles=own.pulse_profiles
     # The pulse predictor and port-admission wrappers retain this same instance
     # dictionary. Never replace the global filter/GO/loaded predictor wrappers.
     profiles.update(copy.deepcopy(model['profiles']))
     own.pulse_model['profiles'].update(copy.deepcopy(model['profiles']))
     own.pose.provider.loc._pf.pulse_calibration['profiles'].update(copy.deepcopy(model['profiles']))
+    return profiles
+
+
+def attach_endpoint(ep,model=None,*,option='off'):
+    if option=='off': return ep
+    if option!=OPTION:raise ValueError('unknown measured servo option')
+    own=ep.own.pose.localizer;profiles=augment(own,model)
     selector=Selector(profiles);ctl=ep.controller;old=ctl._align.__func__;ob=old.__globals__['ob']
     private=SimpleNamespace(**{**vars(ob),'align_command':bind(ob.align_command,project=selector)})
     ctl._align=MethodType(bind(old,ob=private),ctl)
     ctl.s3_measured_visual=dict(option=option,model=copy.deepcopy(model),gt_inputs=False)
     return ep
+
+
+def attach_solo(own,model=None,*,option='off'):
+    if option=='off': return own
+    if option!=OPTION:raise ValueError('unknown measured servo option')
+    augment(own,model)
+    from harness import zone_s3_visual_pose_servo as old
+    # Keep its fresh-observation, wait and state guards. A cyan's yaw is not
+    # an alignment success requirement, exactly as in the original servo.
+    return bind(old.attach_solo,Selector=Selector,OPTION=OPTION)(own,option)

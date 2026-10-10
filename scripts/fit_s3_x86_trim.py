@@ -18,14 +18,14 @@ def fit(runs,template):
         for line in (raw/'eval_only/contacts.jsonl').read_text().splitlines():
             for c in json.loads(line)['contacts']:
                 a,b=c['geom1'],c['geom2']
-                if any(r+'__' in a for r in ('r1','r2')) and ('cargo_' in b or 'wall' in b):abnormal+=1
-                if any(r+'__' in b for r in ('r1','r2')) and ('cargo_' in a or 'wall' in a):abnormal+=1
-                if any(r+'__' in a and q+'__' in b for r,q in (('r1','r2'),('r2','r1'))):abnormal+=1
+                if any(r+'__' in a for r in ('r1','r2','r3')) and ('cargo_' in b or 'wall' in b):abnormal+=1
+                if any(r+'__' in b for r in ('r1','r2','r3')) and ('cargo_' in a or 'wall' in a):abnormal+=1
+                if any(r+'__' in a and q+'__' in b for r in ('r1','r2','r3') for q in ('r1','r2','r3') if r!=q):abnormal+=1
     if sorted(s['condition'] for s in sources)!=list(range(6)):raise ValueError('all six frozen conditions required')
     profiles={};scores={}
     for key,rows in sorted(groups.items()):
         train=[r for r in rows if r['condition']<3];test=[r for r in rows if r['condition']>=3]
-        if len(train)!=12 or len(test)!=12:raise ValueError('fixed two robots/two repeats split required')
+        if len(train)!=18 or len(test)!=18:raise ValueError('fixed three robots/two repeats split required')
         curves=np.array([r['curve'] for r in train]);mean=curves.mean(0)
         err=np.array([r['curve'][-1] for r in test])-mean[-1]
         var=np.mean((curves[:,-1]-mean[-1])**2,axis=0)

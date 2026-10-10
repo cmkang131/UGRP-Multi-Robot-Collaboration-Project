@@ -33,8 +33,8 @@ class PhysicsBackend(Previous):
         option=self.bundle.get('visual_trim','off')
         if option=='off': return elapsed
         if option!=OPTION: raise ValueError('unknown visual trim option')
-        for rid in ('r1','r2'):
+        for rid in ('r1','r2','r3'):
             self.ports[rid]=TrimPort(self.world,rid,
-                coupled=lambda:all(self.commands.get(r,{}).get(1,2000)<=1600 for r in ('r1','r2')),
+                coupled=lambda rid=rid:rid!='r3' and all(self.commands.get(r,{}).get(1,2000)<=1600 for r in ('r1','r2')),
                 allow_reverse=True,allow_mecanum=True,min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1')
         return elapsed
