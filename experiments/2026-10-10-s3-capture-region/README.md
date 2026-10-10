@@ -121,3 +121,12 @@ This is a path check, excluded from the225-point grid and candidate denominators
 The finite-grid evaluator implements the preregistered rule and verifies all raw hashes.
 [Candidate names/seeds](candidate-plan.json) are frozen; parameters await entire-batch
 selection. No ongoing raw outcome was used to alter the submitted grid.
+
+Hardware qualification boundary: `scripts/red_block/primitive.py` accepts a35 floor
+but its high-level lateral primitive expands requests to65/0.65s. The lower-level
+35/0.10s lateral response measured here is a **DEV SIM calibration**, not independently
+verified real sideways motion. No real device is commanded. `hardware_admissible`
+in the diagnostic table means it is not below the recorded no-motion floor; it
+must not be read as measured real distance/angle or deployed lateral qualification.
+Saved-RGB-only delivery uses `build_s3_capture_delivery.py`; it creates no new scene
+rendering or physics and checks actual video decoding/frame count/rate on x86.
