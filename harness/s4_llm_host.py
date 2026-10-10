@@ -158,7 +158,8 @@ class Trial(zi.IntegratedTrial):
     channel_summary = pair.PairTrial.channel_summary
 
     def __init__(self, scenario, *, arm, links, seed, horizon_s, map_bundle, model_adapter,
-                 code_sha='unknown', policy=POLICY, decision_limits=LIMITS, e2e_own_inputs_v1='off'):
+                 code_sha='unknown', policy=POLICY, decision_limits=LIMITS, e2e_own_inputs_v1='off',
+                 e2e_dialogue_v1='off'):
         if arm not in inputs.MODEL_CONDITIONS:
             raise ContractViolation('rule has no model trial')
         if not isinstance(model_adapter.send_ledger, live.PairLiveLedger):
@@ -166,6 +167,10 @@ class Trial(zi.IntegratedTrial):
         from harness import e2e_own_inputs as own
         self.e2e_own_inputs_v1 = e2e_own_inputs_v1
         self.own_input_mode = own.enabled(e2e_own_inputs_v1)
+        self.e2e_dialogue_v1 = e2e_dialogue_v1
+        self.dialogue_mode = own.enabled(e2e_dialogue_v1)
+        if self.dialogue_mode and not self.own_input_mode:
+            raise ContractViolation('E2E_DIALOGUE_REQUIRES_OWN_INPUTS')
         self.route_agreement = own.Agreement() if self.own_input_mode else None
         self.arm = arm
         super().__init__(scenario, condition=inputs.study_spec(arm), seed=seed, links=links,
@@ -191,6 +196,19 @@ class Trial(zi.IntegratedTrial):
             float('inf') if cause and self._message_own_job(actor) is not None else self.scheduler.clock)
         if not self.spec.channel_open:
             self.channel.cap_total = 0
+        self.dialogue = None
+        if self.dialogue_mode:
+            from harness.e2e_dialogue import Dialogue, Transport
+            previous = self.channel
+            self.channel = Transport(self.condition, seed=self.seed, robots=routing.ROBOTS,
+                vocabulary=own.vocabulary(), delivery_owner=zo.BUS_OWNER,
+                delivery_delay_sim_s=previous.delivery_delay_sim_s)
+            self.channel.open_window('w1', at_sim_s=0.)
+            for name in ('cap_total', 'cap_robot', 'cap_window'):
+                setattr(self.channel, name, getattr(previous, name))
+            self.scheduler.bus = self.channel
+            self.dialogue = Dialogue(self)
+            self.scheduler.on_message = self.dialogue.receive
         self.provenance = provenance(source=self.source, code_sha=code_sha, execution_bundle_id=VERSION,
             model=self.client_factory.settings['model'], provider='gemini_subscription_proxy',
             model_settings_sha256=digest(self.client_factory.settings),
@@ -215,10 +233,14 @@ class Trial(zi.IntegratedTrial):
             if not callable(source): raise ContractViolation('E2E_OWN_MAP_ADAPTER_REQUIRED')
             state = copy.deepcopy(source(now))
             from harness.e2e_own_inputs import closed
-            closed(state, ('own_map', 'observed_rgb'), 'OWN_INPUT_SNAPSHOT')
+            keys = ('own_map','observed_rgb','own_route') if self.dialogue is not None and 'own_route' in state else ('own_map','observed_rgb')
+            closed(state, keys, 'OWN_INPUT_SNAPSHOT')
             self._snapshots[(rid, round(now,6))] = dict(frame=frame, own_state=state,
                 history=copy.deepcopy([e for e in self._history[rid] if e['issued_at_sim_s'] <= now]),
                 inbox=list(self.channel.inbox(rid, now_sim_s=now)) if self.spec.channel_open else None)
+            if self.dialogue is not None:
+                snap = self._snapshots[(rid, round(now,6))]
+                snap['dialogue'] = self.dialogue.capture(call, state, frame, snap['inbox'])
             return
         super().snapshot(call)
         adapter = self.links[call.actor].stop_adapter
@@ -234,7 +256,9 @@ class Trial(zi.IntegratedTrial):
             snap = self._snapshots.pop((actor, round(float(sim_time_s),6)))
             result = own.build_inputs(rid=actor, now=sim_time_s, request_id=request_id, frame=snap['frame'],
                 own_map=snap['own_state']['own_map'], observed=snap['own_state']['observed_rgb'],
-                history=snap['history'], inbox=snap['inbox'], arm=self.arm, seed=self.seed)
+                history=snap['history'], inbox=snap['inbox'], arm=self.arm, seed=self.seed,
+                e2e_dialogue_v1=self.e2e_dialogue_v1, dialogue_state=snap.get('dialogue'),
+                own_route=snap['own_state'].get('own_route'))
             self.request_images[snap['frame'].sha256] = snap['frame'].jpeg
             self.input_log.append(dict(request_id=request_id, robot=actor, sim_s=sim_time_s,
                 own_map_sha256=digest(snap['own_state']['own_map']), sources=snap['own_state']['observed_rgb']))
@@ -257,10 +281,24 @@ class Trial(zi.IntegratedTrial):
         return zo.PreparedCall(bundled, builder(bundled, window=window), request_id)
 
     def finish_call(self, call, prepared, raw, *, provider_usage=None):
+        if self.dialogue is not None:
+            return self.dialogue.finish_call(self, call, prepared, raw, provider_usage=provider_usage)
         return pair.PairTrial.finish_call(self, call, prepared, raw, provider_usage=provider_usage,
                                           robots=routing.ROBOTS)
 
     def _on_action(self, actor, action, sim_s):
+        if self.dialogue is not None:
+            live.check_health(self)
+            call_id = self.scheduler.calls[-1].call_id
+            try:
+                self.dialogue.apply(call_id, action, sim_s)
+                accepted, reason = True, None
+            except ContractViolation as exc:
+                accepted, reason = False, str(exc)
+            self.dispatch_log.append(dict(call_id=call_id, actor=actor, sim_s=sim_s, action=action,
+                api=None, ack=None, accepted=accepted, rejected_reason=reason,
+                scope='dialogue_admission_only', motion_connected=False))
+            return
         if self.own_input_mode and action.get('kind') != 'continue':
             raise ContractViolation('E2E_STAGE1_MOTION_NOT_CONNECTED')
         live.check_health(self)
@@ -295,6 +333,10 @@ class Trial(zi.IntegratedTrial):
             row.update(e2e_own_inputs_v1=self.e2e_own_inputs_v1, input_schema=SCHEMA,
                        fixed_roles=dict(TASK['fixed_roles']), input_scope='own_rgb_own_map_peer_report',
                        stage1_only=True, transport_admitted=False)
+        if self.dialogue is not None:
+            row.update(e2e_dialogue_v1=self.e2e_dialogue_v1, stage1_only=False,
+                       dialogue_admission_only=True, motion_connected=False,
+                       structured_wire_extension='OwnRoute_v1', runnable=False)
         return row
 
 
@@ -306,7 +348,8 @@ class Host:
     """
 
     def __init__(self, scenario, *, condition, links, seed, map_bundle, horizon_s=1800.,
-                 model_adapter=None, code_sha='unknown', policy=POLICY, decision_limits=LIMITS, e2e_own_inputs_v1='off'):
+                 model_adapter=None, code_sha='unknown', policy=POLICY, decision_limits=LIMITS, e2e_own_inputs_v1='off',
+                 e2e_dialogue_v1='off'):
         if condition not in CONDITIONS or set(links) != set(routing.ROBOTS):
             raise ContractViolation('S4 needs one own link for each of r1/r2/r3 and a supported condition')
         if any(not isinstance(link, Link) or link.robot_id != rid for rid, link in links.items()):
@@ -333,7 +376,7 @@ class Host:
         self.trial = None if condition == 'rule' else Trial(
             scenario, arm=condition, links=links, seed=seed, horizon_s=horizon_s, map_bundle=map_bundle,
             model_adapter=model_adapter, code_sha=code_sha, policy=policy, decision_limits=decision_limits,
-            e2e_own_inputs_v1=e2e_own_inputs_v1)
+            e2e_own_inputs_v1=e2e_own_inputs_v1, e2e_dialogue_v1=e2e_dialogue_v1)
         self.failed, self.started, self.finished = None, False, False
         self.rule_dispatch = []
 
@@ -386,7 +429,10 @@ class Host:
             raise RuntimeError('begin S4 host first')
         def step():
             self._poll()
-            return self.trial.step_to(at_s) if self.trial is not None else None
+            result = self.trial.step_to(at_s) if self.trial is not None else None
+            if self.trial is not None and self.trial.dialogue is not None:
+                self.trial.dialogue.poll_retries(at_s)
+            return result
         return self._run(step)
 
     def on_executor_event(self, event, *, at_s):
@@ -438,6 +484,10 @@ class Host:
                                                'decisions': link.stop_adapter.decisions}
                                         for rid, link in self.links.items() if link.stop_adapter is not None})
             write('study_config.json', trial.study_config())
+            if trial.dialogue is not None:
+                write('dialogue.json', dict(events=trial.dialogue.events, retries=trial.dialogue.retry_events,
+                    transport_admitted=trial.dialogue.allowed(trial.dialogue.key, trial.scheduler.clock),
+                    motion_connected=False))
             write('send_ledger.json', trial.send_ledger.to_dict())
             # Includes sent-but-failed calls: the durable wire ledger hashes
             # images before POST, independent of whether parsing ever succeeds.

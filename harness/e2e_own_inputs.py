@@ -283,7 +283,8 @@ class Inputs:
         return vocabulary()
 
 
-def build_inputs(*, rid, now, request_id, frame, own_map, observed, history, inbox, arm, seed):
+def build_inputs(*, rid, now, request_id, frame, own_map, observed, history, inbox, arm, seed,
+                 e2e_dialogue_v1='off', dialogue_state=None, own_route=None):
     if hashlib.sha256(frame.jpeg).hexdigest() != frame.sha256 or frame.t > now:
         raise ContractViolation('OWN_FRAME_BYTES_OR_TIME_MISMATCH')
     current = {'robot_id': rid, 'frame_id': frame.index, 't_sim': frame.t, 'sha256': frame.sha256}
@@ -294,7 +295,12 @@ def build_inputs(*, rid, now, request_id, frame, own_map, observed, history, inb
     from harness.zone_study_contract import _history_hits, _inbox_hits, condition, forbidden_key_hits
     errors = _history_hits({'own_command_history': history}, now)
     # Vocabulary derives only from the fixed task; no static location IDs.
-    minimal = {'robot_id': rid, 'inbox': inbox, 'order_sheet': {'orders': TASK['orders']}}
+    dialogue_on = enabled(e2e_dialogue_v1)
+    checked_inbox = inbox
+    if dialogue_on:
+        from harness.e2e_dialogue import legacy_inbox
+        checked_inbox = legacy_inbox(inbox)
+    minimal = {'robot_id': rid, 'inbox': checked_inbox, 'order_sheet': {'orders': TASK['orders']}}
     errors += _inbox_hits(minimal, condition('peer_ko' if arm=='peer_nl' else arm), seed, now)
     errors += forbidden_key_hits(history)
     if errors: raise ContractViolation('; '.join(errors))
@@ -302,6 +308,15 @@ def build_inputs(*, rid, now, request_id, frame, own_map, observed, history, inb
             'sim_time_s': now, 'task': copy.deepcopy(TASK), 'own_rgb': current,
             'own_map': mapped, 'own_command_history': copy.deepcopy(history),
             'peer_reports': copy.deepcopy(inbox), 'channel': channel_section('peer_ko' if arm=='peer_nl' else arm,rid,seed)}
+    if dialogue_on:
+        data['dialogue'] = copy.deepcopy(dialogue_state)
+        proposal = None
+        if own_route is not None:
+            from harness.e2e_dialogue import wire_route
+            if rid != 'r1' or validate_route(own_route,rid,now,observed)['own_map'] != mapped:
+                raise ContractViolation('OWN_ROUTE_CAPTURED_MAP_REQUIRED')
+            proposal = dict(kind='OwnRoute',route=wire_route(own_route),source_message_id=None)
+        data['own_route_proposal'] = proposal
     scan(data)
     return Inputs(data, frame.jpeg, seed, arm)
 
@@ -320,6 +335,9 @@ def build_request(inputs, *, window=None):
         'action은 claim(order_id,role,destination_zone), continue, release(order_id), look_around 중 하나입니다. '
         'decision_sources는 order_sheet, own_rgb, own_commands, own_belief, message 중 실제 쓴 것만 적습니다. '
         'own_map은 own_belief로 표시합니다.', parts['messages'], parts['language']))
+    if 'dialogue' in inputs.data:
+        from harness.e2e_dialogue import PROMPT
+        system += '\n\n' + PROMPT
     body = inputs.payload_dict()
     if window is not None:
         closed(window, ('window_id','max_utterances','max_your_utterances','your_utterances_left','received','sent'), 'DIALOGUE_WINDOW')
@@ -330,9 +348,9 @@ def build_request(inputs, *, window=None):
         body[pk.WINDOW_KEY] = {k:copy.deepcopy(v) for k,v in window.items() if k != 'received'}
     scan(body)
     user = json.dumps(body, ensure_ascii=False, sort_keys=True)
-    image = {'label': 'own_wrist_rgb', 'image': pk._uri(inputs.wrist_jpeg),
-             'sha256': hashlib.sha256(inputs.wrist_jpeg).hexdigest()}
-    refs = [{'label': image['label'], 'ref': f'own-{inputs.robot_id}-{inputs.data["own_rgb"]["frame_id"]}', 'sha256': image['sha256'], 'bytes_sha256': image['sha256'], 'captured_at_sim_s': inputs.data['own_rgb']['t_sim']}]
+    image = {'label': 'own_wrist_rgb', 'image': pk._uri(inputs.wrist_jpeg)}
+    sha = hashlib.sha256(inputs.wrist_jpeg).hexdigest()
+    refs = [{'label': image['label'], 'ref': f'own-{inputs.robot_id}-{inputs.data["own_rgb"]["frame_id"]}', 'sha256': sha, 'bytes_sha256': sha, 'captured_at_sim_s': inputs.data['own_rgb']['t_sim']}]
     tokens = pk.request_tokens(system, user, [image])
     from harness import pair_llm_billing as billing
     request = {'schema': SCHEMA, 'condition': inputs.arm, 'actor': inputs.robot_id, 'prompt_role': 'peer', 'protocol_version': pk.zp.PROTOCOL_VERSION, 'input_profile_id': SCHEMA,
