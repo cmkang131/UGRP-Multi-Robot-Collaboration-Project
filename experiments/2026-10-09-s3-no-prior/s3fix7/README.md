@@ -157,3 +157,79 @@ S3 r2의 R3 끝 오차는 v149 0.387965→0.108691m, v150 0.409033→0.093265m�
 [검증](preflight-v152.json), [전체 단계](offline-sweep-v152.json),
 [문 경계](opposite-door-v152.json), [동일 입력 기본 off 바이트 비교](off-equivalence-v152.json).
 PF 재생 소비 소스는 비교 봉인 뒤 바뀌지 않았고, 원본 워크플로 카탈로그는 main과 같다.
+
+## 10/10 v152 단일 smoke 완료 — 문 대기는 해소, 집기는 미달
+
+실행 SHA **981baa95e77aa78e5ffd6bc87c172cbb97aea7ed**, seed14201,
+`zone-s3-recovery-v152 /7.45.0`, 물리 시뮬레이터 **1회**다.
+문 lease·자기 RGB 정렬 on / 추가 PF diversity off의 적용값을 번들과 런타임 기록에서
+대조했다. 결과는 **DEV_NOT_DELIVERED, HOST_ERROR0, 로봇 성공0/3, 배송0/2**.
+903.05 SIM초(세계 시각904.35)에 끝났고 wall3184.674초, **wall/SIM3.527**이다.
+v151의3.600보다 낮지만 목표≤3 미달이며 조건·궤적이 달라 속도 대조시험으로 해석하지 않는다.
+[전체 요약·원본 해시](v152-result.json), [실행 전 검증](preflight-v152.json).
+
+| 로봇 | 첫 handoff XY 오차 / σ(m) | 첫 관측부터 시간 | 첫 자체 수렴의 XY 오차 / 시각 | 도달 단계 | 최종 XY / yaw 오차 |
+|---|---|---|---|---|---|
+| r1 | 0.02630 /1.84041 | 12.20s | 0.02551m /36.95s, 정확 | 접근→자기 RGB 정렬531.2s; hover0 | 0.74269m /146.09° |
+| r2 | 0.03954 /0.20861 | 12.20s | 0.32010m /112.30s, **허위 수렴** | 접근→정렬531.2s→재접근→정렬551.6s; hover0 | 1.28663m /143.44° |
+| r3 | 0.00389 /0.05831 | 12.20s | 0.00429m /13.95s, 정확 | 탐색·이동 반복; 집기0 | 0.00884m /139.34° |
+
+첫 handoff는 세계 시각13.50s이며 점 추정 정확3/3과 posterior 인증0/3을 구분한다.
+r2는 나중451.8s에 XY0.249982m/yaw5.21°로 기존 평가 문턱을 한 번 통과했다.
+따라서 기록의 `correct_convergence=3/3`은 **한 번 이상 정확한 수렴 표본 존재**일 뿐
+첫 수렴3/3 또는 계속 정확함을 뜻하지 않는다. 최종 σ는 r1/r2/r3
+0.05428/0.02776/0.02604m, yaw σ3.18/1.67/2.99°로 후반 과신은 남는다.
+
+### 세 원인의 관측 결과
+
+1. **문:** v151은 r1+r2 whole-job 예약이13.55s부터 끝까지 문을 점유해 r3를909.05s
+   기다리게 했다. v152 대기 r1/r2/r3는0.05/1.85/0.05s, 대기 episode0/36/0,
+   로봇 충돌0·교착0이다. lease 만료7, 진행 없음29, clear4, grant40을 기록했다.
+   만료 후 점유자는 통로를 비우는 독점 recovery만 다시 받으며 만료를 비움으로 간주하지 않는다.
+   r3 이동 명령1855회로 로컬 상자 접근이 열렸으나 **짐을 든 문 통과·대향 교행 성공은 미검증**이다.
+   대향 동시 요청→만료 경계→다음 소유자 이전은 앞의9명령 오프라인 회귀 근거다.
+2. **정렬:** v151의 PF 재관측 veto가 RGB `_align`보다 먼저 실행되는 경로를 우회한 뒤,
+   실제 own-RGB `beam_obs`는 r1/r2 **0/0→915/866회**, 모두 visible이었다.
+   하지만 `v3_grasp_target`·pregrasp reference·hover·집기·운반·놓기는 전부0이다.
+   마지막 RGB 빔 축 잔차는 r1/r2 0.34871/0.32604rad로 기존0.035rad 문턱보다 크다.
+   즉 이번 잔여 실패는 보이지 않는 hover 이후가 아니라 **가시 상태의 정렬 미수렴**이다.
+   고개/회전 응답·heading 축 선택 중 어느 것이 원인인지는 이 실행만으로 확정하지 않는다.
+   일찍 관측→고정 hover→blind descent→상호 close 순서는 회귀에서 통과했지만 물리 진입0이다.
+   v149 접촉34/254회는 이미 분리한 r2 앞바퀴 roller–beam 접근 접촉이며 이번 정렬 성공 근거가 아니다.
+3. **PF:** 저장4실행/8궤적·후보12재생은 모두 완료했으나 ESS·roughening·floor 후보 모두
+   사전 기준 미달이다. 선택은 off이며 과신을 해결했다고 주장하지 않는다. 표·고갈 직접 사례는 위 링크에 있다.
+
+실제 종료는 **r3 LOCAL_TIMEOUT(세계901.35s), 이후3초 settle**이다. r1/r2는 align 중이며
+별도 LOCAL_TIMEOUT으로 끝난 것이 아니다. 짐 낙하·기울기·집게 이탈·GO 실패·HOST_ERROR는
+이번 종료 사유가 아니다. 최종 성공 판정0/3, 배송 실패 분류3개(로봇 분모, 주문은2개),
+LOCALIZATION 분류1개(r3)이고 이 분류와 후반 실제 오차를 함께 읽어야 한다.
+
+would_stop은 **17,895 hook 발생**으로 I/O 횟수나 독립 실패 개수가 아니다.
+POSE_UNCERTAIN8982, PAIR_REOBSERVE_TIMEOUT6132, DOOR_POSE_UNCERTAIN1077,
+SWEEP_TRANSITION_BLOCKED750, UNMEASURED_V3_CAMERA_POSTURE582,
+APPROACH_SWEEP_TRANSITION_BLOCKED163 등 전체19종은 `v152-result.json`에 보존했다.
+NaN/None 평가 제외0, 0.10초 미만 이동 명령0, 혼합 축0이며, 3대 각18,002프레임의
+v3 렌더 mount와 시각은 S2 동결 receipt/자기 관측에 모두 일치했다.
+
+### 보존·전달·후속 범위
+
+raw: `/Users/changmin/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152`.
+54,040파일/1,724,296,204바이트 전체 SHA 일치, 원본을 덮어쓰지 않았다.
+대표 영상은 `outputs/s3fix7-20261010/v152-report/views/v152/execution.mp4`:
+자기 RGB3개만 이어 붙인1920×480·20fps·4501프레임·225.05초·**4배속**이다.
+영상은 제어 종료까지이고 이후 settle3초는 포함하지 않는다.
+[재생](http://127.0.0.1:6007/video/17269c1e0c0f1df97aef),
+[TensorBoard](http://127.0.0.1:6006/#timeseries),
+[정확한 핀·실행 필터 링크/이벤트 검증](tensorboard-verification.json),
+[UI 검증](ui-verification.json).
+
+후보24개·기존 baseline8개 및 새 v15231개 scalar를 EventAccumulator로 다시 읽어 원자료와
+대조했다. Chrome 강 프로필에서 물리2개/재생32개 선택·핀8/5개·HParams 지정4열을 적용했다.
+HParams는 공유4425개 session group을 보여 Time Series의 실행 필터를 그대로 따르지 않는
+UI 한계가 있다. 영상의 실제 시간 증가와 일시정지를 확인했다. 서버·다른 작업은 중단하지 않았다.
+시뮬레이터와 무거운 후처리가 끝나고 잠금을 반납했으며 #424/#405에 순서 반환을 기록했다.
+CI는 기다리지 않고 PR #416은 독립 검토 전 draft로 유지한다.
+
+다음 물리 제안: **v152 저장 RGB/명령에서 근접 정렬의 각도 잔차·heading pulse 응답을 먼저
+분리하고 오프라인 정렬→hover probe를 통과한 뒤에만 dev_light 1회를 제안한다.**
+이번 작업에서는 추가 물리 실행·seed/문턱 재조정 없이 마친다.
