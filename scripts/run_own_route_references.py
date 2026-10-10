@@ -183,7 +183,36 @@ def score_batch(plan, out):
         reports.append(dict(r, seed=j['seed'], condition=j['condition'], status=j['status'], raw=str(p),
             early_checks=j.get('early_checks',[]), result_sha256=hashlib.sha256((p/'result.json').read_bytes()).hexdigest() if (p/'result.json').exists() else None))
     old.dump(out/'scores.json', reports)
+    old.dump(out/'summary.json', dict(round='egomap66',host='oracle-x86',source_sha=ROOT.name,
+        registered=36,conditions=aggregate(reports),runs=reports,thresholds_changed=False,
+        raw_root=str(out),scores_sha256=hashlib.sha256((out/'scores.json').read_bytes()).hexdigest()))
     return reports
+
+
+def aggregate(reports):
+    groups = {}
+    for condition in CONDITIONS:
+        group = [r for r in reports if r['condition']==condition]
+        measured = [r for r in group if r.get('samples',0)]
+        commands, visual = Counter(), Counter()
+        for r in measured:
+            commands.update(r.get('command_audit',{}).get('counts',{}))
+            visual.update(r.get('visual_gate_failures',{}))
+        groups[condition] = dict(registered=6,attempts=len(group),measured=len(measured),
+            statuses=dict(Counter(r['status'] for r in group)),
+            B_arrived=sum(bool(r.get('B_arrived')) for r in measured) if measured else None,
+            returned=sum(bool(r.get('returned')) for r in measured) if measured else None,
+            false_declarations=sum(r.get('false_declarations',0) for r in measured) if measured else None,
+            wall_contacts=sum(r.get('contacts',{}).get('wall',0) for r in measured),
+            robot_contacts=sum(r.get('contacts',{}).get('robot',0) for r in measured),
+            frames=sum(r['samples'] for r in measured),
+            over3_frames=sum(r.get('over_3sigma',0) for r in measured),
+            commands=dict(commands),turn_fraction=commands['turn']/sum(commands.values()) if commands else None,
+            turn_reversals=sum(r.get('command_audit',{}).get('turn_sign_reversals',0) for r in measured),
+            match_accepted=sum(r.get('match_accepted',0) for r in measured),
+            match_attempts=sum(r.get('match_attempts',0) for r in measured),visual_gate_failures=dict(visual),
+            final_error_median=float(np.median([r['final_error_m'] for r in measured])) if measured else None)
+    return groups
 
 
 def batch(a):

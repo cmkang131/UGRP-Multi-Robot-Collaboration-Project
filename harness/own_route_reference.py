@@ -188,7 +188,9 @@ class ReferenceRoute(GoalRoute):
         # Associate CURRENT confirmed RGB patch to the remembered B; memory
         # alone is never a new observation and never increments the streak.
         patches = self.current_patches
+        tracks = {p['id']:p for p in self.explorer.goal.tracks}
         matched = [p for p in patches if p.get('confirmed_t') is not None and
+                   abs(tracks.get(p.get('track_id'),{}).get('last_t',-math.inf)-t)<=1e-8 and
                    'center_odom_m' in p and math.dist(p['center_odom_m'], self.entities['B']['center_m']) <=
                    self.explorer.goal.options.temporal_center_max_m]
         lower = 0 if self.labels is None else int(np.count_nonzero(self.labels[2*self.labels.shape[0]//3:]))

@@ -59,6 +59,9 @@ def test_scorer_preserves_blocked_denominator(tmp_path):
     for j in p:j['status']='BLOCKED_ADMISSION'
     r=m.score_batch(p,tmp_path)
     assert len(r)==36 and all(x['samples']==0 and x['status']=='BLOCKED_ADMISSION' for x in r)
+    summary=json.loads((tmp_path/'summary.json').read_text())
+    assert len(summary['conditions'])==6
+    assert all(g['registered']==6 and g['measured']==0 and g['B_arrived'] is None for g in summary['conditions'].values())
 
 
 def test_passive_arrival_audit_leaves_all_original_outputs_byte_identical():

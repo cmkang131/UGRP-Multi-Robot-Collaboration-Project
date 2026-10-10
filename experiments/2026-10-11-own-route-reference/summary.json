@@ -1,11 +1,11 @@
 {
   "round": "egomap66",
-  "status": "PREPARED_NOT_EXECUTED",
+  "status": "SMOKE_COMPLETE_BATCH_WAITING_STORAGE",
   "registered": 36,
   "executed": 0,
   "host": "oracle-x86",
   "tests": {
-    "passed": 31,
+    "passed": 32,
     "files": [
       "tests/test_own_route_reference.py",
       "tests/test_own_route_references_batch.py",
@@ -52,11 +52,38 @@
   },
   "raw_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch",
   "causes": [
-    "Prior heading65 reduced command opportunity rather than reversal rate",
-    "Current root disk 8.6GiB; 36 trial estimate around 18GiB, checking other volumes before submission"
+    "eg65 heading condition not adopted; command opportunity reduced",
+    "Remote disk 12GiB available vs registered full-batch storage admission 26GiB"
   ],
   "early_checks": [],
   "thresholds_changed": false,
   "checkpoint_inputs_verified": 6,
-  "prereg_commit": "697947cd"
+  "prereg_commit": "697947cd",
+  "smoke": {
+    "source_sha": "cde14c9a231fdbcfabacf4059d7f4af1fb95d16b",
+    "status": "RECORDED",
+    "sim_s": 8,
+    "wall_s": 35.58828214799996,
+    "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-smoke/data",
+    "files_verified": 78,
+    "early_check": {
+      "wall_age_s": 35.58828214799996,
+      "sim_s": 8.0,
+      "frames": 41,
+      "commands": {
+        "turn": 2,
+        "forward": 39
+      },
+      "displacement_m": 0.496805398147188,
+      "yaw_span_rad": 0.21787612996666472,
+      "stage": "approach",
+      "anomaly": null,
+      "gt_evaluation_only": true
+    },
+    "sha256": {
+      "result.json": "44d1849c9ba9d22fffa405afc95a6bbf871e9fc2cb0d0239db659028f580b9ba",
+      "artifacts.sha256.json": "3bc0688c9f47c46a4f890c67235c50f32c65d68b7509f9cd7306f6461bf38132",
+      "arrival-gates.json": "3d68f81c3963d3b917a27d6ce1ad796e3bce684cd7d929a64358b0545af9b15d"
+    }
+  }
 }

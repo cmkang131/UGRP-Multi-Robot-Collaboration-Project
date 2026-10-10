@@ -13,6 +13,7 @@ def attach(**options):
     c=fake_controller()
     c.heading_host=SimpleNamespace(command=Mock(return_value=({'kind':'hold'},{'reason':'fixture'})))
     c.explorer.goal.options.temporal_center_max_m=.10
+    c.explorer.goal.tracks=[]
     c.graph.observe(sample(1))
     c._entity('B',[.1,0],1,1,'x')
     c._select(1)
@@ -102,9 +103,12 @@ def test_arrival_requires_same_current_B_and_five_consecutive_frames():
     c.current_patches=[{'confirmed_t':1,'center_odom_m':[1,1]}]
     for i in range(2,10):c._arrival(i,i,np.zeros(3),False)
     assert not c.reached and c._visual_reason=='unconfirmed_or_other_B'
-    c.current_patches=[{'confirmed_t':1,'center_odom_m':[.1,0]}]
-    for i in range(10,14):c._arrival(i,i,np.zeros(3),False)
+    c.current_patches=[{'confirmed_t':1,'center_odom_m':[.1,0],'track_id':1}]
+    for i in range(10,14):
+        c.explorer.goal.tracks=[{'id':1,'last_t':i}]
+        c._arrival(i,i,np.zeros(3),False)
     assert not c.reached
+    c.explorer.goal.tracks=[{'id':1,'last_t':14}]
     c._arrival(14,14,np.zeros(3),False);assert 'B' in c.reached
 
 
@@ -126,7 +130,16 @@ def test_visual_reobserve_is_bounded_and_no_stale_declaration():
 
 def test_arrival_current_evidence_holds_for_five_frames():
     c=attach(arrival_verify_fsm=True);c.labels=np.ones((3,3))
-    c.current_patches=[{'confirmed_t':1,'center_odom_m':[.1,0]}]
+    c.current_patches=[{'confirmed_t':1,'center_odom_m':[.1,0],'track_id':1}]
+    c.explorer.goal.tracks=[{'id':1,'last_t':2}]
     c._arrival(2,2,np.zeros(3),False)
     cmd,info=c.heading_host.command(t=2,pose=np.zeros(3))
     assert cmd['kind']=='hold' and info['reason']=='arrival_verify_current_evidence'
+
+
+def test_stale_patch_from_unsettled_frame_never_counts_as_current_evidence():
+    c=attach(arrival_verify_fsm=True);c.labels=np.ones((3,3))
+    c.current_patches=[{'confirmed_t':1,'center_odom_m':[.1,0],'track_id':1}]
+    c.explorer.goal.tracks=[{'id':1,'last_t':1}]
+    for i in range(2,10):c._arrival(i,i,np.zeros(3),False)
+    assert c.streak==0 and not c.reached
