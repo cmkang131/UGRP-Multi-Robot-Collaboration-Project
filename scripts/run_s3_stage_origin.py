@@ -14,6 +14,7 @@ BUNDLE_ID = 'zone-s3-stage-origin-v170'
 WORKFLOW_VERSION = '7.63.0'
 WORKFLOW = 'configs/simulation_workflows.d/s3_stage_origin_v170.json'
 PLAN = 'experiments/2026-10-11-s3-stage-origin/registration.json'
+ROUTE_RETRY = 'experiments/2026-10-11-s3-stage-origin/route-retry.json'
 ROOT = previous.previous.stage.ROOT
 
 
@@ -41,6 +42,9 @@ def bundle(sha, case, condition, option='off', route_case='single'):
         parent_bundles=[*b['parent_bundles'], previous.BUNDLE_ID])
     paths = set(source_closure(ROOT, ['scripts/run_s3_stage_origin.py',
         'scripts/run_s3_stage_origin_cohort.py', 'scripts/evaluate_s3_stage_origin.py'])) | {WORKFLOW, PLAN}
+    if route_case != 'single':
+        b['route_binding'] = 'captured_own_link_callback_v1'
+        paths.add(ROUTE_RETRY)
     b['source_sha256'].update({p: hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths})
     return b
 

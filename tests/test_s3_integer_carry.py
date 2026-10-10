@@ -98,3 +98,48 @@ def test_identical_retry_preserves_twenty_conditions_and_uses_new_names():
   assert {k:a[k] for k in ('case','condition','seed','option')}=={k:b[k] for k in ('case','condition','seed','option')}
   assert a['name'].endswith('-r1') and b['name'].endswith('-r3')
   assert ac[ac.index('--integer-carry')+1]==bc[bc.index('--integer-carry')+1]
+
+
+# Reproduce the actual S3 callback topology without a simulator: executable
+# start is captured by recovery/DEV/heading/vision; team.start becomes claim.
+make_plan = None
+def captured_pair_start(self, rid, *, now):
+ plan=make_plan('public-static',rid)
+ self.sessions.append((rid,now,plan));return plan
+
+
+def test_registered_route_uses_captured_submit_and_preserves_all_wrappers():
+ from types import MethodType
+ from harness.zone_final_pair_binding import bind
+ from harness.zone_s3_route_binding import configure
+ def old(static,*args):return {'route':[[0,0],[1,0]],'static':static}
+ def recovery(inner,seen):
+  def start(*args,**kwargs):seen.append('recovery');return inner(*args,**kwargs)
+  return start
+ def overlay(start,name,seen):
+  def submit(*args,**kwargs):
+   result=start(*args,**kwargs);seen.append(name);return result
+  return submit
+ def fixture():
+  seen=[];team=SimpleNamespace(sessions=[]);leaf=MethodType(bind(captured_pair_start,make_plan=old),team)
+  submit=recovery(leaf,seen)
+  for name in ('dev_light','heading','visual_alignment'):submit=overlay(submit,name,seen)
+  claim=lambda *a,**k:pytest.fail('claim dispatcher must never plan a stage')
+  team.start=claim
+  return SimpleNamespace(links={r:SimpleNamespace(submit=submit) for r in ('r1','r2')},team=team),seen
+ rt,seen=fixture();other,_=fixture();claim=rt.team.start
+ route=[[1.3,.05],[1.4518,.05],[1.4518,.21694529519717285]]
+ def transform(plan,static,new):return {**plan,'route':copy.deepcopy(new)}
+ assert configure(rt,route,transform) is rt
+ for rid in ('r1','r2'):
+  assert rt.links[rid].submit(rid,now=2.)['route']==route
+  assert other.links[rid].submit(rid,now=2.)['route']==[[0,0],[1,0]]
+ assert rt.team.start is claim and make_plan is None
+ assert seen==['recovery','dev_light','heading','visual_alignment']*2
+ assert len(rt.team.sessions)==2
+
+
+def test_route_binding_rejects_module_namespace_before_any_mutation():
+ from harness.zone_s3_route_binding import planner_functions
+ with pytest.raises(ValueError,match='instance-private'):
+  planner_functions(captured_pair_start)

@@ -75,11 +75,8 @@ def run(b,out):
     stage=previous.stage
     def enter(rt,now,ignored):
         if 'registered_route' in b:
-            from types import MethodType
-            team=rt.pair.producer.team;start=team.start.__func__;planner=start.__globals__['make_plan']
-            def registered_planner(static,*args,**kwargs):
-                return route_plan(planner(static,*args,**kwargs),static,b['registered_route'])
-            team.start=MethodType(bind(start,make_plan=registered_planner),team)
+            from harness.zone_s3_route_binding import configure as configure_route
+            configure_route(rt,b['registered_route'],route_plan)
         eps.update(stage.previous.enter_pair(rt,now,'off'))
         for ep in eps.values():
             attach_endpoint(ep,SERVO,refinements=ALL,planner=joint_plan)
