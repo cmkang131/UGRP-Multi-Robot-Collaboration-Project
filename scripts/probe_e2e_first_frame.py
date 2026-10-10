@@ -61,7 +61,7 @@ def run(out, candidate, sha):
                             scene_option=robot._robot_sensor_scene_option)
                         seg=world.renderer.render().copy()
                     finally:world.renderer.disable_segmentation_rendering()
-                    mask=((seg[:,:,0]==world.model.geom('zone_B').id)&(seg[:,:,1]==int(mujoco.mjtObj.mjOBJ_GEOM))).astype('uint8')
+                    mask=((seg[:,:,0]==world.model.geom('zone_zone_B').id)&(seg[:,:,1]==int(mujoco.mjtObj.mjOBJ_GEOM))).astype('uint8')
                     if robot._robot_fisheye_map is not None:
                         import cv2
                         mx,my=robot._robot_fisheye_map
