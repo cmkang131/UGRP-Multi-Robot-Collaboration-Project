@@ -36,13 +36,15 @@ def inputs():
     return scenario, mapped, OrderSheetSource(scenario, mapped).sheet()
 
 
-def bundle(sha, condition, cap):
-    if condition not in stage.CONDITIONS or cap not in (7.5, 90.):
-        raise ValueError('registered condition and 7.5/90 SIM-second cap required')
+def bundle(sha, condition, cap, *, seed=601):
+    if condition not in stage.CONDITIONS or cap not in (7.5, 90., 120.):
+        raise ValueError('registered condition and 7.5/90/120 SIM-second cap required')
+    if type(seed) is not int or seed not in (601, 602):
+        raise ValueError('registered DEV seed required')
     b = previous.bundle(sha, 'cyan')
     scenario, mapped, sheet = inputs()
     b.update(schema='ugrp.s4_live_stage.v157', execution_bundle_id=BUNDLE_ID,
-        workflow_version=WORKFLOW_VERSION, seed=601, provider_seeds={r:601+i for i,r in enumerate(stage.s4.routing.ROBOTS)},
+        workflow_version=WORKFLOW_VERSION, seed=seed, provider_seeds={r:seed+i for i,r in enumerate(stage.s4.routing.ROBOTS)},
         scenario_id='dev_s1lite', scenario_sha256=digest(scenario), map_bundle_sha256=digest(mapped),
         order_sheet_sha256=digest(sheet), case_cap_s=cap, wall_cap_s=1800.,
         condition=condition, research_result=False, model_calls=None,
@@ -83,7 +85,7 @@ def run(b, out, receipt, *, pair_extension=None, backend_factory=None):
     profile['sha256'] = digest(profile)
     run_key = f's4live1-{b["condition"]}-{out.parent.name}'
     budget = MainStudyBudget.create(out/'budget.sqlite')
-    budget.register_cohort(run_key, token_cap=300000 if pair_extension is None else 1100000, unknown_usage_charge_tokens=16000,
+    budget.register_cohort(run_key, token_cap=b.get('token_cap',300000 if pair_extension is None else 1100000), unknown_usage_charge_tokens=16000,
                           prereg_sha256=b['source_sha256'][PLAN], source={'source_sha':b['source_sha']})
     budget.start_run(run_key, cohort_id=run_key, bundle_id=b['execution_bundle_id'], bundle_sha256=digest(b),
                      record={'research_result':False})
@@ -91,32 +93,32 @@ def run(b, out, receipt, *, pair_extension=None, backend_factory=None):
     write(out/'proxy-identity.json', ledger.proxy_identity)
     adapter = ModelAdapter(client_factory(profile), ledger)
     result = dict(status='HOST_ERROR', research_result=False, source_sha=b['source_sha'],
-        execution_bundle_id=b['execution_bundle_id'], condition=b['condition'], seed=601, host='oracle-x86',
+        execution_bundle_id=b['execution_bundle_id'], condition=b['condition'], seed=b['seed'], host='oracle-x86',
         gt_control_inputs=False, weld='off', dev_light=True, model_calls=0,
         pair_scope='claim_only_no_pair_motion', physical_success=None, loadavg_start=os.getloadavg())
     began = time.monotonic(); backend = runtime = host = pair_driver = None; states = []; causal = []
     try:
-        backend = (backend_factory or PhysicsBackend)(b, out, seed=601); backend.reset(b['reset_cap_s'])
+        backend = (backend_factory or PhysicsBackend)(b, out, seed=b['seed']); backend.reset(b['reset_cap_s'])
         previous.previous.restore_scene(backend, setup_record(scenario))
         start = backend.now; backend.set_deadline(start+b['case_cap_s'])
         static = hp.resolve(b['map_id'])[0]
         internal_orders = copy.deepcopy(sheet['orders'])
         for order in internal_orders: order['destination_zone'] = 'B'
         runtime = Runtime(static, internal_orders, ROOT/b['calibration'], b['calibration_sha256'],
-                          seed=601, config=b['controller_config'])
+                          seed=b['seed'], config=b['controller_config'])
         own = stage.use_public_destination(runtime, next(o for o in sheet['orders'] if o['kind']=='cyan'), static)
         runtime.initial_commands(start, backend.commands)
         runtime.boot_finished_at = start
         link_cls, host_cls, extra = (stage.Link, stage.Host, {}) if pair_extension is None else pair_extension.components()
         links = {r:link_cls(runtime.links[r], condition=b['condition'], origin_s=start,
             executor=runtime.pair.actors[r] if r != 'r3' else None, **extra) for r in stage.s4.routing.ROBOTS}
-        host = host_cls(scenario, condition=b['condition'], links=links, seed=601, map_bundle=mapped,
+        host = host_cls(scenario, condition=b['condition'], links=links, seed=b['seed'], map_bundle=mapped,
             horizon_s=b['case_cap_s'], model_adapter=adapter, code_sha=b['source_sha'],
-            policy=CallPolicy(max_calls_per_actor=6 if pair_extension is None else 30,
-                max_http_attempts_per_actor=6 if pair_extension is None else 30,
-                max_attempts_total=18 if pair_extension is None else 90, max_retries=0),
-            decision_limits=DecisionLimits(max_calls_total=18 if pair_extension is None else 90,
-                max_utterances_per_actor=6, max_utterances_total=12))
+            policy=CallPolicy(max_calls_per_actor=b.get('calls_per_actor',6 if pair_extension is None else 30),
+                max_http_attempts_per_actor=b.get('calls_per_actor',6 if pair_extension is None else 30),
+                max_attempts_total=b.get('calls_total',18 if pair_extension is None else 90), max_retries=0),
+            decision_limits=DecisionLimits(max_calls_total=b.get('calls_total',18 if pair_extension is None else 90),
+                max_utterances_per_actor=b.get('utterances_per_actor',6), max_utterances_total=b.get('utterances_total',12)))
         if pair_extension is not None:
             pair_driver = pair_extension.driver(host, runtime.pair.producer)
             result['pair_scope'] = 'claim-align-grasp-mutual-go-carry-own-rgb-monitor'
