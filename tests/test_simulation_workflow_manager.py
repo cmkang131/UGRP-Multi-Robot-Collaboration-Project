@@ -308,6 +308,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s4-pair-live-v166": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
             "zone-s4-pair-live-v167": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
             "zone-s4-pair-live-v168": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v176": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
             "zone-s3-capture-diagnostic-v160": ["--expected-source-sha", "0" * 40, "--kind", "capture"],
             "zone-s3-x86-trim-probe-v158": ["--expected-source-sha", "0" * 40, "--model", "/nonexistent/trim.json", "--model-sha256", "0" * 64],
             "v7-exact-speed-benchmark": ["--suite", str(source), "--expected-source-sha", "0" * 40],

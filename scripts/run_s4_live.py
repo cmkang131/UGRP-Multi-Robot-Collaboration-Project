@@ -164,8 +164,15 @@ def run(b, out, receipt, *, pair_extension=None, backend_factory=None):
             if pair_driver is not None and pair_driver.handshake.failure:
                 result['pair_failure'] = pair_driver.handshake.failure
                 break
+            if pair_extension is not None and hasattr(pair_extension, 'terminal') and pair_extension.terminal():
+                result['own_executor_route_complete'] = True
+                break
             backend.advance_to(start+(i+1)*.05)
-        host.finish(round(backend.now-start,8))
+        if b.get('terminal_censor', False):
+            from harness.s4_pair_recovery import settle_without_commands
+            result['terminal_settlement'] = settle_without_commands(host, round(backend.now-start,8))
+        else:
+            host.finish(round(backend.now-start,8))
         result.update(status='PAIR_STOP' if result.get('pair_failure') else 'DEV_STAGE_FINISHED', final_state=own.state,
             departure_accepted=links['r3'].departure_accepted,
             departure_decisions=links['r3'].departure_decisions,
@@ -181,7 +188,11 @@ def run(b, out, receipt, *, pair_extension=None, backend_factory=None):
                 backend.issue(rid, {'kind':'hold'})
             if pair_extension is not None and hasattr(pair_extension, 'health'):
                 pair_extension.health(backend, runtime, host, causal, result['check_sim_s'], result=result)
-        if host is not None: host.save(out/'llm')
+        if host is not None:
+            if b.get('terminal_censor', False) and not host.finished:
+                from harness.s4_pair_recovery import settle_without_commands
+                result['terminal_settlement'] = settle_without_commands(host, result.get('check_sim_s',0.))
+            host.save(out/'llm')
         if pair_driver is not None:
             write(out/'pair-handshake.json', pair_driver.handshake.record())
             write(out/'pair-submissions.json', {r:links[r].pair_submission_log for r in ('r1','r2')})

@@ -1,0 +1,242 @@
+{
+  "research_result": false,
+  "status": "REGISTERED_NOT_SUBMITTED",
+  "execution_bundle_id": "zone-s4-pair-live-v176",
+  "workflow_version": "7.69.0",
+  "S3_source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+  "plan": {
+    "path": "/Users/changmin/projects/ugrp-wt/s4-llm/experiments/2026-10-06-s4-llm/s4live9/plan.json",
+    "sha256": "252844fdd0658e69885a83bcf9dcb38091317c4eb449faf2c2389e60c0161beb"
+  },
+  "baseline_evidence": {
+    "raw_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs",
+    "cause_record": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/cause-and-size.json",
+    "sha256": "c23fd52b44c0e41fb6ab9cf4f3cf50471b12cd5bf2c635098dc8f2f321e615ce"
+  },
+  "metrics": {
+    "reobserve": {
+      "n": null,
+      "N": 8
+    },
+    "regrasp": {
+      "n": null,
+      "N": 8
+    },
+    "fresh_go_ack": {
+      "n": null,
+      "N": 8
+    },
+    "second_carry": {
+      "n": null,
+      "N": 8
+    },
+    "goal_route": {
+      "n": null,
+      "N": 8
+    }
+  },
+  "initial_health": null,
+  "runs": [
+    {
+      "name": "s4live9-no_comm-s601-v176",
+      "condition": "no_comm",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-no_comm-s601-v176/raw",
+        "--condition",
+        "no_comm",
+        "--seed",
+        "601",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-peer_ko-s601-v176",
+      "condition": "peer_ko",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-peer_ko-s601-v176/raw",
+        "--condition",
+        "peer_ko",
+        "--seed",
+        "601",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-leader_ko-s601-v176",
+      "condition": "leader_ko",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-leader_ko-s601-v176/raw",
+        "--condition",
+        "leader_ko",
+        "--seed",
+        "601",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-structured-s601-v176",
+      "condition": "structured",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-structured-s601-v176/raw",
+        "--condition",
+        "structured",
+        "--seed",
+        "601",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-no_comm-s602-v176",
+      "condition": "no_comm",
+      "seed": 602,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-no_comm-s602-v176/raw",
+        "--condition",
+        "no_comm",
+        "--seed",
+        "602",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-peer_ko-s602-v176",
+      "condition": "peer_ko",
+      "seed": 602,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-peer_ko-s602-v176/raw",
+        "--condition",
+        "peer_ko",
+        "--seed",
+        "602",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-leader_ko-s602-v176",
+      "condition": "leader_ko",
+      "seed": 602,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-leader_ko-s602-v176/raw",
+        "--condition",
+        "leader_ko",
+        "--seed",
+        "602",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-structured-s602-v176",
+      "condition": "structured",
+      "seed": 602,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-structured-s602-v176/raw",
+        "--condition",
+        "structured",
+        "--seed",
+        "602",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    }
+  ],
+  "Mac_physics": 0,
+  "offline_model_POSTs": 0,
+  "validation": {
+    "related_tests": 20,
+    "additional_terminal_test": 1,
+    "latest_new_file": "7 passed in33.69s",
+    "physics_calls": 0,
+    "model_POSTs": 0
+  }
+}
