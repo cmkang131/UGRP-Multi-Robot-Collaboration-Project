@@ -7,8 +7,8 @@
 
 ## 판단과 재현
 
-2026-10-10: `controller-replay-abba` adapter 1.0.0은 1.1.0(완료 사례만 명시적 재사용,
-원래 측정 SHA 보존 + 새 전체 B byte gate)으로, `controller-replay-profile` 1.1.0은
+2026-10-10: `controller-replay-abba` adapter 1.0.0은 1.1.0(visibility 비교 옵션,
+측정 source/산출물 경로 명시)으로, `controller-replay-profile` 1.1.0은
 1.2.0(private binding/RGB 구간, visibility 옵션)으로 대체한다. 이전 실행 소스는
 `c35cd553df431628fb3288dd77e4850086c64f22`, 원본은 기본 checkout
 `outputs/speedctrl2-20261010-v1`에 보존한다. 당시 큐 취소/미완료 ABBA를 새 완료 판정으로 승계하지 않는다.

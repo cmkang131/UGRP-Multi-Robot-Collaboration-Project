@@ -13,6 +13,9 @@ S3·55001 ABBA와 55003 단일 A가 완료됐고, S3 연구 순번을 위해 큐
   기존 8192 pair/64 field 캐시를 바꾸면 실행 진단 카운터까지 달라진다.
   별도의 유한 순수 결과 캐시로 원래 카운터·lazy field 생성·후보·동점 순서를 유지한다.
   pair 항목은 128MiB 추정 상한과 weak owner 참조, 각 field cache는 64MiB 상한을 둔다.
+  첫 재생 후 확인한 miss 경로의 중복 field 해시를 없애 새 pair는 post-state 한 번만
+  해시한다. per-pair submap segment 원본 바이트도 32B 지문으로 바꾸고 지문/키/결과를
+  메모리 추정에 포함한다. 기존 pair 결과를 바꾼 채 재사용하지 않고 현재 field 지문을 검증한다.
 - 정확한 거리장은 최근접 장애물 witness로 추가/삭제의 영향을 추적한다.
   제거한 장애물을 최근접으로 쓰던 모든 칸을 갱신하며, 영향이 큰 경우 원래 전체 EDT로 fallback한다.
   원래 거리는 무한 범위이므로 임의의 dirty halo로 잘라 갱신하지 않는다.
@@ -83,17 +86,16 @@ receive 잔여0.205로 나뉜다. 새 RGB/private binding 타이머로 잔여를
 잠금 반환/NI0/원본 보존 기록은 `outputs/speedctrl2-20261010-control-v3/handoff.json`과
 [순번 반환 댓글](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/424#issuecomment-6092099201)에 있다.
 
-후속 후보는 S3·55003을 새 SHA의 연속 ABBA로 실행한다. 이미 완료된 55001은
-원래 source·4회 수치를 재계산해 보존하고 새 B 전체 재생을 네 기존 실행 모두와
-직접 비교한다(`--abba-case s3-v148 --abba-case ego59-55003 --completed-baseline <v1>`).
-재사용한 측정 SHA와 새 검증 SHA를 구분하며 새 부하 조건의 speedup으로 재표현하지 않는다.
+후속 후보의 miss 해시/메모리 경로가 두 ego 사례 모두에 영향을 주므로 세 입력을
+**동일한 새 SHA의 연속 ABBA**로 다시 측정한다. 이전 source·4회 수치는 진단 자료로
+보존하며 최종 후보의 새 부하 조건 speedup으로 재표현하지 않는다.
 별도 cProfile·기본 off local2m·종료 심판 ABBA는 새 S3 스모크와 무거운 사후 작업이
 완료·순번 반환된 다음 수행한다. 새 후보는 아직 온라인 ≤1.5를 달성했다고 주장하지 않는다.
 
 ## ABBA 계획과 채택 기준
 
 [plan.json](plan.json)의 초기 계획은 S3 v148, ego59 55001/55003 각각 **A→B→B→A**였다.
-순번 반환 이후의 명시적 재사용 범위는 위 후속 계획과 각 실행의 plan/measurement_source에 남긴다.
+순번 반환 이후의 새 전체 비교 범위와 SHA는 각 실행의 plan/measurement_source에 남긴다.
 A는 #423 exact-v1/scan off/referee off/plain 기록,
 B는 exact-v1/scan exact-v2/referee owned-v1/gzip-v1 기록이다.
 후속 후보는 A visibility off/B shared-v1도 비교한다.

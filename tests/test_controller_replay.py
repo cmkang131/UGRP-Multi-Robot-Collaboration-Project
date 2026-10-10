@@ -2,19 +2,6 @@ import pytest
 from scripts.profile_controller_replay import Timers
 
 
-def test_reuse_rejects_partial_duplicate_or_misordered_abba_before_execution():
-    import copy
-    from scripts.benchmark_controller_replay import completed_case,ORDER
-    row=dict(id='saved',components=[dict(order=i,arm=a) for i,a in enumerate(ORDER,1)],proof=dict(verified=True))
-    # A canceled batch may contain a genuinely completed case, but its pending
-    # partial case must never become a four-run timing comparison.
-    assert completed_case(dict(complete=False,cases=[row]),'saved') is row
-    for rows in (row['components'][:1],row['components'][::-1]):
-        bad=copy.deepcopy(row);bad['components']=rows
-        with pytest.raises(ValueError,match='INCOMPLETE'):completed_case(dict(cases=[bad]),'saved')
-    with pytest.raises(ValueError,match='AMBIGUOUS'):completed_case(dict(cases=[row,row]),'saved')
-
-
 def test_private_binding_timings_reach_copied_pure_globals(monkeypatch):
     import sys
     from types import ModuleType

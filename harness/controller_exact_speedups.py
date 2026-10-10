@@ -383,8 +383,14 @@ class GraphLoopMemo:
                     else:
                         h.update(repr(key(value)).encode())
             return h.digest()
+        segments=prepared.segments
+        if type(segments) is not np.ndarray or segments.dtype.hasobject:
+            raise TypeError('unsupported prepared segments')
+        h=hashlib.sha256()
+        h.update(repr((segments.dtype.str,segments.shape,segments.strides)).encode())
+        h.update(segments.tobytes())
         return (snapshot(prepared._probability), snapshot(prepared._distance),
-                key(prepared.segments), bool(prepared.grid.cells))
+                h.digest(), bool(prepared.grid.cells))
 
     def __call__(self, submap, row, initial, options, *, prepared=None):
         if prepared is None:
@@ -392,28 +398,33 @@ class GraphLoopMemo:
         try:
             # Cache keys must not retain the Prepared owner (and its grid/fields).
             signature = (weakref.ref(prepared), bool(submap['grid'].cells), key(row['segments']), key(initial), key(options))
-            current = (signature, self.fields(prepared))
-            hash(current)
+            hash(signature)
         except (TypeError, AttributeError):
             return self.function(submap, row, initial, options, prepared=prepared)
-        saved = self.entries.get(current)
+        saved = self.entries.get(signature)
         if saved is not None:
-            self.hits += 1
-            self.entries.move_to_end(current)
-            return copy.deepcopy(saved[0])
+            try:current_fields=self.fields(prepared)
+            except (TypeError,AttributeError):
+                return self.function(submap,row,initial,options,prepared=prepared)
+            if current_fields==saved[2]:
+                self.hits += 1
+                self.entries.move_to_end(signature)
+                return copy.deepcopy(saved[0])
         result = self.function(submap, row, initial, options, prepared=prepared)
         self.misses += 1
         # Lazy construction is part of the original call; key its post-state.
-        current = (signature, self.fields(prepared))
-        size = len(repr(signature)) + len(repr(result)) + 256
+        # A new signature cannot hit: do not hash large fields before computing.
+        try:fields=self.fields(prepared)
+        except (TypeError,AttributeError):return result
+        size = len(repr(signature)) + len(repr(fields)) + len(repr(result)) + 256
         if size <= self.max_bytes:
-            if current in self.entries:
-                self.bytes -= self.entries[current][1]
-            self.entries[current] = (copy.deepcopy(result), size)
-            self.entries.move_to_end(current)
+            if signature in self.entries:
+                self.bytes -= self.entries[signature][1]
+            self.entries[signature] = (copy.deepcopy(result), size,fields)
+            self.entries.move_to_end(signature)
             self.bytes += size
             while len(self.entries) > self.maxsize or self.bytes > self.max_bytes:
-                _, (_, removed) = self.entries.popitem(last=False)
+                _, (_, removed,_) = self.entries.popitem(last=False)
                 self.bytes -= removed
         return result
 

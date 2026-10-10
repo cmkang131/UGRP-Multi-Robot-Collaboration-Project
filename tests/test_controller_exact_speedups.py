@@ -129,9 +129,14 @@ def test_loop_result_cache_owner_mutation_lazy_fields_and_output_isolation():
             self.grid=S(cells={(0,0):1.}); self.builds=0
     p=Prepared(); submap={'grid':p.grid}; row={'segments':[[[0.,0.],[1.,1.]]]}; initial=np.zeros(3)
     cache=GraphLoopMemo(original,maxsize=2)
+    fingerprints=[]
+    fields=cache.fields
+    cache.fields=lambda owner:(fingerprints.append(1),fields(owner))[1]
     expected=cache(submap,row,initial,None,prepared=p)
+    assert len(fingerprints)==1  # a unique pair performs only the post-state hash
     cache(submap,row,initial,None,prepared=p)['pose'][0]=999
     assert cache(submap,row,initial,None,prepared=p)==expected and p.builds==1 and len(calls)==1
+    assert len(fields(p)[2])==32  # no full submap segment array retained per pair
     p._probability.values[0,0] += .1
     assert cache(submap,row,initial,None,prepared=p)['score'] != expected['score']
     q=Prepared()

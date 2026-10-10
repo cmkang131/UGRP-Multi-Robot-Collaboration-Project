@@ -28,17 +28,6 @@ EGO_FILES = tuple(name+'.json' for name in (
     'own-controller.jsonl','own-contacts.jsonl','frontend-covariances.jsonl','online-maps.jsonl')
 
 
-def completed_case(baseline, ident):
-    found=[c for c in baseline['cases'] if c['id']==ident]
-    if len(found)!=1:raise ValueError('AMBIGUOUS_BASELINE_CASE')
-    previous=found[0]
-    rows=previous['components']
-    if ([(r['order'],r['arm']) for r in rows]!=list(enumerate(ORDER,1)) or
-            not previous['proof']['verified']):
-        raise ValueError('INCOMPLETE_BASELINE_CASE')
-    return previous
-
-
 def priority_check(receipt, expected_run=None):
     data = json.loads(receipt.read_text())
     result = Path(data['result_path'])
@@ -259,8 +248,6 @@ def main():
     p.add_argument('--profile',action='store_true')
     p.add_argument('--diagnostic-profile',action='store_true',help='separate profiled B replay after unprofiled ABBA')
     p.add_argument('--referee-abba',action='store_true',help='separate evaluator-event ABBA from finalized priority run')
-    p.add_argument('--abba-case',action='append',help='selected case IDs; others require an explicit completed baseline and full new B byte validation')
-    p.add_argument('--completed-baseline',type=Path,help='reuse only completed ABBA cases; keep their original source/timings and validate all four against a new B')
     p.add_argument('--local-submap-m',type=float,default=0.)
     p.add_argument('--execute',action='store_true')
     args=p.parse_args()
@@ -269,53 +256,21 @@ def main():
     if not math.isfinite(args.local_submap_m) or not 0<=args.local_submap_m<=6:
         p.error('local radius must be finite and in [0,6]')
     plan=json.loads(args.plan.read_text())
-    selected=set(args.abba_case or [c['id'] for c in plan['cases']])
-    if selected-{c['id'] for c in plan['cases']}:p.error('unknown ABBA case')
-    baseline=None
-    if args.completed_baseline:
-        baseline=json.loads((args.completed_baseline/'abba.json').read_text())
-    if any(c['id'] not in selected for c in plan['cases']) and baseline is None:
-        p.error('unselected cases require a completed baseline')
-    for case in plan['cases']:
-        if case['id'] not in selected:completed_case(baseline,case['id'])
     if not args.execute:
-        print(json.dumps(dict(execution_started=False,order=ORDER,cases=plan['cases'],physics_runs=0,
-            selected_abba_cases=sorted(selected),validation_only_cases=[c['id'] for c in plan['cases'] if c['id'] not in selected])))
+        print(json.dumps(dict(execution_started=False,order=ORDER,cases=plan['cases'],physics_runs=0)))
         return
     source_check(args.expected_source_sha)
     assert int(subprocess.check_output(['ps','-o','ni=','-p',str(os.getpid())]))==0
     priority=priority_check(args.priority_receipt,plan['priority_run'])
     args.output.mkdir(parents=True,exist_ok=False)
     write(args.output/'plan.json',dict(plan=plan,plan_sha256=sha(args.plan),source=args.expected_source_sha,
-        order=ORDER,priority=priority,profile=args.profile,local_submap_m=args.local_submap_m,
-        selected_abba_cases=sorted(selected),completed_baseline=str(args.completed_baseline) if baseline else None))
+        order=ORDER,priority=priority,profile=args.profile,local_submap_m=args.local_submap_m))
     args.deadline=time.monotonic()+args.budget_s
     held,owned=acquire_slot(args.expected_source_sha,'speedctrl2 serial ABBA saved inputs; physics0',
         wait_s=min(7200,args.budget_s),expected_minutes=math.ceil(args.budget_s/60))
     report=dict(schema='ugrp.controller_abba.v1',source=args.expected_source_sha,cases=[],complete=False)
     try:
         for case in plan['cases']:
-            if case['id'] not in selected:
-                paths=[args.completed_baseline/(case['id']+'-'+str(i+1)+'-'+arm) for i,arm in enumerate(ORDER)]
-                output=args.output/(case['id']+'-validation')
-                print(f"VALIDATE {case['id']} new B against completed baseline ABBA",flush=True)
-                invoke(case,output,args,scan='exact-v2',storage='gzip-v1')
-                proof=compare_runs(paths+[output],case['kind'])
-                if not proof['verified']:raise RuntimeError('FINAL_BEHAVIOR_BYTES_DIFFER')
-                if not all(json.loads((p/'result.json').read_text())['implementation_sha']==baseline['source'] for p in paths):
-                    raise ValueError('BASELINE_SOURCE_MISMATCH')
-                rows=components(paths);load=load_assessment(paths)
-                a=statistics.fmean(rows[i]['wall_per_input_sim'] for i in (0,3))
-                b=statistics.fmean(rows[i]['wall_per_input_sim'] for i in (1,2))
-                entry=dict(id=case['id'],proof=proof,components=rows,load=load,A_wall_per_input_sim=a,
-                    B_wall_per_input_sim=b,percent_saved=100*(a-b)/a if load['comparable'] else None)
-                entry.update(measurement_source=baseline['source'],paths=[str(p) for p in paths],
-                    reused_completed_measurement=True,validation=dict(path=str(output),proof=proof,
-                        result=json.loads((output/'result.json').read_text())),
-                    baseline_manifest=dict(path=str(args.completed_baseline/'abba.json'),sha256=sha(args.completed_baseline/'abba.json')))
-                report['cases'].append(entry)
-                write(args.output/(case['id']+'-comparison.json'),entry)
-                continue
             paths=[]
             for index,arm in enumerate(ORDER):
                 output=args.output/(case['id']+'-'+str(index+1)+'-'+arm)
@@ -340,7 +295,7 @@ def main():
                 output=args.output/(case['id']+'-profile')
                 invoke(case,output,profile_args,scan='exact-v2',storage='gzip-v1')
                 entry=next(c for c in report['cases'] if c['id']==case['id'])
-                reference=Path(entry['validation']['path']) if 'validation' in entry else args.output/(case['id']+'-2-B')
+                reference=args.output/(case['id']+'-2-B')
                 entry['diagnostic_profile']=dict(result=json.loads((output/'result.json').read_text()),
                     proof=compare_runs([reference,output],case['kind']))
                 if not entry['diagnostic_profile']['proof']['verified']:
@@ -351,7 +306,7 @@ def main():
                 output=args.output/(case['id']+'-local')
                 invoke(case,output,args,scan='exact-v2',storage='gzip-v1',local=args.local_submap_m)
                 entry=next(c for c in report['cases'] if c['id']==case['id'])
-                reference=Path(entry['validation']['path']) if 'validation' in entry else args.output/(case['id']+'-2-B')
+                reference=args.output/(case['id']+'-2-B')
                 entry['local_option']=dict(radius_m=args.local_submap_m,default_on=False,
                     result=json.loads((output/'result.json').read_text()),
                     delta=pose_difference(reference,output),
