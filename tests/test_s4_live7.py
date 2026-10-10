@@ -81,7 +81,7 @@ def test_scheduler_continue_in_lower_and_align_renews_both_endpoints(tmp_path,se
         raw=completion_body(json.dumps(reply),usage=FIXTURE['usage'],model='fixture-model')
         self.responses.append(raw);return io.BytesIO(raw)
     monkeypatch.setattr(PairWire,'__call__',wire)
-    host,driver,inner=build(tmp_path,setup_data,'no_comm');h=driver.handshake;h.carry_lease_renewal=hs.PHASE_HEARTBEAT
+    host,driver,inner=build(tmp_path,setup_data,'no_comm');h=driver.handshake;h.carry_lease_renewal=hs.ACTIVE_PHASE_HEARTBEAT
     host.begin()
     for i in range(1,301):
         t=i/10

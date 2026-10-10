@@ -62,9 +62,10 @@ def evaluate(raw,variant):
 
 def main(argv=None):
     p=argparse.ArgumentParser();p.add_argument('--raw-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--plan',type=Path,default=ROOT/RECORD/'plan.json')
     a=p.parse_args(argv)
     if a.output.exists():raise FileExistsError(a.output)
-    results=[evaluate(a.raw_root/r['name']/'raw',r['variant']) for r in read(ROOT/RECORD/'plan.json')['runs']]
+    results=[evaluate(a.raw_root/r['name']/'raw',r['variant']) for r in read(a.plan)['runs']]
     a.output.write_text(json.dumps(results,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     print(json.dumps([{k:r[k] for k in ('condition','variant','status','continue_transport','goal_transport','lowering','distance','heartbeats')} for r in results]))
 
