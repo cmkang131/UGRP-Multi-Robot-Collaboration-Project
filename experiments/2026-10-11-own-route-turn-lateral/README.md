@@ -7,4 +7,4 @@ B 새 판정=자기가 확인한 바닥 칸 안5프레임; 기존 .20m·현재�
 참고 자료: [Borenstein–Feng 1996](https://doi.org/10.1109/70.544770), [원문](https://web.cecs.pdx.edu/~mperkows/CLASS_479/S2006/Paper-correction-odometry-error.pdf): 양방향 기동·반복으로 체계/산포 분리. 차동차륜 공식 대신 메카넘 명령별 Y 평균곡선, 공간 제약상 .26m 사각으로 변경.
 참고 자료: [OpenCV HSV](https://docs.opencv.org/4.x/df/d9d/tutorial_py_colorspaces.html): 기존 HSV+연결성/형상 유지, 알려진 B/pickup 재질의 hue 최근접 분류(동일 사전확률); 기존 v3 minAreaRect 규격 확인, 위치/정답 마스크 입력0; 부분시야 recall 비용.
 Mac 물리/재생0, x86 영속 raw·3분 초기 표식 확인·ARM SHA 보관·Mac 가벼운 회수; 새 물리 전 관련 시험과 커밋, 결과 후 재튜닝0.
-결과: 21:58Z 부하110.92>51로 보정0/5 입장대기, 평가0/24; [summary.json](summary.json)에 근거·SHA. 15시험초록, PR #405 DRAFT.
+결과: 보정 첫5 HOST 명령오류·다음5 벽접촉(적합사용0), 기동/관문 유지·중앙 fixture+CAD 팽창 preflight 추가; [summary.json](summary.json). 17시험초록·평가0/24·PR405 DRAFT.

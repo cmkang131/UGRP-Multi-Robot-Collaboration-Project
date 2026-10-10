@@ -70,3 +70,11 @@ def test_every_clock_command_passes_actual_real_port_contract_without_physics():
         for t,cmd in commands.items():
             assert profile_key(cmd,False) in model()['profiles']
             assert p.apply(cmd,t/20)['ok']
+
+
+def test_CAD_swept_radius_rejects_old_north_start_and_admits_central_fixture():
+    from scripts.run_turn_lateral_calibration import preflight
+    with pytest.raises(ValueError,match='INTERSECTS_WALL'):preflight(70001,[3.5,1.1,0.])
+    for seed in (70001,70002):
+        record=preflight(seed)
+        assert record['minimum_clearance_m']>.5 and record['cad_radius_m']>.15

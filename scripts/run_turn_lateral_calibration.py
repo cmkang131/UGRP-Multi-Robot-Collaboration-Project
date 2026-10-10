@@ -15,6 +15,7 @@ from scripts.run_wall_servo_stiffness import arm
 
 ROOT = Path(__file__).resolve().parents[1]
 SEEDS = tuple(range(70001,70006))
+SPAWN = [3.5,-.85,0.]
 
 
 def schedule(seed):
@@ -44,19 +45,46 @@ def schedule(seed):
     return blocks,commands,tick
 
 
+def preflight(seed,spawn=SPAWN):
+    """Authored test-fixture geometry only; never used as robot observations.
+
+    Standard configuration-space obstacle inflation by the CAD circumscribed
+    radius, including SEARCH arm links, and the existing .02m padding.
+    """
+    from harness.active_camera import SEARCH
+    from harness.floor_goal_self_mask import body_envelopes
+    from harness.self_pulse_rotation import RotationPulseOdometry
+    spec=ROOT/'maps/zones_final_v3/zone_wide_two_doors_final_v3.json'
+    walls=[r for r in json.loads(spec.read_text())['obstacles'] if r['kind']=='wall']
+    radius=max(float(np.linalg.norm(v[:,:2],axis=1).max()) for _,v in body_envelopes(SEARCH,'camera_v3'))+.02
+    _,commands,ticks=schedule(seed);d=RotationPulseOdometry();d._pose=np.array(spawn,float)
+    closest=math.inf
+    for tick in range(ticks+1):
+        d.advance(tick/20)
+        xy=np.asarray(d.pose[:2])
+        clearance=min(float(np.linalg.norm(np.maximum(abs(xy-r['center_m'])-r['half_extents_m'],0)))-radius for r in walls)
+        closest=min(closest,clearance)
+        if clearance<=0:raise ValueError('CALIBRATION_SWEEP_INTERSECTS_WALL')
+        if tick in commands:d.command(dict(t=tick/20,**commands[tick]))
+    return dict(spawn=spawn,minimum_clearance_m=closest,cad_radius_m=radius,gt_runtime_feedback=False,
+                setup_map_sha256=hashlib.sha256(spec.read_bytes()).hexdigest())
+
+
 def capture(a):
     from sim.pulse_rotation_audit import PhysicsBackend
     blocks,commands,ticks=schedule(a.seed)
+    fixture=preflight(a.seed)
     from harness.self_pulse_odom import model,profile_key
     # Reject command vocabulary mismatches before creating a physics backend.
     for cmd in commands.values():
         if profile_key(cmd,False) not in model()['profiles']:
             raise ValueError('UNREGISTERED_CALIBRATION_PRIMITIVE')
     b=frozen_bundle('calibration',ROOT.name)
-    b.update(execution_bundle_id=f'egomap70-calibration-{a.seed}',spawn=[3.5,1.1,0.],case_cap_s=ticks/20)
+    b.update(execution_bundle_id=f'egomap70-calibration-{a.seed}',spawn=SPAWN,case_cap_s=ticks/20)
     b['task']['seed']=a.seed
     a.output.mkdir(parents=True,exist_ok=False)
     dump(a.output/'bundle.json',b);dump(a.output/'schedule.json',dict(blocks=blocks,commands=commands,ticks=ticks))
+    dump(a.output/'preflight.json',fixture)
     result=dict(seed=a.seed,status='HOST_ERROR',host='oracle-x86',source_sha=ROOT.name,gt_feedback=False,model_calls=0)
     backend=None;wall=time.monotonic()
     try:

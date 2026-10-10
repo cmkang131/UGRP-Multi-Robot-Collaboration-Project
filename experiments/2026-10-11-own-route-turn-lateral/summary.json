@@ -1,15 +1,16 @@
 {
   "round": "egomap70",
-  "status": "CALIBRATION_HOST_FIX",
+  "status": "CALIBRATION_FIXTURE_FIX",
   "source_sha": "8938a9c81052be5e93e2374c305cf9b61643d3ee",
   "measurement_source": "971db97cefbe15296c5067ed419e466376f011b2",
   "host": "oracle-x86",
   "calibration": {
     "registered": 5,
-    "started": 5,
-    "completed": 5,
+    "started": 10,
+    "completed": 10,
     "host_errors": 5,
-    "valid": 0
+    "valid": 0,
+    "physical_failures": 5
   },
   "evaluation": {
     "registered": 24,
@@ -18,7 +19,7 @@
   },
   "local_tests": {
     "files": 2,
-    "passed": 16
+    "passed": 17
   },
   "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data",
   "references": {
@@ -231,5 +232,11 @@
     "cause": "REAL primitive speed/duration mismatch: forward .30 instead of registered .35",
     "retry": "same seeds in fixed single batch v2; no partial data fitted",
     "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data"
+  },
+  "calibration_fixture_error": {
+    "cause": "north wall at y1.45, square reaches y1.275 plus robot extent",
+    "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data",
+    "fit_used": false,
+    "repeat": "same maneuvers and split, central setup spawn and preflight v3"
   }
 }
