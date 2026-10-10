@@ -12,6 +12,7 @@ import shutil
 from harness.zone_final_pair_binding import bind
 from harness.zone_s3_alignment_entry import attach_endpoint, OPTION
 from harness.python_source_closure import source_closure
+from sim.s3_stage_safety import PhysicsBackend as StageBackend
 from scripts import run_s3_alignment_probe as previous
 from scripts import run_s3_alignment_entry_probe as entry
 
@@ -34,6 +35,7 @@ def bundle(sha, case, alignment_entry=OPTION):
     b.update(execution_bundle_id=BUNDLE_ID, workflow_version=WORKFLOW_VERSION,
         schema='ugrp.s3_oracle_stage_probe.v155', host='oracle-a1', render_backend='osmesa',
         alignment_entry=alignment_entry, stop_after_close=case != 'cyan',
+        physical_supervisor='S2_StopGuard_r3_abort_only_v1',
         stage_scope='align-hover-descent-close' if case == 'pair' else 'align-hover-descent-close-lift-carry',
         setup_fixture=FIXTURE, source_raw='committed evaluation-side setup extract',
         wall_cap_s=1800., parent_bundles=[*b['parent_bundles'], entry.BUNDLE_ID],
@@ -72,7 +74,7 @@ def run(b, out):
             'machine': platform.machine(), 'concurrent_probe_limit': 3,
             'source_mode': 'oracle_run committed git archive; no local Mac execution'}
     result = bind(previous.run, setup_record=setup_record, enter_pair=enter_pair,
-        environment_record=environment_record)(b, out)
+        environment_record=environment_record)(b, out, backend_factory=StageBackend)
     result.update(host='oracle-a1', alignment_entry=b['alignment_entry'], stage_scope=b['stage_scope'])
     # The existing host terminates actual tilt/drop faults. Preserve its full
     # traceback and classify that terminal separately from execution errors.

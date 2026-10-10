@@ -23,3 +23,5 @@ v154를 보존하고 새 번들v155/workflow7.48.0으로 세 개를 병렬 실�
 - [MuJoCo Python headless rendering](https://mujoco.readthedocs.io/en/stable/python.html#rendering): 플랫폼별 OpenGL context 경로를 명시하고 실제 환경을 기록한다. Oracle 실행은 사용자 지정 OSMesa다.
 
 실행 전 관련3파일의26개 통과, Oracle 환경 fixture의 우선순위 모의를 고친1개 재실행 통과: 총27개 확인. 실제 모터 stub 경로·Mac 실행 거절·archive SHA·닫기 후 상승/운반 상태 진행을 검증했다. 물리·렌더·저장 재생0.
+
+상승 전 source 점검에서 S3 host는 낙하/기울기를 감시하지만 S2의0.3초 양손가락 접촉 이탈 가드가 없음을 확인했다. 새 r3 probe에만 기존 S2 `StopGuard`를 그대로 연결한다(높이0.06m·이탈0.3초·바닥0.005m·기울기10도, 수정 없음). GT는 별도 host의 abort만 결정하며 위치/행동 보정에 반환하지 않는다. pair와 기존v153/v154 기본 경로는 유지한다.

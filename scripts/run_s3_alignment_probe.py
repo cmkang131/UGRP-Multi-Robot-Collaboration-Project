@@ -132,7 +132,7 @@ def enter_pair(rt,now,option):
         attach_endpoint(ep,option)
     return endpoints
 
-def run(b,out):
+def run(b,out,*,backend_factory=None):
     from sim.s3_motion_ports import PhysicsBackend
     from harness.zone_s3_recovery_runtime import Runtime
     out.mkdir(parents=True,exist_ok=False);write(out/'bundle.json',b);write(out/'environment.json',environment_record())
@@ -140,7 +140,7 @@ def run(b,out):
         case=b['case'],servo_option=b['servo_option'],gt_inputs=False,loadavg_start=os.getloadavg())
     started=time.monotonic();host=rt=None;states=[];entry=None;eps={};closed_since=None
     try:
-        host=PhysicsBackend(b,out,seed=b['seed']);host.reset(b['reset_cap_s'])
+        host=(backend_factory or PhysicsBackend)(b,out,seed=b['seed']);host.reset(b['reset_cap_s'])
         restore_scene(host,setup_record(RAW,b['case']))
         start=host.now;host.set_deadline(start+CAP)
         static=parent.hp.resolve(b['map_id'])[0]

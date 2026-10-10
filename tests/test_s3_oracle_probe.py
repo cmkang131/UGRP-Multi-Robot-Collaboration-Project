@@ -80,3 +80,24 @@ def test_actual_probe_loop_reaches_lift_and_carry_only_when_requested(tmp_path,m
         out=tmp_path/str(stop);result=p.run(b,out)
         assert result['status']=='DEV_STAGE_FINISHED'
         assert result['final']['r3']['state']==('grasp' if stop else 'carry')
+
+
+def test_r3_stage_uses_existing_s2_grip_loss_abort_without_control_feedback():
+    import numpy as np
+    from sim.s3_stage_safety import check_cyan, StopGuard, PhysicalStop
+    from types import SimpleNamespace as NS
+    body=NS(xipos=np.array([0.,0.,.02]));robot=NS(xmat=np.eye(3).ravel())
+    m=NS(geom_type=np.array([6]),geom_size=np.array([[.02,.02,.015]]))
+    d=NS(body=lambda name: body if name=='cargo_cyan_1' else robot,contact=[],ncon=0,
+        geom_xpos=np.array([[0.,0.,.02]]),geom_xmat=np.array([np.eye(3).ravel()]))
+    rows=[];host=NS(world=NS(model=m,data=d),objects={'cyan_1':dict(kind='cyan',body_name='cargo_cyan_1')},
+        _box_geom={'cyan_1':{0}},_fingers={'r3':({1},{2})},commands={'r3':{1:1500}},now=0.,
+        _append=lambda path,row: rows.append((path,row)))
+    guard=StopGuard();check_cyan(host,guard)  # before lift, missing contact is not a stop
+    body.xipos[2]=.10;d.geom_xpos[0,2]=.10;host.now=1.
+    d.contact=[NS(geom1=0,geom2=1),NS(geom1=0,geom2=2)];d.ncon=2;check_cyan(host,guard)
+    d.contact=d.contact[:1];d.ncon=1;host.now=1.05;check_cyan(host,guard)
+    host.now=1.35
+    with pytest.raises(PhysicalStop,match='GRIP_LOSS'):check_cyan(host,guard)
+    assert all(not row['feedback_to_controller'] for _,row in rows)
+    host.commands['r3'][1]=2000;check_cyan(host,guard)  # normal release stays allowed
