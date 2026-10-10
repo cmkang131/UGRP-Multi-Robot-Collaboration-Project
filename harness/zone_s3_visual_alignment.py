@@ -15,6 +15,8 @@ REASONS = frozenset(('align_entry', 'fix_gap', 'sigma_reserve', 'pose_missing',
 
 def attach_endpoint(ep, audit):
     ctl = ep.controller
+    from harness.zone_s3_pregrasp_reference import attach as pregrasp
+    pregrasp(ctl,audit)
     driver = ctl.driver
     tick = driver.tick
     def approach_tick(now):
@@ -46,7 +48,8 @@ def attach_endpoint(ep, audit):
     ctl._begin_align_relook = begin
     ctl.s3_visual_alignment = dict(option=OPTION, error_source='own calibrated RGB beam',
         pf_used_for_local_error=False, aligned_receipt_thresholds_changed=False,
-        sequence=['visible RGB alignment', 'fixed hover', 'blind final descent', 'mutual close'])
+        sequence=['visible RGB alignment/standoff', 'commanded hover without renewed visual receipt',
+                  'blind final descent', 'mutual close'])
 
 
 def attach(pair, *, visual_alignment='off', submit=None):
@@ -66,6 +69,7 @@ def attach(pair, *, visual_alignment='off', submit=None):
     pair.s3_visual_submit = submit
     record = pair.record
     pair.record = lambda: {**record(), 'visual_alignment': {ep.own.robot_id:
-        copy.deepcopy(ep.controller.s3_visual_alignment) for s in pair.team.sessions
-        for ep in s['endpoints'].values()}}
+        {**copy.deepcopy(ep.controller.s3_visual_alignment),
+         'pregrasp_references':copy.deepcopy(ep.controller.s3_pregrasp_references)}
+        for s in pair.team.sessions for ep in s['endpoints'].values()}}
     return pair

@@ -277,6 +277,15 @@ def sweep(out, monkeypatch, *, invalid_pose_cases=False):
         def descend(ep=ep):
             ctl=ep.controller;ctl.grip_base=[GRASP_RADIUS_M,0.]
             ctl.pregrasp_done=True
+            if hasattr(ctl,'s3_pregrasp_references'):
+                # Fixed perception response at the EARLY RGB boundary. Hover
+                # intentionally has no beam pixels/visual confirmation.
+                track=ctl.blind_track;track.segment=ctl.seg;track.t=p.host.now
+                track.motion=(0.,0.,0.);track.until=p.host.now
+                track.beam=dict(grip_base_m=[GRASP_RADIUS_M,0.],axis_heading_rad=0.,
+                    std_xy_m=.015,std_yaw_rad=.018,anchor_time_s=p.host.now,
+                    anchor_frame_id=ep.own.last_obs['frame_id'],anchor_sha256=ep.own.last_obs['sha256'],
+                    anchor_servo=dict(ep.own.servo),prediction_time_s=p.host.now)
             ctl._queue_open_descent(p.host.now)
             p.arm(ep,ctl.arm.until+.05)
             monkeypatch.setattr(ctl,'preclose_check',lambda t,o:True)
@@ -284,10 +293,14 @@ def sweep(out, monkeypatch, *, invalid_pose_cases=False):
                 ctl.blind_track.blind_window=dict(drop_m=.071)
             monkeypatch.setattr(ctl.blind_track,'confirm',confirm)
             monkeypatch.setattr(ctl.blind_track,'window_record',lambda:dict(fixture='fixed hover perception'))
-            monkeypatch.setattr(ctl.blind_track,'command',lambda *a:None)
+            if not hasattr(ctl,'s3_pregrasp_references'):
+                monkeypatch.setattr(ctl.blind_track,'command',lambda *a:None)
             for _ in range(2):
                 p.refresh(p.host.now+.1);ctl._pregrasp_descend(p.host.now,True)
             assert ctl.blind_phase=='descend', ctl.failure
+            if hasattr(ctl,'s3_pregrasp_references'):
+                assert ctl.blind_track.blind_window['hover_visual_confirmation'] is False
+                assert ctl.blind_track.blind_window['visual_confirmed_at_s']<p.host.now
             p.arm(ep,ctl.arm.until+.05)
             ctl._pregrasp_descend(p.host.now,True)
             assert ctl.state=='wait_close', (ctl.state,ctl.failure)

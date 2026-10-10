@@ -7,12 +7,34 @@ the previous team clears it. No world/peer pose capability crosses the relay.
 import copy
 import math
 from dataclasses import dataclass, asdict
+from harness.zone_own_guards import CHASSIS_X_M, CHASSIS_Y_M
+from harness.zone_own_guards_v3 import body_spheres
 
 OPTION = 'door_lease_v2'
 TEAMS = (('r1', 'r2'), ('r3',))
 ROBOTS = ('r1', 'r2', 'r3')
 LEASE_S, NO_PROGRESS_S = 30., 10.
 APPROACH_M, PROGRESS_M = .45, .02
+
+
+def estimated_bounds(r, servo, *, loaded, offset=None, envelope=None):
+    """Public chassis/arm geometry and own issued posture, never peer truth."""
+    co,si=math.cos(r.yaw_rad),math.sin(r.yaw_rad)
+    points=[(x,y,0.) for x in CHASSIS_X_M for y in (-CHASSIS_Y_M,CHASSIS_Y_M)]
+    points += [(x,y,radius) for x,y,z,radius in body_spheres(servo,loaded=loaded)]
+    world=[(r.x_m+co*x-si*y,r.y_m+si*x+co*y,radius) for x,y,radius in points]
+    radius=max(math.hypot(x,y)+a for x,y,a in points)
+    if loaded and offset is not None:
+        ox,oy,heading=offset; yaw=r.yaw_rad-heading
+        c,s=math.cos(yaw),math.sin(yaw)
+        x,y=r.x_m-c*ox+s*oy,r.y_m-s*ox-c*oy
+        a,b=envelope
+        world += [(x+c*dx-s*dy,y+s*dx+c*dy,0.) for dx in (-a,a) for dy in (-b,b)]
+        radius=max(radius,math.hypot(ox,oy)+math.hypot(a,b))
+    bounds=(min(x-a for x,y,a in world),max(x+a for x,y,a in world),
+            min(y-a for x,y,a in world),max(y+a for x,y,a in world))
+    padding=3*r.std_xy_m+2*radius*math.sin(min(math.pi,3*r.std_yaw_rad)/2)
+    return bounds,padding
 
 
 @dataclass(frozen=True)
@@ -92,26 +114,32 @@ class Client:
 
     def offer(self, now):
         r = self.own.last_report
-        valid = (r is not None and r.initialized and all(math.isfinite(float(v))
-            for v in (r.t_est, r.x_m, r.y_m, r.yaw_rad, r.std_xy_m))
-            and -1e-8 <= now-r.t_est <= 1.)
+        try:
+            valid = (r is not None and r.initialized and all(math.isfinite(float(v))
+                for v in (r.t_est, r.x_m, r.y_m, r.yaw_rad, r.std_xy_m, r.std_yaw_rad))
+                and r.std_xy_m >= 0 and r.std_yaw_rad >= 0
+                and -1e-8 <= now-r.t_est)
+        except (TypeError,ValueError):
+            valid = False
         if not valid:
             self.request = True
             return Signal(self.robot_id, True, False, False)
+        if now-r.t_est > 1.:
+            if self.audit is None:
+                self.request = True
+                return Signal(self.robot_id, True, False, False)
+            self.audit.note(self.own,now,'DOOR_POSE_STALE','door.clearance',
+                estimate_age_s=now-r.t_est)
         loaded = self.own.pose.provider.loc._pf.load.loaded
-        x,y=r.x_m,r.y_m
-        ex=ey=.28
-        if loaded and self.robot_id != 'r3':
-            ox,oy,heading=self.offset; yaw=r.yaw_rad-heading
-            co,si=math.cos(yaw),math.sin(yaw)
-            x,y=x-co*ox+si*oy,y-si*ox-co*oy
-            a,b=self.envelope
-            ex,ey=abs(co)*a+abs(si)*b,abs(si)*a+abs(co)*b
-        padding=3*r.std_xy_m
-        dx, dy = abs(x-self.x)-self.hx-ex, abs(y-self.y)-self.hy-ey
+        (xmin,xmax,ymin,ymax),padding=estimated_bounds(r,self.own.servo,
+            loaded=loaded,offset=self.offset if self.robot_id!='r3' else None,
+            envelope=self.envelope)
+        dx=max(xmin-self.x-self.hx,self.x-self.hx-xmax)
+        dy=max(ymin-self.y-self.hy,self.y-self.hy-ymax)
         if self.audit is None:
             dx,dy=dx-padding,dy-padding
-        elif ((dx > .05 or dy > .05) and not (dx-padding > .05 or dy-padding > .05)):
+        elif any((dx > margin or dy > margin) and
+                 not (dx-padding > margin or dy-padding > margin) for margin in (.05,APPROACH_M)):
             self.audit.note(self.own,now,'DOOR_POSE_UNCERTAIN','door.clearance',
                 sigma_padding_m=padding,continued_with_geometry='current own estimate')
         clear = dx > .05 or dy > .05

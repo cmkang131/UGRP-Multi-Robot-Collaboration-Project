@@ -144,3 +144,89 @@ def test_full_existing_sweep_on_new_options(tmp_path,monkeypatch):
     monkeypatch.setattr(probe,'Runtime',Runtime)
     report=probe.sweep(tmp_path,monkeypatch,invalid_pose_cases=True)
     assert report['error_count']==0,report['errors']
+
+
+def test_door_clearance_uses_own_arm_and_loaded_formation():
+    from harness.zone_own_guards_v3 import body_spheres
+    from tests.s3_stage_probe import INITIAL
+    report=SimpleNamespace(t_est=1.,initialized=True,x_m=0.,y_m=0.,yaw_rad=0.,
+        std_xy_m=.01,std_yaw_rad=.01)
+    own=SimpleNamespace(last_report=report,servo=dict(INITIAL),
+        pose=SimpleNamespace(provider=SimpleNamespace(loc=SimpleNamespace(
+            _pf=SimpleNamespace(load=SimpleNamespace(loaded=False))))))
+    box,padding=door.estimated_bounds(report,own.servo,loaded=False)
+    for x,y,z,r in body_spheres(own.servo,loaded=False):
+        assert box[0]<=x-r and x+r<=box[1]
+        assert box[2]<=y-r and y+r<=box[3]
+    loaded,pad=door.estimated_bounds(report,own.servo,loaded=True,offset=(.7,0.,0.),envelope=(1.,.3))
+    assert loaded[0]<=-1.7 and loaded[1]>=.3 and pad>padding
+    # The tip can occupy the portal even while the chassis is outside it.
+    portal={'center_m':[box[1]-.01,0.,0.], 'half_extents_m':[.01,.5,1.]}
+    legacy=SimpleNamespace(offset=(0.,0.,0.),envelope=(.3,.3))
+    client=door.Client('r3',own,door.Board(),portal,legacy)
+    assert not client.offer(1.).clear
+    own.last_report=SimpleNamespace(**{**vars(report),'std_yaw_rad':None})
+    assert client.offer(1.)==door.Signal('r3',True,False,False)
+    # DEV proceeds with nominal own geometry but records the uncertainty veto.
+    own.last_report=SimpleNamespace(**{**vars(report),'x_m':-2.,'std_xy_m':1.})
+    notes=[]
+    client.audit=SimpleNamespace(note=lambda *a,**kw:notes.append((a,kw)))
+    assert client.offer(1.).clear and notes
+    client.audit=None
+    assert not client.offer(1.).clear
+    own.last_report=SimpleNamespace(**{**vars(report),'x_m':-2.})
+    assert not client.offer(3.).clear
+    client.audit=SimpleNamespace(note=lambda *a,**kw:notes.append((a,kw)))
+    assert client.offer(3.).clear
+    assert any('DOOR_POSE_STALE' in a for a,kw in notes)
+
+
+def test_lease_deadlock_metric_ignores_epoch_churn():
+    from scripts.evaluate_s3_recovery import lease_deadlocks
+    protocol={'events':[], 'lease_events':[]}
+    for t in range(0,181,10):
+        protocol['events'].append(dict(sim_s=t,signals=[dict(robot_id=r,
+            state='REQUEST' if r=='r3' or t%20==10 else 'USING') for r in door.ROBOTS]))
+        protocol['lease_events'].append(dict(event='grant',sim_s=t,team=['r1','r2']))
+    traj={r:[dict(t=i/10,robot_xyz_m=[0.,0.,0.],robot_yaw_rad=0.) for i in range(1801)] for r in door.ROBOTS}
+    rows=lease_deadlocks(protocol,traj,180.)
+    assert len(rows)==1 and rows[0]['waiters']==['r3'] and rows[0]['continuous_wait_start']==0
+    for q in traj['r2']:q['robot_xyz_m'][0]=q['t']*.01
+    assert not lease_deadlocks(protocol,traj,180.)
+
+
+def test_early_rgb_reference_not_renewed_by_hidden_hover(monkeypatch):
+    from harness import zone_s3_pregrasp_reference as pre
+    from harness.zone_pair_highpose_blind_close import grasp_postures
+    hover,path=grasp_postures();events=[];queued=[];notes=[]
+    own=SimpleNamespace(servo={**hover,1:2000},robot_id='r1')
+    track=SimpleNamespace(segment=0,beam=dict(anchor_time_s=1.,anchor_frame_id='early',
+        anchor_sha256='a'*64,grip_base_m=[.14,0.]),command=lambda *a:None,
+        _blind=lambda *a:(None,dict(evidence='old')))
+    obs=dict(sim_time=3.,frame_id='hover-1',image='target not visible')
+    ctl=SimpleNamespace(blind_track=track,port=SimpleNamespace(own=own),seg=0,rid='r1',
+        state='align',blind_phase=None,blind_hover_last_frame=None,blind_hover_streak=0,
+        hover=hover,blind_path=path,arm=SimpleNamespace(queue=lambda p,*a,**kw:queued.append(p),until=0.),
+        look=lambda now:obs,log=lambda *a,**kw:events.append((a,kw)),
+        hover_barrier_gate=lambda *a:True,_pregrasp_descend=lambda *a:None,
+        _light_resume_align=lambda now:notes.append(('reacquire',now)),
+        fail=lambda *a:notes.append(('fail',a)))
+    def queue(now):ctl.state='pregrasp_descend';ctl.blind_phase='hover'
+    ctl._queue_open_descent=queue
+    audit=SimpleNamespace(note=lambda *a,**kw:notes.append(('would_stop',kw)))
+    monkeypatch.setattr(pre,'controller_gate',lambda ctl:lambda *a:True)
+    pre.attach(ctl,audit);ctl._queue_open_descent(2.)
+    ctl._pregrasp_descend(3.,True)
+    assert not queued
+    obs['frame_id']='hover-2';obs['sim_time']=3.1
+    ctl._pregrasp_descend(3.1,True)
+    assert queued==path
+    assert track.blind_window['frame_id']=='early'
+    assert track.blind_window['visual_confirmed_at_s']==1.
+    assert track.blind_window['confirmed_at_s']==3.1
+    assert track.blind_window['hover_visual_confirmation'] is False
+    # A moved base cannot keep using the earlier RGB reference.
+    ctl._queue_open_descent(4.)
+    track.command(dict(kind='mecanum',t=4.1,forward=.01),own.servo)
+    ctl._pregrasp_descend(4.2,True)
+    assert notes[-1]==('reacquire',4.2) and len(queued)==len(path)

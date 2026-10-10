@@ -211,7 +211,7 @@
       "robot": "r1",
       "result": "expected_rejection",
       "error": "ValueError: coupled motion requires own grasp and live pair carry GO",
-      "traceback": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 164, in case\n    detail = operation() or {}\n             ^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 370, in <lambda>\n    p.case('reject_unmatched_lift_enum','r1',lambda:me.port.apply(\n                                                    ^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 164, in case\n    detail = operation() or {}\n             ^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 383, in <lambda>\n    p.case('reject_unmatched_lift_enum','r1',lambda:me.port.apply(\n                                                    ^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
       "issued": 0
     },
     {
