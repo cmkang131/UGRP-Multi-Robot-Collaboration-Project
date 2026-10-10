@@ -27,3 +27,10 @@ def test_wall_failure_is_scored_from_events_not_excluded():
     assert not recorded_B(dict(status='WALL_CONTACT'),[])
     assert recorded_B(dict(status='WALL_CONTACT'),[dict(reason='goal_reached',entity='B')])
     assert not recorded_B(dict(declared_B=False),[])
+
+
+def test_oracle_lateral_diagnosis_does_not_change_yaw_or_forward():
+    from scripts.analyze_own_route_forensics import counterfactual
+    gt=np.array([[0.,0.,0.],[0.,0.,.1],[.1*np.cos(.1),.1*np.sin(.1),.1]])
+    dr=np.array([[0.,0.,0.],[0.,-.03,.1],[.1*np.cos(.1),-.03+.1*np.sin(.1),.1]])
+    assert counterfactual(dr,gt,['left_turn','forward'],'turn_xy')['end_m']<1e-10
