@@ -25,10 +25,11 @@ MODES = ('off', DEFAULT)
 SCAN_ENV = 'UGRP_CONTROLLER_SCAN_SPEEDUPS'
 LOCAL_ENV = 'UGRP_CONTROLLER_LOCAL_SUBMAP_M'
 REFEREE_ENV = 'UGRP_REFEREE_EVENT_SPEEDUPS'
+VISIBILITY_ENV = 'UGRP_CONTROLLER_VISIBILITY_SPEEDUPS'
 
 
 def scan_options():
-    selected = os.environ.get(SCAN_ENV, 'exact-v2')
+    selected = os.environ.get(SCAN_ENV, 'off')
     if selected not in ('off', 'exact-v2'):
         raise ValueError(f'{SCAN_ENV}: off or exact-v2 required')
     radius = float(os.environ.get(LOCAL_ENV, '0'))
@@ -167,6 +168,54 @@ class GridFieldMemo:
         def initialize(owner, *args, **kwargs):
             return self(owner, *args, **kwargs)
         return initialize
+
+
+class ShadowDepthMemo(PureMemo):
+    """Share identical fixed-command geometry without sharing mutable arrays.
+
+    Only aligned C-contiguous float64 arguments enter the cache; this retains
+    the same NumPy/BLAS layout as the original computation. Changed global slab
+    implementation, unsupported layouts, and large inputs use the original.
+    """
+    def __init__(self, function, slab, maxsize=8):
+        super().__init__(function, maxsize=maxsize)
+        self.slab = slab
+        self.bytes, self.max_bytes = 0, 64*1024*1024
+
+    @staticmethod
+    def array(value, shape=None):
+        return (type(value) is np.ndarray and value.dtype == np.float64 and
+                value.flags.c_contiguous and value.flags.aligned and
+                (shape is None or value.shape == shape))
+
+    def __call__(self, origin, rays, boxes):
+        eligible = (self.function.__globals__.get('box_depth') is self.slab and
+            self.array(origin, (3,)) and self.array(rays) and rays.ndim >= 2 and
+            rays.shape[-1] == 3 and rays.nbytes <= 4*1024*1024 and
+            type(boxes) in (tuple, list) and len(boxes) <= 256)
+        if eligible:
+            eligible = all(type(b) in (tuple,list) and len(b) == 4 and type(b[0]) is str and
+                b[0] in ('gripper','arm','chassis') and self.array(b[1], (3,)) and
+                self.array(b[2], (3,3)) and self.array(b[3], (3,)) for b in boxes)
+        if not eligible:
+            return self.function(origin, rays, boxes)
+        current = key((origin, rays, boxes))
+        if current in self.entries:
+            self.hits += 1
+            self.entries.move_to_end(current)
+            return copy.deepcopy(self.entries[current][0])
+        result = self.function(origin, rays, boxes)
+        self.misses += 1
+        cost = origin.nbytes+rays.nbytes+sum(v.nbytes for b in boxes for v in b[1:])+sum(v.nbytes for v in result.values())+1024+len(boxes)*512
+        self.entries[current] = (copy.deepcopy(result),cost)
+        self.bytes += cost
+        while len(self.entries)>self.maxsize or self.bytes>self.max_bytes:
+            _,(_,size)=self.entries.popitem(last=False)
+            self.bytes -= size
+        return result
+
+    def extra_stats(self):
+        return dict(estimated_entry_bytes=self.bytes,max_entry_bytes=self.max_bytes)
 
 
 class IncrementalGridFieldMemo(GridFieldMemo):
@@ -381,8 +430,11 @@ class OwnedEventLog:
     changed through snapshots. Imported logs keep their full hash/key replay.
     """
     def __init__(self, rows, key_function, digest, audit):
-        self._rows, self._key_function, self._digest, self._audit = rows,key_function,digest,audit
-        self._key = key_function(rows[0]['evidence_key']) if rows else None
+        if type(rows) is not list or len(rows)>1:
+            raise ValueError('fresh private event stream required')
+        self._rows = copy.deepcopy(rows)
+        self._key_function, self._digest, self._audit = key_function,digest,audit
+        self._key = key_function(self._rows[0]['evidence_key']) if self._rows else None
 
     def __len__(self):
         return len(self._rows)
@@ -539,13 +591,17 @@ class Installation:
         self.record = receipt(selected)
         self.scan_mode, self.local_radius = scan_options()
         self.record.update(scan_speedups=self.scan_mode,
-            local_submap_requested_m=self.local_radius, local_submap_active_m=0.)
+            local_submap_requested_m=self.local_radius, local_submap_active_m=0.,result_changes_allowed=False)
         self.referee_mode=os.environ.get(REFEREE_ENV,'owned-v1')
         if self.referee_mode not in ('off','owned-v1'):
             raise ValueError(f'{REFEREE_ENV}: off or owned-v1 required')
         self.record.update(referee_event_speedups=self.referee_mode,referee_owned_streams=0,
                            referee_owned_appends=0,referee_past_key_checks_avoided=0)
         self.referees=[]
+        self.visibility_mode=os.environ.get(VISIBILITY_ENV,'shared-v1')
+        if self.visibility_mode not in ('off','shared-v1'):
+            raise ValueError(f'{VISIBILITY_ENV}: off or shared-v1 required')
+        self.record['visibility_speedups']=self.visibility_mode
         self.restore = []
         self.caches = {}
         self.record.update(applied=[], fallback=[])
@@ -611,6 +667,14 @@ class Installation:
             self.replace(opencv, 'make_detect_boundaries', bind(opencv.make_detect_boundaries, np=clip))
             self.record['applied'].append('opencv_integer_clip')
         self.integer_clip = clip
+        visibility=self.optional('harness.zone_solo_cyan_visibility')
+        if self.visibility_mode=='shared-v1' and visibility and self.guard(
+                visibility.shadow_depths,'ba113008f9124ab4f156090e64ab21d5fb76745ccd4cf97459c2ba9852a2cb6c','shadow_depths') and self.guard(
+                visibility.box_depth,'96720668382d6ed16c223ce4246239c4faeee892d3f40caa78748039a1b60ecb','box_depth'):
+            cached=ShadowDepthMemo(visibility.shadow_depths,visibility.box_depth)
+            self.aliases(visibility.shadow_depths,cached)
+            self.caches['shared_shadow_depths']=cached
+            self.record['applied'].append('shared_shadow_depths')
         if self.guard(global_start.belief_report,
                 '7c0acfa9ce86e0a26348a6e56f193533f87c5c89428e7ce16a4430d9c4fd0207', 'posterior_summary'):
             summary = memo(global_start.belief_report, selected=DEFAULT)
@@ -707,6 +771,7 @@ class Installation:
                 self.aliases(original, local_graph)
                 self.record['applied'].append('local_submap_candidate_radius')
                 self.record['local_submap_active_m'] = radius
+                self.record['result_changes_allowed'] = True
             if graph and self.guard(graph.ProbabilityField.query,
                     'c53abd7fbb32e9b0d65980743e4b3503635c9c08e486ef007d42d2b3632a4526', 'probability_query'):
                 import scipy

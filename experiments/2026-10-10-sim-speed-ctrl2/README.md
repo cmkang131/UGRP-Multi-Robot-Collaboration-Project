@@ -1,7 +1,8 @@
 # speedctrl2 — 정합 성장·타이머 밖 비용·무손실 기록
 
-main `77eba22c`/PR #423 이후의 저장 입력 개발 진단이다. **새 ABBA 측정은 아직 미실행**이며,
-이 문서는 실행 전 계획이다. 이전 off/on의 부하 평균 4.8/2.9가 달라 절감률을
+main `77eba22c`/PR #423 이후의 저장 입력 개발 진단이다. 첫 소스 `c35cd553`에서
+S3·55001 ABBA와 55003 단일 A가 완료됐고, S3 연구 순번을 위해 큐를 반환했다.
+**후속 후보 측정은 아직 미실행**이다. 이전 off/on의 부하 평균 4.8/2.9가 달라 절감률을
 공정한 속도 증거로 재사용하지 않는다. 물리 근사·입자 감소·새 관측 생략은 적용하지 않는다.
 
 ## 확인한 병목과 적용 범위
@@ -17,12 +18,16 @@ main `77eba22c`/PR #423 이후의 저장 입력 개발 진단이다. **새 ABBA 
   원래 거리는 무한 범위이므로 임의의 dirty halo로 잘라 갱신하지 않는다.
   전체 rebuild도 EDT 한 번에서 거리와 witness를 함께 얻어 계산을 중복하지 않는다.
   확률장은 같은 geometry에서 값이 바뀐 칸만 원래 scalar sigmoid로 계산한다.
-- `UGRP_CONTROLLER_SCAN_SPEEDUPS=exact-v2`가 후보 기본이며 `off`는 #423 경로다.
+- `UGRP_CONTROLLER_SCAN_SPEEDUPS=off`가 기본이며 #423 경로다. `exact-v2`는 명시적 비교 옵션이다.
+  첫 55001 ABBA가 바이트는 동일하지만 1.363→1.406 wall/input-SIM으로 느려 기본 채택하지 않는다.
   부모 `UGRP_CONTROLLER_EXACT_SPEEDUPS=off`는 모든 가속을 끈다. 실행 기록에 설치·fallback·통계를 남긴다.
-  source/API guard가 불일치하면 원래 계산을 쓴다. 기본 채택은 전체 논리 바이트 증명 이후 판정한다.
+  source/API guard가 불일치하면 원래 계산을 쓴다. 새로운 기본 가속은 전체 논리 바이트 증명 이후 판정한다.
 - `UGRP_CONTROLLER_LOCAL_SUBMAP_M=0`이 기본 off다. 양수는 기존 후보 거리 상한을 줄이므로
   **결과가 바뀔 수 있는 별도 옵션**이다. 2m 비교는 동결 입력·명령의 추정 궤적 차이로 보고하며
   재생 이후에만 eval_only trajectory/초기 spawn으로 절대 RMSE를 평가한다.
+  raw frontend와 기록된 시각부터만 적용하는 online map→odom 자세를 별도로 비교한다.
+  두 GT 파일은 원본 manifest 해시를 검증한다. graph 제한은 frontend PF/RNG를 직접 바꾸지
+  않으므로 frontend 오차가 같아도 map-frame 오차·지도·생성 명령은 달라질 수 있다.
   온라인 정확도나 새 임무 성공으로 표현하지 않는다. 기존 ±1m scan 탐색 창 자체는 유지한다.
 - S3의 `vision` 경계는 OpenCV 관측/경계 검출이며 실행 중 영상 인코딩이 아니다.
   저장 S3 각 로봇 439장과 ego59 55003의 2461장 JPEG는 각 로봇 내 해시가 모두 다르다.
@@ -38,12 +43,60 @@ main `77eba22c`/PR #423 이후의 저장 입력 개발 진단이다. **새 ABBA 
   심판이 새로 만든 private 기록만 append-only 소유한다. 새 키는 매번 검증하고 snapshot은 deep copy다.
   외부 mutable list의 과거 키 검사와 가져온 기록의 전체 key/sequence/hash-chain replay는 원래대로다.
   close 시 살아 있는 심판을 원래 private list로 되돌린다. 심판 정답은 제어에 전달하지 않는다.
+- `UGRP_CONTROLLER_VISIBILITY_SPEEDUPS=shared-v1` 후보 기본 on/`off`로 해제한다.
+  기존 Visibility 인스턴스 캐시는 그대로 두고 pure `shadow_depths`의 실제 origin·rays·상자
+  형상 바이트가 같은 경우만 공유한다. C-contiguous/aligned float64와 고정 source guard,
+  8항목/64MiB 추정 상한을 적용하며 반환 배열은 복사한다. 연산·후보·마스크는 바꾸지 않는다.
+  불지원 layout·큰 입력·slab 함수 변경은 원래 계산이다. 후보 속도/전체 바이트 검증은 대기 중이다.
+- 심판 소유 기록 생성자는 입력 첫 행도 deep copy하고 2행 이상의 외부 기록을 거부한다.
+  기존 caller alias가 내부 과거 행을 바꾸는 경로를 차단한다. 외부 list append/import 검증은 유지한다.
+- 후속 interval 타이머는 `bind()`가 복사한 private globals의 pure helper도 계측한다.
+  cvtColor·remap을 `rgb_preprocess`로 분리해 중첩 vision/receive에서 exclusive 비용을 뺀다.
+  타이머는 새 인터프리터에만 적용하며 새 후보 전체 재생의 행동 바이트로 계측 불변성도 확인한다.
+
+## 첫 측정과 순번 반환
+
+raw: `/Users/changmin/projects/ugrp/outputs/speedctrl2-20261010-v1`, source `c35cd553`.
+이 수치는 controller-only이며 physics/render 0회다.
+
+| 입력 | A wall/input-SIM | B wall/input-SIM | 복원 행동 바이트 | 부하 판정 / 절감률 |
+|---|---:|---:|---|---|
+| S3 v148 | 1.971245 | 1.966085 | 3파일 모두 동일 | 교차 부하 실패 / 미보고 |
+| ego59 55001 | 1.363485 | 1.406348 | 20파일 모두 동일 | 기준 통과 / -3.144% |
+| ego59 55003 | 3.959559 | 미실행 | 단일 A, 후보 비교 없음 | ABBA 미완료 / 제외 |
+
+55001 입자 수는 100→100, 지도 칸은 0→236377이다. A의 처음/마지막 100프레임
+scan-match 평균은 0.00809→0.15481s/frame이며 B는 0.00912→0.16473이다.
+정합 캐시 hit 0/12059 miss였고 scan_match 합계는 A 약0.387/B 약0.420 wall/input-SIM이다.
+55001 행동 기록 380993680 논리 바이트는 gzip 저장 102624707 바이트(약73.1% 감소)다.
+직렬화·압축·flush·footer·hash 비용은 wall 및 record_io에 포함된다.
+
+S3 B의 ‘기타’ 분해는 visibility_geometry 0.441, receive 잔여0.352,
+pose_estimate 0.160, cache_key 0.021, belief_report 0.005 wall/input-SIM이다.
+55001은 raytrace0.164, costmap0.156, floor0.122, wall0.099, forecast0.068,
+receive 잔여0.205로 나뉜다. 새 RGB/private binding 타이머로 잔여를 더 확인한다.
+
+연구 S3의 순번 요청 뒤 상위 큐 PID57475만 일시 대기시켰고, 진행 중인
+55003 A가 2460 완료 콜백/491.8 input-SIM을 전부 끝내고 자식이 종료한 경계에서
+큐를 SIGINT/SIGCONT로 정상 종료했다. `abba.json`의 complete=false/KeyboardInterrupt를
+그대로 보존한다. 이 취소는 완료된 자식의 입력 실패가 아니며 불완전 55003 ABBA를 채택하지 않는다.
+잠금 반환/NI0/원본 보존 기록은 `outputs/speedctrl2-20261010-control-v3/handoff.json`과
+[순번 반환 댓글](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/424#issuecomment-6092099201)에 있다.
+
+후속 후보는 S3·55003을 새 SHA의 연속 ABBA로 실행한다. 이미 완료된 55001은
+원래 source·4회 수치를 재계산해 보존하고 새 B 전체 재생을 네 기존 실행 모두와
+직접 비교한다(`--abba-case s3-v148 --abba-case ego59-55003 --completed-baseline <v1>`).
+재사용한 측정 SHA와 새 검증 SHA를 구분하며 새 부하 조건의 speedup으로 재표현하지 않는다.
+별도 cProfile·기본 off local2m·종료 심판 ABBA는 새 S3 스모크와 무거운 사후 작업이
+완료·순번 반환된 다음 수행한다. 새 후보는 아직 온라인 ≤1.5를 달성했다고 주장하지 않는다.
 
 ## ABBA 계획과 채택 기준
 
-[plan.json](plan.json)의 S3 v148, ego59 55001/55003을 각각 **A→B→B→A**로 직렬 재생한다.
+[plan.json](plan.json)의 초기 계획은 S3 v148, ego59 55001/55003 각각 **A→B→B→A**였다.
+순번 반환 이후의 명시적 재사용 범위는 위 후속 계획과 각 실행의 plan/measurement_source에 남긴다.
 A는 #423 exact-v1/scan off/referee off/plain 기록,
 B는 exact-v1/scan exact-v2/referee owned-v1/gzip-v1 기록이다.
+후속 후보는 A visibility off/B shared-v1도 비교한다.
 속도 ABBA는 cProfile 없이 구간 타이머만 사용하며, 이후 별도 B 전체 재생에서 cProfile을 얻는다.
 profile 재생도 ABBA B와 논리 바이트를 직접 비교한다. profiler overhead를 속도 표에 혼합하지 않는다.
 이 비교는 정합과 저장 변경을 함께 측정한다. 직렬화·버퍼 flush·gzip footer·파일 hash까지
@@ -94,5 +147,7 @@ raw는 기본 checkout outputs 아래에, 작은 표·해시·실패 기록은 �
 - [Fowler Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html),
   [Python deep copy](https://docs.python.org/3.12/library/copy.html): append-only 이벤트의 소유와 snapshot 격리.
   private producer만 새 이벤트를 검증하며 외부 mutable 기록의 기존 전체 검증은 생략하지 않는다.
-- Thrun, Burgard, Fox, *Probabilistic Robotics* 4·6·8장: PF·likelihood field·occupancy grid의 표준 근거.
-  판본 원문은 이번 실행에서 별도로 확인하지 않았으며 장별 내용은 #423의 기존 참고 범위를 승계한다.
+- [Thrun, Burgard, Fox, *Probabilistic Robotics*, MIT Press](https://mitpress.ublish.com/book/probabilistic-robotics):
+  출판사 목차에서 4장 비모수 필터, 6장 로봇 지각, 8장 격자/Monte Carlo 위치 추정을 확인했다.
+  PF·likelihood field·MCL의 참고 범위다. 점유 격자 mapping은 9장으로 바로잡는다.
+  장 본문 전체를 새로 검증한 인용으로 표현하지 않는다. 입자 축소/KLD는 이번 후보에 적용하지 않았다.

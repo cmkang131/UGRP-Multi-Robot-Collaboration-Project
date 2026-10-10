@@ -28,6 +28,17 @@ EGO_FILES = tuple(name+'.json' for name in (
     'own-controller.jsonl','own-contacts.jsonl','frontend-covariances.jsonl','online-maps.jsonl')
 
 
+def completed_case(baseline, ident):
+    found=[c for c in baseline['cases'] if c['id']==ident]
+    if len(found)!=1:raise ValueError('AMBIGUOUS_BASELINE_CASE')
+    previous=found[0]
+    rows=previous['components']
+    if ([(r['order'],r['arm']) for r in rows]!=list(enumerate(ORDER,1)) or
+            not previous['proof']['verified']):
+        raise ValueError('INCOMPLETE_BASELINE_CASE')
+    return previous
+
+
 def priority_check(receipt, expected_run=None):
     data = json.loads(receipt.read_text())
     result = Path(data['result_path'])
@@ -87,10 +98,31 @@ def components(paths):
     return result
 
 
-def pose_difference(baseline, candidate):
+def estimated_trajectory(path, *, frame='frontend'):
+    """Saved frontend, or its actual held online map->odom transform.
+
+    Graph transforms are applied only from their recorded timestamp onward;
+    no interpolation or final correction of earlier online states is invented.
+    """
+    if frame not in ('frontend','online_map'):raise ValueError('UNKNOWN_TRAJECTORY_FRAME')
+    with logical_open(path/'frontend-poses.json') as stream:poses=json.load(stream)
+    if frame=='frontend':return poses
+    with logical_open(path/'graphs.json') as stream:graphs=json.load(stream)
+    if any(b['t']<a['t'] for a,b in zip(graphs,graphs[1:])):raise ValueError('UNORDERED_GRAPH_TRANSFORMS')
+    transform=[0.,0.,0.];index=0
+    for row in poses:
+        while index<len(graphs) and graphs[index]['t']<=row['t']:
+            transform=graphs[index]['map_to_odom'];index+=1
+        if len(transform)!=3 or not all(math.isfinite(v) for v in transform):
+            raise ValueError('INVALID_MAP_TRANSFORM')
+        x,y,yaw=row['pose'];tx,ty,angle=transform;c,s=math.cos(angle),math.sin(angle)
+        row['pose']=[tx+c*x-s*y,ty+s*x+c*y,math.atan2(math.sin(angle+yaw),math.cos(angle+yaw))]
+    return poses
+
+
+def pose_difference(baseline, candidate, *, frame='frontend'):
     """Estimated frontend trajectory deltas; no truth is provided to the runner."""
-    with logical_open(baseline/'frontend-poses.json') as a, logical_open(candidate/'frontend-poses.json') as b:
-        old,new = json.load(a),json.load(b)
+    old,new=estimated_trajectory(baseline,frame=frame),estimated_trajectory(candidate,frame=frame)
     if len(old) != len(new) or [x['t'] for x in old] != [x['t'] for x in new]:
         return dict(comparable=False, reason='estimated_trajectory_stamps_differ')
     import numpy as np
@@ -103,20 +135,23 @@ def pose_difference(baseline, candidate):
     return dict(comparable=True, samples=len(delta), xy_rmse_delta_m=float(np.sqrt(np.mean(np.sum(delta[:,:2]**2,axis=1)))),
         xy_max_delta_m=float(np.linalg.norm(delta[:,:2],axis=1).max()),yaw_rmse_delta_rad=float(np.sqrt(np.mean(yaw*yaw))),
         generated_commands_equal=commands_a==commands_b,
+        trajectory_frame=frame,
         scope='same archived inputs and issued commands; estimated trajectory delta, not absolute accuracy or closed-loop success')
 
 
-def trajectory_accuracy(path, raw):
+def trajectory_accuracy(path, raw, *, frame='frontend'):
     """Evaluation after replay only; simulator truth never enters the controller."""
     import numpy as np
     source=raw/'eval_only/trajectory.jsonl'
     setup=raw/'eval_only/setup.json'
+    manifest=json.loads((raw/'artifacts.sha256.json').read_text());manifest=manifest.get('files',manifest)
+    if any(manifest.get(str(p.relative_to(raw)))!=sha(p) for p in (source,setup)):
+        raise ValueError('EVAL_INPUT_HASH')
     truth={round(r['t'],9):r for r in (json.loads(line) for line in source.read_text().splitlines())}
     spawn=json.loads(setup.read_text())['spawns']['r3']
     origin=np.array(spawn[:2]);yaw=spawn[3]
     world_to_own=np.array([[math.cos(yaw),math.sin(yaw)],[-math.sin(yaw),math.cos(yaw)]])
-    with logical_open(path/'frontend-poses.json') as stream:
-        estimates=json.load(stream)
+    estimates=estimated_trajectory(path,frame=frame)
     errors=[]
     for estimate in estimates:
         value=truth.get(round(estimate['t'],9))
@@ -131,7 +166,7 @@ def trajectory_accuracy(path, raw):
     error=np.asarray(errors)
     return dict(available=True,samples=len(error),xy_rmse_m=float(np.sqrt(np.mean(np.sum(error[:,:2]**2,axis=1)))),
         yaw_rmse_rad=float(np.sqrt(np.mean(error[:,2]**2))),xy_max_m=float(np.linalg.norm(error[:,:2],axis=1).max()),
-        gt_use='posthoc evaluation only; immutable saved spawn defines own odom frame',
+        trajectory_frame=frame,gt_use='posthoc evaluation only; immutable saved spawn defines own odom frame',
         source_hashes={str(source):sha(source),str(setup):sha(setup)})
 
 
@@ -206,6 +241,7 @@ def invoke(case, output, args, *, scan, storage, local=0.):
         '--lock-owner-pid',str(os.getpid()),'--execute','--speedups','exact-v1',
         '--scan-speedups',scan,'--record-storage',storage,'--local-submap-m',str(local),
         '--referee-speedups','off' if scan=='off' else 'owned-v1',
+        '--visibility-speedups','off' if scan=='off' else 'shared-v1',
         '--detail-timers']
     if args.profile:
         command += ['--profile']
@@ -223,6 +259,8 @@ def main():
     p.add_argument('--profile',action='store_true')
     p.add_argument('--diagnostic-profile',action='store_true',help='separate profiled B replay after unprofiled ABBA')
     p.add_argument('--referee-abba',action='store_true',help='separate evaluator-event ABBA from finalized priority run')
+    p.add_argument('--abba-case',action='append',help='selected case IDs; others require an explicit completed baseline and full new B byte validation')
+    p.add_argument('--completed-baseline',type=Path,help='reuse only completed ABBA cases; keep their original source/timings and validate all four against a new B')
     p.add_argument('--local-submap-m',type=float,default=0.)
     p.add_argument('--execute',action='store_true')
     args=p.parse_args()
@@ -231,21 +269,53 @@ def main():
     if not math.isfinite(args.local_submap_m) or not 0<=args.local_submap_m<=6:
         p.error('local radius must be finite and in [0,6]')
     plan=json.loads(args.plan.read_text())
+    selected=set(args.abba_case or [c['id'] for c in plan['cases']])
+    if selected-{c['id'] for c in plan['cases']}:p.error('unknown ABBA case')
+    baseline=None
+    if args.completed_baseline:
+        baseline=json.loads((args.completed_baseline/'abba.json').read_text())
+    if any(c['id'] not in selected for c in plan['cases']) and baseline is None:
+        p.error('unselected cases require a completed baseline')
+    for case in plan['cases']:
+        if case['id'] not in selected:completed_case(baseline,case['id'])
     if not args.execute:
-        print(json.dumps(dict(execution_started=False,order=ORDER,cases=plan['cases'],physics_runs=0)))
+        print(json.dumps(dict(execution_started=False,order=ORDER,cases=plan['cases'],physics_runs=0,
+            selected_abba_cases=sorted(selected),validation_only_cases=[c['id'] for c in plan['cases'] if c['id'] not in selected])))
         return
     source_check(args.expected_source_sha)
     assert int(subprocess.check_output(['ps','-o','ni=','-p',str(os.getpid())]))==0
     priority=priority_check(args.priority_receipt,plan['priority_run'])
     args.output.mkdir(parents=True,exist_ok=False)
     write(args.output/'plan.json',dict(plan=plan,plan_sha256=sha(args.plan),source=args.expected_source_sha,
-        order=ORDER,priority=priority,profile=args.profile,local_submap_m=args.local_submap_m))
+        order=ORDER,priority=priority,profile=args.profile,local_submap_m=args.local_submap_m,
+        selected_abba_cases=sorted(selected),completed_baseline=str(args.completed_baseline) if baseline else None))
     args.deadline=time.monotonic()+args.budget_s
     held,owned=acquire_slot(args.expected_source_sha,'speedctrl2 serial ABBA saved inputs; physics0',
         wait_s=min(7200,args.budget_s),expected_minutes=math.ceil(args.budget_s/60))
     report=dict(schema='ugrp.controller_abba.v1',source=args.expected_source_sha,cases=[],complete=False)
     try:
         for case in plan['cases']:
+            if case['id'] not in selected:
+                paths=[args.completed_baseline/(case['id']+'-'+str(i+1)+'-'+arm) for i,arm in enumerate(ORDER)]
+                output=args.output/(case['id']+'-validation')
+                print(f"VALIDATE {case['id']} new B against completed baseline ABBA",flush=True)
+                invoke(case,output,args,scan='exact-v2',storage='gzip-v1')
+                proof=compare_runs(paths+[output],case['kind'])
+                if not proof['verified']:raise RuntimeError('FINAL_BEHAVIOR_BYTES_DIFFER')
+                if not all(json.loads((p/'result.json').read_text())['implementation_sha']==baseline['source'] for p in paths):
+                    raise ValueError('BASELINE_SOURCE_MISMATCH')
+                rows=components(paths);load=load_assessment(paths)
+                a=statistics.fmean(rows[i]['wall_per_input_sim'] for i in (0,3))
+                b=statistics.fmean(rows[i]['wall_per_input_sim'] for i in (1,2))
+                entry=dict(id=case['id'],proof=proof,components=rows,load=load,A_wall_per_input_sim=a,
+                    B_wall_per_input_sim=b,percent_saved=100*(a-b)/a if load['comparable'] else None)
+                entry.update(measurement_source=baseline['source'],paths=[str(p) for p in paths],
+                    reused_completed_measurement=True,validation=dict(path=str(output),proof=proof,
+                        result=json.loads((output/'result.json').read_text())),
+                    baseline_manifest=dict(path=str(args.completed_baseline/'abba.json'),sha256=sha(args.completed_baseline/'abba.json')))
+                report['cases'].append(entry)
+                write(args.output/(case['id']+'-comparison.json'),entry)
+                continue
             paths=[]
             for index,arm in enumerate(ORDER):
                 output=args.output/(case['id']+'-'+str(index+1)+'-'+arm)
@@ -257,7 +327,8 @@ def main():
             load=load_assessment(paths)
             a=statistics.fmean(rows[i]['wall_per_input_sim'] for i in (0,3))
             b=statistics.fmean(rows[i]['wall_per_input_sim'] for i in (1,2))
-            entry=dict(id=case['id'],proof=proof,components=rows,load=load,A_wall_per_input_sim=a,
+            entry=dict(id=case['id'],measurement_source=args.expected_source_sha,paths=[str(p) for p in paths],
+                proof=proof,components=rows,load=load,A_wall_per_input_sim=a,
                 B_wall_per_input_sim=b,percent_saved=(100*(a-b)/a if proof['verified'] and load['comparable'] else None))
             report['cases'].append(entry)
             write(args.output/(case['id']+'-comparison.json'),entry)
@@ -269,8 +340,9 @@ def main():
                 output=args.output/(case['id']+'-profile')
                 invoke(case,output,profile_args,scan='exact-v2',storage='gzip-v1')
                 entry=next(c for c in report['cases'] if c['id']==case['id'])
+                reference=Path(entry['validation']['path']) if 'validation' in entry else args.output/(case['id']+'-2-B')
                 entry['diagnostic_profile']=dict(result=json.loads((output/'result.json').read_text()),
-                    proof=compare_runs([args.output/(case['id']+'-2-B'),output],case['kind']))
+                    proof=compare_runs([reference,output],case['kind']))
                 if not entry['diagnostic_profile']['proof']['verified']:
                     raise RuntimeError('PROFILE_BEHAVIOR_BYTES_DIFFER')
         if args.local_submap_m:
@@ -279,11 +351,15 @@ def main():
                 output=args.output/(case['id']+'-local')
                 invoke(case,output,args,scan='exact-v2',storage='gzip-v1',local=args.local_submap_m)
                 entry=next(c for c in report['cases'] if c['id']==case['id'])
+                reference=Path(entry['validation']['path']) if 'validation' in entry else args.output/(case['id']+'-2-B')
                 entry['local_option']=dict(radius_m=args.local_submap_m,default_on=False,
                     result=json.loads((output/'result.json').read_text()),
-                    delta=pose_difference(args.output/(case['id']+'-2-B'),output),
-                    baseline_accuracy=trajectory_accuracy(args.output/(case['id']+'-2-B'),Path(case['raw'])),
-                    local_accuracy=trajectory_accuracy(output,Path(case['raw'])))
+                    delta=pose_difference(reference,output),
+                    online_map_delta=pose_difference(reference,output,frame='online_map'),
+                    baseline_accuracy=trajectory_accuracy(reference,Path(case['raw'])),
+                    local_accuracy=trajectory_accuracy(output,Path(case['raw'])),
+                    baseline_map_accuracy=trajectory_accuracy(reference,Path(case['raw']),frame='online_map'),
+                    local_map_accuracy=trajectory_accuracy(output,Path(case['raw']),frame='online_map'))
         if args.referee_abba:
             report['referee_abba']=referee_abba(Path(plan['priority_run']),args.output/'referee-abba',args)
         report['complete']=True

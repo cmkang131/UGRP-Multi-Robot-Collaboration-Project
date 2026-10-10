@@ -142,6 +142,7 @@ class Timers:
         self.clock = clock
         self.stack = []
         self.total = defaultdict(lambda: dict(calls=0, exclusive_s=0., inclusive_s=0.))
+        self.alias_registry = {}
 
     @contextmanager
     def span(self, name):
@@ -167,11 +168,32 @@ class Timers:
 
     def aliases(self, function, name):
         replacement = self.wrapper(function, name)
+        self.alias_registry[id(function)] = (function,replacement)
         for key, module in list(sys.modules.items()):
             if key.startswith(('harness.', 'scripts.')):
                 for attribute, value in list(vars(module).items()):
                     if value is function:
                         setattr(module, attribute, replacement)
+
+    def track_bindings(self):
+        """Measure pure helpers copied into private frozen-function globals.
+
+        A module alias alone cannot reach bind()'s copied globals. Keep the
+        original code/defaults/closures and only forward known pure helpers to
+        the same timing wrapper when the private dependency clone is created.
+        """
+        from harness.zone_final_pair_binding import bind
+        def timed_bind(function, **dependencies):
+            result = bind(function, **dependencies)
+            for name,value in list(result.__globals__.items()):
+                pair=self.alias_registry.get(id(value))
+                if pair is not None and pair[0] is value:
+                    result.__globals__[name]=pair[1]
+            return result
+        for key,module in list(sys.modules.items()):
+            if key.startswith(('harness.','scripts.')):
+                for name,value in list(vars(module).items()):
+                    if value is bind:setattr(module,name,timed_bind)
 
     def method(self, cls, name, category):
         setattr(cls, name, self.wrapper(getattr(cls, name), category))
@@ -195,6 +217,9 @@ def detail_timers(timer, kind):
         for name in names:
             if hasattr(module, name):
                 timer.aliases(getattr(module, name), category)
+    import cv2
+    timer.method(cv2,'cvtColor','rgb_preprocess')
+    timer.method(cv2,'remap','rgb_preprocess')
     if kind == 's3':
         functions('harness.zone_s3_exact_cache', ['key'], 'cache_key')
         from harness import controller_exact_speedups as acceleration
@@ -497,12 +522,14 @@ def worker(args):
     os.environ[speedups.SCAN_ENV] = args.scan_speedups
     os.environ[speedups.LOCAL_ENV] = str(args.local_submap_m)
     os.environ[speedups.REFEREE_ENV] = args.referee_speedups
+    os.environ[speedups.VISIBILITY_ENV] = args.visibility_speedups
     installed = speedups.install(args.speedups)
     timer = Timers()
     timer.record_storage, timer.record_receipts = args.record_storage, []
     attach_timers(timer, kind)
     if args.detail_timers:
         detail_timers(timer, kind)
+        timer.track_bindings()
     profiler = cProfile.Profile() if args.profile else None
     timer.profiler = profiler
     timer.profile_window = args.profile_window_frames
@@ -562,10 +589,11 @@ def main():
     p.add_argument('--profile', action='store_true')
     p.add_argument('--profile-window-frames', type=int, default=100)
     p.add_argument('--speedups', choices=('off', 'exact-v1'), default='off')
-    p.add_argument('--scan-speedups', choices=('off', 'exact-v2'), default='exact-v2')
+    p.add_argument('--scan-speedups', choices=('off', 'exact-v2'), default='off')
     p.add_argument('--local-submap-m', type=float, default=0.)
     p.add_argument('--record-storage', choices=('off', 'gzip-v1'), default='off')
     p.add_argument('--referee-speedups', choices=('off','owned-v1'), default='owned-v1')
+    p.add_argument('--visibility-speedups', choices=('off','shared-v1'), default='shared-v1')
     p.add_argument('--detail-timers', action='store_true')
     p.add_argument('--lock-owner-pid', type=int)
     p.add_argument('--execute', action='store_true')

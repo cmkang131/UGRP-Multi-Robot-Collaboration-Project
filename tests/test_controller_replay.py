@@ -2,6 +2,47 @@ import pytest
 from scripts.profile_controller_replay import Timers
 
 
+def test_reuse_rejects_partial_duplicate_or_misordered_abba_before_execution():
+    import copy
+    from scripts.benchmark_controller_replay import completed_case,ORDER
+    row=dict(id='saved',components=[dict(order=i,arm=a) for i,a in enumerate(ORDER,1)],proof=dict(verified=True))
+    # A canceled batch may contain a genuinely completed case, but its pending
+    # partial case must never become a four-run timing comparison.
+    assert completed_case(dict(complete=False,cases=[row]),'saved') is row
+    for rows in (row['components'][:1],row['components'][::-1]):
+        bad=copy.deepcopy(row);bad['components']=rows
+        with pytest.raises(ValueError,match='INCOMPLETE'):completed_case(dict(cases=[bad]),'saved')
+    with pytest.raises(ValueError,match='AMBIGUOUS'):completed_case(dict(cases=[row,row]),'saved')
+
+
+def test_private_binding_timings_reach_copied_pure_globals(monkeypatch):
+    import sys
+    from types import ModuleType
+    from harness.zone_final_pair_binding import bind
+    module=ModuleType('harness._binding_timing_test')
+    exec('def helper(x): return x+1\ndef calculate(x): return helper(x)*2',module.__dict__)
+    module.bind=bind
+    monkeypatch.setitem(sys.modules,module.__name__,module)
+    original=module.helper
+    # A pre-bound dependency retains the original pure helper in private globals.
+    private=bind(module.calculate)
+    timer=Timers()
+    timer.aliases(original,'pf_update')
+    timer.track_bindings()
+    try:
+        measured=module.bind(private)
+        assert measured(4)==private(4)==10
+        assert timer.total['pf_update']['calls']==1
+        assert private.__globals__['helper'] is original
+    finally:
+        # track_bindings is process-scoped in the replay CLI; restore test peers.
+        wrapped_bind=module.bind
+        for name,owner in list(sys.modules.items()):
+            if name.startswith(('harness.','scripts.')):
+                for attr,value in list(vars(owner).items()):
+                    if value is wrapped_bind:setattr(owner,attr,bind)
+
+
 def test_nested_timers_are_a_partition_including_exception():
     times = iter([0., 1., 3., 5.])
     timers = Timers(clock=lambda: next(times))
@@ -37,6 +78,7 @@ def test_atomic_slot_wait_handles_status_to_acquire_race(monkeypatch):
     monkeypatch.setattr(agent_lock,'acquire',acquire)
     monkeypatch.setattr(replay,'source_check',lambda expected:None)
     monkeypatch.setattr(replay.time,'sleep',lambda seconds:None)
+    monkeypatch.setattr(replay.subprocess,'check_output',lambda *a,**k:'codex/sim-speed-ctrl2\n')
     held,owned=replay.acquire_slot('a'*40,'test')
     assert owned and held['pid']==replay.os.getpid() and len(calls)==2
 
@@ -128,11 +170,26 @@ def test_local_accuracy_uses_saved_spawn_frame_only_after_replay(tmp_path):
     (raw/'eval_only/setup.json').write_text(json.dumps({'spawns':{'r3':[3.,2.,0.,0.]}}))
     truth=dict(t=1.,robot_xyz_m=[4.,2.,0.],robot_yaw_rad=.1)
     (raw/'eval_only/trajectory.jsonl').write_text(json.dumps(truth)+'\n')
+    from scripts.benchmark_controller_replay import sha
+    (raw/'artifacts.sha256.json').write_text(json.dumps({str(p.relative_to(raw)):sha(p) for p in (raw/'eval_only/setup.json',raw/'eval_only/trajectory.jsonl')}))
     (out/'frontend-poses.json').write_text(json.dumps([dict(t=1.,pose=[1.,0.,.1])]))
     r=trajectory_accuracy(out,raw)
     assert r['xy_rmse_m']==r['yaw_rmse_rad']==0. and r['samples']==1
     (out/'frontend-poses.json').write_text(json.dumps([dict(t=2.,pose=[1.,0.,.1])]))
     with pytest.raises(ValueError,match='TIMESTAMP_MISSING'):trajectory_accuracy(out,raw)
+    (raw/'eval_only/setup.json').write_text('{}')
+    with pytest.raises(ValueError,match='EVAL_INPUT_HASH'):trajectory_accuracy(out,raw)
+
+
+def test_online_map_accuracy_uses_held_graph_transform_only_after_its_stamp(tmp_path):
+    import json
+    from scripts.benchmark_controller_replay import estimated_trajectory
+    poses=[dict(t=t,pose=[1.,0.,0.]) for t in (1.,2.,3.)]
+    (tmp_path/'frontend-poses.json').write_text(json.dumps(poses))
+    graphs=[dict(t=2.,map_to_odom=[2.,1.,0.])]
+    (tmp_path/'graphs.json').write_text(json.dumps(graphs))
+    assert [r['pose'] for r in estimated_trajectory(tmp_path,frame='online_map')]==[[1.,0.,0.],[3.,1.,0.],[3.,1.,0.]]
+    assert estimated_trajectory(tmp_path)==poses
 
 
 def test_native_selection_preserves_first_arm_commands_and_finite_window(tmp_path):

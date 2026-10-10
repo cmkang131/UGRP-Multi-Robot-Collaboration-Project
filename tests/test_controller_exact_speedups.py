@@ -3,6 +3,54 @@ import pytest
 from harness.controller_exact_speedups import ArrayRevision, PosteriorMemo, PureMemo, MethodSummaryMemo, IntegerClipNumpy, mode
 
 
+def test_shared_shadow_cache_bits_layout_mutation_ownership_and_slab_change(monkeypatch):
+    from harness import zone_solo_cyan_visibility as visibility
+    from harness.controller_exact_speedups import ShadowDepthMemo
+    original=visibility.shadow_depths
+    memo=ShadowDepthMemo(original,visibility.box_depth,maxsize=2)
+    rng=np.random.default_rng(947)
+    origin=np.zeros(3)
+    rays=rng.normal(size=(8,11,3))
+    boxes=[('arm',np.array([0.,0.,1.]),np.eye(3),np.full(3,.4)),
+           ('chassis',np.array([0.,0.,-.3]),np.eye(3),np.full(3,.5))]
+    expected=original(origin,rays,boxes)
+    for result in (memo(origin,rays,boxes),memo(origin,rays,boxes)):
+        for category in expected:
+            assert result[category].tobytes()==expected[category].tobytes()
+            result[category][:]=123
+    assert memo.hits==1 and memo.misses==1
+    boxes[0][1][0]=.7
+    actual=memo(origin,rays,boxes);expected=original(origin,rays,boxes)
+    assert all(actual[k].tobytes()==expected[k].tobytes() for k in expected)
+    for r in (rays[:,::2,:],rays.astype(np.float32)):
+        actual=memo(origin,r,boxes);expected=original(origin,r,boxes)
+        assert all(actual[k].tobytes()==expected[k].tobytes() for k in expected)
+    slab=visibility.box_depth
+    monkeypatch.setattr(visibility,'box_depth',lambda *a:slab(*a)+.01)
+    actual=memo(origin,rays,boxes);expected=original(origin,rays,boxes)
+    assert all(actual[k].tobytes()==expected[k].tobytes() for k in expected)
+    assert memo.hits==1 and len(memo.entries)<=2 and memo.bytes<=memo.max_bytes
+
+
+def test_owned_event_constructor_has_no_caller_alias_and_requires_fresh_stream():
+    import copy
+    from harness.controller_exact_speedups import OwnedEventLog
+    from harness import zone_referee_replay as events
+    from tests.zone_evidence_fixtures import planned
+    plan,_=planned(1,1);key=plan['admitted'][0]['key']
+    rows=[];events.append_event(rows,{'event':'orders'},evidence_key=key)
+    expected=copy.deepcopy(rows)
+    audit=dict(referee_past_key_checks_avoided=0,referee_owned_appends=0)
+    owned=OwnedEventLog(rows,events.trial_key,events.digest,audit)
+    rows[0]['evidence_key']['seed']+=1
+    rows.append({'unexpected':'external append'})
+    owned.append_payload({'event':'sample'},evidence_key=key)
+    events.append_event(expected,{'event':'sample'},evidence_key=key)
+    assert copy.deepcopy(owned)==expected
+    with pytest.raises(ValueError,match='fresh private'):
+        OwnedEventLog(expected,events.trial_key,events.digest,audit)
+
+
 def test_incremental_distance_field_matches_original_bytes_add_remove_and_owned_result():
     from scipy.ndimage import distance_transform_edt
     from harness.controller_exact_speedups import IncrementalGridFieldMemo
@@ -102,7 +150,7 @@ def test_scan_options_are_explicit_and_local_policy_defaults_off(monkeypatch):
     from harness.controller_exact_speedups import scan_options
     monkeypatch.delenv('UGRP_CONTROLLER_SCAN_SPEEDUPS',raising=False)
     monkeypatch.delenv('UGRP_CONTROLLER_LOCAL_SUBMAP_M',raising=False)
-    assert scan_options()==('exact-v2',0.)
+    assert scan_options()==('off',0.)
     monkeypatch.setenv('UGRP_CONTROLLER_LOCAL_SUBMAP_M','nan')
     with pytest.raises(ValueError):scan_options()
 
@@ -378,7 +426,7 @@ def test_common_install_off_and_restore(monkeypatch):
         for a, b in zip(actual[:2], expected[:2]):
             assert a.tobytes() == b.tobytes()
         assert actual[2] == expected[2]
-        assert on.snapshot()['applied'] == ['owncam_moments','markerless_integer_clip','opencv_integer_clip','posterior_summary','owned_referee_events']
+        assert on.snapshot()['applied'] == ['owncam_moments','markerless_integer_clip','opencv_integer_clip','shared_shadow_depths','posterior_summary','owned_referee_events']
         from harness.vision_loc_protocol import load_vis3
         from harness import zone_pair_highpose_opencv_exact as opencv
         vl, _ = load_vis3()
