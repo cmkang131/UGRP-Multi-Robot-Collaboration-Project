@@ -1,0 +1,83 @@
+{
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1010-speedctrl-33f8f182",
+  "url": "http://127.0.0.1:6006/?smoothing=0&runFilter=%5E1010-speedctrl-%2833f8f182%2F%28s3%28-unprofiled%29%3F%7Cego%2858%7C59%29-5500%5B13%5D%29-%28off%7Cexact-v1%7Cnative%7Cboundary-failure%29%24%7Chistory-33f8f182-v2%2F%29&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22gate%2Fbytes_identical%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fwall_per_sim%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fscan_match_wall_per_sim%22%7D%5D#timeseries",
+  "pinned_tags": [
+    "gate/bytes_identical",
+    "offline/wall_per_sim",
+    "result/wall_s",
+    "result/commands",
+    "result/model_calls",
+    "offline/scan_match_wall_per_sim"
+  ],
+  "default_runs": [
+    "1010-speedctrl-33f8f182/s3-off",
+    "1010-speedctrl-33f8f182/s3-exact-v1",
+    "1010-speedctrl-33f8f182/ego58-55001-off",
+    "1010-speedctrl-33f8f182/ego58-55001-exact-v1",
+    "1010-speedctrl-33f8f182/ego58-55003-off",
+    "1010-speedctrl-33f8f182/ego58-55003-exact-v1",
+    "1010-speedctrl-33f8f182/ego59-55001-off",
+    "1010-speedctrl-33f8f182/ego59-55001-exact-v1",
+    "1010-speedctrl-33f8f182/ego59-55003-off",
+    "1010-speedctrl-33f8f182/ego59-55003-exact-v1",
+    "1010-speedctrl-33f8f182/s3-unprofiled-off",
+    "1010-speedctrl-33f8f182/s3-unprofiled-exact-v1",
+    "1010-speedctrl-33f8f182/s3-native",
+    "1010-speedctrl-33f8f182/ego58-55001-native",
+    "1010-speedctrl-33f8f182/ego58-55003-native",
+    "1010-speedctrl-33f8f182/ego59-55001-native",
+    "1010-speedctrl-33f8f182/ego59-55003-boundary-failure",
+    "1010-speedctrl-history-33f8f182-v2/s3-historical",
+    "1010-speedctrl-history-33f8f182-v2/ego58-55001-historical",
+    "1010-speedctrl-history-33f8f182-v2/ego58-55003-historical",
+    "1010-speedctrl-history-33f8f182-v2/ego59-55001-historical",
+    "1010-speedctrl-history-33f8f182-v2/ego59-55003-historical"
+  ],
+  "hparams_visible_columns": [
+    "case",
+    "outcome",
+    "policy",
+    "seed",
+    "source_sha",
+    "result/wall_s",
+    "result/sim_s",
+    "evaluation/reported_success"
+  ],
+  "scope": "saved-input exact controller replay and separate native command cost samples; no new mission completion",
+  "pending_native": [
+    "ego59-55003"
+  ],
+  "new_videos": 0,
+  "model_response_time": "unavailable; model calls0; no invented latency scalar",
+  "verified_event_data": true,
+  "verified_http_data": true,
+  "scalar_checks": 355,
+  "excluded_derived_runs": [
+    "1010-speedctrl-33f8f182/s3-historical",
+    "1010-speedctrl-33f8f182/ego58-55001-historical",
+    "1010-speedctrl-33f8f182/ego58-55003-historical",
+    "1010-speedctrl-33f8f182/ego59-55001-historical",
+    "1010-speedctrl-33f8f182/ego59-55003-historical"
+  ],
+  "history_correction_snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1010-speedctrl-history-33f8f182-v2",
+  "verified_ui": true,
+  "verified_selected_runs": 22,
+  "hparams_limit": "Shared native HParams lists all 4367 session groups and does not honor Time Series runFilter; only current available columns configured. Compare the selected 22 conditions in Time Series; five old historical derived runs are excluded there.",
+  "unavailable_hparams_metrics": [
+    "offline/wall_per_sim",
+    "gate/bytes_identical"
+  ],
+  "server_pid": 52016,
+  "verified_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+  "verified_new_video_registrations": 0,
+  "screenshots": {
+    "tensorboard-timeseries.png": {
+      "path": "/Users/changmin/projects/ugrp/outputs/speedctrl-20261009-v15/tensorboard-timeseries.png",
+      "sha256": "5be95daebd3f2c7699db5b8daa8e648237064dee51ff19f41236726d247378be"
+    },
+    "tensorboard-hparams.png": {
+      "path": "/Users/changmin/projects/ugrp/outputs/speedctrl-20261009-v15/tensorboard-hparams.png",
+      "sha256": "228b6b50652e05616307cf36cd211719ed1187030297ad09b8d3083bcf4faf1e"
+    }
+  }
+}

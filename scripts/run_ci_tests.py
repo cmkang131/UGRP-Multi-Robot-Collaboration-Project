@@ -386,6 +386,8 @@ TEST_PATTERNS = (
     "tests/test_masterpi_drive_friction_v7.py",
     "tests/test_v7_exact_speedups.py",
     "tests/test_v7_speed_benchmark.py",
+    "tests/test_controller_exact_speedups.py",
+    "tests/test_controller_replay.py",
     "tests/test_masterpi_drive_friction_v7_freeze.py",
     "tests/test_masterpi_drive_friction_v7_sphere6.py",
     "tests/test_probe_v7_roller_approx.py",

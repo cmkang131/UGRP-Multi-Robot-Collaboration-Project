@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "controller-replay-profile",
+      "version": "1.0.0",
+      "purpose": "Saved own-input controller profiling (offline)",
+      "entry": "scripts/profile_controller_replay.py",
+      "runner": "scripts.profile_controller_replay",
+      "docs": "experiments/2026-10-09-sim-speed-ctrl/README.md",
+      "requires": "Committed source; immutable completed own inputs; exclusive host lock after S3 smoke",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": ["--kind", "--raw", "--adapter", "--expected-source-sha"],
+      "side_effect": "offline_evaluation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

@@ -84,6 +84,21 @@ raise SystemExit(3 if a.fail else 0)
             wm.run_workflow(self.root, "fixture", [], record_dir=record)
         self.assertTrue((record / "manifest.json").is_file())
 
+    def test_exited_group_permission_error_still_finishes_its_manifest(self):
+        with mock.patch.object(wm.os, 'killpg', side_effect=PermissionError('exited macOS group')):
+            record = wm.run_workflow(self.root, 'fixture', [])
+        data = json.loads((record/'manifest.json').read_text())
+        self.assertEqual(data['status'], 'process_completed')
+        self.assertEqual(data['exit_code'], 0)
+
+    def test_live_group_permission_error_is_not_treated_as_gone(self):
+        child = mock.Mock(pid=12345)
+        child.poll.return_value = None
+        with mock.patch.object(wm.os, 'killpg', side_effect=PermissionError('live')) as kill:
+            with self.assertRaises(PermissionError):
+                wm._signal_owned_group(child, 15)
+        kill.assert_called_once_with(12345, 15)
+
     def test_output_collision_and_duplicate_flag_fail_before_record(self):
         output = self.root / "prior"
         output.mkdir()
@@ -313,6 +328,9 @@ raise SystemExit(3 if a.fail else 0)
         samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
         samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
         samples['v7-exact-speed-benchmark'] = ['--suite', 's2', '--expected-source-sha', '0'*40]
+        for name in ('controller-replay-profile', 'saved-physics-profile'):
+            samples[name] = ['--kind', 's3', '--raw', str(model), '--adapter', str(model),
+                             '--expected-source-sha', '0'*40]
         samples['zone-path-heading-v145'] = ['--expected-source-sha', '0'*40, '--seed', '1066']
         samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
                                            '--heading-mode', 'path_tangent_v1']
