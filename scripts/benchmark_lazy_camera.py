@@ -78,6 +78,31 @@ def verify_archive(args, source):
     return args.archive_manifest_sha256
 
 
+def observe_append(host):
+    """Inspect issued commands independently of the adapter's buffered writers."""
+    if hasattr(host, '_speed4_append_observer'): return
+    original = host._append
+    counts = dict(frames=0,commands=0,translating_commands=0,arm_commands=0,command_kinds={})
+    host._speed4_append_observer = counts
+    last = [-float('inf')]
+    def append(name, row):
+        result = original(name,row)
+        if name.startswith('robots/') and name.endswith('/commands.jsonl'):
+            counts['commands'] += 1
+            key = row['kind']; counts['command_kinds'][key] = counts['command_kinds'].get(key,0)+1
+            counts['translating_commands'] += int(abs(row.get('forward',0.))+abs(row.get('left',0.))>0.)
+            counts['arm_commands'] += int(key in ('arm','servo','look'))
+        if name.startswith('robots/') and name.endswith('/frames.jsonl'):
+            counts['frames'] += 1
+            t = row['sim_time']
+            if t-last[0] >= 1.-1e-8:
+                last[0] = t
+                write(host.out/'command-progress.json',dict(**counts,sim_time=t,
+                    semantics='evaluation-only observer of original append calls; original buffering unchanged'))
+        return result
+    host._append = append
+
+
 def run_one(args):
     from sim import lazy_camera  # our committed implementation before adapter routing
     # Ignore an adapter's old pyc files; no untracked cached code in the proof.
@@ -93,6 +118,15 @@ def run_one(args):
         package.__path__ = [str(adapter/name), str(ROOT/name)]
     os.environ[lazy_camera.ENV] = args.render_mode
     undo = lazy_camera.install_adapter()
+    if args.parent_batch:
+        from sim.solo_cyan_v106 import PhysicsBackend as Solo
+        from sim.zone_s3_host import PhysicsBackend as Team
+        for cls in (Solo,Team):
+            capture = cls.capture
+            def observed(host, _capture=capture):
+                observe_append(host)
+                return _capture(host)
+            cls.capture = observed
     out = args.output
     if out.exists(): raise ValueError('PRESERVE_EXISTING_OUTPUT')
     if args.start_barrier:
@@ -418,19 +452,26 @@ def early_state(path, kind, log):
     moving = max((v['max_position_delta_m'] for v in progress.get('robots',{}).values()), default=0.)
     translating = [r for r in commands if abs(r.get('forward',0.))+abs(r.get('left',0.)) > 0]
     arm_actions = [r for r in commands if r.get('kind') in ('arm','servo','look')]
+    observed_path = path/'command-progress.json'
+    observed = json.loads(observed_path.read_text()) if observed_path.exists() else {}
+    frame_count = max(len(frames), observed.get('frames',0))
+    command_count = max(len(commands), observed.get('commands',0))
+    translation_count = max(len(translating),observed.get('translating_commands',0))
+    arm_count = max(len(arm_actions),observed.get('arm_commands',0))
     own = path/'own-controller.jsonl'
     controller = lines(own) if own.exists() else []
     stages = sorted({r.get('stage','unknown') for r in controller})
     # Initial egomap sensor_sweep is a registered exploration observation phase;
     # rotation there is intentional. Once it exits, require translational commands.
     sweeping = bool(controller) and all(r.get('status') == 'sensor_sweep' for r in controller)
-    command_ok = bool(commands) and (bool(translating) or (kind == 's3' and bool(arm_actions)) or
+    command_ok = command_count>0 and (translation_count>0 or (kind == 's3' and arm_count>0) or
                                     (kind == 'ego' and sweeping and progress.get('sim_time',0.) <= 20.))
-    stage_ok = bool(stages) if kind == 'ego' else bool(frames and arm_actions)
-    ok = not errors and len(frames)>2 and moving>1e-5 and command_ok and stage_ok
-    return dict(ok=ok, traceback=errors, frames=len(frames), sim_time=progress.get('sim_time'),
-        motion_delta_m=moving, commands=len(commands), translating_commands=len(translating),
-        command_kinds=sorted({r['kind'] for r in commands}), stages=stages,
+    stage_ok = bool(stages) if kind == 'ego' else bool(frame_count and arm_count)
+    ok = not errors and frame_count>2 and moving>1e-5 and command_ok and stage_ok
+    return dict(ok=ok, traceback=errors, frames=frame_count, sim_time=progress.get('sim_time'),
+        motion_delta_m=moving, commands=command_count, translating_commands=translation_count,
+        command_kinds=sorted({r['kind'] for r in commands}|set(observed.get('command_kinds',{}))), stages=stages,
+        buffered_append_observer=observed,
         stage_evidence='own controller stage' if kind=='ego' else 'S3 camera control and arm commands',
         initial_sensor_sweep=sweeping, evaluation=progress)
 

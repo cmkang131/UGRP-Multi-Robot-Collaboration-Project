@@ -303,3 +303,18 @@ def test_paired_driver_never_acquires_exclusive_lease(tmp_path,monkeypatch):
     monkeypatch.setattr(agent_lock,'acquire',lambda *a,**k:pytest.fail('concurrent authorization'))
     monkeypatch.setattr(probe,'paired_cohort',lambda args:0)
     assert probe.main()==0
+
+
+def test_early_append_observer_preserves_buffered_original_and_sees_commands(tmp_path):
+    from scripts import benchmark_lazy_camera as probe
+    host=Host(tmp_path);original=host._append
+    probe.observe_append(host)
+    # The real writer can buffer all bytes. The observer uses append call receipts.
+    host._append('robots/r1/commands.jsonl',dict(kind='arm',pulse=1500))
+    for t in (1.,2.,3.):host._append('robots/r1/frames.jsonl',dict(sim_time=t))
+    assert host.rows['robots/r1/commands.jsonl']==[dict(kind='arm',pulse=1500)]
+    record=json.loads((tmp_path/'command-progress.json').read_text())
+    assert record['frames']==3 and record['commands']==1 and record['arm_commands']==1
+    probe.write(tmp_path/'evaluation-progress.json',dict(sim_time=3.,robots={'r1':dict(max_position_delta_m=.1)}))
+    log=tmp_path/'log';log.write_text('')
+    assert probe.early_state(tmp_path,'s3',log)['ok']
