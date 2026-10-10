@@ -42,6 +42,10 @@ def build(run, output, evaluation_name='evaluation'):
             policy='Oracle staged own RGB; ' + evaluation['stage_scope'])
         view['offline_scalars']['offline/infrastructure_interruptions'] = 0
         view['offline_scalars']['offline/physical_stops'] = int(evaluation['status'] == 'PHYSICAL_STOP')
+        if 'cyan_physics' in evaluation:
+            physics=evaluation['cyan_physics']
+            view['offline_scalars']['offline/contact_lift_samples'] = physics['lift_with_both_fingers_samples']
+            view['offline_scalars']['offline/contact_lift_xy_m'] = physics['max_xy_displacement_while_contact_lifted_m']
         view['provenance_note'] = 'Video overlay off names the unchanged visual_pose_mpc option; alignment_entry is recorded separately.'
     (output / 'result.json').write_text(json.dumps(view, indent=2, allow_nan=False) + '\n')
 

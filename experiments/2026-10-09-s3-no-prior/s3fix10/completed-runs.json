@@ -1,0 +1,636 @@
+[
+  {
+    "run": "s3fix10-r2-pair-n-c0bf138f",
+    "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix10-r2-pair-n-c0bf138f",
+    "host": "oracle-a1",
+    "source_sha": "c0bf138f24d8afa2bdd540375fc008ad6a65c2e4",
+    "status": "DEV_STAGE_FINISHED",
+    "wall_s": 761.242994963,
+    "sim_s": 60.0,
+    "all_stage_pass": false,
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r1",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9661,
+          "axis_heading_rad": 0.20567439828894124,
+          "near_end_base_m": [
+            0.17610934760552072,
+            0.010766539067929785
+          ],
+          "grip_base_m": [
+            0.20547705190174287,
+            0.016893360786378517
+          ],
+          "visible_length_m": 0.22577039300323543,
+          "lateral_spread_m": 0.011629316763953729,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.014,
+            "far_m": 0.0478,
+            "length_m": 0.0338,
+            "points": 3732,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 143
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "last_beam": {
+          "robot_id": "r2",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 7086,
+          "axis_heading_rad": 0.1362809266678833,
+          "near_end_base_m": [
+            0.22503836342444136,
+            0.0002078041865012448
+          ],
+          "grip_base_m": [
+            0.2547602069647731,
+            0.004283588352038156
+          ],
+          "visible_length_m": 0.19057789588731414,
+          "lateral_spread_m": 0.011476072714347911,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0293,
+            "far_m": 0.063,
+            "length_m": 0.0337,
+            "points": 2437,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {},
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "frame_analysis": {
+      "r1": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 136,
+        "command_frames": 144,
+        "data_sha256": "f522684e74c239947688e3ce77afb2ab145cd5a136d3d09cb99f84242f2a8c12",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 143,
+        "command_frames": 144,
+        "data_sha256": "5ce7cc7325fdb4fe0e7eac118cc601341e01910b18443eb3067d5fb37231a448",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "cyan_physics": null,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "c0d5ee6b4ccc309eabf34b50885fe66858df6d9834e1da8537b5c4a6aaaf5116"
+    },
+    "local_hashes_verified": true,
+    "heading_mode": "path_tangent_v1",
+    "heading_visual_lock": "off",
+    "environment": {
+      "host": "oracle-a1",
+      "machine": "aarch64",
+      "logical_cpus": 6,
+      "physical_memory_bytes": 25136717824,
+      "MUJOCO_GL": "osmesa"
+    },
+    "report_sha256": "f3b4bcb8e797cfccaa008a57bdec77df06e90bed22fc14607a29d3c3f0d4fa0d",
+    "video": {
+      "path": "outputs/s3fix10-r2-pair-n-c0bf138f/delivery/execution.mp4",
+      "sha256": "71b736a23032ec5e9f9e6a27a9bd8857f42e1ae3d12ee64846e34c554b9c2c98",
+      "fps": 20.0,
+      "frames": 300,
+      "duration_s": 15.0,
+      "playback": 4,
+      "source": "saved own RGB only"
+    },
+    "local_video": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix10-r2-pair-n-c0bf138f/delivery/execution.mp4"
+  },
+  {
+    "run": "s3fix10-r2-pair-b-c0bf138f",
+    "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix10-r2-pair-b-c0bf138f",
+    "host": "oracle-a1",
+    "source_sha": "c0bf138f24d8afa2bdd540375fc008ad6a65c2e4",
+    "status": "DEV_STAGE_FINISHED",
+    "wall_s": 753.5430722660001,
+    "sim_s": 60.0,
+    "all_stage_pass": false,
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 139,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 141,
+        "beam_visible": 141,
+        "last_beam": {
+          "robot_id": "r1",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9452,
+          "axis_heading_rad": 0.14642503715410923,
+          "near_end_base_m": [
+            0.19218902808416882,
+            0.005257247028322894
+          ],
+          "grip_base_m": [
+            0.2218679979087086,
+            0.009634317984345693
+          ],
+          "visible_length_m": 0.21759837621762096,
+          "lateral_spread_m": 0.011529540907802836,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0239,
+            "far_m": 0.0578,
+            "length_m": 0.0339,
+            "points": 3281,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {
+          "POSE_CLUSTER_UNCERTAIN": 28
+        },
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align_start",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 2.9,
+            "state": "align",
+            "blind_phase": null,
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 139,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 141,
+        "beam_visible": 141,
+        "last_beam": {
+          "robot_id": "r2",
+          "event": "beam_obs",
+          "sim_s": 62.2,
+          "posture": "inspect",
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 9829,
+          "axis_heading_rad": 0.29937064533169805,
+          "near_end_base_m": [
+            0.18879711730835566,
+            0.003759588556353336
+          ],
+          "grip_base_m": [
+            0.21746278591645515,
+            0.012607155637230394
+          ],
+          "visible_length_m": 0.2267442271125864,
+          "lateral_spread_m": 0.011523212944525197,
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0227,
+            "far_m": 0.0562,
+            "length_m": 0.0335,
+            "points": 3329,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre"
+        },
+        "local_would_stop": {},
+        "lift": null,
+        "carry": null,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "frame_analysis": {
+      "r1": {
+        "rows": 141,
+        "detected": 141,
+        "tolerance_hit": 0,
+        "end_visible_count": 129,
+        "reasons": {
+          "BAND_VISIBLE": 129,
+          "END_CLIPPED": 2,
+          "BAND_CLIPPED": 10
+        },
+        "forward_reversals": 18,
+        "turn_reversals": 115,
+        "command_frames": 139,
+        "data_sha256": "3bfd9f93fd242499c90b6b54c171b846a196796e856b9933dbe503da00bf63ce",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 141,
+        "detected": 141,
+        "tolerance_hit": 0,
+        "end_visible_count": 138,
+        "reasons": {
+          "BAND_VISIBLE": 138,
+          "END_CLIPPED": 2,
+          "BAND_CLIPPED": 1
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 125,
+        "command_frames": 139,
+        "data_sha256": "4fdb97e8be086e9435c2bc1e584f9979580393bf7fa5a9d5dd191adebf83a432",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "cyan_physics": null,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "ea91c15c764e8217cb25b39e6790bfdc4d9d0e50bd05d745c2bb8cd2c0c47a3d"
+    },
+    "local_hashes_verified": true,
+    "heading_mode": "path_tangent_v1",
+    "heading_visual_lock": "off",
+    "environment": {
+      "host": "oracle-a1",
+      "machine": "aarch64",
+      "logical_cpus": 6,
+      "physical_memory_bytes": 25136717824,
+      "MUJOCO_GL": "osmesa"
+    },
+    "report_sha256": "94ef69c4a0689c58a9232de49025183707e1ded5ab4dd714b69dcb86124cf1a8",
+    "video": {
+      "path": "outputs/s3fix10-r2-pair-b-c0bf138f/delivery/execution.mp4",
+      "sha256": "c0168842e0db9a421424da103422623ba1c5179526130a893ea250f8e55182eb",
+      "fps": 20.0,
+      "frames": 300,
+      "duration_s": 15.0,
+      "playback": 4,
+      "source": "saved own RGB only"
+    },
+    "local_video": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix10-r2-pair-b-c0bf138f/delivery/execution.mp4"
+  },
+  {
+    "run": "s3fix10-r2-cyan-c0bf138f",
+    "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix10-r2-cyan-c0bf138f",
+    "host": "oracle-a1",
+    "source_sha": "c0bf138f24d8afa2bdd540375fc008ad6a65c2e4",
+    "status": "DEV_STAGE_FINISHED",
+    "wall_s": 894.9331510290001,
+    "sim_s": 60.0,
+    "all_stage_pass": true,
+    "robots": {
+      "r3": {
+        "hover": 12.35,
+        "descent": 13.65,
+        "close": 15.3,
+        "timeline": [
+          {
+            "t": 2.85,
+            "state": "align",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 11.35,
+            "state": "real_pregrasp",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 12.35,
+            "state": "hover",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          },
+          {
+            "t": 13.65,
+            "state": "blind_descent",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 807,
+              "4": 1897,
+              "5": 2187,
+              "6": 1500
+            }
+          },
+          {
+            "t": 14.85,
+            "state": "grasp",
+            "failure": null,
+            "servo": {
+              "1": 2000,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            }
+          },
+          {
+            "t": 15.75,
+            "state": "lift",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            }
+          },
+          {
+            "t": 36.95,
+            "state": "real_carry_transition",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 896,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            }
+          },
+          {
+            "t": 37.55,
+            "state": "carry",
+            "failure": null,
+            "servo": {
+              "1": 1500,
+              "3": 1050,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            }
+          }
+        ],
+        "stage_pass": true,
+        "failure": null,
+        "moving_commands": 63,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 0,
+        "beam_visible": 0,
+        "last_beam": null,
+        "local_would_stop": {
+          "REAL_PREGRASP_UNCONFIRMED": 1,
+          "ARM_COLLISION_GUARD": 14,
+          "POSE_UNCERTAIN": 27,
+          "PATH_COLLISION_GUARD": 1
+        },
+        "lift": 15.75,
+        "carry": 37.55,
+        "lower": null,
+        "released": null,
+        "done": null
+      }
+    },
+    "frame_analysis": {
+      "r3": {
+        "rows": 170,
+        "detected": 170,
+        "tolerance_hit": 7,
+        "end_visible_count": 0,
+        "reasons": {
+          "unique_fit": 170
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 17,
+        "command_frames": 21,
+        "data_sha256": "22aa5608f1b46f583cb959d57c2155aa7663d1247dfbcbf30e48051f570a7f5e",
+        "coverage": "all RGB alignment frames"
+      }
+    },
+    "cyan_physics": {
+      "lift_threshold_m": 0.06,
+      "lift_with_both_fingers_samples": 917,
+      "first_contact_lift_t": 16.55,
+      "max_xy_displacement_while_contact_lifted_m": 0.24988350387015118,
+      "max_com_z_m": 0.16294936284200331,
+      "qualification": "actual two-finger contact and lift; continuous cargo displacement is reported, no new success threshold"
+    },
+    "artifact_verification": {
+      "files": 3636,
+      "all_hashes_match": true,
+      "manifest_sha256": "ad390f71d968a3b7a28e05c4506087524f08810dc7aa057ab601c4e1ab9c2d89"
+    },
+    "local_hashes_verified": true,
+    "heading_mode": "path_tangent_v1",
+    "heading_visual_lock": "unique_cyan_align_v1",
+    "environment": {
+      "host": "oracle-a1",
+      "machine": "aarch64",
+      "logical_cpus": 6,
+      "physical_memory_bytes": 25136717824,
+      "MUJOCO_GL": "osmesa"
+    },
+    "report_sha256": "614b2e6b4fd220bfbea346b721e8470d648a6a5ed1f5c532263d18db3262a045",
+    "video": {
+      "path": "outputs/s3fix10-r2-cyan-c0bf138f/delivery/execution.mp4",
+      "sha256": "8862878bc2fbfa0def455a95aeba638612d1d98b09327d14cf49497c13a1490e",
+      "fps": 20.0,
+      "frames": 300,
+      "duration_s": 15.0,
+      "playback": 4,
+      "source": "saved own RGB only"
+    },
+    "local_video": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix10-r2-cyan-c0bf138f/delivery/execution.mp4"
+  }
+]
