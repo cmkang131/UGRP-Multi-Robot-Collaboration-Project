@@ -7,10 +7,11 @@
   "source": "test_route_provider",
   "E2E_success_eligible": false,
   "candidates": [
-    "visual",
-    "recovery"
+    "off",
+    "saved_phase",
+    "local_servo"
   ],
-  "selected": "visual",
+  "selected": null,
   "route": [
     [
       1.275,
@@ -46,5 +47,30 @@
       "method": "ordered waypoints with per-waypoint execution; reuse S3 release/regrasp checkpoints"
     }
   ],
-  "scope": "S3-only synthetic entrance; legacy authored guard/provider, historical calibration unmeasured on new map; no ownmap or live dialogue success"
+  "scope": "S3-only synthetic entrance; legacy authored guard/provider, historical calibration unmeasured on new map; no ownmap or live dialogue success",
+  "candidate_field": "test_entrance",
+  "carry_candidate": "visual",
+  "diagnosis": {
+    "attempt1": "two early stops after 180 wall seconds",
+    "source_sha": "ed908b382e1847fe8a5a376b520b467e45b8c037",
+    "own_RGB_grip_x_m": [
+      0.2265371464020663,
+      0.24339796042208875
+    ],
+    "legacy_expected_x_m": 0.5032,
+    "legacy_tolerance_x_m": 0.25,
+    "legacy_absolute_errors_m": [
+      0.27666285359793374,
+      0.25980203957791126
+    ],
+    "states": [
+      "align",
+      "reapproach"
+    ],
+    "frames": 500,
+    "initial_check_SIM_s": 27.3,
+    "first_carry_segments": 0,
+    "cause": "far-prestation legacy first-view check takes ownership before stopped-base near alignment"
+  },
+  "comparison": "three entrances x identical two seeds, same SHA/batch; old attempt failures preserved"
 }

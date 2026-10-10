@@ -31,7 +31,9 @@ PLAN = 'experiments/2026-10-11-e2e3-s3-route/registration.json'
 WORKFLOW = 'configs/simulation_workflows.d/e2e_s3_ownroute_v179.json'
 
 
-def bundle(sha,seed,option='off',candidate='visual'):
+def bundle(sha,seed,option='off',candidate='visual',entrance='off'):
+    from harness.e2e_s3_entrance import OPTIONS
+    if entrance not in OPTIONS:raise ValueError('UNKNOWN_TEST_ENTRANCE')
     if seed not in (61001,61002) or option not in ('off','on_v1') or candidate not in ('recovery','visual'):
         raise ValueError('registered own-route option/candidate/two seeds required')
     b = json.loads((ROOT/TEMPLATE).read_text())
@@ -42,6 +44,7 @@ def bundle(sha,seed,option='off',candidate='visual'):
         case='pair',check='e2e3-test-route',robot_model='masterpi_v3',weld=False,model_calls=0,
         stage_probe=True,research_result=False,physical_success=None,E2E_success=False,
         own_route_adapter=option,route_source='test_route_provider',registered_route=copy.deepcopy(WAYPOINTS),
+        test_entrance=entrance,
         route_case='e2e-beam-to-B',initial_condition=0,servo_option=FINE,cap_sim_s=900.,case_cap_s=900.,
         wall_cap_s=18000.,calibration_status='UNMEASURED_NEW_MAP',host='oracle-x86',render_backend='osmesa',
         legacy_authored_guard_provider=True,dialogue_connected=False,goal_rgb_inferred=False,
@@ -52,6 +55,7 @@ def bundle(sha,seed,option='off',candidate='visual'):
                                   'scripts/run_e2e_s3_route_cohort.py','sim/e2e_s3_test.py']))|{TEMPLATE,PLAN,WORKFLOW,registry['file'],
             registry['parent_file'],'configs/e2e_environment_v1.json','configs/zone_study_dev/e2e_one_beam_ownmap.json',
             'experiments/2026-10-09-s3-no-prior/s3fix10/scene-setup.json',b['calibration']}
+    paths.add('experiments/2026-10-09-s3-no-prior/s3fix8/alignment-phase.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -118,6 +122,8 @@ def run(b,out):
                     # The job deadline is independent of the probe horizon.
                     ep.own.job_sim_limit_s=b['cap_sim_s'];ctl.job_sim_limit_s=b['cap_sim_s']
                     ep.own.job.deadline=now+b['cap_sim_s']
+                    from harness.e2e_s3_entrance import attach as entrance
+                    entrance(ep,b['test_entrance'])
                 entered=True
             if entered:
                 pair=rt.pair.producer
@@ -141,6 +147,7 @@ def run(b,out):
         if host is not None and 'start' in locals():result['check_sim_s']=host.now-start
         from sim.zone_s3_no_prior import PhysicalStop
         if 'PhysicalStop:' in result['failure']:result['status']='PHYSICAL_STOP'
+        elif 'DEV_INITIAL_CHECK_STOP' in result['failure']:result['status']='EARLY_STOP'
     finally:
         write(out/'stage-states.json',states);write(out/'checkpoint-correction.json',dict(robots=audit,command_plan_bus=bus))
         if rt is not None:write(out/'student_record.json',rt.record());rt.close()
@@ -155,6 +162,8 @@ def main():
     p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,choices=(61001,61002),required=True)
     p.add_argument('--own-route-adapter',choices=('off','on_v1'),default='off')
     p.add_argument('--candidate',choices=('recovery','visual'),default='visual');p.add_argument('--execute',action='store_true')
+    from harness.e2e_s3_entrance import OPTIONS
+    p.add_argument('--entrance',choices=OPTIONS,default='off')
     a=p.parse_args()
     if not a.execute:print(json.dumps(dict(bundle_id=BUNDLE_ID,execution_started=False,adapter=a.own_route_adapter)));return 0
     if a.own_route_adapter=='off':raise ValueError('OWN_ROUTE_ADAPTER_OFF')
@@ -163,7 +172,7 @@ def main():
     if not a.output.resolve().is_relative_to(Path.home()/'ugrp-sim/runs'):raise ValueError('PERSISTENT_RUN_REQUIRED')
     from harness.zone_pair_highpose_exact_speedups import install
     _,undo=install('v98-exact-v6')
-    try:r=run(bundle(a.expected_source_sha,a.seed,a.own_route_adapter,a.candidate),a.output)
+    try:r=run(bundle(a.expected_source_sha,a.seed,a.own_route_adapter,a.candidate,a.entrance),a.output)
     finally:undo()
     print(json.dumps(r));return int(r['status']!='DEV_STAGE_FINISHED')
 

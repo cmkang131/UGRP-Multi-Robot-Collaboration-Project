@@ -14,11 +14,12 @@ from scripts.evaluate_e2e_s3_route import evaluate, file_sha
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def commands(sha,attempt,candidate):
-    return [(dict(name=f'e2e3-{candidate}-s{seed}-r{attempt}',seed=seed,case='pair',candidate=candidate),
+def commands(sha,attempt,candidate,entrances=('off',)):
+    return [(dict(name=f'e2e3-{candidate}-{entrance}-s{seed}-r{attempt}',seed=seed,case='pair',candidate=candidate,entrance=entrance),
         [sys.executable,'-m','scripts.run_e2e_s3_route','--expected-source-sha',sha,
-         '--output',f'outputs/e2e3-{candidate}-s{seed}-r{attempt}/raw','--seed',str(seed),
-         '--candidate',candidate,'--own-route-adapter','on_v1','--execute']) for seed in (61001,61002)]
+         '--output',f'outputs/e2e3-{candidate}-{entrance}-s{seed}-r{attempt}/raw','--seed',str(seed),
+         '--candidate',candidate,'--entrance',entrance,'--own-route-adapter','on_v1','--execute'])
+            for entrance in entrances for seed in (61001,61002)]
 
 
 def run_one(item,out,sha):
@@ -48,7 +49,9 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--attempt',type=int,default=1)
     p.add_argument('--candidate',choices=('visual','recovery'),default='visual');p.add_argument('--execute',action='store_true')
-    a=p.parse_args();items=commands(a.expected_source_sha,a.attempt,a.candidate)
+    from harness.e2e_s3_entrance import OPTIONS
+    p.add_argument('--entrances',nargs='+',choices=OPTIONS,default=['off'])
+    a=p.parse_args();items=commands(a.expected_source_sha,a.attempt,a.candidate,a.entrances)
     if not a.execute:print(json.dumps(items));return 0
     if (platform.system()!='Linux' or platform.machine()!='x86_64' or ROOT.name!=a.expected_source_sha
             or os.getpriority(os.PRIO_PROCESS,0)!=0 or os.environ.get('LP_NUM_THREADS')!='4'):
@@ -56,7 +59,7 @@ def main():
     if not a.output.resolve().is_relative_to(Path.home()/'ugrp-sim/runs') or a.output.exists():
         raise ValueError('NEW_PERSISTENT_COHORT_REQUIRED')
     a.output.mkdir(parents=True,exist_ok=False)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(items)) as pool:
         results=list(pool.map(lambda item:run_one(item,a.output,a.expected_source_sha),items))
     (a.output/'cohort.json').write_text(json.dumps(results,indent=2,allow_nan=False)+'\n')
     print(json.dumps([dict(name=r['name'],exit_code=r['exit_code'],archive_ok='arm_archive' in r,

@@ -125,3 +125,45 @@ def test_cohort_command_uses_both_seeds_same_candidate_persistent_outputs():
         assert args[args.index('--output')+1]==f'outputs/{r["name"]}/raw'
         assert args[args.index('--own-route-adapter')+1]=='on_v1'
         assert args[args.index('--candidate')+1]=='visual'
+    grouped=commands('a'*40,2,'visual',('off','saved_phase','local_servo'))
+    assert len(grouped)==len({r['name'] for r,args in grouped})==6
+
+
+def entrance_fixture():
+    from types import MethodType
+    from scripts.run_m2_pair import M2DoorStudent
+    from harness.zone_final_pair_binding import bind
+    log=[]
+    ctl=SimpleNamespace(version='v3',state='align',seg=0,vo_obs=[],align_cmds0=None,commands=0,
+        pending_reapproach=None,beam_grasp_confirmed=False,rid='r1',
+        log=lambda *a,**k:log.append((a,k)))
+    ctl._on_beam_obs=MethodType(bind(M2DoorStudent._on_beam_obs,EXPECT_GRIP_X_M=.5032),ctl)
+    ep=SimpleNamespace(controller=ctl,own=SimpleNamespace(robot_id='r1',servo={1:2000},
+        last_obs=dict(frame_id=2,sha256='a'*64,sim_time=2.)))
+    beam=dict(visible=True,end_visible=True,reason='BAND_VISIBLE',grip_base_m=[.227,.002],axis_heading_rad=.157)
+    return ep,beam,log
+
+
+def test_entrance_owner_fix_replays_real_legacy_callback_without_faking_commands():
+    from harness.e2e_s3_entrance import attach
+    ep,beam,log=entrance_fixture();old=ep.controller._on_beam_obs
+    assert attach(ep) is ep and ep.controller._on_beam_obs is old
+    old(2.,beam);assert ep.controller.pending_reapproach==[.227,.002]
+    ep,beam,log=entrance_fixture();attach(ep,'local_servo');ep.controller._on_beam_obs(2.,beam)
+    assert ep.controller.pending_reapproach is None
+    assert ep.controller.commands==0 and ep.controller.vo_obs[-1]['moved_before'] is False
+    assert log[-1][0][1]=='test_local_alignment_owner' and not log[-1][1]['GO_bypassed']
+
+
+@pytest.mark.parametrize('change',('stale','closed','far','missing_end','later_segment'))
+def test_near_entrance_never_relaxes_stale_closed_far_or_later_stage(change):
+    from harness.e2e_s3_entrance import attach
+    ep,beam,log=entrance_fixture()
+    if change=='stale':ep.own.last_obs['sim_time']=1.
+    elif change=='closed':ep.own.servo[1]=1500
+    elif change=='far':beam['grip_base_m'][0]=.9
+    elif change=='missing_end':beam['end_visible']=False
+    elif change=='later_segment':ep.controller.seg=1
+    attach(ep,'local_servo');ep.controller._on_beam_obs(2.,beam)
+    assert not any(a[1]=='test_local_alignment_owner' for a,k in log)
+    with pytest.raises(ValueError):attach(ep,'local_servo',source='own_map')
