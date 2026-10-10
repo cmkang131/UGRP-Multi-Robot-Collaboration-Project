@@ -92,4 +92,4 @@ v107/v108 중 기존 v3 물리를 쓰는 경로를 v7로 바꾸는 변경은 포
 [Olson 2009 스캔 정합](https://april.eecs.umich.edu/media/pdfs/olson2009icra.pdf)이다.
 원문 열람 범위와 정확한 계산 재사용 경계는 위 실험 기록의 참고 자료에 적었다.
 
-- [s4grip2 유지/외란 RGB 진단 사전 등록](experiments/2026-10-06-s4-llm/s4grip2/README.md): r1/r2/r3, 24사례, 탐색/확증 분리, 기본 CV 유지.
+- [s4grip2 유지/외란 RGB 진단 결과](experiments/2026-10-06-s4-llm/s4grip2/README.md): 24사례 완료; 확증 정탐4/6, 유지 경보0/6, r3 조기경보·unknown으로 안전 감지기 not-ready.

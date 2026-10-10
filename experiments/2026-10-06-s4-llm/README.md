@@ -40,4 +40,4 @@
 `tests/test_pair_llm_s4_routing.py`: **7 passed in 0.47s**, exit 0 (초기 경계 시험). 후속 요청/응답 보존·이미지 해시·호출/토큰/시간·429 정지와 S3 어댑터까지 포함한 최종 검증은 RESUME_RECORD를 따른다.
 새 실험·훈련·평가 결과가 없으므로 TensorBoard snapshot을 만들지 않는다.
 
-- [s4grip2 유지/외란 RGB 진단 사전 등록](s4grip2/README.md): r1/r2/r3, 24사례, 탐색/확증 분리, 기본 CV 유지.
+- [s4grip2 유지/외란 RGB 진단 결과](s4grip2/README.md): 24사례 완료; 확증 정탐4/6, 유지 경보0/6, r3 조기경보·unknown으로 안전 감지기 not-ready.
