@@ -1,16 +1,1040 @@
 {
   "round": "egomap68",
-  "status": "PREREGISTERED",
+  "status": "COMPLETE",
+  "verdict": "NOT_ADOPTED",
+  "source_sha": "a90e17e2c6cbf7d4680335a0b34bcdeb58d09ce5",
+  "prereg_commit": "a90e17e2c6cbf7d4680335a0b34bcdeb58d09ce5",
+  "host": "oracle-x86",
   "registered": 24,
-  "executed": 0,
+  "measured": 24,
+  "excluded": 0,
+  "physics_retries": 0,
+  "host_errors": 0,
+  "statuses": {
+    "RECORDED": 20,
+    "PHYSICAL_FAILURE": 4
+  },
+  "sampling_scope": "Same six development checkpoints; no independent seed confirmation and no LLM transport E2E claim",
+  "condition_order": [
+    "baseline",
+    "traversed",
+    "homing",
+    "loopclosure"
+  ],
+  "conditions": {
+    "baseline": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "RECORDED": 5,
+        "PHYSICAL_FAILURE": 1
+      },
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 13611,
+      "over3_frames": 9353,
+      "commands": {
+        "turn": 8163,
+        "forward": 3904,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 1544
+      },
+      "turn_fraction": 0.5997355080449637,
+      "turn_reversals": 1271,
+      "match_accepted": 12,
+      "match_attempts": 139,
+      "visual_gate_failures": {
+        "outside_20cm": 5433,
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "final_error_median": 0.5050521480957121,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      },
+      "final_error_max": 1.6608683293284388
+    },
+    "traversed": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "PHYSICAL_FAILURE": 1,
+        "RECORDED": 5
+      },
+      "B_arrived": 2,
+      "returned": 2,
+      "false_declarations": 3,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 10591,
+      "over3_frames": 5118,
+      "commands": {
+        "turn": 6108,
+        "forward": 2939,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 1544
+      },
+      "turn_fraction": 0.5767160796903031,
+      "turn_reversals": 1548,
+      "match_accepted": 0,
+      "match_attempts": 78,
+      "visual_gate_failures": {
+        "outside_20cm": 5433,
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "final_error_median": 0.21524262126841076,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      },
+      "final_error_max": 1.6764231056808425
+    },
+    "homing": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "PHYSICAL_FAILURE": 1,
+        "RECORDED": 5
+      },
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 13861,
+      "over3_frames": 6964,
+      "commands": {
+        "turn": 6322,
+        "forward": 2951,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 4588
+      },
+      "turn_fraction": 0.4560998484957795,
+      "turn_reversals": 1569,
+      "match_accepted": 2,
+      "match_attempts": 111,
+      "visual_gate_failures": {
+        "outside_20cm": 5433,
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "final_error_median": 0.33002441717890296,
+      "visual_matching": {
+        "attempts": 3171,
+        "accepted": 0,
+        "corrections": 0,
+        "home_attempts": 3171,
+        "home_accepted": 0
+      },
+      "final_error_max": 1.8381874139428598
+    },
+    "loopclosure": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "PHYSICAL_FAILURE": 1,
+        "RECORDED": 5
+      },
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 13861,
+      "over3_frames": 7168,
+      "commands": {
+        "turn": 6404,
+        "forward": 2949,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 4508
+      },
+      "turn_fraction": 0.46201572758098264,
+      "turn_reversals": 1606,
+      "match_accepted": 3,
+      "match_attempts": 116,
+      "visual_gate_failures": {
+        "outside_20cm": 5433,
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "final_error_median": 0.33002441717890296,
+      "visual_matching": {
+        "attempts": 3180,
+        "accepted": 2,
+        "corrections": 2,
+        "home_attempts": 3096,
+        "home_accepted": 0
+      },
+      "final_error_max": 1.8381874139428598
+    }
+  },
+  "runs": [
+    {
+      "seed": 63001,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 2287,
+      "final_error_m": 1.6608683293284388,
+      "final_sigma_m": 0.09203801656723937,
+      "final_error_sigma": 18.045459814044055,
+      "final_return_distance_m": 2.6569041605635277,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63001,
+      "condition": "traversed",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1686,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 1272,
+      "final_error_m": 1.3656883781625397,
+      "final_sigma_m": 0.08858419935081625,
+      "final_error_sigma": 15.416839438307298,
+      "final_return_distance_m": 1.530343336077862,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63001,
+      "condition": "homing",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1686,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 1272,
+      "final_error_m": 1.3656883781625397,
+      "final_sigma_m": 0.08858419935081625,
+      "final_error_sigma": 15.416839438307298,
+      "final_return_distance_m": 1.530343336077862,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63001,
+      "condition": "loopclosure",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1686,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 1272,
+      "final_error_m": 1.3656883781625397,
+      "final_sigma_m": 0.08858419935081625,
+      "final_error_sigma": 15.416839438307298,
+      "final_return_distance_m": 1.530343336077862,
+      "visual_matching": {
+        "attempts": 7,
+        "accepted": 0,
+        "reasons": {
+          "inconsistent_candidates": 1,
+          "insufficient_3d_matches": 6
+        },
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "baseline",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1436,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 217,
+      "final_error_m": 0.41216594597439293,
+      "final_sigma_m": 0.10721606367255009,
+      "final_error_sigma": 3.8442555327641394,
+      "final_return_distance_m": 3.3960898079937456,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "traversed",
+      "status": "RECORDED",
+      "samples": 1965,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 1,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 329,
+      "final_error_m": 0.2445784698167353,
+      "final_sigma_m": 0.07266818859640876,
+      "final_error_sigma": 3.3656882680136366,
+      "final_return_distance_m": 0.3589353991298515,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "homing",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1065,
+      "final_error_m": 0.40178416899294683,
+      "final_sigma_m": 0.055614725072498435,
+      "final_error_sigma": 7.224420663218018,
+      "final_return_distance_m": 0.3616617546342475,
+      "visual_matching": {
+        "attempts": 736,
+        "accepted": 0,
+        "reasons": {
+          "insufficient_3d_matches": 356,
+          "fewer_than_50_pose_inliers": 276,
+          "two_view_ransac": 104
+        },
+        "corrections": 0,
+        "home_attempts": 736,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "loopclosure",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1065,
+      "final_error_m": 0.40178416899294683,
+      "final_sigma_m": 0.055614725072498435,
+      "final_error_sigma": 7.224420663218018,
+      "final_return_distance_m": 0.3616617546342475,
+      "visual_matching": {
+        "attempts": 749,
+        "accepted": 0,
+        "reasons": {
+          "insufficient_3d_matches": 366,
+          "fewer_than_50_pose_inliers": 278,
+          "two_view_ransac": 105
+        },
+        "corrections": 0,
+        "home_attempts": 736,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 2201,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1748,
+      "final_error_m": 0.8198801004914216,
+      "final_sigma_m": 0.07629310177731988,
+      "final_error_sigma": 10.746451270056403,
+      "final_return_distance_m": 2.0452823478687687,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "traversed",
+      "status": "RECORDED",
+      "samples": 1589,
+      "B_arrived": true,
+      "returned": true,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 879,
+      "final_error_m": 0.11242499732833705,
+      "final_sigma_m": 0.10811562512679676,
+      "final_error_sigma": 1.0398589213768714,
+      "final_return_distance_m": 0.14766757094783123,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "homing",
+      "status": "RECORDED",
+      "samples": 2201,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 887,
+      "final_error_m": 0.15788489082374826,
+      "final_sigma_m": 0.09768881622405078,
+      "final_error_sigma": 1.616202313902923,
+      "final_return_distance_m": 0.12168857228779606,
+      "visual_matching": {
+        "attempts": 623,
+        "accepted": 0,
+        "reasons": {
+          "insufficient_3d_matches": 623
+        },
+        "corrections": 0,
+        "home_attempts": 623,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "loopclosure",
+      "status": "RECORDED",
+      "samples": 2201,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1219,
+      "final_error_m": 0.13016275821705042,
+      "final_sigma_m": 0.04183578895855752,
+      "final_error_sigma": 3.1112777231472672,
+      "final_return_distance_m": 0.11894549257605265,
+      "visual_matching": {
+        "attempts": 719,
+        "accepted": 1,
+        "reasons": {
+          "pnp_verified": 1,
+          "insufficient_3d_matches": 716,
+          "two_view_ransac": 2
+        },
+        "corrections": 1,
+        "home_attempts": 705,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 2424,
+      "final_error_m": 0.5979383502170312,
+      "final_sigma_m": 0.08534221282869446,
+      "final_error_sigma": 7.006360983599754,
+      "final_return_distance_m": 3.4082135151612225,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "traversed",
+      "status": "RECORDED",
+      "samples": 2513,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 1,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1685,
+      "final_error_m": 1.6764231056808425,
+      "final_sigma_m": 0.07685280939390625,
+      "final_error_sigma": 21.81342645638883,
+      "final_return_distance_m": 1.5347755594299775,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "homing",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1873,
+      "final_error_m": 1.8381874139428598,
+      "final_sigma_m": 0.07203875796636208,
+      "final_error_sigma": 25.516645009359912,
+      "final_return_distance_m": 1.6010590991177325,
+      "visual_matching": {
+        "attempts": 92,
+        "accepted": 0,
+        "reasons": {
+          "insufficient_3d_matches": 92
+        },
+        "corrections": 0,
+        "home_attempts": 92,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "loopclosure",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1873,
+      "final_error_m": 1.8381874139428598,
+      "final_sigma_m": 0.07203875796636208,
+      "final_error_sigma": 25.516645009359912,
+      "final_return_distance_m": 1.6010590991177325,
+      "visual_matching": {
+        "attempts": 118,
+        "accepted": 0,
+        "reasons": {
+          "fewer_than_50_pose_inliers": 4,
+          "insufficient_3d_matches": 113,
+          "two_view_ransac": 1
+        },
+        "corrections": 0,
+        "home_attempts": 92,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1789,
+      "final_error_m": 0.26701648472551665,
+      "final_sigma_m": 0.07114878240948472,
+      "final_error_sigma": 3.7529311912711125,
+      "final_return_distance_m": 2.2604074334758093,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "traversed",
+      "status": "RECORDED",
+      "samples": 1789,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 1,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 736,
+      "final_error_m": 0.1859067727200862,
+      "final_sigma_m": 0.045647221114650555,
+      "final_error_sigma": 4.072685438028102,
+      "final_return_distance_m": 0.23170355836494558,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "homing",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1650,
+      "final_error_m": 0.19963869815164093,
+      "final_sigma_m": 0.050908987720370155,
+      "final_error_sigma": 3.9214823765148195,
+      "final_return_distance_m": 0.28398158831659165,
+      "visual_matching": {
+        "attempts": 918,
+        "accepted": 0,
+        "reasons": {
+          "insufficient_3d_matches": 713,
+          "fewer_than_50_pose_inliers": 201,
+          "two_view_ransac": 4
+        },
+        "corrections": 0,
+        "home_attempts": 918,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "loopclosure",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1522,
+      "final_error_m": 0.20583217566247874,
+      "final_sigma_m": 0.04837277808035969,
+      "final_error_sigma": 4.255124138633061,
+      "final_return_distance_m": 0.26988943604916166,
+      "visual_matching": {
+        "attempts": 773,
+        "accepted": 1,
+        "reasons": {
+          "pnp_verified": 1,
+          "fewer_than_50_pose_inliers": 407,
+          "insufficient_3d_matches": 192,
+          "two_view_ransac": 173
+        },
+        "corrections": 1,
+        "home_attempts": 761,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 1871,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 888,
+      "final_error_m": 0.20493867987503167,
+      "final_sigma_m": 0.06897879012328641,
+      "final_error_sigma": 2.971039061554181,
+      "final_return_distance_m": 1.7993147816385895,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "traversed",
+      "status": "RECORDED",
+      "samples": 1049,
+      "B_arrived": true,
+      "returned": true,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 217,
+      "final_error_m": 0.0170194577954654,
+      "final_sigma_m": 0.07711465067892243,
+      "final_error_sigma": 0.22070329886247272,
+      "final_return_distance_m": 0.17155869712539723,
+      "visual_matching": {
+        "attempts": 0,
+        "accepted": 0,
+        "reasons": {},
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "homing",
+      "status": "RECORDED",
+      "samples": 1871,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 217,
+      "final_error_m": 0.2582646653648591,
+      "final_sigma_m": 0.09043752077690426,
+      "final_error_sigma": 2.85572473842974,
+      "final_return_distance_m": 0.21203603320977932,
+      "visual_matching": {
+        "attempts": 802,
+        "accepted": 0,
+        "reasons": {
+          "insufficient_3d_matches": 692,
+          "two_view_ransac": 77,
+          "fewer_than_50_pose_inliers": 33
+        },
+        "corrections": 0,
+        "home_attempts": 802,
+        "home_accepted": 0
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "loopclosure",
+      "status": "RECORDED",
+      "samples": 1871,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 217,
+      "final_error_m": 0.2582646653648591,
+      "final_sigma_m": 0.09043752077690426,
+      "final_error_sigma": 2.85572473842974,
+      "final_return_distance_m": 0.21203603320977932,
+      "visual_matching": {
+        "attempts": 814,
+        "accepted": 0,
+        "reasons": {
+          "fewer_than_50_pose_inliers": 34,
+          "insufficient_3d_matches": 703,
+          "two_view_ransac": 77
+        },
+        "corrections": 0,
+        "home_attempts": 802,
+        "home_accepted": 0
+      }
+    }
+  ],
+  "diagnosis": {
+    "case": "63003-homing",
+    "gt_evaluation_only": true,
+    "home_attempts": 623,
+    "accepted": 0,
+    "first_reference": {
+      "frame": 11,
+      "features": 133,
+      "points": 44
+    },
+    "required_pose_inliers": 50,
+    "final_gt_home_distance_m": 0.12168857228779606,
+    "final_gt_yaw_difference_deg": 12.111789679740728,
+    "interpretation": "Current adapter rejected a physically near-home return. Fixed 50-inlier gate is retained. This is not a general verdict on ORB-SLAM or visual homing.",
+    "next_candidate": "Acquire start-view keyframes with sufficient overlapping visual features and parallax, using a standard active teach procedure; no threshold retuning in this round.",
+    "raw": "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63003-homing",
+    "match_audit_sha256": "da1f746d0d2cd6a6202ceb9c07ed6fa93e985b9a394e96bd2ba47eadf417314a",
+    "visual_reasons": {
+      "baseline": {
+        "reasons": {},
+        "attempts": 0,
+        "accepted": 0,
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      },
+      "traversed": {
+        "reasons": {},
+        "attempts": 0,
+        "accepted": 0,
+        "corrections": 0,
+        "home_attempts": 0,
+        "home_accepted": 0
+      },
+      "homing": {
+        "reasons": {
+          "insufficient_3d_matches": 2476,
+          "fewer_than_50_pose_inliers": 510,
+          "two_view_ransac": 185
+        },
+        "attempts": 3171,
+        "accepted": 0,
+        "corrections": 0,
+        "home_attempts": 3171,
+        "home_accepted": 0
+      },
+      "loopclosure": {
+        "reasons": {
+          "inconsistent_candidates": 1,
+          "insufficient_3d_matches": 2096,
+          "fewer_than_50_pose_inliers": 723,
+          "two_view_ransac": 358,
+          "pnp_verified": 2
+        },
+        "attempts": 3180,
+        "accepted": 2,
+        "corrections": 2,
+        "home_attempts": 3096,
+        "home_accepted": 0
+      }
+    },
+    "accepted_metric_corrections": [
+      {
+        "run": "egomap68-63003-loopclosure",
+        "corrections": [
+          {
+            "frame_id": 922,
+            "delta": [
+              -0.2327403772353427,
+              -0.24061545807595852,
+              0.0038192474677005706
+            ],
+            "xy_before_m": 0.5751880636119769,
+            "xy_after_m": 0.34323275896565825
+          }
+        ]
+      },
+      {
+        "run": "egomap68-63005-loopclosure",
+        "corrections": [
+          {
+            "frame_id": 1518,
+            "delta": [
+              0.08617904274476429,
+              0.04845138720661302,
+              0.049259593406032476
+            ],
+            "xy_before_m": 0.35414953967670815,
+            "xy_after_m": 0.34801606273322166
+          }
+        ]
+      }
+    ],
+    "interpretation_limit": "Independent OpenCV ORB/triangulation/PnP adapter, not full ORB-SLAM; this cohort cannot establish a general failure of visual homing."
+  },
   "tests": {
     "files": 3,
     "passed": 27,
-    "synthetic_geometry_no_physics": true,
-    "first_frame_options": [
-      "homing",
-      "loopclosure"
-    ],
+    "physics_free": true,
     "off_bytes_identical": true
-  }
+  },
+  "initial_checks": {
+    "checked": 24,
+    "passed": 24,
+    "min_sim_s": 44.8,
+    "min_displacement_m": 0.16462872623398617,
+    "first_marker_valid": 24
+  },
+  "execution_markers": {
+    "frames": 51924,
+    "valid": 51924
+  },
+  "golden": {
+    "baseline": {
+      "files": 36,
+      "equal": 36,
+      "missing": 0
+    },
+    "traversed": {
+      "files": 36,
+      "equal": 36,
+      "missing": 0
+    }
+  },
+  "smoke": {
+    "sim_s": 8.0,
+    "wall_s": 37.416332891998536,
+    "frames": 41,
+    "valid": 41,
+    "displacement_m": 0.3863965401631613,
+    "sha256": {
+      "result.json": "c5c51977ca946a7818d6b2f46c1212f505912a993cab2ceab5aa292a25d9ba3a",
+      "execution-path.jsonl": "2f492bca0ee110b52bd5368183548181e1933ddbb1ccd730ad38c2056b58bd8d",
+      "visual-homing.json": "62cda1150121008f0ecfbeb2b908ff7a671d3a1d85b01e61be1d38431ea4219b",
+      "artifacts.sha256.json": "f98bcf5c05908fcd1f95cdcbd851351421d10355342fc52961f26eea45afe410"
+    }
+  },
+  "delivery": {
+    "raw": "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data",
+    "archive": "/home/ubuntu/ugrp-sim/arm/egomap68-batch/data",
+    "files_verified": 52836,
+    "mac": "fetch-lite compact egomap68-delivery; three individually selected diagnostic JPEGs only, no bulk media or npz",
+    "local_compact": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery",
+    "local_compact_bytes": 649729,
+    "selected_rgb": [
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/egomap68-delivery/reference-63003.jpg",
+        "bytes": 13564,
+        "sha256": "914b4be70ca35fda225b9aba1fd65de42b9a2781cdd6bb04efa36bdfe1f2a1e8"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/egomap68-delivery/return-first-63003.jpg",
+        "bytes": 13992,
+        "sha256": "185b8aea89d216639eaffcb0936d96ea4a2b1a48173953232f68e61ac1ea35a6"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/egomap68-delivery/return-final-63003.jpg",
+        "bytes": 14585,
+        "sha256": "a24da289d7bc26c288a7fab9d5b7a2d6c698b0eab7483f09ca6113764dddb418"
+      }
+    ]
+  },
+  "artifacts": {
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery/full-report.json": "b353fa14cd8ef84e351ee33cb558d1b8fca8c62919eea3f9336fb606a79bdcf2",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery/match-audit.json": "da1f746d0d2cd6a6202ceb9c07ed6fa93e985b9a394e96bd2ba47eadf417314a",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery/diagnosis.json": "a2f8c82e3b0cf4d42b091f663d67bbdce31f86e99b59a805502296308cdea69d",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery/audit.json": "8c4a9659cc35704b26bc15ab63c17e71779e8ba477ba801e5bf2608f991c9d47",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery/retrieval.json": "bd361821290e77de386d8c636460049b15c48e25ad8f1d73a56f3f57bc6ac8e8",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery/complete.json": "ce3eebad1e925d79897a474f5750f5a1a64097c1ee26ab1781a6da8f4dd9c628",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery/archive-metadata.json": "fa1b9a19b1b4c9cca87f463f63655c8364f2736e8a4e5607b6c2f9155a078650",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery/banks.json": "efd9be5bfb5a92591688516c2ac4aed211d584134c9bbc555344200b086a8290",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap68-delivery/approach-equivalence.json": "1e23ecc6cc69fafc2dade3254e27b798a9ed926f4b5b3f64d11221c7d06bdc31",
+    "/Users/changmin/projects/ugrp/outputs/egomap68-delivery/selected-rgb.json": "a5ca224b6d2a9a61204e5b835ab844ad6c2925bb49fc421b2a14dc8eb9a0f840",
+    "experiments/2026-10-11-own-rgb-homing/prereg.json": "8481f10129dc01b7ef392da3e7c002962627d73734b91d7afd2e0ccbc93daf52"
+  },
+  "thresholds_changed": false,
+  "mac_physics_or_replay": 0,
+  "model_calls": 0,
+  "e2e_success": false,
+  "updated_utc": "2026-10-10T20:58:35Z"
 }
