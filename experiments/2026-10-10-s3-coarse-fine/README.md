@@ -120,3 +120,105 @@ source caches deduplicated by identical relative path/mode/size/fullSHA using
 hardlinks;35,377 source files,6,100,575,734 duplicate bytes. Full receipt under
 `outputs/oracle-runs/s3fix15-storage-record/source-dedup.json`; no run outputs,
 venv, live source, process or worktree removed. Free space15GiB before shipment.
+
+
+### Completed frozen round — source `4e19382d59a9bb2bbf351a7fca1356cdf480e8a0`
+
+All10 submitted together and completed on oracle-x86, LP4/OMP1/nice0;
+60SIM s each, HOST_ERROR0, physical abort0, model calls0. The sole5SIM
+pathcheck passed and is excluded. No outcome-driven threshold/code change.
+**Candidate not adopted; default remains off, PR #416 DRAFT.**
+
+|denominator|alignment|bilateral grasp|contact lift|physical carry >=20mm|
+|---|---:|---:|---:|---:|
+|r1 (pair)|0/6|0/6|0/6|0/6|
+|r2 (pair)|0/6|0/6|0/6|0/6|
+|r3 (cyan)|2/4|2/4|2/4|2/4|
+|pair joint|0/6|0/6|0/6|0/6|
+|all cases (pair joint or cyan)|2/10|2/10|2/10|2/10|
+
+Cyan c0 regression recovered versus s3fix13; c5 also passes. This is a
+new development regression with changed gates, not fresh confirmation of
+s3fix14 calibration. Neither synthetic stage entry nor cargo carry here
+proves mission approach, B delivery, return, S3 E2E, or real hardware.
+
+|case|alignment / hover|descent / close|contact lift / carry entry|contact-lifted XY|turn reversals|wall/SIM|
+|---|---|---|---|---:|---:|---:|
+|pair-c0|— / —|— / —|— / —|0.000m|0|374.67/60 = 6.24|
+|pair-c1|— / —|— / —|— / —|0.000m|0|343.72/60 = 5.73|
+|pair-c2|— / —|— / —|— / —|0.000m|0|371.14/60 = 6.19|
+|pair-c3|— / —|— / —|— / —|0.000m|0|372.60/60 = 6.21|
+|pair-c4|— / —|— / —|— / —|0.000m|0|322.02/60 = 5.37|
+|pair-c5|— / —|— / —|— / —|0.000m|0|340.40/60 = 5.67|
+|cyan-c0|4.75 / 4.75|6.05 / 7.25|8.95 / 29.95|0.685m|0|401.22/60 = 6.69|
+|cyan-c3|— / —|— / —|— / —|0.000m|116|402.53/60 = 6.71|
+|cyan-c4|— / —|— / —|— / —|0.000m|115|403.35/60 = 6.72|
+|cyan-c5|8.75 / 8.75|10.05 / 11.25|12.95 / 33.95|0.565m|8|418.99/60 = 6.98|
+
+Times above are raw world SIM timestamps; stage start=2.35s. Cyan c0/c5
+alignment elapsed=2.40/6.40s, hover then blind descent then close;
+contact-lift samples1069/989, maximum COM height0.1607/0.1635m.
+Original `fine_pan_commands` in evaluator-v1 counts event appearances
+(cyan record repeats the same event in two containers); do not treat it as
+physical actuator pulses. Raw command-based turn reversal counts above are
+unaffected; cyan each successful case has one unique fine-pan decision.
+
+### Remaining causes — measured before another change
+
+- **Pair endpoint visibility:8/12 robot-cases.** r1 c0/c1/c2/c3 has end-visible
+  only2/461,1/464,3/457,3/457 frames; r2 c0/c2/c3/c5 only6/445,7/441,6/445,4/453.
+  Beam body visible100%, but endpoint detection is no longer accepted after
+  coarse approach, so the own-RGB gate supplies no new alignment receipt.
+  Actual occlusion versus segmentation/geometric rejection remains unseparated.
+  Last accepted residual yaw0.11267…0.16507rad often still exceeds0.112;
+  no post-outcome widening. Four-corner capture slices did not establish
+  visibility along this closed-loop path.
+- **Pair arm/PF posture ownership conflict:4/12 robot-cases.** c1r2,c4r1,
+  c4r2,c5r1 request fine pan39/40/39/40 times but existing
+  `zone_pair_highpose_posture_defer.DeferRelook.tick/_v98_restore` restores
+  pan1500 from the private local-vision pan38/39/39/39 times. Example c4r1:
+  commanded1544 at3.80s; `align_posture_restore` at3.90s targets1500.
+  These views are deliberately not registered as measured PF views. The
+  motor-stub regression called `_align` directly and missed the outer tick
+  conflict. This is an unresolved integration bug, not successful fine servo.
+- **Cyan coarse yaw cycle:2/4 cases (c3,c4).** Each issues119 coarse decisions;
+  residual dx26.591/28.135mm remains outside9.6mm, with turn sign reversals
+  116/115. Successful c5 still has8 reversals before convergence, c0 has0.
+  Pair chassis reversals0. Total reversal count239; oscillation was not
+  eliminated for all conditions by this candidate.
+- Disjoint case outcomes:cyan2 success; cyan2 coarse cycle; pair3 lose both
+  endpoints, pair2 have one lost endpoint+one pan restore, pair1 has two pan
+  restores. All finish at the60s horizon; no new physics round was started.
+
+Speed: sum measured run wall3750.63s /600SIM=6.25 (per case5.37…6.98),
+concurrent driver elapsed444.89s including startup. Nested host timers:
+render1147.49s, physics1016.59s, capture including render/I/O1236.97s,
+JSONL append10.47s. Three cameras at20Hz plus three-robot physics dominate
+these measured host costs; residual includes controller/init/evaluation and
+was not separately profiled here. No optimization or single-run benchmark
+claim; wall values from simultaneous jobs must not be summed as batch latency.
+
+Next proposed round: test the full pair tick with private local arm views
+while retaining PF prediction-only, preserve endpoint visibility during
+coarse approach, and register a non-cycling coarse action rule before new
+probes. The current2/10 result remains attached to the original SHA.
+
+Raw: `outputs/oracle-runs/s3fix15-batch-r1/cohort/NAME/raw/`;
+post-run reports/videos: `outputs/oracle-runs/s3fix15-eval-r1/evaluation/`.
+[results.json](results.json) binds raw paths and report hashes. Originals and
+4× saved-RGB videos retained; no Mac physics/render/controller replay.
+
+### Delivery verification
+
+Retrieved ten raw manifests: **36354 files, every SHA256 matched**.
+Pathcheck335 files independently matched. Oracle evaluator exit0 and all ten
+4× videos decoded at20fps with saved-frame counts matched.
+New immutable TensorBoard snapshot `1010-s3fix15-coarse-fine-v1`:12 views
+(ten cases + count aggregate + excluded pathcheck),244 scalar tags and10
+registered videos; event reload and media HTTP206 range checks passed.
+[Open pinned TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1010-s3fix15-coarse-fine-v1%2F&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Falignment%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fgrasp%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flift%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcarry%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fn%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhost_errors%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0#timeseries); baseline s3fix13 is kept separately in
+`outputs/tensorboard-view.json:s3fix15_20261010`. Chrome 강 display verified:12 selected views,9 pinned cards, displayed
+alignment/grasp count2; HParams case/policy/seed/source_sha reapplied.
+Representative cyan c0 video played to15.00s end without error.
+Source and result docs are separate commits; physics source remains4e19382d.
+CI not awaited; no merge.
