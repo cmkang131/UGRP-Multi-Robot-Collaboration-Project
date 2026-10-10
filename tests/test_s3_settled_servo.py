@@ -112,3 +112,56 @@ def test_frozen_whole_batch_includes_all_pair_and_cyan_failures():
     assert [r['condition'] for r,a in rows if r['case']=='pair']==list(range(6))
     assert [r['condition'] for r,a in rows if r['case']=='cyan']==[0,3,4,5]
     assert all(set(plan['flags']).issubset(args) for r,args in rows)
+
+
+@pytest.mark.parametrize('case', ['pair','cyan'])
+def test_composed_runner_reaches_loop_with_configured_cap_and_hooks(tmp_path,monkeypatch,case):
+    """Exercise both nested bind layers and the real probe loop with no physics."""
+    from scripts import run_s3_settled_probe as runner
+    from harness import zone_s3_recovery_runtime
+    stage=runner.stage;p=stage.previous;hooks=[]
+    class Host:
+        def __init__(self,b,out,seed):self.now=0.;self.commands={r:{1:2000} for r in p.ROBOTS}
+        def reset(self,cap):pass
+        def set_deadline(self,t):assert t==5.
+        def eval_sample(self):pass
+        def capture(self):return {}
+        def advance_to(self,t):self.now=t
+        def issue(self,*a):pass
+        def close(self):pass
+    class Own:
+        def __init__(self,rid):
+            self.robot_id=rid;self.state='init';self.failure=None;self.servo={1:2000};self.last_obs={}
+            self.vision=SimpleNamespace(detect=lambda *a:[{'estimated_box_center_base_m':[.24,0.,0.]}])
+        def set_state(self,s,t):self.state=s
+        def step(self,t):self.state='carry';return []
+    class Controller:
+        state='init';failure=None;s3_alignment_entry={}
+        def set(self,s,*a,**kw):self.state=s
+    class Runtime:
+        def __init__(self,*a,**kw):
+            self.localizers={r:Own(r) for r in p.ROBOTS}
+            self.pair=SimpleNamespace(producer=SimpleNamespace(step=lambda t:[],arm_step=lambda t:[]))
+        def initial_commands(self,*a):pass
+        def on_frames(self,*a):pass
+        def on_command(self,*a):pass
+        def record(self):return {}
+        def close(self):pass
+    monkeypatch.setattr(stage,'StageBackend',Host)
+    monkeypatch.setattr(zone_s3_recovery_runtime,'Runtime',Runtime)
+    monkeypatch.setattr(p,'restore_scene',lambda *a:None)
+    monkeypatch.setattr(p,'assert_frame_commands',lambda *a:None)
+    monkeypatch.setattr(p,'environment_record',lambda:{})
+    monkeypatch.setenv('MUJOCO_GL','osmesa')
+    monkeypatch.setattr(p,'enter_pair',lambda rt,*a:{r:SimpleNamespace(own=rt.localizers[r],controller=Controller()) for r in ('r1','r2')})
+    monkeypatch.setattr(stage,'attach_endpoint',lambda *a,**kw:None)
+    monkeypatch.setattr(runner,'attach_endpoint',lambda ep,opts:hooks.append((ep.own.robot_id,opts)))
+    monkeypatch.setattr(runner,'attach_solo',lambda own,opts:hooks.append((own.robot_id,opts)))
+    before=dict(p.run.__kwdefaults__)
+    options=Options(True,True,True,True)
+    result=runner.run(runner.bundle('0'*40,case,0,options,5.),tmp_path/'raw')
+    assert result['status']=='DEV_STAGE_FINISHED',result.get('failure')
+    assert result['check_sim_s']==5.
+    assert hooks==[(rid,options) for rid in (('r1','r2') if case=='pair' else ('r3',))]
+    assert p.run.__kwdefaults__==before
+    assert json.loads((tmp_path/'raw/environment.json').read_text())['concurrent_probe_limit']==10

@@ -1,7 +1,6 @@
 """Frozen S3 quantization/settling probe, Oracle x86 only, <=60 SIM seconds."""
 import argparse
 import dataclasses
-import functools
 import hashlib
 import json
 from types import SimpleNamespace
@@ -43,8 +42,10 @@ def run(b, out):
         return eps
     def configure(own, ignored):
         return attach_solo(own,options)
-    previous=SimpleNamespace(**{**vars(stage.previous), 'enter_pair':enter,
-        'run':functools.partial(bind(stage.previous.run,CAP=b['cap_sim_s']),solo_configure=configure)})
+    # stage.run rebinds this function's globals; keep a real FunctionType.
+    probe_run=bind(stage.previous.run,CAP=b['cap_sim_s'])
+    probe_run.__kwdefaults__={**probe_run.__kwdefaults__, 'solo_configure':configure}
+    previous=SimpleNamespace(**{**vars(stage.previous), 'enter_pair':enter, 'run':probe_run})
     result=bind(stage.run,previous=previous)(b,out)
     environment=json.loads((out/'environment.json').read_text())
     environment['concurrent_probe_limit']=10

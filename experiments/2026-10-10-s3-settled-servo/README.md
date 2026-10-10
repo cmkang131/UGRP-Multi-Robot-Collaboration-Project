@@ -94,6 +94,10 @@ python -m scripts.run_s3_settled_probe --expected-source-sha "$SHA" \
 
 ## 결과
 
-미실행. 고정 소스와 관련 회귀 완료 후 위 목록을 실행한다.
+본10개 미실행. 첫 경로 확인의 물리 시작 전 결함을 수정한 뒤 고정 목록을 실행한다.
 
 실행 전 검증: 변경 controller/runner와 workflow의 관련2파일 선별9개 PASS(18.03s). 처음 pair motor-stub 회귀에서 감사 dict의 중복 errors키를 발견해 control_errors로 분리한 뒤 전부 재통과했다. 실제 물리로 결함을 탐색하지 않았다.
+
+경로 확인 `s3fix13-pathcheck-r1`(0db2d591): 물리 시작 전 FunctionType 재바인딩에 functools.partial을 넘겨 EXIT1(21.72wall초, 물리0). 새 함수의 keyword defaults에 solo hook을 고정하도록 수정했다. pair/cyan 실제 probe 루프를 physics stub으로 끝까지 통과시키는 회귀를 추가했다. 수정 후 `s3fix13-pathcheck-r2`로 동일 pair/C0/seed14201/네 flags/최대7.35SIM초 경로 확인1회, 조건 변경 없이 본10개를 전송한다. 원본 COMMAND/SOURCE_SHA/log/EXIT는 primary outputs/oracle-runs/s3fix13-pathcheck-r1/에 보존한다.
+
+수정 후 관련2시험 파일 선별11개 PASS(56.46s), pair/cyan 중첩 바인딩과 실제5SIM초 루프를 physics stub으로 검증했다.
