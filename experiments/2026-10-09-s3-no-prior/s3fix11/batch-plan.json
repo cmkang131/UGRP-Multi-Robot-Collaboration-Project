@@ -1,0 +1,90 @@
+{
+  "host": "oracle-x86",
+  "max_simultaneous_s3": 10,
+  "runs": [
+    {
+      "name": "s3fix11-measure-c0-r1",
+      "module": "scripts.run_s3_x86_pulse_measure",
+      "condition": 0,
+      "seed": 14201,
+      "phase": "measure"
+    },
+    {
+      "name": "s3fix11-measure-c1-r1",
+      "module": "scripts.run_s3_x86_pulse_measure",
+      "condition": 1,
+      "seed": 14202,
+      "phase": "measure"
+    },
+    {
+      "name": "s3fix11-measure-c2-r1",
+      "module": "scripts.run_s3_x86_pulse_measure",
+      "condition": 2,
+      "seed": 14203,
+      "phase": "measure"
+    },
+    {
+      "name": "s3fix11-measure-c3-r1",
+      "module": "scripts.run_s3_x86_pulse_measure",
+      "condition": 3,
+      "seed": 14204,
+      "phase": "measure"
+    },
+    {
+      "name": "s3fix11-measure-c4-r1",
+      "module": "scripts.run_s3_x86_pulse_measure",
+      "condition": 4,
+      "seed": 14205,
+      "phase": "measure"
+    },
+    {
+      "name": "s3fix11-measure-c5-r1",
+      "module": "scripts.run_s3_x86_pulse_measure",
+      "condition": 5,
+      "seed": 14206,
+      "phase": "measure"
+    },
+    {
+      "name": "s3fix11-candidate-c0-r1",
+      "module": "scripts.run_s3_x86_trim_probe",
+      "condition": 0,
+      "seed": 14201,
+      "phase": "candidate"
+    },
+    {
+      "name": "s3fix11-candidate-c1-r1",
+      "module": "scripts.run_s3_x86_trim_probe",
+      "condition": 1,
+      "seed": 14202,
+      "phase": "candidate"
+    },
+    {
+      "name": "s3fix11-candidate-c2-r1",
+      "module": "scripts.run_s3_x86_trim_probe",
+      "condition": 2,
+      "seed": 14203,
+      "phase": "candidate"
+    },
+    {
+      "name": "s3fix11-candidate-c3-r1",
+      "module": "scripts.run_s3_x86_trim_probe",
+      "condition": 3,
+      "seed": 14204,
+      "phase": "candidate"
+    },
+    {
+      "name": "s3fix11-candidate-c4-r1",
+      "module": "scripts.run_s3_x86_trim_probe",
+      "condition": 4,
+      "seed": 14205,
+      "phase": "candidate"
+    },
+    {
+      "name": "s3fix11-candidate-c5-r1",
+      "module": "scripts.run_s3_x86_trim_probe",
+      "condition": 5,
+      "seed": 14206,
+      "phase": "candidate"
+    }
+  ]
+}

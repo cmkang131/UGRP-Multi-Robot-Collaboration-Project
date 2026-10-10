@@ -1,5 +1,5 @@
 """Preregistered open-loop system identification; no student or GT feedback."""
-import argparse,hashlib,json,math,time,traceback
+import argparse,hashlib,json,math,time,traceback,os,platform
 from pathlib import Path
 import numpy as np
 from scripts import run_s3_x86_probe as stage
@@ -23,11 +23,14 @@ def run(sha,condition,out):
     b=stage.bundle(sha,'pair',condition=condition)
     b.update(execution_bundle_id='zone-s3-x86-pulse-measure-v157',workflow_version='7.50.0',
         schema='ugrp.s3_pulse_measure.v157',visual_trim=OPTION,
-        student_control=False,measurement='unloaded inspect posture; fixed command sequence; GT evaluation only')
+        student_control=False,concurrent_probe_limit=10,measurement='unloaded inspect posture; fixed command sequence; GT evaluation only')
     from harness.python_source_closure import source_closure
     for p in source_closure(stage.ROOT,['scripts/run_s3_x86_pulse_measure.py']):
         b['source_sha256'][p]=hashlib.sha256((stage.ROOT/p).read_bytes()).hexdigest()
+    b['source_sha256']['configs/simulation_workflows.d/s3_x86_pulse_measure_v157.json']=hashlib.sha256((stage.ROOT/'configs/simulation_workflows.d/s3_x86_pulse_measure_v157.json').read_bytes()).hexdigest()
     out.mkdir(parents=True,exist_ok=False);write(out/'bundle.json',b)
+    write(out/'environment.json',dict(host='oracle-x86',machine=platform.machine(),logical_cpus=os.cpu_count(),
+        concurrent_probe_limit=10,loadavg_start=os.getloadavg(),MUJOCO_GL=os.environ.get('MUJOCO_GL')))
     host=None;rows=[];started=time.monotonic()
     result=dict(status='HOST_ERROR',host='oracle-x86',source_sha=sha,condition=condition,
         student_control=False,research_result=False,model_calls=0,sequence=sequence())

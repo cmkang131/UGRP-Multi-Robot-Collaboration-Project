@@ -35,3 +35,72 @@ def test_measurement_sequence_is_fixed_bounded_and_passes_actual_motor_port():
         p.apply(row,i*.5)
         assert p._drive_expires_at==pytest.approx(i*.5+row['duration_s'])
     assert len(rows)*.5<=60
+
+
+def model():
+    from harness.zone_solo_cyan_pulse_cal import profile_key
+    profiles={}
+    for a in sequence()[:18]:
+        axis=next(k for k in ('forward','left','turn') if a[k]);j=('forward','left','turn').index(axis)
+        delta=[0.,0.,0.];delta[j]=math.copysign(a['duration_s']*(1. if j==2 else .10),a[axis])
+        profiles[profile_key(a,False)]=dict(loaded=False,axis=axis,u=a[axis],duration_s=a['duration_s'],
+            mean_delta=delta,mean_curve=[[0,0,0],delta],times=[0,.5],prediction_variance=[.0001]*3,
+            transfer=None,s3_trim_measured=True)
+    return dict(qualified=True,profiles=profiles,runtime_gt=False)
+
+
+def test_measured_selector_off_identity_and_full_pose_legal_actions():
+    from harness.zone_s3_measured_visual_servo import Selector,attach_endpoint
+    marker=object();assert attach_endpoint(marker) is marker
+    profiles=model()['profiles'];selector=Selector(profiles)
+    for errors in ([.023,.002,.157],[-.011,.016,-.073],[.005,0,0]):
+        action,p,row=selector(profiles,errors)
+        assert p is not None and command_reason(action) is None
+        assert row['after']<row['before'] and row['thresholds_changed'] is False
+        assert row['goal_distance_m']<=.10
+    assert selector(profiles,[0,0,0])[1] is None
+
+
+def test_measured_selector_reaches_actual_pair_apply_with_shared_predictor(tmp_path,monkeypatch):
+    from tests import s3_stage_probe as probe
+    from harness import zone_s3_recovery_contract as contract
+    from harness.zone_s3_recovery_runtime import Runtime
+    from harness.zone_s3_measured_visual_servo import attach_endpoint,OPTION
+    monkeypatch.setattr(probe,'contract',contract);monkeypatch.setattr(probe,'Runtime',Runtime)
+    p=probe.Probe(tmp_path,monkeypatch)
+    try:
+        p.refresh(1.)
+        for rid,ep in p.eps.items():
+            p.host.ports[rid]=TrimPort(p.host.world,rid,coupled=lambda:False,
+                allow_reverse=True,allow_mecanum=True,min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1')
+            predictor=ep.own.pose.localizer.pose.provider.loc._pf.predict_to
+            attach_endpoint(ep,model(),option=OPTION)
+            assert ep.own.pose.localizer.pose.provider.loc._pf.predict_to is predictor
+            ep.controller.set('align',1.)
+            ob=ep.controller._align.__func__.__globals__['ob']
+            command=ob.align_command(dict(grip_base_m=[.2032,.015],axis_heading_rad=0.))
+            ep.controller.drive(command,1.)
+            rows=p.drain(ep,1.)
+            assert any(a.get('left') for a in rows)
+            assert ep.s3_alignment_audit[-1]['phase']==OPTION
+            assert all(command_reason(a) is None for a in rows)
+    finally:p.runtime.close()
+
+
+def test_all_six_measurements_required_and_holdout_can_veto(tmp_path):
+    import json
+    from scripts.fit_s3_x86_trim import fit
+    from harness.zone_solo_cyan_pulse_cal import profile_key
+    profiles=model()['profiles'];runs=[]
+    for i in range(6):
+        raw=tmp_path/str(i);(raw/'eval_only').mkdir(parents=True);runs.append(raw)
+        (raw/'result.json').write_text(json.dumps(dict(status='COLLECTED_UNQUALIFIED',host='oracle-x86',condition=i)))
+        (raw/'eval_only/contacts.jsonl').write_text('')
+        rows=[dict(action=a,times=[0,.5],curve=[[0,0,0],profiles[profile_key(a,False)]['mean_delta']]) for a in sequence() for rid in ('r1','r2')]
+        (raw/'pulse-responses.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    result=fit(runs,profiles);assert result['qualified'] and len(result['profiles'])==18
+    with pytest.raises(ValueError,match='all six'):fit(runs[:5],profiles)
+    path=runs[-1]/'pulse-responses.jsonl';rows=[json.loads(s) for s in path.read_text().splitlines()]
+    rows[0]['curve'][-1][0]+=.01
+    path.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    assert not fit(runs,profiles)['qualified']

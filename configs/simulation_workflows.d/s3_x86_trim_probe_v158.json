@@ -2,17 +2,19 @@
   "schema": "ugrp.local_workflow_catalog.v1",
   "workflows": [
     {
-      "id": "zone-s3-x86-pulse-measure-v157",
-      "version": "7.50.0",
-      "purpose": "S3 minimum100ms fixed pulse measurement, no student",
-      "entry": "scripts/run_s3_x86_pulse_measure.py",
-      "runner": "scripts.run_s3_x86_pulse_measure",
+      "id": "zone-s3-x86-trim-probe-v158",
+      "version": "7.51.0",
+      "purpose": "S3 qualified measured full-pose visual alignment cohort",
+      "entry": "scripts/run_s3_x86_trim_probe.py",
+      "runner": "scripts.run_s3_x86_trim_probe",
       "docs": "experiments/2026-10-09-s3-no-prior/s3fix11/README.md",
       "requires": "committed Oracle x86/OSMesa archive; S3 at most ten simultaneous jobs; no Mac physics",
       "output_flag": "--output",
       "output_kind": "directory",
       "required_inputs": [
-        "--expected-source-sha"
+        "--expected-source-sha",
+        "--model",
+        "--model-sha256"
       ],
       "side_effect": "local_simulation",
       "adapter": "managed_legacy_cli"

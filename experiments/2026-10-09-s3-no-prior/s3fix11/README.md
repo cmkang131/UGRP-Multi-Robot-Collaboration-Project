@@ -65,3 +65,70 @@ pulse후 .5초까지 완전 응답을 저장한다. 고정 시퀀스는 GT·측�
 사전에 고정한다. 첫 pulse 뒤 충분히 정지하고 새 자기RGB로 재계산한다.
 조건6개를 모두 같은 초기 장면·seed로 반복하고, r3 기존 제어는 바꾸지 않는다.
 이는 고정 보정 데이터의 사용이며 실행 GT 보정이 아니다. 조건별 원본·측정·선택 결과를 남긴다.
+
+## 09:16UTC 사용자 묶음 규칙 적용
+
+이 절이 앞의 동시18/20개 계획보다 우선한다. S3 동시 최대10개. 코드·관련 시험을
+먼저 모두 마치고, 묶음 이름·명령·시드를 아래 목록대로 보낸다. 묶음 중 계획 변경 없음.
+기존 규칙에서 이미 보낸 기준12개는 동결 소스7a4bda7a를 유지한다. 마지막 cyan c4/c5
+자체 프로세스만09:16:43UTC SIGSTOP으로 대기시켰고 종료 슬롯이 생기면 동일 PID를
+SIGCONT한다. 원본 파괴/새 seed/새 시도 아님. 두 시행의 wall에는 대기가 포함되어
+속도 비교에서 제외하며 scheduling.jsonl에 기록한다. 다른 작업의 프로세스는 건드리지 않는다.
+
+후속 실행 명령은 아래 표의 모듈/조건/이름을 사용한 다음 공통 명령이다. `$SHA`는
+묶음 시작 전 커밋·push한 동일 HEAD이며 실행 도중 바뀌면 전송을 거부한다.
+`$MODEL`/`$MODEL_SHA`는 전체 보정 묶음 판정이 끝난 뒤 봉인한 단일 모델이다.
+필요한 ≤10SIM 경로 스모크는 현재 계획0회(실제 motor port stub 회귀 사용).
+
+```sh
+ORACLE_HOST=oracle-x86 "$S/oracle_run.sh" "$WT" "$NAME" -- \
+  .venv-sim/bin/python -m "$MODULE" --expected-source-sha "$SHA" \
+  --output "outputs/$NAME/raw" --condition "$C" --execute
+# 후보는 위 명령에 --model "$MODEL" --model-sha256 "$MODEL_SHA" 추가
+```
+
+| 이름 | 모듈 | C | seed |
+|---|---|---:|---:|
+|s3fix11-measure-c0-r1|scripts.run_s3_x86_pulse_measure|0|14201|
+|s3fix11-measure-c1-r1|scripts.run_s3_x86_pulse_measure|1|14202|
+|s3fix11-measure-c2-r1|scripts.run_s3_x86_pulse_measure|2|14203|
+|s3fix11-measure-c3-r1|scripts.run_s3_x86_pulse_measure|3|14204|
+|s3fix11-measure-c4-r1|scripts.run_s3_x86_pulse_measure|4|14205|
+|s3fix11-measure-c5-r1|scripts.run_s3_x86_pulse_measure|5|14206|
+|s3fix11-candidate-c0-r1|scripts.run_s3_x86_trim_probe|0|14201|
+|s3fix11-candidate-c1-r1|scripts.run_s3_x86_trim_probe|1|14202|
+|s3fix11-candidate-c2-r1|scripts.run_s3_x86_trim_probe|2|14203|
+|s3fix11-candidate-c3-r1|scripts.run_s3_x86_trim_probe|3|14204|
+|s3fix11-candidate-c4-r1|scripts.run_s3_x86_trim_probe|4|14205|
+|s3fix11-candidate-c5-r1|scripts.run_s3_x86_trim_probe|5|14206|
+
+측정6개는 기준 묶음 전체가 끝나고 동시에 보낸다. 전체6개 raw를 한 번에 fit/holdout
+판정하고, qualified일 때에만 후보6개를 동시에 보낸다. 보정 전 후보 실행은 금지한다.
+후보/보정 코드 모두 실행 전에 시험하며 결과 뒤 이득/문턱/탐색폭/조건을 바꾸지 않는다.
+후보 결과도6개가 모두 끝난 뒤 한꺼번에 raw로 판정한다. 실패면 한 묶음으로 분류한다.
+
+## 기준 실행 전송 기록 (사후 이름 기록)
+
+초기 기준12개는 7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1에서 전송됐다.
+이 이름 표는 전송 뒤 기록한 것이며, 새 사용자 규칙 아래 사전 등록으로 소급하지 않는다.
+각 명령은 `python -m scripts.run_s3_x86_probe --expected-source-sha 7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1
+--output outputs/<이름>/raw --case <case> --condition <C> --execute`이다.
+
+| 이름 | case | C | seed |
+|---|---|---:|---:|
+|s3fix11-base-pair-c0-7a4bda7a|pair|0|14201|
+|s3fix11-base-pair-c1-7a4bda7a|pair|1|14202|
+|s3fix11-base-pair-c2-7a4bda7a|pair|2|14203|
+|s3fix11-base-pair-c3-7a4bda7a|pair|3|14204|
+|s3fix11-base-pair-c4-7a4bda7a|pair|4|14205|
+|s3fix11-base-pair-c5-7a4bda7a|pair|5|14206|
+|s3fix11-base-cyan-c0-7a4bda7a|cyan|0|14201|
+|s3fix11-base-cyan-c1-7a4bda7a|cyan|1|14202|
+|s3fix11-base-cyan-c2-7a4bda7a|cyan|2|14203|
+|s3fix11-base-cyan-c3-7a4bda7a|cyan|3|14204|
+|s3fix11-base-cyan-c4-7a4bda7a|cyan|4|14205|
+|s3fix11-base-cyan-c5-7a4bda7a|cyan|5|14206|
+
+09:21:03UTC 완료 슬롯 확인 후 보류2개를 같은PID로 재개했다. 대기260초씩이며
+해당 wall은 대기 포함·속도 비교 제외다. 기준 전체 종료 후 post-run 평가를 최대10 worker로
+한꺼번에 처리하고, 원본 SHA/프레임별 오차/4배속 영상을 회수한다.
