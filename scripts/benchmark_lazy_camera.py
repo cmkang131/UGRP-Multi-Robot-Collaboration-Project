@@ -1,4 +1,4 @@
-"""Finite Oracle x86 ABBA, frozen experiment adapters, no Mac execution."""
+"""Finite Oracle x86 paired/ABBA runs, frozen adapters, no Mac execution."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -8,6 +8,10 @@ import os
 from pathlib import Path
 import platform
 import shutil
+import resource
+import signal
+import statistics
+import contextlib
 import subprocess
 import sys
 import threading
@@ -23,7 +27,9 @@ ORDER = ('eager', 'lazy-v1', 'lazy-v1', 'eager')
 
 def write(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, allow_nan=False)+'\n')
+    temporary = path.with_name(path.name+f'.{os.getpid()}.tmp')
+    temporary.write_text(json.dumps(value, indent=2, allow_nan=False)+'\n')
+    os.replace(temporary,path)
 
 
 def sha(path):
@@ -89,6 +95,12 @@ def run_one(args):
     undo = lazy_camera.install_adapter()
     out = args.output
     if out.exists(): raise ValueError('PRESERVE_EXISTING_OUTPUT')
+    if args.start_barrier:
+        write(args.start_barrier.parent/(out.name+'-ready.json'), dict(pid=os.getpid(), source=args.expected_source_sha))
+        deadline = time.monotonic()+120
+        while not args.start_barrier.exists():
+            if time.monotonic()>deadline: raise TimeoutError('BATCH_START_BARRIER_TIMEOUT')
+            time.sleep(.1)
     samples = []
     done = threading.Event()
     def sample():
@@ -96,7 +108,11 @@ def run_one(args):
             samples.append(dict(wall=time.time(), load=list(os.getloadavg())))
             done.wait(1.)
     thread = threading.Thread(target=sample, daemon=True); thread.start()
+    started_at = time.time()
     started = time.monotonic()
+    cpu_start = resource.getrusage(resource.RUSAGE_SELF)
+    motion = {}
+    last_progress = [-float("inf")]
     counters = {'physics_s': 0., 'physics_calls': 0, 'render_s': 0., 'render_calls': 0}
     from sim.multi_masterpi_production import MultiMasterPiProductionV2 as World
     originals = {}
@@ -104,7 +120,22 @@ def run_one(args):
         original = getattr(World, name); originals[name] = original
         def timed(*a, _original=original, _category=category, **kw):
             start = time.perf_counter()
-            try: return _original(*a, **kw)
+            try:
+                if _category == 'render':
+                    world = a[0]
+                    t = float(world.data.time)
+                    if t-last_progress[0] >= 1.-1e-8:
+                        last_progress[0] = t
+                        for rid, robot in world.controllers.items():
+                            values = [float(x) for x in (*robot.base_xyz(), *robot.base_rpy(), *robot.site_xyz('grip_site'))]
+                            initial = motion.setdefault(rid, dict(initial=values, latest=values, max_position_delta_m=0.))
+                            initial['latest'] = values
+                            initial['max_position_delta_m'] = max(initial['max_position_delta_m'],
+                                max(sum((values[i+j]-initial['initial'][i+j])**2 for j in range(3))**.5 for i in (0,6)))
+                        # Evaluation-only sidecar. Never returned to the controller.
+                        write(out/'evaluation-progress.json', dict(sim_time=t, wall=time.time(), robots=motion,
+                            semantics='base and grip positions; evaluation only; no feedback'))
+                return _original(*a, **kw)
             finally:
                 counters[_category+'_s'] += time.perf_counter()-start
                 counters[_category+'_calls'] += 1
@@ -132,13 +163,20 @@ def run_one(args):
                 b.update(stage_diagnostic=True, admission='speedctrl3 same-seed finite DEV camera comparison')
                 return b
             b = bundle(55001, ADAPTERS['ego'], 'baseline', 'speedctrl_stage')
-            result = bind(stage.run, bundle=bundle)(SimpleNamespace(output=out,
+            # The parent admission replaces the frozen eight-slot limiter for this
+            # explicitly authorized concurrent batch; robot behavior is unchanged.
+            bindings = dict(bundle=bundle)
+            if args.parent_batch: bindings['server_slot'] = lambda: contextlib.nullcontext('speed4-batch')
+            result = bind(stage.run, **bindings)(SimpleNamespace(output=out,
                 seed=55001, profile='baseline', mode='speedctrl_stage', checkpoint=None))
     except BaseException:
         failure = traceback.format_exc()
         raise
     finally:
         elapsed = time.monotonic()-started
+        cpu_end = resource.getrusage(resource.RUSAGE_SELF)
+        cpu_user = cpu_end.ru_utime-cpu_start.ru_utime
+        cpu_sys = cpu_end.ru_stime-cpu_start.ru_stime
         done.set(); thread.join()
         for name, original in originals.items(): setattr(World, name, original)
         undo()
@@ -157,7 +195,11 @@ def run_one(args):
             archive_manifest_sha256=args.archive_manifest_sha256,
             adapter_fingerprint=before, adapter_unchanged=unchanged,
             kind=args.kind, mode=args.render_mode, requested_sim_s=args.sim_s,
-            sim_s=sim, wall_s=elapsed, wall_per_sim=elapsed/sim if sim else None,
+            sim_s=sim, started_at=started_at, ended_at=time.time(), wall_s=elapsed,
+            wall_per_sim=elapsed/sim if sim else None, cpu_user_s=cpu_user, cpu_sys_s=cpu_sys,
+            cpu_per_sim=(cpu_user+cpu_sys)/sim if sim else None,
+            cpu_scope="RUSAGE_SELF including all in-process renderer threads; same interval as wall",
+            load_start=samples[0]['load'], load_end=samples[-1]['load'],
             load_mean=[sum(row['load'][i] for row in samples)/len(samples) for i in range(3)],
             samples=samples, timers=counters,
             timer_coverage={key: ('measured' if counters[key+'_calls'] else 'unmeasured_hook_not_called')
@@ -274,20 +316,229 @@ def cohort(args):
     return 0
 
 
+# These six provider summaries contain measured inference latency, not inputs or
+# decisions. Keep the sample count and every other value. JSON object key order
+# has no semantic meaning; arrays and numeric values are never rounded/reordered.
+LATENCY_PATHS = tuple(tuple(p.split('/')) for p in (
+    'pair/robots/r1/provider/provider/inference_wall_ms',
+    'pair/robots/r2/provider/provider/inference_wall_ms',
+    'solo/provider/provider/inference_wall_ms',
+    'localizers/r1/provider/provider/inference_wall_ms',
+    'localizers/r2/provider/provider/inference_wall_ms',
+    'localizers/r3/provider/provider/inference_wall_ms'))
+
+
+def behavior_projection(path):
+    value = json.loads(path.read_text())
+    removed = {}
+    if path.name == 'student_record.json':
+        for parts in LATENCY_PATHS:
+            node = value
+            for part in parts:
+                if not isinstance(node, dict) or part not in node:
+                    raise ValueError('MISSING_REGISTERED_LATENCY:'+ '/'.join(parts))
+                node = node[part]
+            if set(node) != {'n','p50','p90','max'}:
+                raise ValueError('UNKNOWN_LATENCY_SUMMARY')
+            for key in ('p50','p90','max'):
+                removed['/'+ '/'.join((*parts,key))] = node.pop(key)
+    payload = json.dumps(value, sort_keys=True, separators=(',', ':'),
+                         ensure_ascii=False, allow_nan=False).encode()
+    return hashlib.sha256(payload).hexdigest(), removed
+
+
+def compare_pair(a, b, kind):
+    rows = [json.loads((p/'measurement.json').read_text()) for p in (a,b)]
+    files = [behavior_files(p, kind) for p in (a,b)]
+    raw_mismatches, behavior_mismatches, proofs = [], [], {}
+    for name in sorted(set.union(*files)):
+        if any(name not in f for f in files):
+            raw_mismatches.append(name); behavior_mismatches.append(name); continue
+        raw = equal_bytes(a/name, b/name)
+        if not raw: raw_mismatches.append(name)
+        # Only these two JSON objects are projected. Ledgers, SIM timestamps,
+        # command arrays and every retained JPEG remain strict original bytes.
+        if name in ('bundle.json','student_record.json'):
+            projected = [behavior_projection(p/name) for p in (a,b)]
+            same = projected[0][0] == projected[1][0]
+            proofs[name] = dict(raw_sha256=[sha(p/name) for p in (a,b)],
+                behavior_sha256=[v[0] for v in projected],
+                excluded_latency_fields=[v[1] for v in projected])
+        else: same = raw
+        if not same: behavior_mismatches.append(name)
+    identities = ('implementation_sha','adapter_sha','adapter_fingerprint',
+                  'source_module_sha256','environment','archive_manifest_sha256')
+    complete = all(r['adapter_unchanged'] and not r['failure'] and
+                   r['sim_s'] == r['requested_sim_s'] and
+                   r['result_status'] in ('RECORDED','DEV_STAGE_FINISHED') for r in rows)
+    source_same = all(rows[0][k] == rows[1][k] for k in identities)
+    overlap = max(0., min(r['ended_at'] for r in rows)-max(r['started_at'] for r in rows))
+    eligible = complete and source_same and not behavior_mismatches and overlap > 0
+    return dict(kind=kind, paths=[str(a),str(b)], complete=complete, same_source=source_same,
+        raw_byte_identical=not raw_mismatches, raw_mismatches=raw_mismatches,
+        behavior_byte_identical=not behavior_mismatches, behavior_mismatches=behavior_mismatches,
+        compared_files=len(files[0]), proofs=proofs, eligible=eligible,
+        start_skew_s=abs(rows[0]['started_at']-rows[1]['started_at']), overlap_s=overlap,
+        wall_ratio_b_over_a=rows[1]['wall_per_sim']/rows[0]['wall_per_sim'] if eligible else None,
+        cpu_ratio_b_over_a=rows[1]['cpu_per_sim']/rows[0]['cpu_per_sim'] if eligible else None,
+        rows=rows, camera=[json.loads((p/'camera-render.json').read_text()) for p in (a,b)])
+
+
+def validate_parent_batch(args):
+    receipt = json.loads(args.parent_batch.read_text())
+    if not (receipt['pid'] == os.getppid() and receipt['source'] == args.expected_source_sha
+            and any(r['kind'] == args.kind and r['mode'] == args.render_mode
+                    and r['output'] == str(args.output) for r in receipt['runs'])):
+        raise ValueError('LIVE_REGISTERED_BATCH_PARENT_REQUIRED')
+    os.kill(receipt['pid'], 0)
+    if args.start_barrier != args.parent_batch.parent/'start.json':
+        raise ValueError('REGISTERED_START_BARRIER_REQUIRED')
+
+
+def admit_concurrent():
+    row = host_sample()
+    if row['available_bytes'] < 6*2**30: raise RuntimeError('BATCH_MEMORY_RETRY_REQUIRED')
+    if row['load'][0] >= 51: raise RuntimeError('BATCH_LOAD_RETRY_REQUIRED')
+    return row
+
+
+def early_state(path, kind, log):
+    errors = 'Traceback (most recent call last)' in log.read_text()
+    progress = json.loads((path/'evaluation-progress.json').read_text()) if (path/'evaluation-progress.json').exists() else {}
+    frames, commands = [], []
+    def lines(p):
+        text = p.read_text()
+        # A concurrently growing line-buffered ledger can end in an unfinished
+        # row. Inspect only newline-terminated records, never repair originals.
+        return [json.loads(line) for line in text.split('\n')[:-1] if line]
+    for p in (path/'robots').glob('*/frames.jsonl'):
+        frames.extend(lines(p))
+    for p in (path/'robots').glob('*/commands.jsonl'):
+        commands.extend(lines(p))
+    moving = max((v['max_position_delta_m'] for v in progress.get('robots',{}).values()), default=0.)
+    translating = [r for r in commands if abs(r.get('forward',0.))+abs(r.get('left',0.)) > 0]
+    arm_actions = [r for r in commands if r.get('kind') in ('arm','servo','look')]
+    own = path/'own-controller.jsonl'
+    controller = lines(own) if own.exists() else []
+    stages = sorted({r.get('stage','unknown') for r in controller})
+    # Initial egomap sensor_sweep is a registered exploration observation phase;
+    # rotation there is intentional. Once it exits, require translational commands.
+    sweeping = bool(controller) and all(r.get('status') == 'sensor_sweep' for r in controller)
+    command_ok = bool(commands) and (bool(translating) or (kind == 's3' and bool(arm_actions)) or
+                                    (kind == 'ego' and sweeping and progress.get('sim_time',0.) <= 20.))
+    stage_ok = bool(stages) if kind == 'ego' else bool(frames and arm_actions)
+    ok = not errors and len(frames)>2 and moving>1e-5 and command_ok and stage_ok
+    return dict(ok=ok, traceback=errors, frames=len(frames), sim_time=progress.get('sim_time'),
+        motion_delta_m=moving, commands=len(commands), translating_commands=len(translating),
+        command_kinds=sorted({r['kind'] for r in commands}), stages=stages,
+        stage_evidence='own controller stage' if kind=='ego' else 'S3 camera control and arm commands',
+        initial_sensor_sweep=sweeping, evaluation=progress)
+
+
+def stop_owned(process):
+    # Every subprocess is a new session created by this parent. Never select a
+    # process by name, and never signal a peer run or the common server.
+    if process.poll() is None:
+        os.killpg(process.pid, signal.SIGTERM)
+        try: process.wait(timeout=15)
+        except subprocess.TimeoutExpired:
+            os.killpg(process.pid, signal.SIGKILL); process.wait(timeout=15)
+
+
+def paired_cohort(args):
+    runs, children = [], []
+    initial = admit_concurrent()
+    if shutil.disk_usage(args.output).free < 2*2**30: raise OSError('REMOTE_DISK_RESERVE_2GIB')
+    for pair in range(4):
+        for kind in ('s3','ego'):
+            for mode in (ORDER[:2] if pair%2 == 0 else ORDER[:2][::-1]):
+                name = f'{kind}-p{pair+1}-{mode}'
+                runs.append(dict(kind=kind, pair=pair+1, mode=mode, output=str(args.output/name)))
+    receipt = args.output/'batch.json'; barrier = args.output/'start.json'
+    write(receipt, dict(pid=os.getpid(),source=args.expected_source_sha,runs=runs,
+        admission=initial, authorization='2026-10-10 speed4 concurrent pairs; no exclusive lease',
+        frozen_ego_slot_override='parent resource admission replaces eight-slot wrapper only'))
+    try:
+        for row in runs:
+            admission = admit_concurrent()
+            name = Path(row['output']).name
+            cmd = [sys.executable,'-m','scripts.benchmark_lazy_camera','--kind',row['kind'],
+                '--output',row['output'],'--render-mode',row['mode'],'--sim-s',str(args.sim_s),
+                '--parent-batch',str(receipt),'--start-barrier',str(barrier),
+                '--archive-manifest',str(args.archive_manifest),
+                '--archive-manifest-sha256',args.archive_manifest_sha256,
+                '--expected-source-sha',args.expected_source_sha]
+            log = args.output/(name+'.log')
+            with log.open('x') as stream:
+                proc = subprocess.Popen(cmd,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,start_new_session=True)
+            children.append((row,proc,log))
+            write(args.output/(name+'-launch.json'),dict(pid=proc.pid,admission=admission,command=cmd))
+        ready_deadline = time.monotonic()+120
+        while not all((args.output/(Path(r['output']).name+'-ready.json')).exists() for r in runs):
+            if any(p.poll() is not None for _,p,_ in children): raise RuntimeError('CHILD_FAILED_BEFORE_BARRIER')
+            if time.monotonic()>ready_deadline: raise TimeoutError('PARENT_BARRIER_TIMEOUT')
+            time.sleep(.5)
+        write(barrier, dict(released_at=time.time(),admission=host_sample()))
+        started = time.monotonic(); checked = set(); early = {}
+        while any(p.poll() is None for _,p,_ in children):
+            for row,proc,log in children:
+                name = Path(row['output']).name
+                if name not in checked and (time.monotonic()-started >= 180 or proc.poll() is not None):
+                    state = early_state(Path(row['output']),row['kind'],log)
+                    state.update(checked_at=time.time(),elapsed_since_barrier_s=time.monotonic()-started)
+                    if not state['ok']:
+                        stop_owned(proc); state['EXIT'] = proc.returncode
+                    early[name]=state; checked.add(name)
+                    write(args.output/'early-check.json',early)
+            if time.monotonic()-started > 1800: raise TimeoutError('FINITE_BATCH_BUDGET')
+            time.sleep(1.)
+        pairs = []; failures=[]
+        for kind in ('s3','ego'):
+            for i in range(1,5):
+                try: pairs.append(compare_pair(args.output/f'{kind}-p{i}-eager',args.output/f'{kind}-p{i}-lazy-v1',kind))
+                except Exception as e: failures.append(dict(kind=kind,pair=i,error=str(e)))
+        summaries = {}
+        for kind in ('s3','ego'):
+            valid = [r for r in pairs if r['kind']==kind and r['eligible']]
+            summaries[kind] = dict(n=len(valid),N=4)
+            for metric in ('wall','cpu'):
+                ratios = [r[metric+'_ratio_b_over_a'] for r in valid]
+                summaries[kind][metric] = dict(median=statistics.median(ratios) if ratios else None,
+                    range=[min(ratios),max(ratios)] if ratios else None,ratios=ratios)
+        write(args.output/'comparison.json',dict(schema='ugrp.lazy_camera_paired.v1',source=args.expected_source_sha,
+            cases=summaries,pairs=pairs,failures=failures,early_checks=early,
+            exit_codes={Path(r['output']).name:p.returncode for r,p,_ in children},
+            projection='JSON key order and only 18 registered measured inference quantiles; raw proofs retained',
+            adopted=False,default='eager'))
+        return int(bool(failures) or any(not r['eligible'] for r in pairs) or any(not v['ok'] for v in early.values()))
+    finally:
+        for row,proc,_ in children:
+            stop_owned(proc)
+            write(args.output/(Path(row['output']).name+'-EXIT.json'),dict(pid=proc.pid,EXIT=proc.returncode))
+
+
 @interruptible
 def main():
-    p = argparse.ArgumentParser(); p.add_argument('--kind', choices=('s3','ego','abba'), required=True)
+    p = argparse.ArgumentParser(); p.add_argument('--kind', choices=('s3','ego','abba','paired'), required=True)
     p.add_argument('--output', type=Path, required=True); p.add_argument('--expected-source-sha', required=True)
     p.add_argument('--render-mode', choices=ORDER[:2], default='eager')
     p.add_argument('--sim-s', type=float, choices=(5.,60.), default=60.)
     p.add_argument('--parent-lease-pid', type=int)
+    p.add_argument('--parent-batch', type=Path)
+    p.add_argument('--start-barrier', type=Path)
     p.add_argument('--archive-manifest', type=Path, required=True)
     p.add_argument('--archive-manifest-sha256', required=True)
     args = p.parse_args(); host_guard(args.expected_source_sha)
     if args.output.exists(): raise ValueError('PRESERVE_EXISTING_OUTPUT')
     from scripts import agent_lock
     lock_root = ROOT.parent.parent/'agent-locks'
+    if args.kind == 'paired':
+        args.output.mkdir(parents=True, exist_ok=False)
+        return paired_cohort(args)
     if args.kind != 'abba':
+        if args.parent_batch:
+            validate_parent_batch(args)
+            return run_one(args)
         held = agent_lock.status(lock_root)
         if not (held and held['pid_alive'] and held['timing_sensitive'] and
                 held['owner'] == 'codex' and held['branch'] == 'codex/sim-speed-ctrl2' and

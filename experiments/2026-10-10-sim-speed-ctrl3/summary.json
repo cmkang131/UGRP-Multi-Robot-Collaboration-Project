@@ -1,0 +1,30 @@
+{
+  "schema": "ugrp.dev_speed4.v1",
+  "status": "REGISTERED",
+  "n": 0,
+  "N": 8,
+  "adopted": false,
+  "default": "eager",
+  "cases": [
+    "S3 cyan c0 60SIM seed14201",
+    "egomap59 initial explore 60SIM seed55001"
+  ],
+  "candidates": [
+    "A eager",
+    "B lazy-v1"
+  ],
+  "pairs_per_case": 4,
+  "admission": "load1 <51 and MemAvailable >=6GiB; research peers allowed",
+  "criteria": "complete60SIM; same commands, frame-ledger and allJPEG bytes; projected control JSON equal; timing quantiles only separated; no gain claim on ineligible pairs",
+  "telemetry_exclusions": [
+    "JSON object key serialization order in bundle/student_record only",
+    "18 inference_wall_ms p50/p90/max fields at explicit provider paths; n preserved"
+  ],
+  "initial_check": "each run at 180seconds or completion: exception, frame/SIM progress, evaluation base/grip motion, commands, stage; stop owned anomalous run",
+  "references": [
+    "https://docs.python.org/3/library/json.html",
+    "https://www.rfc-editor.org/rfc/rfc8785.html",
+    "https://google.github.io/benchmark/user_guide.html"
+  ],
+  "tensorboard_conversion": false
+}

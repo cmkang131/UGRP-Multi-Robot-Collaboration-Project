@@ -227,3 +227,79 @@ def test_idle_after_deadline_does_not_admit_a_late_arm(tmp_path, monkeypatch):
         probe.wait_for_idle(receipt)
     assert slept == [5.]
     assert not json.loads(receipt.read_text())['ready']
+
+
+def provider_record(probe, value):
+    record = {'control': {'sim_time': 3.5, 'command': [0.,1.]}}
+    for parts in probe.LATENCY_PATHS:
+        node = record
+        for part in parts[:-1]: node = node.setdefault(part,{})
+        node[parts[-1]] = dict(n=7,p50=value,p90=value+1,max=value+2)
+    return record
+
+
+def test_projection_separates_only_registered_latency_and_key_order(tmp_path):
+    from scripts import benchmark_lazy_camera as probe
+    p = tmp_path/'student_record.json'
+    a = provider_record(probe,1.)
+    p.write_text(json.dumps(a));first,removed=probe.behavior_projection(p)
+    p.write_text(json.dumps(provider_record(probe,99.),sort_keys=True))
+    assert probe.behavior_projection(p)[0] == first and len(removed)==18
+    changed=provider_record(probe,99.);changed['control']['sim_time']=3.6
+    p.write_text(json.dumps(changed));assert probe.behavior_projection(p)[0] != first
+    changed=provider_record(probe,99.)
+    changed['solo']['provider']['provider']['inference_wall_ms']['n']=8
+    p.write_text(json.dumps(changed));assert probe.behavior_projection(p)[0] != first
+    changed=provider_record(probe,99.)
+    changed['solo']['provider']['provider']['inference_wall_ms']['unknown']=1
+    p.write_text(json.dumps(changed))
+    with pytest.raises(ValueError,match='UNKNOWN_LATENCY'): probe.behavior_projection(p)
+
+
+def test_concurrent_admission_allows_research_peers_and_rejects_limits(monkeypatch):
+    from scripts import benchmark_lazy_camera as probe
+    row=dict(peers=['research'],available_bytes=6*2**30,load=[50.,20.,20.])
+    monkeypatch.setattr(probe,'host_sample',lambda:row)
+    assert probe.admit_concurrent()==row
+    row['load'][0]=51.
+    with pytest.raises(RuntimeError,match='LOAD_RETRY'):probe.admit_concurrent()
+    row['load'][0]=1.;row['available_bytes']-=1
+    with pytest.raises(RuntimeError,match='MEMORY_RETRY'):probe.admit_concurrent()
+
+
+def test_batch_child_requires_exact_parent_source_run_and_barrier(tmp_path,monkeypatch):
+    from scripts import benchmark_lazy_camera as probe
+    p=tmp_path/'batch.json';out=tmp_path/'s3-p1-eager'
+    args=SimpleNamespace(parent_batch=p,expected_source_sha='a'*40,kind='s3',render_mode='eager',
+        output=out,start_barrier=tmp_path/'start.json')
+    p.write_text(json.dumps(dict(pid=123,source='a'*40,runs=[dict(kind='s3',mode='eager',output=str(out))])))
+    monkeypatch.setattr(probe.os,'getppid',lambda:123)
+    monkeypatch.setattr(probe.os,'kill',lambda pid,sig:None)
+    probe.validate_parent_batch(args)
+    args.render_mode='lazy-v1'
+    with pytest.raises(ValueError,match='LIVE_REGISTERED'):probe.validate_parent_batch(args)
+    args.render_mode='eager';args.start_barrier=tmp_path/'wrong'
+    with pytest.raises(ValueError,match='START_BARRIER'):probe.validate_parent_batch(args)
+
+
+def test_early_check_needs_motion_progress_and_normal_commands(tmp_path):
+    from scripts import benchmark_lazy_camera as probe
+    out=tmp_path/'run';robot=out/'robots/r3';robot.mkdir(parents=True)
+    log=tmp_path/'log';log.write_text('healthy\n')
+    (robot/'frames.jsonl').write_text(''.join(json.dumps(dict(sim_time=t))+'\n' for t in (3.,4.,5.)))
+    (robot/'commands.jsonl').write_text(json.dumps(dict(kind='mecanum',forward=.1,turn=0.))+'\n'+ '{unfinished')
+    (out/'own-controller.jsonl').write_text(json.dumps(dict(stage='explore',status='drive'))+'\n')
+    probe.write(out/'evaluation-progress.json',dict(sim_time=12.,robots={'r3':dict(max_position_delta_m=.1)}))
+    assert probe.early_state(out,'ego',log)['ok']
+    probe.write(out/'evaluation-progress.json',dict(sim_time=12.,robots={'r3':dict(max_position_delta_m=0.)}))
+    assert not probe.early_state(out,'ego',log)['ok']
+    log.write_text('Traceback (most recent call last)')
+    assert probe.early_state(out,'ego',log)['traceback']
+
+
+def test_paired_driver_never_acquires_exclusive_lease(tmp_path,monkeypatch):
+    from scripts import agent_lock
+    probe=driver_args(monkeypatch,tmp_path/'new','paired')
+    monkeypatch.setattr(agent_lock,'acquire',lambda *a,**k:pytest.fail('concurrent authorization'))
+    monkeypatch.setattr(probe,'paired_cohort',lambda args:0)
+    assert probe.main()==0
