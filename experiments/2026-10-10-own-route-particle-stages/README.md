@@ -20,3 +20,7 @@
 - Cartographer [기본 설정 L35–39](https://github.com/cartographer-project/cartographer/blob/master/configuration_files/trajectory_builder_2d.lua#L35)와 [실시간 CSM 원본](https://github.com/cartographer-project/cartographer/blob/master/cartographer/mapping/internal/2d/scan_matching/real_time_correlative_scan_matcher_2d.cc): 예측 주변 고정 탐색창. Olson2009를 구현한 원본 구조를 따르며 기존 own-map 격자·카메라 벽점·motion prior는 보존한다. Cartographer 전체/서브맵90스캔 수명주기를 이식했다는 뜻은 아니다.
 - c는 새 위치 생성법이 아니라 기존 정합 수락 검사를 실제 proposal 표본에 적용하는 기하적 검증이다. 실패 관측에서 억지로 일치하는 표본을 반복 추출하지 않는다(분포를 임의로 잘라 과신하지 않음). 대안 선택/문턱 튜닝 없이 고정 비교한다.
 - 전체 상태 snapshot은 기존 DEV checkpoint의 source/stream hash와 renderer/lock 재생성 규약을 따른다. 재개 단계는 DEV_RESUMED_DIAGNOSTIC이며 본 연구/연속 완주 증거가 아니다.
+
+## 구현·실행 전 확인
+
+사전등록 f0ba9ee1. 합성 변경 모듈3파일25시험 통과(물리/녹화 재생0), legacy proposal off 결과/샘플 bytes 동일. stage seed는 동일 P1 시작 위치·지도에 새 난수seed만 사용한다. 서버 공유 venv에 cloudpickle이 없어 pure-Python cloudpickle3.1.2를 전용 `~/ugrp-sim/egomap60-deps`에 `--no-deps` 설치하고 해당 작업 PYTHONPATH에만 연결한다. 공용 venv/물리 의존성 변경0.

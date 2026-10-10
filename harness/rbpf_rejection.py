@@ -78,6 +78,9 @@ def _proposals(self, points, camera, attempt):
     def propose(i):
         past = self.maps[i].occupied_points()
         past = past[np.linalg.norm(past-priors[i, :2], axis=1) <= 6.]
+        local_reference = getattr(self, '_local_reference', None)
+        if local_reference is not None:
+            past = local_reference(past, points, priors[i])
         if attempt and len(past) >= self.options.min_points:
             proposal = getattr(self, '_selective_proposal', improved_proposal)
             pose, increment, pe = proposal(GridField(past), points, camera,

@@ -27,7 +27,7 @@ class RBPFOptions:
     seed: int = 20261006
 
     def __post_init__(self):
-        if type(self.particles) is not int or self.particles not in (30, 100):
+        if type(self.particles) is not int or self.particles not in (30, 100, 500):
             raise ValueError('RBPF_PARTICLES_REQUIRE_30_OR_100')
         if type(self.seed) is not int or self.seed < 0:
             raise ValueError('RBPF_INVALID_SEED')
@@ -62,7 +62,8 @@ def importance_increment(log_likelihood, pose, prior_mean, prior_cov, proposal_m
     return float(log_likelihood+log_normal(a, prior_cov)[0]-log_normal(b, proposal_cov)[0])
 
 
-def improved_proposal(field, points, camera, prior, covariance, rng, options, *, yaw_window_deg=8.):
+def improved_proposal(field, points, camera, prior, covariance, rng, options, *, yaw_window_deg=8.,
+                      translation_window_m=.5, observed_sample=False):
     """Scan-match mode, local product moments, sample, exact importance ratio.
 
     A failed match falls back to the motion proposal (Eq.8). Sensor failure does
@@ -70,9 +71,12 @@ def improved_proposal(field, points, camera, prior, covariance, rng, options, *,
     """
     if yaw_window_deg not in (8., 20.):
         raise ValueError('UNREGISTERED_RBPF_YAW_WINDOW')
+    if translation_window_m not in (.1, .5):
+        raise ValueError('UNREGISTERED_RBPF_TRANSLATION_WINDOW')
     sigma = sensor_sigma(points, camera, options)
     step = np.array([.1, .1, math.radians(2.)])
-    coarse = offsets_grid([5, 5, int(yaw_window_deg/2)], step)
+    count = round(translation_window_m/.1)
+    coarse = offsets_grid([count, count, int(yaw_window_deg/2)], step)
     sensor = likelihood(field, points, prior+coarse, sigma)
     # MAP registration includes the motion prior as in the paper's Eq.21.
     cost = sensor+log_normal(coarse, covariance)
@@ -82,13 +86,16 @@ def improved_proposal(field, points, camera, prior, covariance, rng, options, *,
     # Include the prior mode when registration moved the local integration box.
     # These are quadrature samples for a Gaussian approximation, not a discrete PF.
     offsets = np.unique(np.vstack([offsets, np.zeros((1, 3))]), axis=0)
+    if translation_window_m != .5:
+        offsets = offsets[np.all(abs(offsets[:, :2]) <= translation_window_m+1e-12, axis=1)
+                          & (abs(offsets[:, 2]) <= math.radians(yaw_window_deg)+1e-12)]
     log_l = likelihood(field, points, prior+offsets, sigma)
     log_product = log_l+log_normal(offsets, covariance)
     best = offsets[int(np.argmax(log_product))]
     distances = field.query(transform(points, prior+best))
     overlap = float(np.mean(distances <= options.overlap_distance_m))
     residual = float(np.sqrt(np.mean(distances**2)))
-    boundary = bool(np.any(abs(best) >= np.array([.5, .5, math.radians(yaw_window_deg)])))
+    boundary = bool(np.any(abs(best) >= np.array([translation_window_m]*2+[math.radians(yaw_window_deg)])))
     reason = ('search_boundary' if boundary else 'low_overlap' if overlap < options.min_overlap else
               'high_residual' if residual > options.max_residual_m else 'improved_proposal')
     event = {'reason': reason, 'overlap': overlap, 'residual_m': residual, 'search_boundary': boundary,
@@ -111,6 +118,22 @@ def improved_proposal(field, points, camera, prior, covariance, rng, options, *,
         log_weight = float(likelihood(field, points, sample, sigma)[0])
         event.update(proposal='motion_fallback', log_weight_increment=log_weight)
     sample[2] = wrap(sample[2])
+    if observed_sample and reason == 'improved_proposal':
+        # Validate the actual draw, not only the mode. A failed measurement
+        # uses the existing rejection owner; never repeatedly draw until fit.
+        distances = field.query(transform(points, sample))
+        overlap = float(np.mean(distances <= options.overlap_distance_m))
+        residual = float(np.sqrt(np.mean(distances**2)))
+        offset = sample-prior
+        offset[2] = wrap(offset[2])
+        outside = bool(np.any(abs(offset) >= [translation_window_m]*2+[math.radians(yaw_window_deg)]))
+        rejected = 'sample_search_boundary' if outside else 'sample_low_overlap' if overlap < options.min_overlap else 'sample_high_residual' if residual > options.max_residual_m else None
+        event.update(sample_overlap=overlap, sample_residual_m=residual, sample_verified=rejected is None)
+        if rejected:
+            sample = rng.multivariate_normal(prior, covariance)
+            sample[2] = wrap(sample[2])
+            log_weight = 0.
+            event.update(reason=rejected, proposal='motion_fallback', log_weight_increment=0.)
     return sample, log_weight, event
 
 
