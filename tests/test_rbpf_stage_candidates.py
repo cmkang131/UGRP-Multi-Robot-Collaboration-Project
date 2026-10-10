@@ -183,3 +183,15 @@ def test_batch_fixed_eight_slots_no_replacement_or_retry(tmp_path):
     assert len(jobs)==8 and len({j['name'] for j in jobs})==8
     assert [j['profile'] for j in jobs if j['seed']==60012]==['baseline','a','b','c']
     assert all(j['status']=='BLOCKED_PREPARE_B_UNOBSERVED' for j in jobs if j['seed']==60011)
+
+
+def test_delivery_rejects_missing_or_corrupt_raw_evidence(tmp_path):
+    import hashlib
+    spec=importlib.util.spec_from_file_location('stage_deliver',Path(__file__).resolve().parents[1]/'experiments/2026-10-10-own-route-particle-stages/code/deliver.py')
+    m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    with pytest.raises(ValueError,match='NO_RAW_MANIFESTS'):m.verify([tmp_path])
+    raw=tmp_path/'result.json';raw.write_text('{}')
+    (tmp_path/'artifacts.sha256.json').write_text(json.dumps({'result.json':hashlib.sha256(raw.read_bytes()).hexdigest()}))
+    assert m.verify([tmp_path,tmp_path])==1
+    raw.write_text('{"status":"changed"}')
+    with pytest.raises(ValueError):m.verify([tmp_path])
