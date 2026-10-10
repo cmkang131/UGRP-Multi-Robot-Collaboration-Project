@@ -10,6 +10,8 @@ from scripts.run_final_environment_checks import write,check_source
 from scripts.run_s3_host import artifact_manifest,environment_record
 
 BUNDLE_ID='zone-s3-alignment-probe-v153'
+WORKFLOW_VERSION='7.46.0'
+PHASE='experiments/2026-10-09-s3-no-prior/s3fix8/alignment-phase.json'
 ROOT=parent.ROOT
 RAW=Path('/Users/changmin/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152')
 ROBOTS=('r1','r2','r3')
@@ -51,11 +53,12 @@ def bundle(sha,case,option):
         # mission's map-slot admission; no global pose is fabricated.
         b['controller_config']['options']['heading_visual_lock']=VISUAL_LOCK
         b['options']['heading_visual_lock']=VISUAL_LOCK
-    b.update(execution_bundle_id=BUNDLE_ID,schema='ugrp.s3_alignment_probe.v153',source_sha=sha,
+    b.update(execution_bundle_id=BUNDLE_ID,workflow_version=WORKFLOW_VERSION,schema='ugrp.s3_alignment_probe.v153',source_sha=sha,
         case=case,servo_option=option,case_cap_s=CAP,wall_cap_s=1800.,stage_probe=True,
         source_raw=str(RAW),stage_source_t=STAGE_T,known_start_information=False,research_result=False)
     from harness.python_source_closure import source_closure
     paths=set(b['source_sha256'])|set(source_closure(ROOT,['scripts/run_s3_alignment_probe.py','harness/zone_s3_visual_pose_servo.py']))
+    paths.update((PHASE,'configs/simulation_workflows.d/s3_alignment_probe_v153.json'))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -83,6 +86,21 @@ def restore_scene(host,setup):
     spec=mujoco.mjtState.mjSTATE_INTEGRATION;state=np.empty(mujoco.mj_stateSize(m,spec));mujoco.mj_getState(m,d,state,spec)
     np.savez(host.out/'eval_only/stage-integration-state.npz',state=state)
 
+def resume_alignment_phase(ep,now,history,source_t):
+    """Restore only saved own-RGB/issued-command phase history, never pose truth."""
+    ctl=ep.controller
+    ctl.arm.events.clear();ctl.arm.until=now;ctl.arm.commanded=dict(ep.own.servo)
+    ctl.look_name=history['look_name']
+    ctl.commands=history['issued_motions']
+    ctl.set('align',now,stage_probe_entry=True,resumed_saved_rgb_phase=True)
+    ctl.align_cmds0=0
+    ctl.vo_obs=[dict(row,t=now+row['t']-source_t) for row in history['vo_obs']]
+    ctl.next_look=now
+    ctl.aligned_streak=0
+    ctl.pending_reapproach=None
+    ctl.log(ctl.rid,'stage_saved_phase',now,look_name=ctl.look_name,prior_issued_motions=ctl.commands,
+        prior_own_rgb_rows=len(ctl.vo_obs),source='saved own RGB and issued commands only',aligned_receipt=False)
+
 def enter_pair(rt,now,option):
     pair=rt.pair.producer
     for rid,other in [('r1','r2'),('r2','r1')]:
@@ -96,7 +114,9 @@ def enter_pair(rt,now,option):
         ctl.driver.outcome='arrived'
         ctl.claims['at_prestation']=dict(estimate=[report.x_m,report.y_m,report.yaw_rad],std_xy_m=report.std_xy_m,
             looks=0,sim_time=now,source='stage-only own RGB estimate; not student arrival')
-        ctl.set('align_start',now,stage_probe_entry=True)
+        history=json.loads((ROOT/PHASE).read_text())
+        if history['source_t']!=STAGE_T:raise ValueError('saved phase time mismatch')
+        resume_alignment_phase(ep,now,history['robots'][ep.own.robot_id],STAGE_T)
         attach_endpoint(ep,option)
     return endpoints
 

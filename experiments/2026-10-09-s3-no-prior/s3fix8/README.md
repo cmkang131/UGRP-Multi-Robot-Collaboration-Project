@@ -43,3 +43,11 @@ probe 제어기 전체 checkpoint도 원본에 없으므로 새 map-uniform PF�
 2bb6148d의 첫 pair는60 SIM초/174.82 wall초, r1 검출140/140·hover0, r2는532.1초 장면에서 그립 거리0.784m라 reapproach에 머물렀다. cyan은0.5 SIM초/12.90 wall초에 초기 상자가 화면 아래로 잘려 준비 assert에서 HOST_ERROR였다. 둘 다 raw를 보존하며 통과/유효한 전후 비교에 합산하지 않는다.
 
 근접 정렬을 분리하려고 **560.0초** 저장 장면으로 고정한다(r1/r2 저장 RGB 오차거리23.5/43.2mm). r3 합성 단계는 cyan 전방0.24m와 기존 inspect 자세로 시작한다. r3 양쪽 비교에 기존 `heading_visual_lock`을 명시적으로 켜, 생략한 전역 접근의 map-slot 판정을 새 PF로 대신하지 않고 자기 RGB의 유일 후보를 유지한다. 새 옵션/문턱/GT 제어를 추가하지 않는다. 실제 close 이후1초를 관측하고 더 이상의 lift 행동은 발행하지 않는다. 이 정정된 시작점에서 B/off와N/visual_pose_mpc_v1을 각각1회만 실행하며 같은 실패가 반복되면 중지한다.
+
+### 단계 재개 상태의 누락: 물리 비교 전에 추가 오프라인 수정
+
+560초 재구성 B/N에서도 pair가 각60초 뒤 reapproach에 머물렀다(152.96/152.75 wall초). 이때 `align_start`가 저장 inspect를 search로 다시 바꿔, 자기쪽 띠가 아니라 먼 띠를0.761/0.783m로 읽었다. 새 제어기의 빈 `vo_obs`는 이를 최초 접근 검증으로 간주해 reapproach했다. **수정 선택기가 근접 구간에 한 번도 도달하지 않은 준비 실패**이며 알고리즘 전후 결과로 쓰지 않는다. 같은 준비 문제의 물리 반복은 중지했다.
+
+[MuJoCo state/reproducibility](https://mujoco.readthedocs.io/en/stable/programming/simulation.html#state-and-control)의 전체 상태 보존 원칙과 기존 단계 probe의 상태 주입 경로를 확인했다. physics 적분 상태만으로 외부 제어기의 phase/history가 복원되지 않는 것이 이 경로의 원인이다. 새 단계 재개는 저장된 **자기 RGB69/19행·발행 이동66/17회·inspect 자세**를 `alignment-phase.json`으로 보존하고, 원래 align 상태에서 시작한다. 새 aligned receipt는 만들지 않으며 이전 관측의 시간을 새 단계 시계로 평행 이동한다. 현재 global PF에는 과거 GT/pose prior를 넣지 않는다. 최초 새 영상·기존 문턱·실제 GO·실제 port.apply를 유지한다.
+
+이 수정은 결과 문턱 조정이 아니다. 오프라인 회귀에서 재진입 자세·최초 관측의 재접근 오판·실제 모터 계약을 먼저 고정한 뒤, 수정된 pair 시작점으로 B/N 각각1회만 확인한다. cyan은 독립된 유효한 비교 결과를 재사용하며 반복하지 않는다. 번들 내부에 부모의7.45.0이 남은 메타데이터도 카탈로그와 같은7.46.0으로 정정한다; 이전 raw는 바꾸지 않는다.

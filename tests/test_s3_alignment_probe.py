@@ -37,7 +37,13 @@ def test_actual_s3_selector_binding_and_native_apply(tmp_path,monkeypatch):
         for rid,ep in p.eps.items():
             attach_endpoint(ep,OPTION)
             p.refresh(1.)
-            ep.controller.state='align'
+            from scripts.run_s3_alignment_probe import resume_alignment_phase,PHASE
+            history=json.loads(Path(PHASE).read_text())
+            resume_alignment_phase(ep,1.,history['robots'][rid],history['source_t'])
+            assert ep.controller.state=='align' and ep.controller.look_name=='inspect'
+            assert not ep.controller.arm.events
+            ep.controller._on_beam_obs(1.,dict(visible=True,grip_base_m=[.2219,.0021],axis_heading_rad=.34,end_visible=True))
+            assert ep.controller.pending_reapproach is None
             ob=ep.controller._align.__func__.__globals__['ob']
             command=ob.align_command(dict(grip_base_m=[.2219151338,.0020969867],axis_heading_rad=.34871237))
             ep.controller.drive(command,1.)
@@ -91,3 +97,11 @@ def test_reconstructed_stage_is_near_and_uses_existing_cyan_view(monkeypatch):
     assert setup['robots']['r3']['pose']['robot_xyz_m'][:2]==pytest.approx([-.44,-2.45])
     assert setup['robots']['r3']['frame']['commanded_servo']=={1:2000,**pose_of('inspect')}
     assert not setup['checkpoint'] and 'synthetic' in setup['classification']
+
+def test_probe_workflow_version_and_phase_input_are_sealed():
+    from scripts import run_s3_alignment_probe as probe
+    b=probe.bundle('0'*40,'cyan','off')
+    catalog=json.loads(Path('configs/simulation_workflows.d/s3_alignment_probe_v153.json').read_text())
+    assert b['workflow_version']==catalog['workflows'][0]['version']
+    assert probe.PHASE in b['source_sha256']
+    assert b['options']['heading_visual_lock']=='unique_cyan_align_v1'
