@@ -603,7 +603,7 @@ class Installation:
         self.scan_mode, self.local_radius = scan_options()
         self.record.update(scan_speedups=self.scan_mode,
             local_submap_requested_m=self.local_radius, local_submap_active_m=0.,result_changes_allowed=False)
-        self.referee_mode=os.environ.get(REFEREE_ENV,'owned-v1')
+        self.referee_mode=os.environ.get(REFEREE_ENV,'off')
         if self.referee_mode not in ('off','owned-v1'):
             raise ValueError(f'{REFEREE_ENV}: off or owned-v1 required')
         self.record.update(referee_event_speedups=self.referee_mode,referee_owned_streams=0,

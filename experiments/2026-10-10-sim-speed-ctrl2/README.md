@@ -2,7 +2,8 @@
 
 main `77eba22c`/PR #423 이후의 저장 입력 개발 진단이다. 첫 소스 `c35cd553`에서
 S3·55001 ABBA와 55003 단일 A가 완료됐고, S3 연구 순번을 위해 큐를 반환했다.
-**후속 후보 측정은 아직 미실행**이다. 이전 off/on의 부하 평균 4.8/2.9가 달라 절감률을
+후속 `37360616`의 S3·55001 ABBA도 완료됐으나 55003은 SIGTERM 중단이다.
+이전 off/on의 부하 평균 4.8/2.9가 달라 절감률을
 공정한 속도 증거로 재사용하지 않는다. 물리 근사·입자 감소·새 관측 생략은 적용하지 않는다.
 
 ## 확인한 병목과 적용 범위
@@ -42,7 +43,7 @@ S3·55001 ABBA와 55003 단일 A가 완료됐고, S3 연구 순번을 위해 큐
 - S3 v151 종료 심판에서 과거 이벤트 실행 키를 매번 전부 검증하는 N(N−1)/2 비용도 발견됐다.
   [s3fix6 진단](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/423#issuecomment-6091325311)은
   다른 작업의 표본이며, 기존 v148 제어기 ‘기타’와 동일한 구간으로 합산하지 않는다.
-  공통 가속의 `UGRP_REFEREE_EVENT_SPEEDUPS=owned-v1`(기본 on, `off`로 해제)은 source-guarded
+  공통 가속의 `UGRP_REFEREE_EVENT_SPEEDUPS=owned-v1`(기본 off, 명시적 비교)은 source-guarded
   심판이 새로 만든 private 기록만 append-only 소유한다. 새 키는 매번 검증하고 snapshot은 deep copy다.
   외부 mutable list의 과거 키 검사와 가져온 기록의 전체 key/sequence/hash-chain replay는 원래대로다.
   close 시 살아 있는 심판을 원래 private list로 되돌린다. 심판 정답은 제어에 전달하지 않는다.

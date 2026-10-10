@@ -67,6 +67,13 @@ def flush(host):
         host._lazy_camera_pending = None
 
 
+def write_receipt(host):
+    record = getattr(host, '_lazy_camera_record', None)
+    if record is not None:
+        host.out.mkdir(parents=True, exist_ok=True)
+        (host.out/'camera-render.json').write_text(json.dumps(record, indent=2)+'\n')
+
+
 def _initialize(host):
     mode = os.environ.get(ENV, 'eager')
     if mode not in MODES:
@@ -77,6 +84,10 @@ def _initialize(host):
                   retention='all legacy JPEGs and frame-ledger rows',
                   module_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
     host._lazy_camera_record = record
+    # Legacy hosts can be checkpointed with their original bound methods.
+    # Adapter instrumentation opts in separately to collecting its final counters.
+    if mode == 'eager' and not getattr(host, '_camera_adapter_receipt', False):
+        return record
     # Bind the most-derived methods, including the integer clock and physical
     # supervisor. Their implementation/order is unchanged after the flush.
     for name in ('issue', 'advance_to', 'reset'):
@@ -94,8 +105,7 @@ def _initialize(host):
             try:
                 close()
             finally:
-                host.out.mkdir(parents=True, exist_ok=True)
-                (host.out/'camera-render.json').write_text(json.dumps(record, indent=2)+'\n')
+                write_receipt(host)
     host.close = finish
     return record
 
@@ -157,8 +167,15 @@ def install_adapter():
     from sim.solo_cyan_v106 import PhysicsBackend as Solo
     from sim.zone_s3_host import PhysicsBackend as Team
     previous = (Solo.capture, Team.capture)
+    previous_receipts = {cls: cls.__dict__.get('_camera_adapter_receipt') for cls in (Solo, Team)}
+    Solo._camera_adapter_receipt = Team._camera_adapter_receipt = True
     Solo.capture = lambda self: capture_robot_frames(self, (self.bundle['task']['robot_id'],))
     Team.capture = lambda self: capture_robot_frames(self, ('r1', 'r2', 'r3'))
     def undo():
         Solo.capture, Team.capture = previous
+        for cls, previous_receipt in previous_receipts.items():
+            if previous_receipt is None:
+                delattr(cls, '_camera_adapter_receipt')
+            else:
+                cls._camera_adapter_receipt = previous_receipt
     return undo

@@ -17,6 +17,8 @@
   seed55001의 초기 지도 작성 60SIM초 DEV 구간. 같은 명령/mapper,
   dev_light 및 원래 물리 실패 정지. libm_ulps_v1 자산 검증은 양쪽 동일.
 - 구현 archive SHA와 adapter SHA/실제 Python 지문을 별도로 기록한다.
+  송신 측 Git tree manifest의 SHA-256을 명령에 고정하고 실제 source/설정/지도/
+  asset의 Git blob 및 Python 파일 목록을 매 arm 앞뒤에 대조한다.
   adapter의 두 capture 메서드만 명시적으로 같은 공통 함수에 연결한다.
   하나의 구현 SHA에서 A=eager, B=lazy-v1 순서 **ABBA**, S3 다음 ego.
   각 arm 새 프로세스, LP_NUM_THREADS=4, OMP_NUM_THREADS=1, OSMesa.
@@ -24,6 +26,7 @@
   다른 작업 종료0회, 우선순위 변경0회. 서버 agent_lock과 각 arm loadavg
   1초 표본을 보존한다. 부하 판정은 인접 A/B 두 쌍과 A/B 집계 모두
   `abs(A-B) <= max(0.5, 0.25*min(A,B))`. 실패하면 절감률 null.
+  단독 arm은 실제 부모 PID와 살아 있는 공용 lease를 검증해야 시작한다.
 - 모든 명령·제어 원장·**소비 프레임을 포함한 전체 원본 JPEG/프레임 원장**을
   직접 바이트 비교한다. 원래 제어 JSON의 숫자/시각 필드를 정규화하지 않는다.
   wall/load/source/설정 출처 receipt는 행동 비교 밖에 별도 보존한다.
@@ -42,6 +45,12 @@
 새 bundle 번호/성공 판정은 발급하지 않고 기존 실험 adapter의 파생 진단으로
 구분한다. 렌더 비용은 구간 타이머, 전체 비용은 initialization 포함 wall/SIM이다.
 렌더 로그는 생성/소비/기록 강제 횟수를 기록한다. 원본 압축·삭제0회.
+기본 eager는 기존 bound method/체크포인트 객체 구조를 유지한다. lazy-v1의
+동기 wrapper는 이 진단의 새 실행에만 검증하며 checkpoint resume 경로는 미검증이다.
+Oracle 첫 archive는 oracle_run으로 전송했다. 후속 archive의 변하지 않은 파일은
+서버에서 읽기 전용 hardlink로 공유하고 바뀐 파일만 새 inode로 쓴 뒤 **모든 추적
+파일의 Git blob**을 검증하여 원자적으로 게시했다. 과거 archive를 수정하지 않는다.
+서버의 기존 Oracle adapter처럼 실행 전 2GiB 디스크 여유를 확인한다. raw는 삭제하지 않는다.
 
 ## 참고 자료
 

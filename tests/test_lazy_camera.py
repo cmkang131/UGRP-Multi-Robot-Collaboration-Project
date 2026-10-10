@@ -85,6 +85,7 @@ def test_default_is_legacy_eager_and_unknown_mode_fails(tmp_path, monkeypatch):
     host = Host(tmp_path)
     frames = capture_robot_frames(host, ('r1', 'r2'))
     assert isinstance(frames, dict) and host.rendered == [('r1', 0.), ('r2', 0.)]
+    assert not {'issue','advance_to','reset','close'} & vars(host).keys()
     host.close()
     monkeypatch.setenv('UGRP_CAMERA_RENDER', 'typo')
     with pytest.raises(ValueError): capture_robot_frames(Host(tmp_path), ('r1',))
@@ -118,3 +119,63 @@ def test_direct_bytes_do_not_normalize_control_ledger(tmp_path):
     assert equal_bytes(a,b)
     b.write_bytes(b'{"t":1.1}\n')
     assert not equal_bytes(a,b)
+
+
+def driver_args(monkeypatch, output, kind='abba'):
+    import sys
+    from scripts import benchmark_lazy_camera as probe
+    monkeypatch.setattr(probe, 'host_guard', lambda _: None)
+    monkeypatch.setattr(sys, 'argv', ['probe','--kind',kind,'--output',str(output),
+        '--expected-source-sha','a'*40,'--archive-manifest','unused',
+        '--archive-manifest-sha256','b'*64])
+    return probe
+
+
+def test_direct_arm_requires_live_parent_lease(tmp_path, monkeypatch):
+    from scripts import agent_lock
+    probe = driver_args(monkeypatch, tmp_path/'new', 's3')
+    monkeypatch.setattr(agent_lock, 'status', lambda _: None)
+    monkeypatch.setattr(probe, 'run_one', lambda _: pytest.fail('physics must not start'))
+    with pytest.raises(ValueError, match='LIVE_PARENT_LEASE'):
+        probe.main()
+
+
+def test_existing_output_never_acquires_lock_or_overwrites_receipt(tmp_path, monkeypatch):
+    from scripts import agent_lock
+    out = tmp_path/'old';out.mkdir();receipt=out/'lock.json';receipt.write_bytes(b'original')
+    probe = driver_args(monkeypatch, out)
+    monkeypatch.setattr(agent_lock, 'acquire', lambda *a, **k: pytest.fail('must not acquire'))
+    with pytest.raises(ValueError, match='PRESERVE_EXISTING'):
+        probe.main()
+    assert receipt.read_bytes() == b'original'
+
+
+def test_receipt_failure_still_releases_owned_lease(tmp_path, monkeypatch):
+    from scripts import agent_lock
+    probe = driver_args(monkeypatch, tmp_path/'new')
+    held = dict(owner='codex',pid=123,branch='codex/sim-speed-ctrl2',acquired_unix=1.)
+    released = []
+    monkeypatch.setattr(agent_lock, 'acquire', lambda *a, **k: held)
+    monkeypatch.setattr(agent_lock, 'status', lambda _: held)
+    monkeypatch.setattr(agent_lock, 'release', lambda *a, **k: released.append(k))
+    monkeypatch.setattr(probe, 'cohort', lambda _: 0)
+    def fail(*_): raise OSError('ENOSPC')
+    monkeypatch.setattr(probe, 'write', fail)
+    with pytest.raises(OSError, match='ENOSPC'):
+        probe.main()
+    assert released == [dict(owner='codex')]
+
+
+def test_commit_manifest_rejects_first_arm_source_mutation(tmp_path, monkeypatch):
+    import hashlib
+    from scripts import benchmark_lazy_camera as probe
+    source = 'a'*40;root=tmp_path/source;(root/'sim').mkdir(parents=True)
+    code=root/'sim/one.py';code.write_bytes(b'original\n')
+    blob=hashlib.sha1(b'blob 9\0original\n').hexdigest()
+    manifest=tmp_path/'manifest.json';manifest.write_text(json.dumps({'archives':{source:{'sim/one.py':blob}}}))
+    args=SimpleNamespace(archive_manifest=manifest,archive_manifest_sha256=probe.sha(manifest))
+    monkeypatch.setattr(probe,'ROOT',root)
+    probe.verify_archive(args,source)
+    code.write_bytes(b'modified\n')
+    with pytest.raises(ValueError,match='ARCHIVE_GIT_BLOB_CHANGED'):
+        probe.verify_archive(args,source)

@@ -52,6 +52,26 @@ def host_guard(expected):
         raise ValueError('FIXED_LP_NUM_THREADS_4_REQUIRED')
 
 
+def verify_archive(args, source):
+    """Compare a sender-pinned Git tree manifest to actual archive source bytes."""
+    if sha(args.archive_manifest) != args.archive_manifest_sha256:
+        raise ValueError('ARCHIVE_MANIFEST_CHANGED')
+    manifest = json.loads(args.archive_manifest.read_text())
+    files = manifest['archives'][source]
+    root = ROOT.parent/source
+    actual_python = {str(p.relative_to(root)) for folder in ('sim','harness','scripts')
+                     for p in (root/folder).rglob('*.py')}
+    expected_python = {p for p in files if p.endswith('.py') and p.split('/')[0] in ('sim','harness','scripts')}
+    if actual_python != expected_python:
+        raise ValueError('ARCHIVE_PYTHON_FILE_SET_CHANGED')
+    for name, blob in files.items():
+        path = root/name
+        data = os.readlink(path).encode() if path.is_symlink() else path.read_bytes()
+        digest = hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
+        if digest != blob: raise ValueError('ARCHIVE_GIT_BLOB_CHANGED:'+name)
+    return args.archive_manifest_sha256
+
+
 def run_one(args):
     from sim import lazy_camera  # our committed implementation before adapter routing
     # Ignore an adapter's old pyc files; no untracked cached code in the proof.
@@ -59,6 +79,8 @@ def run_one(args):
     sys.pycache_prefix = tempfile.mkdtemp(prefix='speedctrl3-pycache-')
     sys.dont_write_bytecode = True
     adapter = ROOT.parent/ADAPTERS[args.kind]
+    verify_archive(args, args.expected_source_sha)
+    verify_archive(args, ADAPTERS[args.kind])
     before = archive_fingerprint(adapter)
     for name in ('sim', 'harness', 'scripts'):
         package = importlib.import_module(name)
@@ -121,11 +143,18 @@ def run_one(args):
         for name, original in originals.items(): setattr(World, name, original)
         undo()
         unchanged = before == archive_fingerprint(adapter)
+        try:
+            verify_archive(args, args.expected_source_sha)
+            verify_archive(args, ADAPTERS[args.kind])
+        except Exception:
+            unchanged = False
+            failure = traceback.format_exc()
         sim = (result or {}).get('check_sim_s')
         if sim is None and result and result.get('total_sim_s') is not None:
             sim = result['total_sim_s']-result.get('start_sim_s', 0.)
         write(out/'measurement.json', dict(schema='ugrp.lazy_camera_measurement.v1',
             implementation_sha=args.expected_source_sha, adapter_sha=ADAPTERS[args.kind],
+            archive_manifest_sha256=args.archive_manifest_sha256,
             adapter_fingerprint=before, adapter_unchanged=unchanged,
             kind=args.kind, mode=args.render_mode, requested_sim_s=args.sim_s,
             sim_s=sim, wall_s=elapsed, wall_per_sim=elapsed/sim if sim else None,
@@ -177,7 +206,7 @@ def compare(paths, kind):
     load_ok = comparable(loads[0],loads[1]) and comparable(loads[3],loads[2]) and comparable(a_load,b_load)
     valid = all(r['adapter_unchanged'] and r['failure'] is None and r['sim_s'] == r['requested_sim_s']
                 and r['result_status'] in ('DEV_STAGE_FINISHED','RECORDED') for r in rows)
-    identities = ('implementation_sha','adapter_sha','adapter_fingerprint','source_module_sha256','environment')
+    identities = ('implementation_sha','adapter_sha','adapter_fingerprint','source_module_sha256','environment','archive_manifest_sha256')
     same_source = all(all(r[k] == rows[0][k] for r in rows) for k in identities)
     a = (rows[0]['wall_per_sim']+rows[3]['wall_per_sim'])/2
     b = (rows[1]['wall_per_sim']+rows[2]['wall_per_sim'])/2
@@ -190,7 +219,6 @@ def compare(paths, kind):
 
 
 def cohort(args):
-    args.output.mkdir(parents=True, exist_ok=False)
     results = []
     for kind in ('s3','ego'):
         paths = []
@@ -209,6 +237,9 @@ def cohort(args):
             path = args.output/f'{kind}-{i}-{mode}'; paths.append(path)
             cmd = [sys.executable, '-m', 'scripts.benchmark_lazy_camera', '--kind', kind,
                    '--output', str(path), '--render-mode', mode, '--sim-s', str(args.sim_s),
+                   '--parent-lease-pid', str(os.getpid()),
+                   '--archive-manifest', str(args.archive_manifest),
+                   '--archive-manifest-sha256', args.archive_manifest_sha256,
                    '--expected-source-sha', args.expected_source_sha]
             with (args.output/f'{kind}-{i}.log').open('x') as log:
                 from scripts.benchmark_controller_replay import run_owned_command
@@ -227,20 +258,35 @@ def main():
     p.add_argument('--output', type=Path, required=True); p.add_argument('--expected-source-sha', required=True)
     p.add_argument('--render-mode', choices=ORDER[:2], default='eager')
     p.add_argument('--sim-s', type=float, choices=(5.,60.), default=60.)
+    p.add_argument('--parent-lease-pid', type=int)
+    p.add_argument('--archive-manifest', type=Path, required=True)
+    p.add_argument('--archive-manifest-sha256', required=True)
     args = p.parse_args(); host_guard(args.expected_source_sha)
-    if args.kind != 'abba': return run_one(args)
+    if args.output.exists(): raise ValueError('PRESERVE_EXISTING_OUTPUT')
     from scripts import agent_lock
     lock_root = ROOT.parent.parent/'agent-locks'
+    if args.kind != 'abba':
+        held = agent_lock.status(lock_root)
+        if not (held and held['pid_alive'] and held['timing_sensitive'] and
+                held['owner'] == 'codex' and held['branch'] == 'codex/sim-speed-ctrl2' and
+                held['pid'] == args.parent_lease_pid == os.getppid()):
+            raise ValueError('LIVE_PARENT_LEASE_REQUIRED')
+        return run_one(args)
+    # Atomic admission before acquiring a lease; no finally may write into an
+    # existing run, even if a competing invocation races for the same path.
+    args.output.mkdir(parents=True, exist_ok=False)
     held = agent_lock.acquire(lock_root, owner='codex', branch='codex/sim-speed-ctrl2',
         purpose='speedctrl3 Oracle camera ABBA after S3 research', pid=os.getpid(),
         expected_minutes=90, timing_sensitive=True)
     try:
         return cohort(args)
     finally:
-        write(args.output/'lock.json', held)
-        current = agent_lock.status(lock_root)
-        if current and all(current[k] == held[k] for k in ('owner','pid','branch','acquired_unix')):
-            agent_lock.release(lock_root, owner='codex')
+        try:
+            write(args.output/'lock.json', held)
+        finally:
+            current = agent_lock.status(lock_root)
+            if current and all(current[k] == held[k] for k in ('owner','pid','branch','acquired_unix')):
+                agent_lock.release(lock_root, owner='codex')
 
 
 if __name__ == '__main__': raise SystemExit(main())
