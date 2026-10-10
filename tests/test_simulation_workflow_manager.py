@@ -299,6 +299,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-integer-carry-v167": ["--expected-source-sha", "0" * 40],
             "zone-s3-stage-origin-v170": ["--expected-source-sha", "0" * 40],
             "zone-s3-route-resume-v172": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
+            "zone-s3-full-route-v175": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
             "zone-s3-synchronized-start-v165": ["--expected-source-sha", "0" * 40],
             "zone-s3-capture-diagnostic-v160": ["--expected-source-sha", "0" * 40, "--kind", "capture"],
             "zone-s3-x86-trim-probe-v158": ["--expected-source-sha", "0" * 40, "--model", "/nonexistent/trim.json", "--model-sha256", "0" * 64],
