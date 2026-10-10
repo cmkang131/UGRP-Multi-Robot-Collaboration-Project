@@ -28,6 +28,11 @@ RBPF의 지도/입자 조상 연결은 유지한다. ESS와 고유값, 고유 �
 R1/R2/R3 순으로 결정한다. 일치하는 전체 covariance가 있는 자기 지도만 full NEES를 낸다.
 모두 탈락하면 smoke는 off. 본 자료로 하한/계수 재튜닝하지 않는다.
 
+재생 시작 전 계산 절약: B 네 개는 s3fix6의 봉인된 결과를 유지한다. 해당 소비 경로의
+바이트/AST 동일성을 검사하고, main 이후 차이는 재생에서 호출하지 않는 물리 backend의
+reset/close/write_receipt뿐임을 별도 AST로 증명한다. 추가 PF 옵션 off는 identity다.
+symlink와 원래 SHA/receipt를 남기며 새 실행이라고 세지 않는다. 후보12회만 새로 재생한다.
+
 ## 통합 수정과 단일 smoke
 
 문: 문 근처에서만 요청, 양쪽 동시 요청은 공개 팀 순서로 결정. 임대/진행 타임아웃은

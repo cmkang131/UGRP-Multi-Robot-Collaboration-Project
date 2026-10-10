@@ -24,7 +24,12 @@ def main():
     a.output.mkdir(parents=True,exist_ok=False)
     assert os.getpriority(os.PRIO_PROCESS,0)==0
     receipts=[]
-    for option in OPTIONS:
+    from baseline_equivalence import proof
+    retained=proof(ROOT,RAW/'s3fix6-20261010/replays-v4')
+    (a.output/'baseline-equivalence.json').write_text(json.dumps(retained,indent=2)+'\n')
+    for key,receipt in retained['receipts'].items():
+        (a.output/key).symlink_to(Path(receipt['path']).parent,target_is_directory=True)
+    for option in OPTIONS[1:]:
         for case,kind,raw in CASES:
             key=case+'-'+option
             deadline=time.monotonic()+12*3600

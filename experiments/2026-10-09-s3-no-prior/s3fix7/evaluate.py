@@ -55,6 +55,7 @@ def main():
     files=source_closure(Path.cwd(),['harness/zone_s3_consistent_runtime.py',
         'harness/pf_resampling_diversity.py'])
     value.update(source_sha=source,physics_runs=0,replay_receipts=receipts,
+        retained_baseline_proof=read(a.replays/'baseline-equivalence.json'),
         preregistration_sha256=sha(HERE/'README.md'),
         runtime_source_sha256={p:sha(Path(p)) for p in sorted(files)})
     with a.output.open('x') as f:f.write(json.dumps(value,indent=2,allow_nan=False)+'\n')
