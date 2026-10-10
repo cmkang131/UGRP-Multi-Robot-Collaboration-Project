@@ -1,0 +1,74 @@
+{
+  "status": "PREREGISTERED",
+  "research_result": false,
+  "source_sha": null,
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs",
+  "planned_jobs": 8,
+  "planned_cases": 32,
+  "judgment": null,
+  "initial_checks": null,
+  "diagnosis": {
+    "source": "s4grip2 stored r3 RGB; evaluation labels only",
+    "frames": 488,
+    "held_unknown": {
+      "n": 178,
+      "N": 336
+    },
+    "held_unknown_reasons": {
+      "ANCHOR_ACQUISITION": 16,
+      "ANCHOR_UNOBSERVABLE": 162
+    },
+    "roi_zero_unknown": 170,
+    "persistent_unknown_body": "no strong cyan; full-frame120px live at top y14..36, not foreground evidence",
+    "size_check": {
+      "roi_grid_shape": [
+        102,
+        128
+      ],
+      "old_min_grid_pixels": 261.12,
+      "native_equivalent_pixels": 4177.92,
+      "visible_foreground_native_range": [
+        25190,
+        53785
+      ],
+      "box_task_size_m": [
+        0.034,
+        0.04,
+        0.032
+      ]
+    },
+    "shadow_check": {
+      "blank_body_soft_largest_component": 56,
+      "visible_soft_largest_component_min": 26041,
+      "blank_bluegray_body_fraction": 0.9324,
+      "blank_dark_cyan_body_pixels_range": [
+        361,
+        372
+      ],
+      "conclusion": "shadow relaxation finds only tiny background/border components; self occlusion versus outside-FOV remains unlocalized from RGB"
+    },
+    "frame_table": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4grip3-offline/frame-diagnosis.jsonl",
+      "sha256": "660a99c028036f3c97cf60b64695b8ca7132b599a4642fa81e8ce503df746123"
+    },
+    "research_result": false
+  },
+  "tests": {
+    "related_files": 3,
+    "initial": {
+      "passed": 34,
+      "failed": 1,
+      "reason": "reobserve fixture omitted0.6..1.2s frames; FRAME_GAP correctly returned unknown"
+    },
+    "final_candidate": {
+      "passed": 7,
+      "failed": 0
+    },
+    "sha256": {
+      "pytest.xml": "a7fc48521da29e06c910427895bedcdbcefcc010ae76964190bb476b40fac906",
+      "pytest-candidate.xml": "6db2f55c9fe1da9605e3d9e5aee67a22b4616cf3570f9d357e38b4ef629d76d9"
+    }
+  },
+  "model_calls": 0,
+  "tensorboard": "skipped DEV per #426"
+}

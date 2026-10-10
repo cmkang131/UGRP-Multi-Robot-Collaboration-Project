@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s4-grip-r3-v165",
+      "version": "7.58.0",
+      "purpose": "Cyan-only own RGB candidates, frozen beam, matched hold/loss",
+      "entry": "scripts/run_s4_grip_r3.py",
+      "runner": "scripts.run_s4_grip_r3",
+      "docs": "experiments/2026-10-06-s4-llm/s4grip3/README.md",
+      "requires": "committed Oracle x86 OSMesa archive; LP_NUM_THREADS=4; at most10 jobs; early liveness check",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--job"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}
