@@ -3,6 +3,7 @@ import copy
 from dataclasses import dataclass
 from functools import lru_cache
 import json
+import math
 from harness import s4_pair_stage as base
 from harness import s4_pair_handshake as hs
 from harness.zone_final_pair_binding import bind
@@ -46,12 +47,39 @@ class Handshake(hs.Handshake):
         if row['accepted'] and action['choice']=='go':
             rnd = self.rounds[action['epoch']]
             rnd['go_at'][rid] = row['at']
-            if set(rnd['go_at'])==set(hs.PAIR) and rnd['ack_opened'] is None:
+            if (set(rnd['go_at'])==set(hs.PAIR) and rnd['ack_opened'] is None
+                    and row['at'] < min(self.own[r]['opened']+hs.HANDSHAKE_S for r in hs.PAIR)):
                 rnd['ack_opened'] = max(rnd['go_at'].values())
         return row
 
     def renew_carry(self, rid, action, *, seen, **kwargs):
         original_phase = seen.get('phase'); own = self.own.get(rid)
+        if (self.epoch_reconnect and self.carry_lease_renewal in hs.PHASE_RENEWALS
+                and own and not own['committed'] and original_phase=='wait_go'):
+            request, now, frame = (kwargs[k] for k in ('requested_at','now','frame_t'))
+            kind=action.get('kind')
+            valid=bool(not self.failure and rid not in self.completed and own['ack']
+                and seen.get('own_ack_sent') and seen.get('epoch')==own['epoch']
+                and isinstance(seen.get('own_executor_phase'),str)
+                and seen['own_executor_phase'] not in ('done','failed','aborted','idle')
+                and (kind=='continue' or kind=='pair_decision' and action.get('choice')=='held'
+                    and action.get('epoch')==own['epoch'])
+                and 'own_rgb' in kwargs['decision_sources']
+                and all(math.isfinite(t) for t in (request,now,frame))
+                and own['opened']<=frame<=request<=now<self.deadline(rid)
+                and now-frame<hs.WINDOW_S
+                and isinstance(kwargs['frame_sha256'],str) and len(kwargs['frame_sha256'])==64
+                and all(c in '0123456789abcdef' for c in kwargs['frame_sha256'])
+                and kwargs['call_id'] and not any(r['call_id']==kwargs['call_id'] for r in self.renewals))
+            if valid:
+                previous=own['last_response_at'];own['last_response_at']=now
+                row=dict(robot_id=rid,call_id=kwargs['call_id'],action=copy.deepcopy(action),at=now,
+                    requested_at=request,frame_t=frame,frame_sha256=kwargs['frame_sha256'],epoch=own['epoch'],
+                    command_accepted=kwargs['command_accepted'],mode=self.carry_lease_renewal,
+                    own_executor_phase=seen.get('own_executor_phase'),decision_sources=list(kwargs['decision_sources']),
+                    grasp_success_claim=False,previous_response_at=previous,accepted=True,reason=None,
+                    captured_phase=original_phase,pending_epoch_heartbeat=True,same_epoch_rebind=False)
+                self.renewals.append(row);self.reconnections.append(copy.deepcopy(row));return row
         rebind = bool(self.epoch_reconnect and own and own['committed']
             and seen.get('epoch')==own['epoch'] and original_phase=='wait_go'
             and seen.get('own_ack_sent'))

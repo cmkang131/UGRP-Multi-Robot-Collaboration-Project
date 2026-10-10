@@ -132,3 +132,26 @@ def test_current_go_example_passes_real_condition_schema(tmp_path,setup_data,mon
         order_ids=b.order_ids(),item_ids=b.item_ids(),roles_by_order=b.roles_by_order(),vocabulary=b.vocabulary(),
         passages=b.passages(),location_refs=b.location_refs(),robots=ep.base.si.ROBOTS)
     assert checked['action']['choice']=='go' and bool(checked['messages'])==(condition!='no_comm')
+
+
+@pytest.mark.parametrize('enabled',[False,True])
+def test_own_ack_wait_heartbeat_refreshes_liveness_without_permit_or_deadline_extension(enabled):
+    h=opened(rounds=True,reconnect=enabled)
+    for r in ep.hs.PAIR:vote(h,r,'go',1.,2.)
+    vote(h,'r1','ack_go',3.,4.,'go-r2');seen=h.view('r1',4.);seen['own_executor_phase']='wait_carry'
+    deadline=h.deadline('r1')
+    row=h.renew_carry('r1',fixture.action('held'),call_id='waiting',command_accepted=False,
+        decision_sources=['own_rgb'],requested_at=4.,now=5.,frame_t=4.,frame_sha256='a'*64,seen=seen)
+    assert row['accepted']==enabled and h.deadline('r1')==deadline
+    assert not h.tick(5.) and not h.allowed('r1',0) and not h.permits
+    assert not h.renew_carry('r1',{'kind':'continue'},call_id='expired-wait',command_accepted=False,
+        decision_sources=['own_rgb'],requested_at=deadline-1,now=deadline,frame_t=deadline-1,
+        frame_sha256='a'*64,seen=seen)['accepted']
+
+
+def test_second_go_cannot_resurrect_other_endpoint_expired_same_tick():
+    h=opened(rounds=True);h.own['r2']['opened']=5.
+    assert vote(h,'r1','go',17.,18.)['accepted']
+    assert vote(h,'r2','go',19.,20.)['accepted']
+    assert h.rounds[0]['ack_opened'] is None
+    assert not h.tick(20.) and h.failure=='PAIR_GO_TIMEOUT' and not h.permits
