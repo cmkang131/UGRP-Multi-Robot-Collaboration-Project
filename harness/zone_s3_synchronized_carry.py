@@ -15,7 +15,7 @@ PLAN_OPTION='joint_pan_v1'
 PARAMS=dict(pulse_source='configs/s2_v133_full_template.json loaded pulse calibration',
     axial_u=.35,axial_s=.10,axial_period_s=.20,lateral_u=.65,lateral_s=.65,
     lateral_period_s=.80,leader='static object route; same consumed two-party GO',
-    goal_tolerance_m=.02,runtime_gt=False,force_feedback=False,heading_turns=False)
+    go_ack_settle_s=.20,goal_tolerance_m=.02,runtime_gt=False,force_feedback=False,heading_turns=False)
 
 
 def joint_plan(grip,heading,rid):
@@ -60,15 +60,16 @@ def pulse_schedule(ctl,t0,profiles):
            if v['loaded'] and v['axis']==axis and abs(v['u'])==u and v['duration_s']==duration]
     step=min(steps);count=math.ceil(distance/step)
     command=dict(forward=0.,left=0.,turn=0.);command[axis]=sign*u
-    schedule=[(t0+i*period,t0+i*period+duration,dict(command)) for i in range(count)]
+    start=t0+PARAMS['go_ack_settle_s']
+    schedule=[(start+i*period,start+i*period+duration,dict(command)) for i in range(count)]
     # Final settle is a zero interval; the old carry monitor/barrier remains.
-    schedule.append((t0+count*period,t0+count*period+.1,dict(forward=0.,left=0.,turn=0.)))
+    schedule.append((start+count*period,start+count*period+.1,dict(forward=0.,left=0.,turn=0.)))
     ctl.claims.setdefault('segments',[]).append(dict(seg=ctl.seg,axis=axis,distance_m=distance,
         static_from_xy=list(a),static_to_xy=list(b),cmd=command,pulses=count,
         calibrated_step_m=step,nominal_distance_m=count*step,option=OPTION))
     ctl.log(ctl.rid,'synchronized_carry_plan',t0,seg=ctl.seg,cmd=command,duration_s=duration,
         period_s=period,pulses=count,distance_m=distance,calibrated_step_m=step,
-        common_clock='consumed carry GO',runtime_gt=False)
+        common_clock='consumed carry GO + two control ticks for carry heartbeat',go_ack_settle_s=PARAMS['go_ack_settle_s'],runtime_gt=False)
     return schedule,duration
 
 

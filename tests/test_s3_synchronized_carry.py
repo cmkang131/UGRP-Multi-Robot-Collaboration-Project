@@ -57,6 +57,7 @@ def test_actual_pair_port_contract_and_go_guard(tmp_path,monkeypatch):
             cmd=ctl.schedule[0][2]
             ctl.port.apply(dict(kind='mecanum',**cmd,duration_s=.15),10.)
             issued=p.drain(ep,10.)
+            assert ctl.schedule[0][0]==pytest.approx(10.2)
             assert issued[-1]['duration_s']==.1 and abs(issued[-1]['forward'])==.35
             assert any(abs(x)==.35 for x in p.robots[rid].motors)
             p.host.ports[rid].tick(10.1)
@@ -74,3 +75,35 @@ def test_manifest_and_defaults():
     b=bundle('0'*40,'pair',0)
     assert b['synchronized_carry']['option']=='off' and b['joint_pan']=='off'
     assert len(commands(json.loads(PLAN.read_text()),'0'*40))==10
+
+
+def test_outer_ticks_publish_carry_before_first_pulse(tmp_path,monkeypatch):
+    from scripts.run_m2_pair import M2Student
+    from sim.s3_synchronized_carry import CarryPulsePort
+    from harness.zone_s3_coupled_motion import authorized
+    p=fixture(tmp_path,monkeypatch)
+    try:
+        for rid,ep in p.eps.items():
+            attach(ep,OPTION);ctl=ep.controller
+            p.issue(rid,dict(kind='arm',servo_id=1,pulse=1500),9.)
+            ctl.state='carry';ctl.seg=0;ctl.schedule=ctl.door_schedule(10.)
+            ctl.next_look=float('inf');ep.status.grant=('carry_go_0',10.)
+            ep.own.pose.localizer.pose.provider.loc._pf.load.loaded=True # synthetic commanded-grasp checkpoint
+            ep.status.tick('carry_go_0',10.05) # benign GO heartbeat overwrites its original stamp
+            p.host.ports[rid]=CarryPulsePort(p.host.world,rid,coupled=lambda:True,
+                allow_reverse=True,allow_mecanum=True,min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1')
+        assert not authorized(p.eps['r1'],10.1) # real previous failure before peer carry publication
+        for t in (10.1,10.2):
+            p.refresh(t)
+            for rid,ep in p.eps.items():
+                M2Student.tick(ep.controller,t)
+                issued=p.drain(ep,t)
+                moving=[a for a in issued if a.get('kind')=='mecanum' and a.get('forward')]
+                if t==10.1:assert not moving
+                else:
+                    assert authorized(ep,t), (ep.status.channel.partner_view(rid,t),ep.status.grant,ctl.state)
+                    assert len(moving)==1 and moving[0]['duration_s']==.1
+        # The fix is a shared start delay, not relaxed authorization.
+        p.eps['r2'].status.tick('abort',10.3)
+        assert not authorized(p.eps['r1'],10.3)
+    finally:p.runtime.close()

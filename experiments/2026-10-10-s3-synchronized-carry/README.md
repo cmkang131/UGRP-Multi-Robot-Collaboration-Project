@@ -78,3 +78,32 @@ Local pre-execution validation:22 relevant tests passed across3 changed/dependen
 |s3fix16-pair-c5-r1|0.266|0.460/0.841|0.416/0.663|201/201 each|94/94,0|
 
 Every case:59 neutral+35 matched nonzero ticks, mirrored ±0.043618/150ms, no one-sided wait. Wheel/chassis path proxies are both sub-mm to8mm; no evidence of substantial powered wheel spin/slip. This carry-only window differs from the older4–8mm excursion over all lifted samples after carry entry (includes refix/lowering). Both fingers contact the lifted beam in201/201 samples per robot. The v7 relay generates0 source motor torque for input0.043618 after the neutral reset; this is a command-side model fact, not a measured force. **Exact contact forces were not recorded in v162** (no qvel/ctrl/constraint forces): not reconstructable from qpos alone. New eval-only force recording addresses that evidence gap; controller receives none. c3 never entered carry. [Full numerical audit](previous-carry-diagnosis.json).
+
+## r1 completed, integration bug / r2 preregistration BEFORE r2 physics
+
+r1 source03029adb, all ten finished before inspecting/tuning. Raw scored
+alignment/grasp/lift10/10, carry/target4/10(cyan4/4), **HOST_ERROR6/10(pair)**.
+No pair pulse reached the motor: the first carry tick tried to drive before the
+peer's carry enum publication. Example c0: both consumed `carry_go_0`29.1;
+benign heartbeat repeated it29.15; first r1 pulse29.2; the unchanged inner
+validator requires the latest grant stamp==29.1, and rejects29.15. This error
+was hidden by v162's six-second neutral prefix; direct apply test had not tested
+loaded authorization through both outer publisher ticks. Raw/failures preserved.
+
+Small **v165 / workflow7.58.0** correction: first pulse begins **GO+0.20s**,
+allowing two normal100ms controller ticks to publish live carry status at both
+ends. No validator relaxation or invented GO, peer pose, pulse size, gain,
+threshold, seed, target criterion, or number of pulses changes. Regression uses
+actual M2 outer publisher/carry ticks, loaded command-state fixture, motor stub
+apply/expiry, then live peer abort rejection. Initial bad repeated-GO stamp is
+explicitly rejected; motion begins only after both carry enum publications.
+
+A NEW frozen ten-case round `batch-plan-r2.json` is submitted simultaneously,
+same conditions/flags/seeds/caps. r1 and r2 denominators are kept separate;
+r1 failures cannot be discarded or relabelled. No per-case retry/adaptation.
+Optional pathcheck was already performed in r1 (5SIM, HOST_ERROR0), no extra
+single physics case is added. r2 uses `scripts.run_s3_synchronized_start` and
+`python -m scripts.run_s3_synchronized_start_cohort --expected-source-sha SHA --output outputs/s3fix17-batch-r2/cohort --execute`.
+Results of r2 are pending at this registration; same original outcomes.
+
+R2 preflight:6 synchronized carry regressions passed (23 unique relevant tests including prior17 unchanged regressions); catalog dry plan verified forv164, v165 follows same adapter. v165 is next after main/open heads maximum164. r1 score source719c9744 (documentation-only descendant of03029adb) and [all10 results](results-r1.json) are preserved. No new physics pathcheck.
