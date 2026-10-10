@@ -50,6 +50,8 @@ def test_actual_s4_prepare_has_only_own_image_and_sources(tmp_path,setup_data,mo
     trial=host.trial
     assert trial.map_png is None and trial.static_map is None
     assert trial.sheet==own.TASK
+    assert trial.study_config()['fixed_roles']['r3']=='idle'
+    assert trial.study_config()['stage1_only']
     # Poison every old fallback, including LLM stop estimates from static PF.
     monkeypatch.setattr(s4.zi.IntegratedTrial,'snapshot',lambda *a:pytest.fail('legacy snapshot'))
     monkeypatch.setattr(s4.zi.IntegratedTrial,'build_inputs',lambda *a,**k:pytest.fail('legacy payload'))
@@ -144,6 +146,10 @@ def test_new_map_only_B_floor_and_scenario():
     assert len(scenario['orders'])==len(scenario['eval']['setup']['placements'])==1
     assert scenario['eval']['setup']['placements'][0]['pose_m']==[1.275,.05,0.]
     assert validate(scenario).ok
+    from sim.zone_scenario_scene import ScenarioFinalV3Scene
+    scene=ScenarioFinalV3Scene.from_scenario('e2e_one_beam_ownmap',61001)
+    assert len(scene.cargo)==1 and scene.cargo[0].item_id=='beam_1'
+    assert scene.config['setup_only']['spawns']==scenario['eval']['setup']['robot_spawns']
     with pytest.raises(ValueError,match='STATIC_PROVIDER_FORBIDDEN'):provider_spec(MAP_ID)
 
 
@@ -157,3 +163,28 @@ def test_payload_mutation_and_window_injection_rejected():
     with pytest.raises(ContractViolation):own.build_request(bundled,window={'eval':{'success':True}})
     bundled.data['own_map']['pose']['mean']=[4.6,-2.1,0.]
     with pytest.raises(ContractViolation,match='MUTATED'):own.build_request(bundled)
+
+
+@pytest.mark.parametrize('fault',[None,'unreceived','future','world_transform'])
+def test_r2_received_B_route_uses_RGB_beam_alignment_only(fault):
+    from harness.zone_final_pair_skill import make_plan
+    remote,refs=route();mapped,local_refs,_=state('r2');mapped['goal']=None
+    report=dict(schema='ugrp.e2e_peer_route.v1',sender='r1',recipient='r2',message_id='m1',route=remote,
+        beam_alignment=dict(beam_ref='shared_visual_beam',own_rgb=local_refs[0],peer_rgb=refs[0],
+            own_beam_pose=[1.,.1,0.],peer_beam_pose=[.3,.2,0.],
+            covariance=[[.01,0.,0.],[0.,.01,0.],[0.,0.,.01]]))
+    if fault=='world_transform':report['beam_alignment']['world_alignment']=[4.6,-2.1]
+    received={'m1':dict(report_sha256=digest(report),delivered_at_sim_s=1.)}
+    if fault=='unreceived':received={}
+    if fault=='future':received['m1']['delivered_at_sim_s']=2.
+    def invoke():
+        return make_plan(None,None,None,e2e_own_inputs_v1='on_v1',peer_report=report,
+            own_map=mapped,robot_id='r2',now=1.,observed_rgb=local_refs,received_reports=received)
+    if fault:
+        with pytest.raises(ContractViolation):invoke()
+    else:
+        result=invoke();own.scan(result)
+        assert result['provider']['goal'] is None
+        assert result['planner']['peer_report']['route']['B_rgb_sources'][0]['robot_id']=='r1'
+        assert result['planner']['waypoints']==[[.7,-.1],[1.2,-.1]]
+        assert result['transport_admitted'] is False

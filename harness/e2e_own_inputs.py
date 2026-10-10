@@ -186,6 +186,55 @@ def s3_inputs(route, *, rid, now, observed):
             'provider': copy.deepcopy(route['own_map']), 'transport_admitted': False}
 
 
+def peer_s3_inputs(report, *, own_map, rid, now, observed, received_reports):
+    """r2 may use r1's B report without claiming it saw B itself.
+
+    The receive adapter pins the complete decoded report hash at delivery.
+    Alignment is computed ONLY from two RGB estimates of the same beam, each
+    in its own start frame; a host/world transform cannot enter this schema.
+    """
+    closed(report, ('schema','sender','recipient','message_id','route','beam_alignment'), 'PEER_ROUTE')
+    if report['schema'] != 'ugrp.e2e_peer_route.v1' or report['sender'] != 'r1' or report['recipient'] != rid or rid != 'r2':
+        raise ContractViolation('R1_TO_R2_RECEIVED_ROUTE_REQUIRED')
+    receipt = received_reports.get(report['message_id'])
+    closed(receipt, ('report_sha256','delivered_at_sim_s'), 'PEER_ROUTE_RECEIPT')
+    if (receipt['report_sha256'] != digest(report) or type(receipt['delivered_at_sim_s']) not in (int,float)
+            or not 0 <= receipt['delivered_at_sim_s'] <= now):
+        raise ContractViolation('RECEIVED_REPORT_BYTES_AND_TIME_REQUIRED')
+    local = validate_map(own_map, rid, now, observed)
+    alignment = report['beam_alignment']
+    closed(alignment, ('beam_ref','own_rgb','peer_rgb','own_beam_pose','peer_beam_pose','covariance'), 'BEAM_ALIGNMENT')
+    if alignment['beam_ref'] != 'shared_visual_beam':
+        raise ContractViolation('COMMON_VISUAL_BEAM_REQUIRED')
+    rgb_ref(alignment['own_rgb'],rid,now,observed)
+    # These are received SOURCE REFERENCES, never a peer image attachment.
+    peer = report['route']
+    peer_refs = peer['own_map']['sources']
+    remote = validate_route(peer,'r1',receipt['delivered_at_sim_s'],peer_refs)
+    rgb_ref(alignment['peer_rgb'],'r1',receipt['delivered_at_sim_s'],peer_refs)
+    for key in ('own_beam_pose','peer_beam_pose'): numbers(alignment[key],3,'RGB_BEAM_POSE')
+    covariance = alignment['covariance']
+    if not isinstance(covariance,list) or len(covariance)!=3:
+        raise ContractViolation('BEAM_ALIGNMENT_COVARIANCE_REQUIRED')
+    for row in covariance:numbers(row,3,'BEAM_COVARIANCE')
+    import numpy as np
+    cov=np.asarray(covariance)
+    if not np.allclose(cov,cov.T) or np.linalg.eigvalsh(cov).min() < -1e-10:
+        raise ContractViolation('BEAM_ALIGNMENT_COVARIANCE_REQUIRED')
+    ax,ay,atheta=alignment['own_beam_pose'];bx,by,btheta=alignment['peer_beam_pose']
+    theta=math.atan2(math.sin(atheta-btheta),math.cos(atheta-btheta))
+    c,s=math.cos(theta),math.sin(theta)
+    translation=[ax-c*bx+s*by,ay-s*bx-c*by]
+    waypoints=[[translation[0]+c*x-s*y,translation[1]+s*x+c*y] for x,y in remote['waypoints']]
+    result={'schema':SCHEMA,'planner':{'frame':rid+'/own_start','waypoints':waypoints,
+        'received_route_hash':remote['route_hash'],'peer_report':copy.deepcopy(report),
+        'peer_to_own_from_rgb_beam':{'translation':translation,'yaw':theta,'covariance':copy.deepcopy(covariance)}},
+        'guard':{'frame':local['frame'],'walls':copy.deepcopy(local['walls']),'pose':copy.deepcopy(local['pose'])},
+        'provider':local,'transport_admitted':False}
+    scan(result)
+    return result
+
+
 @dataclass(frozen=True)
 class Inputs:
     """S4 parser/ledger compatible input; only the own wrist image is attached."""

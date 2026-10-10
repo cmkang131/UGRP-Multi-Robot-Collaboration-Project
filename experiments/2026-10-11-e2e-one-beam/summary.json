@@ -7,14 +7,14 @@
   "past_success_inherited": false,
   "input_toggle": "e2e_own_inputs_v1=off (opt-in on_v1)",
   "tests": {
-    "passed": 75,
-    "total": 75,
+    "passed": 79,
+    "total": 79,
     "scope": [
       "tests/test_e2e_own_inputs.py",
       "tests/test_pair_llm_s4_host.py",
       "tests/test_zone_scenario_scene.py"
     ],
-    "final_log": "/Users/changmin/projects/ugrp/outputs/e2e1-contract-checks/pytest-parser-75.log"
+    "final_log": "/Users/changmin/projects/ugrp/outputs/e2e1-contract-checks/pytest-peer-79.log"
   },
   "first_frame": {
     "passed": 0,
@@ -27,13 +27,18 @@
     ],
     "seed": 61001,
     "status": "LOAD_ADMISSION_WAIT",
-    "loadavg_last": 77.44
+    "loadavg_last": 72.77
   },
   "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-contract-checks",
   "sha256": {
     "pytest-75.log": "ca9ecb967a9b29ee2792c3d6124043d26b2bdde26dbaa532675797ba5435217f",
     "pytest-parser-75.log": "e68db32a6c811ebe69ff2d2b84f925bf15d055b754a4115d255fcb23efe5591f",
-    "pytest-final.log": "d6d5c7ae47274248a7236d4e37c6f178049c0f49a601d06a8053d5aedcc797d3"
+    "pytest-metadata-75.log": "a93876676e394f4a8a20a3a964980199f7ce1b522d78424b0f2256dac9a31e47",
+    "pytest-final.log": "d6d5c7ae47274248a7236d4e37c6f178049c0f49a601d06a8053d5aedcc797d3",
+    "ci-shard3-114280280576.log": "45c48c0c076d9093d630764d39c6a34b76affb1048fc31bc09413a6619c8a04f",
+    "pytest-peer-79.log": "06cf5613a74c6d3339a993aff95d5d090cefaf4648b6634aadc67cf4b6afbb3c",
+    "ci-runtime-114280280596.log": "3f70cc0b25c828205285383c0d90a0437009aa873d3583750fd673b1531f01fe",
+    "ci-common-114280280535.log": "e89e8df1cc1326721850a2365affaa0d6feb411509dc9dff28d44fb4a07e8142"
   },
   "remaining": [
     "x86 first RGB rendering and retrieval",
@@ -47,5 +52,28 @@
     "version": "7.68.0",
     "max_seen_before_registration": "7.67.0",
     "new_runnable_bundle_registered": false
+  },
+  "source_sha_for_first_frame": "15e81387134208b9fff31d460e220521d445dac8",
+  "CI": {
+    "run_id": 38075055605,
+    "status": "FAILED",
+    "scope": "combined_dependency_tree",
+    "blockers": [
+      {
+        "job": "offline-regression-checks",
+        "cause": "duration table coverage 551/627 <90%; before e2e1 551/626 <90%",
+        "introduced_by_e2e1": false
+      },
+      {
+        "job": "offline-regression-shard (3/8)",
+        "cause": "existing S4 runner import requires mujoco in offline CI; relevant paths unchanged from dependency merge",
+        "introduced_by_e2e1": false
+      },
+      {
+        "job": "ubuntu-simulation-runtime",
+        "cause": "six historical v127/v128 frozen source/calibration refusal expectation failures; e2e1 did not edit compared files",
+        "introduced_by_e2e1": false
+      }
+    ]
   }
 }

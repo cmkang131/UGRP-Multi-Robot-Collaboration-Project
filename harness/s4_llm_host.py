@@ -290,6 +290,11 @@ class Trial(zi.IntegratedTrial):
                    prompt_version=inputs.PROMPT_VERSION, fixed_roles={'r1': 'end_neg', 'r2': 'end_pos', 'r3': 'west'},
                    stop_decisions=pair.decisions.record(), input_billing=pair.billing.record(),
                    runnable=False, physical_verified=False)
+        if self.own_input_mode:
+            from harness.e2e_own_inputs import SCHEMA, TASK
+            row.update(e2e_own_inputs_v1=self.e2e_own_inputs_v1, input_schema=SCHEMA,
+                       fixed_roles=dict(TASK['fixed_roles']), input_scope='own_rgb_own_map_peer_report',
+                       stage1_only=True, transport_admitted=False)
         return row
 
 

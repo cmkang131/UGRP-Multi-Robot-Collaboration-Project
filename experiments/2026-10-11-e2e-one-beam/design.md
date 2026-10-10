@@ -8,6 +8,8 @@
 
 `OwnRoute`는 robot_id·frame_id·map_version·자기 지도(pose/covariance 포함)·B RGB 출처·waypoints·route_hash를 갖는다. planner·guard·provider 입력은 동일한 검증된 자기 스냅샷에서만 나온다. `zone_final_pair_skill.make_plan(..., on_v1)`은 정적 map/sheet를 전혀 읽지 않고 이 계약을 반환한다. 단순 정적 route overlay 및 기존 S3 Runtime의 정적 planner/guard/provider 구성은 ON에서 거부한다. `transport_admitted=false`이며 이 계약을 실제 기존 펄스/수명 루프에 적용하는 일은 3단계다. S4 ON의 `continue` 이외 실행 action은 `E2E_STAGE1_MOTION_NOT_CONNECTED`로 차단된다. 이 차단을 운반 성공 또는 연결 완료로 보고하지 않는다.
 
+`PeerRoute`는 r2의 B 직접 관측을 요구하지 않는다. 수신 어댑터가 고정한 보고 전체 해시·실제 배달 시각을 확인하고 r1의 B 출처를 peer_report로 유지한다. 두 로봇의 자기 RGB에서 얻은 동일 빔 pose 두 개로만 peer→own 변환을 계산하며 spawn/world transform 필드는 거부한다. r2 provider·guard는 r2 자기 지도이며, r2 goal이 unknown인 상태를 보존한다. 이 수신 어댑터를 실제 S4 채널에 연결하는 것은 4단계이고 현재 운반 허가는 계속 false다.
+
 `Agreement`는 실제 수신 proposal ID·route_hash와 r2 모델 승인 응답 ID의 일치를 요구한다. `(order_id, route_hash, grip_epoch, seg)`에 양쪽 GO와 ACK이 모두 있어야 ready다. 새 epoch/seg는 이전 투표를 지우며 과거 epoch/다른 해시/미수신 승인·미확인 모델 응답을 거부한다. 이 상태를 실제 claim·heartbeat·재집기·최종 내려놓기까지 연결하는 일은 4단계다. 호스트 spawn 좌표로 두 자기 지도를 맞추지 않으며, 향후 같은 빔의 자기 RGB에서 얻은 변환과 수신 `peer_report`를 별도 출처로 다룬다.
 
 새 `e2e_one_beam_ownmap`은 0.60m·300g 빔 1개, r1/r2, r3 idle, 숨은 사건 없음이다. `zone_wide_door_e2e_b80_v1`은 원래 `zone_wide_door_geometry_v3`에서 B 바닥 half extent x만 .30→.40m(전체 .80×1.40m), map ID/version만 변경했다. 중심과 전체 벽·물리·카메라·weld OFF를 보존한다. 무회전 빔의 동서 착지 여유는 `(0.80−0.60)/2=0.10m`다. 평가 전용 시작 `(1.275,.05)`과 B 중심 `(4.6,−2.1)` 사이 축 경로 길이는 `3.325+2.15=5.475m`이며 실행 경로로 제공하지 않는다. 새 맵의 기존 정적 위치 제공자는 거부하고 calibration은 `UNMEASURED_NEW_MAP`으로 표시한다.
