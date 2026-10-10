@@ -71,7 +71,9 @@ def run(b, out):
     original_environment = previous.environment_record
     def environment_record():
         return {**original_environment(), 'host': 'oracle-a1', 'MUJOCO_GL': os.environ['MUJOCO_GL'],
-            'machine': platform.machine(), 'concurrent_probe_limit': 3,
+            'machine': platform.machine(), 'logical_cpus': os.cpu_count(),
+            'physical_memory_bytes': os.sysconf('SC_PAGE_SIZE')*os.sysconf('SC_PHYS_PAGES'),
+            'concurrent_probe_limit': 3,
             'source_mode': 'oracle_run committed git archive; no local Mac execution'}
     result = bind(previous.run, setup_record=setup_record, enter_pair=enter_pair,
         environment_record=environment_record)(b, out, backend_factory=StageBackend)
