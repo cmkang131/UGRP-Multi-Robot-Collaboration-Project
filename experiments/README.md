@@ -1,3 +1,4 @@
+- [2026-10-10 S3 공동 운반 동기 펄스 v164](2026-10-10-s3-synchronized-carry/README.md): v162 raw 운반 정체 분해, 기본 off 공동 GO·기존35/100ms 펄스와 c3 팔 공동 허용 영역, x86 10조건 사전 등록.
 # 실험 인덱스
 - [2026-10-10 S3 정렬 소유권·끝점 v162](2026-10-10-s3-alignment-ownership/README.md): 기본 off A/B/C, x86 10조건 정렬·집기·상승9/10·실제 운반4/10; pair 운반0/6·c3 정렬 잔여, raw/TensorBoard 검증.
 

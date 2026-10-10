@@ -110,8 +110,9 @@ def yaw_calibration(calibration, pan):
 
 
 class Servo:
-    def __init__(self, rid, profiles, refinements=Options()):
+    def __init__(self, rid, profiles, refinements=Options(), planner=None):
         self.refinements = refinements
+        self.planner = planner or plan
         self.rid, self.profiles = rid, profiles
         self.gate = SettleGate()
         self.last_frame = None
@@ -126,12 +127,12 @@ class Servo:
 
     def proposal(self, grip, heading):
         if self.refinements.coarse_axis_ownership:
-            return one_step(self,grip,heading,plan)
-        p = plan(grip, heading, self.rid)
+            return one_step(self,grip,heading,self.planner)
+        p = self.planner(grip, heading, self.rid)
         if p['ready']:
             return None, p
         def score(g, h):
-            q = plan(g, h, self.rid)
+            q = self.planner(g, h, self.rid)
             return sum(max(abs(e)/t-1., 0.)**2 for e, t in zip(q['errors'], q['halfwidths']))
         # Receding three-pulse enumeration resolves coupled yaw/position geometry;
         # issue just the first existing single-axis pulse, then settle/reobserve.
@@ -186,7 +187,7 @@ class Servo:
         return ('ready', current) if self.streak >= 2 else ('wait', None)
 
 
-def attach_endpoint(ep, option='off', *, refinements=Options()):
+def attach_endpoint(ep, option='off', *, refinements=Options(), planner=None):
     if option == 'off':
         return ep
     if option != OPTION:
@@ -194,7 +195,7 @@ def attach_endpoint(ep, option='off', *, refinements=Options()):
     from harness import zone_pair_highpose_blind_close as blind
     from harness.zone_pair_highpose_frame_gate import controller_gate
     ctl = ep.controller; own = ep.own.pose.localizer
-    servo = Servo(ep.own.robot_id, own.pulse_profiles, refinements)
+    servo = Servo(ep.own.robot_id, own.pulse_profiles, refinements, planner)
     calibration = ep.vision.calibration
     visions = {}
     def vision(pan):
