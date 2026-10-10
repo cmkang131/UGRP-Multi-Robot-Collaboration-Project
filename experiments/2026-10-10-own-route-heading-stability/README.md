@@ -32,3 +32,9 @@
 - 코드·변경시험·commit/push 후 ≤8SIMs smoke1회(경로오류시 수정 후1회만 재확인). 준비가 끝나면24개 전부 한 묶음으로 고정 제출, 최대10동시, RAM6GiB 미만이면 대기. 중간 raw 보고 설정/목록 변경0.
 - 실행기 wall alarm: egomap64 동일호스트12건의 최대 wall/SIM **7.0114851602**, `ceil(540×7.0114851602×2 + 300)` = **7873wall초/회**. 두 조건 공통, SIM예산/성공문턱 아님. 결과 이후 늘리거나 재실행하지 않는다. admission디스크<2GiB/HOST/벽실패도24분모에 남김. 예상전체2–3시간(실측전 추정), raw약12–16GiB. Mac잔여약4GiB로 이번 raw RGB는 서버원본 보존하고 로그/결과/해시만 로컬회수; 미회수RGB를 로컬백업이라 보고하지 않음.
 - 최종 모든24건 terminal 뒤 공동채점: 각조건 n/6 B·귀환·접촉·거짓선언, >3σ프레임n/N/종료n/6, 종료오차, 회전/전진/hold명령 비율·반전·B최근접거리. HOST/차단/미측정분리. 반복seed DEV이며 독립확증 아님. 새 gate/후속 선택실행 없음, 결과 그대로 보고.
+
+## 구현·물리 입장 전 검증
+
+- `harness/path_heading_stability.py`: S3 SettleGate와 latch 규칙을 공통 어댑터로 추출. 원형 저역통과 후 기존 `own_map_heading.command → select_waypoint → select`를 인스턴스 전용 binding으로 호출한다. profile/예측/충돌 검사·dev_light는 기존 Host가 그대로 소유한다. off는 설치 자체 identity; 도착 권한을 latch가 부여하지 않는다.
+- `scripts/run_own_route_heading_stability.py`: 기존 egomap64 runner의 체크포인트복원 직후만 on설치. 기존1257모듈 및 기존실행기 바이트는 변경0; 새 어댑터에서 wall alarm만7873초로 바인딩하고 번들에 근거를 남긴다. 스모크8SIM은 같은 공식413wall초.24명령/10슬롯/6GiB입장/전체terminal후채점 고정.
+- 변경 관련3파일 **28시험 통과(1.70s)**: off 원본 명령/로그 bytes, 경계 히스테리시스, ±π 필터, 새관측/정착, 실제 Host 공유펄스계약, 실제 runner wrapper 설치·alarm,24조건과 원본옵션 보존. Mac 물리/재생0. 실행 직전 origin 재확인: S3 ad844d13 그대로, 공유 selector 새변경 없음.
