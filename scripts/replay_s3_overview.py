@@ -123,7 +123,7 @@ class Video:
         self.renderer = mujoco.Renderer(self.model, height=444, width=960)
         self.camera = mujoco.MjvCamera()
         self.camera.type = mujoco.mjtCamera.mjCAMERA_FREE
-        self.camera.azimuth, self.camera.elevation = 75., -45.
+        self.camera.azimuth, self.camera.elevation = 65., -45.
         self.camera.distance = 2.
         self.font = ImageFont.truetype(str(font), 21)
         self.next_t, self.frames, self.minimum_coverage = start, 0, 1.
@@ -167,7 +167,7 @@ class Video:
         self.camera.lookat[:] = (points.max(axis=0)+points.min(axis=0))/2
         # Keep the oblique view relative to the beam's long axis while tracking.
         axis = self.data.xmat[self.beam_body].reshape(3,3)[:,0]
-        self.camera.azimuth = float(np.degrees(np.arctan2(axis[1],axis[0])))+75.
+        self.camera.azimuth = float(np.degrees(np.arctan2(axis[1],axis[0])))+65.
         self.renderer.update_scene(self.data,camera=self.camera)
         cams = self.renderer.scene.camera
         forward = np.mean([c.forward for c in cams],axis=0); forward /= np.linalg.norm(forward)
