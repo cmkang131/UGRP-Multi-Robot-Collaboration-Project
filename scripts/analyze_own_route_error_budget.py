@@ -57,6 +57,12 @@ def kind(cmd):
     return 'hold'
 
 
+def recorded_B(result, events):
+    # Physical-failure result has no declared_B field. Preserve that run and
+    # use its retained causal event log, rather than dropping it from N.
+    return bool(result.get('declared_B', any(e.get('reason')=='goal_reached' and e.get('entity')=='B' for e in events)))
+
+
 def motion_poses(commands, times):
     from harness.self_pulse_rotation import RotationPulseOdometry
     model = RotationPulseOdometry(min(float(commands[0]['t']), times[0]))
@@ -145,14 +151,15 @@ def evaluate(p, out, features=True):
         checkpoints.append(series[min(int(np.searchsorted(times,start+dt)),len(times)-1)])
     sensor=[r for r in rows(p/'robots/r3/inputs/range.jsonl') if 't' in r and start<=r['t']<=times[-1]]
     valid=[r['range_m'] for r in sensor if r.get('valid')]
-    bsummary=dict(arrived=bool(result['declared_B']),approach_sim_s=float(min(ret,times[-1])-start),
+    bsummary=dict(arrived=recorded_B(result,events),approach_sim_s=float(min(ret,times[-1])-start),
         nearest_GT_B_boundary_m=min(bd),frames_inside_GT_B=sum(d<1e-9 for d in bd),
         gate_frames=len(gates),estimated_near_frames=len(near),gate_reasons=dict(Counter(g['reason'] for g in gates)),
         near_reasons=dict(Counter(g['reason'] for g in near)),
         near_patch_present=sum(g['patches']>0 for g in near),near_fresh_confirmed=sum(g['fresh_confirmed'] for g in near),
         near_hold=sum(kind(r['command'])=='hold' for r in rr if any(abs(g['t']-r['t'])<1e-6 for g in near)),
         patches_present=sum(g['patches']>0 for g in gates),fresh_confirmed=sum(g['fresh_confirmed'] for g in gates),
-        max_streak=max((g['streak'] for g in gates),default=0),
+        max_streak=max((g['streak'] for g in gates),default=0),final_GT_B_boundary_m=bd[-1],
+        last_near_time=max((g['t'] for g in near),default=None),
         entity=route['entities'].get('B'),status=result['status'])
     final=dict(estimate_error_m=float(e[-1]),estimate_yaw_deg=float(ye[-1]),sigma_m=float(sigma[-1]),
         over_3sigma_frames=int((e>3*sigma).sum()),samples=len(e),

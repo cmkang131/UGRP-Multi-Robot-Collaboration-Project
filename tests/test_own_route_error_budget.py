@@ -1,5 +1,5 @@
 import numpy as np
-from scripts.analyze_own_route_error_budget import between,compose,interval_audit,motion_poses,kind
+from scripts.analyze_own_route_error_budget import between,compose,interval_audit,motion_poses,kind,recorded_B
 
 
 def test_se2_and_posterior_error_budget_distinguish_motion_from_jump():
@@ -21,3 +21,9 @@ def test_command_at_image_time_is_not_integrated_into_current_pose():
     np.testing.assert_array_equal(poses[:2],np.zeros((2,3)))
     assert poses[2,0]>.01
     assert kind(commands[1])=='forward' and kind(dict(kind='hold'))=='hold'
+
+
+def test_wall_failure_is_scored_from_events_not_excluded():
+    assert not recorded_B(dict(status='WALL_CONTACT'),[])
+    assert recorded_B(dict(status='WALL_CONTACT'),[dict(reason='goal_reached',entity='B')])
+    assert not recorded_B(dict(declared_B=False),[])
