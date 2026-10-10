@@ -66,3 +66,15 @@ Batch:
 - Existing measured response `configs/s2_v133_full_template.json`, real35/100 primitive contract, and v7 input relay `sim/masterpi_drive_friction_v7.py` are calibration/plant sources, not public evidence of installed hardware response.
 
 Local pre-execution validation:22 relevant tests passed across3 changed/dependent modules; catalog dry planning passed. Tests include c3 fixed-bounds pan selection, fresh settled frames, mirrored axial/crab clocks, actual apply/expiry on motor stubs, and outer pan/heading regressions. No Mac physics. Maximum bundle ID across main and11 open heads163; v164/workflow7.57.0 reserved.
+
+## Previous v162 raw diagnosis (0 physics steps, Oracle x86)
+
+|case|carry-only beam excursion mm|r1/r2 wheel rim path mm|r1/r2 chassis path mm|both-finger contacts per robot|matched commands / one-side wait|
+|---|---:|---:|---:|---|---|
+|s3fix16-pair-c0-r1|0.582|0.531/1.147|0.539/1.041|201/201 each|94/94,0|
+|s3fix16-pair-c1-r1|0.495|0.853/1.747|0.823/1.675|201/201 each|94/94,0|
+|s3fix16-pair-c2-r1|4.203|7.876/1.882|7.983/1.952|201/201 each|94/94,0|
+|s3fix16-pair-c4-r1|0.109|0.346/0.260|0.308/0.212|201/201 each|94/94,0|
+|s3fix16-pair-c5-r1|0.266|0.460/0.841|0.416/0.663|201/201 each|94/94,0|
+
+Every case:59 neutral+35 matched nonzero ticks, mirrored ±0.043618/150ms, no one-sided wait. Wheel/chassis path proxies are both sub-mm to8mm; no evidence of substantial powered wheel spin/slip. This carry-only window differs from the older4–8mm excursion over all lifted samples after carry entry (includes refix/lowering). Both fingers contact the lifted beam in201/201 samples per robot. The v7 relay generates0 source motor torque for input0.043618 after the neutral reset; this is a command-side model fact, not a measured force. **Exact contact forces were not recorded in v162** (no qvel/ctrl/constraint forces): not reconstructable from qpos alone. New eval-only force recording addresses that evidence gap; controller receives none. c3 never entered carry. [Full numerical audit](previous-carry-diagnosis.json).
