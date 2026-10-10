@@ -7,4 +7,4 @@
 - oracle-x86 부하<51·여유≥6GiB에서 한 묶음 제출; 각 실행 180초 후 SIM/위치/명령/예외 확인, 이상 실행만 중단·기록.
 - 참고 자료: [Nav2 RPP](https://github.com/ros-navigation/navigation2/tree/jazzy/nav2_regulated_pure_pursuit_controller), [NavFn](https://github.com/ros-navigation/navigation2/blob/main/nav2_navfn_planner/src/navfn_planner.cpp), [stateful checker](https://github.com/ros-navigation/navigation2/blob/main/nav2_controller/plugins/simple_goal_checker.cpp) 원문 확인.
 - 참고 자료: [VT&R 귀환 §III](https://arxiv.org/html/1809.05757) 원문 확인; [Furgale–Barfoot 2010](https://doi.org/10.1002/rob.20342) 초록만 확인(전문 미확인).
-- 상태: 코드/로컬 시험 준비 중, 물리 결과 없음; oracle-x86 SSH 시간 초과 확인(기존 결과를 새 결과로 대체하지 않음).
+- 상태: 관련 31시험 초록·6개 체크포인트/prefix 바이트 검증; oracle-x86 디스크 용량 확인 후 8초 스모크→36개 묶음 예정.
