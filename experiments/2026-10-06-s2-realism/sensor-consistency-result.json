@@ -1,0 +1,1070 @@
+{
+  "schema": "ugrp.s2.sensor_consistency.result.v1",
+  "comparisons": [
+    {
+      "seed": 1051,
+      "baseline": {
+        "seed": 1051,
+        "option": "baseline",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full",
+        "carry_interval": [
+          81.85,
+          289.1
+        ],
+        "carry_rmse_m": 0.21796156929128263,
+        "carry_end_xy_m": 0.13927110783855523,
+        "nees_exceed_fraction": 0.9026369168356998,
+        "nees_valid": 493,
+        "decision_count": 493,
+        "unflagged_gt_25cm": 44,
+        "alarm_count": 293,
+        "near_truth_support_fraction": 0.4057971014492754,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.13071256038647347,
+        "particle_snapshots": 207,
+        "measurement_count": 32,
+        "actual_resamples": 32,
+        "feature_counts": {
+          "floor_line": 124
+        },
+        "feature_count_per_update": {
+          "4": 31,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000001674,
+          "median": 569.5111725599129,
+          "max": 2228419553.7723103
+        },
+        "active_score_ratio": {
+          "min": 1.0000000000001674,
+          "median": 569.5111725599129,
+          "max": 2228419553.772294
+        },
+        "posterior_ess_fraction": {
+          "min": 0.009888575822578552,
+          "median": 0.560518776438811,
+          "max": 1.0000000000000002
+        },
+        "baseline_recorded_pose_bytes_equal": true,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "6fc216670835b6bc83c303b83e5da6540fff5390b8d93647dfc721e8d2bda739",
+        "clouds_hash": "882c54ec75d4a0cbe2dd346f246b299b1b7d5225f8afdb32d9f8cfd74c770a5f",
+        "gt_hash": "c66c183fe432f3a481476ddab73fb936a13c30875d8313bd7c40bf7f4489b8fb",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "on": {
+        "seed": 1051,
+        "option": "on",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full",
+        "carry_interval": [
+          81.85,
+          289.1
+        ],
+        "carry_rmse_m": 0.3442698461472227,
+        "carry_end_xy_m": 0.3719795069451431,
+        "nees_exceed_fraction": 0.8519269776876268,
+        "nees_valid": 493,
+        "decision_count": 493,
+        "unflagged_gt_25cm": 222,
+        "alarm_count": 266,
+        "near_truth_support_fraction": 0.13043478260869565,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.01043778794670324,
+        "particle_snapshots": 207,
+        "measurement_count": 32,
+        "actual_resamples": 25,
+        "feature_counts": {
+          "floor_line": 124
+        },
+        "feature_count_per_update": {
+          "4": 31,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000007518,
+          "median": 484.91119811861734,
+          "max": 1120050348.997614
+        },
+        "active_score_ratio": {
+          "min": 1.0000019996719551,
+          "median": 11654188141.157093,
+          "max": 4.4658969524869493e+42
+        },
+        "posterior_ess_fraction": {
+          "min": 0.0005240587465694627,
+          "median": 0.19092798053821897,
+          "max": 0.9999999999998623
+        },
+        "baseline_recorded_pose_bytes_equal": false,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "b994c907fa44c5922e4fcba52eed59df1e6d387772dbdead5f773833b5b3ac4c",
+        "clouds_hash": "4a058dc887a925bb187e094f50e65d553866082b6a9a9189660812c46555128f",
+        "gt_hash": "c66c183fe432f3a481476ddab73fb936a13c30875d8313bd7c40bf7f4489b8fb",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "checks": {
+        "nees": false,
+        "coverage": true,
+        "unflagged": false,
+        "carry_rmse": false,
+        "support": false,
+        "mass": true,
+        "baseline_bytes": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1053,
+      "baseline": {
+        "seed": 1053,
+        "option": "baseline",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction",
+        "carry_interval": [
+          94.8,
+          286.25
+        ],
+        "carry_rmse_m": 0.11151768450106762,
+        "carry_end_xy_m": 0.10491121827921342,
+        "nees_exceed_fraction": 0.5102880658436214,
+        "nees_valid": 486,
+        "decision_count": 486,
+        "unflagged_gt_25cm": 0,
+        "alarm_count": 200,
+        "near_truth_support_fraction": 0.828125,
+        "near_truth_median_mass": 0.40950000000000014,
+        "near_truth_mean_mass": 0.39365741467279713,
+        "particle_snapshots": 192,
+        "measurement_count": 36,
+        "actual_resamples": 36,
+        "feature_counts": {
+          "floor_line": 140
+        },
+        "feature_count_per_update": {
+          "4": 35,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000017477,
+          "median": 193.07853457850086,
+          "max": 855730164.462267
+        },
+        "active_score_ratio": {
+          "min": 1.0000000000017477,
+          "median": 193.07853457850103,
+          "max": 855730164.462267
+        },
+        "posterior_ess_fraction": {
+          "min": 0.005185993960140338,
+          "median": 0.7834191594609508,
+          "max": 1.0
+        },
+        "baseline_recorded_pose_bytes_equal": true,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "544a6ca571eb2f868bd6879feacc050a9210e350ae46edfd2d264641400ea23a",
+        "clouds_hash": "1d16181c29c6a742824ecc973283031f32ab3c9c5626887a1cad793c2801162f",
+        "gt_hash": "7abb90985dc9106a800696cda652948bc2aa3ec2b1b93c61ea0fb592bfcba197",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "on": {
+        "seed": 1053,
+        "option": "on",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction",
+        "carry_interval": [
+          94.8,
+          286.25
+        ],
+        "carry_rmse_m": 0.2027832499735848,
+        "carry_end_xy_m": 0.27208064617719707,
+        "nees_exceed_fraction": 0.6584362139917695,
+        "nees_valid": 486,
+        "decision_count": 486,
+        "unflagged_gt_25cm": 149,
+        "alarm_count": 66,
+        "near_truth_support_fraction": 0.4583333333333333,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.2871726066580938,
+        "particle_snapshots": 192,
+        "measurement_count": 36,
+        "actual_resamples": 25,
+        "feature_counts": {
+          "floor_line": 140
+        },
+        "feature_count_per_update": {
+          "4": 35,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000184328,
+          "median": 184.35268510378648,
+          "max": 855730164.462267
+        },
+        "active_score_ratio": {
+          "min": 1.0000490170550582,
+          "median": 594931.1309640087,
+          "max": 1.1729339694061462e+44
+        },
+        "posterior_ess_fraction": {
+          "min": 0.0005100053534850059,
+          "median": 0.21927997648364625,
+          "max": 0.8940304996135551
+        },
+        "baseline_recorded_pose_bytes_equal": false,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "183482262949173ef5bbe89c8c115ecdcf4eac43ef55a3d7929107f1896b4a7c",
+        "clouds_hash": "cbc0525333cff1585ffdd2c8d6eb1571b80a8000d5bb239ccd1404e73bbb85e1",
+        "gt_hash": "7abb90985dc9106a800696cda652948bc2aa3ec2b1b93c61ea0fb592bfcba197",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "checks": {
+        "nees": false,
+        "coverage": true,
+        "unflagged": false,
+        "carry_rmse": false,
+        "support": false,
+        "mass": false,
+        "baseline_bytes": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1054,
+      "baseline": {
+        "seed": 1054,
+        "option": "baseline",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction",
+        "carry_interval": [
+          203.7,
+          410.3
+        ],
+        "carry_rmse_m": 0.21583382852258898,
+        "carry_end_xy_m": 0.19101322132938592,
+        "nees_exceed_fraction": 0.9247648902821317,
+        "nees_valid": 638,
+        "decision_count": 638,
+        "unflagged_gt_25cm": 0,
+        "alarm_count": 312,
+        "near_truth_support_fraction": 0.4396135265700483,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.0026594202898550735,
+        "particle_snapshots": 207,
+        "measurement_count": 37,
+        "actual_resamples": 37,
+        "feature_counts": {
+          "floor_line": 143
+        },
+        "feature_count_per_update": {
+          "4": 35,
+          "0": 1,
+          "3": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000111573,
+          "median": 30.88700199896232,
+          "max": 577334835.9904435
+        },
+        "active_score_ratio": {
+          "min": 1.0000000000111573,
+          "median": 30.88700199896232,
+          "max": 577334835.9904435
+        },
+        "posterior_ess_fraction": {
+          "min": 0.005149096916582475,
+          "median": 0.8441324984395728,
+          "max": 1.0
+        },
+        "baseline_recorded_pose_bytes_equal": true,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "e74b04d677a4e92953615789106a59166a1bada9d8021cdea2c0cd70cb4a306e",
+        "clouds_hash": "7aab3f75a346489acd2bb3eba6d31571a01de126728cd2aed2720f9b06e05c14",
+        "gt_hash": "629f1d6bf90715d98ff06750c73fe1ce26e1b1a66e6b1ba9f1cf33c5240589ae",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "on": {
+        "seed": 1054,
+        "option": "on",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction",
+        "carry_interval": [
+          203.7,
+          410.3
+        ],
+        "carry_rmse_m": 0.36590714129688484,
+        "carry_end_xy_m": 0.8057795296567792,
+        "nees_exceed_fraction": 0.9764890282131662,
+        "nees_valid": 638,
+        "decision_count": 638,
+        "unflagged_gt_25cm": 324,
+        "alarm_count": 65,
+        "near_truth_support_fraction": 0.0,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.0,
+        "particle_snapshots": 207,
+        "measurement_count": 37,
+        "actual_resamples": 26,
+        "feature_counts": {
+          "floor_line": 143
+        },
+        "feature_count_per_update": {
+          "4": 35,
+          "0": 1,
+          "3": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000089357,
+          "median": 12.604491507323948,
+          "max": 577334835.9904435
+        },
+        "active_score_ratio": {
+          "min": 1.0000237778862484,
+          "median": 31643749990256.086,
+          "max": 1.1310326844798723e+44
+        },
+        "posterior_ess_fraction": {
+          "min": 0.0005000008759483987,
+          "median": 0.16723983131212888,
+          "max": 0.999999999996135
+        },
+        "baseline_recorded_pose_bytes_equal": false,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "12269cc956dd28886c2f91d5788746caac9ed649736f0366718b01701a9ed8ff",
+        "clouds_hash": "028dedcebc8bcfad7ac71b8faf44b7f8f6c80758e1e74247c99d972e8878c01b",
+        "gt_hash": "629f1d6bf90715d98ff06750c73fe1ce26e1b1a66e6b1ba9f1cf33c5240589ae",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "checks": {
+        "nees": false,
+        "coverage": true,
+        "unflagged": false,
+        "carry_rmse": false,
+        "support": false,
+        "mass": true,
+        "baseline_bytes": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1056,
+      "baseline": {
+        "seed": 1056,
+        "option": "baseline",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1056-v133-reproduction",
+        "carry_interval": [
+          85.55,
+          273.8
+        ],
+        "carry_rmse_m": 0.16728975363763318,
+        "carry_end_xy_m": 0.13627642180278277,
+        "nees_exceed_fraction": 0.8235294117647058,
+        "nees_valid": 442,
+        "decision_count": 442,
+        "unflagged_gt_25cm": 2,
+        "alarm_count": 318,
+        "near_truth_support_fraction": 0.5478723404255319,
+        "near_truth_median_mass": 0.0015,
+        "near_truth_mean_mass": 0.22276861702127665,
+        "particle_snapshots": 188,
+        "measurement_count": 36,
+        "actual_resamples": 36,
+        "feature_counts": {
+          "floor_line": 140
+        },
+        "feature_count_per_update": {
+          "4": 35,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000004314,
+          "median": 250.09162597831926,
+          "max": 1065033580524.5043
+        },
+        "active_score_ratio": {
+          "min": 1.0000000000004314,
+          "median": 250.09162597831926,
+          "max": 1065033580524.508
+        },
+        "posterior_ess_fraction": {
+          "min": 0.00530370792563159,
+          "median": 0.7337714251997209,
+          "max": 1.0
+        },
+        "baseline_recorded_pose_bytes_equal": true,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "619911e53bf455550ead8406e548cf677463d04d88cb8a18dace9c624de9f449",
+        "clouds_hash": "140abe5d080c0fdd50bef14228fadf6efeb99757ea9236ce929621426e558cc5",
+        "gt_hash": "89db92015ae2a83f1735b5024f191001b4b55f6368ed19d8162753dc51b31cdd",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "on": {
+        "seed": 1056,
+        "option": "on",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1056-v133-reproduction",
+        "carry_interval": [
+          85.55,
+          273.8
+        ],
+        "carry_rmse_m": 0.34230453902668223,
+        "carry_end_xy_m": 0.5767761694842243,
+        "nees_exceed_fraction": 0.9072398190045249,
+        "nees_valid": 442,
+        "decision_count": 442,
+        "unflagged_gt_25cm": 202,
+        "alarm_count": 63,
+        "near_truth_support_fraction": 0.28191489361702127,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.19636631225876605,
+        "particle_snapshots": 188,
+        "measurement_count": 36,
+        "actual_resamples": 22,
+        "feature_counts": {
+          "floor_line": 140
+        },
+        "feature_count_per_update": {
+          "4": 35,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000002254,
+          "median": 129.0507822864338,
+          "max": 986168048940.7762
+        },
+        "active_score_ratio": {
+          "min": 1.0000006146384137,
+          "median": 4176.815959645736,
+          "max": 2.6137523063010593e+43
+        },
+        "posterior_ess_fraction": {
+          "min": 0.0005000018974862131,
+          "median": 0.3057130680938476,
+          "max": 0.99999999999999
+        },
+        "baseline_recorded_pose_bytes_equal": false,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "ba29338d6c23dc7cbd954943b762f704e2bb429c4811dc144ac260d227389426",
+        "clouds_hash": "dbab292ddcfae8fd2b114deca5649af468f6a899f098f6e8b4ba5aedbe22ee94",
+        "gt_hash": "89db92015ae2a83f1735b5024f191001b4b55f6368ed19d8162753dc51b31cdd",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "checks": {
+        "nees": false,
+        "coverage": true,
+        "unflagged": false,
+        "carry_rmse": false,
+        "support": false,
+        "mass": false,
+        "baseline_bytes": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1057,
+      "baseline": {
+        "seed": 1057,
+        "option": "baseline",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1057-v133-reproduction",
+        "carry_interval": [
+          76.3,
+          239.7
+        ],
+        "carry_rmse_m": 0.1800418935841804,
+        "carry_end_xy_m": 0.060074021038794306,
+        "nees_exceed_fraction": 0.3812154696132597,
+        "nees_valid": 362,
+        "decision_count": 362,
+        "unflagged_gt_25cm": 0,
+        "alarm_count": 302,
+        "near_truth_support_fraction": 0.9141104294478528,
+        "near_truth_median_mass": 0.08750000000000002,
+        "near_truth_mean_mass": 0.20995450439876637,
+        "particle_snapshots": 163,
+        "measurement_count": 32,
+        "actual_resamples": 32,
+        "feature_counts": {
+          "floor_line": 122
+        },
+        "feature_count_per_update": {
+          "4": 29,
+          "0": 1,
+          "3": 2
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000002008025062,
+          "median": 350.3676724311546,
+          "max": 365867252.2045559
+        },
+        "active_score_ratio": {
+          "min": 1.0000002008025062,
+          "median": 350.3676724311546,
+          "max": 365867252.2045546
+        },
+        "posterior_ess_fraction": {
+          "min": 0.10284227988053461,
+          "median": 0.6723073131594708,
+          "max": 1.0
+        },
+        "baseline_recorded_pose_bytes_equal": true,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "7525adcf2d6c96256dd0c1cb408593d9d590c53de596d080409bd56b53692f90",
+        "clouds_hash": "bfed3cb53481b70c193a68f5d0841584c0c952aedcec36bde88b9b113c0bd2ad",
+        "gt_hash": "d4be28d55e02e25f6542c00f244977f82be1489c38481137038b016c9e2a8ce4",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "on": {
+        "seed": 1057,
+        "option": "on",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1057-v133-reproduction",
+        "carry_interval": [
+          76.3,
+          239.7
+        ],
+        "carry_rmse_m": 0.797478788521166,
+        "carry_end_xy_m": 1.4601054403673606,
+        "nees_exceed_fraction": 0.850828729281768,
+        "nees_valid": 362,
+        "decision_count": 362,
+        "unflagged_gt_25cm": 158,
+        "alarm_count": 204,
+        "near_truth_support_fraction": 0.18404907975460122,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.000440784934612749,
+        "particle_snapshots": 163,
+        "measurement_count": 32,
+        "actual_resamples": 26,
+        "feature_counts": {
+          "floor_line": 122
+        },
+        "feature_count_per_update": {
+          "4": 29,
+          "0": 1,
+          "3": 2
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000115798053,
+          "median": 8.112707844990403,
+          "max": 7762228.36781025
+        },
+        "active_score_ratio": {
+          "min": 1.030825422135597,
+          "median": 1319311.9408756946,
+          "max": 8.049448982391137e+32
+        },
+        "posterior_ess_fraction": {
+          "min": 0.0005064599178425023,
+          "median": 0.09484660258232916,
+          "max": 0.999998580197901
+        },
+        "baseline_recorded_pose_bytes_equal": false,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "530ef1dd8e17db8cc8c851fbeb61c297a0c733e85666998c3113ff89c3e708bd",
+        "clouds_hash": "62d06d1a55f5b4f8f88d33c7257ea42edf35cac7b08cac7ac2f1073008ee8543",
+        "gt_hash": "d4be28d55e02e25f6542c00f244977f82be1489c38481137038b016c9e2a8ce4",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "checks": {
+        "nees": false,
+        "coverage": true,
+        "unflagged": false,
+        "carry_rmse": false,
+        "support": false,
+        "mass": false,
+        "baseline_bytes": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1058,
+      "baseline": {
+        "seed": 1058,
+        "option": "baseline",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1058-v133-reproduction",
+        "carry_interval": [
+          83.05,
+          265.05
+        ],
+        "carry_rmse_m": 0.13000387549995898,
+        "carry_end_xy_m": 0.136069188181229,
+        "nees_exceed_fraction": 0.5446224256292906,
+        "nees_valid": 437,
+        "decision_count": 437,
+        "unflagged_gt_25cm": 0,
+        "alarm_count": 274,
+        "near_truth_support_fraction": 0.8076923076923077,
+        "near_truth_median_mass": 0.33025000000000004,
+        "near_truth_mean_mass": 0.3426238011501061,
+        "particle_snapshots": 182,
+        "measurement_count": 36,
+        "actual_resamples": 36,
+        "feature_counts": {
+          "floor_line": 139
+        },
+        "feature_count_per_update": {
+          "4": 34,
+          "0": 1,
+          "3": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000503095,
+          "median": 245.49013268860853,
+          "max": 646107423.3431339
+        },
+        "active_score_ratio": {
+          "min": 1.0000000000503095,
+          "median": 245.4901326886083,
+          "max": 646107423.3431317
+        },
+        "posterior_ess_fraction": {
+          "min": 0.0050356000831150724,
+          "median": 0.7441450107516843,
+          "max": 1.0
+        },
+        "baseline_recorded_pose_bytes_equal": true,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "bec6f448a17b8fc34134eeda2f8b6d5eebe134411af0ee1192a988f691e2fa5d",
+        "clouds_hash": "892bfe6b4141321738e479f3b2eb8ac302fb9b0cbeddfec99a02fa2b3c6a48ca",
+        "gt_hash": "cf951c3bddb3fc47d3d2d92e99ad876d934208e2d98e5f8118778511c52a5e0e",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "on": {
+        "seed": 1058,
+        "option": "on",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1058-v133-reproduction",
+        "carry_interval": [
+          83.05,
+          265.05
+        ],
+        "carry_rmse_m": 0.4237176909670332,
+        "carry_end_xy_m": 0.6757992940726104,
+        "nees_exceed_fraction": 0.8924485125858124,
+        "nees_valid": 437,
+        "decision_count": 437,
+        "unflagged_gt_25cm": 261,
+        "alarm_count": 52,
+        "near_truth_support_fraction": 0.2692307692307692,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.05148697046522008,
+        "particle_snapshots": 182,
+        "measurement_count": 36,
+        "actual_resamples": 23,
+        "feature_counts": {
+          "floor_line": 139
+        },
+        "feature_count_per_update": {
+          "4": 34,
+          "0": 1,
+          "3": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000297646,
+          "median": 25.67696437604882,
+          "max": 646107423.3431339
+        },
+        "active_score_ratio": {
+          "min": 1.0000791533741442,
+          "median": 4308815.5433946485,
+          "max": 9.378194843200747e+45
+        },
+        "posterior_ess_fraction": {
+          "min": 0.0005001293892394183,
+          "median": 0.37869993778689237,
+          "max": 0.9945125707251242
+        },
+        "baseline_recorded_pose_bytes_equal": false,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "cb8cde40af4fa3ab69735959bd8fd233bd9139fa9cc61b9f4f8277b6ad0ea684",
+        "clouds_hash": "5077bf62af38038cfefdfa9ccb09696737deb66c1a879ac880b3d5b8f9c9ab75",
+        "gt_hash": "cf951c3bddb3fc47d3d2d92e99ad876d934208e2d98e5f8118778511c52a5e0e",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "checks": {
+        "nees": false,
+        "coverage": true,
+        "unflagged": false,
+        "carry_rmse": false,
+        "support": false,
+        "mass": false,
+        "baseline_bytes": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1059,
+      "baseline": {
+        "seed": 1059,
+        "option": "baseline",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1059-v139-unknown-start",
+        "carry_interval": [
+          84.05,
+          274.55
+        ],
+        "carry_rmse_m": 0.11907159453331655,
+        "carry_end_xy_m": 0.07948321574507075,
+        "nees_exceed_fraction": 0.6581196581196581,
+        "nees_valid": 468,
+        "decision_count": 468,
+        "unflagged_gt_25cm": 0,
+        "alarm_count": 101,
+        "near_truth_support_fraction": 0.8315789473684211,
+        "near_truth_median_mass": 0.45525000000000015,
+        "near_truth_mean_mass": 0.4393657894736844,
+        "particle_snapshots": 190,
+        "measurement_count": 41,
+        "actual_resamples": 38,
+        "feature_counts": {
+          "floor_line": 155
+        },
+        "feature_count_per_update": {
+          "1": 1,
+          "3": 2,
+          "4": 37,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000001394,
+          "median": 91.87219631812839,
+          "max": 1277361180.2684174
+        },
+        "active_score_ratio": {
+          "min": 1.0000000000001394,
+          "median": 91.87219631812854,
+          "max": 1277361180.2684174
+        },
+        "posterior_ess_fraction": {
+          "min": 0.0020962530074251015,
+          "median": 0.7656825350244942,
+          "max": 1.0
+        },
+        "baseline_recorded_pose_bytes_equal": true,
+        "source_sha": "01ca987474e2a9f735140a694b3d479907f2000c",
+        "prediction_hash": "9a172e4e2bff434d5813a6b20004ac427be74d0a418508c1e8da9a906406d3ad",
+        "clouds_hash": "e967066c09c5e2ffec7d441b1b917cb6558fff7b04181835a9203afbd882b00f",
+        "gt_hash": "dc124bf2359d8b7285b0c092361e3e3d6f2de45f4c2106fea1bdf812ee5a8b4a",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "on": {
+        "seed": 1059,
+        "option": "on",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1059-v139-unknown-start",
+        "carry_interval": [
+          84.05,
+          274.55
+        ],
+        "carry_rmse_m": 0.4142819613366451,
+        "carry_end_xy_m": 0.8246625740516819,
+        "nees_exceed_fraction": 1.0,
+        "nees_valid": 467,
+        "decision_count": 468,
+        "unflagged_gt_25cm": 177,
+        "alarm_count": 50,
+        "near_truth_support_fraction": 0.3526315789473684,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.13423646080887516,
+        "particle_snapshots": 190,
+        "measurement_count": 41,
+        "actual_resamples": 30,
+        "feature_counts": {
+          "floor_line": 155
+        },
+        "feature_count_per_update": {
+          "1": 1,
+          "3": 2,
+          "4": 37,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000000022,
+          "median": 81.46174497512507,
+          "max": 45350064.458553806
+        },
+        "active_score_ratio": {
+          "min": 1.0000000040946837,
+          "median": 50374.56323476131,
+          "max": 1.1410175617321796e+104
+        },
+        "posterior_ess_fraction": {
+          "min": 1.4967296861793412e-05,
+          "median": 0.10125999544260948,
+          "max": 0.9999999999999998
+        },
+        "baseline_recorded_pose_bytes_equal": false,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "b87a5ea4721f0072209bbf23e8aeaa6f3509be948a41727cadce8f4a573d9f0c",
+        "clouds_hash": "db69a88354d04dca356e81db104b22fd63b364d20266987d30d7382e2ccdfd94",
+        "gt_hash": "dc124bf2359d8b7285b0c092361e3e3d6f2de45f4c2106fea1bdf812ee5a8b4a",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "checks": {
+        "nees": false,
+        "coverage": false,
+        "unflagged": false,
+        "carry_rmse": false,
+        "support": false,
+        "mass": false,
+        "baseline_bytes": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1060,
+      "baseline": {
+        "seed": 1060,
+        "option": "baseline",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1060-v139-unknown-start",
+        "carry_interval": [
+          82.05,
+          270.8
+        ],
+        "carry_rmse_m": 0.822796985235283,
+        "carry_end_xy_m": 1.7185033062629302,
+        "nees_exceed_fraction": 0.9977220956719818,
+        "nees_valid": 439,
+        "decision_count": 439,
+        "unflagged_gt_25cm": 0,
+        "alarm_count": 290,
+        "near_truth_support_fraction": 0.2127659574468085,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.001704787234042554,
+        "particle_snapshots": 188,
+        "measurement_count": 41,
+        "actual_resamples": 39,
+        "feature_counts": {
+          "floor_line": 157
+        },
+        "feature_count_per_update": {
+          "2": 1,
+          "4": 38,
+          "3": 1,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000000029,
+          "median": 13.097495418754376,
+          "max": 18419768428216.25
+        },
+        "active_score_ratio": {
+          "min": 1.0000000000000029,
+          "median": 13.097495418754376,
+          "max": 18419768428216.25
+        },
+        "posterior_ess_fraction": {
+          "min": 0.008449776099349932,
+          "median": 0.918524136716129,
+          "max": 1.0000000000000007
+        },
+        "baseline_recorded_pose_bytes_equal": true,
+        "source_sha": "01ca987474e2a9f735140a694b3d479907f2000c",
+        "prediction_hash": "10048922d49d50e3e6db6fe40a82d92779782ca08c992cd99f27416b8963739c",
+        "clouds_hash": "76a9e6bc2287183f485fb950857198eea8dcb547828536e4bb64988614b30bdc",
+        "gt_hash": "6bb9f31aedb58b86db57da99dd29a79f60a9047a30a87e5f3a4c25dcd56935da",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "on": {
+        "seed": 1060,
+        "option": "on",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1060-v139-unknown-start",
+        "carry_interval": [
+          82.05,
+          270.8
+        ],
+        "carry_rmse_m": 3.900490665895109,
+        "carry_end_xy_m": 5.814879293340256,
+        "nees_exceed_fraction": 1.0,
+        "nees_valid": 438,
+        "decision_count": 439,
+        "unflagged_gt_25cm": 310,
+        "alarm_count": 129,
+        "near_truth_support_fraction": 0.0,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.0,
+        "particle_snapshots": 188,
+        "measurement_count": 41,
+        "actual_resamples": 19,
+        "feature_counts": {
+          "floor_line": 157
+        },
+        "feature_count_per_update": {
+          "2": 1,
+          "4": 38,
+          "3": 1,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0,
+          "median": 1.454711647149066,
+          "max": 1937633494628.8672
+        },
+        "active_score_ratio": {
+          "min": 1.0,
+          "median": 638.2515470550825,
+          "max": 9.6830939669115e+102
+        },
+        "posterior_ess_fraction": {
+          "min": 2.364013320984268e-05,
+          "median": 0.5327478560152448,
+          "max": 1.000000000000001
+        },
+        "baseline_recorded_pose_bytes_equal": false,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "b7522a4d1a2e7383e223cfdd9314403befcd62b9a89f71eae503276384a37425",
+        "clouds_hash": "6bce7c079f86f6737f56cb09bb0a88f25406346b679aafe30969285c27272e0b",
+        "gt_hash": "6bb9f31aedb58b86db57da99dd29a79f60a9047a30a87e5f3a4c25dcd56935da",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "checks": {
+        "nees": false,
+        "coverage": false,
+        "unflagged": false,
+        "carry_rmse": false,
+        "support": false,
+        "mass": true,
+        "baseline_bytes": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1061,
+      "baseline": {
+        "seed": 1061,
+        "option": "baseline",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1061-v139-unknown-start",
+        "carry_interval": [
+          79.25,
+          287.2
+        ],
+        "carry_rmse_m": 0.12873193487060638,
+        "carry_end_xy_m": 0.17994063908122146,
+        "nees_exceed_fraction": 0.7701612903225806,
+        "nees_valid": 496,
+        "decision_count": 496,
+        "unflagged_gt_25cm": 0,
+        "alarm_count": 106,
+        "near_truth_support_fraction": 0.7451923076923077,
+        "near_truth_median_mass": 0.01725,
+        "near_truth_mean_mass": 0.2300504807692309,
+        "particle_snapshots": 208,
+        "measurement_count": 42,
+        "actual_resamples": 39,
+        "feature_counts": {
+          "floor_line": 160
+        },
+        "feature_count_per_update": {
+          "3": 2,
+          "4": 38,
+          "2": 1,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.000000000007655,
+          "median": 87.159087935191,
+          "max": 1320171635695.0847
+        },
+        "active_score_ratio": {
+          "min": 1.000000000007655,
+          "median": 87.15908793519105,
+          "max": 1320171635695.0847
+        },
+        "posterior_ess_fraction": {
+          "min": 0.000214995820741917,
+          "median": 0.7487920373081853,
+          "max": 1.0
+        },
+        "baseline_recorded_pose_bytes_equal": true,
+        "source_sha": "01ca987474e2a9f735140a694b3d479907f2000c",
+        "prediction_hash": "5ba8418e4cc351bb7a28217005ab8459c41a28011a0c4b5baac1ba44d3cb6bd1",
+        "clouds_hash": "101466a857e365b82c0ed1f04b13bb7af105812b080c68bc5f65220d9d5e7fb7",
+        "gt_hash": "5b2a1093b5e9793687c582575e01c754cd30b94a810e31218b24b572ac431606",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "on": {
+        "seed": 1061,
+        "option": "on",
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-329eb4b6-s1061-v139-unknown-start",
+        "carry_interval": [
+          79.25,
+          287.2
+        ],
+        "carry_rmse_m": 0.20074136352573446,
+        "carry_end_xy_m": 0.2560034168467988,
+        "nees_exceed_fraction": 0.9032258064516129,
+        "nees_valid": 496,
+        "decision_count": 496,
+        "unflagged_gt_25cm": 190,
+        "alarm_count": 98,
+        "near_truth_support_fraction": 0.4423076923076923,
+        "near_truth_median_mass": 0.0,
+        "near_truth_mean_mass": 0.13154352471481387,
+        "particle_snapshots": 208,
+        "measurement_count": 42,
+        "actual_resamples": 28,
+        "feature_counts": {
+          "floor_line": 160
+        },
+        "feature_count_per_update": {
+          "3": 2,
+          "4": 38,
+          "2": 1,
+          "0": 1
+        },
+        "legacy_score_ratio": {
+          "min": 1.0000000000076732,
+          "median": 1112.9503311825881,
+          "max": 1048597862094.0643
+        },
+        "active_score_ratio": {
+          "min": 1.000020407438667,
+          "median": 80705045.1358683,
+          "max": 7.062361110018406e+71
+        },
+        "posterior_ess_fraction": {
+          "min": 7.617040667358254e-05,
+          "median": 0.1791189942724214,
+          "max": 0.9999999999891631
+        },
+        "baseline_recorded_pose_bytes_equal": false,
+        "source_sha": "65dc14c7ce99e8451384437a941bdf1126560166",
+        "prediction_hash": "0258f338608adb3ad3a3b3d0d7490a42ed715cbd763cfac94945d7804ffffb57",
+        "clouds_hash": "2c392a5d1c9a310f0413616cf55ecaef0e8e8775eae000b90fefc69b5790a4a1",
+        "gt_hash": "5b2a1093b5e9793687c582575e01c754cd30b94a810e31218b24b572ac431606",
+        "physics_runs": 0,
+        "gt_use": "sealed prediction evaluation only"
+      },
+      "checks": {
+        "nees": false,
+        "coverage": true,
+        "unflagged": false,
+        "carry_rmse": false,
+        "support": false,
+        "mass": false,
+        "baseline_bytes": true
+      },
+      "passed": false
+    }
+  ],
+  "passed": false,
+  "physics_runs": 0,
+  "threshold_changes": 0,
+  "off_equivalence": {
+    "seed": 1060,
+    "particle_sha256": true,
+    "pose_fields_sha256": true,
+    "frame_count": 5771,
+    "max_delta": 0.0
+  },
+  "criteria_hash": "3f6299d8cd1b588dce537b8dfbf1ef2c582510eaeaea0ca0a4595adcd8dedba7",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-sensor-consistency-v56-20261008"
+}

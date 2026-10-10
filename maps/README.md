@@ -133,3 +133,12 @@ RGB로 지속 미끄러짐이 보이면 내려놓고 한 번 재파지하며, �
 - 문 1개: 기존 `zones/zone_wide_door_geometry_v2.json`을 그대로 재사용한다.
 - 문 2개·복도: 같은 규칙으로 만든 `zones_final/zone_wide_two_doors_final_v1.json`, `zones_final/zone_wide_corridor_final_v1.json`.
 - 해시와 v1→v2 변경 경로는 [catalog.json](zones_final/catalog.json)에 있다. 생성·검사는 `python -m harness.zone_final_env [--write]`로 하며 기존 파일은 덮어쓰지 않는다. 재고와 검증 범위는 [실험 기록](../experiments/2026-09-28-final-map-scenario-v2/README.md)을 따른다.
+
+## hardmaps1 보류 시험 맵 (2026-10-09, 준비 전용)
+
+`zones_final_v3/hardmaps1_catalog.json`은 기본 실행 목록과 분리한 held-out 2개다.
+[H1](zones_final_v3/zone_hardmaps1_h1_final_v3.json)은 방 4개·막다른 목표 방·복수 접근,
+[H2](zones_final_v3/zone_hardmaps1_h2_final_v3.json)는 56cm 문·엇갈린 장애물·막힌 분기다.
+6.45×4.60m 경기장, pickup/A/B/C·슬롯·시작 규칙·벽 높이·색/체커/벽 테이프 규칙을 유지한다.
+**개발 튜닝/귀환 실행에 사용하지 않는다.** 정적 도달 가능성은 학생 탐색·귀환 성공이 아니다.
+[설계·단서 표·통행 검사·하네스 연결 한계](../experiments/2026-10-09-hardmaps1-heldout/README.md).

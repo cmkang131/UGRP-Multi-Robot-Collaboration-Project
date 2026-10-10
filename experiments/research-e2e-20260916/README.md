@@ -139,3 +139,5 @@ python scripts/audit_research_camera_e2e.py outputs/research-e2e-v2-natural-repe
 영상 준비 판정·역할 불일치·자연어 OFF 입력·물리 최종 성공 조건을 검사했다.
 최종 로컬 회귀 검증은 **685 tests + 154 subtests 통과**다.
 모든 실행은 전용 세션에서 시작·정리했고 기존 모델 프록시는 변경하거나 종료하지 않았다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

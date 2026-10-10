@@ -808,3 +808,5 @@ v1·v2·v3 파일은 바이트 그대로다. 테스트가 해시로 고정한다
 - 위치: 기본 체크아웃 `outputs/zone-owncam-skill-20260925/`. probe 2개, `cohort-d016c04/{501..505}`, `dev/*`, `cohort-d016c04/cohort.log`(시드별 부하 평균 포함).
 - 경로·SHA-256·부하 평균·단계 시각은 `results.json`에 있다.
 - 재생성: `python experiments/2026-09-25-zone-owncam-skill/build_results.py`.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

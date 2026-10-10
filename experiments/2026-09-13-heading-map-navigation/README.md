@@ -73,3 +73,5 @@ PYTHONPATH=. /absolute/path/to/python -m scripts.report_heading_navigation \
 ```
 
 작업 브랜치는 #36 `codex/known-map-navigation` 위에 쌓았다. 이슈 #37을 다루며 main 병합은 사용자 확인 후 별도 승인으로 진행한다. 이 프로젝트는 Drive를 사용하지 않는다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

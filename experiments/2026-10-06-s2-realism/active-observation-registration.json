@@ -1,0 +1,97 @@
+{
+  "schema": "ugrp.s2.active_observation.registration.v1",
+  "task": "s2v58",
+  "option": "discriminating_views_v1",
+  "baseline": "v139 exact options, no starting prior; s2v55/56/57 candidates OFF",
+  "offline_seeds": [
+    1051,
+    1053,
+    1054,
+    1056,
+    1057,
+    1058,
+    1059,
+    1060,
+    1061
+  ],
+  "physical_seeds": [
+    1060,
+    1062,
+    1063,
+    1064
+  ],
+  "order": [
+    1060,
+    1062,
+    1063,
+    1064
+  ],
+  "runs_per_seed": 1,
+  "trigger": {
+    "posterior_ess_fraction_lt": 0.5,
+    "source": "pre-resampling measured posterior; ESS convention N/2",
+    "covariance_ratio": "diagnostic only: no universal published degeneracy threshold"
+  },
+  "limits": {
+    "min_interval_s": 20.0,
+    "max_events": 5,
+    "max_added_fraction": 0.1,
+    "angles_deg": [
+      45,
+      -45,
+      90,
+      -90
+    ],
+    "translations": false,
+    "settle_s": 0.4,
+    "observation_wait_s": 1.5,
+    "planning_particles": 512
+  },
+  "planner": {
+    "objective": "H(b)-E_z H(b|z,a)",
+    "features": "nearest visible same-color floor-boundary crossing or mapped door; no unique IDs supplied as sensor signatures",
+    "noise": "existing landmark sigma_range=.2m, sigma_bearing=3deg, random_fraction=.05; existing KLD entropy bins .5m/.5m/10deg",
+    "geometry": "fixed commanded-arm camera calibration, static map occlusion; hypothetical detection only",
+    "safety": "whole rotation and return enclosed by existing commanded arm/cargo swept radius + 2sigma; static walls/terrain and own RGB risk only; no GT contacts",
+    "budget": "reserve outward+return pulse stopping horizons plus observation waits BEFORE action; charged time including resume settling <= elapsed non-active/9; no final denominator borrowing",
+    "resumption": "return to original commanded heading, preserve arm/grip and mission state; clear route cache and replan"
+  },
+  "offline_gates": {
+    "all_nine_valid": true,
+    "finite_expected_entropy": true,
+    "selection": "argmax information among safe budget-admitted actions; compare stay view",
+    "s1060_action_before_s": 124.8,
+    "off_exact": true,
+    "no_counterfactual_rmse_claim": true
+  },
+  "physical_evaluation": {
+    "success": "unchanged evaluate lifted/inside/floor/stable/success",
+    "near_truth": "within .10m and 5deg; evaluation-only mass from sealed particle snapshots",
+    "nees_boundary": 5.991464547107979,
+    "unflagged_m": 0.25,
+    "required_fields": [
+      "success",
+      "near_truth_mass",
+      "NEES",
+      "unflagged_gt_25cm",
+      "active_count",
+      "active_added_s",
+      "active_added_fraction",
+      "would_stop",
+      "wall_per_sim"
+    ]
+  },
+  "stopping": "No tuning after results. Retain every failure/exclusion. If same actual physical failure repeats twice, stop and mark unexecuted seeds excluded; no replacement.",
+  "gt": "evaluation only, never planner/trigger/safety",
+  "model_calls": 0,
+  "physics_offline": 0,
+  "raw_budget_gib": 4,
+  "host_error": "ENOSPC retained as HOST_ERROR",
+  "freeze_scope": "S2 solo DEV only",
+  "sources": [
+    "https://publications.ri.cmu.edu/storage/publications/pub_files/pub1/burgard_w_1997_1/burgard_w_1997_1.pdf",
+    "https://doi.org/10.1016/S0921-8890(98)00049-9",
+    "https://www.cs.cmu.edu/~kaess/pub/Zhang16icra.html",
+    "https://github.com/ros-planning/navigation/blob/f44bb1fc/amcl/src/amcl/pf/pf.c"
+  ]
+}

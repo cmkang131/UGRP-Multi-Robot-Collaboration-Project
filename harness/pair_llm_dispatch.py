@@ -422,7 +422,7 @@ class PairTrial(zo.OfflineTrial):
         return zo.PreparedCall(bundled=bundled, request=pi.build_request(bundled, window=window),
                                request_id=request_id)
 
-    def finish_call(self, call, prepared, raw, *, provider_usage=None) -> CallReply:
+    def finish_call(self, call, prepared, raw, *, provider_usage=None, robots=PAIR_ROBOTS) -> CallReply:
         """Reply text -> validation -> relay -> costed attempts. ``zo.OfflineTrial.finish_call`` with the pair."""
         actor, bundled, request, request_id = call.actor, prepared.bundled, prepared.request, prepared.request_id
         self._output_token_counts[call.call_id] = pk.count_tokens(
@@ -433,7 +433,7 @@ class PairTrial(zo.OfflineTrial):
                                       order_ids=bundled.order_ids(), item_ids=bundled.item_ids(),
                                       roles_by_order=bundled.roles_by_order(), vocabulary=bundled.vocabulary(),
                                       passages=bundled.passages(), location_refs=bundled.location_refs(),
-                                      robots=PAIR_ROBOTS)
+                                      robots=robots)
         except zp.ProtocolError as exc:
             produced = zo.generated_utterances(raw)
             attempts = (Attempt(outcome='invalid', input_tokens=input_tokens,
@@ -519,13 +519,13 @@ class PairTrial(zo.OfflineTrial):
         return tuple(i for i in dict.fromkeys(ids) if i != 'r3')
 
     # -- actions ----------------------------------------------------------------------------
-    def _release_action(self, actor, action, sim_s, call_id):
+    def _release_action(self, actor, action, sim_s, call_id, *, planner=pair_executor_plan):
         """``zi.IntegratedTrial._on_action`` with the pair's own action plan; otherwise identical."""
         extra = getattr(self, '_pending', {}).get(call_id)
         if extra is None or self.scheduler.calls[-1].actor != actor:
             raise AssertionError(f'released action of {actor} has no recorded call')
         link = self.links[actor]
-        plan = pair_executor_plan(action, link.job(), actor=actor, orders=self.sheet['orders'])
+        plan = planner(action, link.job(), actor=actor, orders=self.sheet['orders'])
         kind, arguments, order_id, role = pair_action_row(action)
         if plan.api in decisions.HOOK_ACTIONS:
             ack = link.call(plan.api, *plan.args, window_ref=self._window_refs.get(call_id))

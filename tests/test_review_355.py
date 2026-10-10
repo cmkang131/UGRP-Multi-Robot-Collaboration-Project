@@ -36,16 +36,28 @@ OLD_LOCK_SHA = '709db3d87e4d2369171aba10ce3c64b7c8be254e2de7115ae608a022b1783dce
 def test_legacy_registered_source_hash_is_not_substituted(tmp_path, version, map_id, check):
     contract = c if version == 'v88' else v90
     from tests.test_review_352 import args, plan
+    from tests.pinned_source_bundle import bundle_at, json_at
     from scripts import run_final_pair_v3, run_final_pair_heldout
     frozen = json.loads((c.ROOT/'tests/fixtures/review_355_legacy.json').read_text())
     expected = frozen['cases'][f'{contract.BUNDLE_ID}/{map_id}/{check}']
-    bundle = contract.bundle(map_id, check)
-    # No monkeypatch, ignored key, normalized receipt or successor exemption.
+    current_bundle = contract.bundle(map_id, check)
+    assert all(c.base.sha(c.ROOT/p) == digest for p,digest in current_bundle['source_sha256'].items())
+    paths = tuple(current_bundle['source_sha256']) + tuple(expected['source_paths'])
+    bundle = bundle_at(BASE, contract.__name__, map_id, check, paths)
+    # The unchanged archived receipt is checked against its actual Git source.
     assert bundle['source_sha256']['scripts/agent_lock.py'] == OLD_LOCK_SHA
     assert bundle['source_sha256'] == {p: frozen['source_sha256'][p] for p in expected['source_paths']}
     assert 'scripts/agent_sim_slots.py' not in bundle['source_sha256']
     runner = run_final_pair_v3 if version == 'v88' else run_final_pair_heldout
-    registration = plan(args(tmp_path, map_id, check), entry=runner.main)
+    current_plan = plan(args(tmp_path, map_id, check), entry=runner.main)
+    code = ('import io,contextlib; from scripts import '+runner.__name__.rsplit('.',1)[-1]+' as run; '
+            'output=io.StringIO();\nwith contextlib.redirect_stdout(output):\n '
+            'assert run.main('+repr(args(tmp_path,map_id,check))+')==0\nprint(output.getvalue())')
+    registration = json_at(BASE, code, paths)
+    assert {k:v for k,v in current_bundle.items() if k != 'source_sha256'} == {
+        k:v for k,v in bundle.items() if k != 'source_sha256'}
+    assert {k:v for k,v in current_plan.items() if k != 'bundles_sha256'} == {
+        k:v for k,v in registration.items() if k != 'bundles_sha256'}
     for name, value in [('bundle', bundle), ('plan', registration)]:
         blob = (json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False)+'\n').encode()
         assert hashlib.sha256(blob).hexdigest() == expected[name+'_writer_sha256']
@@ -56,9 +68,8 @@ def test_legacy_registered_source_hash_is_not_substituted(tmp_path, version, map
 @pytest.mark.parametrize('check', ['calibration-unloaded', 'calibration-loaded', 'calibration-fine'])
 @pytest.mark.parametrize('artifact', ['bundle', 'plan'])
 def test_legacy_writer_bytes_without_historical_hash_fixture(tmp_path, check, artifact):
-    from tests.test_review_352 import BASE_BYTES, args, plan
-    from harness.zone_final_pair_excitation import MAP_ID
-    value = c.bundle(MAP_ID, check) if artifact == 'bundle' else plan(args(tmp_path, MAP_ID, check))
+    from tests.test_review_352 import BASE_BYTES, baseline_writer
+    value = baseline_writer(tmp_path, check, artifact)
     blob = (json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False)+'\n').encode()
     assert hashlib.sha256(blob).hexdigest() == BASE_BYTES[check][artifact]
 

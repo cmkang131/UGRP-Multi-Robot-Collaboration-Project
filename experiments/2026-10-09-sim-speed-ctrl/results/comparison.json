@@ -1,0 +1,2648 @@
+{
+  "schema": "ugrp.speedctrl_comparison.v1",
+  "scope": "saved-input controller-only; physics/render0; profiled windows",
+  "excluded_artifacts": [
+    "lock.json",
+    "profile.pstats",
+    "profile.txt",
+    "result.json",
+    "timing-provenance.json",
+    "trend.json"
+  ],
+  "cases": [
+    {
+      "case": "s3",
+      "status": "verified",
+      "full_replay": true,
+      "behavior_bytes_identical": true,
+      "files": {
+        "commands.json": {
+          "bytes_identical": true,
+          "bytes": 268794,
+          "off_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a",
+          "on_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a"
+        },
+        "record.json": {
+          "bytes_identical": true,
+          "bytes": 13022104,
+          "off_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7",
+          "on_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7"
+        },
+        "state.json": {
+          "bytes_identical": true,
+          "bytes": 5109822,
+          "off_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e",
+          "on_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e"
+        }
+      },
+      "missing_on": [],
+      "missing_off": [],
+      "input_sha_identical": true,
+      "implementations": [
+        "bdaf46815620b919a8f61b69d301ca88547f1589",
+        "ee554da0a44ad5829e54663992989b8565f6045b"
+      ],
+      "sim_s": 21.9,
+      "off_wall_s": 62.92128491704352,
+      "on_wall_s": 47.63411629101029,
+      "off_wall_per_input_sim": 2.8731180327417136,
+      "on_wall_per_input_sim": 2.175073803242479,
+      "speedup": 1.3209289857009123,
+      "physics_runs": 0,
+      "render_calls": 0,
+      "breakdown": {
+        "off": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 6843,
+            "exclusive_s": 5.302656074112747,
+            "inclusive_s": 5.302656074112747,
+            "wall_per_input_sim": 0.24213041434304783
+          },
+          "posterior_summary": {
+            "calls": 6216,
+            "exclusive_s": 6.725305424421094,
+            "inclusive_s": 6.725305424421094,
+            "wall_per_input_sim": 0.3070915718913742
+          },
+          "scan_match": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "map_insert": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "path_plan": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "graph": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "vision": {
+            "calls": 1476,
+            "exclusive_s": 14.559759809460957,
+            "inclusive_s": 28.966482714866288,
+            "wall_per_input_sim": 0.6648292150438794
+          },
+          "record_io": {
+            "calls": 440,
+            "exclusive_s": 3.1595423887483776,
+            "inclusive_s": 3.1595423887483776,
+            "wall_per_input_sim": 0.1442713419519807
+          },
+          "controller_other": {
+            "calls": 439,
+            "exclusive_s": 31.399123366631102,
+            "inclusive_s": 57.9868446746259,
+            "wall_per_input_sim": 1.4337499254169455
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 1.7619653946021572,
+            "inclusive_s": 62.908352457976434,
+            "wall_per_input_sim": 0.08045504084941357
+          }
+        },
+        "on": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 6843,
+            "exclusive_s": 5.276792674034368,
+            "inclusive_s": 5.276792674034368,
+            "wall_per_input_sim": 0.24094943717051912
+          },
+          "posterior_summary": {
+            "calls": 6216,
+            "exclusive_s": 2.5186279778718017,
+            "inclusive_s": 2.5186279778718017,
+            "wall_per_input_sim": 0.11500584373843845
+          },
+          "scan_match": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "map_insert": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "path_plan": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "graph": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "vision": {
+            "calls": 1476,
+            "exclusive_s": 12.18135736673139,
+            "inclusive_s": 24.2091745781363,
+            "wall_per_input_sim": 0.5562263637776891
+          },
+          "record_io": {
+            "calls": 440,
+            "exclusive_s": 2.9386264217901044,
+            "inclusive_s": 2.9386264217901044,
+            "wall_per_input_sim": 0.13418385487626047
+          },
+          "controller_other": {
+            "calls": 439,
+            "exclusive_s": 22.958735695283394,
+            "inclusive_s": 42.935513713920955,
+            "wall_per_input_sim": 1.048344095675041
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 1.7513138642534614,
+            "inclusive_s": 47.62545399996452,
+            "wall_per_input_sim": 0.07996866960061468
+          }
+        }
+      },
+      "growth": {
+        "off": [
+          {
+            "window": "early",
+            "first_t": 2.3,
+            "last_t": 6.25,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.06111663400879479,
+              "posterior_summary": 0.010129589435382513,
+              "scan_match": 0.0,
+              "map_insert": 0.0,
+              "path_plan": 0.0,
+              "graph": 0.0,
+              "vision": 0.047162324539385736,
+              "record_io": 0.002334361014800379,
+              "controller_other": 0.09861257447628305,
+              "setup_proof": 0.0
+            },
+            "cells_min": 0,
+            "cells_max": 0,
+            "particles_first": [
+              400000,
+              400000,
+              400000
+            ],
+            "particles_last": [
+              8001,
+              8001,
+              8001
+            ],
+            "ledger_first": null,
+            "ledger_last": null,
+            "record_bytes_first": null,
+            "record_bytes_last": null
+          },
+          {
+            "window": "late",
+            "first_t": 18.25,
+            "last_t": 23.2,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 4.838973982259631e-05,
+              "posterior_summary": 0.0033600517397280785,
+              "scan_match": 0.0,
+              "map_insert": 0.0,
+              "path_plan": 0.0,
+              "graph": 0.0,
+              "vision": 0.038879887526854874,
+              "record_io": 0.0025668517441954464,
+              "controller_other": 0.032346168042859065,
+              "setup_proof": 0.0
+            },
+            "cells_min": 0,
+            "cells_max": 0,
+            "particles_first": [
+              8001,
+              8001,
+              8001
+            ],
+            "particles_last": [
+              8001,
+              8001,
+              8001
+            ],
+            "ledger_first": null,
+            "ledger_last": null,
+            "record_bytes_first": null,
+            "record_bytes_last": null
+          }
+        ],
+        "on": [
+          {
+            "window": "early",
+            "first_t": 2.3,
+            "last_t": 6.25,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.06082184686310939,
+              "posterior_summary": 0.001954556771670468,
+              "scan_match": 0.0,
+              "map_insert": 0.0,
+              "path_plan": 0.0,
+              "graph": 0.0,
+              "vision": 0.037517307321104455,
+              "record_io": 0.0018683421461901163,
+              "controller_other": 0.08233770104343421,
+              "setup_proof": 0.0
+            },
+            "cells_min": 0,
+            "cells_max": 0,
+            "particles_first": [
+              400000,
+              400000,
+              400000
+            ],
+            "particles_last": [
+              8001,
+              8001,
+              8001
+            ],
+            "ledger_first": null,
+            "ledger_last": null,
+            "record_bytes_first": null,
+            "record_bytes_last": null
+          },
+          {
+            "window": "late",
+            "first_t": 18.25,
+            "last_t": 23.2,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 4.965229076333344e-05,
+              "posterior_summary": 0.0011219095368869602,
+              "scan_match": 0.0,
+              "map_insert": 0.0,
+              "path_plan": 0.0,
+              "graph": 0.0,
+              "vision": 0.03462009290640708,
+              "record_io": 0.0018991117394762114,
+              "controller_other": 0.025632544024847447,
+              "setup_proof": 0.0
+            },
+            "cells_min": 0,
+            "cells_max": 0,
+            "particles_first": [
+              8001,
+              8001,
+              8001
+            ],
+            "particles_last": [
+              8001,
+              8001,
+              8001
+            ],
+            "ledger_first": null,
+            "ledger_last": null,
+            "record_bytes_first": null,
+            "record_bytes_last": null
+          }
+        ]
+      },
+      "speedups": {
+        "schema": "ugrp.controller_exact_speedups.v1",
+        "mode": "exact-v1",
+        "enabled": true,
+        "module_sha256": "06b498a2348e42fae46114c055e6745a81dc44f1d276ba54665e6ef46de7b8b9",
+        "distribution_changed": false,
+        "rng_changed": false,
+        "observation_skipping": false,
+        "physics_changed": false,
+        "applied": [
+          "owncam_moments",
+          "markerless_integer_clip",
+          "opencv_integer_clip",
+          "posterior_summary",
+          "s3_exact_snapshot_keys"
+        ],
+        "fallback": [
+          "harness.self_map_rbpf:not_in_source"
+        ],
+        "integer_clip_fast_calls": 1430422,
+        "nearest_lookup_fast_calls": 0,
+        "caches": {
+          "owncam_moments": {
+            "hits": 5637,
+            "misses": 27,
+            "entries": 3,
+            "max_entries": 4
+          },
+          "posterior_summary": {
+            "hits": 0,
+            "misses": 27,
+            "entries": 4,
+            "max_entries": 4
+          }
+        }
+      }
+    },
+    {
+      "case": "ego58-55001",
+      "status": "verified",
+      "full_replay": true,
+      "behavior_bytes_identical": true,
+      "files": {
+        "active-events.json": {
+          "bytes_identical": true,
+          "bytes": 191019,
+          "off_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03",
+          "on_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03"
+        },
+        "all-particle-maps.json": {
+          "bytes_identical": true,
+          "bytes": 14095398,
+          "off_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43",
+          "on_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43"
+        },
+        "commands.json": {
+          "bytes_identical": true,
+          "bytes": 157434,
+          "off_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd",
+          "on_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd"
+        },
+        "decisions.json": {
+          "bytes_identical": true,
+          "bytes": 23223164,
+          "off_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed",
+          "on_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed"
+        },
+        "frontend-covariances.jsonl": {
+          "bytes_identical": true,
+          "bytes": 442472,
+          "off_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b",
+          "on_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b"
+        },
+        "frontend-grid.json": {
+          "bytes_identical": true,
+          "bytes": 159889,
+          "off_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328",
+          "on_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328"
+        },
+        "frontend-ledger.json": {
+          "bytes_identical": true,
+          "bytes": 730443,
+          "off_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684",
+          "on_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684"
+        },
+        "frontend-poses.json": {
+          "bytes_identical": true,
+          "bytes": 193443,
+          "off_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267",
+          "on_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267"
+        },
+        "graphs.json": {
+          "bytes_identical": true,
+          "bytes": 47444103,
+          "off_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993",
+          "on_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993"
+        },
+        "heading-decisions.json": {
+          "bytes_identical": true,
+          "bytes": 9143444,
+          "off_sha256": "7710be94455b8edd9bc9b3e66493890c10caa906b66311dbb131c44fb8d30baa",
+          "on_sha256": "7710be94455b8edd9bc9b3e66493890c10caa906b66311dbb131c44fb8d30baa"
+        },
+        "navigation.json": {
+          "bytes_identical": true,
+          "bytes": 13713,
+          "off_sha256": "d20bd2cef2e500d4a910d8e9c4e887b233df7dbc2184f988f17baf52f3763e46",
+          "on_sha256": "d20bd2cef2e500d4a910d8e9c4e887b233df7dbc2184f988f17baf52f3763e46"
+        },
+        "online-maps.jsonl": {
+          "bytes_identical": true,
+          "bytes": 58687164,
+          "off_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94",
+          "on_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94"
+        },
+        "own-contacts.jsonl": {
+          "bytes_identical": true,
+          "bytes": 130549444,
+          "off_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f",
+          "on_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f"
+        },
+        "own-controller.jsonl": {
+          "bytes_identical": true,
+          "bytes": 24815170,
+          "off_sha256": "d30e8a7085d47bd60460c05376ff6cfdc35782e259900d570ebf4263bd12637a",
+          "on_sha256": "d30e8a7085d47bd60460c05376ff6cfdc35782e259900d570ebf4263bd12637a"
+        },
+        "own-inputs.json": {
+          "bytes_identical": true,
+          "bytes": 321532,
+          "off_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6",
+          "on_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6"
+        },
+        "return-navigation.json": {
+          "bytes_identical": true,
+          "bytes": 6911,
+          "off_sha256": "0126a92e37811b5a4a8bbb759fa6618ddbe953769137d30ebb8ddbe2f285029b",
+          "on_sha256": "0126a92e37811b5a4a8bbb759fa6618ddbe953769137d30ebb8ddbe2f285029b"
+        },
+        "route-map.json": {
+          "bytes_identical": true,
+          "bytes": 24540549,
+          "off_sha256": "baf9c7f630bc3afd2a3be3b0992b1f38c6180083407bdbb9bc862480756cfce9",
+          "on_sha256": "baf9c7f630bc3afd2a3be3b0992b1f38c6180083407bdbb9bc862480756cfce9"
+        },
+        "state.json": {
+          "bytes_identical": true,
+          "bytes": 681445,
+          "off_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832",
+          "on_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832"
+        },
+        "traces.json": {
+          "bytes_identical": true,
+          "bytes": 44516748,
+          "off_sha256": "eaf12015c111497550d1cc2dc11e53f2719600568a09cfc32fe8f20e2a3ca41c",
+          "on_sha256": "eaf12015c111497550d1cc2dc11e53f2719600568a09cfc32fe8f20e2a3ca41c"
+        },
+        "utility-events.json": {
+          "bytes_identical": true,
+          "bytes": 67603,
+          "off_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3",
+          "on_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3"
+        }
+      },
+      "missing_on": [],
+      "missing_off": [],
+      "input_sha_identical": true,
+      "implementations": [
+        "bdaf46815620b919a8f61b69d301ca88547f1589",
+        "ee554da0a44ad5829e54663992989b8565f6045b"
+      ],
+      "sim_s": 270.0,
+      "off_wall_s": 403.028186874988,
+      "on_wall_s": 389.207214583992,
+      "off_wall_per_input_sim": 1.4926969884258816,
+      "on_wall_per_input_sim": 1.4415082021629335,
+      "speedup": 1.035510575788706,
+      "physics_runs": 0,
+      "render_calls": 0,
+      "breakdown": {
+        "off": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 6325,
+            "exclusive_s": 12.833854818018153,
+            "inclusive_s": 59.86159395863069,
+            "wall_per_input_sim": 0.04753279562228946
+          },
+          "posterior_summary": {
+            "calls": 8431,
+            "exclusive_s": 0.15560784039553255,
+            "inclusive_s": 0.15560784039553255,
+            "wall_per_input_sim": 0.0005763253347982687
+          },
+          "scan_match": {
+            "calls": 51517,
+            "exclusive_s": 124.03578837309033,
+            "inclusive_s": 124.03578837309033,
+            "wall_per_input_sim": 0.4593918087892234
+          },
+          "map_insert": {
+            "calls": 33608,
+            "exclusive_s": 15.629864972899668,
+            "inclusive_s": 15.629864972899668,
+            "wall_per_input_sim": 0.057888388788517285
+          },
+          "path_plan": {
+            "calls": 1204,
+            "exclusive_s": 0.2688577344524674,
+            "inclusive_s": 0.2688577344524674,
+            "wall_per_input_sim": 0.0009957693868609904
+          },
+          "graph": {
+            "calls": 27,
+            "exclusive_s": 8.039554234070238,
+            "inclusive_s": 86.03894245898118,
+            "wall_per_input_sim": 0.02977612679285273
+          },
+          "vision": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "record_io": {
+            "calls": 2693,
+            "exclusive_s": 19.392231831036042,
+            "inclusive_s": 19.418527350528166,
+            "wall_per_input_sim": 0.07182308085568904
+          },
+          "controller_other": {
+            "calls": 2682,
+            "exclusive_s": 222.46212274453137,
+            "inclusive_s": 383.39935519796563,
+            "wall_per_input_sim": 0.8239337879427088
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 0.21026153553975746,
+            "inclusive_s": 403.02814408403356,
+            "wall_per_input_sim": 0.0007787464279250276
+          }
+        },
+        "on": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 6325,
+            "exclusive_s": 12.831516804348212,
+            "inclusive_s": 59.02100143529242,
+            "wall_per_input_sim": 0.04752413631240079
+          },
+          "posterior_summary": {
+            "calls": 8431,
+            "exclusive_s": 0.1560952210566029,
+            "inclusive_s": 0.1560952210566029,
+            "wall_per_input_sim": 0.0005781304483577886
+          },
+          "scan_match": {
+            "calls": 47017,
+            "exclusive_s": 105.9948086082004,
+            "inclusive_s": 105.9948086082004,
+            "wall_per_input_sim": 0.392573365215557
+          },
+          "map_insert": {
+            "calls": 33608,
+            "exclusive_s": 15.937596845789813,
+            "inclusive_s": 15.937596845789813,
+            "wall_per_input_sim": 0.05902813646588819
+          },
+          "path_plan": {
+            "calls": 1204,
+            "exclusive_s": 0.26827296847477555,
+            "inclusive_s": 0.26827296847477555,
+            "wall_per_input_sim": 0.000993603586943613
+          },
+          "graph": {
+            "calls": 27,
+            "exclusive_s": 8.221727848111186,
+            "inclusive_s": 79.69882279093144,
+            "wall_per_input_sim": 0.030450843881893282
+          },
+          "vision": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "record_io": {
+            "calls": 2693,
+            "exclusive_s": 19.271503436146304,
+            "inclusive_s": 19.297901146346703,
+            "wall_per_input_sim": 0.07137593865239372
+          },
+          "controller_other": {
+            "calls": 2682,
+            "exclusive_s": 226.31541359249968,
+            "inclusive_s": 369.6990341782803,
+            "wall_per_input_sim": 0.8382052355277766
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 0.2102423423784785,
+            "inclusive_s": 389.20717766700545,
+            "wall_per_input_sim": 0.0007786753421425129
+          }
+        }
+      },
+      "growth": {
+        "off": [
+          {
+            "window": "early",
+            "first_t": 5.3,
+            "last_t": 21.1,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.004504769262712216,
+              "posterior_summary": 0.00013467595999827608,
+              "scan_match": 0.022140413148736115,
+              "map_insert": 0.016322662579477766,
+              "path_plan": 3.500051170703955e-05,
+              "graph": 0.00029037345011602157,
+              "vision": 0.0,
+              "record_io": 0.0024661230861966034,
+              "controller_other": 0.1803698101786722,
+              "setup_proof": 0.0
+            },
+            "cells_min": 17482,
+            "cells_max": 97454,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 3,
+            "ledger_last": 16,
+            "record_bytes_first": 1155134,
+            "record_bytes_last": 10419900
+          },
+          {
+            "window": "late",
+            "first_t": 251.5,
+            "last_t": 271.3,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.015737113773357122,
+              "posterior_summary": 0.00014246979961171746,
+              "scan_match": 0.18120758734701667,
+              "map_insert": 0.016760353857534938,
+              "path_plan": 0.00032723415119107814,
+              "graph": 0.02646771757863462,
+              "vision": 0.0,
+              "record_io": 0.004001810808549635,
+              "controller_other": 0.122537510766997,
+              "setup_proof": 0.0
+            },
+            "cells_min": 233441,
+            "cells_max": 236377,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 172,
+            "ledger_last": 188,
+            "record_bytes_first": 195448060,
+            "record_bytes_last": 214494250
+          }
+        ],
+        "on": [
+          {
+            "window": "early",
+            "first_t": 5.3,
+            "last_t": 21.1,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.004495034807769116,
+              "posterior_summary": 0.00013540752042899838,
+              "scan_match": 0.011672311844449723,
+              "map_insert": 0.016339587603579276,
+              "path_plan": 3.512188923195936e-05,
+              "graph": 0.0002920458617154509,
+              "vision": 0.0,
+              "record_io": 0.002468237586435862,
+              "controller_other": 0.18202864092090748,
+              "setup_proof": 0.0
+            },
+            "cells_min": 17482,
+            "cells_max": 97454,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 3,
+            "ledger_last": 16,
+            "record_bytes_first": 1155134,
+            "record_bytes_last": 10419900
+          },
+          {
+            "window": "late",
+            "first_t": 251.5,
+            "last_t": 271.3,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.0162456737406319,
+              "posterior_summary": 0.00015240231703501195,
+              "scan_match": 0.16765046367247124,
+              "map_insert": 0.017708644228405318,
+              "path_plan": 0.000330922965076752,
+              "graph": 0.021931106705451384,
+              "vision": 0.0,
+              "record_io": 0.004363671345636248,
+              "controller_other": 0.12421414265932981,
+              "setup_proof": 0.0
+            },
+            "cells_min": 233441,
+            "cells_max": 236377,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 172,
+            "ledger_last": 188,
+            "record_bytes_first": 195448060,
+            "record_bytes_last": 214494250
+          }
+        ]
+      },
+      "speedups": {
+        "schema": "ugrp.controller_exact_speedups.v1",
+        "mode": "exact-v1",
+        "enabled": true,
+        "module_sha256": "06b498a2348e42fae46114c055e6745a81dc44f1d276ba54665e6ef46de7b8b9",
+        "distribution_changed": false,
+        "rng_changed": false,
+        "observation_skipping": false,
+        "physics_changed": false,
+        "applied": [
+          "owncam_moments",
+          "markerless_integer_clip",
+          "opencv_integer_clip",
+          "posterior_summary",
+          "offsets_grid",
+          "sensor_sigma",
+          "grid_field",
+          "nearest_probability_lookup",
+          "forecast_evidence_copy"
+        ],
+        "fallback": [
+          "harness.zone_s3_exact_cache:not_in_source"
+        ],
+        "nearest_lookup_scipy": "1.17.1",
+        "integer_clip_fast_calls": 0,
+        "nearest_lookup_fast_calls": 313335,
+        "caches": {
+          "owncam_moments": {
+            "hits": 0,
+            "misses": 0,
+            "entries": 0,
+            "max_entries": 4
+          },
+          "posterior_summary": {
+            "hits": 0,
+            "misses": 0,
+            "entries": 0,
+            "max_entries": 4
+          },
+          "offsets_grid": {
+            "hits": 23131,
+            "misses": 16327,
+            "entries": 32,
+            "max_entries": 32
+          },
+          "sensor_sigma": {
+            "hits": 19503,
+            "misses": 226,
+            "entries": 8,
+            "max_entries": 8
+          },
+          "grid_field": {
+            "hits": 5724,
+            "misses": 14005,
+            "entries": 32,
+            "max_entries": 32
+          }
+        }
+      }
+    },
+    {
+      "case": "ego58-55003",
+      "status": "verified",
+      "full_replay": true,
+      "behavior_bytes_identical": true,
+      "files": {
+        "active-events.json": {
+          "bytes_identical": true,
+          "bytes": 631239,
+          "off_sha256": "baab56dcc50d28bd32bb6d955767d486b607f698429d44040ee712aea95b4472",
+          "on_sha256": "baab56dcc50d28bd32bb6d955767d486b607f698429d44040ee712aea95b4472"
+        },
+        "all-particle-maps.json": {
+          "bytes_identical": true,
+          "bytes": 15839432,
+          "off_sha256": "071f9e4c3d662b3492ede1727d639e6a3c294ed0d64ec50453b8e5e1d804f308",
+          "on_sha256": "071f9e4c3d662b3492ede1727d639e6a3c294ed0d64ec50453b8e5e1d804f308"
+        },
+        "commands.json": {
+          "bytes_identical": true,
+          "bytes": 303720,
+          "off_sha256": "caf9eae5f6dfe4a9ffa9ce54ac5655bdd21a3c71ccc9d017aceab82b77bfd43b",
+          "on_sha256": "caf9eae5f6dfe4a9ffa9ce54ac5655bdd21a3c71ccc9d017aceab82b77bfd43b"
+        },
+        "decisions.json": {
+          "bytes_identical": true,
+          "bytes": 51228042,
+          "off_sha256": "f0d6f22c3e0b74b24e115675c77454c05b667d3605cafc2597b46a98a387b531",
+          "on_sha256": "f0d6f22c3e0b74b24e115675c77454c05b667d3605cafc2597b46a98a387b531"
+        },
+        "frontend-covariances.jsonl": {
+          "bytes_identical": true,
+          "bytes": 811618,
+          "off_sha256": "9948826c9b98da244de706c14cefe4ee15aa7a0b92921e5faa18de06f7346a58",
+          "on_sha256": "9948826c9b98da244de706c14cefe4ee15aa7a0b92921e5faa18de06f7346a58"
+        },
+        "frontend-grid.json": {
+          "bytes_identical": true,
+          "bytes": 176589,
+          "off_sha256": "74be4d8670c8533e6ebb67d4913ca91836475df842bfcc0b948e35eee9ef10ab",
+          "on_sha256": "74be4d8670c8533e6ebb67d4913ca91836475df842bfcc0b948e35eee9ef10ab"
+        },
+        "frontend-ledger.json": {
+          "bytes_identical": true,
+          "bytes": 1749422,
+          "off_sha256": "8125c42669649fba10f0d549ad0e707434068a02b0cdd412523878ff51251152",
+          "on_sha256": "8125c42669649fba10f0d549ad0e707434068a02b0cdd412523878ff51251152"
+        },
+        "frontend-poses.json": {
+          "bytes_identical": true,
+          "bytes": 355084,
+          "off_sha256": "0bf5d513b84366f2326baddb67790aaf251139d36352a3d0e8d67d5129ed8a50",
+          "on_sha256": "0bf5d513b84366f2326baddb67790aaf251139d36352a3d0e8d67d5129ed8a50"
+        },
+        "graphs.json": {
+          "bytes_identical": true,
+          "bytes": 275699990,
+          "off_sha256": "ccd3244d69ac2f49c343ee8b555f657e68d3b0f0b8c5dbbeaf4920efc5c068bb",
+          "on_sha256": "ccd3244d69ac2f49c343ee8b555f657e68d3b0f0b8c5dbbeaf4920efc5c068bb"
+        },
+        "heading-decisions.json": {
+          "bytes_identical": true,
+          "bytes": 16206781,
+          "off_sha256": "67d581aa86c037d5283e9390f3714382415292bb4cb2df463d35058eff8d7071",
+          "on_sha256": "67d581aa86c037d5283e9390f3714382415292bb4cb2df463d35058eff8d7071"
+        },
+        "navigation.json": {
+          "bytes_identical": true,
+          "bytes": 25588,
+          "off_sha256": "36943c94c9329d324087e3375833cb347f0093dd52e65ab329c2362b8c859b2c",
+          "on_sha256": "36943c94c9329d324087e3375833cb347f0093dd52e65ab329c2362b8c859b2c"
+        },
+        "online-maps.jsonl": {
+          "bytes_identical": true,
+          "bytes": 274136471,
+          "off_sha256": "b96baa48343c3e87bfc6ccf31e5cec87bf0e62860c9d1782a3139be6bce028f4",
+          "on_sha256": "b96baa48343c3e87bfc6ccf31e5cec87bf0e62860c9d1782a3139be6bce028f4"
+        },
+        "own-contacts.jsonl": {
+          "bytes_identical": true,
+          "bytes": 244497146,
+          "off_sha256": "7d42967c55b966bd01dd03aa08b2cae403fee98ed27999c574d34d97beed066b",
+          "on_sha256": "7d42967c55b966bd01dd03aa08b2cae403fee98ed27999c574d34d97beed066b"
+        },
+        "own-controller.jsonl": {
+          "bytes_identical": true,
+          "bytes": 77646467,
+          "off_sha256": "1e855ba7da95fa838cb4a4237dc1f361ad240f0f7796ee08961657615ed5cd74",
+          "on_sha256": "1e855ba7da95fa838cb4a4237dc1f361ad240f0f7796ee08961657615ed5cd74"
+        },
+        "own-inputs.json": {
+          "bytes_identical": true,
+          "bytes": 590421,
+          "off_sha256": "f2669aabc8d606363b4e7255cca7cbe3d0f0a281a7e5f967777a8a2e33de515d",
+          "on_sha256": "f2669aabc8d606363b4e7255cca7cbe3d0f0a281a7e5f967777a8a2e33de515d"
+        },
+        "return-navigation.json": {
+          "bytes_identical": true,
+          "bytes": 854,
+          "off_sha256": "83c6e8551e53e1107a6dc76752b1ed0a91af98e5bd1f8fc77fdd661bc35b059a",
+          "on_sha256": "83c6e8551e53e1107a6dc76752b1ed0a91af98e5bd1f8fc77fdd661bc35b059a"
+        },
+        "route-map.json": {
+          "bytes_identical": true,
+          "bytes": 56071428,
+          "off_sha256": "1f61c5faed03d406ab86a72c912fe1b68d965624448b0f681fca9e0e267beb38",
+          "on_sha256": "1f61c5faed03d406ab86a72c912fe1b68d965624448b0f681fca9e0e267beb38"
+        },
+        "state.json": {
+          "bytes_identical": true,
+          "bytes": 1246744,
+          "off_sha256": "f3167ccea49b3c1554bf3648a05750bf7194863cd80efca3ef2cb98fca2de217",
+          "on_sha256": "f3167ccea49b3c1554bf3648a05750bf7194863cd80efca3ef2cb98fca2de217"
+        },
+        "traces.json": {
+          "bytes_identical": true,
+          "bytes": 140934338,
+          "off_sha256": "e43e0d4634a67ed2aea981ef2158bcc29f881e2ee648a0a488d819c675a8d260",
+          "on_sha256": "e43e0d4634a67ed2aea981ef2158bcc29f881e2ee648a0a488d819c675a8d260"
+        },
+        "utility-events.json": {
+          "bytes_identical": true,
+          "bytes": 114319,
+          "off_sha256": "6ee0f0355a3f100e31da208a094cf6aadc10571c1ecdb7d7245dbb3fbc5b007d",
+          "on_sha256": "6ee0f0355a3f100e31da208a094cf6aadc10571c1ecdb7d7245dbb3fbc5b007d"
+        }
+      },
+      "missing_on": [],
+      "missing_off": [],
+      "input_sha_identical": true,
+      "implementations": [
+        "47bb794e46b2b105e0a073201059c885384b00ba",
+        "ee554da0a44ad5829e54663992989b8565f6045b"
+      ],
+      "sim_s": 492.2,
+      "off_wall_s": 2133.7040180420154,
+      "on_wall_s": 2010.381242125004,
+      "off_wall_per_input_sim": 4.335034575461226,
+      "on_wall_per_input_sim": 4.084480378149134,
+      "speedup": 1.0613429797955423,
+      "physics_runs": 0,
+      "render_calls": 0,
+      "breakdown": {
+        "off": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 12484,
+            "exclusive_s": 30.178822648595087,
+            "inclusive_s": 134.85480353742605,
+            "wall_per_input_sim": 0.06131414597439067
+          },
+          "posterior_summary": {
+            "calls": 15558,
+            "exclusive_s": 0.2863181733409874,
+            "inclusive_s": 0.2863181733409874,
+            "wall_per_input_sim": 0.0005817110388886376
+          },
+          "scan_match": {
+            "calls": 296246,
+            "exclusive_s": 1320.8493604634423,
+            "inclusive_s": 1320.8493604634423,
+            "wall_per_input_sim": 2.6835622926928937
+          },
+          "map_insert": {
+            "calls": 97579,
+            "exclusive_s": 46.674899873149116,
+            "inclusive_s": 46.674899873149116,
+            "wall_per_input_sim": 0.09482913424044924
+          },
+          "path_plan": {
+            "calls": 1092,
+            "exclusive_s": 0.2475957848946564,
+            "inclusive_s": 0.2475957848946564,
+            "wall_per_input_sim": 0.0005030389778436741
+          },
+          "graph": {
+            "calls": 49,
+            "exclusive_s": 41.04350261436775,
+            "inclusive_s": 1251.7932375878445,
+            "wall_per_input_sim": 0.08338785577888613
+          },
+          "vision": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "record_io": {
+            "calls": 4915,
+            "exclusive_s": 59.32423617161112,
+            "inclusive_s": 59.37237855285639,
+            "wall_per_input_sim": 0.12052872038116846
+          },
+          "controller_other": {
+            "calls": 4904,
+            "exclusive_s": 634.6957222646452,
+            "inclusive_s": 2073.9280794411898,
+            "wall_per_input_sim": 1.2895077656738017
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 0.4035209229332395,
+            "inclusive_s": 2133.7039789169794,
+            "wall_per_input_sim": 0.0008198312127859396
+          }
+        },
+        "on": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 12484,
+            "exclusive_s": 31.23049434495624,
+            "inclusive_s": 133.6015561161912,
+            "wall_per_input_sim": 0.06345082150539667
+          },
+          "posterior_summary": {
+            "calls": 15558,
+            "exclusive_s": 0.29050001135328785,
+            "inclusive_s": 0.29050001135328785,
+            "wall_per_input_sim": 0.0005902072558985938
+          },
+          "scan_match": {
+            "calls": 280046,
+            "exclusive_s": 1192.4269454526366,
+            "inclusive_s": 1192.4269454526366,
+            "wall_per_input_sim": 2.422647187022829
+          },
+          "map_insert": {
+            "calls": 97579,
+            "exclusive_s": 47.20098277082434,
+            "inclusive_s": 47.20098277082434,
+            "wall_per_input_sim": 0.09589797393503523
+          },
+          "path_plan": {
+            "calls": 1092,
+            "exclusive_s": 0.2475271768635139,
+            "inclusive_s": 0.2475271768635139,
+            "wall_per_input_sim": 0.000502899587288732
+          },
+          "graph": {
+            "calls": 49,
+            "exclusive_s": 38.580544377618935,
+            "inclusive_s": 1159.59214345488,
+            "wall_per_input_sim": 0.07838387724018475
+          },
+          "vision": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "record_io": {
+            "calls": 4915,
+            "exclusive_s": 61.13314964220626,
+            "inclusive_s": 61.18285618792288,
+            "wall_per_input_sim": 0.12420387980943978
+          },
+          "controller_other": {
+            "calls": 4904,
+            "exclusive_s": 638.8670319710509,
+            "inclusive_s": 1948.7943195595872,
+            "wall_per_input_sim": 1.297982592383281
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 0.4040290444972925,
+            "inclusive_s": 2010.3812047920073,
+            "wall_per_input_sim": 0.0008208635605389933
+          }
+        }
+      },
+      "growth": {
+        "off": [
+          {
+            "window": "early",
+            "first_t": 5.3,
+            "last_t": 21.1,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.004895132800447755,
+              "posterior_summary": 0.00013619259188999422,
+              "scan_match": 0.034211466218403076,
+              "map_insert": 0.019262964159133845,
+              "path_plan": 5.7170311629306524e-05,
+              "graph": 0.0002995859518705402,
+              "vision": 0.0,
+              "record_io": 0.002501373895211145,
+              "controller_other": 0.17087724782031727,
+              "setup_proof": 0.0
+            },
+            "cells_min": 16119,
+            "cells_max": 95356,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 3,
+            "ledger_last": 16,
+            "record_bytes_first": 1127051,
+            "record_bytes_last": 10499272
+          },
+          {
+            "window": "late",
+            "first_t": 473.7,
+            "last_t": 493.5,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.01668645432277117,
+              "posterior_summary": 0.00015197185915894807,
+              "scan_match": 2.1501782775158063,
+              "map_insert": 0.05376409490883816,
+              "path_plan": 8.643333800137043e-05,
+              "graph": 0.07679008970386349,
+              "vision": 0.0,
+              "record_io": 0.00688172847032547,
+              "controller_other": 0.49151656876434574,
+              "setup_proof": 0.0
+            },
+            "cells_min": 267555,
+            "cells_max": 268029,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 402,
+            "ledger_last": 419,
+            "record_bytes_first": 561322664,
+            "record_bytes_last": 597091702
+          }
+        ],
+        "on": [
+          {
+            "window": "early",
+            "first_t": 5.3,
+            "last_t": 21.1,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.004548450819856953,
+              "posterior_summary": 0.00013662284327438102,
+              "scan_match": 0.014543164966016774,
+              "map_insert": 0.019303363311337307,
+              "path_plan": 5.673384948750027e-05,
+              "graph": 0.00030292550072772426,
+              "vision": 0.0,
+              "record_io": 0.002499595965491608,
+              "controller_other": 0.1817151616931369,
+              "setup_proof": 0.0
+            },
+            "cells_min": 16119,
+            "cells_max": 95356,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 3,
+            "ledger_last": 16,
+            "record_bytes_first": 1127051,
+            "record_bytes_last": 10499272
+          },
+          {
+            "window": "late",
+            "first_t": 473.7,
+            "last_t": 493.5,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.01666814322641585,
+              "posterior_summary": 0.0001480907591758296,
+              "scan_match": 1.9659079115639906,
+              "map_insert": 0.05444634447281715,
+              "path_plan": 8.333584992215037e-05,
+              "graph": 0.07573615147848614,
+              "vision": 0.0,
+              "record_io": 0.006782937973621301,
+              "controller_other": 0.46382875902811066,
+              "setup_proof": 0.0
+            },
+            "cells_min": 267555,
+            "cells_max": 268029,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 402,
+            "ledger_last": 419,
+            "record_bytes_first": 561322664,
+            "record_bytes_last": 597091702
+          }
+        ]
+      },
+      "speedups": {
+        "schema": "ugrp.controller_exact_speedups.v1",
+        "mode": "exact-v1",
+        "enabled": true,
+        "module_sha256": "06b498a2348e42fae46114c055e6745a81dc44f1d276ba54665e6ef46de7b8b9",
+        "distribution_changed": false,
+        "rng_changed": false,
+        "observation_skipping": false,
+        "physics_changed": false,
+        "applied": [
+          "owncam_moments",
+          "markerless_integer_clip",
+          "opencv_integer_clip",
+          "posterior_summary",
+          "offsets_grid",
+          "sensor_sigma",
+          "grid_field",
+          "nearest_probability_lookup",
+          "forecast_evidence_copy"
+        ],
+        "fallback": [
+          "harness.zone_s3_exact_cache:not_in_source"
+        ],
+        "nearest_lookup_scipy": "1.17.1",
+        "integer_clip_fast_calls": 0,
+        "nearest_lookup_fast_calls": 5213862,
+        "caches": {
+          "owncam_moments": {
+            "hits": 0,
+            "misses": 0,
+            "entries": 0,
+            "max_entries": 4
+          },
+          "posterior_summary": {
+            "hits": 0,
+            "misses": 0,
+            "entries": 0,
+            "max_entries": 4
+          },
+          "offsets_grid": {
+            "hits": 59077,
+            "misses": 41669,
+            "entries": 32,
+            "max_entries": 32
+          },
+          "sensor_sigma": {
+            "hits": 49797,
+            "misses": 576,
+            "entries": 8,
+            "max_entries": 8
+          },
+          "grid_field": {
+            "hits": 14639,
+            "misses": 35734,
+            "entries": 32,
+            "max_entries": 32
+          }
+        }
+      }
+    },
+    {
+      "case": "ego59-55001",
+      "status": "verified",
+      "full_replay": true,
+      "behavior_bytes_identical": true,
+      "files": {
+        "active-events.json": {
+          "bytes_identical": true,
+          "bytes": 191019,
+          "off_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03",
+          "on_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03"
+        },
+        "all-particle-maps.json": {
+          "bytes_identical": true,
+          "bytes": 14095398,
+          "off_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43",
+          "on_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43"
+        },
+        "commands.json": {
+          "bytes_identical": true,
+          "bytes": 157434,
+          "off_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd",
+          "on_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd"
+        },
+        "decisions.json": {
+          "bytes_identical": true,
+          "bytes": 23223164,
+          "off_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed",
+          "on_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed"
+        },
+        "frontend-covariances.jsonl": {
+          "bytes_identical": true,
+          "bytes": 442472,
+          "off_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b",
+          "on_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b"
+        },
+        "frontend-grid.json": {
+          "bytes_identical": true,
+          "bytes": 159889,
+          "off_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328",
+          "on_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328"
+        },
+        "frontend-ledger.json": {
+          "bytes_identical": true,
+          "bytes": 730443,
+          "off_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684",
+          "on_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684"
+        },
+        "frontend-poses.json": {
+          "bytes_identical": true,
+          "bytes": 193443,
+          "off_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267",
+          "on_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267"
+        },
+        "graphs.json": {
+          "bytes_identical": true,
+          "bytes": 47444103,
+          "off_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993",
+          "on_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993"
+        },
+        "heading-decisions.json": {
+          "bytes_identical": true,
+          "bytes": 9143444,
+          "off_sha256": "7710be94455b8edd9bc9b3e66493890c10caa906b66311dbb131c44fb8d30baa",
+          "on_sha256": "7710be94455b8edd9bc9b3e66493890c10caa906b66311dbb131c44fb8d30baa"
+        },
+        "navigation.json": {
+          "bytes_identical": true,
+          "bytes": 13713,
+          "off_sha256": "d20bd2cef2e500d4a910d8e9c4e887b233df7dbc2184f988f17baf52f3763e46",
+          "on_sha256": "d20bd2cef2e500d4a910d8e9c4e887b233df7dbc2184f988f17baf52f3763e46"
+        },
+        "online-maps.jsonl": {
+          "bytes_identical": true,
+          "bytes": 58687164,
+          "off_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94",
+          "on_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94"
+        },
+        "own-contacts.jsonl": {
+          "bytes_identical": true,
+          "bytes": 130549444,
+          "off_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f",
+          "on_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f"
+        },
+        "own-controller.jsonl": {
+          "bytes_identical": true,
+          "bytes": 24815170,
+          "off_sha256": "d30e8a7085d47bd60460c05376ff6cfdc35782e259900d570ebf4263bd12637a",
+          "on_sha256": "d30e8a7085d47bd60460c05376ff6cfdc35782e259900d570ebf4263bd12637a"
+        },
+        "own-inputs.json": {
+          "bytes_identical": true,
+          "bytes": 321532,
+          "off_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6",
+          "on_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6"
+        },
+        "return-navigation.json": {
+          "bytes_identical": true,
+          "bytes": 6911,
+          "off_sha256": "0126a92e37811b5a4a8bbb759fa6618ddbe953769137d30ebb8ddbe2f285029b",
+          "on_sha256": "0126a92e37811b5a4a8bbb759fa6618ddbe953769137d30ebb8ddbe2f285029b"
+        },
+        "route-map.json": {
+          "bytes_identical": true,
+          "bytes": 24540549,
+          "off_sha256": "baf9c7f630bc3afd2a3be3b0992b1f38c6180083407bdbb9bc862480756cfce9",
+          "on_sha256": "baf9c7f630bc3afd2a3be3b0992b1f38c6180083407bdbb9bc862480756cfce9"
+        },
+        "state.json": {
+          "bytes_identical": true,
+          "bytes": 681445,
+          "off_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832",
+          "on_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832"
+        },
+        "traces.json": {
+          "bytes_identical": true,
+          "bytes": 44516748,
+          "off_sha256": "eaf12015c111497550d1cc2dc11e53f2719600568a09cfc32fe8f20e2a3ca41c",
+          "on_sha256": "eaf12015c111497550d1cc2dc11e53f2719600568a09cfc32fe8f20e2a3ca41c"
+        },
+        "utility-events.json": {
+          "bytes_identical": true,
+          "bytes": 67603,
+          "off_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3",
+          "on_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3"
+        }
+      },
+      "missing_on": [],
+      "missing_off": [],
+      "input_sha_identical": true,
+      "implementations": [
+        "ee554da0a44ad5829e54663992989b8565f6045b",
+        "ee554da0a44ad5829e54663992989b8565f6045b"
+      ],
+      "sim_s": 270.0,
+      "off_wall_s": 401.3272517499863,
+      "on_wall_s": 387.09069925005315,
+      "off_wall_per_input_sim": 1.486397228703653,
+      "on_wall_per_input_sim": 1.4336692564816784,
+      "speedup": 1.0367783378094977,
+      "physics_runs": 0,
+      "render_calls": 0,
+      "breakdown": {
+        "off": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 6325,
+            "exclusive_s": 12.53793168865377,
+            "inclusive_s": 59.588736514386255,
+            "wall_per_input_sim": 0.046436784032051
+          },
+          "posterior_summary": {
+            "calls": 8431,
+            "exclusive_s": 0.1523125873063691,
+            "inclusive_s": 0.1523125873063691,
+            "wall_per_input_sim": 0.0005641206937272929
+          },
+          "scan_match": {
+            "calls": 51517,
+            "exclusive_s": 123.86415086139459,
+            "inclusive_s": 123.86415086139459,
+            "wall_per_input_sim": 0.45875611430146146
+          },
+          "map_insert": {
+            "calls": 33608,
+            "exclusive_s": 15.690321161760949,
+            "inclusive_s": 15.690321161760949,
+            "wall_per_input_sim": 0.058112300599114625
+          },
+          "path_plan": {
+            "calls": 1204,
+            "exclusive_s": 0.2672265795408748,
+            "inclusive_s": 0.2672265795408748,
+            "wall_per_input_sim": 0.0009897280723736104
+          },
+          "graph": {
+            "calls": 27,
+            "exclusive_s": 7.982252060552128,
+            "inclusive_s": 85.8367401700234,
+            "wall_per_input_sim": 0.029563896520563435
+          },
+          "vision": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "record_io": {
+            "calls": 2693,
+            "exclusive_s": 18.635373041965067,
+            "inclusive_s": 18.660825632163323,
+            "wall_per_input_sim": 0.06901990015542618
+          },
+          "controller_other": {
+            "calls": 2682,
+            "exclusive_s": 221.96712379384553,
+            "inclusive_s": 382.43586614285596,
+            "wall_per_input_sim": 0.8221004584957242
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 0.23052426695358008,
+            "inclusive_s": 401.32721604197286,
+            "wall_per_input_sim": 0.0008537935813095559
+          }
+        },
+        "on": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 6325,
+            "exclusive_s": 13.15150247485144,
+            "inclusive_s": 59.01200347393751,
+            "wall_per_input_sim": 0.04870926842537571
+          },
+          "posterior_summary": {
+            "calls": 8431,
+            "exclusive_s": 0.15430042473599315,
+            "inclusive_s": 0.15430042473599315,
+            "wall_per_input_sim": 0.0005714830545777524
+          },
+          "scan_match": {
+            "calls": 47017,
+            "exclusive_s": 105.63925909122918,
+            "inclusive_s": 105.63925909122918,
+            "wall_per_input_sim": 0.39125651515270066
+          },
+          "map_insert": {
+            "calls": 33608,
+            "exclusive_s": 15.682025641144719,
+            "inclusive_s": 15.682025641144719,
+            "wall_per_input_sim": 0.05808157644868414
+          },
+          "path_plan": {
+            "calls": 1204,
+            "exclusive_s": 0.269674330833368,
+            "inclusive_s": 0.269674330833368,
+            "wall_per_input_sim": 0.000998793817901363
+          },
+          "graph": {
+            "calls": 27,
+            "exclusive_s": 7.55821466963971,
+            "inclusive_s": 78.75457595783519,
+            "wall_per_input_sim": 0.02799338766533226
+          },
+          "vision": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "record_io": {
+            "calls": 2693,
+            "exclusive_s": 19.08286504971329,
+            "inclusive_s": 19.108417674025986,
+            "wall_per_input_sim": 0.07067727796190108
+          },
+          "controller_other": {
+            "calls": 2682,
+            "exclusive_s": 225.35143333062297,
+            "inclusive_s": 367.7808573387447,
+            "wall_per_input_sim": 0.8346349382615665
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 0.20138911221874878,
+            "inclusive_s": 387.0906641249894,
+            "wall_per_input_sim": 0.0007458856008101806
+          }
+        }
+      },
+      "growth": {
+        "off": [
+          {
+            "window": "early",
+            "first_t": 5.3,
+            "last_t": 21.1,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.004507098474277882,
+              "posterior_summary": 0.00013347909116419033,
+              "scan_match": 0.02217167576018255,
+              "map_insert": 0.016438860898779238,
+              "path_plan": 3.494323755148798e-05,
+              "graph": 0.0002881916712794919,
+              "vision": 0.0,
+              "record_io": 0.0025176890470902436,
+              "controller_other": 0.1800531561493699,
+              "setup_proof": 0.0
+            },
+            "cells_min": 17482,
+            "cells_max": 97454,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 3,
+            "ledger_last": 16,
+            "record_bytes_first": 1155134,
+            "record_bytes_last": 10419900
+          },
+          {
+            "window": "late",
+            "first_t": 251.5,
+            "last_t": 271.3,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.015506584392860533,
+              "posterior_summary": 0.00013464543968439102,
+              "scan_match": 0.17999812453519554,
+              "map_insert": 0.016684582315501757,
+              "path_plan": 0.000322129568667151,
+              "graph": 0.025954545903368854,
+              "vision": 0.0,
+              "record_io": 0.0040185142873087895,
+              "controller_other": 0.11992529656039551,
+              "setup_proof": 0.0
+            },
+            "cells_min": 233441,
+            "cells_max": 236377,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 172,
+            "ledger_last": 188,
+            "record_bytes_first": 195448060,
+            "record_bytes_last": 214494250
+          }
+        ],
+        "on": [
+          {
+            "window": "early",
+            "first_t": 5.3,
+            "last_t": 21.1,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.004906068092532223,
+              "posterior_summary": 0.00013530142678064294,
+              "scan_match": 0.011289921153365867,
+              "map_insert": 0.016513777078944258,
+              "path_plan": 3.577083771233447e-05,
+              "graph": 0.0002951375128759537,
+              "vision": 0.0,
+              "record_io": 0.0024704703639145007,
+              "controller_other": 0.18182496819426888,
+              "setup_proof": 0.0
+            },
+            "cells_min": 17482,
+            "cells_max": 97454,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 3,
+            "ledger_last": 16,
+            "record_bytes_first": 1155134,
+            "record_bytes_last": 10419900
+          },
+          {
+            "window": "late",
+            "first_t": 251.5,
+            "last_t": 271.3,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.015620698769344016,
+              "posterior_summary": 0.00013598697376437485,
+              "scan_match": 0.1672837839386193,
+              "map_insert": 0.01651373153727036,
+              "path_plan": 0.0003254404105246067,
+              "graph": 0.0219159612164367,
+              "vision": 0.0,
+              "record_io": 0.007621194236562588,
+              "controller_other": 0.11914176548365503,
+              "setup_proof": 0.0
+            },
+            "cells_min": 233441,
+            "cells_max": 236377,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 172,
+            "ledger_last": 188,
+            "record_bytes_first": 195448060,
+            "record_bytes_last": 214494250
+          }
+        ]
+      },
+      "speedups": {
+        "schema": "ugrp.controller_exact_speedups.v1",
+        "mode": "exact-v1",
+        "enabled": true,
+        "module_sha256": "06b498a2348e42fae46114c055e6745a81dc44f1d276ba54665e6ef46de7b8b9",
+        "distribution_changed": false,
+        "rng_changed": false,
+        "observation_skipping": false,
+        "physics_changed": false,
+        "applied": [
+          "owncam_moments",
+          "markerless_integer_clip",
+          "opencv_integer_clip",
+          "posterior_summary",
+          "offsets_grid",
+          "sensor_sigma",
+          "grid_field",
+          "nearest_probability_lookup",
+          "forecast_evidence_copy"
+        ],
+        "fallback": [
+          "harness.zone_s3_exact_cache:not_in_source"
+        ],
+        "nearest_lookup_scipy": "1.17.1",
+        "integer_clip_fast_calls": 0,
+        "nearest_lookup_fast_calls": 313335,
+        "caches": {
+          "owncam_moments": {
+            "hits": 0,
+            "misses": 0,
+            "entries": 0,
+            "max_entries": 4
+          },
+          "posterior_summary": {
+            "hits": 0,
+            "misses": 0,
+            "entries": 0,
+            "max_entries": 4
+          },
+          "offsets_grid": {
+            "hits": 23131,
+            "misses": 16327,
+            "entries": 32,
+            "max_entries": 32
+          },
+          "sensor_sigma": {
+            "hits": 19503,
+            "misses": 226,
+            "entries": 8,
+            "max_entries": 8
+          },
+          "grid_field": {
+            "hits": 5724,
+            "misses": 14005,
+            "entries": 32,
+            "max_entries": 32
+          }
+        }
+      }
+    },
+    {
+      "case": "ego59-55003",
+      "status": "verified",
+      "full_replay": true,
+      "behavior_bytes_identical": true,
+      "files": {
+        "active-events.json": {
+          "bytes_identical": true,
+          "bytes": 631239,
+          "off_sha256": "baab56dcc50d28bd32bb6d955767d486b607f698429d44040ee712aea95b4472",
+          "on_sha256": "baab56dcc50d28bd32bb6d955767d486b607f698429d44040ee712aea95b4472"
+        },
+        "all-particle-maps.json": {
+          "bytes_identical": true,
+          "bytes": 15839432,
+          "off_sha256": "071f9e4c3d662b3492ede1727d639e6a3c294ed0d64ec50453b8e5e1d804f308",
+          "on_sha256": "071f9e4c3d662b3492ede1727d639e6a3c294ed0d64ec50453b8e5e1d804f308"
+        },
+        "commands.json": {
+          "bytes_identical": true,
+          "bytes": 303551,
+          "off_sha256": "13589fad5aee5f8d3ed7e79a262191ca74ff631f548e7c777fea6526f1134d73",
+          "on_sha256": "13589fad5aee5f8d3ed7e79a262191ca74ff631f548e7c777fea6526f1134d73"
+        },
+        "decisions.json": {
+          "bytes_identical": true,
+          "bytes": 51226125,
+          "off_sha256": "5a9b6446491acb267c51bbca92d26cc3c781dad8828e41ce44953c9d3934b0b6",
+          "on_sha256": "5a9b6446491acb267c51bbca92d26cc3c781dad8828e41ce44953c9d3934b0b6"
+        },
+        "frontend-covariances.jsonl": {
+          "bytes_identical": true,
+          "bytes": 810955,
+          "off_sha256": "6f889d5fa29ba1f52a533c20c974a69f71d228d0e0b71bae0e81646a8ca1c27b",
+          "on_sha256": "6f889d5fa29ba1f52a533c20c974a69f71d228d0e0b71bae0e81646a8ca1c27b"
+        },
+        "frontend-grid.json": {
+          "bytes_identical": true,
+          "bytes": 176532,
+          "off_sha256": "29eb981a23539553df7b0edee4c339444f2f3edc25b4532a7f4314a960dc1c78",
+          "on_sha256": "29eb981a23539553df7b0edee4c339444f2f3edc25b4532a7f4314a960dc1c78"
+        },
+        "frontend-ledger.json": {
+          "bytes_identical": true,
+          "bytes": 1749422,
+          "off_sha256": "8125c42669649fba10f0d549ad0e707434068a02b0cdd412523878ff51251152",
+          "on_sha256": "8125c42669649fba10f0d549ad0e707434068a02b0cdd412523878ff51251152"
+        },
+        "frontend-poses.json": {
+          "bytes_identical": true,
+          "bytes": 354794,
+          "off_sha256": "46d55c7afe7654e5ca7b227acad55f112c5eefbdf25e62799d38648c126ba117",
+          "on_sha256": "46d55c7afe7654e5ca7b227acad55f112c5eefbdf25e62799d38648c126ba117"
+        },
+        "graphs.json": {
+          "bytes_identical": true,
+          "bytes": 275699990,
+          "off_sha256": "ccd3244d69ac2f49c343ee8b555f657e68d3b0f0b8c5dbbeaf4920efc5c068bb",
+          "on_sha256": "ccd3244d69ac2f49c343ee8b555f657e68d3b0f0b8c5dbbeaf4920efc5c068bb"
+        },
+        "heading-decisions.json": {
+          "bytes_identical": true,
+          "bytes": 16206781,
+          "off_sha256": "67d581aa86c037d5283e9390f3714382415292bb4cb2df463d35058eff8d7071",
+          "on_sha256": "67d581aa86c037d5283e9390f3714382415292bb4cb2df463d35058eff8d7071"
+        },
+        "navigation.json": {
+          "bytes_identical": true,
+          "bytes": 25588,
+          "off_sha256": "36943c94c9329d324087e3375833cb347f0093dd52e65ab329c2362b8c859b2c",
+          "on_sha256": "36943c94c9329d324087e3375833cb347f0093dd52e65ab329c2362b8c859b2c"
+        },
+        "online-maps.jsonl": {
+          "bytes_identical": true,
+          "bytes": 274136471,
+          "off_sha256": "b96baa48343c3e87bfc6ccf31e5cec87bf0e62860c9d1782a3139be6bce028f4",
+          "on_sha256": "b96baa48343c3e87bfc6ccf31e5cec87bf0e62860c9d1782a3139be6bce028f4"
+        },
+        "own-contacts.jsonl": {
+          "bytes_identical": true,
+          "bytes": 244274659,
+          "off_sha256": "bc22d6562313310ff89fa95a4cc7b3626d65cc1501ab51d036a4d5b4b77f2a4f",
+          "on_sha256": "bc22d6562313310ff89fa95a4cc7b3626d65cc1501ab51d036a4d5b4b77f2a4f"
+        },
+        "own-controller.jsonl": {
+          "bytes_identical": true,
+          "bytes": 77553821,
+          "off_sha256": "0bbd2afd0bdb1618690e3dd3d680d6ab4a64aa138a8a48e8197bb076e6d846e4",
+          "on_sha256": "0bbd2afd0bdb1618690e3dd3d680d6ab4a64aa138a8a48e8197bb076e6d846e4"
+        },
+        "own-inputs.json": {
+          "bytes_identical": true,
+          "bytes": 589935,
+          "off_sha256": "26cbb675154c395629c40896b666ce78c86ddb1f8f52560aa0b09071f4bdb2e0",
+          "on_sha256": "26cbb675154c395629c40896b666ce78c86ddb1f8f52560aa0b09071f4bdb2e0"
+        },
+        "return-navigation.json": {
+          "bytes_identical": true,
+          "bytes": 854,
+          "off_sha256": "83c6e8551e53e1107a6dc76752b1ed0a91af98e5bd1f8fc77fdd661bc35b059a",
+          "on_sha256": "83c6e8551e53e1107a6dc76752b1ed0a91af98e5bd1f8fc77fdd661bc35b059a"
+        },
+        "route-map.json": {
+          "bytes_identical": true,
+          "bytes": 56019054,
+          "off_sha256": "bd01b4927782e4a773845f78c62c1c2f4c1c0ed2aec382c74e0498134d4c4532",
+          "on_sha256": "bd01b4927782e4a773845f78c62c1c2f4c1c0ed2aec382c74e0498134d4c4532"
+        },
+        "state.json": {
+          "bytes_identical": true,
+          "bytes": 1245728,
+          "off_sha256": "489e37685d6468677e63defec90a8325cb791b9dd400d6d9e2571cfc0ebdfbb9",
+          "on_sha256": "489e37685d6468677e63defec90a8325cb791b9dd400d6d9e2571cfc0ebdfbb9"
+        },
+        "traces.json": {
+          "bytes_identical": true,
+          "bytes": 140761234,
+          "off_sha256": "89b9204d980ebb0f0405c639fea1815712158d19d0f8052d2f5bd5399dad1f94",
+          "on_sha256": "89b9204d980ebb0f0405c639fea1815712158d19d0f8052d2f5bd5399dad1f94"
+        },
+        "utility-events.json": {
+          "bytes_identical": true,
+          "bytes": 114203,
+          "off_sha256": "5b98377e530c53d692d125045398623b158f892d584aa0c478aac628e88ff789",
+          "on_sha256": "5b98377e530c53d692d125045398623b158f892d584aa0c478aac628e88ff789"
+        }
+      },
+      "missing_on": [],
+      "missing_off": [],
+      "input_sha_identical": true,
+      "implementations": [
+        "33f8f182f070b7ab7ca5547e92cfb77aca58b5de",
+        "33f8f182f070b7ab7ca5547e92cfb77aca58b5de"
+      ],
+      "sim_s": 491.8,
+      "off_wall_s": 2127.704152832972,
+      "on_wall_s": 2012.8432715419913,
+      "off_wall_per_input_sim": 4.326360619831175,
+      "on_wall_per_input_sim": 4.092808604192744,
+      "speedup": 1.057063996444685,
+      "physics_runs": 0,
+      "render_calls": 0,
+      "breakdown": {
+        "off": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 12474,
+            "exclusive_s": 29.53469533059979,
+            "inclusive_s": 134.30639078468084,
+            "wall_per_input_sim": 0.06005428086742535
+          },
+          "posterior_summary": {
+            "calls": 15546,
+            "exclusive_s": 0.2851398977218196,
+            "inclusive_s": 0.2851398977218196,
+            "wall_per_input_sim": 0.0005797883239565261
+          },
+          "scan_match": {
+            "calls": 296246,
+            "exclusive_s": 1317.8101397866267,
+            "inclusive_s": 1317.8101397866267,
+            "wall_per_input_sim": 2.679565148000461
+          },
+          "map_insert": {
+            "calls": 97579,
+            "exclusive_s": 46.79346290696412,
+            "inclusive_s": 46.79346290696412,
+            "wall_per_input_sim": 0.09514734222644189
+          },
+          "path_plan": {
+            "calls": 1092,
+            "exclusive_s": 0.24748099641874433,
+            "inclusive_s": 0.24748099641874433,
+            "wall_per_input_sim": 0.0005032147141495411
+          },
+          "graph": {
+            "calls": 49,
+            "exclusive_s": 38.280852101685014,
+            "inclusive_s": 1245.9228857086273,
+            "wall_per_input_sim": 0.07783825152843639
+          },
+          "vision": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "record_io": {
+            "calls": 4911,
+            "exclusive_s": 60.39920833334327,
+            "inclusive_s": 60.44744753692066,
+            "wall_per_input_sim": 0.12281254236141372
+          },
+          "controller_other": {
+            "calls": 4900,
+            "exclusive_s": 633.4382906232495,
+            "inclusive_s": 2066.3418224396883,
+            "wall_per_input_sim": 1.2879997775991245
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 0.914834690396674,
+            "inclusive_s": 2127.7041046670056,
+            "wall_per_input_sim": 0.0018601762716483814
+          }
+        },
+        "on": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 12474,
+            "exclusive_s": 30.311407658387907,
+            "inclusive_s": 132.54562853998505,
+            "wall_per_input_sim": 0.06163360646276516
+          },
+          "posterior_summary": {
+            "calls": 15546,
+            "exclusive_s": 0.2892569660907611,
+            "inclusive_s": 0.2892569660907611,
+            "wall_per_input_sim": 0.0005881597521162283
+          },
+          "scan_match": {
+            "calls": 280046,
+            "exclusive_s": 1193.4356701251236,
+            "inclusive_s": 1193.4356701251236,
+            "wall_per_input_sim": 2.426668707045798
+          },
+          "map_insert": {
+            "calls": 97579,
+            "exclusive_s": 46.704463267698884,
+            "inclusive_s": 46.704463267698884,
+            "wall_per_input_sim": 0.09496637508682164
+          },
+          "path_plan": {
+            "calls": 1092,
+            "exclusive_s": 0.24835487658856437,
+            "inclusive_s": 0.24835487658856437,
+            "wall_per_input_sim": 0.0005049916156741853
+          },
+          "graph": {
+            "calls": 49,
+            "exclusive_s": 39.04951887781499,
+            "inclusive_s": 1160.7273633799632,
+            "wall_per_input_sim": 0.07940121772634198
+          },
+          "vision": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "record_io": {
+            "calls": 4911,
+            "exclusive_s": 60.809298913693056,
+            "inclusive_s": 60.85825101583032,
+            "wall_per_input_sim": 0.12364639876716765
+          },
+          "controller_other": {
+            "calls": 4900,
+            "exclusive_s": 641.0758320277091,
+            "inclusive_s": 1951.0655516972765,
+            "wall_per_input_sim": 1.303529548653333
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 0.919427994871512,
+            "inclusive_s": 2012.8432307079784,
+            "wall_per_input_sim": 0.0018695160530124279
+          }
+        }
+      },
+      "growth": {
+        "off": [
+          {
+            "window": "early",
+            "first_t": 5.3,
+            "last_t": 21.1,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.004547292365168687,
+              "posterior_summary": 0.00013562414242187514,
+              "scan_match": 0.03424677725852234,
+              "map_insert": 0.019330302661546738,
+              "path_plan": 5.717916210414842e-05,
+              "graph": 0.00031568018821417356,
+              "vision": 0.0,
+              "record_io": 0.002468782803043723,
+              "controller_other": 0.17179512608781805,
+              "setup_proof": 0.0
+            },
+            "cells_min": 16119,
+            "cells_max": 95356,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 3,
+            "ledger_last": 16,
+            "record_bytes_first": 1127051,
+            "record_bytes_last": 10499272
+          },
+          {
+            "window": "late",
+            "first_t": 473.3,
+            "last_t": 493.1,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.016757903627003544,
+              "posterior_summary": 0.00014643912203609943,
+              "scan_match": 2.1389209525543267,
+              "map_insert": 0.0537299056048505,
+              "path_plan": 8.396916906349361e-05,
+              "graph": 0.07593331296171528,
+              "vision": 0.0,
+              "record_io": 0.006726892135338858,
+              "controller_other": 0.4872393866139464,
+              "setup_proof": 0.0
+            },
+            "cells_min": 267555,
+            "cells_max": 268029,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 401,
+            "ledger_last": 419,
+            "record_bytes_first": 559786737,
+            "record_bytes_last": 596775906
+          }
+        ],
+        "on": [
+          {
+            "window": "early",
+            "first_t": 5.3,
+            "last_t": 21.1,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.004711579388094833,
+              "posterior_summary": 0.00013819143641740083,
+              "scan_match": 0.01564520852989517,
+              "map_insert": 0.01950545861982391,
+              "path_plan": 5.717656385968439e-05,
+              "graph": 0.0003045114739506971,
+              "vision": 0.0,
+              "record_io": 0.002507251271890709,
+              "controller_other": 0.1840371697282535,
+              "setup_proof": 0.0
+            },
+            "cells_min": 16119,
+            "cells_max": 95356,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 3,
+            "ledger_last": 16,
+            "record_bytes_first": 1127051,
+            "record_bytes_last": 10499272
+          },
+          {
+            "window": "late",
+            "first_t": 473.3,
+            "last_t": 493.1,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.016871149619692005,
+              "posterior_summary": 0.0001575269631575793,
+              "scan_match": 1.9885709258011774,
+              "map_insert": 0.05380048050836194,
+              "path_plan": 8.624706941191108e-05,
+              "graph": 0.07726866930315737,
+              "vision": 0.0,
+              "record_io": 0.006990982270799577,
+              "controller_other": 0.46034128445957323,
+              "setup_proof": 0.0
+            },
+            "cells_min": 267555,
+            "cells_max": 268029,
+            "particles_first": 100,
+            "particles_last": 100,
+            "ledger_first": 401,
+            "ledger_last": 419,
+            "record_bytes_first": 559786737,
+            "record_bytes_last": 596775906
+          }
+        ]
+      },
+      "speedups": {
+        "schema": "ugrp.controller_exact_speedups.v1",
+        "mode": "exact-v1",
+        "enabled": true,
+        "module_sha256": "06b498a2348e42fae46114c055e6745a81dc44f1d276ba54665e6ef46de7b8b9",
+        "distribution_changed": false,
+        "rng_changed": false,
+        "observation_skipping": false,
+        "physics_changed": false,
+        "applied": [
+          "owncam_moments",
+          "markerless_integer_clip",
+          "opencv_integer_clip",
+          "posterior_summary",
+          "offsets_grid",
+          "sensor_sigma",
+          "grid_field",
+          "nearest_probability_lookup",
+          "forecast_evidence_copy"
+        ],
+        "fallback": [
+          "harness.zone_s3_exact_cache:not_in_source"
+        ],
+        "nearest_lookup_scipy": "1.17.1",
+        "integer_clip_fast_calls": 0,
+        "nearest_lookup_fast_calls": 5213862,
+        "caches": {
+          "owncam_moments": {
+            "hits": 0,
+            "misses": 0,
+            "entries": 0,
+            "max_entries": 4
+          },
+          "posterior_summary": {
+            "hits": 0,
+            "misses": 0,
+            "entries": 0,
+            "max_entries": 4
+          },
+          "offsets_grid": {
+            "hits": 59077,
+            "misses": 41669,
+            "entries": 32,
+            "max_entries": 32
+          },
+          "sensor_sigma": {
+            "hits": 49797,
+            "misses": 576,
+            "entries": 8,
+            "max_entries": 8
+          },
+          "grid_field": {
+            "hits": 14639,
+            "misses": 35734,
+            "entries": 32,
+            "max_entries": 32
+          }
+        }
+      }
+    },
+    {
+      "case": "s3-unprofiled",
+      "status": "verified",
+      "full_replay": true,
+      "behavior_bytes_identical": true,
+      "files": {
+        "commands.json": {
+          "bytes_identical": true,
+          "bytes": 268794,
+          "off_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a",
+          "on_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a"
+        },
+        "record.json": {
+          "bytes_identical": true,
+          "bytes": 13022104,
+          "off_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7",
+          "on_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7"
+        },
+        "state.json": {
+          "bytes_identical": true,
+          "bytes": 5109822,
+          "off_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e",
+          "on_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e"
+        }
+      },
+      "missing_on": [],
+      "missing_off": [],
+      "input_sha_identical": true,
+      "implementations": [
+        "47bb794e46b2b105e0a073201059c885384b00ba",
+        "ee554da0a44ad5829e54663992989b8565f6045b"
+      ],
+      "sim_s": 21.9,
+      "off_wall_s": 57.91411545802839,
+      "on_wall_s": 43.24279029201716,
+      "off_wall_per_input_sim": 2.64448015790084,
+      "on_wall_per_input_sim": 1.9745566343386833,
+      "speedup": 1.3392779482298955,
+      "physics_runs": 0,
+      "render_calls": 0,
+      "breakdown": {
+        "off": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 6843,
+            "exclusive_s": 5.364388307731133,
+            "inclusive_s": 5.364388307731133,
+            "wall_per_input_sim": 0.24494923779594216
+          },
+          "posterior_summary": {
+            "calls": 6216,
+            "exclusive_s": 6.699567328672856,
+            "inclusive_s": 6.699567328672856,
+            "wall_per_input_sim": 0.305916316377756
+          },
+          "scan_match": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "map_insert": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "path_plan": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "graph": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "vision": {
+            "calls": 1476,
+            "exclusive_s": 12.966756881098263,
+            "inclusive_s": 25.819532699184492,
+            "wall_per_input_sim": 0.5920893553012906
+          },
+          "record_io": {
+            "calls": 440,
+            "exclusive_s": 1.4945330772316083,
+            "inclusive_s": 1.4945330772316083,
+            "wall_per_input_sim": 0.06824351950829262
+          },
+          "controller_other": {
+            "calls": 439,
+            "exclusive_s": 30.25770265457686,
+            "inclusive_s": 55.28841517207911,
+            "wall_per_input_sim": 1.3816302581998567
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 1.1222260427311994,
+            "inclusive_s": 57.90517429204192,
+            "wall_per_input_sim": 0.051243198298228286
+          }
+        },
+        "on": {
+          "physics": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "render": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "pf_update": {
+            "calls": 6843,
+            "exclusive_s": 5.275468453532085,
+            "inclusive_s": 5.275468453532085,
+            "wall_per_input_sim": 0.24088897048091712
+          },
+          "posterior_summary": {
+            "calls": 6216,
+            "exclusive_s": 2.440065865870565,
+            "inclusive_s": 2.440065865870565,
+            "wall_per_input_sim": 0.11141853268815367
+          },
+          "scan_match": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "map_insert": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "path_plan": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "graph": {
+            "calls": 0,
+            "exclusive_s": 0.0,
+            "inclusive_s": 0.0,
+            "wall_per_input_sim": 0.0
+          },
+          "vision": {
+            "calls": 1476,
+            "exclusive_s": 11.013675464957487,
+            "inclusive_s": 21.91456847009249,
+            "wall_per_input_sim": 0.5029075554775109
+          },
+          "record_io": {
+            "calls": 440,
+            "exclusive_s": 1.4567066294839606,
+            "inclusive_s": 1.4567066294839606,
+            "wall_per_input_sim": 0.0665162844513224
+          },
+          "controller_other": {
+            "calls": 439,
+            "exclusive_s": 21.946235695038922,
+            "inclusive_s": 40.67544547939906,
+            "wall_per_input_sim": 1.002111218951549
+          },
+          "setup_proof": {
+            "calls": 1,
+            "exclusive_s": 1.1017623081570491,
+            "inclusive_s": 43.23391441704007,
+            "wall_per_input_sim": 0.05030878119438581
+          }
+        }
+      },
+      "growth": {
+        "off": [
+          {
+            "window": "early",
+            "first_t": 2.3,
+            "last_t": 6.25,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.06189585987958708,
+              "posterior_summary": 0.009890678942610975,
+              "scan_match": 0.0,
+              "map_insert": 0.0,
+              "path_plan": 0.0,
+              "graph": 0.0,
+              "vision": 0.035968970816611545,
+              "record_io": 0.0021263374328555074,
+              "controller_other": 0.09238915401001577,
+              "setup_proof": 0.0
+            },
+            "cells_min": 0,
+            "cells_max": 0,
+            "particles_first": [
+              400000,
+              400000,
+              400000
+            ],
+            "particles_last": [
+              8001,
+              8001,
+              8001
+            ],
+            "ledger_first": null,
+            "ledger_last": null,
+            "record_bytes_first": null,
+            "record_bytes_last": null
+          },
+          {
+            "window": "late",
+            "first_t": 18.25,
+            "last_t": 23.2,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 2.438909490592778e-05,
+              "posterior_summary": 0.0030780060216784475,
+              "scan_match": 0.0,
+              "map_insert": 0.0,
+              "path_plan": 0.0,
+              "graph": 0.0,
+              "vision": 0.031957826649886556,
+              "record_io": 0.00232015420042444,
+              "controller_other": 0.02735040736326482,
+              "setup_proof": 0.0
+            },
+            "cells_min": 0,
+            "cells_max": 0,
+            "particles_first": [
+              8001,
+              8001,
+              8001
+            ],
+            "particles_last": [
+              8001,
+              8001,
+              8001
+            ],
+            "ledger_first": null,
+            "ledger_last": null,
+            "record_bytes_first": null,
+            "record_bytes_last": null
+          }
+        ],
+        "on": [
+          {
+            "window": "early",
+            "first_t": 2.3,
+            "last_t": 6.25,
+            "frames": 80,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 0.060863231141411234,
+              "posterior_summary": 0.0014972219461924397,
+              "scan_match": 0.0,
+              "map_insert": 0.0,
+              "path_plan": 0.0,
+              "graph": 0.0,
+              "vision": 0.02860728600717266,
+              "record_io": 0.0020514233845460696,
+              "controller_other": 0.07601166768654366,
+              "setup_proof": 0.0
+            },
+            "cells_min": 0,
+            "cells_max": 0,
+            "particles_first": [
+              400000,
+              400000,
+              400000
+            ],
+            "particles_last": [
+              8001,
+              8001,
+              8001
+            ],
+            "ledger_first": null,
+            "ledger_last": null,
+            "record_bytes_first": null,
+            "record_bytes_last": null
+          },
+          {
+            "window": "late",
+            "first_t": 18.25,
+            "last_t": 23.2,
+            "frames": 100,
+            "exclusive_s_per_frame": {
+              "physics": 0.0,
+              "render": 0.0,
+              "pf_update": 2.454398025292903e-05,
+              "posterior_summary": 0.0005729637056356296,
+              "scan_match": 0.0,
+              "map_insert": 0.0,
+              "path_plan": 0.0,
+              "graph": 0.0,
+              "vision": 0.02901125707488973,
+              "record_io": 0.002227469577919692,
+              "controller_other": 0.020571307779755445,
+              "setup_proof": 0.0
+            },
+            "cells_min": 0,
+            "cells_max": 0,
+            "particles_first": [
+              8001,
+              8001,
+              8001
+            ],
+            "particles_last": [
+              8001,
+              8001,
+              8001
+            ],
+            "ledger_first": null,
+            "ledger_last": null,
+            "record_bytes_first": null,
+            "record_bytes_last": null
+          }
+        ]
+      },
+      "speedups": {
+        "schema": "ugrp.controller_exact_speedups.v1",
+        "mode": "exact-v1",
+        "enabled": true,
+        "module_sha256": "06b498a2348e42fae46114c055e6745a81dc44f1d276ba54665e6ef46de7b8b9",
+        "distribution_changed": false,
+        "rng_changed": false,
+        "observation_skipping": false,
+        "physics_changed": false,
+        "applied": [
+          "owncam_moments",
+          "markerless_integer_clip",
+          "opencv_integer_clip",
+          "posterior_summary",
+          "s3_exact_snapshot_keys"
+        ],
+        "fallback": [
+          "harness.self_map_rbpf:not_in_source"
+        ],
+        "integer_clip_fast_calls": 1430422,
+        "nearest_lookup_fast_calls": 0,
+        "caches": {
+          "owncam_moments": {
+            "hits": 5637,
+            "misses": 27,
+            "entries": 3,
+            "max_entries": 4
+          },
+          "posterior_summary": {
+            "hits": 0,
+            "misses": 27,
+            "entries": 4,
+            "max_entries": 4
+          }
+        }
+      }
+    }
+  ]
+}
