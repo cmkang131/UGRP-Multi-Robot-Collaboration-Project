@@ -1,0 +1,29 @@
+{
+  "parent_sha": "92855f925edb339bd90b123c6540e8e49f96a272",
+  "tests": [
+    "tests/test_pf_sensor_proposal.py",
+    "tests/test_s3_alignment_entry.py",
+    "tests/test_simulation_workflow_manager.py"
+  ],
+  "passed": 30,
+  "elapsed_s": 64.87,
+  "source_sha256": {
+    "harness/pf_sensor_proposal.py": "b105567a0c1b69fbf492d3f0e90ef8889a87f1fb4a7fa3a907f718961f3893cd",
+    "harness/zone_s3_alignment_entry.py": "225db7c85cc859ad5947f385328c8ee5bffa03d068f11967285d9a70e50e8bed",
+    "harness/zone_s3_proposal_runtime.py": "1cc3aaccb78645246d8eadc37e8479914bd4aedbed3c9ee090287b031d309fd7",
+    "scripts/run_s3_alignment_entry_probe.py": "238a84fe5fd09e38c242638ea64eff4ca5d4ec54c2c01d4222e8d5d94ed47ef3",
+    "experiments/2026-10-09-s3-no-prior/s3fix9/replay.py": "8b66920268ff4f60a38137f01b5cff627b42a515bf917bfbdb051c8d8b682f73",
+    "experiments/2026-10-09-s3-no-prior/s3fix9/run_replays.py": "e93586a50f17a411c48c7bc8e9a73e9d12a5559d514bf792897f0f116ac40330",
+    "experiments/2026-10-09-s3-no-prior/s3fix9/evaluate.py": "ce34a9318403131fd061a7879913214f5a36aa4833cbd811786c13393547d6ff"
+  },
+  "syntax_checked": true,
+  "physics_runs": 0,
+  "CI_wait": false,
+  "followup_validation": {
+    "changed": "ESS selective resampling retained; virtual candidates do not add active triggers",
+    "test": "tests/test_pf_sensor_proposal.py",
+    "passed": 7,
+    "elapsed_s": 19.84
+  },
+  "main_catalog_byte_identical": true
+}

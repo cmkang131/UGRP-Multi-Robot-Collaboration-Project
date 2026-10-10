@@ -287,6 +287,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-consistency-v151": ["--expected-source-sha", "0" * 40],
             "zone-s3-recovery-v152": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-probe-v153": ["--expected-source-sha", "0" * 40],
+            "zone-s3-alignment-entry-probe-v154": ["--expected-source-sha", "0" * 40],
             "v7-exact-speed-benchmark": ["--suite", str(source), "--expected-source-sha", "0" * 40],
             "masterpi-drive-friction-probe": ["--expected-source-sha", "0" * 40, "--drive-profile", "masterpi_drive_friction_v7"],
             "masterpi-v7-roller-approx-probe": ["--expected-source-sha", "0" * 40, "--phase", "profile"],
