@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.s3view.v1",
-  "status": "ready_waiting_for_oracle_slot",
+  "status": "cyan_side_view_correction",
   "base_sha": "60eaf042bbf95e31fd7bdd50a84c69dcd38112c7",
   "original_execution_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
   "base_vs_original_code_diff": "none in scripts/harness/sim; only experiment records differ",
@@ -24,21 +24,29 @@
     "capture_sim_fps": 5,
     "playback_fps": 20,
     "fixed_views": {
-      "oblique": [
-        135,
-        -55
-      ],
-      "side": [
-        90,
-        -12
-      ]
+      "oblique": {
+        "azimuth": 135,
+        "elevation": -55,
+        "distance_m": 2.8
+      },
+      "pair_side": {
+        "azimuth": 90,
+        "elevation": -12,
+        "distance_m": 2.8
+      },
+      "cyan_side": {
+        "azimuth": 270,
+        "elevation": -12,
+        "distance_m": 1.8
+      }
     },
     "distance_m": 2.8
   },
   "verification": {
     "pytest": "tests/test_s3_synchronized_carry.py: 6 passed",
     "oracle_read_only_render": "passed; qpos/qvel/ctrl unchanged",
-    "source_committed_and_pushed": true
+    "source_committed_and_pushed": true,
+    "cyan_side_static_render": "270 degrees at 1.8m visually unobscured; observer-only state render, no physics stepping"
   },
   "runs": [
     {
@@ -46,8 +54,8 @@
       "name": "s3view-pair-c0-r2",
       "case": "pair",
       "condition": 0,
-      "status": "not_started",
-      "command_trajectory_match": null,
+      "status": "completed",
+      "command_trajectory_match": true,
       "original_record": {
         "commands": [
           "/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/.venv-sim/bin/python",
@@ -116,15 +124,205 @@
           "r2": "00377aebfdfbfc93f975bc41f155cd22796cdbf3bba8d8109e401d7454d567eb",
           "r3": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1"
         }
+      },
+      "remote_path": "/home/ubuntu/ugrp-sim/runs/s3view-pair-c0-r2",
+      "exit": 0,
+      "result": {
+        "status": "PHYSICAL_STOP",
+        "stage_probe": true,
+        "research_result": false,
+        "model_calls": 0,
+        "source_sha": "c36657805d64be61ad4c0cb586397b7bbd8d9f9a",
+        "case": "pair",
+        "servo_option": "stopped_base_arm_v1",
+        "gt_inputs": false,
+        "loadavg_start": [
+          10.51025390625,
+          8.28076171875,
+          11.5
+        ],
+        "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/c36657805d64be61ad4c0cb586397b7bbd8d9f9a/scripts/run_s3_alignment_probe.py\", line 156, in run\n    now=host.now;host.eval_sample()\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/c36657805d64be61ad4c0cb586397b7bbd8d9f9a/sim/s3_overview_recording.py\", line 71, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/c36657805d64be61ad4c0cb586397b7bbd8d9f9a/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/c36657805d64be61ad4c0cb586397b7bbd8d9f9a/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/c36657805d64be61ad4c0cb586397b7bbd8d9f9a/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/c36657805d64be61ad4c0cb586397b7bbd8d9f9a/sim/zone_s3_no_prior.py\", line 131, in eval_sample\n    raise PhysicalStop('LOAD_DROP:'+item)\nsim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1\n",
+        "check_sim_s": 52.3,
+        "wall_s": 267.5520894379988,
+        "loadavg_end": [
+          12.05810546875,
+          10.02685546875,
+          11.353515625
+        ],
+        "host": "oracle-x86",
+        "alignment_entry": "preserve_issued_look_v1",
+        "stage_scope": "align-hover-descent-close-lift-carry",
+        "physical_stop": "LOAD_DROP:beam_1",
+        "runtime_speedups": {
+          "schema": "ugrp.v7_exact_speedups.v1",
+          "mode": "relay-cache-v1",
+          "enabled": true,
+          "fallback": null,
+          "module_sha256": "b60cf83ffb7709247fc213e182342a74e873ebe624dc321fdbcfe036fed02243",
+          "cache_maxsize": 256,
+          "physics_changed": false,
+          "log_buffering": false
+        },
+        "heading_mode": "path_tangent_v1",
+        "heading_visual_lock": "off"
+      },
+      "command_sha256": {
+        "r1": {
+          "original": "bfc2167872bb09b25db14995a91a52f466ad22791670062ed5050f1ce2fdd2c7",
+          "rerun": "bfc2167872bb09b25db14995a91a52f466ad22791670062ed5050f1ce2fdd2c7",
+          "match": true,
+          "lines": 1238
+        },
+        "r2": {
+          "original": "00377aebfdfbfc93f975bc41f155cd22796cdbf3bba8d8109e401d7454d567eb",
+          "rerun": "00377aebfdfbfc93f975bc41f155cd22796cdbf3bba8d8109e401d7454d567eb",
+          "match": true,
+          "lines": 1241
+        },
+        "r3": {
+          "original": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1",
+          "rerun": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1",
+          "match": true,
+          "lines": 6
+        }
+      },
+      "evaluation_trajectory_sha256": {
+        "r1": {
+          "original": "e9636e7a92c124afb0de93a8f8a5608980de680121231ab94ccdc61b4ea74351",
+          "rerun": "e9636e7a92c124afb0de93a8f8a5608980de680121231ab94ccdc61b4ea74351",
+          "match": true
+        },
+        "r2": {
+          "original": "8b2017635161ed482f43c9c26a6e790e96143da7e2c4c26883a4e200d4ad5b1a",
+          "rerun": "8b2017635161ed482f43c9c26a6e790e96143da7e2c4c26883a4e200d4ad5b1a",
+          "match": true
+        },
+        "r3": {
+          "original": "f525cc04123037d4a648e100f63a264ad910b564bb6ce0c04143a12643c4fe69",
+          "rerun": "f525cc04123037d4a648e100f63a264ad910b564bb6ce0c04143a12643c4fe69",
+          "match": true
+        }
+      },
+      "control_rgb_sha256": {
+        "r1": {
+          "original": "6e4098b945d15cd4ce1772ce210f07334422e83e809a536049fb1445e1769ef4",
+          "rerun": "6e4098b945d15cd4ce1772ce210f07334422e83e809a536049fb1445e1769ef4",
+          "frame_counts": [
+            1046,
+            1046
+          ],
+          "match": true
+        },
+        "r2": {
+          "original": "0ff2c51256fc4bfae890eb4459fd0f74bbf317cb25f4e4ee656a56cd56e943f7",
+          "rerun": "0ff2c51256fc4bfae890eb4459fd0f74bbf317cb25f4e4ee656a56cd56e943f7",
+          "frame_counts": [
+            1046,
+            1046
+          ],
+          "match": true
+        },
+        "r3": {
+          "original": "7e2c5346cdd4a20d6cffd4b07b41cf91255f33fe749c5f714623c52e1b656d64",
+          "rerun": "7e2c5346cdd4a20d6cffd4b07b41cf91255f33fe749c5f714623c52e1b656d64",
+          "frame_counts": [
+            1046,
+            1046
+          ],
+          "match": true
+        }
+      },
+      "video": {
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s3view-pair-c0-r2/overview.mp4",
+        "bytes": 229657,
+        "sha256": "5e03d758cbecafdd0b6fa83ca495b5b4b0ae6cbd9d839eb2dfe0f56d1091245b",
+        "probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 1280,
+              "height": 480,
+              "coded_width": 1280,
+              "coded_height": 480,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 31,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "20/1",
+              "avg_frame_rate": "20/1",
+              "time_base": "1/10240",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 134144,
+              "duration": "13.100000",
+              "bit_rate": "137817",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "262",
+              "extradata_size": 44,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc60.31.102 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "/home/ubuntu/ugrp-sim/runs/s3view-pair-c0-r2/overview.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "13.100000",
+            "size": "229657",
+            "bit_rate": "140248",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf60.16.100"
+            }
+          }
+        }
       }
     },
     {
       "original": "s3fix17-cyan-c0-r2",
-      "name": "s3view-cyan-c0-r2",
-      "case": "cyan",
-      "condition": 0,
-      "status": "not_started",
-      "command_trajectory_match": null,
       "original_record": {
         "commands": [
           "/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/.venv-sim/bin/python",
@@ -199,23 +397,439 @@
           "r2": "6043e41042775c6cb5378aa39a2a361f8bcf9c5c9d3dcc9e18ef14622fda60a6",
           "r3": "47029cd7682824e4dce1cfd9f74ec439536df07f264385161b26728ea5888f19"
         }
-      }
+      },
+      "case": "cyan",
+      "condition": 0,
+      "name": "s3view-cyan-c0-r2-sidefix1",
+      "status": "ready",
+      "command_trajectory_match": null
     }
   ],
-  "remaining": "Oracle slot coordination (egomap65 + speedctrl3-abba observed running); reruns, first 3min health checks, exact command sha256 comparisons and video-only retrieval pending",
+  "remaining": "cyan corrected-side rerun, health checks, final video-only retrieval and hash verification",
   "tensorboard": "skipped: DEV view-only task per user instructions",
   "remote_raw": "preserved on oracle-x86; only videos will be retrieved",
   "pull_request": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/427",
   "recording_source_sha": "f3108bc905a5808e5ff889c51acfd3168bbfb81d",
-  "execution_sha": null,
-  "first_3min_health_checks": null,
+  "execution_sha": "c36657805d64be61ad4c0cb586397b7bbd8d9f9a",
+  "first_3min_health_checks": {
+    "passed": true,
+    "checked_utc": "2026-10-10T13:55:27Z",
+    "pair_elapsed_s": 212,
+    "cyan_elapsed_s": 180,
+    "available_memory_mib": 57322,
+    "processes_alive": true,
+    "evaluation_time_advanced": true,
+    "error_logs_empty": true,
+    "command_logs": "buffered; full hash comparison deferred to close"
+  },
   "retrieved_videos": [],
-  "blocker": {
-    "source": "AGENTS.md: 가벼운 개발 진행, 시뮬레이션 한 번에 하나",
-    "observed_active_jobs": [
-      "egomap65 baseline/a seed63005",
-      "speedctrl3-abba-2e08"
-    ],
-    "action": "No existing process stopped; no rerun launched. Await slot or explicit parallel exception."
-  }
+  "oracle_policy": {
+    "parallel_user_authorized": true,
+    "max_concurrent": 10,
+    "minimum_available_memory_gib": 6,
+    "observed_available_memory_mib_before_submission": 56200,
+    "single_sim_rule_scope": "Mac only per supervisor"
+  },
+  "failed_submissions": [
+    {
+      "name": "s3view-cyan-c0-r2",
+      "status": "HOST_ERROR",
+      "exit": 127,
+      "failure": "submitted before shared source archive extraction created .venv-sim; no simulation started",
+      "preserved_remote": "oracle-x86:~/ugrp-sim/runs/s3view-cyan-c0-r2"
+    }
+  ],
+  "initial_health_samples": [
+    {
+      "time_utc": "2026-10-10T13:54:09Z",
+      "loadavg": [
+        7.01220703125,
+        7.6416015625,
+        10.916015625
+      ],
+      "runs": [
+        {
+          "name": "s3view-pair-c0-r2",
+          "exit": null,
+          "video_bytes": 48,
+          "robots": {
+            "r1": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            },
+            "r2": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            },
+            "r3": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            }
+          },
+          "last_flushed_sim_t": 22.25,
+          "log_tail": ""
+        },
+        {
+          "name": "s3view-cyan-c0-r2-retry1",
+          "exit": null,
+          "video_bytes": 48,
+          "robots": {
+            "r1": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            },
+            "r2": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            },
+            "r3": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            }
+          },
+          "last_flushed_sim_t": 8.95,
+          "log_tail": ""
+        }
+      ]
+    },
+    {
+      "time_utc": "2026-10-10T13:55:26Z",
+      "loadavg": [
+        12.54052734375,
+        9.662109375,
+        11.375
+      ],
+      "runs": [
+        {
+          "name": "s3view-pair-c0-r2",
+          "exit": null,
+          "video_bytes": 48,
+          "robots": {
+            "r1": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            },
+            "r2": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            },
+            "r3": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            }
+          },
+          "last_flushed_sim_t": 35.55,
+          "log_tail": ""
+        },
+        {
+          "name": "s3view-cyan-c0-r2-retry1",
+          "exit": null,
+          "video_bytes": 48,
+          "robots": {
+            "r1": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            },
+            "r2": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            },
+            "r3": {
+              "flushed_commands": 0,
+              "prefix_matches_original": null
+            }
+          },
+          "last_flushed_sim_t": 22.25,
+          "log_tail": ""
+        }
+      ]
+    }
+  ],
+  "superseded_view_runs": [
+    {
+      "original": "s3fix17-cyan-c0-r2",
+      "name": "s3view-cyan-c0-r2-retry1",
+      "case": "cyan",
+      "condition": 0,
+      "status": "completed",
+      "command_trajectory_match": true,
+      "original_record": {
+        "commands": [
+          "/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/.venv-sim/bin/python",
+          "-m",
+          "scripts.run_s3_synchronized_start",
+          "--expected-source-sha",
+          "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+          "--output",
+          "outputs/s3fix17-cyan-c0-r2/raw",
+          "--case",
+          "cyan",
+          "--condition",
+          "0",
+          "--coarse-fine",
+          "stopped_base_arm_v1",
+          "--refinements",
+          "abc_v1",
+          "--carry",
+          "synchronized_pulses_v1",
+          "--pan",
+          "joint_pan_v1",
+          "--execute"
+        ],
+        "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+        "result": {
+          "status": "DEV_STAGE_FINISHED",
+          "stage_probe": true,
+          "research_result": false,
+          "model_calls": 0,
+          "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+          "case": "cyan",
+          "servo_option": "stopped_base_arm_v1",
+          "gt_inputs": false,
+          "loadavg_start": [
+            37.3779296875,
+            30.740234375,
+            36.0498046875
+          ],
+          "check_sim_s": 60.0,
+          "entry_sim_s": 2.85,
+          "close_settle_s": null,
+          "final": {
+            "r3": {
+              "state": "carry",
+              "failure": null
+            }
+          },
+          "wall_s": 407.0392060060003,
+          "loadavg_end": [
+            85.56494140625,
+            103.05810546875,
+            70.6962890625
+          ],
+          "host": "oracle-x86",
+          "alignment_entry": "preserve_issued_look_v1",
+          "stage_scope": "align-hover-descent-close-lift-carry",
+          "runtime_speedups": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "relay-cache-v1",
+            "enabled": true,
+            "fallback": null,
+            "module_sha256": "b60cf83ffb7709247fc213e182342a74e873ebe624dc321fdbcfe036fed02243",
+            "cache_maxsize": 256,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "heading_mode": "path_tangent_v1",
+          "heading_visual_lock": "unique_cyan_align_v1"
+        },
+        "command_sha256": {
+          "r1": "6043e41042775c6cb5378aa39a2a361f8bcf9c5c9d3dcc9e18ef14622fda60a6",
+          "r2": "6043e41042775c6cb5378aa39a2a361f8bcf9c5c9d3dcc9e18ef14622fda60a6",
+          "r3": "47029cd7682824e4dce1cfd9f74ec439536df07f264385161b26728ea5888f19"
+        }
+      },
+      "remote_path": "/home/ubuntu/ugrp-sim/runs/s3view-cyan-c0-r2-retry1",
+      "exit": 0,
+      "result": {
+        "status": "DEV_STAGE_FINISHED",
+        "stage_probe": true,
+        "research_result": false,
+        "model_calls": 0,
+        "source_sha": "c36657805d64be61ad4c0cb586397b7bbd8d9f9a",
+        "case": "cyan",
+        "servo_option": "stopped_base_arm_v1",
+        "gt_inputs": false,
+        "loadavg_start": [
+          7.65576171875,
+          7.8056640625,
+          11.23828125
+        ],
+        "check_sim_s": 60.0,
+        "entry_sim_s": 2.85,
+        "close_settle_s": null,
+        "final": {
+          "r3": {
+            "state": "carry",
+            "failure": null
+          }
+        },
+        "wall_s": 361.968487877999,
+        "loadavg_end": [
+          89.3974609375,
+          39.7275390625,
+          22.00439453125
+        ],
+        "host": "oracle-x86",
+        "alignment_entry": "preserve_issued_look_v1",
+        "stage_scope": "align-hover-descent-close-lift-carry",
+        "runtime_speedups": {
+          "schema": "ugrp.v7_exact_speedups.v1",
+          "mode": "relay-cache-v1",
+          "enabled": true,
+          "fallback": null,
+          "module_sha256": "b60cf83ffb7709247fc213e182342a74e873ebe624dc321fdbcfe036fed02243",
+          "cache_maxsize": 256,
+          "physics_changed": false,
+          "log_buffering": false
+        },
+        "heading_mode": "path_tangent_v1",
+        "heading_visual_lock": "unique_cyan_align_v1"
+      },
+      "command_sha256": {
+        "r1": {
+          "original": "6043e41042775c6cb5378aa39a2a361f8bcf9c5c9d3dcc9e18ef14622fda60a6",
+          "rerun": "6043e41042775c6cb5378aa39a2a361f8bcf9c5c9d3dcc9e18ef14622fda60a6",
+          "match": true,
+          "lines": 6
+        },
+        "r2": {
+          "original": "6043e41042775c6cb5378aa39a2a361f8bcf9c5c9d3dcc9e18ef14622fda60a6",
+          "rerun": "6043e41042775c6cb5378aa39a2a361f8bcf9c5c9d3dcc9e18ef14622fda60a6",
+          "match": true,
+          "lines": 6
+        },
+        "r3": {
+          "original": "47029cd7682824e4dce1cfd9f74ec439536df07f264385161b26728ea5888f19",
+          "rerun": "47029cd7682824e4dce1cfd9f74ec439536df07f264385161b26728ea5888f19",
+          "match": true,
+          "lines": 1146
+        }
+      },
+      "evaluation_trajectory_sha256": {
+        "r1": {
+          "original": "8dacd49d3c01b381e110a83cca247720a27431b4eaafbdc161a78f50a8eb9c1f",
+          "rerun": "8dacd49d3c01b381e110a83cca247720a27431b4eaafbdc161a78f50a8eb9c1f",
+          "match": true
+        },
+        "r2": {
+          "original": "bf98fb3d08aea6cce731778b2d7d5fb48587ae839e3aa438e4a00922f1aada23",
+          "rerun": "bf98fb3d08aea6cce731778b2d7d5fb48587ae839e3aa438e4a00922f1aada23",
+          "match": true
+        },
+        "r3": {
+          "original": "3f0d0917c4b6077381f88483a2ba5ffff2bd6c093b3f15a12f25cdd95f9f6db4",
+          "rerun": "3f0d0917c4b6077381f88483a2ba5ffff2bd6c093b3f15a12f25cdd95f9f6db4",
+          "match": true
+        }
+      },
+      "control_rgb_sha256": {
+        "r1": {
+          "original": "fe472256301b7edb0e2e9915480bc79c0fc48e2f752b8056843900d32c7ebfe5",
+          "rerun": "fe472256301b7edb0e2e9915480bc79c0fc48e2f752b8056843900d32c7ebfe5",
+          "frame_counts": [
+            1200,
+            1200
+          ],
+          "match": true
+        },
+        "r2": {
+          "original": "a9a3facc2cbebe95a1f111705bbff71a791eb06d5a1bbd7a485a501fc0c46b3e",
+          "rerun": "a9a3facc2cbebe95a1f111705bbff71a791eb06d5a1bbd7a485a501fc0c46b3e",
+          "frame_counts": [
+            1200,
+            1200
+          ],
+          "match": true
+        },
+        "r3": {
+          "original": "cdab17b726d31788ca91425c7290257ebaa78a1dd6e4961e4fade494d3427a9d",
+          "rerun": "cdab17b726d31788ca91425c7290257ebaa78a1dd6e4961e4fade494d3427a9d",
+          "frame_counts": [
+            1200,
+            1200
+          ],
+          "match": true
+        }
+      },
+      "video": {
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s3view-cyan-c0-r2-retry1/overview.mp4",
+        "bytes": 139491,
+        "sha256": "5a1892f63857619ce9f509c22741e3086108a4e3e97d258b674387430f7532b8",
+        "probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 1280,
+              "height": 480,
+              "coded_width": 1280,
+              "coded_height": 480,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 31,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "20/1",
+              "avg_frame_rate": "20/1",
+              "time_base": "1/10240",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 154112,
+              "duration": "15.050000",
+              "bit_rate": "71774",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "301",
+              "extradata_size": 44,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc60.31.102 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "/home/ubuntu/ugrp-sim/runs/s3view-cyan-c0-r2-retry1/overview.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "15.050000",
+            "size": "139491",
+            "bit_rate": "74148",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf60.16.100"
+            }
+          }
+        }
+      },
+      "reason": "cyan side view obscured by fixed wall; raw and video preserved; command/eval/RGB hashes matched original"
+    }
+  ]
 }

@@ -23,11 +23,12 @@ class Overview:
         self.renderer = mujoco.Renderer(self.model, height=480, width=640)
         lookat = (1.35, .15, .10) if host.bundle['case'] == 'pair' else (-.2, -2.05, .10)
         self.cameras = []
-        for azimuth, elevation in ((135., -55.), (90., -12.)):
+        side = (90., -12., 2.8) if host.bundle['case'] == 'pair' else (270., -12., 1.8)
+        for azimuth, elevation, distance in ((135., -55., 2.8), side):
             camera = mujoco.MjvCamera()
             camera.type = mujoco.mjtCamera.mjCAMERA_FREE
             camera.lookat[:] = lookat
-            camera.distance, camera.azimuth, camera.elevation = 2.8, azimuth, elevation
+            camera.distance, camera.azimuth, camera.elevation = distance, azimuth, elevation
             self.cameras.append(camera)
         self.next_time = host.now
         self.frames = 0
