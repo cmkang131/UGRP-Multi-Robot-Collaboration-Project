@@ -291,6 +291,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-oracle-stage-probe-v155": ["--expected-source-sha", "0" * 40],
             "zone-s3-x86-stage-probe-v156": ["--expected-source-sha", "0" * 40],
             "zone-s3-x86-pulse-measure-v157": ["--expected-source-sha", "0" * 40],
+            "zone-s3-settled-servo-probe-v159": ["--expected-source-sha", "0" * 40],
             "zone-s3-x86-trim-probe-v158": ["--expected-source-sha", "0" * 40, "--model", "/nonexistent/trim.json", "--model-sha256", "0" * 64],
             "v7-exact-speed-benchmark": ["--suite", str(source), "--expected-source-sha", "0" * 40],
             "masterpi-drive-friction-probe": ["--expected-source-sha", "0" * 40, "--drive-profile", "masterpi_drive_friction_v7"],
