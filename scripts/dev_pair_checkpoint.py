@@ -181,16 +181,22 @@ def _mujoco_view(array):
     return type(base).__name__ == 'PyCapsule' and base is not array
 
 
+def _fresh_local_cache(function, parameters):
+    return functools.lru_cache(**parameters)(function)
+
+
 class CheckpointPickler:
     """cloudpickle.Pickler with recreate-on-load reducers (subclassed lazily so cloudpickle stays optional)."""
 
-    def __new__(cls, file, *, out, renderers, streams):
+    def __new__(cls, file, *, out, renderers, streams, local_caches=False):
         import cloudpickle
         import mujoco
 
         class _Pickler(cloudpickle.Pickler):
             def reducer_override(self, obj):
                 kind = type(obj)
+                if local_caches and isinstance(obj,functools._lru_cache_wrapper) and '<locals>' in obj.__qualname__:
+                    return _fresh_local_cache,(obj.__wrapped__,obj.cache_parameters())
                 if kind is _LOCK:
                     if obj.locked():
                         raise RuntimeError('lock held at the checkpoint boundary')

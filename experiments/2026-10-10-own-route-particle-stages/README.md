@@ -58,3 +58,18 @@ r3(60011)는14.2SIM초/72RGB에서 upstream PythonRobotics의 plot import 의존
 |egomap60-stage-60012-c|60012|c|동일 명령, `--profile c --output outputs/egomap60-stage-60012-c/data`|
 
 CP는 `egomap60-prep-60012-r3/data/checkpoints/manifest.jsonl`의 첫 자기B 확인 행(하나)의 file·sha256이다. 이름을 결과에 따라 고르는 것이 아니라 이 유일한 행을 기계적으로 사용한다. 공통 prefix: `ORACLE_HOST=oracle-x86 $S/oracle_run.sh WT NAME -- /usr/bin/time -v /usr/bin/env UGRP_EXECUTION_HOST=oracle-x86 MPLBACKEND=Agg PYTHONPATH=/home/ubuntu/ugrp-sim/egomap60-deps /bin/bash -c 'cd /home/ubuntu/ugrp-sim/src/0fa397aaed3797a6cc27823959de1dcfe1b49af8 && exec .venv-sim/bin/python ...'`. 출력을 각 run 절대 경로에 저장(동결 runtime 안의 symlink 유무에 의존하지 않음).
+
+### 실행 목록 정정·코드 일괄 완료 (후보 결과 없음)
+
+60012-r3의 첫B(67.6초) 저장도 local own-mask lru_cache 직렬화에서 실패했다. 이전 절의 old-runtime 스모크/후보 명령은 **미입장 취소**한다. 직렬화의 표준 reducer를 local lru wrapper 전체에 opt-in 적용하고, **전체 실제 제어기 객체**를 MuJoCo/녹화 없이 serialize→restore→지도/그래프 bytes 비교하는 시험을 추가했다. 원본 메모리/RNG/정책은 유지하고 순수 memoization만 cold cache. 단편 캐시별 긴 물리 재시도는 끝낸다.
+
+최종 소스는 이 절과 코드가 포함된 새 커밋으로 전체 동일하게 고정한다. 기본 off/기존 physical 경로는 불변. 실행 목록:
+
+|이름|seed/조건|고정 명령|
+|---|---|---|
+|egomap60-checkpoint-smoke-v2|60012/baseline|`python -m scripts.run_own_route_particle_stages --mode smoke --seed 60012 --output outputs/egomap60-checkpoint-smoke-v2/data` (4SIM초 저장+4SIM초 복원, reset포함≤10초)|
+|egomap60-fixed-batch-v2|등록8슬롯/4실행 가능|`python -m scripts.run_own_route_particle_batch --output outputs/egomap60-fixed-batch-v2/data --smoke /home/ubuntu/ugrp-sim/runs/egomap60-checkpoint-smoke-v2/data/smoke-summary.json`|
+
+batch는 `egomap60-prep-60012-batch`(자기B 시작 상태 생성, 기존150초 상한)와 앞 표의 stage8슬롯을 한꺼번에 등록한다. 시작 상태 생성은 후속 조건의 필수 선행 의존성이며, 완료 후 사람이 결과를 보고 수정하지 않고 **baseline/a/b/c4개를 즉시 모두 동시에** 발행한다. 60011은 이미 B미관측으로 확정됐으므로 물리 재실행 없이4슬롯 차단 유지. 60012 준비가 다시 실패하면4개 모두 차단, 자동재시도0. 모든 결과가 끝난 뒤에만 raw 공동판정, 유효seed 부족이면후속전체0. 이는 사용자 새 묶음 규칙에 맞춘 실행 어댑터 수정이며 실험 문턱 변경0이다.
+
+旧 inline smoke 발행은 launcher의 중첩 shell quoting 문법 오류로 **프로세스/물리0** 거부됐다(후보 실행 아님). 원격 launcher는 수정하지 않고, 새 등록 CLI `--mode smoke`만 사용하여 복잡한 inline command를 없앴다. 변경 모듈 합성40시험 초록; whole-controller pickle, native handle, sensor stream, local cache, asset exact/off, batch8슬롯·비대체 규칙 포함. 이번 묶음은 이 코드/README SHA 한 개만 사용한다.

@@ -154,3 +154,32 @@ def test_relay_cache_checkpoint_preserves_command_bytes_without_physics(tmp_path
     b=pickle.loads(raw.getvalue())
     assert b.cache_info()['currsize']==0
     assert all(x.tobytes()==y.tobytes() for x,y in zip(expected,b.command_step(u,state)))
+
+
+def test_whole_controller_checkpoint_without_physics_or_recording(tmp_path):
+    import io,pickle
+    from scripts.dev_pair_checkpoint import CheckpointPickler
+    from scripts import run_goal_route_continuous as old
+    from harness.active_camera import SEARCH
+    a=old.actor('r3',1.3,SEARCH,active_mapping='frontier_rbpf_v1',active_loop='information_gain_v1',seed=60012,
+        active_recovery='nav2_frontier_v1',navigation_map='public_ros_v8',motion_model='s2_pulse_v122_rotL_v1')
+    old.base.install_profile(a.memory.self_map,profile='egomap27_wide');c=old.controller(a)
+    raw=io.BytesIO();CheckpointPickler(raw,out=tmp_path,renderers={},streams={},local_caches=True).dump(c)
+    d=pickle.loads(raw.getvalue())
+    assert d.explorer.memory.self_map.export()==c.explorer.memory.self_map.export()
+    assert d.graph.snapshot()==c.graph.snapshot()
+
+
+def test_smoke_is_four_plus_four_seconds_only():
+    from scripts.run_own_route_particle_stages import bundle
+    assert bundle(60012,'a'*40,'baseline','smoke_save')['case_cap_s']==4.
+    assert bundle(60012,'a'*40,'baseline','smoke_resume')['case_cap_s']==4.
+    assert bundle(60012,'a'*40,'baseline','stage')['case_cap_s']==120.
+
+
+def test_batch_fixed_eight_slots_no_replacement_or_retry(tmp_path):
+    from scripts.run_own_route_particle_batch import plan
+    jobs=plan(tmp_path)
+    assert len(jobs)==8 and len({j['name'] for j in jobs})==8
+    assert [j['profile'] for j in jobs if j['seed']==60012]==['baseline','a','b','c']
+    assert all(j['status']=='BLOCKED_PREPARE_B_UNOBSERVED' for j in jobs if j['seed']==60011)

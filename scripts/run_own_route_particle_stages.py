@@ -1,7 +1,7 @@
 """Oracle-only egomap60 DEV stages; existing physics/controller/checkpoint owners."""
 from pathlib import Path
 import argparse,contextlib,fcntl,hashlib,json,os,platform,signal,time,traceback
-from types import MethodType
+from functools import partial
 from harness.active_camera import bind,SEARCH
 from harness.rbpf_stage_candidates import install,POPULATION,LOCAL,GATE
 from scripts import run_goal_route_motion_audit as previous
@@ -24,7 +24,7 @@ def bundle(seed,source,profile,mode):
     b['options'].update({k:'off' for k in ('rbpf_population','rbpf_local_search','rbpf_candidate_gate')})
     b['options'].update(PROFILES[profile]);b['host']='oracle-x86'
     b['options']['wall_asset_numeric']='libm_ulps_v1'
-    b['case_cap_s']=810. if mode=='full' else 150. if mode=='prepare' else 120.
+    b['case_cap_s']=4. if mode.startswith('smoke_') else 810. if mode=='full' else 150. if mode=='prepare' else 120.
     b['stage_diagnostic']=mode!='full';b['admission']='egomap60 preregistered oracle-only DEV'
     return b
 
@@ -56,12 +56,13 @@ def enter_return(c,t):
 
 
 def checkpoint_save(backend,c,*,tick,start,source,out):
-    from scripts.dev_pair_checkpoint import DevCheckpoint
+    from scripts.dev_pair_checkpoint import DevCheckpoint,CheckpointPickler
     cp=DevCheckpoint(checkpoint_dir=out/'checkpoints')
     if backend.range_rig is not None:
         for writer in backend.range_rig.input._writers.values():
             backend.streams[str(writer.path.relative_to(out))]=writer._fh
-    save=bind(DevCheckpoint.save,code_identity=lambda:dict(head=source,dirty=False,branch='claude/ego-wall-map'))
+    save=bind(DevCheckpoint.save,code_identity=lambda:dict(head=source,dirty=False,branch='claude/ego-wall-map'),
+        CheckpointPickler=partial(CheckpointPickler,local_caches=True))
     save(cp,tick,backend=backend,runtime=c,start=start,commands={},result={},reasons=['first_own_B_confirmation'])
     return cp.saved[-1]
 
@@ -92,7 +93,7 @@ def run(args):
         try:
             from harness.active_wall_vision import observe
             from scripts.run_wall_servo_stiffness import arm
-            if args.mode=='stage':
+            if args.mode in ('stage','smoke_resume'):
                 if args.checkpoint is None:raise ValueError('CHECKPOINT_REQUIRED')
                 backend,c,original_start,tick,cp=checkpoint_load(args.checkpoint.resolve(),out)
                 if cp['code']['head']!=source:raise ValueError('STAGE_SOURCE_MISMATCH')
@@ -135,7 +136,7 @@ def run(args):
                     dump(out/'progress.json',progress);print(json.dumps(progress),flush=True)
                 if c.done or t>=end-1e-8:break
                 backend.advance_to(round(t+.2,9));tick+=1
-                if args.mode=='prepare' and 'B' in c.entities:
+                if (args.mode=='prepare' and 'B' in c.entities) or (args.mode=='smoke_save' and backend.now>=end-1e-8):
                     result['saved_checkpoint']=checkpoint_save(backend,c,tick=tick,start=original_start,source=source,out=out)
                     break
             result.update(status='RECORDED',frames=backend.frame,total_sim_s=backend.now,stage=c.stage,
@@ -160,8 +161,18 @@ def run(args):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--mode',choices=('prepare','stage','full'),required=True);p.add_argument('--profile',choices=PROFILES,default='baseline')
+    p=argparse.ArgumentParser();p.add_argument('--mode',choices=('prepare','stage','full','smoke'),required=True);p.add_argument('--profile',choices=PROFILES,default='baseline')
     p.add_argument('--seed',type=int,choices=SEEDS,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--checkpoint',type=Path)
-    a=p.parse_args();r=run(a);print(json.dumps(r),flush=True);return 0 if r['status']=='RECORDED' else 1
+    a=p.parse_args()
+    if a.mode=='smoke':
+        output=a.output
+        a.output=output/'save';a.mode='smoke_save';saved=run(a)
+        if saved['status']!='RECORDED' or 'saved_checkpoint' not in saved:
+            print(json.dumps(saved),flush=True);return 1
+        a.checkpoint=a.output/'checkpoints'/saved['saved_checkpoint']['file']
+        a.output=output/'resume';a.mode='smoke_resume';r=run(a)
+        dump(output/'smoke-summary.json',dict(save=saved,resume=r,new_sim_s=8.,candidate_trial=False))
+    else:r=run(a)
+    print(json.dumps(r),flush=True);return 0 if r['status']=='RECORDED' else 1
 
 if __name__=='__main__':raise SystemExit(main())
