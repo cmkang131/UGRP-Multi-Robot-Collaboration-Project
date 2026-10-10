@@ -1,10 +1,10 @@
 # s4live10-r3 DEV (`research_result=false`)
-이전16개 원본 보존: r2 새GO·셋째운반8/8·lease0/8·낙하0/8, 목표0/8; [r2 판정](../s4live10-r2/summary.json).
-r2 원인: 바닥접촉·COM16.2mm·비지지0인데 S2 가드의 release_allowed=false가 LOAD_DROP을 다시 발생8/8.
-같은 기본off 바닥지지 토글을 두 감독 모두에 연결; 기존 S2 기울기·공중이탈 체크 유지, 모델 입력·S3 제어130파일은 그대로.
-v181/workflow7.74.0; [고정8명령·seed601/602](plan.json), 바닥지지·형식피드백 및 기존3토글 ON; 재탐색이며 인과·확증 아님.
-900SIM/10800wall·450call/actor·1350/run·27Mtoken; 전체8구간5.45m+20mm목표·최종안정바닥배치로 판정, 중간성공 없음.
-실제 S2 StopGuard를 써서 바닥 허용·공중 손실·기울기 및 전체두가드 체인을 검증34/34; 물리·렌더·실모델 없이 시험.
-x86 영속runs/LP4/OSMesa·180–300wall 초기점검; 종료 즉시 서버평가·SHA·ARM원본 보관, Mac 이미지제외 fetch-lite.
-[summary.json](summary.json)에 모든8실행·실패·순환·거리·모델/메시지·원본SHA; 준비중.
-참고: [MuJoCo contact dynamics](https://mujoco.readthedocs.io/en/stable/overview.html), [Chubby lease](https://www.usenix.org/legacy/event/osdi06/tech/full_papers/burrows/burrows_html/), [필수 JSON Schema](https://ai.google.dev/gemini-api/docs/structured-output?hl=en).
+실행 SHA `a9c0e3d8030ff3ad3869310a2339cbfac929aec5`, v181/workflow7.74.0; [고정8명령·601/602](plan.json), 토글 기본off·실행ON, 재탐색이며 확증 아님.
+이전16개 실패·원본은 [r1](../s4live10/summary.json)·[r2](../s4live10-r2/summary.json)에 보존; 두 감독의 바닥지지 처리를 연결했고 S3 130파일은 그대로.
+900SIM/10800wall·450call/actor·1350/run·27Mtoken; 전체8구간5.45m+20mm목표·최종안정바닥배치 기준, 중간 성공 없음.
+초기점검8/8·재관측/재파지/새GO8/8·셋째운반8/8·다섯째6/8·누적2.502–3.350m·목표0/8·관측 빔/cyan 낙하각0/8.
+종료: 개인 모델 사용량 한도 HTTP429 7/8(최초 응답 초기화 약2h34m), 형식 무효2회 뒤 안전한 lease 종료1/8; 900초 도달 전 외부 실패.
+부가 지연: no_comm601 r2 집기밴드 BAND_CLIPPED 556/556(287–379.5SIM); inspect508은 보정표에 등록되어 1펄스 차이 가설 제외.
+관련시험34/34·Mac 물리/렌더0·모델POST1460/1460 및 이미지SHA2920 검증·종료후 명령/메시지변경0; 전체CI 미통과·PR425초안.
+[summary.json](summary.json)에 순환·거리·토큰/응답시간/메시지·원본SHA; ARM181838파일/5344220258bytes 전량일치8/8, Mac fetch-lite만(미디어0).
+참고: [Chubby lease](https://www.usenix.org/legacy/event/osdi06/tech/full_papers/burrows/burrows_html/), [ROS2 action/취소](https://design.ros2.org/articles/actions.html), [MuJoCo](https://mujoco.readthedocs.io/en/stable/overview.html), [필수 JSON Schema](https://ai.google.dev/gemini-api/docs/structured-output?hl=en); 다음은 한도 회복 후 재실행·형식제약·공동 재관측/backoff.
