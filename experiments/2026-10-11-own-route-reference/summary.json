@@ -1,0 +1,60 @@
+{
+  "round": "egomap66",
+  "status": "PREPARED_NOT_EXECUTED",
+  "registered": 36,
+  "executed": 0,
+  "host": "oracle-x86",
+  "tests": {
+    "passed": 30,
+    "files": [
+      "tests/test_own_route_reference.py",
+      "tests/test_own_route_references_batch.py",
+      "tests/test_own_route_full_budget.py"
+    ]
+  },
+  "conditions": {
+    "baseline": {
+      "registered": 6,
+      "executed": 0,
+      "B_arrived": null,
+      "returned": null
+    },
+    "progress_lookahead": {
+      "registered": 6,
+      "executed": 0,
+      "B_arrived": null,
+      "returned": null
+    },
+    "return_local_vtr": {
+      "registered": 6,
+      "executed": 0,
+      "B_arrived": null,
+      "returned": null
+    },
+    "return_own_free_astar": {
+      "registered": 6,
+      "executed": 0,
+      "B_arrived": null,
+      "returned": null
+    },
+    "arrival_verify_fsm": {
+      "registered": 6,
+      "executed": 0,
+      "B_arrived": null,
+      "returned": null
+    },
+    "combined": {
+      "registered": 6,
+      "executed": 0,
+      "B_arrived": null,
+      "returned": null
+    }
+  },
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch",
+  "causes": [
+    "Prior heading65 reduced command opportunity rather than reversal rate",
+    "Current root disk 8.6GiB; 36 trial estimate around 18GiB, checking other volumes before submission"
+  ],
+  "early_checks": [],
+  "thresholds_changed": false
+}
