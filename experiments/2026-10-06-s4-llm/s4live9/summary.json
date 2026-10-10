@@ -1,9 +1,13 @@
 {
   "research_result": false,
-  "status": "REGISTERED_NOT_SUBMITTED",
+  "status": "DEV_EVALUATED_SERVER_FULL_HASH_VERIFIED_MAC_LITE",
+  "verification_scope": "Existing synthetic beam alignment entrance; repeated regrasp/GO/transport until failure/cap; full goal 0/8, no formal navigation/E2E-study success",
+  "finished_unix": 1791660317.1977,
+  "source_sha": "fe3b709b3c3263289f07648ea314996d6a789008",
+  "S3_source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+  "S3_control_files_unchanged": 130,
   "execution_bundle_id": "zone-s4-pair-live-v176",
   "workflow_version": "7.69.0",
-  "S3_source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
   "plan": {
     "path": "/Users/changmin/projects/ugrp-wt/s4-llm/experiments/2026-10-06-s4-llm/s4live9/plan.json",
     "sha256": "252844fdd0658e69885a83bcf9dcb38091317c4eb449faf2c2389e60c0161beb"
@@ -14,229 +18,2568 @@
     "sha256": "c23fd52b44c0e41fb6ab9cf4f3cf50471b12cd5bf2c635098dc8f2f321e615ce"
   },
   "metrics": {
+    "claim": {
+      "n": 8,
+      "N": 8
+    },
+    "go_ack": {
+      "n": 7,
+      "N": 8
+    },
+    "simultaneous_departure": {
+      "n": 7,
+      "N": 8
+    },
+    "carry_20mm": {
+      "n": 7,
+      "N": 8
+    },
+    "lowering": {
+      "n": 7,
+      "N": 8
+    },
     "reobserve": {
-      "n": null,
+      "n": 7,
       "N": 8
     },
     "regrasp": {
-      "n": null,
+      "n": 7,
       "N": 8
     },
     "fresh_go_ack": {
-      "n": null,
-      "N": 8
-    },
-    "second_carry": {
-      "n": null,
+      "n": 5,
       "N": 8
     },
     "goal_route": {
-      "n": null,
+      "n": 0,
+      "N": 8
+    },
+    "second_carry": {
+      "n": 5,
+      "N": 8
+    },
+    "beam_drop": {
+      "n": 0,
+      "N": 8
+    },
+    "second_carry_distance_m": {
+      "min_positive": 0.29236347915874056,
+      "max": 0.753304339874618,
+      "epoch": 2001,
+      "segment": 1,
+      "definition": "maximum connected bilateral-support excursion in exactly the second carry, >=20mm"
+    },
+    "all_post_release_supported_path_m": {
+      "min_positive": 0.29282353929405575,
+      "max": 1.508605120598223,
+      "definition": "sum of all supported later carry paths; excludes gaps and includes third carry where present"
+    }
+  },
+  "per_condition": {
+    "no_comm": {
+      "reobserve": {
+        "n": 2,
+        "N": 2
+      },
+      "regrasp": {
+        "n": 2,
+        "N": 2
+      },
+      "fresh_go_ack": {
+        "n": 2,
+        "N": 2
+      },
+      "second_carry": {
+        "n": 2,
+        "N": 2
+      },
+      "goal_route": {
+        "n": 0,
+        "N": 2
+      }
+    },
+    "peer_ko": {
+      "reobserve": {
+        "n": 2,
+        "N": 2
+      },
+      "regrasp": {
+        "n": 2,
+        "N": 2
+      },
+      "fresh_go_ack": {
+        "n": 2,
+        "N": 2
+      },
+      "second_carry": {
+        "n": 2,
+        "N": 2
+      },
+      "goal_route": {
+        "n": 0,
+        "N": 2
+      }
+    },
+    "leader_ko": {
+      "reobserve": {
+        "n": 1,
+        "N": 2
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 2
+      },
+      "fresh_go_ack": {
+        "n": 1,
+        "N": 2
+      },
+      "second_carry": {
+        "n": 1,
+        "N": 2
+      },
+      "goal_route": {
+        "n": 0,
+        "N": 2
+      }
+    },
+    "structured": {
+      "reobserve": {
+        "n": 2,
+        "N": 2
+      },
+      "regrasp": {
+        "n": 2,
+        "N": 2
+      },
+      "fresh_go_ack": {
+        "n": 0,
+        "N": 2
+      },
+      "second_carry": {
+        "n": 0,
+        "N": 2
+      },
+      "goal_route": {
+        "n": 0,
+        "N": 2
+      }
+    }
+  },
+  "causes": {
+    "GO_TIMEOUT": {
+      "n": 3,
+      "N": 8,
+      "detail": "leader602 ACK missing mandatory message even after one retry; structured601/602 protocol-invalid GO responses consumed bounded retries, accepted GO at 117.35/118.35 and 111.30/118.55 SIM, 119.15 deadline censored pending ACKs"
+    },
+    "VISUAL_LEASE_EXPIRED": {
+      "n": 1,
+      "N": 8,
+      "detail": "peer601 second-epoch transport; last eight heartbeat attempts in lift/wait_carry rejected as UNADMITTED_OR_STALE_CARRY_RGB; expiry120.2 SIM"
+    },
+    "CYAN_HEIGHT_GUARD_STOP": {
+      "n": 4,
+      "N": 8,
+      "bilateral_contact_preceding_1s": {
+        "n": 84,
+        "N": 84
+      },
+      "unsupported_preceding_1s": {
+        "n": 0,
+        "N": 84
+      },
+      "stop_com_z_m_range": [
+        0.033946149699733995,
+        0.034177341952762966
+      ],
+      "detail": "r3 own commanded lower, gripper1500; legacy z<=35mm stop despite bilateral contact, no free-flight evidence in final1s; release not completed"
+    },
+    "UNMEASURED_V3_CAMERA_POSTURE": {
+      "n": 0,
       "N": 8
     }
   },
-  "initial_health": null,
+  "next_candidates": [
+    "same-epoch snapshot/heartbeat rebind at regrasp; classify semantic rejections as well as protocol-invalid replies",
+    "per-epoch GO/ACK state reconciliation within existing deadline, retaining bounded retry and command idempotence",
+    "S3 cyan supported-lowering supervisor aligned with contact/COM evaluation; no change made to S3 source"
+  ],
+  "model": {
+    "POSTs": 547,
+    "reconciled_POSTs": {
+      "n": 547,
+      "N": 547
+    },
+    "image_references_verified": 1094,
+    "reported_tokens": {
+      "prompt": 4250735,
+      "completion": 56109,
+      "total_known": 4329212,
+      "note": "provider reported totals may include tokens beyond prompt+completion"
+    },
+    "wall_latency_s": {
+      "N": 547,
+      "mean": 4.840722835466179,
+      "median": 3.337994,
+      "max": 33.854769
+    },
+    "api_error_requests": 0,
+    "scheduler_failed_calls": 15,
+    "terminal_censored_calls": 15,
+    "same_epoch_bounded_re_requests": 5,
+    "upstream_finish_verified": false,
+    "upstream_attempts_exact": null,
+    "provider_billing_verified": false,
+    "proxy_identity": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/relay/identity.json",
+      "sha256": "08dfe245bd5dcb3232ca9ebad7974642d3378261081e6c57c6d341ce4d548ff4"
+    }
+  },
+  "messages": {
+    "sent": 135,
+    "accepted_messages": 129,
+    "delivery_edges": 133
+  },
+  "terminal_censorship": {
+    "settled_without_new_commands": {
+      "n": 8,
+      "N": 8
+    },
+    "outstanding_calls": 0,
+    "delivered_edges_preserved": {
+      "n": 133,
+      "N": 133
+    }
+  },
+  "initial_health": {
+    "n": 8,
+    "N": 8,
+    "checked_at_wall_s": 181.98721604101593,
+    "raw_receipt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/admissions.json",
+      "sha256": "2159c24562aae192f3225849ce1c4ab862f1e63d8f934415c3e98e6f955d7432"
+    }
+  },
+  "pipeline_parity": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/pipeline-parity.json",
+    "sha256": "3543eafb86b0def8c75446bb1db61b7e5ca8b21498a707089f1ec1ee7ed0af4f",
+    "server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-offline/pipeline-parity.json"
+  },
   "runs": [
     {
       "name": "s4live9-no_comm-s601-v176",
       "condition": "no_comm",
       "seed": 601,
-      "argv": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s4_pair_live9",
-        "--expected-source-sha",
-        "<SOURCE_SHA>",
-        "--output",
-        "outputs/s4live9-no_comm-s601-v176/raw",
-        "--condition",
-        "no_comm",
-        "--seed",
-        "601",
-        "--inspect-before-look",
-        "--go-ack-retry",
-        "--terminal-censor",
-        "--relay-receipt",
-        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
-        "--execute"
-      ]
+      "status": "PHYSICAL_STOP",
+      "exit_code": 0,
+      "cause": "LOAD_DROP:cyan_1",
+      "sim_s_since_reset": 212.0,
+      "sim_s_absolute": 214.35,
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "first_go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "first_simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 41.2,
+          "r2": 41.2
+        }
+      },
+      "first_carry": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.15442511190579228,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          41.0,
+          43.7
+        ]
+      },
+      "first_lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1368,
+            "sha256": "254fe78e6b9ba29d3152e2345e4040ade2c3dbed377752666c5521bdf4846572",
+            "sim_s": 70.7,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1368,
+            "sha256": "4394da464e95a3b72667bfe9565e2840a011806ba6d0399f411b2203a37e1cbe",
+            "sim_s": 70.7,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 77.05
+      },
+      "fresh_go_ack": {
+        "n": 1,
+        "N": 1,
+        "permits": [
+          {
+            "at": 106.75,
+            "epoch": 2001,
+            "claim_calls": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "go_calls": {
+              "r1": "call-0042-r1",
+              "r2": "call-0041-r2"
+            },
+            "ack_calls": {
+              "r1": "call-0044-r1",
+              "r2": "call-0045-r2"
+            }
+          },
+          {
+            "at": 184.45000000000002,
+            "epoch": 3002,
+            "claim_calls": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "go_calls": {
+              "r1": "call-0083-r1",
+              "r2": "call-0084-r2"
+            },
+            "ack_calls": {
+              "r1": "call-0087-r1",
+              "r2": "call-0086-r2"
+            }
+          }
+        ]
+      },
+      "second_carry": {
+        "n": 1,
+        "N": 1,
+        "epoch": 2001,
+        "segment": 1,
+        "excursion_m": 0.7532465608226836,
+        "path_m": 0.7551077827734041
+      },
+      "all_post_release_contact_supported_path_m": 1.508078140568038,
+      "maximum_later_segment_excursion_m": 0.7532465608226836,
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15442511190579228,
+          "1": 0.7532465608226836,
+          "2": 0.7522592156197971
+        },
+        "goal_distance_m": 2.6446159841923804,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "beam_drop_events": 0,
+      "terminal_bilateral_beam_fingers": true,
+      "model_calls": 105,
+      "reported_model_usage": {
+        "requests": 105,
+        "blocked": 0,
+        "tokens_prompt": 763858,
+        "tokens_completion": 8818,
+        "tokens_total_known": 775982,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 105,
+          "sum": 451129.758,
+          "max": 31516.332,
+          "median": 3223.239
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "scheduler_statuses": {
+        "done": 103,
+        "censored": 2
+      },
+      "go_ack_retries": [],
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "terminal_settlement": {
+        "before": {
+          "sends": 105,
+          "actions": 103,
+          "deliveries": 0,
+          "dispatch": 103
+        },
+        "after": {
+          "sends": 105,
+          "actions": 103,
+          "deliveries": 0,
+          "dispatch": 103
+        },
+        "censored_calls": 2,
+        "unsent_cancelled": 0,
+        "outstanding": 0,
+        "commands_released": 0
+      },
+      "initial_health": {
+        "status": "PASS",
+        "checked_after_wall_s": 181.9872454580036,
+        "log_exceptions": [],
+        "first_sim_s": 1.0,
+        "last_sim_s": 22.0,
+        "first_frames": 21,
+        "last_frames": 441,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8424048003636669,
+              0.07099150581476259,
+              0.03193470271014462
+            ],
+            "base_delta_m": 0.03838229697330903,
+            "arm_delta_m": 0.1152467689157478,
+            "commands": 663,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7508914110105407,
+              0.01763850473181986,
+              0.03196709667322482
+            ],
+            "base_delta_m": 0.05965600555662371,
+            "arm_delta_m": 0.13634607807807686,
+            "commands": 667,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 3,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      },
+      "raw": {
+        "canonical_server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-no_comm-s601-v176/raw",
+        "automatic_archive_destination": "ARM:~/ugrp-archive/runs/s4live9-no_comm-s601-v176/raw",
+        "ARM_copy_verified_by_this_task": false,
+        "local_fetch_lite_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live9-no_comm-s601-v176",
+        "verified_artifacts": 13103,
+        "manifest_sha256": "4942c6fa22aad454ec4a44a749204ff2d9f0e08f205433b5452f08257dd0e4ee",
+        "result_sha256": "9377afffb5e8f0bc1dbbfa984bf9673d3754fbe6cca7458559782760bf2cd62f",
+        "server_inventory_files": 13113,
+        "server_inventory_bytes": 399399082,
+        "server_inventory_sha256": "fef3d8a7a2a8ce70d637a4678ae89d51e068a96de4bde9278fa114558174fe5e"
+      },
+      "cyan_height_guard_evidence": {
+        "own_state": "lower",
+        "own_events_tail": [
+          {
+            "robot_id": "r3",
+            "event": "cyan_setdown_relook_disabled",
+            "t": 200.9,
+            "index": 2,
+            "last_fix_t": 91.75,
+            "physical_success": null
+          },
+          {
+            "robot_id": "r3",
+            "event": "state",
+            "t": 200.9,
+            "state": "real_carry_return"
+          },
+          {
+            "robot_id": "r3",
+            "event": "state",
+            "t": 201.5,
+            "state": "lower"
+          }
+        ],
+        "bilateral_contact_last1s": {
+          "n": 21,
+          "N": 21
+        },
+        "unsupported_last1s": {
+          "n": 0,
+          "N": 21
+        },
+        "z_at_1s_before_m": 0.08680109664665453,
+        "z_at_stop_m": 0.03413488694095833,
+        "classification": "height-threshold stop during own commanded lowering; bilateral fingers maintained; no observed free-flight drop in preceding 1s; floor release was not completed",
+        "last_own_gripper_command": {
+          "t": 214.3,
+          "kind": "arm",
+          "servo_id": 1,
+          "pulse": 1500
+        },
+        "complete_command_history": "server raw/student_record.json; diagnosis.json records preceding1s commands"
+      },
+      "invalid_reply_errors": {}
     },
     {
       "name": "s4live9-peer_ko-s601-v176",
       "condition": "peer_ko",
       "seed": 601,
-      "argv": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s4_pair_live9",
-        "--expected-source-sha",
-        "<SOURCE_SHA>",
-        "--output",
-        "outputs/s4live9-peer_ko-s601-v176/raw",
-        "--condition",
-        "peer_ko",
-        "--seed",
-        "601",
-        "--inspect-before-look",
-        "--go-ack-retry",
-        "--terminal-censor",
-        "--relay-receipt",
-        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
-        "--execute"
-      ]
+      "status": "PAIR_STOP",
+      "exit_code": 0,
+      "cause": "PAIR_VISUAL_LEASE_EXPIRED",
+      "sim_s_since_reset": 120.2,
+      "sim_s_absolute": 122.55,
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "first_go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "first_simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.4,
+          "r2": 44.4
+        }
+      },
+      "first_carry": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.15411470943653574,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          44.2,
+          46.9
+        ]
+      },
+      "first_lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1430,
+            "sha256": "b18737fd54178108a45f147ceb496c9a78f7fb6cb4d0b28b28462ee1b05c7c15",
+            "sim_s": 73.8,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1430,
+            "sha256": "2071fdbc354d46d8b6c850cf3f27d59cec2a654969dbf03180319540a5720761",
+            "sim_s": 73.8,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 80.05
+      },
+      "fresh_go_ack": {
+        "n": 1,
+        "N": 1,
+        "permits": [
+          {
+            "at": 115.2,
+            "epoch": 2001,
+            "claim_calls": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "go_calls": {
+              "r1": "call-0042-r1",
+              "r2": "call-0041-r2"
+            },
+            "ack_calls": {
+              "r1": "call-0044-r1",
+              "r2": "call-0045-r2"
+            }
+          }
+        ]
+      },
+      "second_carry": {
+        "n": 1,
+        "N": 1,
+        "epoch": 2001,
+        "segment": 1,
+        "excursion_m": 0.29236347915874056,
+        "path_m": 0.29282353929405575
+      },
+      "all_post_release_contact_supported_path_m": 0.29282353929405575,
+      "maximum_later_segment_excursion_m": 0.29236347915874056,
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15411470943653574,
+          "1": 0.2965894570806594
+        },
+        "goal_distance_m": 3.5637104512404885,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "beam_drop_events": 0,
+      "terminal_bilateral_beam_fingers": true,
+      "model_calls": 50,
+      "reported_model_usage": {
+        "requests": 50,
+        "blocked": 0,
+        "tokens_prompt": 400417,
+        "tokens_completion": 5534,
+        "tokens_total_known": 409717,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 50,
+          "sum": 283911.484,
+          "max": 31260.422,
+          "median": 3500.285
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "scheduler_statuses": {
+        "done": 46,
+        "failed": 2,
+        "censored": 2
+      },
+      "go_ack_retries": [],
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 20,
+        "accepted_messages": 20,
+        "rejected": 0,
+        "delivery_edges": 21,
+        "free_text_messages": 20,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 11,
+          "r2": 10,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "terminal_settlement": {
+        "before": {
+          "sends": 50,
+          "actions": 46,
+          "deliveries": 21,
+          "dispatch": 46
+        },
+        "after": {
+          "sends": 50,
+          "actions": 46,
+          "deliveries": 21,
+          "dispatch": 46
+        },
+        "censored_calls": 2,
+        "unsent_cancelled": 0,
+        "outstanding": 0,
+        "commands_released": 0
+      },
+      "initial_health": {
+        "status": "PASS",
+        "checked_after_wall_s": 181.9872502500075,
+        "log_exceptions": [],
+        "first_sim_s": 1.0,
+        "last_sim_s": 23.0,
+        "first_frames": 21,
+        "last_frames": 461,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8353552417789706,
+              0.08079922599808988,
+              0.03191258034419901
+            ],
+            "base_delta_m": 0.029153877111339863,
+            "arm_delta_m": 0.10483501138263343,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7647567509718758,
+              0.02746773184272243,
+              0.03194175238414264
+            ],
+            "base_delta_m": 0.04935560424618789,
+            "arm_delta_m": 0.12168788781731393,
+            "commands": 716,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      },
+      "raw": {
+        "canonical_server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-peer_ko-s601-v176/raw",
+        "automatic_archive_destination": "ARM:~/ugrp-archive/runs/s4live9-peer_ko-s601-v176/raw",
+        "ARM_copy_verified_by_this_task": false,
+        "local_fetch_lite_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live9-peer_ko-s601-v176",
+        "verified_artifacts": 7433,
+        "manifest_sha256": "a8dcc70ea53f1502d9987ad2f815897d8963054d69f465b635a8292f324b80d8",
+        "result_sha256": "13fb97282c44406de36be235cfcba535af12ed198d6d0600029fbb11fb9fe5ae",
+        "server_inventory_files": 7443,
+        "server_inventory_bytes": 227062285,
+        "server_inventory_sha256": "3e3bfe591ab882db3f96b9621054e93a30c805f61a228e764cfa9b3d70ecbfb0"
+      },
+      "invalid_reply_errors": {
+        "pair GO/ACK/loss needs a condition-channel notification": 2
+      }
     },
     {
       "name": "s4live9-leader_ko-s601-v176",
       "condition": "leader_ko",
       "seed": 601,
-      "argv": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s4_pair_live9",
-        "--expected-source-sha",
-        "<SOURCE_SHA>",
-        "--output",
-        "outputs/s4live9-leader_ko-s601-v176/raw",
-        "--condition",
-        "leader_ko",
-        "--seed",
-        "601",
-        "--inspect-before-look",
-        "--go-ack-retry",
-        "--terminal-censor",
-        "--relay-receipt",
-        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
-        "--execute"
-      ]
+      "status": "PHYSICAL_STOP",
+      "exit_code": 0,
+      "cause": "LOAD_DROP:cyan_1",
+      "sim_s_since_reset": 205.20000000000002,
+      "sim_s_absolute": 207.55,
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "first_go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "first_simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 45.3,
+          "r2": 45.3
+        }
+      },
+      "first_carry": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.15436952380635643,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          45.1,
+          47.8
+        ]
+      },
+      "first_lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1450,
+            "sha256": "b23c84ad5c71e653f4bad452baccbb191205769850bffcfc9764ab65d420c4bd",
+            "sim_s": 74.8,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1450,
+            "sha256": "845f94b1a24eaf866313fccbc89c93c0547d06b818fd5b8a582258153cd5b2a1",
+            "sim_s": 74.8,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 81.05
+      },
+      "fresh_go_ack": {
+        "n": 1,
+        "N": 1,
+        "permits": [
+          {
+            "at": 113.60000000000001,
+            "epoch": 2001,
+            "claim_calls": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "go_calls": {
+              "r1": "call-0043-r1",
+              "r2": "call-0044-r2"
+            },
+            "ack_calls": {
+              "r1": "call-0047-r1",
+              "r2": "call-0046-r2"
+            }
+          },
+          {
+            "at": 189.3,
+            "epoch": 3002,
+            "claim_calls": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "go_calls": {
+              "r1": "call-0082-r1",
+              "r2": "call-0083-r2"
+            },
+            "ack_calls": {
+              "r1": "call-0086-r1",
+              "r2": "call-0085-r2"
+            }
+          }
+        ]
+      },
+      "second_carry": {
+        "n": 1,
+        "N": 1,
+        "epoch": 2001,
+        "segment": 1,
+        "excursion_m": 0.7511799989930162,
+        "path_m": 0.7528484701986223
+      },
+      "all_post_release_contact_supported_path_m": 1.506152980482459,
+      "maximum_later_segment_excursion_m": 0.751970950074426,
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15436952380635643,
+          "1": 0.7511799989930162,
+          "2": 0.751970950074426
+        },
+        "goal_distance_m": 2.651668894194973,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "beam_drop_events": 0,
+      "terminal_bilateral_beam_fingers": true,
+      "model_calls": 95,
+      "reported_model_usage": {
+        "requests": 95,
+        "blocked": 0,
+        "tokens_prompt": 774816,
+        "tokens_completion": 9694,
+        "tokens_total_known": 787411,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 95,
+          "sum": 465298.724,
+          "max": 29210.059,
+          "median": 3415.917
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "scheduler_statuses": {
+        "done": 93,
+        "censored": 2
+      },
+      "go_ack_retries": [],
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r2",
+        "sent": 25,
+        "accepted_messages": 25,
+        "rejected": 0,
+        "delivery_edges": 25,
+        "free_text_messages": 25,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 12,
+          "r2": 12,
+          "r3": 1
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "terminal_settlement": {
+        "before": {
+          "sends": 95,
+          "actions": 93,
+          "deliveries": 25,
+          "dispatch": 93
+        },
+        "after": {
+          "sends": 95,
+          "actions": 93,
+          "deliveries": 25,
+          "dispatch": 93
+        },
+        "censored_calls": 2,
+        "unsent_cancelled": 0,
+        "outstanding": 0,
+        "commands_released": 0
+      },
+      "initial_health": {
+        "status": "PASS",
+        "checked_after_wall_s": 181.98721604101593,
+        "log_exceptions": [],
+        "first_sim_s": 1.0,
+        "last_sim_s": 22.0,
+        "first_frames": 21,
+        "last_frames": 441,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8348317877493734,
+              0.08138077127524214,
+              0.031920313000775975
+            ],
+            "base_delta_m": 0.028568348957229574,
+            "arm_delta_m": 0.10965843999237469,
+            "commands": 593,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.764542172070922,
+              0.028393282510175796,
+              0.03193651416299283
+            ],
+            "base_delta_m": 0.049945004123524796,
+            "arm_delta_m": 0.12685953544174286,
+            "commands": 596,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      },
+      "raw": {
+        "canonical_server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-leader_ko-s601-v176/raw",
+        "automatic_archive_destination": "ARM:~/ugrp-archive/runs/s4live9-leader_ko-s601-v176/raw",
+        "ARM_copy_verified_by_this_task": false,
+        "local_fetch_lite_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live9-leader_ko-s601-v176",
+        "verified_artifacts": 12665,
+        "manifest_sha256": "9f44daee3e4a4ac3d947442dbdb0d2b4efc0d5b0dc791d7207d65a479db95441",
+        "result_sha256": "c19ab0e7577d4de8b941e2d97875731b8788ffe3303b06ee2e283cce00809c81",
+        "server_inventory_files": 12675,
+        "server_inventory_bytes": 384334602,
+        "server_inventory_sha256": "68f4bb32a24313b8a9c688b1b4e863e567a99bd2c517d671a07f6235f956dddd"
+      },
+      "cyan_height_guard_evidence": {
+        "own_state": "lower",
+        "own_events_tail": [
+          {
+            "robot_id": "r3",
+            "event": "cyan_setdown_relook_disabled",
+            "t": 194.1,
+            "index": 2,
+            "last_fix_t": 85.8,
+            "physical_success": null
+          },
+          {
+            "robot_id": "r3",
+            "event": "state",
+            "t": 194.1,
+            "state": "real_carry_return"
+          },
+          {
+            "robot_id": "r3",
+            "event": "state",
+            "t": 194.7,
+            "state": "lower"
+          }
+        ],
+        "bilateral_contact_last1s": {
+          "n": 21,
+          "N": 21
+        },
+        "unsupported_last1s": {
+          "n": 0,
+          "N": 21
+        },
+        "z_at_1s_before_m": 0.0868763573982385,
+        "z_at_stop_m": 0.03416242369346086,
+        "classification": "height-threshold stop during own commanded lowering; bilateral fingers maintained; no observed free-flight drop in preceding 1s; floor release was not completed",
+        "last_own_gripper_command": {
+          "t": 207.5,
+          "kind": "arm",
+          "servo_id": 1,
+          "pulse": 1500
+        },
+        "complete_command_history": "server raw/student_record.json; diagnosis.json records preceding1s commands"
+      },
+      "invalid_reply_errors": {}
     },
     {
       "name": "s4live9-structured-s601-v176",
       "condition": "structured",
       "seed": 601,
-      "argv": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s4_pair_live9",
-        "--expected-source-sha",
-        "<SOURCE_SHA>",
-        "--output",
-        "outputs/s4live9-structured-s601-v176/raw",
-        "--condition",
-        "structured",
-        "--seed",
-        "601",
-        "--inspect-before-look",
-        "--go-ack-retry",
-        "--terminal-censor",
-        "--relay-receipt",
-        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
-        "--execute"
-      ]
+      "status": "PAIR_STOP",
+      "exit_code": 0,
+      "cause": "PAIR_GO_TIMEOUT",
+      "sim_s_since_reset": 119.15,
+      "sim_s_absolute": 121.5,
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "first_go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "first_simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 47.8,
+          "r2": 47.8
+        }
+      },
+      "first_carry": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.15411479479429221,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          47.6,
+          50.3
+        ]
+      },
+      "first_lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1500,
+            "sha256": "36e366d273eca96128594aa509bf83e037cda9ebd6f28e209747867a5d5551ec",
+            "sim_s": 77.3,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1500,
+            "sha256": "dce88bf7cb451a7ae30338ebde6df6b4c9ebe064536ff16993e0719b5e06cc78",
+            "sim_s": 77.3,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 83.55
+      },
+      "fresh_go_ack": {
+        "n": 0,
+        "N": 1,
+        "permits": []
+      },
+      "second_carry": {
+        "n": 0,
+        "N": 1,
+        "epoch": 2001,
+        "segment": 1,
+        "excursion_m": 0.0,
+        "path_m": 0.0
+      },
+      "all_post_release_contact_supported_path_m": 0.0,
+      "maximum_later_segment_excursion_m": 0.0,
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15411479479429221
+        },
+        "goal_distance_m": 3.819514164115074,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "beam_drop_events": 0,
+      "terminal_bilateral_beam_fingers": true,
+      "model_calls": 50,
+      "reported_model_usage": {
+        "requests": 50,
+        "blocked": 0,
+        "tokens_prompt": 394261,
+        "tokens_completion": 5824,
+        "tokens_total_known": 402674,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 50,
+          "sum": 246067.137,
+          "max": 31459.666,
+          "median": 3332.143
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "scheduler_statuses": {
+        "done": 43,
+        "failed": 4,
+        "censored": 3
+      },
+      "go_ack_retries": [
+        {
+          "robot_id": "r2",
+          "epoch": 2001,
+          "choice": "go",
+          "invalid_call_id": "call-0042-r2",
+          "at": 105.10000000000001,
+          "same_epoch": true,
+          "accepted_action_replayed": false,
+          "transport_retry": false
+        },
+        {
+          "robot_id": "r1",
+          "epoch": 2001,
+          "choice": "go",
+          "invalid_call_id": "call-0043-r1",
+          "at": 106.0,
+          "same_epoch": true,
+          "accepted_action_replayed": false,
+          "transport_retry": false
+        }
+      ],
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 11,
+        "accepted_messages": 8,
+        "rejected": 0,
+        "delivery_edges": 8,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 4,
+          "r2": 4,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "terminal_settlement": {
+        "before": {
+          "sends": 50,
+          "actions": 43,
+          "deliveries": 8,
+          "dispatch": 43
+        },
+        "after": {
+          "sends": 50,
+          "actions": 43,
+          "deliveries": 8,
+          "dispatch": 43
+        },
+        "censored_calls": 3,
+        "unsent_cancelled": 0,
+        "outstanding": 0,
+        "commands_released": 0
+      },
+      "initial_health": {
+        "status": "PASS",
+        "checked_after_wall_s": 181.98725429101614,
+        "log_exceptions": [],
+        "first_sim_s": 1.0,
+        "last_sim_s": 22.0,
+        "first_frames": 21,
+        "last_frames": 441,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8347392362424246,
+              0.0819236531950808,
+              0.03189179784445903
+            ],
+            "base_delta_m": 0.02842520612551874,
+            "arm_delta_m": 0.1093753415501585,
+            "commands": 593,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.765845672850535,
+              0.027666549900543538,
+              0.03195543880837785
+            ],
+            "base_delta_m": 0.048455325456358604,
+            "arm_delta_m": 0.12547066570071166,
+            "commands": 596,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      },
+      "raw": {
+        "canonical_server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-structured-s601-v176/raw",
+        "automatic_archive_destination": "ARM:~/ugrp-archive/runs/s4live9-structured-s601-v176/raw",
+        "ARM_copy_verified_by_this_task": false,
+        "local_fetch_lite_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live9-structured-s601-v176",
+        "verified_artifacts": 7370,
+        "manifest_sha256": "2f8b1c38a7953575a086958de0f5ec5ed3101e549eca4124c314b91790ea8ecb",
+        "result_sha256": "2ff5867cf1df751f1b13cb761da59da7a2a7f4ce89d20d07a96ff45aa796d23d",
+        "server_inventory_files": 7380,
+        "server_inventory_bytes": 224787100,
+        "server_inventory_sha256": "86f76d51b8d99f18590a72daf7aa7bf455bcd1cce23b44fcebee08339742af85"
+      },
+      "invalid_reply_errors": {
+        "pair GO/ACK/loss needs a condition-channel notification": 4
+      }
     },
     {
       "name": "s4live9-no_comm-s602-v176",
       "condition": "no_comm",
       "seed": 602,
-      "argv": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s4_pair_live9",
-        "--expected-source-sha",
-        "<SOURCE_SHA>",
-        "--output",
-        "outputs/s4live9-no_comm-s602-v176/raw",
-        "--condition",
-        "no_comm",
-        "--seed",
-        "602",
-        "--inspect-before-look",
-        "--go-ack-retry",
-        "--terminal-censor",
-        "--relay-receipt",
-        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
-        "--execute"
-      ]
+      "status": "PHYSICAL_STOP",
+      "exit_code": 0,
+      "cause": "LOAD_DROP:cyan_1",
+      "sim_s_since_reset": 204.20000000000002,
+      "sim_s_absolute": 206.55,
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "first_go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "first_simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 40.8,
+          "r2": 40.8
+        }
+      },
+      "first_carry": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.1547461903131438,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          40.6,
+          43.3
+        ]
+      },
+      "first_lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1360,
+            "sha256": "49382a39411d239ffd2ef82132047421fee81bb93b230045eb278021391e91ec",
+            "sim_s": 70.3,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1360,
+            "sha256": "b33d36edc5e390d445b92b01945249b2e007a7061c0832c5c4a4fc777aff95eb",
+            "sim_s": 70.3,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 76.55
+      },
+      "fresh_go_ack": {
+        "n": 1,
+        "N": 1,
+        "permits": [
+          {
+            "at": 100.65,
+            "epoch": 2001,
+            "claim_calls": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "go_calls": {
+              "r1": "call-0040-r1",
+              "r2": "call-0041-r2"
+            },
+            "ack_calls": {
+              "r1": "call-0043-r1",
+              "r2": "call-0042-r2"
+            }
+          },
+          {
+            "at": 174.95000000000002,
+            "epoch": 3002,
+            "claim_calls": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "go_calls": {
+              "r1": "call-0082-r1",
+              "r2": "call-0081-r2"
+            },
+            "ack_calls": {
+              "r1": "call-0083-r1",
+              "r2": "call-0084-r2"
+            }
+          }
+        ]
+      },
+      "second_carry": {
+        "n": 1,
+        "N": 1,
+        "epoch": 2001,
+        "segment": 1,
+        "excursion_m": 0.7516182289575969,
+        "path_m": 0.753042595953505
+      },
+      "all_post_release_contact_supported_path_m": 1.508605120598223,
+      "maximum_later_segment_excursion_m": 0.7539233335918408,
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.1547461903131438,
+          "1": 0.7516182289575969,
+          "2": 0.7539233335918408
+        },
+        "goal_distance_m": 2.694162905992628,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "beam_drop_events": 0,
+      "terminal_bilateral_beam_fingers": true,
+      "model_calls": 101,
+      "reported_model_usage": {
+        "requests": 101,
+        "blocked": 0,
+        "tokens_prompt": 733948,
+        "tokens_completion": 8318,
+        "tokens_total_known": 743597,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 101,
+          "sum": 435509.324,
+          "max": 25535.227,
+          "median": 3142.128
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "scheduler_statuses": {
+        "done": 99,
+        "censored": 2
+      },
+      "go_ack_retries": [],
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "terminal_settlement": {
+        "before": {
+          "sends": 101,
+          "actions": 99,
+          "deliveries": 0,
+          "dispatch": 99
+        },
+        "after": {
+          "sends": 101,
+          "actions": 99,
+          "deliveries": 0,
+          "dispatch": 99
+        },
+        "censored_calls": 2,
+        "unsent_cancelled": 0,
+        "outstanding": 0,
+        "commands_released": 0
+      },
+      "initial_health": {
+        "status": "PASS",
+        "checked_after_wall_s": 181.98724745796062,
+        "log_exceptions": [],
+        "first_sim_s": 1.0,
+        "last_sim_s": 22.0,
+        "first_frames": 21,
+        "last_frames": 441,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8345857534882761,
+              0.08153751820841784,
+              0.031900295590374286
+            ],
+            "base_delta_m": 0.02830859514863341,
+            "arm_delta_m": 0.10512535278841649,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7570262407665695,
+              0.03635094913368996,
+              0.0319225889246019
+            ],
+            "base_delta_m": 0.06029653097237948,
+            "arm_delta_m": 0.13152315167856488,
+            "commands": 716,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      },
+      "raw": {
+        "canonical_server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-no_comm-s602-v176/raw",
+        "automatic_archive_destination": "ARM:~/ugrp-archive/runs/s4live9-no_comm-s602-v176/raw",
+        "ARM_copy_verified_by_this_task": false,
+        "local_fetch_lite_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live9-no_comm-s602-v176",
+        "verified_artifacts": 12623,
+        "manifest_sha256": "aa0cb975dbf355d717330c6fa9d9ca9ca6c4697d8054613031838ae42e362533",
+        "result_sha256": "b28f11e99ddf11424beb4c031a97bf8b11c525a78c45991cb96832bd88240580",
+        "server_inventory_files": 12633,
+        "server_inventory_bytes": 383023842,
+        "server_inventory_sha256": "1e7f04fb7225c231058accb3bd13129c0f33d088f0d4a42077b5b0fb097c984d"
+      },
+      "cyan_height_guard_evidence": {
+        "own_state": "lower",
+        "own_events_tail": [
+          {
+            "robot_id": "r3",
+            "event": "cyan_setdown_relook_disabled",
+            "t": 193.1,
+            "index": 2,
+            "last_fix_t": 84.75,
+            "physical_success": null
+          },
+          {
+            "robot_id": "r3",
+            "event": "state",
+            "t": 193.1,
+            "state": "real_carry_return"
+          },
+          {
+            "robot_id": "r3",
+            "event": "state",
+            "t": 193.7,
+            "state": "lower"
+          }
+        ],
+        "bilateral_contact_last1s": {
+          "n": 21,
+          "N": 21
+        },
+        "unsupported_last1s": {
+          "n": 0,
+          "N": 21
+        },
+        "z_at_1s_before_m": 0.08702367680685393,
+        "z_at_stop_m": 0.034177341952762966,
+        "classification": "height-threshold stop during own commanded lowering; bilateral fingers maintained; no observed free-flight drop in preceding 1s; floor release was not completed",
+        "last_own_gripper_command": {
+          "t": 206.5,
+          "kind": "arm",
+          "servo_id": 1,
+          "pulse": 1500
+        },
+        "complete_command_history": "server raw/student_record.json; diagnosis.json records preceding1s commands"
+      },
+      "invalid_reply_errors": {}
     },
     {
       "name": "s4live9-peer_ko-s602-v176",
       "condition": "peer_ko",
       "seed": 602,
-      "argv": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s4_pair_live9",
-        "--expected-source-sha",
-        "<SOURCE_SHA>",
-        "--output",
-        "outputs/s4live9-peer_ko-s602-v176/raw",
-        "--condition",
-        "peer_ko",
-        "--seed",
-        "602",
-        "--inspect-before-look",
-        "--go-ack-retry",
-        "--terminal-censor",
-        "--relay-receipt",
-        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
-        "--execute"
-      ]
+      "status": "PHYSICAL_STOP",
+      "exit_code": 0,
+      "cause": "LOAD_DROP:cyan_1",
+      "sim_s_since_reset": 213.45000000000002,
+      "sim_s_absolute": 215.8,
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "first_go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "first_simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.3,
+          "r2": 44.3
+        }
+      },
+      "first_carry": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.15433820468119067,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          44.1,
+          46.8
+        ]
+      },
+      "first_lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1430,
+            "sha256": "c64f7de58c146b7baa86597d9ea229aa1a3f548e26e13ce2b6b3e6ae58a20b34",
+            "sim_s": 73.8,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1430,
+            "sha256": "e048a1e3b62facb8a531314e776f166b680a0c87bda697df48629e9ecd412091",
+            "sim_s": 73.8,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 80.05
+      },
+      "fresh_go_ack": {
+        "n": 1,
+        "N": 1,
+        "permits": [
+          {
+            "at": 113.4,
+            "epoch": 2001,
+            "claim_calls": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "go_calls": {
+              "r1": "call-0039-r1",
+              "r2": "call-0038-r2"
+            },
+            "ack_calls": {
+              "r1": "call-0041-r1",
+              "r2": "call-0043-r2"
+            }
+          },
+          {
+            "at": 195.75,
+            "epoch": 3002,
+            "claim_calls": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "go_calls": {
+              "r1": "call-0075-r1",
+              "r2": "call-0074-r2"
+            },
+            "ack_calls": {
+              "r1": "call-0077-r1",
+              "r2": "call-0078-r2"
+            }
+          }
+        ]
+      },
+      "second_carry": {
+        "n": 1,
+        "N": 1,
+        "epoch": 2001,
+        "segment": 1,
+        "excursion_m": 0.753304339874618,
+        "path_m": 0.7552738050820802
+      },
+      "all_post_release_contact_supported_path_m": 1.5074317542262583,
+      "maximum_later_segment_excursion_m": 0.753304339874618,
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15433820468119067,
+          "1": 0.753304339874618,
+          "2": 0.7507727922493235
+        },
+        "goal_distance_m": 2.6756928701590272,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "beam_drop_events": 0,
+      "terminal_bilateral_beam_fingers": true,
+      "model_calls": 87,
+      "reported_model_usage": {
+        "requests": 87,
+        "blocked": 0,
+        "tokens_prompt": 726193,
+        "tokens_completion": 11245,
+        "tokens_total_known": 744536,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 87,
+          "sum": 465935.93,
+          "max": 33854.769,
+          "median": 3597.052
+        },
+        "failure_classes": {
+          "model_output_rejected": 2
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "scheduler_statuses": {
+        "done": 83,
+        "failed": 2,
+        "censored": 2
+      },
+      "go_ack_retries": [],
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 65,
+        "accepted_messages": 63,
+        "rejected": 0,
+        "delivery_edges": 65,
+        "free_text_messages": 63,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 36,
+          "r2": 29,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "terminal_settlement": {
+        "before": {
+          "sends": 87,
+          "actions": 83,
+          "deliveries": 65,
+          "dispatch": 83
+        },
+        "after": {
+          "sends": 87,
+          "actions": 83,
+          "deliveries": 65,
+          "dispatch": 83
+        },
+        "censored_calls": 2,
+        "unsent_cancelled": 0,
+        "outstanding": 0,
+        "commands_released": 0
+      },
+      "initial_health": {
+        "status": "PASS",
+        "checked_after_wall_s": 181.9872517499607,
+        "log_exceptions": [],
+        "first_sim_s": 1.0,
+        "last_sim_s": 21.0,
+        "first_frames": 21,
+        "last_frames": 421,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8442193382726229,
+              0.07121507553810388,
+              0.03192165175648918
+            ],
+            "base_delta_m": 0.04001561167311587,
+            "arm_delta_m": 0.11961304805801934,
+            "commands": 593,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7687287548192934,
+              0.029560305411703704,
+              0.03199464789745913
+            ],
+            "base_delta_m": 0.04676770805805693,
+            "arm_delta_m": 0.1237398147466406,
+            "commands": 596,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      },
+      "raw": {
+        "canonical_server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-peer_ko-s602-v176/raw",
+        "automatic_archive_destination": "ARM:~/ugrp-archive/runs/s4live9-peer_ko-s602-v176/raw",
+        "ARM_copy_verified_by_this_task": false,
+        "local_fetch_lite_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live9-peer_ko-s602-v176",
+        "verified_artifacts": 13136,
+        "manifest_sha256": "73fe0d707ab073fca6b0b3aa1e2cecbf94574c32a7bdd9d57b835853dfdc58a5",
+        "result_sha256": "8400fd1a87b50d84092924d860e1b3c7f6e6bf94f6282f164f6c94725265f034",
+        "server_inventory_files": 13146,
+        "server_inventory_bytes": 404109572,
+        "server_inventory_sha256": "231af8d52efe91ba76ecf6cba17bdf4fd07225b6a91cd98ec571d109dea1a357"
+      },
+      "cyan_height_guard_evidence": {
+        "own_state": "lower",
+        "own_events_tail": [
+          {
+            "robot_id": "r3",
+            "event": "cyan_setdown_relook_disabled",
+            "t": 202.35,
+            "index": 2,
+            "last_fix_t": 124.1,
+            "physical_success": null
+          },
+          {
+            "robot_id": "r3",
+            "event": "state",
+            "t": 202.35,
+            "state": "real_carry_return"
+          },
+          {
+            "robot_id": "r3",
+            "event": "state",
+            "t": 202.95,
+            "state": "lower"
+          }
+        ],
+        "bilateral_contact_last1s": {
+          "n": 21,
+          "N": 21
+        },
+        "unsupported_last1s": {
+          "n": 0,
+          "N": 21
+        },
+        "z_at_1s_before_m": 0.08663541241008652,
+        "z_at_stop_m": 0.033946149699733995,
+        "classification": "height-threshold stop during own commanded lowering; bilateral fingers maintained; no observed free-flight drop in preceding 1s; floor release was not completed",
+        "last_own_gripper_command": {
+          "t": 215.75,
+          "kind": "arm",
+          "servo_id": 1,
+          "pulse": 1500
+        },
+        "complete_command_history": "server raw/student_record.json; diagnosis.json records preceding1s commands"
+      },
+      "invalid_reply_errors": {}
     },
     {
       "name": "s4live9-leader_ko-s602-v176",
       "condition": "leader_ko",
       "seed": 602,
-      "argv": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s4_pair_live9",
-        "--expected-source-sha",
-        "<SOURCE_SHA>",
-        "--output",
-        "outputs/s4live9-leader_ko-s602-v176/raw",
-        "--condition",
-        "leader_ko",
-        "--seed",
-        "602",
-        "--inspect-before-look",
-        "--go-ack-retry",
-        "--terminal-censor",
-        "--relay-receipt",
-        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
-        "--execute"
-      ]
+      "status": "PAIR_STOP",
+      "exit_code": 0,
+      "cause": "PAIR_GO_TIMEOUT",
+      "sim_s_since_reset": 51.05,
+      "sim_s_absolute": 53.4,
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "first_go_ack": {
+        "n": 0,
+        "N": 1
+      },
+      "first_simultaneous_departure": {
+        "n": 0,
+        "N": 1,
+        "first_command_t": {
+          "r1": null,
+          "r2": null
+        }
+      },
+      "first_carry": {
+        "n": 0,
+        "N": 1,
+        "excursion_m": 0.0,
+        "contact_supported_samples": 0,
+        "first_carry_window": null
+      },
+      "first_lowering": {
+        "n": 0,
+        "N": 1,
+        "entered": 0,
+        "stable_floor_placement": false,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "reobserve": {
+        "n": 0,
+        "N": 1,
+        "own_frame_receipts": {}
+      },
+      "regrasp": {
+        "n": 0,
+        "N": 1,
+        "first_supported_t": null
+      },
+      "fresh_go_ack": {
+        "n": 0,
+        "N": 1,
+        "permits": []
+      },
+      "second_carry": {
+        "n": 0,
+        "N": 1,
+        "epoch": 2001,
+        "segment": 1,
+        "excursion_m": 0.0,
+        "path_m": 0.0
+      },
+      "all_post_release_contact_supported_path_m": 0.0,
+      "maximum_later_segment_excursion_m": 0.0,
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {},
+        "goal_distance_m": 3.937581075436819,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "beam_drop_events": 0,
+      "terminal_bilateral_beam_fingers": true,
+      "model_calls": 9,
+      "reported_model_usage": {
+        "requests": 9,
+        "blocked": 0,
+        "tokens_prompt": 62320,
+        "tokens_completion": 1260,
+        "tokens_total_known": 64161,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 9,
+          "sum": 35412.613,
+          "max": 7601.121,
+          "median": 3451.271
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "scheduler_statuses": {
+        "done": 7,
+        "failed": 2
+      },
+      "go_ack_retries": [
+        {
+          "robot_id": "r2",
+          "epoch": 1000,
+          "choice": "ack_go",
+          "invalid_call_id": "call-0008-r2",
+          "at": 40.4,
+          "same_epoch": true,
+          "accepted_action_replayed": false,
+          "transport_retry": false
+        }
+      ],
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r3",
+        "sent": 5,
+        "accepted_messages": 5,
+        "rejected": 0,
+        "delivery_edges": 6,
+        "free_text_messages": 5,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 1,
+          "r2": 1,
+          "r3": 4
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "terminal_settlement": {
+        "before": {
+          "sends": 9,
+          "actions": 7,
+          "deliveries": 6,
+          "dispatch": 7
+        },
+        "after": {
+          "sends": 9,
+          "actions": 7,
+          "deliveries": 6,
+          "dispatch": 7
+        },
+        "censored_calls": 0,
+        "unsent_cancelled": 0,
+        "outstanding": 0,
+        "commands_released": 0
+      },
+      "initial_health": {
+        "status": "PASS",
+        "checked_after_wall_s": 181.9872411660035,
+        "log_exceptions": [],
+        "first_sim_s": 1.0,
+        "last_sim_s": 22.0,
+        "first_frames": 21,
+        "last_frames": 441,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8440518538258236,
+              0.07135321091681192,
+              0.031932686625227164
+            ],
+            "base_delta_m": 0.03981214184414308,
+            "arm_delta_m": 0.11932683320013536,
+            "commands": 613,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7662735610127032,
+              0.027499453673098934,
+              0.03193016298374432
+            ],
+            "base_delta_m": 0.04799747783773358,
+            "arm_delta_m": 0.12530174644808736,
+            "commands": 616,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      },
+      "raw": {
+        "canonical_server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-leader_ko-s602-v176/raw",
+        "automatic_archive_destination": "ARM:~/ugrp-archive/runs/s4live9-leader_ko-s602-v176/raw",
+        "ARM_copy_verified_by_this_task": false,
+        "local_fetch_lite_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live9-leader_ko-s602-v176",
+        "verified_artifacts": 3161,
+        "manifest_sha256": "476fcaba4ce0afbbb76621cb8e2117c4e88ec0d86823c4a9d8214511770e0220",
+        "result_sha256": "484c76a3de3c242dd4168145175b48b75ae16b0b98519f6e500905da2d2818e6",
+        "server_inventory_files": 3171,
+        "server_inventory_bytes": 92980285,
+        "server_inventory_sha256": "faaaa0886d65055ad0c1d7e0f675f1e1bce914f7b39ac965024d66978487c4fa"
+      },
+      "invalid_reply_errors": {
+        "pair GO/ACK/loss needs a condition-channel notification": 2
+      }
     },
     {
       "name": "s4live9-structured-s602-v176",
       "condition": "structured",
       "seed": 602,
-      "argv": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s4_pair_live9",
-        "--expected-source-sha",
-        "<SOURCE_SHA>",
-        "--output",
-        "outputs/s4live9-structured-s602-v176/raw",
-        "--condition",
-        "structured",
-        "--seed",
-        "602",
-        "--inspect-before-look",
-        "--go-ack-retry",
-        "--terminal-censor",
-        "--relay-receipt",
-        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
-        "--execute"
-      ]
+      "status": "PAIR_STOP",
+      "exit_code": 0,
+      "cause": "PAIR_GO_TIMEOUT",
+      "sim_s_since_reset": 119.15,
+      "sim_s_absolute": 121.5,
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "first_go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "first_simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 47.9,
+          "r2": 47.9
+        }
+      },
+      "first_carry": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.15353334690313045,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          47.7,
+          50.4
+        ]
+      },
+      "first_lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1500,
+            "sha256": "c2e5538fa5c71fd95ee22c820230397783cb2f7d8b3bfaeb71d93801d0aba192",
+            "sim_s": 77.3,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1500,
+            "sha256": "987ad940b62dacae4a5d3534575845516739f05352fdadac5b16c51fe02bb9a2",
+            "sim_s": 77.3,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 83.55
+      },
+      "fresh_go_ack": {
+        "n": 0,
+        "N": 1,
+        "permits": []
+      },
+      "second_carry": {
+        "n": 0,
+        "N": 1,
+        "epoch": 2001,
+        "segment": 1,
+        "excursion_m": 0.0,
+        "path_m": 0.0
+      },
+      "all_post_release_contact_supported_path_m": 0.0,
+      "maximum_later_segment_excursion_m": 0.0,
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15353334690313045
+        },
+        "goal_distance_m": 3.810733916101913,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "beam_drop_events": 0,
+      "terminal_bilateral_beam_fingers": true,
+      "model_calls": 50,
+      "reported_model_usage": {
+        "requests": 50,
+        "blocked": 0,
+        "tokens_prompt": 394922,
+        "tokens_completion": 5416,
+        "tokens_total_known": 401134,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 50,
+          "sum": 264610.421,
+          "max": 28203.622,
+          "median": 3318.248
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "scheduler_statuses": {
+        "done": 43,
+        "failed": 5,
+        "censored": 2
+      },
+      "go_ack_retries": [
+        {
+          "robot_id": "r2",
+          "epoch": 2001,
+          "choice": "go",
+          "invalid_call_id": "call-0042-r2",
+          "at": 105.0,
+          "same_epoch": true,
+          "accepted_action_replayed": false,
+          "transport_retry": false
+        },
+        {
+          "robot_id": "r1",
+          "epoch": 2001,
+          "choice": "go",
+          "invalid_call_id": "call-0043-r1",
+          "at": 106.10000000000001,
+          "same_epoch": true,
+          "accepted_action_replayed": false,
+          "transport_retry": false
+        }
+      ],
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 9,
+        "accepted_messages": 8,
+        "rejected": 0,
+        "delivery_edges": 8,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 4,
+          "r2": 4,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "terminal_settlement": {
+        "before": {
+          "sends": 50,
+          "actions": 43,
+          "deliveries": 8,
+          "dispatch": 43
+        },
+        "after": {
+          "sends": 50,
+          "actions": 43,
+          "deliveries": 8,
+          "dispatch": 43
+        },
+        "censored_calls": 2,
+        "unsent_cancelled": 0,
+        "outstanding": 0,
+        "commands_released": 0
+      },
+      "initial_health": {
+        "status": "PASS",
+        "checked_after_wall_s": 181.98725574999116,
+        "log_exceptions": [],
+        "first_sim_s": 1.0,
+        "last_sim_s": 22.0,
+        "first_frames": 21,
+        "last_frames": 441,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8432346703442649,
+              0.07100073005491858,
+              0.03193158120455723
+            ],
+            "base_delta_m": 0.03915916491843881,
+            "arm_delta_m": 0.11913191939692921,
+            "commands": 593,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7645375905881653,
+              0.028152034426572187,
+              0.03194373899769225
+            ],
+            "base_delta_m": 0.04984509581549198,
+            "arm_delta_m": 0.12731856011818735,
+            "commands": 596,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      },
+      "raw": {
+        "canonical_server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-structured-s602-v176/raw",
+        "automatic_archive_destination": "ARM:~/ugrp-archive/runs/s4live9-structured-s602-v176/raw",
+        "ARM_copy_verified_by_this_task": false,
+        "local_fetch_lite_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live9-structured-s602-v176",
+        "verified_artifacts": 7370,
+        "manifest_sha256": "3a8f299a499b955b6ac0f3760349edaca71a213595540b5993cd0b7833822d31",
+        "result_sha256": "5d2197906de93e5c12adc29130a3c1908c824e443dc3d921a5d847fcd1109949",
+        "server_inventory_files": 7380,
+        "server_inventory_bytes": 222433048,
+        "server_inventory_sha256": "baeee6b077175a41dc3f407f539f0cb0027b69977419669928c4cc4aacb0a9a0"
+      },
+      "invalid_reply_errors": {
+        "pair GO/ACK/loss needs a condition-channel notification": 6
+      }
     }
   ],
-  "Mac_physics": 0,
-  "offline_model_POSTs": 0,
+  "storage": {
+    "policy": "2026-10-11 user: full evaluation/hash on server; Mac fetch-lite only; delete exact matching task-local full copies; ARM automatic archival owned by supervisor",
+    "server_verified_runs": {
+      "n": 8,
+      "N": 8
+    },
+    "server_verified_files": 76941,
+    "server_verified_bytes": 2338129816,
+    "server_manifest_verified_artifacts": 76861,
+    "server_inventory": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/server-inventory-summary.json",
+      "sha256": "65d20e3c71eef66c9ffd7a0f7ceca1b4fa7f9a306846ceea3eaf31f1752e9098",
+      "server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-offline/server-inventory-summary.json"
+    },
+    "evaluation": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/report.json",
+      "sha256": "c8166cad1751026b9b721408af8ee431e48cb806055015848bc83aaceb087fd9",
+      "server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-offline/report.json"
+    },
+    "evaluation_diagnosis": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/diagnosis.json",
+      "sha256": "dc7cc4fd618f55a7b6d835a5812d7166fde10f3642ee15f00ebb27ede649eb00",
+      "server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-offline/diagnosis.json"
+    },
+    "request_response_audit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/final-audit.json",
+      "sha256": "f2025957ce43ae8b55604e47c09804722979591665d854447d7a08a0de584986",
+      "server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-offline/final-audit.json"
+    },
+    "audit_script": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/server-audit.py",
+      "sha256": "f8193a0c9ecba50e34fa076ea4ce87a4261e2cd051fa1f265bce0516252649f9",
+      "server_path": "/home/ubuntu/ugrp-sim/runs/s4live9-offline/server-audit.py"
+    },
+    "previous_full_fetch": {
+      "successful": {
+        "n": 7,
+        "N": 8
+      },
+      "failed": {
+        "n": 1,
+        "N": 8
+      },
+      "failure": "peer602 rsync EXIT10 ENOSPC on Mac; simulation output unaffected",
+      "receipt": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/fetch-final.json",
+        "sha256": "e4c43a1e8dd8ee79d39f5de35760879d8d61b382d96fde587d93f20c23770df3"
+      }
+    },
+    "matching_local_full_copies_deleted": {
+      "files": 63825,
+      "bytes": 1948522715,
+      "GiB": 1.8147031916305423,
+      "unmatched_files": 0,
+      "server_originals_deleted": false,
+      "receipt": {
+        "path": "/Users/changmin/projects/ugrp/outputs/cleanup-records/s4live9-server-verified-20261011/receipt.json",
+        "sha256": "faa11154f0913e2b6580a5b18dc7165547c4b6d432fd6623f5123a3c08dddb94"
+      },
+      "per_file_proof": {
+        "path": "/Users/changmin/projects/ugrp/outputs/cleanup-records/s4live9-server-verified-20261011/verified-before-deletion.jsonl",
+        "sha256": "68685cf41ee40b7af73c4af6c1b8babad9bb54a3e7322b236bf5095a8cdf6f6d"
+      },
+      "deletion_journal": {
+        "path": "/Users/changmin/projects/ugrp/outputs/cleanup-records/s4live9-server-verified-20261011/deletion-events.jsonl",
+        "sha256": "88bef3e3f1c56fe19c31a865a86d3da36e1d8a97cd4ea9715140d53f5c1de6f8"
+      },
+      "server_copy_receipt": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/cleanup-server-receipt.json",
+        "sha256": "27844235f25c44adbd4e253f78b09a59e8db44ce1aec6d558e1a6a13029e9f4a"
+      }
+    },
+    "fetch_lite": {
+      "n": 8,
+      "N": 8,
+      "retained_files": 1702,
+      "retained_bytes": 1378097035,
+      "excluded_image_video_array_files": true,
+      "local_full_evaluation": false,
+      "inline_wire_JSON_images": "existing official fetch-lite retains text/JSON request archives; separately named image/video/array files excluded",
+      "net_removed_bytes": 570425680,
+      "receipt": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/fetch-lite.json",
+        "sha256": "7f1d930dcbbc4972288b846aaf5ff4240e0c879afc1fc3b2977f52399197c098"
+      },
+      "validation": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/fetch-lite-validation.json",
+        "sha256": "973bd361ad61a36d406714f2d2b17833553002e1892e8a94d9d50a7cae5a5f92"
+      }
+    },
+    "ARM_archival": "automatic supervisor policy; this task verified x86 canonical originals, not ARM copies"
+  },
   "validation": {
-    "related_tests": 20,
-    "additional_terminal_test": 1,
-    "latest_new_file": "7 passed in33.69s",
-    "physics_calls": 0,
-    "model_POSTs": 0
-  }
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/validation.json",
+    "sha256": "16c4cea5a3d6715f022e5f1d0d1aa90b128aad65514785c717dec84a90b5e6aa"
+  },
+  "security": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live9-offline/final-security-audit.json",
+    "sha256": "bafda58fa0001a1d9b7e79b6fc4f4da54e296d7ade7fd076b51c02ee2a05eef8"
+  },
+  "admission_resources": {
+    "loadavg": [
+      45.271484375,
+      61.04833984375,
+      65.27978515625
+    ],
+    "mem_available_GiB": 37.9635124206543
+  },
+  "Mac_physics": 0,
+  "Mac_render": 0,
+  "offline_model_POSTs": 0,
+  "resumption_new_physics": 0,
+  "resumption_new_model_POSTs": 0,
+  "push_target": "origin/codex/s4-llm-host",
+  "PR": 425,
+  "PR_draft": true
 }
