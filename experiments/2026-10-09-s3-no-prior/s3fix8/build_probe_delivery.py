@@ -1,11 +1,11 @@
 """New immutable derived views and four-speed own-camera videos."""
-import argparse,hashlib,json,subprocess
+import argparse,hashlib,json,subprocess,shutil
 from pathlib import Path
 import cv2,numpy as np
 p=argparse.ArgumentParser();p.add_argument('--raw',type=Path,required=True);p.add_argument('--report',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();R=a.raw;O=a.output;O.mkdir(parents=True,exist_ok=False)
 r=json.loads(a.report.read_text());b=json.loads((R/'bundle.json').read_text());result=json.loads((R/'result.json').read_text())
 frames=[[json.loads(s) for s in (R/f'robots/{rid}/frames.jsonl').read_text().splitlines()] for rid in ('r1','r2','r3')]
-video=O/'execution.mp4';pipe=subprocess.Popen(['/opt/homebrew/bin/ffmpeg','-v','error','-f','rawvideo','-pixel_format','bgr24','-video_size','1920x480','-framerate','20','-i','-','-an','-c:v','libx264','-threads','1','-preset','veryfast','-crf','28','-pix_fmt','yuv420p','-movflags','+faststart',str(video)],stdin=subprocess.PIPE);n=0
+video=O/'execution.mp4';pipe=subprocess.Popen([shutil.which('ffmpeg') or '/opt/homebrew/bin/ffmpeg','-v','error','-f','rawvideo','-pixel_format','bgr24','-video_size','1920x480','-framerate','20','-i','-','-an','-c:v','libx264','-threads','1','-preset','veryfast','-crf','28','-pix_fmt','yuv420p','-movflags','+faststart',str(video)],stdin=subprocess.PIPE);n=0
 for i,triple in enumerate(zip(*frames)):
  if i%4:continue
  images=[]

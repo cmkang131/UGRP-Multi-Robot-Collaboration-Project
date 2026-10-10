@@ -181,7 +181,7 @@ def run(b,out):
                 if any(v['failure'] for v in current.values()):break
                 # Keep rendering/evaluation for one full second after close.
                 # Freeze further controller actions, so this cannot authorize lift.
-                if closed_since is None and all(v['servo'].get(1,2000)<=1600 and v['state'] not in ('align','align_start') for v in current.values()):
+                if b.get('stop_after_close', True) and closed_since is None and all(v['servo'].get(1,2000)<=1600 and v['state'] not in ('align','align_start') for v in current.values()):
                     closed_since=now
             host.advance_to(start+(i+1)*.05)
         result.update(status='DEV_STAGE_FINISHED',check_sim_s=host.now-start,entry_sim_s=entry,close_settle_s=None if closed_since is None else host.now-closed_since,

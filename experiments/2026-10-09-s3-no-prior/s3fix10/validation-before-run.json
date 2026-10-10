@@ -1,0 +1,22 @@
+{
+  "files": [
+    "tests/test_s3_oracle_probe.py",
+    "tests/test_s3_alignment_entry.py",
+    "tests/test_simulation_workflow_manager.py"
+  ],
+  "initial": {
+    "passed": 26,
+    "failed": 1,
+    "seconds": 195.14,
+    "reason": "Oracle nice-zero fixture inherited Mac runner nice5; production guard correctly rejected it"
+  },
+  "fixed": "Oracle environment fixture explicitly mocks nice0; no process priority changed",
+  "targeted_rerun": {
+    "passed": 1,
+    "seconds": 0.6
+  },
+  "unique_cases_verified": 27,
+  "physics": 0,
+  "renderer": 0,
+  "local_saved_replays": 0
+}
