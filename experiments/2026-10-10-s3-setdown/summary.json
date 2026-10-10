@@ -1,0 +1,586 @@
+{
+  "schema": "ugrp.s3_setdown_dev.v166",
+  "status": "preregistered",
+  "host": "oracle-x86",
+  "preregistration": {
+    "workers": 10,
+    "sim_cap_s": 60,
+    "runs": [
+      {
+        "name": "s3fix18-base-c2-r1",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "off"
+      },
+      {
+        "name": "s3fix18-base-c5-r1",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "off"
+      },
+      {
+        "name": "s3fix18-a-c2-r1",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "canonical_floor_v1"
+      },
+      {
+        "name": "s3fix18-a-c5-r1",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "canonical_floor_v1"
+      },
+      {
+        "name": "s3fix18-b-c2-r1",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "slow_final_v1"
+      },
+      {
+        "name": "s3fix18-b-c5-r1",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "slow_final_v1"
+      },
+      {
+        "name": "s3fix18-c-c2-r1",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "settle_floor_v1"
+      },
+      {
+        "name": "s3fix18-c-c5-r1",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "settle_floor_v1"
+      },
+      {
+        "name": "s3fix18-c-c0-r1",
+        "case": "pair",
+        "condition": 0,
+        "seed": 14201,
+        "option": "settle_floor_v1"
+      },
+      {
+        "name": "s3fix18-c-c3-r1",
+        "case": "pair",
+        "condition": 3,
+        "seed": 14204,
+        "option": "settle_floor_v1"
+      }
+    ],
+    "criteria": "place: after both full-open commands, floor force>=0.1N, COM<=25mm, |vertical speed|<=20mm/s, tilt<10deg for>=0.20SIMs; no physical/controller/host terminal. Existing alignment/grasp/lift/carry criteria unchanged. Endpoint errors report only.",
+    "selection": "compare common c2/c5 first: maximize place count with no early-open/tilt/free-fall; ties prefer smallest change A then B then C. Extra C c0/c3 are separate DEV stress cases; no confirmation claim.",
+    "options": {
+      "off": "v165 legacy controller/guard",
+      "canonical_floor_v1": "A: lower assertion uses actual queued canonical endpoint; evaluation distinguishes supported commanded lowering from body-origin LOAD_DROP",
+      "slow_final_v1": "B: A plus final lower duration1.2->2.4s",
+      "settle_floor_v1": "C: A plus final floor dwell0.4->1.2s"
+    },
+    "shared_safety": "candidate supervisor distinguishes supported lowering only in lower/wait_open/cp_open, both fingers per robot; positive floor support substitutes for fingers only after BOTH verified floor contracts (wait_open/cp_open), |vz|<=0.12m/s and tilt<10deg. Force/contact never controller input; early grip loss and other hard stops remain.",
+    "initial_check_wall_s": 180,
+    "scope": "10 total paired DEV runs: 8 common comparisons plus2 C stress; cyan unchanged and not physically retested; no TensorBoard conversion"
+  },
+  "diagnosis": {
+    "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+    "path": "/Users/changmin/projects/ugrp/outputs/s3fix18-control-20261010/raw-diagnosis.json",
+    "sha256": "9cc01ca92bbeadd66609379372fedd4fc3e5aeaf419109dffb9666df85b3c194",
+    "physics_steps": 0,
+    "runs": [
+      {
+        "name": "s3fix17-pair-c0-r2",
+        "max_pair_finger_height_delta_m": 0.0016332915125604058,
+        "max_pair_velocity_delta_m_s": 0.001664445644043261,
+        "max_beam_tilt_deg": 1.4194194443621897,
+        "first_floor_contact": null,
+        "last_both_finger_contacts": {
+          "r1": true,
+          "r2": true
+        },
+        "robots": {
+          "r1": {
+            "height_start_m": 0.09734564725206982,
+            "height_end_m": 0.060673170545942845,
+            "max_down_speed_m_s": 0.06910045674077846,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1544
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 902,
+              "4": 1929,
+              "5": 2250,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "3": [
+                902,
+                1269
+              ],
+              "4": [
+                1929,
+                2052
+              ],
+              "5": [
+                2250,
+                2494
+              ],
+              "6": [
+                1500,
+                1544
+              ]
+            }
+          },
+          "r2": {
+            "height_start_m": 0.09897893876463022,
+            "height_end_m": 0.06214806474331569,
+            "max_down_speed_m_s": 0.06930935593583618,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1628
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 902,
+              "4": 1929,
+              "5": 2250,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "3": [
+                902,
+                1269
+              ],
+              "4": [
+                1929,
+                2052
+              ],
+              "5": [
+                2250,
+                2494
+              ],
+              "6": [
+                1500,
+                1628
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "s3fix17-pair-c1-r2",
+        "max_pair_finger_height_delta_m": 0.0008429947391452169,
+        "max_pair_velocity_delta_m_s": 0.0012240535534225468,
+        "max_beam_tilt_deg": 0.6082487223224182,
+        "first_floor_contact": null,
+        "last_both_finger_contacts": {
+          "r1": true,
+          "r2": true
+        },
+        "robots": {
+          "r1": {
+            "height_start_m": 0.09804810770445448,
+            "height_end_m": 0.06084003202151865,
+            "max_down_speed_m_s": 0.06926808275274773,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1540
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 902,
+              "4": 1929,
+              "5": 2250,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "3": [
+                902,
+                1269
+              ],
+              "4": [
+                1929,
+                2052
+              ],
+              "5": [
+                2250,
+                2494
+              ],
+              "6": [
+                1500,
+                1540
+              ]
+            }
+          },
+          "r2": {
+            "height_start_m": 0.0988911024435997,
+            "height_end_m": 0.061364822039908784,
+            "max_down_speed_m_s": 0.0689324230301463,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1620
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 902,
+              "4": 1929,
+              "5": 2250,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "3": [
+                902,
+                1269
+              ],
+              "4": [
+                1929,
+                2052
+              ],
+              "5": [
+                2250,
+                2494
+              ],
+              "6": [
+                1500,
+                1620
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "s3fix17-pair-c2-r2",
+        "max_pair_finger_height_delta_m": 0.001206384029228444,
+        "max_pair_velocity_delta_m_s": 0.016566541719141407,
+        "max_beam_tilt_deg": 0.5805794776523242,
+        "first_floor_contact": 56.1,
+        "last_both_finger_contacts": {
+          "r1": true,
+          "r2": true
+        },
+        "robots": {
+          "r1": {
+            "height_start_m": 0.09637704119694752,
+            "height_end_m": 0.022860322604850145,
+            "max_down_speed_m_s": 0.08019674564955931,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1540
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "6": [
+                1500,
+                1540
+              ]
+            }
+          },
+          "r2": {
+            "height_start_m": 0.09524566701688322,
+            "height_end_m": 0.02272744482960025,
+            "max_down_speed_m_s": 0.07994508889463552,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1632
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "6": [
+                1500,
+                1632
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "s3fix17-pair-c3-r2",
+        "max_pair_finger_height_delta_m": 0.0008749166949521686,
+        "max_pair_velocity_delta_m_s": 0.019280398872930912,
+        "max_beam_tilt_deg": 0.23706329511224908,
+        "first_floor_contact": 56.55,
+        "last_both_finger_contacts": {
+          "r1": true,
+          "r2": true
+        },
+        "robots": {
+          "r1": {
+            "height_start_m": 0.0920018276111564,
+            "height_end_m": 0.022780924803762377,
+            "max_down_speed_m_s": 0.07697048845461334,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1616
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "6": [
+                1500,
+                1616
+              ]
+            }
+          },
+          "r2": {
+            "height_start_m": 0.0926368793369081,
+            "height_end_m": 0.02190600810881021,
+            "max_down_speed_m_s": 0.0772175752792271,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1680
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "6": [
+                1500,
+                1680
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "s3fix17-pair-c4-r2",
+        "max_pair_finger_height_delta_m": 0.0008168501005964557,
+        "max_pair_velocity_delta_m_s": 0.0011715074908486666,
+        "max_beam_tilt_deg": 1.1755258907290997,
+        "first_floor_contact": null,
+        "last_both_finger_contacts": {
+          "r1": true,
+          "r2": true
+        },
+        "robots": {
+          "r1": {
+            "height_start_m": 0.09368399740550282,
+            "height_end_m": 0.060348314569202866,
+            "max_down_speed_m_s": 0.06141430768894495,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1544
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 879,
+              "4": 1921,
+              "5": 2235,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "3": [
+                879,
+                1269
+              ],
+              "4": [
+                1921,
+                2052
+              ],
+              "5": [
+                2235,
+                2494
+              ],
+              "6": [
+                1500,
+                1544
+              ]
+            }
+          },
+          "r2": {
+            "height_start_m": 0.09450084750609927,
+            "height_end_m": 0.060891451626685814,
+            "max_down_speed_m_s": 0.06024280019809629,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1480
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 879,
+              "4": 1921,
+              "5": 2235,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "3": [
+                879,
+                1269
+              ],
+              "4": [
+                1921,
+                2052
+              ],
+              "5": [
+                2235,
+                2494
+              ],
+              "6": [
+                1500,
+                1480
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "s3fix17-pair-c5-r2",
+        "max_pair_finger_height_delta_m": 0.005481740217246317,
+        "max_pair_velocity_delta_m_s": 0.0016055023343478994,
+        "max_beam_tilt_deg": 0.5778832907599967,
+        "first_floor_contact": null,
+        "last_both_finger_contacts": {
+          "r1": true,
+          "r2": true
+        },
+        "robots": {
+          "r1": {
+            "height_start_m": 0.10209305667233068,
+            "height_end_m": 0.06263378279147104,
+            "max_down_speed_m_s": 0.07001326478328782,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1568
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 902,
+              "4": 1929,
+              "5": 2250,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "3": [
+                902,
+                1269
+              ],
+              "4": [
+                1929,
+                2052
+              ],
+              "5": [
+                2250,
+                2494
+              ],
+              "6": [
+                1500,
+                1568
+              ]
+            }
+          },
+          "r2": {
+            "height_start_m": 0.09719936567038172,
+            "height_end_m": 0.05759722300802618,
+            "max_down_speed_m_s": 0.06901190313988831,
+            "first_open_change": null,
+            "grasp_target": {
+              "3": 1269,
+              "4": 2052,
+              "5": 2494,
+              "6": 1588
+            },
+            "last_issued": {
+              "1": 1500,
+              "3": 902,
+              "4": 1929,
+              "5": 2250,
+              "6": 1500
+            },
+            "floor_target_mismatch": {
+              "3": [
+                902,
+                1269
+              ],
+              "4": [
+                1929,
+                2052
+              ],
+              "5": [
+                2250,
+                2494
+              ],
+              "6": [
+                1500,
+                1588
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "results": null,
+  "local_validation": {
+    "files": [
+      "tests/test_s3_setdown.py",
+      "tests/test_s3_synchronized_carry.py",
+      "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan"
+    ],
+    "unique_tests_passed": 16,
+    "physics_on_mac": false,
+    "default_off": "original controller/guard retained; unchanged central workflow catalog",
+    "origin_main_merged": "95c3fc43306a2347eb08f234c835d8e6269c6f00"
+  }
+}

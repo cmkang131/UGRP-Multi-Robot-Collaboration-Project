@@ -1,3 +1,4 @@
+- [2026-10-10 S3 첫 내려놓기 v166](2026-10-10-s3-setdown/README.md): DEV 기준+계약·감속·정착 3후보, c2/c5 공통 8회+C c0/c3 2회, x86 동시10회 사전 등록.
 - [2026-10-10 S3 공동 운반 v164/v165](2026-10-10-s3-synchronized-carry/README.md): x86 동시10조건 v165 정렬·집기·상승·20mm 운반10/10; pair endpoint1/6, 이후 하강 낙하가드4/6·포즈계약 실패2/6, HOST_ERROR0. 기본 off·미채택.
 # 실험 인덱스
 - [2026-10-10 S3 정렬 소유권·끝점 v162](2026-10-10-s3-alignment-ownership/README.md): 기본 off A/B/C, x86 10조건 정렬·집기·상승9/10·실제 운반4/10; pair 운반0/6·c3 정렬 잔여, raw/TensorBoard 검증.

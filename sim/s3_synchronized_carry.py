@@ -29,6 +29,9 @@ class PhysicsBackend(Previous):
 
     def eval_sample(self):
         super().eval_sample()
+        self.record_dynamics()
+
+    def record_dynamics(self):
         if self.bundle['synchronized_carry']['option']=='off':return
         import mujoco
         m,d=self.world.model,self.world.data
