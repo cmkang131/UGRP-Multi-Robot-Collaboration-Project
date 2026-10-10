@@ -46,7 +46,7 @@ p=pathlib.Path.home()/'ugrp-sim/runs'/NAME
 if (p/'EXIT').exists():print('already exited');raise SystemExit(0)
 r=json.loads((p/'driver.json').read_text());assert r['job']==NAME and r['source_sha']==SHA
 pid=r['pid'];pgid=r['pgid'];cmd=(pathlib.Path('/proc')/str(pid)/'cmdline').read_bytes().split(b'\\0')
-assert any(c in cmd for c in (b'scripts.run_s4_pair_live5',b'scripts.run_s4_pair_live5_r2')) and ('outputs/'+NAME+'/raw').encode() in cmd
+assert any(c in cmd for c in (b'scripts.run_s4_pair_live5',b'scripts.run_s4_pair_live5_r2',b'scripts.run_s4_pair_live5_r3')) and ('outputs/'+NAME+'/raw').encode() in cmd
 assert os.getpgid(pid)==pgid and pgid!=os.getpgrp()
 (p/'initial-stop.json').write_text(json.dumps({'reason':REASON,'source_sha':SHA,'pid':pid,'pgid':pgid,'classification':'INITIAL_CHECK_ABORT'}))
 (p/'EXIT').write_text('143\\n');os.killpg(pgid,signal.SIGTERM)

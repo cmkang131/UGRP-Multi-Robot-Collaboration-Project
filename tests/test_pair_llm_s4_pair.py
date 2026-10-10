@@ -64,6 +64,19 @@ def test_current_epoch_cannot_ack_unseen_go_or_restart_after_loss():
     assert not h.open('r1',1,15.) and not h.allowed('r1',0)
 
 
+def test_poll_between_asynchronous_go_completions_waits_then_requests_seen_ack():
+    h=opened();decide(h,'r1','go')
+    asked=[]
+    host=SimpleNamespace(trial=SimpleNamespace(handshake=h,scheduler=SimpleNamespace(
+        trigger=lambda r,*a,**k:asked.append(r))),links={r:SimpleNamespace(origin_s=0) for r in hs.PAIR})
+    driver=stage.Driver(host,None)
+    driver.poll(12.05)
+    assert asked==['r2']  # r1 owns GO, peer GO is not released yet: no choice
+    decide(h,'r2','go',request=12.1,now=13.)
+    driver.poll(13.2)
+    assert asked==['r2','r1','r2']
+
+
 class PairWire(RecordedWire):
     def __init__(self, *, lose=False):
         super().__init__()

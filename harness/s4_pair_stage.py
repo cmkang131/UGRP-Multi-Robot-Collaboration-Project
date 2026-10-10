@@ -233,7 +233,7 @@ class Driver:
             view = self.handshake.view(rid, rel)
             choice = 'go' if not view['own_go_sent'] else 'ack_go' if view['peer_go_ref'] and not view['own_ack_sent'] else None
             key = (view['epoch'], choice)
-            due = (view['phase'] == 'wait_go' and choice and self.ask_keys.get(rid) != key)
+            due = bool(view['phase'] == 'wait_go' and choice and self.ask_keys.get(rid) != key)
             due |= view['phase'] == 'carry' and rel >= self.next_ask.get(rid, -1.)
             if due:
                 self.host.trial.scheduler.trigger(rid, 'idle', at=rel)
