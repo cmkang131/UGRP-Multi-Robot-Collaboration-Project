@@ -1,7 +1,7 @@
 {
   "round": "egomap70",
-  "status": "CALIBRATION_QUALIFIED_EVALUATION_PENDING",
-  "source_sha": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
+  "status": "READY_BLOCKED_STORAGE",
+  "source_sha": "39f676d624fd4f349aaf7f6be12e3fd0be94b395",
   "measurement_source": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
   "host": "oracle-x86",
   "calibration": {
@@ -548,12 +548,203 @@
         }
       ],
       "calibration_sha256": "9a3d06f5bdecc9bd709c7b4cfc0c33da3b8809aab5206cbec3fc6b9d1bf2f3bf"
-    }
+    },
+    "failed_acquisitions": [
+      {
+        "seed": 70001,
+        "status": "HOST_ERROR",
+        "host": "oracle-x86",
+        "source_sha": "971db97cefbe15296c5067ed419e466376f011b2",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "ValueError('REAL primitive speed/duration mismatch')",
+        "wall_s": 48.64926453099906,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70001",
+        "result_sha256": "3db23788198f00a0290be49705a89e06bfb4bbee54208d812cb7ea1d9f92419d",
+        "manifest_sha256": "1542eaf745a79c93d8411a5e2aceadfc1854bb2741abfa37c836a4844ccf9fb7",
+        "excluded_from_fit": true
+      },
+      {
+        "seed": 70002,
+        "status": "HOST_ERROR",
+        "host": "oracle-x86",
+        "source_sha": "971db97cefbe15296c5067ed419e466376f011b2",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "ValueError('REAL primitive speed/duration mismatch')",
+        "wall_s": 49.84260101499967,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70002",
+        "result_sha256": "3df11309e8ab2740b251e1f59bac04bf21a07002a6dff6fd623657401c9c496f",
+        "manifest_sha256": "94d3db2b7de0f8acdb3692e6bcdb58478812b70bea44810e4ab9a55caeb3e87d",
+        "excluded_from_fit": true
+      },
+      {
+        "seed": 70003,
+        "status": "HOST_ERROR",
+        "host": "oracle-x86",
+        "source_sha": "971db97cefbe15296c5067ed419e466376f011b2",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "ValueError('REAL primitive speed/duration mismatch')",
+        "wall_s": 48.2588210219983,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70003",
+        "result_sha256": "2117a520cd7fb9bdb49f6c1f66c2a1b475e1a0df5e20586e555c9acc03cfe746",
+        "manifest_sha256": "7eec392b4ee00421e2f19b3c203822e33305d15081605529348f61b29611bf9b",
+        "excluded_from_fit": true
+      },
+      {
+        "seed": 70004,
+        "status": "HOST_ERROR",
+        "host": "oracle-x86",
+        "source_sha": "971db97cefbe15296c5067ed419e466376f011b2",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "ValueError('REAL primitive speed/duration mismatch')",
+        "wall_s": 47.96771375499884,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70004",
+        "result_sha256": "8e014ef4ee9a87a1af3a150d383261bc07852d6453962c0134b4b2a53476db5c",
+        "manifest_sha256": "7f7b00163414b628e6576c74240b3565feb26d076a05b2870bf1868e62506bd1",
+        "excluded_from_fit": true
+      },
+      {
+        "seed": 70005,
+        "status": "HOST_ERROR",
+        "host": "oracle-x86",
+        "source_sha": "971db97cefbe15296c5067ed419e466376f011b2",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "ValueError('REAL primitive speed/duration mismatch')",
+        "wall_s": 46.408607999001106,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70005",
+        "result_sha256": "527bb9a79f2f583dc2890293823744a96a891559afb63b7b3eea3c79003ef7e5",
+        "manifest_sha256": "2dc3f97b5436df8138673e833453bc13c1cae8e934b0685fc8eb2279c5bcf703",
+        "excluded_from_fit": true
+      },
+      {
+        "seed": 70001,
+        "status": "PHYSICAL_FAILURE",
+        "host": "oracle-x86",
+        "source_sha": "b1ad1fe85fbece2439e9d32fab455760a5175da0",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "PhysicalStop('WALL_CONTACT')",
+        "wall_s": 60.49189391999971,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70001",
+        "result_sha256": "25d730d11cdd2b601b0b3f9f2eb6826ad2d7fe966d4fd05eece8721eb05fa5b4",
+        "manifest_sha256": "e47c2375d2709d7a14e44d12be858dcdee2fc319143ad9eb3705fe0ed49684e4",
+        "excluded_from_fit": true
+      },
+      {
+        "seed": 70002,
+        "status": "PHYSICAL_FAILURE",
+        "host": "oracle-x86",
+        "source_sha": "b1ad1fe85fbece2439e9d32fab455760a5175da0",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "PhysicalStop('WALL_CONTACT')",
+        "wall_s": 109.01869975999944,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70002",
+        "result_sha256": "c18195ac14b912b7c09302f8bd97076bb2e23ca7e2e0ffbdd2bc201ddc348cd9",
+        "manifest_sha256": "5a37bf169bc01e0baf8cecd24aa82b09ff4050c7c7b44947df09c0d8ac5a0c35",
+        "excluded_from_fit": true
+      },
+      {
+        "seed": 70003,
+        "status": "PHYSICAL_FAILURE",
+        "host": "oracle-x86",
+        "source_sha": "b1ad1fe85fbece2439e9d32fab455760a5175da0",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "PhysicalStop('WALL_CONTACT')",
+        "wall_s": 60.276128572000744,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70003",
+        "result_sha256": "ec9b3fb7b015881544b2bca73c046dbec21f80e88ef38148b390039933a8c022",
+        "manifest_sha256": "a59bf732feb1f4691b5dcc8db6e17d15836a5e1725312ed9ca473bb78727a5d8",
+        "excluded_from_fit": true
+      },
+      {
+        "seed": 70004,
+        "status": "PHYSICAL_FAILURE",
+        "host": "oracle-x86",
+        "source_sha": "b1ad1fe85fbece2439e9d32fab455760a5175da0",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "PhysicalStop('WALL_CONTACT')",
+        "wall_s": 108.75428682299753,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70004",
+        "result_sha256": "8a839ade44386f241bfed10e9d727b133f02bb444be1ae3c43898c467abbc398",
+        "manifest_sha256": "caed73f957880535b84da7e811e874f3cc37ec3ec3f537bcf93aefbafe55d697",
+        "excluded_from_fit": true
+      },
+      {
+        "seed": 70005,
+        "status": "PHYSICAL_FAILURE",
+        "host": "oracle-x86",
+        "source_sha": "b1ad1fe85fbece2439e9d32fab455760a5175da0",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "error": "PhysicalStop('WALL_CONTACT')",
+        "wall_s": 60.36012056799882,
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70005",
+        "result_sha256": "5c945a3a782c5f8e1cf8ef30be86cd64121ae49bf50218f653740cf3635702cd",
+        "manifest_sha256": "8af8b5ef790808f2777305fc5d7bd5a5b5a90352b91932831d198dad5f44e8dc",
+        "excluded_from_fit": true
+      }
+    ]
   },
   "evaluation": {
     "registered": 24,
     "started": 0,
-    "completed": 0
+    "completed": 0,
+    "blocked": 24,
+    "conditions": {
+      "baseline": {
+        "registered": 6,
+        "started": 0,
+        "completed": 0,
+        "B_arrived": null,
+        "returned": null,
+        "false_return": null,
+        "position_rmse_median": null
+      },
+      "calib": {
+        "registered": 6,
+        "started": 0,
+        "completed": 0,
+        "B_arrived": null,
+        "returned": null,
+        "false_return": null,
+        "position_rmse_median": null
+      },
+      "calib_traversed": {
+        "registered": 6,
+        "started": 0,
+        "completed": 0,
+        "B_arrived": null,
+        "returned": null,
+        "false_return": null,
+        "position_rmse_median": null
+      },
+      "calib_traversed_zone": {
+        "registered": 6,
+        "started": 0,
+        "completed": 0,
+        "B_arrived": null,
+        "returned": null,
+        "false_return": null,
+        "position_rmse_median": null
+      }
+    }
   },
   "local_tests": {
     "files": 2,
@@ -569,8 +760,7 @@
     "footprint": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_costmap_2d/src/footprint.cpp#L40-L66",
     "footprint_adaptation": "CAD circumscribed radius; .02m padding is existing repo value, not claimed Nav2 default"
   },
-  "results_not_yet_available": true,
-  "reason": "Independent holdout 6/6 qualified; evaluation not started",
+  "reason": "Evaluation not submitted: x86 14.0 GiB < registered20 GiB, ARM8.17 GiB < expected12–14 GiB raw. No originals deleted.",
   "pre_execution_color_diagnostic": {
     "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-delivery/data/prefix-color-diagnostic.json",
     "sha256": "d9887defd38f8ab25c5e02ba649c0cb883a5f5e6a124b89ed37cb1844bed31af",
@@ -783,6 +973,276 @@
     "arm": "/home/ubuntu/ugrp-sim/arm/egomap70-calibration-v3",
     "raw_manifest_files_verified": 255,
     "rsync_checksum_mismatches": 0,
-    "mac": "fetch-lite compact metadata only"
+    "mac": "fetch-lite compact metadata only",
+    "arm_smoke": "/home/ubuntu/ugrp-sim/arm/egomap70-smoke",
+    "arm_failed": [
+      "/home/ubuntu/ugrp-sim/arm/egomap70-calibration",
+      "/home/ubuntu/ugrp-sim/arm/egomap70-calibration-v2"
+    ],
+    "arm_delivery": "/home/ubuntu/ugrp-sim/arm/egomap70-delivery",
+    "smoke_raw_files_verified": 83,
+    "delivery_sha256": "aa729c39bdb5d0614afac2dab4202862d3099af78fb32cb3c92345903c2c8708",
+    "delivery_verified_files": 10,
+    "mac_verified_bytes": 40107
+  },
+  "evaluation_results_available": false,
+  "smoke": {
+    "result": {
+      "status": "RECORDED",
+      "host": "oracle-x86",
+      "source_sha": "39f676d624fd4f349aaf7f6be12e3fd0be94b395",
+      "seed": 63004,
+      "profile": "baseline",
+      "mode": "smoke_resume",
+      "slot": "resource_admitted",
+      "model_calls": 0,
+      "loadavg_start": [
+        37.0634765625,
+        28.8974609375,
+        40.3056640625
+      ],
+      "platform": "Linux-6.17.0-1020-oracle-x86_64-with-glibc2.39",
+      "stage_only": true,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+        "sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 67.7
+      },
+      "stage_schedule": "b_return_270_v1",
+      "start_sim_s": 67.7,
+      "original_start_sim_s": 1.3,
+      "frames": 373,
+      "total_sim_s": 75.7,
+      "stage": "explore",
+      "declared_B": false,
+      "declared_return": false,
+      "wall_s": 29.41228346599746,
+      "loadavg_end": [
+        53.298828125,
+        33.80859375,
+        41.5888671875
+      ]
+    },
+    "initial_check": {
+      "completed_before_180s": true,
+      "sim_elapsed_s": 8.0,
+      "trace_count": 41,
+      "invalid_traces": 0,
+      "first_trace": {
+        "call": 1,
+        "execution": {
+          "calls": 1,
+          "dispatched": {
+            "arrival_verify_fsm": false,
+            "progress_lookahead": false,
+            "return_local_vtr": false,
+            "return_own_free_astar": true
+          },
+          "exercised": {
+            "arrival": true,
+            "heading": true,
+            "localize": true,
+            "receive": true
+          },
+          "version": "receive_composed_v1"
+        },
+        "frame_id": 333,
+        "options": {
+          "arrival_verify_fsm": false,
+          "progress_lookahead": false,
+          "return_local_vtr": false,
+          "return_own_free_astar": true
+        },
+        "receiver": "ReferenceRoute.receive",
+        "t": 67.7,
+        "turn_lateral": {
+          "changed_axes": [
+            "turn_lateral"
+          ],
+          "option": "motion_model_turn_lateral_v2",
+          "prefix_recomputed": false,
+          "sha256": "9a3d06f5bdecc9bd709c7b4cfc0c33da3b8809aab5206cbec3fc6b9d1bf2f3bf",
+          "yaw_noise_forward_unchanged": true
+        },
+        "turn_profiles_applied": true,
+        "valid": true,
+        "zone_calls": 1
+      },
+      "displacement_m": 0.0785153925736344,
+      "log_exceptions": 0
+    },
+    "color": [
+      {
+        "scope": "prefix",
+        "accepted": false,
+        "reason": "partial_or_wrong_metric_extent",
+        "median_hue": 110.0,
+        "distances": {
+          "B": 2.0,
+          "pickup": 2.413787841796875
+        },
+        "prototypes": {
+          "B": 112.0,
+          "pickup": 107.58621215820312
+        },
+        "pixels": 130,
+        "size_consistent": false,
+        "rect_sides_m": [
+          0.1930510252714157,
+          0.5348772406578064
+        ]
+      },
+      {
+        "t": 68.3,
+        "frame_id": 336,
+        "accepted": false,
+        "reason": "partial_or_wrong_metric_extent",
+        "median_hue": 110.0,
+        "distances": {
+          "B": 2.0,
+          "pickup": 2.413787841796875
+        },
+        "prototypes": {
+          "B": 112.0,
+          "pickup": 107.58621215820312
+        },
+        "pixels": 145,
+        "size_consistent": false,
+        "rect_sides_m": [
+          0.136229008436203,
+          0.3125789165496826
+        ]
+      },
+      {
+        "t": 68.9,
+        "frame_id": 339,
+        "accepted": false,
+        "reason": "partial_or_wrong_metric_extent",
+        "median_hue": 110.0,
+        "distances": {
+          "B": 2.0,
+          "pickup": 2.413787841796875
+        },
+        "prototypes": {
+          "B": 112.0,
+          "pickup": 107.58621215820312
+        },
+        "pixels": 145,
+        "size_consistent": false,
+        "rect_sides_m": [
+          0.12749318778514862,
+          0.2576938569545746
+        ]
+      },
+      {
+        "t": 69.9,
+        "frame_id": 344,
+        "accepted": false,
+        "reason": "partial_or_wrong_metric_extent",
+        "median_hue": 110.0,
+        "distances": {
+          "B": 2.0,
+          "pickup": 2.413787841796875
+        },
+        "prototypes": {
+          "B": 112.0,
+          "pickup": 107.58621215820312
+        },
+        "pixels": 137,
+        "size_consistent": false,
+        "rect_sides_m": [
+          0.11649364978075027,
+          0.2589588463306427
+        ]
+      },
+      {
+        "t": 70.1,
+        "frame_id": 345,
+        "accepted": false,
+        "reason": "partial_or_wrong_metric_extent",
+        "median_hue": 110.0,
+        "distances": {
+          "B": 2.0,
+          "pickup": 2.413787841796875
+        },
+        "prototypes": {
+          "B": 112.0,
+          "pickup": 107.58621215820312
+        },
+        "pixels": 134,
+        "size_consistent": false,
+        "rect_sides_m": [
+          0.13506974279880524,
+          0.27927955985069275
+        ]
+      },
+      {
+        "t": 70.9,
+        "frame_id": 349,
+        "accepted": false,
+        "reason": "partial_or_wrong_metric_extent",
+        "median_hue": 111.0,
+        "distances": {
+          "B": 1.0,
+          "pickup": 3.413787841796875
+        },
+        "prototypes": {
+          "B": 112.0,
+          "pickup": 107.58621215820312
+        },
+        "pixels": 310,
+        "size_consistent": false,
+        "rect_sides_m": [
+          0.07560048252344131,
+          1.5798240900039673
+        ]
+      },
+      {
+        "t": 73.5,
+        "frame_id": 362,
+        "accepted": false,
+        "reason": "partial_or_wrong_metric_extent",
+        "median_hue": 111.0,
+        "distances": {
+          "B": 1.0,
+          "pickup": 3.413787841796875
+        },
+        "prototypes": {
+          "B": 112.0,
+          "pickup": 107.58621215820312
+        },
+        "pixels": 206,
+        "size_consistent": false,
+        "rect_sides_m": [
+          0.061893947422504425,
+          0.6115931272506714
+        ]
+      }
+    ],
+    "manifest_sha256": "d7bfcf17d998ddde050489e7fbc9e900c8a200565338167e17d24b1828c435a1",
+    "raw_files": 83
+  },
+  "resources": {
+    "utc": "2026-10-10T22:19:39.422766+00:00",
+    "x86_free_gib": 14.005767822265625,
+    "arm_free_gib": 8.171783447265625,
+    "load": 43.18408203125,
+    "x86_required_gib": 20,
+    "arm_expected_raw_gib": [
+      12,
+      14
+    ],
+    "reason": "preserve all originals; no deletion authorized"
+  },
+  "next": "Run the already fixed24 jobs as one batch after persistent execution/archive capacity is available; no code or threshold retuning.",
+  "scope": {
+    "E2E_demonstrated": false,
+    "mac_physics": 0,
+    "mac_replay": 0,
+    "model_calls": 0,
+    "evaluation_truth_in_control": false,
+    "default_off": true,
+    "byte_identity_scope": "2-file local regression only; six-seed physics baseline comparison pending"
   }
 }
