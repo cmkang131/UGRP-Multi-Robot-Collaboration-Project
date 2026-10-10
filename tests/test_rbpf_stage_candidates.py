@@ -107,3 +107,16 @@ def test_return_probe_uses_only_own_temporal_route():
     enter_return(c,60.)
     assert c.stage=='return' and c.cursor==0 and c.leg_start==60.
     assert events[0]['synthetic_task_transition'] is True
+
+
+def test_registered_selection_requires_both_seeds_and_all_safety_gates():
+    spec=importlib.util.spec_from_file_location('stage_score',Path(__file__).resolve().parents[1]/'experiments/2026-10-10-own-route-particle-stages/code/score.py')
+    m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    rows=[]
+    for profile,rate in [('baseline',.6),('a',.5),('b',.55),('c',.4)]:
+        for seed in (60011,60012):
+            rows.append(dict(profile=profile,seed=seed,status='RECORDED',samples=100,over_3sigma_rate=rate,
+                final_error_m=.2,B_arrived=True,returned=False,false_declarations=int(profile=='c'),contacts={'wall':0,'robot':0}))
+    r=m.select(rows)
+    assert r['selected']=='a' and not r['gates']['b']['overconfidence'] and not r['gates']['c']['false']
+    assert m.select([r for r in rows if r['seed']==60011])['selected'] is None

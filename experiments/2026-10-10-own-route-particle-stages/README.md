@@ -24,3 +24,9 @@
 ## 구현·실행 전 확인
 
 사전등록 f0ba9ee1. 합성 변경 모듈3파일25시험 통과(물리/녹화 재생0), legacy proposal off 결과/샘플 bytes 동일. stage seed는 동일 P1 시작 위치·지도에 새 난수seed만 사용한다. 서버 공유 venv에 cloudpickle이 없어 pure-Python cloudpickle3.1.2를 전용 `~/ugrp-sim/egomap60-deps`에 `--no-deps` 설치하고 해당 작업 PYTHONPATH에만 연결한다. 공용 venv/물리 의존성 변경0.
+
+## x86 입장 오류와 이식 수정 (물리 전, 2026-10-10)
+
+`prepare-60011/60012`는 launcher가 이미 만든 출력 root를 넘겨 `PRESERVE_EXISTING_OUTPUT`로 물리0 거부. 후속 `prep-60011/60012-r1`은 `P1_ASSET_LAYOUT_MISMATCH`로 물리0 거부. 네 시도 모두 원본 로그 보존, 성능 분모와 분리하며 성공 실행으로 대체 표기하지 않는다.
+
+Mac/x86 layout 대조: patch 꼭짓점11개 값만 최대5.551115123125783e-17m(1 ULP) 다름. 벽 기하·길이·배치·PNG는 동일하며 libm sin/cos 마지막 비트 차이다. [Python math ULP/isclose](https://docs.python.org/3/library/math.html#math.ulp)의 표준 부동소수 비교를 따라 `wall_asset_numeric=libm_ulps_v1`(기본 off)에서는 patch 꼭짓점만4 ULP 허용, 다른 필드는 exact·PNG SHA exact를 유지한다. 재생성/이미지/XML 변경0. 성능 문턱과 무관한 서버 admission 수정이며 baseline/a/b/c 전부 동일하게 켠다. 허용범위 밖·다른 metadata·PNG 변조 거부 및 off exact·on XML bytes 동일을 합성시험으로 고정한다. 새 서버 실행 전 커밋한다.

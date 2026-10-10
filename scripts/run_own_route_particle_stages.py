@@ -23,6 +23,7 @@ def bundle(seed,source,profile,mode):
     b['execution_bundle_id']=f'egomap60-{mode}-{profile}-{seed}-v1'
     b['options'].update({k:'off' for k in ('rbpf_population','rbpf_local_search','rbpf_candidate_gate')})
     b['options'].update(PROFILES[profile]);b['host']='oracle-x86'
+    b['options']['wall_asset_numeric']='libm_ulps_v1'
     b['case_cap_s']=810. if mode=='full' else 150. if mode=='prepare' else 120.
     b['stage_diagnostic']=mode!='full';b['admission']='egomap60 preregistered oracle-only DEV'
     return b

@@ -124,3 +124,33 @@ def test_workflow_uses_preflight_entrypoint():
     from sim.workflow_manager import plan
     p=plan(runner.ROOT,'goal-route-preflight-dev',['--seed','55001','--output','/tmp/no-physics','--expected-source-sha','a'*40])
     assert 'scripts.run_goal_route_preflight' in p['command']
+
+
+def test_portable_vertices_only_and_exact_off():
+    import math
+    a={'faces':[{'patches':[{'vertices_m':[[.21,.05]]}],'length_m':2.95}]}
+    b=copy.deepcopy(a);b['faces'][0]['patches'][0]['vertices_m'][0][0]=math.nextafter(.21,math.inf)
+    assert not assets._layout_equal(a,b)
+    assert assets._layout_equal(a,b,'libm_ulps_v1')
+    b['faces'][0]['patches'][0]['vertices_m'][0][0]+=.000001
+    assert not assets._layout_equal(a,b,'libm_ulps_v1')
+    b=copy.deepcopy(a);b['faces'][0]['length_m']=math.nextafter(2.95,math.inf)
+    assert not assets._layout_equal(a,b,'libm_ulps_v1')
+
+
+def test_portable_validation_keeps_png_hash_and_xml_bytes(monkeypatch):
+    import math
+    m=static_map('zone_wide_door_geometry_v3');original=assets.tape.layout
+    def linux_layout(walls):
+        r=json.loads(json.dumps(original(walls)))
+        vertex=r['faces'][0]['patches'][0]['vertices_m'][0]
+        vertex[0]=math.nextafter(vertex[0],math.inf)
+        return r
+    b=runner.bundle(55001,'a'*40);old_receipt,old_xml=assets.xml_preflight(b,55001)
+    monkeypatch.setattr(assets.tape,'layout',linux_layout)
+    with pytest.raises(ValueError,match='P1_ASSET_LAYOUT_MISMATCH'):assets.xml_preflight(b,55001)
+    b['options']['wall_asset_numeric']='libm_ulps_v1'
+    new_receipt,new_xml=assets.xml_preflight(b,55001)
+    assert new_receipt==old_receipt and new_xml.encode()==old_xml.encode()
+    monkeypatch.setattr(assets.tape,'sha',lambda p:'bad')
+    with pytest.raises(ValueError,match='P1_ASSET_PNG_MISMATCH'):assets.validate(m,assets.directory(m),asset_numeric='libm_ulps_v1')
