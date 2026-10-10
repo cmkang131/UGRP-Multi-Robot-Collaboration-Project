@@ -237,10 +237,11 @@ def wait_for_idle(receipt):
     try:
         while True:
             row = host_sample(); samples.append(row)
+            remaining = deadline-time.monotonic()
+            if remaining <= 0: raise TimeoutError('HOST_BUSY_NO_MEASUREMENT')
             ready = not row['peers'] and row['available_bytes'] >= 6*2**30 and row['load'][0] <= 2.
             if ready: return
-            if time.monotonic() >= deadline: raise TimeoutError('HOST_BUSY_NO_MEASUREMENT')
-            time.sleep(10)
+            time.sleep(min(10, remaining))
     finally:
         write(receipt, dict(ready=ready, samples=samples,
             rule='no peer workers, MemAvailable >=6GiB, 1min load <=2.0 before every arm'))

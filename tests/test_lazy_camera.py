@@ -209,3 +209,21 @@ def test_busy_admission_expires_without_physics_and_keeps_receipt(tmp_path, monk
     with pytest.raises(TimeoutError, match='HOST_BUSY_NO_MEASUREMENT'):
         probe.wait_for_idle(receipt)
     assert json.loads(receipt.read_text())['ready'] is False
+
+
+def test_idle_after_deadline_does_not_admit_a_late_arm(tmp_path, monkeypatch):
+    from scripts import benchmark_lazy_camera as probe
+    times = iter([0.,3595.,3605.])
+    samples = iter([
+        dict(peers=['research'],available_bytes=8*2**30,load=[1.,1.,1.]),
+        dict(peers=[],available_bytes=8*2**30,load=[1.,1.,1.]),
+    ])
+    slept = []
+    monkeypatch.setattr(probe.time, 'monotonic', lambda: next(times))
+    monkeypatch.setattr(probe, 'host_sample', lambda: next(samples))
+    monkeypatch.setattr(probe.time, 'sleep', slept.append)
+    receipt = tmp_path/'late.json'
+    with pytest.raises(TimeoutError, match='HOST_BUSY_NO_MEASUREMENT'):
+        probe.wait_for_idle(receipt)
+    assert slept == [5.]
+    assert not json.loads(receipt.read_text())['ready']
