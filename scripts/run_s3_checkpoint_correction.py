@@ -31,6 +31,8 @@ def bundle(sha,condition,route_case,seed,candidate='baseline'):
         parent_bundles=[*b['parent_bundles'],previous.BUNDLE_ID])
     paths=set(source_closure(ROOT,['scripts/run_s3_checkpoint_correction.py',
         'scripts/run_s3_checkpoint_correction_cohort.py','scripts/evaluate_s3_checkpoint_correction.py']))|{WORKFLOW,PLAN}
+    retry='experiments/2026-10-11-s3-checkpoint-correction/retry2.json'
+    if (ROOT/retry).exists():paths.add(retry)
     b['source_sha256'].update({p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths})
     return b
 

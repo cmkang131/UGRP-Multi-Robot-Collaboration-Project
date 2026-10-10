@@ -10,7 +10,7 @@ from sim.s3_release_epoch import PhysicsBackend, Previous, released_supported
 
 def row(**kw):
     return dict(t=1.,states={'r1':'cp_open','r2':'cp_open'},floor_normal_n=3.,cargo_z_m=.016,
-        vertical_speed_m_s=0.,cargo_tilt_deg=0.,**kw)
+        vertical_speed_m_s=0.,cargo_tilt_deg=0.,controller_feedback=False,**kw)
 
 
 def test_release_epoch_clears_only_supported_bilateral_release_and_rearms(monkeypatch):
@@ -55,6 +55,14 @@ def test_rigid_static_floor_registration_and_blank_rejection():
     assert visual.register(ref,{**cur,'desc':None})[0] is None
     line={**cur,'points':np.c_[np.arange(40)*.01,np.zeros(40)]}
     assert not visual.register(ref,line)[1]['accepted']
+
+
+def test_corrective_plan_event_is_counted_without_rewriting_raw():
+    from scripts.evaluate_s3_checkpoint_correction import normalized_events
+    original={'event':'checkpoint_carry_command_plan','seg':2,'robot_id':'r1','sim_s':114.,'pulses':[]}
+    adapted=list(normalized_events([original]))
+    assert adapted==[original,{**original,'event':'synchronized_carry_plan'}]
+    assert original['event']=='checkpoint_carry_command_plan'
 
 
 def test_corrected_both_endpoints_same_world_pulses_actual_port(tmp_path,monkeypatch):

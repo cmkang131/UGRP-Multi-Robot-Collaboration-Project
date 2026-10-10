@@ -55,7 +55,7 @@ class PhysicsBackend(Previous):
             row = self.setdown_row()
             if 'beam_1' in self.lifted and released_supported(row, self.commands):
                 self.lifted.discard('beam_1')
-                self._append('eval_only/release-epochs.jsonl', dict(**row,
-                    event='supported_release_disarms_previous_lift', controller_feedback=False,
-                    rearm='unchanged height > .08 guard on the next actual lift'))
+                self._append('eval_only/release-epochs.jsonl', {**row,
+                    'event':'supported_release_disarms_previous_lift', 'controller_feedback':False,
+                    'rearm':'unchanged height > .08 guard on the next actual lift'})
         return super().eval_sample()

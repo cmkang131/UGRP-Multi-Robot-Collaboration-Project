@@ -34,8 +34,10 @@ def main():
     p.add_argument('--expected-source-sha', required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--execute', action='store_true')
+    p.add_argument('--attempt',type=int,choices=(1,2),default=1)
     a = p.parse_args()
-    items = commands(json.loads((ROOT/PLAN).read_text()), a.expected_source_sha)
+    selected=PLAN if a.attempt==1 else 'experiments/2026-10-11-s3-checkpoint-correction/retry2.json'
+    items = commands(json.loads((ROOT/selected).read_text()), a.expected_source_sha)
     if not a.execute:
         print(json.dumps(items))
         return 0
