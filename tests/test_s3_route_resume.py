@@ -12,6 +12,16 @@ def test_default_off_leaves_methods_and_objects_unchanged():
     with pytest.raises(ValueError): resume.Options(final_release_only=1)
 
 
+def test_evaluator_distinguishes_one_endpoint_from_joint_post_release_hover():
+    from scripts.evaluate_s3_route_resume import post_release_alignment
+    ev = [dict(event='coarse_fine_aligned',robot_id='r2',sim_s=10.),
+        *[dict(event='checkpoint_open',robot_id=r,sim_s=58.) for r in ('r1','r2')],
+        dict(event='coarse_fine_aligned',robot_id='r1',sim_s=59.)]
+    assert post_release_alignment(ev)==dict(r1=True,r2=False)
+    ev.append(dict(event='coarse_fine_aligned',robot_id='r2',sim_s=59.5))
+    assert all(post_release_alignment(ev).values())
+
+
 @pytest.mark.parametrize('segments', (2,3))
 def test_real_checkpoint_increment_precedes_completion_predicate(segments):
     from harness.zone_final_pair_skill import V3Controller

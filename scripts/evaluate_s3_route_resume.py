@@ -19,6 +19,17 @@ def events(value):
             yield from events(x)
 
 
+def post_release_alignment(ev):
+    """A single endpoint's new hover is not a joint regrasp readiness receipt."""
+    result = {}
+    for rid in ('r1','r2'):
+        release = next((e['sim_s'] for e in sorted(ev,key=lambda e:e.get('sim_s',0.))
+            if e.get('event')=='checkpoint_open' and e.get('robot_id')==rid), None)
+        result[rid] = release is not None and any(e.get('event')=='coarse_fine_aligned'
+            and e.get('robot_id')==rid and e['sim_s']>release for e in ev)
+    return result
+
+
 def evaluate(raw):
     r = previous(raw)
     b = read(raw/'bundle.json')
@@ -42,8 +53,7 @@ def evaluate(raw):
             endpoint_error_m=error,endpoint_reached=end is not None and error<=.02))
     releases = sorted((e for e in ev if e.get('event')=='checkpoint_open'
         and e.get('robot_id')=='r1'),key=lambda e:e['sim_s'])
-    realigned = [e for e in ev if e.get('event')=='coarse_fine_aligned'
-        and e.get('robot_id')=='r1' and releases and e['sim_s']>releases[0]['sim_s']]
+    realigned = post_release_alignment(ev)
     expected = len(route)-1
     early = (r['status']=='DEV_STAGE_FINISHED' and r['sim_s']<b['cap_sim_s']-1e-8
         and len(legs)<expected and not r['controller_failures'])
@@ -52,7 +62,8 @@ def evaluate(raw):
     r.update(candidate=b['route_resume']['candidate'],seed=b['seed'],route_case=b['route_case'],
         route_applied=True,planned_legs=expected,legs=legs,
         second_leg_started=any(l['seg']==1 for l in legs),
-        reentry=bool(releases),realigned_after_release=bool(realigned),
+        reentry=bool(releases),realigned_by_robot=realigned,
+        realigned_after_release=all(realigned.values()),
         premature_complete=early,unmeasured_camera_host=unmeasured,
         probe_horizon=horizon,full_route_success=len(legs)==expected
             and all(l['endpoint_reached'] for l in legs) and r['setdown'],
