@@ -23,6 +23,8 @@ import sys
 import time
 import re
 import uuid
+import signal
+from functools import wraps
 from unittest.mock import patch
 from harness.lossless_recording import RecordStream
 
@@ -121,6 +123,47 @@ def ancestor(pid, parent):
     return False
 
 
+def interruptible(function):
+    """Convert TERM/HUP to a recorded exception; restore handlers on exit.
+
+    As with Python's SIGINT handler, raising unwinds existing try/finally
+    cleanup. Repeated TERM/HUP are ignored only while that cleanup runs.
+    SIGKILL and a process crash cannot provide this guarantee.
+    """
+    @wraps(function)
+    def guarded(*args, **kwargs):
+        watched = [signal.SIGTERM]
+        if hasattr(signal, 'SIGHUP'):
+            watched.append(signal.SIGHUP)
+        previous = {sig: signal.getsignal(sig) for sig in watched}
+        def stop(signum, _frame):
+            for sig in watched:
+                signal.signal(sig, signal.SIG_IGN)
+            raise InterruptedError(f'HOST_INTERRUPTED:{signal.Signals(signum).name}')
+        try:
+            for sig in watched:
+                signal.signal(sig, stop)
+            return function(*args, **kwargs)
+        finally:
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
+    return guarded
+
+
+def release_slot(held, owned):
+    """Never release a later task's lease just because its owner is Codex."""
+    if not owned:
+        return None
+    from scripts import agent_lock
+    current = agent_lock.status(agent_lock.DEFAULT_ROOT)
+    identity = ('owner', 'branch', 'pid', 'acquired_unix')
+    if (not current or not all(key in held for key in identity) or
+            any(current.get(key) != held[key] for key in identity)):
+        print('Exclusive lease changed; foreign lock left intact', flush=True)
+        return None
+    return agent_lock.release(agent_lock.DEFAULT_ROOT, owner=held['owner'])
+
+
 def acquire_slot(expected, purpose, *, lock_owner_pid=None, wait_s=7200, expected_minutes=90):
     """Atomic finite wait, or borrow this queue driver's verified ancestor lock."""
     from scripts import agent_lock
@@ -150,7 +193,7 @@ def acquire_slot(expected, purpose, *, lock_owner_pid=None, wait_s=7200, expecte
     try:
         source_check(expected)
     except BaseException:
-        agent_lock.release(agent_lock.DEFAULT_ROOT, owner='codex')
+        release_slot(held, True)
         raise
     return held, True
 
@@ -610,6 +653,7 @@ def worker(args):
     return result['failure'] is None and result['frames'] == result['available_frames']
 
 
+@interruptible
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--kind', choices=('s3', 'egomap'), required=True)
@@ -642,9 +686,10 @@ def main():
     try:
         complete = worker(a)
     finally:
-        released = agent_lock.release(agent_lock.DEFAULT_ROOT, owner='codex') if owned else None
+        released = release_slot(held, owned)
         if a.output.exists():
-            write(a.output / 'lock.json', dict(acquired=held, released=released, borrowed=not owned))
+            write(a.output / 'lock.json', dict(acquired=held, released=released, borrowed=not owned,
+                release_skipped=owned and released is None))
     if not complete:
         raise RuntimeError('INCOMPLETE_REPLAY: failure preserved in result.json')
 

@@ -9,6 +9,7 @@ import argparse
 import json
 import math
 import os
+import signal
 from pathlib import Path
 import shutil
 import statistics
@@ -17,7 +18,8 @@ import sys
 import time
 
 from harness.lossless_recording import logical_equal, logical_open
-from scripts.profile_controller_replay import ROOT, acquire_slot, sha, source_check, verify_adapter, write
+from scripts.profile_controller_replay import (ROOT, acquire_slot, interruptible, release_slot,
+                                               sha, source_check, verify_adapter, write)
 
 ORDER = ('A', 'B', 'B', 'A')
 S3_FILES = ('commands.json', 'state.json', 'record.json')
@@ -243,9 +245,23 @@ def invoke(case, output, args, *, scan, storage, local=0.):
     if args.profile:
         command += ['--profile']
     with (output.parent/(output.name+'.log')).open('xb') as log:
-        subprocess.run(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,check=True)
+        # Keep the managed CLI alive long enough to forward interruption and
+        # clean its own worker group before our outer lease can be released.
+        # subprocess.run kills only that CLI when a handler raises OSError.
+        child=subprocess.Popen(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,
+                               start_new_session=True)
+        try:
+            code=child.wait()
+        except BaseException:
+            if child.poll() is None:
+                child.send_signal(signal.SIGTERM)
+            child.wait()  # workflow_manager owns finite timeout/group cleanup
+            raise
+        if code:
+            raise subprocess.CalledProcessError(code,command)
 
 
+@interruptible
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--plan',type=Path,required=True)
@@ -334,12 +350,12 @@ def main():
         report['failure']=dict(type=type(exc).__name__,message=str(exc))
         raise
     finally:
-        from scripts import agent_lock
         try:
             write(args.output/'abba.json',report)
         finally:
-            released=agent_lock.release(agent_lock.DEFAULT_ROOT,owner='codex') if owned else None
-        write(args.output/'lock.json',dict(acquired=held,released=released))
+            released=release_slot(held,owned)
+        write(args.output/'lock.json',dict(acquired=held,released=released,
+            release_skipped=owned and released is None))
 
 
 if __name__=='__main__':

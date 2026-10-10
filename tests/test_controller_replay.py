@@ -344,3 +344,92 @@ def test_host_budget_replay_uses_completed_inputs_without_fabricating_range():
         recorded_control_prefix(frames, inputs, [10], original)
     with pytest.raises(ValueError, match='UNEXPLAINED_CAPTURE'):
         recorded_control_prefix(frames, inputs, [10,11], dict(status='RECORDED'))
+
+
+def test_release_slot_keeps_another_codex_tasks_lease(monkeypatch):
+    from scripts import profile_controller_replay as replay, agent_lock
+    ours=dict(owner='codex',branch='codex/sim-speed-ctrl2',pid=123,acquired_unix=1.)
+    current={**ours,'pid':456,'branch':'codex/research'}
+    released=[]
+    monkeypatch.setattr(agent_lock,'status',lambda root:current)
+    monkeypatch.setattr(agent_lock,'release',lambda *a,**k:released.append(k) or current)
+    assert replay.release_slot(ours,True) is None and released==[]
+    current={**ours,'acquired_unix':2.}
+    assert replay.release_slot(ours,True) is None and released==[]
+    current=ours.copy()
+    assert replay.release_slot(ours,False) is None and released==[]
+    assert replay.release_slot(ours,True)==ours
+    assert released==[{'owner':'codex'}]
+
+
+def test_interrupted_invoke_waits_for_managed_cli_cleanup(tmp_path,monkeypatch):
+    import signal,time
+    from types import SimpleNamespace
+    from scripts import benchmark_controller_replay as abba
+    monkeypatch.setattr(abba,'source_check',lambda expected:None)
+    monkeypatch.setattr(abba,'verify_adapter',lambda *a:None)
+    events=[]
+    class Child:
+        def wait(self):
+            events.append('wait')
+            if events.count('wait')==1:raise InterruptedError('HOST_INTERRUPTED:SIGTERM')
+            events.append('worker group cleaned');return 130
+        def poll(self):return None
+        def send_signal(self,sig):events.append(('signal',sig))
+    def popen(command,**kwargs):
+        assert kwargs['start_new_session'] is True
+        assert '--timeout' in command
+        return Child()
+    monkeypatch.setattr(abba.subprocess,'Popen',popen)
+    args=SimpleNamespace(expected_source_sha='a'*40,deadline=time.monotonic()+60,profile=False)
+    case=dict(id='s3',kind='s3',raw='unused',adapter='unused',adapter_sha256='fixed')
+    with pytest.raises(InterruptedError,match='HOST_INTERRUPTED'):
+        abba.invoke(case,tmp_path/'new',args,scan='off',storage='off')
+    assert events==['wait',('signal',signal.SIGTERM),'wait','worker group cleaned']
+
+
+@pytest.mark.parametrize('signal_name',['SIGTERM','SIGHUP'])
+def test_abba_signal_retains_completed_case_and_failure_and_restores_handlers(
+        tmp_path,monkeypatch,signal_name):
+    import json,os,signal,sys
+    from scripts import benchmark_controller_replay as abba, agent_lock
+    signum=getattr(signal,signal_name)
+    previous={s:signal.getsignal(s) for s in (signal.SIGTERM,signal.SIGHUP)}
+    plan=tmp_path/'plan.json'
+    plan.write_text(json.dumps(dict(priority_run='unused',cases=[
+        dict(id=name,kind='s3',adapter=str(tmp_path/'adapter'),raw='unused')
+        for name in ('complete-case','interrupted-case')])))
+    original=plan.read_bytes();output=tmp_path/'result'
+    held=dict(owner='codex',branch='codex/sim-speed-ctrl2',pid=os.getpid(),acquired_unix=1.)
+    monkeypatch.setattr(sys,'argv',['abba','--plan',str(plan),'--output',str(output),
+        '--priority-receipt',str(tmp_path/'unused'),'--expected-source-sha','a'*40,'--execute'])
+    monkeypatch.setattr(abba,'source_check',lambda expected:None)
+    monkeypatch.setattr(abba.subprocess,'check_output',lambda *a,**k:'0')
+    monkeypatch.setattr(abba,'priority_check',lambda *a:{})
+    monkeypatch.setattr(abba,'verify_adapter',lambda *a:{'sha256':'fixed-source'})
+    monkeypatch.setattr(abba,'acquire_slot',lambda *a,**k:(held,True))
+    monkeypatch.setattr(agent_lock,'status',lambda root:held)
+    releases=[]
+    def release(*args,**kwargs):
+        # A repeated TERM/HUP during cleanup must not lose the failure record.
+        os.kill(os.getpid(),signum)
+        releases.append(kwargs);return held
+    monkeypatch.setattr(agent_lock,'release',release)
+    calls=[]
+    def invoke(case,path,*args,**kwargs):
+        path.mkdir();calls.append(case['id'])
+        if case['id']=='interrupted-case':os.kill(os.getpid(),signum)
+    monkeypatch.setattr(abba,'invoke',invoke)
+    monkeypatch.setattr(abba,'compare_runs',lambda *a:dict(verified=True,adapter_source_hashes_equal=True))
+    monkeypatch.setattr(abba,'components',lambda *a:[dict(wall_per_input_sim=1.) for _ in range(4)])
+    monkeypatch.setattr(abba,'load_assessment',lambda *a:dict(comparable=True))
+    with pytest.raises(InterruptedError,match='HOST_INTERRUPTED:'+signal_name):abba.main()
+    result=json.loads((output/'abba.json').read_text())
+    assert result['complete'] is False
+    assert [row['id'] for row in result['cases']]==['complete-case']
+    assert result['failure']==dict(type='InterruptedError',message='HOST_INTERRUPTED:'+signal_name)
+    assert calls==['complete-case']*4+['interrupted-case']
+    assert releases==[{'owner':'codex'}]
+    assert json.loads((output/'lock.json').read_text())['release_skipped'] is False
+    assert plan.read_bytes()==original
+    assert {s:signal.getsignal(s) for s in previous}==previous

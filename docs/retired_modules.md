@@ -203,3 +203,9 @@ RGB 구간 출력 누락·S3 종료 검사·동결 adapter Python 지문 검증�
 ## 감사 기록
 
 [작업 기록과 검증 결과](../experiments/2026-10-09-module-retirement/README.md). DRAFT PR이며 감독·사용자 확인 전 병합 금지.
+## speedctrl2 종료 기록 보완 (2026-10-10)
+
+`controller-replay-abba` 1.2.0과 `controller-replay-profile` 1.3.0의 새 실행은
+1.3.0/1.4.0으로 대체한다. 기존 raw는 보존하며 정상 제어기 수학은 동일하다.
+TERM/HUP 실패 기록과 현재 lease 신원 확인을 추가했다. SIGTERM으로 미완료인
+`speedctrl2-20261010-v2`를 완료로 승계하지 않는다.
