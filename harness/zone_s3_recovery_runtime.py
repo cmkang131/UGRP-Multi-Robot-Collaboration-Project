@@ -8,6 +8,9 @@ from harness import zone_s3_visual_alignment as alignment
 
 class Runtime(Previous):
     def __init__(self, static, *args, config, **kwargs):
+        from harness.e2e_own_inputs import enabled
+        if enabled(config.get('options', {}).get('e2e_own_inputs_v1', 'off')):
+            raise ValueError('E2E_STAGE1_ONLY: legacy static planner/guard/provider forbidden')
         plain = copy.deepcopy(config)
         diversity = plain['options'].pop('resampling_diversity', 'off')
         lease = plain['options'].pop('door_lease', 'off')

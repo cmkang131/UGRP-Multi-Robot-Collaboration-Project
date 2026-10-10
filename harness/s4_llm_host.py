@@ -158,11 +158,15 @@ class Trial(zi.IntegratedTrial):
     channel_summary = pair.PairTrial.channel_summary
 
     def __init__(self, scenario, *, arm, links, seed, horizon_s, map_bundle, model_adapter,
-                 code_sha='unknown', policy=POLICY, decision_limits=LIMITS):
+                 code_sha='unknown', policy=POLICY, decision_limits=LIMITS, e2e_own_inputs_v1='off'):
         if arm not in inputs.MODEL_CONDITIONS:
             raise ContractViolation('rule has no model trial')
         if not isinstance(model_adapter.send_ledger, live.PairLiveLedger):
             raise ContractViolation('S4 requires the existing durable PairLiveLedger')
+        from harness import e2e_own_inputs as own
+        self.e2e_own_inputs_v1 = e2e_own_inputs_v1
+        self.own_input_mode = own.enabled(e2e_own_inputs_v1)
+        self.route_agreement = own.Agreement() if self.own_input_mode else None
         self.arm = arm
         super().__init__(scenario, condition=inputs.study_spec(arm), seed=seed, links=links,
                          horizon_s=horizon_s, map_bundle=map_bundle, model_adapter=model_adapter,
@@ -170,7 +174,13 @@ class Trial(zi.IntegratedTrial):
                          decision_limits=decision_limits)
         self.bundle_id = VERSION  # library identity only; no runnable bundle is registered
         self.run_id = f's4-{arm}-{self.scenario_id}-s{seed}'
-        self.map_png, self.map_meta = pair.map_figure(self.bundle)
+        self.map_png, self.map_meta = (None, None) if self.own_input_mode else pair.map_figure(self.bundle)
+        if self.own_input_mode:
+            # Authored configuration remains audit provenance, never a model/control input.
+            self.static_map = None
+            import copy
+            self.sheet = copy.deepcopy(own.TASK)
+            self.channel.vocabulary = own.vocabulary()
         self._output_token_counts, self._window_refs, self._claim_entries = {}, {}, {}
         self.language_rows, self.claim_results = [], []
         # The scheduler already owns this ledger; change only its transport,
@@ -194,6 +204,22 @@ class Trial(zi.IntegratedTrial):
         return self.links[actor].job()
 
     def snapshot(self, call):
+        if self.own_input_mode:
+            import copy
+            rid, now = call.actor, float(call.started_sim_s)
+            link = self.links[rid]
+            frame = link.frame_at(now)
+            if frame is None: raise ContractViolation('E2E_OWN_FRAME_REQUIRED')
+            # A new own-map adapter must implement this; legacy belief() is forbidden.
+            source = getattr(link.inner, 'own_inputs_at', None)
+            if not callable(source): raise ContractViolation('E2E_OWN_MAP_ADAPTER_REQUIRED')
+            state = copy.deepcopy(source(now))
+            from harness.e2e_own_inputs import closed
+            closed(state, ('own_map', 'observed_rgb'), 'OWN_INPUT_SNAPSHOT')
+            self._snapshots[(rid, round(now,6))] = dict(frame=frame, own_state=state,
+                history=copy.deepcopy([e for e in self._history[rid] if e['issued_at_sim_s'] <= now]),
+                inbox=list(self.channel.inbox(rid, now_sim_s=now)) if self.spec.channel_open else None)
+            return
         super().snapshot(call)
         adapter = self.links[call.actor].stop_adapter
         if adapter is not None:
@@ -203,6 +229,16 @@ class Trial(zi.IntegratedTrial):
             self._window_refs[call.call_id] = adapter.window.reference(call.started_sim_s)
 
     def build_inputs(self, actor, *, sim_time_s, request_id):
+        if self.own_input_mode:
+            from harness import e2e_own_inputs as own
+            snap = self._snapshots.pop((actor, round(float(sim_time_s),6)))
+            result = own.build_inputs(rid=actor, now=sim_time_s, request_id=request_id, frame=snap['frame'],
+                own_map=snap['own_state']['own_map'], observed=snap['own_state']['observed_rgb'],
+                history=snap['history'], inbox=snap['inbox'], arm=self.arm, seed=self.seed)
+            self.request_images[snap['frame'].sha256] = snap['frame'].jpeg
+            self.input_log.append(dict(request_id=request_id, robot=actor, sim_s=sim_time_s,
+                own_map_sha256=digest(snap['own_state']['own_map']), sources=snap['own_state']['observed_rgb']))
+            return result
         snap = self._snapshots[(actor, round(float(sim_time_s), 6))]
         estimate, window = snap.get('own_belief'), snap.get('decision_window')
         base = super().build_inputs(actor, sim_time_s=sim_time_s, request_id=request_id)
@@ -214,13 +250,19 @@ class Trial(zi.IntegratedTrial):
         request_id = f'req_{call.call_id.replace("-", "_")}'
         bundled = self.build_inputs(call.actor, sim_time_s=call.started_sim_s, request_id=request_id)
         window = self.channel.window_context(call.actor, now_sim_s=call.started_sim_s) if self.spec.channel_open else None
-        return zo.PreparedCall(bundled, inputs.build_request(bundled, window=window), request_id)
+        builder = inputs.build_request
+        if self.own_input_mode:
+            from harness.e2e_own_inputs import build_request
+            builder = build_request
+        return zo.PreparedCall(bundled, builder(bundled, window=window), request_id)
 
     def finish_call(self, call, prepared, raw, *, provider_usage=None):
         return pair.PairTrial.finish_call(self, call, prepared, raw, provider_usage=provider_usage,
                                           robots=routing.ROBOTS)
 
     def _on_action(self, actor, action, sim_s):
+        if self.own_input_mode and action.get('kind') != 'continue':
+            raise ContractViolation('E2E_STAGE1_MOTION_NOT_CONNECTED')
         live.check_health(self)
         call_id = self.scheduler.calls[-1].call_id
         self.links[actor].call_ref = call_id
@@ -259,7 +301,7 @@ class Host:
     """
 
     def __init__(self, scenario, *, condition, links, seed, map_bundle, horizon_s=1800.,
-                 model_adapter=None, code_sha='unknown', policy=POLICY, decision_limits=LIMITS):
+                 model_adapter=None, code_sha='unknown', policy=POLICY, decision_limits=LIMITS, e2e_own_inputs_v1='off'):
         if condition not in CONDITIONS or set(links) != set(routing.ROBOTS):
             raise ContractViolation('S4 needs one own link for each of r1/r2/r3 and a supported condition')
         if any(not isinstance(link, Link) or link.robot_id != rid for rid, link in links.items()):
@@ -268,16 +310,25 @@ class Host:
             raise ContractViolation('stop adapters and host must use the same condition')
         if (condition == 'rule') != (model_adapter is None):
             raise ContractViolation('rule has no model adapter; no_comm/peer_nl require one')
+        from harness.e2e_own_inputs import enabled
+        self.own_input_mode = enabled(e2e_own_inputs_v1)
+        if self.own_input_mode and condition == 'rule':
+            raise ContractViolation('E2E_REQUIRES_MODEL_AND_OWN_MAP_ADAPTER')
         self.condition, self.links = condition, dict(links)
         self.source = OrderSheetSource(scenario, map_bundle)
         orders = self.source.sheet()['orders']
-        if (scenario.get('scenario_id') != 'dev_s1lite' or len(orders) != 2
+        if self.own_input_mode:
+            if (scenario.get('scenario_id') != 'e2e_one_beam_ownmap' or len(orders) != 1
+                    or (orders[0]['kind'], orders[0]['required_robots'], orders[0]['count']) != ('long_beam', 2, 1)):
+                raise ContractViolation('E2E_ONE_BEAM_SCENARIO_REQUIRED')
+        elif (scenario.get('scenario_id') != 'dev_s1lite' or len(orders) != 2
                 or {(o['kind'], o['required_robots'], o['count']) for o in orders}
                 != {('cyan', 1, 1), ('long_beam', 2, 1)}):
             raise ContractViolation('S4 currently supports only the dev_s1lite cyan + beam orders')
         self.trial = None if condition == 'rule' else Trial(
             scenario, arm=condition, links=links, seed=seed, horizon_s=horizon_s, map_bundle=map_bundle,
-            model_adapter=model_adapter, code_sha=code_sha, policy=policy, decision_limits=decision_limits)
+            model_adapter=model_adapter, code_sha=code_sha, policy=policy, decision_limits=decision_limits,
+            e2e_own_inputs_v1=e2e_own_inputs_v1)
         self.failed, self.started, self.finished = None, False, False
         self.rule_dispatch = []
 
@@ -391,7 +442,8 @@ class Host:
             image_dir.mkdir()
             for sha, data in trial.request_images.items():
                 (image_dir / f'{sha}.jpg').write_bytes(data)
-            (out / 'map_figure.png').write_bytes(trial.map_png)
+            if trial.map_png is not None:
+                (out / 'map_figure.png').write_bytes(trial.map_png)
         manifest = {str(p.relative_to(out)): hashlib.sha256(p.read_bytes()).hexdigest()
                     for p in sorted(out.rglob('*')) if p.is_file()}
         write('artifacts.sha256.json', manifest)

@@ -65,7 +65,10 @@ def route_for(static, sheet, target, opening):
     return route, checkpoints, info
 
 
-def make_plan(static, sheet, target):
+def make_plan(static, sheet, target, *, e2e_own_inputs_v1='off', own_route=None, robot_id=None, now=None, observed_rgb=None):
+    from harness.e2e_own_inputs import enabled, s3_inputs
+    if enabled(e2e_own_inputs_v1):
+        return s3_inputs(own_route, rid=robot_id, now=now, observed=observed_rgb)
     from sim.zone_model_conventions import station_offset
     static = passage.without_aliases(static)
     if sheet != task(static)['sheet'] or target != task(static)['target']:

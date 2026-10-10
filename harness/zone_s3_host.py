@@ -69,7 +69,10 @@ def pair_task(static, order):
 
 class PairRuntime(pair.Runtime):
     """Private dependency binding, already used by the frozen v3 pair stack."""
-    def __init__(self, static, calibration, calibration_sha, *, seed, order, provider_factory=None):
+    def __init__(self, static, calibration, calibration_sha, *, seed, order, provider_factory=None, e2e_own_inputs_v1='off'):
+        from harness.e2e_own_inputs import enabled
+        if enabled(e2e_own_inputs_v1):
+            raise ValueError('E2E_STAGE1_ONLY: legacy static planner/guard/provider construction forbidden')
         task = pair_task(static, order)
         planner = bind(skill.make_plan, task=lambda _: task)
         # Fail before constructing providers if the PUBLIC prior has no static route.
@@ -209,7 +212,10 @@ class IntegratedTrial(integration.IntegratedTrial):
 class Runtime:
     """Multiplex unchanged pair/solo producers on ONE host clock, no truth input."""
     def __init__(self, static, orders, calibration, calibration_sha, *, seed,
-                 pair_factory=PairRuntime, solo_factory=solo.Runtime):
+                 pair_factory=PairRuntime, solo_factory=solo.Runtime, e2e_own_inputs_v1='off'):
+        from harness.e2e_own_inputs import enabled
+        if enabled(e2e_own_inputs_v1):
+            raise ValueError('E2E_STAGE1_ONLY: use own input contract; legacy static runtime forbidden')
         tasks = public_tasks(orders)
         self.pair = self.solo = None
         self.trial, self.started = None, False

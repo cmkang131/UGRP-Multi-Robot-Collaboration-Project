@@ -1,0 +1,51 @@
+{
+  "schema": "ugrp.e2e1.summary.v1",
+  "scope": "input_state_contract_only",
+  "status": "CONTRACT_VERIFIED_RENDER_PENDING",
+  "E2E_runs": 0,
+  "model_calls": 0,
+  "past_success_inherited": false,
+  "input_toggle": "e2e_own_inputs_v1=off (opt-in on_v1)",
+  "tests": {
+    "passed": 75,
+    "total": 75,
+    "scope": [
+      "tests/test_e2e_own_inputs.py",
+      "tests/test_pair_llm_s4_host.py",
+      "tests/test_zone_scenario_scene.py"
+    ],
+    "final_log": "/Users/changmin/projects/ugrp/outputs/e2e1-contract-checks/pytest-parser-75.log"
+  },
+  "first_frame": {
+    "passed": 0,
+    "executed": 0,
+    "planned": 3,
+    "candidates": [
+      "base",
+      "A",
+      "B"
+    ],
+    "seed": 61001,
+    "status": "LOAD_ADMISSION_WAIT",
+    "loadavg_last": 77.44
+  },
+  "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-contract-checks",
+  "sha256": {
+    "pytest-75.log": "ca9ecb967a9b29ee2792c3d6124043d26b2bdde26dbaa532675797ba5435217f",
+    "pytest-parser-75.log": "e68db32a6c811ebe69ff2d2b84f925bf15d055b754a4115d255fcb23efe5591f",
+    "pytest-final.log": "d6d5c7ae47274248a7236d4e37c6f178049c0f49a601d06a8053d5aedcc797d3"
+  },
+  "remaining": [
+    "x86 first RGB rendering and retrieval",
+    "own-map-to-beam navigation (step 2)",
+    "own planner/guard/provider transport adapter (step 3)",
+    "live route approval/claim/heartbeat wiring (step 4)",
+    "same-run LLM + ownmap + full transport (step 5)"
+  ],
+  "workflow": {
+    "id": "e2e-one-beam-ownmap-inputs",
+    "version": "7.68.0",
+    "max_seen_before_registration": "7.67.0",
+    "new_runnable_bundle_registered": false
+  }
+}
