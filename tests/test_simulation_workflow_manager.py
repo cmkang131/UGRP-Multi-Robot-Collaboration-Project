@@ -323,6 +323,8 @@ raise SystemExit(3 if a.fail else 0)
         for name in ('controller-replay-profile', 'saved-physics-profile'):
             samples[name] = ['--kind', 's3', '--raw', str(model), '--adapter', str(model),
                              '--expected-source-sha', '0'*40]
+        samples['controller-replay-abba'] = ['--plan', str(source),
+            '--priority-receipt', str(source), '--expected-source-sha', '0'*40]
         samples['zone-path-heading-v145'] = ['--expected-source-sha', '0'*40, '--seed', '1066']
         samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
                                            '--heading-mode', 'path_tangent_v1']
