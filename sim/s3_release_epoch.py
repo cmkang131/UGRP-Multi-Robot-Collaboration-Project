@@ -15,7 +15,7 @@ class CheckpointCarryPort(CarryPulsePort):
                     or abs(speed) not in (.35,.65) or not .10 <= duration <= .80):
                 raise ValueError('checkpoint carry requires finite admitted speed, one axis, 100-800ms')
             self._command_expires_at=None
-            self._set_motors((-speed,speed,-speed,speed))
+            self._set_motors((-speed,speed,speed,-speed))
             self._drive_expires_at=float(now)+duration;self._busy_until=self._drive_expires_at
             return dict(ok=True,robot_id=self.robot_id,kind='mecanum',sim_time=float(now),
                 busy_until=self._busy_until,actuator_state=self._actuator_state())

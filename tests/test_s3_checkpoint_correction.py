@@ -65,6 +65,24 @@ def test_corrective_plan_event_is_counted_without_rewriting_raw():
     assert original['event']=='checkpoint_carry_command_plan'
 
 
+@pytest.mark.parametrize('speed,duration',[(.65,.65),(-.65,.65),(.35,.1),(-.35,.1)])
+def test_native_checkpoint_crab_preserves_shared_wheel_axis(speed,duration):
+    from sim.s3_release_epoch import CheckpointCarryPort
+    from sim.s2_real_output import RealPrimitivePort
+    def stub(cls):
+        p=cls.__new__(cls);p.coupled=lambda:True;p.robot_id='r1';p.min_wheel_cmd='real_v1'
+        p._actuator_state=lambda:{};p._set_motors=lambda motors:setattr(p,'motors',motors)
+        return p
+    port=stub(CheckpointCarryPort)
+    action=dict(kind='mecanum',forward=0.,left=speed,turn=0.,duration_s=duration)
+    port.apply(action,10.)
+    assert port.motors==(-speed,speed,speed,-speed)
+    assert port._drive_expires_at==10.+duration
+    if abs(speed)==.65:
+        shared=stub(RealPrimitivePort);shared.apply(action,10.)
+        assert port.motors==shared.motors
+
+
 def test_corrected_both_endpoints_same_world_pulses_actual_port(tmp_path,monkeypatch):
     from tests.test_s3_full_route import probe
     from harness.zone_s3_synchronized_carry import attach as carry,OPTION
