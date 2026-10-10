@@ -41,6 +41,32 @@ def test_nested_timers_are_a_partition_including_exception():
     assert timers.stack == []
 
 
+def test_rgb_child_timing_survives_snapshot_and_preserves_partition():
+    times=iter([0.,1.,3.,5.])
+    timers=Timers(clock=lambda:next(times))
+    with timers.span('vision'):
+        with timers.span('rgb_preprocess'):pass
+    snapshot=timers.snapshot()
+    assert snapshot['rgb_preprocess']['exclusive_s']==2.
+    assert sum(row['exclusive_s'] for row in snapshot.values())==5.
+
+
+def test_adapter_fingerprint_rejects_edit_add_and_remove(tmp_path):
+    from scripts.profile_controller_replay import verify_adapter
+    source=tmp_path/'harness/matcher.py';source.parent.mkdir()
+    source.write_text('answer=1\n')
+    original=verify_adapter(tmp_path)
+    assert original['files']=={'harness/matcher.py':__import__('hashlib').sha256(source.read_bytes()).hexdigest()}
+    source.write_text('answer=2\n')
+    with pytest.raises(ValueError,match='SOURCE_ADAPTER_CHANGED'):verify_adapter(tmp_path,original['sha256'])
+    source.write_text('answer=1\n')
+    extra=tmp_path/'dependency.py';extra.write_text('answer=3\n')
+    with pytest.raises(ValueError,match='SOURCE_ADAPTER_CHANGED'):verify_adapter(tmp_path,original['sha256'])
+    extra.unlink();assert verify_adapter(tmp_path,original['sha256'])==original
+    source.unlink()
+    with pytest.raises(ValueError,match='EMPTY_SOURCE_ADAPTER'):verify_adapter(tmp_path,original['sha256'])
+
+
 def test_managed_catalog_plans_without_execution(tmp_path):
     from pathlib import Path
     from sim.workflow_manager import plan
@@ -124,11 +150,16 @@ def test_abba_direct_proof_rejects_corrupted_behavior_or_missing_callback(tmp_pa
     paths=[tmp_path/str(i) for i in range(4)]
     for i,path in enumerate(paths):
         path.mkdir()
-        (path/'result.json').write_text(json.dumps(dict(input_sha256={'frame':'a'},failure=None,frames=2,available_frames=2)))
+        (path/'result.json').write_text(json.dumps(dict(input_sha256={'frame':'a'},failure=None,
+            frames=2,available_frames=2,adapter_sha256='source1')))
         for name in S3_FILES:
             stream=RecordStream(path/name,storage='gzip-v1' if i in (1,2) else 'off')
             stream.write('{"rng":"state","particles":"bits"}\n');stream.close()
     assert compare_runs(paths,'s3')['verified']
+    metadata=json.loads((paths[3]/'result.json').read_text())
+    metadata['adapter_sha256']='source2';(paths[3]/'result.json').write_text(json.dumps(metadata))
+    assert not compare_runs(paths,'s3')['verified']
+    metadata['adapter_sha256']='source1';(paths[3]/'result.json').write_text(json.dumps(metadata))
     (paths[3]/'state.json').write_text('{"rng":"different"}\n')
     assert not compare_runs(paths,'s3')['verified']
 
@@ -136,7 +167,7 @@ def test_abba_direct_proof_rejects_corrupted_behavior_or_missing_callback(tmp_pa
 def test_abba_requires_current_s3_final_result_and_explicit_return(tmp_path):
     import json
     from scripts.benchmark_controller_replay import priority_check, sha
-    result=tmp_path/'result.json';result.write_text('{"status":"DEV_FINISHED"}\n')
+    result=tmp_path/'result.json';result.write_text('{"status":"DEV_NOT_DELIVERED"}\n')
     receipt=tmp_path/'receipt.json'
     data=dict(result_path=str(result),result_sha256=sha(result),released_for_speedctrl=False,
               coordination_url='https://github.com/example/repo/pull/1#issuecomment-2')
@@ -147,6 +178,10 @@ def test_abba_requires_current_s3_final_result_and_explicit_return(tmp_path):
     with pytest.raises(ValueError,match='CURRENT_S3'):priority_check(receipt,tmp_path/'old')
     result.write_text('{}')
     with pytest.raises(ValueError,match='HASH'):priority_check(receipt,tmp_path)
+    for invalid in ({'status':'RUNNING'},{},{'status':'arbitrary'}):
+        result.write_text(json.dumps(invalid));data['result_sha256']=sha(result)
+        receipt.write_text(json.dumps(data))
+        with pytest.raises(ValueError,match='TERMINAL_S3'):priority_check(receipt,tmp_path)
 
 
 def test_local_accuracy_uses_saved_spawn_frame_only_after_replay(tmp_path):

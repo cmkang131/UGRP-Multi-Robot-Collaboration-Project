@@ -56,6 +56,14 @@ S3·55001 ABBA와 55003 단일 A가 완료됐고, S3 연구 순번을 위해 큐
 - 후속 interval 타이머는 `bind()`가 복사한 private globals의 pure helper도 계측한다.
   cvtColor·remap을 `rgb_preprocess`로 분리해 중첩 vision/receive에서 exclusive 비용을 뺀다.
   타이머는 새 인터프리터에만 적용하며 새 후보 전체 재생의 행동 바이트로 계측 불변성도 확인한다.
+  독립 검토에서 발견한 `rgb_preprocess` snapshot 카테고리 누락을 측정 전에 고쳤다.
+  중첩 vision/RGB 구간의 exclusive 합계가 전체 구간을 보존하는 반례 시험을 추가했다.
+  S3 우선 실행은 DEV_DELIVERED/DEV_NOT_DELIVERED/HOST_ERROR의 종료 상태와 명시적 반환을
+  함께 확인한다. 실패한 종료와 실행 중 상태를 구분하며 RUNNING/무상태 결과를 거부한다.
+  각 adapter의 모든 Python 파일 이름/내용 지문을 ABBA 계획에 고정하고, 매 자식의 시작·종료
+  및 다음 자식 전 다시 검증한다. 기존 adapter pyc를 읽지 않고 동결 Python 소스를 로드한다.
+  `adapter-source.json`/result에 지문·파일 목록을 남긴다. 이 출처 검증 시간은 controller wall
+  밖이며 별도 기록한다. 이전 c35 자료의 adapter 지문은 미기록으로 구분한다.
 
 ## 첫 측정과 순번 반환
 

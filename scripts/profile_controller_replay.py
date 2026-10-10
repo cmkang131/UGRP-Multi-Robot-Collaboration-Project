@@ -33,7 +33,7 @@ CATEGORIES = ('physics', 'render', 'pf_update', 'posterior_summary', 'scan_match
               'floor_detection', 'wall_detection', 'raytrace', 'costmap_build',
               'grid_export', 'frontier_forecast', 'controller_receive', 'controller_step',
               'command_feedback', 'frame_hash_decode', 'state_proof', 'trend_record',
-              'visibility_geometry', 'likelihood_lookup')
+              'visibility_geometry', 'likelihood_lookup', 'rgb_preprocess')
 
 
 def split_timing(value):
@@ -80,6 +80,25 @@ def sha(path):
         for block in iter(lambda: stream.read(1024 * 1024), b''):
             h.update(block)
     return h.hexdigest()
+
+
+def adapter_manifest(adapter):
+    """Fingerprint every frozen Python source, including additions/removals."""
+    adapter = Path(adapter).resolve()
+    files = {str(path.relative_to(adapter)): sha(path)
+             for path in sorted(adapter.rglob('*.py')) if path.is_file()}
+    if not files:
+        raise ValueError('EMPTY_SOURCE_ADAPTER')
+    encoded = json.dumps(files, sort_keys=True, separators=(',', ':')).encode()
+    return dict(path=str(adapter), sha256=hashlib.sha256(encoded).hexdigest(), files=files,
+                scope='all frozen adapter Python files; current common module is bound to Git SHA')
+
+
+def verify_adapter(adapter, expected=None):
+    manifest = adapter_manifest(adapter)
+    if expected is not None and manifest['sha256'] != expected:
+        raise ValueError('SOURCE_ADAPTER_CHANGED')
+    return manifest
 
 
 def rows(path):
@@ -505,11 +524,17 @@ def egomap(raw, out, timer):
 
 
 def worker(args):
+    verification_started = time.perf_counter()
+    adapter = verify_adapter(args.adapter, args.expected_adapter_sha256)
+    adapter_verification_s = time.perf_counter() - verification_started
     sys.path.insert(0, str(args.adapter))
     for name in ('sim', 'harness', 'scripts'):
         importlib.import_module(name).__path__ = [str(args.adapter / name)]
     out = args.output
     out.mkdir(parents=True, exist_ok=False)
+    # Import the fingerprinted source rather than any existing adapter pyc.
+    sys.pycache_prefix = str(out / '_unused_bytecode')
+    sys.dont_write_bytecode = True
     kind = args.kind
     inputs = verify_inputs(args.raw, ('r1', 'r2', 'r3') if kind == 's3' else ('r3',))
     # Import adapter before wrapping all references to shared pure functions.
@@ -556,6 +581,10 @@ def worker(args):
                       failure=dict(type=type(exc).__name__, message=str(exc)), trend=[],
                       partial_outputs=True)
     wall = time.perf_counter() - started
+    verification_started = time.perf_counter()
+    verify_adapter(args.adapter, adapter['sha256'])
+    adapter_verification_s += time.perf_counter() - verification_started
+    write(out / 'adapter-source.json', adapter)
     if profiler:
         profiler.disable()
         profiler.dump_stats(out / 'profile.pstats')
@@ -573,6 +602,8 @@ def worker(args):
         loadavg_start=load, loadavg_end=os.getloadavg(), input_sha256=inputs,
         source_adapter=str(args.adapter), implementation_sha=subprocess.check_output(
             ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+        adapter_sha256=adapter['sha256'], adapter_verification_s=adapter_verification_s,
+        adapter_verification_scope='pre/post provenance check outside controller wall; same frozen manifest across ABBA',
         cprofile_scope='initialization, first/last window and final serialization',
         cprofile_window_frames=args.profile_window_frames))
     installed.close()
@@ -586,6 +617,7 @@ def main():
     p.add_argument('--adapter', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--expected-source-sha', required=True)
+    p.add_argument('--expected-adapter-sha256')
     p.add_argument('--profile', action='store_true')
     p.add_argument('--profile-window-frames', type=int, default=100)
     p.add_argument('--speedups', choices=('off', 'exact-v1'), default='off')

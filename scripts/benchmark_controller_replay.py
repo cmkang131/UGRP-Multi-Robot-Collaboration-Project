@@ -17,7 +17,7 @@ import sys
 import time
 
 from harness.lossless_recording import logical_equal, logical_open
-from scripts.profile_controller_replay import ROOT, acquire_slot, sha, source_check, write
+from scripts.profile_controller_replay import ROOT, acquire_slot, sha, source_check, verify_adapter, write
 
 ORDER = ('A', 'B', 'B', 'A')
 S3_FILES = ('commands.json', 'state.json', 'record.json')
@@ -37,8 +37,10 @@ def priority_check(receipt, expected_run=None):
         raise ValueError('EXPLICIT_S3_RETURN_REQUIRED')
     if not result.is_file() or sha(result) != data['result_sha256']:
         raise ValueError('S3_COMPLETION_HASH_REQUIRED')
-    if not isinstance(json.loads(result.read_text()), dict):
-        raise ValueError('S3_RESULT_REQUIRED')
+    finalized = json.loads(result.read_text())
+    if (not isinstance(finalized, dict) or finalized.get('status') not in
+            ('DEV_DELIVERED', 'DEV_NOT_DELIVERED', 'HOST_ERROR')):
+        raise ValueError('TERMINAL_S3_RESULT_REQUIRED')
     return data
 
 
@@ -50,9 +52,13 @@ def compare_runs(paths, kind):
         checked.append(dict(name=name, equal=all(matches), comparisons=matches))
     results = [json.loads((p/'result.json').read_text()) for p in paths]
     inputs_equal = all(r['input_sha256'] == results[0]['input_sha256'] for r in results)
+    adapters = [r.get('adapter_sha256') for r in results]
+    known_adapters = {value for value in adapters if value}
+    adapter_equal = (False if len(known_adapters)>1 else True if all(adapters) else None)
     complete = all(r['failure'] is None and r['frames'] == r['available_frames'] for r in results)
-    return dict(verified=all(x['equal'] for x in checked) and inputs_equal and complete,
+    return dict(verified=all(x['equal'] for x in checked) and inputs_equal and complete and adapter_equal is not False,
                 files=checked, input_hashes_equal=inputs_equal, completed_callbacks=complete,
+                adapter_source_hashes_equal=adapter_equal,
                 scope='direct decoded behavior bytes; per-frame particle-array hashes and full RNG state; final maps',
                 excluded=('timing, load, profile, implementation/adapter/storage provenance',))
 
@@ -218,6 +224,7 @@ def referee_abba(raw, output, args):
 
 def invoke(case, output, args, *, scan, storage, local=0.):
     source_check(args.expected_source_sha)
+    verify_adapter(case['adapter'], case['adapter_sha256'])
     if shutil.disk_usage(output.parent).free < 10*2**30:
         raise RuntimeError('HOST_ERROR: disk below 10 GiB; originals preserved')
     budget = args.deadline-time.monotonic()
@@ -227,6 +234,7 @@ def invoke(case, output, args, *, scan, storage, local=0.):
         '--record',str(output.parent/(output.name+'-managed')),'--timeout',str(min(5400.,budget)), '--',
         '--kind',case['kind'],'--raw',case['raw'],'--adapter',case['adapter'],
         '--output',str(output),'--expected-source-sha',args.expected_source_sha,
+        '--expected-adapter-sha256',case['adapter_sha256'],
         '--lock-owner-pid',str(os.getpid()),'--execute','--speedups','exact-v1',
         '--scan-speedups',scan,'--record-storage',storage,'--local-submap-m',str(local),
         '--referee-speedups','off' if scan=='off' else 'owned-v1',
@@ -262,6 +270,8 @@ def main():
     source_check(args.expected_source_sha)
     assert int(subprocess.check_output(['ps','-o','ni=','-p',str(os.getpid())]))==0
     priority=priority_check(args.priority_receipt,plan['priority_run'])
+    for case in plan['cases']:
+        case['adapter_sha256'] = verify_adapter(case['adapter'])['sha256']
     args.output.mkdir(parents=True,exist_ok=False)
     write(args.output/'plan.json',dict(plan=plan,plan_sha256=sha(args.plan),source=args.expected_source_sha,
         order=ORDER,priority=priority,profile=args.profile,local_submap_m=args.local_submap_m))
@@ -289,6 +299,8 @@ def main():
             write(args.output/(case['id']+'-comparison.json'),entry)
             if not proof['verified']:
                 raise RuntimeError('BEHAVIOR_BYTES_DIFFER: default-on adoption refused')
+            if proof['adapter_source_hashes_equal'] is not True:
+                raise RuntimeError('SOURCE_ADAPTERS_DIFFER')
         if args.diagnostic_profile:
             profile_args=argparse.Namespace(**{**vars(args),'profile':True})
             for case in plan['cases']:
