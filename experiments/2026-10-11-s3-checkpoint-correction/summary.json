@@ -1520,10 +1520,77 @@
     },
     {
       "attempt": 3,
-      "status": "copy_or_verification_pending",
-      "runs": []
+      "status": "verified",
+      "archive_host": "oracle ARM via existing mounted persistent archive",
+      "x86_originals_retained": true,
+      "rsync_checksum_equal": true,
+      "utc": "2026-10-10T19:46:57Z",
+      "receipt": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s3fix24-control-20261011/arm-copy-r3.json",
+        "sha256": "cb98697271582a4077216973561ad42ca5aab7537d89e0f9efd1af183845695a"
+      },
+      "runs": [
+        {
+          "name": "s3fix24-visual-multi-three-s15206-r3",
+          "arm_raw": "/home/ubuntu/ugrp-sim/arm/s3fix24-batch-r3/cohort/s3fix24-visual-multi-three-s15206-r3/raw",
+          "files_verified": 9197,
+          "bytes_verified": 264981625,
+          "manifest_sha256": "e3dd1d5bd53c7b42c080efa4eb772099377def209fb0db918385aee06a958ecc",
+          "all_hashes_match": true
+        },
+        {
+          "name": "s3fix24-visual-multi-right-s15204-r3",
+          "arm_raw": "/home/ubuntu/ugrp-sim/arm/s3fix24-batch-r3/cohort/s3fix24-visual-multi-right-s15204-r3/raw",
+          "files_verified": 6143,
+          "bytes_verified": 178561205,
+          "manifest_sha256": "e1c33f5667b5f2680c71fe1c618b4297daa3c6d1519beb8e4e6ce71ff28e3c47",
+          "all_hashes_match": true
+        },
+        {
+          "name": "s3fix24-recovery-multi-left-s14201-r3",
+          "arm_raw": "/home/ubuntu/ugrp-sim/arm/s3fix24-batch-r3/cohort/s3fix24-recovery-multi-left-s14201-r3/raw",
+          "files_verified": 5989,
+          "bytes_verified": 173848072,
+          "manifest_sha256": "e1ea3d347349eba6c6e02e1c43482cd3342fc29bd1f07326848911e91a24f32f",
+          "all_hashes_match": true
+        },
+        {
+          "name": "s3fix24-visual-multi-left-s15201-r3",
+          "arm_raw": "/home/ubuntu/ugrp-sim/arm/s3fix24-batch-r3/cohort/s3fix24-visual-multi-left-s15201-r3/raw",
+          "files_verified": 5989,
+          "bytes_verified": 173779254,
+          "manifest_sha256": "f16dfa55fc3368ffe969a8dcb1c2487c22d5d3fefd6d4351e1bad3d35437f9f0",
+          "all_hashes_match": true
+        },
+        {
+          "name": "s3fix24-recovery-multi-three-s14206-r3",
+          "arm_raw": "/home/ubuntu/ugrp-sim/arm/s3fix24-batch-r3/cohort/s3fix24-recovery-multi-three-s14206-r3/raw",
+          "files_verified": 9259,
+          "bytes_verified": 267947510,
+          "manifest_sha256": "e7fe25ee664642f2a9f7a8da8aa0efbd3fc85afd62e9b0bbd94e736f673cdff0",
+          "all_hashes_match": true
+        },
+        {
+          "name": "s3fix24-recovery-multi-right-s14204-r3",
+          "arm_raw": "/home/ubuntu/ugrp-sim/arm/s3fix24-batch-r3/cohort/s3fix24-recovery-multi-right-s14204-r3/raw",
+          "files_verified": 6107,
+          "bytes_verified": 178280894,
+          "manifest_sha256": "817dff6984e557ce8994859822b3cf6cdc7f64b55d3c57e9a96476a7b909708d",
+          "all_hashes_match": true
+        }
+      ]
     }
   ],
+  "root_metadata_verification": {
+    "n": 18,
+    "metadata_files_verified": 150,
+    "all_hashes_match": true,
+    "errors": [],
+    "receipt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix24-control-20261011/root-verification.json",
+      "sha256": "1dff2dca8b4703e3803d99cc10484a7f72cce416db541398f15e889785e7ded8"
+    }
+  },
   "first_stage_command_preservation": {
     "n": 12,
     "identical": 12,
@@ -3102,5 +3169,10 @@
       "path": "/Users/changmin/projects/ugrp/outputs/cleanup-records/s3fix24-20261011/summary.json",
       "sha256": "5a58f2aef7d983bb0a41c559633dc954386079a87b6d011a9ed2e54374f1a180"
     }
+  },
+  "analysis_derivation": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s3fix24-control-20261011/server-diagnosis.py",
+    "sha256": "a637568babde558c5c880820358c93730b15d73346c231d0a1e413be21ba23d2",
+    "scope": "Executed on Oracle-x86 saved originals, not Mac replay; per-leg vector identity verified at 1e-12."
   }
 }
