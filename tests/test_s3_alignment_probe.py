@@ -35,6 +35,19 @@ def test_actual_s3_selector_binding_and_native_apply(tmp_path,monkeypatch):
     p=probe.Probe(tmp_path,monkeypatch)
     try:
         for rid,ep in p.eps.items():
+            from scripts.run_s3_alignment_probe import issue_stage_servos,assert_frame_commands
+            from harness.owncam_pair_beam_v2 import pose_of
+            servo={1:2000,**pose_of('inspect')}
+            # Reproduce the preparation bug: writing the motor directly leaves
+            # the camera port's issued-command record at the search posture.
+            p.robots[rid].set_servo_pulses(servo);p.host.commands[rid]=dict(servo)
+            frame=lambda:{rid:({'actuator_state':p.host.ports[rid]._actuator_state()},None)}
+            with pytest.raises(ValueError,match='STAGE_PORT_CAMERA_COMMAND_MISMATCH'):
+                assert_frame_commands(p.host,frame())
+            issue_stage_servos(p.host,rid,servo)
+            p.host.ports[rid].tick(p.host.now+.2)
+            assert_frame_commands(p.host,frame())
+            assert p.robots[rid].servo_command_pulses==servo
             attach_endpoint(ep,OPTION)
             p.refresh(1.)
             from scripts.run_s3_alignment_probe import resume_alignment_phase,PHASE

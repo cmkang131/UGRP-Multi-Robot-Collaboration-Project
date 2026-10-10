@@ -51,3 +51,9 @@ probe 제어기 전체 checkpoint도 원본에 없으므로 새 map-uniform PF�
 [MuJoCo state/reproducibility](https://mujoco.readthedocs.io/en/stable/programming/simulation.html#state-and-control)의 전체 상태 보존 원칙과 기존 단계 probe의 상태 주입 경로를 확인했다. physics 적분 상태만으로 외부 제어기의 phase/history가 복원되지 않는 것이 이 경로의 원인이다. 새 단계 재개는 저장된 **자기 RGB69/19행·발행 이동66/17회·inspect 자세**를 `alignment-phase.json`으로 보존하고, 원래 align 상태에서 시작한다. 새 aligned receipt는 만들지 않으며 이전 관측의 시간을 새 단계 시계로 평행 이동한다. 현재 global PF에는 과거 GT/pose prior를 넣지 않는다. 최초 새 영상·기존 문턱·실제 GO·실제 port.apply를 유지한다.
 
 이 수정은 결과 문턱 조정이 아니다. 오프라인 회귀에서 재진입 자세·최초 관측의 재접근 오판·실제 모터 계약을 먼저 고정한 뒤, 수정된 pair 시작점으로 B/N 각각1회만 확인한다. cyan은 독립된 유효한 비교 결과를 재사용하며 반복하지 않는다. 번들 내부에 부모의7.45.0이 남은 메타데이터도 카탈로그와 같은7.46.0으로 정정한다; 이전 raw는 바꾸지 않는다.
+
+### 준비 포트 기록 검증 (추가 물리 전)
+
+601cc014의 pair B/N은 align 상태에 머물렀지만 첫 RGB 해석부터 틀렸다. 동일 프레임의 host 발행 자세는 inspect(508/2432)인데 `actuator_state.servo_pulses`는 search(740/2320)였다. 준비 코드가 모터에 직접 서보를 쓰고 카메라 포트의 명령 이력을 갱신하지 않은 결함이다. 그 결과 첫 그립 x를 r1 .226→.409m, r2 .243→.451m로 오독했다. controller extrinsic을 영상에 맞춰 바꾸지 않는다.
+
+초기화 서보를 **host.issue→실제 port.apply**로만 발행하도록 고쳤다. 첫 프레임부터 매 프레임 host 발행 명령과 actuator_state 명령 이력을 대조해 불일치하면 정렬을 시작하지 않는다. 회귀는 기존 결함(모터만 직접 변경)을 실제 포트에서 재현해 거부하고, 동일 포트로 정상 발행한 뒤 기록·적용값 일치를 확인한다. 물리 재시도 전에 이 계약과 phase 재개의 검사부터 통과시킨다. 앞선 준비 실행들은 전부 보존하되 PBVS 효과의 전후 증거에서 제외한다.

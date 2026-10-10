@@ -62,17 +62,27 @@ def bundle(sha,case,option):
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
+def issue_stage_servos(host,rid,servo):
+    for sid,pulse in servo.items():
+        action=dict(kind='look',pan_pulse=pulse) if sid==6 else dict(kind='arm',servo_id=sid,pulse=pulse)
+        host.issue(rid,action)
+
+def assert_frame_commands(host,frames):
+    for rid,(obs,_) in frames.items():
+        recorded={int(k):v for k,v in obs['actuator_state']['servo_pulses'].items()}
+        if recorded!=host.commands[rid]:
+            raise ValueError('STAGE_PORT_CAMERA_COMMAND_MISMATCH:'+rid)
+
 def restore_scene(host,setup):
     """Setup-only before creating any controller; actual state is never returned."""
     import mujoco
     import numpy as np
     m,d=host.world.model,host.world.data
+    servos={}
     for rid,row in setup['robots'].items():
         robot=host.world.robot(rid);p=row['pose']
         robot.set_base_pose_for_test(p['robot_xyz_m'],p['robot_yaw_rad'])
-        servo={int(k):int(v) for k,v in row['frame']['commanded_servo'].items()}
-        robot.set_servo_pulses(servo);host.commands[rid]=servo
-        host._append(f'robots/{rid}/commands.jsonl',dict(t=host.now,kind='initial_servo_command',pulses=servo,source='saved issued reset commands'))
+        servos[rid]={int(k):int(v) for k,v in row['frame']['commanded_servo'].items()}
     for item,row in setup['truth']['items'].items():
         body=m.body(host.objects[item]['body_name']);j=int(body.jntadr[0]);q=int(m.jnt_qposadr[j]);v=int(m.jnt_dofadr[j]);a=row['yaw']
         # Saved height is inertial/COM; transform local COM offset to body origin.
@@ -81,6 +91,8 @@ def restore_scene(host,setup):
         d.qpos[q:q+7]=[*origin,*quat];d.qvel[v:v+6]=0
     mujoco.mj_forward(m,d)
     host.set_deadline(host.now+2.)
+    host.advance_to(round(host.now+.05,9))  # leave the reset's float clock boundary
+    for rid,servo in servos.items():issue_stage_servos(host,rid,servo)
     host.advance_to(round(host.now+1.,9))  # issued arm settle only, no controller
     write(host.out/'eval_only/stage-setup.json',setup)
     spec=mujoco.mjtState.mjSTATE_INTEGRATION;state=np.empty(mujoco.mj_stateSize(m,spec));mujoco.mj_getState(m,d,state,spec)
@@ -144,7 +156,7 @@ def run(b,out):
             now=host.now;host.eval_sample()
             if i==round(CAP/.05):break
             if time.monotonic()-started>b['wall_cap_s']:raise TimeoutError('PROBE_WALL_CAP')
-            frames=host.capture();rt.on_frames(now,frames)
+            frames=host.capture();assert_frame_commands(host,frames);rt.on_frames(now,frames)
             if entry is None and now-start>=.5:
                 if b['case']=='pair':eps=enter_pair(rt,now,b['servo_option'])
                 else:
