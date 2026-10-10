@@ -139,3 +139,22 @@ def test_off_runner_matches_previous_source_bytes(tmp_path,monkeypatch):
         r=run(args);assert r['status']=='RECORDED'
         outputs.append({p.name:p.read_bytes() for p in out.rglob('*') if p.is_file() and p.name not in ('result.json','artifacts.sha256.json')})
     assert outputs[0]==outputs[1]
+
+
+def test_delivery_preserves_registered_denominator_and_command_counts():
+    import importlib.util
+    p=runner.ROOT/'experiments/2026-10-10-own-route-full-budget/code/deliver.py'
+    spec=importlib.util.spec_from_file_location('egomap64_delivery_test',p)
+    m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    scores=[]
+    for profile in ('baseline','a'):
+        for seed in runner.SEEDS:
+            r=dict(profile=profile,seed=seed,status='BLOCKED_DISK_CAPACITY',samples=0)
+            if seed==63001:r.update(status='RECORDED',samples=10,over_3sigma=3,final_error_sigma=4,final_error_m=.4,
+                B_arrived=True,returned=False,both_arrived=False,false_declarations=0,contacts={'wall':0,'robot':1},
+                command_audit=command_metrics([{'t':0,'command':{'turn':1}},{'t':1,'command':{'forward':1}}],[]))
+            scores.append(r)
+    a=m.aggregate(scores)['a']
+    assert (a['registered'],a['recorded'],a['blocked'],a['B'],a['returned'])==(6,1,5,1,0)
+    assert a['turn_fraction']==.5 and a['forward_fraction']==.5
+    assert (a['frames'],a['over3_frames'])==(10,3)
