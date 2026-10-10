@@ -40,6 +40,14 @@ def test_ambiguous_coupled_grip_transition_is_rejected(tmp_path):
         audit_tape(tmp_path)
 
 
+def test_original_reset_float_then_integer_clock(tmp_path):
+    fixture(tmp_path)
+    p=tmp_path/'robots/r1/commands.jsonl'
+    put(p, [dict(t=1.3000000000000178,kind='initial_servo_command',pulses={'1':2000}),
+            dict(t=1.3,kind='arm',servo_id=1,pulse=2000)], lines=True)
+    assert audit_tape(tmp_path)[0]==2.35
+
+
 def test_stage_caption_uses_current_record_and_keeps_async_states():
     timeline=Timeline([dict(t=3.,robots={'r1':dict(state='align'),'r2':dict(state='grasp')}),
                        dict(t=4.,robots={'r1':dict(state='lower'),'r2':dict(state='wait_open')})])

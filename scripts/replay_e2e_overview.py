@@ -54,7 +54,7 @@ def audit_tape(raw):
         previous = -float('inf')
         for row in rows(raw/f'robots/{rid}/commands.jsonl'):
             t = row['t']
-            if t < previous or t > end+1e-8:
+            if t < previous-1e-8 or t > end+1e-8:
                 raise ValueError('nonchronological or out-of-range actuator log')
             previous = t
             if t < start-1e-8:
