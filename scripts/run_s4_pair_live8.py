@@ -18,6 +18,8 @@ BUNDLE_ID = 'zone-s4-pair-live-v173'
 VERSION = '7.66.0'
 WORKFLOW = 'configs/simulation_workflows.d/s4_pair_live_v173.json'
 RENEWAL_MODE = hs.ACTIVE_PHASE_HEARTBEAT
+PLAN_FILE = 'plan.json'
+RELEASE_FILE = 'release.json'
 
 
 def configure(rid, ep, now):
@@ -32,7 +34,7 @@ def configure(rid, ep, now):
 def bundle(sha, condition, seed=601, renewal='off'):
     if renewal not in ('off', RENEWAL_MODE):
         raise ValueError('unregistered heartbeat')
-    release = json.loads((ROOT/RECORD/'release.json').read_text())
+    release = json.loads((ROOT/RECORD/RELEASE_FILE).read_text())
     for p,h in release['s3_file_sha256'].items():
         if admission.old.sha(ROOT/p) != h:
             raise ValueError('frozen upstream S3 changed: '+p)
@@ -50,7 +52,7 @@ def bundle(sha, condition, seed=601, renewal='off'):
         calls_per_actor=60,calls_total=180,token_cap=4000000,utterances_per_actor=24,utterances_total=48,
         no_scripted_claims=True,grip_monitor='LLM own RGB, unvalidated',handshake_deadline_s=hs.HANDSHAKE_S,own_rgb_response_ttl_s=hs.WINDOW_S)
     paths=set(source_closure(ROOT,['scripts/run_s4_pair_live8.py','sim/s4_pair_live8.py','scripts/submit_s4_live8.py','scripts/evaluate_s4_live8.py']))
-    paths.update((WORKFLOW,PLAN,RECORD+'/release.json',RECORD+'/plan.json'))
+    paths.update((WORKFLOW,PLAN,RECORD+'/'+RELEASE_FILE,RECORD+'/'+PLAN_FILE))
     b['source_sha256'].update({p:admission.old.sha(ROOT/p) for p in paths})
     return b
 

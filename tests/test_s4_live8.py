@@ -80,3 +80,20 @@ def test_upstream_adapters_fix_real_command_floor_check_and_integer_windows(tmp_
         fired=[windows.select(i*.05)[0] for i in range(24)]
         assert [i for i in fired if i is not None]==list(range(12))
     finally:p.runtime.close()
+
+
+def test_corrected_batch_uses_archive_venv_and_two_actual_seeds(capsys):
+    from scripts import run_s4_pair_live8_r2 as corrected,submit_s4_live8_r2 as batch
+    jobs=batch.commands('a'*40)
+    assert len(jobs)==len({n for n,_ in jobs})==8
+    for name,argv in jobs:
+        assert argv[0]=='.venv-sim/bin/python'
+        assert argv[2]=='scripts.run_s4_pair_live8_r2' and name.endswith('v174')
+        assert argv[argv.index('--carry-lease-renewal')+1]==ACTIVE_PHASE_HEARTBEAT
+    b=corrected.bundle('a'*40,'structured',602,ACTIVE_PHASE_HEARTBEAT)
+    assert b['seed']==602 and b['s3_release']['execution_bundle_id']==b['execution_bundle_id']==corrected.BUNDLE_ID
+    assert b['workflow_version']=='7.67.0'
+    assert run.RECORD+'/plan-r2.json' in b['source_sha256']
+    assert corrected.main(['--expected-source-sha','a'*40,'--output','/tmp/no-write','--condition','no_comm',
+        '--seed','602','--relay-receipt','/tmp/no-read'])==0
+    assert json.loads(capsys.readouterr().out)['bundle_id']==corrected.BUNDLE_ID
