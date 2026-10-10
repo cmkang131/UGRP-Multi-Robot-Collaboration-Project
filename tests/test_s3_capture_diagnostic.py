@@ -66,3 +66,15 @@ def test_frozen_whole_batch_has_all_capture_and_low_pulse_cases():
     assert sum(x['kind']=='pulse' for x,a in rows)==6
     assert all('--execute' in a and 'outputs/'+x['name']+'/raw' in a for x,a in rows)
     assert len(r.low_sequence())==48 and all(x['duration_s']==.1 for x in r.low_sequence())
+
+
+def test_capture_selection_requires_whole_region_and_physical_pulse_fit():
+    from scripts.evaluate_s3_capture_diagnostic import admissible_box
+    trials=[dict(grid=g,status='COLLECTED',grasp=True,lift=True)
+        for y in range(3) for g in r.capture_grid('r1',y)]
+    q=admissible_box(trials,[.013,.014,.11]);assert q['admissible']
+    assert q['selected_capture_box']['inner_halfwidth_m_m_rad']==[.019200000000000002,.019200000000000002,.11200000000000002]
+    assert not admissible_box(trials,[.020,.014,.11])['admissible']
+    nominal=next(t for t in trials if t['grid']['dx']==t['grid']['dy']==t['grid']['dyaw']==0.)
+    nominal['lift']=False;assert not admissible_box(trials,[.013,.014,.11])['admissible']
+    with pytest.raises(ValueError):admissible_box(trials[:-1],[.013,.014,.11])

@@ -110,3 +110,14 @@ Pending entire diagnostic batch. No new physical results claimed yet.
 
 Local pre-execution checks: `test_s3_capture_diagnostic.py` and catalog plan subset,
 6 passed; no local physics/render/replay. Central catalog matches origin/main bytes.
+
+## Execution receipt (before cohort results)
+
+Physics source **4384d61cfeafef96e62fd90355fe05c8cfa38699**, pushed.
+`s3fix14-pathcheck-r1`:8SIMs, no HOST_ERROR; nominal cyan fixed tape reached
+bilateral grasp and low lift. Trial wall16.65s; whole process including imports38.59s.
+This is a path check, excluded from the225-point grid and candidate denominators.
+`s3fix14-diagnostics-r1` submitted all15 jobs unchanged, workers10, LP_NUM_THREADS4.
+The finite-grid evaluator implements the preregistered rule and verifies all raw hashes.
+[Candidate names/seeds](candidate-plan.json) are frozen; parameters await entire-batch
+selection. No ongoing raw outcome was used to alter the submitted grid.
