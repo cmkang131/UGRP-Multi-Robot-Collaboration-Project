@@ -129,3 +129,7 @@ HOST_ERROR 수정은 S3 no-prior 어댑터에 한정한다. `SlotTeam`은 S2 pro
 - s3next: [호스트 v3 바인딩/첫 렌더 회귀·장면 점검·수렴 잔여 원인과 재시험 사전 조건](s3next/README.md). 외부 파라미터 합성은 오프라인 진단 전용이고 물리 호스트는 이를 거부한다.
 - s3fix6 (10/10): [NaN 복구·공통 PF 후보 3개/저장 4실행 비교·v151 결과](s3fix6/README.md). 변경 시험24 PASS, NaN/None 포함 sweep68건/3192명령/오류0. 후보는 실제 오차 악화로 모두 기각해 off 유지. v151 단일 smoke는 HOST_ERROR0이나 r1/r2 job LOCAL_TIMEOUT, 배송0/2; 초기 점 오차0.026/0.040/0.004m, 최종 r2 오차0.328m/σ0.0055m로 과신 미해결이다. wall3327.431/SIM924.25초(3.600), raw·4배속 영상·TensorBoard 전달 완료, 추가 물리0회.
 - s3fix7 (10/10): [문 lease·자기 RGB 정렬·입자 고갈 비교와 v152 결과](s3fix7/README.md). 변경 시험34 PASS, sweep68건/3190명령·대향 문9명령 오류0. PF 후보12재생은 모두 미채택(off). 단일 v152는 r3 문 대기909.05→0.05초·교착0·HOST_ERROR0이나 RGB 정렬915/866회 뒤 hover/집기0, r3 LOCAL_TIMEOUT·배송0/2다. wall3184.674/SIM903.05초(3.527), 후반 위치/yaw 과신 미해결; raw·4배속 영상·TensorBoard 검증 완료, 추가 물리0회.
+
+## s3fix8 단계 probe (2026-10-10)
+
+[전체 기록·프레임 표·입자 조사](s3fix8/README.md): 최종 소스9a57581f, r1/r2 B/N 각60 SIM초에서 hover0, r3 B/N은6.75/7.55 SIM초로 hover→하강→닫기 도달(상승/배송 미검증). 시야 잘림/후퇴 진동으로 새 servo 후보 미채택, 전체 스모크0. 자기 지도55001 입자100→500만 늘리면 >3σ48.55→16.33%, RMSE.308→.277m, CPU1.90배; 한 입력 진단이며 S3 자동 채택 없음.
