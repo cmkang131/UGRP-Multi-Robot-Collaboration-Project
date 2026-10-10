@@ -35,6 +35,18 @@ def test_admission_stacks_same_s3_modules_then_starts_own_stage(monkeypatch):
     assert calls[-1][1]==('align_start',10.)
 
 
+def test_r2_uses_actual_s3_phase_restore_before_legacy_first_look(monkeypatch):
+    from scripts import run_s4_pair_live5_r2 as r2
+    ctl=SimpleNamespace(rid='r1',arm=SimpleNamespace(events=[],until=0,commanded={}),
+        driver=SimpleNamespace(outcome=None),commands=0,vo_obs=[],set=lambda *a,**k:None,log=lambda *a,**k:None)
+    ep=SimpleNamespace(controller=ctl,own=SimpleNamespace(robot_id='r1',servo={1:2000,3:508,4:2432,5:1320,6:1500}))
+    before=[];monkeypatch.setattr(run,'admit',lambda *a:before.append(ctl.commands))
+    r2.admit('r1',ep,10.)
+    assert before==[66] and len(ctl.vo_obs)==69 and ctl.pending_reapproach is None
+    assert ctl.align_cmds0==0 and ctl.commands>ctl.align_cmds0
+    assert ctl.arm.commanded==ep.own.servo and ctl.driver.outcome=='arrived'
+
+
 def health(t=10,frames=20):
     return dict(sim_s=t,frames=frames,model_calls=3,status='RUNNING',robots={r:dict(commands=50,arm_delta_m=.1,
         servo_ids=[1,3,4,5],state='pregrasp_descend') for r in ('r1','r2')})

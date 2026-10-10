@@ -10,8 +10,8 @@ from scripts.run_s4_pair_live5 import ROOT,RECORD
 from scripts.submit_s4_pair_batch import stage_source,submit_one
 
 
-def commands(sha):
-    p=json.loads((ROOT/RECORD/'plan.json').read_text())
+def commands(sha,plan=ROOT/RECORD/'plan.json'):
+    p=json.loads(plan.read_text())
     assert len(p['runs'])==4 and p['max_concurrent']==4
     return [(r['name'],[v.replace('<SOURCE_SHA>',sha) for v in r['argv']]) for r in p['runs']]
 
@@ -35,8 +35,8 @@ def healthy(h):
     return bool(h and h['sim_s']>=10 and h['frames']>=3 and h['model_calls']>=2
         and all(r['commands']>10 and r['arm_delta_m']>.005
             and {1,3,4,5}.issubset(r['servo_ids'])
-            and r['state'] in ('align','align_start','pregrasp_descend','grasp_close','grasp_wait',
-                'lift','raise','raise_wait','ready','wait_carry','carry','refix_decide','lower','hold')
+            and r['state'] in ('align','align_start','pregrasp_descend','grasp','grasp_close','grasp_wait',
+                'lift','low_lift','raise_high','raise','raise_wait','ready','wait_carry','carry','refix_decide','lower','hold')
             for r in h['robots'].values()) and len(h['robots'])==2)
 
 
@@ -46,7 +46,7 @@ p=pathlib.Path.home()/'ugrp-sim/runs'/NAME
 if (p/'EXIT').exists():print('already exited');raise SystemExit(0)
 r=json.loads((p/'driver.json').read_text());assert r['job']==NAME and r['source_sha']==SHA
 pid=r['pid'];pgid=r['pgid'];cmd=(pathlib.Path('/proc')/str(pid)/'cmdline').read_bytes().split(b'\\0')
-assert b'scripts.run_s4_pair_live5' in cmd and ('outputs/'+NAME+'/raw').encode() in cmd
+assert any(c in cmd for c in (b'scripts.run_s4_pair_live5',b'scripts.run_s4_pair_live5_r2')) and ('outputs/'+NAME+'/raw').encode() in cmd
 assert os.getpgid(pid)==pgid and pgid!=os.getpgrp()
 (p/'initial-stop.json').write_text(json.dumps({'reason':REASON,'source_sha':SHA,'pid':pid,'pgid':pgid,'classification':'INITIAL_CHECK_ABORT'}))
 (p/'EXIT').write_text('143\\n');os.killpg(pgid,signal.SIGTERM)
@@ -80,8 +80,9 @@ def initial_checks(names,sha,*,read=snapshot,terminate=stop,wait=time.sleep,cloc
 
 def main(argv=None):
     p=argparse.ArgumentParser();p.add_argument('--oracle-runner',type=Path,required=True)
-    p.add_argument('--output',type=Path,required=True);p.add_argument('--submit',action='store_true');a=p.parse_args(argv)
-    sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip();rows=commands(sha)
+    p.add_argument('--output',type=Path,required=True);p.add_argument('--submit',action='store_true')
+    p.add_argument('--plan',type=Path,default=ROOT/RECORD/'plan.json');a=p.parse_args(argv)
+    sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip();rows=commands(sha,a.plan)
     if not a.submit:print(json.dumps(rows));return 0
     if a.output.exists() or not a.oracle_runner.is_file():raise ValueError('new receipt and existing runner required')
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip():raise ValueError('commit source first')

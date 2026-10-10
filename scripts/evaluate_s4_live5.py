@@ -69,11 +69,12 @@ def evaluate(raw):
 
 
 def main(argv=None):
-    p=argparse.ArgumentParser();p.add_argument('--raw-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args(argv)
+    p=argparse.ArgumentParser();p.add_argument('--raw-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--plan',type=Path);a=p.parse_args(argv)
     from scripts.run_s4_pair_live5 import ROOT,RECORD
     if a.output.exists():raise FileExistsError(a.output)
     seq=[]
-    for job in read(ROOT/RECORD/'plan.json')['runs']:
+    for job in read(a.plan or ROOT/RECORD/'plan.json')['runs']:
         raw=a.raw_root/job['name']/'raw'
         seq.append(evaluate(raw) if (raw/'result.json').exists() else dict(condition=job['condition'],status='MISSING_RAW',research_result=False))
     a.output.write_text(json.dumps(seq,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
