@@ -34,3 +34,27 @@ Mac/x86 layout 대조: patch 꼭짓점11개 값만 최대5.551115123125783e-17m(
 첫 r2(60011)는 XML 통과 후 C++ compiler 부재로 RGB0·reset1.3SIM초에서 HOST_ERROR. 서버 Ubuntu 공식 g++ 패키지를 설치(공용 venv 변경0), 동일 NavFn 원본을 빌드한다. 전송/입장 반복을 줄이기 위해 checkpoint 객체를 정적 점검하여 stateless ctypes library의 표준 pickle reducer와 등록된 sensor stream alias 복원을 추가했다([Python pickle 재구성 규약](https://docs.python.org/3/library/pickle.html#object.__reduce__)). 센서 기록은 prefix hash 검증/새 출력으로 복사·append하며 판독/state/RNG 변경0, 별도 truth 입력0. 기존 checkpoint restore 기본값은 alias 복원 off. 합성 시험으로 원본 planner 경로 bytes·sensor alias를 고정, 물리 성능 결과가 아니다.
 
 r3(60011)는14.2SIM초/72RGB에서 upstream PythonRobotics의 plot import 의존성 누락으로 종료. matplotlib3.11.2와 부속 패키지를 같은 전용 deps 폴더에 `--no-deps` 설치, numpy/physics/shared venv 불변; 원본 pursuit 단독 입력 검사를 통과했다. 60012-r2는67.6SIM초 자기B 확인 직후 checkpoint가 v7 exact relay의 local `lru_cache` closure 직렬화를 거부했다. 순수 memoization cache만 empty로 재구성하는 표준 `__reduce__`를 추가: DriveParameters·wheel direction·MjData/RNG 유지, cache hit/miss 진단만 새 프로세스에서 리셋되므로 초기 wall 시간에는 cold cache 비용 포함. 명령 결과 bytes 동일을 합성시험으로 고정. 이 실패도 raw/분모 별도 보존, 물리 결과를 성공으로 소급하지 않는다.
+
+## 감독의 묶음 실행 규칙 반영 (2026-10-10 09:18 UTC, 후보 결과 전)
+
+개별 실행→수정→다음 실행을 중단한다. 새 규칙 도착 전 시작된 두 준비 실행은 그대로 종료·보존한다. 60011-r4는150SIM초/751RGB에서 B미관측(준비 실패), seed 교체/예산 연장/다시 탐색0. 60012-r3는 진행 중이다. 준비 실패도 등록2seed 분모에 남기므로 **이번 후보가 하나의 유효 seed에서 좋아도 전체2회 자격 기준을 통과할 수 없다**. 이미 등록한 관문을 낮추지 않는다.
+
+물리/후보 코드 고정 SHA=`0fa397aaed3797a6cc27823959de1dcfe1b49af8`. 이후 README-only 커밋은 동결 runtime을 바꾸지 않는다. oracle launcher SOURCE_SHA는 문서 포함 현재HEAD, 실제 자식의 source_sha/실행 cwd는 위 runtime SHA로 함께 보존한다. x86 archive의 이 SHA에서만 실행한다. Mac 물리/재생0. 코드 변경 파일 합성15시험 통과(이전 asset22시험 포함 관련37), CI대기0.
+
+60012 체크포인트 저장 성공 후 복원 경로를 **8SIM초 스모크1회**로 확인한다. `bind(run,bundle=cap8_bundle)`로 budget만8초, 나머지 stage baseline동일. 스모크는 후보분모에서 제외하며 raw보존. 실패하면 후보 묶음을 보내지 않고 연결 수정·관련 시험을 한 묶음으로 한다.
+
+다음 목록 전체가 이번 단계 묶음이다. 스모크 통과 후 실행 가능한 네 개를 한꺼번에 detached 발행한다(각 egomap server-slot,최대8). 미관측 seed의 네 개는 `BLOCKED_PREPARE_B_UNOBSERVED`로 명시해 실행하지 않는다. 묶음 중 계획/코드/문턱 변경0, 전부 terminal 후 raw를 함께 채점한다.
+
+|이름|seed|profile|명령/상태|
+|---|---:|---|---|
+|egomap60-smoke-60012|60012|baseline|아래8초 복원 검사, 후보분모 제외|
+|egomap60-stage-60011-baseline|60011|baseline|BLOCKED_PREPARE_B_UNOBSERVED|
+|egomap60-stage-60011-a|60011|a|BLOCKED_PREPARE_B_UNOBSERVED|
+|egomap60-stage-60011-b|60011|b|BLOCKED_PREPARE_B_UNOBSERVED|
+|egomap60-stage-60011-c|60011|c|BLOCKED_PREPARE_B_UNOBSERVED|
+|egomap60-stage-60012-baseline|60012|baseline|`-m scripts.run_own_route_particle_stages --mode stage --seed 60012 --profile baseline --checkpoint CP --output outputs/egomap60-stage-60012-baseline/data`|
+|egomap60-stage-60012-a|60012|a|동일 명령, `--profile a --output outputs/egomap60-stage-60012-a/data`|
+|egomap60-stage-60012-b|60012|b|동일 명령, `--profile b --output outputs/egomap60-stage-60012-b/data`|
+|egomap60-stage-60012-c|60012|c|동일 명령, `--profile c --output outputs/egomap60-stage-60012-c/data`|
+
+CP는 `egomap60-prep-60012-r3/data/checkpoints/manifest.jsonl`의 첫 자기B 확인 행(하나)의 file·sha256이다. 이름을 결과에 따라 고르는 것이 아니라 이 유일한 행을 기계적으로 사용한다. 공통 prefix: `ORACLE_HOST=oracle-x86 $S/oracle_run.sh WT NAME -- /usr/bin/time -v /usr/bin/env UGRP_EXECUTION_HOST=oracle-x86 MPLBACKEND=Agg PYTHONPATH=/home/ubuntu/ugrp-sim/egomap60-deps /bin/bash -c 'cd /home/ubuntu/ugrp-sim/src/0fa397aaed3797a6cc27823959de1dcfe1b49af8 && exec .venv-sim/bin/python ...'`. 출력을 각 run 절대 경로에 저장(동결 runtime 안의 symlink 유무에 의존하지 않음).
