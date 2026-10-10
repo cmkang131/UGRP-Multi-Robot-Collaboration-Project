@@ -129,7 +129,7 @@ class Trial(base.Trial):
             self._window_refs[call.call_id]=None
         seen['next_pair_choice']=('go' if not seen['own_go_sent'] else
             'ack_go' if seen['peer_go_ref'] and not seen['own_ack_sent'] else 'continue') if seen['phase']=='wait_go' else (
-            ('continue' if seen.get('own_executor_phase') in ('lower','wait_open','cp_open','refix_look','refix_post_look','align') else 'held')
+            ('held' if seen.get('own_executor_phase') in ('carry','lift','low_lift','raise','raise_high','raise_wait','wait_carry','wait_lift') else 'continue')
             if seen['phase']=='carry' else None)
         own=self.handshake.own.get(call.actor)
         seen['response_deadline_sim_s']=self.handshake.deadline(call.actor) if own else None

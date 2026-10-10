@@ -117,6 +117,10 @@ def test_open_carry_window_overrides_monitor_example_without_commands(tmp_path,s
     context=prepared.bundled.context
     assert context['reply_example'] is None
     assert context['decision_actions']==[{'kind':'carry_decision','choice':c} for c in ('continue','set_down')]
+    host.trial.links['r1'].stop_adapter.window.current=None
+    base.runtime.actors['r1']._pair.controller.state='pregrasp_descend'
+    call.call_id='call-9998-r1';host.trial.snapshot(call);prepared=host.trial.prepare_call(call)
+    assert prepared.bundled.context['reply_example']['action']=={'kind':'continue'}
 
 
 @pytest.mark.parametrize('condition',['no_comm','peer_ko','leader_ko','structured'])
