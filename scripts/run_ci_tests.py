@@ -24,8 +24,49 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_e2e_dialogue.py",
+    "tests/test_e2e_s3_route.py",
+    "tests/test_e2e_own_inputs.py",
     "tests/test_ownmap_s2.py",
     "tests/test_lazy_camera.py",
+    "tests/test_goal_route_continuous.py",
+    "tests/test_own_traversal_graph.py",
+    "tests/test_self_odom_grid.py",
+    "tests/test_self_map_csm.py",
+    "tests/test_self_map_csm_v2.py",
+    "tests/test_self_map_prob.py",
+    "tests/test_map_error_oracle.py",
+    "tests/test_wall_projection_guard.py",
+    "tests/test_wall_confidence.py",
+    "tests/test_wall_floor_boundary.py",
+    "tests/test_wall_parallax.py",
+    "tests/test_wall_texture.py",
+    "tests/test_wall_detector_evaluation.py",
+    "tests/test_servo_camera_fk.py",
+    "tests/test_camera_frame_conventions.py",
+    "tests/test_servo_stiffness.py",
+    "tests/test_arena_wall_map.py",
+    "tests/test_self_pulse_odom.py",
+    "tests/test_self_pulse_rotation.py",
+    "tests/test_self_wall_segments.py",
+    "tests/test_self_wall_export.py",
+    "tests/test_self_map_relocalize.py",
+    "tests/test_self_map_causal.py",
+    "tests/test_self_wall_validation.py",
+    "tests/test_self_wall_pr.py",
+    "tests/test_wall_contact_types.py",
+    "tests/test_wall_bottom_connected.py",
+    "tests/test_wall_floor_ulrich.py",
+    "tests/test_wall_floor_lorigo.py",
+    "tests/test_wall_cell_attribution.py",
+    "tests/test_active_wall_rotleft.py",
+    "tests/test_camera_projection_audit.py",
+    "tests/test_s2_projection_comparison.py",
+    "tests/test_online_camera_pitch.py",
+    "tests/test_self_pose_graph.py",
+    "tests/test_self_wall_robust.py",
+    "tests/test_self_wall_memory.py",
+    "tests/test_coela_runtime_self_walls.py",
     "tests/test_s2_path_heading.py",
     "tests/test_path_heading_default.py",
     "tests/test_opencv_wall_robot_mask.py",
@@ -114,9 +155,18 @@ TEST_PATTERNS = (
     "tests/test_s2_*.py",  # Include real-site, freeze-scope and in-hand S2 option regressions.
     "tests/test_solo_cyan_v106*.py",  # S2 v3 cyan: own RGB/commands, synthetic backend only
     "tests/test_s3_host*.py",  # S3 fixed-role host, no physics or model calls
+    "tests/test_s3_pair_heading.py",
+    "tests/test_s3_exact_cache.py",
+    "tests/test_s3_no_prior.py",  # S3 v142 source/input boundary, no physics
+    "tests/test_s3_camera_render.py",  # shared render call and S2 mount parity, no physics
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
     "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
+    "tests/test_s4_live_stage.py",  # S4 stage admission and transport: stub model, fake physics
+    "tests/test_s4_live5.py",  # opt-in frozen S3 pair integration, no physics/model
+    "tests/test_s4_grip_r3.py",
+    "tests/test_s4_grip_visual.py",
+    "tests/test_s4_grip_raw.py",  # eval-only recorded contact labels; no physics/model
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
     "tests/test_review_355.py",

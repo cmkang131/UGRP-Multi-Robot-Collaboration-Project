@@ -27,6 +27,11 @@
 
 ## 현재 검증 범위
 
+- [S4 집게 이탈 저장 영상 감사](experiments/2026-10-06-s4-llm/s4grip/README.md): 실제 모델 응답·이탈 영상 부족으로 S4 정확도 미측정. 기존 CV 참고 진단, 접촉 라벨 평가 전용, 물리/렌더/모델0.
+
+- [S4 빔 공동 출발 준비](experiments/2026-10-06-s4-llm/s4live4/README.md): 기본 OFF LLM claim→GO/ACK→공동 출발·자기 RGB 이탈 정지, 오프라인 준비만. S3 확정 SHA 대기, 4조건×seed601 사전 목록, 실제 모델/물리 0.
+- [S4 실제 모델·Oracle x86 배관 확인](experiments/2026-10-06-s4-llm/s4live1/README.md): 네 통신 조건 각90 SIM초·모델7호출, claim→출발 허가→r3 cyan 약1m 운반 명령 연결. 빔 claim-only, 호스트 중단/재실행 분리, `research_result=false`·배송/E2E 성공 아님. README·TensorBoard·원본 해시 대조 기록.
+
 - [진행 방향 주행 기본 on · v145](experiments/2026-10-09-s2-heading/default-on/README.md): 새 S2·공통 S3/S4 주행은 회전 후 전진, `--heading-mode off`로 옆걸음 재현. 자기 지도 계획 어댑터도 같은 선택기를 사용한다. 고정 v143 비교는 성공1/3, 1068 시야 상실 원인·선택 수정안과 적용 표를 기록했다.
 
 - [S2 손목 카메라 검토·공식 자료와 새 도면 후보](experiments/2026-10-06-robot-camera-review/README.md): 실물 기록1.35%·7.92%, v3 들기5.63%; #403 중간 내려놓기 OFF 및 원래 자리 재관측 파지 확인·재집기 옵션 구현(오프라인). 기본값·기존 번들 유지, #404 확정 뒤 새 카메라+구동 S2 재검증 필요.
@@ -95,3 +100,5 @@ v107/v108 중 기존 v3 물리를 쓰는 경로를 v7로 바꾸는 변경은 포
 [AMCL 거리장 구현](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/map/map_cspace.cpp),
 [Olson 2009 스캔 정합](https://april.eecs.umich.edu/media/pdfs/olson2009icra.pdf)이다.
 원문 열람 범위와 정확한 계산 재사용 경계는 위 실험 기록의 참고 자료에 적었다.
+
+- [s4grip2 유지/외란 RGB 진단 결과](experiments/2026-10-06-s4-llm/s4grip2/README.md): 24사례 완료; 확증 정탐4/6, 유지 경보0/6, r3 조기경보·unknown으로 안전 감지기 not-ready.

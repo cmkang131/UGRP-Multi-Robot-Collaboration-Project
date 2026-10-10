@@ -4,6 +4,20 @@
 
 **영상은 stage probe를 다시 그린 것이다.** 위에서 본 그림은 정답 위치(평가용, 로봇 입력 아님)를 그린 도식이며 top 카메라 영상이 아니다(probe는 공용 top 카메라 프레임을 저장하지 않는다). 아래 곡선은 로봇이 추정한 yaw 불확실도 σ다. E2E 성공, 학생 성공, 성공률이 아니다.
 
+## 2026-10-08 자기 지도 감독 승인 DEV (egomap34)
+
+아래 기존 stage-probe 영상과 별개로 새 물리180초를 기록했다. 단 한 번 승인된 seed32002이며
+기존 seed31001과 paired가 아니다. egomap33 관문5/7 미달을 통과로 바꾸지 않는다.
+실행 소스 `9ff00833`, 번들 `egomap34-rotleft-dev-v1`: tape/SEARCH/강성/rotL.
+손목 RGB와 과거 snapshot만 사용한 자기 지도/경로, 평가용 회색 GT벽·초록 실제경로를 나란히 그렸다.
+종료0.202m·1.99σ, 영역P/R63.6/76.0%, B미도착·벽접촉0. 실물/전체 지도 성공 아님.
+
+[4배속 미리보기](../experiments/2026-10-08-wall-segment-dev/figures/wrist-map-4x-preview.mp4)
+(640×240,45.05초,901프레임, SHA256 `d123cf6bdf726702d09d7634f917567f8909aeb72f42362e23b7a089194a97e4`).
+원본1280×480은 `outputs/wall-segment-dev-v1/wrist-map-4x.mp4`,
+SHA256 `1c6e607ef9de55da36ecfb7e89097c1f764df6f02fee7349bc8fcc21b65c7688`.
+[전체 결과·해시](../experiments/2026-10-08-wall-segment-dev/README.md).
+
 ## 대표 케이스 선택 규칙
 
 1. **그 버전의 가장 전형적인 결과 1건.** 그 버전이 가장 자주 낸 판정(성공만 고르지 않는다. 그 버전의 기준선이 실패 위주면 전형적인 실패)을 낸 단계·셀에서 고른다. 사전 지정 seed(911)와 `nominal` 또는 그 코호트의 기준 셀을 우선한다.
@@ -29,6 +43,7 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 
 | 버전 | 실행 소스(SHA) · 번들 | 대표 case (paired) | 결과 (sim 시간) | 영상 · sha256 | 무엇을 보여주나 | 일반화하지 못하는 것 |
 |---|---|---|---|---|---|---|
+| **S3 coupled exception v148** | `533329b5` · v148/7.41.0 | seed14201, v147과 동일 | HOST_ERROR,21.90 SIM초; B0/2 | 로컬 `s3fix3-20261009/views/v148/execution.mp4`, `5fb02b66…74a519` | 저장 자기 RGB3대,4배속5.5초,초기 관측 | 첫 점 정확3/3이나 인증0/3; 접근 명령이 reset 기본 포트에 거부돼 carry 미인수. [원본/해시](../experiments/2026-10-09-s3-no-prior/s3fix3/README.md) |
 | **S2 path heading v143** | `b60acdca` · v143/7.36.0 |1066,실행 전 첫 seed로 지정(v141와 같은 seed)|DEV 성공423.95SIM초,전체1/3|로컬 `s2-heading-b60acdca-s1066-v143/motion.mp4`, `c8c90783…a78498a`|저장 손목RGB와 평가용 실제 경로,4배속104.95초|3회 비교 DEV이며 나머지1068/1065 실패. S3 기본채택 보류,실물/E2E 성공 아님. [원자료·해시](../experiments/2026-10-09-s2-heading/README.md#비교-dev-최종-결과)|
 | **b-v6c** 운반 | `b604499d`(clean, probe 0.4.1) · v76 | 운반 leg 1, nominal, seed 911 | 실패 `SELF_POSE_UNCERTAIN`(yaw), 8.8 s에 σ가 게이트 52.4 mrad에 닿음 | `carry_L1_nominal_s911_v6c_topdown.mp4` `56063b7e…ffcc0` | 운반 명령 2.7 s 만에 σ가 게이트에 닿는 기준선 실패 | 한 케이스. 33건이 같은 원인이라는 것은 v6c-carry 기록의 결과이며 이 영상이 보이는 것이 아님 |
 | **b-v6d** 정렬 | `052e3eba`(source_dirty, probe 0.4.0) · v76 (병합 트리 `4714263a`는 v80) | 정렬 yaw+/opp, seed 911. b-v6c(`b5234b7a`)와 paired | b-v6c `ALIGN_RELOOK_NO_FIX`(stage 20.5 s) → b-v6d 통과(36.1 s) | `align_yawp-opp_s911_v6c_vs_v6d_topdown.mp4` `efc276c5…d0ab2` | 같은 셀에서 실패가 통과로 바뀜. σ는 게이트보다 아래(원인 아님) | 운반 raw 없음(v6d는 운반 미측정). 정렬 영상은 위치 그림에서 차이가 거의 안 보여 **제출용으로는 약함**. 이 셀 하나이며 v6d 정렬 25/25는 v6d 기록을 따름 |
@@ -60,4 +75,30 @@ SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
 2. `python3 scripts/render_pair_probe_video.py --case <이전 case> --label ... --case <새 case> --label ... --output <mp4>`. `--pf-track`으로 돌린 실행은 σ가 `trace.jsonl`의 PF에서 나오고, 없으면 `robots.json` 보고로 대신한다(영상 안에 출처가 적힌다). 정렬처럼 σ 게이트가 종료 원인이 아닌 단계는 `--gate none`.
 3. 파일 크기와 sha256을 확인하고 `experiments/<ID>/videos/`에 넣는다. 이 표에 행을 추가한다.
 
+
+## egomap29 자기 지도 탐색 복구 (2026-10-08)
+
+|버전·소스|단일 case|결과|영상·원본|확인 범위/한계|
+|---|---|---|---|---|
+|`egomap29-active-recovery-v1` · `00e4cebd`|seed29001, 180 SIM초, tape/SEARCH/wide + recovery|4.225m / 1.523m², hold52.53%, 접촉0, B미도착; 지도/2σ 기준 미달|[손목 RGB와 online 지도 4배속](../experiments/2026-10-08-active-recovery/figures/wrist-map-4x.mp4), SHA256 `3f3d68c9e1f245f17739f2fc5bef9ccda4ca8ac30f641cd209f2e73959985dd4`; raw `outputs/active-recovery-v1/new-seed/`|20개 당시 snapshot, 최종 지도 역채움0. GT 벽/경로는 평가 표시만. 90.5초 frontier소진; 6회 recovery소진 분기 미발생. raw/결과 hash는 [manifest](../experiments/2026-10-08-active-recovery/results/physical-manifest.json). 단일 새 seed, 실물/일반화 아님.|
+
+## egomap31 PR409 costmap 재사용 (2026-10-08)
+
+|버전·소스|단일 case|결과|영상·원본|확인 범위/한계|
+|---|---|---|---|---|
+|`active-nav2` · `462473cb`|사전 지정 seed31001, 180 SIM초, tape/SEARCH/wide/recovery + navigation_map=public_ros_v8|8.053m / 2.390m², hold4.49%, frontier소진 없음, 접촉0, B미도착; 2σ/전체 지도 품질 미달|[손목 RGB와 online 지도 4배속](../experiments/2026-10-08-active-frontier-audit/figures/wrist-map-4x-preview.mp4), SHA256 `e5e7ccae66a9d7946a62d9af471bab83b3785b46099cef3964a5061dbf73637d`; raw `outputs/active-frontier-audit-v1/new-seed/`|47개 당시 snapshot, 최종 지도 역채움0. GT는 평가 표시만. 경기장 고정 영상 범위 밖의 거짓 벽은 [전체 지도/결과](../experiments/2026-10-08-active-frontier-audit/README.md)에 표시. 단일 새 seed이며 이전 seed29001과 paired/실물/일반화 아님. [원본·축소본 hash](../experiments/2026-10-08-active-frontier-audit/results/physical-manifest.json).|
+
+## egomap32 양방향 회전 측정 (2026-10-08)
+
+|버전·소스|단일 case|결과|영상·원본|확인 범위/한계|
+|---|---|---|---|---|
+|`pulse-rotation-audit` · `60d4e833`|사전 지정 seed32001, 60 SIM초, SEARCH/강성on, 좌우·단발/연속 각5회|CCW 예측5.369→실측 연속5.906°/펄스; CW5.935→5.945°. 양방향 재적합 기준 미달/런타임 후보 미채택|[손목4배속](../experiments/2026-10-08-pulse-rotation-audit/figures/wrist-4x.mp4), SHA256 `681b550464de116b45ccd1a8591dd676ece1a9fe27b44c1b4405c336917c5223`; raw `outputs/pulse-rotation-audit-v1/measurement/`|61프레임1Hz→4fps/15.25초. 기구 진단이며 지도/탐색 성공·실물/독립 seed 확증 아님. [측정·원본 hash](../experiments/2026-10-08-pulse-rotation-audit/README.md).|
+
+## 2026-10-08 자기 문 후보 오프라인 표시 (egomap50)
+
+새 물리 결과가 아니라 egomap49 첫 등록 실패 seed49001의 보존 RGB/자기 지도에 문 후보를 표시했다.
+[결과·영상 해시](../experiments/2026-10-08-own-door-navigation/README.md),
+원본 `outputs/own-door-navigation-v1/49001/wrist-map-doors-4x.mp4` (1280×480·157.55초·4배속).
+SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
+후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
 - 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.

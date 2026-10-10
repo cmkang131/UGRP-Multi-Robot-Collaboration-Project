@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-setdown-v166",
+      "version": "7.59.0",
+      "purpose": "S3 \uacf5\ub3d9 \ud558\uac15\u00b7\uac1c\ubc29 \ud6c4\ubcf4 \ube44\uad50",
+      "entry": "scripts/run_s3_setdown.py",
+      "runner": "scripts.run_s3_setdown",
+      "docs": "experiments/2026-10-10-s3-setdown/README.md",
+      "requires": "committed oracle-x86/OSMesa LP4, <=10 workers",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

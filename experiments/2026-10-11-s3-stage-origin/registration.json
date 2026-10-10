@@ -1,0 +1,872 @@
+{
+  "schema": "ugrp.s3_stage_origin_registration.v1",
+  "task": "s3fix21",
+  "host": "oracle-x86",
+  "status": "preregistered",
+  "scope": "DEV synthetic stage initialization comparison; not E2E or fresh confirmation",
+  "candidate": "public_stage_origin_v1; default off; host-only rigid translation before controller construction",
+  "comparison": "same ten case/condition/seed combinations, stage origin off/on; A setdown and integer12 held on in both arms to isolate the new factor",
+  "constraints": {
+    "runtime_GT_control": false,
+    "PF_pose_prior": false,
+    "heading_default_on": true,
+    "pair_carry_crab": true,
+    "dev_light": true,
+    "cap_sim_s": 60,
+    "LP_NUM_THREADS": 4,
+    "persistent_raw": "~/ugrp-sim/runs",
+    "initial_check_wall_s": 180,
+    "admission_load1_below": 51,
+    "admission_memory_GiB_min": 6
+  },
+  "criteria": {
+    "endpoint_threshold_m": 0.02,
+    "pair_endpoint_required": 6,
+    "pair_pulse_count_required": 12,
+    "pair_setdown_required": 6,
+    "cyan_regression_required": 4,
+    "drop_aborts_required": 0,
+    "tilt_aborts_required": 0,
+    "HOST_ERROR_required": 0,
+    "ENOSPC": "HOST_ERROR",
+    "gate": "all pair endpoints 6/6, integer pulses6/6, setdown6/6, cyan4/4, no drops/tilt/HOST"
+  },
+  "cause": {
+    "public_route_start_xy_m": [
+      1.3,
+      0.05
+    ],
+    "committed_fixture_beam_xy_m": [
+      1.2749148886483785,
+      0.05011256421084961
+    ],
+    "decomposition_identity": "endpoint vector = start offset vector + (carry delta - nominal leg vector)",
+    "rows": [
+      {
+        "name": "s3fix19-off-pair-c0-r3",
+        "integer_option": "off",
+        "condition": 0,
+        "start_offset_mm": [
+          -29.638119710007736,
+          4.8331371656614515
+        ],
+        "transport_error_mm": [
+          70.42407314407723,
+          -16.731275395447298
+        ],
+        "endpoint_error_mm": [
+          40.78595343406954,
+          -11.898138229785845
+        ],
+        "start_norm_mm": 30.029607969583072,
+        "transport_norm_mm": 72.38429149035471,
+        "endpoint_norm_mm": 42.485994055231664
+      },
+      {
+        "name": "s3fix19-off-pair-c1-r3",
+        "integer_option": "off",
+        "condition": 1,
+        "start_offset_mm": [
+          -29.51144402903738,
+          -5.031446047985791
+        ],
+        "transport_error_mm": [
+          71.25825506373678,
+          -19.837045566457007
+        ],
+        "endpoint_error_mm": [
+          41.74681103469946,
+          -24.8684916144428
+        ],
+        "start_norm_mm": 29.93728073845048,
+        "transport_norm_mm": 73.96788013411133,
+        "endpoint_norm_mm": 48.592572547093205
+      },
+      {
+        "name": "s3fix19-off-pair-c2-r3",
+        "integer_option": "off",
+        "condition": 2,
+        "start_offset_mm": [
+          -36.10420932134528,
+          -0.18598248357083041
+        ],
+        "transport_error_mm": [
+          32.58254598447036,
+          -15.916746322258431
+        ],
+        "endpoint_error_mm": [
+          -3.5216633368748695,
+          -16.102728805829262
+        ],
+        "start_norm_mm": 36.10468834104112,
+        "transport_norm_mm": 36.26244774304753,
+        "endpoint_norm_mm": 16.48332453276256
+      },
+      {
+        "name": "s3fix19-off-pair-c3-r3",
+        "integer_option": "off",
+        "condition": 3,
+        "start_offset_mm": [
+          -25.875338775786403,
+          -0.41536652878835373
+        ],
+        "transport_error_mm": [
+          57.99832445231717,
+          -18.495400630607406
+        ],
+        "endpoint_error_mm": [
+          32.122985676530824,
+          -18.91076715939576
+        ],
+        "start_norm_mm": 25.87867241793816,
+        "transport_norm_mm": 60.87598445826502,
+        "endpoint_norm_mm": 37.276042216569685
+      },
+      {
+        "name": "s3fix19-off-pair-c4-r3",
+        "integer_option": "off",
+        "condition": 4,
+        "start_offset_mm": [
+          -25.568056892283142,
+          -0.9606090502906408
+        ],
+        "transport_error_mm": [
+          72.97783768716099,
+          -16.04045880289049
+        ],
+        "endpoint_error_mm": [
+          47.409780794877896,
+          -17.00106785318113
+        ],
+        "start_norm_mm": 25.586095891998212,
+        "transport_norm_mm": 74.7198843153604,
+        "endpoint_norm_mm": 50.365897422431004
+      },
+      {
+        "name": "s3fix19-off-pair-c5-r3",
+        "integer_option": "off",
+        "condition": 5,
+        "start_offset_mm": [
+          -27.25478638600709,
+          -1.7635410926474249
+        ],
+        "transport_error_mm": [
+          74.51663545350135,
+          -24.32975995665169
+        ],
+        "endpoint_error_mm": [
+          47.26184906749431,
+          -26.093301049299114
+        ],
+        "start_norm_mm": 27.311782404895027,
+        "transport_norm_mm": 78.38792112856615,
+        "endpoint_norm_mm": 53.98650513719116
+      },
+      {
+        "name": "s3fix19-on-pair-c0-r3",
+        "integer_option": "integer_ticks_v1",
+        "condition": 0,
+        "start_offset_mm": [
+          -29.638119710007736,
+          4.8331371656614515
+        ],
+        "transport_error_mm": [
+          2.0226676119993736,
+          -12.49331801116664
+        ],
+        "endpoint_error_mm": [
+          -27.61545209800831,
+          -7.660180845505189
+        ],
+        "start_norm_mm": 30.029607969583072,
+        "transport_norm_mm": 12.65599380518069,
+        "endpoint_norm_mm": 28.658184959331184
+      },
+      {
+        "name": "s3fix19-on-pair-c1-r3",
+        "integer_option": "integer_ticks_v1",
+        "condition": 1,
+        "start_offset_mm": [
+          -29.51144402903738,
+          -5.031446047985791
+        ],
+        "transport_error_mm": [
+          1.640684679688753,
+          -14.14052396806513
+        ],
+        "endpoint_error_mm": [
+          -27.870759349348575,
+          -19.17197001605092
+        ],
+        "start_norm_mm": 29.93728073845048,
+        "transport_norm_mm": 14.23538774707559,
+        "endpoint_norm_mm": 33.82814894441694
+      },
+      {
+        "name": "s3fix19-on-pair-c2-r3",
+        "integer_option": "integer_ticks_v1",
+        "condition": 2,
+        "start_offset_mm": [
+          -36.10420932134528,
+          -0.18598248357083041
+        ],
+        "transport_error_mm": [
+          1.4862594689055153,
+          -11.529037035900178
+        ],
+        "endpoint_error_mm": [
+          -34.61794985243971,
+          -11.715019519471008
+        ],
+        "start_norm_mm": 36.10468834104112,
+        "transport_norm_mm": 11.624442446159268,
+        "endpoint_norm_mm": 36.54646541497026
+      },
+      {
+        "name": "s3fix19-on-pair-c3-r3",
+        "integer_option": "integer_ticks_v1",
+        "condition": 3,
+        "start_offset_mm": [
+          -25.875338775786403,
+          -0.41536652878835373
+        ],
+        "transport_error_mm": [
+          2.3358637583785202,
+          -13.28464441142562
+        ],
+        "endpoint_error_mm": [
+          -23.53947501740783,
+          -13.700010940213975
+        ],
+        "start_norm_mm": 25.87867241793816,
+        "transport_norm_mm": 13.488440852660778,
+        "endpoint_norm_mm": 27.23595388190305
+      },
+      {
+        "name": "s3fix19-on-pair-c4-r3",
+        "integer_option": "integer_ticks_v1",
+        "condition": 4,
+        "start_offset_mm": [
+          -25.568056892283142,
+          -0.9606090502906408
+        ],
+        "transport_error_mm": [
+          3.7013596814010064,
+          -10.11263491467048
+        ],
+        "endpoint_error_mm": [
+          -21.86669721088208,
+          -11.073243964961122
+        ],
+        "start_norm_mm": 25.586095891998212,
+        "transport_norm_mm": 10.768725477442231,
+        "endpoint_norm_mm": 24.510593196002947
+      },
+      {
+        "name": "s3fix19-on-pair-c5-r3",
+        "integer_option": "integer_ticks_v1",
+        "condition": 5,
+        "start_offset_mm": [
+          -27.25478638600709,
+          -1.7635410926474249
+        ],
+        "transport_error_mm": [
+          2.5311251003640733,
+          -15.658228259680357
+        ],
+        "endpoint_error_mm": [
+          -24.72366128564296,
+          -17.421769352327782
+        ],
+        "start_norm_mm": 27.311782404895027,
+        "transport_norm_mm": 15.861485003175003,
+        "endpoint_norm_mm": 30.245288471643118
+      }
+    ],
+    "raw_source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix20-eval-r1/endpoint-decomposition.json",
+    "raw_source_sha256": "b39b508bc3e1960b1cb7dbd6a58a0f1a6a59d1158490f87199c10cfb334c40cf",
+    "interpretation": "25.085mm x origin mismatch exists before control; transportation residual is10.8–15.9mm; translating synthetic fixture tests this stage contract, without correcting live localization"
+  },
+  "runs": [
+    {
+      "name": "s3fix21-off-pair-c0-r1",
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-pair-c0-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "0",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-off-pair-c1-r1",
+      "case": "pair",
+      "condition": 1,
+      "seed": 14202,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-pair-c1-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "1",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-off-pair-c2-r1",
+      "case": "pair",
+      "condition": 2,
+      "seed": 14203,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-pair-c2-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "2",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-off-pair-c3-r1",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-pair-c3-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "3",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-off-pair-c4-r1",
+      "case": "pair",
+      "condition": 4,
+      "seed": 14205,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-pair-c4-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "4",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-off-pair-c5-r1",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-pair-c5-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "5",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-off-cyan-c0-r1",
+      "case": "cyan",
+      "condition": 0,
+      "seed": 14201,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-cyan-c0-r1/raw",
+        "--case",
+        "cyan",
+        "--condition",
+        "0",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-off-cyan-c3-r1",
+      "case": "cyan",
+      "condition": 3,
+      "seed": 14204,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-cyan-c3-r1/raw",
+        "--case",
+        "cyan",
+        "--condition",
+        "3",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-off-cyan-c4-r1",
+      "case": "cyan",
+      "condition": 4,
+      "seed": 14205,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-cyan-c4-r1/raw",
+        "--case",
+        "cyan",
+        "--condition",
+        "4",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-off-cyan-c5-r1",
+      "case": "cyan",
+      "condition": 5,
+      "seed": 14206,
+      "option": "off",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-off-cyan-c5-r1/raw",
+        "--case",
+        "cyan",
+        "--condition",
+        "5",
+        "--stage-origin",
+        "off",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-pair-c0-r1",
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-pair-c0-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "0",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-pair-c1-r1",
+      "case": "pair",
+      "condition": 1,
+      "seed": 14202,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-pair-c1-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "1",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-pair-c2-r1",
+      "case": "pair",
+      "condition": 2,
+      "seed": 14203,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-pair-c2-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "2",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-pair-c3-r1",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-pair-c3-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "3",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-pair-c4-r1",
+      "case": "pair",
+      "condition": 4,
+      "seed": 14205,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-pair-c4-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "4",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-pair-c5-r1",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-pair-c5-r1/raw",
+        "--case",
+        "pair",
+        "--condition",
+        "5",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-cyan-c0-r1",
+      "case": "cyan",
+      "condition": 0,
+      "seed": 14201,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-cyan-c0-r1/raw",
+        "--case",
+        "cyan",
+        "--condition",
+        "0",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-cyan-c3-r1",
+      "case": "cyan",
+      "condition": 3,
+      "seed": 14204,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-cyan-c3-r1/raw",
+        "--case",
+        "cyan",
+        "--condition",
+        "3",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-cyan-c4-r1",
+      "case": "cyan",
+      "condition": 4,
+      "seed": 14205,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-cyan-c4-r1/raw",
+        "--case",
+        "cyan",
+        "--condition",
+        "4",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix21-on-cyan-c5-r1",
+      "case": "cyan",
+      "condition": 5,
+      "seed": 14206,
+      "option": "public_stage_origin_v1",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_stage_origin",
+        "--expected-source-sha",
+        "<committed-SHA>",
+        "--output",
+        "outputs/s3fix21-on-cyan-c5-r1/raw",
+        "--case",
+        "cyan",
+        "--condition",
+        "5",
+        "--stage-origin",
+        "public_stage_origin_v1",
+        "--execute"
+      ]
+    }
+  ],
+  "next_stage_preregistration": {
+    "status": "prepared_not_executed_gate_not_adjudicable",
+    "seed_list": [
+      14201,
+      14204,
+      14206
+    ],
+    "cases": [
+      {
+        "name": "s3fix19-multi-left-c0",
+        "condition": 0,
+        "route": [
+          [
+            1.3,
+            0.05
+          ],
+          [
+            1.4518,
+            0.05
+          ],
+          [
+            1.4518,
+            0.21694529519717284
+          ]
+        ],
+        "seed": 14201,
+        "module": "scripts.run_s3_integer_carry",
+        "flags": [
+          "--case",
+          "pair",
+          "--condition",
+          "0",
+          "--integer-carry",
+          "integer_ticks_v1",
+          "--route-case",
+          "multi-left",
+          "--execute"
+        ]
+      },
+      {
+        "name": "s3fix19-multi-right-c3",
+        "condition": 3,
+        "route": [
+          [
+            1.3,
+            0.05
+          ],
+          [
+            1.4518,
+            0.05
+          ],
+          [
+            1.4518,
+            -0.11694529519717285
+          ]
+        ],
+        "seed": 14204,
+        "module": "scripts.run_s3_integer_carry",
+        "flags": [
+          "--case",
+          "pair",
+          "--condition",
+          "3",
+          "--integer-carry",
+          "integer_ticks_v1",
+          "--route-case",
+          "multi-right",
+          "--execute"
+        ]
+      },
+      {
+        "name": "s3fix19-multi-three-c5",
+        "condition": 5,
+        "route": [
+          [
+            1.3,
+            0.05
+          ],
+          [
+            1.4518,
+            0.05
+          ],
+          [
+            1.4518,
+            0.21694529519717284
+          ],
+          [
+            1.348290225509269,
+            0.21694529519717284
+          ]
+        ],
+        "seed": 14206,
+        "module": "scripts.run_s3_integer_carry",
+        "flags": [
+          "--case",
+          "pair",
+          "--condition",
+          "5",
+          "--integer-carry",
+          "integer_ticks_v1",
+          "--route-case",
+          "multi-three",
+          "--execute"
+        ]
+      }
+    ],
+    "criteria": "each static corner<=20mm; retain bilateral grasp/tilt<10deg; both reach second leg, final registered floor settling; horizon60SIM; no runtimeGT",
+    "turn_scope": "static travel direction turns90deg via jointly authorized crab; beam yaw remains fixed. Individual loaded heading turns remain prohibited; actual beam/body rotation is a separate uncalibrated plant, not claimed here.",
+    "option": "integer_ticks_v1+canonical_floor_v1; existing per-segment two-party high-stop andGO",
+    "static_sweep_note": "third route initially rejected wall_divider_2 before prereg/source commit; replaced final +x leg with -x leg; no executed result used",
+    "final_release_contract": "multi-route stops after final segment release only; temporary re-fix release must continue. Offline motor/state regression fixed before additional physics."
+  },
+  "references": [
+    {
+      "title": "MoveIt Task Constructor: stages propagate consistent start/goal states; CurrentState supplies stage entry",
+      "url": "https://moveit.picknik.ai/main/doc/tutorials/pick_and_place_with_moveit_task_constructor/pick_and_place_with_moveit_task_constructor.html",
+      "verified": true,
+      "application": "synthetic probe fixture/start-state consistency only, no runtime ground truth feedback"
+    }
+  ]
+}

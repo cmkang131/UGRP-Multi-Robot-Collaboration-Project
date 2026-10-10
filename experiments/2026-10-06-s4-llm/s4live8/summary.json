@@ -1,0 +1,2140 @@
+{
+  "schema": "ugrp.s4live8.dev_summary.v1",
+  "research_result": false,
+  "source_sha": "7b25757369d0a069d9c5fa47d916caec35681382",
+  "S3_source_sha": "5337ff750455cc3de925a8a625a1d5184bc0508f",
+  "S3_control_files_byte_identical": 128,
+  "execution_bundle_id": "zone-s4-pair-live-v174",
+  "workflow_version": "7.67.0",
+  "pr": 425,
+  "pr_draft": true,
+  "plan": "plan-r2.json",
+  "release": "release-r2.json",
+  "cohort": "DEV same four conditions x seeds601/602; not research or confirmation",
+  "metrics": {
+    "claim": {
+      "n": 8,
+      "N": 8
+    },
+    "go_ack": {
+      "n": 7,
+      "N": 8
+    },
+    "simultaneous_departure": {
+      "n": 7,
+      "N": 8
+    },
+    "carry_20mm": {
+      "n": 7,
+      "N": 8
+    },
+    "lowering": {
+      "n": 7,
+      "N": 8
+    },
+    "reobserve": {
+      "n": 0,
+      "N": 8
+    },
+    "regrasp": {
+      "n": 0,
+      "N": 8
+    },
+    "fresh_go_ack": {
+      "n": 0,
+      "N": 8
+    },
+    "fresh_go_ack_continue": {
+      "n": 0,
+      "N": 8
+    },
+    "fall": {
+      "n": 0,
+      "N": 8
+    }
+  },
+  "conditions": {
+    "no_comm": {
+      "claim": {
+        "n": 2,
+        "N": 2
+      },
+      "go_ack": {
+        "n": 2,
+        "N": 2
+      },
+      "simultaneous_departure": {
+        "n": 2,
+        "N": 2
+      },
+      "carry_20mm": {
+        "n": 2,
+        "N": 2
+      },
+      "lowering": {
+        "n": 2,
+        "N": 2
+      },
+      "reobserve": {
+        "n": 0,
+        "N": 2
+      },
+      "regrasp": {
+        "n": 0,
+        "N": 2
+      },
+      "fresh_go_ack": {
+        "n": 0,
+        "N": 2
+      },
+      "fresh_go_ack_continue": {
+        "n": 0,
+        "N": 2
+      }
+    },
+    "peer_ko": {
+      "claim": {
+        "n": 2,
+        "N": 2
+      },
+      "go_ack": {
+        "n": 2,
+        "N": 2
+      },
+      "simultaneous_departure": {
+        "n": 2,
+        "N": 2
+      },
+      "carry_20mm": {
+        "n": 2,
+        "N": 2
+      },
+      "lowering": {
+        "n": 2,
+        "N": 2
+      },
+      "reobserve": {
+        "n": 0,
+        "N": 2
+      },
+      "regrasp": {
+        "n": 0,
+        "N": 2
+      },
+      "fresh_go_ack": {
+        "n": 0,
+        "N": 2
+      },
+      "fresh_go_ack_continue": {
+        "n": 0,
+        "N": 2
+      }
+    },
+    "leader_ko": {
+      "claim": {
+        "n": 2,
+        "N": 2
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 2
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 2
+      },
+      "carry_20mm": {
+        "n": 1,
+        "N": 2
+      },
+      "lowering": {
+        "n": 1,
+        "N": 2
+      },
+      "reobserve": {
+        "n": 0,
+        "N": 2
+      },
+      "regrasp": {
+        "n": 0,
+        "N": 2
+      },
+      "fresh_go_ack": {
+        "n": 0,
+        "N": 2
+      },
+      "fresh_go_ack_continue": {
+        "n": 0,
+        "N": 2
+      }
+    },
+    "structured": {
+      "claim": {
+        "n": 2,
+        "N": 2
+      },
+      "go_ack": {
+        "n": 2,
+        "N": 2
+      },
+      "simultaneous_departure": {
+        "n": 2,
+        "N": 2
+      },
+      "carry_20mm": {
+        "n": 2,
+        "N": 2
+      },
+      "lowering": {
+        "n": 2,
+        "N": 2
+      },
+      "reobserve": {
+        "n": 0,
+        "N": 2
+      },
+      "regrasp": {
+        "n": 0,
+        "N": 2
+      },
+      "fresh_go_ack": {
+        "n": 0,
+        "N": 2
+      },
+      "fresh_go_ack_continue": {
+        "n": 0,
+        "N": 2
+      }
+    }
+  },
+  "causes": {
+    "post_release_unmeasured_camera_posture": {
+      "n": 7,
+      "N": 8,
+      "issued_pulses": {
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1544
+      },
+      "registered_inspect_pulses": {
+        "3": 508,
+        "4": 2432,
+        "5": 1320,
+        "6": 1500
+      },
+      "pulse_difference": {
+        "3": 299,
+        "4": -535,
+        "5": 867,
+        "6": 44
+      },
+      "failure": "UNMEASURED_V3_CAMERA_POSTURE: unloaded:807,1897,2187,1544",
+      "r1_fresh_RGB": 7,
+      "r2_fresh_RGB": 0,
+      "physical_fall": false
+    },
+    "initial_GO_ACK": {
+      "n": 1,
+      "N": 8,
+      "condition": "leader_ko",
+      "seed": 602,
+      "call_id": "call-0007-r1",
+      "model_ack_valid_shape": true,
+      "messages": [],
+      "validation_rule": "pair GO/ACK/loss needs a condition-channel notification",
+      "no_new_request_after_failed_reply": true,
+      "API_error": false,
+      "diagnosis": "offline rule+raw replay inference; scheduler saved only failed status"
+    },
+    "old_floor_contract_failure": {
+      "n": 0,
+      "N": 8,
+      "lowering_reached": 7
+    },
+    "lease_expiry": {
+      "n": 0,
+      "N": 8
+    }
+  },
+  "continued_additional_distance_m": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "first_carry_mm": {
+    "n": 7,
+    "N": 8,
+    "min": 153.310906167599,
+    "max": 154.48291594519313
+  },
+  "moving_integer_pulses": {
+    "n": 14,
+    "N": 16,
+    "each": 12,
+    "following_zero_command": 1,
+    "eligible_endpoints": 14,
+    "eligible_pass": 14,
+    "not_entered_GO_timeout": 2
+  },
+  "heartbeat_RGB_model_dispatch_links": {
+    "n": 101,
+    "N": 101
+  },
+  "channel_accounting": {
+    "saved_report_unfinalized_n": 7,
+    "N": 8,
+    "sent": 57,
+    "unique_delivered": 56,
+    "delivery_edges": 60,
+    "note": "CalibrationError path did not call Host.finish; saved accepted_messages=0 is incomplete. Actual scheduler delivery IDs used."
+  },
+  "model": {
+    "calls": 195,
+    "known_reported_tokens": 1466948,
+    "proxy_post_reconciliation": {
+      "n": 195,
+      "N": 195
+    },
+    "image_sha256_checked": 390,
+    "response_wall_s": {
+      "n": 195,
+      "mean": 4.0548957641025645,
+      "median": 3.589246,
+      "max": 13.308904
+    },
+    "API_errors": 0,
+    "failed_replies": 4,
+    "pending_at_exception": 15,
+    "pending_action_released": false,
+    "upstream_finish_verified": false,
+    "provider_billing_verified": false
+  },
+  "initial_health": {
+    "n": 8,
+    "N": 8,
+    "checked_after_wall_s": 182.145
+  },
+  "condition_common_config_sha256": "d8de41371cf98c24d13347c6943b7b5a4459a048abd318bf691ead6e72192c0a",
+  "retrieval": {
+    "n": 8,
+    "N": 8,
+    "verified_manifest_files": 33891,
+    "raw_bytes": 1019526886,
+    "max_EXIT_to_fetch_start_s": 10.929828882217407,
+    "persistent_storage": "ext4 ~/ugrp-sim/runs only",
+    "server_raw_preserved": true
+  },
+  "security": {
+    "scope": "own s4live8 initial8 + corrected8 command/log/JSON text, not entire server",
+    "scanned_files": 974,
+    "secret_pattern_matches": 0,
+    "active_driver_pids": [],
+    "remote_tunnel_listener": false,
+    "local_relay_alive": [],
+    "mac_relay_listener": false,
+    "original_proxy_listener": true
+  },
+  "host_only_first_attempt": {
+    "source_sha": "95a258dc8245df3e045ff107e679ac1d19466a50",
+    "classification": "HOST_ERROR_INTERPRETER_NOT_FOUND",
+    "n": 8,
+    "N": 8,
+    "physics_steps": 0,
+    "model_calls": 0,
+    "excluded_from_physical_cohort": true,
+    "raws": [
+      {
+        "name": "s4live8-no_comm-s601-v173",
+        "exit": "127",
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-no_comm-s601-v173",
+        "source_sha": "95a258dc8245df3e045ff107e679ac1d19466a50",
+        "files_sha256": {
+          "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+          "log.txt": "0ef36a602b49746ec6678f653c21a22810e02116ab8dcba464bc2c8969661e6b",
+          "EXIT": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe",
+          "COMMAND": "6456ebf59be8eefe09a2f0656a6fd00b255adea3a463160bfbe80acaffdeda0e",
+          "SOURCE_SHA": "08588d3b42dd984cadff608d41a88d2c50d42eb7923074b18664d57885a61c5d"
+        }
+      },
+      {
+        "name": "s4live8-peer_ko-s601-v173",
+        "exit": "127",
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-peer_ko-s601-v173",
+        "source_sha": "95a258dc8245df3e045ff107e679ac1d19466a50",
+        "files_sha256": {
+          "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+          "log.txt": "0ef36a602b49746ec6678f653c21a22810e02116ab8dcba464bc2c8969661e6b",
+          "EXIT": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe",
+          "COMMAND": "3c6eaf48910bdee12b240e3c3f0bc2324387ee2ec3887f23a6acdb0a4ba47997",
+          "SOURCE_SHA": "08588d3b42dd984cadff608d41a88d2c50d42eb7923074b18664d57885a61c5d"
+        }
+      },
+      {
+        "name": "s4live8-leader_ko-s601-v173",
+        "exit": "127",
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-leader_ko-s601-v173",
+        "source_sha": "95a258dc8245df3e045ff107e679ac1d19466a50",
+        "files_sha256": {
+          "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+          "log.txt": "0ef36a602b49746ec6678f653c21a22810e02116ab8dcba464bc2c8969661e6b",
+          "EXIT": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe",
+          "COMMAND": "7544001262aeb6b2b51d804f674d28402ba1037886fb9d47baeb8bb476fb7bfe",
+          "SOURCE_SHA": "08588d3b42dd984cadff608d41a88d2c50d42eb7923074b18664d57885a61c5d"
+        }
+      },
+      {
+        "name": "s4live8-structured-s601-v173",
+        "exit": "127",
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-structured-s601-v173",
+        "source_sha": "95a258dc8245df3e045ff107e679ac1d19466a50",
+        "files_sha256": {
+          "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+          "log.txt": "0ef36a602b49746ec6678f653c21a22810e02116ab8dcba464bc2c8969661e6b",
+          "EXIT": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe",
+          "COMMAND": "9c518e9aec11727b5c8fdc82a49b6dbab1a8b1cae5566aa96a08dbd6bb0a5d99",
+          "SOURCE_SHA": "08588d3b42dd984cadff608d41a88d2c50d42eb7923074b18664d57885a61c5d"
+        }
+      },
+      {
+        "name": "s4live8-no_comm-s602-v173",
+        "exit": "127",
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-no_comm-s602-v173",
+        "source_sha": "95a258dc8245df3e045ff107e679ac1d19466a50",
+        "files_sha256": {
+          "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+          "log.txt": "0ef36a602b49746ec6678f653c21a22810e02116ab8dcba464bc2c8969661e6b",
+          "EXIT": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe",
+          "COMMAND": "1b6b55a8fb278cf4d173ba4dcddca68f2b766a012cde101f61c93ea88acda82a",
+          "SOURCE_SHA": "08588d3b42dd984cadff608d41a88d2c50d42eb7923074b18664d57885a61c5d"
+        }
+      },
+      {
+        "name": "s4live8-peer_ko-s602-v173",
+        "exit": "127",
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-peer_ko-s602-v173",
+        "source_sha": "95a258dc8245df3e045ff107e679ac1d19466a50",
+        "files_sha256": {
+          "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+          "log.txt": "0ef36a602b49746ec6678f653c21a22810e02116ab8dcba464bc2c8969661e6b",
+          "EXIT": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe",
+          "COMMAND": "3f5054dd690efbc79575c82cd4ece11485aabdef6b16bb9ead42283b3331d314",
+          "SOURCE_SHA": "08588d3b42dd984cadff608d41a88d2c50d42eb7923074b18664d57885a61c5d"
+        }
+      },
+      {
+        "name": "s4live8-leader_ko-s602-v173",
+        "exit": "127",
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-leader_ko-s602-v173",
+        "source_sha": "95a258dc8245df3e045ff107e679ac1d19466a50",
+        "files_sha256": {
+          "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+          "log.txt": "0ef36a602b49746ec6678f653c21a22810e02116ab8dcba464bc2c8969661e6b",
+          "EXIT": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe",
+          "COMMAND": "9d503e493545ed00b518c8283b612c6d8a923f4005ef7ae5069fdc8493a8d204",
+          "SOURCE_SHA": "08588d3b42dd984cadff608d41a88d2c50d42eb7923074b18664d57885a61c5d"
+        }
+      },
+      {
+        "name": "s4live8-structured-s602-v173",
+        "exit": "127",
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-structured-s602-v173",
+        "source_sha": "95a258dc8245df3e045ff107e679ac1d19466a50",
+        "files_sha256": {
+          "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+          "log.txt": "0ef36a602b49746ec6678f653c21a22810e02116ab8dcba464bc2c8969661e6b",
+          "EXIT": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe",
+          "COMMAND": "bc0690be371ab8598c7b916e04efc2194bd85d07afbc06b20fbe4bc784f01c65",
+          "SOURCE_SHA": "08588d3b42dd984cadff608d41a88d2c50d42eb7923074b18664d57885a61c5d"
+        }
+      }
+    ]
+  },
+  "validation": {
+    "prior_related_passed": 30,
+    "evaluator_false_release_regression_passed": 1,
+    "retry_admission_contract_passed": 1,
+    "retry_regression_wall_s": 22.98,
+    "Mac_physics": 0,
+    "real_model_calls": 0
+  },
+  "artifacts": {
+    "report.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/report.json",
+      "sha256": "f26875855140d9b82aa021103fffd9d32dc39e3daded831520424c2147cc778e"
+    },
+    "final-audit.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/final-audit.json",
+      "sha256": "557a8aeaf4b1871c3d81875cd18aceab7095141531c0c1a9eb0416131da2cc94"
+    },
+    "final-security-audit.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/final-security-audit.json",
+      "sha256": "d73da83e264587275411a00de24adfba9e7f76953a6b1e77fb9e186e613a561c"
+    },
+    "admissions.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/admissions.json",
+      "sha256": "023c2a91d66c1d1316ec7a83bf97898154cae2856356571b19341f58d8df7db9"
+    },
+    "persistent-storage.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/persistent-storage.json",
+      "sha256": "c1e45e18e99a52001c077cc13ee4d00116ebf3b9ec7447f110a7bc7e37ad4a39"
+    },
+    "applied-config.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/applied-config.json",
+      "sha256": "43523595d2d28c141fd6707beef932d049960a20c56781cd55675dcec65148bb"
+    },
+    "pulse-and-lower-proof.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/pulse-and-lower-proof.json",
+      "sha256": "eac21676820a5fc060cb6fc9977ea0d5b5240c8eff6b0a4af8fa94b2080fd7b3"
+    },
+    "message-proof.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/message-proof.json",
+      "sha256": "5665ded65e00174da0b67aaa762ba5fb18a8be3b6bb46125989e9507fa9ff353"
+    },
+    "retrieval-timing.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/retrieval-timing.json",
+      "sha256": "2c6d654b024746b8a3c0d09bfd8913f80e57bc324dfb1f87815b46704e1cea4c"
+    },
+    "prior-host-errors.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/prior-host-errors.json",
+      "sha256": "c71e3c6b7514ca981ed9df6afb79c8b7d5a37b8c89890a5c0b22f468630c8099"
+    },
+    "go-timeout-cause.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/go-timeout-cause.json",
+      "sha256": "1b192a257b54db048f452068b0f8a1c468beba8f9b3f1688e55eb9162ec35e35"
+    },
+    "terminal-errors.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/terminal-errors.json",
+      "sha256": "1a6fce0752a5d59ca5ea52ed6255098fbeaa02b9841139f94f1615907d1e9b85"
+    },
+    "validation.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/validation.json",
+      "sha256": "0c2beda02641eb5871930d63d53713dee266b4829fb84635c63acf9ddb314b42"
+    },
+    "number-scan.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live8-r2-offline/number-scan.json",
+      "sha256": "3959ec4fad29230708627ec4a6ec57772660743795f4246018adfd5b3d4c18cf"
+    }
+  },
+  "runs": [
+    {
+      "name": "s4live8-r2-no_comm-s601-v174",
+      "condition": "no_comm",
+      "seed": 601,
+      "status": "HOST_ERROR",
+      "cause": "UNMEASURED_V3_CAMERA_POSTURE_AFTER_RELEASE",
+      "exit": "1",
+      "check_sim_s": 67.45,
+      "wall_s": 436.8082740810005,
+      "metrics": {
+        "claim": {
+          "n": 1,
+          "N": 1
+        },
+        "go_ack": {
+          "n": 1,
+          "N": 1
+        },
+        "simultaneous_departure": {
+          "n": 1,
+          "N": 1,
+          "first_command_t": {
+            "r1": 41.2,
+            "r2": 41.2
+          }
+        },
+        "carry_20mm": {
+          "n": 1,
+          "N": 1,
+          "excursion_m": 0.15442511190579228,
+          "contact_supported_samples": 54,
+          "first_carry_window": [
+            41.0,
+            43.7
+          ]
+        },
+        "lowering": {
+          "n": 1,
+          "N": 1,
+          "entered": 1,
+          "stable_floor_placement": true,
+          "drop": false,
+          "drop_first_t": null
+        },
+        "reobserve": {
+          "n": 0,
+          "N": 1,
+          "own_frame_receipts": {
+            "r1": {
+              "robot_id": "r1",
+              "frame_id": 1350,
+              "sha256": "14b321438eb545dc15a174b5c5d259996e1ae87e876ec89b12eaaa0f6e4ab533",
+              "sim_s": 69.8,
+              "phase": "align"
+            },
+            "r2": null
+          }
+        },
+        "regrasp": {
+          "n": 0,
+          "N": 1,
+          "first_supported_t": null
+        },
+        "fresh_go_ack": {
+          "n": 0,
+          "N": 1,
+          "permits": []
+        },
+        "fresh_go_ack_continue": {
+          "n": 0,
+          "N": 1,
+          "additional_distance_m": 0.0,
+          "additional_path_m": 0.0
+        }
+      },
+      "fall": {
+        "n": 0,
+        "N": 1,
+        "unsupported_descent_max_m": 0,
+        "first_t": null
+      },
+      "distance": {
+        "contact_supported_path_m": 0.15468401597831186,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.15468401597831186
+        },
+        "segment_excursion_m": {
+          "0": 0.15442511190579228
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 16,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 6,
+          "lower": 8
+        },
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 9,
+        "rejected_commands_with_live_heartbeat": 3
+      },
+      "model": {
+        "calls": 27,
+        "tokens": 188776,
+        "response_wall_s": {
+          "n": 27,
+          "mean": 3.5809635925925924,
+          "median": 3.445661,
+          "max": 5.489236
+        },
+        "API_errors": 0,
+        "failed_replies": 0,
+        "pending_at_exception": 2,
+        "upstream_finish_verified": false,
+        "provider_billing_verified": false
+      },
+      "messages": {
+        "sent": 0,
+        "unique_delivered": 0,
+        "delivery_edges": 0,
+        "saved_accepted_messages": 0,
+        "saved_report_finalized": false,
+        "source": "scheduler message deliveries, channel.sent; unfinalized counters preserved separately"
+      },
+      "pulse_counts": {
+        "r1": {
+          "moving_n": 12,
+          "zero_n": 1
+        },
+        "r2": {
+          "moving_n": 12,
+          "zero_n": 1
+        }
+      },
+      "initial_check": {
+        "status": "PASS",
+        "checked_after_s": 182.14518133399542,
+        "first_sim_s": 1.0,
+        "first_frames": 21,
+        "last_sim_s": 28.0,
+        "last_frames": 561,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8430966221683626,
+              0.07021909375449781,
+              0.03192989486769982
+            ],
+            "base_delta_m": 0.03930248280214455,
+            "arm_delta_m": 0.11416192502754137,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7505782458953054,
+              0.017853300920698145,
+              0.031963139300804765
+            ],
+            "base_delta_m": 0.06000339288351766,
+            "arm_delta_m": 0.13506664672100954,
+            "commands": 717,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 3,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        },
+        "log_exceptions": []
+      },
+      "raw": {
+        "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-r2-no_comm-s601-v174/raw",
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s4live8-r2-no_comm-s601-v174/raw",
+        "result_sha256": "3a01f17f4401ad43717dc09a1b934ca0cec26a4d3156cf52cfd2432415314a57",
+        "manifest_sha256": "b11dd45945f97b50c7e8d735bd498a8434458974ecce5ef33f9c461045799133",
+        "verified_manifest_files": 4197,
+        "bytes": 127193688
+      },
+      "exit_to_fetch_start_s": 8.057777404785156,
+      "heartbeat_rejection_counts": {
+        "n": 6,
+        "by_reason": {
+          "UNADMITTED_OR_STALE_CARRY_RGB": 6
+        }
+      }
+    },
+    {
+      "name": "s4live8-r2-peer_ko-s601-v174",
+      "condition": "peer_ko",
+      "seed": 601,
+      "status": "HOST_ERROR",
+      "cause": "UNMEASURED_V3_CAMERA_POSTURE_AFTER_RELEASE",
+      "exit": "1",
+      "check_sim_s": 70.55000000000001,
+      "wall_s": 472.69829089700033,
+      "metrics": {
+        "claim": {
+          "n": 1,
+          "N": 1
+        },
+        "go_ack": {
+          "n": 1,
+          "N": 1
+        },
+        "simultaneous_departure": {
+          "n": 1,
+          "N": 1,
+          "first_command_t": {
+            "r1": 44.3,
+            "r2": 44.3
+          }
+        },
+        "carry_20mm": {
+          "n": 1,
+          "N": 1,
+          "excursion_m": 0.1541651001746699,
+          "contact_supported_samples": 54,
+          "first_carry_window": [
+            44.1,
+            46.8
+          ]
+        },
+        "lowering": {
+          "n": 1,
+          "N": 1,
+          "entered": 1,
+          "stable_floor_placement": true,
+          "drop": false,
+          "drop_first_t": null
+        },
+        "reobserve": {
+          "n": 0,
+          "N": 1,
+          "own_frame_receipts": {
+            "r1": {
+              "robot_id": "r1",
+              "frame_id": 1412,
+              "sha256": "b7e2911d1474b7fd5bd0b1f2a0513f4320b5152fc1e5fb76b7ea2a26f83488f4",
+              "sim_s": 72.9,
+              "phase": "align"
+            },
+            "r2": null
+          }
+        },
+        "regrasp": {
+          "n": 0,
+          "N": 1,
+          "first_supported_t": null
+        },
+        "fresh_go_ack": {
+          "n": 0,
+          "N": 1,
+          "permits": []
+        },
+        "fresh_go_ack_continue": {
+          "n": 0,
+          "N": 1,
+          "additional_distance_m": 0.0,
+          "additional_path_m": 0.0
+        }
+      },
+      "fall": {
+        "n": 0,
+        "N": 1,
+        "unsupported_descent_max_m": 0,
+        "first_t": null
+      },
+      "distance": {
+        "contact_supported_path_m": 0.15455253495127597,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.15455253495127597
+        },
+        "segment_excursion_m": {
+          "0": 0.1541651001746699
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 13,
+        "by_phase": {
+          "wait_carry": 1,
+          "carry": 1,
+          "refix_decide": 4,
+          "lower": 7
+        },
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 7,
+        "rejected_commands_with_live_heartbeat": 3
+      },
+      "model": {
+        "calls": 27,
+        "tokens": 209476,
+        "response_wall_s": {
+          "n": 27,
+          "mean": 4.316604333333333,
+          "median": 4.068239,
+          "max": 7.364770999999999
+        },
+        "API_errors": 0,
+        "failed_replies": 1,
+        "pending_at_exception": 2,
+        "upstream_finish_verified": false,
+        "provider_billing_verified": false
+      },
+      "messages": {
+        "sent": 12,
+        "unique_delivered": 12,
+        "delivery_edges": 13,
+        "saved_accepted_messages": 0,
+        "saved_report_finalized": false,
+        "source": "scheduler message deliveries, channel.sent; unfinalized counters preserved separately"
+      },
+      "pulse_counts": {
+        "r1": {
+          "moving_n": 12,
+          "zero_n": 1
+        },
+        "r2": {
+          "moving_n": 12,
+          "zero_n": 1
+        }
+      },
+      "initial_check": {
+        "status": "PASS",
+        "checked_after_s": 182.14519233402098,
+        "first_sim_s": 1.0,
+        "first_frames": 21,
+        "last_sim_s": 28.0,
+        "last_frames": 561,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8434633577374077,
+              0.07268123251888772,
+              0.03195844237676002
+            ],
+            "base_delta_m": 0.03883644278006132,
+            "arm_delta_m": 0.11416091619851425,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7649569694749938,
+              0.028195038949001706,
+              0.03196030950975602
+            ],
+            "base_delta_m": 0.04948523930403675,
+            "arm_delta_m": 0.12268881747977048,
+            "commands": 716,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        },
+        "log_exceptions": []
+      },
+      "raw": {
+        "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-r2-peer_ko-s601-v174/raw",
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s4live8-r2-peer_ko-s601-v174/raw",
+        "result_sha256": "ed7cea1f820d51adaeecbfa6b2a73bf1f9270389201dcf1d028372b4f7044b08",
+        "manifest_sha256": "85d09f9e02790c5e7111fa900ec59bf8d1a2a0962ea768984cde6790dca08dad",
+        "verified_manifest_files": 4383,
+        "bytes": 131065683
+      },
+      "exit_to_fetch_start_s": 4.4542295932769775,
+      "heartbeat_rejection_counts": {
+        "n": 8,
+        "by_reason": {
+          "UNADMITTED_OR_STALE_CARRY_RGB": 8
+        }
+      }
+    },
+    {
+      "name": "s4live8-r2-leader_ko-s601-v174",
+      "condition": "leader_ko",
+      "seed": 601,
+      "status": "HOST_ERROR",
+      "cause": "UNMEASURED_V3_CAMERA_POSTURE_AFTER_RELEASE",
+      "exit": "1",
+      "check_sim_s": 72.35000000000001,
+      "wall_s": 477.533295706,
+      "metrics": {
+        "claim": {
+          "n": 1,
+          "N": 1
+        },
+        "go_ack": {
+          "n": 1,
+          "N": 1
+        },
+        "simultaneous_departure": {
+          "n": 1,
+          "N": 1,
+          "first_command_t": {
+            "r1": 46.2,
+            "r2": 46.2
+          }
+        },
+        "carry_20mm": {
+          "n": 1,
+          "N": 1,
+          "excursion_m": 0.15439940641286293,
+          "contact_supported_samples": 54,
+          "first_carry_window": [
+            46.0,
+            48.7
+          ]
+        },
+        "lowering": {
+          "n": 1,
+          "N": 1,
+          "entered": 1,
+          "stable_floor_placement": true,
+          "drop": false,
+          "drop_first_t": null
+        },
+        "reobserve": {
+          "n": 0,
+          "N": 1,
+          "own_frame_receipts": {
+            "r1": {
+              "robot_id": "r1",
+              "frame_id": 1448,
+              "sha256": "ef4bde3b16870e7cfc257fe6168ab8f63158b22d8cf83c47c1a85670dafe4102",
+              "sim_s": 74.7,
+              "phase": "align"
+            },
+            "r2": null
+          }
+        },
+        "regrasp": {
+          "n": 0,
+          "N": 1,
+          "first_supported_t": null
+        },
+        "fresh_go_ack": {
+          "n": 0,
+          "N": 1,
+          "permits": []
+        },
+        "fresh_go_ack_continue": {
+          "n": 0,
+          "N": 1,
+          "additional_distance_m": 0.0,
+          "additional_path_m": 0.0
+        }
+      },
+      "fall": {
+        "n": 0,
+        "N": 1,
+        "unsupported_descent_max_m": 0,
+        "first_t": null
+      },
+      "distance": {
+        "contact_supported_path_m": 0.15499201777832472,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.15499201777832472
+        },
+        "segment_excursion_m": {
+          "0": 0.15439940641286293
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 14,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 6,
+          "lower": 6
+        },
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 7,
+        "rejected_commands_with_live_heartbeat": 3
+      },
+      "model": {
+        "calls": 28,
+        "tokens": 216393,
+        "response_wall_s": {
+          "n": 28,
+          "mean": 4.081081214285715,
+          "median": 3.5810755,
+          "max": 9.775096
+        },
+        "API_errors": 0,
+        "failed_replies": 1,
+        "pending_at_exception": 2,
+        "upstream_finish_verified": false,
+        "provider_billing_verified": false
+      },
+      "messages": {
+        "sent": 13,
+        "unique_delivered": 13,
+        "delivery_edges": 13,
+        "saved_accepted_messages": 0,
+        "saved_report_finalized": false,
+        "source": "scheduler message deliveries, channel.sent; unfinalized counters preserved separately"
+      },
+      "pulse_counts": {
+        "r1": {
+          "moving_n": 12,
+          "zero_n": 1
+        },
+        "r2": {
+          "moving_n": 12,
+          "zero_n": 1
+        }
+      },
+      "initial_check": {
+        "status": "PASS",
+        "checked_after_s": 182.14506454201182,
+        "first_sim_s": 1.0,
+        "first_frames": 21,
+        "last_sim_s": 28.0,
+        "last_frames": 561,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8346806195696862,
+              0.08125481386824272,
+              0.03190170818914626
+            ],
+            "base_delta_m": 0.028431434909558753,
+            "arm_delta_m": 0.10432024418151653,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.763981682494244,
+              0.02874667075421857,
+              0.03194925141929768
+            ],
+            "base_delta_m": 0.05060335871695907,
+            "arm_delta_m": 0.12252278296790835,
+            "commands": 716,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        },
+        "log_exceptions": []
+      },
+      "raw": {
+        "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-r2-leader_ko-s601-v174/raw",
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s4live8-r2-leader_ko-s601-v174/raw",
+        "result_sha256": "470c4b228fc59cfd7606d72ed3199d8afa9d32d6fc2c982c773933d04360c4d3",
+        "manifest_sha256": "dae95c30e4be96ae1a3721d053e0e6ac78b64ea24ce1ccaa22ed48ce19168d26",
+        "verified_manifest_files": 4494,
+        "bytes": 136230461
+      },
+      "exit_to_fetch_start_s": 10.929828882217407,
+      "heartbeat_rejection_counts": {
+        "n": 8,
+        "by_reason": {
+          "UNADMITTED_OR_STALE_CARRY_RGB": 8
+        }
+      }
+    },
+    {
+      "name": "s4live8-r2-structured-s601-v174",
+      "condition": "structured",
+      "seed": 601,
+      "status": "HOST_ERROR",
+      "cause": "UNMEASURED_V3_CAMERA_POSTURE_AFTER_RELEASE",
+      "exit": "1",
+      "check_sim_s": 74.05000000000001,
+      "wall_s": 470.78527202499936,
+      "metrics": {
+        "claim": {
+          "n": 1,
+          "N": 1
+        },
+        "go_ack": {
+          "n": 1,
+          "N": 1
+        },
+        "simultaneous_departure": {
+          "n": 1,
+          "N": 1,
+          "first_command_t": {
+            "r1": 47.8,
+            "r2": 47.8
+          }
+        },
+        "carry_20mm": {
+          "n": 1,
+          "N": 1,
+          "excursion_m": 0.15385841151656413,
+          "contact_supported_samples": 54,
+          "first_carry_window": [
+            47.6,
+            50.3
+          ]
+        },
+        "lowering": {
+          "n": 1,
+          "N": 1,
+          "entered": 1,
+          "stable_floor_placement": true,
+          "drop": false,
+          "drop_first_t": null
+        },
+        "reobserve": {
+          "n": 0,
+          "N": 1,
+          "own_frame_receipts": {
+            "r1": {
+              "robot_id": "r1",
+              "frame_id": 1482,
+              "sha256": "53d2ceb5cea1b9990e9d7571eae1d918a8a4e8e15f6bb1a5c3f8adda9e612255",
+              "sim_s": 76.4,
+              "phase": "align"
+            },
+            "r2": null
+          }
+        },
+        "regrasp": {
+          "n": 0,
+          "N": 1,
+          "first_supported_t": null
+        },
+        "fresh_go_ack": {
+          "n": 0,
+          "N": 1,
+          "permits": []
+        },
+        "fresh_go_ack_continue": {
+          "n": 0,
+          "N": 1,
+          "additional_distance_m": 0.0,
+          "additional_path_m": 0.0
+        }
+      },
+      "fall": {
+        "n": 0,
+        "N": 1,
+        "unsupported_descent_max_m": 0,
+        "first_t": null
+      },
+      "distance": {
+        "contact_supported_path_m": 0.15473569125923567,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.15473569125923567
+        },
+        "segment_excursion_m": {
+          "0": 0.15385841151656413
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 14,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 5,
+          "lower": 7
+        },
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 8,
+        "rejected_commands_with_live_heartbeat": 2
+      },
+      "model": {
+        "calls": 26,
+        "tokens": 199808,
+        "response_wall_s": {
+          "n": 26,
+          "mean": 3.7874852307692306,
+          "median": 3.3345895,
+          "max": 6.896308
+        },
+        "API_errors": 0,
+        "failed_replies": 1,
+        "pending_at_exception": 2,
+        "upstream_finish_verified": false,
+        "provider_billing_verified": false
+      },
+      "messages": {
+        "sent": 6,
+        "unique_delivered": 6,
+        "delivery_edges": 6,
+        "saved_accepted_messages": 0,
+        "saved_report_finalized": false,
+        "source": "scheduler message deliveries, channel.sent; unfinalized counters preserved separately"
+      },
+      "pulse_counts": {
+        "r1": {
+          "moving_n": 12,
+          "zero_n": 1
+        },
+        "r2": {
+          "moving_n": 12,
+          "zero_n": 1
+        }
+      },
+      "initial_check": {
+        "status": "PASS",
+        "checked_after_s": 182.1452016250114,
+        "first_sim_s": 1.0,
+        "first_frames": 21,
+        "last_sim_s": 28.0,
+        "last_frames": 561,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8433890187680818,
+              0.07008309555033294,
+              0.03193158999447647
+            ],
+            "base_delta_m": 0.03962421665918614,
+            "arm_delta_m": 0.11456216692351587,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7643587424431664,
+              0.02806699488777902,
+              0.031955511073956624
+            ],
+            "base_delta_m": 0.049970047346683,
+            "arm_delta_m": 0.12319535243814221,
+            "commands": 716,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        },
+        "log_exceptions": []
+      },
+      "raw": {
+        "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-r2-structured-s601-v174/raw",
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s4live8-r2-structured-s601-v174/raw",
+        "result_sha256": "e957ebe89cead49819b135a9581cc7de1cec91c297fb0fbb8cc2917220d34736",
+        "manifest_sha256": "7a88f1e8a7b66523cd97538c5ffa379a5d311f44193471ba16edf96ffae66380",
+        "verified_manifest_files": 4590,
+        "bytes": 138217224
+      },
+      "exit_to_fetch_start_s": 6.909481525421143,
+      "heartbeat_rejection_counts": {
+        "n": 7,
+        "by_reason": {
+          "UNADMITTED_OR_STALE_CARRY_RGB": 7
+        }
+      }
+    },
+    {
+      "name": "s4live8-r2-no_comm-s602-v174",
+      "condition": "no_comm",
+      "seed": 602,
+      "status": "HOST_ERROR",
+      "cause": "UNMEASURED_V3_CAMERA_POSTURE_AFTER_RELEASE",
+      "exit": "1",
+      "check_sim_s": 66.95,
+      "wall_s": 444.40034682199985,
+      "metrics": {
+        "claim": {
+          "n": 1,
+          "N": 1
+        },
+        "go_ack": {
+          "n": 1,
+          "N": 1
+        },
+        "simultaneous_departure": {
+          "n": 1,
+          "N": 1,
+          "first_command_t": {
+            "r1": 40.7,
+            "r2": 40.7
+          }
+        },
+        "carry_20mm": {
+          "n": 1,
+          "N": 1,
+          "excursion_m": 0.15448291594519312,
+          "contact_supported_samples": 54,
+          "first_carry_window": [
+            40.5,
+            43.2
+          ]
+        },
+        "lowering": {
+          "n": 1,
+          "N": 1,
+          "entered": 1,
+          "stable_floor_placement": true,
+          "drop": false,
+          "drop_first_t": null
+        },
+        "reobserve": {
+          "n": 0,
+          "N": 1,
+          "own_frame_receipts": {
+            "r1": {
+              "robot_id": "r1",
+              "frame_id": 1340,
+              "sha256": "a58e92c0311d4e600a14168cfc31d45e1d84a3cb57d708a88467fcfefa332ffc",
+              "sim_s": 69.3,
+              "phase": "align"
+            },
+            "r2": null
+          }
+        },
+        "regrasp": {
+          "n": 0,
+          "N": 1,
+          "first_supported_t": null
+        },
+        "fresh_go_ack": {
+          "n": 0,
+          "N": 1,
+          "permits": []
+        },
+        "fresh_go_ack_continue": {
+          "n": 0,
+          "N": 1,
+          "additional_distance_m": 0.0,
+          "additional_path_m": 0.0
+        }
+      },
+      "fall": {
+        "n": 0,
+        "N": 1,
+        "unsupported_descent_max_m": 0,
+        "first_t": null
+      },
+      "distance": {
+        "contact_supported_path_m": 0.15487853528922124,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.15487853528922124
+        },
+        "segment_excursion_m": {
+          "0": 0.15448291594519312
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 16,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 6,
+          "lower": 8
+        },
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 10,
+        "rejected_commands_with_live_heartbeat": 2
+      },
+      "model": {
+        "calls": 27,
+        "tokens": 187588,
+        "response_wall_s": {
+          "n": 27,
+          "mean": 3.8563746666666665,
+          "median": 3.351402,
+          "max": 13.308904
+        },
+        "API_errors": 0,
+        "failed_replies": 0,
+        "pending_at_exception": 3,
+        "upstream_finish_verified": false,
+        "provider_billing_verified": false
+      },
+      "messages": {
+        "sent": 0,
+        "unique_delivered": 0,
+        "delivery_edges": 0,
+        "saved_accepted_messages": 0,
+        "saved_report_finalized": false,
+        "source": "scheduler message deliveries, channel.sent; unfinalized counters preserved separately"
+      },
+      "pulse_counts": {
+        "r1": {
+          "moving_n": 12,
+          "zero_n": 1
+        },
+        "r2": {
+          "moving_n": 12,
+          "zero_n": 1
+        }
+      },
+      "initial_check": {
+        "status": "PASS",
+        "checked_after_s": 182.1451873339829,
+        "first_sim_s": 1.0,
+        "first_frames": 21,
+        "last_sim_s": 28.0,
+        "last_frames": 561,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.834426601047189,
+              0.0813747562266903,
+              0.03189458054555777
+            ],
+            "base_delta_m": 0.02816689543655628,
+            "arm_delta_m": 0.10491406269203929,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.757146304418792,
+              0.03644614051336855,
+              0.03192187317873254
+            ],
+            "base_delta_m": 0.06023891191131925,
+            "arm_delta_m": 0.13142325999296073,
+            "commands": 716,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        },
+        "log_exceptions": []
+      },
+      "raw": {
+        "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-r2-no_comm-s602-v174/raw",
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s4live8-r2-no_comm-s602-v174/raw",
+        "result_sha256": "20bddbf8f7970b521d214a25a1e11712448be083849996eba17ea9de2f532e03",
+        "manifest_sha256": "a6cb0a9a7eb99b19fe571ce479fc07e1b545ee0ed10d338ce2cc5905b833fc4f",
+        "verified_manifest_files": 4167,
+        "bytes": 124971726
+      },
+      "exit_to_fetch_start_s": 0.15862226486206055,
+      "heartbeat_rejection_counts": {
+        "n": 6,
+        "by_reason": {
+          "UNADMITTED_OR_STALE_CARRY_RGB": 6
+        }
+      }
+    },
+    {
+      "name": "s4live8-r2-peer_ko-s602-v174",
+      "condition": "peer_ko",
+      "seed": 602,
+      "status": "HOST_ERROR",
+      "cause": "UNMEASURED_V3_CAMERA_POSTURE_AFTER_RELEASE",
+      "exit": "1",
+      "check_sim_s": 70.45,
+      "wall_s": 485.98050229800174,
+      "metrics": {
+        "claim": {
+          "n": 1,
+          "N": 1
+        },
+        "go_ack": {
+          "n": 1,
+          "N": 1
+        },
+        "simultaneous_departure": {
+          "n": 1,
+          "N": 1,
+          "first_command_t": {
+            "r1": 44.2,
+            "r2": 44.2
+          }
+        },
+        "carry_20mm": {
+          "n": 1,
+          "N": 1,
+          "excursion_m": 0.1538941425153388,
+          "contact_supported_samples": 54,
+          "first_carry_window": [
+            44.0,
+            46.7
+          ]
+        },
+        "lowering": {
+          "n": 1,
+          "N": 1,
+          "entered": 1,
+          "stable_floor_placement": true,
+          "drop": false,
+          "drop_first_t": null
+        },
+        "reobserve": {
+          "n": 0,
+          "N": 1,
+          "own_frame_receipts": {
+            "r1": {
+              "robot_id": "r1",
+              "frame_id": 1410,
+              "sha256": "39b349cf821c452c1a6317c9675d5f3cc550f1a7f9c78410db7a089228d275ee",
+              "sim_s": 72.8,
+              "phase": "align"
+            },
+            "r2": null
+          }
+        },
+        "regrasp": {
+          "n": 0,
+          "N": 1,
+          "first_supported_t": null
+        },
+        "fresh_go_ack": {
+          "n": 0,
+          "N": 1,
+          "permits": []
+        },
+        "fresh_go_ack_continue": {
+          "n": 0,
+          "N": 1,
+          "additional_distance_m": 0.0,
+          "additional_path_m": 0.0
+        }
+      },
+      "fall": {
+        "n": 0,
+        "N": 1,
+        "unsupported_descent_max_m": 0,
+        "first_t": null
+      },
+      "distance": {
+        "contact_supported_path_m": 0.15469889501840403,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.15469889501840403
+        },
+        "segment_excursion_m": {
+          "0": 0.1538941425153388
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 13,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 5,
+          "lower": 6
+        },
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 6,
+        "rejected_commands_with_live_heartbeat": 3
+      },
+      "model": {
+        "calls": 25,
+        "tokens": 195189,
+        "response_wall_s": {
+          "n": 25,
+          "mean": 4.6211211599999995,
+          "median": 4.02723,
+          "max": 10.048755
+        },
+        "API_errors": 0,
+        "failed_replies": 0,
+        "pending_at_exception": 2,
+        "upstream_finish_verified": false,
+        "provider_billing_verified": false
+      },
+      "messages": {
+        "sent": 14,
+        "unique_delivered": 13,
+        "delivery_edges": 15,
+        "saved_accepted_messages": 0,
+        "saved_report_finalized": false,
+        "source": "scheduler message deliveries, channel.sent; unfinalized counters preserved separately"
+      },
+      "pulse_counts": {
+        "r1": {
+          "moving_n": 12,
+          "zero_n": 1
+        },
+        "r2": {
+          "moving_n": 12,
+          "zero_n": 1
+        }
+      },
+      "initial_check": {
+        "status": "PASS",
+        "checked_after_s": 182.1451972500072,
+        "first_sim_s": 1.0,
+        "first_frames": 21,
+        "last_sim_s": 27.0,
+        "last_frames": 541,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8445838627826424,
+              0.07095510442577006,
+              0.03193115451901186
+            ],
+            "base_delta_m": 0.04044540027014346,
+            "arm_delta_m": 0.11560217001364424,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7652868873809882,
+              0.028055188125190367,
+              0.03193542695171198
+            ],
+            "base_delta_m": 0.04912753157057478,
+            "arm_delta_m": 0.12216238006540181,
+            "commands": 716,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        },
+        "log_exceptions": []
+      },
+      "raw": {
+        "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-r2-peer_ko-s602-v174/raw",
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s4live8-r2-peer_ko-s602-v174/raw",
+        "result_sha256": "74231cd5e54c17d86ca7bc03f7574e44029cbfc0abd80abd07ce13e2a8e9dc2c",
+        "manifest_sha256": "932253f096eafbdbc75b354cf95f49eaaec98e36608f1f0707163b68526d84ea",
+        "verified_manifest_files": 4371,
+        "bytes": 132600548
+      },
+      "exit_to_fetch_start_s": 1.616640329360962,
+      "heartbeat_rejection_counts": {
+        "n": 7,
+        "by_reason": {
+          "UNADMITTED_OR_STALE_CARRY_RGB": 7
+        }
+      }
+    },
+    {
+      "name": "s4live8-r2-leader_ko-s602-v174",
+      "condition": "leader_ko",
+      "seed": 602,
+      "status": "PAIR_STOP",
+      "cause": "GO_ACK_NOTIFICATION_MISSING_NO_RETRY",
+      "exit": "0",
+      "check_sim_s": 50.05,
+      "wall_s": 290.55207084299946,
+      "metrics": {
+        "claim": {
+          "n": 1,
+          "N": 1
+        },
+        "go_ack": {
+          "n": 0,
+          "N": 1
+        },
+        "simultaneous_departure": {
+          "n": 0,
+          "N": 1,
+          "first_command_t": {
+            "r1": null,
+            "r2": null
+          }
+        },
+        "carry_20mm": {
+          "n": 0,
+          "N": 1,
+          "excursion_m": 0.0,
+          "contact_supported_samples": 0,
+          "first_carry_window": null
+        },
+        "lowering": {
+          "n": 0,
+          "N": 1,
+          "entered": 0,
+          "stable_floor_placement": false,
+          "drop": false,
+          "drop_first_t": null
+        },
+        "reobserve": {
+          "n": 0,
+          "N": 1,
+          "own_frame_receipts": {}
+        },
+        "regrasp": {
+          "n": 0,
+          "N": 1,
+          "first_supported_t": null
+        },
+        "fresh_go_ack": {
+          "n": 0,
+          "N": 1,
+          "permits": []
+        },
+        "fresh_go_ack_continue": {
+          "n": 0,
+          "N": 1,
+          "additional_distance_m": 0.0,
+          "additional_path_m": 0.0
+        }
+      },
+      "fall": {
+        "n": 0,
+        "N": 1,
+        "unsupported_descent_max_m": 0,
+        "first_t": null
+      },
+      "distance": {
+        "contact_supported_path_m": 0,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {},
+        "segment_excursion_m": {},
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 0,
+        "by_phase": {},
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 0,
+        "rejected_commands_with_live_heartbeat": 0
+      },
+      "model": {
+        "calls": 8,
+        "tokens": 56069,
+        "response_wall_s": {
+          "n": 8,
+          "mean": 4.00117825,
+          "median": 3.9860749999999996,
+          "max": 4.764804
+        },
+        "API_errors": 0,
+        "failed_replies": 1,
+        "pending_at_exception": 0,
+        "upstream_finish_verified": false,
+        "provider_billing_verified": false
+      },
+      "messages": {
+        "sent": 4,
+        "unique_delivered": 4,
+        "delivery_edges": 5,
+        "saved_accepted_messages": 4,
+        "saved_report_finalized": true,
+        "source": "scheduler message deliveries, channel.sent; unfinalized counters preserved separately"
+      },
+      "pulse_counts": {
+        "r1": {
+          "moving_n": 0,
+          "zero_n": 0
+        },
+        "r2": {
+          "moving_n": 0,
+          "zero_n": 0
+        }
+      },
+      "initial_check": {
+        "status": "PASS",
+        "checked_after_s": 182.14517166698352,
+        "first_sim_s": 1.0,
+        "first_frames": 21,
+        "last_sim_s": 28.0,
+        "last_frames": 561,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.834426601047189,
+              0.0813747562266903,
+              0.03189458054555777
+            ],
+            "base_delta_m": 0.02816689543655628,
+            "arm_delta_m": 0.10491406269203929,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.757146304418792,
+              0.03644614051336855,
+              0.03192187317873254
+            ],
+            "base_delta_m": 0.06023891191131925,
+            "arm_delta_m": 0.13142325999296073,
+            "commands": 716,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        },
+        "log_exceptions": []
+      },
+      "raw": {
+        "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-r2-leader_ko-s602-v174/raw",
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s4live8-r2-leader_ko-s602-v174/raw",
+        "result_sha256": "b444837ee4bae36de9182b8fcff9e17e8e9e5c88d974d6808fe1e88e26aa0757",
+        "manifest_sha256": "47953a301f69943711f7a753c69824396b631f5508acadfce7f55f9c51693aff",
+        "verified_manifest_files": 3096,
+        "bytes": 91310726
+      },
+      "exit_to_fetch_start_s": 4.178915739059448,
+      "heartbeat_rejection_counts": {
+        "n": 5,
+        "by_reason": {
+          "UNADMITTED_OR_STALE_CARRY_RGB": 5
+        }
+      }
+    },
+    {
+      "name": "s4live8-r2-structured-s602-v174",
+      "condition": "structured",
+      "seed": 602,
+      "status": "HOST_ERROR",
+      "cause": "UNMEASURED_V3_CAMERA_POSTURE_AFTER_RELEASE",
+      "exit": "1",
+      "check_sim_s": 74.05000000000001,
+      "wall_s": 484.87802881899916,
+      "metrics": {
+        "claim": {
+          "n": 1,
+          "N": 1
+        },
+        "go_ack": {
+          "n": 1,
+          "N": 1
+        },
+        "simultaneous_departure": {
+          "n": 1,
+          "N": 1,
+          "first_command_t": {
+            "r1": 47.9,
+            "r2": 47.9
+          }
+        },
+        "carry_20mm": {
+          "n": 1,
+          "N": 1,
+          "excursion_m": 0.153310906167599,
+          "contact_supported_samples": 54,
+          "first_carry_window": [
+            47.7,
+            50.4
+          ]
+        },
+        "lowering": {
+          "n": 1,
+          "N": 1,
+          "entered": 1,
+          "stable_floor_placement": true,
+          "drop": false,
+          "drop_first_t": null
+        },
+        "reobserve": {
+          "n": 0,
+          "N": 1,
+          "own_frame_receipts": {
+            "r1": {
+              "robot_id": "r1",
+              "frame_id": 1482,
+              "sha256": "269c64c18e86c4beb6558b7bc3e93899c29356f373fafe68eb9aa141c2286963",
+              "sim_s": 76.4,
+              "phase": "align"
+            },
+            "r2": null
+          }
+        },
+        "regrasp": {
+          "n": 0,
+          "N": 1,
+          "first_supported_t": null
+        },
+        "fresh_go_ack": {
+          "n": 0,
+          "N": 1,
+          "permits": []
+        },
+        "fresh_go_ack_continue": {
+          "n": 0,
+          "N": 1,
+          "additional_distance_m": 0.0,
+          "additional_path_m": 0.0
+        }
+      },
+      "fall": {
+        "n": 0,
+        "N": 1,
+        "unsupported_descent_max_m": 0,
+        "first_t": null
+      },
+      "distance": {
+        "contact_supported_path_m": 0.1539745709577951,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.1539745709577951
+        },
+        "segment_excursion_m": {
+          "0": 0.153310906167599
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 15,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 6,
+          "lower": 7
+        },
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 9,
+        "rejected_commands_with_live_heartbeat": 2
+      },
+      "model": {
+        "calls": 27,
+        "tokens": 213649,
+        "response_wall_s": {
+          "n": 27,
+          "mean": 4.187625148148149,
+          "median": 3.648254,
+          "max": 10.204974
+        },
+        "API_errors": 0,
+        "failed_replies": 0,
+        "pending_at_exception": 2,
+        "upstream_finish_verified": false,
+        "provider_billing_verified": false
+      },
+      "messages": {
+        "sent": 8,
+        "unique_delivered": 8,
+        "delivery_edges": 8,
+        "saved_accepted_messages": 0,
+        "saved_report_finalized": false,
+        "source": "scheduler message deliveries, channel.sent; unfinalized counters preserved separately"
+      },
+      "pulse_counts": {
+        "r1": {
+          "moving_n": 12,
+          "zero_n": 1
+        },
+        "r2": {
+          "moving_n": 12,
+          "zero_n": 1
+        }
+      },
+      "initial_check": {
+        "status": "PASS",
+        "checked_after_s": 182.14520591701148,
+        "first_sim_s": 1.0,
+        "first_frames": 21,
+        "last_sim_s": 28.0,
+        "last_frames": 561,
+        "robots": {
+          "r1": {
+            "base_xyz_m": [
+              0.8433742625081714,
+              0.07120084005322984,
+              0.03198430402862182
+            ],
+            "base_delta_m": 0.03922290361732407,
+            "arm_delta_m": 0.11487243609599081,
+            "commands": 713,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_xyz_m": [
+              1.7619014469261742,
+              0.027761667831181544,
+              0.031944072795023905
+            ],
+            "base_delta_m": 0.052078472433418684,
+            "arm_delta_m": 0.12518939957335784,
+            "commands": 716,
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        },
+        "log_exceptions": []
+      },
+      "raw": {
+        "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live8-r2-structured-s602-v174/raw",
+        "remote_path": "/home/ubuntu/ugrp-sim/runs/s4live8-r2-structured-s602-v174/raw",
+        "result_sha256": "35c94c81c7791918ed8efaaa91eb35808bb60de408906eb8992f988b7d3c6b58",
+        "manifest_sha256": "51d956f2818ee8ef69ebae811046d13a2d263ec5fb8ea2168e3c66b4a2ad4543",
+        "verified_manifest_files": 4593,
+        "bytes": 137936830
+      },
+      "exit_to_fetch_start_s": 3.907884120941162,
+      "heartbeat_rejection_counts": {
+        "n": 8,
+        "by_reason": {
+          "UNADMITTED_OR_STALE_CARRY_RGB": 8
+        }
+      }
+    }
+  ],
+  "next_candidates": [
+    "S3 existing inspect_before_look toggle: registered own-command inspect move-settle-fresh-look; S3 control source unchanged",
+    "S4 bounded idempotent GO/ACK re-request after invalid reply; keep channel notification requirement",
+    "Failure finalization: censor pending scheduler calls without releasing commands and retain delivered-message counts"
+  ],
+  "references": [
+    {
+      "url": "https://www.cs.cmu.edu/~lew/PUBLICATION%20PDFs/VISUAL%20SERVOING/JRA%201987.pdf",
+      "verified": true,
+      "scope": "Weiss et al. 1987 p407 static look-and-move; upstream existing inspect-before-look candidate"
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+      "verified": true,
+      "scope": "idempotency/retry safety; proposed application-level fresh LLM request, bounded same-epoch GO/ACK validation; not implemented"
+    }
+  ]
+}

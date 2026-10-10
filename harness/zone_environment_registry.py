@@ -35,6 +35,11 @@ def environment_entry(map_id, *, root=ROOT):
     if not isinstance(map_id, str) or not map_id or '/' in map_id or map_id.startswith('.'):
         raise ValueError(f'bad map_id: {map_id!r}')
     root = Path(root)
+    from harness import e2e_environment as e2e
+    if map_id == e2e.MAP_ID:
+        _, row, _ = e2e.resolve(root=root)
+        return {**row, 'map_file': row['file'], 'file_sha256': row['sha256'],
+                'catalog': 'e2e', 'catalog_file': e2e.REGISTRY, 'catalog_sha256': _sha(root/e2e.REGISTRY)}
     reg = registry(root)
     if map_id not in reg['maps']:
         from harness.zone_final_env import V3_MAP_PARENTS
@@ -108,6 +113,8 @@ def maps_dir_for(map_id, *, root=ROOT):
 def load_scenario(scenario_id):
     """Explicit version routing; the legacy loader and its default list stay frozen."""
     from harness.zone_study_scenarios import load, SCENARIO_DIR
+    if scenario_id == 'e2e_one_beam_ownmap':
+        return load(scenario_id, directory=ROOT/'configs/zone_study_dev')
     directory = SCENARIO_DIR
     for version in (2, 3, 4):
         if scenario_id.endswith(f'_v{version}'):

@@ -1,0 +1,2759 @@
+{
+  "schema": "ugrp.s3fix22.dev_summary.v1",
+  "host": "oracle-x86",
+  "source_sha": "bfb79622af2c288278afe2788d9dd97c8e311cf2",
+  "bundle": "zone-s3-route-resume-v172",
+  "n": 24,
+  "by_candidate": {
+    "baseline": {
+      "n": 6,
+      "reentry": 6,
+      "realigned_after_release": 0,
+      "second_leg_started": 0,
+      "premature_complete": 4,
+      "unmeasured_camera_host": 2,
+      "probe_horizon": 0,
+      "full_route_success": 0,
+      "setdown": 4,
+      "host_errors": 2,
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "first_corner_reached": 6,
+      "post_release_hover_by_robot": {
+        "r1": 0,
+        "r2": 0
+      }
+    },
+    "completion": {
+      "n": 6,
+      "reentry": 6,
+      "realigned_after_release": 0,
+      "second_leg_started": 0,
+      "premature_complete": 0,
+      "unmeasured_camera_host": 6,
+      "probe_horizon": 0,
+      "full_route_success": 0,
+      "setdown": 0,
+      "host_errors": 6,
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "first_corner_reached": 6,
+      "post_release_hover_by_robot": {
+        "r1": 0,
+        "r2": 0
+      }
+    },
+    "inspect": {
+      "n": 6,
+      "reentry": 6,
+      "realigned_after_release": 1,
+      "second_leg_started": 0,
+      "premature_complete": 4,
+      "unmeasured_camera_host": 0,
+      "probe_horizon": 2,
+      "full_route_success": 0,
+      "setdown": 6,
+      "host_errors": 0,
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "first_corner_reached": 6,
+      "post_release_hover_by_robot": {
+        "r1": 2,
+        "r2": 1
+      }
+    },
+    "combined": {
+      "n": 6,
+      "reentry": 6,
+      "realigned_after_release": 3,
+      "second_leg_started": 0,
+      "premature_complete": 0,
+      "unmeasured_camera_host": 0,
+      "probe_horizon": 6,
+      "full_route_success": 0,
+      "setdown": 6,
+      "host_errors": 0,
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "first_corner_reached": 6,
+      "post_release_hover_by_robot": {
+        "r1": 4,
+        "r2": 3
+      }
+    }
+  },
+  "counts": {
+    "initial_checks_healthy": 24,
+    "files_verified": 83708,
+    "all_raw_retrieved": true,
+    "all_hashes_match": true,
+    "root_metadata_files_verified": 168
+  },
+  "evaluation_sha": "e6a863c9481288105a745cca53594ba05e6a9a7a",
+  "local_tests": {
+    "files": [
+      "tests/test_s3_route_resume.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "passed": 26,
+    "wall_s": 44.49,
+    "Mac_physics": false,
+    "evaluation_scope_regression": {
+      "file": "tests/test_s3_route_resume.py",
+      "selector": "evaluator",
+      "passed": 1
+    }
+  },
+  "raw_cause_before": [
+    {
+      "name": "s3fix21-multi-left-c0-r2",
+      "status": "DEV_STAGE_FINISHED",
+      "elapsed_sim_s": 55.6,
+      "expected_legs": 2,
+      "observed_legs": 1,
+      "first_released_seg": 0,
+      "post_release_seg": 1,
+      "old_stop_expression": "1+1>=2",
+      "last_issued": {
+        "1": 2000,
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1544
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-left-c0-r2/raw",
+      "manifest_sha256": "3fe425f7ba2c8071a38e81ef4749a9546531c1ae9dc4a71abb5ec8dc368c8f13"
+    },
+    {
+      "name": "s3fix21-multi-right-c3-r2",
+      "status": "DEV_STAGE_FINISHED",
+      "elapsed_sim_s": 57.1,
+      "expected_legs": 2,
+      "observed_legs": 1,
+      "first_released_seg": 0,
+      "post_release_seg": 1,
+      "old_stop_expression": "1+1>=2",
+      "last_issued": {
+        "1": 2000,
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1616
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-right-c3-r2/raw",
+      "manifest_sha256": "ee389c1deaf7da37223d154c4797ecfe2b3a991767d56f04c2f350b373bba89a"
+    },
+    {
+      "name": "s3fix21-multi-three-c5-r2",
+      "status": "HOST_ERROR",
+      "elapsed_sim_s": 56.15,
+      "expected_legs": 3,
+      "observed_legs": 1,
+      "first_released_seg": 0,
+      "post_release_seg": 1,
+      "old_stop_expression": "1+1>=3",
+      "last_issued": {
+        "1": 2000,
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1568
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-three-c5-r2/raw",
+      "manifest_sha256": "d73baeb6caa230fe2081d0010b87baccd4af9d6fa5a2220ecb6ae106e5655328"
+    }
+  ],
+  "default_off_byte_comparison": [
+    {
+      "name": "s3fix22-baseline-multi-left-s14201-r1",
+      "reference": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-left-c0-r2/raw",
+      "matches": {
+        "stage-states.json": true,
+        "robots/r1/commands.jsonl": true,
+        "robots/r2/commands.jsonl": true,
+        "robots/r3/commands.jsonl": true
+      }
+    },
+    {
+      "name": "s3fix22-baseline-multi-right-s14204-r1",
+      "reference": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-right-c3-r2/raw",
+      "matches": {
+        "stage-states.json": true,
+        "robots/r1/commands.jsonl": true,
+        "robots/r2/commands.jsonl": true,
+        "robots/r3/commands.jsonl": true
+      }
+    },
+    {
+      "name": "s3fix22-baseline-multi-three-s14206-r1",
+      "reference": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-three-c5-r2/raw",
+      "matches": {
+        "stage-states.json": true,
+        "robots/r1/commands.jsonl": true,
+        "robots/r2/commands.jsonl": true,
+        "robots/r3/commands.jsonl": true
+      }
+    }
+  ],
+  "wall_sim": {
+    "sum_wall_s": 9744.206341103996,
+    "sum_sim_s": 1379.0,
+    "median_wall_per_sim": 7.058747584159361
+  },
+  "scope": "No premature completion or unmeasured camera host; keep thresholds/seeds/pulse profiles fixed. Full-route success requires all fixed corners <=20mm and final settled setdown; horizon is incomplete, not success. Only command-index and issued-inspect-before-new-frame fixes; default off.",
+  "runs": [
+    {
+      "name": "s3fix22-baseline-multi-left-s14201-r1",
+      "candidate": "baseline",
+      "seed": 14201,
+      "route_case": "multi-left",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 55.6,
+      "wall_s": 399.3830233839999,
+      "cause": "premature_complete",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": true,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.014201318925026706,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-baseline-multi-left-s14201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03938208414813765,
+            "finger_xyz_m": 0.1612237614574404
+          },
+          "r2": {
+            "base_xyz_m": 0.050283033367408185,
+            "finger_xyz_m": 0.1696543611556711
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.04718778799997
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-baseline-multi-left-s14201-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-baseline-multi-left-s14201-r1/raw",
+        "manifest_sha256": "db03d1f78ad9f60572ffe1211e4c3c3b5bbfc122993da9f59740213ba79662ae",
+        "files_verified": 3376,
+        "all_hashes_match": true
+      },
+      "restore_counts": {},
+      "first_restore": {}
+    },
+    {
+      "name": "s3fix22-baseline-multi-left-s15201-r1",
+      "candidate": "baseline",
+      "seed": 15201,
+      "route_case": "multi-left",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 55.6,
+      "wall_s": 390.76528450099977,
+      "cause": "premature_complete",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": true,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.013593297847527896,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-baseline-multi-left-s15201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03962421446767674,
+            "finger_xyz_m": 0.16126080352734043
+          },
+          "r2": {
+            "base_xyz_m": 0.05008558498074198,
+            "finger_xyz_m": 0.16979688751073096
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.03762472399922
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-baseline-multi-left-s15201-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-baseline-multi-left-s15201-r1/raw",
+        "manifest_sha256": "846b8d59638266dbe3e6f7c9af1999f2dcbb1804a3ce32186e6b9e63ab82267b",
+        "files_verified": 3376,
+        "all_hashes_match": true
+      },
+      "restore_counts": {},
+      "first_restore": {}
+    },
+    {
+      "name": "s3fix22-baseline-multi-right-s14204-r1",
+      "candidate": "baseline",
+      "seed": 14204,
+      "route_case": "multi-right",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 57.1,
+      "wall_s": 408.10519457900045,
+      "cause": "premature_complete",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": true,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.016468964433528514,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-baseline-multi-right-s14204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.056681025490847664,
+            "finger_xyz_m": 0.1724748412718958
+          },
+          "r2": {
+            "base_xyz_m": 0.0763922293384913,
+            "finger_xyz_m": 0.183756883841371
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.04972756400002
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-baseline-multi-right-s14204-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-baseline-multi-right-s14204-r1/raw",
+        "manifest_sha256": "8f57d6a668ca178b60d586bb6fac8d8a81fee33359e5e68c3feb87438ffa575a",
+        "files_verified": 3465,
+        "all_hashes_match": true
+      },
+      "restore_counts": {},
+      "first_restore": {}
+    },
+    {
+      "name": "s3fix22-baseline-multi-right-s15204-r1",
+      "candidate": "baseline",
+      "seed": 15204,
+      "route_case": "multi-right",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 57.1,
+      "wall_s": 399.0035009909998,
+      "cause": "premature_complete",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": true,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.015214755067825896,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-baseline-multi-right-s15204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.05592778093533332,
+            "finger_xyz_m": 0.1723985310344831
+          },
+          "r2": {
+            "base_xyz_m": 0.07410506023202489,
+            "finger_xyz_m": 0.1838383202487547
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.03086590800012
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-baseline-multi-right-s15204-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-baseline-multi-right-s15204-r1/raw",
+        "manifest_sha256": "eb5270d78822ec2a127053a396470f9b2e87ab297cee3854bde1b0c94e16d79c",
+        "files_verified": 3465,
+        "all_hashes_match": true
+      },
+      "restore_counts": {},
+      "first_restore": {}
+    },
+    {
+      "name": "s3fix22-baseline-multi-three-s14206-r1",
+      "candidate": "baseline",
+      "seed": 14206,
+      "route_case": "multi-three",
+      "status": "HOST_ERROR",
+      "sim_s": 56.15,
+      "wall_s": 401.5505807790005,
+      "cause": "camera_posture_contract",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": true,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": false,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.6,
+          "end_sim_s": 32.3,
+          "endpoint_error_m": 0.013375002822669865,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-baseline-multi-three-s14206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.0314225122550003,
+            "finger_xyz_m": 0.16148417833319798
+          },
+          "r2": {
+            "base_xyz_m": 0.07792914179777854,
+            "finger_xyz_m": 0.18461016019322463
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.03374185200028
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": null,
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-baseline-multi-three-s14206-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-baseline-multi-three-s14206-r1/raw",
+        "manifest_sha256": "26017ab308efd0c6f2aa2359d05e5e0af724b22887a64f7195bb5d0468d08300",
+        "files_verified": 3411,
+        "all_hashes_match": true
+      },
+      "restore_counts": {},
+      "first_restore": {}
+    },
+    {
+      "name": "s3fix22-baseline-multi-three-s15206-r1",
+      "candidate": "baseline",
+      "seed": 15206,
+      "route_case": "multi-three",
+      "status": "HOST_ERROR",
+      "sim_s": 55.15,
+      "wall_s": 392.7319837569994,
+      "cause": "camera_posture_contract",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": true,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": false,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 28.6,
+          "end_sim_s": 31.3,
+          "endpoint_error_m": 0.018980965203727513,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-baseline-multi-three-s15206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.028262064164973674,
+            "finger_xyz_m": 0.1613156840312482
+          },
+          "r2": {
+            "base_xyz_m": 0.058525854697419444,
+            "finger_xyz_m": 0.16919617511927135
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.068760526
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": null,
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-baseline-multi-three-s15206-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-baseline-multi-three-s15206-r1/raw",
+        "manifest_sha256": "73051b0436a2eff4201177da67e79bef6cd80d6698ad3ca313031162597390d6",
+        "files_verified": 3351,
+        "all_hashes_match": true
+      },
+      "restore_counts": {},
+      "first_restore": {}
+    },
+    {
+      "name": "s3fix22-combined-multi-left-s14201-r1",
+      "candidate": "combined",
+      "seed": 14201,
+      "route_case": "multi-left",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 60.0,
+      "wall_s": 413.49276834600005,
+      "cause": "probe_horizon",
+      "reentry": true,
+      "realigned_after_release": true,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": true
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": true,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.014201318925026706,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-combined-multi-left-s14201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03938208414813765,
+            "finger_xyz_m": 0.1612237614574404
+          },
+          "r2": {
+            "base_xyz_m": 0.050283033367408185,
+            "finger_xyz_m": 0.1696543611556711
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.05485819300065
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "pregrasp_descend",
+          "failure": null
+        },
+        "r2": {
+          "state": "pregrasp_descend",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-combined-multi-left-s14201-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-left-s14201-r1/raw",
+        "manifest_sha256": "6b828e89999e761ad49208a2688c4997963a1faccc8508007899fe1eb16ad59b",
+        "files_verified": 3640,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 1,
+        "r2": 1
+      },
+      "first_restore": {
+        "r1": {
+          "t": 58.0,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1544
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1544
+          },
+          "settled_after_s": 58.85
+        },
+        "r2": {
+          "t": 58.0,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1628
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1628
+          },
+          "settled_after_s": 58.85
+        }
+      }
+    },
+    {
+      "name": "s3fix22-combined-multi-left-s15201-r1",
+      "candidate": "combined",
+      "seed": 15201,
+      "route_case": "multi-left",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 60.0,
+      "wall_s": 414.3861632469998,
+      "cause": "probe_horizon",
+      "reentry": true,
+      "realigned_after_release": true,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": true
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": true,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.013593297847527896,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-combined-multi-left-s15201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03962421446767674,
+            "finger_xyz_m": 0.16126080352734043
+          },
+          "r2": {
+            "base_xyz_m": 0.05008558498074198,
+            "finger_xyz_m": 0.16979688751073096
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.08278965799946
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "pregrasp_descend",
+          "failure": null
+        },
+        "r2": {
+          "state": "pregrasp_descend",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-combined-multi-left-s15201-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-left-s15201-r1/raw",
+        "manifest_sha256": "9bd7c946f558ebccd101d5a37d7a355f3b6e4f8b7631f3f55bd913465302a134",
+        "files_verified": 3640,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 1,
+        "r2": 1
+      },
+      "first_restore": {
+        "r1": {
+          "t": 58.0,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1544
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1544
+          },
+          "settled_after_s": 58.85
+        },
+        "r2": {
+          "t": 58.0,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1628
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1628
+          },
+          "settled_after_s": 58.85
+        }
+      }
+    },
+    {
+      "name": "s3fix22-combined-multi-right-s14204-r1",
+      "candidate": "combined",
+      "seed": 14204,
+      "route_case": "multi-right",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 60.0,
+      "wall_s": 419.10697134400016,
+      "cause": "probe_horizon",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": true,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.016468964433528514,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-combined-multi-right-s14204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.056681025490847664,
+            "finger_xyz_m": 0.1724748412718958
+          },
+          "r2": {
+            "base_xyz_m": 0.0763922293384913,
+            "finger_xyz_m": 0.183756883841371
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.08277232100045
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-combined-multi-right-s14204-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-right-s14204-r1/raw",
+        "manifest_sha256": "cb4c84cd3ecbd5ab36184142b174d97f91083c0752d05af46a3ad7cb6bfd3970",
+        "files_verified": 3639,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 1,
+        "r2": 1
+      },
+      "first_restore": {
+        "r1": {
+          "t": 59.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1616
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1616
+          },
+          "settled_after_s": 60.35
+        },
+        "r2": {
+          "t": 59.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1680
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1680
+          },
+          "settled_after_s": 60.35
+        }
+      }
+    },
+    {
+      "name": "s3fix22-combined-multi-right-s15204-r1",
+      "candidate": "combined",
+      "seed": 15204,
+      "route_case": "multi-right",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 60.0,
+      "wall_s": 419.71793757699925,
+      "cause": "probe_horizon",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": true,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.015214755067825896,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-combined-multi-right-s15204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.05646840872928661,
+            "finger_xyz_m": 0.1723985310344831
+          },
+          "r2": {
+            "base_xyz_m": 0.07410506023202489,
+            "finger_xyz_m": 0.1838383202487547
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.04904099099986
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-combined-multi-right-s15204-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-right-s15204-r1/raw",
+        "manifest_sha256": "5be82c036086ae1615fa810096dc1889a51a6633bd8812da096bebbcbc79fdf5",
+        "files_verified": 3639,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 1,
+        "r2": 1
+      },
+      "first_restore": {
+        "r1": {
+          "t": 59.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1612
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1612
+          },
+          "settled_after_s": 60.35
+        },
+        "r2": {
+          "t": 59.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1684
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1684
+          },
+          "settled_after_s": 60.35
+        }
+      }
+    },
+    {
+      "name": "s3fix22-combined-multi-three-s14206-r1",
+      "candidate": "combined",
+      "seed": 14206,
+      "route_case": "multi-three",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 60.0,
+      "wall_s": 420.01067650000005,
+      "cause": "probe_horizon",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": true,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.6,
+          "end_sim_s": 32.3,
+          "endpoint_error_m": 0.013375002822669865,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-combined-multi-three-s14206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.0314225122550003,
+            "finger_xyz_m": 0.16148417833319798
+          },
+          "r2": {
+            "base_xyz_m": 0.07792914179777854,
+            "finger_xyz_m": 0.18461016019322463
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.05591146799998
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "pregrasp_descend",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-combined-multi-three-s14206-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-three-s14206-r1/raw",
+        "manifest_sha256": "69f34da398c44ec98b11fc9992ae4e23ce3bd99b498c2598fbfd8e963deff4e0",
+        "files_verified": 3639,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 1,
+        "r2": 1
+      },
+      "first_restore": {
+        "r1": {
+          "t": 58.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1568
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1568
+          },
+          "settled_after_s": 59.35
+        },
+        "r2": {
+          "t": 58.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1592
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1592
+          },
+          "settled_after_s": 59.35
+        }
+      }
+    },
+    {
+      "name": "s3fix22-combined-multi-three-s15206-r1",
+      "candidate": "combined",
+      "seed": 15206,
+      "route_case": "multi-three",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 60.0,
+      "wall_s": 419.0932044479996,
+      "cause": "probe_horizon",
+      "reentry": true,
+      "realigned_after_release": true,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": true
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": true,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 28.6,
+          "end_sim_s": 31.3,
+          "endpoint_error_m": 0.018980965203727513,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-combined-multi-three-s15206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.028262064164973674,
+            "finger_xyz_m": 0.1613156840312482
+          },
+          "r2": {
+            "base_xyz_m": 0.058525854697419444,
+            "finger_xyz_m": 0.16919617511927135
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.05504913500044
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "pregrasp_descend",
+          "failure": null
+        },
+        "r2": {
+          "state": "pregrasp_descend",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-combined-multi-three-s15206-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-three-s15206-r1/raw",
+        "manifest_sha256": "78b1eecccaf0ffbc5c1d827ee3e0fe7c84f9f3c5c713809643079e11e2937366",
+        "files_verified": 3639,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 1,
+        "r2": 1
+      },
+      "first_restore": {
+        "r1": {
+          "t": 57.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1568
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1568
+          },
+          "settled_after_s": 58.35
+        },
+        "r2": {
+          "t": 57.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1584
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1584
+          },
+          "settled_after_s": 58.35
+        }
+      }
+    },
+    {
+      "name": "s3fix22-completion-multi-left-s14201-r1",
+      "candidate": "completion",
+      "seed": 14201,
+      "route_case": "multi-left",
+      "status": "HOST_ERROR",
+      "sim_s": 55.65,
+      "wall_s": 401.15287349499977,
+      "cause": "camera_posture_contract",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": true,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": false,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.014201318925026706,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-completion-multi-left-s14201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03938208414813765,
+            "finger_xyz_m": 0.1612237614574404
+          },
+          "r2": {
+            "base_xyz_m": 0.050283033367408185,
+            "finger_xyz_m": 0.1696543611556711
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.03219104100026
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": null,
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-completion-multi-left-s14201-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-completion-multi-left-s14201-r1/raw",
+        "manifest_sha256": "722182640195c1b0511a90d45c904f0d38c9dc79c1e783263be9ca9bb1ab201c",
+        "files_verified": 3382,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-completion-multi-left-s15201-r1",
+      "candidate": "completion",
+      "seed": 15201,
+      "route_case": "multi-left",
+      "status": "HOST_ERROR",
+      "sim_s": 55.65,
+      "wall_s": 405.8980001580003,
+      "cause": "camera_posture_contract",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": true,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": false,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.013593297847527896,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-completion-multi-left-s15201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03962421446767674,
+            "finger_xyz_m": 0.16126080352734043
+          },
+          "r2": {
+            "base_xyz_m": 0.05008558498074198,
+            "finger_xyz_m": 0.16979688751073096
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.03148518800026
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": null,
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-completion-multi-left-s15201-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-completion-multi-left-s15201-r1/raw",
+        "manifest_sha256": "df942d4042ee316a9de12e14747cc31e0f64d1f212bc9d44c83a9ae7d18c1255",
+        "files_verified": 3382,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-completion-multi-right-s14204-r1",
+      "candidate": "completion",
+      "seed": 14204,
+      "route_case": "multi-right",
+      "status": "HOST_ERROR",
+      "sim_s": 57.15,
+      "wall_s": 408.9047971099999,
+      "cause": "camera_posture_contract",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": true,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": false,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.016468964433528514,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-completion-multi-right-s14204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.05703313187721814,
+            "finger_xyz_m": 0.1724748412718958
+          },
+          "r2": {
+            "base_xyz_m": 0.07736516189930681,
+            "finger_xyz_m": 0.183756883841371
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.05893045800076
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": null,
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-completion-multi-right-s14204-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-completion-multi-right-s14204-r1/raw",
+        "manifest_sha256": "e542d478bf0df2f85b7145e10ba2b0fc0fde183ad6eed50f11459fc747bf01d8",
+        "files_verified": 3471,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-completion-multi-right-s15204-r1",
+      "candidate": "completion",
+      "seed": 15204,
+      "route_case": "multi-right",
+      "status": "HOST_ERROR",
+      "sim_s": 57.15,
+      "wall_s": 401.24751307600036,
+      "cause": "camera_posture_contract",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": true,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": false,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.015214755067825896,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-completion-multi-right-s15204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.05646840872928661,
+            "finger_xyz_m": 0.1723985310344831
+          },
+          "r2": {
+            "base_xyz_m": 0.07410506023202489,
+            "finger_xyz_m": 0.1838383202487547
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.05528409
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": null,
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-completion-multi-right-s15204-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-completion-multi-right-s15204-r1/raw",
+        "manifest_sha256": "8e451c04ff50a3d2335be49dea2125b27d510702f0aa2c0f27de2cb940e7a07b",
+        "files_verified": 3471,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-completion-multi-three-s14206-r1",
+      "candidate": "completion",
+      "seed": 14206,
+      "route_case": "multi-three",
+      "status": "HOST_ERROR",
+      "sim_s": 56.15,
+      "wall_s": 404.184682391,
+      "cause": "camera_posture_contract",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": true,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": false,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.6,
+          "end_sim_s": 32.3,
+          "endpoint_error_m": 0.013375002822669865,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-completion-multi-three-s14206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.0314225122550003,
+            "finger_xyz_m": 0.16148417833319798
+          },
+          "r2": {
+            "base_xyz_m": 0.07792914179777854,
+            "finger_xyz_m": 0.18461016019322463
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.05337217399938
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": null,
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-completion-multi-three-s14206-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-completion-multi-three-s14206-r1/raw",
+        "manifest_sha256": "15a92f9b2faf44b32064c5a8a691fc5c7103b946db819378fcda66398a596dc9",
+        "files_verified": 3411,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-completion-multi-three-s15206-r1",
+      "candidate": "completion",
+      "seed": 15206,
+      "route_case": "multi-three",
+      "status": "HOST_ERROR",
+      "sim_s": 55.15,
+      "wall_s": 390.8108602329994,
+      "cause": "camera_posture_contract",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": true,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": false,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 28.6,
+          "end_sim_s": 31.3,
+          "endpoint_error_m": 0.018980965203727513,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-completion-multi-three-s15206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.028262064164973674,
+            "finger_xyz_m": 0.1613156840312482
+          },
+          "r2": {
+            "base_xyz_m": 0.058525854697419444,
+            "finger_xyz_m": 0.16919617511927135
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0623713269997
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": null,
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-completion-multi-three-s15206-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-completion-multi-three-s15206-r1/raw",
+        "manifest_sha256": "8a69b6c6b4f0fb199a7c8551f502100c32f1473b5ac33c0840a5a69db65be333",
+        "files_verified": 3351,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-inspect-multi-left-s14201-r1",
+      "candidate": "inspect",
+      "seed": 14201,
+      "route_case": "multi-left",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 55.6,
+      "wall_s": 398.8836719709998,
+      "cause": "premature_complete",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": true,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.014201318925026706,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-inspect-multi-left-s14201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03938208414813765,
+            "finger_xyz_m": 0.1612237614574404
+          },
+          "r2": {
+            "base_xyz_m": 0.050283033367408185,
+            "finger_xyz_m": 0.1696543611556711
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0569738109998
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-inspect-multi-left-s14201-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-inspect-multi-left-s14201-r1/raw",
+        "manifest_sha256": "5447fbb0af0b7efc80d2b73008559ae588b518784620d6997644ef5838574cbd",
+        "files_verified": 3376,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-inspect-multi-left-s15201-r1",
+      "candidate": "inspect",
+      "seed": 15201,
+      "route_case": "multi-left",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 55.6,
+      "wall_s": 399.5909760530003,
+      "cause": "premature_complete",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": true,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.013593297847527896,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-inspect-multi-left-s15201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03962421446767674,
+            "finger_xyz_m": 0.16126080352734043
+          },
+          "r2": {
+            "base_xyz_m": 0.05008558498074198,
+            "finger_xyz_m": 0.16979688751073096
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0888694840005
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-inspect-multi-left-s15201-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-inspect-multi-left-s15201-r1/raw",
+        "manifest_sha256": "443cb7fae15764dc80e3425c6cdab6eaee26b79e26762dd35dc72b886f41cad1",
+        "files_verified": 3376,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-inspect-multi-right-s14204-r1",
+      "candidate": "inspect",
+      "seed": 14204,
+      "route_case": "multi-right",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 57.1,
+      "wall_s": 402.0299477689996,
+      "cause": "premature_complete",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": true,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.016468964433528514,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-inspect-multi-right-s14204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:40Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.056681025490847664,
+            "finger_xyz_m": 0.1724748412718958
+          },
+          "r2": {
+            "base_xyz_m": 0.0763922293384913,
+            "finger_xyz_m": 0.183756883841371
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.05809230900013
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-inspect-multi-right-s14204-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-inspect-multi-right-s14204-r1/raw",
+        "manifest_sha256": "bb0eca138609dbc263c710ce8379c8876da33916ca36ef590491906a37a3407f",
+        "files_verified": 3465,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-inspect-multi-right-s15204-r1",
+      "candidate": "inspect",
+      "seed": 15204,
+      "route_case": "multi-right",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 57.1,
+      "wall_s": 404.07902634199945,
+      "cause": "premature_complete",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": true,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.015214755067825896,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-inspect-multi-right-s15204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 21,
+        "sim_s": 22.35,
+        "frames": 400,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.05646840872928661,
+            "finger_xyz_m": 0.1723985310344831
+          },
+          "r2": {
+            "base_xyz_m": 0.07410506023202489,
+            "finger_xyz_m": 0.1838383202487547
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.04281237299983
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-inspect-multi-right-s15204-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-inspect-multi-right-s15204-r1/raw",
+        "manifest_sha256": "aede156ab7117d00b564fd85b4ad4bbcb290a5abb4a766822a7790918590967f",
+        "files_verified": 3465,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 0,
+        "r2": 0
+      },
+      "first_restore": {
+        "r1": null,
+        "r2": null
+      }
+    },
+    {
+      "name": "s3fix22-inspect-multi-three-s14206-r1",
+      "candidate": "inspect",
+      "seed": 14206,
+      "route_case": "multi-three",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 60.0,
+      "wall_s": 414.1675327469993,
+      "cause": "probe_horizon",
+      "reentry": true,
+      "realigned_after_release": false,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": false
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": true,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.6,
+          "end_sim_s": 32.3,
+          "endpoint_error_m": 0.013375002822669865,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-inspect-multi-three-s14206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.031325790424357,
+            "finger_xyz_m": 0.16148417833319798
+          },
+          "r2": {
+            "base_xyz_m": 0.07727752766100651,
+            "finger_xyz_m": 0.18461016019322463
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.029585839
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "pregrasp_descend",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-inspect-multi-three-s14206-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-inspect-multi-three-s14206-r1/raw",
+        "manifest_sha256": "8dfb24c1b6645ad76a876334e897bc9a369d2c93908e312b57478d7b6bd5a07e",
+        "files_verified": 3639,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 1,
+        "r2": 1
+      },
+      "first_restore": {
+        "r1": {
+          "t": 58.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1568
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1568
+          },
+          "settled_after_s": 59.35
+        },
+        "r2": {
+          "t": 58.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1592
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1592
+          },
+          "settled_after_s": 59.35
+        }
+      }
+    },
+    {
+      "name": "s3fix22-inspect-multi-three-s15206-r1",
+      "candidate": "inspect",
+      "seed": 15206,
+      "route_case": "multi-three",
+      "status": "DEV_STAGE_FINISHED",
+      "sim_s": 60.0,
+      "wall_s": 415.9091703060003,
+      "cause": "probe_horizon",
+      "reentry": true,
+      "realigned_after_release": true,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": true
+      },
+      "second_leg_started": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": true,
+      "full_route_success": false,
+      "setdown": true,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 28.6,
+          "end_sim_s": 31.3,
+          "endpoint_error_m": 0.018980965203727513,
+          "endpoint_reached": true
+        }
+      ],
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "initial_check": {
+        "name": "s3fix22-inspect-multi-three-s15206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T17:10:39Z",
+        "progress_samples": 20,
+        "sim_s": 21.35,
+        "frames": 380,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.028262064164973674,
+            "finger_xyz_m": 0.1613156840312482
+          },
+          "r2": {
+            "base_xyz_m": 0.058525854697419444,
+            "finger_xyz_m": 0.16919617511927135
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.02357225600008
+      },
+      "first_corner_reached": true,
+      "joint_first_grasp": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "final_controller_states": {
+        "r1": {
+          "state": "pregrasp_descend",
+          "failure": null
+        },
+        "r2": {
+          "state": "pregrasp_descend",
+          "failure": null
+        }
+      },
+      "raw": {
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-inspect-multi-three-s15206-r1/raw",
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix22-inspect-multi-three-s15206-r1/raw",
+        "manifest_sha256": "26d681c057bb8b3a194bd6dbfd25e9a2bb33cf6c7eba04bbd42f9ad05af57f13",
+        "files_verified": 3639,
+        "all_hashes_match": true
+      },
+      "restore_counts": {
+        "r1": 1,
+        "r2": 1
+      },
+      "first_restore": {
+        "r1": {
+          "t": 57.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1568
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1568
+          },
+          "settled_after_s": 58.35
+        },
+        "r2": {
+          "t": 57.5,
+          "phase": "restore_inspect",
+          "seg": 1,
+          "issued_before": {
+            "1": 2000,
+            "3": 807,
+            "4": 1897,
+            "5": 2187,
+            "6": 1584
+          },
+          "target": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1584
+          },
+          "settled_after_s": 58.35
+        }
+      }
+    }
+  ],
+  "remaining": "Combined: r1 post-release hover4/6, r2 3/6, joint3/6; second-leg entry0/6, all censored at60 SIM seconds. Remaining alignment/grasp/lift/carry behaviour is unconfirmed; next proposed stage continuation begins just after release and lasts<=60 SIM seconds.",
+  "references": [
+    {
+      "url": "https://www.cs.cmu.edu/~lew/PUBLICATION%20PDFs/VISUAL%20SERVOING/JRA%201987.pdf",
+      "scope": "Weiss et al. 1987 p407 static look-and-move: wait for issued move to settle before a new image; no new extrinsics"
+    },
+    {
+      "url": "https://moveit.picknik.ai/main/doc/tutorials/pick_and_place_with_moveit_task_constructor/pick_and_place_with_moveit_task_constructor.html",
+      "scope": "sequential manipulation stages and terminal release are distinct; segment-completion index is our contract regression"
+    }
+  ],
+  "raw_evaluation": {
+    "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-eval-r2/summary.json",
+    "sha256": "495d47bd14c89b4c0917495d0adfc03534a23818963176d548617c921c5e73c2"
+  },
+  "source_archive": {
+    "source_sha": "bfb79622af2c288278afe2788d9dd97c8e311cf2",
+    "files_verified": 11562,
+    "shared_bytes": 1230874695,
+    "new_bytes": 103395,
+    "free_bytes": 14513926144
+  },
+  "evaluation_metric_correction": {
+    "original_r1_only_summary": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix22-eval-r1/summary.json",
+    "original_sha256": "b659230890f6dfc0a1fb2309a532570fb0a9fb91286984b8e2226cb8bb8f91d7",
+    "change": "post-release hover completion requires both endpoints; r1/r2 and joint reported separately; no physical rerun or threshold change"
+  },
+  "raw_metadata_manifest": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s3fix22-control-20261011/root-manifests.json",
+    "sha256": "b3b7b7a1cf9749adb52d05fd83e5f9623a857fb254314c71ce045b592c0c8833"
+  },
+  "applied_process_configuration": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s3fix22-control-20261011/applied-config.json",
+    "sha256": "ad921b7558a23177504c86c1af74c056fc055248ccd48fa95dfbcdf8371cfaea",
+    "actual_LP4_workers": 24
+  },
+  "evaluation_source_archive": {
+    "source_sha": "e6a863c9481288105a745cca53594ba05e6a9a7a",
+    "base_sha": "bfb79622af2c288278afe2788d9dd97c8e311cf2",
+    "files_verified": 11562,
+    "verification": "all Git blob SHA1; previous full archive also SHA256-verified",
+    "shared_bytes": 1230967402,
+    "new_bytes": 11691,
+    "free_bytes": 12629483520
+  },
+  "recording_operations": {
+    "own_duplicate_aggregate_fetch_cancelled": true,
+    "worker_originals_retrieved": 24,
+    "own_slow_source_upload_cancelled": true,
+    "partial_source_cache_preserved": true,
+    "raw_deleted_or_overwritten": false,
+    "physical_runs_retried": 0
+  },
+  "combined_wall_sim": {
+    "wall_s": [
+      413.49276834600005,
+      420.01067650000005
+    ],
+    "sim_s": 60.0,
+    "median_ratio": 6.985001464933331
+  }
+}

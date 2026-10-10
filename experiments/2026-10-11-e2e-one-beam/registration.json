@@ -1,0 +1,9 @@
+{
+  "scope": "e2e1 input/state contract and setup-only first RGB, no controller or LLM run",
+  "candidates": ["base", "A", "B"],
+  "seed": 61001,
+  "criteria": {"r1_B_visible_pixels_min": 100, "r2_B_visible_pixels": 0, "payload_privileged_input_hits": 0},
+  "selection": "keep base if PASS; otherwise first PASS in A then B; verify original JPEG visually",
+  "host_error": ["exception", "ENOSPC", "unretrieved originals"],
+  "past_success_inherited": false
+}

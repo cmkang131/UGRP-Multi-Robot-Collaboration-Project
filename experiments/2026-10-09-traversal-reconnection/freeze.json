@@ -1,0 +1,57 @@
+{
+  "prereg_commit": "a068cf73",
+  "criteria_commit": "570f8127",
+  "seeds": [
+    49001,
+    49002,
+    49003,
+    49004,
+    49005,
+    49006
+  ],
+  "source_files": {
+    "harness/own_traversal_reconnection.py": "29a53de86676076ec21b9aafb997c26a70a4c09fe9d9fff0da4d5db05b7a6f8f",
+    "harness/own_traversal_graph.py": "e8363c68d1cd64b4183d3ce6098f6d72d7f339f3e0227cd124476f33c6f2de41",
+    "harness/self_map_return_repeat.py": "749a2cd651127e8a3199aa2db95d27ea5a5d1d0118b43908b0070b4eb2a4f093",
+    "harness/self_map_closed_loop.py": "c6173e16d3bb1bd4b329f75a555ed893c22af525f5e5262ebefd34fe0fd63c09",
+    "harness/self_graph_cache.py": "f006f908cc0829883209a45e7503326cf5d91ba99d52be664919983d1de2dd34",
+    "harness/self_pose_graph.py": "5628d8bb65eb69a31575879c054b8aec383409b40013d4a5b503736735de4f2e",
+    "experiments/2026-10-09-own-traversal-return/code/offline.py": "ea246f00459c56d652fcfe9b9bac1ac744bb85de183f219288859227ad92a08a",
+    "experiments/2026-10-09-traversal-reconnection/code/offline.py": "7c24de4122a41b09d6ad7e44dc909a173d495a30458f734059938d82043d7d44",
+    "tests/test_own_traversal_reconnection.py": "f4b403b9bb2bc5c3e641e796d405ebbfdc4cc91e6d5fe4db70b1dcb9f4666d71"
+  },
+  "loop_options": {
+    "submap_scans": 20,
+    "stride": 10,
+    "separation_s": 5.0,
+    "candidate_distance_m": 6.0,
+    "translation_window_m": 1.0,
+    "yaw_window_deg": 15.0,
+    "translation_step_m": 0.1,
+    "yaw_step_deg": 1.0,
+    "min_score": 0.55,
+    "min_overlap": 0.6,
+    "overlap_m": 0.2,
+    "max_residual_m": 0.15,
+    "mode_distance_m": 0.2,
+    "mode_yaw_deg": 5.0,
+    "mode_gap": 0.02,
+    "hessian_ratio": 0.03,
+    "min_points": 6,
+    "effective_points": 12.0,
+    "sigma_xy_m": 0.1,
+    "sigma_yaw_deg": 2.0,
+    "huber_delta": 1.5,
+    "max_nfev": 200
+  },
+  "k": 5,
+  "place_radius_m": 0.3,
+  "partial_turn_deg": 27.25,
+  "partial_timeout_s": 10,
+  "test_count": 26,
+  "test_files": [
+    "tests/test_own_traversal_reconnection.py",
+    "tests/test_own_traversal_graph.py",
+    "tests/test_self_map_return_repeat.py"
+  ]
+}

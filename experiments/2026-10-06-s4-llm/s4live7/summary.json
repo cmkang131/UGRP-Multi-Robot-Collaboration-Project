@@ -1,0 +1,446 @@
+{
+  "schema": "ugrp.s4live7.summary.v2",
+  "research_result": false,
+  "status": "COMPLETE_DEV_PLUMBING_COMPARISON",
+  "latest_cohort": "corrected",
+  "seed": 601,
+  "case_cap_SIM_s": 90,
+  "defaults": {
+    "carry_lease_renewal": "off",
+    "pair_drop_guard": "off"
+  },
+  "both_comparison_arms_guard": "contact_com_v1",
+  "S3_frozen_control_files": 11,
+  "pytest": {
+    "n": 45,
+    "N": 45
+  },
+  "control_GT_inputs": 0,
+  "weld": false,
+  "Mac_physics_render_calls": 0,
+  "height_cause": {
+    "old_height_stop_false_positive": {
+      "n": 2,
+      "N": 2
+    },
+    "bilateral_contact_last_half_second": {
+      "n": 22,
+      "N": 22
+    },
+    "COM_last_mm": [
+      49.79862028298582,
+      47.48900539506566
+    ],
+    "beam_dimensions_mm": [
+      600,
+      40,
+      32
+    ],
+    "COM_offset_mm": 16,
+    "old_origin_stop_mm": 35,
+    "horizontal_COM_equivalent_stop_mm": 51,
+    "unsupported_fall_n": 0,
+    "offline_guard_replay": {
+      "drop_n": 0,
+      "frames_N": 2617
+    },
+    "artifacts": [
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live7-offline/height-causes.json",
+        "sha256": "9243b04d4facd430e797c50f5a0a51ce4bf5842b20cd89626b80b80eb3098d3f"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live7-offline/size-check.json",
+        "sha256": "154d6844b538e0feeaf4616fdbf84fdb533f11002b131b68d6fc69392735a145"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live7-offline/guard-replay.json",
+        "sha256": "2e0ef7103bb28c3a7110f5aed9a8be609618b0f41e9111b772d1c39787c4153d"
+      }
+    ]
+  },
+  "preregistration_metadata_error": {
+    "first_plan_on_label": "accepted_carry_reply_v1",
+    "actual_frozen_argv_and_raw": "all_phase_rgb_heartbeat_v2",
+    "affected_rows": 4,
+    "original_plan_preserved": true,
+    "command_drift": false
+  },
+  "measurement": {
+    "continued": "later carry segment, both carry state, same segment, bilateral four-finger contact; no gaps bridged; excursion>=20mm",
+    "goal_XY": [
+      4.6,
+      -2.1
+    ],
+    "goal_tolerance_m": 0.02,
+    "XY_reference": "saved referee geometric body-center projection; COM horizontal offset <=16mm cannot change any goal verdict because minimum error>3.78m",
+    "placement": "both lower; >=.5SIMs floor support without fingers, speed<=.03m/s, z range<=5mm",
+    "drop": "unsupported descent>=20mm and downward speed>.10m/s before floor support",
+    "limitation": "S3 failed before open/relook/regrasp; those phases have synthetic regression coverage only; lease liveness is not grasp success"
+  },
+  "remaining": {
+    "cause": "FLOOR_POSE_NOT_COMMANDED, r2 PARTNER_ABORT; beam remains finger-held on floor; on4/4",
+    "guard_source": "harness/zone_pair_highpose_runtime.py:391",
+    "next_candidates": [
+      "restore consistency between issued floor pulses and saved own grasp_pose, via S3 toggle",
+      "validate subsequent own-RGB relook/regrasp and fresh GO/ACK after S3 floor command fix"
+    ]
+  },
+  "cohorts": [
+    {
+      "runs": [
+        {"name":"s4live7-off-no_comm-s601-v170","condition":"no_comm","mode":"off","status":"PAIR_STOP","stop":"PAIR_VISUAL_LEASE_EXPIRED","software_failures":{"r1":"PAIR_VISUAL_LEASE_EXPIRED","r2":"PAIR_VISUAL_LEASE_EXPIRED"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.18337735775196057,"continued_n":0,"continued_m":0.0,"carried_path_m":0.18402797626984607,"goal_n":0,"goal_error_m":3.800627551152525,"placement_n":0,"drop":false,"final_COM_m":0.08790311396328364,"final_finger_contact":true,"final_floor_contact":false,"heartbeat_n":0,"heartbeat_by_phase":{},"inactive_heartbeat_n":0,"api_calls":16,"tokens":106883,"latency_mean_s":7.5731898125,"latency_max_s":41.181466,"accepted_messages":0,"sent_messages":0,"failed_replies":0,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.4702564579784,"health_frames":401,"health_SIM_s":20.0,"verified_files":3189,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-off-no_comm-s601-v170/raw","raw_remote":"~/ugrp-sim/runs/s4live7-off-no_comm-s601-v170/raw","result_sha256":"ba1317893d926e65d3f793688df98c84ef4efa723429b3fad90c855661bf0a40","manifest_sha256":"d910dc030932c4753966de5099760b508cbc19ed9a7fdaee178217c54f8c7a6f"},
+        {"name":"s4live7-off-peer_ko-s601-v170","condition":"peer_ko","mode":"off","status":"PAIR_STOP","stop":"PAIR_VISUAL_LEASE_EXPIRED","software_failures":{"r1":"PAIR_VISUAL_LEASE_EXPIRED","r2":"PAIR_VISUAL_LEASE_EXPIRED"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.1838543445827982,"continued_n":0,"continued_m":0.0,"carried_path_m":0.18469355109723437,"goal_n":0,"goal_error_m":3.8004322049796264,"placement_n":0,"drop":false,"final_COM_m":0.08600571727893719,"final_finger_contact":true,"final_floor_contact":false,"heartbeat_n":0,"heartbeat_by_phase":{},"inactive_heartbeat_n":0,"api_calls":18,"tokens":129364,"latency_mean_s":7.617701222222221,"latency_max_s":25.272043,"accepted_messages":9,"sent_messages":10,"failed_replies":1,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.47026583296247,"health_frames":381,"health_SIM_s":19.0,"verified_files":3441,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-off-peer_ko-s601-v170/raw","raw_remote":"~/ugrp-sim/runs/s4live7-off-peer_ko-s601-v170/raw","result_sha256":"9ae1747cdb6ffaaff2cf4302e5e27aa71570efe4deca0186ca8d530e46ee6247","manifest_sha256":"91543658d8f6bc952bb263108dc458c961f378bfbd72545ef17bad345b950f94"},
+        {"name":"s4live7-off-leader_ko-s601-v170","condition":"leader_ko","mode":"off","status":"PAIR_STOP","stop":"PAIR_VISUAL_LEASE_EXPIRED","software_failures":{"r1":"PAIR_VISUAL_LEASE_EXPIRED","r2":"PAIR_VISUAL_LEASE_EXPIRED"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.17902193992568333,"continued_n":0,"continued_m":0.0,"carried_path_m":0.1799033594833578,"goal_n":0,"goal_error_m":3.803069545556848,"placement_n":0,"drop":false,"final_COM_m":0.08625006208229355,"final_finger_contact":true,"final_floor_contact":false,"heartbeat_n":0,"heartbeat_by_phase":{},"inactive_heartbeat_n":0,"api_calls":17,"tokens":122534,"latency_mean_s":7.623495352941177,"latency_max_s":19.655687999999998,"accepted_messages":9,"sent_messages":9,"failed_replies":1,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.47019387496402,"health_frames":321,"health_SIM_s":16.0,"verified_files":3486,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-off-leader_ko-s601-v170/raw","raw_remote":"~/ugrp-sim/runs/s4live7-off-leader_ko-s601-v170/raw","result_sha256":"6cbac9a1de85aea344d04284d6de87b24e5c1fcf1fa30dfa6bec1ae7cf4fceb7","manifest_sha256":"6811ffec6684cf04f87d0a069c1e92821af2f88693195462931c601b8d69a30b"},
+        {"name":"s4live7-off-structured-s601-v170","condition":"structured","mode":"off","status":"PAIR_STOP","stop":"PAIR_VISUAL_LEASE_EXPIRED","software_failures":{"r1":"PAIR_VISUAL_LEASE_EXPIRED","r2":"PAIR_VISUAL_LEASE_EXPIRED"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.19508252895208653,"continued_n":0,"continued_m":0.0,"carried_path_m":0.19598120673900915,"goal_n":0,"goal_error_m":3.791927196848299,"placement_n":0,"drop":false,"final_COM_m":0.08520608763116062,"final_finger_contact":true,"final_floor_contact":false,"heartbeat_n":0,"heartbeat_by_phase":{},"inactive_heartbeat_n":0,"api_calls":16,"tokens":117386,"latency_mean_s":6.649758375,"latency_max_s":13.161267,"accepted_messages":4,"sent_messages":4,"failed_replies":0,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.47027129196795,"health_frames":381,"health_SIM_s":19.0,"verified_files":3489,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-off-structured-s601-v170/raw","raw_remote":"~/ugrp-sim/runs/s4live7-off-structured-s601-v170/raw","result_sha256":"cda05f0f9276727ab100e28d091e1e0e6674e49823e3f1ac4a55f04d9918f849","manifest_sha256":"069f06f4fcaf7bbb95e9f141c16a857fa6a263a0090f568f86721c35fd2856d2"},
+        {"name":"s4live7-on-no_comm-s601-v170","condition":"no_comm","mode":"all_phase_rgb_heartbeat_v2","status":"DEV_STAGE_FINISHED","stop":null,"software_failures":{"r1":"FLOOR_POSE_NOT_COMMANDED","r2":"PARTNER_ABORT"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.18180944169056104,"continued_n":0,"continued_m":0.0,"carried_path_m":0.18242086723045067,"goal_n":0,"goal_error_m":3.8067337501687524,"placement_n":0,"drop":false,"final_COM_m":0.01582803813646199,"final_finger_contact":true,"final_floor_contact":true,"heartbeat_n":28,"heartbeat_by_phase":{"wait_carry":2,"refix_decide":6,"lower":8,"inactive":12},"inactive_heartbeat_n":12,"api_calls":39,"tokens":276334,"latency_mean_s":5.423010205128206,"latency_max_s":11.815016,"accepted_messages":0,"sent_messages":0,"failed_replies":0,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.4702794170007,"health_frames":381,"health_SIM_s":19.0,"verified_files":5580,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-on-no_comm-s601-v170/raw","raw_remote":"~/ugrp-sim/runs/s4live7-on-no_comm-s601-v170/raw","result_sha256":"03e33f669c3dd36b80579e9a3f806ff486cdc7f141da3e0b4c2f44183c99636c","manifest_sha256":"5cba6c75c4e36f8e2d5828789c025f9df82a7cfec278c75a5bfe73538da1f28e"},
+        {"name":"s4live7-on-peer_ko-s601-v170","condition":"peer_ko","mode":"all_phase_rgb_heartbeat_v2","status":"DEV_STAGE_FINISHED","stop":null,"software_failures":{"r1":"FLOOR_POSE_NOT_COMMANDED","r2":"PARTNER_ABORT"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.19438104114476967,"continued_n":0,"continued_m":0.0,"carried_path_m":0.1953617708910079,"goal_n":0,"goal_error_m":3.79194209453674,"placement_n":0,"drop":false,"final_COM_m":0.015828487133468776,"final_finger_contact":true,"final_floor_contact":true,"heartbeat_n":22,"heartbeat_by_phase":{"wait_carry":2,"refix_decide":6,"lower":6,"inactive":8},"inactive_heartbeat_n":8,"api_calls":36,"tokens":279399,"latency_mean_s":5.420407638888888,"latency_max_s":14.649488999999999,"accepted_messages":10,"sent_messages":10,"failed_replies":3,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.4702837919467,"health_frames":361,"health_SIM_s":18.0,"verified_files":5571,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-on-peer_ko-s601-v170/raw","raw_remote":"~/ugrp-sim/runs/s4live7-on-peer_ko-s601-v170/raw","result_sha256":"ddff32ccca81c0a40828e5bdb4fe51a05f7d35d4a555ddff1366873b5354f9ce","manifest_sha256":"33e3175e60361db66e9278c81a692f92b585ed05a77bd1989d25e957d4a2e56a"},
+        {"name":"s4live7-on-leader_ko-s601-v170","condition":"leader_ko","mode":"all_phase_rgb_heartbeat_v2","status":"DEV_STAGE_FINISHED","stop":null,"software_failures":{"r1":"FLOOR_POSE_NOT_COMMANDED","r2":"PARTNER_ABORT"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.17907018040403325,"continued_n":0,"continued_m":0.0,"carried_path_m":0.17978408056705425,"goal_n":0,"goal_error_m":3.8104579597785877,"placement_n":0,"drop":false,"final_COM_m":0.015875707181797687,"final_finger_contact":true,"final_floor_contact":true,"heartbeat_n":24,"heartbeat_by_phase":{"wait_carry":2,"refix_decide":6,"lower":8,"inactive":8},"inactive_heartbeat_n":8,"api_calls":36,"tokens":280048,"latency_mean_s":6.418611805555555,"latency_max_s":16.062106,"accepted_messages":11,"sent_messages":11,"failed_replies":0,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.47027541697025,"health_frames":361,"health_SIM_s":18.0,"verified_files":5571,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-on-leader_ko-s601-v170/raw","raw_remote":"~/ugrp-sim/runs/s4live7-on-leader_ko-s601-v170/raw","result_sha256":"3ed87b57df525c67b1824c18a956749eb35891ffe8d873c50a8f0b848203d6f2","manifest_sha256":"f33c0472c7de625b1817b61cdb5f7528ae57f945541b5dd06234dde6bc277215"},
+        {"name":"s4live7-on-structured-s601-v170","condition":"structured","mode":"all_phase_rgb_heartbeat_v2","status":"DEV_STAGE_FINISHED","stop":null,"software_failures":{"r1":"FLOOR_POSE_NOT_COMMANDED","r2":"PARTNER_ABORT"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.18101406095029376,"continued_n":0,"continued_m":0.0,"carried_path_m":0.18155300679281217,"goal_n":0,"goal_error_m":3.801838102484122,"placement_n":0,"drop":false,"final_COM_m":0.015848083517431635,"final_finger_contact":true,"final_floor_contact":true,"heartbeat_n":24,"heartbeat_by_phase":{"wait_carry":2,"refix_decide":6,"lower":8,"inactive":8},"inactive_heartbeat_n":8,"api_calls":37,"tokens":286652,"latency_mean_s":5.794719162162162,"latency_max_s":25.637748,"accepted_messages":5,"sent_messages":5,"failed_replies":1,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.47028799995314,"health_frames":361,"health_SIM_s":18.0,"verified_files":5574,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-on-structured-s601-v170/raw","raw_remote":"~/ugrp-sim/runs/s4live7-on-structured-s601-v170/raw","result_sha256":"bab1b548b863fa605b90690cd4322dd000fcec973335ea80cf328329a5915044","manifest_sha256":"040e8ab24d4f870f48700471140d6b1baa109fa40ba094b3cd10da6d660285a4"}
+      ],
+      "id": "initial",
+      "source_sha": "254ffd4844db9f14968feae723de7cf0ef883fdf",
+      "bundle": "zone-s4-pair-live-v170",
+      "workflow": "7.63.0",
+      "plan": "plan.json",
+      "plan_sha256": "65b63437b86007d755c33eb5efab55e5fe08b23b3378c2c5e2a5dfc00fb8e82d",
+      "initial_health": {
+        "n": 8,
+        "N": 8
+      },
+      "totals": {
+        "off": {
+          "claim_n": {
+            "n": 4,
+            "N": 4
+          },
+          "GO_ACK_n": {
+            "n": 4,
+            "N": 4
+          },
+          "simultaneous_departure_n": {
+            "n": 4,
+            "N": 4
+          },
+          "first_carry_n": {
+            "n": 4,
+            "N": 4
+          },
+          "continued_n": {
+            "n": 0,
+            "N": 4
+          },
+          "goal_n": {
+            "n": 0,
+            "N": 4
+          },
+          "placement_n": {
+            "n": 0,
+            "N": 4
+          },
+          "lease_expired": {
+            "n": 4,
+            "N": 4
+          },
+          "software_floor_command_failure": {
+            "n": 0,
+            "N": 4
+          },
+          "drop": {
+            "n": 0,
+            "N": 4
+          },
+          "continued_m": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "on": {
+          "claim_n": {
+            "n": 4,
+            "N": 4
+          },
+          "GO_ACK_n": {
+            "n": 4,
+            "N": 4
+          },
+          "simultaneous_departure_n": {
+            "n": 4,
+            "N": 4
+          },
+          "first_carry_n": {
+            "n": 4,
+            "N": 4
+          },
+          "continued_n": {
+            "n": 0,
+            "N": 4
+          },
+          "goal_n": {
+            "n": 0,
+            "N": 4
+          },
+          "placement_n": {
+            "n": 0,
+            "N": 4
+          },
+          "lease_expired": {
+            "n": 0,
+            "N": 4
+          },
+          "software_floor_command_failure": {
+            "n": 4,
+            "N": 4
+          },
+          "drop": {
+            "n": 0,
+            "N": 4
+          },
+          "continued_m": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "heartbeat_links": {
+        "n": 98,
+        "N": 98
+      },
+      "inactive_heartbeat_n": 36,
+      "model": {
+        "calls": 215,
+        "tokens_reported": 1598600,
+        "response_mean_s": 6.262288004651162,
+        "response_max_s": 41.181466,
+        "messages_accepted": 48,
+        "messages_sent": 49,
+        "failed_replies": 6,
+        "censored_charged_unreleased": 16,
+        "api_errors": 0
+      },
+      "audit": {
+        "receipts": {
+          "n": 215,
+          "N": 215
+        },
+        "image_SHA_checked": 430,
+        "manifest_files_verified": 35901,
+        "raw_bytes": 1047895516,
+        "secrets_pattern_matches": 0,
+        "own_active_driver_pids": [],
+        "own_relays_cleaned": true,
+        "original_proxy_alive": true,
+        "upstream_finish_verified": false,
+        "upstream_attempt_count_verified": false,
+        "provider_billing_verified": false
+      },
+      "artifacts": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-offline/report-corrected.json",
+          "sha256": "e33ca8cafc0aaa8b364890ad9ad18977d90c7c2df316af6599f4b013e8b62bce"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-offline/final-audit.json",
+          "sha256": "c101f38305f1d1b50c32a6ffa1d4ace492711b709d7bea58db3d6b71ef162d97"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-offline/final-security-audit.json",
+          "sha256": "2d31ec025ebdb9af4941161f46b27ccdbb2cfc9ed9483ae4610e50f8884f4acd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-offline/fetch-final.json",
+          "sha256": "580795901e457086e0e1196afed5adb2babe75ed9ea6cd7d168474d325279e68"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-offline/admissions.json",
+          "sha256": "b870057b0df0ef70835be232c06c7c894c5da4664f0f09260bd07687dbbadd13"
+        }
+      ]
+    },
+    {
+      "runs": [
+        {"name":"s4live7-r2-off-no_comm-s601-v171","condition":"no_comm","mode":"off","status":"PAIR_STOP","stop":"PAIR_VISUAL_LEASE_EXPIRED","software_failures":{"r1":"PAIR_VISUAL_LEASE_EXPIRED","r2":"PAIR_VISUAL_LEASE_EXPIRED"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.18337735775196057,"continued_n":0,"continued_m":0.0,"carried_path_m":0.18402797626984607,"goal_n":0,"goal_error_m":3.800627551152525,"placement_n":0,"drop":false,"final_COM_m":0.08790311396328364,"final_finger_contact":true,"final_floor_contact":false,"heartbeat_n":0,"heartbeat_by_phase":{},"inactive_heartbeat_n":0,"api_calls":16,"tokens":106167,"latency_mean_s":4.350423125,"latency_max_s":6.507565,"accepted_messages":0,"sent_messages":0,"failed_replies":0,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.34777462499915,"health_frames":521,"health_SIM_s":26.0,"verified_files":3189,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-r2-off-no_comm-s601-v171/raw","raw_remote":"~/ugrp-sim/runs/s4live7-r2-off-no_comm-s601-v171/raw","result_sha256":"89a4ff24d8def31333f0a8d185c92b2061a9cf87553c9e9ab21808cb5f6057c0","manifest_sha256":"a6fc4543ad7c1503306b48b78ba3605482fd1f48b89d494eb00f360234c693fc"},
+        {"name":"s4live7-r2-off-peer_ko-s601-v171","condition":"peer_ko","mode":"off","status":"PAIR_STOP","stop":"PAIR_VISUAL_LEASE_EXPIRED","software_failures":{"r1":"PAIR_VISUAL_LEASE_EXPIRED","r2":"PAIR_VISUAL_LEASE_EXPIRED"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.18393178850863764,"continued_n":0,"continued_m":0.0,"carried_path_m":0.1842345540946629,"goal_n":0,"goal_error_m":3.798401675169411,"placement_n":0,"drop":false,"final_COM_m":0.08362852398012474,"final_finger_contact":true,"final_floor_contact":false,"heartbeat_n":0,"heartbeat_by_phase":{},"inactive_heartbeat_n":0,"api_calls":17,"tokens":121833,"latency_mean_s":4.807162823529412,"latency_max_s":8.627462,"accepted_messages":9,"sent_messages":9,"failed_replies":1,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.3477834999794,"health_frames":501,"health_SIM_s":25.0,"verified_files":3438,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-r2-off-peer_ko-s601-v171/raw","raw_remote":"~/ugrp-sim/runs/s4live7-r2-off-peer_ko-s601-v171/raw","result_sha256":"ccfb04877842f487b47e80e470c852211f5bfd397382d709ade01ee633ecb2df","manifest_sha256":"9252863934f34ed99c53d3034e86027a75a30d62d3d4d384ec3f8cc696630b1f"},
+        {"name":"s4live7-r2-off-leader_ko-s601-v171","condition":"leader_ko","mode":"off","status":"PAIR_STOP","stop":"PAIR_VISUAL_LEASE_EXPIRED","software_failures":{"r1":"PAIR_VISUAL_LEASE_EXPIRED","r2":"PAIR_VISUAL_LEASE_EXPIRED"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.1949167006690057,"continued_n":0,"continued_m":0.0,"carried_path_m":0.1952755860845821,"goal_n":0,"goal_error_m":3.7878321042229612,"placement_n":0,"drop":false,"final_COM_m":0.08429353028130614,"final_finger_contact":true,"final_floor_contact":false,"heartbeat_n":0,"heartbeat_by_phase":{},"inactive_heartbeat_n":0,"api_calls":19,"tokens":137791,"latency_mean_s":5.85101105263158,"latency_max_s":15.722266,"accepted_messages":10,"sent_messages":11,"failed_replies":1,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.34769704198698,"health_frames":501,"health_SIM_s":25.0,"verified_files":3501,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-r2-off-leader_ko-s601-v171/raw","raw_remote":"~/ugrp-sim/runs/s4live7-r2-off-leader_ko-s601-v171/raw","result_sha256":"49be92032915891ccaeee7828de57624c6d800cf66f3323cdc050a0b515f7802","manifest_sha256":"d3321d9ad6b8c4eeff7bfac04044025afd8a4e9eeed9f1168a25c84392ec6bf2"},
+        {"name":"s4live7-r2-off-structured-s601-v171","condition":"structured","mode":"off","status":"PAIR_STOP","stop":"PAIR_VISUAL_LEASE_EXPIRED","software_failures":{"r1":"PAIR_VISUAL_LEASE_EXPIRED","r2":"PAIR_VISUAL_LEASE_EXPIRED"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.19508252895208653,"continued_n":0,"continued_m":0.0,"carried_path_m":0.19598120673900915,"goal_n":0,"goal_error_m":3.791927196848299,"placement_n":0,"drop":false,"final_COM_m":0.08520608763116062,"final_finger_contact":true,"final_floor_contact":false,"heartbeat_n":0,"heartbeat_by_phase":{},"inactive_heartbeat_n":0,"api_calls":16,"tokens":118603,"latency_mean_s":5.4564011875,"latency_max_s":14.306486999999999,"accepted_messages":5,"sent_messages":5,"failed_replies":0,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.34778774995357,"health_frames":521,"health_SIM_s":26.0,"verified_files":3489,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-r2-off-structured-s601-v171/raw","raw_remote":"~/ugrp-sim/runs/s4live7-r2-off-structured-s601-v171/raw","result_sha256":"1d25476309eed5057799b5568349881b84796fc7aa12fc81c1c54dc4fc68f8eb","manifest_sha256":"a8fa2d9433343e463af814c23c2b9edfed8fa53b67d447582100c21c05599351"},
+        {"name":"s4live7-r2-on-no_comm-s601-v171","condition":"no_comm","mode":"all_active_phase_rgb_heartbeat_v3","status":"PAIR_STOP","stop":"S3_PAIR_TERMINAL","software_failures":{"r1":"FLOOR_POSE_NOT_COMMANDED","r2":"PARTNER_ABORT"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.1931989860192167,"continued_n":0,"continued_m":0.0,"carried_path_m":0.19377187662166195,"goal_n":0,"goal_error_m":3.797492688154544,"placement_n":0,"drop":false,"final_COM_m":0.01582214688445116,"final_finger_contact":true,"final_floor_contact":true,"heartbeat_n":14,"heartbeat_by_phase":{"wait_carry":2,"refix_decide":6,"lower":6},"inactive_heartbeat_n":0,"api_calls":25,"tokens":173750,"latency_mean_s":5.059500320000001,"latency_max_s":11.540484000000001,"accepted_messages":0,"sent_messages":0,"failed_replies":0,"censored_replies":3,"api_errors":0,"health":"PASS","health_wall_s":184.34779583394993,"health_frames":521,"health_SIM_s":26.0,"verified_files":4038,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-r2-on-no_comm-s601-v171/raw","raw_remote":"~/ugrp-sim/runs/s4live7-r2-on-no_comm-s601-v171/raw","result_sha256":"83e4179260fc4bfa08468c67c3650f9e9a00c42944717b9446c9b718d19b7cf5","manifest_sha256":"3db7252043a06332a47a9e3aeba3e90eb1940a3334df205030bb7e2e772d096d"},
+        {"name":"s4live7-r2-on-peer_ko-s601-v171","condition":"peer_ko","mode":"all_active_phase_rgb_heartbeat_v3","status":"PAIR_STOP","stop":"S3_PAIR_TERMINAL","software_failures":{"r1":"FLOOR_POSE_NOT_COMMANDED","r2":"PARTNER_ABORT"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.1799335722917305,"continued_n":0,"continued_m":0.0,"carried_path_m":0.18071010028594228,"goal_n":0,"goal_error_m":3.8037752856449596,"placement_n":0,"drop":false,"final_COM_m":0.01582652328476511,"final_finger_contact":true,"final_floor_contact":true,"heartbeat_n":13,"heartbeat_by_phase":{"wait_carry":2,"refix_decide":5,"lower":6},"inactive_heartbeat_n":0,"api_calls":24,"tokens":181839,"latency_mean_s":4.7635599583333335,"latency_max_s":9.970177,"accepted_messages":10,"sent_messages":10,"failed_replies":0,"censored_replies":3,"api_errors":0,"health":"PASS","health_wall_s":184.34779987495858,"health_frames":501,"health_SIM_s":25.0,"verified_files":4239,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-r2-on-peer_ko-s601-v171/raw","raw_remote":"~/ugrp-sim/runs/s4live7-r2-on-peer_ko-s601-v171/raw","result_sha256":"d78e82df6d8af334f2b05af286d3311f8ed209c88736b02985c2518cb89bef4e","manifest_sha256":"3dea109f629257e934a55c972b5efe2ee4e9a844a5d1aeca7dadafe265666575"},
+        {"name":"s4live7-r2-on-leader_ko-s601-v171","condition":"leader_ko","mode":"all_active_phase_rgb_heartbeat_v3","status":"PAIR_STOP","stop":"S3_PAIR_TERMINAL","software_failures":{"r1":"FLOOR_POSE_NOT_COMMANDED","r2":"PARTNER_ABORT"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.18310709767637415,"continued_n":0,"continued_m":0.0,"carried_path_m":0.1834790684199286,"goal_n":0,"goal_error_m":3.8072544155804255,"placement_n":0,"drop":false,"final_COM_m":0.015893221200855217,"final_finger_contact":true,"final_floor_contact":true,"heartbeat_n":13,"heartbeat_by_phase":{"wait_carry":1,"carry":1,"refix_decide":5,"lower":6},"inactive_heartbeat_n":0,"api_calls":27,"tokens":208739,"latency_mean_s":5.747830259259259,"latency_max_s":14.047754000000001,"accepted_messages":11,"sent_messages":11,"failed_replies":1,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.34779158397578,"health_frames":501,"health_SIM_s":25.0,"verified_files":4320,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-r2-on-leader_ko-s601-v171/raw","raw_remote":"~/ugrp-sim/runs/s4live7-r2-on-leader_ko-s601-v171/raw","result_sha256":"0977487eeb381d4897e76630becf00e18eb50e5d963b535287d59eea7a5b441e","manifest_sha256":"18f38800766ad9cdfefd88d7a88a50f02f0a18fdec244474de024c6408de02d0"},
+        {"name":"s4live7-r2-on-structured-s601-v171","condition":"structured","mode":"all_active_phase_rgb_heartbeat_v3","status":"PAIR_STOP","stop":"S3_PAIR_TERMINAL","software_failures":{"r1":"FLOOR_POSE_NOT_COMMANDED","r2":"PARTNER_ABORT"},"claim_n":1,"GO_ACK_n":1,"simultaneous_departure_n":1,"first_carry_n":1,"first_excursion_m":0.19436339182863532,"continued_n":0,"continued_m":0.0,"carried_path_m":0.1947409685359317,"goal_n":0,"goal_error_m":3.798540858262559,"placement_n":0,"drop":false,"final_COM_m":0.015787174412032146,"final_finger_contact":true,"final_floor_contact":true,"heartbeat_n":14,"heartbeat_by_phase":{"wait_carry":2,"refix_decide":6,"lower":6},"inactive_heartbeat_n":0,"api_calls":27,"tokens":204960,"latency_mean_s":4.568983666666667,"latency_max_s":9.294857,"accepted_messages":5,"sent_messages":5,"failed_replies":1,"censored_replies":2,"api_errors":0,"health":"PASS","health_wall_s":184.34780516696628,"health_frames":521,"health_SIM_s":26.0,"verified_files":4722,"raw":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-r2-on-structured-s601-v171/raw","raw_remote":"~/ugrp-sim/runs/s4live7-r2-on-structured-s601-v171/raw","result_sha256":"3f269dc4c11ba978274f273324a84b83fc2d71f0c39315410ed1ce27b106afd5","manifest_sha256":"7c5fce521b1e82455b5b98d0ce405c3f2972c4a9198999e8a682062ab036af36"}
+      ],
+      "id": "corrected",
+      "source_sha": "369fd8549b94f4f33e9d858ac480c56fbbb942ba",
+      "bundle": "zone-s4-pair-live-v171",
+      "workflow": "7.64.0",
+      "plan": "plan-r2.json",
+      "plan_sha256": "eadba1fc90b857605c44e009d43f6006894c9d244ab7195a4da2a45383ad382b",
+      "initial_health": {
+        "n": 8,
+        "N": 8
+      },
+      "totals": {
+        "off": {
+          "claim_n": {
+            "n": 4,
+            "N": 4
+          },
+          "GO_ACK_n": {
+            "n": 4,
+            "N": 4
+          },
+          "simultaneous_departure_n": {
+            "n": 4,
+            "N": 4
+          },
+          "first_carry_n": {
+            "n": 4,
+            "N": 4
+          },
+          "continued_n": {
+            "n": 0,
+            "N": 4
+          },
+          "goal_n": {
+            "n": 0,
+            "N": 4
+          },
+          "placement_n": {
+            "n": 0,
+            "N": 4
+          },
+          "lease_expired": {
+            "n": 4,
+            "N": 4
+          },
+          "software_floor_command_failure": {
+            "n": 0,
+            "N": 4
+          },
+          "drop": {
+            "n": 0,
+            "N": 4
+          },
+          "continued_m": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "on": {
+          "claim_n": {
+            "n": 4,
+            "N": 4
+          },
+          "GO_ACK_n": {
+            "n": 4,
+            "N": 4
+          },
+          "simultaneous_departure_n": {
+            "n": 4,
+            "N": 4
+          },
+          "first_carry_n": {
+            "n": 4,
+            "N": 4
+          },
+          "continued_n": {
+            "n": 0,
+            "N": 4
+          },
+          "goal_n": {
+            "n": 0,
+            "N": 4
+          },
+          "placement_n": {
+            "n": 0,
+            "N": 4
+          },
+          "lease_expired": {
+            "n": 0,
+            "N": 4
+          },
+          "software_floor_command_failure": {
+            "n": 4,
+            "N": 4
+          },
+          "drop": {
+            "n": 0,
+            "N": 4
+          },
+          "continued_m": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "heartbeat_links": {
+        "n": 54,
+        "N": 54
+      },
+      "inactive_heartbeat_n": 0,
+      "model": {
+        "calls": 171,
+        "tokens_reported": 1253682,
+        "response_mean_s": 5.082848479532164,
+        "response_max_s": 15.722266,
+        "messages_accepted": 50,
+        "messages_sent": 51,
+        "failed_replies": 4,
+        "censored_charged_unreleased": 18,
+        "api_errors": 0
+      },
+      "audit": {
+        "receipts": {
+          "n": 171,
+          "N": 171
+        },
+        "image_SHA_checked": 342,
+        "manifest_files_verified": 30936,
+        "raw_bytes": 921372446,
+        "secrets_pattern_matches": 0,
+        "own_active_driver_pids": [],
+        "own_relays_cleaned": true,
+        "original_proxy_alive": true,
+        "upstream_finish_verified": false,
+        "upstream_attempt_count_verified": false,
+        "provider_billing_verified": false
+      },
+      "artifacts": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-r2-offline/report.json",
+          "sha256": "8270ceae33fe9f6b89f0dd057de79fd424e963c0920868daf6e8d850d25d14bf"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-r2-offline/final-audit.json",
+          "sha256": "35b529bbdf9936fa96e15a73b314fa404c1b0f57b6307da959e7683e0f31fac1"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-r2-offline/final-security-audit.json",
+          "sha256": "fcf24ba96e8c77a4dca110337c4f3eabc6211a53b59c9ef6622d4b1aa6a55892"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-r2-offline/fetch-final.json",
+          "sha256": "76c2ab62b5ca8238c5df44e6cc8ab54e628d1d1f75f6f565e9cbb5fd906f1317"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live7-r2-offline/admissions.json",
+          "sha256": "dddfa5b1adfafef7c6940832208cf8e362867e12a28723c6266e893f6e02cc2f"
+        }
+      ],
+      "persistent_ext4": {
+        "n": 8,
+        "N": 8
+      },
+      "LP_NUM_THREADS": 4,
+      "max_EXIT_to_fetch_start_s": 75.74162268638611,
+      "post_terminal_heartbeat_n": 0
+    }
+  ]
+}

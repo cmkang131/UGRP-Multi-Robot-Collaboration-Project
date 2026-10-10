@@ -1,0 +1,230 @@
+{
+  "seed": 55004,
+  "condition": "T2",
+  "started": true,
+  "status": "PHYSICAL_FAILURE",
+  "acquisition": {
+    "status": "PHYSICAL_FAILURE",
+    "source_sha": "5b33094635804662a8a604718aead132c420b5ba",
+    "seed": 55004,
+    "condition": "T2",
+    "model_calls": 0,
+    "freeze": false,
+    "physical_hardware": false,
+    "loadavg_start": [
+      3.03955078125,
+      4.037109375,
+      4.5537109375
+    ],
+    "start_sim_s": 1.3,
+    "total_sim_s": 172.9,
+    "frames": 859,
+    "failure": {
+      "type": "PhysicalStop",
+      "message": "WALL_CONTACT"
+    },
+    "enospc": false,
+    "wall_s": 511.839531790989,
+    "loadavg_end": [
+      4.0400390625,
+      4.240234375,
+      4.521484375
+    ],
+    "heading_contract": {
+      "shared_version": "zone-s2-realism-v145",
+      "main_sha": "6813f8a15930bbf3a039887219c76a7acb863648",
+      "command_factory": "harness.own_map_heading.command",
+      "selector": "harness.zone_solo_cyan_path_heading.select_waypoint",
+      "mode": "path_tangent_v1",
+      "host": "shared_v145",
+      "motion_model": "s2_pulse_v122_rotL_v1",
+      "return_shortcuts": false,
+      "command_contract_source": "6ffa74dfcf004458e450fde5a897dc343bd13e1b",
+      "command_contract": "single_axis_0.10_to_0.80_s"
+    },
+    "heading_mode": "path_tangent_v1",
+    "heading_visual_lock": "off",
+    "runtime_speedups": {
+      "schema": "ugrp.v7_exact_speedups.v1",
+      "mode": "relay-cache-v1",
+      "enabled": true,
+      "fallback": null,
+      "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+      "cache_maxsize": 256,
+      "physics_changed": false,
+      "log_buffering": false
+    }
+  },
+  "arrived_B": false,
+  "false_declarations": 0,
+  "returned_start": false,
+  "excluded": false,
+  "legs": [
+    {
+      "leg": 1,
+      "target": "unfinished",
+      "start_sim_s": 1.3,
+      "end_sim_s": 172.9,
+      "sim_s": 171.6,
+      "own_tracked_path_m": 16.3602255158439,
+      "actual_path_m": 2.8744799190525834,
+      "status": "PHYSICAL_FAILURE",
+      "budget_failed": false
+    }
+  ],
+  "declarations": [],
+  "return_GT_distance_m": null,
+  "reached_entities": {},
+  "failure": "physical_or_host",
+  "final_error_m": 0.7340779003368476,
+  "path_rmse_m": 0.44476560070797144,
+  "final_sigma_m": 0.049067282438202596,
+  "final_error_sigma": 14.960639021763154,
+  "final_nees": 893.0925623401783,
+  "over_3sigma_frames": 435,
+  "error_samples": 849,
+  "map": {
+    "occupied_cells": 535,
+    "precision_015": 0.2523364485981308,
+    "precision_cell": 0.13271028037383178,
+    "wall_coverage": 0.28939828080229224,
+    "wall_error_rmse_m": 0.6517404855738987
+  },
+  "map_samples": 349,
+  "map_covered_samples": 101,
+  "tube": {
+    "occupied_cells": 112,
+    "precision_015": 0.125,
+    "precision_cell": 0.044642857142857144,
+    "wall_coverage": 0.375,
+    "wall_error_rmse_m": 0.3784418498023996
+  },
+  "tube_samples": 40,
+  "tube_covered_samples": 15,
+  "tube_occupied_cells": 112,
+  "outside_cells": 102,
+  "contacts": {
+    "wall": 1,
+    "robot": 5
+  },
+  "cue_count": 792,
+  "nodes": 557,
+  "local_match_accepted": 1,
+  "local_match_attempts": 14,
+  "local_match_success": 0.07142857142857142,
+  "travelled_m": 2.8744799190525834,
+  "hold_fraction": 0.10365135453474676,
+  "rotation_fraction": 0.6702002355712603,
+  "sim_s": 171.6,
+  "route_length_to_B_m": null,
+  "GT_shortest_to_B_center_m": null,
+  "route_length_ratio": null,
+  "insertion_frames": 113,
+  "insertion_reasons": {
+    "bootstrap": 1,
+    "gmapping_motion_gate": 723,
+    "low_overlap": 20,
+    "insufficient_match_points": 6,
+    "high_residual": 35,
+    "improved_proposal": 51
+  },
+  "gates": {
+    "B_arrival": false,
+    "no_false_declaration": true,
+    "tube_coverage": false,
+    "tube_precision": false,
+    "tube_rmse": false,
+    "no_outside": false,
+    "cue_ledger": true,
+    "route_ratio": false
+  },
+  "motion_audit": {
+    "dr_path_m": 3.8146761482111207,
+    "posterior_path_m": 16.3602255158439,
+    "actual_path_m": 2.8744727036563846,
+    "dr_to_actual": 1.3270872752970586,
+    "posterior_to_actual": 5.6915570967271245,
+    "correction_norm_sum_m": 12.823221503701621,
+    "pulse_groups": [
+      {
+        "axis": "forward",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 191,
+        "predicted_xy_sum_m": 2.468372030674983,
+        "actual_xy_sum_m": 2.4136746044940294,
+        "predicted_body_mean": [
+          0.012917157771402099,
+          -0.0004020679808201128,
+          -0.0002937895356369187
+        ],
+        "actual_body_mean": [
+          0.012616255078885795,
+          2.572307006021503e-05,
+          5.677000731227722e-05
+        ],
+        "actual_body_std": [
+          0.001390106291641607,
+          0.0004566114616823798,
+          0.004304309724456715
+        ],
+        "predicted_yaw_sum_deg": -3.21508398730681,
+        "actual_yaw_sum_deg": 0.6212622279867785
+      },
+      {
+        "axis": "turn",
+        "u": -0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 261,
+        "predicted_xy_sum_m": 0.4775502779575459,
+        "actual_xy_sum_m": 0.1842851421237546,
+        "predicted_body_mean": [
+          -0.0002967923972441378,
+          -0.0018054629392352107,
+          -0.10358137147758209
+        ],
+        "actual_body_mean": [
+          3.4579767063032926e-05,
+          0.00033510726280481406,
+          -0.10308915187144843
+        ],
+        "actual_body_std": [
+          0.0005296272151966158,
+          0.0005147028359810053,
+          0.00591976915794981
+        ],
+        "predicted_yaw_sum_deg": -1548.9763851008242,
+        "actual_yaw_sum_deg": -1541.615635428281
+      },
+      {
+        "axis": "turn",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 308,
+        "predicted_xy_sum_m": 0.8687538395786295,
+        "actual_xy_sum_m": 0.2683956483917019,
+        "predicted_body_mean": [
+          0.00013277632403879566,
+          -0.0028175025064410522,
+          0.10354346792033219
+        ],
+        "actual_body_mean": [
+          0.0001193095436719609,
+          -0.0004923929297214448,
+          0.0980271498116639
+        ],
+        "actual_body_std": [
+          0.000551432718925808,
+          0.0008310369366395203,
+          0.01928871289476167
+        ],
+        "predicted_yaw_sum_deg": 1827.2419420588535,
+        "actual_yaw_sum_deg": 1729.8949242667359
+      }
+    ],
+    "command_replay_sha256": "8985f773b06797c7ae42707f869fe6d4050570669c5f4be201af6b39e6b4493f"
+  }
+}

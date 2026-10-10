@@ -1,0 +1,600 @@
+{
+  "graph": [
+    {
+      "name": "off-timing",
+      "profile": false,
+      "graph_acceleration": "off",
+      "wall_s": 42.35412800000631,
+      "stage_s": {
+        "make_submaps": 0.9967274160007946,
+        "probability_field": 5.485441140859621,
+        "match_loop": 36.25930290820543,
+        "distance_field": 0.10305361996870488,
+        "legacy_optimize": 0.04816979099996388,
+        "legacy_rebuild": 0.5628191660216544,
+        "switchable_optimize": 0.09703120798803866,
+        "robust_rebuild": 0.529791374981869
+      },
+      "calls": {
+        "make_submaps": 1,
+        "probability_field": 3623,
+        "match_loop": 3751,
+        "distance_field": 64,
+        "legacy_optimize": 1,
+        "legacy_rebuild": 1,
+        "switchable_optimize": 1,
+        "robust_rebuild": 1
+      },
+      "optimizers": {
+        "legacy_optimize": {
+          "accepted": true,
+          "reason": "converged",
+          "initial_cost": 5.3139357445982025,
+          "final_cost": 3.3752997965867753,
+          "nfev": 6,
+          "status": 2,
+          "message": "`ftol` termination condition is satisfied.",
+          "max_translation_change_m": 0.1828567243041873
+        },
+        "switchable_optimize": {
+          "accepted": true,
+          "reason": "converged",
+          "initial_cost": 6.300947261582369,
+          "final_cost": 1.2396952048042202,
+          "nfev": 12,
+          "status": 2,
+          "message": "`ftol` termination condition is satisfied.",
+          "switches": [
+            {
+              "constraint_index": 398,
+              "submap": 0,
+              "scan": 126,
+              "switch": 0.11194268028775824,
+              "information_scale": 0.012531163670007256,
+              "unscaled_chi2": 7.936762850191991,
+              "retained": false,
+              "reason": "switch_suppressed"
+            },
+            {
+              "constraint_index": 399,
+              "submap": 7,
+              "scan": 109,
+              "switch": 0.6928629594763658,
+              "information_scale": 0.4800590806143481,
+              "unscaled_chi2": 0.44335601856815876,
+              "retained": true,
+              "reason": "switch_retained"
+            },
+            {
+              "constraint_index": 400,
+              "submap": 16,
+              "scan": 109,
+              "switch": 0.39901592566426947,
+              "information_scale": 0.1592137089337138,
+              "unscaled_chi2": 1.5062650913894933,
+              "retained": false,
+              "reason": "switch_suppressed"
+            },
+            {
+              "constraint_index": 401,
+              "submap": 17,
+              "scan": 96,
+              "switch": 0.37696119569923736,
+              "information_scale": 0.14209974306299872,
+              "unscaled_chi2": 1.653096230969631,
+              "retained": false,
+              "reason": "switch_suppressed"
+            }
+          ],
+          "switch_prior_mean": 1.0,
+          "switch_prior_variance": 1.0,
+          "max_translation_change_m": 0.027593968360881384
+        }
+      },
+      "scans": 204,
+      "path_nodes": 1791,
+      "pose_nodes": 225,
+      "submaps": 21,
+      "constraints": 402,
+      "loop_counts": {
+        "member_scan": 398,
+        "temporal_separation": 135,
+        "ambiguous_modes": 1080,
+        "insufficient_points": 128,
+        "search_boundary": 319,
+        "low_probability": 2160,
+        "accepted": 4,
+        "unobservable": 47,
+        "high_residual": 7,
+        "refinement_failed": 6
+      },
+      "switch_counts": {
+        "switch_suppressed": 3,
+        "switch_retained": 1
+      },
+      "graph_sha256": "dd2c4b878b05038513fa82994879c1b0ab268c2ca06b118bbdf7ab1244f04145",
+      "grid_sha256": "86dfddfbcd18e65c8403d619c71a6932d15ecf6b581afb242120b5265f577625",
+      "source_sha": "a715e81fc3046f68895db7a37dae0acccbb177a5",
+      "input_sha256": {
+        "frontend-ledger.json": "20c4e4278014e5399680cff96bfb7e96951397cee4ff769c205cd7465a4b2854",
+        "frontend-poses.json": "1e0466c820ed5b2b4890f021f1a90cb203b7d39e6a88b1a4d513291930904def",
+        "bundle.json": "424d42ef827e9464bcddde6efc61c735ae3c0aa35c21976441c5d0f2faaaa08b"
+      },
+      "gt_input": false,
+      "physics": 0
+    },
+    {
+      "name": "cache-cold",
+      "profile": false,
+      "graph_acceleration": "match_cache_v1",
+      "wall_s": 33.66309045799426,
+      "stage_s": {
+        "make_submaps": 1.0400341250060592,
+        "probability_field": 0.032257625920465216,
+        "match_loop": 30.820865383924684,
+        "distance_field": 0.02865791614749469,
+        "legacy_optimize": 0.040729957981966436,
+        "legacy_rebuild": 0.5066201669978909,
+        "switchable_optimize": 0.09092716698069125,
+        "robust_rebuild": 0.5119800420070533
+      },
+      "calls": {
+        "make_submaps": 1,
+        "probability_field": 21,
+        "match_loop": 3751,
+        "distance_field": 17,
+        "legacy_optimize": 1,
+        "legacy_rebuild": 1,
+        "switchable_optimize": 1,
+        "robust_rebuild": 1
+      },
+      "optimizers": {
+        "legacy_optimize": {
+          "accepted": true,
+          "reason": "converged",
+          "initial_cost": 5.3139357445982025,
+          "final_cost": 3.3752997965867753,
+          "nfev": 6,
+          "status": 2,
+          "message": "`ftol` termination condition is satisfied.",
+          "max_translation_change_m": 0.1828567243041873
+        },
+        "switchable_optimize": {
+          "accepted": true,
+          "reason": "converged",
+          "initial_cost": 6.300947261582369,
+          "final_cost": 1.2396952048042202,
+          "nfev": 12,
+          "status": 2,
+          "message": "`ftol` termination condition is satisfied.",
+          "switches": [
+            {
+              "constraint_index": 398,
+              "submap": 0,
+              "scan": 126,
+              "switch": 0.11194268028775824,
+              "information_scale": 0.012531163670007256,
+              "unscaled_chi2": 7.936762850191991,
+              "retained": false,
+              "reason": "switch_suppressed"
+            },
+            {
+              "constraint_index": 399,
+              "submap": 7,
+              "scan": 109,
+              "switch": 0.6928629594763658,
+              "information_scale": 0.4800590806143481,
+              "unscaled_chi2": 0.44335601856815876,
+              "retained": true,
+              "reason": "switch_retained"
+            },
+            {
+              "constraint_index": 400,
+              "submap": 16,
+              "scan": 109,
+              "switch": 0.39901592566426947,
+              "information_scale": 0.1592137089337138,
+              "unscaled_chi2": 1.5062650913894933,
+              "retained": false,
+              "reason": "switch_suppressed"
+            },
+            {
+              "constraint_index": 401,
+              "submap": 17,
+              "scan": 96,
+              "switch": 0.37696119569923736,
+              "information_scale": 0.14209974306299872,
+              "unscaled_chi2": 1.653096230969631,
+              "retained": false,
+              "reason": "switch_suppressed"
+            }
+          ],
+          "switch_prior_mean": 1.0,
+          "switch_prior_variance": 1.0,
+          "max_translation_change_m": 0.027593968360881384
+        }
+      },
+      "scans": 204,
+      "path_nodes": 1791,
+      "pose_nodes": 225,
+      "submaps": 21,
+      "constraints": 402,
+      "loop_counts": {
+        "member_scan": 398,
+        "temporal_separation": 135,
+        "ambiguous_modes": 1080,
+        "insufficient_points": 128,
+        "search_boundary": 319,
+        "low_probability": 2160,
+        "accepted": 4,
+        "unobservable": 47,
+        "high_residual": 7,
+        "refinement_failed": 6
+      },
+      "switch_counts": {
+        "switch_suppressed": 3,
+        "switch_retained": 1
+      },
+      "graph_sha256": "dd2c4b878b05038513fa82994879c1b0ab268c2ca06b118bbdf7ab1244f04145",
+      "grid_sha256": "86dfddfbcd18e65c8403d619c71a6932d15ecf6b581afb242120b5265f577625",
+      "source_sha": "a715e81fc3046f68895db7a37dae0acccbb177a5",
+      "input_sha256": {
+        "frontend-ledger.json": "20c4e4278014e5399680cff96bfb7e96951397cee4ff769c205cd7465a4b2854",
+        "frontend-poses.json": "1e0466c820ed5b2b4890f021f1a90cb203b7d39e6a88b1a4d513291930904def",
+        "bundle.json": "424d42ef827e9464bcddde6efc61c735ae3c0aa35c21976441c5d0f2faaaa08b"
+      },
+      "gt_input": false,
+      "physics": 0,
+      "cache": {
+        "field_misses": 21,
+        "pair_misses": 3751,
+        "probability_builds": 21,
+        "distance_builds": 17,
+        "pair_entries": 3751,
+        "field_entries": 21,
+        "max_pairs": 8192,
+        "max_fields": 64
+      }
+    },
+    {
+      "name": "cache-warm",
+      "profile": false,
+      "graph_acceleration": "match_cache_v1",
+      "wall_s": 2.8380873749847524,
+      "stage_s": {
+        "make_submaps": 0.9967936670000199,
+        "legacy_optimize": 0.04142754201893695,
+        "legacy_rebuild": 0.5773607500013895,
+        "switchable_optimize": 0.09334333299193531,
+        "robust_rebuild": 0.5162342499825172
+      },
+      "calls": {
+        "make_submaps": 1,
+        "legacy_optimize": 1,
+        "legacy_rebuild": 1,
+        "switchable_optimize": 1,
+        "robust_rebuild": 1
+      },
+      "optimizers": {
+        "legacy_optimize": {
+          "accepted": true,
+          "reason": "converged",
+          "initial_cost": 5.3139357445982025,
+          "final_cost": 3.3752997965867753,
+          "nfev": 6,
+          "status": 2,
+          "message": "`ftol` termination condition is satisfied.",
+          "max_translation_change_m": 0.1828567243041873
+        },
+        "switchable_optimize": {
+          "accepted": true,
+          "reason": "converged",
+          "initial_cost": 6.300947261582369,
+          "final_cost": 1.2396952048042202,
+          "nfev": 12,
+          "status": 2,
+          "message": "`ftol` termination condition is satisfied.",
+          "switches": [
+            {
+              "constraint_index": 398,
+              "submap": 0,
+              "scan": 126,
+              "switch": 0.11194268028775824,
+              "information_scale": 0.012531163670007256,
+              "unscaled_chi2": 7.936762850191991,
+              "retained": false,
+              "reason": "switch_suppressed"
+            },
+            {
+              "constraint_index": 399,
+              "submap": 7,
+              "scan": 109,
+              "switch": 0.6928629594763658,
+              "information_scale": 0.4800590806143481,
+              "unscaled_chi2": 0.44335601856815876,
+              "retained": true,
+              "reason": "switch_retained"
+            },
+            {
+              "constraint_index": 400,
+              "submap": 16,
+              "scan": 109,
+              "switch": 0.39901592566426947,
+              "information_scale": 0.1592137089337138,
+              "unscaled_chi2": 1.5062650913894933,
+              "retained": false,
+              "reason": "switch_suppressed"
+            },
+            {
+              "constraint_index": 401,
+              "submap": 17,
+              "scan": 96,
+              "switch": 0.37696119569923736,
+              "information_scale": 0.14209974306299872,
+              "unscaled_chi2": 1.653096230969631,
+              "retained": false,
+              "reason": "switch_suppressed"
+            }
+          ],
+          "switch_prior_mean": 1.0,
+          "switch_prior_variance": 1.0,
+          "max_translation_change_m": 0.027593968360881384
+        }
+      },
+      "scans": 204,
+      "path_nodes": 1791,
+      "pose_nodes": 225,
+      "submaps": 21,
+      "constraints": 402,
+      "loop_counts": {
+        "member_scan": 398,
+        "temporal_separation": 135,
+        "ambiguous_modes": 1080,
+        "insufficient_points": 128,
+        "search_boundary": 319,
+        "low_probability": 2160,
+        "accepted": 4,
+        "unobservable": 47,
+        "high_residual": 7,
+        "refinement_failed": 6
+      },
+      "switch_counts": {
+        "switch_suppressed": 3,
+        "switch_retained": 1
+      },
+      "graph_sha256": "dd2c4b878b05038513fa82994879c1b0ab268c2ca06b118bbdf7ab1244f04145",
+      "grid_sha256": "86dfddfbcd18e65c8403d619c71a6932d15ecf6b581afb242120b5265f577625",
+      "source_sha": "a715e81fc3046f68895db7a37dae0acccbb177a5",
+      "input_sha256": {
+        "frontend-ledger.json": "20c4e4278014e5399680cff96bfb7e96951397cee4ff769c205cd7465a4b2854",
+        "frontend-poses.json": "1e0466c820ed5b2b4890f021f1a90cb203b7d39e6a88b1a4d513291930904def",
+        "bundle.json": "424d42ef827e9464bcddde6efc61c735ae3c0aa35c21976441c5d0f2faaaa08b"
+      },
+      "gt_input": false,
+      "physics": 0,
+      "cache": {
+        "field_misses": 21,
+        "pair_misses": 3751,
+        "probability_builds": 21,
+        "distance_builds": 17,
+        "field_hits": 21,
+        "pair_hits": 3751,
+        "pair_entries": 3751,
+        "field_entries": 21,
+        "max_pairs": 8192,
+        "max_fields": 64
+      }
+    },
+    {
+      "name": "combined-cold",
+      "profile": false,
+      "graph_acceleration": "match_cache_v1",
+      "wall_s": 31.640964874997735,
+      "stage_s": {
+        "make_submaps": 0.2660985830007121,
+        "probability_field": 0.031384915026137605,
+        "match_loop": 30.585334301082185,
+        "distance_field": 0.029445416992530227,
+        "legacy_optimize": 0.04137795802671462,
+        "legacy_rebuild": 0.0708043749909848,
+        "switchable_optimize": 0.09760633300174959,
+        "robust_rebuild": 0.0848881250130944
+      },
+      "calls": {
+        "make_submaps": 1,
+        "probability_field": 21,
+        "match_loop": 3751,
+        "distance_field": 17,
+        "legacy_optimize": 1,
+        "legacy_rebuild": 1,
+        "switchable_optimize": 1,
+        "robust_rebuild": 1
+      },
+      "optimizers": {
+        "legacy_optimize": {
+          "accepted": true,
+          "reason": "converged",
+          "initial_cost": 5.3139357445982025,
+          "final_cost": 3.3752997965867753,
+          "nfev": 6,
+          "status": 2,
+          "message": "`ftol` termination condition is satisfied.",
+          "max_translation_change_m": 0.1828567243041873
+        },
+        "switchable_optimize": {
+          "accepted": true,
+          "reason": "converged",
+          "initial_cost": 6.300947261582369,
+          "final_cost": 1.2396952048042202,
+          "nfev": 12,
+          "status": 2,
+          "message": "`ftol` termination condition is satisfied.",
+          "switches": [
+            {
+              "constraint_index": 398,
+              "submap": 0,
+              "scan": 126,
+              "switch": 0.11194268028775824,
+              "information_scale": 0.012531163670007256,
+              "unscaled_chi2": 7.936762850191991,
+              "retained": false,
+              "reason": "switch_suppressed"
+            },
+            {
+              "constraint_index": 399,
+              "submap": 7,
+              "scan": 109,
+              "switch": 0.6928629594763658,
+              "information_scale": 0.4800590806143481,
+              "unscaled_chi2": 0.44335601856815876,
+              "retained": true,
+              "reason": "switch_retained"
+            },
+            {
+              "constraint_index": 400,
+              "submap": 16,
+              "scan": 109,
+              "switch": 0.39901592566426947,
+              "information_scale": 0.1592137089337138,
+              "unscaled_chi2": 1.5062650913894933,
+              "retained": false,
+              "reason": "switch_suppressed"
+            },
+            {
+              "constraint_index": 401,
+              "submap": 17,
+              "scan": 96,
+              "switch": 0.37696119569923736,
+              "information_scale": 0.14209974306299872,
+              "unscaled_chi2": 1.653096230969631,
+              "retained": false,
+              "reason": "switch_suppressed"
+            }
+          ],
+          "switch_prior_mean": 1.0,
+          "switch_prior_variance": 1.0,
+          "max_translation_change_m": 0.027593968360881384
+        }
+      },
+      "scans": 204,
+      "path_nodes": 1791,
+      "pose_nodes": 225,
+      "submaps": 21,
+      "constraints": 402,
+      "loop_counts": {
+        "member_scan": 398,
+        "temporal_separation": 135,
+        "ambiguous_modes": 1080,
+        "insufficient_points": 128,
+        "search_boundary": 319,
+        "low_probability": 2160,
+        "accepted": 4,
+        "unobservable": 47,
+        "high_residual": 7,
+        "refinement_failed": 6
+      },
+      "switch_counts": {
+        "switch_suppressed": 3,
+        "switch_retained": 1
+      },
+      "graph_sha256": "dd2c4b878b05038513fa82994879c1b0ab268c2ca06b118bbdf7ab1244f04145",
+      "grid_sha256": "86dfddfbcd18e65c8403d619c71a6932d15ecf6b581afb242120b5265f577625",
+      "source_sha": "a715e81fc3046f68895db7a37dae0acccbb177a5",
+      "input_sha256": {
+        "frontend-ledger.json": "20c4e4278014e5399680cff96bfb7e96951397cee4ff769c205cd7465a4b2854",
+        "frontend-poses.json": "1e0466c820ed5b2b4890f021f1a90cb203b7d39e6a88b1a4d513291930904def",
+        "bundle.json": "424d42ef827e9464bcddde6efc61c735ae3c0aa35c21976441c5d0f2faaaa08b"
+      },
+      "gt_input": false,
+      "physics": 0,
+      "cache": {
+        "field_misses": 21,
+        "pair_misses": 3751,
+        "probability_builds": 21,
+        "distance_builds": 17,
+        "pair_entries": 3751,
+        "field_entries": 21,
+        "max_pairs": 8192,
+        "max_fields": 64
+      }
+    }
+  ],
+  "frames": [
+    {
+      "name": "combined-off",
+      "profile": false,
+      "acceleration": "off",
+      "sim_s": 30,
+      "rgb": 151,
+      "controller_frames": 141,
+      "identical_to_physical": 141,
+      "all_outputs_sha256": "af0969c41610a963723a99f281efd032a48b5e7018d0613bba84d158333a4b69",
+      "measured_wall_s": 31.547827246104134,
+      "wall_per_sim": 1.0515942415368045,
+      "total_replay_wall_s": 31.755951583007118,
+      "parts": {
+        "image_decode": 0.17076091523631476,
+        "wall_detection": 1.808658456982812,
+        "map_insertion": 7.105361426598392,
+        "rbpf_matching": 1.0588144695502706,
+        "controller_other": 16.53489648643881,
+        "command_propagation": 0.003124669980024919,
+        "pose_graph": 4.868447417160496,
+        "frontier_search": 0.0012946250208187848,
+        "navfn_plan": 0.003352040017489344
+      },
+      "rendering": "NOT_MEASURED_saved_JPEG_only",
+      "gt_input": false,
+      "physics": 0,
+      "inclusive_graph_s": 5.171230332984123,
+      "graph_calls": 3,
+      "graph_acceleration": "off"
+    },
+    {
+      "name": "combined-on",
+      "profile": false,
+      "acceleration": "scalar_rays_v1",
+      "sim_s": 30,
+      "rgb": 151,
+      "controller_frames": 141,
+      "identical_to_physical": 141,
+      "all_outputs_sha256": "af0969c41610a963723a99f281efd032a48b5e7018d0613bba84d158333a4b69",
+      "measured_wall_s": 19.474045414855937,
+      "wall_per_sim": 0.6491348471618645,
+      "total_replay_wall_s": 19.667185208003502,
+      "parts": {
+        "image_decode": 0.16215566513710655,
+        "wall_detection": 1.9680326618545223,
+        "map_insertion": 1.1959990790346637,
+        "rbpf_matching": 0.9366709776222706,
+        "controller_other": 12.028004069114104,
+        "command_propagation": 0.0031248378509189934,
+        "pose_graph": 3.178895077930065,
+        "frontier_search": 0.0012940420128870755,
+        "navfn_plan": 0.003328749939100817
+      },
+      "rendering": "NOT_MEASURED_saved_JPEG_only",
+      "gt_input": false,
+      "physics": 0,
+      "inclusive_graph_s": 3.2219938749913126,
+      "graph_calls": 3,
+      "graph_acceleration": "match_cache_v1"
+    }
+  ],
+  "lock": {
+    "owner": "codex",
+    "branch": "claude/ego-wall-map",
+    "purpose": "egomap48 offline exact cache benchmarks",
+    "pid": 71400,
+    "acquired_unix": 1791450295.394467,
+    "expected_end_unix": 1791450895.394467,
+    "loadavg_at_acquire": [
+      1.8076171875,
+      2.86962890625,
+      3.17529296875
+    ],
+    "timing_sensitive": true
+  },
+  "physics": 0,
+  "gt_input": false
+}

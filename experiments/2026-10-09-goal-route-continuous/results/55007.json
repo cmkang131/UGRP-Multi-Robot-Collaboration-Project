@@ -1,0 +1,50 @@
+{
+  "seed": 55007,
+  "condition": "T2",
+  "started": true,
+  "status": "HOST_ERROR",
+  "acquisition": {
+    "status": "HOST_ERROR",
+    "source_sha": "1afd7e24ac106bb262d858173906dfb36d34871b",
+    "seed": 55007,
+    "condition": "T2",
+    "model_calls": 0,
+    "freeze": false,
+    "physical_hardware": false,
+    "loadavg_start": [
+      3.068359375,
+      2.80615234375,
+      3.21337890625
+    ],
+    "total_sim_s": null,
+    "frames": 0,
+    "failure": {
+      "type": "ValueError",
+      "message": "scene walls differ from the fixed physical tape table"
+    },
+    "enospc": false,
+    "wall_s": 0.09049616695847362,
+    "loadavg_end": [
+      3.068359375,
+      2.80615234375,
+      3.21337890625
+    ],
+    "heading_contract": {
+      "shared_version": "zone-s2-realism-v145",
+      "main_sha": "6813f8a15930bbf3a039887219c76a7acb863648",
+      "command_factory": "harness.own_map_heading.command",
+      "selector": "harness.zone_solo_cyan_path_heading.select_waypoint",
+      "mode": "path_tangent_v1",
+      "host": "shared_v145",
+      "motion_model": "s2_pulse_v122_rotL_v1",
+      "return_shortcuts": false
+    },
+    "heading_mode": "path_tangent_v1",
+    "heading_visual_lock": "off"
+  },
+  "arrived_B": false,
+  "false_declarations": 0,
+  "returned_start": false,
+  "excluded": false,
+  "failure": "no_trace_or_gt"
+}

@@ -1,0 +1,111 @@
+{
+  "physics_runs": 0,
+  "rows": [
+    {
+      "sim_s": 2.0,
+      "owner": [
+        "r1",
+        "r2"
+      ],
+      "moving": {
+        "r1": true,
+        "r2": true,
+        "r3": false
+      },
+      "actions": [
+        [
+          "r1",
+          {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          }
+        ],
+        [
+          "r2",
+          {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          }
+        ],
+        [
+          "r3",
+          {
+            "kind": "hold"
+          }
+        ]
+      ]
+    },
+    {
+      "sim_s": 12.0,
+      "owner": null,
+      "moving": {
+        "r1": false,
+        "r2": false,
+        "r3": false
+      },
+      "actions": [
+        [
+          "r1",
+          {
+            "kind": "hold"
+          }
+        ],
+        [
+          "r2",
+          {
+            "kind": "hold"
+          }
+        ],
+        [
+          "r3",
+          {
+            "kind": "hold"
+          }
+        ]
+      ]
+    },
+    {
+      "sim_s": 12.05,
+      "owner": [
+        "r3"
+      ],
+      "moving": {
+        "r1": false,
+        "r2": false,
+        "r3": true
+      },
+      "actions": [
+        [
+          "r1",
+          {
+            "kind": "hold"
+          }
+        ],
+        [
+          "r2",
+          {
+            "kind": "hold"
+          }
+        ],
+        [
+          "r3",
+          {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          }
+        ]
+      ]
+    }
+  ],
+  "errors": 0,
+  "commands": 9
+}

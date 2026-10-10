@@ -1,0 +1,197 @@
+{
+  "snapshot": "1010-s3fix10-oracle",
+  "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22evaluation%2Freported_success%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcontact_lift_xy_m%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Finfrastructure_interruptions%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhover_n%22%7D%5D&smoothing=0&runFilter=%5E1010-s3fix10-oracle%2F#timeseries",
+  "pinned_tags": [
+    "evaluation/reported_success",
+    "offline/contact_lift_xy_m",
+    "offline/infrastructure_interruptions",
+    "result/wall_s",
+    "result/sim_s",
+    "result/commands",
+    "result/model_calls",
+    "offline/hover_n"
+  ],
+  "default_runs": [
+    "1010-s3fix10-oracle/views__s3fix10-cyan-c0bf138f__2d797a87",
+    "1010-s3fix10-oracle/views__s3fix10-pair-b-c0bf138f__4a933495",
+    "1010-s3fix10-oracle/views__s3fix10-pair-n-c0bf138f__aa4170c2",
+    "1010-s3fix10-oracle/views__s3fix10-r2-cyan-c0bf138f__cabaa4d7",
+    "1010-s3fix10-oracle/views__s3fix10-r2-pair-b-c0bf138f__f88adbda",
+    "1010-s3fix10-oracle/views__s3fix10-r2-pair-n-c0bf138f__0e20c771"
+  ],
+  "hparams_visible_columns": [
+    "case",
+    "policy",
+    "seed",
+    "source_sha"
+  ],
+  "videos": [
+    {
+      "run": "1010-s3fix10-oracle/views__s3fix10-r2-cyan-c0bf138f__cabaa4d7",
+      "url": "http://127.0.0.1:6007/video/2433400557dbee674291",
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix10-control-20261010/views/s3fix10-r2-cyan-c0bf138f/execution.mp4",
+      "range_status": 206
+    },
+    {
+      "run": "1010-s3fix10-oracle/views__s3fix10-r2-pair-b-c0bf138f__f88adbda",
+      "url": "http://127.0.0.1:6007/video/20542bd1d3f9c6690773",
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix10-control-20261010/views/s3fix10-r2-pair-b-c0bf138f/execution.mp4",
+      "range_status": 206
+    },
+    {
+      "run": "1010-s3fix10-oracle/views__s3fix10-r2-pair-n-c0bf138f__0e20c771",
+      "url": "http://127.0.0.1:6007/video/01b0f4251ed1f1923442",
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix10-control-20261010/views/s3fix10-r2-pair-n-c0bf138f/execution.mp4",
+      "range_status": 206
+    }
+  ],
+  "checks": [
+    {
+      "run": "1010-s3fix10-oracle/views__s3fix10-cyan-c0bf138f__2d797a87",
+      "scalars": {
+        "offline/infrastructure_interruptions": 1.0
+      },
+      "complete": true
+    },
+    {
+      "run": "1010-s3fix10-oracle/views__s3fix10-pair-b-c0bf138f__4a933495",
+      "scalars": {
+        "offline/infrastructure_interruptions": 1.0
+      },
+      "complete": true
+    },
+    {
+      "run": "1010-s3fix10-oracle/views__s3fix10-pair-n-c0bf138f__aa4170c2",
+      "scalars": {
+        "offline/infrastructure_interruptions": 1.0
+      },
+      "complete": true
+    },
+    {
+      "run": "1010-s3fix10-oracle/views__s3fix10-r2-cyan-c0bf138f__cabaa4d7",
+      "scalars": {
+        "result/wall_s": 894.9331665039062,
+        "result/sim_s": 60.0,
+        "result/commands": 63.0,
+        "result/model_calls": 0.0,
+        "evaluation/reported_success": 1.0,
+        "offline/stage_pass_n": 1.0,
+        "offline/hover_n": 1.0,
+        "offline/descent_n": 1.0,
+        "offline/close_n": 1.0,
+        "offline/host_errors": 0.0,
+        "offline/physical_runs": 1.0,
+        "offline/wall_per_sim": 14.915552139282227,
+        "offline/r3/moving_commands": 63.0,
+        "offline/r3/short_commands": 0.0,
+        "offline/r3/mixed_commands": 0.0,
+        "offline/r3/beam_observations": 0.0,
+        "offline/r3/beam_visible": 0.0,
+        "offline/infrastructure_interruptions": 0.0,
+        "offline/physical_stops": 0.0,
+        "offline/contact_lift_samples": 917.0,
+        "offline/contact_lift_xy_m": 0.2498835027217865
+      },
+      "complete": true
+    },
+    {
+      "run": "1010-s3fix10-oracle/views__s3fix10-r2-pair-b-c0bf138f__f88adbda",
+      "scalars": {
+        "result/wall_s": 753.5430908203125,
+        "result/sim_s": 60.0,
+        "result/commands": 278.0,
+        "result/model_calls": 0.0,
+        "evaluation/reported_success": 0.0,
+        "offline/stage_pass_n": 0.0,
+        "offline/hover_n": 0.0,
+        "offline/descent_n": 0.0,
+        "offline/close_n": 0.0,
+        "offline/host_errors": 0.0,
+        "offline/physical_runs": 1.0,
+        "offline/wall_per_sim": 12.559051513671875,
+        "offline/r1/moving_commands": 139.0,
+        "offline/r1/short_commands": 0.0,
+        "offline/r1/mixed_commands": 0.0,
+        "offline/r1/beam_observations": 141.0,
+        "offline/r1/beam_visible": 141.0,
+        "offline/r2/moving_commands": 139.0,
+        "offline/r2/short_commands": 0.0,
+        "offline/r2/mixed_commands": 0.0,
+        "offline/r2/beam_observations": 141.0,
+        "offline/r2/beam_visible": 141.0,
+        "offline/infrastructure_interruptions": 0.0,
+        "offline/physical_stops": 0.0
+      },
+      "complete": true
+    },
+    {
+      "run": "1010-s3fix10-oracle/views__s3fix10-r2-pair-n-c0bf138f__0e20c771",
+      "scalars": {
+        "result/wall_s": 761.2429809570312,
+        "result/sim_s": 60.0,
+        "result/commands": 288.0,
+        "result/model_calls": 0.0,
+        "evaluation/reported_success": 0.0,
+        "offline/stage_pass_n": 0.0,
+        "offline/hover_n": 0.0,
+        "offline/descent_n": 0.0,
+        "offline/close_n": 0.0,
+        "offline/host_errors": 0.0,
+        "offline/physical_runs": 1.0,
+        "offline/wall_per_sim": 12.687383651733398,
+        "offline/r1/moving_commands": 144.0,
+        "offline/r1/short_commands": 0.0,
+        "offline/r1/mixed_commands": 0.0,
+        "offline/r1/beam_observations": 144.0,
+        "offline/r1/beam_visible": 144.0,
+        "offline/r2/moving_commands": 144.0,
+        "offline/r2/short_commands": 0.0,
+        "offline/r2/mixed_commands": 0.0,
+        "offline/r2/beam_observations": 144.0,
+        "offline/r2/beam_visible": 144.0,
+        "offline/infrastructure_interruptions": 0.0,
+        "offline/physical_stops": 0.0
+      },
+      "complete": true
+    }
+  ],
+  "scope": "3 completed Oracle probes plus 3 reboot interruptions; stage success only, no delivery/E2E claim",
+  "ui": {
+    "browser": "Chrome \uac15 / browser1",
+    "tab": "964001922",
+    "video_tab": "964001925",
+    "pins": 8,
+    "selected_runs": 6,
+    "stage_pass_values": [
+      1,
+      0,
+      0
+    ],
+    "contact_lift_xy_m": 0.2499,
+    "wall_s": [
+      894.9332,
+      753.5431,
+      761.243
+    ],
+    "sim_s": [
+      60,
+      60,
+      60
+    ],
+    "hparams_applied": [
+      "case",
+      "policy",
+      "seed",
+      "source_sha"
+    ],
+    "hparams_limitation": "HParams global 4445 groups; Time Series filtered to own six runs",
+    "video": {
+      "paused": false,
+      "time": 0.2264,
+      "duration": 15,
+      "ready_state": 4,
+      "width": 1920,
+      "height": 480
+    }
+  }
+}

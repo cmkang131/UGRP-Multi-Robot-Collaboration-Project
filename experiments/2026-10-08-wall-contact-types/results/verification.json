@@ -1,0 +1,123 @@
+{
+  "records": {
+    "31001": {
+      "input_rgb_frames": 891,
+      "detector_frames": 891,
+      "inserted_frames": 47,
+      "own_pose_and_camera_exact": true,
+      "off_observation_exact_frames": 47,
+      "historical_grid_bytes_identical": true,
+      "decision_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 844,
+        "low_overlap": 8,
+        "improved_proposal": 22,
+        "high_residual": 14,
+        "search_boundary": 2
+      },
+      "baseline_sha": "73427fbf009cfee5ebee5ddd08ef5f939fb1bbcc",
+      "prediction_sha": "26a007d77b4b6298676d815980d82e1919cc2399",
+      "ground_truth_only_during_evaluation": true,
+      "source_hashes": {
+        "decisions.json": "3dcf7d4f2b8bc9187acaa5e3752b53c035a18492315fa7d9c69ae7fe56a5094b",
+        "eval_only/camera.jsonl": "38c3bd2a5c2c0c905d06ac0c1116b2ff97c5f1ac1d5447b05fa7a23c5fc04e57",
+        "eval_only/trajectory.jsonl": "bab865dfdccf368f205d80c22ae02cbecbdd6d5590ca29e4a2ee214129a9b097",
+        "scene.xml": "7604aa6fcfa097adc252fcebcaf7e7f3b5965051246bb29d07d9d84fa23eff7a"
+      },
+      "point_gate": false,
+      "on_map_gates": {
+        "grid": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        }
+      }
+    },
+    "32002": {
+      "input_rgb_frames": 891,
+      "detector_frames": 891,
+      "inserted_frames": 64,
+      "own_pose_and_camera_exact": true,
+      "off_observation_exact_frames": 64,
+      "historical_grid_bytes_identical": true,
+      "decision_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 814,
+        "improved_proposal": 30,
+        "search_boundary": 2,
+        "high_residual": 19,
+        "insufficient_match_points": 5,
+        "low_overlap": 7
+      },
+      "baseline_sha": "73427fbf009cfee5ebee5ddd08ef5f939fb1bbcc",
+      "prediction_sha": "c015f76dadcb6b316efa1e4dfeeccddb05323262",
+      "ground_truth_only_during_evaluation": true,
+      "source_hashes": {
+        "decisions.json": "7b1bfd9fd356f0980d112e1504bd48f48713f4b1475555c43342423817a59f28",
+        "eval_only/camera.jsonl": "189436ec15c8eafda5a44d323e01a8d7d4f1eb3e828d5792b1d294e16cac0870",
+        "eval_only/trajectory.jsonl": "c06c2d964971d4ee1eaaa90760f8f04bea15555a64ea481849a903f18f211ee0",
+        "scene.xml": "b5b968ebb39d1d467425eef13843c36ca69dca4969974f4248a2c0682730dad5"
+      },
+      "point_gate": false,
+      "on_map_gates": {
+        "grid": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        }
+      }
+    }
+  },
+  "preregistration": "56860d86",
+  "method_commit": "26a007d7",
+  "freeze_commit": "c015f76dadcb6b316efa1e4dfeeccddb05323262",
+  "tests": 16,
+  "physics": 0,
+  "render": 0,
+  "models": 0,
+  "lock_acquired": false,
+  "held_on_evaluations": 1,
+  "retuning": 0,
+  "original_untracked_unchanged": true,
+  "raw_path": "/Users/changmin/projects/ugrp/outputs/wall-contact-types-v1",
+  "manifest_sha256": "995c0859f06f96abb6bbfd475f3768a586f1dd22526ceb84d6cf9b641f7bb12d",
+  "figure_hashes": {
+    "31001-on-rgb.jpg": {
+      "sha256": "a8695523e4be70bbeef2da2fd588dc7814294737754fdb873bac1f3912d1efe5",
+      "bytes": 69807
+    },
+    "32002-on-rgb.jpg": {
+      "sha256": "89ddedfa5e3323943e43e2a32e67907598b452159a2c194eba3c21d7b08d826e",
+      "bytes": 66006
+    },
+    "maps.png": {
+      "sha256": "63fd294d82cdd30856a599c1684a3aedaf248849440a403c18494d03aa611f56",
+      "bytes": 166147
+    },
+    "type-examples-31001.jpg": {
+      "sha256": "2c4435297ab65b64b328695a48c549f8a167b49204aa4191f5ee14763df685a8",
+      "bytes": 97464
+    },
+    "type-examples-32002.jpg": {
+      "sha256": "fdb4131e7c7754e1530b14ac371472490a94fed8789bffb5223d3fb2f7c40dcf",
+      "bytes": 67535
+    }
+  },
+  "fixture_hashes": {
+    "active_wall_vision_before.py.txt": "0ef6fdd4443595404cf4c521169bc5c94f1cdd4040ae42d527422733e5a49147",
+    "dev326.jpg": "f7288803d8a963a766271e0d5da7dd88bb8300eb3dd51b6e5cacb111a01a45d0",
+    "frame.json": "96debd2e26ee085943705f3b802671cfdd6ce32747de5c6f15cde201f42e5c10",
+    "segment_points_before.py.txt": "c274e0cafda6791e675cb1e55f63fba97454bc7a2d9470adf90d71974223f296"
+  },
+  "note": "Default off golden bytes unchanged; paired evaluator recomputes both weights from saved post-scan covariance; historical grid kept separately."
+}

@@ -1,0 +1,389 @@
+{
+  "schema": "ugrp.e2e1.summary.v1",
+  "scope": "input_state_contract_only",
+  "status": "STEP1_VERIFIED",
+  "E2E_runs": 0,
+  "model_calls": 0,
+  "past_success_inherited": false,
+  "input_toggle": "e2e_own_inputs_v1=off (opt-in on_v1)",
+  "tests": {
+    "passed": 79,
+    "total": 79,
+    "scope": [
+      "tests/test_e2e_own_inputs.py",
+      "tests/test_pair_llm_s4_host.py",
+      "tests/test_zone_scenario_scene.py"
+    ],
+    "final_log": "/Users/changmin/projects/ugrp/outputs/e2e1-contract-checks/pytest-delivery-79.log",
+    "latest_changed_module": {
+      "passed": 19,
+      "total": 19,
+      "log": "/Users/changmin/projects/ugrp/outputs/e2e1-contract-checks/pytest-epoch-19.log"
+    }
+  },
+  "first_frame": {
+    "passed": 3,
+    "executed": 9,
+    "HOST_ERROR": 6,
+    "valid_RGB_cases": 3,
+    "pending": 0,
+    "candidates": [
+      "base",
+      "A",
+      "B"
+    ],
+    "seed": 61001,
+    "status": "COMPLETE",
+    "attempts": [
+      {
+        "source_sha": "15e81387134208b9fff31d460e220521d445dac8",
+        "candidate": "base",
+        "status": "HOST_ERROR",
+        "cause": "segmentation API name",
+        "initial_check": {
+          "exception_free": false,
+          "exit_recorded": true
+        },
+        "wall_s": 3.573489446000167,
+        "loadavg_start": [
+          50.466796875,
+          68.12353515625,
+          67.7646484375
+        ],
+        "exit_code": 1,
+        "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/e2e1-61001-15e81387134208b9fff31d460e220521d445dac8/base/raw",
+        "raw_remote": "/home/ubuntu/ugrp-sim/runs/e2e1-61001-15e81387134208b9fff31d460e220521d445dac8/base/raw",
+        "sha256_manifest": "c292efa876b176424a53784bafef62f59d7fa9e661b71d950a55a9e9d5aeedd9",
+        "retrieved_hashes_verified": true
+      },
+      {
+        "source_sha": "15e81387134208b9fff31d460e220521d445dac8",
+        "candidate": "A",
+        "status": "HOST_ERROR",
+        "cause": "segmentation API name",
+        "initial_check": {
+          "exception_free": false,
+          "exit_recorded": true
+        },
+        "wall_s": 3.5929083580012957,
+        "loadavg_start": [
+          50.466796875,
+          68.12353515625,
+          67.7646484375
+        ],
+        "exit_code": 1,
+        "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/e2e1-61001-15e81387134208b9fff31d460e220521d445dac8/A/raw",
+        "raw_remote": "/home/ubuntu/ugrp-sim/runs/e2e1-61001-15e81387134208b9fff31d460e220521d445dac8/A/raw",
+        "sha256_manifest": "4397bced25602a87649820509cf96c7c3d9a09423e3b82ef44d901b692978e62",
+        "retrieved_hashes_verified": true
+      },
+      {
+        "source_sha": "15e81387134208b9fff31d460e220521d445dac8",
+        "candidate": "B",
+        "status": "HOST_ERROR",
+        "cause": "segmentation API name",
+        "initial_check": {
+          "exception_free": false,
+          "exit_recorded": true
+        },
+        "wall_s": 3.605277603999639,
+        "loadavg_start": [
+          50.466796875,
+          68.12353515625,
+          67.7646484375
+        ],
+        "exit_code": 1,
+        "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/e2e1-61001-15e81387134208b9fff31d460e220521d445dac8/B/raw",
+        "raw_remote": "/home/ubuntu/ugrp-sim/runs/e2e1-61001-15e81387134208b9fff31d460e220521d445dac8/B/raw",
+        "sha256_manifest": "b31d236c0ebb2878c7c83c596fb0ef0de2da5053d3fcaa7da1e73766fcd38315",
+        "retrieved_hashes_verified": true
+      },
+      {
+        "source_sha": "8f593389b319d5f0723be7cf5a77dce3aeba6edb",
+        "candidate": "base",
+        "status": "HOST_ERROR",
+        "cause": "Scene geometry prefix",
+        "initial_check": {
+          "exception_free": false,
+          "exit_recorded": true
+        },
+        "wall_s": 3.077186062000692,
+        "loadavg_start": [
+          45.185546875,
+          59.58984375,
+          64.6640625
+        ],
+        "exit_code": 1,
+        "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/e2e1-61001-8f593389b319d5f0723be7cf5a77dce3aeba6edb/base/raw",
+        "raw_remote": "/home/ubuntu/ugrp-sim/runs/e2e1-61001-8f593389b319d5f0723be7cf5a77dce3aeba6edb/base/raw",
+        "sha256_manifest": "ffd03cf6ed3b35da8e7379485b7388beb54a9a9ed69844325148896802f7714b",
+        "retrieved_hashes_verified": true
+      },
+      {
+        "source_sha": "8f593389b319d5f0723be7cf5a77dce3aeba6edb",
+        "candidate": "A",
+        "status": "HOST_ERROR",
+        "cause": "Scene geometry prefix",
+        "initial_check": {
+          "exception_free": false,
+          "exit_recorded": true
+        },
+        "wall_s": 3.125523530999999,
+        "loadavg_start": [
+          45.185546875,
+          59.58984375,
+          64.6640625
+        ],
+        "exit_code": 1,
+        "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/e2e1-61001-8f593389b319d5f0723be7cf5a77dce3aeba6edb/A/raw",
+        "raw_remote": "/home/ubuntu/ugrp-sim/runs/e2e1-61001-8f593389b319d5f0723be7cf5a77dce3aeba6edb/A/raw",
+        "sha256_manifest": "fdd960078a90280c7110bf1f5e7925e52091a52726dc6093359905670001b284",
+        "retrieved_hashes_verified": true
+      },
+      {
+        "source_sha": "8f593389b319d5f0723be7cf5a77dce3aeba6edb",
+        "candidate": "B",
+        "status": "HOST_ERROR",
+        "cause": "Scene geometry prefix",
+        "initial_check": {
+          "exception_free": false,
+          "exit_recorded": true
+        },
+        "wall_s": 3.16700549000052,
+        "loadavg_start": [
+          45.185546875,
+          59.58984375,
+          64.6640625
+        ],
+        "exit_code": 1,
+        "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/e2e1-61001-8f593389b319d5f0723be7cf5a77dce3aeba6edb/B/raw",
+        "raw_remote": "/home/ubuntu/ugrp-sim/runs/e2e1-61001-8f593389b319d5f0723be7cf5a77dce3aeba6edb/B/raw",
+        "sha256_manifest": "1b33e541f844e3db9f2076a1f1a3c3cd6539f5250f1d5bad5af8727b975b906c",
+        "retrieved_hashes_verified": true
+      },
+      {
+        "source_sha": "52162f21794f37f136fa672cae4ff1008263048c",
+        "candidate": "base",
+        "status": "PASS",
+        "B_visible_pixels": {
+          "r1": 143135,
+          "r2": 0,
+          "r3": 0
+        },
+        "first_frames": {
+          "r1": {
+            "frame_id": 1,
+            "sim_s": 1.3000000000000178,
+            "sha256": "67d466412c32a8be4aed2574b5cf8ee23261af1d86b3c7a58b579e29e0086409"
+          },
+          "r2": {
+            "frame_id": 1,
+            "sim_s": 1.3000000000000178,
+            "sha256": "350f5725d760ee3cb41671c1dbc250c3d4d55649f1bcd28b703c16fb2b36259d"
+          },
+          "r3": {
+            "frame_id": 1,
+            "sim_s": 1.3000000000000178,
+            "sha256": "39d8d1a8c555cfc75de2f72cb7312b4692ae3d68ca4a18e41778ef17e45e2186"
+          }
+        },
+        "sim_s": 1.3000000000000178,
+        "wall_s": 3.6845177069990314,
+        "initial_check": {
+          "exception_free": true,
+          "first_frames_written": 3,
+          "stationary_setup_only": true,
+          "controller_command_check": "not_applicable_no_controller",
+          "information_gap": true
+        },
+        "loadavg_start": [
+          50.61376953125,
+          65.81787109375,
+          68.619140625
+        ],
+        "exit_code": 0,
+        "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/e2e1-61001-52162f21794f37f136fa672cae4ff1008263048c/base/raw",
+        "raw_remote": "/home/ubuntu/ugrp-sim/runs/e2e1-61001-52162f21794f37f136fa672cae4ff1008263048c/base/raw",
+        "sha256_manifest": "c83c648e131380c719a4337135c64e062daab7e798086de6282f8f70a1741c28",
+        "retrieved_hashes_verified": true
+      },
+      {
+        "source_sha": "52162f21794f37f136fa672cae4ff1008263048c",
+        "candidate": "A",
+        "status": "PASS",
+        "B_visible_pixels": {
+          "r1": 56956,
+          "r2": 0,
+          "r3": 0
+        },
+        "first_frames": {
+          "r1": {
+            "frame_id": 1,
+            "sim_s": 1.3000000000000178,
+            "sha256": "42bf93377d786d611ddeeccc4d80494dad7fee6087131d280f789c390af1aad1"
+          },
+          "r2": {
+            "frame_id": 1,
+            "sim_s": 1.3000000000000178,
+            "sha256": "350f5725d760ee3cb41671c1dbc250c3d4d55649f1bcd28b703c16fb2b36259d"
+          },
+          "r3": {
+            "frame_id": 1,
+            "sim_s": 1.3000000000000178,
+            "sha256": "39d8d1a8c555cfc75de2f72cb7312b4692ae3d68ca4a18e41778ef17e45e2186"
+          }
+        },
+        "sim_s": 1.3000000000000178,
+        "wall_s": 3.8967424130005384,
+        "initial_check": {
+          "exception_free": true,
+          "first_frames_written": 3,
+          "stationary_setup_only": true,
+          "controller_command_check": "not_applicable_no_controller",
+          "information_gap": true
+        },
+        "loadavg_start": [
+          50.61376953125,
+          65.81787109375,
+          68.619140625
+        ],
+        "exit_code": 0,
+        "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/e2e1-61001-52162f21794f37f136fa672cae4ff1008263048c/A/raw",
+        "raw_remote": "/home/ubuntu/ugrp-sim/runs/e2e1-61001-52162f21794f37f136fa672cae4ff1008263048c/A/raw",
+        "sha256_manifest": "f73b6982396981bdc6249be9d41b509ed26399830ac7cbc706105f6f8e4a6ad1",
+        "retrieved_hashes_verified": true
+      },
+      {
+        "source_sha": "52162f21794f37f136fa672cae4ff1008263048c",
+        "candidate": "B",
+        "status": "PASS",
+        "B_visible_pixels": {
+          "r1": 162036,
+          "r2": 0,
+          "r3": 0
+        },
+        "first_frames": {
+          "r1": {
+            "frame_id": 1,
+            "sim_s": 1.3000000000000178,
+            "sha256": "eb3fe593d7c7140eb5d8e565890aa9681814be1e44c55b1749c84d4a99e62f89"
+          },
+          "r2": {
+            "frame_id": 1,
+            "sim_s": 1.3000000000000178,
+            "sha256": "350f5725d760ee3cb41671c1dbc250c3d4d55649f1bcd28b703c16fb2b36259d"
+          },
+          "r3": {
+            "frame_id": 1,
+            "sim_s": 1.3000000000000178,
+            "sha256": "39d8d1a8c555cfc75de2f72cb7312b4692ae3d68ca4a18e41778ef17e45e2186"
+          }
+        },
+        "sim_s": 1.3000000000000178,
+        "wall_s": 3.8491738550001173,
+        "initial_check": {
+          "exception_free": true,
+          "first_frames_written": 3,
+          "stationary_setup_only": true,
+          "controller_command_check": "not_applicable_no_controller",
+          "information_gap": true
+        },
+        "loadavg_start": [
+          50.61376953125,
+          65.81787109375,
+          68.619140625
+        ],
+        "exit_code": 0,
+        "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/e2e1-61001-52162f21794f37f136fa672cae4ff1008263048c/B/raw",
+        "raw_remote": "/home/ubuntu/ugrp-sim/runs/e2e1-61001-52162f21794f37f136fa672cae4ff1008263048c/B/raw",
+        "sha256_manifest": "d641bfe43088f817365e2682581da0535a8fd94f23d9f778358bd0a6a7e253ea",
+        "retrieved_hashes_verified": true
+      }
+    ],
+    "retrieval_receipts": [
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/retrieval-15e81387.json",
+        "sha256": "2f428687acb0ea75b47f8177bac9e1e0437a4904b11903977d3c10f7adb96c4f"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/retrieval-52162f21.json",
+        "sha256": "8b13f85c445c14accf25f88c02cb37f0a3beca138bb1cb81c85d8a1158ef15c2"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e1-first-frame/retrieval-8f593389.json",
+        "sha256": "6b99c0439d868c634d6dae86d246e5fd0892d16c18825b3883a5e53a1db48b68"
+      }
+    ],
+    "selected_candidate": "base",
+    "visual_QA": {
+      "r1": "B blue floor with three white rectangular marks visible",
+      "r2": "beam and blue pickup floor visible; B physically occluded",
+      "source_sha": "52162f21794f37f136fa672cae4ff1008263048c",
+      "geometry_mask_only_in_eval": true
+    },
+    "all_attempts_n_N": [
+      3,
+      9
+    ],
+    "valid_RGB_n_N": [
+      3,
+      3
+    ],
+    "retrieval_totals": {
+      "files": 132,
+      "bytes": 10126643,
+      "all_hashes_verified": true,
+      "raw_local_only_backup": false,
+      "remote_and_local_retained": true
+    }
+  },
+  "raw_local": "/Users/changmin/projects/ugrp/outputs/e2e1-contract-checks",
+  "sha256": {
+    "pytest-epoch-19.log": "5f98f9ef855e9964805f6b2a7dc08e8c42bb9f9d0bbab985f9e8d36ffda0d5c8",
+    "pytest-delivery-79.log": "da16448c3d33a774bfb630a401d7c42daf227707aad4263b702317b098a58384",
+    "pytest-75.log": "ca9ecb967a9b29ee2792c3d6124043d26b2bdde26dbaa532675797ba5435217f",
+    "pytest-parser-75.log": "e68db32a6c811ebe69ff2d2b84f925bf15d055b754a4115d255fcb23efe5591f",
+    "pytest-metadata-75.log": "a93876676e394f4a8a20a3a964980199f7ce1b522d78424b0f2256dac9a31e47",
+    "pytest-final.log": "d6d5c7ae47274248a7236d4e37c6f178049c0f49a601d06a8053d5aedcc797d3",
+    "ci-shard3-114280280576.log": "45c48c0c076d9093d630764d39c6a34b76affb1048fc31bc09413a6619c8a04f",
+    "pytest-peer-79.log": "06cf5613a74c6d3339a993aff95d5d090cefaf4648b6634aadc67cf4b6afbb3c",
+    "ci-runtime-114280280596.log": "3f70cc0b25c828205285383c0d90a0437009aa873d3583750fd673b1531f01fe",
+    "ci-common-114280280535.log": "e89e8df1cc1326721850a2365affaa0d6feb411509dc9dff28d44fb4a07e8142"
+  },
+  "remaining": [
+    "combined dependency CI blockers remain; DRAFT, no merge",
+    "own-map-to-beam navigation (step 2)",
+    "own planner/guard/provider transport adapter (step 3)",
+    "live route approval/claim/heartbeat wiring (step 4)",
+    "same-run LLM + ownmap + full transport (step 5)"
+  ],
+  "workflow": {
+    "id": "e2e-one-beam-ownmap-inputs",
+    "version": "7.68.0",
+    "max_seen_before_registration": "7.67.0",
+    "new_runnable_bundle_registered": false
+  },
+  "source_sha_for_first_frame": "52162f21794f37f136fa672cae4ff1008263048c",
+  "CI": {
+    "run_id": 38075055605,
+    "status": "FAILED",
+    "scope": "combined_dependency_tree",
+    "blockers": [
+      {
+        "job": "offline-regression-checks",
+        "cause": "duration table coverage 551/627 <90%; before e2e1 551/626 <90%",
+        "introduced_by_e2e1": false
+      },
+      {
+        "job": "offline-regression-shard (3/8)",
+        "cause": "existing S4 runner import requires mujoco in offline CI; relevant paths unchanged from dependency merge",
+        "introduced_by_e2e1": false
+      },
+      {
+        "job": "ubuntu-simulation-runtime",
+        "cause": "six historical v127/v128 frozen source/calibration refusal expectation failures; e2e1 did not edit compared files",
+        "introduced_by_e2e1": false
+      }
+    ]
+  }
+}

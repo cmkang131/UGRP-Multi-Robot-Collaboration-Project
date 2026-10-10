@@ -1,0 +1,72 @@
+{
+  "sequences": [
+    {
+      "case": "s1045",
+      "frames": 13794,
+      "eligible": 0,
+      "exclusions": {
+        "no_eligible_own_contact": 13380,
+        "no_front_axis_contact": 57,
+        "pitch_root_outside_bounds": 310,
+        "oblique_wall": 40,
+        "invalid_range": 7
+      },
+      "groups": [],
+      "passed": false
+    },
+    {
+      "case": "s1046",
+      "frames": 6500,
+      "eligible": 3,
+      "exclusions": {
+        "no_eligible_own_contact": 6303,
+        "no_front_axis_contact": 19,
+        "pitch_root_outside_bounds": 166,
+        "invalid_range": 7,
+        "near_range": 2
+      },
+      "groups": [
+        {
+          "command_pose": "740,2320,1320,1500",
+          "n": 3,
+          "predicted_offset_deg": -1.0302844143749041,
+          "actual_offset_deg": -0.904182783268169,
+          "absolute_error_deg": 0.1261016311067351,
+          "passed": true,
+          "single_frame_median_error_deg": 0.1261016311067351,
+          "causal_median_error_deg": 0.12622041109682747,
+          "causal_p95_error_deg": 0.16244495931882577
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case": "s1047",
+      "frames": 5101,
+      "eligible": 4,
+      "exclusions": {
+        "no_eligible_own_contact": 4894,
+        "no_front_axis_contact": 19,
+        "pitch_root_outside_bounds": 181,
+        "invalid_range": 3
+      },
+      "groups": [
+        {
+          "command_pose": "740,2320,1320,1500",
+          "n": 4,
+          "predicted_offset_deg": -1.2301480725682694,
+          "actual_offset_deg": -0.8665373745767937,
+          "absolute_error_deg": 0.3636106979914757,
+          "passed": false,
+          "single_frame_median_error_deg": 0.36361069799147583,
+          "causal_median_error_deg": 0.3978025456073676,
+          "causal_p95_error_deg": 0.5364147219917484
+        }
+      ],
+      "passed": false
+    }
+  ],
+  "passed": 1,
+  "denominator": 3,
+  "qualification": "Per-command-pose causal median of own-range plane solutions. Actual camera is post-seal evaluation only; synthetic echoes are not a physical calibration result."
+}

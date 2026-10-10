@@ -1,0 +1,44 @@
+{
+  "paired_command_sequences_identical": 12,
+  "weld_off_samples": 5328,
+  "independent_contact_label_rechecks": 1463,
+  "pre_post_capture_mismatches": [
+    {
+      "job": "s4grip2-r3-loss-r1",
+      "case": "explore-s32201",
+      "sim_time": 12.75,
+      "pre_capture": [
+        false,
+        false
+      ],
+      "post_capture": [
+        true,
+        false
+      ]
+    }
+  ],
+  "contact_proxy": "distance<=0 named cargo/finger geometry; no force threshold",
+  "research_result": false,
+  "pre_capture_label_sensitivity_episode_changes": [
+    {
+      "job": "s4grip2-r3-loss-r1",
+      "case": "explore-s32201",
+      "differences": {
+        "onset_frame": {
+          "pre_capture": 23,
+          "post_capture": 25
+        },
+        "delay_frames": {
+          "pre_capture": 2,
+          "post_capture": 0
+        },
+        "delay_sim_s": {
+          "pre_capture": 0.2,
+          "post_capture": 0.0
+        }
+      }
+    }
+  ],
+  "confirmation_label_match": "732/732",
+  "primary_label_position": "after capture; render refresh invokes mj_forward without advancing SIM clock"
+}

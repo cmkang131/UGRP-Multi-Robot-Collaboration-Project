@@ -48,6 +48,9 @@ def registry(*, root=ROOT):
 
 
 def resolve(map_id, *, root=ROOT):
+    from harness import e2e_environment as e2e
+    if map_id == e2e.MAP_ID:
+        return e2e.resolve(root=root)
     reg = registry(root=root)
     if map_id not in reg['maps']:
         raise ValueError(f'final provider map is not allow-listed: {map_id}')
@@ -83,6 +86,9 @@ def resolve(map_id, *, root=ROOT):
 
 def provider_spec(map_id, *, root=ROOT):
     """New allow-list; frozen P03/v2 registry and its factories stay unchanged."""
+    from harness.e2e_environment import MAP_ID
+    if map_id == MAP_ID:
+        raise ValueError('E2E_NEW_MAP_STATIC_PROVIDER_FORBIDDEN')
     static, row, contract = resolve(map_id, root=root)
     return {'provider_id': PROVIDER_ID, 'parent_provider_id': 'vision_zero_tag_v2_p03_v1',
             'factory': 'harness.vision_pose_source_final:FinalVisionPoseSource',

@@ -1,0 +1,369 @@
+{
+  "cases": {
+    "strafe-north": {
+      "eligible_frames": 89,
+      "counts": {
+        "unsettled": 2,
+        "calibrated_unloaded": 89,
+        "reset_tracks": 0,
+        "seeded": 10,
+        "insufficient_views": 8,
+        "zero_baseline": 41,
+        "accepted": 3,
+        "reprojection": 90,
+        "lk_failure": 4,
+        "outside_wall_roi": 2,
+        "low_parallax": 50
+      },
+      "event_count": 198,
+      "event_fractions": {
+        "low_parallax": 0.25252525252525254,
+        "zero_baseline": 0.20707070707070707,
+        "reprojection": 0.45454545454545453,
+        "behind_camera": 0.0,
+        "outside_wall_roi": 0.010101010101010102,
+        "lk_failure": 0.020202020202020204,
+        "insufficient_views": 0.04040404040404041,
+        "range": 0.0
+      },
+      "actual_xy_extent_m": [
+        0.015845304789963335,
+        0.6882767067696131
+      ],
+      "actual_path_m": 1.3803639566915527,
+      "actual_yaw_span_deg": 4.796844663440624,
+      "dr_xy_extent_m": [
+        0.3224157859747873,
+        1.5385702128634637
+      ],
+      "dr_end_error_m": 0.0021963503262466275,
+      "dr_path_error_m": {
+        "median": 0.09385697590836437,
+        "p90": 0.901421996387299,
+        "max": 0.9139380073624059
+      },
+      "available_10view_dr_baseline_m": {
+        "median": 0.34706253656266395,
+        "p90": 0.6993030061662847,
+        "max": 0.7415009936567357
+      },
+      "available_10view_actual_baseline_m": {
+        "median": 0.1710239084163988,
+        "p90": 0.3167192130979612,
+        "max": 0.3442085915306106
+      },
+      "pitch_actual_minus_table_deg": {
+        "median": -0.8311081584107782,
+        "p90": -0.7659543034340991,
+        "max": -0.5656123988314476
+      },
+      "accepted_unique_tracks": 3,
+      "accepted_frame_ids": [
+        53
+      ],
+      "accepted_parallax_deg": {
+        "median": 1.3520736054203573,
+        "p90": 1.5978288268091352,
+        "max": 1.6592676321563298
+      },
+      "confidence": {
+        "median": 0.0002521024788290388,
+        "p90": 0.0003963976063613376,
+        "max": 0.0004324713882444123
+      },
+      "texture": {
+        "walls": [
+          {
+            "name": "zone_wall_north",
+            "type": "box",
+            "pos": "2.1750000000000003 1.45 0.2",
+            "size": "3.25 0.025 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_south",
+            "type": "box",
+            "pos": "2.1750000000000003 -3.15 0.2",
+            "size": "3.25 0.025 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_west",
+            "type": "box",
+            "pos": "-1.05 -0.85 0.2",
+            "size": "0.025 2.3 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_east",
+            "type": "box",
+            "pos": "5.4 -0.85 0.2",
+            "size": "0.025 2.3 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_divider_1",
+            "type": "box",
+            "pos": "2.2 -1.1625 0.2",
+            "size": "0.025 0.9625 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_divider_2",
+            "type": "box",
+            "pos": "2.2 0.875 0.2",
+            "size": "0.025 0.575 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          }
+        ],
+        "ground_assets": [
+          {
+            "name": "ground",
+            "type": "2d",
+            "builtin": "checker",
+            "width": "256",
+            "height": "256",
+            "rgb1": ".36 .35 .34",
+            "rgb2": ".62 .61 .59"
+          },
+          {
+            "name": "groundmat",
+            "texture": "ground",
+            "texrepeat": "14 14",
+            "reflectance": "0"
+          }
+        ],
+        "wall_materials_count": 0
+      },
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "92eadc20b82868f8e5e141191a85ec53ab9456cb",
+        "case": "strafe-north",
+        "model_calls": 0,
+        "loadavg_start": [
+          2.6875,
+          2.80517578125,
+          3.052734375
+        ],
+        "qualification": "authored data acquisition; not navigation or physical hardware success",
+        "frames": 181,
+        "total_sim_s": 19.3,
+        "wall_s": 23.620008957979735,
+        "loadavg_end": [
+          2.7177734375,
+          2.80126953125,
+          3.044921875
+        ]
+      },
+      "evaluation_sources": {
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-north-host-retry1/eval_only/trajectory.jsonl": "c60f50b163b637b3334a0e039e374fab1234910fac8fbc1c74923d3975036c58",
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-north-host-retry1/eval_only/camera.jsonl": "eca5141dfb87f8f01dd41ee364bf5c215885e5fb16847c87ef77258fc78bb2e9",
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-north-host-retry1/scene.xml": "1f1690cf666229f53d9f6372876cce8b970b95c585541435dab91cefcf822cc2"
+      }
+    },
+    "strafe-south": {
+      "eligible_frames": 89,
+      "counts": {
+        "unsettled": 2,
+        "calibrated_unloaded": 89,
+        "reset_tracks": 0,
+        "seeded": 6,
+        "insufficient_views": 3,
+        "reprojection": 8,
+        "outside_wall_roi": 4,
+        "lk_failure": 2
+      },
+      "event_count": 17,
+      "event_fractions": {
+        "low_parallax": 0.0,
+        "zero_baseline": 0.0,
+        "reprojection": 0.47058823529411764,
+        "behind_camera": 0.0,
+        "outside_wall_roi": 0.23529411764705882,
+        "lk_failure": 0.11764705882352941,
+        "insufficient_views": 0.17647058823529413,
+        "range": 0.0
+      },
+      "actual_xy_extent_m": [
+        0.01753837670588962,
+        0.6889870750436318
+      ],
+      "actual_path_m": 1.3795425594239652,
+      "actual_yaw_span_deg": 4.461478645836303,
+      "dr_xy_extent_m": [
+        0.052664225862028936,
+        1.5710337557512175
+      ],
+      "dr_end_error_m": 0.005514770262613868,
+      "dr_path_error_m": {
+        "median": 0.09521071130738949,
+        "p90": 0.8728338042528139,
+        "max": 0.8853178324149342
+      },
+      "available_10view_dr_baseline_m": {
+        "median": 0.347062536562664,
+        "p90": 0.6993030061662848,
+        "max": 0.7415009936567358
+      },
+      "available_10view_actual_baseline_m": {
+        "median": 0.17116472820709877,
+        "p90": 0.3170597104358941,
+        "max": 0.34409456909763586
+      },
+      "pitch_actual_minus_table_deg": {
+        "median": -0.8311132538219823,
+        "p90": -0.7927333735344853,
+        "max": -0.5817959172395462
+      },
+      "accepted_unique_tracks": 0,
+      "accepted_frame_ids": [],
+      "accepted_parallax_deg": null,
+      "confidence": null,
+      "texture": {
+        "walls": [
+          {
+            "name": "zone_wall_north",
+            "type": "box",
+            "pos": "2.1750000000000003 1.45 0.2",
+            "size": "3.25 0.025 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_south",
+            "type": "box",
+            "pos": "2.1750000000000003 -3.15 0.2",
+            "size": "3.25 0.025 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_west",
+            "type": "box",
+            "pos": "-1.05 -0.85 0.2",
+            "size": "0.025 2.3 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_east",
+            "type": "box",
+            "pos": "5.4 -0.85 0.2",
+            "size": "0.025 2.3 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_divider_1",
+            "type": "box",
+            "pos": "2.2 -1.1625 0.2",
+            "size": "0.025 0.9625 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          },
+          {
+            "name": "zone_wall_divider_2",
+            "type": "box",
+            "pos": "2.2 0.875 0.2",
+            "size": "0.025 0.575 0.2",
+            "rgba": ".23 .28 .33 1",
+            "contype": "1",
+            "conaffinity": "3",
+            "group": "0",
+            "mass": "0"
+          }
+        ],
+        "ground_assets": [
+          {
+            "name": "ground",
+            "type": "2d",
+            "builtin": "checker",
+            "width": "256",
+            "height": "256",
+            "rgb1": ".36 .35 .34",
+            "rgb2": ".62 .61 .59"
+          },
+          {
+            "name": "groundmat",
+            "texture": "ground",
+            "texrepeat": "14 14",
+            "reflectance": "0"
+          }
+        ],
+        "wall_materials_count": 0
+      },
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "92eadc20b82868f8e5e141191a85ec53ab9456cb",
+        "case": "strafe-south",
+        "model_calls": 0,
+        "loadavg_start": [
+          2.8583984375,
+          2.82666015625,
+          3.04931640625
+        ],
+        "qualification": "authored data acquisition; not navigation or physical hardware success",
+        "frames": 181,
+        "total_sim_s": 19.3,
+        "wall_s": 23.57077400002163,
+        "loadavg_end": [
+          2.6083984375,
+          2.771484375,
+          3.02392578125
+        ]
+      },
+      "evaluation_sources": {
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-south/eval_only/trajectory.jsonl": "bb7c8ddc4e01d5aab37fb8f7373a7dc5801a8f3bd27387428ee13e66678c0414",
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-south/eval_only/camera.jsonl": "6b557c855b1f95fd03ea57644e642388c182b90652086bc2947f4682201100a6",
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-strafe-v1/strafe-south/scene.xml": "8ab6d2c4bc44bdda26eac267ce3f36b8ece49c42aa6b294d47bfe74c957387a4"
+      }
+    }
+  },
+  "real_reference": {
+    "path": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/search-v3/recovered/real_traces/20260902T145131Z-real-19bb30fd/skills/20260902T145421Z-pick-b5f9a960/frames/frame-000005.jpg",
+    "sha256": "2297f6fb9c2b56c5c162d0813c32e827089321fe450495060fd3f5d95b747aaf",
+    "comparability": "Historical tabletop real RGB, not matched arena walls; no quantitative real-wall texture claim"
+  },
+  "tuning": 0,
+  "mapping_replays": 0,
+  "decision": "STOP_OWN_MAP_TRACK"
+}

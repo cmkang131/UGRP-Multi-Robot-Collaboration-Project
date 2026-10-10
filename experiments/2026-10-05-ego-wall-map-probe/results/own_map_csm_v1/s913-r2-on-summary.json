@@ -1,0 +1,124 @@
+{
+  "wall_boundary_samples": 349,
+  "wall_tolerance_m": 0.15,
+  "final": {
+    "t": 59.5,
+    "occupied_cells": 116,
+    "precision_015": 0.3448275862068966,
+    "precision_cell": 0.28448275862068967,
+    "wall_coverage": 0.07736389684813753,
+    "wall_error_rmse_m": 0.5814781645153326,
+    "wall_coverage_ever": 0.07736389684813753,
+    "oracle_precision_015": 0.5454545454545454,
+    "oracle_wall_coverage": 0.07449856733524356,
+    "oracle_wall_error_rmse_m": 0.49553198489295125
+  },
+  "end_sim_s": 75.4,
+  "last_wall_sim_s": 59.5,
+  "end_position_error_m": 0.8657983785525043,
+  "end_yaw_error_deg": 0.178406551012724,
+  "end_4m_point_error_bound_m": 0.8782535004100193,
+  "mapped_endpoint_pose_rmse_m": 0.5255494129403451,
+  "last_wall_endpoint_pose_rmse_m": 0.8687065838050269,
+  "alignment": "actual grid: start GT SE(2) only; oracle grid: eval-only counterfactual per-frame GT",
+  "origin_eval_only": [
+    1.7731954362722948,
+    0.04999999400227847,
+    -3.141592648899993
+  ],
+  "name": "s913-r2",
+  "robot": "r2",
+  "source_sha": "d7545baae1f3c31414567956c2140e72e3364607",
+  "pose_correction": "own_map_csm_v1",
+  "path_position_error": {
+    "median_m": 0.7171991639696712,
+    "p90_m": 0.8691013027585182,
+    "p95_m": 0.8691973073268624,
+    "max_m": 0.8732255221206693,
+    "rmse_m": 0.6509464496694669,
+    "count": 1483
+  },
+  "inserted_frames": 9,
+  "cached_input_frames": 179,
+  "historical_prefilter_rejected": {
+    "unsettled": 0,
+    "range_segments": 19
+  },
+  "split": "confirmation_replay",
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/commands.jsonl",
+      "sha256": "cd552661254a41025edad1b2a63d5134481ea42758c4e58f67fb5e58d65fff62"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/frames.jsonl",
+      "sha256": "88348ab25ce5a9c12884a43577036aea62bdedef23e6e2bc3641d23b5c78edb1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-odom-grid-v1-complete/s913-r2/observations.jsonl",
+      "sha256": "4aac6e17c6f08927edb381e9998ce48367ee20542df6337aaaf4e6f0bb42f6d4"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-odom-grid-v1-complete/s913-r2/poses.jsonl",
+      "sha256": "d5ba33ba893b4e73cb1906b5cd73f757ab3a0b73991c33e362860c964d63f62f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-odom-grid-v1-complete/s913-r2/grid.json",
+      "sha256": "e090698e55a0001cc0a6c06547aba56282def6066549e7accf01a9e4d0f00005"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/scene.xml",
+      "sha256": "2d2d0372882c935bd44c3341fc74c1e9b322c8ad3f40784ab77f3879f4f65df9"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/eval_only/trajectory.jsonl",
+      "sha256": "ea44a20ce3cb9d52fd47c84cf08f29599416267b93e9da6571e8f23c950b07d8"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/inputs/static_map.json",
+      "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    }
+  ],
+  "correction_status_counts": {
+    "bootstrap": 3,
+    "deferred": 147,
+    "rejected": 23,
+    "accepted": 6
+  },
+  "correction_reason_counts": {
+    "new_submap_dr_anchor": 3,
+    "keyframe_interval": 147,
+    "search_boundary": 12,
+    "unobservable": 1,
+    "accepted": 6,
+    "ambiguous_modes": 5,
+    "high_residual": 2,
+    "low_overlap": 3
+  },
+  "submaps": 3,
+  "options": {
+    "field_resolution_m": 0.05,
+    "translation_window_m": 0.5,
+    "yaw_window_deg": 8.0,
+    "yaw_step_deg": 1.0,
+    "submap_age_s": 15.0,
+    "submap_radius_m": 6.0,
+    "submap_keyframes": 12,
+    "keyframe_interval_s": 1.0,
+    "min_points": 6,
+    "min_overlap": 0.6,
+    "overlap_distance_m": 0.2,
+    "max_residual_m": 0.15,
+    "mode_distance_m": 0.15,
+    "mode_gap": 0.5,
+    "hessian_ratio": 0.03,
+    "effective_points": 12.0,
+    "calibration_floor_m": 0.08,
+    "pixel_sigma": 2.0,
+    "focal_y_px": 622.1654884818748,
+    "height_lower_bound_m": 0.15,
+    "covariance_floor_xy_m": 0.1,
+    "covariance_floor_yaw_deg": 2.0,
+    "loaded_unexplained_xy_m_sqrt_s": 0.02
+  }
+}

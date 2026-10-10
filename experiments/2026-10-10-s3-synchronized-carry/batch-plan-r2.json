@@ -1,0 +1,79 @@
+{
+  "schema": "ugrp.s3_synchronized_start_batch.v1",
+  "host": "oracle-x86",
+  "workers": 10,
+  "sim_cap_s": 60,
+  "flags": [
+    "--coarse-fine",
+    "stopped_base_arm_v1",
+    "--refinements",
+    "abc_v1",
+    "--carry",
+    "synchronized_pulses_v1",
+    "--pan",
+    "joint_pan_v1"
+  ],
+  "runs": [
+    {
+      "name": "s3fix17-pair-c0-r2",
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201
+    },
+    {
+      "name": "s3fix17-pair-c1-r2",
+      "case": "pair",
+      "condition": 1,
+      "seed": 14202
+    },
+    {
+      "name": "s3fix17-pair-c2-r2",
+      "case": "pair",
+      "condition": 2,
+      "seed": 14203
+    },
+    {
+      "name": "s3fix17-pair-c3-r2",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204
+    },
+    {
+      "name": "s3fix17-pair-c4-r2",
+      "case": "pair",
+      "condition": 4,
+      "seed": 14205
+    },
+    {
+      "name": "s3fix17-pair-c5-r2",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206
+    },
+    {
+      "name": "s3fix17-cyan-c0-r2",
+      "case": "cyan",
+      "condition": 0,
+      "seed": 14201
+    },
+    {
+      "name": "s3fix17-cyan-c3-r2",
+      "case": "cyan",
+      "condition": 3,
+      "seed": 14204
+    },
+    {
+      "name": "s3fix17-cyan-c4-r2",
+      "case": "cyan",
+      "condition": 4,
+      "seed": 14205
+    },
+    {
+      "name": "s3fix17-cyan-c5-r2",
+      "case": "cyan",
+      "condition": 5,
+      "seed": 14206
+    }
+  ],
+  "qualification": "new fixed bug-fix round after all r1 finished; criteria and seeds unchanged; denominators separate"
+}
