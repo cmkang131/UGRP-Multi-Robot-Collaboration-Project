@@ -12,12 +12,17 @@ MODE = 'mutual_go_v1'
 WINDOW_S = 10.
 HANDSHAKE_S = 2 * WINDOW_S  # one fresh-response window for GO, one for ACK
 MONITOR_S = 2.
+CARRY_RENEWAL = 'accepted_carry_reply_v1'
 SIGNAL_DELAY_S = .1
 CHOICES = ('go', 'ack_go', 'held', 'grip_lost', 'unknown')
 
 
 class Handshake:
-    def __init__(self):
+    def __init__(self, *, carry_lease_renewal='off'):
+        if carry_lease_renewal not in ('off', CARRY_RENEWAL):
+            raise ValueError('unknown carry lease renewal')
+        self.carry_lease_renewal = carry_lease_renewal
+        self.renewals = []
         self.claims, self.own, self.signals = {}, {}, []
         self.decisions, self.permits = [], []
         self.failure = None
@@ -122,11 +127,44 @@ class Handshake:
                 ack_calls={r:v['ack'] for r,v in self.own.items()}))
         return True
 
+    def renew_carry(self, rid, action, *, call_id, command_accepted, decision_sources,
+                    requested_at, now, frame_t, frame_sha256, seen):
+        """Piggyback liveness on an admitted carry reply to a fresh own-RGB request.
+
+        No timeout change or expired-session revival. Command rejection is not
+        a heartbeat; each endpoint must renew its own current committed epoch.
+        """
+        if self.carry_lease_renewal == 'off':
+            return None
+        own = self.own.get(rid)
+        valid = bool(command_accepted and not self.failure and own and own['committed']
+            and action.get('kind') == 'carry_decision' and action.get('choice') in ('continue', 'set_down')
+            and seen.get('phase') == 'carry'
+            and seen.get('epoch') == own['epoch']
+            and all(math.isfinite(t) for t in (requested_at, now, frame_t))
+            and own['opened'] <= frame_t <= requested_at <= now
+            and now-frame_t < WINDOW_S and now < own['last_response_at']+WINDOW_S
+            and isinstance(frame_sha256, str) and len(frame_sha256) == 64
+            and all(c in '0123456789abcdef' for c in frame_sha256)
+            and call_id and not any(r['call_id'] == call_id for r in self.renewals))
+        previous = own['last_response_at'] if own else None
+        if valid:
+            own['last_response_at'] = now
+        row = dict(robot_id=rid, call_id=call_id, action=copy.deepcopy(action), at=now,
+            requested_at=requested_at, frame_t=frame_t, frame_sha256=frame_sha256,
+            epoch=seen.get('epoch'), command_accepted=bool(command_accepted),
+            decision_sources=list(decision_sources), grasp_success_claim=False,
+            previous_response_at=previous, accepted=valid,
+            reason=None if valid else 'UNADMITTED_OR_STALE_CARRY_RGB')
+        self.renewals.append(row)
+        return row
+
     def allowed(self, rid, epoch):
         row = self.own.get(rid)
         return bool(not self.failure and row and row['epoch'] == epoch and row['committed'])
 
     def record(self):
         return copy.deepcopy(dict(mode=MODE, research_result=False, visual_detector='LLM own RGB judgement; unvalidated',
+            carry_lease_renewal=self.carry_lease_renewal, renewals=self.renewals,
             claims=self.claims, signals=self.signals, decisions=self.decisions, permits=self.permits,
             failure=self.failure, physical_success=None))

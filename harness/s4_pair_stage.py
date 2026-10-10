@@ -129,6 +129,7 @@ class Trial(old.Trial):
         if self.links['r2'].handshake is not self.handshake:
             raise ValueError('one pair safety wire required')
         self.pair_snapshots = {}
+        self.carry_sources = {}
 
     def snapshot(self, call):
         super().snapshot(call)
@@ -156,12 +157,26 @@ class Trial(old.Trial):
         return old.s4.zo.PreparedCall(bundled, request, prepared.request_id)
 
     def finish_call(self, call, prepared, raw, **kwargs):
-        return bind(pair.PairTrial.finish_call, validate_reply=validate_reply)(
+        reply = bind(pair.PairTrial.finish_call, validate_reply=validate_reply)(
             self, call, prepared, raw, robots=si.ROBOTS, **kwargs)
+        if reply.action and reply.action['kind'] == 'carry_decision':
+            value = pair.zp.parse(raw) if isinstance(raw, str) else raw
+            self.carry_sources[call.call_id] = tuple(value['decision_sources'])
+        return reply
 
     def _on_action(self, actor, action, sim_s):
         if action['kind'] != 'pair_decision':
-            return super()._on_action(actor, action, sim_s)
+            result = super()._on_action(actor, action, sim_s)
+            if actor in hs.PAIR and action['kind'] == 'carry_decision':
+                call_id = self.scheduler.calls[-1].call_id
+                ack = self.dispatch_log[-1].get('ack') or {}
+                row = self.handshake.renew_carry(actor, action, call_id=call_id,
+                    command_accepted=ack.get('accepted', False),
+                    decision_sources=self.carry_sources.get(call_id, ()),
+                    **self.pair_snapshots[call_id], now=sim_s)
+                if row is not None:
+                    self.dispatch_log[-1]['carry_lease_renewal'] = copy.deepcopy(row)
+            return result
         old.s4.live.check_health(self)
         call = self.scheduler.calls[-1]
         link = self.links[actor]
@@ -183,6 +198,7 @@ class Trial(old.Trial):
 
     def study_config(self):
         return {**super().study_config(), 'pair_mode': hs.MODE, 'research_result': False,
+                'carry_lease_renewal': self.handshake.carry_lease_renewal,
                 'grip_detector': 'own_RGB_LLM_unvalidated', 'fixed_safety_wire_same_all_conditions': True}
 
 
