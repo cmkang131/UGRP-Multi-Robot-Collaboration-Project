@@ -56,6 +56,10 @@ def route_plan(plan,static,route):
     out['registered_route_source']='s3fix19 pre-execution public route; no cargo/robot truth';return out
 
 
+def release_completes_probe(ctl,b):
+    return ('registered_route' not in b or ctl.seg+1>=len(ctl.segments))
+
+
 def run(b,out):
     # Rebind only this runner's dependency, leaving all registered older paths.
     old_attach=previous.attach_carry
@@ -83,7 +87,7 @@ def run(b,out):
             ctl=ep.controller;old=ctl._cp_open
             def cp_open(now,idle,ctl=ctl,old=old):
                 value=old(now,idle)
-                if idle and not ctl.failure and ctl._issued().get(1)==2000:ctl.s3_first_release_complete=True
+                if idle and not ctl.failure and ctl._issued().get(1)==2000 and release_completes_probe(ctl,b):ctl.s3_first_release_complete=True
                 return value
             ctl._cp_open=cp_open
         return eps

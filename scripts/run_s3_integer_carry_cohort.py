@@ -62,7 +62,7 @@ def execute(item,out,sha):
 
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--attempt',type=int,choices=(1,2),default=1);p.add_argument('--execute',action='store_true');a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--attempt',type=int,choices=(1,2,3),default=1);p.add_argument('--execute',action='store_true');a=p.parse_args()
  plan=json.loads(PLAN.read_text());items=commands(plan,a.expected_source_sha,a.attempt)
  if not a.execute:print(json.dumps(items));return 0
  if platform.system()!='Linux' or platform.machine()!='x86_64' or ROOT.name!=a.expected_source_sha or not re.fullmatch('[a-f0-9]{40}',a.expected_source_sha) or os.getpriority(os.PRIO_PROCESS,0)!=0:raise ValueError('committed x86 archive and nice0 required')

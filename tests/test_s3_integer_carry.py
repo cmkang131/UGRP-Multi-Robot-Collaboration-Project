@@ -79,3 +79,22 @@ def test_multi_route_factory_preserves_source_plan_and_rejects_diagonal(monkeypa
  out=route_plan(source,{},route)
  assert out['route']==route and source==old and out['route'] is not route
  with pytest.raises(ValueError):route_plan(source,{},[[0,0],[1,1]])
+
+
+def test_multi_route_intermediate_release_is_not_final_stop():
+ from scripts.run_s3_integer_carry import release_completes_probe
+ ctl=SimpleNamespace(seg=0,segments=[.1518,.1669])
+ assert release_completes_probe(ctl,{})
+ assert not release_completes_probe(ctl,{'registered_route':[[0,0],[.1518,0],[.1518,.1669]]})
+ ctl.seg=1
+ assert release_completes_probe(ctl,{'registered_route':[[0,0],[.1518,0],[.1518,.1669]]})
+
+
+def test_identical_retry_preserves_twenty_conditions_and_uses_new_names():
+ from scripts.run_s3_integer_carry_cohort import PLAN,commands
+ plan=json.loads(PLAN.read_text());first=commands(plan,'0'*40);retry=commands(plan,'0'*40,3)
+ assert len(first)==len(retry)==20
+ for (a,ac),(b,bc) in zip(first,retry):
+  assert {k:a[k] for k in ('case','condition','seed','option')}=={k:b[k] for k in ('case','condition','seed','option')}
+  assert a['name'].endswith('-r1') and b['name'].endswith('-r3')
+  assert ac[ac.index('--integer-carry')+1]==bc[bc.index('--integer-carry')+1]
