@@ -69,7 +69,7 @@ def setup_record(scenario):
     return data
 
 
-def run(b, out, receipt, *, pair_extension=None):
+def run(b, out, receipt, *, pair_extension=None, backend_factory=None):
     from sim.s3_stage_safety import PhysicsBackend
     from harness.zone_s3_recovery_runtime import Runtime
     from harness.zone_solo_cyan_v106 import passage_route
@@ -96,7 +96,7 @@ def run(b, out, receipt, *, pair_extension=None):
         pair_scope='claim_only_no_pair_motion', physical_success=None, loadavg_start=os.getloadavg())
     began = time.monotonic(); backend = runtime = host = pair_driver = None; states = []; causal = []
     try:
-        backend = PhysicsBackend(b, out, seed=601); backend.reset(b['reset_cap_s'])
+        backend = (backend_factory or PhysicsBackend)(b, out, seed=601); backend.reset(b['reset_cap_s'])
         previous.previous.restore_scene(backend, setup_record(scenario))
         start = backend.now; backend.set_deadline(start+b['case_cap_s'])
         static = hp.resolve(b['map_id'])[0]
@@ -130,6 +130,8 @@ def run(b, out, receipt, *, pair_extension=None):
             frames = backend.capture(); previous.previous.assert_frame_commands(backend, frames)
             runtime.on_frames(now, frames)
             for link in links.values(): link.capture_frame()
+            if pair_extension is not None and hasattr(pair_extension, 'health') and i % 20 == 0:
+                pair_extension.health(backend, runtime, host, causal, rel)
             if not host.started: host.begin(0.)
             if own.state == 'carry' and links['r3'].departure_opened is None:
                 host.trial.open_departure(rel)
@@ -145,6 +147,8 @@ def run(b, out, receipt, *, pair_extension=None):
                 waiting = own.state == 'carry' and not links['r3'].departure_accepted
                 if not waiting: commands = own.step(now)
             if pair_driver is not None: commands = [*commands, *pair_driver.step(now)]
+            if pair_extension is not None and hasattr(pair_extension, 'record_states'):
+                pair_extension.record_states(runtime,now)
             for rid, action in commands:
                 backend.issue(rid, action); runtime.on_command(rid, now, action)
                 causal.append(dict(t=now, robot_id=rid, action=action, claim_call_id=links[rid].claim_call,
@@ -173,6 +177,8 @@ def run(b, out, receipt, *, pair_extension=None):
             result['check_sim_s'] = backend.now-start if 'start' in locals() else 0.
             for rid in ('r1','r2','r3'):
                 backend.issue(rid, {'kind':'hold'})
+            if pair_extension is not None and hasattr(pair_extension, 'health'):
+                pair_extension.health(backend, runtime, host, causal, result['check_sim_s'], result=result)
         if host is not None: host.save(out/'llm')
         if pair_driver is not None:
             write(out/'pair-handshake.json', pair_driver.handshake.record())
