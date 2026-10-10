@@ -53,3 +53,30 @@ def test_recovery_only_five_zero_physics_input_losses_and_same_commands(tmp_path
     for a,b in zip(jobs,result):assert a['command'][:-1]==b['command'][:-1] and a['output']!=b['output']
     bad=Path(jobs[0]['output']);bad.mkdir();(bad/'own-controller.jsonl').write_text('prior physics')
     with pytest.raises(ValueError,match='PHYSICS_ALREADY_STARTED'):admission(root,out,tmp_path/SOURCE)
+
+
+def test_hold_audit_excludes_checkpoint_prefix_and_uses_pulse_reason():
+    import importlib.util
+    path=runner.ROOT/'experiments/2026-10-10-own-route-heading-stability/code/hold_audit.py'
+    spec=importlib.util.spec_from_file_location('egomap65_hold_audit_test',path)
+    m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    rows=[dict(t=0,command={'turn':1}),dict(t=1,command={'turn':-1}),
+          dict(t=2,command={'kind':'hold'},pulse={'reason':'heading_stability_settle'}),
+          dict(t=3,command={'turn':1})]
+    r=m.audit(rows,1)
+    assert r['commands']=={'turn':2,'hold':1}
+    assert r['turn_sign_reversals']==1 and r['reversals_per_turn']==.5
+    assert r['hold_reasons']=={'heading_stability_settle':1}
+
+
+def test_local_retrieval_scope_distinguishes_full_and_partial(tmp_path):
+    import hashlib,importlib.util,json
+    path=runner.ROOT/'experiments/2026-10-10-own-route-heading-stability/code/deliver.py'
+    spec=importlib.util.spec_from_file_location('egomap65_retrieval_test',path)
+    m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    (tmp_path/'artifacts.sha256.json').write_text(json.dumps({'rgb':hashlib.sha256(b'RGB').hexdigest()}))
+    assert m.verify_subset(tmp_path)['scope'].startswith('Partial retrieval')
+    (tmp_path/'rgb').write_bytes(b'RGB')
+    r=m.verify_subset(tmp_path)
+    assert r['local_unretrieved_files']==0 and r['local_verified_files']==1
+    assert r['scope'].startswith('Complete artifact manifest')

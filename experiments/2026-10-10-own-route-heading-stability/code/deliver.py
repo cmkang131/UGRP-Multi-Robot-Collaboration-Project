@@ -42,7 +42,7 @@ def verify_subset(root):
             found+=1
             if sha(p)!=digest:bad.append(str(p))
     if bad:raise ValueError(('LOCAL_HASH_MISMATCH',bad))
-    return dict(local_verified_files=found,local_unretrieved_files=missing,mismatches=bad,scope='Only retrieved files verified locally; original RGB/large maps remain on oracle-x86, not a Mac backup.')
+    return dict(local_verified_files=found,local_unretrieved_files=missing,mismatches=bad,scope=('Partial retrieval; missing manifest files remain unverified locally.' if missing else 'Complete artifact manifest retrieved and SHA-256 verified locally, including RGB and maps; server originals retained.'))
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('batch',type=Path);p.add_argument('--smoke',type=Path,required=True);p.add_argument('--recovery',type=Path);a=p.parse_args()
@@ -72,11 +72,11 @@ def main():
         traces=[[line for line in (folder/'own-controller.jsonl').read_text().splitlines() if start<=json.loads(line)['t']<start+60] for folder in (old,current)]
         prefixes.append(dict(seed=r['seed'],profile=r['profile'],frames=[len(x) for x in traces],identical=sum(x==y for x,y in zip(*traces)),all_identical=traces[0]==traces[1]))
     result['old_heading_first60s_prefix']=prefixes
-    target=EXP/'results/comparison.json';write(target,result)
+    target=EXP/'results/comparison-v2.json';write(target,result)
     sources=[]
     for r in scores:
         label='old' if r['heading_stability']=='off' else 'stable'
-        name=f"{r['profile']}-{label}-{r['seed']}";source=PRIMARY/'outputs/egomap65-delivery/views'/name
+        name=f"{r['profile']}-{label}-{r['seed']}";source=PRIMARY/'outputs/egomap65-delivery/views-v2'/name
         metrics=dict(registered=1,measured=int(r.get('samples',0)>0))
         for k in ('B_arrived','returned','false_declarations','over_3sigma','over_3sigma_rate','final_error_m','final_sigma_m','final_error_sigma','samples','B_nearest_boundary_distance_m','approach_sim_s','return_sim_s'):
             if r.get(k) is not None:metrics[k]=int(r[k]) if isinstance(r[k],bool) else r[k]
@@ -88,11 +88,30 @@ def main():
             offline_scalars=metrics,offline_scalar_scope='24 preregistered paired DEV conditions, same six checkpoints; failures retained',family='egomap65',
             policy=r['profile']+'-'+label,case=name,condition='oracle-x86',seed=r['seed'],source_sha=plan['source_sha'],outcome=r['status'],
             model_calls=0,hparam_metrics=list(metrics),evaluation=r)
+        if r.get('command_audit'):view['commands']=r['command_audit']['commands']
         for k in ('wall_s','sim_s'):
             if r.get(k) is not None:view[k]=r[k]
         write(source/'result.json',view);sources.append(source)
     cmd=[sys.executable,str(ROOT/'scripts/export_offline_audit.py')]
     for source in sources:cmd+=['--source',str(source)]
-    subprocess.run(cmd+['--output',str(PRIMARY/'outputs/tensorboard/1010-egomap65')],check=True)
+    subprocess.run(cmd+['--output',str(PRIMARY/'outputs/tensorboard/1010-egomap65-v2')],check=True)
+    # Failed admissions remain separate attempts, never extra physical trials.
+    infra_sources=[]
+    for r in original_scores:
+        if r.get('samples',0) or r['status']!='HOST_ERROR_NO_RESULT':continue
+        name=f"input-loss-{r['seed']}-{r['profile']}-{r['heading_stability']}"
+        source=PRIMARY/'outputs/egomap65-delivery/infra-v2'/name
+        metrics={'offline/submission_attempt':1,'offline/physical_started':0,'offline/input_loss_host':1}
+        view=dict(schema='ugrp.offline_audit_view.v1',derived_view_only=True,
+            offline_source=dict(path=str(target),sha256=sha(target)),offline_scalars=metrics,
+            offline_scalar_scope='Original zero-physics input-loss submissions; separate from 24 physical conditions',
+            family='egomap65-infrastructure',policy=r['profile'],case=name,seed=r['seed'],
+            source_sha=plan['source_sha'],outcome=r['status'],model_calls=0,
+            hparam_metrics=list(metrics),evaluation=r)
+        write(source/'result.json',view);infra_sources.append(source)
+    if infra_sources:
+        cmd=[sys.executable,str(ROOT/'scripts/export_offline_audit.py')]
+        for source in infra_sources:cmd+=['--source',str(source)]
+        subprocess.run(cmd+['--output',str(PRIMARY/'outputs/tensorboard/1010-egomap65-infra-v2')],check=True)
     print(json.dumps(result['summary'],indent=2))
 if __name__=='__main__':main()
