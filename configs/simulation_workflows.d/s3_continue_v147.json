@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-continue-v147",
+      "version": "7.40.0",
+      "purpose": "S3 DEV 보수적 정지 기록 후 계속·전역 입자·능동 wrist 관측 혼합1회",
+      "entry": "scripts/run_s3_continue.py",
+      "runner": "scripts.run_s3_continue",
+      "docs": "experiments/2026-10-09-s3-no-prior/s3fix/README.md",
+      "requires": "committed SHA; explicit option; own exclusive SIM lock; one finite smoke",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

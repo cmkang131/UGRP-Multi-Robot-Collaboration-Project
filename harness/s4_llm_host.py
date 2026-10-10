@@ -27,7 +27,7 @@ from harness.zone_study_decisions import DecisionLimits
 from harness.zone_study_inputs import OrderSheetSource, belief_skeleton, provenance
 
 VERSION = 'ugrp.s4_llm_host.v1'
-CONDITIONS = ('rule', 'no_comm', 'peer_nl')
+CONDITIONS = ('rule', *inputs.MODEL_CONDITIONS)
 POLICY = CallPolicy(max_calls_per_actor=30, max_http_attempts_per_actor=30,
                     max_attempts_total=90, max_retries=0)
 LIMITS = DecisionLimits(max_calls_total=90, max_utterances_per_actor=6, max_utterances_total=12)
@@ -159,12 +159,12 @@ class Trial(zi.IntegratedTrial):
 
     def __init__(self, scenario, *, arm, links, seed, horizon_s, map_bundle, model_adapter,
                  code_sha='unknown', policy=POLICY, decision_limits=LIMITS):
-        if arm not in pp.PAIR_CONDITIONS:
+        if arm not in inputs.MODEL_CONDITIONS:
             raise ContractViolation('rule has no model trial')
         if not isinstance(model_adapter.send_ledger, live.PairLiveLedger):
             raise ContractViolation('S4 requires the existing durable PairLiveLedger')
         self.arm = arm
-        super().__init__(scenario, condition=pp.study_spec(arm), seed=seed, links=links,
+        super().__init__(scenario, condition=inputs.study_spec(arm), seed=seed, links=links,
                          horizon_s=horizon_s, map_bundle=map_bundle, model_adapter=model_adapter,
                          actor='gemini_proxy', code_sha=code_sha, policy=policy,
                          decision_limits=decision_limits)
@@ -184,8 +184,8 @@ class Trial(zi.IntegratedTrial):
         self.provenance = provenance(source=self.source, code_sha=code_sha, execution_bundle_id=VERSION,
             model=self.client_factory.settings['model'], provider='gemini_subscription_proxy',
             model_settings_sha256=digest(self.client_factory.settings),
-            prompt_template_sha256=digest({c: {r: inputs.system_prompt(c, r) for r in routing.ROBOTS}
-                                          for c in pp.PAIR_CONDITIONS}), cost_profile_id=self.params.version)
+            prompt_template_sha256=digest({c: {r: inputs.system_prompt(c, r, seed=seed) for r in routing.ROBOTS}
+                                          for c in inputs.MODEL_CONDITIONS}), cost_profile_id=self.params.version)
 
     def _message_own_job(self, actor):
         adapter = self.links[actor].stop_adapter

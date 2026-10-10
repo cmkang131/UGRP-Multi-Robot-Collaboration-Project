@@ -14,7 +14,13 @@ from harness.pair_llm_stop_adapter import belief_violations, window_violations
 from harness.zone_study_contract import ContractViolation, digest
 
 VERSION = 'ugrp.s4_llm_inputs.v1'
-PROMPT_VERSION = 'ugrp.s4_llm_prompt.v1'
+PROMPT_VERSION = 'ugrp.s4_llm_prompt.v2'
+MODEL_CONDITIONS = ('no_comm', 'peer_ko', 'leader_ko', 'structured', 'peer_nl')
+
+def study_spec(condition):
+    if condition not in MODEL_CONDITIONS:
+        raise ContractViolation('unknown S4 model condition')
+    return 'peer_ko' if condition == 'peer_nl' else condition
 PAIR = ('r1', 'r2')
 ROBOTS = (*PAIR, 'r3')
 
@@ -44,23 +50,26 @@ ACTION = '''- action은 정확히 하나입니다:
   {"kind":"post_look_decision","choice":"regrasp"|"look_again"}도 사용할 수 있습니다.'''
 
 
-def system_prompt(condition, rid, *, cap_window=12, cap_robot=6):
+def system_prompt(condition, rid, *, cap_window=12, cap_robot=6, seed=0):
     if rid not in ROBOTS:
         raise ContractViolation('unknown S4 robot')
-    spec = pp.zp.spec(pp.study_spec(condition))
-    messages = (pp.KO_PAIR_MESSAGES.replace('"r1"|"r2"', '"r1"|"r2"|"r3"')
-                .replace(pp.CHARS_PLACEHOLDER, str(pp.zp.PROMPT_TEXT_CHARS))
-                if spec.channel_open else pk.KO_MESSAGES_NONE)
-    return '\n\n'.join((HEAD.format(rid=rid),
-                        pp._channel_block(condition, spec, cap_window=cap_window, cap_robot=cap_robot),
-                        PAIR_BEHAVIOUR if rid in PAIR else '짝 정지 판단은 단독 실행기에 보내지 마십시오.',
-                        pk.KO_OUTPUT_HEAD, ACTION, pk.KO_SOURCES, messages, pk.KO_SEPARATION))
+    parts = pk.prompt_parts(study_spec(condition), rid, seed=seed,
+                            cap_window=cap_window, cap_robot=cap_robot)
+    departure = ('r3의 own_command_history에 S4_DEPARTURE_PENDING이 있으면, '
+                 '집게 HIGH 자세를 발행한 뒤 운반 출발 결정을 기다리는 상태입니다. '
+                 '이는 실제 파지 성공 판정이 아닙니다. continue로 출발을 허가할 수 있습니다. '
+                 'pending 이전에 요청된 답이나 10 SIM초 뒤 도착한 답은 출발에 쓰이지 않습니다.')
+    return '\n\n'.join((HEAD.format(rid=rid), parts['channel'],
+                        PAIR_BEHAVIOUR if rid in PAIR else departure,
+                        pk.KO_OUTPUT_HEAD, ACTION, pk.KO_SOURCES,
+                        parts['messages'], pk.KO_SEPARATION, parts['language']))
 
 
 @lru_cache(maxsize=32)
-def fixed_prompt_tokens(cap_window, cap_robot):
-    return max(pk.count_tokens(system_prompt(c, r, cap_window=cap_window, cap_robot=cap_robot))
-               for c in pp.PAIR_CONDITIONS for r in ROBOTS)
+def fixed_prompt_tokens(cap_window, cap_robot, seed=0):
+    return max(pk.count_tokens(system_prompt(c, r, cap_window=cap_window,
+                                            cap_robot=cap_robot, seed=seed))
+               for c in MODEL_CONDITIONS for r in ROBOTS)
 
 
 @dataclass(frozen=True)
@@ -71,7 +80,7 @@ class Inputs:
     decision_window: dict | None = None
 
     def __post_init__(self):
-        if self.base.condition != pp.study_spec(self.arm) or self.base.robot_id not in ROBOTS:
+        if self.base.condition != study_spec(self.arm) or self.base.robot_id not in ROBOTS:
             raise ContractViolation('S4 arm/robot differs from the validated study payload')
         if self.base.robot_id in PAIR:
             errors = belief_violations(self.own_belief)
@@ -111,7 +120,7 @@ def build_request(inputs, *, window=None):
     body.update(inputs.payload_dict())
     caps = body.get(pk.WINDOW_KEY, {})
     total, per_actor = caps.get('max_utterances', 12), caps.get('max_your_utterances', 6)
-    system = system_prompt(inputs.arm, inputs.robot_id, cap_window=total, cap_robot=per_actor)
+    system = system_prompt(inputs.arm, inputs.robot_id, cap_window=total, cap_robot=per_actor, seed=inputs.base.seed or 0)
     user = json.dumps(body, sort_keys=True, ensure_ascii=False)
     request.update(schema=VERSION, condition=inputs.arm, prompt_version=PROMPT_VERSION,
                    payload_schema=VERSION, input_sha256=inputs.payload_sha256,
@@ -119,5 +128,5 @@ def build_request(inputs, *, window=None):
     request['request_sha256'] = pk.request_digest_from_refs(system, user, request['image_refs'])
     request['tokens'] = pk.request_tokens(system, user, request['images'])
     request['billed_tokens'] = billing.billed_tokens(request['tokens'],
-                                                    system_billed=fixed_prompt_tokens(total, per_actor))
+                                                    system_billed=fixed_prompt_tokens(total, per_actor, inputs.base.seed or 0))
     return request

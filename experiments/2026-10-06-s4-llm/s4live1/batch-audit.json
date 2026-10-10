@@ -1,0 +1,1836 @@
+{
+  "schema": "ugrp.s4live1_audit.v1",
+  "research_result": false,
+  "runs": [
+    {
+      "name": "s4live1-smoke-no_comm-s601-v157",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-smoke-no_comm-s601-v157/raw",
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "condition": "no_comm",
+      "status": "DEV_STAGE_FINISHED",
+      "exit_code": 0,
+      "research_result": false,
+      "sim_s": 7.5,
+      "wall_s": 63.407639289000144,
+      "model_calls": 3,
+      "model_usage": {
+        "requests": 3,
+        "blocked": 0,
+        "tokens_prompt": 17355,
+        "tokens_completion": 322,
+        "tokens_total_known": 17677,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 20417.842,
+          "max": 8403.327,
+          "median": 6879.412
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        8.403326999999999,
+        6.879412,
+        5.135103
+      ],
+      "commands": 135,
+      "accepted_claims": {
+        "r1": "call-0001-r1",
+        "r2": "call-0002-r2",
+        "r3": "call-0003-r3"
+      },
+      "departure_accepted": false,
+      "departure_decisions": [],
+      "carry_motion_commands": 0,
+      "causal_violations": [],
+      "first_states": {
+        "init": 0.0,
+        "align": 3.8,
+        "real_pregrasp": 5.1,
+        "hover": 6.1,
+        "blind_descent": 7.4
+      },
+      "lifted_contact_samples": 0,
+      "max_cyan_com_z_m": 0.015892244579833164,
+      "contact_lift_xy_m": 0.0,
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "invalid_replies": 0,
+      "verified_artifacts": 516,
+      "hash_mismatches": [],
+      "physical_success": null,
+      "stage_plumbing_pass": true,
+      "carry_plumbing_pass": false,
+      "configuration_fingerprint": "b01aeea4cc0c6adc7d6efaa8323d2fe10def9694c5108f4b34977f84fbf1518e",
+      "result_sha256": "8c14ef9aa04c6b4710a13184b7079da13b7fbe1299b4248f28703882847fac98",
+      "manifest_sha256": "20e49149b7e0d28a180ebf0fa4583dd5662c747cba2d3c1da4129ab884c1aa18",
+      "managed_manifest_sha256": "d03599f33c038ff17fd115a130145ec8f80be8debd3c9a62852b74fbea79a21e",
+      "wire_audit": {
+        "calls": [
+          {
+            "call_id": "call-0001-r1",
+            "request_sha256": "a7d0db0fffce95e9b71e98334a2384fec144b4773ef1544403c2da69741c7957",
+            "response_sha256": "ac144d46ad04bbdaca695d41f6674b9cac37fc20d343641734311d792160d8ea",
+            "image_hashes": [
+              {
+                "sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+                "bytes": 15172
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 108,
+              "prompt_tokens": 5871,
+              "total_tokens": 5979
+            },
+            "status": "response_received",
+            "latency_ms": 8403.327,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0002-r2",
+            "request_sha256": "8ba42c9741f21b3fb2045df0cdbd53d98b7328dad03bf5c26d19927faaa8683d",
+            "response_sha256": "a74cdd495d5cafe5da4706bd77bb95e49c6924cb2b4153ddc77a3677b79b72eb",
+            "image_hashes": [
+              {
+                "sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+                "bytes": 14631
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 108,
+              "prompt_tokens": 5876,
+              "total_tokens": 5984
+            },
+            "status": "response_received",
+            "latency_ms": 6879.412,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0003-r3",
+            "request_sha256": "5d109080bb99877baac3cdf88cf805caebb114dae870ffa0f6960e98180237d6",
+            "response_sha256": "5a4221dfa5a25e54a795fa6567fd5ba569af82cf8a83724d0f77524848d1948a",
+            "image_hashes": [
+              {
+                "sha256": "b4e535cb1fb67b27318dbb510444e63cee91b83be5f1908bcac03b61433d8868",
+                "bytes": 11890
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 106,
+              "prompt_tokens": 5608,
+              "total_tokens": 5714
+            },
+            "status": "response_received",
+            "latency_ms": 5135.103,
+            "usage_known": true
+          }
+        ],
+        "verified": true,
+        "upstream_attempts_and_billing_verified": false
+      }
+    },
+    {
+      "name": "s4live1-no_comm-s601-v157",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-no_comm-s601-v157/raw",
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "condition": "no_comm",
+      "status": "DEV_STAGE_FINISHED",
+      "exit_code": 0,
+      "research_result": false,
+      "sim_s": 90.0,
+      "wall_s": 620.1277299349999,
+      "model_calls": 7,
+      "model_usage": {
+        "requests": 7,
+        "blocked": 0,
+        "tokens_prompt": 40740,
+        "tokens_completion": 573,
+        "tokens_total_known": 41313,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 7,
+          "sum": 153367.201,
+          "max": 129578.378,
+          "median": 3945.559
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        3.40298,
+        4.697586,
+        129.578378,
+        3.9455590000000003,
+        3.539877,
+        4.334204,
+        3.868617
+      ],
+      "commands": 1299,
+      "accepted_claims": {
+        "r2": "call-0002-r2",
+        "r1": "call-0001-r1",
+        "r3": "call-0003-r3"
+      },
+      "departure_accepted": true,
+      "departure_decisions": [
+        {
+          "call_id": "call-0004-r3",
+          "requested_at": 31.35,
+          "at": 34.55,
+          "opened": 31.35,
+          "accepted": true,
+          "reason": null
+        },
+        {
+          "call_id": "call-0007-r3",
+          "requested_at": 63.8,
+          "at": 67.0,
+          "opened": 31.35,
+          "accepted": false,
+          "reason": "STALE_OR_CLOSED_DEPARTURE"
+        }
+      ],
+      "carry_motion_commands": 118,
+      "causal_violations": [],
+      "first_states": {
+        "init": 0.0,
+        "align": 3.8,
+        "real_pregrasp": 5.1,
+        "hover": 6.1,
+        "blind_descent": 7.4,
+        "grasp": 8.6,
+        "lift": 9.5,
+        "real_carry_transition": 30.7,
+        "carry": 31.3
+      },
+      "lifted_contact_samples": 1595,
+      "max_cyan_com_z_m": 0.16029570982451513,
+      "contact_lift_xy_m": 1.0044139822636877,
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "invalid_replies": 0,
+      "verified_artifacts": 5478,
+      "hash_mismatches": [],
+      "physical_success": null,
+      "stage_plumbing_pass": true,
+      "carry_plumbing_pass": true,
+      "configuration_fingerprint": "0ee2ab869a465254fc23939db01babb0df67ad4b3c2246a0df8f988bf59ffa8f",
+      "result_sha256": "edae1b04f0e29777bbbed115e85518b74b5bd3bf17863758be51470441b673a3",
+      "manifest_sha256": "c245d599b5d61206a14408dcb6b25a3ec0958590c2071992881f1dcb2c21e181",
+      "managed_manifest_sha256": "a8848e90dbd73c717b1d7c43a728d3b6043ec1465e20cdf14baa92033388b891",
+      "wire_audit": {
+        "calls": [
+          {
+            "call_id": "call-0001-r1",
+            "request_sha256": "a7d0db0fffce95e9b71e98334a2384fec144b4773ef1544403c2da69741c7957",
+            "response_sha256": "7f20643f54cdcab5a7f0a851d8d7a89d9cd4529474b86f53f6d8981a53bc91dc",
+            "image_hashes": [
+              {
+                "sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+                "bytes": 15172
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 108,
+              "prompt_tokens": 5871,
+              "total_tokens": 5979
+            },
+            "status": "response_received",
+            "latency_ms": 3402.98,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0002-r2",
+            "request_sha256": "8ba42c9741f21b3fb2045df0cdbd53d98b7328dad03bf5c26d19927faaa8683d",
+            "response_sha256": "1a4c3f077815c36d611c066f6ac095a959cf4c3d3b347483f838893f13fbcf3f",
+            "image_hashes": [
+              {
+                "sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+                "bytes": 14631
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 101,
+              "prompt_tokens": 5876,
+              "total_tokens": 5977
+            },
+            "status": "response_received",
+            "latency_ms": 4697.586,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0003-r3",
+            "request_sha256": "5d109080bb99877baac3cdf88cf805caebb114dae870ffa0f6960e98180237d6",
+            "response_sha256": "464a6c25c81e6aa26abe73f5c44fa8ec16c7922a5127240c8f801f01809b6188",
+            "image_hashes": [
+              {
+                "sha256": "b4e535cb1fb67b27318dbb510444e63cee91b83be5f1908bcac03b61433d8868",
+                "bytes": 11890
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 106,
+              "prompt_tokens": 5608,
+              "total_tokens": 5714
+            },
+            "status": "response_received",
+            "latency_ms": 129578.378,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0004-r3",
+            "request_sha256": "5d719a934ec0804f59f1ec0149cb58a413dbcfe93985494a27d9b6a4bb566d92",
+            "response_sha256": "0f2438be6612799e1e6827e1a4ca65ce41faaa3b2e11bab51dfeaa0cf333b0ce",
+            "image_hashes": [
+              {
+                "sha256": "52a66a85959671dc04e791ad3f05abf7813d9163fab35d51f4b23b6b2e70cb3e",
+                "bytes": 14248
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 5749,
+              "total_tokens": 5818
+            },
+            "status": "response_received",
+            "latency_ms": 3945.559,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0005-r2",
+            "request_sha256": "0cb31aa080bf5fdf580c64c9edf52f7f033e860619aee12634a12ee090b40ca6",
+            "response_sha256": "a602fd5f1b9f19431bbf5dfc6127cbbf53e98f64a52ba0fc4fbf7680d6698923",
+            "image_hashes": [
+              {
+                "sha256": "c1aaf95771e9a7d4764020a9f769abeba1e3c52da2c34a07217e3abec2878316",
+                "bytes": 14669
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 76,
+              "prompt_tokens": 5943,
+              "total_tokens": 6019
+            },
+            "status": "response_received",
+            "latency_ms": 3539.877,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0006-r1",
+            "request_sha256": "448dbdfbe495725102a820deba14c1d56f9ee426a75515e1a4f87cbdcf4ae3b7",
+            "response_sha256": "bf07d8009d0ace63bf789afbd243503496d67865eae0ebc0fe752b9f297f79f9",
+            "image_hashes": [
+              {
+                "sha256": "7a7340040668834f6b4e44d5fbad1923c8a956c5e382f4e594e5eee7f2944e73",
+                "bytes": 15154
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 44,
+              "prompt_tokens": 5947,
+              "total_tokens": 5991
+            },
+            "status": "response_received",
+            "latency_ms": 4334.204,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0007-r3",
+            "request_sha256": "6535cd14159ee2afa5af94ca7004f8c88508823ab392e1474fda57cf6da873b9",
+            "response_sha256": "4b06f4c7ecac928a5a203e59102f7cb39a904b8c3d7b87ecfe7059ae1121fbf4",
+            "image_hashes": [
+              {
+                "sha256": "a66611c60f6710f9121b64b2d8ebf42cb58ab7befd18c44c152b61fdab5e2f5c",
+                "bytes": 13449
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 5746,
+              "total_tokens": 5815
+            },
+            "status": "response_received",
+            "latency_ms": 3868.617,
+            "usage_known": true
+          }
+        ],
+        "verified": true,
+        "upstream_attempts_and_billing_verified": false
+      }
+    },
+    {
+      "name": "s4live1-peer_ko-s601-v157",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-peer_ko-s601-v157/raw",
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "condition": "peer_ko",
+      "status": "DEV_STAGE_FINISHED",
+      "exit_code": 0,
+      "research_result": false,
+      "sim_s": 90.0,
+      "wall_s": 514.5708544280001,
+      "model_calls": 7,
+      "model_usage": {
+        "requests": 7,
+        "blocked": 0,
+        "tokens_prompt": 42651,
+        "tokens_completion": 811,
+        "tokens_total_known": 43462,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 7,
+          "sum": 35910.163,
+          "max": 8296.504,
+          "median": 4592.074
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        8.296504,
+        3.876629,
+        4.7029,
+        5.442001,
+        4.592073999999999,
+        4.416817,
+        4.583238000000001
+      ],
+      "commands": 1278,
+      "accepted_claims": {
+        "r2": "call-0002-r2",
+        "r1": "call-0001-r1",
+        "r3": "call-0003-r3"
+      },
+      "departure_accepted": true,
+      "departure_decisions": [
+        {
+          "call_id": "call-0004-r3",
+          "requested_at": 32.65,
+          "at": 35.85,
+          "opened": 32.65,
+          "accepted": true,
+          "reason": null
+        },
+        {
+          "call_id": "call-0007-r3",
+          "requested_at": 65.1,
+          "at": 68.4,
+          "opened": 32.65,
+          "accepted": false,
+          "reason": "STALE_OR_CLOSED_DEPARTURE"
+        }
+      ],
+      "carry_motion_commands": 122,
+      "causal_violations": [],
+      "first_states": {
+        "init": 0.0,
+        "align": 5.1,
+        "real_pregrasp": 6.4,
+        "hover": 7.4,
+        "blind_descent": 8.7,
+        "grasp": 9.9,
+        "lift": 10.8,
+        "real_carry_transition": 32.0,
+        "carry": 32.6
+      },
+      "lifted_contact_samples": 1569,
+      "max_cyan_com_z_m": 0.16034541762546586,
+      "contact_lift_xy_m": 1.009459153914763,
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 3,
+        "accepted_messages": 3,
+        "rejected": 0,
+        "delivery_edges": 4,
+        "free_text_messages": 3,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 2,
+          "r2": 2,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "invalid_replies": 0,
+      "verified_artifacts": 5478,
+      "hash_mismatches": [],
+      "physical_success": null,
+      "stage_plumbing_pass": true,
+      "carry_plumbing_pass": true,
+      "configuration_fingerprint": "0ee2ab869a465254fc23939db01babb0df67ad4b3c2246a0df8f988bf59ffa8f",
+      "result_sha256": "3b1f6985cd8f01e48b3ee6d514031463f5bf1fc0cbcc635d7e44efc963e85671",
+      "manifest_sha256": "e1b9831d59034ed246cd89eb5db3332c33e3bf7633326fba6fcfa296200a5346",
+      "managed_manifest_sha256": "610a0b880a9df2fb32f44a44c3add3a0eb6ddeb75e68cfd33e6c2fdfb19608a1",
+      "wire_audit": {
+        "calls": [
+          {
+            "call_id": "call-0001-r1",
+            "request_sha256": "21d8ab039f4f024a0e8523c1c79fbcb44faff1215f3a2f95eae122391cf0cceb",
+            "response_sha256": "b492d1dd92884bb53be4354281c3b9fa0c817e9f721e53e5901110d49a48043d",
+            "image_hashes": [
+              {
+                "sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+                "bytes": 15172
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 176,
+              "prompt_tokens": 6079,
+              "total_tokens": 6255
+            },
+            "status": "response_received",
+            "latency_ms": 8296.504,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0002-r2",
+            "request_sha256": "ab3be417eaa6c43dbfbcb3f45dfc657af9297a889064cdbb4ca7a025e01e79aa",
+            "response_sha256": "726ea917b9adb69b8160434681b05673b1cf2da1a0331a7b16a077d2fd820a8d",
+            "image_hashes": [
+              {
+                "sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+                "bytes": 14631
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 164,
+              "prompt_tokens": 6084,
+              "total_tokens": 6248
+            },
+            "status": "response_received",
+            "latency_ms": 3876.629,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0003-r3",
+            "request_sha256": "77883d1a3b7a3766ebffcb8c3a894d7a4d90c7faa77789ea023ca7754553dd05",
+            "response_sha256": "15ab60d95771a37224dcb8851515c7752f6381014715edf3141e3c8961759793",
+            "image_hashes": [
+              {
+                "sha256": "b4e535cb1fb67b27318dbb510444e63cee91b83be5f1908bcac03b61433d8868",
+                "bytes": 11890
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 174,
+              "prompt_tokens": 5816,
+              "total_tokens": 5990
+            },
+            "status": "response_received",
+            "latency_ms": 4702.9,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0004-r3",
+            "request_sha256": "55d626a159c5354139e04c97e9613fc6e2a31341679ee9eaee50041192255cf7",
+            "response_sha256": "bb88882e867005ab02f028203794dad38044d103d71f29f0b599edd83b79c754",
+            "image_hashes": [
+              {
+                "sha256": "b4eddbb48b46815f0c8bbf3af22df80e92a8f8f34d092d2b1c3a30e0277adc26",
+                "bytes": 14240
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 5964,
+              "total_tokens": 6033
+            },
+            "status": "response_received",
+            "latency_ms": 5442.001,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0005-r2",
+            "request_sha256": "c57e13adce17fec5fe57f1be8c8a78c058e40446d9e6d3306e65140f01cbfe48",
+            "response_sha256": "743e47d627366d7b274f2a59cb98cf0bc7583224d2991fc13f6b3afec8fc819d",
+            "image_hashes": [
+              {
+                "sha256": "ac4bfceda3901d66c2660b0e3a138eb832b5db0c6d7a42180d8e0d2d1ef0a29e",
+                "bytes": 14669
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 76,
+              "prompt_tokens": 6378,
+              "total_tokens": 6454
+            },
+            "status": "response_received",
+            "latency_ms": 4592.074,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0006-r1",
+            "request_sha256": "e3484523752acbb1d5fd59f03176096af2815c4bd0a29ea4eba2ea021bf1a639",
+            "response_sha256": "0c889c04238079a087adc10b582188d5eb6cef15d37df224e4b7d112755b3481",
+            "image_hashes": [
+              {
+                "sha256": "4bc771fa59d117b514b1b3df85d7bf0b923ddc6690b94d5a759859b89b9469e4",
+                "bytes": 15140
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 76,
+              "prompt_tokens": 6368,
+              "total_tokens": 6444
+            },
+            "status": "response_received",
+            "latency_ms": 4416.817,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0007-r3",
+            "request_sha256": "4813a0b99c1a4f3cf206b4ff38ab0bd06d1624be4ce5d294dd3e4e87d97308ec",
+            "response_sha256": "4123aba16013c2b34d9c3d489cae66ff5000211dac77e209576acdf7a9abc9dc",
+            "image_hashes": [
+              {
+                "sha256": "799c4682be36392d3f77ff1cdd9f7a6c343eb4c899a9b3ff20deb97e626d3e8f",
+                "bytes": 13558
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 76,
+              "prompt_tokens": 5962,
+              "total_tokens": 6038
+            },
+            "status": "response_received",
+            "latency_ms": 4583.238,
+            "usage_known": true
+          }
+        ],
+        "verified": true,
+        "upstream_attempts_and_billing_verified": false
+      }
+    },
+    {
+      "name": "s4live1-leader_ko-s601-v157",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-leader_ko-s601-v157/raw",
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "condition": "leader_ko",
+      "status": "DEV_STAGE_FINISHED",
+      "exit_code": 0,
+      "research_result": false,
+      "sim_s": 90.0,
+      "wall_s": 525.265469423,
+      "model_calls": 7,
+      "model_usage": {
+        "requests": 7,
+        "blocked": 0,
+        "tokens_prompt": 42699,
+        "tokens_completion": 710,
+        "tokens_total_known": 43409,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 7,
+          "sum": 47302.887,
+          "max": 13288.761,
+          "median": 5060.563
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        13.288761000000001,
+        10.841003,
+        5.8079350000000005,
+        3.820379,
+        4.006577,
+        5.060563,
+        4.477669
+      ],
+      "commands": 1298,
+      "accepted_claims": {
+        "r3": "call-0003-r3",
+        "r1": "call-0001-r1",
+        "r2": "call-0002-r2"
+      },
+      "departure_accepted": true,
+      "departure_decisions": [
+        {
+          "call_id": "call-0004-r3",
+          "requested_at": 31.35,
+          "at": 34.65,
+          "opened": 31.35,
+          "accepted": true,
+          "reason": null
+        },
+        {
+          "call_id": "call-0005-r3",
+          "requested_at": 63.8,
+          "at": 67.1,
+          "opened": 31.35,
+          "accepted": false,
+          "reason": "STALE_OR_CLOSED_DEPARTURE"
+        }
+      ],
+      "carry_motion_commands": 118,
+      "causal_violations": [],
+      "first_states": {
+        "init": 0.0,
+        "align": 3.8,
+        "real_pregrasp": 5.1,
+        "hover": 6.1,
+        "blind_descent": 7.4,
+        "grasp": 8.6,
+        "lift": 9.5,
+        "real_carry_transition": 30.7,
+        "carry": 31.3
+      },
+      "lifted_contact_samples": 1595,
+      "max_cyan_com_z_m": 0.16029570982451513,
+      "contact_lift_xy_m": 1.0044139822636877,
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r2",
+        "sent": 3,
+        "accepted_messages": 3,
+        "rejected": 0,
+        "delivery_edges": 3,
+        "free_text_messages": 3,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 1,
+          "r2": 1,
+          "r3": 1
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "invalid_replies": 0,
+      "verified_artifacts": 5478,
+      "hash_mismatches": [],
+      "physical_success": null,
+      "stage_plumbing_pass": true,
+      "carry_plumbing_pass": true,
+      "configuration_fingerprint": "0ee2ab869a465254fc23939db01babb0df67ad4b3c2246a0df8f988bf59ffa8f",
+      "result_sha256": "f8ee993c820b3138cb9b75ffe0d77c9db3fa180c2ae55afc36faa83b77587e65",
+      "manifest_sha256": "e2c2bfa96c40b1725ee0c061b0fa016c4e4ee674d1c622dc9b3b5f595b25228c",
+      "managed_manifest_sha256": "3e9a8379c2e2646aa2e3f6ea9d504b4f117b0127f5c4a35d806b506726de001e",
+      "wire_audit": {
+        "calls": [
+          {
+            "call_id": "call-0001-r1",
+            "request_sha256": "392c9e4d7ffe1fbc14a2f4034f39caeea1c51e2d13b42d84f627eb9d425de504",
+            "response_sha256": "e000bc8acf62b8120b4600aa45ab96bad6271de6bd456de1f2992fa46ddbcfe5",
+            "image_hashes": [
+              {
+                "sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+                "bytes": 15172
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 151,
+              "prompt_tokens": 6085,
+              "total_tokens": 6236
+            },
+            "status": "response_received",
+            "latency_ms": 13288.761,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0002-r2",
+            "request_sha256": "6022bcecb29d66093b3d44e6bc02d2d54106a3eedc1bef7f28b0b44a3d80e720",
+            "response_sha256": "901b4cc696bcb24020eee8d726d8e914df23d34e552f08ee409c451a37ac06cd",
+            "image_hashes": [
+              {
+                "sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+                "bytes": 14631
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 200,
+              "prompt_tokens": 6107,
+              "total_tokens": 6307
+            },
+            "status": "response_received",
+            "latency_ms": 10841.003,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0003-r3",
+            "request_sha256": "10149708d8dc35160789e08019da29d0d1aa34550ac98954f57e53c976104839",
+            "response_sha256": "2174c2f1523c6148b2cf3859e0f4caa96c80a5fff29c148a648a48fa27fa8752",
+            "image_hashes": [
+              {
+                "sha256": "b4e535cb1fb67b27318dbb510444e63cee91b83be5f1908bcac03b61433d8868",
+                "bytes": 11890
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 106,
+              "prompt_tokens": 5822,
+              "total_tokens": 5928
+            },
+            "status": "response_received",
+            "latency_ms": 5807.935,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0004-r3",
+            "request_sha256": "faca80e59d149fefa8f336c070eab66cd7c5f9922034f6ccbd9935baf4b81ff8",
+            "response_sha256": "8aa83bc7ce338243c999b440835dc6fc09b448d126d2e5f8d0daba5f4b55c269",
+            "image_hashes": [
+              {
+                "sha256": "52a66a85959671dc04e791ad3f05abf7813d9163fab35d51f4b23b6b2e70cb3e",
+                "bytes": 14248
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 6064,
+              "total_tokens": 6133
+            },
+            "status": "response_received",
+            "latency_ms": 3820.379,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0005-r3",
+            "request_sha256": "3279af0a7121ef8fba7f569d5e4d6e6198a74e89438f604a39d88a3cab3d385e",
+            "response_sha256": "e7fe2f39e1a201aa556aef4ff690e295b47c8c9817b9ac08908fad7bd9f0f84e",
+            "image_hashes": [
+              {
+                "sha256": "a66611c60f6710f9121b64b2d8ebf42cb58ab7befd18c44c152b61fdab5e2f5c",
+                "bytes": 13449
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 6061,
+              "total_tokens": 6130
+            },
+            "status": "response_received",
+            "latency_ms": 4006.577,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0006-r1",
+            "request_sha256": "dff210b9ab259472d79268dfca901c274e64b87e37979ad6f5460ba926aa3ae7",
+            "response_sha256": "4ee5ed2129043ec3eadf76441041c88eb3dc6972099d591bfcf9356cdce51104",
+            "image_hashes": [
+              {
+                "sha256": "21fd07fc73549e770a0431db464743f73760bfddc9e01abe18dcce7afc0a5c17",
+                "bytes": 15137
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 6266,
+              "total_tokens": 6335
+            },
+            "status": "response_received",
+            "latency_ms": 5060.563,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0007-r2",
+            "request_sha256": "dd983c19cebf01eed5a0c8710c11ed5cbc469738a3dd8e547b210424ec4e1d8f",
+            "response_sha256": "34c234990942ffb18a0d94e5155bf6e4089f7aef960d30b3a034469855481c68",
+            "image_hashes": [
+              {
+                "sha256": "9c669296b52e6b85e135da69a9c505b7281c468daffb2ddc5663f67f7006255c",
+                "bytes": 14666
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 46,
+              "prompt_tokens": 6294,
+              "total_tokens": 6340
+            },
+            "status": "response_received",
+            "latency_ms": 4477.669,
+            "usage_known": true
+          }
+        ],
+        "verified": true,
+        "upstream_attempts_and_billing_verified": false
+      }
+    },
+    {
+      "name": "s4live1-structured-s601-v157",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-structured-s601-v157/raw",
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "condition": "structured",
+      "status": "DEV_STAGE_FINISHED",
+      "exit_code": 0,
+      "research_result": false,
+      "sim_s": 90.0,
+      "wall_s": 572.461672124,
+      "model_calls": 7,
+      "model_usage": {
+        "requests": 7,
+        "blocked": 0,
+        "tokens_prompt": 43423,
+        "tokens_completion": 873,
+        "tokens_total_known": 44589,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 7,
+          "sum": 97144.012,
+          "max": 64492.618,
+          "median": 5234.373
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        6.145759,
+        4.7124369999999995,
+        5.234373,
+        4.797586,
+        64.49261800000001,
+        4.502421,
+        7.258818
+      ],
+      "commands": 1299,
+      "accepted_claims": {
+        "r3": "call-0003-r3",
+        "r1": "call-0001-r1",
+        "r2": "call-0002-r2"
+      },
+      "departure_accepted": true,
+      "departure_decisions": [
+        {
+          "call_id": "call-0004-r3",
+          "requested_at": 31.35,
+          "at": 34.55,
+          "opened": 31.35,
+          "accepted": true,
+          "reason": null
+        },
+        {
+          "call_id": "call-0005-r3",
+          "requested_at": 63.8,
+          "at": 67.0,
+          "opened": 31.35,
+          "accepted": false,
+          "reason": "STALE_OR_CLOSED_DEPARTURE"
+        }
+      ],
+      "carry_motion_commands": 118,
+      "causal_violations": [],
+      "first_states": {
+        "init": 0.0,
+        "align": 3.8,
+        "real_pregrasp": 5.1,
+        "hover": 6.1,
+        "blind_descent": 7.4,
+        "grasp": 8.6,
+        "lift": 9.5,
+        "real_carry_transition": 30.7,
+        "carry": 31.3
+      },
+      "lifted_contact_samples": 1595,
+      "max_cyan_com_z_m": 0.16029570982451513,
+      "contact_lift_xy_m": 1.0044139822636877,
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 2,
+        "accepted_messages": 2,
+        "rejected": 0,
+        "delivery_edges": 2,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 1,
+          "r2": 1,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "invalid_replies": 0,
+      "verified_artifacts": 5478,
+      "hash_mismatches": [],
+      "physical_success": null,
+      "stage_plumbing_pass": true,
+      "carry_plumbing_pass": true,
+      "configuration_fingerprint": "0ee2ab869a465254fc23939db01babb0df67ad4b3c2246a0df8f988bf59ffa8f",
+      "result_sha256": "139f76c46da6caf0661f003ca24130b08bf03c57e6522d3611c8584666ee2271",
+      "manifest_sha256": "e034b6678a226f246fa8577acb6df767f36dd2b1f02cd61b15e04abfc5457dd8",
+      "managed_manifest_sha256": "a2b2ef7c5f32b9649d506713cf761d9299ded0409483e38ea65edfc718778a01",
+      "wire_audit": {
+        "calls": [
+          {
+            "call_id": "call-0001-r1",
+            "request_sha256": "0f2851406f414400eb9785d35efa6945170f23d805d1a809571652c96e7889e1",
+            "response_sha256": "b7f029644f3b10745ee858dccb897f2a42bc904c8c9fdf2b88bcb7c70a5958ea",
+            "image_hashes": [
+              {
+                "sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+                "bytes": 15172
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 238,
+              "prompt_tokens": 6210,
+              "total_tokens": 6448
+            },
+            "status": "response_received",
+            "latency_ms": 6145.759,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0002-r2",
+            "request_sha256": "1893140e35c4fdc4fca469566220fd7ce57dc51b2382b8201aba6f12e4bc2909",
+            "response_sha256": "617d5240b1e18319ba8fb948283f4c212405580c747f11087b8b8f7d958c8159",
+            "image_hashes": [
+              {
+                "sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+                "bytes": 14631
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 247,
+              "prompt_tokens": 6215,
+              "total_tokens": 6462
+            },
+            "status": "response_received",
+            "latency_ms": 4712.437,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0003-r3",
+            "request_sha256": "611394b64dbfb6f56bcbcff19d60fb589586a52bea7f91b981606bc828ef702e",
+            "response_sha256": "0f3ee857780ba1db343214cf4219e55305e040327256bfc5b7fc3b493baa1ba0",
+            "image_hashes": [
+              {
+                "sha256": "b4e535cb1fb67b27318dbb510444e63cee91b83be5f1908bcac03b61433d8868",
+                "bytes": 11890
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 98,
+              "prompt_tokens": 5947,
+              "total_tokens": 6045
+            },
+            "status": "response_received",
+            "latency_ms": 5234.373,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0004-r3",
+            "request_sha256": "5c2e49fee0e73dd0bb9fdf6d8b2ec1b372390a9864096fd82fafbcf01a8ad27b",
+            "response_sha256": "65be21607e7af7d8375f66a1e4416649745d3f0f5817800f2001ae0c58a20c11",
+            "image_hashes": [
+              {
+                "sha256": "52a66a85959671dc04e791ad3f05abf7813d9163fab35d51f4b23b6b2e70cb3e",
+                "bytes": 14248
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 6088,
+              "total_tokens": 6157
+            },
+            "status": "response_received",
+            "latency_ms": 4797.586,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0005-r3",
+            "request_sha256": "28363c1f9883d0ffca3a7c6db389b8748cc3648293a054a46e591c8bf3d3ab1d",
+            "response_sha256": "d9c8a0c6526e65a0d20cfbcabaf272328e80a676968180d623af6dd84a579c2e",
+            "image_hashes": [
+              {
+                "sha256": "a66611c60f6710f9121b64b2d8ebf42cb58ab7befd18c44c152b61fdab5e2f5c",
+                "bytes": 13449
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 6085,
+              "total_tokens": 6154
+            },
+            "status": "response_received",
+            "latency_ms": 64492.618,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0006-r1",
+            "request_sha256": "7d67c3af50d62d452e22c3e22396b5b001ad3a0a0dc680a479947a32e8193777",
+            "response_sha256": "08c7554cd5badc432a9ded1385865bc7ea3c3262a8e025d2a23c01c1cb1084e2",
+            "image_hashes": [
+              {
+                "sha256": "652c7d2399460c72325f9e52922f7ba1315cd056add16be1e01bd2970d767efb",
+                "bytes": 15130
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 76,
+              "prompt_tokens": 6444,
+              "total_tokens": 6520
+            },
+            "status": "response_received",
+            "latency_ms": 4502.421,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0007-r2",
+            "request_sha256": "db167911f3819649f833e84e8f7508ebaf34daaf03929ac432c32a0aeb62d463",
+            "response_sha256": "8929ed5bc6e08b6f14251908872e6964fa51b6b14f7e83f21b7c85f5c79c1ed9",
+            "image_hashes": [
+              {
+                "sha256": "56fb3b6c35cbdf5c7bf9d92f4f82b4f2fccb355e55644bfcf460c692ae4a5292",
+                "bytes": 14669
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 76,
+              "prompt_tokens": 6434,
+              "total_tokens": 6803
+            },
+            "status": "response_received",
+            "latency_ms": 7258.818,
+            "usage_known": true
+          }
+        ],
+        "verified": true,
+        "upstream_attempts_and_billing_verified": false
+      }
+    }
+  ],
+  "host_interrupted_attempts": [
+    {
+      "name": "s4live1-no_comm-s601-v157-host-stop-093244Z",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-no_comm-s601-v157-host-stop-093244Z/raw",
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "condition": "no_comm",
+      "research_result": false,
+      "status": "HOST_INTERRUPTED",
+      "exit_code": 143,
+      "cause": "Supervisor poweroff bug at 2026-10-10T09:32:44Z; user confirmed",
+      "result_complete": false,
+      "physical_success": null,
+      "stage_plumbing_pass": null,
+      "last_persisted_absolute_sim_s": 17.15,
+      "command_and_scheduler_logs_complete": false,
+      "ledger_finalized": false,
+      "wire_audit": {
+        "calls": [
+          {
+            "call_id": "call-0001-r1",
+            "request_sha256": "a7d0db0fffce95e9b71e98334a2384fec144b4773ef1544403c2da69741c7957",
+            "response_sha256": "5d9b42d756719b3869ec88e290d69a7d8ae10d0c24dd7283d368c482134dcf03",
+            "image_hashes": [
+              {
+                "sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+                "bytes": 15172
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 108,
+              "prompt_tokens": 5871,
+              "total_tokens": 5979
+            },
+            "status": "response_received",
+            "latency_ms": 9812.256,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0002-r2",
+            "request_sha256": "8ba42c9741f21b3fb2045df0cdbd53d98b7328dad03bf5c26d19927faaa8683d",
+            "response_sha256": "16f4e44090740863101708888f8d10cb3671f6688ba2769d6303977892c3e526",
+            "image_hashes": [
+              {
+                "sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+                "bytes": 14631
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 108,
+              "prompt_tokens": 5876,
+              "total_tokens": 5984
+            },
+            "status": "response_received",
+            "latency_ms": 23877.081,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0003-r3",
+            "request_sha256": "5d109080bb99877baac3cdf88cf805caebb114dae870ffa0f6960e98180237d6",
+            "response_sha256": "c803161591555272e32df7440366fe7d02e0a45d65a5c39acbc2b9932183faf9",
+            "image_hashes": [
+              {
+                "sha256": "b4e535cb1fb67b27318dbb510444e63cee91b83be5f1908bcac03b61433d8868",
+                "bytes": 11890
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 106,
+              "prompt_tokens": 5608,
+              "total_tokens": 5714
+            },
+            "status": "response_received",
+            "latency_ms": 3599.626,
+            "usage_known": true
+          }
+        ],
+        "verified": true,
+        "upstream_attempts_and_billing_verified": false
+      }
+    },
+    {
+      "name": "s4live1-peer_ko-s601-v157-host-stop-093244Z",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-peer_ko-s601-v157-host-stop-093244Z/raw",
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "condition": "peer_ko",
+      "research_result": false,
+      "status": "HOST_INTERRUPTED",
+      "exit_code": 143,
+      "cause": "Supervisor poweroff bug at 2026-10-10T09:32:44Z; user confirmed",
+      "result_complete": false,
+      "physical_success": null,
+      "stage_plumbing_pass": null,
+      "last_persisted_absolute_sim_s": 24.3,
+      "command_and_scheduler_logs_complete": false,
+      "ledger_finalized": false,
+      "wire_audit": {
+        "calls": [
+          {
+            "call_id": "call-0001-r1",
+            "request_sha256": "21d8ab039f4f024a0e8523c1c79fbcb44faff1215f3a2f95eae122391cf0cceb",
+            "response_sha256": "ffc25bc74c1fc66b06a26ea270bcb1b84acd7e599ac26c651306d1ba26f490df",
+            "image_hashes": [
+              {
+                "sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+                "bytes": 15172
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 175,
+              "prompt_tokens": 6079,
+              "total_tokens": 6254
+            },
+            "status": "response_received",
+            "latency_ms": 4511.421,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0002-r2",
+            "request_sha256": "ab3be417eaa6c43dbfbcb3f45dfc657af9297a889064cdbb4ca7a025e01e79aa",
+            "response_sha256": "8ea2ff46b7681dacc018fd9407f3534c71461ada3a250d9b210b700478903908",
+            "image_hashes": [
+              {
+                "sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+                "bytes": 14631
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 164,
+              "prompt_tokens": 6084,
+              "total_tokens": 6248
+            },
+            "status": "response_received",
+            "latency_ms": 3840.017,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0003-r3",
+            "request_sha256": "77883d1a3b7a3766ebffcb8c3a894d7a4d90c7faa77789ea023ca7754553dd05",
+            "response_sha256": "f1dd7211cce16e11258b4a9f6f0bb93fea11c88699d9b66f8945ea1a0327d459",
+            "image_hashes": [
+              {
+                "sha256": "b4e535cb1fb67b27318dbb510444e63cee91b83be5f1908bcac03b61433d8868",
+                "bytes": 11890
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 173,
+              "prompt_tokens": 5816,
+              "total_tokens": 5989
+            },
+            "status": "response_received",
+            "latency_ms": 4719.609,
+            "usage_known": true
+          }
+        ],
+        "verified": true,
+        "upstream_attempts_and_billing_verified": false
+      }
+    },
+    {
+      "name": "s4live1-leader_ko-s601-v157-host-stop-093244Z",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-leader_ko-s601-v157-host-stop-093244Z/raw",
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "condition": "leader_ko",
+      "research_result": false,
+      "status": "HOST_INTERRUPTED",
+      "exit_code": 143,
+      "cause": "Supervisor poweroff bug at 2026-10-10T09:32:44Z; user confirmed",
+      "result_complete": false,
+      "physical_success": null,
+      "stage_plumbing_pass": null,
+      "last_persisted_absolute_sim_s": 24.15,
+      "command_and_scheduler_logs_complete": false,
+      "ledger_finalized": false,
+      "wire_audit": {
+        "calls": [
+          {
+            "call_id": "call-0001-r1",
+            "request_sha256": "392c9e4d7ffe1fbc14a2f4034f39caeea1c51e2d13b42d84f627eb9d425de504",
+            "response_sha256": "6c8992c4123c90f85402a2658f2bb817cc6fa62ab5d2cd1f9fc33bcf973ac942",
+            "image_hashes": [
+              {
+                "sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+                "bytes": 15172
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 108,
+              "prompt_tokens": 6085,
+              "total_tokens": 6337
+            },
+            "status": "response_received",
+            "latency_ms": 4904.119,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0002-r2",
+            "request_sha256": "6022bcecb29d66093b3d44e6bc02d2d54106a3eedc1bef7f28b0b44a3d80e720",
+            "response_sha256": "73fe4115d28006e5d208f8a90d98bd05977ce170801a432c2d0af85360bb67d8",
+            "image_hashes": [
+              {
+                "sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+                "bytes": 14631
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 225,
+              "prompt_tokens": 6107,
+              "total_tokens": 6332
+            },
+            "status": "response_received",
+            "latency_ms": 4297.015,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0003-r3",
+            "request_sha256": "10149708d8dc35160789e08019da29d0d1aa34550ac98954f57e53c976104839",
+            "response_sha256": "a4a860bbb05815d1fd8967332e22ee6ee210edbfa2aac1547852a81e2d3306e8",
+            "image_hashes": [
+              {
+                "sha256": "b4e535cb1fb67b27318dbb510444e63cee91b83be5f1908bcac03b61433d8868",
+                "bytes": 11890
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 98,
+              "prompt_tokens": 5822,
+              "total_tokens": 5920
+            },
+            "status": "response_received",
+            "latency_ms": 6100.934,
+            "usage_known": true
+          }
+        ],
+        "verified": true,
+        "upstream_attempts_and_billing_verified": false
+      }
+    },
+    {
+      "name": "s4live1-structured-s601-v157-host-stop-093244Z",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live1-structured-s601-v157-host-stop-093244Z/raw",
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "condition": "structured",
+      "research_result": false,
+      "status": "HOST_INTERRUPTED",
+      "exit_code": 143,
+      "cause": "Supervisor poweroff bug at 2026-10-10T09:32:44Z; user confirmed",
+      "result_complete": false,
+      "physical_success": null,
+      "stage_plumbing_pass": null,
+      "last_persisted_absolute_sim_s": 24.15,
+      "command_and_scheduler_logs_complete": false,
+      "ledger_finalized": false,
+      "wire_audit": {
+        "calls": [
+          {
+            "call_id": "call-0001-r1",
+            "request_sha256": "0f2851406f414400eb9785d35efa6945170f23d805d1a809571652c96e7889e1",
+            "response_sha256": "6b23daa36558436c974c3b2733d3eea6679fe27b7fb9f1cfda9b95dee1512c5d",
+            "image_hashes": [
+              {
+                "sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+                "bytes": 15172
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 247,
+              "prompt_tokens": 6210,
+              "total_tokens": 6457
+            },
+            "status": "response_received",
+            "latency_ms": 5737.72,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0002-r2",
+            "request_sha256": "1893140e35c4fdc4fca469566220fd7ce57dc51b2382b8201aba6f12e4bc2909",
+            "response_sha256": "5d7c514e7e021ac57e02072f3e03991106aedc11895d36b293148e1106bec808",
+            "image_hashes": [
+              {
+                "sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+                "bytes": 14631
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 247,
+              "prompt_tokens": 6215,
+              "total_tokens": 6462
+            },
+            "status": "response_received",
+            "latency_ms": 3900.387,
+            "usage_known": true
+          },
+          {
+            "call_id": "call-0003-r3",
+            "request_sha256": "611394b64dbfb6f56bcbcff19d60fb589586a52bea7f91b981606bc828ef702e",
+            "response_sha256": "12ebfe0bfb1b9241d4cf47a01e5f2a807e44612760b8a480cac83c8740d4bca3",
+            "image_hashes": [
+              {
+                "sha256": "b4e535cb1fb67b27318dbb510444e63cee91b83be5f1908bcac03b61433d8868",
+                "bytes": 11890
+              },
+              {
+                "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+                "bytes": 11810
+              }
+            ],
+            "proxy_matches": 1,
+            "request_hash_match": true,
+            "response_hash_match": true,
+            "image_hash_match": true,
+            "provider_usage": {
+              "completion_tokens": 98,
+              "prompt_tokens": 5947,
+              "total_tokens": 6045
+            },
+            "status": "response_received",
+            "latency_ms": 5142.647,
+            "usage_known": true
+          }
+        ],
+        "verified": true,
+        "upstream_attempts_and_billing_verified": false
+      }
+    }
+  ],
+  "relay_receipts_path": "/Users/changmin/projects/ugrp/outputs/s4live1-delivery/proxy-receipts.jsonl",
+  "relay_receipts_sha256": "d1b83b1f1b7901fc4eb9c519b608fe8ffa7c99983847119179ecb3a22f1b5020",
+  "same_configuration": true,
+  "caveats": [
+    "synthetic alignment entrance; no navigation or E2E success",
+    "pair claim-only, no alignment/GO/transport",
+    "provider-reported tokens; upstream attempts/billing not independently reconciled",
+    "delayed/invalid response behavior tested offline; do not infer live fault injection"
+  ]
+}

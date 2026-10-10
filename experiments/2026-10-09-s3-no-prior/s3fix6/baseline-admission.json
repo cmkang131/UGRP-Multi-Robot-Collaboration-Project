@@ -1,0 +1,124 @@
+{
+  "source_sha": "105ffc704a48abb56f674b67e83dd815438fde10",
+  "physics_runs": 0,
+  "ownmap": {
+    "55001": {
+      "frames": 1341,
+      "original_frontend_equal": true,
+      "original_contacts_equal": true,
+      "original_proposals_equal": true,
+      "failure": null
+    },
+    "55002": {
+      "frames": 2528,
+      "original_frontend_equal": true,
+      "original_contacts_equal": true,
+      "original_proposals_equal": true,
+      "failure": null
+    }
+  },
+  "s3": {
+    "v149": {
+      "poses": {
+        "r1": {
+          "original_frames": 5493,
+          "replayed_frames": 5493,
+          "equal_prefix_frames": 5493,
+          "all_equal": true
+        },
+        "r2": {
+          "original_frames": 5493,
+          "replayed_frames": 5493,
+          "equal_prefix_frames": 5493,
+          "all_equal": true
+        },
+        "r3": {
+          "original_frames": 5493,
+          "replayed_frames": 5493,
+          "equal_prefix_frames": 5493,
+          "all_equal": true
+        }
+      },
+      "recorded_command_comparison": {
+        "r1": {
+          "expected": 1910,
+          "generated": 1909,
+          "json_equal": false
+        },
+        "r2": {
+          "expected": 3294,
+          "generated": 3292,
+          "json_equal": false
+        },
+        "r3": {
+          "expected": 5836,
+          "generated": 5835,
+          "json_equal": false
+        }
+      },
+      "command_scope": "11036 generated proposals equal the original prefix; four excluded host holds: r2 at termination275.9s and all robots after settling278.9s. Existing pre-GO rewait is present; no claim of whole command-file identity."
+    },
+    "v150": {
+      "poses": {
+        "r1": {
+          "original_frames": 6285,
+          "replayed_frames": 6285,
+          "equal_prefix_frames": 6285,
+          "all_equal": true
+        },
+        "r2": {
+          "original_frames": 6285,
+          "replayed_frames": 6285,
+          "equal_prefix_frames": 6284,
+          "all_equal": false
+        },
+        "r3": {
+          "original_frames": 6285,
+          "replayed_frames": 6285,
+          "equal_prefix_frames": 6285,
+          "all_equal": true
+        }
+      },
+      "recorded_command_comparison": {
+        "r1": {
+          "expected": 1909,
+          "generated": 1909,
+          "json_equal": true
+        },
+        "r2": {
+          "expected": 3874,
+          "generated": 3876,
+          "json_equal": false
+        },
+        "r3": {
+          "expected": 6626,
+          "generated": 6627,
+          "json_equal": false
+        }
+      },
+      "command_scope": "All12409 original commands are an exact prefix; repaired final step returns three extra holds at315.5s (r2 twice, r3 once).",
+      "repair": {
+        "first_skipped_frame_s": 315.3,
+        "skipped_frames": 1,
+        "last_released_pose_s": 315.5,
+        "r2_sigma_m": 0.08187923677743911,
+        "nonfinite_fields": 0,
+        "new_visual_fix": false
+      }
+    }
+  },
+  "evidence": {
+    "baseline-equality-complete.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/baseline-equality-complete.json",
+      "sha256": "2f34d3c28c06e19dd442e69c7230748ff159df8076c0acfe4d0c175d1ac98b9b"
+    },
+    "v149-command-tail-difference.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v149-command-tail-difference.json",
+      "sha256": "02ca702e34a68b2479a97486a0eba47132f580cbba922c0a9eac4d41eeede349"
+    },
+    "v150-command-recovery.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v150-command-recovery.json",
+      "sha256": "97aa29999f2fb8ae62cbfa2a6c7c076f72f601f6ca0630725fac0711757b2445"
+    }
+  }
+}

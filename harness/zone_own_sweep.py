@@ -8,6 +8,8 @@ through an inflated obstacle, nor a claim that a blocked estimate means physical
 """
 from __future__ import annotations
 
+import math
+
 from harness.zone_own_guards import GATE_LOADED, GATE_UNLOADED, OwnPose
 
 SWEEP_REOBSERVE_S = 10.
@@ -37,6 +39,11 @@ class SweepRecheck:
 
     def check(self, now, guard, current, target, pose, *, loaded):
         self._account_wait(now)
+        # A missing/invalid belief is an observation wait, never a zero-sigma
+        # geometry query. Preserve the same cumulative timeout and fail closed.
+        if pose is None or not all(math.isfinite(float(v)) for v in
+                (pose.x, pose.y, pose.yaw, pose.std_xy, pose.std_yaw)):
+            return self._wait(now)
         if guard.transition_clear(current, target, pose, loaded=loaded):
             return 'clear'
         profile = self.loaded_profile if loaded else GATE_UNLOADED

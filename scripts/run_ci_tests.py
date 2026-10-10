@@ -114,9 +114,18 @@ TEST_PATTERNS = (
     "tests/test_s2_*.py",  # Include real-site, freeze-scope and in-hand S2 option regressions.
     "tests/test_solo_cyan_v106*.py",  # S2 v3 cyan: own RGB/commands, synthetic backend only
     "tests/test_s3_host*.py",  # S3 fixed-role host, no physics or model calls
+    "tests/test_s3_pair_heading.py",
+    "tests/test_s3_exact_cache.py",
+    "tests/test_s3_no_prior.py",  # S3 v142 source/input boundary, no physics
+    "tests/test_s3_camera_render.py",  # shared render call and S2 mount parity, no physics
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
     "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
+    "tests/test_s4_live_stage.py",  # S4 stage admission and transport: stub model, fake physics
+    "tests/test_s4_live5.py",  # opt-in frozen S3 pair integration, no physics/model
+    "tests/test_s4_grip_r3.py",
+    "tests/test_s4_grip_visual.py",
+    "tests/test_s4_grip_raw.py",  # eval-only recorded contact labels; no physics/model
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
     "tests/test_review_355.py",
