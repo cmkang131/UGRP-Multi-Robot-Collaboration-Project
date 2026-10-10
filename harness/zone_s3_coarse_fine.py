@@ -7,6 +7,7 @@ import copy
 import itertools
 import math
 from functools import lru_cache
+from harness.zone_s3_alignment_ownership import Options, LastVisible, band_vision, install_posture_owner, install_solo_owner, one_step
 
 import numpy as np
 
@@ -109,7 +110,8 @@ def yaw_calibration(calibration, pan):
 
 
 class Servo:
-    def __init__(self, rid, profiles):
+    def __init__(self, rid, profiles, refinements=Options()):
+        self.refinements = refinements
         self.rid, self.profiles = rid, profiles
         self.gate = SettleGate()
         self.last_frame = None
@@ -123,6 +125,8 @@ class Servo:
             raise ValueError('four existing 35/100ms base profiles required')
 
     def proposal(self, grip, heading):
+        if self.refinements.coarse_axis_ownership:
+            return one_step(self,grip,heading,plan)
         p = plan(grip, heading, self.rid)
         if p['ready']:
             return None, p
@@ -182,7 +186,7 @@ class Servo:
         return ('ready', current) if self.streak >= 2 else ('wait', None)
 
 
-def attach_endpoint(ep, option='off'):
+def attach_endpoint(ep, option='off', *, refinements=Options()):
     if option == 'off':
         return ep
     if option != OPTION:
@@ -190,14 +194,21 @@ def attach_endpoint(ep, option='off'):
     from harness import zone_pair_highpose_blind_close as blind
     from harness.zone_pair_highpose_frame_gate import controller_gate
     ctl = ep.controller; own = ep.own.pose.localizer
-    servo = Servo(ep.own.robot_id, own.pulse_profiles)
+    servo = Servo(ep.own.robot_id, own.pulse_profiles, refinements)
     calibration = ep.vision.calibration
     visions = {}
     def vision(pan):
         if pan not in visions:
             visions[pan] = PairVision(yaw_calibration(calibration, pan))
+            if refinements.band_border:band_vision(visions[pan])
         return visions[pan]
     track = ctl.blind_track
+    memory = LastVisible(own.pulse_profiles)
+    issued = track.command
+    def command(row,pulses):
+        if refinements.endpoint_memory and ctl.state=='align':memory.command(row,pulses)
+        return issued(row,pulses)
+    if refinements.endpoint_memory:track.command=command
     # Existing track quality/age estimator, through the command-derived view.
     def standoff(obs, pulses):
         return vision(pulses[6]).beam_track()._standoff(obs, pulses)
@@ -227,9 +238,19 @@ def attach_endpoint(ep, option='off'):
         ctl.next_look = now+.1
         beam = vision(pulses[6]).observe_beam(obs['image'], pulses)
         ctl.log(ctl.rid, 'beam_obs', now, posture='inspect', **{k:v for k,v in beam.items() if k!='provenance'})
+        predicted = False
+        if refinements.endpoint_memory and beam.get('visible') and beam.get('end_visible'):
+            measured=standoff(obs,pulses)
+            if measured is not None:
+                memory.capture(measured,obs,pulses,ctl.seg)
         if not beam.get('visible') or not beam.get('end_visible'):
-            servo.streak = 0
-            return ctl.port.hold(now)
+            retained=memory.estimate(now,ctl.seg) if refinements.endpoint_memory and beam.get('reason') in ('BAND_CLIPPED','END_CLIPPED') else None
+            if retained is None:
+                servo.streak = 0
+                return ctl.port.hold(now)
+            beam={**beam,**retained};predicted=True
+            ctl.log(ctl.rid,'last_visible_approach',now,anchor_frame_id=retained['anchor_frame_id'],
+                anchor_time_s=retained['anchor_time_s'],pulses=memory.pulses,grip_base_m=retained['grip_base_m'])
         phase, value = servo.observe(now, obs, pulses, beam['grip_base_m'], beam['axis_heading_rad'])
         ctl.log(ctl.rid, 'coarse_fine', now, phase=phase, detail=copy.deepcopy(servo.audit[-1]) if servo.audit else {})
         if phase == 'base':
@@ -246,6 +267,12 @@ def attach_endpoint(ep, option='off'):
             track.beam.get('anchor_frame_id') == obs['frame_id'] and
             track.beam.get('anchor_sha256') == obs['sha256'] and
             track.beam.get('anchor_time_s') == obs['sim_time'])
+        if predicted:
+            # Keep original visual provenance and uncertainty; no fake new frame.
+            track.beam=memory.estimate(now,ctl.seg)
+            track.segment=ctl.seg
+            track.t=now
+            anchored=track.beam is not None
         if not anchored and not track.observe_standoff(obs, pulses, ctl.seg):
             servo.streak = 0
             return ctl.port.hold(now)
@@ -258,6 +285,9 @@ def attach_endpoint(ep, option='off'):
         ctl.grip_base = list(beam['grip_base_m'])
         ctl.claims['aligned'] = dict(grip_base_m=ctl.grip_base, errors=servo.chosen['errors'],
             sim_time=now, option=OPTION, frame_id=obs['frame_id'])
+        if refinements.enabled:
+            ctl.claims['aligned'].update(frame_id=track.beam['anchor_frame_id'],
+                evidence='predicted_last_visible' if predicted else 'own_rgb')
         # Existing DEV rule: PF budgets log only; the own-RGB reference above
         # remains real. Mutual hover/close/lift GO barriers are not bypassed.
         if not ctl._grasp_pose_ready(now):
@@ -296,10 +326,19 @@ def attach_endpoint(ep, option='off'):
                 hover=ctl.hover, path=ctl.blind_path, source='own RGB + frozen capture offset')
     ctl._align, ctl._queue_open_descent = align, queue_open
     ctl.s3_coarse_fine = servo
+    if refinements.enabled:
+        previous_set=ctl.set
+        def set_state(state,now,**detail):
+            if state=='align' and ctl.state!='align':
+                memory.anchor=None
+                servo.streak=0;servo.chosen=None;servo.gate=SettleGate()
+            return previous_set(state,now,**detail)
+        ctl.set=set_state
+    if refinements.posture_ownership:install_posture_owner(ctl)
     return ep
 
 
-def attach_solo(own, option='off'):
+def attach_solo(own, option='off', *, refinements=Options()):
     if option == 'off':
         return own
     if option != OPTION:
@@ -307,8 +346,10 @@ def attach_solo(own, option='off'):
     from harness import zone_pair_highpose_blind_close as blind
     from harness.zone_solo_cyan_vision_v106 import CyanVision
     from harness.zone_pair_highpose_frame_gate import gate
-    servo = Servo('r3', own.pulse_profiles)
+    servo = Servo('r3', own.pulse_profiles, refinements)
     control, record = own._control, own.record
+    if refinements.coarse_axis_ownership:
+        install_solo_owner(own,servo)
     calibration = own.vision.calibration
     visions = {}
     stage = dict(postures=None, anchor=None)
@@ -388,5 +429,6 @@ def attach_solo(own, option='off'):
     own._control = control_fine
     own.s3_coarse_fine = servo
     own.record = lambda: {**record(), 'coarse_fine':dict(option=OPTION, params=PARAMS,
-        decisions=copy.deepcopy(servo.audit), runtime_gt=False)}
+        decisions=copy.deepcopy(servo.audit), runtime_gt=False,
+        **({'refinements':__import__('dataclasses').asdict(refinements)} if refinements.enabled else {}))}
     return own
