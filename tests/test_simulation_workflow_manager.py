@@ -298,6 +298,8 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-alignment-ownership-v162": ["--expected-source-sha", "0" * 40],
             "zone-s4-grip-r3-v165": ["--expected-source-sha", "0" * 40, "--job", "s4grip3-existing-explore-r1"],
             "zone-s4-grip-dataset-v163": ["--expected-source-sha", "0" * 40, "--job", "s4grip2-r1-hold-r1"],
+            "zone-s3-synchronized-carry-v164": ["--expected-source-sha", "0" * 40],
+            "zone-s3-synchronized-start-v165": ["--expected-source-sha", "0" * 40],
             "zone-s3-capture-diagnostic-v160": ["--expected-source-sha", "0" * 40, "--kind", "capture"],
             "zone-s3-x86-trim-probe-v158": ["--expected-source-sha", "0" * 40, "--model", "/nonexistent/trim.json", "--model-sha256", "0" * 64],
             "v7-exact-speed-benchmark": ["--suite", str(source), "--expected-source-sha", "0" * 40],
