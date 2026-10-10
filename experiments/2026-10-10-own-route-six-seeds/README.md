@@ -27,3 +27,11 @@
 ## 결과
 
 미실행. egomap60(유효1/2)의 수치를 새6seed 결과로 합산하지 않는다.
+
+### 고정 제출 목록/명령
+
+러너: `python -m scripts.run_own_route_particle_round --mode batch --output outputs/egomap63-batch/data`.
+준비명: `egomap63-prepare-{63001,63002,63003,63004,63005,63006}`; 명령은 같은 모듈의 `--mode prepare --seed S --profile baseline --output .../prepare-S`.
+비교명: `egomap63-stage-S-{baseline,a,b,c}`(S는 위6개 전부); `--mode stage --seed S --profile P --checkpoint .../prepare-S/checkpoints/<own-B-file> --output .../stage-S-P`.
+전체30슬롯 `batch-plan.json`을 제출 시작에 저장하고, 준비6개 모두 종료 후 유효 seed의 모든 비교 명령을 `paired-plan.json`에 고정한 다음 max10 pool로 실행한다. 6GiB 미만은 제출 전 대기하며 조건/명령 변경 없음.
+스모크 필요 시 `--mode smoke --seed 63001 --output outputs/egomap63-smoke/data` 4초 저장+4초 복원(리셋 포함 기존9.3초) 한 번만. 시간 trigger이며 자기B 관측 성공으로 세지 않는다.

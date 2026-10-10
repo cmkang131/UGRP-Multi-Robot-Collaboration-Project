@@ -30,13 +30,14 @@ def bundle(seed,source,profile,mode):
 
 
 @contextlib.contextmanager
-def server_slot():
+def server_slot(limit=8):
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.getenv('UGRP_EXECUTION_HOST')!='oracle-x86':
         raise RuntimeError('ORACLE_X86_ONLY_NO_MAC_PHYSICS')
     if os.getenv('MUJOCO_GL')!='osmesa':raise RuntimeError('OSMESA_REQUIRED')
     root=Path.home()/'ugrp-sim/egomap-slots';root.mkdir(exist_ok=True)
     held=None
-    for i in range(8):
+    if limit not in (8,10):raise ValueError('UNREGISTERED_SERVER_SLOT_LIMIT')
+    for i in range(limit):
         f=(root/f'{i}.lock').open('a+')
         try:fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError:f.close();continue
