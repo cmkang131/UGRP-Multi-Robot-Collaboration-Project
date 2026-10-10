@@ -69,12 +69,20 @@ def test_real_s3_tracking_handoff_and_current_sensor_packet(tmp_path):
         b['calibration_sha256'], seed=b['seed'], config=b['controller_config'])
     try:
         own = rt.localizers['r1']; pf = own.pose.provider.loc._pf
+        identity = own.pose.provider.identity_sha256
+        random = copy.deepcopy(pf.rng.bit_generator.state)
         p.attach_s3(own, sensor_proposal=p.OPTION, tracking_particles=100, static=hp.resolve(b['map_id'])[0])
+        assert own.pose.provider.identity_sha256 != identity
+        assert pf.rng.bit_generator.state == random
+        assert own.pose.provider.runtime_contract['s3_sensor_proposal']['option'] == p.OPTION
         before = pf.px.copy(); n = pf.n
         own.on_command('r1', 0., dict(kind='hold'))
         assert np.array_equal(before, pf.px) and pf.n == n
         own.on_command('r1', 0., dict(kind='mecanum', forward=.35, left=0., turn=0., duration_s=.1))
         assert pf.n == 100 and own.sensor_proposal_audit['handoff']['after'] == 100
+        assert own.sensor_proposal_audit['handoff']['before'] == n
+        assert not own.kld_audit['handoff']['intermediate_2000_draw']
+        assert min(own.sensor_proposal_audit['handoff']['mode_allocation']) >= 2
         selected = _closure(pf.update_obs, 'selected').cell_contents
         score, resample = (selected.__globals__[k] for k in ('likelihood', 'resample'))
         packet = Measurement(np.empty((0, 2)), [])

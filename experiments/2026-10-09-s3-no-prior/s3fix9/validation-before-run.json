@@ -8,7 +8,7 @@
   "passed": 30,
   "elapsed_s": 64.87,
   "source_sha256": {
-    "harness/pf_sensor_proposal.py": "b105567a0c1b69fbf492d3f0e90ef8889a87f1fb4a7fa3a907f718961f3893cd",
+    "harness/pf_sensor_proposal.py": "041e329624463bda3d153522349cb9522530812d2ae1ce6534010a051bd1ada6",
     "harness/zone_s3_alignment_entry.py": "225db7c85cc859ad5947f385328c8ee5bffa03d068f11967285d9a70e50e8bed",
     "harness/zone_s3_proposal_runtime.py": "1cc3aaccb78645246d8eadc37e8479914bd4aedbed3c9ee090287b031d309fd7",
     "scripts/run_s3_alignment_entry_probe.py": "238a84fe5fd09e38c242638ea64eff4ca5d4ec54c2c01d4222e8d5d94ed47ef3",
@@ -25,5 +25,21 @@
     "passed": 7,
     "elapsed_s": 19.84
   },
-  "main_catalog_byte_identical": true
+  "main_catalog_byte_identical": true,
+  "handoff_validation": {
+    "test": "tests/test_pf_sensor_proposal.py",
+    "passed": 7,
+    "elapsed_s": 20.29,
+    "scope": "direct global-to100 weighted mode allocation; provider identity; RNG unchanged until handoff"
+  },
+  "unstarted_preparation": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s3fix9-20261010/replays-v1",
+    "files": [
+      "waiting.json"
+    ],
+    "inputs_processed": 0,
+    "physics_runs": 0,
+    "owned_wait_driver_stopped": true,
+    "other_processes_stopped": 0
+  }
 }

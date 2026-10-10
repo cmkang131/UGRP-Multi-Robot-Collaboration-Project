@@ -282,17 +282,49 @@ def attach_s3(runtime, *, sensor_proposal='off', tracking_particles=None, static
     command, record = runtime.on_command, runtime.record
 
     def on_command(rid, now, action):
-        out = command(rid, now, action)
+        direct_handoff = (sensor_proposal != 'off' and audit['handoff'] is None
+            and runtime.global_policy.active and action['kind'] in ('mecanum', 'drive')
+            and any(action.get(k, 0) for k in ('forward', 'left', 'turn')))
+        sampling = runtime.particle_sampling
+        try:
+            # Do not first lose a weak mode in the legacy 2000-particle draw.
+            # All ordinary command/global-phase transitions still execute.
+            if direct_handoff: runtime.particle_sampling = 'off'
+            out = command(rid, now, action)
+        finally:
+            runtime.particle_sampling = sampling
         if audit['handoff'] is None and not runtime.global_policy.active:
             before = pf.n
-            indices = pf.rng.choice(pf.n, size=tracking_particles, p=pf._weights())
-            assign(pf, indices); pf.stats['resamples'] += 1
-            audit['handoff'] = dict(t=now, before=before, after=pf.n)
+            detail = {}
+            if sensor_proposal == 'off':
+                indices = pf.rng.choice(pf.n, size=tracking_particles, p=pf._weights())
+                assign(pf, indices)
+            else:
+                weights = pf._weights()
+                heading = pf.px[int(np.argmax(weights)), 2]
+                labels = (np.cos(pf.px[:, 2]-heading) < 0).astype(int)
+                # The same posterior, including weak opposite modes, survives
+                # the budget handoff. This is not an extra sensor update.
+                indices, logw, detail = draw(np.log(np.maximum(weights, 1e-300)), np.zeros(pf.n),
+                    static_free(pf, static, pf.px), pf.rng, tracking_particles, labels)
+                assign(pf, indices); pf.logw = logw-logsumexp(logw)
+            pf.stats['resamples'] += 1
+            audit['handoff'] = dict(t=now, before=before, after=pf.n, **detail)
+            if direct_handoff:
+                runtime.kld_audit['handoff'] = dict(t=now, before=before, after=pf.n,
+                    adapter=OPTION, intermediate_2000_draw=False)
         return out
 
     runtime.on_command = on_command
     runtime.sensor_proposal_audit = audit
     runtime.record = lambda: {**record(), 'sensor_proposal': copy.deepcopy(audit)}
+    from harness.zone_solo_cyan_v106 import hp
+    inner = runtime.pose.provider
+    inner.runtime_contract['s3_sensor_proposal'] = {k: copy.deepcopy(v) for k, v in audit.items()
+        if k not in ('rows', 'handoff')}
+    inner.identity_sha256 = hp.base.digest(inner.runtime_contract)
+    inner.source = 'owncam_pf_s3_sensor_proposal:'+inner.identity_sha256[:8]
+    runtime.pose.source = inner.source
     wrapper = pf.update_obs
     selected = _closure(wrapper, 'selected').cell_contents
     original_score = selected.__globals__['likelihood']
