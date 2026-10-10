@@ -27,6 +27,7 @@
 
 ## UGRP Results and TensorBoard
 
+- **Scope (2026-10-10 user request, "TensorBoard는 걍 뺄까"):** DEV rounds (dev_light runs, stage probes, diagnostic batches) do not need TensorBoard conversion. Record only a short summary JSON, raw locations, and sha256 values in `experiments/<ID>/`. Apply this section only to milestone results: first success of a new stage, formal E2E, and the main-study cohort. You can also apply it when the user asks for a dashboard.
 - Include TensorBoard in result delivery. Follow `docs/tensorboard.md` to add newly completed or retrieved experiment, training, and evaluation results—including failures—to a new snapshot. Verify actual data loading and show the dashboard.
 - Preserve originals and existing snapshots. Never mark running experiments or unretrieved remote results complete. Check existing manifests' source paths and hashes to avoid duplicate conversion.
 - Use the primary checkout's `outputs/tensorboard` as the shared viewing root. Verify the server logdir and new video registration. Update only your own viewer when necessary, after checking session ownership, PID, and command. Never stop other tasks' experiments or servers.
