@@ -111,7 +111,7 @@ def run_one(args):
     started_at = time.time()
     started = time.monotonic()
     cpu_start = resource.getrusage(resource.RUSAGE_SELF)
-    motion = {}
+    evaluated_motion = {}
     last_progress = [-float("inf")]
     counters = {'physics_s': 0., 'physics_calls': 0, 'render_s': 0., 'render_calls': 0}
     from sim.multi_masterpi_production import MultiMasterPiProductionV2 as World
@@ -128,12 +128,12 @@ def run_one(args):
                         last_progress[0] = t
                         for rid, robot in world.controllers.items():
                             values = [float(x) for x in (*robot.base_xyz(), *robot.base_rpy(), *robot.site_xyz('grip_site'))]
-                            initial = motion.setdefault(rid, dict(initial=values, latest=values, max_position_delta_m=0.))
+                            initial = evaluated_motion.setdefault(rid, dict(initial=values, latest=values, max_position_delta_m=0.))
                             initial['latest'] = values
                             initial['max_position_delta_m'] = max(initial['max_position_delta_m'],
                                 max(sum((values[i+j]-initial['initial'][i+j])**2 for j in range(3))**.5 for i in (0,6)))
                         # Evaluation-only sidecar. Never returned to the controller.
-                        write(out/'evaluation-progress.json', dict(sim_time=t, wall=time.time(), robots=motion,
+                        write(out/'evaluation-progress.json', dict(sim_time=t, wall=time.time(), robots=evaluated_motion,
                             semantics='base and grip positions; evaluation only; no feedback'))
                 return _original(*a, **kw)
             finally:
@@ -153,11 +153,11 @@ def run_one(args):
             finally: undo_exact()
         else:
             from scripts import run_own_route_particle_stages as stage
-            from scripts import run_goal_route_motion_audit as motion
+            from scripts import run_goal_route_motion_audit as motion_adapter
             from harness.active_camera import bind
             from types import SimpleNamespace
             def bundle(seed, source, profile, mode):
-                b = motion.bundle(seed, source)
+                b = motion_adapter.bundle(seed, source)
                 b['case_cap_s'] = args.sim_s
                 b['options']['wall_asset_numeric'] = 'libm_ulps_v1'
                 b.update(stage_diagnostic=True, admission='speedctrl3 same-seed finite DEV camera comparison')

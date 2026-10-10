@@ -26,5 +26,16 @@
     "https://www.rfc-editor.org/rfc/rfc8785.html",
     "https://google.github.io/benchmark/user_guide.html"
   ],
-  "tensorboard_conversion": false
+  "tensorboard_conversion": false,
+  "failed_rounds": [
+    {
+      "name": "speed4-paired-4bc1",
+      "source": "4bc172c3bd8603ae4672d5acec149f84810c60c1",
+      "n": 0,
+      "N": 8,
+      "cause": "evaluation motion dict shadowed by module import on ego first frame; early detected; owned parent stopped; originals retained",
+      "raw": "oracle-x86:~/ugrp-sim/runs/speed4-paired-4bc1",
+      "peer_signals": 0
+    }
+  ]
 }
