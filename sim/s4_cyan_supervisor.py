@@ -7,8 +7,9 @@ from sim.zone_s3_no_prior import PhysicalStop
 MODE='contact_com_v1'
 
 
-def supported_height_stop(row):
-    return bool(not row['drop'] and row['finger_contact'] and row['bilateral_finger_contact'])
+def supported_height_stop(row, *, allow_floor=False):
+    return bool(not row['drop'] and (allow_floor and row.get('floor_contact')
+        or row['finger_contact'] and row['bilateral_finger_contact']))
 
 
 class PhysicsBackend(Previous):
@@ -39,11 +40,13 @@ class PhysicsBackend(Previous):
         row=self.cyan_row();self._append('eval_only/r3/com-contact-supervisor.jsonl',row)
         try:super().eval_sample()
         except PhysicalStop as exc:
-            if str(exc)!='LOAD_DROP:cyan_1' or not supported_height_stop(row):raise
+            if str(exc)!='LOAD_DROP:cyan_1' or not supported_height_stop(row,
+                    allow_floor=self.bundle.get('cyan_floor_support',False)):raise
             # The legacy S3 threshold interrupted the evaluation chain before
             # these receipts. Resume evaluation only, never a controller call.
             self._append('eval_only/r3/height-stop-classification.jsonl',dict(**row,
-                original_guard=str(exc),classification='bilaterally_supported_height_stop',free_fall=False))
+                original_guard=str(exc),classification='floor_supported_height_stop' if row.get('floor_contact')
+                    and self.bundle.get('cyan_floor_support',False) else 'bilaterally_supported_height_stop',free_fall=False))
             self.record_dynamics()
             self._append('eval_only/setdown.jsonl',self._pending_beam_setdown)
             self.progress()

@@ -159,3 +159,65 @@ def test_second_go_cannot_resurrect_other_endpoint_expired_same_tick():
     assert vote(h,'r2','go',19.,20.)['accepted']
     assert h.rounds[0]['ack_opened'] is None
     assert not h.tick(20.) and h.failure=='PAIR_GO_TIMEOUT' and not h.permits
+
+
+@pytest.mark.parametrize('enabled,floor,drop,suppress',[
+    (False,True,False,False),(True,True,False,True),
+    (True,False,True,False),(True,False,False,False)])
+def test_floor_support_recovery_keeps_airborne_drop_fatal(monkeypatch,enabled,floor,drop,suppress):
+    obj=object.__new__(cyan.PhysicsBackend);obj.bundle={'cyan_drop_supervisor':'contact_com_v1','cyan_floor_support':enabled}
+    obj.stage_cyan_guard=object();calls=[]
+    obj.cyan_row=lambda:{'drop':drop,'finger_contact':False,'bilateral_finger_contact':False,'floor_contact':floor}
+    obj._append=lambda *a:calls.append(a);obj.record_dynamics=lambda:calls.append('dynamics')
+    obj.progress=lambda:calls.append('progress');obj._pending_beam_setdown={}
+    monkeypatch.setattr(cyan.Previous,'eval_sample',lambda self:(_ for _ in ()).throw(cyan.PhysicalStop('LOAD_DROP:cyan_1')))
+    monkeypatch.setattr(cyan,'check_cyan',lambda *a:calls.append('guard'))
+    if suppress:
+        obj.eval_sample();assert 'guard' in calls and 'dynamics' in calls
+        assert any(isinstance(c,tuple) and c[0].endswith('height-stop-classification.jsonl') and c[1]['classification']=='floor_supported_height_stop' for c in calls)
+    else:
+        with pytest.raises(cyan.PhysicalStop,match='LOAD_DROP:cyan_1'):obj.eval_sample()
+
+
+class MissingIDWire(fixture.PairWire):
+    def __init__(self,**kwargs):super().__init__(**kwargs);self.invalid=0
+    def __call__(self,request,**kwargs):
+        stream=super().__call__(request,**kwargs);outer=json.loads(stream.getvalue());reply=json.loads(outer['choices'][0]['message']['content'])
+        if reply['action'].get('choice')=='held' and reply['request_id'].endswith('_r1') and not self.invalid:
+            reply.pop('request_id');self.invalid+=1;outer['choices'][0]['message']['content']=json.dumps(reply)
+            raw=json.dumps(outer).encode();self.responses[-1]=raw;return io.BytesIO(raw)
+        return stream
+
+
+@pytest.mark.parametrize('feedback',[False,True])
+def test_invalid_carry_envelope_feedback_uses_regular_requests_no_invalid_action(tmp_path,setup_data,monkeypatch,feedback):
+    monkeypatch.setattr(fixture.stage,'Host',ep.Host)
+    monkeypatch.setattr(fixture.hs,'Handshake',lambda **kw:ep.Handshake(go_ack_rounds=True,epoch_reconnect=True,
+        carry_protocol_feedback=feedback,carry_lease_renewal=ep.hs.ACTIVE_PHASE_HEARTBEAT))
+    wire=MissingIDWire();monkeypatch.setattr(fixture,'PairWire',lambda **kw:wire)
+    host,base,inner=fixture.build(tmp_path,setup_data,'no_comm');driver=ep.Driver(host,base.runtime,go_ack_retry=True)
+    host.begin()
+    for i in range(1,221):
+        t=i/10
+        for r,own in inner.items():own.now=t;host.links[r].capture_frame()
+        driver.poll(t);host.step_to(t);driver.step(t)
+    invalid=[r for r in host.trial.scheduler.ledger.values() if r['status']=='failed']
+    assert wire.invalid==1 and invalid
+    invalid_ids={r['call_id'] for r in invalid}
+    assert not any(r['call_id'] in invalid_ids for r in driver.handshake.renewals)
+    events=[r for r in driver.retry_events if r.get('phase')=='carry']
+    assert len(events)==int(feedback)
+    assert all(not r['forced_new_send'] and not r['transport_retry'] for r in events)
+    bodies=[json.loads(next(v['text'] for v in json.loads(b)['messages'][1]['content'] if v['type']=='text')) for b in wire.requests]
+    assert any(r.get('s4_round',{}).get('previous_rejection') for r in bodies)==feedback
+    assert driver.handshake.permits and not driver.handshake.failure
+
+
+def test_continuation_defaults_off_and_all_eight_commands(capsys):
+    from scripts import run_s4_pair_live10b as retry,submit_s4_live10b as batch
+    b=retry.bundle('a'*40,'no_comm',602)
+    assert not b['cyan_floor_support'] and not b['carry_protocol_feedback']
+    assert b['bundle_id']=='zone-s4-pair-live-v180' if 'bundle_id' in b else b['execution_bundle_id']=='zone-s4-pair-live-v180'
+    assert len(batch.commands('a'*40))==8
+    assert retry.main(['--expected-source-sha','a'*40,'--output','no-write','--condition','no_comm','--relay-receipt','no-read'])==0
+    assert not json.loads(capsys.readouterr().out)['carry_protocol_feedback']

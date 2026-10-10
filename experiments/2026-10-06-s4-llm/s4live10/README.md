@@ -6,5 +6,5 @@ raw: wait_go→commit heartbeat 거부·ACK 남은0.6–0.8초·cyan 지지84/84
 900SIM/10800wall,450call/actor·1350/run·27Mtoken; 8구간5.45m(목표 직선3.8m) 끝/실패까지, 중간 운반으로 성공 처리 안 함.
 판정: 순환·총 지지운반 거리·최종20mm 목표+안정 바닥배치 n/8·낙하; 모든 실패/상한 포함, GT는 평가 출력에만.
 x86 LP4·OSMesa·영속runs·부하<51/여유≥6GiB,180–300wall 건강점검; 완료 즉시 fetch-lite, 서버 전체 평가·SHA 후 ARM 자동보관.
-[summary.json](summary.json)에 판정·원본·SHA; 준비 중, Mac 물리·렌더·실제 모델0회.
+[summary.json](summary.json): 목표0/8·재파지 후 운반8/8·셋째구간6/8·낙하0/8·최대1.663m; 잔여: 바닥지지 누락6/8, ID누락 뒤 lease2/8.
 참고: [Chubby§2.4/2.8](https://www.usenix.org/legacy/event/osdi06/tech/full_papers/burrows/burrows_html/), [Raft§8](https://raft.github.io/raft.pdf), [ROS2 goal UUID](https://design.ros2.org/articles/actions.html).

@@ -1,16 +1,48 @@
 {
-  "status": "PREREGISTERED_NOT_RUN",
+  "status": "COMPLETE_EVALUATED_FETCH_LITE",
   "research_result": false,
   "bundle": "zone-s4-pair-live-v178",
   "workflow": "7.71.0",
   "plan_sha256": "3ede500d25e86225845c6ea2db22240448117f3fe90442f8f58dafd986415685",
   "metrics": {
-    "goal_arrival": {
-      "n": null,
+    "claim": {
+      "n": 8,
       "N": 8
     },
-    "drop": {
-      "n": null,
+    "go_ack": {
+      "n": 8,
+      "N": 8
+    },
+    "simultaneous_departure": {
+      "n": 8,
+      "N": 8
+    },
+    "reobserve": {
+      "n": 8,
+      "N": 8
+    },
+    "regrasp": {
+      "n": 8,
+      "N": 8
+    },
+    "fresh_go_ack_continue": {
+      "n": 8,
+      "N": 8
+    },
+    "goal_arrival": {
+      "n": 0,
+      "N": 8
+    },
+    "cyan_drop": {
+      "n": 0,
+      "N": 8
+    },
+    "beam_drop": {
+      "n": 0,
+      "N": 8
+    },
+    "third_supported_leg": {
+      "n": 6,
       "N": 8
     }
   },
@@ -27,5 +59,1287 @@
   "validation": {
     "path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/validation.json",
     "sha256": "3f69f1cce87bc5a5e16e08c14e1d8526e2f3d3bc0e64240750107aa4519d8c19"
+  },
+  "source_sha": "3b3f8c7d8f15bcdaf5dc9de94e0a12f0d9a5567e",
+  "admission_n": 8,
+  "admission_N": 8,
+  "admission_resources": {
+    "loadavg": [
+      39.04052734375,
+      59.337890625,
+      68.21484375
+    ],
+    "mem_available_GiB": 42.74818420410156
+  },
+  "initial_checks": {
+    "n": 8,
+    "N": 8,
+    "runs": {
+      "s4live10-leader_ko-s601-v178": {
+        "status": "PASS",
+        "checked_after_s": 181.89228674996411,
+        "SIM_s": [
+          1.0,
+          21.0
+        ],
+        "frames": [
+          21,
+          421
+        ],
+        "min_base_delta_m": 0.03873496812368259,
+        "min_arm_delta_m": 0.11869893274477418,
+        "min_translation_commands": 1,
+        "states": {
+          "r1": "lift",
+          "r2": "lift"
+        },
+        "log_exceptions": 0
+      },
+      "s4live10-leader_ko-s602-v178": {
+        "status": "PASS",
+        "checked_after_s": 181.89243791700574,
+        "SIM_s": [
+          1.0,
+          21.0
+        ],
+        "frames": [
+          21,
+          421
+        ],
+        "min_base_delta_m": 0.04001561167311587,
+        "min_arm_delta_m": 0.11961304805801934,
+        "min_translation_commands": 1,
+        "states": {
+          "r1": "lift",
+          "r2": "lift"
+        },
+        "log_exceptions": 0
+      },
+      "s4live10-no_comm-s601-v178": {
+        "status": "PASS",
+        "checked_after_s": 181.8924528339994,
+        "SIM_s": [
+          1.0,
+          22.0
+        ],
+        "frames": [
+          21,
+          441
+        ],
+        "min_base_delta_m": 0.03838229697330903,
+        "min_arm_delta_m": 0.1152467689157478,
+        "min_translation_commands": 1,
+        "states": {
+          "r1": "lift",
+          "r2": "lift"
+        },
+        "log_exceptions": 0
+      },
+      "s4live10-no_comm-s602-v178": {
+        "status": "PASS",
+        "checked_after_s": 181.89246920897858,
+        "SIM_s": [
+          1.0,
+          22.0
+        ],
+        "frames": [
+          21,
+          441
+        ],
+        "min_base_delta_m": 0.02830859514863341,
+        "min_arm_delta_m": 0.10512535278841649,
+        "min_translation_commands": 1,
+        "states": {
+          "r1": "lift",
+          "r2": "lift"
+        },
+        "log_exceptions": 0
+      },
+      "s4live10-peer_ko-s601-v178": {
+        "status": "PASS",
+        "checked_after_s": 181.892477958987,
+        "SIM_s": [
+          1.0,
+          21.0
+        ],
+        "frames": [
+          21,
+          421
+        ],
+        "min_base_delta_m": 0.028138124403716387,
+        "min_arm_delta_m": 0.10908677779121247,
+        "min_translation_commands": 1,
+        "states": {
+          "r1": "lift",
+          "r2": "lift"
+        },
+        "log_exceptions": 0
+      },
+      "s4live10-peer_ko-s602-v178": {
+        "status": "PASS",
+        "checked_after_s": 181.89248637499986,
+        "SIM_s": [
+          1.0,
+          21.0
+        ],
+        "frames": [
+          21,
+          421
+        ],
+        "min_base_delta_m": 0.04001561167311587,
+        "min_arm_delta_m": 0.11961304805801934,
+        "min_translation_commands": 1,
+        "states": {
+          "r1": "lift",
+          "r2": "lift"
+        },
+        "log_exceptions": 0
+      },
+      "s4live10-structured-s601-v178": {
+        "status": "PASS",
+        "checked_after_s": 181.89249424997251,
+        "SIM_s": [
+          1.0,
+          22.0
+        ],
+        "frames": [
+          21,
+          441
+        ],
+        "min_base_delta_m": 0.03892787841687765,
+        "min_arm_delta_m": 0.11885638879711978,
+        "min_translation_commands": 1,
+        "states": {
+          "r1": "lift",
+          "r2": "lift"
+        },
+        "log_exceptions": 0
+      },
+      "s4live10-structured-s602-v178": {
+        "status": "PASS",
+        "checked_after_s": 181.89250162499957,
+        "SIM_s": [
+          1.0,
+          21.0
+        ],
+        "frames": [
+          21,
+          421
+        ],
+        "min_base_delta_m": 0.038926116363565265,
+        "min_arm_delta_m": 0.11893704196054626,
+        "min_translation_commands": 1,
+        "states": {
+          "r1": "lift",
+          "r2": "lift"
+        },
+        "log_exceptions": 0
+      }
+    }
+  },
+  "admission_receipt": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/admissions.json",
+    "sha256": "6d6ebbdab2760216d146a2792b5530782005798ea8659aa53fb1932d6b157a48"
+  },
+  "persistent_storage": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/persistent-storage.json",
+    "sha256": "752b9bbed7931ea5f3638b42b1f5d016bf00b398a1b846f15efb2f3f1d26dbc8",
+    "filesystem": "ext4",
+    "credential_env_names_present": 0
+  },
+  "completed_runs": {
+    "n": 8,
+    "N": 8
+  },
+  "runs": [
+    {
+      "name": "s4live10-no_comm-s601-v178",
+      "condition": "no_comm",
+      "seed": 601,
+      "status": "PHYSICAL_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 41.3,
+          "r2": 41.3
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1370,
+            "sha256": "6ba547c0ab808f8cd618af9e89c8a5f3b3fc65ac813d3ff4bbfbc0991aeb7893",
+            "sim_s": 70.8,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1370,
+            "sha256": "8ccd5ae8dd38ea088303155d1ebe48659a5030dfe94f42f297a649e975ee58dc",
+            "sim_s": 70.8,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 77.05
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.7511194620369626,
+        "additional_path_m": 1.504094367144857
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 3,
+        "completed_supported_carry_legs": 3,
+        "supported_restarts": 2
+      },
+      "total_supported_carry_path_m": 1.6587240197093884,
+      "pair_failure": null,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_height_stops_suppressed": 20,
+      "model_calls": 105,
+      "model_usage": {
+        "requests": 105,
+        "blocked": 0,
+        "tokens_prompt": 811606,
+        "tokens_completion": 8064,
+        "tokens_total_known": 819670,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 105,
+          "sum": 316946.804,
+          "max": 8529.218,
+          "median": 2938.677
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10-no_comm-s601-v178/raw",
+      "EXIT": "0",
+      "raw_files": 13176,
+      "raw_bytes": 404384866,
+      "manifest_sha256": "fe6a58553c830c43d61beb3877e64ee165a9b91f6b994806c5f0de09bb02bdb6",
+      "result_sha256": "3ab116e84a278e8d90aef19d50ee4abd99754c23edc268428b6ac2fd25a4950e",
+      "inventory_path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/s4live10-no_comm-s601-v178-inventory.json",
+      "inventory_sha256": "a9bde19e40b38e30c8dacbbea15d19cc484b2c73383bd0578659e1c241db06cb",
+      "server_report_sha256": "0db1508ed9c6440b564de2aec47fdda311de5fef911d1b2eac56b9362f3e1ae3",
+      "regrasp_cycles": 2
+    },
+    {
+      "name": "s4live10-peer_ko-s601-v178",
+      "condition": "peer_ko",
+      "seed": 601,
+      "status": "PAIR_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.5,
+          "r2": 44.5
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1434,
+            "sha256": "5b3f72899d95c7ff54244a8e0e83b72ba46f75cdae58c72d68d5c61d95c5e2c7",
+            "sim_s": 74.0,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1434,
+            "sha256": "9a35368868c0b9c5a3fa5ff7499593c0313b7255aca80a3f3906e10e7d914c02",
+            "sim_s": 74.0,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 80.35
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.7526974165759752,
+        "additional_path_m": 0.7546338609883774
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 2,
+        "completed_supported_carry_legs": 2,
+        "supported_restarts": 1
+      },
+      "total_supported_carry_path_m": 0.9093210456557574,
+      "pair_failure": "PAIR_VISUAL_LEASE_EXPIRED",
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_height_stops_suppressed": 0,
+      "model_calls": 76,
+      "model_usage": {
+        "requests": 76,
+        "blocked": 0,
+        "tokens_prompt": 655026,
+        "tokens_completion": 7375,
+        "tokens_total_known": 663615,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 76,
+          "sum": 244008.487,
+          "max": 5367.307,
+          "median": 3073.93
+        },
+        "failure_classes": {
+          "model_output_rejected": 10
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 25,
+        "accepted_messages": 24,
+        "rejected": 0,
+        "delivery_edges": 24,
+        "free_text_messages": 24,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 12,
+          "r2": 12,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10-peer_ko-s601-v178/raw",
+      "EXIT": "0",
+      "raw_files": 10415,
+      "raw_bytes": 317901160,
+      "manifest_sha256": "04fe43311219ba810ddfd64e530f4ebe799afde0dea2be3d8950df724b38c6c7",
+      "result_sha256": "602c119036dcc023b74e68707fb1d686e7748f68c8b00d62eec33ed3ab40e128",
+      "inventory_path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/s4live10-peer_ko-s601-v178-inventory.json",
+      "inventory_sha256": "5edd9885098681202c8c5b7a909ba04a02877a67f18c4154306af3ba27df6190",
+      "server_report_sha256": "2c5dc7eb158b32ab251c5ecfa7a0f2271901a97dfb791873bdce183c775ccfd5",
+      "regrasp_cycles": 2
+    },
+    {
+      "name": "s4live10-leader_ko-s601-v178",
+      "condition": "leader_ko",
+      "seed": 601,
+      "status": "PHYSICAL_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 45.9,
+          "r2": 45.9
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1460,
+            "sha256": "3dd10be66f734b92a4a5c0aa9a5cc90358130c831a0c8227508b871b2fb5bb6e",
+            "sim_s": 75.3,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1460,
+            "sha256": "c993ffb8c6b89f09dc9c741bcd86812c112bfb7a78a66ef1050690bae4af6159",
+            "sim_s": 75.3,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 81.55
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.7531882835386535,
+        "additional_path_m": 1.480704856306076
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 3,
+        "completed_supported_carry_legs": 3,
+        "supported_restarts": 2
+      },
+      "total_supported_carry_path_m": 1.635281792441804,
+      "pair_failure": null,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_height_stops_suppressed": 20,
+      "model_calls": 84,
+      "model_usage": {
+        "requests": 84,
+        "blocked": 0,
+        "tokens_prompt": 729353,
+        "tokens_completion": 11042,
+        "tokens_total_known": 743464,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 84,
+          "sum": 298800.987,
+          "max": 7601.085,
+          "median": 3397.777
+        },
+        "failure_classes": {
+          "model_output_rejected": 1
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r2",
+        "sent": 56,
+        "accepted_messages": 54,
+        "rejected": 0,
+        "delivery_edges": 54,
+        "free_text_messages": 54,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 26,
+          "r2": 27,
+          "r3": 1
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10-leader_ko-s601-v178/raw",
+      "EXIT": "0",
+      "raw_files": 12711,
+      "raw_bytes": 386563795,
+      "manifest_sha256": "c0eca06f1c57fff3294b0afa8cc54dc68500f965e645b02fcd68cca48e485a93",
+      "result_sha256": "9005c262d399dd6fb58be93439dbd054c9d18c64d5afecfb08cc4c167b96f5d1",
+      "inventory_path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/s4live10-leader_ko-s601-v178-inventory.json",
+      "inventory_sha256": "56e0d60f90ef177f50d3902c6b5d98bfa94849f9655bec1821467f9ee2e04cb2",
+      "server_report_sha256": "a29084d5d147b81d5c0d9f384e4d3c453b41fb9f51c28e711da921e33c52ac5b",
+      "regrasp_cycles": 2
+    },
+    {
+      "name": "s4live10-structured-s601-v178",
+      "condition": "structured",
+      "seed": 601,
+      "status": "PHYSICAL_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 47.6,
+          "r2": 47.6
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1496,
+            "sha256": "6a3b24dd61669429409b541d1e4234bb49980618b3f5675bbec2545a5081343c",
+            "sim_s": 77.1,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1496,
+            "sha256": "01dfce80262ee044845efc968b8bb63c1c69828070935706db8c5dbadfa4d62a",
+            "sim_s": 77.1,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 83.35
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.751617920403631,
+        "additional_path_m": 1.5058027009260155
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 3,
+        "completed_supported_carry_legs": 3,
+        "supported_restarts": 2
+      },
+      "total_supported_carry_path_m": 1.6602709660779529,
+      "pair_failure": null,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_height_stops_suppressed": 20,
+      "model_calls": 97,
+      "model_usage": {
+        "requests": 97,
+        "blocked": 0,
+        "tokens_prompt": 844647,
+        "tokens_completion": 9886,
+        "tokens_total_known": 859240,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 97,
+          "sum": 339224.182,
+          "max": 14555.962,
+          "median": 3088.13
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 15,
+        "accepted_messages": 15,
+        "rejected": 0,
+        "delivery_edges": 15,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 7,
+          "r2": 8,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10-structured-s601-v178/raw",
+      "EXIT": "0",
+      "raw_files": 13152,
+      "raw_bytes": 402355657,
+      "manifest_sha256": "b2d6931053c4d12785828f46dd493f17c5a40f32b78487f4ff2d48ed645cfbc3",
+      "result_sha256": "357a1e1c4734796b26f3ba259b35d8d91bb85530be4ae7e033a1844bff98e416",
+      "inventory_path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/s4live10-structured-s601-v178-inventory.json",
+      "inventory_sha256": "dc9b4cd7098d29e57b3cc232831d3ff2f09aacdd9d4c956a2d61fc1f59f632d9",
+      "server_report_sha256": "0b7ea24ba76ea3ff3c1ba9a6fb1bba7751179ebe843ae8744d7156b2bcf3903b",
+      "regrasp_cycles": 2
+    },
+    {
+      "name": "s4live10-no_comm-s602-v178",
+      "condition": "no_comm",
+      "seed": 602,
+      "status": "PHYSICAL_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 40.8,
+          "r2": 40.8
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1360,
+            "sha256": "49382a39411d239ffd2ef82132047421fee81bb93b230045eb278021391e91ec",
+            "sim_s": 70.3,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1360,
+            "sha256": "b33d36edc5e390d445b92b01945249b2e007a7061c0832c5c4a4fc777aff95eb",
+            "sim_s": 70.3,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 76.55
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.7532303600012151,
+        "additional_path_m": 1.5079094932609372
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 3,
+        "completed_supported_carry_legs": 3,
+        "supported_restarts": 2
+      },
+      "total_supported_carry_path_m": 1.6629368741370165,
+      "pair_failure": null,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_height_stops_suppressed": 20,
+      "model_calls": 101,
+      "model_usage": {
+        "requests": 101,
+        "blocked": 0,
+        "tokens_prompt": 778999,
+        "tokens_completion": 7897,
+        "tokens_total_known": 786896,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 101,
+          "sum": 306258.78,
+          "max": 7620.596,
+          "median": 2948.277
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10-no_comm-s602-v178/raw",
+      "EXIT": "0",
+      "raw_files": 12696,
+      "raw_bytes": 385805455,
+      "manifest_sha256": "56be4cfc60a7c09cc8eebed6e96998413aad06e198f743f4e3c1cf3b140af34b",
+      "result_sha256": "4a9c53fb22b95382281978a585ee4d51b6d04d77d1616b3a8ad6f18af1d8f41c",
+      "inventory_path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/s4live10-no_comm-s602-v178-inventory.json",
+      "inventory_sha256": "770adf730518c48f654edd8a56e3734b087b69eed56d4cec960b1cb6e21374f3",
+      "server_report_sha256": "7742a537ad8c93aabeda594234f877bb75ea7f79533b17fc6ac4298731e1386f",
+      "regrasp_cycles": 2
+    },
+    {
+      "name": "s4live10-peer_ko-s602-v178",
+      "condition": "peer_ko",
+      "seed": 602,
+      "status": "PAIR_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.7,
+          "r2": 44.7
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1438,
+            "sha256": "70cf3abcf663d9b0187276098e48be6890d832b40a782d27671dd48722a4a807",
+            "sim_s": 74.2,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1438,
+            "sha256": "b5666f321376011bc3e7ff80b6131a9114a52929a0e1a99d90606195375ee2e1",
+            "sim_s": 74.2,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 80.55
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.7522397039679247,
+        "additional_path_m": 0.7541779049320015
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 2,
+        "completed_supported_carry_legs": 2,
+        "supported_restarts": 1
+      },
+      "total_supported_carry_path_m": 0.9088357587494542,
+      "pair_failure": "PAIR_VISUAL_LEASE_EXPIRED",
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_height_stops_suppressed": 0,
+      "model_calls": 59,
+      "model_usage": {
+        "requests": 59,
+        "blocked": 0,
+        "tokens_prompt": 498273,
+        "tokens_completion": 6007,
+        "tokens_total_known": 506506,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 59,
+          "sum": 205623.165,
+          "max": 11123.46,
+          "median": 3120.429
+        },
+        "failure_classes": {
+          "model_output_rejected": 4
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 20,
+        "accepted_messages": 18,
+        "rejected": 0,
+        "delivery_edges": 19,
+        "free_text_messages": 18,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 9,
+          "r2": 10,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10-peer_ko-s602-v178/raw",
+      "EXIT": "0",
+      "raw_files": 8204,
+      "raw_bytes": 247852324,
+      "manifest_sha256": "97541cb0816b05dd4bc97753eda8607ea468cbfe6999d4577a96b71787c10ddb",
+      "result_sha256": "403ddd036fc62a222fe430cc4358ece859016c6d824869b71fd730ac8c47dfe4",
+      "inventory_path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/s4live10-peer_ko-s602-v178-inventory.json",
+      "inventory_sha256": "86a2a3eec0aa4d3f7117af033acdc5135a88d20fb325db78208467024bee4633",
+      "server_report_sha256": "dffeb17a1290ccb521386c280a21a22f86ed9b279a58195e6eacea9f5cdde8ee",
+      "regrasp_cycles": 1
+    },
+    {
+      "name": "s4live10-leader_ko-s602-v178",
+      "condition": "leader_ko",
+      "seed": 602,
+      "status": "PHYSICAL_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.3,
+          "r2": 44.3
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1430,
+            "sha256": "c64f7de58c146b7baa86597d9ea229aa1a3f548e26e13ce2b6b3e6ae58a20b34",
+            "sim_s": 73.8,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1430,
+            "sha256": "e048a1e3b62facb8a531314e776f166b680a0c87bda697df48629e9ecd412091",
+            "sim_s": 73.8,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 80.05
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.7524473934678346,
+        "additional_path_m": 1.5064598199428045
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 3,
+        "completed_supported_carry_legs": 3,
+        "supported_restarts": 2
+      },
+      "total_supported_carry_path_m": 1.6613023420679225,
+      "pair_failure": null,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_height_stops_suppressed": 20,
+      "model_calls": 103,
+      "model_usage": {
+        "requests": 103,
+        "blocked": 0,
+        "tokens_prompt": 837820,
+        "tokens_completion": 9688,
+        "tokens_total_known": 851762,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 103,
+          "sum": 357138.903,
+          "max": 10557.876,
+          "median": 3097.982
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r3",
+        "sent": 20,
+        "accepted_messages": 20,
+        "rejected": 0,
+        "delivery_edges": 21,
+        "free_text_messages": 20,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 1,
+          "r2": 1,
+          "r3": 19
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10-leader_ko-s602-v178/raw",
+      "EXIT": "0",
+      "raw_files": 13812,
+      "raw_bytes": 420964699,
+      "manifest_sha256": "859864c83dc6650814b193fbd51aa6c7b9ad7fc1a46be5aed6a443c8e2925546",
+      "result_sha256": "88e17bb71335541cb58b0900b5adaa902a591aea2f30f059b4da7aad970e2f06",
+      "inventory_path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/s4live10-leader_ko-s602-v178-inventory.json",
+      "inventory_sha256": "224538c3161a14c95fa24b20616ea86a057524d4a0f25ad986a41219d51c96bc",
+      "server_report_sha256": "eca434abf1c7e8898a127ff961b4f83288a81bded68420c1157413230ff2209b",
+      "regrasp_cycles": 2
+    },
+    {
+      "name": "s4live10-structured-s602-v178",
+      "condition": "structured",
+      "seed": 602,
+      "status": "PHYSICAL_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 47.5,
+          "r2": 47.5
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1494,
+            "sha256": "425695963bdee9d6d015ff5aa2af2e628fca1cdf075d268d8a6630f9c24fe586",
+            "sim_s": 77.0,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1494,
+            "sha256": "b98fe464af08ca7facec141715356339dba095aa0191524d4da79570914765c4",
+            "sim_s": 77.0,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 83.35
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.7520662156043537,
+        "additional_path_m": 1.5058998522837996
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 3,
+        "completed_supported_carry_legs": 3,
+        "supported_restarts": 2
+      },
+      "total_supported_carry_path_m": 1.660204936797144,
+      "pair_failure": null,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_height_stops_suppressed": 20,
+      "model_calls": 92,
+      "model_usage": {
+        "requests": 92,
+        "blocked": 0,
+        "tokens_prompt": 808606,
+        "tokens_completion": 9915,
+        "tokens_total_known": 820286,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 92,
+          "sum": 302873.129,
+          "max": 8716.581,
+          "median": 3076.7
+        },
+        "failure_classes": {
+          "model_output_rejected": 2
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 18,
+        "accepted_messages": 18,
+        "rejected": 0,
+        "delivery_edges": 19,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 8,
+          "r2": 11,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10-structured-s602-v178/raw",
+      "EXIT": "0",
+      "raw_files": 12903,
+      "raw_bytes": 392594460,
+      "manifest_sha256": "0556aac315501aec16bb14537d3f0543021403951b057c21f0e53c9f311255c9",
+      "result_sha256": "c2afdeadd798d01ea95434d6c512534f5ef48d61d00f31e27a730d97c08b736c",
+      "inventory_path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/s4live10-structured-s602-v178-inventory.json",
+      "inventory_sha256": "d7649df2193d5c89becb1ae2ed946fb3fa4130c2501640a731e82d79a3d43f41",
+      "server_report_sha256": "bf3b8d3b8034352d4856bfdc7faa02b93ca55267e69c12c7521fbed0a9c8d8e7",
+      "regrasp_cycles": 2
+    }
+  ],
+  "peer602_lease_cause": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/peer602-lease-cause.json",
+    "sha256": "1ce1ddc82aa2d17bc4182d782cd9b1aeb53f51a0b47c2c711c322ef3b1c8dc77",
+    "cause": "request_id omitted twice, next valid reply censored beyond lease; current-epoch RGB rebind was admitted"
+  },
+  "next_candidates": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/next-schema-candidates.json",
+    "sha256": "57dff6edb12198ec138ea4841ef7c31eb0bea32f703efcff25bfcfcd31457b52"
+  },
+  "remaining_causes": {
+    "lease_after_missing_request_id": {
+      "n": 2,
+      "N": 8
+    },
+    "cyan_floor_support_not_accepted_by_supervisor": {
+      "n": 6,
+      "N": 8
+    },
+    "confirmed_free_fall": {
+      "n": 0,
+      "N": 8
+    }
+  },
+  "model_audit": {
+    "reconciled_posts": {
+      "n": 717,
+      "N": 717
+    },
+    "image_references_checked": 1434,
+    "anomalies": [],
+    "upstream_finish_verified": false,
+    "provider_billing_verified": false,
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/final-audit.json",
+    "sha256": "680bc9de7fab84333e241c3aa69a915efc85f80d3ee80608c5b6fc003dc15901",
+    "outstanding": 0,
+    "terminal_mutations": 0
+  },
+  "continuation": "s4live10-r2: same8 exploring floor support and own format feedback, no research/paired causal claim",
+  "storage_validation": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10-offline/lite-validation-all.json",
+    "sha256": "44b18bcf399d1180ea3303faf1e302711e4aa2405e2ea922a17c1e00dec038b5",
+    "server_full_files": 97069,
+    "server_full_bytes": 2958422416,
+    "Mac_lite_files": 1347,
+    "Mac_lite_bytes": 1731322937,
+    "media_files_fetched": 0,
+    "wire_requests_with_inline_images_fetched": 0,
+    "ARM_status": "copy/checksum in progress; not yet verified"
   }
 }

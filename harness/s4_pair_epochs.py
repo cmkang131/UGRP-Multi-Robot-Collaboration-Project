@@ -20,13 +20,18 @@ structured 메시지는 text가 아닌 recipients/reply_to/message 객체입니�
 s4_round.previous_rejection은 자기 이전 응답 거부 사유입니다. 새 RGB·현재 epoch를 사용해 수정하십시오.
 기한·RGB10초·재요청1회 상한은 유지합니다. 예시는 파지 정답이 아니며 시각 불명확/이탈은 unknown/grip_lost로 보고합니다.'''
 
+CARRY_FORMAT_PROMPT = '''응답의 루트 키는 request_id/action/decision_sources/messages 네 개를 모두 포함해야 합니다.
+request_id는 현재 입력의 값을 그대로 복사합니다. held/continue 응답도 request_id를 생략하지 않습니다.
+previous_rejection은 자기 이전 형식 실패이며, 기한·현재 epoch·새 RGB를 바꾸지 않고 다음 정규 응답에서 고칩니다.'''
+
 
 class Handshake(hs.Handshake):
-    def __init__(self, *, epoch_reconnect=False, go_ack_rounds=False, **kwargs):
+    def __init__(self, *, epoch_reconnect=False, go_ack_rounds=False, carry_protocol_feedback=False, **kwargs):
         super().__init__(**kwargs)
-        if any(type(v) is not bool for v in (epoch_reconnect, go_ack_rounds)):
+        if any(type(v) is not bool for v in (epoch_reconnect, go_ack_rounds, carry_protocol_feedback)):
             raise ValueError('epoch recovery switches must be bool')
         self.epoch_reconnect, self.go_ack_rounds = epoch_reconnect, go_ack_rounds
+        self.carry_protocol_feedback = carry_protocol_feedback
         self.rounds, self.reconnections = {}, []
 
     def open(self, rid, epoch, now):
@@ -95,7 +100,8 @@ class Handshake(hs.Handshake):
     def record(self):
         return {**super().record(), 'epoch_reconnect':self.epoch_reconnect,
             'go_ack_rounds':self.go_ack_rounds, 'rounds':copy.deepcopy(self.rounds),
-            'snapshot_reconnections':copy.deepcopy(self.reconnections)}
+            'snapshot_reconnections':copy.deepcopy(self.reconnections),
+            'carry_protocol_feedback':self.carry_protocol_feedback}
 
 
 @dataclass(frozen=True)
@@ -109,9 +115,10 @@ class Inputs:
 
 
 @lru_cache(maxsize=32)
-def system_tokens(total, per_actor, seed, heartbeat):
+def system_tokens(total, per_actor, seed, heartbeat, feedback=False):
     return max(base.si.pk.count_tokens(base.si.system_prompt(c,r,cap_window=total,cap_robot=per_actor,seed=seed)
-        +'\n\n'+base.PROMPT+'\n\n'+base.heartbeat_prompt(heartbeat)+'\n\n'+PROMPT)
+        +'\n\n'+base.PROMPT+'\n\n'+base.heartbeat_prompt(heartbeat)+'\n\n'+PROMPT
+        + ('\n\n'+CARRY_FORMAT_PROMPT if feedback else ''))
         for c in base.old.CONDITIONS for r in base.si.ROBOTS)
 
 
@@ -121,7 +128,7 @@ class Trial(base.Trial):
 
     def snapshot(self, call):
         super().snapshot(call)
-        if call.actor not in hs.PAIR or not (self.handshake.epoch_reconnect or self.handshake.go_ack_rounds):return
+        if call.actor not in hs.PAIR or not (self.handshake.epoch_reconnect or self.handshake.go_ack_rounds or self.handshake.carry_protocol_feedback):return
         seen=self.pair_snapshots[call.call_id]['seen']
         if seen['phase']=='wait_go':
             # Previous own carry window cannot authorize a new grip epoch.
@@ -136,7 +143,7 @@ class Trial(base.Trial):
 
     def prepare_call(self, call):
         prepared=super().prepare_call(call)
-        if not (self.handshake.epoch_reconnect or self.handshake.go_ack_rounds) or call.actor not in hs.PAIR:return prepared
+        if not (self.handshake.epoch_reconnect or self.handshake.go_ack_rounds or self.handshake.carry_protocol_feedback) or call.actor not in hs.PAIR:return prepared
         if self.pair_snapshots[call.call_id]['seen']['phase'] not in ('wait_go','carry'):return prepared
         request=copy.deepcopy(prepared.request);body=json.loads(request['messages'][1]['content']);seen=self.pair_snapshots[call.call_id]['seen']
         choice=seen.get('next_pair_choice');action={'kind':'continue'}
@@ -159,16 +166,19 @@ class Trial(base.Trial):
             'action':action,'decision_sources':['own_rgb'],'messages':messages}
         context={'epoch':seen.get('epoch'),'reply_example':None if choices else example,
             'decision_actions':[{'kind':window['kind'],'choice':c} for c in choices],
-            'previous_rejection':self.epoch_retry_context.get((call.actor,seen.get('epoch'))) if seen['phase']=='wait_go' else None,
+            'previous_rejection':self.epoch_retry_context.get((call.actor,seen.get('epoch')))
+                if seen['phase']=='wait_go' or self.handshake.carry_protocol_feedback else None,
             'retry_bound_per_robot_epoch':1,'go_budget_sim_s':hs.HANDSHAKE_S,'ack_budget_sim_s':hs.HANDSHAKE_S}
         bundled=Inputs(prepared.bundled,context);body['s4_round']=context
         system=request['messages'][0]['content']+'\n\n'+PROMPT;user=json.dumps(body,ensure_ascii=False,sort_keys=True)
+        if self.handshake.carry_protocol_feedback:system+='\n\n'+CARRY_FORMAT_PROMPT
         request.update(input_sha256=bundled.payload_sha256,prompt_version='ugrp.s4_epoch_prompt.v1',
             messages=[{'role':'system','content':system},{'role':'user','content':user}])
         request['request_sha256']=base.si.pk.request_digest_from_refs(system,user,request['image_refs'])
         request['tokens']=base.si.pk.request_tokens(system,user,request['images']);caps=body.get(base.si.pk.WINDOW_KEY,{})
         request['billed_tokens']=base.si.billing.billed_tokens(request['tokens'],system_billed=system_tokens(
-            caps.get('max_utterances',12),caps.get('max_your_utterances',6),self.seed,self.handshake.carry_lease_renewal))
+            caps.get('max_utterances',12),caps.get('max_your_utterances',6),self.seed,self.handshake.carry_lease_renewal,
+            self.handshake.carry_protocol_feedback))
         return base.old.s4.zo.PreparedCall(bundled,request,prepared.request_id)
 
 
@@ -189,12 +199,25 @@ class Driver(base.Driver):
                 self.epoch_transitions.append({'robot_id':rid,'at':rel,'from':self.last_view.get(rid),'to':key})
                 self.ask_keys.pop(rid,None);self.next_ask[rid]=rel
                 self.last_view[rid]=key
-        if self.go_ack_retry and not self.handshake.failure and not self.host.failed:
+        if (self.go_ack_retry or self.handshake.carry_protocol_feedback) and not self.handshake.failure and not self.host.failed:
             for call in trial.scheduler.calls:
                 if call.call_id in self.examined:continue
                 self.examined.add(call.call_id);entry=trial.scheduler.ledger[call.call_id]
                 seen=trial.pair_snapshots.get(call.call_id,{}).get('seen',{})
-                if (call.actor not in hs.PAIR or seen.get('phase')!='wait_go' or call.notes.get('send_violation')
+                if (self.handshake.carry_protocol_feedback and call.actor in hs.PAIR
+                    and seen.get('phase')=='carry' and entry['status']=='failed'
+                    and (entry.get('completion') or {}).get('finish_reason')=='stop'
+                    and not call.notes.get('send_violation')):
+                    view=self.handshake.view(call.actor,rel);once=(call.actor,seen['epoch'],'carry_feedback')
+                    if (once not in self.retry_used and view['phase']=='carry' and view['epoch']==seen['epoch']
+                            and rel<self.handshake.deadline(call.actor)):
+                        reason=next((r.get('error') for r in reversed(trial.requests) if r['call_id']==call.call_id),None) or 'INVALID_NORMAL_REPLY'
+                        self.retry_used.add(once)
+                        trial.epoch_retry_context[(call.actor,seen['epoch'])]={'call_id':call.call_id,'reason':reason}
+                        self.retry_events.append({'robot_id':call.actor,'epoch':seen['epoch'],'phase':'carry',
+                            'invalid_call_id':call.call_id,'at':rel,'same_epoch':True,'reason':reason,
+                            'forced_new_send':False,'transport_retry':False,'accepted_action_replayed':False})
+                if (not self.go_ack_retry or call.actor not in hs.PAIR or seen.get('phase')!='wait_go' or call.notes.get('send_violation')
                     or (entry.get('completion') or {}).get('finish_reason')!='stop'):continue
                 rejected=next((r for r in reversed(self.handshake.decisions) if r['call_id']==call.call_id and not r['accepted']),None)
                 failed=entry['status']=='failed';semantic=bool(self.handshake.go_ack_rounds and rejected)
