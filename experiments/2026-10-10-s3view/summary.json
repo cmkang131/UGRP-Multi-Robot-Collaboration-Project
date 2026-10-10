@@ -1,0 +1,221 @@
+{
+  "schema": "ugrp.s3view.v1",
+  "status": "ready_waiting_for_oracle_slot",
+  "base_sha": "60eaf042bbf95e31fd7bdd50a84c69dcd38112c7",
+  "original_execution_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+  "base_vs_original_code_diff": "none in scripts/harness/sim; only experiment records differ",
+  "branch": "codex/s3-overview-view",
+  "worktree": "/Users/changmin/projects/ugrp-wt/s3-view",
+  "toggle": {
+    "environment": "UGRP_S3_OVERVIEW",
+    "default": "off",
+    "enabled": "on_v1"
+  },
+  "scope": "evaluation-only rerun footage; controller inputs, observations, physics unchanged; not a new success claim",
+  "video": {
+    "filename": "overview.mp4",
+    "width": 1280,
+    "height": 480,
+    "panel_size": [
+      640,
+      480
+    ],
+    "speedup": 4,
+    "capture_sim_fps": 5,
+    "playback_fps": 20,
+    "fixed_views": {
+      "oblique": [
+        135,
+        -55
+      ],
+      "side": [
+        90,
+        -12
+      ]
+    },
+    "distance_m": 2.8
+  },
+  "verification": {
+    "pytest": "tests/test_s3_synchronized_carry.py: 6 passed",
+    "oracle_read_only_render": "passed; qpos/qvel/ctrl unchanged",
+    "source_committed_and_pushed": true
+  },
+  "runs": [
+    {
+      "original": "s3fix17-pair-c0-r2",
+      "name": "s3view-pair-c0-r2",
+      "case": "pair",
+      "condition": 0,
+      "status": "not_started",
+      "command_trajectory_match": null,
+      "original_record": {
+        "commands": [
+          "/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/.venv-sim/bin/python",
+          "-m",
+          "scripts.run_s3_synchronized_start",
+          "--expected-source-sha",
+          "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+          "--output",
+          "outputs/s3fix17-pair-c0-r2/raw",
+          "--case",
+          "pair",
+          "--condition",
+          "0",
+          "--coarse-fine",
+          "stopped_base_arm_v1",
+          "--refinements",
+          "abc_v1",
+          "--carry",
+          "synchronized_pulses_v1",
+          "--pan",
+          "joint_pan_v1",
+          "--execute"
+        ],
+        "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+        "result": {
+          "status": "PHYSICAL_STOP",
+          "stage_probe": true,
+          "research_result": false,
+          "model_calls": 0,
+          "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+          "case": "pair",
+          "servo_option": "stopped_base_arm_v1",
+          "gt_inputs": false,
+          "loadavg_start": [
+            37.3779296875,
+            30.740234375,
+            36.0498046875
+          ],
+          "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/scripts/run_s3_alignment_probe.py\", line 156, in run\n    now=host.now;host.eval_sample()\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/zone_s3_no_prior.py\", line 131, in eval_sample\n    raise PhysicalStop('LOAD_DROP:'+item)\nsim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1\n",
+          "check_sim_s": 52.3,
+          "wall_s": 334.58973354499904,
+          "loadavg_end": [
+            143.0634765625,
+            114.9912109375,
+            71.724609375
+          ],
+          "host": "oracle-x86",
+          "alignment_entry": "preserve_issued_look_v1",
+          "stage_scope": "align-hover-descent-close-lift-carry",
+          "physical_stop": "LOAD_DROP:beam_1",
+          "runtime_speedups": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "relay-cache-v1",
+            "enabled": true,
+            "fallback": null,
+            "module_sha256": "b60cf83ffb7709247fc213e182342a74e873ebe624dc321fdbcfe036fed02243",
+            "cache_maxsize": 256,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "heading_mode": "path_tangent_v1",
+          "heading_visual_lock": "off"
+        },
+        "command_sha256": {
+          "r1": "bfc2167872bb09b25db14995a91a52f466ad22791670062ed5050f1ce2fdd2c7",
+          "r2": "00377aebfdfbfc93f975bc41f155cd22796cdbf3bba8d8109e401d7454d567eb",
+          "r3": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1"
+        }
+      }
+    },
+    {
+      "original": "s3fix17-cyan-c0-r2",
+      "name": "s3view-cyan-c0-r2",
+      "case": "cyan",
+      "condition": 0,
+      "status": "not_started",
+      "command_trajectory_match": null,
+      "original_record": {
+        "commands": [
+          "/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/.venv-sim/bin/python",
+          "-m",
+          "scripts.run_s3_synchronized_start",
+          "--expected-source-sha",
+          "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+          "--output",
+          "outputs/s3fix17-cyan-c0-r2/raw",
+          "--case",
+          "cyan",
+          "--condition",
+          "0",
+          "--coarse-fine",
+          "stopped_base_arm_v1",
+          "--refinements",
+          "abc_v1",
+          "--carry",
+          "synchronized_pulses_v1",
+          "--pan",
+          "joint_pan_v1",
+          "--execute"
+        ],
+        "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+        "result": {
+          "status": "DEV_STAGE_FINISHED",
+          "stage_probe": true,
+          "research_result": false,
+          "model_calls": 0,
+          "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+          "case": "cyan",
+          "servo_option": "stopped_base_arm_v1",
+          "gt_inputs": false,
+          "loadavg_start": [
+            37.3779296875,
+            30.740234375,
+            36.0498046875
+          ],
+          "check_sim_s": 60.0,
+          "entry_sim_s": 2.85,
+          "close_settle_s": null,
+          "final": {
+            "r3": {
+              "state": "carry",
+              "failure": null
+            }
+          },
+          "wall_s": 407.0392060060003,
+          "loadavg_end": [
+            85.56494140625,
+            103.05810546875,
+            70.6962890625
+          ],
+          "host": "oracle-x86",
+          "alignment_entry": "preserve_issued_look_v1",
+          "stage_scope": "align-hover-descent-close-lift-carry",
+          "runtime_speedups": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "relay-cache-v1",
+            "enabled": true,
+            "fallback": null,
+            "module_sha256": "b60cf83ffb7709247fc213e182342a74e873ebe624dc321fdbcfe036fed02243",
+            "cache_maxsize": 256,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "heading_mode": "path_tangent_v1",
+          "heading_visual_lock": "unique_cyan_align_v1"
+        },
+        "command_sha256": {
+          "r1": "6043e41042775c6cb5378aa39a2a361f8bcf9c5c9d3dcc9e18ef14622fda60a6",
+          "r2": "6043e41042775c6cb5378aa39a2a361f8bcf9c5c9d3dcc9e18ef14622fda60a6",
+          "r3": "47029cd7682824e4dce1cfd9f74ec439536df07f264385161b26728ea5888f19"
+        }
+      }
+    }
+  ],
+  "remaining": "Oracle slot coordination (egomap65 + speedctrl3-abba observed running); reruns, first 3min health checks, exact command sha256 comparisons and video-only retrieval pending",
+  "tensorboard": "skipped: DEV view-only task per user instructions",
+  "remote_raw": "preserved on oracle-x86; only videos will be retrieved",
+  "pull_request": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/427",
+  "recording_source_sha": "f3108bc905a5808e5ff889c51acfd3168bbfb81d",
+  "execution_sha": null,
+  "first_3min_health_checks": null,
+  "retrieved_videos": [],
+  "blocker": {
+    "source": "AGENTS.md: 가벼운 개발 진행, 시뮬레이션 한 번에 하나",
+    "observed_active_jobs": [
+      "egomap65 baseline/a seed63005",
+      "speedctrl3-abba-2e08"
+    ],
+    "action": "No existing process stopped; no rerun launched. Await slot or explicit parallel exception."
+  }
+}
