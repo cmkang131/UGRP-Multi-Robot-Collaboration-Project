@@ -24,6 +24,7 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_ownmap_s2.py",
     "tests/test_lazy_camera.py",
     "tests/test_s2_path_heading.py",
     "tests/test_path_heading_default.py",
