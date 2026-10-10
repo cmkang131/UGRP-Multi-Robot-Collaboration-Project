@@ -117,6 +117,8 @@ def score_batch(plan,out):
         B=json.loads((p/'inputs/static_map.json').read_text())['regions']['zone_B']
         dual=json.loads((p/'dual-arrival.json').read_text()) if (p/'dual-arrival.json').exists() else []
         r['position_rmse_m']=float(np.sqrt(np.mean(err**2)))
+        r['false_return']=sum(d['kind']=='return_start_declared' and not d['valid'] for d in r.get('declarations',[]))
+        r['false_B']=sum(d['kind']=='goal_reached' and not d['valid'] for d in r.get('declarations',[]))
         for kind in ('legacy','zone'):
             stamp=next((x[kind+'_at'] for x in dual if x[kind+'_at'] is not None),None)
             gt=tb.get(round(stamp,6)) if stamp is not None else None
@@ -128,6 +130,8 @@ def score_batch(plan,out):
     for key in CONDITIONS:
         group=[r for r in reports if r['condition']==key and r.get('samples')]
         aggregate[key]['position_rmse_median']=float(np.median([r['position_rmse_m'] for r in group])) if group else None
+        aggregate[key]['false_return']=sum(r['false_return'] for r in group)
+        aggregate[key]['false_B']=sum(r['false_B'] for r in group)
         aggregate[key]['dual_B']={kind:dict(declared=sum(r[kind+'_B']['declared_t'] is not None for r in group),
             true=sum(r[kind+'_B']['actual_inside'] is True for r in group)) for kind in ('legacy','zone')}
     ref.old.dump(out/'summary.json',dict(round='egomap70',host='oracle-x86',source_sha=ROOT.name,registered=24,

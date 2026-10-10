@@ -136,7 +136,7 @@
       "return": 270
     },
     "prefix": "same unmodified checkpoint; apply new motion only after restore",
-    "color": "equal-prior nearest hue from fixed B/pickup material RGB + unchanged v3 metric guards; revalidate prefix own B RGB, quarantine on reject",
+    "color": "equal-prior nearest material hue AND complete B metric rectangle .6x1.4m within existing v3 1.2 size ratio; partial pieces deferred; no GT locations",
     "condition_interpretation": "last condition jointly changes arrival+class confirmation, cannot attribute their effects separately"
   },
   "conditions": [
@@ -702,5 +702,11 @@
         "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63006-calib_traversed_zone"
       ]
     }
-  ]
+  ],
+  "pre_execution_amendment": {
+    "reason": "prefix diagnostic: hue-only accepts ambiguous pickup H110 vs B H112, add known class extent confirmation before first evaluation",
+    "changed_hue_threshold": false,
+    "new_label": "material_hue_size_v1",
+    "existing_v3_tolerance": 1.2
+  }
 }

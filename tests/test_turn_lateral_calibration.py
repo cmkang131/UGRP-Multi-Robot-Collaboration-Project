@@ -48,3 +48,12 @@ def test_calibration_protocol_separate_seeds_and_fixed_bidirectional_squares():
         assert len([x for x in blocks if x['kind']=='square'])==16
         assert sum(x['n'] for x in blocks)==330
         assert len(commands)==330 and max(commands)+4<ticks
+
+
+def test_square_validation_integrates_actual_schedule_and_preserves_model():
+    from scripts.analyze_turn_lateral_squares import model_displacement
+    base=calibrated_model();before=json.dumps(base,sort_keys=True)
+    cmd={0:dict(kind='mecanum',turn=.35,duration_s=.1)}
+    got=model_displacement(cmd,0,4,base)
+    np.testing.assert_allclose(got,base['profiles']['0:turn:0.35:0.10']['mean_delta'],atol=1e-12)
+    assert json.dumps(base,sort_keys=True)==before

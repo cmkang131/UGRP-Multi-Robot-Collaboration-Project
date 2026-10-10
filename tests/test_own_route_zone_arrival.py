@@ -81,7 +81,7 @@ def test_all_four_actual_accelerated_receive_paths_first_frame(monkeypatch,condi
         assert c.heading_host.profiles is c.explorer.memory.self_map.odom.driver.profiles
     if condition.endswith('zone'):
         rgb=np.full((12,16,3),[51,102,242],np.uint8)
-        c.explorer.goal.detector=lambda *args,**kw:([dict(component=1,center_body_m=[.1,0])],np.ones((12,16),int),{})
+        c.explorer.goal.detector=lambda *args,**kw:([dict(component=1,center_body_m=[.1,0],rect_sides_m=[.6,1.4])],np.ones((12,16),int),{})
         m.install(c,arrival_zone=m.ARRIVAL,B_color_confirmation=m.COLOR,prefix_rgb=rgb,prefix_servo={})
     _,trace=frame(c)
     assert active==[True]
@@ -93,3 +93,10 @@ def test_registered_24_commands_unique_fixed_seeds():
     jobs=runner.jobs('/unused');assert len(jobs)==24
     assert len({j['name'] for j in jobs})==24
     assert {j['seed'] for j in jobs}==set(range(63001,63007))
+
+
+def test_partial_blue_piece_is_not_full_B_identity_but_size_tolerance_unchanged():
+    rgb=np.full((12,16,3),[51,102,242],np.uint8);region=np.ones((12,16),bool)
+    assert m.confirm_component(rgb,region,dict(rect_sides_m=[.6,1.4]))['accepted']
+    assert not m.confirm_component(rgb,region,dict(rect_sides_m=[.2,.5]))['accepted']
+    assert not m.confirm_component(rgb,region,dict(rect_sides_m=[.8,1.4]))['accepted']

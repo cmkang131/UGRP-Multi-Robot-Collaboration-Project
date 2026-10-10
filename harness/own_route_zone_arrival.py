@@ -10,9 +10,9 @@ import cv2
 import numpy as np
 
 ARRIVAL = 'remembered_cells_v1'
-COLOR = 'nearest_material_hue_v1'
+COLOR = 'material_hue_size_v1'
 # Appearance specifications only (not positions, region IDs or scene queries).
-# sim/zone_masterpi_v3_scene.py palette: blue B vs blue pickup floor.
+# maps/zones_final_v3/zone_wide_two_doors_final_v3.json:165/187, appearance only.
 PALETTE = {'B': [.20,.40,.95], 'pickup': [.12,.36,.70]}
 
 
@@ -37,11 +37,23 @@ def classify(rgb,region):
 def filter_components(rgb,patches,labels):
     accepted=[];out=np.zeros_like(labels);records=[]
     for p in patches:
-        region=labels==p['component'];r=classify(rgb,region);records.append(r)
+        region=labels==p['component'];r=confirm_component(rgb,region,p);records.append(r)
         if r['accepted']:
             q=copy.deepcopy(p);q['component']=len(accepted)+1;q['color_confirmation']=r
             out[region]=q['component'];accepted.append(q)
     return accepted,out,records
+
+
+def confirm_component(rgb,region,patch):
+    r=classify(rgb,region)
+    sides=np.asarray(patch.get('rect_sides_m',[]),float)
+    # Full class extent required for identity, not a new pixel threshold.
+    # Use the v3 existing 1.2 metric-size tolerance, symmetrically in ratio.
+    # A partial blue patch remains ambiguous and is deferred (recall cost).
+    size_ok=sides.shape==(2,) and bool(np.all(sides>=np.array([.6,1.4])/1.2)
+                                    and np.all(sides<=np.array([.6,1.4])*1.2))
+    return dict(r,accepted=r['accepted'] and size_ok,size_consistent=size_ok,rect_sides_m=sides.tolist(),
+        reason=r['reason'] if size_ok else 'partial_or_wrong_metric_extent')
 
 
 def observed_inside(c,pose):
@@ -60,7 +72,7 @@ def install(c,*,arrival_zone='off',B_color_confirmation='off',prefix_rgb=None,pr
         raise ValueError('UNKNOWN_ZONE_OPTION')
     c._zone_calls=0;c._zone_rows=[];c._color_rows=[];c._zone_streak=0;c._legacy_streak=0
     c._legacy_declared=None;c._zone_declared=None;c._zone_last=None
-    base_receive,base_arrival,base_entity,base_select=c.receive,c._arrival,c._entity,c._select
+    base_receive,base_arrival,base_select=c.receive,c._arrival,c._select
     pending_quarantine=False
     if B_color_confirmation!='off':
         if prefix_rgb is None:raise ValueError('PREFIX_OWN_RGB_REQUIRED')
@@ -69,7 +81,7 @@ def install(c,*,arrival_zone='off',B_color_confirmation='off',prefix_rgb=None,pr
             patches,labels,diag=original(rgb,**kw)
             patches,labels,records=filter_components(rgb,patches,labels)
             c.labels=labels;c.current_patches=patches
-            c._color_rows.extend(dict(t=c.explorer.goal.last_t,**r) for r in records)
+            c._color_rows.extend(dict(t=c._zone_input['t'],frame_id=c._zone_input['frame_id'],**r) for r in records)
             return patches,labels,{**diag,'material_rejected':sum(not r['accepted'] for r in records)}
         c.explorer.goal.detector=detector
         # Revalidate causally stored first-confirmation RGB, never evaluation RGB.
@@ -80,12 +92,8 @@ def install(c,*,arrival_zone='off',B_color_confirmation='off',prefix_rgb=None,pr
         from harness.self_odom_grid import transform
         pose=c.explorer.memory.self_map.odom.pose
         nearest=min(patches,key=lambda p:math.dist(transform([p['center_body_m']],pose)[0],track['last_center']),default=None)
-        r=classify(prefix_rgb,labels==nearest['component']) if nearest else dict(accepted=False,reason='prefix_component_not_visible')
+        r=confirm_component(prefix_rgb,labels==nearest['component'],nearest) if nearest else dict(accepted=False,reason='prefix_component_not_visible')
         c._color_rows.append(dict(scope='prefix',**r));pending_quarantine=not r['accepted']
-
-        def entity(self,name,*args,**kw):
-            return base_entity(name,*args,**kw)
-        c._entity=MethodType(entity,c)
 
     def select(self,t):
         # This registered task is B then return; quarantine must not silently
@@ -121,6 +129,7 @@ def install(c,*,arrival_zone='off',B_color_confirmation='off',prefix_rgb=None,pr
     def receive(**kw):
         nonlocal pending_quarantine
         c._zone_calls+=1
+        c._zone_input=kw
         if pending_quarantine:
             old=c.entities.pop('B');candidate=old['observation']['candidate_id']
             for tr in c.explorer.goal.tracks:
