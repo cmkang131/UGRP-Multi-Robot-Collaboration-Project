@@ -356,6 +356,8 @@ raise SystemExit(3 if a.fail else 0)
                              '--expected-source-sha', '0'*40]
         samples['controller-replay-abba'] = ['--plan', str(source),
             '--priority-receipt', str(source), '--expected-source-sha', '0'*40]
+        samples['lazy-camera-abba'] = ['--kind', 'abba', '--expected-source-sha', '0'*40,
+            '--archive-manifest', str(source), '--archive-manifest-sha256', '0'*64]
         samples['zone-path-heading-v145'] = ['--expected-source-sha', '0'*40, '--seed', '1066']
         samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
                                            '--heading-mode', 'path_tangent_v1']

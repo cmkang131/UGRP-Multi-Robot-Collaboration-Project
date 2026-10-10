@@ -46,7 +46,9 @@
 `~/ugrp-sim/runs/<name>`에 새로 쓰고 fetch 후 로컬 primary outputs에 보존한다.
 새 bundle 번호/성공 판정은 발급하지 않고 기존 실험 adapter의 파생 진단으로
 구분한다. 렌더 비용은 구간 타이머, 전체 비용은 initialization 포함 wall/SIM이다.
-렌더 로그는 생성/소비/기록 강제 횟수를 기록한다. 원본 압축·삭제0회.
+렌더 로그는 생성/소비/기록 강제 횟수를 기록한다. `consumer`는 lazy 값 접근으로
+생성한 횟수이므로 eager의 consumer=0을 제어기 미소비로 해석하지 않는다.
+원본 압축·삭제0회.
 이 구형 adapter는 선택한 physics timer hook을 우회한다. `physics_calls=0`은
 물리 비용0이 아니라 미계측이며 `timer_coverage`로 명시한다. 렌더와 전체 wall은 실측이다.
 기본 eager는 기존 bound method/체크포인트 객체 구조를 유지한다. lazy-v1의
@@ -85,5 +87,16 @@ Oracle 5SIM 확인(`90a467ac`)은 S3 ABBA4회와 ego 첫 A를 마친 뒤 연구 
 `outputs/tensorboard/1010-speedctrl-partial-v1`에 새 snapshot으로 보존했다.
 EventAccumulator에서 수치·원본 해시21개를 다시 확인했고 실제 TensorBoard의
 고정 카드/실행 선택/열(case·policy·outcome·source_sha·seed) 표시를 확인했다.
-원본 JPEG는 Oracle에 보존하고 Mac에는 JSON/JSONL·로그·출처를 우선 회수했다
-(회수 시 Mac 가용3.8GiB). MP4 생성/등록0회. 전체60SIM ABBA는 대기 중이며 기본 eager다.
+종료된 예비·시험·부분 실행9개의 **모든 원본 JPEG를 포함한 5,132파일,
+156,821,337바이트**를 primary `outputs/oracle-runs/`로 회수했다. Oracle에서
+만든 파일 목록의 크기·SHA-256과 전부 대조했다([회수 확인](fetch-verification.json)).
+Oracle 원본도 보존한다. 진행 중인 최종 cb4b ABBA는 이 회수 집계에서 제외한다.
+MP4 생성/등록0회. 전체60SIM ABBA는 대기 중이며 기본 eager다.
+
+최종 구현 `cb4b872c451de99c883fde13026deb24923ddf6c`는 Oracle 변경 모듈
+`tests/test_lazy_camera.py` 18PASS다. 독립 source review의 잔여 P0/P1/P2는
+없으며([검토 범위](review-final.json)), 이는 실행·동등성·성능 통과를 뜻하지 않는다.
+이 SHA의 전체 CI에서 새 workflow의 명시적 plan 시험 인자 누락1건이 발견됐다.
+기존 catalog 전수 검사에 필요한 네 인자를 추가했고 해당 시험 파일21PASS를
+확인했다. 이 시험은 임시 CLI fixture만 쓰며 Mac 물리·렌더·성능 측정이 아니다.
+[실패 기록](ci-regression.json)을 보존하고 수정 후 전체 CI는 원격에서 다시 수행한다.
