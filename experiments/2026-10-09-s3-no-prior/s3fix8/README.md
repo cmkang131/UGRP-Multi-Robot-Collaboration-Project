@@ -34,6 +34,6 @@ S3는 전역 KLD와 추적2,000개를 쓰므로 'S3가100개라서 실패'라고
 
 수정 후보는 [visual servo PBVS](https://faculty.cc.gatech.edu/~seth/res.php?u=vs)의 물체 상대강체 변환과 [DWB의 이산 궤적 평가](https://github.com/ros-navigation/navigation2/blob/main/nav2_dwb_controller/dwb_core/src/dwb_local_planner.cpp)를 따른다. 근접한 관측 그립점 **전체 좌표**에 SE(2) 회전을 적용하고 합법적 기존 pulse의 유한 horizon을 평가한다. 기존 path bearing 선택기는 far approach에 유지하고, default-off 옵션으로만 비교한다. 새 물리 probe 전 선택기 범위·horizon과 성공 문턱을 코드/시험에 고정한다. 교사좌표·실시간 정답 보정은 사용하지 않는다.
 
-구현 사전 고정: `visual_pose_mpc_v1`, near≤0.10m에서 기존 합법 전진±/회전±0.10초4개만 사용, horizon6개(각 후보 최장0.6초 명령+기존 settle), 허용오차 초과분의 정규화 제곱합+명령수0.01을 최소화한다. 첫 명령만 발행한 뒤 새 RGB를 관측한다. 단독 cyan에는 기존에 없는 yaw 성공 조건을 추가하지 않는다. 이 방식의 실제 수렴은 아직 미검증이며 문턱/모터 최소길이를 바꾸지 않는다. 새 프레임의 검출·고정 카메라와 기존 파지 상태기계를 그대로 사용한다.
+구현 사전 고정: `visual_pose_mpc_v1`, near≤0.10m에서 기존 합법 전진±/회전±0.10초4개만 사용, horizon6개(각 후보 최장0.6초 명령+기존 settle), 허용오차 초과분의 정규화 제곱합을 먼저 최소화하고 동점에서 짧은 명령열을 고른다. 물리 전 kinematic 점검에서 additive 명령 패널티가3mm 바로 밖 정지를 만들 수 있어 lexicographic으로 고쳤다(성공 문턱 유지). 첫 명령만 발행한 뒤 새 RGB를 관측한다. 단독 cyan에는 기존에 없는 yaw 성공 조건을 추가하지 않는다. 이 방식의 실제 수렴은 아직 미검증이며 문턱/모터 최소길이를 바꾸지 않는다. 새 프레임의 검출·고정 카메라와 기존 파지 상태기계를 그대로 사용한다.
 
 probe 제어기 전체 checkpoint도 원본에 없으므로 새 map-uniform PF를 해당 장면의 자기 RGB로 시작한다(저장 GT나 Gaussian pose prior 주입 없음). 미션 dispatcher/접근만 단계 초기화로 생략한다. 이것은 위치 찾기·접근의 재검증이 아니다. 동일 후보의 물리 실패를 먼저 모아 보고하고 통과 전 전체 스모크는 실행하지 않는다.

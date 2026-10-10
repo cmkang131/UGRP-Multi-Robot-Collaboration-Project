@@ -50,8 +50,10 @@ class Selector:
             value=np.maximum(np.abs(e)/scale-1.,0.)**2
             if not self.angle_required:value[...,2]=0.
             return np.sum(value,axis=-1)
-        before=float(cost(np.array(errors)));costs=cost(terminal)+.01*self.lengths
-        best=int(np.argmin(costs));p=self.pool[self.first[best]] if costs[best]<before else None
+        before=float(cost(np.array(errors)));costs=cost(terminal)
+        # Lexicographic tie break: an action penalty must not create an extra
+        # dead zone immediately outside the unchanged success tolerance.
+        best=int(np.lexsort((self.lengths,costs))[0]);p=self.pool[self.first[best]] if costs[best]<before-1e-12 else None
         action=dict(kind='mecanum',forward=0.,left=0.,turn=0.,duration_s=.1) if p is None else action_of(p)
         return action,p,dict(phase='visual_pose_mpc',goal_distance_m=distance,before=before,after=float(costs[best]),
             horizon=HORIZON,selected_length=int(self.lengths[best]),terminal_errors=terminal[best].tolist(),

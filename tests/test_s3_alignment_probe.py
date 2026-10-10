@@ -71,3 +71,9 @@ def test_cyan_orientation_is_not_added_to_existing_alignment_verdict():
     assert p is None and row['before']==0
     from harness.zone_s3_visual_pose_servo import attach_solo
     marker=object();assert attach_solo(marker) is marker
+
+def test_no_action_penalty_dead_zone_outside_original_tolerance():
+    ps=profiles();s=Selector(ps)
+    e=[-.003063845889049094,-.003210532023583606,-.03039554654342916]
+    a,p,r=s(ps,e)
+    assert p is not None and r['after']<r['before']
