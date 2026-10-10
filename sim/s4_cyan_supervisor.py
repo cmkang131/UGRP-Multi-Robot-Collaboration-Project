@@ -12,6 +12,19 @@ def supported_height_stop(row, *, allow_floor=False):
         or row['finger_contact'] and row['bilateral_finger_contact']))
 
 
+class FloorSupportedGuard:
+    """Evaluation-only release witness; delegate retains airborne loss and tilt."""
+    def __init__(self, guard, com_row, append):
+        self.guard,self.com_row,self.append=guard,com_row,append
+
+    def check(self, row, *, release_allowed):
+        floor=bool(self.com_row['floor_contact'] and not self.com_row['drop'])
+        self.append('eval_only/r3/release-supervisor.jsonl',dict(t=row['t'],
+            release_allowed_from_command=release_allowed,release_allowed_by_floor=floor,
+            floor_contact=self.com_row['floor_contact'],drop=self.com_row['drop'],feedback_to_controller=False))
+        return self.guard.check(row,release_allowed=release_allowed or floor)
+
+
 class PhysicsBackend(Previous):
     def setdown_row(self):
         row=super().setdown_row();self._pending_beam_setdown=row;return row
@@ -38,17 +51,21 @@ class PhysicsBackend(Previous):
         if mode=='off':return super().eval_sample()
         if mode!=MODE:raise ValueError('unknown cyan supervisor')
         row=self.cyan_row();self._append('eval_only/r3/com-contact-supervisor.jsonl',row)
-        try:super().eval_sample()
-        except PhysicalStop as exc:
-            if str(exc)!='LOAD_DROP:cyan_1' or not supported_height_stop(row,
-                    allow_floor=self.bundle.get('cyan_floor_support',False)):raise
-            # The legacy S3 threshold interrupted the evaluation chain before
-            # these receipts. Resume evaluation only, never a controller call.
-            self._append('eval_only/r3/height-stop-classification.jsonl',dict(**row,
-                original_guard=str(exc),classification='floor_supported_height_stop' if row.get('floor_contact')
-                    and self.bundle.get('cyan_floor_support',False) else 'bilaterally_supported_height_stop',free_fall=False))
-            self.record_dynamics()
-            self._append('eval_only/setdown.jsonl',self._pending_beam_setdown)
-            self.progress()
-            check_cyan(self,self.stage_cyan_guard)  # existing tilt and grip-loss guard remains
-        if row['drop']:raise PhysicalStop('LOAD_DROP:cyan_1')
+        original_guard=self.stage_cyan_guard
+        if self.bundle.get('cyan_floor_support',False):
+            self.stage_cyan_guard=FloorSupportedGuard(original_guard,row,self._append)
+        try:
+            try:super().eval_sample()
+            except PhysicalStop as exc:
+                if str(exc)!='LOAD_DROP:cyan_1' or not supported_height_stop(row,
+                        allow_floor=self.bundle.get('cyan_floor_support',False)):raise
+                # Resume interrupted evaluation only; never a controller call.
+                self._append('eval_only/r3/height-stop-classification.jsonl',dict(**row,
+                    original_guard=str(exc),classification='floor_supported_height_stop' if row.get('floor_contact')
+                        and self.bundle.get('cyan_floor_support',False) else 'bilaterally_supported_height_stop',free_fall=False))
+                self.record_dynamics()
+                self._append('eval_only/setdown.jsonl',self._pending_beam_setdown)
+                self.progress()
+                check_cyan(self,self.stage_cyan_guard)
+            if row['drop']:raise PhysicalStop('LOAD_DROP:cyan_1')
+        finally:self.stage_cyan_guard=original_guard

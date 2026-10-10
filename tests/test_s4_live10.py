@@ -221,3 +221,33 @@ def test_continuation_defaults_off_and_all_eight_commands(capsys):
     assert len(batch.commands('a'*40))==8
     assert retry.main(['--expected-source-sha','a'*40,'--output','no-write','--condition','no_comm','--relay-receipt','no-read'])==0
     assert not json.loads(capsys.readouterr().out)['carry_protocol_feedback']
+
+
+@pytest.mark.parametrize('floor,tilted,stop',[(True,False,False),(False,False,True),(True,True,True)])
+def test_real_s2_guard_accepts_grounded_release_but_keeps_air_loss_and_tilt(floor,tilted,stop):
+    from sim.s2_realism import StopGuard,PhysicalStop
+    from harness.zone_s2_realism_contract import SAFETY
+    g=StopGuard();g.lifted=True;events=[]
+    proxy=cyan.FloorSupportedGuard(g,{'floor_contact':floor,'drop':False},lambda *x:events.append(x))
+    row={'t':207.55,'cyan_z_m':.0162,'cyan_min_z_m':-.0004,'finger_contacts':[False,False],
+        'robot_tilt_deg':SAFETY['robot_tilt_limit_deg'] if tilted else .076}
+    if stop:
+        with pytest.raises(PhysicalStop):proxy.check(row,release_allowed=False)
+    else:proxy.check(row,release_allowed=False);assert g.lost_since is None
+    assert events and not events[0][1]['feedback_to_controller']
+
+
+@pytest.mark.parametrize('enabled',[False,True])
+def test_cyan_full_guard_chain_with_real_s2_guard_matches_recorded_floor_stop(monkeypatch,enabled):
+    from sim.s2_realism import StopGuard
+    obj=object.__new__(cyan.PhysicsBackend);obj.bundle={'cyan_drop_supervisor':'contact_com_v1','cyan_floor_support':enabled}
+    obj.stage_cyan_guard=StopGuard();original=obj.stage_cyan_guard;original.lifted=True
+    obj.cyan_row=lambda:{'drop':False,'finger_contact':False,'bilateral_finger_contact':False,'floor_contact':True}
+    events=[];obj._append=lambda *a:events.append(a);obj.record_dynamics=lambda:None;obj.progress=lambda:None;obj._pending_beam_setdown={}
+    monkeypatch.setattr(cyan.Previous,'eval_sample',lambda self:(_ for _ in ()).throw(cyan.PhysicalStop('LOAD_DROP:cyan_1')))
+    monkeypatch.setattr(cyan,'check_cyan',lambda host,guard:guard.check({'t':207.55,'cyan_z_m':.0162,
+        'cyan_min_z_m':-.0004,'finger_contacts':[False,False],'robot_tilt_deg':.076},release_allowed=False))
+    if enabled:obj.eval_sample();assert any(e[0].endswith('release-supervisor.jsonl') for e in events)
+    else:
+        with pytest.raises(cyan.PhysicalStop):obj.eval_sample()
+    assert obj.stage_cyan_guard is original

@@ -6,5 +6,5 @@ v180/workflow7.73.0, S3 ca3d51b7 제어130파일 동결; [고정8명령·seed601
 900SIM/10800wall·450call/actor·1350/run·27Mtoken; 전체8구간5.45m+20mm목표·안정바닥배치로 판정, 중간성공 없음.
 동일seed 재탐색이며 확증·인과 비교 아님; GT는 평가·실제 물리 실패 감독에만, 제어입력 금지.
 x86 영속runs/LP4/OSMesa,180–300wall 초기점검; 완료 즉시 서버평가·전체SHA·ARM보관, Mac fetch-lite(인코딩이미지 요청도 제외).
-준비중; [summary.json](summary.json)에 모든8실행·실패·거리·순환·모델/메시지·원본SHA.
+[summary.json](summary.json): 목표0/8·셋째운반8/8·lease0/8·낙하0/8; 바닥지지 토글은 적용됐으나 S2 후속가드 release_allowed=false 정지8/8.
 참고: [JSON Schema 필수필드](https://ai.google.dev/gemini-api/docs/structured-output?hl=en), [Chubby lease](https://www.usenix.org/legacy/event/osdi06/tech/full_papers/burrows/burrows_html/); 기존프록시 native schema 지원 미확인, 이번은 피드백 토글.
