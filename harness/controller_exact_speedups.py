@@ -14,12 +14,28 @@ from pathlib import Path
 import inspect
 import importlib
 import sys
+import math
+import weakref
 
 import numpy as np
 
 ENV = 'UGRP_CONTROLLER_EXACT_SPEEDUPS'
 DEFAULT = 'exact-v1'
 MODES = ('off', DEFAULT)
+SCAN_ENV = 'UGRP_CONTROLLER_SCAN_SPEEDUPS'
+LOCAL_ENV = 'UGRP_CONTROLLER_LOCAL_SUBMAP_M'
+REFEREE_ENV = 'UGRP_REFEREE_EVENT_SPEEDUPS'
+VISIBILITY_ENV = 'UGRP_CONTROLLER_VISIBILITY_SPEEDUPS'
+
+
+def scan_options():
+    selected = os.environ.get(SCAN_ENV, 'off')
+    if selected not in ('off', 'exact-v2'):
+        raise ValueError(f'{SCAN_ENV}: off or exact-v2 required')
+    radius = float(os.environ.get(LOCAL_ENV, '0'))
+    if not math.isfinite(radius) or radius < 0 or radius > 6:
+        raise ValueError(f'{LOCAL_ENV}: finite radius in [0, 6] required')
+    return selected, radius
 
 
 def mode(value=None):
@@ -154,6 +170,304 @@ class GridFieldMemo:
         return initialize
 
 
+class ShadowDepthMemo(PureMemo):
+    """Share identical fixed-command geometry without sharing mutable arrays.
+
+    Only aligned C-contiguous float64 arguments enter the cache; this retains
+    the same NumPy/BLAS layout as the original computation. Changed global slab
+    implementation, unsupported layouts, and large inputs use the original.
+    """
+    def __init__(self, function, slab, maxsize=8):
+        super().__init__(function, maxsize=maxsize)
+        self.slab = slab
+        self.bytes, self.max_bytes = 0, 64*1024*1024
+
+    @staticmethod
+    def array(value, shape=None):
+        return (type(value) is np.ndarray and value.dtype == np.float64 and
+                value.flags.c_contiguous and value.flags.aligned and
+                (shape is None or value.shape == shape))
+
+    def __call__(self, origin, rays, boxes):
+        eligible = (self.function.__globals__.get('box_depth') is self.slab and
+            self.array(origin, (3,)) and self.array(rays) and rays.ndim >= 2 and
+            rays.shape[-1] == 3 and rays.nbytes <= 4*1024*1024 and
+            type(boxes) in (tuple, list) and len(boxes) <= 256)
+        if eligible:
+            eligible = all(type(b) in (tuple,list) and len(b) == 4 and type(b[0]) is str and
+                b[0] in ('gripper','arm','chassis') and self.array(b[1], (3,)) and
+                self.array(b[2], (3,3)) and self.array(b[3], (3,)) for b in boxes)
+        if not eligible:
+            return self.function(origin, rays, boxes)
+        current = key((origin, rays, boxes))
+        if current in self.entries:
+            self.hits += 1
+            self.entries.move_to_end(current)
+            return copy.deepcopy(self.entries[current][0])
+        result = self.function(origin, rays, boxes)
+        self.misses += 1
+        cost = origin.nbytes+rays.nbytes+sum(v.nbytes for b in boxes for v in b[1:])+sum(v.nbytes for v in result.values())+1024+len(boxes)*512
+        self.entries[current] = (copy.deepcopy(result),cost)
+        self.bytes += cost
+        while len(self.entries)>self.maxsize or self.bytes>self.max_bytes:
+            _,(_,size)=self.entries.popitem(last=False)
+            self.bytes -= size
+        return result
+
+    def extra_stats(self):
+        return dict(estimated_entry_bytes=self.bytes,max_entry_bytes=self.max_bytes)
+
+
+class IncrementalGridFieldMemo(GridFieldMemo):
+    """Exact integer nearest-site updates; large changes use the original EDT.
+
+    No finite distance cutoff: deleting a witness invalidates every dependent
+    cell, including distant cells. A KD-tree supplies a remaining witness;
+    integer squared distances and SciPy's float64 sqrt/multiply are retained.
+    """
+    def __init__(self, cls, maxsize=16):
+        super().__init__(cls, maxsize)
+        self.updates = self.changed_cells = self.full_rebuilds = 0
+        self.bytes, self.max_bytes = 0, 64*1024*1024
+
+    def __call__(self, owner, points, resolution=.05):
+        if (type(owner) is not self.cls or type(points) is not np.ndarray or
+                points.dtype != np.float64 or points.ndim != 2 or points.shape[1] != 2 or
+                not len(points) or not np.isfinite(points).all() or
+                type(resolution) is not float or not 0 < resolution < math.inf):
+            return self.function(owner, points, resolution)
+        origin = np.floor((points.min(0)-1.)/resolution)*resolution
+        size = np.ceil((points.max(0)+1.-origin)/resolution).astype(int)+1
+        if np.any(size <= 0) or np.any(size > 4096) or np.prod(size) > 4_000_000:
+            return self.function(owner, points, resolution)
+        if int(np.prod(size))*25 > self.max_bytes:
+            return self.function(owner, points, resolution)
+        indices = np.rint((points-origin)/resolution).astype(int)
+        occupied = np.zeros(tuple(size), bool)
+        occupied[indices[:, 0], indices[:, 1]] = True
+        geometry = key((origin, resolution, tuple(int(x) for x in size)))
+        old = self.entries.get(geometry)
+        if old is not None and np.array_equal(occupied, old['occupied']):
+            self.hits += 1
+            owner.resolution, owner.origin, owner.distance = resolution, origin, old['distance'].copy()
+            self.entries.move_to_end(geometry)
+            return None
+        self.misses += 1
+        additions = np.argwhere(occupied & ~old['occupied']) if old is not None else []
+        affected = None
+        if old is not None:
+            removed = old['occupied'] & ~occupied
+            affected = removed[old['nearest'][0], old['nearest'][1]]
+        if old is not None and len(additions) <= 8 and np.count_nonzero(affected) <= occupied.size//4:
+            from scipy.spatial import cKDTree
+            nearest, squares = old['nearest'].copy(), old['squares'].copy()
+            coordinates = np.indices(occupied.shape, dtype=np.int64)
+            if affected.any():
+                sites = np.argwhere(occupied)
+                query = coordinates[:, affected].T
+                _, index = cKDTree(sites).query(query, eps=0, workers=1)
+                witnesses = sites[index].T
+                nearest[:, affected] = witnesses
+                squares[affected] = np.sum((query.T-witnesses)**2, axis=0)
+            for site in additions:
+                candidate = np.sum((coordinates-site[:, None, None])**2, axis=0)
+                better = candidate < squares
+                squares[better] = candidate[better]
+                nearest[:, better] = site[:, None]
+            changed = squares != old['squares']
+            distance = old['distance'].copy()
+            distance[changed] = np.sqrt(squares[changed].astype(np.float64))*resolution
+            self.updates += 1
+            self.changed_cells += int(changed.sum())
+            owner.resolution, owner.origin, owner.distance = resolution, origin, distance.copy()
+        else:
+            # The original EDT already computes nearest indices internally.
+            # Return both in one pass; retain the original sqrt then multiply.
+            from scipy.ndimage import distance_transform_edt
+            raw_distance, nearest = distance_transform_edt(~occupied, return_indices=True)
+            owner.resolution, owner.origin, owner.distance = resolution, origin, raw_distance*resolution
+            squares = np.sum((np.indices(occupied.shape, dtype=np.int64)-nearest)**2, axis=0)
+            distance = owner.distance.copy()
+            self.full_rebuilds += 1
+        if old is not None:
+            self.bytes -= old['bytes']
+        size_bytes = sum(a.nbytes for a in (occupied,nearest,squares,distance))
+        self.entries[geometry] = dict(occupied=occupied, nearest=nearest,
+            squares=squares, distance=distance, bytes=size_bytes)
+        self.bytes += size_bytes
+        self.entries.move_to_end(geometry)
+        while len(self.entries) > self.maxsize or self.bytes > self.max_bytes:
+            self.bytes -= self.entries.popitem(last=False)[1]['bytes']
+
+    def extra_stats(self):
+        return dict(incremental_updates=self.updates, changed_distance_cells=self.changed_cells,
+                    full_rebuilds=self.full_rebuilds, array_bytes=self.bytes,max_array_bytes=self.max_bytes)
+
+
+class ProbabilityFieldMemo(GridFieldMemo):
+    """Only changed log-odds cells are re-evaluated; geometry stays unchanged."""
+    def __init__(self, cls, maxsize=32):
+        super().__init__(cls, maxsize)
+        self.updates = self.changed_cells = 0
+        self.bytes, self.max_bytes = 0, 64*1024*1024
+
+    def __call__(self, owner, grid):
+        cells = grid.cells
+        if (type(owner) is not self.cls or type(cells) is not dict or not cells or
+                any(type(k) is not tuple or len(k)!=2 or any(type(i) not in (int,np.int64,np.int32) for i in k) for k in cells) or
+                any(type(v) is not float or not math.isfinite(v) or abs(v) > 600 for v in cells.values())):
+            return self.function(owner, grid)
+        keys = np.array(list(cells))
+        lower = keys.min(0)-2
+        shape = tuple(keys.max(0)-lower+3)
+        if np.prod(shape)*8+len(cells)*64 > self.max_bytes:
+            return self.function(owner,grid)
+        geometry = key((grid.resolution_m, lower, tuple(int(x) for x in shape)))
+        old = self.entries.get(geometry)
+        changed = [(k, v) for k, v in cells.items() if old is not None and
+                   (k not in old['cells'] or key(v) != key(old['cells'][k]))]
+        removed = [] if old is None else old['cells'].keys()-cells.keys()
+        if old is not None and len(changed)+len(removed) < len(cells)//2:
+            values = old['values'].copy()
+            for k in removed:
+                values[tuple(np.array(k)-lower)] = .5
+            for k, v in changed:
+                values[tuple(np.array(k)-lower)] = 1/(1+math.exp(-v))
+            owner.resolution, owner.lower, owner.values = grid.resolution_m, lower, values
+            self.hits += 1
+            self.updates += 1
+            self.changed_cells += len(changed)+len(removed)
+        else:
+            self.function(owner, grid)
+            self.misses += 1
+        if old is not None:
+            self.bytes -= old['bytes']
+        size_bytes = owner.values.nbytes+len(cells)*64
+        self.entries[geometry] = dict(cells=dict(cells), values=owner.values.copy(), bytes=size_bytes)
+        self.bytes += size_bytes
+        self.entries.move_to_end(geometry)
+        while len(self.entries) > self.maxsize or self.bytes > self.max_bytes:
+            self.bytes -= self.entries.popitem(last=False)[1]['bytes']
+
+    def extra_stats(self):
+        return dict(incremental_updates=self.updates, changed_probability_cells=self.changed_cells,
+                    estimated_bytes=self.bytes,max_estimated_bytes=self.max_bytes)
+
+
+class GraphLoopMemo:
+    """Retain pure loop results beyond the existing 8192-pair LRU.
+
+    Prepared object identity and actual mutable field bytes are keys. Original
+    GraphCache counters/lazy field construction remain unchanged. No candidate
+    exclusion, score quantization, tie reordering or optimizer change.
+    """
+    def __init__(self, function, maxsize=65536):
+        self.function, self.maxsize = function, maxsize
+        self.entries = OrderedDict()
+        self.hits = self.misses = self.bytes = 0
+        self.max_bytes = 128*1024*1024
+
+    @staticmethod
+    def fields(prepared):
+        def snapshot(field):
+            if field is None:
+                return None
+            h = hashlib.sha256()
+            for name in ('resolution', 'lower', 'values', 'origin', 'distance', 'segments'):
+                if hasattr(field, name):
+                    value = getattr(field, name)
+                    h.update(name.encode())
+                    if type(value) is np.ndarray and not value.dtype.hasobject:
+                        h.update(repr((value.dtype.str, value.shape)).encode())
+                        h.update(value.tobytes())
+                    else:
+                        h.update(repr(key(value)).encode())
+            return h.digest()
+        segments=prepared.segments
+        if type(segments) is not np.ndarray or segments.dtype.hasobject:
+            raise TypeError('unsupported prepared segments')
+        h=hashlib.sha256()
+        h.update(repr((segments.dtype.str,segments.shape,segments.strides)).encode())
+        h.update(segments.tobytes())
+        return (snapshot(prepared._probability), snapshot(prepared._distance),
+                h.digest(), bool(prepared.grid.cells))
+
+    def __call__(self, submap, row, initial, options, *, prepared=None):
+        if prepared is None:
+            return self.function(submap, row, initial, options, prepared=prepared)
+        try:
+            # Cache keys must not retain the Prepared owner (and its grid/fields).
+            signature = (weakref.ref(prepared), bool(submap['grid'].cells), key(row['segments']), key(initial), key(options))
+            hash(signature)
+        except (TypeError, AttributeError):
+            return self.function(submap, row, initial, options, prepared=prepared)
+        saved = self.entries.get(signature)
+        if saved is not None:
+            try:current_fields=self.fields(prepared)
+            except (TypeError,AttributeError):
+                return self.function(submap,row,initial,options,prepared=prepared)
+            if current_fields==saved[2]:
+                self.hits += 1
+                self.entries.move_to_end(signature)
+                return copy.deepcopy(saved[0])
+        result = self.function(submap, row, initial, options, prepared=prepared)
+        self.misses += 1
+        # Lazy construction is part of the original call; key its post-state.
+        # A new signature cannot hit: do not hash large fields before computing.
+        try:fields=self.fields(prepared)
+        except (TypeError,AttributeError):return result
+        size = len(repr(signature)) + len(repr(fields)) + len(repr(result)) + 256
+        if size <= self.max_bytes:
+            if signature in self.entries:
+                self.bytes -= self.entries[signature][1]
+            self.entries[signature] = (copy.deepcopy(result), size,fields)
+            self.entries.move_to_end(signature)
+            self.bytes += size
+            while len(self.entries) > self.maxsize or self.bytes > self.max_bytes:
+                _, (_, removed,_) = self.entries.popitem(last=False)
+                self.bytes -= removed
+        return result
+
+    def extra_stats(self):
+        return dict(estimated_entry_bytes=self.bytes, max_entry_bytes=self.max_bytes)
+
+
+class OwnedEventLog:
+    """Private append-only producer state; snapshots never expose owned rows.
+
+    Arbitrary mutable input lists still use the original full validation. This
+    object is only transferred from a freshly constructed, source-guarded judge.
+    New keys are validated on every append; keys of owned past rows cannot be
+    changed through snapshots. Imported logs keep their full hash/key replay.
+    """
+    def __init__(self, rows, key_function, digest, audit):
+        if type(rows) is not list or len(rows)>1:
+            raise ValueError('fresh private event stream required')
+        self._rows = copy.deepcopy(rows)
+        self._key_function, self._digest, self._audit = key_function,digest,audit
+        self._key = key_function(self._rows[0]['evidence_key']) if self._rows else None
+
+    def __len__(self):
+        return len(self._rows)
+
+    def __deepcopy__(self, memo):
+        return copy.deepcopy(self._rows,memo)
+
+    def append_payload(self, payload, *, evidence_key):
+        current = self._key_function(evidence_key)
+        if 'evidence_key' in payload:
+            raise ValueError('INVALID: payload cannot override its source trial key')
+        if self._rows and current != self._key:
+            raise ValueError('INVALID: raw event stream cannot be rebound')
+        row = {'seq':len(self._rows),'previous_sha256':self._rows[-1]['sha256'] if self._rows else None,
+               **copy.deepcopy(payload),'evidence_key':copy.deepcopy(evidence_key)}
+        encoded = {**row,'sha256':self._digest(row)}
+        self._audit['referee_past_key_checks_avoided'] += len(self._rows)
+        self._audit['referee_owned_appends'] += 1
+        self._rows.append(encoded)
+        self._key = current
+
+
 class NearestCoordinates:
     """SciPy 1.17.1's float64/order0/constant path, with owned output."""
     def __init__(self, original):
@@ -286,6 +600,19 @@ class Installation:
     """One simulation process, reversible patches, guards for optional adapters."""
     def __init__(self, selected=None):
         self.record = receipt(selected)
+        self.scan_mode, self.local_radius = scan_options()
+        self.record.update(scan_speedups=self.scan_mode,
+            local_submap_requested_m=self.local_radius, local_submap_active_m=0.,result_changes_allowed=False)
+        self.referee_mode=os.environ.get(REFEREE_ENV,'off')
+        if self.referee_mode not in ('off','owned-v1'):
+            raise ValueError(f'{REFEREE_ENV}: off or owned-v1 required')
+        self.record.update(referee_event_speedups=self.referee_mode,referee_owned_streams=0,
+                           referee_owned_appends=0,referee_past_key_checks_avoided=0)
+        self.referees=[]
+        self.visibility_mode=os.environ.get(VISIBILITY_ENV,'shared-v1')
+        if self.visibility_mode not in ('off','shared-v1'):
+            raise ValueError(f'{VISIBILITY_ENV}: off or shared-v1 required')
+        self.record['visibility_speedups']=self.visibility_mode
         self.restore = []
         self.caches = {}
         self.record.update(applied=[], fallback=[])
@@ -351,6 +678,14 @@ class Installation:
             self.replace(opencv, 'make_detect_boundaries', bind(opencv.make_detect_boundaries, np=clip))
             self.record['applied'].append('opencv_integer_clip')
         self.integer_clip = clip
+        visibility=self.optional('harness.zone_solo_cyan_visibility')
+        if self.visibility_mode=='shared-v1' and visibility and self.guard(
+                visibility.shadow_depths,'ba113008f9124ab4f156090e64ab21d5fb76745ccd4cf97459c2ba9852a2cb6c','shadow_depths') and self.guard(
+                visibility.box_depth,'96720668382d6ed16c223ce4246239c4faeee892d3f40caa78748039a1b60ecb','box_depth'):
+            cached=ShadowDepthMemo(visibility.shadow_depths,visibility.box_depth)
+            self.aliases(visibility.shadow_depths,cached)
+            self.caches['shared_shadow_depths']=cached
+            self.record['applied'].append('shared_shadow_depths')
         if self.guard(global_start.belief_report,
                 '7c0acfa9ce86e0a26348a6e56f193533f87c5c89428e7ce16a4430d9c4fd0207', 'posterior_summary'):
             summary = memo(global_start.belief_report, selected=DEFAULT)
@@ -411,11 +746,43 @@ class Installation:
             field = rbpf.GridField
             if self.guard(field, '4afaf15e52fcb1894461853bbfac03d6cc103e171cd4e3d2970ea869c4f14e81', 'grid_field_class') and self.guard(field.__init__, 'f3c4b4f4fdd15cc68bcf2b3c953c2e0508e013588b2b8012efe8172f9607db52', 'grid_field') and self.guard(
                     field.query, '6d5691dda6f25897a3879849254bb7715fab8ab9269630662167261540a2db87', 'field_query'):
-                cached = GridFieldMemo(field, maxsize=32)
+                cached = (IncrementalGridFieldMemo(field) if self.scan_mode == 'exact-v2'
+                          else GridFieldMemo(field, maxsize=32))
                 self.replace(field, '__init__', cached.bound())
                 self.caches['grid_field'] = cached
                 self.record['applied'].append('grid_field')
             graph = self.optional('harness.self_pose_graph')
+            if graph and self.scan_mode == 'exact-v2':
+                if self.guard(graph.ProbabilityField.__init__,
+                        '8148fa2572196519e65aabd22a3d900665512d6d311fb0f3b36485aa12ee1e12', 'probability_incremental'):
+                    cached = ProbabilityFieldMemo(graph.ProbabilityField)
+                    self.replace(graph.ProbabilityField, '__init__', cached.bound())
+                    self.caches['probability_field'] = cached
+                    self.record['applied'].append('incremental_probability_field')
+                prepared = self.optional('harness.self_graph_cache')
+                if prepared and self.guard(prepared.Prepared,
+                        'f4c9637df39507cfddaccf4a535cc121cd84a90df7df36380c017fbfd1dc7bfc', 'prepared_fields') and self.guard(
+                        graph.match_loop, 'b8a05f32154916dbb19d719d6c79e42e829cb941e4a0c793c740521429b4c1a9', 'graph_loop_memo'):
+                    cached = GraphLoopMemo(graph.match_loop)
+                    self.aliases(graph.match_loop, cached)
+                    self.caches['graph_loop'] = cached
+                    self.record['applied'].append('exact_graph_loop_results')
+            if graph and self.local_radius and self.guard(graph.apply_pose_graph,
+                    'de728340f100118db9705601b2c3a09bff95c9d65e82e194ba42a11246c580d6', 'local_submap'):
+                original, radius = graph.apply_pose_graph, self.local_radius
+                @wraps(original)
+                def local_graph(rows, poses, *, robot_id, pose_graph='off', options=None, cache=None,
+                                _original=original, _radius=radius):
+                    selected = options
+                    if pose_graph != 'off':
+                        selected = {**(options or {}), 'candidate_distance_m':min(
+                            _radius, (options or {}).get('candidate_distance_m', 6.))}
+                    return _original(rows, poses, robot_id=robot_id, pose_graph=pose_graph,
+                                    options=selected, cache=cache)
+                self.aliases(original, local_graph)
+                self.record['applied'].append('local_submap_candidate_radius')
+                self.record['local_submap_active_m'] = radius
+                self.record['result_changes_allowed'] = True
             if graph and self.guard(graph.ProbabilityField.query,
                     'c53abd7fbb32e9b0d65980743e4b3503635c9c08e486ef007d42d2b3632a4526', 'probability_query'):
                 import scipy
@@ -437,15 +804,44 @@ class Installation:
             if guards and all(self.guard(function, expected, name) for function, expected, name in guards):
                 self.aliases(information.forecast, bind(information.forecast, copy=ForecastCopy))
                 self.record['applied'].append('forecast_evidence_copy')
+        judge=self.optional('harness.zone_study_referee')
+        events=self.optional('harness.zone_referee_replay')
+        if self.referee_mode=='owned-v1' and judge and events and self.guard(judge.Referee,
+                '38faee89bbdff04a4dcf2d00f9f6ef062fac5723a098a4d3956131e240db33f7','referee_class') and self.guard(
+                judge.Referee.__init__,'25ad185b42db18d848e2970e172671369ff3a40734c31015da33665a018d0ff6','referee_init') and self.guard(
+                events.append_event,'bd843fbad2470af3f6ea5d99bc4e1384eea1ae55b8eb157feb9196b038e82c7f','referee_append'):
+            original=judge.Referee.__init__
+            def initialize(owner,*args,**kwargs):
+                original(owner,*args,**kwargs)
+                if type(owner) is judge.Referee and type(owner._events) is list and len(owner._events)<=1:
+                    owner._events=OwnedEventLog(owner._events,events.trial_key,events.digest,self.record)
+                    self.referees.append(weakref.ref(owner))
+                    self.record['referee_owned_streams']+=1
+            self.replace(judge.Referee,'__init__',initialize)
+            original_append=events.append_event
+            def append(rows,payload,*,evidence_key):
+                if type(rows) is OwnedEventLog:
+                    return rows.append_payload(payload,evidence_key=evidence_key)
+                return original_append(rows,payload,evidence_key=evidence_key)
+            self.aliases(original_append,append)
+            self.record['applied'].append('owned_referee_events')
         return self
 
     def snapshot(self):
         return {**self.record, 'integer_clip_fast_calls': getattr(getattr(self, 'integer_clip', None), 'fast_calls', 0),
             'nearest_lookup_fast_calls': getattr(getattr(self, 'nearest_lookup', None), 'fast_calls', 0),
             'caches': {name: dict(hits=c.hits, misses=c.misses,
-            entries=len(c.entries), max_entries=c.maxsize) for name, c in self.caches.items()}}
+            entries=len(c.entries), max_entries=c.maxsize,
+            **(c.extra_stats() if hasattr(c, 'extra_stats') else {})) for name, c in self.caches.items()}}
 
     def close(self):
+        # Restore live judges to the original mutable private list before the
+        # original append function is restored, so close never breaks objects.
+        for reference in self.referees:
+            owner=reference()
+            if owner is not None and type(owner._events) is OwnedEventLog:
+                owner._events=owner._events._rows
+        self.referees.clear()
         for restore in reversed(self.restore):
             restore()
         self.restore.clear()

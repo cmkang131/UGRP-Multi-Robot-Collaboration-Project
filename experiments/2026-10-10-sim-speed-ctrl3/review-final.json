@@ -1,0 +1,24 @@
+{
+  "source": "cb4b872c451de99c883fde13026deb24923ddf6c",
+  "reviewer": "/root/speedctrl2_review",
+  "scope": "read-only source delta; no execution, physics, rendering, performance or cohort completion evidence",
+  "verdict": "source-ready",
+  "remaining_findings": [],
+  "previous_review": "review.json",
+  "additional_fixed": [
+    "P2: ready state after the finite admission deadline must not start an arm",
+    "sleep bounded to remaining admission time; late scheduler wake-up regression"
+  ],
+  "oracle_changed_module_test": {
+    "run": "speedctrl3-tests-cb4b",
+    "module": "tests/test_lazy_camera.py",
+    "passed": 18,
+    "exit_code": 0,
+    "physics_runs": 0
+  },
+  "limitations": [
+    "Pre-arm admission does not prevent an unrelated process from starting during an arm",
+    "Lazy checkpoint resume remains unverified",
+    "Strict control-ledger equivalence failed in preliminary S3 path checking"
+  ]
+}
