@@ -1,0 +1,422 @@
+{
+  "schema": "ugrp.s3_integer_carry.dev.v1",
+  "status": "preregistered_not_executed",
+  "host": "oracle-x86",
+  "bundle_id": "zone-s3-integer-carry-v167",
+  "preregistration": {
+    "workers": 20,
+    "sim_cap_s": 60,
+    "LP_NUM_THREADS": 4,
+    "admission": "1min load<51; MemAvailable>=6GiB, independent Oracle jobs do not block",
+    "runs": [
+      {
+        "name": "s3fix19-off-pair-c0-r1",
+        "case": "pair",
+        "condition": 0,
+        "seed": 14201,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c1-r1",
+        "case": "pair",
+        "condition": 1,
+        "seed": 14202,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c2-r1",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c3-r1",
+        "case": "pair",
+        "condition": 3,
+        "seed": 14204,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c4-r1",
+        "case": "pair",
+        "condition": 4,
+        "seed": 14205,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c5-r1",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c0-r1",
+        "case": "cyan",
+        "condition": 0,
+        "seed": 14201,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c3-r1",
+        "case": "cyan",
+        "condition": 3,
+        "seed": 14204,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c4-r1",
+        "case": "cyan",
+        "condition": 4,
+        "seed": 14205,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c5-r1",
+        "case": "cyan",
+        "condition": 5,
+        "seed": 14206,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-on-pair-c0-r1",
+        "case": "pair",
+        "condition": 0,
+        "seed": 14201,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c1-r1",
+        "case": "pair",
+        "condition": 1,
+        "seed": 14202,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c2-r1",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c3-r1",
+        "case": "pair",
+        "condition": 3,
+        "seed": 14204,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c4-r1",
+        "case": "pair",
+        "condition": 4,
+        "seed": 14205,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c5-r1",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c0-r1",
+        "case": "cyan",
+        "condition": 0,
+        "seed": 14201,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c3-r1",
+        "case": "cyan",
+        "condition": 3,
+        "seed": 14204,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c4-r1",
+        "case": "cyan",
+        "condition": 4,
+        "seed": 14205,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c5-r1",
+        "case": "cyan",
+        "condition": 5,
+        "seed": 14206,
+        "option": "integer_ticks_v1"
+      }
+    ],
+    "criteria": "pair: exactly12 nonzero first-leg carry commands per robot; matching mirrored commands/common timestamps; first-leg static endpoint error<=20mm. Setdown: original s3fix18 floor>=.1N, COM<=25mm, |vz|<=20mm/s, tilt<10deg for>=.20SIM after both full-open; zero physical/host/controller terminal. Cyan: unchanged alignment/grasp/lift/carry>=20mm regression; no pair pulse contract or artificial cyan final-stage bypass.",
+    "second_stage_gate": "on pair6/6 pulse count, endpoint and setdown; cyan carry4/4; zero drop/tilt/HOST_ERROR. No criteria changes after seeing results.",
+    "initial_check_wall_s": 180,
+    "options": {
+      "off": "A canonical floor; original floating windows",
+      "integer_ticks_v1": "A plus integer50ms tick half-open windows; each pulse once; same duration/amplitude/plan/count/GO/hold monitor; cyan toggle is negative control"
+    },
+    "scope": "20runs=10conditions xon/off; repeated DEV tuning conditions, not confirmation"
+  },
+  "diagnosis": {
+    "runs": [
+      {
+        "condition": 0,
+        "planned_pulses": 12,
+        "issued_pulses": 17,
+        "excess_pulses": 5,
+        "excess_calibrated_translation_m": 0.06469360905670689,
+        "command_times_s": [
+          29.3,
+          29.4,
+          29.5,
+          29.7,
+          30.0,
+          30.1,
+          30.2,
+          30.3,
+          30.4,
+          30.5,
+          30.7,
+          31.0,
+          31.1,
+          31.2,
+          31.3,
+          31.4,
+          31.5
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c0-r2/raw",
+        "commands_sha256": "bfc2167872bb09b25db14995a91a52f466ad22791670062ed5050f1ce2fdd2c7"
+      },
+      {
+        "condition": 1,
+        "planned_pulses": 12,
+        "issued_pulses": 17,
+        "excess_pulses": 5,
+        "excess_calibrated_translation_m": 0.06469360905670689,
+        "command_times_s": [
+          28.8,
+          28.9,
+          29.0,
+          29.2,
+          29.5,
+          29.6,
+          29.7,
+          29.8,
+          29.9,
+          30.0,
+          30.2,
+          30.5,
+          30.6,
+          30.7,
+          30.8,
+          30.9,
+          31.0
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c1-r2/raw",
+        "commands_sha256": "bb2ee3c98bbfa476ffe0086343e1406d658f87859d99342327129414fbaf5bae"
+      },
+      {
+        "condition": 2,
+        "planned_pulses": 12,
+        "issued_pulses": 14,
+        "excess_pulses": 2,
+        "excess_calibrated_translation_m": 0.025877443622682756,
+        "command_times_s": [
+          30.3,
+          30.4,
+          30.5,
+          30.7,
+          31.0,
+          31.1,
+          31.2,
+          31.3,
+          31.4,
+          31.5,
+          31.7,
+          32.1,
+          32.3,
+          32.5
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c2-r2/raw",
+        "commands_sha256": "f71e4733b382f17f82a190b0be35b1addef930e5d5ec78bed313601c915dd665"
+      },
+      {
+        "condition": 3,
+        "planned_pulses": 12,
+        "issued_pulses": 16,
+        "excess_pulses": 4,
+        "excess_calibrated_translation_m": 0.05175488724536551,
+        "command_times_s": [
+          30.8,
+          30.9,
+          31.0,
+          31.2,
+          31.5,
+          31.6,
+          31.7,
+          31.8,
+          31.9,
+          32.0,
+          32.2,
+          32.3,
+          32.4,
+          32.6,
+          32.8,
+          33.0
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c3-r2/raw",
+        "commands_sha256": "43ad37546c86e59bef7d288b2ddaff1c8adce0dd7dc2b598acf00fa79982bc27"
+      },
+      {
+        "condition": 4,
+        "planned_pulses": 12,
+        "issued_pulses": 17,
+        "excess_pulses": 5,
+        "excess_calibrated_translation_m": 0.06469360905670689,
+        "command_times_s": [
+          28.3,
+          28.4,
+          28.5,
+          28.7,
+          29.0,
+          29.1,
+          29.2,
+          29.3,
+          29.4,
+          29.5,
+          29.7,
+          30.0,
+          30.1,
+          30.2,
+          30.3,
+          30.4,
+          30.5
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c4-r2/raw",
+        "commands_sha256": "2b2d3c73b724a4e6bbee696ad0a95e1389352fbc2e28d0f000454c81c3b956e1"
+      },
+      {
+        "condition": 5,
+        "planned_pulses": 12,
+        "issued_pulses": 17,
+        "excess_pulses": 5,
+        "excess_calibrated_translation_m": 0.06469360905670689,
+        "command_times_s": [
+          29.8,
+          29.9,
+          30.0,
+          30.2,
+          30.5,
+          30.6,
+          30.7,
+          30.8,
+          30.9,
+          31.0,
+          31.2,
+          31.5,
+          31.6,
+          31.7,
+          31.8,
+          31.9,
+          32.0
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c5-r2/raw",
+        "commands_sha256": "e76047e10891ffa503214df308c87d5b1d5606924ef659b7539e4dfa3b371db4"
+      }
+    ],
+    "size_check": "2\u20135 excess pulses x12.9387mm=25.9\u201364.7mm; endpoint16\u201354mm fits scale; root floating end boundary reissues, not tuned speed"
+  },
+  "next_stage_preregistration": {
+    "status": "conditional_not_executed",
+    "seed_list": [
+      14201,
+      14204,
+      14206
+    ],
+    "cases": [
+      {
+        "name": "s3fix19-multi-left-c0",
+        "condition": 0,
+        "route": [
+          [
+            1.3,
+            0.05
+          ],
+          [
+            1.4518,
+            0.05
+          ],
+          [
+            1.4518,
+            0.21694529519717284
+          ]
+        ]
+      },
+      {
+        "name": "s3fix19-multi-right-c3",
+        "condition": 3,
+        "route": [
+          [
+            1.3,
+            0.05
+          ],
+          [
+            1.4518,
+            0.05
+          ],
+          [
+            1.4518,
+            -0.11694529519717285
+          ]
+        ]
+      },
+      {
+        "name": "s3fix19-multi-three-c5",
+        "condition": 5,
+        "route": [
+          [
+            1.3,
+            0.05
+          ],
+          [
+            1.4518,
+            0.05
+          ],
+          [
+            1.4518,
+            0.21694529519717284
+          ],
+          [
+            1.348290225509269,
+            0.21694529519717284
+          ]
+        ]
+      }
+    ],
+    "criteria": "each static corner<=20mm; retain bilateral grasp/tilt<10deg; both reach second leg, final registered floor settling; horizon60SIM; no runtimeGT",
+    "turn_scope": "static travel direction turns90deg via jointly authorized crab; beam yaw remains fixed. Individual loaded heading turns remain prohibited; actual beam/body rotation is a separate uncalibrated plant, not claimed here.",
+    "option": "integer_ticks_v1+canonical_floor_v1; existing per-segment two-party high-stop andGO",
+    "static_sweep_note": "third route initially rejected wall_divider_2 before prereg/source commit; replaced final +x leg with -x leg; no executed result used"
+  },
+  "references": [
+    {
+      "url": "https://www.gafferongames.com/post/fix_your_timestep/",
+      "scope": "author fixed timestep design and floating precision caveat; integer pulse index is local implementation"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_controllers/blob/master/joint_trajectory_controller/src/trajectory.cpp",
+      "scope": "primary timed trajectory sampler; retain original monitor andcommand-only timing"
+    }
+  ],
+  "local_validation": {
+    "pytest_passed": 20,
+    "files": [
+      "tests/test_s3_integer_carry.py",
+      "tests/test_s3_setdown.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "scope": "pure regression/motorstub and managed read-only plans; no local physics/render/replay"
+  }
+}
