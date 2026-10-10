@@ -86,3 +86,22 @@ def test_composed_rbpf_update_calls_b_window_and_local_map():
     s=g._candidate_audit
     assert s['proposal_calls']>=1 and s['reference_calls']>=s['proposal_calls']
     assert s['candidates_max']<1000 and s['translation_window_m']==.1
+
+
+def test_delivery_keeps_blocked_slots_and_counts_only_measured_uncertainty():
+    import importlib.util
+    from pathlib import Path
+    p=Path(__file__).resolve().parents[1]/'experiments/2026-10-10-own-route-six-seeds/code/deliver.py'
+    spec=importlib.util.spec_from_file_location('egomap63_delivery',p)
+    m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    rows=[]
+    for profile in ('baseline','a','b','c'):
+        for seed in range(63001,63007):
+            r=dict(profile=profile,seed=seed,status='BLOCKED_PREPARE_B_UNOBSERVED',samples=0)
+            if seed==63001:r.update(status='RECORDED',samples=10,over_3sigma=2,over_3sigma_rate=.2,
+                final_error_m=.4,final_error_sigma=4.,B_arrived=False,returned=False,false_declarations=0,contacts={'wall':1,'robot':0})
+            rows.append(r)
+    a=m.aggregate(rows)['a']
+    assert (a['registered'],a['recorded'],a['blocked'],a['frames'],a['over3_frames'],a['end_over3'])==(6,1,5,10,2,1)
+    assert a['error_median_m']==.4 and a['contact_runs']==1
+    assert not m.gates(rows,[63001])['a']['complete_pairs']
