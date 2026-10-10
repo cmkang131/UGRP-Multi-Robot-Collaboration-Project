@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-capture-diagnostic-v160",
+      "version": "7.53.0",
+      "purpose": "Evaluation-only grasp capture grid and deadband pulse diagnostic; no student",
+      "entry": "scripts/run_s3_capture_diagnostic.py",
+      "runner": "scripts.run_s3_capture_diagnostic",
+      "docs": "experiments/2026-10-10-s3-capture-region/README.md",
+      "requires": "committed Oracle x86/OSMesa archive; S3 at most ten simultaneous jobs; no Mac physics",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--kind"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}
