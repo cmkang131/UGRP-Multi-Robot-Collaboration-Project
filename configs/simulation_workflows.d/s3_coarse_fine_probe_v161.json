@@ -1,0 +1,12 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-s3-coarse-fine-probe-v161", "version": "7.54.0",
+    "purpose": "S3 차체 거친 정렬 후 자기 RGB 팔 미세 보정 단계 probe",
+    "entry": "scripts/run_s3_coarse_fine_probe.py", "runner": "scripts.run_s3_coarse_fine_probe",
+    "docs": "experiments/2026-10-10-s3-coarse-fine/README.md",
+    "requires": "committed Oracle x86/OSMesa; maximum ten concurrent; no Mac physics",
+    "output_flag": "--output", "output_kind": "directory", "required_inputs": ["--expected-source-sha"],
+    "side_effect": "local_simulation", "adapter": "managed_legacy_cli"
+  }]
+}
