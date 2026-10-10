@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e-s3-ownroute-v179",
+      "version": "7.72.0",
+      "purpose": "test_route_provider OwnRoute to full S3 beam-to-B transport, never E2E success",
+      "entry": "scripts/run_e2e_s3_route.py",
+      "runner": "scripts.run_e2e_s3_route",
+      "docs": "experiments/2026-10-11-e2e3-s3-route/README.md",
+      "requires": "committed oracle-x86 OSMesa LP4; load<51 memory>=6GiB; persistent runs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--seed"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

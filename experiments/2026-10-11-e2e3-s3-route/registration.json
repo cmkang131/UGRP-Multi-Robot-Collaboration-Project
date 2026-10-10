@@ -1,0 +1,50 @@
+{
+  "schema": "ugrp.dev_registration.v1",
+  "seeds": [
+    61001,
+    61002
+  ],
+  "source": "test_route_provider",
+  "E2E_success_eligible": false,
+  "candidates": [
+    "visual",
+    "recovery"
+  ],
+  "selected": "visual",
+  "route": [
+    [
+      1.275,
+      0.05
+    ],
+    [
+      4.6,
+      0.05
+    ],
+    [
+      4.6,
+      -2.1
+    ]
+  ],
+  "length_m": 5.475,
+  "segment_max_m": 0.85,
+  "cap_sim_s": 900,
+  "wall_cap_s": 18000,
+  "criteria": {
+    "segment_carry": "bilateral finger contacts, height>0.06, actual translation >= planned minus 0.10m, segment completed",
+    "B": "entire actual MuJoCo box-geometry outline inside 0.80 x 1.40m B after bilateral release, stable floor witness >=1s",
+    "drops": 0,
+    "door": "whole beam crosses east edge",
+    "ENOSPC": "HOST_ERROR"
+  },
+  "references": [
+    {
+      "url": "https://docs.wpilib.org/en/latest/docs/software/kinematics-and-odometry/mecanum-drive-kinematics.html",
+      "method": "separate forward, sideways and angular components; existing S3 forbids loaded angular command"
+    },
+    {
+      "url": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/waypoint_follower/",
+      "method": "ordered waypoints with per-waypoint execution; reuse S3 release/regrasp checkpoints"
+    }
+  ],
+  "scope": "S3-only synthetic entrance; legacy authored guard/provider, historical calibration unmeasured on new map; no ownmap or live dialogue success"
+}
