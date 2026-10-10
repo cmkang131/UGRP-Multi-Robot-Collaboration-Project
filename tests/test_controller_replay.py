@@ -368,6 +368,7 @@ def test_interrupted_invoke_waits_for_managed_cli_cleanup(tmp_path,monkeypatch):
     from scripts import benchmark_controller_replay as abba
     monkeypatch.setattr(abba,'source_check',lambda expected:None)
     monkeypatch.setattr(abba,'verify_adapter',lambda *a:None)
+    monkeypatch.setattr(abba.shutil,'disk_usage',lambda _:SimpleNamespace(free=20*2**30))
     events=[]
     class Child:
         def wait(self):

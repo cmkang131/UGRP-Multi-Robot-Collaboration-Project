@@ -54,6 +54,10 @@ def host_guard(expected):
 
 def run_one(args):
     from sim import lazy_camera  # our committed implementation before adapter routing
+    # Ignore an adapter's old pyc files; no untracked cached code in the proof.
+    import tempfile
+    sys.pycache_prefix = tempfile.mkdtemp(prefix='speedctrl3-pycache-')
+    sys.dont_write_bytecode = True
     adapter = ROOT.parent/ADAPTERS[args.kind]
     before = archive_fingerprint(adapter)
     for name in ('sim', 'harness', 'scripts'):
@@ -137,13 +141,16 @@ def behavior_files(path, kind):
     # Direct original bytes, including every retained JPEG. No float rounding,
     # canonicalization or timing-key removal from the control ledgers.
     files = {str(p.relative_to(path)) for p in (path/'robots').rglob('*') if p.is_file()}
-    names = ('student_record.json', 'stage-states.json') if kind == 's3' else (
+    names = ('bundle.json', 'student_record.json', 'stage-states.json') if kind == 's3' else (
+        'bundle.json',
         'own-controller.jsonl', 'own-contacts.jsonl', 'frontend-covariances.jsonl',
         'online-maps.jsonl', 'route-map.json', 'utility-events.json', 'frontend-grid.json',
         'frontend-ledger.json', 'decisions.json', 'heading-decisions.json')
     for name in names:
         if not (path/name).is_file(): raise ValueError('MISSING_BEHAVIOR:'+name)
         files.add(name)
+    if not any(name.endswith('.jpg') for name in files):
+        raise ValueError('MISSING_CAMERA_FRAMES')
     return files
 
 
