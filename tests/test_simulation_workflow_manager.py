@@ -303,6 +303,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-integer-carry-v167": ["--expected-source-sha", "0" * 40],
             "zone-s3-stage-origin-v170": ["--expected-source-sha", "0" * 40],
             "zone-s3-route-resume-v172": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
+            "zone-s3-full-route-v175": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
             "zone-s3-synchronized-start-v165": ["--expected-source-sha", "0" * 40],
             "zone-s4-pair-live-v166": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
             "zone-s4-pair-live-v167": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
