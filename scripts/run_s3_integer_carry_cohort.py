@@ -7,7 +7,9 @@ PLAN=ROOT/'experiments/2026-10-10-s3-integer-carry/summary.json'
 ADMIT=threading.Lock()
 
 
-def commands(plan,sha):
+def commands(plan,sha,attempt=1):
+ plan=json.loads(json.dumps(plan))
+ for r in plan['preregistration']['runs']:r['name']=re.sub(r'-r1$','-r'+str(attempt),r['name'])
  return [(r,[sys.executable,'-m','scripts.run_s3_integer_carry','--expected-source-sha',sha,'--output',f'outputs/{r["name"]}/raw','--case',r['case'],'--condition',str(r['condition']),'--integer-carry',r['option'],'--execute']) for r in plan['preregistration']['runs']]
 
 
@@ -60,8 +62,8 @@ def execute(item,out,sha):
 
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--execute',action='store_true');a=p.parse_args()
- plan=json.loads(PLAN.read_text());items=commands(plan,a.expected_source_sha)
+ p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--attempt',type=int,choices=(1,2),default=1);p.add_argument('--execute',action='store_true');a=p.parse_args()
+ plan=json.loads(PLAN.read_text());items=commands(plan,a.expected_source_sha,a.attempt)
  if not a.execute:print(json.dumps(items));return 0
  if platform.system()!='Linux' or platform.machine()!='x86_64' or ROOT.name!=a.expected_source_sha or not re.fullmatch('[a-f0-9]{40}',a.expected_source_sha) or os.getpriority(os.PRIO_PROCESS,0)!=0:raise ValueError('committed x86 archive and nice0 required')
  if len(items)!=20 or os.environ.get('LP_NUM_THREADS')!='4':raise ValueError('frozen20 worker/LP4 required')
