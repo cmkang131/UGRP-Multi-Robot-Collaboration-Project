@@ -102,29 +102,38 @@
       {
         "seed": 70001,
         "name": "cal-70001",
-        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70001 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70001"
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70001 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70001"
       },
       {
         "seed": 70002,
         "name": "cal-70002",
-        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70002 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70002"
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70002 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70002"
       },
       {
         "seed": 70003,
         "name": "cal-70003",
-        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70003 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70003"
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70003 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70003"
       },
       {
         "seed": 70004,
         "name": "cal-70004",
-        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70004 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70004"
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70004 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70004"
       },
       {
         "seed": 70005,
         "name": "cal-70005",
-        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70005 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70005"
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70005 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data/cal-70005"
       }
-    ]
+    ],
+    "host_contract_fix": {
+      "before": 0.3,
+      "after": 0.35,
+      "axis": "forward",
+      "source": "sim/s2_real_output.py:26",
+      "first_batch": "egomap70-calibration",
+      "first_batch_host_errors": 5,
+      "calibration_gate_unchanged": true
+    }
   },
   "criteria": {
     "legacy_B": "distance <=.20m and current confirmed RGB and bottom pixels, 5 frames",
@@ -147,7 +156,7 @@
   ],
   "registered": 24,
   "thresholds_changed_after_results": false,
-  "calibration_command": "python -m scripts.run_turn_lateral_calibration --mode batch --output outputs/egomap70-calibration/data",
+  "calibration_command": "python -m scripts.run_turn_lateral_calibration --mode batch --output outputs/egomap70-calibration-v2/data",
   "batch_command": "python -m scripts.run_own_route_turn_lateral --mode batch --output outputs/egomap70-batch/data",
   "jobs": [
     {

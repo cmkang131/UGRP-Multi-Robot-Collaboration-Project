@@ -26,7 +26,7 @@ def schedule(seed):
         start = tick
         for j in range(n):
             commands[tick] = dict(kind='mecanum',forward=0.,left=0.,turn=0.,duration_s=.1)
-            commands[tick][axis] = sign*(.35 if axis=='turn' else .3)
+            commands[tick][axis] = sign*.35
             tick += 4
             if kind=='isolated': tick += 36
         blocks.append(dict(kind=kind,axis=axis,sign=sign,n=n,start_tick=start,end_tick=tick))
@@ -47,6 +47,11 @@ def schedule(seed):
 def capture(a):
     from sim.pulse_rotation_audit import PhysicsBackend
     blocks,commands,ticks=schedule(a.seed)
+    from harness.self_pulse_odom import model,profile_key
+    # Reject command vocabulary mismatches before creating a physics backend.
+    for cmd in commands.values():
+        if profile_key(cmd,False) not in model()['profiles']:
+            raise ValueError('UNREGISTERED_CALIBRATION_PRIMITIVE')
     b=frozen_bundle('calibration',ROOT.name)
     b.update(execution_bundle_id=f'egomap70-calibration-{a.seed}',spawn=[3.5,1.1,0.],case_cap_s=ticks/20)
     b['task']['seed']=a.seed
@@ -152,6 +157,12 @@ def batch(a):
                     log_exception='Traceback' in (a.output/f'cal-{seed}.log').read_text())
                 checks.append(check);dump(a.output/'initial-check.json',checks)
             if p.poll() is not None:
+                if seed not in [x['seed'] for x in checks]:
+                    tr=rows(out/'eval_only/trajectory.jsonl')
+                    checks.append(dict(seed=seed,age_s=age,completed_before_180s=True,
+                        progress=json.loads((out/'progress.json').read_text()) if (out/'progress.json').exists() else None,
+                        eval_samples=len(tr),log_exception='Traceback' in (a.output/f'cal-{seed}.log').read_text()))
+                    dump(a.output/'initial-check.json',checks)
                 stream.close();(out/'EXIT').write_text(str(p.returncode)+'\n');running.remove(record);finished.append(dict(seed=seed,exit=p.returncode))
         dump(a.output/'status.json',dict(pending=pending,running=[x[0] for x in running],finished=finished))
         if pending or running:time.sleep(3)

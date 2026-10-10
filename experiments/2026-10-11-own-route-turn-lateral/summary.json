@@ -1,13 +1,15 @@
 {
   "round": "egomap70",
-  "status": "QUEUED_CALIBRATION",
+  "status": "CALIBRATION_HOST_FIX",
   "source_sha": "8938a9c81052be5e93e2374c305cf9b61643d3ee",
   "measurement_source": "971db97cefbe15296c5067ed419e466376f011b2",
   "host": "oracle-x86",
   "calibration": {
     "registered": 5,
-    "started": 0,
-    "completed": 0
+    "started": 5,
+    "completed": 5,
+    "host_errors": 5,
+    "valid": 0
   },
   "evaluation": {
     "registered": 24,
@@ -16,7 +18,7 @@
   },
   "local_tests": {
     "files": 2,
-    "passed": 15
+    "passed": 16
   },
   "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data",
   "references": {
@@ -224,5 +226,10 @@
     "calibration_started": 0,
     "wall_wait_minutes_approx": 25,
     "others_modified": false
+  },
+  "calibration_host_error": {
+    "cause": "REAL primitive speed/duration mismatch: forward .30 instead of registered .35",
+    "retry": "same seeds in fixed single batch v2; no partial data fitted",
+    "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data"
   }
 }

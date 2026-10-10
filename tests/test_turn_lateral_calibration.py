@@ -57,3 +57,16 @@ def test_square_validation_integrates_actual_schedule_and_preserves_model():
     got=model_displacement(cmd,0,4,base)
     np.testing.assert_allclose(got,base['profiles']['0:turn:0.35:0.10']['mean_delta'],atol=1e-12)
     assert json.dumps(base,sort_keys=True)==before
+
+
+def test_every_clock_command_passes_actual_real_port_contract_without_physics():
+    from sim.s2_real_output import RealPrimitivePort
+    from harness.self_pulse_odom import model,profile_key
+    p=object.__new__(RealPrimitivePort)
+    p.min_wheel_cmd='real_v1';p.robot_id='r3'
+    p._set_motors=lambda motors:None;p._actuator_state=lambda:{}
+    for seed in SEEDS:
+        _,commands,_=schedule(seed)
+        for t,cmd in commands.items():
+            assert profile_key(cmd,False) in model()['profiles']
+            assert p.apply(cmd,t/20)['ok']
