@@ -13,7 +13,7 @@
     "harness/zone_s3_proposal_runtime.py": "1cc3aaccb78645246d8eadc37e8479914bd4aedbed3c9ee090287b031d309fd7",
     "scripts/run_s3_alignment_entry_probe.py": "238a84fe5fd09e38c242638ea64eff4ca5d4ec54c2c01d4222e8d5d94ed47ef3",
     "experiments/2026-10-09-s3-no-prior/s3fix9/replay.py": "8b66920268ff4f60a38137f01b5cff627b42a515bf917bfbdb051c8d8b682f73",
-    "experiments/2026-10-09-s3-no-prior/s3fix9/run_replays.py": "e93586a50f17a411c48c7bc8e9a73e9d12a5559d514bf792897f0f116ac40330",
+    "experiments/2026-10-09-s3-no-prior/s3fix9/run_replays.py": "126aaf86253ea2101aa085abd2a13d16954a41b6467f4d21d7953c0b25bbf6f6",
     "experiments/2026-10-09-s3-no-prior/s3fix9/evaluate.py": "ce34a9318403131fd061a7879913214f5a36aa4833cbd811786c13393547d6ff"
   },
   "syntax_checked": true,
@@ -32,14 +32,33 @@
     "elapsed_s": 20.29,
     "scope": "direct global-to100 weighted mode allocation; provider identity; RNG unchanged until handoff"
   },
-  "unstarted_preparation": {
-    "path": "/Users/changmin/projects/ugrp/outputs/s3fix9-20261010/replays-v1",
-    "files": [
-      "waiting.json"
-    ],
-    "inputs_processed": 0,
-    "physics_runs": 0,
-    "owned_wait_driver_stopped": true,
-    "other_processes_stopped": 0
-  }
+  "queue_disk_validation": {
+    "test": "tests/test_s3_replay_queue.py",
+    "passed": 1,
+    "elapsed_s": 0.08,
+    "scope": "fresh 10GiB floor after waiting; existing other-owner lock blocks launch",
+    "controller_changed": false
+  },
+  "unstarted_preparations": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix9-20261010/replays-v1",
+      "files": [
+        "waiting.json"
+      ],
+      "inputs_processed": 0,
+      "physics_runs": 0,
+      "owned_wait_driver_stopped": true,
+      "other_processes_stopped": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix9-20261010/replays-v2",
+      "files": [
+        "waiting.json"
+      ],
+      "inputs_processed": 0,
+      "physics_runs": 0,
+      "owned_wait_driver_stopped": true,
+      "other_processes_stopped": 0
+    }
+  ]
 }

@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import time
@@ -19,6 +20,15 @@ CASES = [('55001', 'ownmap', RAW/'goal-route-motion-audit-v1/seed55001'),
          ('v150', 's3', RAW/'s3-odometry-4c9eb3aa-s14201-v150')]
 
 
+def launch_state():
+    """A long queue must recheck the same 10GiB floor as ugrp_session."""
+    held = agent_lock.status(agent_lock.DEFAULT_ROOT)
+    free = shutil.disk_usage(RAW).free
+    return dict(held=held, free_bytes=free,
+                ready=held is None and free >= 10*1024**3,
+                reason='shared_lock' if held is not None else 'disk_reserve' if free < 10*1024**3 else 'ready')
+
+
 def main():
     p = argparse.ArgumentParser(); p.add_argument('--expected-source-sha', required=True)
     p.add_argument('--output', type=Path, required=True); a = p.parse_args()
@@ -30,15 +40,15 @@ def main():
         for arm in ('n100', 'n500', 'sensor100'):
             key = case+'-'+arm
             while True:
-                held = agent_lock.status(agent_lock.DEFAULT_ROOT)
-                if held is None:
+                state = launch_state()
+                if state['ready']:
                     try:
                         acquired = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch=BRANCH,
                             purpose='s3fix9 saved proposal '+key+'; physics0', pid=os.getpid(),
                             expected_minutes=35, timing_sensitive=True)
                         break
                     except RuntimeError: pass
-                (a.output/'waiting.json').write_text(json.dumps(dict(case=key, at=time.time(), held=held))+'\n')
+                (a.output/'waiting.json').write_text(json.dumps(dict(case=key, at=time.time(), **state))+'\n')
                 if time.monotonic() > deadline: raise TimeoutError('finite shared-lock wait expired')
                 time.sleep(30.)
             try:

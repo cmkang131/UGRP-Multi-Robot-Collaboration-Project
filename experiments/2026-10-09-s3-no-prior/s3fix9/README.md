@@ -37,3 +37,5 @@
 잠금은 speedctrl2의 진행 중 ABBA 뒤에 사용한다. 재생은 직렬·물리0, 물리는 위 짧은 단계만이며 dev_light/GT eval_only/공유 top 미사용/weld off를 유지한다. 실행 소스 초록→커밋→push, CI 대기0, PR416 병합0. ENOSPC는 HOST_ERROR로 기록하며 원본을 덮어쓰거나 지우지 않는다.
 
 실행 전 검증: 변경3파일30PASS/64.87초. 첫 실제 소비자 시험에서 가상 후보2700개를 실제100개 ESS와 곱하는 진단 decorator의 계약 오류를 발견하여, 후보 점수만 같은 순수 우도로 계산하도록 수정했다. 후보 평가가 active-look 트리거 수를 늘리지 않는 회귀를 포함한다. `align_start`의 자세 보존·unknown 자세의 기존 search 복귀·arm 이동 중 대기·실제 port.apply→발행 자세 일치를 시험했다. 번들v154/workflow7.47.0, 디스크 여유15.26GiB(실행 전 조회), replay+probe 새 raw 예산2GiB. [순번 요청](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/424#issuecomment-6094701715)은55003 ABBA4회 종료 경계이며 다른 실행 중단/잠금 해제는 하지 않는다.
+
+대기 중 디스크 여유가11.56GiB까지 감소하여 큐에도 각 자식 실행 직전10GiB 재확인을 추가했다(새 회귀1PASS/0.08초). 기존다른잠금과디스크부족때모두시작하지않고유한대기한다.6755dd6f의제어기·후보상수는그대로이고큐만바뀌었다.두대기준비(v1/v2)는입력0/물리0,waiting.json만보존하며실험실패분모에넣지않는다.
