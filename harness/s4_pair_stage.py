@@ -31,6 +31,15 @@ GO 의사·상대 확인·이탈을 알립니다. structured는 기존 형식의
 고정 안전신호는 네 조건에 동일합니다. 상대의 자유 대화는 상태 정답이 아니며 스스로 확인해야 합니다.
 응답의 자기 영상은 요청 시각부터 10 SIM초 미만만 유효합니다. 이탈/운반 중 unknown/기한 만료는 두 로봇을 정지합니다.'''
 
+HEARTBEAT_PROMPT = '''all_phase_rgb_heartbeat_v2: pair_handshake.own_executor_phase는 자기 발행 명령의
+소프트웨어 단계이며 실제 접촉/성공 판정이 아닙니다. 운반 세션의 모든 단계에서 정상 응답은 동일한 liveness
+heartbeat가 됩니다. 명령 거부와 heartbeat는 별개이며, 거부된 명령은 실행되지 않습니다.
+carry/lift/raise/wait_carry 단계에서는 위의 자기 RGB held/grip_lost/unknown 규칙을 따르십시오.
+lower/open/refix_look/refix_post_look 등 의도적인 내려놓기·재관측 단계에는 잡고 있을 의무가 없으므로
+그 이유만으로 grip_lost/unknown을 보고하지 마십시오. 열린 decision_window에 맞춰 carry_decision 또는
+post_look_decision을 선택하고, 창이 없으면 continue로 자기 명령 진행을 기다리십시오.
+정렬·재집기·운반 중 예상하지 않은 이탈이 자기 RGB에 보이면 abort로 정지하십시오.'''
+
 
 def validate_reply(raw, **kwargs):
     try:
@@ -62,9 +71,10 @@ def plan(action, job, **kwargs):
 
 
 @lru_cache(maxsize=32)
-def fixed_tokens(total, per_actor, seed):
+def fixed_tokens(total, per_actor, seed, heartbeat=False):
     return max(si.pk.count_tokens(si.system_prompt(c, r, cap_window=total, cap_robot=per_actor, seed=seed)
-                                 + '\n\n' + PROMPT) for c in old.CONDITIONS for r in si.ROBOTS)
+                                 + '\n\n' + PROMPT + ('\n\n'+HEARTBEAT_PROMPT if heartbeat else ''))
+               for c in old.CONDITIONS for r in si.ROBOTS)
 
 
 @dataclass(frozen=True)
@@ -135,8 +145,14 @@ class Trial(old.Trial):
         super().snapshot(call)
         if call.actor in hs.PAIR:
             frame = self._snapshots[(call.actor, round(float(call.started_sim_s), 6))]['frame']
+            seen = self.handshake.view(call.actor, call.started_sim_s)
+            if self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT:
+                # Own executor software state only: no measurements or peer state.
+                adapter = self.links[call.actor].stop_adapter
+                ctl = adapter.controller() if adapter is not None else None
+                seen['own_executor_phase'] = getattr(ctl, 'state', None)
             self.pair_snapshots[call.call_id] = dict(requested_at=call.started_sim_s,
-                frame_t=frame.t, frame_sha256=frame.sha256, seen=self.handshake.view(call.actor, call.started_sim_s))
+                frame_t=frame.t, frame_sha256=frame.sha256, seen=seen)
 
     def prepare_call(self, call):
         prepared = super().prepare_call(call)
@@ -146,6 +162,8 @@ class Trial(old.Trial):
         body = json.loads(request['messages'][1]['content'])
         body['pair_handshake'] = state
         system = request['messages'][0]['content'] + '\n\n' + PROMPT
+        if self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT:
+            system += '\n\n' + HEARTBEAT_PROMPT
         user = json.dumps(body, ensure_ascii=False, sort_keys=True)
         request.update(prompt_version='ugrp.s4_pair_prompt.v1', input_sha256=bundled.payload_sha256,
             messages=[dict(role='system', content=system), dict(role='user', content=user)])
@@ -153,13 +171,14 @@ class Trial(old.Trial):
         request['tokens'] = si.pk.request_tokens(system, user, request['images'])
         caps = body.get(si.pk.WINDOW_KEY, {})
         request['billed_tokens'] = si.billing.billed_tokens(request['tokens'], system_billed=fixed_tokens(
-            caps.get('max_utterances', 12), caps.get('max_your_utterances', 6), self.seed))
+            caps.get('max_utterances', 12), caps.get('max_your_utterances', 6), self.seed,
+            self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT))
         return old.s4.zo.PreparedCall(bundled, request, prepared.request_id)
 
     def finish_call(self, call, prepared, raw, **kwargs):
         reply = bind(pair.PairTrial.finish_call, validate_reply=validate_reply)(
             self, call, prepared, raw, robots=si.ROBOTS, **kwargs)
-        if reply.action and reply.action['kind'] == 'carry_decision':
+        if reply.action:
             value = pair.zp.parse(raw) if isinstance(raw, str) else raw
             self.carry_sources[call.call_id] = tuple(value['decision_sources'])
         return reply
@@ -167,7 +186,8 @@ class Trial(old.Trial):
     def _on_action(self, actor, action, sim_s):
         if action['kind'] != 'pair_decision':
             result = super()._on_action(actor, action, sim_s)
-            if actor in hs.PAIR and action['kind'] == 'carry_decision':
+            if actor in hs.PAIR and (action['kind'] == 'carry_decision'
+                    or self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT):
                 call_id = self.scheduler.calls[-1].call_id
                 ack = self.dispatch_log[-1].get('ack') or {}
                 row = self.handshake.renew_carry(actor, action, call_id=call_id,
@@ -187,6 +207,13 @@ class Trial(old.Trial):
                 self, actor, action, sim_s, call.call_id, planner=plan)
         finally:
             link.call_ref = link.response_context = None
+        if self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT:
+            ack = self.dispatch_log[-1].get('ack') or {}
+            row = self.handshake.renew_carry(actor, action, call_id=call.call_id,
+                command_accepted=ack.get('accepted', False),
+                decision_sources=self.carry_sources.get(call.call_id, ()),
+                **self.pair_snapshots[call.call_id], now=sim_s)
+            self.dispatch_log[-1]['carry_lease_renewal'] = copy.deepcopy(row)
 
     def _remember_command(self, actor, call_id, sim_s, plan, ack, kind, arguments, local):
         if plan.api == 'pair_decision':

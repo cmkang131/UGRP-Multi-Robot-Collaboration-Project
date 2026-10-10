@@ -13,13 +13,14 @@ WINDOW_S = 10.
 HANDSHAKE_S = 2 * WINDOW_S  # one fresh-response window for GO, one for ACK
 MONITOR_S = 2.
 CARRY_RENEWAL = 'accepted_carry_reply_v1'
+PHASE_HEARTBEAT = 'all_phase_rgb_heartbeat_v2'
 SIGNAL_DELAY_S = .1
 CHOICES = ('go', 'ack_go', 'held', 'grip_lost', 'unknown')
 
 
 class Handshake:
     def __init__(self, *, carry_lease_renewal='off'):
-        if carry_lease_renewal not in ('off', CARRY_RENEWAL):
+        if carry_lease_renewal not in ('off', CARRY_RENEWAL, PHASE_HEARTBEAT):
             raise ValueError('unknown carry lease renewal')
         self.carry_lease_renewal = carry_lease_renewal
         self.renewals = []
@@ -129,16 +130,25 @@ class Handshake:
 
     def renew_carry(self, rid, action, *, call_id, command_accepted, decision_sources,
                     requested_at, now, frame_t, frame_sha256, seen):
-        """Piggyback liveness on an admitted carry reply to a fresh own-RGB request.
+        """Renew from a released fresh own-RGB reply, never an expired session.
 
-        No timeout change or expired-session revival. Command rejection is not
-        a heartbeat; each endpoint must renew its own current committed epoch.
+        v1 admits carry commands only. v2 uses one liveness rule across phases;
+        loss/unknown still abort separately, and each endpoint renews itself.
         """
         if self.carry_lease_renewal == 'off':
             return None
         own = self.own.get(rid)
-        valid = bool(command_accepted and not self.failure and own and own['committed']
-            and action.get('kind') == 'carry_decision' and action.get('choice') in ('continue', 'set_down')
+        # A normal, validated, released reply proves endpoint liveness even
+        # when its actuator command is refused. It never proves grasp or
+        # overrides a refusal. The v1 admission rule remains reproducible.
+        phase_heartbeat = self.carry_lease_renewal == PHASE_HEARTBEAT
+        eligible = (action.get('kind') in ('continue', 'carry_decision', 'post_look_decision')
+            or action.get('kind') == 'pair_decision' and action.get('choice') == 'held'
+                and command_accepted and own and action.get('epoch') == own['epoch'])
+        admitted_carry = (command_accepted and action.get('kind') == 'carry_decision'
+            and action.get('choice') in ('continue', 'set_down'))
+        valid = bool((eligible if phase_heartbeat else admitted_carry)
+            and not self.failure and own and own['committed']
             and seen.get('phase') == 'carry'
             and seen.get('epoch') == own['epoch']
             and all(math.isfinite(t) for t in (requested_at, now, frame_t))
@@ -153,6 +163,7 @@ class Handshake:
         row = dict(robot_id=rid, call_id=call_id, action=copy.deepcopy(action), at=now,
             requested_at=requested_at, frame_t=frame_t, frame_sha256=frame_sha256,
             epoch=seen.get('epoch'), command_accepted=bool(command_accepted),
+            mode=self.carry_lease_renewal, own_executor_phase=seen.get('own_executor_phase'),
             decision_sources=list(decision_sources), grasp_success_claim=False,
             previous_response_at=previous, accepted=valid,
             reason=None if valid else 'UNADMITTED_OR_STALE_CARRY_RGB')

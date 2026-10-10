@@ -1,0 +1,74 @@
+{
+  "research_result": false,
+  "status": "PREREGISTERED",
+  "height_cause": [
+    {
+      "condition": "no_comm",
+      "N": 11,
+      "bilateral_contact_n": 11,
+      "floor_contact_n": 0,
+      "COM_last_mm": 49.798620282985816,
+      "COM_first_mm": 68.0279049607647,
+      "final_state": {
+        "r1": {
+          "state": "lower",
+          "seg": 0
+        },
+        "r2": {
+          "state": "lower",
+          "seg": 0
+        }
+      },
+      "last_t": 65.65,
+      "unsupported_drop_n": 0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-on-no_comm-s601-v169/raw",
+      "sha256": {
+        "eval_only/referee_truth.jsonl": "b24d0b40b5bda8d25daf2cbc8296d27608268d3c648c1b47d50f25b8906980b2",
+        "eval_only/contacts.jsonl": "e18a38c72966fde74b5b754a540f74359ed837ac25d598a28e01cc33ff8969b8",
+        "pair-controller-states.jsonl": "b4620f0481f41a5016d6c1dfeb714ad7d027a73ddd4f8ab2b2776ec8f828f208"
+      }
+    },
+    {
+      "condition": "leader_ko",
+      "N": 11,
+      "bilateral_contact_n": 11,
+      "floor_contact_n": 0,
+      "COM_last_mm": 47.48900539506566,
+      "COM_first_mm": 69.74831713101099,
+      "final_state": {
+        "r1": {
+          "state": "lower",
+          "seg": 0
+        },
+        "r2": {
+          "state": "lower",
+          "seg": 0
+        }
+      },
+      "last_t": 69.8,
+      "unsupported_drop_n": 0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-on-leader_ko-s601-v169/raw",
+      "sha256": {
+        "eval_only/referee_truth.jsonl": "a2fa54e95ef22b00fb1d138e8602ffd40b8b219c919f6f34f515c1d4825da518",
+        "eval_only/contacts.jsonl": "9be82e454a9b580e07539511ce6ff855f6c85f43fc86b48a466ddb2c427d3982",
+        "pair-controller-states.jsonl": "1d2c49348326eee05a713c11154cad0d015a90a0c83869b2c004bad26d6f65fb"
+      }
+    }
+  ],
+  "offline_guard_replay": [
+    {
+      "condition": "no_comm",
+      "frames": 1267,
+      "new_drop_n": 0,
+      "height_reference": "COM from saved referee truth; origin unavailable, ignored in predicate"
+    },
+    {
+      "condition": "leader_ko",
+      "frames": 1350,
+      "new_drop_n": 0,
+      "height_reference": "COM from saved referee truth; origin unavailable, ignored in predicate"
+    }
+  ],
+  "batch_plan": "plan.json",
+  "source_sha": null
+}
