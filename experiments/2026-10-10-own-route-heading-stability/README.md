@@ -38,3 +38,39 @@
 - `harness/path_heading_stability.py`: S3 SettleGate와 latch 규칙을 공통 어댑터로 추출. 원형 저역통과 후 기존 `own_map_heading.command → select_waypoint → select`를 인스턴스 전용 binding으로 호출한다. profile/예측/충돌 검사·dev_light는 기존 Host가 그대로 소유한다. off는 설치 자체 identity; 도착 권한을 latch가 부여하지 않는다.
 - `scripts/run_own_route_heading_stability.py`: 기존 egomap64 runner의 체크포인트복원 직후만 on설치. 기존1257모듈 및 기존실행기 바이트는 변경0; 새 어댑터에서 wall alarm만7873초로 바인딩하고 번들에 근거를 남긴다. 스모크8SIM은 같은 공식413wall초.24명령/10슬롯/6GiB입장/전체terminal후채점 고정.
 - 변경 관련3파일 **28시험 통과(1.70s)**: off 원본 명령/로그 bytes, 경계 히스테리시스, ±π 필터, 새관측/정착, 실제 Host 공유펄스계약, 실제 runner wrapper 설치·alarm,24조건과 원본옵션 보존. Mac 물리/재생0. 실행 직전 origin 재확인: S3 ad844d13 그대로, 공유 selector 새변경 없음.
+
+### 추가 분해(저장 JSON만, 물리 설정 변경0)
+
+목표방위 항을 다시 고정 이전 waypoint에 대한 자기 XY 이동 효과와 waypoint 갱신 효과로 나눴다. 각 단계에서 동일한 atan2/wrap 대수차를 사용한다.
+
+|seed|조건|반전시 목표방위 변화 중앙(°)|yaw innovation 중앙(°)|추정−GT yaw변화 중앙(°)|carrot거리 중앙(m)|
+|---|---|---:|---:|---:|---:|
+|63001|a|34.93|3.24|3.20|0.075|
+|63001|baseline|71.94|0.89|0.81|0.074|
+|63002|a|27.81|2.45|2.40|0.071|
+|63002|baseline|26.90|0.92|0.91|0.076|
+|63003|a|26.77|1.03|1.02|0.078|
+|63003|baseline|27.29|2.10|2.16|0.077|
+|63004|a|27.77|3.18|3.33|0.079|
+|63004|baseline|35.77|1.36|1.25|0.077|
+|63005|a|56.40|2.51|2.64|0.077|
+|63005|baseline|37.49|1.94|1.90|0.076|
+|63006|a|29.29|3.01|3.13|0.081|
+|63006|baseline|27.91|2.42|2.37|0.076|
+
+baseline 목표방위 우세 반전 내부: waypoint 갱신 우세 350, 자기 XY 이동 우세 352.
+
+a 목표방위 우세 반전 내부: waypoint 갱신 우세 224, 자기 XY 이동 우세 330.
+
+## 인프라 입력 소실·복구 등록(본 정책 결과 개봉 전)
+
+13:2x UTC, 입장 시24개 SHA검증을 통과했던 서버 `egomap63-batch` 입력 경로가 사라져 대기5개가 `FileNotFoundError`/`HOST_ERROR_NO_RESULT`로 물리 시작 전 종료됐다. 같은 시각 여유 공간 약10→23GiB 증가를 관측했으나 **제거 주체/원인은 미확인**이다. 이 작업의 삭제/다른 작업 종료0. 이미 진행 중인 물리19개는 그대로 두고, 원래 실패5개 로그도 보존한다.
+
+- 영향: **63005/a/on 및63006/baseline/off,on·a/off,on**. result/own-controller 파일이 생성되지 않아 물리0임을 별도 admission으로 검사한다.
+- 로컬 보존 원본에서 prepare63005(40MiB)·63006(32MiB)를 `rsync --ignore-existing`로 원래 서버 경로에 복구했다. 두 체크포인트의 원래 SHA 및 각각29개 파일/스트림 prefix SHA 일치. 새로운 prepare·튜닝·GT 입력0. [공유 알림](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/416#issuecomment-6097908619).
+- 최초 묶음 전체 terminal 뒤, **미시작5슬롯만 한 묶음**으로 `egomap65-input-recovery`에 재제출한다. 물리 child는 원래 **4f759965ca00d4ae29ec9419083a8dca62cfb736** checkout/venv/CLI 인자/seed/옵션/7873wall상한 그대로, 출력 경로만 새 폴더. 새 orchestrator SHA와 child SHA를 구분한다. 추가 smoke0. 유효 물리 재시험0, 계획된 물리총수24 그대로.
+- `scripts/retry_own_route_heading_inputs.py`는 정확히 위5개·기존FileNotFoundError·물리0·복구파일존재·기존전체종료를 요구한다. 메모리6GiB 대기,동시5≤10. 이 복구도 실패하면 추가 재시도하지 않는다. 결과는 등록조건24와 제출시도29(최초HOST5 포함)를 모두 보고하고 실패행을 대체/삭제하지 않는다. 정책 성능을 보고 재실행 대상을 고른 것이 아니다.
+
+- 복구/전달 변경 관련3파일23시험 통과(1.35s): 정확한5개 미시작 조건만 허용, 진행·유효물리 대체거부, 4그룹 각각6분모, 서버/로컬hash 검사. 복구 child의 절대출력 경로를 새폴더로 고정했다. 원래checkpoint가 요구한 source import 파일 누락0도 확인. 물리 설정 변경0.
+
+- 사후 인프라 확인: 서버 `runs/SUPERVISOR-NOTES.txt`의 **2026-10-10T13:11:43Z** 기록은 `egomap63-batch`·`egomap64-batch`를 Mac rsync-c 동일성 확인 후 중복본 정리했다고 명시한다. 따라서 미확인이던 경로 소실 원인은 보존 정리와 실행 입력 의존성의 충돌로 확인됐다. Mac 원본은 온전하고, 이 작업의 삭제는0이다. 이후 archive 명령으로 옮겨진 eg63/64 smoke도 자기 결과 로컬본을 보존한다. 진행 중 참조 입력은 완료 run이어도 보존해야 한다.

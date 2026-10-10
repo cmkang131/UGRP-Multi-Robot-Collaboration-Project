@@ -24,8 +24,9 @@ def audit(p):
         xa,pa,ba,ya,ea=geometry(a);xb,pb,bb,yb,eb=geometry(b)
         dp=a['predicted_delta'][2];dy=wrap(yb-ya);db=wrap(bb-ba)
         innovation=wrap(dy-dp)
+        same_target_bearing=math.atan2(pa[1]-xb[1],pa[0]-xb[0])
         row=dict(t=b['t'],heading_error_before=ea,heading_error_after=eb,
-            target_bearing_change=db,estimated_yaw_change=dy,predicted_yaw=dp,yaw_innovation=innovation,
+            target_bearing_change=db,own_xy_bearing_component=wrap(same_target_bearing-ba),waypoint_bearing_component=wrap(bb-same_target_bearing),estimated_yaw_change=dy,predicted_yaw=dp,yaw_innovation=innovation,
             waypoint_shift_m=math.dist(pa,pb),carrot_distance_m=math.dist(xa,pa))
         if round(a['t'],6) in gt and round(b['t'],6) in gt:
             gy=wrap(gt[round(b['t'],6)]['robot_yaw_rad']-gt[round(a['t'],6)]['robot_yaw_rad'])
@@ -41,6 +42,7 @@ def audit(p):
         reversal_abs_target_delta_rad=stats([abs(r['target_bearing_change']) for r in flips]),
         reversal_abs_yaw_innovation_rad=stats([abs(r['yaw_innovation']) for r in flips]),
         reversal_abs_est_minus_actual_yaw_rad=stats([abs(r['est_minus_actual_yaw_change']) for r in flips if 'est_minus_actual_yaw_change' in r]),
+        reversal_target_subcomponent_dominance=dict(Counter('waypoint_update' if abs(r['waypoint_bearing_component'])>abs(r['own_xy_bearing_component']) else 'own_xy_motion' for r in flips if r['dominant_error_change']=='target_bearing')),
         reversal_waypoint_shift_m=stats([r['waypoint_shift_m'] for r in flips]),
         reversal_carrot_distance_m=stats([r['carrot_distance_m'] for r in flips]),
         turn_error_smaller_than_one_pulse=len(near),min_pulse_rad=stats([abs(r['predicted_yaw']) for r in allpairs]),
