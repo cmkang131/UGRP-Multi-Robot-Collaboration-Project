@@ -84,20 +84,25 @@ def run(args):
     if len(source)!=40 or any(v not in '0123456789abcdef' for v in source):raise ValueError('COMMITTED_ARCHIVE_SHA_REQUIRED')
     if out.exists():raise ValueError('PRESERVE_EXISTING_OUTPUT')
     b=bundle(args.seed,source,args.profile,args.mode)
+    schedule_option=getattr(args,'stage_schedule','off')
+    schedule=None
+    if schedule_option!='off':
+        from scripts.own_route_budget_schedule import Schedule,admit_checkpoint
+        admit_checkpoint(args.checkpoint,args.seed,schedule_option,ROOT)
     from sim.goal_route_assets import PhysicsBackend,xml_preflight
     receipt,_=xml_preflight(b,args.seed)  # no model created before XML admission
     with server_slot() as slot:
         started=time.monotonic();backend=c=None;result=dict(status='HOST_ERROR',host='oracle-x86',source_sha=source,seed=args.seed,
             profile=args.profile,mode=args.mode,slot=slot,model_calls=0,loadavg_start=list(os.getloadavg()),platform=platform.platform(),stage_only=args.mode!='full')
         def deadline(*_):raise TimeoutError('REGISTERED_HOST_BUDGET')
-        signal.signal(signal.SIGALRM,deadline);signal.alarm(3600 if args.mode=='full' else 1800)
+        signal.signal(signal.SIGALRM,deadline);signal.alarm(3600 if args.mode=='full' or schedule_option!='off' else 1800)
         try:
             from harness.active_wall_vision import observe
             from scripts.run_wall_servo_stiffness import arm
             if args.mode in ('stage','smoke_resume'):
                 if args.checkpoint is None:raise ValueError('CHECKPOINT_REQUIRED')
                 backend,c,original_start,tick,cp=checkpoint_load(args.checkpoint.resolve(),out)
-                if cp['code']['head']!=source:raise ValueError('STAGE_SOURCE_MISMATCH')
+                if cp['code']['head']!=source and schedule_option=='off':raise ValueError('STAGE_SOURCE_MISMATCH')
                 result['checkpoint']=dict(path=str(args.checkpoint.resolve()),sha256=cp['sha256'],source=cp['code']['head'],sim_s=cp['sim_s'])
                 install(c.explorer.memory.self_map,**PROFILES[args.profile]);initial_tick=tick
             else:
@@ -109,12 +114,18 @@ def run(args):
                 continuous.base.install_profile(explorer.memory.self_map,profile='egomap27_wide')
                 install(explorer.memory.self_map,**PROFILES[args.profile]);c=continuous.controller(explorer);tick=initial_tick=0
             start=backend.now;end=start+b['case_cap_s'];backend.set_deadline(end)
+            if schedule_option!='off':
+                schedule=Schedule(c,start,option=schedule_option)
+                result['stage_schedule']=schedule_option
             result.update(start_sim_s=start,original_start_sim_s=original_start)
             dump(out/'bundle.json',b);dump(out/'preflight.json',receipt)
             entered=False;last_revision=None
             while backend.now<=end+1e-8:
                 t=backend.now
-                if args.mode=='stage' and t-start>=60 and not entered:
+                if schedule is not None:
+                    schedule.before_frame(c,t,enter_return)
+                    end=min(end,schedule.deadline)
+                elif args.mode=='stage' and t-start>=60 and not entered:
                     enter_return(c,t);entered=True
                 obs,rgb=backend.capture()['r3']
                 if tick>=10:
@@ -123,6 +134,7 @@ def run(args):
                     frame_hash=hashlib.sha256(image.read_bytes()).hexdigest()
                     cmd,trace=c.receive(robot_id='r3',t=t,frame_id=obs['frame_id'],rgb=rgb,servo=SEARCH,observation=detection,
                         frame_sha256=frame_hash,own_range=backend.own_range())
+                    if schedule is not None:cmd,trace=schedule.after_frame(c,t,cmd,trace)
                     backend._append('own-controller.jsonl',trace);backend._append('own-contacts.jsonl',dict(t=t,frame_id=obs['frame_id'],**detection))
                     g=c.explorer.memory.self_map
                     backend._append('frontend-covariances.jsonl',dict(t=t,frame_id=obs['frame_id'],pose=list(g.odom.pose),covariance=g.odom.covariance.tolist()))
