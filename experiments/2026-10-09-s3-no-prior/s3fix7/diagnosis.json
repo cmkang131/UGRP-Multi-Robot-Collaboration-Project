@@ -1,0 +1,111 @@
+{
+  "source": "3ec2d781789522a3f155eb81dd03f5682731e530",
+  "report_path": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v151-report/smoke-report.json",
+  "report_sha256": "d72593f590dad631f0065dcb982a712fd8c917fe75ecde68a3f8efb1cb70a68e",
+  "robots": {
+    "r1": {
+      "beam_observations": 0,
+      "grasp_targets": 0,
+      "relook_count": 8,
+      "relook_reasons": {
+        "align_entry": 1,
+        "fix_gap": 7
+      },
+      "first_relook": {
+        "robot_id": "r1",
+        "event": "align_relook_trigger",
+        "sim_s": 543.3,
+        "reason": "align_entry",
+        "count": 1,
+        "fix_age_s": null,
+        "std_xy_m": 0.024701319656892887,
+        "std_yaw_rad": 0.026085156213177318
+      },
+      "last_position": {
+        "t_sim_s": 922.55,
+        "estimate_t": 922.39,
+        "elapsed_from_first_frame_s": 921.25,
+        "xy_error_m": 0.17473940996124526,
+        "yaw_error_deg": 0.3392356860279829,
+        "sigma_xy_m": 0.024701319656892887,
+        "sigma_yaw_deg": 1.494569358954517,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 922.39,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": true,
+          "connected_modes": 1,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 922.55
+        },
+        "connected_modes": 1
+      }
+    },
+    "r2": {
+      "beam_observations": 0,
+      "grasp_targets": 0,
+      "relook_count": 8,
+      "relook_reasons": {
+        "align_entry": 1,
+        "fix_gap": 7
+      },
+      "first_relook": {
+        "robot_id": "r2",
+        "event": "align_relook_trigger",
+        "sim_s": 543.3,
+        "reason": "align_entry",
+        "count": 1,
+        "fix_age_s": 11.64,
+        "std_xy_m": 0.005485558540121379,
+        "std_yaw_rad": 0.007771721520845091
+      },
+      "last_position": {
+        "t_sim_s": 922.55,
+        "estimate_t": 922.39,
+        "elapsed_from_first_frame_s": 921.25,
+        "xy_error_m": 0.3277959956243759,
+        "yaw_error_deg": 0.8726922214438375,
+        "sigma_xy_m": 0.005485558540121379,
+        "sigma_yaw_deg": 0.44528684269541713,
+        "accurate": false,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 922.39,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": true,
+          "connected_modes": 2,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 922.55
+        },
+        "connected_modes": 2
+      }
+    }
+  },
+  "v149_beam_contact": {
+    "source": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/forward-audit-v2/v149-pulses.json",
+    "sha256": "2786bf7b1296788bab2478ec9f9c32f8fd8e5e22d1a515cdcde023fe26108020",
+    "count": 34,
+    "forward_count": 254,
+    "first_t": 102.4,
+    "last_t": 119.2,
+    "pairs": [
+      "cargo_beam_1__bar|r2__v3_wheel_fl_roller_0_body_contact",
+      "cargo_beam_1__bar|r2__v3_wheel_fl_roller_1_body_contact",
+      "cargo_beam_1__bar|r2__v3_wheel_fl_roller_2_body_contact",
+      "cargo_beam_1__bar|r2__v3_wheel_fl_roller_3_body_contact",
+      "cargo_beam_1__bar|r2__v3_wheel_fl_roller_4_body_contact",
+      "cargo_beam_1__bar|r2__v3_wheel_fl_roller_5_body_contact",
+      "cargo_beam_1__bar|r2__v3_wheel_fl_roller_6_body_contact",
+      "cargo_beam_1__bar|r2__v3_wheel_fl_roller_7_body_contact",
+      "cargo_beam_1__bar|r2__v3_wheel_fl_roller_8_body_contact"
+    ],
+    "phase": "approach, before approach GO/align; see s3fix4 README",
+    "same_immediate_cause": false,
+    "interpretation": "coarse PF approach contacted beam; subsequent v151 local RGB servo was never reached. Not caused by the RGB alignment law."
+  }
+}

@@ -1,0 +1,689 @@
+{
+  "probe-pair-B-9a57581f": {
+    "raw": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/probe-pair-B-9a57581f",
+    "source_sha": "9a57581fead861fb27c1b7fe7260eb6d6c0f7337",
+    "case": "pair",
+    "option": "off",
+    "status": "DEV_STAGE_FINISHED",
+    "wall_s": 180.58316850004485,
+    "sim_s": 60.0,
+    "actual_stop": null,
+    "thresholds_changed": false,
+    "gt_use": "post-run evaluation only; setup is separately labelled reconstruction",
+    "input_hashes": {
+      "result.json": "575573232e9e37b9b475fe8a18fbed0d0c360b590c8beb0f1f1e11ca21db6b31",
+      "bundle.json": "12673ba1f32c3aa16f45e9d2c025666105ecc24320273161d37fc2200068dc8d",
+      "stage-states.json": "4ae375b86ea2cfa66efbfe6bde984530563972502393c89d375a69dc13574826",
+      "student_record.json": "2a12fdaabe7d372ddafcc4f8bf4d062bf508f5ce8de10c5d50322cd0ea20782e"
+    },
+    "cargo": {
+      "cyan_1": {
+        "held_samples": 0,
+        "max_com_z_m": 0.01589224457978401,
+        "samples": 1201
+      },
+      "beam_1": {
+        "held_samples": 0,
+        "max_com_z_m": 0.015892244579783835,
+        "samples": 1201
+      }
+    },
+    "frame_command_mismatches": {
+      "r1": 0,
+      "r2": 0,
+      "r3": 0
+    },
+    "input_contract_valid": true,
+    "finger_contacts_eval_only": {
+      "r1": {
+        "left": 0,
+        "right": 0,
+        "both": 0,
+        "both_after_close": 0,
+        "last_both": false
+      },
+      "r2": {
+        "left": 0,
+        "right": 0,
+        "both": 0,
+        "both_after_close": 0,
+        "last_both": false
+      }
+    },
+    "exit_reason": "probe_horizon",
+    "all_stage_pass": false,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "0e8dc8ac8849fde1b9103543742c3eb992af7cbd8cb6aa3562955940ea8ead27"
+    },
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 58,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "local_would_stop": {}
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "local_would_stop": {}
+      }
+    },
+    "pair_would_stop": {
+      "r1:pair.admission:SELF_UNCERTAIN": 2,
+      "r2:pair.admission:SELF_UNCERTAIN": 2,
+      "r1:align.rgb_continue:POSE_UNCERTAIN": 422,
+      "r2:align.rgb_continue:POSE_UNCERTAIN": 166,
+      "r1:pair.before_control:POSE_UNCERTAIN": 1190,
+      "r2:pair.before_control:POSE_UNCERTAIN": 1190
+    },
+    "frame_summary": {
+      "r1": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 52,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r1/rgb/01197.jpg",
+          "frame_sha256": "609cbde9e5e3dfe1044486ced36c6630a160283efd9d4148cfaf5dc34f2bcf62",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.005107292092051657,
+            0.00021608708772154526,
+            0.10951589922575262
+          ],
+          "pixel_error_xy": [
+            -0.7891719870095244,
+            -15.697169068071275
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              286.8370830951886,
+              357.7221020471948
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [],
+          "eval_delta_forward_m": -6.731457272498454e-07,
+          "eval_delta_left_m": 4.382883641330523e-08,
+          "eval_delta_yaw_rad": -6.007536874630404e-07,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 58,
+        "data_sha256": "50b641a57ef86859914aeddaa9dadc09dea47b295f67768d86b7eccd547acb07",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 144,
+        "reasons": {
+          "BAND_VISIBLE": 144
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 138,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r2/rgb/01197.jpg",
+          "frame_sha256": "00175a078ddc3af371b49457b365688dfcccc237c4d7742b6e42e0e76158bbc8",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.02308678977623696,
+            0.006307624637312463,
+            0.26879524153972156
+          ],
+          "pixel_error_xy": [
+            -20.899471112531785,
+            -67.80639089979974
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              266.7267839696663,
+              305.61288021546636
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": -0.00014409206601594416,
+          "eval_delta_left_m": -0.0004371865279750937,
+          "eval_delta_yaw_rad": 0.09839818559026801,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "d418cd81915381e1f7bb0983e42974c6a71bcba0d0c103b3684c5dc4263c9659",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "video": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/delivery/views/probe-pair-B-9a57581f/execution.mp4",
+      "sha256": "6b06049b41f18cb7c177a088d09d682035b7db128f64a89cf27f178a2dddea36",
+      "fps": 20.0,
+      "frames": 300,
+      "duration_s": 15.0,
+      "playback": 4,
+      "source": "saved own RGB only"
+    }
+  },
+  "probe-pair-N-9a57581f": {
+    "raw": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/probe-pair-N-9a57581f",
+    "source_sha": "9a57581fead861fb27c1b7fe7260eb6d6c0f7337",
+    "case": "pair",
+    "option": "visual_pose_mpc_v1",
+    "status": "DEV_STAGE_FINISHED",
+    "wall_s": 180.97813708300237,
+    "sim_s": 60.0,
+    "actual_stop": null,
+    "thresholds_changed": false,
+    "gt_use": "post-run evaluation only; setup is separately labelled reconstruction",
+    "input_hashes": {
+      "result.json": "39d07288ff7a3d53ad8c9fd405f283dfda2ef83ac8e654b3b26b95d2d93489dd",
+      "bundle.json": "d9ef9530ec608ad8aac78ea2a69826531bef44b3a7433309ccd2d1c10198a873",
+      "stage-states.json": "4ae375b86ea2cfa66efbfe6bde984530563972502393c89d375a69dc13574826",
+      "student_record.json": "c0015c86e694cbe15dffc8fd0916f9c4ba7cccebe0875b310d513168e763aacb"
+    },
+    "cargo": {
+      "cyan_1": {
+        "held_samples": 0,
+        "max_com_z_m": 0.01589224457978401,
+        "samples": 1201
+      },
+      "beam_1": {
+        "held_samples": 0,
+        "max_com_z_m": 0.015892244579783835,
+        "samples": 1201
+      }
+    },
+    "frame_command_mismatches": {
+      "r1": 0,
+      "r2": 0,
+      "r3": 0
+    },
+    "input_contract_valid": true,
+    "finger_contacts_eval_only": {
+      "r1": {
+        "left": 0,
+        "right": 0,
+        "both": 0,
+        "both_after_close": 0,
+        "last_both": false
+      },
+      "r2": {
+        "left": 0,
+        "right": 0,
+        "both": 0,
+        "both_after_close": 0,
+        "last_both": false
+      }
+    },
+    "exit_reason": "probe_horizon",
+    "all_stage_pass": false,
+    "artifact_verification": {
+      "files": 3635,
+      "all_hashes_match": true,
+      "manifest_sha256": "a34bf309d5f50822517b8d0ff4d9df972250587334830665d5fc88cfad0b23ad"
+    },
+    "robots": {
+      "r1": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "local_would_stop": {}
+      },
+      "r2": {
+        "hover": null,
+        "descent": null,
+        "close": null,
+        "stage_pass": false,
+        "failure": "probe_horizon",
+        "moving_commands": 144,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 144,
+        "beam_visible": 144,
+        "local_would_stop": {}
+      }
+    },
+    "pair_would_stop": {
+      "r1:pair.admission:SELF_UNCERTAIN": 2,
+      "r2:pair.admission:SELF_UNCERTAIN": 2,
+      "r1:align.rgb_continue:POSE_UNCERTAIN": 166,
+      "r2:align.rgb_continue:POSE_UNCERTAIN": 166,
+      "r1:pair.before_control:POSE_UNCERTAIN": 1190,
+      "r2:pair.before_control:POSE_UNCERTAIN": 1190
+    },
+    "frame_summary": {
+      "r1": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 74,
+        "reasons": {
+          "BAND_VISIBLE": 74,
+          "BAND_CLIPPED": 70
+        },
+        "forward_reversals": 139,
+        "turn_reversals": 0,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r1/rgb/01197.jpg",
+          "frame_sha256": "9cfe7b0df91f9c85b4b1594dd42858f95c84fdfe26d541a330a46196a3b68720",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.0033527914702090322,
+            0.04356943800861354,
+            0.3624510417020108
+          ],
+          "pixel_error_xy": [
+            -148.58010930597356,
+            -13.119154132041388
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              139.04614577622453,
+              360.3001169832247
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": 0.009722750156584204,
+          "eval_delta_left_m": 0.00020843019562904542,
+          "eval_delta_yaw_rad": -0.0023891534148082205,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "68dde4643057a898a3a7b22b14ec92b4dfb0f231d9b635bbaced71df90203724",
+        "coverage": "all actual controller beam observation decisions"
+      },
+      "r2": {
+        "rows": 144,
+        "detected": 144,
+        "tolerance_hit": 0,
+        "end_visible_count": 88,
+        "reasons": {
+          "BAND_VISIBLE": 88,
+          "BAND_CLIPPED": 56
+        },
+        "forward_reversals": 98,
+        "turn_reversals": 0,
+        "last": {
+          "t": 62.2,
+          "frame": "robots/r2/rgb/01197.jpg",
+          "frame_sha256": "1d8c35418a248fb427e1aaec7a99fe64b42e81dc999ef2d6c4ccf37029cec997",
+          "visible": true,
+          "end_visible": true,
+          "reason": "BAND_VISIBLE",
+          "errors_m_m_rad": [
+            0.003279317130414877,
+            0.023282063249204173,
+            0.3526821334286835
+          ],
+          "pixel_error_xy": [
+            -80.70179731053682,
+            -10.818153429302868
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              206.92445777166128,
+              362.60111768596323
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [
+            {
+              "t": 62.2,
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            }
+          ],
+          "eval_delta_forward_m": 0.01065907385481832,
+          "eval_delta_left_m": 1.789694366584457e-05,
+          "eval_delta_yaw_rad": 0.009175032377220838,
+          "eval_interval_s": 0.14999999999999858
+        },
+        "command_frames": 144,
+        "data_sha256": "98e1ce6acff9cd1f59cea1d2e2b25e1750eabb5c132e2c9fab059d7a784c2465",
+        "coverage": "all actual controller beam observation decisions"
+      }
+    },
+    "video": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/delivery/views/probe-pair-N-9a57581f/execution.mp4",
+      "sha256": "6284ec734a5792b855d7c83073c0e160cf8e09880f7c0d54333c9aa81ef7e43b",
+      "fps": 20.0,
+      "frames": 300,
+      "duration_s": 15.0,
+      "playback": 4,
+      "source": "saved own RGB only"
+    }
+  },
+  "probe-cyan-B-9a57581f": {
+    "raw": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/probe-cyan-B-9a57581f",
+    "source_sha": "9a57581fead861fb27c1b7fe7260eb6d6c0f7337",
+    "case": "cyan",
+    "option": "off",
+    "status": "DEV_STAGE_FINISHED",
+    "wall_s": 30.405697125010192,
+    "sim_s": 6.75,
+    "actual_stop": null,
+    "thresholds_changed": false,
+    "gt_use": "post-run evaluation only; setup is separately labelled reconstruction",
+    "input_hashes": {
+      "result.json": "223af875a5448daee1dbe2e9977441010a8b46a8ef8d8b6d5d9dde49de2a7a35",
+      "bundle.json": "41bd1f4d781f9b522461a287a7b7aac4d35b306323853b658270ccaffd837d83",
+      "stage-states.json": "0b8a4ff2d759290dcd980f15aabbec07d6f4d45892e584bdbc6e7a918a1a0cfa",
+      "student_record.json": "9877b482312dba5a12aa4b9a2a47248cee63198e790358678c32b654bc1cdf8f"
+    },
+    "cargo": {
+      "cyan_1": {
+        "held_samples": 22,
+        "max_com_z_m": 0.015899584237841664,
+        "samples": 136
+      },
+      "beam_1": {
+        "held_samples": 0,
+        "max_com_z_m": 0.015892244579783835,
+        "samples": 136
+      }
+    },
+    "frame_command_mismatches": {
+      "r1": 0,
+      "r2": 0,
+      "r3": 0
+    },
+    "input_contract_valid": true,
+    "finger_contacts_eval_only": {
+      "r3": {
+        "left": 22,
+        "right": 22,
+        "both": 22,
+        "both_after_close": 21,
+        "last_both": true
+      }
+    },
+    "exit_reason": "commanded_close_settled",
+    "all_stage_pass": true,
+    "artifact_verification": {
+      "files": 443,
+      "all_hashes_match": true,
+      "manifest_sha256": "dcb7efcc52d1076e52238803fc8f7c27b0484aeab3391d499b84d1940659c1e2"
+    },
+    "robots": {
+      "r3": {
+        "hover": 5.15,
+        "descent": 6.45,
+        "close": 8.1,
+        "stage_pass": true,
+        "failure": null,
+        "moving_commands": 3,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 0,
+        "beam_visible": 0,
+        "local_would_stop": {
+          "REAL_PREGRASP_UNCONFIRMED": 1,
+          "ARM_COLLISION_GUARD": 9
+        }
+      }
+    },
+    "pair_would_stop": {},
+    "frame_summary": {
+      "r3": {
+        "rows": 26,
+        "detected": 26,
+        "tolerance_hit": 4,
+        "end_visible_count": 0,
+        "reasons": {
+          "unique_fit": 26
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 0,
+        "last": {
+          "t": 4.1,
+          "frame": "robots/r3/rgb/00035.jpg",
+          "frame_sha256": "a690664882a70bce31c0829a975986ae824b900cab5d5372736752d4157c47a7",
+          "visible": true,
+          "end_visible": null,
+          "reason": "unique_fit",
+          "errors_m_m_rad": [
+            -0.0022744689584096867,
+            0.00019204118424251572,
+            0
+          ],
+          "pixel_error_xy": [
+            -0.662393714710845,
+            7.114244098010431
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              286.96386136748725,
+              380.53351521327653
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [],
+          "eval_delta_forward_m": -5.2651374898459405e-05,
+          "eval_delta_left_m": -3.6574232884215786e-06,
+          "eval_delta_yaw_rad": -2.6270579798368497e-05,
+          "eval_interval_s": 0.40000000000000036
+        },
+        "command_frames": 3,
+        "data_sha256": "1a6513179749b1bcd9e2b10531a2a94a36d1dfca0891ffba864e2eae63bc16b8",
+        "coverage": "all RGB alignment frames"
+      }
+    },
+    "video": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/delivery/views/probe-cyan-B-9a57581f/execution.mp4",
+      "sha256": "f40251130e2ad7ae9c4f3ab7f8a88222e74e0c335ffef346bf7299f32bb35902",
+      "fps": 20.0,
+      "frames": 34,
+      "duration_s": 1.7,
+      "playback": 4,
+      "source": "saved own RGB only"
+    }
+  },
+  "probe-cyan-N-9a57581f": {
+    "raw": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/probe-cyan-N-9a57581f",
+    "source_sha": "9a57581fead861fb27c1b7fe7260eb6d6c0f7337",
+    "case": "cyan",
+    "option": "visual_pose_mpc_v1",
+    "status": "DEV_STAGE_FINISHED",
+    "wall_s": 33.23763212497579,
+    "sim_s": 7.550000000000001,
+    "actual_stop": null,
+    "thresholds_changed": false,
+    "gt_use": "post-run evaluation only; setup is separately labelled reconstruction",
+    "input_hashes": {
+      "result.json": "bdf127483250df378d1774a09a7c4dbc9e4f31df82c008cf69001572571a02f6",
+      "bundle.json": "3855e20b662d1ad2b0db9830e031007c2f3bd90413f3b94060b21ea3e7749079",
+      "stage-states.json": "27a76ffb5fbfa8753edfc62717f421e4cb0eb417465acfd0ae1dcc4d52b4d361",
+      "student_record.json": "95da18d0dc85f0c806d8017cd3eef98833eec4902c5a9497b1e134dd16b0285c"
+    },
+    "cargo": {
+      "cyan_1": {
+        "held_samples": 22,
+        "max_com_z_m": 0.015894351617359186,
+        "samples": 152
+      },
+      "beam_1": {
+        "held_samples": 0,
+        "max_com_z_m": 0.015892244579783835,
+        "samples": 152
+      }
+    },
+    "frame_command_mismatches": {
+      "r1": 0,
+      "r2": 0,
+      "r3": 0
+    },
+    "input_contract_valid": true,
+    "finger_contacts_eval_only": {
+      "r3": {
+        "left": 22,
+        "right": 22,
+        "both": 22,
+        "both_after_close": 21,
+        "last_both": true
+      }
+    },
+    "exit_reason": "commanded_close_settled",
+    "all_stage_pass": true,
+    "artifact_verification": {
+      "files": 491,
+      "all_hashes_match": true,
+      "manifest_sha256": "0b736226c6984ebd2212959d6f9e93de10fb362824c0616d0da08277402da03e"
+    },
+    "robots": {
+      "r3": {
+        "hover": 5.95,
+        "descent": 7.25,
+        "close": 8.9,
+        "stage_pass": true,
+        "failure": null,
+        "moving_commands": 5,
+        "short_commands": 0,
+        "mixed_commands": 0,
+        "beam_observations": 0,
+        "beam_visible": 0,
+        "local_would_stop": {
+          "REAL_PREGRASP_UNCONFIRMED": 1,
+          "ARM_COLLISION_GUARD": 9
+        }
+      }
+    },
+    "pair_would_stop": {},
+    "frame_summary": {
+      "r3": {
+        "rows": 42,
+        "detected": 42,
+        "tolerance_hit": 7,
+        "end_visible_count": 0,
+        "reasons": {
+          "unique_fit": 42
+        },
+        "forward_reversals": 0,
+        "turn_reversals": 1,
+        "last": {
+          "t": 4.9,
+          "frame": "robots/r3/rgb/00051.jpg",
+          "frame_sha256": "e5e781145f755085944b336b67c999b0b13dd93c858a4bcb6b1b66b9b9e8dc2a",
+          "visible": true,
+          "end_visible": null,
+          "reason": "unique_fit",
+          "errors_m_m_rad": [
+            -0.0024964427523618826,
+            0.00012858841569824862,
+            0
+          ],
+          "pixel_error_xy": [
+            -0.4360979885955203,
+            7.811705364894294
+          ],
+          "projected_observed_and_target_pixels": [
+            [
+              287.1901570936026,
+              381.2309764801604
+            ],
+            [
+              287.6262550821981,
+              373.4192711152661
+            ]
+          ],
+          "pixel_method": "projection of own-RGB fitted grip and fixed grasp target; not mask-centroid difference",
+          "commands": [],
+          "eval_delta_forward_m": -5.97919794726041e-05,
+          "eval_delta_left_m": 2.491667199446499e-06,
+          "eval_delta_yaw_rad": -7.558471053914198e-05,
+          "eval_interval_s": 0.40000000000000036
+        },
+        "command_frames": 5,
+        "data_sha256": "01f38b65da59d1f75ba4e5dd893748f05ded2ecc4a4f1b447f643d18ec5cf370",
+        "coverage": "all RGB alignment frames"
+      }
+    },
+    "video": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/delivery/views/probe-cyan-N-9a57581f/execution.mp4",
+      "sha256": "6bd0e8de3e61cb694bd092ed171dda9bd3470fab42c5e3dec86f29c9bca67184",
+      "fps": 20.0,
+      "frames": 38,
+      "duration_s": 1.9,
+      "playback": 4,
+      "source": "saved own RGB only"
+    }
+  }
+}

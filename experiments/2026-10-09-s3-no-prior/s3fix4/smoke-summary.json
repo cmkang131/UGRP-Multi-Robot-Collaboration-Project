@@ -1,0 +1,658 @@
+{
+  "schema": "ugrp.s3fix4.eval_only.v1",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s3-sweep-b73ce193-s14201-v149",
+  "source": "b73ce1931dae5d803bf2562ad5fa090cb71d2dfb",
+  "status": "DEV_NOT_DELIVERED",
+  "evaluation": {
+    "schema": "ugrp.s3_no_prior_evaluation.v142",
+    "gt_use": "post-run eval_only; no feedback",
+    "robots": {
+      "r1": {
+        "success": false,
+        "commands_complete": false,
+        "cargo_order": "order-5",
+        "delivery_complete": false,
+        "first_convergence": {
+          "released_t": 36.95,
+          "estimate_t": 36.79,
+          "std_xy_m": 0.013210548817776065,
+          "actual_xy_error_m": 0.02551429127219264,
+          "actual_yaw_error_deg": 1.9579163211249193,
+          "wrong_mode": false
+        },
+        "first_eval_convergence": {
+          "released_t": 36.95,
+          "estimate_t": 36.79,
+          "std_xy_m": 0.013210548817776065,
+          "actual_xy_error_m": 0.02551429127219264,
+          "actual_yaw_error_deg": 1.9579163211249193,
+          "wrong_mode": false
+        },
+        "correct_convergence": true,
+        "own_failure": "BARRIER_APPROACH_TIMEOUT",
+        "failure_categories": [
+          "DELIVERY_PLACEMENT"
+        ]
+      },
+      "r2": {
+        "success": false,
+        "commands_complete": false,
+        "cargo_order": "order-5",
+        "delivery_complete": false,
+        "first_convergence": {
+          "released_t": 112.3,
+          "estimate_t": 112.14,
+          "std_xy_m": 0.04913114341500979,
+          "actual_xy_error_m": 0.3200988510734814,
+          "actual_yaw_error_deg": 0.8414376754694449,
+          "wrong_mode": true
+        },
+        "first_eval_convergence": null,
+        "correct_convergence": false,
+        "own_failure": "PARTNER_ABORT",
+        "failure_categories": [
+          "DELIVERY_PLACEMENT",
+          "LOCALIZATION"
+        ]
+      },
+      "r3": {
+        "success": false,
+        "commands_complete": false,
+        "cargo_order": "order-1",
+        "delivery_complete": false,
+        "first_convergence": null,
+        "first_eval_convergence": null,
+        "correct_convergence": false,
+        "own_failure": null,
+        "failure_categories": [
+          "DELIVERY_PLACEMENT",
+          "LOCALIZATION"
+        ]
+      }
+    },
+    "failure_counts": {
+      "DELIVERY_PLACEMENT": 3,
+      "LOCALIZATION": 2,
+      "COLLISION_EPISODES": 0,
+      "DOOR_DEADLOCK_EPISODES": 0
+    },
+    "failure_count_denominator": "robot-category pairs except named episode/HOST counters; beam affects two robots",
+    "collision_episodes": [],
+    "door_wait_episodes": {
+      "r1": 1,
+      "r2": 1,
+      "r3": 1
+    },
+    "door_wait_robot_s": {
+      "r1": 0.05000000000000071,
+      "r2": 0.05000000000000071,
+      "r3": 262.4
+    },
+    "door_deadlocks": [],
+    "wall_s": 875.0666224160232,
+    "sim_s": 277.59999999999997,
+    "wall_per_sim": 3.1522572853603146,
+    "commands": {
+      "r1": 1909,
+      "r2": 3293,
+      "r3": 5835
+    },
+    "model_calls": 0,
+    "raw": "/Users/changmin/projects/ugrp/outputs/s3-sweep-b73ce193-s14201-v149"
+  },
+  "first_location": {
+    "r1": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.026296539986631152,
+      "yaw_error_deg": 2.010974964675302,
+      "sigma_xy_m": 1.8404065567893735,
+      "sigma_yaw_deg": 67.5609804924593,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    },
+    "r2": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.03953718742000841,
+      "yaw_error_deg": 1.6124946417887247,
+      "sigma_xy_m": 0.20860964185748732,
+      "sigma_yaw_deg": 7.34648601849228,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    },
+    "r3": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.003887017675199066,
+      "yaw_error_deg": 0.5756560943590964,
+      "sigma_xy_m": 0.0583070051532328,
+      "sigma_yaw_deg": 1.3684972446766488,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    }
+  },
+  "localization": {
+    "r1": {
+      "last": {
+        "t_sim_s": 275.9,
+        "estimate_t": 275.74,
+        "elapsed_from_first_frame_s": 274.59999999999997,
+        "xy_error_m": 0.17244786538271317,
+        "yaw_error_deg": 2.6462760519761472,
+        "sigma_xy_m": 0.024701319656892887,
+        "sigma_yaw_deg": 1.494569358954517,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 275.74,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": true,
+          "connected_modes": 1,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 275.9
+        },
+        "connected_modes": 1
+      },
+      "frame_count": 5493,
+      "accurate_frames": 5410,
+      "first_accurate": {
+        "t_sim_s": 5.45,
+        "estimate_t": 5.29,
+        "elapsed_from_first_frame_s": 4.15,
+        "xy_error_m": 0.01612929526630803,
+        "yaw_error_deg": 0.13077310470249143,
+        "sigma_xy_m": 1.955883441782654,
+        "sigma_yaw_deg": 77.47106413972145,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 5.29,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 4,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 5.45
+        },
+        "connected_modes": 4
+      },
+      "first_sigma": {
+        "t_sim_s": 27.65,
+        "estimate_t": 27.49,
+        "elapsed_from_first_frame_s": 26.349999999999998,
+        "xy_error_m": 0.03477222820273681,
+        "yaw_error_deg": 0.7925667753056377,
+        "sigma_xy_m": 0.025321296300921132,
+        "sigma_yaw_deg": 0.5626823043682534,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 27.49,
+          "qualified": false,
+          "covariance_ok": true,
+          "all_particles_compact": false,
+          "connected_modes": 3,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 27.65
+        },
+        "connected_modes": 3
+      },
+      "first_certificate": {
+        "t_sim_s": 36.95,
+        "estimate_t": 36.79,
+        "elapsed_from_first_frame_s": 35.650000000000006,
+        "xy_error_m": 0.02551429127219264,
+        "yaw_error_deg": 1.9579163211249193,
+        "sigma_xy_m": 0.013210548817776065,
+        "sigma_yaw_deg": 0.903393320653309,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 36.79,
+          "qualified": true,
+          "covariance_ok": true,
+          "all_particles_compact": true,
+          "connected_modes": 1,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 36.95
+        },
+        "connected_modes": 1
+      }
+    },
+    "r2": {
+      "last": {
+        "t_sim_s": 275.9,
+        "estimate_t": 275.74,
+        "elapsed_from_first_frame_s": 274.59999999999997,
+        "xy_error_m": 0.3879645010194854,
+        "yaw_error_deg": 0.2714493395275216,
+        "sigma_xy_m": 0.005400484834371477,
+        "sigma_yaw_deg": 0.617637336880686,
+        "accurate": false,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 275.74,
+          "qualified": true,
+          "covariance_ok": true,
+          "all_particles_compact": true,
+          "connected_modes": 1,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 275.9
+        },
+        "connected_modes": 1
+      },
+      "frame_count": 5493,
+      "accurate_frames": 2057,
+      "first_accurate": {
+        "t_sim_s": 2.45,
+        "estimate_t": 2.29,
+        "elapsed_from_first_frame_s": 1.1500000000000001,
+        "xy_error_m": 0.024347871061360774,
+        "yaw_error_deg": 1.4622903337972553,
+        "sigma_xy_m": 2.0186790757849353,
+        "sigma_yaw_deg": 122.34240793753938,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 2.29,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 10,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 2.45
+        },
+        "connected_modes": 10
+      },
+      "first_sigma": {
+        "t_sim_s": 112.3,
+        "estimate_t": 112.14,
+        "elapsed_from_first_frame_s": 111.0,
+        "xy_error_m": 0.3200988510734814,
+        "yaw_error_deg": 0.8414376754694449,
+        "sigma_xy_m": 0.04913114341500979,
+        "sigma_yaw_deg": 2.0244809916452784,
+        "accurate": false,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 112.14,
+          "qualified": true,
+          "covariance_ok": true,
+          "all_particles_compact": true,
+          "connected_modes": 1,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 112.3
+        },
+        "connected_modes": 1
+      },
+      "first_certificate": {
+        "t_sim_s": 112.3,
+        "estimate_t": 112.14,
+        "elapsed_from_first_frame_s": 111.0,
+        "xy_error_m": 0.3200988510734814,
+        "yaw_error_deg": 0.8414376754694449,
+        "sigma_xy_m": 0.04913114341500979,
+        "sigma_yaw_deg": 2.0244809916452784,
+        "accurate": false,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 112.14,
+          "qualified": true,
+          "covariance_ok": true,
+          "all_particles_compact": true,
+          "connected_modes": 1,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 112.3
+        },
+        "connected_modes": 1
+      }
+    },
+    "r3": {
+      "last": {
+        "t_sim_s": 275.9,
+        "estimate_t": 275.74,
+        "elapsed_from_first_frame_s": 274.59999999999997,
+        "xy_error_m": 0.007505310746205107,
+        "yaw_error_deg": 0.4359533227934126,
+        "sigma_xy_m": 0.0583070051532328,
+        "sigma_yaw_deg": 1.3684972446766488,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 275.74,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 2,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 275.9
+        },
+        "connected_modes": 2
+      },
+      "frame_count": 5493,
+      "accurate_frames": 5470,
+      "first_accurate": {
+        "t_sim_s": 2.45,
+        "estimate_t": 2.29,
+        "elapsed_from_first_frame_s": 1.1500000000000001,
+        "xy_error_m": 0.05227544892913267,
+        "yaw_error_deg": 0.13370061453227472,
+        "sigma_xy_m": 2.5516879756397173,
+        "sigma_yaw_deg": 65.80950907111071,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 2.29,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 17,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 2.45
+        },
+        "connected_modes": 17
+      },
+      "first_sigma": null,
+      "first_certificate": null
+    }
+  },
+  "movement": {
+    "r1": {
+      "nonzero_commands": 135,
+      "max_displacement_m": 1.3761654602154783,
+      "final_displacement_m": 1.3744260863525284,
+      "short_commands": [],
+      "mixed_axis_commands": []
+    },
+    "r2": {
+      "nonzero_commands": 374,
+      "max_displacement_m": 2.707559251977345,
+      "final_displacement_m": 2.706612173878367,
+      "short_commands": [],
+      "mixed_axis_commands": []
+    },
+    "r3": {
+      "nonzero_commands": 0,
+      "max_displacement_m": 0.003658144367986007,
+      "final_displacement_m": 0.0019526910614306708,
+      "short_commands": [],
+      "mixed_axis_commands": []
+    }
+  },
+  "would_stop_counts": {
+    "ARM_COLLISION_GUARD": 23,
+    "POSE_CLUSTER_UNCERTAIN": 60,
+    "GLOBAL_START_UNRESOLVED": 3,
+    "POSE_UNCERTAIN": 2459,
+    "SWEEP_TRANSITION_BLOCKED": 431,
+    "SELF_UNCERTAIN": 4,
+    "PAIR_COLLISION_GUARD": 79,
+    "PAIR_REOBSERVE_TIMEOUT": 2726,
+    "APPROACH_ARRIVAL_UNCONFIRMED": 1,
+    "APPROACH_TIMEOUT": 1,
+    "APPROACH_LOST": 1
+  },
+  "host_timing": {
+    "option": "buffered_jsonl_v1",
+    "timers": {
+      "jsonl_append": {
+        "calls": 71766,
+        "wall_s": 2.350238791841548
+      },
+      "eval_sample_including_io": {
+        "calls": 5553,
+        "wall_s": 1.8920798904728144
+      },
+      "render_rgb": {
+        "calls": 16479,
+        "wall_s": 170.705305902462
+      },
+      "capture_including_render_io": {
+        "calls": 5493,
+        "wall_s": 195.81664924812503
+      },
+      "physics_advance": {
+        "calls": 5552,
+        "wall_s": 289.6705629316275
+      }
+    },
+    "nested_timers_not_additive": true,
+    "controller_feedback": false,
+    "cprofile": false
+  },
+  "camera_contract": {
+    "r1": {
+      "rendered": 5493,
+      "own_frames": 5493,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    },
+    "r2": {
+      "rendered": 5493,
+      "own_frames": 5493,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    },
+    "r3": {
+      "rendered": 5493,
+      "own_frames": 5493,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    }
+  },
+  "source_artifacts": {
+    "result.json": "1a16ea0b3c13aa55b97d64ab6db31a8c615006d2e9b1414dce4ec9f623eb2e67",
+    "student_record.json": "5a7135b1176d814edf256a5df4ae5661f7de2edad7b7e7e1b73cabff3f9fef4c",
+    "bundle.json": "c54ab7a713844a94220a4e5dfbb22a5144938872e3a6ebffdf7caa82c9992b16",
+    "host-timing.json": "91eb0eb8a972bcba85229e24318edfbb4eae7434123f94e29b359d4f281fe6e4",
+    "artifacts.sha256.json": "4442621eb68c21804839733ed1bb82c2df70118c9441dd2cb860662bf1001db8"
+  },
+  "scope": "post-run eval_only; v149 before pre-GO wait follow-up; no feedback",
+  "stage_summary": {
+    "r1": {
+      "last_pair_states": [
+        {
+          "robot_id": "r1",
+          "event": "state",
+          "sim_s": 125.8,
+          "state": "wait_approach",
+          "seg": 0
+        },
+        {
+          "robot_id": "r1",
+          "event": "state",
+          "sim_s": 275.9,
+          "state": "failed",
+          "seg": 0,
+          "reason": "BARRIER_APPROACH_TIMEOUT"
+        }
+      ],
+      "jobs": [
+        {
+          "job_id": "r1-job-001",
+          "kind": "look_around",
+          "outcome": "LOOKED_POSE_UNCERTAIN",
+          "confirmation": "unconfirmed",
+          "started_at_sim_s": 13.55,
+          "ended_at_sim_s": 22.45,
+          "slot_id": null,
+          "level": "high",
+          "gate": "uncertain",
+          "failed_checks": [
+            "fix_in_sweep"
+          ]
+        },
+        {
+          "job_id": "r1-job-003",
+          "kind": "pair_carry",
+          "outcome": "BARRIER_APPROACH_TIMEOUT",
+          "confirmation": "failed",
+          "started_at_sim_s": 22.5,
+          "ended_at_sim_s": 275.9,
+          "slot_id": null
+        }
+      ],
+      "cargo_delivered": false
+    },
+    "r2": {
+      "last_pair_states": [
+        {
+          "robot_id": "r2",
+          "event": "state",
+          "sim_s": 222.6,
+          "state": "approach",
+          "seg": 0
+        }
+      ],
+      "jobs": [
+        {
+          "job_id": "r2-job-001",
+          "kind": "look_around",
+          "outcome": "LOOKED_POSE_UNCERTAIN",
+          "confirmation": "unconfirmed",
+          "started_at_sim_s": 13.55,
+          "ended_at_sim_s": 22.45,
+          "slot_id": null,
+          "level": "high",
+          "gate": "uncertain",
+          "failed_checks": [
+            "fix_in_sweep"
+          ]
+        },
+        {
+          "job_id": "r2-job-003",
+          "kind": "pair_carry",
+          "outcome": "PARTNER_ABORT",
+          "confirmation": "failed",
+          "started_at_sim_s": 22.5,
+          "ended_at_sim_s": 275.9,
+          "slot_id": null
+        }
+      ],
+      "cargo_delivered": false
+    },
+    "r3": {
+      "last_pair_states": [],
+      "jobs": [],
+      "cargo_delivered": false
+    }
+  },
+  "stop_analysis": {
+    "primary": "BARRIER_APPROACH_TIMEOUT",
+    "primary_robots": [
+      "r1"
+    ],
+    "secondary": "PARTNER_ABORT",
+    "secondary_robots": [
+      "r2"
+    ],
+    "waiting_robot": "r3",
+    "actual_GO_consumption_mismatch": false,
+    "pre_GO_wait_started_sim_s": 125.8,
+    "pre_GO_timeout_sim_s": 275.9,
+    "wait_s": 150.1,
+    "host_errors": 0,
+    "picked_orders": 0,
+    "delivered_orders": 0,
+    "return_stage": "unimplemented"
+  },
+  "would_stop_hook_occurrences": 5788,
+  "heading_checks": {
+    "short_duration_commands": 0,
+    "mixed_axis_commands": 0,
+    "coupled_carry_not_reached": true
+  }
+}

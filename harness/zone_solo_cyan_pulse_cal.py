@@ -136,10 +136,15 @@ def select_pulse(profiles, loaded, error_xy, yaw, yaw_tolerance=.06):
 
 
 class Runtime(Previous):
-    def __init__(self,*args,pulse_motion_model='off',pulse_calibration=None,**kwargs):
+    def __init__(self,*args,pulse_motion_model='off',pulse_calibration=None,pulse_odometry='off',**kwargs):
         if pulse_motion_model not in ('off',OPTION):raise ValueError('unsupported pulse_motion_model')
         if pulse_motion_model!='off' and (pulse_calibration is None or kwargs.get('min_wheel_cmd')!='real_v1'):
             raise ValueError('pulse model requires explicit real output and fixed calibration')
+        if pulse_odometry != 'off':
+            if pulse_motion_model != OPTION:
+                raise ValueError('pulse_odometry requires fixed pulse model')
+            from harness.pulse_rotation_odometry import selected_model
+            pulse_calibration=selected_model(pulse_calibration,pulse_odometry=pulse_odometry)
         super().__init__(*args,**kwargs)
         self.pulse_option=pulse_motion_model
         if pulse_motion_model!='off':

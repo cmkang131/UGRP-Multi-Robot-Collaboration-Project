@@ -1,0 +1,127 @@
+{
+  "gt_read": false,
+  "selection_rule_changed": false,
+  "source": "harness/zone_solo_cyan_best_cluster.py",
+  "source_sha256": "8ac9a142d848f26e3a3fc4041f7a148fe61e12a9dae8f5eb976f2ae919b804ee",
+  "input_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/replays-v2/v149-off/state.json": "c4eb1ce4cbac7763623fa70cae83f6f6e87322ea98dd69c7643a91805882bdcb",
+    "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/replays-v2/v150-off/state.json": "1e084b59bcb19d13c73184001185dd6fecb717a7d7937fb0a01911b6446aacf0"
+  },
+  "rows": [
+    {
+      "case": "v149",
+      "robot": "r1",
+      "frames": 5249,
+      "selected_cov_present": 5249,
+      "selected_trace_matches_report": 4965,
+      "mismatch_examples": [
+        {
+          "t_est": 13.34,
+          "reported_sigma_m": 1.8404065567893735,
+          "selected_cluster_sigma_m": 0.06047825975768196
+        },
+        {
+          "t_est": 13.39,
+          "reported_sigma_m": 1.8404065567893735,
+          "selected_cluster_sigma_m": 0.06047825975768196
+        }
+      ]
+    },
+    {
+      "case": "v149",
+      "robot": "r2",
+      "frames": 5249,
+      "selected_cov_present": 5249,
+      "selected_trace_matches_report": 5016,
+      "mismatch_examples": [
+        {
+          "t_est": 13.34,
+          "reported_sigma_m": 0.20860964185748732,
+          "selected_cluster_sigma_m": 0.05390736170899073
+        },
+        {
+          "t_est": 13.39,
+          "reported_sigma_m": 0.20860964185748732,
+          "selected_cluster_sigma_m": 0.05390736170899073
+        }
+      ]
+    },
+    {
+      "case": "v149",
+      "robot": "r3",
+      "frames": 5249,
+      "selected_cov_present": 5249,
+      "selected_trace_matches_report": 0,
+      "mismatch_examples": [
+        {
+          "t_est": 13.34,
+          "reported_sigma_m": 0.0583070051532328,
+          "selected_cluster_sigma_m": 0.034418899612452133
+        },
+        {
+          "t_est": 13.39,
+          "reported_sigma_m": 0.0583070051532328,
+          "selected_cluster_sigma_m": 0.034418899612452133
+        }
+      ]
+    },
+    {
+      "case": "v150",
+      "robot": "r1",
+      "frames": 6041,
+      "selected_cov_present": 6041,
+      "selected_trace_matches_report": 5757,
+      "mismatch_examples": [
+        {
+          "t_est": 13.34,
+          "reported_sigma_m": 1.8404065567893735,
+          "selected_cluster_sigma_m": 0.06047825975768196
+        },
+        {
+          "t_est": 13.39,
+          "reported_sigma_m": 1.8404065567893735,
+          "selected_cluster_sigma_m": 0.06047825975768196
+        }
+      ]
+    },
+    {
+      "case": "v150",
+      "robot": "r2",
+      "frames": 6041,
+      "selected_cov_present": 6041,
+      "selected_trace_matches_report": 5703,
+      "mismatch_examples": [
+        {
+          "t_est": 13.34,
+          "reported_sigma_m": 0.20860964185748732,
+          "selected_cluster_sigma_m": 0.05390736170899073
+        },
+        {
+          "t_est": 13.39,
+          "reported_sigma_m": 0.20860964185748732,
+          "selected_cluster_sigma_m": 0.05390736170899073
+        }
+      ]
+    },
+    {
+      "case": "v150",
+      "robot": "r3",
+      "frames": 6041,
+      "selected_cov_present": 6041,
+      "selected_trace_matches_report": 0,
+      "mismatch_examples": [
+        {
+          "t_est": 13.34,
+          "reported_sigma_m": 0.0583070051532328,
+          "selected_cluster_sigma_m": 0.034418899612452133
+        },
+        {
+          "t_est": 13.39,
+          "reported_sigma_m": 0.0583070051532328,
+          "selected_cluster_sigma_m": 0.034418899612452133
+        }
+      ]
+    }
+  ],
+  "conclusion": "Published sigma is sqrt(trace(overall XY covariance)); the per-frame selected_cluster_cov is different. Full matching per-frame XY covariance is not retained in the replay pose records. Do not substitute the selected-cluster matrix into full-stream NEES."
+}

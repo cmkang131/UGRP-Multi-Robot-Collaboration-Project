@@ -1,0 +1,111 @@
+{
+  "schema": "ugrp.s3fix14.candidate_plan.v1",
+  "host": "oracle-x86",
+  "max_simultaneous": 10,
+  "LP_NUM_THREADS": 4,
+  "status": "NOT_RUN_CAPTURE_PULSE_INCOMPATIBLE",
+  "profile_sha256": null,
+  "executed": false,
+  "research_result": false,
+  "gate": "all robots: capture-margin halfwidth >= worst hardware-valid pulse bound",
+  "runs": [
+    {
+      "name": "s3fix14-candidate-pair-c0-r1",
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    },
+    {
+      "name": "s3fix14-candidate-pair-c1-r1",
+      "case": "pair",
+      "condition": 1,
+      "seed": 14202,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    },
+    {
+      "name": "s3fix14-candidate-pair-c2-r1",
+      "case": "pair",
+      "condition": 2,
+      "seed": 14203,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    },
+    {
+      "name": "s3fix14-candidate-pair-c3-r1",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    },
+    {
+      "name": "s3fix14-candidate-pair-c4-r1",
+      "case": "pair",
+      "condition": 4,
+      "seed": 14205,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    },
+    {
+      "name": "s3fix14-candidate-pair-c5-r1",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    },
+    {
+      "name": "s3fix14-candidate-cyan-c0-r1",
+      "case": "cyan",
+      "condition": 0,
+      "seed": 14201,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    },
+    {
+      "name": "s3fix14-candidate-cyan-c3-r1",
+      "case": "cyan",
+      "condition": 3,
+      "seed": 14204,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    },
+    {
+      "name": "s3fix14-candidate-cyan-c4-r1",
+      "case": "cyan",
+      "condition": 4,
+      "seed": 14205,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    },
+    {
+      "name": "s3fix14-candidate-cyan-c5-r1",
+      "case": "cyan",
+      "condition": 5,
+      "seed": 14206,
+      "cap_sim_s": 60.0,
+      "status": "NOT_RUN",
+      "reason": "profile_admission_failed"
+    }
+  ],
+  "measured_decision": "NOT_ADMISSIBLE_CURRENT_GRID",
+  "diagnostic_summary_sha256": "05324b0d7d7b2059a7df55545cd748f84032fe74e5121f1c099214827751af89",
+  "required_halfwidth_m_m_rad": [
+    0.022353843227175988,
+    0.01339784017016332,
+    0.1014465589912742
+  ],
+  "reason": "No origin-centred measured capture box passes every point; forward bound22.354mm exceeds maximum shrunken19.2mm. Known physical deadband excludes15/20/25."
+}

@@ -194,3 +194,9 @@
 ## 감사 기록
 
 [작업 기록과 검증 결과](../experiments/2026-10-09-module-retirement/README.md). DRAFT PR이며 감독·사용자 확인 전 병합 금지.
+
+- 2026-10-09 S3 준비용 `zone-s3-host-heading-v144` / workflow7.37.0: 물리 실행0·heading 의존성 미승인 상태에서 퇴역. 사용자 새 최대+1 지시에 따라 `zone-s3-host-heading-v146` /7.39.0으로 대체; 계획 원본은 `experiments/2026-10-09-s3-no-prior/s3next/registration.json`과89357a64에 보존. 과거v142 실행과 원본은 유지.
+
+- 2026-10-09 S3 `zone-s3-sweep-v149`는 원본 `b73ce193` 및 raw 증거를 보존한 과거 DEV 실행이다. 후속 실행은 pre-GO 재대기와 사전 등록된 motion 옵션 선택을 묶은 `zone-s3-odometry-v150` /7.43.0을 사용한다. 기존 실행/실패 기록과 재생 소스는 삭제·덮어쓰지 않는다.
+
+- 2026-10-10 S3 `zone-s3-odometry-v150` / `zone-s3-consistency-v151`는 원본 SHA `4c9eb3aa` / `3ec2d781`와 raw를 보존하는 과거 DEV 실행이다. 새 실행은 문 임대·자기 RGB 정렬의 `zone-s3-recovery-v152` /7.45.0을 사용한다. PF 다양성 후보는 저장 재생에서 미채택되어 off를 유지한다. 과거 번들의 봉인은 완화하지 않는다.
