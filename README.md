@@ -27,6 +27,8 @@
 
 ## 현재 검증 범위
 
+- [S4 집게 이탈 저장 영상 감사](experiments/2026-10-06-s4-llm/s4grip/README.md): 실제 모델 응답·이탈 영상 부족으로 S4 정확도 미측정. 기존 CV 참고 진단, 접촉 라벨 평가 전용, 물리/렌더/모델0.
+
 - [S4 빔 공동 출발 준비](experiments/2026-10-06-s4-llm/s4live4/README.md): 기본 OFF LLM claim→GO/ACK→공동 출발·자기 RGB 이탈 정지, 오프라인 준비만. S3 확정 SHA 대기, 4조건×seed601 사전 목록, 실제 모델/물리 0.
 - [S4 실제 모델·Oracle x86 배관 확인](experiments/2026-10-06-s4-llm/s4live1/README.md): 네 통신 조건 각90 SIM초·모델7호출, claim→출발 허가→r3 cyan 약1m 운반 명령 연결. 빔 claim-only, 호스트 중단/재실행 분리, `research_result=false`·배송/E2E 성공 아님. README·TensorBoard·원본 해시 대조 기록.
 
