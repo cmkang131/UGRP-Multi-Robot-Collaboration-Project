@@ -680,10 +680,7 @@
       "output_flag": "--output",
       "side_effect": "local_simulation",
       "adapter": "managed_legacy_cli",
-      "required_inputs": [
-        "--prereg",
-        "--condition"
-      ],
+      "required_inputs": ["--prereg", "--condition"],
       "output_kind": "directory"
     },
     {
@@ -766,6 +763,39 @@
       "required_inputs": [
         "--seeds",
         "--policy"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "own-map-goal-dev",
+      "purpose": "egomap43 자기 snapshot 재위치 후 기억한 B 복귀 DEV 1회",
+      "entry": "scripts/run_own_map_goal_dev.py",
+      "docs": "experiments/2026-10-08-own-map-closed-loop/README.md",
+      "requires": "committed clean source; explicit execute; agent_lock; own RGB and commands only",
+      "version": "1.0.0",
+      "runner": "scripts.run_own_map_goal_dev",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "goal-route-continuous-dev",
+      "purpose": "egomap56 연속 추적 자기 목표/경로 P1 DEV, 잠금 하 한 실행",
+      "entry": "scripts/run_goal_route_continuous.py",
+      "docs": "experiments/2026-10-09-goal-route-continuous/README.md",
+      "requires": "explicit --execute, frozen source, S3 retest queue admission, agent_lock; no model calls",
+      "version": "1.0.0",
+      "runner": "scripts.run_goal_route_continuous",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--seed",
+        "--expected-source-sha"
       ],
       "output_kind": "directory"
     }

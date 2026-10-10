@@ -1,0 +1,132 @@
+{
+  "source_sha": "462473cbc2730add0db5e8ab3e0965f1d9987d5e",
+  "seed": 31001,
+  "physical_runs": 1,
+  "sim_duration_s": 180.0,
+  "frozen_options_changed": false,
+  "event_counts": {
+    "frontier_selected": 35,
+    "ABORTED_unreachable": 2,
+    "graph_preserved_recovery": 18,
+    "planner_failed": 18,
+    "recovery_context_clear": 10,
+    "context_clear_planner": 10,
+    "navigation_layer_reset": 13,
+    "recovery_success": 16,
+    "recovery_clear": 3,
+    "recovery_spin": 3,
+    "recovery_backup": 1,
+    "recovery_wait": 1
+  },
+  "recovery_started": {
+    "context_clear": 10,
+    "clear": 3,
+    "spin": 3,
+    "backup": 1,
+    "wait": 1
+  },
+  "recovery_success": {
+    "context_clear": 10,
+    "clear": 3,
+    "spin": 1,
+    "backup": 1,
+    "wait": 1
+  },
+  "recovery_failure": {},
+  "recovery_success_total": 16,
+  "navigation_resets": 13,
+  "blacklist_total": 2,
+  "blacklist_by_reason": {
+    "ABORTED_unreachable": 2
+  },
+  "blacklist_followups": [
+    {
+      "blacklist": {
+        "t": 10.5,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          2.556020942408377,
+          -0.7667539267015706
+        ]
+      },
+      "next_selection": {
+        "t": 10.5,
+        "reason": "frontier_selected",
+        "target": [
+          0.17745098039215684,
+          -0.06078431372549038
+        ]
+      }
+    },
+    {
+      "blacklist": {
+        "t": 178.5,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          2.968194842406877,
+          1.829512893982808
+        ]
+      },
+      "next_selection": {
+        "t": 178.5,
+        "reason": "frontier_selected",
+        "target": [
+          2.14037610619469,
+          -1.6107300884955749
+        ]
+      }
+    }
+  ],
+  "frontier_selections": 35,
+  "exhaustion_abort_count": 0,
+  "permanent_failed_frames": 0,
+  "first_exploration_finished_absolute_s": null,
+  "first_exploration_finished_elapsed_s": null,
+  "tail_frames": 0,
+  "tail_hold_frames": 0,
+  "tail_duration_s": null,
+  "all_status_counts": {
+    "public_frontier": 559,
+    "public_static": 246,
+    "no_path": 20,
+    "recover_spin": 20,
+    "recover_backup": 22,
+    "recover_wait": 24
+  },
+  "hold": {
+    "n": 40,
+    "total": 891,
+    "fraction": 0.04489337822671156,
+    "baseline_n": 468,
+    "baseline_total": 891
+  },
+  "wall_contact_sample_pairs": 0,
+  "eval_contact_frames": 901,
+  "recovery_gate": {
+    "recorded": true,
+    "distance": true,
+    "area": true,
+    "hold_fraction": true,
+    "no_contact": true
+  },
+  "recovery_gate_pass_count": 5,
+  "egomap27_gate": {
+    "within_2sigma": false,
+    "precision_improves": true
+  },
+  "original_quality_criteria": {
+    "recorded": true,
+    "no_contact": true,
+    "no_wrong_door": false,
+    "distance": true,
+    "area": true,
+    "visible_samples": true,
+    "precision": false,
+    "recall": true,
+    "wall_rmse": false,
+    "path_rmse": true
+  },
+  "original_quality_pass_count": 7,
+  "wrong_door_plan_proxy_count": 7,
+  "qualification": "Recovery starts include contextual clears. Starts without terminal events are not successes. Unreachable-frontier blacklists and retry-budget exhaustion are reported separately. Contact count is saved sample pairs plus abort-only runtime safety, not hardware sensing."
+}

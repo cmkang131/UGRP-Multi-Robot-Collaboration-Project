@@ -1,0 +1,10 @@
+{
+  "discovered_at": "2026-10-09T14:51:21.634839+09:00",
+  "source": "4851b313a6280f7f089b8320c18c479ccf421fc1",
+  "reproducer": "TeachGraph('r3') with one node; match(query)",
+  "error": "TypeError: super(type, obj): obj must be an instance or subtype of type",
+  "cause": "Borrowed ReconnectedGraph.match closes over ReconnectedGraph in zero-argument super; TeachGraph is not its subclass",
+  "changed_live_source": false,
+  "continuation": "Finish frozen teach prefix and let existing driver record runtime failure; no extra physics slot",
+  "reference": "https://docs.python.org/3/library/functions.html#super"
+}

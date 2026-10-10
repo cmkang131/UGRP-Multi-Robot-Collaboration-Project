@@ -1,0 +1,14 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "pulse-rotation-audit", "version": "1.0.0",
+    "purpose": "egomap32 preregistered bilateral rotation measurement",
+    "entry": "scripts/run_pulse_rotation_audit.py",
+    "runner": "scripts.run_pulse_rotation_audit",
+    "docs": "experiments/2026-10-08-pulse-rotation-audit/README.md",
+    "requires": "Committed source, exclusive agent_lock, clock-only schedule, no freeze/model",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha"],
+    "side_effect": "local_simulation", "adapter": "managed_legacy_cli"
+  }]
+}

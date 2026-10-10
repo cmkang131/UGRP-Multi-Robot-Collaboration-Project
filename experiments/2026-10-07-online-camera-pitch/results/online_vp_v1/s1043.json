@@ -1,0 +1,385 @@
+{
+  "case": "s1043",
+  "camera_pitch": "online_vp_v1",
+  "split": "development",
+  "frames": 6,
+  "points": 387,
+  "positive": 238,
+  "within4m": 238,
+  "metrics": {
+    "baseline": {
+      "n": 387,
+      "median": 0.48446353266666564,
+      "p05": 0.43852548345597486,
+      "p90": 0.6757898546616532,
+      "p95": 0.678084344852811,
+      "rmse": 0.5264160483115259
+    },
+    "candidate": {
+      "n": 238,
+      "median": 0.4467903481317129,
+      "p05": 0.046946174709630493,
+      "p90": 0.48377538514416313,
+      "p95": 0.4884188199953971,
+      "rmse": 0.3807023879867435
+    },
+    "oracle": {
+      "n": 0,
+      "median": null,
+      "p05": null,
+      "p90": null,
+      "p95": null,
+      "rmse": null
+    }
+  },
+  "counts": {
+    "accepted": 3,
+    "insufficient_vertical_support": 2,
+    "ambiguous_vertical_axis": 1
+  },
+  "pitch_delta_deg": {
+    "n": 0,
+    "median": null,
+    "p05": null,
+    "p90": null,
+    "p95": null
+  },
+  "gate": {
+    "checks": {
+      "points": true,
+      "positive": false,
+      "valid_fraction": false,
+      "median": false,
+      "p90": false,
+      "nonincrease": true
+    },
+    "passed": false
+  },
+  "frame_scores": [
+    {
+      "frame_id": 221,
+      "fixed_points": 71,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": true,
+        "reason": "accepted",
+        "lines": 41,
+        "vps": [
+          [
+            0.21053629520133132,
+            -0.15762888940892453,
+            0.9647940721348816
+          ],
+          [
+            -0.977436129403336,
+            -0.05122525639097769,
+            0.20492580619508072
+          ],
+          [
+            -0.017119597368063746,
+            0.9861689051208318,
+            0.16485693785441866
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 8.746325541124024,
+        "support_lines": [
+          6,
+          22,
+          2
+        ],
+        "pitch_deg": -9.488923801181722
+      },
+      "metrics": {
+        "baseline": {
+          "n": 71,
+          "median": 0.6762211779090105,
+          "p05": 0.6724677018359763,
+          "p90": 0.6818200632565511,
+          "p95": 0.6822322088139762
+        },
+        "candidate": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "candidate_pitch_deg": -9.488923801181723
+    },
+    {
+      "frame_id": 417,
+      "fixed_points": 80,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": false,
+        "reason": "insufficient_vertical_support",
+        "lines": 43,
+        "vps": [
+          [
+            0.9983710419571187,
+            -0.018111919572304576,
+            0.054103797933819996
+          ],
+          [
+            -0.05705491025580184,
+            -0.31693005254646883,
+            0.9467312601834773
+          ],
+          [
+            0.0,
+            0.9482759656775365,
+            0.31744714980345273
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 0.32770455514863095,
+        "support_lines": [
+          27,
+          9,
+          0
+        ]
+      },
+      "metrics": {
+        "baseline": {
+          "n": 80,
+          "median": 0.4590524267916155,
+          "p05": 0.4294345679915369,
+          "p90": 0.48453656901046815,
+          "p95": 0.48766016190982897
+        },
+        "candidate": {
+          "n": 80,
+          "median": 0.4590524267916155,
+          "p05": 0.4294345679915369,
+          "p90": 0.48453656901046815,
+          "p95": 0.48766016190982897
+        }
+      },
+      "candidate_pitch_deg": -18.1809995808156
+    },
+    {
+      "frame_id": 613,
+      "fixed_points": 78,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": true,
+        "reason": "accepted",
+        "lines": 39,
+        "vps": [
+          [
+            0.011828949038561768,
+            -0.3225005051433482,
+            0.9464953777736732
+          ],
+          [
+            -0.9999300355288286,
+            -0.003815108953628806,
+            0.011196829506053824
+          ],
+          [
+            0.0,
+            0.9465616044028453,
+            0.32252306750108795
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 0.6346273898246647,
+        "support_lines": [
+          7,
+          22,
+          3
+        ],
+        "pitch_deg": -18.815578132423894
+      },
+      "metrics": {
+        "baseline": {
+          "n": 78,
+          "median": 0.4757025441094037,
+          "p05": 0.4577638298026375,
+          "p90": 0.4903433392977889,
+          "p95": 0.4924183389383927
+        },
+        "candidate": {
+          "n": 78,
+          "median": 0.056156255883834126,
+          "p05": 0.04421563903685253,
+          "p90": 0.0658781818239571,
+          "p95": 0.06722814444105477
+        }
+      },
+      "candidate_pitch_deg": -18.81557813242389
+    },
+    {
+      "frame_id": 807,
+      "fixed_points": 80,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": false,
+        "reason": "insufficient_vertical_support",
+        "lines": 38,
+        "vps": [
+          [
+            0.032335344893354934,
+            -0.30765026989841976,
+            0.9509499129302538
+          ],
+          [
+            -0.9994767659049009,
+            -0.009203701985557063,
+            0.031007842331272444
+          ],
+          [
+            0.0007873111187478197,
+            0.9514549989757527,
+            0.30778688254253583
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 0.25778712606862314,
+        "support_lines": [
+          9,
+          24,
+          1
+        ]
+      },
+      "metrics": {
+        "baseline": {
+          "n": 80,
+          "median": 0.4646697114325632,
+          "p05": 0.4383811875645334,
+          "p90": 0.48887278396203665,
+          "p95": 0.49345432577587484
+        },
+        "candidate": {
+          "n": 80,
+          "median": 0.4646697114325632,
+          "p05": 0.4383811875645334,
+          "p90": 0.48887278396203665,
+          "p95": 0.49345432577587484
+        }
+      },
+      "candidate_pitch_deg": -18.1809995808156
+    },
+    {
+      "frame_id": 1003,
+      "fixed_points": 78,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": true,
+        "reason": "accepted",
+        "lines": 44,
+        "vps": [
+          [
+            0.9824907218284259,
+            0.01714943914200893,
+            0.18552056020337293
+          ],
+          [
+            -0.17931964871330067,
+            -0.18318672353418078,
+            0.9665852719269781
+          ],
+          [
+            -0.05056129913480899,
+            0.982928542667152,
+            0.17690402776655234
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 8.487920801043106,
+        "support_lines": [
+          22,
+          6,
+          4
+        ],
+        "pitch_deg": -10.189479839639926
+      },
+      "metrics": {
+        "baseline": {
+          "n": 78,
+          "median": 0.5400645420636384,
+          "p05": 0.5116945903918956,
+          "p90": 0.5681274663956374,
+          "p95": 0.5706986684378383
+        },
+        "candidate": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "candidate_pitch_deg": -10.189479839639926
+    },
+    {
+      "frame_id": 1247,
+      "fixed_points": 0,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": false,
+        "reason": "ambiguous_vertical_axis",
+        "lines": 13,
+        "vps": [
+          [
+            0.009250078352245013,
+            -0.00016146071724253684,
+            0.9999572040747114
+          ],
+          [
+            -0.9999277729237676,
+            0.007672489726274361,
+            0.009251045190379
+          ],
+          [
+            0.007673655153114161,
+            0.9999705529816043,
+            9.047792970596709e-05
+          ]
+        ],
+        "vertical_axis": 0,
+        "axis_delta_deg": 40.95044860298149,
+        "support_lines": [
+          0,
+          7,
+          4
+        ]
+      },
+      "metrics": {
+        "baseline": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        },
+        "candidate": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "candidate_pitch_deg": -49.06188268796114
+    }
+  ],
+  "prediction_sha256": "34a949d75b4c4d37898b9079482ea93b688badf4b8823316758bd419a5f975d8",
+  "hashes": {
+    "experiments/2026-10-07-online-camera-pitch/README.md": "813b17fe3fdc45f6a435148cfd03b5f9e6729119172b84b4d09ef5593764b928",
+    "experiments/2026-10-07-online-camera-pitch/SOURCES.json": "36e151448ded77945fca9bb37147201d5b7b38b9080dbc49f7826c37a246689b",
+    "experiments/2026-10-07-online-camera-pitch/code/evaluate_pitch.py": "8af2249d025fdd195557a183a2cd3bd20b6cc1b24aa40783ed72a631d8582f8c",
+    "harness/online_camera_pitch.py": "cafc11c4b44eff03c2a75a08275dcf1a318394ea19c0279bf6dee149e1829e57",
+    "harness/vendor/lu_vp/__init__.py": "8fa823452f466e883305d3514138456841adc689b26bdd14617df6843bb7badd",
+    "harness/vendor/lu_vp/vp_detection.py": "27a75756d632ab43d17634e9edab1b6334f06ec220d7d9d61cda1bf1aa90c911",
+    "harness/vendor/lu_vp/UPSTREAM.json": "36e151448ded77945fca9bb37147201d5b7b38b9080dbc49f7826c37a246689b",
+    "experiments/2026-10-07-camera-pose-projection/code/audit.py": "f2a492a3bd22ed227803fd9e98b9f3aff5965ea101a7f27a800b5d5e3af9b728",
+    "experiments/2026-10-07-camera-pose-projection/code/evaluate_fk.py": "c1634a26a624cbd6d9daa08bec44c759bda38d44fa7dbcc60e42f7d68a31e461",
+    "experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py": "503b6f9008cf4c50300ca0a0aa14120f89381ef6d38c98414bc126d10bb34cd1",
+    "experiments/2026-10-07-wall-floor-boundary/annotation-sample.json": "e545f71d93b41388ddfd9c93c430a05317cd6ddafcc7f17a7f6d40b413dd674f"
+  },
+  "physics": 0,
+  "models": 0
+}

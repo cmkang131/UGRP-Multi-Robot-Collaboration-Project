@@ -248,6 +248,18 @@ raise SystemExit(3 if a.fail else 0)
         model.mkdir()
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
+            "active-nav2": ["--case", "new-seed", "--expected-source-sha", "0"*40],
+            "pulse-rotation-audit": ["--expected-source-sha", "0"*40],
+            "active-recovery": ["--case", "new-seed", "--expected-source-sha", "0"*40],
+            "rbpf-wide-confirm": ["--case", "new-seed", "--expected-source-sha", "0"*40],
+            "rbpf-motion-gate": ["--case", "baseline", "--expected-source-sha", "0"*40],
+            "active-wall-map": ["--case", "static", "--expected-source-sha", "0"*40],
+            "arena-wall-map": ["--case", "forward", "--expected-source-sha", "0"*40],
+            "wall-parallax-strafe": ["--case", "strafe-north", "--expected-source-sha", "0"*40],
+            "wall-parallax-texture": ["--case", "preview", "--expected-source-sha", "0"*40,
+                                      "--wall-texture", "tape_v1"],
+            "wall-servo-stiffness": ["--case", "static-on", "--expected-source-sha", "0"*40,
+                                     "--servo-stiffness", "real_v1"],
             "zone-study-pilot": [],
             "local": ["run", str(PROJECT / "configs/simulation/drive.json"), "--headless"], "dispatch": ["--headless"],
             "dispatch-skills": ["--plan-replay", str(source), "--grasp-model-dir", str(model), "--stage-model-dir", str(model)],

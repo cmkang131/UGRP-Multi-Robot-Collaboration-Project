@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "frontier-duration", "version": "1.0.0",
+    "purpose": "egomap46 separately locked A/B360s, seed46001, no retuning",
+    "entry": "scripts/run_frontier_duration.py", "runner": "scripts.run_frontier_duration",
+    "docs": "experiments/2026-10-08-frontier-duration/README.md",
+    "requires": "Frozen source, exclusive agent lock, A then B once, no freeze or model",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--condition","--expected-source-sha"], "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}
