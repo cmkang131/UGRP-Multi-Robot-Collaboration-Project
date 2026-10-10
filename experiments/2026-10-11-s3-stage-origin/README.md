@@ -1,10 +1,10 @@
 # s3fix21 — 단계 시작 계약 (DEV, oracle-x86)
-1. 사전 등록: `registration.json`; v170, pair c0–c5·cyan c0/c3/c4/c5 × 시작 계약 off/on =20.
-2. 두 군 모두 A 내려놓기·정수12 on; 기존20의 초기조건·seed 유지, 새 요인 하나만 비교.
-3. 기존 정수군: 시작 편차25.6–36.1mm + 운반 오차10.8–15.9mm = 끝점24.5–36.5mm(벡터).
-4. fixture x=1.2749149와 공용 경로 x=1.3 불일치25.085mm; run별 분해·원본 SHA는 등록 JSON.
-5. 기본 off 옵션은 호스트 초기 장면만 강체 평행이동(빔+r1/r2); 상대 자세·seed·목표·20mm 문턱 불변.
-6. 제어기 생성 전 합성 시작 설정이며 실행 중 GT·PF 사전정보 없음; 전체 임무 위치오차 해결 근거 아님.
-7. x86 영속 runs/·LP4·dev_light·60 SIM초; load<51/mem≥6GiB 동시 제출,180wall초 초기 점검·완료 즉시 회수.
-8. 정수12·끝점·정착6/6, cyan4/4, 낙하/기울기/HOST0이면 기존 등록3경로를 바로 실행.
-9. [표준 단계 시작/목표 상태 계약](https://moveit.picknik.ai/main/doc/tutorials/pick_and_place_with_moveit_task_constructor/pick_and_place_with_moveit_task_constructor.html); 결과·초기 점검·원본/해시는 `summary.json`.
+1. v170: `registration.json`의 같은10개 조건/seed × origin off/on20개; A·정수12 두 군 모두 on.
+2. run별 끝점=시작편차+운반오차(벡터): off25.6–36.1+10.8–15.9→24.5–36.5mm, 잔차0.
+3. fixture/public 경로 x불일치25.085mm; 기본 off 호스트 옵션은 빔+r1/r2만 제어기 생성 전 강체 이동.
+4. 실행 중 GT·PF 사전정보·목표/20mm 문턱 변경 없음; 합성 단계 진입 검증이며 전체 임무 위치오차 해결 근거 아님.
+5. 71c656e7 비교: 정렬/집기/상승/운반20/20; 끝점0/6→6/6(13.38–19.93mm), 내려놓기6/6, cyan4/4, 낙하/HOST0.
+6. 초기180wall 점검20/20 정상; off10개 명령·상태 바이트 동일; 원본26개/80,286파일 전체 회수·해시 확인.
+7. 등록3경로: 초기 바인딩 HOST3 수정·22시험 후9d50e37d 재제출; 적용 경로/초기점검/첫 모서리3/3, 둘째 구간0/3.
+8. 다구간0/3: 중간 해제 뒤 seg중복계산 조기완료2, 재정렬 미보정 자세 HOST1; 낙하/기울기 중단0.
+9. `summary.json`에 모든 실패·원본/sha·wall/SIM·다음2후보; 등록 JSON에 표준 상태 계약/Python 참고 자료, PR416 초안.
