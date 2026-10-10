@@ -1,0 +1,733 @@
+{
+  "status": "preregistered_not_run",
+  "host": "oracle-x86",
+  "n": 6,
+  "source_sha": null,
+  "before": {
+    "guard-diagnosis.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix24-control-20261011/guard-diagnosis.json",
+      "sha256": "48ffe382f163e3bd654ac6e868602f358a168f4d135bd14f1ccabdd626072318",
+      "data": [
+        {
+          "name": "s3fix23-baseline-multi-left-s14201-r1",
+          "guard": "LOAD_DROP:beam_1",
+          "sim_s": 60.949999999999996,
+          "last": {
+            "t": 63.25,
+            "states": {
+              "r1": "grasp",
+              "r2": "grasp"
+            },
+            "fingers": {
+              "r1": [
+                false,
+                false
+              ],
+              "r2": [
+                false,
+                false
+              ]
+            },
+            "floor_normal_n": 2.942999999999991,
+            "cargo_z_m": 0.0158922445797838,
+            "body_origin_z_m": -0.00010775542021617032,
+            "vertical_speed_m_s": 0.0,
+            "cargo_tilt_deg": 3.306651113363206e-06,
+            "controller_feedback": false
+          },
+          "samples": 21,
+          "min_floor_n": 2.942999999999988,
+          "z_span_m": 3.469446951953614e-18,
+          "max_abs_vz_m_s": 6.938893903907623e-17,
+          "max_tilt_deg": 3.306651113363206e-06,
+          "classification": "stale previous-lift latch at grounded regrasp; actual fall not observed",
+          "source": "sim/zone_s3_no_prior.py:128 lifted is never cleared after checkpoint release; no threshold change"
+        },
+        {
+          "name": "s3fix23-baseline-multi-left-s15201-r1",
+          "guard": "LOAD_DROP:beam_1",
+          "sim_s": 60.949999999999996,
+          "last": {
+            "t": 63.25,
+            "states": {
+              "r1": "grasp",
+              "r2": "grasp"
+            },
+            "fingers": {
+              "r1": [
+                false,
+                false
+              ],
+              "r2": [
+                false,
+                false
+              ]
+            },
+            "floor_normal_n": 2.942999999999995,
+            "cargo_z_m": 0.015892244579783808,
+            "body_origin_z_m": -0.0001077554202161695,
+            "vertical_speed_m_s": 0.0,
+            "cargo_tilt_deg": 3.1945284701301985e-06,
+            "controller_feedback": false
+          },
+          "samples": 21,
+          "min_floor_n": 2.942999999999981,
+          "z_span_m": 3.469446951953614e-18,
+          "max_abs_vz_m_s": 6.938893903907623e-17,
+          "max_tilt_deg": 3.1945284701301985e-06,
+          "classification": "stale previous-lift latch at grounded regrasp; actual fall not observed",
+          "source": "sim/zone_s3_no_prior.py:128 lifted is never cleared after checkpoint release; no threshold change"
+        },
+        {
+          "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+          "guard": "LOAD_DROP:beam_1",
+          "sim_s": 114.55000000000001,
+          "last": {
+            "t": 116.85,
+            "states": {
+              "r1": "grasp",
+              "r2": "grasp"
+            },
+            "fingers": {
+              "r1": [
+                false,
+                false
+              ],
+              "r2": [
+                false,
+                false
+              ]
+            },
+            "floor_normal_n": 2.9429999999999947,
+            "cargo_z_m": 0.01589224457978383,
+            "body_origin_z_m": -0.0001077554202161705,
+            "vertical_speed_m_s": 0.0,
+            "cargo_tilt_deg": 0.0,
+            "controller_feedback": false
+          },
+          "samples": 21,
+          "min_floor_n": 2.9429999999999765,
+          "z_span_m": 3.469446951953614e-18,
+          "max_abs_vz_m_s": 6.938893903907623e-17,
+          "max_tilt_deg": 0.0,
+          "classification": "stale previous-lift latch at grounded regrasp; actual fall not observed",
+          "source": "sim/zone_s3_no_prior.py:128 lifted is never cleared after checkpoint release; no threshold change"
+        }
+      ]
+    },
+    "endpoint-decomposition.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix24-control-20261011/endpoint-decomposition.json",
+      "sha256": "5022beebffc021b42c833b5f95ccd68a2aafd6940fedc90fda28e7b910595665",
+      "data": [
+        {
+          "name": "s3fix23-baseline-multi-left-s14201-r1",
+          "seg": 0,
+          "start_error_xy_m": [
+            5.1599816213165894e-05,
+            -0.001118481459424052
+          ],
+          "transport_error_xy_m": [
+            0.0022064834734341066,
+            -0.012902164712109462
+          ],
+          "end_error_xy_m": [
+            0.0022580832896472725,
+            -0.014020646171533514
+          ],
+          "start_error_m": 0.0011196710749629061,
+          "transport_error_m": 0.013089477589917043,
+          "end_error_m": 0.014201318925026706
+        },
+        {
+          "name": "s3fix23-baseline-multi-left-s15201-r1",
+          "seg": 0,
+          "start_error_xy_m": [
+            0.0004151388431348213,
+            -0.0011576625065538235
+          ],
+          "transport_error_xy_m": [
+            0.00203348745616605,
+            -0.012213275217404757
+          ],
+          "end_error_xy_m": [
+            0.002448626299300871,
+            -0.01337093772395858
+          ],
+          "start_error_m": 0.001229846631966685,
+          "transport_error_m": 0.012381403909511146,
+          "end_error_m": 0.013593297847527896
+        },
+        {
+          "name": "s3fix23-pan-multi-right-s14204-r1",
+          "seg": 0,
+          "start_error_xy_m": [
+            -0.0037599500732021784,
+            -0.0027095560858737405
+          ],
+          "transport_error_xy_m": [
+            0.0029099740693754317,
+            -0.013737459762168294
+          ],
+          "end_error_xy_m": [
+            -0.0008499760038267468,
+            -0.016447015848042035
+          ],
+          "start_error_m": 0.004634535439013115,
+          "transport_error_m": 0.014042284351259605,
+          "end_error_m": 0.016468964433528514
+        },
+        {
+          "name": "s3fix23-pan-multi-right-s15204-r1",
+          "seg": 0,
+          "start_error_xy_m": [
+            -0.0021086324132122414,
+            -0.0023036154695389097
+          ],
+          "transport_error_xy_m": [
+            0.0018335201703965076,
+            -0.012908652113822444
+          ],
+          "end_error_xy_m": [
+            -0.00027511224281573377,
+            -0.015212267583361354
+          ],
+          "start_error_m": 0.003122975325798821,
+          "transport_error_m": 0.013038216734313919,
+          "end_error_m": 0.015214755067825896
+        },
+        {
+          "name": "s3fix23-pan-multi-right-s15204-r1",
+          "seg": 1,
+          "start_error_xy_m": [
+            0.009158361883525368,
+            -0.020400725940419705
+          ],
+          "transport_error_xy_m": [
+            -0.0050519854503816575,
+            -0.0003589803276121406
+          ],
+          "end_error_xy_m": [
+            0.00410637643314371,
+            -0.02075970626803185
+          ],
+          "start_error_m": 0.022362137896134254,
+          "transport_error_m": 0.005064723473841438,
+          "end_error_m": 0.021161940642238815
+        },
+        {
+          "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+          "seg": 0,
+          "start_error_xy_m": [
+            -0.005306045697612172,
+            0.002479072999284973
+          ],
+          "transport_error_xy_m": [
+            0.002503441162761133,
+            -0.015557150393445754
+          ],
+          "end_error_xy_m": [
+            -0.0028026045348510387,
+            -0.01307807739416078
+          ],
+          "start_error_m": 0.005856613687185833,
+          "transport_error_m": 0.015757288663335967,
+          "end_error_m": 0.013375002822669865
+        },
+        {
+          "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+          "seg": 1,
+          "start_error_xy_m": [
+            0.0028018123684203644,
+            -0.016214132122171
+          ],
+          "transport_error_xy_m": [
+            0.005826892495407909,
+            0.0012149983280090593
+          ],
+          "end_error_xy_m": [
+            0.008628704863828274,
+            -0.014999133794161956
+          ],
+          "start_error_m": 0.01645442897894214,
+          "transport_error_m": 0.005952217829524204,
+          "end_error_m": 0.017304004224520546
+        },
+        {
+          "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+          "seg": 0,
+          "start_error_xy_m": [
+            -0.011165198421263733,
+            -0.0028436438139360365
+          ],
+          "transport_error_xy_m": [
+            0.0033069434716728185,
+            -0.014434228428106516
+          ],
+          "end_error_xy_m": [
+            -0.007858254949590915,
+            -0.017277872242042552
+          ],
+          "start_error_m": 0.011521630350203345,
+          "transport_error_m": 0.01480820128981227,
+          "end_error_m": 0.018980965203727513
+        },
+        {
+          "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+          "seg": 1,
+          "start_error_xy_m": [
+            -0.00733650052566559,
+            -0.018156962143474176
+          ],
+          "transport_error_xy_m": [
+            0.01187758176082121,
+            0.00016286486040567594
+          ],
+          "end_error_xy_m": [
+            0.00454108123515562,
+            -0.0179940972830685
+          ],
+          "start_error_m": 0.019583143625134494,
+          "transport_error_m": 0.011878698306117031,
+          "end_error_m": 0.018558258426286008
+        },
+        {
+          "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+          "seg": 2,
+          "start_error_xy_m": [
+            -0.01453051696832608,
+            -0.021952559586903203
+          ],
+          "transport_error_xy_m": [
+            -0.000122799029252052,
+            0.004634377919737309
+          ],
+          "end_error_xy_m": [
+            -0.014653315997578131,
+            -0.017318181667165894
+          ],
+          "start_error_m": 0.026325857930623038,
+          "transport_error_m": 0.004636004562609268,
+          "end_error_m": 0.022685658156241358
+        }
+      ]
+    },
+    "final-projection.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix24-control-20261011/final-projection.json",
+      "sha256": "5478407ea42fab81b3de2fd33eb6bd10df4131cbb08f7254bfca433f9862d0f4",
+      "data": {
+        "host": "oracle-x86",
+        "eval_only": true,
+        "source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+        "summary": {
+          "r1": {
+            "frames": 2,
+            "categories": {
+              "fov_clipped": 2
+            },
+            "rejection_reasons": {
+              "BAND_CLIPPED": 2
+            },
+            "rejected_center_outside": 0
+          },
+          "r2": {
+            "frames": 2,
+            "categories": {
+              "fov_clipped": 2
+            },
+            "rejection_reasons": {
+              "BAND_CLIPPED": 2
+            },
+            "rejected_center_outside": 0
+          }
+        },
+        "rows": {
+          "r1": [
+            {
+              "t": 60.4,
+              "render_index": 1161,
+              "reason": "BAND_CLIPPED",
+              "category": "fov_clipped",
+              "band_center_inside": true,
+              "band_corners_inside": 3,
+              "pinhole_px": [
+                [
+                  269.0345071849574,
+                  411.9613441909594
+                ],
+                [
+                  354.1260169449963,
+                  477.91091225849027
+                ],
+                [
+                  187.76835810743592,
+                  486.70967600906937
+                ],
+                [
+                  338.8680045221553,
+                  347.7287271636577
+                ],
+                [
+                  194.68196684458718,
+                  354.33493781975676
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            {
+              "t": 172.3,
+              "render_index": 3399,
+              "reason": "BAND_CLIPPED",
+              "category": "fov_clipped",
+              "band_center_inside": true,
+              "band_corners_inside": 3,
+              "pinhole_px": [
+                [
+                  269.9486338359377,
+                  411.9526319644899
+                ],
+                [
+                  355.07132882040224,
+                  477.95477658639106
+                ],
+                [
+                  188.71591691092758,
+                  486.6535693737472
+                ],
+                [
+                  339.75975275191183,
+                  347.7549020101091
+                ],
+                [
+                  195.5762441170298,
+                  354.2860223370611
+                ]
+              ],
+              "evaluated_gt_only": true
+            }
+          ],
+          "r2": [
+            {
+              "t": 60.4,
+              "render_index": 1161,
+              "reason": "BAND_CLIPPED",
+              "category": "fov_clipped",
+              "band_center_inside": true,
+              "band_corners_inside": 3,
+              "pinhole_px": [
+                [
+                  262.5919711066291,
+                  410.62987638016637
+                ],
+                [
+                  191.21053197698785,
+                  350.79153264313794
+                ],
+                [
+                  335.22728309679104,
+                  348.8183832718452
+                ],
+                [
+                  178.56487032222947,
+                  482.13560023181964
+                ],
+                [
+                  344.75787896413374,
+                  479.50873197332544
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            {
+              "t": 172.3,
+              "render_index": 3399,
+              "reason": "BAND_CLIPPED",
+              "category": "fov_clipped",
+              "band_center_inside": true,
+              "band_corners_inside": 3,
+              "pinhole_px": [
+                [
+                  263.06896021796143,
+                  410.62703786707704
+                ],
+                [
+                  191.6006517177741,
+                  350.8328803333541
+                ],
+                [
+                  335.62581154255537,
+                  348.7645300098288
+                ],
+                [
+                  179.12229108834543,
+                  482.2005885906111
+                ],
+                [
+                  345.3248714722035,
+                  479.44667301491654
+                ]
+              ],
+              "evaluated_gt_only": true
+            }
+          ]
+        }
+      }
+    }
+  },
+  "scope": "uninterrupted registered synthetic alignment-to-final-release routes; not dock-to-B mission",
+  "runs": [
+    {
+      "name": "s3fix24-recovery-multi-left-s14201-r1",
+      "case": "pair",
+      "candidate": "recovery",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_checkpoint_correction",
+        "--expected-source-sha",
+        "{SOURCE_SHA}",
+        "--output",
+        "outputs/s3fix24-recovery-multi-left-s14201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "14201",
+        "--candidate",
+        "recovery",
+        "--execute"
+      ],
+      "cap_sim_s": 240
+    },
+    {
+      "name": "s3fix24-visual-multi-left-s15201-r1",
+      "case": "pair",
+      "candidate": "visual",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_checkpoint_correction",
+        "--expected-source-sha",
+        "{SOURCE_SHA}",
+        "--output",
+        "outputs/s3fix24-visual-multi-left-s15201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "15201",
+        "--candidate",
+        "visual",
+        "--execute"
+      ],
+      "cap_sim_s": 240
+    },
+    {
+      "name": "s3fix24-recovery-multi-right-s14204-r1",
+      "case": "pair",
+      "candidate": "recovery",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 14204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_checkpoint_correction",
+        "--expected-source-sha",
+        "{SOURCE_SHA}",
+        "--output",
+        "outputs/s3fix24-recovery-multi-right-s14204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "14204",
+        "--candidate",
+        "recovery",
+        "--execute"
+      ],
+      "cap_sim_s": 240
+    },
+    {
+      "name": "s3fix24-visual-multi-right-s15204-r1",
+      "case": "pair",
+      "candidate": "visual",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 15204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_checkpoint_correction",
+        "--expected-source-sha",
+        "{SOURCE_SHA}",
+        "--output",
+        "outputs/s3fix24-visual-multi-right-s15204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "15204",
+        "--candidate",
+        "visual",
+        "--execute"
+      ],
+      "cap_sim_s": 240
+    },
+    {
+      "name": "s3fix24-recovery-multi-three-s14206-r1",
+      "case": "pair",
+      "candidate": "recovery",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_checkpoint_correction",
+        "--expected-source-sha",
+        "{SOURCE_SHA}",
+        "--output",
+        "outputs/s3fix24-recovery-multi-three-s14206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "14206",
+        "--candidate",
+        "recovery",
+        "--execute"
+      ],
+      "cap_sim_s": 240
+    },
+    {
+      "name": "s3fix24-visual-multi-three-s15206-r1",
+      "case": "pair",
+      "candidate": "visual",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_checkpoint_correction",
+        "--expected-source-sha",
+        "{SOURCE_SHA}",
+        "--output",
+        "outputs/s3fix24-visual-multi-three-s15206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "15206",
+        "--candidate",
+        "visual",
+        "--execute"
+      ],
+      "cap_sim_s": 240
+    }
+  ]
+}
