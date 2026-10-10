@@ -1,10 +1,10 @@
 # s4live8 — 최신 S3 통합 DEV
-S3 5337ff75 위 v174 / workflow 7.67.0; 제어 파일 동일 해시를 release-r2.json으로 고정.
-[plan-r2.json](plan-r2.json)의 이름·명령·seed 8행 그대로 Oracle 동시 제출: 4조건×601/602, heartbeat on.
-A canonical_floor_v1·integer_ticks_v1·public_stage_origin_v1 공통, 기본 기존/off; heading on·빔 crab·weld off.
-각120SIM·LP4·load<51·메모리≥6GiB·영속 runs; 종료 즉시 회수.
-180–300wall초 초기 프레임/시간/위치/명령/핵심 단계 점검; 이상 자기 실행 중단·EXIT 기록.
-판정: 안정 바닥 해제, 각자 RGB 재관측, 실제 재파지, 새 GO/ACK 뒤 추가≥20mm·거리·낙하 각n/8.
-모델·토큰·응답시간·메시지·원본 sha256과 실패는 summary.json; research_result=false.
-참고: #416 s3fix18/20/21의 원본 수정·표준 방법은 upstream 실험 기록; 새 제어 보정 없음.
-v173 첫8개 EXIT127·물리/모델0·회수8/8; interpreter 수정 r2, PR #425 초안·정답 평가 전용.
+S3 5337ff75 / 실행7b257573, v174·workflow7.67.0; 제어 관련128파일 byte 동일.
+[plan-r2.json](plan-r2.json) 4조건×601/602 8개·120SIM·LP4·heartbeat on, A/정수/단계원점 공통.
+초기182wall초 점검8/8; 원본8/8 회수·33,891파일 해시 검증, 연구 결과 아님(research_result=false).
+claim8/8·GO/ACK/첫운반7/8(153.31–154.48mm); 운반 진입14 endpoint 모두 이동12펄스+정지1.
+내려놓기7/8·양쪽 재관측/재파지/새 GO/ACK 후 추가운반0/8(추가0m)·낙하0/8.
+하강 뒤 미측정 카메라 자세7/8; leader_ko602 ACK 필수 메시지 누락·재요청 없음1/8, lease만료0/8.
+모델195·보고토큰1,466,948·평균4.055s·메시지57발신/56개 전달; 상세·원본경로·sha는 [summary.json](summary.json).
+v173 첫8개 interpreter HOST127·물리/모델0 보존; 자격증명 흔적0·자기 프로세스 정리·PR425 초안.
+다음: inspect 복구·정착 후 관측, ACK 재요청; 참고 [Weiss1987 p407](https://www.cs.cmu.edu/~lew/PUBLICATION%20PDFs/VISUAL%20SERVOING/JRA%201987.pdf)·[RFC9110 §9.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2), 후보만·미구현.
