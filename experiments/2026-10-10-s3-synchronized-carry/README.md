@@ -107,3 +107,55 @@ single physics case is added. r2 uses `scripts.run_s3_synchronized_start` and
 Results of r2 are pending at this registration; same original outcomes.
 
 R2 preflight:6 synchronized carry regressions passed (23 unique relevant tests including prior17 unchanged regressions); catalog dry plan verified forv164, v165 follows same adapter. v165 is next after main/open heads maximum164. r1 score source719c9744 (documentation-only descendant of03029adb) and [all10 results](results-r1.json) are preserved. No new physics pathcheck.
+
+## r2 completed raw audit — v165 (DEV, no adoption)
+
+Physics/evaluation source `bf1c9b6acaacefa4200786e42a971eeb94dc3943`, host=oracle-x86. All10 completed before evaluation; fixed10 conditions/seeds/criteria. The initial wrong full SHA was refused at0SIM in `s3fix17-batch-r2`, retained/excluded. Actual unchanged cohort ran in **s3fix17-batch-r2-ready**, elapsed460.79wall seconds. No third physical round or threshold retuning.
+
+**Alignment/grasp/contact-lift/carry>=20mm/registered distance10/10** (pair6/6, cyan4/4), HOST_ERROR0. This distance receipt is not correct endpoint arrival or complete transport: pair first static endpoint<=20mm **1/6**, later lowering **LOAD_DROP guard4/6** and **FLOOR_POSE_NOT_COMMANDED2/6**. Consequently pair error-free completion0/6; no E2E claim. The two controller failures appear inside raw `DEV_STAGE_FINISHED`; final controller states must also be read, not only outer status. Cyan c0 regression retained.
+
+|case|alignment/grasp/lift/carry/target|contact-lift carry mm|first-leg endpoint error mm|cargo max tilt deg|end or actual stop|wall/SIM s|
+|---|---|---:|---:|---:|---|---|
+|s3fix17-pair-c0-r2|1/1 each|228.096|42.486|1.420|LOAD_DROP:beam_1|334.590/52.30|
+|s3fix17-pair-c1-r2|1/1 each|228.438|48.593|0.608|LOAD_DROP:beam_1|334.831/51.80|
+|s3fix17-pair-c2-r2|1/1 each|185.277|16.483|0.581|FLOOR_POSE_NOT_COMMANDED|343.878/54.55|
+|s3fix17-pair-c3-r2|1/1 each|210.757|37.276|0.512|FLOOR_POSE_NOT_COMMANDED|344.611/55.05|
+|s3fix17-pair-c4-r2|1/1 each|225.548|50.366|1.176|LOAD_DROP:beam_1|327.234/51.25|
+|s3fix17-pair-c5-r2|1/1 each|228.420|53.987|0.828|LOAD_DROP:beam_1|335.087/52.80|
+|s3fix17-cyan-c0-r2|1/1 each|631.580|—|24.008|60SIM horizon, carry|407.039/60.00|
+|s3fix17-cyan-c3-r2|1/1 each|274.728|—|23.923|60SIM horizon, carry|410.190/60.00|
+|s3fix17-cyan-c4-r2|1/1 each|575.222|—|24.227|60SIM horizon, carry|430.047/60.00|
+|s3fix17-cyan-c5-r2|1/1 each|662.025|—|24.075|60SIM horizon, carry|430.667/60.00|
+
+Cargo tilt: pair max0.51–1.42deg, cyan23.92–24.23deg; robot-tilt abort0 and LOAD_DROP guard abort4. The cargo angle is reported separately from the unchanged robot tilt guard. All pair lowering failures occur after first-carry completion and refix_decide; no drop occurs inside the first carry window.
+
+|pair|issued nonzero ticks r1/r2 (planned12)|matching ticks / unilateral wait|first-carry excursion mm|rim/chassis path mm r1; r2|mean normal squeeze N r1/r2|mean net resultant N r1/r2|
+|---|---|---|---:|---|---|---|
+|s3fix17-pair-c0-r2|17/17|18/18, 0|222.887|227.805/227.502; 226.839/221.760|11.130/11.476|1.511/1.489|
+|s3fix17-pair-c1-r2|17/17|18/18, 0|223.939|227.750/227.470; 227.628/222.056|11.434/11.695|1.503/1.492|
+|s3fix17-pair-c2-r2|14/14|16/16, 0|185.277|187.058/187.005; 189.768/184.352|11.343/11.466|1.483/1.496|
+|s3fix17-pair-c3-r2|16/16|18/18, 0|210.757|212.319/212.662; 215.022/209.919|11.280/11.488|1.498/1.483|
+|s3fix17-pair-c4-r2|17/17|18/18, 0|225.548|229.085/229.338; 229.070/224.660|10.987/11.006|1.506/1.490|
+|s3fix17-pair-c5-r2|17/17|19/19, 0|227.621|230.357/230.653; 229.485/225.246|11.238/11.364|1.454/1.539|
+
+Every pair: mirrored ±0.35/100ms, start skew0s, unilateral waiting0, both fingers57/57 samples **each robot** in first carry. Wheel rim/chassis path187–231mm versus184–231mm supports powered translation rather than the old subthreshold stall; proxy is not exact contact-point slip. Exact contact force is new evaluation-only evidence (squeeze and net resultant are different quantities).
+
+**Remaining pulse-clock defect:** nominal12 intervals yielded14–17 issued nonzero actions per robot. For c0, boundary29.4 was issued after29.3, and more adjacent100ms actions followed: legacy half-open `start <= now < end` window uses unrounded float boundaries (e.g.29.3+.1=29.400000000000002) against the rounded tick29.4, allowing a boundary reissue and extending drive. No per-pulse index suppresses that reissue. This is consistent with first-leg excursions185–228mm instead of nominal155.265mm and endpoint errors16–54mm. Counts/skew above are measured; isolated causal calibration remains unperformed. Do not claim the nominal12-pulse distance was physically executed. No post-result controller change in this round.
+
+c3 fine pan failure repaired: r1/r2 alignment, grasp, lift, transport reached; stage robot turn reversals0 for all pair cases. Cyan later navigation reversals c0/c3/c4/c5=1/4/1/1, distinct from solved alignment cycles.
+
+Run aggregate wall/SIM **3698.173317/557.75=6.631**, commands19775, model calls0; concurrent batch wall460.79s is a separate measure. Measured render 1146.561s and physics 1170.705s dominate; capture timers nested/not additive. No speed optimization or controlled benchmark claim.
+
+Raw: `/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/*/raw`; evaluation: `outputs/oracle-runs/s3fix17-eval-r2/evaluation`. Retrieved raw hashes all match; [all ten results](results-r2.json), [first-carry commands/forces/endpoint audit](pair-dynamics-r2.json), [retrieval receipt](retrieval-r2.json). Force helper performs0 physics steps and hash-checks saved source files. It never feeds controller input.
+
+Next proposed round: offline scheduled-pulse index deduplication and complete pan-owned lowering/safe-release sweep first, then preregister a single short concurrent10-case carry→lower batch. No B-delivery or real-hardware success claim.
+
+Lowering classification from the last evaluated samples: all4 LOAD_DROP guards fired while both fingers of **both robots still contacted the beam**, held=True, COM z49.6–50.8mm, speed7.3–24.1mm/s during commanded lower. The guard itself uses beam body origin<=35mm and closed grippers. These are confirmed guard stops, **not proven grip-loss/free-fall events**; safe set-down/height-reference contract needs separate checking. c2/c3 reached COM15.6–15.9mm with both-finger contact, then r1 failed FLOOR_POSE_NOT_COMMANDED. [Last-frame records](lowering-last-sample.json). No guard disabled or success relabelled after seeing results.
+
+## TensorBoard / delivery
+
+New immutable snapshots `1010-s3fix17-v164-r1`, `1010-s3fix17-v165-r2`, `1010-s3fix17-aux-v1`:25 views,565 scalar tags,20 saved-RGB4x videos. All event values match derived source JSON; native API loaded25, all20 videos hash/Range206 checked. Retrieved raw r1 24,538 files / r2 33,835 files match all artifact hashes; originals preserved. Pathcheck5SIM,0SIM wrong-SHA preflight and0-physics old-raw audit have separate views, excluded from10-case denominators.
+
+[Native comparison dashboard](http://127.0.0.1:6006/?runFilter=%5E%281010-s3fix17-v164-r1%7C1010-s3fix17-v165-r2%7C1010-s3fix16-alignment-ownership-v1%29%2F&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Falignment%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fgrasp%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flift%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcarry%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ftarget_distance%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fn%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhost_errors%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ftilt_aborts%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fdrop_aborts%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0#timeseries), [pair c3 representative4x video](http://127.0.0.1:6007/video/52b6fbcf36661c55bd43), [HParams](http://127.0.0.1:6006/#hparams). Chrome **강** actual HParams page448,10 rows/page: v165 cases and cohort10-r2 load, case/policy/seed/source_sha columns applied; cohort wall3698.2/SIM557.75/commands19775/model0 match source. Time Series actual cohort carry4/4/10 forv162/v164r1/v165r2 and first four outcome cards checked; twelve pinned tags saved (not all simultaneously visible). Video readyState4,1920×480,13.8s. [Verification](tensorboard-verification.json). Plugin export status is not full mission success.
+
+Operational preservation: to satisfy the remote disk guard, two own **inactive** source archives were deduplicated by same-path,size,mode,SHA-verified hard links; no raw changed/deleted and no other process stopped. [Receipt](source-cache-preservation.json). No Mac physics, CI wait or merge; PR416 remains DRAFT. Final documentation commit is separate from fixed physics source.

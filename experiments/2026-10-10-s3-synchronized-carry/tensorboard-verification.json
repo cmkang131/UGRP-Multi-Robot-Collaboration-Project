@@ -1,0 +1,60 @@
+{
+  "snapshots": [
+    "1010-s3fix17-v164-r1",
+    "1010-s3fix17-v165-r2",
+    "1010-s3fix17-aux-v1"
+  ],
+  "runs": 25,
+  "scalar_tags": 565,
+  "videos": 20,
+  "event_source_values_match": true,
+  "api_loaded": true,
+  "video_range206_hashes_match": true,
+  "url": "http://127.0.0.1:6006/?runFilter=%5E%281010-s3fix17-v164-r1%7C1010-s3fix17-v165-r2%7C1010-s3fix16-alignment-ownership-v1%29%2F&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Falignment%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fgrasp%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flift%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcarry%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ftarget_distance%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fn%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhost_errors%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ftilt_aborts%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fdrop_aborts%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0#timeseries",
+  "display": {
+    "verified_at": "2026-10-10T13:27:28.717110+00:00",
+    "browser_profile": "강 / kcm0127@gmail.com",
+    "hparams": {
+      "actual_rows_loaded": true,
+      "page": 448,
+      "page_size": 10,
+      "visible_columns": [
+        "case",
+        "policy",
+        "seed",
+        "source_sha"
+      ],
+      "cohort": "cohort10-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "wall_s_display": "3698.2",
+      "sim_s_display": "557.75",
+      "commands": 19775,
+      "model_calls": 0
+    },
+    "timeseries": {
+      "actual_values_verified": true,
+      "visible_cards": [
+        "offline/alignment",
+        "offline/grasp",
+        "offline/lift",
+        "offline/carry"
+      ],
+      "cohort_carry": {
+        "v162": 4,
+        "v164-r1": 4,
+        "v165-r2": 10
+      },
+      "saved_pinned_tags": 12,
+      "all_12_simultaneously_visible": false
+    },
+    "representative_video": {
+      "url": "http://127.0.0.1:6007/video/52b6fbcf36661c55bd43",
+      "readyState": 4,
+      "duration_s": 13.8,
+      "width": 1920,
+      "height": 480
+    },
+    "scope": "Native TensorBoard actual HParams rows, first four Time Series cohorts, saved twelve pinned tags and representative video; export success does not mean full physical task success"
+  },
+  "source_manifest": "outputs/s3fix17-control-20261010/tb-verification.json"
+}
