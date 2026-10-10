@@ -20,7 +20,7 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--seconds', type=int, default=3600)
     a = p.parse_args()
-    if not 0 < a.seconds <= 3600: raise ValueError('finite <=1h relay required')
+    if not 0 < a.seconds <= 14400: raise ValueError('finite <=4h relay required')
     a.output.mkdir(parents=True, exist_ok=False)
     profile = load_registry()['driver_profiles']['main_study_gemini_v1']
     proxy, runtime = live_proxy(profile, a.proxy_pid)
