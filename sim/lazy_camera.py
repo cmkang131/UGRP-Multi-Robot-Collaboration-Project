@@ -24,6 +24,7 @@ class FrameBatch(Mapping):
         self._keys = tuple(keys)
         self._produce, self._valid = produce, valid
         self._values = {}
+        self._failure = None
 
     def __iter__(self):
         return iter(self._keys)
@@ -41,9 +42,17 @@ class FrameBatch(Mapping):
         if key not in self._keys:
             raise KeyError(key)
         if key not in self._values:
+            if self._failure is not None:
+                raise self._failure
             if not self._valid():
                 raise RuntimeError('pending camera frame crossed a physics boundary')
-            self._values[key] = self._produce(key, reason)
+            try:
+                self._values[key] = self._produce(key, reason)
+            except BaseException as exc:
+                # A port may have advanced its sequence or stored a JPEG before
+                # a ledger write failed. Never retake/overwrite that evidence.
+                self._failure = exc
+                raise
         return self._values[key]
 
     def retain(self):

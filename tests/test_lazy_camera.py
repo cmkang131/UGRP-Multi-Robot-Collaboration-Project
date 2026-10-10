@@ -97,6 +97,20 @@ def test_oracle_guard_rejects_mac_before_any_physics(monkeypatch):
         probe.host_guard('a'*40)
 
 
+def test_partial_write_failure_does_not_retake_or_overwrite_on_close(tmp_path, monkeypatch):
+    monkeypatch.setenv('UGRP_CAMERA_RENDER', 'lazy-v1')
+    host = Host(tmp_path)
+    def fail(*_): raise OSError('ledger unavailable')
+    host._append = fail
+    frames = capture_robot_frames(host, ('r1', 'r2'))
+    with pytest.raises(OSError): frames['r1']
+    image = tmp_path/'robots/r1/rgb/00000.jpg'
+    before = (image.stat().st_mtime_ns, image.read_bytes())
+    with pytest.raises(OSError): host.close()
+    assert host.closed and host.rendered == [('r1', 0.)]
+    assert (image.stat().st_mtime_ns, image.read_bytes()) == before
+
+
 def test_direct_bytes_do_not_normalize_control_ledger(tmp_path):
     from scripts.benchmark_lazy_camera import equal_bytes
     a, b = tmp_path/'a', tmp_path/'b'
