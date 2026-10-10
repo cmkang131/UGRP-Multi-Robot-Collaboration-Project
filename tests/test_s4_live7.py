@@ -20,7 +20,7 @@ from scripts.evaluate_s4_live7 import distances
     ('refix_look', {'kind':'continue'}),
     ('refix_post_look', {'kind':'post_look_decision','choice':'regrasp'})])
 def test_same_heartbeat_all_phases_even_actuator_refused(phase, action):
-    h=committed(hs.PHASE_HEARTBEAT)
+    h=committed(hs.ACTIVE_PHASE_HEARTBEAT)
     for r in hs.PAIR:
         seen={**h.view(r,19.), 'own_executor_phase':phase}
         row=h.renew_carry(r,action,call_id='fresh-'+r,command_accepted=False,
@@ -41,6 +41,34 @@ def test_rgb_loss_and_unknown_still_stop_and_cannot_heartbeat():
     for choice in ('grip_lost','unknown'):
         h=committed(hs.PHASE_HEARTBEAT);decide(h,'r1',choice,request=19.,now=20.)
         assert h.failure and not renew(h)['accepted'] and not h.tick(20.)
+
+
+def test_inactive_or_closed_executor_never_renews():
+    for phase in (None,'done','failed','aborted','idle'):
+        h=committed(hs.ACTIVE_PHASE_HEARTBEAT)
+        assert not renew(h,seen={**h.view('r1',19.),'own_executor_phase':phase})['accepted']
+    h=committed(hs.ACTIVE_PHASE_HEARTBEAT)
+    for r in hs.PAIR:h.close(r,20.)
+    assert not h.tick(99.) and h.failure is None
+    assert h.view('r1',99.)['phase']=='completed' and not h.allowed('r1',0)
+    assert not renew(h,now=21.)['accepted']
+
+
+def test_terminal_failure_survives_team_removing_endpoint(tmp_path,setup_data):
+    host,driver,inner=build(tmp_path,setup_data,'no_comm');h=driver.handshake;h.carry_lease_renewal=hs.ACTIVE_PHASE_HEARTBEAT
+    host.begin()
+    for i in range(1,141):
+        t=i/10
+        for r,own in inner.items():own.now=t;host.links[r].capture_frame()
+        driver.poll(t);host.step_to(t);driver.step(t)
+    assert h.permits
+    endpoint=driver.endpoints['r1'];endpoint.terminal=True;endpoint.controller.state='failed'
+    def remove(now):
+        for actor in driver.runtime.actors.values():
+            if actor._pair is not None and actor._pair.terminal:actor._pair=None
+    driver.runtime.team.poll=remove
+    assert all(c['kind']=='hold' for r,c in driver.step(14.1))
+    assert h.failure=='S3_PAIR_TERMINAL' and driver.runtime.actors['r1']._pair is None
 
 
 def test_scheduler_continue_in_lower_and_align_renews_both_endpoints(tmp_path,setup_data,monkeypatch):

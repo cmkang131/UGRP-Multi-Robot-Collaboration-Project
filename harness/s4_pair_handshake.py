@@ -14,19 +14,22 @@ HANDSHAKE_S = 2 * WINDOW_S  # one fresh-response window for GO, one for ACK
 MONITOR_S = 2.
 CARRY_RENEWAL = 'accepted_carry_reply_v1'
 PHASE_HEARTBEAT = 'all_phase_rgb_heartbeat_v2'
+ACTIVE_PHASE_HEARTBEAT = 'all_active_phase_rgb_heartbeat_v3'
+PHASE_RENEWALS = (PHASE_HEARTBEAT, ACTIVE_PHASE_HEARTBEAT)
 SIGNAL_DELAY_S = .1
 CHOICES = ('go', 'ack_go', 'held', 'grip_lost', 'unknown')
 
 
 class Handshake:
     def __init__(self, *, carry_lease_renewal='off'):
-        if carry_lease_renewal not in ('off', CARRY_RENEWAL, PHASE_HEARTBEAT):
+        if carry_lease_renewal not in ('off', CARRY_RENEWAL, *PHASE_RENEWALS):
             raise ValueError('unknown carry lease renewal')
         self.carry_lease_renewal = carry_lease_renewal
         self.renewals = []
         self.claims, self.own, self.signals = {}, {}, []
         self.decisions, self.permits = [], []
         self.failure = None
+        self.completed = {}
 
     def claim(self, rid, call_id):
         if rid not in PAIR or not call_id or rid in self.claims or self.failure:
@@ -35,7 +38,7 @@ class Handshake:
         return True
 
     def open(self, rid, epoch, now):
-        if rid not in self.claims or self.failure:
+        if rid not in self.claims or self.failure or rid in self.completed:
             return False
         old = self.own.get(rid)
         if old and epoch <= old['epoch']:
@@ -55,6 +58,7 @@ class Handshake:
         own = self.own.get(rid)
         peer = self._peer_go(rid, now)
         return dict(phase='aborted' if self.failure else 'unclaimed' if rid not in self.claims
+                    else 'completed' if rid in self.completed
                     else 'align_grasp' if own is None else 'carry' if own['committed'] else 'wait_go',
                     epoch=None if own is None else own['epoch'],
                     own_go_sent=bool(own and own['go']),
@@ -68,13 +72,18 @@ class Handshake:
             self.signals.append(dict(sender=rid, state='GRIP_LOST' if reason == 'OWN_RGB_GRIP_LOST'
                                      else 'ABORT', epoch=self.own.get(rid, {}).get('epoch'), at=now, ref=None))
 
+    def close(self, rid, now):
+        """Own executor issued a normal terminal state; no physical-success claim."""
+        if rid in self.own and not self.failure:
+            self.completed.setdefault(rid, now)
+
     def decide(self, rid, action, *, call_id, requested_at, now, frame_t, frame_sha256, seen):
         """Only a released, validated response to its captured request may vote."""
         own = self.own.get(rid)
         choice = action['choice']
         valid_time = all(math.isfinite(t) for t in (requested_at, now, frame_t))
         fresh = valid_time and frame_t <= requested_at <= now and now-frame_t < WINDOW_S
-        valid = (not self.failure and own is not None and fresh
+        valid = (not self.failure and rid not in self.completed and own is not None and fresh
                  and own['opened'] <= requested_at and action['epoch'] == own['epoch'] == seen['epoch']
                  and isinstance(frame_sha256, str) and len(frame_sha256) == 64)
         if valid:
@@ -110,10 +119,14 @@ class Handshake:
         if self.failure:
             return False
         for rid, own in self.own.items():
+            if rid in self.completed:
+                continue
             until = own['last_response_at']+WINDOW_S if own['committed'] else own['opened']+HANDSHAKE_S
             if now >= until:
                 self.abort(rid, now, 'PAIR_VISUAL_LEASE_EXPIRED' if own['committed'] else 'PAIR_GO_TIMEOUT')
                 return False
+        if self.completed:
+            return False
         if set(self.claims) != set(PAIR) or set(self.own) != set(PAIR):
             return False
         rows = list(self.own.values())
@@ -141,14 +154,17 @@ class Handshake:
         # A normal, validated, released reply proves endpoint liveness even
         # when its actuator command is refused. It never proves grasp or
         # overrides a refusal. The v1 admission rule remains reproducible.
-        phase_heartbeat = self.carry_lease_renewal == PHASE_HEARTBEAT
+        phase_heartbeat = self.carry_lease_renewal in PHASE_RENEWALS
         eligible = (action.get('kind') in ('continue', 'carry_decision', 'post_look_decision')
             or action.get('kind') == 'pair_decision' and action.get('choice') == 'held'
                 and command_accepted and own and action.get('epoch') == own['epoch'])
         admitted_carry = (command_accepted and action.get('kind') == 'carry_decision'
             and action.get('choice') in ('continue', 'set_down'))
+        if self.carry_lease_renewal == ACTIVE_PHASE_HEARTBEAT:
+            phase = seen.get('own_executor_phase')
+            eligible = eligible and isinstance(phase, str) and phase not in ('done', 'failed', 'aborted', 'idle')
         valid = bool((eligible if phase_heartbeat else admitted_carry)
-            and not self.failure and own and own['committed']
+            and not self.failure and rid not in self.completed and own and own['committed']
             and seen.get('phase') == 'carry'
             and seen.get('epoch') == own['epoch']
             and all(math.isfinite(t) for t in (requested_at, now, frame_t))
@@ -172,10 +188,11 @@ class Handshake:
 
     def allowed(self, rid, epoch):
         row = self.own.get(rid)
-        return bool(not self.failure and row and row['epoch'] == epoch and row['committed'])
+        return bool(not self.failure and rid not in self.completed and row and row['epoch'] == epoch and row['committed'])
 
     def record(self):
         return copy.deepcopy(dict(mode=MODE, research_result=False, visual_detector='LLM own RGB judgement; unvalidated',
             carry_lease_renewal=self.carry_lease_renewal, renewals=self.renewals,
+            completed=self.completed,
             claims=self.claims, signals=self.signals, decisions=self.decisions, permits=self.permits,
             failure=self.failure, physical_success=None))

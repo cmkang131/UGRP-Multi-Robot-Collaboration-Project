@@ -70,10 +70,14 @@ def plan(action, job, **kwargs):
     return old.s4.routing.executor_plan(action, job, **kwargs)
 
 
+def heartbeat_prompt(mode):
+    return HEARTBEAT_PROMPT.replace(hs.PHASE_HEARTBEAT, mode)
+
+
 @lru_cache(maxsize=32)
-def fixed_tokens(total, per_actor, seed, heartbeat=False):
+def fixed_tokens(total, per_actor, seed, heartbeat='off'):
     return max(si.pk.count_tokens(si.system_prompt(c, r, cap_window=total, cap_robot=per_actor, seed=seed)
-                                 + '\n\n' + PROMPT + ('\n\n'+HEARTBEAT_PROMPT if heartbeat else ''))
+                                 + '\n\n' + PROMPT + ('\n\n'+heartbeat_prompt(heartbeat) if heartbeat != 'off' else ''))
                for c in old.CONDITIONS for r in si.ROBOTS)
 
 
@@ -146,7 +150,7 @@ class Trial(old.Trial):
         if call.actor in hs.PAIR:
             frame = self._snapshots[(call.actor, round(float(call.started_sim_s), 6))]['frame']
             seen = self.handshake.view(call.actor, call.started_sim_s)
-            if self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT:
+            if self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS:
                 # Own executor software state only: no measurements or peer state.
                 adapter = self.links[call.actor].stop_adapter
                 ctl = adapter.controller() if adapter is not None else None
@@ -162,8 +166,8 @@ class Trial(old.Trial):
         body = json.loads(request['messages'][1]['content'])
         body['pair_handshake'] = state
         system = request['messages'][0]['content'] + '\n\n' + PROMPT
-        if self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT:
-            system += '\n\n' + HEARTBEAT_PROMPT
+        if self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS:
+            system += '\n\n' + heartbeat_prompt(self.handshake.carry_lease_renewal)
         user = json.dumps(body, ensure_ascii=False, sort_keys=True)
         request.update(prompt_version='ugrp.s4_pair_prompt.v1', input_sha256=bundled.payload_sha256,
             messages=[dict(role='system', content=system), dict(role='user', content=user)])
@@ -172,7 +176,7 @@ class Trial(old.Trial):
         caps = body.get(si.pk.WINDOW_KEY, {})
         request['billed_tokens'] = si.billing.billed_tokens(request['tokens'], system_billed=fixed_tokens(
             caps.get('max_utterances', 12), caps.get('max_your_utterances', 6), self.seed,
-            self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT))
+            self.handshake.carry_lease_renewal if self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS else 'off'))
         return old.s4.zo.PreparedCall(bundled, request, prepared.request_id)
 
     def finish_call(self, call, prepared, raw, **kwargs):
@@ -187,7 +191,7 @@ class Trial(old.Trial):
         if action['kind'] != 'pair_decision':
             result = super()._on_action(actor, action, sim_s)
             if actor in hs.PAIR and (action['kind'] == 'carry_decision'
-                    or self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT):
+                    or self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS):
                 call_id = self.scheduler.calls[-1].call_id
                 ack = self.dispatch_log[-1].get('ack') or {}
                 row = self.handshake.renew_carry(actor, action, call_id=call_id,
@@ -207,7 +211,7 @@ class Trial(old.Trial):
                 self, actor, action, sim_s, call.call_id, planner=plan)
         finally:
             link.call_ref = link.response_context = None
-        if self.handshake.carry_lease_renewal == hs.PHASE_HEARTBEAT:
+        if self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS:
             ack = self.dispatch_log[-1].get('ack') or {}
             row = self.handshake.renew_carry(actor, action, call_id=call.call_id,
                 command_accepted=ack.get('accepted', False),
@@ -250,8 +254,10 @@ class Driver:
         self.host, self.runtime, self.on_admit = host, pair_runtime, on_admit
         self.handshake = host.trial.handshake
         self.attached, self.next_ask, self.ask_keys, self.next_submit = set(), {}, {}, 0.
+        self.endpoints = {}
 
     def _attach(self, rid, ep):
+        self.endpoints[rid] = ep
         link = self.host.links[rid]
         original = ep.controller._wait_carry
         released_epochs = set()
@@ -292,6 +298,17 @@ class Driver:
         self.runtime.team.poll(now)
         return [(rid, {'kind': 'hold'}) for rid in hs.PAIR]
 
+    def _own_terminals(self, rel):
+        if self.handshake.carry_lease_renewal != hs.ACTIVE_PHASE_HEARTBEAT:
+            return
+        # team.poll can remove failed endpoints; keep the admitted own handle.
+        for rid, ep in self.endpoints.items():
+            if ep.terminal:
+                if ep.controller.state == 'done':
+                    self.handshake.close(rid, rel)
+                else:
+                    self.handshake.abort(rid, rel, 'S3_PAIR_TERMINAL')
+
     def step(self, now):
         rel = now-self.host.links['r1'].origin_s
         self.handshake.tick(rel)
@@ -324,11 +341,13 @@ class Driver:
                 raise RuntimeError('S4 pair requires a fresh own frame before tick')
             issued.extend((rid, c) for c in decision['commands'])
         self.runtime.team.poll(now)
+        self._own_terminals(rel)
         for rid in hs.PAIR:
             ep = self.runtime.actors[rid]._pair
             if ep is not None:
                 issued.extend((rid, c) for c in ep.arm_step(now))
         self.runtime.team.poll(now)
+        self._own_terminals(rel)
         for rid in hs.PAIR:
             ep = self.runtime.actors[rid]._pair
             if ep is not None and ep.terminal and ep.controller.state != 'done':

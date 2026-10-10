@@ -2,6 +2,7 @@
 import argparse
 import json
 import math
+from collections import Counter
 from pathlib import Path
 from scripts.evaluate_s4_live5 import evaluate as old_evaluate, read, rows
 from scripts.evaluate_s4_live6 import physical_metrics, support
@@ -47,11 +48,14 @@ def evaluate(raw,variant):
     distance=distances(states,contacts,truth)
     physical=physical_metrics(states,contacts,truth,route)
     physical['continue_transport']['n']=int(distance['continued_transport_distance_m']>=.020)
-    value.update(variant=variant,**physical,
+    actual_variant=h['carry_lease_renewal']
+    value.update(variant=actual_variant,planned_variant_label=variant,**physical,
         distance=distance,heartbeats=dict(n=len(accepted),
-            by_phase={phase:sum(r.get('own_executor_phase')==phase for r in accepted)
-                for phase in sorted({r.get('own_executor_phase') or 'unspecified' for r in accepted})},
-            rejected_commands_with_live_heartbeat=sum(not r['command_accepted'] for r in accepted)),
+            by_phase=dict(Counter(r.get('own_executor_phase') or 'inactive' for r in accepted)),
+            inactive_heartbeat_n=sum(r.get('own_executor_phase') is None for r in accepted),
+            noop_heartbeat_n=sum(r['action']['kind']=='continue' for r in accepted),
+            rejected_commands_with_live_heartbeat=sum(bool(released[r['call_id']].get('ack'))
+                and not released[r['call_id']]['ack']['accepted'] for r in accepted)),
         renewal_rejections=[r for r in h.get('renewals',[]) if not r['accepted']])
     return value
 

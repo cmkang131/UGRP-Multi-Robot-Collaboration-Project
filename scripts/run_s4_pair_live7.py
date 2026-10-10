@@ -15,12 +15,13 @@ PLAN = RECORD+'/README.md'
 BUNDLE_ID = 'zone-s4-pair-live-v170'
 VERSION = '7.63.0'
 WORKFLOW = 'configs/simulation_workflows.d/s4_pair_live_v170.json'
+RENEWAL_MODE = hs.PHASE_HEARTBEAT
 
 
 def bundle(source_sha, condition, renewal='off', drop_guard='off'):
     if drop_guard not in ('off', 'contact_com_v1'):
         raise ValueError('unknown beam evaluation guard')
-    if renewal not in ('off', hs.PHASE_HEARTBEAT):
+    if renewal not in ('off', RENEWAL_MODE):
         raise ValueError('unknown carry lease renewal')
     b = previous.bundle(source_sha, condition)
     b.update(schema='ugrp.s4_pair_live.v170', execution_bundle_id=BUNDLE_ID,
@@ -70,7 +71,7 @@ def main(argv=None):
     p.add_argument('--expected-source-sha', required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--condition', choices=base.old.live.stage.CONDITIONS, required=True)
-    p.add_argument('--carry-lease-renewal', choices=('off', hs.PHASE_HEARTBEAT), default='off')
+    p.add_argument('--carry-lease-renewal', choices=('off', RENEWAL_MODE), default='off')
     p.add_argument('--relay-receipt', type=Path, required=True)
     p.add_argument('--pair-drop-guard', choices=('off', 'contact_com_v1'), default='off')
     p.add_argument('--execute', action='store_true')

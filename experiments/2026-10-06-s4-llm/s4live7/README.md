@@ -1,10 +1,10 @@
-# s4live7 DEV 사전 등록 (research_result=false)
-원인: s4live6 높이 정지2건은 마지막0.5s 양측 접촉22/22, COM49.8/47.5mm, 양쪽lower; 미지원 낙하0/2.
-후보: lease off / all_phase_rgb_heartbeat_v2(기본 off); 평가 contact_com_v1(기본 off)는 두 군 공통, cyan·S3 제어기 동결.
-단일 heartbeat: 모든 단계의 정상 검증·공개된 fresh 자기 RGB 응답, 같은 epoch·미만료 lease; 명령 거부와 별개이며 이탈·unknown은 정지.
-사전 목록 [plan.json](plan.json): 4조건×on/off×seed601, v170/workflow7.63, cap90SIMs, LP4, 8개 동시, 부하<51·여유≥6GiB.
-판정: 다음 구간 접촉 운반≥20mm, 계속 운반 거리(m), 고정 목표(4.6,-2.1)±20mm, 안정 내려놓기·미지원 낙하; 각 n/4.
-제출후3–5분: 예외·SIM/프레임 증가·실제 이동·정상 명령·집기/상승 점검; 이상 실행 중단/EXIT 기록.
-raw는 영속 ~/ugrp-sim/runs, 완료마다 즉시 회수; 결과·원본 위치·sha256 [summary.json](summary.json); ENOSPC=HOST_ERROR.
-참고: [Chubby §2.8](https://research.google.com/archive/chubby-osdi06.pdf), [Raft §8](https://raft.github.io/raft.pdf): heartbeat 응답으로 현재 lease 갱신, 만료 세션 부활 금지.
-참고: [MuJoCo mjData](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html): xpos=body frame, xipos=COM; 평가만 읽고 제어에는 전달하지 않음.
+# s4live7 DEV (research_result=false)
+원인: 기존 높이 정지2건은 접촉22/22·COM49.8/47.5mm; 빔600×40×32mm·COM 오프셋16mm로 원점35mm는 COM약51mm.
+1차 v170/SHA254ffd48: 초기8/8, on lease만료0/4·off4/4; 계속/목표/내려놓기 각0/4, 첫179–195mm·추가0m.
+1차 S3 FLOOR_POSE_NOT_COMMANDED4/4 뒤 비활성 heartbeat36건 누락 확인; 원본·기존 [plan.json](plan.json)은 보존.
+보완: 기본off/all_active_phase_rgb_heartbeat_v3, 모든 활성 단계에 단일 heartbeat; 종료·미만료·epoch 확인, S3 자기 종료 전달.
+사전 등록 [plan-r2.json](plan-r2.json): 4조건×on/off×seed601, v171/workflow7.64, cap90SIMs, LP4, 부하<51·여유≥6GiB, 8개 동시.
+평가 contact_com_v1은 양쪽 공통·기본off; S3 동결11파일 유지, GT는 평가만; 다음구간≥20mm·거리·목표(4.6,-2.1)·안정해제/낙하 n/4.
+3–5분 건강 점검·완료마다 영속 runs raw 회수; 결과·원본 위치·sha256 [summary.json](summary.json); ENOSPC=HOST_ERROR.
+참고 [Chubby §2.8](https://research.google.com/archive/chubby-osdi06.pdf), [Raft §8](https://raft.github.io/raft.pdf): 현재 세션 heartbeat 갱신·종료·만료 시 중지.
+참고 [MuJoCo mjData](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html): xpos=body origin, xipos=COM; 제어 전달 없음.

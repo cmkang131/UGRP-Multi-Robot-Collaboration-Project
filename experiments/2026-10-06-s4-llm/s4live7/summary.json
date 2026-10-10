@@ -1,6 +1,2276 @@
 {
   "research_result": false,
-  "status": "PREREGISTERED",
+  "status": "FIRST_COHORT_COMPLETE_CORRECTED_COHORT_PREREGISTERED",
+  "first_source_sha": "254ffd4844db9f14968feae723de7cf0ef883fdf",
+  "first_bundle": "zone-s4-pair-live-v170",
+  "first_results": [
+    {
+      "condition": "no_comm",
+      "status": "PAIR_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 40.4,
+          "r2": 40.4
+        }
+      },
+      "carry_20mm": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.18337735775196057,
+        "contact_supported_samples": 56,
+        "first_carry_window": [
+          40.1,
+          42.9
+        ]
+      },
+      "plumbing_carry": {
+        "n": 1,
+        "N": 1
+      },
+      "pair_failure": "PAIR_VISUAL_LEASE_EXPIRED",
+      "failure": null,
+      "lowering": {
+        "n": 0,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": false,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "model_calls": 16,
+      "model_usage": {
+        "requests": 16,
+        "blocked": 0,
+        "tokens_prompt": 104744,
+        "tokens_completion": 1322,
+        "tokens_total_known": 106883,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 16,
+          "sum": 121171.037,
+          "max": 41181.466,
+          "median": 4851.833
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        4.608318000000001,
+        5.618309,
+        4.030923,
+        4.851833,
+        9.517519,
+        4.231352,
+        5.558979999999999,
+        4.5764830000000005,
+        4.447408,
+        4.189826,
+        6.70995,
+        41.181466,
+        8.060742,
+        4.586435000000001,
+        4.143452,
+        4.858041
+      ],
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "model_failures": [],
+      "fixed_signals": 3,
+      "verified_artifacts": 3189,
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-off-no_comm-s601-v170/raw",
+      "result_sha256": "ba1317893d926e65d3f793688df98c84ef4efa723429b3fad90c855661bf0a40",
+      "manifest_sha256": "d910dc030932c4753966de5099760b508cbc19ed9a7fdaee178217c54f8c7a6f",
+      "research_result": false,
+      "variant": "off",
+      "planned_variant_label": "off",
+      "continue_transport": {
+        "n": 0,
+        "N": 1,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.18337735775196057
+        }
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 1,
+        "goal_xy_m": [
+          4.6,
+          -2.1
+        ],
+        "minimum_error_m": 3.800627551152525
+      },
+      "distance": {
+        "contact_supported_path_m": 0.18402797626984607,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.18402797626984607
+        },
+        "segment_excursion_m": {
+          "0": 0.18337735775196057
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 0,
+        "by_phase": {},
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 0,
+        "rejected_commands_with_live_heartbeat": 0
+      },
+      "renewal_rejections": []
+    },
+    {
+      "condition": "peer_ko",
+      "status": "PAIR_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.4,
+          "r2": 44.4
+        }
+      },
+      "carry_20mm": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.1838543445827982,
+        "contact_supported_samples": 56,
+        "first_carry_window": [
+          44.1,
+          46.9
+        ]
+      },
+      "plumbing_carry": {
+        "n": 1,
+        "N": 1
+      },
+      "pair_failure": "PAIR_VISUAL_LEASE_EXPIRED",
+      "failure": null,
+      "lowering": {
+        "n": 0,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": false,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "model_calls": 18,
+      "model_usage": {
+        "requests": 18,
+        "blocked": 0,
+        "tokens_prompt": 126440,
+        "tokens_completion": 2312,
+        "tokens_total_known": 129364,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 18,
+          "sum": 137118.622,
+          "max": 25272.043,
+          "median": 5615.703
+        },
+        "failure_classes": {
+          "model_output_rejected": 1
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        4.784993,
+        6.022723,
+        5.615703000000001,
+        5.139929,
+        4.864563,
+        5.1383019999999995,
+        5.286734,
+        6.551551000000001,
+        6.612012,
+        4.544853,
+        4.157756999999999,
+        5.456944,
+        5.074979,
+        6.860855,
+        25.272043,
+        6.509677,
+        9.380773999999999,
+        19.84423
+      ],
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 10,
+        "accepted_messages": 9,
+        "rejected": 0,
+        "delivery_edges": 9,
+        "free_text_messages": 9,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 4,
+          "r2": 5,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0012-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        }
+      ],
+      "fixed_signals": 3,
+      "verified_artifacts": 3441,
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-off-peer_ko-s601-v170/raw",
+      "result_sha256": "9ae1747cdb6ffaaff2cf4302e5e27aa71570efe4deca0186ca8d530e46ee6247",
+      "manifest_sha256": "91543658d8f6bc952bb263108dc458c961f378bfbd72545ef17bad345b950f94",
+      "research_result": false,
+      "variant": "off",
+      "planned_variant_label": "off",
+      "continue_transport": {
+        "n": 0,
+        "N": 1,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.1838543445827982
+        }
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 1,
+        "goal_xy_m": [
+          4.6,
+          -2.1
+        ],
+        "minimum_error_m": 3.8004322049796264
+      },
+      "distance": {
+        "contact_supported_path_m": 0.18469355109723437,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.18469355109723437
+        },
+        "segment_excursion_m": {
+          "0": 0.1838543445827982
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 0,
+        "by_phase": {},
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 0,
+        "rejected_commands_with_live_heartbeat": 0
+      },
+      "renewal_rejections": []
+    },
+    {
+      "condition": "leader_ko",
+      "status": "PAIR_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 45.1,
+          "r2": 45.1
+        }
+      },
+      "carry_20mm": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.17902193992568333,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          44.9,
+          47.6
+        ]
+      },
+      "plumbing_carry": {
+        "n": 1,
+        "N": 1
+      },
+      "pair_failure": "PAIR_VISUAL_LEASE_EXPIRED",
+      "failure": null,
+      "lowering": {
+        "n": 0,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": false,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "model_calls": 17,
+      "model_usage": {
+        "requests": 17,
+        "blocked": 0,
+        "tokens_prompt": 118835,
+        "tokens_completion": 2141,
+        "tokens_total_known": 122534,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 17,
+          "sum": 129599.421,
+          "max": 19655.688,
+          "median": 6526.416
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        6.845232,
+        4.799712,
+        19.655687999999998,
+        6.482442,
+        6.897729999999999,
+        8.224169,
+        4.388032,
+        6.811371,
+        15.918119,
+        9.366024,
+        7.150184,
+        6.526416,
+        5.482272,
+        4.843428,
+        6.021403,
+        5.532712,
+        4.6544870000000005
+      ],
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r2",
+        "sent": 9,
+        "accepted_messages": 9,
+        "rejected": 0,
+        "delivery_edges": 9,
+        "free_text_messages": 9,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 4,
+          "r2": 4,
+          "r3": 1
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "model_failures": [],
+      "fixed_signals": 3,
+      "verified_artifacts": 3486,
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-off-leader_ko-s601-v170/raw",
+      "result_sha256": "6cbac9a1de85aea344d04284d6de87b24e5c1fcf1fa30dfa6bec1ae7cf4fceb7",
+      "manifest_sha256": "6811ffec6684cf04f87d0a069c1e92821af2f88693195462931c601b8d69a30b",
+      "research_result": false,
+      "variant": "off",
+      "planned_variant_label": "off",
+      "continue_transport": {
+        "n": 0,
+        "N": 1,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.17902193992568333
+        }
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 1,
+        "goal_xy_m": [
+          4.6,
+          -2.1
+        ],
+        "minimum_error_m": 3.803069545556848
+      },
+      "distance": {
+        "contact_supported_path_m": 0.1799033594833578,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.1799033594833578
+        },
+        "segment_excursion_m": {
+          "0": 0.17902193992568333
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 0,
+        "by_phase": {},
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 0,
+        "rejected_commands_with_live_heartbeat": 0
+      },
+      "renewal_rejections": []
+    },
+    {
+      "condition": "structured",
+      "status": "PAIR_STOP",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 45.2,
+          "r2": 45.2
+        }
+      },
+      "carry_20mm": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.19508252895208653,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          45.0,
+          47.7
+        ]
+      },
+      "plumbing_carry": {
+        "n": 1,
+        "N": 1
+      },
+      "pair_failure": "PAIR_VISUAL_LEASE_EXPIRED",
+      "failure": null,
+      "lowering": {
+        "n": 0,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": false,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "model_calls": 16,
+      "model_usage": {
+        "requests": 16,
+        "blocked": 0,
+        "tokens_prompt": 112831,
+        "tokens_completion": 2071,
+        "tokens_total_known": 117386,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 16,
+          "sum": 106396.134,
+          "max": 13161.267,
+          "median": 5151.753
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        4.774551000000001,
+        6.922321,
+        4.962275,
+        13.161267,
+        12.349574,
+        5.964866,
+        5.151752999999999,
+        5.527005,
+        8.949028,
+        4.448236,
+        4.979632,
+        4.322302,
+        11.118347,
+        4.218350999999999,
+        4.685537,
+        4.861089
+      ],
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 4,
+        "accepted_messages": 4,
+        "rejected": 0,
+        "delivery_edges": 4,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 2,
+          "r2": 2,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "model_failures": [],
+      "fixed_signals": 3,
+      "verified_artifacts": 3489,
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-off-structured-s601-v170/raw",
+      "result_sha256": "cda05f0f9276727ab100e28d091e1e0e6674e49823e3f1ac4a55f04d9918f849",
+      "manifest_sha256": "069f06f4fcaf7bbb95e9f141c16a857fa6a263a0090f568f86721c35fd2856d2",
+      "research_result": false,
+      "variant": "off",
+      "planned_variant_label": "off",
+      "continue_transport": {
+        "n": 0,
+        "N": 1,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.19508252895208653
+        }
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 1,
+        "goal_xy_m": [
+          4.6,
+          -2.1
+        ],
+        "minimum_error_m": 3.791927196848299
+      },
+      "distance": {
+        "contact_supported_path_m": 0.19598120673900915,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.19598120673900915
+        },
+        "segment_excursion_m": {
+          "0": 0.19508252895208653
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 0,
+        "by_phase": {},
+        "inactive_heartbeat_n": 0,
+        "noop_heartbeat_n": 0,
+        "rejected_commands_with_live_heartbeat": 0
+      },
+      "renewal_rejections": []
+    },
+    {
+      "condition": "no_comm",
+      "status": "DEV_STAGE_FINISHED",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 40.9,
+          "r2": 40.9
+        }
+      },
+      "carry_20mm": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.18180944169056104,
+        "contact_supported_samples": 56,
+        "first_carry_window": [
+          40.6,
+          43.4
+        ]
+      },
+      "plumbing_carry": {
+        "n": 1,
+        "N": 1
+      },
+      "pair_failure": null,
+      "failure": null,
+      "lowering": {
+        "n": 0,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": false,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "model_calls": 39,
+      "model_usage": {
+        "requests": 39,
+        "blocked": 0,
+        "tokens_prompt": 272815,
+        "tokens_completion": 3345,
+        "tokens_total_known": 276334,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 39,
+          "sum": 211497.398,
+          "max": 11815.016,
+          "median": 4902.465
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        4.79568,
+        5.184671000000001,
+        8.410287,
+        5.352518,
+        4.695817,
+        3.8596500000000002,
+        5.440196,
+        8.496255999999999,
+        11.815016,
+        4.230087,
+        5.072373,
+        4.792385,
+        4.1593350000000004,
+        7.001143,
+        4.271675,
+        4.7987020000000005,
+        7.597100999999999,
+        4.376506,
+        6.403978,
+        4.5090129999999995,
+        5.187595,
+        4.289599,
+        5.857749,
+        4.902465,
+        4.871236,
+        4.286212000000001,
+        4.469166,
+        7.140267,
+        4.636153,
+        4.716444999999999,
+        5.3328109999999995,
+        5.1505209999999995,
+        4.309887,
+        5.890915,
+        6.0880469999999995,
+        4.338103,
+        5.20686,
+        5.14692,
+        4.414058
+      ],
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "model_failures": [],
+      "fixed_signals": 2,
+      "verified_artifacts": 5580,
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-on-no_comm-s601-v170/raw",
+      "result_sha256": "03e33f669c3dd36b80579e9a3f806ff486cdc7f141da3e0b4c2f44183c99636c",
+      "manifest_sha256": "5cba6c75c4e36f8e2d5828789c025f9df82a7cfec278c75a5bfe73538da1f28e",
+      "research_result": false,
+      "variant": "all_phase_rgb_heartbeat_v2",
+      "planned_variant_label": "accepted_carry_reply_v1",
+      "continue_transport": {
+        "n": 0,
+        "N": 1,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.18180944169056104
+        }
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 1,
+        "goal_xy_m": [
+          4.6,
+          -2.1
+        ],
+        "minimum_error_m": 3.8067337501687524
+      },
+      "distance": {
+        "contact_supported_path_m": 0.18242086723045067,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.18242086723045067
+        },
+        "segment_excursion_m": {
+          "0": 0.18180944169056104
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 28,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 6,
+          "lower": 8,
+          "inactive": 12
+        },
+        "inactive_heartbeat_n": 12,
+        "noop_heartbeat_n": 10,
+        "rejected_commands_with_live_heartbeat": 2
+      },
+      "renewal_rejections": [
+        {
+          "robot_id": "r1",
+          "call_id": "call-0001-r1",
+          "action": {
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg",
+            "destination_zone": "B"
+          },
+          "at": 3.9,
+          "requested_at": 0.0,
+          "frame_t": 0.0,
+          "frame_sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+          "epoch": null,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": null,
+          "decision_sources": [
+            "order_sheet"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": null,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0002-r2",
+          "action": {
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_pos",
+            "destination_zone": "B"
+          },
+          "at": 3.9,
+          "requested_at": 0.0,
+          "frame_t": 0.0,
+          "frame_sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+          "epoch": null,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": null,
+          "decision_sources": [
+            "order_sheet"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": null,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0005-r2",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "go",
+            "peer_go_ref": null
+          },
+          "at": 33.8,
+          "requested_at": 30.1,
+          "frame_t": 30.1,
+          "frame_sha256": "9394eb5640b0c6fc54b0b875c1fb4b4a670814feee852e7dd0756d4266c1c9aa",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 33.8,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0004-r1",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "go",
+            "peer_go_ref": null
+          },
+          "at": 33.9,
+          "requested_at": 30.1,
+          "frame_t": 30.1,
+          "frame_sha256": "42a03a52b53c5758c4ec408607a8fe684ec88a8d644274b7a960e680889806a9",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 33.9,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0007-r1",
+          "action": {
+            "choice": "ack_go",
+            "epoch": 1000,
+            "kind": "pair_decision",
+            "peer_go_ref": "call-0005-r2"
+          },
+          "at": 37.95,
+          "requested_at": 33.95,
+          "frame_t": 33.95,
+          "frame_sha256": "defdb771927154b6c840de1aadd9c888c15baf06968a843a52d1d476e4372a5b",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 37.95,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0008-r2",
+          "action": {
+            "choice": "ack_go",
+            "epoch": 1000,
+            "kind": "pair_decision",
+            "peer_go_ref": "call-0004-r1"
+          },
+          "at": 38.0,
+          "requested_at": 34.0,
+          "frame_t": 34.0,
+          "frame_sha256": "c55b1a3c86919aa32ab183cbd06b88a202a95ae603776737da232d66162ac6d7",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 38.0,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        }
+      ]
+    },
+    {
+      "condition": "peer_ko",
+      "status": "DEV_STAGE_FINISHED",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.2,
+          "r2": 44.2
+        }
+      },
+      "carry_20mm": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.19438104114476967,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          44.0,
+          46.7
+        ]
+      },
+      "plumbing_carry": {
+        "n": 1,
+        "N": 1
+      },
+      "pair_failure": null,
+      "failure": null,
+      "lowering": {
+        "n": 0,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": false,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "model_calls": 36,
+      "model_usage": {
+        "requests": 36,
+        "blocked": 0,
+        "tokens_prompt": 275457,
+        "tokens_completion": 3582,
+        "tokens_total_known": 279399,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 36,
+          "sum": 195134.675,
+          "max": 14649.489,
+          "median": 4907.497
+        },
+        "failure_classes": {
+          "model_output_rejected": 4
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        4.5941019999999995,
+        5.575241,
+        14.649488999999999,
+        5.633604999999999,
+        4.644973,
+        6.079948,
+        4.862063,
+        6.304155,
+        3.966688,
+        5.128589,
+        4.833672,
+        4.472600000000001,
+        4.50105,
+        7.815823999999999,
+        5.783908,
+        5.321975,
+        5.0414129999999995,
+        4.5978270000000006,
+        4.655349,
+        5.452864,
+        3.8735030000000004,
+        4.419973,
+        4.907497,
+        3.192628,
+        4.853636000000001,
+        5.09861,
+        4.494638,
+        10.104671,
+        4.7491520000000005,
+        5.136701,
+        4.076591,
+        4.5914459999999995,
+        5.70109,
+        6.63096,
+        3.948849,
+        5.439395
+      ],
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 10,
+        "accepted_messages": 10,
+        "rejected": 0,
+        "delivery_edges": 11,
+        "free_text_messages": 10,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 5,
+          "r2": 6,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0018-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0025-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0028-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0036-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        }
+      ],
+      "fixed_signals": 2,
+      "verified_artifacts": 5571,
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-on-peer_ko-s601-v170/raw",
+      "result_sha256": "ddff32ccca81c0a40828e5bdb4fe51a05f7d35d4a555ddff1366873b5354f9ce",
+      "manifest_sha256": "33e3175e60361db66e9278c81a692f92b585ed05a77bd1989d25e957d4a2e56a",
+      "research_result": false,
+      "variant": "all_phase_rgb_heartbeat_v2",
+      "planned_variant_label": "accepted_carry_reply_v1",
+      "continue_transport": {
+        "n": 0,
+        "N": 1,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.19438104114476967
+        }
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 1,
+        "goal_xy_m": [
+          4.6,
+          -2.1
+        ],
+        "minimum_error_m": 3.79194209453674
+      },
+      "distance": {
+        "contact_supported_path_m": 0.1953617708910079,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.1953617708910079
+        },
+        "segment_excursion_m": {
+          "0": 0.19438104114476967
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 22,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 6,
+          "lower": 6,
+          "inactive": 8
+        },
+        "inactive_heartbeat_n": 8,
+        "noop_heartbeat_n": 6,
+        "rejected_commands_with_live_heartbeat": 4
+      },
+      "renewal_rejections": [
+        {
+          "robot_id": "r2",
+          "call_id": "call-0002-r2",
+          "action": {
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_pos",
+            "destination_zone": "B"
+          },
+          "at": 4.9,
+          "requested_at": 0.0,
+          "frame_t": 0.0,
+          "frame_sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+          "epoch": null,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": null,
+          "decision_sources": [
+            "order_sheet"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": null,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0001-r1",
+          "action": {
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg",
+            "destination_zone": "B"
+          },
+          "at": 5.0,
+          "requested_at": 0.0,
+          "frame_t": 0.0,
+          "frame_sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+          "epoch": null,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": null,
+          "decision_sources": [
+            "order_sheet"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": null,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0004-r1",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "go",
+            "peer_go_ref": null
+          },
+          "at": 36.0,
+          "requested_at": 31.1,
+          "frame_t": 31.1,
+          "frame_sha256": "dea3755525777576a99ff57256c91bd763e19d02b3fed551530cd1ae18d1c8f2",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 36.0,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0005-r2",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "go",
+            "peer_go_ref": null
+          },
+          "at": 36.0,
+          "requested_at": 31.1,
+          "frame_t": 31.1,
+          "frame_sha256": "b2d556c762c5af2336f9defccca67de28c46a68194408187490c0e771483fc0e",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 36.0,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0007-r1",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "ack_go",
+            "peer_go_ref": "call-0005-r2"
+          },
+          "at": 41.4,
+          "requested_at": 36.1,
+          "frame_t": 36.1,
+          "frame_sha256": "34eee06162f77b22fe520bd4963695dd10b79795aec940d1f1f63e0b7e5ca3c0",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands",
+            "message"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 41.4,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0008-r2",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "ack_go",
+            "peer_go_ref": "call-0004-r1"
+          },
+          "at": 41.4,
+          "requested_at": 36.1,
+          "frame_t": 36.1,
+          "frame_sha256": "fef648edc7f69218b2f1f69eb6c04a7e6afde051546bd43d26ca9f60272eb495",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands",
+            "message"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 41.4,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        }
+      ]
+    },
+    {
+      "condition": "leader_ko",
+      "status": "DEV_STAGE_FINISHED",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 45.6,
+          "r2": 45.6
+        }
+      },
+      "carry_20mm": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.17907018040403325,
+        "contact_supported_samples": 54,
+        "first_carry_window": [
+          45.4,
+          48.1
+        ]
+      },
+      "plumbing_carry": {
+        "n": 1,
+        "N": 1
+      },
+      "pair_failure": null,
+      "failure": null,
+      "lowering": {
+        "n": 0,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": false,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "model_calls": 36,
+      "model_usage": {
+        "requests": 36,
+        "blocked": 0,
+        "tokens_prompt": 274812,
+        "tokens_completion": 3733,
+        "tokens_total_known": 280048,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 36,
+          "sum": 231070.025,
+          "max": 16062.106,
+          "median": 5545.706
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        8.37782,
+        6.41744,
+        5.93704,
+        6.010039,
+        5.545706,
+        6.233484000000001,
+        5.031522,
+        7.582277,
+        4.907278,
+        4.3648869999999995,
+        3.858665,
+        5.245521,
+        14.795328999999999,
+        5.599972,
+        16.062106,
+        4.1770320000000005,
+        5.052482,
+        5.113627999999999,
+        11.586084000000001,
+        4.806633,
+        5.157204,
+        6.2074620000000005,
+        5.348428,
+        5.575158999999999,
+        4.39586,
+        4.87063,
+        5.629839,
+        4.472731,
+        5.771687,
+        4.243024999999999,
+        4.951321,
+        11.309201,
+        5.782832,
+        10.808103,
+        4.5775429999999995,
+        5.264055
+      ],
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r2",
+        "sent": 11,
+        "accepted_messages": 11,
+        "rejected": 0,
+        "delivery_edges": 11,
+        "free_text_messages": 11,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 5,
+          "r2": 5,
+          "r3": 1
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "model_failures": [],
+      "fixed_signals": 2,
+      "verified_artifacts": 5571,
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-on-leader_ko-s601-v170/raw",
+      "result_sha256": "3ed87b57df525c67b1824c18a956749eb35891ffe8d873c50a8f0b848203d6f2",
+      "manifest_sha256": "f33c0472c7de625b1817b61cdb5f7528ae57f945541b5dd06234dde6bc277215",
+      "research_result": false,
+      "variant": "all_phase_rgb_heartbeat_v2",
+      "planned_variant_label": "accepted_carry_reply_v1",
+      "continue_transport": {
+        "n": 0,
+        "N": 1,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.17907018040403325
+        }
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 1,
+        "goal_xy_m": [
+          4.6,
+          -2.1
+        ],
+        "minimum_error_m": 3.8104579597785877
+      },
+      "distance": {
+        "contact_supported_path_m": 0.17978408056705425,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.17978408056705425
+        },
+        "segment_excursion_m": {
+          "0": 0.17907018040403325
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 24,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 6,
+          "lower": 8,
+          "inactive": 8
+        },
+        "inactive_heartbeat_n": 8,
+        "noop_heartbeat_n": 9,
+        "rejected_commands_with_live_heartbeat": 3
+      },
+      "renewal_rejections": [
+        {
+          "robot_id": "r1",
+          "call_id": "call-0001-r1",
+          "action": {
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg",
+            "destination_zone": "B"
+          },
+          "at": 4.9,
+          "requested_at": 0.0,
+          "frame_t": 0.0,
+          "frame_sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+          "epoch": null,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": null,
+          "decision_sources": [
+            "order_sheet"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": null,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0002-r2",
+          "action": {
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_pos",
+            "destination_zone": "B"
+          },
+          "at": 6.3,
+          "requested_at": 0.0,
+          "frame_t": 0.0,
+          "frame_sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+          "epoch": null,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": null,
+          "decision_sources": [
+            "order_sheet"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": null,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0005-r1",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "go",
+            "peer_go_ref": null
+          },
+          "at": 37.3,
+          "requested_at": 32.3,
+          "frame_t": 32.3,
+          "frame_sha256": "833aa8e41b389332c61ab47b7b3c9a41d9fe206dcfdc65cf85721b34b2f8ea1a",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 37.3,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0006-r2",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "go",
+            "peer_go_ref": null
+          },
+          "at": 37.4,
+          "requested_at": 32.3,
+          "frame_t": 32.3,
+          "frame_sha256": "e73263f05334ef779437c6c53871d223550497b52739fa2fcb5f931c37b5d85f",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 37.4,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0008-r2",
+          "action": {
+            "choice": "ack_go",
+            "epoch": 1000,
+            "kind": "pair_decision",
+            "peer_go_ref": "call-0005-r1"
+          },
+          "at": 42.75,
+          "requested_at": 37.45,
+          "frame_t": 37.45,
+          "frame_sha256": "4a8d6a9e5c296f833ae3bbef7844edf7d107358c0fdee3093a3e9299d3760e1a",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 42.75,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0009-r1",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "ack_go",
+            "peer_go_ref": "call-0006-r2"
+          },
+          "at": 42.8,
+          "requested_at": 37.5,
+          "frame_t": 37.5,
+          "frame_sha256": "5e3b1ca237c9595af0f6d2753dab2b4f12628c07050f3899bf824ec4441e4ce6",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands",
+            "message"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 42.8,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0007-r2",
+          "action": {
+            "choice": "ack_go",
+            "epoch": 1000,
+            "kind": "pair_decision",
+            "peer_go_ref": "call-0005-r1"
+          },
+          "at": 42.8,
+          "requested_at": 37.4,
+          "frame_t": 37.4,
+          "frame_sha256": "df4695e4287faaf21a4e1fa50af16eba5b627dbf386462adfc4da17b3a82e141",
+          "epoch": 1000,
+          "command_accepted": false,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands",
+            "message"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 42.75,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        }
+      ]
+    },
+    {
+      "condition": "structured",
+      "status": "DEV_STAGE_FINISHED",
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 48.0,
+          "r2": 48.0
+        }
+      },
+      "carry_20mm": {
+        "n": 1,
+        "N": 1,
+        "excursion_m": 0.18101406095029376,
+        "contact_supported_samples": 56,
+        "first_carry_window": [
+          47.7,
+          50.5
+        ]
+      },
+      "plumbing_carry": {
+        "n": 1,
+        "N": 1
+      },
+      "pair_failure": null,
+      "failure": null,
+      "lowering": {
+        "n": 0,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": false,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "model_calls": 37,
+      "model_usage": {
+        "requests": 37,
+        "blocked": 0,
+        "tokens_prompt": 282716,
+        "tokens_completion": 3936,
+        "tokens_total_known": 286652,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 37,
+          "sum": 214404.609,
+          "max": 25637.748,
+          "median": 5213.862
+        },
+        "failure_classes": {},
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_response_wall_s": [
+        9.106521,
+        5.374834,
+        3.8750430000000002,
+        4.594704,
+        5.719472,
+        5.241821,
+        7.216857,
+        6.054966,
+        5.847359,
+        4.544555,
+        5.414471,
+        5.988707000000001,
+        5.847817,
+        4.880774000000001,
+        3.996741,
+        4.51801,
+        4.886808,
+        5.195184,
+        5.213862,
+        5.576103,
+        4.082204,
+        3.740167,
+        6.953428,
+        5.364363,
+        5.760866,
+        4.957732,
+        4.330337999999999,
+        4.7951880000000005,
+        5.033269000000001,
+        4.871303,
+        5.650296999999999,
+        4.507038,
+        25.637748,
+        5.333079,
+        5.296645000000001,
+        4.103974,
+        4.892361
+      ],
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 5,
+        "accepted_messages": 5,
+        "rejected": 0,
+        "delivery_edges": 5,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 2,
+          "r2": 3,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "model_failures": [],
+      "fixed_signals": 2,
+      "verified_artifacts": 5574,
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live7-on-structured-s601-v170/raw",
+      "result_sha256": "bab1b548b863fa605b90690cd4322dd000fcec973335ea80cf328329a5915044",
+      "manifest_sha256": "040e8ab24d4f870f48700471140d6b1baa109fa40ba094b3cd10da6d660285a4",
+      "research_result": false,
+      "variant": "all_phase_rgb_heartbeat_v2",
+      "planned_variant_label": "accepted_carry_reply_v1",
+      "continue_transport": {
+        "n": 0,
+        "N": 1,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.18101406095029376
+        }
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 1,
+        "goal_xy_m": [
+          4.6,
+          -2.1
+        ],
+        "minimum_error_m": 3.801838102484122
+      },
+      "distance": {
+        "contact_supported_path_m": 0.18155300679281217,
+        "continued_transport_path_m": 0,
+        "continued_transport_distance_m": 0.0,
+        "segment_path_m": {
+          "0": 0.18155300679281217
+        },
+        "segment_excursion_m": {
+          "0": 0.18101406095029376
+        },
+        "definition": "carry state on both robots, same segment, bilateral four-finger contact, COM>.06m; no gaps bridged"
+      },
+      "heartbeats": {
+        "n": 24,
+        "by_phase": {
+          "wait_carry": 2,
+          "refix_decide": 6,
+          "lower": 8,
+          "inactive": 8
+        },
+        "inactive_heartbeat_n": 8,
+        "noop_heartbeat_n": 9,
+        "rejected_commands_with_live_heartbeat": 3
+      },
+      "renewal_rejections": [
+        {
+          "robot_id": "r2",
+          "call_id": "call-0002-r2",
+          "action": {
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_pos",
+            "destination_zone": "B"
+          },
+          "at": 3.9,
+          "requested_at": 0.0,
+          "frame_t": 0.0,
+          "frame_sha256": "0776554a07795724879b974401e4074aecc125d3c6059f9c67501e25e3275052",
+          "epoch": null,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": null,
+          "decision_sources": [
+            "order_sheet"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": null,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0001-r1",
+          "action": {
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg",
+            "destination_zone": "B"
+          },
+          "at": 6.1,
+          "requested_at": 0.0,
+          "frame_t": 0.0,
+          "frame_sha256": "61009c7570202f490ca44d62d883b3fa1bde3ba6ee54a4c608f86a2ce168df1a",
+          "epoch": null,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": null,
+          "decision_sources": [
+            "order_sheet"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": null,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0005-r1",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "go",
+            "peer_go_ref": null
+          },
+          "at": 38.2,
+          "requested_at": 32.1,
+          "frame_t": 32.1,
+          "frame_sha256": "c7a689fb72c1ed1dca19dcf661e62b41032a988a3b432c0d1c65e72e6da5b5a4",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 38.2,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0006-r2",
+          "action": {
+            "choice": "go",
+            "epoch": 1000,
+            "kind": "pair_decision",
+            "peer_go_ref": null
+          },
+          "at": 38.4,
+          "requested_at": 32.1,
+          "frame_t": 32.1,
+          "frame_sha256": "7f22fc50e46face9fb75834a84ed173defca33b50fba78ef8bfea9c34e5d041a",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 38.4,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r2",
+          "call_id": "call-0007-r2",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "ack_go",
+            "peer_go_ref": "call-0005-r1"
+          },
+          "at": 44.9,
+          "requested_at": 38.4,
+          "frame_t": 38.4,
+          "frame_sha256": "105bbbe0e12d7dd64c2ed192c57a612e34019b197544a2da3086cf6a952a85e2",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 44.9,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0009-r1",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "ack_go",
+            "peer_go_ref": "call-0006-r2"
+          },
+          "at": 45.1,
+          "requested_at": 38.5,
+          "frame_t": 38.5,
+          "frame_sha256": "420592af611bd5ba574099cc4d281f5d6bb453c879047d68d6752586e7344c64",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb",
+            "own_commands",
+            "message"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 45.1,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        },
+        {
+          "robot_id": "r1",
+          "call_id": "call-0010-r1",
+          "action": {
+            "kind": "pair_decision",
+            "epoch": 1000,
+            "choice": "held",
+            "peer_go_ref": null
+          },
+          "at": 48.9,
+          "requested_at": 45.1,
+          "frame_t": 45.1,
+          "frame_sha256": "1b9b0f45f9f292c73e3e2bfa10a17f795fb1514e6ed31fa99ccdf4f75d409e65",
+          "epoch": 1000,
+          "command_accepted": true,
+          "mode": "all_phase_rgb_heartbeat_v2",
+          "own_executor_phase": "wait_carry",
+          "decision_sources": [
+            "own_rgb"
+          ],
+          "grasp_success_claim": false,
+          "previous_response_at": 48.9,
+          "accepted": false,
+          "reason": "UNADMITTED_OR_STALE_CARRY_RGB"
+        }
+      ]
+    }
+  ],
+  "first_initial_checks": {
+    "n": 8,
+    "N": 8
+  },
+  "first_raw_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs",
+  "first_artifacts": [
+    {
+      "name": "s4live7-off-no_comm-s601-v170",
+      "files": 3189,
+      "bytes": 93555655,
+      "manifest_sha256": "d910dc030932c4753966de5099760b508cbc19ed9a7fdaee178217c54f8c7a6f"
+    },
+    {
+      "name": "s4live7-off-peer_ko-s601-v170",
+      "files": 3441,
+      "bytes": 101918925,
+      "manifest_sha256": "91543658d8f6bc952bb263108dc458c961f378bfbd72545ef17bad345b950f94"
+    },
+    {
+      "name": "s4live7-off-leader_ko-s601-v170",
+      "files": 3486,
+      "bytes": 102274749,
+      "manifest_sha256": "6811ffec6684cf04f87d0a069c1e92821af2f88693195462931c601b8d69a30b"
+    },
+    {
+      "name": "s4live7-off-structured-s601-v170",
+      "files": 3489,
+      "bytes": 102482306,
+      "manifest_sha256": "069f06f4fcaf7bbb95e9f141c16a857fa6a263a0090f568f86721c35fd2856d2"
+    },
+    {
+      "name": "s4live7-on-no_comm-s601-v170",
+      "files": 5580,
+      "bytes": 161178422,
+      "manifest_sha256": "5cba6c75c4e36f8e2d5828789c025f9df82a7cfec278c75a5bfe73538da1f28e"
+    },
+    {
+      "name": "s4live7-on-peer_ko-s601-v170",
+      "files": 5571,
+      "bytes": 160817258,
+      "manifest_sha256": "33e3175e60361db66e9278c81a692f92b585ed05a77bd1989d25e957d4a2e56a"
+    },
+    {
+      "name": "s4live7-on-leader_ko-s601-v170",
+      "files": 5571,
+      "bytes": 161190606,
+      "manifest_sha256": "f33c0472c7de625b1817b61cdb5f7528ae57f945541b5dd06234dde6bc277215"
+    },
+    {
+      "name": "s4live7-on-structured-s601-v170",
+      "files": 5574,
+      "bytes": 160928960,
+      "manifest_sha256": "040e8ab24d4f870f48700471140d6b1baa109fa40ba094b3cd10da6d660285a4"
+    }
+  ],
+  "first_terminal_causes": [
+    {
+      "condition": "no_comm",
+      "failures": {
+        "r1": "FLOOR_POSE_NOT_COMMANDED",
+        "r2": "PARTNER_ABORT"
+      },
+      "executor_job_sim_limit_s": 900.0,
+      "events": [
+        {
+          "robot_id": "r1",
+          "event": "setdown_started",
+          "sim_s": 53.5,
+          "seg": 0,
+          "stop": 1
+        },
+        {
+          "robot_id": "r2",
+          "event": "setdown_started",
+          "sim_s": 53.5,
+          "seg": 0,
+          "stop": 1
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_failed",
+          "sim_s": 67.4,
+          "job_id": "r1-job-001",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "FLOOR_POSE_NOT_COMMANDED"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_failed",
+          "sim_s": 67.4,
+          "job_id": "r2-job-001",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PARTNER_ABORT"
+          },
+          "scheduler_trigger": "failure"
+        }
+      ]
+    },
+    {
+      "condition": "peer_ko",
+      "failures": {
+        "r1": "FLOOR_POSE_NOT_COMMANDED",
+        "r2": "PARTNER_ABORT"
+      },
+      "executor_job_sim_limit_s": 900.0,
+      "events": [
+        {
+          "robot_id": "r1",
+          "event": "setdown_started",
+          "sim_s": 56.9,
+          "seg": 0,
+          "stop": 1
+        },
+        {
+          "robot_id": "r2",
+          "event": "setdown_started",
+          "sim_s": 56.9,
+          "seg": 0,
+          "stop": 1
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_failed",
+          "sim_s": 70.8,
+          "job_id": "r1-job-001",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "FLOOR_POSE_NOT_COMMANDED"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_failed",
+          "sim_s": 70.8,
+          "job_id": "r2-job-001",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PARTNER_ABORT"
+          },
+          "scheduler_trigger": "failure"
+        }
+      ]
+    },
+    {
+      "condition": "leader_ko",
+      "failures": {
+        "r1": "FLOOR_POSE_NOT_COMMANDED",
+        "r2": "PARTNER_ABORT"
+      },
+      "executor_job_sim_limit_s": 900.0,
+      "events": [
+        {
+          "robot_id": "r1",
+          "event": "setdown_started",
+          "sim_s": 58.3,
+          "seg": 0,
+          "stop": 1
+        },
+        {
+          "robot_id": "r2",
+          "event": "setdown_started",
+          "sim_s": 58.3,
+          "seg": 0,
+          "stop": 1
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_failed",
+          "sim_s": 72.2,
+          "job_id": "r1-job-001",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "FLOOR_POSE_NOT_COMMANDED"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_failed",
+          "sim_s": 72.2,
+          "job_id": "r2-job-001",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PARTNER_ABORT"
+          },
+          "scheduler_trigger": "failure"
+        }
+      ]
+    },
+    {
+      "condition": "structured",
+      "failures": {
+        "r1": "FLOOR_POSE_NOT_COMMANDED",
+        "r2": "PARTNER_ABORT"
+      },
+      "executor_job_sim_limit_s": 900.0,
+      "events": [
+        {
+          "robot_id": "r1",
+          "event": "setdown_started",
+          "sim_s": 60.6,
+          "seg": 0,
+          "stop": 1
+        },
+        {
+          "robot_id": "r2",
+          "event": "setdown_started",
+          "sim_s": 60.6,
+          "seg": 0,
+          "stop": 1
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_failed",
+          "sim_s": 74.4,
+          "job_id": "r1-job-001",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "FLOOR_POSE_NOT_COMMANDED"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_failed",
+          "sim_s": 74.4,
+          "job_id": "r2-job-001",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PARTNER_ABORT"
+          },
+          "scheduler_trigger": "failure"
+        }
+      ]
+    }
+  ],
   "height_cause": [
     {
       "condition": "no_comm",
@@ -55,20 +2325,47 @@
       }
     }
   ],
-  "offline_guard_replay": [
+  "size_check": [
     {
       "condition": "no_comm",
-      "frames": 1267,
-      "new_drop_n": 0,
-      "height_reference": "COM from saved referee truth; origin unavailable, ignored in predicate"
+      "beam_size_m": [
+        0.6,
+        0.04,
+        0.032
+      ],
+      "mass_kg": 0.3,
+      "static_COM_offset_z_m": 0.016,
+      "old_origin_threshold_m": 0.035,
+      "horizontal_equivalent_COM_threshold_m": 0.051000000000000004,
+      "last_pre_guard_tilt_deg": 1.3238802601858188,
+      "last_pre_guard_t": 65.6,
+      "final_frame_tilt_not_logged": true,
+      "scene_xml": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-on-no_comm-s601-v169/raw/scene.xml",
+      "scene_sha256": "9572b7a7b4bcd41f746e89b028e13f2ba9d91e968cd1af54f536c3decf34a8f6"
     },
     {
       "condition": "leader_ko",
-      "frames": 1350,
-      "new_drop_n": 0,
-      "height_reference": "COM from saved referee truth; origin unavailable, ignored in predicate"
+      "beam_size_m": [
+        0.6,
+        0.04,
+        0.032
+      ],
+      "mass_kg": 0.3,
+      "static_COM_offset_z_m": 0.016,
+      "old_origin_threshold_m": 0.035,
+      "horizontal_equivalent_COM_threshold_m": 0.051000000000000004,
+      "last_pre_guard_tilt_deg": 1.3578961662112201,
+      "last_pre_guard_t": 69.75,
+      "final_frame_tilt_not_logged": true,
+      "scene_xml": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-on-leader_ko-s601-v169/raw/scene.xml",
+      "scene_sha256": "9572b7a7b4bcd41f746e89b028e13f2ba9d91e968cd1af54f536c3decf34a8f6"
     }
   ],
-  "batch_plan": "plan.json",
-  "source_sha": null
+  "preregistration_label_mismatch": {
+    "n": 4,
+    "N": 8,
+    "original_plan_preserved": true,
+    "note": "on variant labels incorrectly said v1; frozen argv and raw config ran v2; no command changes"
+  },
+  "second_plan": "plan-r2.json"
 }
