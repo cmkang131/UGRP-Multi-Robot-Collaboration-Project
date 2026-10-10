@@ -27,6 +27,7 @@
 
 ## UGRP Results and TensorBoard
 
+- **Scope (2026-10-10 user request, "TensorBoard는 걍 뺄까"):** DEV rounds (dev_light runs, stage probes, diagnostic batches) skip the TensorBoard conversion, dashboard, pinned-card and viewer steps below, including in DEV reports. For those rounds, record a short summary JSON in `experiments/<ID>/` covering every run, failures and HOST_ERROR included, plus raw locations and sha256 values. The integrity and reporting rules still apply to every round: never mark running or unretrieved results complete, and report the verification scope and any unfinished retrieval. Do the TensorBoard steps only for milestone results (first success of a new stage, formal E2E, the main-study cohort) or when the user asks.
 - Include TensorBoard in result delivery. Follow `docs/tensorboard.md` to add newly completed or retrieved experiment, training, and evaluation results—including failures—to a new snapshot. Verify actual data loading and show the dashboard.
 - Preserve originals and existing snapshots. Never mark running experiments or unretrieved remote results complete. Check existing manifests' source paths and hashes to avoid duplicate conversion.
 - Use the primary checkout's `outputs/tensorboard` as the shared viewing root. Verify the server logdir and new video registration. Update only your own viewer when necessary, after checking session ownership, PID, and command. Never stop other tasks' experiments or servers.
