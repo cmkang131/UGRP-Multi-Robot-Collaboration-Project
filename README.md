@@ -27,6 +27,7 @@
 
 ## 현재 검증 범위
 
+- [S4 빔 공동 출발 준비](experiments/2026-10-06-s4-llm/s4live4/README.md): 기본 OFF LLM claim→GO/ACK→공동 출발·자기 RGB 이탈 정지, 오프라인 준비만. S3 확정 SHA 대기, 4조건×seed601 사전 목록, 실제 모델/물리 0.
 - [S4 실제 모델·Oracle x86 배관 확인](experiments/2026-10-06-s4-llm/s4live1/README.md): 네 통신 조건 각90 SIM초·모델7호출, claim→출발 허가→r3 cyan 약1m 운반 명령 연결. 빔 claim-only, 호스트 중단/재실행 분리, `research_result=false`·배송/E2E 성공 아님. README·TensorBoard·원본 해시 대조 기록.
 
 - [진행 방향 주행 기본 on · v145](experiments/2026-10-09-s2-heading/default-on/README.md): 새 S2·공통 S3/S4 주행은 회전 후 전진, `--heading-mode off`로 옆걸음 재현. 자기 지도 계획 어댑터도 같은 선택기를 사용한다. 고정 v143 비교는 성공1/3, 1068 시야 상실 원인·선택 수정안과 적용 표를 기록했다.

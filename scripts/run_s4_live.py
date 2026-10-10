@@ -69,7 +69,7 @@ def setup_record(scenario):
     return data
 
 
-def run(b, out, receipt):
+def run(b, out, receipt, *, pair_extension=None):
     from sim.s3_stage_safety import PhysicsBackend
     from harness.zone_s3_recovery_runtime import Runtime
     from harness.zone_solo_cyan_v106 import passage_route
@@ -83,18 +83,18 @@ def run(b, out, receipt):
     profile['sha256'] = digest(profile)
     run_key = f's4live1-{b["condition"]}-{out.parent.name}'
     budget = MainStudyBudget.create(out/'budget.sqlite')
-    budget.register_cohort(run_key, token_cap=300000, unknown_usage_charge_tokens=16000,
+    budget.register_cohort(run_key, token_cap=300000 if pair_extension is None else 1100000, unknown_usage_charge_tokens=16000,
                           prereg_sha256=b['source_sha256'][PLAN], source={'source_sha':b['source_sha']})
-    budget.start_run(run_key, cohort_id=run_key, bundle_id=BUNDLE_ID, bundle_sha256=digest(b),
+    budget.start_run(run_key, cohort_id=run_key, bundle_id=b['execution_bundle_id'], bundle_sha256=digest(b),
                      record={'research_result':False})
     ledger = TunnelLedger(receipt=receipt, store_dir=out/'wire', budget=budget, run_key=run_key, profile=profile)
     write(out/'proxy-identity.json', ledger.proxy_identity)
     adapter = ModelAdapter(client_factory(profile), ledger)
     result = dict(status='HOST_ERROR', research_result=False, source_sha=b['source_sha'],
-        execution_bundle_id=BUNDLE_ID, condition=b['condition'], seed=601, host='oracle-x86',
+        execution_bundle_id=b['execution_bundle_id'], condition=b['condition'], seed=601, host='oracle-x86',
         gt_control_inputs=False, weld='off', dev_light=True, model_calls=0,
         pair_scope='claim_only_no_pair_motion', physical_success=None, loadavg_start=os.getloadavg())
-    began = time.monotonic(); backend = runtime = host = None; states = []; causal = []
+    began = time.monotonic(); backend = runtime = host = pair_driver = None; states = []; causal = []
     try:
         backend = PhysicsBackend(b, out, seed=601); backend.reset(b['reset_cap_s'])
         previous.previous.restore_scene(backend, setup_record(scenario))
@@ -107,13 +107,19 @@ def run(b, out, receipt):
         own = stage.use_public_destination(runtime, next(o for o in sheet['orders'] if o['kind']=='cyan'), static)
         runtime.initial_commands(start, backend.commands)
         runtime.boot_finished_at = start
-        links = {r:stage.Link(runtime.links[r], condition=b['condition'], origin_s=start,
-            executor=runtime.pair.actors[r] if r != 'r3' else None) for r in stage.s4.routing.ROBOTS}
-        host = stage.Host(scenario, condition=b['condition'], links=links, seed=601, map_bundle=mapped,
+        link_cls, host_cls, extra = (stage.Link, stage.Host, {}) if pair_extension is None else pair_extension.components()
+        links = {r:link_cls(runtime.links[r], condition=b['condition'], origin_s=start,
+            executor=runtime.pair.actors[r] if r != 'r3' else None, **extra) for r in stage.s4.routing.ROBOTS}
+        host = host_cls(scenario, condition=b['condition'], links=links, seed=601, map_bundle=mapped,
             horizon_s=b['case_cap_s'], model_adapter=adapter, code_sha=b['source_sha'],
-            policy=CallPolicy(max_calls_per_actor=6, max_http_attempts_per_actor=6,
-                max_attempts_total=18, max_retries=0), decision_limits=DecisionLimits(
-                max_calls_total=18, max_utterances_per_actor=6, max_utterances_total=12))
+            policy=CallPolicy(max_calls_per_actor=6 if pair_extension is None else 30,
+                max_http_attempts_per_actor=6 if pair_extension is None else 30,
+                max_attempts_total=18 if pair_extension is None else 90, max_retries=0),
+            decision_limits=DecisionLimits(max_calls_total=18 if pair_extension is None else 90,
+                max_utterances_per_actor=6, max_utterances_total=12))
+        if pair_extension is not None:
+            pair_driver = pair_extension.driver(host, runtime.pair.producer)
+            result['pair_scope'] = 'claim-align-grasp-mutual-go-carry-own-rgb-monitor'
         entered = False
         steps = round(b['case_cap_s']/.05)
         for i in range(steps+1):
@@ -127,6 +133,7 @@ def run(b, out, receipt):
             if not host.started: host.begin(0.)
             if own.state == 'carry' and links['r3'].departure_opened is None:
                 host.trial.open_departure(rel)
+            if pair_driver is not None: pair_driver.poll(now)
             host.step_to(rel)
             commands = []
             if runtime.links['r3'].active:
@@ -137,16 +144,23 @@ def run(b, out, receipt):
                     own.set_state('align', now); entered = True
                 waiting = own.state == 'carry' and not links['r3'].departure_accepted
                 if not waiting: commands = own.step(now)
+            if pair_driver is not None: commands = [*commands, *pair_driver.step(now)]
             for rid, action in commands:
                 backend.issue(rid, action); runtime.on_command(rid, now, action)
-                causal.append(dict(t=now, robot_id=rid, action=action, claim_call_id=links['r3'].claim_call,
-                    departure_call_id=next((d['call_id'] for d in links['r3'].departure_decisions if d['accepted']),None)))
+                causal.append(dict(t=now, robot_id=rid, action=action, claim_call_id=links[rid].claim_call,
+                    departure_call_id=next((d['call_id'] for d in links['r3'].departure_decisions if d['accepted']),None)
+                    if rid=='r3' else None,
+                    **({'pair_permit': copy.deepcopy(pair_driver.handshake.permits[-1])
+                        if pair_driver.handshake.permits else None} if rid != 'r3' and pair_driver is not None else {})))
             states.append(dict(t=now, relative_sim_s=rel, state=own.state, failure=own.failure,
                 departure_pending=links['r3'].departure_opened is not None and not links['r3'].departure_accepted))
             if own.failure: raise RuntimeError('CONTROLLER_FAILURE:'+own.failure)
+            if pair_driver is not None and pair_driver.handshake.failure:
+                result['pair_failure'] = pair_driver.handshake.failure
+                break
             backend.advance_to(start+(i+1)*.05)
         host.finish(round(backend.now-start,8))
-        result.update(status='DEV_STAGE_FINISHED', final_state=own.state,
+        result.update(status='PAIR_STOP' if result.get('pair_failure') else 'DEV_STAGE_FINISHED', final_state=own.state,
             departure_accepted=links['r3'].departure_accepted,
             departure_decisions=links['r3'].departure_decisions,
             accepted_claims={r:links[r].claim_call for r in links})
@@ -160,6 +174,9 @@ def run(b, out, receipt):
             for rid in ('r1','r2','r3'):
                 backend.issue(rid, {'kind':'hold'})
         if host is not None: host.save(out/'llm')
+        if pair_driver is not None:
+            write(out/'pair-handshake.json', pair_driver.handshake.record())
+            write(out/'pair-submissions.json', {r:links[r].pair_submission_log for r in ('r1','r2')})
         if runtime is not None:
             write(out/'student_record.json', runtime.record()); runtime.close()
         if backend is not None: backend.close()
@@ -179,7 +196,13 @@ def main(argv=None):
     p.add_argument('--output', type=Path, required=True); p.add_argument('--condition', choices=stage.CONDITIONS, required=True)
     p.add_argument('--cap-s', type=float, choices=(7.5,90.), default=90.)
     p.add_argument('--relay-receipt', type=Path, required=True); p.add_argument('--execute', action='store_true')
+    p.add_argument('--pair-mode', choices=('off','mutual_go_v1'), default='off')
+    p.add_argument('--pair-release', type=Path,
+        default=Path('experiments/2026-10-06-s4-llm/s4live4/release.json'))
     a=p.parse_args(argv)
+    if a.pair_mode != 'off':
+        from scripts.run_s4_pair_preparation import dispatch
+        return dispatch(a)
     if not a.execute:
         print(json.dumps(dict(execution_started=False, bundle_id=BUNDLE_ID, condition=a.condition))); return 0
     previous.archive_guard(a.expected_source_sha, a.output)
