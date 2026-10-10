@@ -43,9 +43,10 @@ pair baseline의 알려진 회전진동은 시야 검출과 실제 이동을 분
 이 변환을 각 측정 primitive에 적용하고 자기RGB로 다시 관측하는 방식으로 유지한다.
 [MuJoCo rendering](https://mujoco.readthedocs.io/en/stable/python.html#rendering): OSMesa 경로 사용.
 
-## 결과
+## 현재 결과
 
-미실행. 실행 소스를 커밋·push한 뒤 묶음을 보내고 완료/실패 모두 추가한다.
+기준12개 완료·회수. 아래 최종 판정 표가 현재 상태이며 앞부분의 실행 전 문구는 당시 사전 등록이다.
+보정/후보는 아래 동결 계획을 따르고, 실행/회수/판정을 각각 구분한다.
 
 ## 보정 묶음 사전 추가 (기준 probe 결과 열람 전)
 
@@ -191,3 +192,82 @@ ORACLE_HOST=oracle-x86 "$S/oracle_run.sh" "$WT" "s3fix11-$PHASE-batch-r1" -- \
 3SIM초(초기화/settle 포함5.35초), 보정 train/holdout에는 넣지 않는다. 소스·시험 완료 후
 실행하고 HOST_ERROR면 경로 오류만 한 묶음으로 고친 뒤 ≤10초 확인을 다시1회 한다.
 경로 통과 후 조건6개는 동일 코드에서 동시에 시작한다. 모델 선택 규칙은 변경하지 않는다.
+
+## 기준12개 최종 회수·검증
+
+물리 소스 `7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1`, post-run 평가 `1071e697fc00772a8677d1331d4a9e3e68e94f8c`, host=oracle-x86.
+전체 raw40,568파일을 기본 체크아웃 `outputs/oracle-runs/<이름>/raw`로 회수하고 해시 일치를 확인했다.
+[로봇별 단계·would_stop·종료·원본 해시](completed-baseline.json), [프레임 판정 요약](baseline-summary.json).
+
+|case/C|hover→하강→닫기|r3 접촉 상승·운반(m)|종료|wall/SIM(s)|
+|---|---|---:|---|---:|
+|cyan/0|2.80→4.10→5.75|0.5866|DEV_STAGE_FINISHED|384.622/60|
+|cyan/1|3.20→4.50→6.15|0.5825|DEV_STAGE_FINISHED|382.322/60|
+|cyan/2|3.20→4.50→6.15|0.5930|DEV_STAGE_FINISHED|362.139/60|
+|cyan/3|—→—→—|0.0000|DEV_STAGE_FINISHED|384.023/60|
+|cyan/4|—→—→—|0.0000|HOST_ERROR|334.847/9|
+|cyan/5|—→—→—|0.0000|DEV_STAGE_FINISHED|577.414/60|
+|pair/0|r1/r2 모두 0/2|—|DEV_STAGE_FINISHED|335.773/60|
+|pair/1|r1/r2 모두 0/2|—|DEV_STAGE_FINISHED|338.745/60|
+|pair/2|r1/r2 모두 0/2|—|DEV_STAGE_FINISHED|342.526/60|
+|pair/3|r1/r2 모두 0/2|—|DEV_STAGE_FINISHED|340.140/60|
+|pair/4|r1/r2 모두 0/2|—|DEV_STAGE_FINISHED|343.691/60|
+|pair/5|r1/r2 모두 0/2|—|DEV_STAGE_FINISHED|339.264/60|
+
+단계 시각은 probe 시작 후 SIM초. cyan c4/c5의 wall은 자체 한도 조정 대기260초를 포함하여 속도 비교에서 제외한다.
+pair는 각로봇0/6. r3 접촉 상승·운반3/6시도(완료 정책 시행3/5, 스케줄링 HOST_ERROR1).
+11개는60SIM초까지, c4는9SIM초에 render wall timeout으로 종료. 실제 낙하/집게이탈 정지는0.
+cyan B도착0/6이며 놓기/귀환 미도달; pair는 집기 전이므로 임무 성공이 아니다.
+입력계약·혼합축/짧은 명령0, frame/command 자세 불일치0. 기본 off 본체/카탈로그는 유지한다.
+would_stop 원문과 로봇별 계수는 위 JSON에 보존했다: pair admission/POSE_UNCERTAIN,
+cyan REAL_PREGRASP_UNCONFIRMED·ARM_COLLISION_GUARD·GRASP_INHAND_UNCONFIRMED·POSE_UNCERTAIN·PATH_COLLISION_GUARD·POSE_CLUSTER_UNCERTAIN.
+
+TensorBoard 새 snapshot `1010-s3fix11-x86-baseline-v2`:12실행270scalar를 이벤트와 실제 서버에서 원본 수치와 대조했다.
+영상12개 Range206, Chrome 강에서 핀8개·선택12개·HParams4열과 대표4배속15초 영상 재생 확인.
+[검증 JSON](tensorboard-verification.json), [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1010-s3fix11-x86-baseline-v2%2F#timeseries),
+[대표 r3 영상](http://127.0.0.1:6007/video/42f1eee45cd08828283e).
+첫 offline-only 변환은 schema 미지원으로12개 모두 실패해 별도 빈 snapshot에 보존하고, 표준 result 변환기로 새 v2를 만들었다.
+이는 실험 실패/재실행이 아니다. 원본과 기존 snapshots는 수정하지 않았다.
+
+## 후속 묶음 실행 기록
+
+코드/회귀 완료 소스 `259f17e1e442c9bf6519954bde11b42244493885`: 바뀐3파일의 선별9개 회귀와 추가 setup1개, 최종 sequence/setup/cohort3개 재확인 초록 후 push.
+최종 고유 검증10개 범위는 trim8개 + 실제 probe loop + workflow catalog이며, 같은 검사의 반복 통과를 추가 표본으로 세지 않는다.
+기존 카탈로그 SHA256 `fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813`, main과 바이트 동일.
+
+09:34UTC 전송 전 SSH 실패 후09:40UTC 복구, uptime으로 재부팅 확인. 이때 실행은0이며 원본 손실 없음.
+`s3fix11-pathcheck-r1`은 동일 소스로 EXIT0/HOST_ERROR0,6고정 명령×3로봇18응답,
+3.00SIM초(초기화 포함5.35), 실행 wall7.765초/전체 process wall30.65초. train/holdout에서 제외.
+경로 통과 후 `s3fix11-measure-batch-r1`의 고정6개를 모두 동시 제출했다. 실행 중 조건/코드 변경 없음.
+
+## 보정6개 일괄 판정 — 기각, 후보 실행0
+
+전체6개 EXIT0/HOST_ERROR0, 각18SIM초108응답(총648), 비정상 접촉0.
+경로 확인 포함7개 raw189파일 해시 일치. [실행/회수](measurements.json),
+[기각 모델과18개 유보 점수](trim-model.json), [기각 표본 진단](rejected-profile-diagnostic.json).
+
+|C/seed|wall(s)|SIM(s)|응답|
+|---|---:|---:|---:|
+|0/14201|28.347|18|108|
+|1/14202|27.760|18|108|
+|2/14203|28.198|18|108|
+|3/14204|28.499|18|108|
+|4/14205|27.710|18|108|
+|5/14206|27.863|18|108|
+
+18개 중17개는 방향/유보 XY3mm/yaw.035rad 기준을 통과했다.
+**forward +35/.10초만 최대 XY3.08199556mm로 기각**(C4/seed14205/r3/두 번째 반복 index18).
+실제 응답 `(13.9511,3.1327)mm`, 예측 `(15.2632,.3439)mm`, yaw잔차.00318450rad.
+문턱 초과는.081996mm이지만 사전 기준을 완화하거나 이 명령만 사후 제거하지 않는다.
+고정한 all18 profile 자격 조건에 따라 전체 모델qualified=false, 후보12개와 full smoke는0회다.
+
+원인 분리: 같은 +35/.10초의 전체 평균 전진은 첫 반복16.6563mm, 두 번째13.7697mm,
+횡방향은-.07975→1.09047mm로 달랐다. 단일 평균 모델의 반복/이력 의존 잔차가 관찰되며,
+어떤 물리 상태가 원인인지는 아직 분리하지 않았다. 로봇별 모델이면 해결되거나 단순 문턱 문제라고 단정하지 않는다.
+다음 물리 제안: **명령 전 정지 시간·직전 명령을 요인으로 고정한 전체 보정 묶음을 사전 등록해 이력 의존성을 먼저 검증**한다.
+현재 라운드 중 조건/seed/문턱/모델 선택 규칙은 변경하지 않았다.
+
+준비한 full-pose PBVS와 합법≥.10초 pulse/공유 PF 예측기 연결은 회귀 검증 범위이며,
+새 후보의 실제 정렬·집기 성능은 미검증·기본off다. PF plausible-only 100/500/새100 비교도 기존0/12 상태이며 새 성능 주장이 없다.
+
+보정 TensorBoard는 `1010-s3fix11-x86-measure-v2`에 경로 확인1개·보정6개·기각 판정1개,63scalar를 등록하고 이벤트/서버 수치 대조를 완료했다. 첫 변환의 출처 필드 형식 오류8건은 빈 snapshot으로 보존하고 새 v2에서 수정했다(물리 재실행 아님). [보정 검증](tensorboard-measure-verification.json). 기준270개와 합계333scalar, 실행 raw40,757파일을 검증했다.
