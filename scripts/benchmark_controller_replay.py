@@ -241,7 +241,8 @@ def main():
     write(args.output/'plan.json',dict(plan=plan,plan_sha256=sha(args.plan),source=args.expected_source_sha,
         order=ORDER,priority=priority,profile=args.profile,local_submap_m=args.local_submap_m))
     args.deadline=time.monotonic()+args.budget_s
-    held,owned=acquire_slot(args.expected_source_sha,'speedctrl2 serial ABBA saved inputs; physics0',wait_s=min(7200,args.budget_s))
+    held,owned=acquire_slot(args.expected_source_sha,'speedctrl2 serial ABBA saved inputs; physics0',
+        wait_s=min(7200,args.budget_s),expected_minutes=math.ceil(args.budget_s/60))
     report=dict(schema='ugrp.controller_abba.v1',source=args.expected_source_sha,cases=[],complete=False)
     try:
         for case in plan['cases']:

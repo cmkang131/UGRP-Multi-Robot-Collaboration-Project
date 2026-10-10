@@ -102,7 +102,7 @@ def ancestor(pid, parent):
     return False
 
 
-def acquire_slot(expected, purpose, *, lock_owner_pid=None, wait_s=7200):
+def acquire_slot(expected, purpose, *, lock_owner_pid=None, wait_s=7200, expected_minutes=90):
     """Atomic finite wait, or borrow this queue driver's verified ancestor lock."""
     from scripts import agent_lock
     source_check(expected)
@@ -119,7 +119,7 @@ def acquire_slot(expected, purpose, *, lock_owner_pid=None, wait_s=7200):
     while True:
         try:
             held = agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch=branch,
-                purpose=purpose, pid=os.getpid(), expected_minutes=90, timing_sensitive=True)
+                purpose=purpose, pid=os.getpid(), expected_minutes=expected_minutes, timing_sensitive=True)
             break
         except RuntimeError as exc:
             if not str(exc).startswith('lock held:') or time.monotonic() >= deadline:
