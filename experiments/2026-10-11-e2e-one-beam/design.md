@@ -27,3 +27,5 @@
 - [Hi Robot (2025)](https://arxiv.org/abs/2502.19417): 논문 초록의 상위 판단/하위 VLA 실행 계층을 확인했다. 이 PR은 모델/VLA 교체가 아닌 입력·상태 경계 설계다.
 
 - 첫 렌더 3건의 HOST_ERROR는 평가용 segmentation API 오기였다. MuJoCo 설치 구현의 `Renderer.enable_segmentation_rendering`/`disable_segmentation_rendering`을 직접 확인하고 [공식 Python 렌더링 문서](https://mujoco.readthedocs.io/en/stable/python.html#rendering)의 동일 GL 소유 스레드 규칙을 유지해 수정했다. 물리·카메라·제어 입력 변경은 없다. 실패 원본을 회수하고 같은 3후보를 새 SHA로 재제출한다.
+
+최종 첫 RGB 검증은 `52162f21794f37f136fa672cae4ff1008263048c`에서 base/A/B 3/3이다. r1의 B 픽셀은143135/56956/162036, r2·r3는모두0, 첫 SIM1.30초·frame1이다. base 원본r1/r2 JPEG도 육안 확인했고 기본 배치를 유지한다. r2의 파란 pickup 바닥과 B를 구분하도록 목적지의 시각 설명에 흰 사각형 표지 세 개를 포함했다. 앞선 API 이름/Scene `zone_` 접두사 오류 HOST_ERROR6은 모두 원본·판정에 남겼다(전체3/9, 유효RGB3/3). 132파일의 원격/로컬 SHA-256이 일치하며 새 제어기·모델·E2E 실행은0이다.

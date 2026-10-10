@@ -25,7 +25,7 @@ FORBIDDEN = {'static_map', 'public_map', 'map_figure', 'initial_location', 'slot
 TASK = {'orders': [{'order_id': 'order-5', 'kind': 'long_beam', 'count': 1,
                    'required_robots': 2, 'destination_zone': 'B',
                    'roles': ['end_neg', 'end_pos']}],
-        'destination_visual_description': '파란 바닥 목적 구역 B',
+        'destination_visual_description': '흰 사각형 표지 세 개가 있는 파란 바닥 목적 구역 B',
         'fixed_roles': {'r1': 'end_neg', 'r2': 'end_pos', 'r3': 'idle'}}
 
 
