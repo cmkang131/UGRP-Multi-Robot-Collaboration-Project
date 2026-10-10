@@ -110,6 +110,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_edge_fit.py",  # v98 HIGH beam-edge consensus fit (recorded own frames)
     "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
     "tests/test_highpose_own_load_occlusion.py",  # v98 own-load occlusion rule: held beam blocking the own camera is no observation, not INVALID_OWN_IMAGE
+    "tests/test_s2_*.py",  # Include real-site, freeze-scope and in-hand S2 option regressions.
     "tests/test_solo_cyan_v106*.py",  # S2 v3 cyan: own RGB/commands, synthetic backend only
     "tests/test_s3_host*.py",  # S3 fixed-role host, no physics or model calls
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
