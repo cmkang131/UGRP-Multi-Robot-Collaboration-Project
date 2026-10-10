@@ -1,0 +1,533 @@
+{
+  "summary": {
+    "schema": "ugrp.s2.flow_fusion.summary.v1",
+    "admission_pass": false,
+    "gates": {
+      "default_off_exact": true,
+      "six_observation_coverage": true,
+      "six_endpoint_error": false,
+      "six_median_error": false,
+      "six_yaw_not_worse": true,
+      "loaded_xy_better": true,
+      "nonblocked_not_worse": false,
+      "carry_rmse": true,
+      "updates": false,
+      "max_gap": true,
+      "stationary": true,
+      "rgb_exact": true,
+      "wall_observation_retention": true,
+      "shadow_before_fourth": false
+    },
+    "results": [
+      {
+        "option": "baseline",
+        "carry_rmse_m": 2.0235827759068257,
+        "carry_updates": 27,
+        "max_gap_s": 33.85000000000002,
+        "stationary_max_m": 0.10566117090294402,
+        "off_max_difference": 0.0
+      },
+      {
+        "option": "candidate",
+        "carry_rmse_m": 1.7194764690282416,
+        "carry_updates": 26,
+        "max_gap_s": 33.150000000000006,
+        "stationary_max_m": 0.10566117090294402,
+        "off_max_difference": 3.737750538494864
+      }
+    ],
+    "motion": {
+      "loaded_pulses": 277,
+      "nonblocked_pulses": 271,
+      "old_xy_rmse_m": 0.024131600300254265,
+      "new_xy_rmse_m": 0.016579705131709466,
+      "nonblocked_old_xy_rmse_m": 0.004977389927234261,
+      "nonblocked_new_xy_rmse_m": 0.011674466153671193,
+      "six_old_yaw_rmse_deg": 7.113346944225255,
+      "six_new_yaw_rmse_deg": 4.741941644242515,
+      "six_coverage_count": 5,
+      "six_error_pass_count": 2,
+      "six_error_median_m": 0.041624955337473506,
+      "measured_intervals": 204,
+      "interval_status_counts": {
+        "measured": 204,
+        "unknown_rigid_consensus": 104,
+        "unknown_texture": 217
+      }
+    },
+    "six": [
+      {
+        "t": 107.35,
+        "key": "1:left:0.65:0.65",
+        "blocked_six": true,
+        "actual_delta": [
+          0.003708054083528956,
+          0.016650853033553344,
+          0.17481335188037356
+        ],
+        "old_prediction": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "new_prediction": [
+          -0.15019880563740617,
+          -0.027394396535400357,
+          0.24090374169516693
+        ],
+        "old_error": [
+          -0.0028696266826814653,
+          0.15054915512270242,
+          -0.20135064190508123
+        ],
+        "new_error": [
+          -0.15390685972093512,
+          -0.0440452495689537,
+          0.06609038981479332
+        ],
+        "coverage": 0.9333333333333371,
+        "status": "partial_or_unknown",
+        "variance": [
+          0.02239472164640247,
+          0.0016448059585150413,
+          0.005714317859746062
+        ]
+      },
+      {
+        "t": 108.3,
+        "key": "1:left:0.65:0.65",
+        "blocked_six": true,
+        "actual_delta": [
+          0.0007263619471074683,
+          0.0005096398316793021,
+          0.0029843805916634895
+        ],
+        "old_prediction": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "new_prediction": [
+          -0.024828032411888117,
+          0.00060471568720537,
+          0.014654935897979683
+        ],
+        "old_error": [
+          0.00011206545374002218,
+          0.16669036832457645,
+          -0.02952167061637123
+        ],
+        "new_error": [
+          -0.025554394358995584,
+          9.507585552606787e-05,
+          0.01167055530631611
+        ],
+        "coverage": 1.0,
+        "status": "measured",
+        "variance": [
+          0.028663851330760222,
+          0.000889450967889724,
+          0.0037608389267383135
+        ]
+      },
+      {
+        "t": 109.25,
+        "key": "1:left:0.65:0.65",
+        "blocked_six": true,
+        "actual_delta": [
+          0.0009004403217636697,
+          0.000899977610910774,
+          0.005157112930955829
+        ],
+        "old_prediction": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "new_prediction": [
+          -0.09587070722525529,
+          -0.00076561306919573,
+          0.042029907898153654
+        ],
+        "old_error": [
+          -6.201292091617921e-05,
+          0.166300030545345,
+          -0.03169440295566339
+        ],
+        "new_error": [
+          -0.09677114754701896,
+          -0.0016655906801065039,
+          0.03687279496719764
+        ],
+        "coverage": 1.0,
+        "status": "measured",
+        "variance": [
+          0.0245145671233986,
+          0.0007444242877158179,
+          0.004617418476913846
+        ]
+      },
+      {
+        "t": 110.2,
+        "key": "1:left:0.65:0.65",
+        "blocked_six": true,
+        "actual_delta": [
+          0.00017017275555503237,
+          0.000810309682916527,
+          -0.0019445508212223793
+        ],
+        "old_prediction": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "new_prediction": [
+          -0.008204436773420105,
+          -0.000602849427190172,
+          0.004097067518009554
+        ],
+        "old_error": [
+          0.0006682546452924581,
+          0.16638969847333923,
+          -0.02459273920348526
+        ],
+        "new_error": [
+          -0.008374609528975138,
+          -0.0014131591101066991,
+          0.006041618339232002
+        ],
+        "coverage": 1.0,
+        "status": "measured",
+        "variance": [
+          0.023042914329602097,
+          0.0011818212470833722,
+          0.0024345727961225037
+        ]
+      },
+      {
+        "t": 111.15,
+        "key": "1:left:0.65:0.65",
+        "blocked_six": true,
+        "actual_delta": [
+          0.0006889246972440349,
+          0.0011644619675563023,
+          0.008262360703685582
+        ],
+        "old_prediction": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "new_prediction": [
+          -0.03753116772515727,
+          6.747727056299408e-05,
+          0.026122780775217864
+        ],
+        "old_error": [
+          0.0001495027036034556,
+          0.16603554618869948,
+          -0.034799650728393416
+        ],
+        "new_error": [
+          -0.038220092422401306,
+          -0.0010969846969933082,
+          0.017860420071532435
+        ],
+        "coverage": 1.0,
+        "status": "measured",
+        "variance": [
+          0.029037867753576363,
+          0.0008715057612229202,
+          0.004063902203354249
+        ]
+      },
+      {
+        "t": 113.7,
+        "key": "1:left:0.65:0.65",
+        "blocked_six": true,
+        "actual_delta": [
+          -0.009240771065744207,
+          0.021863784941128256,
+          -0.24619007351008715
+        ],
+        "old_prediction": [
+          0.0008384274008474905,
+          0.16720000815625577,
+          -0.02653729002470778
+        ],
+        "new_prediction": [
+          -0.009841137185040923,
+          0.06687385991906117,
+          -0.05943209416049389
+        ],
+        "old_error": [
+          0.010079198466591697,
+          0.1453362232151275,
+          0.2196527834853792
+        ],
+        "new_error": [
+          -0.0006003661192967163,
+          0.04501007497793291,
+          0.18675797934959348
+        ],
+        "coverage": 0.6000000000000038,
+        "status": "partial_or_unknown",
+        "variance": [
+          0.013598557691587831,
+          0.0008833104529659836,
+          0.0018013980620092045
+        ]
+      }
+    ],
+    "shadow": {
+      "events": [],
+      "inhibited_attempt_count": 0,
+      "first_inhibited_t": null
+    },
+    "observation": {
+      "common_candidates": 4,
+      "common_points_exact": true,
+      "baseline_candidates": 31,
+      "candidate_candidates": 30,
+      "buffered_frames": 525,
+      "dropped_wall_frames": 0
+    },
+    "pitch": {
+      "nominal_pitch_deg": -28.661989204963614,
+      "six": [
+        {
+          "t": 107.35,
+          "blocked_six": true,
+          "pitch_error_deg_min": -0.5032890510878048,
+          "pitch_error_deg_max": -0.1973624283614015,
+          "pitch_error_deg_median": -0.4004523867033942
+        },
+        {
+          "t": 108.3,
+          "blocked_six": true,
+          "pitch_error_deg_min": -0.42985969844641403,
+          "pitch_error_deg_max": -0.29452326044459554,
+          "pitch_error_deg_median": -0.38377760579720466
+        },
+        {
+          "t": 109.25,
+          "blocked_six": true,
+          "pitch_error_deg_min": -0.45493009528875206,
+          "pitch_error_deg_max": -0.2794609310390115,
+          "pitch_error_deg_median": -0.40059408050387724
+        },
+        {
+          "t": 110.2,
+          "blocked_six": true,
+          "pitch_error_deg_min": -0.44783386023060245,
+          "pitch_error_deg_max": -0.25593064277639854,
+          "pitch_error_deg_median": -0.3993153980277011
+        },
+        {
+          "t": 111.15,
+          "blocked_six": true,
+          "pitch_error_deg_min": -0.44457341740060485,
+          "pitch_error_deg_max": -0.2727718787164193,
+          "pitch_error_deg_median": -0.3609896937485999
+        },
+        {
+          "t": 113.7,
+          "blocked_six": true,
+          "pitch_error_deg_min": -0.42435471403641856,
+          "pitch_error_deg_max": -0.20816110706200064,
+          "pitch_error_deg_median": -0.2684098254318368
+        }
+      ],
+      "scale_ratio_quantiles": [
+        0.12261828108404398,
+        1.026976314666812,
+        18.375743907690985
+      ]
+    },
+    "source_sha": "f73a4edee98fdd85cab03eec3d64218fff206f73",
+    "criteria_sha256": "bdebbb3a69c76bd0c1c0922e45e3ba1a9fd28334f3caf68449e0f7fc969476fb",
+    "physics_runs": 0,
+    "model_calls": 0,
+    "new_seed": null,
+    "new_bundle": null,
+    "full_dev": "NOT_RUN_CRITERIA_FAILED",
+    "limits": "Fixed-command exploratory replay. Recovery is shadow only; actual escape not proven. No new lifted/inside/wall-SIM/visibility/B-distance outcomes. Missing RGB motion intervals keep fixed command prediction."
+  },
+  "six_layers": [
+    {
+      "t": 107.35,
+      "actual_cm": 1.7058738869897985,
+      "coverage": 0.9333333333333371,
+      "raw_vo_error_cm": 1.0869483356326495,
+      "eval_geometry_vo_error_cm": 1.0030418913654058,
+      "ekf_error_cm": 16.008530687964782,
+      "sigma_xy_cm": 15.504685615941238,
+      "progress_upper_cm": 46.277027953345026,
+      "measured_frames": 14,
+      "unknown_frames": 1
+    },
+    {
+      "t": 108.3,
+      "actual_cm": 0.08873186779505209,
+      "coverage": 1.0,
+      "raw_vo_error_cm": 0.09684258030746774,
+      "eval_geometry_vo_error_cm": 0.23668496049000046,
+      "ekf_error_cm": 2.555457122460421,
+      "sigma_xy_cm": 17.191073933483604,
+      "progress_upper_cm": 36.86568742676512,
+      "measured_frames": 15,
+      "unknown_frames": 0
+    },
+    {
+      "t": 109.25,
+      "actual_cm": 0.1273087771207675,
+      "coverage": 1.0,
+      "raw_vo_error_cm": 0.3325384584363571,
+      "eval_geometry_vo_error_cm": 0.23835051645670421,
+      "ekf_error_cm": 9.678548026372845,
+      "sigma_xy_cm": 15.89307755317214,
+      "progress_upper_cm": 41.373531529142305,
+      "measured_frames": 15,
+      "unknown_frames": 0
+    },
+    {
+      "t": 110.2,
+      "actual_cm": 0.08279858386237504,
+      "coverage": 1.0,
+      "raw_vo_error_cm": 0.32048903098564885,
+      "eval_geometry_vo_error_cm": 0.22075272805572319,
+      "ekf_error_cm": 0.8493003204596048,
+      "sigma_xy_cm": 15.564297471034621,
+      "progress_upper_cm": 31.951250460502756,
+      "measured_frames": 15,
+      "unknown_frames": 0
+    },
+    {
+      "t": 111.15,
+      "actual_cm": 0.13529925766085638,
+      "coverage": 1.0,
+      "raw_vo_error_cm": 0.34719961572616964,
+      "eval_geometry_vo_error_cm": 0.3244144261048359,
+      "ekf_error_cm": 3.823583188845687,
+      "sigma_xy_cm": 17.294326675184347,
+      "progress_upper_cm": 38.34177618874733,
+      "measured_frames": 15,
+      "unknown_frames": 0
+    },
+    {
+      "t": 113.7,
+      "actual_cm": 2.3736405411127484,
+      "coverage": 0.6000000000000038,
+      "raw_vo_error_cm": 4.05853269028671,
+      "eval_geometry_vo_error_cm": 4.011804617909113,
+      "ekf_error_cm": 4.501407878649014,
+      "sigma_xy_cm": 12.034063380485335,
+      "progress_upper_cm": 30.8275358487305,
+      "measured_frames": 9,
+      "unknown_frames": 6
+    }
+  ],
+  "scalar_views": {
+    "baseline": {
+      "carry_rmse_m": 2.0235827759068257,
+      "carry_updates": 27,
+      "max_gap_s": 33.85000000000002,
+      "stationary_max_m": 0.10566117090294402
+    },
+    "candidate": {
+      "carry_rmse_m": 1.7194764690282416,
+      "carry_updates": 26,
+      "max_gap_s": 33.150000000000006,
+      "stationary_max_m": 0.10566117090294402
+    },
+    "motion": {
+      "old_xy_rmse_m": 0.024131600300254265,
+      "new_xy_rmse_m": 0.016579705131709466,
+      "nonblocked_old_xy_rmse_m": 0.004977389927234261,
+      "nonblocked_new_xy_rmse_m": 0.011674466153671193,
+      "six_error_pass_count": 2,
+      "six_coverage_count": 5,
+      "six_error_median_m": 0.041624955337473506,
+      "shadow_inhibited_attempts": 0,
+      "raw_vo_six_error_pass_count": 5,
+      "admission_pass": 0
+    },
+    "pitch": {
+      "nominal_pitch_deg": -28.661989204963614,
+      "fixed_vs_actual_geometry_xy_median_m": 0.0019066428344676168,
+      "distance_scale_ratio_median": 1.026976314666812,
+      "pitch_error_min_deg": -0.5032890510878048,
+      "pitch_error_max_deg": -0.17108277520335236,
+      "six_pulse_sigma_xy_min_m": 0.12034063380485335,
+      "six_pulse_sigma_xy_max_m": 0.17294326675184346
+    }
+  },
+  "pitch_fixed_bound_scale_sensitivity": {
+    "-2.8": {
+      "n": 161,
+      "min": 0.3554686767685878,
+      "median": 0.8634219593771142,
+      "max": 1.7607802997622648
+    },
+    "-0.9": {
+      "n": 161,
+      "min": 0.7068794265242117,
+      "median": 0.9519089992265418,
+      "max": 1.24587553522263
+    },
+    "0.9": {
+      "n": 161,
+      "min": 0.7554111872747064,
+      "median": 1.053067952724101,
+      "max": 1.3950959036210795
+    },
+    "2.8": {
+      "n": 161,
+      "min": 0.2950070983779916,
+      "median": 1.1799324415356973,
+      "max": 2.740692481048984
+    }
+  },
+  "conclusion": "Rejected. Raw consecutive-frame VO error passes 5/6 only as post-hoc decomposition; registered velocity-EKF passes 2/6. Large correlated nuisance covariance with constant-velocity filtering retains erroneous cross-axis velocity. Unknown texture still causes command fallback. No second tuned candidate.",
+  "verification": {
+    "raw_hashes_intact": true,
+    "committed_runtime_hashes": true,
+    "complete_frames": true,
+    "preregistration_unchanged": true,
+    "rejected_without_physics": true,
+    "wall_frames_preserved": true,
+    "shadow_no_false_success": true
+  },
+  "preregistration_commit": "0ef95343",
+  "runtime_commit": "f73a4edee98fdd85cab03eec3d64218fff206f73",
+  "code_tests": [
+    {
+      "files": [
+        "tests/test_s2_flow_fusion.py",
+        "tests/test_s2_progress_noise.py",
+        "tests/test_s2_pulse_cal.py"
+      ],
+      "passed": 17,
+      "seconds": 17.75,
+      "source": "5c984bd5"
+    },
+    {
+      "files": [
+        "tests/test_s2_flow_fusion.py"
+      ],
+      "passed": 6,
+      "seconds": 0.67,
+      "source": "f73a4ede",
+      "reason": "serialization fix"
+    }
+  ],
+  "serialization_failures": {
+    "first_candidate": "full computation, JSON numpy.bool_ failed; no saved candidate result; re-run after scalar cast",
+    "first_score": "motion/pitch written; summary empty; unchanged scoring written under scoring-v2 after numpy scalar serialization fix"
+  },
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-flow-fusion-20261007",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "new_full_outcomes": null,
+  "measured_input_scope": "RGB, issued commands, fixed tables; GT camera/trajectory evaluation only after replay closed"
+}

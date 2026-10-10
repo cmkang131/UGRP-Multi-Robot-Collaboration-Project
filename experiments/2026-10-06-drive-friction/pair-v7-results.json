@@ -1,0 +1,1885 @@
+{
+  "schema": "ugrp.drive_pair_comparison.v1",
+  "source_sha": "c05130d9bef2f42fe93e755cbd0c83e375570b2e",
+  "rows": [
+    {
+      "case": "pair_beam",
+      "profile": "legacy_wrench",
+      "status": "MEASURED_DEV",
+      "model_calls": 0,
+      "physical_success": null,
+      "loaded": true,
+      "design": {
+        "schema": "ugrp.drive_pair_beam.v1",
+        "seed": 1601,
+        "map": "zone_wide_two_doors_final_v3",
+        "beam_pose": [
+          3.55,
+          -0.85,
+          0.0
+        ],
+        "beam_kind": "long_beam",
+        "mass_kg": 0.3,
+        "contact_profile": "cargo_noslip_v1",
+        "staging": {
+          "end_s": 32.0,
+          "visits": [
+            [
+              0.0,
+              "stage_floor_grasp_open",
+              {
+                "3": 1269,
+                "4": 2052,
+                "5": 2494,
+                "6": 1500,
+                "1": 2000
+              }
+            ],
+            [
+              2.0,
+              "stage_close",
+              {
+                "1": 1500
+              }
+            ],
+            [
+              4.0,
+              "stage_controller_hover",
+              {
+                "3": 807,
+                "4": 1897,
+                "5": 2187,
+                "6": 1500
+              }
+            ],
+            [
+              16.0,
+              "stage_transition_110",
+              {
+                "3": 891,
+                "4": 2036,
+                "5": 2054,
+                "6": 1500
+              }
+            ],
+            [
+              20.0,
+              "stage_transition_130",
+              {
+                "3": 981,
+                "4": 2152,
+                "5": 1917,
+                "6": 1500
+              }
+            ],
+            [
+              24.0,
+              "stage_high",
+              {
+                "3": 896,
+                "4": 2035,
+                "5": 1894,
+                "6": 1500
+              }
+            ]
+          ]
+        },
+        "command": {
+          "r1": [
+            -0.35,
+            0.35,
+            0.35,
+            -0.35
+          ],
+          "r2": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "drive_s": 0.5,
+        "stop_s": 1.0,
+        "sample_s": 0.01,
+        "finger_min_n": 0.5,
+        "grip_lost_s": 0.3,
+        "lift_clear_m": 0.012,
+        "drop_floor_m": 0.005,
+        "tilt_limit_deg": 10.0,
+        "qualification": "one asymmetric command comparison, not equal speed/force or mission success"
+      },
+      "design_sha256": "fb91f1d3549d87d53a364f26970f3a608a70b4d5e8cb89fdc98341351f690243",
+      "loadavg_start": [
+        3.73681640625,
+        3.78125,
+        3.99169921875
+      ],
+      "qualification": "TEST_SETUP_GT fixed teacher staging; abort-only truth; one DEV perturbation, not student/hardware success",
+      "active_welds": [],
+      "dt": 0.00025,
+      "measurement_alignment": "mj_step force/pose fields precede integration by at most one dt",
+      "drive_parameters": null,
+      "cargo_mass_kg": 0.3,
+      "robot_mass_kg": {
+        "r1": 1.1,
+        "r2": 1.1
+      },
+      "legacy_dynamics": {
+        "r1": {
+          "motor_time_constant_s": 0.085,
+          "max_forward_force_n": 2.2,
+          "max_lateral_force_n": 1.65,
+          "max_yaw_torque_nm": 0.12,
+          "linear_damping_n_per_mps": 1.4,
+          "yaw_damping_nm_per_radps": 0.08,
+          "stop_linear_damping_n_per_mps": 18.0,
+          "stop_yaw_damping_nm_per_radps": 0.8
+        },
+        "r2": {
+          "motor_time_constant_s": 0.085,
+          "max_forward_force_n": 2.2,
+          "max_lateral_force_n": 1.65,
+          "max_yaw_torque_nm": 0.12,
+          "linear_damping_n_per_mps": 1.4,
+          "yaw_damping_nm_per_radps": 0.08,
+          "stop_linear_damping_n_per_mps": 18.0,
+          "stop_yaw_damping_nm_per_radps": 0.8
+        }
+      },
+      "xml_sha256": "0f7e9787e41e0b772d41ab8abe273e9b8f36100485b2a0dd04f90c0d35ae0ddd",
+      "staging": {
+        "preroll": "high_held",
+        "start_sim_s": 1.3000000000000178,
+        "end_sim_s": 33.30000000000002,
+        "teacher_commands": [
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 1269
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2052
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2494
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 1,
+              "pulse": 2000
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 1269
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2052
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2494
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 1,
+              "pulse": 2000
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 2.0,
+            "phase": "stage_close",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 1,
+              "pulse": 1500
+            },
+            "sim_s": 3.3000000000000176
+          },
+          {
+            "t": 2.0,
+            "phase": "stage_close",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 1,
+              "pulse": 1500
+            },
+            "sim_s": 3.3000000000000176
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 807
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 1897
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2187
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 807
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 1897
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2187
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 891
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2036
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2054
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 891
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2036
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2054
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 981
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2152
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 1917
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 981
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2152
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 1917
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 896
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2035
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 1894
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 896
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2035
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 1894
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 25.30000000000002
+          }
+        ],
+        "close_issued_at_s": 3.3000000000000176,
+        "issued_pulses_after": {
+          "r1": {
+            "1": 1500,
+            "3": 896,
+            "4": 2035,
+            "5": 1894,
+            "6": 1500
+          },
+          "r2": {
+            "1": 1500,
+            "3": 896,
+            "4": 2035,
+            "5": 1894,
+            "6": 1500
+          }
+        }
+      },
+      "motion_start": {
+        "t": 32.00000000006797,
+        "phase": "prepare",
+        "beam_xyz": [
+          3.5500288426773445,
+          -0.8499834594735535,
+          0.11487978452480418
+        ],
+        "beam_yaw_rad": 0.0017565084197979873,
+        "beam_tilt_deg": 0.03929890721643036,
+        "beam_min_z_m": 0.11481553502575857,
+        "beam_floor_contacts": 0,
+        "finger_n": {
+          "r1": [
+            5.376357595815863,
+            5.375343614438951
+          ],
+          "r2": [
+            5.375704926032098,
+            5.376646777260124
+          ]
+        },
+        "robot_xyz": {
+          "r1": [
+            3.0780323158437333,
+            -0.8505196127766663,
+            0.032347915773986664
+          ],
+          "r2": [
+            4.021999594053652,
+            -0.8494011313259657,
+            0.03234789632871007
+          ]
+        },
+        "robot_yaw_rad": {
+          "r1": 0.0003468987713410976,
+          "r2": -3.1411625237787515
+        },
+        "robot_tilt_deg": {
+          "r1": 0.08980066462313456,
+          "r2": 0.08982627811127343
+        },
+        "grip_in_beam_m": {
+          "r1": [
+            -0.27129421818141425,
+            9.64333108140066e-07,
+            0.021018705696433312
+          ],
+          "r2": [
+            0.271261440034274,
+            -1.7294802944574876e-06,
+            0.021110206615356328
+          ]
+        },
+        "wheel_command": {
+          "r1": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "base_external_force": {
+          "r1": [
+            2.337941226911265e-05,
+            -3.591278020183185e-05,
+            0.0,
+            0.0,
+            0.0,
+            -3.929331275026525e-06
+          ],
+          "r2": [
+            -2.338632347566243e-05,
+            3.534340976836288e-05,
+            0.0,
+            0.0,
+            0.0,
+            -3.009872314435718e-05
+          ]
+        }
+      },
+      "warnings": {},
+      "sim_s": 33.50000000007513,
+      "last_sample": {
+        "t": 33.50000000007513,
+        "phase": "stop",
+        "beam_xyz": [
+          3.5503744340121006,
+          -0.8262773728594983,
+          0.11488520823477234
+        ],
+        "beam_yaw_rad": -0.04365952942413114,
+        "beam_tilt_deg": 0.06613677670478131,
+        "beam_min_z_m": 0.11481119195079817,
+        "beam_floor_contacts": 0,
+        "finger_n": {
+          "r1": [
+            5.376316560008309,
+            5.374747845092026
+          ],
+          "r2": [
+            5.3754823463418555,
+            5.3773116509372105
+          ]
+        },
+        "robot_xyz": {
+          "r1": [
+            3.0788410459541113,
+            -0.8053435447360964,
+            0.03234772053010561
+          ],
+          "r2": [
+            4.021928461736183,
+            -0.8467893018768022,
+            0.032347928516216574
+          ]
+        },
+        "robot_yaw_rad": {
+          "r1": -0.04530577162888149,
+          "r2": 3.09825962737934
+        },
+        "robot_tilt_deg": {
+          "r1": 0.08995694523055975,
+          "r2": 0.09003261789897408
+        },
+        "grip_in_beam_m": {
+          "r1": [
+            -0.2712908217836642,
+            2.689252648466724e-07,
+            0.02102445869328352
+          ],
+          "r2": [
+            0.27129238643637643,
+            -1.924275863182395e-06,
+            0.02109927146680958
+          ]
+        },
+        "wheel_command": {
+          "r1": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "base_external_force": {
+          "r1": [
+            6.009707196985481e-05,
+            0.0003761436320391892,
+            0.0,
+            0.0,
+            0.0,
+            -0.0002338131395564385
+          ],
+          "r2": [
+            -2.4386319572973166e-06,
+            -0.001163441399005068,
+            0.0,
+            0.0,
+            0.0,
+            0.0003163432253602816
+          ]
+        }
+      },
+      "final": {
+        "beam_delta_m": [
+          0.00034559133475609016,
+          0.023706086614055155,
+          5.423709968158108e-06
+        ],
+        "beam_yaw_change_deg": -2.602147290663566,
+        "robot_progress_m": {
+          "r1": 0.04517606804056995,
+          "r2": 0.002611829449163494
+        },
+        "progress_difference_m": 0.042564238591406456,
+        "robot_delta_m": {
+          "r1": [
+            0.0008087301103780753,
+            0.04517606804056995,
+            -1.9524388105568447e-07
+          ],
+          "r2": [
+            -7.113231746913584e-05,
+            0.002611829449163494,
+            3.2187506507352914e-08
+          ]
+        },
+        "grip_slip_m": {
+          "r1": 6.716850638768014e-06,
+          "r2": 3.282217576789897e-05
+        }
+      },
+      "peak_beam_xy_m": 0.023708605524655885,
+      "peak_abs_yaw_deg": 2.697327349078324,
+      "peak_abs_progress_difference_m": 0.043375355563761486,
+      "max_grip_slip_m": {
+        "r1": 5.3335519968955835e-05,
+        "r2": 4.7795951273484076e-05
+      },
+      "commands": 48,
+      "command_count_scope": "scheduled per-robot arm actions and wheel command batches, excludes final cleanup stop",
+      "wall_s": 34.71808312498615,
+      "loadavg_end": [
+        4.24560546875,
+        3.88671875,
+        4.0205078125
+      ],
+      "wall_per_sim": 1.0363606902957698,
+      "trace_measurements": {
+        "samples": 3351,
+        "motion_samples": 150,
+        "max_robot_tilt_deg": 2.2678608963846636,
+        "max_beam_tilt_deg": 0.11106465143964515,
+        "min_motion_beam_z_m": 0.11481119195079817,
+        "min_motion_finger_n": 5.250084001779905,
+        "max_base_external_force_norm": 1.9993533811142934,
+        "motion_floor_contact_samples": 0,
+        "trace_sha256": "834c45eecb1307577077564015f8653ef8d9ce0d41277c3ff28f9c3518f2295e"
+      },
+      "drive_end": {
+        "beam_delta_m": [
+          0.00018866782875237575,
+          0.016969218506580952,
+          6.378553459224223e-06
+        ],
+        "beam_yaw_change_deg": -2.1813318955174705,
+        "robot_progress_m": {
+          "r1": 0.03509950413868124,
+          "r2": 0.0002191141140996944
+        },
+        "progress_difference_m": 0.03488039002458154,
+        "robot_delta_m": {
+          "r1": [
+            0.0005099279600266904,
+            0.03509950413868124,
+            6.434641879077274e-06
+          ],
+          "r2": [
+            -0.00011018207037416516,
+            0.0002191141140996944,
+            -1.2542347361643724e-05
+          ]
+        },
+        "grip_slip_m": {
+          "r1": 5.325467495392489e-05,
+          "r2": 2.4101971452877845e-05
+        }
+      },
+      "run": "legacy",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-c05130d9-pair-legacy/pair-beam/result.json",
+        "sha256": "1c42997507cad9a1d5c52cfb1d43ae05de740a4e42c7cc39a262af32d2f8c36d"
+      },
+      "source_sha": "c05130d9bef2f42fe93e755cbd0c83e375570b2e"
+    },
+    {
+      "case": "pair_beam",
+      "profile": "masterpi_drive_friction_v7",
+      "status": "MEASURED_DEV",
+      "model_calls": 0,
+      "physical_success": null,
+      "loaded": true,
+      "design": {
+        "schema": "ugrp.drive_pair_beam.v1",
+        "seed": 1601,
+        "map": "zone_wide_two_doors_final_v3",
+        "beam_pose": [
+          3.55,
+          -0.85,
+          0.0
+        ],
+        "beam_kind": "long_beam",
+        "mass_kg": 0.3,
+        "contact_profile": "cargo_noslip_v1",
+        "staging": {
+          "end_s": 32.0,
+          "visits": [
+            [
+              0.0,
+              "stage_floor_grasp_open",
+              {
+                "3": 1269,
+                "4": 2052,
+                "5": 2494,
+                "6": 1500,
+                "1": 2000
+              }
+            ],
+            [
+              2.0,
+              "stage_close",
+              {
+                "1": 1500
+              }
+            ],
+            [
+              4.0,
+              "stage_controller_hover",
+              {
+                "3": 807,
+                "4": 1897,
+                "5": 2187,
+                "6": 1500
+              }
+            ],
+            [
+              16.0,
+              "stage_transition_110",
+              {
+                "3": 891,
+                "4": 2036,
+                "5": 2054,
+                "6": 1500
+              }
+            ],
+            [
+              20.0,
+              "stage_transition_130",
+              {
+                "3": 981,
+                "4": 2152,
+                "5": 1917,
+                "6": 1500
+              }
+            ],
+            [
+              24.0,
+              "stage_high",
+              {
+                "3": 896,
+                "4": 2035,
+                "5": 1894,
+                "6": 1500
+              }
+            ]
+          ]
+        },
+        "command": {
+          "r1": [
+            -0.35,
+            0.35,
+            0.35,
+            -0.35
+          ],
+          "r2": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "drive_s": 0.5,
+        "stop_s": 1.0,
+        "sample_s": 0.01,
+        "finger_min_n": 0.5,
+        "grip_lost_s": 0.3,
+        "lift_clear_m": 0.012,
+        "drop_floor_m": 0.005,
+        "tilt_limit_deg": 10.0,
+        "qualification": "one asymmetric command comparison, not equal speed/force or mission success"
+      },
+      "design_sha256": "fb91f1d3549d87d53a364f26970f3a608a70b4d5e8cb89fdc98341351f690243",
+      "loadavg_start": [
+        3.3779296875,
+        3.7080078125,
+        3.94873046875
+      ],
+      "qualification": "TEST_SETUP_GT fixed teacher staging; abort-only truth; one DEV perturbation, not student/hardware success",
+      "active_welds": [],
+      "dt": 0.00025,
+      "measurement_alignment": "mj_step force/pose fields precede integration by at most one dt",
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v7",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 0.8,
+          "start_fraction": 0.325,
+          "no_load_current_a": 0.1,
+          "stall_current_a": 1.2
+        },
+        "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+        "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+        "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+        "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+        "public_model": {
+          "repository": "https://github.com/DaiGuard/fuji_mecanum",
+          "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+          "license": "MIT, Copyright (c) 2022 DaiGuard",
+          "mesh_original_path": "mesh/collision/roller.stl",
+          "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+          "mesh_modified": false,
+          "source_radius_m": 0.1025,
+          "roller_ring_radius_m": 0.0895,
+          "roller_count": 15,
+          "roller_angle_deg": 45,
+          "roller_mass_kg": 0.3,
+          "roller_inertia_kg_m2": [
+            0.00024,
+            0.00076,
+            0.00076
+          ],
+          "hub_mass_kg": 2.0,
+          "hub_inertia_kg_m2": [
+            0.042025,
+            0.024279,
+            0.024279
+          ],
+          "roller_damping": 0.001,
+          "roller_frictionloss": 0.0001,
+          "roller_sliding_friction": 0.8,
+          "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+          "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+        },
+        "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+        "zero_command": "input relay resets; passive DC speed loss remains",
+        "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+        "reset_rule": "world.reset clears all input relay states before normal scene reset",
+        "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+        "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+        "kinetic_fraction": 0.08333333333333334,
+        "kinetic_torque_nm": 0.009806650000000002,
+        "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+        "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+        "speed_loss_nm_s": 0.006867418019757396,
+        "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+        "unconfirmed": [
+          "installed TT and stall torque",
+          "PWM transfer",
+          "Coulomb versus viscous no-load split",
+          "load-dependent start threshold",
+          "external stall/re-stick",
+          "brake versus coast"
+        ],
+        "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+        "xml_sha256": "074d43106974c896229a0d564e8df24c3a3f07c2952654a1b327dd812c39e3ab"
+      },
+      "cargo_mass_kg": 0.3,
+      "robot_mass_kg": {
+        "r1": 1.1,
+        "r2": 1.1
+      },
+      "legacy_dynamics": null,
+      "xml_sha256": "074d43106974c896229a0d564e8df24c3a3f07c2952654a1b327dd812c39e3ab",
+      "staging": {
+        "preroll": "high_held",
+        "start_sim_s": 1.3000000000000178,
+        "end_sim_s": 33.30000000000002,
+        "teacher_commands": [
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 1269
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2052
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2494
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 1,
+              "pulse": 2000
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 1269
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2052
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2494
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 0.0,
+            "phase": "stage_floor_grasp_open",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 1,
+              "pulse": 2000
+            },
+            "sim_s": 1.3000000000000178
+          },
+          {
+            "t": 2.0,
+            "phase": "stage_close",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 1,
+              "pulse": 1500
+            },
+            "sim_s": 3.3000000000000176
+          },
+          {
+            "t": 2.0,
+            "phase": "stage_close",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 1,
+              "pulse": 1500
+            },
+            "sim_s": 3.3000000000000176
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 807
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 1897
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2187
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 807
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 1897
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2187
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 4.0,
+            "phase": "stage_controller_hover",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 5.300000000000018
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 891
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2036
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2054
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 891
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2036
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 2054
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 16.0,
+            "phase": "stage_transition_110",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 17.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 981
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2152
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 1917
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 981
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2152
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 1917
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 20.0,
+            "phase": "stage_transition_130",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 21.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 896
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2035
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r1",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 1894
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r1",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 3,
+              "pulse": 896
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 4,
+              "pulse": 2035
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r2",
+            "action": {
+              "kind": "arm",
+              "servo_id": 5,
+              "pulse": 1894
+            },
+            "sim_s": 25.30000000000002
+          },
+          {
+            "t": 24.0,
+            "phase": "stage_high",
+            "robot_id": "r2",
+            "action": {
+              "kind": "look",
+              "pan_pulse": 1500
+            },
+            "sim_s": 25.30000000000002
+          }
+        ],
+        "close_issued_at_s": 3.3000000000000176,
+        "issued_pulses_after": {
+          "r1": {
+            "1": 1500,
+            "3": 896,
+            "4": 2035,
+            "5": 1894,
+            "6": 1500
+          },
+          "r2": {
+            "1": 1500,
+            "3": 896,
+            "4": 2035,
+            "5": 1894,
+            "6": 1500
+          }
+        }
+      },
+      "motion_start": {
+        "t": 32.00000000006797,
+        "phase": "prepare",
+        "beam_xyz": [
+          3.543332854282829,
+          -0.8495539229517778,
+          0.1147028762482197
+        ],
+        "beam_yaw_rad": 0.0018053873224932319,
+        "beam_tilt_deg": 0.05909917632557816,
+        "beam_min_z_m": 0.11454049013947477,
+        "beam_floor_contacts": 0,
+        "finger_n": {
+          "r1": [
+            5.380477414282285,
+            5.37125191670175
+          ],
+          "r2": [
+            5.3807061028268715,
+            5.368712016407029
+          ]
+        },
+        "robot_xyz": {
+          "r1": [
+            3.071334342705015,
+            -0.8504120082342607,
+            0.03198002303544078
+          ],
+          "r2": [
+            4.0149040643484835,
+            -0.8495932867088452,
+            0.03192980106250381
+          ]
+        },
+        "robot_yaw_rad": {
+          "r1": 0.001484678924925255,
+          "r2": 3.1375924898487564
+        },
+        "robot_tilt_deg": {
+          "r1": 0.2474634364371202,
+          "r2": 0.11660541721283757
+        },
+        "grip_in_beam_m": {
+          "r1": [
+            -0.27100926628072963,
+            -2.3626642962461693e-06,
+            0.020436233587444782
+          ],
+          "r2": [
+            0.2708425404981603,
+            7.173077147736815e-08,
+            0.020581992379693072
+          ]
+        },
+        "wheel_command": {
+          "r1": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "base_external_force": {
+          "r1": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "warnings": {},
+      "sim_s": 33.50000000007513,
+      "last_sample": {
+        "t": 33.50000000007513,
+        "phase": "stop",
+        "beam_xyz": [
+          3.546515427277332,
+          -0.819024663726499,
+          0.11481936601388885
+        ],
+        "beam_yaw_rad": -0.05669419256547811,
+        "beam_tilt_deg": 0.027767605795231586,
+        "beam_min_z_m": 0.11476497021367084,
+        "beam_floor_contacts": 0,
+        "finger_n": {
+          "r1": [
+            5.370595172200746,
+            5.381206749289857
+          ],
+          "r2": [
+            5.372501160265559,
+            5.382027540418479
+          ]
+        },
+        "robot_xyz": {
+          "r1": [
+            3.075367690123305,
+            -0.7921427552764184,
+            0.032045472537801795
+          ],
+          "r2": [
+            4.017608339801115,
+            -0.8458738460336498,
+            0.03192185120856884
+          ]
+        },
+        "robot_yaw_rad": {
+          "r1": -0.05736494977600447,
+          "r2": 3.085689811826555
+        },
+        "robot_tilt_deg": {
+          "r1": 0.20432971544301223,
+          "r2": 0.19726903680675267
+        },
+        "grip_in_beam_m": {
+          "r1": [
+            -0.27098057239464746,
+            6.913315487962839e-06,
+            0.020449433965796238
+          ],
+          "r2": [
+            0.27089245948913543,
+            -1.4803116591816552e-06,
+            0.020560325555545555
+          ]
+        },
+        "wheel_command": {
+          "r1": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "base_external_force": {
+          "r1": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "final": {
+        "beam_delta_m": [
+          0.0031825729945031966,
+          0.030529259225278826,
+          0.00011648976566915048
+        ],
+        "beam_yaw_change_deg": -3.3517790308691517,
+        "robot_progress_m": {
+          "r1": 0.058269252957842244,
+          "r2": 0.0037194406751953624
+        },
+        "progress_difference_m": 0.05454981228264688,
+        "robot_delta_m": {
+          "r1": [
+            0.004033347418290312,
+            0.058269252957842244,
+            6.544950236101604e-05
+          ],
+          "r2": [
+            0.0027042754526318546,
+            0.0037194406751953624,
+            -7.949853934971496e-06
+          ]
+        },
+        "grip_slip_m": {
+          "r1": 3.2918579678891645e-05,
+          "r2": 5.444047909708248e-05
+        }
+      },
+      "peak_beam_xy_m": 0.030767433285868444,
+      "peak_abs_yaw_deg": 3.414039280007576,
+      "peak_abs_progress_difference_m": 0.05510540987257184,
+      "max_grip_slip_m": {
+        "r1": 6.375068088040954e-05,
+        "r2": 5.9400798217710564e-05
+      },
+      "commands": 48,
+      "command_count_scope": "scheduled per-robot arm actions and wheel command batches, excludes final cleanup stop",
+      "wall_s": 58.446607124991715,
+      "loadavg_end": [
+        6.64599609375,
+        4.63671875,
+        4.28125
+      ],
+      "wall_per_sim": 1.7446748395480787,
+      "trace_measurements": {
+        "samples": 3351,
+        "motion_samples": 150,
+        "max_robot_tilt_deg": 2.909445413906412,
+        "max_beam_tilt_deg": 0.1053761506773748,
+        "min_motion_beam_z_m": 0.11451917614443288,
+        "min_motion_finger_n": 5.23735333215633,
+        "max_base_external_force_norm": 0.0,
+        "motion_floor_contact_samples": 0,
+        "trace_sha256": "8f402be46a98c9224ede39a1ff2f78d436a2d53a3f705788baa4bc3448e2a2f9"
+      },
+      "drive_end": {
+        "beam_delta_m": [
+          0.00037755015388718505,
+          0.027024176840162006,
+          -2.1863513001305068e-05
+        ],
+        "beam_yaw_change_deg": -3.160643914817011,
+        "robot_progress_m": {
+          "r1": 0.05309924709339131,
+          "r2": 0.0022484904467031663
+        },
+        "progress_difference_m": 0.050850756646688144,
+        "robot_delta_m": {
+          "r1": [
+            0.0011657332397003728,
+            0.05309924709339131,
+            2.5780964924997096e-05
+          ],
+          "r2": [
+            -6.453202299461225e-05,
+            0.0022484904467031663,
+            3.197374266865338e-05
+          ]
+        },
+        "grip_slip_m": {
+          "r1": 4.0876200913493565e-05,
+          "r2": 4.4450477066328034e-05
+        }
+      },
+      "run": "v7",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-c05130d9-pair-v7/pair-beam/result.json",
+        "sha256": "67c702159f21886ce55670a44dd0e76dc1f6bdd82e1925b9973aa88eb9d8ccd1"
+      },
+      "source_sha": "c05130d9bef2f42fe93e755cbd0c83e375570b2e"
+    }
+  ],
+  "comparison_completed": true,
+  "candidate_decision": "v7 DEV candidate adopted by user; not default or hardware validation",
+  "physical_failure": false,
+  "limitation": "n=1 per profile, equal commands not equal force or progress; no own-camera feedback; staging outcomes also matter",
+  "real_measurement_todo": [
+    "unloaded/loaded sideways distance and yaw, both directions with command/time",
+    "own-camera direction correction before/after error",
+    "installed motor torque/speed and paired carrying"
+  ],
+  "model_calls": 0,
+  "raw_remote_backup": false
+}

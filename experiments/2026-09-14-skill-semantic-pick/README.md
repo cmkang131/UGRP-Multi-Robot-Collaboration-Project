@@ -76,3 +76,5 @@ python scripts/ugrp_session.py run pick-match-example -- \
 ```
 
 관련 설계: PR #41. 원 자료: [Show-Harness 논문](https://arxiv.org/html/2609.10522v1), [공식 저장소](https://github.com/showlab/Show-Harness).
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

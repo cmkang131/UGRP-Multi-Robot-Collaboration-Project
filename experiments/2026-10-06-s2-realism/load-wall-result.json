@@ -1,0 +1,1675 @@
+{
+  "schema": "ugrp.s2.load_wall.summary.v1",
+  "rows": [
+    {
+      "case": "far-high-empty",
+      "wall": "far",
+      "pose": "high",
+      "loaded": false,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-b161a388/far-high-empty",
+      "source_sha": "b161a388de5509fc27b5b098e112c023225e9202",
+      "mean_lateral_mm": 169.82700431898576,
+      "mean_abs_yaw_deg": 1.4220632925969117,
+      "bilateral_fraction": 0.0,
+      "pitch_deg": -30.263645694072085,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.015308276195266313,
+        -4.838738932866349e-07,
+        0.047210325220405004
+      ],
+      "box_added_com_shift_m": null,
+      "wall_forces": {
+        "wheel_other": {
+          "mean_normal_n": 10.296954333967072,
+          "peak_normal_n": 13.447959428767152,
+          "samples": 136
+        }
+      },
+      "wall_foot_in_view_fraction": 0.0,
+      "wall_foot_clear_fraction": null,
+      "original_clear_invalid_camera_group": true,
+      "sim_s": 11.250249999996456,
+      "wall_s": 10.265834999998333,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            0.0023084409245142687,
+            0.16945040072715112
+          ],
+          "yaw_deg": -1.1393253376782353
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            0.0016116813836807857,
+            0.17003134127609693
+          ],
+          "yaw_deg": -1.9137127519965964
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            0.0012424835071183438,
+            0.17093598885734126
+          ],
+          "yaw_deg": -1.1195925944795508
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            0.0022719358825463234,
+            0.17035415175052068
+          ],
+          "yaw_deg": -2.1010323477489767
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.001452795098773281,
+            0.1695113025679508
+          ],
+          "yaw_deg": -1.2633272644771358
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            0.00011090825509399091,
+            0.1686788407348538
+          ],
+          "yaw_deg": -0.9953894592009744
+        }
+      ],
+      "hashes": {
+        "result.json": "f80147bce9b446ce6370c5eb1f31f5902d5274c1e0d565f444e0fcc8130f376a",
+        "eval-only.jsonl": "ab7520dd31cc5b3bf7b20825f420eb26b804519d764b8b65ad749acbf0474b34",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "e8ed5bafdeaf3a487525125405aab7f0ee7f69c072d76c17b6058d67eabfca1d"
+      }
+    },
+    {
+      "case": "far-high-loaded",
+      "wall": "far",
+      "pose": "high",
+      "loaded": true,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-b161a388/far-high-loaded",
+      "source_sha": "b161a388de5509fc27b5b098e112c023225e9202",
+      "mean_lateral_mm": 169.11858928310085,
+      "mean_abs_yaw_deg": 1.8039047991053712,
+      "bilateral_fraction": 1.0,
+      "pitch_deg": -30.39779645170023,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.015331082634921778,
+        6.790966455838543e-09,
+        0.047194991672694045
+      ],
+      "box_added_com_shift_m": [
+        0.0049897329072283725,
+        3.6229604194470966e-07,
+        0.0018365732823409087
+      ],
+      "wall_forces": {
+        "grasp": {
+          "mean_normal_n": 10.405063103577488,
+          "peak_normal_n": 10.405114346973061,
+          "samples": 144
+        },
+        "wheel_other": {
+          "mean_normal_n": 11.129888817357745,
+          "peak_normal_n": 12.592926007436574,
+          "samples": 144
+        }
+      },
+      "wall_foot_in_view_fraction": 0.0,
+      "wall_foot_clear_fraction": null,
+      "original_clear_invalid_camera_group": true,
+      "sim_s": 11.250249999996456,
+      "wall_s": 13.23881529198843,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            0.0024870872287545446,
+            0.16879738320369325
+          ],
+          "yaw_deg": -1.6260232064874605
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            0.0017488958689345704,
+            0.16882161238227916
+          ],
+          "yaw_deg": -1.4973772356202966
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            0.002293022616336557,
+            0.16963428250583282
+          ],
+          "yaw_deg": -1.8575861366774769
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            0.0016929818163174595,
+            0.16971607312028056
+          ],
+          "yaw_deg": -2.1290070174356757
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.0009381223413876157,
+            0.16800713600756706
+          ],
+          "yaw_deg": -1.3835711938935429
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            0.0029737339944328374,
+            0.1697350484789522
+          ],
+          "yaw_deg": -2.329864004517775
+        }
+      ],
+      "hashes": {
+        "result.json": "5e613f24c08d29ac01958865167877428e0ce5f40d0120d5314150e580cd566d",
+        "eval-only.jsonl": "7c6bfa1668f76afb65caf8746ecb4811e1f4a4756f52e320208dae886d447005",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "3a391238b641df860c629feeccdf87071c24ad6b838df982f5c145c05ffdb626"
+      }
+    },
+    {
+      "case": "far-look_ahead-empty",
+      "wall": "far",
+      "pose": "look_ahead",
+      "loaded": false,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-b161a388/far-look_ahead-empty",
+      "source_sha": "b161a388de5509fc27b5b098e112c023225e9202",
+      "mean_lateral_mm": 169.78711989782815,
+      "mean_abs_yaw_deg": 1.4037177934189913,
+      "bilateral_fraction": 0.0,
+      "pitch_deg": -16.416908151715077,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.015614015850226703,
+        -2.781065298051999e-07,
+        0.04762417870245625
+      ],
+      "box_added_com_shift_m": null,
+      "wall_forces": {
+        "wheel_other": {
+          "mean_normal_n": 10.247757785999799,
+          "peak_normal_n": 12.587817938701855,
+          "samples": 136
+        }
+      },
+      "wall_foot_in_view_fraction": 1.0,
+      "wall_foot_clear_fraction": null,
+      "original_clear_invalid_camera_group": true,
+      "sim_s": 11.250249999996456,
+      "wall_s": 10.417047333990922,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            0.0022272447600208242,
+            0.16943299307036033
+          ],
+          "yaw_deg": -1.1469119436239594
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            0.0017600195948594076,
+            0.1698990511258694
+          ],
+          "yaw_deg": -1.9308750573429225
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            0.001119580175150561,
+            0.17057229175397082
+          ],
+          "yaw_deg": -1.1021649491641965
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            0.002156841167149596,
+            0.17053364154184242
+          ],
+          "yaw_deg": -2.023779506069886
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.0013799214133647757,
+            0.16946967290557371
+          ],
+          "yaw_deg": -1.1002468067441236
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            -6.334101409452564e-05,
+            0.1688150689893522
+          ],
+          "yaw_deg": -1.118328497568859
+        }
+      ],
+      "hashes": {
+        "result.json": "9601387640c8ffe667a780ac0ae86ca152c0459fe91a230bd05feed79abc0d69",
+        "eval-only.jsonl": "df24661f92e01d203f8b2061091246e32e29228f8b15254a0c65cd7422529a77",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "55b51433a7167f87d9c666540b88bb66dde064a2e433ba337f6fc8444faa0ba4"
+      }
+    },
+    {
+      "case": "far-search-empty",
+      "wall": "far",
+      "pose": "search",
+      "loaded": false,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-b161a388/far-search-empty",
+      "source_sha": "b161a388de5509fc27b5b098e112c023225e9202",
+      "mean_lateral_mm": 170.1121564681819,
+      "mean_abs_yaw_deg": 0.8690266567850075,
+      "bilateral_fraction": 0.0,
+      "pitch_deg": -18.25590983664262,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.009023988467744104,
+        -9.039410715505625e-07,
+        0.049136353847217436
+      ],
+      "box_added_com_shift_m": null,
+      "wall_forces": {
+        "wheel_other": {
+          "mean_normal_n": 10.31774576772917,
+          "peak_normal_n": 12.554273602328543,
+          "samples": 137
+        }
+      },
+      "wall_foot_in_view_fraction": 1.0,
+      "wall_foot_clear_fraction": null,
+      "original_clear_invalid_camera_group": true,
+      "sim_s": 11.250249999996456,
+      "wall_s": 10.644960832985817,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            0.002380481895988016,
+            0.1693757883865535
+          ],
+          "yaw_deg": -0.5555651120882424
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            -5.7972069071354966e-05,
+            0.16991178325058343
+          ],
+          "yaw_deg": -1.3323650582072941
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            0.0022253905660241167,
+            0.17052175788079493
+          ],
+          "yaw_deg": -1.2491966260168426
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            0.0017814580383655274,
+            0.17125133165918194
+          ],
+          "yaw_deg": -0.9927256951291539
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.001428345362379969,
+            0.1704021363270908
+          ],
+          "yaw_deg": -0.797728089006733
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            0.00017934589922363915,
+            0.16921014130488674
+          ],
+          "yaw_deg": -0.28657936026177916
+        }
+      ],
+      "hashes": {
+        "result.json": "1252c972cd8aad01d032fb827994a63c359b5cbef4ad85b6d48339f5e0395ba0",
+        "eval-only.jsonl": "d79c381de85a682cbb99b8dc41762893e035c1144d04f1b580d81b320f440255",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "5a6b57a5056e8062f5e83482e2c10203a612d483a68ccad7cd2e8b3f445a01f4"
+      }
+    },
+    {
+      "case": "far-look_ahead-loaded",
+      "wall": "far",
+      "pose": "look_ahead",
+      "loaded": true,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/far-look_ahead-loaded",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 168.98432733004176,
+      "mean_abs_yaw_deg": 1.6914052423691368,
+      "bilateral_fraction": 1.0,
+      "pitch_deg": -16.565414286994876,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.015639270105318737,
+        8.819527930192805e-08,
+        0.047606787263405434
+      ],
+      "box_added_com_shift_m": [
+        0.005289153306870187,
+        4.045856925039004e-07,
+        0.0022883032229146227
+      ],
+      "wall_forces": {
+        "grasp": {
+          "mean_normal_n": 10.405063246410618,
+          "peak_normal_n": 10.405109069293024,
+          "samples": 144
+        },
+        "wheel_other": {
+          "mean_normal_n": 11.153813550876585,
+          "peak_normal_n": 12.440538978362994,
+          "samples": 144
+        }
+      },
+      "wall_foot_in_view_fraction": 1.0,
+      "wall_foot_clear_fraction": 1.0,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 11.800249999995174,
+      "wall_s": 14.216131124994718,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.649999999999937,
+          "end_t": 5.400000000000854,
+          "delta_body_m": [
+            0.0024953067136327806,
+            0.16884666782235397
+          ],
+          "yaw_deg": -1.777320826471515
+        },
+        {
+          "index": 1,
+          "start_t": 5.600000000001098,
+          "end_t": 6.350000000002015,
+          "delta_body_m": [
+            0.0013581917416800038,
+            0.1680311533319811
+          ],
+          "yaw_deg": -1.2195199009000615
+        },
+        {
+          "index": 2,
+          "start_t": 6.550000000002259,
+          "end_t": 7.300000000003176,
+          "delta_body_m": [
+            0.0020410048654800443,
+            0.16932933469221828
+          ],
+          "yaw_deg": -1.8647604216190188
+        },
+        {
+          "index": 3,
+          "start_t": 7.50000000000342,
+          "end_t": 8.250000000003448,
+          "delta_body_m": [
+            0.001423912394052181,
+            0.16994772962875687
+          ],
+          "yaw_deg": -2.226189560403768
+        },
+        {
+          "index": 4,
+          "start_t": 8.450000000002982,
+          "end_t": 9.200000000001234,
+          "delta_body_m": [
+            0.0012573821165852254,
+            0.16908007400533015
+          ],
+          "yaw_deg": -1.5783569234901067
+        },
+        {
+          "index": 5,
+          "start_t": 10.999999999997039,
+          "end_t": 11.74999999999529,
+          "delta_body_m": [
+            0.00018782833491498563,
+            0.16867100449961028
+          ],
+          "yaw_deg": -1.4822838213303497
+        }
+      ],
+      "hashes": {
+        "result.json": "66be7e072e6b2baca31ace8e0cf0acf83d1843ff50ac05f1dd4c74d7f5f2cc8c",
+        "eval-only.jsonl": "2534cf5db487888ec06d7a6a973605c153ccd8cacd1181d58b3d3edf50f06acc",
+        "commands.json": "10b728e4a77db784189aefd0a9785a8ddd456fb64697b6842db7452ca80724f4",
+        "frames.json": "23d68eeb5164e14291c323139dcb73e7c2ec91f800fd1e378005abea52d7e85b"
+      }
+    },
+    {
+      "case": "far-real_delivery-empty",
+      "wall": "far",
+      "pose": "real_delivery",
+      "loaded": false,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/far-real_delivery-empty",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 169.9836192223957,
+      "mean_abs_yaw_deg": 0.9683534229590066,
+      "bilateral_fraction": 0.0,
+      "pitch_deg": -27.24915458841191,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.009427451396009534,
+        -9.386768143881952e-07,
+        0.04930857060547551
+      ],
+      "box_added_com_shift_m": null,
+      "wall_forces": {
+        "wheel_other": {
+          "mean_normal_n": 10.221714937834033,
+          "peak_normal_n": 12.248597855260616,
+          "samples": 136
+        }
+      },
+      "wall_foot_in_view_fraction": 0.0,
+      "wall_foot_clear_fraction": 0.0,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 11.250249999996456,
+      "wall_s": 11.534409541985951,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            0.002488810646081042,
+            0.1693558330225751
+          ],
+          "yaw_deg": -0.6212113548707542
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            -0.00025772954344179726,
+            0.1696166370367431
+          ],
+          "yaw_deg": -1.264833632410878
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            0.0017289598242854654,
+            0.1703224090565831
+          ],
+          "yaw_deg": -1.2523814643892264
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            0.0012575309242589903,
+            0.17103242451230774
+          ],
+          "yaw_deg": -0.9903990393038541
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.0019031104812993384,
+            0.17021031917933374
+          ],
+          "yaw_deg": -1.0527757716480093
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            0.00047889644378674816,
+            0.16936409252683152
+          ],
+          "yaw_deg": -0.6285192751313184
+        }
+      ],
+      "hashes": {
+        "result.json": "bfd4ff1ad51c58461226b4ef9da7f56bf3e3e9acff5c33f123c0c2b33c8b3c3f",
+        "eval-only.jsonl": "e7b638845f7d535933c1f7bbe351ea2b7b6618b192b90ac24e35ea6bfdc5fba3",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "45394cdf8348257f06cbde041355a4c61d3233645b1afedfc61b89216cc075de"
+      }
+    },
+    {
+      "case": "far-real_delivery-loaded",
+      "wall": "far",
+      "pose": "real_delivery",
+      "loaded": true,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/far-real_delivery-loaded",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 169.05469834728663,
+      "mean_abs_yaw_deg": 1.0679890103831224,
+      "bilateral_fraction": 1.0,
+      "pitch_deg": -27.348301552017347,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.009433651525853293,
+        -6.303461974610514e-06,
+        0.049302663969923444
+      ],
+      "box_added_com_shift_m": [
+        0.0034514689329769865,
+        -1.858356098560776e-06,
+        0.0026995680915440634
+      ],
+      "wall_forces": {
+        "grasp": {
+          "mean_normal_n": 10.405063762423408,
+          "peak_normal_n": 10.405123685731068,
+          "samples": 144
+        },
+        "wheel_other": {
+          "mean_normal_n": 11.093342337933096,
+          "peak_normal_n": 12.825250482360872,
+          "samples": 144
+        }
+      },
+      "wall_foot_in_view_fraction": 0.0,
+      "wall_foot_clear_fraction": 0.0,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 13.117749999992103,
+      "wall_s": 15.42601308299345,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 5.9675000000015475,
+          "end_t": 6.717500000002464,
+          "delta_body_m": [
+            0.002296796307483069,
+            0.16852401155804833
+          ],
+          "yaw_deg": -0.9604840716505721
+        },
+        {
+          "index": 1,
+          "start_t": 6.9175000000027085,
+          "end_t": 7.667500000003625,
+          "delta_body_m": [
+            0.0012620545027785656,
+            0.16900963560500895
+          ],
+          "yaw_deg": -1.6095243037847775
+        },
+        {
+          "index": 2,
+          "start_t": 7.8675000000038695,
+          "end_t": 8.617500000002591,
+          "delta_body_m": [
+            0.001366980695963505,
+            0.16957536597442366
+          ],
+          "yaw_deg": -0.8091472277732026
+        },
+        {
+          "index": 3,
+          "start_t": 8.817500000002125,
+          "end_t": 9.567500000000377,
+          "delta_body_m": [
+            0.0024694007663584507,
+            0.16999503872762534
+          ],
+          "yaw_deg": -1.196152300615499
+        },
+        {
+          "index": 4,
+          "start_t": 9.767499999999911,
+          "end_t": 10.517499999998163,
+          "delta_body_m": [
+            0.0011952747032369215,
+            0.1683779783053886
+          ],
+          "yaw_deg": -0.8871580392994449
+        },
+        {
+          "index": 5,
+          "start_t": 12.317499999993968,
+          "end_t": 13.06749999999222,
+          "delta_body_m": [
+            0.0016036288022095932,
+            0.1688461599132249
+          ],
+          "yaw_deg": -0.9454681191752387
+        }
+      ],
+      "hashes": {
+        "result.json": "c5f0718188cdf933151b82fbffd68d5a35b7b8f67ca48fdae11e8adf0f7250b7",
+        "eval-only.jsonl": "3ea55c2787cd10a201917bc807c6f9f24be6c2dffa56ba937ccff2d3bbb9a6b0",
+        "commands.json": "9845a2f927bf7ef25f2af325eec152c71213d07ebc479d463a54babe6f3313c3",
+        "frames.json": "406e7519b6badf23d9825bb2febee6db9fbf3339915f90cf19dd5cd9ebe87014"
+      }
+    },
+    {
+      "case": "near-search-empty",
+      "wall": "near",
+      "pose": "search",
+      "loaded": false,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/near-search-empty",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 0.37210827747907244,
+      "mean_abs_yaw_deg": 0.0655205913892309,
+      "bilateral_fraction": 0.0,
+      "pitch_deg": -18.255909836642612,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.009023988467744104,
+        -9.039410715505625e-07,
+        0.049136353847217436
+      ],
+      "box_added_com_shift_m": null,
+      "wall_forces": {
+        "wall_wheel": {
+          "mean_normal_n": 2.797176484681779,
+          "peak_normal_n": 6.269099895438817,
+          "samples": 87
+        },
+        "wheel_other": {
+          "mean_normal_n": 8.754750219933252,
+          "peak_normal_n": 12.658176689767373,
+          "samples": 124
+        }
+      },
+      "wall_foot_in_view_fraction": 0.7708333333333334,
+      "wall_foot_clear_fraction": 0.7708333333333334,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 11.250249999996456,
+      "wall_s": 17.06347941700369,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            0.0002027845976505398,
+            0.001769322686645632
+          ],
+          "yaw_deg": 0.029604684008546118
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            -8.489138369424573e-05,
+            -2.315522428228021e-06
+          ],
+          "yaw_deg": -0.015654549513434705
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            -0.00021179962342034975,
+            1.7833188718592152e-05
+          ],
+          "yaw_deg": -0.06724299179033034
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            -0.00014477936091577927,
+            -0.00010215935951709023
+          ],
+          "yaw_deg": -0.05834117117682495
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.0005220857989332935,
+            0.0002308590129378271
+          ],
+          "yaw_deg": 0.10303240654360384
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            0.00028018976392847367,
+            0.0003191096585177019
+          ],
+          "yaw_deg": 0.11924774530264541
+        }
+      ],
+      "hashes": {
+        "result.json": "69a4cdc59c0aabf229e059cffc3a26fcd3f912fdd512beb20f715bf7da4313c8",
+        "eval-only.jsonl": "42bf7507349f58339f6dc9812775d5600b045445d1bc1e2c8d1dc052e61a6864",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "111b66b5328dd411cebcc136629a590d6012fd09304af6654f4d631025996cf6"
+      }
+    },
+    {
+      "case": "near-high-empty",
+      "wall": "near",
+      "pose": "high",
+      "loaded": false,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/near-high-empty",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 0.7443956515375268,
+      "mean_abs_yaw_deg": 0.2683768188212297,
+      "bilateral_fraction": 0.0,
+      "pitch_deg": -30.263645694072103,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.015308276195266313,
+        -4.838738936197018e-07,
+        0.047210325220405004
+      ],
+      "box_added_com_shift_m": null,
+      "wall_forces": {
+        "wall_wheel": {
+          "mean_normal_n": 2.5283805666407213,
+          "peak_normal_n": 7.450473945653583,
+          "samples": 85
+        },
+        "wheel_other": {
+          "mean_normal_n": 8.545382364533658,
+          "peak_normal_n": 11.866635520363241,
+          "samples": 125
+        }
+      },
+      "wall_foot_in_view_fraction": 0.24583333333333332,
+      "wall_foot_clear_fraction": 0.24583333333333332,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 11.250249999996456,
+      "wall_s": 14.673646750015905,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            4.4497976570645427e-05,
+            0.0017949083428400534
+          ],
+          "yaw_deg": 0.01700127019546885
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            -0.0001305049130933939,
+            -0.00020777691083635101
+          ],
+          "yaw_deg": 0.11401647657567157
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            -0.0005214924361215568,
+            0.0011555370183264097
+          ],
+          "yaw_deg": -0.7770796628186435
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            -0.00012126243646778109,
+            -0.0003769862835685302
+          ],
+          "yaw_deg": -0.07980733221798499
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.00035859241012632,
+            0.001415232662912004
+          ],
+          "yaw_deg": -0.3392142011678049
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            0.0010084898191962308,
+            0.0006854590795515752
+          ],
+          "yaw_deg": 0.2831419699518045
+        }
+      ],
+      "hashes": {
+        "result.json": "f3760a817b603e9a16b9ba2902dfc4a8c69791f4ac04601bfe7811ed2855142d",
+        "eval-only.jsonl": "96cc0dd32a373dade4f5973162e4319ee45ce805928ebd661eeb6caeffb270ce",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "6ed57cad9d855aa57af373d694e79932c6f524062783629aec11ede40018d9b4"
+      }
+    },
+    {
+      "case": "near-high-loaded",
+      "wall": "near",
+      "pose": "high",
+      "loaded": true,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/near-high-loaded",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 0.3123633136095061,
+      "mean_abs_yaw_deg": 0.07063089421695777,
+      "bilateral_fraction": 1.0,
+      "pitch_deg": -30.397787244996806,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.015331090882277021,
+        1.1593233706364003e-08,
+        0.04719499044957966
+      ],
+      "box_added_com_shift_m": [
+        0.004989733554684239,
+        3.622834012784182e-07,
+        0.0018365731751002062
+      ],
+      "wall_forces": {
+        "grasp": {
+          "mean_normal_n": 10.405057981826587,
+          "peak_normal_n": 10.405103193644399,
+          "samples": 144
+        },
+        "wall_wheel": {
+          "mean_normal_n": 2.536881573861962,
+          "peak_normal_n": 7.762741482647662,
+          "samples": 107
+        },
+        "wheel_other": {
+          "mean_normal_n": 10.310493788026681,
+          "peak_normal_n": 12.787226646420386,
+          "samples": 144
+        }
+      },
+      "wall_foot_in_view_fraction": 0.24930555555555556,
+      "wall_foot_clear_fraction": 0.24930555555555556,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 11.250249999996456,
+      "wall_s": 19.96789641698706,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            5.2419225199865755e-05,
+            0.001690661407530385
+          ],
+          "yaw_deg": 0.08008722790427958
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            -8.315175516186398e-05,
+            4.3304912355129634e-05
+          ],
+          "yaw_deg": -0.04030480008916576
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            -5.5037325682236606e-05,
+            -6.915944888689974e-05
+          ],
+          "yaw_deg": -0.0013607354618336816
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            9.482686996270382e-05,
+            9.970384094568599e-05
+          ],
+          "yaw_deg": -0.18025144593247086
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.00013364313785254125,
+            0.00011144431315349809
+          ],
+          "yaw_deg": 0.09644432253224997
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            4.591809439069784e-05,
+            -1.7751434407624186e-06
+          ],
+          "yaw_deg": -0.025336833381746804
+        }
+      ],
+      "hashes": {
+        "result.json": "9bbee212c20d6f6084d7df4ac4a2dc6a0b59fed7785c9e97cce5c62f87a2f9ea",
+        "eval-only.jsonl": "eb247d5095b4db28a37da0e347400c91fb8bffb340e7a332986ed2b543fdf3c3",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "2c7688c5decc4ab70a2f6351468e25316398fdcd6946af98a44a0f055a2f8b59"
+      }
+    },
+    {
+      "case": "near-look_ahead-empty",
+      "wall": "near",
+      "pose": "look_ahead",
+      "loaded": false,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/near-look_ahead-empty",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 0.4570060559604513,
+      "mean_abs_yaw_deg": 0.18897771452982126,
+      "bilateral_fraction": 0.0,
+      "pitch_deg": -16.416908151715152,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.015614015850226703,
+        -2.781065302492891e-07,
+        0.04762417870245622
+      ],
+      "box_added_com_shift_m": null,
+      "wall_forces": {
+        "wall_wheel": {
+          "mean_normal_n": 2.5861955070494016,
+          "peak_normal_n": 6.463044191384699,
+          "samples": 101
+        },
+        "wheel_other": {
+          "mean_normal_n": 8.61511862593122,
+          "peak_normal_n": 12.14015939095782,
+          "samples": 125
+        }
+      },
+      "wall_foot_in_view_fraction": 0.7847222222222222,
+      "wall_foot_clear_fraction": 0.7847222222222222,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 11.250249999996456,
+      "wall_s": 14.879250792000676,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            0.00016970828171924187,
+            0.0015799010645118712
+          ],
+          "yaw_deg": 0.16352090972227798
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            -0.00040885869422219883,
+            0.0001949752890301871
+          ],
+          "yaw_deg": -0.1489103724800145
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            -0.00029459488312314305,
+            0.0006328930244006035
+          ],
+          "yaw_deg": -0.5558782446914736
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            -6.264660500236901e-05,
+            -1.064804987470662e-05
+          ],
+          "yaw_deg": -0.023102874632384803
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.0002540402670604284,
+            0.00015542063051991913
+          ],
+          "yaw_deg": 0.22991520475907684
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            0.0003651325534110826,
+            0.00018949437717483296
+          ],
+          "yaw_deg": 0.012538680893699736
+        }
+      ],
+      "hashes": {
+        "result.json": "8ff90a2951ac60af5a7211134ff53d90b8e13ebe1b079c954680885f9cf75267",
+        "eval-only.jsonl": "d92b85c003a57f111e11b2712c0fb3fc061c0303622361d247c68fd99c5b6f10",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "957276ed22e37745ef1ad3a40133cc1dd7185e37b2a0895b1ec0ace33e0b9e52"
+      }
+    },
+    {
+      "case": "near-look_ahead-loaded",
+      "wall": "near",
+      "pose": "look_ahead",
+      "loaded": true,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/near-look_ahead-loaded",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 0.3916787509293266,
+      "mean_abs_yaw_deg": 0.15523076572290226,
+      "bilateral_fraction": 1.0,
+      "pitch_deg": -16.565407392273542,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.01563927194897241,
+        8.775284143780482e-08,
+        0.04760678771320601
+      ],
+      "box_added_com_shift_m": [
+        0.005289153412694869,
+        4.059726650407214e-07,
+        0.002288303558256738
+      ],
+      "wall_forces": {
+        "grasp": {
+          "mean_normal_n": 10.405057192520314,
+          "peak_normal_n": 10.405111151149022,
+          "samples": 144
+        },
+        "wall_wheel": {
+          "mean_normal_n": 2.5871885555169096,
+          "peak_normal_n": 7.781788453813635,
+          "samples": 129
+        },
+        "wheel_other": {
+          "mean_normal_n": 10.343295994603421,
+          "peak_normal_n": 12.93224902586541,
+          "samples": 144
+        }
+      },
+      "wall_foot_in_view_fraction": 0.7854166666666667,
+      "wall_foot_clear_fraction": 0.7854166666666667,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 11.800249999995174,
+      "wall_s": 18.728502459009178,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.649999999999937,
+          "end_t": 5.400000000000854,
+          "delta_body_m": [
+            -0.00013899170162005967,
+            0.0017295826175233525
+          ],
+          "yaw_deg": 0.04968255687081048
+        },
+        {
+          "index": 1,
+          "start_t": 5.600000000001098,
+          "end_t": 6.350000000002015,
+          "delta_body_m": [
+            0.00019412308240107239,
+            -0.00019363341123985152
+          ],
+          "yaw_deg": 0.13009825580056253
+        },
+        {
+          "index": 2,
+          "start_t": 6.550000000002259,
+          "end_t": 7.300000000003176,
+          "delta_body_m": [
+            -0.00030618196031956664,
+            0.0009332680982068448
+          ],
+          "yaw_deg": -0.6263743706919308
+        },
+        {
+          "index": 3,
+          "start_t": 7.50000000000342,
+          "end_t": 8.250000000003448,
+          "delta_body_m": [
+            0.00020030032862686172,
+            -4.5858153811993416e-05
+          ],
+          "yaw_deg": -0.004403261429527544
+        },
+        {
+          "index": 4,
+          "start_t": 8.450000000002982,
+          "end_t": 9.200000000001234,
+          "delta_body_m": [
+            1.9224646400079026e-05,
+            3.8729792424369254e-05
+          ],
+          "yaw_deg": -0.07093198462801487
+        },
+        {
+          "index": 5,
+          "start_t": 10.999999999997039,
+          "end_t": 11.74999999999529,
+          "delta_body_m": [
+            0.00010917975250666831,
+            -0.00011201643752676194
+          ],
+          "yaw_deg": 0.04989416491656739
+        }
+      ],
+      "hashes": {
+        "result.json": "492b5247b5cdd725d77f3137cab741ff8391b69b0367d35bd7693898a424a4f5",
+        "eval-only.jsonl": "0b5154ec39f7edac64d9be22c63f1963b7c0d540f903520199d712d3403c42a8",
+        "commands.json": "10b728e4a77db784189aefd0a9785a8ddd456fb64697b6842db7452ca80724f4",
+        "frames.json": "aec2c560dbe3e8b84836b94418a8742548a098ab302b639e85c226561ad02774"
+      }
+    },
+    {
+      "case": "near-real_delivery-empty",
+      "wall": "near",
+      "pose": "real_delivery",
+      "loaded": false,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/near-real_delivery-empty",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 0.47812381239793444,
+      "mean_abs_yaw_deg": 0.14979373841426288,
+      "bilateral_fraction": 0.0,
+      "pitch_deg": -27.24915458841192,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.009427451396009534,
+        -9.386768142771729e-07,
+        0.04930857060547552
+      ],
+      "box_added_com_shift_m": null,
+      "wall_forces": {
+        "wall_wheel": {
+          "mean_normal_n": 2.611591956338328,
+          "peak_normal_n": 6.285624376637593,
+          "samples": 78
+        },
+        "wheel_other": {
+          "mean_normal_n": 8.388738166295989,
+          "peak_normal_n": 12.02411318358323,
+          "samples": 123
+        }
+      },
+      "wall_foot_in_view_fraction": 0.21736111111111112,
+      "wall_foot_clear_fraction": 0.21736111111111112,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 11.250249999996456,
+      "wall_s": 15.551091000001179,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 4.099999999999265,
+          "end_t": 4.850000000000182,
+          "delta_body_m": [
+            -8.642441650068843e-05,
+            0.0016006197341761918
+          ],
+          "yaw_deg": 0.13550846429546845
+        },
+        {
+          "index": 1,
+          "start_t": 5.050000000000426,
+          "end_t": 5.800000000001343,
+          "delta_body_m": [
+            7.407435619333927e-06,
+            0.0004742876150592447
+          ],
+          "yaw_deg": -0.3165231145715592
+        },
+        {
+          "index": 2,
+          "start_t": 6.000000000001587,
+          "end_t": 6.750000000002504,
+          "delta_body_m": [
+            -0.00012040682617341363,
+            -9.693057410896e-05
+          ],
+          "yaw_deg": -0.1106934953665047
+        },
+        {
+          "index": 3,
+          "start_t": 6.950000000002748,
+          "end_t": 7.700000000003665,
+          "delta_body_m": [
+            0.00034582336893125684,
+            0.00025927830420894324
+          ],
+          "yaw_deg": 0.1535299818340284
+        },
+        {
+          "index": 4,
+          "start_t": 7.900000000003909,
+          "end_t": 8.650000000002516,
+          "delta_body_m": [
+            0.000508629133080057,
+            0.00019542818098337503
+          ],
+          "yaw_deg": -0.015702738500873024
+        },
+        {
+          "index": 5,
+          "start_t": 10.44999999999832,
+          "end_t": 11.199999999996573,
+          "delta_body_m": [
+            0.0006819498260641971,
+            0.0004360596140688116
+          ],
+          "yaw_deg": 0.1668046359171436
+        }
+      ],
+      "hashes": {
+        "result.json": "ec960fa6120ea17b22fe22bb4145e59bbef5b8ca1200608ccf876c9b5e9d99e2",
+        "eval-only.jsonl": "732ab3149302f55dd4bfc3ff5243ce84a4840429e674cb5ca9ee95c599772f2e",
+        "commands.json": "0074b18e32cad65818d779e63d8ad61132f7855e80822e11b942332d023b3483",
+        "frames.json": "d9700a51e810738c87c052749322f6806627b2745d55ed39b8364f7138a4cb0a"
+      }
+    },
+    {
+      "case": "near-real_delivery-loaded",
+      "wall": "near",
+      "pose": "real_delivery",
+      "loaded": true,
+      "status": "MEASURED",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/near-real_delivery-loaded",
+      "source_sha": "bf8f6411cfbd9e872d8b483102a3354bf9e77e94",
+      "mean_lateral_mm": 0.2999230837619695,
+      "mean_abs_yaw_deg": 0.025914055741645698,
+      "bilateral_fraction": 1.0,
+      "pitch_deg": -27.348875253185113,
+      "robot_mass_kg": 1.1,
+      "box_mass_kg": 0.03,
+      "robot_com_relative_m": [
+        0.009434174800064365,
+        -6.263864676725461e-06,
+        0.049302564940057726
+      ],
+      "box_added_com_shift_m": [
+        0.0034514987732818803,
+        -1.8920968951618988e-06,
+        0.002699533005750418
+      ],
+      "wall_forces": {
+        "grasp": {
+          "mean_normal_n": 10.405053398001144,
+          "peak_normal_n": 10.40510136201602,
+          "samples": 144
+        },
+        "wall_wheel": {
+          "mean_normal_n": 2.9881482379923034,
+          "peak_normal_n": 7.141166167038471,
+          "samples": 141
+        },
+        "wheel_other": {
+          "mean_normal_n": 10.604830600029626,
+          "peak_normal_n": 12.073363870541732,
+          "samples": 144
+        }
+      },
+      "wall_foot_in_view_fraction": 0.21458333333333332,
+      "wall_foot_clear_fraction": 0.21458333333333332,
+      "original_clear_invalid_camera_group": false,
+      "sim_s": 13.117749999992103,
+      "wall_s": 23.844518291996792,
+      "pulses": [
+        {
+          "index": 0,
+          "start_t": 5.9675000000015475,
+          "end_t": 6.717500000002464,
+          "delta_body_m": [
+            1.3504445952063165e-05,
+            0.0017107191277562382
+          ],
+          "yaw_deg": 0.05703796778073042
+        },
+        {
+          "index": 1,
+          "start_t": 6.9175000000027085,
+          "end_t": 7.667500000003625,
+          "delta_body_m": [
+            -2.9911014502495574e-05,
+            4.077258044124198e-06
+          ],
+          "yaw_deg": 0.002611237699052479
+        },
+        {
+          "index": 2,
+          "start_t": 7.8675000000038695,
+          "end_t": 8.617500000002591,
+          "delta_body_m": [
+            -0.00010378967248566704,
+            3.8065172740373237e-05
+          ],
+          "yaw_deg": -0.028711895679102865
+        },
+        {
+          "index": 3,
+          "start_t": 8.817500000002125,
+          "end_t": 9.567500000000377,
+          "delta_body_m": [
+            -0.00010421830357741636,
+            -9.418132851820661e-07
+          ],
+          "yaw_deg": 0.017066573560590246
+        },
+        {
+          "index": 4,
+          "start_t": 9.767499999999911,
+          "end_t": 10.517499999998163,
+          "delta_body_m": [
+            -7.961965531467836e-05,
+            4.840450083612389e-05
+          ],
+          "yaw_deg": 0.04419113412012332
+        },
+        {
+          "index": 5,
+          "start_t": 12.317499999993968,
+          "end_t": 13.06749999999222,
+          "delta_body_m": [
+            3.51238726808544e-05,
+            -7.857435198601961e-07
+          ],
+          "yaw_deg": -0.005865525610274875
+        }
+      ],
+      "hashes": {
+        "result.json": "ed95166298ca81661dd8ab8f150c2d2a66b77483124a08596a8fcc603dae2aba",
+        "eval-only.jsonl": "b818e5a4f93b4a2d53e837b9c1de26aa9bf664428f9701f2cd36a2846ae076ed",
+        "commands.json": "9845a2f927bf7ef25f2af325eec152c71213d07ebc479d463a54babe6f3313c3",
+        "frames.json": "edab38560f7c4764ece9bdbd31ddcb7396d40c120b53dc509ec6e7c9e17e21b6"
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "pose": "high",
+      "load_relative_difference": 0.004171392168905608,
+      "yaw_difference_deg": 0.3818415065084595,
+      "load_gate_pass": true
+    },
+    {
+      "pose": "look_ahead",
+      "load_relative_difference": 0.004728230081701534,
+      "yaw_difference_deg": 0.28768744895014553,
+      "load_gate_pass": true
+    },
+    {
+      "pose": "real_delivery",
+      "load_relative_difference": 0.005464767013189209,
+      "yaw_difference_deg": 0.09963558742411582,
+      "load_gate_pass": true
+    }
+  ],
+  "look_ahead_calibration": {
+    "schema": "ugrp.s2.look_ahead_calibration.v1",
+    "option": "look_ahead_v1",
+    "servo_stiffness": "real_v1",
+    "fit_uses_gt": false,
+    "pose_key": "1050,2035,1894,1500",
+    "camera_models": {
+      "unloaded": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.19684253553427858,
+          -8.659910289978856e-05,
+          0.17401167050346028
+        ],
+        "rotation": [
+          [
+            -0.00029450968147570755,
+            -0.2828957387945232,
+            0.9591506212456669
+          ],
+          [
+            -0.9999999410904421,
+            -8.578673192882746e-05,
+            -0.0003323548543607835
+          ],
+          [
+            0.00017630416929048653,
+            -0.95915066262425,
+            -0.282895696864237
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0,
+            0,
+            0.0325
+          ],
+          "rotation": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "loaded": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.1969079647658467,
+          1.5852935816124486e-05,
+          0.17344295812764707
+        ],
+        "rotation": [
+          [
+            -0.0006624993322333905,
+            -0.28424793685763194,
+            0.958750578350185
+          ],
+          [
+            -0.9999997442752567,
+            -6.991592681737657e-05,
+            -0.0007117311177441965
+          ],
+          [
+            0.00026934003708811716,
+            -0.9587508046953299,
+            -0.28424781784914666
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0,
+            0,
+            0.0325
+          ],
+          "rotation": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      }
+    },
+    "quality": {
+      "unloaded": {
+        "fit": {
+          "rms_px": 0.13413635224095483,
+          "max_px": 0.288113630632137,
+          "points": 80
+        },
+        "holdout": {
+          "rms_px": 0.24321461699415076,
+          "max_px": 0.4332203841393953,
+          "points": 40
+        }
+      },
+      "loaded": {
+        "fit": {
+          "rms_px": 0.12973605101278546,
+          "max_px": 0.2614124244017777,
+          "points": 80
+        },
+        "holdout": {
+          "rms_px": 0.21458777504761278,
+          "max_px": 0.3369172226098577,
+          "points": 40
+        }
+      }
+    },
+    "pitch_difference_deg": 0.08078706036653216,
+    "bilateral_fraction": 1.0,
+    "origin": "surveyed known boards, free chassis, RGB solvePnP; GT audit separate",
+    "raw": {
+      "unloaded": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-b161a388/far-look_ahead-empty",
+      "loaded": "/Users/changmin/projects/ugrp/outputs/s2-load-wall-bf8f6411/far-look_ahead-loaded"
+    },
+    "admission_pass": true
+  },
+  "conclusion": "controlled free load effect below 0.55%; near wall blocks both empty/loaded; not a demonstrated mass or roller defect",
+  "model_fitted": false,
+  "sim_parameters_changed": false,
+  "physical_cases": 14,
+  "physical_failures": 0,
+  "full_dev_admissible": true
+}

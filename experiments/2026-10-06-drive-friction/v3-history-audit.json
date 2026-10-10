@@ -1,0 +1,87 @@
+{
+  "reachable_commits": 2664,
+  "refs": 486,
+  "history_search": [
+    "git",
+    "log",
+    "--all",
+    "--format=%H %ad %s",
+    "--date=iso-strict",
+    "--name-only",
+    "-G",
+    "setMotor|MecanumChassis|MIN_EFFECTIVE_WHEEL_SPEED|wheel dead zone|30 이하에서 바퀴",
+    "--",
+    "."
+  ],
+  "matched_lines": 17,
+  "physical_paths": {
+    "scripts/masterpi_control.py": {
+      "initial_commit": "2df57325",
+      "sha256": "ba7e8c36d92539c8393f3e4f4976f75fde6e5635de06c4d5ad3f411721809b15",
+      "history": [
+        "2df573259de679e651bc1085e34f7da6ea713716 Initialize private source repository"
+      ]
+    },
+    "scripts/robot_actions.py": {
+      "initial_commit": "2df57325",
+      "sha256": "fffb0c4d351294275c9dab497feb201fb045a05939e51ff892c2027af54ba96c",
+      "history": [
+        "3c8479e4b97549a63ba9c24d844ac30d4d30294b Preserve pinned RGB execution source hashes",
+        "9610a4a8bd183b8e790431b12224796cba0804f3 Retire legacy browser dashboards and preserve robot command core",
+        "2df573259de679e651bc1085e34f7da6ea713716 Initialize private source repository"
+      ]
+    },
+    "docs/decision_log.md": {
+      "initial_commit": "2df57325",
+      "sha256": "f1c3d9dd43ca40e292c9ea13d09b80d491e0efe1f6835c7bca1a7ec64f81819e",
+      "history": [
+        "57a210ab30343b2e470bcee84e544907cce77f38 Merge origin/main into kiro/records-0926b",
+        "0d3eef1886f6888e3909f3ccaa4759307894b21d 기록: 2026-09-26 사용자 결정 — cargo_noslip_v1 연구 전체 채택, 짝 상태 채널 전 조건 포함",
+        "0b8cb270eccbf4097ef4af628047026575fc089a 기록: 2026-09-26 Kiro 추가·대화 연구 패키지·자기 카메라·미끄러짐 판정",
+        "56ca1829aa432639571fe3a945a5fc4284da6e68 기록: 9/25 후속 — 자기 RGB·지도·명령 이력만으로 성공, AprilTag 벽 표식, 손목 카메라만, M1 + 자기 카메라 조사 보고서 2건",
+        "ec9ad331339857769304c919941a48084ad03406 기록: 9/25 후속 — 지휘자 형태 결정(로봇 겸임·r1/r2/r3 순환·허브-스포크)",
+        "a5ff27a2d068ffa29210ac31d3f78afe69eb2b32 기록: 9/25 조건 결정 후속 — 통신 채널만 바꾸는 축, TOP 카메라 제외·정적 지도+작업 지시서 입력",
+        "0d5b45b3adad8155b74093dd9e07e79bba3c314e 기록: 연구 조건을 통신없음/동적통신/AI 지휘로 변경 + Codex PR 리뷰 보고서",
+        "839c2968399c90587b89dcf96dc16a2209ecd2c4 Preserve 2026-09-25 Codex design analyses and record today's decisions",
+        "4c3ed63c1c9819d07791998a8d489a3a8a266d8c docs: streamline UGRP guidance and separate current results from history",
+        "9659f7a464ab1a73e5f160d7142208eeba45848c retire legacy physics and cloud simulation environments",
+        "6bec0fbdf0f5b4fd21d2a2f9918a783df7fbbcb8 docs: record unresolved session CI failure from audit",
+        "4bad601ee05f86def034a2f4da686fcd010a4cad docs: audit experiment records and retain failed trial outcomes",
+        "e9ebb0560019c6abb763cc654a1885c7603b577f chore: establish CI, experiment provenance, and GitHub workflow",
+        "2df573259de679e651bc1085e34f7da6ea713716 Initialize private source repository"
+      ]
+    },
+    "calibration/masterpi/chassis_trials.jsonl": {
+      "initial_commit": "2df57325",
+      "sha256": "f5cf3d40dd5d017d3e163b4eb3d4aa27dc6f0a4c111a7de36e058fc1043b0afc",
+      "history": [
+        "2df573259de679e651bc1085e34f7da6ea713716 Initialize private source repository"
+      ]
+    }
+  },
+  "chassis_trials": {
+    "rows": 108,
+    "measured_xyz_rows": 0
+  },
+  "pr385": {
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/385",
+    "source_sha": "88c5803c74bab1683fa1ef4082508ec50311ada9",
+    "scope": "Pi4 legacy I2C driver reference; arm dry-run, camera/battery diagnostics; no measured wheel speed or torque",
+    "legacy_driver_sha256": "7d66aad709f2a7d099a0941940cb31f2068c70fe47a81ba47ff08793a7bcfe73",
+    "windows_raw_retrieved": false,
+    "hardware_commands_issued": false
+  },
+  "local_search": {
+    "root": "/Users/changmin/projects",
+    "scope": "Other project folders and historical UGRP folders read-only; no independent wheel calibration/SDK found. Git object binaries and dependency/weight trees excluded from file content search. Git history searched separately.",
+    "unmeasured_patch": "ugrp/work/prs/masterpi-control-latency/0001-perf-reduce-MasterPi-terminal-control-latency.patch (arm visual-servo latency context, no wheel measurements)",
+    "pre_import_sdk_and_firmware_found": false
+  },
+  "official_sdk": {
+    "repository": "https://github.com/Hiwonder/MasterPi",
+    "sha": "11b0cb04ada14be7c391e6c865ac705f903a95e7",
+    "platform": "current Pi5 UART SDK differs from historical Pi4 I2C",
+    "observation": "set_velocity says mm/s in docstring but directly sends kinematic integer wheel values to set_motor_duty; no measured mm/s conversion",
+    "actual_pwm_voltage_mapping_verified": false
+  }
+}

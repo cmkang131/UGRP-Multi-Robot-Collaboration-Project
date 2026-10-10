@@ -1,0 +1,200 @@
+{
+  "viewer": {
+    "schema": "ugrp.s2.v36.followup.viewer.v1",
+    "active_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+    "url": "http://127.0.0.1:6006/?runFilter=%5E1008-s2-v36-%28likelihood%7Cfull-v131%7Cv131-video%29%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Finside%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2FB_distance_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_update_gap_sim_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_xy_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fwall_bottom_clear_fraction%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fwheel_wall_episodes%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fwall_per_sim%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+    "pinned_tags": [
+      "offline/inside",
+      "offline/B_distance_m",
+      "offline/max_update_gap_sim_s",
+      "offline/carry_xy_rmse_m",
+      "offline/wall_bottom_clear_fraction",
+      "offline/wheel_wall_episodes",
+      "offline/wall_per_sim",
+      "result/model_calls"
+    ],
+    "hparams_visible_columns": [
+      "policy",
+      "condition",
+      "source_sha",
+      "seed",
+      "offline/inside",
+      "offline/B_distance_m",
+      "offline/wall_per_sim"
+    ],
+    "verification": {
+      "source_event_live_api_match": true,
+      "scalars": 22,
+      "browser": "NUMERIC_ONLY_UI_NOT_VERIFIED"
+    },
+    "scope": "one full DEV outside B + saved stationary likelihood diagnostic; no pooling",
+    "video_url": "http://127.0.0.1:6007/video/45b58e17b5b88e5d4c29"
+  },
+  "checks": [
+    {
+      "checks": [
+        {
+          "tag": "offline/raw/best_position_error_m",
+          "source": 0.05164157709360576,
+          "event": 0.05164157599210739,
+          "live": 0.05164157599210739
+        },
+        {
+          "tag": "offline/raw/false_best_over_GT",
+          "source": 0.6895464725381215,
+          "event": 0.6895464658737183,
+          "live": 0.6895464658737183
+        },
+        {
+          "tag": "offline/raw/grid_uniform_prior_near_GT_mass",
+          "source": 0.09042866718332926,
+          "event": 0.0904286652803421,
+          "live": 0.0904286652803421
+        },
+        {
+          "tag": "offline/raw/grid_uniform_prior_mean_error_m",
+          "source": 3.2423578781583133,
+          "event": 3.2423579692840576,
+          "live": 3.2423579692840576
+        },
+        {
+          "tag": "offline/actual_camera/best_position_error_m",
+          "source": 0.05164157709360576,
+          "event": 0.05164157599210739,
+          "live": 0.05164157599210739
+        },
+        {
+          "tag": "offline/actual_camera/false_best_over_GT",
+          "source": 0.7393024376743729,
+          "event": 0.7393024563789368,
+          "live": 0.7393024563789368
+        },
+        {
+          "tag": "offline/actual_camera/grid_uniform_prior_near_GT_mass",
+          "source": 0.09469330592331363,
+          "event": 0.09469330310821533,
+          "live": 0.09469330310821533
+        },
+        {
+          "tag": "offline/actual_camera/grid_uniform_prior_mean_error_m",
+          "source": 3.253629709280632,
+          "event": 3.253629684448242,
+          "live": 3.253629684448242
+        },
+        {
+          "tag": "offline/ideal/best_position_error_m",
+          "source": 0.04835919527495484,
+          "event": 0.04835919663310051,
+          "live": 0.04835919663310051
+        },
+        {
+          "tag": "offline/ideal/false_best_over_GT",
+          "source": 0.818537058083106,
+          "event": 0.8185370564460754,
+          "live": 0.8185370564460754
+        },
+        {
+          "tag": "offline/ideal/grid_uniform_prior_near_GT_mass",
+          "source": 0.1731432886900029,
+          "event": 0.17314328253269196,
+          "live": 0.17314328253269196
+        },
+        {
+          "tag": "offline/ideal/grid_uniform_prior_mean_error_m",
+          "source": 3.103591931178725,
+          "event": 3.1035919189453125,
+          "live": 3.1035919189453125
+        }
+      ],
+      "UI_verified": false,
+      "source_event_live_api_match": true
+    },
+    {
+      "checks": [
+        {
+          "tag": "offline/lifted",
+          "source": 1,
+          "event": 1.0,
+          "live": 1.0
+        },
+        {
+          "tag": "offline/inside",
+          "source": 0,
+          "event": 0.0,
+          "live": 0.0
+        },
+        {
+          "tag": "offline/wall_per_sim",
+          "source": 1.7664278032258154,
+          "event": 1.766427755355835,
+          "live": 1.766427755355835
+        },
+        {
+          "tag": "offline/B_distance_m",
+          "source": 2.3363827609139154,
+          "event": 2.3363828659057617,
+          "live": 2.3363828659057617
+        },
+        {
+          "tag": "offline/wheel_wall_episodes",
+          "source": 54,
+          "event": 54.0,
+          "live": 54.0
+        },
+        {
+          "tag": "offline/wheel_wall_samples",
+          "source": 188,
+          "event": 188.0,
+          "live": 188.0
+        },
+        {
+          "tag": "offline/visual_updates",
+          "source": 19,
+          "event": 19.0,
+          "live": 19.0
+        },
+        {
+          "tag": "offline/max_update_gap_sim_s",
+          "source": 45.0,
+          "event": 45.0,
+          "live": 45.0
+        },
+        {
+          "tag": "offline/carry_xy_rmse_m",
+          "source": 1.1542425384384931,
+          "event": 1.1542425155639648,
+          "live": 1.1542425155639648
+        },
+        {
+          "tag": "offline/wall_bottom_clear_fraction",
+          "source": 0.6098431647940075,
+          "event": 0.6098431944847107,
+          "live": 0.6098431944847107
+        }
+      ],
+      "UI_verified": false,
+      "source_event_live_api_match": true,
+      "video_http_verified": true,
+      "video_url": "http://127.0.0.1:6007/video/45b58e17b5b88e5d4c29"
+    }
+  ],
+  "video": "/Users/changmin/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead-4x.mp4",
+  "video_sha256": "5f7d9ae03d0c7be6c1965ae608771c8c7caea5837665a5c4fb3968208c308d9a",
+  "video_speed": 4,
+  "video_frames": 5340,
+  "video_duration_s": 66.75,
+  "lock_released": true,
+  "session_stopped": true,
+  "raw_github_backup": false,
+  "tests": {
+    "full_related": 11,
+    "offline_diagnostic_and_contacts": 2
+  },
+  "ci_followup": {
+    "original_run": 37650297077,
+    "local_changed_test_files": 3,
+    "local_passed": 74,
+    "production_admission_guards_unchanged": true,
+    "remote_full_ci": "pending after push"
+  }
+}

@@ -84,6 +84,21 @@ raise SystemExit(3 if a.fail else 0)
             wm.run_workflow(self.root, "fixture", [], record_dir=record)
         self.assertTrue((record / "manifest.json").is_file())
 
+    def test_exited_group_permission_error_still_finishes_its_manifest(self):
+        with mock.patch.object(wm.os, 'killpg', side_effect=PermissionError('exited macOS group')):
+            record = wm.run_workflow(self.root, 'fixture', [])
+        data = json.loads((record/'manifest.json').read_text())
+        self.assertEqual(data['status'], 'process_completed')
+        self.assertEqual(data['exit_code'], 0)
+
+    def test_live_group_permission_error_is_not_treated_as_gone(self):
+        child = mock.Mock(pid=12345)
+        child.poll.return_value = None
+        with mock.patch.object(wm.os, 'killpg', side_effect=PermissionError('live')) as kill:
+            with self.assertRaises(PermissionError):
+                wm._signal_owned_group(child, 15)
+        kill.assert_called_once_with(12345, 15)
+
     def test_output_collision_and_duplicate_flag_fail_before_record(self):
         output = self.root / "prior"
         output.mkdir()
@@ -261,7 +276,74 @@ raise SystemExit(3 if a.fail else 0)
             "zone-final-environment-gaincal-v101": ["--check", "calibration-gain-v101", "--run-id", "fitA1", "--seed", "1101", "--expected-source-sha", "0" * 40],
             "zone-final-pair-loaded-gaincal-v102": ["--check", "calibration-loaded", "--run-id", "latA", "--seed", "1201", "--expected-source-sha", "0" * 40],
             "zone-solo-cyan-v106": ["--expected-source-sha", "0" * 40],
+            "zone-s3-host-v107": ["--expected-source-sha", "0" * 40],
+            "zone-s3-door-yield-v108": ["--expected-source-sha", "0" * 40],
+            "zone-s3-no-prior-v142": ["--expected-source-sha", "0" * 40],
+            "zone-s3-host-heading-v146": ["--expected-source-sha", "0" * 40],
+            "zone-s3-continue-v147": ["--expected-source-sha", "0" * 40],
+            "zone-s3-motion-v148": ["--expected-source-sha", "0" * 40],
+            "zone-s3-sweep-v149": ["--expected-source-sha", "0" * 40],
+            "zone-s3-odometry-v150": ["--expected-source-sha", "0" * 40],
+            "zone-s3-consistency-v151": ["--expected-source-sha", "0" * 40],
+            "zone-s3-recovery-v152": ["--expected-source-sha", "0" * 40],
+            "zone-s3-alignment-probe-v153": ["--expected-source-sha", "0" * 40],
+            "zone-s3-alignment-entry-probe-v154": ["--expected-source-sha", "0" * 40],
+            "zone-s3-oracle-stage-probe-v155": ["--expected-source-sha", "0" * 40],
+            "zone-s3-x86-stage-probe-v156": ["--expected-source-sha", "0" * 40],
+            "v7-exact-speed-benchmark": ["--suite", str(source), "--expected-source-sha", "0" * 40],
+            "masterpi-drive-friction-probe": ["--expected-source-sha", "0" * 40, "--drive-profile", "masterpi_drive_friction_v7"],
+            "masterpi-v7-roller-approx-probe": ["--expected-source-sha", "0" * 40, "--phase", "profile"],
         }
+        # Explicit samples for preserved S2 bundles; planning never executes.
+        samples.update({name: ["--expected-source-sha", "0" * 40] for name in (
+            'zone-s2-realism-v109',
+            'zone-s2-realism-v110',
+            'zone-s2-realism-v113',
+            'zone-s2-realism-v114',
+            'zone-s2-realism-v115',
+            'zone-s2-realism-v116',
+            'zone-s2-realism-v117',
+            'zone-s2-realism-v118',
+            'zone-s2-realism-v119',
+            'zone-s2-realism-v120',
+            'zone-s2-realism-v121',
+            'zone-s2-realism-v122',
+            'zone-s2-realism-v123',
+            'zone-s2-realism-v124',
+            'zone-s2-realism-v125',
+            'zone-s2-realism-v126',
+            'zone-s2-realism-v127',
+            'zone-s2-realism-v128',
+            'zone-s2-realism-v129',
+            's2-camera-extrinsic-capture-v1',
+            's2-stiff-camera-capture-v1',
+            's2-stiff-start-capture-v1',
+            's2-active-markov-start-v1',
+            's2-load-wall-v1',
+            'zone-s2-realism-v130',
+            'zone-s2-realism-v131',
+            'zone-s2-real-output-diag-v111',
+            'zone-s2-real-output-diag-v112',
+        )})
+        samples['zone-s2-realism-v132'] = ['--expected-source-sha', '0'*40, '--mode', 'start']
+        samples['zone-s2-realism-v133'] = ['--expected-source-sha', '0'*40, '--mode', 'full']
+        samples['zone-s2-v133-reproduction'] = ['--expected-registration-sha', '0'*40, '--seed', '1053']
+        samples['zone-s2-v133-baseline-v52'] = ['--expected-registration-sha', '0'*40, '--seed', '1056']
+        samples['zone-s2-unknown-start-v139'] = ['--expected-source-sha', '0'*40, '--seed', '1059']
+        samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
+        samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
+        samples['v7-exact-speed-benchmark'] = ['--suite', 's2', '--expected-source-sha', '0'*40]
+        for name in ('controller-replay-profile', 'saved-physics-profile'):
+            samples[name] = ['--kind', 's3', '--raw', str(model), '--adapter', str(model),
+                             '--expected-source-sha', '0'*40]
+        samples['zone-path-heading-v145'] = ['--expected-source-sha', '0'*40, '--seed', '1066']
+        samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
+                                           '--heading-mode', 'path_tangent_v1']
+        samples['zone-s2-side-scan-v134'] = ['--expected-source-sha', '0'*40]
+        samples['s2-loaded-rotation-v1'] = ['--expected-source-sha', '0'*40]
+        for name in ('zone-s2-look-before-move-v135', 'zone-s2-goal-heading-v136',
+                     'zone-s2-staged-approach-v137', 'zone-s2-staging-only-v138'):
+            samples[name] = ['--expected-source-sha', '0'*40, '--seed', '1054']
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
             plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}

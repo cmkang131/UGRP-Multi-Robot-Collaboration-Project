@@ -1,0 +1,76 @@
+{
+  "checks": [
+    {
+      "run": "1007-s2-kld-v33/views__off__7b2cc82e",
+      "source_view": "off",
+      "scalars": {
+        "result/model_calls": 0.0,
+        "offline/final_error_m": 3.1810338497161865,
+        "offline/rmse_m": 3.3155057430267334,
+        "offline/truth_mass": 0.07189035415649414,
+        "offline/tight_mass": 0.0,
+        "offline/initial_tight_count": 0.0,
+        "offline/final_particles": 2000.0,
+        "offline/wall_s": 2.791001796722412,
+        "offline/cpu_s": 3.3813600540161133
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "1007-s2-kld-v33/views__on__bf850ba1",
+      "source_view": "on",
+      "scalars": {
+        "result/model_calls": 0.0,
+        "offline/final_error_m": 3.090308427810669,
+        "offline/rmse_m": 3.330362558364868,
+        "offline/truth_mass": 0.11752675473690033,
+        "offline/tight_mass": 0.07082045078277588,
+        "offline/initial_tight_count": 4.0,
+        "offline/final_particles": 21025.0,
+        "offline/wall_s": 43.68670654296875,
+        "offline/cpu_s": 44.042537689208984
+      },
+      "hparams_loaded": true
+    }
+  ],
+  "viewer": {
+    "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-kld-v33",
+    "url": "http://127.0.0.1:6006/?runFilter=%5E1007-s2-kld-v33%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ffinal_error_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ftruth_mass%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcpu_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+    "pinned_tags": [
+      "offline/final_error_m",
+      "offline/truth_mass",
+      "offline/wall_s",
+      "offline/cpu_s",
+      "result/model_calls"
+    ],
+    "hparams_visible_columns": [
+      "policy",
+      "condition",
+      "source_sha",
+      "seed",
+      "offline/final_error_m",
+      "offline/truth_mass",
+      "offline/wall_s"
+    ],
+    "scope": "s2v33 one offline off/on replay; physics 0; FAIL",
+    "verification": {
+      "scalars": 18,
+      "source_event_live_api_match": true,
+      "browser": "NUMERIC_ONLY"
+    }
+  },
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-kld-start-20261007",
+  "source_sha": "75ccac4f",
+  "new_physics": 0,
+  "lock_released": true,
+  "session_stopped": true,
+  "tests": {
+    "files": [
+      "tests/test_s2_kld_start.py",
+      "tests/test_s2_augmented_start.py"
+    ],
+    "passed": 14,
+    "seconds": 1.54
+  },
+  "source_hashes_verified": true
+}

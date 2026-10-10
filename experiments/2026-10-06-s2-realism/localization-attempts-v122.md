@@ -1,0 +1,43 @@
+# S2 위치 추정 시도 v122 이후 — s2v28 결과까지
+
+2026-10-07. 서로 다른 seed/자세/옵션/궤적의 수치를 합산하지 않는다.
+`v122–v126`은 실행 번들 번호, `s2v14–25`는 개발 기록 번호다.
+시각 갱신은 informative weighting이며 올바른 절대 fix의 보장이 아니다.
+아래 수치는 [README](README.md)의 각 당시 결과와 연결된 JSON에서 옮겼다.
+물리 행의 최종 오차와 재생 행의 운반 RMSE는 서로 다른 지표다.
+
+|시도·자료|방식|시각 갱신·최장 공백|위치/운동 결과|당시 판정·실행 경계|
+|---|---|---|---|---|
+|v122, s1046 full|하중/무하중 펄스 응답표 + 미세 펄스|운반 갱신 없음, 마지막 fix 32.85 s|방향 반전 538→3; 끝 위치오차 3.346 m|lifted true / inside false; [분석](s1046-failure-analysis.json)|
+|v123, s1047 full|정지 관측 격리 + RGB 정체 기록|운반 0; 마지막 fix 34.45 s, 최종 fix age 221.69 s|끝 위치오차 0.620 m|lifted true / inside false; [결과](completed-v123.json)|
+|무하중 외부 보정/sag, s1045–47 재생|21자세 보정표 + 두 처짐 근사|새 9조건 공백 107.70–222.75 s|벽 잔차 약52→18–39 px; 모든 조건 공백≤30 s 실패|full 없음; [표](unloaded-sag-summary.json)|
+|s2v14, s1045–47 재생|soft likelihood-field MCL|62/30/21회; 184.85/20.20/40.00 s|RMSE 1.6445/2.1327/0.6229 m; s1046 정확도 악화|모든 조건 전체 기준 실패, full 없음|
+|s2v16, s1045–47 재생|명령 기하 가림 + 95% prior 가시성 마스크|67/7/3회; 253.30/62.75/117.30 s|RMSE 1.685/2.099/0.658 m|공백 실패, full 없음; [표](visibility-summary.json)|
+|s2v17, 옛 궤적 기하만|실물 운반 자세 real_delivery_v1|실제 fix 미측정; nominal 기하 공백 104.80/40.35/73.45 s|하단 가시율 42.06/45.31/19.33%; RMSE N/A|기하 개선이나 새로운 RGB/경로 증거 아님; full 없음|
+|v124/s2v18, s1049 full|실물 운반 자세 + 고정보정 + 기존 MCL|운반 진입 없음|정지 실제 1.086 mm에 초기 추정오차 2.008 m|비물리 CYAN_NOT_UNIQUELY_VISIBLE 종료; lifted false / inside false|
+|v125/s2v19, s1050 full|AMCL 이동 문턱 + 정지 1회 갱신, DEV 재탐색|운반 0; 165.80 s|정지 최대오차 0.08876 m, 운반 RMSE 2.19094 m|lifted true / inside false; B까지 3.548 m|
+|s2v20, s1050 재생|예측 가시성 제거, 관측 우도 혼합|0→18회; 165.80→39.25 s|RMSE 2.190939→2.199598 m|교착 해소, RMSE 실패로 full 없음|
+|v126/s2v21, s1051 full|바닥 외형 오검출 제외|27회; 33.85 s|RMSE 2.023583 m; 바닥 오인 37.90%; B까지 2.178 m|lifted true / inside false; 이후 모든 후보의 고정 재생 자료|
+|s2v22 A, s1051 재생(s1050 보정)|하중별 bias/AMCL 운동잡음|23회; 43.70 s|RMSE 1.640675 m이나 펄스 RMS 24.132→43.161 mm|개별 운동 예측 악화, full 없음|
+|s2v22 B/AB, s1051 재생|벽 상단-하단 높이 일관성|0회; 154.05 s|RMSE B 1.051437 / AB 1.311830 m이나 진짜 벽 보존0%|상단이 시야 밖, 관측 전체 소실; full 없음|
+|s2v23, s1051 재생|광류 진행 부족 시 운동잡음 증가|26회; 33.85 s|RMSE 2.051483 m; 6회 예측 3σ 포함 0/6|명령 평균 bias 미수정; full 없음|
+|s2v24, s1051 재생|RGB 속도 EKF + shadow 회피|26회; 33.15 s|RMSE 1.719476 m; 6회 오차≤3.5 cm 2/6; 정상 RMS 4.977→11.674 mm|축간 EKF 결합·정상 오차 악화·방향 차단0, full 없음|
+|**s2v25, s1051 재생**|**slip 비율<0.5 구간만 순수 VO 대체**|**23회; 43.50 s**|**RMSE 1.785303 m; 6회 중5회 오차≤3.5 cm; 정상 RMS 4.977 mm 동일**|**갱신/공백 기준 실패. 미채택·추가 시도 및 full 중단**; [판정](slip-detect-summary.json)|
+
+**s2v25 당시 결론**은 slip 구간의 국소 변위와 정상 이동 보존은 개선됐지만, 전체 위치 추정의
+관측 갱신 유지 조건은 충족하지 못했다는 것이다. 새 실행으로 승격하거나 기준을 완화하지 않는다.
+새 lifted/inside, 실제 벽 하단 가시율, B 거리, would-stop, wall/SIM은 없다.
+마지막 실제 실행은 v126/s1051이며 이번 재생에 그 물리 결과를 승계하지 않는다.
+
+관리자 후속 승인 s2v26/v127(사전 기준 의도적 이탈): s1052 full1회는 초기 도크 행 미식별로
+LOCAL_TIMEOUT, lifted/inside=false/false, 운반·slip대체0으로 효과 미측정. 기존 s2v25 FAIL은 유지한다.
+[새 실행 비교표/원인](README.md#v127--s1052-닫힌-루프-1회-결과--집기-전-도크-행-미식별-local_timeout).
+
+사용자 후속 승인으로 seed1051을 재사용해 slip만 바꾼 v128을1회 실행했다. 이전 FAIL은
+유지하며 새로운 확증 분모로 합산하지 않는다. 도크 후보 재생은 이 물리 실행 종료 뒤 했다.
+
+|후속 시도·자료|방식|시각 갱신·최장 공백|위치/운동 결과|판정·경계|
+|---|---|---|---|---|
+|v128/s2v27, s1051 matched full|v126 동일 seed/구성 + slip만 ON|41회;133.50s|운반 RMSE1.887833m; B까지0.536406m; 대체470펄스 RMS166.750→3.148mm|lifted true / inside false. 진행<1cm469회 반복; recovery off. [비교](slip-matched-summary.json)|
+|s2v27, s1052 정지 재생|Nav2 전역 균일 초기화·최대 군집 + 유한 Spin 후보|기존/후보 모두1회; 운반 없음|최종오차1.428663→3.317731m, RMSE1.422832→3.319475m|사전 기준FAIL, 기본off. 새 Spin 영상 없음·실행 없음. [판정](dock-global-summary.json)|
+|v129/s2v28, s1051 recovery full|v128 그대로 + progress timeout→inverse BackUp→replan|10회;123.05s|반대 실제18.21cm, slip 반복469→10; RMSE1.997254m, B까지4.894993m|lifted true / inside false, STAGNATION_120S_LT_1CM. 방향 차단 후 대체 펄스 없음1194회, hold 교착. 기본off·미채택. [진단](slip-recovery-diagnosis.json)|

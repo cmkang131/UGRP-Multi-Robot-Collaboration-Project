@@ -1,0 +1,19 @@
+{
+  "version": "s2v46-prereg-v1",
+  "baseline": "s2v45 combined forward_scale_v1 and pr_likelihood_half_v1; frozen per-holdout tables",
+  "option": "ground_motion=unloaded_coarse_vo_v1",
+  "seeds": [1051,1053,1054],
+  "holdouts": [{"fit":[1053,1054],"check":1051},{"fit":[1051,1054],"check":1053},{"fit":[1051,1053],"check":1054}],
+  "new_fit": "none; reuse each v45 two-run scale table and fixed alpha0.5; new GT use evaluation only",
+  "scope": "unloaded commanded SEARCH 740,2320,1320,1500; settled; existing forward/left profile translation >=0.05m; loaded slip detector unchanged",
+  "method": "Seegmiller2011 II-C--F LK, calibrated ground homography, RANSAC/SVD SE2; complete own-RGB pulse replaces commanded SE2, incomplete retains original profile",
+  "parameters": {"pitch_scale_bound_deg":0.3,"minimum_expected_m":0.05,"max_track_gap_s":0.15,"complete_coverage":1.0},
+  "parameters_source": "existing ground_vo_v1/stiff preregistration; no new sweep, no GT-derived collision trigger or bias offset",
+  "primary_universe": "unchanged s2v44 1602 times, unavailable matching single-cluster covariance fails coverage; all 1617 warning opportunities",
+  "chi2_95_xy": 5.991464547107979,
+  "admission_each_holdout": {"xy_nees_exceedance_rate_max":0.2,"unflagged_xy_above_25cm_max":0,"carry_rmse_increase_m_max":1e-9,"off_pose_serialization_identical":true},
+  "rmse_reference": "v45 combined for the same heldout seed",
+  "physical": "all three holdouts pass, then register fresh seed and acquire agent_lock; otherwise physics0",
+  "threshold_change_after_results": false,
+  "host_error": "ENOSPC is HOST_ERROR"
+}

@@ -1,0 +1,1810 @@
+{
+  "schema": "ugrp.s3fix3.eval_only.v1",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s3-motion-533329b5-s14201-v148",
+  "source": "533329b51a3eb0e6d940a8d2f4c187af46781805",
+  "gt_use": "post-run eval_only; no control feedback",
+  "thresholds_changed": false,
+  "status": "HOST_ERROR",
+  "actual_stop": {
+    "type": "ValueError",
+    "message": "turn must be between -0.15 and 0.15",
+    "category": "HOST_ERROR"
+  },
+  "end_reason": null,
+  "evaluation": {
+    "schema": "ugrp.s3_no_prior_evaluation.v142",
+    "gt_use": "post-run eval_only; no feedback",
+    "robots": {
+      "r1": {
+        "success": false,
+        "commands_complete": false,
+        "cargo_order": "order-5",
+        "delivery_complete": false,
+        "first_convergence": null,
+        "first_eval_convergence": null,
+        "correct_convergence": false,
+        "own_failure": null,
+        "failure_categories": [
+          "DELIVERY_PLACEMENT",
+          "LOCALIZATION"
+        ]
+      },
+      "r2": {
+        "success": false,
+        "commands_complete": false,
+        "cargo_order": "order-5",
+        "delivery_complete": false,
+        "first_convergence": null,
+        "first_eval_convergence": null,
+        "correct_convergence": false,
+        "own_failure": null,
+        "failure_categories": [
+          "DELIVERY_PLACEMENT",
+          "LOCALIZATION"
+        ]
+      },
+      "r3": {
+        "success": false,
+        "commands_complete": false,
+        "cargo_order": "order-1",
+        "delivery_complete": false,
+        "first_convergence": null,
+        "first_eval_convergence": null,
+        "correct_convergence": false,
+        "own_failure": null,
+        "failure_categories": [
+          "DELIVERY_PLACEMENT",
+          "LOCALIZATION"
+        ]
+      }
+    },
+    "failure_counts": {
+      "DELIVERY_PLACEMENT": 3,
+      "LOCALIZATION": 3,
+      "COLLISION_EPISODES": 0,
+      "DOOR_DEADLOCK_EPISODES": 0,
+      "HOST_ERROR": 1
+    },
+    "failure_count_denominator": "robot-category pairs except named episode/HOST counters; beam affects two robots",
+    "collision_episodes": [],
+    "door_wait_episodes": {
+      "r1": 1,
+      "r2": 1,
+      "r3": 1
+    },
+    "door_wait_robot_s": {
+      "r1": 0.05000000000000071,
+      "r2": 0.05000000000000071,
+      "r3": 9.7
+    },
+    "door_deadlocks": [],
+    "wall_s": 93.52677175001008,
+    "sim_s": 21.9,
+    "wall_per_sim": 4.270628847032424,
+    "commands": {
+      "r1": 852,
+      "r2": 851,
+      "r3": 780
+    },
+    "model_calls": 0,
+    "raw": "/Users/changmin/projects/ugrp/outputs/s3-motion-533329b5-s14201-v148"
+  },
+  "first_location": {
+    "r1": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.026296539986631152,
+      "yaw_error_deg": 2.010974964675302,
+      "sigma_xy_m": 1.8404065567893735,
+      "sigma_yaw_deg": 67.5609804924593,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    },
+    "r2": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.03953718742000841,
+      "yaw_error_deg": 1.6124946417887247,
+      "sigma_xy_m": 0.20860964185748732,
+      "sigma_yaw_deg": 7.34648601849228,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    },
+    "r3": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.003887017675199066,
+      "yaw_error_deg": 0.5756560943590964,
+      "sigma_xy_m": 0.0583070051532328,
+      "sigma_yaw_deg": 1.3684972446766488,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    }
+  },
+  "localization": {
+    "r1": {
+      "last": {
+        "t_sim_s": 23.2,
+        "estimate_t": 23.04,
+        "elapsed_from_first_frame_s": 21.9,
+        "xy_error_m": 0.02752368787150198,
+        "yaw_error_deg": 3.1205710139656038,
+        "sigma_xy_m": 1.8404065567893735,
+        "sigma_yaw_deg": 67.5609804924593,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 23.04,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 2,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 23.2
+        },
+        "connected_modes": 2
+      },
+      "frame_count": 439,
+      "accurate_frames": 356,
+      "first_accurate": {
+        "t_sim_s": 5.45,
+        "estimate_t": 5.29,
+        "elapsed_from_first_frame_s": 4.15,
+        "xy_error_m": 0.01612929526630803,
+        "yaw_error_deg": 0.13077310470249143,
+        "sigma_xy_m": 1.955883441782654,
+        "sigma_yaw_deg": 77.47106413972145,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 5.29,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 4,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 5.45
+        },
+        "connected_modes": 4
+      },
+      "first_sigma": null,
+      "first_certificate": null
+    },
+    "r2": {
+      "last": {
+        "t_sim_s": 23.2,
+        "estimate_t": 23.04,
+        "elapsed_from_first_frame_s": 21.9,
+        "xy_error_m": 0.0404846574414549,
+        "yaw_error_deg": 0.23043848498923328,
+        "sigma_xy_m": 0.20860964185748732,
+        "sigma_yaw_deg": 7.34648601849228,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 23.04,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 2,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 23.2
+        },
+        "connected_modes": 2
+      },
+      "frame_count": 439,
+      "accurate_frames": 416,
+      "first_accurate": {
+        "t_sim_s": 2.45,
+        "estimate_t": 2.29,
+        "elapsed_from_first_frame_s": 1.1500000000000001,
+        "xy_error_m": 0.024347871061360774,
+        "yaw_error_deg": 1.4622903337972553,
+        "sigma_xy_m": 2.0186790757849353,
+        "sigma_yaw_deg": 122.34240793753938,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 2.29,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 10,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 2.45
+        },
+        "connected_modes": 10
+      },
+      "first_sigma": null,
+      "first_certificate": null
+    },
+    "r3": {
+      "last": {
+        "t_sim_s": 23.2,
+        "estimate_t": 23.04,
+        "elapsed_from_first_frame_s": 21.9,
+        "xy_error_m": 0.008016095934527937,
+        "yaw_error_deg": 0.47188778749050064,
+        "sigma_xy_m": 0.0583070051532328,
+        "sigma_yaw_deg": 1.3684972446766488,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 23.04,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 2,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 23.2
+        },
+        "connected_modes": 2
+      },
+      "frame_count": 439,
+      "accurate_frames": 416,
+      "first_accurate": {
+        "t_sim_s": 2.45,
+        "estimate_t": 2.29,
+        "elapsed_from_first_frame_s": 1.1500000000000001,
+        "xy_error_m": 0.05227544892913267,
+        "yaw_error_deg": 0.13370061453227472,
+        "sigma_xy_m": 2.5516879756397173,
+        "sigma_yaw_deg": 65.80950907111071,
+        "accurate": true,
+        "certificate": {
+          "option": "posterior_consensus_v1",
+          "estimate_t": 2.29,
+          "qualified": false,
+          "covariance_ok": false,
+          "all_particles_compact": false,
+          "connected_modes": 17,
+          "gt_inputs": false,
+          "qualification": "posterior certificate only; accuracy requires eval_only",
+          "released_t": 2.45
+        },
+        "connected_modes": 17
+      },
+      "first_sigma": null,
+      "first_certificate": null
+    }
+  },
+  "movement": {
+    "r1": {
+      "nonzero_commands": 0,
+      "max_displacement_m": 0.004334803744729866,
+      "final_displacement_m": 0.004107829926563868,
+      "short_commands": [],
+      "mixed_axis_commands": []
+    },
+    "r2": {
+      "nonzero_commands": 0,
+      "max_displacement_m": 0.002503890211474363,
+      "final_displacement_m": 0.001736277516077441,
+      "short_commands": [],
+      "mixed_axis_commands": []
+    },
+    "r3": {
+      "nonzero_commands": 0,
+      "max_displacement_m": 0.003658144367986007,
+      "final_displacement_m": 0.002557781869233697,
+      "short_commands": [],
+      "mixed_axis_commands": []
+    }
+  },
+  "stages": {
+    "r1": {
+      "localizer_states": [
+        {
+          "robot_id": "r1",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r1",
+          "event": "state",
+          "t": 11.9,
+          "state": "search_move"
+        }
+      ],
+      "last_state": "search_move",
+      "jobs": [
+        {
+          "job_id": "r1-job-001",
+          "kind": "look_around",
+          "outcome": "LOOKED_POSE_UNCERTAIN",
+          "confirmation": "unconfirmed",
+          "started_at_sim_s": 13.55,
+          "ended_at_sim_s": 22.45,
+          "slot_id": null,
+          "level": "high",
+          "gate": "uncertain",
+          "failed_checks": [
+            "fix_in_sweep"
+          ]
+        }
+      ],
+      "job_events": [
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 13.55,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r1",
+          "t": 13.55,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.plan",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.9223869153755683,
+            "y": 0.545063998843044,
+            "yaw": 0.02242639180684574,
+            "std_xy_m": 1.8404065567893735,
+            "std_yaw_rad": 1.1791615554690746
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null,
+          "original": {
+            "pans": [],
+            "dropped": [
+              1500,
+              1230,
+              970,
+              700,
+              1770,
+              2030,
+              2300,
+              1500
+            ],
+            "backoff": null,
+            "interval": null,
+            "reason": "no_clear_pan",
+            "transition_clear": false,
+            "margin_m": 0.225
+          }
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r1",
+          "t": 13.55,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.transition",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.9223869153755683,
+            "y": 0.545063998843044,
+            "yaw": 0.02242639180684574,
+            "std_xy_m": 1.8404065567893735,
+            "std_yaw_rad": 1.1791615554690746
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r1",
+          "t": 16.05,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.transition",
+          "occurrence": 51,
+          "estimate": {
+            "x": -0.9223869153755683,
+            "y": 0.545063998843044,
+            "yaw": 0.02241828101535289,
+            "std_xy_m": 1.8404065567893735,
+            "std_yaw_rad": 1.1791615554690746
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r1",
+          "t": 18.55,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.transition",
+          "occurrence": 101,
+          "estimate": {
+            "x": -0.9223869153755683,
+            "y": 0.545063998843044,
+            "yaw": 0.022430523719493035,
+            "std_xy_m": 1.8404065567893735,
+            "std_yaw_rad": 1.1791615554690746
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r1",
+          "t": 21.05,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.transition",
+          "occurrence": 151,
+          "estimate": {
+            "x": -0.9223869153755683,
+            "y": 0.545063998843044,
+            "yaw": 0.022432207091312304,
+            "std_xy_m": 1.8404065567893735,
+            "std_yaw_rad": 1.1791615554690746
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_done",
+          "sim_s": 22.45,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "unconfirmed",
+            "outcome": "LOOKED_POSE_UNCERTAIN",
+            "level": "high",
+            "gate": "uncertain",
+            "failed_checks": [
+              "fix_in_sweep"
+            ]
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r1",
+          "t": 22.5,
+          "code": "SELF_UNCERTAIN",
+          "site": "pair.admission",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.9223869153755683,
+            "y": 0.545063998843044,
+            "yaw": 0.02242639180684574,
+            "std_xy_m": 1.8404065567893735,
+            "std_yaw_rad": 1.1791615554690746
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null,
+          "failed_checks": [
+            "gate_ok"
+          ]
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 22.5,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_neg"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r1",
+          "t": 22.55,
+          "code": "POSE_UNCERTAIN",
+          "site": "pair.before_control",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.9223869153755683,
+            "y": 0.545063998843044,
+            "yaw": 0.02242639180684574,
+            "std_xy_m": 1.8404065567893735,
+            "std_yaw_rad": 1.1791615554690746
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 22.55,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        }
+      ],
+      "pair_events": [],
+      "cargo_delivered": false
+    },
+    "r2": {
+      "localizer_states": [
+        {
+          "robot_id": "r2",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r2",
+          "event": "state",
+          "t": 11.9,
+          "state": "search_move"
+        }
+      ],
+      "last_state": "search_move",
+      "jobs": [
+        {
+          "job_id": "r2-job-001",
+          "kind": "look_around",
+          "outcome": "LOOKED_POSE_UNCERTAIN",
+          "confirmation": "unconfirmed",
+          "started_at_sim_s": 13.55,
+          "ended_at_sim_s": 22.45,
+          "slot_id": null,
+          "level": "high",
+          "gate": "uncertain",
+          "failed_checks": [
+            "fix_in_sweep"
+          ]
+        }
+      ],
+      "job_events": [
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 13.55,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 13.55,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.plan",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.024286583380727682,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null,
+          "original": {
+            "pans": [],
+            "dropped": [
+              1500,
+              1230,
+              970,
+              700,
+              1770,
+              2030,
+              2300,
+              1500
+            ],
+            "backoff": null,
+            "interval": null,
+            "reason": "no_clear_pan",
+            "transition_clear": false,
+            "margin_m": 0.2106
+          }
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 13.55,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.transition",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.024286583380727682,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 16.05,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.transition",
+          "occurrence": 51,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.02427847258923484,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 18.55,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.transition",
+          "occurrence": 101,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.02429071529337498,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 21.05,
+          "code": "SWEEP_TRANSITION_BLOCKED",
+          "site": "sweep.transition",
+          "occurrence": 151,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.02429239866519425,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_done",
+          "sim_s": 22.45,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "unconfirmed",
+            "outcome": "LOOKED_POSE_UNCERTAIN",
+            "level": "high",
+            "gate": "uncertain",
+            "failed_checks": [
+              "fix_in_sweep"
+            ]
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 22.5,
+          "code": "SELF_UNCERTAIN",
+          "site": "pair.admission",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.024286583380727682,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null,
+          "failed_checks": [
+            "gate_ok"
+          ]
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 22.5,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_pos"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 22.5,
+          "code": "POSE_UNCERTAIN",
+          "site": "pair.before_control",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.024286583380727682,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 22.5,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 23.1,
+          "code": "POSE_UNCERTAIN",
+          "site": "approach.look",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.024286583380727682,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null,
+          "trigger": "uncertain"
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 23.2,
+          "code": "POSE_UNCERTAIN",
+          "site": "approach.drive",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.024286583380727682,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        },
+        {
+          "event": "dev_light_would_stop",
+          "robot_id": "r2",
+          "t": 23.2,
+          "code": "PAIR_COLLISION_GUARD",
+          "site": "approach.plan",
+          "occurrence": 1,
+          "estimate": {
+            "x": -0.878701297910854,
+            "y": -0.8838883890212131,
+            "yaw": 0.024286583380727682,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193
+          },
+          "continued_with": "current own estimate",
+          "physical_success": null
+        }
+      ],
+      "pair_events": [
+        {
+          "robot_id": "r2",
+          "event": "dev_light_would_stop",
+          "sim_s": 23.2,
+          "would_reason": "POSE_UNCERTAIN",
+          "reasons": [
+            "POSE_UNCERTAIN"
+          ],
+          "site": "CommandGuard.check",
+          "occurrence": 1,
+          "estimate": {
+            "x_m": -0.878701297910854,
+            "y_m": -0.8838883890212131,
+            "yaw_rad": 0.024286583380727682,
+            "std_xy_m": 0.20860964185748732,
+            "std_yaw_rad": 0.1282203694744193,
+            "fix_age_s": 9.94,
+            "t_est": 23.04,
+            "cov": [
+              [
+                0.041043624218117365,
+                -0.00019009918175185767,
+                0.0
+              ],
+              [
+                -0.00019009918175185767,
+                0.00247435845779176,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.016440463148156597
+              ]
+            ]
+          },
+          "loaded": false,
+          "light_version": "dev_light_v6",
+          "commands": [
+            {
+              "kind": "mecanum",
+              "forward": 0.0,
+              "left": 0.0,
+              "turn": 0.35,
+              "duration_s": 0.1
+            }
+          ],
+          "moving": true,
+          "parent_commands": [
+            {
+              "kind": "hold"
+            }
+          ]
+        }
+      ],
+      "cargo_delivered": false
+    },
+    "r3": {
+      "localizer_states": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 11.9,
+          "state": "search_move"
+        }
+      ],
+      "last_state": "search_move",
+      "jobs": [],
+      "job_events": [],
+      "pair_events": [],
+      "cargo_delivered": false
+    }
+  },
+  "would_stop": {
+    "r1": {
+      "ARM_COLLISION_GUARD": 7,
+      "POSE_CLUSTER_UNCERTAIN": 30,
+      "GLOBAL_START_UNRESOLVED": 1,
+      "POSE_UNCERTAIN": 1
+    },
+    "r2": {
+      "ARM_COLLISION_GUARD": 8,
+      "GLOBAL_START_UNRESOLVED": 1,
+      "POSE_UNCERTAIN": 1
+    },
+    "r3": {
+      "ARM_COLLISION_GUARD": 8,
+      "POSE_CLUSTER_UNCERTAIN": 30,
+      "GLOBAL_START_UNRESOLVED": 1,
+      "POSE_UNCERTAIN": 1
+    }
+  },
+  "pair_heading": {
+    "r1": {
+      "localizer_heading": "path_tangent_v1",
+      "localizer_parameters": {
+        "final_alignment_m": 0.1,
+        "heading_tolerance_rad": 0.06,
+        "turn_raw_limit": 0.35,
+        "turn_duration_s": 0.1,
+        "lateral_raw_limit": 0.35,
+        "min_command_s": 0.1,
+        "short_command_policy": "omit; no unmeasured duration extension",
+        "angular_dynamics": "unchanged measured pulse, coast and delayed feedback",
+        "active_observation_actual_limit_deg": 90.0,
+        "gt_inputs": false
+      },
+      "exact_cache": null
+    },
+    "r2": {
+      "localizer_heading": "path_tangent_v1",
+      "localizer_parameters": {
+        "final_alignment_m": 0.1,
+        "heading_tolerance_rad": 0.06,
+        "turn_raw_limit": 0.35,
+        "turn_duration_s": 0.1,
+        "lateral_raw_limit": 0.35,
+        "min_command_s": 0.1,
+        "short_command_policy": "omit; no unmeasured duration extension",
+        "angular_dynamics": "unchanged measured pulse, coast and delayed feedback",
+        "active_observation_actual_limit_deg": 90.0,
+        "gt_inputs": false
+      },
+      "exact_cache": null
+    },
+    "r3": {
+      "localizer_heading": "path_tangent_v1",
+      "localizer_parameters": {
+        "final_alignment_m": 0.1,
+        "heading_tolerance_rad": 0.06,
+        "turn_raw_limit": 0.35,
+        "turn_duration_s": 0.1,
+        "lateral_raw_limit": 0.35,
+        "min_command_s": 0.1,
+        "short_command_policy": "omit; no unmeasured duration extension",
+        "angular_dynamics": "unchanged measured pulse, coast and delayed feedback",
+        "active_observation_actual_limit_deg": 90.0,
+        "gt_inputs": false
+      },
+      "exact_cache": null
+    }
+  },
+  "camera_contract": {
+    "r1": {
+      "rendered": 439,
+      "own_frames": 439,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    },
+    "r2": {
+      "rendered": 439,
+      "own_frames": 439,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    },
+    "r3": {
+      "rendered": 439,
+      "own_frames": 439,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    }
+  },
+  "startup": {
+    "r1": {
+      "t": 13.5,
+      "first_motion_withheld": true,
+      "state": "search_move",
+      "prior": {
+        "source": "uniform static free space and yaw",
+        "known_own_dock": false,
+        "option": "augmented_active_v1"
+      }
+    },
+    "r2": {
+      "t": 13.5,
+      "first_motion_withheld": true,
+      "state": "search_move",
+      "prior": {
+        "source": "uniform static free space and yaw",
+        "known_own_dock": false,
+        "option": "augmented_active_v1"
+      }
+    },
+    "r3": {
+      "t": 13.5,
+      "first_motion_withheld": true,
+      "state": "search_move",
+      "prior": {
+        "source": "uniform static free space and yaw",
+        "known_own_dock": false,
+        "option": "augmented_active_v1"
+      }
+    }
+  },
+  "pair_dev_light": {
+    "option": "continue_estimate_v1",
+    "thresholds_changed": false,
+    "gt_inputs": false,
+    "counts": {
+      "r1:sweep.plan:SWEEP_TRANSITION_BLOCKED": 1,
+      "r1:sweep.transition:SWEEP_TRANSITION_BLOCKED": 186,
+      "r2:sweep.plan:SWEEP_TRANSITION_BLOCKED": 1,
+      "r2:sweep.transition:SWEEP_TRANSITION_BLOCKED": 186,
+      "r1:pair.admission:SELF_UNCERTAIN": 2,
+      "r2:pair.admission:SELF_UNCERTAIN": 2,
+      "r2:pair.before_control:POSE_UNCERTAIN": 15,
+      "r1:pair.before_control:POSE_UNCERTAIN": 14,
+      "r2:approach.look:POSE_UNCERTAIN": 2,
+      "r2:approach.drive:POSE_UNCERTAIN": 1,
+      "r2:approach.plan:PAIR_COLLISION_GUARD": 1
+    },
+    "rows": [
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r1",
+        "t": 13.55,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.plan",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.9223869153755683,
+          "y": 0.545063998843044,
+          "yaw": 0.02242639180684574,
+          "std_xy_m": 1.8404065567893735,
+          "std_yaw_rad": 1.1791615554690746
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null,
+        "original": {
+          "pans": [],
+          "dropped": [
+            1500,
+            1230,
+            970,
+            700,
+            1770,
+            2030,
+            2300,
+            1500
+          ],
+          "backoff": null,
+          "interval": null,
+          "reason": "no_clear_pan",
+          "transition_clear": false,
+          "margin_m": 0.225
+        }
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r1",
+        "t": 13.55,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.transition",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.9223869153755683,
+          "y": 0.545063998843044,
+          "yaw": 0.02242639180684574,
+          "std_xy_m": 1.8404065567893735,
+          "std_yaw_rad": 1.1791615554690746
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 13.55,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.plan",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.024286583380727682,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null,
+        "original": {
+          "pans": [],
+          "dropped": [
+            1500,
+            1230,
+            970,
+            700,
+            1770,
+            2030,
+            2300,
+            1500
+          ],
+          "backoff": null,
+          "interval": null,
+          "reason": "no_clear_pan",
+          "transition_clear": false,
+          "margin_m": 0.2106
+        }
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 13.55,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.transition",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.024286583380727682,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r1",
+        "t": 16.05,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.transition",
+        "occurrence": 51,
+        "estimate": {
+          "x": -0.9223869153755683,
+          "y": 0.545063998843044,
+          "yaw": 0.02241828101535289,
+          "std_xy_m": 1.8404065567893735,
+          "std_yaw_rad": 1.1791615554690746
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 16.05,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.transition",
+        "occurrence": 51,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.02427847258923484,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r1",
+        "t": 18.55,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.transition",
+        "occurrence": 101,
+        "estimate": {
+          "x": -0.9223869153755683,
+          "y": 0.545063998843044,
+          "yaw": 0.022430523719493035,
+          "std_xy_m": 1.8404065567893735,
+          "std_yaw_rad": 1.1791615554690746
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 18.55,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.transition",
+        "occurrence": 101,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.02429071529337498,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r1",
+        "t": 21.05,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.transition",
+        "occurrence": 151,
+        "estimate": {
+          "x": -0.9223869153755683,
+          "y": 0.545063998843044,
+          "yaw": 0.022432207091312304,
+          "std_xy_m": 1.8404065567893735,
+          "std_yaw_rad": 1.1791615554690746
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 21.05,
+        "code": "SWEEP_TRANSITION_BLOCKED",
+        "site": "sweep.transition",
+        "occurrence": 151,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.02429239866519425,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r1",
+        "t": 22.5,
+        "code": "SELF_UNCERTAIN",
+        "site": "pair.admission",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.9223869153755683,
+          "y": 0.545063998843044,
+          "yaw": 0.02242639180684574,
+          "std_xy_m": 1.8404065567893735,
+          "std_yaw_rad": 1.1791615554690746
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null,
+        "failed_checks": [
+          "gate_ok"
+        ]
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 22.5,
+        "code": "SELF_UNCERTAIN",
+        "site": "pair.admission",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.024286583380727682,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null,
+        "failed_checks": [
+          "gate_ok"
+        ]
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 22.5,
+        "code": "POSE_UNCERTAIN",
+        "site": "pair.before_control",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.024286583380727682,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r1",
+        "t": 22.55,
+        "code": "POSE_UNCERTAIN",
+        "site": "pair.before_control",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.9223869153755683,
+          "y": 0.545063998843044,
+          "yaw": 0.02242639180684574,
+          "std_xy_m": 1.8404065567893735,
+          "std_yaw_rad": 1.1791615554690746
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 23.1,
+        "code": "POSE_UNCERTAIN",
+        "site": "approach.look",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.024286583380727682,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null,
+        "trigger": "uncertain"
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 23.2,
+        "code": "POSE_UNCERTAIN",
+        "site": "approach.drive",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.024286583380727682,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      },
+      {
+        "event": "dev_light_would_stop",
+        "robot_id": "r2",
+        "t": 23.2,
+        "code": "PAIR_COLLISION_GUARD",
+        "site": "approach.plan",
+        "occurrence": 1,
+        "estimate": {
+          "x": -0.878701297910854,
+          "y": -0.8838883890212131,
+          "yaw": 0.024286583380727682,
+          "std_xy_m": 0.20860964185748732,
+          "std_yaw_rad": 0.1282203694744193
+        },
+        "continued_with": "current own estimate",
+        "physical_success": null
+      }
+    ]
+  },
+  "legacy_pair_would_stop": [
+    {
+      "robot_id": "r2",
+      "event": "dev_light_would_stop",
+      "sim_s": 23.2,
+      "would_reason": "POSE_UNCERTAIN",
+      "reasons": [
+        "POSE_UNCERTAIN"
+      ],
+      "site": "CommandGuard.check",
+      "occurrence": 1,
+      "estimate": {
+        "x_m": -0.878701297910854,
+        "y_m": -0.8838883890212131,
+        "yaw_rad": 0.024286583380727682,
+        "std_xy_m": 0.20860964185748732,
+        "std_yaw_rad": 0.1282203694744193,
+        "fix_age_s": 9.94,
+        "t_est": 23.04,
+        "cov": [
+          [
+            0.041043624218117365,
+            -0.00019009918175185767,
+            0.0
+          ],
+          [
+            -0.00019009918175185767,
+            0.00247435845779176,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.016440463148156597
+          ]
+        ]
+      },
+      "loaded": false,
+      "light_version": "dev_light_v6",
+      "commands": [
+        {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        }
+      ],
+      "moving": true,
+      "parent_commands": [
+        {
+          "kind": "hold"
+        }
+      ]
+    }
+  ],
+  "would_stop_counts": {
+    "ARM_COLLISION_GUARD": 23,
+    "POSE_CLUSTER_UNCERTAIN": 60,
+    "GLOBAL_START_UNRESOLVED": 3,
+    "POSE_UNCERTAIN": 36,
+    "SWEEP_TRANSITION_BLOCKED": 374,
+    "SELF_UNCERTAIN": 4,
+    "PAIR_COLLISION_GUARD": 1
+  },
+  "would_stop_count_scope": "hook occurrences; includes distinct local/pair/legacy hooks, not physical failures or disk writes",
+  "pair_heading_audit": {
+    "option": "pair_heading_pulse_v1",
+    "scope": "heading for solo/approach; coupled beam carry preserves legacy schedule",
+    "exceptions": {
+      "coupled_beam_carry": {
+        "robots": [
+          "r1",
+          "r2"
+        ],
+        "required_robots": 2,
+        "controller_state": "carry",
+        "partner_enum": "carry",
+        "motion": "unchanged registered pair schedule, including lateral",
+        "entry": "existing two-party GO and own commanded grasp",
+        "exit": "own commanded release",
+        "gt_inputs": false
+      }
+    },
+    "prediction": {
+      "r1": {
+        "exception": "coupled_beam_carry",
+        "pose_reset": false,
+        "gt_inputs": false,
+        "motion_loaded": {
+          "deadband": {
+            "c0": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "u0": [
+              0.005399036624742172,
+              0.007171165899391851,
+              0.0
+            ],
+            "u1": [
+              1e-06,
+              1e-06,
+              0.031909184676893604
+            ]
+          },
+          "drift_ratio_std": 0.0010101039283118686,
+          "gain": [
+            [
+              1.5699011823525189,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.1802079812547774,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.9073154343172743
+            ]
+          ],
+          "load_transition": {
+            "scale_std": [
+              0.015438183016723523,
+              0.028375634454031292,
+              0.0
+            ],
+            "unloaded_scale_std": 0.0
+          },
+          "noise_abs": [
+            0.002,
+            0.002,
+            0.01406
+          ],
+          "noise_rel": [
+            0.01557908035037392,
+            0.016615528370925847,
+            0.1116
+          ],
+          "rest_noise": false,
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "tau_axis_s": [
+            1.0172334542665913,
+            1.0318894263033787,
+            0.6555100032553108
+          ],
+          "tau_s": 1.0172334542665913,
+          "tau_stop_s": 0.10035335696344526,
+          "use_scale": false,
+          "yaw_bias_std_rad_s": 0.00023380193446118067
+        },
+        "source": "same static pair params used by door_schedule",
+        "transitions": []
+      },
+      "r2": {
+        "exception": "coupled_beam_carry",
+        "pose_reset": false,
+        "gt_inputs": false,
+        "motion_loaded": {
+          "deadband": {
+            "c0": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "u0": [
+              0.005399036624742172,
+              0.007171165899391851,
+              0.0
+            ],
+            "u1": [
+              1e-06,
+              1e-06,
+              0.031909184676893604
+            ]
+          },
+          "drift_ratio_std": 0.0010101039283118686,
+          "gain": [
+            [
+              1.5699011823525189,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.1802079812547774,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.9073154343172743
+            ]
+          ],
+          "load_transition": {
+            "scale_std": [
+              0.015438183016723523,
+              0.028375634454031292,
+              0.0
+            ],
+            "unloaded_scale_std": 0.0
+          },
+          "noise_abs": [
+            0.002,
+            0.002,
+            0.01406
+          ],
+          "noise_rel": [
+            0.01557908035037392,
+            0.016615528370925847,
+            0.1116
+          ],
+          "rest_noise": false,
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "tau_axis_s": [
+            1.0172334542665913,
+            1.0318894263033787,
+            0.6555100032553108
+          ],
+          "tau_s": 1.0172334542665913,
+          "tau_stop_s": 0.10035335696344526,
+          "use_scale": false,
+          "yaw_bias_std_rad_s": 0.00023380193446118067
+        },
+        "source": "same static pair params used by door_schedule",
+        "transitions": []
+      }
+    },
+    "decision_counts": {
+      "r1": 0,
+      "r2": 1
+    },
+    "alignment_counts": {
+      "r1": 0,
+      "r2": 0
+    }
+  },
+  "applied": {
+    "bundle_options": {
+      "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+      "drive_profile": "masterpi_drive_friction_v7",
+      "setdown_relook": "off",
+      "grasp_check": "pickup_site_v1",
+      "min_wheel_cmd": "real_v1",
+      "dead_reckoning": "v7_diag_v1",
+      "stagnation_watch": "window120_v1",
+      "alignment_pulse": "real_fine_v1",
+      "hover_check": "real_pregrasp_v1",
+      "idle_robot_contacts": "off",
+      "site_check": "off",
+      "hold_check": "inhand_rgb_v1",
+      "dev_grasp_policy": "log_only_v1",
+      "eval_camera_trace": "pose_v1",
+      "pulse_motion_model": "v7_pulse_cal_v1",
+      "visual_update": "accepted_scan_v1",
+      "visual_stall": "lk_pulse_v1",
+      "carry_pose": "look_ahead_v1",
+      "camera_calibration": "v3_unloaded_sag_v1",
+      "measurement_model": "amcl_likelihood_field_v1",
+      "visibility_mask": "command_geometry_v1",
+      "amcl_update": "ros_motion_v1",
+      "dev_search": "repeat_views_v1",
+      "visibility_policy": "nav2_observed_v1",
+      "contact_filter": "floor_appearance_v1",
+      "slip_detection": "slip_detect_v1",
+      "stall_recovery": "off",
+      "slip_recovery": "slip_recovery_v1",
+      "servo_stiffness": "real_v1",
+      "camera_pitch": "stiff_target_v1",
+      "pregrasp_policy": "log_only_v1",
+      "sensor_landmarks": "floor_zones_doors_v1",
+      "sensor_model": "amcl_likelihood_field_v1",
+      "pose_estimate": "amcl_best_cluster_v1",
+      "start_prior": "none_v1",
+      "global_localization": "augmented_active_v1",
+      "particle_sampling": "kld_global_v1",
+      "active_localization": "discriminating_views_v1",
+      "active_rotation_guard": "rgb_homography_bound_v1",
+      "heading_mode": "path_tangent_v1",
+      "localization_certification": "posterior_consensus_v1",
+      "s3_dev_light": "continue_estimate_v1",
+      "global_diversity": "kld_augmented_v2",
+      "mode_head_look": "mode_information_v1",
+      "pair_heading": "pair_heading_pulse_v1",
+      "s3_exact_cache": "posterior_content_v1",
+      "s3_io": "buffered_jsonl_v1"
+    },
+    "result_heading": "path_tangent_v1",
+    "runtime_speedups": {
+      "schema": "ugrp.v7_exact_speedups.v1",
+      "mode": "relay-cache-v1",
+      "enabled": true,
+      "fallback": null,
+      "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+      "cache_maxsize": 256,
+      "physics_changed": false,
+      "log_buffering": false
+    },
+    "camera_binding": "v3_persistent_v1",
+    "ports": {
+      "option": "pair_heading_pulse_v1",
+      "ports": {
+        "r1": "PairPhasePort",
+        "r2": "PairPhasePort",
+        "r3": "FinePulsePort"
+      },
+      "min_wheel_cmd": "real_v1",
+      "alignment_pulse": "real_fine_v1",
+      "scope": "S2 heading pulse; both issued grips closed permits unchanged pair continuous commands",
+      "state_feedback": false
+    }
+  },
+  "host_timing": {
+    "option": "buffered_jsonl_v1",
+    "timers": {
+      "jsonl_append": {
+        "calls": 7315,
+        "wall_s": 0.19077827117871493
+      },
+      "eval_sample_including_io": {
+        "calls": 439,
+        "wall_s": 0.1476489944034256
+      },
+      "render_rgb": {
+        "calls": 1317,
+        "wall_s": 13.361862757010385
+      },
+      "capture_including_render_io": {
+        "calls": 439,
+        "wall_s": 15.345282069814857
+      },
+      "physics_advance": {
+        "calls": 438,
+        "wall_s": 20.620449004578404
+      }
+    },
+    "nested_timers_not_additive": true,
+    "controller_feedback": false,
+    "cprofile": false
+  },
+  "source_artifacts": {
+    "result.json": "c80118daeee0698b2fdd54fb1ac53fba0baa5038621cd98d6f3dfe8a0e723c85",
+    "student_record.json": "57611841697c9b166372557dacaa28be47ef6d2189ed1ab34dab48b5e6b39c03",
+    "bundle.json": "8172622798822729eb53e5cff57f88d60c7a8f5a6e3af588bbbd19d4fd8ae086",
+    "host-timing.json": "fbe928339daca98039ca7d8f9426261ed02fe022bac4323cc6bdf2b18e031846",
+    "artifacts.sha256.json": "5b5b708ea04c133e618dead4406df8575342516b57b6b58d7eae7188389e6c07"
+  }
+}

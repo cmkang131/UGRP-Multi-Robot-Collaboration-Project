@@ -1,0 +1,54 @@
+{
+  "checks": [
+    {
+      "run": "1007-s2-start-view-v31/augmented_active_v1",
+      "source_view": "augmented_active_v1",
+      "scalars": {
+        "offline/final_error_m": 3.3572535514831543,
+        "offline/rmse_m": 3.288994550704956,
+        "offline/updates": 5.0,
+        "offline/fixed_detector_columns": 0.0,
+        "offline/eval_camera_detector_columns": 93.0,
+        "offline/pitch_mismatch_deg": 1.3283584117889404,
+        "result/model_calls": 0.0
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "1007-s2-start-view-v31/off",
+      "source_view": "off",
+      "scalars": {
+        "offline/final_error_m": 1.4286631345748901,
+        "offline/rmse_m": 1.42284095287323,
+        "offline/updates": 1.0,
+        "result/model_calls": 0.0
+      },
+      "hparams_loaded": true
+    }
+  ],
+  "viewer": {
+    "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-start-view-v31",
+    "url": "http://127.0.0.1:6006/?runFilter=%5E1007-s2-start-view-v31%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Ffinal_error_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Frmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fupdates%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fpitch_mismatch_deg%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+    "pinned_tags": [
+      "offline/final_error_m",
+      "offline/rmse_m",
+      "offline/updates",
+      "offline/pitch_mismatch_deg",
+      "result/model_calls"
+    ],
+    "hparams_visible_columns": [
+      "policy",
+      "condition",
+      "source_sha",
+      "seed",
+      "offline/final_error_m",
+      "offline/rmse_m"
+    ],
+    "scope": "s2v31 stationary start replay and eval-only geometry; new physical runs 0",
+    "verification": {
+      "scalars": 11,
+      "source_event_live_api_match": true,
+      "browser": "NUMERIC_ONLY"
+    }
+  }
+}

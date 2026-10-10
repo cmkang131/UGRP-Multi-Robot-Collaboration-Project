@@ -1,0 +1,466 @@
+{
+  "schema": "ugrp.s2.best_cluster.result.v1",
+  "criteria": {
+    "schema": "ugrp.s2.best_cluster.criteria.v1",
+    "base_sha": "53f5804d98181b81f2cc67b45fe9d03d3cddd66c",
+    "option": "pose_estimate=amcl_best_cluster_v1",
+    "default": "off",
+    "recordings": {
+      "start1052": {
+        "seed": 1052,
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start",
+        "baseline_poses": "/Users/changmin/projects/ugrp/outputs/s2-kld-start-20261007/replay/on.json",
+        "window": [
+          1.3,
+          12.0
+        ],
+        "configuration": "stiff_target_v1 + real_v1 + augmented_active_v1 + kld_global_v1; static saved RGB; no known dock"
+      },
+      "carry1051": {
+        "seed": 1051,
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead",
+        "baseline_poses": "/Users/changmin/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead/student_record.json",
+        "window": [
+          71.85,
+          249.25
+        ],
+        "configuration": "exact v131 options and commands"
+      }
+    },
+    "conditions": [
+      "off",
+      "on"
+    ],
+    "runs_per_condition": 1,
+    "cluster_bins_m_m_deg": [
+      0.5,
+      0.5,
+      10.0
+    ],
+    "weight_pruning": false,
+    "yaw_wrap": false,
+    "reported_covariance": "overall filter; Nav2 publishAmclPose",
+    "uncertainty": {
+      "multiple_clusters": true,
+      "maximum_cluster_mass_below": 0.5,
+      "basis": "S2 diagnostic majority convention, not a Nav2 default",
+      "action": "log_only; never stop dev_light"
+    },
+    "gates": {
+      "start_final_error_m_max": 0.25,
+      "particle_trajectory_bytes_unchanged": true,
+      "amcl_updates_unchanged": true,
+      "baseline_pose_max_delta": 1e-09
+    },
+    "carry_metrics": "report RMSE/pre-setdown error without adding a new admission threshold",
+    "physical_sequence": "if all offline gates pass, seed1052 start only once; if final error <=.25m, seed1051 full once; agent_lock and ugrp_session mandatory",
+    "gt_use": "scoring only after off/on predictions close",
+    "retuning_after_results": false,
+    "performance_comparison": false,
+    "physics_before_admission": 0
+  },
+  "gt_use": "evaluation after all prediction files close; never controller input",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "recordings": {
+    "start1052": {
+      "conditions": [
+        {
+          "option": "off",
+          "final_error_m": 3.0903083128524984,
+          "window_xy_rmse_m": 3.3303804144503584,
+          "window_end_error_m": 3.0903083128524984,
+          "frames": 214,
+          "updates": 6,
+          "final_cluster": null,
+          "uncertain_frames": 0,
+          "truth_near_mass": 0.1175267538644471,
+          "truth_near_count": 2471,
+          "window_visual_updates": 6,
+          "window_max_fix_gap_s": 3.3499999999999996
+        },
+        {
+          "option": "on",
+          "final_error_m": 3.089584966217964,
+          "window_xy_rmse_m": 3.330367870028895,
+          "window_end_error_m": 3.089584966217964,
+          "frames": 214,
+          "updates": 6,
+          "final_cluster": {
+            "cluster_count": 15,
+            "maximum_cluster_weight": 0.999096313912043,
+            "uncertain": false,
+            "selected_cluster_cov": [
+              [
+                4.01150902403369,
+                0.9903157205476117,
+                0.0
+              ],
+              [
+                0.9903157205476117,
+                1.5402409539539053,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                4.703931749297772
+              ]
+            ],
+            "overall_mean_xy": [
+              1.8788450959279754,
+              -0.8914786943466531
+            ]
+          },
+          "uncertain_frames": 0,
+          "truth_near_mass": 0.1175267538644471,
+          "truth_near_count": 2471,
+          "window_visual_updates": 6,
+          "window_max_fix_gap_s": 3.3499999999999996
+        }
+      ],
+      "particle_trajectory_bytes_equal": true,
+      "amcl_audit_equal": true,
+      "baseline_max_pose_delta": 0.0,
+      "baseline_frames_equal": true
+    },
+    "carry1051": {
+      "conditions": [
+        {
+          "option": "off",
+          "final_error_m": 2.7100966639410338,
+          "window_xy_rmse_m": 1.1542425384384931,
+          "window_end_error_m": 2.709823108977631,
+          "frames": 5340,
+          "updates": 23,
+          "final_cluster": null,
+          "uncertain_frames": 0,
+          "window_visual_updates": 19,
+          "window_max_fix_gap_s": 45.0
+        },
+        {
+          "option": "on",
+          "final_error_m": 2.710096663941036,
+          "window_xy_rmse_m": 1.1542425384384933,
+          "window_end_error_m": 2.709823108977634,
+          "frames": 5340,
+          "updates": 23,
+          "final_cluster": {
+            "cluster_count": 1,
+            "maximum_cluster_weight": 0.9999999999999453,
+            "uncertain": false,
+            "selected_cluster_cov": [
+              [
+                0.045320698910335584,
+                0.05605531050353274,
+                0.0
+              ],
+              [
+                0.05605531050353274,
+                0.10204724989418879,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.018839740063460796
+              ]
+            ],
+            "overall_mean_xy": [
+              4.389339140430301,
+              -2.109819678865964
+            ]
+          },
+          "uncertain_frames": 0,
+          "window_visual_updates": 19,
+          "window_max_fix_gap_s": 45.0
+        }
+      ],
+      "particle_trajectory_bytes_equal": true,
+      "amcl_audit_equal": true,
+      "baseline_max_pose_delta": 0.0,
+      "baseline_frames_equal": true
+    }
+  },
+  "gates": {
+    "start_error_within_25cm": false,
+    "unchanged_particle_trajectories": true,
+    "unchanged_amcl_updates": true,
+    "baseline_reproduced": true
+  },
+  "physical_start_admitted": false,
+  "hashes": {
+    "start1052-on.json": "bde510fdc7d35df736a916a580dc95816a7c69e5f194097d35f8fc4700e2be2e",
+    "carry1051-on.json": "78853afafe0ff6054ee9dccdd4116cfeb443c4f956b08b9563f021b3b12b4ae8",
+    "start1052-off.json": "33685966cfc97902ff0604ca65e7c6be1f008f97b840b901c67e91f357b2fe16",
+    "carry1051-off.json": "dcf5e5a669ce3c6fc10935273e18b20b0e3aa21fae083420d1d29f6044189058"
+  },
+  "cluster_diagnosis": {
+    "scope": "posthoc evaluation only; no retuning",
+    "rows": [
+      {
+        "cluster": 0,
+        "mass": 0.999096313912043,
+        "particles": 21006,
+        "mean": [
+          1.8779985084518465,
+          -0.8913946500478331,
+          -0.7297462406700059
+        ],
+        "xy_span": [
+          6.259563139539939,
+          4.4095933041902695
+        ],
+        "truth_near_particles": 2471,
+        "truth_near_mass": 0.1175267538644471,
+        "position_error_m": 3.089584966217964
+      },
+      {
+        "cluster": 1,
+        "mass": 0.0001426872770511296,
+        "particles": 3,
+        "mean": [
+          4.8080839609662345,
+          -2.4313028827104266,
+          -1.3599751965894544
+        ],
+        "xy_span": [
+          0.5117445139392496,
+          0.6760353465610889
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 5.707574272513462
+      },
+      {
+        "cluster": 12,
+        "mass": 9.512485136741974e-05,
+        "particles": 2,
+        "mean": [
+          5.034301309196416,
+          -1.0295201125100417,
+          -1.1307974152311697
+        ],
+        "xy_span": [
+          0.26706966553771583,
+          0.045141138981761975
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 6.055288694871377
+      },
+      {
+        "cluster": 8,
+        "mass": 9.512485136741974e-05,
+        "particles": 2,
+        "mean": [
+          2.087756943645602,
+          -3.0293607751582665,
+          -0.8991226736490574
+        ],
+        "xy_span": [
+          0.6066006478166124,
+          0.027209311295816718
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 3.0843551316262974
+      },
+      {
+        "cluster": 6,
+        "mass": 9.512485136741974e-05,
+        "particles": 2,
+        "mean": [
+          0.6021690154182167,
+          1.088223232332827,
+          1.9949432260156754
+        ],
+        "xy_span": [
+          0.17909330606184948,
+          0.07219042455920177
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 3.6596523154304195
+      },
+      {
+        "cluster": 14,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          4.272039135773842,
+          1.3161615266553441,
+          -0.19036421833603892
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 6.279787221898524
+      },
+      {
+        "cluster": 13,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          3.8481437894570014,
+          1.2380194566939844,
+          0.5343974651104691
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 5.889157257090798
+      },
+      {
+        "cluster": 11,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          5.1821479961503405,
+          -2.574102795040901,
+          -0.5593547202021938
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 6.087382545119754
+      },
+      {
+        "cluster": 10,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          -0.8410152019005651,
+          -0.4934511325636637,
+          -3.1204417882898094
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 1.757869018891614
+      },
+      {
+        "cluster": 9,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          0.9814448854077216,
+          -3.004457448956413,
+          -3.0174891791129865
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 2.023779749717137
+      },
+      {
+        "cluster": 7,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          -0.7259353289395568,
+          -2.350283244141515,
+          -2.7954231392253948
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 0.19774534336082225
+      },
+      {
+        "cluster": 5,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          -0.5217560125084759,
+          -3.010736131525733,
+          1.6918546519023265
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 0.8476884214893351
+      },
+      {
+        "cluster": 4,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          1.241706460946141,
+          0.7865457089695446,
+          2.371400208124138
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 3.714261907274009
+      },
+      {
+        "cluster": 3,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          5.210474207792605,
+          1.269230467266056,
+          1.948532417608677
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 7.048739685890573
+      },
+      {
+        "cluster": 2,
+        "mass": 4.756242568370987e-05,
+        "particles": 1,
+        "mean": [
+          4.961516994601979,
+          1.3547678178471456,
+          -0.8854385781149388
+        ],
+        "xy_span": [
+          0.0,
+          0.0
+        ],
+        "truth_near_particles": 0,
+        "truth_near_mass": 0.0,
+        "position_error_m": 6.8786148191448655
+      }
+    ],
+    "largest_cluster_fraction_of_truth_near_mass": 1.0,
+    "no_density_pruning": true,
+    "bin_geometry": "0.5m x 0.5m x 10deg, 26 neighbors plus self; unweighted occupancy connectivity",
+    "uncertainty_note": "large maximum cluster mass is not evidence of a concentrated belief; overall covariance is still reported"
+  },
+  "execution_decision": "OFFLINE_GATE_FAIL; no start-only or full physics; no bundle admitted; no lock acquire or release",
+  "source_sha": "9b87378b6624651878fecb2da24b191401b5b475",
+  "pr_draft": true,
+  "baseline_result_sha256": "a4c253d7f73dbc50b51dc649c248536d54a5415ee2eae0f15e6851a3496ab41c"
+}

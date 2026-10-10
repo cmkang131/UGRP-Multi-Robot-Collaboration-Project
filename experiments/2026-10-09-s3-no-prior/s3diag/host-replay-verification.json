@@ -1,0 +1,56 @@
+{
+  "schema": "ugrp.s3_saved_input_replay.v1",
+  "simulation_runs": 0,
+  "gt_input": false,
+  "source_sha": "6c6571244e33a6e9e39b00afcd38d805035aed7d",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s3-no-prior-6c657124-s14201-v142",
+  "raw_manifest_sha256": "b5b9131f66d32d8d6194c5b0302458bf4ea5cfa0c0dc8efb9d2476d7238e1a76",
+  "all_control_commands_match": true,
+  "terminal_at": 43.55,
+  "failures": {
+    "r1": "LOOK_RECOVERY_EXHAUSTED"
+  },
+  "boot_done": [
+    "r1",
+    "r2",
+    "r3"
+  ],
+  "startup": {
+    "r1": {
+      "t": 10.5,
+      "first_motion_withheld": true,
+      "state": "search_move",
+      "prior": {
+        "source": "uniform static free space and yaw",
+        "known_own_dock": false,
+        "option": "augmented_active_v1"
+      }
+    },
+    "r2": {
+      "t": 10.5,
+      "first_motion_withheld": true,
+      "state": "search_move",
+      "prior": {
+        "source": "uniform static free space and yaw",
+        "known_own_dock": false,
+        "option": "augmented_active_v1"
+      }
+    },
+    "r3": {
+      "t": 10.5,
+      "first_motion_withheld": true,
+      "state": "search_move",
+      "prior": {
+        "source": "uniform static free space and yaw",
+        "known_own_dock": false,
+        "option": "augmented_active_v1"
+      }
+    }
+  },
+  "startup_finished_at": 10.5,
+  "record_errors": {},
+  "matched_frames_per_robot": 846,
+  "matched_control_commands": 3356,
+  "replay_wall_s": 112.59561924997251,
+  "raw_manifest_unchanged": true
+}

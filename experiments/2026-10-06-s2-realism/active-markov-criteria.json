@@ -1,0 +1,63 @@
+{
+  "schema": "ugrp.s2.active_markov.criteria.v1",
+  "created": "2026-10-08",
+  "base_sha": "954b4ebe",
+  "seed": 1052,
+  "runs": 1,
+  "start_only": true,
+  "transport": false,
+  "parameters": {
+    "sim_cap_s": 30.0,
+    "sigma_xy_m": 0.1,
+    "sigma_yaw_rad": 0.08726646259971647,
+    "arm_settle_s": 2.0,
+    "motion_settle_s": 0.4,
+    "observation_wait_s": 1.5,
+    "planning_particles": 512,
+    "belief_bins": [
+      0.5,
+      0.5,
+      0.17453292519943295
+    ],
+    "cost_weight": 0.0,
+    "turn_degrees": [
+      45,
+      -45,
+      90,
+      -90,
+      180,
+      -180
+    ],
+    "side_fine_pulses": 10
+  },
+  "options": {
+    "start_localization": "active_markov_v1",
+    "particle_sampling": "kld_global_v1",
+    "global_localization": "augmented_active_v1",
+    "camera_pitch": "stiff_target_v1",
+    "servo_stiffness": "real_v1",
+    "idle_robot_contacts": "freeze_v1"
+  },
+  "candidate_vocabulary": "8 actions: calibrated pulse sequences approximating +/-45/90/180 deg, +/-10 fine lateral pulses (~7cm)",
+  "planning_model": "Fox sec4.1 H(b)-E_z H(b_next|z), cost weight0; 512 deterministic systematic representatives, 6-point motion covariance cubature, 0.5m/10deg state bins; existing 8px central-column hit/random/unknown sensor",
+  "observation_policy": "only stopped settled RGB; once per completed action, clear seen-view identity to request one new settled measurement; no lowering likelihood/gate thresholds",
+  "end_rule": "global XY sigma <=0.10m AND yaw sigma <=5deg after new observation OR 30 SIM seconds from initial command including setup",
+  "gate": {
+    "final_position_error_m_max": 0.25,
+    "gt_use": "final scoring only after controller stops"
+  },
+  "if_pass": "propose full DEV only",
+  "if_fail": "record unchanged, no retune or second run",
+  "source": {
+    "title": "Fox/Burgard/Thrun 1998 Active Markov Localization full paper",
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-dock-augmented-20261007/ras-active.ps.gz",
+    "url": "https://www.cs.cmu.edu/~dfox/postscripts/ras-active.ps.gz",
+    "sha256": "4354d223db50175f38939097b3682296a1348827de993f0aa33ed6dae4c9d1c1",
+    "verified": "full source read; local raw retained"
+  },
+  "no_start_dock_prior": true,
+  "lock": "exclusive agent_lock; wait while held; no concurrent ego-map physics",
+  "host_error": "ENOSPC or execution error retained separately; no automatic physics retry",
+  "command_model": "fixed v122 pulse profiles; no new fitting",
+  "limits": "single-column planning proxy, finite candidate and belief approximations; not a claim that the camera planner implements every laser measurement in the paper"
+}

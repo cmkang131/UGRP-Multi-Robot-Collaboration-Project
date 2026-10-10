@@ -1,0 +1,101 @@
+{
+  "robots": {
+    "r1": {
+      "frames": 846,
+      "frames_with_visible_orange": 0,
+      "first_visible": null,
+      "max_orange_fraction": 0.0,
+      "max_exclusion_fraction": 0.0,
+      "critical": {
+        "robot": "r1",
+        "t": 13.75,
+        "orange_pixels": 0,
+        "orange_fraction": 0.0,
+        "exclusion_box": null,
+        "exclusion_fraction": 0.0,
+        "camera_geometry_available": true,
+        "definition": "orange surface lower bound / padded box area; eval-only annotation, not exact segmentation"
+      },
+      "masked_packet_changes": []
+    },
+    "r2": {
+      "frames": 846,
+      "frames_with_visible_orange": 14,
+      "first_visible": 13.6,
+      "max_orange_fraction": 0.007314453125,
+      "max_exclusion_fraction": 0.101982421875,
+      "critical": {
+        "robot": "r2",
+        "t": 13.75,
+        "orange_pixels": 2219,
+        "orange_fraction": 0.0072233072916666665,
+        "exclusion_box": [
+          456,
+          39,
+          633,
+          216
+        ],
+        "exclusion_fraction": 0.101982421875,
+        "camera_geometry_available": true,
+        "definition": "orange surface lower bound / padded box area; eval-only annotation, not exact segmentation"
+      },
+      "masked_packet_changes": [
+        {
+          "t": 13.75,
+          "before": [
+            32,
+            4
+          ],
+          "after": [
+            27,
+            3
+          ],
+          "box": [
+            456,
+            39,
+            633,
+            216
+          ]
+        }
+      ]
+    },
+    "r3": {
+      "frames": 846,
+      "frames_with_visible_orange": 0,
+      "first_visible": null,
+      "max_orange_fraction": 0.0,
+      "max_exclusion_fraction": 0.0,
+      "critical": {
+        "robot": "r3",
+        "t": 13.75,
+        "orange_pixels": 0,
+        "orange_fraction": 0.0,
+        "exclusion_box": null,
+        "exclusion_fraction": 0.0,
+        "camera_geometry_available": true,
+        "definition": "orange surface lower bound / padded box area; eval-only annotation, not exact segmentation"
+      },
+      "masked_packet_changes": []
+    }
+  },
+  "receipts": {
+    "r1": {
+      "packet_count": 6,
+      "changed": 0,
+      "identity_if_unchanged": true
+    },
+    "r2": {
+      "packet_count": 44,
+      "changed": 1,
+      "identity_if_unchanged": false
+    },
+    "r3": {
+      "packet_count": 6,
+      "changed": 0,
+      "identity_if_unchanged": true
+    }
+  },
+  "method": "eval-only peer sphere ROI restricts annotation to other robots; saved undistorted own RGB; orange HSV[5,35],S>=120,V>=80 annotation plus20px box; real pixel GT unavailable",
+  "gt_use": "offline eval_only causal exclusion; never production perception",
+  "mask_scope": "discard existing endpoints/features intersecting box; never synthesize background or introduce black-image boundaries"
+}

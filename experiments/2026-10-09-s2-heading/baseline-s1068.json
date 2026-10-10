@@ -1,0 +1,133 @@
+{
+  "seed": 1068,
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1068-v141-graduation",
+  "source_sha": "99d81d8c9cbc8dee1cc21462d25a1c81f65de9f5",
+  "condition": "off_v141",
+  "success": false,
+  "evaluation": {
+    "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+    "success": false,
+    "lifted": true,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "qualification": "post-run DEV only; no study/physical hardware success claim"
+  },
+  "status": "STAGE_REACHED_UNQUALIFIED",
+  "failure": null,
+  "commands": {
+    "moving_s": 63.77999999999935,
+    "lateral_s": 23.880000000000162,
+    "forward_s": 38.99999999999922,
+    "turn_s": 0.899999999999963,
+    "lateral_fraction_moving": 0.37441204139229234,
+    "elapsed_sim_s": 294.7,
+    "lateral_fraction_sim": 0.08103155751611864
+  },
+  "carry_angles": [
+    {
+      "start_s": 122.75,
+      "end_s": 274.0,
+      "box_yaw_range_deg": 107.97793296081048,
+      "box_max_abs_from_carry_start_deg": 99.74371500557035,
+      "relative_box_robot_yaw_range_deg": 0.5606966211151165,
+      "relative_max_abs_from_carry_start_deg": 0.3875200794894731
+    }
+  ],
+  "wall_contacts": {
+    "body": {
+      "samples": 128,
+      "sampled_s": 6.400000000000034,
+      "episodes": 8
+    },
+    "wheel": {
+      "samples": 522,
+      "sampled_s": 26.100000000000136,
+      "episodes": 45
+    },
+    "finger": {
+      "samples": 163,
+      "sampled_s": 8.149999999999949,
+      "episodes": 10
+    },
+    "cargo": {
+      "samples": 313,
+      "sampled_s": 15.650000000000034,
+      "episodes": 42
+    },
+    "any": {
+      "samples": 1008,
+      "sampled_s": 50.40000000000015,
+      "episodes": 88
+    }
+  },
+  "door": {
+    "robot": {
+      "crossings": [],
+      "passed_center": false,
+      "definition": "center crossed divider west-to-east within authored opening; full clearance assessed separately by contact logs"
+    },
+    "cargo": {
+      "crossings": [],
+      "passed_center": false,
+      "definition": "center crossed divider west-to-east within authored opening; full clearance assessed separately by contact logs"
+    }
+  },
+  "active_observations": [
+    {
+      "start_s": 142.45,
+      "end_s": 144.75,
+      "max_abs_deg": 10.1067308704577
+    },
+    {
+      "start_s": 233.1,
+      "end_s": 235.2,
+      "max_abs_deg": 3.5720548020352316
+    }
+  ],
+  "active_actual_90deg_exceeded": false,
+  "wall_per_sim": 2.5810674024492934,
+  "wall_s": 763.9959511249908,
+  "sim_s": 296.0,
+  "commands_issued": 3912,
+  "model_calls": 0,
+  "carry_visibility": {
+    "sample_hz": 1.0,
+    "sample_frames": 151,
+    "all_columns": {
+      "clear": 9215,
+      "wall_occlusion": 630,
+      "below": 4651
+    },
+    "detected_columns": {
+      "clear": 1016,
+      "wall_occlusion": 29,
+      "below": 7
+    },
+    "all_clear_fraction": 0.6356926048565121,
+    "detected_clear_fraction": 0.9657794676806084,
+    "method": "saved actual camera/cargo + static walls, conservative command-body bounds, undistorted rows4..470; not live perception input"
+  },
+  "provenance": {
+    "result.json": "e97b6729c74a32593359823ece30dff3d6fe650ef1cdaa27affed46525edb3e7",
+    "student_record.json": "fe00fce48e29d7101650d29f9ec56f0b4e7d1249f56060ae628bb5327a95b9c0",
+    "eval_only/trajectory.jsonl": "cd68e910fc9fb98b813c0f7d656a52db14be7dcaa4da9ae7beeee89a5f482a54",
+    "eval_only/wall-contacts.jsonl": "29dba00d6338bc8381bc073171a659e05bfe8df26441751193e07d4dc63ac9b1",
+    "eval_only/contacts.jsonl": "e3ef87e655bc0db932920291bfebe09306f317c9902df4aeb60796e6cdc1ef87"
+  },
+  "scope": "post-run evaluation only; simulated plant, no hardware success claim",
+  "motion": {
+    "min_speed_m_s": 0.01,
+    "moving_s": 116.3999999999998,
+    "path_m": 7.476116751665676,
+    "direction_within_20deg_fraction": 0.6593642611683858,
+    "lateral_speed_fraction": 0.4712771407018102,
+    "definition": "actual velocity vs midpoint chassis yaw, time fraction within +/-20deg; integral abs(body lateral velocity) / integral speed; speed>=0.01m/s; GT evaluation only"
+  },
+  "robot_contacts": {
+    "samples": 0,
+    "sampled_s": 0,
+    "episodes": 0
+  }
+}
