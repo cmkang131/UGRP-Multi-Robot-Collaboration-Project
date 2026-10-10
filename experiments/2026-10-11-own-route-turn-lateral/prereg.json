@@ -1,0 +1,706 @@
+{
+  "round": "egomap70",
+  "host": "oracle-x86",
+  "checkpoints": [
+    {
+      "seed": 63001,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "file": "ckpt_00378_t00076.900.pkl.zlib",
+      "sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "tick": 378,
+      "sim_s": 76.9,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 18600304
+    },
+    {
+      "seed": 63002,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "file": "ckpt_00199_t00041.100.pkl.zlib",
+      "sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "tick": 199,
+      "sim_s": 41.1,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 12883161
+    },
+    {
+      "seed": 63003,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "file": "ckpt_00071_t00015.500.pkl.zlib",
+      "sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "tick": 71,
+      "sim_s": 15.5,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 8453302
+    },
+    {
+      "seed": 63004,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "file": "ckpt_00332_t00067.700.pkl.zlib",
+      "sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "tick": 332,
+      "sim_s": 67.7,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 16163572
+    },
+    {
+      "seed": 63005,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "file": "ckpt_00167_t00034.700.pkl.zlib",
+      "sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "tick": 167,
+      "sim_s": 34.7,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 11897690
+    },
+    {
+      "seed": 63006,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "file": "ckpt_00135_t00028.300.pkl.zlib",
+      "sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "tick": 135,
+      "sim_s": 28.3,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 10922284
+    }
+  ],
+  "host_alarm_s": 7200,
+  "calibration": {
+    "seeds": [
+      70001,
+      70002,
+      70003,
+      70004,
+      70005
+    ],
+    "fit": [
+      70001,
+      70002,
+      70003
+    ],
+    "check": [
+      70004,
+      70005
+    ],
+    "kind": "5 isolated +20 continuous turns per sign, CW+CCW 4x(20 forward+15 turn) squares per seed",
+    "runtime_truth": false,
+    "fit_rule": "mean turn Y curve, .05s samples interpolated to .01s; independent turns only",
+    "gate": "heldout lateral RMSE no increase for each sign x isolated/continuous/square",
+    "scope": "unloaded .35 turn .10s only; x yaw variance all other profiles unchanged",
+    "jobs": [
+      {
+        "seed": 70001,
+        "name": "cal-70001",
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70001 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70001"
+      },
+      {
+        "seed": 70002,
+        "name": "cal-70002",
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70002 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70002"
+      },
+      {
+        "seed": 70003,
+        "name": "cal-70003",
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70003 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70003"
+      },
+      {
+        "seed": 70004,
+        "name": "cal-70004",
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70004 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70004"
+      },
+      {
+        "seed": 70005,
+        "name": "cal-70005",
+        "command": "python -m scripts.run_turn_lateral_calibration --mode capture --seed 70005 --output /home/ubuntu/ugrp-sim/runs/egomap70-calibration/data/cal-70005"
+      }
+    ]
+  },
+  "criteria": {
+    "legacy_B": "distance <=.20m and current confirmed RGB and bottom pixels, 5 frames",
+    "zone_B": "own remembered confirmed observed B cell contains estimated chassis center, 5 frames; report legacy independently",
+    "truth_B": "declared chassis center inside GT B; evaluator only",
+    "return_goal": "unchanged <=.20m start, 5 frames; evaluator true distance <=.20m",
+    "budgets": {
+      "B": 270,
+      "return": 270
+    },
+    "prefix": "same unmodified checkpoint; apply new motion only after restore",
+    "color": "equal-prior nearest hue from fixed B/pickup material RGB + unchanged v3 metric guards; revalidate prefix own B RGB, quarantine on reject",
+    "condition_interpretation": "last condition jointly changes arrival+class confirmation, cannot attribute their effects separately"
+  },
+  "conditions": [
+    "baseline",
+    "calib",
+    "calib_traversed",
+    "calib_traversed_zone"
+  ],
+  "registered": 24,
+  "thresholds_changed_after_results": false,
+  "calibration_command": "python -m scripts.run_turn_lateral_calibration --mode batch --output outputs/egomap70-calibration/data",
+  "batch_command": "python -m scripts.run_own_route_turn_lateral --mode batch --output outputs/egomap70-batch/data",
+  "jobs": [
+    {
+      "name": "egomap70-63001-baseline",
+      "seed": 63001,
+      "condition": "baseline",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "checkpoint_sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63001-baseline",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63001-baseline"
+      ]
+    },
+    {
+      "name": "egomap70-63001-calib",
+      "seed": 63001,
+      "condition": "calib",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "checkpoint_sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63001-calib",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--condition",
+        "calib",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63001-calib"
+      ]
+    },
+    {
+      "name": "egomap70-63001-calib_traversed",
+      "seed": 63001,
+      "condition": "calib_traversed",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "checkpoint_sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63001-calib_traversed",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--condition",
+        "calib_traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63001-calib_traversed"
+      ]
+    },
+    {
+      "name": "egomap70-63001-calib_traversed_zone",
+      "seed": 63001,
+      "condition": "calib_traversed_zone",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "checkpoint_sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63001-calib_traversed_zone",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--condition",
+        "calib_traversed_zone",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63001-calib_traversed_zone"
+      ]
+    },
+    {
+      "name": "egomap70-63002-baseline",
+      "seed": 63002,
+      "condition": "baseline",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "checkpoint_sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63002-baseline",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63002-baseline"
+      ]
+    },
+    {
+      "name": "egomap70-63002-calib",
+      "seed": 63002,
+      "condition": "calib",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "checkpoint_sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63002-calib",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--condition",
+        "calib",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63002-calib"
+      ]
+    },
+    {
+      "name": "egomap70-63002-calib_traversed",
+      "seed": 63002,
+      "condition": "calib_traversed",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "checkpoint_sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63002-calib_traversed",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--condition",
+        "calib_traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63002-calib_traversed"
+      ]
+    },
+    {
+      "name": "egomap70-63002-calib_traversed_zone",
+      "seed": 63002,
+      "condition": "calib_traversed_zone",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "checkpoint_sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63002-calib_traversed_zone",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--condition",
+        "calib_traversed_zone",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63002-calib_traversed_zone"
+      ]
+    },
+    {
+      "name": "egomap70-63003-baseline",
+      "seed": 63003,
+      "condition": "baseline",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63003-baseline",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63003-baseline"
+      ]
+    },
+    {
+      "name": "egomap70-63003-calib",
+      "seed": 63003,
+      "condition": "calib",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63003-calib",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--condition",
+        "calib",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63003-calib"
+      ]
+    },
+    {
+      "name": "egomap70-63003-calib_traversed",
+      "seed": 63003,
+      "condition": "calib_traversed",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63003-calib_traversed",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--condition",
+        "calib_traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63003-calib_traversed"
+      ]
+    },
+    {
+      "name": "egomap70-63003-calib_traversed_zone",
+      "seed": 63003,
+      "condition": "calib_traversed_zone",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63003-calib_traversed_zone",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--condition",
+        "calib_traversed_zone",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63003-calib_traversed_zone"
+      ]
+    },
+    {
+      "name": "egomap70-63004-baseline",
+      "seed": 63004,
+      "condition": "baseline",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "checkpoint_sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63004-baseline",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63004-baseline"
+      ]
+    },
+    {
+      "name": "egomap70-63004-calib",
+      "seed": 63004,
+      "condition": "calib",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "checkpoint_sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63004-calib",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--condition",
+        "calib",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63004-calib"
+      ]
+    },
+    {
+      "name": "egomap70-63004-calib_traversed",
+      "seed": 63004,
+      "condition": "calib_traversed",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "checkpoint_sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63004-calib_traversed",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--condition",
+        "calib_traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63004-calib_traversed"
+      ]
+    },
+    {
+      "name": "egomap70-63004-calib_traversed_zone",
+      "seed": 63004,
+      "condition": "calib_traversed_zone",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "checkpoint_sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63004-calib_traversed_zone",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--condition",
+        "calib_traversed_zone",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63004-calib_traversed_zone"
+      ]
+    },
+    {
+      "name": "egomap70-63005-baseline",
+      "seed": 63005,
+      "condition": "baseline",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "checkpoint_sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63005-baseline",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63005-baseline"
+      ]
+    },
+    {
+      "name": "egomap70-63005-calib",
+      "seed": 63005,
+      "condition": "calib",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "checkpoint_sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63005-calib",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--condition",
+        "calib",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63005-calib"
+      ]
+    },
+    {
+      "name": "egomap70-63005-calib_traversed",
+      "seed": 63005,
+      "condition": "calib_traversed",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "checkpoint_sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63005-calib_traversed",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--condition",
+        "calib_traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63005-calib_traversed"
+      ]
+    },
+    {
+      "name": "egomap70-63005-calib_traversed_zone",
+      "seed": 63005,
+      "condition": "calib_traversed_zone",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "checkpoint_sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63005-calib_traversed_zone",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--condition",
+        "calib_traversed_zone",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63005-calib_traversed_zone"
+      ]
+    },
+    {
+      "name": "egomap70-63006-baseline",
+      "seed": 63006,
+      "condition": "baseline",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "checkpoint_sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63006-baseline",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63006-baseline"
+      ]
+    },
+    {
+      "name": "egomap70-63006-calib",
+      "seed": 63006,
+      "condition": "calib",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "checkpoint_sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63006-calib",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--condition",
+        "calib",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63006-calib"
+      ]
+    },
+    {
+      "name": "egomap70-63006-calib_traversed",
+      "seed": 63006,
+      "condition": "calib_traversed",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "checkpoint_sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63006-calib_traversed",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--condition",
+        "calib_traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63006-calib_traversed"
+      ]
+    },
+    {
+      "name": "egomap70-63006-calib_traversed_zone",
+      "seed": 63006,
+      "condition": "calib_traversed_zone",
+      "profile": "baseline",
+      "status": "QUEUED",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "checkpoint_sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63006-calib_traversed_zone",
+      "command": [
+        "/opt/anaconda3/bin/python3",
+        "-m",
+        "scripts.run_own_route_turn_lateral",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--condition",
+        "calib_traversed_zone",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap70-batch/data/egomap70-63006-calib_traversed_zone"
+      ]
+    }
+  ]
+}
