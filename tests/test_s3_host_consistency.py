@@ -22,7 +22,7 @@ def test_off_does_not_touch_consumers_or_arrays():
 
 def test_s3_actual_factory_binds_measurement_and_same_pulse_dictionary():
     from harness.zone_s3_consistency_contract import inputs, ROOT, hp
-    from harness.zone_s3_consistency_contract import bundle
+    from tests.s3_stage_probe import consistency_fixture as bundle
     from harness.zone_s3_consistent_runtime import Runtime
     b = bundle('0'*40)
     assert b['options']['pose_validity'] == 'defer_unmeasured_v1'

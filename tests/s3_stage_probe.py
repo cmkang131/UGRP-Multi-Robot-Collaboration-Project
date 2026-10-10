@@ -22,6 +22,24 @@ ROBOTS = ('r1', 'r2', 'r3')
 INITIAL = {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}
 
 
+def consistency_fixture(sha):
+    """Current-code unit fixture, NOT a runnable historical v151 bundle.
+
+    Main's host speed changes legitimately invalidate v151's sealed full source
+    closure. Keep that execution seal strict and test its options independently.
+    """
+    from harness import zone_s3_odometry_contract as parent
+    from harness import zone_s3_consistency_contract as sealed
+    b=parent.bundle(sha)
+    plan=sealed.hp.base.read(sealed.ROOT/sealed.PLAN)
+    b['controller_config']['options'].update(pose_validity=plan['pose_validity'],
+        observation_consistency=plan['observation_consistency'])
+    b['options']=b['controller_config']['options']
+    b['preregistration']=plan
+    b['execution_bundle_id']='unit-fixture-not-runnable'
+    return b
+
+
 class Motor:
     def __init__(self):
         self.servo_command_pulses = dict(INITIAL)
@@ -467,6 +485,12 @@ def sweep(out, monkeypatch, *, invalid_pose_cases=False):
     p.case('solo_release_done','r3',lambda:solo_step('released','done'))
     # Door arbitration and its actual gated producer reach real holds/motors.
     def door_wait():
+        if hasattr(p.runtime, 'door_lease_board'):
+            # Opposite sides, same request round; only own synthetic reports.
+            c=p.runtime.clients['r1']
+            p.refresh(p.host.now+1.,xy=(c.x-c.hx-.5,c.y))
+            own=p.runtime.localizers['r3']
+            own.last_report=replace(own.last_report,x_m=c.x+c.hx+.5)
         p.runtime.exchange(p.host.now);p.runtime.exchange(p.host.now)
         assert p.runtime.pair.allowed() and not p.runtime.solo.allowed()
         for rid,action in p.runtime.solo.step(p.host.now):p.issue(rid,action,p.host.now)

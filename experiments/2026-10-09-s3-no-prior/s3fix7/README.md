@@ -1,0 +1,75 @@
+# s3fix7: 문 임대·근접 RGB 정렬·입자 고갈 (사전 등록)
+
+등록 시점: 2026-10-10, 후보 재생 및 새 물리 실행 전. 기준 소스 3bb4f4c8,
+main 속도 변경 merge 7362820. speedctrl2의 공통 가속/기록 모듈은 수정하지 않는다.
+
+## 고정 비교·선택 규칙
+
+원본은 s3fix6과 같은 네 실행: S3 v149/v150 seed14201의 r1–r3,
+자기 지도 55001/55002 (총 8개 궤적). 영상과 발행 명령 고정, GT는 평가 프로세스만 읽는다.
+동일 원본 재생은 폐루프 임무 성공이 아니다. seed, 관측 우도, 수렴 문턱을 바꾸지 않는다.
+
+| 후보 | 추적 중 재표본 조건 | 재표본 뒤 처리 |
+|---|---|---|
+| B off | 역사적 구현 그대로 | 그대로 |
+| R1 ess_v1 | ESS < N/2 | 없음 (자기 지도는 이미 같은 조건) |
+| R2 roughen_v1 | ESS < N/2 | Gordon Gaussian jitter, 각 축 σ=0.2 E N^(-1/3) |
+| R3 roughen_floor_v1 | ESS < N/2 | R2 + 실제 posterior covariance 하한: XY 각 축 0.02m, yaw 1° |
+
+전역 시작 분포/능동 pan은 보존하고 추적 단계에만 적용한다. yaw 범위는 원형 평균에 대한
+wrap 잔차로 계산한다. R2는 논문의 예시 K=0.2를 그대로 고정한다. R3의 2cm/1°는
+미리 정한 개발용 하한이며 보정된 정확도나 논문 권장값이라고 주장하지 않는다.
+하한은 보고 숫자만 부풀리는 대신 S3 입자 분포, RBPF 조건부 covariance에 적용한다.
+RBPF의 지도/입자 조상 연결은 유지한다. ESS와 고유값, 고유 입자 수를 전후 기록한다.
+
+유효성: 모든 원본 프레임/명령 완료, 비유한 수 0, B 원본 동등성. 선택은 일관성 우선이나
+8개 **각 궤적** RMSE와 마지막 위치 오차가 B+1e-9 이하이고 >3σ 비율이 비악화해야 한다.
+그중 pooled >3σ가 엄격히 줄어드는 후보만 채택하며 pooled >3σ, pooled RMSE,
+R1/R2/R3 순으로 결정한다. 일치하는 전체 covariance가 있는 자기 지도만 full NEES를 낸다.
+모두 탈락하면 smoke는 off. 본 자료로 하한/계수 재튜닝하지 않는다.
+
+## 통합 수정과 단일 smoke
+
+문: 문 근처에서만 요청, 양쪽 동시 요청은 공개 팀 순서로 결정. 임대/진행 타임아웃은
+이전 epoch의 차체 명령을 먼저 차단한다. 점유 중이면 자동으로 다른 팀에 문을 주지 않고
+자기 추정 기준 문 밖 이탈을 확인해야 다음 팀을 허용한다. GT 위치는 사용하지 않는다.
+기존 whole-job 예약은 off 경로에 보존한다. 문 밖 집기/접근은 진행한다.
+DEV에서는 σ 확장만으로 문을 점유했다고 간주하지 않는다. nominal 자기 추정 형상으로
+통과/양보하고 추가 σ 여유 때문에 막혔을 경우 `DOOR_POSE_UNCERTAIN`을 기록한다.
+정식 경로는 σ 여유를 유지한다. lease 점유/epoch 상호배제 자체는 DEV에서도 유지한다.
+
+정렬: 기존 자기 RGB 빔 오차의 폐루프 정렬을 실제 tick까지 통과시킨다. dev_light에서
+PF 재관측 가드가 재진입 루프를 만들면 would_stop 후 동일 RGB 정렬을 진행한다.
+영상 정렬 성공을 조작하지 않는다. 일찍 관측→고정 hover→가려진 마지막 하강·닫기 순서를 유지한다.
+기존 calibrated arrival silhouette 검사도 PF 목표 도달 전의 접근 중부터 검사한다.
+기존 drive 자세·명령 안정화·프레임 신선도·pixel bands를 모두 만족할 때만 같은 `_arrive`로 넘긴다.
+별도 거리/픽셀 문턱을 만들지 않는다. PF가 잘못된 목표 도달을 주장할 때까지 상자를 밀며 진행하는
+경로를 줄이려는 후보이며 새 물리 효과는 아직 미확인이다.
+
+회귀: 양쪽 동시 요청, 임대 만료, 무진행, 오래된 epoch, reset/재시도, 실제 motor stub port.apply,
+PF σ가 크거나 fix가 오래돼도 RGB 정렬에 도달, hover 이전 관측과 blind 하강 순서.
+관련 시험만 초록 후 commit/push. 이후 최댓값 다음 번들로 dev_light smoke **1회**.
+v3 마운트/heading 기본 on, 공동 운반 옆걸음 예외 유지. agent_lock 순서, CI 대기 없음.
+raw는 primary outputs, ENOSPC=HOST_ERROR, 10GiB 여유 유지. 기존 실행/영상 보존.
+
+## 표준 방법 조사
+
+- [Gordon, Salmond, Smith 1993 §4.2](https://people.bordeaux.inria.fr/pierre.delmoral/gordon-salmond-smith-1993.pdf): 재표본 복제에 따른 다양성 손실과 Gaussian roughening, K=0.2 예시.
+- [Musso, Oudjane, Le Gland 2001](https://link.springer.com/book/10.1007/978-1-4757-3437-9): regularized PF 장의 서지 확인. 전문 미확인; 세부 공식을 구현했다고 주장하지 않는다.
+- [ROS AMCL pf.c](https://github.com/ros-planning/navigation/blob/noetic-devel/amcl/src/amcl/pf/pf.c): ESS 기반 selective resampling. 이 저장소 기존 ESS 구현 재사용.
+- [Gray, Cheriton 1989](https://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15712-s12/www/papers/gray89.pdf): 유한 lease. 물리적 통로의 비움은 lease 만료와 별개로 확인해야 한다.
+- [Hutchinson의 visual servo 자료](https://faculty.cc.gatech.edu/~seth/res.php?u=vs): 영상 특징 오차 피드백. 이 작업은 기존 calibrated own-RGB 정렬 경로를 복구한다.
+
+## 결과
+
+아직 후보 재생/새 smoke 없음.
+
+기록 진단: v151 r1/r2 각각 재관측 8회, `beam_obs` 0회, `v3_grasp_target` 0회.
+543.3초 align 진입 재관측 이후 `fix_gap`이 RGB handler 전에 재진입했다.
+문은 r1/r2가13.55초부터 작업 끝까지 USING을 유지했고 r3 대기909.05초였다.
+v149의34/254 접촉은102.4–119.2초 접근 중 r2 바퀴–빔 접촉이다. 당시 approach GO와
+정렬은 시작되지 않았으므로 RGB 정렬 법칙의 접촉으로 합산하지 않는다. [수치](diagnosis.json).
+
+main 병합은 v151 봉인에 포함된 `sim/final_environment_checks.py`를 변경했다.
+v151 봉인을 완화하지 않고 현재 코드 unit 시험 구성과 과거 실행 번들을 분리했다.
+과거 v151 실행은 원래 SHA3ec2d781에서만 재구성하며, 새 물리는 새 번들152를 쓴다.
