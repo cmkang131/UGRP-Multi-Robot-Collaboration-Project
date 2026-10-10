@@ -122,12 +122,14 @@ jobs:
     # Files are packed longest-first by measured seconds from
     # configs/ci_test_durations.json (pytest-split style; unknown files use the
     # median). Refresh it from the offline-shard-* artifacts with
-    # scripts/refresh_ci_durations.py (see CONTRIBUTING.md). The 25 minute limit
+    # scripts/refresh_ci_durations.py (see CONTRIBUTING.md). The timeout
     # is a margin, not the balance mechanism. Raised from 15 on 2026-10-02:
     # new calibration property tests (#351, #352) ran 2-3x slower on hosted
     # runners than their locally measured durations, so shards were cancelled
     # before any JUnit could be written to refresh the durations.
-    timeout-minutes: 25
+    # 2026-10-10: three shards reached the 25-minute limit without test
+    # failures on ee554da0. Allow JUnit completion before recalibrating packs.
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:

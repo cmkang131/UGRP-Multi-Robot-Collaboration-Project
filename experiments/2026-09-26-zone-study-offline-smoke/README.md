@@ -102,3 +102,5 @@ PYTHONPATH=. python3 scripts/ugrp_session.py run kiro-zone-study-offline-smoke -
 ```
 
 자동 회귀검사는 `tests/test_zone_study_offline.py`(36개)이며 `scripts/run_ci_tests.py`의 `TEST_PATTERNS`에 등록했다. 자동 검사 통과와 실제 물리 완주는 구분한다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

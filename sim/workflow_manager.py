@@ -546,6 +546,19 @@ def _select_python(row: dict, argv: list[str]) -> str:
     return sys.executable
 
 
+def _signal_owned_group(child, signum):
+    """An exited macOS group may report EPERM rather than ESRCH."""
+    try:
+        os.killpg(child.pid, signum)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        if child.poll() is None:
+            raise
+        return False
+    return True
+
+
 def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[Path] | None = None,
                  record_dir: Path | None = None, timeout: float | None = None) -> Path:
     root = root.resolve()
@@ -603,7 +616,7 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
         _write(record / "manifest.json", {k: v for k, v in manifest.items() if not k.startswith("_")})
         def forward(signum, _frame):
             if child and child.poll() is None:
-                os.killpg(child.pid, signum)
+                _signal_owned_group(child, signum)
             raise KeyboardInterrupt
         for sig in (signal.SIGINT, signal.SIGTERM):
             previous[sig] = signal.signal(sig, forward)
@@ -612,21 +625,21 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
             status = "process_completed" if code == 0 else "process_failed"
         except subprocess.TimeoutExpired:
             status, failure = "timeout", f"timeout after {timeout}s"
-            os.killpg(child.pid, signal.SIGTERM)
+            _signal_owned_group(child, signal.SIGTERM)
             try:
                 child.wait(timeout=3)
             except subprocess.TimeoutExpired:
-                os.killpg(child.pid, signal.SIGKILL)
+                _signal_owned_group(child, signal.SIGKILL)
                 child.wait()
             code = 124
     except KeyboardInterrupt:
         status, failure, code = "interrupted", "keyboard interrupt", 130
         if child is not None and child.poll() is None:
-            os.killpg(child.pid, signal.SIGTERM)
+            _signal_owned_group(child, signal.SIGTERM)
             try:
                 child.wait(timeout=3)
             except subprocess.TimeoutExpired:
-                os.killpg(child.pid, signal.SIGKILL)
+                _signal_owned_group(child, signal.SIGKILL)
                 child.wait()
     except BaseException as error:
         failure = f"{type(error).__name__}: {error}"
@@ -638,9 +651,7 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
             # The leader can exit while its children continue running. Always
             # clean our own process group, including on process exit 0.
             for sig in (signal.SIGTERM, signal.SIGKILL):
-                try:
-                    os.killpg(child.pid, sig)
-                except ProcessLookupError:
+                if not _signal_owned_group(child, sig):
                     break
                 if sig == signal.SIGTERM:
                     time.sleep(0.1)

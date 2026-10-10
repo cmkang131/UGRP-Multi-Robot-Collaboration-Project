@@ -1,0 +1,150 @@
+{
+  "scope": "fixed own inputs and mean pulse model; not closed-loop physics",
+  "gt_inputs": false,
+  "runs": [
+    {
+      "seed": 1066,
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1066-v141-graduation",
+      "source_sha256": "537c3b6045d2c342340053c7b462d4bb47204fc8d30668bd99203438b188c1b4",
+      "fixed_inputs": {
+        "count": 370,
+        "off_matches": 370,
+        "off_byte_identical": true,
+        "baseline": {
+          "moving_s": 55.91000000000027,
+          "lateral_s": 26.210000000000004,
+          "forward_s": 28.50000000000025,
+          "turn_s": 1.200000000000017,
+          "lateral_fraction_moving": 0.46878912538007295
+        },
+        "on": {
+          "moving_s": 36.120000000000246,
+          "lateral_s": 1.3200000000000092,
+          "forward_s": 5.700000000000031,
+          "turn_s": 29.100000000000207,
+          "lateral_fraction_moving": 0.036544850498338874
+        }
+      },
+      "stored_plan_count": 4,
+      "model_goals_reached": {
+        "off": 4,
+        "on": 4
+      },
+      "actual_baseline_commands": {
+        "moving_s": 64.70999999999934,
+        "lateral_s": 28.370000000000182,
+        "forward_s": 35.0399999999992,
+        "turn_s": 1.2999999999999545,
+        "lateral_fraction_moving": 0.4384175552464916,
+        "elapsed_sim_s": 281.45,
+        "lateral_fraction_sim": 0.10079943151536751
+      },
+      "baseline_evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      }
+    },
+    {
+      "seed": 1068,
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1068-v141-graduation",
+      "source_sha256": "fe00fce48e29d7101650d29f9ec56f0b4e7d1249f56060ae628bb5327a95b9c0",
+      "fixed_inputs": {
+        "count": 397,
+        "off_matches": 397,
+        "off_byte_identical": true,
+        "baseline": {
+          "moving_s": 54.4800000000003,
+          "lateral_s": 22.07999999999999,
+          "forward_s": 31.80000000000031,
+          "turn_s": 0.600000000000005,
+          "lateral_fraction_moving": 0.4052863436123324
+        },
+        "on": {
+          "moving_s": 39.140000000000285,
+          "lateral_s": 0.8400000000000105,
+          "forward_s": 9.100000000000126,
+          "turn_s": 29.20000000000015,
+          "lateral_fraction_moving": 0.021461420541645487
+        }
+      },
+      "stored_plan_count": 6,
+      "model_goals_reached": {
+        "off": 6,
+        "on": 6
+      },
+      "actual_baseline_commands": {
+        "moving_s": 63.77999999999935,
+        "lateral_s": 23.880000000000162,
+        "forward_s": 38.99999999999922,
+        "turn_s": 0.899999999999963,
+        "lateral_fraction_moving": 0.37441204139229234,
+        "elapsed_sim_s": 291.7,
+        "lateral_fraction_sim": 0.08186492972231801
+      },
+      "baseline_evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      }
+    },
+    {
+      "seed": 1065,
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation",
+      "source_sha256": "b703299a2efd105506db07b0f601d23ae1279c1ada12096d9ac6064213ba0209",
+      "fixed_inputs": {
+        "count": 990,
+        "off_matches": 990,
+        "off_byte_identical": true,
+        "baseline": {
+          "moving_s": 106.40999999999826,
+          "lateral_s": 11.010000000000012,
+          "forward_s": 95.29999999999825,
+          "turn_s": 0.09999999999999964,
+          "lateral_fraction_moving": 0.10346771919932518
+        },
+        "on": {
+          "moving_s": 98.63999999999866,
+          "lateral_s": 0.5399999999999965,
+          "forward_s": 45.79999999999937,
+          "turn_s": 52.299999999999294,
+          "lateral_fraction_moving": 0.005474452554744564
+        }
+      },
+      "stored_plan_count": 74,
+      "model_goals_reached": {
+        "off": 74,
+        "on": 74
+      },
+      "actual_baseline_commands": {
+        "moving_s": 106.40999999999961,
+        "lateral_s": 11.010000000000014,
+        "forward_s": 95.2999999999996,
+        "turn_s": 0.10000000000000142,
+        "lateral_fraction_moving": 0.10346771919932388,
+        "elapsed_sim_s": 900.0,
+        "lateral_fraction_sim": 0.01223333333333335
+      },
+      "baseline_evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": false,
+        "lifted": false,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      }
+    }
+  ]
+}

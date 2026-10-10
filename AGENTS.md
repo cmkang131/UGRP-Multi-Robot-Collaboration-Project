@@ -27,6 +27,7 @@
 
 ## UGRP Results and TensorBoard
 
+- **Scope (2026-10-10 user request, "TensorBoard는 걍 뺄까"):** DEV rounds (dev_light runs, stage probes, diagnostic batches) skip the TensorBoard conversion, dashboard, pinned-card and viewer steps below, including in DEV reports. For those rounds, record a short summary JSON in `experiments/<ID>/` covering every run, failures and HOST_ERROR included, plus raw locations and sha256 values. The integrity and reporting rules still apply to every round: never mark running or unretrieved results complete, and report the verification scope and any unfinished retrieval. Do the TensorBoard steps only for milestone results (first success of a new stage, formal E2E, the main-study cohort) or when the user asks.
 - Include TensorBoard in result delivery. Follow `docs/tensorboard.md` to add newly completed or retrieved experiment, training, and evaluation results—including failures—to a new snapshot. Verify actual data loading and show the dashboard.
 - Preserve originals and existing snapshots. Never mark running experiments or unretrieved remote results complete. Check existing manifests' source paths and hashes to avoid duplicate conversion.
 - Use the primary checkout's `outputs/tensorboard` as the shared viewing root. Verify the server logdir and new video registration. Update only your own viewer when necessary, after checking session ownership, PID, and command. Never stop other tasks' experiments or servers.
@@ -78,6 +79,8 @@
 - **절차는 자동으로, 보고는 짧게:** 번들 번호·해시·admitted 목록·기록은 스크립트로 만든다. 에이전트 사이 보고는 3줄 안팎으로 하고, 하위 에이전트는 꼭 필요할 때만 쓴다.
 
 ## Git·검증·병합
+
+- 새 버전이 채택되면 같은 PR 또는 바로 다음 정리 PR에서 이전 버전을 퇴역(docs/retired_modules.md 기록)한다.
 
 - 시뮬레이션의 표준 관리 진입점은 `scripts/open_simulation.command` / `scripts/sim_cli.py`다. 새 실행 경로는 `configs/simulation_workflows.json`에 등록하고 공통 실행 기록에 소스·설정·입력·환경·결과를 연결한다. 연구별 실행기는 이 관리 계층의 어댑터로 유지하며 별도의 기본 실행·버전 관리 체계를 만들지 않는다. 장면·초기화·접촉 설정은 표준 `sim.session_scenes.Scene`을 재사용하고, 호환 경로의 차이는 명시적 버전/프로필로 남긴다. 표준 관리 통합과 제어기 이관, 실제 운반 성공 검증은 각각 구분해 보고한다.
 

@@ -1,0 +1,142 @@
+{
+  "schema": "ugrp.s2.graduation59.registration.v1",
+  "task": "s2v59",
+  "seeds": [
+    1065,
+    1066,
+    1067,
+    1068,
+    1069,
+    1070
+  ],
+  "runs": [
+    {
+      "seed": 1065,
+      "slot": "P1-1",
+      "stage": "place",
+      "mode": "serial"
+    },
+    {
+      "seed": 1066,
+      "slot": "P2-1",
+      "stage": "place",
+      "mode": "serial"
+    },
+    {
+      "seed": 1067,
+      "slot": "P1-2",
+      "stage": "place",
+      "mode": "concurrent_pair"
+    },
+    {
+      "seed": 1068,
+      "slot": "P2-2",
+      "stage": "place",
+      "mode": "concurrent_pair"
+    },
+    {
+      "seed": 1069,
+      "slot": "P1-3",
+      "stage": "place",
+      "mode": "serial"
+    },
+    {
+      "seed": 1070,
+      "slot": "P2-3",
+      "stage": "place",
+      "mode": "serial"
+    }
+  ],
+  "user_decision": "2026-10-09 s2v59: six fresh no-prior full DEV graduation samples, own RGB actual-yaw guard; supervisor authorized concurrent pair",
+  "baseline": "v140 e532f52e options plus active_rotation_guard=rgb_homography_bound_v1; six original graduation slots, no starting prior",
+  "runs_per_fresh_seed": 1,
+  "denominator": 6,
+  "dev_light": true,
+  "model_calls": 0,
+  "gt_use": "evaluation only",
+  "success": {
+    "judge": "unchanged sim.solo_cyan_v106.evaluate",
+    "lifted_z_gt_m": 0.06,
+    "whole_cuboid_inside_B": true,
+    "final_window_s": 2.0,
+    "minimum_settled_s": 1.95,
+    "floor_error_lt_m": 0.008,
+    "center_z_lt_m": 0.04,
+    "stability_lte_m": 0.008,
+    "normal_controller_completion_required_for_graduation": true,
+    "false_verdict": "evaluation.success vs independent eight-corner trajectory judge both directions; invalid timeline not a success"
+  },
+  "limits": {
+    "case_sim_s": 900.0,
+    "wall_s": 10800,
+    "active_abs_actual_deg": 90.0,
+    "active_min_interval_s": 20.0,
+    "active_count": 5,
+    "active_added_fraction": 0.1
+  },
+  "offline_gate": {
+    "path": "rotation-envelope-offline-result.json",
+    "sha256": "e7559220bce4b2ca08d202b061c111c874242eddc698ffa534dff97aaf488d15",
+    "scope": "unchanged admitted recorded prefix plus preceding pulse coast; changed post-stop trajectory unknown"
+  },
+  "cohort_policy": "Fixed order and conditions; every failure/host error retained in n=6; no tuning, replacement or retries. Inability to start stays unexecuted in denominator. Fresh six precede supplemental timing A/A.",
+  "host_error": "ENOSPC or <10GiB preflight retained as HOST_ERROR; do not delete evidence",
+  "raw_budget_gib": 8.0,
+  "wall_budget_minutes": 180,
+  "freeze_scope": "S2 solo DEV only, not formal E2E or main study",
+  "graduation_scope": "Only six solo full DEV samples here; original overall graduation also needs stage gates, false verdict0 and three-robot smoke6. Do not claim whole-program graduation.",
+  "nees": "descriptive only; unchanged chi2_95=5.991464547107979; unflagged xy>0.25m; no covariance or threshold correction",
+  "concurrency": {
+    "supervisor": "2026-10-09 15:00 user-approved pair exception",
+    "groups": [
+      [
+        1065
+      ],
+      [
+        1066
+      ],
+      [
+        1067,
+        1068
+      ],
+      [
+        1069
+      ],
+      [
+        1070
+      ]
+    ],
+    "timing_sensitive": false,
+    "sim_clock": "synchronous integer substeps; capture/update/commands use SIM time; fixed perception delay .16SIM",
+    "wall_caveat": "worker OS timeout remains host-error boundary, never silently excluded; wall durations are reporting only in normal loop",
+    "supplemental_serial_check": true,
+    "serial_check_seed": 1067,
+    "extra_trial_in_graduation_denominator": false,
+    "comparison": "paired 1067 vs supplemental serial 1067 exact evaluation + commands + trajectory bytes; supplemental is benchmark A/A, not fresh success evidence",
+    "throughput": "(pair SIM sum/pair parent wall)/(four serial fresh SIM sum/four serial parent wall sum)",
+    "pass_ratio_gte": 1.3,
+    "pass_also_requires_exact_result": true,
+    "small_sample_caveat": true
+  },
+  "required_metrics": [
+    "success",
+    "lifted",
+    "inside",
+    "floor",
+    "stable",
+    "false_positive",
+    "false_negative",
+    "failure_category",
+    "NEES",
+    "unflagged_gt_25cm",
+    "would_stop",
+    "active_count",
+    "active_added_s",
+    "active_added_fraction",
+    "active_max_actual_deg",
+    "wall/SIM",
+    "CPU/SIM",
+    "loadavg_start_end",
+    "memory_pressure"
+  ]
+}

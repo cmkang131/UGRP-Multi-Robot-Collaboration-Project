@@ -1,0 +1,947 @@
+{
+  "source_sha": "725f45b155fda3f7dc93beba782b848ca3b4a6dd",
+  "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+  "managed_manifest": {
+    "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3-managed/manifest.json",
+    "sha256": "253d24bb6fd83c80a630817d4ce6b15dd19cba3d384cb58b5ab21f24891cc497"
+  },
+  "scope": "30 SIM seconds per saved-command physical backend; no online controller or mission success claim",
+  "n_per_condition": 2,
+  "paths": {
+    "s2": {
+      "seed": 1065,
+      "before": 1.083962714582837,
+      "after": 0.8870583395832606,
+      "wall_reduction_percent": 18.165235053804874,
+      "before_load_mean_1_5_15": [
+        2.77783203125,
+        3.7525634765625,
+        4.64794921875
+      ],
+      "after_load_mean_1_5_15": [
+        2.7696533203125,
+        3.738525390625,
+        4.64501953125
+      ],
+      "all_bytes_identical": true,
+      "behavior_files_per_run": 625,
+      "provenance_exceptions": [
+        "runtime-bundle.json",
+        "v7-speedups.json"
+      ],
+      "state": {
+        "steps": 120000,
+        "start": 1.3,
+        "end": 31.3,
+        "dt": 0.00025,
+        "sim_s": 30.0,
+        "period": 0.05,
+        "robots": [
+          "r3"
+        ],
+        "frames": 601,
+        "state_spec": 16383,
+        "chain_sha256": "9b7b37fa1957d3eb0d5355140dfb3380606580d25e81f7b88e7706924023dc19",
+        "final_sha256": "1cc35a1c9542dfc74db9fff4d07720dceb6849cacfe67365667e4689a244829d"
+      },
+      "judgment": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": false,
+        "lifted": false,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "measurements": [
+        {
+          "mode": "off",
+          "seed": 1065,
+          "kind": "s2",
+          "sim_s": 30.0,
+          "wall_s": 32.009865333966445,
+          "wall_per_sim": 1.066995511132215,
+          "load_start": [
+            2.7744140625,
+            3.966796875,
+            4.7900390625
+          ],
+          "load_end": [
+            2.69921875,
+            3.81103515625,
+            4.69921875
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 601,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "off",
+            "enabled": false,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 0,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "name": "A1",
+          "commands": 519,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s2/A1.measurement.json",
+            "sha256": "88ad16cb7ed432b0cdc46971cd10ca83ed5bb6958d293c2fbcb7a8a1b56f9f01"
+          }
+        },
+        {
+          "mode": "relay-cache-v1",
+          "seed": 1065,
+          "kind": "s2",
+          "sim_s": 30.0,
+          "wall_s": 26.24001499998849,
+          "wall_per_sim": 0.874667166666283,
+          "load_start": [
+            2.69921875,
+            3.81103515625,
+            4.69921875
+          ],
+          "load_end": [
+            2.798828125,
+            3.74462890625,
+            4.6484375
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 601,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "relay-cache-v1",
+            "enabled": true,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 256,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "cache": {
+            "hits": 375591,
+            "misses": 9,
+            "maxsize": 256,
+            "currsize": 9
+          },
+          "name": "B1",
+          "commands": 519,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s2/B1.measurement.json",
+            "sha256": "55e3c7b0b25c9dfcc822175b9dd3c0266df941898cbcf7962aa5e0c82d8aa5b6"
+          }
+        },
+        {
+          "mode": "relay-cache-v1",
+          "seed": 1065,
+          "kind": "s2",
+          "sim_s": 30.0,
+          "wall_s": 26.98348537500715,
+          "wall_per_sim": 0.8994495125002383,
+          "load_start": [
+            2.798828125,
+            3.74462890625,
+            4.6484375
+          ],
+          "load_end": [
+            2.78173828125,
+            3.65380859375,
+            4.583984375
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 601,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "relay-cache-v1",
+            "enabled": true,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 256,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "cache": {
+            "hits": 375591,
+            "misses": 9,
+            "maxsize": 256,
+            "currsize": 9
+          },
+          "name": "B2",
+          "commands": 519,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s2/B2.measurement.json",
+            "sha256": "bafaed6011dd1849405a941f7164e18d393f8c49a9f6613d52f157bd709c01c8"
+          }
+        },
+        {
+          "mode": "off",
+          "seed": 1065,
+          "kind": "s2",
+          "sim_s": 30.0,
+          "wall_s": 33.02789754100377,
+          "wall_per_sim": 1.1009299180334589,
+          "load_start": [
+            2.78173828125,
+            3.65380859375,
+            4.583984375
+          ],
+          "load_end": [
+            2.85595703125,
+            3.57861328125,
+            4.5185546875
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 601,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "off",
+            "enabled": false,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 0,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "name": "A2",
+          "commands": 519,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s2/A2.measurement.json",
+            "sha256": "57274f8ced4d42479847caa8ecc453ab7ae26d460c381ff8e87b853288d12348"
+          }
+        }
+      ],
+      "raw_comparison": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s2/comparison.json",
+        "sha256": "d281f630c9df88b664cda425bd5980b1242b4c0dc5b30bffe4eccd107737d740"
+      },
+      "input_hashes": {
+        "bundle.json": "3ebbc6f6a06cb549b9e600679458c22bb0371d576b06a84af0de0e0d84608dba",
+        "scene.xml": "07ba34c3bda9fa1b848979d5bc0256dc7d85659164dc796fe0b86633791558c6",
+        "robots/r1/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+        "robots/r2/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+        "robots/r3/commands.jsonl": "b6ed13f2fc63c39df6822b7d8a67105e20be6c617fe3940a2664a471255052a0",
+        "robots/r3/frames.jsonl": "129eeabd8a9f735cc99a04d3d6a8cec929e4d888338d9d5c8443a3bd7566b70a"
+      },
+      "adapter_sha": "99d81d8c9cbc8dee1cc21462d25a1c81f65de9f5",
+      "adapter_manifest": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s2/adapter-manifest.json",
+        "sha256": "c2d33b6c572e7a4bd1f60bf2d0182853180c6c2907003c655db8c43e10d4ef1a"
+      }
+    },
+    "s3": {
+      "seed": 14201,
+      "before": 1.8716517083327442,
+      "after": 1.6743058395659318,
+      "wall_reduction_percent": 10.543941903732012,
+      "before_load_mean_1_5_15": [
+        2.8702392578125,
+        3.38623046875,
+        4.3184814453125
+      ],
+      "after_load_mean_1_5_15": [
+        3.0484619140625,
+        3.4429931640625,
+        4.337890625
+      ],
+      "all_bytes_identical": true,
+      "behavior_files_per_run": 1825,
+      "provenance_exceptions": [
+        "runtime-bundle.json",
+        "v7-speedups.json"
+      ],
+      "state": {
+        "steps": 120000,
+        "start": 1.3,
+        "end": 31.3,
+        "dt": 0.00025,
+        "sim_s": 30.0,
+        "period": 0.05,
+        "robots": [
+          "r1",
+          "r2",
+          "r3"
+        ],
+        "frames": 601,
+        "state_spec": 16383,
+        "chain_sha256": "09c772ef5bf674cf2f5a1e539f100129f5843a81789e718f0609c98d05b1c305",
+        "final_sha256": "eccc9ed3842ad890800ad2e9fccdf04987c095df51a61bd73c48c27d99bb645e"
+      },
+      "judgment": {
+        "status": "EVALUATOR_ERROR",
+        "type": "ContractViolation",
+        "message": "invalid item identity, kind, height or speed"
+      },
+      "measurements": [
+        {
+          "mode": "off",
+          "seed": 14201,
+          "kind": "s3",
+          "sim_s": 30.0,
+          "wall_s": 58.19385516596958,
+          "wall_per_sim": 1.9397951721989861,
+          "load_start": [
+            2.947265625,
+            3.58544921875,
+            4.51513671875
+          ],
+          "load_end": [
+            3.4560546875,
+            3.5927734375,
+            4.44677734375
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 601,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "off",
+            "enabled": false,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 0,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "name": "A1",
+          "commands": 2660,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s3/A1.measurement.json",
+            "sha256": "4a556c90f9a002301871b461b1510aed1d0b3e54743d1a6ad50d08ca0375b728"
+          }
+        },
+        {
+          "mode": "relay-cache-v1",
+          "seed": 14201,
+          "kind": "s3",
+          "sim_s": 30.0,
+          "wall_s": 51.52109691599617,
+          "wall_per_sim": 1.7173698971998723,
+          "load_start": [
+            3.4560546875,
+            3.5927734375,
+            4.44677734375
+          ],
+          "load_end": [
+            3.1669921875,
+            3.48486328125,
+            4.3564453125
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 601,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "relay-cache-v1",
+            "enabled": true,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 256,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "cache": {
+            "hits": 375599,
+            "misses": 1,
+            "maxsize": 256,
+            "currsize": 1
+          },
+          "name": "B1",
+          "commands": 2660,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s3/B1.measurement.json",
+            "sha256": "f34257cff2336f721971e5ff9c2c93d5fc82c3c6c8dec05b2d6b5d92007f4097"
+          }
+        },
+        {
+          "mode": "relay-cache-v1",
+          "seed": 14201,
+          "kind": "s3",
+          "sim_s": 30.0,
+          "wall_s": 48.93725345795974,
+          "wall_per_sim": 1.6312417819319913,
+          "load_start": [
+            3.1533203125,
+            3.4765625,
+            4.34814453125
+          ],
+          "load_end": [
+            2.41748046875,
+            3.2177734375,
+            4.2001953125
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 601,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "relay-cache-v1",
+            "enabled": true,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 256,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "cache": {
+            "hits": 375599,
+            "misses": 1,
+            "maxsize": 256,
+            "currsize": 1
+          },
+          "name": "B2",
+          "commands": 2660,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s3/B2.measurement.json",
+            "sha256": "476654b66c30f50a0a4e45a84b78d9664ba2c6b7e268d39d2b68f41d6ed62c9e"
+          }
+        },
+        {
+          "mode": "off",
+          "seed": 14201,
+          "kind": "s3",
+          "sim_s": 30.0,
+          "wall_s": 54.10524733399507,
+          "wall_per_sim": 1.8035082444665023,
+          "load_start": [
+            2.41748046875,
+            3.2177734375,
+            4.2001953125
+          ],
+          "load_end": [
+            2.66015625,
+            3.14892578125,
+            4.11181640625
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 601,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "off",
+            "enabled": false,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 0,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "name": "A2",
+          "commands": 2660,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s3/A2.measurement.json",
+            "sha256": "43a6a4bb612e06438dafc061e6830d451b5bc2db669243bdc9a2d9da7b4fbac5"
+          }
+        }
+      ],
+      "raw_comparison": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s3/comparison.json",
+        "sha256": "a4eb527f656b31a7cf949ac4b183060c54866be5d9fa88cce79c47155513e92a"
+      },
+      "input_hashes": {
+        "bundle.json": "064ecc5d8dc62af8de7744eeb7744380edaddcc14c2aaa5e057676af0b38a8e4",
+        "scene.xml": "be6c24483085f0441519416560abe2b4b5a5006bb72d767d7b6cf30f24d0661a",
+        "robots/r1/commands.jsonl": "d7c242025c2c6672429370928fe209b2369f6e6371233b29ef8a1f611c8c789a",
+        "robots/r2/commands.jsonl": "0b011cb9efa227af0c8dadc2ac86462e1cd54d7b23709a2567b0f4b5a7ad48a7",
+        "robots/r3/commands.jsonl": "73258dce8cb87135d73f4618bd3a8aee5d55f902518b2e7b411d376fd908a3c0",
+        "robots/r1/frames.jsonl": "df47ec5b77c10039ffad189a12d783bb1c8c119ea77f1cf44667f39e0d8b81b7",
+        "robots/r2/frames.jsonl": "38f0d2bbb14433c7267641e477a66fda90f94ecb2db5a54bc022a501bb8a17de",
+        "robots/r3/frames.jsonl": "a7df4c0e2bcf078f76511835daa1ca2454f284fcf201835e2f03dd1832420b9c"
+      },
+      "adapter_sha": "6c6571244e33a6e9e39b00afcd38d805035aed7d",
+      "adapter_manifest": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/s3/adapter-manifest.json",
+        "sha256": "710a670929352b7a1407523ae53a1b5a02c3b4bc3ad8cc3d535b0a6fa5bb9072"
+      }
+    },
+    "egomap": {
+      "seed": 49001,
+      "before": 1.1999619951161247,
+      "after": 0.9977543680666713,
+      "wall_reduction_percent": 16.851169276397382,
+      "before_load_mean_1_5_15": [
+        3.0767822265625,
+        3.1435546875,
+        4.0205078125
+      ],
+      "after_load_mean_1_5_15": [
+        2.4993896484375,
+        2.9979248046875,
+        3.9674072265625
+      ],
+      "all_bytes_identical": true,
+      "behavior_files_per_run": 172,
+      "provenance_exceptions": [
+        "runtime-bundle.json",
+        "v7-speedups.json"
+      ],
+      "state": {
+        "steps": 120000,
+        "start": 1.3,
+        "end": 31.3,
+        "dt": 0.00025,
+        "sim_s": 30.0,
+        "period": 0.2,
+        "robots": [
+          "r3"
+        ],
+        "frames": 151,
+        "state_spec": 16383,
+        "chain_sha256": "b37128ae42e884f4d6c7f497b26b77c653da317f461728a42aac6ef807f96d55",
+        "final_sha256": "49eca2649d2841d202018c0c3991a80cfabfb11ef4dd1f1f9b5f1199bedec059"
+      },
+      "judgment": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": false,
+        "lifted": false,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "measurements": [
+        {
+          "mode": "off",
+          "seed": 49001,
+          "kind": "egomap",
+          "sim_s": 30.0,
+          "wall_s": 35.62248504097806,
+          "wall_per_sim": 1.187416168032602,
+          "load_start": [
+            2.64453125,
+            3.12744140625,
+            4.09228515625
+          ],
+          "load_end": [
+            2.7177734375,
+            3.09521484375,
+            4.04052734375
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 151,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "off",
+            "enabled": false,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 0,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "name": "A1",
+          "commands": 149,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/A1.measurement.json",
+            "sha256": "d1fb682a7f4cca629b0e7fc1c25a04875d80529bef03477902b37b291218850c"
+          }
+        },
+        {
+          "mode": "relay-cache-v1",
+          "seed": 49001,
+          "kind": "egomap",
+          "sim_s": 30.0,
+          "wall_s": 29.880871333996765,
+          "wall_per_sim": 0.9960290444665588,
+          "load_start": [
+            2.7177734375,
+            3.09521484375,
+            4.04052734375
+          ],
+          "load_end": [
+            2.44189453125,
+            2.98681640625,
+            3.96240234375
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 151,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "relay-cache-v1",
+            "enabled": true,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 256,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "cache": {
+            "hits": 375590,
+            "misses": 10,
+            "maxsize": 256,
+            "currsize": 10
+          },
+          "name": "B1",
+          "commands": 149,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/B1.measurement.json",
+            "sha256": "6d4183ddec3cc556f10970e1a23896e9c32765d95017387c6fa17dd2a5f3f122"
+          }
+        },
+        {
+          "mode": "relay-cache-v1",
+          "seed": 49001,
+          "kind": "egomap",
+          "sim_s": 30.0,
+          "wall_s": 29.984390750003513,
+          "wall_per_sim": 0.9994796916667837,
+          "load_start": [
+            2.44189453125,
+            2.98681640625,
+            3.96240234375
+          ],
+          "load_end": [
+            2.39599609375,
+            2.9228515625,
+            3.904296875
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 151,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "relay-cache-v1",
+            "enabled": true,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 256,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "cache": {
+            "hits": 375590,
+            "misses": 10,
+            "maxsize": 256,
+            "currsize": 10
+          },
+          "name": "B2",
+          "commands": 149,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/B2.measurement.json",
+            "sha256": "a73b2cea6e10dd1e36e50fd2b418524b0534608352f6b3ad3dfb765d1d0103f8"
+          }
+        },
+        {
+          "mode": "off",
+          "seed": 49001,
+          "kind": "egomap",
+          "sim_s": 30.0,
+          "wall_s": 36.37523466598941,
+          "wall_per_sim": 1.212507822199647,
+          "load_start": [
+            2.39599609375,
+            2.9228515625,
+            3.904296875
+          ],
+          "load_end": [
+            4.548828125,
+            3.4287109375,
+            4.044921875
+          ],
+          "nice": 0,
+          "steps": 120000,
+          "frames": 151,
+          "receipt": {
+            "schema": "ugrp.v7_exact_speedups.v1",
+            "mode": "off",
+            "enabled": false,
+            "fallback": null,
+            "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+            "cache_maxsize": 0,
+            "physics_changed": false,
+            "log_buffering": false
+          },
+          "profile": false,
+          "name": "A2",
+          "commands": 149,
+          "measurement_source": {
+            "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/A2.measurement.json",
+            "sha256": "a46177bc23de70451347437c00374dd73cd3c9a9ac88380e5d055245d86081d5"
+          }
+        }
+      ],
+      "raw_comparison": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/comparison.json",
+        "sha256": "dbc03366aedcc96e1c91e1ec27f5b0a408593ddc891f1d833e72aec59b116c3b"
+      },
+      "input_hashes": {
+        "bundle.json": "ea5f8811dbdf54053b48b05970fc6e149bfcb0145bc05fbe07f67a1d657045fd",
+        "scene.xml": "b3796eec6c343e34822e1ceedbefcb94a52b7561a5c0fa7ed6fbed395075d30e",
+        "robots/r1/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+        "robots/r2/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+        "robots/r3/commands.jsonl": "ecb3e184d1f5da5e7843190c3fbd484809604ee84c471163454e9d2934a2b761",
+        "robots/r3/frames.jsonl": "9b31dcf48a1abeb38caf4209d3c7070afc890d1640ce788b465782dd0bc71368"
+      },
+      "adapter_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+      "adapter_manifest": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/adapter-manifest.json",
+        "sha256": "dd6bdd4d8194ae56fa043bb8557024ca9222c703be4f670f25f86dcae4bec7a1"
+      }
+    }
+  },
+  "profiles": [
+    {
+      "mode": "off",
+      "seed": 49001,
+      "kind": "egomap",
+      "sim_s": 30.0,
+      "wall_s": 41.02981854201062,
+      "wall_per_sim": 1.3676606180670206,
+      "load_start": [
+        4.548828125,
+        3.4287109375,
+        4.044921875
+      ],
+      "load_end": [
+        4.15185546875,
+        3.451171875,
+        4.017578125
+      ],
+      "nice": 0,
+      "steps": 120000,
+      "frames": 151,
+      "receipt": {
+        "schema": "ugrp.v7_exact_speedups.v1",
+        "mode": "off",
+        "enabled": false,
+        "fallback": null,
+        "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+        "cache_maxsize": 0,
+        "physics_changed": false,
+        "log_buffering": false
+      },
+      "profile": true,
+      "profile_total_s": 41.019423528999994,
+      "top10_python": [
+        {
+          "function": "/Users/changmin/projects/ugrp-wt/sim-speed-core/sim/masterpi_drive_friction_v7.py:52:command_step",
+          "calls": 360000,
+          "self_s": 3.1028297260000004,
+          "cumulative_s": 9.416086492,
+          "percent": 7.5642938370558905
+        },
+        {
+          "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/lib/_arraysetops_impl.py:806:_isin",
+          "calls": 360000,
+          "self_s": 2.394833486,
+          "cumulative_s": 4.6173099,
+          "percent": 5.838291423834603
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp-wt/sim-speed-core/sim/masterpi_drive_friction_v7.py:212:_physics_step_for",
+          "calls": 120000,
+          "self_s": 0.7189621350000001,
+          "cumulative_s": 36.466595678000004,
+          "percent": 1.752735833773253
+        },
+        {
+          "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:66:_wrapreduction",
+          "calls": 720000,
+          "self_s": 0.39288551200000005,
+          "cumulative_s": 0.718015609,
+          "percent": 0.9578035920525239
+        },
+        {
+          "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/_core/numeric.py:97:zeros_like",
+          "calls": 360000,
+          "self_s": 0.296649231,
+          "cumulative_s": 0.402308881,
+          "percent": 0.7231921013962431
+        },
+        {
+          "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/lib/_arraysetops_impl.py:958:isin",
+          "calls": 360000,
+          "self_s": 0.25088477800000003,
+          "cumulative_s": 4.9679007230000005,
+          "percent": 0.6116243389491542
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp-wt/sim-speed-core/scripts/benchmark_v7_speed.py:199:step",
+          "calls": 120000,
+          "self_s": 0.24316034,
+          "cumulative_s": 37.773361295,
+          "percent": 0.5927931674322289
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/adapter/sim/final_pair_highpose_clock.py:76:advance_to",
+          "calls": 151,
+          "self_s": 0.22475339100000002,
+          "cumulative_s": 38.822227328000004,
+          "percent": 0.5479194285631621
+        },
+        {
+          "function": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:86:_wrapreduction_any_all",
+          "calls": 361186,
+          "self_s": 0.20472520400000002,
+          "cumulative_s": 0.36112723700000005,
+          "percent": 0.4990933230820832
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/adapter/sim/camera_robot_port.py:278:_finite_number",
+          "calls": 360006,
+          "self_s": 0.140562675,
+          "cumulative_s": 0.22981979500000002,
+          "percent": 0.34267345298167035
+        }
+      ],
+      "name": "egomap-profile-off",
+      "measurement_source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/profile-off.measurement.json",
+        "sha256": "44a2fb3446d5e7bc3ee219a5b65526a393eccbbcfc6e06d6f5e76d1b01dae98a"
+      }
+    },
+    {
+      "mode": "relay-cache-v1",
+      "seed": 49001,
+      "kind": "egomap",
+      "sim_s": 30.0,
+      "wall_s": 32.7021592920064,
+      "wall_per_sim": 1.0900719764002134,
+      "load_start": [
+        4.15185546875,
+        3.451171875,
+        4.017578125
+      ],
+      "load_end": [
+        4.1376953125,
+        3.51220703125,
+        4.01513671875
+      ],
+      "nice": 0,
+      "steps": 120000,
+      "frames": 151,
+      "receipt": {
+        "schema": "ugrp.v7_exact_speedups.v1",
+        "mode": "relay-cache-v1",
+        "enabled": true,
+        "fallback": null,
+        "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+        "cache_maxsize": 256,
+        "physics_changed": false,
+        "log_buffering": false
+      },
+      "profile": true,
+      "cache": {
+        "hits": 375590,
+        "misses": 10,
+        "maxsize": 256,
+        "currsize": 10
+      },
+      "profile_total_s": 32.692869594999976,
+      "top10_python": [
+        {
+          "function": "/Users/changmin/projects/ugrp-wt/sim-speed-core/sim/masterpi_drive_friction_v7.py:212:_physics_step_for",
+          "calls": 120000,
+          "self_s": 0.6458326320000001,
+          "cumulative_s": 28.294077652000002,
+          "percent": 1.9754540974854444
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp-wt/sim-speed-core/sim/v7_exact_speedups.py:41:command_step",
+          "calls": 360000,
+          "self_s": 0.43446529500000003,
+          "cumulative_s": 1.276946855,
+          "percent": 1.328929825928914
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp-wt/sim-speed-core/sim/v7_exact_speedups.py:47:<genexpr>",
+          "calls": 1080000,
+          "self_s": 0.22441254800000002,
+          "cumulative_s": 0.29072077100000004,
+          "percent": 0.6864265840840155
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp-wt/sim-speed-core/scripts/benchmark_v7_speed.py:199:step",
+          "calls": 120000,
+          "self_s": 0.20862450300000002,
+          "cumulative_s": 29.540802658,
+          "percent": 0.638134570578983
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/adapter/sim/final_pair_highpose_clock.py:76:advance_to",
+          "calls": 151,
+          "self_s": 0.20449466100000002,
+          "cumulative_s": 30.500861326000003,
+          "percent": 0.6255023298146801
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp-wt/sim-speed-core/sim/v7_exact_speedups.py:44:<genexpr>",
+          "calls": 1080000,
+          "self_s": 0.184565577,
+          "cumulative_s": 0.184565577,
+          "percent": 0.5645438264869455
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/adapter/sim/camera_robot_port.py:278:_finite_number",
+          "calls": 360006,
+          "self_s": 0.128982182,
+          "cumulative_s": 0.2081568,
+          "percent": 0.39452695220038575
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp-wt/sim-speed-core/sim/v7_exact_speedups.py:48:<genexpr>",
+          "calls": 1080000,
+          "self_s": 0.11412148400000001,
+          "cumulative_s": 0.268150459,
+          "percent": 0.349071480765499
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/adapter/sim/camera_robot_port.py:246:_advance_servos",
+          "calls": 360005,
+          "self_s": 0.11287361600000001,
+          "cumulative_s": 0.143687013,
+          "percent": 0.345254538369623
+        },
+        {
+          "function": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/adapter/sim/camera_robot_port.py:196:tick",
+          "calls": 360000,
+          "self_s": 0.11017956100000001,
+          "cumulative_s": 0.46565570300000003,
+          "percent": 0.33701404118056005
+        }
+      ],
+      "name": "egomap-profile-on",
+      "measurement_source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v3/egomap/profile-on.measurement.json",
+        "sha256": "57952b223d8f38dd3e18e76288451ae695690a99980a89841eb2a29c43f50a92"
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "name": "v1-referee-error",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v1-managed/manifest.json",
+        "sha256": "3c78ce503e71c48431af42e224afdc0f7e9f98bbf8c9450a7855ef8159df7ad2"
+      },
+      "scope": "S2 ABBA passed; S3 off completed 30s but original referee ContractViolation stopped report publication; preserved, excluded from final means"
+    },
+    {
+      "name": "v2-host-interruption",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-v2-managed/host-interruption.json",
+        "sha256": "32a7fc73fec80fa2ab74625b78c24edc5d948f24fcf5b5a0b63cd28c51803a15"
+      },
+      "scope": "감독 세션 종료로 대기 중단; no physics; not robot failure"
+    }
+  ]
+}

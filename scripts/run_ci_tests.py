@@ -25,6 +25,10 @@ from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
     "tests/test_ownmap_s2.py",
+    "tests/test_s2_path_heading.py",
+    "tests/test_path_heading_default.py",
+    "tests/test_opencv_wall_robot_mask.py",
+    "tests/test_zone_heldout_maps.py",
     "tests/test_ci_fast_path.py",
     "tests/test_owncam_memory_v3.py",
     "tests/test_owncam_memory_time.py",
@@ -107,6 +111,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
     "tests/test_highpose_own_load_occlusion.py",  # v98 own-load occlusion rule: held beam blocking the own camera is no observation, not INVALID_OWN_IMAGE
     "tests/test_solo_cyan_v106*.py",  # S2 v3 cyan: own RGB/commands, synthetic backend only
+    "tests/test_s3_host*.py",  # S3 fixed-role host, no physics or model calls
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
     "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
@@ -309,6 +314,7 @@ TEST_PATTERNS = (
     "tests/test_dispatch_translation_skew_fallback.py",
     "tests/test_dispatch_pair_prefetch.py",
     "tests/test_communication_observer.py",
+    "tests/test_speech_bubble_overlay.py",
     "tests/test_dispatch_solo_cadence.py",
     "tests/test_fine_gain_schedule.py",
     "tests/test_dispatch_coarse_handoff.py",
@@ -366,6 +372,26 @@ TEST_PATTERNS = (
     "tests/test_pick_match*.py",
     "tests/test_replay_pick_match.py",
     "tests/test_masterpi_model_v3.py",
+    "tests/test_masterpi_drive_friction.py",
+    "tests/test_masterpi_drive_friction_v2.py",
+    "tests/test_masterpi_drive_friction_v3.py",
+    "tests/test_masterpi_drive_friction_v4.py",
+    "tests/test_masterpi_drive_friction_v5.py",
+    "tests/test_drive_torque_audit.py",
+    "tests/test_masterpi_drive_friction_v5_hard.py",
+    "tests/test_masterpi_drive_friction_v6.py",
+    "tests/test_masterpi_drive_friction_v7.py",
+    "tests/test_v7_exact_speedups.py",
+    "tests/test_v7_speed_benchmark.py",
+    "tests/test_controller_exact_speedups.py",
+    "tests/test_controller_replay.py",
+    "tests/test_masterpi_drive_friction_v7_freeze.py",
+    "tests/test_masterpi_drive_friction_v7_sphere6.py",
+    "tests/test_probe_v7_roller_approx.py",
+    "tests/test_probe_drive_pair_beam.py",
+    "tests/test_masterpi_camera_review_v1.py",
+    "tests/test_masterpi_camera_review_v2.py",
+    "tests/test_masterpi_camera_review_v3.py",
     "tests/test_zone_masterpi_v3_scene.py",
     "tests/test_zone_model_conventions.py",
     "tests/test_visual_arm_v3.py",
