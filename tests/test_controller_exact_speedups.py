@@ -107,6 +107,42 @@ def test_scan_options_are_explicit_and_local_policy_defaults_off(monkeypatch):
     with pytest.raises(ValueError):scan_options()
 
 
+def test_owned_referee_stream_bytes_snapshot_isolation_rebinding_and_close(monkeypatch):
+    import copy
+    import json
+    from harness.controller_exact_speedups import install, REFEREE_ENV, OwnedEventLog
+    from harness import zone_study_referee as judge,zone_referee_replay as replay
+    from harness.zone_study_contract import digest
+    from tests.zone_evidence_fixtures import planned,MAP,at_zone
+    monkeypatch.setenv(REFEREE_ENV,'owned-v1')
+    plan,_=planned(1,1);admitted=plan['admitted'][0];key=admitted['key'];orders=admitted['orders']
+    old=judge.Referee(orders,MAP,evidence_key=key)
+    samples=[(i*.1,{'item-0':at_zone('A',held=bool(i%5==0))}) for i in range(40)]
+    for t,items in samples:old.observe(t,items)
+    installed=install('exact-v1')
+    try:
+        new=judge.Referee(orders,MAP,evidence_key=key)
+        assert type(new._events) is OwnedEventLog
+        for t,items in samples:new.observe(t,items)
+        assert digest(new.record())==digest(old.record())
+        assert json.dumps(new.record(),indent=2,ensure_ascii=False).encode()==json.dumps(old.record(),indent=2,ensure_ascii=False).encode()
+        snapshot=new.record();snapshot['events'][1]['evidence_key']['seed']=True
+        assert digest(new.record())==digest(old.record())
+        with pytest.raises(ValueError,match='INVALID'):
+            replay.replay(snapshot['events'],orders,plan['referee_policy'],evidence_key=key,source_key=key)
+        # A mutable imported list retains the original validation on EVERY append.
+        with pytest.raises(ValueError,match='INVALID'):
+            replay.append_event(snapshot['events'],{'event':'sample','sim_s':5.,'items':{}},evidence_key=key)
+        new._evidence_key['seed']+=1
+        with pytest.raises(ValueError,match='cannot be rebound'):new.observe(5.,{})
+        new._evidence_key=copy.deepcopy(key)
+        assert installed.snapshot()['referee_owned_appends']==len(samples)
+    finally:installed.close()
+    assert type(new._events) is list
+    new.observe(5.,{});old.observe(5.,{})
+    assert digest(new.record())==digest(old.record())
+
+
 def test_snapshot_in_place_noncontiguous_signed_zero_and_nan_payloads():
     bits = np.array([0, 0x7ff8000000000001], dtype=np.uint64)
     a = bits.view(np.float64)
@@ -342,7 +378,7 @@ def test_common_install_off_and_restore(monkeypatch):
         for a, b in zip(actual[:2], expected[:2]):
             assert a.tobytes() == b.tobytes()
         assert actual[2] == expected[2]
-        assert on.snapshot()['applied'] == ['owncam_moments','markerless_integer_clip','opencv_integer_clip','posterior_summary']
+        assert on.snapshot()['applied'] == ['owncam_moments','markerless_integer_clip','opencv_integer_clip','posterior_summary','owned_referee_events']
         from harness.vision_loc_protocol import load_vis3
         from harness import zone_pair_highpose_opencv_exact as opencv
         vl, _ = load_vis3()

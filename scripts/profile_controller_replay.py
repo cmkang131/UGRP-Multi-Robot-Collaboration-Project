@@ -496,6 +496,7 @@ def worker(args):
     spec.loader.exec_module(speedups)
     os.environ[speedups.SCAN_ENV] = args.scan_speedups
     os.environ[speedups.LOCAL_ENV] = str(args.local_submap_m)
+    os.environ[speedups.REFEREE_ENV] = args.referee_speedups
     installed = speedups.install(args.speedups)
     timer = Timers()
     timer.record_storage, timer.record_receipts = args.record_storage, []
@@ -564,6 +565,7 @@ def main():
     p.add_argument('--scan-speedups', choices=('off', 'exact-v2'), default='exact-v2')
     p.add_argument('--local-submap-m', type=float, default=0.)
     p.add_argument('--record-storage', choices=('off', 'gzip-v1'), default='off')
+    p.add_argument('--referee-speedups', choices=('off','owned-v1'), default='owned-v1')
     p.add_argument('--detail-timers', action='store_true')
     p.add_argument('--lock-owner-pid', type=int)
     p.add_argument('--execute', action='store_true')

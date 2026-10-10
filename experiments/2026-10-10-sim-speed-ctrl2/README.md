@@ -31,11 +31,19 @@ main `77eba22c`/PR #423 이후의 저장 입력 개발 진단이다. **새 ABBA 
   visibility geometry/likelihood, raytrace/costmap/export/forecast/바닥·벽 검출로 나눈다.
   프레임 해시/디코드, 상태·RNG 증명, 계측 기록도 별도 exclusive 타이머에 둔다.
   cProfile은 처음·마지막 100프레임과 초기화/최종 직렬화만 계측한다.
+- S3 v151 종료 심판에서 과거 이벤트 실행 키를 매번 전부 검증하는 N(N−1)/2 비용도 발견됐다.
+  [s3fix6 진단](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/423#issuecomment-6091325311)은
+  다른 작업의 표본이며, 기존 v148 제어기 ‘기타’와 동일한 구간으로 합산하지 않는다.
+  공통 가속의 `UGRP_REFEREE_EVENT_SPEEDUPS=owned-v1`(기본 on, `off`로 해제)은 source-guarded
+  심판이 새로 만든 private 기록만 append-only 소유한다. 새 키는 매번 검증하고 snapshot은 deep copy다.
+  외부 mutable list의 과거 키 검사와 가져온 기록의 전체 key/sequence/hash-chain replay는 원래대로다.
+  close 시 살아 있는 심판을 원래 private list로 되돌린다. 심판 정답은 제어에 전달하지 않는다.
 
 ## ABBA 계획과 채택 기준
 
 [plan.json](plan.json)의 S3 v148, ego59 55001/55003을 각각 **A→B→B→A**로 직렬 재생한다.
-A는 #423 exact-v1/scan off/plain 기록, B는 exact-v1/scan exact-v2/gzip-v1 기록이다.
+A는 #423 exact-v1/scan off/referee off/plain 기록,
+B는 exact-v1/scan exact-v2/referee owned-v1/gzip-v1 기록이다.
 속도 ABBA는 cProfile 없이 구간 타이머만 사용하며, 이후 별도 B 전체 재생에서 cProfile을 얻는다.
 profile 재생도 ABBA B와 논리 바이트를 직접 비교한다. profiler overhead를 속도 표에 혼합하지 않는다.
 이 비교는 정합과 저장 변경을 함께 측정한다. 직렬화·버퍼 flush·gzip footer·파일 hash까지
@@ -43,6 +51,8 @@ profile 재생도 ABBA B와 논리 바이트를 직접 비교한다. profiler ov
 물리/렌더는 실행하지 않으며 **controller-only wall/input-SIM**이다. 온라인 ≤1.5 달성 주장과 구분한다.
 
 S3 v151 결과 파일과 명시적인 PR 순번 반환의 해시 receipt를 확인한 뒤 agent_lock을 취득한다.
+v151의 완료 심판 이벤트에 대한 별도 A→B→B→A도 4회 실행하고, 심판 record 전체 복원 bytes를 비교한다.
+이 입력은 source `3ec2d781`의 별도 종료평가 자료이며 v148 제어기 재생 수치에 합산하지 않는다.
 다른 잠금/프로세스를 해제·종료하지 않는다. 유한 예산 6시간, 각 재생 상한 90분, 반복은 1 ABBA 묶음이다.
 프레임별 1/5/15분 부하 평균을 기록한다. 두 교차 쌍과 A/B 평균 모두
 `|load_A-load_B| <= max(0.5, 0.25*min(load_A,load_B))`인 경우만 절감률을 보고한다.
@@ -81,5 +91,8 @@ raw는 기본 checkout outputs 아래에, 작은 표·해시·실패 기록은 �
   obstacle witness/정수 제곱거리·추가/삭제 갱신의 공개 구현. 우리의 2D 증분은 float64 전체 EDT와 바이트 대조한다.
 - [SciPy 1.17.1 EDT 원문](https://github.com/scipy/scipy/blob/v1.17.1/scipy/ndimage/_morphology.py):
   feature transform으로 거리와 최근접 index를 함께 반환한다. 동일 sqrt/multiply 순서를 유지한다.
+- [Fowler Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html),
+  [Python deep copy](https://docs.python.org/3.12/library/copy.html): append-only 이벤트의 소유와 snapshot 격리.
+  private producer만 새 이벤트를 검증하며 외부 mutable 기록의 기존 전체 검증은 생략하지 않는다.
 - Thrun, Burgard, Fox, *Probabilistic Robotics* 4·6·8장: PF·likelihood field·occupancy grid의 표준 근거.
   판본 원문은 이번 실행에서 별도로 확인하지 않았으며 장별 내용은 #423의 기존 참고 범위를 승계한다.

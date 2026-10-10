@@ -135,6 +135,63 @@ def trajectory_accuracy(path, raw):
         source_hashes={str(source):sha(source),str(setup):sha(setup)})
 
 
+def referee_abba(raw, output, args):
+    """Replay finalized evaluator events only; never deliver truth to control."""
+    from harness import controller_exact_speedups as acceleration
+    from harness.zone_study_referee import Referee
+    source=raw/'eval_only/referee.json'
+    manifest=json.loads((raw/'artifacts.sha256.json').read_text())
+    manifest=manifest.get('files',manifest)
+    digest=sha(source)
+    if manifest['eval_only/referee.json']!=digest:
+        raise ValueError('REFEREE_INPUT_HASH')
+    archived=json.loads(source.read_text());events=archived['events'];first=events[0]
+    assert first['event']=='orders' and all(r['event']=='sample' for r in events[1:])
+    output.mkdir(exist_ok=False)
+    runs=[];paths=[]
+    old_env={name:os.environ.get(name) for name in (acceleration.REFEREE_ENV,acceleration.SCAN_ENV)}
+    try:
+        for index,arm in enumerate(ORDER,1):
+            source_check(args.expected_source_sha)
+            if time.monotonic()>=args.deadline:raise TimeoutError('FINITE_ABBA_BUDGET')
+            out=output/(str(index)+'-'+arm);out.mkdir(exist_ok=False);paths.append(out)
+            os.environ[acceleration.REFEREE_ENV]='off' if arm=='A' else 'owned-v1'
+            os.environ[acceleration.SCAN_ENV]='off'
+            installed=acceleration.install('exact-v1')
+            loads=[];started=time.perf_counter()
+            try:
+                judge=Referee(first['orders'],first['static_map'],evidence_key=first['evidence_key'])
+                for j,row in enumerate(events[1:]):
+                    judge.observe(row['sim_s'],row['items'])
+                    if j%1000==0:loads.append(os.getloadavg())
+                record=judge.record()
+                receipts=[]
+                write(out/'record.json',record,ensure_ascii=False,
+                      storage='off' if arm=='A' else 'gzip-v1',receipts=receipts)
+                wall=time.perf_counter()-started
+                runs.append(dict(order=index,arm=arm,wall_s=wall,samples=len(events)-1,
+                    source_sha=args.expected_source_sha,source_run_sha=json.loads((raw/'bundle.json').read_text())['source_sha'],
+                    input_sim_s=events[-1]['sim_s']-events[1]['sim_s'],loadavg_samples=loads,
+                    speedups=installed.snapshot(),storage=receipts))
+            finally:installed.close()
+            write(out/'result.json',runs[-1])
+    finally:
+        for name,value in old_env.items():
+            if value is None:os.environ.pop(name,None)
+            else:os.environ[name]=value
+    means=[statistics.fmean(x[0] for x in r['loadavg_samples']) for r in runs]
+    a,b=(statistics.fmean(means[i] for i in group) for group in ((0,3),(1,2)))
+    comparable=abs(a-b)<=max(.5,.25*min(a,b)) and all(
+        abs(means[i]-means[j])<=max(.5,.25*min(means[i],means[j])) for i,j in ((0,1),(2,3)))
+    proof=all(logical_equal(paths[0]/'record.json',p/'record.json') for p in paths[1:])
+    result=dict(runs=runs,bytes_identical=proof,load_comparable=comparable,mean_1min=means,
+        original=dict(path=str(source),sha256=digest),physics_runs=0,controller_feedback=False,
+        scope='separate finalized S3 v151 evaluator-event replay; not v148 controller timing or online mission')
+    write(output/'comparison.json',result)
+    if not proof:raise RuntimeError('REFEREE_BEHAVIOR_BYTES_DIFFER')
+    return result
+
+
 def invoke(case, output, args, *, scan, storage, local=0.):
     source_check(args.expected_source_sha)
     if shutil.disk_usage(output.parent).free < 10*2**30:
@@ -148,6 +205,7 @@ def invoke(case, output, args, *, scan, storage, local=0.):
         '--output',str(output),'--expected-source-sha',args.expected_source_sha,
         '--lock-owner-pid',str(os.getpid()),'--execute','--speedups','exact-v1',
         '--scan-speedups',scan,'--record-storage',storage,'--local-submap-m',str(local),
+        '--referee-speedups','off' if scan=='off' else 'owned-v1',
         '--detail-timers']
     if args.profile:
         command += ['--profile']
@@ -164,6 +222,7 @@ def main():
     p.add_argument('--budget-s',type=float,default=21600.)
     p.add_argument('--profile',action='store_true')
     p.add_argument('--diagnostic-profile',action='store_true',help='separate profiled B replay after unprofiled ABBA')
+    p.add_argument('--referee-abba',action='store_true',help='separate evaluator-event ABBA from finalized priority run')
     p.add_argument('--local-submap-m',type=float,default=0.)
     p.add_argument('--execute',action='store_true')
     args=p.parse_args()
@@ -224,6 +283,8 @@ def main():
                     delta=pose_difference(args.output/(case['id']+'-2-B'),output),
                     baseline_accuracy=trajectory_accuracy(args.output/(case['id']+'-2-B'),Path(case['raw'])),
                     local_accuracy=trajectory_accuracy(output,Path(case['raw'])))
+        if args.referee_abba:
+            report['referee_abba']=referee_abba(Path(plan['priority_run']),args.output/'referee-abba',args)
         report['complete']=True
     except BaseException as exc:
         report['failure']=dict(type=type(exc).__name__,message=str(exc))

@@ -24,6 +24,7 @@ DEFAULT = 'exact-v1'
 MODES = ('off', DEFAULT)
 SCAN_ENV = 'UGRP_CONTROLLER_SCAN_SPEEDUPS'
 LOCAL_ENV = 'UGRP_CONTROLLER_LOCAL_SUBMAP_M'
+REFEREE_ENV = 'UGRP_REFEREE_EVENT_SPEEDUPS'
 
 
 def scan_options():
@@ -371,6 +372,39 @@ class GraphLoopMemo:
         return dict(estimated_entry_bytes=self.bytes, max_entry_bytes=self.max_bytes)
 
 
+class OwnedEventLog:
+    """Private append-only producer state; snapshots never expose owned rows.
+
+    Arbitrary mutable input lists still use the original full validation. This
+    object is only transferred from a freshly constructed, source-guarded judge.
+    New keys are validated on every append; keys of owned past rows cannot be
+    changed through snapshots. Imported logs keep their full hash/key replay.
+    """
+    def __init__(self, rows, key_function, digest, audit):
+        self._rows, self._key_function, self._digest, self._audit = rows,key_function,digest,audit
+        self._key = key_function(rows[0]['evidence_key']) if rows else None
+
+    def __len__(self):
+        return len(self._rows)
+
+    def __deepcopy__(self, memo):
+        return copy.deepcopy(self._rows,memo)
+
+    def append_payload(self, payload, *, evidence_key):
+        current = self._key_function(evidence_key)
+        if 'evidence_key' in payload:
+            raise ValueError('INVALID: payload cannot override its source trial key')
+        if self._rows and current != self._key:
+            raise ValueError('INVALID: raw event stream cannot be rebound')
+        row = {'seq':len(self._rows),'previous_sha256':self._rows[-1]['sha256'] if self._rows else None,
+               **copy.deepcopy(payload),'evidence_key':copy.deepcopy(evidence_key)}
+        encoded = {**row,'sha256':self._digest(row)}
+        self._audit['referee_past_key_checks_avoided'] += len(self._rows)
+        self._audit['referee_owned_appends'] += 1
+        self._rows.append(encoded)
+        self._key = current
+
+
 class NearestCoordinates:
     """SciPy 1.17.1's float64/order0/constant path, with owned output."""
     def __init__(self, original):
@@ -506,6 +540,12 @@ class Installation:
         self.scan_mode, self.local_radius = scan_options()
         self.record.update(scan_speedups=self.scan_mode,
             local_submap_requested_m=self.local_radius, local_submap_active_m=0.)
+        self.referee_mode=os.environ.get(REFEREE_ENV,'owned-v1')
+        if self.referee_mode not in ('off','owned-v1'):
+            raise ValueError(f'{REFEREE_ENV}: off or owned-v1 required')
+        self.record.update(referee_event_speedups=self.referee_mode,referee_owned_streams=0,
+                           referee_owned_appends=0,referee_past_key_checks_avoided=0)
+        self.referees=[]
         self.restore = []
         self.caches = {}
         self.record.update(applied=[], fallback=[])
@@ -688,6 +728,27 @@ class Installation:
             if guards and all(self.guard(function, expected, name) for function, expected, name in guards):
                 self.aliases(information.forecast, bind(information.forecast, copy=ForecastCopy))
                 self.record['applied'].append('forecast_evidence_copy')
+        judge=self.optional('harness.zone_study_referee')
+        events=self.optional('harness.zone_referee_replay')
+        if self.referee_mode=='owned-v1' and judge and events and self.guard(judge.Referee,
+                '38faee89bbdff04a4dcf2d00f9f6ef062fac5723a098a4d3956131e240db33f7','referee_class') and self.guard(
+                judge.Referee.__init__,'25ad185b42db18d848e2970e172671369ff3a40734c31015da33665a018d0ff6','referee_init') and self.guard(
+                events.append_event,'bd843fbad2470af3f6ea5d99bc4e1384eea1ae55b8eb157feb9196b038e82c7f','referee_append'):
+            original=judge.Referee.__init__
+            def initialize(owner,*args,**kwargs):
+                original(owner,*args,**kwargs)
+                if type(owner) is judge.Referee and type(owner._events) is list and len(owner._events)<=1:
+                    owner._events=OwnedEventLog(owner._events,events.trial_key,events.digest,self.record)
+                    self.referees.append(weakref.ref(owner))
+                    self.record['referee_owned_streams']+=1
+            self.replace(judge.Referee,'__init__',initialize)
+            original_append=events.append_event
+            def append(rows,payload,*,evidence_key):
+                if type(rows) is OwnedEventLog:
+                    return rows.append_payload(payload,evidence_key=evidence_key)
+                return original_append(rows,payload,evidence_key=evidence_key)
+            self.aliases(original_append,append)
+            self.record['applied'].append('owned_referee_events')
         return self
 
     def snapshot(self):
@@ -698,6 +759,13 @@ class Installation:
             **(c.extra_stats() if hasattr(c, 'extra_stats') else {})) for name, c in self.caches.items()}}
 
     def close(self):
+        # Restore live judges to the original mutable private list before the
+        # original append function is restored, so close never breaks objects.
+        for reference in self.referees:
+            owner=reference()
+            if owner is not None and type(owner._events) is OwnedEventLog:
+                owner._events=owner._events._rows
+        self.referees.clear()
         for restore in reversed(self.restore):
             restore()
         self.restore.clear()
