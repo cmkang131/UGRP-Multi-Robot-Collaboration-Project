@@ -63,11 +63,20 @@ def attach(ctl,audit):
         ref=getattr(ctl,'s3_pregrasp_reference',None)
         obs=ctl.look(now);servo=dict(ctl.port.own.servo)
         valid=(ref is not None and ref['disarmed'] is None and ref['segment']==ctl.seg
-            and 0<=now-ref['visual_confirmed_at_s']<=resting.MAX_AGE_S
-            and blind.at_posture(servo,ctl.hover) and servo.get(1)==blind.OPEN_PWM
-            and controller_gate(ctl)(obs,ctl.rid,now))
+            and now>=ref['visual_confirmed_at_s']
+            and blind.at_posture(servo,ctl.hover) and servo.get(1)==blind.OPEN_PWM)
         if not valid:
             return reacquire(now,'standoff_or_command_window_invalid',obs)
+        if not controller_gate(ctl)(obs,ctl.rid,now):
+            audit.note(ctl.port.own,now,'PREGRASP_FRAME_UNAVAILABLE','pair.pregrasp')
+            return ctl.port.hold(now)
+        if now-ref['visual_confirmed_at_s']>resting.MAX_AGE_S:
+            h=getattr(ctl,'refix_hover',None)
+            if not h or h.get('go_s') is None:return reacquire(now,'standoff_expired',obs)
+            # Age alone is a conservative DEV veto, not a failed mutual GO.
+            # Keep the original timestamp and current best relative estimate.
+            audit.note(ctl.port.own,now,'PREGRASP_REFERENCE_EXPIRED','pair.pregrasp',
+                visual_confirmed_at_s=ref['visual_confirmed_at_s'],age_s=now-ref['visual_confirmed_at_s'])
         if obs['frame_id']!=ctl.blind_hover_last_frame:ctl.blind_hover_streak+=1
         ctl.blind_hover_last_frame=obs['frame_id']
         if ctl.blind_hover_streak<blind.HOVER_CONFIRM_FRAMES:return
@@ -96,7 +105,19 @@ def attach(ctl,audit):
         if value is not None and track.blind_window.get('profile')=='own_rgb_pregrasp_reference_v1':
             value={**value,'evidence':'blind_after_pregrasp_reference',
                 'visual_confirmed_at_s':track.blind_window['visual_confirmed_at_s'],
-                'hover_visual_confirmation':False}
+                'hover_visual_confirmation':False,
+                'blind_profile':track.blind_window['profile']}
         return code,value
+    original_record=getattr(track,'window_record',None)
+    if original_record is not None:
+        def window_record():
+            value=original_record()
+            window=track.blind_window
+            if value is not None and window.get('profile')=='own_rgb_pregrasp_reference_v1':
+                value={**value,'visual_confirmed_at_s':window['visual_confirmed_at_s'],
+                    'hover_visual_confirmation':False,
+                    'command_window_started_s':window['confirmed_at_s']}
+            return value
+        track.window_record=window_record
     ctl._queue_open_descent,ctl._pregrasp_descend=queue_open,at_hover
     track.command,track._blind=issued,predicted
