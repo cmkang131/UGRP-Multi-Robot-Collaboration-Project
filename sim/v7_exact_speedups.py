@@ -38,6 +38,12 @@ class CachedParameters:
     def __getattr__(self, name):
         return getattr(self.original, name)
 
+    def __reduce__(self):
+        # lru_cache's local closure is not serializable. Its values are pure
+        # memoized original arithmetic, so reconstruct an empty cache; wheel
+        # direction/physical state are owned and saved by the world, not here.
+        return type(self), (self.original,)
+
     def command_step(self, command, previous_direction):
         # Preserve the original validation/conversion for noncanonical inputs.
         arrays = (command, previous_direction)

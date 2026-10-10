@@ -141,3 +141,16 @@ def test_checkpoint_registered_sensor_stream_alias_and_stateless_native_core(tmp
     a=PublicCore();b=pickle.loads(pickle.dumps(a))
     costs=np.zeros((20,20),np.uint8)
     assert a.lib is not b.lib and a.plan(costs,[3,3],[14,14]).tobytes()==b.plan(costs,[3,3],[14,14]).tobytes()
+
+
+def test_relay_cache_checkpoint_preserves_command_bytes_without_physics(tmp_path):
+    import io,pickle
+    from scripts.dev_pair_checkpoint import CheckpointPickler
+    from sim.v7_exact_speedups import CachedParameters
+    from sim.masterpi_drive_friction_v7 import DriveParameters
+    a=CachedParameters(DriveParameters());u=np.array([.1,.7,-.3,0.]);state=np.zeros(4)
+    expected=a.command_step(u,state)
+    raw=io.BytesIO();CheckpointPickler(raw,out=tmp_path,renderers={},streams={}).dump(a)
+    b=pickle.loads(raw.getvalue())
+    assert b.cache_info()['currsize']==0
+    assert all(x.tobytes()==y.tobytes() for x,y in zip(expected,b.command_step(u,state)))
