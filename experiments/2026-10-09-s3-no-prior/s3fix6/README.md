@@ -358,3 +358,97 @@ test files;68 offline stage cases,3192 motor-stub commands,zero errors including
 None/NaN and unmeasured-camera paths. Registered workflow plan and non-executing
 runner both pass. Original root catalog remains byte-identical to main.
 [Validation and tested source hashes](validation.json), [sweep](offline-sweep.json).
+
+## v151 단일 스모크 결과 (2026-10-10)
+
+실행 소스 `3ec2d781789522a3f155eb81dd03f5682731e530`, seed14201,
+`zone-s3-consistency-v151`/7.44.0. 사전 선택대로 관측 일관성 옵션은 **off**,
+미보정 카메라 자세의 예측 유지 옵션만 on이다. 표준 workflow와 관리 세션으로
+잠금 취득 후 **물리 SIM 1회** 실행했다. 소스/입력 변경0, 재시도0.
+**HOST_ERROR 0, DEV_NOT_DELIVERED, 배송0/2, 로봇 성공0/3**이다.
+[기계 판독 결과·해시·원본 경로](v151-result.json).
+
+| 로봇 | 시작 최선 위치 오차 / σxy (m) | 시작 인계 시각 / 첫 프레임부터 | 최초 인증 수렴의 실제 오차 / 시각 | 최종 오차 / σxy (m) | 도달 단계 / 실제 명령 |
+|---|---|---|---|---|---|
+| r1 | 0.02630 /1.84041 | 13.50 /12.20 s | 0.02551 m /36.95 s (정확) | 0.17474 /0.02470 | pair 접근→접근 GO→집기 전 align; 차체 명령135 |
+| r2 | 0.03954 /0.20861 | 13.50 /12.20 s | 0.32010 m /112.30 s (**허위**, σ0.04913) | 0.32780 /0.00549 | pair 접근→접근 GO→집기 전 align; 차체 명령477 |
+| r3 | 0.00389 /0.05831 | 13.50 /12.20 s | 없음 | 0.00607 /0.05831 | search_move 계획 뒤 문 예약 대기; 차체 명령0 |
+
+시작 **점 추정 정확3/3**과 시작 **posterior 인증0/3**을 구분한다.
+실행 중 정확한 인증은1/3, 최초 허위 인증은1/3이다. 임계값을 바꾸지 않았다.
+r1/r2 접근 GO(`approach_go_0`)는542.30s에 교환했으나 **집기/운반 GO가 아니다**.
+두 로봇은542.40s부터 align, 이후 재관측/복귀를 반복했고
+`ALIGN_RELOOK_LIMIT`을 무시한 뒤에도 같은 상태로 돌아왔다.
+922.55s에 공통 executor의 **900s job 예산 `LOCAL_TIMEOUT` 2건**이 실제 종료 원인이다.
+이는 물리 실패나 NaN 예외가 아닌 작업 예산 종료다. 기존 예산은 이번 실행에서
+바꾸지 않았으며, dev_light의 계속 진행이 단계 진전으로 이어지지 않는 한계로 남긴다.
+legacy 평가 helper가 `LOCAL_TIMEOUT`을 문자열 때문에 LOCALIZATION으로 묶는
+문제는 결과 JSON에서 별도 job-budget 분류로 명시했다.
+
+r3는13.55s부터 REQUEST, r1/r2는 같은 시각부터 USING을 계속 유지했다.
+문 예약 대기 r1/r2/r3=0.05/0.05/**909.05 robot-s**, REQUEST 진입은각1회다.
+사전 등록된 마지막120초 정지 창의 교착 후보1건(805.55–925.55s),
+robot-robot 음수 접촉 episode0. 문 통과0, 실제 파지/들기/공동 운반/놓기0,
+cyan·beam의 held 표본은각0/18,486이다. 귀환은 현재 S3 호스트의 미구현 범위이며
+도달했다고 주장하지 않는다. r3의 이동0은 위치 오차보다 **미해제 예약에 따른 대기**다.
+
+### NaN 수정 검증과 would_stop
+
+원래 실패 지점315.30s 이후 r2의 미보정 자세 관측2,281프레임
+(315.30–429.30s)을 prediction-only로 처리했다. 새 카메라 보정/GT 위치를
+만들지 않았고 정상 자세 복귀 뒤 기존 관측 경로로 돌아왔다.
+원본 학생 기록의 비유한 필드0, 평가 제외 포즈0/0/0, 저장 오류0이다.
+세 로봇의18,426개씩 렌더 pose와 자기 프레임 시각이 일치하며,
+전체 마운트가 S2의 고정 v3 마운트와 동일하다. heading 적용값은
+`path_tangent_v1`; 공동 운반 옆걸음 예외는 코드/시험에 유지되나 이번에는 미도달이다.
+
+would_stop 합계 **21,963 hook occurrences**다. 독립 실패 수나 디스크 쓰기 수가 아니다.
+
+| would_stop | 횟수 | would_stop | 횟수 |
+|---|---:|---|---:|
+| ARM_COLLISION_GUARD |23| POSE_CLUSTER_UNCERTAIN |60|
+| GLOBAL_START_UNRESOLVED |3| POSE_UNCERTAIN |5099|
+| SWEEP_TRANSITION_BLOCKED |547| SELF_UNCERTAIN |4|
+| PAIR_COLLISION_GUARD |83| PAIR_REOBSERVE_TIMEOUT |5607|
+| APPROACH_ARRIVAL_UNCONFIRMED |1| APPROACH_TIMEOUT |2|
+| APPROACH_LOST |5| BARRIER_APPROACH_TIMEOUT |2|
+| APPROACH_SWEEP_TRANSITION_BLOCKED |1074| REOBSERVATION_NO_FIX |1|
+| APPROACH_ARRIVAL_NOT_CONFIRMED_BY_VIEW |1| ALIGN_RELOOK_LIMIT |7170|
+| UNMEASURED_V3_CAMERA_POSTURE |2281| | |
+
+### 시간·보존·전달
+
+- wall **3327.430937 s**, SIM **924.25 s**, wall/SIM **3.600142**(목표≤3 미달).
+  SIM은 reset1.3s를 제외하고 마지막 정착3s를 포함한다. runner wall은 종료 후
+  심판/기록 닫기를 포함하고 최종 artifact hashing과 별도 영상 생성은 제외한다.
+  workflow 전체 runtime은3370.964982s다. 모델/HTTP 호출0; 응답 지연은 측정 대상 없음.
+- 중첩 host timer: physics974.722s, capture641.194s(그 안 render557.355s),
+  eval sampling6.464s, JSONL append7.740s. 중첩 값은 합산하지 않는다.
+  종료 시점의1초 native sample/열린 파일/소스에서 referee의 매-event 누적 키 재검사
+  `append_event` 경로를 확인했다. N개 event의 이전 event 비교 합은N(N−1)/2다.
+  이는 남은 종료 비용 후보이며 **정확한 Python 구간별 시간은 계측하지 않았다**.
+  실행 코드 변경 없이 완료를 기다렸고 이 경로는 speedctrl에 전달했다.
+- 원본 `outputs/s3-consistency-3ec2d781-s14201-v151`:55,311개 파일,
+  1,797,422,667바이트 전부 manifest SHA 일치. 로컬 보존이며 원격 raw 백업은 아니다.
+  과거 raw/후보 실패 기록을 덮어쓰거나 삭제하지 않았다.
+- 4배속 영상: `outputs/s3fix6-20261010/v151-report/views/v151/execution.mp4`,
+  자기 RGB 3개,4607프레임/20fps/230.35s, SHA
+  `d17b6bb359f2ad1f92082e1a47d13d6dcc0dbc5e3a551c53145199c82695253f`.
+  디코딩·영상 크기·등록·HTTP206·Chrome 재생13.42s까지 확인했다.
+  [영상](http://127.0.0.1:6007/video/010241ac38b92b1c0aab).
+- TensorBoard 새 snapshot `1010-s3fix6-replays`(32개)와 `1010-s3-v151`(1개),
+  EventAccumulator391개 수치·HParams 출처·live33개 run을 대조했다.
+  [대시보드](http://127.0.0.1:6006/) 링크/핀은 `outputs/tensorboard-view.json`의
+  `s3fix6_20261010`에 추가했고 기존 키는 보존했다. Chrome 강 프로필에서
+  v149/v150/v151 Time Series와 재생32개를 선택, 핀8/5개·smoothing0·값을 확인했다.
+  HParams case/policy/seed/source_sha 4열을 재적용했다. legacy HParams는
+  공용 전체 세션 목록이므로 대상 cohort 비교 화면은 Time Series를 사용한다.
+  원본 검증·event readback·브라우저/영상 증빙은 `outputs/s3fix6-20261010/v151-report/`에 보존했다.
+- 관리 세션 종료·자기 잠금 해제 후
+  [speedctrl에 완료 전달](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/423#issuecomment-6091388414).
+  후처리 드라이버의 첫 시도는 Path 로그 JSON 변환 오류로 실행 전 종료됐고,
+  수정한 드라이버만 재실행했다. 물리 재시도는 아니다. CI 대기/PR 병합 없음.
+
+**판정:** NaN 통합 오류는 고쳤지만 과신은 미해결이며 후보3개는 모두 기각한다.
+다음 물리는 과신·align 재진입·문 예약 범위를 저장 단계 재생으로 먼저 고친 뒤
+사전 등록한 단일 smoke로 제안하며, 이번에는 추가 실행하지 않는다.
