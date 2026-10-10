@@ -100,7 +100,8 @@ def bundle(sha,kind,condition):
     b=stage.bundle(sha,'pair',condition=condition)
     b.update(execution_bundle_id=BUNDLE_ID,workflow_version='7.53.0',schema='ugrp.s3_capture_diagnostic.v160',
         student_control=False,research_result=False,diagnostic_low_pulse=OPTION if kind=='pulse' else 'off',
-        diagnostic=kind,concurrent_probe_limit=10,servo_option='off',cap_per_trial_s=CAP if kind=='capture' else 48.,
+        diagnostic=kind,concurrent_probe_limit=10,servo_option='off',
+        physical_supervisor='S3_drop_tilt_nonfinite_v1',cap_per_trial_s=CAP if kind=='capture' else 48.,
         setup_truth_scope='evaluation-only perturbation; no live feedback or success-driven action',
         camera_scope='nominal capture trial only; diagnostic trajectories do not require images')
     from harness.python_source_closure import source_closure

@@ -78,3 +78,11 @@ def test_capture_selection_requires_whole_region_and_physical_pulse_fit():
     nominal=next(t for t in trials if t['grid']['dx']==t['grid']['dy']==t['grid']['dyaw']==0.)
     nominal['lift']=False;assert not admissible_box(trials,[.013,.014,.11])['admissible']
     with pytest.raises(ValueError):admissible_box(trials[:-1],[.013,.014,.11])
+
+
+def test_diagnostic_bundle_records_the_actual_base_supervisor():
+    b=r.bundle('0'*40,'capture',0)
+    assert b['case']=='pair' and b['student_control'] is False
+    assert b['physical_supervisor']=='S3_drop_tilt_nonfinite_v1'
+    assert b['diagnostic_low_pulse']=='off'
+    assert r.bundle('0'*40,'pulse',0)['diagnostic_low_pulse']==OPTION
