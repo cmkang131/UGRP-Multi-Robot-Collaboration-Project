@@ -9,6 +9,20 @@ from harness.zone_solo_cyan_path_heading import command_reason
 
 def rows(path):return [json.loads(x) for x in path.read_text().splitlines()]
 def wrap(v):return math.atan2(math.sin(v),math.cos(v))
+def pixel_error(config,servo,grip):
+    import cv2
+    from harness.s2_stiff_camera_calibration import corrected_record
+    from harness.zone_final_pair_camera import floor_camera
+    from harness.vision_pose_source_final import camera_key
+    key=camera_key({int(k):v for k,v in servo.items()})
+    original=config['extrinsic_calibration']['camera_models']['unloaded'][key]
+    camera=floor_camera(corrected_record(original,config['stiff_camera_table']['poses'][key]))
+    points=np.array([[*grip,.032],[GRASP_RADIUS_M,0.,.032]])
+    optical=(points-np.asarray(camera['origin_m']))@np.asarray(camera['rotation'])
+    k=np.asarray(config['extrinsic_calibration']['intrinsics_K']);d=np.asarray(config['extrinsic_calibration']['fisheye_D'])
+    pixels=cv2.fisheye.projectPoints(optical.reshape(1,2,3),np.zeros(3),np.zeros(3),k,d)[0].reshape(2,2)
+    return (pixels[0]-pixels[1]).tolist(),pixels.tolist()
+
 def analyze(raw,report,out):
     out.mkdir(parents=True,exist_ok=False)
     saved=json.loads(report.read_text()); b=json.loads((raw/'bundle.json').read_text())
@@ -32,7 +46,8 @@ def analyze(raw,report,out):
                 ex_m=errors[0] if errors else None,ey_m=errors[1] if errors else None,ea_rad=errors[2] if errors else None,
                 phase=score.get('phase'),commands=active,replayed_proposal=proposal,goal_distance_m=score.get('goal_distance_m'),
                 delta_forward_m=c*d[0]+s*d[1],delta_left_m=-s*d[0]+c*d[1],delta_yaw_rad=wrap(p1['robot_yaw_rad']-a),
-                pixel_error_status='pending own camera projection; metric errors are existing RGB fit',eval_only=True))
+                pixel_error_status='inverse projection of saved own-RGB fitted grip and fixed target through same static calibration',
+                pixel_error_xy=pixel_error(b['controller_config'],f['commanded_servo'],e['grip_base_m'])[0] if errors else None,eval_only=True))
         (out/f'{rid}-frames.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in table))
         close=[r for r in table if r['goal_distance_m'] is not None and r['goal_distance_m']<=.1]
         stationary=[r for r in close if not r['commands']]
