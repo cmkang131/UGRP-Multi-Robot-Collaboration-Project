@@ -112,6 +112,7 @@ def test_frozen_two_seed_limits_default_off_and_runtime_source_hash(monkeypatch)
     assert b['cap_sim_s']==b['case_cap_s']==900 and b['wall_cap_s']==18000
     assert b['route_source']=='test_route_provider' and b['legacy_authored_guard_provider']
     assert b['calibration_status']=='UNMEASURED_NEW_MAP'
+    assert b['final_release_guard']=='off'
     assert runner.TEMPLATE in b['source_sha256']
     for seed in (61001,61002):assert runner.bundle('0'*40,seed)['provider_seeds']['r1']==seed
     with pytest.raises(ValueError):runner.bundle('0'*40,14201)
@@ -127,6 +128,9 @@ def test_cohort_command_uses_both_seeds_same_candidate_persistent_outputs():
         assert args[args.index('--candidate')+1]=='visual'
     grouped=commands('a'*40,2,'visual',('off','saved_phase','local_servo'))
     assert len(grouped)==len({r['name'] for r,args in grouped})==6
+    grouped=commands('a'*40,3,'visual',('local_servo',),('off','supported_phase','floor_latch'))
+    assert len(grouped)==len({r['name'] for r,args in grouped})==6
+    assert {r['final_guard'] for r,args in grouped}=={'off','supported_phase','floor_latch'}
 
 
 def entrance_fixture():
@@ -167,3 +171,62 @@ def test_near_entrance_never_relaxes_stale_closed_far_or_later_stage(change):
     attach(ep,'local_servo');ep.controller._on_beam_obs(2.,beam)
     assert not any(a[1]=='test_local_alignment_owner' for a,k in log)
     with pytest.raises(ValueError):attach(ep,'local_servo',source='own_map')
+
+
+def floor_row():
+    return dict(t=419.65,states={'r1':'released','r2':'released'},
+        fingers={'r1':[True,True],'r2':[True,True]},floor_normal_n=2.934,
+        cargo_z_m=.015896,vertical_speed_m_s=-.0000116,cargo_tilt_deg=.0335,controller_feedback=False)
+
+
+def test_final_release_counterexample_is_floor_supported_before_OPEN_dispatch():
+    from sim.s3_setdown import supported_lower
+    from sim.e2e_s3_final_release import supported_final
+    row=floor_row()
+    assert supported_lower({**row,'states':{'r1':'wait_open','r2':'wait_open'}})
+    assert not supported_lower(row)
+    assert not supported_final(None,None)
+    for mode in ('supported_phase','floor_latch'):assert supported_final(row,True,mode)
+
+
+@pytest.mark.parametrize('change',('air','no_floor','fast','tilted','carry','mixed','not_final','nonfinite'))
+def test_final_release_classifier_never_admits_unsupported_or_nonfinal_rows(change):
+    from sim.e2e_s3_final_release import supported_final
+    row=floor_row();final=True
+    if change=='air':row['cargo_z_m']=.08
+    elif change=='no_floor':row['floor_normal_n']=0.
+    elif change=='fast':row['vertical_speed_m_s']=-.3
+    elif change=='tilted':row['cargo_tilt_deg']=10.
+    elif change=='carry':row['states']={'r1':'carry','r2':'carry'}
+    elif change=='mixed':row['states']['r2']='wait_open'
+    elif change=='not_final':final=False
+    elif change=='nonfinite':row['cargo_z_m']=float('nan')
+    for mode in ('off','supported_phase','floor_latch'):assert not supported_final(row,final,mode)
+
+
+def test_backend_final_guard_is_eval_only_and_latch_rearms_on_lost_floor(monkeypatch):
+    import numpy as np
+    from sim.e2e_s3_test import PhysicsBackend
+    from sim.s3_release_epoch import PhysicsBackend as Parent
+    from sim.zone_s3_no_prior import PhysicalStop
+    def legacy(self):
+        if 'beam_1' in self.lifted:raise PhysicalStop('LOAD_DROP:beam_1')
+    monkeypatch.setattr(Parent,'eval_sample',legacy)
+    for mode in ('off','supported_phase','floor_latch'):
+        host=PhysicsBackend.__new__(PhysicsBackend);row=floor_row();events=[]
+        host.bundle={'final_release_guard':mode};host.lifted={'beam_1'}
+        host.final_segment_getter=lambda:True;host.setdown_row=lambda:row
+        host.record_dynamics=lambda:events.append('dynamics');host.progress=lambda:events.append('progress')
+        host._append=lambda path,value:events.append((path,value))
+        host._box_geom={'beam_1':{0}}
+        host.world=SimpleNamespace(model=SimpleNamespace(geom_type=[6],geom_size=np.array([[.3,.02,.015]])),
+            data=SimpleNamespace(time=row['t'],geom_xmat=np.array([np.eye(3).ravel()]),geom_xpos=np.array([[4.6,-2.1,.015]])))
+        if mode=='off':
+            with pytest.raises(PhysicalStop):host.eval_sample()
+            assert not events
+            continue
+        host.eval_sample()
+        assert any(isinstance(x,tuple) and x[0]=='eval_only/final-release-classification.jsonl' and not x[1]['controller_feedback'] for x in events)
+        row['floor_normal_n']=0.
+        with pytest.raises(PhysicalStop):host.eval_sample()
+        assert 'beam_1' in host.lifted

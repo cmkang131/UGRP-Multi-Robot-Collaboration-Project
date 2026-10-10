@@ -31,8 +31,10 @@ PLAN = 'experiments/2026-10-11-e2e3-s3-route/registration.json'
 WORKFLOW = 'configs/simulation_workflows.d/e2e_s3_ownroute_v179.json'
 
 
-def bundle(sha,seed,option='off',candidate='visual',entrance='off'):
+def bundle(sha,seed,option='off',candidate='visual',entrance='off',final_guard='off'):
     from harness.e2e_s3_entrance import OPTIONS
+    from sim.e2e_s3_final_release import OPTIONS as FINAL_GUARDS
+    if final_guard not in FINAL_GUARDS:raise ValueError('UNKNOWN_FINAL_RELEASE_GUARD')
     if entrance not in OPTIONS:raise ValueError('UNKNOWN_TEST_ENTRANCE')
     if seed not in (61001,61002) or option not in ('off','on_v1') or candidate not in ('recovery','visual'):
         raise ValueError('registered own-route option/candidate/two seeds required')
@@ -44,7 +46,7 @@ def bundle(sha,seed,option='off',candidate='visual',entrance='off'):
         case='pair',check='e2e3-test-route',robot_model='masterpi_v3',weld=False,model_calls=0,
         stage_probe=True,research_result=False,physical_success=None,E2E_success=False,
         own_route_adapter=option,route_source='test_route_provider',registered_route=copy.deepcopy(WAYPOINTS),
-        test_entrance=entrance,
+        test_entrance=entrance,final_release_guard=final_guard,evaluation_version='e2e_supported_final_release_v1',
         route_case='e2e-beam-to-B',initial_condition=0,servo_option=FINE,cap_sim_s=900.,case_cap_s=900.,
         wall_cap_s=18000.,calibration_status='UNMEASURED_NEW_MAP',host='oracle-x86',render_backend='osmesa',
         legacy_authored_guard_provider=True,dialogue_connected=False,goal_rgb_inferred=False,
@@ -76,6 +78,7 @@ def run(b,out):
         for path,expected in b['source_sha256'].items():
             if hashlib.sha256((ROOT/path).read_bytes()).hexdigest()!=expected:raise ValueError('SOURCE_HASH_MISMATCH:'+path)
         host=PhysicsBackend(b,out,seed=b['seed']);host.states_getter=lambda:{r:ep.controller.state for r,ep in eps.items()}
+        host.final_segment_getter=lambda:len(eps)==2 and all(ep.controller.seg==len(ep.controller.segments)-1 for ep in eps.values())
         host.reset(b['reset_cap_s']);host.set_deadline(host.now+2.)
         from harness.owncam_pair_beam_v2 import pose_of
         for rid in ('r1','r2'):issue_stage_servos(host,rid,{1:2000,**pose_of('inspect')})
@@ -164,6 +167,8 @@ def main():
     p.add_argument('--candidate',choices=('recovery','visual'),default='visual');p.add_argument('--execute',action='store_true')
     from harness.e2e_s3_entrance import OPTIONS
     p.add_argument('--entrance',choices=OPTIONS,default='off')
+    from sim.e2e_s3_final_release import OPTIONS as FINAL_GUARDS
+    p.add_argument('--final-guard',choices=FINAL_GUARDS,default='off')
     a=p.parse_args()
     if not a.execute:print(json.dumps(dict(bundle_id=BUNDLE_ID,execution_started=False,adapter=a.own_route_adapter)));return 0
     if a.own_route_adapter=='off':raise ValueError('OWN_ROUTE_ADAPTER_OFF')
@@ -172,7 +177,7 @@ def main():
     if not a.output.resolve().is_relative_to(Path.home()/'ugrp-sim/runs'):raise ValueError('PERSISTENT_RUN_REQUIRED')
     from harness.zone_pair_highpose_exact_speedups import install
     _,undo=install('v98-exact-v6')
-    try:r=run(bundle(a.expected_source_sha,a.seed,a.own_route_adapter,a.candidate,a.entrance),a.output)
+    try:r=run(bundle(a.expected_source_sha,a.seed,a.own_route_adapter,a.candidate,a.entrance,a.final_guard),a.output)
     finally:undo()
     print(json.dumps(r));return int(r['status']!='DEV_STAGE_FINISHED')
 

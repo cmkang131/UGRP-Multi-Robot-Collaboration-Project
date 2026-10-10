@@ -14,12 +14,15 @@ from scripts.evaluate_e2e_s3_route import evaluate, file_sha
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def commands(sha,attempt,candidate,entrances=('off',)):
-    return [(dict(name=f'e2e3-{candidate}-{entrance}-s{seed}-r{attempt}',seed=seed,case='pair',candidate=candidate,entrance=entrance),
+def commands(sha,attempt,candidate,entrances=('off',),final_guards=('off',)):
+    def name(entrance,guard,seed):
+        suffix='' if final_guards==('off',) else '-'+guard
+        return f'e2e3-{candidate}-{entrance}{suffix}-s{seed}-r{attempt}'
+    return [(dict(name=name(entrance,guard,seed),seed=seed,case='pair',candidate=candidate,entrance=entrance,final_guard=guard),
         [sys.executable,'-m','scripts.run_e2e_s3_route','--expected-source-sha',sha,
-         '--output',f'outputs/e2e3-{candidate}-{entrance}-s{seed}-r{attempt}/raw','--seed',str(seed),
-         '--candidate',candidate,'--entrance',entrance,'--own-route-adapter','on_v1','--execute'])
-            for entrance in entrances for seed in (61001,61002)]
+         '--output',f'outputs/{name(entrance,guard,seed)}/raw','--seed',str(seed),
+         '--candidate',candidate,'--entrance',entrance,'--final-guard',guard,'--own-route-adapter','on_v1','--execute'])
+            for entrance in entrances for guard in final_guards for seed in (61001,61002)]
 
 
 def run_one(item,out,sha):
@@ -51,7 +54,9 @@ def main():
     p.add_argument('--candidate',choices=('visual','recovery'),default='visual');p.add_argument('--execute',action='store_true')
     from harness.e2e_s3_entrance import OPTIONS
     p.add_argument('--entrances',nargs='+',choices=OPTIONS,default=['off'])
-    a=p.parse_args();items=commands(a.expected_source_sha,a.attempt,a.candidate,a.entrances)
+    from sim.e2e_s3_final_release import OPTIONS as FINAL_GUARDS
+    p.add_argument('--final-guards',nargs='+',choices=FINAL_GUARDS,default=['off'])
+    a=p.parse_args();items=commands(a.expected_source_sha,a.attempt,a.candidate,tuple(a.entrances),tuple(a.final_guards))
     if not a.execute:print(json.dumps(items));return 0
     if (platform.system()!='Linux' or platform.machine()!='x86_64' or ROOT.name!=a.expected_source_sha
             or os.getpriority(os.PRIO_PROCESS,0)!=0 or os.environ.get('LP_NUM_THREADS')!='4'):

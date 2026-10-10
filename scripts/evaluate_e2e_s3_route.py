@@ -28,7 +28,7 @@ def evaluate(raw):
     for path,h in manifest.items():
         if file_sha(raw/path)!=h:raise ValueError('RAW_HASH_MISMATCH:'+path)
     base=dict(status=r['status'],seed=b['seed'],source_sha=b['source_sha'],source='test_route_provider',
-        entrance=b.get('test_entrance','off'),
+        entrance=b.get('test_entrance','off'),final_guard=b.get('final_release_guard','off'),
         E2E_success=False,research_result=False,wall_s=r['wall_s'],sim_s=r.get('check_sim_s',0.),
         failure=r.get('failure'),initial_check=read(raw.parent/'initial-check.json'),
         raw_path=str(raw),manifest_sha256=file_sha(raw/'artifacts.sha256.json'),

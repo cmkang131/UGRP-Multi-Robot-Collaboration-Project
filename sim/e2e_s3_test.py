@@ -67,7 +67,29 @@ class PhysicsBackend(Previous):
         return elapsed
 
     def eval_sample(self):
-        super().eval_sample()
+        from sim.e2e_s3_final_release import supported_final
+        from sim.zone_s3_no_prior import PhysicalStop
+        option=self.bundle.get('final_release_guard','off')
+        final=getattr(self,'final_segment_getter',lambda:False)()
+        row=self.setdown_row()
+        supported=supported_final(row,final,option)
+        if option=='floor_latch':
+            if supported:
+                self.lifted.discard('beam_1')
+                self._final_floor_latched=True
+            elif getattr(self,'_final_floor_latched',False):
+                # An unsupported next frame re-arms the unchanged drop guard.
+                self.lifted.add('beam_1');self._final_floor_latched=False
+        try:super().eval_sample()
+        except PhysicalStop as exc:
+            if option!='supported_phase' or str(exc)!='LOAD_DROP:beam_1' or not supported:raise
+            self.record_dynamics()
+            self._append('eval_only/setdown.jsonl',row)
+            self.progress()
+        if supported:
+            self._append('eval_only/final-release-classification.jsonl',dict(row,
+                option=option,classification='supported_final_release_before_OPEN_dispatch',
+                final_segment=True,free_fall=False,controller_feedback=False))
         import numpy as np
         m,d=self.world.model,self.world.data
         bounds=[]
