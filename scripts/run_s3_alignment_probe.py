@@ -14,6 +14,7 @@ ROOT=parent.ROOT
 RAW=Path('/Users/changmin/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152')
 ROBOTS=('r1','r2','r3')
 CAP=60.
+STAGE_T=560.
 
 def nearest(path,t,key='t'):
     best=None
@@ -25,7 +26,7 @@ def nearest(path,t,key='t'):
     return best
 
 def setup_record(raw,case):
-    t=532.1
+    t=STAGE_T
     data=dict(source=str(raw),source_t=t,checkpoint=False,classification='reconstructed stationary stage setup, not exact resume',
         truth=nearest(raw/'eval_only/referee_truth.jsonl',t),robots={})
     for rid in ROBOTS:
@@ -35,18 +36,24 @@ def setup_record(raw,case):
         # r3 never aligned in v152. Explicit SYNTHETIC stage entrance, using
         # saved cargo only in the setup owner. No pose is returned to control.
         box=data['truth']['items']['cyan_1'];p=data['robots']['r3']['pose']
-        p['robot_xyz_m'][:2]=[box['x']-.35,box['y']]
+        p['robot_xyz_m'][:2]=[box['x']-.24,box['y']]
         p['robot_yaw_rad']=0.
         from harness.owncam_pair_beam_v2 import pose_of
-        data['robots']['r3']['frame']['commanded_servo']={1:2000,**pose_of('search')}
+        data['robots']['r3']['frame']['commanded_servo']={1:2000,**pose_of('inspect')}
         data['classification']='synthetic r3 approach end in saved v152 scene; v152 had no r3 align entry'
     return data
 
 def bundle(sha,case,option):
     b=parent.bundle(sha)
+    if case=='cyan':
+        from harness.path_heading_policy import VISUAL_LOCK
+        # Both comparison arms isolate local RGB alignment from the omitted
+        # mission's map-slot admission; no global pose is fabricated.
+        b['controller_config']['options']['heading_visual_lock']=VISUAL_LOCK
+        b['options']['heading_visual_lock']=VISUAL_LOCK
     b.update(execution_bundle_id=BUNDLE_ID,schema='ugrp.s3_alignment_probe.v153',source_sha=sha,
         case=case,servo_option=option,case_cap_s=CAP,wall_cap_s=1800.,stage_probe=True,
-        source_raw=str(RAW),known_start_information=False,research_result=False)
+        source_raw=str(RAW),stage_source_t=STAGE_T,known_start_information=False,research_result=False)
     from harness.python_source_closure import source_closure
     paths=set(b['source_sha256'])|set(source_closure(ROOT,['scripts/run_s3_alignment_probe.py','harness/zone_s3_visual_pose_servo.py']))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
@@ -99,7 +106,7 @@ def run(b,out):
     out.mkdir(parents=True,exist_ok=False);write(out/'bundle.json',b);write(out/'environment.json',environment_record())
     result=dict(status='HOST_ERROR',stage_probe=True,research_result=False,model_calls=0,source_sha=b['source_sha'],
         case=b['case'],servo_option=b['servo_option'],gt_inputs=False,loadavg_start=os.getloadavg())
-    started=time.monotonic();host=rt=None;states=[];entry=None;eps={}
+    started=time.monotonic();host=rt=None;states=[];entry=None;eps={};closed_since=None
     try:
         host=PhysicsBackend(b,out,seed=b['seed']);host.reset(b['reset_cap_s'])
         restore_scene(host,setup_record(RAW,b['case']))
@@ -127,21 +134,25 @@ def run(b,out):
                 entry=now
             actions=[]
             if entry is not None:
-                if b['case']=='pair':
+                if closed_since is not None:
+                    if now-closed_since>=1.-1e-8:break
+                elif b['case']=='pair':
                     pair=rt.pair.producer
                     actions=pair.step(now)+pair.arm_step(now)
                     current={r:dict(state=ep.controller.state,blind_phase=getattr(ep.controller,'blind_phase',None),failure=ep.controller.failure,servo=dict(ep.own.servo)) for r,ep in eps.items()}
                 else:
                     own=rt.localizers['r3'];actions=own.step(now)
                     current={'r3':dict(state=own.state,failure=own.failure,servo=dict(own.servo))}
-                states.append(dict(t=now,robots=current))
+                states.append(dict(t=now,robots=copy.deepcopy(current)))
                 for rid,action in actions:
                     host.issue(rid,action);rt.on_command(rid,now,action)
                 if any(v['failure'] for v in current.values()):break
-                # Stop after actual commanded close and settle; no teacher lift.
-                if all(v['servo'].get(1,2000)<=1600 and v['state'] not in ('align','align_start') for v in current.values()):break
+                # Keep rendering/evaluation for one full second after close.
+                # Freeze further controller actions, so this cannot authorize lift.
+                if closed_since is None and all(v['servo'].get(1,2000)<=1600 and v['state'] not in ('align','align_start') for v in current.values()):
+                    closed_since=now
             host.advance_to(start+(i+1)*.05)
-        result.update(status='DEV_STAGE_FINISHED',check_sim_s=host.now-start,entry_sim_s=entry,
+        result.update(status='DEV_STAGE_FINISHED',check_sim_s=host.now-start,entry_sim_s=entry,close_settle_s=None if closed_since is None else host.now-closed_since,
             final={r:dict(state=ep.controller.state,failure=ep.controller.failure) for r,ep in eps.items()} if eps else {'r3':dict(state=rt.localizers['r3'].state,failure=rt.localizers['r3'].failure)})
     except Exception:
         result['failure']=traceback.format_exc()

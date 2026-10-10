@@ -77,3 +77,17 @@ def test_no_action_penalty_dead_zone_outside_original_tolerance():
     e=[-.003063845889049094,-.003210532023583606,-.03039554654342916]
     a,p,r=s(ps,e)
     assert p is not None and r['after']<r['before']
+
+def test_reconstructed_stage_is_near_and_uses_existing_cyan_view(monkeypatch):
+    from scripts import run_s3_alignment_probe as probe
+    from harness.owncam_pair_beam_v2 import pose_of
+    def nearest(path,t,key='t'):
+        assert t==560.
+        if path.name=='referee_truth.jsonl':return {'items':{'cyan_1':{'x':-.2,'y':-2.45}}}
+        if path.name=='trajectory.jsonl':return {'robot_xyz_m':[0.,0.,.1],'robot_yaw_rad':1.}
+        return {'commanded_servo':{}}
+    monkeypatch.setattr(probe,'nearest',nearest)
+    setup=probe.setup_record(Path('unused'),'cyan')
+    assert setup['robots']['r3']['pose']['robot_xyz_m'][:2]==pytest.approx([-.44,-2.45])
+    assert setup['robots']['r3']['frame']['commanded_servo']=={1:2000,**pose_of('inspect')}
+    assert not setup['checkpoint'] and 'synthetic' in setup['classification']
