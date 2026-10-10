@@ -55,7 +55,7 @@ r3 새 `continue` 출발 허가, r3 물리 집기·상승·운반 명령 연결�
 | leader_ko | 7 | 42,699 / 710 / 43,409 | 525.27 | 5.06 / 13.29 | 1298 | 1.0044 |
 | structured | 7 | 43,423 / 873 / 44,589 | 572.46 | 5.23 / 64.49 | 1299 | 1.0044 |
 
-- **결정→명령:** 모든 조건 r3 `call-0003-r3` claim → align/pick/lift, `call-0004-r3` continue → 운반 허가. 출발 창은 no_comm/leader/structured 31.35 SIM초, peer 32.65초에 열렸고 각각 34.55/34.65/34.55/35.85초에 허가됐다. 명령별 실제 응답 call_id·해제 시각 위반0. 출발 허가를 가진 이동 명령은 118/122/118/118개다.
+- **결정→명령:** 모든 조건 r3 `call-0003-r3` claim → align/pick/lift, `call-0004-r3` continue → 운반 허가. 출발 창은 no_comm/leader/structured 31.35 SIM초, peer 32.65초에 열렸고 각각 34.55/34.65/34.55/35.85초에 허가됐다. 명령별 실제 응답 call_id·해제 시각 위반0. 출발 허가를 가진 이동 명령은 118/122/118/118개다. 추가 사후 대조에서 원문 action과 dispatch31건이 모두 같고, carry 상태의 이동476건 전부 실제 허가 해제 뒤에 발행됐다([대조 기록](command-gate-audit.json)).
 - **물리 범위:** 최대 cyan COM 높이 약0.1603m. 이동은 두 손가락 접촉이 있고 COM>0.06m인 평가 표본의 처음 위치에서 최대 XY 거리다. 배달·정착/실물/E2E 성공이 아니며 `physical_success=null`, `research_result=false`. r1/r2는 claim-only이고 빔 이동/GO는 실행하지 않았다.
 - **오류·지연:** API 오류0, 형식 실패0. 네 조건 모두 나중에 온 continue 1건씩은 닫힌 출발 창으로 거절됐고 기존 허가를 바꾸지 않았다. 429·비정상 completion·잘못된 claim·허가 전/만료 응답 거절은 오프라인에서 검증했다. 실제 고장 주입은 하지 않았다.
 - **시계 경계:** no_comm 최초 r3 응답은 wall129.58초, structured 재응답은64.49초였다. 기존 scheduler는 토큰 기반 SIM 비용으로 응답을 해제하고 실제 HTTP wall 지연은 별도 기록한다. 10 SIM초 출발 제한은 실시간 wall deadline 검증이 아니다. 이 한 번의 시간 차이를 통신 효율 차이로 해석하지 않는다.
