@@ -1,0 +1,24 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-route-resume-v172",
+      "version": "7.65.0",
+      "purpose": "Default-off multi-route terminal release and calibrated inspect-before-look",
+      "entry": "scripts/run_s3_route_resume.py",
+      "runner": "scripts.run_s3_route_resume",
+      "docs": "experiments/2026-10-11-s3-route-resume/README.md",
+      "requires": "committed oracle-x86 OSMesa LP4; persistent runs; load<51 memory>=6GiB",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--condition",
+        "--route-case",
+        "--seed"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}
