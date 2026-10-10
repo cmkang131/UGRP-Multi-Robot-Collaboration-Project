@@ -94,10 +94,66 @@ python -m scripts.run_s3_settled_probe --expected-source-sha "$SHA" \
 
 ## 결과
 
-본10개 미실행. 첫 경로 확인의 물리 시작 전 결함을 수정한 뒤 고정 목록을 실행한다.
+아래 고정10개를 `5e78ab3c049f37b6d9a7aa6b5e688e613a5cef8a`로 x86에서 동시에 실행하고 전체 종료 후 평가했다. **미채택:** 회전 반전은 없어졌지만 원래 정렬 문턱/집기에 도달하지 못했고 cyan c0가 회귀했다. 기본값은 계속 off다.
 
 실행 전 검증: 변경 controller/runner와 workflow의 관련2파일 선별9개 PASS(18.03s). 처음 pair motor-stub 회귀에서 감사 dict의 중복 errors키를 발견해 control_errors로 분리한 뒤 전부 재통과했다. 실제 물리로 결함을 탐색하지 않았다.
 
 경로 확인 `s3fix13-pathcheck-r1`(0db2d591): 물리 시작 전 FunctionType 재바인딩에 functools.partial을 넘겨 EXIT1(21.72wall초, 물리0). 새 함수의 keyword defaults에 solo hook을 고정하도록 수정했다. pair/cyan 실제 probe 루프를 physics stub으로 끝까지 통과시키는 회귀를 추가했다. 수정 후 `s3fix13-pathcheck-r2`로 동일 pair/C0/seed14201/네 flags/최대7.35SIM초 경로 확인1회, 조건 변경 없이 본10개를 전송한다. 원본 COMMAND/SOURCE_SHA/log/EXIT는 primary outputs/oracle-runs/s3fix13-pathcheck-r1/에 보존한다.
 
 수정 후 관련2시험 파일 선별11개 PASS(56.46s), pair/cyan 중첩 바인딩과 실제5SIM초 루프를 physics stub으로 검증했다.
+
+### 동일 조건 전/후
+
+본 묶음10/10은 EXIT0/HOST_ERROR0, 각각60SIM초/dev_light. pair 성공0/6→0/6(각 로봇0/6), 이번 cyan 대응 부분집합 c0/c3/c4/c5의 집기 성공1/4→0/4다. 기존 전체 cyan3/6과 새4개를 같은 분모로 합산하지 않는다. 이전 c4는9SIM초의 스케줄링 HOST_ERROR였으므로 성공/시간의 순수 정책 비교에 포함하지 않는다.
+모든 후보에서 평가 RGB 표본의 원래 문턱 도달 시각·hover·하강·닫기·lift·carry는 미도달(null)이다. pair의 네 손가락 접촉+COM>.06m 상승0표본, cyan 두 손가락 접촉 상승0표본(각 최대COM .015892m). 임무/배송 성공0이며 전체 E2E를 실행하지 않았다.
+
+|조건/로봇|회전 반전 전→후|최종 자기 RGB 오차 x/y mm, yaw rad|미세 펄스 생략 횟수|문턱/hover/하강/닫기|
+|---|---:|---:|---:|---|
+|cyan c0 / r3|0→0|8.437 / -0.241 / 0.00000|292|미도달 / 미도달 / 미도달 / 미도달|
+|cyan c3 / r3|145→0|8.491 / -11.545 / 0.00000|292|미도달 / 미도달 / 미도달 / 미도달|
+|cyan c4 / r3|18→0|8.600 / 1.860 / 0.00000|292|미도달 / 미도달 / 미도달 / 미도달|
+|cyan c5 / r3|146→0|8.026 / 9.412 / 0.00000|292|미도달 / 미도달 / 미도달 / 미도달|
+|pair c0 / r1|139→0|7.749 / -23.272 / 0.04071|141|미도달 / 미도달 / 미도달 / 미도달|
+|pair c0 / r2|141→0|9.737 / -37.950 / 0.00608|140|미도달 / 미도달 / 미도달 / 미도달|
+|pair c1 / r1|139→0|8.189 / -22.293 / 0.03806|142|미도달 / 미도달 / 미도달 / 미도달|
+|pair c1 / r2|139→0|10.622 / -42.219 / -0.02026|141|미도달 / 미도달 / 미도달 / 미도달|
+|pair c2 / r1|141→0|6.514 / -19.497 / 0.06843|140|미도달 / 미도달 / 미도달 / 미도달|
+|pair c2 / r2|135→0|9.550 / -38.719 / 0.00444|138|미도달 / 미도달 / 미도달 / 미도달|
+|pair c3 / r1|141→0|6.636 / -34.894 / 0.03425|141|미도달 / 미도달 / 미도달 / 미도달|
+|pair c3 / r2|141→0|39.774 / -28.222 / 0.09131|144|미도달 / 미도달 / 미도달 / 미도달|
+|pair c4 / r1|139→0|8.797 / -20.148 / 0.00200|141|미도달 / 미도달 / 미도달 / 미도달|
+|pair c4 / r2|138→0|39.461 / -13.495 / 0.06297|144|미도달 / 미도달 / 미도달 / 미도달|
+|pair c5 / r1|117→0|20.899 / -14.503 / 0.07624|142|미도달 / 미도달 / 미도달 / 미도달|
+|pair c5 / r2|141→0|11.256 / -28.631 / 0.05073|140|미도달 / 미도달 / 미도달 / 미도달|
+
+위 오차는 자기 RGB로 계산한 집게 목표 오차이며 PF/GT 위치 오차가 아니다. '문턱 미도달'은 저장된 평가/결정 RGB 표본에서 조건을 만족한 표본이 없다는 뜻이다. null을0초로 바꾸지 않았다. 기존 cyan c0는 hover5.15/하강6.45/닫기8.10/lift8.55/carry30.35SIM초였으나 새 후보는 전부 null이다.
+
+실패 원인은 **양자화가 큰 기존 vocabulary에 gain1 길이 내림과 회전 우선 정책을 적용해 잔여 오차에서 hold가 고착된 것**이다. 예를 들어 cyan c0는 두 전진 펄스 뒤 x오차8.437mm인데 보정 최소 전진12.917mm라 요청 길이 .065317초<합법 .10초를292회 생략했다. pair c3/r2는 yaw .091305rad에 보정 최소 .093709rad, 요청 .097435초<.10초여서144회 hold하고 병진으로 넘어가지 않았다. 이 사례는 최소 한 펄스가 오히려 원래 yaw 허용 구간 안에 들어갈 수도 있으므로 **모든 실패가 물리적으로 불가능하다는 주장은 하지 않는다**. 엄격한 내림/회전 우선 제어 정책의 막힘과 입력 분해능 한계를 함께 드러낸 결과다. 문턱·seed·모델을 결과 뒤에 바꾸거나 재실행하지 않았다.
+
+### 시간·원본·검증
+
+|실행|wall초 / SIM초|wall/SIM|
+|---|---:|---:|
+|s3fix13-cyan-c0-r1|385.994 / 60.00|6.433|
+|s3fix13-cyan-c3-r1|383.094 / 60.00|6.385|
+|s3fix13-cyan-c4-r1|383.507 / 60.00|6.392|
+|s3fix13-cyan-c5-r1|387.564 / 60.00|6.459|
+|s3fix13-pair-c0-r1|349.236 / 60.00|5.821|
+|s3fix13-pair-c1-r1|309.340 / 60.00|5.156|
+|s3fix13-pair-c2-r1|313.659 / 60.00|5.228|
+|s3fix13-pair-c3-r1|326.825 / 60.00|5.447|
+|s3fix13-pair-c4-r1|376.057 / 60.00|6.268|
+|s3fix13-pair-c5-r1|319.810 / 60.00|5.330|
+
+새 pair c0 시간 분해 한 줄: 3대 RGB3,600회 렌더 90.053초(25.8%), 물리 93.279초(26.7%), 기록 append 0.983초(0.28%); 렌더 포함 capture 98.604초이며 나머지 제어·초기화는 미분해, 최적화0.
+
+- [전체 결과](candidate-summary.json), [로봇별 전/후·생략 횟수](comparison.json), [회수 검증](retrieval.json). 본 raw36,354파일 및 경로 확인 r2 raw335파일 해시 일치. 두 경로 확인은 본10개의 분모에서 제외한다.
+- 실행 raw: primary `outputs/oracle-runs/s3fix13-batch-r1/cohort/<name>/raw/`; 평가 RGB/표/4배속 영상: `outputs/oracle-runs/s3fix13-evaluation-r1/reports/<name>/`. x86 원본도 그대로 보존하며 로컬 회수를 Git raw 백업으로 표현하지 않는다.
+- 새 경로 확인 r2: EXIT0,5.00SIM초(초기화 포함7.35), stage wall31.686초/전체 process53.91초. 첫 r1의 물리 전 HOST_ERROR는 실행기 결함으로 따로 보존·표시한다.
+- 원래 후보11회귀 PASS 이후 소스 고정, 실행/평가10개 모두 완료. 네 옵션 기본 off·기존 함수 identity 유지와 실제 port 계약, pair/cyan 중첩 runner 경로를 시험했다. 기존 중앙 workflow JSON은 origin/main과 바이트 동일이다. CI 대기·병합0.
+
+다음 물리 제안(이번에는 실행하지 않음): 최소 .10초 계약을 지키면서 원래 허용 구간으로 도달 가능한 보정 pulse 집합/선택 규칙을 먼저 오프라인 설계하고, 정착 시간·이력 조건을 포함한 전체 보정 묶음의 사전 기준을 통과한 경우에만 같은 단계 묶음을 재시험한다. 기각 trim 모델을 사후 일부 채택하지 않는다.
+
+### TensorBoard 전달
+
+[기준·후보 비교 대시보드](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22evaluation%2Freported_success%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhover_n%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fr1%2Fturn_reversals%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fr2%2Fturn_reversals%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhost_errors%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E%281010-s3fix11-x86-baseline-v2%7C1010-s3fix13-settled-v1%29%2F#timeseries) · [대표 pair c0 4배속 영상](http://127.0.0.1:6007/video/77d844cd3b701099a8d0). 새 스냅샷 `1010-s3fix13-settled-v1`은 본10개+경로 확인2개이며, 기존 baseline12개와 함께24개를 표시했다. 새266scalar의 EventAccumulator/실제 서버 값 일치,10영상 Range206·전체 해시 및 대표15초 영상 실제 재생을 확인했다. 핀9개/HParams case·policy·seed·source_sha4열 적용. [검증 기록](tensorboard-verification.json). 다른 공용 뷰 키·기존 snapshot/서버는 유지했다.
