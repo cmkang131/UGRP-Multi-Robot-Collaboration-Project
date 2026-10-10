@@ -1,16 +1,554 @@
 {
   "round": "egomap70",
-  "status": "CALIBRATION_FIXTURE_FIX",
-  "source_sha": "8938a9c81052be5e93e2374c305cf9b61643d3ee",
-  "measurement_source": "971db97cefbe15296c5067ed419e466376f011b2",
+  "status": "CALIBRATION_QUALIFIED_EVALUATION_PENDING",
+  "source_sha": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
+  "measurement_source": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
   "host": "oracle-x86",
   "calibration": {
     "registered": 5,
-    "started": 10,
-    "completed": 10,
+    "started": 15,
+    "completed": 15,
     "host_errors": 5,
-    "valid": 0,
-    "physical_failures": 5
+    "valid": 5,
+    "physical_failures": 5,
+    "fit_seeds": [
+      70001,
+      70002,
+      70003
+    ],
+    "check_seeds": [
+      70004,
+      70005
+    ],
+    "qualification": {
+      "checks": [
+        {
+          "direction": 1,
+          "kind": "isolated",
+          "n": 10,
+          "actual_mean_m": -0.0003168350766557729,
+          "old_m": -0.002817502506441061,
+          "new_m": -0.00032507835548692773,
+          "old_rmse_m": 0.002528404919750669,
+          "new_rmse_m": 0.00037357970431531296
+        },
+        {
+          "direction": 1,
+          "kind": "continuous",
+          "n": 40,
+          "actual_mean_m": -0.00033273153556474756,
+          "old_m": -0.002817502506441061,
+          "new_m": -0.00032507835548692773,
+          "old_rmse_m": 0.0025142475504472015,
+          "new_rmse_m": 0.0003839434051855016
+        },
+        {
+          "direction": 1,
+          "kind": "square",
+          "n": 120,
+          "actual_mean_m": -0.0002793937817535506,
+          "old_m": -0.002817502506441061,
+          "new_m": -0.00032507835548692773,
+          "old_rmse_m": 0.0025917211408120985,
+          "new_rmse_m": 0.0005264120569237608
+        },
+        {
+          "direction": -1,
+          "kind": "isolated",
+          "n": 10,
+          "actual_mean_m": 0.00035220089202070263,
+          "old_m": -0.00180546293923522,
+          "new_m": 0.00030087523621077987,
+          "old_rmse_m": 0.0021903139373389115,
+          "new_rmse_m": 0.0003802581469678418
+        },
+        {
+          "direction": -1,
+          "kind": "continuous",
+          "n": 40,
+          "actual_mean_m": 0.00030563002096511234,
+          "old_m": -0.00180546293923522,
+          "new_m": 0.00030087523621077987,
+          "old_rmse_m": 0.002150107622414692,
+          "new_rmse_m": 0.00040776452682451237
+        },
+        {
+          "direction": -1,
+          "kind": "square",
+          "n": 120,
+          "actual_mean_m": 0.00028499374942538534,
+          "old_m": -0.00180546293923522,
+          "new_m": 0.00030087523621077987,
+          "old_rmse_m": 0.002147706941609047,
+          "new_rmse_m": 0.0004928368507856704
+        }
+      ],
+      "gate": true,
+      "rule": "heldout turn lateral RMSE does not increase, each sign x isolated/continuous/square",
+      "thresholds_changed": false
+    },
+    "artifact_sha256": "9a3d06f5bdecc9bd709c7b4cfc0c33da3b8809aab5206cbec3fc6b9d1bf2f3bf",
+    "receipts": [
+      {
+        "seed": 70001,
+        "status": "RECORDED",
+        "host": "oracle-x86",
+        "source_sha": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "sim_s": 126.0,
+        "pulses": 330,
+        "wall_s": 140.28909047499837,
+        "manifest_sha256": "9807542b9223feb73cc3b327a9d35a38e441649dc5109520ffd7bd4f404d95ae",
+        "verified_files": 51,
+        "mismatches": [],
+        "displacement_m": 0.37288204938804087,
+        "preflight": {
+          "spawn": [
+            3.5,
+            -0.85,
+            0.0
+          ],
+          "minimum_clearance_m": 1.0965135650830153,
+          "cad_radius_m": 0.17823725323817918,
+          "gt_runtime_feedback": false,
+          "setup_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+        }
+      },
+      {
+        "seed": 70002,
+        "status": "RECORDED",
+        "host": "oracle-x86",
+        "source_sha": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "sim_s": 126.0,
+        "pulses": 330,
+        "wall_s": 148.0639929179997,
+        "manifest_sha256": "0b13a1c624087fdc81e5cee0f56e046b1d55ed36e6bc592bdbaf21b2c8e85b38",
+        "verified_files": 51,
+        "mismatches": [],
+        "displacement_m": 0.38393093168180975,
+        "preflight": {
+          "spawn": [
+            3.5,
+            -0.85,
+            0.0
+          ],
+          "minimum_clearance_m": 0.9713956556236288,
+          "cad_radius_m": 0.17823725323817918,
+          "gt_runtime_feedback": false,
+          "setup_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+        }
+      },
+      {
+        "seed": 70003,
+        "status": "RECORDED",
+        "host": "oracle-x86",
+        "source_sha": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "sim_s": 126.0,
+        "pulses": 330,
+        "wall_s": 140.90404145200228,
+        "manifest_sha256": "6bf88d69775282a9bdb5a7b734c2a94d79f976c801bffda91bb728b9a2cf73bd",
+        "verified_files": 51,
+        "mismatches": [],
+        "displacement_m": 0.38399460583569345,
+        "preflight": {
+          "spawn": [
+            3.5,
+            -0.85,
+            0.0
+          ],
+          "minimum_clearance_m": 1.0965135650830153,
+          "cad_radius_m": 0.17823725323817918,
+          "gt_runtime_feedback": false,
+          "setup_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+        }
+      },
+      {
+        "seed": 70004,
+        "status": "RECORDED",
+        "host": "oracle-x86",
+        "source_sha": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "sim_s": 126.0,
+        "pulses": 330,
+        "wall_s": 143.36821932800012,
+        "manifest_sha256": "6baad96b5a7e39330de129b326fc759008bc74436d365c4ca43c322019e971ae",
+        "verified_files": 51,
+        "mismatches": [],
+        "displacement_m": 0.36864089464115674,
+        "preflight": {
+          "spawn": [
+            3.5,
+            -0.85,
+            0.0
+          ],
+          "minimum_clearance_m": 0.9713956556236288,
+          "cad_radius_m": 0.17823725323817918,
+          "gt_runtime_feedback": false,
+          "setup_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+        }
+      },
+      {
+        "seed": 70005,
+        "status": "RECORDED",
+        "host": "oracle-x86",
+        "source_sha": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
+        "gt_feedback": false,
+        "model_calls": 0,
+        "start_sim_s": 1.3,
+        "sim_s": 126.0,
+        "pulses": 330,
+        "wall_s": 141.92194082700007,
+        "manifest_sha256": "d715adfb67e14513ae24177cd2b1e6a78c37843d666051e385ef01dfb7e05202",
+        "verified_files": 51,
+        "mismatches": [],
+        "displacement_m": 0.36833130785669915,
+        "preflight": {
+          "spawn": [
+            3.5,
+            -0.85,
+            0.0
+          ],
+          "minimum_clearance_m": 1.0965135650830153,
+          "cad_radius_m": 0.17823725323817918,
+          "gt_runtime_feedback": false,
+          "setup_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+        }
+      }
+    ],
+    "initial_checks": [
+      {
+        "seed": 70001,
+        "age_s": 141.02451095099968,
+        "completed_before_180s": true,
+        "progress": {
+          "sim_s": 125.0,
+          "tick": 2500
+        },
+        "eval_samples": 2521,
+        "log_exception": false
+      },
+      {
+        "seed": 70003,
+        "age_s": 144.04235564499686,
+        "completed_before_180s": true,
+        "progress": {
+          "sim_s": 125.0,
+          "tick": 2500
+        },
+        "eval_samples": 2521,
+        "log_exception": false
+      },
+      {
+        "seed": 70002,
+        "age_s": 150.0644241739974,
+        "completed_before_180s": true,
+        "progress": {
+          "sim_s": 125.0,
+          "tick": 2500
+        },
+        "eval_samples": 2521,
+        "log_exception": false
+      },
+      {
+        "seed": 70004,
+        "age_s": 144.1260605949974,
+        "completed_before_180s": true,
+        "progress": {
+          "sim_s": 125.0,
+          "tick": 2500
+        },
+        "eval_samples": 2521,
+        "log_exception": false
+      },
+      {
+        "seed": 70005,
+        "age_s": 144.1452272409988,
+        "completed_before_180s": true,
+        "progress": {
+          "sim_s": 125.0,
+          "tick": 2500
+        },
+        "eval_samples": 2521,
+        "log_exception": false
+      }
+    ],
+    "square_validation": {
+      "gt_evaluation_only": true,
+      "fit_uses_squares": false,
+      "rows": [
+        {
+          "seed": 70001,
+          "split": "fit",
+          "direction": 1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.011231722188248543,
+            -0.002689584765514562
+          ],
+          "predictions": {
+            "off": [
+              -0.011279226918051569,
+              0.01568715228578547,
+              -0.0940803948105331
+            ],
+            "on": [
+              -0.011509964699950534,
+              0.013427286485591284,
+              -0.0940803948105331
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.018376798452178145,
+            "on": 0.01611927286883749
+          }
+        },
+        {
+          "seed": 70001,
+          "split": "fit",
+          "direction": -1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.00971741026478983,
+            -0.005677414152687486
+          ],
+          "predictions": {
+            "off": [
+              -0.0058483559485653595,
+              -0.004935449183856392,
+              0.04479985567372324
+            ],
+            "on": [
+              -0.005783668396515405,
+              -0.005841773107694673,
+              0.04479985567372324
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.0039395549643161136,
+            "on": 0.003937173980446663
+          }
+        },
+        {
+          "seed": 70002,
+          "split": "fit",
+          "direction": 1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.016161585012526597,
+            0.008747212998936077
+          ],
+          "predictions": {
+            "off": [
+              -0.011279226918051569,
+              0.01568715228578547,
+              -0.0940803948105331
+            ],
+            "on": [
+              -0.011509964699950534,
+              0.013427286485591284,
+              -0.0940803948105331
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.00848529185519517,
+            "on": 0.00659853463830139
+          }
+        },
+        {
+          "seed": 70002,
+          "split": "fit",
+          "direction": -1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.001508323081345457,
+            0.009044117332053818
+          ],
+          "predictions": {
+            "off": [
+              -0.0058483559485653595,
+              -0.004935449183856392,
+              0.04479985567372324
+            ],
+            "on": [
+              -0.005783668396515405,
+              -0.005841773107694673,
+              0.04479985567372324
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.014637765036415461,
+            "on": 0.01548768258159177
+          }
+        },
+        {
+          "seed": 70003,
+          "split": "fit",
+          "direction": 1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.00192070851780481,
+            0.0014813690093020383
+          ],
+          "predictions": {
+            "off": [
+              -0.011279226918051569,
+              0.01568715228578547,
+              -0.0940803948105331
+            ],
+            "on": [
+              -0.011509964699950534,
+              0.013427286485591284,
+              -0.0940803948105331
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.017011353419001486,
+            "on": 0.015318576254898261
+          }
+        },
+        {
+          "seed": 70003,
+          "split": "fit",
+          "direction": -1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.012442760292229873,
+            -0.020026387966136098
+          ],
+          "predictions": {
+            "off": [
+              -0.0058483559485653595,
+              -0.004935449183856392,
+              0.04479985567372324
+            ],
+            "on": [
+              -0.005783668396515405,
+              -0.005841773107694673,
+              0.04479985567372324
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.016468837298918678,
+            "on": 0.015669933106362877
+          }
+        },
+        {
+          "seed": 70004,
+          "split": "check",
+          "direction": 1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.004430037380648251,
+            0.005926633434100523
+          ],
+          "predictions": {
+            "off": [
+              -0.011279226918051569,
+              0.01568715228578547,
+              -0.0940803948105331
+            ],
+            "on": [
+              -0.011509964699950534,
+              0.013427286485591284,
+              -0.0940803948105331
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.011923888861163221,
+            "on": 0.010314318544888968
+          }
+        },
+        {
+          "seed": 70004,
+          "split": "check",
+          "direction": -1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.013595162771208697,
+            -0.009881350900247412
+          ],
+          "predictions": {
+            "off": [
+              -0.0058483559485653595,
+              -0.004935449183856392,
+              0.04479985567372324
+            ],
+            "on": [
+              -0.005783668396515405,
+              -0.005841773107694673,
+              0.04479985567372324
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.009191026043677223,
+            "on": 0.008794181775921521
+          }
+        },
+        {
+          "seed": 70005,
+          "split": "check",
+          "direction": 1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.015603036914779739,
+            0.009745992315956043
+          ],
+          "predictions": {
+            "off": [
+              -0.011279226918051569,
+              0.01568715228578547,
+              -0.0940803948105331
+            ],
+            "on": [
+              -0.011509964699950534,
+              0.013427286485591284,
+              -0.0940803948105331
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.007347973508043566,
+            "on": 0.005505012890011909
+          }
+        },
+        {
+          "seed": 70005,
+          "split": "check",
+          "direction": -1,
+          "pulses": 140,
+          "actual_closure_xy_m": [
+            -0.027660935021358038,
+            -0.00839319516471592
+          ],
+          "predictions": {
+            "off": [
+              -0.0058483559485653595,
+              -0.004935449183856392,
+              0.04479985567372324
+            ],
+            "on": [
+              -0.005783668396515405,
+              -0.005841773107694673,
+              0.04479985567372324
+            ]
+          },
+          "endpoint_error_m": {
+            "off": 0.022084940866458833,
+            "on": 0.022025543114472974
+          }
+        }
+      ],
+      "calibration_sha256": "9a3d06f5bdecc9bd709c7b4cfc0c33da3b8809aab5206cbec3fc6b9d1bf2f3bf"
+    }
   },
   "evaluation": {
     "registered": 24,
@@ -19,18 +557,20 @@
   },
   "local_tests": {
     "files": 2,
-    "passed": 17
+    "passed": 18
   },
-  "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration/data",
+  "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration-v3/data",
   "references": {
     "paper_pdf_sha256": "67fcfe5bf700a54eb8b27ff4db984cf3aa6ba434a8c396f308c1c59003ae20a5",
     "read_pages": [
       872,
       874
-    ]
+    ],
+    "footprint": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_costmap_2d/src/footprint.cpp#L40-L66",
+    "footprint_adaptation": "CAD circumscribed radius; .02m padding is existing repo value, not claimed Nav2 default"
   },
   "results_not_yet_available": true,
-  "reason": "load average exceeds 51; no other processes modified",
+  "reason": "Independent holdout 6/6 qualified; evaluation not started",
   "pre_execution_color_diagnostic": {
     "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-delivery/data/prefix-color-diagnostic.json",
     "sha256": "d9887defd38f8ab25c5e02ba649c0cb883a5f5e6a124b89ed37cb1844bed31af",
@@ -238,5 +778,11 @@
     "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-calibration-v2/data",
     "fit_used": false,
     "repeat": "same maneuvers and split, central setup spawn and preflight v3"
+  },
+  "preservation": {
+    "arm": "/home/ubuntu/ugrp-sim/arm/egomap70-calibration-v3",
+    "raw_manifest_files_verified": 255,
+    "rsync_checksum_mismatches": 0,
+    "mac": "fetch-lite compact metadata only"
   }
 }

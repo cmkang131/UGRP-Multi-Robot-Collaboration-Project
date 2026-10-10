@@ -78,3 +78,14 @@ def test_CAD_swept_radius_rejects_old_north_start_and_admits_central_fixture():
     for seed in (70001,70002):
         record=preflight(seed)
         assert record['minimum_clearance_m']>.5 and record['cad_radius_m']>.15
+
+
+def test_frozen_independent_artifact_and_holdout_receipts():
+    data=json.loads(m.ARTIFACT.read_text());model,digest=m.load()
+    assert digest=='9a3d06f5bdecc9bd709c7b4cfc0c33da3b8809aab5206cbec3fc6b9d1bf2f3bf'
+    assert data['fit_seeds']==[70001,70002,70003]
+    assert data['check_seeds']==[70004,70005]
+    assert len(data['qualification']['checks'])==6
+    assert all(x['new_rmse_m']<=x['old_rmse_m'] for x in data['qualification']['checks'])
+    assert model['profiles']['0:turn:0.35:0.10']['mean_delta'][1]<0
+    assert model['profiles']['0:turn:-0.35:0.10']['mean_delta'][1]>0
