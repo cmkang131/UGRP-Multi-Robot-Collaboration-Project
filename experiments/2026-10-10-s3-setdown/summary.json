@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.s3_setdown_dev.v166",
-  "status": "preregistered",
+  "status": "evaluated_dev_metadata_retrieved",
   "host": "oracle-x86",
   "preregistration": {
     "workers": 10,
@@ -97,481 +97,717 @@
     "runs": [
       {
         "name": "s3fix17-pair-c0-r2",
-        "max_pair_finger_height_delta_m": 0.0016332915125604058,
-        "max_pair_velocity_delta_m_s": 0.001664445644043261,
-        "max_beam_tilt_deg": 1.4194194443621897,
+        "pair_height_delta_mm": 1.633291512560406,
+        "max_descent_mm_s": {
+          "r1": 69.10045674077845,
+          "r2": 69.30935593583618
+        },
         "first_floor_contact": null,
-        "last_both_finger_contacts": {
+        "first_open_change": {
+          "r1": null,
+          "r2": null
+        },
+        "both_fingers_last": {
           "r1": true,
           "r2": true
         },
-        "robots": {
-          "r1": {
-            "height_start_m": 0.09734564725206982,
-            "height_end_m": 0.060673170545942845,
-            "max_down_speed_m_s": 0.06910045674077846,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1544
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 902,
-              "4": 1929,
-              "5": 2250,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "3": [
-                902,
-                1269
-              ],
-              "4": [
-                1929,
-                2052
-              ],
-              "5": [
-                2250,
-                2494
-              ],
-              "6": [
-                1500,
-                1544
-              ]
-            }
-          },
-          "r2": {
-            "height_start_m": 0.09897893876463022,
-            "height_end_m": 0.06214806474331569,
-            "max_down_speed_m_s": 0.06930935593583618,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1628
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 902,
-              "4": 1929,
-              "5": 2250,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "3": [
-                902,
-                1269
-              ],
-              "4": [
-                1929,
-                2052
-              ],
-              "5": [
-                2250,
-                2494
-              ],
-              "6": [
-                1500,
-                1628
-              ]
-            }
-          }
+        "pan_mismatch": {
+          "r1": [
+            1500,
+            1544
+          ],
+          "r2": [
+            1500,
+            1628
+          ]
         }
       },
       {
         "name": "s3fix17-pair-c1-r2",
-        "max_pair_finger_height_delta_m": 0.0008429947391452169,
-        "max_pair_velocity_delta_m_s": 0.0012240535534225468,
-        "max_beam_tilt_deg": 0.6082487223224182,
+        "pair_height_delta_mm": 0.8429947391452169,
+        "max_descent_mm_s": {
+          "r1": 69.26808275274773,
+          "r2": 68.9324230301463
+        },
         "first_floor_contact": null,
-        "last_both_finger_contacts": {
+        "first_open_change": {
+          "r1": null,
+          "r2": null
+        },
+        "both_fingers_last": {
           "r1": true,
           "r2": true
         },
-        "robots": {
-          "r1": {
-            "height_start_m": 0.09804810770445448,
-            "height_end_m": 0.06084003202151865,
-            "max_down_speed_m_s": 0.06926808275274773,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1540
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 902,
-              "4": 1929,
-              "5": 2250,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "3": [
-                902,
-                1269
-              ],
-              "4": [
-                1929,
-                2052
-              ],
-              "5": [
-                2250,
-                2494
-              ],
-              "6": [
-                1500,
-                1540
-              ]
-            }
-          },
-          "r2": {
-            "height_start_m": 0.0988911024435997,
-            "height_end_m": 0.061364822039908784,
-            "max_down_speed_m_s": 0.0689324230301463,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1620
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 902,
-              "4": 1929,
-              "5": 2250,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "3": [
-                902,
-                1269
-              ],
-              "4": [
-                1929,
-                2052
-              ],
-              "5": [
-                2250,
-                2494
-              ],
-              "6": [
-                1500,
-                1620
-              ]
-            }
-          }
+        "pan_mismatch": {
+          "r1": [
+            1500,
+            1540
+          ],
+          "r2": [
+            1500,
+            1620
+          ]
         }
       },
       {
         "name": "s3fix17-pair-c2-r2",
-        "max_pair_finger_height_delta_m": 0.001206384029228444,
-        "max_pair_velocity_delta_m_s": 0.016566541719141407,
-        "max_beam_tilt_deg": 0.5805794776523242,
+        "pair_height_delta_mm": 1.206384029228444,
+        "max_descent_mm_s": {
+          "r1": 80.1967456495593,
+          "r2": 79.94508889463552
+        },
         "first_floor_contact": 56.1,
-        "last_both_finger_contacts": {
+        "first_open_change": {
+          "r1": null,
+          "r2": null
+        },
+        "both_fingers_last": {
           "r1": true,
           "r2": true
         },
-        "robots": {
-          "r1": {
-            "height_start_m": 0.09637704119694752,
-            "height_end_m": 0.022860322604850145,
-            "max_down_speed_m_s": 0.08019674564955931,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1540
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "6": [
-                1500,
-                1540
-              ]
-            }
-          },
-          "r2": {
-            "height_start_m": 0.09524566701688322,
-            "height_end_m": 0.02272744482960025,
-            "max_down_speed_m_s": 0.07994508889463552,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1632
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "6": [
-                1500,
-                1632
-              ]
-            }
-          }
+        "pan_mismatch": {
+          "r1": [
+            1500,
+            1540
+          ],
+          "r2": [
+            1500,
+            1632
+          ]
         }
       },
       {
         "name": "s3fix17-pair-c3-r2",
-        "max_pair_finger_height_delta_m": 0.0008749166949521686,
-        "max_pair_velocity_delta_m_s": 0.019280398872930912,
-        "max_beam_tilt_deg": 0.23706329511224908,
+        "pair_height_delta_mm": 0.8749166949521686,
+        "max_descent_mm_s": {
+          "r1": 76.97048845461333,
+          "r2": 77.21757527922709
+        },
         "first_floor_contact": 56.55,
-        "last_both_finger_contacts": {
+        "first_open_change": {
+          "r1": null,
+          "r2": null
+        },
+        "both_fingers_last": {
           "r1": true,
           "r2": true
         },
-        "robots": {
-          "r1": {
-            "height_start_m": 0.0920018276111564,
-            "height_end_m": 0.022780924803762377,
-            "max_down_speed_m_s": 0.07697048845461334,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1616
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "6": [
-                1500,
-                1616
-              ]
-            }
-          },
-          "r2": {
-            "height_start_m": 0.0926368793369081,
-            "height_end_m": 0.02190600810881021,
-            "max_down_speed_m_s": 0.0772175752792271,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1680
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "6": [
-                1500,
-                1680
-              ]
-            }
-          }
+        "pan_mismatch": {
+          "r1": [
+            1500,
+            1616
+          ],
+          "r2": [
+            1500,
+            1680
+          ]
         }
       },
       {
         "name": "s3fix17-pair-c4-r2",
-        "max_pair_finger_height_delta_m": 0.0008168501005964557,
-        "max_pair_velocity_delta_m_s": 0.0011715074908486666,
-        "max_beam_tilt_deg": 1.1755258907290997,
+        "pair_height_delta_mm": 0.8168501005964557,
+        "max_descent_mm_s": {
+          "r1": 61.41430768894495,
+          "r2": 60.24280019809629
+        },
         "first_floor_contact": null,
-        "last_both_finger_contacts": {
+        "first_open_change": {
+          "r1": null,
+          "r2": null
+        },
+        "both_fingers_last": {
           "r1": true,
           "r2": true
         },
-        "robots": {
-          "r1": {
-            "height_start_m": 0.09368399740550282,
-            "height_end_m": 0.060348314569202866,
-            "max_down_speed_m_s": 0.06141430768894495,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1544
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 879,
-              "4": 1921,
-              "5": 2235,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "3": [
-                879,
-                1269
-              ],
-              "4": [
-                1921,
-                2052
-              ],
-              "5": [
-                2235,
-                2494
-              ],
-              "6": [
-                1500,
-                1544
-              ]
-            }
-          },
-          "r2": {
-            "height_start_m": 0.09450084750609927,
-            "height_end_m": 0.060891451626685814,
-            "max_down_speed_m_s": 0.06024280019809629,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1480
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 879,
-              "4": 1921,
-              "5": 2235,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "3": [
-                879,
-                1269
-              ],
-              "4": [
-                1921,
-                2052
-              ],
-              "5": [
-                2235,
-                2494
-              ],
-              "6": [
-                1500,
-                1480
-              ]
-            }
-          }
+        "pan_mismatch": {
+          "r1": [
+            1500,
+            1544
+          ],
+          "r2": [
+            1500,
+            1480
+          ]
         }
       },
       {
         "name": "s3fix17-pair-c5-r2",
-        "max_pair_finger_height_delta_m": 0.005481740217246317,
-        "max_pair_velocity_delta_m_s": 0.0016055023343478994,
-        "max_beam_tilt_deg": 0.5778832907599967,
+        "pair_height_delta_mm": 5.481740217246317,
+        "max_descent_mm_s": {
+          "r1": 70.01326478328781,
+          "r2": 69.0119031398883
+        },
         "first_floor_contact": null,
-        "last_both_finger_contacts": {
+        "first_open_change": {
+          "r1": null,
+          "r2": null
+        },
+        "both_fingers_last": {
           "r1": true,
           "r2": true
         },
-        "robots": {
-          "r1": {
-            "height_start_m": 0.10209305667233068,
-            "height_end_m": 0.06263378279147104,
-            "max_down_speed_m_s": 0.07001326478328782,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1568
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 902,
-              "4": 1929,
-              "5": 2250,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "3": [
-                902,
-                1269
-              ],
-              "4": [
-                1929,
-                2052
-              ],
-              "5": [
-                2250,
-                2494
-              ],
-              "6": [
-                1500,
-                1568
-              ]
-            }
-          },
-          "r2": {
-            "height_start_m": 0.09719936567038172,
-            "height_end_m": 0.05759722300802618,
-            "max_down_speed_m_s": 0.06901190313988831,
-            "first_open_change": null,
-            "grasp_target": {
-              "3": 1269,
-              "4": 2052,
-              "5": 2494,
-              "6": 1588
-            },
-            "last_issued": {
-              "1": 1500,
-              "3": 902,
-              "4": 1929,
-              "5": 2250,
-              "6": 1500
-            },
-            "floor_target_mismatch": {
-              "3": [
-                902,
-                1269
-              ],
-              "4": [
-                1929,
-                2052
-              ],
-              "5": [
-                2250,
-                2494
-              ],
-              "6": [
-                1500,
-                1588
-              ]
-            }
-          }
+        "pan_mismatch": {
+          "r1": [
+            1500,
+            1568
+          ],
+          "r2": [
+            1500,
+            1588
+          ]
         }
       }
     ]
   },
-  "results": null,
+  "results": {
+    "n": 10,
+    "counts": {
+      "alignment": 10,
+      "grasp": 10,
+      "lift": 10,
+      "carry": 10,
+      "target_distance": 10
+    },
+    "setdown": 8,
+    "by_option": {
+      "off": {
+        "n": 2,
+        "setdown": 0,
+        "core_n": 2,
+        "core_setdown": 0
+      },
+      "canonical_floor_v1": {
+        "n": 2,
+        "setdown": 2,
+        "core_n": 2,
+        "core_setdown": 2
+      },
+      "slow_final_v1": {
+        "n": 2,
+        "setdown": 2,
+        "core_n": 2,
+        "core_setdown": 2
+      },
+      "settle_floor_v1": {
+        "n": 4,
+        "setdown": 4,
+        "core_n": 2,
+        "core_setdown": 2
+      }
+    },
+    "candidate_setdown": "8/8",
+    "baseline_setdown": "0/2",
+    "candidate_physical_stops": 0,
+    "baseline_physical_stops": 1,
+    "controller_failures": 1,
+    "host_errors": 0,
+    "early_open": 0,
+    "tilt_aborts": 0,
+    "max_cargo_tilt_deg": 1.4431126301902513,
+    "batch_wall_s": 333.56,
+    "run_wall_sum_s": 2976.648415781001,
+    "run_sim_sum_s": 562.95,
+    "wall_per_sim": 5.287589334365398,
+    "commands": 27814,
+    "model_calls": 0,
+    "runs": [
+      {
+        "name": "s3fix18-a-c2-r1",
+        "option": "canonical_floor_v1",
+        "condition": 2,
+        "seed": 14203,
+        "status": "DEV_STAGE_FINISHED",
+        "setdown": true,
+        "stop": null,
+        "controller_failures": {},
+        "floor_contact_s": 56.1,
+        "first_open_change_s": {
+          "r1": 57.25,
+          "r2": 57.25
+        },
+        "full_open_s": {
+          "r1": 57.6,
+          "r2": 57.6
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 0.5805696473828124,
+        "first_leg_endpoint_error_mm": 16.48332453276261,
+        "lower": {
+          "lower_start": 43.2,
+          "lower_end": 56.9,
+          "lower_duration_s": 13.699999999999996,
+          "max_pair_height_delta_m": 0.001206384029228444,
+          "max_descent_m_s": {
+            "r1": 0.08019674564955931,
+            "r2": 0.07994508889463552
+          }
+        },
+        "corrected_guard_samples": 0,
+        "wall_s": 298.6647397429988,
+        "sim_s": 56.6,
+        "commands": 2774,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-a-c2-r1/raw",
+          "manifest_sha256": "13d53af391182601a68fee986601d6849abcc2c1ed70c1cabec87e2d4dcf1614"
+        },
+        "result_sha256": "95b56b223343d626c158e1432fcd9a595211e59ecc14126acd8260c48ab43c6e",
+        "bundle_sha256": "58c08d9c82bb4e2302453aa01640f9a38b10fce788f91ec304ecb46b16d94322",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      },
+      {
+        "name": "s3fix18-a-c5-r1",
+        "option": "canonical_floor_v1",
+        "condition": 5,
+        "seed": 14206,
+        "status": "DEV_STAGE_FINISHED",
+        "setdown": true,
+        "stop": null,
+        "controller_failures": {},
+        "floor_contact_s": 55.6,
+        "first_open_change_s": {
+          "r1": 56.75,
+          "r2": 56.75
+        },
+        "full_open_s": {
+          "r1": 57.1,
+          "r2": 57.1
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 0.8277517844513641,
+        "first_leg_endpoint_error_mm": 53.98650513719097,
+        "lower": {
+          "lower_start": 42.7,
+          "lower_end": 56.4,
+          "lower_duration_s": 13.699999999999996,
+          "max_pair_height_delta_m": 0.005481740217246317,
+          "max_descent_m_s": {
+            "r1": 0.08129472189715677,
+            "r2": 0.08006463244616718
+          }
+        },
+        "corrected_guard_samples": 40,
+        "wall_s": 298.8454639880001,
+        "sim_s": 56.1,
+        "commands": 2778,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-a-c5-r1/raw",
+          "manifest_sha256": "6207289d037ed5b18d79dedf21f95b570ce5dcff2993acd98f4300d1e6faae97"
+        },
+        "result_sha256": "a1beb52d038f7fb43977e8f326e5e7e7a94386ccddf3574449c717b3bd200c1d",
+        "bundle_sha256": "61c9fb6cd0a687dc907f65f6d766c3cc0cce837a15469d8d9200a1c0ba5d52f4",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      },
+      {
+        "name": "s3fix18-b-c2-r1",
+        "option": "slow_final_v1",
+        "condition": 2,
+        "seed": 14203,
+        "status": "DEV_STAGE_FINISHED",
+        "setdown": true,
+        "stop": null,
+        "controller_failures": {},
+        "floor_contact_s": 56.95,
+        "first_open_change_s": {
+          "r1": 58.35,
+          "r2": 58.35
+        },
+        "full_open_s": {
+          "r1": 58.7,
+          "r2": 58.7
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 0.5858447589967947,
+        "first_leg_endpoint_error_mm": 16.48332453276261,
+        "lower": {
+          "lower_start": 43.2,
+          "lower_end": 58.0,
+          "lower_duration_s": 14.799999999999997,
+          "max_pair_height_delta_m": 0.001206384029228444,
+          "max_descent_m_s": {
+            "r1": 0.04170533692240784,
+            "r2": 0.04108410072948638
+          }
+        },
+        "corrected_guard_samples": 0,
+        "wall_s": 304.0592471830005,
+        "sim_s": 57.6,
+        "commands": 3014,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-b-c2-r1/raw",
+          "manifest_sha256": "643900169cb568d3f6483cc3f0cb3458325767671ce203f3ee0f0d9db230ed69"
+        },
+        "result_sha256": "dae47781443b882b7b26d5d8c57c1ad77b8e8dd06012bbb04f3569081325d8ca",
+        "bundle_sha256": "18452a667798d01c22968e77809734180423854c53354e5ad30312b1c5264fe3",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      },
+      {
+        "name": "s3fix18-b-c5-r1",
+        "option": "slow_final_v1",
+        "condition": 5,
+        "seed": 14206,
+        "status": "DEV_STAGE_FINISHED",
+        "setdown": true,
+        "stop": null,
+        "controller_failures": {},
+        "floor_contact_s": 56.4,
+        "first_open_change_s": {
+          "r1": 57.85,
+          "r2": 57.85
+        },
+        "full_open_s": {
+          "r1": 58.2,
+          "r2": 58.2
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 0.8277517844513641,
+        "first_leg_endpoint_error_mm": 53.98650513719097,
+        "lower": {
+          "lower_start": 42.7,
+          "lower_end": 57.5,
+          "lower_duration_s": 14.799999999999997,
+          "max_pair_height_delta_m": 0.005481740217246317,
+          "max_descent_m_s": {
+            "r1": 0.042056634222796714,
+            "r2": 0.04090786936033066
+          }
+        },
+        "corrected_guard_samples": 54,
+        "wall_s": 300.74913030300013,
+        "sim_s": 57.1,
+        "commands": 3018,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-b-c5-r1/raw",
+          "manifest_sha256": "fdd9559e11290ba50ad19a9dee22b8ecf1d0c7d94a2227844e3b116d156bb658"
+        },
+        "result_sha256": "5b66e0afff213ac3b469ad2eb0fd842a07c21defe1323eb3de992964f62a7d00",
+        "bundle_sha256": "29b65d7122afd54a5391a53e98f9c7b57b6e934bc59214086f2dfdea10f74b97",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      },
+      {
+        "name": "s3fix18-base-c2-r1",
+        "option": "off",
+        "condition": 2,
+        "seed": 14203,
+        "status": "DEV_STAGE_FINISHED",
+        "setdown": false,
+        "stop": null,
+        "controller_failures": {
+          "r1": "FLOOR_POSE_NOT_COMMANDED"
+        },
+        "floor_contact_s": 56.1,
+        "first_open_change_s": {
+          "r1": null,
+          "r2": null
+        },
+        "full_open_s": {
+          "r1": null,
+          "r2": null
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 0.5805696473828124,
+        "first_leg_endpoint_error_mm": 16.48332453276261,
+        "lower": {
+          "lower_start": 43.2,
+          "lower_end": 56.9,
+          "lower_duration_s": 13.699999999999996,
+          "max_pair_height_delta_m": 0.001206384029228444,
+          "max_descent_m_s": {
+            "r1": 0.08019674564955931,
+            "r2": 0.07994508889463552
+          }
+        },
+        "corrected_guard_samples": 0,
+        "wall_s": 289.685035247001,
+        "sim_s": 54.55,
+        "commands": 2640,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-base-c2-r1/raw",
+          "manifest_sha256": "c3caaac480c01d4780293858ff36839d53e6a9540387a8337b8c2034f0e6e9dd"
+        },
+        "result_sha256": "d7b1c99158e066adc87673285f8e86707c94e25c54e421deb1aa9c7f293e2a76",
+        "bundle_sha256": "2bc8527c119cf26ff82c715932bcaf08a99b4095359fc75e02feb5c5f12d2958",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      },
+      {
+        "name": "s3fix18-base-c5-r1",
+        "option": "off",
+        "condition": 5,
+        "seed": 14206,
+        "status": "PHYSICAL_STOP",
+        "setdown": false,
+        "stop": "LOAD_DROP:beam_1",
+        "controller_failures": {},
+        "floor_contact_s": null,
+        "first_open_change_s": {
+          "r1": null,
+          "r2": null
+        },
+        "full_open_s": {
+          "r1": null,
+          "r2": null
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 0.8277517844513641,
+        "first_leg_endpoint_error_mm": 53.98650513719097,
+        "lower": {
+          "lower_start": 42.7,
+          "lower_end": 55.1,
+          "lower_duration_s": 12.399999999999999,
+          "max_pair_height_delta_m": 0.005481740217246317,
+          "max_descent_m_s": {
+            "r1": 0.07001326478328782,
+            "r2": 0.06901190313988831
+          }
+        },
+        "corrected_guard_samples": 0,
+        "wall_s": 281.3270289970005,
+        "sim_s": 52.8,
+        "commands": 2482,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-base-c5-r1/raw",
+          "manifest_sha256": "72c8aeccffd7ca1fc3c6c444aea952d3a33fc039e9516927dd5e5ba5609278c1"
+        },
+        "result_sha256": "5bbf979e2a97be639dcec4c25f81c3dfcefb73f576d9e132bf513824471c6959",
+        "bundle_sha256": "302dc781005ba7884230d634fb81f219735b66c5f6fc4a6c1b4ee45f2553e613",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      },
+      {
+        "name": "s3fix18-c-c0-r1",
+        "option": "settle_floor_v1",
+        "condition": 0,
+        "seed": 14201,
+        "status": "DEV_STAGE_FINISHED",
+        "setdown": true,
+        "stop": null,
+        "controller_failures": {},
+        "floor_contact_s": 55.1,
+        "first_open_change_s": {
+          "r1": 57.05,
+          "r2": 57.05
+        },
+        "full_open_s": {
+          "r1": 57.4,
+          "r2": 57.4
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 1.4431126301902513,
+        "first_leg_endpoint_error_mm": 42.48599405523146,
+        "lower": {
+          "lower_start": 42.2,
+          "lower_end": 56.7,
+          "lower_duration_s": 14.5,
+          "max_pair_height_delta_m": 0.0016332915125604058,
+          "max_descent_m_s": {
+            "r1": 0.08117141814345379,
+            "r2": 0.08096391485688126
+          }
+        },
+        "corrected_guard_samples": 56,
+        "wall_s": 298.74507691100007,
+        "sim_s": 56.3,
+        "commands": 2775,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-c-c0-r1/raw",
+          "manifest_sha256": "d286bba62660e19c8045272c4a8efd81046782e2035e9313cc458d660ee1f84a"
+        },
+        "result_sha256": "733862985dbe4f56600605bab9d710d2bdd0a7fec49977ac1d2491844f0b2a1d",
+        "bundle_sha256": "084633db6294d6f198a4ca983d0d93d77421bea5f429634ca2b45aa6dea9b34b",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      },
+      {
+        "name": "s3fix18-c-c2-r1",
+        "option": "settle_floor_v1",
+        "condition": 2,
+        "seed": 14203,
+        "status": "DEV_STAGE_FINISHED",
+        "setdown": true,
+        "stop": null,
+        "controller_failures": {},
+        "floor_contact_s": 56.1,
+        "first_open_change_s": {
+          "r1": 58.05,
+          "r2": 58.05
+        },
+        "full_open_s": {
+          "r1": 58.4,
+          "r2": 58.4
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 0.5805696473828124,
+        "first_leg_endpoint_error_mm": 16.48332453276261,
+        "lower": {
+          "lower_start": 43.2,
+          "lower_end": 57.7,
+          "lower_duration_s": 14.5,
+          "max_pair_height_delta_m": 0.001206384029228444,
+          "max_descent_m_s": {
+            "r1": 0.08019674564955931,
+            "r2": 0.07994508889463552
+          }
+        },
+        "corrected_guard_samples": 0,
+        "wall_s": 300.8682517069992,
+        "sim_s": 57.3,
+        "commands": 2774,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-c-c2-r1/raw",
+          "manifest_sha256": "2d4a6772dfb2f5aa0d0ceac5fdc9d68e504d161fa7e4b94b9b06b762a86a030c"
+        },
+        "result_sha256": "4040b179707fadfe911ce524fe5c6dee88e1bb09cca0fc3bb0fc3074eaf6791f",
+        "bundle_sha256": "ac27852067409269f8a988481d279b40a84f1699c218230faa7866f87cdc026b",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      },
+      {
+        "name": "s3fix18-c-c3-r1",
+        "option": "settle_floor_v1",
+        "condition": 3,
+        "seed": 14204,
+        "status": "DEV_STAGE_FINISHED",
+        "setdown": true,
+        "stop": null,
+        "controller_failures": {},
+        "floor_contact_s": 56.55,
+        "first_open_change_s": {
+          "r1": 58.55,
+          "r2": 58.55
+        },
+        "full_open_s": {
+          "r1": 58.9,
+          "r2": 58.9
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 0.5115396631559215,
+        "first_leg_endpoint_error_mm": 37.27604221656949,
+        "lower": {
+          "lower_start": 43.7,
+          "lower_end": 58.2,
+          "lower_duration_s": 14.5,
+          "max_pair_height_delta_m": 0.0008749166949521686,
+          "max_descent_m_s": {
+            "r1": 0.07697048845461334,
+            "r2": 0.0772175752792271
+          }
+        },
+        "corrected_guard_samples": 0,
+        "wall_s": 304.3673388980005,
+        "sim_s": 57.8,
+        "commands": 2781,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-c-c3-r1/raw",
+          "manifest_sha256": "68076b22f66b74df672260307dce69cea8801c87e9694ad333ed32c78a1b9a98"
+        },
+        "result_sha256": "2babbbab5cbb96d2001242f1d971e58cf2591536dbc78f0dc331da3b322c1822",
+        "bundle_sha256": "f9c9f2596e7413ee1d0335a70486f5dc483d23daad6948b9ba81713cf553ba17",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      },
+      {
+        "name": "s3fix18-c-c5-r1",
+        "option": "settle_floor_v1",
+        "condition": 5,
+        "seed": 14206,
+        "status": "DEV_STAGE_FINISHED",
+        "setdown": true,
+        "stop": null,
+        "controller_failures": {},
+        "floor_contact_s": 55.6,
+        "first_open_change_s": {
+          "r1": 57.55,
+          "r2": 57.55
+        },
+        "full_open_s": {
+          "r1": 57.9,
+          "r2": 57.9
+        },
+        "open_before_floor": false,
+        "max_cargo_tilt_deg": 0.8277517844513641,
+        "first_leg_endpoint_error_mm": 53.98650513719097,
+        "lower": {
+          "lower_start": 42.7,
+          "lower_end": 57.2,
+          "lower_duration_s": 14.5,
+          "max_pair_height_delta_m": 0.005481740217246317,
+          "max_descent_m_s": {
+            "r1": 0.08129472189715677,
+            "r2": 0.08006463244616718
+          }
+        },
+        "corrected_guard_samples": 56,
+        "wall_s": 299.3371028040001,
+        "sim_s": 56.8,
+        "commands": 2778,
+        "raw_source": {
+          "path": "/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/s3fix18-c-c5-r1/raw",
+          "manifest_sha256": "89cede6caa1ae6e089bce28df0859e3a01e755cd53042ae6cb82608b0b3ab5f9"
+        },
+        "result_sha256": "a5ad1657e9b0c6eb85b301d624f6ffd3387fb77bfeff918d0b8d5a96cb7495d5",
+        "bundle_sha256": "bbbaf7343e6560164f73a5d3ae7d08a54ea6d635af459997afa2ffdca525b0bb",
+        "stages": {
+          "alignment": true,
+          "grasp": true,
+          "lift": true,
+          "carry20mm": true,
+          "target_distance": true
+        }
+      }
+    ],
+    "selection": "canonical_floor_v1 (A): all three candidates2/2 on common c2/c5; preregistered minimum-change tie-break. C extra stress2/2 separate. Default off preserved; not E2E.",
+    "remaining": "First leg endpoint16.483–53.987mm unchanged; repeated c2 is within20mm (4/10 runs,1/4 unique conditions). c1/c4 and cyan were not physically retested. No endpoint tuning.",
+    "next_candidate": "Keep A for next DEV round; compare integer tick/pulse-index dispatch for duplicated carry boundaries, new preregistration required."
+  },
   "local_validation": {
     "files": [
       "tests/test_s3_setdown.py",
@@ -582,5 +818,378 @@
     "physics_on_mac": false,
     "default_off": "original controller/guard retained; unchanged central workflow catalog",
     "origin_main_merged": "95c3fc43306a2347eb08f234c835d8e6269c6f00"
+  },
+  "physics_source_sha": "a18fb3af5004ce455946c9893311991fd4d4088d",
+  "initial_checks": {
+    "n": 10,
+    "healthy": 10,
+    "exceptions": 0,
+    "abnormal_stop_count": 0,
+    "runs": [
+      {
+        "name": "s3fix18-a-c2-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 29,
+        "first_sim_s": 2.35,
+        "last_sim_s": 30.35,
+        "frames": 560,
+        "motion_m": {
+          "r1": {
+            "base": 0.04668126430415004,
+            "arm_tip": 0.16986618007563994
+          },
+          "r2": {
+            "base": 0.08717365889632575,
+            "arm_tip": 0.18488301079758782
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      },
+      {
+        "name": "s3fix18-a-c5-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 28,
+        "first_sim_s": 2.35,
+        "last_sim_s": 29.35,
+        "frames": 540,
+        "motion_m": {
+          "r1": {
+            "base": 0.03222055607850486,
+            "arm_tip": 0.1613483034962619
+          },
+          "r2": {
+            "base": 0.07369454742077233,
+            "arm_tip": 0.18457228600068723
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_carry",
+          "wait_close",
+          "wait_lift"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      },
+      {
+        "name": "s3fix18-b-c2-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 29,
+        "first_sim_s": 2.35,
+        "last_sim_s": 30.35,
+        "frames": 560,
+        "motion_m": {
+          "r1": {
+            "base": 0.04668126430415004,
+            "arm_tip": 0.16986618007563994
+          },
+          "r2": {
+            "base": 0.08717365889632575,
+            "arm_tip": 0.18488301079758782
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      },
+      {
+        "name": "s3fix18-b-c5-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 29,
+        "first_sim_s": 2.35,
+        "last_sim_s": 30.35,
+        "frames": 560,
+        "motion_m": {
+          "r1": {
+            "base": 0.08227973184783395,
+            "arm_tip": 0.1613483034962619
+          },
+          "r2": {
+            "base": 0.07369454742077233,
+            "arm_tip": 0.18457228600068723
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_carry",
+          "wait_close",
+          "wait_lift"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      },
+      {
+        "name": "s3fix18-base-c2-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 29,
+        "first_sim_s": 2.35,
+        "last_sim_s": 30.35,
+        "frames": 560,
+        "motion_m": {
+          "r1": {
+            "base": 0.04668126430415004,
+            "arm_tip": 0.16986618007563994
+          },
+          "r2": {
+            "base": 0.08717365889632575,
+            "arm_tip": 0.18488301079758782
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      },
+      {
+        "name": "s3fix18-base-c5-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 28,
+        "first_sim_s": 2.35,
+        "last_sim_s": 29.35,
+        "frames": 540,
+        "motion_m": {
+          "r1": {
+            "base": 0.03222055607850486,
+            "arm_tip": 0.1613483034962619
+          },
+          "r2": {
+            "base": 0.07369454742077233,
+            "arm_tip": 0.18457228600068723
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_carry",
+          "wait_close",
+          "wait_lift"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      },
+      {
+        "name": "s3fix18-c-c0-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 28,
+        "first_sim_s": 2.35,
+        "last_sim_s": 29.35,
+        "frames": 540,
+        "motion_m": {
+          "r1": {
+            "base": 0.029378549992722536,
+            "arm_tip": 0.16127969378119406
+          },
+          "r2": {
+            "base": 0.05120669413912652,
+            "arm_tip": 0.1698302437421955
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      },
+      {
+        "name": "s3fix18-c-c2-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 29,
+        "first_sim_s": 2.35,
+        "last_sim_s": 30.35,
+        "frames": 560,
+        "motion_m": {
+          "r1": {
+            "base": 0.04668126430415004,
+            "arm_tip": 0.16986618007563994
+          },
+          "r2": {
+            "base": 0.08717365889632575,
+            "arm_tip": 0.18488301079758782
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      },
+      {
+        "name": "s3fix18-c-c3-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 29,
+        "first_sim_s": 2.35,
+        "last_sim_s": 30.35,
+        "frames": 560,
+        "motion_m": {
+          "r1": {
+            "base": 0.06031049584430163,
+            "arm_tip": 0.17223453376832015
+          },
+          "r2": {
+            "base": 0.07593903316010166,
+            "arm_tip": 0.18379079499003442
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_carry",
+          "wait_close",
+          "wait_lift"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      },
+      {
+        "name": "s3fix18-c-c5-r1",
+        "checked_at_utc": "2026-10-10T13:59:13Z",
+        "progress_samples": 29,
+        "first_sim_s": 2.35,
+        "last_sim_s": 30.35,
+        "frames": 560,
+        "motion_m": {
+          "r1": {
+            "base": 0.08227973184783395,
+            "arm_tip": 0.1613483034962619
+          },
+          "r2": {
+            "base": 0.07369454742077233,
+            "arm_tip": 0.18457228600068723
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_carry",
+          "wait_close",
+          "wait_lift"
+        ],
+        "reasons": [],
+        "healthy": true,
+        "manual_log_exception_scan": false
+      }
+    ]
+  },
+  "integrity": {
+    "default_off_equivalence": [
+      {
+        "condition": 2,
+        "file": "robots/r1/commands.jsonl",
+        "old_sha256": "f71e4733b382f17f82a190b0be35b1addef930e5d5ec78bed313601c915dd665",
+        "new_sha256": "f71e4733b382f17f82a190b0be35b1addef930e5d5ec78bed313601c915dd665",
+        "byte_equal": true
+      },
+      {
+        "condition": 2,
+        "file": "robots/r2/commands.jsonl",
+        "old_sha256": "1a4971a881eb2f8d5e2503f9efffa0005614ba2e9e1ae4bf0cd7769eabbe025d",
+        "new_sha256": "1a4971a881eb2f8d5e2503f9efffa0005614ba2e9e1ae4bf0cd7769eabbe025d",
+        "byte_equal": true
+      },
+      {
+        "condition": 2,
+        "file": "eval_only/referee_truth.jsonl",
+        "old_sha256": "93394df653e9f217fe64f91ba8d40aec0bc726fafd4ef0f0125c623481b8be23",
+        "new_sha256": "93394df653e9f217fe64f91ba8d40aec0bc726fafd4ef0f0125c623481b8be23",
+        "byte_equal": true
+      },
+      {
+        "condition": 5,
+        "file": "robots/r1/commands.jsonl",
+        "old_sha256": "e76047e10891ffa503214df308c87d5b1d5606924ef659b7539e4dfa3b371db4",
+        "new_sha256": "e76047e10891ffa503214df308c87d5b1d5606924ef659b7539e4dfa3b371db4",
+        "byte_equal": true
+      },
+      {
+        "condition": 5,
+        "file": "robots/r2/commands.jsonl",
+        "old_sha256": "71ace927bad5ea968113c7143e46fc223b70b47815000ab15ba7e56150727ac5",
+        "new_sha256": "71ace927bad5ea968113c7143e46fc223b70b47815000ab15ba7e56150727ac5",
+        "byte_equal": true
+      },
+      {
+        "condition": 5,
+        "file": "eval_only/referee_truth.jsonl",
+        "old_sha256": "d05a656e704df6eb345d26b514dcff5754de9758fd3689e179bfd392a11d6a8a",
+        "new_sha256": "d05a656e704df6eb345d26b514dcff5754de9758fd3689e179bfd392a11d6a8a",
+        "byte_equal": true
+      }
+    ],
+    "retrieval": {
+      "metadata_files_verified": 374,
+      "all_retrieved_hashes_match": true,
+      "images_retrieved": false,
+      "raw_images_preserved": "oracle-x86:/home/ubuntu/ugrp-sim/runs/s3fix18-batch-r1/cohort/*/raw",
+      "remote_all_artifact_hashes_verified_by": "evaluate_s3_setdown.summarize"
+    },
+    "remote_full_manifest_files_verified": 34164,
+    "originals_remain_on_oracle": true,
+    "eval_source": {
+      "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix18-eval-r1/summary.json",
+      "remote_path": "oracle-x86:/home/ubuntu/ugrp-sim/runs/s3fix18-eval-r1/summary.json",
+      "sha256": "6b9eac9402d4757ec02cf711ff7add66ce81d6f4409e3eb381bb70e582554a69"
+    },
+    "kinematics_source": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix18-control-20261010/lower-kinematics.json",
+      "sha256": "79d3eba27ca310d6ca9795dae29cf7dc18f64b87df58bc78e3cbe8705238fe14",
+      "helper_sha256": "7bd3c47a8da848e44f57586dd778049a582872f174825aefe3a8612c699ecb9b",
+      "physics_steps": 0
+    },
+    "tensorboard_conversion": false
   }
 }

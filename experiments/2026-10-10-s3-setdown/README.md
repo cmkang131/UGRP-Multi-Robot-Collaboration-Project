@@ -7,4 +7,4 @@ v165: 하강 높이 차이0.8–5.5mm, 최고 속도60–80mm/s, 조기 개방0;
 지원된 하강의 평가 분류만 수정; GT·접촉은 제어 입력 아님, 무지지 낙하/기울기/GO/실행 오류 정지 유지.
 [ROS 시간 지정 관절 경로](https://control.ros.org/jazzy/doc/ros2_controllers/joint_trajectory_controller/doc/userdoc.html), [MoveIt 하강→개방→후퇴](https://docs.picknik.ai/how_to/robotics_applications/pick_and_place_using_mtc/): 개방 전 경로 완료·정착; 실측 관절 제어로 주장하지 않음.
 180wall초 초기 점검(프레임/SIM·실제 팔/차체 이동·단계·명령/예외), 이상은 해당 실행만 협력 중단·EXIT 보존.
-DEV 후보 비교라 TensorBoard 변환 없음; 결과·원본 위치·해시는 summary.json, PR416 초안·병합 없음.
+결과: 기준0/2, A2/2·B2/2·C4/4(공통2/2+추가2/2), 후보 조기 개방/실제 정지/HOST_ERROR0; A 선택·기본 off, 끝점16–54mm 미해결. 원본/해시/초기10/10 점검은 summary.json; TensorBoard 없음·PR416 초안.
