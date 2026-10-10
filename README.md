@@ -82,6 +82,15 @@ v107/v108 중 기존 v3 물리를 쓰는 경로를 v7로 바꾸는 변경은 포
 `controller-speedups.json`과 `runtime-bundle.json`에 기록한다.
 분포·RNG·물리·관측/렌더 주기는 그대로이며 지원 소스가 달라지면 해당 항목은 적용하지 않는다.
 현재 가속 후보의 측정·동등성 인수는 [speedctrl 기록](experiments/2026-10-09-sim-speed-ctrl/README.md)에 남긴다.
+[후속 정합·타이머 밖 비용·무손실 기록](experiments/2026-10-10-sim-speed-ctrl2/README.md)은
+같은 입력의 ABBA·부하·복원 바이트를 구분한다. 첫 55001에서 느려진 정합 캐시는 기본 off이며,
+2m 후보 제한도 결과가 바뀔 수 있어 기본 off다. 새 물리/온라인 ≤1.5 검증은 아직 없다.
+[Oracle 지연 렌더 비교](experiments/2026-10-10-sim-speed-ctrl3/README.md)는
+`UGRP_CAMERA_RENDER=lazy-v1` 선택 시 소비 시점에 카메라를 생성한다. 기본은
+`eager`이며 기존 JPEG·프레임 원장을 모두 보존한다. 기록 대상이거나 실제 읽는
+프레임은 생략하지 않는다. Mac 물리·렌더 없이 Oracle에서 A4/B4를 동시에 비교하고
+원본·행동 동등성, wall/SIM·CPU/SIM·부하 평균을 분리한다. JSON 키 순서와
+명시된 실측 추론 지연만 분리하며 명령·SIM 시각·원본 JPEG는 직접 비교한다.
 근거는 [Thrun 등, Probabilistic Robotics 4·6·8장](https://mitpress.mit.edu/9780262201629/probabilistic-robotics/),
 [AMCL 거리장 구현](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/map/map_cspace.cpp),
 [Olson 2009 스캔 정합](https://april.eecs.umich.edu/media/pdfs/olson2009icra.pdf)이다.

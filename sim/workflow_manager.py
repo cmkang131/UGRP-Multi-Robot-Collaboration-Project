@@ -589,7 +589,20 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
     output_thread = None
     log = None
     previous = {}
+    pending_signal = None
+    def forward(signum, _frame):
+        nonlocal pending_signal
+        # Popen can receive a signal after creating the process but before
+        # returning its handle. Defer interruption until we own that handle.
+        if child is None:
+            pending_signal = signum
+            return
+        if child.poll() is None:
+            _signal_owned_group(child, signum)
+        raise KeyboardInterrupt
     try:
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            previous[sig] = signal.signal(sig, forward)
         command, output = _runner_command(root, row, argv, record=record)
         command[0] = _select_python(row, argv)
         manifest["command"] = redact_argv(command)
@@ -600,6 +613,9 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
         log = (record / "console.log").open("xb")
         child = subprocess.Popen(command, cwd=root, env=env, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                  start_new_session=True)
+        manifest["child_pid"] = child.pid
+        if pending_signal is not None:
+            forward(pending_signal, None)
         def tee():
             assert child is not None and child.stdout is not None
             for chunk in iter(lambda: os.read(child.stdout.fileno(), 4096), b""):
@@ -612,14 +628,7 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
                     pass
         output_thread = threading.Thread(target=tee, daemon=True)
         output_thread.start()
-        manifest["child_pid"] = child.pid
         _write(record / "manifest.json", {k: v for k, v in manifest.items() if not k.startswith("_")})
-        def forward(signum, _frame):
-            if child and child.poll() is None:
-                _signal_owned_group(child, signum)
-            raise KeyboardInterrupt
-        for sig in (signal.SIGINT, signal.SIGTERM):
-            previous[sig] = signal.signal(sig, forward)
         try:
             code = child.wait(timeout=timeout)
             status = "process_completed" if code == 0 else "process_failed"
@@ -634,6 +643,8 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
             code = 124
     except KeyboardInterrupt:
         status, failure, code = "interrupted", "keyboard interrupt", 130
+        for sig in previous:
+            signal.signal(sig, signal.SIG_IGN)
         if child is not None and child.poll() is None:
             _signal_owned_group(child, signal.SIGTERM)
             try:
@@ -645,24 +656,28 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
         failure = f"{type(error).__name__}: {error}"
         status, code = "launcher_failed", 2
     finally:
-        for sig, handler in previous.items():
-            signal.signal(sig, handler)
-        if child is not None:
-            # The leader can exit while its children continue running. Always
-            # clean our own process group, including on process exit 0.
-            for sig in (signal.SIGTERM, signal.SIGKILL):
-                if not _signal_owned_group(child, sig):
-                    break
-                if sig == signal.SIGTERM:
-                    time.sleep(0.1)
-            child.wait()
-        if output_thread is not None:
-            output_thread.join(timeout=3)
-        if child is not None and child.stdout is not None:
-            child.stdout.close()
-        if log is not None:
-            log.close()
-        _finish(manifest, record, exit_code=code, output=output, status=status, failure=failure)
+        for sig in previous:
+            signal.signal(sig, signal.SIG_IGN)
+        try:
+            if child is not None:
+                # The leader can exit while its children continue running. Always
+                # clean our own process group, including on process exit 0.
+                for sig in (signal.SIGTERM, signal.SIGKILL):
+                    if not _signal_owned_group(child, sig):
+                        break
+                    if sig == signal.SIGTERM:
+                        time.sleep(0.1)
+                child.wait()
+            if output_thread is not None:
+                output_thread.join(timeout=3)
+            if child is not None and child.stdout is not None:
+                child.stdout.close()
+            if log is not None:
+                log.close()
+            _finish(manifest, record, exit_code=code, output=output, status=status, failure=failure)
+        finally:
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
     return record
 
 

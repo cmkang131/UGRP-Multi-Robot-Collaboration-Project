@@ -165,3 +165,5 @@ class PhysicsBackend:
                     write(self.out / 'controller-speedups.json', speedups.snapshot())
                 finally:
                     speedups.close()
+            from sim.lazy_camera import write_receipt as camera_receipt
+            camera_receipt(self)
