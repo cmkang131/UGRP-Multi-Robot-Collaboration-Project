@@ -159,7 +159,7 @@ def early_check(output, start_sim, age):
                 stage=own[-1].get('stage') if own else None, anomaly=reason, gt_evaluation_only=True)
 
 
-def score_batch(plan, out):
+def score_batch(plan, out, *, round_name='egomap66'):
     from scripts.score_own_route_full_budget import score
     reports = []
     for j in plan:
@@ -183,8 +183,8 @@ def score_batch(plan, out):
         reports.append(dict(r, seed=j['seed'], condition=j['condition'], status=j['status'], raw=str(p),
             early_checks=j.get('early_checks',[]), result_sha256=hashlib.sha256((p/'result.json').read_bytes()).hexdigest() if (p/'result.json').exists() else None))
     old.dump(out/'scores.json', reports)
-    old.dump(out/'summary.json', dict(round='egomap66',host='oracle-x86',source_sha=ROOT.name,
-        registered=36,conditions=aggregate(reports),runs=reports,thresholds_changed=False,
+    old.dump(out/'summary.json', dict(round=round_name,host='oracle-x86',source_sha=ROOT.name,
+        registered=len(plan),conditions=aggregate(reports),runs=reports,thresholds_changed=False,
         raw_root=str(out),scores_sha256=hashlib.sha256((out/'scores.json').read_bytes()).hexdigest()))
     return reports
 
@@ -215,7 +215,7 @@ def aggregate(reports):
     return groups
 
 
-def batch(a):
+def batch(a, *, required_free_gib=26):
     if platform.system() != 'Linux' or os.getenv('UGRP_EXECUTION_HOST') != 'oracle-x86':
         raise RuntimeError('ORACLE_ONLY_NO_MAC_PHYSICS')
     out = a.output.resolve()
@@ -223,12 +223,12 @@ def batch(a):
     plan = jobs(out)
     cp_by_seed = {c['seed']:c for c in registration()['checkpoints']}
     old.dump(out/'batch-plan.json', dict(source_sha=ROOT.name, host='oracle-x86', jobs=plan))
-    if shutil.disk_usage(out).free < 26*2**30:
+    if shutil.disk_usage(out).free < required_free_gib*2**30:
         # eg65 retained 11.1GiB/24 runs; reserve 20GiB for 36 + 6GiB shared
         # headroom. Do not start a knowingly disk-starved comparison or delete
         # anyone's existing raw to create space.
         for j in plan:
-            j.update(status='BLOCKED_DISK_CAPACITY', required_free_gib=26)
+            j.update(status='BLOCKED_DISK_CAPACITY', required_free_gib=required_free_gib)
         old.dump(out/'batch-status.json',plan)
         score_batch(plan,out)
         return 3

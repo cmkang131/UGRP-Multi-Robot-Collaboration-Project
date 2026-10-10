@@ -1,0 +1,189 @@
+{
+  "round": "egomap67",
+  "status": "PREPARED_WAITING_DISK",
+  "registered": 24,
+  "physical_started": 0,
+  "host": "oracle-x86",
+  "tests": {
+    "files": 3,
+    "passed": 32,
+    "probe_conditions": 6,
+    "accelerated_receive_executed": 6,
+    "off_bytes_identical": true
+  },
+  "diagnosis": {
+    "events": 164,
+    "accepted": 3,
+    "reasons": {
+      "accepted": 3,
+      "unobservable": 26,
+      "ambiguous_modes": 82,
+      "high_residual": 27,
+      "low_overlap": 22,
+      "search_boundary": 4
+    },
+    "by_reason": {
+      "accepted": {
+        "overlap": {
+          "n": 3,
+          "min": 0.8695652173913043,
+          "median": 1.0,
+          "max": 1.0
+        },
+        "residual_m": {
+          "n": 3,
+          "min": 0.0472430992369659,
+          "median": 0.06406165474484916,
+          "max": 0.11006243347947309
+        },
+        "second_sensor_gap": {
+          "n": 3,
+          "min": 2.7730308715544214,
+          "median": 2.8571299466826776,
+          "max": 3.8585659143518836
+        },
+        "candidates": {
+          "n": 3,
+          "min": 637,
+          "median": 833,
+          "max": 6825
+        }
+      },
+      "unobservable": {
+        "overlap": {
+          "n": 26,
+          "min": 0.0,
+          "median": 0.0,
+          "max": 0.0
+        },
+        "residual_m": {
+          "n": 26,
+          "min": 8.20813565369291,
+          "median": 8.77259315236789,
+          "max": 9.149238489002547
+        },
+        "candidates": {
+          "n": 26,
+          "min": 5225,
+          "median": 5225.0,
+          "max": 5225
+        }
+      },
+      "ambiguous_modes": {
+        "overlap": {
+          "n": 82,
+          "min": 0.9333333333333333,
+          "median": 1.0,
+          "max": 1.0
+        },
+        "residual_m": {
+          "n": 82,
+          "min": 0.007064997973589414,
+          "median": 0.025037135734855855,
+          "max": 0.07209518718343136
+        },
+        "second_sensor_gap": {
+          "n": 82,
+          "min": -1.2156002114621987,
+          "median": -0.06348482101063535,
+          "max": 0.19636686545465043
+        },
+        "candidates": {
+          "n": 82,
+          "min": 2871,
+          "median": 3003.0,
+          "max": 4455
+        }
+      },
+      "high_residual": {
+        "overlap": {
+          "n": 27,
+          "min": 0.6,
+          "median": 0.6666666666666666,
+          "max": 0.7058823529411765
+        },
+        "residual_m": {
+          "n": 27,
+          "min": 0.15487060773166464,
+          "median": 0.1710159636936906,
+          "max": 0.3688454246372935
+        },
+        "second_sensor_gap": {
+          "n": 27,
+          "min": -1.1153193788428597,
+          "median": -0.2472208826085187,
+          "max": 12.403603065136913
+        },
+        "candidates": {
+          "n": 27,
+          "min": 1323,
+          "median": 11655,
+          "max": 11655
+        }
+      },
+      "low_overlap": {
+        "overlap": {
+          "n": 22,
+          "min": 0.3793103448275862,
+          "median": 0.5454545454545454,
+          "max": 0.5833333333333334
+        },
+        "residual_m": {
+          "n": 22,
+          "min": 0.22939342456342693,
+          "median": 0.3552546907083902,
+          "max": 0.42130011250137833
+        },
+        "second_sensor_gap": {
+          "n": 22,
+          "min": -4.375935153946756,
+          "median": 9.111173910094148,
+          "max": 11.920750565952083
+        },
+        "candidates": {
+          "n": 22,
+          "min": 1323,
+          "median": 1323.0,
+          "max": 11655
+        }
+      },
+      "search_boundary": {
+        "overlap": {
+          "n": 4,
+          "min": 0.42857142857142855,
+          "median": 0.45238095238095233,
+          "max": 0.5652173913043478
+        },
+        "residual_m": {
+          "n": 4,
+          "min": 0.342016528893356,
+          "median": 0.3535503875444229,
+          "max": 0.37022451010945717
+        },
+        "second_sensor_gap": {
+          "n": 4,
+          "min": 11.452043079841381,
+          "median": 12.264919692870627,
+          "max": 12.749817659625869
+        },
+        "candidates": {
+          "n": 4,
+          "min": 1323,
+          "median": 1323.0,
+          "max": 1323
+        }
+      }
+    }
+  },
+  "prereg_sha256": "a83676d160e67e4f9d98628c81f6510370ac900cd8690e83d44d1a21fc98c402",
+  "raw_root": "/home/ubuntu/ugrp-sim/runs/egomap67-batch",
+  "original_diagnosis_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data",
+  "raw_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63004-return_local_vtr/route-map.json": "5a2b89559b3c78f1fed20cb302ad927209bb7c1093eed428b1adee45879446c2",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63001-return_local_vtr/route-map.json": "a398940162c59f09235c757bd6350abd549f5fe274849c21ffc068eaaf4dd999",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63005-return_local_vtr/route-map.json": "60f103210984a04e0dc70b4b9576145f1f0ede2791ff05398c000b3cc4ae0b7b",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63002-return_local_vtr/route-map.json": "d09a6e0778f2c825cf56135146eb34466646d1c8525cd4f477694c3dcf6cb5c5",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63006-return_local_vtr/route-map.json": "e8bb8175e2b11f0024020942728d608debfc0f49c6fa3f21976c84b152bc6bc9",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63003-return_local_vtr/route-map.json": "e2890b5f19fd8f4962f788bb5d69118b48a4f36c3b39e550f42cf6c65f95dc3b"
+  }
+}
