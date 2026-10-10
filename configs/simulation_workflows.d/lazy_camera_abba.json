@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "lazy-camera-abba",
+    "version": "1.0.0",
+    "purpose": "Oracle x86 demand-render equivalence and ABBA timing",
+    "entry": "scripts/benchmark_lazy_camera.py",
+    "runner": "scripts.benchmark_lazy_camera",
+    "docs": "experiments/2026-10-10-sim-speed-ctrl3/README.md",
+    "requires": "Committed Oracle archive; OSMesa; LP_NUM_THREADS=4; frozen S3 and ego adapters; no Mac execution",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--kind", "--expected-source-sha"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

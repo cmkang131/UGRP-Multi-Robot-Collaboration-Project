@@ -245,21 +245,62 @@ def invoke(case, output, args, *, scan, storage, local=0.):
     if args.profile:
         command += ['--profile']
     with (output.parent/(output.name+'.log')).open('xb') as log:
-        # Keep the managed CLI alive long enough to forward interruption and
-        # clean its own worker group before our outer lease can be released.
-        # subprocess.run kills only that CLI when a handler raises OSError.
-        child=subprocess.Popen(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,
-                               start_new_session=True)
-        try:
-            code=child.wait()
-        except BaseException:
-            if child.poll() is None:
-                child.send_signal(signal.SIGTERM)
-            child.wait()  # workflow_manager owns finite timeout/group cleanup
-            raise
-        if code:
-            raise subprocess.CalledProcessError(code,command)
+        run_owned_command(command, cwd=ROOT, log=log)
 
+
+def run_owned_command(command, *, cwd, log, timeout=None):
+    # Keep the managed CLI alive long enough to forward interruption and
+    # clean its own worker group before our outer lease can be released.
+    # subprocess.run kills only that CLI when a handler raises OSError.
+    child = None
+    interrupted = None
+    cleaning = False
+    watched = (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)
+    previous = {sig: signal.getsignal(sig) for sig in watched}
+    def stop(signum, frame):
+        nonlocal interrupted
+        if cleaning:
+            return
+        interrupted = (signum, frame)
+        # A signal may arrive after the OS child exists and before Popen
+        # returns its handle. Own that handle before unwinding the lease.
+        if child is not None:
+            raise InterruptedError('HOST_INTERRUPTED:'+signal.Signals(signum).name)
+    try:
+        for sig in watched:
+            signal.signal(sig, stop)
+        try:
+            child = subprocess.Popen(command, cwd=cwd, stdout=log,
+                stderr=subprocess.STDOUT, start_new_session=True)
+            if interrupted is not None:
+                raise InterruptedError('HOST_INTERRUPTED:'+signal.Signals(interrupted[0]).name)
+            code = child.wait() if timeout is None else child.wait(timeout=timeout)
+        except BaseException:
+            cleaning = True
+            if child is not None:
+                if child.poll() is None:
+                    child.send_signal(signal.SIGTERM)
+                child.wait()  # CLI finishes owned worker-group cleanup
+            raise
+    except BaseException:
+        # Restore before delegating: the enclosing @interruptible handler
+        # ignores repeated TERM/HUP throughout its result/lease finally.
+        for sig, handler in previous.items():
+            signal.signal(sig, handler)
+        previous = {}
+        if interrupted is not None:
+            signum, frame = interrupted
+            handler = signal.getsignal(signum)
+            if callable(handler):
+                handler(signum, frame)
+            elif signum == signal.SIGINT:
+                raise KeyboardInterrupt
+        raise
+    finally:
+        for sig, handler in previous.items():
+            signal.signal(sig, handler)
+    if code:
+        raise subprocess.CalledProcessError(code,command)
 
 @interruptible
 def main():

@@ -76,20 +76,8 @@ class PhysicsBackend(IntegerClock, BaseBackend):
             super().issue(rid, action)
 
     def capture(self):
-        import numpy as np
-        from PIL import Image
-        rid = self.bundle['task']['robot_id']
-        obs = self.ports[rid].capture()
-        jpeg = base64.b64decode(obs['image'], validate=True)
-        rgb = np.asarray(Image.open(io.BytesIO(jpeg)).convert('RGB'))
-        relative = f'robots/{rid}/rgb/{self.frame:05d}.jpg'
-        path = self.out/relative
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(jpeg)
-        self._append(f'robots/{rid}/frames.jsonl', {**{k: v for k, v in obs.items() if k != 'image'},
-            'path': relative, 'commanded_servo': self.commands[rid]})
-        self.frame += 1
-        return {rid: (obs, rgb)}
+        from sim.lazy_camera import capture_robot_frames
+        return capture_robot_frames(self, (self.bundle['task']['robot_id'],))
 
     def eval_sample(self):
         super().eval_sample()  # weld OFF checked; no contact/success return channel

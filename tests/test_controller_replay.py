@@ -433,3 +433,36 @@ def test_abba_signal_retains_completed_case_and_failure_and_restores_handlers(
     assert json.loads((output/'lock.json').read_text())['release_skipped'] is False
     assert plan.read_bytes()==original
     assert {s:signal.getsignal(s) for s in previous}==previous
+
+
+@pytest.mark.parametrize('signal_name',['SIGTERM','SIGHUP','SIGINT'])
+def test_invoke_defers_startup_signal_until_cli_handle_and_waits(tmp_path,monkeypatch,signal_name):
+    import os,signal,time
+    from types import SimpleNamespace
+    from scripts import benchmark_controller_replay as abba
+    signum=getattr(signal,signal_name)
+    watched=(signal.SIGINT,signal.SIGTERM,signal.SIGHUP)
+    previous={s:signal.getsignal(s) for s in watched}
+    monkeypatch.setattr(abba,'source_check',lambda expected:None)
+    monkeypatch.setattr(abba,'verify_adapter',lambda *a:None)
+    monkeypatch.setattr(abba.shutil,'disk_usage',lambda _:SimpleNamespace(free=20*2**30))
+    events=[]
+    class Child:
+        def poll(self):return None
+        def send_signal(self,sig):events.append(('signal',sig))
+        def wait(self):
+            # Repeated interruption during cleanup must not lose ownership.
+            os.kill(os.getpid(),signum)
+            events.append('group cleaned');return 130
+    def popen(*a,**k):
+        events.append('OS child created')
+        os.kill(os.getpid(),signum)
+        events.append('handle returned')
+        return Child()
+    monkeypatch.setattr(abba.subprocess,'Popen',popen)
+    args=SimpleNamespace(expected_source_sha='a'*40,deadline=time.monotonic()+60,profile=False)
+    case=dict(kind='s3',raw='unused',adapter='unused',adapter_sha256='fixed')
+    exception=KeyboardInterrupt if signum==signal.SIGINT else InterruptedError
+    with pytest.raises(exception):abba.invoke(case,tmp_path/'new',args,scan='off',storage='off')
+    assert events==['OS child created','handle returned',('signal',signal.SIGTERM),'group cleaned']
+    assert {s:signal.getsignal(s) for s in watched}==previous
