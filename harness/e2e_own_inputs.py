@@ -140,6 +140,13 @@ class Agreement:
         self.approved = False
         self.key = None
         self.votes = {}
+        self.response_contexts = {}
+
+    def _bind_response(self, response_id, context):
+        previous = self.response_contexts.get(response_id)
+        if previous is not None and previous != context:
+            raise ContractViolation('MODEL_RESPONSE_REUSED_ACROSS_ROUTE_OR_EPOCH')
+        self.response_contexts[response_id] = context
 
     def propose(self, route_hash, message_id, *, delivered_ids):
         if message_id not in delivered_ids or len(route_hash) != 64:
@@ -151,6 +158,7 @@ class Agreement:
     def approve(self, route_hash, reply_to, *, robot_id, response_id, model_response_ids):
         if robot_id != 'r2' or response_id not in model_response_ids or self.proposal != (route_hash, reply_to):
             raise ContractViolation('MATCHING_R2_MODEL_APPROVAL_REQUIRED')
+        self._bind_response(response_id, ('r2','approve',self.proposal))
         self.approved = True
 
     def begin_epoch(self, *, order_id, route_hash, grip_epoch, seg):
@@ -165,6 +173,7 @@ class Agreement:
     def vote(self, rid, kind, key, *, response_id, model_response_ids):
         if rid not in ('r1', 'r2') or kind not in ('GO', 'ACK') or tuple(key) != self.key or response_id not in model_response_ids:
             raise ContractViolation('MATCHING_CURRENT_MODEL_GO_ACK_REQUIRED')
+        self._bind_response(response_id, (rid,'vote',self.key))
         self.votes.setdefault(rid, set()).add(kind)
 
     @property

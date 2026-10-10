@@ -55,12 +55,12 @@ def run(out, candidate, sha):
                 robot=world.robot(rid)
                 with world.physics_lock,world.render_lock:
                     robot._sync_real_camera_mount()
-                    world.renderer.enable_segmentation_render()
+                    world.renderer.enable_segmentation_rendering()
                     try:
                         world.renderer.update_scene(world.data,camera=robot._n('robot_cam'),
                             scene_option=robot._robot_sensor_scene_option)
                         seg=world.renderer.render().copy()
-                    finally:world.renderer.disable_segmentation_render()
+                    finally:world.renderer.disable_segmentation_rendering()
                     mask=((seg[:,:,0]==world.model.geom('zone_B').id)&(seg[:,:,1]==int(mujoco.mjtObj.mjOBJ_GEOM))).astype('uint8')
                     if robot._robot_fisheye_map is not None:
                         import cv2

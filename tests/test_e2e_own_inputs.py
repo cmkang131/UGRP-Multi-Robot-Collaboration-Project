@@ -132,6 +132,9 @@ def test_approval_and_epoch_contract():
     gate.begin_epoch(order_id='order-5',route_hash=h,grip_epoch=2,seg=0)
     assert not gate.ready
     with pytest.raises(ContractViolation):gate.vote('r1','GO',key,response_id='r1',model_response_ids=['r1'])
+    # An old response ID cannot be relabelled with the new epoch's key.
+    with pytest.raises(ContractViolation,match='REUSED'):
+        gate.vote('r1','GO',('order-5',h,2,0),response_id='r1',model_response_ids=['r1'])
 
 
 def test_new_map_only_B_floor_and_scenario():

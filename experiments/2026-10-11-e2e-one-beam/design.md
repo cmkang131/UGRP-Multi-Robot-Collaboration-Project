@@ -25,3 +25,5 @@
 - [VT&R3 공식 코드](https://github.com/utiasASRL/vtr3): README의 관측 기반 teach/repeat 경로 구조를 확인했다. 코드 이식·새 주행은 이번 범위가 아니다.
 - [CoELA](https://arxiv.org/abs/2307.02485): 논문 초록의 모듈형 기억·통신·실행 구성을 확인했다. 전체 실험 재현은 하지 않았다.
 - [Hi Robot (2025)](https://arxiv.org/abs/2502.19417): 논문 초록의 상위 판단/하위 VLA 실행 계층을 확인했다. 이 PR은 모델/VLA 교체가 아닌 입력·상태 경계 설계다.
+
+- 첫 렌더 3건의 HOST_ERROR는 평가용 segmentation API 오기였다. MuJoCo 설치 구현의 `Renderer.enable_segmentation_rendering`/`disable_segmentation_rendering`을 직접 확인하고 [공식 Python 렌더링 문서](https://mujoco.readthedocs.io/en/stable/python.html#rendering)의 동일 GL 소유 스레드 규칙을 유지해 수정했다. 물리·카메라·제어 입력 변경은 없다. 실패 원본을 회수하고 같은 3후보를 새 SHA로 재제출한다.
