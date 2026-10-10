@@ -1,912 +1,4486 @@
 {
-  "status": "registered_not_run",
   "host": "oracle-x86",
   "n": 6,
-  "registration_sha256": "da816e586ef72ad15efa0252f233dee14d80f7fa3499d65d1df47710ba012941",
-  "raw_diagnosis": {
-    "local_path": "/Users/changmin/projects/ugrp/outputs/s3fix23-control-20261011/visibility-before.json",
-    "sha256": "3d687e5d7f3d4fc58d68f201fb4b438e49b863eff4e2dfe5a6ecebeae0c43cd5",
-    "rows": {
+  "runs": [
+    {
+      "name": "s3fix23-baseline-multi-left-s14201-r1",
+      "source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
       "host": "oracle-x86",
-      "eval_only": true,
-      "scope": "saved exact render/qpos projection; no integration/render, current detector rejection and pinhole FOV reported separately",
-      "runs": [
-        {
-          "name": "s3fix22-combined-multi-left-s14201-r1",
-          "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-left-s14201-r1/raw",
-          "manifest_sha256": "6b828e89999e761ad49208a2688c4997963a1faccc8508007899fe1eb16ad59b",
-          "robots": {
-            "r1": {
-              "released_at_s": 57.9,
-              "frames": 3,
-              "categories": {
-                "visible": 3
-              },
-              "center_outside": 0,
-              "min_corners_inside": 4,
-              "max_corners_inside": 4,
-              "last_projection": {
-                "t": 59.9,
-                "render_index": 1151,
-                "reason": "BAND_VISIBLE",
-                "category": "visible",
-                "band_center_inside": true,
-                "band_corners_inside": 4,
-                "pinhole_px": [
-                  [
-                    308.23297562166044,
-                    344.9384999125602
-                  ],
-                  [
-                    386.35264685857845,
-                    404.866975296848
-                  ],
-                  [
-                    233.2146127692819,
-                    405.0672393619208
-                  ],
-                  [
-                    373.90250754180977,
-                    292.30303808092435
-                  ],
-                  [
-                    239.80632234654547,
-                    292.4458954059369
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_VISIBLE": 3
-              },
-              "point_support": [
-                9778,
-                9782
-              ],
-              "motor_pulses": 0
-            },
-            "r2": {
-              "released_at_s": 57.9,
-              "frames": 3,
-              "categories": {
-                "visible": 3
-              },
-              "center_outside": 0,
-              "min_corners_inside": 4,
-              "max_corners_inside": 4,
-              "last_projection": {
-                "t": 59.9,
-                "render_index": 1151,
-                "reason": "BAND_VISIBLE",
-                "category": "visible",
-                "band_center_inside": true,
-                "band_corners_inside": 4,
-                "pinhole_px": [
-                  [
-                    310.3650400482274,
-                    332.0090855334416
-                  ],
-                  [
-                    243.47584858855865,
-                    280.4529212826093
-                  ],
-                  [
-                    375.71984382283784,
-                    281.50442731098053
-                  ],
-                  [
-                    235.99335103153714,
-                    389.481781009185
-                  ],
-                  [
-                    386.718553377372,
-                    390.8600626258927
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_VISIBLE": 3
-              },
-              "point_support": [
-                9503,
-                9745
-              ],
-              "motor_pulses": 0
-            }
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201,
+      "status": "PHYSICAL_STOP",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/scripts/run_s3_alignment_probe.py\", line 156, in run\n    now=host.now;host.eval_sample()\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_setdown.py\", line 63, in eval_sample\n    try:super().eval_sample()\n        ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/zone_s3_no_prior.py\", line 131, in eval_sample\n    raise PhysicalStop('LOAD_DROP:'+item)\nsim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1\n",
+      "physical_stop": "LOAD_DROP:beam_1",
+      "wall_s": 361.82464020800035,
+      "sim_s": 60.949999999999996,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 1645,
+          "fine_pan_commands": 2,
+          "grasp": 9.15,
+          "lift": 10.9,
+          "carry_xy_m": 0.15829771378300295,
+          "carry": true,
+          "contact_lift_samples": 871,
+          "max_cargo_z_m": 0.09631001373338112,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 1648,
+          "fine_pan_commands": 2,
+          "grasp": 9.15,
+          "lift": 10.9,
+          "carry_xy_m": 0.15829771378300295,
+          "carry": true,
+          "contact_lift_samples": 871,
+          "max_cargo_z_m": 0.09631001373338112,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3698,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 19192,
+            "wall_s": 1.1348286309057585
+          },
+          "physics_advance": {
+            "calls": 1221,
+            "wall_s": 131.83846281500882
+          },
+          "eval_sample_including_io": {
+            "calls": 1220,
+            "wall_s": 0.8308787020014279
+          },
+          "render_rgb": {
+            "calls": 3657,
+            "wall_s": 116.33461983790403
+          },
+          "capture_including_render_io": {
+            "calls": 1219,
+            "wall_s": 126.03862934100653
           }
         },
-        {
-          "name": "s3fix22-combined-multi-left-s15201-r1",
-          "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-left-s15201-r1/raw",
-          "manifest_sha256": "9bd7c946f558ebccd101d5a37d7a355f3b6e4f8b7631f3f55bd913465302a134",
-          "robots": {
-            "r1": {
-              "released_at_s": 57.9,
-              "frames": 3,
-              "categories": {
-                "visible": 3
-              },
-              "center_outside": 0,
-              "min_corners_inside": 4,
-              "max_corners_inside": 4,
-              "last_projection": {
-                "t": 59.9,
-                "render_index": 1151,
-                "reason": "BAND_VISIBLE",
-                "category": "visible",
-                "band_center_inside": true,
-                "band_corners_inside": 4,
-                "pinhole_px": [
-                  [
-                    311.2805154716609,
-                    347.05314388615545
-                  ],
-                  [
-                    389.52190332587605,
-                    407.678391372476
-                  ],
-                  [
-                    235.9477576198878,
-                    407.11496879543665
-                  ],
-                  [
-                    377.2549518103745,
-                    294.45258661383104
-                  ],
-                  [
-                    242.82366846893524,
-                    294.0094363869173
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_VISIBLE": 3
-              },
-              "point_support": [
-                9783,
-                9788
-              ],
-              "motor_pulses": 0
-            },
-            "r2": {
-              "released_at_s": 57.9,
-              "frames": 3,
-              "categories": {
-                "visible": 3
-              },
-              "center_outside": 0,
-              "min_corners_inside": 4,
-              "max_corners_inside": 4,
-              "last_projection": {
-                "t": 59.9,
-                "render_index": 1151,
-                "reason": "BAND_VISIBLE",
-                "category": "visible",
-                "band_center_inside": true,
-                "band_corners_inside": 4,
-                "pinhole_px": [
-                  [
-                    311.25586620135584,
-                    331.881276702143
-                  ],
-                  [
-                    244.91801516447126,
-                    279.82263750912256
-                  ],
-                  [
-                    377.15912050545575,
-                    281.9246082252009
-                  ],
-                  [
-                    236.3711023841255,
-                    388.6462021901815
-                  ],
-                  [
-                    387.08631974934514,
-                    391.389237231388
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_VISIBLE": 3
-              },
-              "point_support": [
-                9514,
-                9758
-              ],
-              "motor_pulses": 0
-            }
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 3293,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.9497901768092585,
+        "r2": 0.5880211332952999
+      },
+      "cargo_max_tilt_deg": 1.1823103452300272,
+      "tilt_aborts": 0,
+      "drop_aborts": 1,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.801178878814774,
+          "max_resultant": 4.417862483901604
+        },
+        "r2": {
+          "max_normal_sum": 13.757934993016317,
+          "max_resultant": 4.424200936841519
+        }
+      },
+      "setdown": false,
+      "lower_start": 42.2,
+      "first_open_change": {
+        "r1": 56.25,
+        "r2": 56.25
+      },
+      "full_open": {
+        "r1": 56.6,
+        "r2": 56.6
+      },
+      "floor_first": 55.05,
+      "open_before_floor": false,
+      "controller_failures": {},
+      "option": "integer_ticks_v1",
+      "corrected_guard_samples": 41,
+      "initial_check": {
+        "name": "s3fix23-baseline-multi-left-s14201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03938208414813765,
+            "finger_xyz_m": 0.1612237614574404
+          },
+          "r2": {
+            "base_xyz_m": 0.050283033367408185,
+            "finger_xyz_m": 0.1696543611556711
           }
         },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0279337410011
+      },
+      "raw_source": {
+        "path": "/home/ubuntu/ugrp-sim/runs/s3fix23-batch-r1/cohort/s3fix23-baseline-multi-left-s14201-r1/raw",
+        "manifest_sha256": "c471ed99841395aae2db4e90caef6dc57095519b90fb77044b7969c8ec71bb4c"
+      },
+      "first_leg_endpoint_error_m": 0.014201318925026706,
+      "planned_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "endpoint_reached": true,
+      "command_sync": true,
+      "candidate": "baseline",
+      "route_case": "multi-left",
+      "route_applied": true,
+      "planned_legs": 2,
+      "legs": [
         {
-          "name": "s3fix22-combined-multi-right-s14204-r1",
-          "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-right-s14204-r1/raw",
-          "manifest_sha256": "cb4c84cd3ecbd5ab36184142b174d97f91083c0752d05af46a3ad7cb6bfd3970",
-          "robots": {
-            "r1": {
-              "released_at_s": 59.4,
-              "frames": 16,
-              "categories": {
-                "fov_clipped": 16
-              },
-              "center_outside": 0,
-              "min_corners_inside": 3,
-              "max_corners_inside": 3,
-              "last_projection": {
-                "t": 62.2,
-                "render_index": 1197,
-                "reason": "BAND_CLIPPED",
-                "category": "fov_clipped",
-                "band_center_inside": true,
-                "band_corners_inside": 3,
-                "pinhole_px": [
-                  [
-                    366.3536077303553,
-                    414.76577069202295
-                  ],
-                  [
-                    447.65423953286984,
-                    496.160996908859
-                  ],
-                  [
-                    280.4115289842591,
-                    474.1371793546137
-                  ],
-                  [
-                    442.4340829057334,
-                    362.2070584897455
-                  ],
-                  [
-                    297.3223514883178,
-                    345.6541956245424
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_CLIPPED": 16
-              },
-              "point_support": [
-                9353,
-                9359
-              ],
-              "motor_pulses": 0
-            },
-            "r2": {
-              "released_at_s": 59.4,
-              "frames": 16,
-              "categories": {
-                "fov_clipped": 16
-              },
-              "center_outside": 0,
-              "min_corners_inside": 3,
-              "max_corners_inside": 3,
-              "last_projection": {
-                "t": 62.2,
-                "render_index": 1197,
-                "reason": "BAND_CLIPPED",
-                "category": "fov_clipped",
-                "band_center_inside": true,
-                "band_corners_inside": 3,
-                "pinhole_px": [
-                  [
-                    427.57354803574634,
-                    419.3961495751786
-                  ],
-                  [
-                    364.12274138388176,
-                    342.1541971257663
-                  ],
-                  [
-                    510.44559885065615,
-                    377.8825797390995
-                  ],
-                  [
-                    336.48897222338786,
-                    465.02366647374373
-                  ],
-                  [
-                    503.84000443907786,
-                    512.2392560673208
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_CLIPPED": 16
-              },
-              "point_support": [
-                9109,
-                9118
-              ],
-              "motor_pulses": 0
-            }
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.014201318925026706,
+          "endpoint_reached": true,
+          "actual_transport_m": 0.15454598929157468,
+          "transport_reached": true
+        }
+      ],
+      "second_leg_started": false,
+      "reentry": true,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": true
+      },
+      "realigned_after_release": true,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "cause": "physical_or_controller_failure",
+      "final_release_sim_s": null,
+      "final_setdown": false,
+      "final_endpoint_error_m": 0.18189253757389084,
+      "reacquire": {},
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-baseline-multi-left-s14201-r1/raw",
+      "wall_sim_ratio": 5.936417394716988,
+      "outcome": "stale_lift_latch_grounded_regrasp"
+    },
+    {
+      "name": "s3fix23-baseline-multi-left-s15201-r1",
+      "source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 0,
+      "seed": 15201,
+      "status": "PHYSICAL_STOP",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/scripts/run_s3_alignment_probe.py\", line 156, in run\n    now=host.now;host.eval_sample()\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_setdown.py\", line 63, in eval_sample\n    try:super().eval_sample()\n        ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/zone_s3_no_prior.py\", line 131, in eval_sample\n    raise PhysicalStop('LOAD_DROP:'+item)\nsim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1\n",
+      "physical_stop": "LOAD_DROP:beam_1",
+      "wall_s": 358.7688524570003,
+      "sim_s": 60.949999999999996,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 1645,
+          "fine_pan_commands": 2,
+          "grasp": 9.15,
+          "lift": 10.9,
+          "carry_xy_m": 0.15806685935481354,
+          "carry": true,
+          "contact_lift_samples": 871,
+          "max_cargo_z_m": 0.09670213473235857,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 1648,
+          "fine_pan_commands": 2,
+          "grasp": 9.15,
+          "lift": 10.9,
+          "carry_xy_m": 0.15806685935481354,
+          "carry": true,
+          "contact_lift_samples": 871,
+          "max_cargo_z_m": 0.09670213473235857,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3698,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 19192,
+            "wall_s": 1.1432555559313187
+          },
+          "physics_advance": {
+            "calls": 1221,
+            "wall_s": 130.55328380994433
+          },
+          "eval_sample_including_io": {
+            "calls": 1220,
+            "wall_s": 0.8095701690381247
+          },
+          "render_rgb": {
+            "calls": 3657,
+            "wall_s": 114.86553263296082
+          },
+          "capture_including_render_io": {
+            "calls": 1219,
+            "wall_s": 124.5309488679759
           }
         },
-        {
-          "name": "s3fix22-combined-multi-right-s15204-r1",
-          "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-right-s15204-r1/raw",
-          "manifest_sha256": "5be82c036086ae1615fa810096dc1889a51a6633bd8812da096bebbcbc79fdf5",
-          "robots": {
-            "r1": {
-              "released_at_s": 59.4,
-              "frames": 16,
-              "categories": {
-                "fov_clipped": 16
-              },
-              "center_outside": 0,
-              "min_corners_inside": 3,
-              "max_corners_inside": 3,
-              "last_projection": {
-                "t": 62.2,
-                "render_index": 1197,
-                "reason": "BAND_CLIPPED",
-                "category": "fov_clipped",
-                "band_center_inside": true,
-                "band_corners_inside": 3,
-                "pinhole_px": [
-                  [
-                    363.9643512679468,
-                    411.8426843607136
-                  ],
-                  [
-                    446.2025614047212,
-                    491.0429728052329
-                  ],
-                  [
-                    279.4594894387487,
-                    472.72173037615454
-                  ],
-                  [
-                    438.5294329741345,
-                    358.12446102923997
-                  ],
-                  [
-                    293.8855283941894,
-                    344.3526091727551
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_CLIPPED": 16
-              },
-              "point_support": [
-                9289,
-                9294
-              ],
-              "motor_pulses": 0
-            },
-            "r2": {
-              "released_at_s": 59.4,
-              "frames": 16,
-              "categories": {
-                "fov_clipped": 16
-              },
-              "center_outside": 0,
-              "min_corners_inside": 3,
-              "max_corners_inside": 3,
-              "last_projection": {
-                "t": 62.2,
-                "render_index": 1197,
-                "reason": "BAND_CLIPPED",
-                "category": "fov_clipped",
-                "band_center_inside": true,
-                "band_corners_inside": 3,
-                "pinhole_px": [
-                  [
-                    430.58213811749596,
-                    410.5724146945563
-                  ],
-                  [
-                    365.63862895624936,
-                    335.74952696535183
-                  ],
-                  [
-                    511.0446656643153,
-                    367.8968522776109
-                  ],
-                  [
-                    341.79384502568803,
-                    457.6637808156214
-                  ],
-                  [
-                    508.2580058220581,
-                    500.0645410608226
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_CLIPPED": 16
-              },
-              "point_support": [
-                8949,
-                8953
-              ],
-              "motor_pulses": 0
-            }
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 3293,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.9215239102679611,
+        "r2": 0.5990103970154402
+      },
+      "cargo_max_tilt_deg": 1.3075330689787903,
+      "tilt_aborts": 0,
+      "drop_aborts": 1,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.588111945313885,
+          "max_resultant": 4.416929117925706
+        },
+        "r2": {
+          "max_normal_sum": 13.899825447349475,
+          "max_resultant": 4.376884105192897
+        }
+      },
+      "setdown": false,
+      "lower_start": 42.2,
+      "first_open_change": {
+        "r1": 56.25,
+        "r2": 56.25
+      },
+      "full_open": {
+        "r1": 56.6,
+        "r2": 56.6
+      },
+      "floor_first": 55.1,
+      "open_before_floor": false,
+      "controller_failures": {},
+      "option": "integer_ticks_v1",
+      "corrected_guard_samples": 41,
+      "initial_check": {
+        "name": "s3fix23-baseline-multi-left-s15201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03962421446767674,
+            "finger_xyz_m": 0.16126080352734043
+          },
+          "r2": {
+            "base_xyz_m": 0.05008558498074198,
+            "finger_xyz_m": 0.16979688751073096
           }
         },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0227529650001
+      },
+      "raw_source": {
+        "path": "/home/ubuntu/ugrp-sim/runs/s3fix23-batch-r1/cohort/s3fix23-baseline-multi-left-s15201-r1/raw",
+        "manifest_sha256": "e762ab62bb86029417b8758bd882bf0915dfaea096a85a8625dae7f33844e28f"
+      },
+      "first_leg_endpoint_error_m": 0.013593297847527896,
+      "planned_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "endpoint_reached": true,
+      "command_sync": true,
+      "candidate": "baseline",
+      "route_case": "multi-left",
+      "route_applied": true,
+      "planned_legs": 2,
+      "legs": [
         {
-          "name": "s3fix22-combined-multi-three-s14206-r1",
-          "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-three-s14206-r1/raw",
-          "manifest_sha256": "69f34da398c44ec98b11fc9992ae4e23ce3bd99b498c2598fbfd8e963deff4e0",
-          "robots": {
-            "r1": {
-              "released_at_s": 58.4,
-              "frames": 3,
-              "categories": {
-                "visible": 3
-              },
-              "center_outside": 0,
-              "min_corners_inside": 4,
-              "max_corners_inside": 4,
-              "last_projection": {
-                "t": 60.4,
-                "render_index": 1161,
-                "reason": "BAND_VISIBLE",
-                "category": "visible",
-                "band_center_inside": true,
-                "band_corners_inside": 4,
-                "pinhole_px": [
-                  [
-                    309.2786829633334,
-                    363.0703070590562
-                  ],
-                  [
-                    388.67531568042233,
-                    426.7541961901859
-                  ],
-                  [
-                    231.70453696556064,
-                    425.11952064489753
-                  ],
-                  [
-                    377.1143331057898,
-                    308.81062182134065
-                  ],
-                  [
-                    240.0663964028913,
-                    307.5552627430964
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_VISIBLE": 3
-              },
-              "point_support": [
-                9620,
-                9713
-              ],
-              "motor_pulses": 0
-            },
-            "r2": {
-              "released_at_s": 58.4,
-              "frames": 24,
-              "categories": {
-                "fov_clipped": 24
-              },
-              "center_outside": 0,
-              "min_corners_inside": 3,
-              "max_corners_inside": 3,
-              "last_projection": {
-                "t": 62.2,
-                "render_index": 1197,
-                "reason": "BAND_CLIPPED",
-                "category": "fov_clipped",
-                "band_center_inside": true,
-                "band_corners_inside": 3,
-                "pinhole_px": [
-                  [
-                    344.16548135942253,
-                    408.6526111598492
-                  ],
-                  [
-                    275.73534369296846,
-                    341.5686384495024
-                  ],
-                  [
-                    419.7067570708901,
-                    355.2409342209392
-                  ],
-                  [
-                    258.59891841061625,
-                    469.1526963642705
-                  ],
-                  [
-                    424.432078317865,
-                    487.3401950743872
-                  ]
-                ],
-                "evaluated_gt_only": true
-              },
-              "reasons": {
-                "BAND_CLIPPED": 24
-              },
-              "point_support": [
-                9338,
-                9351
-              ],
-              "motor_pulses": 0
-            }
+          "seg": 0,
+          "start_sim_s": 29.1,
+          "end_sim_s": 31.8,
+          "endpoint_error_m": 0.013593297847527896,
+          "endpoint_reached": true,
+          "actual_transport_m": 0.15431754908130976,
+          "transport_reached": true
+        }
+      ],
+      "second_leg_started": false,
+      "reentry": true,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": true
+      },
+      "realigned_after_release": true,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "cause": "physical_or_controller_failure",
+      "final_release_sim_s": null,
+      "final_setdown": false,
+      "final_endpoint_error_m": 0.1822783867520488,
+      "reacquire": {},
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-baseline-multi-left-s15201-r1/raw",
+      "wall_sim_ratio": 5.886281418490571,
+      "outcome": "stale_lift_latch_grounded_regrasp"
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s14204-r1",
+      "source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 932.5227226539992,
+      "sim_s": 170.0,
+      "robots": {
+        "r1": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 2539,
+          "fine_pan_commands": 1,
+          "grasp": 10.65,
+          "lift": 12.45,
+          "carry_xy_m": 0.15828029039622382,
+          "carry": true,
+          "contact_lift_samples": 870,
+          "max_cargo_z_m": 0.09166659270923824,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 1116,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 7.4,
+          "hover": 7.4,
+          "descent": 8.9,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 2542,
+          "fine_pan_commands": 1,
+          "grasp": 10.65,
+          "lift": 12.45,
+          "carry_xy_m": 0.15828029039622382,
+          "carry": true,
+          "contact_lift_samples": 870,
+          "max_cargo_z_m": 0.09166659270923824,
+          "restore_collisions": 0,
+          "last_visible_uses": 1,
+          "endpoint_rejected_frames": 1114,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 10240,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 49294,
+            "wall_s": 2.95940514106951
+          },
+          "physics_advance": {
+            "calls": 3402,
+            "wall_s": 284.93867483105714
+          },
+          "eval_sample_including_io": {
+            "calls": 3401,
+            "wall_s": 2.0147932369527553
+          },
+          "render_rgb": {
+            "calls": 10200,
+            "wall_s": 281.63440911207
+          },
+          "capture_including_render_io": {
+            "calls": 3400,
+            "wall_s": 306.1344194839585
           }
         },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 5081,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.7041311143979216,
+        "r2": 0.7483317245190357
+      },
+      "cargo_max_tilt_deg": 5.494781914421237,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r1": {
+          "state": "align",
+          "failure": null
+        },
+        "r2": {
+          "state": "align",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.182596100698506,
+          "max_resultant": 4.683840018616001
+        },
+        "r2": {
+          "max_normal_sum": 13.836580255620085,
+          "max_resultant": 4.365812706135785
+        }
+      },
+      "setdown": true,
+      "lower_start": 43.7,
+      "first_open_change": {
+        "r1": 57.75,
+        "r2": 57.75
+      },
+      "full_open": {
+        "r1": 58.1,
+        "r2": 58.1
+      },
+      "floor_first": 56.6,
+      "open_before_floor": false,
+      "controller_failures": {},
+      "option": "integer_ticks_v1",
+      "corrected_guard_samples": 0,
+      "initial_check": {
+        "name": "s3fix23-pan-multi-right-s14204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.05722783037564652,
+            "finger_xyz_m": 0.1724748412718958
+          },
+          "r2": {
+            "base_xyz_m": 0.07770124911696404,
+            "finger_xyz_m": 0.183756883841371
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.02291832800074
+      },
+      "raw_source": {
+        "path": "/home/ubuntu/ugrp-sim/runs/s3fix23-batch-r1/cohort/s3fix23-pan-multi-right-s14204-r1/raw",
+        "manifest_sha256": "13f4bec0a6a7e1e4a346979b40adef84b0a2296fea747298fedb218f067db2a5"
+      },
+      "first_leg_endpoint_error_m": 0.016468964433528514,
+      "planned_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "endpoint_reached": true,
+      "command_sync": true,
+      "candidate": "pan",
+      "route_case": "multi-right",
+      "route_applied": true,
+      "planned_legs": 2,
+      "legs": [
         {
-          "name": "s3fix22-combined-multi-three-s15206-r1",
-          "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-three-s15206-r1/raw",
-          "manifest_sha256": "78b1eecccaf0ffbc5c1d827ee3e0fe7c84f9f3c5c713809643079e11e2937366",
-          "robots": {
-            "r1": {
-              "released_at_s": 57.4,
-              "frames": 3,
-              "categories": {
-                "visible": 3
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.016468964433528514,
+          "endpoint_reached": true,
+          "actual_transport_m": 0.15531868489420064,
+          "transport_reached": true
+        }
+      ],
+      "second_leg_started": false,
+      "reentry": true,
+      "realigned_by_robot": {
+        "r1": false,
+        "r2": false
+      },
+      "realigned_after_release": false,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": true,
+      "full_route_success": false,
+      "cause": "probe_horizon",
+      "final_release_sim_s": null,
+      "final_setdown": false,
+      "final_endpoint_error_m": 0.14470979031948764,
+      "reacquire": {
+        "r1": {
+          "options": {
+            "canonical_pan": true,
+            "clipped_backoff": false
+          },
+          "audit": [
+            {
+              "t": 59.5,
+              "seg": 1,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
               },
-              "center_outside": 0,
-              "min_corners_inside": 4,
-              "max_corners_inside": 4,
-              "last_projection": {
-                "t": 59.4,
-                "render_index": 1141,
-                "reason": "BAND_VISIBLE",
-                "category": "visible",
-                "band_center_inside": true,
-                "band_corners_inside": 4,
-                "pinhole_px": [
-                  [
-                    309.81920234729125,
-                    348.4666235223929
-                  ],
-                  [
-                    389.46086409731856,
-                    407.54483374707314
-                  ],
-                  [
-                    235.7604883556672,
-                    410.45058365021987
-                  ],
-                  [
-                    374.4345295536624,
-                    294.3863722010005
-                  ],
-                  [
-                    239.90139452779442,
-                    296.6015712615069
-                  ]
-                ],
-                "evaluated_gt_only": true
+              "settled_after_s": 60.35
+            }
+          ],
+          "runtime_gt": false
+        },
+        "r2": {
+          "options": {
+            "canonical_pan": true,
+            "clipped_backoff": false
+          },
+          "audit": [
+            {
+              "t": 59.5,
+              "seg": 1,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
               },
-              "reasons": {
-                "BAND_VISIBLE": 3
+              "settled_after_s": 60.35
+            }
+          ],
+          "runtime_gt": false
+        }
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-pan-multi-right-s14204-r1/raw",
+      "wall_sim_ratio": 5.485427780317642,
+      "outcome": "reentry_clipped_horizon"
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s15204-r1",
+      "source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 3,
+      "seed": 15204,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 665.6921808199986,
+      "sim_s": 121.7,
+      "robots": {
+        "r1": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 2976,
+          "fine_pan_commands": 2,
+          "grasp": 10.65,
+          "lift": 12.45,
+          "carry_xy_m": 0.24360299043695624,
+          "carry": true,
+          "contact_lift_samples": 1508,
+          "max_cargo_z_m": 0.09517693779259567,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 210,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 7.4,
+          "hover": 7.4,
+          "descent": 8.9,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 2772,
+          "fine_pan_commands": 2,
+          "grasp": 10.65,
+          "lift": 12.45,
+          "carry_xy_m": 0.24360299043695624,
+          "carry": true,
+          "contact_lift_samples": 1508,
+          "max_cargo_z_m": 0.09517693779259567,
+          "restore_collisions": 0,
+          "last_visible_uses": 5,
+          "endpoint_rejected_frames": 5,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 7342,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 37403,
+            "wall_s": 2.180618723954467
+          },
+          "physics_advance": {
+            "calls": 2436,
+            "wall_s": 241.89955258901682
+          },
+          "eval_sample_including_io": {
+            "calls": 2435,
+            "wall_s": 1.518113437012289
+          },
+          "render_rgb": {
+            "calls": 7302,
+            "wall_s": 213.4862536800265
+          },
+          "capture_including_render_io": {
+            "calls": 2434,
+            "wall_s": 231.78923556802692
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 5748,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.8443311563958235,
+        "r2": 0.6626433158013036
+      },
+      "cargo_max_tilt_deg": 0.8122852891221585,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r1": {
+          "state": "released",
+          "failure": null
+        },
+        "r2": {
+          "state": "released",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.381044856218029,
+          "max_resultant": 4.614204201542378
+        },
+        "r2": {
+          "max_normal_sum": 13.793910734500805,
+          "max_resultant": 4.6188204829436295
+        }
+      },
+      "setdown": true,
+      "lower_start": 43.7,
+      "first_open_change": {
+        "r1": 57.75,
+        "r2": 57.75
+      },
+      "full_open": {
+        "r1": 58.1,
+        "r2": 58.1
+      },
+      "floor_first": 56.6,
+      "open_before_floor": false,
+      "controller_failures": {},
+      "option": "integer_ticks_v1",
+      "corrected_guard_samples": 0,
+      "initial_check": {
+        "name": "s3fix23-pan-multi-right-s15204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 22,
+        "sim_s": 23.35,
+        "frames": 420,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.05649249189997458,
+            "finger_xyz_m": 0.1723985310344831
+          },
+          "r2": {
+            "base_xyz_m": 0.07410506023202489,
+            "finger_xyz_m": 0.1838383202487547
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.03222108599948
+      },
+      "raw_source": {
+        "path": "/home/ubuntu/ugrp-sim/runs/s3fix23-batch-r1/cohort/s3fix23-pan-multi-right-s15204-r1/raw",
+        "manifest_sha256": "756856ccc43dcb3a6c0acef8ee3fff35792e74153601f584f92d941d80d2184d"
+      },
+      "first_leg_endpoint_error_m": 0.015214755067825896,
+      "planned_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "endpoint_reached": true,
+      "command_sync": true,
+      "candidate": "pan",
+      "route_case": "multi-right",
+      "route_applied": true,
+      "planned_legs": 2,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 30.6,
+          "end_sim_s": 33.3,
+          "endpoint_error_m": 0.015214755067825896,
+          "endpoint_reached": true,
+          "actual_transport_m": 0.15417487415056744,
+          "transport_reached": true
+        },
+        {
+          "seg": 1,
+          "start_sim_s": 106.2,
+          "end_sim_s": 107.3,
+          "endpoint_error_m": 0.021161940642238815,
+          "endpoint_reached": false,
+          "actual_transport_m": 0.1673805340111688,
+          "transport_reached": true
+        }
+      ],
+      "second_leg_started": true,
+      "reentry": true,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": true
+      },
+      "realigned_after_release": true,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "cause": null,
+      "final_release_sim_s": 121.9,
+      "final_setdown": true,
+      "final_endpoint_error_m": 0.027298292562917166,
+      "reacquire": {
+        "r1": {
+          "options": {
+            "canonical_pan": true,
+            "clipped_backoff": false
+          },
+          "audit": [
+            {
+              "t": 59.5,
+              "seg": 1,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
               },
-              "point_support": [
-                9685,
-                9794
-              ],
-              "motor_pulses": 0
+              "settled_after_s": 60.35
+            }
+          ],
+          "runtime_gt": false
+        },
+        "r2": {
+          "options": {
+            "canonical_pan": true,
+            "clipped_backoff": false
+          },
+          "audit": [
+            {
+              "t": 59.5,
+              "seg": 1,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              },
+              "settled_after_s": 60.35
+            }
+          ],
+          "runtime_gt": false
+        }
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-pan-multi-right-s15204-r1/raw",
+      "wall_sim_ratio": 5.4699439672966195,
+      "outcome": "final_endpoint_over_20mm"
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+      "source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206,
+      "status": "PHYSICAL_STOP",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/scripts/run_s3_alignment_probe.py\", line 156, in run\n    now=host.now;host.eval_sample()\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_setdown.py\", line 63, in eval_sample\n    try:super().eval_sample()\n        ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/ca3d51b79d07b8b1230d8186a3b0942127e2b015/sim/zone_s3_no_prior.py\", line 131, in eval_sample\n    raise PhysicalStop('LOAD_DROP:'+item)\nsim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1\n",
+      "physical_stop": "LOAD_DROP:beam_1",
+      "wall_s": 633.933902241999,
+      "sim_s": 114.55000000000001,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 9.3,
+          "lift_entry": 10.6,
+          "carry_entry": 29.6,
+          "turn_reversals": 0,
+          "commands": 3049,
+          "fine_pan_commands": 3,
+          "grasp": 9.65,
+          "lift": 11.45,
+          "carry_xy_m": 0.229508946300047,
+          "carry": true,
+          "contact_lift_samples": 1708,
+          "max_cargo_z_m": 0.09654614611043198,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 6.4,
+          "hover": 6.4,
+          "descent": 7.9,
+          "close": 9.3,
+          "lift_entry": 10.6,
+          "carry_entry": 29.6,
+          "turn_reversals": 0,
+          "commands": 3060,
+          "fine_pan_commands": 3,
+          "grasp": 9.65,
+          "lift": 11.45,
+          "carry_xy_m": 0.229508946300047,
+          "carry": true,
+          "contact_lift_samples": 1708,
+          "max_cargo_z_m": 0.09654614611043198,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 4,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 6914,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 35944,
+            "wall_s": 2.063782463032112
+          },
+          "physics_advance": {
+            "calls": 2293,
+            "wall_s": 236.92119807199742
+          },
+          "eval_sample_including_io": {
+            "calls": 2292,
+            "wall_s": 1.5078288650311151
+          },
+          "render_rgb": {
+            "calls": 6873,
+            "wall_s": 201.52745447705456
+          },
+          "capture_including_render_io": {
+            "calls": 2291,
+            "wall_s": 218.8250866769904
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 6109,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.7905207617281261,
+        "r2": 1.0377580181755603
+      },
+      "cargo_max_tilt_deg": 0.6532717597866625,
+      "tilt_aborts": 0,
+      "drop_aborts": 1,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.503961272761366,
+          "max_resultant": 4.556741135803685
+        },
+        "r2": {
+          "max_normal_sum": 13.52981790246707,
+          "max_resultant": 4.606373934089198
+        }
+      },
+      "setdown": false,
+      "lower_start": 42.7,
+      "first_open_change": {
+        "r1": 56.75,
+        "r2": 56.75
+      },
+      "full_open": {
+        "r1": 57.1,
+        "r2": 57.1
+      },
+      "floor_first": 55.55,
+      "open_before_floor": false,
+      "controller_failures": {},
+      "option": "integer_ticks_v1",
+      "corrected_guard_samples": 41,
+      "initial_check": {
+        "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03171931110089424,
+            "finger_xyz_m": 0.16148417833319798
+          },
+          "r2": {
+            "base_xyz_m": 0.07996859923831233,
+            "finger_xyz_m": 0.18461016019322463
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.02317748699897
+      },
+      "raw_source": {
+        "path": "/home/ubuntu/ugrp-sim/runs/s3fix23-batch-r1/cohort/s3fix23-pan_backoff-multi-three-s14206-r1/raw",
+        "manifest_sha256": "bbc3c70ef6b77932e436bbff875161c7cf8c8448ea5b7bf6836fcbf7e0a988e6"
+      },
+      "first_leg_endpoint_error_m": 0.013375002822669865,
+      "planned_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "endpoint_reached": true,
+      "command_sync": true,
+      "candidate": "pan_backoff",
+      "route_case": "multi-three",
+      "route_applied": true,
+      "planned_legs": 3,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 29.6,
+          "end_sim_s": 32.3,
+          "endpoint_error_m": 0.013375002822669865,
+          "endpoint_reached": true,
+          "actual_transport_m": 0.15508570818432613,
+          "transport_reached": true
+        },
+        {
+          "seg": 1,
+          "start_sim_s": 84.5,
+          "end_sim_s": 85.6,
+          "endpoint_error_m": 0.017304004224520546,
+          "endpoint_reached": true,
+          "actual_transport_m": 0.16826121654923445,
+          "transport_reached": true
+        }
+      ],
+      "second_leg_started": true,
+      "reentry": true,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": true
+      },
+      "realigned_after_release": true,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "cause": "physical_or_controller_failure",
+      "final_release_sim_s": null,
+      "final_setdown": false,
+      "final_endpoint_error_m": 0.11103160013491657,
+      "reacquire": {
+        "r1": {
+          "options": {
+            "canonical_pan": true,
+            "clipped_backoff": true
+          },
+          "audit": [
+            {
+              "t": 58.5,
+              "seg": 1,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              },
+              "settled_after_s": 59.35
             },
-            "r2": {
-              "released_at_s": 57.4,
-              "frames": 3,
-              "categories": {
-                "visible": 3
+            {
+              "t": 111.7,
+              "seg": 2,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
               },
-              "center_outside": 0,
-              "min_corners_inside": 4,
-              "max_corners_inside": 4,
-              "last_projection": {
-                "t": 59.4,
-                "render_index": 1141,
-                "reason": "BAND_VISIBLE",
-                "category": "visible",
-                "band_center_inside": true,
-                "band_corners_inside": 4,
-                "pinhole_px": [
-                  [
-                    307.34265554636335,
-                    326.10098185850654
-                  ],
-                  [
-                    240.09411047212097,
-                    275.9726357971557
-                  ],
-                  [
-                    371.56903404442807,
-                    275.3805007227669
-                  ],
-                  [
-                    234.1629878357677,
-                    383.89200234624514
-                  ],
-                  [
-                    383.8645210792006,
-                    383.1418375744976
-                  ]
-                ],
-                "evaluated_gt_only": true
+              "settled_after_s": 112.55000000000001
+            }
+          ],
+          "runtime_gt": false
+        },
+        "r2": {
+          "options": {
+            "canonical_pan": true,
+            "clipped_backoff": true
+          },
+          "audit": [
+            {
+              "t": 58.5,
+              "seg": 1,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
               },
-              "reasons": {
-                "BAND_VISIBLE": 3
+              "settled_after_s": 59.35
+            },
+            {
+              "t": 59.4,
+              "seg": 1,
+              "phase": "clipped_backoff",
+              "count": 1,
+              "reason": "BAND_CLIPPED",
+              "frame_id": 1142,
+              "action": {
+                "kind": "mecanum",
+                "forward": -0.35,
+                "left": 0.0,
+                "turn": 0.0,
+                "duration_s": 0.1
               },
-              "point_support": [
-                9593,
-                9652
+              "calibrated_delta": [
+                -0.012917157771402163,
+                0.00040206798082011467,
+                0.00029378953563691213
               ],
-              "motor_pulses": 0
+              "settled_after_s": 59.9
+            },
+            {
+              "t": 111.7,
+              "seg": 2,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              },
+              "settled_after_s": 112.55000000000001
+            }
+          ],
+          "runtime_gt": false
+        }
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-pan_backoff-multi-three-s14206-r1/raw",
+      "wall_sim_ratio": 5.534123982907018,
+      "outcome": "stale_lift_latch_grounded_regrasp"
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+      "source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 5,
+      "seed": 15206,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 812.8227692569999,
+      "sim_s": 152.6,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 8.3,
+          "lift_entry": 9.6,
+          "carry_entry": 28.6,
+          "turn_reversals": 0,
+          "commands": 4177,
+          "fine_pan_commands": 3,
+          "grasp": 8.65,
+          "lift": 10.45,
+          "carry_xy_m": 0.2262676995635425,
+          "carry": true,
+          "contact_lift_samples": 2368,
+          "max_cargo_z_m": 0.09574904838357523,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 5.4,
+          "hover": 5.4,
+          "descent": 6.9,
+          "close": 8.3,
+          "lift_entry": 9.6,
+          "carry_entry": 28.6,
+          "turn_reversals": 0,
+          "commands": 4181,
+          "fine_pan_commands": 3,
+          "grasp": 8.65,
+          "lift": 10.45,
+          "carry_xy_m": 0.2262676995635425,
+          "carry": true,
+          "contact_lift_samples": 2368,
+          "max_cargo_z_m": 0.09574904838357523,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 9196,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 48047,
+            "wall_s": 2.692361261080805
+          },
+          "physics_advance": {
+            "calls": 3054,
+            "wall_s": 304.12311577801484
+          },
+          "eval_sample_including_io": {
+            "calls": 3053,
+            "wall_s": 1.8811809610324417
+          },
+          "render_rgb": {
+            "calls": 9156,
+            "wall_s": 257.5594081569434
+          },
+          "capture_including_render_io": {
+            "calls": 3052,
+            "wall_s": 279.88345026498246
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 8358,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.9293889729462835,
+        "r2": 0.8181012241522916
+      },
+      "cargo_max_tilt_deg": 2.284490834684552,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r1": {
+          "state": "released",
+          "failure": null
+        },
+        "r2": {
+          "state": "released",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.51591440819768,
+          "max_resultant": 4.500057832480826
+        },
+        "r2": {
+          "max_normal_sum": 14.6174000796013,
+          "max_resultant": 4.594688365480147
+        }
+      },
+      "setdown": true,
+      "lower_start": 41.7,
+      "first_open_change": {
+        "r1": 55.75,
+        "r2": 55.75
+      },
+      "full_open": {
+        "r1": 56.1,
+        "r2": 56.1
+      },
+      "floor_first": 54.55,
+      "open_before_floor": false,
+      "controller_failures": {},
+      "option": "integer_ticks_v1",
+      "corrected_guard_samples": 0,
+      "initial_check": {
+        "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.028262064164973674,
+            "finger_xyz_m": 0.1613156840312482
+          },
+          "r2": {
+            "base_xyz_m": 0.058601267421334466,
+            "finger_xyz_m": 0.16919617511927135
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0207913510003
+      },
+      "raw_source": {
+        "path": "/home/ubuntu/ugrp-sim/runs/s3fix23-batch-r1/cohort/s3fix23-pan_backoff-multi-three-s15206-r1/raw",
+        "manifest_sha256": "4516de6d65fbe952ef769b28422e0dabc937e947d34ca07a0a5c3f5a14c4c51b"
+      },
+      "first_leg_endpoint_error_m": 0.018980965203727513,
+      "planned_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "endpoint_reached": true,
+      "command_sync": true,
+      "candidate": "pan_backoff",
+      "route_case": "multi-three",
+      "route_applied": true,
+      "planned_legs": 3,
+      "legs": [
+        {
+          "seg": 0,
+          "start_sim_s": 28.6,
+          "end_sim_s": 31.3,
+          "endpoint_error_m": 0.018980965203727513,
+          "endpoint_reached": true,
+          "actual_transport_m": 0.1557771191909757,
+          "transport_reached": true
+        },
+        {
+          "seg": 1,
+          "start_sim_s": 83.0,
+          "end_sim_s": 84.1,
+          "endpoint_error_m": 0.018558258426286008,
+          "endpoint_reached": true,
+          "actual_transport_m": 0.16752974096056578,
+          "transport_reached": true
+        },
+        {
+          "seg": 2,
+          "start_sim_s": 136.0,
+          "end_sim_s": 137.9,
+          "endpoint_error_m": 0.022685658156241358,
+          "endpoint_reached": false,
+          "actual_transport_m": 0.10373614487283414,
+          "transport_reached": true
+        }
+      ],
+      "second_leg_started": true,
+      "reentry": true,
+      "realigned_by_robot": {
+        "r1": true,
+        "r2": true
+      },
+      "realigned_after_release": true,
+      "premature_complete": false,
+      "unmeasured_camera_host": false,
+      "probe_horizon": false,
+      "full_route_success": false,
+      "cause": null,
+      "final_release_sim_s": 152.8,
+      "final_setdown": true,
+      "final_endpoint_error_m": 0.020533970017668622,
+      "reacquire": {
+        "r1": {
+          "options": {
+            "canonical_pan": true,
+            "clipped_backoff": true
+          },
+          "audit": [
+            {
+              "t": 57.5,
+              "seg": 1,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              },
+              "settled_after_s": 58.35
+            },
+            {
+              "t": 110.2,
+              "seg": 2,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              },
+              "settled_after_s": 111.05000000000001
+            }
+          ],
+          "runtime_gt": false
+        },
+        "r2": {
+          "options": {
+            "canonical_pan": true,
+            "clipped_backoff": true
+          },
+          "audit": [
+            {
+              "t": 57.5,
+              "seg": 1,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              },
+              "settled_after_s": 58.35
+            },
+            {
+              "t": 110.2,
+              "seg": 2,
+              "phase": "canonical_inspect",
+              "target": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              },
+              "settled_after_s": 111.05000000000001
+            }
+          ],
+          "runtime_gt": false
+        }
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-pan_backoff-multi-three-s15206-r1/raw",
+      "wall_sim_ratio": 5.32649259015072,
+      "outcome": "final_endpoint_over_20mm"
+    }
+  ],
+  "full_route_success": 0,
+  "final_setdown": 2,
+  "host_errors": 0,
+  "drop_aborts": 3,
+  "tilt_aborts": 0,
+  "initial_checks_healthy": 6,
+  "legs": {
+    "0": {
+      "n": 6,
+      "transported": 6,
+      "endpoint_reached": 6
+    },
+    "1": {
+      "n": 6,
+      "transported": 3,
+      "endpoint_reached": 2
+    },
+    "2": {
+      "n": 2,
+      "transported": 1,
+      "endpoint_reached": 0
+    }
+  },
+  "scope": "unbroken synthetic alignment-to-final-release registered routes; not dock-to-B E2E",
+  "status": "completed_retrieved",
+  "execution_source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+  "evaluator_source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+  "evaluator_receipt": {
+    "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-eval-r1/summary.json",
+    "sha256": "8f023ce7d180adf902bf911fdff9cadaffbda42813b63f2b4a13af6d810ef96f"
+  },
+  "registration_sha256": "da816e586ef72ad15efa0252f233dee14d80f7fa3499d65d1df47710ba012941",
+  "criteria_unchanged": true,
+  "full_route_traversal": 2,
+  "raw_files_verified": 41088,
+  "root_metadata_verification": {
+    "files_verified": 53,
+    "all_hashes_match": true
+  },
+  "raw_diagnosis_before": {
+    "host": "oracle-x86",
+    "eval_only": true,
+    "scope": "saved exact render/qpos projection; no integration/render, current detector rejection and pinhole FOV reported separately",
+    "runs": [
+      {
+        "name": "s3fix22-combined-multi-left-s14201-r1",
+        "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-left-s14201-r1/raw",
+        "manifest_sha256": "6b828e89999e761ad49208a2688c4997963a1faccc8508007899fe1eb16ad59b",
+        "robots": {
+          "r1": {
+            "released_at_s": 57.9,
+            "frames": 3,
+            "categories": {
+              "visible": 3
+            },
+            "center_outside": 0,
+            "min_corners_inside": 4,
+            "max_corners_inside": 4,
+            "last_projection": {
+              "t": 59.9,
+              "render_index": 1151,
+              "reason": "BAND_VISIBLE",
+              "category": "visible",
+              "band_center_inside": true,
+              "band_corners_inside": 4,
+              "pinhole_px": [
+                [
+                  308.23297562166044,
+                  344.9384999125602
+                ],
+                [
+                  386.35264685857845,
+                  404.866975296848
+                ],
+                [
+                  233.2146127692819,
+                  405.0672393619208
+                ],
+                [
+                  373.90250754180977,
+                  292.30303808092435
+                ],
+                [
+                  239.80632234654547,
+                  292.4458954059369
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "point_support": [
+              9778,
+              9782
+            ],
+            "motor_pulses": 0
+          },
+          "r2": {
+            "released_at_s": 57.9,
+            "frames": 3,
+            "categories": {
+              "visible": 3
+            },
+            "center_outside": 0,
+            "min_corners_inside": 4,
+            "max_corners_inside": 4,
+            "last_projection": {
+              "t": 59.9,
+              "render_index": 1151,
+              "reason": "BAND_VISIBLE",
+              "category": "visible",
+              "band_center_inside": true,
+              "band_corners_inside": 4,
+              "pinhole_px": [
+                [
+                  310.3650400482274,
+                  332.0090855334416
+                ],
+                [
+                  243.47584858855865,
+                  280.4529212826093
+                ],
+                [
+                  375.71984382283784,
+                  281.50442731098053
+                ],
+                [
+                  235.99335103153714,
+                  389.481781009185
+                ],
+                [
+                  386.718553377372,
+                  390.8600626258927
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "point_support": [
+              9503,
+              9745
+            ],
+            "motor_pulses": 0
+          }
+        }
+      },
+      {
+        "name": "s3fix22-combined-multi-left-s15201-r1",
+        "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-left-s15201-r1/raw",
+        "manifest_sha256": "9bd7c946f558ebccd101d5a37d7a355f3b6e4f8b7631f3f55bd913465302a134",
+        "robots": {
+          "r1": {
+            "released_at_s": 57.9,
+            "frames": 3,
+            "categories": {
+              "visible": 3
+            },
+            "center_outside": 0,
+            "min_corners_inside": 4,
+            "max_corners_inside": 4,
+            "last_projection": {
+              "t": 59.9,
+              "render_index": 1151,
+              "reason": "BAND_VISIBLE",
+              "category": "visible",
+              "band_center_inside": true,
+              "band_corners_inside": 4,
+              "pinhole_px": [
+                [
+                  311.2805154716609,
+                  347.05314388615545
+                ],
+                [
+                  389.52190332587605,
+                  407.678391372476
+                ],
+                [
+                  235.9477576198878,
+                  407.11496879543665
+                ],
+                [
+                  377.2549518103745,
+                  294.45258661383104
+                ],
+                [
+                  242.82366846893524,
+                  294.0094363869173
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "point_support": [
+              9783,
+              9788
+            ],
+            "motor_pulses": 0
+          },
+          "r2": {
+            "released_at_s": 57.9,
+            "frames": 3,
+            "categories": {
+              "visible": 3
+            },
+            "center_outside": 0,
+            "min_corners_inside": 4,
+            "max_corners_inside": 4,
+            "last_projection": {
+              "t": 59.9,
+              "render_index": 1151,
+              "reason": "BAND_VISIBLE",
+              "category": "visible",
+              "band_center_inside": true,
+              "band_corners_inside": 4,
+              "pinhole_px": [
+                [
+                  311.25586620135584,
+                  331.881276702143
+                ],
+                [
+                  244.91801516447126,
+                  279.82263750912256
+                ],
+                [
+                  377.15912050545575,
+                  281.9246082252009
+                ],
+                [
+                  236.3711023841255,
+                  388.6462021901815
+                ],
+                [
+                  387.08631974934514,
+                  391.389237231388
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "point_support": [
+              9514,
+              9758
+            ],
+            "motor_pulses": 0
+          }
+        }
+      },
+      {
+        "name": "s3fix22-combined-multi-right-s14204-r1",
+        "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-right-s14204-r1/raw",
+        "manifest_sha256": "cb4c84cd3ecbd5ab36184142b174d97f91083c0752d05af46a3ad7cb6bfd3970",
+        "robots": {
+          "r1": {
+            "released_at_s": 59.4,
+            "frames": 16,
+            "categories": {
+              "fov_clipped": 16
+            },
+            "center_outside": 0,
+            "min_corners_inside": 3,
+            "max_corners_inside": 3,
+            "last_projection": {
+              "t": 62.2,
+              "render_index": 1197,
+              "reason": "BAND_CLIPPED",
+              "category": "fov_clipped",
+              "band_center_inside": true,
+              "band_corners_inside": 3,
+              "pinhole_px": [
+                [
+                  366.3536077303553,
+                  414.76577069202295
+                ],
+                [
+                  447.65423953286984,
+                  496.160996908859
+                ],
+                [
+                  280.4115289842591,
+                  474.1371793546137
+                ],
+                [
+                  442.4340829057334,
+                  362.2070584897455
+                ],
+                [
+                  297.3223514883178,
+                  345.6541956245424
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_CLIPPED": 16
+            },
+            "point_support": [
+              9353,
+              9359
+            ],
+            "motor_pulses": 0
+          },
+          "r2": {
+            "released_at_s": 59.4,
+            "frames": 16,
+            "categories": {
+              "fov_clipped": 16
+            },
+            "center_outside": 0,
+            "min_corners_inside": 3,
+            "max_corners_inside": 3,
+            "last_projection": {
+              "t": 62.2,
+              "render_index": 1197,
+              "reason": "BAND_CLIPPED",
+              "category": "fov_clipped",
+              "band_center_inside": true,
+              "band_corners_inside": 3,
+              "pinhole_px": [
+                [
+                  427.57354803574634,
+                  419.3961495751786
+                ],
+                [
+                  364.12274138388176,
+                  342.1541971257663
+                ],
+                [
+                  510.44559885065615,
+                  377.8825797390995
+                ],
+                [
+                  336.48897222338786,
+                  465.02366647374373
+                ],
+                [
+                  503.84000443907786,
+                  512.2392560673208
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_CLIPPED": 16
+            },
+            "point_support": [
+              9109,
+              9118
+            ],
+            "motor_pulses": 0
+          }
+        }
+      },
+      {
+        "name": "s3fix22-combined-multi-right-s15204-r1",
+        "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-right-s15204-r1/raw",
+        "manifest_sha256": "5be82c036086ae1615fa810096dc1889a51a6633bd8812da096bebbcbc79fdf5",
+        "robots": {
+          "r1": {
+            "released_at_s": 59.4,
+            "frames": 16,
+            "categories": {
+              "fov_clipped": 16
+            },
+            "center_outside": 0,
+            "min_corners_inside": 3,
+            "max_corners_inside": 3,
+            "last_projection": {
+              "t": 62.2,
+              "render_index": 1197,
+              "reason": "BAND_CLIPPED",
+              "category": "fov_clipped",
+              "band_center_inside": true,
+              "band_corners_inside": 3,
+              "pinhole_px": [
+                [
+                  363.9643512679468,
+                  411.8426843607136
+                ],
+                [
+                  446.2025614047212,
+                  491.0429728052329
+                ],
+                [
+                  279.4594894387487,
+                  472.72173037615454
+                ],
+                [
+                  438.5294329741345,
+                  358.12446102923997
+                ],
+                [
+                  293.8855283941894,
+                  344.3526091727551
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_CLIPPED": 16
+            },
+            "point_support": [
+              9289,
+              9294
+            ],
+            "motor_pulses": 0
+          },
+          "r2": {
+            "released_at_s": 59.4,
+            "frames": 16,
+            "categories": {
+              "fov_clipped": 16
+            },
+            "center_outside": 0,
+            "min_corners_inside": 3,
+            "max_corners_inside": 3,
+            "last_projection": {
+              "t": 62.2,
+              "render_index": 1197,
+              "reason": "BAND_CLIPPED",
+              "category": "fov_clipped",
+              "band_center_inside": true,
+              "band_corners_inside": 3,
+              "pinhole_px": [
+                [
+                  430.58213811749596,
+                  410.5724146945563
+                ],
+                [
+                  365.63862895624936,
+                  335.74952696535183
+                ],
+                [
+                  511.0446656643153,
+                  367.8968522776109
+                ],
+                [
+                  341.79384502568803,
+                  457.6637808156214
+                ],
+                [
+                  508.2580058220581,
+                  500.0645410608226
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_CLIPPED": 16
+            },
+            "point_support": [
+              8949,
+              8953
+            ],
+            "motor_pulses": 0
+          }
+        }
+      },
+      {
+        "name": "s3fix22-combined-multi-three-s14206-r1",
+        "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-three-s14206-r1/raw",
+        "manifest_sha256": "69f34da398c44ec98b11fc9992ae4e23ce3bd99b498c2598fbfd8e963deff4e0",
+        "robots": {
+          "r1": {
+            "released_at_s": 58.4,
+            "frames": 3,
+            "categories": {
+              "visible": 3
+            },
+            "center_outside": 0,
+            "min_corners_inside": 4,
+            "max_corners_inside": 4,
+            "last_projection": {
+              "t": 60.4,
+              "render_index": 1161,
+              "reason": "BAND_VISIBLE",
+              "category": "visible",
+              "band_center_inside": true,
+              "band_corners_inside": 4,
+              "pinhole_px": [
+                [
+                  309.2786829633334,
+                  363.0703070590562
+                ],
+                [
+                  388.67531568042233,
+                  426.7541961901859
+                ],
+                [
+                  231.70453696556064,
+                  425.11952064489753
+                ],
+                [
+                  377.1143331057898,
+                  308.81062182134065
+                ],
+                [
+                  240.0663964028913,
+                  307.5552627430964
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "point_support": [
+              9620,
+              9713
+            ],
+            "motor_pulses": 0
+          },
+          "r2": {
+            "released_at_s": 58.4,
+            "frames": 24,
+            "categories": {
+              "fov_clipped": 24
+            },
+            "center_outside": 0,
+            "min_corners_inside": 3,
+            "max_corners_inside": 3,
+            "last_projection": {
+              "t": 62.2,
+              "render_index": 1197,
+              "reason": "BAND_CLIPPED",
+              "category": "fov_clipped",
+              "band_center_inside": true,
+              "band_corners_inside": 3,
+              "pinhole_px": [
+                [
+                  344.16548135942253,
+                  408.6526111598492
+                ],
+                [
+                  275.73534369296846,
+                  341.5686384495024
+                ],
+                [
+                  419.7067570708901,
+                  355.2409342209392
+                ],
+                [
+                  258.59891841061625,
+                  469.1526963642705
+                ],
+                [
+                  424.432078317865,
+                  487.3401950743872
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_CLIPPED": 24
+            },
+            "point_support": [
+              9338,
+              9351
+            ],
+            "motor_pulses": 0
+          }
+        }
+      },
+      {
+        "name": "s3fix22-combined-multi-three-s15206-r1",
+        "raw": "/home/ubuntu/ugrp-sim/runs/s3fix22-combined-multi-three-s15206-r1/raw",
+        "manifest_sha256": "78b1eecccaf0ffbc5c1d827ee3e0fe7c84f9f3c5c713809643079e11e2937366",
+        "robots": {
+          "r1": {
+            "released_at_s": 57.4,
+            "frames": 3,
+            "categories": {
+              "visible": 3
+            },
+            "center_outside": 0,
+            "min_corners_inside": 4,
+            "max_corners_inside": 4,
+            "last_projection": {
+              "t": 59.4,
+              "render_index": 1141,
+              "reason": "BAND_VISIBLE",
+              "category": "visible",
+              "band_center_inside": true,
+              "band_corners_inside": 4,
+              "pinhole_px": [
+                [
+                  309.81920234729125,
+                  348.4666235223929
+                ],
+                [
+                  389.46086409731856,
+                  407.54483374707314
+                ],
+                [
+                  235.7604883556672,
+                  410.45058365021987
+                ],
+                [
+                  374.4345295536624,
+                  294.3863722010005
+                ],
+                [
+                  239.90139452779442,
+                  296.6015712615069
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "point_support": [
+              9685,
+              9794
+            ],
+            "motor_pulses": 0
+          },
+          "r2": {
+            "released_at_s": 57.4,
+            "frames": 3,
+            "categories": {
+              "visible": 3
+            },
+            "center_outside": 0,
+            "min_corners_inside": 4,
+            "max_corners_inside": 4,
+            "last_projection": {
+              "t": 59.4,
+              "render_index": 1141,
+              "reason": "BAND_VISIBLE",
+              "category": "visible",
+              "band_center_inside": true,
+              "band_corners_inside": 4,
+              "pinhole_px": [
+                [
+                  307.34265554636335,
+                  326.10098185850654
+                ],
+                [
+                  240.09411047212097,
+                  275.9726357971557
+                ],
+                [
+                  371.56903404442807,
+                  275.3805007227669
+                ],
+                [
+                  234.1629878357677,
+                  383.89200234624514
+                ],
+                [
+                  383.8645210792006,
+                  383.1418375744976
+                ]
+              ],
+              "evaluated_gt_only": true
+            },
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "point_support": [
+              9593,
+              9652
+            ],
+            "motor_pulses": 0
+          }
+        }
+      }
+    ]
+  },
+  "raw_diagnosis_before_receipt": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s3fix23-control-20261011/visibility-before.json",
+    "sha256": "3d687e5d7f3d4fc58d68f201fb4b438e49b863eff4e2dfe5a6ecebeae0c43cd5"
+  },
+  "source_verification": {
+    "source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+    "base_sha": "e6a863c9481288105a745cca53594ba05e6a9a7a",
+    "files_verified": 11572,
+    "verification": "all Git blob SHA1; previous full archive also SHA256-verified",
+    "shared_bytes": 1230948191,
+    "new_bytes": 165118,
+    "free_bytes": 24350273536
+  },
+  "preservation": {
+    "old_controller_host_files_changed": false,
+    "catalog_bytes_identical": true,
+    "catalog_sha256": "fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813",
+    "changed_paths": [
+      "configs/simulation_workflows.d/s3_full_route_v175.json",
+      "experiments/2026-10-11-s3-full-route/README.md",
+      "experiments/2026-10-11-s3-full-route/registration.json",
+      "experiments/2026-10-11-s3-full-route/summary.json",
+      "harness/zone_s3_reacquire.py",
+      "scripts/evaluate_s3_full_route.py",
+      "scripts/run_s3_full_route.py",
+      "scripts/run_s3_full_route_cohort.py",
+      "tests/test_s3_full_route.py",
+      "tests/test_simulation_workflow_manager.py"
+    ]
+  },
+  "first_stage_command_bytes": {
+    "n": 12,
+    "identical": 12,
+    "through_sim_s": 55.0,
+    "rows": [
+      {
+        "name": "s3fix23-baseline-multi-left-s14201-r1",
+        "robot_id": "r1",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "847f6d9e4705cf5cc538ad2be206642d4c6d92879cd83f819527eee81a38c25e",
+        "old_sha256": "847f6d9e4705cf5cc538ad2be206642d4c6d92879cd83f819527eee81a38c25e",
+        "bytes": 67878
+      },
+      {
+        "name": "s3fix23-baseline-multi-left-s14201-r1",
+        "robot_id": "r2",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "d5094529ede3e9fc85be9e766af3b5a6f9d88d2b863ce456b831a5642c774685",
+        "old_sha256": "d5094529ede3e9fc85be9e766af3b5a6f9d88d2b863ce456b831a5642c774685",
+        "bytes": 68168
+      },
+      {
+        "name": "s3fix23-baseline-multi-left-s15201-r1",
+        "robot_id": "r1",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "847f6d9e4705cf5cc538ad2be206642d4c6d92879cd83f819527eee81a38c25e",
+        "old_sha256": "847f6d9e4705cf5cc538ad2be206642d4c6d92879cd83f819527eee81a38c25e",
+        "bytes": 67878
+      },
+      {
+        "name": "s3fix23-baseline-multi-left-s15201-r1",
+        "robot_id": "r2",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "d5094529ede3e9fc85be9e766af3b5a6f9d88d2b863ce456b831a5642c774685",
+        "old_sha256": "d5094529ede3e9fc85be9e766af3b5a6f9d88d2b863ce456b831a5642c774685",
+        "bytes": 68168
+      },
+      {
+        "name": "s3fix23-pan-multi-right-s14204-r1",
+        "robot_id": "r1",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "cfca134cdf875a50f22b8f35d756da2213b7237c524822cc6732de7dd9c90a60",
+        "old_sha256": "cfca134cdf875a50f22b8f35d756da2213b7237c524822cc6732de7dd9c90a60",
+        "bytes": 63735
+      },
+      {
+        "name": "s3fix23-pan-multi-right-s14204-r1",
+        "robot_id": "r2",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "7c5a0173a026d52c180a004f00e1e076e3215866dd84ec56450a95c95521e7ac",
+        "old_sha256": "7c5a0173a026d52c180a004f00e1e076e3215866dd84ec56450a95c95521e7ac",
+        "bytes": 64025
+      },
+      {
+        "name": "s3fix23-pan-multi-right-s15204-r1",
+        "robot_id": "r1",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "99f14f9fe45f238a7213a1c53ff074566301277c2885d5de4eeca452986a8d32",
+        "old_sha256": "99f14f9fe45f238a7213a1c53ff074566301277c2885d5de4eeca452986a8d32",
+        "bytes": 63735
+      },
+      {
+        "name": "s3fix23-pan-multi-right-s15204-r1",
+        "robot_id": "r2",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "0d12a7053720c5229057aadcc1915a2a34f067a5c50dddc7bbefbec54026d748",
+        "old_sha256": "0d12a7053720c5229057aadcc1915a2a34f067a5c50dddc7bbefbec54026d748",
+        "bytes": 64025
+      },
+      {
+        "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+        "robot_id": "r1",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "b5197dfb4aa602efd7e964291675d8803ce765303088915a8d2dd226cc9c8454",
+        "old_sha256": "b5197dfb4aa602efd7e964291675d8803ce765303088915a8d2dd226cc9c8454",
+        "bytes": 65107
+      },
+      {
+        "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+        "robot_id": "r2",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "5ea471f3c6d158699edb345884bb084a32fb2f8808372da267f33c90a8eb54b6",
+        "old_sha256": "5ea471f3c6d158699edb345884bb084a32fb2f8808372da267f33c90a8eb54b6",
+        "bytes": 65488
+      },
+      {
+        "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+        "robot_id": "r1",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "156e81176865230f75cc2bf12868094c473ef903ecac2c6ef1d03b1b31cc0aba",
+        "old_sha256": "156e81176865230f75cc2bf12868094c473ef903ecac2c6ef1d03b1b31cc0aba",
+        "bytes": 70063
+      },
+      {
+        "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+        "robot_id": "r2",
+        "end_sim_s": 55.0,
+        "identical": true,
+        "new_sha256": "70dff1f57b8dce7075769443b698660139b8083b20f8c16d273edbcece8ddf5b",
+        "old_sha256": "70dff1f57b8dce7075769443b698660139b8083b20f8c16d273edbcece8ddf5b",
+        "bytes": 70260
+      }
+    ]
+  },
+  "reentry_diagnosis": [
+    {
+      "name": "s3fix23-baseline-multi-left-s14201-r1",
+      "robots": {
+        "r1": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 57.9,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 59.9,
+            "first_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 58.9,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9778,
+              "axis_heading_rad": 0.02765565234909275,
+              "near_end_base_m": [
+                0.18321903103023995,
+                -0.0015284311771637219
+              ],
+              "grip_base_m": [
+                0.21320755923483442,
+                -0.0006988673627156602
+              ],
+              "visible_length_m": 0.21968096030800044,
+              "lateral_spread_m": 0.011589361738522184,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0194,
+                "far_m": 0.0534,
+                "length_m": 0.034,
+                "points": 3562,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 59.9,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9782,
+              "axis_heading_rad": 0.030454239039633176,
+              "near_end_base_m": [
+                0.18314427495958338,
+                -0.0015417648823898944
+              ],
+              "grip_base_m": [
+                0.21313036412464703,
+                -0.000628278930197542
+              ],
+              "visible_length_m": 0.21924049669425882,
+              "lateral_spread_m": 0.011566427929841139,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0196,
+                "far_m": 0.0535,
+                "length_m": 0.0339,
+                "points": 3574,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
             }
           }
+        ],
+        "r2": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 57.9,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 59.9,
+            "first_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 58.9,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9503,
+              "axis_heading_rad": 0.022178286125136917,
+              "near_end_base_m": [
+                0.18734560900679428,
+                0.0006586997583576657
+              ],
+              "grip_base_m": [
+                0.21733823116358555,
+                0.0013239937985782598
+              ],
+              "visible_length_m": 0.223099185055535,
+              "lateral_spread_m": 0.011554155529331662,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.022,
+                "far_m": 0.0557,
+                "length_m": 0.0337,
+                "points": 3367,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 59.9,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9745,
+              "axis_heading_rad": 0.030952012666504564,
+              "near_end_base_m": [
+                0.18713857004208723,
+                0.00013468756678047377
+              ],
+              "grip_base_m": [
+                0.21712420078299885,
+                0.0010630996895446812
+              ],
+              "visible_length_m": 0.21819397666088747,
+              "lateral_spread_m": 0.011531235474633004,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0226,
+                "far_m": 0.0564,
+                "length_m": 0.0338,
+                "points": 3464,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "s3fix23-baseline-multi-left-s15201-r1",
+      "robots": {
+        "r1": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 57.9,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 59.9,
+            "first_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 58.9,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9783,
+              "axis_heading_rad": 0.0350484034183967,
+              "near_end_base_m": [
+                0.18237177088121678,
+                -0.00010861091846423206
+              ],
+              "grip_base_m": [
+                0.21235334690858615,
+                0.0009426259316653988
+              ],
+              "visible_length_m": 0.21958805105770152,
+              "lateral_spread_m": 0.011600656692361034,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0187,
+                "far_m": 0.0525,
+                "length_m": 0.0338,
+                "points": 3591,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 59.9,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9788,
+              "axis_heading_rad": 0.037404516674096416,
+              "near_end_base_m": [
+                0.18252709061502972,
+                -0.0005342210337169912
+              ],
+              "grip_base_m": [
+                0.21250610659374483,
+                0.0005876528219123006
+              ],
+              "visible_length_m": 0.21923585379970156,
+              "lateral_spread_m": 0.01159838589625199,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0189,
+                "far_m": 0.0529,
+                "length_m": 0.0339,
+                "points": 3616,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          }
+        ],
+        "r2": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 57.9,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 59.9,
+            "first_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 58.9,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9514,
+              "axis_heading_rad": 0.013150998679616674,
+              "near_end_base_m": [
+                0.1873606289427925,
+                0.0006661415176232321
+              ],
+              "grip_base_m": [
+                0.2173580347486873,
+                0.0010606601058650883
+              ],
+              "visible_length_m": 0.22350437042250254,
+              "lateral_spread_m": 0.01156399408617254,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.022,
+                "far_m": 0.0558,
+                "length_m": 0.0338,
+                "points": 3355,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 59.9,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9758,
+              "axis_heading_rad": 0.02118018273064435,
+              "near_end_base_m": [
+                0.18722972693071166,
+                0.0004073383408245279
+              ],
+              "grip_base_m": [
+                0.21722299818015295,
+                0.0010426963166446888
+              ],
+              "visible_length_m": 0.21829680845596577,
+              "lateral_spread_m": 0.011542103542108438,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0226,
+                "far_m": 0.0565,
+                "length_m": 0.0339,
+                "points": 3464,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s14204-r1",
+      "robots": {
+        "r1": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 59.4,
+            "beam_frames": 1113,
+            "end_visible": 0,
+            "reasons": {
+              "BAND_CLIPPED": 1113
+            },
+            "servo_phases": {},
+            "motor_pulses": 0,
+            "new_hover_sim_s": null,
+            "first_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 60.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_CLIPPED",
+              "end_visible": false,
+              "points": 9428,
+              "axis_heading_rad": 0.050200054912749634,
+              "near_end_base_m": [
+                0.2121561060808303,
+                0.005959531723490801
+              ],
+              "grip_base_m": [
+                0.2421183133357516,
+                0.007464900918453256
+              ],
+              "visible_length_m": 0.18466804323855257,
+              "lateral_spread_m": 0.011676243273089606,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": -0.0358,
+                "far_m": -0.0023,
+                "length_m": 0.0336,
+                "points": 4120,
+                "touches_invalid_border": true
+              },
+              "grip_source": "band_clipped"
+            },
+            "last_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 172.3,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_CLIPPED",
+              "end_visible": false,
+              "points": 9419,
+              "axis_heading_rad": 0.04988446619404487,
+              "near_end_base_m": [
+                0.21217313926394293,
+                0.0056775630976851205
+              ],
+              "grip_base_m": [
+                0.24213582010433018,
+                0.007173476483242834
+              ],
+              "visible_length_m": 0.1844845452991069,
+              "lateral_spread_m": 0.01166256790685827,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": -0.0358,
+                "far_m": -0.0022,
+                "length_m": 0.0337,
+                "points": 4126,
+                "touches_invalid_border": true
+              },
+              "grip_source": "band_clipped"
+            }
+          }
+        ],
+        "r2": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 59.4,
+            "beam_frames": 1113,
+            "end_visible": 0,
+            "reasons": {
+              "BAND_CLIPPED": 1113
+            },
+            "servo_phases": {},
+            "motor_pulses": 0,
+            "new_hover_sim_s": null,
+            "first_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 60.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_CLIPPED",
+              "end_visible": false,
+              "points": 9374,
+              "axis_heading_rad": 0.014150562337199423,
+              "near_end_base_m": [
+                0.2125204596153239,
+                0.006948099379597786
+              ],
+              "grip_base_m": [
+                0.24251745608922595,
+                0.00737260208242478
+              ],
+              "visible_length_m": 0.18350769501027792,
+              "lateral_spread_m": 0.011657279287787002,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": -0.0361,
+                "far_m": -0.0021,
+                "length_m": 0.034,
+                "points": 4172,
+                "touches_invalid_border": true
+              },
+              "grip_source": "band_clipped"
+            },
+            "last_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 172.3,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_CLIPPED",
+              "end_visible": false,
+              "points": 9365,
+              "axis_heading_rad": 0.014973265529943856,
+              "near_end_base_m": [
+                0.21254185669817693,
+                0.006828803702697804
+              ],
+              "grip_base_m": [
+                0.24253849378079834,
+                0.007277984883852394
+              ],
+              "visible_length_m": 0.18349693233478645,
+              "lateral_spread_m": 0.011647572303846877,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": -0.0361,
+                "far_m": -0.002,
+                "length_m": 0.0341,
+                "points": 4185,
+                "touches_invalid_border": true
+              },
+              "grip_source": "band_clipped"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s15204-r1",
+      "robots": {
+        "r1": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 59.4,
+            "beam_frames": 210,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_CLIPPED": 207,
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 82.7,
+            "first_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 60.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_CLIPPED",
+              "end_visible": false,
+              "points": 9360,
+              "axis_heading_rad": 0.0488795165265828,
+              "near_end_base_m": [
+                0.1764493467233721,
+                -0.0013821193075912708
+              ],
+              "grip_base_m": [
+                0.2064135157511542,
+                8.368234150869596e-05
+              ],
+              "visible_length_m": 0.22020619429176208,
+              "lateral_spread_m": 0.01162155414796654,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0016,
+                "far_m": 0.0354,
+                "length_m": 0.0337,
+                "points": 4052,
+                "touches_invalid_border": true
+              },
+              "grip_source": "band_clipped"
+            },
+            "last_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 82.7,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9363,
+              "axis_heading_rad": 0.045176851939032314,
+              "near_end_base_m": [
+                0.16482175792652606,
+                -0.0013676881668632358
+              ],
+              "grip_base_m": [
+                0.1947911489137407,
+                -1.2843579665878854e-05
+              ],
+              "visible_length_m": 0.21928977678476125,
+              "lateral_spread_m": 0.011638698992439115,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0012,
+                "far_m": 0.0351,
+                "length_m": 0.0339,
+                "points": 4093,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          }
+        ],
+        "r2": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 59.4,
+            "beam_frames": 3,
+            "end_visible": 1,
+            "reasons": {
+              "BAND_VISIBLE": 1,
+              "BAND_CLIPPED": 2
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 61.4,
+            "first_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 60.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9395,
+              "axis_heading_rad": 0.02528742823224402,
+              "near_end_base_m": [
+                0.165833128995269,
+                0.0010827534725340834
+              ],
+              "grip_base_m": [
+                0.1958235376959859,
+                0.0018412954713473537
+              ],
+              "visible_length_m": 0.21944806024234761,
+              "lateral_spread_m": 0.011648759199781063,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0023,
+                "far_m": 0.0362,
+                "length_m": 0.0339,
+                "points": 4072,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 61.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_CLIPPED",
+              "end_visible": false,
+              "points": 9346,
+              "axis_heading_rad": 0.00723237292255979,
+              "near_end_base_m": [
+                0.21287784243874713,
+                -0.00022452054073692786
+              ],
+              "grip_base_m": [
+                0.24287705783389582,
+                -7.55124458172603e-06
+              ],
+              "visible_length_m": 0.18365553896467274,
+              "lateral_spread_m": 0.011658083268157935,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": -0.0356,
+                "far_m": -0.0017,
+                "length_m": 0.0338,
+                "points": 4119,
+                "touches_invalid_border": true
+              },
+              "grip_source": "band_clipped"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+      "robots": {
+        "r1": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 58.4,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 60.4,
+            "first_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 59.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9724,
+              "axis_heading_rad": 0.03115083565039485,
+              "near_end_base_m": [
+                0.17701250019901937,
+                -0.0003615228906809101
+              ],
+              "grip_base_m": [
+                0.206997945757589,
+                0.0005728510462714243
+              ],
+              "visible_length_m": 0.21938591887111852,
+              "lateral_spread_m": 0.011654169755659074,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0134,
+                "far_m": 0.0474,
+                "length_m": 0.0341,
+                "points": 3759,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 60.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9685,
+              "axis_heading_rad": 0.027598342671006845,
+              "near_end_base_m": [
+                0.17690513023508647,
+                -5.14145887957016e-05
+              ],
+              "grip_base_m": [
+                0.20689370593246892,
+                0.0007764305913933163
+              ],
+              "visible_length_m": 0.21940537869357488,
+              "lateral_spread_m": 0.01165432109874007,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0135,
+                "far_m": 0.0472,
+                "length_m": 0.0337,
+                "points": 3779,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          },
+          {
+            "completed_seg": 1,
+            "release_sim_s": 111.6,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 113.5,
+            "first_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 112.6,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9836,
+              "axis_heading_rad": 0.020471591958703416,
+              "near_end_base_m": [
+                0.1822293260861236,
+                -0.0003409184725202027
+              ],
+              "grip_base_m": [
+                0.2122230400145021,
+                0.00027318639034391054
+              ],
+              "visible_length_m": 0.21923810930164045,
+              "lateral_spread_m": 0.011622238571081491,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0187,
+                "far_m": 0.0525,
+                "length_m": 0.0338,
+                "points": 3613,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 113.5,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9810,
+              "axis_heading_rad": 0.018898446168835837,
+              "near_end_base_m": [
+                0.18217623763441143,
+                -6.221760517265943e-05
+              ],
+              "grip_base_m": [
+                0.21217088052484187,
+                0.0005047020324750439
+              ],
+              "visible_length_m": 0.21936134822937176,
+              "lateral_spread_m": 0.011612567209489463,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0186,
+                "far_m": 0.0526,
+                "length_m": 0.0339,
+                "points": 3597,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          }
+        ],
+        "r2": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 58.4,
+            "beam_frames": 4,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_CLIPPED": 1,
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 1,
+            "new_hover_sim_s": 60.9,
+            "first_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 59.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_CLIPPED",
+              "end_visible": false,
+              "points": 9352,
+              "axis_heading_rad": 0.0358622781696515,
+              "near_end_base_m": [
+                0.21277731829243424,
+                0.005986880974727328
+              ],
+              "grip_base_m": [
+                0.24275802881498898,
+                0.007062518721729117
+              ],
+              "visible_length_m": 0.18359253022426722,
+              "lateral_spread_m": 0.01165706163354934,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": -0.0356,
+                "far_m": -0.0017,
+                "length_m": 0.0338,
+                "points": 4119,
+                "touches_invalid_border": true
+              },
+              "grip_source": "band_clipped"
+            },
+            "last_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 60.9,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9644,
+              "axis_heading_rad": 0.044543904406454095,
+              "near_end_base_m": [
+                0.1752663377573944,
+                0.006772841425142144
+              ],
+              "grip_base_m": [
+                0.2052365802868831,
+                0.008108716690137185
+              ],
+              "visible_length_m": 0.2196025364280144,
+              "lateral_spread_m": 0.011632857151140633,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0119,
+                "far_m": 0.0457,
+                "length_m": 0.0338,
+                "points": 3815,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          },
+          {
+            "completed_seg": 1,
+            "release_sim_s": 111.6,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 113.5,
+            "first_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 112.6,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9532,
+              "axis_heading_rad": 7.541430658550872e-05,
+              "near_end_base_m": [
+                0.1716653993594719,
+                0.0024887497080558754
+              ],
+              "grip_base_m": [
+                0.20166539927416213,
+                0.002491012137251296
+              ],
+              "visible_length_m": 0.21927847976504167,
+              "lateral_spread_m": 0.011642555674755516,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0082,
+                "far_m": 0.0422,
+                "length_m": 0.034,
+                "points": 3972,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 113.5,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9525,
+              "axis_heading_rad": -0.004138253858795823,
+              "near_end_base_m": [
+                0.17139614012632126,
+                0.002936669709903489
+              ],
+              "grip_base_m": [
+                0.20139588324951285,
+                0.002812522448480298
+              ],
+              "visible_length_m": 0.22002394670732367,
+              "lateral_spread_m": 0.01163384854402257,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0081,
+                "far_m": 0.0417,
+                "length_m": 0.0336,
+                "points": 3886,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+      "robots": {
+        "r1": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 57.4,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 59.4,
+            "first_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 58.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9803,
+              "axis_heading_rad": 0.05917104930424396,
+              "near_end_base_m": [
+                0.18138655881203708,
+                -0.001932463817264706
+              ],
+              "grip_base_m": [
+                0.21133405593722865,
+                -0.00015836800907318343
+              ],
+              "visible_length_m": 0.21974221680049116,
+              "lateral_spread_m": 0.011589731058468887,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.018,
+                "far_m": 0.0517,
+                "length_m": 0.0338,
+                "points": 3628,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 59.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9771,
+              "axis_heading_rad": 0.05730933148670977,
+              "near_end_base_m": [
+                0.18144108579870674,
+                -0.0018643000581868188
+              ],
+              "grip_base_m": [
+                0.21139183388887028,
+                -0.00014596108127792667
+              ],
+              "visible_length_m": 0.21909575738250675,
+              "lateral_spread_m": 0.011591516815267364,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0177,
+                "far_m": 0.0516,
+                "length_m": 0.0339,
+                "points": 3640,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          },
+          {
+            "completed_seg": 1,
+            "release_sim_s": 110.1,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 112.0,
+            "first_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 111.1,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9800,
+              "axis_heading_rad": 0.01207938156849158,
+              "near_end_base_m": [
+                0.18255378860441807,
+                -0.0028731378112037357
+              ],
+              "grip_base_m": [
+                0.21255159995914447,
+                -0.0025107651766856426
+              ],
+              "visible_length_m": 0.2191053025077535,
+              "lateral_spread_m": 0.011589218427375406,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.019,
+                "far_m": 0.0529,
+                "length_m": 0.0339,
+                "points": 3615,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r1",
+              "event": "beam_obs",
+              "sim_s": 112.0,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9835,
+              "axis_heading_rad": 0.01051244561869708,
+              "near_end_base_m": [
+                0.18252262512227946,
+                -0.0029271877257306526
+              ],
+              "grip_base_m": [
+                0.2125209674648521,
+                -0.002611820165868991
+              ],
+              "visible_length_m": 0.21925829663233642,
+              "lateral_spread_m": 0.011607879162830454,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0191,
+                "far_m": 0.0529,
+                "length_m": 0.0338,
+                "points": 3596,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          }
+        ],
+        "r2": [
+          {
+            "completed_seg": 0,
+            "release_sim_s": 57.4,
+            "beam_frames": 3,
+            "end_visible": 3,
+            "reasons": {
+              "BAND_VISIBLE": 3
+            },
+            "servo_phases": {
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 0,
+            "new_hover_sim_s": 59.4,
+            "first_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 58.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9677,
+              "axis_heading_rad": 0.03627086397145397,
+              "near_end_base_m": [
+                0.18894505734114433,
+                -0.000945731707048484
+              ],
+              "grip_base_m": [
+                0.2189253258708748,
+                0.00014215564247518905
+              ],
+              "visible_length_m": 0.2173257637177931,
+              "lateral_spread_m": 0.011551815698759007,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0233,
+                "far_m": 0.0572,
+                "length_m": 0.034,
+                "points": 3404,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 59.4,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9694,
+              "axis_heading_rad": 0.03555771312789294,
+              "near_end_base_m": [
+                0.18866828245124057,
+                -0.000878817879236826
+              ],
+              "grip_base_m": [
+                0.21864931918494226,
+                0.00018768874166587003
+              ],
+              "visible_length_m": 0.21738661605492973,
+              "lateral_spread_m": 0.011538410479175299,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0233,
+                "far_m": 0.057,
+                "length_m": 0.0337,
+                "points": 3411,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          },
+          {
+            "completed_seg": 1,
+            "release_sim_s": 110.1,
+            "beam_frames": 4,
+            "end_visible": 4,
+            "reasons": {
+              "BAND_VISIBLE": 4
+            },
+            "servo_phases": {
+              "base": 1,
+              "pan": 1,
+              "wait": 1,
+              "ready": 1
+            },
+            "motor_pulses": 1,
+            "new_hover_sim_s": 112.5,
+            "first_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 111.1,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9423,
+              "axis_heading_rad": -0.01125222189841029,
+              "near_end_base_m": [
+                0.19151976713848967,
+                -0.000813945486177481
+              ],
+              "grip_base_m": [
+                0.22151786797106324,
+                -0.0011515050198152915
+              ],
+              "visible_length_m": 0.21462451493659795,
+              "lateral_spread_m": 0.01151129061104977,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0234,
+                "far_m": 0.0573,
+                "length_m": 0.0339,
+                "points": 3369,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            },
+            "last_beam": {
+              "robot_id": "r2",
+              "event": "beam_obs",
+              "sim_s": 112.5,
+              "posture": "inspect",
+              "visible": true,
+              "reason": "BAND_VISIBLE",
+              "end_visible": true,
+              "points": 9777,
+              "axis_heading_rad": -0.017001605400747265,
+              "near_end_base_m": [
+                0.18191453983751313,
+                -0.0031823402627321373
+              ],
+              "grip_base_m": [
+                0.21191020412315978,
+                -0.0036923638531496153
+              ],
+              "visible_length_m": 0.21949531296427285,
+              "lateral_spread_m": 0.011596130542233601,
+              "perception": "owncam_pair_beam_perception_v2",
+              "band": {
+                "near_m": 0.0183,
+                "far_m": 0.0522,
+                "length_m": 0.0339,
+                "points": 3630,
+                "touches_invalid_border": false
+              },
+              "grip_source": "band_centre"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "endpoint_decomposition": [
+    {
+      "name": "s3fix23-baseline-multi-left-s14201-r1",
+      "seg": 0,
+      "start_error_xy_m": [
+        5.1599816213165894e-05,
+        -0.001118481459424052
+      ],
+      "transport_error_xy_m": [
+        0.0022064834734341066,
+        -0.012902164712109462
+      ],
+      "end_error_xy_m": [
+        0.0022580832896472725,
+        -0.014020646171533514
+      ],
+      "start_error_m": 0.0011196710749629061,
+      "transport_error_m": 0.013089477589917043,
+      "end_error_m": 0.014201318925026706
+    },
+    {
+      "name": "s3fix23-baseline-multi-left-s15201-r1",
+      "seg": 0,
+      "start_error_xy_m": [
+        0.0004151388431348213,
+        -0.0011576625065538235
+      ],
+      "transport_error_xy_m": [
+        0.00203348745616605,
+        -0.012213275217404757
+      ],
+      "end_error_xy_m": [
+        0.002448626299300871,
+        -0.01337093772395858
+      ],
+      "start_error_m": 0.001229846631966685,
+      "transport_error_m": 0.012381403909511146,
+      "end_error_m": 0.013593297847527896
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s14204-r1",
+      "seg": 0,
+      "start_error_xy_m": [
+        -0.0037599500732021784,
+        -0.0027095560858737405
+      ],
+      "transport_error_xy_m": [
+        0.0029099740693754317,
+        -0.013737459762168294
+      ],
+      "end_error_xy_m": [
+        -0.0008499760038267468,
+        -0.016447015848042035
+      ],
+      "start_error_m": 0.004634535439013115,
+      "transport_error_m": 0.014042284351259605,
+      "end_error_m": 0.016468964433528514
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s15204-r1",
+      "seg": 0,
+      "start_error_xy_m": [
+        -0.0021086324132122414,
+        -0.0023036154695389097
+      ],
+      "transport_error_xy_m": [
+        0.0018335201703965076,
+        -0.012908652113822444
+      ],
+      "end_error_xy_m": [
+        -0.00027511224281573377,
+        -0.015212267583361354
+      ],
+      "start_error_m": 0.003122975325798821,
+      "transport_error_m": 0.013038216734313919,
+      "end_error_m": 0.015214755067825896
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s15204-r1",
+      "seg": 1,
+      "start_error_xy_m": [
+        0.009158361883525368,
+        -0.020400725940419705
+      ],
+      "transport_error_xy_m": [
+        -0.0050519854503816575,
+        -0.0003589803276121406
+      ],
+      "end_error_xy_m": [
+        0.00410637643314371,
+        -0.02075970626803185
+      ],
+      "start_error_m": 0.022362137896134254,
+      "transport_error_m": 0.005064723473841438,
+      "end_error_m": 0.021161940642238815
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+      "seg": 0,
+      "start_error_xy_m": [
+        -0.005306045697612172,
+        0.002479072999284973
+      ],
+      "transport_error_xy_m": [
+        0.002503441162761133,
+        -0.015557150393445754
+      ],
+      "end_error_xy_m": [
+        -0.0028026045348510387,
+        -0.01307807739416078
+      ],
+      "start_error_m": 0.005856613687185833,
+      "transport_error_m": 0.015757288663335967,
+      "end_error_m": 0.013375002822669865
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+      "seg": 1,
+      "start_error_xy_m": [
+        0.0028018123684203644,
+        -0.016214132122171
+      ],
+      "transport_error_xy_m": [
+        0.005826892495407909,
+        0.0012149983280090593
+      ],
+      "end_error_xy_m": [
+        0.008628704863828274,
+        -0.014999133794161956
+      ],
+      "start_error_m": 0.01645442897894214,
+      "transport_error_m": 0.005952217829524204,
+      "end_error_m": 0.017304004224520546
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+      "seg": 0,
+      "start_error_xy_m": [
+        -0.011165198421263733,
+        -0.0028436438139360365
+      ],
+      "transport_error_xy_m": [
+        0.0033069434716728185,
+        -0.014434228428106516
+      ],
+      "end_error_xy_m": [
+        -0.007858254949590915,
+        -0.017277872242042552
+      ],
+      "start_error_m": 0.011521630350203345,
+      "transport_error_m": 0.01480820128981227,
+      "end_error_m": 0.018980965203727513
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+      "seg": 1,
+      "start_error_xy_m": [
+        -0.00733650052566559,
+        -0.018156962143474176
+      ],
+      "transport_error_xy_m": [
+        0.01187758176082121,
+        0.00016286486040567594
+      ],
+      "end_error_xy_m": [
+        0.00454108123515562,
+        -0.0179940972830685
+      ],
+      "start_error_m": 0.019583143625134494,
+      "transport_error_m": 0.011878698306117031,
+      "end_error_m": 0.018558258426286008
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+      "seg": 2,
+      "start_error_xy_m": [
+        -0.01453051696832608,
+        -0.021952559586903203
+      ],
+      "transport_error_xy_m": [
+        -0.000122799029252052,
+        0.004634377919737309
+      ],
+      "end_error_xy_m": [
+        -0.014653315997578131,
+        -0.017318181667165894
+      ],
+      "start_error_m": 0.026325857930623038,
+      "transport_error_m": 0.004636004562609268,
+      "end_error_m": 0.022685658156241358
+    }
+  ],
+  "guard_diagnosis": [
+    {
+      "name": "s3fix23-baseline-multi-left-s14201-r1",
+      "guard": "LOAD_DROP:beam_1",
+      "sim_s": 60.949999999999996,
+      "last": {
+        "t": 63.25,
+        "states": {
+          "r1": "grasp",
+          "r2": "grasp"
+        },
+        "fingers": {
+          "r1": [
+            false,
+            false
+          ],
+          "r2": [
+            false,
+            false
+          ]
+        },
+        "floor_normal_n": 2.942999999999991,
+        "cargo_z_m": 0.0158922445797838,
+        "body_origin_z_m": -0.00010775542021617032,
+        "vertical_speed_m_s": 0.0,
+        "cargo_tilt_deg": 3.306651113363206e-06,
+        "controller_feedback": false
+      },
+      "samples": 21,
+      "min_floor_n": 2.942999999999988,
+      "z_span_m": 3.469446951953614e-18,
+      "max_abs_vz_m_s": 6.938893903907623e-17,
+      "max_tilt_deg": 3.306651113363206e-06,
+      "classification": "stale previous-lift latch at grounded regrasp; actual fall not observed",
+      "source": "sim/zone_s3_no_prior.py:128 lifted is never cleared after checkpoint release; no threshold change"
+    },
+    {
+      "name": "s3fix23-baseline-multi-left-s15201-r1",
+      "guard": "LOAD_DROP:beam_1",
+      "sim_s": 60.949999999999996,
+      "last": {
+        "t": 63.25,
+        "states": {
+          "r1": "grasp",
+          "r2": "grasp"
+        },
+        "fingers": {
+          "r1": [
+            false,
+            false
+          ],
+          "r2": [
+            false,
+            false
+          ]
+        },
+        "floor_normal_n": 2.942999999999995,
+        "cargo_z_m": 0.015892244579783808,
+        "body_origin_z_m": -0.0001077554202161695,
+        "vertical_speed_m_s": 0.0,
+        "cargo_tilt_deg": 3.1945284701301985e-06,
+        "controller_feedback": false
+      },
+      "samples": 21,
+      "min_floor_n": 2.942999999999981,
+      "z_span_m": 3.469446951953614e-18,
+      "max_abs_vz_m_s": 6.938893903907623e-17,
+      "max_tilt_deg": 3.1945284701301985e-06,
+      "classification": "stale previous-lift latch at grounded regrasp; actual fall not observed",
+      "source": "sim/zone_s3_no_prior.py:128 lifted is never cleared after checkpoint release; no threshold change"
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+      "guard": "LOAD_DROP:beam_1",
+      "sim_s": 114.55000000000001,
+      "last": {
+        "t": 116.85,
+        "states": {
+          "r1": "grasp",
+          "r2": "grasp"
+        },
+        "fingers": {
+          "r1": [
+            false,
+            false
+          ],
+          "r2": [
+            false,
+            false
+          ]
+        },
+        "floor_normal_n": 2.9429999999999947,
+        "cargo_z_m": 0.01589224457978383,
+        "body_origin_z_m": -0.0001077554202161705,
+        "vertical_speed_m_s": 0.0,
+        "cargo_tilt_deg": 0.0,
+        "controller_feedback": false
+      },
+      "samples": 21,
+      "min_floor_n": 2.9429999999999765,
+      "z_span_m": 3.469446951953614e-18,
+      "max_abs_vz_m_s": 6.938893903907623e-17,
+      "max_tilt_deg": 0.0,
+      "classification": "stale previous-lift latch at grounded regrasp; actual fall not observed",
+      "source": "sim/zone_s3_no_prior.py:128 lifted is never cleared after checkpoint release; no threshold change"
+    }
+  ],
+  "backoff_magnitude": [
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+      "robot_id": "r2",
+      "pulses": 1,
+      "command": {
+        "kind": "mecanum",
+        "forward": -0.35,
+        "left": 0.0,
+        "turn": 0.0,
+        "duration_s": 0.1
+      },
+      "start_s": 59.4,
+      "end_s": 59.9,
+      "calibrated_delta": [
+        -0.012917157771402163,
+        0.00040206798082011467,
+        0.00029378953563691213
+      ],
+      "eval_only_actual_delta": [
+        -0.011136285403997118,
+        0.0005245530928578442,
+        -0.014423534826242259
+      ]
+    }
+  ],
+  "causes": {
+    "stale_lift_latch_grounded_regrasp": 3,
+    "reentry_clipped_horizon": 1,
+    "full_route_final_endpoint_over_20mm": 2
+  },
+  "observed_actual_free_fall_in_abort_windows": 0,
+  "next_candidates": [
+    "Clear old lift epoch after verified supported release; rearm on a fresh lift and keep actual-drop guard.",
+    "Expand existing clipped reverse/fresh-look to right route; account for next-leg start displacement with own RGB/commands, never GT."
+  ],
+  "discussion_sources": [
+    {
+      "url": "https://www.w3.org/TR/scxml/#onentry",
+      "scope": "State entry/exit actions; per-cycle latch reset here is an implementation inference, not a robotics success claim."
+    }
+  ],
+  "variant_scope": "Route-assigned exploration with longer horizons than v172; no causal ranking or confirmation reuse.",
+  "retrieval": [
+    {
+      "name": "s3fix23-baseline-multi-left-s14201-r1",
+      "exit_code": 0,
+      "initial_check": {
+        "name": "s3fix23-baseline-multi-left-s14201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03938208414813765,
+            "finger_xyz_m": 0.1612237614574404
+          },
+          "r2": {
+            "base_xyz_m": 0.050283033367408185,
+            "finger_xyz_m": 0.1696543611556711
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0279337410011
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-baseline-multi-left-s14201-r1/raw",
+      "files_verified": 3698,
+      "all_hashes_match": true,
+      "errors": [],
+      "manifest_sha256": "c471ed99841395aae2db4e90caef6dc57095519b90fb77044b7969c8ec71bb4c",
+      "fetch_started_utc": "2026-10-10T18:27:48.204129+00:00",
+      "fetched_utc": "2026-10-10T18:28:09.045003+00:00"
+    },
+    {
+      "name": "s3fix23-baseline-multi-left-s15201-r1",
+      "exit_code": 0,
+      "initial_check": {
+        "name": "s3fix23-baseline-multi-left-s15201-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03962421446767674,
+            "finger_xyz_m": 0.16126080352734043
+          },
+          "r2": {
+            "base_xyz_m": 0.05008558498074198,
+            "finger_xyz_m": 0.16979688751073096
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0227529650001
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-baseline-multi-left-s15201-r1/raw",
+      "files_verified": 3698,
+      "all_hashes_match": true,
+      "errors": [],
+      "manifest_sha256": "e762ab62bb86029417b8758bd882bf0915dfaea096a85a8625dae7f33844e28f",
+      "fetch_started_utc": "2026-10-10T18:27:48.207780+00:00",
+      "fetched_utc": "2026-10-10T18:27:57.582107+00:00"
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s14204-r1",
+      "exit_code": 0,
+      "initial_check": {
+        "name": "s3fix23-pan-multi-right-s14204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.05722783037564652,
+            "finger_xyz_m": 0.1724748412718958
+          },
+          "r2": {
+            "base_xyz_m": 0.07770124911696404,
+            "finger_xyz_m": 0.183756883841371
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.02291832800074
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-pan-multi-right-s14204-r1/raw",
+      "files_verified": 10240,
+      "all_hashes_match": true,
+      "errors": [],
+      "manifest_sha256": "13f4bec0a6a7e1e4a346979b40adef84b0a2296fea747298fedb218f067db2a5",
+      "fetch_started_utc": "2026-10-10T18:37:29.679268+00:00",
+      "fetched_utc": "2026-10-10T18:37:52.873565+00:00"
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s15204-r1",
+      "exit_code": 0,
+      "initial_check": {
+        "name": "s3fix23-pan-multi-right-s15204-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 22,
+        "sim_s": 23.35,
+        "frames": 420,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.05649249189997458,
+            "finger_xyz_m": 0.1723985310344831
+          },
+          "r2": {
+            "base_xyz_m": 0.07410506023202489,
+            "finger_xyz_m": 0.1838383202487547
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.03222108599948
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-pan-multi-right-s15204-r1/raw",
+      "files_verified": 7342,
+      "all_hashes_match": true,
+      "errors": [],
+      "manifest_sha256": "756856ccc43dcb3a6c0acef8ee3fff35792e74153601f584f92d941d80d2184d",
+      "fetch_started_utc": "2026-10-10T18:33:02.587399+00:00",
+      "fetched_utc": "2026-10-10T18:33:22.082782+00:00"
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+      "exit_code": 0,
+      "initial_check": {
+        "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.03171931110089424,
+            "finger_xyz_m": 0.16148417833319798
+          },
+          "r2": {
+            "base_xyz_m": 0.07996859923831233,
+            "finger_xyz_m": 0.18461016019322463
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.02317748699897
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-pan_backoff-multi-three-s14206-r1/raw",
+      "files_verified": 6914,
+      "all_hashes_match": true,
+      "errors": [],
+      "manifest_sha256": "bbc3c70ef6b77932e436bbff875161c7cf8c8448ea5b7bf6836fcbf7e0a988e6",
+      "fetch_started_utc": "2026-10-10T18:32:31.301909+00:00",
+      "fetched_utc": "2026-10-10T18:32:46.233240+00:00"
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+      "exit_code": 0,
+      "initial_check": {
+        "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T18:23:58Z",
+        "progress_samples": 23,
+        "sim_s": 24.35,
+        "frames": 440,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.028262064164973674,
+            "finger_xyz_m": 0.1613156840312482
+          },
+          "r2": {
+            "base_xyz_m": 0.058601267421334466,
+            "finger_xyz_m": 0.16919617511927135
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close",
+          "wait_lift"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0207913510003
+      },
+      "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-pan_backoff-multi-three-s15206-r1/raw",
+      "files_verified": 9196,
+      "all_hashes_match": true,
+      "errors": [],
+      "manifest_sha256": "4516de6d65fbe952ef769b28422e0dabc937e947d34ca07a0a5c3f5a14c4c51b",
+      "fetch_started_utc": "2026-10-10T18:35:23.794518+00:00",
+      "fetched_utc": "2026-10-10T18:35:42.984138+00:00"
+    }
+  ],
+  "wall_sim_median": 5.50977588161233,
+  "first_post_release_joint_hover": 5,
+  "derivation": {
+    "script": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix23-control-20261011/diagnose-results.py",
+      "sha256": "807d8be6e24ab94548ffc369a99edaf6bc94e4f490587c40f5375fa9f1ccc8b0"
+    },
+    "root_receipts": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix23-control-20261011/root-manifests.json",
+      "sha256": "660eb13dc87bb10f58f1e8be78728de08482cc971690c1a15558bcb684b19152"
+    },
+    "local_tests": {
+      "files": [
+        "tests/test_s3_full_route.py",
+        "tests/test_s3_route_resume.py",
+        "tests/test_simulation_workflow_manager.py"
+      ],
+      "first_run": {
+        "passed": 29,
+        "failed": 1,
+        "reason": "catalog ID174 renamed to175 while the collected manager test retained174; rerun corrected loaded dictionary"
+      },
+      "final_rerun": {
+        "passed": 24,
+        "failed": 0,
+        "seconds": 193.17
+      },
+      "unchanged_parent_tests": {
+        "passed": 7
+      }
+    },
+    "cap_metadata_regression": {
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "final_projection_diagnosis": {
+    "host": "oracle-x86",
+    "eval_only": true,
+    "source_sha": "ca3d51b79d07b8b1230d8186a3b0942127e2b015",
+    "summary": {
+      "r1": {
+        "frames": 2,
+        "categories": {
+          "fov_clipped": 2
+        },
+        "rejection_reasons": {
+          "BAND_CLIPPED": 2
+        },
+        "rejected_center_outside": 0
+      },
+      "r2": {
+        "frames": 2,
+        "categories": {
+          "fov_clipped": 2
+        },
+        "rejection_reasons": {
+          "BAND_CLIPPED": 2
+        },
+        "rejected_center_outside": 0
+      }
+    },
+    "rows": {
+      "r1": [
+        {
+          "t": 60.4,
+          "render_index": 1161,
+          "reason": "BAND_CLIPPED",
+          "category": "fov_clipped",
+          "band_center_inside": true,
+          "band_corners_inside": 3,
+          "pinhole_px": [
+            [
+              269.0345071849574,
+              411.9613441909594
+            ],
+            [
+              354.1260169449963,
+              477.91091225849027
+            ],
+            [
+              187.76835810743592,
+              486.70967600906937
+            ],
+            [
+              338.8680045221553,
+              347.7287271636577
+            ],
+            [
+              194.68196684458718,
+              354.33493781975676
+            ]
+          ],
+          "evaluated_gt_only": true
+        },
+        {
+          "t": 172.3,
+          "render_index": 3399,
+          "reason": "BAND_CLIPPED",
+          "category": "fov_clipped",
+          "band_center_inside": true,
+          "band_corners_inside": 3,
+          "pinhole_px": [
+            [
+              269.9486338359377,
+              411.9526319644899
+            ],
+            [
+              355.07132882040224,
+              477.95477658639106
+            ],
+            [
+              188.71591691092758,
+              486.6535693737472
+            ],
+            [
+              339.75975275191183,
+              347.7549020101091
+            ],
+            [
+              195.5762441170298,
+              354.2860223370611
+            ]
+          ],
+          "evaluated_gt_only": true
+        }
+      ],
+      "r2": [
+        {
+          "t": 60.4,
+          "render_index": 1161,
+          "reason": "BAND_CLIPPED",
+          "category": "fov_clipped",
+          "band_center_inside": true,
+          "band_corners_inside": 3,
+          "pinhole_px": [
+            [
+              262.5919711066291,
+              410.62987638016637
+            ],
+            [
+              191.21053197698785,
+              350.79153264313794
+            ],
+            [
+              335.22728309679104,
+              348.8183832718452
+            ],
+            [
+              178.56487032222947,
+              482.13560023181964
+            ],
+            [
+              344.75787896413374,
+              479.50873197332544
+            ]
+          ],
+          "evaluated_gt_only": true
+        },
+        {
+          "t": 172.3,
+          "render_index": 3399,
+          "reason": "BAND_CLIPPED",
+          "category": "fov_clipped",
+          "band_center_inside": true,
+          "band_corners_inside": 3,
+          "pinhole_px": [
+            [
+              263.06896021796143,
+              410.62703786707704
+            ],
+            [
+              191.6006517177741,
+              350.8328803333541
+            ],
+            [
+              335.62581154255537,
+              348.7645300098288
+            ],
+            [
+              179.12229108834543,
+              482.2005885906111
+            ],
+            [
+              345.3248714722035,
+              479.44667301491654
+            ]
+          ],
+          "evaluated_gt_only": true
         }
       ]
     }
   },
-  "runs": [
-    {
-      "name": "s3fix23-baseline-multi-left-s14201-r1",
-      "case": "pair",
-      "candidate": "baseline",
-      "condition": 0,
-      "route_case": "multi-left",
-      "route": [
-        [
-          1.3,
-          0.05
-        ],
-        [
-          1.4518,
-          0.05
-        ],
-        [
-          1.4518,
-          0.21694529519717284
-        ]
-      ],
-      "seed": 14201,
-      "command": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s3_full_route",
-        "--expected-source-sha",
-        "<committed SHA>",
-        "--output",
-        "outputs/s3fix23-baseline-multi-left-s14201-r1/raw",
-        "--condition",
-        "0",
-        "--route-case",
-        "multi-left",
-        "--seed",
-        "14201",
-        "--candidate",
-        "baseline",
-        "--execute"
-      ],
-      "cap_sim_s": 170,
-      "status": "registered_not_run"
-    },
-    {
-      "name": "s3fix23-baseline-multi-left-s15201-r1",
-      "case": "pair",
-      "candidate": "baseline",
-      "condition": 0,
-      "route_case": "multi-left",
-      "route": [
-        [
-          1.3,
-          0.05
-        ],
-        [
-          1.4518,
-          0.05
-        ],
-        [
-          1.4518,
-          0.21694529519717284
-        ]
-      ],
-      "seed": 15201,
-      "command": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s3_full_route",
-        "--expected-source-sha",
-        "<committed SHA>",
-        "--output",
-        "outputs/s3fix23-baseline-multi-left-s15201-r1/raw",
-        "--condition",
-        "0",
-        "--route-case",
-        "multi-left",
-        "--seed",
-        "15201",
-        "--candidate",
-        "baseline",
-        "--execute"
-      ],
-      "cap_sim_s": 170,
-      "status": "registered_not_run"
-    },
-    {
-      "name": "s3fix23-pan-multi-right-s14204-r1",
-      "case": "pair",
-      "candidate": "pan",
-      "condition": 3,
-      "route_case": "multi-right",
-      "route": [
-        [
-          1.3,
-          0.05
-        ],
-        [
-          1.4518,
-          0.05
-        ],
-        [
-          1.4518,
-          -0.11694529519717285
-        ]
-      ],
-      "seed": 14204,
-      "command": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s3_full_route",
-        "--expected-source-sha",
-        "<committed SHA>",
-        "--output",
-        "outputs/s3fix23-pan-multi-right-s14204-r1/raw",
-        "--condition",
-        "3",
-        "--route-case",
-        "multi-right",
-        "--seed",
-        "14204",
-        "--candidate",
-        "pan",
-        "--execute"
-      ],
-      "cap_sim_s": 170,
-      "status": "registered_not_run"
-    },
-    {
-      "name": "s3fix23-pan-multi-right-s15204-r1",
-      "case": "pair",
-      "candidate": "pan",
-      "condition": 3,
-      "route_case": "multi-right",
-      "route": [
-        [
-          1.3,
-          0.05
-        ],
-        [
-          1.4518,
-          0.05
-        ],
-        [
-          1.4518,
-          -0.11694529519717285
-        ]
-      ],
-      "seed": 15204,
-      "command": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s3_full_route",
-        "--expected-source-sha",
-        "<committed SHA>",
-        "--output",
-        "outputs/s3fix23-pan-multi-right-s15204-r1/raw",
-        "--condition",
-        "3",
-        "--route-case",
-        "multi-right",
-        "--seed",
-        "15204",
-        "--candidate",
-        "pan",
-        "--execute"
-      ],
-      "cap_sim_s": 170,
-      "status": "registered_not_run"
-    },
-    {
-      "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
-      "case": "pair",
-      "candidate": "pan_backoff",
-      "condition": 5,
-      "route_case": "multi-three",
-      "route": [
-        [
-          1.3,
-          0.05
-        ],
-        [
-          1.4518,
-          0.05
-        ],
-        [
-          1.4518,
-          0.21694529519717284
-        ],
-        [
-          1.348290225509269,
-          0.21694529519717284
-        ]
-      ],
-      "seed": 14206,
-      "command": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s3_full_route",
-        "--expected-source-sha",
-        "<committed SHA>",
-        "--output",
-        "outputs/s3fix23-pan_backoff-multi-three-s14206-r1/raw",
-        "--condition",
-        "5",
-        "--route-case",
-        "multi-three",
-        "--seed",
-        "14206",
-        "--candidate",
-        "pan_backoff",
-        "--execute"
-      ],
-      "cap_sim_s": 240,
-      "status": "registered_not_run"
-    },
-    {
-      "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
-      "case": "pair",
-      "candidate": "pan_backoff",
-      "condition": 5,
-      "route_case": "multi-three",
-      "route": [
-        [
-          1.3,
-          0.05
-        ],
-        [
-          1.4518,
-          0.05
-        ],
-        [
-          1.4518,
-          0.21694529519717284
-        ],
-        [
-          1.348290225509269,
-          0.21694529519717284
-        ]
-      ],
-      "seed": 15206,
-      "command": [
-        ".venv-sim/bin/python",
-        "-m",
-        "scripts.run_s3_full_route",
-        "--expected-source-sha",
-        "<committed SHA>",
-        "--output",
-        "outputs/s3fix23-pan_backoff-multi-three-s15206-r1/raw",
-        "--condition",
-        "5",
-        "--route-case",
-        "multi-three",
-        "--seed",
-        "15206",
-        "--candidate",
-        "pan_backoff",
-        "--execute"
-      ],
-      "cap_sim_s": 240,
-      "status": "registered_not_run"
+  "final_projection_raw": {
+    "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-final-projection",
+    "remote_path": "/home/ubuntu/ugrp-sim/runs/s3fix23-final-projection",
+    "sha256": {
+      "summary.json": "5478407ea42fab81b3de2fd33eb6bd10df4131cbb08f7254bfca433f9862d0f4",
+      "r2.jsonl": "bc38a4a1152bf13ecd810d52c8a0ef2d9e9440ae9cf0efe5f31852478be23b38",
+      "r1.jsonl": "54d2ccb85f91b36105e9077d9a3e362f2b649f4776bc7565d06096abc0d58413"
     }
-  ],
-  "diagnostic_projection_raw": {
+  },
+  "raw_diagnosis_before_projection": {
     "local_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix23-visibility-before",
     "remote_path": "/home/ubuntu/ugrp-sim/runs/s3fix23-visibility-before",
     "sha256": {
