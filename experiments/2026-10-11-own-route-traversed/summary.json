@@ -1,189 +1,2171 @@
 {
   "round": "egomap67",
-  "status": "PREPARED_WAITING_DISK",
-  "registered": 24,
-  "physical_started": 0,
+  "status": "COMPLETE",
   "host": "oracle-x86",
-  "tests": {
-    "files": 3,
-    "passed": 32,
-    "probe_conditions": 6,
-    "accelerated_receive_executed": 6,
-    "off_bytes_identical": true
-  },
-  "diagnosis": {
-    "events": 164,
-    "accepted": 3,
-    "reasons": {
-      "accepted": 3,
-      "unobservable": 26,
-      "ambiguous_modes": 82,
-      "high_residual": 27,
-      "low_overlap": 22,
-      "search_boundary": 4
+  "source_sha": "45bdb756d7db0a451cb2a9b47adbb20d23a2b28e",
+  "prereg_commit": "45bdb756",
+  "registered": 24,
+  "scope": "Same six DEV checkpoints, not new-seed confirmation. Stage B approach/return only, no LLM or start-to-end transport E2E claim. 63004 box-to-own-B task switch preserved.",
+  "conditions": {
+    "baseline": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "RECORDED": 5,
+        "PHYSICAL_FAILURE": 1
+      },
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 13611,
+      "over3_frames": 9353,
+      "commands": {
+        "turn": 8163,
+        "forward": 3904,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 1544
+      },
+      "turn_fraction": 0.5997355080449637,
+      "turn_reversals": 1271,
+      "match_accepted": 12,
+      "match_attempts": 139,
+      "visual_gate_failures": {
+        "outside_20cm": 5433,
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "final_error_median": 0.5050521480957121
     },
-    "by_reason": {
-      "accepted": {
-        "overlap": {
-          "n": 3,
-          "min": 0.8695652173913043,
-          "median": 1.0,
-          "max": 1.0
-        },
-        "residual_m": {
-          "n": 3,
-          "min": 0.0472430992369659,
-          "median": 0.06406165474484916,
-          "max": 0.11006243347947309
-        },
-        "second_sensor_gap": {
-          "n": 3,
-          "min": 2.7730308715544214,
-          "median": 2.8571299466826776,
-          "max": 3.8585659143518836
-        },
-        "candidates": {
-          "n": 3,
-          "min": 637,
-          "median": 833,
-          "max": 6825
-        }
+    "progress_lookahead": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "RECORDED": 5,
+        "PHYSICAL_FAILURE": 1
       },
-      "unobservable": {
-        "overlap": {
-          "n": 26,
-          "min": 0.0,
-          "median": 0.0,
-          "max": 0.0
-        },
-        "residual_m": {
-          "n": 26,
-          "min": 8.20813565369291,
-          "median": 8.77259315236789,
-          "max": 9.149238489002547
-        },
-        "candidates": {
-          "n": 26,
-          "min": 5225,
-          "median": 5225.0,
-          "max": 5225
-        }
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 13484,
+      "over3_frames": 6272,
+      "commands": {
+        "turn": 7039,
+        "forward": 3368,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 3077
       },
-      "ambiguous_modes": {
-        "overlap": {
-          "n": 82,
-          "min": 0.9333333333333333,
-          "median": 1.0,
-          "max": 1.0
-        },
-        "residual_m": {
-          "n": 82,
-          "min": 0.007064997973589414,
-          "median": 0.025037135734855855,
-          "max": 0.07209518718343136
-        },
-        "second_sensor_gap": {
-          "n": 82,
-          "min": -1.2156002114621987,
-          "median": -0.06348482101063535,
-          "max": 0.19636686545465043
-        },
-        "candidates": {
-          "n": 82,
-          "min": 2871,
-          "median": 3003.0,
-          "max": 4455
-        }
+      "turn_fraction": 0.5220261050133491,
+      "turn_reversals": 762,
+      "match_accepted": 13,
+      "match_attempts": 126,
+      "visual_gate_failures": {
+        "outside_20cm": 3695,
+        "unconfirmed": 875,
+        "no_current_patch": 2143,
+        "current_evidence": 16
       },
-      "high_residual": {
-        "overlap": {
-          "n": 27,
-          "min": 0.6,
-          "median": 0.6666666666666666,
-          "max": 0.7058823529411765
-        },
-        "residual_m": {
-          "n": 27,
-          "min": 0.15487060773166464,
-          "median": 0.1710159636936906,
-          "max": 0.3688454246372935
-        },
-        "second_sensor_gap": {
-          "n": 27,
-          "min": -1.1153193788428597,
-          "median": -0.2472208826085187,
-          "max": 12.403603065136913
-        },
-        "candidates": {
-          "n": 27,
-          "min": 1323,
-          "median": 11655,
-          "max": 11655
-        }
+      "final_error_median": 0.2776688715221438
+    },
+    "own_free_traversed": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "PHYSICAL_FAILURE": 1,
+        "RECORDED": 5
       },
-      "low_overlap": {
-        "overlap": {
-          "n": 22,
-          "min": 0.3793103448275862,
-          "median": 0.5454545454545454,
-          "max": 0.5833333333333334
-        },
-        "residual_m": {
-          "n": 22,
-          "min": 0.22939342456342693,
-          "median": 0.3552546907083902,
-          "max": 0.42130011250137833
-        },
-        "second_sensor_gap": {
-          "n": 22,
-          "min": -4.375935153946756,
-          "median": 9.111173910094148,
-          "max": 11.920750565952083
-        },
-        "candidates": {
-          "n": 22,
-          "min": 1323,
-          "median": 1323.0,
-          "max": 11655
-        }
+      "B_arrived": 2,
+      "returned": 2,
+      "false_declarations": 3,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 10591,
+      "over3_frames": 5118,
+      "commands": {
+        "turn": 6108,
+        "forward": 2939,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 1544
       },
-      "search_boundary": {
-        "overlap": {
-          "n": 4,
-          "min": 0.42857142857142855,
-          "median": 0.45238095238095233,
-          "max": 0.5652173913043478
-        },
-        "residual_m": {
-          "n": 4,
-          "min": 0.342016528893356,
-          "median": 0.3535503875444229,
-          "max": 0.37022451010945717
-        },
-        "second_sensor_gap": {
-          "n": 4,
-          "min": 11.452043079841381,
-          "median": 12.264919692870627,
-          "max": 12.749817659625869
-        },
-        "candidates": {
-          "n": 4,
-          "min": 1323,
-          "median": 1323.0,
-          "max": 1323
-        }
-      }
+      "turn_fraction": 0.5767160796903031,
+      "turn_reversals": 1548,
+      "match_accepted": 0,
+      "match_attempts": 78,
+      "visual_gate_failures": {
+        "outside_20cm": 5433,
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "final_error_median": 0.21524262126841076
+    },
+    "combined": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "PHYSICAL_FAILURE": 3,
+        "RECORDED": 3
+      },
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 2,
+      "wall_contacts": 3,
+      "robot_contacts": 0,
+      "frames": 9302,
+      "over3_frames": 3140,
+      "commands": {
+        "turn": 1987,
+        "forward": 2890,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 4425
+      },
+      "turn_fraction": 0.21360997634917223,
+      "turn_reversals": 396,
+      "match_accepted": 4,
+      "match_attempts": 50,
+      "visual_gate_failures": {
+        "outside_20cm": 3695,
+        "unconfirmed": 875,
+        "no_current_patch": 2143,
+        "current_evidence": 16
+      },
+      "final_error_median": 0.3037841355488473
     }
   },
-  "prereg_sha256": "a83676d160e67e4f9d98628c81f6510370ac900cd8690e83d44d1a21fc98c402",
-  "raw_root": "/home/ubuntu/ugrp-sim/runs/egomap67-batch",
-  "original_diagnosis_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data",
-  "raw_hashes": {
-    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63004-return_local_vtr/route-map.json": "5a2b89559b3c78f1fed20cb302ad927209bb7c1093eed428b1adee45879446c2",
-    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63001-return_local_vtr/route-map.json": "a398940162c59f09235c757bd6350abd549f5fe274849c21ffc068eaaf4dd999",
-    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63005-return_local_vtr/route-map.json": "60f103210984a04e0dc70b4b9576145f1f0ede2791ff05398c000b3cc4ae0b7b",
-    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63002-return_local_vtr/route-map.json": "d09a6e0778f2c825cf56135146eb34466646d1c8525cd4f477694c3dcf6cb5c5",
-    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63006-return_local_vtr/route-map.json": "e8bb8175e2b11f0024020942728d608debfc0f49c6fa3f21976c84b152bc6bc9",
-    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63003-return_local_vtr/route-map.json": "e2890b5f19fd8f4962f788bb5d69118b48a4f36c3b39e550f42cf6c65f95dc3b"
-  }
+  "runs": [
+    {
+      "seed": 63001,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 2287,
+      "over_3sigma_rate": 0.8467234357645317,
+      "final_error_m": 1.6608683293284388,
+      "final_sigma_m": 0.09203801656723937,
+      "final_error_sigma": 18.045459814044055,
+      "path_rmse_m": 1.4693301804668226,
+      "final_return_distance_m": 2.6569041605635277,
+      "B_nearest_boundary_distance_m": 1.6599877743863476,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "visual_gate_failures": {
+        "outside_20cm": 1350
+      },
+      "return_progress": null,
+      "result_sha256": "fbf8184b8107c073dd4cc00396b6b3379eb3501bfaf316b395a801a53570be94",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63001-baseline",
+      "failure": null
+    },
+    {
+      "seed": 63001,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 690,
+      "over_3sigma_rate": 0.25546094039244727,
+      "final_error_m": 0.2833971732760529,
+      "final_sigma_m": 0.048913891171609665,
+      "final_error_sigma": 5.793797354657009,
+      "path_rmse_m": 0.2691607452643944,
+      "final_return_distance_m": 2.0930899108737298,
+      "B_nearest_boundary_distance_m": 1.0640172411717774,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "match_accepted": 4,
+      "match_attempts": 27,
+      "visual_gate_failures": {
+        "outside_20cm": 1350
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": false,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 2700,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": false,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true,
+            "heading": true
+          }
+        },
+        "traversed_free": null,
+        "return_progress": 0.025298107039199557,
+        "free_remaining_m": null,
+        "free_initial_m": null,
+        "free_path": "not_active",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "30b1fc4852518470a88d574895074d5d1d77ff09b5d40a17c2c53cff2835f907",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63001-progress_lookahead",
+      "failure": null
+    },
+    {
+      "seed": 63001,
+      "condition": "own_free_traversed",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1686,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 1272,
+      "over_3sigma_rate": 0.7544483985765125,
+      "final_error_m": 1.3656883781625397,
+      "final_sigma_m": 0.08858419935081625,
+      "final_error_sigma": 15.416839438307298,
+      "path_rmse_m": 1.179179159963283,
+      "final_return_distance_m": 1.530343336077862,
+      "B_nearest_boundary_distance_m": 1.6599877743863476,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 67.0,
+      "match_accepted": 0,
+      "match_attempts": 7,
+      "visual_gate_failures": {
+        "outside_20cm": 1350
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": false,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1686,
+          "dispatched": {
+            "progress_lookahead": false,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true,
+            "heading": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 2054,
+          "cells": 1391,
+          "cleared_unknown": 1067,
+          "cleared_occupied": 7
+        },
+        "return_progress": null,
+        "free_remaining_m": 1.7332025791414276,
+        "free_initial_m": 3.008413919223133,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "4f3327e72af940a434896d95cc005b95daa460acd4af031ec48e3ce784c8ccab",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63001-own_free_traversed",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      }
+    },
+    {
+      "seed": 63001,
+      "condition": "combined",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1528,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 194,
+      "over_3sigma_rate": 0.12696335078534032,
+      "final_error_m": 0.27261583222083247,
+      "final_sigma_m": 0.07713910788977785,
+      "final_error_sigma": 3.5340806975673926,
+      "path_rmse_m": 0.27118943223264325,
+      "final_return_distance_m": 1.2422407781034375,
+      "B_nearest_boundary_distance_m": 1.0640172411717774,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 35.400000000000034,
+      "match_accepted": 1,
+      "match_attempts": 4,
+      "visual_gate_failures": {
+        "outside_20cm": 1350
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1528,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true,
+            "heading": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 1896,
+          "cells": 1406,
+          "cleared_unknown": 737,
+          "cleared_occupied": 0
+        },
+        "return_progress": null,
+        "free_remaining_m": 1.6792977828002307,
+        "free_initial_m": 2.692015733692375,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "84a6d3989fe637852c5919c0839bf882cb6f732cbab00d9d706d41ea6f9f730b",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63001-combined",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "baseline",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1436,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 217,
+      "over_3sigma_rate": 0.1511142061281337,
+      "final_error_m": 0.41216594597439293,
+      "final_sigma_m": 0.10721606367255009,
+      "final_error_sigma": 3.8442555327641394,
+      "path_rmse_m": 0.3263311920389973,
+      "final_return_distance_m": 3.3960898079937456,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 17.0,
+      "match_accepted": 1,
+      "match_attempts": 2,
+      "visual_gate_failures": {
+        "outside_20cm": 649,
+        "no_current_patch": 691,
+        "unconfirmed": 10
+      },
+      "return_progress": null,
+      "result_sha256": "ef355f81fe23de5e9475ab4e677a4514a44609e202ffb26e6b8f705e7a2e15d6",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63002-baseline",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "samples": 1634,
+      "B_arrived": true,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 97.5,
+          "kind": "goal_reached",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 382,
+      "over_3sigma_rate": 0.23378212974296206,
+      "final_error_m": 0.2719405697682348,
+      "final_sigma_m": 0.18023217645813272,
+      "final_error_sigma": 1.5088347436752259,
+      "path_rmse_m": 0.3199267834841463,
+      "final_return_distance_m": 1.6950399931299032,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 56.6,
+      "return_sim_s": 270.0,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "visual_gate_failures": {
+        "outside_20cm": 248,
+        "unconfirmed": 17,
+        "no_current_patch": 13,
+        "current_evidence": 5
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": false,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1633,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": false,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true,
+            "heading": true
+          }
+        },
+        "traversed_free": null,
+        "return_progress": 0.20531604094470457,
+        "free_remaining_m": null,
+        "free_initial_m": null,
+        "free_path": "not_active",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "6e38ef8ae94213e67023c53ad074b26d6a63667c19bc1fa5be1d405b568b2afb",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63002-progress_lookahead",
+      "failure": null
+    },
+    {
+      "seed": 63002,
+      "condition": "own_free_traversed",
+      "status": "RECORDED",
+      "samples": 1965,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 1,
+      "declarations": [
+        {
+          "t": 433.9,
+          "kind": "return_start_declared",
+          "valid": false
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 329,
+      "over_3sigma_rate": 0.16743002544529262,
+      "final_error_m": 0.2445784698167353,
+      "final_sigma_m": 0.07266818859640876,
+      "final_error_sigma": 3.3656882680136366,
+      "path_rmse_m": 0.303051614245474,
+      "final_return_distance_m": 0.3589353991298515,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 122.79999999999995,
+      "match_accepted": 0,
+      "match_attempts": 12,
+      "visual_gate_failures": {
+        "outside_20cm": 649,
+        "no_current_patch": 691,
+        "unconfirmed": 10
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": false,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1965,
+          "dispatched": {
+            "progress_lookahead": false,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 2154,
+          "cells": 1279,
+          "cleared_unknown": 1202,
+          "cleared_occupied": 0
+        },
+        "return_progress": null,
+        "free_remaining_m": 0.27129769703018186,
+        "free_initial_m": 3.4067487567842334,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "e03f790d5072dbe99f79abe7411e344c037c65ca7b05fc42377c61f51257b51f",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63002-own_free_traversed",
+      "failure": null
+    },
+    {
+      "seed": 63002,
+      "condition": "combined",
+      "status": "RECORDED",
+      "samples": 1634,
+      "B_arrived": true,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 97.5,
+          "kind": "goal_reached",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 0,
+      "over_3sigma_rate": 0.0,
+      "final_error_m": 0.034876669094056297,
+      "final_sigma_m": 0.19482321538326247,
+      "final_error_sigma": 0.17901700793432546,
+      "path_rmse_m": 0.116807038988663,
+      "final_return_distance_m": 3.327018854058002,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 56.6,
+      "return_sim_s": 270.0,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "visual_gate_failures": {
+        "outside_20cm": 248,
+        "unconfirmed": 17,
+        "no_current_patch": 13,
+        "current_evidence": 5
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1633,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true,
+            "heading": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 1822,
+          "cells": 813,
+          "cleared_unknown": 769,
+          "cleared_occupied": 0
+        },
+        "return_progress": null,
+        "free_remaining_m": null,
+        "free_initial_m": null,
+        "free_path": "no_observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "2e0127bbc40f0fd973e85dfc9a0393557ffe558d2c9edc6daefe02d64dd31896",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63002-combined",
+      "failure": null
+    },
+    {
+      "seed": 63003,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 2201,
+      "B_arrived": true,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 185.3,
+          "kind": "goal_reached",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1748,
+      "over_3sigma_rate": 0.7941844616083599,
+      "final_error_m": 0.8198801004914216,
+      "final_sigma_m": 0.07629310177731988,
+      "final_error_sigma": 10.746451270056403,
+      "path_rmse_m": 0.5143435800915955,
+      "final_return_distance_m": 2.0452823478687687,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 170.0,
+      "return_sim_s": 270.0,
+      "match_accepted": 5,
+      "match_attempts": 28,
+      "visual_gate_failures": {
+        "outside_20cm": 678,
+        "unconfirmed": 54,
+        "current_evidence": 15,
+        "no_current_patch": 103
+      },
+      "return_progress": null,
+      "result_sha256": "8b2d7d60ad39cfa880a7ff1500bfea30d34e6d4734845d0640f8c4f15f48956b",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63003-baseline",
+      "failure": null
+    },
+    {
+      "seed": 63003,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 295,
+      "over_3sigma_rate": 0.10921880784894483,
+      "final_error_m": 0.15967285289624808,
+      "final_sigma_m": 0.06197142722432987,
+      "final_error_sigma": 2.5765560040799063,
+      "path_rmse_m": 0.1651729618648764,
+      "final_return_distance_m": 3.185988446530479,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "match_accepted": 4,
+      "match_attempts": 23,
+      "visual_gate_failures": {
+        "outside_20cm": 279,
+        "current_evidence": 4,
+        "no_current_patch": 466,
+        "unconfirmed": 601
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": false,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 2700,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": false,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true,
+            "heading": true
+          }
+        },
+        "traversed_free": null,
+        "return_progress": 0.023276903253296018,
+        "free_remaining_m": null,
+        "free_initial_m": null,
+        "free_path": "not_active",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "05cd4a9dc98fbb801e428500ec105232af1e841b27c85890b2b6920b0496152b",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63003-progress_lookahead",
+      "failure": null
+    },
+    {
+      "seed": 63003,
+      "condition": "own_free_traversed",
+      "status": "RECORDED",
+      "samples": 1589,
+      "B_arrived": true,
+      "returned": true,
+      "both_arrived": true,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 185.3,
+          "kind": "goal_reached",
+          "valid": true
+        },
+        {
+          "t": 333.1,
+          "kind": "return_start_declared",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 879,
+      "over_3sigma_rate": 0.5531780994336061,
+      "final_error_m": 0.11242499732833705,
+      "final_sigma_m": 0.10811562512679676,
+      "final_error_sigma": 1.0398589213768714,
+      "path_rmse_m": 0.364168569928736,
+      "final_return_distance_m": 0.14766757094783123,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 170.0,
+      "return_sim_s": 147.60000000000002,
+      "match_accepted": 0,
+      "match_attempts": 15,
+      "visual_gate_failures": {
+        "outside_20cm": 678,
+        "unconfirmed": 54,
+        "current_evidence": 15,
+        "no_current_patch": 103
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": false,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1589,
+          "dispatched": {
+            "progress_lookahead": false,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 1650,
+          "cells": 1467,
+          "cleared_unknown": 1305,
+          "cleared_occupied": 0
+        },
+        "return_progress": null,
+        "free_remaining_m": 0.21517536829707584,
+        "free_initial_m": 3.5485464564859286,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "d68ad7c1bc971b4b74d3ea8afb5441f2eb9b7bfd34a6a5a7724510392e958d37",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63003-own_free_traversed",
+      "failure": null
+    },
+    {
+      "seed": 63003,
+      "condition": "combined",
+      "status": "RECORDED",
+      "samples": 1640,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 1,
+      "declarations": [
+        {
+          "t": 343.3,
+          "kind": "return_start_declared",
+          "valid": false
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 0,
+      "over_3sigma_rate": 0.0,
+      "final_error_m": 0.39207625677727775,
+      "final_sigma_m": 0.21701313773242395,
+      "final_error_sigma": 1.8066936447907855,
+      "path_rmse_m": 0.1591433451601516,
+      "final_return_distance_m": 0.5049818306539545,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 57.80000000000001,
+      "match_accepted": 1,
+      "match_attempts": 6,
+      "visual_gate_failures": {
+        "outside_20cm": 279,
+        "current_evidence": 4,
+        "no_current_patch": 466,
+        "unconfirmed": 601
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1640,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 1701,
+          "cells": 890,
+          "cleared_unknown": 47,
+          "cleared_occupied": 0
+        },
+        "return_progress": null,
+        "free_remaining_m": 0.19053864398726456,
+        "free_initial_m": 3.6072590349124174,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "e68bde1ed62a274cb4831cbd74db6b3396c7863d140cfedd39b7789e4ddd71f6",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63003-combined",
+      "failure": null
+    },
+    {
+      "seed": 63004,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 2424,
+      "over_3sigma_rate": 0.8974453905960755,
+      "final_error_m": 0.5979383502170312,
+      "final_sigma_m": 0.08534221282869446,
+      "final_error_sigma": 7.006360983599754,
+      "path_rmse_m": 0.6406613153409096,
+      "final_return_distance_m": 3.4082135151612225,
+      "B_nearest_boundary_distance_m": 2.3553208497129594,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "match_accepted": 2,
+      "match_attempts": 27,
+      "visual_gate_failures": {
+        "outside_20cm": 906,
+        "no_current_patch": 24,
+        "unconfirmed": 417,
+        "current_evidence": 3
+      },
+      "return_progress": null,
+      "result_sha256": "4333bdbfe5d236cc85995bd72daefeb675fca1c0c1183fa45c77b48c13751a06",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63004-baseline",
+      "failure": null
+    },
+    {
+      "seed": 63004,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 2600,
+      "over_3sigma_rate": 0.9626064420584969,
+      "final_error_m": 0.4943287611172836,
+      "final_sigma_m": 0.10944840405953442,
+      "final_error_sigma": 4.516546087308807,
+      "path_rmse_m": 0.5813485572530381,
+      "final_return_distance_m": 3.6801548610875527,
+      "B_nearest_boundary_distance_m": 2.3573961045611327,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "match_accepted": 1,
+      "match_attempts": 28,
+      "visual_gate_failures": {
+        "outside_20cm": 423,
+        "no_current_patch": 918,
+        "unconfirmed": 9
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": false,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 2700,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": false,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true,
+            "heading": true
+          }
+        },
+        "traversed_free": null,
+        "return_progress": 0.018674029461389345,
+        "free_remaining_m": null,
+        "free_initial_m": null,
+        "free_path": "not_active",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "09b2f2a650b25ba8054f065189e5447179112123794b87578336fc9dc6f8cf35",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63004-progress_lookahead",
+      "failure": null
+    },
+    {
+      "seed": 63004,
+      "condition": "own_free_traversed",
+      "status": "RECORDED",
+      "samples": 2513,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 1,
+      "declarations": [
+        {
+          "t": 570.1,
+          "kind": "return_start_declared",
+          "valid": false
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1685,
+      "over_3sigma_rate": 0.6705133306804616,
+      "final_error_m": 1.6764231056808425,
+      "final_sigma_m": 0.07685280939390625,
+      "final_error_sigma": 21.81342645638883,
+      "path_rmse_m": 0.8549949479530646,
+      "final_return_distance_m": 1.5347755594299775,
+      "B_nearest_boundary_distance_m": 2.3553208497129594,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 232.40000000000003,
+      "match_accepted": 0,
+      "match_attempts": 24,
+      "visual_gate_failures": {
+        "outside_20cm": 906,
+        "no_current_patch": 24,
+        "unconfirmed": 417,
+        "current_evidence": 3
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": false,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 2513,
+          "dispatched": {
+            "progress_lookahead": false,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 2835,
+          "cells": 2298,
+          "cleared_unknown": 2248,
+          "cleared_occupied": 0
+        },
+        "return_progress": null,
+        "free_remaining_m": 0.13890605562696642,
+        "free_initial_m": 5.144326487201941,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "19feeca57d7db2cdc64bd9f01b4d21ec66a2040e0f0282228b3eab165ccd6f84",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63004-own_free_traversed",
+      "failure": null
+    },
+    {
+      "seed": 63004,
+      "condition": "combined",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1860,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 1792,
+      "over_3sigma_rate": 0.9634408602150538,
+      "final_error_m": 0.9111207139784416,
+      "final_sigma_m": 0.1459981633044268,
+      "final_error_sigma": 6.240631343276738,
+      "path_rmse_m": 0.6796105567386971,
+      "final_return_distance_m": 0.6318106347194486,
+      "B_nearest_boundary_distance_m": 2.3573961045611327,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 101.80000000000001,
+      "match_accepted": 1,
+      "match_attempts": 8,
+      "visual_gate_failures": {
+        "outside_20cm": 423,
+        "no_current_patch": 918,
+        "unconfirmed": 9
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1860,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true,
+            "heading": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 2182,
+          "cells": 1657,
+          "cleared_unknown": 263,
+          "cleared_occupied": 32
+        },
+        "return_progress": null,
+        "free_remaining_m": 0.7655127279900029,
+        "free_initial_m": 4.84158407166256,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "115c57440492566bbdb14500ec3f6d72b2d5c63a42b07deb8b714b25175d5bf9",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63004-combined",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 2701,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1789,
+      "over_3sigma_rate": 0.6623472787856349,
+      "final_error_m": 0.26701648472551665,
+      "final_sigma_m": 0.07114878240948472,
+      "final_error_sigma": 3.7529311912711125,
+      "path_rmse_m": 0.3028404946331802,
+      "final_return_distance_m": 2.2604074334758093,
+      "B_nearest_boundary_distance_m": 0.06599054996626008,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "match_accepted": 3,
+      "match_attempts": 28,
+      "visual_gate_failures": {
+        "outside_20cm": 1350
+      },
+      "return_progress": null,
+      "result_sha256": "dffe067b44ca5a18a1aedc556deb734a60b75b7c9bd2853927624330d8524c5d",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63005-baseline",
+      "failure": null
+    },
+    {
+      "seed": 63005,
+      "condition": "progress_lookahead",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1065,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 75,
+      "over_3sigma_rate": 0.07042253521126761,
+      "final_error_m": 0.3349524388768622,
+      "final_sigma_m": 0.07586252626185526,
+      "final_error_sigma": 4.415255533683446,
+      "path_rmse_m": 0.22353113824182078,
+      "final_return_distance_m": 1.8797496526082096,
+      "B_nearest_boundary_distance_m": 2.0349871613233854,
+      "approach_sim_s": 212.8,
+      "return_sim_s": 0,
+      "match_accepted": 0,
+      "match_attempts": 0,
+      "visual_gate_failures": {
+        "outside_20cm": 1065
+      },
+      "return_progress": null,
+      "result_sha256": "62ca4cb9baf1edb598deeea17d3cb449974a89013f3a27ed1255af816e315bbf",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63005-progress_lookahead",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "own_free_traversed",
+      "status": "RECORDED",
+      "samples": 1789,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 1,
+      "declarations": [
+        {
+          "t": 392.3,
+          "kind": "return_start_declared",
+          "valid": false
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 736,
+      "over_3sigma_rate": 0.41140301844605925,
+      "final_error_m": 0.1859067727200862,
+      "final_sigma_m": 0.045647221114650555,
+      "final_error_sigma": 4.072685438028102,
+      "path_rmse_m": 0.278614178817625,
+      "final_return_distance_m": 0.23170355836494558,
+      "B_nearest_boundary_distance_m": 0.06599054996626008,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 87.60000000000002,
+      "match_accepted": 0,
+      "match_attempts": 9,
+      "visual_gate_failures": {
+        "outside_20cm": 1350
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": false,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1789,
+          "dispatched": {
+            "progress_lookahead": false,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 1946,
+          "cells": 947,
+          "cleared_unknown": 739,
+          "cleared_occupied": 0
+        },
+        "return_progress": null,
+        "free_remaining_m": 0.22952072069879825,
+        "free_initial_m": 2.5669136953560354,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "af508c994ccafc83c420374fd8b8a017f1ac728abfb90aadf3d93021ca5d46d0",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63005-own_free_traversed",
+      "failure": null
+    },
+    {
+      "seed": 63005,
+      "condition": "combined",
+      "status": "PHYSICAL_FAILURE",
+      "samples": 1065,
+      "B_arrived": false,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "over_3sigma": 75,
+      "over_3sigma_rate": 0.07042253521126761,
+      "final_error_m": 0.3349524388768622,
+      "final_sigma_m": 0.07586252626185526,
+      "final_error_sigma": 4.415255533683446,
+      "path_rmse_m": 0.22353113824182078,
+      "final_return_distance_m": 1.8797496526082096,
+      "B_nearest_boundary_distance_m": 2.0349871613233854,
+      "approach_sim_s": 212.8,
+      "return_sim_s": 0,
+      "match_accepted": 0,
+      "match_attempts": 0,
+      "visual_gate_failures": {
+        "outside_20cm": 1065
+      },
+      "return_progress": null,
+      "result_sha256": "eb398d9d7470e4cfbc548ff4771ee7d7a44e3291e80185848096d647287a7f6f",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63005-combined",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "samples": 1871,
+      "B_arrived": true,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 132.1,
+          "kind": "goal_reached",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 888,
+      "over_3sigma_rate": 0.4746125066809193,
+      "final_error_m": 0.20493867987503167,
+      "final_sigma_m": 0.06897879012328641,
+      "final_error_sigma": 2.971039061554181,
+      "path_rmse_m": 0.31853848380627997,
+      "final_return_distance_m": 1.7993147816385895,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 104.00000000000001,
+      "return_sim_s": 270.0,
+      "match_accepted": 0,
+      "match_attempts": 27,
+      "visual_gate_failures": {
+        "outside_20cm": 500,
+        "unconfirmed": 10,
+        "current_evidence": 6,
+        "no_current_patch": 4
+      },
+      "return_progress": null,
+      "result_sha256": "8e129b928759919b415473a4efb448417124ad9fc8fc225c310f886073e95fdb",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63006-baseline",
+      "failure": null
+    },
+    {
+      "seed": 63006,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "samples": 2682,
+      "B_arrived": true,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 294.3,
+          "kind": "goal_reached",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 2230,
+      "over_3sigma_rate": 0.8314690529455631,
+      "final_error_m": 0.25072201235767494,
+      "final_sigma_m": 0.10276316373863785,
+      "final_error_sigma": 2.439804334901049,
+      "path_rmse_m": 0.4392962944652581,
+      "final_return_distance_m": 2.7550041329859387,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 266.2,
+      "return_sim_s": 270.0,
+      "match_accepted": 3,
+      "match_attempts": 21,
+      "visual_gate_failures": {
+        "outside_20cm": 330,
+        "unconfirmed": 248,
+        "no_current_patch": 746,
+        "current_evidence": 7
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": false,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 2681,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": false,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true,
+            "heading": true
+          }
+        },
+        "traversed_free": null,
+        "return_progress": 0.005883280091451373,
+        "free_remaining_m": null,
+        "free_initial_m": null,
+        "free_path": "not_active",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "1b18758c2dfa95e2dc1a4525c7f0c870cc80e943e86de6d522f89a362bf180c6",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63006-progress_lookahead",
+      "failure": null
+    },
+    {
+      "seed": 63006,
+      "condition": "own_free_traversed",
+      "status": "RECORDED",
+      "samples": 1049,
+      "B_arrived": true,
+      "returned": true,
+      "both_arrived": true,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 132.1,
+          "kind": "goal_reached",
+          "valid": true
+        },
+        {
+          "t": 237.9,
+          "kind": "return_start_declared",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 217,
+      "over_3sigma_rate": 0.20686367969494757,
+      "final_error_m": 0.0170194577954654,
+      "final_sigma_m": 0.07711465067892243,
+      "final_error_sigma": 0.22070329886247272,
+      "path_rmse_m": 0.3415276102967981,
+      "final_return_distance_m": 0.17155869712539723,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 104.00000000000001,
+      "return_sim_s": 105.6,
+      "match_accepted": 0,
+      "match_attempts": 11,
+      "visual_gate_failures": {
+        "outside_20cm": 500,
+        "unconfirmed": 10,
+        "current_evidence": 6,
+        "no_current_patch": 4
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": false,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1049,
+          "dispatched": {
+            "progress_lookahead": false,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 1174,
+          "cells": 1050,
+          "cleared_unknown": 994,
+          "cleared_occupied": 0
+        },
+        "return_progress": null,
+        "free_remaining_m": 0.1955389504214711,
+        "free_initial_m": 3.1199722899378846,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "f547c1441be10584101a2e9eaa97d9afed4bf7773a580a8162ba2a3e6c625c7b",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63006-own_free_traversed",
+      "failure": null
+    },
+    {
+      "seed": 63006,
+      "condition": "combined",
+      "status": "RECORDED",
+      "samples": 1575,
+      "B_arrived": true,
+      "returned": false,
+      "both_arrived": false,
+      "false_declarations": 1,
+      "declarations": [
+        {
+          "t": 294.3,
+          "kind": "goal_reached",
+          "valid": true
+        },
+        {
+          "t": 343.1,
+          "kind": "return_start_declared",
+          "valid": false
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "over_3sigma": 1079,
+      "over_3sigma_rate": 0.6850793650793651,
+      "final_error_m": 0.1594456545147721,
+      "final_sigma_m": 0.16722100044665966,
+      "final_error_sigma": 0.9535025749689391,
+      "path_rmse_m": 0.4701900191243093,
+      "final_return_distance_m": 0.3470359384201827,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 266.2,
+      "return_sim_s": 48.60000000000002,
+      "match_accepted": 0,
+      "match_attempts": 5,
+      "visual_gate_failures": {
+        "outside_20cm": 330,
+        "unconfirmed": 248,
+        "no_current_patch": 746,
+        "current_evidence": 7
+      },
+      "return_progress": {
+        "options": {
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": true,
+          "arrival_verify_fsm": false
+        },
+        "execution": {
+          "version": "receive_composed_v1",
+          "calls": 1575,
+          "dispatched": {
+            "progress_lookahead": true,
+            "return_local_vtr": false,
+            "return_own_free_astar": true,
+            "arrival_verify_fsm": false
+          },
+          "exercised": {
+            "receive": true,
+            "localize": true,
+            "return_target": true
+          }
+        },
+        "traversed_free": {
+          "option": "footprint_history_v1",
+          "source": "own_pose_history",
+          "poses": 1700,
+          "cells": 1118,
+          "cleared_unknown": 44,
+          "cleared_occupied": 0
+        },
+        "return_progress": null,
+        "free_remaining_m": 0.22735205788131388,
+        "free_initial_m": 3.1859093756080528,
+        "free_path": "observed_free_path",
+        "visual_gate": "not_active",
+        "repeat_match": "not_active",
+        "verify": null
+      },
+      "result_sha256": "6db41842d3ea0c444cd20805d44fe90d2970116e00ddd7688d07e5045bd645ef",
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data/egomap67-63006-combined",
+      "failure": null
+    }
+  ],
+  "statuses": {
+    "RECORDED": 18,
+    "PHYSICAL_FAILURE": 6
+  },
+  "tests": {
+    "files": 3,
+    "passed": 33,
+    "physics_free_probe_conditions": 6,
+    "off_bytes_identical": true,
+    "simulation_on_Mac": 0
+  },
+  "smoke": {
+    "status": "RECORDED",
+    "wall_s": 33.14721341400036,
+    "sim_s": 8.0,
+    "files_verified": 79,
+    "bad": [],
+    "marks": 41,
+    "valid": 41,
+    "first": {
+      "call": 1,
+      "execution": {
+        "calls": 1,
+        "dispatched": {
+          "arrival_verify_fsm": false,
+          "progress_lookahead": true,
+          "return_local_vtr": false,
+          "return_own_free_astar": true
+        },
+        "exercised": {
+          "arrival": true,
+          "heading": true,
+          "localize": true,
+          "receive": true
+        },
+        "version": "receive_composed_v1"
+      },
+      "frame_id": 379,
+      "options": {
+        "arrival_verify_fsm": false,
+        "progress_lookahead": true,
+        "return_local_vtr": false,
+        "return_own_free_astar": true
+      },
+      "receiver": "ReferenceRoute.receive",
+      "t": 76.9,
+      "valid": true
+    },
+    "sha256": {
+      "result.json": "42fd88363ec7c97c47d97d76b855632646be51b06b21be773d506866e77a667d",
+      "execution-path.jsonl": "e8694162b10fe7c54ef93a9f77121eb91b22d6948778c6e697dda3d2186eb0f1",
+      "artifacts.sha256.json": "2667a980308d3633123591285762521a157587b3d7620995d8f097a494c0ebc4"
+    }
+  },
+  "initial_checks": {
+    "checked": 24,
+    "passed": 24,
+    "min_sim_s": 41.60000000000001,
+    "min_displacement_m": 0.040724209098296944,
+    "first_frame_markers": 24
+  },
+  "off_golden": {
+    "files": 36,
+    "equal": 36,
+    "detail": "/Users/changmin/projects/ugrp/outputs/egomap67-delivery/audit.json"
+  },
+  "execution_marker": {
+    "frames": 46988,
+    "valid": 46988,
+    "runs": 24
+  },
+  "free_path_counts": {
+    "own_free_traversed": {
+      "observed_free_path": 3821
+    },
+    "combined": {
+      "observed_free_path": 1222,
+      "no_observed_free_path": 1350
+    }
+  },
+  "footprint_connectivity": [
+    {
+      "name": "egomap67-63001-combined",
+      "return_frames": 178,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 138.5,
+          "frame_id": 687,
+          "step_m": 0.5543617614502606,
+          "stage": "approach"
+        },
+        {
+          "t": 156.1,
+          "frame_id": 775,
+          "step_m": 0.5337693516266181,
+          "stage": "approach"
+        },
+        {
+          "t": 94.7,
+          "frame_id": 468,
+          "step_m": 0.5028758814808105,
+          "stage": "approach"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63001-own_free_traversed",
+      "return_frames": 336,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 383.7,
+          "frame_id": 1913,
+          "step_m": 1.039638098931183,
+          "stage": "return"
+        },
+        {
+          "t": 379.7,
+          "frame_id": 1893,
+          "step_m": 0.7136946687142979,
+          "stage": "return"
+        },
+        {
+          "t": 388.3,
+          "frame_id": 1936,
+          "step_m": 0.7021196593528103,
+          "stage": "return"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63002-combined",
+      "return_frames": 1350,
+      "free_path": "no_observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 4,
+      "start_component": 1,
+      "current_component": 4,
+      "connected": false,
+      "component_gap_m": 0.36055512754639896,
+      "largest_own_pose_steps": [
+        {
+          "t": 72.1,
+          "frame_id": 355,
+          "step_m": 0.7382863894705298,
+          "stage": "approach"
+        },
+        {
+          "t": 75.7,
+          "frame_id": 373,
+          "step_m": 0.4730726120011495,
+          "stage": "approach"
+        },
+        {
+          "t": 62.7,
+          "frame_id": 308,
+          "step_m": 0.45917174074318073,
+          "stage": "approach"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63002-own_free_traversed",
+      "return_frames": 615,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 81.3,
+          "frame_id": 401,
+          "step_m": 0.6126153482950766,
+          "stage": "approach"
+        },
+        {
+          "t": 79.7,
+          "frame_id": 393,
+          "step_m": 0.5163803647457742,
+          "stage": "approach"
+        },
+        {
+          "t": 33.5,
+          "frame_id": 162,
+          "step_m": 0.45437749340709815,
+          "stage": "explore"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63003-combined",
+      "return_frames": 290,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 50.1,
+          "frame_id": 245,
+          "step_m": 0.39924135188563364,
+          "stage": "approach"
+        },
+        {
+          "t": 320.7,
+          "frame_id": 1598,
+          "step_m": 0.3788561595550553,
+          "stage": "return"
+        },
+        {
+          "t": 166.3,
+          "frame_id": 826,
+          "step_m": 0.3449469681343415,
+          "stage": "approach"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63003-own_free_traversed",
+      "return_frames": 739,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 51.3,
+          "frame_id": 251,
+          "step_m": 0.5747086805589833,
+          "stage": "approach"
+        },
+        {
+          "t": 50.1,
+          "frame_id": 245,
+          "step_m": 0.4769588323034342,
+          "stage": "approach"
+        },
+        {
+          "t": 49.1,
+          "frame_id": 240,
+          "step_m": 0.472631580844478,
+          "stage": "approach"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63004-combined",
+      "return_frames": 510,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 130.3,
+          "frame_id": 646,
+          "step_m": 0.9432540578999709,
+          "stage": "approach"
+        },
+        {
+          "t": 129.3,
+          "frame_id": 641,
+          "step_m": 0.5420712940749515,
+          "stage": "approach"
+        },
+        {
+          "t": 51.1,
+          "frame_id": 250,
+          "step_m": 0.43141154983615526,
+          "stage": "approach"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63004-own_free_traversed",
+      "return_frames": 1163,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 354.5,
+          "frame_id": 1767,
+          "step_m": 0.8755034845536481,
+          "stage": "return"
+        },
+        {
+          "t": 351.1,
+          "frame_id": 1750,
+          "step_m": 0.790520505535438,
+          "stage": "return"
+        },
+        {
+          "t": 368.3,
+          "frame_id": 1836,
+          "step_m": 0.7787562964911673,
+          "stage": "return"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63005-own_free_traversed",
+      "return_frames": 439,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 11.3,
+          "frame_id": 51,
+          "step_m": 0.4505452866169959,
+          "stage": "explore"
+        },
+        {
+          "t": 67.9,
+          "frame_id": 334,
+          "step_m": 0.44998438081793507,
+          "stage": "approach"
+        },
+        {
+          "t": 17.7,
+          "frame_id": 83,
+          "step_m": 0.41636447461163406,
+          "stage": "explore"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63006-combined",
+      "return_frames": 244,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 92.7,
+          "frame_id": 458,
+          "step_m": 0.38178717613850705,
+          "stage": "approach"
+        },
+        {
+          "t": 94.9,
+          "frame_id": 469,
+          "step_m": 0.3675186559407611,
+          "stage": "approach"
+        },
+        {
+          "t": 86.5,
+          "frame_id": 427,
+          "step_m": 0.31497027054714466,
+          "stage": "approach"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    },
+    {
+      "name": "egomap67-63006-own_free_traversed",
+      "return_frames": 529,
+      "free_path": "observed_free_path",
+      "resolution_m": 0.05,
+      "footprint_components": 1,
+      "start_component": 1,
+      "current_component": 1,
+      "connected": true,
+      "component_gap_m": null,
+      "largest_own_pose_steps": [
+        {
+          "t": 96.5,
+          "frame_id": 477,
+          "step_m": 0.5708503354151414,
+          "stage": "approach"
+        },
+        {
+          "t": 67.5,
+          "frame_id": 332,
+          "step_m": 0.5643367858392511,
+          "stage": "approach"
+        },
+        {
+          "t": 97.5,
+          "frame_id": 482,
+          "step_m": 0.5439257115569416,
+          "stage": "approach"
+        }
+      ],
+      "caveat": "footprint union only, not last full navigation costmap; inflation/sensor conflicts remain separate"
+    }
+  ],
+  "VTR": {
+    "included": false,
+    "prior_accepted": 3,
+    "prior_attempts": 164,
+    "reason": "ambiguous 82 / high residual 27 / low overlap 22; unchanged acceptance gates",
+    "detail": "diagnosis.json"
+  },
+  "verdict": {
+    "adopted": false,
+    "B_arrival_all_conditions": "2/6 each",
+    "valid_return_own_free_seeds": [
+      63003,
+      63006
+    ],
+    "own_free_false_return_seeds": [
+      63002,
+      63004,
+      63005
+    ],
+    "own_free_false_return_distance_m": [
+      0.3589353991298515,
+      1.5347755594299775,
+      0.23170355836494558
+    ],
+    "cause": "Free-history restores all 3821 own-free return-frame paths, but estimated-start declarations are still biased; combined63002 own-pose jumps split footprint history into 4 components with 0.361m gap.",
+    "next_candidates": [
+      "Retrospectively apply accepted localization corrections to stored route/free-history in a consistent frame; no invented free bridge.",
+      "Confirm the remembered start with own local observation before return declaration; keep .20m/5-frame gate and do not relax CSM."
+    ],
+    "physics_after_results": 0,
+    "thresholds_changed": false
+  },
+  "delivery": {
+    "complete_raw_runs": 24,
+    "full_raw": "oracle-x86:/home/ubuntu/ugrp-sim/arm/egomap67-batch/data (existing ARM persistent archive)",
+    "x86_original": "/home/ubuntu/ugrp-sim/runs/egomap67-batch/data",
+    "local_text": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap67-batch",
+    "local_scope": "22 non-media copies complete; baseline63001/63005 partial due Mac ENOSPC, aggregate results and execution sidecars present; full originals on ARM verified",
+    "local_images": "not fetched; full ARM originals verified",
+    "manifest_files_verified": 47900,
+    "receipt_sha256": "bb0e363e1c285bdcc1f48a4a6afa0d1d374b2bacad7068ad9550724e0df6b386",
+    "infra_event": "Mac delivery ENOSPC after 22 copies; experiment HOST_ERROR 0, raw loss 0; no deletion performed"
+  },
+  "artifacts": {
+    "/Users/changmin/projects/ugrp/outputs/egomap67-delivery/audit.json": "f76ebc3b714a0bb48a02c05c9a4ecc878ecae0f630dde2a3042b649d1f21e34d",
+    "/Users/changmin/projects/ugrp/outputs/egomap67-delivery/retrieval.json": "bb0e363e1c285bdcc1f48a4a6afa0d1d374b2bacad7068ad9550724e0df6b386",
+    "/Users/changmin/projects/ugrp/outputs/egomap67-delivery/footprint-connectivity.json": "d87cea0ffd474ff9435efc2b3813f9ffc017d335447e56c74b7a0774dde0b13d",
+    "/Users/changmin/projects/ugrp/outputs/egomap67-delivery/connectivity.py": "a906ddc138dd3906e23e96fe15227a668375537c01129ad0fd2d77af199148bf",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap67-batch/data/summary.json": "b2b118c87694eb49e2908ce6c33cc1b17911775b50c3a0a237bbf4fb951f417a",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap67-batch/data/scores.json": "d7c054dc7292d58450fae523989f73c6da3cc60f47d146e68a576261369e4312",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap67-batch/data/batch-status.json": "6938a59b78a259f21a80d360d1ce127b0c10cdcb42882690ec80e4668112d2b4",
+    "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-11-own-route-traversed/prereg.json": "a83676d160e67e4f9d98628c81f6510370ac900cd8690e83d44d1a21fc98c402"
+  },
+  "thresholds_changed": false,
+  "physics_retries": 0,
+  "excluded": 0,
+  "updated_utc": "2026-10-10T19:14:25Z"
 }

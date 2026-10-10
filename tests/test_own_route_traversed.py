@@ -78,12 +78,14 @@ def test_default_off_audit_preserves_full_frame_and_snapshot_bytes(monkeypatch):
     assert json.dumps(a.snapshot(),sort_keys=True)==json.dumps(b.snapshot(),sort_keys=True)
 
 
-def test_traversed_prefix_and_new_pose_make_route_without_mutating_wall_evidence():
+@pytest.mark.parametrize('res',[.05,.1])
+def test_traversed_prefix_and_new_pose_make_route_without_mutating_wall_evidence(res):
     graph=SimpleNamespace(nodes=[dict(frame_id=1,pose=[-.8,0,0])],
         edges=[dict(samples=[dict(frame_id=i+2,pose=[x,0,0]) for i,x in enumerate(np.arange(-.75,.8,.04))])],pending=[])
     history=TraversedFree.from_graph(graph);history.add([.8,0,0],100)
-    raw=np.full((40,40),255,np.uint8);raw[20,20]=254
-    original=raw.tobytes();cm=m.Costmap(raw,[-2,-2],.1);core=m.PublicCore()
+    size=round(4/res)
+    raw=np.full((size,size),255,np.uint8);raw[size//2,size//2]=254
+    original=raw.tobytes();cm=m.Costmap(raw,[-2,-2],res);core=m.PublicCore()
     assert m.free_plan(core,cm,[.8,0,0],[-.8,0])==[]
     overlay=history.overlay(cm,[0,0,0])
     assert m.free_plan(core,overlay,[.8,0,0],[-.8,0])
