@@ -23,6 +23,8 @@
   하나의 구현 SHA에서 A=eager, B=lazy-v1 순서 **ABBA**, S3 다음 ego.
   각 arm 새 프로세스, LP_NUM_THREADS=4, OMP_NUM_THREADS=1, OSMesa.
 - Oracle에서 진행 중 연구 실행이 있으면 종료를 기다린다(각 대기 최대1시간).
+  모든 arm은 연구 worker가 없고 MemAvailable≥6GiB, 1분 load≤2.0일 때
+  시작한다. 이전 작업 종료 직후의 부하 잔류도 기다리며 admission 표본을 보존한다.
   다른 작업 종료0회, 우선순위 변경0회. 서버 agent_lock과 각 arm loadavg
   1초 표본을 보존한다. 부하 판정은 인접 A/B 두 쌍과 A/B 집계 모두
   `abs(A-B) <= max(0.5, 0.25*min(A,B))`. 실패하면 절감률 null.
@@ -45,6 +47,8 @@
 새 bundle 번호/성공 판정은 발급하지 않고 기존 실험 adapter의 파생 진단으로
 구분한다. 렌더 비용은 구간 타이머, 전체 비용은 initialization 포함 wall/SIM이다.
 렌더 로그는 생성/소비/기록 강제 횟수를 기록한다. 원본 압축·삭제0회.
+이 구형 adapter는 선택한 physics timer hook을 우회한다. `physics_calls=0`은
+물리 비용0이 아니라 미계측이며 `timer_coverage`로 명시한다. 렌더와 전체 wall은 실측이다.
 기본 eager는 기존 bound method/체크포인트 객체 구조를 유지한다. lazy-v1의
 동기 wrapper는 이 진단의 새 실행에만 검증하며 checkpoint resume 경로는 미검증이다.
 Oracle 첫 archive는 oracle_run으로 전송했다. 후속 archive의 변하지 않은 파일은
@@ -62,4 +66,24 @@ Oracle 첫 archive는 oracle_run으로 전송했다. 후속 archive의 변하지
 - [기존 정합·캐시·무손실 기록 근거](../2026-10-10-sim-speed-ctrl2/README.md):
   Olson/Cartographer/AMCL와 Thrun 목차 검증 범위는 그대로 유지한다.
 
-결과: 아직 Oracle 비교 전. 기본 eager, 성능 채택 미결정.
+## 예비 확인과 부하 충돌
+
+Oracle 5SIM 확인(`90a467ac`)은 S3 ABBA4회와 ego 첫 A를 마친 뒤 연구 순번을
+위해 활성 물리 자식이 없는 부모 큐만 종료했다. S3의 명령·JPEG·프레임 원장은
+동일했지만 `student_record.json`의 실제 inference_wall_ms 18값과 bundle 키 순서가
+달랐다. 엄격한 원본 byte 증명은 실패이며 양쪽 렌더300회·생략0이다.
+[예비 시험·실패 원본 요약](preliminary-checks.json)은 CLI 오입력(exit2, 물리0)과
+초기 시험 fixture 실패도 보존한다. 수정 후 Oracle 대상3파일61PASS를 확인했다.
+
+60SIM 첫 시도 `1f8bb9ca`는 선행 S3 종료 후 1분 load0.49에서 시작했으나
+실행 도중 S4 6개와 egomap65 batch가 진입했다. 첫 A는 60SIM을 완료
+(wall/SIM5.485794, mean1minload10.9243, 렌더3600회)하고 다음 arm 전 큐를
+종료했다. 외부 프로세스에 신호를 보내지 않았고 lease를 반환했다. 이 부분 실행은
+동일 부하 ABBA 속도 증거로 채택하지 않는다. 후속은 모든 arm에 위 admission을 적용한다.
+
+기존 Mac 재생과 Oracle 예비·중단 결과21개는 primary
+`outputs/tensorboard/1010-speedctrl-partial-v1`에 새 snapshot으로 보존했다.
+EventAccumulator에서 수치·원본 해시21개를 다시 확인했고 실제 TensorBoard의
+고정 카드/실행 선택/열(case·policy·outcome·source_sha·seed) 표시를 확인했다.
+원본 JPEG는 Oracle에 보존하고 Mac에는 JSON/JSONL·로그·출처를 우선 회수했다
+(회수 시 Mac 가용3.8GiB). MP4 생성/등록0회. 전체60SIM ABBA는 대기 중이며 기본 eager다.

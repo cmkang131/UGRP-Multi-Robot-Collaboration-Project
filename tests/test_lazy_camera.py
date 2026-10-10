@@ -179,3 +179,33 @@ def test_commit_manifest_rejects_first_arm_source_mutation(tmp_path, monkeypatch
     code.write_bytes(b'modified\n')
     with pytest.raises(ValueError,match='ARCHIVE_GIT_BLOB_CHANGED'):
         probe.verify_archive(args,source)
+
+
+def test_admission_waits_for_peers_memory_and_decaying_load(tmp_path, monkeypatch):
+    from scripts import benchmark_lazy_camera as probe
+    samples = iter([
+        dict(peers=['research'], available_bytes=8*2**30, load=[1.,1.,1.]),
+        dict(peers=[], available_bytes=5*2**30, load=[1.,1.,1.]),
+        dict(peers=[], available_bytes=8*2**30, load=[2.1,1.,1.]),
+        dict(peers=[], available_bytes=8*2**30, load=[2.,1.,1.]),
+    ])
+    slept = []
+    monkeypatch.setattr(probe, 'host_sample', lambda: next(samples))
+    monkeypatch.setattr(probe.time, 'sleep', slept.append)
+    receipt = tmp_path/'admission.json'
+    probe.wait_for_idle(receipt)
+    assert slept == [10,10,10]
+    data = json.loads(receipt.read_text())
+    assert data['ready'] and len(data['samples']) == 4
+
+
+def test_busy_admission_expires_without_physics_and_keeps_receipt(tmp_path, monkeypatch):
+    from scripts import benchmark_lazy_camera as probe
+    times = iter([0.,3601.])
+    monkeypatch.setattr(probe.time, 'monotonic', lambda: next(times))
+    monkeypatch.setattr(probe, 'host_sample', lambda: dict(peers=['research'],available_bytes=8*2**30,load=[1.,1.,1.]))
+    monkeypatch.setattr(probe.time, 'sleep', lambda _: pytest.fail('deadline already expired'))
+    receipt = tmp_path/'refusal.json'
+    with pytest.raises(TimeoutError, match='HOST_BUSY_NO_MEASUREMENT'):
+        probe.wait_for_idle(receipt)
+    assert json.loads(receipt.read_text())['ready'] is False

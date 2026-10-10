@@ -159,7 +159,10 @@ def run_one(args):
             kind=args.kind, mode=args.render_mode, requested_sim_s=args.sim_s,
             sim_s=sim, wall_s=elapsed, wall_per_sim=elapsed/sim if sim else None,
             load_mean=[sum(row['load'][i] for row in samples)/len(samples) for i in range(3)],
-            samples=samples, timers=counters, result_status=(result or {}).get('status'),
+            samples=samples, timers=counters,
+            timer_coverage={key: ('measured' if counters[key+'_calls'] else 'unmeasured_hook_not_called')
+                            for key in ('physics', 'render')},
+            result_status=(result or {}).get('status'),
             failure=failure, source_module_sha256=sha(Path(lazy_camera.__file__)),
             physics_host=platform.node(), environment={key: os.environ.get(key) for key in
                 ('LP_NUM_THREADS','OMP_NUM_THREADS','MUJOCO_GL','UGRP_EXECUTION_HOST')}))
@@ -218,6 +221,31 @@ def compare(paths, kind):
         rows=rows, camera=[json.loads((p/'camera-render.json').read_text()) for p in paths])
 
 
+def host_sample():
+    available = int(next(line.split()[1] for line in Path('/proc/meminfo').read_text().splitlines()
+                         if line.startswith('MemAvailable:')))*1024
+    processes = subprocess.check_output(['ps','-eo','pid,ppid,args'], text=True).splitlines()
+    peers = [line for line in processes if ' -m scripts.run_' in line and 'python' in line]
+    return dict(at=time.time(), available_bytes=available, peers=peers, load=list(os.getloadavg()))
+
+
+def wait_for_idle(receipt):
+    """Use the same low-load admission for every arm, including load decay."""
+    deadline = time.monotonic()+3600
+    samples = []
+    ready = False
+    try:
+        while True:
+            row = host_sample(); samples.append(row)
+            ready = not row['peers'] and row['available_bytes'] >= 6*2**30 and row['load'][0] <= 2.
+            if ready: return
+            if time.monotonic() >= deadline: raise TimeoutError('HOST_BUSY_NO_MEASUREMENT')
+            time.sleep(10)
+    finally:
+        write(receipt, dict(ready=ready, samples=samples,
+            rule='no peer workers, MemAvailable >=6GiB, 1min load <=2.0 before every arm'))
+
+
 def cohort(args):
     results = []
     for kind in ('s3','ego'):
@@ -225,14 +253,7 @@ def cohort(args):
         for i, mode in enumerate(ORDER, 1):
             # Remote peers use their own slots. Do not stop them. Wait for an
             # idle host before each arm; a finite deadline prevents a daemon.
-            deadline = time.monotonic()+3600
-            while True:
-                available = int(next(line.split()[1] for line in Path('/proc/meminfo').read_text().splitlines() if line.startswith('MemAvailable:')))*1024
-                processes = subprocess.check_output(['ps','-eo','pid,ppid,args'], text=True).splitlines()
-                peers = [line for line in processes if ' -m scripts.run_' in line and 'python' in line]
-                if not peers and available >= 6*2**30: break
-                if time.monotonic() >= deadline: raise TimeoutError('HOST_BUSY_NO_MEASUREMENT')
-                time.sleep(10)
+            wait_for_idle(args.output/f'{kind}-{i}-admission.json')
             if shutil.disk_usage(args.output).free < 2*2**30: raise OSError('REMOTE_DISK_RESERVE_2GIB')
             path = args.output/f'{kind}-{i}-{mode}'; paths.append(path)
             cmd = [sys.executable, '-m', 'scripts.benchmark_lazy_camera', '--kind', kind,
