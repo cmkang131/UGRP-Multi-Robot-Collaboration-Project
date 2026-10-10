@@ -54,7 +54,9 @@ def run(b, out):
     probe_run=bind(stage.previous.run,CAP=b['cap_sim_s'])
     probe_run.__kwdefaults__={**probe_run.__kwdefaults__, 'solo_configure':configure}
     previous=SimpleNamespace(**{**vars(stage.previous), 'enter_pair':enter, 'run':probe_run})
-    result=bind(stage.run,previous=previous,StageBackend=PhysicsBackend)(b,out)
+    from sim.s3_overview_recording import enabled, recording_backend
+    backend=recording_backend(PhysicsBackend) if enabled() else PhysicsBackend
+    result=bind(stage.run,previous=previous,StageBackend=backend)(b,out)
     environment=json.loads((out/'environment.json').read_text())
     environment['concurrent_probe_limit']=10
     stage.previous.write(out/'environment.json',environment)
