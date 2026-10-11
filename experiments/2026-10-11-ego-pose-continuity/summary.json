@@ -1169,5 +1169,52 @@
     "B/return reassessment only at historical declarations; no new mission success prediction",
     "stationary comparator skips recorded posterior measurements; online also suppresses upstream PF updates",
     "REP105 removes control-frame jumps, map RMSE is evaluated after applying map-to-odom; odom drift separately reported"
-  ]
+  ],
+  "representative_v2": {
+    "source": "/home/ubuntu/ugrp-archive/runs/egojump-63001-98ffd823-r1-63001-cluster",
+    "path": "/home/ubuntu/ugrp-archive/runs/egojump-v2-representative-63001-cluster/own-rgb.mp4",
+    "bytes": 5432848,
+    "sha256": "33e8ba25d3be2b80afa2cb46ad0865aacd4396a1f19dfeabda745ed72ade5c63",
+    "frames": 1043,
+    "fps": 5,
+    "command": [
+      "ffmpeg",
+      "-v",
+      "error",
+      "-threads",
+      "1",
+      "-framerate",
+      "5",
+      "-start_number",
+      "0",
+      "-i",
+      "/home/ubuntu/ugrp-archive/runs/egojump-63001-98ffd823-r1-63001-cluster/data/robots/r3/rgb/%05d.jpg",
+      "-c:v",
+      "libx264",
+      "-threads",
+      "1",
+      "-crf",
+      "20",
+      "-pix_fmt",
+      "yuv420p",
+      "/home/ubuntu/ugrp-archive/runs/egojump-v2-representative-63001-cluster/own-rgb.mp4"
+    ],
+    "probe": {
+      "programs": [],
+      "streams": [
+        {
+          "width": 640,
+          "height": 480,
+          "duration": "208.600000",
+          "nb_read_frames": "1043"
+        }
+      ]
+    },
+    "truth_overlay": false,
+    "source_preservation": "complete hash-verified copy under milestone parent",
+    "preserved_source_files": 1093,
+    "copy_note": "hardlinks unavailable across archive owners; ordinary verified copy",
+    "local_selective_video": "/Users/changmin/projects/ugrp/outputs/egojump-representative-v2/own-rgb.mp4"
+  },
+  "source_cache_retirement": "/Users/changmin/projects/ugrp/outputs/egojump-source-cache-retirement.json"
 }
