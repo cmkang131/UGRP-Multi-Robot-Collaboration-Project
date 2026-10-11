@@ -89,8 +89,20 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True)
     p.add_argument('--original',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--path-check',action='store_true');a=p.parse_args()
-    from scripts.run_s3_x86_probe import archive_guard
-    archive_guard(a.expected_source_sha,a.output)
+    # Same archive/resource boundary as the S3 runner, which this older
+    # egomap branch does not contain. No Mac model/render can reach run().
+    import platform
+    import shutil
+    root=Path(__file__).resolve().parents[1]
+    if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
+        raise ValueError('Oracle x86 OSMesa required')
+    if root.name!=a.expected_source_sha:raise ValueError('committed source archive required')
+    if len(a.output.parts)!=3 or a.output.parts[0]!='outputs' or a.output.parts[-1]!='raw':
+        raise ValueError('runner output layout required')
+    if (a.output.parent/'SOURCE_SHA').read_text().strip()!=a.expected_source_sha or a.output.exists():
+        raise ValueError('source receipt mismatch or existing output')
+    if os.getpriority(os.PRIO_PROCESS,0)!=0:raise ValueError('nice zero required')
+    if shutil.disk_usage(a.output.parent).free<11*1024**3:raise ValueError('11GiB free required')
     if os.environ.get('LP_NUM_THREADS')!='4':raise ValueError('original rendering thread profile required')
     return run(a.original,a.output,a.expected_source_sha,path_check=a.path_check)
 
