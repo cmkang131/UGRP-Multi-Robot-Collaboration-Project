@@ -182,6 +182,11 @@ def archive_one(root, run):
     with (locks/(run.name+'.lock')).open('a') as lock:
         try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError:raise ArchiveBusy('archive worker already owns '+run.name) from None
+        # A sibling may finish verification while this admission waits. Reuse
+        # only its full-checksum marker with unchanged source and mounted target.
+        marker=root/'lifecycle/archives'/(run.name+'.json')
+        if marker.exists() and archived(root,run) and os.path.ismount(root/'arm'):
+            if Path(json.loads(marker.read_text())['path']).is_dir():return
         return _archive_one(root,run)
 
 

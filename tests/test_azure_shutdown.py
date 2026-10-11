@@ -169,6 +169,16 @@ def test_archive_one_locks_same_run_before_copying(root, monkeypatch):
     copy.assert_not_called()
 
 
+def test_archive_one_reuses_verified_unchanged_source_but_not_new_writes(root, monkeypatch):
+    folder=run(root);target=root/'arm/shutdown-one';target.mkdir()
+    shutdown.write_json(root/'lifecycle/archives/one.json',dict(verified=True,path=str(target),source_state=shutdown.source_state(folder)))
+    monkeypatch.setattr(shutdown.os.path,'ismount',lambda p:True)
+    copy=Mock();monkeypatch.setattr(shutdown,'_archive_one',copy)
+    shutdown.archive_one(root,folder);copy.assert_not_called()
+    folder.joinpath('raw').write_bytes(b'changed after archive')
+    shutdown.archive_one(root,folder);copy.assert_called_once_with(root,folder)
+
+
 def test_start_recovery_archive_failure_refuses_admission(root, monkeypatch):
     run(root)
     monkeypatch.setattr(shutdown, 'bounded_archive', lambda *args: False)
