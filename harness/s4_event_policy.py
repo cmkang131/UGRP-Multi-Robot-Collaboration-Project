@@ -77,6 +77,18 @@ class Events:
         return reasons
 
 
+@dataclass(frozen=True)
+class ProjectedInputs:
+    base: object
+    body: dict
+    def __getattr__(self,name):return getattr(self.base,name)
+    def payload_dict(self):return copy.deepcopy(self.body)
+    @property
+    def payload_sha256(self):return prompt.digest(self.body)
+    @property
+    def payload(self):return prompt.pk.freeze(self.body)
+
+
 class Trial(prior.Trial):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -95,7 +107,16 @@ class Trial(prior.Trial):
     def prepare_call(self,call):
         p=super().prepare_call(call)
         request=prompt.transform(p.request,compact=self.options.compact_prompt_v1,lang=self.options.prompt_lang)
-        return type(p)(p.bundled,request,p.request_id)
+        bundled=ProjectedInputs(p.bundled,json.loads(request['messages'][1]['content']))
+        return type(p)(bundled,request,p.request_id)
+
+    def finish_call(self,call,prepared,raw,**kwargs):
+        def validate(value,**args):
+            checked=prior.epoch.base.validate_reply(value,**args)
+            if self.options.compact_prompt_v1 and 'static_map' in checked['decision_sources']:
+                raise prior.epoch.base.pair.zp.ProtocolError('removed static_map is not a decision source')
+            return checked
+        return bind(prior.epoch.base.Trial.finish_call,validate_reply=validate)(self,call,prepared,raw,**kwargs)
 
     def on_executor_event(self,event,*,at_s):
         super().on_executor_event(event,at_s=at_s)
@@ -125,7 +146,15 @@ class Trial(prior.Trial):
 
 class Host(prior.Host):
     def __init__(self,*args,**kwargs):
+        kwargs['condition']=prompt.legacy_condition(kwargs['condition'])
         bind(prior.epoch.base.old.s4.Host.__init__,Trial=Trial)(self,*args,**kwargs)
+        self.condition=prompt.external_condition(self.condition,self.trial.options.prompt_lang)
+
+
+class Link(prior.epoch.base.Link):
+    def __init__(self,*args,**kwargs):
+        kwargs['condition']=prompt.legacy_condition(kwargs['condition'])
+        super().__init__(*args,**kwargs)
 
 
 class Driver(prior.epoch.Driver):

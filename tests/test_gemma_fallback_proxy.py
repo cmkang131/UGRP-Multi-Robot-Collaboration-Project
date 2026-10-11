@@ -289,3 +289,20 @@ def test_global_bucket_hold_can_retry_same_id_without_duplicate_generation(tmp_p
         upstream_forwarded=False,quota_wait=value['quota_wait'])
     report=usage_summary([row]);assert report['upstream_generation_requests_confirmed']==0
     assert report['local_quota_wait_responses']==1 and report['tokens_total_known']==0
+
+
+def test_concurrent_provider_calls_do_not_hold_quota_lock(tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    import threading
+    barrier=threading.Barrier(2);seen=[]
+    def send(path,payload=None):
+        if path.startswith('models?'):return 200,{'models':[MODEL]},{}
+        if path.endswith(':countTokens'):return 200,{'totalTokens':11},{}
+        seen.append(path);barrier.wait(timeout=3)
+        return 200,REPLY,{}
+    engine=gemma.Gemma(tmp_path,send=send,shared_quota=gemma.SharedQuota(tmp_path/'shared'))
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results=list(pool.map(lambda i:engine.complete(BODY,'parallel-'+str(i)),range(2)))
+    assert [r[0] for r in results]==[200,200] and len(seen)==2
+    state=json.loads((tmp_path/'shared/bucket.json').read_text())
+    assert state['day_requests']==2 and len(state['window'])==2

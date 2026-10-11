@@ -7,7 +7,7 @@ import argparse
 from dataclasses import asdict
 import json
 from pathlib import Path
-from harness.s4_event_policy import Options, Host, Driver
+from harness.s4_event_policy import Options, Host, Driver, Link
 from harness.s4_compact_prompt import legacy_condition, external_condition
 from harness.zone_study_llm_driver import load_registry
 from harness.zone_study_contract import digest
@@ -50,7 +50,7 @@ def extension_type():
         def components(self):
             link,_,extra=super().components()
             extra['handshake'].study_options=Options(**self.b['study_options'])
-            return link,Host,extra
+            return Link,Host,extra
         def driver(self,host,runtime):
             # Reuse exactly the old on_admit S3 toggles, replace its S4 driver.
             old=super().driver(host,runtime)

@@ -56,9 +56,15 @@ class Journal:
         try:
             value = forward()
             status, response, retry_after = value
+            try:
+                payload=json.loads(response)
+                local_quota=bool(payload.get('ugrp_upstream_forwarded') is False and payload.get('error')
+                    in ('global_gemma_token_bucket','gemma_quota_hold'))
+            except (ValueError,AttributeError):
+                local_quota=False
             # Only an explicit rate-limit permits another upstream attempt.
             # Ambiguous network errors remain cached failures, not double calls.
-            record = dict(state='retryable' if status == 429 and self.retry_rate_limits else 'complete',
+            record = dict(state='retryable' if status == 429 and (self.retry_rate_limits or local_quota) else 'complete',
                 request_sha256=digest, status=status, response=response.decode('utf-8'),
                 retry_after=retry_after, response_sha256=hashlib.sha256(response).hexdigest())
             if status == 429:

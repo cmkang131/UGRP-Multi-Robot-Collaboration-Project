@@ -1,28 +1,717 @@
 {
-  "status": "IN_PROGRESS",
-  "research_result": false,
+  "schema": "ugrp.s4_gemma_standard_dev.v1",
+  "class": "dev",
   "pr": 425,
-  "physical_runs": 0,
+  "research_result": false,
+  "status": "OFFLINE_COMPLETE_PHYSICAL_NOT_ADMITTED",
+  "model_profile": {
+    "id": "study_gemma4_31b_v1",
+    "model_id": "gemma-4-31b-it",
+    "models_list_version": "001",
+    "immutable_service_revision": false,
+    "profile_created": true,
+    "automatic_fallback": false,
+    "production_quality_qualified": false,
+    "default_new_prompt_lang": "en",
+    "legacy_language": "ko explicit reproduction only",
+    "e2e_integration": "English-default adapter supplied; PR433 own-map runtime wiring and Azure activation still pending",
+    "e2e_default_prompt_lang": "en"
+  },
+  "defaults": {
+    "event_driven_llm": false,
+    "compact_prompt_v1": false,
+    "prompt_lang": "en"
+  },
+  "input_tokens": {
+    "source": "actual Google countTokens; exact labeled images through shared wire serializer",
+    "representative": "s4live11-peer_ko-s601 call-0261-r1",
+    "original_ko": 8203,
+    "compact_ko": 2144,
+    "compact_en": 2034,
+    "english_vs_compact_ko_reduction": 110,
+    "english_vs_compact_ko_fraction": 0.051305970149253734,
+    "compact_en_vs_original_fraction_reduced": 0.7520419358771181,
+    "input_target": 2500,
+    "target_met_n": 2,
+    "target_N": 2,
+    "stretch_target_2000_met": false,
+    "system_characters": {
+      "original_ko": 5100,
+      "compact_ko": 815,
+      "compact_en": 1260
+    },
+    "images_before": 2,
+    "images_after": 1,
+    "resized": false,
+    "caveat": "Old delivered Korean text retained verbatim in both compact variants; language delta isolates instructions, not hypothetical new English dialogue.",
+    "countTokens_api_calls_this_task": 17,
+    "countTokens_generation_calls": 0,
+    "model_list_calls_this_task": 6,
+    "context_window_n": 2,
+    "target_scope": "two English representative/worst-candidate requests; not all possible inputs",
+    "additional_structured_case": {
+      "call_id": "s4live11-structured-s601 call-0173-r2",
+      "original_ko": 8677,
+      "compact_ko": 2522,
+      "compact_en": 2413,
+      "compact_ko_meets_2500": false
+    },
+    "final_evidence": [
+      "compact-final/count-tokens-final.json",
+      "structured-final/count-tokens-final.json"
+    ]
+  },
+  "replay": {
+    "original_wire_posts": 1264,
+    "runs": [
+      {
+        "run": "s4live11-no_comm-s601-v182",
+        "original_calls": 306,
+        "eligible_recorded_snapshots": 82,
+        "suppressed_repeated_snapshots": 224,
+        "reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 24,
+          "phase_carry_start": 12,
+          "phase_reobserve": 12,
+          "decision_window": 12,
+          "phase_set_down": 12,
+          "phase_grasp": 11,
+          "phase_carry": 10
+        },
+        "observed_executor_events": {
+          "carry_leg_started": 12,
+          "carry_stop_reached": 12,
+          "setdown_started": 12,
+          "setdown_completed": 12,
+          "regrasp_result": 10,
+          "carry_resumed": 10
+        },
+        "host_error": false,
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-no_comm-s601-v182/raw",
+        "sha256": {
+          "llm/requests.json": "3ee75db0a17b4c8bbe07a2947734f0a739e5322ee18e88670472c9c96f995345",
+          "llm/executor_events.json": "45c2cb3ebd9474c97527faf2dbd3a29823e8d0242e5b366d42539ea5e592cd1f",
+          "llm/result.json": "6beb9df6f39d5f30c5786cf4e019303e09dee76253199aaef4beec686c0f0e8a",
+          "llm/model_calls.json": "5a3883336eba5750e5b5c4eeb53ee78c28d159f55b48a37f55610c63493d4437"
+        },
+        "supplemental_wire_snapshots": 0
+      },
+      {
+        "run": "s4live11-peer_ko-s601-v182",
+        "original_calls": 265,
+        "eligible_recorded_snapshots": 118,
+        "suppressed_repeated_snapshots": 147,
+        "reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 32,
+          "phase_carry_start": 16,
+          "received_message": 57,
+          "phase_reobserve": 14,
+          "decision_window": 14,
+          "phase_set_down": 14,
+          "phase_grasp": 10,
+          "phase_carry": 14
+        },
+        "observed_executor_events": {
+          "carry_leg_started": 16,
+          "carry_stop_reached": 14,
+          "setdown_started": 10,
+          "setdown_completed": 10,
+          "regrasp_result": 10,
+          "carry_resumed": 10
+        },
+        "host_error": false,
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-peer_ko-s601-v182/raw",
+        "sha256": {
+          "llm/requests.json": "cd5ad224b01b47e8950cf9d249bffd78931362a5abfe941551e402ca2db9e58d",
+          "llm/executor_events.json": "6e09bd2cf642caf65e4f9acb2759de0f25b23bacd60ab014c19acb87dae03902",
+          "llm/result.json": "213034bfdd55ebe4e39df43ad45255f2638ba78e7fa418ac2e55fb084357aea7",
+          "llm/model_calls.json": "fd57fbe06c10451f475b956e6f81b6fd058438ba06cf0edc604681d41a9d353b"
+        },
+        "supplemental_wire_snapshots": 0
+      },
+      {
+        "run": "s4live11-leader_ko-s601-v182",
+        "original_calls": 313,
+        "eligible_recorded_snapshots": 126,
+        "suppressed_repeated_snapshots": 187,
+        "reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 32,
+          "phase_carry_start": 16,
+          "received_message": 57,
+          "phase_reobserve": 14,
+          "decision_window": 14,
+          "phase_set_down": 17,
+          "phase_grasp": 13,
+          "phase_carry": 14
+        },
+        "observed_executor_events": {
+          "carry_leg_started": 16,
+          "carry_stop_reached": 14,
+          "setdown_started": 14,
+          "setdown_completed": 14,
+          "regrasp_result": 14,
+          "carry_resumed": 14
+        },
+        "host_error": false,
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-leader_ko-s601-v182/raw",
+        "sha256": {
+          "llm/requests.json": "c86cec6b6917ffae30b2e797f1f32d1dccfa40b393cb9e42010b2e9a16c04ccd",
+          "llm/executor_events.json": "7490085177ad2431b3c50bebebf64c0afbe219ec87424b9f890c71779b2c8c63",
+          "llm/result.json": "e4f82a5beab4d0396f979b2085eab8ff5ca024f4023a4df13c0185a36a64fe81",
+          "llm/model_calls.json": "2b315f7e0c9360fb6d4717d52b45d243152d253b2e12116df8c37fc59e1e7e9b"
+        },
+        "supplemental_wire_snapshots": 0
+      },
+      {
+        "run": "s4live11-structured-s601-v182",
+        "original_calls": 319,
+        "eligible_recorded_snapshots": 121,
+        "suppressed_repeated_snapshots": 198,
+        "reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 32,
+          "phase_carry_start": 16,
+          "received_message": 37,
+          "phase_reobserve": 14,
+          "decision_window": 14,
+          "phase_set_down": 16,
+          "phase_grasp": 13,
+          "phase_carry": 14,
+          "bounded_invalid_retry": 2
+        },
+        "observed_executor_events": {
+          "carry_leg_started": 16,
+          "carry_stop_reached": 14,
+          "setdown_started": 14,
+          "setdown_completed": 14,
+          "regrasp_result": 14,
+          "carry_resumed": 14
+        },
+        "host_error": false,
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-structured-s601-v182/raw",
+        "sha256": {
+          "llm/requests.json": "ff783f1ddcc1ca6ebdc82fd44ef4162472db1b38e6e324b9b76d39d740184669",
+          "llm/executor_events.json": "f0a4cd84a6a296f5f92c14795e259b6893c30d6610ff09fc66a34b7c83340af9",
+          "llm/result.json": "7cc8f01e74ff093a07d137231b4894a68442d4ed026db839dc476cebbec222e1",
+          "llm/model_calls.json": "2b34de613e1908b0ab105097b63969a30fd581f90b813df0b8e519ca017b9697"
+        },
+        "supplemental_wire_snapshots": 2
+      },
+      {
+        "run": "s4live11-no_comm-s602-v182",
+        "original_calls": 16,
+        "eligible_recorded_snapshots": 9,
+        "suppressed_repeated_snapshots": 7,
+        "reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "phase_carry_start": 2,
+          "phase_reobserve": 2,
+          "decision_window": 2
+        },
+        "observed_executor_events": {
+          "carry_leg_started": 2,
+          "carry_stop_reached": 2,
+          "setdown_started": 2
+        },
+        "host_error": true,
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-no_comm-s602-v182/raw",
+        "sha256": {
+          "llm/requests.json": "69339f0ad52b4da1f15cd19f35b46ea0e7c3b9dfce5c5646b577d826044717d6",
+          "llm/executor_events.json": "a80e2bf56578b00dec5d7a37d7a42f9fa243029918849e35379972faeeec2425",
+          "llm/result.json": "0840981f7f9778c800e9b6ab5a730eb8dab03998a028f8143c5814aeefce4a26",
+          "llm/model_calls.json": "704803de589a2c6f6f34d45b567dfbb24a2c28cfb188f6cf2f7b80d19ffe82c2"
+        },
+        "supplemental_wire_snapshots": 2
+      },
+      {
+        "run": "s4live11-peer_ko-s602-v182",
+        "original_calls": 16,
+        "eligible_recorded_snapshots": 10,
+        "suppressed_repeated_snapshots": 6,
+        "reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "phase_carry_start": 2,
+          "received_message": 7,
+          "phase_reobserve": 2,
+          "decision_window": 2
+        },
+        "observed_executor_events": {
+          "carry_leg_started": 2,
+          "carry_stop_reached": 2,
+          "setdown_started": 2
+        },
+        "host_error": true,
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-peer_ko-s602-v182/raw",
+        "sha256": {
+          "llm/requests.json": "c892feb7e50cf697300236b5edc98a44e2bed56249d10ec532423749f734ea74",
+          "llm/executor_events.json": "b734c67ed93dffbb2bab3380807a45abcfc4f69c57c55cd2e3d96338dc5365f3",
+          "llm/result.json": "ca33b11e17fd593ccf262c12708431bb8c44651e776689eec245b41f002318a2",
+          "llm/model_calls.json": "ab07e043a81e83af51cfbf30fa60b54f51cdcda664396b38df4330932ec0b94e"
+        },
+        "supplemental_wire_snapshots": 2
+      },
+      {
+        "run": "s4live11-leader_ko-s602-v182",
+        "original_calls": 14,
+        "eligible_recorded_snapshots": 10,
+        "suppressed_repeated_snapshots": 4,
+        "reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "phase_carry_start": 2,
+          "received_message": 3,
+          "phase_reobserve": 2,
+          "decision_window": 2
+        },
+        "observed_executor_events": {
+          "carry_leg_started": 2,
+          "carry_stop_reached": 2,
+          "setdown_started": 2
+        },
+        "host_error": true,
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-leader_ko-s602-v182/raw",
+        "sha256": {
+          "llm/requests.json": "0d84dae2a932f96ad3e6e36d23ef9834d1b0fcbffb1ddb188c8eb64e2493d018",
+          "llm/executor_events.json": "b734c67ed93dffbb2bab3380807a45abcfc4f69c57c55cd2e3d96338dc5365f3",
+          "llm/result.json": "d603761e3ac487efad6e19ebb48ce46a56d326849e22f65e83359b47199a194f",
+          "llm/model_calls.json": "4ced4c69e346188899b2f069622beb1241c54e4dff130a42bac3bfe9a51ba7bb"
+        },
+        "supplemental_wire_snapshots": 2
+      },
+      {
+        "run": "s4live11-structured-s602-v182",
+        "original_calls": 15,
+        "eligible_recorded_snapshots": 9,
+        "suppressed_repeated_snapshots": 6,
+        "reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "phase_carry_start": 2,
+          "received_message": 4,
+          "phase_reobserve": 2,
+          "decision_window": 2
+        },
+        "observed_executor_events": {
+          "carry_leg_started": 2,
+          "carry_stop_reached": 2,
+          "setdown_started": 2
+        },
+        "host_error": true,
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-structured-s602-v182/raw",
+        "sha256": {
+          "llm/requests.json": "f7dc80418ec92093acd4036f62a771c51c82cc527b840a16da212bf8e0e1b00a",
+          "llm/executor_events.json": "5f2a1626aa56a922f4186191c336dea556ca213d23f33807e705f8e601d1272b",
+          "llm/result.json": "3f2e365bd284bc4c24bd280f821f10858ebb2e70acdd902eb551f5634add6a12",
+          "llm/model_calls.json": "176e16957a5af74888de12dac27b39755ad5b48ef9b7c9d716ebc37c6b6c8582"
+        },
+        "supplemental_wire_snapshots": 2
+      }
+    ],
+    "eligible_is_counterfactual_snapshot_estimate": true,
+    "not_a_success_replay": true,
+    "host_error_runs": {
+      "n": 4,
+      "N": 8,
+      "cause": "prior seed602 tunnel interruption; originals and classification unchanged"
+    },
+    "targets_met": false,
+    "remaining_cause": "GO/ACK alone 24-32 per run, plus 6-8 carry cycles and received messages. Mandatory events kept.",
+    "limitations": [
+      "Live event ordering can coalesce differently from saved call snapshots.",
+      "Changed replies/messages and continuous moving-camera monitor cannot be inferred from this replay.",
+      "No contacts/truth read for event eligibility."
+    ]
+  },
+  "paired_api_quality": {
+    "source_sha": "2d754132",
+    "model_generation_requests": 8,
+    "models": {
+      "gemma-4-31b-it": {
+        "requests": 4,
+        "http_ok": 3,
+        "api_errors": [
+          {
+            "condition": "structured",
+            "http_status": 500
+          }
+        ],
+        "protocol_accepted": 3,
+        "protocol_denominator_received": 3,
+        "wall_s": {
+          "median_success": 65.37430849997327,
+          "min_success": 36.04894695902476,
+          "max_success": 69.05465175001882,
+          "scope": "2d754132 relay round trip, includes prior per-engine quota lock queue; final lock-free network latency not measured"
+        },
+        "provider_total_tokens_known": 4691,
+        "unknown_usage": 1,
+        "strict_json_without_fences": 0,
+        "qualification": "initial own-role claim and schema/channel acceptance only; no delivered dialogue or grasp quality coverage"
+      },
+      "gemini-3.8-flash": {
+        "requests": 4,
+        "http_ok": 4,
+        "api_errors": [],
+        "protocol_accepted": 4,
+        "protocol_denominator_received": 4,
+        "wall_s": {
+          "median_success": 4.539936896006111,
+          "min_success": 4.249252333014738,
+          "max_success": 4.754951583978254
+        },
+        "provider_total_tokens_known": 10541,
+        "unknown_usage": 0,
+        "strict_json_without_fences": 0,
+        "qualification": "initial own-role claim and schema/channel acceptance only; no delivered dialogue or grasp quality coverage"
+      }
+    },
+    "returned_response_n": 7,
+    "N": 8,
+    "provider_error_n": 1,
+    "robot_failure_n": 0,
+    "conclusion": "Gemma initial-claim replies 3/3 accepted; 1/4 API 500 with unknown usage. Gemini 4/4 accepted. No general or physical quality equivalence established; promotion gate remains open.",
+    "source": "quality-v1/summary.json",
+    "normalization": "Existing validator admits JSON fences; all seven responses used fences; strict bare-JSON 0/7."
+  },
+  "quota": {
+    "user_confirmed": {
+      "tpm": 16000,
+      "rpm": 30,
+      "rpd": 14400,
+      "source": "AI Studio user screen 2026-10-11"
+    },
+    "effective": {
+      "tpm": 14400,
+      "rpm": 27,
+      "rpd": 12960
+    },
+    "shared_root": "/Users/changmin/projects/ugrp/outputs/gemma-quota-v1",
+    "cross_process_file_lock": true,
+    "tpm_reservation": "actual counted input + maxOutputTokens, conservative versus input-only TPM",
+    "sim_hold": "synchronous HTTP429 retry; same request/body, SIM/frame/commands frozen in offline test",
+    "actual_probe_quota_waits": 0,
+    "rate_budget_rejects_are_not_model_calls": true,
+    "thinking": {
+      "setting": "minimal",
+      "official_support": "on/off via high/minimal; separate numeric thought cap not documented",
+      "max_output_tokens": 800,
+      "successful_probe_thought_counts": "not reported; not inferred as zero"
+    },
+    "monetary_cost": {
+      "Gemma": "free tier per user; billing ledger not queried",
+      "Gemini": "existing subscription proxy; dollar cost not reported",
+      "Azure": "0 physical runs; cost plan deferred"
+    },
+    "concurrency_fix": "Final code releases local quota lock before upstream I/O; 2-thread fake provider barrier test passed. Probe latency included old lock serialization.",
+    "fallback_compatibility": "Legacy fallback still forwards at most once; only unforwarded local quota holds may retry the same key. Standard profile additionally retries explicit upstream 429."
+  },
   "tests": {
-    "passed": 37,
+    "passed": 38,
+    "failed": 0,
     "files": [
       "tests/test_s4_study_policy.py",
       "tests/test_gemma_fallback_proxy.py"
-    ]
+    ],
+    "scope": "no physics/render/model; actual scheduler, GO/ACK, controller heartbeat, unknown stop, durable quota, same-ID SIM hold",
+    "junit_sha256": "df423c5ea7cc20e334cbaa6375d644413c50b0c5e18675a437a73452ef9c7b94",
+    "test_files_source_sha256": {
+      "tests/test_s4_study_policy.py": "152b04bd11bbe661ef6ec5613ffdcec09ba895cbd24ba707c4d429e520d03117",
+      "tests/test_gemma_fallback_proxy.py": "2bf23cb536c7b4b19381da25d5832a91582d4664c9417a6d2c822c93d3a064a4"
+    },
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/s4-gemma-standard/tests-release.xml"
+  },
+  "physical_runs": 0,
+  "render_calls": 0,
+  "local_model_inference": 0,
+  "plan": {
+    "runs": 16,
+    "seed": 603,
+    "gemma_generation_request_cap": 480,
+    "daily_request_reservation_including_probe": 484,
+    "estimated_wall_minutes_excluding_physics_and_retries": 279.66,
+    "TPM_only_conservative_minutes": 110.0,
+    "submitted": 0,
+    "requires": [
+      "Azure readiness notification",
+      "own-map E2E adapter integration (PR433); no authored map route",
+      "frozen source SHA and new verified proxy receipt",
+      "moving-wrist RGB monitor qualification; stationary-grip evidence is insufficient",
+      "Gemma availability/quality gate: one API 500 of four; transport success is not parity"
+    ],
+    "azure_pr": 438,
+    "bundle": "zone-s4-study-v184",
+    "workflow": "7.77.0"
   },
   "raw": "/Users/changmin/projects/ugrp/outputs/s4-gemma-standard",
-  "token_counts": {
-    "original_ko": 8203,
-    "compact_ko": 2367,
-    "compact_en": 2257
+  "prior_raw": "oracle:/home/ubuntu/ugrp-archive/runs/s4live11-*",
+  "references": [
+    {
+      "url": "https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api",
+      "used_for": "model ID, RGB, systemInstruction, high/minimal thinking"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/tokens",
+      "used_for": "countTokens with original image bytes"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/rate-limits",
+      "used_for": "per-project dimensions; account-specific limits use user screen"
+    },
+    {
+      "url": "https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2026.1843313/full",
+      "used_for": "hierarchical execution and event-triggered high-level replanning, adapted to own-input boundary"
+    }
+  ],
+  "api_probe_source_sha": "2d754132",
+  "implementation_revision": "This result commit; exact final_source_sha256 below. API probe was frozen at api_probe_source_sha.",
+  "final_source_sha256": {
+    "configs/zone_study_integration/llm_driver.json": "a2637e306c36fb2a28f826211cc2b038651559d6ce55257c1ee38d3c6ce3de6f",
+    "harness/pair_llm_live.py": "d3291e4c73ae2abc30cf5975c566aa85f9c8a425908f2e2632e5de98b62ab7b0",
+    "harness/s4_compact_prompt.py": "a1d877751937159a9d21cc153462fd9f7a44b6f11051d268fc94191c2864db5b",
+    "harness/s4_event_policy.py": "8fe8909fbfb7eb22aba6cdc2902cafd27dea7d1ca72c8fbcd03111d3ee888951",
+    "harness/s4_gemma_quota.py": "6d1b282c200e8ad4a873e6f487e25886754916940105e8de41fa254ab29e2d8d",
+    "harness/s4_live_transport.py": "64254f2aeb4e0b572d81cc587ad5a3710c3da8a02e84ddffcacb4d7d0fbd7de1",
+    "harness/s4_relay_journal.py": "b005aba5263455e79aa796eaf82dcddc89b065d5a853e85cb89e003e833f3c74",
+    "harness/zone_study_llm_driver.py": "851ad1c534234ea9f87106568632e90ef5ef95076aaf25d51925fe61a1fbfbe0",
+    "scripts/gemma_fallback_proxy.py": "1ff9f836e48c946bfd24990f7743df13380fe62cf5ee0e99b2999913df3b3b8d",
+    "scripts/replay_s4_call_events.py": "af45d76114d62a294ea6ba1b53f04dc382afc4e8544230a286884ddf3be3d37a",
+    "scripts/run_s4_live.py": "f99bfb7c9a9dc73db26c0e2944eed456fa1f4749f803eda6857e0b649057e6fd",
+    "scripts/run_s4_study_v184.py": "08a18cbb87db15c7ec3684b7eba31d0bb074200f5c6fe653d59629b1cdacf767",
+    "scripts/s4_proxy_relay.py": "0a3dc5d07a4409f0b417863d2b009a348648577c3f250ce901336585e7c5654f",
+    "tests/test_gemma_fallback_proxy.py": "2bf23cb536c7b4b19381da25d5832a91582d4664c9417a6d2c822c93d3a064a4",
+    "tests/test_s4_study_policy.py": "152b04bd11bbe661ef6ec5613ffdcec09ba895cbd24ba707c4d429e520d03117"
   },
-  "quality_probe": {
-    "planned_calls": 8,
-    "status": "NOT_STARTED"
+  "archive": {
+    "remote": "oracle:/home/ubuntu/ugrp-archive/s4-gemma-standard-20261011-v1",
+    "files": 41,
+    "bytes": 699318,
+    "all_sha256_match": true,
+    "source_manifest_sha256": "6aae9f9cd04ae3131828f87837a7c40b0aaaf59ab5e384aecbd735402bd555e6",
+    "exact_secret_scan_hits": 0
   },
-  "limitations": [
-    "event call targets not reached",
-    "Azure and own-map execution admission pending",
-    "moving-camera grip monitor unqualified"
-  ]
+  "raw_sha256": [
+    {
+      "path": "RUN_META.json",
+      "bytes": 72,
+      "sha256": "6731492491acab2552c8b31b4d290fa536f226e716c7fe0b9286ca20766d3dd5"
+    },
+    {
+      "path": "compact-final/count-tokens-final.json",
+      "bytes": 39279,
+      "sha256": "27987109cf1a4ee6492227aaaddf0ac64d14a99e83519693fdda62fac13cd8a5"
+    },
+    {
+      "path": "compact-final/probe/models-list.json",
+      "bytes": 516,
+      "sha256": "390c2196e8897bea693023d164c1fe2b89060c925a7d31a814a4b6ac53d7e9f5"
+    },
+    {
+      "path": "count-tokens-final.json",
+      "bytes": 40796,
+      "sha256": "d8181c29c5261c7a37135ce7aaebd497725f763568ba31142d705f77552e5f9a"
+    },
+    {
+      "path": "count-tokens.json",
+      "bytes": 41056,
+      "sha256": "01e6f849b0d505a188b593b8f52bb58790360b7eb480aa3a915c34564c204a19"
+    },
+    {
+      "path": "final-count/count-tokens-final.json",
+      "bytes": 40815,
+      "sha256": "fef96a5d5173cca56f5559ba4c54e0ade3885b25f223beed172bea9005fc13b3"
+    },
+    {
+      "path": "final-count/probe/models-list.json",
+      "bytes": 516,
+      "sha256": "456a6106af65a20d6d7e07371141ceb34a02157b65a0728281484790c00cae8c"
+    },
+    {
+      "path": "finalize.py",
+      "bytes": 7419,
+      "sha256": "802607ace6a828a8cc1d8919a439535c6b22c8c8df218537a188bcd9298adc9f"
+    },
+    {
+      "path": "missing-snapshots.json",
+      "bytes": 111382,
+      "sha256": "2bc34b05408fd015cc5d6ce83946525d2347521f0ea8e3070d5fbc856e3d74b0"
+    },
+    {
+      "path": "probe/models-list.json",
+      "bytes": 517,
+      "sha256": "3b35ed830b9614a721d3d00cbc94b562cd9d0f2a0ae47776b1f2334cde6f44a9"
+    },
+    {
+      "path": "quality-v1/gemma/ledger.jsonl",
+      "bytes": 25572,
+      "sha256": "0c40806b0e465d4c90ba01229b89ce120d8670e65a0a4a954213bacc502bcc2f"
+    },
+    {
+      "path": "quality-v1/gemma/models-list.json",
+      "bytes": 516,
+      "sha256": "f66b4ece25af1363425b38f57716a1ab83d2ccff4be67e57d6010d170d13d477"
+    },
+    {
+      "path": "quality-v1/gemma/quota.json",
+      "bytes": 300,
+      "sha256": "c2dbba526401fc85dad92fce0ede666e23a7bad2e17bc5590849f406dcca962f"
+    },
+    {
+      "path": "quality-v1/gemma/quota.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "quality-v1/gemma/responses/4ff80cb0d1cea8fde0ee21085f2dfc20499dc354ff91a26f1f0d032bd8af8376.json",
+      "bytes": 2064,
+      "sha256": "702311b37e1f6ce850d10e664f416a7e51c64765747574ab916551dea642a59d"
+    },
+    {
+      "path": "quality-v1/gemma/responses/a0a788a9f993ac6c5f83c67d3211025441a162caa21a3faa43007a691e7a587e.json",
+      "bytes": 2068,
+      "sha256": "f5fe1c1c99f81e05b98a7caba454db6f8fd90686b7e8e62caf2e709c3196e777"
+    },
+    {
+      "path": "quality-v1/gemma/responses/be051290c162b6fbbcfc1ebd98da410520f7fa4587c7d85a92bf1d2b29341686.json",
+      "bytes": 2047,
+      "sha256": "0c42ef74bc7b8b0ea3e2161c369d597e24f956d3193f21df2ab218791dfffe9c"
+    },
+    {
+      "path": "quality-v1/gemma/responses/be270b85cfcd829facd819385ceb2c818434237babb3e8627391e58f99720061.json",
+      "bytes": 1415,
+      "sha256": "042966d30bc1f44eebd856f3248b09c22790fa7efa500bb2ef644eb61afdbf90"
+    },
+    {
+      "path": "quality-v1/s4-standard-quality-leader_ko-gemini-3.8-flash.json",
+      "bytes": 6569,
+      "sha256": "bcde2567fd4414871fa1368afd4a12ac560457e7b708d924e1c04a262ef62e1d"
+    },
+    {
+      "path": "quality-v1/s4-standard-quality-leader_ko-gemma-4-31b-it.json",
+      "bytes": 7904,
+      "sha256": "0d9068ca28a46fc9bf8818992b134e6b0ac9dfc3e2d357e8cf97a52ef686e88b"
+    },
+    {
+      "path": "quality-v1/s4-standard-quality-no_comm-gemini-3.8-flash.json",
+      "bytes": 6236,
+      "sha256": "3732a54042809899f6b80c965c0894e0c6579360978f93fa647dbed9ee57aec5"
+    },
+    {
+      "path": "quality-v1/s4-standard-quality-no_comm-gemma-4-31b-it.json",
+      "bytes": 7567,
+      "sha256": "5f67216481f2eec570790d97e126f0f03b71ba43e069d022f83fb9be39a6f110"
+    },
+    {
+      "path": "quality-v1/s4-standard-quality-peer_ko-gemini-3.8-flash.json",
+      "bytes": 6528,
+      "sha256": "bcb2c1f1cb2fb8b68b87204bd40c1d3114c5243c6cbf9880cb691d571efbd172"
+    },
+    {
+      "path": "quality-v1/s4-standard-quality-peer_ko-gemma-4-31b-it.json",
+      "bytes": 7833,
+      "sha256": "37fcd53a9682071bbba97c56102bc4e4be1d9e1a791fe33c9f5964f7f8a57ec0"
+    },
+    {
+      "path": "quality-v1/s4-standard-quality-structured-gemini-3.8-flash.json",
+      "bytes": 7066,
+      "sha256": "cc67d1383140f3f3a17590ada7461c3f06bf2fbb97de702f4cc093354b65e4e2"
+    },
+    {
+      "path": "quality-v1/s4-standard-quality-structured-gemma-4-31b-it.json",
+      "bytes": 7439,
+      "sha256": "d47aa5980471c5b02697514ac6e70d5cd8391d44cb8267af1d767f4d068dddc2"
+    },
+    {
+      "path": "quality-v1/summary.json",
+      "bytes": 6115,
+      "sha256": "f6c95f4ccee34b6b6a4402e38fe0ec04005c853e3dc3c44cd95bc2b00463308c"
+    },
+    {
+      "path": "replay-final.json",
+      "bytes": 102254,
+      "sha256": "e55cf849bf5371f3d14350dda81d93bd0be8966c9ea4bb73e22f5d5394fb94ca"
+    },
+    {
+      "path": "replay.json",
+      "bytes": 100698,
+      "sha256": "821d1eedc9c9afe3439ae8629b8c885ae1cc527c05a01b65efcc9a7db1a080e7"
+    },
+    {
+      "path": "selected-rgb/24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5.png",
+      "bytes": 11810,
+      "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5"
+    },
+    {
+      "path": "selected-rgb/a2de9c0685d8f615b436019361aca301c7fdf64f60ec832ca8aeb5c45c911deb.jpg",
+      "bytes": 15124,
+      "sha256": "a2de9c0685d8f615b436019361aca301c7fdf64f60ec832ca8aeb5c45c911deb"
+    },
+    {
+      "path": "selected-rgb/d7ff7abb2272f4a22f067937cfd5583e434d75160dca8414cefc67e54c2d6ff8.jpg",
+      "bytes": 14805,
+      "sha256": "d7ff7abb2272f4a22f067937cfd5583e434d75160dca8414cefc67e54c2d6ff8"
+    },
+    {
+      "path": "selected-rgb/dae5d7dab1fa94a1ba234bb41ddbcc6eb693f9f7b38ee079ab951c6e6a634557.jpg",
+      "bytes": 12131,
+      "sha256": "dae5d7dab1fa94a1ba234bb41ddbcc6eb693f9f7b38ee079ab951c6e6a634557"
+    },
+    {
+      "path": "selected-rgb/manifest.json",
+      "bytes": 810,
+      "sha256": "fee9d08e75ddfc33a65872fc87cd68a54163fa3ed135e630eb4018a1d63a73e0"
+    },
+    {
+      "path": "selected-rgb/quality-selected.json",
+      "bytes": 287,
+      "sha256": "6c54625a718314cf32cbc9fbee30dcc42a76779d7bd14f5fd9a065872ecf0eb7"
+    },
+    {
+      "path": "selected-rgb/structured-selected.json",
+      "bytes": 268,
+      "sha256": "0d2f03927bbdb490dbe3e0a828c9f9186298379c296f9f8e3937eb078b240f1e"
+    },
+    {
+      "path": "structured-final/count-tokens-final.json",
+      "bytes": 43844,
+      "sha256": "f92306d575bb5ea0caffbe8345067899af80821b95f4b390e84bb0d4bcfa0aa1"
+    },
+    {
+      "path": "structured-final/probe/models-list.json",
+      "bytes": 516,
+      "sha256": "7ba1937024bed2ae0d1fae7dad3ad39303f97e02da0b01041a69acbc7e51591f"
+    },
+    {
+      "path": "tests-final.xml",
+      "bytes": 5241,
+      "sha256": "4ff1ccca1450fb2a5efb85db14bb0d99b8b0cd3da0c7de0bb16202433570ed06"
+    },
+    {
+      "path": "tests.xml",
+      "bytes": 5111,
+      "sha256": "ecef01587df4d3c5fd42f48b5b5da567d2bd80a041349b34d3eaf1559cfd9f55"
+    }
+  ],
+  "tuning_vs_confirmation": "All offline replay/countTokens/API probes are exploratory DEV; seed603 future comparison is not relabelled historical confirmation.",
+  "event_safety_limitation": "Existing temporal RGB monitor is stationary-wrist-only; new adapter stays admission-blocked until moving-wrist qualification. A fresh-frame controller heartbeat is not grasp success.",
+  "archive_supplement": {
+    "remote": "oracle:/home/ubuntu/ugrp-archive/s4-gemma-standard-20261011-release",
+    "all_sha256_match": true,
+    "sha256": {
+      "tests-release.xml": "df423c5ea7cc20e334cbaa6375d644413c50b0c5e18675a437a73452ef9c7b94",
+      "source-release.json": "f3693616e9e4ba746f43855434dc20f09481888569458861404d1039c619ad33"
+    }
+  }
 }

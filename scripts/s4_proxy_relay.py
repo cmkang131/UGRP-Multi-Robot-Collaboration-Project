@@ -51,7 +51,7 @@ def main():
         authentication='existing_mac_proxy_no_credentials_transferred')
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
     lock = threading.Lock()
-    journal = Journal(a.output/'responses', retry_rate_limits=True) if a.idempotent or fallback else None
+    journal = Journal(a.output/'responses', retry_rate_limits=single or not a.gemma_fallback) if a.idempotent or fallback else None
     receipt['idempotent_response_journal'] = bool(journal)
     if fallback:
         from scripts.gemma_fallback_proxy import PROFILE

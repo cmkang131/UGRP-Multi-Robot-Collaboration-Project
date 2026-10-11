@@ -1,6 +1,5 @@
 {
   "schema": "ugrp.azure_s4_comparison_plan.v1",
-  "class_": "dev",
   "pr": 425,
   "research_result": false,
   "status": "PREPARED_NOT_SUBMITTED",
@@ -14,7 +13,8 @@
     "Azure readiness notification",
     "own-map E2E adapter integration (PR433); no authored map route",
     "frozen source SHA and new verified proxy receipt",
-    "moving-wrist RGB monitor qualification; stationary-grip evidence is insufficient"
+    "moving-wrist RGB monitor qualification; stationary-grip evidence is insufficient",
+    "Gemma availability/quality gate: one API 500 of four; transport success is not parity"
   ],
   "scope": "small DEV stage comparison through claim/GO/ACK/first carry; not full E2E or research",
   "pairing": "same seed/condition/compact English input; model x event factorial; separate model/language cohorts",
@@ -542,15 +542,59 @@
     "total_daily_reserved_calls": 484,
     "daily_remaining_must_be_checked": true,
     "input_token_cap": 2500,
-    "measured_representative_input": 2257,
+    "measured_representative_input": 2034,
     "max_output_tokens": 800,
     "tpm_input_only_wall_lower_bound_minutes": 83.33,
     "conservative_bucket_wall_lower_bound_minutes": 110.0,
     "rpm_wall_lower_bound_minutes": 17.78,
     "wall_formula": "max(total(input+max_output)/14400*60, total_requests/27*60, measured_model_latency*requests/concurrency, physical_wall); add retries. Do not add SIM API queue time.",
     "physical_speed_on_Azure": "unmeasured",
-    "generation_latency": "fill from paired protocol probe; small sample",
-    "cost": "Gemma free tier only; reject quota exhaustion, no paid fallback. Azure VM cost separately controlled by PR438."
+    "generation_latency": {
+      "gemma-4-31b-it": {
+        "requests": 4,
+        "http_ok": 3,
+        "api_errors": [
+          {
+            "condition": "structured",
+            "http_status": 500
+          }
+        ],
+        "protocol_accepted": 3,
+        "protocol_denominator_received": 3,
+        "wall_s": {
+          "median_success": 65.37430849997327,
+          "min_success": 36.04894695902476,
+          "max_success": 69.05465175001882
+        },
+        "provider_total_tokens_known": 4691,
+        "unknown_usage": 1,
+        "strict_json_without_fences": 0,
+        "qualification": "initial own-role claim and schema/channel acceptance only; no delivered dialogue or grasp quality coverage"
+      },
+      "gemini-3.8-flash": {
+        "requests": 4,
+        "http_ok": 4,
+        "api_errors": [],
+        "protocol_accepted": 4,
+        "protocol_denominator_received": 4,
+        "wall_s": {
+          "median_success": 4.539936896006111,
+          "min_success": 4.249252333014738,
+          "max_success": 4.754951583978254
+        },
+        "provider_total_tokens_known": 10541,
+        "unknown_usage": 0,
+        "strict_json_without_fences": 0,
+        "qualification": "initial own-role claim and schema/channel acceptance only; no delivered dialogue or grasp quality coverage"
+      }
+    },
+    "cost": "Gemma free tier only; reject quota exhaustion, no paid fallback. Azure VM cost separately controlled by PR438.",
+    "gemma_generation_wall_projection_minutes": 261.5,
+    "estimated_wall_minutes_excluding_physics_and_retries": 279.66,
+    "model_calls_minute_effective_at_input_cap": 4.36,
+    "measured_large_structured_input": 2413,
+    "full_api_service_projection_minutes": 279.66,
+    "latency_qualification": "Final code releases local quota lock before upstream I/O; 2-thread fake provider barrier test passed. Probe latency included old lock serialization."
   },
   "judgments": [
     "schema and role/channel validity",
@@ -572,5 +616,6 @@
     ]
   },
   "replay_target_reached": false,
-  "raw_policy": "persistent Azure disk -> ARM automatic archive; Mac fetch-lite only"
+  "raw_policy": "persistent Azure disk -> ARM automatic archive; Mac fetch-lite only",
+  "class": "dev"
 }

@@ -39,8 +39,8 @@ def test_compact_preserves_safety_contracts_and_no_map(lang):
     x=cp.project(b,compact=True,lang=lang)
     assert b==original and 'static_map' not in x and 'initial_location' not in x['order_sheet']['orders'][0]
     assert x['self_belief']['status']=='unknown'
-    assert len(x['inbox'])==len(x['own_command_history'])==len(x['dialogue_window']['sent'])==3
-    assert x['history_summary']['inbox']['omitted_count']==5
+    assert len(x['inbox'])==len(x['own_command_history'])==len(x['dialogue_window']['sent'])==2
+    assert x['history_summary']['inbox']['omitted_count']==6
     assert x['pair_handshake']==b['pair_handshake'] and x['decision_window']==b['decision_window']
     m=x['action_message_contract']['message']['message']
     assert m['act']==list(STRUCTURED_ACTS) and m['state']==[*STRUCTURED_STATES,None]
@@ -92,6 +92,7 @@ def test_real_scheduler_english_compact_single_claim_no_timer(tmp_path,setup_dat
     monkeypatch.setattr(fx.hs,'Handshake',handshake)
     monkeypatch.setattr(fx.stage,'Host',Host)
     host,driver,inner=fx.build(tmp_path,setup_data,condition)
+    assert host.condition==cp.external_condition(condition)
     host.begin()
     for i in range(1,51):
         t=i/10
@@ -103,6 +104,7 @@ def test_real_scheduler_english_compact_single_claim_no_timer(tmp_path,setup_dat
     assert len(host.trial.handshake.claims)==2
     for r in host.trial.requests:
         b=json.loads(r['user']);assert 'static_map' not in b
+        assert 'static_map' not in r['input_keys']
         assert len(r['image_refs'])==1 and '당신' not in r['system']
         assert b['condition']==cp.external_condition(condition)
     assert not host.trial.scheduler.send_violations

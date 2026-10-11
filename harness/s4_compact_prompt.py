@@ -90,14 +90,21 @@ def project(body, *, compact=False, lang='en'):
         if lang=='en' and b['channel'].get('encoding')=='free_ko':b['channel']['encoding']='free_en'
     # No map or map-derived belief survives an own-input projection.
     if compact:
+        b['schema']='ugrp.s4.own_input_projection.v1'
         b.pop('static_map',None)
         if 'static_map' in (b.get('self_belief') or {}).get('sources',[]):
             b['self_belief']={'status':'unknown','reason':'authored_map_derived_belief_omitted'}
         sheet=b.get('order_sheet',{})
         for key in ('map_file_sha256','public_map_sha256','map_id','note_ko'):sheet.pop(key,None)
         for order in sheet.get('orders',[]):order.pop('initial_location',None)
-        _tail(b,'inbox',3);_tail(b,'own_command_history',3)
-        if 'dialogue_window' in b:_tail(b['dialogue_window'],'sent',3)
+        _tail(b,'inbox',2);_tail(b,'own_command_history',2)
+        if 'dialogue_window' in b:_tail(b['dialogue_window'],'sent',2)
+        contract=b.get('reply_contract')
+        if contract:
+            # Retain a full current reply example; the prose already defines
+            # the four fields and the actual parser still enforces their types.
+            contract['schema']={'required':['request_id','action','decision_sources','messages'],
+                                'additionalProperties':False}
     if lang=='en':
         sheet=b.get('order_sheet',{})
         if 'note_ko' in sheet:
@@ -129,6 +136,7 @@ def transform(request, *, compact=False, lang='en'):
     r.update(condition=b['condition'],prompt_lang=lang,compact_prompt_v1=compact,
              prompt_version='ugrp.s4_english_compact.v1',input_sha256=digest(b),
              messages=[dict(role='system',content=text),dict(role='user',content=user)])
+    if compact:r.update(payload_schema=b['schema'],input_profile_id='s4_own_rgb_compact_v1')
     r['request_sha256']=pk.request_digest_from_refs(text,user,r['image_refs'])
     r['tokens']=pk.request_tokens(text,user,r['images'])
     # Simulator's synthetic timing remains separate from real countTokens usage.

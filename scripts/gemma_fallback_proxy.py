@@ -251,7 +251,7 @@ class Gemma:
         if expected_version is not None and self.model.get('version') != expected_version:
             raise ValueError('models.list_version_drift')
         write(self.root / 'models-list.json', self.discovery)
-        self.journal = Journal(self.root / 'responses', clock=clock, retry_rate_limits=True)
+        self.journal = Journal(self.root / 'responses', clock=clock, retry_rate_limits=standard)
 
     def count_tokens(self, body):
         payload={'generateContentRequest':{'model':self.model['name'],**body}}
@@ -298,15 +298,21 @@ class Gemma:
                     model=self.model_id, ugrp_upstream_forwarded=False)).encode(), retry
             # Persist the reservation before an ambiguous network failure/crash.
             write(self.root / 'quota.json', state)
-            try:
-                status, response, headers = self.send(self.model['name'] + ':generateContent', body)
-            except Exception:
-                response, headers, status = {'error': 'ambiguous_google_transport_not_retried'}, {}, 502
+        # Never hold the quota file lock across a slow provider request: the
+        # shared token reservation already fences concurrent admission.
+        upstream_started=time.monotonic()
+        try:
+            status, response, headers = self.send(self.model['name'] + ':generateContent', body)
+        except Exception:
+            response, headers, status = {'error': 'ambiguous_google_transport_not_retried'}, {}, 502
+        upstream_wall_s=time.monotonic()-upstream_started
+        with self.quota.transaction() as state:
             self.quota.observe(state, status, response, headers)
             result = openai_reply(response, self.model_id, request_id) if status == 200 else {
                 'error': 'google_generateContent_http_' + str(status), 'provider': PROVIDER,
                 'model': self.model_id}
             result['ugrp_upstream_forwarded'] = True
+            result['ugrp_upstream_wall_s']=upstream_wall_s
             result['ugrp_count_tokens']=counted
             result['ugrp_quota_reservation']=reservation
             result['ugrp_model_pin']=dict(model_id=self.model_id,models_list_version=self.model.get('version'),
