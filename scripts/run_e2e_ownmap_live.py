@@ -30,7 +30,7 @@ def relay_url(profile, decider='off'):
 
 from harness.e2e_result_writer import write, Finalizer
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False):
     if profile not in PROFILES or seed not in (61001,61002,61003,61004):raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
@@ -39,6 +39,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if pose_fix not in ('off','innovation'):raise ValueError('UNKNOWN_E2E_POSE_FIX')
     if path_follow not in ('off','rpp_v1'):raise ValueError('UNKNOWN_PATH_FOLLOW')
     if not 0 < wall_cap_s <= 12600:raise ValueError('FINITE_WALL_CAP_REQUIRED')
+    from harness.e2e_stall_odometry import Options as StallOptions
+    stall=StallOptions(stall_odometry,stall_recovery,stall_noise)
     from harness.zone_study_llm_driver import load_registry
     b=json.loads((ROOT/'configs/e2e_s3_test_runtime_v1.json').read_text())
     # The template contributes physical/calibration constants only. Its authored
@@ -67,6 +69,9 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         b.update(schema='ugrp.e2e_ownmap_live.v194',execution_bundle_id='e2e-explore-posefix-v194',workflow_version='7.87.0')
     if path_follow!='off' or dev_light:
         b.update(schema='ugrp.e2e_ownmap_live.v197',execution_bundle_id='e2e-rpp-lookahead-v197',workflow_version='7.90.0')
+    if stall.enabled or stall_bundle:
+        b['e2e_options'].update(dataclasses.asdict(stall))
+        b.update(schema='ugrp.e2e_ownmap_live.v198',execution_bundle_id='e2e-stall-odometry-v198',workflow_version='7.91.0')
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -80,6 +85,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         paths.add('configs/simulation_workflows.d/e2e_explore_posefix_v194.json')
     if path_follow!='off' or dev_light:
         paths.add('configs/simulation_workflows.d/e2e_rpp_lookahead_v197.json')
+    if stall.enabled or stall_bundle:paths.add('configs/simulation_workflows.d/e2e_stall_odometry_v198.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -115,6 +121,7 @@ def startup_decision(progress, b):
 def run(b,out,receipt,*,backend_factory=None):
     if not b['e2e_options']['enabled']:raise ValueError('E2E_LIVE_TOGGLE_OFF')
     from harness.e2e_live_mapping import Robot,Link
+    from harness.e2e_stall_odometry import Options as StallOptions
     from harness.e2e_live_transport import Transport
     from harness.e2e_s4_live import Host
     from harness.s4_tunnel_recovery import RecoveryLedger
@@ -144,7 +151,8 @@ def run(b,out,receipt,*,backend_factory=None):
                         goal_geometry=b['e2e_options']['goal_geometry'],
                         exploration_progress=b['e2e_options'].get('exploration_progress','off'),
                         pose_fix=b['e2e_options'].get('pose_fix','off'),
-                        path_follow=b['e2e_options'].get('path_follow','off'))
+                        path_follow=b['e2e_options'].get('path_follow','off'),
+                        stall_options=StallOptions(**{k:b['e2e_options'].get(k,'off') for k in ('stall_odometry','stall_recovery','stall_noise')}))
                 for i,r in enumerate(('r1','r2','r3'))}
         for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
         offered=json.loads(receipt.read_text())
@@ -199,7 +207,7 @@ def run(b,out,receipt,*,backend_factory=None):
                         sha256=obs['sha256'],pose_own_m=robot.goal.explorer.local_pose.tolist(),
                         remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
                         pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
-                        navigation_status=trace.get('status'),pulse=trace.get('pulse')))
+                        navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry')))
                 frames_seen+=1
                 if not host.started:
                     write(out/'e2e-progress.json',health(robots,host,transport,now,time.monotonic()-started,frames_seen))
@@ -292,13 +300,18 @@ def main():
     p.add_argument('--exploration-progress',choices=('off','frontier_progress_v1'),default='off')
     p.add_argument('--pose-fix',choices=('off','innovation'),default='off')
     p.add_argument('--path-follow',choices=('off','rpp_v1'),default='off')
+    p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1'),default='off')
+    p.add_argument('--stall-recovery',choices=('off','backup_replan_v1'),default='off')
+    p.add_argument('--stall-noise',choices=('off','amcl_alpha_v1'),default='off')
+    p.add_argument('--stall-bundle',action='store_true')
     p.add_argument('--dev-light',action='store_true')
     p.add_argument('--wall-cap-s',type=float,default=12600.)
     p.add_argument('--execute',action='store_true');a=p.parse_args()
     b=bundle(a.expected_source_sha,a.seed,a.driver_profile,enabled=a.e2e_live,relook=a.setdown_only_when_relook,
              options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider,
              exploration_progress=a.exploration_progress,pose_fix=a.pose_fix,
-             path_follow=a.path_follow,dev_light=a.dev_light,wall_cap_s=a.wall_cap_s)
+             path_follow=a.path_follow,dev_light=a.dev_light,wall_cap_s=a.wall_cap_s,
+             stall_odometry=a.stall_odometry,stall_recovery=a.stall_recovery,stall_noise=a.stall_noise,stall_bundle=a.stall_bundle)
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
         raise ValueError('AZURE_X86_OSMESA_ONLY')

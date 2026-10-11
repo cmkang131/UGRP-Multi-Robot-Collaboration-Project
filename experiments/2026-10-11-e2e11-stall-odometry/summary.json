@@ -1,0 +1,269 @@
+{
+  "schema": "ugrp.e2e11.v1",
+  "status": "PREPARED_NOT_EXECUTED",
+  "pr": 433,
+  "run_class": "dev",
+  "research_result": false,
+  "base_sha": "58f7aa35d8afc0f8ef581518126ea9a4c0400f07",
+  "execution_bundle": "e2e-stall-odometry-v198",
+  "workflow_version": "7.91.0",
+  "diagnosis": {
+    "file": "diagnosis.json",
+    "definition": "Evaluation only: issued-command XY increment >=5mm, actual 50ms-sampled path length <20 percent of that increment. Exact frame/truth time alignment. Contact attribution is association, not causal proof.",
+    "rpp_r2_stall_fraction_range": [
+      0.3127147766,
+      0.6695059625
+    ],
+    "max_map_error_m": 6.979864712696211,
+    "r2_A61001": {
+      "stall_s": 94.8,
+      "issued_m": 6.12569812848129,
+      "actual_path_m": 0.8218324241330888
+    },
+    "r2_A61002": {
+      "stall_s": 157.2,
+      "issued_m": 10.157803225709504,
+      "actual_path_m": 1.437617803269483
+    },
+    "selected_pair_rgb": {
+      "stalled": {
+        "n": 144,
+        "status_counts": {
+          "stationary_view": 71,
+          "changed_view": 73
+        },
+        "median_px": 1.0053313970565796,
+        "p90_px": 1.4518373906612398,
+        "mean_abs_diff": 0.31093207555302205
+      },
+      "moving": {
+        "n": 196,
+        "status_counts": {
+          "stationary_view": 11,
+          "changed_view": 185
+        },
+        "median_px": 2.0719615817070007,
+        "p90_px": 4.42897276878357,
+        "mean_abs_diff": 1.301407400178098
+      }
+    }
+  },
+  "replay": {
+    "file": "replay-comparison.json",
+    "scope": "Fixed actual issued commands and 394 individually selected saved RGB frames (5,924,681 bytes), no simulation or model calls. 18 windows chosen from long stalls and moving segments; missing images reset detector and keep nominal odometry. Command estimator only; RBPF maps and recovery actions not replayed. Not held-out evidence.",
+    "selected": "rgb_pulse_gate_v1",
+    "image_hash_matches": 394,
+    "off_max_abs_reproduction_error": 2.4868995751603507e-14,
+    "windows": 18,
+    "mean_window_endpoint_increment_error_m": {
+      "off": 0.16344299511202404,
+      "rgb_gate_v1": 0.1490633618622202,
+      "rgb_pulse_gate_v1": 0.1376159231959825
+    },
+    "pulse_confusion": {
+      "gated_stall": 36,
+      "ungated_stall": 108,
+      "gated_moving": 0,
+      "ungated_moving": 196
+    },
+    "pulse_windows": {
+      "improved": 9,
+      "worse": 1,
+      "unchanged": 8,
+      "max_worsening_m": 0.000103067234629
+    },
+    "noise_and_recovery_effect": "not evaluated by fixed-command mean replay; deterministic integration tests only",
+    "images_individually_retrieved": true,
+    "candidate_v1_confusion": {
+      "gated_stall": 20,
+      "ungated_stall": 124,
+      "gated_moving": 0,
+      "ungated_moving": 196
+    }
+  },
+  "preregistration": {
+    "max_runs": 4,
+    "seed": [
+      61001,
+      61002
+    ],
+    "conditions": {
+      "A": "RPP + Gemma + rgb_pulse_gate_v1 + backup_replan_v1 + amcl_alpha_v1",
+      "B": "RPP + Gemma; all new toggles off"
+    },
+    "pairing": "A/B per seed submitted in the same four-run batch",
+    "deadline_ready_utc": "2026-10-11T19:45:00Z",
+    "wall_end_before_utc": "2026-10-11T21:40:00Z",
+    "guard_cap_utc": "2026-10-11T21:50:00Z",
+    "success": "LLM_operated AND own_map_completed AND start_to_finish_transport in the same run",
+    "failure": "runtime/physical failure or finite wall/storage cap; conservative DEV guards logged only",
+    "early_check_wall_s": 210
+  },
+  "tests": {
+    "files": [
+      "tests/test_e2e_stall_odometry.py",
+      "tests/test_e2e_explore_posefix.py",
+      "tests/test_e2e_rpp_path.py"
+    ],
+    "passed": 27,
+    "scope": "offline only",
+    "resolved_failures": [
+      "Bound callback deepcopy recursively cloned the RBPF owner; clone predictor data without callbacks.",
+      "Two new test callers erroneously included t in Robot.commanded action; corrected fixture to actual action ABI."
+    ]
+  },
+  "storage_budget": {
+    "runs": 4,
+    "per_run_mib": 4096,
+    "reserved_mib": 2048,
+    "mac_lite_per_run_mib": 64,
+    "floors_gib": {
+      "x86": 8,
+      "arm": 25,
+      "mac": 20
+    },
+    "checks": []
+  },
+  "references": [
+    {
+      "name": "opencv_lk",
+      "url": "https://raw.githubusercontent.com/opencv/opencv/4.x/samples/python/lk_track.py",
+      "verified": true,
+      "bytes": 3153,
+      "sha256": "9bd69f9d01f5533aaae22a5afe0e7c8705e06aa6b1afacf208cd903a3961c26e",
+      "checked_utc": "2026-10-11T18:22:25.516754+00:00"
+    },
+    {
+      "name": "openvins",
+      "url": "https://docs.openvins.com/update-zerovelocity.html",
+      "verified": true,
+      "bytes": 114047,
+      "sha256": "2aeef3582e6cb3eb0eaaa86c46df33cc953ecb15e2312d160aaddaf43d3321df",
+      "checked_utc": "2026-10-11T18:22:25.848376+00:00"
+    },
+    {
+      "name": "nav2_progress",
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_controller/plugins/simple_progress_checker.cpp",
+      "verified": true,
+      "bytes": 4029,
+      "sha256": "f6b4e30b6d223cb1513db9ff1fcd71df511ebb6d3c1f7dac5c7cf6e8b874cee1",
+      "checked_utc": "2026-10-11T18:22:26.115455+00:00"
+    },
+    {
+      "name": "nav2_backup",
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_behaviors/plugins/back_up.cpp",
+      "verified": true,
+      "bytes": 1762,
+      "sha256": "30fb79747258fa3daf4bf67b310924aefeddd010ca124baf408f14ea0fed5ac9",
+      "checked_utc": "2026-10-11T18:22:26.383686+00:00"
+    },
+    {
+      "name": "nav2_bt",
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml",
+      "verified": true,
+      "bytes": 2733,
+      "sha256": "5895b63840d54c6d7eee3d3b3f3ee177680af9e58a14cbf61c4df39fe5db2a90",
+      "checked_utc": "2026-10-11T18:22:26.654074+00:00"
+    },
+    {
+      "name": "nav2_amcl",
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_amcl/src/motion_model/omni_motion_model.cpp",
+      "verified": true,
+      "bytes": 3050,
+      "sha256": "333e066d6391820cade21d6668eef05a01f789c484ebbcca79690e6b54e7dde2",
+      "checked_utc": "2026-10-11T18:22:26.919750+00:00"
+    },
+    {
+      "name": "command_vio_2022",
+      "url": "https://arxiv.org/abs/2204.06776",
+      "verified": true,
+      "bytes": 42818,
+      "sha256": "0e68a4d4ac9987eb1e231930cd6784cb0a300f024c0fbbaba5bd3a2fba8134c9",
+      "checked_utc": "2026-10-11T18:22:27.020597+00:00"
+    },
+    {
+      "name": "python_copy",
+      "url": "https://docs.python.org/3/library/copy.html",
+      "verified": true,
+      "bytes": 28175,
+      "sha256": "576a4dfa69c9fb927c23d4fc9f2ce072fbefbfc74dbd95fb6f2ba65b78c2ceab",
+      "checked_utc": "2026-10-11T18:22:27.265517+00:00"
+    }
+  ],
+  "runs": [],
+  "execution_count": 0,
+  "simulation_count": 0,
+  "conditions": {},
+  "artifacts": [
+    {
+      "path": "replay-v1-s61001.json.zst",
+      "bytes": 340875,
+      "sha256": "f724e46968a9074eb6842cdf236c36dd58702014a43c0b967048a5c899e6cd2c"
+    },
+    {
+      "path": "replay-comparison.json",
+      "bytes": 18082,
+      "sha256": "d76f88c7ffb92d1f8ac50e3f632ae99d020a0a08a27603f44280ea22cab22b7f"
+    },
+    {
+      "path": "replay-pulse-s61001.json.zst",
+      "bytes": 351306,
+      "sha256": "e671769d3401172fd84cc408c014ec18444f85dd4523ae921e94b2152b2ca25b"
+    },
+    {
+      "path": "README.md",
+      "bytes": 889,
+      "sha256": "416c7d17b72dd31b7cafbaa38b7e290b601c0b7087de8396529499b11c46d447"
+    },
+    {
+      "path": "bundle-number-audit.json",
+      "bytes": 1019,
+      "sha256": "cb60c0dde5b26ed7e930f01c53e751366e8e75a88065cc0d9c38c389edb5f6b2"
+    },
+    {
+      "path": "selected-intervals.json.zst",
+      "bytes": 159404,
+      "sha256": "5be00f149d7cd29c4517c3b6018e5557d80249e660dfb6f99e8cade405e10b1e"
+    },
+    {
+      "path": "replay-v1-s61002.json.zst",
+      "bytes": 359002,
+      "sha256": "cc0f73eab404de6ea1dc7e31988e595efc4d10efa1bfe2bebd1c7f0bd008d700"
+    },
+    {
+      "path": "replay-pulse-s61002.json.zst",
+      "bytes": 361571,
+      "sha256": "6c0231cc277cbbf650542bc223480bd18f69b2938d65763995c9c1160a59cde0"
+    },
+    {
+      "path": "diagnosis.json",
+      "bytes": 57660,
+      "sha256": "b6caafc8682455f0116e23823fc9aafc4d7b0638c3d3a07cfea7fd6365b44b0b"
+    },
+    {
+      "path": "references/sources.json",
+      "bytes": 2510,
+      "sha256": "a12acdc6eb395ebaf678d58bd8286818246f9fd16e5578c095a44504a6b46213"
+    },
+    {
+      "path": "references/methods.md",
+      "bytes": 3482,
+      "sha256": "819701b0fc3d893bc4b827f1611fec4c0cebfed0dac83c16047589a819da46f0"
+    }
+  ],
+  "remaining": [
+    "R1 has large error even without <20 percent stall intervals; heading/slip and RGB-map correction remain possible causes.",
+    "Low-texture scenes are unknown, not zero. Binary gates miss partial slip; selected-window recall is 36/144.",
+    "Backup and AMCL inflation have no new closed-loop evidence until this batch.",
+    "PR remains DRAFT; CI and pre-merge independent review are separate."
+  ],
+  "raw_analysis": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry",
+    "full_interval_diagnosis": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry/diagnosis/intervals.json.zst",
+      "bytes": 4975782,
+      "sha256": "f53545f30eb4b228af5e99493a028fe9976e6901305cccc259b8beba9225bb25"
+    }
+  },
+  "created_utc": "2026-10-11T18:23:52.961063+00:00"
+}
