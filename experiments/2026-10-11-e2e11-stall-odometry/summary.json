@@ -1,10 +1,11 @@
 {
   "schema": "ugrp.e2e11.v1",
-  "status": "RUNNING",
+  "status": "COMPLETE_WITH_FAILURES",
   "pr": 433,
   "run_class": "dev",
   "research_result": false,
-  "base_sha": "58f7aa35d8afc0f8ef581518126ea9a4c0400f07",
+  "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+  "initial_failed_source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
   "execution_bundle": "e2e-stall-odometry-v198",
   "workflow_version": "7.91.0",
   "diagnosis": {
@@ -45,14 +46,6 @@
         "median_px": 2.0719615817070007,
         "p90_px": 4.42897276878357,
         "mean_abs_diff": 1.301407400178098
-      }
-    },
-    "residual_heading_error": {
-      "file": "e2e10-heading-error.json",
-      "scope": "evaluation only; does not establish cause",
-      "round10_r1_command_heading_median_deg": {
-        "61001": 42.21837342886587,
-        "61002": 25.033136269750344
       }
     }
   },
@@ -107,140 +100,147 @@
     "failure": "runtime/physical failure or finite wall/storage cap; conservative DEV guards logged only",
     "early_check_wall_s": 210
   },
-  "tests": {
-    "files": [
-      "tests/test_e2e_stall_odometry.py",
-      "tests/test_e2e_explore_posefix.py",
-      "tests/test_e2e_rpp_path.py"
-    ],
-    "passed": 27,
-    "scope": "offline only",
-    "resolved_failures": [
-      "Bound callback deepcopy recursively cloned the RBPF owner; clone predictor data without callbacks.",
-      "Two new test callers erroneously included t in Robot.commanded action; corrected fixture to actual action ABI."
-    ]
+  "counting": {
+    "launch_attempts": 8,
+    "initial_host_errors_before_locomotion": 4,
+    "positive_sim_time_runs": 4,
+    "max_concurrent_simulations": 4,
+    "denominator": "outcomes_all_launches includes all eight attempts; A/B comparison includes four positive-SIM runs."
   },
-  "storage_budget": {
-    "runs": 4,
-    "per_run_mib": 4096,
-    "reserved_mib": 2048,
-    "mac_lite_per_run_mib": 128,
-    "floors_gib": {
-      "x86": 8,
-      "arm": 25,
-      "mac": 20
+  "outcomes_all_launches": {
+    "N": 8,
+    "LLM_operated": 4,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "E2E_success": 0
+  },
+  "conditions": {
+    "A": {
+      "n": 2,
+      "LLM_operated": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
     },
-    "checks": {
-      "x86": {
-        "schema": "ugrp.storage-budget.v1",
-        "ok": true,
-        "checks": [
-          {
-            "host": "x86",
-            "free_bytes": 48183058432,
-            "expected_bytes": 19327352832,
-            "projected_free_bytes": 28855705600,
-            "floor_bytes": 8589934592,
-            "ok": true
-          }
-        ]
-      },
-      "arm": {
-        "schema": "ugrp.storage-budget.v1",
-        "ok": true,
-        "checks": [
-          {
-            "host": "arm",
-            "free_bytes": 86148206592,
-            "expected_bytes": 19327352832,
-            "projected_free_bytes": 66820853760,
-            "floor_bytes": 26843545600,
-            "ok": true
-          }
-        ]
-      },
-      "mac": {
-        "schema": "ugrp.storage-budget.v1",
-        "ok": true,
-        "checks": [
-          {
-            "host": "mac",
-            "free_bytes": 136889434112,
-            "expected_bytes": 1073741824,
-            "projected_free_bytes": 135815692288,
-            "floor_bytes": 21474836480,
-            "ok": true
-          }
-        ]
-      }
+    "B": {
+      "n": 2,
+      "LLM_operated": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
     }
   },
-  "references": [
-    {
-      "name": "opencv_lk",
-      "url": "https://raw.githubusercontent.com/opencv/opencv/4.x/samples/python/lk_track.py",
-      "verified": true,
-      "bytes": 3153,
-      "sha256": "9bd69f9d01f5533aaae22a5afe0e7c8705e06aa6b1afacf208cd903a3961c26e",
-      "checked_utc": "2026-10-11T18:22:25.516754+00:00"
-    },
-    {
-      "name": "openvins",
-      "url": "https://docs.openvins.com/update-zerovelocity.html",
-      "verified": true,
-      "bytes": 114047,
-      "sha256": "2aeef3582e6cb3eb0eaaa86c46df33cc953ecb15e2312d160aaddaf43d3321df",
-      "checked_utc": "2026-10-11T18:22:25.848376+00:00"
-    },
-    {
-      "name": "nav2_progress",
-      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_controller/plugins/simple_progress_checker.cpp",
-      "verified": true,
-      "bytes": 4029,
-      "sha256": "f6b4e30b6d223cb1513db9ff1fcd71df511ebb6d3c1f7dac5c7cf6e8b874cee1",
-      "checked_utc": "2026-10-11T18:22:26.115455+00:00"
-    },
-    {
-      "name": "nav2_backup",
-      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_behaviors/plugins/back_up.cpp",
-      "verified": true,
-      "bytes": 1762,
-      "sha256": "30fb79747258fa3daf4bf67b310924aefeddd010ca124baf408f14ea0fed5ac9",
-      "checked_utc": "2026-10-11T18:22:26.383686+00:00"
-    },
-    {
-      "name": "nav2_bt",
-      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml",
-      "verified": true,
-      "bytes": 2733,
-      "sha256": "5895b63840d54c6d7eee3d3b3f3ee177680af9e58a14cbf61c4df39fe5db2a90",
-      "checked_utc": "2026-10-11T18:22:26.654074+00:00"
-    },
-    {
-      "name": "nav2_amcl",
-      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_amcl/src/motion_model/omni_motion_model.cpp",
-      "verified": true,
-      "bytes": 3050,
-      "sha256": "333e066d6391820cade21d6668eef05a01f789c484ebbcca79690e6b54e7dde2",
-      "checked_utc": "2026-10-11T18:22:26.919750+00:00"
-    },
-    {
-      "name": "command_vio_2022",
-      "url": "https://arxiv.org/abs/2204.06776",
-      "verified": true,
-      "bytes": 42818,
-      "sha256": "0e68a4d4ac9987eb1e231930cd6784cb0a300f024c0fbbaba5bd3a2fba8134c9",
-      "checked_utc": "2026-10-11T18:22:27.020597+00:00"
-    },
-    {
-      "name": "python_copy",
-      "url": "https://docs.python.org/3/library/copy.html",
-      "verified": true,
-      "bytes": 28175,
-      "sha256": "576a4dfa69c9fb927c23d4fc9f2ce072fbefbfc74dbd95fb6f2ba65b78c2ceab",
-      "checked_utc": "2026-10-11T18:22:27.265517+00:00"
-    }
+  "model_accounting": {
+    "provider_calls": 12,
+    "known_cost_usd": 0.00166752,
+    "missing_cost_calls": 0,
+    "initial_failed_provider_calls": 0,
+    "ledger_artifact": "model-accounting.json.zst",
+    "scope": "Model usage only; VM compute cost is separate."
+  },
+  "retrieval": {
+    "completed": 8,
+    "expected": 8,
+    "files": 24088,
+    "hash_matches": 24088,
+    "mac_lite_bytes": 54460577
+  },
+  "completed_launches": 8,
+  "unfinished_launches": 0,
+  "remaining": [
+    "The binary RGB stationarity gate misses nonzero partial slip and cannot correct heading drift. R2 max error improved for seed61001 but worsened for seed61002; no uniform improvement or E2E readiness claim.",
+    "All four runs hit inherited internal 270s navigation budget despite outer 1800s case cap. v199 finite-budget repair passed 31 offline tests only and was not executed after readiness deadline.",
+    "A61001 r1 earlier exhausted reachable frontiers after one sweep; exploration_finished is not B boundary completion. It remains unresolved.",
+    "A combines gate, backup, and alpha inflation; this four-case DEV comparison cannot isolate component causal effects.",
+    "PR remains draft; merge conflicts, required review, and remote checks must be resolved before adoption."
   ],
+  "last_recorded_utc": "2026-10-11T20:04:11.265815+00:00",
+  "evaluation_scope": "Ground truth used only for post-run diagnostic scoring in each own-start frame; no truth enters controller. Actual command replay supplies ungated stall denominator for both conditions. Fixed270s active comparison, full-run metrics, and matched shorter-run metrics are separate DEV evidence.",
+  "budget_mismatch": {
+    "first_terminal_sim_s": 270.2,
+    "affected_runs": 4,
+    "affected_mapping_robots": 8,
+    "outer_cap_s": 1800.0,
+    "inner_cap_s": 270.0,
+    "termination_class": "operational_configuration_error",
+    "stop_reason": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+    "proof": "operations.json.zst",
+    "post_270s_idle_tail_excluded_from_active_comparison": true,
+    "physical_failure": false,
+    "success": false,
+    "source": "harness/goal_route_continuous.py: legacy fixed 270s per leg; e2e_live_mapping.make_goal disables route selection/arrival so leg_start never resets."
+  },
+  "prepared_fix": {
+    "status": "PREPARED_NOT_EXECUTED_AFTER_CUTOFF",
+    "bundle": "e2e-stall-budget-v199",
+    "workflow_version": "7.92.0",
+    "toggle": "--mapping-budget case_cap_v1",
+    "default": "off; legacy 270s preserved",
+    "effect": "Pass explicit finite outer 1800s case budget to inner GoalRoute. No implicit infinite budget.",
+    "actual_execution": false,
+    "reason_not_executed": "Discovered and repaired after 2026-10-11 19:45 UTC readiness deadline; VM stayed off after retrieval.",
+    "number_audit": "budget-repair-bundle-audit.json",
+    "adopted": false,
+    "retirement": "v198 remains a frozen DEV result; v199 is not yet adopted.",
+    "code_files": {
+      "harness/goal_route_continuous.py": "a06a381c73a6cc9a8352bb0e29c7b5dc1c0505b5404b94eae88da8f469e64f4c",
+      "harness/e2e_live_mapping.py": "fceb6202586d065c426b6dccb9ff846da18dbcbcda423f2c83fc4a9d8ad30f68",
+      "scripts/run_e2e_ownmap_live.py": "1d66e956aafee566746d5b90903b4b939029f5514797a5b60fb7b98c2de75d3f",
+      "configs/simulation_workflows.d/e2e_stall_budget_v199.json": "4f3334239ab4232d28876b15280f43ae3b9829c533f9d3eaa3738dd27c86fb6b",
+      "tests/test_e2e_stall_odometry.py": "0fd10b4b8df63ac29eb7f32c75f7549bc2560c1c0a205289d462c13bd29521ef"
+    }
+  },
+  "tests": {
+    "initial": {
+      "files": [
+        "tests/test_e2e_stall_odometry.py",
+        "tests/test_e2e_explore_posefix.py",
+        "tests/test_e2e_rpp_path.py"
+      ],
+      "passed": 27,
+      "scope": "offline only",
+      "resolved_failures": [
+        "Bound callback deepcopy recursively cloned the RBPF owner; clone predictor data without callbacks.",
+        "Two new test callers erroneously included t in Robot.commanded action; corrected fixture to actual action ABI."
+      ]
+    },
+    "relay_fix": {
+      "files": [
+        "tests/test_e2e_stall_odometry.py",
+        "tests/test_e2e_s4_live.py"
+      ],
+      "passed": 47,
+      "seconds": 8.65
+    },
+    "budget_fix": {
+      "files": [
+        "tests/test_e2e_stall_odometry.py",
+        "tests/test_goal_route_continuous.py"
+      ],
+      "passed": 31,
+      "seconds": 10.26,
+      "scope": "Offline only: actual Robot receive path at 269.8/270/1799.8/1800s; finite validation and bundle/catalog wiring."
+    },
+    "count_scope": "Separate revisions; do not add passed counts as unique tests."
+  },
+  "active_comparison": {
+    "sim_window_s": [
+      0,
+      270.0
+    ],
+    "artifact": "active-first270.json.zst",
+    "r2_max_map_error_m_B_to_A": {
+      "61001": [
+        6.023382061756469,
+        3.2535192403317668
+      ],
+      "61002": [
+        3.626234732754522,
+        6.137647666254563
+      ]
+    },
+    "scope": "Common active prefix before inner budget expires; full-run maximum/median per run below."
+  },
   "runs": [
     {
       "id": "e2e11-a-s61001",
@@ -249,20 +249,19 @@
       "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
       "status": "HOST_ERROR",
       "exit": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "frames": 1,
       "sim_s": 0.0,
       "wall_s": 15.37714164700003,
-      "frames": 1,
-      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
-      "failure": "no successful model response",
       "LLM_operated": false,
       "own_map_completed": false,
       "start_to_finish_transport": false,
       "E2E_success": false,
       "furthest_stage": "mapping_initial_frame",
       "model_calls_attempted": 3,
-      "upstream_calls": 0,
-      "known_cost_usd": 0,
       "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 42.768232107162476,
         "checks": {
           "no_exceptions": false,
           "frames_increased": false,
@@ -273,108 +272,23 @@
           "normal_model_response": false,
           "translation_command": false,
           "model_response_accepted": false
-        },
-        "passed": false,
-        "elapsed_since_submit_s": 42.768232107162476,
-        "actual_displacement_m": {
-          "r1": 0.0,
-          "r2": 0.0,
-          "r3": 0.0
-        },
-        "pose_jumps": {
-          "r1": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          },
-          "r2": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          },
-          "r3": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          }
-        },
-        "commands": {
-          "r1": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r2": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r3": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          }
         }
       },
-      "initial_check_scope": "terminated before scheduled 210s; final operational inspection at 39-43s",
       "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61001",
-      "archive": {
-        "run": "e2e11-a-s61001",
-        "summary_sha256": "0515b77948c768fe80cf8721ed438416b7eb6ef741274f760434823bcb833018",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e11-a-s61001",
-          "files": 2,
-          "saved_bytes": 738182,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "18597b5a44338a845d488aaf9c924e2f2bc96069fbba5a235fdb011fa3d1ee4f",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61001",
-          "files": 101,
-          "hash_matches": 101,
-          "inventory_sha256": "ebbd41d84ee06249a67e0baf7da75da0ed130f7d9e112ac832a8b9d738d85f3e",
-          "reused": false,
-          "receiver_seconds": 0.383
-        },
-        "archive_bytes": 1052626
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61001",
+      "summary_sha256": "0515b77948c768fe80cf8721ed438416b7eb6ef741274f760434823bcb833018",
+      "model": {
+        "provider_calls": 0,
+        "known_cost_usd": 0
       },
-      "retrieval": {
-        "run": "e2e11-a-s61001",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-a-s61001",
-        "checksum_verified": true,
-        "excluded_embedded_images": 3,
-        "files": 92,
-        "bytes": 879620
-      }
+      "evaluation": {
+        "status": "NOT_APPLICABLE_NO_LOCOMOTION",
+        "stall_segments": 0,
+        "stall_duration_s": 0,
+        "map_error_m": null,
+        "frame_jump_m": null
+      },
+      "archive_proof": "operations.json.zst"
     },
     {
       "id": "e2e11-b-s61001",
@@ -383,20 +297,19 @@
       "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
       "status": "HOST_ERROR",
       "exit": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "frames": 1,
       "sim_s": 0.0,
       "wall_s": 15.413686728000016,
-      "frames": 1,
-      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
-      "failure": "no successful model response",
       "LLM_operated": false,
       "own_map_completed": false,
       "start_to_finish_transport": false,
       "E2E_success": false,
       "furthest_stage": "mapping_initial_frame",
       "model_calls_attempted": 3,
-      "upstream_calls": 0,
-      "known_cost_usd": 0,
       "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 41.48827886581421,
         "checks": {
           "no_exceptions": false,
           "frames_increased": false,
@@ -407,108 +320,23 @@
           "normal_model_response": false,
           "translation_command": false,
           "model_response_accepted": false
-        },
-        "passed": false,
-        "elapsed_since_submit_s": 41.48827886581421,
-        "actual_displacement_m": {
-          "r1": 0.0,
-          "r2": 0.0,
-          "r3": 0.0
-        },
-        "pose_jumps": {
-          "r1": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          },
-          "r2": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          },
-          "r3": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          }
-        },
-        "commands": {
-          "r1": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r2": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r3": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          }
         }
       },
-      "initial_check_scope": "terminated before scheduled 210s; final operational inspection at 39-43s",
       "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61001",
-      "archive": {
-        "run": "e2e11-b-s61001",
-        "summary_sha256": "1866ecb939ffb2009172d87159d444f5542197a1f1de40dbc549432172a2c922",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e11-b-s61001",
-          "files": 2,
-          "saved_bytes": 738129,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "9ae72d936016b6b49f4f37a0387908d6102d9350e6ef54eb77f93bd68ad3b474",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61001",
-          "files": 101,
-          "hash_matches": 101,
-          "inventory_sha256": "130adc0e33a463ae215e2a29b0f02e342a89ba38033ee60233221374b205be7f",
-          "reused": false,
-          "receiver_seconds": 0.372
-        },
-        "archive_bytes": 1050395
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61001",
+      "summary_sha256": "1866ecb939ffb2009172d87159d444f5542197a1f1de40dbc549432172a2c922",
+      "model": {
+        "provider_calls": 0,
+        "known_cost_usd": 0
       },
-      "retrieval": {
-        "run": "e2e11-b-s61001",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-b-s61001",
-        "checksum_verified": true,
-        "excluded_embedded_images": 3,
-        "files": 92,
-        "bytes": 877389
-      }
+      "evaluation": {
+        "status": "NOT_APPLICABLE_NO_LOCOMOTION",
+        "stall_segments": 0,
+        "stall_duration_s": 0,
+        "map_error_m": null,
+        "frame_jump_m": null
+      },
+      "archive_proof": "operations.json.zst"
     },
     {
       "id": "e2e11-a-s61002",
@@ -517,20 +345,19 @@
       "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
       "status": "HOST_ERROR",
       "exit": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "frames": 1,
       "sim_s": 0.0,
       "wall_s": 15.462724406000007,
-      "frames": 1,
-      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
-      "failure": "no successful model response",
       "LLM_operated": false,
       "own_map_completed": false,
       "start_to_finish_transport": false,
       "E2E_success": false,
       "furthest_stage": "mapping_initial_frame",
       "model_calls_attempted": 3,
-      "upstream_calls": 0,
-      "known_cost_usd": 0,
       "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 40.231945514678955,
         "checks": {
           "no_exceptions": false,
           "frames_increased": false,
@@ -541,108 +368,23 @@
           "normal_model_response": false,
           "translation_command": false,
           "model_response_accepted": false
-        },
-        "passed": false,
-        "elapsed_since_submit_s": 40.231945514678955,
-        "actual_displacement_m": {
-          "r1": 0.0,
-          "r2": 0.0,
-          "r3": 0.0
-        },
-        "pose_jumps": {
-          "r1": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          },
-          "r2": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          },
-          "r3": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          }
-        },
-        "commands": {
-          "r1": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r2": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r3": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          }
         }
       },
-      "initial_check_scope": "terminated before scheduled 210s; final operational inspection at 39-43s",
       "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61002",
-      "archive": {
-        "run": "e2e11-a-s61002",
-        "summary_sha256": "9eb6d239789d2c2b042b0ed1fa2ddc4c316064a5b98a4a9c87f33464a65f65e9",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e11-a-s61002",
-          "files": 2,
-          "saved_bytes": 738193,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "3debd1903e12d14ebcf48f6687e92dfe26877488ce8acf79bf7939ec3e71b3aa",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61002",
-          "files": 101,
-          "hash_matches": 101,
-          "inventory_sha256": "61878c2fc5f7aa85f3d45391fb19709aa338a3c01e4d56377c15b885decf5d9a",
-          "reused": false,
-          "receiver_seconds": 0.388
-        },
-        "archive_bytes": 1052801
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61002",
+      "summary_sha256": "9eb6d239789d2c2b042b0ed1fa2ddc4c316064a5b98a4a9c87f33464a65f65e9",
+      "model": {
+        "provider_calls": 0,
+        "known_cost_usd": 0
       },
-      "retrieval": {
-        "run": "e2e11-a-s61002",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-a-s61002",
-        "checksum_verified": true,
-        "excluded_embedded_images": 3,
-        "files": 92,
-        "bytes": 879743
-      }
+      "evaluation": {
+        "status": "NOT_APPLICABLE_NO_LOCOMOTION",
+        "stall_segments": 0,
+        "stall_duration_s": 0,
+        "map_error_m": null,
+        "frame_jump_m": null
+      },
+      "archive_proof": "operations.json.zst"
     },
     {
       "id": "e2e11-b-s61002",
@@ -651,20 +393,19 @@
       "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
       "status": "HOST_ERROR",
       "exit": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "frames": 1,
       "sim_s": 0.0,
       "wall_s": 15.45429647800006,
-      "frames": 1,
-      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
-      "failure": "no successful model response",
       "LLM_operated": false,
       "own_map_completed": false,
       "start_to_finish_transport": false,
       "E2E_success": false,
       "furthest_stage": "mapping_initial_frame",
       "model_calls_attempted": 3,
-      "upstream_calls": 0,
-      "known_cost_usd": 0,
       "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 38.967008113861084,
         "checks": {
           "no_exceptions": false,
           "frames_increased": false,
@@ -675,216 +416,533 @@
           "normal_model_response": false,
           "translation_command": false,
           "model_response_accepted": false
-        },
-        "passed": false,
-        "elapsed_since_submit_s": 38.967008113861084,
-        "actual_displacement_m": {
-          "r1": 0.0,
-          "r2": 0.0,
-          "r3": 0.0
-        },
-        "pose_jumps": {
-          "r1": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          },
-          "r2": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          },
-          "r3": {
-            "map": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            },
-            "control": {
-              "intervals": 0,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": null
-            }
-          }
-        },
-        "commands": {
-          "r1": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r2": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r3": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          }
         }
       },
-      "initial_check_scope": "terminated before scheduled 210s; final operational inspection at 39-43s",
       "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61002",
-      "archive": {
-        "run": "e2e11-b-s61002",
-        "summary_sha256": "8e77aecc28207a990d94e5ac5f4c4b0c0afd1d66ba6e18736890bfc17be4d068",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e11-b-s61002",
-          "files": 2,
-          "saved_bytes": 738137,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "69c20ea33c6f375d4df45835eb546d9f7e25c03b282f4ffd92999d8c6e7a89ce",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61002",
-          "files": 101,
-          "hash_matches": 101,
-          "inventory_sha256": "0e0dfdcb9850ab9d88159ce173670b6d5868b936b41ba0b86cf7b8a18c8acf54",
-          "reused": false,
-          "receiver_seconds": 0.365
-        },
-        "archive_bytes": 1050755
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61002",
+      "summary_sha256": "8e77aecc28207a990d94e5ac5f4c4b0c0afd1d66ba6e18736890bfc17be4d068",
+      "model": {
+        "provider_calls": 0,
+        "known_cost_usd": 0
       },
-      "retrieval": {
-        "run": "e2e11-b-s61002",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-b-s61002",
-        "checksum_verified": true,
-        "excluded_embedded_images": 3,
-        "files": 92,
-        "bytes": 877697
-      }
+      "evaluation": {
+        "status": "NOT_APPLICABLE_NO_LOCOMOTION",
+        "stall_segments": 0,
+        "stall_duration_s": 0,
+        "map_error_m": null,
+        "frame_jump_m": null
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-a-s61001-r2",
+      "batch": "A",
+      "seed": 61001,
+      "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "cause": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+      "termination_class": "operational_configuration_error",
+      "frames": 2002,
+      "sim_s": 400.23525,
+      "wall_s": 4522.205725389,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "furthest_stage_timing": {
+        "first_B_candidate_sim_s": 2.4,
+        "first_B_candidate_robot": "r1",
+        "wall_s_at_candidate": null,
+        "wall_timing_scope": "No wall timestamp per ownmap row; total driver wall_s is measured separately."
+      },
+      "model": {
+        "relay_receipts": 3,
+        "provider_calls": 3,
+        "http_attempts": 3,
+        "prompt_tokens": 4612,
+        "completion_tokens": 146,
+        "known_cost_usd": 0.00033927999999999996,
+        "missing_cost_calls": 0,
+        "latency_median_s": 6.609646499971859
+      },
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 210.45966482162476,
+        "proof": "operations.json.zst"
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61001-r2",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61001-r2",
+      "result_sha256": "a7f8fd4d562484dcbb468944d48c724647a73d1bacdfb26bbc58753ebd46a28c",
+      "summary_sha256": "4f61a2a4b55e2ad332fed868237f308747cfe2c6eb2995ccfc00cf6b309bf9e4",
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "frames": 2002,
+          "map_error_m": {
+            "max": 1.81565187874657,
+            "median": 1.7814368640786853
+          },
+          "control_error_m": {
+            "max": 0.5651377454433367,
+            "median": 0.5648798804834534
+          },
+          "map_frame_jump_m": {
+            "max": 0.15570970126018974,
+            "median": 0.0,
+            "over_5cm": 5,
+            "over_20cm": 0
+          },
+          "control_frame_jump_m": {
+            "max": 0.01292341377316771,
+            "median": 0.0,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 0,
+          "stall_duration_s": 0,
+          "issued_during_stall_m": 0,
+          "actual_path_during_stall_m": 0,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 299
+        },
+        "r2": {
+          "status": "SCORED",
+          "frames": 2002,
+          "map_error_m": {
+            "max": 3.2535192403317668,
+            "median": 2.4509436974544263
+          },
+          "control_error_m": {
+            "max": 5.187379496961881,
+            "median": 3.487353375469496
+          },
+          "map_frame_jump_m": {
+            "max": 0.3101598263274056,
+            "median": 0.012923413773166616,
+            "over_5cm": 18,
+            "over_20cm": 4
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168217,
+            "median": 0.002820629349281442,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 8,
+          "stall_duration_s": 21.40000000000002,
+          "issued_during_stall_m": 1.3828052737289085,
+          "actual_path_during_stall_m": 0.1414503179813034,
+          "gated_frames": 103,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 577
+        }
+      },
+      "navigation_exhaustion": {
+        "r1": {
+          "frames": 931,
+          "first_sim_s": 84.0,
+          "last_sim_s": 270.0,
+          "observed_duration_s": 186.20000000000002,
+          "frontier_finish_events": 1
+        },
+        "r2": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        }
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-b-s61001-r2",
+      "batch": "B",
+      "seed": 61001,
+      "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "cause": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+      "termination_class": "operational_configuration_error",
+      "frames": 1955,
+      "sim_s": 391.0,
+      "wall_s": 4522.23936055,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "furthest_stage_timing": {
+        "first_B_candidate_sim_s": 2.4,
+        "first_B_candidate_robot": "r1",
+        "wall_s_at_candidate": null,
+        "wall_timing_scope": "No wall timestamp per ownmap row; total driver wall_s is measured separately."
+      },
+      "model": {
+        "relay_receipts": 3,
+        "provider_calls": 3,
+        "http_attempts": 3,
+        "prompt_tokens": 4612,
+        "completion_tokens": 146,
+        "known_cost_usd": 0.00046471999999999996,
+        "missing_cost_calls": 0,
+        "latency_median_s": 5.6019543330185115
+      },
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 212.24427938461304,
+        "proof": "operations.json.zst"
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61001-r2",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61001-r2",
+      "result_sha256": "22af4fc15e186639bd6d0db2b3c5ffb855379e5756676c9236842de52cad1329",
+      "summary_sha256": "f5f2dec9ce88ff6ed2a0b881a0f8e2520c6e1850e701bc4fcf39a5c5b16545e0",
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "frames": 1955,
+          "map_error_m": {
+            "max": 4.3761142937502004,
+            "median": 2.108700592252741
+          },
+          "control_error_m": {
+            "max": 3.998201114804028,
+            "median": 1.302085285814664
+          },
+          "map_frame_jump_m": {
+            "max": 0.51535039656558,
+            "median": 0.012923413773166983,
+            "over_5cm": 10,
+            "over_20cm": 2
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168349,
+            "median": 0.012923413773167042,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 0,
+          "stall_duration_s": 0,
+          "issued_during_stall_m": 0,
+          "actual_path_during_stall_m": 0,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 980
+        },
+        "r2": {
+          "status": "SCORED",
+          "frames": 1955,
+          "map_error_m": {
+            "max": 6.024104760950433,
+            "median": 5.479960009693085
+          },
+          "control_error_m": {
+            "max": 6.565903851187988,
+            "median": 5.3867858297503135
+          },
+          "map_frame_jump_m": {
+            "max": 0.48378422562595996,
+            "median": 0.01292341377316675,
+            "over_5cm": 13,
+            "over_20cm": 3
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168593,
+            "median": 0.012923413773166909,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 78,
+          "stall_duration_s": 94.7999999999999,
+          "issued_during_stall_m": 6.125698128481292,
+          "actual_path_during_stall_m": 0.8218324241330888,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 361
+        }
+      },
+      "navigation_exhaustion": {
+        "r1": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        },
+        "r2": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        }
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-a-s61002-r2",
+      "batch": "A",
+      "seed": 61002,
+      "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "cause": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+      "termination_class": "operational_configuration_error",
+      "frames": 1709,
+      "sim_s": 341.65,
+      "wall_s": 4522.205855266,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "furthest_stage_timing": {
+        "first_B_candidate_sim_s": 2.4,
+        "first_B_candidate_robot": "r1",
+        "wall_s_at_candidate": null,
+        "wall_timing_scope": "No wall timestamp per ownmap row; total driver wall_s is measured separately."
+      },
+      "model": {
+        "relay_receipts": 3,
+        "provider_calls": 3,
+        "http_attempts": 3,
+        "prompt_tokens": 4615,
+        "completion_tokens": 140,
+        "known_cost_usd": 0.00046295000000000006,
+        "missing_cost_calls": 0,
+        "latency_median_s": 5.338473666983191
+      },
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 211.03339910507202,
+        "proof": "operations.json.zst"
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61002-r2",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61002-r2",
+      "result_sha256": "b1aad132888e85f6ddb1696edc58820aeacd6fa74e87cc62e084328756105dc9",
+      "summary_sha256": "d57ce5fbfdf3bdb531565c4ab6e9f8b24c8adfc7047ee9853a67781dabdd2eae",
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "frames": 1709,
+          "map_error_m": {
+            "max": 1.985264200317793,
+            "median": 0.8858139203393776
+          },
+          "control_error_m": {
+            "max": 2.6135173510680225,
+            "median": 0.5253770045868941
+          },
+          "map_frame_jump_m": {
+            "max": 0.18947646775762156,
+            "median": 0.01292341377316716,
+            "over_5cm": 11,
+            "over_20cm": 0
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168345,
+            "median": 0.012923413773167167,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 13,
+          "stall_duration_s": 47.20000000000002,
+          "issued_during_stall_m": 3.0499256504674923,
+          "actual_path_during_stall_m": 0.4281248698454479,
+          "gated_frames": 23,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 836
+        },
+        "r2": {
+          "status": "SCORED",
+          "frames": 1709,
+          "map_error_m": {
+            "max": 6.137647666254563,
+            "median": 2.0766507530924416
+          },
+          "control_error_m": {
+            "max": 6.224311512865857,
+            "median": 2.263038967596217
+          },
+          "map_frame_jump_m": {
+            "max": 0.4757385019464529,
+            "median": 0.012923413773167013,
+            "over_5cm": 20,
+            "over_20cm": 5
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168522,
+            "median": 0.012923413773167074,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 18,
+          "stall_duration_s": 17.000000000000025,
+          "issued_during_stall_m": 1.0984901707192345,
+          "actual_path_during_stall_m": 0.14640463277407054,
+          "gated_frames": 40,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 752
+        }
+      },
+      "navigation_exhaustion": {
+        "r1": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        },
+        "r2": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        }
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-b-s61002-r2",
+      "batch": "B",
+      "seed": 61002,
+      "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "cause": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+      "termination_class": "operational_configuration_error",
+      "frames": 2091,
+      "sim_s": 418.15,
+      "wall_s": 4522.206112805001,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "furthest_stage_timing": {
+        "first_B_candidate_sim_s": 2.4,
+        "first_B_candidate_robot": "r1",
+        "wall_s_at_candidate": null,
+        "wall_timing_scope": "No wall timestamp per ownmap row; total driver wall_s is measured separately."
+      },
+      "model": {
+        "relay_receipts": 3,
+        "provider_calls": 3,
+        "http_attempts": 3,
+        "prompt_tokens": 4615,
+        "completion_tokens": 141,
+        "known_cost_usd": 0.00040057,
+        "missing_cost_calls": 0,
+        "latency_median_s": 5.288840292021632
+      },
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 212.82281064987183,
+        "proof": "operations.json.zst"
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61002-r2",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61002-r2",
+      "result_sha256": "0fb483273aeb8093f25312527622f1955f5716ec4f22cd32fd54d10d51d6b87d",
+      "summary_sha256": "87016e382a66728425486ae9b3d76719461178505cefc81106728e0942d2efac",
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "frames": 2091,
+          "map_error_m": {
+            "max": 6.309282206532107,
+            "median": 4.48672205198584
+          },
+          "control_error_m": {
+            "max": 2.266714329323016,
+            "median": 1.2917566162463903
+          },
+          "map_frame_jump_m": {
+            "max": 0.5282307231724874,
+            "median": 0.012923413773166867,
+            "over_5cm": 10,
+            "over_20cm": 2
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168326,
+            "median": 0.012923413773166914,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 8,
+          "stall_duration_s": 5.199999999999989,
+          "issued_during_stall_m": 0.3360087581023478,
+          "actual_path_during_stall_m": 0.04915307500685967,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 768
+        },
+        "r2": {
+          "status": "SCORED",
+          "frames": 2091,
+          "map_error_m": {
+            "max": 3.626234732754522,
+            "median": 2.0970645996503716
+          },
+          "control_error_m": {
+            "max": 4.522176824130333,
+            "median": 3.047326810016361
+          },
+          "map_frame_jump_m": {
+            "max": 0.13548605643030268,
+            "median": 0.012923413773166883,
+            "over_5cm": 4,
+            "over_20cm": 0
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168366,
+            "median": 0.012923413773166957,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 122,
+          "stall_duration_s": 157.20000000000002,
+          "issued_during_stall_m": 10.157803225709506,
+          "actual_path_during_stall_m": 1.437617803269483,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 22
+        }
+      },
+      "navigation_exhaustion": {
+        "r1": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        },
+        "r2": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        }
+      },
+      "archive_proof": "operations.json.zst"
     }
   ],
-  "execution_count": 4,
-  "simulation_count": 4,
-  "conditions": {},
-  "artifacts": [
-    {
-      "path": "README.md",
-      "bytes": 730,
-      "sha256": "3b912ad3091a37a5c8719508097703324af25ae54b9efa014c263683c937ce00"
-    },
-    {
-      "path": "a61001-r1-hold-diagnosis.json.zst",
-      "bytes": 2567,
-      "sha256": "aafdb81baf064317e19d9fda6726685d48a433eadebadbb8d9fa67131f592ded"
-    },
-    {
-      "path": "bundle-number-audit.json",
-      "bytes": 1019,
-      "sha256": "cb60c0dde5b26ed7e930f01c53e751366e8e75a88065cc0d9c38c389edb5f6b2"
-    },
-    {
-      "path": "diagnosis.json",
-      "bytes": 57660,
-      "sha256": "b6caafc8682455f0116e23823fc9aafc4d7b0638c3d3a07cfea7fd6365b44b0b"
-    },
-    {
-      "path": "e2e10-heading-error.json",
-      "bytes": 1194,
-      "sha256": "a11e5374022e92b39dad92e939b049dc9886b829a94e05e384370f996956695e"
-    },
-    {
-      "path": "evaluate.py",
-      "bytes": 9209,
-      "sha256": "09eecf1147cc184f1e5e63c19d46656874c08ee1f093f1103b066a6416603bd5"
-    },
-    {
-      "path": "online-first120.json.zst",
-      "bytes": 4525,
-      "sha256": "0b0a80212271268afc11bc4397d5004efc6402df58b6569395236a949fe80b12"
-    },
-    {
-      "path": "online-first18.json.zst",
-      "bytes": 3102,
-      "sha256": "813720b9ec50d41bd35f6e3e68f241473c19a422dcf2db41772efacfa8132f2e"
-    },
-    {
-      "path": "online-first60.json.zst",
-      "bytes": 4022,
-      "sha256": "e6edfc97769bf3f201f0fbc8e99c5220dede3422a80cdc481d3cfd2d536d3f96"
-    },
-    {
-      "path": "online-residual-first120.json",
-      "bytes": 4717,
-      "sha256": "ec453d89c1ed57f93bbc64a9843b2fbbd57a4ad88c41afa3b82fe9a05fc42018"
-    },
-    {
-      "path": "references/methods.md",
-      "bytes": 3830,
-      "sha256": "410057cd969df52019d711bacfbb0be3cfeb421b2219102d83a4c2a7b612ef88"
-    },
-    {
-      "path": "references/sources.json",
-      "bytes": 2510,
-      "sha256": "a12acdc6eb395ebaf678d58bd8286818246f9fd16e5578c095a44504a6b46213"
-    },
-    {
-      "path": "replay-comparison.json",
-      "bytes": 18082,
-      "sha256": "d76f88c7ffb92d1f8ac50e3f632ae99d020a0a08a27603f44280ea22cab22b7f"
-    },
-    {
-      "path": "replay-pulse-s61001.json.zst",
-      "bytes": 351306,
-      "sha256": "e671769d3401172fd84cc408c014ec18444f85dd4523ae921e94b2152b2ca25b"
-    },
-    {
-      "path": "replay-pulse-s61002.json.zst",
-      "bytes": 361571,
-      "sha256": "6c0231cc277cbbf650542bc223480bd18f69b2938d65763995c9c1160a59cde0"
-    },
-    {
-      "path": "replay-v1-s61001.json.zst",
-      "bytes": 340875,
-      "sha256": "f724e46968a9074eb6842cdf236c36dd58702014a43c0b967048a5c899e6cd2c"
-    },
-    {
-      "path": "replay-v1-s61002.json.zst",
-      "bytes": 359002,
-      "sha256": "cc0f73eab404de6ea1dc7e31988e595efc4d10efa1bfe2bebd1c7f0bd008d700"
-    },
-    {
-      "path": "running-checkpoint.json",
-      "bytes": 7480,
-      "sha256": "21e021631d01f39c9b6324b301257170a86644ddffe913d7f2797e1702b0479b"
-    },
-    {
-      "path": "selected-intervals.json.zst",
-      "bytes": 159404,
-      "sha256": "5be00f149d7cd29c4517c3b6018e5557d80249e660dfb6f99e8cade405e10b1e"
-    }
-  ],
-  "remaining": [
-    "R1 has large error even without <20 percent stall intervals; heading/slip and RGB-map correction remain possible causes.",
-    "Low-texture scenes are unknown, not zero. Binary gates miss partial slip; selected-window recall is 36/144.",
-    "Backup and AMCL inflation have no new closed-loop evidence until this batch.",
-    "PR remains DRAFT; CI and pre-merge independent review are separate."
-  ],
+  "vm": {
+    "verified_utc": "2026-10-11T20:00:57.803508+00:00",
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "resource_group": "UGRP-SIM-RG",
+    "vm": "ugrp-sim-azure",
+    "state": "PowerState/deallocated",
+    "proof": "operations.json.zst"
+  },
   "raw_analysis": {
     "path": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry",
     "full_interval_diagnosis": {
@@ -893,635 +951,18 @@
       "sha256": "f53545f30eb4b228af5e99493a028fe9976e6901305cccc259b8beba9225bb25"
     }
   },
-  "created_utc": "2026-10-11T18:23:52.961063+00:00",
-  "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
-  "launch_attempt_count": 8,
-  "preparation": {
-    "readiness": {
-      "ready_utc": "2026-10-11T18:25:03.254494+00:00",
-      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
-      "cloud_safety_verified": true,
-      "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
-      "cost_usd": 4.33265035304911,
-      "cost_scope": "user-authorized subscription only; no other subscription queried",
-      "tests_passed": 27,
-      "guest_guard": "must verify/extend to 12h and recreate 21:50 UTC cap before any simulation submission"
-    },
-    "guard": {
-      "max_uptime_s": 43200,
-      "guard_sha256": "00a340c1b48af2d82098236b071bc1b3fb2dc78cd194dfa05827b6b6da86d55c",
-      "absolute_cap": "NextElapseUSecRealtime=Sun 2026-10-11 21:50:00 UTC\nActiveState=active\n",
-      "verified_unix": 1791743479.735686
-    }
+  "detail": "round-complete-detail.json.zst",
+  "references": "references/sources.json",
+  "retention": {
+    "class": "dev",
+    "pr": 433,
+    "pr_status": "open/draft",
+    "heavy_raw": "Retained on ARM while PR remains open; remove only at merge/close with checksum inventory and cleanup-records.",
+    "permanent": "summary, adjudication, LLM text, commands, hashes, representative version videos"
   },
-  "retry": {
-    "only_same_four_cells": true,
-    "max_concurrent_runs": 4,
-    "reason": "relay allowlist omitted new round namespace; no provider requests or locomotion occurred",
-    "controller_changes": false,
-    "source": "https://docs.python.org/3/library/re.html#re.fullmatch",
-    "initial_checks_passed": 4,
-    "resources": {
-      "memory_available_bytes": 66099826688,
-      "free_bytes": 43614109696,
-      "loadavg": [
-        0.33203125,
-        0.3955078125,
-        0.279296875
-      ],
-      "runs": 4,
-      "per_run_bytes": 4294967296,
-      "reserved_bytes": 2147483648
-    }
-  },
-  "relay_fix_tests": {
-    "files": [
-      "tests/test_e2e_stall_odometry.py",
-      "tests/test_e2e_s4_live.py"
-    ],
-    "passed": 47,
-    "seconds": 8.65
-  },
-  "evaluator_validation": {
-    "scope": "round10 A61001 fixed issued commands, first60 SIMs, no execution",
-    "baseline_off_reproduction_max_abs_error": {
-      "r1": 3.3306690738754696e-16,
-      "r2": 3.552713678800501e-15
-    },
-    "stall_denominator": "independent ungated replay of actual commands for both conditions"
-  },
-  "active_source_sha": "540193bab171b85069fb5b47333cb292625490bf",
-  "active_runs": [
-    {
-      "id": "e2e11-a-s61001-r2",
-      "initial_check": {
-        "passed": true,
-        "checks": {
-          "no_exceptions": true,
-          "frames_increased": true,
-          "sim_time_increased": true,
-          "actual_translation": true,
-          "ownmap_trace": true,
-          "mapping_phase_entered": true,
-          "normal_model_response": true,
-          "translation_command": true,
-          "model_response_accepted": true
-        },
-        "elapsed_since_submit_s": 210.45966482162476,
-        "actual_displacement_m": {
-          "r1": 0.6631964983814406,
-          "r2": 0.28967531769170995,
-          "r3": 9.099065776849467e-05
-        },
-        "pose_jumps": {
-          "r1": {
-            "map": {
-              "intervals": 90,
-              "over_5cm": 3,
-              "over_20cm": 0,
-              "max_m": 0.15570970126018974
-            },
-            "control": {
-              "intervals": 90,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.012923413773167627
-            }
-          },
-          "r2": {
-            "map": {
-              "intervals": 90,
-              "over_5cm": 1,
-              "over_20cm": 0,
-              "max_m": 0.08065995154883591
-            },
-            "control": {
-              "intervals": 90,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.012923413773167577
-            }
-          },
-          "r3": {
-            "map": {
-              "intervals": 90,
-              "over_5cm": 1,
-              "over_20cm": 0,
-              "max_m": 0.075001022305662
-            },
-            "control": {
-              "intervals": 90,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.0
-            }
-          }
-        },
-        "commands": {
-          "r1": {
-            "forward": 54,
-            "turns": 37,
-            "turn_sign_flips": 1
-          },
-          "r2": {
-            "forward": 66,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r3": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          }
-        }
-      },
-      "status": "RUNNING"
-    },
-    {
-      "id": "e2e11-a-s61002-r2",
-      "initial_check": {
-        "passed": true,
-        "checks": {
-          "no_exceptions": true,
-          "frames_increased": true,
-          "sim_time_increased": true,
-          "actual_translation": true,
-          "ownmap_trace": true,
-          "mapping_phase_entered": true,
-          "normal_model_response": true,
-          "translation_command": true,
-          "model_response_accepted": true
-        },
-        "elapsed_since_submit_s": 211.03339910507202,
-        "actual_displacement_m": {
-          "r1": 0.6526754571289023,
-          "r2": 0.28954415229636415,
-          "r3": 8.842972302562876e-05
-        },
-        "pose_jumps": {
-          "r1": {
-            "map": {
-              "intervals": 90,
-              "over_5cm": 2,
-              "over_20cm": 0,
-              "max_m": 0.14912048085602428
-            },
-            "control": {
-              "intervals": 90,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.012923413773167625
-            }
-          },
-          "r2": {
-            "map": {
-              "intervals": 90,
-              "over_5cm": 2,
-              "over_20cm": 0,
-              "max_m": 0.08065995154883591
-            },
-            "control": {
-              "intervals": 90,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.012923413773167577
-            }
-          },
-          "r3": {
-            "map": {
-              "intervals": 90,
-              "over_5cm": 1,
-              "over_20cm": 0,
-              "max_m": 0.075001022305662
-            },
-            "control": {
-              "intervals": 90,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.0
-            }
-          }
-        },
-        "commands": {
-          "r1": {
-            "forward": 56,
-            "turns": 35,
-            "turn_sign_flips": 1
-          },
-          "r2": {
-            "forward": 66,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r3": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          }
-        }
-      },
-      "status": "RUNNING"
-    },
-    {
-      "id": "e2e11-b-s61001-r2",
-      "initial_check": {
-        "passed": true,
-        "checks": {
-          "no_exceptions": true,
-          "frames_increased": true,
-          "sim_time_increased": true,
-          "actual_translation": true,
-          "ownmap_trace": true,
-          "mapping_phase_entered": true,
-          "normal_model_response": true,
-          "translation_command": true,
-          "model_response_accepted": true
-        },
-        "elapsed_since_submit_s": 212.24427938461304,
-        "actual_displacement_m": {
-          "r1": 0.6631964983814406,
-          "r2": 0.2972030438520942,
-          "r3": 9.099065776849467e-05
-        },
-        "pose_jumps": {
-          "r1": {
-            "map": {
-              "intervals": 90,
-              "over_5cm": 2,
-              "over_20cm": 0,
-              "max_m": 0.15570970126018974
-            },
-            "control": {
-              "intervals": 90,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.012923413773167627
-            }
-          },
-          "r2": {
-            "map": {
-              "intervals": 90,
-              "over_5cm": 2,
-              "over_20cm": 0,
-              "max_m": 0.08065995154883591
-            },
-            "control": {
-              "intervals": 90,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.012923413773167663
-            }
-          },
-          "r3": {
-            "map": {
-              "intervals": 90,
-              "over_5cm": 1,
-              "over_20cm": 0,
-              "max_m": 0.075001022305662
-            },
-            "control": {
-              "intervals": 90,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.0
-            }
-          }
-        },
-        "commands": {
-          "r1": {
-            "forward": 54,
-            "turns": 37,
-            "turn_sign_flips": 1
-          },
-          "r2": {
-            "forward": 91,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r3": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          }
-        }
-      },
-      "status": "RUNNING"
-    },
-    {
-      "id": "e2e11-b-s61002-r2",
-      "initial_check": {
-        "passed": true,
-        "checks": {
-          "no_exceptions": true,
-          "frames_increased": true,
-          "sim_time_increased": true,
-          "actual_translation": true,
-          "ownmap_trace": true,
-          "mapping_phase_entered": true,
-          "normal_model_response": true,
-          "translation_command": true,
-          "model_response_accepted": true
-        },
-        "elapsed_since_submit_s": 212.82281064987183,
-        "actual_displacement_m": {
-          "r1": 0.6707166578248083,
-          "r2": 0.29968197057694135,
-          "r3": 8.931090312017426e-05
-        },
-        "pose_jumps": {
-          "r1": {
-            "map": {
-              "intervals": 95,
-              "over_5cm": 2,
-              "over_20cm": 0,
-              "max_m": 0.14912048085602428
-            },
-            "control": {
-              "intervals": 95,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.012923413773167625
-            }
-          },
-          "r2": {
-            "map": {
-              "intervals": 95,
-              "over_5cm": 3,
-              "over_20cm": 0,
-              "max_m": 0.1021575556607719
-            },
-            "control": {
-              "intervals": 95,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.012923413773167663
-            }
-          },
-          "r3": {
-            "map": {
-              "intervals": 95,
-              "over_5cm": 1,
-              "over_20cm": 0,
-              "max_m": 0.075001022305662
-            },
-            "control": {
-              "intervals": 95,
-              "over_5cm": 0,
-              "over_20cm": 0,
-              "max_m": 0.0
-            }
-          }
-        },
-        "commands": {
-          "r1": {
-            "forward": 63,
-            "turns": 33,
-            "turn_sign_flips": 1
-          },
-          "r2": {
-            "forward": 96,
-            "turns": 0,
-            "turn_sign_flips": 0
-          },
-          "r3": {
-            "forward": 0,
-            "turns": 0,
-            "turn_sign_flips": 0
-          }
-        }
-      },
-      "status": "RUNNING"
-    }
-  ],
-  "online_first18": {
-    "scope": "Evaluation-only first18 SIMseconds, not final",
-    "artifact": "online-first18.json.zst",
-    "r2": {
-      "e2e11-a-s61001-r2": {
-        "map_error_m": {
-          "n": 91,
-          "max": 0.10366995158282831,
-          "median": 0.08331147252086367
-        },
-        "control_error_m": {
-          "n": 91,
-          "max": 0.027915230146187842,
-          "median": 0.023648594073532238
-        },
-        "stall_duration_s": 4.6,
-        "gated_frames": 27
-      },
-      "e2e11-a-s61002-r2": {
-        "map_error_m": {
-          "n": 91,
-          "max": 0.18077991099430668,
-          "median": 0.14801371711429198
-        },
-        "control_error_m": {
-          "n": 91,
-          "max": 0.14597898133893616,
-          "median": 0.1387985846279769
-        },
-        "stall_duration_s": 5.0,
-        "gated_frames": 18
-      },
-      "e2e11-b-s61001-r2": {
-        "map_error_m": {
-          "n": 91,
-          "max": 0.8322839657420322,
-          "median": 0.32892162180872175
-        },
-        "control_error_m": {
-          "n": 91,
-          "max": 0.8665167662363967,
-          "median": 0.29470016995128523
-        },
-        "stall_duration_s": 12.0,
-        "gated_frames": 0
-      },
-      "e2e11-b-s61002-r2": {
-        "map_error_m": {
-          "n": 91,
-          "max": 0.7074887518190989,
-          "median": 0.3040397039330518
-        },
-        "control_error_m": {
-          "n": 91,
-          "max": 0.8643687720317743,
-          "median": 0.294204472650681
-        },
-        "stall_duration_s": 12.0,
-        "gated_frames": 0
-      }
-    }
-  },
-  "online_first60": {
-    "scope": "Evaluation-only first60 SIMseconds, not final",
-    "artifact": "online-first60.json.zst",
-    "r2": {
-      "e2e11-a-s61001-r2": {
-        "map_error_m": {
-          "n": 301,
-          "max": 0.16163066582722735,
-          "median": 0.09851687665307073
-        },
-        "control_error_m": {
-          "n": 301,
-          "max": 0.8693805242279768,
-          "median": 0.13525206382090887
-        },
-        "stall_duration_s": 9.999999999999998,
-        "gated_frames": 47,
-        "gated_moving_intervals": 0,
-        "moving_intervals": 157
-      },
-      "e2e11-a-s61002-r2": {
-        "map_error_m": {
-          "n": 301,
-          "max": 1.100459296995044,
-          "median": 0.18077991099430668
-        },
-        "control_error_m": {
-          "n": 301,
-          "max": 0.6395819135683427,
-          "median": 0.3038220074184676
-        },
-        "stall_duration_s": 10.400000000000002,
-        "gated_frames": 34,
-        "gated_moving_intervals": 0,
-        "moving_intervals": 157
-      },
-      "e2e11-b-s61001-r2": {
-        "map_error_m": {
-          "n": 301,
-          "max": 2.8939777682940195,
-          "median": 1.5934268447029967
-        },
-        "control_error_m": {
-          "n": 301,
-          "max": 2.8422751958957515,
-          "median": 1.6278311930843221
-        },
-        "stall_duration_s": 39.19999999999999,
-        "gated_frames": 0,
-        "gated_moving_intervals": 0,
-        "moving_intervals": 23
-      },
-      "e2e11-b-s61002-r2": {
-        "map_error_m": {
-          "n": 301,
-          "max": 2.6142659265309613,
-          "median": 1.470400248658858
-        },
-        "control_error_m": {
-          "n": 301,
-          "max": 3.0870158679642095,
-          "median": 1.6310958807113602
-        },
-        "stall_duration_s": 45.4,
-        "gated_frames": 0,
-        "gated_moving_intervals": 0,
-        "moving_intervals": 22
-      }
-    }
-  },
-  "online_first120": {
-    "scope": "Evaluation-only first120 SIMseconds, not final",
-    "artifact": "online-first120.json.zst",
-    "r2": {
-      "e2e11-a-s61001-r2": {
-        "map_error_m": {
-          "n": 601,
-          "max": 1.4358020479471347,
-          "median": 0.16163066582722735
-        },
-        "control_error_m": {
-          "n": 601,
-          "max": 1.9636785037839044,
-          "median": 0.8693805242279768
-        },
-        "stall_duration_s": 21.40000000000002,
-        "gated_frames": 96,
-        "gated_moving_intervals": 0,
-        "moving_intervals": 228
-      },
-      "e2e11-a-s61002-r2": {
-        "map_error_m": {
-          "n": 601,
-          "max": 3.1932843784092135,
-          "median": 1.100459296995044
-        },
-        "control_error_m": {
-          "n": 601,
-          "max": 3.247879530821401,
-          "median": 0.6395819135683427
-        },
-        "stall_duration_s": 10.400000000000002,
-        "gated_frames": 35,
-        "gated_moving_intervals": 0,
-        "moving_intervals": 169
-      },
-      "e2e11-b-s61001-r2": {
-        "map_error_m": {
-          "n": 601,
-          "max": 5.659395693121275,
-          "median": 2.8939777682940195
-        },
-        "control_error_m": {
-          "n": 601,
-          "max": 5.503750953942529,
-          "median": 2.8422751958957515
-        },
-        "stall_duration_s": 77.99999999999999,
-        "gated_frames": 0,
-        "gated_moving_intervals": 0,
-        "moving_intervals": 23
-      },
-      "e2e11-b-s61002-r2": {
-        "map_error_m": {
-          "n": 601,
-          "max": 3.626234732754522,
-          "median": 2.405162124067485
-        },
-        "control_error_m": {
-          "n": 601,
-          "max": 4.300041384880178,
-          "median": 3.0870158679642095
-        },
-        "stall_duration_s": 74.60000000000002,
-        "gated_frames": 0,
-        "gated_moving_intervals": 0,
-        "moving_intervals": 22
-      }
-    }
-  },
-  "online_residual_first120": {
-    "file": "online-residual-first120.json",
-    "scope": "evaluation only; no change to active source",
-    "seed61002_r2_partial_motion_60_120": {
-      "duration_s": 41.4,
-      "commanded_m": 2.675146651045619,
-      "actual_path_m": 1.063888727090006,
-      "gated_intervals": 1,
-      "total_intervals": 207
-    },
-    "remaining": "Binary stationarity cannot estimate a nonzero slip ratio or correct heading drift. Keep the frozen four-run comparison; report final failure if unmet."
-  },
-  "online_navigation_exhaustion": {
-    "run": "e2e11-a-s61001-r2",
-    "robot": "r1",
-    "first_observed_by_sim_s": 84,
-    "last_inspected_sim_s": 189,
-    "status": "exploration_finished",
-    "reason": "no reachable frontier after one sweep",
-    "gate_active": false,
-    "command": "hold",
-    "artifact": "a61001-r1-hold-diagnosis.json.zst",
-    "action": "record_only_dev_light",
-    "scope": "design-level navigation exhaustion, not a physical failure; source frozen"
-  },
-  "completed_launches": 4,
-  "unfinished_launches": 4,
-  "running_checkpoint": "running-checkpoint.json",
-  "last_recorded_utc": "2026-10-11T19:39:45.362885+00:00"
+  "artifacts": {
+    "path": "artifact-inventory.json.zst",
+    "bytes": 1584,
+    "sha256": "0e32a6024f8a871fccc063baba11815b17bb3fec62973c328e93877b7728d06b"
+  }
 }

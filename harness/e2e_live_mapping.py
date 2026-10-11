@@ -16,7 +16,7 @@ from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
 
 
-def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None):
+def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None):
     if goal_geometry not in ('off','e2e_b80_v1'):raise ValueError('UNKNOWN_GOAL_GEOMETRY')
     from harness.active_navfn_start import make_mapper
     from harness.grid_acceleration import install
@@ -32,7 +32,8 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
     graph_cache(explorer.memory,graph_acceleration='match_cache_v1')
     install_profile(explorer.memory.self_map,profile='egomap27_wide')
     from harness.goal_route_heading import OPTION as HEADING
-    goal = GoalRoute(explorer,heading_host=HEADING,dev_light=True)
+    goal = GoalRoute(explorer,heading_host=HEADING,dev_light=True,
+                     leg_budget_s=270. if mapping_budget_s is None else mapping_budget_s)
     goal = attach(goal, own_route='goal_route_v1' if rid=='r1' else 'off',
         arrival_gate='rgb_geometry_v1', covariance_inflation='nees_frozen_v1',
         covariance_profile=covariance_profile,
@@ -73,10 +74,10 @@ def beam_observer():
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None):
         self.robot_id=rid;self.study_options=options
         self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
-                            exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options)
+                            exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s)
         self.observe_beam=beam_observer()
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]

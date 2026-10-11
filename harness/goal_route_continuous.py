@@ -115,8 +115,10 @@ class StationaryPitch:
 
 
 class GoalRoute:
-    def __init__(self,explorer,*,heading_mode='path_tangent_v1',heading_host='off',dev_light=False):
+    def __init__(self,explorer,*,heading_mode='path_tangent_v1',heading_host='off',dev_light=False,leg_budget_s=270.):
         if heading_mode not in ('off','path_tangent_v1'):raise ValueError('UNKNOWN_HEADING_MODE')
+        if not math.isfinite(leg_budget_s) or leg_budget_s<=0:raise ValueError('FINITE_LEG_BUDGET_REQUIRED')
+        self.leg_budget_s=float(leg_budget_s)
         self.explorer=explorer;self.robot_id=explorer.robot_id;self.started=explorer.started
         self.dev_light=dev_light;self.heading_mode=heading_mode;self.stage='explore';self.done=False;self.declared=False
         from harness.goal_route_heading import Host,OPTION as HOST
@@ -272,8 +274,8 @@ class GoalRoute:
         self.own_rgb_received(t=t,frame_id=frame_id,rgb=rgb,servo=servo,sample=sample)
         if self.stage!='return':
             self._select(t);self._arrival(t,frame_id,pose,box_visible);self._select(t)
-        if t-self.leg_start>=270:
-            self.done=True;self.stage='budget_exhausted';self.event(t,'leg_budget_exhausted',reached=list(self.reached),active=self.active)
+        if t-self.leg_start>=self.leg_budget_s:
+            self.done=True;self.stage='budget_exhausted';self.event(t,'leg_budget_exhausted',reached=list(self.reached),active=self.active,leg_budget_s=self.leg_budget_s)
         target=None;nav=self.navigator;shared_used=False
         if self.stage=='approach':target=np.asarray(self.entities[self.active]['center_m'])
         elif self.stage=='return':

@@ -84,12 +84,12 @@ def test_calibrated_reverse_is_available():
     assert d.pose[0]<0 and d.active is None
 
 
-def robot(options):
+def robot(options,mapping_budget_s=None):
     from harness.e2e_live_mapping import Robot
     from harness.s4_event_policy import Options as Study
     cov=json.loads(Path('configs/e2e_nees_egomap70_dev_v1.json').read_text())
     return Robot('r1',61001,cov,Study(),exploration_progress='frontier_progress_v1',
-        pose_fix='innovation',path_follow='rpp_v1',stall_options=options)
+        pose_fix='innovation',path_follow='rpp_v1',stall_options=options,mapping_budget_s=mapping_budget_s)
 
 
 def receive(r,i):
@@ -139,6 +139,8 @@ def test_bundle_and_managed_cli_register_all_explicit_toggles():
     assert '--stall-bundle' not in w['required_inputs'] and '--dev-light' not in w['required_inputs']
     for flag in ('--stall-odometry','--stall-recovery','--stall-noise'):assert flag in w['required_inputs']
     assert _option(['--stall-odometry',PULSE_GATE,'--stall-bundle'],'--stall-odometry')==PULSE_GATE
+
+
 def test_e2e11_registered_calls_reach_relay_admission():
     from scripts.s4_proxy_relay import accepted_call_id
     for batch in ('a','b'):
@@ -148,3 +150,36 @@ def test_e2e11_registered_calls_reach_relay_admission():
     for name in ('e2e11-c-s61001','e2e11-a-s61003','e2e11-a-s61001-r3','other-e2e11-a-s61001'):
         assert not accepted_call_id(name+':call-0001-r1:1')
 
+
+def test_registered_mission_budget_reaches_goal_and_preserves_legacy_cutoff():
+    from scripts.run_e2e_ownmap_live import bundle
+    legacy=bundle('a'*40,61001,'study_gemma4_31b_v1',enabled=True,stall_bundle=True)
+    assert legacy['execution_bundle_id']=='e2e-stall-odometry-v198'
+    assert 'mapping_budget_s' not in legacy['e2e_options']
+    fixed=bundle('a'*40,61001,'study_gemma4_31b_v1',enabled=True,stall_bundle=True,mapping_budget='case_cap_v1')
+    assert fixed['execution_bundle_id']=='e2e-stall-budget-v199'
+    assert fixed['e2e_options']['mapping_budget_s']==fixed['case_cap_s']==1800.
+    for selected,limit in ((None,270.),(fixed['e2e_options']['mapping_budget_s'],1800.)):
+        r=robot(Options(),selected);receive(r,0)
+        receive(r,1349)  # 269.8 SIM seconds, own RGB only.
+        assert not r.goal.done
+        receive(r,1350)
+        assert r.goal.done==(limit==270.)
+        if limit==1800.:
+            receive(r,8999);assert not r.goal.done
+            receive(r,9000);assert r.goal.done
+        assert r.goal.stage=='budget_exhausted' and not r.goal.declared
+        assert r.goal.events[-1]['leg_budget_s']==limit
+
+
+def test_mapping_budget_is_finite_and_catalog_input_is_explicit():
+    from harness.goal_route_continuous import GoalRoute
+    from scripts.run_e2e_ownmap_live import bundle
+    from sim.workflow_manager import catalog
+    for value in (0.,-1.,float('inf'),float('nan')):
+        with pytest.raises(ValueError,match='FINITE_LEG_BUDGET_REQUIRED'):
+            GoalRoute(object(),leg_budget_s=value)
+    with pytest.raises(ValueError,match='UNKNOWN_MAPPING_BUDGET'):
+        bundle('a'*40,61001,'study_gemma4_31b_v1',mapping_budget='guess')
+    rows,_=catalog(Path('.'));w=next(w for w in rows['workflows'] if w['id']=='e2e-stall-budget-v199')
+    assert '--mapping-budget' in w['required_inputs']

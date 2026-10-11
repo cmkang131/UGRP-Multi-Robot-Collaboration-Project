@@ -11,3 +11,5 @@
 URL·열람 시각·본문 SHA-256은 [sources.json](sources.json)에 있다. 단순 source 열람, 고정 명령 재생, 새 폐루프 실행의 근거는 서로 구분한다.
 
 - 초기 실행 HOST_ERROR: 기존 릴레이의 `re.fullmatch` 허용 목록에서 e2e11 이름을 누락하여 HTTP 400, provider 전달 0회. [Python re.fullmatch](https://docs.python.org/3/library/re.html#re.fullmatch)의 전체 문자열 검사를 유지하고 A/B·61001/61002·최초/r2만 등록했다. 제어기는 변경하지 않는다.
+- 270초 내부 예산 오류: Nav2 `BackUpAction`의 `time_allowance` 입력과 BehaviorTree.CPP `TimeoutNode`의 명시적 유한 timeout을 참고했다. 제한을 제거하지 않고 등록된 외부 case cap(1800 SIM초)을 내부 GoalRoute에 전달하는 `case_cap_v1`을 기본 off로 추가했다. 기존 270초 동작은 보존하며 270/1800초 경계를 실제 Robot receive 경로의 고정 입력 시험으로 검증했다. v199는 준비 마감 후라 실행하지 않았다.
+- `m-explore`는 frontier 목록 소진/모든 frontier blacklist 상태에서 탐색을 종료한다. 우리 실행의 `exploration_finished` 역시 실제 frontier 고갈이며 지도 완성 또는 B 경계 확인을 뜻하지 않는다. 이 문제는 판정에서 분리했고 이번 라운드에서는 임의 성공 처리나 정답 재시작을 넣지 않았다.
