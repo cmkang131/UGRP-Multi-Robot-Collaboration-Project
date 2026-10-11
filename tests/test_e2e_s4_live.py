@@ -157,3 +157,12 @@ def test_relay_admits_actual_e2e_ledger_id_without_widening_to_arbitrary_runs():
     assert accepted_call_id('s4live1-old-run:call-0001-r2:2')
     assert not accepted_call_id('arbitrary:call-0001-r1:1')
     assert not accepted_call_id('e2eaz1-gemma-s99999-on:call-0001-r1:1')
+
+
+def test_guarded_batch_contains_exactly_first_four_registered_cells():
+    from scripts.run_e2e_azure_batch import cells
+    from scripts.s4_proxy_relay import accepted_call_id
+    rows=cells()
+    assert len(rows)==4 and len(set(r[0] for r in rows))==4
+    assert {(r[1],r[2]) for r in rows}=={(s,m) for s in (61001,61002) for m in ('gemma','gemini')}
+    assert all(accepted_call_id(name+':call-0001-r1:1') for name,*_ in rows)
