@@ -197,14 +197,22 @@
   "remaining": [
     "Future midnight/real eight-hour/expiry firing unverified on final source.",
     "Final-source graceful stop and real ARM archive not exercised; shared VM leases intentionally preserved.",
-    "Current candidate CI and independent final review pending at record creation."
+    "CI was in progress at this record commit; final status is linked in delivery. Independent final policy re-review and merge remain."
   ],
   "delivery": {
     "committed_source": "9589255ce589ba93343693138df0b743de3a233f",
-    "push": "pending",
-    "draft": true,
-    "ci": "pending",
-    "merge": "not_requested_in_completion_steps; independent final policy review required"
+    "pushed_candidate_observed": "90ddca89f3d58e13fdb5372c93815f5dddd4e0ad",
+    "push": "verified origin/codex/azure-sim and PR head match",
+    "draft": false,
+    "mergeable": "MERGEABLE",
+    "ci": {
+      "status_at_record": "in_progress",
+      "observed_run_id": 38131256784,
+      "live_checks": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/438/checks",
+      "final_confirmation_raw": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/ci-final.json",
+      "final_confirmation_location": "PR body and raw record; never infer CI completion from the record commit"
+    },
+    "merge": "not performed; final independent policy re-review required"
   },
   "references": [
     {
@@ -285,6 +293,12 @@
       "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/vm-before.json",
       "bytes": 1391,
       "sha256": "aaabbeaf9a31be52e47604c06c2a7ea232fcdb636c4382d9f80a563f35d1a2dc"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/ci-at-push.json",
+      "bytes": 30314,
+      "sha256": "d95f14fdd241c16f8634340ae352dafc287f0b2fc236f5794d6499a322273807",
+      "scope": "historical push-time CI snapshot"
     }
   ],
   "code_sha256": {
