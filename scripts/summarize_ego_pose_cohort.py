@@ -31,6 +31,12 @@ def aggregate(root, sha):
         scores = [j['score'] for j in measured]
         frames = sum(s['samples'] for s in scores)
         paired = [s for p in pairs.values() for s in p['runs'] if s['condition'] == condition]
+        regressions=[]
+        for name,pair in pairs.items():
+            by_condition={r['condition']:r for r in pair['runs']}
+            candidate=by_condition[condition]['rmse_m'];baseline=by_condition['off']['rmse_m']
+            if candidate>baseline+1e-12:
+                regressions.append(dict(group=name,candidate_rmse_m=candidate,baseline_rmse_m=baseline))
         def jumps(which, values):
             return dict(transitions=sum(s[which]['transitions'] for s in values),
                         counts={k: sum(s[which]['counts'][k] for s in values)
@@ -52,6 +58,7 @@ def aggregate(root, sha):
             map_jumps=jumps('map_jumps',scores), control_jumps=jumps('control_jumps',scores),
             paired_map_jumps=jumps('map_jumps',paired), paired_control_jumps=jumps('control_jumps',paired),
             paired_groups=len(paired), paired_frames=sum(s['frames'] for s in paired),
+            paired_rmse_regressions=regressions,
             paired_rmse_m=math.sqrt(sum(s['squared_error_sum_m2'] for s in paired)/
                 sum(s['frames'] for s in paired)) if paired else None,
             commands=sum(s['commands'] for s in scores),

@@ -44,7 +44,15 @@
     "new_tests_explicitly_registered": true,
     "registered_test_files_now": 550,
     "failed_job": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38144323189/job/114484555878",
-    "log_sha256": "22636655673284efee46e0b8cdde885038b7675b9b5dd52c4d419626f8c7bab4"
+    "log_sha256": "22636655673284efee46e0b8cdde885038b7675b9b5dd52c4d419626f8c7bab4",
+    "source_comparison": {
+      "path": "/Users/changmin/projects/ugrp/outputs/egojump-ci-base-source-comparison.json",
+      "sha256": "52c0cc223bebd39e5fb5910d6145b71a91bc17d666589c5e8926b81e2f977edc",
+      "base_final_pair_paths_identical": 251,
+      "coela_actual_base_sha256": "e1e5dcb16052896878230a05da77ae65e2f55a29fd9991f5a04f105a1b1498b3",
+      "coela_expected_sha256": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+      "additional_ci_failures": "historical hash/archive, optional MuJoCo, import-order failures; not all isolated or repaired"
+    }
   },
   "ci_registration_validation": {
     "passed": 10,
@@ -72,6 +80,27 @@
     "command": "pytest test_ego_pose_runner.py test_ego_pose_continuity.py with sys.modules[mujoco]=None",
     "passed": 11,
     "elapsed_s": 1.04,
-    "frozen_azure_worker_unchanged": "98ffd82347c764fc6ddcd319d1d383df16d994a5"
+    "frozen_azure_worker_unchanged": "98ffd82347c764fc6ddcd319d1d383df16d994a5",
+    "frozen_worker_parity": {
+      "frozen_worker": "98ffd82347c764fc6ddcd319d1d383df16d994a5",
+      "normalized_function_ast_identical": [
+        "bundle",
+        "run",
+        "score",
+        "group",
+        "main"
+      ],
+      "real_bundle_comparisons_passed": 18,
+      "scope": "numeric/static metadata only; no physics or rendering",
+      "harness_unchanged": true
+    },
+    "parity_receipt_sha256": "3d57fabe98f3811e1efcb8edd1ace17b1a59e15ddcae830768139a73a0b7bff0"
+  },
+  "offline_expansion": {
+    "complete_numeric_replay": true,
+    "original_eight_candidate_outputs_identical": true,
+    "main_runs": 11,
+    "smoke_runs": 1,
+    "scope": "pure numeric fixed posterior replay; not physics; additional input selection with original evidence unchanged"
   }
 }

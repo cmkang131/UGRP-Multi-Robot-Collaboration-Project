@@ -85,5 +85,54 @@
     "egojump-{seed}-{condition}-v1"
   ],
   "active_bundle": "egojump-{seed}-{condition}-v2",
-  "v2_reason": "v1 virtual information-gain clone creates incomplete PoseView after B declaration; all six seeds/three conditions rerun on one fixed v2 SHA"
+  "v2_reason": "v1 virtual information-gain clone creates incomplete PoseView after B declaration; all six seeds/three conditions rerun on one fixed v2 SHA",
+  "resource_scaling_20261011T1515Z": {
+    "registered_runs_unchanged": 18,
+    "frozen_worker_unchanged": "98ffd82347c764fc6ddcd319d1d383df16d994a5",
+    "reason": "Azure source-cache cleanup by its owner restored about 50 GiB; load about 5; memory and admission rechecked per group",
+    "pipelines": [
+      {
+        "seeds": [
+          63004
+        ],
+        "cpus": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "seeds": [
+          63003
+        ],
+        "cpus": [
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "seeds": [
+          63005
+        ],
+        "cpus": [
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "seeds": [
+          63006
+        ],
+        "cpus": [
+          0,
+          10,
+          11
+        ]
+      }
+    ],
+    "handoff": "stop only own local supervisors and release leases, reattach existing physical jobs; no new physical attempt for 63003/4; no other owner process or VM action",
+    "original_absolute_window_end_utc": "2026-10-11T18:23:39Z"
+  }
 }

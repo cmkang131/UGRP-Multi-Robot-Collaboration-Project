@@ -12,24 +12,26 @@ import sys
 import numpy as np
 
 
-def extract(root):
-    for folder in sorted(Path(root).glob('egomap70-*')):
+def extract(root, folders=None):
+    for folder in sorted(folders if folders is not None else Path(root).glob('egomap70-*')):
         if not folder.is_dir():
             continue
+        run = folder.parent.name if folder.name == 'data' else folder.name
         provenance = []
         def read(name, lines=False):
             p = folder/name
             if not p.exists():
                 p = Path(str(p)+'.zst')
-            provenance.append(dict(path=str(p), bytes=p.stat().st_size,
-                sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
-            raw = subprocess.check_output(['zstd', '-qdc', str(p)]) if p.suffix == '.zst' else p.read_bytes()
+            packed = p.read_bytes()
+            provenance.append(dict(path=str(p), bytes=len(packed),
+                sha256=hashlib.sha256(packed).hexdigest()))
+            raw = subprocess.check_output(['zstd', '-qdc'], input=packed) if p.suffix == '.zst' else packed
             return [json.loads(x) for x in raw.splitlines()] if lines else json.loads(raw)
         decisions = read('decisions.json')
         own = read('own-controller.jsonl', True)
         online = read('online-maps.jsonl', True)
         route = read('route-map.json')
-        print(json.dumps(dict(kind='sources', run=folder.name, sources=provenance)), flush=True)
+        print(json.dumps(dict(kind='sources', run=run, sources=provenance)), flush=True)
         by_t = {round(x['t'], 6):x for x in decisions}
         clouds = {round(x['t'], 6):x['grid'] for x in online}
         offsets = {round(x['t'], 6):x['delta'] for x in route['offsets']}
@@ -60,7 +62,7 @@ def extract(root):
             prior_lineage_pose = None
             if pe and previous_selected is not None:
                 prior_lineage_pose = pe[previous_selected].get('pose')
-            print(json.dumps(dict(kind='sample', run=folder.name, t=row['t'], frame_id=row['frame_id'],
+            print(json.dumps(dict(kind='sample', run=run, t=row['t'], frame_id=row['frame_id'],
                 command_odom=driver.tolist(), body_delta=delta.tolist(),
                 cluster_pose=None if cluster is None else cluster.tolist(), cluster=info,
                 measurement=bool(pe), reason=d.get('reason'), raw_pose=d.get('pose'),
@@ -77,6 +79,11 @@ def extract(root):
 
 
 if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('root', type=Path)
+    parser.add_argument('--folder', action='append', help='explicit available child; other incoming children may be incomplete')
+    args = parser.parse_args()
     if 'dominant_cluster' not in globals():
         from harness.ego_pose_continuity import dominant_cluster
-    extract(sys.argv[1])
+    extract(args.root, None if args.folder is None else [args.root/name for name in args.folder])

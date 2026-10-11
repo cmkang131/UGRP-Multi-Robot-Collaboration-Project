@@ -1265,5 +1265,331 @@
     "worker_sha": "98ffd82347c764fc6ddcd319d1d383df16d994a5"
   },
   "cache_relocation_receipt": "/Users/changmin/projects/ugrp/outputs/egojump-cache-relocation.json",
-  "idle_cache_relocation_receipt": "/Users/changmin/projects/ugrp/outputs/cleanup-records/egojump-source-cache-20261011/receipt.json"
+  "idle_cache_relocation_receipt": "/Users/changmin/projects/ugrp/outputs/cleanup-records/egojump-source-cache-20261011/receipt.json",
+  "offline_expanded": {
+    "main": {
+      "off": {
+        "runs": 11,
+        "frames": 18790,
+        "rmse_m": 0.6634190133394281,
+        "mean_final_error_m": 0.5470400631298964,
+        "map_jumps": {
+          "0.05": 1520,
+          "0.2": 557,
+          "0.5": 63
+        },
+        "control_jumps": {
+          "0.05": 1520,
+          "0.2": 557,
+          "0.5": 63
+        },
+        "max_map_jump_m": 0.8342080208855123,
+        "max_control_jump_m": 0.8342080208855123,
+        "worse_runs": [],
+        "historical_declarations": 7,
+        "frozen_geometry_pass": 6
+      },
+      "rep105": {
+        "runs": 11,
+        "frames": 18790,
+        "rmse_m": 0.6634190133394281,
+        "mean_final_error_m": 0.5470400631298964,
+        "map_jumps": {
+          "0.05": 1520,
+          "0.2": 557,
+          "0.5": 63
+        },
+        "control_jumps": {
+          "0.05": 0,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.8342080208855123,
+        "max_control_jump_m": 0.025846827267472512,
+        "worse_runs": [],
+        "historical_declarations": 7,
+        "frozen_geometry_pass": 6
+      },
+      "stationary": {
+        "runs": 11,
+        "frames": 18790,
+        "rmse_m": 0.6622562098885169,
+        "mean_final_error_m": 0.5289462154015699,
+        "map_jumps": {
+          "0.05": 1331,
+          "0.2": 444,
+          "0.5": 51
+        },
+        "control_jumps": {
+          "0.05": 1331,
+          "0.2": 444,
+          "0.5": 51
+        },
+        "max_map_jump_m": 0.8342080208855123,
+        "max_control_jump_m": 0.8342080208855123,
+        "worse_runs": [
+          "egomap70-63001-calib",
+          "egomap70-63001-calib_traversed",
+          "egomap70-63001-calib_traversed_zone",
+          "egomap70-63002-calib",
+          "egomap70-63002-calib_traversed",
+          "egomap70-63002-calib_traversed_zone",
+          "egomap70-63003-calib"
+        ],
+        "historical_declarations": 7,
+        "frozen_geometry_pass": 6
+      },
+      "cluster": {
+        "runs": 11,
+        "frames": 18790,
+        "rmse_m": 0.649576596901435,
+        "mean_final_error_m": 0.4833376625435438,
+        "map_jumps": {
+          "0.05": 168,
+          "0.2": 7,
+          "0.5": 1
+        },
+        "control_jumps": {
+          "0.05": 168,
+          "0.2": 7,
+          "0.5": 1
+        },
+        "max_map_jump_m": 0.5654821267178638,
+        "max_control_jump_m": 0.5654821267178638,
+        "worse_runs": [],
+        "historical_declarations": 7,
+        "frozen_geometry_pass": 3
+      },
+      "mahalanobis": {
+        "runs": 11,
+        "frames": 18790,
+        "rmse_m": 0.6389106939191197,
+        "mean_final_error_m": 0.4680966618516351,
+        "map_jumps": {
+          "0.05": 152,
+          "0.2": 1,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 152,
+          "0.2": 1,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.22702620519581862,
+        "max_control_jump_m": 0.22702620519581862,
+        "worse_runs": [],
+        "historical_declarations": 7,
+        "frozen_geometry_pass": 5
+      },
+      "bounded": {
+        "runs": 11,
+        "frames": 18790,
+        "rmse_m": 0.6391272917034618,
+        "mean_final_error_m": 0.4634371386594442,
+        "map_jumps": {
+          "0.05": 159,
+          "0.2": 1,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 159,
+          "0.2": 1,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.3025133724726131,
+        "max_control_jump_m": 0.3025133724726131,
+        "worse_runs": [],
+        "historical_declarations": 7,
+        "frozen_geometry_pass": 4
+      },
+      "cluster_mahalanobis": {
+        "runs": 11,
+        "frames": 18790,
+        "rmse_m": 0.6408579102873919,
+        "mean_final_error_m": 0.446037105847018,
+        "map_jumps": {
+          "0.05": 21,
+          "0.2": 1,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 21,
+          "0.2": 1,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.3030066073668031,
+        "max_control_jump_m": 0.3030066073668031,
+        "worse_runs": [],
+        "historical_declarations": 7,
+        "frozen_geometry_pass": 5
+      }
+    },
+    "smoke": {
+      "off": {
+        "runs": 1,
+        "frames": 363,
+        "rmse_m": 0.25206796252999925,
+        "mean_final_error_m": 0.21940121546841576,
+        "map_jumps": {
+          "0.05": 42,
+          "0.2": 13,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 42,
+          "0.2": 13,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.43141154983615526,
+        "max_control_jump_m": 0.43141154983615526,
+        "worse_runs": [],
+        "historical_declarations": 0,
+        "frozen_geometry_pass": 0
+      },
+      "rep105": {
+        "runs": 1,
+        "frames": 363,
+        "rmse_m": 0.25206796252999925,
+        "mean_final_error_m": 0.21940121546841576,
+        "map_jumps": {
+          "0.05": 42,
+          "0.2": 13,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 0,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.43141154983615526,
+        "max_control_jump_m": 0.012923413773167561,
+        "worse_runs": [],
+        "historical_declarations": 0,
+        "frozen_geometry_pass": 0
+      },
+      "stationary": {
+        "runs": 1,
+        "frames": 363,
+        "rmse_m": 0.2493967760666983,
+        "mean_final_error_m": 0.27336068538271696,
+        "map_jumps": {
+          "0.05": 27,
+          "0.2": 6,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 27,
+          "0.2": 6,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.43141154983615543,
+        "max_control_jump_m": 0.43141154983615543,
+        "worse_runs": [],
+        "historical_declarations": 0,
+        "frozen_geometry_pass": 0
+      },
+      "cluster": {
+        "runs": 1,
+        "frames": 363,
+        "rmse_m": 0.21704588383997728,
+        "mean_final_error_m": 0.2483277337846952,
+        "map_jumps": {
+          "0.05": 3,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 3,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.12445107694042501,
+        "max_control_jump_m": 0.12445107694042501,
+        "worse_runs": [],
+        "historical_declarations": 0,
+        "frozen_geometry_pass": 0
+      },
+      "mahalanobis": {
+        "runs": 1,
+        "frames": 363,
+        "rmse_m": 0.23626497915776126,
+        "mean_final_error_m": 0.2675284916766009,
+        "map_jumps": {
+          "0.05": 2,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 2,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.09636886067576242,
+        "max_control_jump_m": 0.09636886067576242,
+        "worse_runs": [],
+        "historical_declarations": 0,
+        "frozen_geometry_pass": 0
+      },
+      "bounded": {
+        "runs": 1,
+        "frames": 363,
+        "rmse_m": 0.23612927594751118,
+        "mean_final_error_m": 0.2674640004378566,
+        "map_jumps": {
+          "0.05": 2,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 2,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.0727867666681216,
+        "max_control_jump_m": 0.0727867666681216,
+        "worse_runs": [],
+        "historical_declarations": 0,
+        "frozen_geometry_pass": 0
+      },
+      "cluster_mahalanobis": {
+        "runs": 1,
+        "frames": 363,
+        "rmse_m": 0.23113417528911187,
+        "mean_final_error_m": 0.2878652292410611,
+        "map_jumps": {
+          "0.05": 1,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "control_jumps": {
+          "0.05": 1,
+          "0.2": 0,
+          "0.5": 0
+        },
+        "max_map_jump_m": 0.08514150115784148,
+        "max_control_jump_m": 0.08514150115784148,
+        "worse_runs": [],
+        "historical_declarations": 0,
+        "frozen_geometry_pass": 0
+      }
+    },
+    "scope": {
+      "original_selection_runs": 8,
+      "original_selection_unchanged": true,
+      "added_main": 3,
+      "added_smoke": 1,
+      "incomplete_main_archives": 13,
+      "oracle_x86_read_only_connection": "timeout; no VM action",
+      "original_eight_candidate_outputs_exactly_preserved": true
+    },
+    "receipt": {
+      "raw_bytes": 302571,
+      "raw_sha256": "bb1674e5bcff9f5de427572721514c9910f71973616237ed4a2fb38c411613ce",
+      "compressed_bytes": 30809,
+      "compressed_sha256": "4d94fc5971e254b5db34abd1464c9a5f12634476f566d5622ece1377a3f84b1d",
+      "local": "/Users/changmin/projects/ugrp/outputs/egojump-offline-expanded/summary.json.zst",
+      "committed": "experiments/2026-10-11-ego-pose-continuity/offline-expanded-summary.json.zst",
+      "roundtrip": true
+    }
+  }
 }
