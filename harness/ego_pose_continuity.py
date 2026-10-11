@@ -162,6 +162,12 @@ class PoseView:
         return getattr(base, name)
 
     @property
+    def forecast_odometry(self):
+        # Virtual information-gain rollouts mutate a private particle cloud,
+        # not the live output reporter or its correlated covariance state.
+        return self.base
+
+    @property
     def reporting(self):
         return any(getattr(self.options, k) != 'off' for k in
                    ('pose_reporting', 'correction_gate', 'correction_limit'))

@@ -9,3 +9,5 @@
 확인 범위: 위 공개 원문/공개 구현을 직접 열람했다. REP ros.org와 일부 docs URL은 접근 거부여서 공식 GitHub 원문으로 확인했다. 최신 main 구현도 대조했으며 새로운 논문의 검증되지 않은 개선을 추가하지 않았다. 이미 본 DEV 로그의 후보 선택은 확증 결과가 아니다.
 
 Azure CPU 제한: [systemd AllowedCPUs](https://raw.githubusercontent.com/systemd/systemd/main/man/systemd.resource-control.xml)의 cgroup cpuset으로 자기 scope만 0–11에 제한한다. taskset 이후 Mesa helper가 affinity를 확장하는 것을 관측했으므로 thread affinity도 확인했다. [Mesa LP_NUM_THREADS](https://docs.mesa3d.org/envvars.html)는 렌더 스레드 수이고 CPU 허용 범위 제한을 대신하지 않는다.
+
+온라인 가상 경로 복제 오류: [Python deepcopy memo](https://docs.python.org/3/library/copy.html)에 따라 wrapper와 underlying odometry의 cyclic owner를 같은 private 복제 객체로 연결한다. 기존 forecast는 object.__new__(type(grid.odom)) 뒤 owner/driver만 넣어 PoseView의 base/reporter를 빠뜨렸다. 가상 particle rollout은 private CloudOdometry를 사용하고 실제 reporter·driver·RNG·cloud를 변경하지 않는 회귀 시험으로 검증한다.

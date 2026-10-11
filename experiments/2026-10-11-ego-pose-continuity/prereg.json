@@ -55,5 +55,10 @@
     "hashes",
     "first-success representative data"
   ],
-  "initial_check": "at 180-240 wall seconds: exceptions, frames/SIM, evaluation-only displacement, command diversity and stage entry; abnormal own run SIGINT and EXIT"
+  "initial_check": "at 180-240 wall seconds: exceptions, frames/SIM, evaluation-only displacement, command diversity and stage entry; abnormal own run SIGINT and EXIT",
+  "retired_bundles": [
+    "egojump-{seed}-{condition}-v1"
+  ],
+  "active_bundle": "egojump-{seed}-{condition}-v2",
+  "v2_reason": "v1 virtual information-gain clone creates incomplete PoseView after B declaration; all six seeds/three conditions rerun on one fixed v2 SHA"
 }

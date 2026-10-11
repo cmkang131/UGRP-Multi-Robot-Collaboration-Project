@@ -102,3 +102,18 @@ def test_rep105_transforms_targets_after_reference_path_selection(monkeypatch):
     # A new map correction changes only transform/targets, never odom pose.
     c.heading_host.command(**dict(kw,pose=local+[.7,0,0]))
     assert np.array_equal(calls[0]['pose'],calls[1]['pose'])
+
+
+def test_information_forecast_copies_underlying_cloud_without_live_state_changes():
+    from harness.active_information_gain import forecast
+    c,g,_,_=fixture_controller()
+    install(c,Options(pose_reporting=CLUSTER))
+    view=c._pose_continuity_view
+    before=(g.poses.copy(),g.weights.copy(),copy.deepcopy(g.histories),
+            np.asarray(view.base.driver.pose).copy(),view.reporter.pose.copy(),
+            copy.deepcopy(g.rng.bit_generator.state))
+    result=forecast(g,[[0,0],[.5,0]],seed=7)
+    assert np.isfinite(result['utility']) and result['views']==1
+    assert np.array_equal(g.poses,before[0]) and np.array_equal(g.weights,before[1])
+    assert g.histories==before[2] and np.array_equal(view.base.driver.pose,before[3])
+    assert np.array_equal(view.reporter.pose,before[4]) and g.rng.bit_generator.state==before[5]

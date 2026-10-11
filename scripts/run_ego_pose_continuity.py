@@ -29,7 +29,7 @@ dump=base.dump
 
 def bundle(seed,condition,source):
     b=base.bundle(seed,'off',source)
-    b.update(execution_bundle_id=f'egojump-{seed}-{condition}-v1',
+    b.update(execution_bundle_id=f'egojump-{seed}-{condition}-v2',
              comparison='same fresh seed/Scene/schedule, registered pose toggles only')
     b['options'].update(asdict(CONDITIONS[condition]))
     return b
