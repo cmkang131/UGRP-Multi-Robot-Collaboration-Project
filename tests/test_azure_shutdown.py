@@ -150,13 +150,13 @@ def test_start_recovery_preserves_live_sibling_without_archiving_or_signalling(r
     archive.assert_not_called();signal.assert_not_called()
 
 
-def test_start_recovery_preserves_existing_archive_and_keeps_stop_blocker(root, monkeypatch):
+def test_start_recovery_preserves_existing_copy_and_keeps_recovery_and_stop_blocked(root, monkeypatch):
     run(root)
     monkeypatch.setattr(shutdown,'active_archive_processes',lambda root,run:{1234})
     archive=Mock(side_effect=AssertionError('do not start duplicate copy'))
     monkeypatch.setattr(shutdown,'bounded_archive',archive)
     result=shutdown.lifecycle('recover','start_recovery',root,grace=.01)
-    assert result['active_archive_preserved']==['one'] and not result['failed']
+    assert result['active_archive_preserved']==['one'] and result['failed']==['one']
     assert shutdown.blockers(root)['unarchived']==['one']
     archive.assert_not_called()
 
@@ -173,13 +173,13 @@ def test_scheduled_archive_copy_requires_exact_run_and_incoming_target(root):
 @pytest.mark.parametrize('published',[True,False])
 def test_recover_rescans_archive_progress_before_retrying_mutex(root,monkeypatch,published):
     run(root)
-    monkeypatch.setattr(shutdown,'archived',Mock(side_effect=[False,published]))
+    monkeypatch.setattr(shutdown,'archived',Mock(side_effect=[False,published,published]))
     monkeypatch.setattr(shutdown,'active_archive_processes',Mock(side_effect=[set(),{2345}]))
     archive=Mock(side_effect=AssertionError('duplicate copy forbidden'))
     monkeypatch.setattr(shutdown,'bounded_archive',archive)
     result=shutdown.lifecycle('recover','start_recovery',root,grace=1)
     assert result['archived' if published else 'active_archive_preserved']==['one']
-    assert not result['failed'];archive.assert_not_called()
+    assert result['failed']==([] if published else ['one']);archive.assert_not_called()
 
 
 def test_archive_one_locks_same_run_before_copying(root, monkeypatch):
@@ -214,6 +214,60 @@ def test_start_recovery_archive_failure_refuses_admission(root, monkeypatch):
     with pytest.raises(RuntimeError, match='new execution refused'):
         azctl.recover()
     fetch.assert_not_called()
+
+
+def test_recover_failed_copy_then_scheduled_copy_keeps_failure_and_refuses_admission(root, monkeypatch):
+    folder = run(root)
+    archive = Mock(return_value=False)
+    monkeypatch.setattr(shutdown, 'bounded_archive', archive)
+    # The scheduled rsync starts only after recovery's first copy has failed.
+    monkeypatch.setattr(shutdown, 'active_archive_processes',
+                        lambda root, run: {2345} if archive.call_count else set())
+    monkeypatch.setattr(shutdown.time, 'sleep', lambda delay: None)
+    monkeypatch.setattr(sys, 'argv', ['guard', 'recover', '--root', str(root), '--grace-seconds', '1'])
+    assert shutdown.main() == 74
+    archive.assert_called_once()
+    record = json.loads(next((root / 'lifecycle/events').iterdir()).read_text())
+    assert record['failed'] == ['one'] and not record['archived']
+    assert record['active_archive_preserved'] == ['one']
+    assert record['attempts'] == {'one': 1}
+    assert not shutdown.archived(root, folder)
+    assert not (root / 'lifecycle/archives/one.json').exists()
+    assert (root / 'leases/one').exists()
+    assert folder.joinpath('raw').read_bytes() == b'flushed original'
+    monkeypatch.setattr(azctl.subprocess, 'run', lambda *args, **kw: subprocess.CompletedProcess([], 0))
+    monkeypatch.setattr(azctl, 'guest', lambda action: subprocess.CompletedProcess([], shutdown.main()))
+    fetch = Mock()
+    monkeypatch.setattr(remote_run, 'fetch_lifecycle', fetch)
+    with pytest.raises(RuntimeError, match='new execution refused'):
+        azctl.recover()
+    fetch.assert_not_called()
+
+
+@pytest.mark.parametrize('marker_state', ['missing', 'unverified', 'changed', 'verified'])
+def test_recover_requires_verified_unchanged_markers_for_every_deferred_run(root, monkeypatch, marker_state):
+    first = run(root, 'one')
+    second = run(root, 'two')
+    shutdown.write_json(root / 'lifecycle/archives/one.json',
+                        {'verified': True, 'source_state': shutdown.source_state(first)})
+    if marker_state != 'missing':
+        shutdown.write_json(root / 'lifecycle/archives/two.json',
+                            {'verified': marker_state != 'unverified',
+                             'source_state': shutdown.source_state(second)})
+    if marker_state == 'changed':
+        second.joinpath('raw').write_bytes(b'changed after verification')
+    monkeypatch.setattr(shutdown, 'active_archive_processes', lambda root, run: {2345})
+    archive = Mock(side_effect=AssertionError('duplicate copy forbidden'))
+    monkeypatch.setattr(shutdown, 'bounded_archive', archive)
+    monkeypatch.setattr(sys, 'argv', ['guard', 'recover', '--root', str(root), '--grace-seconds', '1'])
+    verified = marker_state == 'verified'
+    assert shutdown.main() == (0 if verified else 74)
+    record = json.loads(next((root / 'lifecycle/events').iterdir()).read_text())
+    assert record['archived'] == (['one', 'two'] if verified else ['one'])
+    assert record['failed'] == ([] if verified else ['two'])
+    assert record['active_archive_preserved'] == ['one', 'two']
+    assert (root / 'leases/two').exists()
+    archive.assert_not_called()
 
 
 def test_failed_rsync_resumes_incoming_and_never_overwrites_published(root, monkeypatch):

@@ -291,14 +291,13 @@ def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
                 report.setdefault('active_preserved', []).append(run.name)
                 write_json(record, report)
                 continue
+            deferred = False
             if action == 'recover' and active_archive_processes(root,run):
                 report.setdefault('active_archive_preserved', []).append(run.name)
-                write_json(record, report)
-                continue
+                deferred = True
             ok = archived(root, run)
             attempts = 0
-            deferred = False
-            while not ok and time.monotonic() < deadline:
+            while not ok and not deferred and time.monotonic() < deadline:
                 if action == 'recover':
                     # The scheduled archiver may publish or start copying after
                     # the first scan. Recheck instead of waiting on its mutex.
@@ -321,9 +320,10 @@ def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
                 write_json(record, report)
                 if not ok:
                     time.sleep(min(10, max(0, deadline - time.monotonic())))
-            if deferred:
-                write_json(record,report)
-                continue
+            if action == 'recover':
+                # A deferred copy or successful worker exit is not verification.
+                # Admission stays blocked until the unchanged-source marker exists.
+                ok = archived(root, run)
             report['archived' if ok else 'failed'].append(run.name)
             if not ok:
                 leases = root / 'leases'
