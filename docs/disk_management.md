@@ -1,299 +1,122 @@
-# UGRP 디스크 사용 관리
+# UGRP 영상·증거 저장 규칙
 
-2026-09-26 사용자 요청 "남은 게 중요한 게 아니라 이 프로젝트 자체가 너무 많이 잡아먹고 있다"에 따라 작성했다. 목표는 여유 공간 경보가 아니라 **프로젝트 자체의 사용량을 줄이고 작게 유지하는 것**이다. 수치는 `du` 기준 할당 크기(GiB)다. APFS clone은 전체 크기로 세므로 물리 사용량보다 클 수 있다. 측정 원본은 [사고 기록 폴더](../experiments/2026-09-26-disk-incident/footprint/)에 있다.
+2026-10-11 사용자 결정: 저장 공간을 다 쓴 뒤 회수·정리하지 말고, 배치 제출 전에 공간을 확보한다. 10/10 x86 tmpfs 원본 소실과 10/11 egomap66/67 전체 회수로 Mac 디스크가 찬 사고를 반영한다. egomap 36실행 약 15 GB 중 94%가 프레임별 비압축 JSON/JSONL이었다(사고 배치 관측치이며 모든 실행의 고정 예산은 아니다).
 
-## 1. 한눈에 보기
+이력: 2026-10-04의 이미지 원본 보존·최근 3일 규칙은 10/11의 PR 수명·dev/milestone/study 규칙으로 대체·통합했다. 이전 측정과 규칙 원문은 Git 이력에 남아 있다.
 
-| 구분 | 측정 (09-26 15:26) | 적용 뒤 측정 (16:05) | 제안 예산 |
-|---|---|---|---|
-| 기본 체크아웃 `outputs/` | 66.74 | 67.98 (Codex 은퇴분 0.82 유입, 다른 작업의 새 실행) | ≤ 40 |
-| worktree | 78.07 (69개) | 63.04 (57개. 이 PR의 worktree 등 2개는 sparse) | ≤ 10 |
-| 기본 체크아웃 나머지(`experiments/` 1.01, `.git` 0.96, `work/` 1.13 등) | 3.47 | 3.46 | ≤ 6 |
-| 가상환경(`Project-Runtimes/ugrp`) | 1.12 | 1.12 | ≤ 2 |
-| **프로젝트 합계** | **149.4** | **135.6** | **≤ 60** (58 + 여유 2) |
-| 에이전트 상태(`~/.codex` worktree 제외, `~/.kiro`, `~/.claude`) | 6.55 | 6.77 | 예산 밖, 보고만 |
+## 1. 위치: 실행 → ARM 보관 → Mac fetch-lite
 
-- 2026-09-26 18:24–18:54 사용자 승인 4항목을 적용했다. 결과·제외 목록·검증은 [적용 기록](../experiments/2026-09-26-disk-apply/README.md)에 있다. 아래 1–2절 수치는 그 전 측정이다.
-- 처음 적용은 두 가지다.
-  - 병합된 Codex-app worktree 14개를 은퇴시켜 checkout 14.38 GiB(추정)를 확보했다. 파일시스템 여유는 32.47 → 46.88 GiB로 늘었는데, 이 값에는 다른 작업의 쓰기가 섞여 있다.
-  - 이 PR의 worktree를 sparse로 바꿔 1.05 GiB → 0.13 GiB가 됐다.
-- 두 측정 사이에도 다른 에이전트의 새 실행·worktree가 늘었으므로, 차이 13.8 GiB는 순수 절감량이 아니다.
-- 예산에 도달하려면 아래 3절의 사용자 결정이 필요하다. 가장 큰 두 가지는 worktree를 sparse로 바꾸는 것과 오래된 raw를 외부로 옮기는 것이다.
-- `outputs/`는 하루 5–15 GiB씩 늘었다(폴더 이름 날짜 기준 09-24 8.3, 09-25 15.1 GiB). 보관 주기 없이 정리만 하면 며칠 안에 다시 찬다.
+- 원본은 **실행 호스트의 영속 디스크**에만 쓴다. tmpfs·ramfs·`/dev/shm`·`/tmp`·`/run`은 금지한다. 임시 x86 서버 종료 전에 회수·해시 검증을 완료한다. 영속 디스크 하나는 독립 백업 두 벌을 뜻하지 않는다.
+- x86 기본 실행 경로는 `~/ugrp-sim/runs/<batch-or-run>/`. 평가 결과와 해시 목록을 남긴 후 ARM `~/ugrp-archive/runs/`에 자동 아카이브한다. 기존 SSHFS 마운트 `~/ugrp-sim/arm`을 재사용한다. 로컬 사본 제거는 전체 복사·검증 뒤에만 하며 원래 경로에는 링크를 남긴다.
+- ARM은 stock-bot 호스트다. **복사 후 여유 25 GiB**를 지킨다. `~/stock-bot`·crontab은 건드리지 않는다. 아카이브는 실패 시 x86 사본을 남긴다. `.incoming-*` 미완료 복사는 재시도 전에 확인하며 자동 덮어쓰기·삭제하지 않는다.
+- Mac은 **fetch-lite만** 회수한다: summary/판정, 가벼운 원장, LLM 요청·응답 텍스트, 명령 궤적, 모든 파일 해시 목록, 압축 매니페스트, 버전별 대표 영상 1개와 그 데이터. 원본 전체 `rsync`·tar 회수는 금지한다. 진단에 꼭 필요한 파일만 해시와 함께 개별 회수한다.
+- fetch-lite는 경로 목록 `FETCH_LITE.txt`를 실행 담당자가 명시적으로 만든다. 큰 trace를 와일드카드 `*.json*`로 포함하지 않는다. 먼저 총 크기로 Mac 예산을 검사하고 `rsync -a --files-from=FETCH_LITE.txt oracle:ugrp-archive/runs/<run>/ <local>/`로 회수한다. 회수 목록·출처·전체 해시를 실험 기록에 연결한다. 대표 데이터의 범위는 아래 `keep`에 기록한다.
+- Git에는 `experiments/<ID>/`의 작은 요약·판정·검증 기록만 둔다(미디어 파일당 1 MiB, 실험당 5 MiB). raw 위치·해시·미회수 상태를 적으며 로컬 보관을 원격 백업으로 표현하지 않는다. Google Drive는 사용하지 않는다.
 
-## 2. 측정 결과 (09-26 14:42–15:49, 적용 전)
+## 2. 등급과 영구 보존
 
-### 2.1 기본 체크아웃 `outputs/` (66.74 GiB, 497항목)
-
-- 파일 종류별: 이미지 46.06 GiB(JPEG 106만 장, 평균 약 16 KB), JSON 11.42, 압축 3.91, 모델·배열 2.50, 영상 1.37, 기타 1.49.
-- 큰 폴더: `retired-worktrees` 12.25, `simulation-realtime-20260923` 3.69, `jev-semantic-motion-20260921-v1` 3.52, `zone-rgb-outcome-v2-20260925` 3.42, `plan-guidance-20260925` 2.93, `experiment-archives-20260907` 2.71, `act-action-training-20260924` 2.60, `dynamic-team-recovery-20260925` 2.33.
-- 연구 줄기별 분류(폴더 이름 기준 추정, 합계는 반올림):
-
-| 줄기 | GiB | 비고 |
+| class | 용도 | 무거운 원본의 보존 |
 |---|---|---|
-| `retired-worktrees` (9/7–9/20 worktree 보관분) | 12.25 | 9/23에 프레임 23.4 GiB 삭제 뒤 남은 결과·영상·모델 |
-| 현재 연구: zone·owncam·M1·M2 | 10.74 | dev 4.23 / test 2.92 / 미분류 3.60 |
-| Jev (9/21) | 10.49 | 보조 과제 |
-| 계획·동적 협업·재파지·지도 (9/24–25) | 9.25 | |
-| 실시간·시뮬레이션 속도 (9/23–24) | 5.92 | 현재 연구 대상 아님(사용자 방침) |
-| RGB·파지 (9/10) | 5.71 | |
-| dispatch·ACT·markerless·nav·pair | 8.18 | 9/8–9/24 |
-| 9/7 실험 ZIP 보관분 | 2.71 | 9/22 정리로 비압축본을 지운 뒤 남은 **유일 사본** |
-| TensorBoard·기타 | 1.49 | 스냅샷 98개 0.10 GiB + archive 0.26 GiB |
+| `dev` (기본) | 탐색·튜닝·개발·진단 | 해당 PR 병합 또는 종료 때 정리. 날짜로 판단하지 않음 |
+| `milestone` | 새 단계 첫 성공·버전별 대표 증거 | 원본 전부 보존, 자동 prune 제외 |
+| `study` | 정식 E2E·사전 등록 본 연구 | 원본 전부 보존, 자동 prune 제외 |
 
-### 2.2 worktree (69개, 78.07 GiB)
+모든 등급에서 영구 보존: summary/판정, LLM 요청·응답 **텍스트**, 자기 발행 명령 궤적, 가벼운 결과·trace 원장, **모든 파일의 SHA-256 목록**, 버전별 대표 영상 1개와 그 데이터. 프레임·이미지·npz·일반 영상·큰 trace는 dev의 무거운 원본이다. 알 수 없는 이름의 파일은 삭제 대상으로 추측하지 않는다. 모델 가중치는 기존 [모델 배포](model_artifacts.md) 규칙대로 보존한다.
 
-| 위치 | 개수 | 합계 | 추적 checkout | 무시 `outputs/` | 캐시 |
-|---|---|---|---|---|---|
-| `~/.codex/worktrees` | 23 | 27.08 | 23.52 | 3.50 | 0.07 |
-| `ugrp-wt/` | 42 | 44.54 | 43.86 | 0.58 | 0.10 |
-| `ugrp-worktrees/` | 3 | 5.40 | 3.14 | 2.24 | 0.02 |
-| 기타(`ugrp-kiro-agent`) | 1 | 1.04 | 1.04 | 0 | 0 |
-
-- 전체 checkout 1개는 약 1.03 GiB다. 그중 0.93 GiB가 `experiments/`의 추적 미디어다(아래 2.3).
-- 주인별: Claude 20개 23.19 GiB, Codex 23개 27.08 GiB, Kiro 26개 27.79 GiB.
-- 15:49 기준 56개: 병합됐고 열린 PR 없음 19개(22.14 GiB), 열린 PR 22개(23.53 GiB), 미병합이며 열린 PR 없음 15개(18.14 GiB).
-  - 미병합 15개는 Codex 9개(PR 없는 브랜치 6, detached 감사 2, 닫힌 PR #120 1)와 동결 소스 detached 6개다.
-
-### 2.3 추적 `experiments/` (origin/main, 1.00 GiB)
-
-- 종류별: zip 0.69 GiB(51개), gz 0.11(680), mp4 0.06(129), json 0.06(1,673), jpg 0.05(627), png·jsonl·xml 각 0.01.
-- 무거운 미디어(sparse에서 빼는 종류) 합계는 0.93 GiB다. 대부분 9/10–9/17 증거 ZIP이다: `2026-09-10-rgb-short-approach` 347 MiB, `2026-09-10-rgb-varied-start` 157 MiB, `2026-09-13-rgb-short-transport` 111 MiB, `2026-09-13-pair-carry-sync` 76 MiB.
-- 최근 기록은 작다. 9/20 이후 기록의 미디어는 실험당 최대 5.7 MiB(`2026-09-25-zone-cargo-catalogue`, 파일당 최대 0.5 MiB)다.
-- 실행 코드가 읽는 추적 압축 파일은 두 개뿐이다: `experiments/dispatch-skill-integration-20260917/models.zip`, `experiments/2026-09-10-rgb-varied-start/models.zip`(`tests/test_agent_worktree.py`가 소스를 검사한다).
-
-### 2.4 `.git`과 기타
-
-- `.git` 0.96 GiB(pack 931 MiB). 과거 증거 ZIP이 이력에 있어 줄이려면 이력 재작성과 강제 push가 필요하다. 금지된 작업이므로 제안하지 않는다. sparse checkout은 `.git`을 줄이지 않는다(worktree끼리 공유).
-- 새 clone에서는 `git clone --filter=blob:none --sparse`(partial clone)에 같은 sparse 패턴을 쓰면, 제외한 과거 증거 ZIP을 내려받지 않는다. 절감량은 측정하지 않았다.
-- 기본 체크아웃의 무시 폴더: `work/` 1.13 GiB(Raspberry Pi 이미지 작업 공간), `.venv-dev` 0.26 GiB, `작업 증거/` 0.04 GiB.
-
-### 2.5 실행 1회 크기
-
-| 실행 | 크기 | 구성 |
-|---|---|---|
-| M1 자기 카메라 1대 에피소드 (`m1-owncam-20260926/test`) | 25–48 MiB (6회 평균 36) | wrist JPEG q90 640×480 5 Hz 1,414–2,748장(장당 약 16 KB) 23–43 MiB, `eval_only/` 0.9–2.1 MiB, 영상 1.8–2.8 MB는 별도 |
-| 3대 dispatch LLM 실행 (`plan-guidance-20260925/legacy-1`) | 224 MiB | RGB 스킬 프레임 3,406장 187 MiB, LLM 요청·결정 61개 18 MiB, result.json 3.2 MB, 영상 1.9 MB |
-| M2 2대 운반 단계 (`zone-m2-pair-20260926`) | 단계당 159–363 MiB | 프레임 76k장 1.36 GiB |
-| 인식 평가 렌더 (`zone-rgb-outcome-v2-20260925`) | 3.42 GiB | JPEG 63k장 |
-| TensorBoard 스냅샷 | 98개 106 MiB | 평균 1.1 MiB, 최대 38 MiB |
-| 영상 | mp4 2,361개 1.37 GiB | 평균 0.6 MB |
-
-### 2.6 중복
-
-- **worktree마다 들어 있는 추적 미디어 사본이 가장 큰 중복이다.** 전체 checkout 68개 × 0.93 GiB ≈ 63 GiB다. Git은 같은 내용을 `.git`에 한 번만 압축해 둔다.
-- `outputs/`와 큰 worktree의 1 MiB 이상 파일 중 내용이 같은 파일: 논리 2.70 GiB, 물리 추정 2.50 GiB. 종류별로 JSON 0.90, 재생용 `model.mjb` 0.76, ACT `model.safetensors` 0.34, zip 0.24, mp4 0.10이다. `retired-worktrees`와 다른 위치 사이의 중복은 논리 1.26 GiB다.
-- TensorBoard는 raw 사본이 아니다. 스칼라·텍스트와 결정당 이미지 표본(최대 8장)만 담아 합계 0.36 GiB다.
-
-## 3. 감축 계획 (조치별 GiB)
-
-| # | 조치 | 절감 | 상태 |
-|---|---|---|---|
-| 1 | 병합된 Codex-app worktree 14개 은퇴(무시 자료 0.82 GiB 이동) | 14.38 | **적용함** |
-| 2 | 새 worktree는 sparse checkout (`agent_worktree.py new`) | 개당 0.92 (실측 134 MiB 대 1,077 MiB) | **도구·규칙 적용**, 이후 생성분부터 |
-| 3 | 병합됐고 열린 PR이 없는 다른 에이전트 worktree 은퇴 | 22개 23.01(추정), 무시 자료 0.24 이동 | **적용함**(09-26 사용자 승인, 사용 중 5개 제외) |
-| 4 | 열린 PR·동결 소스 worktree를 sparse로 전환 (`sparsify`) | 17개 15.59(18.09 → 2.50) | **적용함**(09-26 사용자 승인, 사용 중 7개 제외) |
-| 5 | Codex 미병합 9개: HEAD를 `codex/archive-<이름>-0926`에 올리고 SHA 확인 뒤 은퇴 | checkout 9.20(추정), 무시 자료 2.60 이동 | **적용함**(09-26 사용자 승인) |
-| 6 | 에이전트당 동시 worktree 8개 상한 | 안정 상태 24개 × 0.14 ≈ 3.4 | **도구 적용**(초과 시 거부) |
-| 7 | `experiments/`에 무거운 미디어 커밋 중단(파일당 1 MiB, 실험당 5 MiB) | 이후 checkout·`.git` 증가 방지 | **경고 적용**(pre-commit·CI) |
-| 8 | raw 보존 등급(4절)에 따른 외부 보관 | 21.7–46 | 사용자 결정 |
-| 9 | 기록된 dev·진단 raw 프레임 솎기(1 Hz + 결정 프레임) | 논리 추정 4.74 (중복 제거 뒤 실제는 더 작음) | **보류**: 삭제 조건(재생성·파생본) 미확인, 목록만 제시 |
-| 10 | 앞으로의 캡처 설정(5절) | dev 실행당 60–80% | 러너 주인·사용자 결정 |
-| 11 | 같은 내용 파일의 APFS clone 중복 제거 (4 KiB 이상, fclones) | 26.50 계획, `df` +26.77 | **적용함**(09-26 사용자 승인, 해시 재검증) |
-| 12 | `.venv-dev` 0.26, `work/` 1.13 | 최대 1.4 | 사용자 결정 |
-
-- 1–7을 모두 적용하면 worktree는 약 10 GiB 이하가 된다.
-- `outputs/` 40 GiB 예산에는 8의 앞 세 등급(21.7 GiB)과 오래된 보조 연구 raw 일부의 외부 보관이 필요하다.
-
-## 4. raw 보존 등급 (사용자가 등급마다 결정)
-
-AGENTS.md에 따라 raw 삭제·압축·이동은 사용자가 정한다(이미지 원본 중 5절 보존 규칙에 해당하지 않는 것은 2026-10-04 결정으로 휴지통 이동 가능). 크기는 16:05 측정이다(줄기별 T4–T7만 15:26). 폴더 이름 기반 분류라 추정치다. "기록 참조"는 origin/main의 `experiments/`·`docs/`·`configs/`가 그 폴더를 가리키는지를 뜻한다. `python3 scripts/disk_report.py --sections outputs,retention`이 최신 목록과 참조 여부를 보여 준다.
-
-| 등급 | 대상 | GiB | 제안 |
-|---|---|---|---|
-| T0 기반 자료 | `tensorboard*`, `agent-locks`, 모델 설치본 | 0.47 | 유지 |
-| T1 test 코호트 raw | 이름에 test·final·holdout·cohort가 있는 폴더 | 8.53 (기록 참조 6.11, 참조 없음 2.41) | 텍스트·로그·해시는 유지. 과거 실행의 이미지 원본은 5절 보존 규칙에 따라 정리할 수 있다(2026-10-04 결정). 앞으로의 본 연구 코호트는 사전 등록의 보존 기간 |
-| T2 dev·진단 raw | 이름에 dev·diag·pilot·probe·smoke·sweep이 있는 폴더 | 12.07 (기록 참조 6.63, 참조 없음 5.45) | 기록 참조분은 솎기 또는 외부 보관. 참조 없음분은 열린 PR의 기록인지 먼저 확인 |
-| T3 이전 worktree 보관분 | `retired-worktrees/` | 13.07 (오늘 이동분 포함) | 외부 보관 뒤 로컬 삭제 |
-| T4 퇴역 연구 raw | 실시간·시뮬레이션 속도 (9/23–24) | 5.92 | 외부 보관 또는 삭제 |
-| T5 9/7 실험 ZIP | `experiment-archives-20260907/` | 2.71 | 유일 사본이므로 외부에 두 벌 보관 뒤에만 로컬 삭제 |
-| T6 보조 연구선 (9/8–9/22) | Jev, RGB·파지, markerless·nav, pair, ACT, dispatch | 24.4 | 외부 보관 (기록 해시 대조 뒤) |
-| T7 현재 연구 | zone·owncam·M1·M2, 계획·동적 협업 (9/24–) | 20.0 | 연구 종료까지 유지. dev만 T2 규칙 |
-
-- 외부로 옮기기 전에 해당 기록의 `raw_index`·manifest 해시와 대조한다. 옮긴 뒤 새 위치를 기록에 추가한다. 로컬 사본만으로는 백업이 아니다.
-- T1–T7은 겹칠 수 있다(T6·T7 안에도 test·dev 폴더가 있다). 결정은 폴더 목록 단위로 한다.
-
-## 5. 캡처 설정 (앞으로의 실행)
-
-AGENTS.md는 모델 요청·응답 **텍스트, 원장, 결과·trace 로그와 제거한 이미지의 sha256 목록을 항상** 보존하고, 이미지 원본(모델 요청 이미지·제어기 입력 프레임·원본 영상)은 보존 규칙 4가지(진행 중 작업·열린 PR·테스트가 쓰는 자료, 최근 3일 실행, 버전별 대표 영상, 사전 등록한 본 연구 코호트)에 해당할 때만 둔다고 정한다(2026-10-04 사용자 결정. 과거 실행은 연구 결과가 아니라 플랫폼 개발 과정이므로 이미지 원본을 지울 수 있다. 이전의 "모델 요청 이미지 전부 보존" 규칙은 폐기). 해당하지 않는 이미지 원본은 목록을 쓴 뒤 휴지통으로 옮기고 `outputs/cleanup-records/`에 기록하며, 휴지통은 사용자가 비운다. 아래 표는 러너가 **쓰는 시점**의 기준이고, 쓴 뒤의 정리는 이 규칙을 따른다. 먼저 프레임의 용도를 나눈다.
-
-| 종류 | 예 | test 코호트 | dev·진단 |
-|---|---|---|---|
-| 모델 요청 입력 (LLM·ACT·학습 학생) | `team/*-request.json`, ACT 입력 | 바이트 그대로 전부(본 연구 코호트는 사전 등록의 보존 기간, 보존 규칙 4) | 쓰는 시점엔 전부. 텍스트·해시는 항상 보존하고 이미지 원본은 보존 규칙에 따라 정리 |
-| 규칙 기반 제어 입력 프레임 | 자기 카메라 추정기·RGB 스킬의 5 Hz JPEG | 전부 | 1 Hz 표본 + 결정·단계 전환 프레임. 나머지는 해시만 |
-| 평가 전용 추가 캡처 | TOP·개관 이미지, `eval_only/` 렌더 | 저해상도 영상 1개 + 요약 프레임 | 영상만 |
-| 실행 영상 | `execution.mp4` | 유지(약 2 MB) | 유지 |
-
-- 같은 이미지를 요청 JSON(base64)과 프레임 폴더에 두 번 저장하지 않는다. 한쪽은 해시로 가리킨다.
-- 추정 효과: M1형 dev 에피소드는 36 → 약 8–10 MiB, 3대 dispatch형 dev 실행은 224 → 약 40–60 MiB다.
-- 러너는 각 주인의 파일이므로 이 문서는 기준만 정한다. 적용 여부는 사용자와 러너 주인이 정한다.
-
-### 5.1 2026-09-27 결정과 공용 프로필
-
-코디네이터가 전달한 2026-09-27 사용자 결정은 "dev만 1초 1장, test는 5장 유지, 결정 시점 프레임은 항상 저장"이다. 이를 `harness/frame_storage.py`의 버전 고정 프로필로 만들었다(테스트 `tests/test_frame_storage.py`).
-
-| 프로필 | 쓰는 파일 | 허용 split |
-|---|---|---|
-| `all_v1` | 원본 JPEG 전부. 09-27 이전 모든 러너, 과거 사전 등록의 동작이다. 보존 규칙 4가지(진행 중 작업·최근 3일·대표 영상·본 연구 코호트)에 해당하는 이미지를 쓰는 실행은 이것을 **명시적으로** 고른다 | 모두 |
-| `dev_1hz_decisions_v1` | 스트림(로봇 카메라·TOP)마다 1.0 SIM s에 주기 프레임 1장, 그리고 모든 결정 프레임 | `dev`, `diag`만. 그 밖의 split은 생성 시 `ValueError`로 거부 |
-| `none_v1` (`smoke`의 기본값) | 프레임 바이트 없음. 프레임마다 `{stream, index, t, sha256, bytes}` 한 줄만 쓴다 | `dev`·`diag`·`smoke`만(원본 JPEG이 남지 않으므로 코호트·test는 거부). 프로필 이름을 생략할 수 있는 것은 `smoke`뿐이다 |
-| `mp4_v1` | 스트림마다 H.264 mp4 하나(원본 JPEG을 ffmpeg로 보냄, crf 28, 중단돼도 재생 가능한 조각 mp4) + 같은 해시 목록. 손실 압축이라 원본 JPEG은 남지 않고, 해시는 원본 JPEG의 것 | `dev`·`diag`·`smoke`만 |
-
-- 결정 프레임은 세 가지다: 제어기가 요청한 capture, macro 뒤의 capture, 제어기가 이벤트를 내거나 단계를 바꾼 프레임. 결정 프레임은 주기 시계를 움직이지 않는다.
-- 파일을 쓰지 않은 프레임도 러너의 프레임 로그에 SIM 시간·sha256을 남긴다.
-- 모델 요청 이미지(LLM·ACT·학습 학생)는 이 프로필의 솎기 대상이 아니다. 쓴 뒤의 정리는 AGENTS.md 보존 규칙(텍스트·원장·로그·해시 항상, 이미지 원본은 4가지 조건)을 따른다.
-- 러너는 실행 기록(manifest)에 `FrameStoragePolicy.record()`를 넣는다. 프로필 이름이 실행 번들 조건의 일부가 된다([실행 버전 관리](execution_versioning.md)).
-- 예: `policy = FrameStoragePolicy('dev_1hz_decisions_v1', split='dev')`로 만든 뒤 프레임마다 `policy.decide(rid, now, decision=..., reason=...)['saved']`가 참일 때만 JPEG를 쓴다.
-
-**공용 기록 계층 조사 결과:** 모든 러너가 거치는 공용 프레임 기록 계층은 main에 없다. 러너마다 JPEG를 직접 쓴다. 이번 변경은 정책 모듈과 테스트만 넣었고, 어느 러너의 기본 동작도 바꾸지 않았다. 러너별 연결은 아래 순서로 주인이 한다.
-
-| 러너 (프레임을 쓰는 곳) | 쓰임 | 연결 방법 | 상태 |
-|---|---|---|---|
-| `harness/zone_own_team_host.py` `_capture_raw` (`frames_dir/<rid>/NNNNN.jpg`, 5 Hz) | 자기 카메라 실행기 3대 host: own-executor 스모크, vision-worker, 통합 러너(#229), 공동 운반(#235) | `OwnCamTeamHost(..., frame_profile=, split=)` 인자 추가. 주기 capture(`_physics_until`)는 `decision=False`로 넘긴다. `_decide_raw`의 capture와 macro 뒤 capture는 `decision=True`로 넘긴다. `on_frame` 중 `executor.events`가 늘어도 `decision=True`로 처리한다 | **보류**: 열린 PR #235(Codex)·#229(Kiro)가 이 파일을 고치는 중이라 병합 뒤 연결한다 |
-| `scripts/run_m1_owncam.py` (`frames/NNNNN.jpg`) | M1 1대 배달 dev·test | `--frame-profile`과 `--split` 인자를 추가한다(`FrameSink`와 같은 규칙). test 사전 등록 명령은 바꾸지 않는다 | 미연결 |
-| `scripts/run_zone_pair_dev.py`, `zone_pair_dev_runtime.py` (Codex 브랜치) | M2 공동 운반 dev | 위 host와 같은 방식 | **이번에 수정 금지**(Codex가 `ugrp-wt/codex-pair-grasp`에서 수정 중). 목록에만 남긴다 |
-| `harness/rgb_skill_execution.py` (`rgb/<oid>-<label>.jpg`) | 3대 dispatch RGB 스킬(`plan-guidance` 등) | 관측 id를 스트림으로 쓴다. 스킬 단계 전환·LLM 결정 직전 관측은 결정 프레임 | 미연결 |
-| `harness/task_stage_execution.py` (`rgb/<request>-<label>.jpg`) | 단계 요청 실행 | 요청마다 쓰는 이미지는 모델 요청 입력이라 **전부 쓴다**(프로필 대상 아님. 쓴 뒤 정리는 보존 규칙) | 해당 없음 |
-| `harness/rgb_communication_runtime.py`, `harness/camera_runtime.py` | RGB 대화·카메라 런타임(모델 요청) | 모델 요청 이미지라 **전부 쓴다**(쓴 뒤 정리는 보존 규칙) | 해당 없음 |
-| `scripts/record_owncam_localization.py`, `experiments/2026-09-26-vision-loc/run_vl_teacher_render.py` | 위치 추정 학습·평가 데이터 | 학습 표본이라 **전부 유지** | 해당 없음 |
-| `scripts/eval_zone_*`, `probe_*` | 인식 평가 렌더·진단 | 평가 표본은 전부 유지. 진단 probe는 러너 주인이 판단한다 | 미연결 |
-
-- 효과(추정, 5 Hz 기준): 결정 프레임이 적은 구간에서 dev 프레임 파일은 약 1/5가 된다. M1형 dev 에피소드는 36 → 약 8–12 MiB다. 실제 비율은 연결 뒤 `record()`의 `saved/frames`로 확인한다.
-
-### 5.2 쓰기 상한과 `FrameSink` (2026-10-01)
-
-2026-10-01 사용자 지시("80기가가 쌓이는 게 말이 안 된다")에 따라 **프레임을 쓰는 시점**에 양을 줄이는 도구를 넣었다. 이 도구는 위 보존 규칙(AGENTS.md "보존")을 바꾸지 않는다. 텍스트·원장·로그·sha256 목록은 항상 남기고, 이미지 원본은 보존 규칙 4가지에 해당할 때만 둔다. 쓰는 쪽은 **프레임이 필요 없는 실행에서 아예 쓰지 않거나 상한을 거는 것**만 한다.
-
-- `FrameSink(out_dir, profile, split=, cap_mib=, fps=)`가 프로필 적용·해시 목록(`frames.sha256.jsonl`, 프레임마다 flush)·실행당 쓰기 상한을 한곳에서 처리한다. `add(stream, t, jpeg, decision=, reason=)`로 프레임을 넣고 `close()`가 mp4를 마무리하며 manifest 블록(`ugrp.frame-storage.v2`)을 돌려준다. 프로필 이름과 상한은 실행 번들 조건의 일부다([실행 버전 관리](execution_versioning.md)).
-- 프로필을 생략하면 `none_v1`이지만 `smoke`일 때만이다. dev·diag·test·본 연구 코호트 등 그 밖의 split은 프로필을 반드시 적어야 하므로, 진행 중 작업·최근 3일·코호트 때문에 이미지가 필요한 실행이 생략으로 프레임을 잃는 일이 없다. `none_v1`·`mp4_v1`은 원본 JPEG이 남지 않아 코호트·test에서는 거부한다. 모델 요청 이미지는 `FrameSink`를 거치지 않고 러너가 요청 텍스트와 함께 보존한다.
-- 같은 폴더에 `FrameSink`를 다시 만들면 거절한다(이전 프레임·해시 목록을 덮어쓰거나 이어 쓰지 않는다). 상한을 넘으면 이후 `add`도 계속 `FrameWriteCapExceeded`를 낸다.
-- 상한은 dev·diag·smoke에서 생략하면 64 MiB이고 "무제한" 모드가 없다. test·코호트는 `cap_mib`를 반드시 적는다(사전 등록 크기에서 정한다. 3대 dispatch 한 실행의 프레임이 187 MiB였다). 번들·설정에 값을 적는다. 넘으면 `FrameWriteCapExceeded`(OSError 하위, errno 없음)로 멈춘다. 과제 실패도 ENOSPC(HOST_ERROR)도 아니고 **설정된 상한 때문에 중단한 실행**이므로 사전 등록에 따로 적는다(8절의 `host_error`와 구분).
-- 예: `sink = FrameSink(run_dir / 'frames', 'none_v1', split='dev', cap_mib=64)`; 캡처마다 `sink.add(rid, now, jpeg)`; 종료 시 `manifest['frame_storage'] = sink.close()`.
-- TensorBoard 변환(`scripts/tensorboard_tools/zone_study.py`)은 기본으로 요청 이미지 파일이 없으면 거절한다. 이미지를 보존 규칙에 따라 정리한 실행만 `export.py --allow-removed-request-images`로 요청 행과 이미지 sha256만 보고 통과시키며(`request_images_hash_only`로 개수 기록) 파일이 있는데 해시가 다르면 여전히 거절한다.
-
-### 5.3 러너와 무관한 안전망 (`scripts/write_cap_guard.py`)
-
-어떤 명령이든 감싸서 감시 폴더의 **증가분**(할당 바이트)이 상한을 넘으면 프로세스 그룹에 SIGTERM(그레이스 뒤 SIGKILL)을 보내고 `write-cap.json`을 남기며 종료 코드 3으로 끝난다. 상한 기본 512 MiB이고 무제한은 없다. 이 스크립트는 파일을 지우거나 옮기지 않는다.
-
-```sh
-python3 scripts/ugrp_session.py run m1-dev -- \
-  python3 scripts/write_cap_guard.py --watch /Users/changmin/projects/ugrp/outputs/<run> --max-mib 256 -- <실행 명령>
-```
-
-`ugrp_session.py`·`harness/zone_own_team_host.py` 등 봉인된 의존성에 들어 있는 파일은 고치지 않았다(번들 해시·봉인 보존). 그래서 안전망이 별도 스크립트다. 본 연구 코호트에 쓰면 상한을 사전 등록 크기에 맞춰 넉넉하게 정한다.
-
-### 5.4 묶기 도구 (`scripts/pack_frames.py`)
-
-```sh
-python3 scripts/pack_frames.py <실행 폴더>                       # 계획만 (프레임 수·크기)
-python3 scripts/pack_frames.py <실행 폴더> --execute              # mp4 + sha256 목록 쓰고 검증
-python3 scripts/pack_frames.py <실행 폴더> --execute --trash-originals --reason "<보존 4가지에 해당하지 않는 이유>"
-```
-
-- `*.jpg`가 있는 폴더마다 옆에 `<폴더명>.mp4`와 `<폴더명>.sha256.jsonl`을 쓴다. 검증은 목록 행 수 = 파일 수, ffprobe가 읽은 프레임 수 = 파일 수다.
-- `--trash-originals`는 검증을 통과한 폴더의 JPEG을 **삭제하지 않고 휴지통(`~/.Trash/ugrp-pack-frames-<시각>/`)으로 옮기며**, 원래 경로·바이트가 든 기록을 `outputs/cleanup-records/pack-frames-<시각>-<폴더>.json`에 남긴다. 휴지통은 사용자가 비운다.
-- 최근 3일 안에 바뀐 JPEG이 있거나 git이 추적하는 JPEG(테스트 자료·커밋된 증거)가 있는 폴더, 이미 `<폴더명>.mp4`·`.sha256.jsonl`이 있는 폴더, 기록 폴더에 쓸 수 없는 경우는 거절하며 종료 코드 2를 낸다(`--min-age-days`, 기본 3). 이동 계획(원래 경로·바이트·sha256)을 기록에 먼저 쓰고 옮긴 뒤 `status`를 `done`으로 바꾼다. `--reason`에 그 폴더가 진행 중 작업·열린 PR·버전별 대표 영상·사전 등록한 본 연구 코호트에 해당하지 않는 이유를 적어야 한다. 이 판단은 호출하는 사람의 책임이다. 봉인된 코호트가 고정한 inventory(sha256/size/mtime)가 가리키는 파일에는 쓰지 않는다.
-
-### 5.5 측정 (2026-10-01, 실제 프레임 묶음 1회씩)
-
-| 표본 | 원본 JPEG | `mp4_v1` (mp4 + 목록) | `none_v1` (목록만) |
-|---|---|---|---|
-| M1 dev 에피소드 `m1-owncam-20260926/dev-a1/m1dev-s91/frames` (1,214장, 자기 카메라 5 Hz) | 18.7 MiB(`du`) / 16.38 MiB(논리) | 2.19 MiB (mp4 1.99 + 목록 0.18) → **88% 감소** | 0.18 MiB → **99% 감소** |
-| 3대 dispatch 실행 `plan-guidance-20260925/legacy-1/rgb` (3,406장, 자기·TOP 섞임) | 187.3 MiB(`du`) / 181.30 MiB(논리) | 24.19 MiB (mp4 23.6 + 목록 0.52) → **87% 감소** | 0.52 MiB → **99.7% 감소** |
-
-- 원본은 읽기만 했고 복사본(스크래치)에서 묶었다. 두 표본 모두 `pack_frames.py --execute` 검증이 통과했다(목록 행 수·디코딩 프레임 수 일치). 수치는 `FrameSink`에 같은 프레임을 넣어 잰 폴더 합계이고 감소율은 `du` 기준이다. 프레임 파일만의 수치이며 결과 JSON·요청 텍스트·영상은 그대로 남는다.
-- `FrameSink`를 러너에 연결하기 전에는 이 절감이 자동으로 나타나지 않는다. 위 5.1 표의 러너들이 봉인된 번들 해시에 들어 있어, 주인이 다음 새 번들 등록 때 연결한다(`FrameSink.add`로 교체). 그때까지 새 dev·smoke 실행은 5.3의 안전망으로 쓰기량을 막고, 끝난 실행은 5.4로 묶되 보존 규칙 4가지에 해당하지 않을 때만 JPEG를 휴지통으로 옮긴다.
-
-## 6. 예산 (제안, 사용자 확정 필요)
-
-- 프로젝트 합계 ≤ 60 GiB: `outputs/` ≤ 40, worktree ≤ 10, 기본 체크아웃 나머지 ≤ 6, 가상환경 ≤ 2, 여유 2.
-- 실험 ID당 raw ≤ 2 GiB가 기본이다. 더 필요하면 사전 등록에 예상 크기(에피소드당 × 수)를 적고 사용자 승인을 받는다. 예를 들어 3대 자기 카메라 5 Hz 주 연구는 에피소드당 약 150 MiB라 test 48회에 약 7 GiB다.
-- Git 미디어: `experiments/`에 파일당 1 MiB, 실험당 5 MiB. 20 MiB 초과 파일은 기존 hook이 거부한다.
-- 세션 시작 하한: 여유 공간 10 GiB(`ugrp_session.py run`).
-- 보관 주기: 기록이 병합되고 7일이 지난 dev·진단 raw는 주 1회 보관 후보로 올린다. 실제 이동·삭제는 사용자 결정이다.
-
-## 7. 에이전트 규칙
-
-1. **worktree 생성:** `python3 scripts/agent_worktree.py new <이름> --branch <kiro|claude|codex>/<주제>`를 쓴다.
-   - sparse checkout이며 `experiments/`의 zip·gz·영상·이미지·pdf·html·npz를 빼고, 실행에 쓰는 `models.zip` 두 개는 남긴다.
-   - 동결 소스는 `--detach --owner <에이전트>`로 만든다.
-   - 에이전트당 등록 worktree가 8개 이상이면 거부한다. 넘겨야 하면 `--allow-over-cap --reason "<이유>"`를 쓴다.
-   - sparse worktree에서 뺀 종류의 새 파일을 커밋하려면 `git add --sparse <경로>`가 필요하다. 크기 제한을 지킨다.
-   - 기존 worktree는 주인이 `python3 scripts/agent_worktree.py sparsify <경로>`로 바꿀 수 있다.
-2. **raw 위치:** 실행 raw는 기본 체크아웃의 `outputs/`(절대 경로 `/Users/changmin/projects/ugrp/outputs/...`)에 쓴다. worktree 안의 `outputs/`는 worktree와 함께 사라질 수 있다.
-3. **병합 뒤 정리:** `python3 scripts/agent_worktree.py retire <경로>`로 계획을 본 뒤 `--execute`를 붙인다.
-   - 무시된 `outputs/<이름>`은 기본 체크아웃의 같은 상대 경로로 옮긴다. 그 경로가 이미 있거나 `outputs/` 밖의 무시 파일(`MUJOCO_LOG.TXT` 등)은 `outputs/retired-worktrees/<주인>-<이름>/`으로 옮긴다(`--archive-layout`이면 전부 이쪽).
-   - 옮기기 전후 모든 파일의 개수·바이트·sha256을 비교하고 같을 때만 `git worktree remove`를 실행한다. 목록은 `outputs/retired-worktrees/<주인>-<이름>/MANIFEST.tsv`, 영수증은 같은 폴더의 `RETIRED.json`이다. 불일치면 worktree를 남기고 실패 영수증을 쓴다.
-   - 프로세스 cwd·열린 파일·명령줄이 그 경로를 가리키거나 60분 안에 바뀐 파일·git index가 있으면 거부한다(`--idle-minutes`). `sparsify`도 같다.
-   - 미병합 작업은 HEAD를 원격 `codex/archive-<이름>-0926` 같은 보관 브랜치에 올리고 `--archive-ref <브랜치>`를 준다. `ls-remote`로 원격 SHA가 HEAD와 같을 때만 진행한다.
-   - `git worktree remove`를 직접 쓰지 않는다. `--force`는 쓰지 않는다. `git status --porcelain`만 보고 지우지 않는다(무시 파일이 안 보인다).
-   - 다른 에이전트의 worktree는 주인이나 사용자가 정한다.
-   - Codex-app worktree(`~/.codex/worktrees/<이름>/ugrp`)도 같은 절차이며, 은퇴 폴더 이름은 `codex-<이름>`이다.
-4. **Git 미디어:** `experiments/`에는 기록(JSON·Markdown·작은 그림)만 둔다. raw 프레임·영상·큰 로그는 `outputs/`에 두고 sha256을 기록한다. 경고는 `scripts/check_media_size.py`(pre-commit·CI)가 낸다.
-5. **확인:** `python3 scripts/disk_report.py`(읽기 전용, 약 2–3분)로 사용량·예산·은퇴 후보를 본다.
-
-## 8. 사전 등록 지침: 디스크 부족은 HOST_ERROR
-
-2026-09-26 M1 test에서 s103·s104가 디스크가 가득 차 카메라 프레임을 쓰다 멈췄다(`OSError [Errno 28] No space left on device`). 예외 처리기가 `result.json`을 남겨, 사전 등록 문구대로라면 과제 실패로 집계된다. **M1 사전 등록은 소급해 고치지 않는다.** s103·s104 처리는 사용자·코디네이터 결정으로 남는다. 앞으로의 사전 등록에는 다음을 넣는다.
-
-- 실행 중 `ENOSPC`(errno 28), `EDQUOT`(errno 122) 또는 "No space left on device"로 끝난 에피소드는 과제 결과가 아니라 **HOST_ERROR**다. `result.json`을 썼는지와 무관하다.
-- HOST_ERROR는 공간을 확보한 뒤 같은 동결 소스·seed로 1회 재실행한다. 원 시도의 raw·로그는 지우지 않고 보고한다. 재실행도 HOST_ERROR면 결측으로 보고하고, 분모 처리 규칙을 미리 정한다.
-- 시작 전 여유 공간 검사와 에피소드당 raw 예상 크기를 적는다. 집계기는 HOST_ERROR를 성공·실패와 다른 열로 센다.
+각 실행 디렉터리에 다음 `RUN_META.json`을 쓴다. PR 번호는 정수, 미정은 `null`이다. PR 미정·메타데이터 누락·불명확한 과거 자료는 자동 정리하지 않는다.
 
 ```json
-"host_error": {
-  "match": ["OSError errno 28 (ENOSPC)", "OSError errno 122 (EDQUOT)", "No space left on device"],
-  "applies_even_if_result_json_written": true,
-  "action": "rerun once on the same frozen source and seed after freeing space; keep and report the failed attempt",
-  "second_host_error": "report as missing; use the pre-registered denominator rule",
-  "free_space_floor_gib": 10,
-  "expected_raw_mib_per_episode": 150
-}
+{"schema":"ugrp.run-meta.v1","class":"dev","pr":435,"branch":"codex/example","sha":"<full-source-SHA>","batch":"example-wave1","keep":["representative.mp4","representative-data","commands.jsonl","llm"]}
 ```
 
-## 9. 보관 대상 비교 (Google Drive는 사용하지 않는다)
+- `keep`은 실행 폴더 기준 파일 또는 디렉터리 목록이다. 대표 영상의 입력·구성·재생에 필요한 데이터를 빠짐없이 넣는다. `representative*` 파일·디렉터리도 항상 보존한다. 실제 등급은 결과 수집 전에 정하며 첫 성공은 milestone로 승격한 새 기록을 남긴다. 불리한 study 실패를 dev로 낮추지 않는다.
+- 열린 PR·진행 중 작업·테스트가 쓰는 자료는 보존한다. 사용 중인 자료에 `.IN_USE` 또는 `.TEST_IN_USE`를 두고, RUN_META의 `in_use=true`와 `keep`도 사용할 수 있다. 실제 실행은 `.evidence.lock`을 잡는다. 완료 표시는 `EXIT`다(0뿐 아니라 실패·HOST_ERROR도 포함). EXIT 없는 실행을 압축·아카이브·prune하지 않는다.
+- 부모가 study/milestone면 자식 dev도 정리하지 않는다. 중첩 RUN_META가 있는 부모는 통째로 prune하지 않고 자식별로 검토한다. 다른 열린 PR·테스트의 입력으로 재사용하면 해당 자료에 사용 표시를 먼저 남긴다.
 
-| 방식 | 비용 | 장점 | 단점 |
-|---|---|---|---|
-| GitHub Release asset (모델과 같은 방식) | 무료. 릴리스당 asset 1,000개, 파일당 2 GiB 미만, 전체 크기·대역 제한 없음([GitHub 문서](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)) | 원격 보관. 기존 모델 배포 절차(manifest·재다운로드·해시 검증) 재사용 | **저장소가 PUBLIC이라 raw가 공개된다.** 업로드 시간이 걸리고 2 GiB 분할이 필요하다. 올린 뒤 회수를 보장할 수 없다 |
-| 외장 디스크 | 1회 구매. 2026년 시세 1 TB 휴대용 SSD 약 $150–200(메모리 가격 상승기), HDD는 TB당 더 쌈. 구매 시점 가격 확인 필요 | 비공개. 빠름(USB 3.2 SSD 약 1 GB/s). 대용량 | 한 벌은 백업이 아니다(두 벌 권장). 수동 관리, 분실·고장 위험 |
-| Git LFS | Free/Pro 계정에 저장 10 GiB·월 다운로드 10 GiB 포함, 초과분은 사용량 과금([GitHub 문서](https://docs.github.com/en/billing/concepts/product-billing/git-lfs)) | Git 기록과 연결 | clone·fork·GitHub Actions의 다운로드가 모두 소유자 대역으로 계산된다. 공개 저장소에서 빠르게 소진된다. raw에는 권장하지 않는다 |
+## 3. 배치 제출 전 예산
 
-- 권장: raw 보관은 외장 디스크 두 벌(비공개)로 한다. GitHub Release는 공개해도 되는 선별 묶음(모델, 대표 영상)에만 쓴다.
-- 어느 쪽이든 옮긴 뒤 해시를 대조하고 새 위치를 기록에 적은 다음에만 로컬 삭제를 사용자에게 제안한다.
+`실행 수 × 예상 실행당 크기 + 이미 제출한 작업이 앞으로 쓸 크기`를 각 호스트 여유에서 뺀다. x86은 **비압축 peak raw**, ARM은 압축 효과가 불확실하면 **비압축 전체 크기**, Mac은 **fetch-lite 크기**를 쓴다. 압축 임시 파일·아카이브 중복·영상 생성 작업의 peak도 예상 크기 또는 예약량에 더한다.
 
-## 10. 도구
+| 호스트 | 제출 후 바닥 | 여유 공간 경보 |
+|---|---|---|
+| x86 (`oracle-x86`) | 8 GiB | 8 GiB |
+| ARM (`oracle`) | 25 GiB | 25 GiB |
+| Mac | 20 GiB | 15 GiB |
 
 ```sh
-# 새 sparse worktree (fetch 후 origin/main에서)
-python3 scripts/agent_worktree.py new kiro-topic --branch kiro/topic
-python3 scripts/agent_worktree.py new zone-x-s1-frozen --detach --owner claude --base <SHA>
-# 기존 worktree 줄이기 (주인만)
-python3 scripts/agent_worktree.py sparsify /Users/changmin/projects/ugrp-wt/<이름>
-# 병합 뒤 정리: 먼저 계획, 그다음 실행
-python3 scripts/agent_worktree.py retire /Users/changmin/projects/ugrp-wt/<이름>
-python3 scripts/agent_worktree.py retire /Users/changmin/projects/ugrp-wt/<이름> --execute
-# 미병합 작업: HEAD를 보관 브랜치에 올린 뒤
-python3 scripts/agent_worktree.py retire <경로> --archive-ref codex/archive-<이름>-0926 --execute
-# 읽기 전용 보고서
-python3 scripts/disk_report.py --json /tmp/disk.json
-# 미디어 경고 (pre-commit hook이 자동 실행; 기존 worktree는 한 번 설정)
-git config --worktree core.hooksPath .githooks
-python3 scripts/check_media_size.py --base origin/main
-# 여유 공간 하한 무시(사유를 기록할 것)
-python3 scripts/ugrp_session.py run --allow-low-disk <이름> -- <명령>
+# 세 호스트 중 하나라도 실패하면 && 뒤의 제출 명령은 실행되지 않는다.
+python3 scripts/storage_budget.py --all-hosts --runs 36 --per-run-mb 512 \
+  --mac-per-run-mb 5 --reserved-mb 1024 && <배치 제출 명령>
+# 지정 호스트의 실제 저장 파일시스템 확인 (원격 df에 해당하는 disk_usage)
+python3 scripts/storage_budget.py --host arm --ssh oracle \
+  --path '~/ugrp-archive/runs' --runs 36 --per-run-mb 512
+# 과거 완료 배치에서 추정: RUN_META가 있으면 가장 큰 완료 실행 + 25% 여유
+python3 scripts/storage_budget.py --host x86 --past-batch <과거 배치> --runs 36
+# 구형 배치는 실패/HOST_ERROR 포함 정확한 실행 수를 지정: 평균 + 25% 여유
+python3 scripts/storage_budget.py --host x86 --past-batch <과거 배치> --past-runs 36 --runs 36
 ```
 
-- `new`는 새 worktree에 `core.hooksPath=.githooks`를 worktree 설정으로 넣는다. 공유 설정과 다른 worktree는 바꾸지 않는다.
-- `retire`의 영수증은 각 은퇴 폴더의 `RETIRED.json`과 `outputs/retired-worktrees/retirements.jsonl`이다.
-- `ugrp_session.py run`의 하한은 `--min-free-gib` 또는 환경 변수 `UGRP_MIN_FREE_GIB`로 바꾼다. GitHub Actions에서는 기본으로 끈다.
+`--per-run-mb`, `--reserved-mb`의 단위는 MiB다. JSON 출력·종료 코드 0/1을 제출 기록에 저장한다. SSH/df 실패·빈 표본·실행 수 미확인·잘못된 크기는 제출 거부다. 여러 에이전트가 동시에 제출할 때는 조정자가 제출 순서와 이미 승인한 배치의 예약량을 합산하고 직전 다시 검사한다. 이 도구는 원자적 전역 예약 큐가 아니므로, 동시에 같은 여유를 각각 예약하지 않는다.
+
+압축된 과거 배치는 `COMPRESSED.jsonl`의 원본 크기로 peak를 계산한다. 원본 크기 매니페스트가 없는 구형 `.json.zst`/`.jsonl.zst`는 작아진 파일 크기로 예산을 낮추지 않고 추정을 거부한다. 이때 비압축 실행 기록에서 확인한 `--per-run-mb`를 명시한다.
+
+감시는 `storage_budget.py --host <host> --path <저장 경로> --alert-only`를 5분마다 실행한다. Mac은 `--notify`로 알림도 보낸다. x86·ARM은 systemd journal에 경보와 종료 코드 1을 남긴다. 자동 삭제나 다른 작업 중지는 하지 않는다. 서버 전원 OFF·Mac 절전 중에는 경보가 실행되지 않으므로 제출 검사를 반드시 별도로 한다.
+
+설치 구성은 `configs/storage_watch/`다. 서버는 도구를 `~/ugrp-storage-tools/scripts/`에 두고 user systemd service/timer를 사용한다(x86만 `x86.conf` drop-in). Mac은 `~/Library/Application Support/ugrp-storage-tools/`의 도구와 `com.ugrp.storage-watch` LaunchAgent를 사용한다. worktree 은퇴와 관계없이 감시 도구가 남는다. 설치·실행·파일 해시 확인은 [10/11 적용 기록](../experiments/2026-10-11-storage-rules/README.md)에 있다.
+
+## 4. 큰 JSON/JSONL의 무손실 압축
+
+```sh
+python3 scripts/compress_json_traces.py <완료 실행>             # 계획만
+python3 scripts/compress_json_traces.py <완료 실행> --execute   # 검증 압축
+```
+
+- 64 KiB보다 큰 JSON/JSONL에 `zstd -3 -T1`을 적용한다. RUN_META는 읽을 수 있도록 그대로 둔다. 진행 중·사용 중·중첩 미완료 실행은 거부한다. 심볼릭 링크는 따라가지 않는다.
+- 압축 전 원본 SHA-256 → 임시 `.zst` → 스트리밍 압축 해제 SHA-256 일치와 원본 불변 확인 → `.zst` 게시 → `COMPRESSED.jsonl` fsync → 원본 제거 순서다. 기존 `.zst`를 덮어쓰지 않는다. 불일치·압축 실패 시 원본을 남긴다.
+- `ALL-hashes.tsv`에는 압축 전 전체 파일 목록을, `SHA256SUMS.tsv`에는 현재 보관 파일 목록을 남긴다. 매니페스트는 원본/압축 경로·바이트·SHA-256·코덱·검증 방식을 기록한다. TSV의 경로는 탭·개행을 안전하게 나타내도록 JSON 문자열이다.
+- 압축은 study/milestone에도 바이트를 복원할 수 있는 보관 방식이다. 해시는 원본 해시와 `.zst` 해시를 구별한다. 과거 평가자가 `trace.jsonl`을 직접 읽으면 필요한 파일만 별도 영속 작업 경로에 해제하고 원본 해시를 검증한다. 봉인된 실행 폴더에 파일을 덮어쓰지 않는다.
+- x86 자동 아카이브는 기존 10분 timer에서 EXIT·20분 idle·평가 결과(`summary.json`, `result.json`, verdict 또는 평가자가 남긴 `EVALUATED`)를 확인한 뒤 위 압축을 실행한다. 이후 ARM **복사 후** 25 GiB 검사, 임시 목적지 rsync, `rsync -anc` 차이 없음, 전체 파일 SHA-256 대조와 원본 불변·사용 중 재확인 후 게시한다. 오류·이미 존재하는 목적지는 원본을 남기고 기록한다. 20분은 실행 중 파일을 피하기 위한 idle 조건이며 dev 보존 기간이 아니다.
+
+## 5. PR 수명에 따른 dev 정리
+
+```sh
+python3 scripts/evidence_prune.py --pr <번호> <경로1> <경로2>   # 기본 dry-run
+# 별도 정리 작업에서만 명시적으로 실행; 이번 10/11 작업은 dry-run만
+python3 scripts/evidence_prune.py --pr <번호> <경로들> --execute \
+  --records <프로젝트>/outputs/cleanup-records
+```
+
+- `gh`가 실제 PR의 MERGED/CLOSED 상태와 같은 브랜치의 열린 PR 부재를 확인한다. RUN_META의 정수 pr이 일치하고 class=dev, EXIT 완료인 실행만 대상으로 한다. API·인증·프로세스 조회 실패는 정리를 거부한다. 원격에서 실행할 때 gh 접근을 따로 준비하며 Mac의 인증정보를 복사하지 않는다.
+- 이미지·프레임·배열·일반 영상과 >64 KiB JSON/JSONL을 찾되, 영구 보존 이름·`keep`·`representative*`는 제외한다. 압축된 trace는 `COMPRESSED.jsonl`의 **원본 크기**로 분류한다. 이름을 모르는 기타 파일은 보존한다. 가벼운 trace(≤64 KiB)는 남긴다.
+- dry-run은 후보 경로·현재 바이트·SHA-256을 stdout JSON으로 보고하고 실행 자료를 쓰거나 삭제하지 않는다. 중복 경로는 한 번만 계산한다. RUN_META가 없는 폴더는 후보 0으로 보존하며 이는 원본이 없다는 뜻이 아니다.
+- execute는 배타 잠금·실제 cwd/열린 파일/실행 명령 검사를 재사용한다. 전체 파일 목록 `ALL-hashes.tsv`, 후보 `PRUNED-hashes.tsv`, `outputs/cleanup-records/`의 계획 영수증을 먼저 저장한다. 그 뒤 파일 불변·완료 상태를 다시 확인하고 처리한 파일을 영수증에 남긴다. 이전 목록·영수증은 보존한다.
+- Mac은 `~/.Trash/ugrp-pr-<번호>-<시각>/`으로 이동한다. 사용자가 휴지통을 비운다. 서버는 해시·기록을 저장한 뒤 후보 파일만 삭제한다. milestone/study·대표 증거·가벼운 파일은 삭제 대상이 아니다. PR 미정 자료·raw 등급 변경·그 밖의 삭제는 별도 결정이 필요하다.
+
+## 6. 공용 실행 경로의 RUN_META 옵션
+
+`ugrp_session.py`의 저장 옵션은 **기본 OFF**다. 기존 명령·기본 10 GiB 실행 검사·세션 수명 관리는 그대로다. 새 배치는 세 호스트 예산을 통과한 뒤 다음 토글을 사용한다(옵션은 세션 이름 앞).
+
+```sh
+python3 scripts/ugrp_session.py run \
+  --evidence-dir "$HOME/ugrp-sim/runs/example-NEW" \
+  --evidence-class dev --pr <번호> --batch example-wave1 \
+  --storage-host x86 --expected-mb 512 \
+  --keep representative.mp4 --keep representative-data \
+  example -- <표준 sim_cli 또는 연구 어댑터> --output "$HOME/ugrp-sim/runs/example-NEW/data"
+```
+
+새/빈 폴더만 사용한다. RUN_META에 class/pr/branch/전체 SHA/batch·keep·활성 상태·예산을 기록하고 실행 동안 잠금을 유지한다. 종료 후 `active=false`와 EXIT를 쓴다. 래퍼 예외·미완료에는 EXIT가 없어 자동 정리를 막는다. 소스 변경 여부 `source_dirty`를 기록하며 실제 실험 전에 실행 소스를 커밋·push하고 코호트 중 고정하는 기존 규칙을 지킨다. class=study를 명시해야 정식 E2E 원본 보호를 보장할 수 있다. 임의 scratchpad 래퍼를 공용 기본 경로로 만들지 않는다.
+
+## 7. 기존 도구와 원본 무결성
+
+- `disk_report.py`: 프로젝트·worktree·환경·outputs 크기를 읽기 전용으로 측정한다. 파일명으로 추정한 기존 retention 표시를 실제 삭제 허가로 쓰지 않는다. 저장 예산 제출 검사는 새 도구가 맡는다.
+- `agent_worktree.py new`: sparse checkout, 에이전트당 등록 8개. 은퇴는 `retire`만 쓴다. 무시 raw를 옮기고 전체 파일 수·바이트·SHA-256 대조 후 제거한다. 사용 중/60분 안 변경 worktree는 거부한다. 미병합 HEAD는 원격 보관 SHA가 같은 경우만 은퇴한다. 직접 `git worktree remove`, force, reset, clean을 쓰지 않는다.
+- `harness/frame_storage.py`·`FrameSink`: 기존 캡처 프로필과 쓰기 상한은 실행 번들의 일부다. 이번 저장 변경이 입력 프레임 빈도·물리·제어기를 바꾸지 않는다. study는 원본 전부를 남기는 프로필과 사전 등록 크기를 사용한다. 개발 캡처·모델 요청 텍스트·원본 이미지 해시를 구별한다.
+- `write_cap_guard.py`: 설정된 증가분 상한을 넘으면 자기 프로세스 그룹만 정리한다. 쓰기 상한 초과는 설정 중단이며 ENOSPC와 구분한다. `pack_frames.py`의 옛 날짜 검사·손실 영상 전환을 PR 기반 prune의 대체로 쓰지 않는다.
+- 실행 중 ENOSPC/EDQUOT는 **HOST_ERROR**다. 실패 시도의 요약·원장·해시·원본 위치도 기록하며 실행 중·미회수 자료를 완료로 표시하지 않는다. 본 연구의 분모·재실행 규칙은 사전 등록에 둔다. 과거 판정은 소급 변경하지 않는다.
+
+## 참고 자료
+
+- [Zstandard 공식 CLI](https://github.com/facebook/zstd/blob/dev/programs/zstd.1.md): 무손실 압축, 원본 기본 보존, `-d`/`-t`. 자체 압축 해제 SHA-256 비교를 추가했다.
+- [rsync 공식 매뉴얼](https://www.samba.org/ftp/rsync/generated-files/rsync.1.html): `-c`는 복사 필요 여부를 내용 체크섬으로 결정한다. 전송 중 체크섬 검증과 별개이며, 이번 아카이브는 `-anc` 재비교와 전체 SHA-256도 확인한다.
+- [DCC: Five steps to decide what data to keep](https://dcc.ac.uk/guidance/how-guides/five-steps-decide-what-data-keep): 재사용 가치와 재현 필요에 따라 보존 자료를 선택한다. dev/milestone/study의 구체적 수명·숫자 바닥은 논문 표준값이 아닌 10/11 사용자 결정이다.
