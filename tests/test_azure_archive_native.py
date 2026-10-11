@@ -143,3 +143,19 @@ def test_direct_installed_shutdown_script_can_import_native_module(tmp_path):
         'import runpy,sys; runpy.run_path(sys.argv[1],run_name="archive_cli"); import scripts.azure_archive_native',
         str(Path(shutdown.__file__).resolve())], cwd=tmp_path, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
+
+
+def test_cli_loads_explicit_vm_toggle_and_respects_environment_override(tmp_path, monkeypatch):
+    env = tmp_path / 'archive-native.env'
+    env.write_text('UGRP_ARCHIVE_NATIVE=on_v1\nUGRP_ARCHIVE_NATIVE_HOST=archive-host\n'
+                   'UGRP_ARCHIVE_NATIVE_IDENTITY=/key/path\nUNRELATED=value\n')
+    monkeypatch.setattr(shutdown, 'NATIVE_ENV', env)
+    for name in ('UGRP_ARCHIVE_NATIVE', 'UGRP_ARCHIVE_NATIVE_HOST', 'UGRP_ARCHIVE_NATIVE_IDENTITY'):
+        monkeypatch.delenv(name, raising=False)
+    shutdown.load_native_environment()
+    assert os.environ['UGRP_ARCHIVE_NATIVE'] == 'on_v1'
+    assert os.environ['UGRP_ARCHIVE_NATIVE_HOST'] == 'archive-host'
+    assert 'UNRELATED' not in os.environ
+    monkeypatch.setenv('UGRP_ARCHIVE_NATIVE', 'off')
+    shutdown.load_native_environment()
+    assert os.environ['UGRP_ARCHIVE_NATIVE'] == 'off'

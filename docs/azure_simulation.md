@@ -67,7 +67,8 @@ Azure 원본은 압축·삭제·이동하거나 symlink로 바꾸지 않는다. 
 VM의 `/etc/ugrp/archive-native.env`를 자동 보관·guard·boot recovery 서비스가
 선택적으로 읽는다. `UGRP_ARCHIVE_NATIVE_HOST=ubuntu@161.33.46.134`,
 `UGRP_ARCHIVE_NATIVE_IDENTITY=/home/ugrp/.ssh/id_ed25519_arm_archive`를
-명시한다. 수동 `recover`/`archive-one`에도 이 환경을 전달한다. ARM에는
+명시한다. 설치된 CLI의 수동/실행기 `recover`·`archive-one`도 이 파일을
+읽으며 호출자의 명시적 환경값을 우선한다. ARM에는
 이 Python 모듈만 root 소유 `/usr/local/lib/ugrp-archive-native.py`로 설치한다.
 기존 archive 공개키에 대해 Ubuntu의 authorized_keys에 `restrict`,
 Azure IP의 `from=`, 고정 `command`를 붙인 **별도 줄**을 추가한다.

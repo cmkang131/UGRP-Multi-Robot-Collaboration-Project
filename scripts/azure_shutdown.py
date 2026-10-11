@@ -17,6 +17,18 @@ if __package__ in (None, ''):
 
 ROOT = Path('/home/ugrp/ugrp-sim')
 GRACE_SECONDS = 600
+NATIVE_ENV = Path('/etc/ugrp/archive-native.env')
+
+
+def load_native_environment():
+    """Installed CLI calls also honor the VM's explicit opt-in; env wins."""
+    if not NATIVE_ENV.exists():
+        return
+    allowed = {'UGRP_ARCHIVE_NATIVE', 'UGRP_ARCHIVE_NATIVE_HOST', 'UGRP_ARCHIVE_NATIVE_IDENTITY'}
+    for line in NATIVE_ENV.read_text().splitlines():
+        name, separator, value = line.partition('=')
+        if separator and name.strip() in allowed:
+            os.environ.setdefault(name.strip(), value.strip())
 
 
 def boot_id():
@@ -344,6 +356,7 @@ def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
 
 
 def main():
+    load_native_environment()
     parser = argparse.ArgumentParser()
     parser.add_argument('action', choices=['stop', 'recover', 'status', 'admit', 'daily', 'archive-one'])
     parser.add_argument('--root', type=Path, default=ROOT)
