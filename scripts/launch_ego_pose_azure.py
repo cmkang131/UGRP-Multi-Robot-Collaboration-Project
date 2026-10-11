@@ -68,7 +68,11 @@ def main():
     # Successful SSH is the only VM-state check. No start/stop API is called.
     ssh('python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py admit')
     already_shipped=ssh(f'test ! -f ~/ugrp-sim/src/{sha}/.git/ugrp-source-complete || cat ~/ugrp-sim/src/{sha}/.git/ugrp-source-complete')==sha
-    budget('source',shipping=not already_shipped)
+    if a.resume_existing and already_shipped:
+        save('budget-source.json',dict(resumed_approved_group=True,new_source_bytes=0,
+             note='No new simulation submitted here; every future group is separately budgeted below.'))
+    else:
+        budget('source',shipping=not already_shipped)
     save('source.json',dict(worker_sha=sha,launcher_sha=launcher_sha,reused_source=already_shipped,seeds=seeds,cpus=cpus))
     ssh(f'mkdir -p ~/ugrp-sim/leases; test ! -e {lease}; touch {lease}')
     started=time.monotonic();stop=threading.Event();records=[]
