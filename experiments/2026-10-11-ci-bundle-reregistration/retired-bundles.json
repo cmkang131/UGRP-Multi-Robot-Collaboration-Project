@@ -1,0 +1,34 @@
+{
+  "schema": "ugrp.retired_execution_bundles.v1",
+  "retired": [
+    {
+      "execution_bundle_id": "zone-s3-recovery-v152",
+      "workflow_version": "7.45.0",
+      "source_sha": "981baa95e77aa78e5ffd6bc87c172cbb97aea7ed",
+      "consumer_source_sha": "a6ff738f5fa24106f5896c9b5b3b8d7f2e3e8e2e",
+      "comparison_path": "experiments/2026-10-09-s3-no-prior/s3fix7/comparison.json",
+      "comparison_sha256": "4a6478c18875ec67f025b668f31c270dbb3bd324d365d955913b7fe5b16b5839",
+      "runtime_source_count": 379,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v152/harness/zone_s3_recovery_contract.py",
+          "sha256": "6a70777cc9d7c8174232a73aaf32da590228b94a18b1a791136c9e9ee8b32662"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v152/scripts/run_s3_recovery.py",
+          "sha256": "02d2d79604add7b4b4c18821dfc47ffd3352eb8c3b61d70b5e0bda1e6534d0cb"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v152.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v152/configs/simulation_workflows.d/s3_recovery_v152.json",
+          "sha256": "b57be93e5333f111c23c51a6a4ea8bb1807cf63c2a222cdb253d4947fafe0244"
+        },
+        "experiments/2026-10-09-s3-no-prior/s3fix7/registration.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v152/experiments/2026-10-09-s3-no-prior/s3fix7/registration.json",
+          "sha256": "12e3fcb4b744925da3370dee91e5ad279263bf7aca46c2de39d6e8b54a6ba2a1"
+        }
+      },
+      "reason": "six source consumers changed after the recorded seal; replay only at original SHA",
+      "replacement": "zone-s3-recovery-v188"
+    }
+  ]
+}
