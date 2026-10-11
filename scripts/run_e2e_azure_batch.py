@@ -91,7 +91,10 @@ def main():
             selected_cpu=cpus[index] if cpus else None
             if selected_cpu is not None:command=['taskset','-c',str(selected_cpu),*command]
             process=subprocess.Popen(command,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,env=env)
+            try:start_ticks=Path(f'/proc/{process.pid}/stat').read_text().rsplit(')',1)[1].split()[19]
+            except FileNotFoundError:start_ticks=None
             write(target/'PROCESS.json',dict(pid=process.pid,started_unix=time.time(),command=command,
+                start=start_ticks,boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),
                 cpu=selected_cpu,thread_limits={k:env[k] for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','LP_NUM_THREADS')}))
             jobs.append((target,process,log,time.monotonic()))
         while any(proc.poll() is None for _,proc,_,_ in jobs):
