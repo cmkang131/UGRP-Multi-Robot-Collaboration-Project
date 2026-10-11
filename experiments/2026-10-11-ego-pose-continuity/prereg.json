@@ -1,0 +1,56 @@
+{
+  "schema": "ugrp.egojump.dev.v1",
+  "class": "dev",
+  "pr": 405,
+  "base_sha": "29c0c169bdfd7eff91186bb90af901393340f2a1",
+  "seeds": [
+    63001,
+    63002,
+    63003,
+    63004,
+    63005,
+    63006
+  ],
+  "candidates": [
+    "off",
+    "rep105",
+    "stationary",
+    "cluster",
+    "mahalanobis",
+    "bounded",
+    "cluster_mahalanobis"
+  ],
+  "offline_scope": "fixed recorded command and posterior-output replay; no counterfactual RGB/PF/map or physical task success",
+  "admission": "fewer >20cm control jumps and pooled map XY RMSE <= baseline; per-run regression disclosed; select at most two non-off settings plus off = 18 runs",
+  "online": "fresh same-seed B/return paired DEV because checkpoint prefix admission is missing in egomap71; not identical resumed egomap70 cohort",
+  "storage": "peak 768 MiB per run plus source and archive temporary reserves; Mac fetch-lite 5MiB/run; bound finite concurrency to actual free disk",
+  "azure": {
+    "cpus": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "load_1m_below": 12.8,
+    "available_mem_gib": 6,
+    "vm_start_stop": false,
+    "class": "dev",
+    "pr": 405
+  },
+  "preserve": [
+    "summary",
+    "commands",
+    "LLM text",
+    "hashes",
+    "first-success representative data"
+  ],
+  "initial_check": "at 180-240 wall seconds: exceptions, frames/SIM, evaluation-only displacement, command diversity and stage entry; abnormal own run SIGINT and EXIT"
+}

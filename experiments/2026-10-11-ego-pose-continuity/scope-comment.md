@@ -1,0 +1,2 @@
+egojump 작업 시작: `29c0c169`에서 별도 `codex/ego-pose-continuity` worktree를 만들었습니다. egomap70 8개 기록의 최대 가중 입자 전환과 누적 회전 게이트를 프레임 단위로 진단하고, 기본 OFF REP-105 제어 프레임 분리·AMCL 최소 운동·클러스터 pose·혁신/운동공분산 게이트를 비교합니다. egomap72 worktree/프로세스는 변경하지 않습니다.
+오프라인 통과 후보만 Azure seed63001–63006 짝 실행, CPU0–11·자기 lease·부하<12.8·저장 예산 조건을 지킵니다. VM 시작/정지는 하지 않습니다. 결과/누락/재생 한계를 `experiments/2026-10-11-ego-pose-continuity/summary.json`에 남기고 base `claude/ego-wall-map` 초안 PR을 만듭니다.

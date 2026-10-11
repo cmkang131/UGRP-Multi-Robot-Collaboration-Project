@@ -1,0 +1,12 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "ego-pose-continuity-dev", "version": "1.0.0",
+    "purpose": "Default-off ego pose continuity: same-seed OFF/cluster/innovation DEV",
+    "entry": "scripts/run_ego_pose_continuity.py", "runner": "scripts.run_ego_pose_continuity",
+    "docs": "experiments/2026-10-11-ego-pose-continuity/README.md",
+    "requires": "Live Azure x86 OSMesa, committed SHA, own lease, CPU0-11, load<12.8, storage budgets",
+    "output_flag": "--output", "output_kind": "directory", "required_inputs": ["--mode", "--seed"],
+    "side_effect": "remote_simulation", "adapter": "managed_legacy_cli"
+  }]
+}
