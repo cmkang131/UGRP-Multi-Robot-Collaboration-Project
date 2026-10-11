@@ -96,6 +96,10 @@ _recheck = bind(SweepRecheck.check, GATE_LOADED=LOADED_GATE)
 
 
 class PairRecheck(_PairRecheck):
+    def __init__(self, *, loaded_profile=None, fail_closed_without_pose=True):
+        super().__init__(loaded_profile=loaded_profile,
+                         fail_closed_without_pose=fail_closed_without_pose)
+
     def check(self, now, *args, **kwargs):
         result = _recheck(self, now, *args, **kwargs)
         self.sweep_waiting = result == 'wait'

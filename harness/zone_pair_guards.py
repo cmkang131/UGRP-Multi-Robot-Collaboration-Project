@@ -25,8 +25,9 @@ class _PairRecheck(SweepRecheck):
     A geometrically clear arm step may run while HIGH, but must not stop the
     uncertainty clock. Overlapping gate/geometry waits count only once.
     """
-    def __init__(self, *, loaded_profile=None):
-        super().__init__(loaded_profile=loaded_profile)
+    def __init__(self, *, loaded_profile=None, fail_closed_without_pose=False):
+        super().__init__(loaded_profile=loaded_profile,
+                         fail_closed_without_pose=fail_closed_without_pose)
         self.uncertain = False
         self.sweep_waiting = False
         # Review 3: a planned safety look (envelope growth by issued motion)

@@ -3,6 +3,8 @@ from types import SimpleNamespace
 import cv2
 import numpy as np
 import pytest
+
+pytest.importorskip("mujoco")
 from harness.s4_grip_visual import TemporalGrip, GripMonitor, OPTION
 from scripts.submit_s4_grip_batch import commands, submit_one
 from scripts.run_s4_grip_dataset import cases, bundle

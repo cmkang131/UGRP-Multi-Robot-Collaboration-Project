@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import select
+import signal
 import subprocess
 import sys
 import tempfile
@@ -115,6 +116,36 @@ raise SystemExit(3 if a.fail else 0)
         self.assertEqual(row["exit_code"], 124)
         self.assertIsNone(row["physical_success"])
         self.assertIsNotNone(row["child_pid"])
+
+    def test_startup_signal_waits_for_process_handle_then_cleans_owned_group(self):
+        handlers = {}
+        old = {sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)}
+        child = mock.Mock(pid=12345, stdout=None)
+        child.poll.return_value = None
+        child.wait.return_value = -signal.SIGTERM
+        real_popen = subprocess.Popen
+        def install(sig, handler):
+            prior = handlers.get(sig, old[sig])
+            handlers[sig] = handler
+            return prior
+        def start(*args, **kwargs):
+            if not kwargs.get("start_new_session"):
+                return real_popen(*args, **kwargs)
+            # The OS child already exists but Popen has not returned its handle.
+            handler = handlers.get(signal.SIGTERM)
+            self.assertTrue(callable(handler), "handler must precede Popen")
+            handler(signal.SIGTERM, None)
+            return child
+        with mock.patch.object(wm.signal, "signal", side_effect=install), \
+             mock.patch.object(wm.subprocess, "Popen", side_effect=start), \
+             mock.patch.object(wm, "_signal_owned_group", return_value=False) as forward:
+            record = wm.run_workflow(self.root, "fixture", [])
+        row = json.loads((record / "manifest.json").read_text())
+        self.assertEqual((row["status"], row["exit_code"], row["child_pid"]),
+                         ("interrupted", 130, child.pid))
+        forward.assert_any_call(child, signal.SIGTERM)
+        child.wait.assert_called()
+        self.assertEqual(handlers, old)
 
     def test_parent_exit_cleans_background_child(self):
         record = wm.run_workflow(self.root, "fixture", ["--spawn"])
@@ -304,11 +335,25 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-stage-origin-v170": ["--expected-source-sha", "0" * 40],
             "zone-s3-route-resume-v172": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
             "zone-s3-full-route-v175": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
+            "zone-s3-checkpoint-correction-v177": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
+            "zone-s3-continuous-distance-v186": ["--expected-source-sha", "0" * 40],
             "zone-s3-synchronized-start-v165": ["--expected-source-sha", "0" * 40],
             "zone-s4-pair-live-v166": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
             "zone-s4-pair-live-v167": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
             "zone-s4-pair-live-v168": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
-            "zone-s4-pair-live-v176": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v169": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v170": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v171": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v173": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v174": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v178": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v180": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v181": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v182": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v183": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v183-gemma-dev-v1": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201", "--gemma-fallback", "on"],
+            "zone-s4-study-v184": ["--expected-source-sha", "0" * 40, "--condition", "no_comm"],
+            "zone-s4-pair-live-v176": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
             "zone-s3-capture-diagnostic-v160": ["--expected-source-sha", "0" * 40, "--kind", "capture"],
             "zone-s3-x86-trim-probe-v158": ["--expected-source-sha", "0" * 40, "--model", "/nonexistent/trim.json", "--model-sha256", "0" * 64],
             "v7-exact-speed-benchmark": ["--suite", str(source), "--expected-source-sha", "0" * 40],
@@ -357,6 +402,10 @@ raise SystemExit(3 if a.fail else 0)
         for name in ('controller-replay-profile', 'saved-physics-profile'):
             samples[name] = ['--kind', 's3', '--raw', str(model), '--adapter', str(model),
                              '--expected-source-sha', '0'*40]
+        samples['controller-replay-abba'] = ['--plan', str(source),
+            '--priority-receipt', str(source), '--expected-source-sha', '0'*40]
+        samples['lazy-camera-abba'] = ['--kind', 'abba', '--expected-source-sha', '0'*40,
+            '--archive-manifest', str(source), '--archive-manifest-sha256', '0'*64]
         samples['zone-path-heading-v145'] = ['--expected-source-sha', '0'*40, '--seed', '1066']
         samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
                                            '--heading-mode', 'path_tangent_v1']
