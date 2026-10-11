@@ -246,6 +246,9 @@ def bounded_archive(root, run, seconds):
             os.fsync(log.fileno())
 
 
+ARCHIVE_LOCK = '/tmp/ugrp-auto-archive.lock'
+
+
 def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
     grace = min(max(grace, 0), GRACE_SECONDS)
     started = time.monotonic()
@@ -253,7 +256,7 @@ def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
     state = root / 'lifecycle'
     state.mkdir(parents=True, exist_ok=True)
     # Same lock as scheduled archival; never race compression/source publication.
-    with open('/tmp/ugrp-auto-archive.lock', 'a') as lock:
+    with open(ARCHIVE_LOCK, 'a') as lock:
         if action == 'stop':
             write_json(state / 'STOPPING.json', {'boot_id': boot_id(), 'reason': reason})
         signalled = signal_runs(root) if action == 'stop' else []

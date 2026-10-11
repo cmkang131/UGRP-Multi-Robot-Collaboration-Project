@@ -21,6 +21,7 @@ def root(tmp_path, monkeypatch):
     (tmp_path / 'arm').mkdir()
     monkeypatch.setattr(shutdown, 'boot_id', lambda: 'boot-one')
     monkeypatch.setattr(shutdown, 'run_processes', lambda run: set())
+    monkeypatch.setattr(shutdown, 'ARCHIVE_LOCK', str(tmp_path/'archive.lock'))
     monkeypatch.setattr(shutdown.os, 'sync', lambda: None, raising=False)
     return tmp_path
 
