@@ -3,6 +3,34 @@ param([ValidateSet('Cost','Force')][string]$Mode = 'Cost', [object]$WebhookData)
 $ErrorActionPreference = 'Stop'
 Disable-AzContextAutosave -Scope Process | Out-Null
 Connect-AzAccount -Identity | Out-Null
+$ProgressPreference = 'SilentlyContinue'
+function Get-CostResponse([string]$Path, [string]$Body) {
+    # Invoke-AzRestMethod has no request-Headers parameter. Use the official
+    # managed-identity access token with WebRequest for a fixed ClientType.
+    $token = (Get-AzAccessToken -ResourceUrl 'https://management.azure.com/').Token
+    if ($token -is [System.Security.SecureString]) {
+        $plain = (New-Object System.Net.NetworkCredential('', $token)).Password
+    } else { $plain = $token }
+    try {
+        for ($attempt=0; $attempt -le 3; $attempt++) {
+            try {
+                return Invoke-WebRequest -UseBasicParsing -Uri "https://management.azure.com$Path" -Method POST -Body $Body -ContentType 'application/json' -Headers @{Authorization="Bearer $plain";ClientType='UGRPSimulationCostGuard'}
+            } catch {
+                $response = $_.Exception.Response
+                if ($null -eq $response -or [int]$response.StatusCode -ne 429 -or $attempt -eq 3) { throw }
+                $delay = 60
+                foreach ($key in $response.Headers.AllKeys) {
+                    if ($key -match 'retry-after' -and $response.Headers[$key] -match '^\d+(\.\d+)?$') {
+                        $delay = [Math]::Max($delay, [double]$response.Headers[$key])
+                    }
+                }
+                if ($delay -gt 600) { throw }
+                Write-Output "Cost query throttled; retry-after=$delay seconds"
+                Start-Sleep -Seconds $delay
+            }
+        }
+    } finally { $plain = $null; $token = $null }
+}
 $subscriptions = @('88b7ee7f-f2f3-4a0d-a0ce-cf7306943676','c02f839a-2a6b-49d8-9c9a-f3d9f09aa5ea')
 $stop = $Mode -eq 'Force' -or [DateTime]::UtcNow -ge [DateTime]'2026-11-18T15:00:00Z'
 $total = 0.0
@@ -10,7 +38,7 @@ if (-not $stop) {
     try {
         foreach ($sub in $subscriptions) {
             $body = @{type='ActualCost';timeframe='Custom';timePeriod=@{from='2026-10-01T00:00:00Z';to=[DateTime]::UtcNow.ToString('o')};dataset=@{granularity='None';aggregation=@{usd=@{name='CostUSD';function='Sum'}}}} | ConvertTo-Json -Depth 8
-            $result = Invoke-AzRestMethod -Method POST -Path "/subscriptions/$sub/providers/Microsoft.CostManagement/query?api-version=2025-03-01" -Payload $body -Headers @{ClientType='UGRPSimulationCostGuard'}
+            $result = Get-CostResponse "/subscriptions/$sub/providers/Microsoft.CostManagement/query?api-version=2025-03-01" $body
             if ($result.StatusCode -ne 200) { throw 'Cost query failed' }
             $data = ($result.Content | ConvertFrom-Json).properties
             $index = [array]::IndexOf(@($data.columns.name), 'CostUSD')
@@ -23,6 +51,7 @@ if (-not $stop) {
     } catch {
         # A failed cost check cannot leave paid compute running indefinitely.
         $stop = $true
+        Write-Output "Cost check error type=$($_.Exception.GetType().Name) code=$($_.FullyQualifiedErrorId)"
         Write-Output 'COST_CHECK_FAILED: fail closed, deallocate both subscriptions'
     }
 }
