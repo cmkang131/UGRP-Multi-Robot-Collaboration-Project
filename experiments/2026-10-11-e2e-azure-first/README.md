@@ -1,7 +1,7 @@
 # E2E first Azure DEV
 Own RGB GoalRoute -> received OwnRoute approval -> current epoch GO/ACK -> S3 primitives; no authored runtime shell or fixture entrance.
 First four: seeds 61001/61002 x Gemma/Gemini, event+compact English on, setdown relook on.
-Only after all four startup checks pass: add seeds 61003/61004 and paired setdown off for 61001, total 15 including five failed attempts; see azure-plan.json.
+Expansion suspended after initial failures; final four-cell retry totals 13 attempts, within the absolute cap of 16; see azure-plan.json.
 LLM, own-map route completion and full transport are judged separately for every run; E2E requires all three plus post-run full-outline B/drop evaluation.
 New executive reuses S3 coarse/fine, joint-pan, high posture and synchronized residual pulses; its full physical behavior is unverified.
 Only observed carrier axes admit transport; unavailable geometry/route/RGB correction holds or stops, never uses a static substitute.

@@ -29,6 +29,15 @@ def test_compact_projection_keeps_ownroute_contract_and_rgb(tmp_path,setup_data)
     assert len(projected['images'])==len(original['images'])==1
     assert projected['image_refs']==original['image_refs']
     assert payload['condition']=='peer_en' and payload['task']['fixed_roles']['r3']=='idle'
+    from harness.llm_completion import assess_completion,normal_completion
+    example=payload['reply_format_example']
+    assert example['request_id']==payload['request_id']
+    assert example['action']=={'kind':'continue'} and example['messages']==[]
+    completion=lambda body:assess_completion({'choices':[{'finish_reason':'stop','message':{'content':json.dumps(body)}}]},study_json=True)
+    assert normal_completion(completion(example))
+    # The observed Gemma failure stays rejected: examples do not repair outputs.
+    malformed={**example,'action':'continue','message':{}};malformed.pop('messages')
+    assert not normal_completion(completion(malformed))
 
 
 @pytest.mark.parametrize('key', sorted(own.FORBIDDEN))

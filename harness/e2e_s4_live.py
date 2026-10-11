@@ -14,7 +14,7 @@ from harness.zone_final_pair_binding import bind
 
 
 EN = '''You are {rid}. r1=end_neg, r2=end_pos carry one long beam; r3 is idle.
-Use only your wrist RGB, issued commands, private own map, fixed task and actually delivered peer_reports. An estimate or issued command is not success. Never invent coordinates or a route. Return JSON only with exactly request_id, action, decision_sources, messages.
+Use only your wrist RGB, issued commands, private own map, fixed task and actually delivered peer_reports. An estimate or issued command is not success. Never invent coordinates or a route. Return JSON only with exactly request_id, action, decision_sources, messages. action is an object with kind. messages is an array (empty [] is valid). Copy request_id exactly. Follow reply_format_example for the JSON structure and choose your action from current evidence.
 Until a route exists, continue while the own-camera mapper explores. r1 must send own_route_proposal unchanged as the message contract to r2 (or via the permitted leader). r2 must receive that exact proposal before approve_route. Both claim only after approval. No_comm cannot deliver B or approve a route.
 GO/ACK use the exact current dialogue.key [order_id,route_hash,grip_epoch,seg]. GO requires own RGB supporting the grip; ACK requires your GO and the current peer_go_ref. Never reuse a previous epoch or segment. When unsure, continue holds transport. Only channel.can_send_to may receive messages. reply_to must be a received ID or null. All prose is English. Examples describe syntax, not evidence.'''
 
@@ -52,20 +52,24 @@ def project(request, *, options):
             dict(kind='route_vote', choice=['GO','ACK'], order_id='order-5',
                  route_hash='<dialogue.key[1]>', grip_epoch='<dialogue.key[2]>',
                  seg='<dialogue.key[3]>', peer_go_ref='<dialogue.peer_go_ref for ACK; null for GO>')],
-        'message': dict(recipients=['<channel.can_send_to>'], text='<English own observation>',
+        'message_element': dict(recipients=['<channel.can_send_to>'], text='<English own observation>',
                         reply_to=None, contract='<own_route_proposal unchanged, when proposing only>'),
         'decision_sources': ['order_sheet','own_rgb','own_commands','own_belief','message']}
     if b['robot_id'] == 'r3': b['action_message_contract']['actions'] = [dict(kind='continue')]
     if b['channel'].get('encoding') == 'schema':
-        b['action_message_contract']['message'] = prompt.contracts(b, options.prompt_lang)['message']
-        b['action_message_contract']['message']['contract'] = '<unchanged OwnRoute when proposing>'
+        b['action_message_contract']['message_element'] = prompt.contracts(b, options.prompt_lang)['message']
+        b['action_message_contract']['message_element']['contract'] = '<unchanged OwnRoute when proposing>'
+    # Complete typed example, rather than isolated field snippets. This is
+    # output syntax, never a synthetic peer observation or accepted decision.
+    b['reply_format_example'] = dict(request_id=b['request_id'],action=dict(kind='continue'),
+        decision_sources=['order_sheet'],messages=[])
     b['prompt_lang'] = options.prompt_lang
     own.scan(b)
     if len(r['images']) != 1 or len(r['image_refs']) != 1:
         raise base.ContractViolation('ONE_OWN_RGB_ONLY')
     user = json.dumps(b, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
     r.update(messages=[dict(role='system', content=system), dict(role='user', content=user)],
-        input_sha256=own.digest(b), prompt_version='ugrp.e2e_s4_live.v1',
+        input_sha256=own.digest(b), prompt_version='ugrp.e2e_s4_live.v2',
         condition=b['condition'], compact_prompt_v1=options.compact_prompt_v1,
         prompt_lang=options.prompt_lang)
     r['request_sha256'] = prompt.pk.request_digest_from_refs(system,user,r['image_refs'])

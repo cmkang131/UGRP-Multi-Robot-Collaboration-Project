@@ -32,7 +32,8 @@
       61001
     ],
     "additional_runs": 6,
-    "total_max": 15
+    "total_max": 15,
+    "admission": "suspended after initial cohort failed; final same-cell retry only; requested balanced six-run expansion no longer fits remaining 3 attempts under absolute cap"
   },
   "options": {
     "event_driven_llm": true,
@@ -122,10 +123,10 @@
   },
   "requested_azure_runner_sha": "d0a5080402f30e8eccdf7b4852d1cb36d05c0ced",
   "attempt_accounting": {
-    "completed_failed_attempts": 5,
+    "completed_failed_attempts": 9,
     "first_four_retry": 4,
-    "conditional_expansion": 6,
-    "total_max_including_failures": 15,
+    "conditional_expansion": 0,
+    "total_max_including_failures": 13,
     "absolute_user_cap": 16
   },
   "submission": "one remote_run supervised batch with four independent sim_cli workflows, RUN_META and EXIT per case",
@@ -133,5 +134,10 @@
     "before_children": true,
     "source": "https://docs.python.org/3/library/multiprocessing.html#synchronization-between-processes",
     "cause": "Two concurrent cold-start dlopen calls saw a partially linked final .so; serialize planner build/load before child startup; no input, provider or physics during preflight"
+  },
+  "prompt_format_fix": {
+    "reason": "Gemma returned singular message and string action in 3/3 HTTP200 replies",
+    "strategy": "Complete valid one-shot JSON syntax example; strict validator unchanged",
+    "source": "https://ai.google.dev/gemini-api/docs/prompting-strategies#few-shot"
   }
 }
