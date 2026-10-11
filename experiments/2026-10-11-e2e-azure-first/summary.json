@@ -1,63 +1,146 @@
 {
-  "status": "WAITING_AZURE_CAPACITY",
-  "class_": "dev",
+  "status": "FINAL_RETRY_CAPACITY_AVAILABLE",
+  "class": "dev",
   "pr": 433,
-  "tests": {
-    "checkpoints": [
-      {
-        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests.xml",
-        "sha256": "63ac340f50c85ac973e552507ec686e7b49076f1573bfb512a22e4ef8d19c2be",
-        "passed": 56,
-        "skipped": 0,
-        "scope": "three related files before relay fix"
-      },
-      {
-        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-relay-fix.xml",
-        "sha256": "ea4301c49b938ded9f64d78b573df5959a34dfe27e4fe6a09157a84be53355d0",
-        "passed": 57,
-        "skipped": 0,
-        "scope": "three related files with relay-ID regression"
-      },
-      {
-        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-batch.xml",
-        "sha256": "e86b2defdbd64a7ba351532ce97677ec2920feee1d6afd7cc62a61517559b0b5",
-        "passed": 32,
-        "skipped": 0,
-        "scope": "changed E2E file after batch orchestration"
-      },
-      {
-        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-azure-recovery.xml",
-        "sha256": "43375b214bd044cd7cf8b75dbfb0821c8fb64e9469305cb6b0cc5b6ced9d69ea",
-        "passed": 26,
-        "skipped": 12,
-        "scope": "changed Azure lifecycle file; PowerShell runtime unavailable for 12 runbook tests"
-      },
-      {
-        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-azure-linux.xml",
-        "sha256": "65a54c64b737908f4820d15d5af0aa692e5f2f8f3271810b8f0d9c9a893a4672",
-        "passed": 26,
-        "skipped": 12,
-        "scope": "Azure Python 3.12 lifecycle tests; isolated pytest dependency path; no VM/provider API calls; PowerShell unavailable"
-      }
-    ]
+  "latest_candidate_sha": "5c89f012f3ed064276fd83ea40eb5eb207adce34",
+  "latest_candidate_physics_verified": false,
+  "executed_candidate_sha": "0d663178cf0be10728f12ee8b5be348c3e1f0bbf",
+  "s4_import_sha": "b91a7eaf",
+  "azure_guard": {
+    "source_sha": "4c20f4c02cf8576a9bce52f1ce68f89b2cb1c7e3",
+    "helper_sha256": "700600c8ed050eba520d3bfc24c79eacf6db0a7c0d051e6e3cb33ccd93f44acb",
+    "guest_output": "700600c8ed050eba520d3bfc24c79eacf6db0a7c0d051e6e3cb33ccd93f44acb  /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py\n",
+    "linux_tests": {
+      "passed": 32,
+      "skipped_powershell_unavailable": 12
+    }
   },
+  "tests": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-relay-fix.xml",
+      "sha256": "ea4301c49b938ded9f64d78b573df5959a34dfe27e4fe6a09157a84be53355d0",
+      "passed": 57,
+      "skipped": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-b80.xml",
+      "sha256": "fe5266037e4dcc1bf2783576ddb7ab9bcee2b109c8e928c83e0d48c64fa0926a",
+      "passed": 35,
+      "skipped": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-azure-rescan.xml",
+      "sha256": "660615bfd86e7604e3c24fb68810a03c024cfd725d6408519499867dfbf6c945",
+      "passed": 32,
+      "skipped": 12
+    }
+  ],
+  "actual_input_contract_audit": {
+    "n": 19,
+    "N": 19,
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/input-audit-through-r4.json",
+    "sha256": "08f941521957ba4ff5b6881fcd35f8788b27c545a0329ccaf9995a55ce5e959e"
+  },
+  "attempt_accounting": {
+    "started": 9,
+    "planned_including_final_retry": 13,
+    "scene_initialized": 5,
+    "latest_executed_first_cohort": {
+      "n": 4,
+      "healthy": 0,
+      "LLM": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0
+    },
+    "unstarted_final_retry": 4,
+    "absolute_cap": 16,
+    "expansion_admitted": false
+  },
+  "E2E": {
+    "denominator": "all started attempts including HOST_ERROR and sibling aborts",
+    "N": 9,
+    "LLM_operated": 2,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "E2E_success": 0
+  },
+  "model_metrics": {
+    "gemma": {
+      "generation_requests_actual": 4,
+      "relay_post_attempts": 7,
+      "cached_posts": 3,
+      "tokens_total_known": 4527,
+      "usage_unknown_generations": 1,
+      "response_latency_median_s": 38.522737979888916,
+      "response_latency_mean_s": 36.61133599281311,
+      "generation_http_status": {
+        "200": 3,
+        "503": 1
+      },
+      "latency_scope": "Mac relay wall per actually forwarded generation, includes failed response; cached replies excluded",
+      "source_receipts": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/gemma-relay-r2/receipts.jsonl",
+        "sha256": "0a881026811f48df801efb2dc3f03e14221ed269ab6254ea5521f59757922e1f"
+      },
+      "earlier_namespace_rejected_posts": 3,
+      "accounting_correction": "VM ledger counted cached HTTP503 as four confirmed generations; Mac durable receipt/journal confirms one actual HTTP503 generation plus three cached replies."
+    },
+    "gemini": {
+      "generation_requests_actual": 9,
+      "relay_post_attempts": 9,
+      "cached_posts": 0,
+      "tokens_total_known": 23774,
+      "usage_unknown_generations": 0,
+      "response_latency_median_s": 5.307313919067383,
+      "response_latency_mean_s": 8.217814736896091,
+      "generation_http_status": {
+        "200": 9
+      },
+      "latency_scope": "Mac relay wall per actually forwarded generation, includes failed response; cached replies excluded",
+      "source_receipts": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/gemini-relay-r2/receipts.jsonl",
+        "sha256": "342749f87357b5b7f5f7d9ec5e579124e5f34de0a2bd044ab6af17ca65efeaa1"
+      },
+      "late_response_accounted": "Seed61001 fourth generation returned after VM cancellation; its 2903 tokens are included in relay accounting, not retroactively accepted by controller."
+    }
+  },
+  "setdowns_total": 0,
   "runs": [
     {
-      "id": "e2eaz1-gemma-s61001-on",
       "status": "HOST_ERROR",
-      "seed": 61001,
-      "model": "Gemma",
       "source_sha": "457dea24353ea49dd56e0a54d26d7002e2e7fe7c",
+      "seed": 61001,
+      "model": "study_gemma4_31b_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "fractional_duration_v1",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1"
+      },
       "wall_s": 18.336523190000037,
       "sim_s": 0.0,
       "frames": 1,
-      "provider_calls": 0,
-      "relay_post_attempts": 3,
-      "tokens_total_known": 0,
-      "normal_response_latency_s": null,
-      "error_response_latency_median_s": 1.968361,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
       "setdowns": 0,
-      "cause": "relay rejected new E2E run-key prefix before upstream; fixed in 951e551d",
+      "model_calls": 3,
+      "failure_type": "GeminiProxyError",
+      "failure": "no successful model response",
+      "drops": 0,
+      "id": "e2eaz1-gemma-s61001-on",
+      "scene_initialized": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-gemma-s61001-on/raw",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-gemma-s61001-on/raw",
+      "archive_verified": true,
+      "result_sha256": "00dff65cb17036e380bbf1fd88a88a94372d4b1dcef69f95ef4225d5ed1cd5d4",
       "initial_check": {
         "passed": false,
         "no_exceptions": false,
@@ -69,77 +152,560 @@
         "automatic_health_stop_wall_s": 18.336523190000037,
         "stopped_before_180s": true
       },
-      "raw": "azure:~/ugrp-sim/runs/e2eaz1-gemma-s61001-on",
-      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-gemma-s61001-on",
+      "cause": "relay_namespace_rejected_before_provider"
+    },
+    {
+      "status": "EARLY_STOP",
+      "source_sha": "ae3d03d91f90c5e71c31cbbcce2b6626c6343d4a",
+      "seed": 61001,
+      "model": "main_study_gemini_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "fractional_duration_v1",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1"
+      },
+      "wall_s": 3.4328402979999737,
+      "sim_s": null,
+      "frames": 0,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 0,
+      "failure_type": "KeyboardInterrupt",
+      "failure": "",
+      "drops": null,
+      "id": "e2eaz1-gemini-s61001-on-r1",
+      "scene_initialized": false,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r3/cases/e2eaz1-gemini-s61001-on-r1/raw",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r3/cases/e2eaz1-gemini-s61001-on-r1/raw",
       "archive_verified": true,
-      "result_sha256": "00dff65cb17036e380bbf1fd88a88a94372d4b1dcef69f95ef4225d5ed1cd5d4"
+      "result_sha256": "bc23aaaf714a3fa3c783b510608b13ef2483b07910a8740e0aca5157836b5b06",
+      "initial_check": {
+        "passed": false,
+        "first_external_inspection_elapsed_s": 31.18,
+        "automatic_batch_stop": true,
+        "no_exceptions": false,
+        "frames": 0,
+        "sim_advanced": false,
+        "actual_movement": false,
+        "normal_commands": false,
+        "own_B_generated": false,
+        "all_toggles_enabled": true
+      },
+      "cause": "shared_native_library_cold_build_race_or_sibling_abort"
+    },
+    {
+      "status": "HOST_ERROR",
+      "source_sha": "ae3d03d91f90c5e71c31cbbcce2b6626c6343d4a",
+      "seed": 61002,
+      "model": "main_study_gemini_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "fractional_duration_v1",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1"
+      },
+      "wall_s": 2.118005753000034,
+      "sim_s": null,
+      "frames": 0,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 0,
+      "failure_type": "OSError",
+      "failure": "/home/ugrp/ugrp-sim/src/ae3d03d91f90c5e71c31cbbcce2b6626c6343d4a/outputs/mapfree-public-navigation-build/core-21ee0c69fc800469.so: file too short",
+      "drops": null,
+      "id": "e2eaz1-gemini-s61002-on-r1",
+      "scene_initialized": false,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r3/cases/e2eaz1-gemini-s61002-on-r1/raw",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r3/cases/e2eaz1-gemini-s61002-on-r1/raw",
+      "archive_verified": true,
+      "result_sha256": "f104378412c5e9f69a629ee90df905a0efd7711c9b3c2759567941339a660fa3",
+      "initial_check": {
+        "passed": false,
+        "first_external_inspection_elapsed_s": 31.18,
+        "automatic_batch_stop": true,
+        "no_exceptions": false,
+        "frames": 0,
+        "sim_advanced": false,
+        "actual_movement": false,
+        "normal_commands": false,
+        "own_B_generated": false,
+        "all_toggles_enabled": true
+      },
+      "cause": "shared_native_library_cold_build_race_or_sibling_abort"
+    },
+    {
+      "status": "EARLY_STOP",
+      "source_sha": "ae3d03d91f90c5e71c31cbbcce2b6626c6343d4a",
+      "seed": 61001,
+      "model": "study_gemma4_31b_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "fractional_duration_v1",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1"
+      },
+      "wall_s": 3.4311257060007847,
+      "sim_s": null,
+      "frames": 0,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 0,
+      "failure_type": "KeyboardInterrupt",
+      "failure": "",
+      "drops": null,
+      "id": "e2eaz1-gemma-s61001-on-r1",
+      "scene_initialized": false,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r3/cases/e2eaz1-gemma-s61001-on-r1/raw",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r3/cases/e2eaz1-gemma-s61001-on-r1/raw",
+      "archive_verified": true,
+      "result_sha256": "71c0afc4c700ebbc7456891c3f641f8b9215f3f70e086b250cb949b811d357bd",
+      "initial_check": {
+        "passed": false,
+        "first_external_inspection_elapsed_s": 31.18,
+        "automatic_batch_stop": true,
+        "no_exceptions": false,
+        "frames": 0,
+        "sim_advanced": false,
+        "actual_movement": false,
+        "normal_commands": false,
+        "own_B_generated": false,
+        "all_toggles_enabled": true
+      },
+      "cause": "shared_native_library_cold_build_race_or_sibling_abort"
+    },
+    {
+      "status": "HOST_ERROR",
+      "source_sha": "ae3d03d91f90c5e71c31cbbcce2b6626c6343d4a",
+      "seed": 61002,
+      "model": "study_gemma4_31b_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "fractional_duration_v1",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1"
+      },
+      "wall_s": 2.116303576000064,
+      "sim_s": null,
+      "frames": 0,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 0,
+      "failure_type": "OSError",
+      "failure": "/home/ugrp/ugrp-sim/src/ae3d03d91f90c5e71c31cbbcce2b6626c6343d4a/outputs/mapfree-public-navigation-build/core-21ee0c69fc800469.so: file too short",
+      "drops": null,
+      "id": "e2eaz1-gemma-s61002-on-r1",
+      "scene_initialized": false,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r3/cases/e2eaz1-gemma-s61002-on-r1/raw",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r3/cases/e2eaz1-gemma-s61002-on-r1/raw",
+      "archive_verified": true,
+      "result_sha256": "fdab408c75565a48046a4402a4a1d7a1d3f42bf6cee1bc48e9cafcea345f8b48",
+      "initial_check": {
+        "passed": false,
+        "first_external_inspection_elapsed_s": 31.18,
+        "automatic_batch_stop": true,
+        "no_exceptions": false,
+        "frames": 0,
+        "sim_advanced": false,
+        "actual_movement": false,
+        "normal_commands": false,
+        "own_B_generated": false,
+        "all_toggles_enabled": true
+      },
+      "cause": "shared_native_library_cold_build_race_or_sibling_abort"
+    },
+    {
+      "status": "EARLY_STOP",
+      "source_sha": "0d663178cf0be10728f12ee8b5be348c3e1f0bbf",
+      "seed": 61001,
+      "model": "main_study_gemini_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "fractional_duration_v1",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1"
+      },
+      "wall_s": 105.46427273200061,
+      "sim_s": 4.0,
+      "frames": 21,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 4,
+      "failure_type": "KeyboardInterrupt",
+      "failure": "",
+      "drops": 0,
+      "id": "e2eaz1-gemini-s61001-on-r2",
+      "scene_initialized": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r4/cases/e2eaz1-gemini-s61001-on-r2/raw",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r4/cases/e2eaz1-gemini-s61001-on-r2/raw",
+      "archive_verified": true,
+      "result_sha256": "b531055bdb5d08f820eadce2a470d259db269355882fd2d07ca9cc1efb862a69",
+      "initial_check": {
+        "passed": false,
+        "observed_unix": 1791717743.6086836,
+        "elapsed_s": 152.8885898590088,
+        "actual_displacement_m": {
+          "r1": 0.005290441589257627,
+          "r2": 0.00519581516150438,
+          "r3": 1.287190483607346e-05
+        },
+        "automatic_batch_stop": true,
+        "exception_log": true,
+        "sim_s": 4.0,
+        "frames": 21,
+        "first_model_response": true,
+        "own_map_B_generated": false,
+        "phase": "mapping",
+        "commands_rotation_only_at_stop": true
+      },
+      "cause": "malformed_Gemma_reply_or_HTTP503_or_sibling_abort"
+    },
+    {
+      "status": "EARLY_STOP",
+      "source_sha": "0d663178cf0be10728f12ee8b5be348c3e1f0bbf",
+      "seed": 61002,
+      "model": "main_study_gemini_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "fractional_duration_v1",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1"
+      },
+      "wall_s": 105.45375658800003,
+      "sim_s": 4.2,
+      "frames": 21,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 5,
+      "failure_type": "KeyboardInterrupt",
+      "failure": "",
+      "drops": 0,
+      "id": "e2eaz1-gemini-s61002-on-r2",
+      "scene_initialized": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r4/cases/e2eaz1-gemini-s61002-on-r2/raw",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r4/cases/e2eaz1-gemini-s61002-on-r2/raw",
+      "archive_verified": true,
+      "result_sha256": "92b1dff8504c33524b7e10c804f5468ecffce1bb7b7a0af529f457b13210712b",
+      "initial_check": {
+        "passed": false,
+        "observed_unix": 1791717743.6086836,
+        "elapsed_s": 152.89441013336182,
+        "actual_displacement_m": {
+          "r1": 0.00536085067830964,
+          "r2": 0.005373732418972977,
+          "r3": 1.3470778336117633e-05
+        },
+        "automatic_batch_stop": true,
+        "exception_log": true,
+        "sim_s": 4.0,
+        "frames": 21,
+        "first_model_response": true,
+        "own_map_B_generated": false,
+        "phase": "mapping",
+        "commands_rotation_only_at_stop": true
+      },
+      "cause": "malformed_Gemma_reply_or_HTTP503_or_sibling_abort"
+    },
+    {
+      "status": "EARLY_STOP",
+      "source_sha": "0d663178cf0be10728f12ee8b5be348c3e1f0bbf",
+      "seed": 61001,
+      "model": "study_gemma4_31b_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "fractional_duration_v1",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1"
+      },
+      "wall_s": 105.39612725799998,
+      "sim_s": 0.0,
+      "frames": 1,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 4,
+      "failure_type": "KeyboardInterrupt",
+      "failure": "",
+      "drops": 0,
+      "id": "e2eaz1-gemma-s61001-on-r2",
+      "scene_initialized": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r4/cases/e2eaz1-gemma-s61001-on-r2/raw",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r4/cases/e2eaz1-gemma-s61001-on-r2/raw",
+      "archive_verified": true,
+      "result_sha256": "8a018acf2963dcabc60dac3c224c765a7fb156f11df2248608d939d56b54b74f",
+      "initial_check": {
+        "passed": false,
+        "observed_unix": 1791717743.6086836,
+        "elapsed_s": 152.90723371505737,
+        "actual_displacement_m": {
+          "r1": 0.0,
+          "r2": 0.0,
+          "r3": 0.0
+        },
+        "automatic_batch_stop": true,
+        "exception_log": true,
+        "sim_s": 0.0,
+        "frames": 1,
+        "first_model_response": false,
+        "own_map_B_generated": false,
+        "phase": "mapping",
+        "commands_rotation_only_at_stop": true
+      },
+      "cause": "malformed_Gemma_reply_or_HTTP503_or_sibling_abort"
+    },
+    {
+      "status": "HOST_ERROR",
+      "source_sha": "0d663178cf0be10728f12ee8b5be348c3e1f0bbf",
+      "seed": 61002,
+      "model": "study_gemma4_31b_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "fractional_duration_v1",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1"
+      },
+      "wall_s": 102.65607937799996,
+      "sim_s": 0.0,
+      "frames": 1,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 3,
+      "failure_type": "GeminiProxyError",
+      "failure": "no successful model response",
+      "drops": 0,
+      "id": "e2eaz1-gemma-s61002-on-r2",
+      "scene_initialized": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r4/cases/e2eaz1-gemma-s61002-on-r2/raw",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r4/cases/e2eaz1-gemma-s61002-on-r2/raw",
+      "archive_verified": true,
+      "result_sha256": "6e5542f6233c91dbc09f0588f06c786a821e9ea6ea95f6153bf76f02f8ea889d",
+      "initial_check": {
+        "passed": false,
+        "observed_unix": 1791717743.6086836,
+        "elapsed_s": 152.91126561164856,
+        "actual_displacement_m": {
+          "r1": 0.0,
+          "r2": 0.0,
+          "r3": 0.0
+        },
+        "automatic_batch_stop": true,
+        "exception_log": true,
+        "sim_s": 0.0,
+        "frames": 1,
+        "first_model_response": false,
+        "own_map_B_generated": false,
+        "phase": "mapping",
+        "commands_rotation_only_at_stop": true
+      },
+      "cause": "malformed_Gemma_reply_or_HTTP503_or_sibling_abort"
     }
   ],
-  "executed": 1,
-  "first_planned": 4,
-  "expansion_admitted": false,
-  "physical_success_unverified": true,
-  "limitations": [
-    "Only observed calibrated carrier axes admitted; full initial-scene runtime has no physical acceptance yet."
-  ],
-  "source_sha": "3efd025803204969759b8609e229be8a6dfc03c7",
-  "azure_guard_sha": "1bfa2bde2d60d214d775585d937e005e109f1922",
-  "initial_cohort": {
-    "planned": 4,
-    "physical_started": 1,
-    "normal": 0
-  },
-  "E2E": {
-    "denominator": "actual started attempts",
-    "N": 1,
-    "LLM": 0,
-    "own_map_completed": 0,
-    "start_to_finish_transport": 0,
-    "all_three": 0
-  },
   "blocked_batches": [
     {
       "id": "e2eaz1-first4-r1",
       "status": "BLOCKED_PRESTART",
-      "cells": 4,
-      "reason": "AZURE_LOAD_ADMISSION",
-      "load_1m_at_submit": 165.66,
-      "limit": 12.8,
-      "vcpus": 16,
-      "model_calls": 0,
-      "setdowns": 0,
-      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r1",
-      "archive_verified": true
-    }
-  ],
-  "actual_model_input_audit": {
-    "passed": 3,
-    "total": 3,
-    "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/input-audit.json",
-    "sha256": "dcb4c2a9ced18cfe25a04acdd8d46e5712feef688b66441fe3db45f96eb21c30"
-  },
-  "remaining": [
-    "Capacity occupied by egomap71 and S3 batches",
-    "No real provider completion yet",
-    "Own RGB B route and start-to-finish transport physically unverified",
-    "VM currently allocated for other tasks; task five-hour cap installed"
-  ],
-  "sources": [
-    "https://github.com/ros-infrastructure/rep/blob/master/rep-0105.rst",
-    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/waypoint_follower/",
-    "https://docs.python.org/3/library/subprocess.html",
-    "https://docs.python.org/3/library/subprocess.html#subprocess.Popen.poll"
-  ],
-  "raw_locations": [
-    {
-      "host": "Mac",
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011",
-      "purpose": "small proxy, lifecycle, test and input-audit metadata"
+      "cases_started": 0,
+      "reason": "AZURE_LOAD_ADMISSION"
     },
     {
-      "host": "Azure",
-      "path": "~/ugrp-sim/runs/e2eaz1-gemma-s61001-on",
-      "archive_manifest_sha256": "9551a8ecef1a7a496ef83961688c54df305acee2c7114c08dea5ba9dd8ee03d4"
+      "id": "e2eaz1-first4-r5",
+      "status": "BLOCKED_PRESTART",
+      "cases_started": 0,
+      "reason": "RESERVED_CPU_OVERLAP",
+      "candidate_sha": "b9ae6eee9de5d9e6686385f905acad564588a10f"
     }
+  ],
+  "offline_B_metric_replay": {
+    "scope": "offline replay of measured RGB metric footprints; not new physical evidence",
+    "source_file": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/B-rgb-diagnosis.json",
+    "source_sha256": "3e47b9d4cd6d19f906bdb367cbd7d536a4be8538b8c71320f37b9ab18ab5be0c",
+    "source_code_sha256": "eeab6652759687cbe2b039da74c3f65670bfa51793d1ca2366858c13565733f9",
+    "frames": 22,
+    "accepted_frames": {
+      "off": 5,
+      "e2e_b80_v1": 12
+    },
+    "first_frame_short_m": 0.8307955265045166,
+    "short_limits_m": {
+      "off": 0.72,
+      "e2e_b80_v1": 0.96
+    }
+  },
+  "archives": {
+    "e2eaz1-gemma-s61001-on": {
+      "verified": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-gemma-s61001-on",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-gemma-s61001-on",
+      "manifest_sha256": "9551a8ecef1a7a496ef83961688c54df305acee2c7114c08dea5ba9dd8ee03d4",
+      "files": 86,
+      "bytes": 1712836
+    },
+    "e2eaz1-first4-r1": {
+      "verified": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r1",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r1",
+      "manifest_sha256": "45636f25afeaaebd494e3419c00140376e6d1fcf70d559cd80500900fff9457e",
+      "files": 10,
+      "bytes": 2882
+    },
+    "e2eaz1-first4-r3": {
+      "verified": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r3",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r3",
+      "manifest_sha256": "388393cd01f3e9b049e09bd393e01748fc5cdbcc27f3d9a3aa5651bfb7cc3c30",
+      "files": 52,
+      "bytes": 3659111
+    },
+    "e2eaz1-first4-r4": {
+      "verified": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r4",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r4",
+      "manifest_sha256": "4f5e40f5fc3537b314a2c47cb19d77334309478310a80535cceb170b46c19e93",
+      "files": 474,
+      "bytes": 10844921
+    },
+    "e2eaz1-first4-r5": {
+      "verified": true,
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-first4-r5",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r5",
+      "manifest_sha256": "839c665f1a2e51507be9b39259278081fc17af37a84bf4b2190ee6fd6d358d35",
+      "files": 10,
+      "bytes": 3475
+    }
+  },
+  "proxy_cleanup": {
+    "checked_unix": 1791718947.628725,
+    "owned": [
+      {
+        "name": "gemma-relay",
+        "pid": 74714,
+        "stop_sent": true,
+        "still_running": false
+      },
+      {
+        "name": "gemini-relay",
+        "pid": 74732,
+        "stop_sent": true,
+        "still_running": false
+      },
+      {
+        "name": "tunnel",
+        "pid": 74766,
+        "stop_sent": true,
+        "still_running": false
+      },
+      {
+        "name": "gemini",
+        "pid": 74713,
+        "stop_sent": true,
+        "still_running": false
+      }
+    ],
+    "unrelated_proxy_1529_present": true,
+    "unrelated_proxy_touched": false
+  },
+  "VM": {
+    "start_requested_unix": 1791713042.590061,
+    "start_requested_utc": "2026-10-11T10:04:02.590063+00:00",
+    "hard_cap_s": 18000,
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "cap_trigger_remaining_s": 17023,
+    "cap_unit": "ugrp-e2e433-five-hour-cap",
+    "cap_install_output": "Running timer as unit: ugrp-e2e433-five-hour-cap.timer\nWill run service as unit: ugrp-e2e433-five-hour-cap.service\n",
+    "last_checked_unix": 1791719079.461592,
+    "elapsed_hours": 1.6769087586137983,
+    "retail_compute_USD_per_hour": 0.848,
+    "estimated_compute_USD": 1.422,
+    "cost_scope": "shared VM allocation interval estimate; excludes storage/network/model charges, not a final invoice",
+    "deallocated": false,
+    "stop_attempt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/vm-stop-status.json",
+      "sha256": "3b50690cc6c3daef13d12be92bb495ed5aa259c94ac45041802fab98d5745c6f"
+    },
+    "stop_output": "Unarchived runs/leases; deallocation deferred: {\"unarchived\": [\"e2eaz1-relay-evidence\", \"egomap72-b-return-29c0c169\", \"s3-continuous-20261011-v186\", \"s3-release-ack-20261011-v187\"], \"leases\": [\"egomap72-b-return-29c0c169\", \"egomap72-delivery\"], \"stopping\": false}\n"
+  },
+  "remaining": [
+    "Corrected typed reply and B80 geometry have no new physical acceptance; four-case retry needs CPU capacity and fresh finite proxy receipts.",
+    "Own map B route completion and full transport remain 0; fresh observed carrier axes and own RGB setdown correction remain physically unverified.",
+    "VM still running; task cap remains active; shutdown after final retry and verified archives."
+  ],
+  "references": [
+    "https://ai.google.dev/gemini-api/docs/prompting-strategies#few-shot",
+    "https://docs.python.org/3/library/multiprocessing.html#synchronization-between-processes",
+    "https://docs.python.org/3/library/fcntl.html#fcntl.flock",
+    "https://docs.kernel.org/filesystems/proc.html",
+    "https://github.com/ros-infrastructure/rep/blob/master/rep-0105.rst",
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/waypoint_follower/"
   ]
 }
