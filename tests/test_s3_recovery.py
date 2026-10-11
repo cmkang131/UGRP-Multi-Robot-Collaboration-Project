@@ -329,6 +329,11 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
     from harness import zone_s3_recovery_contract as contract
     from harness.zone_s3_recovery_runtime import Runtime
     b=contract.bundle('0'*40)
+    assert b['execution_bundle_id']=='zone-s3-recovery-v189'
+    assert b['workflow_version']=='7.82.0'
+    assert b['retired_bundles'][0]['execution_bundle_id']=='zone-s3-recovery-v152'
+    assert b['preregistration']['inherited_results'] is False
+    contract.verify(b)
     assert b['s3_camera_binding']=='v3_persistent_v1' and b['eval_render_camera']
     assert b['options']['heading_mode']=='path_tangent_v1'
     assert b['options']==b['controller_config']['options']
@@ -348,3 +353,38 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
             else:
                 assert own.resampling_diversity_audit['option']==b['options']['resampling_diversity']
     finally:p.runtime.close()
+
+
+def test_retired_v152_bytes_and_consumers_match_original_git_source():
+    import hashlib
+    import io
+    import json
+    import subprocess
+    import tarfile
+    from harness import zone_s3_recovery_contract as contract
+    record=json.loads((contract.ROOT/contract.RETIRED).read_text())['retired'][0]
+    comparison=contract.ROOT/record['comparison_path']
+    assert hashlib.sha256(comparison.read_bytes()).hexdigest()==record['comparison_sha256']
+    decision=json.loads(comparison.read_text())
+    expected=decision['runtime_source_sha256']
+    assert len(expected)==record['runtime_source_count']==379
+    paths=[*expected,record['comparison_path'],*record['preserved_files']]
+    archive=subprocess.check_output(['git','archive',record['source_sha'],'--',*paths],cwd=contract.ROOT)
+    with tarfile.open(fileobj=io.BytesIO(archive)) as source:
+        blobs={m.name:source.extractfile(m).read() for m in source if m.isfile()}
+    assert blobs[record['comparison_path']]==comparison.read_bytes()
+    for path,digest in expected.items():
+        assert hashlib.sha256(blobs[path]).hexdigest()==digest,path
+    for path,row in record['preserved_files'].items():
+        preserved=(contract.ROOT/row['path']).read_bytes()
+        assert preserved==blobs[path]
+        assert hashlib.sha256(preserved).hexdigest()==row['sha256']
+
+
+def test_new_registration_refuses_changed_consumers(monkeypatch):
+    from harness import zone_s3_recovery_contract as contract
+    original=contract.hp.base.sha
+    path=contract.ROOT/'harness/zone_own_sweep.py'
+    monkeypatch.setattr(contract.hp.base,'sha',lambda p:'0'*64 if p==path else original(p))
+    with pytest.raises(ValueError,match='registered S3 consumer changed: harness/zone_own_sweep.py'):
+        contract.bundle('0'*40)

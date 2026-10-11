@@ -7,6 +7,13 @@
 
 ## 판단과 재현
 
+2026-10-11: #416의 `zone-s3-recovery-v152` / 7.45.0은 실행 당시 SHA
+`981baa95`에서만 재현한다. 비교 JSON은 그대로 보존하고 원래 계약·실행기·workflow·등록을
+[퇴역 목록](../experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json)에 바이트/해시로 보존했다.
+현재 소스는 v188 / 7.81.0으로 재등록하며 과거 결과를 승계하지 않는다.
+#425의 S4 공통 소비자 2개 차이는 v189 / 7.82.0으로 별도 등록했다. v188은 실행 0회의
+등록이며 원래 바이트를 같은 퇴역 목록에 보존한다.
+
 2026-10-10: `controller-replay-abba` adapter 1.0.0은 1.1.0(visibility 비교 옵션,
 측정 source/산출물 경로 명시)으로, `controller-replay-profile` 1.1.0은
 1.2.0(private binding/RGB 구간, visibility 옵션)으로 대체한다. 이전 실행 소스는

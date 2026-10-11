@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-recovery-v189",
+      "version": "7.82.0",
+      "purpose": "S4 분기 공통 소스를 포함한 S3 현재 소스 재등록",
+      "entry": "scripts/run_s3_recovery.py",
+      "runner": "scripts.run_s3_recovery",
+      "docs": "experiments/2026-10-11-ci-bundle-reregistration/README.md",
+      "requires": "committed SHA; explicit option; own exclusive SIM lock; one finite smoke",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}
