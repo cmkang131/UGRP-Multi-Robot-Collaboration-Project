@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import shutil
 import subprocess
 import sys
@@ -84,6 +85,13 @@ def main():
         yield 'azure_one_core'
     def load(path, out):
         row = find_checkpoint(path)
+        def relocated(value):
+            return re.sub(r'/home/ubuntu/ugrp-sim/src/[0-9a-f]{40}/?', str(a.source)+'/', value).rstrip('/')
+        # Import names and checkpoint payload stay intact; only host paths move.
+        row = {**row, 'imports': {
+            'sys_path': [relocated(x) for x in row['imports']['sys_path']],
+            'modules': {name: relocated(file) for name, file in row['imports']['modules'].items()},
+        }}
         cp = DevCheckpoint(resume=dict(row=row, file=str(path), source_case_dir=str(prefix),
             labels={'egomap60': True, 'host': 'oracle-x86'}))
         out.mkdir(exist_ok=False)
@@ -138,6 +146,11 @@ def main():
         result = frozen.run(args)
         for video in videos:
             video.close()
+        if not videos:
+            write(run / 'summary.json', dict(status=result['status'], failure=result.get('failure'),
+                source_sha=SOURCE, seed=63003, condition='calib_traversed_zone', video_created=False,
+                physics_frames=result.get('frames', 0), host='azure', raw=str(run / 'raw')))
+            return 1
         scores = run / 'evaluation'
         scores.mkdir()
         frozen.score_batch([dict(seed=63003, condition='calib_traversed_zone', status=result['status'],
