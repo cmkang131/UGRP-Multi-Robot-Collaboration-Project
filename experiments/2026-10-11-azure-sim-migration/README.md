@@ -13,3 +13,11 @@ CostUSD 정상 조회, 비용 검사 실패 시 두 구독 실제 정지, Action
 소스 `f566eeefb8b6afd3c041064e1706c9f2e1f8cac3`: 비용 상한은 SIGINT·flush와 최대 10분 checksum 보관 시도 후 반드시 할당 해제한다. 일반 종료는 EXIT만 있는 미보관 원본·실패 lease를 보존하고 시작/부팅 때 재보관한다. 관련 두 시험 파일 38개(모의 PowerShell 실행 포함) 통과. [수정·시험·실배포 범위](review-fixes-20261011.json).
 
 실제 변경은 기존 runbook 내용만 publish했고 바이트/Published 재조회가 일치했다. VM을 켜지 않았으며 두 구독 모두 deallocated다. Run Command 권한·lease-aware 자정 일정/기존 강제 일정 비활성화·게스트 가드/복구 설치는 허용 범위 밖이라 미적용이며, 실제 우아한 정지/ARM 보관은 검증하지 않았다. 이전 스모크 증거를 새 후보의 실배포 검증으로 승계하지 않는다.
+
+## #438 마무리 — P2와 승인된 배포
+
+소스 `9589255c`: 복구/정지의 보관 실패를 종료 코드74로 전달해 `azctl start`가 새 실행을 거부한다. 실패 원본·lease 보존과 실제 복구 CLI→start 차단을 포함해 관련 두 시험 파일 **44개 통과**(PowerShell 모의12개 포함). `origin/main 8d772093`의 #435/#439 저장 자동화·문서와 Azure 내용을 함께 보존했고 충돌한 CI 목록에 양쪽 시험을 등록했다. 새 실행 번들 ID 없음.
+
+사용자가 승인한 Run Command 권한은 Automation·VM identity 모두 구독88b7ee7f의 자기 VM에만 할당했고 PAYG에는 추가하지 않았다. runbook Published/전체 바이트, 일일00:00 KST→Daily 연결, 기존 DevTest 강제 종료 Disabled를 재조회했다. VM identity의 무해한 실제 명령 PUT201·GET200·exit0을 확인했다. 게스트 가드·감독 실행기·복구 서비스는 이미 현재 버전이라 재설치를 건너뛰고 종료 도우미만 백업 후 원자 교체했다. 서비스 재시작·복구/시뮬레이션 실행·VM 시작/정지 없이 활성 lease를 보존했다.
+
+새 소스의 실제 우아한 종료·ARM 보관·미래 자정 발동은 미검증이다. 다른 작업이 사용하는 VM은 running을 유지한다. [배포·해시·CI 상태](finalize-438.json); 이전 P1 기록과 과거 스모크 결과는 별도 이력으로 유지한다.
