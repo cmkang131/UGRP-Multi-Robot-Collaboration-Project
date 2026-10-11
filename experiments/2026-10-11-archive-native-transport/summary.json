@@ -232,8 +232,11 @@
     }
   ],
   "ci": {
-    "status": "in_progress",
-    "pr": 441
+    "status_at_record": "queued",
+    "source_head_sha": "e87b430ae8159e4370dda40757cd3ec7193f1796",
+    "pr": 441,
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/441",
+    "final_result_location": "GitHub PR checks and local outputs/archive-native-transport/ci-final.json"
   },
   "scope": "storage transport/admission; no new simulation, model call, VM lifecycle action, Oracle x86 or stock-bot/crontab change",
   "references": [
@@ -244,29 +247,19 @@
   ],
   "artifacts": [
     {
-      "path": "experiments/2026-10-11-archive-native-transport/deployment.json",
-      "sha256": "a67ba032c2c873aff5c9bdd0dfc6f5e7827a788b5fa8091d020bb53d8a919b81",
-      "bytes": 815
+      "path": "experiments/2026-10-11-archive-native-transport/admission-direct-cli.json",
+      "sha256": "4c1d7b8e47a6489f0010d756850e313c6d15344842aaaa6141e5df47fea2bb09",
+      "bytes": 2275
     },
     {
-      "path": "experiments/2026-10-11-archive-native-transport/rsync-interruption.json",
-      "sha256": "e9c6175aab4951b98292ca04c6b6e8c74b14abb2e525ff4335d67324e5303a88",
-      "bytes": 929
+      "path": "experiments/2026-10-11-archive-native-transport/admission.json",
+      "sha256": "fba8c1207f04bb41d30f9fd3d9575d884f81f0c4bda982c4996059fbe5106f0e",
+      "bytes": 2269
     },
     {
-      "path": "experiments/2026-10-11-archive-native-transport/rsync-interruption-v187.json",
-      "sha256": "b569f44ca245fd676e9f4cb67ba28afdc822d9425507b2e8528ba2815a4c1de9",
-      "bytes": 922
-    },
-    {
-      "path": "experiments/2026-10-11-archive-native-transport/v187-verification.json",
-      "sha256": "60cac53ba6fb6336bdda4905d61832fe33afd2d5946da984a5909b2fe9ade7b8",
-      "bytes": 762
-    },
-    {
-      "path": "experiments/2026-10-11-archive-native-transport/v186-verification.json",
-      "sha256": "d49c6aee9b98adacb22482fd2af87cf2f0c5d82ef01c7958852e92711b86317f",
-      "bytes": 758
+      "path": "experiments/2026-10-11-archive-native-transport/auto-archive-check.json",
+      "sha256": "b441e065f92ef1a28dd69a80792bfc55666acf994df729a2065481fd1a90a1e6",
+      "bytes": 413
     },
     {
       "path": "experiments/2026-10-11-archive-native-transport/deployment-cli-fix.json",
@@ -274,9 +267,161 @@
       "bytes": 174
     },
     {
-      "path": "experiments/2026-10-11-archive-native-transport/admission.json",
-      "sha256": "fba8c1207f04bb41d30f9fd3d9575d884f81f0c4bda982c4996059fbe5106f0e",
-      "bytes": 2269
+      "path": "experiments/2026-10-11-archive-native-transport/deployment-final.json",
+      "sha256": "9299fa4649cea7d9a0110a8489d509667b6ad35d5e82d3916bea86406d60bf73",
+      "bytes": 544
+    },
+    {
+      "path": "experiments/2026-10-11-archive-native-transport/deployment-vm-config.json",
+      "sha256": "978b249889d6b9ad1939b90c5e24219baa61bbfb61e43439124dc00603316207",
+      "bytes": 174
+    },
+    {
+      "path": "experiments/2026-10-11-archive-native-transport/deployment.json",
+      "sha256": "a67ba032c2c873aff5c9bdd0dfc6f5e7827a788b5fa8091d020bb53d8a919b81",
+      "bytes": 815
+    },
+    {
+      "path": "experiments/2026-10-11-archive-native-transport/final-verification.json",
+      "sha256": "ebd086ac7c529875aa57456334c0b2f75210504a212f0b153e7f29e21c1b9717",
+      "bytes": 1547
+    },
+    {
+      "path": "experiments/2026-10-11-archive-native-transport/local-final-tests.json",
+      "sha256": "ab9edf1210c25101fcdf3b1db876c35ea142a97f1b27dea2fabd35e27f6abb8a",
+      "bytes": 17307
+    },
+    {
+      "path": "experiments/2026-10-11-archive-native-transport/rsync-interruption-v187.json",
+      "sha256": "b569f44ca245fd676e9f4cb67ba28afdc822d9425507b2e8528ba2815a4c1de9",
+      "bytes": 922
+    },
+    {
+      "path": "experiments/2026-10-11-archive-native-transport/rsync-interruption.json",
+      "sha256": "e9c6175aab4951b98292ca04c6b6e8c74b14abb2e525ff4335d67324e5303a88",
+      "bytes": 929
+    },
+    {
+      "path": "experiments/2026-10-11-archive-native-transport/v186-verification.json",
+      "sha256": "d49c6aee9b98adacb22482fd2af87cf2f0c5d82ef01c7958852e92711b86317f",
+      "bytes": 758
+    },
+    {
+      "path": "experiments/2026-10-11-archive-native-transport/v187-verification.json",
+      "sha256": "60cac53ba6fb6336bdda4905d61832fe33afd2d5946da984a5909b2fe9ade7b8",
+      "bytes": 762
     }
+  ],
+  "final_installed_source_sha": "e87b430ae8159e4370dda40757cd3ec7193f1796",
+  "final_verification": {
+    "markers": {
+      "s3-continuous-20261011-v186": {
+        "accepted": true,
+        "source_preserved": true,
+        "marker_sha256": "13bab87feee91a673c36914e1db626b9370468706740fef6f33616990d247e52"
+      },
+      "s3-release-ack-20261011-v187": {
+        "accepted": true,
+        "source_preserved": true,
+        "marker_sha256": "06718bf338fbfca8fe2465ed0a2e077191219a1c0ef31d61d51a3f3f921d4614"
+      }
+    },
+    "native_environment": {
+      "UGRP_ARCHIVE_NATIVE": "on_v1",
+      "UGRP_ARCHIVE_NATIVE_HOST": "ubuntu@161.33.46.134",
+      "UGRP_ARCHIVE_NATIVE_IDENTITY": "/home/ugrp/.ssh/id_ed25519_arm_archive"
+    },
+    "services": "EnvironmentFiles=/etc/ugrp/archive-native.env (ignore_errors=yes)\nId=ugrp-auto-archive.service\n\nEnvironmentFiles=/etc/ugrp/archive-native.env (ignore_errors=yes)\nId=ugrp-azure-recover.service\n\nEnvironmentFiles=/etc/ugrp/archive-native.env (ignore_errors=yes)\nId=ugrp-azure-guard.service\n",
+    "azure_free_bytes": 14384840704,
+    "arm": {
+      "arm_free_bytes": 89972346880,
+      "runs": {
+        "s3-continuous-20261011-v186": {
+          "partial_exists": true,
+          "partial_regular_files": 32967,
+          "published_exists": true,
+          "published_regular_files": 55223
+        },
+        "s3-release-ack-20261011-v187": {
+          "partial_exists": true,
+          "partial_regular_files": 1158,
+          "published_exists": true,
+          "published_regular_files": 29744
+        }
+      },
+      "receiver_sha256": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+    },
+    "utc": "2026-10-11T14:21:58.059314+00:00"
+  },
+  "automatic_archive_check": {
+    "utc": "2026-10-11T14:20:54.786950+00:00",
+    "exit_code": 0,
+    "seconds": 9.361,
+    "stdout": "",
+    "stderr": "auto-archive skipped e2eaz1-first4-r1: evaluation output/marker absent\nauto-archive skipped e2eaz1-first4-r5: evaluation output/marker absent\nauto-archive skipped e2eaz1-relay-evidence: evaluation output/marker absent\nauto-archive skipped e2eaz1-relay-final: evaluation output/marker absent\n"
+  },
+  "final_direct_cli_admission": {
+    "recover": {
+      "exit_code": 0,
+      "stdout": "{\"id\": \"76c6a0ac46fd45f79c6d6d5e3389245e\", \"action\": \"recover\", \"reason\": \"native_config_cli_verified\", \"boot_id\": \"456e9da6-bc7b-4b98-8c61-2bd74832c16f\", \"status\": \"complete\", \"signalled\": [], \"archived\": [\"e2eaz1-first4-r1\", \"e2eaz1-first4-r3\", \"e2eaz1-first4-r4\", \"e2eaz1-first4-r5\", \"e2eaz1-first4-r6\", \"e2eaz1-relay-evidence\", \"e2eaz1-relay-final\", \"egojump-63001-3a823f8f\", \"egojump-63001-3a823f8f-r2\", \"egojump-63001-98ffd823-r1\", \"egojump-63002-3a823f8f\", \"egojump-63999-98ffd823-r1\", \"egomap70view-calib_traversed_zone-s63003\", \"egomap70view-calib_traversed_zone-s63003-r2\", \"egomap70view-calib_traversed_zone-s63003-r3\", \"egomap70view-calib_traversed_zone-s63003-r4\", \"egomap70view-prefix-s63003\", \"egomap72-b-return-29c0c169\", \"s3-continuous-20261011-v186\", \"s3-release-ack-20261011-v187\"], \"failed\": [], \"active_preserved\": [\"egojump-63002-98ffd823-r1\"], \"elapsed_seconds\": 18.504}",
+      "stderr": "",
+      "report": {
+        "id": "76c6a0ac46fd45f79c6d6d5e3389245e",
+        "action": "recover",
+        "reason": "native_config_cli_verified",
+        "boot_id": "456e9da6-bc7b-4b98-8c61-2bd74832c16f",
+        "status": "complete",
+        "signalled": [],
+        "archived": [
+          "e2eaz1-first4-r1",
+          "e2eaz1-first4-r3",
+          "e2eaz1-first4-r4",
+          "e2eaz1-first4-r5",
+          "e2eaz1-first4-r6",
+          "e2eaz1-relay-evidence",
+          "e2eaz1-relay-final",
+          "egojump-63001-3a823f8f",
+          "egojump-63001-3a823f8f-r2",
+          "egojump-63001-98ffd823-r1",
+          "egojump-63002-3a823f8f",
+          "egojump-63999-98ffd823-r1",
+          "egomap70view-calib_traversed_zone-s63003",
+          "egomap70view-calib_traversed_zone-s63003-r2",
+          "egomap70view-calib_traversed_zone-s63003-r3",
+          "egomap70view-calib_traversed_zone-s63003-r4",
+          "egomap70view-prefix-s63003",
+          "egomap72-b-return-29c0c169",
+          "s3-continuous-20261011-v186",
+          "s3-release-ack-20261011-v187"
+        ],
+        "failed": [],
+        "active_preserved": [
+          "egojump-63002-98ffd823-r1"
+        ],
+        "elapsed_seconds": 18.504
+      }
+    },
+    "admit": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  "final_local_tests": {
+    "source_sha": "e87b430ae8159e4370dda40757cd3ec7193f1796",
+    "utc": "2026-10-11T14:22:23.485085+00:00",
+    "exit_code": 1,
+    "stdout": "...................F.................FFFF.......ssssssssssss............ [ 80%]\n..................                                                     [100%]\n=================================== FAILURES ===================================\n____________ test_archive_retry_then_next_boot_recovers_failed_raw _____________\n\nroot = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-991/test_archive_retry_then_next_b0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10aac8290>\n\n    def test_archive_retry_then_next_boot_recovers_failed_raw(root, monkeypatch):\n        folder = run(root)\n        monkeypatch.setattr(shutdown.os.path, 'ismount', lambda path: True)\n        monkeypatch.setattr(shutdown.shutil, 'disk_usage', lambda path: Mock(free=100 * 2**30))\n        monkeypatch.setattr(shutdown.subprocess, 'run', copy_rsync)\n        attempts = []\n        def archive(*args):\n            attempts.append(1)\n            if len(attempts) == 1:\n                return False\n            shutdown.archive_one(root, folder)\n            return True\n        monkeypatch.setattr(shutdown, 'bounded_archive', archive)\n        monkeypatch.setattr(shutdown.time, 'sleep', lambda delay: None)\n        shutdown.write_json(root / 'lifecycle/STOPPING.json', {'boot_id': 'old-boot', 'reason': 'cap'})\n>       result = shutdown.lifecycle('recover', 'boot_recovery', root, grace=1)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_azure_shutdown.py:109: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nscripts/azure_shutdown.py:335: in lifecycle\n    ok = locked and bounded_archive(root, run, remaining)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_azure_shutdown.py:104: in archive\n    shutdown.archive_one(root, folder)\nscripts/azure_shutdown.py:218: in archive_one\n    return _archive_one(root,run)\n           ^^^^^^^^^^^^^^^^^^^^^^\nscripts/azure_shutdown.py:234: in _archive_one\n    return archive(root, run)\n           ^^^^^^^^^^^^^^^^^^\nscripts/azure_archive_native.py:222: in archive\n    proof = transport(run, hashes, os.environ.get('UGRP_ARCHIVE_NATIVE_HOST'),\nscripts/azure_archive_native.py:189: in transport\n    first = json.loads(receiver.stdout.readline())\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:338: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x10a556f60>, s = '', idx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n            obj, end = self.scan_once(s, idx)\n        except StopIteration as err:\n>           raise JSONDecodeError(\"Expecting value\", s, err.value) from None\nE           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:356: JSONDecodeError\n----------------------------- Captured stderr call -----------------------------\nWarning: Identity file /key/path not accessible: No such file or directory.\nssh: Could not resolve hostname archive-host: nodename nor servname provided, or not known\n______ test_failed_rsync_resumes_incoming_and_never_overwrites_published _______\n\nroot = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-991/test_failed_rsync_resumes_inco0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10ab64d10>\n\n    def test_failed_rsync_resumes_incoming_and_never_overwrites_published(root, monkeypatch):\n        folder = run(root)\n        monkeypatch.setattr(shutdown.os.path, 'ismount', lambda path: True)\n        monkeypatch.setattr(shutdown.shutil, 'disk_usage', lambda path: Mock(free=100 * 2**30))\n        with patch.object(shutdown.subprocess, 'run', side_effect=subprocess.CalledProcessError(23, 'rsync')):\n            with pytest.raises(subprocess.CalledProcessError):\n>               shutdown.archive_one(root, folder)\n\ntests/test_azure_shutdown.py:279: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nscripts/azure_shutdown.py:218: in archive_one\n    return _archive_one(root,run)\n           ^^^^^^^^^^^^^^^^^^^^^^\nscripts/azure_shutdown.py:234: in _archive_one\n    return archive(root, run)\n           ^^^^^^^^^^^^^^^^^^\nscripts/azure_archive_native.py:222: in archive\n    proof = transport(run, hashes, os.environ.get('UGRP_ARCHIVE_NATIVE_HOST'),\nscripts/azure_archive_native.py:189: in transport\n    first = json.loads(receiver.stdout.readline())\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:338: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x10a556f60>, s = '', idx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n            obj, end = self.scan_once(s, idx)\n        except StopIteration as err:\n>           raise JSONDecodeError(\"Expecting value\", s, err.value) from None\nE           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:356: JSONDecodeError\n----------------------------- Captured stderr call -----------------------------\nWarning: Identity file /key/path not accessible: No such file or directory.\nssh: Could not resolve hostname archive-host: nodename nor servname provided, or not known\n________________ test_archive_checksum_mismatch_is_not_success _________________\n\nroot = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-991/test_archive_checksum_mismatch0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10aac9940>\n\n    def test_archive_checksum_mismatch_is_not_success(root, monkeypatch):\n        folder = run(root)\n        monkeypatch.setattr(shutdown.os.path, 'ismount', lambda path: True)\n        monkeypatch.setattr(shutdown.shutil, 'disk_usage', lambda path: Mock(free=100 * 2**30))\n        def bad_copy(call, **kwargs):\n            answer = copy_rsync(call, **kwargs)\n            if call[1] == '-ac':\n                Path(call[-1], 'raw').write_bytes(b'wrong bytes')\n            return answer\n        monkeypatch.setattr(shutdown.subprocess, 'run', bad_copy)\n        with pytest.raises(RuntimeError, match='checksum mismatch'):\n>           shutdown.archive_one(root, folder)\n\ntests/test_azure_shutdown.py:302: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nscripts/azure_shutdown.py:218: in archive_one\n    return _archive_one(root,run)\n           ^^^^^^^^^^^^^^^^^^^^^^\nscripts/azure_shutdown.py:234: in _archive_one\n    return archive(root, run)\n           ^^^^^^^^^^^^^^^^^^\nscripts/azure_archive_native.py:222: in archive\n    proof = transport(run, hashes, os.environ.get('UGRP_ARCHIVE_NATIVE_HOST'),\nscripts/azure_archive_native.py:189: in transport\n    first = json.loads(receiver.stdout.readline())\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:338: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x10a556f60>, s = '', idx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n            obj, end = self.scan_once(s, idx)\n        except StopIteration as err:\n>           raise JSONDecodeError(\"Expecting value\", s, err.value) from None\nE           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:356: JSONDecodeError\n----------------------------- Captured stderr call -----------------------------\nWarning: Identity file /key/path not accessible: No such file or directory.\nssh: Could not resolve hostname archive-host: nodename nor servname provided, or not known\n_______________ test_arm_reserve_and_flushing_run_refuse_archive _______________\n\nroot = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-991/test_arm_reserve_and_flushing_0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10aaca5d0>\n\n    def test_arm_reserve_and_flushing_run_refuse_archive(root, monkeypatch):\n        folder = run(root)\n        monkeypatch.setattr(shutdown.os.path, 'ismount', lambda path: True)\n        monkeypatch.setattr(shutdown.shutil, 'disk_usage', lambda path: Mock(free=25 * 2**30))\n        with pytest.raises(RuntimeError, match='reserve'):\n>           shutdown.archive_one(root, folder)\n\ntests/test_azure_shutdown.py:312: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nscripts/azure_shutdown.py:218: in archive_one\n    return _archive_one(root,run)\n           ^^^^^^^^^^^^^^^^^^^^^^\nscripts/azure_shutdown.py:234: in _archive_one\n    return archive(root, run)\n           ^^^^^^^^^^^^^^^^^^\nscripts/azure_archive_native.py:222: in archive\n    proof = transport(run, hashes, os.environ.get('UGRP_ARCHIVE_NATIVE_HOST'),\nscripts/azure_archive_native.py:189: in transport\n    first = json.loads(receiver.stdout.readline())\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:338: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x10a556f60>, s = '', idx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n            obj, end = self.scan_once(s, idx)\n        except StopIteration as err:\n>           raise JSONDecodeError(\"Expecting value\", s, err.value) from None\nE           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:356: JSONDecodeError\n----------------------------- Captured stderr call -----------------------------\nWarning: Identity file /key/path not accessible: No such file or directory.\nssh: Could not resolve hostname archive-host: nodename nor servname provided, or not known\n_________ test_recovery_without_exit_records_host_error_before_archive _________\n\nroot = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-991/test_recovery_without_exit_rec0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10aaad070>\n\n    def test_recovery_without_exit_records_host_error_before_archive(root, monkeypatch):\n        folder = run(root)\n        folder.joinpath('EXIT').unlink()\n        monkeypatch.setattr(shutdown.os.path, 'ismount', lambda path: True)\n        monkeypatch.setattr(shutdown.shutil, 'disk_usage', lambda path: Mock(free=100 * 2**30))\n        monkeypatch.setattr(shutdown.subprocess, 'run', copy_rsync)\n>       shutdown.archive_one(root, folder)\n\ntests/test_azure_shutdown.py:324: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nscripts/azure_shutdown.py:218: in archive_one\n    return _archive_one(root,run)\n           ^^^^^^^^^^^^^^^^^^^^^^\nscripts/azure_shutdown.py:234: in _archive_one\n    return archive(root, run)\n           ^^^^^^^^^^^^^^^^^^\nscripts/azure_archive_native.py:222: in archive\n    proof = transport(run, hashes, os.environ.get('UGRP_ARCHIVE_NATIVE_HOST'),\nscripts/azure_archive_native.py:189: in transport\n    first = json.loads(receiver.stdout.readline())\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:338: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x10a556f60>, s = '', idx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n            obj, end = self.scan_once(s, idx)\n        except StopIteration as err:\n>           raise JSONDecodeError(\"Expecting value\", s, err.value) from None\nE           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n\n/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:356: JSONDecodeError\n----------------------------- Captured stderr call -----------------------------\nWarning: Identity file /key/path not accessible: No such file or directory.\nssh: Could not resolve hostname archive-host: nodename nor servname provided, or not known\n=========================== short test summary info ============================\nFAILED tests/test_azure_shutdown.py::test_archive_retry_then_next_boot_recovers_failed_raw\nFAILED tests/test_azure_shutdown.py::test_failed_rsync_resumes_incoming_and_never_overwrites_published\nFAILED tests/test_azure_shutdown.py::test_archive_checksum_mismatch_is_not_success\nFAILED tests/test_azure_shutdown.py::test_arm_reserve_and_flushing_run_refuse_archive\nFAILED tests/test_azure_shutdown.py::test_recovery_without_exit_records_host_error_before_archive\n5 failed, 73 passed, 12 skipped, 2 subtests passed in 1.50s\n",
+    "stderr": "",
+    "files": [
+      "tests/test_azure_archive_native.py",
+      "tests/test_azure_shutdown.py",
+      "tests/test_storage_tools.py"
+    ]
+  },
+  "record_updated_utc": "2026-10-11T14:23:25.394136+00:00",
+  "remaining": [
+    "Final record HEAD CI and merge pending; storage transfer and admission are verified.",
+    "Azure originals and legacy partials deliberately retained; no E2E submission or VM lifecycle action performed."
   ]
 }
