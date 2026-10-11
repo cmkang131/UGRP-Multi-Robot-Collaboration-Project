@@ -11,3 +11,5 @@
 Azure CPU 제한: [systemd AllowedCPUs](https://raw.githubusercontent.com/systemd/systemd/main/man/systemd.resource-control.xml)의 cgroup cpuset으로 자기 scope만 0–11에 제한한다. taskset 이후 Mesa helper가 affinity를 확장하는 것을 관측했으므로 thread affinity도 확인했다. [Mesa LP_NUM_THREADS](https://docs.mesa3d.org/envvars.html)는 렌더 스레드 수이고 CPU 허용 범위 제한을 대신하지 않는다.
 
 온라인 가상 경로 복제 오류: [Python deepcopy memo](https://docs.python.org/3/library/copy.html)에 따라 wrapper와 underlying odometry의 cyclic owner를 같은 private 복제 객체로 연결한다. 기존 forecast는 object.__new__(type(grid.odom)) 뒤 owner/driver만 넣어 PoseView의 base/reporter를 빠뜨렸다. 가상 particle rollout은 private CloudOdometry를 사용하고 실제 reporter·driver·RNG·cloud를 변경하지 않는 회귀 시험으로 검증한다.
+
+원본 회수: [GNU tar 압축 지원](https://www.gnu.org/software/tar/manual/html_section/Compression.html)의 `-I zstd`로 영속 디스크에 운송 복사본을 만들고 ARM에서 직접 해제·전체 파일 SHA-256을 검증한다. SSHFS에서 수천 파일을 각각 해시할 때의 900초 시간 초과를 피한다. 전송 전후 Azure 원본 inventory/state와 ARM inventory가 같아야 완료이며 검증 뒤 운송 복사본만 제거한다. 원본 두 사본은 보존한다. 별도 0회 물리 실행 fixture의 파일·symlink 왕복과 lifecycle marker 수락을 확인했다.

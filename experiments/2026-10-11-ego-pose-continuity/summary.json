@@ -224,8 +224,8 @@
     "completed": 0,
     "runs": [],
     "worker_sha": "98ffd82347c764fc6ddcd319d1d383df16d994a5",
-    "launcher_sha": "c262f819",
-    "live_output": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823-r1",
+    "launcher_sha": "918afb56",
+    "live_output": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823-r1-systemscope",
     "prior_host_errors": [
       {
         "name": "egojump-63001-3a823f8f",
@@ -1158,6 +1158,11 @@
       "connectivity_fsck": "passed",
       "source_dependency": "azure:/home/ugrp/ugrp-sim/src/3a823f8f2ffcd40beac4cb79093c226e87fa4a3b/.git/objects",
       "dedup": "git alternates plus local-only repack; original source retained; no raw experiment deletion"
+    },
+    "cpu_enforcement": {
+      "v2_first_group": "user manager AllowedCPUs had no effective cpuset; two live own workers moved to system manager scope; effective 0-11 verified; earlier Mesa helper expanded affinity recorded in thread-cpu-repair.json",
+      "future_groups": "sudo systemd-run --scope --uid=ugrp --gid=ugrp AllowedCPUs=0-11 plus taskset; uid1000 and attempted 0-15 expansion returning 0-11 verified",
+      "timing_comparison": false
     }
   },
   "limits": [

@@ -39,6 +39,8 @@ def main():
         raise ValueError('THREE_DISTINCT_CPUS_0_TO_11_REQUIRED')
     spec=importlib.util.spec_from_file_location('ego_remote',a.runner_root/'scripts/remote_run.py')
     remote=importlib.util.module_from_spec(spec);spec.loader.exec_module(remote)
+    spec=importlib.util.spec_from_file_location('ego_archive',a.worktree/'scripts/ego_pose_archive_transport.py')
+    archive_transport=importlib.util.module_from_spec(spec);spec.loader.exec_module(archive_transport)
     launcher_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=a.worktree,text=True).strip()
     sha=subprocess.check_output(['git','rev-parse',a.worker_sha or 'HEAD'],cwd=a.worktree,text=True).strip()
     if len(sha)!=40 or any(c not in '0123456789abcdef' for c in sha):
@@ -132,12 +134,9 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
                     for job in rows:
                         if 'exit_code' not in job or job['condition'] in archived_jobs:continue
                         jobname=Path(job['root']).name
-                        result=remote.ssh('azure',f'taskset -c 0-11 python3 - {name} {jobname}',
-                            input=(a.worktree/'scripts/archive_ego_pose_job.py').read_text(),
-                            capture_output=True,text=True,timeout=900)
-                        receipt=json.loads(result.stdout.splitlines()[-1])
-                        marker_bytes=ssh(f'cat {root}/per-run-archives/{jobname}.json')+'\n'
-                        marker=json.loads(marker_bytes)
+                        marker=archive_transport.archive(remote,name,jobname)
+                        receipt={k:v for k,v in marker.items() if k not in ('inventory','source_state')}
+                        marker_bytes=json.dumps(marker,sort_keys=True)+'\n'
                         summary_bytes=ssh(f'cat {root}/data/{jobname}/summary.json')+'\n'
                         if hashlib.sha256(summary_bytes.encode()).hexdigest()!=marker['inventory']['summary.json']['sha256']:
                             raise RuntimeError('JOB_FETCH_LITE_HASH_MISMATCH')
@@ -163,9 +162,7 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
                 record['common_horizon']['processor_sha256']=hashlib.sha256(script.encode()).hexdigest()
             save(name+'-summary.json',record)
             print('FINISHED',name,'exit',state,flush=True)
-            ssh(f'timeout 600 python3 /usr/local/lib/ugrp-storage/scripts/compress_json_traces.py {root} --execute',timeout=650)
-            ssh(f'touch {lease}; timeout 900 python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py archive-one --run {name}',timeout=950)
-            marker=json.loads(ssh(f'cat $HOME/ugrp-sim/lifecycle/archives/{name}.json',timeout=120))
+            marker=archive_transport.archive(remote,name)
             if marker.get('verified') is not True:raise RuntimeError('UNVERIFIED_ARM_ARCHIVE')
             # The hash inventory is permanent evidence, compressed for Mac.
             raw=json.dumps(marker,sort_keys=True).encode()
