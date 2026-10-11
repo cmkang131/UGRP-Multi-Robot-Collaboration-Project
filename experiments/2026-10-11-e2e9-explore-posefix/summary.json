@@ -1499,7 +1499,6 @@
         "18391": false
       },
       "remaining_lease_names": [
-        "e2e9-audit-evidence",
         "egojump-98ffd823-pipeline-a",
         "egojump-98ffd823-pipeline-c",
         "egojump-98ffd823-pipeline-d"
@@ -1507,7 +1506,8 @@
       "cap_timer": "NextElapseUSecRealtime=Sun 2026-10-11 21:50:00 UTC\nActiveState=active",
       "vm_not_deallocated": true,
       "foreign_processes_not_signalled": true
-    }
+    },
+    "audit_lease_released": true
   },
   "details": {
     "path": "round9-details.json.zst",
@@ -1527,5 +1527,38 @@
     "decider": "A:off; B:jev_v1",
     "exploration_progress": "frontier_progress_v1",
     "pose_fix": "innovation"
+  },
+  "audit_archive": {
+    "compression": {
+      "run": "/home/ugrp/ugrp-sim/runs/e2e9-audit-evidence",
+      "files": 3,
+      "saved_bytes": 1530296,
+      "sha256_verified": true
+    },
+    "verified": true,
+    "native_verification": {
+      "verified": true,
+      "schema": "ugrp.archive-native.v1",
+      "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e9-audit-evidence",
+      "files": 121,
+      "hash_matches": 121,
+      "inventory_sha256": "00387f30c9d75a0bf2d8c539ba1d39932f766234145087730344b14182853c8c",
+      "reused": false,
+      "receiver_seconds": 0.391
+    },
+    "archive_marker_sha256": "6f6a681669337c8cd6ad7fb3d631abb224ca06fa893c2a45ad65da8ad3380581",
+    "bytes": 1473763,
+    "lease_remaining": false,
+    "retries": [
+      "Nested audit RUN_META needed completion marker after relay shutdown.",
+      "Existing compressed inventory preserved under new filename after exact decompressed hash equality; compression retried."
+    ]
+  },
+  "record_validation": {
+    "runs_reconciled": 8,
+    "compressed_json_readable": 2,
+    "mac_media_files": 0,
+    "mac_embedded_images": 0,
+    "readme_lines": 10
   }
 }
