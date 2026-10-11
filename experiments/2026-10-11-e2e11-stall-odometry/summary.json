@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.e2e11.v1",
-  "status": "PREPARED_NOT_EXECUTED",
+  "status": "RETRY_PREPARATION_AFTER_HOST_ERROR",
   "pr": 433,
   "run_class": "dev",
   "research_result": false,
@@ -116,13 +116,56 @@
     "runs": 4,
     "per_run_mib": 4096,
     "reserved_mib": 2048,
-    "mac_lite_per_run_mib": 64,
+    "mac_lite_per_run_mib": 128,
     "floors_gib": {
       "x86": 8,
       "arm": 25,
       "mac": 20
     },
-    "checks": []
+    "checks": {
+      "x86": {
+        "schema": "ugrp.storage-budget.v1",
+        "ok": true,
+        "checks": [
+          {
+            "host": "x86",
+            "free_bytes": 48183058432,
+            "expected_bytes": 19327352832,
+            "projected_free_bytes": 28855705600,
+            "floor_bytes": 8589934592,
+            "ok": true
+          }
+        ]
+      },
+      "arm": {
+        "schema": "ugrp.storage-budget.v1",
+        "ok": true,
+        "checks": [
+          {
+            "host": "arm",
+            "free_bytes": 86148206592,
+            "expected_bytes": 19327352832,
+            "projected_free_bytes": 66820853760,
+            "floor_bytes": 26843545600,
+            "ok": true
+          }
+        ]
+      },
+      "mac": {
+        "schema": "ugrp.storage-budget.v1",
+        "ok": true,
+        "checks": [
+          {
+            "host": "mac",
+            "free_bytes": 136889434112,
+            "expected_bytes": 1073741824,
+            "projected_free_bytes": 135815692288,
+            "floor_bytes": 21474836480,
+            "ok": true
+          }
+        ]
+      }
+    }
   },
   "references": [
     {
@@ -190,9 +233,546 @@
       "checked_utc": "2026-10-11T18:22:27.265517+00:00"
     }
   ],
-  "runs": [],
-  "execution_count": 0,
-  "simulation_count": 0,
+  "runs": [
+    {
+      "id": "e2e11-a-s61001",
+      "batch": "A",
+      "seed": 61001,
+      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "sim_s": 0.0,
+      "wall_s": 15.37714164700003,
+      "frames": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "failure": "no successful model response",
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "mapping_initial_frame",
+      "model_calls_attempted": 3,
+      "upstream_calls": 0,
+      "known_cost_usd": 0,
+      "initial_check": {
+        "checks": {
+          "no_exceptions": false,
+          "frames_increased": false,
+          "sim_time_increased": false,
+          "actual_translation": false,
+          "ownmap_trace": false,
+          "mapping_phase_entered": true,
+          "normal_model_response": false,
+          "translation_command": false,
+          "model_response_accepted": false
+        },
+        "passed": false,
+        "elapsed_since_submit_s": 42.768232107162476,
+        "actual_displacement_m": {
+          "r1": 0.0,
+          "r2": 0.0,
+          "r3": 0.0
+        },
+        "pose_jumps": {
+          "r1": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          },
+          "r2": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          },
+          "r3": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          }
+        },
+        "commands": {
+          "r1": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r2": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r3": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          }
+        }
+      },
+      "initial_check_scope": "terminated before scheduled 210s; final operational inspection at 39-43s",
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61001",
+      "archive": {
+        "run": "e2e11-a-s61001",
+        "summary_sha256": "0515b77948c768fe80cf8721ed438416b7eb6ef741274f760434823bcb833018",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e11-a-s61001",
+          "files": 2,
+          "saved_bytes": 738182,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "18597b5a44338a845d488aaf9c924e2f2bc96069fbba5a235fdb011fa3d1ee4f",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61001",
+          "files": 101,
+          "hash_matches": 101,
+          "inventory_sha256": "ebbd41d84ee06249a67e0baf7da75da0ed130f7d9e112ac832a8b9d738d85f3e",
+          "reused": false,
+          "receiver_seconds": 0.383
+        },
+        "archive_bytes": 1052626
+      },
+      "retrieval": {
+        "run": "e2e11-a-s61001",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-a-s61001",
+        "checksum_verified": true,
+        "excluded_embedded_images": 3,
+        "files": 92,
+        "bytes": 879620
+      }
+    },
+    {
+      "id": "e2e11-b-s61001",
+      "batch": "B",
+      "seed": 61001,
+      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "sim_s": 0.0,
+      "wall_s": 15.413686728000016,
+      "frames": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "failure": "no successful model response",
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "mapping_initial_frame",
+      "model_calls_attempted": 3,
+      "upstream_calls": 0,
+      "known_cost_usd": 0,
+      "initial_check": {
+        "checks": {
+          "no_exceptions": false,
+          "frames_increased": false,
+          "sim_time_increased": false,
+          "actual_translation": false,
+          "ownmap_trace": false,
+          "mapping_phase_entered": true,
+          "normal_model_response": false,
+          "translation_command": false,
+          "model_response_accepted": false
+        },
+        "passed": false,
+        "elapsed_since_submit_s": 41.48827886581421,
+        "actual_displacement_m": {
+          "r1": 0.0,
+          "r2": 0.0,
+          "r3": 0.0
+        },
+        "pose_jumps": {
+          "r1": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          },
+          "r2": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          },
+          "r3": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          }
+        },
+        "commands": {
+          "r1": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r2": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r3": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          }
+        }
+      },
+      "initial_check_scope": "terminated before scheduled 210s; final operational inspection at 39-43s",
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61001",
+      "archive": {
+        "run": "e2e11-b-s61001",
+        "summary_sha256": "1866ecb939ffb2009172d87159d444f5542197a1f1de40dbc549432172a2c922",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e11-b-s61001",
+          "files": 2,
+          "saved_bytes": 738129,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "9ae72d936016b6b49f4f37a0387908d6102d9350e6ef54eb77f93bd68ad3b474",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61001",
+          "files": 101,
+          "hash_matches": 101,
+          "inventory_sha256": "130adc0e33a463ae215e2a29b0f02e342a89ba38033ee60233221374b205be7f",
+          "reused": false,
+          "receiver_seconds": 0.372
+        },
+        "archive_bytes": 1050395
+      },
+      "retrieval": {
+        "run": "e2e11-b-s61001",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-b-s61001",
+        "checksum_verified": true,
+        "excluded_embedded_images": 3,
+        "files": 92,
+        "bytes": 877389
+      }
+    },
+    {
+      "id": "e2e11-a-s61002",
+      "batch": "A",
+      "seed": 61002,
+      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "sim_s": 0.0,
+      "wall_s": 15.462724406000007,
+      "frames": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "failure": "no successful model response",
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "mapping_initial_frame",
+      "model_calls_attempted": 3,
+      "upstream_calls": 0,
+      "known_cost_usd": 0,
+      "initial_check": {
+        "checks": {
+          "no_exceptions": false,
+          "frames_increased": false,
+          "sim_time_increased": false,
+          "actual_translation": false,
+          "ownmap_trace": false,
+          "mapping_phase_entered": true,
+          "normal_model_response": false,
+          "translation_command": false,
+          "model_response_accepted": false
+        },
+        "passed": false,
+        "elapsed_since_submit_s": 40.231945514678955,
+        "actual_displacement_m": {
+          "r1": 0.0,
+          "r2": 0.0,
+          "r3": 0.0
+        },
+        "pose_jumps": {
+          "r1": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          },
+          "r2": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          },
+          "r3": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          }
+        },
+        "commands": {
+          "r1": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r2": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r3": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          }
+        }
+      },
+      "initial_check_scope": "terminated before scheduled 210s; final operational inspection at 39-43s",
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61002",
+      "archive": {
+        "run": "e2e11-a-s61002",
+        "summary_sha256": "9eb6d239789d2c2b042b0ed1fa2ddc4c316064a5b98a4a9c87f33464a65f65e9",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e11-a-s61002",
+          "files": 2,
+          "saved_bytes": 738193,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "3debd1903e12d14ebcf48f6687e92dfe26877488ce8acf79bf7939ec3e71b3aa",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61002",
+          "files": 101,
+          "hash_matches": 101,
+          "inventory_sha256": "61878c2fc5f7aa85f3d45391fb19709aa338a3c01e4d56377c15b885decf5d9a",
+          "reused": false,
+          "receiver_seconds": 0.388
+        },
+        "archive_bytes": 1052801
+      },
+      "retrieval": {
+        "run": "e2e11-a-s61002",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-a-s61002",
+        "checksum_verified": true,
+        "excluded_embedded_images": 3,
+        "files": 92,
+        "bytes": 879743
+      }
+    },
+    {
+      "id": "e2e11-b-s61002",
+      "batch": "B",
+      "seed": 61002,
+      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "sim_s": 0.0,
+      "wall_s": 15.45429647800006,
+      "frames": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "failure": "no successful model response",
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "mapping_initial_frame",
+      "model_calls_attempted": 3,
+      "upstream_calls": 0,
+      "known_cost_usd": 0,
+      "initial_check": {
+        "checks": {
+          "no_exceptions": false,
+          "frames_increased": false,
+          "sim_time_increased": false,
+          "actual_translation": false,
+          "ownmap_trace": false,
+          "mapping_phase_entered": true,
+          "normal_model_response": false,
+          "translation_command": false,
+          "model_response_accepted": false
+        },
+        "passed": false,
+        "elapsed_since_submit_s": 38.967008113861084,
+        "actual_displacement_m": {
+          "r1": 0.0,
+          "r2": 0.0,
+          "r3": 0.0
+        },
+        "pose_jumps": {
+          "r1": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          },
+          "r2": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          },
+          "r3": {
+            "map": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            },
+            "control": {
+              "intervals": 0,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": null
+            }
+          }
+        },
+        "commands": {
+          "r1": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r2": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r3": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          }
+        }
+      },
+      "initial_check_scope": "terminated before scheduled 210s; final operational inspection at 39-43s",
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61002",
+      "archive": {
+        "run": "e2e11-b-s61002",
+        "summary_sha256": "8e77aecc28207a990d94e5ac5f4c4b0c0afd1d66ba6e18736890bfc17be4d068",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e11-b-s61002",
+          "files": 2,
+          "saved_bytes": 738137,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "69c20ea33c6f375d4df45835eb546d9f7e25c03b282f4ffd92999d8c6e7a89ce",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61002",
+          "files": 101,
+          "hash_matches": 101,
+          "inventory_sha256": "0e0dfdcb9850ab9d88159ce173670b6d5868b936b41ba0b86cf7b8a18c8acf54",
+          "reused": false,
+          "receiver_seconds": 0.365
+        },
+        "archive_bytes": 1050755
+      },
+      "retrieval": {
+        "run": "e2e11-b-s61002",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-b-s61002",
+        "checksum_verified": true,
+        "excluded_embedded_images": 3,
+        "files": 92,
+        "bytes": 877697
+      }
+    }
+  ],
+  "execution_count": 4,
+  "simulation_count": 4,
   "conditions": {},
   "artifacts": [
     {
@@ -265,5 +845,48 @@
       "sha256": "f53545f30eb4b228af5e99493a028fe9976e6901305cccc259b8beba9225bb25"
     }
   },
-  "created_utc": "2026-10-11T18:23:52.961063+00:00"
+  "created_utc": "2026-10-11T18:23:52.961063+00:00",
+  "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+  "launch_attempt_count": 4,
+  "preparation": {
+    "readiness": {
+      "ready_utc": "2026-10-11T18:25:03.254494+00:00",
+      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+      "cloud_safety_verified": true,
+      "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+      "cost_usd": 4.33265035304911,
+      "cost_scope": "user-authorized subscription only; no other subscription queried",
+      "tests_passed": 27,
+      "guest_guard": "must verify/extend to 12h and recreate 21:50 UTC cap before any simulation submission"
+    },
+    "guard": {
+      "max_uptime_s": 43200,
+      "guard_sha256": "00a340c1b48af2d82098236b071bc1b3fb2dc78cd194dfa05827b6b6da86d55c",
+      "absolute_cap": "NextElapseUSecRealtime=Sun 2026-10-11 21:50:00 UTC\nActiveState=active\n",
+      "verified_unix": 1791743479.735686
+    }
+  },
+  "retry": {
+    "only_same_four_cells": true,
+    "max_concurrent_runs": 4,
+    "reason": "relay allowlist omitted new round namespace; no provider requests or locomotion occurred",
+    "controller_changes": false,
+    "source": "https://docs.python.org/3/library/re.html#re.fullmatch"
+  },
+  "relay_fix_tests": {
+    "files": [
+      "tests/test_e2e_stall_odometry.py",
+      "tests/test_e2e_s4_live.py"
+    ],
+    "passed": 47,
+    "seconds": 8.65
+  },
+  "evaluator_validation": {
+    "scope": "round10 A61001 fixed issued commands, first60 SIMs, no execution",
+    "baseline_off_reproduction_max_abs_error": {
+      "r1": 3.3306690738754696e-16,
+      "r2": 3.552713678800501e-15
+    },
+    "stall_denominator": "independent ungated replay of actual commands for both conditions"
+  }
 }

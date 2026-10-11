@@ -139,3 +139,12 @@ def test_bundle_and_managed_cli_register_all_explicit_toggles():
     assert '--stall-bundle' not in w['required_inputs'] and '--dev-light' not in w['required_inputs']
     for flag in ('--stall-odometry','--stall-recovery','--stall-noise'):assert flag in w['required_inputs']
     assert _option(['--stall-odometry',PULSE_GATE,'--stall-bundle'],'--stall-odometry')==PULSE_GATE
+def test_e2e11_registered_calls_reach_relay_admission():
+    from scripts.s4_proxy_relay import accepted_call_id
+    for batch in ('a','b'):
+        for seed in (61001,61002):
+            for suffix in ('','-r2'):
+                assert accepted_call_id(f'e2e11-{batch}-s{seed}{suffix}:call-0001-r1:1')
+    for name in ('e2e11-c-s61001','e2e11-a-s61003','e2e11-a-s61001-r3','other-e2e11-a-s61001'):
+        assert not accepted_call_id(name+':call-0001-r1:1')
+

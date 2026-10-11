@@ -9,3 +9,5 @@
 - Python `copy` 문서에 따라 predictor의 데이터만 복제하고 bound callback은 복제하지 않는다. 전체 callback 소유 RBPF를 복제하면 순환 참조가 발생하는 반례를 실제 integration 시험에서 수정했다.
 
 URL·열람 시각·본문 SHA-256은 [sources.json](sources.json)에 있다. 단순 source 열람, 고정 명령 재생, 새 폐루프 실행의 근거는 서로 구분한다.
+
+- 초기 실행 HOST_ERROR: 기존 릴레이의 `re.fullmatch` 허용 목록에서 e2e11 이름을 누락하여 HTTP 400, provider 전달 0회. [Python re.fullmatch](https://docs.python.org/3/library/re.html#re.fullmatch)의 전체 문자열 검사를 유지하고 A/B·61001/61002·최초/r2만 등록했다. 제어기는 변경하지 않는다.
