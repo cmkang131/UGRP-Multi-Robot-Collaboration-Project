@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-recovery-v152",
+      "version": "7.45.0",
+      "purpose": "S3 문 임대·자기 RGB 정렬·입자 고갈 DEV 1회",
+      "entry": "scripts/run_s3_recovery.py",
+      "runner": "scripts.run_s3_recovery",
+      "docs": "experiments/2026-10-09-s3-no-prior/s3fix7/README.md",
+      "requires": "committed SHA; explicit option; own exclusive SIM lock; one finite smoke",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

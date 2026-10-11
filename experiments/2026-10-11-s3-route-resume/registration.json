@@ -1,0 +1,1093 @@
+{
+  "host": "oracle-x86",
+  "bundle_id": "zone-s3-route-resume-v172",
+  "cap_sim_s": 60,
+  "wall_cap_s": 1800,
+  "load_max": 51,
+  "mem_min_gib": 6,
+  "disk_reserve_gib": 10,
+  "raw_root": "/home/ubuntu/ugrp-sim/runs",
+  "candidate_options": {
+    "baseline": [
+      false,
+      false
+    ],
+    "completion": [
+      true,
+      false
+    ],
+    "inspect": [
+      false,
+      true
+    ],
+    "combined": [
+      true,
+      true
+    ]
+  },
+  "selection": "No premature completion or unmeasured camera host; keep thresholds/seeds/pulse profiles fixed. Full-route success requires all fixed corners <=20mm and final settled setdown; horizon is incomplete, not success. Only command-index and issued-inspect-before-new-frame fixes; default off.",
+  "scope": "same reconstructed synthetic setup and public-origin normalization as v170; no GT control, no weld or initial pose prior; solo heading on, jointly held beam crab exempt",
+  "runs": [
+    {
+      "name": "s3fix22-baseline-multi-left-s14201-r1",
+      "case": "pair",
+      "candidate": "baseline",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-baseline-multi-left-s14201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "14201",
+        "--candidate",
+        "baseline",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-baseline-multi-left-s15201-r1",
+      "case": "pair",
+      "candidate": "baseline",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-baseline-multi-left-s15201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "15201",
+        "--candidate",
+        "baseline",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-baseline-multi-right-s14204-r1",
+      "case": "pair",
+      "candidate": "baseline",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 14204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-baseline-multi-right-s14204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "14204",
+        "--candidate",
+        "baseline",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-baseline-multi-right-s15204-r1",
+      "case": "pair",
+      "candidate": "baseline",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 15204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-baseline-multi-right-s15204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "15204",
+        "--candidate",
+        "baseline",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-baseline-multi-three-s14206-r1",
+      "case": "pair",
+      "candidate": "baseline",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-baseline-multi-three-s14206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "14206",
+        "--candidate",
+        "baseline",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-baseline-multi-three-s15206-r1",
+      "case": "pair",
+      "candidate": "baseline",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-baseline-multi-three-s15206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "15206",
+        "--candidate",
+        "baseline",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-completion-multi-left-s14201-r1",
+      "case": "pair",
+      "candidate": "completion",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-completion-multi-left-s14201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "14201",
+        "--candidate",
+        "completion",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-completion-multi-left-s15201-r1",
+      "case": "pair",
+      "candidate": "completion",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-completion-multi-left-s15201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "15201",
+        "--candidate",
+        "completion",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-completion-multi-right-s14204-r1",
+      "case": "pair",
+      "candidate": "completion",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 14204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-completion-multi-right-s14204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "14204",
+        "--candidate",
+        "completion",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-completion-multi-right-s15204-r1",
+      "case": "pair",
+      "candidate": "completion",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 15204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-completion-multi-right-s15204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "15204",
+        "--candidate",
+        "completion",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-completion-multi-three-s14206-r1",
+      "case": "pair",
+      "candidate": "completion",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-completion-multi-three-s14206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "14206",
+        "--candidate",
+        "completion",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-completion-multi-three-s15206-r1",
+      "case": "pair",
+      "candidate": "completion",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-completion-multi-three-s15206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "15206",
+        "--candidate",
+        "completion",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-inspect-multi-left-s14201-r1",
+      "case": "pair",
+      "candidate": "inspect",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-inspect-multi-left-s14201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "14201",
+        "--candidate",
+        "inspect",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-inspect-multi-left-s15201-r1",
+      "case": "pair",
+      "candidate": "inspect",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-inspect-multi-left-s15201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "15201",
+        "--candidate",
+        "inspect",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-inspect-multi-right-s14204-r1",
+      "case": "pair",
+      "candidate": "inspect",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 14204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-inspect-multi-right-s14204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "14204",
+        "--candidate",
+        "inspect",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-inspect-multi-right-s15204-r1",
+      "case": "pair",
+      "candidate": "inspect",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 15204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-inspect-multi-right-s15204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "15204",
+        "--candidate",
+        "inspect",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-inspect-multi-three-s14206-r1",
+      "case": "pair",
+      "candidate": "inspect",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-inspect-multi-three-s14206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "14206",
+        "--candidate",
+        "inspect",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-inspect-multi-three-s15206-r1",
+      "case": "pair",
+      "candidate": "inspect",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-inspect-multi-three-s15206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "15206",
+        "--candidate",
+        "inspect",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-combined-multi-left-s14201-r1",
+      "case": "pair",
+      "candidate": "combined",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-combined-multi-left-s14201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "14201",
+        "--candidate",
+        "combined",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-combined-multi-left-s15201-r1",
+      "case": "pair",
+      "candidate": "combined",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-combined-multi-left-s15201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "15201",
+        "--candidate",
+        "combined",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-combined-multi-right-s14204-r1",
+      "case": "pair",
+      "candidate": "combined",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 14204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-combined-multi-right-s14204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "14204",
+        "--candidate",
+        "combined",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-combined-multi-right-s15204-r1",
+      "case": "pair",
+      "candidate": "combined",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 15204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-combined-multi-right-s15204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "15204",
+        "--candidate",
+        "combined",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-combined-multi-three-s14206-r1",
+      "case": "pair",
+      "candidate": "combined",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-combined-multi-three-s14206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "14206",
+        "--candidate",
+        "combined",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s3fix22-combined-multi-three-s15206-r1",
+      "case": "pair",
+      "candidate": "combined",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_route_resume",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix22-combined-multi-three-s15206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "15206",
+        "--candidate",
+        "combined",
+        "--execute"
+      ]
+    }
+  ],
+  "raw_cause_before": [
+    {
+      "name": "s3fix21-multi-left-c0-r2",
+      "status": "DEV_STAGE_FINISHED",
+      "elapsed_sim_s": 55.6,
+      "expected_legs": 2,
+      "observed_legs": 1,
+      "first_released_seg": 0,
+      "post_release_seg": 1,
+      "old_stop_expression": "1+1>=2",
+      "last_issued": {
+        "1": 2000,
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1544
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-left-c0-r2/raw",
+      "manifest_sha256": "3fe425f7ba2c8071a38e81ef4749a9546531c1ae9dc4a71abb5ec8dc368c8f13"
+    },
+    {
+      "name": "s3fix21-multi-right-c3-r2",
+      "status": "DEV_STAGE_FINISHED",
+      "elapsed_sim_s": 57.1,
+      "expected_legs": 2,
+      "observed_legs": 1,
+      "first_released_seg": 0,
+      "post_release_seg": 1,
+      "old_stop_expression": "1+1>=2",
+      "last_issued": {
+        "1": 2000,
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1616
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-right-c3-r2/raw",
+      "manifest_sha256": "ee389c1deaf7da37223d154c4797ecfe2b3a991767d56f04c2f350b373bba89a"
+    },
+    {
+      "name": "s3fix21-multi-three-c5-r2",
+      "status": "HOST_ERROR",
+      "elapsed_sim_s": 56.15,
+      "expected_legs": 3,
+      "observed_legs": 1,
+      "first_released_seg": 0,
+      "post_release_seg": 1,
+      "old_stop_expression": "1+1>=3",
+      "last_issued": {
+        "1": 2000,
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1568
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-three-c5-r2/raw",
+      "manifest_sha256": "d73baeb6caa230fe2081d0010b87baccd4af9d6fa5a2220ecb6ae106e5655328"
+    }
+  ],
+  "references": [
+    {
+      "url": "https://www.cs.cmu.edu/~lew/PUBLICATION%20PDFs/VISUAL%20SERVOING/JRA%201987.pdf",
+      "scope": "Weiss et al. 1987 p407 static look-and-move: wait for issued move to settle before a new image; no new extrinsics"
+    },
+    {
+      "url": "https://moveit.picknik.ai/main/doc/tutorials/pick_and_place_with_moveit_task_constructor/pick_and_place_with_moveit_task_constructor.html",
+      "scope": "sequential manipulation stages and terminal release are distinct; segment-completion index is our contract regression"
+    }
+  ]
+}

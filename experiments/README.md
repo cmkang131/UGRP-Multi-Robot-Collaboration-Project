@@ -1,4 +1,12 @@
+- [2026-10-10 S3 내려놓기 v166](2026-10-10-s3-setdown/README.md): 기준0/2, A2/2·B2/2·C4/4(공통2/2), 후보 조기 개방·실제 정지·HOST0; 기본 off A 선택, 끝점 오차16–54mm 미해결.
+- [S3 s3fix19 정수 tick 운반](2026-10-10-s3-integer-carry/README.md): 관련22시험 통과·20조건 on/off 등록; 디스크 거부/원본 소실/SSH 단절로 물리 판정 미완료.
+- [2026-10-10 S3 공동 운반 v164/v165](2026-10-10-s3-synchronized-carry/README.md): x86 동시10조건 v165 정렬·집기·상승·20mm 운반10/10; pair endpoint1/6, 이후 하강 낙하가드4/6·포즈계약 실패2/6, HOST_ERROR0. 기본 off·미채택.
 # 실험 인덱스
+- [2026-10-10 S3 정렬 소유권·끝점 v162](2026-10-10-s3-alignment-ownership/README.md): 기본 off A/B/C, x86 10조건 정렬·집기·상승9/10·실제 운반4/10; pair 운반0/6·c3 정렬 잔여, raw/TensorBoard 검증.
+
+- [2026-10-10 S3 차체·팔 coarse/fine v161](2026-10-10-s3-coarse-fine/README.md): 기본 off, 자기 RGB·정지 차체 팔 보정, x86 10조건 정렬·집기·상승·운반2/10(cyan c0/c5), pair0/6; HOST_ERROR0, 자세 복귀 충돌·끝점 가림·회전 진동 잔존, 미채택.
+
+- [2026-10-10 S3 포착 영역·불감대 진단 v160](2026-10-10-s3-capture-region/README.md): x86 평가 전용225점, 지속 상승r1 29/75·r2 29/75·r3 19/75, HOST_ERROR0. 저속15/20/25 제외, 포착/최소펄스 사전 조건 미충족으로 후속 학생10조건 미실행; 새 정책 미채택.
 
 - [2026-10-11 영상·증거 저장 규칙과 서버 적용](2026-10-11-storage-rules/README.md): dev PR 수명·milestone/study 보존, 배치 예산·검증 zstd·dry-run prune·옵션형 RUN_META. 37개 관련 시험 통과, x86 완료 배치 159파일 압축·ARM 복사 및 세 호스트 경보 실제 적용. 기존 실행 메타데이터 누락으로 정리 후보 0B, 실제 prune·CI 확인은 미실행.
 

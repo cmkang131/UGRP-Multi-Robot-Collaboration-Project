@@ -1,0 +1,78 @@
+"""Frozen S3 coarse-base/fine-arm probe, Oracle x86 only, <=60 SIM seconds."""
+import argparse
+import hashlib
+import json
+from types import SimpleNamespace
+from pathlib import Path
+
+from harness.zone_final_pair_binding import bind
+from harness.zone_s3_coarse_fine import OPTION, PARAMS, attach_endpoint, attach_solo
+from scripts import run_s3_x86_probe as stage
+
+BUNDLE_ID = 'zone-s3-coarse-fine-probe-v161'
+WORKFLOW_VERSION = '7.54.0'
+WORKFLOW = 'configs/simulation_workflows.d/s3_coarse_fine_probe_v161.json'
+
+
+def bundle(sha, case, condition, option='off', cap=60.):
+    if cap not in (5., 60.):
+        raise ValueError('only pathcheck5 or registered60 allowed')
+    if option not in ('off', OPTION): raise ValueError('unknown option')
+    b = stage.bundle(sha, case, condition=condition)
+    b.update(execution_bundle_id=BUNDLE_ID, workflow_version=WORKFLOW_VERSION,
+        schema='ugrp.s3_coarse_fine_probe.v161', servo_option=option,
+        coarse_fine=dict(option=option,params=PARAMS), physical_supervisor='S3_common_and_cyan_StopGuard_v1', cap_sim_s=cap,
+        concurrent_probe_limit=10, stop_after_close=False,
+        stage_scope='align-hover-descent-close-lift-carry',
+        qualification='DEV coarse/fine tuning; fixed capture constants; no GT control')
+    from harness.python_source_closure import source_closure
+    paths=set(source_closure(stage.ROOT,['scripts/run_s3_coarse_fine_probe.py']))
+    paths.update((WORKFLOW, 'experiments/2026-10-10-s3-coarse-fine/README.md',
+                  'experiments/2026-10-10-s3-coarse-fine/batch-plan.json'))
+    b['source_sha256'].update({p:hashlib.sha256((stage.ROOT/p).read_bytes()).hexdigest() for p in paths})
+    return b
+
+
+def run(b, out):
+    option=b['coarse_fine']['option']
+    def enter(rt, now, ignored):
+        eps=stage.previous.enter_pair(rt,now,'off')
+        for ep in eps.values():
+            attach_endpoint(ep,option)
+        return eps
+    def configure(own, ignored):
+        return attach_solo(own,option)
+    # stage.run rebinds this function's globals; keep a real FunctionType.
+    probe_run=bind(stage.previous.run,CAP=b['cap_sim_s'])
+    probe_run.__kwdefaults__={**probe_run.__kwdefaults__, 'solo_configure':configure}
+    previous=SimpleNamespace(**{**vars(stage.previous), 'enter_pair':enter, 'run':probe_run})
+    result=bind(stage.run,previous=previous)(b,out)
+    environment=json.loads((out/'environment.json').read_text())
+    environment['concurrent_probe_limit']=10
+    stage.previous.write(out/'environment.json',environment)
+    stage.previous.artifact_manifest(out)
+    return result
+
+
+def main():
+    p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True)
+    p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--condition',type=int,choices=range(6),default=0)
+    p.add_argument('--case',choices=('pair','cyan'),default='pair')
+    p.add_argument('--path-check',action='store_true')
+    p.add_argument('--coarse-fine',choices=('off',OPTION),default='off')
+    p.add_argument('--execute',action='store_true');a=p.parse_args()
+    if not a.execute:
+        print(json.dumps(dict(execution_started=False,bundle_id=BUNDLE_ID,host='oracle-x86')))
+        return 0
+    stage.archive_guard(a.expected_source_sha,a.output)
+    from harness.zone_pair_highpose_exact_speedups import install
+    _,undo=install('v98-exact-v6')
+    try:
+        r=run(bundle(a.expected_source_sha,a.case,a.condition,a.coarse_fine,5. if a.path_check else 60.),a.output)
+    finally:
+        undo()
+    print(json.dumps(r));return int(r['status']=='HOST_ERROR')
+
+
+if __name__=='__main__':raise SystemExit(main())

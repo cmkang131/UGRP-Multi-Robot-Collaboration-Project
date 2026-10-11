@@ -1,0 +1,113 @@
+{
+  "schema": "ugrp.s3_stage_sweep_smoke.v149",
+  "execution_bundle_id": "zone-s3-sweep-v149",
+  "workflow_version": "7.42.0",
+  "seeds": [
+    14201
+  ],
+  "run_limit": 1,
+  "case_cap_s": 1800,
+  "wall_cap_s": 10800,
+  "raw_budget_bytes": 3221225472,
+  "start_prior": "none_v1",
+  "forbidden_inputs": [
+    "dock_prior",
+    "shared_top_camera",
+    "peer_pose",
+    "GT_control"
+  ],
+  "weld": "off",
+  "controller_base": "99d81d8c9cbc8dee1cc21462d25a1c81f65de9f5",
+  "cargo": {
+    "r1+r2": "beam_1 -> B",
+    "r3": "cyan_1 -> B"
+  },
+  "localization": {
+    "own_convergence_std_xy_m_lte": 0.05,
+    "posthoc_correct_xy_m_lte": 0.25,
+    "posthoc_correct_yaw_deg_lte": 15,
+    "source": "S2 v139 preregistration unchanged; evaluated separately for each robot",
+    "own_convergence_std_yaw_deg_lte": 5,
+    "posterior_all_particles_range_m": 0.5,
+    "posterior_connected_modes_eq": 1,
+    "threshold_change": false
+  },
+  "collision": {
+    "rule": "any robot-robot geometry contact with dist_m < 0; episodes merged across gaps <=1 SIM s",
+    "evaluation_only": true
+  },
+  "deadlock": {
+    "rule": "after startup: reservation state unchanged, another robot waiting, and USING owners stationary (<1cm XY envelope and <5deg yaw range) in final 120 SIM s of that reservation interval; posthoc only",
+    "window_s": 120
+  },
+  "delivery": {
+    "rule": "existing S3 post-run referee order completion in zone B, each order separately; pair shared outcome counts one cargo",
+    "control_feedback": false
+  },
+  "failure_rule": "classify only; same root cause twice stops additional trials",
+  "video": {
+    "source": "three own camera recordings",
+    "playback": 4,
+    "capture_hz": 20,
+    "output_fps": 20,
+    "stride": 4
+  },
+  "differences_from_s2": [
+    "all three robots active; idle contacts off",
+    "mixed pair beam; loaded pair command model remains separately unqualified",
+    "same v3 runtime render binding and controller calibration as S2"
+  ],
+  "references": [
+    {
+      "title": "Active Mobile Robot Localization, Burgard et al. IJCAI 1997",
+      "url": "https://publications.ri.cmu.edu/storage/publications/pub_files/pub1/burgard_w_1997_1/burgard_w_1997_1.pdf",
+      "use": "reuse entropy-ranked own-camera observations and uniform global belief; no custom pose prior"
+    },
+    {
+      "title": "OpenCV homography tutorial",
+      "url": "https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html",
+      "use": "reuse S2 RGB rotation guard without changing the 90-degree bound"
+    }
+  ],
+  "scenario_catalog_seeds": [
+    14201,
+    14202,
+    14203
+  ],
+  "execution_admission": "14201 only; other catalog seeds are inactive and not authorized by this smoke contract",
+  "success": "per robot: command completion, at least one posthoc-correct convergence, its cargo delivered B, no own failure or robot collision",
+  "heading_mode": "path_tangent_v1",
+  "host_camera_binding": "v3_persistent_v1",
+  "eval_render_camera": true,
+  "recorded_camera_mount": "off",
+  "localization_certification": "posterior_consensus_v1",
+  "particle_recovery_changes": true,
+  "heading_dependency": "PR422 shared REAL contract plus explicit existing manipulation tolerance",
+  "heading_dependency_sha": "256a1b0c6633609f2fb91584e01f77f133afb642",
+  "heading_scope": {
+    "solo_and_approach": "path_tangent_v1 default on",
+    "final_alignment": "lateral allowed only final 0.10m and registered REAL command",
+    "coupled_beam_carry": "existing pair continuous lateral schedule, explicit exception; GO remains hard"
+  },
+  "runtime_speedups_required": "relay-cache-v1",
+  "main_speed_dependency_sha": "1ba3668b6c42f2f2d1d22b6bd495a84522d87031",
+  "heading_visual_lock": "off",
+  "s3_dev_light": "continue_estimate_v1",
+  "global_diversity": "kld_augmented_v2",
+  "mode_head_look": "mode_information_v1",
+  "source_decision": "s3fix4/README.md before new smoke",
+  "parent_bundle": "zone-s3-motion-v148",
+  "exact_acceleration": {
+    "s3_exact_cache": "posterior_content_v2",
+    "s3_io": "buffered_jsonl_v1",
+    "admission": "saved input equality required; cProfile before smoke; no particle/seed/threshold changes"
+  },
+  "pair_heading": "pair_heading_pulse_v1",
+  "would_stop": "DEV conservative vetoes log only; actual errors/GO/physical failure stop",
+  "options_added": {
+    "s3_exact_cache": "posterior_content_v2"
+  },
+  "offline_admission": "all implemented stages through native motor stub; zero unexpected errors",
+  "return_scope": "not implemented; delivery to B unchanged",
+  "smoke_count": 1
+}

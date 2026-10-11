@@ -1,0 +1,82 @@
+{
+  "scope": "posthoc diagnostic windows; not causal proof or tuning",
+  "gt_use": "eval_only",
+  "variants": {
+    "off": {
+      "windows": {
+        "pre_contact": {
+          "bounds": [
+            13.34,
+            102.55
+          ],
+          "frames": 1785,
+          "error_end": 0.24706142747041238,
+          "sigma_end": 0.06126623787312099,
+          "over_3sigma": 542,
+          "rmse": 0.15127511455830242
+        },
+        "contact_period": {
+          "bounds": [
+            102.55,
+            210.05
+          ],
+          "frames": 2150,
+          "error_end": 0.442369631419505,
+          "sigma_end": 0.015464807093827101,
+          "over_3sigma": 2150,
+          "rmse": 0.43493484090512835
+        },
+        "after_contact": {
+          "bounds": [
+            210.05,
+            276.0
+          ],
+          "frames": 1314,
+          "error_end": 0.3879645010194854,
+          "sigma_end": 0.005400484834371477,
+          "over_3sigma": 1314,
+          "rmse": 0.3810261116690161
+        }
+      },
+      "prediction_sha256": "c4eb1ce4cbac7763623fa70cae83f6f6e87322ea98dd69c7643a91805882bdcb"
+    },
+    "on": {
+      "windows": {
+        "pre_contact": {
+          "bounds": [
+            13.34,
+            102.55
+          ],
+          "frames": 1785,
+          "error_end": 0.21365909415439843,
+          "sigma_end": 0.035516389498946394,
+          "over_3sigma": 1081,
+          "rmse": 0.1362857032962591
+        },
+        "contact_period": {
+          "bounds": [
+            102.55,
+            210.05
+          ],
+          "frames": 2150,
+          "error_end": 0.3849090204096287,
+          "sigma_end": 0.004046704005829714,
+          "over_3sigma": 2150,
+          "rmse": 0.38842319449457824
+        },
+        "after_contact": {
+          "bounds": [
+            210.05,
+            276.0
+          ],
+          "frames": 1314,
+          "error_end": 0.372112932724566,
+          "sigma_end": 0.00553237824983801,
+          "over_3sigma": 1314,
+          "rmse": 0.37208698756438746
+        }
+      },
+      "prediction_sha256": "c195d36855cfbbd109434722aedcb2425a23a63b87ad40e76c8187e174edb024"
+    }
+  }
+}

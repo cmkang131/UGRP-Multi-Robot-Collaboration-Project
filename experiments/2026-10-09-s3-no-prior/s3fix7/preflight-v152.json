@@ -1,0 +1,47 @@
+{
+  "tests": {
+    "files": [
+      "tests/test_s3_recovery.py",
+      "tests/test_s3_stage_sweep.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "passed": 34,
+    "wall_s": 129.82,
+    "log": "/Users/changmin/projects/ugrp/outputs/s3fix7-20261010/preflight-v152.log",
+    "log_sha256": "cbcf36b237c58b6d68b10b5f8bd9ba47b46f7bf9fe2a05076be974186b259635"
+  },
+  "physics_runs": 0,
+  "model_calls": 0,
+  "pf_replays_completed": 12,
+  "pf_replay_errors": 0,
+  "replay_source_sha": "a6ff738f5fa24106f5896c9b5b3b8d7f2e3e8e2e",
+  "pf_consumers_unchanged_after_replay": true,
+  "preregistration_source_hash_verified": true,
+  "stage_sweep": {
+    "cases": 68,
+    "commands": 3190,
+    "errors": 0
+  },
+  "opposite_door": {
+    "boundaries": 3,
+    "commands": 9,
+    "errors": 0
+  },
+  "off_identity": {
+    "scope": "same synthetic initial own inputs and same fixed protocol nonce; full initial commands and record; not a full physical mission",
+    "before": "/Users/changmin/projects/ugrp/outputs/s3fix7-20261010/preflight-v152/test_composed_off_initial_comm0/before.json",
+    "off": "/Users/changmin/projects/ugrp/outputs/s3fix7-20261010/preflight-v152/test_composed_off_initial_comm0/off.json",
+    "before_sha256": "b1a90c902a43103b0c0387d6add74c353b79c081c32f9dba4dc07d8faff6707b",
+    "off_sha256": "b1a90c902a43103b0c0387d6add74c353b79c081c32f9dba4dc07d8faff6707b",
+    "identical": true
+  },
+  "source_files_sha256": {
+    "harness/zone_s3_pregrasp_reference.py": "0a94cd9904d8085751f4f5b7936e401df1afc02fa6c2fa7c07781d07161402a9",
+    "harness/zone_s3_recovery_contract.py": "6a70777cc9d7c8174232a73aaf32da590228b94a18b1a791136c9e9ee8b32662",
+    "scripts/run_s3_recovery.py": "02d2d79604add7b4b4c18821dfc47ffd3352eb8c3b61d70b5e0bda1e6534d0cb",
+    "tests/test_s3_recovery.py": "cb52f268ea879bed9babe8e18510b5f831a3da7a7cb586efb3f0cce9a312a5fc",
+    "tests/test_s3_stage_sweep.py": "c32f5b7fbecf5182864ac122e5f370af8484080c15358cc0340c1cf3c0a7f671",
+    "tests/test_simulation_workflow_manager.py": "132e8bd5c77b0612aacf69539dc2e448d8b10cca599d2365fef1d9912758d483"
+  },
+  "ci_waited": false
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-s3-oracle-stage-probe-v155", "version": "7.48.0",
+    "purpose": "Oracle S3 정렬·상승·운반 ≤60 SIM초 병렬 단계 probe",
+    "entry": "scripts/run_s3_oracle_probe.py", "runner": "scripts.run_s3_oracle_probe",
+    "docs": "experiments/2026-10-09-s3-no-prior/s3fix10/README.md",
+    "requires": "committed Oracle ARM/OSMesa archive; at most three remote probes; no Mac physics",
+    "output_flag": "--output", "output_kind": "directory", "required_inputs": ["--expected-source-sha"],
+    "side_effect": "local_simulation", "adapter": "managed_legacy_cli"
+  }]
+}

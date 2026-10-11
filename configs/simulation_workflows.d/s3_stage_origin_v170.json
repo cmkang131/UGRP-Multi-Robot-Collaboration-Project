@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-s3-stage-origin-v170",
+    "version": "7.63.0",
+    "purpose": "S3 reconstructed stage/public route entrance contract, default off",
+    "entry": "scripts/run_s3_stage_origin.py",
+    "runner": "scripts.run_s3_stage_origin",
+    "docs": "experiments/2026-10-11-s3-stage-origin/README.md",
+    "requires": "committed oracle-x86 OSMesa LP4; persistent runs; load<51 memory>=6GiB",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

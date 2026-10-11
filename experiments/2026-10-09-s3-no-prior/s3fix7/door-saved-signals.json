@@ -1,0 +1,1970 @@
+{
+  "scope": "saved own pose/servo signals; open-loop protocol only; no new motion or closed-loop success",
+  "gt_inputs": false,
+  "loaded": false,
+  "loaded_basis": "v151 no grasp or load transition",
+  "frames": 18182,
+  "counts": {
+    "r1": {
+      "request_frames": 0,
+      "blocked_frames": 0,
+      "permitted_frames": 18182
+    },
+    "r2": {
+      "request_frames": 16351,
+      "blocked_frames": 70,
+      "permitted_frames": 18112
+    },
+    "r3": {
+      "request_frames": 0,
+      "blocked_frames": 0,
+      "permitted_frames": 18182
+    }
+  },
+  "initial": [
+    {
+      "sim_s": 13.5,
+      "owner": null,
+      "signals": [
+        {
+          "robot_id": "r1",
+          "request": false,
+          "clear": true,
+          "progress": false
+        },
+        {
+          "robot_id": "r2",
+          "request": false,
+          "clear": true,
+          "progress": false
+        },
+        {
+          "robot_id": "r3",
+          "request": false,
+          "clear": true,
+          "progress": false
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "sim_s": 105.05,
+      "event": "grant",
+      "epoch": 1,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": false
+    },
+    {
+      "sim_s": 135.05,
+      "event": "revoke",
+      "epoch": 2,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "lease_expired",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 135.1,
+      "event": "grant",
+      "epoch": 3,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 151.15,
+      "event": "revoke",
+      "epoch": 4,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 151.2,
+      "event": "grant",
+      "epoch": 5,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 163.25,
+      "event": "revoke",
+      "epoch": 6,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 163.3,
+      "event": "grant",
+      "epoch": 7,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 173.3,
+      "event": "revoke",
+      "epoch": 8,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 173.35,
+      "event": "grant",
+      "epoch": 9,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 183.35,
+      "event": "revoke",
+      "epoch": 10,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 183.4,
+      "event": "grant",
+      "epoch": 11,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 197.05,
+      "event": "revoke",
+      "epoch": 12,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 197.1,
+      "event": "grant",
+      "epoch": 13,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 207.1,
+      "event": "revoke",
+      "epoch": 14,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 207.15,
+      "event": "grant",
+      "epoch": 15,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 221.3,
+      "event": "clear_after_revoke",
+      "epoch": 15,
+      "team": [
+        "r1",
+        "r2"
+      ]
+    },
+    {
+      "sim_s": 230.55,
+      "event": "revoke",
+      "epoch": 16,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 230.6,
+      "event": "grant",
+      "epoch": 17,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 245.45,
+      "event": "revoke",
+      "epoch": 18,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 245.5,
+      "event": "grant",
+      "epoch": 19,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 260.9,
+      "event": "revoke",
+      "epoch": 20,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 260.95,
+      "event": "grant",
+      "epoch": 21,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 273.1,
+      "event": "revoke",
+      "epoch": 22,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 273.15,
+      "event": "grant",
+      "epoch": 23,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 285.9,
+      "event": "revoke",
+      "epoch": 24,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 285.95,
+      "event": "grant",
+      "epoch": 25,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 298.3,
+      "event": "revoke",
+      "epoch": 26,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 298.35,
+      "event": "grant",
+      "epoch": 27,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 310.5,
+      "event": "revoke",
+      "epoch": 28,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 310.55,
+      "event": "grant",
+      "epoch": 29,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 320.55,
+      "event": "revoke",
+      "epoch": 30,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 320.6,
+      "event": "grant",
+      "epoch": 31,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 330.6,
+      "event": "revoke",
+      "epoch": 32,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 330.65,
+      "event": "grant",
+      "epoch": 33,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 340.65,
+      "event": "revoke",
+      "epoch": 34,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 340.7,
+      "event": "grant",
+      "epoch": 35,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 350.7,
+      "event": "revoke",
+      "epoch": 36,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 350.75,
+      "event": "grant",
+      "epoch": 37,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 360.75,
+      "event": "revoke",
+      "epoch": 38,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 360.8,
+      "event": "grant",
+      "epoch": 39,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 370.8,
+      "event": "revoke",
+      "epoch": 40,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 370.85,
+      "event": "grant",
+      "epoch": 41,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 380.85,
+      "event": "revoke",
+      "epoch": 42,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 380.9,
+      "event": "grant",
+      "epoch": 43,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 390.9,
+      "event": "revoke",
+      "epoch": 44,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 390.95,
+      "event": "grant",
+      "epoch": 45,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 400.95,
+      "event": "revoke",
+      "epoch": 46,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 401.0,
+      "event": "grant",
+      "epoch": 47,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 411.0,
+      "event": "revoke",
+      "epoch": 48,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 411.05,
+      "event": "grant",
+      "epoch": 49,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 421.05,
+      "event": "revoke",
+      "epoch": 50,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 421.1,
+      "event": "grant",
+      "epoch": 51,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 438.95,
+      "event": "clear_after_revoke",
+      "epoch": 51,
+      "team": [
+        "r1",
+        "r2"
+      ]
+    },
+    {
+      "sim_s": 450.15,
+      "event": "revoke",
+      "epoch": 52,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": false,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 450.2,
+      "event": "grant",
+      "epoch": 53,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": false
+    },
+    {
+      "sim_s": 464.1,
+      "event": "revoke",
+      "epoch": 54,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 464.15,
+      "event": "grant",
+      "epoch": 55,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 478.75,
+      "event": "revoke",
+      "epoch": 56,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 478.8,
+      "event": "grant",
+      "epoch": 57,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 493.8,
+      "event": "revoke",
+      "epoch": 58,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 493.85,
+      "event": "grant",
+      "epoch": 59,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 504.6,
+      "event": "revoke",
+      "epoch": 60,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 504.65,
+      "event": "grant",
+      "epoch": 61,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 517.25,
+      "event": "revoke",
+      "epoch": 62,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 517.3,
+      "event": "grant",
+      "epoch": 63,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 532.3,
+      "event": "revoke",
+      "epoch": 64,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 532.35,
+      "event": "grant",
+      "epoch": 65,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 542.35,
+      "event": "revoke",
+      "epoch": 66,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 542.4,
+      "event": "grant",
+      "epoch": 67,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 552.4,
+      "event": "revoke",
+      "epoch": 68,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 552.45,
+      "event": "grant",
+      "epoch": 69,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 562.45,
+      "event": "revoke",
+      "epoch": 70,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 562.5,
+      "event": "grant",
+      "epoch": 71,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 572.5,
+      "event": "revoke",
+      "epoch": 72,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 572.55,
+      "event": "grant",
+      "epoch": 73,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 582.55,
+      "event": "revoke",
+      "epoch": 74,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 582.6,
+      "event": "grant",
+      "epoch": 75,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 592.6,
+      "event": "revoke",
+      "epoch": 76,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 592.65,
+      "event": "grant",
+      "epoch": 77,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 602.65,
+      "event": "revoke",
+      "epoch": 78,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 602.7,
+      "event": "grant",
+      "epoch": 79,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 612.7,
+      "event": "revoke",
+      "epoch": 80,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 612.75,
+      "event": "grant",
+      "epoch": 81,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 622.75,
+      "event": "revoke",
+      "epoch": 82,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 622.8,
+      "event": "grant",
+      "epoch": 83,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 632.8,
+      "event": "revoke",
+      "epoch": 84,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 632.85,
+      "event": "grant",
+      "epoch": 85,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 642.85,
+      "event": "revoke",
+      "epoch": 86,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 642.9,
+      "event": "grant",
+      "epoch": 87,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 652.9,
+      "event": "revoke",
+      "epoch": 88,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 652.95,
+      "event": "grant",
+      "epoch": 89,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 662.95,
+      "event": "revoke",
+      "epoch": 90,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 663.0,
+      "event": "grant",
+      "epoch": 91,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 673.0,
+      "event": "revoke",
+      "epoch": 92,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 673.05,
+      "event": "grant",
+      "epoch": 93,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 683.05,
+      "event": "revoke",
+      "epoch": 94,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 683.1,
+      "event": "grant",
+      "epoch": 95,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 693.1,
+      "event": "revoke",
+      "epoch": 96,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 693.15,
+      "event": "grant",
+      "epoch": 97,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 703.15,
+      "event": "revoke",
+      "epoch": 98,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 703.2,
+      "event": "grant",
+      "epoch": 99,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 713.2,
+      "event": "revoke",
+      "epoch": 100,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 713.25,
+      "event": "grant",
+      "epoch": 101,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 723.25,
+      "event": "revoke",
+      "epoch": 102,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 723.3,
+      "event": "grant",
+      "epoch": 103,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 733.3,
+      "event": "revoke",
+      "epoch": 104,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 733.35,
+      "event": "grant",
+      "epoch": 105,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 743.35,
+      "event": "revoke",
+      "epoch": 106,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 743.4,
+      "event": "grant",
+      "epoch": 107,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 753.4,
+      "event": "revoke",
+      "epoch": 108,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 753.45,
+      "event": "grant",
+      "epoch": 109,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 763.45,
+      "event": "revoke",
+      "epoch": 110,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 763.5,
+      "event": "grant",
+      "epoch": 111,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 773.5,
+      "event": "revoke",
+      "epoch": 112,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 773.55,
+      "event": "grant",
+      "epoch": 113,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 783.55,
+      "event": "revoke",
+      "epoch": 114,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 783.6,
+      "event": "grant",
+      "epoch": 115,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 793.6,
+      "event": "revoke",
+      "epoch": 116,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 793.65,
+      "event": "grant",
+      "epoch": 117,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 803.65,
+      "event": "revoke",
+      "epoch": 118,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 803.7,
+      "event": "grant",
+      "epoch": 119,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 813.7,
+      "event": "revoke",
+      "epoch": 120,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 813.75,
+      "event": "grant",
+      "epoch": 121,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 823.75,
+      "event": "revoke",
+      "epoch": 122,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 823.8,
+      "event": "grant",
+      "epoch": 123,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 833.8,
+      "event": "revoke",
+      "epoch": 124,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 833.85,
+      "event": "grant",
+      "epoch": 125,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 843.85,
+      "event": "revoke",
+      "epoch": 126,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 843.9,
+      "event": "grant",
+      "epoch": 127,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 853.9,
+      "event": "revoke",
+      "epoch": 128,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 853.95,
+      "event": "grant",
+      "epoch": 129,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 863.95,
+      "event": "revoke",
+      "epoch": 130,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 864.0,
+      "event": "grant",
+      "epoch": 131,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 874.0,
+      "event": "revoke",
+      "epoch": 132,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 874.05,
+      "event": "grant",
+      "epoch": 133,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 884.05,
+      "event": "revoke",
+      "epoch": 134,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 884.1,
+      "event": "grant",
+      "epoch": 135,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 894.1,
+      "event": "revoke",
+      "epoch": 136,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 894.15,
+      "event": "grant",
+      "epoch": 137,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 904.15,
+      "event": "revoke",
+      "epoch": 138,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 904.2,
+      "event": "grant",
+      "epoch": 139,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    },
+    {
+      "sim_s": 914.2,
+      "event": "revoke",
+      "epoch": 140,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "reason": "no_progress",
+      "occupied": true,
+      "queue": [
+        [
+          "r1",
+          "r2"
+        ]
+      ]
+    },
+    {
+      "sim_s": 914.25,
+      "event": "grant",
+      "epoch": 141,
+      "team": [
+        "r1",
+        "r2"
+      ],
+      "recovery": true
+    }
+  ]
+}

@@ -1,0 +1,1230 @@
+{
+  "host": "oracle-x86",
+  "physics_steps": 0,
+  "runs": [
+    {
+      "case": "s3fix17-pair-c0-r2",
+      "host": "oracle-x86",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "first_carry_start": 29.1,
+      "first_carry_end": 31.9,
+      "first_carry_duration_s": 2.799999999999997,
+      "matched_ticks": 18,
+      "total_ticks": 18,
+      "one_sided_wait_ticks": 0,
+      "max_pulse_skew_s": 0.0,
+      "robots": {
+        "r1": {
+          "command_ticks": 18,
+          "nonzero_ticks": 17,
+          "first_pulse": 29.3,
+          "last_pulse": 31.5,
+          "unique_nonzero": [
+            [
+              0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.22780474267822506,
+          "chassis_path_m": 0.2275019564498652,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.13002110360437,
+          "normal_sum_max_n": 11.670925672527027,
+          "force_resultant_mean_n": 1.5109326347526064,
+          "force_resultant_max_n": 1.7759622114584976
+        },
+        "r2": {
+          "command_ticks": 18,
+          "nonzero_ticks": 17,
+          "first_pulse": 29.3,
+          "last_pulse": 31.5,
+          "unique_nonzero": [
+            [
+              -0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.22683862672528593,
+          "chassis_path_m": 0.22175972591588597,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.475894081449661,
+          "normal_sum_max_n": 12.597188362694435,
+          "force_resultant_mean_n": 1.4886377114745624,
+          "force_resultant_max_n": 1.6506152919403696
+        }
+      },
+      "first_carry_excursion_m": 0.22288717453707804,
+      "static_endpoint_xy_m": [
+        1.4518000000000002,
+        0.05
+      ],
+      "endpoint_xy_m": [
+        1.4925859534340695,
+        0.03810186177021416
+      ],
+      "endpoint_error_m": 0.04248599405523146,
+      "endpoint_within20mm": false,
+      "cargo_max_tilt_during_carry_deg": 1.2137429084312505,
+      "last_transitions": [
+        {
+          "t": 8.6,
+          "robots": {
+            "r1": {
+              "state": "wait_close",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_close",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 8.8,
+          "robots": {
+            "r1": {
+              "state": "grasp",
+              "failure": null
+            },
+            "r2": {
+              "state": "grasp",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 9.8,
+          "robots": {
+            "r1": {
+              "state": "wait_lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 10.1,
+          "robots": {
+            "r1": {
+              "state": "lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 28.8,
+          "robots": {
+            "r1": {
+              "state": "wait_carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 29.1,
+          "robots": {
+            "r1": {
+              "state": "carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 31.9,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 32.0,
+          "robots": {
+            "r1": {
+              "state": "refix_decide",
+              "failure": null
+            },
+            "r2": {
+              "state": "refix_decide",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 41.9,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 42.2,
+          "robots": {
+            "r1": {
+              "state": "lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "lower",
+              "failure": null
+            }
+          }
+        }
+      ],
+      "eval_only": true,
+      "slip_scope": "absolute wheel rim path proxy; not a contact-point slip ratio"
+    },
+    {
+      "case": "s3fix17-pair-c1-r2",
+      "host": "oracle-x86",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "first_carry_start": 28.6,
+      "first_carry_end": 31.4,
+      "first_carry_duration_s": 2.799999999999997,
+      "matched_ticks": 18,
+      "total_ticks": 18,
+      "one_sided_wait_ticks": 0,
+      "max_pulse_skew_s": 0.0,
+      "robots": {
+        "r1": {
+          "command_ticks": 18,
+          "nonzero_ticks": 17,
+          "first_pulse": 28.8,
+          "last_pulse": 31.0,
+          "unique_nonzero": [
+            [
+              0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.22774961840861008,
+          "chassis_path_m": 0.22747043972325878,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.434180142232634,
+          "normal_sum_max_n": 12.393469410119362,
+          "force_resultant_mean_n": 1.5029404228057714,
+          "force_resultant_max_n": 1.716527420467597
+        },
+        "r2": {
+          "command_ticks": 18,
+          "nonzero_ticks": 17,
+          "first_pulse": 28.8,
+          "last_pulse": 31.0,
+          "unique_nonzero": [
+            [
+              -0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.22762829689635067,
+          "chassis_path_m": 0.22205585355319032,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.694535117238589,
+          "normal_sum_max_n": 12.457649748533296,
+          "force_resultant_mean_n": 1.4923424482467536,
+          "force_resultant_max_n": 1.6384540012633475
+        }
+      },
+      "first_carry_excursion_m": 0.2239385932100243,
+      "static_endpoint_xy_m": [
+        1.4518000000000002,
+        0.05
+      ],
+      "endpoint_xy_m": [
+        1.4935468110346994,
+        0.025131508385557205
+      ],
+      "endpoint_error_m": 0.04859257254709302,
+      "endpoint_within20mm": false,
+      "cargo_max_tilt_during_carry_deg": 0.5774756514447982,
+      "last_transitions": [
+        {
+          "t": 8.1,
+          "robots": {
+            "r1": {
+              "state": "wait_close",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_close",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 8.3,
+          "robots": {
+            "r1": {
+              "state": "grasp",
+              "failure": null
+            },
+            "r2": {
+              "state": "grasp",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 9.3,
+          "robots": {
+            "r1": {
+              "state": "wait_lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 9.6,
+          "robots": {
+            "r1": {
+              "state": "lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 28.3,
+          "robots": {
+            "r1": {
+              "state": "wait_carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 28.6,
+          "robots": {
+            "r1": {
+              "state": "carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 31.4,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 31.5,
+          "robots": {
+            "r1": {
+              "state": "refix_decide",
+              "failure": null
+            },
+            "r2": {
+              "state": "refix_decide",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 41.4,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 41.7,
+          "robots": {
+            "r1": {
+              "state": "lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "lower",
+              "failure": null
+            }
+          }
+        }
+      ],
+      "eval_only": true,
+      "slip_scope": "absolute wheel rim path proxy; not a contact-point slip ratio"
+    },
+    {
+      "case": "s3fix17-pair-c2-r2",
+      "host": "oracle-x86",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "first_carry_start": 30.1,
+      "first_carry_end": 32.9,
+      "first_carry_duration_s": 2.799999999999997,
+      "matched_ticks": 16,
+      "total_ticks": 16,
+      "one_sided_wait_ticks": 0,
+      "max_pulse_skew_s": 0.0,
+      "robots": {
+        "r1": {
+          "command_ticks": 16,
+          "nonzero_ticks": 14,
+          "first_pulse": 30.3,
+          "last_pulse": 32.5,
+          "unique_nonzero": [
+            [
+              0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.18705754436383787,
+          "chassis_path_m": 0.18700489568618792,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.342647349978073,
+          "normal_sum_max_n": 12.270443667035064,
+          "force_resultant_mean_n": 1.4832794936132658,
+          "force_resultant_max_n": 1.655201667073341
+        },
+        "r2": {
+          "command_ticks": 16,
+          "nonzero_ticks": 14,
+          "first_pulse": 30.3,
+          "last_pulse": 32.5,
+          "unique_nonzero": [
+            [
+              -0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.18976814484335747,
+          "chassis_path_m": 0.1843517639409069,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.4657440237329,
+          "normal_sum_max_n": 12.61540923044901,
+          "force_resultant_mean_n": 1.4960640725025551,
+          "force_resultant_max_n": 1.6183168508323003
+        }
+      },
+      "first_carry_excursion_m": 0.185277228633361,
+      "static_endpoint_xy_m": [
+        1.4518000000000002,
+        0.05
+      ],
+      "endpoint_xy_m": [
+        1.448278336663125,
+        0.03389727119417074
+      ],
+      "endpoint_error_m": 0.01648332453276261,
+      "endpoint_within20mm": true,
+      "cargo_max_tilt_during_carry_deg": 0.4024551578596532,
+      "last_transitions": [
+        {
+          "t": 9.8,
+          "robots": {
+            "r1": {
+              "state": "grasp",
+              "failure": null
+            },
+            "r2": {
+              "state": "grasp",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 10.8,
+          "robots": {
+            "r1": {
+              "state": "wait_lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 11.1,
+          "robots": {
+            "r1": {
+              "state": "lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 29.8,
+          "robots": {
+            "r1": {
+              "state": "wait_carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 30.1,
+          "robots": {
+            "r1": {
+              "state": "carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 32.9,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 33.0,
+          "robots": {
+            "r1": {
+              "state": "refix_decide",
+              "failure": null
+            },
+            "r2": {
+              "state": "refix_decide",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 42.9,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 43.2,
+          "robots": {
+            "r1": {
+              "state": "lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 56.9,
+          "robots": {
+            "r1": {
+              "state": "failed",
+              "failure": "FLOOR_POSE_NOT_COMMANDED"
+            },
+            "r2": {
+              "state": "lower",
+              "failure": null
+            }
+          }
+        }
+      ],
+      "eval_only": true,
+      "slip_scope": "absolute wheel rim path proxy; not a contact-point slip ratio"
+    },
+    {
+      "case": "s3fix17-pair-c3-r2",
+      "host": "oracle-x86",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "first_carry_start": 30.6,
+      "first_carry_end": 33.4,
+      "first_carry_duration_s": 2.799999999999997,
+      "matched_ticks": 18,
+      "total_ticks": 18,
+      "one_sided_wait_ticks": 0,
+      "max_pulse_skew_s": 0.0,
+      "robots": {
+        "r1": {
+          "command_ticks": 18,
+          "nonzero_ticks": 16,
+          "first_pulse": 30.8,
+          "last_pulse": 33.0,
+          "unique_nonzero": [
+            [
+              0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.2123193092091189,
+          "chassis_path_m": 0.21266165934599804,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.279950028194593,
+          "normal_sum_max_n": 11.65936891386929,
+          "force_resultant_mean_n": 1.4976313545779287,
+          "force_resultant_max_n": 1.6762190550305842
+        },
+        "r2": {
+          "command_ticks": 18,
+          "nonzero_ticks": 16,
+          "first_pulse": 30.8,
+          "last_pulse": 33.0,
+          "unique_nonzero": [
+            [
+              -0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.21502182623539856,
+          "chassis_path_m": 0.20991883490335184,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.488008155941548,
+          "normal_sum_max_n": 12.149652900387792,
+          "force_resultant_mean_n": 1.4831502949836783,
+          "force_resultant_max_n": 1.5931005604041928
+        }
+      },
+      "first_carry_excursion_m": 0.21075650729426154,
+      "static_endpoint_xy_m": [
+        1.4518000000000002,
+        0.05
+      ],
+      "endpoint_xy_m": [
+        1.4839229856765308,
+        0.031089232840604244
+      ],
+      "endpoint_error_m": 0.037276042216569494,
+      "endpoint_within20mm": false,
+      "cargo_max_tilt_during_carry_deg": 0.25557450942126375,
+      "last_transitions": [
+        {
+          "t": 10.3,
+          "robots": {
+            "r1": {
+              "state": "grasp",
+              "failure": null
+            },
+            "r2": {
+              "state": "grasp",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 11.3,
+          "robots": {
+            "r1": {
+              "state": "wait_lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 11.6,
+          "robots": {
+            "r1": {
+              "state": "lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 30.3,
+          "robots": {
+            "r1": {
+              "state": "wait_carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 30.6,
+          "robots": {
+            "r1": {
+              "state": "carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 33.4,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 33.5,
+          "robots": {
+            "r1": {
+              "state": "refix_decide",
+              "failure": null
+            },
+            "r2": {
+              "state": "refix_decide",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 43.4,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 43.7,
+          "robots": {
+            "r1": {
+              "state": "lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 57.4,
+          "robots": {
+            "r1": {
+              "state": "failed",
+              "failure": "FLOOR_POSE_NOT_COMMANDED"
+            },
+            "r2": {
+              "state": "lower",
+              "failure": null
+            }
+          }
+        }
+      ],
+      "eval_only": true,
+      "slip_scope": "absolute wheel rim path proxy; not a contact-point slip ratio"
+    },
+    {
+      "case": "s3fix17-pair-c4-r2",
+      "host": "oracle-x86",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "first_carry_start": 28.1,
+      "first_carry_end": 30.9,
+      "first_carry_duration_s": 2.799999999999997,
+      "matched_ticks": 18,
+      "total_ticks": 18,
+      "one_sided_wait_ticks": 0,
+      "max_pulse_skew_s": 0.0,
+      "robots": {
+        "r1": {
+          "command_ticks": 18,
+          "nonzero_ticks": 17,
+          "first_pulse": 28.3,
+          "last_pulse": 30.5,
+          "unique_nonzero": [
+            [
+              0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.22908479212387026,
+          "chassis_path_m": 0.22933821853397673,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 10.986723400836631,
+          "normal_sum_max_n": 11.812602973378834,
+          "force_resultant_mean_n": 1.5058529833960512,
+          "force_resultant_max_n": 1.662419082849185
+        },
+        "r2": {
+          "command_ticks": 18,
+          "nonzero_ticks": 17,
+          "first_pulse": 28.3,
+          "last_pulse": 30.5,
+          "unique_nonzero": [
+            [
+              -0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.22907044054413248,
+          "chassis_path_m": 0.2246595952201691,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.00593096823244,
+          "normal_sum_max_n": 11.448044337162665,
+          "force_resultant_mean_n": 1.490384930420823,
+          "force_resultant_max_n": 1.6673263514591459
+        }
+      },
+      "first_carry_excursion_m": 0.22554753480824796,
+      "static_endpoint_xy_m": [
+        1.4518000000000002,
+        0.05
+      ],
+      "endpoint_xy_m": [
+        1.4992097807948779,
+        0.03299893214681887
+      ],
+      "endpoint_error_m": 0.0503658974224308,
+      "endpoint_within20mm": false,
+      "cargo_max_tilt_during_carry_deg": 1.0402167967360219,
+      "last_transitions": [
+        {
+          "t": 7.6,
+          "robots": {
+            "r1": {
+              "state": "wait_close",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_close",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 7.8,
+          "robots": {
+            "r1": {
+              "state": "grasp",
+              "failure": null
+            },
+            "r2": {
+              "state": "grasp",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 8.8,
+          "robots": {
+            "r1": {
+              "state": "wait_lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 9.1,
+          "robots": {
+            "r1": {
+              "state": "lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 27.8,
+          "robots": {
+            "r1": {
+              "state": "wait_carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 28.1,
+          "robots": {
+            "r1": {
+              "state": "carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 30.9,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 31.0,
+          "robots": {
+            "r1": {
+              "state": "refix_decide",
+              "failure": null
+            },
+            "r2": {
+              "state": "refix_decide",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 40.9,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 41.2,
+          "robots": {
+            "r1": {
+              "state": "lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "lower",
+              "failure": null
+            }
+          }
+        }
+      ],
+      "eval_only": true,
+      "slip_scope": "absolute wheel rim path proxy; not a contact-point slip ratio"
+    },
+    {
+      "case": "s3fix17-pair-c5-r2",
+      "host": "oracle-x86",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "first_carry_start": 29.6,
+      "first_carry_end": 32.4,
+      "first_carry_duration_s": 2.799999999999997,
+      "matched_ticks": 19,
+      "total_ticks": 19,
+      "one_sided_wait_ticks": 0,
+      "max_pulse_skew_s": 0.0,
+      "robots": {
+        "r1": {
+          "command_ticks": 19,
+          "nonzero_ticks": 17,
+          "first_pulse": 29.8,
+          "last_pulse": 32.0,
+          "unique_nonzero": [
+            [
+              0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.23035678970384024,
+          "chassis_path_m": 0.23065285556352416,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.23808756039515,
+          "normal_sum_max_n": 12.26878700648922,
+          "force_resultant_mean_n": 1.454495507823671,
+          "force_resultant_max_n": 1.6337240259427108
+        },
+        "r2": {
+          "command_ticks": 19,
+          "nonzero_ticks": 17,
+          "first_pulse": 29.8,
+          "last_pulse": 32.0,
+          "unique_nonzero": [
+            [
+              -0.35,
+              0.0,
+              0.0,
+              0.1
+            ]
+          ],
+          "wheel_rim_path_proxy_m": 0.2294851865027443,
+          "chassis_path_m": 0.22524562705824777,
+          "both_finger_samples": 57,
+          "contact_samples": 57,
+          "normal_sum_mean_n": 11.364334284194648,
+          "normal_sum_max_n": 11.749057861763328,
+          "force_resultant_mean_n": 1.539441442436149,
+          "force_resultant_max_n": 1.674832060111363
+        }
+      },
+      "first_carry_excursion_m": 0.22762064208358018,
+      "static_endpoint_xy_m": [
+        1.4518000000000002,
+        0.05
+      ],
+      "endpoint_xy_m": [
+        1.4990618490674943,
+        0.02390669895070089
+      ],
+      "endpoint_error_m": 0.053986505137190964,
+      "endpoint_within20mm": false,
+      "cargo_max_tilt_during_carry_deg": 0.46840257882543573,
+      "last_transitions": [
+        {
+          "t": 9.1,
+          "robots": {
+            "r1": {
+              "state": "wait_close",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_close",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 9.3,
+          "robots": {
+            "r1": {
+              "state": "grasp",
+              "failure": null
+            },
+            "r2": {
+              "state": "grasp",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 10.3,
+          "robots": {
+            "r1": {
+              "state": "wait_lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 10.6,
+          "robots": {
+            "r1": {
+              "state": "lift",
+              "failure": null
+            },
+            "r2": {
+              "state": "lift",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 29.3,
+          "robots": {
+            "r1": {
+              "state": "wait_carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 29.6,
+          "robots": {
+            "r1": {
+              "state": "carry",
+              "failure": null
+            },
+            "r2": {
+              "state": "carry",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 32.4,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 32.5,
+          "robots": {
+            "r1": {
+              "state": "refix_decide",
+              "failure": null
+            },
+            "r2": {
+              "state": "refix_decide",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 42.4,
+          "robots": {
+            "r1": {
+              "state": "wait_lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "wait_lower",
+              "failure": null
+            }
+          }
+        },
+        {
+          "t": 42.7,
+          "robots": {
+            "r1": {
+              "state": "lower",
+              "failure": null
+            },
+            "r2": {
+              "state": "lower",
+              "failure": null
+            }
+          }
+        }
+      ],
+      "eval_only": true,
+      "slip_scope": "absolute wheel rim path proxy; not a contact-point slip ratio"
+    }
+  ]
+}

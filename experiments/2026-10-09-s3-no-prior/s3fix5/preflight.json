@@ -1,0 +1,20 @@
+{
+  "passed": 12,
+  "deselected": 16,
+  "seconds": 72.8,
+  "physics_runs": 0,
+  "command": "PYTHONPATH=.:tests python -m pytest -q tests/test_s3_host_odometry.py tests/test_s2_pulse_cal.py tests/test_simulation_workflow_manager.py -k \"not WorkflowManagerTests or catalog\"",
+  "sweep_cases": 58,
+  "native_commands": 3165,
+  "sweep_errors": 0,
+  "files_sha256": {
+    "harness/pulse_rotation_odometry.py": "bba6c04ad0c07037177fa39baa7df0f1d1c566e43bd6d97b2d3ead4e78e9a15b",
+    "harness/zone_solo_cyan_pulse_cal.py": "95b29f2d05ae7fb974e7f8c916d577d5dea78f7f1b0e4d8ac1188c88bb134ad5",
+    "harness/zone_s3_odometry_contract.py": "66db1e10e59342fac0948ae123a526fa0b8f0ae3117688ea8b5f4a5b083e8cf5",
+    "harness/zone_s3_dev_light.py": "6f108efadedf3442a2470f18db4c8f3c8bdb8c8d8ba7a0060c1d18955bc12bf8",
+    "scripts/run_s3_odometry.py": "fd5ba36d837f8f6557bdbc382e4dda771af4ca698db73753f9b7fc296897ee73",
+    "tests/test_s3_host_odometry.py": "3bc8e78b4e82e9421eb657263cc1231eed55b5b21351e61920fa4b630c92bcd8",
+    "tests/test_simulation_workflow_manager.py": "e96bbe59aadf075c36108d2bfbaf52967088495ebe17a5869f66d16f646a826a"
+  },
+  "root_catalog_main_bytes_identical": true
+}

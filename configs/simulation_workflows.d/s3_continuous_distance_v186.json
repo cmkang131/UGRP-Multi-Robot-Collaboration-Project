@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-s3-continuous-distance-v186", "version": "7.79.0",
+    "purpose": "Own-RGB paired uninterrupted transport distance limit, twelve DEV conditions",
+    "entry": "scripts/run_s3_continuous_cohort.py", "runner": "scripts.run_s3_continuous_cohort",
+    "docs": "experiments/2026-10-11-s3-continuous-distance/README.md",
+    "requires": "Azure immutable x86 OSMesa LP4; persistent runs; lease; no LLM",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha"],
+    "side_effect": "local_simulation", "adapter": "managed_legacy_cli"
+  }]
+}

@@ -7,6 +7,22 @@
 
 ## 판단과 재현
 
+2026-10-11: #416 독립 검토 수정으로 미실행 v190 / 7.83.0도 등록 당시 SHA
+`bca75e25`의 계약·실행기·workflow·등록·봉인 5파일을 바이트/해시 그대로 퇴역 보존했다.
+새 등록은 v193 / 7.86.0이며 S3 가드·pulse_odometry는 전용 모듈에 격리한다.
+공통 가드 3파일과 S2 pulse 소스는 main 원본으로 복원했다. v127의 오프라인 실행 admission은
+복원되며 v128·v129는 main의 기존 공유 소스 8개 변경 때문에 현재 소스에서 계속 퇴역이다
+(첫 거부: `harness/idle_robot_contacts_contract.py`; 전체 목록은 연결된 기록).
+두 번들의 원래 봉인·판정·시험을 유지하며 재현은 원래 등록 SHA에서만 한다.
+[admission과 봉인 확인](../experiments/2026-10-11-pr416-review-fixes/summary.json).
+
+2026-10-11: #416 main PR422 반영 후 미실행 v188 / 7.81.0을 원래 SHA `b3d52826`의 바이트로 퇴역 목록에 보존했다. 새 등록은 v190 / 7.83.0이며 공통 `min_command_contract` 기본 off를 유지하고 S3는 on_v1을 명시해 병합 전 명령을 보존한다. [기록](../experiments/2026-10-11-pr416-main-sync/summary.json).
+
+2026-10-11: #416의 `zone-s3-recovery-v152` / 7.45.0은 실행 당시 SHA
+`981baa95`에서만 재현한다. 비교 JSON은 그대로 보존하고 원래 계약·실행기·workflow·등록을
+[퇴역 목록](../experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json)에 바이트/해시로 보존했다.
+현재 소스는 v188 / 7.81.0으로 재등록하며 과거 결과를 승계하지 않는다.
+
 2026-10-11 Azure CPU 이관: VM의 기존 `ugrp-azure-idle-guard.timer`
 (15분·batch lease 미지원)와 `ugrp-sim-worker.service`
 (무한 GPU worker 재시작 supervisor)를 비활성화했다. 서버의 정의·스크립트·자료는
@@ -211,6 +227,12 @@ RGB 구간 출력 누락·S3 종료 검사·동결 adapter Python 지문 검증�
 ## 감사 기록
 
 [작업 기록과 검증 결과](../experiments/2026-10-09-module-retirement/README.md). DRAFT PR이며 감독·사용자 확인 전 병합 금지.
+
+- 2026-10-09 S3 준비용 `zone-s3-host-heading-v144` / workflow7.37.0: 물리 실행0·heading 의존성 미승인 상태에서 퇴역. 사용자 새 최대+1 지시에 따라 `zone-s3-host-heading-v146` /7.39.0으로 대체; 계획 원본은 `experiments/2026-10-09-s3-no-prior/s3next/registration.json`과89357a64에 보존. 과거v142 실행과 원본은 유지.
+
+- 2026-10-09 S3 `zone-s3-sweep-v149`는 원본 `b73ce193` 및 raw 증거를 보존한 과거 DEV 실행이다. 후속 실행은 pre-GO 재대기와 사전 등록된 motion 옵션 선택을 묶은 `zone-s3-odometry-v150` /7.43.0을 사용한다. 기존 실행/실패 기록과 재생 소스는 삭제·덮어쓰지 않는다.
+
+- 2026-10-10 S3 `zone-s3-odometry-v150` / `zone-s3-consistency-v151`는 원본 SHA `4c9eb3aa` / `3ec2d781`와 raw를 보존하는 과거 DEV 실행이다. 새 실행은 문 임대·자기 RGB 정렬의 `zone-s3-recovery-v152` /7.45.0을 사용한다. PF 다양성 후보는 저장 재생에서 미채택되어 off를 유지한다. 과거 번들의 봉인은 완화하지 않는다.
 ## speedctrl2 종료 기록 보완 (2026-10-10)
 
 `controller-replay-abba` 1.2.0과 `controller-replay-profile` 1.3.0의 새 실행은

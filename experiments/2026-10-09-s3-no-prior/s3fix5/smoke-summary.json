@@ -1,0 +1,445 @@
+{
+  "source": "4c9eb3aa4730c6f6b72b4bb5a36b7ee2d418673a",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150",
+  "status": "HOST_ERROR",
+  "actual_stop": {
+    "type": "AttributeError",
+    "message": "'NoneType' object has no attribute 'x'",
+    "category": "HOST_ERROR"
+  },
+  "first_location": {
+    "r1": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.026296539986631152,
+      "yaw_error_deg": 2.010974964675302,
+      "sigma_xy_m": 1.8404065567893735,
+      "sigma_yaw_deg": 67.5609804924593,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    },
+    "r2": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.03953718742000841,
+      "yaw_error_deg": 1.6124946417887247,
+      "sigma_xy_m": 0.20860964185748732,
+      "sigma_yaw_deg": 7.34648601849228,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    },
+    "r3": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.003887017675199066,
+      "yaw_error_deg": 0.5756560943590964,
+      "sigma_xy_m": 0.0583070051532328,
+      "sigma_yaw_deg": 1.3684972446766488,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    }
+  },
+  "evaluation": {
+    "schema": "ugrp.s3_no_prior_evaluation.v142",
+    "gt_use": "post-run eval_only; no feedback",
+    "robots": {
+      "r1": {
+        "success": false,
+        "commands_complete": false,
+        "cargo_order": "order-5",
+        "delivery_complete": false,
+        "first_convergence": {
+          "released_t": 36.95,
+          "estimate_t": 36.79,
+          "std_xy_m": 0.013210548817776065,
+          "actual_xy_error_m": 0.02551429127219264,
+          "actual_yaw_error_deg": 1.9579163211249193,
+          "wrong_mode": false
+        },
+        "first_eval_convergence": {
+          "released_t": 36.95,
+          "estimate_t": 36.79,
+          "std_xy_m": 0.013210548817776065,
+          "actual_xy_error_m": 0.02551429127219264,
+          "actual_yaw_error_deg": 1.9579163211249193,
+          "wrong_mode": false
+        },
+        "correct_convergence": true,
+        "own_failure": null,
+        "failure_categories": [
+          "DELIVERY_PLACEMENT"
+        ]
+      },
+      "r2": {
+        "success": false,
+        "commands_complete": false,
+        "cargo_order": "order-5",
+        "delivery_complete": false,
+        "first_convergence": {
+          "released_t": 112.3,
+          "estimate_t": 112.14,
+          "std_xy_m": 0.04913114341500979,
+          "actual_xy_error_m": 0.3200988510734814,
+          "actual_yaw_error_deg": 0.8414376754694449,
+          "wrong_mode": true
+        },
+        "first_eval_convergence": null,
+        "correct_convergence": false,
+        "own_failure": null,
+        "failure_categories": [
+          "DELIVERY_PLACEMENT",
+          "LOCALIZATION"
+        ]
+      },
+      "r3": {
+        "success": false,
+        "commands_complete": false,
+        "cargo_order": "order-1",
+        "delivery_complete": false,
+        "first_convergence": null,
+        "first_eval_convergence": null,
+        "correct_convergence": false,
+        "own_failure": null,
+        "failure_categories": [
+          "DELIVERY_PLACEMENT",
+          "LOCALIZATION"
+        ]
+      }
+    },
+    "failure_counts": {
+      "DELIVERY_PLACEMENT": 3,
+      "LOCALIZATION": 2,
+      "COLLISION_EPISODES": 0,
+      "DOOR_DEADLOCK_EPISODES": 0,
+      "HOST_ERROR": 1
+    },
+    "failure_count_denominator": "robot-category pairs except named episode/HOST counters; beam affects two robots",
+    "collision_episodes": [],
+    "door_wait_episodes": {
+      "r1": 1,
+      "r2": 1,
+      "r3": 1
+    },
+    "door_wait_robot_s": {
+      "r1": 0.05000000000000071,
+      "r2": 0.05000000000000071,
+      "r3": 302.0
+    },
+    "door_deadlocks": [],
+    "wall_s": 1039.2588607499492,
+    "sim_s": 314.2,
+    "wall_per_sim": 3.3076348209737407,
+    "commands": {
+      "r1": 1909,
+      "r2": 3874,
+      "r3": 6626
+    },
+    "model_calls": 0,
+    "raw": "/Users/changmin/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150"
+  },
+  "would_stop_counts": {
+    "ARM_COLLISION_GUARD": 23,
+    "POSE_CLUSTER_UNCERTAIN": 60,
+    "GLOBAL_START_UNRESOLVED": 3,
+    "POSE_UNCERTAIN": 2562,
+    "SWEEP_TRANSITION_BLOCKED": 431,
+    "SELF_UNCERTAIN": 4,
+    "PAIR_COLLISION_GUARD": 80,
+    "PAIR_REOBSERVE_TIMEOUT": 3325,
+    "APPROACH_ARRIVAL_UNCONFIRMED": 1,
+    "APPROACH_TIMEOUT": 1,
+    "APPROACH_LOST": 2,
+    "BARRIER_APPROACH_TIMEOUT": 1,
+    "APPROACH_SWEEP_TRANSITION_BLOCKED": 3
+  },
+  "camera_contract": {
+    "r1": {
+      "rendered": 6285,
+      "own_frames": 6285,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    },
+    "r2": {
+      "rendered": 6285,
+      "own_frames": 6285,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    },
+    "r3": {
+      "rendered": 6285,
+      "own_frames": 6285,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    }
+  },
+  "nonfinite_fields": [
+    "/localization/r2/last/xy_error_m",
+    "/localization/r2/last/yaw_error_deg",
+    "/localization/r2/last/sigma_xy_m",
+    "/localization/r2/last/sigma_yaw_deg"
+  ],
+  "nonfinite_policy": "Nonfinite replay fields become null in derived strict JSON only; original replay preserves NaN",
+  "recovery": {
+    "student_record": "saved-input replay; original serialization failed",
+    "commands": {
+      "r1": {
+        "expected": 1909,
+        "generated": 1909,
+        "json_equal": true
+      },
+      "r2": {
+        "expected": 3874,
+        "generated": 3874,
+        "json_equal": true
+      },
+      "r3": {
+        "expected": 6626,
+        "generated": 6626,
+        "json_equal": true
+      }
+    },
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp/outputs/s3fix5-20261009/recover_smoke.py\", line 73, in replay\n    rt.on_frames(now,batch);actions=rt.step(now)\n                                    ^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_no_prior.py\", line 215, in step\n    return super().step(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_door_yield.py\", line 226, in step\n    rows = super().step(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_host.py\", line 280, in step\n    rows = ([(r, {'kind': 'hold'}) for r in ('r1', 'r2')] if self.pair_ended else self.pair.step(now))\n                                                                                  ^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_door_yield.py\", line 153, in step\n    return (self.producer.step(now) if self.allowed()\n            ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_pair_highpose_runtime.py\", line 804, in step\n    return self._vetoed('step', now, collect, lambda t: None)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_pair_highpose_runtime.py\", line 789, in _vetoed\n    issued = call(now)\n             ^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_pair_highpose_runtime.py\", line 803, in collect\n    return self.look_recovery.filter(self, t, parent(t))\n                                              ^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_final_pair_runtime.py\", line 67, in step\n    decision = own.step(now)\n               ^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_own_executor.py\", line 535, in step\n    return getattr(self, '_step_' + job.kind)(now, job)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_own_executor.py\", line 565, in _step_pair_carry\n    return self._pair.step(now)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_pair_highpose_runtime.py\", line 664, in step\n    return run(now)\n           ^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_pair_executor.py\", line 374, in step\n    self.controller.tick(now)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_pair_alignment.py\", line 95, in tick\n    return old_tick(now)\n           ^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_pair_highpose_posture_defer.py\", line 157, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_pair_highpose_refix.py\", line 906, in tick\n    out = super().tick(now)\n          ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_pair_grasp.py\", line 320, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_pair_align.py\", line 280, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/scripts/run_m2_pair.py\", line 428, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/scripts/run_m2_pair.py\", line 216, in tick\n    handler(now, arm_idle)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/scripts/run_m2_pair.py\", line 232, in _approach\n    for cmd in self.driver.tick(now):\n               ^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_pair_heading.py\", line 61, in tick\n    rows = original(now)\n           ^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_own_driver.py\", line 205, in tick\n    cmds = super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/pair_owncam_approach.py\", line 213, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/pair_owncam_approach.py\", line 102, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/owncam_drive.py\", line 253, in tick\n    steps = self._arm_step()\n            ^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_own_driver.py\", line 130, in _arm_step\n    result = self.sweep_recheck.check(now, self.guard, self.servo, self.arm_target, pose, loaded=self.loaded)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_final_pair_guards.py\", line 100, in check\n    result = _recheck(self, now, *args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_own_sweep.py\", line 44, in check\n    nominal = OwnPose(pose.x, pose.y, pose.yaw, 0., 0.)\n                      ^^^^^^\nAttributeError: 'NoneType' object has no attribute 'x'\n",
+    "generated_sha256": "3dfcf1414712a79e15ad5c7dc4aed95b3b4133f60db8b81a49de1277276de81e"
+  },
+  "last_finite": {
+    "r1": {
+      "released_t": 315.5,
+      "estimate_t": 315.34,
+      "error_m": 0.1724567359109941,
+      "sigma_m": 0.024701319656892887
+    },
+    "r2": {
+      "released_t": 315.45,
+      "estimate_t": 315.29,
+      "error_m": 0.4090428137156378,
+      "sigma_m": 0.08187923677743911
+    },
+    "r3": {
+      "released_t": 315.5,
+      "estimate_t": 315.34,
+      "error_m": 0.007448997987564749,
+      "sigma_m": 0.0583070051532328
+    }
+  },
+  "cargo": {
+    "scope": "post-run evaluation only",
+    "items": {
+      "cyan_1": {
+        "max_com_z_m": 0.015892244579783686,
+        "held_samples": 0,
+        "samples": 6285,
+        "final": {
+          "kind": "cyan",
+          "x": -0.2000000000005715,
+          "y": -2.4499999999993203,
+          "yaw": 2.8180282940746315e-15,
+          "z": 0.015892244579783686,
+          "held": false,
+          "speed": 8.154427176662131e-11
+        }
+      },
+      "beam_1": {
+        "max_com_z_m": 0.0165,
+        "held_samples": 0,
+        "samples": 6285,
+        "final": {
+          "kind": "long_beam",
+          "x": 1.2748773516101657,
+          "y": 0.05005705503507814,
+          "yaw": -0.00011238287293339142,
+          "z": 0.015892244579783804,
+          "held": false,
+          "speed": 3.9812716764587955e-13
+        }
+      }
+    }
+  },
+  "pre_go_rewait": [
+    {
+      "event": "dev_light_would_stop",
+      "robot_id": "r1",
+      "t": 275.9,
+      "code": "BARRIER_APPROACH_TIMEOUT",
+      "site": "pair.pre_go_wait",
+      "occurrence": 1,
+      "estimate": {
+        "x": 0.5036804446947808,
+        "y": -0.001954595715295581,
+        "yaw": -0.004155372832812978,
+        "std_xy_m": 0.024701319656892887,
+        "std_yaw_rad": 0.026085156213177318
+      },
+      "continued_with": "current own estimate",
+      "physical_success": null,
+      "original_wait_s": 150.09999999999997,
+      "resumed_action": "wait for real mutual GO"
+    }
+  ],
+  "applied": {
+    "bundle_options": {
+      "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+      "drive_profile": "masterpi_drive_friction_v7",
+      "setdown_relook": "off",
+      "grasp_check": "pickup_site_v1",
+      "min_wheel_cmd": "real_v1",
+      "dead_reckoning": "v7_diag_v1",
+      "stagnation_watch": "window120_v1",
+      "alignment_pulse": "real_fine_v1",
+      "hover_check": "real_pregrasp_v1",
+      "idle_robot_contacts": "off",
+      "site_check": "off",
+      "hold_check": "inhand_rgb_v1",
+      "dev_grasp_policy": "log_only_v1",
+      "eval_camera_trace": "pose_v1",
+      "pulse_motion_model": "v7_pulse_cal_v1",
+      "visual_update": "accepted_scan_v1",
+      "visual_stall": "lk_pulse_v1",
+      "carry_pose": "look_ahead_v1",
+      "camera_calibration": "v3_unloaded_sag_v1",
+      "measurement_model": "amcl_likelihood_field_v1",
+      "visibility_mask": "command_geometry_v1",
+      "amcl_update": "ros_motion_v1",
+      "dev_search": "repeat_views_v1",
+      "visibility_policy": "nav2_observed_v1",
+      "contact_filter": "floor_appearance_v1",
+      "slip_detection": "slip_detect_v1",
+      "stall_recovery": "off",
+      "slip_recovery": "slip_recovery_v1",
+      "servo_stiffness": "real_v1",
+      "camera_pitch": "stiff_target_v1",
+      "pregrasp_policy": "log_only_v1",
+      "sensor_landmarks": "floor_zones_doors_v1",
+      "sensor_model": "amcl_likelihood_field_v1",
+      "pose_estimate": "amcl_best_cluster_v1",
+      "start_prior": "none_v1",
+      "global_localization": "augmented_active_v1",
+      "particle_sampling": "kld_global_v1",
+      "active_localization": "discriminating_views_v1",
+      "active_rotation_guard": "rgb_homography_bound_v1",
+      "heading_mode": "path_tangent_v1",
+      "localization_certification": "posterior_consensus_v1",
+      "s3_dev_light": "continue_estimate_v1",
+      "global_diversity": "kld_augmented_v2",
+      "mode_head_look": "mode_information_v1",
+      "pair_heading": "pair_heading_pulse_v1",
+      "s3_exact_cache": "posterior_content_v2",
+      "s3_io": "buffered_jsonl_v1",
+      "pulse_odometry": "off"
+    },
+    "ports": {
+      "option": "pair_heading_pulse_v1",
+      "ports": {
+        "r1": "PairPhasePort",
+        "r2": "PairPhasePort",
+        "r3": "FinePulsePort"
+      },
+      "min_wheel_cmd": "real_v1",
+      "alignment_pulse": "real_fine_v1",
+      "applied_after": "IntegerClock.reset and grid snap",
+      "scope": "S2 heading pulse; both issued grips closed permits unchanged pair continuous commands",
+      "state_feedback": false
+    }
+  },
+  "movement": {
+    "r1": {
+      "nonzero_commands": 135,
+      "max_displacement_m": 1.3761654602154783,
+      "final_displacement_m": 1.3744220480718277
+    },
+    "r2": {
+      "nonzero_commands": 388,
+      "max_displacement_m": 2.7137287827914327,
+      "final_displacement_m": 2.705972467853376
+    },
+    "r3": {
+      "nonzero_commands": 0,
+      "max_displacement_m": 0.003658144367986007,
+      "final_displacement_m": 0.001963053199264936
+    }
+  },
+  "full_report": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s3fix5-20261009/smoke-report.json",
+    "sha256": "26c762a11395c36170a9e5d446bc36025781d8eabce36a59062ea233d6bcb593"
+  }
+}
