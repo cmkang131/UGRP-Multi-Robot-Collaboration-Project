@@ -27,6 +27,7 @@
 
 ## UGRP Results and TensorBoard
 
+- **Off by default (2026-10-10 user, repeated: "TensorBoard는 걍 뺄까", "tensor board는 왜자꾸 보는 거야", "아니 TensorBoard 왜 또 켜"):** Do not convert to TensorBoard, write `outputs/tensorboard` snapshots, start or verify a viewer, or link/mention TensorBoard in reports — for every round, including DEV rounds, first successes and milestones. No launchd/keepalive viewers. Record results as a short summary JSON in `experiments/<ID>/` covering every run (failures and HOST_ERROR included) with raw locations and sha256. The integrity and reporting rules still apply: never mark running or unretrieved results complete, and report verification scope and unfinished retrieval. The TensorBoard workflow below applies **only when the user explicitly asks for it**.
 - Include TensorBoard in result delivery. Follow `docs/tensorboard.md` to add newly completed or retrieved experiment, training, and evaluation results—including failures—to a new snapshot. Verify actual data loading and show the dashboard.
 - Preserve originals and existing snapshots. Never mark running experiments or unretrieved remote results complete. Check existing manifests' source paths and hashes to avoid duplicate conversion.
 - Use the primary checkout's `outputs/tensorboard` as the shared viewing root. Verify the server logdir and new video registration. Update only your own viewer when necessary, after checking session ownership, PID, and command. Never stop other tasks' experiments or servers.
@@ -39,21 +40,24 @@
 2026-09-24 사용자 요청(2026-09-26 Kiro 추가)에 따라 Claude·Codex·Kiro가 같은 Mac·저장소에서 동시에 작업할 때 다음을 지킨다. 브랜치 접두사(`claude/`, `codex/`, `kiro/`)로 작업 주체를 구분한다.
 
 - **시작 전 확인:** `git fetch origin`과 `gh pr list`로 열린 PR과 관련 `experiments/` 기록을 읽는다. 같은 주제의 작업이 있으면 범위·가설·결과를 그 PR 코멘트로 알리고 중복 구현을 피한다. 상대 결과를 자신의 증거로 합산하지 않는다. 에이전트 사이의 피드백은 PR 코멘트와 실험 기록으로 남긴다.
-- **물리·학습 잠금:** realtime native 실행, wall 시간 비교, 학습·추론 속도 측정은 시작 전에 `python3 scripts/agent_lock.py acquire --owner <claude|codex|kiro> --branch <브랜치> --purpose <목적> --pid <드라이버 PID> --expected-minutes <분>`으로 배타 잠금을 잡고, 끝나면 `release`한다. 다른 에이전트는 `status`로 잠금을 확인하고, 잠금이 있는 동안 물리·학습을 새로 시작하지 않는다. 잠금 없이 도는 동기 모드 SIM 시간 실험도 실행마다 부하 평균을 기록한다. 기록된 PID가 죽은 잠금만 `--stale`로 해제하며 다른 작업의 프로세스는 종료하지 않는다.
+- **물리·학습 잠금:** Mac realtime native 실행과 Mac에서의 학습·추론 속도 측정은 시작 전에 `python3 scripts/agent_lock.py acquire --owner <claude|codex|kiro> --branch <브랜치> --purpose <목적> --pid <드라이버 PID> --expected-minutes <분>`으로 배타 잠금을 잡고, 끝나면 `release`한다. 다른 에이전트는 `status`로 잠금을 확인하고, 잠금이 있는 동안 물리·학습을 새로 시작하지 않는다. 잠금 없이 도는 동기 모드 SIM 시간 실험도 실행마다 부하 평균을 기록한다. 기록된 PID가 죽은 잠금만 `--stale`로 해제하며 다른 작업의 프로세스는 종료하지 않는다. oracle-x86의 속도 비교는 잠금 없이 짝지어 동시 실행하며 "가벼운 개발 진행"의 시뮬레이션 항목을 따른다.
 - **Kiro:** `kiro-cli`는 단독 실행 시 `kiro/` 브랜치의 자기 worktree에서 작업한다. Claude·Codex가 `kiro-plugin-cc` 등으로 Kiro를 하위 도구로 부르면 호출한 에이전트의 브랜치·worktree 안에서만 실행하고 결과·검증 책임도 호출자가 진다. `--trust-all-tools`(파일 수정·명령 실행 무확인)는 해당 worktree 안에서만 허용하고 기본 체크아웃에서는 `--no-trust-all-tools`를 쓴다. Kiro 모델은 2026-09-26 사용자 요청에 따라 `claude-opus-5`·effort `max`이며, `kiro-cli` 전역 설정(`chat.defaultModel`, `chat.modelDefaults`)으로 적용한다. Kiro 출력은 별도 검증 전까지 증거로 합산하지 않는다.
 - **기본 체크아웃:** 실험 드라이버·시뮬레이션은 자기 worktree에서 실행한다. 기본 체크아웃(`/Users/changmin/projects/ugrp`)은 공용 `outputs/`와 최신 main 확인에만 쓴다. 그래야 다른 에이전트가 안전하게 fast-forward할 수 있다.
 - **번호 예약:** 새 실행 번들 ID나 workflow 버전을 정하기 전에 main과 열린 PR 브랜치 전체에서 사용 중인 최댓값을 확인하고(`git grep RUNNABLE_ID origin/<브랜치> -- harness/rgb_execution_bundle.py`) 그 다음 번호를 쓴다. 사용한 ID를 PR 본문에 적는다. 병합 충돌 시 실행 기록이 쓴 번들은 바이트 그대로 은퇴 목록에 보존하고, 나중에 병합되는 쪽이 새 ID로 다시 등록한다.
 - **공용 설정 파일:** `outputs/tensorboard-view.json` 등 공용 파일은 쓰기 직전에 다시 읽고 자기 키만 추가·수정한다. 다른 키의 값·순서·형식을 바꾸지 않는다.
 
-## 디스크 사용 (2026-09-26)
+## 디스크 사용 (2026-10-11)
 
-2026-09-26 사용자 요청에 따라 프로젝트 자체의 디스크 사용량을 작게 유지한다. 예산·측정·보존 등급은 [디스크 관리](docs/disk_management.md)를 따른다.
+실행 전 예산·등급·보존 목록을 정한다. 상세 절차와 도구는 [디스크 관리](docs/disk_management.md)를 따른다.
 
 - **worktree:** `python3 scripts/agent_worktree.py new <이름> --branch <에이전트>/<주제>`로 만든다. `experiments/`의 무거운 미디어를 뺀 sparse checkout이며, 에이전트당 등록 worktree는 8개까지다.
 - **병합 뒤 정리:** `python3 scripts/agent_worktree.py retire <경로> --execute`만 쓴다. 이 명령은 무시된 `outputs/<이름>`을 기본 체크아웃의 같은 상대 경로로(이미 있으면 `outputs/retired-worktrees/<이름>/`으로) 옮기고, 모든 파일의 개수·바이트·sha256을 확인한 뒤 제거한다. 사용 중(프로세스 cwd·열린 파일·명령줄)이거나 60분 안에 바뀐 worktree는 거부한다. 미병합 작업은 HEAD를 원격 보관 브랜치에 올리고 `--archive-ref`로 SHA가 같은지 확인한 뒤에만 정리한다. `git worktree remove`를 직접 쓰거나 `git status --porcelain`만 보고 지우지 않는다. 무시 파일이 보이지 않아 raw가 함께 지워진다(2026-09-26 사고). Codex-app worktree도 같다.
-- **raw 위치:** 실행 raw는 기본 체크아웃 `outputs/`에 절대 경로로 쓴다. `experiments/`에는 파일당 1 MiB, 실험당 5 MiB를 넘는 미디어를 커밋하지 않는다. raw 프레임·영상은 `outputs/`에 두고 sha256을 기록한다.
-- **보존:** 모델 요청·응답 텍스트, 원장, 결과·trace 로그와 제거한 모든 이미지·프레임의 sha256 목록은 항상 보존한다. 이미지 원본(모델 요청 이미지·제어기 입력 프레임·원본 영상)은 다음만 둔다. (1) 진행 중인 작업·열린 PR·테스트가 쓰는 자료(그 작업이 끝날 때까지). (2) 최근 3일 안의 실행. (3) 버전별 대표 영상. (4) 지금부터 하는 실제 연구(사전 등록한 본 연구 코호트)의 실행. 보존 기간은 그 연구의 사전 등록이 정한다. 과거 실행은 연구 결과가 아니라 플랫폼 개발 과정이므로 이미지 원본을 지울 수 있다. 지울 때는 휴지통으로 옮기고 `outputs/cleanup-records/`에 기록을 남기며, 휴지통은 사용자가 비운다. 이 범주 밖의 raw 삭제·솎기·압축·외부 이동은 계속 등급별 사용자 결정이다(2026-10-04 사용자 결정: 이 범주만 위 규칙으로 정했다).
-- **실행 전:** `ugrp_session.py run`은 여유 공간이 10 GiB 미만이면 시작하지 않는다. 사용량은 `python3 scripts/disk_report.py`로 확인한다. 사전 등록에는 디스크 부족(ENOSPC)을 HOST_ERROR로 분류하는 규칙을 넣는다.
+- **위치·압축:** 원본은 실행 호스트의 영속 디스크에만 쓴다(tmpfs 금지). x86 원본은 평가·해시 뒤 자동 아카이브로 ARM에 보관하되 복사 후 25 GiB를 남긴다(stock-bot 보호). Mac은 fetch-lite(요약·가벼운 원장·텍스트·해시 목록·대표 영상)만 회수한다. 전체 원본 회수는 금지하며 필요한 파일만 개별 회수한다. 큰 JSON/JSONL(>64 KiB)은 zstd 무손실 압축·해제 sha256 확인·매니페스트 기록 뒤 원본을 제거한다.
+- **등급:** 실행마다 `RUN_META.json(class, pr, branch, sha, batch)`을 쓴다. 기본 `dev`, 첫 성공·버전별 대표 증거는 `milestone`, 정식 E2E·사전 등록 본 연구는 `study`다. 메타데이터 없는 과거 자료는 아래 2026-10-11 후속 자동 소급·정리 규칙을 따른다.
+- **보존·정리:** summary/판정, LLM 요청·응답 텍스트, 명령 궤적, 가벼운 결과·trace 원장, 모든 파일 sha256 목록, 버전별 대표 영상 1개와 그 데이터는 영구 보존한다. `milestone`·`study` 원본은 전부 보존한다. `dev`의 무거운 원본(프레임·이미지·npz·영상·대형 trace)은 해당 PR 병합·종료 시 정리한다(날짜 기준 없음). 열린 PR·진행 중 작업·테스트 사용 자료는 보존한다. `evidence_prune.py`로 기본 dry-run, `--execute` 때만 정리하며 전체 해시·가벼운 파일·`outputs/cleanup-records/` 기록을 먼저 남긴다. Mac은 휴지통으로, 서버는 해시 목록 저장 뒤 삭제한다.
+- **배치 예산·경보:** 제출 전에 `실행 수 × 예상 실행당 크기`와 이미 승인한 작업의 남은 쓰기를 합쳐 x86·ARM·Mac 예상 여유를 검사한다(`storage_budget.py --all-hosts`). 바닥 x86 8 GiB·ARM 25 GiB·Mac 20 GiB 아래면 제출 거부한다. 세 호스트의 여유 공간 경보는 x86 8 GiB·ARM 25 GiB·Mac 15 GiB다. ENOSPC는 HOST_ERROR로 기록한다. 사용량은 기존 `disk_report.py`로 확인한다.
+- **자동 정리(2026-10-11 후속 승인):** Mac 사용자 LaunchAgent가 매일 및 여유 <20 GiB에서 Mac·ARM의 MERGED/CLOSED DEV 원본을 해시 기록 뒤 정리한다. 최근 24시간 변경·열린 PR·실행/테스트 사용·milestone/study·대표 영상/데이터·영구 텍스트는 보존한다. 과거 RUN_META는 PR/experiments 근거로 소급하고 불명확하면 dev/pr=null/note로 기록한다. PR 없는 완료 DEV는 7일 뒤 압박의 마지막 단계 또는 명시적 1회 정리 대상이며 누락 메타데이터 자체를 영구 제외 사유로 쓰지 않는다. 바닥+10 GiB 압박은 큰 JSON 압축→종료 PR DEV→오래된 PR 없는 DEV 순서다. Mac 휴지통은 비우지 않고 >10 GiB 알림 파일을 남긴다. ARM stock-bot·crontab 및 Oracle x86은 건드리지 않으며 Azure는 별도 준비 작업 완료 후 적용한다.
+- **Git 크기:** `experiments/`에는 파일당 1 MiB·실험당 5 MiB를 넘는 미디어를 커밋하지 않는다. 원본은 실행 호스트 경로와 sha256으로 연결한다. Mac 기존 raw는 삭제 권한 없이 옮기거나 지우지 않는다.
 
 ## 빠른 진행 규칙 (2026-09-30)
 
@@ -70,7 +74,7 @@
 
 사용자 요청: "다 라이트하게 줄여", "멈추지 말고 끝까지 가면서 기록만", "애초에 뭘 이렇게 시험을 많이 돌리는 거야". DEV 실행과 개발 작업에 적용한다. 정식 E2E·본 연구 코호트는 기존 규칙을 따른다.
 
-- **시뮬레이션:** 시뮬레이션은 한 번에 하나만 돌린다. 순서는 조정자가 정하고 연구 실행이 속도 검증 실행보다 먼저다. 프로세스 우선순위는 낮추지 않는다. renice, nice>0, taskpolicy를 쓰지 않는다. zsh 실행기는 `setopt NO_BG_NICE`를 넣는다.
+- **시뮬레이션:** Mac에서는 시뮬레이션을 한 번에 하나만 돌린다(2026-10-10부터 Mac 물리·렌더는 하지 않는다). 임시 oracle-x86 서버에서는 2026-10-10 사용자 지시("모두 준비되면 한 번에 켜서 돌리게")에 따라 여러 작업을 동시에 돌린다. 동시 실행 수는 고정하지 않는다. 부하 평균이 코어 수의 80% 미만이고 여유 메모리가 충분한 동안 늘린다. 2026-10-10 측정으로는 실행당 약 0.6코어, 0.4 GiB였다(동시 실행 수는 부하 기준, 2026-10-10 사용자 질문 "10개 이상은?"). 새 실행을 제출하기 전에 서버 전체 여유 메모리가 최소 6 GiB인지와 디스크 여유를 검사하고, 부하 평균을 기록한다. 속도 비교는 서버가 비기를 기다리지 않는다. 기존과 후보를 같은 시각·같은 부하에서 짝지어 동시에 돌리고(2026-10-10 사용자 지시), 짝별 wall/SIM과 CPU 시간/SIM의 중앙값으로 판정한다. 배타 잠금은 Mac realtime 실행에만 쓴다. 순서는 조정자가 정하고 연구 실행이 속도 검증 실행보다 먼저다. 프로세스 우선순위는 낮추지 않는다. renice, nice>0, taskpolicy를 쓰지 않는다. zsh 실행기는 `setopt NO_BG_NICE`를 넣는다.
 - **CI·병합을 기다리지 않음:** DEV 실행은 커밋·push한 브랜치 SHA로 바로 돌린다. 의존하는 PR은 브랜치 위에 쌓는다. CI·독립 검토는 뒤에서 병렬로 하고, 병합 규칙은 그대로다.
 - **끝까지 가며 기록만(dev_light):** DEV 실행에서 보수적 정지는 멈추지 않고 "여기서 멈췄을 것"만 기록한다. 대상은 충돌 가드, σ 예산, 재관측 시한, 위치 불확실 계열이다. 실제 물리 실패에서만 멈춘다. 짐 낙하, 기울기 한도, 두 로봇 GO 상호 확인 실패, 집게 이탈, 실행 오류가 여기에 해당한다. 한 번 실행으로 멈췄을 지점을 모두 모은 뒤 한 묶음으로 고친다. 정식 E2E와 본 실험은 정지를 다시 켠다.
 - **로컬 시험은 최소로:** 실행 전에는 바뀐 모듈의 시험 파일(보통 1~3개)만 돌린다. 넓은 관련 시험은 로컬에서 돌리지 않는다. push 뒤 GitHub CI가 전체를 원격으로 돌린다. 시뮬레이션이 도는 동안 pytest는 동시에 1개까지만 돌린다(10/5 측정: pytest 3개가 겹치면 2.1→3.8 wall/SIM). 통과한 뒤에만 커밋하는 규칙은 그대로다.

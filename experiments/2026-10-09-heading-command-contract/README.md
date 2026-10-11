@@ -19,3 +19,37 @@
 S3 RGB 집기 정렬은 기존3mm 허용치를 쓰는데 공통 회전/전진 fallback은 경로용3cm 반경에서 방향 정렬로 돌아가, 옆방향1cm/2cm 입력에서 명령0으로 멈췄다. `select(..., position_tolerance_m=.03)`로 호출자의 기존 허용치를 받는다. 기본3cm 호출은 그대로이며 S3가 자체3mm 조건을 명시한다. 성공/위치 수렴 문턱이나 calibration을 바꾸지 않는다. 회귀 두 입력 모두 turn .35/0.10초로 진행하며 물리0. 최소 보정 펄스보다 작은 오차의 양자화 한계와 실제 파지 성공은 별도 인수 대상이다.
 
 단독 cyan의 실제 `step()`도 최종0.10m 안에서는 불법0.06초 제안을 단순 생략하던 경로가 있어 같은 공통 selector로 대체한다. 기존 RGB 검출·view 전환·도착 판정·full pulse/coast/지연 관측 대기를 유지한다. 큰 오차와1cm·2cm의 실제 step 회귀를 함께 검사한다. 유효한 기존 명령과 heading off 경로는 그대로다.
+
+## 2026-10-11 PR #422 병합 준비
+
+`codex/heading-command-contract`의 `256a1b0c6633609f2fb91584e01f77f133afb642`에
+`origin/main` `8d7720933a6f007565c1b4999790ff3be613b323`을 충돌 없이 병합했다.
+PR #416에 이미 포함된 공통 계약의 선행 PR이며, main 병합은 독립 검토 뒤 별도 작업이다.
+
+기존 CI 실행 `37935975349`의 실패 7건은 아래 6개 shard와 집계 job이다.
+main에 이미 반영된 수정을 함께 받아 해결하며 과거 fixture/hash는 다시 생성하지 않는다.
+
+| 실패 job | 원인 및 반영된 수정 |
+|---|---|
+| shard 0, 5 | 얕은 checkout에 고정된 과거 commit이 없어 `git archive` 실패. `f5ad22c4`의 전체 이력 checkout과 `cfff3a1d`의 고정 소스 receipt 사용을 반영. |
+| shard 0, 2 | v87/v84 과거 bundle을 현재 closure로 재계산해 hash 불일치. `cfff3a1d`의 실제 과거 producer 재생을 반영. |
+| shard 3, 6, 7 | v88/v90 bundle/plan/source receipt를 현재 소스로 생성해 고정 바이트와 불일치. `cfff3a1d`의 과거 Git producer와 현재 receipt 검사 분리를 반영. |
+| shard 3 | heading off 초기 record의 camera 파생 hash가 호스트 수치 환경에 의존. `33f8f182`의 동일 호스트 과거 producer 비교를 반영하며 고정 원본 SHA 유지. |
+| offline-regressions | 위 shard 실패의 집계 결과. 모든 shard의 새 CI 성공 확인이 필요. |
+
+로컬은 기존 `.venv-sim-worker-mac`에서 `test_s2_path_heading.py`와
+`test_path_heading_default.py`만 실행해 **34 PASS / 79.79초**를 확인했다.
+native 물리·렌더·실제 모델 호출은 실행하지 않았다. main 자체의 전체 CI
+`38126818044`는 성공이지만 #422의 새 후보 CI와 구분한다.
+새 후보 CI는 push 이후 확인하며 이 커밋 시점에는 대기다.
+
+원본 실패 로그, JUnit, 로컬 시험 로그, 확인한 참고 문서는
+`/Users/changmin/projects/ugrp-wt/pr422/outputs/pr422-merge-prep/`에 보존한다.
+파일 SHA와 원인별 요약은 [merge-preparation.json](merge-preparation.json)에 기록했다.
+
+참고 자료(2026-10-11 CLI로 원문 확인):
+[Git archive](https://git-scm.com/docs/git-archive)의 지정 tree 소스 추출,
+[actions/checkout](https://github.com/actions/checkout#fetch-all-history-for-all-tags-and-branches)의
+`fetch-depth: 0`,
+[Nav2 RPP](https://github.com/ros-navigation/navigation2/blob/main/nav2_regulated_pure_pursuit_controller/README.md)의
+path heading / goal orientation 분리. REAL의 0.10초·단일 축 수치는 프로젝트 계약이다.

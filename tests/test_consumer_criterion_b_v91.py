@@ -60,7 +60,11 @@ def acquisition_source_hashes(paths):
 
 
 def make_raw(root, map_id):
-    bundle = {**acquisition.bundle(map_id, acquisition.CHECK),
+    from tests.pinned_source_bundle import bundle_at
+    current = acquisition.bundle(map_id, acquisition.CHECK)
+    pinned = bundle_at(new.SOURCE, acquisition.__name__, map_id, acquisition.CHECK,
+                       tuple(current['source_sha256']))
+    bundle = {**pinned,
               'case': acquisition.cases(acquisition.CHECK, map_id)[0], 'source_sha': new.SOURCE}
     bundle['source_sha256'] = dict(acquisition_source_hashes(tuple(sorted(bundle['source_sha256']))))
     folder = root / map_id

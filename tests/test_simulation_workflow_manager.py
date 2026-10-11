@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import select
+import signal
 import subprocess
 import sys
 import tempfile
@@ -84,6 +85,21 @@ raise SystemExit(3 if a.fail else 0)
             wm.run_workflow(self.root, "fixture", [], record_dir=record)
         self.assertTrue((record / "manifest.json").is_file())
 
+    def test_exited_group_permission_error_still_finishes_its_manifest(self):
+        with mock.patch.object(wm.os, 'killpg', side_effect=PermissionError('exited macOS group')):
+            record = wm.run_workflow(self.root, 'fixture', [])
+        data = json.loads((record/'manifest.json').read_text())
+        self.assertEqual(data['status'], 'process_completed')
+        self.assertEqual(data['exit_code'], 0)
+
+    def test_live_group_permission_error_is_not_treated_as_gone(self):
+        child = mock.Mock(pid=12345)
+        child.poll.return_value = None
+        with mock.patch.object(wm.os, 'killpg', side_effect=PermissionError('live')) as kill:
+            with self.assertRaises(PermissionError):
+                wm._signal_owned_group(child, 15)
+        kill.assert_called_once_with(12345, 15)
+
     def test_output_collision_and_duplicate_flag_fail_before_record(self):
         output = self.root / "prior"
         output.mkdir()
@@ -100,6 +116,36 @@ raise SystemExit(3 if a.fail else 0)
         self.assertEqual(row["exit_code"], 124)
         self.assertIsNone(row["physical_success"])
         self.assertIsNotNone(row["child_pid"])
+
+    def test_startup_signal_waits_for_process_handle_then_cleans_owned_group(self):
+        handlers = {}
+        old = {sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)}
+        child = mock.Mock(pid=12345, stdout=None)
+        child.poll.return_value = None
+        child.wait.return_value = -signal.SIGTERM
+        real_popen = subprocess.Popen
+        def install(sig, handler):
+            prior = handlers.get(sig, old[sig])
+            handlers[sig] = handler
+            return prior
+        def start(*args, **kwargs):
+            if not kwargs.get("start_new_session"):
+                return real_popen(*args, **kwargs)
+            # The OS child already exists but Popen has not returned its handle.
+            handler = handlers.get(signal.SIGTERM)
+            self.assertTrue(callable(handler), "handler must precede Popen")
+            handler(signal.SIGTERM, None)
+            return child
+        with mock.patch.object(wm.signal, "signal", side_effect=install), \
+             mock.patch.object(wm.subprocess, "Popen", side_effect=start), \
+             mock.patch.object(wm, "_signal_owned_group", return_value=False) as forward:
+            record = wm.run_workflow(self.root, "fixture", [])
+        row = json.loads((record / "manifest.json").read_text())
+        self.assertEqual((row["status"], row["exit_code"], row["child_pid"]),
+                         ("interrupted", 130, child.pid))
+        forward.assert_any_call(child, signal.SIGTERM)
+        child.wait.assert_called()
+        self.assertEqual(handlers, old)
 
     def test_parent_exit_cleans_background_child(self):
         record = wm.run_workflow(self.root, "fixture", ["--spawn"])
@@ -305,6 +351,13 @@ raise SystemExit(3 if a.fail else 0)
         samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
         samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
         samples['v7-exact-speed-benchmark'] = ['--suite', 's2', '--expected-source-sha', '0'*40]
+        for name in ('controller-replay-profile', 'saved-physics-profile'):
+            samples[name] = ['--kind', 's3', '--raw', str(model), '--adapter', str(model),
+                             '--expected-source-sha', '0'*40]
+        samples['controller-replay-abba'] = ['--plan', str(source),
+            '--priority-receipt', str(source), '--expected-source-sha', '0'*40]
+        samples['lazy-camera-abba'] = ['--kind', 'abba', '--expected-source-sha', '0'*40,
+            '--archive-manifest', str(source), '--archive-manifest-sha256', '0'*64]
         samples['zone-path-heading-v145'] = ['--expected-source-sha', '0'*40, '--seed', '1066']
         samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
                                            '--heading-mode', 'path_tangent_v1']

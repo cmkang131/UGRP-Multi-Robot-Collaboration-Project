@@ -7,6 +7,15 @@
 
 ## 판단과 재현
 
+2026-10-10: `controller-replay-abba` adapter 1.0.0은 1.1.0(visibility 비교 옵션,
+측정 source/산출물 경로 명시)으로, `controller-replay-profile` 1.1.0은
+1.2.0(private binding/RGB 구간, visibility 옵션)으로 대체한다. 이전 실행 소스는
+`c35cd553df431628fb3288dd77e4850086c64f22`, 원본은 기본 checkout
+`outputs/speedctrl2-20261010-v1`에 보존한다. 당시 큐 취소/미완료 ABBA를 새 완료 판정으로 승계하지 않는다.
+같은 후속 PR에서 ABBA 1.1.0→1.2.0, profile 1.2.0→1.3.0으로 바꾼다.
+RGB 구간 출력 누락·S3 종료 검사·동결 adapter Python 지문 검증을 보완한 버전이며,
+이전 버전으로 새 완료/속도 판정을 만들지 않는다.
+
 `import`/상대 import, importlib 별칭·상수·모듈 문자열, subprocess `-m`, pathlib 경로 조합의 AST 그래프를 계산했다. 파일 이름의 부분 문자열 유무로 삭제를 결정하지 않았다. 현재 실행 경로, main 안내 명령, 운영/실물 경로, 열린 PR의 변경 코드·설정·명령과 전이 의존성을 시작점으로 삼았다. 유지 모듈을 직접 검사하는 시험은 의존성 전체를 유지한다. 그대로 남기는 과거 실험 Python 스크립트의 호출 대상도 보류했다. 임의 외부 설정/체크포인트에 담긴 동적 import는 정적으로 완전하게 증명할 수 없다.
 
 기본 카탈로그 41항목 + 조각 18항목은 모두 유지 경로/문서/PR 의존성에 연결되어 이번에 퇴역하지 않는다. 오래됐다는 이유만으로 현재 번들 소스나 고정 시험을 지우지 않았다. 카탈로그별 근거는 아래 표와 `inventory.json`의 시작점/브랜치 경로에 있다.
@@ -194,3 +203,9 @@
 ## 감사 기록
 
 [작업 기록과 검증 결과](../experiments/2026-10-09-module-retirement/README.md). DRAFT PR이며 감독·사용자 확인 전 병합 금지.
+## speedctrl2 종료 기록 보완 (2026-10-10)
+
+`controller-replay-abba` 1.2.0과 `controller-replay-profile` 1.3.0의 새 실행은
+1.3.0/1.4.0으로 대체한다. 기존 raw는 보존하며 정상 제어기 수학은 동일하다.
+TERM/HUP 실패 기록과 현재 lease 신원 확인을 추가했다. SIGTERM으로 미완료인
+`speedctrl2-20261010-v2`를 완료로 승계하지 않는다.

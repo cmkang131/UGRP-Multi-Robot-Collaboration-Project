@@ -86,7 +86,9 @@ def write_receipt(backend):
             'execution_bundle_id': bundle.get('execution_bundle_id'),
             'source_sha': bundle.get('source_sha'),
             'input_bundle_sha256': hashlib.sha256(json.dumps(bundle, sort_keys=True).encode()).hexdigest(),
-            'runtime_speedups': receipt})
+            'runtime_speedups': receipt,
+            **({'controller_speedups': backend._controller_speedups.snapshot()}
+               if hasattr(backend, '_controller_speedups') else {})})
 
 
 def result_record(path, value):
