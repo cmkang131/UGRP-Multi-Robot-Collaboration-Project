@@ -150,6 +150,8 @@ find "$HOME/ugrp-sim/runs/{name}" -type f ! -name SHA256SUMS -print0 | sort -z |
         ssh(host, f'rm -f {lease}')
         if host == 'azure' and not args.detach:
             subprocess.run([sys.executable, str(Path(__file__).with_name('azctl.py')), 'stop'], check=True)
+    if state != '0':
+        raise RuntimeError(f'Remote command failed with EXIT={state}; evidence archived and VM lifecycle completed')
 
 
 if __name__ == '__main__':
