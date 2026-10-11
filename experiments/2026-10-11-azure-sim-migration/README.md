@@ -21,3 +21,5 @@ CostUSD 정상 조회, 비용 검사 실패 시 두 구독 실제 정지, Action
 사용자가 승인한 Run Command 권한은 Automation·VM identity 모두 구독88b7ee7f의 자기 VM에만 할당했고 PAYG에는 추가하지 않았다. runbook Published/전체 바이트, 일일00:00 KST→Daily 연결, 기존 DevTest 강제 종료 Disabled를 재조회했다. VM identity의 무해한 실제 명령 PUT201·GET200·exit0을 확인했다. 게스트 가드·감독 실행기·복구 서비스는 이미 현재 버전이라 재설치를 건너뛰고 종료 도우미만 백업 후 원자 교체했다. 서비스 재시작·복구/시뮬레이션 실행·VM 시작/정지 없이 활성 lease를 보존했다.
 
 새 소스의 실제 우아한 종료·ARM 보관·미래 자정 발동은 미검증이다. 다른 작업이 사용하는 VM은 running을 유지한다. [배포·해시·CI 상태](finalize-438.json); 이전 P1 기록과 과거 스모크 결과는 별도 이력으로 유지한다.
+
+동시 작업자가 추가한 `1bfa2bde`(반복 start 시 살아 있는 형제 writer 보존)를 포함해 관련 시험45개를 다시 통과했다. 설치 helper 해시 일치와 갱신한 runbook 전체 바이트/Published, 실제 일정 연결의 Daily·Cost·Force도 재조회했다. 이 재확인은 다른 작업의 시뮬레이션/운반 결과를 합산하지 않는다. 이전 후보 CI는 새 push로 취소됐고 최종 CI는 PR checks와 로컬 마무리 원장에 따로 남긴다.

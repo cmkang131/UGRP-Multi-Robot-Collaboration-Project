@@ -201,16 +201,17 @@
   ],
   "delivery": {
     "committed_source": "9589255ce589ba93343693138df0b743de3a233f",
-    "pushed_candidate_observed": "90ddca89f3d58e13fdb5372c93815f5dddd4e0ad",
+    "pushed_candidate_observed": "1bfa2bde2d60d214d775585d937e005e109f1922",
     "push": "verified origin/codex/azure-sim and PR head match",
     "draft": false,
     "mergeable": "MERGEABLE",
     "ci": {
       "status_at_record": "in_progress",
-      "observed_run_id": 38131256784,
+      "observed_run_id": 38131531512,
       "live_checks": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/438/checks",
       "final_confirmation_raw": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/ci-final.json",
-      "final_confirmation_location": "PR body and raw record; never infer CI completion from the record commit"
+      "final_confirmation_location": "PR body and raw record; never infer CI completion from the record commit",
+      "prior_ci_result": "38131335466 cancelled by concurrent source push; aggregate failure reflects cancellations, not a confirmed test regression"
     },
     "merge": "not performed; final independent policy re-review required"
   },
@@ -299,6 +300,36 @@
       "bytes": 30314,
       "sha256": "d95f14fdd241c16f8634340ae352dafc287f0b2fc236f5794d6499a322273807",
       "scope": "historical push-time CI snapshot"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/tests-1bfa.txt",
+      "bytes": 99,
+      "sha256": "49af5618d2a12a4eec0290f4a62834c5206742d1abc22b6be22e923fc64b497d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/runbook-publish-1bfa.txt",
+      "bytes": 75,
+      "sha256": "d4083293107507f3ddea75cc32afac24784fe0ecce373577f465af505b36f56d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/readback-1bfa.py",
+      "bytes": 3255,
+      "sha256": "0aea77b5d0295681d3c1d3262bb044153db73b88387bbce995df77eebb5fb381"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/live-readback-1bfa.json",
+      "bytes": 3854,
+      "sha256": "861028bf21f6a4952d1c45aa6a8f01a4842dd087743d403d7c1e9a6f8e6a81e0"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/guest-current-1bfa.json",
+      "bytes": 521,
+      "sha256": "4bf5dc96bf5f6137e158e6cf4b8c89969c1bae25390395020c42b2ad6c9fb708"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/finalize-438/jobschedules-1bfa.json",
+      "bytes": 1743,
+      "sha256": "9a43df7eb069ffa50c2408963ba8a916ca2e4e204cee30b8a24bc9914f8fffb7"
     }
   ],
   "code_sha256": {
@@ -309,5 +340,58 @@
     "scripts/run_ci_tests.py": "d1e0ba9a9dd2c5be96dd97387fdf82e4f96347a07f8997520acebb7e77a7a1f6",
     "tests/test_azure_shutdown.py": "579c956e11feec357f73eb7ed9a628fe06c6892412f8a76eda0ee0be4479e173",
     "tests/test_azure_lifecycle.py": "4dab3ee1f07743667fcd98ab1d544ab25a170442b29d6b42ff0f62670850867f"
+  },
+  "followup_candidate": {
+    "source_sha": "1bfa2bde2d60d214d775585d937e005e109f1922",
+    "provenance": "concurrent sibling-run start fix; preserved without rewriting",
+    "validation_by_this_task": {
+      "passed": 45,
+      "failed": 0,
+      "skipped": 0,
+      "files": [
+        "tests/test_azure_shutdown.py",
+        "tests/test_azure_lifecycle.py"
+      ]
+    },
+    "deployed_helper_observed": {
+      "hashes": {
+        "/usr/local/bin/ugrp-azure-guard": "f720ce1ccda1d158a312f043fe397a2dae80cd743bd2017e037f5c3f181f455c",
+        "/usr/local/lib/ugrp-storage/scripts/azure_shutdown.py": "74332f9990755a47f17de38f70c7abf468d7751c100938cede23d99859ce1034",
+        "/usr/local/lib/ugrp-storage/scripts/remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad"
+      },
+      "leases": [
+        "e2e433-bootstrap",
+        "e2eaz1-first4-r1",
+        "e2eaz1-gemini-s61001-on",
+        "s3-continuous-20261011-v186"
+      ]
+    },
+    "runbook_state": "Published",
+    "runbook_sha256": "81264d45ad0b04e722886490a21baf1ec9bb51f692e42efa1687353b0f81723b",
+    "daily_link": {
+      "jobScheduleId": "41a3fbf5-928c-4f8c-98bc-f89648225f20",
+      "runbook": {
+        "name": "Stop-UgrpVMs"
+      },
+      "schedule": {
+        "name": "daily-backup-kst"
+      },
+      "runOn": null,
+      "parameters": {
+        "Mode": "Daily"
+      }
+    },
+    "new_guest_change_by_this_followup": false,
+    "runbook_only_republished_by_this_task": true,
+    "schedule_lookup": "publish changed link ID; discovered matching actual link then GET verified Mode=Daily; Cost/Force also individually checked",
+    "code_sha256": {
+      "scripts/azure_shutdown.py": "74332f9990755a47f17de38f70c7abf468d7751c100938cede23d99859ce1034",
+      "scripts/azure_safety_setup.py": "13fb3439f8bc1e544c557adb71be1609359bf479e9f74b065b41ed3bddc48e30",
+      "scripts/azure_idle_guard.py": "f720ce1ccda1d158a312f043fe397a2dae80cd743bd2017e037f5c3f181f455c",
+      "scripts/remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
+      "scripts/run_ci_tests.py": "d1e0ba9a9dd2c5be96dd97387fdf82e4f96347a07f8997520acebb7e77a7a1f6",
+      "tests/test_azure_shutdown.py": "adcb84d08f6c9d12397bd9159852a2939648996a93369d466363995abf8def83",
+      "tests/test_azure_lifecycle.py": "4dab3ee1f07743667fcd98ab1d544ab25a170442b29d6b42ff0f62670850867f"
+    }
   }
 }

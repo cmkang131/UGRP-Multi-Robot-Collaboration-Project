@@ -53,6 +53,8 @@ Azure 모드는 시작 → 실행 완료 대기 → fetch-lite → 검증된 ARM
 
 게스트 가드 본체·감독 실행기·부팅 복구 서비스는 이미 설치된 새 버전과 일치해 재설치를 건너뛰었다. 반환값이 바뀐 `azure_shutdown.py`만 이전 파일을 보존하고 원자 교체했으며, 서비스 시작/재시작/정지와 복구 실행을 하지 않았다. 교체 전후 활성 lease가 같았다. VM은 다른 작업이 켜 둔 실행 상태를 유지했고 이 배포에서 시작·종료하거나 PAYG 자원을 변경하지 않았다. 실제 비용 상한 종료·ARM 보관·미래 자정 발동은 새 소스에서 실행하지 않았다. [마무리 기록](../experiments/2026-10-11-azure-sim-migration/finalize-438.json).
 
+같은 브랜치의 동시 작업에서 `1bfa2bde`가 추가되어, 반복 start 복구는 PID·부팅·프로세스 시작 시각으로 확인한 실행 중 형제 writer를 보관/신호 없이 보존한다. 완료/중단된 원본의 복구 실패는 계속 코드74로 차단하며 일반 종료·비용 상한의 경계는 유지한다. 이 후보를 관련 시험45개로 다시 확인했고 설치된 helper 해시도 일치했다. 내장 helper가 포함된 runbook도 갱신/재조회했다. publish 뒤 연결 ID가 바뀌므로 일정 목록에서 실제 ID를 찾고 개별 GET으로 Daily·Cost·Force 모드를 확인했다(목록 응답의 parameters는 null).
+
 모델은 Mac relay의 `127.0.0.1:18392`로 연결하는 유한 역방향 SSH `127.0.0.1:18391 → Mac:18392`를 사용한다. S4 브랜치의 `scripts/s4_reverse_tunnel.py`에 `--host azure`를 추가할 수 있는 일반 실행기 `scripts/remote_reverse_tunnel.py`는 기본 재연결 OFF, 명시적 `--reconnect`, 최대 4시간 종료 시각을 유지한다. S4의 request idempotency/재시도 토글은 그 브랜치에서 계속 적용한다. 단순 HTTP 터널 확인은 모델 실제 응답 검증이 아니다.
 
 S3 설치 스모크는 기존 표준 Scene·접촉·카메라·0.5초 물리 진행과 3대 자기 RGB 6장을 확인한다. 제어기·LLM 호출·운반 성공 평가를 포함하지 않는다. 공통 관리 catalog에 `azure-s3-environment-smoke`로 등록하며 과거 성공을 새 호스트에 승계하지 않는다.
