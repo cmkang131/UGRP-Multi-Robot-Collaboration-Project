@@ -93,7 +93,7 @@ def main():
             if exists and not attach:raise RuntimeError('EXISTING_RUN_REQUIRES_EXPLICIT_RESUME')
             if not attach:budget(seed)
             wall=min(5400,int(remaining-900))
-            command=['systemd-run','--user','--scope','--quiet','--unit='+name,
+            command=['sudo','-n','systemd-run','--scope','--uid=ugrp','--gid=ugrp','--quiet','--unit='+name,
                 '--property=AllowedCPUs=0-11','env','UGRP_EXECUTION_HOST=azure','MUJOCO_GL=osmesa','MPLBACKEND=Agg',
                 'OMP_NUM_THREADS=1','OPENBLAS_NUM_THREADS=1','LP_NUM_THREADS=1',
                 'timeout','-s','INT','-k','90',str(wall+120),'taskset','-c','0-11','.venv-sim/bin/python','-m','scripts.sim_cli',
