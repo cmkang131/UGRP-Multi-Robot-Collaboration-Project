@@ -4,6 +4,8 @@ import json
 from types import SimpleNamespace as NS
 import numpy as np
 import pytest
+
+pytest.importorskip("mujoco")
 from harness.pulse_rotation_odometry import OPTION, selected_model
 from harness.zone_solo_cyan_pulse_cal import Runtime, action_of
 from harness import zone_s2_realism_contract_v122 as c

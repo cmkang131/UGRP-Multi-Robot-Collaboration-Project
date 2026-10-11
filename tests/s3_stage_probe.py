@@ -582,7 +582,7 @@ def sweep(out, monkeypatch, *, invalid_pose_cases=False):
                 now += 11.
                 def missing_pose(rid=rid,pose=pose):
                     own=p.runtime.localizers[rid]
-                    recheck=(type(p.eps[rid].command_guard.recheck)() if rid in p.eps else SweepRecheck())
+                    recheck=(type(p.eps[rid].command_guard.recheck)() if rid in p.eps else SweepRecheck(fail_closed_without_pose=True))
                     assert recheck.check(now,own.guard,own.servo,{6:1500},pose,loaded=False)=='wait'
                     p.issue(rid,dict(kind='hold'),now)
                     assert recheck.check(now+10.,own.guard,own.servo,{6:1500},pose,loaded=False)=='blocked'
