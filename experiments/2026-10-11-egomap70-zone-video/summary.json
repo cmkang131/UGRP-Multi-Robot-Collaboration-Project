@@ -1,0 +1,78 @@
+{
+  "status": "SOURCE_UNAVAILABLE",
+  "checked_utc": "2026-10-11T11:56:00.118342+00:00",
+  "seed": 63003,
+  "condition": "calib_traversed_zone",
+  "pr": 405,
+  "class": "milestone",
+  "requested_video": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70view-calib_traversed_zone-s63003/overview.mp4",
+  "video_created": false,
+  "replay_started": false,
+  "command_match": {
+    "verified": 0,
+    "requested": 1,
+    "match": null
+  },
+  "archive_check": {
+    "host": "oracle (ARM)",
+    "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib_traversed_zone",
+    "regular_files": 0,
+    "required_original_or_zstd_files": {
+      "result.json": false,
+      "bundle.json": false,
+      "robots/r3/commands.jsonl": false,
+      "robots/r3/frames.jsonl": false,
+      "own-controller.jsonl": false,
+      "eval_only/trajectory.jsonl": false,
+      "eval_only/camera.jsonl": false,
+      "eval_only/servo.jsonl": false
+    },
+    "published_wave2_archive_found": false,
+    "scope": "sudo directory listing, archive-wide target command/controller path search; no original deletion or mutation"
+  },
+  "original_manifest": {
+    "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/completed/egomap70-63003-calib_traversed_zone/complete.sha256.json",
+    "sha256": "5f53ae05526d151dea5917aec32d1b6ec65edddfd7c8749e4978703bc6d0bc24",
+    "server_original_verification_utc": "2026-10-11T05:17:46.612691+00:00",
+    "server_original_files": 879,
+    "required_original_sha256": {
+      "result.json": "701f3eeeb074dd68840698d61e7f5b0e8c54ddcd2f148666d0cc1d2f3b492029",
+      "bundle.json": "80fdeff5baf31dbbc695287d35825f5924daddee1d8f2ac3e6490323ff906bdc",
+      "robots/r3/commands.jsonl": "16ef40956c9263cb14c04843d682cac7b2aaab13f2eb503e4aee6d8b0d5f6937",
+      "robots/r3/frames.jsonl": "7e1ce74c85350b18113c098917701e244ee81c6385c04fbe470702cf5a27bc73",
+      "own-controller.jsonl": "7a651c09c2b55a8da2a257748b252e7a1a8c77a057544c3dc16babd03248f69b",
+      "eval_only/trajectory.jsonl": "41562d2a8925b2b4e5df2322b71e007193a99c79131bf3d825c3e63cc20b956e",
+      "eval_only/camera.jsonl": "16f902a788dfb401b7f245862b107ad445d1e062945f06635dd2a44362585b8d",
+      "eval_only/servo.jsonl": "57935b86a6540d150c6de2edb7b6ae1b8c9c486573dd6b8ff0257626877d7749"
+    }
+  },
+  "archive_compression_inventory": {
+    "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/COMPRESSED.jsonl",
+    "recorded_command_zstd_sha256": "05deb977bfb86f6948daba5205b0bd99d77abd39e131a9e32853c71dfc502a79",
+    "recorded_controller_zstd_sha256": "3c3dfac092c3c40d74f2a6600736187fbe167915a8985bd7b2d7e056b723f2c9",
+    "note": "compression receipts are present; referenced data files absent in checked archive"
+  },
+  "x86_access": {
+    "ssh_exit": 255,
+    "reason": "ConnectTimeout=10: operation timed out",
+    "vm_start_stop": false
+  },
+  "source_result": {
+    "B_arrived": true,
+    "true_return": true,
+    "position_estimation_final_error_m": 0.02635518781456547,
+    "actual_distance_to_start_m": 0.17177799719940554,
+    "return_threshold_m": 0.2,
+    "note": "previous recorded result, not a new replay verification"
+  },
+  "preservation": {
+    "mac_raw_downloads": 0,
+    "mac_rendering": 0,
+    "azure_runs_started": 0,
+    "own_lease_created": false,
+    "other_leases_changed": false,
+    "other_processes_changed": false,
+    "ARM_stock_bot_or_crontab_touched": false
+  },
+  "next_required": "Recover verified original files on ARM, or provide another existing location; then single-core Azure replay and MP4-only retrieval."
+}
