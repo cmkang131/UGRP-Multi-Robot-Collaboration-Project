@@ -116,7 +116,7 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
                     f'printf %s {shlex.quote(script)} > {root}/run_wrapper.sh && cat /proc/loadavg > {root}/LOADAVG && '
                     f'setsid -f bash {root}/run_wrapper.sh </dev/null >{root}/wrapper.log 2>&1')
             pending.append(name);print('ATTACHED' if attach else 'STARTED',name,sha,flush=True)
-            previous=None
+            previous=None;archived_jobs=set()
             while True:
                 state=ssh(f'test ! -f {root}/EXIT || cat {root}/EXIT')
                 status=ssh(f'test ! -f {root}/data/batch-status.json || cat {root}/data/batch-status.json')
@@ -124,6 +124,25 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
                     rows=json.loads(status)
                     compact=[{k:r.get(k) for k in ('condition','status','initial_check')} for r in rows]
                     if compact!=previous:print('PROGRESS',json.dumps(compact),flush=True);previous=compact
+                    for job in rows:
+                        if 'exit_code' not in job or job['condition'] in archived_jobs:continue
+                        jobname=Path(job['root']).name
+                        result=remote.ssh('azure',f'taskset -c 0-11 python3 - {name} {jobname}',
+                            input=(a.worktree/'scripts/archive_ego_pose_job.py').read_text(),
+                            capture_output=True,text=True,timeout=900)
+                        receipt=json.loads(result.stdout.splitlines()[-1])
+                        marker_bytes=ssh(f'cat {root}/per-run-archives/{jobname}.json')+'\n'
+                        marker=json.loads(marker_bytes)
+                        summary_bytes=ssh(f'cat {root}/data/{jobname}/summary.json')+'\n'
+                        if hashlib.sha256(summary_bytes.encode()).hexdigest()!=marker['inventory']['summary.json']['sha256']:
+                            raise RuntimeError('JOB_FETCH_LITE_HASH_MISMATCH')
+                        packed=subprocess.check_output(['zstd','-q','-3'],input=marker_bytes.encode())
+                        if subprocess.check_output(['zstd','-qdc'],input=packed)!=marker_bytes.encode():
+                            raise RuntimeError('JOB_INVENTORY_ROUNDTRIP')
+                        (a.output/(name+'-'+jobname+'-archive.json.zst')).write_bytes(packed)
+                        save(name+'-'+jobname+'-summary.json',dict(job=job,archive=receipt))
+                        archived_jobs.add(job['condition'])
+                        print('CONDITION_ARCHIVED_AND_LITE_VERIFIED',name,job['condition'],flush=True)
                 if state:break
                 if time.monotonic()-started>a.task_budget_s-600:
                     raise TimeoutError('TASK_DEADLINE_WORKER_HAS_FINITE_TIMEOUT')
