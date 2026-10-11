@@ -48,7 +48,8 @@ def main():
     a.output.mkdir(parents=True,exist_ok=False)
     lease=f'$HOME/ugrp-sim/leases/egojump-{sha[:8]}'
     def ssh(cmd,timeout=120):
-        return remote.ssh('azure',cmd,capture_output=True,text=True,timeout=timeout).stdout.strip()
+        return remote.ssh('azure','taskset -c 0-11 bash -c '+shlex.quote(cmd),
+                          capture_output=True,text=True,timeout=timeout).stdout.strip()
     def save(name,data):
         (a.output/name).write_text(json.dumps(data,indent=2)+'\n')
     def budget(seed,shipping=False):
