@@ -161,6 +161,27 @@ def test_start_recovery_preserves_existing_archive_and_keeps_stop_blocker(root, 
     archive.assert_not_called()
 
 
+def test_scheduled_archive_copy_requires_exact_run_and_incoming_target(root):
+    folder=run(root)
+    command=['rsync','-a','--',str(folder)+'/',str(root/'arm/.incoming-one')+'/']
+    assert shutdown.archive_copy_matches(command,root,folder)
+    assert not shutdown.archive_copy_matches(command,root,root/'runs/two')
+    assert not shutdown.archive_copy_matches([*command[:-1],str(root/'unrelated')],root,folder)
+    assert not shutdown.archive_copy_matches(['echo',*command[1:]],root,folder)
+
+
+@pytest.mark.parametrize('published',[True,False])
+def test_recover_rescans_archive_progress_before_retrying_mutex(root,monkeypatch,published):
+    run(root)
+    monkeypatch.setattr(shutdown,'archived',Mock(side_effect=[False,published]))
+    monkeypatch.setattr(shutdown,'active_archive_processes',Mock(side_effect=[set(),{2345}]))
+    archive=Mock(side_effect=AssertionError('duplicate copy forbidden'))
+    monkeypatch.setattr(shutdown,'bounded_archive',archive)
+    result=shutdown.lifecycle('recover','start_recovery',root,grace=1)
+    assert result['archived' if published else 'active_archive_preserved']==['one']
+    assert not result['failed'];archive.assert_not_called()
+
+
 def test_archive_one_locks_same_run_before_copying(root, monkeypatch):
     folder=run(root)
     monkeypatch.setattr(shutdown.fcntl,'flock',Mock(side_effect=BlockingIOError))

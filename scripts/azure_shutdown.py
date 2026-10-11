@@ -155,6 +155,15 @@ class ArchiveBusy(RuntimeError):
     pass
 
 
+def archive_copy_matches(argv, root, run):
+    """Scheduled archiver's exact source and registered incoming destination."""
+    if not argv or Path(argv[0]).name != 'rsync':return False
+    args=[a.rstrip('/') for a in argv[1:] if a]
+    destinations={str(root/'arm'/('.incoming-'+run.name)),
+                  str(root/'arm'/('.incoming-shutdown-'+run.name))}
+    return str(run) in args and bool(destinations.intersection(args))
+
+
 def active_archive_processes(root, run):
     """Identify an existing archive worker, including workers started before locks.
 
@@ -168,6 +177,8 @@ def active_archive_processes(root, run):
         if not p.name.isdigit() or int(p.name)==os.getpid():continue
         try:
             argv=(p/'cmdline').read_bytes().decode().split('\0')
+            if archive_copy_matches(argv,root,run):
+                found.add(int(p.name));continue
             if str(Path(__file__).resolve()) not in argv or 'archive-one' not in argv:continue
             if argv[argv.index('--run')+1]!=run.name:continue
             selected=Path(argv[argv.index('--root')+1]) if '--root' in argv else ROOT
@@ -286,7 +297,15 @@ def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
                 continue
             ok = archived(root, run)
             attempts = 0
+            deferred = False
             while not ok and time.monotonic() < deadline:
+                if action == 'recover':
+                    # The scheduled archiver may publish or start copying after
+                    # the first scan. Recheck instead of waiting on its mutex.
+                    if archived(root,run):ok=True;break
+                    if active_archive_processes(root,run):
+                        report.setdefault('active_archive_preserved',[]).append(run.name)
+                        deferred=True;break
                 remaining = deadline - time.monotonic()
                 locked = False
                 try:
@@ -302,6 +321,9 @@ def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
                 write_json(record, report)
                 if not ok:
                     time.sleep(min(10, max(0, deadline - time.monotonic())))
+            if deferred:
+                write_json(record,report)
+                continue
             report['archived' if ok else 'failed'].append(run.name)
             if not ok:
                 leases = root / 'leases'
