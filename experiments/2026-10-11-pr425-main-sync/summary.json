@@ -19,7 +19,26 @@
     "zone-s3-recovery-v191"
   ],
   "newly_retired_bundle": "zone-s3-recovery-v191",
-  "preserved_main_bundle": "zone-s3-recovery-v193",
+  "preserved_main_bundle": {
+    "execution_bundle_id": "zone-s3-recovery-v193",
+    "preserved_scope": "Only the three registration, source-seal, and retirement-ledger record files were preserved from PR416 main; four sealed runtime sources changed in PR425, so the bundle is retired.",
+    "preserved_record_files": [
+      "experiments/2026-10-11-pr416-review-fixes/registration-v193.json",
+      "experiments/2026-10-11-pr416-review-fixes/source-seal-v193.json",
+      "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json"
+    ],
+    "runtime_source_count": 433,
+    "changed_runtime_sources": [
+      "harness/zone_s3_recovery_contract.py",
+      "harness/zone_study_llm_driver.py",
+      "scripts/run_s3_recovery.py",
+      "sim/zone_s3_no_prior.py"
+    ],
+    "retired": true,
+    "replacement": "zone-s3-recovery-v195",
+    "retirement_record": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+    "followup_summary": "experiments/2026-10-12-retire-v193/summary.json"
+  },
   "preserved_main_workflow_version": "7.86.0",
   "source_files": 434,
   "source_composition_diff": {
