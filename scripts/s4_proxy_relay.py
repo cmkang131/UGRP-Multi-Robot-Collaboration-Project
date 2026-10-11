@@ -85,7 +85,7 @@ def main():
                             return exc.code, exc.read(8_000_000), exc.headers.get('Retry-After')
                     if fallback:
                         from scripts.gemma_fallback_proxy import route
-                        status, raw, retry_after = route(primary, body, call_id, fallback=fallback)
+                        status, raw, retry_after = route(primary, body, call_id, fallback=fallback, idempotency_key=key)
                     else:
                         status, raw, retry_after = primary()
                 except Exception as exc:

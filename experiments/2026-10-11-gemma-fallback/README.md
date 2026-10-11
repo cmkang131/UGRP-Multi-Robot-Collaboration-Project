@@ -17,9 +17,11 @@ Mac 저장 로봇 RGB 1장으로 `PYTHONPATH=. python3 -m scripts.gemma_fallback
 
 서버에는 키 대신 relay identity를 전달하고 기존 역방향 SSH와 S4 러너 `--gemma-fallback`을 함께 선택한다. profile 선택과 relay identity가 다르면 거부한다. 이번 작업에서는 시뮬레이션·상시 서비스·서버 배포를 하지 않는다.
 
-## 확인 중
+## 검증 결과
 
-처음 키체인 확인은 키 없음이었다. 후속 models.list 실제 조회에서는 키가 읽혀 `models/gemma-4-31b-it`(version 001)을 확인했다. RGB 실제 호출·최종 시험 결과는 후속 summary.json에 저장한다.
+`models.list` 실제 조회에서 `models/gemma-4-31b-it`(version 001)을 확인했다. 키체인 키는 읽을 수 있었고 키 필요 없음이다. 커밋 `8e5f678c`에서 저장된 로봇 자기 RGB `tests/fixtures/owncam_pair_v2/grip_613_r1_00059.jpg`를 1회 전달해 HTTP 200·STOP·이미지에 관한 텍스트 응답을 받았다. 모델이 장면을 정확히 이해했는지와 행동 정확도는 미검증이다. 실제 모델1회·물리0·렌더0. 원본·SHA와 응답은 [summary.json](summary.json), [image-probe-response.json](image-probe-response.json)에 연결했다.
+
+실제 응답의 quota 관련 헤더는 없었다. RPM/RPD는 null(미확인)이며 한도를 알아내려고 추가 429를 유도하지 않았다. 기본 off 상태에서 서비스/서버 실행은 시작하지 않았다. 원장·요약은 로컬에 보존하며 DEV이므로 TensorBoard 단계는 생략했다. 후속 안정 idempotency-key 연결은 오프라인 시험으로 별도 검증했다.
 
 ## 참고 자료
 
@@ -27,3 +29,5 @@ Mac 저장 로봇 RGB 1장으로 `PYTHONPATH=. python3 -m scripts.gemma_fallback
 - [models.list](https://ai.google.dev/api/models): 페이지 전체 목록과 generateContent 지원을 확인한 뒤 이름을 선택한다.
 - [Google rate limits](https://ai.google.dev/gemini-api/docs/rate-limits): RPM/RPD/TPM, 프로젝트 단위 한도, Pacific 자정 초기화. 실제 계정 숫자는 AI Studio/응답에서 확인해야 한다.
 - 기존 `harness/s4_relay_journal.py`의 durable idempotency 방식을 재사용했다. 무응답을 실패 응답으로 간주해 모델을 다시 호출하지 않는다.
+
+오프라인 최종 관련 시험: **214/214 통과**(36.91초, 파일3개). API 모델 전환·쿼터 보류·동일 논리 키의 다른 wire 시도 ID·실제 원장 metadata와 모델별 집계·기존 own-map 차단을 검사했다. 원본 pytest XML은 summary의 절대 경로·SHA로 기록했다. 새 CI 전체 결과는 이 로컬 검사와 구분한다.

@@ -243,3 +243,12 @@ def test_ambiguous_google_failure_is_cached_without_another_call(tmp_path):
     assert engine.complete(BODY,'same-id')[0]==502
     assert engine.complete(BODY,'same-id')[0]==502 and calls==[1]
     assert 'ambiguous' in (tmp_path/'ledger.jsonl').read_text()
+
+
+def test_same_logical_key_survives_changed_wire_attempt_id(tmp_path):
+    engine,calls=api(tmp_path)
+    key=hashlib.sha256(b'run:logical-request').hexdigest()
+    one=gemma.route(lambda:(429,b'{"error":"quota"}',None),BODY,'wire-attempt-1',fallback=engine,idempotency_key=key)
+    two=gemma.route(lambda:(429,b'{"error":"quota"}',None),BODY,'wire-attempt-2',fallback=engine,idempotency_key=key)
+    assert len(calls)==1
+    assert json.loads(one[1])['choices']==json.loads(two[1])['choices']

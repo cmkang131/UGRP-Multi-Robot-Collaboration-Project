@@ -252,8 +252,8 @@ class Gemma:
         if probe.get('model_id') != self.model_id or probe.get('image_input_confirmed') is not True:
             raise ValueError('image_probe_required_before_DEV_fallback')
 
-    def complete(self, raw, request_id):
-        key = hashlib.sha256(request_id.encode()).hexdigest()
+    def complete(self, raw, request_id, *, idempotency_key=None):
+        key = idempotency_key or hashlib.sha256(request_id.encode()).hexdigest()
         return self.journal.call(key, raw, lambda: self._complete(raw, request_id))[0]
 
     def _complete(self, raw, request_id):
@@ -299,7 +299,7 @@ class Gemma:
             handle.write(json.dumps(row, ensure_ascii=False) + '\n')
 
 
-def route(primary, body, request_id, *, fallback=None):
+def route(primary, body, request_id, *, fallback=None, idempotency_key=None):
     """One completed Gemini HTTP failure -> one Gemma call with unchanged message/request_id."""
     status, raw, retry = primary()
     try:
@@ -311,7 +311,7 @@ def route(primary, body, request_id, *, fallback=None):
     # Transport/identity ambiguity is never passed here: relay calls route only after HTTP result.
     quota = status >= 400 and re.search(r'quota|resource[ _-]?exhausted|rate[ _-]?limit', raw.decode('utf8', 'replace'), re.I)
     if fallback is not None and (status == 429 or status >= 500 or quota):
-        status, raw, retry = fallback.complete(body, request_id)
+        status, raw, retry = fallback.complete(body, request_id, idempotency_key=idempotency_key)
         response = json.loads(raw)
         attempts.append({'provider': PROVIDER, 'model': response.get('model') or fallback.model_id,
                          'status': status, 'usage': response.get('usage'),
@@ -375,7 +375,8 @@ def main(argv=None):
             request_id = self.headers.get('X-UGRP-Call-ID', '')
             if not 0 < n <= 8_000_000 or not request_id: self.send_error(400); return
             try:
-                status, raw, retry = engine.complete(self.rfile.read(n), request_id)
+                status, raw, retry = engine.complete(self.rfile.read(n), request_id,
+                    idempotency_key=self.headers.get('X-UGRP-Idempotency-Key'))
             except (ValueError, KeyError, TypeError):
                 status, raw, retry = 400, b'{"error":"invalid_OpenAI_request"}', None
             self.send_response(status); self.send_header('Content-Type', 'application/json')
