@@ -1,32 +1,2781 @@
 {
-  "status": "PREREGISTERED_READY",
   "research_result": false,
-  "execution_bundle_id": "zone-s4-pair-live-v182",
-  "workflow_version": "7.75.0",
-  "runs_planned": 8,
-  "runs_submitted": 0,
-  "results_evaluated": 0,
-  "offline_tests": {
-    "n": 47,
-    "N": 47
+  "status": "PARTIAL_4_COMPLETE_4_HOST_UNREACHABLE_UNRETRIEVED",
+  "source_sha": "4316bdd5804f37e46d7eb3866f9c7d2ae774168f",
+  "bundle": "zone-s4-pair-live-v182",
+  "workflow": "7.75.0",
+  "seeds": [
+    601,
+    602
+  ],
+  "max_concurrent": 4,
+  "cohort": {
+    "planned": 8,
+    "submitted": 8,
+    "server_evaluated": 4,
+    "ARM_SHA_verified": 4,
+    "pending_host_verification": 4,
+    "complete": false
   },
-  "prior_causes": {
-    "BAND_CLIPPED": {
-      "n": 556,
-      "N": 556,
-      "role": "r2",
-      "effect": "fifth-leg regrasp blocked",
-      "observed_band_m": 0.0341,
-      "pixels": 4124
+  "metrics_observed_only": {
+    "goal_B_landed": {
+      "n": 0,
+      "N": 4,
+      "unobserved": 4
     },
-    "API429": {
-      "n": 7,
-      "N": 8
+    "completed_eight_carry_legs": {
+      "n": 3,
+      "N": 4
     },
-    "invalid_then_lease": {
-      "n": 1,
-      "N": 8
+    "beam_drop": {
+      "n": 0,
+      "N": 4,
+      "unobserved": 4
+    },
+    "cyan_drop": {
+      "n": 0,
+      "N": 4,
+      "unobserved": 4
+    },
+    "paths_m": [
+      4.195266283703266,
+      5.857686684947281,
+      5.855071251673471,
+      5.855692716306342
+    ],
+    "supported_carry_legs": [
+      6,
+      8,
+      8,
+      8
+    ]
+  },
+  "initial_health": {
+    "n": 8,
+    "N": 8,
+    "source": [
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/admissions601.json",
+        "sha256": "010f3aa08fc63608949b1c73a7bdabe18287c5dc0e95e16e0a89c708dbdabcbc",
+        "bytes": 27717
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/admissions602.json",
+        "sha256": "b8a94e2194bc97aee26146f83fea22a04e57c158160a7b2b89706bdf81c290ad",
+        "bytes": 27581
+      }
+    ]
+  },
+  "runs": [
+    {
+      "name": "s4live11-no_comm-s601-v182",
+      "condition": "no_comm",
+      "seed": 601,
+      "health": {
+        "status": "PASS",
+        "checked_after_s": 181.86431312502827,
+        "first": {
+          "sim_s": 3.0,
+          "frames": 61,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8064260999595252,
+                0.08433373697274392,
+                0.03201350692728709
+              ],
+              "base_delta_m": 9.450511617769423e-06,
+              "arm_delta_m": 1.0407508277261299e-05,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.809530671675837,
+                0.006721502619010497,
+                0.03201356097730018
+              ],
+              "base_delta_m": 9.185343429452519e-06,
+              "arm_delta_m": 1.0173210099722358e-05,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            }
+          },
+          "wall_s": 34.549913080001716,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [],
+            "completed": {},
+            "claims": {},
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "last": {
+          "sim_s": 30.0,
+          "frames": 601,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8351959031578213,
+                0.0821889388730788,
+                0.03190870769963479
+              ],
+              "base_delta_m": 0.028859240125249253,
+              "arm_delta_m": 0.1045628913360267,
+              "commands": 716,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 1,
+              "turn_commands": 0,
+              "state": "wait_carry"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.764867518522265,
+                0.02814117177457983,
+                0.031956611927069285
+              ],
+              "base_delta_m": 0.04954253345607143,
+              "arm_delta_m": 0.12160457976809307,
+              "commands": 719,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 2,
+              "turn_commands": 2,
+              "state": "wait_carry"
+            }
+          },
+          "wall_s": 150.30719036400114,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [
+              {
+                "robot_id": "r1",
+                "call_id": "call-0001-r1",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_neg"
+                },
+                "at": 3.8,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "a2de9c0685d8f615b436019361aca301c7fdf64f60ec832ca8aeb5c45c911deb",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              },
+              {
+                "robot_id": "r2",
+                "call_id": "call-0002-r2",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_pos"
+                },
+                "at": 3.8,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "970ccb02395f492d018cf71550f68dd3bbfbb44b3ca33ed31a1f0d79e216670c",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              }
+            ],
+            "completed": {},
+            "claims": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {
+              "1000": {
+                "go_at": {},
+                "ack_opened": null
+              }
+            },
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "log_exceptions": []
+      },
+      "status": "PAIR_STOP",
+      "pair_failure": "S3_PAIR_TERMINAL",
+      "s3_failures": {
+        "r1": "PARTNER_ABORT",
+        "r2": "REFIX_HOVER_BARRIER_TIMEOUT"
+      },
+      "goal_B_landed": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 6,
+        "completed_supported_carry_legs": 6,
+        "supported_restarts": 5
+      },
+      "path_m": 4.195266283703266,
+      "beam_drop": false,
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "final_endpoint": {
+        "initial_beam": {
+          "t": 2.35,
+          "kind": "long_beam",
+          "x": 1.3,
+          "y": 0.05,
+          "yaw": -2.2070106714092577e-17,
+          "z": 0.015892244579783832,
+          "held": false,
+          "speed": 1.6837881876302034e-12
+        },
+        "final_beam": {
+          "t": 543.7,
+          "kind": "long_beam",
+          "x": 2.778786752183405,
+          "y": -2.558560807901761,
+          "yaw": -0.06480005749656025,
+          "z": 0.01589224457978381,
+          "held": false,
+          "speed": 1.2498814167044534e-12
+        },
+        "final_goal_error_m": 1.8780563645871187,
+        "delta_goal_xy_m": [
+          -1.8212132478165945,
+          -0.4585608079017609
+        ],
+        "last_half_second": {
+          "samples": 11,
+          "contacts": 11,
+          "stable_floor": true,
+          "max_speed": 1.951820618658486e-12,
+          "z_range_m": 3.469446951953614e-18
+        },
+        "files": {
+          "eval_only/referee_truth.jsonl": {
+            "sha256": "62d3cdbd45605d13e9224664a6c8253f9d925d4df329292cc476a672d6cd2d92",
+            "bytes": 4760392
+          },
+          "eval_only/contacts.jsonl": {
+            "sha256": "ae49ec75005f51ced156bed9d3b837f69f4acb2c1b085dfb550eb388f764085a",
+            "bytes": 39524965
+          }
+        }
+      },
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "model_audit": {
+        "name": "s4live11-no_comm-s601-v182",
+        "condition": "no_comm",
+        "seed": 601,
+        "root_reply_format": {
+          "n": 306,
+          "N": 306
+        },
+        "strict_permitted_distance": {
+          "path_m": 4.195266283703266,
+          "loaded_samples": 788,
+          "unpermitted_loaded_samples": 0
+        },
+        "sent_posts": 306,
+        "provider_usage_reported": {
+          "prompt_tokens": 2495240,
+          "completion_tokens": 16059,
+          "total_tokens": 2518732
+        },
+        "response_wall_s": {
+          "n": 306,
+          "total": 1452.772434,
+          "median": 3.958266,
+          "max": 23.862976
+        },
+        "wire_failures": {},
+        "proxy_http_statuses": {
+          "200": 306
+        },
+        "scheduler_statuses": {
+          "done": 304,
+          "censored": 2
+        },
+        "grasp_epoch_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "regrasp_cycles_beyond_first": 10,
+        "terminal_settlement": {
+          "at": 541.35,
+          "before": {
+            "sends": 306,
+            "actions": 304,
+            "deliveries": 0,
+            "dispatch": 304
+          },
+          "after": {
+            "sends": 306,
+            "actions": 304,
+            "deliveries": 0,
+            "dispatch": 304
+          },
+          "censored": 2,
+          "unsent_cancelled": 0,
+          "channel": {
+            "condition": "no_comm",
+            "topology": "none",
+            "encoding": "none",
+            "leader_id": null,
+            "sent": 0,
+            "accepted_messages": 0,
+            "rejected": 0,
+            "delivery_edges": 0,
+            "free_text_messages": 0,
+            "follower_to_follower": 0,
+            "received": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "inbox_agrees_with_scheduler": true,
+            "study_spec": "no_comm"
+          }
+        },
+        "outstanding": 0,
+        "floor_guard_samples": {
+          "N": 10828,
+          "floor_admitted": 6777,
+          "command_release_allowed": 6740,
+          "floor_admitted_despite_command_false": 37,
+          "truth_feedback_rows": 0
+        },
+        "clipped_backoffs": [
+          {
+            "robot_id": "r1",
+            "t": 415.8,
+            "seg": 6,
+            "phase": "clipped_backoff",
+            "count": 1,
+            "reason": "BAND_CLIPPED",
+            "frame_id": 8270,
+            "action": {
+              "kind": "mecanum",
+              "forward": -0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "calibrated_delta": [
+              -0.012917157771402163,
+              0.00040206798082011467,
+              0.00029378953563691213
+            ],
+            "settled_after_s": 416.3
+          },
+          {
+            "robot_id": "r1",
+            "t": 416.3,
+            "seg": 6,
+            "phase": "clipped_backoff",
+            "count": 2,
+            "reason": "BAND_CLIPPED",
+            "frame_id": 8280,
+            "action": {
+              "kind": "mecanum",
+              "forward": -0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "calibrated_delta": [
+              -0.012917157771402163,
+              0.00040206798082011467,
+              0.00029378953563691213
+            ],
+            "settled_after_s": 416.8
+          }
+        ],
+        "retry_waits": [],
+        "retry_exhausted": [],
+        "retry_hold_violations": 0,
+        "result_status": "PAIR_STOP",
+        "end_sim_s": 541.35,
+        "model_rejections": [],
+        "security": {
+          "scanned_text_files": 687,
+          "secret_pattern_matches": 0,
+          "skipped_large_text_files": [
+            "/home/ubuntu/ugrp-sim/runs/s4live11-no_comm-s601-v182/raw/student_record.json"
+          ]
+        }
+      },
+      "raw": {
+        "canonical_ARM": "/home/ubuntu/ugrp-archive/runs/s4live11-no_comm-s601-v182",
+        "inventory": {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/s4live11-no_comm-s601-v182-inventory.json",
+          "sha256": "60de90613d79d88491b64313578ad453cd91ac5cfdf7a77f76192399d5e74c5b",
+          "bytes": 4104607
+        },
+        "files": 33484,
+        "bytes": 964952804,
+        "Mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-no_comm-s601-v182",
+        "full_SHA_verified": true
+      },
+      "evaluation": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/s4live11-no_comm-s601-v182-report.json",
+        "sha256": "2bc0f2385aea5ba41e9fcf8b09e9acd376b2959ebf27d1eda6450fa4f0ace66d",
+        "bytes": 65104
+      }
+    },
+    {
+      "name": "s4live11-peer_ko-s601-v182",
+      "condition": "peer_ko",
+      "seed": 601,
+      "health": {
+        "status": "PASS",
+        "checked_after_s": 181.8643301660195,
+        "first": {
+          "sim_s": 1.0,
+          "frames": 21,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8064199336059195,
+                0.08433461303644484,
+                0.03201347603101254
+              ],
+              "base_delta_m": 3.2282171905156272e-06,
+              "arm_delta_m": 3.694270571824599e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.8095366763785026,
+                0.0067208470103147875,
+                0.03201345990152728
+              ],
+              "base_delta_m": 3.1443803483813764e-06,
+              "arm_delta_m": 3.546130491851569e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            }
+          },
+          "wall_s": 23.19731847300136,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [],
+            "completed": {},
+            "claims": {},
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "last": {
+          "sim_s": 30.0,
+          "frames": 601,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8347020487272938,
+                0.08039397461383849,
+                0.03191209663717222
+              ],
+              "base_delta_m": 0.028558724347077083,
+              "arm_delta_m": 0.10419106173732141,
+              "commands": 713,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 1,
+              "turn_commands": 0,
+              "state": "lift"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.7650830438093799,
+                0.028033798174172418,
+                0.03195682298584867
+              ],
+              "base_delta_m": 0.04930177003082869,
+              "arm_delta_m": 0.12143247025145194,
+              "commands": 716,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 2,
+              "turn_commands": 2,
+              "state": "lift"
+            }
+          },
+          "wall_s": 148.94141130400385,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [
+              {
+                "robot_id": "r1",
+                "call_id": "call-0001-r1",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_neg"
+                },
+                "at": 4.9,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "a2de9c0685d8f615b436019361aca301c7fdf64f60ec832ca8aeb5c45c911deb",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              },
+              {
+                "robot_id": "r2",
+                "call_id": "call-0002-r2",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_pos"
+                },
+                "at": 5.0,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "970ccb02395f492d018cf71550f68dd3bbfbb44b3ca33ed31a1f0d79e216670c",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              }
+            ],
+            "completed": {},
+            "claims": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "log_exceptions": []
+      },
+      "status": "DEV_STAGE_FINISHED",
+      "pair_failure": null,
+      "s3_failures": {},
+      "goal_B_landed": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 8,
+        "completed_supported_carry_legs": 8,
+        "supported_restarts": 7
+      },
+      "path_m": 5.857686684947281,
+      "beam_drop": false,
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "final_endpoint": {
+        "initial_beam": {
+          "t": 2.35,
+          "kind": "long_beam",
+          "x": 1.3,
+          "y": 0.05,
+          "yaw": -2.2070106714092577e-17,
+          "z": 0.015892244579783832,
+          "held": false,
+          "speed": 1.6837881876302034e-12
+        },
+        "final_beam": {
+          "t": 515.05,
+          "kind": "long_beam",
+          "x": 4.513535031613187,
+          "y": -2.618812772537824,
+          "yaw": -0.032336388521159075,
+          "z": 0.015892244579783804,
+          "held": false,
+          "speed": 9.845063439065404e-13
+        },
+        "final_goal_error_m": 0.5259685196915462,
+        "delta_goal_xy_m": [
+          -0.08646496838681283,
+          -0.518812772537824
+        ],
+        "last_half_second": {
+          "samples": 11,
+          "contacts": 11,
+          "stable_floor": true,
+          "max_speed": 1.8780231504986787e-12,
+          "z_range_m": 3.469446951953614e-18
+        },
+        "files": {
+          "eval_only/referee_truth.jsonl": {
+            "sha256": "36411bf78fb20f7862c62e1272278b8d483c565ccec1239dea99c76bf835cc52",
+            "bytes": 4497723
+          },
+          "eval_only/contacts.jsonl": {
+            "sha256": "fbfa481c942cdef5b6b84ed46ffd29cb37bbe8887b27c74af66ce01268c619e7",
+            "bytes": 39565848
+          }
+        }
+      },
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 64,
+        "accepted_messages": 64,
+        "rejected": 0,
+        "delivery_edges": 65,
+        "free_text_messages": 64,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 33,
+          "r2": 32,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "model_audit": {
+        "name": "s4live11-peer_ko-s601-v182",
+        "condition": "peer_ko",
+        "seed": 601,
+        "root_reply_format": {
+          "n": 265,
+          "N": 265
+        },
+        "strict_permitted_distance": {
+          "path_m": 5.857686684947281,
+          "loaded_samples": 1312,
+          "unpermitted_loaded_samples": 0
+        },
+        "sent_posts": 265,
+        "provider_usage_reported": {
+          "prompt_tokens": 2471153,
+          "completion_tokens": 18878,
+          "total_tokens": 2491975
+        },
+        "response_wall_s": {
+          "n": 265,
+          "total": 1320.40894,
+          "median": 4.071612,
+          "max": 30.898541
+        },
+        "wire_failures": {},
+        "proxy_http_statuses": {
+          "200": 265
+        },
+        "scheduler_statuses": {
+          "done": 264,
+          "censored": 1,
+          "not_sent": 1
+        },
+        "grasp_epoch_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "regrasp_cycles_beyond_first": 5,
+        "terminal_settlement": {
+          "at": 512.7,
+          "before": {
+            "sends": 265,
+            "actions": 264,
+            "deliveries": 65,
+            "dispatch": 264
+          },
+          "after": {
+            "sends": 265,
+            "actions": 264,
+            "deliveries": 65,
+            "dispatch": 264
+          },
+          "censored": 1,
+          "unsent_cancelled": 1,
+          "channel": {
+            "condition": "peer_ko",
+            "topology": "mesh",
+            "encoding": "free_ko",
+            "leader_id": null,
+            "sent": 64,
+            "accepted_messages": 64,
+            "rejected": 0,
+            "delivery_edges": 65,
+            "free_text_messages": 64,
+            "follower_to_follower": 0,
+            "received": {
+              "r1": 33,
+              "r2": 32,
+              "r3": 0
+            },
+            "inbox_agrees_with_scheduler": true,
+            "study_spec": "peer_ko"
+          }
+        },
+        "outstanding": 0,
+        "floor_guard_samples": {
+          "N": 10255,
+          "floor_admitted": 6114,
+          "command_release_allowed": 6078,
+          "floor_admitted_despite_command_false": 36,
+          "truth_feedback_rows": 0
+        },
+        "clipped_backoffs": [],
+        "retry_waits": [],
+        "retry_exhausted": [],
+        "retry_hold_violations": 0,
+        "result_status": "DEV_STAGE_FINISHED",
+        "end_sim_s": 512.6999999999999,
+        "model_rejections": [],
+        "security": {
+          "scanned_text_files": 605,
+          "secret_pattern_matches": 0,
+          "skipped_large_text_files": [
+            "/home/ubuntu/ugrp-sim/runs/s4live11-peer_ko-s601-v182/raw/student_record.json"
+          ]
+        }
+      },
+      "raw": {
+        "canonical_ARM": "/home/ubuntu/ugrp-archive/runs/s4live11-peer_ko-s601-v182",
+        "inventory": {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/s4live11-peer_ko-s601-v182-inventory.json",
+          "sha256": "b085e8b30a54ad278760f0358a59e8fa9807aa3abe22d8e1c172ebaf7c1a3235",
+          "bytes": 3876752
+        },
+        "files": 31641,
+        "bytes": 916816471,
+        "Mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-peer_ko-s601-v182",
+        "full_SHA_verified": true
+      },
+      "evaluation": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/s4live11-peer_ko-s601-v182-report.json",
+        "sha256": "bc0a866a92352b514123c3f190e536390403a22fa3587bcdef459ca86fb942b9",
+        "bytes": 83332
+      }
+    },
+    {
+      "name": "s4live11-leader_ko-s601-v182",
+      "condition": "leader_ko",
+      "seed": 601,
+      "health": {
+        "status": "PASS",
+        "checked_after_s": 181.86423395801103,
+        "first": {
+          "sim_s": 1.0,
+          "frames": 21,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8064199336059195,
+                0.08433461303644484,
+                0.03201347603101254
+              ],
+              "base_delta_m": 3.2282171905156272e-06,
+              "arm_delta_m": 3.694270571824599e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.8095366763785026,
+                0.0067208470103147875,
+                0.03201345990152728
+              ],
+              "base_delta_m": 3.1443803483813764e-06,
+              "arm_delta_m": 3.546130491851569e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            }
+          },
+          "wall_s": 23.579616475006333,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [],
+            "completed": {},
+            "claims": {},
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "last": {
+          "sim_s": 30.0,
+          "frames": 601,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8347020487272938,
+                0.08039397461383849,
+                0.03191209663717222
+              ],
+              "base_delta_m": 0.028558724347077083,
+              "arm_delta_m": 0.10419106173732141,
+              "commands": 713,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 1,
+              "turn_commands": 0,
+              "state": "lift"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.7650830438093799,
+                0.028033798174172418,
+                0.03195682298584867
+              ],
+              "base_delta_m": 0.04930177003082869,
+              "arm_delta_m": 0.12143247025145194,
+              "commands": 716,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 2,
+              "turn_commands": 2,
+              "state": "lift"
+            }
+          },
+          "wall_s": 148.89187222000328,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [
+              {
+                "robot_id": "r1",
+                "call_id": "call-0001-r1",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_neg"
+                },
+                "at": 5.0,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "a2de9c0685d8f615b436019361aca301c7fdf64f60ec832ca8aeb5c45c911deb",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              },
+              {
+                "robot_id": "r2",
+                "call_id": "call-0002-r2",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_pos"
+                },
+                "at": 5.0,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "970ccb02395f492d018cf71550f68dd3bbfbb44b3ca33ed31a1f0d79e216670c",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              }
+            ],
+            "completed": {},
+            "claims": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "log_exceptions": []
+      },
+      "status": "DEV_STAGE_FINISHED",
+      "pair_failure": null,
+      "s3_failures": {},
+      "goal_B_landed": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 8,
+        "completed_supported_carry_legs": 8,
+        "supported_restarts": 7
+      },
+      "path_m": 5.855071251673471,
+      "beam_drop": false,
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "final_endpoint": {
+        "initial_beam": {
+          "t": 2.35,
+          "kind": "long_beam",
+          "x": 1.3,
+          "y": 0.05,
+          "yaw": -2.2070106714092577e-17,
+          "z": 0.015892244579783832,
+          "held": false,
+          "speed": 1.6837881876302034e-12
+        },
+        "final_beam": {
+          "t": 600.05,
+          "kind": "long_beam",
+          "x": 4.579727612370793,
+          "y": -2.548587099828387,
+          "yaw": -0.021129704159508707,
+          "z": 0.01589224457978383,
+          "held": false,
+          "speed": 7.492853731878101e-13
+        },
+        "final_goal_error_m": 0.4490449374312462,
+        "delta_goal_xy_m": [
+          -0.020272387629206357,
+          -0.44858709982838674
+        ],
+        "last_half_second": {
+          "samples": 11,
+          "contacts": 11,
+          "stable_floor": true,
+          "max_speed": 1.1191177439327048e-12,
+          "z_range_m": 3.469446951953614e-18
+        },
+        "files": {
+          "eval_only/referee_truth.jsonl": {
+            "sha256": "6d62a8bdcf4b92a6025de67258db4b4c09c4ffbad32feff29056c00b0cdec31e",
+            "bytes": 5257088
+          },
+          "eval_only/contacts.jsonl": {
+            "sha256": "e94c9238836fb75332885ca0960186f70303dc3368d701ae9f6fc8a953779307",
+            "bytes": 46037027
+          }
+        }
+      },
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r2",
+        "sent": 64,
+        "accepted_messages": 64,
+        "rejected": 0,
+        "delivery_edges": 64,
+        "free_text_messages": 64,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 29,
+          "r2": 35,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "model_audit": {
+        "name": "s4live11-leader_ko-s601-v182",
+        "condition": "leader_ko",
+        "seed": 601,
+        "root_reply_format": {
+          "n": 313,
+          "N": 313
+        },
+        "strict_permitted_distance": {
+          "path_m": 5.855071251673471,
+          "loaded_samples": 1312,
+          "unpermitted_loaded_samples": 0
+        },
+        "sent_posts": 313,
+        "provider_usage_reported": {
+          "prompt_tokens": 2931317,
+          "completion_tokens": 21329,
+          "total_tokens": 2952646
+        },
+        "response_wall_s": {
+          "n": 313,
+          "total": 1475.902132,
+          "median": 3.940071,
+          "max": 27.638916000000002
+        },
+        "wire_failures": {},
+        "proxy_http_statuses": {
+          "200": 313
+        },
+        "scheduler_statuses": {
+          "done": 311,
+          "censored": 2
+        },
+        "grasp_epoch_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "regrasp_cycles_beyond_first": 7,
+        "terminal_settlement": {
+          "at": 597.7,
+          "before": {
+            "sends": 313,
+            "actions": 311,
+            "deliveries": 64,
+            "dispatch": 311
+          },
+          "after": {
+            "sends": 313,
+            "actions": 311,
+            "deliveries": 64,
+            "dispatch": 311
+          },
+          "censored": 2,
+          "unsent_cancelled": 0,
+          "channel": {
+            "condition": "leader_ko",
+            "topology": "star",
+            "encoding": "free_ko",
+            "leader_id": "r2",
+            "sent": 64,
+            "accepted_messages": 64,
+            "rejected": 0,
+            "delivery_edges": 64,
+            "free_text_messages": 64,
+            "follower_to_follower": 0,
+            "received": {
+              "r1": 29,
+              "r2": 35,
+              "r3": 0
+            },
+            "inbox_agrees_with_scheduler": true,
+            "study_spec": "leader_ko"
+          }
+        },
+        "outstanding": 0,
+        "floor_guard_samples": {
+          "N": 11955,
+          "floor_admitted": 8060,
+          "command_release_allowed": 8023,
+          "floor_admitted_despite_command_false": 37,
+          "truth_feedback_rows": 0
+        },
+        "clipped_backoffs": [
+          {
+            "robot_id": "r1",
+            "t": 525.4,
+            "seg": 7,
+            "phase": "clipped_backoff",
+            "count": 1,
+            "reason": "BAND_CLIPPED",
+            "frame_id": 10462,
+            "action": {
+              "kind": "mecanum",
+              "forward": -0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "calibrated_delta": [
+              -0.012917157771402163,
+              0.00040206798082011467,
+              0.00029378953563691213
+            ],
+            "settled_after_s": 525.9
+          }
+        ],
+        "retry_waits": [],
+        "retry_exhausted": [],
+        "retry_hold_violations": 0,
+        "result_status": "DEV_STAGE_FINISHED",
+        "end_sim_s": 597.6999999999999,
+        "model_rejections": [],
+        "security": {
+          "scanned_text_files": 701,
+          "secret_pattern_matches": 0,
+          "skipped_large_text_files": [
+            "/home/ubuntu/ugrp-sim/runs/s4live11-leader_ko-s601-v182/raw/student_record.json"
+          ]
+        }
+      },
+      "raw": {
+        "canonical_ARM": "/home/ubuntu/ugrp-archive/runs/s4live11-leader_ko-s601-v182",
+        "inventory": {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/s4live11-leader_ko-s601-v182-inventory.json",
+          "sha256": "db46cd79ed78c1a90695360aa8a9aeaac28b28a6ceb2c3fa0114af8e97947db8",
+          "bytes": 4519052
+        },
+        "files": 36886,
+        "bytes": 1072918854,
+        "Mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-leader_ko-s601-v182",
+        "full_SHA_verified": true
+      },
+      "evaluation": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/s4live11-leader_ko-s601-v182-report.json",
+        "sha256": "2ab7e4aa04a4ffc457f23d11ecc3b6d1033312fa1ebda9980ff7840c6f2c8022",
+        "bytes": 87489
+      }
+    },
+    {
+      "name": "s4live11-structured-s601-v182",
+      "condition": "structured",
+      "seed": 601,
+      "health": {
+        "status": "PASS",
+        "checked_after_s": 181.86433966597542,
+        "first": {
+          "sim_s": 1.0,
+          "frames": 21,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8064199336059195,
+                0.08433461303644484,
+                0.03201347603101254
+              ],
+              "base_delta_m": 3.2282171905156272e-06,
+              "arm_delta_m": 3.694270571824599e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.8095366763785026,
+                0.0067208470103147875,
+                0.03201345990152728
+              ],
+              "base_delta_m": 3.1443803483813764e-06,
+              "arm_delta_m": 3.546130491851569e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            }
+          },
+          "wall_s": 23.70868881500064,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [],
+            "completed": {},
+            "claims": {},
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "last": {
+          "sim_s": 30.0,
+          "frames": 601,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8432881652925257,
+                0.06961506712679452,
+                0.031930921241234346
+              ],
+              "base_delta_m": 0.039701274516051994,
+              "arm_delta_m": 0.11456817675172468,
+              "commands": 713,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 1,
+              "turn_commands": 0,
+              "state": "lift"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.7643435211411675,
+                0.027995153480179502,
+                0.03196270488011682
+              ],
+              "base_delta_m": 0.049953163479733775,
+              "arm_delta_m": 0.12319440957293538,
+              "commands": 716,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 2,
+              "turn_commands": 2,
+              "state": "lift"
+            }
+          },
+          "wall_s": 147.98755429800076,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [
+              {
+                "robot_id": "r2",
+                "call_id": "call-0002-r2",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_pos"
+                },
+                "at": 3.9,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "970ccb02395f492d018cf71550f68dd3bbfbb44b3ca33ed31a1f0d79e216670c",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              },
+              {
+                "robot_id": "r1",
+                "call_id": "call-0001-r1",
+                "action": {
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_neg",
+                  "destination_zone": "B"
+                },
+                "at": 6.2,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "a2de9c0685d8f615b436019361aca301c7fdf64f60ec832ca8aeb5c45c911deb",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet",
+                  "static_map"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              }
+            ],
+            "completed": {},
+            "claims": {
+              "r2": "call-0002-r2",
+              "r1": "call-0001-r1"
+            },
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "log_exceptions": []
+      },
+      "status": "DEV_STAGE_FINISHED",
+      "pair_failure": null,
+      "s3_failures": {},
+      "goal_B_landed": {
+        "n": 0,
+        "N": 1
+      },
+      "cycles": {
+        "GO_ACK_epochs": 8,
+        "completed_supported_carry_legs": 8,
+        "supported_restarts": 7
+      },
+      "path_m": 5.855692716306342,
+      "beam_drop": false,
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "final_endpoint": {
+        "initial_beam": {
+          "t": 2.35,
+          "kind": "long_beam",
+          "x": 1.3,
+          "y": 0.05,
+          "yaw": -2.2070106714092577e-17,
+          "z": 0.015892244579783832,
+          "held": false,
+          "speed": 1.6837881876302034e-12
+        },
+        "final_beam": {
+          "t": 618.65,
+          "kind": "long_beam",
+          "x": 4.537736480470811,
+          "y": -2.541654786484737,
+          "yaw": 0.024751280169941877,
+          "z": 0.01589224457978382,
+          "held": false,
+          "speed": 1.7949572542335177e-12
+        },
+        "final_goal_error_m": 0.4460220804949463,
+        "delta_goal_xy_m": [
+          -0.062263519529188294,
+          -0.4416547864847371
+        ],
+        "last_half_second": {
+          "samples": 11,
+          "contacts": 11,
+          "stable_floor": true,
+          "max_speed": 1.7949572542335177e-12,
+          "z_range_m": 3.469446951953614e-18
+        },
+        "files": {
+          "eval_only/referee_truth.jsonl": {
+            "sha256": "8e7da2690f147ba99d7b698a44b98f645f9bf642b2ea52aaaa493a4e13b781c1",
+            "bytes": 5427771
+          },
+          "eval_only/contacts.jsonl": {
+            "sha256": "4c8511e16cd2e6f21250249840e4f9cdea643417c78ea38c5d000f2d2833cb26",
+            "bytes": 46389887
+          }
+        }
+      },
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 44,
+        "accepted_messages": 43,
+        "rejected": 0,
+        "delivery_edges": 43,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 21,
+          "r2": 22,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "model_audit": {
+        "name": "s4live11-structured-s601-v182",
+        "condition": "structured",
+        "seed": 601,
+        "root_reply_format": {
+          "n": 317,
+          "N": 319
+        },
+        "strict_permitted_distance": {
+          "path_m": 5.855692716306342,
+          "loaded_samples": 1312,
+          "unpermitted_loaded_samples": 0
+        },
+        "sent_posts": 319,
+        "provider_usage_reported": {
+          "prompt_tokens": 3045479,
+          "completion_tokens": 22731,
+          "total_tokens": 3070226
+        },
+        "response_wall_s": {
+          "n": 319,
+          "total": 1529.1871,
+          "median": 3.977253,
+          "max": 33.694599000000004
+        },
+        "wire_failures": {
+          "model_output_rejected": 2
+        },
+        "proxy_http_statuses": {
+          "200": 319
+        },
+        "scheduler_statuses": {
+          "done": 315,
+          "failed": 2,
+          "censored": 2
+        },
+        "grasp_epoch_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "regrasp_cycles_beyond_first": 7,
+        "terminal_settlement": {
+          "at": 616.3,
+          "before": {
+            "sends": 319,
+            "actions": 315,
+            "deliveries": 43,
+            "dispatch": 315
+          },
+          "after": {
+            "sends": 319,
+            "actions": 315,
+            "deliveries": 43,
+            "dispatch": 315
+          },
+          "censored": 2,
+          "unsent_cancelled": 0,
+          "channel": {
+            "condition": "structured",
+            "topology": "mesh",
+            "encoding": "schema",
+            "leader_id": null,
+            "sent": 44,
+            "accepted_messages": 43,
+            "rejected": 0,
+            "delivery_edges": 43,
+            "free_text_messages": 0,
+            "follower_to_follower": 0,
+            "received": {
+              "r1": 21,
+              "r2": 22,
+              "r3": 0
+            },
+            "inbox_agrees_with_scheduler": true,
+            "study_spec": "structured"
+          }
+        },
+        "outstanding": 0,
+        "floor_guard_samples": {
+          "N": 12327,
+          "floor_admitted": 8276,
+          "command_release_allowed": 8239,
+          "floor_admitted_despite_command_false": 37,
+          "truth_feedback_rows": 0
+        },
+        "clipped_backoffs": [],
+        "retry_waits": [],
+        "retry_exhausted": [],
+        "retry_hold_violations": 0,
+        "result_status": "DEV_STAGE_FINISHED",
+        "end_sim_s": 616.3,
+        "model_rejections": [],
+        "security": {
+          "scanned_text_files": 713,
+          "secret_pattern_matches": 0,
+          "skipped_large_text_files": [
+            "/home/ubuntu/ugrp-sim/runs/s4live11-structured-s601-v182/raw/student_record.json"
+          ]
+        }
+      },
+      "raw": {
+        "canonical_ARM": "/home/ubuntu/ugrp-archive/runs/s4live11-structured-s601-v182",
+        "inventory": {
+          "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/s4live11-structured-s601-v182-inventory.json",
+          "sha256": "8608b57e6758d52ce4d1ada3d03740000fe1ede9f236ac3a769e9a2ce980d6c1",
+          "bytes": 4657690
+        },
+        "files": 38020,
+        "bytes": 1103115716,
+        "Mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-structured-s601-v182",
+        "full_SHA_verified": true
+      },
+      "evaluation": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/s4live11-structured-s601-v182-report.json",
+        "sha256": "8c612b8051d4a709cbf4ff8747a2f542c3d0f717c9c8b1c505cd9207507cb5dd",
+        "bytes": 90045
+      }
+    },
+    {
+      "name": "s4live11-no_comm-s602-v182",
+      "condition": "no_comm",
+      "seed": 602,
+      "health": {
+        "status": "PASS",
+        "checked_after_s": 185.6106300840038,
+        "first": {
+          "sim_s": 1.0,
+          "frames": 21,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8064191951244768,
+                0.08433506270352438,
+                0.032013465241813394
+              ],
+              "base_delta_m": 3.2349453299618734e-06,
+              "arm_delta_m": 3.686781868315999e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.8095366172031642,
+                0.0067205269737625395,
+                0.032013456470907066
+              ],
+              "base_delta_m": 3.2389369163365365e-06,
+              "arm_delta_m": 3.719572513814266e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            }
+          },
+          "wall_s": 26.29054326700134,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [],
+            "completed": {},
+            "claims": {},
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "last": {
+          "sim_s": 29.0,
+          "frames": 581,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8348014714523215,
+                0.081890513456694,
+                0.031898614576840435
+              ],
+              "base_delta_m": 0.028490806713696887,
+              "arm_delta_m": 0.10424300809936872,
+              "commands": 713,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 1,
+              "turn_commands": 0,
+              "state": "lift"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.7648662544198568,
+                0.028060336242762926,
+                0.03195302761589933
+              ],
+              "base_delta_m": 0.049508959233626734,
+              "arm_delta_m": 0.12154082576931628,
+              "commands": 716,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 2,
+              "turn_commands": 2,
+              "state": "lift"
+            }
+          },
+          "wall_s": 152.00900953100063,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [
+              {
+                "robot_id": "r1",
+                "call_id": "call-0001-r1",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_neg"
+                },
+                "at": 3.8,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "a9013a3e35ee1cfafef03fd8d15cff6548659642b19efe710259485940173c7c",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              },
+              {
+                "robot_id": "r2",
+                "call_id": "call-0002-r2",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_pos"
+                },
+                "at": 3.8,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "287c59aaf711c5a84ac996d6658a6cbf1c218596a94db8c32d1646a4ec6ac5ab",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              }
+            ],
+            "completed": {},
+            "claims": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "log_exceptions": []
+      },
+      "status": "HOST_UNREACHABLE_PENDING_VERIFICATION",
+      "verdict": null,
+      "raw": {
+        "x86_expected": "/home/ubuntu/ugrp-sim/runs/s4live11-no_comm-s602-v182/raw",
+        "sha256": null,
+        "retrieved": false
+      },
+      "last_confirmed_SIM_s": 55.0,
+      "physics_failure_claimed": false,
+      "last_confirmed_model_calls": 18
+    },
+    {
+      "name": "s4live11-peer_ko-s602-v182",
+      "condition": "peer_ko",
+      "seed": 602,
+      "health": {
+        "status": "PASS",
+        "checked_after_s": 185.61063637497136,
+        "first": {
+          "sim_s": 1.0,
+          "frames": 21,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8064191951244768,
+                0.08433506270352438,
+                0.032013465241813394
+              ],
+              "base_delta_m": 3.2349453299618734e-06,
+              "arm_delta_m": 3.686781868315999e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.8095366172031642,
+                0.0067205269737625395,
+                0.032013456470907066
+              ],
+              "base_delta_m": 3.2389369163365365e-06,
+              "arm_delta_m": 3.719572513814266e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            }
+          },
+          "wall_s": 25.009000924997963,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [],
+            "completed": {},
+            "claims": {},
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "last": {
+          "sim_s": 30.0,
+          "frames": 601,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8445672643580552,
+                0.06890688781564137,
+                0.03190581992785806
+              ],
+              "base_delta_m": 0.041153081660847135,
+              "arm_delta_m": 0.11569842261847706,
+              "commands": 713,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 1,
+              "turn_commands": 0,
+              "state": "lift"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.7642714138613576,
+                0.028717182682829048,
+                0.03197699901826405
+              ],
+              "base_delta_m": 0.05032992960053584,
+              "arm_delta_m": 0.12369281342732903,
+              "commands": 716,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 2,
+              "turn_commands": 2,
+              "state": "lift"
+            }
+          },
+          "wall_s": 153.85556776299927,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [
+              {
+                "robot_id": "r1",
+                "call_id": "call-0001-r1",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_neg"
+                },
+                "at": 4.9,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "a9013a3e35ee1cfafef03fd8d15cff6548659642b19efe710259485940173c7c",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              },
+              {
+                "robot_id": "r2",
+                "call_id": "call-0002-r2",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_pos"
+                },
+                "at": 4.9,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "287c59aaf711c5a84ac996d6658a6cbf1c218596a94db8c32d1646a4ec6ac5ab",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              }
+            ],
+            "completed": {},
+            "claims": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "log_exceptions": []
+      },
+      "status": "HOST_UNREACHABLE_PENDING_VERIFICATION",
+      "verdict": null,
+      "raw": {
+        "x86_expected": "/home/ubuntu/ugrp-sim/runs/s4live11-peer_ko-s602-v182/raw",
+        "sha256": null,
+        "retrieved": false
+      },
+      "last_confirmed_SIM_s": 55.0,
+      "physics_failure_claimed": false,
+      "last_confirmed_model_calls": 18
+    },
+    {
+      "name": "s4live11-leader_ko-s602-v182",
+      "condition": "leader_ko",
+      "seed": 602,
+      "health": {
+        "status": "PASS",
+        "checked_after_s": 185.61053979198914,
+        "first": {
+          "sim_s": 1.0,
+          "frames": 21,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8064191951244768,
+                0.08433506270352438,
+                0.032013465241813394
+              ],
+              "base_delta_m": 3.2349453299618734e-06,
+              "arm_delta_m": 3.686781868315999e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.8095366172031642,
+                0.0067205269737625395,
+                0.032013456470907066
+              ],
+              "base_delta_m": 3.2389369163365365e-06,
+              "arm_delta_m": 3.719572513814266e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            }
+          },
+          "wall_s": 26.76767826899595,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [],
+            "completed": {},
+            "claims": {},
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "last": {
+          "sim_s": 30.0,
+          "frames": 601,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8446001568557149,
+                0.07084052251356816,
+                0.0319332881209872
+              ],
+              "base_delta_m": 0.04049880994497947,
+              "arm_delta_m": 0.11562962259947669,
+              "commands": 713,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 1,
+              "turn_commands": 0,
+              "state": "lift"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.765440911841742,
+                0.0282102394519606,
+                0.03194339789468947
+              ],
+              "base_delta_m": 0.04905654834109119,
+              "arm_delta_m": 0.12206443390192925,
+              "commands": 716,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 2,
+              "turn_commands": 2,
+              "state": "lift"
+            }
+          },
+          "wall_s": 155.56737033399986,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [
+              {
+                "robot_id": "r1",
+                "call_id": "call-0001-r1",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_neg"
+                },
+                "at": 4.9,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "a9013a3e35ee1cfafef03fd8d15cff6548659642b19efe710259485940173c7c",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              },
+              {
+                "robot_id": "r2",
+                "call_id": "call-0002-r2",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_pos"
+                },
+                "at": 5.0,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "287c59aaf711c5a84ac996d6658a6cbf1c218596a94db8c32d1646a4ec6ac5ab",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              }
+            ],
+            "completed": {},
+            "claims": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "log_exceptions": []
+      },
+      "status": "HOST_UNREACHABLE_PENDING_VERIFICATION",
+      "verdict": null,
+      "raw": {
+        "x86_expected": "/home/ubuntu/ugrp-sim/runs/s4live11-leader_ko-s602-v182/raw",
+        "sha256": null,
+        "retrieved": false
+      },
+      "last_confirmed_SIM_s": 54.0,
+      "physics_failure_claimed": false,
+      "last_confirmed_model_calls": 15
+    },
+    {
+      "name": "s4live11-structured-s602-v182",
+      "condition": "structured",
+      "seed": 602,
+      "health": {
+        "status": "PASS",
+        "checked_after_s": 185.61063991696574,
+        "first": {
+          "sim_s": 1.0,
+          "frames": 21,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8064191951244768,
+                0.08433506270352438,
+                0.032013465241813394
+              ],
+              "base_delta_m": 3.2349453299618734e-06,
+              "arm_delta_m": 3.686781868315999e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.8095366172031642,
+                0.0067205269737625395,
+                0.032013456470907066
+              ],
+              "base_delta_m": 3.2389369163365365e-06,
+              "arm_delta_m": 3.719572513814266e-06,
+              "commands": 0,
+              "servo_ids": [],
+              "translation_commands": 0,
+              "turn_commands": 0,
+              "state": "await_claim"
+            }
+          },
+          "wall_s": 24.68066622799961,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [],
+            "completed": {},
+            "claims": {},
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "last": {
+          "sim_s": 30.0,
+          "frames": 601,
+          "robots": {
+            "r1": {
+              "base_xyz_m": [
+                0.8344237894255447,
+                0.08135976972122627,
+                0.03189430290440827
+              ],
+              "base_delta_m": 0.02816568006619754,
+              "arm_delta_m": 0.1049043110874963,
+              "commands": 713,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 1,
+              "turn_commands": 0,
+              "state": "wait_carry"
+            },
+            "r2": {
+              "base_xyz_m": [
+                1.757132478943002,
+                0.03645597527583299,
+                0.03192206127907009
+              ],
+              "base_delta_m": 0.06025578967511931,
+              "arm_delta_m": 0.13144826201425272,
+              "commands": 716,
+              "servo_ids": [
+                1,
+                3,
+                4,
+                5
+              ],
+              "translation_commands": 2,
+              "turn_commands": 2,
+              "state": "wait_carry"
+            }
+          },
+          "wall_s": 153.71013317899633,
+          "model_calls": 3,
+          "phase": {
+            "mode": "mutual_go_v1",
+            "research_result": false,
+            "visual_detector": "LLM own RGB judgement; unvalidated",
+            "carry_lease_renewal": "all_active_phase_rgb_heartbeat_v3",
+            "renewals": [
+              {
+                "robot_id": "r1",
+                "call_id": "call-0001-r1",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_neg"
+                },
+                "at": 3.9,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "a9013a3e35ee1cfafef03fd8d15cff6548659642b19efe710259485940173c7c",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              },
+              {
+                "robot_id": "r2",
+                "call_id": "call-0002-r2",
+                "action": {
+                  "destination_zone": "B",
+                  "kind": "claim",
+                  "order_id": "order-5",
+                  "role": "end_pos"
+                },
+                "at": 3.9,
+                "requested_at": 0.0,
+                "frame_t": 0.0,
+                "frame_sha256": "287c59aaf711c5a84ac996d6658a6cbf1c218596a94db8c32d1646a4ec6ac5ab",
+                "epoch": null,
+                "command_accepted": true,
+                "mode": "all_active_phase_rgb_heartbeat_v3",
+                "own_executor_phase": null,
+                "decision_sources": [
+                  "order_sheet"
+                ],
+                "grasp_success_claim": false,
+                "previous_response_at": null,
+                "accepted": false,
+                "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+                "captured_phase": "unclaimed",
+                "same_epoch_rebind": false
+              }
+            ],
+            "completed": {},
+            "claims": {
+              "r1": "call-0001-r1",
+              "r2": "call-0002-r2"
+            },
+            "signals": [],
+            "decisions": [],
+            "permits": [],
+            "failure": null,
+            "physical_success": null,
+            "epoch_reconnect": true,
+            "go_ack_rounds": true,
+            "rounds": {},
+            "snapshot_reconnections": [],
+            "carry_protocol_feedback": true
+          },
+          "status": "RUNNING",
+          "error": null,
+          "controller_feedback": false
+        },
+        "log_exceptions": []
+      },
+      "status": "HOST_UNREACHABLE_PENDING_VERIFICATION",
+      "verdict": null,
+      "raw": {
+        "x86_expected": "/home/ubuntu/ugrp-sim/runs/s4live11-structured-s602-v182/raw",
+        "sha256": null,
+        "retrieved": false
+      },
+      "last_confirmed_SIM_s": 55.0,
+      "physics_failure_claimed": false,
+      "last_confirmed_model_calls": 18
+    }
+  ],
+  "model_accounting_completed_only": {
+    "POSTs": 1203,
+    "reported_tokens": 11033579,
+    "response_wall_s_total": 5778.270606,
+    "HTTP_429": 0,
+    "waits": 0,
+    "wait_wall_s": 0,
+    "root_format_valid": {
+      "n": 1201,
+      "N": 1203
+    },
+    "billed_USD": null,
+    "cost_scope": "provider-reported tokens only; subscription USD and exact upstream attempts unavailable; interrupted wave excluded pending reconciliation"
+  },
+  "integrity": {
+    "POST_response_image_audit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/audit-wave601.json",
+      "sha256": "7da6b1e09f44c06003ae822f8e2b0b38318e367ecb670dba4bc03ca46cfe9815",
+      "bytes": 1041809
+    },
+    "reconciled_POSTs": {
+      "n": 1203,
+      "N": 1203
+    },
+    "image_SHA_checked": 2406,
+    "ARM_files_verified": 140031,
+    "ARM_bytes": 4057803845,
+    "ARM_proof": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/archive-wave601.json",
+      "sha256": "b9805e0cd721d2186b756ce1fbf0d855ca7ec8f8676d1c9c814921b46b8e2692",
+      "bytes": 1404
+    },
+    "Mac_lite": [
+      {
+        "name": "s4live11-no_comm-s601-v182",
+        "files": 386,
+        "bytes": 550607220,
+        "errors": []
+      },
+      {
+        "name": "s4live11-peer_ko-s601-v182",
+        "files": 345,
+        "bytes": 523576866,
+        "errors": []
+      },
+      {
+        "name": "s4live11-leader_ko-s601-v182",
+        "files": 393,
+        "bytes": 608137801,
+        "errors": []
+      },
+      {
+        "name": "s4live11-structured-s601-v182",
+        "files": 399,
+        "bytes": 626286561,
+        "errors": []
+      }
+    ],
+    "large_text_security": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/large-text-security601.json",
+      "sha256": "5845062d0dcb19cbb7ff618a3b14808507d6de060e41bebf6e1f0ce40fae21a7",
+      "bytes": 1159
+    },
+    "supplemental_ARM_metadata": {
+      "proof": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/metadata-ARM-verification.json",
+      "sha256": "984c3e41adf73d360113d8db224b86b6dbac44aca6478b758099144e59840c96",
+      "files": 19,
+      "matched": 19,
+      "errors": [],
+      "path": "/home/ubuntu/ugrp-archive/s4live11-integrity"
     }
   },
-  "raw_policy": "server full evaluation/SHA; Mac fetch-lite only"
+  "verification": {
+    "offline_tests": {
+      "n": 47,
+      "N": 47,
+      "files": [
+        "tests/test_s4_live11.py",
+        "tests/test_s4_live10.py"
+      ],
+      "latest_new_tests": "13 passed in 42.16s",
+      "prior_related_tests": "34 passed; initial new-test assertions corrected to match logical call_id, no physics run"
+    },
+    "Mac_physics_render_model_calls": 0,
+    "S3_frozen_source_files": 130,
+    "source_compiles": true,
+    "scope": "offline regression and startup preflight only; excludes subsequent live model batch"
+  },
+  "host_interruption": {
+    "recorded_utc": "2026-10-11T05:54:51.138002+00:00",
+    "classification": "HOST_CONNECTIVITY_UNKNOWN",
+    "last_observed_sim_s": {
+      "no_comm": 54,
+      "peer_ko": 55,
+      "leader_ko": 54,
+      "structured": 55
+    },
+    "first_wave_complete_ARM_verified": 4,
+    "wave602_initial_health": "4/4 PASS",
+    "Mac_ssh": "timeout",
+    "ARM_tcp22_errno": 11,
+    "existing_tunnel": "Connection closed by remote host",
+    "physics_failure_claimed": false,
+    "OCI_power_state": "RUNNING",
+    "last_checked_utc": "2026-10-11T06:00:33.128899+00:00",
+    "last_confirmed_progress": {
+      "unix": 1791697910.469575,
+      "runs": {
+        "s4live11-no_comm-s602-v182": {
+          "EXIT": null,
+          "sim_s": 55.0,
+          "model_calls": 18,
+          "status": "RUNNING"
+        },
+        "s4live11-peer_ko-s602-v182": {
+          "EXIT": null,
+          "sim_s": 55.0,
+          "model_calls": 18,
+          "status": "RUNNING"
+        },
+        "s4live11-leader_ko-s602-v182": {
+          "EXIT": null,
+          "sim_s": 54.0,
+          "model_calls": 15,
+          "status": "RUNNING"
+        },
+        "s4live11-structured-s602-v182": {
+          "EXIT": null,
+          "sim_s": 55.0,
+          "model_calls": 18,
+          "status": "RUNNING"
+        }
+      }
+    }
+  },
+  "remaining_causes": {
+    "target_error_completed_route": {
+      "n": 3,
+      "N": 4,
+      "goal_tolerance_m": 0.02,
+      "observed_errors_m": [
+        0.5259685196915462,
+        0.4490449374312462,
+        0.4460220804949463
+      ],
+      "y_error_m": [
+        -0.518812772537824,
+        -0.44858709982838674,
+        -0.4416547864847371
+      ],
+      "interpretation": "Posthoc direction/length drift; S3 control source unchanged; not a GO/ACK or API stop"
+    },
+    "clipped_reacquisition": {
+      "n": 1,
+      "N": 4,
+      "case": "no_comm seed601",
+      "reason": "r1 BAND_CLIPPED 828/828 after two bounded reverse pulses; r2 REFIX_HOVER_BARRIER_TIMEOUT",
+      "details": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/no_comm601-clipping.json",
+        "sha256": "dfa56b49169c8fd59efbeca3f618a5658d768e82c3705c7b15646de4cde0ce1d",
+        "bytes": 2532
+      }
+    },
+    "interrupted_wave": {
+      "n": 4,
+      "N": 8,
+      "classification": "HOST_UNREACHABLE_PENDING_VERIFICATION",
+      "OCI_power_state": "RUNNING",
+      "ssh": "timeout from Mac and ARM; existing reverse tunnel closed by remote host",
+      "raw_removed": false,
+      "rerun_before_raw_verification": false
+    }
+  },
+  "BAND_CLIPPED_explanation": "Own RGB grip band intersects the invalid image border; the band is detected, but a fully visible grasp endpoint cannot be certified. It is not image-file truncation.",
+  "references": [
+    "https://docs.cloud.google.com/storage/docs/retry-strategy",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#name-retry-after",
+    "https://ai.google.dev/gemini-api/docs/structured-output",
+    "https://design.ros2.org/articles/actions.html"
+  ],
+  "next_candidates": [
+    "S3 image/issued-command route endpoint correction for systematic y overshoot",
+    "Bounded own-RGB reacquisition motion after clipped-backoff exhaustion"
+  ],
+  "limitations": [
+    "Eight-run cohort not complete; no conclusions for four interrupted seed602 runs",
+    "Four live runs observed no HTTP429; retry freeze and duplicate suppression verified only by offline fault injection",
+    "Unchanged proxy does not enforce native structured-output schema; short examples plus strict local validation",
+    "Synthetic S3 alignment entrance; no warehouse main-study E2E success",
+    "Exploratory reused seeds; historical v181 baseline is not a paired causal comparison"
+  ],
+  "interrupted_wave_proxy_receipts": {
+    "count": 70,
+    "reconciled_server_ledger": false,
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/relay/receipts.jsonl",
+    "sha256": "82cc9fb6d98f72a3bc65ba83b4efdb2124e59ffd7fd5561b0bd2f0ee59bc1a3d",
+    "usage_unknown": true
+  },
+  "security": {
+    "completed_run_text_scans": 4,
+    "secret_matches": 0,
+    "large_text_scans": 4,
+    "large_text_matches": 0,
+    "driver_environment_key_names": 0,
+    "own_relay_tunnel_exited": true,
+    "remote_processes_and_raw_current_status": "unverified because SSH unavailable",
+    "original_proxy_pid": 1529,
+    "original_proxy_retained": true
+  },
+  "remote_CI": {
+    "verified_complete": false,
+    "known_failure": "existing tests/test_s4_live5.py collection ModuleNotFoundError: mujoco",
+    "snapshot_path": "/Users/changmin/projects/ugrp/outputs/s4live11-offline/ci-snapshot-latest.json",
+    "source_sha": "4316bdd5804f37e46d7eb3866f9c7d2ae774168f",
+    "counts": {
+      "SUCCESS": 25,
+      "FAILURE": 8
+    },
+    "scope": "source4316 checks; one failed shard inspected as missing mujoco; other failure causes not audited"
+  },
+  "resumption": {
+    "source_sha": "4316bdd5804f37e46d7eb3866f9c7d2ae774168f",
+    "preserve_interrupted_raw_before_rerun": true,
+    "same_commands": "experiments/2026-10-06-s4-llm/s4live11/plan.json",
+    "rerun_only_interrupted_seed602_after_host_and_raw_check": true,
+    "shared_host_reboot_performed": false,
+    "live_process_status_unverified": true
+  }
 }
