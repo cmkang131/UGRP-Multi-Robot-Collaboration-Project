@@ -1,0 +1,189 @@
+{
+  "schema": "ugrp.e2e9.v1",
+  "status": "PREPARED",
+  "pr": 433,
+  "run_class": "dev",
+  "research_result": false,
+  "execution_bundle": "e2e-explore-posefix-v194",
+  "workflow_version": "7.87.0",
+  "source_sha": null,
+  "source_pose": {
+    "commit": "1c809ebd052fec3cafceef3ebc0edb2218c05d54",
+    "path": "harness/ego_pose_continuity.py",
+    "sha256": "87a0d84889f701986b313820346c0a5f88de9b8902ded3a426d7504b8f96c01b",
+    "condition": "innovation",
+    "other_branch_modified": false
+  },
+  "preregistration": {
+    "seeds": [
+      61001,
+      61002
+    ],
+    "expansion_seeds": [
+      61003,
+      61004
+    ],
+    "max_runs": 8,
+    "batches": {
+      "A": "OpenRouter Gemma; decider=off",
+      "B": "OpenRouter Gemma + Jev; decider=jev_v1"
+    },
+    "toggles": {
+      "exploration_progress": "frontier_progress_v1",
+      "pose_fix": "innovation"
+    },
+    "end_conditions": [
+      "LLM_operated",
+      "own_map_completed",
+      "start_to_finish_transport"
+    ],
+    "expansion": "Only after initial per-run check all pass",
+    "deadline_utc": "2026-10-11T21:50:00Z",
+    "new_run_cutoff_utc": "2026-10-11T21:30:00Z"
+  },
+  "baseline": {
+    "source": "experiments/2026-10-11-e2e8-openrouter-jev/summary.json",
+    "actual_runs": 4,
+    "LLM_operated": 4,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "frame_jumps_over5cm": 57,
+    "frame_jumps_over20cm": 17,
+    "max_frame_jump_m": 0.7097264562825204
+  },
+  "diagnosis": {
+    "replay_run": "e2e8-b-s61001-r2",
+    "records": {
+      "r1": {
+        "frames": 66,
+        "max_pose_replay_error": 0.0,
+        "events": [
+          {
+            "t": 0.0,
+            "reason": "sensor_sweep_started",
+            "cause": "initial_view"
+          },
+          {
+            "t": 10.0,
+            "reason": "graph_preserved_recovery",
+            "phase": "sensor_sweep",
+            "retry": 0,
+            "navigation_epoch": null
+          },
+          {
+            "t": 11.6,
+            "reason": "sensor_sweep_completed",
+            "rotation_rad": 6.295574504920404,
+            "duration_s": 11.6
+          },
+          {
+            "t": 11.8,
+            "reason": "information_cycle_committed",
+            "target": [
+              -3.1362771739130437,
+              1.1669836956521744
+            ]
+          }
+        ],
+        "sha256": "40e638b6645c4bbb46a2c48aca754524af1bed50e5537fc083db6c13d6c1acfd"
+      },
+      "r2": {
+        "frames": 66,
+        "max_pose_replay_error": 0.0,
+        "events": [
+          {
+            "t": 0.0,
+            "reason": "sensor_sweep_started",
+            "cause": "initial_view"
+          },
+          {
+            "t": 10.0,
+            "reason": "graph_preserved_recovery",
+            "phase": "sensor_sweep",
+            "retry": 0,
+            "navigation_epoch": null
+          },
+          {
+            "t": 12.4,
+            "reason": "sensor_sweep_completed",
+            "rotation_rad": 6.376138195725023,
+            "duration_s": 12.4
+          },
+          {
+            "t": 12.6,
+            "reason": "information_cycle_committed",
+            "target": [
+              2.931882911392405,
+              -1.1840981012658225
+            ]
+          }
+        ],
+        "sha256": "5adbaeec41f83ce85387eb745eb608a05476c67c60f732473940707af07cf924"
+      }
+    },
+    "direct_cause": "Mandatory initial 360deg acquisition consumed 11.6/12.4 SIM seconds; normal single frontier alignment started just before external 180s stop. No reselection oscillation or repeated recovery established.",
+    "limitations": "r1/r2 replay 132 own RGB frames in one paired run. Other runs same initial-only command pattern but not all replayed."
+  },
+  "storage_budget": {
+    "runs": 4,
+    "per_run_mib": 4096,
+    "mac_lite_per_run_mib": 64,
+    "reserved_mib": 2048,
+    "floors_gib": {
+      "x86": 8,
+      "arm": 25,
+      "mac": 20
+    }
+  },
+  "tests": {
+    "files": [
+      "tests/test_e2e_explore_posefix.py",
+      "tests/test_e2e_s4_live.py",
+      "tests/test_e2e_jev_decider.py"
+    ],
+    "passed": 59,
+    "initial_run_passed": 58,
+    "changed_file_followup_passed": 9
+  },
+  "references": [
+    {
+      "url": "https://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated1/yamauchi_frontiers.pdf",
+      "use": "Yamauchi 1997: observed free/unknown frontier; navigate, integrate measurements, choose another accessible frontier.",
+      "verified": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/hrnr/m-explore/noetic-devel/explore/src/explore.cpp",
+      "use": "Progress timeout and ABORTED blacklist; do not replace identical goal. E2E commits goal until arrival/failure as hysteresis.",
+      "verified": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/hrnr/m-explore/noetic-devel/explore/src/frontier_search.cpp",
+      "use": "Use existing vendored gain/distance ranking and reachability planner.",
+      "verified": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_controller/plugins/simple_progress_checker.cpp",
+      "use": "0.5m/10s translation progress; E2E uses allowed issued-command odometry, not measured GT. This cannot prove actual movement; evaluator checks it separately.",
+      "verified": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_behaviors/plugins/spin.cpp",
+      "use": "Bounded integrated rotation and timeout; map corrections must not count as spin progress.",
+      "verified": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-infrastructure/rep/master/rep-0105.rst",
+      "use": "Map and continuous odom separation; source SHA 1c809ebd reporter used unchanged.",
+      "verified": true
+    },
+    {
+      "url": "https://docs.python.org/3/library/os.html#os.replace",
+      "use": "Same-directory tempfile, fsync, atomic replace; result checkpoint before optional cleanup.",
+      "verified": true
+    }
+  ],
+  "runs": [],
+  "remaining": [
+    "Remote runs, actual initial checks, evaluation, archive verification and lite retrieval pending."
+  ]
+}

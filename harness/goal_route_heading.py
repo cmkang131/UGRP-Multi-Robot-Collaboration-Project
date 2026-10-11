@@ -22,6 +22,9 @@ class Host:
     def command(self,*,t,pose,path,goal,costmap,core,points,map_pose,dev_light):
         if t<self.ready-1e-8:
             return dict(t=float(t),kind='hold'),dict(reason='heading_coast_wait',predicted_delta=[0.,0.,0.])
+        frame_transform=getattr(self,'pose_frame_transform',None)
+        if frame_transform is not None:
+            pose,path,goal=frame_transform(pose,path,goal)
         # Last point is the mission goal, not a dense teach waypoint: the
         # shared selector permits lateral trim only at the final goal.
         plan=dict(coordinate_frame=f'{self.robot_id}/own_odom',status='goal_approach',

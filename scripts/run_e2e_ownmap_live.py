@@ -28,16 +28,15 @@ def relay_url(profile, decider='off'):
     return f'http://127.0.0.1:{port}/v1/chat/completions'
 
 
-def write(path,value):
-    path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text(json.dumps(value,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+from harness.e2e_result_writer import write, Finalizer
 
-
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off'):
     if profile not in PROFILES or seed not in (61001,61002,61003,61004):raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
     if decider!='off' and profile!='study_gemma4_31b_v1':raise ValueError('JEV_GEMMA_REQUIRED')
+    if exploration_progress not in ('off','frontier_progress_v1'):raise ValueError('UNKNOWN_EXPLORATION_PROGRESS')
+    if pose_fix not in ('off','innovation'):raise ValueError('UNKNOWN_E2E_POSE_FIX')
     from harness.zone_study_llm_driver import load_registry
     b=json.loads((ROOT/'configs/e2e_s3_test_runtime_v1.json').read_text())
     # The template contributes physical/calibration constants only. Its authored
@@ -56,9 +55,11 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
             goal_geometry='e2e_b80_v1' if enabled else 'off',
             covariance_inflation='nees_frozen_v1' if enabled else 'off',
             setdown_reobserve='boundary_reobserve_v1' if enabled else 'off',setdown_only_when_relook=relook))
-    b['e2e_options']['decider']=decider
+    b['e2e_options'].update(decider=decider,exploration_progress=exploration_progress,pose_fix=pose_fix)
     if decider=='jev_v1':
         b.update(schema='ugrp.e2e_ownmap_live.v192',execution_bundle_id='e2e-ownmap-jev-v192',workflow_version='7.85.0')
+    if exploration_progress!='off' or pose_fix!='off':
+        b.update(schema='ugrp.e2e_ownmap_live.v194',execution_bundle_id='e2e-explore-posefix-v194',workflow_version='7.87.0')
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -68,6 +69,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         'configs/s2_v133_full_template.json','configs/e2e_nees_egomap70_dev_v1.json',
         'configs/zone_study_dev/e2e_one_beam_ownmap.json'))
     if decider=='jev_v1':paths.add('configs/simulation_workflows.d/e2e_ownmap_jev_v192.json')
+    if exploration_progress!='off' or pose_fix!='off':
+        paths.add('configs/simulation_workflows.d/e2e_explore_posefix_v194.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -84,7 +87,8 @@ def health(robots,host,transport,sim_s,wall_s,frames):
         own_route_generated=bool(r1 and r1.packet is not None),
         phase=transport.state if transport else 'boot',setdowns=transport.setdowns if transport else 0,
         robots={r:dict(pose_own_m=v.goal.explorer.local_pose.tolist(),stage=v.goal.stage,
-            map_frames=len(v.goal.e2e_observed),command=v.nav_command) for r,v in robots.items()},
+            map_frames=len(v.goal.e2e_observed),command=v.nav_command,
+            translation_commands=v.translation_commands) for r,v in robots.items()},
         latest_route_wait=transport.last_route_error if transport else None)
 
 
@@ -108,15 +112,17 @@ def run(b,out,receipt,*,backend_factory=None):
         start_to_finish_transport=False,E2E_success=False,setdowns=0,model_calls=0,
         physical_hardware=False,route_source='own_map',host='azure',class_='dev',pr=433)
     started=time.monotonic();backend=host=transport=None;robots={};frames_seen=0;origin=0.
-    def stop(*_):raise KeyboardInterrupt('EARLY_HEALTH_OR_TASK_STOP')
-    previous=signal.signal(signal.SIGTERM,stop)
+    finalizer=Finalizer(out,result)
+    finalizer.install()
     try:
         for p,sha in b['source_sha256'].items():
             if hashlib.sha256((ROOT/p).read_bytes()).hexdigest()!=sha:raise ValueError('SOURCE_HASH_MISMATCH:'+p)
         options=Options(**b['study_options'])
         cov=json.loads((ROOT/'configs/e2e_nees_egomap70_dev_v1.json').read_text())
         robots={r:Robot(r,b['seed']+i,cov,options,relook=b['e2e_options']['setdown_only_when_relook'],
-                        goal_geometry=b['e2e_options']['goal_geometry'])
+                        goal_geometry=b['e2e_options']['goal_geometry'],
+                        exploration_progress=b['e2e_options'].get('exploration_progress','off'),
+                        pose_fix=b['e2e_options'].get('pose_fix','off'))
                 for i,r in enumerate(('r1','r2','r3'))}
         for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
         offered=json.loads(receipt.read_text())
@@ -168,7 +174,9 @@ def run(b,out,receipt,*,backend_factory=None):
                     trace=robot.receive(own_obs,rgb)
                     backend._append(f'robots/{rid}/ownmap.jsonl',dict(t=now,frame_id=obs['frame_id'],
                         sha256=obs['sha256'],pose_own_m=robot.goal.explorer.local_pose.tolist(),
-                        remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command))
+                        remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
+                        pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
+                        navigation_status=trace.get('status'),pulse=trace.get('pulse')))
                 frames_seen+=1
                 if not host.started:
                     write(out/'e2e-progress.json',health(robots,host,transport,now,time.monotonic()-started,frames_seen))
@@ -188,10 +196,14 @@ def run(b,out,receipt,*,backend_factory=None):
                 p=health(robots,host,transport,now,time.monotonic()-started,frames_seen)
                 write(out/'e2e-progress.json',p);backend.flush()
                 print(json.dumps(p,ensure_ascii=False),flush=True)
-                if p['wall_s']>=b['initial_health_wall_s'] and not (p['first_model_response'] and p['own_map_B_generated']):
+                startup_ok=p['first_model_response'] and p['own_map_B_generated']
+                if b['e2e_options'].get('exploration_progress','off')!='off':
+                    startup_ok=p['first_model_response'] and all(
+                        p['robots'][r]['map_frames']>1 and p['robots'][r]['translation_commands']>0 for r in ('r1','r2'))
+                if p['wall_s']>=b['initial_health_wall_s'] and not startup_ok:
                     write(out/'initial-check.json',{**p,'passed':False,'reason':'MODEL_OR_OWN_B_STARTUP_MISSING'})
                     raise RuntimeError('INITIAL_HEALTH_FAILED')
-                if p['first_model_response'] and p['own_map_B_generated'] and now>=10:
+                if startup_ok and now>=10:
                     write(out/'initial-check.json',{**p,'passed':True})
             if transport.failure:result['status']='CONTROLLER_STOP';break
             if transport.done:result['status']='FINISHED';break
@@ -203,33 +215,41 @@ def run(b,out,receipt,*,backend_factory=None):
             failure=str(exc),traceback=traceback.format_exc())
         if host is not None:host.failed=exc
     finally:
-        signal.signal(signal.SIGTERM,previous)
+        finalizer.finalizing=True
+        result.update(wall_s=time.monotonic()-started,frames=frames_seen)
+        if backend is not None:result['sim_s']=backend.now-origin
+        finalizer.checkpoint()
         if transport is not None:
             result.update(setdowns=transport.setdowns,controller_failure=transport.failure,
-                own_map_completed=any(e['event']=='own_map_B_route_generated' for e in transport.events),
-                start_to_finish_transport=transport.done)
-            write(out/'transport-trace.json',transport.events)
+                own_map_completed=any(e['event']=='own_map_B_route_generated' for e in transport.events))
+            finalizer.attempt('transport',lambda:write(out/'transport-trace.json',transport.events))
         if host is not None:
             from harness.llm_completion import normal_completion
-            saved=host.save(out/'llm');result.update(model_calls=len(host.trial.send_ledger.entries),
-                model_usage=saved['model_usage'],response_wall_s=saved['response_wall_s'],
+            result.update(model_calls=len(host.trial.send_ledger.entries),
                 LLM_operated=any(normal_completion(r.get('completion')) for r in host.trial.send_ledger.entries))
-            write(out/'jev-guard-events.json',host.trial.jev_guard_events)
+            def save_host():
+                saved=host.save(out/'llm')
+                result.update(model_usage=saved['model_usage'],response_wall_s=saved['response_wall_s'])
+                write(out/'jev-guard-events.json',host.trial.jev_guard_events)
+            finalizer.attempt('llm',save_host)
         for rid,robot in robots.items():
-            write(out/f'{rid}-ownmap-final.json',robot.goal.snapshot())
-            write(out/f'{rid}-relook.json',robot.goal.e2e_relook.events)
+            finalizer.attempt(rid+'-map',lambda:write(out/f'{rid}-ownmap-final.json',robot.goal.snapshot()))
+            finalizer.attempt(rid+'-relook',lambda:write(out/f'{rid}-relook.json',robot.goal.e2e_relook.events))
         if backend is not None:
-            result['sim_s']=backend.now-origin
-            for rid in robots:backend.issue(rid,dict(kind='hold'))
-            backend.close()
-            from scripts.evaluate_e2e_ownmap_live import evaluate
-            evaluation=evaluate(out,result,transport.events if transport else [],origin)
-            write(out/'evaluation.json',evaluation)
-            result['start_to_finish_transport']=evaluation['start_to_finish_transport']
-            result['drops']=evaluation['drops']
-        result.update(wall_s=time.monotonic()-started,frames=frames_seen)
-        result['E2E_success']=all(result[k] for k in ('LLM_operated','own_map_completed','start_to_finish_transport'))
-        write(out/'result.json',result)
+            for rid in robots:
+                finalizer.attempt(rid+'-hold',lambda:backend.issue(rid,dict(kind='hold')))
+            finalizer.attempt('backend-close',backend.close)
+            def evaluate_result():
+                from scripts.evaluate_e2e_ownmap_live import evaluate
+                evaluation=evaluate(out,{**result,'start_to_finish_transport':bool(transport and transport.done)},
+                                    transport.events if transport else [],origin)
+                write(out/'evaluation.json',evaluation)
+                result['start_to_finish_transport']=evaluation['start_to_finish_transport']
+                result['drops']=evaluation['drops']
+            finalizer.attempt('evaluation',evaluate_result)
+        result['E2E_success']=not result['finalization_errors'] and all(
+            result[k] for k in ('LLM_operated','own_map_completed','start_to_finish_transport'))
+        finalizer.finish()
         hashes={}
         for p in out.rglob('*'):
             if p.is_file() and p.name!='artifacts.sha256.json':
@@ -245,9 +265,12 @@ def main():
     p.add_argument('--e2e-live',action='store_true');p.add_argument('--event-driven-llm',action='store_true')
     p.add_argument('--compact-prompt',action='store_true');p.add_argument('--setdown-only-when-relook',choices=('off','on_v1'),default='off')
     p.add_argument('--decider',choices=('off','jev_v1'),default='off')
+    p.add_argument('--exploration-progress',choices=('off','frontier_progress_v1'),default='off')
+    p.add_argument('--pose-fix',choices=('off','innovation'),default='off')
     p.add_argument('--execute',action='store_true');a=p.parse_args()
     b=bundle(a.expected_source_sha,a.seed,a.driver_profile,enabled=a.e2e_live,relook=a.setdown_only_when_relook,
-             options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider)
+             options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider,
+             exploration_progress=a.exploration_progress,pose_fix=a.pose_fix)
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
         raise ValueError('AZURE_X86_OSMESA_ONLY')

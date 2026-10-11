@@ -16,7 +16,7 @@ from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
 
 
-def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'):
+def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off'):
     if goal_geometry not in ('off','e2e_b80_v1'):raise ValueError('UNKNOWN_GOAL_GEOMETRY')
     from harness.active_navfn_start import make_mapper
     from harness.grid_acceleration import install
@@ -45,6 +45,12 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
     goal._select=lambda t:None
     goal._arrival=lambda *args:None
     OwnRGBRelook(goal)
+    if pose_fix not in ('off','innovation'):raise ValueError('UNKNOWN_E2E_POSE_FIX')
+    if pose_fix=='innovation':
+        from harness.ego_pose_continuity import install as pose_install, Options as PoseOptions
+        pose_install(goal,PoseOptions(correction_gate='mahalanobis_v1',pose_continuity='rep105_offset_v1'))
+    from harness.e2e_exploration import install as exploration_install
+    exploration_install(goal,exploration_progress)
     return goal
 
 
@@ -62,14 +68,16 @@ def beam_observer():
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off'):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off'):
         self.robot_id=rid;self.study_options=options
-        self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry)
+        self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
+                            exploration_progress=exploration_progress,pose_fix=pose_fix)
         self.observe_beam=beam_observer()
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]
         self.call_ref=None;self.trace=None;self.revision=0
         self.wall_segments=[]
+        self.translation_commands=0
 
     def receive(self,obs,rgb):
         own.closed(obs,('frame_id','sim_time','sha256','image'),'OWN_CAPTURE')
@@ -97,6 +105,8 @@ class Robot:
         return trace
 
     def commanded(self,action,now):
+        if action['kind']=='mecanum' and abs(action.get('forward',0))+abs(action.get('left',0))>0:
+            self.translation_commands+=1
         if action['kind']=='arm':self.servo[action['servo_id']]=action['pulse']
         elif action['kind']=='look':self.servo[6]=action['pan_pulse']
         self.goal.command(dict(t=now,**action))
