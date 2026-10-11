@@ -14,6 +14,14 @@
 [퇴역 목록](../experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json)에 바이트/해시로 보존했다.
 현재 소스는 v188 / 7.81.0으로 재등록하며 과거 결과를 승계하지 않는다.
 
+2026-10-11 Azure CPU 이관: VM의 기존 `ugrp-azure-idle-guard.timer`
+(15분·batch lease 미지원)와 `ugrp-sim-worker.service`
+(무한 GPU worker 재시작 supervisor)를 비활성화했다. 서버의 정의·스크립트·자료는
+보존했다. 대체는 [20분/8시간 가드](../scripts/azure_idle_guard.py)와
+유한 [CPU 실행기](../scripts/remote_run.py)이며,
+이전 가드의 보관 중 할당 해제와 복구는
+[검증 기록](../experiments/2026-10-11-azure-sim-migration/summary.json)에 남겼다.
+
 2026-10-10: `controller-replay-abba` adapter 1.0.0은 1.1.0(visibility 비교 옵션,
 측정 source/산출물 경로 명시)으로, `controller-replay-profile` 1.1.0은
 1.2.0(private binding/RGB 구간, visibility 옵션)으로 대체한다. 이전 실행 소스는

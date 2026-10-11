@@ -373,6 +373,7 @@ raise SystemExit(3 if a.fail else 0)
             'zone-s2-real-output-diag-v112',
         )})
         samples['zone-s2-realism-v132'] = ['--expected-source-sha', '0'*40, '--mode', 'start']
+        samples['azure-s3-environment-smoke'] = ['--expected-source-sha', '0'*40]
         samples['zone-s2-realism-v133'] = ['--expected-source-sha', '0'*40, '--mode', 'full']
         samples['zone-s2-v133-reproduction'] = ['--expected-registration-sha', '0'*40, '--seed', '1053']
         samples['zone-s2-v133-baseline-v52'] = ['--expected-registration-sha', '0'*40, '--seed', '1056']
