@@ -228,5 +228,5 @@ def test_prepared_plan_never_authorizes_execution_and_stays_within_azure_budget(
     assert set(options.values())=={'off'}
     p=json.loads(Path('experiments/2026-10-11-e2e-stage2-offline/azure-plan.json').read_text())
     assert not p['physical_execution_authorized'] and p['status']=='PREPARED_NOT_SUBMITTED'
-    assert p['N']==len(p['runs'])==24 and len({tuple(r.values()) for r in p['runs']})==24
+    assert p['N']==len(p['runs'])==48 and len({tuple(r.values()) for r in p['runs']})==48
     assert p['server']['max_concurrent']*p['server']['cpu_per_run_estimate']<p['server']['vcpu']*.8

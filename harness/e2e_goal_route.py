@@ -34,7 +34,8 @@ def provider_plan(packet, *, agreement, now, observed, profiles):
             agreement.proposal[0] != wire['route_hash']):
         raise ContractViolation('RECEIVED_CURRENT_ROUTE_APPROVAL_REQUIRED')
     compiled = compile_route(route, now=now, observed=observed, profiles=profiles,
-        option='on_v1', source='own_map', pulse_budget=packet['compiled'].get('pulse_budget', 'off'))
+        option='on_v1', source='own_map', pulse_budget=packet['compiled'].get('pulse_budget', 'off'),
+        setdown_only_when_relook=packet['compiled'].get('setdown_only_when_relook','off'))
     if packet['compiled'] != compiled:
         raise ContractViolation('COMPILED_OWN_ROUTE_MISMATCH')
     return {**plan_from_route(None, compiled), 'agreement_route_hash':wire['route_hash']}
@@ -161,7 +162,8 @@ class IntegratedGoalRoute(GoalRoute):
                      map_version=self.e2e_version, own_map=mapped, B_rgb_sources=copy.deepcopy(goal_sources), waypoints=points)
         route['route_hash'] = digest(route)
         compiled = compile_route(route, now=now, observed=sources, profiles=profiles, option='on_v1',
-                                 source='own_map', pulse_budget=pulse_budget)
+                                 source='own_map', pulse_budget=pulse_budget,
+                                 setdown_only_when_relook=self.e2e_options['setdown_only_when_relook'])
         return dict(source='own_map', route=route, compiled=compiled,
                     inputs=own.s3_inputs(route, rid='r1', now=now, observed=sources),
                     proposal=dict(kind='OwnRoute', route=wire_route(route), source_message_id=None),
@@ -197,7 +199,8 @@ class IntegratedGoalRoute(GoalRoute):
             route['B_rgb_sources'] = route['own_map']['goal']['sources'] = copy.deepcopy(verdict['frames'])
             route['route_hash'] = digest({k:v for k,v in route.items() if k != 'route_hash'})
             compiled = compile_route(route, now=now, observed=self.e2e_observed, profiles=profiles,
-                                     option='on_v1', source='own_map', pulse_budget=pulse_budget)
+                                     option='on_v1', source='own_map', pulse_budget=pulse_budget,
+                                     setdown_only_when_relook=self.e2e_options['setdown_only_when_relook'])
             packet = dict(source='own_map', route=route, compiled=compiled,
                           inputs=own.s3_inputs(route, rid='r1', now=now, observed=self.e2e_observed),
                           proposal=dict(kind='OwnRoute', route=wire_route(route), source_message_id=None),
@@ -207,6 +210,25 @@ class IntegratedGoalRoute(GoalRoute):
         agreement.proposal, agreement.approved, agreement.key, agreement.votes = None, False, None, {}
         self.e2e_pending_setdown = dict(packet=packet, boundary_center=boundary['center'], previous_epoch=previous_epoch)
         return dict(status='REAPPROVAL_REQUIRED', allow_lower=False, pending_route=packet)
+
+    def route_after_relook(self, beam, *, now, profiles, agreement, pulse_budget='off'):
+        """Consume an actually applied own fix in the next S3 pulse trajectory.
+
+        The host obtains beam center from the same robot's calibrated RGB and
+        installs provider_plan only after the new compact route is received
+        and approved. r2 separately aligns that delivered route to its own map.
+        """
+        relook=getattr(self,'e2e_relook',None)
+        receipt=None if relook is None else relook.receipt
+        if (receipt is None or self.e2e_options['setdown_only_when_relook']=='off' or
+                beam['rgb']['frame_id']<receipt['rgb'][-1]['frame_id']):
+            raise ContractViolation('APPLIED_OWN_RGB_CORRECTION_REQUIRED')
+        packet=self.route_to_B(beam,now=now,profiles=profiles,pulse_budget=pulse_budget)
+        relook.bound_plan_hash=packet['compiled']['plan_hash']
+        self.event(now,'e2e_pose_correction_used_by_route',route_hash=packet['route']['route_hash'],
+                   correction_frames=copy.deepcopy(receipt['rgb']),map_version=packet['route']['map_version'])
+        agreement.proposal,agreement.approved,agreement.key,agreement.votes=None,False,None,{}
+        return packet
 
     def setdown_ready(self, footprint, *, now, agreement, order_id, grip_epoch, seg):
         """No declaration/actuation from geometry alone: fresh revised agreement is mandatory."""
@@ -233,16 +255,18 @@ class IntegratedGoalRoute(GoalRoute):
 
 
 def attach(controller, *, own_route='off', arrival_gate='off', covariance_inflation='off',
-           covariance_profile=None, setdown_reobserve='off'):
+           covariance_profile=None, setdown_reobserve='off', setdown_only_when_relook='off'):
     options = dict(own_route=own_route, arrival_gate=arrival_gate, covariance_inflation=covariance_inflation,
-                   setdown_reobserve=setdown_reobserve)
+                   setdown_reobserve=setdown_reobserve,setdown_only_when_relook=setdown_only_when_relook)
     for key, allowed in (('own_route', OPTION), ('arrival_gate', RGB), ('covariance_inflation', NEES),
-                         ('setdown_reobserve', SETDOWN)):
+                         ('setdown_reobserve', SETDOWN), ('setdown_only_when_relook','on_v1')):
         if options[key] not in ('off', allowed): raise ContractViolation('UNKNOWN_E2E_' + key.upper())
     if all(v == 'off' for v in options.values()): return controller
     if type(controller) is not GoalRoute: raise ContractViolation('EXACT_GOAL_ROUTE_ADAPTER_REQUIRED')
     if own_route != 'off' and controller.robot_id != 'r1': raise ContractViolation('R1_GOAL_ROUTE_REQUIRED')
     if setdown_reobserve != 'off' and own_route == 'off': raise ContractViolation('SETDOWN_REQUIRES_OWN_ROUTE')
+    if setdown_only_when_relook != 'off' and controller.robot_id == 'r1' and own_route == 'off':
+        raise ContractViolation('RELOOK_REQUIRES_OWN_ROUTE_PROVIDER')
     controller.__class__ = IntegratedGoalRoute
     controller.e2e_options = options; controller.e2e_covariance_profile = copy.deepcopy(covariance_profile)
     controller.e2e_observed = []; controller.e2e_version = 0
@@ -276,4 +300,5 @@ def attach_setdown_gate(ep, controller, *, agreement, observation, option='off')
                 return
         return lower(now, idle)
     ctl._wait_lower = wait_lower
+    ctl.e2e_final_rgb_gate = controller
     return ep

@@ -11,12 +11,15 @@ from harness.zone_s3_integer_carry import PulseWindows
 OPTION = 'on_v1'
 
 
-def compile_route(route, *, now, observed, profiles, option='off', source='own_map', pulse_budget='off'):
+def compile_route(route, *, now, observed, profiles, option='off', source='own_map', pulse_budget='off',
+                  setdown_only_when_relook='off'):
     if option == 'off':
         return None
     if option != OPTION or source not in ('own_map', 'test_route_provider'):
         raise ContractViolation('UNKNOWN_OWN_ROUTE_ADAPTER')
     route = own.validate_route(route, 'r1', now, observed)
+    if setdown_only_when_relook not in ('off','on_v1'):
+        raise ContractViolation('UNKNOWN_SETDOWN_ONLY_WHEN_RELOOK')
     if len(route['waypoints']) > 64:
         raise ContractViolation('OWN_ROUTE_TOO_LONG')
     points = [copy.deepcopy(route['waypoints'][0])]
@@ -24,8 +27,9 @@ def compile_route(route, *, now, observed, profiles, option='off', source='own_m
         dx, dy = b[0]-a[0], b[1]-a[1]
         if math.hypot(dx, dy) < 1e-6 or abs(dx)>1e-8 and abs(dy)>1e-8:
             raise ContractViolation('S3_CARDINAL_NONZERO_LEG_REQUIRED')
-        # Existing S3's <=0.85 m release/regrasp drift boundary.
-        count = math.ceil(math.hypot(dx,dy)/.85)
+        # Frozen M2 carry/relocalize cadence, NOT a measured grasp limit.
+        # Opt-in .80 leaves room for integer ceil inside the measured envelope.
+        count = math.ceil(math.hypot(dx,dy)/(.80 if setdown_only_when_relook!='off' else .85))
         for i in range(1,count+1):points.append([a[0]+dx*i/count,a[1]+dy*i/count])
     if len(points)>64:raise ContractViolation('S3_SEGMENT_BUDGET_EXCEEDED')
     legs, turns, previous_heading = [], [], None
@@ -40,6 +44,7 @@ def compile_route(route, *, now, observed, profiles, option='off', source='own_m
                 turns.append(dict(at_seg=seg, route_turn_rad=turn, loaded_heading_turn_rad=0.,
                                   strategy='release_regrasp_then_axis_change'))
         plans = {}
+        command_distances = []
         for rid in ('r1', 'r2'):
             ctl = SimpleNamespace(rid=rid, seg=seg, v3_plan={'route':points},
                                   claims={}, log=lambda *a, **k:None)
@@ -49,8 +54,15 @@ def compile_route(route, *, now, observed, profiles, option='off', source='own_m
                               pulses=ctl.claims['segments'][0]['pulses'])
             if pulse_budget != 'off':
                 plans[rid]['pulse_durations_s'] = ctl.claims['segments'][0]['pulse_durations_s']
+            command_distances.append(ctl.claims['segments'][0]['nominal_distance_m'])
         legs.append(dict(seg=seg, start=list(a), end=list(b), distance_m=math.hypot(dx, dy),
                          axis='forward' if abs(dx)>1e-8 else 'left', plans=plans))
+        if setdown_only_when_relook!='off':
+            from harness.e2e_setdown_relook import CONTINUOUS_M, PULSES
+            leg=legs[-1];leg['command_distance_m']=max(command_distances)
+            if (leg['command_distance_m']>CONTINUOUS_M[leg['axis']]+1e-10 or
+                    leg['plans']['r1']['pulses']>PULSES[leg['axis']]):
+                raise ContractViolation('SEGMENT_EXCEEDS_MEASURED_CONTINUOUS_ENVELOPE')
         previous_heading = heading
     result = dict(schema='ugrp.e2e_s3_plan.v1', source=source, frame=route['own_map']['frame'],
                   map_version=route['map_version'], route_hash=route['route_hash'],
@@ -60,6 +72,10 @@ def compile_route(route, *, now, observed, profiles, option='off', source='own_m
                   transport_admitted=False, research_result=False,
                   requires='received route approval and fresh per-grip-epoch GO/ACK')
     if pulse_budget != 'off': result['pulse_budget'] = pulse_budget
+    if setdown_only_when_relook!='off':
+        from harness.e2e_setdown_relook import narrow_boundaries
+        result.update(setdown_only_when_relook=setdown_only_when_relook,
+                      relook_boundaries=narrow_boundaries(route,points))
     result['plan_hash'] = digest(result)
     return result
 

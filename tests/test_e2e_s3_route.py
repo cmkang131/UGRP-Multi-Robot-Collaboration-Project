@@ -42,6 +42,14 @@ def test_route_5_475m_seven_segments_one_corner_shared_cardinal_integer_plan():
     assert plan['plan_hash']==digest({k:v for k,v in plan.items() if k!='plan_hash'})
 
 
+def test_relook_compiler_rejects_pulse_count_beyond_saved_envelope():
+    # A different calibration cannot inherit the measured five lateral pulses
+    # merely because the waypoint distance is short enough.
+    route,args=fixture()
+    with pytest.raises(ContractViolation,match='MEASURED_CONTINUOUS'):
+        compile_route(route,**args,setdown_only_when_relook='on_v1')
+
+
 @pytest.mark.parametrize('change',('hash','goal','source','diagonal','duplicate','too_long'))
 def test_invalid_or_unobserved_routes_do_not_compile(change):
     route,args=fixture()

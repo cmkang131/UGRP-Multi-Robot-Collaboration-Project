@@ -1,0 +1,282 @@
+{
+  "id": "e2e-setdown-relook",
+  "status": "OFFLINE_PASS_PHYSICAL_UNVERIFIED",
+  "source_base": "169d6fba2dc52d8b39a6792d1c5bb6c8f8e677bb",
+  "new_physics": 0,
+  "model_calls": 0,
+  "oracle_x86_connections": 0,
+  "azure_submissions": 0,
+  "E2E_success": 0,
+  "tests": {
+    "passed": 90,
+    "total": 90,
+    "files": [
+      "tests/test_e2e_setdown_relook.py",
+      "tests/test_e2e_goal_route.py",
+      "tests/test_e2e_s3_route.py"
+    ],
+    "final_log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-setdown-relook-20261011/pytest-final-r2.txt",
+      "bytes": 179,
+      "sha256": "86def5328d16d356038bdfd231a194a6817f348f0914e9e2cb3b6e0a1f0e1339"
+    },
+    "prior_attempts": [
+      {
+        "log": "pytest-r1.txt",
+        "passed": 73,
+        "failed": 12,
+        "reason": "test fixture requested unsupported 3-particle RBPF"
+      },
+      {
+        "log": "pytest-r2.txt",
+        "passed": 15,
+        "failed": 1,
+        "reason": "continuation fixture unintentionally over covariance budget"
+      },
+      {
+        "log": "pytest-r3.txt",
+        "passed": 86,
+        "failed": 0
+      },
+      {
+        "log": "pytest-r4.txt",
+        "passed": 88,
+        "failed": 0
+      },
+      {
+        "log": "pytest-final.txt",
+        "passed": 89,
+        "failed": 0
+      }
+    ]
+  },
+  "cause": {
+    "cadence": "M2 fixed door points 1.55->2.40 (0.85m), 2.40->3.20 (0.80m); <=0.85m split inherited carry/relocalize cadence, not a measured grasp limit",
+    "references": [
+      "harness/zone_pair_executor.py:53-63",
+      "harness/pair_passage_plan.py:53",
+      "harness/zone_pair_highpose_runtime.py:359-379",
+      "harness/zone_pair_highpose_refix.py:886-904,922-953,965-998,1079-1106",
+      "harness/zone_s3_coarse_fine.py:229-248,328",
+      "591acf56:scripts/run_s4_pair_live11.py:36-42"
+    ],
+    "peer_s601": {
+      "segments": 8,
+      "planned_leg_m": [
+        0.15180000000000016,
+        0.7482,
+        0.7481999999999998,
+        0.7166666666666667,
+        0.7166666666666667,
+        0.7166666666666668,
+        0.8258999999999999,
+        0.8258999999999999
+      ],
+      "planned_total_m": 5.449999999999999,
+      "supported_restarts": 7,
+      "per_robot_own_request": "5/7",
+      "remaining": "2/7 both within own threshold but LLM set_down latched; pair OR lowered",
+      "relook_result": "0/7 per robot",
+      "checkpoint_high_reobserved": "0/7 per robot"
+    },
+    "bypass": "S3 coarse_fine replaces _align with beam grip alignment; inspect restore does not call legacy _align_relook_return metric wall fix. New release gate explicitly consumes own RGB/CSM and applies particle pose correction."
+  },
+  "measured_envelope": {
+    "stable_sampled_legs": 24,
+    "N": 24,
+    "truth_max_gap_s": 0.05000000000006821,
+    "max_tilt_deg": 1.2689484350505562,
+    "checks": [
+      "all sampled held",
+      "both sampled contacts >0",
+      "same r1/r2 pulse clock/count",
+      "mirrored commands"
+    ],
+    "limits_m": {
+      "forward": 0.8277695513612384,
+      "left": 0.8388003777717301
+    },
+    "limit_rule": "minimum measured axis progress among six 64-pulse axial and nine 5-pulse lateral trains; runtime sum of conservative calibrated commanded distance plus pulse-count bound",
+    "max_pulses": {
+      "forward": 64,
+      "left": 5
+    },
+    "independent_seeds": 1,
+    "conditions": 3,
+    "measurement_scope": "saved s4live11 s601, 20Hz evaluation samples; not proof of continuous contact or a new unbroken multi-leg trial"
+  },
+  "change": {
+    "toggle": "setdown_only_when_relook",
+    "default": "off",
+    "on": "on_v1",
+    "triggers": [
+      "own-observed narrow passage before/after",
+      "final placement",
+      "inflated covariance limit",
+      "measured distance/pulse cap",
+      "unmeasured direction change"
+    ],
+    "otherwise": "unchanged pair stop barrier, carry_grasp_receipt, unchanged grip epoch, fresh per-segment GO/ACK",
+    "relook": "post-open fixed inspect -> three fresh own RGB ORB/RANSAC + CSM -> actual RBPF pose transform, no covariance reset -> regrasp; corrected approved new OwnRoute required before carry",
+    "trace": [
+      "e2e_setdown_relook_started",
+      "e2e_relook_rgb",
+      "e2e_pose_correction_applied",
+      "e2e_setdown_relook_complete",
+      "e2e_pose_correction_used_by_route"
+    ],
+    "missing": "hold then 15 SIM second timeout; stale epoch, no_comm, old/hash-only renamed plans cannot open carry"
+  },
+  "next_plan": {
+    "path": "experiments/2026-10-11-e2e-stage2-offline/azure-plan.json",
+    "N": 48,
+    "carry": 36,
+    "no_comm": 12,
+    "vcpu": 16,
+    "max_concurrent": 18,
+    "waves": [
+      18,
+      18,
+      12
+    ],
+    "estimated_hours": [
+      3.15,
+      5.4
+    ],
+    "status": "PREPARED_NOT_SUBMITTED"
+  },
+  "remaining": [
+    "Native host composition and physical multi-leg retained-grasp continuation are not validated; frozen evidence is single uninterrupted pulse trains.",
+    "Saved eight-leg route can still require all seven intermediate setdowns under the measured envelope; no stop-count/time reduction is claimed.",
+    "Reobservation can fail through occlusion or aliasing; three-frame geometric agreement does not establish held-out localization accuracy.",
+    "Azure throughput is unmeasured; 6.3 wall/SIM from earlier x86 plus 120 SIM seconds relook allowance."
+  ],
+  "raw": {
+    "extracted": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-setdown-relook-20261011/saved-audit.json",
+      "bytes": 40501,
+      "sha256": "7c17882e80acc283551a3be45b64c619876bc9b4dd75e92bb41cef7939585ba1"
+    },
+    "original_host": "ARM oracle, saved records only",
+    "original_total_bytes": 723955479,
+    "originals": [
+      {
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live11-leader_ko-s601-v182/raw",
+        "files": {
+          "student_record.json": {
+            "sha256": "f1e2fa101e3d07d0b24d45320e7a2775c35f85edbeb9fad0c068263ca5271f09",
+            "bytes": 232282230
+          },
+          "eval_only/referee_truth.jsonl": {
+            "sha256": "6d62a8bdcf4b92a6025de67258db4b4c09c4ffbad32feff29056c00b0cdec31e",
+            "bytes": 5257088
+          },
+          "eval_only/cooperative-dynamics.jsonl": {
+            "sha256": "e6c748b2c1a36f1558413d510d5f1889dd76d93ee4b6fd95493367caa2a609e0",
+            "bytes": 9766450
+          }
+        }
+      },
+      {
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live11-peer_ko-s601-v182/raw",
+        "files": {
+          "student_record.json": {
+            "sha256": "f0ac1a2e3a9655e9c351d163d228af3101dbbcb5e68ce96e41bd503f19726805",
+            "bytes": 209176952
+          },
+          "eval_only/referee_truth.jsonl": {
+            "sha256": "36411bf78fb20f7862c62e1272278b8d483c565ccec1239dea99c76bf835cc52",
+            "bytes": 4497723
+          },
+          "eval_only/cooperative-dynamics.jsonl": {
+            "sha256": "612eae0ec57ae9a33d39dcb1f99043cca708c3041e74af1ad904dbdf129a9d53",
+            "bytes": 8399257
+          }
+        }
+      },
+      {
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live11-structured-s601-v182/raw",
+        "files": {
+          "student_record.json": {
+            "sha256": "59eb61649d1cd42216349ba534c06227e099bb8149e664f59b0cd0965ec7b7d6",
+            "bytes": 239053822
+          },
+          "eval_only/referee_truth.jsonl": {
+            "sha256": "8e7da2690f147ba99d7b698a44b98f645f9bf642b2ea52aaaa493a4e13b781c1",
+            "bytes": 5427771
+          },
+          "eval_only/cooperative-dynamics.jsonl": {
+            "sha256": "766306f8a11f82883eae11295f29c3eb1cedb916b66ea0d884ef5e72745bb8bb",
+            "bytes": 10094186
+          }
+        }
+      }
+    ],
+    "student_hashes_match_prior_record": "3/3"
+  },
+  "references": [
+    {
+      "title": "Olson 2009 Real-Time Correlative Scan Matching",
+      "url": "https://april.eecs.umich.edu/media/pdfs/olson2009icra.pdf",
+      "application": "Reuse existing CSM rigid registration; own RGB projected wall segments replace lidar, existing likelihood/acceptance unchanged."
+    },
+    {
+      "title": "Nav2 waypoint task executor",
+      "url": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/waypoint_follower/",
+      "application": "Separate waypoint traversal and explicit reobservation task; no Nav2 runtime dependency."
+    },
+    {
+      "title": "LoopGNN 2025",
+      "url": "https://arxiv.org/html/2505.21754v1",
+      "application": "Reviewed multi-frame consensus plus geometric verification; use existing ORB/RANSAC and CSM, not learned LoopGNN weights."
+    },
+    {
+      "title": "Prentice and Roy 2009 Belief Roadmap",
+      "url": "https://people.csail.mit.edu/prentice/papers/ijrr09-brm.pdf",
+      "application": "Uncertainty-triggered observation principle; no claim of a full BRM implementation."
+    }
+  ],
+  "source_sha256": {
+    "harness/e2e_setdown_relook.py": "21bd2a8d768a4b00c47920846e4d6e5695c953f0e8ef49efc60a307ca5f9d9a9",
+    "harness/e2e_goal_route.py": "418afa6f7f502a517dd7b4fa5e8d778d7b083e246ba516c3dc288c199fe23b76",
+    "harness/e2e_s3_route.py": "b3ab32cf9aa69425905fb79b3b3c4b109715eb74368e5b49edca7d9a54afef57",
+    "scripts/audit_e2e_setdown.py": "3d9ea6c1db4b2d7979fd6720b08bb7a4f10b7e4f6ff58725a99059364d2c030a",
+    "configs/e2e_stage2_options_v1.json": "94872fc1c2a2434db77bb337a1065c31d59ea6904143e80722e5c07e702b3a56",
+    "experiments/2026-10-11-e2e-stage2-offline/azure-plan.json": "6d4480f2cad35a8813dd3175613c4f3015ae626e3686334745a7cce8d8215838",
+    "tests/test_e2e_setdown_relook.py": "a8d57456a33216c59c55bcda853a9cb6d3cbf45107d68bd123b1518acec20b22",
+    "tests/test_e2e_goal_route.py": "c61bcfad1ce09a0a0db2ad5a38f2b557de430e47c18d2df3395e733ca3101af8",
+    "tests/test_e2e_s3_route.py": "c50fb771e0a0d1ce47262aeb5b66a703627496932b14b375beb877f1ae6f8807"
+  },
+  "attempt_logs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-setdown-relook-20261011/pytest-final-r2.txt",
+      "bytes": 179,
+      "sha256": "86def5328d16d356038bdfd231a194a6817f348f0914e9e2cb3b6e0a1f0e1339"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-setdown-relook-20261011/pytest-final.txt",
+      "bytes": 179,
+      "sha256": "43f15e109ea8d207851115369a10610e9a71efa7e84e3f52328b7a9d9e732c9c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-setdown-relook-20261011/pytest-r1.txt",
+      "bytes": 18560,
+      "sha256": "108582c81fb759b690b0d26d15bb5af1e7fba2b74cb9a9743f3ac768aae6363f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-setdown-relook-20261011/pytest-r2.txt",
+      "bytes": 719,
+      "sha256": "dcd25f143e8cbdd0d5b9423ae69f512c672c744b4b8633fff44d1f47253b0437"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-setdown-relook-20261011/pytest-r3.txt",
+      "bytes": 179,
+      "sha256": "f1b259caa141f2ec697996532bad81603671636a4f155668fb0f2a81723d1446"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-setdown-relook-20261011/pytest-r4.txt",
+      "bytes": 179,
+      "sha256": "980805a410131aa9080c6c608d34336a93b384f0870240a89e3b62bffa752f0e"
+    }
+  ]
+}
