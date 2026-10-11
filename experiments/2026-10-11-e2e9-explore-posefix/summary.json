@@ -1,12 +1,119 @@
 {
   "schema": "ugrp.e2e9.v1",
-  "status": "PREPARED",
+  "status": "COMPLETE_WITH_FAILURES",
+  "verdict": "not-ready: own-map completion and end-to-end transport 0/8; heading oscillation remains",
   "pr": 433,
   "run_class": "dev",
   "research_result": false,
+  "execution_count": 8,
+  "source_sha": "ba278e0e05f0ce87ca20d05b8d153a369c1880f0",
   "execution_bundle": "e2e-explore-posefix-v194",
   "workflow_version": "7.87.0",
-  "source_sha": null,
+  "batches": {
+    "A": {
+      "Gemma_calls": 12,
+      "http_attempts": 12,
+      "provider_counts": {
+        "DeepInfra": 12
+      },
+      "prompt_tokens": 18447,
+      "completion_tokens": 607,
+      "tokens": 19054,
+      "latency": {
+        "median_s": 2.7256100209779106,
+        "max_s": 7.9207063330104575
+      },
+      "cost_usd": 0.0018666099999999999,
+      "missing_cost_calls": 0,
+      "relay_posts": 12,
+      "Jev": {
+        "calls": 0,
+        "tokens": 0,
+        "latency": {
+          "median_s": null,
+          "max_s": null
+        },
+        "cost_usd": 0,
+        "cost_status": "not_used",
+        "shadow_disagreements": 0,
+        "shadow_comparisons": 0,
+        "choices": {}
+      },
+      "runs": 4,
+      "completed_records": 4,
+      "initial_health_passed": 3,
+      "LLM_operated": 4,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
+    },
+    "B": {
+      "Gemma_calls": 12,
+      "http_attempts": 12,
+      "provider_counts": {
+        "DeepInfra": 12
+      },
+      "prompt_tokens": 19839,
+      "completion_tokens": 730,
+      "tokens": 20569,
+      "latency": {
+        "median_s": 3.264369541022461,
+        "max_s": 9.695298000006005
+      },
+      "cost_usd": 0.00203371,
+      "missing_cost_calls": 0,
+      "relay_posts": 12,
+      "Jev": {
+        "calls": 12,
+        "tokens": 13084,
+        "latency": {
+          "median_s": 0.23848089599050581,
+          "max_s": 0.2801737500121817
+        },
+        "cost_usd": null,
+        "cost_status": "not_reported_by_provider",
+        "shadow_disagreements": 0,
+        "shadow_comparisons": 12,
+        "choices": {
+          "continue": 12
+        }
+      },
+      "runs": 4,
+      "completed_records": 4,
+      "initial_health_passed": 3,
+      "LLM_operated": 4,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
+    }
+  },
+  "pose_jumps": {
+    "map": {
+      "intervals": 6431,
+      "over_5cm": 111,
+      "over_20cm": 0,
+      "max_m": 0.13875027276745244
+    },
+    "control": {
+      "intervals": 6431,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773167566
+    }
+  },
+  "result_writer_verification": {
+    "result_present": 8,
+    "summary_present": 8,
+    "finalization_complete": 8,
+    "errors": 0,
+    "baseline_missing": 1,
+    "signal_integration": true,
+    "managed_timeout": "related test only; no real timeout run"
+  },
+  "known_gemma_cost_usd": 0.00390032,
+  "Jev_cost_usd": null,
+  "rotation_oscillation_runs": 8,
+  "host_wrapper_error_records": 8,
   "source_pose": {
     "commit": "1c809ebd052fec3cafceef3ebc0edb2218c05d54",
     "path": "harness/ego_pose_continuity.py",
@@ -133,7 +240,32 @@
       "x86": 8,
       "arm": 25,
       "mac": 20
-    }
+    },
+    "initial_resource_check": {
+      "memory_available_bytes": 54835482624,
+      "free_bytes": 53980225536,
+      "loadavg": [
+        8.34326171875,
+        6.7763671875,
+        5.80712890625
+      ],
+      "runs": 4,
+      "per_run_bytes": 4294967296,
+      "reserved_bytes": 2147483648
+    },
+    "expansion_resource_check": {
+      "memory_available_bytes": 50589552640,
+      "free_bytes": 53743398912,
+      "loadavg": [
+        23.43994140625,
+        15.021484375,
+        9.408203125
+      ],
+      "runs": 4,
+      "per_run_bytes": 4294967296,
+      "reserved_bytes": 19327352832
+    },
+    "total_runs": 8
   },
   "tests": {
     "files": [
@@ -180,10 +312,1220 @@
       "url": "https://docs.python.org/3/library/os.html#os.replace",
       "use": "Same-directory tempfile, fsync, atomic replace; result checkpoint before optional cleanup.",
       "verified": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_regulated_pure_pursuit_controller/src/regulated_pure_pursuit_controller.cpp",
+      "use": "Rotate toward path lookahead point.",
+      "verified": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_regulated_pure_pursuit_controller/src/parameter_handler.cpp",
+      "use": "Default lookahead0.6m; min0.3/max0.9m.",
+      "verified": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_util/src/controller_utils.cpp",
+      "use": "Current main uses accumulated path length with segment interpolation. Applied to saved paths only.",
+      "verified": true
     }
   ],
-  "runs": [],
+  "runs": [
+    {
+      "id": "e2e9-a-s61001",
+      "batch": "A",
+      "seed": 61001,
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "simulation_started": true,
+      "host_wrapper_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "cause": "OBSERVED_REPEATED_HEADING_OSCILLATION",
+      "stop_decision": "posthoc_DEV_health_stop",
+      "stop_record_sha256": "f4a11607442c29885594f088c25a6e6332e7eddf586f9598490031d102fba92c",
+      "source_sha": "ba278e0e05f0ce87ca20d05b8d153a369c1880f0",
+      "submitted_unix": 1791731980.8467102,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "result_missing": false,
+      "result_sha256": "e54099846178dcb016316547d4f904dd510f5f4d74343b42b22c1de6ad2e723a",
+      "summary_sha256": "4ccf5de84d78ee6dda37d0e1dd70eaaa812b096b7fc7986f6a8ccf2f94088644",
+      "frames": 363,
+      "sim_s": 72.55,
+      "wall_s": 1295.7253873369991,
+      "finalization_complete": true,
+      "shutdown_signals": [
+        2
+      ],
+      "finalization_errors": [],
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 210.46086049079895,
+        "sim_s": 14.0,
+        "frames": 71,
+        "actual_displacement_m": {
+          "r1": 0.12394484628075081,
+          "r2": 0.12275240415798803,
+          "r3": 7.633249938053306e-05
+        },
+        "failed_checks": []
+      },
+      "actual_displacement_m": {
+        "r1": 0.2726417373811181,
+        "r2": 0.25127317787042264,
+        "r3": 0.0003313567583489465
+      },
+      "exploration": {
+        "r1": {
+          "turn_only_command_s": 27.300000000000118,
+          "longest_without_translation_s": 7.600000000000001,
+          "target_selections": 7,
+          "target_reselections": 6,
+          "turn_only_commands": 273,
+          "translation_commands": 90,
+          "turn_direction_flips": 54,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        },
+        "r2": {
+          "turn_only_command_s": 28.000000000000128,
+          "longest_without_translation_s": 9.800000000000004,
+          "target_selections": 8,
+          "target_reselections": 7,
+          "turn_only_commands": 280,
+          "translation_commands": 48,
+          "turn_direction_flips": 65,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        }
+      },
+      "pose_jumps": {
+        "map": {
+          "intervals": 1086,
+          "over_5cm": 17,
+          "over_20cm": 0,
+          "max_m": 0.1127075956529511
+        },
+        "control": {
+          "intervals": 1086,
+          "over_5cm": 0,
+          "over_20cm": 0,
+          "max_m": 0.012923413773167547
+        }
+      },
+      "B_candidate_observed": true,
+      "B_boundary_verified": false,
+      "route_generated": false,
+      "model_calls": 3,
+      "model_usage": {
+        "tokens_prompt": 4612,
+        "tokens_completion": 146,
+        "tokens_total_known": 4758,
+        "tokens_complete": true,
+        "api_error_requests": 0
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e9-a-s61001",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e9-a-s61001",
+      "local_lite": {
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e9-a-s61001",
+        "checksum_verified": true,
+        "bytes": 4172002,
+        "excluded_embedded_images": 3
+      },
+      "archive": {
+        "verified": true,
+        "files": 1189,
+        "hash_matches": 1189,
+        "inventory_sha256": "48254436f7fd175ff687327b8540f28ee5ea2c15e6bae04c4b85c7d6b161c6b7",
+        "bytes": 21117654,
+        "archive_marker_sha256": "ff2ec2f402b685ab28e04fd76028ad2b8305cf148dee040e3eccc6c4c2a9c819"
+      },
+      "initial_health_sha256": "17710bfdfd5349a5ed4d2860eb56f39a0d466a736df970a5202fbe23848b0d75"
+    },
+    {
+      "id": "e2e9-a-s61002",
+      "batch": "A",
+      "seed": 61002,
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "simulation_started": true,
+      "host_wrapper_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "cause": "OBSERVED_REPEATED_HEADING_OSCILLATION",
+      "stop_decision": "posthoc_DEV_health_stop",
+      "stop_record_sha256": "dffe594aae4998739d47b50307418e494dbf8f0ed065c421dfe502378bdd46c4",
+      "source_sha": "ba278e0e05f0ce87ca20d05b8d153a369c1880f0",
+      "submitted_unix": 1791731983.446809,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "result_missing": false,
+      "result_sha256": "62b3c7ef1b5b0f28c80da70203d1419ce98c37cdddf46a6a7306ee0476fa1a1b",
+      "summary_sha256": "dd90a644766c27366ce52bd3901fbc674c700fffd4eca2577da78e5c5058f3a5",
+      "frames": 372,
+      "sim_s": 74.4,
+      "wall_s": 1293.6321411979989,
+      "finalization_complete": true,
+      "shutdown_signals": [
+        2
+      ],
+      "finalization_errors": [],
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 210.94580268859863,
+        "sim_s": 13.0,
+        "frames": 66,
+        "actual_displacement_m": {
+          "r1": 0.41349281114903075,
+          "r2": 0.11299216023225678,
+          "r3": 6.975994391735397e-05
+        },
+        "failed_checks": []
+      },
+      "actual_displacement_m": {
+        "r1": 0.6577999286078036,
+        "r2": 0.3137260652797206,
+        "r3": 0.0005620929480191062
+      },
+      "exploration": {
+        "r1": {
+          "turn_only_command_s": 26.600000000000108,
+          "longest_without_translation_s": 19.6,
+          "target_selections": 7,
+          "target_reselections": 6,
+          "turn_only_commands": 266,
+          "translation_commands": 99,
+          "turn_direction_flips": 58,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        },
+        "r2": {
+          "turn_only_command_s": 31.200000000000173,
+          "longest_without_translation_s": 6.0,
+          "target_selections": 8,
+          "target_reselections": 7,
+          "turn_only_commands": 312,
+          "translation_commands": 60,
+          "turn_direction_flips": 60,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        }
+      },
+      "pose_jumps": {
+        "map": {
+          "intervals": 1113,
+          "over_5cm": 13,
+          "over_20cm": 0,
+          "max_m": 0.09498530855807778
+        },
+        "control": {
+          "intervals": 1113,
+          "over_5cm": 0,
+          "over_20cm": 0,
+          "max_m": 0.012923413773167566
+        }
+      },
+      "B_candidate_observed": true,
+      "B_boundary_verified": false,
+      "route_generated": false,
+      "model_calls": 3,
+      "model_usage": {
+        "tokens_prompt": 4615,
+        "tokens_completion": 153,
+        "tokens_total_known": 4768,
+        "tokens_complete": true,
+        "api_error_requests": 0
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e9-a-s61002",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e9-a-s61002",
+      "local_lite": {
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e9-a-s61002",
+        "checksum_verified": true,
+        "bytes": 4284515,
+        "excluded_embedded_images": 3
+      },
+      "archive": {
+        "verified": true,
+        "files": 1219,
+        "hash_matches": 1219,
+        "inventory_sha256": "f8d74c1696fc56919b075dc1d83af4c575364897553589df20ac2d6bcfc49cf3",
+        "bytes": 21250543,
+        "archive_marker_sha256": "9cdce5c2567023537e4ea42527e09c9b02cbf8ef9ee600f6ceb30ba129443d48"
+      },
+      "initial_health_sha256": "2ffc4e297514f2fe7645778639c29b2b3d79aa14d685a7f23602660149c430f1"
+    },
+    {
+      "id": "e2e9-a-s61003",
+      "batch": "A",
+      "seed": 61003,
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "simulation_started": true,
+      "host_wrapper_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "cause": "INITIAL_HEALTH_FAILED",
+      "stop_decision": "initial_210s_DEV_health_check",
+      "stop_record_sha256": "8a0e518471a7b20bb55be3e11d10cdc5cbae4bfc71e6b985d3c1bd41e4a7266e",
+      "source_sha": "ba278e0e05f0ce87ca20d05b8d153a369c1880f0",
+      "submitted_unix": 1791732246.3564267,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "result_missing": false,
+      "result_sha256": "610e149b7739c72e6b75ca2b8961476bd5ff94e743ea921c523ec9729f008d77",
+      "summary_sha256": "9fcb8d6997967414055a64678a0bfd4eea88afd9e09322bb929a840f46b6b5a0",
+      "frames": 56,
+      "sim_s": 11.2,
+      "wall_s": 202.42583373399975,
+      "finalization_complete": true,
+      "shutdown_signals": [
+        2
+      ],
+      "finalization_errors": [],
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 212.876562833786,
+        "sim_s": 11.0,
+        "frames": 56,
+        "actual_displacement_m": {
+          "r1": 0.11482585827745094,
+          "r2": 0.013464129244657248,
+          "r3": 4.8727265002070014e-05
+        },
+        "failed_checks": [
+          "actual_translation"
+        ]
+      },
+      "actual_displacement_m": {
+        "r1": 0.11482585827745094,
+        "r2": 0.013464129244657248,
+        "r3": 5.050305273584557e-05
+      },
+      "exploration": {
+        "r1": {
+          "turn_only_command_s": 4.4,
+          "longest_without_translation_s": 4.0,
+          "target_selections": 2,
+          "target_reselections": 1,
+          "turn_only_commands": 44,
+          "translation_commands": 12,
+          "turn_direction_flips": 7,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": false
+        },
+        "r2": {
+          "turn_only_command_s": 5.4999999999999964,
+          "longest_without_translation_s": 7.8,
+          "target_selections": 2,
+          "target_reselections": 1,
+          "turn_only_commands": 55,
+          "translation_commands": 1,
+          "turn_direction_flips": 11,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        }
+      },
+      "pose_jumps": {
+        "map": {
+          "intervals": 165,
+          "over_5cm": 6,
+          "over_20cm": 0,
+          "max_m": 0.08013223973060297
+        },
+        "control": {
+          "intervals": 165,
+          "over_5cm": 0,
+          "over_20cm": 0,
+          "max_m": 0.012923413773167532
+        }
+      },
+      "B_candidate_observed": true,
+      "B_boundary_verified": false,
+      "route_generated": false,
+      "model_calls": 3,
+      "model_usage": {
+        "tokens_prompt": 4615,
+        "tokens_completion": 168,
+        "tokens_total_known": 4783,
+        "tokens_complete": true,
+        "api_error_requests": 0
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e9-a-s61003",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e9-a-s61003",
+      "local_lite": {
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e9-a-s61003",
+        "checksum_verified": true,
+        "bytes": 1701608,
+        "excluded_embedded_images": 3
+      },
+      "archive": {
+        "verified": true,
+        "files": 271,
+        "hash_matches": 271,
+        "inventory_sha256": "52062ea48608875a56bb3bccce3dfbd194dbb3cb7a56ab76b624bbc19c2f8bb8",
+        "bytes": 4459758,
+        "archive_marker_sha256": "5498fc74285195881776893bd77964f4047376e04f3c430f27388dd926702a32"
+      },
+      "initial_health_sha256": "3188919d54ae33e328bbd0a74bc4e7d60e11339f7ac123b41641468d30ac62e9"
+    },
+    {
+      "id": "e2e9-a-s61004",
+      "batch": "A",
+      "seed": 61004,
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "simulation_started": true,
+      "host_wrapper_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "cause": "OBSERVED_REPEATED_HEADING_OSCILLATION",
+      "stop_decision": "posthoc_DEV_health_stop",
+      "stop_record_sha256": "2a2b6c15d2ca75a01a3bd1cb1d6b35e90e330241e9a0f1e6238840e84c8ac316",
+      "source_sha": "ba278e0e05f0ce87ca20d05b8d153a369c1880f0",
+      "submitted_unix": 1791732249.1629906,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "result_missing": false,
+      "result_sha256": "a97edf220376370cbe718f1142eeae4cf95dc8abe0330b796e5ca81c54ec4949",
+      "summary_sha256": "eb4e09a94367614aa773109a33f5f91efb0147ed0c69f33473604041d33b69a0",
+      "frames": 287,
+      "sim_s": 57.21925,
+      "wall_s": 1024.2870136570018,
+      "finalization_complete": true,
+      "shutdown_signals": [
+        2,
+        15
+      ],
+      "finalization_errors": [],
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 210.21496415138245,
+        "sim_s": 10.0,
+        "frames": 51,
+        "actual_displacement_m": {
+          "r1": 0.10948975777748741,
+          "r2": 0.13449088116846153,
+          "r3": 4.082379342291124e-05
+        },
+        "failed_checks": []
+      },
+      "actual_displacement_m": {
+        "r1": 0.2703313512063339,
+        "r2": 0.289470885910146,
+        "r3": 0.0002541523486790331
+      },
+      "exploration": {
+        "r1": {
+          "turn_only_command_s": 22.000000000000043,
+          "longest_without_translation_s": 17.0,
+          "target_selections": 4,
+          "target_reselections": 3,
+          "turn_only_commands": 220,
+          "translation_commands": 46,
+          "turn_direction_flips": 22,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        },
+        "r2": {
+          "turn_only_command_s": 23.600000000000065,
+          "longest_without_translation_s": 6.800000000000004,
+          "target_selections": 6,
+          "target_reselections": 5,
+          "turn_only_commands": 238,
+          "translation_commands": 49,
+          "turn_direction_flips": 48,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        }
+      },
+      "pose_jumps": {
+        "map": {
+          "intervals": 855,
+          "over_5cm": 19,
+          "over_20cm": 0,
+          "max_m": 0.13875027276745244
+        },
+        "control": {
+          "intervals": 855,
+          "over_5cm": 0,
+          "over_20cm": 0,
+          "max_m": 0.012923413773167542
+        }
+      },
+      "B_candidate_observed": true,
+      "B_boundary_verified": false,
+      "route_generated": false,
+      "model_calls": 3,
+      "model_usage": {
+        "tokens_prompt": 4605,
+        "tokens_completion": 140,
+        "tokens_total_known": 4745,
+        "tokens_complete": true,
+        "api_error_requests": 0
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e9-a-s61004",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e9-a-s61004",
+      "local_lite": {
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e9-a-s61004",
+        "checksum_verified": true,
+        "bytes": 3485079,
+        "excluded_embedded_images": 3
+      },
+      "archive": {
+        "verified": true,
+        "files": 961,
+        "hash_matches": 961,
+        "inventory_sha256": "60a827b0612877d199a8cd4e92a68e955e5f13ab981bd69dba201f5bcae4c3de",
+        "bytes": 16655754,
+        "archive_marker_sha256": "5d67ceae3e2b6cb0946cbcdf54eedf0460f57565d92f35135333097cd2db4084"
+      },
+      "initial_health_sha256": "8e95a928521a2f371dc85950d57e8f5fd47f0f58334f95201f582e41b75556e6"
+    },
+    {
+      "id": "e2e9-b-s61001",
+      "batch": "B",
+      "seed": 61001,
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "simulation_started": true,
+      "host_wrapper_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "cause": "OBSERVED_REPEATED_HEADING_OSCILLATION",
+      "stop_decision": "posthoc_DEV_health_stop",
+      "stop_record_sha256": "ae4bc0453620046bdef0ecffaed565f78279ae0dad24a0dd8a8df81f5cbced17",
+      "source_sha": "ba278e0e05f0ce87ca20d05b8d153a369c1880f0",
+      "submitted_unix": 1791731982.1477904,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "result_missing": false,
+      "result_sha256": "59e8291bf2495ea03a6df42a8a72438ff60c4d6330e53cb2a65d273f3fa7606f",
+      "summary_sha256": "c9f05f0e4bb505585cc7d24c9e3952bd1bb4e0f291008624551b7b06c7b4f6bf",
+      "frames": 353,
+      "sim_s": 70.45,
+      "wall_s": 1294.6603689189978,
+      "finalization_complete": true,
+      "shutdown_signals": [
+        2,
+        15
+      ],
+      "finalization_errors": [],
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 212.21650862693787,
+        "sim_s": 13.0,
+        "frames": 66,
+        "actual_displacement_m": {
+          "r1": 0.12318054874813648,
+          "r2": 0.12275240415798803,
+          "r3": 7.14138994719792e-05
+        },
+        "failed_checks": []
+      },
+      "actual_displacement_m": {
+        "r1": 0.2726417373811181,
+        "r2": 0.25127317787042264,
+        "r3": 0.0003193056249613231
+      },
+      "exploration": {
+        "r1": {
+          "turn_only_command_s": 26.450000000000102,
+          "longest_without_translation_s": 7.600000000000001,
+          "target_selections": 7,
+          "target_reselections": 6,
+          "turn_only_commands": 265,
+          "translation_commands": 88,
+          "turn_direction_flips": 52,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        },
+        "r2": {
+          "turn_only_command_s": 27.700000000000124,
+          "longest_without_translation_s": 9.400000000000006,
+          "target_selections": 7,
+          "target_reselections": 6,
+          "turn_only_commands": 277,
+          "translation_commands": 47,
+          "turn_direction_flips": 64,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        }
+      },
+      "pose_jumps": {
+        "map": {
+          "intervals": 1056,
+          "over_5cm": 17,
+          "over_20cm": 0,
+          "max_m": 0.1127075956529511
+        },
+        "control": {
+          "intervals": 1056,
+          "over_5cm": 0,
+          "over_20cm": 0,
+          "max_m": 0.012923413773167547
+        }
+      },
+      "B_candidate_observed": true,
+      "B_boundary_verified": false,
+      "route_generated": false,
+      "model_calls": 3,
+      "model_usage": {
+        "tokens_prompt": 4960,
+        "tokens_completion": 232,
+        "tokens_total_known": 5192,
+        "tokens_complete": true,
+        "api_error_requests": 0
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e9-b-s61001",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e9-b-s61001",
+      "local_lite": {
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e9-b-s61001",
+        "checksum_verified": true,
+        "bytes": 4095864,
+        "excluded_embedded_images": 3
+      },
+      "archive": {
+        "verified": true,
+        "files": 1159,
+        "hash_matches": 1159,
+        "inventory_sha256": "b2bc285d7fe0cc95d4e363b93fef75b3c540e64c7523452d0b681df401eee35c",
+        "bytes": 20571751,
+        "archive_marker_sha256": "2af117c1685ff7998ee5c3bdf0b260083b42ca8cc1239c38d64c47e47a9d1b78"
+      },
+      "initial_health_sha256": "6300663f957d991f2924a6ed73904369f349536f6d619887a6d5c118f235f461"
+    },
+    {
+      "id": "e2e9-b-s61002",
+      "batch": "B",
+      "seed": 61002,
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "simulation_started": true,
+      "host_wrapper_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "cause": "OBSERVED_REPEATED_HEADING_OSCILLATION",
+      "stop_decision": "posthoc_DEV_health_stop",
+      "stop_record_sha256": "62b6a8b532124b79abf60a90215cd9697c85309733ff777309cbad4338f24353",
+      "source_sha": "ba278e0e05f0ce87ca20d05b8d153a369c1880f0",
+      "submitted_unix": 1791731984.8012764,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "result_missing": false,
+      "result_sha256": "ef5d73cbcccca84e61d841202bb49a4f29dfeb2ad8dd581ee19a12127a48d29f",
+      "summary_sha256": "3d3e2e818ed0a85186a7c0a0e03ab2b50bcad00309789c7a403c323836c4662c",
+      "frames": 381,
+      "sim_s": 76.2,
+      "wall_s": 1290.8680601019987,
+      "finalization_complete": true,
+      "shutdown_signals": [
+        2,
+        15
+      ],
+      "finalization_errors": [],
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 212.7124752998352,
+        "sim_s": 14.0,
+        "frames": 71,
+        "actual_displacement_m": {
+          "r1": 0.41349281114903075,
+          "r2": 0.12477626792792722,
+          "r3": 7.486032003171516e-05
+        },
+        "failed_checks": []
+      },
+      "actual_displacement_m": {
+        "r1": 0.6577999286078036,
+        "r2": 0.3137260652797206,
+        "r3": 0.0005750092597478287
+      },
+      "exploration": {
+        "r1": {
+          "turn_only_command_s": 27.50000000000012,
+          "longest_without_translation_s": 19.6,
+          "target_selections": 7,
+          "target_reselections": 6,
+          "turn_only_commands": 275,
+          "translation_commands": 99,
+          "turn_direction_flips": 59,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        },
+        "r2": {
+          "turn_only_command_s": 31.900000000000183,
+          "longest_without_translation_s": 6.0,
+          "target_selections": 8,
+          "target_reselections": 7,
+          "turn_only_commands": 319,
+          "translation_commands": 62,
+          "turn_direction_flips": 61,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        }
+      },
+      "pose_jumps": {
+        "map": {
+          "intervals": 1141,
+          "over_5cm": 14,
+          "over_20cm": 0,
+          "max_m": 0.09498530855807778
+        },
+        "control": {
+          "intervals": 1141,
+          "over_5cm": 0,
+          "over_20cm": 0,
+          "max_m": 0.012923413773167566
+        }
+      },
+      "B_candidate_observed": true,
+      "B_boundary_verified": false,
+      "route_generated": false,
+      "model_calls": 3,
+      "model_usage": {
+        "tokens_prompt": 4963,
+        "tokens_completion": 163,
+        "tokens_total_known": 5126,
+        "tokens_complete": true,
+        "api_error_requests": 0
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e9-b-s61002",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e9-b-s61002",
+      "local_lite": {
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e9-b-s61002",
+        "checksum_verified": true,
+        "bytes": 4381432,
+        "excluded_embedded_images": 3
+      },
+      "archive": {
+        "verified": true,
+        "files": 1246,
+        "hash_matches": 1246,
+        "inventory_sha256": "83366bcc1850b9d384ba2522ccd5edf068e060d14ccde975bb8d3a9ff4fce97f",
+        "bytes": 21741321,
+        "archive_marker_sha256": "2b69b085b14a6772d037a5540b379e7515a3724a2938149ee48f9ec4ddb50aee"
+      },
+      "initial_health_sha256": "cf231b7361b45167fcf23a028a5e3665622806a2087c535f65b48688b6f8dc26"
+    },
+    {
+      "id": "e2e9-b-s61003",
+      "batch": "B",
+      "seed": 61003,
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "simulation_started": true,
+      "host_wrapper_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "cause": "INITIAL_HEALTH_FAILED",
+      "stop_decision": "initial_210s_DEV_health_check",
+      "stop_record_sha256": "305adbbfa753488be9132dc3d598f09b7e988acc45c7677bda8047af0113e5b9",
+      "source_sha": "ba278e0e05f0ce87ca20d05b8d153a369c1880f0",
+      "submitted_unix": 1791732247.7855825,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "result_missing": false,
+      "result_sha256": "2ed81ac7543eb733f121b60108e0bf65dc58fe971a2f49a174f3421af96a7505",
+      "summary_sha256": "98e2067b67ad3e2e0f746aa3c599135cd460b34f0dd9fd4acf1deb462540e772",
+      "frames": 54,
+      "sim_s": 10.799999999999999,
+      "wall_s": 201.30092041099851,
+      "finalization_complete": true,
+      "shutdown_signals": [
+        2,
+        15
+      ],
+      "finalization_errors": [],
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 211.60379242897034,
+        "sim_s": 10.0,
+        "frames": 51,
+        "actual_displacement_m": {
+          "r1": 0.11456019387168612,
+          "r2": 0.01160140552422867,
+          "r3": 4.0293289149595355e-05
+        },
+        "failed_checks": [
+          "actual_translation"
+        ]
+      },
+      "actual_displacement_m": {
+        "r1": 0.11482585827745094,
+        "r2": 0.013094404768307415,
+        "r3": 4.7118390930235014e-05
+      },
+      "exploration": {
+        "r1": {
+          "turn_only_command_s": 4.200000000000001,
+          "longest_without_translation_s": 4.0,
+          "target_selections": 2,
+          "target_reselections": 1,
+          "turn_only_commands": 42,
+          "translation_commands": 12,
+          "turn_direction_flips": 7,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": false
+        },
+        "r2": {
+          "turn_only_command_s": 5.299999999999997,
+          "longest_without_translation_s": 7.8,
+          "target_selections": 2,
+          "target_reselections": 1,
+          "turn_only_commands": 53,
+          "translation_commands": 1,
+          "turn_direction_flips": 10,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        }
+      },
+      "pose_jumps": {
+        "map": {
+          "intervals": 160,
+          "over_5cm": 6,
+          "over_20cm": 0,
+          "max_m": 0.08013223973060297
+        },
+        "control": {
+          "intervals": 160,
+          "over_5cm": 0,
+          "over_20cm": 0,
+          "max_m": 0.012923413773167532
+        }
+      },
+      "B_candidate_observed": true,
+      "B_boundary_verified": false,
+      "route_generated": false,
+      "model_calls": 3,
+      "model_usage": {
+        "tokens_prompt": 4963,
+        "tokens_completion": 172,
+        "tokens_total_known": 5135,
+        "tokens_complete": true,
+        "api_error_requests": 0
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e9-b-s61003",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e9-b-s61003",
+      "local_lite": {
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e9-b-s61003",
+        "checksum_verified": true,
+        "bytes": 1737296,
+        "excluded_embedded_images": 3
+      },
+      "archive": {
+        "verified": true,
+        "files": 265,
+        "hash_matches": 265,
+        "inventory_sha256": "a5ecfb2a50cd70fb458c65a8c842ada512887f9da18e8da2b24b8e4435571973",
+        "bytes": 4402028,
+        "archive_marker_sha256": "4f7f89f6218fd49fe5ae288b1428d0d534c59ad5f441ed2e1920e6c2faf9681d"
+      },
+      "initial_health_sha256": "6cf9175836bc3992105c7fbae69616aa2f27d84d37d564c99f663b1269ebe172"
+    },
+    {
+      "id": "e2e9-b-s61004",
+      "batch": "B",
+      "seed": 61004,
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "simulation_started": true,
+      "host_wrapper_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "cause": "OBSERVED_REPEATED_HEADING_OSCILLATION",
+      "stop_decision": "posthoc_DEV_health_stop",
+      "stop_record_sha256": "d4bbc1f301def9bb0737315a9d8c9aa44936ad6b31aa1819711125c42376fbc1",
+      "source_sha": "ba278e0e05f0ce87ca20d05b8d153a369c1880f0",
+      "submitted_unix": 1791732250.810743,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "result_missing": false,
+      "result_sha256": "1010251524ac217b6bc883de53097be10e117537076f39335e60afa38a3e9a2c",
+      "summary_sha256": "ee1726f4388e59b4bd29f83173d9064afd8b478cfc2f14b8884b185ae44b0e95",
+      "frames": 287,
+      "sim_s": 57.300000000000004,
+      "wall_s": 1022.955583040999,
+      "finalization_complete": true,
+      "shutdown_signals": [
+        2
+      ],
+      "finalization_errors": [],
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 211.97104406356812,
+        "sim_s": 10.0,
+        "frames": 51,
+        "actual_displacement_m": {
+          "r1": 0.10948975777748741,
+          "r2": 0.13449088116846153,
+          "r3": 4.082379342291124e-05
+        },
+        "failed_checks": []
+      },
+      "actual_displacement_m": {
+        "r1": 0.2703313512063339,
+        "r2": 0.289470885910146,
+        "r3": 0.0002541523486790331
+      },
+      "exploration": {
+        "r1": {
+          "turn_only_command_s": 22.000000000000043,
+          "longest_without_translation_s": 17.0,
+          "target_selections": 4,
+          "target_reselections": 3,
+          "turn_only_commands": 220,
+          "translation_commands": 46,
+          "turn_direction_flips": 22,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        },
+        "r2": {
+          "turn_only_command_s": 23.600000000000065,
+          "longest_without_translation_s": 6.800000000000004,
+          "target_selections": 6,
+          "target_reselections": 5,
+          "turn_only_commands": 238,
+          "translation_commands": 49,
+          "turn_direction_flips": 48,
+          "frontier_arrivals": 0,
+          "rotation_oscillation_observed": true
+        }
+      },
+      "pose_jumps": {
+        "map": {
+          "intervals": 855,
+          "over_5cm": 19,
+          "over_20cm": 0,
+          "max_m": 0.13875027276745244
+        },
+        "control": {
+          "intervals": 855,
+          "over_5cm": 0,
+          "over_20cm": 0,
+          "max_m": 0.012923413773167542
+        }
+      },
+      "B_candidate_observed": true,
+      "B_boundary_verified": false,
+      "route_generated": false,
+      "model_calls": 3,
+      "model_usage": {
+        "tokens_prompt": 4953,
+        "tokens_completion": 163,
+        "tokens_total_known": 5116,
+        "tokens_complete": true,
+        "api_error_requests": 0
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e9-b-s61004",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e9-b-s61004",
+      "local_lite": {
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e9-b-s61004",
+        "checksum_verified": true,
+        "bytes": 3561397,
+        "excluded_embedded_images": 3
+      },
+      "archive": {
+        "verified": true,
+        "files": 961,
+        "hash_matches": 961,
+        "inventory_sha256": "8d2c7fa1f9062fcc037ac47937fa516e0bd49df7163e15c6ff8eda037d797497",
+        "bytes": 16733431,
+        "archive_marker_sha256": "6ab61c95dad73b09c1098be37c6b29332d762c695eb23a9b9657afbe86376799"
+      },
+      "initial_health_sha256": "1e989df1014d6193b5558cc2c4456782edf2967acecfa1159ee64b7a3593abae"
+    }
+  ],
   "remaining": [
-    "Remote runs, actual initial checks, evaluation, archive verification and lite retrieval pending."
-  ]
+    "Local path lookahead fix and new closed-loop paired cohort remain; 0/8 own map/transport.",
+    "PR433 remains draft: no reported CI checks, required review absent, remote reports merge conflicts. No merge or primary checkout update performed.",
+    "Jev provider cost not supplied; known Gemma cost only."
+  ],
+  "host_wrapper_status_note": "All eight intentional SIGINT health stops are labelled HOST_ERROR/cost_stop_signal by remote_run_finish; retained per run. They are not successful completions or missing attempts.",
+  "common_window_comparison": {
+    "window_sim_s": [
+      0,
+      10
+    ],
+    "seeds": [
+      61001,
+      61002
+    ],
+    "batches": [
+      "A",
+      "B"
+    ],
+    "scope": "paired seeds and same observed SIM window; bundled exploration+pose changes, no component ablation",
+    "versions": {
+      "8": {
+        "aggregate": {
+          "map": {
+            "intervals": 600,
+            "over_5cm": 54,
+            "over_20cm": 14,
+            "max_m": 0.34334854839682544
+          }
+        },
+        "r1_r2_commands": {
+          "turn_only_commands": 408,
+          "translation_commands": 0,
+          "turn_direction_flips": 0
+        }
+      },
+      "9": {
+        "aggregate": {
+          "map": {
+            "intervals": 600,
+            "over_5cm": 26,
+            "over_20cm": 0,
+            "max_m": 0.08070955497730094
+          },
+          "control": {
+            "intervals": 600,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167566
+          }
+        },
+        "r1_r2_commands": {
+          "turn_only_commands": 300,
+          "translation_commands": 108,
+          "turn_direction_flips": 78
+        }
+      }
+    }
+  },
+  "round9_diagnosis": {
+    "source_run": "e2e9-a-s61003",
+    "robot": "r2",
+    "frames": 56,
+    "max_exact_replay_pose_error": 0.0,
+    "path_cell_resolution_m": 0.05,
+    "carrot_m": [
+      0.03520931144932054,
+      0.09055367900656773
+    ],
+    "cause": "Short local path carrot varies across replanning/localization corrections; heading selector alternates turns despite committed global frontier.",
+    "counterfactual": {
+      "source_sha256": "a8b18e70b9320559c0d2bba3434ffaf455efb9a93f4254d5d3f5ad512bb79967",
+      "scope": "fixed saved poses and paths; proposed actions not executed; not a success or closed-loop result",
+      "source_run": "e2e9-a-s61003",
+      "robot": "r2",
+      "results": {
+        "baseline_035m": {
+          "frames": 56,
+          "turns": 55,
+          "translations": 1,
+          "holds": 0,
+          "turn_sign_flips": 11,
+          "matches_actual": 56,
+          "carrot_range_m": [
+            0.03520931144932054,
+            0.09055367900656773
+          ],
+          "first_action": {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.0,
+            "turn": 0.35,
+            "duration_s": 0.1
+          }
+        },
+        "nav2_path_lookahead_0.3m": {
+          "frames": 56,
+          "turns": 46,
+          "translations": 10,
+          "holds": 0,
+          "turn_sign_flips": 8,
+          "matches_actual": 32,
+          "carrot_range_m": [
+            0.1851423050685306,
+            0.2992129680333393
+          ],
+          "first_action": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          }
+        },
+        "nav2_path_lookahead_0.6m": {
+          "frames": 56,
+          "turns": 45,
+          "translations": 11,
+          "holds": 0,
+          "turn_sign_flips": 6,
+          "matches_actual": 26,
+          "carrot_range_m": [
+            0.48506176292895775,
+            0.5992118315433659
+          ],
+          "first_action": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          }
+        },
+        "nav2_path_lookahead_0.9m": {
+          "frames": 56,
+          "turns": 47,
+          "translations": 9,
+          "holds": 0,
+          "turn_sign_flips": 6,
+          "matches_actual": 26,
+          "carrot_range_m": [
+            0.7850466629041709,
+            0.8992105519071857
+          ],
+          "first_action": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          }
+        }
+      }
+    }
+  },
+  "next_candidates": [
+    {
+      "option": "nav2_path_lookahead_0.3m",
+      "status": "fixed_input_only_not_executed",
+      "closed_loop_success": null
+    },
+    {
+      "option": "nav2_path_lookahead_0.6m",
+      "status": "fixed_input_only_not_executed",
+      "closed_loop_success": null
+    },
+    {
+      "option": "nav2_path_lookahead_0.9m",
+      "status": "fixed_input_only_not_executed",
+      "closed_loop_success": null
+    }
+  ],
+  "comparison_limits": [
+    "All eight online runs enable both exploration and pose fixes. No concurrent off/ablation run; historical baseline only.",
+    "Six post-hoc health stops after observed repeated turn reversals and 4+ aborted goals; two initial movement failures. Not full time-budget runs or unbiased success-rate estimates.",
+    "B colour candidate is not a complete own map or admitted transport route. No verified B boundary or route in these runs.",
+    "Fixed-input lookahead comparison does not predict closed-loop success. The eight-run cap prevents another physical submission in this round."
+  ],
+  "retrieval": {
+    "arm_hash_verified": 8,
+    "expected": 8,
+    "files": 7271,
+    "hash_matches": 7271,
+    "full_archive_bytes": 126932240,
+    "mac_lite_bytes": 27419193,
+    "mac_lite_files": 752,
+    "image_bearing_requests_excluded": 24,
+    "raw_inventories": {
+      "path": "raw-inventories.json.zst",
+      "compressed_sha256": "af8deda091c55e8cb7c77f6a57dc67594bb57acaa06938f29bddc2e8f4f89102"
+    },
+    "preservation": "Open PR raw retained; permanent text/command trajectories/frame hashes and light records retained. Heavy DEV originals eligible for recorded cleanup at PR merge/close."
+  },
+  "host_cleanup": {
+    "relay_owned_pids_alive": [],
+    "relay_ports_listening": {
+      "18394": false,
+      "18392": false
+    },
+    "stopped": true,
+    "remote": {
+      "runs": {
+        "e2e9-a-s61001": {
+          "owned_supervisor_alive": false,
+          "lease_present": false
+        },
+        "e2e9-b-s61001": {
+          "owned_supervisor_alive": false,
+          "lease_present": false
+        },
+        "e2e9-a-s61002": {
+          "owned_supervisor_alive": false,
+          "lease_present": false
+        },
+        "e2e9-b-s61002": {
+          "owned_supervisor_alive": false,
+          "lease_present": false
+        },
+        "e2e9-a-s61003": {
+          "owned_supervisor_alive": false,
+          "lease_present": false
+        },
+        "e2e9-b-s61003": {
+          "owned_supervisor_alive": false,
+          "lease_present": false
+        },
+        "e2e9-a-s61004": {
+          "owned_supervisor_alive": false,
+          "lease_present": false
+        },
+        "e2e9-b-s61004": {
+          "owned_supervisor_alive": false,
+          "lease_present": false
+        }
+      },
+      "remote_relay_ports_listening": {
+        "18393": false,
+        "18391": false
+      },
+      "remaining_lease_names": [
+        "e2e9-audit-evidence",
+        "egojump-98ffd823-pipeline-a",
+        "egojump-98ffd823-pipeline-c",
+        "egojump-98ffd823-pipeline-d"
+      ],
+      "cap_timer": "NextElapseUSecRealtime=Sun 2026-10-11 21:50:00 UTC\nActiveState=active",
+      "vm_not_deallocated": true,
+      "foreign_processes_not_signalled": true
+    }
+  },
+  "details": {
+    "path": "round9-details.json.zst",
+    "compressed_sha256": "ff1d0c42ed223f2ee3e44b37abe98338c898cd164fd056fcfa46b409543d8f84"
+  },
+  "execution_options": {
+    "enabled": true,
+    "own_inputs": "on_v1",
+    "dialogue": "on_v1",
+    "pulse_budget": "fractional_duration_v1",
+    "own_route": "goal_route_v1",
+    "arrival_gate": "rgb_geometry_v1",
+    "goal_geometry": "e2e_b80_v1",
+    "covariance_inflation": "nees_frozen_v1",
+    "setdown_reobserve": "boundary_reobserve_v1",
+    "setdown_only_when_relook": "on_v1",
+    "decider": "A:off; B:jev_v1",
+    "exploration_progress": "frontier_progress_v1",
+    "pose_fix": "innovation"
+  }
 }
