@@ -1,1432 +1,2126 @@
 {
-  "schema": "ugrp.e2e10.v1",
-  "status": "RUNNING",
-  "pr": 433,
-  "run_class": "dev",
-  "research_result": false,
-  "execution_count": 8,
-  "execution_bundle": "e2e-rpp-lookahead-v197",
-  "workflow_version": "7.90.0",
-  "preregistration": {
-    "max_runs": 8,
-    "seeds": {
-      "A": [
-        61001,
-        61002,
-        61003,
-        61004
-      ],
-      "B": [
-        61001,
-        61002
-      ],
-      "C": [
-        61001,
-        61002
-      ]
-    },
-    "conditions": {
-      "A": "rpp_v1 + OpenRouter Gemma",
-      "B": "rpp_v1 + Gemma shadow/Jev decider",
-      "C": "path_follow off + round9 settings"
-    },
-    "success": "All three in the same run: LLM_operated, own_map_completed (admitted own B route), start_to_finish_transport (separate physical evaluator)",
-    "no_new_start_after_utc": "2026-10-11T21:30:00Z",
-    "wall_end_before_utc": "2026-10-11T21:40:00Z",
-    "cap_utc": "2026-10-11T21:50:00Z",
-    "host_cap": "existing eight-hour uptime guard unchanged; finish this batch by 17:55 UTC before host guard ~18:04 UTC",
-    "early_check_s": 210,
-    "health_policy": "DEV observational: missing translation, turn sign reversals, no-progress and observation deadlines do not stop; execution errors/physical failures and finite resource/time budgets still stop"
+ "schema": "ugrp.e2e10.v1",
+ "status": "COMPLETE_WITH_FAILURES",
+ "pr": 433,
+ "run_class": "dev",
+ "research_result": false,
+ "completed_utc": "2026-10-11T18:00:55.106172+00:00",
+ "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
+ "execution_bundle": "e2e-rpp-lookahead-v197",
+ "workflow_version": "7.90.0",
+ "retired_bundle": {
+  "id": "e2e-rpp-lookahead-v196",
+  "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+  "physical_runs": 0,
+  "host_errors": 8,
+  "catalog_preserved": true
+ },
+ "execution_count": 8,
+ "simulation_count": 8,
+ "launch_attempt_count": 16,
+ "conditions": {
+  "A": {
+   "runs": 4,
+   "LLM_operated": 4,
+   "own_map_completed": 0,
+   "start_to_finish_transport": 0,
+   "E2E_success": 0,
+   "forward": 8840,
+   "turns": 1793,
+   "turn_sign_flips": 70,
+   "cost_usd": 0.0018026700000000001,
+   "Jev_calls": 0,
+   "Jev_shadow_disagreements": 0
   },
-  "diagnosis": {
-    "source_run": "e2e9-a-s61003",
-    "robot": "r2",
-    "source_sha256": "a8b18e70b9320559c0d2bba3434ffaf455efb9a93f4254d5d3f5ad512bb79967",
-    "scope": "fixed saved inputs; proposed commands not executed; no closed-loop success evidence",
-    "results": {
-      "off": {
-        "frames": 56,
-        "turns": 55,
-        "forward": 1,
-        "holds": 0,
-        "turn_sign_flips": 11,
-        "matches_actual": 56,
-        "carrot_range_m": null
-      },
-      "rpp_v1": {
-        "frames": 56,
-        "turns": 6,
-        "forward": 50,
-        "holds": 0,
-        "turn_sign_flips": 0,
-        "matches_actual": 3,
-        "carrot_range_m": [
-          0.6008803009433603,
-          0.6247551975070298
-        ]
-      }
+  "B": {
+   "runs": 2,
+   "LLM_operated": 2,
+   "own_map_completed": 0,
+   "start_to_finish_transport": 0,
+   "E2E_success": 0,
+   "forward": 4477,
+   "turns": 849,
+   "turn_sign_flips": 29,
+   "cost_usd": 0.00101257,
+   "Jev_calls": 6,
+   "Jev_shadow_disagreements": 0
+  },
+  "C": {
+   "runs": 2,
+   "LLM_operated": 2,
+   "own_map_completed": 0,
+   "start_to_finish_transport": 0,
+   "E2E_success": 0,
+   "forward": 583,
+   "turns": 2563,
+   "turn_sign_flips": 501,
+   "cost_usd": 0.00092971,
+   "Jev_calls": 0,
+   "Jev_shadow_disagreements": 0
+  }
+ },
+ "matched_comparison": [
+  {
+   "seed": 61001,
+   "sim_window_s": [
+    0,
+    398.05
+   ],
+   "conditions": {
+    "A": {
+     "forward": 2243,
+     "turns": 425,
+     "turn_sign_flips": 12
+    },
+    "B": {
+     "forward": 2243,
+     "turns": 425,
+     "turn_sign_flips": 12
+    },
+    "C": {
+     "forward": 198,
+     "turns": 968,
+     "turn_sign_flips": 185
     }
+   }
   },
-  "method": {
-    "upstream_commit": "645abd95f2be02a13ca539b29c2ddc065db34f89",
-    "lookahead_dist": 0.6,
-    "min_lookahead_dist": 0.3,
-    "max_lookahead_dist": 0.9,
-    "use_velocity_scaled_lookahead_dist": false,
-    "lookahead_time": 1.5,
-    "use_rotate_to_heading": true,
-    "rotate_to_heading_min_angle": 0.785,
-    "turn_direction_hysteresis": false,
-    "selection": "First radial path point >= lookahead, else last point, as requested. Jazzy interpolates circle/segment after selecting the point; this port uses the selected grid point. Current main instead accumulates path length.",
-    "pulse_adaptation": "Own pose/path transformed through existing REP105 command frame. Existing measured single-axis 0.1s turn/positive-forward pulses, coast and fresh feedback. No uncalibrated mixed-axis velocity/acceleration, no physical speed input. This ports lookahead/rotation, not continuous curvature/velocity regulation.",
-    "goal_tolerance": "existing 0.03m / 0.06rad own navigation contract"
-  },
-  "storage_budget": {
-    "runs": 8,
-    "per_run_mib": 4096,
-    "mac_lite_per_run_mib": 64,
-    "reserved_mib": 2048,
-    "floors_gib": {
-      "x86": 8,
-      "arm": 25,
-      "mac": 20
+  {
+   "seed": 61002,
+   "sim_window_s": [
+    0,
+    406.65
+   ],
+   "conditions": {
+    "A": {
+     "forward": 2234,
+     "turns": 424,
+     "turn_sign_flips": 17
     },
-    "checks": [
-      {
-        "schema": "ugrp.storage-budget.v1",
-        "ok": true,
-        "checks": [
-          {
-            "host": "x86",
-            "free_bytes": 53038862336,
-            "expected_bytes": 36507222016,
-            "projected_free_bytes": 16531640320,
-            "floor_bytes": 8589934592,
-            "ok": true
-          }
-        ]
-      },
-      {
-        "schema": "ugrp.storage-budget.v1",
-        "ok": true,
-        "checks": [
-          {
-            "host": "arm",
-            "free_bytes": 87239241728,
-            "expected_bytes": 36507222016,
-            "projected_free_bytes": 50732019712,
-            "floor_bytes": 26843545600,
-            "ok": true
-          }
-        ]
-      },
-      {
-        "schema": "ugrp.storage-budget.v1",
-        "ok": true,
-        "checks": [
-          {
-            "host": "mac",
-            "free_bytes": 135437037568,
-            "expected_bytes": 1073741824,
-            "projected_free_bytes": 134363295744,
-            "floor_bytes": 21474836480,
-            "ok": true
-          }
-        ]
-      }
-    ],
-    "admission": {
-      "memory_available_bytes": 65521291264,
-      "free_bytes": 51605364736,
-      "loadavg": [
-        0.65185546875,
-        1.8310546875,
-        8.1162109375
-      ],
-      "runs": 8,
-      "per_run_bytes": 4294967296,
-      "reserved_bytes": 2147483648
+    "B": {
+     "forward": 2234,
+     "turns": 424,
+     "turn_sign_flips": 17
     },
-    "retry_admission": {
-      "memory_available_bytes": 65355026432,
-      "free_bytes": 49331585024,
-      "loadavg": [
-        0.40869140625,
-        0.98095703125,
-        6.26953125
-      ],
-      "runs": 8,
-      "per_run_bytes": 4294967296,
-      "reserved_bytes": 2147483648
+    "C": {
+     "forward": 385,
+     "turns": 1595,
+     "turn_sign_flips": 316
     }
-  },
-  "tests": {
-    "files": [
-      "tests/test_e2e_rpp_path.py",
-      "tests/test_e2e_explore_posefix.py",
-      "tests/test_s2_path_heading.py"
-    ],
-    "passed": 41,
-    "changed_followup_pending": false,
-    "changed_file_followup_passed": 7,
-    "initial_fixture_failure": "New timeout test passed empty calibration; fixed to use the existing S3 four pulse profile fixture.",
-    "managed_cli_regression": true
-  },
-  "references": [
-    {
-      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_regulated_pure_pursuit_controller/src/regulated_pure_pursuit_controller.cpp",
-      "verified": true,
-      "sha256": "9f5f23dc174e2bfae10c502fdebecc37b65d5397039d0c2c4504404557101d85"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_regulated_pure_pursuit_controller/src/parameter_handler.cpp",
-      "verified": true,
-      "sha256": "19c6af2e3308868a034d869f8dc2ca3333a625349fcc4f11eb2c33e98cd22969"
-    },
-    {
-      "url": "https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/controller_plugins/configuring_regulated_pp/",
-      "verified": true,
-      "use": "Official Jazzy defaults, radial lookahead and heading rotation."
-    },
-    {
-      "url": "https://docs.python.org/3/library/argparse.html#action",
-      "verified": true,
-      "use": "store_true flags consume no value; omit from legacy workflow manager value-required list."
-    }
+   }
+  }
+ ],
+ "known_Gemma_cost_usd": 0.00374495,
+ "Jev_cost_usd": null,
+ "diagnosis": {
+  "source_run": "e2e9-a-s61003",
+  "robot": "r2",
+  "source_sha256": "a8b18e70b9320559c0d2bba3434ffaf455efb9a93f4254d5d3f5ad512bb79967",
+  "scope": "fixed saved inputs; proposed commands not executed; no closed-loop success evidence",
+  "results": {
+   "off": {
+    "frames": 56,
+    "turns": 55,
+    "forward": 1,
+    "holds": 0,
+    "turn_sign_flips": 11,
+    "matches_actual": 56,
+    "carrot_range_m": null
+   },
+   "rpp_v1": {
+    "frames": 56,
+    "turns": 6,
+    "forward": 50,
+    "holds": 0,
+    "turn_sign_flips": 0,
+    "matches_actual": 3,
+    "carrot_range_m": [
+     0.6008803009433603,
+     0.6247551975070298
+    ]
+   }
+  }
+ },
+ "method": {
+  "upstream_commit": "645abd95f2be02a13ca539b29c2ddc065db34f89",
+  "lookahead_dist": 0.6,
+  "min_lookahead_dist": 0.3,
+  "max_lookahead_dist": 0.9,
+  "use_velocity_scaled_lookahead_dist": false,
+  "lookahead_time": 1.5,
+  "use_rotate_to_heading": true,
+  "rotate_to_heading_min_angle": 0.785,
+  "turn_direction_hysteresis": false,
+  "selection": "First radial path point >= lookahead, else last point, as requested. Jazzy interpolates circle/segment after selecting the point; this port uses the selected grid point. Current main instead accumulates path length.",
+  "pulse_adaptation": "Own pose/path transformed through existing REP105 command frame. Existing measured single-axis 0.1s turn/positive-forward pulses, coast and fresh feedback. No uncalibrated mixed-axis velocity/acceleration, no physical speed input. This ports lookahead/rotation, not continuous curvature/velocity regulation.",
+  "goal_tolerance": "existing 0.03m / 0.06rad own navigation contract"
+ },
+ "tests": {
+  "files": [
+   "tests/test_e2e_rpp_path.py",
+   "tests/test_e2e_explore_posefix.py",
+   "tests/test_s2_path_heading.py"
   ],
-  "runs": [
-    {
-      "id": "e2e10-a-s61001",
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
-      "status": "HOST_ERROR",
-      "simulation_started": false,
-      "sim_s": 0,
-      "wall_s": 14.590696811676025,
-      "LLM_operated": false,
-      "own_map_completed": false,
-      "start_to_finish_transport": false,
-      "cause": "workflow: --dev-light requires a value, got another option",
-      "exit": 2,
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61001",
-      "archive": {
-        "run": "e2e10-a-s61001",
-        "summary_sha256": "fc27bad0834cf7c39ec6c2eb55ba632dbc2af3b97ce2357243389505e5ddc648",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e10-a-s61001",
-          "files": 0,
-          "saved_bytes": 0,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "9479f48a401cfc8acd2117168d9591f98939486e5718b39daf008a53b362ecd8",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61001",
-          "files": 18,
-          "hash_matches": 18,
-          "inventory_sha256": "8c920ac78d8a7d8ab07073391e924734220e2bd253fbf9fc0bd0ecacd41188ca",
-          "reused": false,
-          "receiver_seconds": 0.083
-        },
-        "archive_bytes": 14410
-      },
-      "retrieval": {
-        "run": "e2e10-a-s61001",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001",
-        "checksum_verified": true,
-        "excluded_embedded_images": 0,
-        "files": 18,
-        "bytes": 14410
-      }
-    },
-    {
-      "id": "e2e10-b-s61001",
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
-      "status": "HOST_ERROR",
-      "simulation_started": false,
-      "sim_s": 0,
-      "wall_s": 13.340088844299316,
-      "LLM_operated": false,
-      "own_map_completed": false,
-      "start_to_finish_transport": false,
-      "cause": "workflow: --dev-light requires a value, got another option",
-      "exit": 2,
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-b-s61001",
-      "archive": {
-        "run": "e2e10-b-s61001",
-        "summary_sha256": "894b6d0d38b299ec1c4802100781b63a79d17f12f5b513c784adce01e51e56d8",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e10-b-s61001",
-          "files": 0,
-          "saved_bytes": 0,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "d7d6a94e7a7c2533c778ce179fe1d6a25125dc94a70121003c7f503592f1b7d2",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-b-s61001",
-          "files": 18,
-          "hash_matches": 18,
-          "inventory_sha256": "7d5b8a2aed7a866601a38899312bbce2f445ae3bf860e35a7ba55718b16e19be",
-          "reused": false,
-          "receiver_seconds": 0.088
-        },
-        "archive_bytes": 14415
-      },
-      "retrieval": {
-        "run": "e2e10-b-s61001",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001",
-        "checksum_verified": true,
-        "excluded_embedded_images": 0,
-        "files": 18,
-        "bytes": 14415
-      }
-    },
-    {
-      "id": "e2e10-c-s61001",
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
-      "status": "HOST_ERROR",
-      "simulation_started": false,
-      "sim_s": 0,
-      "wall_s": 12.080543518066406,
-      "LLM_operated": false,
-      "own_map_completed": false,
-      "start_to_finish_transport": false,
-      "cause": "workflow: --dev-light requires a value, got another option",
-      "exit": 2,
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-c-s61001",
-      "archive": {
-        "run": "e2e10-c-s61001",
-        "summary_sha256": "58a23abd0b9060bb4691a9914e4fe45eda6a9ee1596c43c9add86beae4ca07ce",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e10-c-s61001",
-          "files": 0,
-          "saved_bytes": 0,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "8324e5cd02e34b1d2150fba0dc5947fac03c30bc5cd2fec8d99c61700d213e39",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-c-s61001",
-          "files": 18,
-          "hash_matches": 18,
-          "inventory_sha256": "624b46672e47a09d24ec3944cc046036bf92047e3ea3ac70096ba33671716cf9",
-          "reused": false,
-          "receiver_seconds": 0.077
-        },
-        "archive_bytes": 14401
-      },
-      "retrieval": {
-        "run": "e2e10-c-s61001",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001",
-        "checksum_verified": true,
-        "excluded_embedded_images": 0,
-        "files": 18,
-        "bytes": 14401
-      }
-    },
-    {
-      "id": "e2e10-a-s61002",
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
-      "status": "HOST_ERROR",
-      "simulation_started": false,
-      "sim_s": 0,
-      "wall_s": 10.796459197998047,
-      "LLM_operated": false,
-      "own_map_completed": false,
-      "start_to_finish_transport": false,
-      "cause": "workflow: --dev-light requires a value, got another option",
-      "exit": 2,
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61002",
-      "archive": {
-        "run": "e2e10-a-s61002",
-        "summary_sha256": "220f8d9e83a31312c4b776e3d5a39742c57f4a908e91d4d94dac6b8f2c549e92",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e10-a-s61002",
-          "files": 0,
-          "saved_bytes": 0,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "834160b5edbb3793966e79181853ba26f3fbfa5531a0607f6e375fbb5d4f5768",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61002",
-          "files": 18,
-          "hash_matches": 18,
-          "inventory_sha256": "49523e09c3d00de85e03bcd0f962d83231fc089b83630c300c8f380b402b4117",
-          "reused": false,
-          "receiver_seconds": 0.086
-        },
-        "archive_bytes": 14407
-      },
-      "retrieval": {
-        "run": "e2e10-a-s61002",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002",
-        "checksum_verified": true,
-        "excluded_embedded_images": 0,
-        "files": 18,
-        "bytes": 14407
-      }
-    },
-    {
-      "id": "e2e10-b-s61002",
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
-      "status": "HOST_ERROR",
-      "simulation_started": false,
-      "sim_s": 0,
-      "wall_s": 9.554059028625488,
-      "LLM_operated": false,
-      "own_map_completed": false,
-      "start_to_finish_transport": false,
-      "cause": "workflow: --dev-light requires a value, got another option",
-      "exit": 2,
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-b-s61002",
-      "archive": {
-        "run": "e2e10-b-s61002",
-        "summary_sha256": "57bb456b633dff88fdd7bfdc40aa2ef0e00e6025b0dedaa68b9d3c0ad2f963a8",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e10-b-s61002",
-          "files": 0,
-          "saved_bytes": 0,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "f91dfe2736dcedcbadc0c185687db3b0c3ec39cc0ffc4f62a06dd0e5b7d4123c",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-b-s61002",
-          "files": 18,
-          "hash_matches": 18,
-          "inventory_sha256": "8b046ab48e6e6545d3f5771abc256386cae0100d63d197732946686855663755",
-          "reused": false,
-          "receiver_seconds": 0.072
-        },
-        "archive_bytes": 14408
-      },
-      "retrieval": {
-        "run": "e2e10-b-s61002",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002",
-        "checksum_verified": true,
-        "excluded_embedded_images": 0,
-        "files": 18,
-        "bytes": 14408
-      }
-    },
-    {
-      "id": "e2e10-c-s61002",
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
-      "status": "HOST_ERROR",
-      "simulation_started": false,
-      "sim_s": 0,
-      "wall_s": 8.287484884262085,
-      "LLM_operated": false,
-      "own_map_completed": false,
-      "start_to_finish_transport": false,
-      "cause": "workflow: --dev-light requires a value, got another option",
-      "exit": 2,
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-c-s61002",
-      "archive": {
-        "run": "e2e10-c-s61002",
-        "summary_sha256": "8b199d4f215107bb7b860dbc88c9bc63e87b5cc38571898027ad9cf286769104",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e10-c-s61002",
-          "files": 0,
-          "saved_bytes": 0,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "4866bcb24580c6b6b656937c51779826cdd106d9332ddd6f36dcf4efcd349c11",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-c-s61002",
-          "files": 18,
-          "hash_matches": 18,
-          "inventory_sha256": "1218f046b060e9caf6fcecc1282851acbbc031edf87885d3ab28b748112a55fe",
-          "reused": false,
-          "receiver_seconds": 0.079
-        },
-        "archive_bytes": 14399
-      },
-      "retrieval": {
-        "run": "e2e10-c-s61002",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002",
-        "checksum_verified": true,
-        "excluded_embedded_images": 0,
-        "files": 18,
-        "bytes": 14399
-      }
-    },
-    {
-      "id": "e2e10-a-s61003",
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
-      "status": "HOST_ERROR",
-      "simulation_started": false,
-      "sim_s": 0,
-      "wall_s": 7.009382963180542,
-      "LLM_operated": false,
-      "own_map_completed": false,
-      "start_to_finish_transport": false,
-      "cause": "workflow: --dev-light requires a value, got another option",
-      "exit": 2,
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61003",
-      "archive": {
-        "run": "e2e10-a-s61003",
-        "summary_sha256": "326ce2c69ac3a92b391126b81b75a2900811ed1734947afc9ad08b858233ef03",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e10-a-s61003",
-          "files": 0,
-          "saved_bytes": 0,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "264e22eaf1332a81d7707a5d0fd7cadc5d8f137bebb82d3d5ba5aff114a98ed0",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61003",
-          "files": 18,
-          "hash_matches": 18,
-          "inventory_sha256": "cbc920e132e2acf5e022d166fd3293d863d83d0cd1a674932a62093da16dcd8f",
-          "reused": false,
-          "receiver_seconds": 0.071
-        },
-        "archive_bytes": 14404
-      },
-      "retrieval": {
-        "run": "e2e10-a-s61003",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003",
-        "checksum_verified": true,
-        "excluded_embedded_images": 0,
-        "files": 18,
-        "bytes": 14404
-      }
-    },
-    {
-      "id": "e2e10-a-s61004",
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
-      "status": "HOST_ERROR",
-      "simulation_started": false,
-      "sim_s": 0,
-      "wall_s": 5.6948769092559814,
-      "LLM_operated": false,
-      "own_map_completed": false,
-      "start_to_finish_transport": false,
-      "cause": "workflow: --dev-light requires a value, got another option",
-      "exit": 2,
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61004",
-      "archive": {
-        "run": "e2e10-a-s61004",
-        "summary_sha256": "0da5eb68226ebfde9cd08752539da92c0bba93da7b3647c96b8e54a0f8152a90",
-        "compression": {
-          "run": "/home/ugrp/ugrp-sim/runs/e2e10-a-s61004",
-          "files": 0,
-          "saved_bytes": 0,
-          "sha256_verified": true
-        },
-        "archive_marker_sha256": "97d17f25b0d8570e79ebcd20c1837520fab6953386e8ec1ffcd11d8d05bb0244",
-        "proof": {
-          "verified": true,
-          "schema": "ugrp.archive-native.v1",
-          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61004",
-          "files": 18,
-          "hash_matches": 18,
-          "inventory_sha256": "556e7fe4c826ea5f43b6a38493e49bce32aeb47147ac63b7f6fb45917232e817",
-          "reused": false,
-          "receiver_seconds": 0.073
-        },
-        "archive_bytes": 14407
-      },
-      "retrieval": {
-        "run": "e2e10-a-s61004",
-        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004",
-        "checksum_verified": true,
-        "excluded_embedded_images": 0,
-        "files": 18,
-        "bytes": 14407
-      }
-    }
-  ],
-  "remaining": [
-    "Eight running cells passed <=5min checks. B boundary, admitted own route and transport still pending. Terminal retrieval is not complete."
-  ],
-  "bundle_number_audit": [
-    {
-      "pr": 0,
-      "ref": "origin/main",
-      "max_id": 193
-    },
-    {
-      "pr": 440,
-      "ref": "origin/codex/ego-pose-continuity",
-      "max_id": 145
-    },
-    {
-      "pr": 437,
-      "ref": "origin/codex/egomap70-overview",
-      "max_id": 145
-    },
-    {
-      "pr": 436,
-      "ref": "origin/codex/s4live11-overview",
-      "max_id": 182
-    },
-    {
-      "pr": 434,
-      "ref": "origin/codex/e2e-overview-view",
-      "max_id": 179
-    },
-    {
-      "pr": 433,
-      "ref": "origin/codex/e2e-integration",
-      "max_id": 194
-    },
-    {
-      "pr": 432,
-      "ref": "origin/codex/s3-overview-view3",
-      "max_id": 170
-    },
-    {
-      "pr": 431,
-      "ref": "origin/codex/s4-overview-view",
-      "max_id": 168
-    },
-    {
-      "pr": 427,
-      "ref": "origin/codex/s3-overview-view",
-      "max_id": 165
-    },
-    {
-      "pr": 425,
-      "ref": "origin/codex/s4-llm-host",
-      "max_id": 195
-    },
-    {
-      "pr": 405,
-      "ref": "origin/claude/ego-wall-map",
-      "max_id": 145
-    },
-    {
-      "pr": 385,
-      "ref": "origin/codex/real-robot-link",
-      "max_id": 2
-    },
-    {
-      "pr": 339,
-      "ref": "origin/codex/integ-target-backend",
-      "max_id": 101
-    }
-  ],
-  "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
-  "submissions": [
-    {
-      "run": "e2e10-a-s61001",
-      "pid": 271089,
-      "submitted_unix": 1791734873.6287382,
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
-    },
-    {
-      "run": "e2e10-b-s61001",
-      "pid": 271144,
-      "submitted_unix": 1791734874.9128304,
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
-    },
-    {
-      "run": "e2e10-c-s61001",
-      "pid": 271205,
-      "submitted_unix": 1791734876.2168996,
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
-    },
-    {
-      "run": "e2e10-a-s61002",
-      "pid": 271267,
-      "submitted_unix": 1791734877.4874156,
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
-    },
-    {
-      "run": "e2e10-b-s61002",
-      "pid": 271329,
-      "submitted_unix": 1791734878.7700105,
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
-    },
-    {
-      "run": "e2e10-c-s61002",
-      "pid": 271388,
-      "submitted_unix": 1791734880.07342,
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
-    },
-    {
-      "run": "e2e10-a-s61003",
-      "pid": 271454,
-      "submitted_unix": 1791734881.3425379,
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
-    },
-    {
-      "run": "e2e10-a-s61004",
-      "pid": 271519,
-      "submitted_unix": 1791734882.9556792,
-      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
-    }
-  ],
-  "orchestration": {
-    "submit.py": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/submit.py",
-      "sha256": "ec138ac1a78a304e0d8a8bd8bbaa1567fbe6dede1098423d4565c3fecf29f9d9"
-    },
-    "fetch-finished.py": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/fetch-finished.py",
-      "sha256": "3567e98dff652f3437eb318c0475cd1bd1362998f30a46ffa642d20992ab9b43"
-    },
-    "export-lite.py": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/export-lite.py",
-      "sha256": "bc7b91e61da8b0606bc3813d21433ac3836db5979fef526f6ef962d853343f51"
-    },
-    "relay-supervisor.py": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/relay-supervisor.py",
-      "sha256": "462e19a100d3e2c767141fee6c02cda8ed6f43b3fd7e5a4f224a82a23522be11"
-    },
-    "watch.py": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/watch.py",
-      "sha256": "c1eec0f0f0d91b47cd295d1a58591ecc14c361b49359660d9f23c4f8f6dc6638"
-    },
-    "finish.py": {
-      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/finish.py",
-      "sha256": "b38a043cae8365f7d6d5c8b1b5b6dffec08679a156eac5445892eff11a1484c1"
-    }
+  "passed": 41,
+  "changed_followup_pending": false,
+  "changed_file_followup_passed": 7,
+  "initial_fixture_failure": "New timeout test passed empty calibration; fixed to use the existing S3 four pulse profile fixture.",
+  "managed_cli_regression": true
+ },
+ "references": [
+  {
+   "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_regulated_pure_pursuit_controller/src/regulated_pure_pursuit_controller.cpp",
+   "verified": true,
+   "sha256": "9f5f23dc174e2bfae10c502fdebecc37b65d5397039d0c2c4504404557101d85"
   },
-  "launch_attempt_count": 16,
-  "simulation_count": 8,
-  "retired_bundle": {
-    "id": "e2e-rpp-lookahead-v196",
-    "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
-    "physical_runs": 0,
-    "host_errors": 8,
-    "catalog_preserved": true
+  {
+   "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_regulated_pure_pursuit_controller/src/parameter_handler.cpp",
+   "verified": true,
+   "sha256": "19c6af2e3308868a034d869f8dc2ca3333a625349fcc4f11eb2c33e98cd22969"
   },
-  "submissions_r2": [
+  {
+   "url": "https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/controller_plugins/configuring_regulated_pp/",
+   "verified": true,
+   "use": "Official Jazzy defaults, radial lookahead and heading rotation."
+  },
+  {
+   "url": "https://docs.python.org/3/library/argparse.html#action",
+   "verified": true,
+   "use": "store_true flags consume no value; omit from legacy workflow manager value-required list."
+  }
+ ],
+ "retrieval": {
+  "completed": 8,
+  "expected": 8,
+  "files": 55330,
+  "hash_matches": 55330,
+  "mac_lite_bytes": 118575641,
+  "all_launches_archived_and_lite_verified": 16,
+  "all_launch_inventory_files": 55474
+ },
+ "remaining": [
+  "8/8 simulations ended with E2E_WALL_CAP (HOST_ERROR), after 398.05-499.7 SIM seconds; no own-map completion or transport.",
+  "B color candidates appeared, but no B boundary validation, route, grasp, carry or setdown was reached.",
+  "RPP reduces alternating turns, but issued-command odometry accumulates despite contacts/slip; max evaluation-only map error is 6.98 m. Contact is not proved to explain every error.",
+  "Next candidate must estimate executed motion from allowed RGB/history and handle persistent blockage; no ground-truth feedback is permitted.",
+  "Jev shadow disagreed 0/6; Jev cost was not available. No physical-hardware evidence or research success is claimed."
+ ],
+ "measurement_notes": [
+  "Forward counts issued positive-forward commands; turning signs ignore intervening translations. These are not counts of successful physical displacement.",
+  "Online comparisons use seeds 61001/61002, both active robots and the minimum available SIM horizon per seed; A and B are identical within these windows.",
+  "Navigation fourth-abort markers were reconstructed from navigation_action_aborted events: the live watcher matched the older reason progress_timeout_blacklist. This affected observations only, not control.",
+  "Final health inspection can record INITIAL_OR_PERIODIC_HEALTH_FAILED after a run has exited; this did not stop the run. Wall cap is the terminal cause.",
+  "Trace event times and run stage times are SIM seconds; watcher wall times are since submission, while result wall time starts inside the driver.",
+  "For missing stages, timestamps are null. Mapping/LLM milestone SIM zero denotes completion of startup with mapping about to begin."
+ ],
+ "retention": "Open PR raw preserved. At PR merge/closure remove DEV heavy originals with cleanup-records while keeping hashes, summaries, LLM text, command trajectories and representative media; no deletion performed in this round.",
+ "lifecycle": {
+  "vm": "ugrp-sim-azure",
+  "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+  "final_state": {
+   "size": "Standard_D16as_v5",
+   "status": [
     {
-      "run": "e2e10-a-s61001-r2",
-      "pid": 274120,
-      "submitted_unix": 1791735121.2761238,
-      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+     "code": "ProvisioningState/succeeded",
+     "displayStatus": "Provisioning succeeded",
+     "level": "Info",
+     "time": "2026-10-11T17:59:41.823819+00:00"
     },
     {
-      "run": "e2e10-b-s61001-r2",
-      "pid": 274177,
-      "submitted_unix": 1791735122.5506754,
-      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
-    },
-    {
-      "run": "e2e10-c-s61001-r2",
-      "pid": 274238,
-      "submitted_unix": 1791735123.8387945,
-      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
-    },
-    {
-      "run": "e2e10-a-s61002-r2",
-      "pid": 274342,
-      "submitted_unix": 1791735125.103173,
-      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
-    },
-    {
-      "run": "e2e10-b-s61002-r2",
-      "pid": 274396,
-      "submitted_unix": 1791735126.3908153,
-      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
-    },
-    {
-      "run": "e2e10-c-s61002-r2",
-      "pid": 274451,
-      "submitted_unix": 1791735127.7587895,
-      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
-    },
-    {
-      "run": "e2e10-a-s61003-r2",
-      "pid": 274514,
-      "submitted_unix": 1791735129.033173,
-      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
-    },
-    {
-      "run": "e2e10-a-s61004-r2",
-      "pid": 274620,
-      "submitted_unix": 1791735130.2582176,
-      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+     "code": "PowerState/deallocated",
+     "displayStatus": "VM deallocated",
+     "level": "Info"
     }
+   ]
+  },
+  "before_stop": {
+   "unarchived": [],
+   "leases": [],
+   "stopping": false
+  },
+  "own_relay_stopped": true,
+  "own_relay_listeners_absent": true,
+  "scope": "Only own processes stopped; existing lease/admission and eight-hour guard preserved."
+ },
+ "details": {
+  "path": "round10-details.json.zst",
+  "bytes": 19481,
+  "sha256": "fe36679aba00d090cabc19efccb4606f7462cf9edbc53fea316b0ddf03ab8ed9",
+  "uncompressed_bytes": 133004,
+  "uncompressed_sha256": "f0d4ea833bb8cb6c6426b104c43281d70a5a38cdfb520d09220a5273e9c8a236"
+ },
+ "preregistration": {
+  "details": "round10-details.json.zst",
+  "max_simulations": 8,
+  "conditions": {
+   "A": "rpp_v1 + Gemma, seeds 61001-61004",
+   "B": "rpp_v1 + Jev v1 with Gemma shadow, seeds 61001-61002",
+   "C": "rpp off + Gemma, seeds 61001-61002"
+  },
+  "success": "LLM operated AND own map complete AND start-to-finish transport in the same execution",
+  "health_policy": "DEV conservative health only logged; actual physical failures or runtime errors stop; finite wall cap retained"
+ },
+ "initial_health": {
+  "passed": 8,
+  "total": 8,
+  "checked_after_submit_s": [
+   210,
+   214
   ],
-  "initial_health": {
-    "e2e10-c-s61001-r2": {
-      "passed": true,
-      "elapsed_since_submit_s": 212.06138515472412,
-      "sim_s": 15.0,
-      "frames": 76,
-      "checks": {
-        "no_exceptions": true,
-        "frames_increased": true,
-        "sim_time_increased": true,
-        "actual_translation": true,
-        "deepinfra_normal": true,
-        "ownmap_trace": true,
-        "mapping_phase_entered": true,
-        "jev_response": true,
-        "translation_command": true,
-        "model_response_accepted": true
-      },
-      "actual_displacement_m": {
-        "r1": 0.12529387305622786,
-        "r2": 0.12275240415798803,
-        "r3": 8.114526146219145e-05
-      },
-      "commands": {
-        "r1": {
-          "forward": 11,
-          "turns": 65,
-          "turn_sign_flips": 12
-        },
-        "r2": {
-          "forward": 9,
-          "turns": 67,
-          "turn_sign_flips": 17
-        },
-        "r3": {
-          "forward": 0,
-          "turns": 0,
-          "turn_sign_flips": 0
-        }
-      },
-      "pose_jumps": {
-        "r1": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 6,
-            "over_20cm": 0,
-            "max_m": 0.10112786436371897
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.012923413773167528
-          }
-        },
-        "r2": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.1127075956529511
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.01292341377316754
-          }
-        },
-        "r3": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.075001022305662
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.0
-          }
-        }
-      }
-    },
-    "e2e10-a-s61004-r2": {
-      "passed": true,
-      "elapsed_since_submit_s": 211.9435694217682,
-      "sim_s": 15.0,
-      "frames": 76,
-      "checks": {
-        "no_exceptions": true,
-        "frames_increased": true,
-        "sim_time_increased": true,
-        "actual_translation": true,
-        "deepinfra_normal": true,
-        "ownmap_trace": true,
-        "mapping_phase_entered": true,
-        "jev_response": true,
-        "translation_command": true,
-        "model_response_accepted": true
-      },
-      "actual_displacement_m": {
-        "r1": 0.682262869749025,
-        "r2": 0.29341812970436976,
-        "r3": 8.172271666635471e-05
-      },
-      "commands": {
-        "r1": {
-          "forward": 54,
-          "turns": 22,
-          "turn_sign_flips": 1
-        },
-        "r2": {
-          "forward": 76,
-          "turns": 0,
-          "turn_sign_flips": 0
-        },
-        "r3": {
-          "forward": 0,
-          "turns": 0,
-          "turn_sign_flips": 0
-        }
-      },
-      "pose_jumps": {
-        "r1": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.09203872567533024
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.01292341377316763
-          }
-        },
-        "r2": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.08065995154883591
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.01292341377316764
-          }
-        },
-        "r3": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.075001022305662
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.0
-          }
-        }
-      }
-    },
-    "e2e10-b-s61002-r2": {
-      "passed": true,
-      "elapsed_since_submit_s": 212.65215039253235,
-      "sim_s": 15.0,
-      "frames": 76,
-      "checks": {
-        "no_exceptions": true,
-        "frames_increased": true,
-        "sim_time_increased": true,
-        "actual_translation": true,
-        "deepinfra_normal": true,
-        "ownmap_trace": true,
-        "mapping_phase_entered": true,
-        "jev_response": true,
-        "translation_command": true,
-        "model_response_accepted": true
-      },
-      "actual_displacement_m": {
-        "r1": 0.6610155235758007,
-        "r2": 0.2947406018867206,
-        "r3": 7.944070739023477e-05
-      },
-      "commands": {
-        "r1": {
-          "forward": 53,
-          "turns": 23,
-          "turn_sign_flips": 1
-        },
-        "r2": {
-          "forward": 76,
-          "turns": 0,
-          "turn_sign_flips": 0
-        },
-        "r3": {
-          "forward": 0,
-          "turns": 0,
-          "turn_sign_flips": 0
-        }
-      },
-      "pose_jumps": {
-        "r1": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.14912048085602428
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.012923413773167625
-          }
-        },
-        "r2": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.1021575556607719
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.01292341377316764
-          }
-        },
-        "r3": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.075001022305662
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.0
-          }
-        }
-      }
-    },
-    "e2e10-a-s61001-r2": {
-      "passed": true,
-      "elapsed_since_submit_s": 211.44164061546326,
-      "sim_s": 15.0,
-      "frames": 76,
-      "checks": {
-        "no_exceptions": true,
-        "frames_increased": true,
-        "sim_time_increased": true,
-        "actual_translation": true,
-        "deepinfra_normal": true,
-        "ownmap_trace": true,
-        "mapping_phase_entered": true,
-        "jev_response": true,
-        "translation_command": true,
-        "model_response_accepted": true
-      },
-      "actual_displacement_m": {
-        "r1": 0.6597423158969616,
-        "r2": 0.2934105667699602,
-        "r3": 8.114526146219145e-05
-      },
-      "commands": {
-        "r1": {
-          "forward": 54,
-          "turns": 22,
-          "turn_sign_flips": 1
-        },
-        "r2": {
-          "forward": 76,
-          "turns": 0,
-          "turn_sign_flips": 0
-        },
-        "r3": {
-          "forward": 0,
-          "turns": 0,
-          "turn_sign_flips": 0
-        }
-      },
-      "pose_jumps": {
-        "r1": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.15570970126018974
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.012923413773167627
-          }
-        },
-        "r2": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.08065995154883591
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.01292341377316764
-          }
-        },
-        "r3": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.075001022305662
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.0
-          }
-        }
-      }
-    },
-    "e2e10-a-s61003-r2": {
-      "passed": true,
-      "elapsed_since_submit_s": 210.11456179618835,
-      "sim_s": 16.0,
-      "frames": 81,
-      "checks": {
-        "no_exceptions": true,
-        "frames_increased": true,
-        "sim_time_increased": true,
-        "actual_translation": true,
-        "deepinfra_normal": true,
-        "ownmap_trace": true,
-        "mapping_phase_entered": true,
-        "jev_response": true,
-        "translation_command": true,
-        "model_response_accepted": true
-      },
-      "actual_displacement_m": {
-        "r1": 0.6577310114547399,
-        "r2": 0.2964822529157976,
-        "r3": 8.703064332928814e-05
-      },
-      "commands": {
-        "r1": {
-          "forward": 55,
-          "turns": 26,
-          "turn_sign_flips": 1
-        },
-        "r2": {
-          "forward": 81,
-          "turns": 0,
-          "turn_sign_flips": 0
-        },
-        "r3": {
-          "forward": 0,
-          "turns": 0,
-          "turn_sign_flips": 0
-        }
-      },
-      "pose_jumps": {
-        "r1": {
-          "map": {
-            "intervals": 80,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.1534981994013758
-          },
-          "control": {
-            "intervals": 80,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.012923413773167618
-          }
-        },
-        "r2": {
-          "map": {
-            "intervals": 80,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.08065995154883591
-          },
-          "control": {
-            "intervals": 80,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.012923413773167663
-          }
-        },
-        "r3": {
-          "map": {
-            "intervals": 80,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.075001022305662
-          },
-          "control": {
-            "intervals": 80,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.0
-          }
-        }
-      }
-    },
-    "e2e10-a-s61002-r2": {
-      "passed": true,
-      "elapsed_since_submit_s": 210.82354474067688,
-      "sim_s": 15.0,
-      "frames": 76,
-      "checks": {
-        "no_exceptions": true,
-        "frames_increased": true,
-        "sim_time_increased": true,
-        "actual_translation": true,
-        "deepinfra_normal": true,
-        "ownmap_trace": true,
-        "mapping_phase_entered": true,
-        "jev_response": true,
-        "translation_command": true,
-        "model_response_accepted": true
-      },
-      "actual_displacement_m": {
-        "r1": 0.6610155235758007,
-        "r2": 0.2947406018867206,
-        "r3": 7.944070739023477e-05
-      },
-      "commands": {
-        "r1": {
-          "forward": 53,
-          "turns": 23,
-          "turn_sign_flips": 1
-        },
-        "r2": {
-          "forward": 76,
-          "turns": 0,
-          "turn_sign_flips": 0
-        },
-        "r3": {
-          "forward": 0,
-          "turns": 0,
-          "turn_sign_flips": 0
-        }
-      },
-      "pose_jumps": {
-        "r1": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.14912048085602428
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.012923413773167625
-          }
-        },
-        "r2": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.1021575556607719
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.01292341377316764
-          }
-        },
-        "r3": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.075001022305662
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.0
-          }
-        }
-      }
-    },
-    "e2e10-c-s61002-r2": {
-      "passed": true,
-      "elapsed_since_submit_s": 211.42066955566406,
-      "sim_s": 15.0,
-      "frames": 76,
-      "checks": {
-        "no_exceptions": true,
-        "frames_increased": true,
-        "sim_time_increased": true,
-        "actual_translation": true,
-        "deepinfra_normal": true,
-        "ownmap_trace": true,
-        "mapping_phase_entered": true,
-        "jev_response": true,
-        "translation_command": true,
-        "model_response_accepted": true
-      },
-      "actual_displacement_m": {
-        "r1": 0.41437732145289163,
-        "r2": 0.149261397126703,
-        "r3": 7.944070739023477e-05
-      },
-      "commands": {
-        "r1": {
-          "forward": 33,
-          "turns": 41,
-          "turn_sign_flips": 12
-        },
-        "r2": {
-          "forward": 13,
-          "turns": 63,
-          "turn_sign_flips": 15
-        },
-        "r3": {
-          "forward": 0,
-          "turns": 0,
-          "turn_sign_flips": 0
-        }
-      },
-      "pose_jumps": {
-        "r1": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 3,
-            "over_20cm": 0,
-            "max_m": 0.07733039251493075
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.012923413773167566
-          }
-        },
-        "r2": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 5,
-            "over_20cm": 0,
-            "max_m": 0.08070955497730094
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.012923413773167532
-          }
-        },
-        "r3": {
-          "map": {
-            "intervals": 75,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.075001022305662
-          },
-          "control": {
-            "intervals": 75,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.0
-          }
-        }
-      }
-    },
-    "e2e10-b-s61001-r2": {
-      "passed": true,
-      "elapsed_since_submit_s": 210.23682498931885,
-      "sim_s": 14.0,
-      "frames": 71,
-      "checks": {
-        "no_exceptions": true,
-        "frames_increased": true,
-        "sim_time_increased": true,
-        "actual_translation": true,
-        "deepinfra_normal": true,
-        "ownmap_trace": true,
-        "mapping_phase_entered": true,
-        "jev_response": true,
-        "translation_command": true,
-        "model_response_accepted": true
-      },
-      "actual_displacement_m": {
-        "r1": 0.6322389106062254,
-        "r2": 0.2926629410337932,
-        "r3": 7.633249938053306e-05
-      },
-      "commands": {
-        "r1": {
-          "forward": 51,
-          "turns": 20,
-          "turn_sign_flips": 1
-        },
-        "r2": {
-          "forward": 71,
-          "turns": 0,
-          "turn_sign_flips": 0
-        },
-        "r3": {
-          "forward": 0,
-          "turns": 0,
-          "turn_sign_flips": 0
-        }
-      },
-      "pose_jumps": {
-        "r1": {
-          "map": {
-            "intervals": 70,
-            "over_5cm": 2,
-            "over_20cm": 0,
-            "max_m": 0.15570970126018974
-          },
-          "control": {
-            "intervals": 70,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.012923413773167627
-          }
-        },
-        "r2": {
-          "map": {
-            "intervals": 70,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.08065995154883591
-          },
-          "control": {
-            "intervals": 70,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.01292341377316764
-          }
-        },
-        "r3": {
-          "map": {
-            "intervals": 70,
-            "over_5cm": 1,
-            "over_20cm": 0,
-            "max_m": 0.075001022305662
-          },
-          "control": {
-            "intervals": 70,
-            "over_5cm": 0,
-            "over_20cm": 0,
-            "max_m": 0.0
-          }
-        }
-      }
+  "details": "round10-details.json.zst"
+ },
+ "runs": [
+  {
+   "id": "e2e10-a-s61001",
+   "batch": "A",
+   "seed": 61001,
+   "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+   "status": "HOST_ERROR",
+   "exit": 2,
+   "simulation_started": false,
+   "cause": "workflow: --dev-light requires a value, got another option",
+   "sim_s": 0,
+   "wall_s": 6.81,
+   "LLM_operated": false,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {},
+   "furthest_stage": "not_started",
+   "model": {
+    "Gemma_calls": 0,
+    "cost_usd": 0,
+    "Jev": {
+     "calls": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
     }
+   },
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61001",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61001",
+   "RUN_META_sha256": "8b6f7ac444406992e90f71aad158fd0ac9ef417bec2e5d4c17a2d27c8c7cf59e",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-a-s61001.json.zst",
+    "bytes": 1542,
+    "sha256": "30966ad6acf1ed60b820d4b3e924b0b8f7efe1c3cb41d20c5880eb2ecabe4b97",
+    "uncompressed_bytes": 3577,
+    "uncompressed_sha256": "f5761270b7822302759a62d637e1af14e459a8e2d0a54e7645e5b22389aa4acc"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001",
+    "checksum_verified": true,
+    "archive_files": 18,
+    "hash_matches": 18,
+    "archive_verified": true,
+    "inventory_sha256": "8c920ac78d8a7d8ab07073391e924734220e2bd253fbf9fc0bd0ecacd41188ca"
+   }
   },
-  "initial_health_passed": 8
+  {
+   "id": "e2e10-a-s61001-r2",
+   "batch": "A",
+   "seed": 61001,
+   "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
+   "status": "HOST_ERROR",
+   "exit": 1,
+   "simulation_started": true,
+   "cause": "E2E_WALL_CAP",
+   "frames": 2308,
+   "sim_s": 461.5,
+   "wall_s": 6089.201483368997,
+   "LLM_operated": true,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "E2E_success": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 21.254016768998554
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 21.254016768998554
+    }
+   },
+   "furthest_stage": "mapping",
+   "model": {
+    "Gemma_calls": 3,
+    "http_attempts": 3,
+    "prompt_tokens": 4612,
+    "completion_tokens": 146,
+    "cost_usd": 0.00046471999999999996,
+    "missing_cost_calls": 0,
+    "latency_median_s": 3.735761917021591,
+    "Jev": {
+     "calls": 0,
+     "tokens": 0,
+     "cost_usd": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "pose_jumps": {
+    "r1": {
+     "map": {
+      "intervals": 2307,
+      "over_5cm": 10,
+      "over_20cm": 2,
+      "max_m": 0.51535039656558
+     },
+     "control": {
+      "intervals": 2307,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773168349
+     }
+    },
+    "r2": {
+     "map": {
+      "intervals": 2307,
+      "over_5cm": 13,
+      "over_20cm": 3,
+      "max_m": 0.48378422562595996
+     },
+     "control": {
+      "intervals": 2307,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773168593
+     }
+    },
+    "r3": {
+     "map": {
+      "intervals": 2307,
+      "over_5cm": 1,
+      "over_20cm": 0,
+      "max_m": 0.075001022305662
+     },
+     "control": {
+      "intervals": 2307,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.0
+     }
+    }
+   },
+   "commands": {
+    "r1": {
+     "forward": 1104,
+     "turns": 245,
+     "turn_sign_flips": 5
+    },
+    "r2": {
+     "forward": 1139,
+     "turns": 180,
+     "turn_sign_flips": 7
+    },
+    "r3": {
+     "forward": 0,
+     "turns": 0,
+     "turn_sign_flips": 0
+    }
+   },
+   "would_stop": [
+    {
+     "reason": "INITIAL_OR_PERIODIC_HEALTH_FAILED",
+     "sim_s": 461.0,
+     "wall_s": 6113.588069438934,
+     "action": "record_only",
+     "dev_light": true,
+     "note": "Final inspection can fail after EXIT; not a run termination cause."
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r1",
+     "sim_s": 249.0,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r2",
+     "sim_s": 159.6,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    }
+   ],
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61001-r2",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61001-r2",
+   "result_sha256": "d60765b1524cbb3d5c688896e3d369ddabad39df986194169eb86242ebcd1a03",
+   "summary_sha256": "eadbc4ba4a834c88b671011f38d34de252d05b7251a85347501bb832567d7001",
+   "RUN_META_sha256": "ab46a2b5e502c2a2e555c9eb40200023373f0a5aec00d552fb82505a19354215",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-a-s61001-r2.json.zst",
+    "bytes": 332880,
+    "sha256": "7dbf3fe98c6bb77a3ba9f8b60a48c1304358bfffdf4bc9447b71b31b1811ecd4",
+    "uncompressed_bytes": 1405206,
+    "uncompressed_sha256": "fd2606ed21b4df274a36768b1f578538520b5bb8bb7186fac9ddb6f0a596351a"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2",
+    "checksum_verified": true,
+    "archive_files": 7025,
+    "hash_matches": 7025,
+    "archive_verified": true,
+    "inventory_sha256": "dfca8497b8f5964dc31888766355ab42418a1aae0e737baaad0be646117c742d"
+   },
+   "initial_check": {
+    "passed": true,
+    "elapsed_since_submit_s": 211.44164061546326
+   },
+   "odometry_evaluation": {
+    "r1": {
+     "final_map_error_m": 4.376040364373277,
+     "max_map_error_m": 4.3761142937502004,
+     "max_control_error_m": 3.998201114804028,
+     "nonfloor_contact_samples": 1065,
+     "first_nonfloor_contact_sim_s": 213.45
+    },
+    "r2": {
+     "final_map_error_m": 6.023591114677584,
+     "max_map_error_m": 6.024104760950433,
+     "max_control_error_m": 6.565903851187988,
+     "nonfloor_contact_samples": 6623,
+     "first_nonfloor_contact_sim_s": 4.3
+    }
+   }
+  },
+  {
+   "id": "e2e10-a-s61002",
+   "batch": "A",
+   "seed": 61002,
+   "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+   "status": "HOST_ERROR",
+   "exit": 2,
+   "simulation_started": false,
+   "cause": "workflow: --dev-light requires a value, got another option",
+   "sim_s": 0,
+   "wall_s": 3.08,
+   "LLM_operated": false,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {},
+   "furthest_stage": "not_started",
+   "model": {
+    "Gemma_calls": 0,
+    "cost_usd": 0,
+    "Jev": {
+     "calls": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61002",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61002",
+   "RUN_META_sha256": "2e0b658eee82885b273687de7cf6a7c8321d4ebd54b50bf0884fbb407fe19c14",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-a-s61002.json.zst",
+    "bytes": 1551,
+    "sha256": "8882b87673ff3f0c45a286433ec84baf8c7a729300403dea4f97fe3a14fcfbac",
+    "uncompressed_bytes": 3577,
+    "uncompressed_sha256": "f86da1e66bab243fa2adb97af566acb50250ccc59553ae963d573b4c361896e7"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002",
+    "checksum_verified": true,
+    "archive_files": 18,
+    "hash_matches": 18,
+    "archive_verified": true,
+    "inventory_sha256": "49523e09c3d00de85e03bcd0f962d83231fc089b83630c300c8f380b402b4117"
+   }
+  },
+  {
+   "id": "e2e10-a-s61002-r2",
+   "batch": "A",
+   "seed": 61002,
+   "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
+   "status": "HOST_ERROR",
+   "exit": 1,
+   "simulation_started": true,
+   "cause": "E2E_WALL_CAP",
+   "frames": 2353,
+   "sim_s": 470.5,
+   "wall_s": 6086.052211449001,
+   "LLM_operated": true,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "E2E_success": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 25.384148873999948
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 25.384148873999948
+    }
+   },
+   "furthest_stage": "mapping",
+   "model": {
+    "Gemma_calls": 3,
+    "http_attempts": 3,
+    "prompt_tokens": 4615,
+    "completion_tokens": 140,
+    "cost_usd": 0.00046295000000000006,
+    "missing_cost_calls": 0,
+    "latency_median_s": 3.8567061250214465,
+    "Jev": {
+     "calls": 0,
+     "tokens": 0,
+     "cost_usd": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "pose_jumps": {
+    "r1": {
+     "map": {
+      "intervals": 2352,
+      "over_5cm": 10,
+      "over_20cm": 2,
+      "max_m": 0.5282307231724874
+     },
+     "control": {
+      "intervals": 2352,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773168326
+     }
+    },
+    "r2": {
+     "map": {
+      "intervals": 2352,
+      "over_5cm": 4,
+      "over_20cm": 0,
+      "max_m": 0.13548605643030268
+     },
+     "control": {
+      "intervals": 2352,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773168366
+     }
+    },
+    "r3": {
+     "map": {
+      "intervals": 2352,
+      "over_5cm": 1,
+      "over_20cm": 0,
+      "max_m": 0.075001022305662
+     },
+     "control": {
+      "intervals": 2352,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.0
+     }
+    }
+   },
+   "commands": {
+    "r1": {
+     "forward": 1060,
+     "turns": 266,
+     "turn_sign_flips": 8
+    },
+    "r2": {
+     "forward": 1174,
+     "turns": 158,
+     "turn_sign_flips": 9
+    },
+    "r3": {
+     "forward": 0,
+     "turns": 0,
+     "turn_sign_flips": 0
+    }
+   },
+   "would_stop": [
+    {
+     "reason": "INITIAL_OR_PERIODIC_HEALTH_FAILED",
+     "sim_s": 470.0,
+     "wall_s": 6119.6763372421265,
+     "action": "record_only",
+     "dev_light": true,
+     "note": "Final inspection can fail after EXIT; not a run termination cause."
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r1",
+     "sim_s": 65.6,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r2",
+     "sim_s": 96.8,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    }
+   ],
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61002-r2",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61002-r2",
+   "result_sha256": "bd27ce081268d3de1542cf2b28521704fd5e5cb8e4b257e303533d7deffff8e1",
+   "summary_sha256": "2aeac9f1695971e72ba2da9a3787af4c84f2334a678853871626cb7ebc46a435",
+   "RUN_META_sha256": "d46f1b52700e3501e76afce78855b66ff758ba87a88ed2e72fb140bb5ba01b64",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-a-s61002-r2.json.zst",
+    "bytes": 335438,
+    "sha256": "303753d3f08604ed53b1136029695b86b47d8824bb188cfd2ee0e3868fbc3547",
+    "uncompressed_bytes": 1432204,
+    "uncompressed_sha256": "81cfa866ae8699ca249b62f78eb73aa3a53b552757892b574390e963b0040615"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2",
+    "checksum_verified": true,
+    "archive_files": 7160,
+    "hash_matches": 7160,
+    "archive_verified": true,
+    "inventory_sha256": "dd84db657d2c8e28b962ee36db1513cb488ddc88438fcdf98b87516ea906271f"
+   },
+   "initial_check": {
+    "passed": true,
+    "elapsed_since_submit_s": 210.82354474067688
+   },
+   "odometry_evaluation": {
+    "r1": {
+     "final_map_error_m": 6.303700055528964,
+     "max_map_error_m": 6.309282206532107,
+     "max_control_error_m": 2.2669127477134023,
+     "nonfloor_contact_samples": 2033,
+     "first_nonfloor_contact_sim_s": 190.29999999999998
+    },
+    "r2": {
+     "final_map_error_m": 2.0965670205502587,
+     "max_map_error_m": 3.626234732754522,
+     "max_control_error_m": 4.522176824130333,
+     "nonfloor_contact_samples": 10874,
+     "first_nonfloor_contact_sim_s": 4.3
+    }
+   }
+  },
+  {
+   "id": "e2e10-a-s61003",
+   "batch": "A",
+   "seed": 61003,
+   "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+   "status": "HOST_ERROR",
+   "exit": 2,
+   "simulation_started": false,
+   "cause": "workflow: --dev-light requires a value, got another option",
+   "sim_s": 0,
+   "wall_s": 0.76,
+   "LLM_operated": false,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {},
+   "furthest_stage": "not_started",
+   "model": {
+    "Gemma_calls": 0,
+    "cost_usd": 0,
+    "Jev": {
+     "calls": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61003",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61003",
+   "RUN_META_sha256": "ec6e702d7bcffcdaac7552c806d47ada5057182b0fe522e96619888d2d63b086",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-a-s61003.json.zst",
+    "bytes": 1538,
+    "sha256": "a20339345d7e749ce72ab694157bdcc60654289edf4fbe069c3fea64c513d579",
+    "uncompressed_bytes": 3577,
+    "uncompressed_sha256": "e60b2727ce0978d8634866689315cd8a3478cb435895143fe769c31a34353856"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003",
+    "checksum_verified": true,
+    "archive_files": 18,
+    "hash_matches": 18,
+    "archive_verified": true,
+    "inventory_sha256": "cbc920e132e2acf5e022d166fd3293d863d83d0cd1a674932a62093da16dcd8f"
+   }
+  },
+  {
+   "id": "e2e10-a-s61003-r2",
+   "batch": "A",
+   "seed": 61003,
+   "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
+   "status": "HOST_ERROR",
+   "exit": 1,
+   "simulation_started": true,
+   "cause": "E2E_WALL_CAP",
+   "frames": 2453,
+   "sim_s": 490.59999999999997,
+   "wall_s": 6082.038350838,
+   "LLM_operated": true,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "E2E_success": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 20.617307721000543
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 20.617307721000543
+    }
+   },
+   "furthest_stage": "mapping",
+   "model": {
+    "Gemma_calls": 3,
+    "http_attempts": 3,
+    "prompt_tokens": 4615,
+    "completion_tokens": 138,
+    "cost_usd": 0.00043795,
+    "missing_cost_calls": 0,
+    "latency_median_s": 3.035494999960065,
+    "Jev": {
+     "calls": 0,
+     "tokens": 0,
+     "cost_usd": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "pose_jumps": {
+    "r1": {
+     "map": {
+      "intervals": 2452,
+      "over_5cm": 5,
+      "over_20cm": 0,
+      "max_m": 0.17310464147037483
+     },
+     "control": {
+      "intervals": 2452,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.01292341377316794
+     }
+    },
+    "r2": {
+     "map": {
+      "intervals": 2452,
+      "over_5cm": 9,
+      "over_20cm": 0,
+      "max_m": 0.17435647483625033
+     },
+     "control": {
+      "intervals": 2452,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.01292341377316857
+     }
+    },
+    "r3": {
+     "map": {
+      "intervals": 2452,
+      "over_5cm": 1,
+      "over_20cm": 0,
+      "max_m": 0.075001022305662
+     },
+     "control": {
+      "intervals": 2452,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.0
+     }
+    }
+   },
+   "commands": {
+    "r1": {
+     "forward": 1142,
+     "turns": 204,
+     "turn_sign_flips": 3
+    },
+    "r2": {
+     "forward": 1164,
+     "turns": 168,
+     "turn_sign_flips": 10
+    },
+    "r3": {
+     "forward": 0,
+     "turns": 0,
+     "turn_sign_flips": 0
+    }
+   },
+   "would_stop": [
+    {
+     "reason": "TURN_SIGN_REVERSALS_GE10",
+     "sim_s": 199.0,
+     "wall_s": 2558.614211320877,
+     "action": "record_only",
+     "dev_light": true
+    },
+    {
+     "reason": "INITIAL_OR_PERIODIC_HEALTH_FAILED",
+     "sim_s": 490.0,
+     "wall_s": 6109.873344659805,
+     "action": "record_only",
+     "dev_light": true,
+     "note": "Final inspection can fail after EXIT; not a run termination cause."
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r1",
+     "sim_s": 171.4,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r2",
+     "sim_s": 143.8,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    }
+   ],
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61003-r2",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61003-r2",
+   "result_sha256": "ea4b9924b19b448bdf063d05edd8ab370f0158ee4638246d0eca5c31cc881734",
+   "summary_sha256": "068c9f8c65eabdef745ffc30f80cbc19c8ebbf9d93055bee177cac373d918a55",
+   "RUN_META_sha256": "b65d3ef157de578eeca8b4ec5d31504401bd785558bb281a6df549e83febaac9",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-a-s61003-r2.json.zst",
+    "bytes": 357223,
+    "sha256": "892602205ab9daac2928d53081293b16d96a458f97402f6fa38c41319b89fde4",
+    "uncompressed_bytes": 1491587,
+    "uncompressed_sha256": "c2e6480ff5d3f3535ac627a887347c4036f25cb83392eed54595751b81b7d6de"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2",
+    "checksum_verified": true,
+    "archive_files": 7460,
+    "hash_matches": 7460,
+    "archive_verified": true,
+    "inventory_sha256": "78153c4535a37a2dbec561b6bdb2cc6faa0a3054039fdb18ad2ca77b1023884f"
+   },
+   "initial_check": {
+    "passed": true,
+    "elapsed_since_submit_s": 210.11456179618835
+   },
+   "odometry_evaluation": {
+    "r1": {
+     "final_map_error_m": 2.1319149721326824,
+     "max_map_error_m": 3.151912563870286,
+     "max_control_error_m": 4.124626572665596,
+     "nonfloor_contact_samples": 1499,
+     "first_nonfloor_contact_sim_s": 132.1
+    },
+    "r2": {
+     "final_map_error_m": 3.109553101620823,
+     "max_map_error_m": 6.979864712696211,
+     "max_control_error_m": 5.224795064348334,
+     "nonfloor_contact_samples": 3803,
+     "first_nonfloor_contact_sim_s": 4.3
+    }
+   }
+  },
+  {
+   "id": "e2e10-a-s61004",
+   "batch": "A",
+   "seed": 61004,
+   "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+   "status": "HOST_ERROR",
+   "exit": 2,
+   "simulation_started": false,
+   "cause": "workflow: --dev-light requires a value, got another option",
+   "sim_s": 0,
+   "wall_s": 0.76,
+   "LLM_operated": false,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {},
+   "furthest_stage": "not_started",
+   "model": {
+    "Gemma_calls": 0,
+    "cost_usd": 0,
+    "Jev": {
+     "calls": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61004",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61004",
+   "RUN_META_sha256": "bed126f89f03594e82d87c350153f97f25da5c6c20c76112825ec91b08ec0282",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-a-s61004.json.zst",
+    "bytes": 1546,
+    "sha256": "6f98c82b295c4d93086ec2c61db28860a0af6504316380b3dab015e923523100",
+    "uncompressed_bytes": 3577,
+    "uncompressed_sha256": "5b80017167d157e1c283c7f3fe44c1ec762e90e9dce3fe71b00f06c0f7f33752"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004",
+    "checksum_verified": true,
+    "archive_files": 18,
+    "hash_matches": 18,
+    "archive_verified": true,
+    "inventory_sha256": "556e7fe4c826ea5f43b6a38493e49bce32aeb47147ac63b7f6fb45917232e817"
+   }
+  },
+  {
+   "id": "e2e10-a-s61004-r2",
+   "batch": "A",
+   "seed": 61004,
+   "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
+   "status": "HOST_ERROR",
+   "exit": 1,
+   "simulation_started": true,
+   "cause": "E2E_WALL_CAP",
+   "frames": 2370,
+   "sim_s": 473.95,
+   "wall_s": 6080.1655917690005,
+   "LLM_operated": true,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "E2E_success": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 28.078430925001157
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 28.078430925001157
+    }
+   },
+   "furthest_stage": "mapping",
+   "model": {
+    "Gemma_calls": 3,
+    "http_attempts": 3,
+    "prompt_tokens": 4605,
+    "completion_tokens": 138,
+    "cost_usd": 0.00043705,
+    "missing_cost_calls": 0,
+    "latency_median_s": 5.236653250001837,
+    "Jev": {
+     "calls": 0,
+     "tokens": 0,
+     "cost_usd": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "pose_jumps": {
+    "r1": {
+     "map": {
+      "intervals": 2369,
+      "over_5cm": 4,
+      "over_20cm": 1,
+      "max_m": 0.6546483541579361
+     },
+     "control": {
+      "intervals": 2369,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773168196
+     }
+    },
+    "r2": {
+     "map": {
+      "intervals": 2369,
+      "over_5cm": 6,
+      "over_20cm": 1,
+      "max_m": 0.4285605405143054
+     },
+     "control": {
+      "intervals": 2369,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.0129234137731686
+     }
+    },
+    "r3": {
+     "map": {
+      "intervals": 2369,
+      "over_5cm": 1,
+      "over_20cm": 0,
+      "max_m": 0.075001022305662
+     },
+     "control": {
+      "intervals": 2369,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.0
+     }
+    }
+   },
+   "commands": {
+    "r1": {
+     "forward": 1034,
+     "turns": 275,
+     "turn_sign_flips": 7
+    },
+    "r2": {
+     "forward": 1023,
+     "turns": 297,
+     "turn_sign_flips": 21
+    },
+    "r3": {
+     "forward": 0,
+     "turns": 0,
+     "turn_sign_flips": 0
+    }
+   },
+   "would_stop": [
+    {
+     "reason": "TURN_SIGN_REVERSALS_GE10",
+     "sim_s": 182.0,
+     "wall_s": 2557.7274203300476,
+     "action": "record_only",
+     "dev_light": true
+    },
+    {
+     "reason": "INITIAL_OR_PERIODIC_HEALTH_FAILED",
+     "sim_s": 473.0,
+     "wall_s": 6100.660004854202,
+     "action": "record_only",
+     "dev_light": true,
+     "note": "Final inspection can fail after EXIT; not a run termination cause."
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r1",
+     "sim_s": 128.0,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r2",
+     "sim_s": 181.0,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    }
+   ],
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61004-r2",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61004-r2",
+   "result_sha256": "7312bb07653ac179823b8f4dc63fb17779bb3957c81b71db142f13813053a262",
+   "summary_sha256": "c73e5f55683ed70b74e4ecce464f68b14517f91a7a1ea3ab00279176b084e8a7",
+   "RUN_META_sha256": "01671555f72ff43ca47b291de419ad7f6a22f5e8fc8911de1ea8bdd9aa2aa688",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-a-s61004-r2.json.zst",
+    "bytes": 322712,
+    "sha256": "5018ba62600a4855525d6a7da0a63edaf0bdc55d96e0047aef3ed74c23941404",
+    "uncompressed_bytes": 1439993,
+    "uncompressed_sha256": "f9c2a0250b76b868471f142d7739e07ce591d5e1768e81b29f0ae093ac2a854c"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2",
+    "checksum_verified": true,
+    "archive_files": 7211,
+    "hash_matches": 7211,
+    "archive_verified": true,
+    "inventory_sha256": "9faa92b270ddff1fc385f6669fd0f2396d25d3b3c3c1bf5b153539363fde5efd"
+   },
+   "initial_check": {
+    "passed": true,
+    "elapsed_since_submit_s": 211.9435694217682
+   },
+   "odometry_evaluation": {
+    "r1": {
+     "final_map_error_m": 5.5671691138353365,
+     "max_map_error_m": 5.568731748540182,
+     "max_control_error_m": 4.261249928249943,
+     "nonfloor_contact_samples": 7226,
+     "first_nonfloor_contact_sim_s": 86.75
+    },
+    "r2": {
+     "final_map_error_m": 4.617668332190625,
+     "max_map_error_m": 5.093763713528073,
+     "max_control_error_m": 4.849902383510183,
+     "nonfloor_contact_samples": 4484,
+     "first_nonfloor_contact_sim_s": 4.3
+    }
+   }
+  },
+  {
+   "id": "e2e10-b-s61001",
+   "batch": "B",
+   "seed": 61001,
+   "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+   "status": "HOST_ERROR",
+   "exit": 2,
+   "simulation_started": false,
+   "cause": "workflow: --dev-light requires a value, got another option",
+   "sim_s": 0,
+   "wall_s": 5.37,
+   "LLM_operated": false,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {},
+   "furthest_stage": "not_started",
+   "model": {
+    "Gemma_calls": 0,
+    "cost_usd": 0,
+    "Jev": {
+     "calls": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-b-s61001",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-b-s61001",
+   "RUN_META_sha256": "4f2abfeefeb528872081d87e8ef056103062cea02068b8d1781bcd249f040422",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-b-s61001.json.zst",
+    "bytes": 1540,
+    "sha256": "f753d96a857d4f1cf0ead8494bfd5896a08849c4d1fe333c7e56d04e1cb50bfb",
+    "uncompressed_bytes": 3577,
+    "uncompressed_sha256": "e7f4044436cca2bf408d8e330b292f66ebd18b3e6142ad231af802b11877f41b"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001",
+    "checksum_verified": true,
+    "archive_files": 18,
+    "hash_matches": 18,
+    "archive_verified": true,
+    "inventory_sha256": "7d5b8a2aed7a866601a38899312bbce2f445ae3bf860e35a7ba55718b16e19be"
+   }
+  },
+  {
+   "id": "e2e10-b-s61001-r2",
+   "batch": "B",
+   "seed": 61001,
+   "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
+   "status": "HOST_ERROR",
+   "exit": 1,
+   "simulation_started": true,
+   "cause": "E2E_WALL_CAP",
+   "frames": 2166,
+   "sim_s": 433.05,
+   "wall_s": 6088.455401187999,
+   "LLM_operated": true,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "E2E_success": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 31.86645054499968
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 31.86645054499968
+    }
+   },
+   "furthest_stage": "mapping",
+   "model": {
+    "Gemma_calls": 3,
+    "http_attempts": 3,
+    "prompt_tokens": 4960,
+    "completion_tokens": 196,
+    "cost_usd": 0.00051304,
+    "missing_cost_calls": 0,
+    "latency_median_s": 7.7406374589772895,
+    "Jev": {
+     "calls": 3,
+     "tokens": 3271,
+     "cost_usd": null,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 3
+    }
+   },
+   "pose_jumps": {
+    "r1": {
+     "map": {
+      "intervals": 2165,
+      "over_5cm": 10,
+      "over_20cm": 2,
+      "max_m": 0.51535039656558
+     },
+     "control": {
+      "intervals": 2165,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773168349
+     }
+    },
+    "r2": {
+     "map": {
+      "intervals": 2165,
+      "over_5cm": 13,
+      "over_20cm": 3,
+      "max_m": 0.48378422562595996
+     },
+     "control": {
+      "intervals": 2165,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773168593
+     }
+    },
+    "r3": {
+     "map": {
+      "intervals": 2165,
+      "over_5cm": 1,
+      "over_20cm": 0,
+      "max_m": 0.075001022305662
+     },
+     "control": {
+      "intervals": 2165,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.0
+     }
+    }
+   },
+   "commands": {
+    "r1": {
+     "forward": 1104,
+     "turns": 245,
+     "turn_sign_flips": 5
+    },
+    "r2": {
+     "forward": 1139,
+     "turns": 180,
+     "turn_sign_flips": 7
+    },
+    "r3": {
+     "forward": 0,
+     "turns": 0,
+     "turn_sign_flips": 0
+    }
+   },
+   "would_stop": [
+    {
+     "reason": "INITIAL_OR_PERIODIC_HEALTH_FAILED",
+     "sim_s": 433.0,
+     "wall_s": 6113.3107879161835,
+     "action": "record_only",
+     "dev_light": true,
+     "note": "Final inspection can fail after EXIT; not a run termination cause."
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r1",
+     "sim_s": 249.0,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r2",
+     "sim_s": 159.6,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    }
+   ],
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-b-s61001-r2",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-b-s61001-r2",
+   "result_sha256": "cd2828d939bcb952bad29316c0f04b0850d42cb1b421571fd47e3b52403b45a6",
+   "summary_sha256": "4867c3ca44163b9f4b0a873c4fd0b29fe7580d9f76c61e5dcb8cb4b131026e96",
+   "RUN_META_sha256": "31d798592ab3f79f4d6facfb5d7a7c129d5a8ad6008192fb8a4512afed8c0a3c",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-b-s61001-r2.json.zst",
+    "bytes": 313765,
+    "sha256": "7326004c3adde3654990d201d11545bfeae0ef889dfba6b48baa16b817fee167",
+    "uncompressed_bytes": 1320001,
+    "uncompressed_sha256": "e5d3a2d4f578e5e5e3f254e3181dca09f532972358f32a7c8538d59b860e08bb"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2",
+    "checksum_verified": true,
+    "archive_files": 6599,
+    "hash_matches": 6599,
+    "archive_verified": true,
+    "inventory_sha256": "4af0cd20daf642cb83ae01b356633a8dbf6590768054614347f71121a440d073"
+   },
+   "initial_check": {
+    "passed": true,
+    "elapsed_since_submit_s": 210.23682498931885
+   },
+   "odometry_evaluation": {
+    "r1": {
+     "final_map_error_m": 4.376028534328784,
+     "max_map_error_m": 4.3761142937502004,
+     "max_control_error_m": 3.998201114804028,
+     "nonfloor_contact_samples": 1065,
+     "first_nonfloor_contact_sim_s": 213.45
+    },
+    "r2": {
+     "final_map_error_m": 6.023703626788918,
+     "max_map_error_m": 6.024104760950433,
+     "max_control_error_m": 6.565903851187988,
+     "nonfloor_contact_samples": 6531,
+     "first_nonfloor_contact_sim_s": 4.3
+    }
+   }
+  },
+  {
+   "id": "e2e10-b-s61002",
+   "batch": "B",
+   "seed": 61002,
+   "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+   "status": "HOST_ERROR",
+   "exit": 2,
+   "simulation_started": false,
+   "cause": "workflow: --dev-light requires a value, got another option",
+   "sim_s": 0,
+   "wall_s": 1.97,
+   "LLM_operated": false,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {},
+   "furthest_stage": "not_started",
+   "model": {
+    "Gemma_calls": 0,
+    "cost_usd": 0,
+    "Jev": {
+     "calls": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-b-s61002",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-b-s61002",
+   "RUN_META_sha256": "c8a5ac9ff4638fc2dd2b90ea1e97cb1beda4a212268ac6333e8296faddc39868",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-b-s61002.json.zst",
+    "bytes": 1547,
+    "sha256": "bcd9a2a278931d40c92797a8e529f35832689925dea61bed0ddb047263418e8a",
+    "uncompressed_bytes": 3577,
+    "uncompressed_sha256": "9ae337e17747e5f764c8d712cdcadf7a0b27cea9deed660fbb654600d6f88d38"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002",
+    "checksum_verified": true,
+    "archive_files": 18,
+    "hash_matches": 18,
+    "archive_verified": true,
+    "inventory_sha256": "8b046ab48e6e6545d3f5771abc256386cae0100d63d197732946686855663755"
+   }
+  },
+  {
+   "id": "e2e10-b-s61002-r2",
+   "batch": "B",
+   "seed": 61002,
+   "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
+   "status": "HOST_ERROR",
+   "exit": 1,
+   "simulation_started": true,
+   "cause": "E2E_WALL_CAP",
+   "frames": 2499,
+   "sim_s": 499.7,
+   "wall_s": 6084.157615835,
+   "LLM_operated": true,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "E2E_success": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 24.07136451599945
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 24.07136451599945
+    }
+   },
+   "furthest_stage": "mapping",
+   "model": {
+    "Gemma_calls": 3,
+    "http_attempts": 3,
+    "prompt_tokens": 4963,
+    "completion_tokens": 163,
+    "cost_usd": 0.00049953,
+    "missing_cost_calls": 0,
+    "latency_median_s": 3.2667862080270424,
+    "Jev": {
+     "calls": 3,
+     "tokens": 3271,
+     "cost_usd": null,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 3
+    }
+   },
+   "pose_jumps": {
+    "r1": {
+     "map": {
+      "intervals": 2498,
+      "over_5cm": 10,
+      "over_20cm": 2,
+      "max_m": 0.5282307231724874
+     },
+     "control": {
+      "intervals": 2498,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773168326
+     }
+    },
+    "r2": {
+     "map": {
+      "intervals": 2498,
+      "over_5cm": 4,
+      "over_20cm": 0,
+      "max_m": 0.13548605643030268
+     },
+     "control": {
+      "intervals": 2498,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773168366
+     }
+    },
+    "r3": {
+     "map": {
+      "intervals": 2498,
+      "over_5cm": 1,
+      "over_20cm": 0,
+      "max_m": 0.075001022305662
+     },
+     "control": {
+      "intervals": 2498,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.0
+     }
+    }
+   },
+   "commands": {
+    "r1": {
+     "forward": 1060,
+     "turns": 266,
+     "turn_sign_flips": 8
+    },
+    "r2": {
+     "forward": 1174,
+     "turns": 158,
+     "turn_sign_flips": 9
+    },
+    "r3": {
+     "forward": 0,
+     "turns": 0,
+     "turn_sign_flips": 0
+    }
+   },
+   "would_stop": [
+    {
+     "reason": "INITIAL_OR_PERIODIC_HEALTH_FAILED",
+     "sim_s": 499.0,
+     "wall_s": 6111.053281068802,
+     "action": "record_only",
+     "dev_light": true,
+     "note": "Final inspection can fail after EXIT; not a run termination cause."
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r1",
+     "sim_s": 65.6,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r2",
+     "sim_s": 96.8,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    }
+   ],
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-b-s61002-r2",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-b-s61002-r2",
+   "result_sha256": "739eca17ca4e87530a519d5f54e0c6cad2838db294241d7d2a07f55ca9d6938e",
+   "summary_sha256": "b3267bbf6cad3e9ebdc2455f68cdc44a69580b01e77c621b0f11d0aee1146d21",
+   "RUN_META_sha256": "c97bb8a6bb31ae1d82a883f67cc5aacc3f2da08e5cd6131c5ed63741e98718d9",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-b-s61002-r2.json.zst",
+    "bytes": 358329,
+    "sha256": "0ed7bfa31a8acdd8498a059174f9be67b281de9224309ec83fc6d1b292f8de49",
+    "uncompressed_bytes": 1519823,
+    "uncompressed_sha256": "8bb63034e251039081b47f2cc6b0cb069342e47dc9b6f14f06242d7deeba8d40"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2",
+    "checksum_verified": true,
+    "archive_files": 7598,
+    "hash_matches": 7598,
+    "archive_verified": true,
+    "inventory_sha256": "70db5bba7dd6435f40caf856db2faf762e6369444778e0450cf4550b10b752e4"
+   },
+   "initial_check": {
+    "passed": true,
+    "elapsed_since_submit_s": 212.65215039253235
+   },
+   "odometry_evaluation": {
+    "r1": {
+     "final_map_error_m": 6.303790479874146,
+     "max_map_error_m": 6.309282206532107,
+     "max_control_error_m": 2.2669789276684766,
+     "nonfloor_contact_samples": 2033,
+     "first_nonfloor_contact_sim_s": 190.29999999999998
+    },
+    "r2": {
+     "final_map_error_m": 2.096562672713631,
+     "max_map_error_m": 3.626234732754522,
+     "max_control_error_m": 4.522176824130333,
+     "nonfloor_contact_samples": 11344,
+     "first_nonfloor_contact_sim_s": 4.3
+    }
+   }
+  },
+  {
+   "id": "e2e10-c-s61001",
+   "batch": "C",
+   "seed": 61001,
+   "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+   "status": "HOST_ERROR",
+   "exit": 2,
+   "simulation_started": false,
+   "cause": "workflow: --dev-light requires a value, got another option",
+   "sim_s": 0,
+   "wall_s": 4.27,
+   "LLM_operated": false,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {},
+   "furthest_stage": "not_started",
+   "model": {
+    "Gemma_calls": 0,
+    "cost_usd": 0,
+    "Jev": {
+     "calls": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-c-s61001",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-c-s61001",
+   "RUN_META_sha256": "5711c1f119c4042063e6e6f4f341ef0952f6e6cf01af679e0a98e453bdf6601e",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-c-s61001.json.zst",
+    "bytes": 1541,
+    "sha256": "d7544b8a5fecdbe766388c1943446ab3fae4a1f74ef04122089a1e21cc654cfd",
+    "uncompressed_bytes": 3577,
+    "uncompressed_sha256": "c7de4ce16ccad2398a91e61bbc6fc5906f7453f2b1c211007798447fc785d112"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001",
+    "checksum_verified": true,
+    "archive_files": 18,
+    "hash_matches": 18,
+    "archive_verified": true,
+    "inventory_sha256": "624b46672e47a09d24ec3944cc046036bf92047e3ea3ac70096ba33671716cf9"
+   }
+  },
+  {
+   "id": "e2e10-c-s61001-r2",
+   "batch": "C",
+   "seed": 61001,
+   "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
+   "status": "HOST_ERROR",
+   "exit": 1,
+   "simulation_started": true,
+   "cause": "E2E_WALL_CAP",
+   "frames": 1991,
+   "sim_s": 398.05,
+   "wall_s": 6087.643044678,
+   "LLM_operated": true,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "E2E_success": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 20.609650588001386
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 20.609650588001386
+    }
+   },
+   "furthest_stage": "mapping",
+   "model": {
+    "Gemma_calls": 3,
+    "http_attempts": 3,
+    "prompt_tokens": 4612,
+    "completion_tokens": 139,
+    "cost_usd": 0.00046234,
+    "missing_cost_calls": 0,
+    "latency_median_s": 3.465065791970119,
+    "Jev": {
+     "calls": 0,
+     "tokens": 0,
+     "cost_usd": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "pose_jumps": {
+    "r1": {
+     "map": {
+      "intervals": 1990,
+      "over_5cm": 15,
+      "over_20cm": 0,
+      "max_m": 0.10573045465360423
+     },
+     "control": {
+      "intervals": 1990,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.01292341377316753
+     }
+    },
+    "r2": {
+     "map": {
+      "intervals": 1990,
+      "over_5cm": 10,
+      "over_20cm": 0,
+      "max_m": 0.1127075956529511
+     },
+     "control": {
+      "intervals": 1990,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773167573
+     }
+    },
+    "r3": {
+     "map": {
+      "intervals": 1990,
+      "over_5cm": 1,
+      "over_20cm": 0,
+      "max_m": 0.075001022305662
+     },
+     "control": {
+      "intervals": 1990,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.0
+     }
+    }
+   },
+   "commands": {
+    "r1": {
+     "forward": 103,
+     "turns": 368,
+     "turn_sign_flips": 63
+    },
+    "r2": {
+     "forward": 95,
+     "turns": 600,
+     "turn_sign_flips": 122
+    },
+    "r3": {
+     "forward": 0,
+     "turns": 0,
+     "turn_sign_flips": 0
+    }
+   },
+   "would_stop": [
+    {
+     "reason": "TURN_SIGN_REVERSALS_GE10",
+     "sim_s": 15.0,
+     "wall_s": 212.04183840751648,
+     "action": "record_only",
+     "dev_light": true
+    },
+    {
+     "reason": "INITIAL_OR_PERIODIC_HEALTH_FAILED",
+     "sim_s": 398.0,
+     "wall_s": 6112.888827562332,
+     "action": "record_only",
+     "dev_light": true,
+     "note": "Final inspection can fail after EXIT; not a run termination cause."
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r1",
+     "sim_s": 40.8,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r2",
+     "sim_s": 40.8,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    }
+   ],
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-c-s61001-r2",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-c-s61001-r2",
+   "result_sha256": "4dc329ab841929298268a378824e0dd62cfa2c90f608b84500cdaba2d6f10369",
+   "summary_sha256": "f968bbc30d422d1028877336f1a739a26212e31dc71327e3f5f596aa4e81748d",
+   "RUN_META_sha256": "1f0982c12b448f3c32401c76684c1dd220eb0844c8378361ad0f0155f13c346f",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-c-s61001-r2.json.zst",
+    "bytes": 283156,
+    "sha256": "17be9a678769d368c53aa739061843acbbc33908d696e0410f73983617b02963",
+    "uncompressed_bytes": 1215355,
+    "uncompressed_sha256": "13f5c22ab3864045d5292e0f99fffd3ee12bd8fbcf9d1bc2abc84073ccbe5da0"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2",
+    "checksum_verified": true,
+    "archive_files": 6074,
+    "hash_matches": 6074,
+    "archive_verified": true,
+    "inventory_sha256": "9efb1dd315ef080b2b58c1f4188150148b72de097b3c9f82ad7bcbe005b03327"
+   },
+   "initial_check": {
+    "passed": true,
+    "elapsed_since_submit_s": 212.06138515472412
+   },
+   "odometry_evaluation": {
+    "r1": {
+     "final_map_error_m": 0.2449973049346003,
+     "max_map_error_m": 0.41835080376480904,
+     "max_control_error_m": 0.3024253944853996,
+     "nonfloor_contact_samples": 0,
+     "first_nonfloor_contact_sim_s": null
+    },
+    "r2": {
+     "final_map_error_m": 0.2829647413648639,
+     "max_map_error_m": 0.4621876501366795,
+     "max_control_error_m": 0.9157666791753709,
+     "nonfloor_contact_samples": 303,
+     "first_nonfloor_contact_sim_s": 109.5
+    }
+   }
+  },
+  {
+   "id": "e2e10-c-s61002",
+   "batch": "C",
+   "seed": 61002,
+   "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+   "status": "HOST_ERROR",
+   "exit": 2,
+   "simulation_started": false,
+   "cause": "workflow: --dev-light requires a value, got another option",
+   "sim_s": 0,
+   "wall_s": 0.79,
+   "LLM_operated": false,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {},
+   "furthest_stage": "not_started",
+   "model": {
+    "Gemma_calls": 0,
+    "cost_usd": 0,
+    "Jev": {
+     "calls": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-c-s61002",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-c-s61002",
+   "RUN_META_sha256": "025075b27cea3eb78bf51dd0aaf24c058f731a56dbcd108fb2a6173ebf96b6d6",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-c-s61002.json.zst",
+    "bytes": 1548,
+    "sha256": "eee8151567b66adb83d954b07a5c22e225daee44311e182cb1d3eb7d2c92c74c",
+    "uncompressed_bytes": 3577,
+    "uncompressed_sha256": "5945e9bd8c74e1893d9d8f99d47f2f67eb83131a5f30b0dbaf68add5233f0168"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002",
+    "checksum_verified": true,
+    "archive_files": 18,
+    "hash_matches": 18,
+    "archive_verified": true,
+    "inventory_sha256": "1218f046b060e9caf6fcecc1282851acbbc031edf87885d3ab28b748112a55fe"
+   }
+  },
+  {
+   "id": "e2e10-c-s61002-r2",
+   "batch": "C",
+   "seed": 61002,
+   "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
+   "status": "HOST_ERROR",
+   "exit": 1,
+   "simulation_started": true,
+   "cause": "E2E_WALL_CAP",
+   "frames": 2034,
+   "sim_s": 406.65,
+   "wall_s": 6083.726510436001,
+   "LLM_operated": true,
+   "own_map_completed": false,
+   "start_to_finish_transport": false,
+   "E2E_success": false,
+   "stages": {
+    "B_boundary": null,
+    "route": null,
+    "grasp": null,
+    "carry": null,
+    "setdown": null
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 20.928962027002854
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 20.928962027002854
+    }
+   },
+   "furthest_stage": "mapping",
+   "model": {
+    "Gemma_calls": 3,
+    "http_attempts": 3,
+    "prompt_tokens": 4615,
+    "completion_tokens": 153,
+    "cost_usd": 0.00046737000000000005,
+    "missing_cost_calls": 0,
+    "latency_median_s": 3.3395458339946344,
+    "Jev": {
+     "calls": 0,
+     "tokens": 0,
+     "cost_usd": 0,
+     "shadow_disagreements": 0,
+     "shadow_comparisons": 0
+    }
+   },
+   "pose_jumps": {
+    "r1": {
+     "map": {
+      "intervals": 2033,
+      "over_5cm": 11,
+      "over_20cm": 0,
+      "max_m": 0.10746707636582323
+     },
+     "control": {
+      "intervals": 2033,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773167611
+     }
+    },
+    "r2": {
+     "map": {
+      "intervals": 2033,
+      "over_5cm": 28,
+      "over_20cm": 0,
+      "max_m": 0.13122792846933504
+     },
+     "control": {
+      "intervals": 2033,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.012923413773167742
+     }
+    },
+    "r3": {
+     "map": {
+      "intervals": 2033,
+      "over_5cm": 1,
+      "over_20cm": 0,
+      "max_m": 0.075001022305662
+     },
+     "control": {
+      "intervals": 2033,
+      "over_5cm": 0,
+      "over_20cm": 0,
+      "max_m": 0.0
+     }
+    }
+   },
+   "commands": {
+    "r1": {
+     "forward": 166,
+     "turns": 511,
+     "turn_sign_flips": 116
+    },
+    "r2": {
+     "forward": 219,
+     "turns": 1084,
+     "turn_sign_flips": 200
+    },
+    "r3": {
+     "forward": 0,
+     "turns": 0,
+     "turn_sign_flips": 0
+    }
+   },
+   "would_stop": [
+    {
+     "reason": "TURN_SIGN_REVERSALS_GE10",
+     "sim_s": 15.0,
+     "wall_s": 211.4039590358734,
+     "action": "record_only",
+     "dev_light": true
+    },
+    {
+     "reason": "INITIAL_OR_PERIODIC_HEALTH_FAILED",
+     "sim_s": 406.0,
+     "wall_s": 6110.642472982407,
+     "action": "record_only",
+     "dev_light": true,
+     "note": "Final inspection can fail after EXIT; not a run termination cause."
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r1",
+     "sim_s": 53.6,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    },
+    {
+     "reason": "GOAL_ABORTS_GE4",
+     "robot": "r2",
+     "sim_s": 40.8,
+     "action": "record_only",
+     "reconstructed_from_raw": true
+    }
+   ],
+   "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-c-s61002-r2",
+   "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e10-c-s61002-r2",
+   "result_sha256": "f0c23b2dd9894d3d57f6c2b2fdad77739448a16d3f10ae92db34a0fd5629e1de",
+   "summary_sha256": "e5b381485d3c47286c3ab1ba663a07e5b8d57b9024ff2678526ebdbe90e83e6c",
+   "RUN_META_sha256": "e5acd0eb4573c36f81c387ca0ba993ef4fefc3d7982f7af494f1bd3ad1d06ff4",
+   "raw_hash_inventory": {
+    "path": "hashes/e2e10-c-s61002-r2.json.zst",
+    "bytes": 289779,
+    "sha256": "6a05c483ca25551d0fd3aced8356d4658946ec794b34869e13618334cce0d083",
+    "uncompressed_bytes": 1241163,
+    "uncompressed_sha256": "289c9fb1d7a1731505070276944a7e07959e9ddcd45985ef5b31f81e505d7a4f"
+   },
+   "retrieval": {
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2",
+    "checksum_verified": true,
+    "archive_files": 6203,
+    "hash_matches": 6203,
+    "archive_verified": true,
+    "inventory_sha256": "4973288b08a8f3d67f9305d54c2921269ee5270fbe690c173dd4ce669adefa08"
+   },
+   "initial_check": {
+    "passed": true,
+    "elapsed_since_submit_s": 211.42066955566406
+   },
+   "odometry_evaluation": {
+    "r1": {
+     "final_map_error_m": 0.2935192433454422,
+     "max_map_error_m": 0.632769828272042,
+     "max_control_error_m": 0.6482819490065338,
+     "nonfloor_contact_samples": 0,
+     "first_nonfloor_contact_sim_s": null
+    },
+    "r2": {
+     "final_map_error_m": 1.1700805223236925,
+     "max_map_error_m": 1.25247919655082,
+     "max_control_error_m": 1.3873716562682605,
+     "nonfloor_contact_samples": 1053,
+     "first_nonfloor_contact_sim_s": 35.75
+    }
+   }
+  }
+ ],
+ "record_validation": {
+  "all_16_attempts_present": true,
+  "actual_8_frozen_sha_and_terminal_outcomes_checked": true,
+  "all_inventory_compressed_and_uncompressed_sha256_checked": true,
+  "all_archive_and_lite_verifications_checked": true,
+  "mac_lite_has_no_image_video_npz_npy_files": true,
+  "README_within_10_lines": true,
+  "experiment_below_5MiB": true
+ }
 }
