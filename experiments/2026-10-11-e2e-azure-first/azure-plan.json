@@ -2,29 +2,105 @@
   "class": "dev",
   "pr": 433,
   "bundle": "e2e-ownmap-live-v185",
-  "azure_runner_sha": "d0a5080402f30e8eccdf7b4852d1cb36d05c0ced",
+  "azure_runner_sha": "1bfa2bde2d60d214d775585d937e005e109f1922",
   "s4_import_sha": "b91a7eaf",
   "e2e_parent_sha": "dc57dd7c14ca22a1680685f7613ca08dff85aa5e",
   "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
   "scene": "e2e_one_beam_ownmap",
   "condition": "peer_en",
-  "driver_profiles": ["study_gemma4_31b_v1", "main_study_gemini_v1"],
-  "first": {"seeds": [61001,61002], "setdown_only_when_relook": ["on_v1"], "runs": 4},
+  "driver_profiles": [
+    "study_gemma4_31b_v1",
+    "main_study_gemini_v1"
+  ],
+  "first": {
+    "seeds": [
+      61001,
+      61002
+    ],
+    "setdown_only_when_relook": [
+      "on_v1"
+    ],
+    "runs": 4
+  },
   "expansion": {
     "requires": "all first four pass real 180-300 wall-second startup check; adequate shared quota and remaining VM deadline",
-    "new_on_seeds": [61003,61004],
-    "off_seeds": [61001,61002,61003,61004],
-    "additional_runs": 12,
-    "total_max": 16
+    "new_on_seeds": [
+      61003,
+      61004
+    ],
+    "off_seeds": [
+      61001,
+      61002
+    ],
+    "additional_runs": 8,
+    "total_max": 13
   },
-  "options": {"event_driven_llm": true,"compact_prompt_v1": true,"prompt_lang": "en","e2e_live": true,"pulse_budget": "fractional_duration_v1"},
-  "resources": {"vcpus":16,"cores_per_run_estimate":0.6,"concurrent_max":16,"cpu_admission_load_1m_lt":12.8,"memory_available_min_GiB":6,"per_run_reserve_MiB":512},
-  "quota": {"Gemma_shared_RPM_limit":30,"Gemma_shared_TPM_limit":16000,"proxy_RPM":27,"proxy_TPM":14400,"fallback":false},
-  "budget": {"task_VM_hard_cap_hours":5,"run_wall_cap_s":12600,"run_sim_cap_s":1800,"tunnel_and_relay_s":14400,"shutdown_archive_reserve_s":900,"expected_total_wall_hours_range":[1,4.5],"estimate_basis":"parallel simulation and shared Gemma quota; measured throughput pending"},
-  "initial_check": ["no exceptions","frame and SIM time increase","actual robot displacement in eval-only trajectory","commands not exclusively repeated rotations or stationary","toggles in bundle","first actual normal model response","r1 own RGB B memory trace"],
+  "options": {
+    "event_driven_llm": true,
+    "compact_prompt_v1": true,
+    "prompt_lang": "en",
+    "e2e_live": true,
+    "pulse_budget": "fractional_duration_v1"
+  },
+  "resources": {
+    "vcpus": 16,
+    "cores_per_run_estimate": 0.6,
+    "concurrent_max": 16,
+    "cpu_admission_load_1m_lt": 12.8,
+    "memory_available_min_GiB": 6,
+    "per_run_reserve_MiB": 512
+  },
+  "quota": {
+    "Gemma_shared_RPM_limit": 30,
+    "Gemma_shared_TPM_limit": 16000,
+    "proxy_RPM": 27,
+    "proxy_TPM": 14400,
+    "fallback": false
+  },
+  "budget": {
+    "task_VM_hard_cap_hours": 5,
+    "run_wall_cap_s": 12600,
+    "run_sim_cap_s": 1800,
+    "tunnel_and_relay_s": 14400,
+    "shutdown_archive_reserve_s": 900,
+    "expected_total_wall_hours_range": [
+      1,
+      4.5
+    ],
+    "estimate_basis": "parallel simulation and shared Gemma quota; measured throughput pending"
+  },
+  "initial_check": [
+    "no exceptions",
+    "frame and SIM time increase",
+    "actual robot displacement in eval-only trajectory",
+    "commands not exclusively repeated rotations or stationary",
+    "toggles in bundle",
+    "first actual normal model response",
+    "r1 own RGB B memory trace"
+  ],
   "failure_action": "stop affected run immediately; no expansion if any first run fails; preserve EXIT/HOST_ERROR and archive before deallocation",
-  "E2E": ["normal LLM response with actual usage receipt","own RGB B to validated OwnRoute completion","initial scene to final released full beam outline inside B with no drop"],
+  "E2E": [
+    "normal LLM response with actual usage receipt",
+    "own RGB B to validated OwnRoute completion",
+    "initial scene to final released full beam outline inside B with no drop"
+  ],
   "ENOSPC": "HOST_ERROR",
-  "storage": {"raw":"azure:~/ugrp-sim/runs","archive":"oracle-codex:~/ugrp-archive/runs","Mac":"fetch-lite only; no images/npz/video"},
-  "id_reservation": {"open_branch_max_workflow_version":184,"new_version":185}
+  "storage": {
+    "raw": "azure:~/ugrp-sim/runs",
+    "archive": "oracle-codex:~/ugrp-archive/runs",
+    "Mac": "fetch-lite only; no images/npz/video"
+  },
+  "id_reservation": {
+    "open_branch_max_workflow_version": 184,
+    "new_version": 185
+  },
+  "requested_azure_runner_sha": "d0a5080402f30e8eccdf7b4852d1cb36d05c0ced",
+  "attempt_accounting": {
+    "completed_failed_attempts": 1,
+    "first_four_retry": 4,
+    "conditional_expansion": 8,
+    "total_max_including_failures": 13,
+    "absolute_user_cap": 16
+  },
+  "submission": "one remote_run supervised batch with four independent sim_cli workflows, RUN_META and EXIT per case"
 }

@@ -1,24 +1,145 @@
 {
-  "status": "PREPARED",
+  "status": "WAITING_AZURE_CAPACITY",
   "class_": "dev",
   "pr": 433,
   "tests": {
-    "passed": 56,
-    "total": 56,
-    "files": [
-      "tests/test_e2e_s4_live.py",
-      "tests/test_s4_study_policy.py",
-      "tests/test_s4_live12.py"
-    ],
-    "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests.xml",
-    "sha256": "63ac340f50c85ac973e552507ec686e7b49076f1573bfb512a22e4ef8d19c2be"
+    "checkpoints": [
+      {
+        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests.xml",
+        "sha256": "63ac340f50c85ac973e552507ec686e7b49076f1573bfb512a22e4ef8d19c2be",
+        "passed": 56,
+        "skipped": 0,
+        "scope": "three related files before relay fix"
+      },
+      {
+        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-relay-fix.xml",
+        "sha256": "ea4301c49b938ded9f64d78b573df5959a34dfe27e4fe6a09157a84be53355d0",
+        "passed": 57,
+        "skipped": 0,
+        "scope": "three related files with relay-ID regression"
+      },
+      {
+        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-batch.xml",
+        "sha256": "e86b2defdbd64a7ba351532ce97677ec2920feee1d6afd7cc62a61517559b0b5",
+        "passed": 32,
+        "skipped": 0,
+        "scope": "changed E2E file after batch orchestration"
+      },
+      {
+        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-azure-recovery.xml",
+        "sha256": "43375b214bd044cd7cf8b75dbfb0821c8fb64e9469305cb6b0cc5b6ced9d69ea",
+        "passed": 26,
+        "skipped": 12,
+        "scope": "changed Azure lifecycle file; PowerShell runtime unavailable for 12 runbook tests"
+      },
+      {
+        "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/tests-azure-linux.xml",
+        "sha256": "65a54c64b737908f4820d15d5af0aa692e5f2f8f3271810b8f0d9c9a893a4672",
+        "passed": 26,
+        "skipped": 12,
+        "scope": "Azure Python 3.12 lifecycle tests; isolated pytest dependency path; no VM/provider API calls; PowerShell unavailable"
+      }
+    ]
   },
-  "runs": [],
-  "executed": 0,
+  "runs": [
+    {
+      "id": "e2eaz1-gemma-s61001-on",
+      "status": "HOST_ERROR",
+      "seed": 61001,
+      "model": "Gemma",
+      "source_sha": "457dea24353ea49dd56e0a54d26d7002e2e7fe7c",
+      "wall_s": 18.336523190000037,
+      "sim_s": 0.0,
+      "frames": 1,
+      "provider_calls": 0,
+      "relay_post_attempts": 3,
+      "tokens_total_known": 0,
+      "normal_response_latency_s": null,
+      "error_response_latency_median_s": 1.968361,
+      "setdowns": 0,
+      "cause": "relay rejected new E2E run-key prefix before upstream; fixed in 951e551d",
+      "initial_check": {
+        "passed": false,
+        "no_exceptions": false,
+        "frame_count": 1,
+        "sim_advanced": false,
+        "moved": false,
+        "normal_commands": false,
+        "own_B_generated": false,
+        "automatic_health_stop_wall_s": 18.336523190000037,
+        "stopped_before_180s": true
+      },
+      "raw": "azure:~/ugrp-sim/runs/e2eaz1-gemma-s61001-on",
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-gemma-s61001-on",
+      "archive_verified": true,
+      "result_sha256": "00dff65cb17036e380bbf1fd88a88a94372d4b1dcef69f95ef4225d5ed1cd5d4"
+    }
+  ],
+  "executed": 1,
   "first_planned": 4,
   "expansion_admitted": false,
   "physical_success_unverified": true,
   "limitations": [
     "Only observed calibrated carrier axes admitted; full initial-scene runtime has no physical acceptance yet."
+  ],
+  "source_sha": "3efd025803204969759b8609e229be8a6dfc03c7",
+  "azure_guard_sha": "1bfa2bde2d60d214d775585d937e005e109f1922",
+  "initial_cohort": {
+    "planned": 4,
+    "physical_started": 1,
+    "normal": 0
+  },
+  "E2E": {
+    "denominator": "actual started attempts",
+    "N": 1,
+    "LLM": 0,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "all_three": 0
+  },
+  "blocked_batches": [
+    {
+      "id": "e2eaz1-first4-r1",
+      "status": "BLOCKED_PRESTART",
+      "cells": 4,
+      "reason": "AZURE_LOAD_ADMISSION",
+      "load_1m_at_submit": 165.66,
+      "limit": 12.8,
+      "vcpus": 16,
+      "model_calls": 0,
+      "setdowns": 0,
+      "archive": "oracle-codex:~/ugrp-archive/runs/shutdown-e2eaz1-first4-r1",
+      "archive_verified": true
+    }
+  ],
+  "actual_model_input_audit": {
+    "passed": 3,
+    "total": 3,
+    "raw": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011/input-audit.json",
+    "sha256": "dcb4c2a9ced18cfe25a04acdd8d46e5712feef688b66441fe3db45f96eb21c30"
+  },
+  "remaining": [
+    "Capacity occupied by egomap71 and S3 batches",
+    "No real provider completion yet",
+    "Own RGB B route and start-to-finish transport physically unverified",
+    "VM currently allocated for other tasks; task five-hour cap installed"
+  ],
+  "sources": [
+    "https://github.com/ros-infrastructure/rep/blob/master/rep-0105.rst",
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/waypoint_follower/",
+    "https://docs.python.org/3/library/subprocess.html",
+    "https://docs.python.org/3/library/subprocess.html#subprocess.Popen.poll"
+  ],
+  "raw_locations": [
+    {
+      "host": "Mac",
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-azure-first-20261011",
+      "purpose": "small proxy, lifecycle, test and input-audit metadata"
+    },
+    {
+      "host": "Azure",
+      "path": "~/ugrp-sim/runs/e2eaz1-gemma-s61001-on",
+      "archive_manifest_sha256": "9551a8ecef1a7a496ef83961688c54df305acee2c7114c08dea5ba9dd8ee03d4"
+    }
   ]
 }
