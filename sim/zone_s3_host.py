@@ -62,22 +62,8 @@ class PhysicsBackend(SoloBackend):
             BaseBackend.issue(self, rid, action)
 
     def capture(self):
-        import numpy as np
-        from PIL import Image
-        frames = {}
-        for rid in ROBOTS:
-            obs = self.ports[rid].capture()
-            jpeg = base64.b64decode(obs['image'], validate=True)
-            rgb = np.asarray(Image.open(io.BytesIO(jpeg)).convert('RGB'))
-            relative = f'robots/{rid}/rgb/{self.frame:05d}.jpg'
-            path = self.out/relative
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(jpeg)
-            self._append(f'robots/{rid}/frames.jsonl', {**{k: v for k, v in obs.items() if k != 'image'},
-                'path': relative, 'commanded_servo': self.commands[rid]})
-            frames[rid] = (obs, rgb)
-        self.frame += 1
-        return frames
+        from sim.lazy_camera import capture_robot_frames
+        return capture_robot_frames(self, ROBOTS)
 
     def eval_sample(self):
         BaseBackend.eval_sample(self)  # contacts/weld audit only

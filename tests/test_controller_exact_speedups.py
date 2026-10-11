@@ -3,6 +3,199 @@ import pytest
 from harness.controller_exact_speedups import ArrayRevision, PosteriorMemo, PureMemo, MethodSummaryMemo, IntegerClipNumpy, mode
 
 
+def test_shared_shadow_cache_bits_layout_mutation_ownership_and_slab_change(monkeypatch):
+    from harness import zone_solo_cyan_visibility as visibility
+    from harness.controller_exact_speedups import ShadowDepthMemo
+    original=visibility.shadow_depths
+    memo=ShadowDepthMemo(original,visibility.box_depth,maxsize=2)
+    rng=np.random.default_rng(947)
+    origin=np.zeros(3)
+    rays=rng.normal(size=(8,11,3))
+    boxes=[('arm',np.array([0.,0.,1.]),np.eye(3),np.full(3,.4)),
+           ('chassis',np.array([0.,0.,-.3]),np.eye(3),np.full(3,.5))]
+    expected=original(origin,rays,boxes)
+    for result in (memo(origin,rays,boxes),memo(origin,rays,boxes)):
+        for category in expected:
+            assert result[category].tobytes()==expected[category].tobytes()
+            result[category][:]=123
+    assert memo.hits==1 and memo.misses==1
+    boxes[0][1][0]=.7
+    actual=memo(origin,rays,boxes);expected=original(origin,rays,boxes)
+    assert all(actual[k].tobytes()==expected[k].tobytes() for k in expected)
+    for r in (rays[:,::2,:],rays.astype(np.float32)):
+        actual=memo(origin,r,boxes);expected=original(origin,r,boxes)
+        assert all(actual[k].tobytes()==expected[k].tobytes() for k in expected)
+    slab=visibility.box_depth
+    monkeypatch.setattr(visibility,'box_depth',lambda *a:slab(*a)+.01)
+    actual=memo(origin,rays,boxes);expected=original(origin,rays,boxes)
+    assert all(actual[k].tobytes()==expected[k].tobytes() for k in expected)
+    assert memo.hits==1 and len(memo.entries)<=2 and memo.bytes<=memo.max_bytes
+
+
+def test_owned_event_constructor_has_no_caller_alias_and_requires_fresh_stream():
+    import copy
+    from harness.controller_exact_speedups import OwnedEventLog
+    from harness import zone_referee_replay as events
+    from tests.zone_evidence_fixtures import planned
+    plan,_=planned(1,1);key=plan['admitted'][0]['key']
+    rows=[];events.append_event(rows,{'event':'orders'},evidence_key=key)
+    expected=copy.deepcopy(rows)
+    audit=dict(referee_past_key_checks_avoided=0,referee_owned_appends=0)
+    owned=OwnedEventLog(rows,events.trial_key,events.digest,audit)
+    rows[0]['evidence_key']['seed']+=1
+    rows.append({'unexpected':'external append'})
+    owned.append_payload({'event':'sample'},evidence_key=key)
+    events.append_event(expected,{'event':'sample'},evidence_key=key)
+    assert copy.deepcopy(owned)==expected
+    with pytest.raises(ValueError,match='fresh private'):
+        OwnedEventLog(expected,events.trial_key,events.digest,audit)
+
+
+def test_incremental_distance_field_matches_original_bytes_add_remove_and_owned_result():
+    from scipy.ndimage import distance_transform_edt
+    from harness.controller_exact_speedups import IncrementalGridFieldMemo
+    class Field:
+        def __init__(self, points, resolution=.05):
+            self.resolution = resolution
+            self.origin = np.floor((points.min(0)-1.)/resolution)*resolution
+            size = np.ceil((points.max(0)+1.-self.origin)/resolution).astype(int)+1
+            grid = np.ones(tuple(size), bool)
+            ij = np.rint((points-self.origin)/resolution).astype(int)
+            grid[ij[:,0],ij[:,1]] = False
+            self.distance = distance_transform_edt(grid)*resolution
+    original = Field.__init__
+    cache = IncrementalGridFieldMemo(Field, maxsize=2)
+    rng = np.random.default_rng(312)
+    points = np.vstack([[[0.,0.],[4.,4.]], rng.integers(1,79,(35,2))*.05])
+    for i in range(60):
+        baseline = Field(points)
+        actual = object.__new__(Field)
+        cache(actual, points)
+        assert actual.origin.tobytes() == baseline.origin.tobytes()
+        assert actual.distance.tobytes() == baseline.distance.tobytes()
+        actual.distance[:] = -1
+        # Alternate additions/deletions, including deletion of a nearest witness.
+        if i % 2:
+            points = np.delete(points, 2+rng.integers(len(points)-2), axis=0)
+        else:
+            points = np.vstack([points, rng.integers(1,79,(1,2))*.05])
+    assert cache.updates > 0 and cache.changed_cells > 0
+    # Expanding geometry rebuilds rather than applying a finite, unsafe halo.
+    points = np.vstack([points, [[9.,-7.]]])
+    baseline = Field(points); actual = object.__new__(Field); cache(actual, points)
+    assert actual.distance.tobytes() == baseline.distance.tobytes()
+    assert Field.__init__ is original and len(cache.entries) <= 2
+
+
+def test_incremental_probability_changes_only_cells_and_preserves_bits():
+    import math
+    from types import SimpleNamespace
+    from harness.controller_exact_speedups import ProbabilityFieldMemo
+    class Field:
+        def __init__(self, grid):
+            keys = np.array(list(grid.cells)); self.resolution = grid.resolution_m
+            self.lower = keys.min(0)-2; size = keys.max(0)-self.lower+3
+            self.values = np.full(tuple(size), .5)
+            for k,v in grid.cells.items():
+                self.values[tuple(np.array(k)-self.lower)] = 1/(1+math.exp(-v))
+    cache = ProbabilityFieldMemo(Field, maxsize=2)
+    grid = SimpleNamespace(resolution_m=.05, cells={(i,j):float(i-j)/10 for i in range(10) for j in range(10)})
+    for change in (None, (3,4), (6,7), (3,4)):
+        if change is not None: grid.cells[change] += .3
+        baseline = Field(grid); actual = object.__new__(Field); cache(actual, grid)
+        assert baseline.lower.tobytes() == actual.lower.tobytes()
+        assert baseline.values.tobytes() == actual.values.tobytes()
+        actual.values[:] = 999
+    del grid.cells[(5,5)]
+    baseline = Field(grid); actual = object.__new__(Field); cache(actual, grid)
+    assert baseline.values.tobytes() == actual.values.tobytes()
+    assert cache.updates > 0 and cache.changed_cells > 0
+
+
+def test_loop_result_cache_owner_mutation_lazy_fields_and_output_isolation():
+    from types import SimpleNamespace as S
+    from harness.controller_exact_speedups import GraphLoopMemo
+    calls=[]
+    def original(submap,row,initial,options,*,prepared=None):
+        calls.append(1)
+        if not submap['grid'].cells: return {'reason':'empty'}
+        if prepared._probability is None:
+            prepared._probability=S(resolution=.05,lower=np.zeros(2),values=np.array([[.6,.8]]))
+            prepared.builds += 1
+        return {'score':float(prepared._probability.values.sum()),'pose':initial.tolist()}
+    class Prepared:
+        def __init__(self):
+            self._probability=self._distance=None; self.segments=np.zeros((1,2,2))
+            self.grid=S(cells={(0,0):1.}); self.builds=0
+    p=Prepared(); submap={'grid':p.grid}; row={'segments':[[[0.,0.],[1.,1.]]]}; initial=np.zeros(3)
+    cache=GraphLoopMemo(original,maxsize=2)
+    fingerprints=[]
+    fields=cache.fields
+    cache.fields=lambda owner:(fingerprints.append(1),fields(owner))[1]
+    expected=cache(submap,row,initial,None,prepared=p)
+    assert len(fingerprints)==1  # a unique pair performs only the post-state hash
+    cache(submap,row,initial,None,prepared=p)['pose'][0]=999
+    assert cache(submap,row,initial,None,prepared=p)==expected and p.builds==1 and len(calls)==1
+    assert len(fields(p)[2])==32  # no full submap segment array retained per pair
+    p._probability.values[0,0] += .1
+    assert cache(submap,row,initial,None,prepared=p)['score'] != expected['score']
+    q=Prepared()
+    cache({'grid':q.grid},row,initial,None,prepared=q)
+    assert q.builds==1 and len(cache.entries)<=2
+    p.grid.cells.clear()
+    assert cache(submap,row,initial,None,prepared=p)=={'reason':'empty'}
+    import gc, weakref
+    owner=weakref.ref(p)
+    del p
+    gc.collect()
+    assert owner() is None  # cached pairs must not keep expired submap owners alive
+
+
+def test_scan_options_are_explicit_and_local_policy_defaults_off(monkeypatch):
+    from harness.controller_exact_speedups import scan_options
+    monkeypatch.delenv('UGRP_CONTROLLER_SCAN_SPEEDUPS',raising=False)
+    monkeypatch.delenv('UGRP_CONTROLLER_LOCAL_SUBMAP_M',raising=False)
+    assert scan_options()==('off',0.)
+    monkeypatch.setenv('UGRP_CONTROLLER_LOCAL_SUBMAP_M','nan')
+    with pytest.raises(ValueError):scan_options()
+
+
+def test_owned_referee_stream_bytes_snapshot_isolation_rebinding_and_close(monkeypatch):
+    import copy
+    import json
+    from harness.controller_exact_speedups import install, REFEREE_ENV, OwnedEventLog
+    from harness import zone_study_referee as judge,zone_referee_replay as replay
+    from harness.zone_study_contract import digest
+    from tests.zone_evidence_fixtures import planned,MAP,at_zone
+    monkeypatch.setenv(REFEREE_ENV,'owned-v1')
+    plan,_=planned(1,1);admitted=plan['admitted'][0];key=admitted['key'];orders=admitted['orders']
+    old=judge.Referee(orders,MAP,evidence_key=key)
+    samples=[(i*.1,{'item-0':at_zone('A',held=bool(i%5==0))}) for i in range(40)]
+    for t,items in samples:old.observe(t,items)
+    installed=install('exact-v1')
+    try:
+        new=judge.Referee(orders,MAP,evidence_key=key)
+        assert type(new._events) is OwnedEventLog
+        for t,items in samples:new.observe(t,items)
+        assert digest(new.record())==digest(old.record())
+        assert json.dumps(new.record(),indent=2,ensure_ascii=False).encode()==json.dumps(old.record(),indent=2,ensure_ascii=False).encode()
+        snapshot=new.record();snapshot['events'][1]['evidence_key']['seed']=True
+        assert digest(new.record())==digest(old.record())
+        with pytest.raises(ValueError,match='INVALID'):
+            replay.replay(snapshot['events'],orders,plan['referee_policy'],evidence_key=key,source_key=key)
+        # A mutable imported list retains the original validation on EVERY append.
+        with pytest.raises(ValueError,match='INVALID'):
+            replay.append_event(snapshot['events'],{'event':'sample','sim_s':5.,'items':{}},evidence_key=key)
+        new._evidence_key['seed']+=1
+        with pytest.raises(ValueError,match='cannot be rebound'):new.observe(5.,{})
+        new._evidence_key=copy.deepcopy(key)
+        assert installed.snapshot()['referee_owned_appends']==len(samples)
+    finally:installed.close()
+    assert type(new._events) is list
+    new.observe(5.,{});old.observe(5.,{})
+    assert digest(new.record())==digest(old.record())
+
+
 def test_snapshot_in_place_noncontiguous_signed_zero_and_nan_payloads():
     bits = np.array([0, 0x7ff8000000000001], dtype=np.uint64)
     a = bits.view(np.float64)
@@ -238,7 +431,8 @@ def test_common_install_off_and_restore(monkeypatch):
         for a, b in zip(actual[:2], expected[:2]):
             assert a.tobytes() == b.tobytes()
         assert actual[2] == expected[2]
-        assert on.snapshot()['applied'] == ['owncam_moments','markerless_integer_clip','opencv_integer_clip','posterior_summary']
+        assert on.snapshot()['applied'] == ['owncam_moments','markerless_integer_clip','opencv_integer_clip','shared_shadow_depths','posterior_summary']
+        assert on.snapshot()['referee_event_speedups'] == 'off'
         from harness.vision_loc_protocol import load_vis3
         from harness import zone_pair_highpose_opencv_exact as opencv
         vl, _ = load_vis3()
