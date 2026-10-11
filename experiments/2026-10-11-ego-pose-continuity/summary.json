@@ -1216,5 +1216,53 @@
     "copy_note": "hardlinks unavailable across archive owners; ordinary verified copy",
     "local_selective_video": "/Users/changmin/projects/ugrp/outputs/egojump-representative-v2/own-rgb.mp4"
   },
-  "source_cache_retirement": "/Users/changmin/projects/ugrp/outputs/egojump-source-cache-retirement.json"
+  "source_cache_retirement": "/Users/changmin/projects/ugrp/outputs/egojump-source-cache-retirement.json",
+  "v2_interim": {
+    "recorded": 3,
+    "registered": 18,
+    "cohort_receipt": "/Users/changmin/projects/ugrp/outputs/egojump-v2-cohort.json",
+    "first_seed": 63001,
+    "scope": "first seed only; remaining seeds in progress",
+    "B_and_return": {
+      "off": 0,
+      "cluster": 1,
+      "innovation": 0
+    },
+    "false_B": {
+      "seed": 63001,
+      "condition": "innovation",
+      "t": 213.9,
+      "local_pose": [
+        3.0172611446224016,
+        3.477783019584024,
+        -3.0252259724893484
+      ],
+      "evaluation_local_xy": [
+        2.6419963748533823,
+        3.3189564137345493
+      ],
+      "pose_error_m": 0.4074917645247071,
+      "evaluation_world_xy": [
+        0.6079710300321159,
+        -2.5689479518703604
+      ],
+      "B_region": {
+        "center_m": [
+          4.6,
+          -2.1
+        ],
+        "half_extents_m": [
+          0.3,
+          0.7
+        ],
+        "rgba": ".20 .40 .95 .30"
+      },
+      "B_center_distance_m": 4.019478508292618,
+      "inside_pickup": true,
+      "goal_state": "locally_confirmed_region",
+      "scope": "post-run evaluation only; no controller feedback; target recognition cause not separately intervened"
+    },
+    "worker_sha": "98ffd82347c764fc6ddcd319d1d383df16d994a5"
+  },
+  "cache_relocation_receipt": "/Users/changmin/projects/ugrp/outputs/egojump-cache-relocation.json"
 }

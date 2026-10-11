@@ -31,20 +31,26 @@ def aggregate(root, sha):
         scores = [j['score'] for j in measured]
         frames = sum(s['samples'] for s in scores)
         paired = [s for p in pairs.values() for s in p['runs'] if s['condition'] == condition]
-        def jumps(which):
-            return dict(transitions=sum(s[which]['transitions'] for s in scores),
-                        counts={k: sum(s[which]['counts'][k] for s in scores)
+        def jumps(which, values):
+            return dict(transitions=sum(s[which]['transitions'] for s in values),
+                        counts={k: sum(s[which]['counts'][k] for s in values)
                                 for k in ('0.05', '0.2', '0.5')},
-                        max_m=max((s[which]['max_m'] for s in scores), default=None))
+                        max_m=max((s[which]['max_m'] for s in values), default=None))
         conditions[condition] = dict(registered=6, measured=len(measured),
             host_errors=sum(j['status'].startswith('HOST_ERROR') for j in selected),
             physical_failures=sum(j['status'] == 'PHYSICAL_FAILURE' for j in measured),
             B=sum(s['B_arrived'] for s in scores), returned=sum(s['returned'] for s in scores),
+            B_and_return=sum(s['B_arrived'] and s['returned'] for s in scores),
             false_declarations=sum(not d['valid'] for s in scores for d in s['declarations']),
+            false_B=sum(d['kind']=='goal_reached' and not d['valid']
+                        for s in scores for d in s['declarations']),
+            false_return=sum(d['kind']=='return_start_declared' and not d['valid']
+                             for s in scores for d in s['declarations']),
             frames=frames, full_rmse_m=math.sqrt(sum(s['samples']*s['xy_rmse_m']**2
                 for s in scores)/frames) if frames else None,
             mean_final_error_m=sum(s['final_error_m'] for s in scores)/len(scores) if scores else None,
-            map_jumps=jumps('map_jumps'), control_jumps=jumps('control_jumps'),
+            map_jumps=jumps('map_jumps',scores), control_jumps=jumps('control_jumps',scores),
+            paired_map_jumps=jumps('map_jumps',paired), paired_control_jumps=jumps('control_jumps',paired),
             paired_groups=len(paired), paired_frames=sum(s['frames'] for s in paired),
             paired_rmse_m=math.sqrt(sum(s['squared_error_sum_m2'] for s in paired)/
                 sum(s['frames'] for s in paired)) if paired else None,
