@@ -122,7 +122,7 @@ def report(a, suite):
                                   http_attempts=len(r['attempts']), error=r['error'], request_sha256=r['request_sha256'],
                                   response_sha256=r['response_sha256'], usage=r['usage'], cost=r['cost'], provider=r.get('provider'))
     summary['calls'] = cmap
-    summary['journals_sha256'] = {str(p): sha(p) for p in (raw / 'phase1' / 'calls.jsonl', raw / 'improved' / 'calls.jsonl', raw / 'real' / 'calls.jsonl') if Path(p).exists()}
+    summary['journals_sha256'] = {str(p): sha(p) for p in (raw / 'phase1' / 'calls.jsonl', raw / 'improved' / 'calls.jsonl', raw / 'probe' / 'calls.jsonl', raw / 'real' / 'calls.jsonl') if Path(p).exists()}
     Path(a.out).write_text(json.dumps(summary, indent=1, sort_keys=True) + '\n')
     print('wrote', a.out, 'phase1 calls', len(rows), 'real calls', len(real))
 
