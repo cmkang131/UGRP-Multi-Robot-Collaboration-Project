@@ -151,6 +151,13 @@
       "reason": "s3-continuous-20261011-v186 active archive is unverified; recover exit 74",
       "actual_runs": 0,
       "record": "azure:~/ugrp-sim/lifecycle/events/ccb0f5e456784d4e8e835e55741cc19c.json"
+    },
+    {
+      "batch": "A/B",
+      "stage": "final_shared_admission_after_Jev_implementation",
+      "reason": "recover exit74: completed S3 original archive is still unverified; other active writer preserved",
+      "actual_runs": 0,
+      "record": "azure:~/ugrp-sim/lifecycle/events/b2ccbea9c3804e1a982444a6543cd133.json"
     }
   ],
   "host_actions": {
@@ -167,7 +174,24 @@
       "raw_deleted": false,
       "record": "azure:~/ugrp-sim/lifecycle/events/e2e8-unused-source-cleanup.json"
     },
-    "other_processes_signalled": []
+    "other_processes_signalled": [],
+    "unused_candidate_source_copy": {
+      "source_sha": "afee0d3e525fd1a4c1d948398298da42e1a9ae2c",
+      "bytes_removed": 2228025570,
+      "raw_deleted": false,
+      "record": "azure:~/ugrp-sim/lifecycle/events/e2e8-unused-candidate-source-cleanup.json"
+    },
+    "final": {
+      "own_sessions_stopped": [
+        "e2e8-relay",
+        "e2e8-tunnel",
+        "e2e8-jev-smoke"
+      ],
+      "own_prestart_lease_removed": true,
+      "vm_deallocated": false,
+      "reason": "Other task active lease/process preserved",
+      "free_bytes": 14630502400
+    }
   },
   "comparison": {
     "planned": 4,
@@ -204,6 +228,51 @@
   },
   "local_evidence": {
     "path": "/Users/changmin/projects/ugrp/outputs/e2e8-openrouter-jev-20261011",
-    "uploaded_raw": false
+    "uploaded_raw": false,
+    "manifest": "experiments/2026-10-11-e2e8-openrouter-jev/evidence-sha256.json",
+    "manifest_sha256": "767261a51448c73f3a2f33678c9a3af365c4f79fd48389703b78db18bd62149a"
+  },
+  "implementation_sha": "384b44e4d278cde39496009e6e7c19b9688e8025",
+  "live_relay_stored_input_smoke": {
+    "scope": "two archived own-RGB requests; no new simulation, no live E2E success",
+    "normal": 2,
+    "N": 2,
+    "provider": "DeepInfra",
+    "gemma_calls": 2,
+    "gemma_tokens": 3792,
+    "gemma_latency_median_s": 2.7018462705018464,
+    "gemma_cost_usd": 0.00037253,
+    "jev_calls": 2,
+    "jev_tokens": 2181,
+    "jev_latency_median_s": 0.3574979164986871,
+    "jev_cost_usd": null,
+    "jev_cost_status": "provider response has tokens but no cost",
+    "shadow_disagreements": 0,
+    "own_rgb_grip": [
+      "none",
+      "holding"
+    ],
+    "grip_accuracy": "not evaluated; not an acceptance result",
+    "records": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e8-openrouter-jev-20261011/relay-smoke-evidence/summary.json",
+      "sha256": "3ced007703bb7a6b31e9c5b182aa56fa87c255fb55502124a8f516a6ebe103e9"
+    },
+    "request_text_and_image_hashes_preserved": true
+  },
+  "remaining": [
+    "Azure completed S3 archive must verify before new admission",
+    "A2/B2 not started; initial checks, own-map completion, transport and per-frame jumps remain unmeasured",
+    "Gemma own_rgb_grip accuracy not evaluated by stored-input relay smoke",
+    "No CI checks reported on draft PR; independent merge review not performed"
+  ],
+  "retrieval": {
+    "simulation_raw": "none: no new simulated run",
+    "model_text": "Mac relay raw retained with hashes",
+    "lifecycle": "four relevant light JSON records recovered from Azure",
+    "invalid_fetch": {
+      "path": "e2e8-no-run",
+      "exit": 23,
+      "reason": "No such run; no data transferred; empty local directory removed"
+    }
   }
 }
