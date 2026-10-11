@@ -125,7 +125,7 @@ python3 scripts/ugrp_session.py run \
 
 `storage_automation.py`는 기존 압축·prune·배타 잠금·실제 사용 검사를 재사용한다.
 Mac `com.ugrp.storage-auto` 사용자 LaunchAgent는 매일 04:15와 5분 간격에 호출된다.
-5분 호출은 여유 검사만 하고, 하루가 지났거나 Mac <20 GiB / ARM <35 GiB일 때만
+5분 호출은 여유 검사만 하고, 하루가 지났거나 Mac <30 GiB / ARM <35 GiB일 때만
 실제 작업한다. 압박 재시도는 시간당 한 번으로 제한한다. 동시에 실행되면 공용
 maintenance 잠금으로 하나만 진행한다. KeepAlive·무한 로그 파일은 만들지 않는다.
 절전/로그아웃 중에는 실행되지 않으므로 제출 전 예산 검사는 계속 필요하다.

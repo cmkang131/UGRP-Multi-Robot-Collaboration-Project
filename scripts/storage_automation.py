@@ -226,20 +226,22 @@ def maintenance(root, host, catalog, records, execute=False, include_orphans=Fal
             skips[str(run)] = str(exc)
     report['skipped'] = skips
     if pressure:
-        stage = {'stage': 'a_compress', 'runs': []}
+        stage = {'stage': 'a_compress', 'runs': [], 'before_free_bytes': shutil.disk_usage(root).free}
         for run, number, meta in groups['closed_dev'] + groups['prless_dev_7d']:
             try:
                 # Any nested active run is checked by the existing compressor.
                 stage['runs'].append(compress_run(run, execute))
             except (OSError, ValueError, Refused, subprocess.SubprocessError) as exc:
                 report['errors'].append({'run': str(run), 'stage': stage['stage'], 'error': str(exc)})
+        stage['after_free_bytes'] = shutil.disk_usage(root).free
         report['stages'].append(stage)
     for name in ('closed_dev', 'prless_dev_7d'):
         if name == 'prless_dev_7d' and not (include_orphans or
                 (pressure and shutil.disk_usage(root).free < (FLOORS[host] + 10) * GIB)):
             report['stages'].append({'stage': 'c_prless_dev_7d', 'skipped': 'space above pressure threshold'})
             continue
-        stage = {'stage': 'b_closed_dev' if name == 'closed_dev' else 'c_prless_dev_7d', 'runs': []}
+        stage = {'stage': 'b_closed_dev' if name == 'closed_dev' else 'c_prless_dev_7d', 'runs': [],
+                 'before_free_bytes': shutil.disk_usage(root).free}
         for run, number, meta in groups[name]:
             try:
                 if execute:
@@ -247,12 +249,15 @@ def maintenance(root, host, catalog, records, execute=False, include_orphans=Fal
                     if row.get('candidates'):
                         row = prune.execute(run, number, records, catalog=catalog, idle_hours=24)
                 elif run in virtual:
-                    row = virtual_plan(run, number, meta)
+                    row = ({'run': str(run), 'skipped': 'nested runs: prune separately', 'bytes': 0}
+                           if any(run in child.parents for child in virtual if child != run)
+                           else virtual_plan(run, number, meta))
                 else:
                     row = prune.plan(run, number, idle_hours=24)
                 stage['runs'].append(row)
             except (OSError, ValueError, Refused, subprocess.SubprocessError) as exc:
                 report['errors'].append({'run': str(run), 'stage': stage['stage'], 'error': str(exc)})
+        stage['after_free_bytes'] = shutil.disk_usage(root).free
         report['stages'].append(stage)
     report['after_free_bytes'] = shutil.disk_usage(root).free
     report['candidate_bytes'] = sum(row.get('bytes', 0) for s in report['stages'] for row in s.get('runs', []))
@@ -361,7 +366,7 @@ def main(argv=None):
             now = time.time()
             if args.scheduled:
                 daily_due = now - state.get('last_success', 0) >= 86400
-                low = shutil.disk_usage(root).free < FLOORS[args.host] * GIB
+                low = shutil.disk_usage(root).free < (FLOORS[args.host] + 10) * GIB
                 # Also query ARM free space over SSH, without touching any other host.
                 arm_low = False
                 if args.remote_arm:
