@@ -1,0 +1,230 @@
+{
+  "schema": "ugrp.e2e_azure_plan.v1",
+  "status": "PREPARED_NOT_SUBMITTED",
+  "physical_execution_authorized": false,
+  "activation": "Wait for user to announce Azure readiness; no Oracle x86 access or automatic launch.",
+  "workflow": "e2e_one_beam_ownmap: GoalRoute -> OwnRoute -> received S4 approval -> S3 -> own RGB setdown",
+  "execution_bundle_id": null,
+  "bundle_rule": "Freeze source/config closure and register a new bundle before execution; v179 historical success cannot transfer.",
+  "inputs": "r1 own RGB GoalRoute/observed grid and own command history; r2 only delivered compact route + own observations; evaluation GT stays outside controls.",
+  "endpoint": "Observed B boundary only; no authored B fallback or test_route_provider.",
+  "common": {
+    "own_route": "goal_route_v1",
+    "arrival_gate": "rgb_geometry_v1",
+    "covariance_inflation": "nees_frozen_v1",
+    "covariance_profile": "configs/e2e_nees_egomap70_dev_v1.json",
+    "setdown_reobserve": "boundary_reobserve_v1"
+  },
+  "variants": [
+    {
+      "name": "ceil_control",
+      "pulse_budget": "off"
+    },
+    {
+      "name": "fractional",
+      "pulse_budget": "fractional_duration_v1"
+    },
+    {
+      "name": "tick_tail",
+      "pulse_budget": "tick_duration_v1"
+    }
+  ],
+  "conditions": [
+    "no_comm",
+    "peer_ko",
+    "leader_ko",
+    "structured"
+  ],
+  "seeds": [
+    601,
+    602
+  ],
+  "runs": [
+    {
+      "condition": "no_comm",
+      "seed": 601,
+      "candidate": "ceil_control"
+    },
+    {
+      "condition": "no_comm",
+      "seed": 601,
+      "candidate": "fractional"
+    },
+    {
+      "condition": "no_comm",
+      "seed": 601,
+      "candidate": "tick_tail"
+    },
+    {
+      "condition": "peer_ko",
+      "seed": 601,
+      "candidate": "ceil_control"
+    },
+    {
+      "condition": "peer_ko",
+      "seed": 601,
+      "candidate": "fractional"
+    },
+    {
+      "condition": "peer_ko",
+      "seed": 601,
+      "candidate": "tick_tail"
+    },
+    {
+      "condition": "leader_ko",
+      "seed": 601,
+      "candidate": "ceil_control"
+    },
+    {
+      "condition": "leader_ko",
+      "seed": 601,
+      "candidate": "fractional"
+    },
+    {
+      "condition": "leader_ko",
+      "seed": 601,
+      "candidate": "tick_tail"
+    },
+    {
+      "condition": "structured",
+      "seed": 601,
+      "candidate": "ceil_control"
+    },
+    {
+      "condition": "structured",
+      "seed": 601,
+      "candidate": "fractional"
+    },
+    {
+      "condition": "structured",
+      "seed": 601,
+      "candidate": "tick_tail"
+    },
+    {
+      "condition": "no_comm",
+      "seed": 602,
+      "candidate": "ceil_control"
+    },
+    {
+      "condition": "no_comm",
+      "seed": 602,
+      "candidate": "fractional"
+    },
+    {
+      "condition": "no_comm",
+      "seed": 602,
+      "candidate": "tick_tail"
+    },
+    {
+      "condition": "peer_ko",
+      "seed": 602,
+      "candidate": "ceil_control"
+    },
+    {
+      "condition": "peer_ko",
+      "seed": 602,
+      "candidate": "fractional"
+    },
+    {
+      "condition": "peer_ko",
+      "seed": 602,
+      "candidate": "tick_tail"
+    },
+    {
+      "condition": "leader_ko",
+      "seed": 602,
+      "candidate": "ceil_control"
+    },
+    {
+      "condition": "leader_ko",
+      "seed": 602,
+      "candidate": "fractional"
+    },
+    {
+      "condition": "leader_ko",
+      "seed": 602,
+      "candidate": "tick_tail"
+    },
+    {
+      "condition": "structured",
+      "seed": 602,
+      "candidate": "ceil_control"
+    },
+    {
+      "condition": "structured",
+      "seed": 602,
+      "candidate": "fractional"
+    },
+    {
+      "condition": "structured",
+      "seed": 602,
+      "candidate": "tick_tail"
+    }
+  ],
+  "N": 24,
+  "expected_denominators": {
+    "carry": 18,
+    "no_comm_negative_controls": 6
+  },
+  "no_comm": "No B delivery to r2, route approval/claim/transport must remain closed; intentional contract hold is not carry success.",
+  "server": {
+    "vcpu": 16,
+    "cpu_per_run_estimate": 0.6,
+    "max_concurrent": 18,
+    "planned_cpu": 10.8,
+    "admission": "total load average <12.8, existing workload + added .6 cores/run <=12.8, MemAvailable >=6GiB after each admission",
+    "memory_per_run_estimate_gib": 0.4,
+    "memory_rule": "Require >=6 + .4*new_runs GiB before adding a group; reject/wait for memory, preserve paired groups.",
+    "grouping": "Admit each condition/seed baseline+2 candidates together; 6 groups first wave, 2 groups second wave if other work allows.",
+    "storage": "Persistent ~/ugrp-sim/runs only; >=10GiB free plus estimated remaining raw budget (initial reserve 48GiB); ENOSPC=HOST_ERROR"
+  },
+  "time": {
+    "expected_sim_s_per_run": [
+      600,
+      900
+    ],
+    "cap_sim_s": 1200,
+    "estimated_wall_per_sim": 6.3,
+    "provenance": "Earlier x86 S3 timing only; Azure unmeasured, not a throughput guarantee",
+    "estimated_wall_minutes_per_run": [
+      63,
+      95
+    ],
+    "estimated_two_wave_hours": [
+      2.1,
+      3.2
+    ],
+    "wall_cap_s_per_run": 10800,
+    "recompute": "Measure first 180/300 wall seconds before revising completion estimate."
+  },
+  "initial_health": {
+    "wall_s": [
+      180,
+      300
+    ],
+    "per_run": [
+      "no exception",
+      "frame and SIM time increasing",
+      "observed/eval pose displacement recorded separately",
+      "commands progress through meaningful phases; no endless turns",
+      "own map/B proposal and received approval state recorded"
+    ],
+    "exception": "no_comm expected contract hold must be explicitly recorded",
+    "on_failure": "Stop only the failed run, record EXIT, repair and resubmit with new run identity."
+  },
+  "verdict": [
+    "all route segments transported",
+    "full beam outline inside B in eval-only output",
+    "no drop",
+    "fresh own-RGB B/return declarations only",
+    "setdown needs complete own RGB B boundary, revised route approval and new epoch GO/ACK",
+    "all failures/HOST_ERROR included"
+  ],
+  "retention": "Evaluate/hash on execution host, archive full originals on ARM after verified transfer; fetch-lite only to Mac; no image/npz/video batch fetch.",
+  "physical_readiness_limits": [
+    "Short-pulse duration response unmeasured",
+    "B may be occluded; gate holds, no synthetic boundary",
+    "NEES scale does not establish held-out coverage or r1 transfer",
+    "Native host composition/registered bundle must consume these opt-in interfaces; legacy authored-map runtime remains rejected."
+  ]
+}

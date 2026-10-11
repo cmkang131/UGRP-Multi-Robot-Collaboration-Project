@@ -5,13 +5,13 @@ from types import SimpleNamespace
 
 from harness import e2e_own_inputs as own
 from harness.zone_study_contract import ContractViolation, digest
-from harness.zone_s3_synchronized_carry import pulse_schedule
+from harness.e2e_pulse_budget import pulse_schedule
 from harness.zone_s3_integer_carry import PulseWindows
 
 OPTION = 'on_v1'
 
 
-def compile_route(route, *, now, observed, profiles, option='off', source='own_map'):
+def compile_route(route, *, now, observed, profiles, option='off', source='own_map', pulse_budget='off'):
     if option == 'off':
         return None
     if option != OPTION or source not in ('own_map', 'test_route_provider'):
@@ -43,10 +43,12 @@ def compile_route(route, *, now, observed, profiles, option='off', source='own_m
         for rid in ('r1', 'r2'):
             ctl = SimpleNamespace(rid=rid, seg=seg, v3_plan={'route':points},
                                   claims={}, log=lambda *a, **k:None)
-            schedule, duration = pulse_schedule(ctl, 0., profiles)
+            schedule, duration = pulse_schedule(ctl, 0., profiles, option=pulse_budget)
             windows = PulseWindows(schedule).windows
             plans[rid] = dict(windows=windows, duration_s=duration,
                               pulses=ctl.claims['segments'][0]['pulses'])
+            if pulse_budget != 'off':
+                plans[rid]['pulse_durations_s'] = ctl.claims['segments'][0]['pulse_durations_s']
         legs.append(dict(seg=seg, start=list(a), end=list(b), distance_m=math.hypot(dx, dy),
                          axis='forward' if abs(dx)>1e-8 else 'left', plans=plans))
         previous_heading = heading
@@ -57,14 +59,23 @@ def compile_route(route, *, now, observed, profiles, option='off', source='own_m
                   length_m=sum(l['distance_m'] for l in legs),
                   transport_admitted=False, research_result=False,
                   requires='received route approval and fresh per-grip-epoch GO/ACK')
+    if pulse_budget != 'off': result['pulse_budget'] = pulse_budget
     result['plan_hash'] = digest(result)
     return result
 
 
 def plan_from_route(base_plan, compiled):
-    """Explicit test-runtime shell only; no authored route survives this handoff."""
+    """Own-map plans start empty; only explicit test providers may reuse a shell."""
+    if compiled['source'] == 'own_map':
+        if base_plan is not None:
+            raise ContractViolation('AUTHORED_RUNTIME_SHELL_FORBIDDEN')
+        if compiled['plan_hash'] != digest({k:v for k,v in compiled.items() if k != 'plan_hash'}):
+            raise ContractViolation('S3_PLAN_HASH_MISMATCH')
+        return dict(route=copy.deepcopy(compiled['waypoints']),
+                    checkpoint_segments={'before_destination':len(compiled['legs'])-1},
+                    own_route=copy.deepcopy(compiled), registered_route_source='own_map')
     if compiled['source'] != 'test_route_provider':
-        raise ContractViolation('OWN_MAP_RUNTIME_NOT_CONNECTED_YET')
+        raise ContractViolation('UNKNOWN_ROUTE_PROVIDER')
     plan = copy.deepcopy(base_plan)
     plan.update(route=copy.deepcopy(compiled['waypoints']),
                 checkpoint_segments={'before_destination':len(compiled['legs'])-1},

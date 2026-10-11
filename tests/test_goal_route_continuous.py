@@ -213,3 +213,14 @@ def test_leg_report_splits_on_arrival_not_detection_and_marks_270s():
     assert len(v)==2 and [p['sim_s'] for p in v]==[20,270]
     assert [p['budget_failed'] for p in v]==[False,True]
     assert [p['own_tracked_path_m'] for p in v]==[2,2]
+
+
+def test_r1_goal_memory_has_own_identity_and_default_hooks_preserve_decisions():
+    from harness.self_map_closed_loop import remembered_goal
+    snap=dict(robot_id='r1',coordinate_frame='r1/own_odom',candidates=[])
+    assert remembered_goal(snap,t=1.,frame_id=1,frame_sha256='a'*64,robot_id='r1') is None
+    with pytest.raises(AssertionError):remembered_goal(snap,t=1.,frame_id=1,frame_sha256='a'*64)
+    c=fake_controller()
+    assert c.arrival_evidence('B',1.,1,[0,0,0],True)
+    assert not c.arrival_evidence('B',1.,1,[0,0,0],False)
+    assert c.return_evidence(None,True) and not c.return_evidence(None,False)

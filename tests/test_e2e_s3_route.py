@@ -230,3 +230,65 @@ def test_backend_final_guard_is_eval_only_and_latch_rearms_on_lost_floor(monkeyp
         row['floor_normal_n']=0.
         with pytest.raises(PhysicalStop):host.eval_sample()
         assert 'beam_1' in host.lifted
+
+
+def test_residual_pulses_replay_saved_three_lateral_legs_and_keep_off_exact():
+    from tests.test_s3_coarse_fine import profiles
+    from harness.e2e_pulse_budget import pulse_schedule
+    from harness.zone_s3_synchronized_carry import pulse_schedule as legacy
+    def ctl(rid='r1'):
+        return SimpleNamespace(rid=rid,seg=0,v3_plan={'route':[[0.,0.],[0.,-2.15/3]]},claims={},log=lambda *a,**k:None)
+    old=ctl();old_schedule,duration=legacy(old,29.1,profiles())
+    off=ctl();assert pulse_schedule(off,29.1,profiles())==(old_schedule,duration)
+    assert off.claims==old.claims
+    excess=3*(old.claims['segments'][0]['nominal_distance_m']-2.15/3)
+    assert excess==pytest.approx(.3541794279575926)
+    for option in ('fractional_duration_v1','tick_duration_v1'):
+        controllers=[ctl(r) for r in ('r1','r2')]
+        outputs=[pulse_schedule(c,29.1,profiles(),option=option) for c in controllers]
+        a,b=[c.claims['segments'][0] for c in controllers]
+        assert a['pulse_durations_s']==b['pulse_durations_s']
+        assert abs(3*a['residual_prediction_m'])<excess/10
+        assert a['pulse_durations_s'][-1]<duration
+        assert outputs[0][0][-1][:2]==old_schedule[-1][:2] # same settle budget
+        for x,y in zip(outputs[0][0],outputs[1][0]):
+            assert x[:2]==y[:2] and all(x[2][k]==-y[2][k] for k in x[2])
+
+
+def test_residual_tail_runs_through_real_controller_integer_dispatch_and_native_port_stub():
+    from types import MethodType
+    from scripts.study_owncam_pair_beam import PairStudent
+    from tests.s3_stage_probe import Motor
+    from tests.test_s3_coarse_fine import profiles
+    from tests.test_e2e_goal_route import ready
+    from harness.zone_s3_synchronized_carry import attach as sync,OPTION as SYNC
+    from harness.zone_s3_integer_carry import attach as integer,OPTION as INTEGER,tick
+    from harness.e2e_pulse_budget import attach,pulse_authorizer
+    from sim.e2e_pulse_port import ResidualPulsePort
+    motor=Motor();world=SimpleNamespace(robot=lambda rid:motor,data=SimpleNamespace(time=0.))
+    issued=[]
+    ctl=SimpleNamespace(rid='r1',seg=0,v3_plan={'route':[[0.,0.],[.1518,0.]],'agreement_route_hash':'a'*64},state='carry',
+        claims={},commands=0,next_look=float('inf'),log=lambda *a,**k:None,door_schedule=lambda t:None)
+    ctl.set=lambda state,t:setattr(ctl,'state',state)
+    ctl._carry=MethodType(PairStudent._carry,ctl)
+    agreement=ready('a'*64)
+    ep=SimpleNamespace(controller=ctl,own=SimpleNamespace(pose=SimpleNamespace(localizer=SimpleNamespace(pulse_profiles=profiles()))))
+    native=ResidualPulsePort(world,'r1',coupled=lambda:True,allow_reverse=True,allow_mecanum=True,
+        min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1',pulse_budget='fractional_duration_v1',
+        authorize_pulse=pulse_authorizer(ep,agreement,lambda:agreement.key))
+    def issue(action,now):
+        result=native.apply(action,now);issued.append((now,dict(action),native._drive_expires_at));return result
+    ctl.port=SimpleNamespace(apply=issue,hold=lambda t:native.hold(t))
+    sync(ep,SYNC);attach(ep,option='fractional_duration_v1');integer(ep,INTEGER)
+    ctl.schedule=ctl.door_schedule(29.1)
+    for n in range(tick(29.1),tick(ctl.schedule[-1][1])+1):ctl._carry(n/20,True)
+    moves=[(t,a,expiry) for t,a,expiry in issued if a.get('forward')]
+    assert len(moves)==ctl.claims['segments'][0]['pulses']
+    t,last,expiry=moves[-1]
+    assert last['duration_s']==pytest.approx(ctl.claims['segments'][0]['pulse_durations_s'][-1])
+    assert last['duration_s']<.1 and expiry==pytest.approx(t+last['duration_s'])
+    assert ctl.state=='wait_lower'
+    with pytest.raises(ValueError,match='GO_OR_SCHEDULE'):native.apply(last,40.)
+    ctl.state='carry';ctl.v3_plan['agreement_route_hash']='b'*64
+    assert not native.authorize_pulse(last,29.3)
+    agreement.votes.clear();assert not native.authorize_pulse(last,29.3)
