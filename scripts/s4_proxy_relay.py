@@ -34,6 +34,10 @@ def main():
     p.add_argument('--gemini-port',type=int,choices=(8391,8395),default=8391)
     p.add_argument('--gemma-fallback', action='store_true', help='DEV only; default off')
     p.add_argument('--multi-key-v1', action='store_true', help='multi_key_v1; default off, Mac keys only')
+    p.add_argument('--upstream', choices=('default', 'openrouter_v1'), default='default',
+                   help='openrouter_v1: paid OpenRouter Gemma 4 31B (Keychain ugrp-openrouter); default off')
+    p.add_argument('--openrouter-providers', default='DeepInfra',
+                   help='comma-separated pinned provider order (recorded in identity.json)')
     p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
                    default='main_study_gemini_v1')
     p.add_argument('--gemma-state', type=Path,
@@ -44,31 +48,43 @@ def main():
     single=a.driver_profile=='study_gemma4_31b_v1'
     if a.multi_key_v1 and not (single or a.gemma_fallback):
         raise ValueError('multi_key_v1 requires a Gemma profile')
+    openrouter = a.upstream == 'openrouter_v1'
+    if openrouter and not single: raise ValueError('openrouter_v1 requires --driver-profile study_gemma4_31b_v1')
+    if openrouter and (a.multi_key_v1 or a.gemma_fallback): raise ValueError('openrouter_v1 excludes multi_key_v1/gemma_fallback')
     if single and a.gemma_fallback:raise ValueError('single model cannot fallback')
     profile = load_registry()['driver_profiles'][a.driver_profile]
     if not single:profile={**profile,'proxy_url':f'http://127.0.0.1:{a.gemini_port}/v1/chat/completions'}
     if single:
-        source=Path(__file__).parent/'gemma_fallback_proxy.py'
+        source=Path(__file__).parent/('openrouter_upstream.py' if openrouter else 'gemma_fallback_proxy.py')
         proxy=dict(source_sha256=hashlib.sha256(source.read_bytes()).hexdigest())
-        runtime=dict(provider='google_aistudio_gemma',key_location='Mac Keychain only')
+        runtime=dict(provider='openrouter' if openrouter else 'google_aistudio_gemma',key_location='Mac Keychain only')
     else:
         if a.proxy_pid is None:raise ValueError('Gemini proxy PID required')
         proxy, runtime = live_proxy(profile, a.proxy_pid)
     fallback = None
-    if a.gemma_fallback or single:
+    if openrouter:
+        from scripts import openrouter_upstream as orp
+        orp_cfg = orp.config(tuple(x.strip() for x in a.openrouter_providers.split(',') if x.strip()))
+        fallback = orp.OpenRouter(a.gemma_state/'openrouter', provider_order=orp_cfg['provider_order'])
+    elif a.gemma_fallback or single:
         from scripts.gemma_fallback_proxy import Gemma
         registered = profile['model']['model'] if single else load_registry()['driver_profiles']['dev_gemini_gemma_fallback_v1']['fallback']['model_id']
         fallback = Gemma(a.gemma_state, expected_model=registered,standard=single,
                          expected_version='001' if single else None, multi_key_v1=a.multi_key_v1)
         fallback.require_image_probe()
+    fb_source = Path(__file__).parent/('openrouter_upstream.py' if openrouter else 'gemma_fallback_proxy.py')
     receipt = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url=f'http://127.0.0.1:{a.remote_port}/v1/chat/completions', proxy=proxy,
         runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, audit_per_post=True,
         authentication='existing_mac_proxy_no_credentials_transferred')
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
     lock = threading.Lock()
-    journal = Journal(a.output/'responses', retry_rate_limits=single or not a.gemma_fallback) if a.idempotent or fallback else None
+    journal = Journal(a.output/'responses', retry_rate_limits=single or not a.gemma_fallback, cache_errors=not openrouter) if a.idempotent or fallback else None
     receipt['idempotent_response_journal'] = bool(journal)
-    if fallback:
+    if openrouter:
+        receipt.update(driver_profile=a.driver_profile, single_model=True, fallback_enabled=False,
+            upstream='openrouter_v1', openrouter_v1=dict(orp_cfg, source_sha256=hashlib.sha256(fb_source.read_bytes()).hexdigest()),
+            cohort='openrouter_v1; separate from AI Studio runs')
+    elif fallback:
         from scripts.gemma_fallback_proxy import PROFILE
         receipt.update(driver_profile=PROFILE, dev_only=True, gemma_fallback=dict(
             model_id=fallback.model_id, provider='google_aistudio_gemma',
@@ -109,7 +125,7 @@ def main():
                 try:
                     current = dict(source_sha256=hashlib.sha256(source.read_bytes()).hexdigest()) if single else live_proxy(profile,a.proxy_pid)[0]
                     if current != proxy: raise ValueError('proxy identity changed')
-                    if fallback and hashlib.sha256((Path(__file__).parent/'gemma_fallback_proxy.py').read_bytes()).hexdigest() != receipt['gemma_fallback']['source_sha256']:
+                    if fallback and hashlib.sha256(fb_source.read_bytes()).hexdigest() != (receipt['openrouter_v1'] if openrouter else receipt['gemma_fallback'])['source_sha256']:
                         raise ValueError('fallback source changed')
                     def primary():
                         request = Request(profile['proxy_url'], data=body, headers={
@@ -137,7 +153,14 @@ def main():
                 response_sha256=hashlib.sha256(raw).hexdigest(), retry_after=retry_after,
                 proxy_source_sha256=proxy['source_sha256'], idempotency_key=key,
                 disposition=disposition, upstream_forwarded=disposition in ('forwarded', 'legacy'))
-            if fallback:
+            if openrouter:
+                try:
+                    response = json.loads(raw)
+                    row.update(upstream='openrouter_v1', response_model=response.get('model'),
+                        provider=response.get('provider'), openrouter=response.get('ugrp_openrouter'),
+                        host_error=response.get('host_error', False))
+                except (ValueError, AttributeError): pass
+            elif fallback:
                 try:
                     response = json.loads(raw)
                     row.update(response_model=response.get('model'), provider=response.get('provider'),
