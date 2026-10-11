@@ -1,4 +1,4 @@
-"""Single committed S3 v188 door lease and own RGB alignment smoke."""
+"""Single committed S3 v190 door lease and own RGB alignment smoke."""
 import argparse
 import errno
 import json
@@ -27,7 +27,7 @@ def acquire_lock(branch, wait_seconds=0.):
     while True:
         try:
             return agent_lock.acquire(agent_lock.DEFAULT_ROOT, owner='codex', branch=branch,
-                purpose='S3 v188 one mixed DEV smoke; lease and RGB alignment; preregistered PF diversity', pid=os.getpid(),
+                purpose='S3 v190 one mixed DEV smoke; lease and RGB alignment; preregistered PF diversity', pid=os.getpid(),
                 expected_minutes=180, timing_sensitive=True)
         except RuntimeError:
             remaining=deadline-time.monotonic()
@@ -48,6 +48,8 @@ def require_heading_source(bundle):
 
 
 def run(bundle, out, **kwargs):
+    if bundle['controller_config']['options'].get('min_command_contract') != 'on_v1':
+        raise ValueError('S3 recovery requires explicit min_command_contract=on_v1')
     require_heading_source(bundle)  # refuse before any simulator/output construction
     from harness.zone_s3_recovery_runtime import Runtime
     from sim.s3_motion_ports import PhysicsBackend
@@ -77,7 +79,7 @@ def main(argv=None):
         raise ValueError('own S3 branch and nice zero required')
     from scripts import agent_lock
     primary = agent_lock.DEFAULT_ROOT.parent
-    expected = primary/f's3-recovery-{a.expected_source_sha[:8]}-s{a.seed}-v188'
+    expected = primary/f's3-recovery-{a.expected_source_sha[:8]}-s{a.seed}-v190'
     if not a.output.is_absolute() or a.output.resolve() != expected.resolve() or a.output.exists():
         raise ValueError('new registered primary output required')
     if shutil.disk_usage(primary).free < b['raw_budget_bytes']+10*1024**3:

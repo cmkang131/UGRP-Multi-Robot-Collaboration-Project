@@ -1,0 +1,199 @@
+{
+  "class": "dev",
+  "pr": 416,
+  "branch": "codex/s3-no-prior-smoke",
+  "pre_merge_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
+  "merged_main_sha": "feb0d8184ea729f183d9e867a39f4eb0ebf4ed77",
+  "text_conflicts": [],
+  "bundle_id": "zone-s3-recovery-v190",
+  "workflow_version": "7.83.0",
+  "retired_bundle": "zone-s3-recovery-v188",
+  "historical_source_hashes": {
+    "matched": 431,
+    "total": 431,
+    "source_sha": "b3d52826997712e964812eecefe32aeb67d20b7f"
+  },
+  "changed_sealed_sources": [
+    "harness/zone_s3_pair_alignment.py",
+    "harness/zone_s3_pair_heading.py",
+    "harness/zone_s3_recovery_contract.py",
+    "harness/zone_solo_cyan_path_heading.py",
+    "scripts/run_s3_recovery.py"
+  ],
+  "new_source_files": 431,
+  "controller_edits_beyond_main_merge": true,
+  "min_command_contract_default": "off",
+  "simulation_runs": 0,
+  "local_tests": {
+    "passed": 73,
+    "failed": 0,
+    "files": [
+      {
+        "file": "tests/test_s3_recovery.py",
+        "passed": 15,
+        "failed": 0,
+        "seconds": 146.123
+      },
+      {
+        "file": "tests/test_s2_path_heading.py",
+        "passed": 37,
+        "failed": 0,
+        "seconds": 20.49
+      },
+      {
+        "file": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests",
+        "passed": 21,
+        "failed": 0,
+        "seconds": 2.339
+      }
+    ]
+  },
+  "ci": {
+    "status_at_commit": "pending push",
+    "receipt": "outputs/pr416-main-sync/contract-on-v1/ci-summary.json"
+  },
+  "raw_locations": {
+    "local": "outputs/pr416-main-sync/contract-on-v1",
+    "remote": "GitHub Actions PR416"
+  },
+  "references": [
+    "https://docs.python.org/3/tutorial/controlflow.html#keyword-arguments",
+    "https://git-scm.com/docs/git-show",
+    "https://git-scm.com/docs/git-diff"
+  ],
+  "artifact_sha256": {
+    "experiments/2026-10-11-pr416-main-sync/reservation-scan.json": "8e00991b59d112e960687cc7e045b5e2047410ce7926743e7ba2fe37f96be24b",
+    "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": "051b7eeb7b1a19575af0884b6500e60bcb52b8f368e042b4379acac24dfcd964",
+    "experiments/2026-10-11-ci-bundle-reregistration/registration-v190.json": "604abe92803edff3ca2b1a2534d7e6cb172256eeb904c5fbfd7edb9cbc2a7be6",
+    "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v190.json": "0fa27a45017ee50bc763fb6cd076b13e27c46d3ec6f6bc52c8a486074b6a2691",
+    "outputs/pr416-main-sync/local-tests.xml": "4bfa35d8373578b8c564e151575f487c41cd85b578f34c1e9b5a7e96a59f3320",
+    "outputs/pr416-main-sync/local-tests.log": "adc79a3f47a263eeff5c103afa649125e89896633bc0fa54bc03e05537f458a6",
+    "outputs/pr416-main-sync/contract-on-v1/comparison.json": "0942b62c16699e559bfca012d67e5207e76daeecb89df9d47aecdf34468641c2",
+    "outputs/pr416-main-sync/contract-on-v1/before/commands.json.zst": "ac8389603aee4f807b28040d2295f0b70d217dfd05badc249274ae2a13dc351f",
+    "outputs/pr416-main-sync/contract-on-v1/before/progress.json": "a2c6d818b9c1050c29f1580d0baf7c1680c9bd04d19869f3e5698ccb00544541",
+    "outputs/pr416-main-sync/contract-on-v1/before/sweep.json": "c961182e72922961d5bf2a7b3bb0c782b05fd12d5920c3ab8e2887412df7179b",
+    "outputs/pr416-main-sync/contract-on-v1/after/commands.json.zst": "ac8389603aee4f807b28040d2295f0b70d217dfd05badc249274ae2a13dc351f",
+    "outputs/pr416-main-sync/contract-on-v1/after/progress.json": "a2c6d818b9c1050c29f1580d0baf7c1680c9bd04d19869f3e5698ccb00544541",
+    "outputs/pr416-main-sync/contract-on-v1/after/sweep.json": "c961182e72922961d5bf2a7b3bb0c782b05fd12d5920c3ab8e2887412df7179b",
+    "outputs/pr416-main-sync/contract-on-v1/after/eval_only/pair-motion-ports.json": "b762f3964d36dff26adc42ab030dce7c3dc2d55904a712ee76f388933aff3dd7",
+    "outputs/pr416-main-sync/contract-on-v1/before/eval_only/pair-motion-ports.json": "b762f3964d36dff26adc42ab030dce7c3dc2d55904a712ee76f388933aff3dd7",
+    "outputs/pr416-main-sync/contract-on-v1/RUN_META.json": "b0baac5a383bf9097875240e070722314ee255021c69529447c9558345cadab6",
+    "outputs/pr416-main-sync/contract-on-v1/test-workflows.log": "6f1d451040140125282ab74069d47ea2e17f22318f5f7f59770a813e42bc1e60",
+    "outputs/pr416-main-sync/contract-on-v1/test-heading.log": "d060f5995779bb0a214320cf564f6e104a6d6b30d3e88d2163a43c537b79992a",
+    "outputs/pr416-main-sync/contract-on-v1/test-s3.log": "450eb5b14eed13b09f5badfbd132761d983ac957d321d83d059d157dec70ac0f",
+    "outputs/pr416-main-sync/contract-on-v1/test-s3.xml": "e69a8cec83fb6c75773ce0a06ee98ddb6e7542d3e89dc9c31a4a6704873be907",
+    "outputs/pr416-main-sync/contract-on-v1/test-workflows.xml": "cc48a9c2b0584b6d01dd2453da0fc66640270eaea1ffc1ec49a1047603e76800",
+    "outputs/pr416-main-sync/contract-on-v1/test-heading.xml": "98feb837f17c80dc3f8db7823a19fd8703f678b5d390f87d1aa37b566b59c762"
+  },
+  "status": "OFFLINE_EQUIVALENT_LOCAL_TESTS_PASSED",
+  "merge_commit": null,
+  "pushed": false,
+  "stage_probe": {
+    "reference_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
+    "min_command_contract": "on_v1",
+    "default": "off",
+    "selector_cases": {
+      "select": 280,
+      "select_waypoint": 140,
+      "own_map_heading.command": 140,
+      "S3 approach": 70,
+      "S3 RGB alignment": 70
+    },
+    "selector_mismatches": 0,
+    "stage_probe": {
+      "before": {
+        "errors": 0,
+        "cases": 68,
+        "commands": 3190
+      },
+      "after": {
+        "errors": 0,
+        "cases": 68,
+        "commands": 3190
+      }
+    },
+    "command_mismatches": 0,
+    "before_command_sha256": "f837827b16e2e7af6ce019d140bcdb9fda95670c2e213c54a0b610155adc0945",
+    "after_command_sha256": "f837827b16e2e7af6ce019d140bcdb9fda95670c2e213c54a0b610155adc0945",
+    "physics_runs": 0,
+    "model_calls": 0,
+    "verification_scope": "offline selectors and synthetic stage commands",
+    "artifacts": {
+      "outputs/pr416-main-sync/contract-on-v1/before/commands.json.zst": {
+        "sha256": "ac8389603aee4f807b28040d2295f0b70d217dfd05badc249274ae2a13dc351f",
+        "bytes": 14554,
+        "uncompressed_sha256": "341d0d4d00ab3d655bc05ce60ef1d226bf7b0b2b70df4734f6d239fef72a8d74",
+        "uncompressed_bytes": 378687
+      },
+      "outputs/pr416-main-sync/contract-on-v1/after/commands.json.zst": {
+        "sha256": "ac8389603aee4f807b28040d2295f0b70d217dfd05badc249274ae2a13dc351f",
+        "bytes": 14554,
+        "uncompressed_sha256": "341d0d4d00ab3d655bc05ce60ef1d226bf7b0b2b70df4734f6d239fef72a8d74",
+        "uncompressed_bytes": 378687
+      }
+    }
+  },
+  "counterexample": {
+    "body_error_m": [
+      0,
+      0.04
+    ],
+    "yaw_rad": 0,
+    "goal_distance_m": 0.04,
+    "min_command_contract": "off (main default)",
+    "issued": {
+      "kind": "mecanum",
+      "forward": 0.0,
+      "left": 0.35,
+      "turn": 0.0,
+      "duration_s": 0.06
+    },
+    "production_error": "shared heading contract: duration_outside_real_contract",
+    "explicit_on_comparison": {
+      "turn": 0.35,
+      "duration_s": 0.1,
+      "error": null
+    },
+    "resolution": "S3 explicitly selects on_v1; pre-merge commands preserved"
+  },
+  "blocking_callers": [],
+  "next_candidate": null,
+  "remote": [
+    {
+      "pr": 416,
+      "head_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
+      "mergeable": "CONFLICTING",
+      "existing_checks": {},
+      "scope": "unchanged remote head; no new push in this task"
+    },
+    {
+      "pr": 425,
+      "head_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
+      "mergeable": "MERGEABLE",
+      "existing_checks": {
+        "SUCCESS": 25,
+        "IN_PROGRESS": 7
+      },
+      "scope": "unchanged remote head; no new push in this task"
+    }
+  ],
+  "s4_updated": false,
+  "raw_files": {
+    "outputs/pr416-main-sync/sweep.json": {
+      "sha256": "d61075c9b261323000814de2138a4b6870e99d22c4b7ab4df155bc7691d77ca4",
+      "bytes": 29713
+    },
+    "outputs/pr416-main-sync/commands.json.zst": {
+      "sha256": "4938cb6a9e460c08350e38418b8a3464ad3c69ef0f66aaa24d49064e53043c44",
+      "bytes": 14480,
+      "uncompressed_sha256": "a79bb8dc6235d122c065995407fcf6ce8c4bcd33b8291668dc97b9ed9a908cd2",
+      "uncompressed_bytes": 377705
+    }
+  },
+  "verification_scope": "700 offline selector/adapter cases and 68 synthetic stage entries; 3190 issued commands byte-identical to pre-merge heading behavior; no physical or model validation",
+  "min_command_contract": "on_v1",
+  "previous_attempt": "experiments/2026-10-11-pr416-main-sync/blocked-before-decision.json",
+  "method": "Keep the library default off; explicitly select the existing on branch at S3 call sites. git show loads the exact pre-merge heading source in memory for same-input comparison. No new control algorithm or changed pulse duration.",
+  "merge_commit_record": "outputs/pr416-main-sync/contract-on-v1/ci-summary.json",
+  "pushed_record": "outputs/pr416-main-sync/contract-on-v1/ci-summary.json"
+}

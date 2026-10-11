@@ -316,7 +316,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-sweep-v149": ["--expected-source-sha", "0" * 40],
             "zone-s3-odometry-v150": ["--expected-source-sha", "0" * 40],
             "zone-s3-consistency-v151": ["--expected-source-sha", "0" * 40],
-            "zone-s3-recovery-v188": ["--expected-source-sha", "0" * 40],
+            "zone-s3-recovery-v190": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-probe-v153": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-entry-probe-v154": ["--expected-source-sha", "0" * 40],
             "zone-s3-oracle-stage-probe-v155": ["--expected-source-sha", "0" * 40],

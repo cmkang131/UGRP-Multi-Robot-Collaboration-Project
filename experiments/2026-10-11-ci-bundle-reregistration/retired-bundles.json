@@ -29,6 +29,36 @@
       },
       "reason": "six source consumers changed after the recorded seal; replay only at original SHA",
       "replacement": "zone-s3-recovery-v188"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v188",
+      "workflow_version": "7.81.0",
+      "source_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
+      "recorded_runs": 0,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/harness/zone_s3_recovery_contract.py",
+          "sha256": "1c1b5f59f57a96c38eeddcf76e060f12b507ec2ec8e1cea862f244ffe39ac1eb"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/scripts/run_s3_recovery.py",
+          "sha256": "fa14f909fa289e994a5000f7d95f07a08e053abe00454a220c57d8b49c17a6ad"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v188.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/configs/simulation_workflows.d/s3_recovery_v188.json",
+          "sha256": "e2d51f4134c1984d2eeff5395fac517d43e540f6c50312ad790506c9d7534d45"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v188.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/experiments/2026-10-11-ci-bundle-reregistration/registration-v188.json",
+          "sha256": "fafd76bea90a0f4d50c3a3c1bffac6215cb10e28697c3b6c6a6c69d412eb1ba1"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v188.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v188.json",
+          "sha256": "7adcac5d7cb26242ab3dd85fe1a681d139e53d23a5541afdb538f1001f426b41"
+        }
+      },
+      "reason": "Merged main PR422 changes the sealed heading source; registration only",
+      "replacement": "zone-s3-recovery-v190"
     }
   ]
 }
