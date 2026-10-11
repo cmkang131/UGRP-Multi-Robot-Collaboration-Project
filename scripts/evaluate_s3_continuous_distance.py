@@ -42,18 +42,28 @@ def evaluate(raw,limits):
                 longest[rid]=max(longest[rid],x['t']-loss_start[rid]+.05)
             else:loss_start.pop(rid,None)
     first=poses[0]['robots'];sync=[];yaw=[];errors={rid:[] for rid in longest};curve=[]
+    truth_by_time={round(x['t'],6):x['items']['beam_1'] for x in truth}
+    first_axis_limit=None;prefix={str(d):0. for d in (.25,.4,.5,.6,.7,.8)}
     for x in poses:
         pp=x['robots'];delta={rid:[pp[rid]['actual_xy_m'][i]-first[rid]['actual_xy_m'][i] for i in range(2)] for rid in longest}
         disagreement=[delta['r1'][i]-delta['r2'][i] for i in range(2)]
         drift=(pp['r1']['actual_yaw_rad']-pp['r2']['actual_yaw_rad'])-(first['r1']['actual_yaw_rad']-first['r2']['actual_yaw_rad'])
         drift=abs(math.atan2(math.sin(drift),math.cos(drift)))
         sync.append(disagreement);yaw.append(drift)
+        beam=truth_by_time.get(round(x['t'],6))
+        distance=dist([beam['x'],beam['y']],origin) if beam else None
+        axis_error=max(map(abs,disagreement))
+        if distance is not None:
+            if first_axis_limit is None and axis_error>limits['axis_displacement_disagreement_m']:
+                first_axis_limit=dict(t=x['t'],distance_m=distance,axis_error_m=axis_error)
+            for d in prefix:
+                if distance<=float(d):prefix[d]=max(prefix[d],axis_error)
         for rid in errors:
             estimate=pp[rid]['estimated_xy_m']
             if estimate is not None and all(v is not None and math.isfinite(v) for v in estimate):
                 errors[rid].append(dist(estimate,pp[rid]['actual_xy_m']))
         if len(curve)==0 or x['t']-curve[-1]['t']>=1.-1e-7:
-            curve.append(dict(t=x['t'],carrier_displacement_m=delta,
+            curve.append(dict(t=x['t'],distance_m=distance,carrier_displacement_m=delta,
                 axis_error_m=disagreement,opposed_heading_drift_rad=drift,
                 localization_error_m={rid:errors[rid][-1] if errors[rid] else None for rid in errors}))
     carried=max(dist([p['x'],p['y']],origin) for p in points)
@@ -78,11 +88,13 @@ def evaluate(raw,limits):
     result.update(carry_start_sim_s=start,carry_end_sim_s=end,actual_continuous_distance_m=carried,
         tilt_max_deg=tilt,drop=drop,grip_loss_samples=loss_samples,max_grip_loss_s=longest,
         carrier_axis_error_max_m=axis,opposed_heading_drift_max_rad=max(yaw),
-        localization_error_m={rid:dict(max=max(v),final=v[-1],rms=math.sqrt(sum(z*z for z in v)/len(v))) if v else None for rid,v in errors.items()},
+        localization_error_m={rid:dict(initial=v[0],max=max(v),final=v[-1],rms=math.sqrt(sum(z*z for z in v)/len(v))) if v else None for rid,v in errors.items()},
         samples=len(witnesses),final_release=released,carry_completed=carry_completed,
         whole_episode_completed=r['status']=='DEV_STAGE_FINISHED' and released,
         post_carry_guard_abort=(r.get('failure') if carry_completed and r.get('failure') else None),
-        safe=not reasons,reasons=reasons,curve=curve)
+        safe=not reasons,reasons=reasons,curve=curve,
+        mechanical_hold_safe=not [v for v in reasons if v!='axis_disagreement'],
+        first_axis_limit=first_axis_limit,prefix_axis_max_m=prefix)
     return result
 
 
@@ -98,11 +110,19 @@ def main():
         run['initial_check']=read(target/'initial-check.json') if (target/'initial-check.json').exists() else None
         runs.append(run)
     groups={str(d):dict(n=3,safe=sum(r.get('safe',False) for r in runs if r['distance_m']==d),
+        mechanical_hold_safe=sum(r.get('mechanical_hold_safe',False) for r in runs if r['distance_m']==d),
         reached=sum(r.get('actual_continuous_distance_m',0)>=d-.020 for r in runs if r['distance_m']==d)) for d in (.85,1.5,2.5,4.)}
     accepted=[float(k) for k,v in groups.items() if v['safe']==3]
+    # Exploratory integration recommendation, distinct from the preregistered
+    # target-level adoption rule. Do not label these trace prefixes new runs.
+    onsets=[r['first_axis_limit']['distance_m'] for r in runs if r.get('first_axis_limit')]
+    candidate=math.floor(min(onsets)*.8/.05)*.05 if onsets else None
     summary=dict(schema='ugrp.s3_continuous_distance.summary.v1',host='ugrp-sim-azure',runs=runs,n=12,
         groups=groups,maximum_tested_safe_distance_m=max(accepted,default=None),
         recommended_max_continuous_distance_m=max(accepted,default=None),
+        integration_candidate_distance_m=round(candidate,2) if candidate is not None else None,
+        integration_candidate_basis='exploratory: 20% margin before earliest fixed-20mm sync-limit crossing, rounded down to 50mm; no independent target-length confirmation',
+        effective_independent_seeds=3,
         qualification='DEV synthetic alignment entrance; 3 seeds; no formal/real-robot safety guarantee',
         gt_control=False,model_calls=0)
     a.output.write_text(json.dumps(summary,indent=2,allow_nan=False)+'\n')
