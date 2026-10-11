@@ -487,7 +487,7 @@ class Host:
             if trial.dialogue is not None:
                 write('dialogue.json', dict(events=trial.dialogue.events, retries=trial.dialogue.retry_events,
                     transport_admitted=trial.dialogue.allowed(trial.dialogue.key, trial.scheduler.clock),
-                    motion_connected=False))
+                    motion_connected=bool(getattr(trial.dialogue,'motion_connected',False))))
             write('send_ledger.json', trial.send_ledger.to_dict())
             # Includes sent-but-failed calls: the durable wire ledger hashes
             # images before POST, independent of whether parsing ever succeeds.

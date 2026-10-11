@@ -1,0 +1,621 @@
+{
+  "schema": "ugrp.azure_s4_comparison_plan.v1",
+  "pr": 425,
+  "research_result": false,
+  "status": "PREPARED_NOT_SUBMITTED",
+  "azure_plan": {
+    "pr": 438,
+    "branch": "codex/azure-sim",
+    "observed_sha": "393a4c82113bf84e59768335c4e191a2eac48fd7",
+    "requires": "readiness notification and its cost/idle/archive guards"
+  },
+  "gates": [
+    "Azure readiness notification",
+    "own-map E2E adapter integration (PR433); no authored map route",
+    "frozen source SHA and new verified proxy receipt",
+    "moving-wrist RGB monitor qualification; stationary-grip evidence is insufficient",
+    "Gemma availability/quality gate: one API 500 of four; transport success is not parity"
+  ],
+  "scope": "small DEV stage comparison through claim/GO/ACK/first carry; not full E2E or research",
+  "pairing": "same seed/condition/compact English input; model x event factorial; separate model/language cohorts",
+  "runs": [
+    {
+      "name": "gemma-standard-gemma-no_comm-event0-s603-v184",
+      "profile": "study_gemma4_31b_v1",
+      "prompt_lang": "en",
+      "condition": "no_comm",
+      "seed": 603,
+      "event_driven_llm": false,
+      "compact_prompt_v1": true,
+      "max_calls": 80,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "no_comm",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "study_gemma4_31b_v1",
+        "--compact-prompt-v1"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemma-peer_en-event0-s603-v184",
+      "profile": "study_gemma4_31b_v1",
+      "prompt_lang": "en",
+      "condition": "peer_en",
+      "seed": 603,
+      "event_driven_llm": false,
+      "compact_prompt_v1": true,
+      "max_calls": 80,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "peer_en",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "study_gemma4_31b_v1",
+        "--compact-prompt-v1"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemma-leader_en-event0-s603-v184",
+      "profile": "study_gemma4_31b_v1",
+      "prompt_lang": "en",
+      "condition": "leader_en",
+      "seed": 603,
+      "event_driven_llm": false,
+      "compact_prompt_v1": true,
+      "max_calls": 80,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "leader_en",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "study_gemma4_31b_v1",
+        "--compact-prompt-v1"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemma-structured-event0-s603-v184",
+      "profile": "study_gemma4_31b_v1",
+      "prompt_lang": "en",
+      "condition": "structured",
+      "seed": 603,
+      "event_driven_llm": false,
+      "compact_prompt_v1": true,
+      "max_calls": 80,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "structured",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "study_gemma4_31b_v1",
+        "--compact-prompt-v1"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemma-no_comm-event1-s603-v184",
+      "profile": "study_gemma4_31b_v1",
+      "prompt_lang": "en",
+      "condition": "no_comm",
+      "seed": 603,
+      "event_driven_llm": true,
+      "compact_prompt_v1": true,
+      "max_calls": 40,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "no_comm",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "study_gemma4_31b_v1",
+        "--compact-prompt-v1",
+        "--event-driven-llm"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemma-peer_en-event1-s603-v184",
+      "profile": "study_gemma4_31b_v1",
+      "prompt_lang": "en",
+      "condition": "peer_en",
+      "seed": 603,
+      "event_driven_llm": true,
+      "compact_prompt_v1": true,
+      "max_calls": 40,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "peer_en",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "study_gemma4_31b_v1",
+        "--compact-prompt-v1",
+        "--event-driven-llm"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemma-leader_en-event1-s603-v184",
+      "profile": "study_gemma4_31b_v1",
+      "prompt_lang": "en",
+      "condition": "leader_en",
+      "seed": 603,
+      "event_driven_llm": true,
+      "compact_prompt_v1": true,
+      "max_calls": 40,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "leader_en",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "study_gemma4_31b_v1",
+        "--compact-prompt-v1",
+        "--event-driven-llm"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemma-structured-event1-s603-v184",
+      "profile": "study_gemma4_31b_v1",
+      "prompt_lang": "en",
+      "condition": "structured",
+      "seed": 603,
+      "event_driven_llm": true,
+      "compact_prompt_v1": true,
+      "max_calls": 40,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "structured",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "study_gemma4_31b_v1",
+        "--compact-prompt-v1",
+        "--event-driven-llm"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemini-no_comm-event0-s603-v184",
+      "profile": "main_study_gemini_v1",
+      "prompt_lang": "en",
+      "condition": "no_comm",
+      "seed": 603,
+      "event_driven_llm": false,
+      "compact_prompt_v1": true,
+      "max_calls": 80,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "no_comm",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "main_study_gemini_v1",
+        "--compact-prompt-v1"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemini-peer_en-event0-s603-v184",
+      "profile": "main_study_gemini_v1",
+      "prompt_lang": "en",
+      "condition": "peer_en",
+      "seed": 603,
+      "event_driven_llm": false,
+      "compact_prompt_v1": true,
+      "max_calls": 80,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "peer_en",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "main_study_gemini_v1",
+        "--compact-prompt-v1"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemini-leader_en-event0-s603-v184",
+      "profile": "main_study_gemini_v1",
+      "prompt_lang": "en",
+      "condition": "leader_en",
+      "seed": 603,
+      "event_driven_llm": false,
+      "compact_prompt_v1": true,
+      "max_calls": 80,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "leader_en",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "main_study_gemini_v1",
+        "--compact-prompt-v1"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemini-structured-event0-s603-v184",
+      "profile": "main_study_gemini_v1",
+      "prompt_lang": "en",
+      "condition": "structured",
+      "seed": 603,
+      "event_driven_llm": false,
+      "compact_prompt_v1": true,
+      "max_calls": 80,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "structured",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "main_study_gemini_v1",
+        "--compact-prompt-v1"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemini-no_comm-event1-s603-v184",
+      "profile": "main_study_gemini_v1",
+      "prompt_lang": "en",
+      "condition": "no_comm",
+      "seed": 603,
+      "event_driven_llm": true,
+      "compact_prompt_v1": true,
+      "max_calls": 40,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "no_comm",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "main_study_gemini_v1",
+        "--compact-prompt-v1",
+        "--event-driven-llm"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemini-peer_en-event1-s603-v184",
+      "profile": "main_study_gemini_v1",
+      "prompt_lang": "en",
+      "condition": "peer_en",
+      "seed": 603,
+      "event_driven_llm": true,
+      "compact_prompt_v1": true,
+      "max_calls": 40,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "peer_en",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "main_study_gemini_v1",
+        "--compact-prompt-v1",
+        "--event-driven-llm"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemini-leader_en-event1-s603-v184",
+      "profile": "main_study_gemini_v1",
+      "prompt_lang": "en",
+      "condition": "leader_en",
+      "seed": 603,
+      "event_driven_llm": true,
+      "compact_prompt_v1": true,
+      "max_calls": 40,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "leader_en",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "main_study_gemini_v1",
+        "--compact-prompt-v1",
+        "--event-driven-llm"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    },
+    {
+      "name": "gemma-standard-gemini-structured-event1-s603-v184",
+      "profile": "main_study_gemini_v1",
+      "prompt_lang": "en",
+      "condition": "structured",
+      "seed": 603,
+      "event_driven_llm": true,
+      "compact_prompt_v1": true,
+      "max_calls": 40,
+      "sim_cap_s": 90,
+      "command_prepare": [
+        "python",
+        "-m",
+        "scripts.run_s4_study_v184",
+        "--expected-source-sha",
+        "<PINNED_SHA>",
+        "--condition",
+        "structured",
+        "--seed",
+        "603",
+        "--driver-profile",
+        "main_study_gemini_v1",
+        "--compact-prompt-v1",
+        "--event-driven-llm"
+      ],
+      "command_execute": null,
+      "run_meta": {
+        "class": "dev",
+        "pr": 425,
+        "research_result": false
+      }
+    }
+  ],
+  "max_concurrent": 4,
+  "network_concurrency": 2,
+  "limits": {
+    "source": "user AI Studio screen 2026-10-11",
+    "tpm": 16000,
+    "rpm": 30,
+    "rpd": 14400,
+    "headroom": 0.1,
+    "effective_tpm": 14400,
+    "effective_rpm": 27,
+    "effective_rpd": 12960
+  },
+  "quota_plan": {
+    "gemma_generation_call_cap": 480,
+    "additional_protocol_probe_calls": 4,
+    "total_daily_reserved_calls": 484,
+    "daily_remaining_must_be_checked": true,
+    "input_token_cap": 2500,
+    "measured_representative_input": 2034,
+    "max_output_tokens": 800,
+    "tpm_input_only_wall_lower_bound_minutes": 83.33,
+    "conservative_bucket_wall_lower_bound_minutes": 110.0,
+    "rpm_wall_lower_bound_minutes": 17.78,
+    "wall_formula": "max(total(input+max_output)/14400*60, total_requests/27*60, measured_model_latency*requests/concurrency, physical_wall); add retries. Do not add SIM API queue time.",
+    "physical_speed_on_Azure": "unmeasured",
+    "generation_latency": {
+      "gemma-4-31b-it": {
+        "requests": 4,
+        "http_ok": 3,
+        "api_errors": [
+          {
+            "condition": "structured",
+            "http_status": 500
+          }
+        ],
+        "protocol_accepted": 3,
+        "protocol_denominator_received": 3,
+        "wall_s": {
+          "median_success": 65.37430849997327,
+          "min_success": 36.04894695902476,
+          "max_success": 69.05465175001882
+        },
+        "provider_total_tokens_known": 4691,
+        "unknown_usage": 1,
+        "strict_json_without_fences": 0,
+        "qualification": "initial own-role claim and schema/channel acceptance only; no delivered dialogue or grasp quality coverage"
+      },
+      "gemini-3.8-flash": {
+        "requests": 4,
+        "http_ok": 4,
+        "api_errors": [],
+        "protocol_accepted": 4,
+        "protocol_denominator_received": 4,
+        "wall_s": {
+          "median_success": 4.539936896006111,
+          "min_success": 4.249252333014738,
+          "max_success": 4.754951583978254
+        },
+        "provider_total_tokens_known": 10541,
+        "unknown_usage": 0,
+        "strict_json_without_fences": 0,
+        "qualification": "initial own-role claim and schema/channel acceptance only; no delivered dialogue or grasp quality coverage"
+      }
+    },
+    "cost": "Gemma free tier only; reject quota exhaustion, no paid fallback. Azure VM cost separately controlled by PR438.",
+    "gemma_generation_wall_projection_minutes": 261.5,
+    "estimated_wall_minutes_excluding_physics_and_retries": 279.66,
+    "model_calls_minute_effective_at_input_cap": 4.36,
+    "measured_large_structured_input": 2413,
+    "full_api_service_projection_minutes": 279.66,
+    "latency_qualification": "Final code releases local quota lock before upstream I/O; 2-thread fake provider barrier test passed. Probe latency included old lock serialization."
+  },
+  "judgments": [
+    "schema and role/channel validity",
+    "claim -> GO/ACK -> first carry >=20mm",
+    "true generation calls vs local quota waits",
+    "countTokens and provider usage/thoughts",
+    "decision latency and SIM hold",
+    "HOST_ERROR separate"
+  ],
+  "baseline": "s4live7-11 Gemini/Korean immutable historical baseline, never pooled",
+  "targets": {
+    "no_comm_calls_per_full_run": [
+      20,
+      40
+    ],
+    "dialogue_calls_per_full_run": [
+      40,
+      60
+    ]
+  },
+  "replay_target_reached": false,
+  "raw_policy": "persistent Azure disk -> ARM automatic archive; Mac fetch-lite only",
+  "class": "dev"
+}

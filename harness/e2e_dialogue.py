@@ -137,7 +137,8 @@ class Dialogue:
             key=list(self.key) if visible and self.key else None,
             own_go_sent='GO' in self.votes.get(actor, {}), own_ack_sent='ACK' in self.votes.get(actor, {}),
             peer_go_ref=peer['GO']['call_id'] if visible and peer else None,
-            transport_admitted=bool(visible and self.allowed(self.key, now)), motion_connected=False)
+            transport_admitted=bool(visible and self.allowed(self.key, now)),
+            motion_connected=bool(getattr(self,'motion_connected',False)))
 
     def fresh(self, context, now):
         return context['frame_t'] <= context['requested_at'] <= now < context['frame_t'] + WINDOW_S

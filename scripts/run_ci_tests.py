@@ -24,6 +24,7 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_e2e_s4_live.py",
     "tests/test_e2e_goal_route.py",
     "tests/test_e2e_dialogue.py",
     "tests/test_e2e_s3_route.py",
@@ -164,6 +165,8 @@ TEST_PATTERNS = (
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
     "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
     "tests/test_s4_live_stage.py",  # S4 stage admission and transport: stub model, fake physics
+    "tests/test_gemma_fallback_proxy.py",  # Mac DEV fallback/quota/Keychain: fake API only
+    "tests/test_s4_study_policy.py",  # English/event/quota policy: offline only
     "tests/test_s4_live5.py",  # opt-in frozen S3 pair integration, no physics/model
     "tests/test_s4_grip_r3.py",
     "tests/test_s4_grip_visual.py",
