@@ -174,3 +174,5 @@ StartInterval/StartCalendarInterval을 그대로 사용한다. 삭제 조건·7�
 해제 방법을 따르며, 기존 도구의 독립 SHA-256 복원 검증을 유지한다.
 
 대량 prune 진행 기록은 후보 목록을 파일마다 통째로 다시 쓰지 않고 `*.progress.jsonl`에 append·flush·fsync한다. 계획 JSON과 전체 hash 목록은 삭제 전에 저장하고, 마지막 완료 JSON에 전체 completed를 기록한다. 중단 시 계획+진행 journal을 함께 읽어 부분 완료를 확인한다. [Python fsync 문서](https://docs.python.org/3.12/library/os.html#os.fsync)의 flush 후 fsync 순서를 따른다.
+
+자동 정리 자체의 상세 JSON 보고서도 완료/실패 EXIT를 가진 개별 receipt 디렉터리에서 검증 압축한다. keep에 report.json을 기록해 보고서와 원본/압축 해시를 영구 보존한다.

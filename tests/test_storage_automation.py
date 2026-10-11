@@ -1,6 +1,7 @@
 """Retention regressions use disposable data; never inspect or delete actual evidence."""
 import json
 import os
+import shutil
 from pathlib import Path
 import tempfile
 import time
@@ -171,6 +172,7 @@ class AutomationTests(unittest.TestCase):
         self.assertEqual(row['compression_error'], 'busy')
         self.assertTrue((self.run / 'frame.jpg').exists())
 
+    @unittest.skipUnless(shutil.which('zstd'), 'zstd CLI needed')
     def test_large_maintenance_receipt_is_compressed_with_keep_and_original_hash(self):
         records = self.base / 'records'
         records.mkdir()
@@ -182,6 +184,9 @@ class AutomationTests(unittest.TestCase):
         manifest = json.loads((unit / 'COMPRESSED.jsonl').read_text())
         from scripts.compress_json_traces import decompressed_hash
         self.assertEqual(decompressed_hash(unit / 'report.json.zst'), manifest['sha256'])
+        stamp = time.time() - 8 * 86400
+        for p in common.files(unit):
+            os.utime(p, (stamp, stamp))
         self.assertEqual(prune.plan(unit, None)['bytes'], 0)
 
 if __name__ == '__main__':
