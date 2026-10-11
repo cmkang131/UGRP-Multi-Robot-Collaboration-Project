@@ -160,6 +160,8 @@ def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle
         record = {'schema': 'ugrp.evidence-prune.v1', 'pr': info, 'run': str(root),
                   'bytes': planned['bytes'], 'files': planned['candidates'], 'status': 'planned',
                   'all_hashes': str(root / 'ALL-hashes.tsv'), 'completed': []}
+        progress = receipt.with_suffix('.progress.jsonl')
+        record['progress_journal'] = str(progress)
         atomic_text(receipt, json.dumps(record, indent=2) + '\n')
         for row in all_rows:
             if (not safe_path(root / row['path'], root)
@@ -171,8 +173,10 @@ def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle
             raise ValueError('run changed before pruning')
         for row in planned['candidates']:
             if catalog is not None:
-                from scripts.storage_automation import validate_catalog
+                from scripts.storage_automation import validate_catalog, catalog_pr
                 validate_catalog(catalog)
+                if number is not None:
+                    catalog_pr(catalog, number)
             path = root / row['path']
             if not safe_path(path, root) or snapshot(path) != tuple(row['snapshot']) or idle_reason(root):
                 raise ValueError(f'run/file changed before pruning: {path}')
@@ -183,7 +187,12 @@ def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle
             else:
                 path.unlink()
             record['completed'].append(row['path'])
-            atomic_text(receipt, json.dumps(record, indent=2) + '\n')
+            # Append durable progress; don't rewrite the entire candidate list per frame.
+            with progress.open('a') as stream:
+                stream.write(json.dumps({'path': row['path'], 'sha256': row['sha256'],
+                                         'status': 'completed'}) + '\n')
+                stream.flush()
+                os.fsync(stream.fileno())
         record.update(status='done', trash=str(trash) if sys.platform == 'darwin' else None)
         atomic_text(receipt, json.dumps(record, indent=2) + '\n')
         return planned

@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import re
+import selectors
 import shlex
 import shutil
 import subprocess
@@ -26,6 +27,7 @@ GIB = 2**30
 FLOORS = {'mac': 20, 'arm': 25, 'azure': 8}
 REPO = 'kcm0127-dotcom/ugrp'
 CATALOG_TTL = 300
+_catalog_refresher = None
 # Confirmed against PR bodies/experiments on 2026-10-11. Specific view jobs first.
 PREFIXES = [(r'^egomap70view', 437), (r'^s4live11view', 436), (r'^e2e3view', 434),
             (r'^s3view3', 432), (r'^s4view', 431), (r'^s3view', 427),
@@ -71,6 +73,11 @@ def reference_index(prs):
 
 def validate_catalog(data):
     age = time.time() - data['fetched_at']
+    if age >= 240 and _catalog_refresher is not None:
+        fresh = _catalog_refresher()
+        data.clear()
+        data.update(fresh)
+        age = time.time() - data['fetched_at']
     if data.get('repo') != REPO or not 0 <= age <= CATALOG_TTL:
         raise ValueError('PR catalog is expired/wrong repository; refresh on Mac')
     if not isinstance(data.get('prs'), list) or not data['prs']:
@@ -330,14 +337,64 @@ def post_run(root):
 
 def remote_run(catalog, execute, include_orphans=False):
     # Credentials stay on Mac. SSH transports only a short-lived live PR catalog.
-    command = shlex.join(['python3', 'ugrp-storage-tools/scripts/storage_automation.py',
-        '--host', 'arm', '--root', 'ugrp-archive/runs', '--catalog-stdin'] +
+    # Published archives are shared with ugrparch; sudo inspects ALL users' open files.
+    # No chmod/chown/group changes, and no access to stock-bot/crontab.
+    command = shlex.join(['sudo', '-n', 'python3', '/home/ubuntu/ugrp-storage-tools/scripts/storage_automation.py',
+        '--host', 'arm', '--root', '/home/ubuntu/ugrp-archive/runs', '--catalog-stdin', '--catalog-interactive'] +
         (['--execute'] if execute else []) + (['--include-orphans'] if include_orphans else []))
-    result = subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', 'oracle', command],
-        input=json.dumps(catalog), text=True, capture_output=True, timeout=3600)
-    if result.returncode:
-        raise ValueError(f'ARM maintenance failed: {result.stderr[-1000:]}')
-    return json.loads(result.stdout)
+    return catalog_session(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10',
+        '-o', 'ServerAliveInterval=30', '-o', 'ServerAliveCountMax=3', 'oracle', command], catalog)
+
+
+def catalog_session(command, catalog):
+    """Refresh API authorization over existing SSH pipes; no persistent daemon/socket."""
+    proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    errors, buffer, report = b'', b'', None
+    deadline = time.monotonic() + 3600
+    try:
+        proc.stdin.write((json.dumps(catalog) + '\n').encode())
+        proc.stdin.flush()
+        with selectors.DefaultSelector() as selector:
+            selector.register(proc.stdout, selectors.EVENT_READ)
+            selector.register(proc.stderr, selectors.EVENT_READ)
+            while selector.get_map():
+                if time.monotonic() >= deadline:
+                    raise ValueError('ARM maintenance exceeded 1 hour')
+                for key, _ in selector.select(timeout=1):
+                    chunk = os.read(key.fileobj.fileno(), 65536)
+                    if not chunk:
+                        selector.unregister(key.fileobj)
+                        continue
+                    if key.fileobj is proc.stderr:
+                        errors = (errors + chunk)[-4000:]
+                        continue
+                    buffer += chunk
+                    while b'\n' in buffer:
+                        line, buffer = buffer.split(b'\n', 1)
+                        item = json.loads(line)
+                        if item == {'refresh_catalog': True}:
+                            proc.stdin.write((json.dumps(fetch_catalog()) + '\n').encode())
+                            proc.stdin.flush()
+                        else:
+                            report = item
+        status = proc.wait(timeout=10)
+        if status or report is None:
+            raise ValueError('ARM maintenance failed: ' + errors.decode(errors='replace')[-1000:])
+        return report
+    finally:
+        if proc.poll() is None:
+            proc.kill()
+            proc.wait()
+        for stream in (proc.stdin, proc.stdout, proc.stderr):
+            stream.close()
+
+
+def parent_catalog():
+    print(json.dumps({'refresh_catalog': True}), flush=True)
+    line = sys.stdin.readline()
+    if not line:
+        raise ValueError('catalog coordinator disconnected; no pruning authorized')
+    return json.loads(line)
 
 
 def main(argv=None):
@@ -347,10 +404,15 @@ def main(argv=None):
     parser.add_argument('--records', type=Path)
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--catalog-stdin', action='store_true')
+    parser.add_argument('--catalog-interactive', action='store_true', help='refresh over the existing SSH stream')
     parser.add_argument('--remote-arm', action='store_true')
     parser.add_argument('--scheduled', action='store_true', help='5min check; expensive work daily or low disk')
     parser.add_argument('--include-orphans', action='store_true', help='explicit manual 7d PR-less sweep')
     args = parser.parse_args(argv)
+    global _catalog_refresher
+    if args.catalog_interactive and not args.catalog_stdin:
+        parser.error('--catalog-interactive requires --catalog-stdin')
+    _catalog_refresher = parent_catalog if args.catalog_interactive else None if args.catalog_stdin else fetch_catalog
     root = args.root.expanduser().absolute()
     records = args.records or (root / 'cleanup-records')
     try:
@@ -382,7 +444,8 @@ def main(argv=None):
                     print(json.dumps({'skipped': 'pressure retry limited to hourly'}))
                     return 0
                 atomic_text(state_file, json.dumps({**state, 'last_attempt': now})+'\n')
-            catalog = json.load(sys.stdin) if args.catalog_stdin else fetch_catalog()
+            catalog = (json.loads(sys.stdin.readline()) if args.catalog_interactive else
+                       json.load(sys.stdin) if args.catalog_stdin else fetch_catalog())
             report = maintenance(root, args.host, catalog, records, args.execute, args.include_orphans)
             if args.remote_arm:
                 # Refresh just before remote execution (large Mac hashes can take minutes).

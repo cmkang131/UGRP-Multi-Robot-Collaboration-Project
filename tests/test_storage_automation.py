@@ -74,6 +74,49 @@ class AutomationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             auto.catalog_pr(self.catalog, 416)
 
+    def test_long_operation_refreshes_catalog_and_rejects_reopened_pr(self):
+        self.catalog['fetched_at'] -= 301
+        fresh = {'repo': auto.REPO, 'fetched_at': time.time(), 'prs': [
+            {**self.catalog['prs'][0], 'state': 'OPEN'}]}
+        with mock.patch.object(auto, '_catalog_refresher', return_value=fresh):
+            with self.assertRaisesRegex(ValueError, 'not MERGED/CLOSED'):
+                auto.catalog_pr(self.catalog, 416)
+        self.assertEqual(self.catalog['prs'][0]['state'], 'OPEN')
+
+    def test_refresh_over_real_child_pipes_without_credentials_or_daemon(self):
+        import sys
+        child = ('import sys,json; json.loads(sys.stdin.readline()); '
+                 'print(json.dumps({"refresh_catalog": True}),flush=True); '
+                 'fresh=json.loads(sys.stdin.readline()); print(json.dumps({"fresh": fresh["fetched_at"]}))')
+        fresh = {**self.catalog, 'fetched_at': time.time() + 1}
+        with mock.patch.object(auto, 'fetch_catalog', return_value=fresh):
+            report = auto.catalog_session([sys.executable, '-c', child], self.catalog)
+        self.assertEqual(report, {'fresh': fresh['fetched_at']})
+
+    def test_partial_pruning_preserves_durable_progress_and_full_hashes(self):
+        self.old()
+        self.meta(pr=None)
+        second = self.run / 'second.jpg'
+        second.write_bytes(b'raw2')
+        self.old()
+        original_unlink = Path.unlink
+        def fail_second(path, *args, **kwargs):
+            if path == second:
+                raise OSError('injected delete error')
+            return original_unlink(path, *args, **kwargs)
+        records = self.base / 'records'
+        with mock.patch.object(prune, 'refuse_if_in_use'), \
+                mock.patch.object(prune.sys, 'platform', 'linux'), \
+                mock.patch.object(Path, 'unlink', fail_second):
+            with self.assertRaises(OSError):
+                prune.execute(self.run, None, records, catalog=self.catalog, idle_hours=24)
+        receipt = json.loads(next(records.glob('*.json')).read_text())
+        progress = [json.loads(line) for line in Path(receipt['progress_journal']).read_text().splitlines()]
+        self.assertEqual([r['path'] for r in progress], ['frame.jpg'])
+        self.assertFalse((self.run / 'frame.jpg').exists())
+        self.assertTrue(second.exists())
+        self.assertIn('second.jpg', (self.run / 'ALL-hashes.tsv').read_text())
+
     def test_orphan_branch_open_preserved(self):
         self.old()
         self.meta(pr=None, branch='codex/s3-no-prior-smoke')

@@ -131,7 +131,7 @@ maintenance 잠금으로 하나만 진행한다. KeepAlive·무한 로그 파일
 절전/로그아웃 중에는 실행되지 않으므로 제출 전 예산 검사는 계속 필요하다.
 
 - Mac에서 인증된 GitHub API로 **모든 PR**을 페이지 끝까지 조회한다. ARM에는 비밀·토큰을
-  복사하지 않고 SSH 표준 입력으로 5분 유효 PR 목록만 전달한다. 잘못된 저장소·만료·빈 목록,
+  복사하지 않고 SSH 표준 입력으로 5분 유효 PR 목록만 전달한다. 긴 작업에서는 같은 SSH 파이프로 4분 시점에 Mac에 새 목록을 요청하며 서버 daemon/socket은 만들지 않는다. 잘못된 저장소·만료·빈 목록,
   열린 PR·같은 브랜치 다른 열린 PR은 정리를 거부한다. API/SSH 실패는 기록하고 다음에 재시도한다.
 - 소급 RUN_META는 최상위 배치와 EXIT 있는 자식에 붙인다. 기존 메타데이터는 보존하고
   자식은 부모 PR·study/milestone을 상속한다. 미완료 EXIT는 만들어내지 않는다.
@@ -163,7 +163,7 @@ python3 scripts/storage_automation.py --host mac --root ~/projects/ugrp/outputs 
 
 설치 후 자체 worktree를 지워도 도구는 Mac `~/Library/Application Support/ugrp-storage-tools/`와
 ARM `~/ugrp-storage-tools/`에 남는다. 이전 도구는 버전별 backups에 보존하고 설치 파일의
-전체 SHA-256을 확인한다. ARM stock-bot·crontab·기존 timer는 변경하지 않는다.
+전체 SHA-256을 확인한다. ARM stock-bot·crontab·기존 timer는 변경하지 않는다. 과거 하위 폴더는 ugrparch 소유여서 ARM 작업은 sudo -n으로 이 UGRP 도구만 실행한다. 기존 파일 chmod/chown·사용자 그룹은 바꾸지 않는다. 실제 lsof 검사도 모든 사용자의 열린 파일을 확인한다.
 Azure는 `--host azure`/`configs/storage_auto/azure-command.txt`의 적용 명령만 준비했다.
 준비 작업 종료 뒤 서버가 이미 켜져 있을 때 dry-run/검토/설치를 수행해야 한다.
 자동화는 Azure·oracle-x86에 접속하거나 VM을 시작하지 않는다.
@@ -172,3 +172,5 @@ Azure는 `--host azure`/`configs/storage_auto/azure-command.txt`의 적용 명�
 StartInterval/StartCalendarInterval을 그대로 사용한다. 삭제 조건·7일·용량 문턱은 사용자 결정이다.
 [Zstandard 공식 CLI](https://github.com/facebook/zstd/blob/dev/programs/zstd.1.md)의 무손실 압축과
 해제 방법을 따르며, 기존 도구의 독립 SHA-256 복원 검증을 유지한다.
+
+대량 prune 진행 기록은 후보 목록을 파일마다 통째로 다시 쓰지 않고 `*.progress.jsonl`에 append·flush·fsync한다. 계획 JSON과 전체 hash 목록은 삭제 전에 저장하고, 마지막 완료 JSON에 전체 completed를 기록한다. 중단 시 계획+진행 journal을 함께 읽어 부분 완료를 확인한다. [Python fsync 문서](https://docs.python.org/3.12/library/os.html#os.fsync)의 flush 후 fsync 순서를 따른다.
