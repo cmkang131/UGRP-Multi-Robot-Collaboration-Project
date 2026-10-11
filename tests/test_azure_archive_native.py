@@ -159,3 +159,25 @@ def test_cli_loads_explicit_vm_toggle_and_respects_environment_override(tmp_path
     monkeypatch.setenv('UGRP_ARCHIVE_NATIVE', 'off')
     shutdown.load_native_environment()
     assert os.environ['UGRP_ARCHIVE_NATIVE'] == 'off'
+
+
+def test_auto_archive_native_skips_compression_and_uses_lifecycle_worker(tmp_path):
+    import time
+    runs = tmp_path / 'runs'; run = runs / 'one'; run.mkdir(parents=True)
+    archive = tmp_path / 'arm'; archive.mkdir()
+    (run / 'EXIT').write_text('0'); (run / 'summary.json').write_text('{}')
+    for p in [*run.iterdir(), run]:
+        os.utime(p, (time.time() - 1800, time.time() - 1800))
+    tools = tmp_path / 'tools/scripts'; tools.mkdir(parents=True)
+    (tools / 'compress_json_traces.py').write_text('raise RuntimeError("compression must not run")')
+    (tools / 'azure_shutdown.py').write_text('import sys; print("worker", *sys.argv[1:])')
+    commands = tmp_path / 'commands'; commands.mkdir()
+    for name in ('mountpoint', 'flock'):
+        p = commands / name; p.write_text('#!/bin/sh\nexit 0\n'); p.chmod(0o755)
+    result = subprocess.run(['bash', str(Path(native.__file__).with_name('ugrp_auto_archive.sh'))],
+        capture_output=True, text=True, env={**os.environ, 'PATH': str(commands) + os.pathsep + os.environ['PATH'],
+        'UGRP_RUNS': str(runs), 'UGRP_ARCHIVE': str(archive), 'UGRP_STORAGE_TOOLS': str(tools.parent),
+        'UGRP_ARCHIVE_LOCK': str(tmp_path / 'lock'), 'UGRP_ARCHIVE_NATIVE': 'on_v1'})
+    assert result.returncode == 0, result.stderr
+    assert 'worker archive-one --root ' + str(tmp_path) + ' --run one' in result.stdout
+    assert (run / 'summary.json').read_text() == '{}'

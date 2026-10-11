@@ -5,6 +5,15 @@ set -euo pipefail
 R=${UGRP_RUNS:-/home/ubuntu/ugrp-sim/runs}
 A=${UGRP_ARCHIVE:-/home/ubuntu/ugrp-sim/arm}
 TOOLS=${UGRP_STORAGE_TOOLS:-/usr/local/lib/ugrp-storage}
+# Manual runner calls use the same explicit VM opt-in as systemd services.
+if [[ -r /etc/ugrp/archive-native.env ]]; then
+  while IFS='=' read -r key value; do
+    case "$key" in
+      UGRP_ARCHIVE_NATIVE|UGRP_ARCHIVE_NATIVE_HOST|UGRP_ARCHIVE_NATIVE_IDENTITY)
+        if ! declare -p "$key" >/dev/null 2>&1; then export "$key=$value"; fi ;;
+    esac
+  done < /etc/ugrp/archive-native.env
+fi
 L=$R/SUPERVISOR-NOTES.txt
 dry=false
 if [[ ${1:-} == --dry-run ]]; then dry=true; elif [[ $# != 0 ]]; then exit 2; fi

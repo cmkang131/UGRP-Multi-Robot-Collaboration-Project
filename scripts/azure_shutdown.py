@@ -14,6 +14,8 @@ import uuid
 
 if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    # Managed Run Command embeds this helper in /tmp; native modules stay installed.
+    sys.path.append('/usr/local/lib/ugrp-storage')
 
 ROOT = Path('/home/ugrp/ugrp-sim')
 GRACE_SECONDS = 600
