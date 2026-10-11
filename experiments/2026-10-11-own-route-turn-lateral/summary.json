@@ -1,6 +1,6 @@
 {
   "round": "egomap70",
-  "status": "PARTIAL_REMOTE_UNREACHABLE",
+  "status": "COMPLETED_24_WITH_8_HOST_INTERRUPTED_RETRIES",
   "source_sha": "f26d9322c48eadbe2b28777ac1f07684ca03e124",
   "measurement_source": "c9f2aa815a60f50a1b07e94e9a057fe6bfc3fbfb",
   "host": "oracle-x86",
@@ -705,118 +705,267 @@
   "evaluation": {
     "registered": 24,
     "started": 24,
-    "completed": 16,
-    "remote_status_unknown": 8,
-    "physical_failures": 5,
-    "host_errors_confirmed": 0,
+    "completed": 24,
+    "physical_attempts": 32,
+    "host_interrupted_attempts": 8,
+    "retry_attempts": 8,
+    "performance_denominator": 24,
+    "remote_status_unknown": 0,
+    "physical_failures": 6,
+    "host_errors_confirmed": 8,
     "conditions": {
       "baseline": {
         "registered": 6,
-        "started": 6,
-        "completed": 4,
-        "remote_status_unknown": 2,
-        "B_arrived": 1,
-        "returned": 0,
-        "both_arrived": 0,
-        "false_B": 0,
-        "false_return": 0,
-        "position_rmse_median": 0.5775024477162526,
+        "attempts": 6,
+        "measured": 6,
         "statuses": {
-          "RECORDED": 3,
+          "RECORDED": 5,
           "PHYSICAL_FAILURE": 1
         },
-        "samples": 9039,
-        "over_3sigma": 6676,
+        "B_arrived": 2,
+        "returned": 0,
+        "false_declarations": 0,
         "wall_contacts": 1,
         "robot_contacts": 0,
+        "frames": 13611,
+        "over3_frames": 9353,
+        "commands": {
+          "turn": 8163,
+          "forward": 3904,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1544
+        },
+        "turn_fraction": 0.5997355080449637,
+        "turn_reversals": 1271,
+        "match_accepted": 12,
+        "match_attempts": 139,
+        "visual_gate_failures": {
+          "outside_20cm": 5433,
+          "no_current_patch": 822,
+          "unconfirmed": 491,
+          "current_evidence": 24
+        },
+        "final_error_median": 0.5050521480957121,
+        "position_rmse_median": 0.4203373860652964,
+        "false_return": 0,
+        "false_B": 0,
+        "dual_B": {
+          "legacy": {
+            "declared": 2,
+            "true": 2
+          },
+          "zone": {
+            "declared": 4,
+            "true": 1
+          }
+        },
+        "completed": 6,
         "completed_seeds": [
           63001,
           63002,
           63003,
-          63004
+          63004,
+          63005,
+          63006
         ],
-        "denominator_note": "PARTIAL 4 completed of 6 registered; 2 unverified, no full-cohort rate"
+        "true_return_runs": 0,
+        "false_return_runs": 0,
+        "both_arrived": 0,
+        "false_B_runs": 0,
+        "over_3sigma_rate": 0.6871647931819852,
+        "host_interrupted_prior_attempts": 2,
+        "physical_attempts_including_host_interruption": 8,
+        "denominator_note": "6 fixed condition results; prior 2 host-shutdown attempts preserved separately, not simulator failures"
       },
       "calib": {
         "registered": 6,
-        "started": 6,
-        "completed": 4,
-        "remote_status_unknown": 2,
-        "B_arrived": 2,
-        "returned": 0,
-        "both_arrived": 0,
-        "false_B": 0,
-        "false_return": 0,
-        "position_rmse_median": 0.4023884641225537,
+        "attempts": 6,
+        "measured": 6,
         "statuses": {
-          "PHYSICAL_FAILURE": 1,
-          "RECORDED": 3
+          "PHYSICAL_FAILURE": 2,
+          "RECORDED": 4
         },
-        "samples": 7461,
-        "over_3sigma": 4876,
-        "wall_contacts": 1,
+        "B_arrived": 3,
+        "returned": 0,
+        "false_declarations": 1,
+        "wall_contacts": 2,
         "robot_contacts": 0,
+        "frames": 10073,
+        "over3_frames": 5490,
+        "commands": {
+          "turn": 5111,
+          "forward": 3808,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1154
+        },
+        "turn_fraction": 0.5073960091333267,
+        "turn_reversals": 738,
+        "match_accepted": 7,
+        "match_attempts": 113,
+        "visual_gate_failures": {
+          "outside_20cm": 3335,
+          "no_current_patch": 1007,
+          "unconfirmed": 107,
+          "current_evidence": 23
+        },
+        "final_error_median": 0.2708552000323977,
+        "position_rmse_median": 0.3164096616158277,
+        "false_return": 0,
+        "false_B": 1,
+        "dual_B": {
+          "legacy": {
+            "declared": 4,
+            "true": 3
+          },
+          "zone": {
+            "declared": 5,
+            "true": 1
+          }
+        },
+        "completed": 6,
         "completed_seeds": [
           63001,
           63002,
           63003,
-          63004
+          63004,
+          63005,
+          63006
         ],
-        "denominator_note": "PARTIAL 4 completed of 6 registered; 2 unverified, no full-cohort rate"
+        "true_return_runs": 0,
+        "false_return_runs": 0,
+        "both_arrived": 0,
+        "false_B_runs": 1,
+        "over_3sigma_rate": 0.5450213441874318,
+        "host_interrupted_prior_attempts": 2,
+        "physical_attempts_including_host_interruption": 8,
+        "denominator_note": "6 fixed condition results; prior 2 host-shutdown attempts preserved separately, not simulator failures"
       },
       "calib_traversed": {
         "registered": 6,
-        "started": 6,
-        "completed": 4,
-        "remote_status_unknown": 2,
-        "B_arrived": 2,
-        "returned": 1,
-        "both_arrived": 0,
-        "false_B": 0,
-        "false_return": 2,
-        "position_rmse_median": 0.43526988633472585,
+        "attempts": 6,
+        "measured": 6,
         "statuses": {
           "PHYSICAL_FAILURE": 1,
-          "RECORDED": 3
+          "RECORDED": 5
         },
-        "samples": 5806,
-        "over_3sigma": 3084,
+        "B_arrived": 3,
+        "returned": 1,
+        "false_declarations": 4,
         "wall_contacts": 1,
         "robot_contacts": 0,
+        "frames": 8663,
+        "over3_frames": 3140,
+        "commands": {
+          "turn": 3621,
+          "forward": 2537,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 2505
+        },
+        "turn_fraction": 0.41798453191734963,
+        "turn_reversals": 957,
+        "match_accepted": 1,
+        "match_attempts": 74,
+        "visual_gate_failures": {
+          "outside_20cm": 3335,
+          "no_current_patch": 1007,
+          "unconfirmed": 107,
+          "current_evidence": 23
+        },
+        "final_error_median": 0.2907694248521768,
+        "position_rmse_median": 0.3644619871338468,
+        "false_return": 3,
+        "false_B": 1,
+        "dual_B": {
+          "legacy": {
+            "declared": 4,
+            "true": 3
+          },
+          "zone": {
+            "declared": 5,
+            "true": 1
+          }
+        },
+        "completed": 6,
         "completed_seeds": [
           63001,
           63002,
           63003,
-          63004
+          63004,
+          63005,
+          63006
         ],
-        "denominator_note": "PARTIAL 4 completed of 6 registered; 2 unverified, no full-cohort rate"
+        "true_return_runs": 1,
+        "false_return_runs": 3,
+        "both_arrived": 0,
+        "false_B_runs": 1,
+        "over_3sigma_rate": 0.3624610412097426,
+        "host_interrupted_prior_attempts": 2,
+        "physical_attempts_including_host_interruption": 8,
+        "denominator_note": "6 fixed condition results; prior 2 host-shutdown attempts preserved separately, not simulator failures"
       },
       "calib_traversed_zone": {
         "registered": 6,
-        "started": 6,
-        "completed": 4,
-        "remote_status_unknown": 2,
-        "B_arrived": 1,
-        "returned": 1,
-        "both_arrived": 1,
-        "false_B": 1,
-        "false_return": 1,
-        "position_rmse_median": 0.28466435459174344,
+        "attempts": 6,
+        "measured": 6,
         "statuses": {
           "PHYSICAL_FAILURE": 2,
-          "RECORDED": 2
+          "RECORDED": 4
         },
-        "samples": 2009,
-        "over_3sigma": 273,
+        "B_arrived": 1,
+        "returned": 1,
+        "false_declarations": 6,
         "wall_contacts": 2,
         "robot_contacts": 0,
+        "frames": 3678,
+        "over3_frames": 349,
+        "commands": {
+          "turn": 1895,
+          "forward": 1555,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 228
+        },
+        "turn_fraction": 0.5152256661228929,
+        "turn_reversals": 512,
+        "match_accepted": 0,
+        "match_attempts": 33,
+        "visual_gate_failures": {
+          "outside_20cm": 1877
+        },
+        "final_error_median": 0.2915518216147015,
+        "position_rmse_median": 0.2941921513366106,
+        "false_return": 3,
+        "false_B": 3,
+        "dual_B": {
+          "legacy": {
+            "declared": 0,
+            "true": 0
+          },
+          "zone": {
+            "declared": 4,
+            "true": 1
+          }
+        },
+        "completed": 6,
         "completed_seeds": [
           63001,
           63002,
           63003,
-          63004
+          63004,
+          63005,
+          63006
         ],
-        "denominator_note": "PARTIAL 4 completed of 6 registered; 2 unverified, no full-cohort rate"
+        "true_return_runs": 1,
+        "false_return_runs": 3,
+        "both_arrived": 1,
+        "false_B_runs": 3,
+        "over_3sigma_rate": 0.09488852637302882,
+        "host_interrupted_prior_attempts": 2,
+        "physical_attempts_including_host_interruption": 8,
+        "denominator_note": "6 fixed condition results; prior 2 host-shutdown attempts preserved separately, not simulator failures"
       }
     },
     "runs": [
@@ -826,10 +975,14 @@
         "status": "RECORDED",
         "B_arrived": false,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 1.4693301804668226,
         "final_error_m": 1.6608683293284388,
+        "final_sigma_m": 0.09203801656723937,
+        "final_error_sigma": 18.045459814044055,
+        "final_return_distance_m": 2.6569041605635277,
         "samples": 2701,
         "over_3sigma": 2287,
         "contacts": {
@@ -837,7 +990,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data/egomap70-63001-baseline",
-        "result_sha256": "c021479c4275973659fe1fe11ed36ae67dc2a946ad76d6f0c0ae256929c7e255"
+        "B_nearest_boundary_distance_m": 1.6599877743863476,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "approach_sim_s": 270.0,
+        "return_sim_s": 270.0,
+        "return_gt_audit": [],
+        "score_sha256": "686a79375f86730c024147306a4b31569304b83d1a4ea1928ffeeceb7f515fd6"
       },
       {
         "seed": 63001,
@@ -845,10 +1010,14 @@
         "status": "PHYSICAL_FAILURE",
         "B_arrived": false,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.31559413223160054,
         "final_error_m": 0.2735807245502622,
+        "final_sigma_m": 0.08106613778143744,
+        "final_error_sigma": 3.3747842445370186,
+        "final_return_distance_m": 1.2570310445207942,
         "samples": 371,
         "over_3sigma": 172,
         "contacts": {
@@ -856,7 +1025,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data/egomap70-63001-calib",
-        "result_sha256": "f600bc5d680c82ef889a8a5e1fd2a696a6f5d147c1a8bc2489381721d88872b7"
+        "B_nearest_boundary_distance_m": 1.687826175921026,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "approach_sim_s": 74.0,
+        "return_sim_s": 0,
+        "return_gt_audit": [],
+        "score_sha256": "b054296deef15d7a8e88d4fa574be367d685bdf4731e7c243031b4364ee052f1"
       },
       {
         "seed": 63001,
@@ -864,10 +1045,14 @@
         "status": "PHYSICAL_FAILURE",
         "B_arrived": false,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.31559413223160054,
         "final_error_m": 0.2735807245502622,
+        "final_sigma_m": 0.08106613778143744,
+        "final_error_sigma": 3.3747842445370186,
+        "final_return_distance_m": 1.2570310445207942,
         "samples": 371,
         "over_3sigma": 172,
         "contacts": {
@@ -875,7 +1060,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data/egomap70-63001-calib_traversed",
-        "result_sha256": "30829aa2a0eb1b5be854573e831f345efa640594fb829a940d4fc5b3e7098eef"
+        "B_nearest_boundary_distance_m": 1.687826175921026,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "approach_sim_s": 74.0,
+        "return_sim_s": 0,
+        "return_gt_audit": [],
+        "score_sha256": "6c935fceef43bfdecec7b698aa1cb6617ba7805ae90626b2bee34329a9df1ef1"
       },
       {
         "seed": 63001,
@@ -883,10 +1080,14 @@
         "status": "PHYSICAL_FAILURE",
         "B_arrived": false,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.31559413223160054,
         "final_error_m": 0.2735807245502622,
+        "final_sigma_m": 0.08106613778143744,
+        "final_error_sigma": 3.3747842445370186,
+        "final_return_distance_m": 1.2570310445207942,
         "samples": 371,
         "over_3sigma": 172,
         "contacts": {
@@ -894,7 +1095,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data/egomap70-63001-calib_traversed_zone",
-        "result_sha256": "33bb0be07acaba9d1f8f25933e941c07459eeaf2517253473b8fad597097612c"
+        "B_nearest_boundary_distance_m": 1.687826175921026,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "approach_sim_s": 74.0,
+        "return_sim_s": 0,
+        "return_gt_audit": [],
+        "score_sha256": "9a0c3bfdf036d7542074ca85181dbce5b55d8a66761b2e2ce01935bb207830fc"
       },
       {
         "seed": 63002,
@@ -902,10 +1115,14 @@
         "status": "PHYSICAL_FAILURE",
         "B_arrived": false,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.3263311920389973,
         "final_error_m": 0.41216594597439293,
+        "final_sigma_m": 0.10721606367255009,
+        "final_error_sigma": 3.8442555327641394,
+        "final_return_distance_m": 3.3960898079937456,
         "samples": 1436,
         "over_3sigma": 217,
         "contacts": {
@@ -913,7 +1130,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data/egomap70-63002-baseline",
-        "result_sha256": "a1cb90f3a3ba2729cda1b348feda0151ce9582c8c3cd90056f96f637eb5dbe88"
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": 126.7,
+          "actual_inside": true
+        },
+        "approach_sim_s": 270.0,
+        "return_sim_s": 17.0,
+        "return_gt_audit": [],
+        "score_sha256": "d24b5efb17fb0159049b627d23a6f4469ccb8d5dd5df6878bdcb2a46e28423bd"
       },
       {
         "seed": 63002,
@@ -921,10 +1150,14 @@
         "status": "RECORDED",
         "B_arrived": true,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.3172251910000548,
         "final_error_m": 0.19124948494797736,
+        "final_sigma_m": 0.06991557841822788,
+        "final_error_sigma": 2.7354344950697884,
+        "final_return_distance_m": 2.3979052054568952,
         "samples": 1906,
         "over_3sigma": 738,
         "contacts": {
@@ -932,7 +1165,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data/egomap70-63002-calib",
-        "result_sha256": "457951a4dc4187fc753d317cd35162f78e0d0457546fda1ae0033d5b12af9c2e"
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 151.9,
+          "actual_inside": true
+        },
+        "zone_B": {
+          "declared_t": 97.5,
+          "actual_inside": false
+        },
+        "approach_sim_s": 111.0,
+        "return_sim_s": 270.0,
+        "return_gt_audit": [],
+        "score_sha256": "28b07f0f6bd6eebe5955fa18a4de78aee8f21f21064d497f017596f063d1f288"
       },
       {
         "seed": 63002,
@@ -940,10 +1185,14 @@
         "status": "RECORDED",
         "B_arrived": true,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 1,
         "position_rmse_m": 0.4572099306333586,
         "final_error_m": 0.9561719915480198,
+        "final_sigma_m": 0.16840381700293172,
+        "final_error_sigma": 5.677852251599345,
+        "final_return_distance_m": 0.8564282745538161,
         "samples": 1071,
         "over_3sigma": 121,
         "contacts": {
@@ -951,7 +1200,26 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data/egomap70-63002-calib_traversed",
-        "result_sha256": "27bbd51fd3a0cf351378c09e9c4d51fddfe1aaa3d971622665d5b6cb5b48835a"
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 151.9,
+          "actual_inside": true
+        },
+        "zone_B": {
+          "declared_t": 97.5,
+          "actual_inside": false
+        },
+        "approach_sim_s": 111.0,
+        "return_sim_s": 103.0,
+        "return_gt_audit": [
+          {
+            "t": 255.1,
+            "actual_distance_to_start_m": 0.8564282745538161,
+            "true_return": false,
+            "threshold_m": 0.2
+          }
+        ],
+        "score_sha256": "14d360cbe0343782bf945eaa5c9a8d1e029394ccfb3812fe6cc3f5da25315e80"
       },
       {
         "seed": 63002,
@@ -959,10 +1227,14 @@
         "status": "RECORDED",
         "B_arrived": false,
         "returned": false,
+        "both_arrived": false,
         "false_B": 1,
         "false_return": 1,
         "position_rmse_m": 0.34431793422145957,
         "final_error_m": 0.4694453445276744,
+        "final_sigma_m": 0.19352126119552376,
+        "final_error_sigma": 2.4258075915150807,
+        "final_return_distance_m": 0.5997352169583345,
         "samples": 671,
         "over_3sigma": 0,
         "contacts": {
@@ -970,7 +1242,26 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data/egomap70-63002-calib_traversed_zone",
-        "result_sha256": "e49aae184b7546af4cf440ec7fd41765c6fc0ab4be9f267c26ce15dd25d60f5c"
+        "B_nearest_boundary_distance_m": 0.17853645492071024,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": 97.5,
+          "actual_inside": false
+        },
+        "approach_sim_s": 56.6,
+        "return_sim_s": 77.39999999999999,
+        "return_gt_audit": [
+          {
+            "t": 175.1,
+            "actual_distance_to_start_m": 0.5997352169583345,
+            "true_return": false,
+            "threshold_m": 0.2
+          }
+        ],
+        "score_sha256": "606275ad0204013e6b147c9a548fc1e6e67f2463c5a13e8c7ad0147361f50741"
       },
       {
         "seed": 63003,
@@ -978,10 +1269,14 @@
         "status": "RECORDED",
         "B_arrived": true,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.5143435800915955,
         "final_error_m": 0.8198801004914216,
+        "final_sigma_m": 0.07629310177731988,
+        "final_error_sigma": 10.746451270056403,
+        "final_return_distance_m": 2.0452823478687687,
         "samples": 2201,
         "over_3sigma": 1748,
         "contacts": {
@@ -989,7 +1284,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63003-baseline",
-        "result_sha256": "0c1039788706afc60371cb031e1d18b2afedec2a865e428dd13dbe70c3eec489"
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 185.3,
+          "actual_inside": true
+        },
+        "zone_B": {
+          "declared_t": 112.1,
+          "actual_inside": false
+        },
+        "approach_sim_s": 170.0,
+        "return_sim_s": 270.0,
+        "return_gt_audit": [],
+        "score_sha256": "d7ef07ffff33fd136117a2024c8be3b3ef30fbcb22070614982515f783e2db92"
       },
       {
         "seed": 63003,
@@ -997,10 +1304,14 @@
         "status": "RECORDED",
         "B_arrived": true,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.5356312309578858,
         "final_error_m": 0.41990083923463106,
+        "final_sigma_m": 0.06195259085857596,
+        "final_error_sigma": 6.777776900294156,
+        "final_return_distance_m": 3.345705901994265,
         "samples": 2483,
         "over_3sigma": 1551,
         "contacts": {
@@ -1008,7 +1319,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63003-calib",
-        "result_sha256": "679cd52cb93e5475d305ca1923301c2c8044db4fbab802cf274cb641e5b661d1"
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 241.7,
+          "actual_inside": true
+        },
+        "zone_B": {
+          "declared_t": 113.5,
+          "actual_inside": true
+        },
+        "approach_sim_s": 226.4,
+        "return_sim_s": 270.0,
+        "return_gt_audit": [],
+        "score_sha256": "1afa245b33046ee9a041097a6253a5e9d26dd71a8d790af7f81565a1e12f8e27"
       },
       {
         "seed": 63003,
@@ -1016,10 +1339,14 @@
         "status": "RECORDED",
         "B_arrived": true,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 1,
         "position_rmse_m": 0.5513728275875568,
         "final_error_m": 0.32829327390122937,
+        "final_sigma_m": 0.12718068283338393,
+        "final_error_sigma": 2.5813139746333786,
+        "final_return_distance_m": 0.2895867100926891,
         "samples": 1969,
         "over_3sigma": 987,
         "contacts": {
@@ -1027,7 +1354,26 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63003-calib_traversed",
-        "result_sha256": "82669dae609a5f18c11c9b38d2360385f91fc444a27c717b45ce1e5a5864d78c"
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 241.7,
+          "actual_inside": true
+        },
+        "zone_B": {
+          "declared_t": 113.5,
+          "actual_inside": true
+        },
+        "approach_sim_s": 226.4,
+        "return_sim_s": 167.20000000000002,
+        "return_gt_audit": [
+          {
+            "t": 409.1,
+            "actual_distance_to_start_m": 0.28958671009268905,
+            "true_return": false,
+            "threshold_m": 0.2
+          }
+        ],
+        "score_sha256": "7f19626714e8d03632a6f94d02866b9fefb1452efa99dd4416f7b268cfe949a5"
       },
       {
         "seed": 63003,
@@ -1035,10 +1381,14 @@
         "status": "RECORDED",
         "B_arrived": true,
         "returned": true,
+        "both_arrived": true,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.24846503065213169,
         "final_error_m": 0.02635518781456547,
+        "final_sigma_m": 0.20099193608267,
+        "final_error_sigma": 0.1311255980126751,
+        "final_return_distance_m": 0.17177799719940554,
         "samples": 841,
         "over_3sigma": 26,
         "contacts": {
@@ -1046,7 +1396,26 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63003-calib_traversed_zone",
-        "result_sha256": "701f3eeeb074dd68840698d61e7f5b0e8c54ddcd2f148666d0cc1d2f3b492029"
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": 113.5,
+          "actual_inside": true
+        },
+        "approach_sim_s": 98.2,
+        "return_sim_s": 69.8,
+        "return_gt_audit": [
+          {
+            "t": 183.5,
+            "actual_distance_to_start_m": 0.17177799719940554,
+            "true_return": true,
+            "threshold_m": 0.2
+          }
+        ],
+        "score_sha256": "f46ec2dced47418181db5ba1d5b2632b8f70fc0fab088b23f5d74847da80a297"
       },
       {
         "seed": 63004,
@@ -1054,10 +1423,14 @@
         "status": "RECORDED",
         "B_arrived": false,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.6406613153409096,
         "final_error_m": 0.5979383502170312,
+        "final_sigma_m": 0.08534221282869446,
+        "final_error_sigma": 7.006360983599754,
+        "final_return_distance_m": 3.4082135151612225,
         "samples": 2701,
         "over_3sigma": 2424,
         "contacts": {
@@ -1065,7 +1438,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63004-baseline",
-        "result_sha256": "40987a05fccc0a6bd5ab2e0bc96ce12d0d2d986b90f644e624e0b77ee0ac0bfa"
+        "B_nearest_boundary_distance_m": 2.3553208497129594,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": 212.3,
+          "actual_inside": false
+        },
+        "approach_sim_s": 270.0,
+        "return_sim_s": 270.00000000000006,
+        "return_gt_audit": [],
+        "score_sha256": "a5a96c7bec2fb33d97b6857ecb40c2edd5fd82d6a4a6fd8d615a0d8b62c7c6ce"
       },
       {
         "seed": 63004,
@@ -1073,10 +1458,14 @@
         "status": "RECORDED",
         "B_arrived": false,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.4875517372450526,
         "final_error_m": 0.37081587435635865,
+        "final_sigma_m": 0.07708736265425217,
+        "final_error_sigma": 4.810332868949231,
+        "final_return_distance_m": 3.7206563975372697,
         "samples": 2701,
         "over_3sigma": 2415,
         "contacts": {
@@ -1084,7 +1473,19 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63004-calib",
-        "result_sha256": "75ba704d350151790a3e67f048ac29bae184638e25e762093c222386223f455c"
+        "B_nearest_boundary_distance_m": 2.3589087310475034,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": 161.1,
+          "actual_inside": false
+        },
+        "approach_sim_s": 270.0,
+        "return_sim_s": 270.00000000000006,
+        "return_gt_audit": [],
+        "score_sha256": "111a8d111275c5fe195050e5ac86a05494b42cdadda3124d47680d722a10e126"
       },
       {
         "seed": 63004,
@@ -1092,10 +1493,14 @@
         "status": "RECORDED",
         "B_arrived": false,
         "returned": true,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.41332984203609313,
         "final_error_m": 0.06496632185000636,
+        "final_sigma_m": 0.08057967334762396,
+        "final_error_sigma": 0.8062370961686458,
+        "final_return_distance_m": 0.04317281536967514,
         "samples": 2395,
         "over_3sigma": 1804,
         "contacts": {
@@ -1103,7 +1508,26 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63004-calib_traversed",
-        "result_sha256": "942744e5a19fa39801ae25cf821966141fa2a10af2a7db06035bcada72875477"
+        "B_nearest_boundary_distance_m": 2.3589087310475034,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": 161.1,
+          "actual_inside": false
+        },
+        "approach_sim_s": 270.0,
+        "return_sim_s": 208.8,
+        "return_gt_audit": [
+          {
+            "t": 546.5,
+            "actual_distance_to_start_m": 0.04317281536967514,
+            "true_return": true,
+            "threshold_m": 0.2
+          }
+        ],
+        "score_sha256": "f86f11694db50ab408dc3930d76dcf998f6f8b7f597dfd91a8e6cec361282e3d"
       },
       {
         "seed": 63004,
@@ -1111,10 +1535,14 @@
         "status": "PHYSICAL_FAILURE",
         "B_arrived": false,
         "returned": false,
+        "both_arrived": false,
         "false_B": 0,
         "false_return": 0,
         "position_rmse_m": 0.2537345769518863,
         "final_error_m": 0.3095229186791408,
+        "final_sigma_m": 0.08966771230166774,
+        "final_error_sigma": 3.4518882074053305,
+        "final_return_distance_m": 1.2487025176356061,
         "samples": 126,
         "over_3sigma": 75,
         "contacts": {
@@ -1122,9 +1550,441 @@
           "robot": 0
         },
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63004-calib_traversed_zone",
-        "result_sha256": "4764d83ff840d20acf11d5abd8b2fb79127f306567615d55b492d7504073cae6"
+        "B_nearest_boundary_distance_m": 2.32811527052466,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "approach_sim_s": 25.0,
+        "return_sim_s": 0,
+        "return_gt_audit": [],
+        "score_sha256": "d3f5341a8eaeb803ea63902632164803ab2c18ab51435bec4362cf13c965dbdb"
+      },
+      {
+        "seed": 63005,
+        "condition": "baseline",
+        "status": "RECORDED",
+        "B_arrived": false,
+        "returned": false,
+        "both_arrived": false,
+        "false_B": 0,
+        "false_return": 0,
+        "position_rmse_m": 0.3028404946331802,
+        "final_error_m": 0.26701648472551665,
+        "final_sigma_m": 0.07114878240948472,
+        "final_error_sigma": 3.7529311912711125,
+        "final_return_distance_m": 2.2604074334758093,
+        "samples": 2701,
+        "over_3sigma": 1789,
+        "contacts": {
+          "wall": 0,
+          "robot": 0
+        },
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63005-baseline",
+        "B_nearest_boundary_distance_m": 0.06599054996626008,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "approach_sim_s": 270.0,
+        "return_sim_s": 270.00000000000006,
+        "return_gt_audit": [],
+        "score_sha256": "861af557bb1108d883b9b39aa07675f1daabd9cf8f50431990887c76243f047f"
+      },
+      {
+        "seed": 63005,
+        "condition": "calib",
+        "status": "PHYSICAL_FAILURE",
+        "B_arrived": false,
+        "returned": false,
+        "both_arrived": false,
+        "false_B": 1,
+        "false_return": 0,
+        "position_rmse_m": 0.29705841949935763,
+        "final_error_m": 0.1386553126811353,
+        "final_sigma_m": 0.06828112236977207,
+        "final_error_sigma": 2.0306536839019174,
+        "final_return_distance_m": 3.021398423711355,
+        "samples": 780,
+        "over_3sigma": 15,
+        "contacts": {
+          "wall": 1,
+          "robot": 0
+        },
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63005-calib",
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 151.1,
+          "actual_inside": false
+        },
+        "zone_B": {
+          "declared_t": 129.7,
+          "actual_inside": false
+        },
+        "approach_sim_s": 116.60000000000001,
+        "return_sim_s": 39.19999999999999,
+        "return_gt_audit": [],
+        "score_sha256": "3867db80e42b8ddd4e2c09dbb1c651db4dfa287c82b66f58ed91f1bd213d1f6b"
+      },
+      {
+        "seed": 63005,
+        "condition": "calib_traversed",
+        "status": "RECORDED",
+        "B_arrived": false,
+        "returned": false,
+        "both_arrived": false,
+        "false_B": 1,
+        "false_return": 1,
+        "position_rmse_m": 0.31324379959040854,
+        "final_error_m": 0.3079581251540914,
+        "final_sigma_m": 0.08988353027792616,
+        "final_error_sigma": 3.4261908071686027,
+        "final_return_distance_m": 0.43277197839890874,
+        "samples": 1025,
+        "over_3sigma": 56,
+        "contacts": {
+          "wall": 0,
+          "robot": 0
+        },
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63005-calib_traversed",
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 151.1,
+          "actual_inside": false
+        },
+        "zone_B": {
+          "declared_t": 129.7,
+          "actual_inside": false
+        },
+        "approach_sim_s": 116.60000000000001,
+        "return_sim_s": 88.19999999999999,
+        "return_gt_audit": [
+          {
+            "t": 239.5,
+            "actual_distance_to_start_m": 0.43277197839890874,
+            "true_return": false,
+            "threshold_m": 0.2
+          }
+        ],
+        "score_sha256": "8ee959d775ae8a0fa377fc5b4c030d61ee8729a99365981216a3b97ca652a491"
+      },
+      {
+        "seed": 63005,
+        "condition": "calib_traversed_zone",
+        "status": "RECORDED",
+        "B_arrived": false,
+        "returned": false,
+        "both_arrived": false,
+        "false_B": 1,
+        "false_return": 1,
+        "position_rmse_m": 0.3107070738767135,
+        "final_error_m": 0.37508882060634385,
+        "final_sigma_m": 0.07249409932620861,
+        "final_error_sigma": 5.174060014436774,
+        "final_return_distance_m": 0.5076374486161715,
+        "samples": 915,
+        "over_3sigma": 76,
+        "contacts": {
+          "wall": 0,
+          "robot": 0
+        },
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63005-calib_traversed_zone",
+        "B_nearest_boundary_distance_m": 0.11658389752367704,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": 129.7,
+          "actual_inside": false
+        },
+        "approach_sim_s": 95.2,
+        "return_sim_s": 87.6,
+        "return_gt_audit": [
+          {
+            "t": 217.5,
+            "actual_distance_to_start_m": 0.5076374486161715,
+            "true_return": false,
+            "threshold_m": 0.2
+          }
+        ],
+        "score_sha256": "f94a8f963da73352e05cf3b7e4ecd24e8928f007c1b26779a9413441a9ab9f82"
+      },
+      {
+        "seed": 63006,
+        "condition": "baseline",
+        "status": "RECORDED",
+        "B_arrived": true,
+        "returned": false,
+        "both_arrived": false,
+        "false_B": 0,
+        "false_return": 0,
+        "position_rmse_m": 0.31853848380627997,
+        "final_error_m": 0.20493867987503167,
+        "final_sigma_m": 0.06897879012328641,
+        "final_error_sigma": 2.971039061554181,
+        "final_return_distance_m": 1.7993147816385895,
+        "samples": 1871,
+        "over_3sigma": 888,
+        "contacts": {
+          "wall": 0,
+          "robot": 0
+        },
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63006-baseline",
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 132.1,
+          "actual_inside": true
+        },
+        "zone_B": {
+          "declared_t": 90.3,
+          "actual_inside": false
+        },
+        "approach_sim_s": 104.00000000000001,
+        "return_sim_s": 270.0,
+        "return_gt_audit": [],
+        "score_sha256": "333ffa03b8e91ba75d45f9e9a776a55ebda81e6599742385fb92280b6fb848f4"
+      },
+      {
+        "seed": 63006,
+        "condition": "calib",
+        "status": "RECORDED",
+        "B_arrived": true,
+        "returned": false,
+        "both_arrived": false,
+        "false_B": 0,
+        "false_return": 0,
+        "position_rmse_m": 0.258884375605704,
+        "final_error_m": 0.26812967551453315,
+        "final_sigma_m": 0.07481504157340794,
+        "final_error_sigma": 3.5839006418441453,
+        "final_return_distance_m": 2.825775424651065,
+        "samples": 1832,
+        "over_3sigma": 599,
+        "contacts": {
+          "wall": 0,
+          "robot": 0
+        },
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63006-calib",
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 124.3,
+          "actual_inside": true
+        },
+        "zone_B": {
+          "declared_t": 79.3,
+          "actual_inside": false
+        },
+        "approach_sim_s": 96.2,
+        "return_sim_s": 270.0,
+        "return_gt_audit": [],
+        "score_sha256": "5a804945dec5aaf965348b5a2bd6f8a871edba7d07c5ba092bf981bee607655d"
+      },
+      {
+        "seed": 63006,
+        "condition": "calib_traversed",
+        "status": "RECORDED",
+        "B_arrived": true,
+        "returned": false,
+        "both_arrived": false,
+        "false_B": 0,
+        "false_return": 0,
+        "position_rmse_m": 0.16201195356887718,
+        "final_error_m": 0.03568293944260951,
+        "final_sigma_m": 0.20277066590726595,
+        "final_error_sigma": 0.17597683216628857,
+        "final_return_distance_m": 2.942459404184077,
+        "samples": 1832,
+        "over_3sigma": 0,
+        "contacts": {
+          "wall": 0,
+          "robot": 0
+        },
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63006-calib_traversed",
+        "B_nearest_boundary_distance_m": 0.0,
+        "legacy_B": {
+          "declared_t": 124.3,
+          "actual_inside": true
+        },
+        "zone_B": {
+          "declared_t": 79.3,
+          "actual_inside": false
+        },
+        "approach_sim_s": 96.2,
+        "return_sim_s": 270.0,
+        "return_gt_audit": [],
+        "score_sha256": "cf0f09d7f3df827217cfa5c721a4329633b60c3127a26b5792d618a64885fd4a"
+      },
+      {
+        "seed": 63006,
+        "condition": "calib_traversed_zone",
+        "status": "RECORDED",
+        "B_arrived": false,
+        "returned": false,
+        "both_arrived": false,
+        "false_B": 1,
+        "false_return": 1,
+        "position_rmse_m": 0.27767722879650775,
+        "final_error_m": 0.23873719317634462,
+        "final_sigma_m": 0.0943826430237705,
+        "final_error_sigma": 2.529460772953964,
+        "final_return_distance_m": 0.36152180757947977,
+        "samples": 754,
+        "over_3sigma": 0,
+        "contacts": {
+          "wall": 0,
+          "robot": 0
+        },
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63006-calib_traversed_zone",
+        "B_nearest_boundary_distance_m": 0.2764634994126425,
+        "legacy_B": {
+          "declared_t": null,
+          "actual_inside": null
+        },
+        "zone_B": {
+          "declared_t": 79.3,
+          "actual_inside": false
+        },
+        "approach_sim_s": 51.2,
+        "return_sim_s": 99.4,
+        "return_gt_audit": [
+          {
+            "t": 178.9,
+            "actual_distance_to_start_m": 0.36152180757947977,
+            "true_return": false,
+            "threshold_m": 0.2
+          }
+        ],
+        "score_sha256": "0abd07b65fe95a0d539873dbc804b33a9ef1eab4ab0f8b1fa959a1c1a5be4a95"
       }
-    ]
+    ],
+    "host_attempts": [
+      {
+        "name": "egomap70-63005-baseline",
+        "seed": 63005,
+        "condition": "baseline",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63005-baseline",
+        "status": "HOST_ERROR",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "reported_shutdown_utc": "2026-10-11T05:49:00Z",
+        "reboot_utc": "2026-10-11T06:03:00Z",
+        "recorded_utc": "2026-10-11T06:08:24.237289+00:00",
+        "exit_code": 143,
+        "exit_code_synthetic": true,
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63005-calib",
+        "seed": 63005,
+        "condition": "calib",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63005-calib",
+        "status": "HOST_ERROR",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "reported_shutdown_utc": "2026-10-11T05:49:00Z",
+        "reboot_utc": "2026-10-11T06:03:00Z",
+        "recorded_utc": "2026-10-11T06:08:24.237605+00:00",
+        "exit_code": 143,
+        "exit_code_synthetic": true,
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63005-calib_traversed",
+        "seed": 63005,
+        "condition": "calib_traversed",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63005-calib_traversed",
+        "status": "HOST_ERROR",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "reported_shutdown_utc": "2026-10-11T05:49:00Z",
+        "reboot_utc": "2026-10-11T06:03:00Z",
+        "recorded_utc": "2026-10-11T06:08:24.237782+00:00",
+        "exit_code": 143,
+        "exit_code_synthetic": true,
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63005-calib_traversed_zone",
+        "seed": 63005,
+        "condition": "calib_traversed_zone",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63005-calib_traversed_zone",
+        "status": "HOST_ERROR",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "reported_shutdown_utc": "2026-10-11T05:49:00Z",
+        "reboot_utc": "2026-10-11T06:03:00Z",
+        "recorded_utc": "2026-10-11T06:08:24.237959+00:00",
+        "exit_code": 143,
+        "exit_code_synthetic": true,
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63006-baseline",
+        "seed": 63006,
+        "condition": "baseline",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63006-baseline",
+        "status": "HOST_ERROR",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "reported_shutdown_utc": "2026-10-11T05:49:00Z",
+        "reboot_utc": "2026-10-11T06:03:00Z",
+        "recorded_utc": "2026-10-11T06:08:24.238131+00:00",
+        "exit_code": 143,
+        "exit_code_synthetic": true,
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63006-calib",
+        "seed": 63006,
+        "condition": "calib",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63006-calib",
+        "status": "HOST_ERROR",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "reported_shutdown_utc": "2026-10-11T05:49:00Z",
+        "reboot_utc": "2026-10-11T06:03:00Z",
+        "recorded_utc": "2026-10-11T06:08:24.238276+00:00",
+        "exit_code": 143,
+        "exit_code_synthetic": true,
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63006-calib_traversed",
+        "seed": 63006,
+        "condition": "calib_traversed",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63006-calib_traversed",
+        "status": "HOST_ERROR",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "reported_shutdown_utc": "2026-10-11T05:49:00Z",
+        "reboot_utc": "2026-10-11T06:03:00Z",
+        "recorded_utc": "2026-10-11T06:08:24.238549+00:00",
+        "exit_code": 143,
+        "exit_code_synthetic": true,
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63006-calib_traversed_zone",
+        "seed": 63006,
+        "condition": "calib_traversed_zone",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63006-calib_traversed_zone",
+        "status": "HOST_ERROR",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "reported_shutdown_utc": "2026-10-11T05:49:00Z",
+        "reboot_utc": "2026-10-11T06:03:00Z",
+        "recorded_utc": "2026-10-11T06:08:24.238705+00:00",
+        "exit_code": 143,
+        "exit_code_synthetic": true,
+        "simulation_failure": false
+      }
+    ],
+    "position_rmse_scope": "Per-run post-checkpoint samples until actual termination; median across six registered runs per condition, unequal exposure retained in sample counts and phase times.",
+    "host_attempts_full_record": {
+      "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/host-interruptions.json",
+      "sha256": "53199240000f2584c7cab184dc056b2a7b6523b5124d7c26755be170317ded54"
+    }
   },
   "local_tests": {
     "files": 2,
@@ -1143,7 +2003,7 @@
     "footprint": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_costmap_2d/src/footprint.cpp#L40-L66",
     "footprint_adaptation": "CAD circumscribed radius; .02m padding is existing repo value, not claimed Nav2 default"
   },
-  "reason": "Two SSH connection timeouts after all24 initial checks; last8 outcome unknown, not classified as physical failure",
+  "reason": "24 fixed conditions completed with 16 originals and eight exact-SHA host retries. Calibration is evaluated separately from task success; true and false arrivals use evaluation-only GT.",
   "pre_execution_color_diagnostic": {
     "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-delivery/data/prefix-color-diagnostic.json",
     "sha256": "d9887defd38f8ab25c5e02ba649c0cb883a5f5e6a124b89ed37cb1844bed31af",
@@ -1368,7 +2228,7 @@
     "delivery_verified_files": 10,
     "mac_verified_bytes": 40107
   },
-  "evaluation_results_available": "partial_16_of_24",
+  "evaluation_results_available": true,
   "smoke": {
     "result": {
       "status": "RECORDED",
@@ -1619,7 +2479,7 @@
     "reason": "preserve all originals; no deletion authorized",
     "scope": "historical pre-resume capacity check, not current capacity"
   },
-  "next": "Restore oracle-x86 access, inspect existing final8 and retrieve results; do not duplicate live jobs. Only confirmed interrupted jobs may resume with same f26d9322 SHA/commands; no retuning.",
+  "next": "No further tuning or physical runs authorized in this completion task. E2E transport remains unproven; next decision should address residual false arrival/localization using this fixed full cohort.",
   "scope": {
     "E2E_demonstrated": false,
     "mac_physics": 0,
@@ -1627,7 +2487,7 @@
     "model_calls": 0,
     "evaluation_truth_in_control": false,
     "default_off": true,
-    "byte_identity_scope": "18 pre-run tests; first3 completed baseline seeds x3 core files SHA identical, remaining3 not yet verified"
+    "byte_identity_scope": "6 baseline seeds x3 core SHA equal18/18:17 direct decompressed-byte comparisons +1 preserved original manifest hash (eg68 63005 own-controller currently unavailable); not whole-directory identity"
   },
   "resumed_submission": [
     {
@@ -1657,67 +2517,53 @@
     "per_job_existing_free_gib": 6,
     "load_max": 51,
     "memory_min_gib": 6,
-    "archive": "supervisor automatic after server evaluation/hash"
+    "archive": "supervisor automatic after server evaluation/hash",
+    "retry": {
+      "raw": "egomap70-wave3-retry1",
+      "free_gib_before_submission": 12.782684326171875,
+      "minimum_gib_per_launch": 8,
+      "load_max": 51,
+      "memory_min_gib": 6,
+      "RUN_META": {
+        "class": "dev",
+        "pr": 405
+      },
+      "operator_sha256": "b0f7b4d3e5d6959cf6ae2602c501ec10737f6b05883716fe5c42885e196ab1c3",
+      "changes": "operator-only disk admission + metadata; frozen controller/evaluator f26"
+    }
   },
   "initial_checks": {
-    "checked": 24,
+    "completed": 24,
+    "retry_checks": 8,
+    "retry_trace_valid": 2308,
     "anomalies": 0,
-    "calibration_on": 18,
-    "frames": 7103,
-    "valid": 7103,
-    "full_record": {
-      "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/initial-checks.json",
-      "sha256": "8a5026d0900995badcf1e7b0be0a49578ce753c9d753d05d3976355630aa7ad9"
-    },
-    "baseline_63005_hold": {
-      "hold": 194,
-      "frames": 353,
-      "forward": 22,
-      "displacement_m": 0.168,
-      "note": "performance diagnosis; expected baseline behavior retained"
-    }
+    "original24_checks_preserved": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/original24-initial-checks.json",
+    "record": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/initial-checks.json",
+    "sha256": "bf7578df1f69d15f86c0a07e205560c9d3c14fa86f24188870eee2fa1f31d514",
+    "retry_RUN_META_valid": 8
   },
   "execution_live": {
     "registered": 24,
     "submitted_to_physics": 24,
     "states": {
-      "RECORDED": 11,
-      "PHYSICAL_FAILURE": 5,
-      "RUNNING": 8
+      "RECORDED": 18,
+      "PHYSICAL_FAILURE": 6
     },
-    "evaluated": 16,
+    "evaluated": 24,
     "initial_checks": 24,
     "initial_anomalies": 0,
-    "utc": "2026-10-11T05:51:45.633126+00:00"
-  },
-  "infrastructure_event": {
-    "recorded_utc": "2026-10-11T05:57:59.247746+00:00",
-    "host": "oracle-x86",
-    "ssh_attempts": 2,
-    "exit_codes": [
-      255,
-      255
-    ],
-    "error": "SSH connect timeout",
-    "last_verified_utc": "2026-10-11T05:51:45.633126+00:00",
-    "completed": 16,
-    "remaining_last_state": "RUNNING",
-    "remaining": 8,
-    "server_power_state": "unknown",
-    "remote_exit_codes": "unavailable",
-    "physical_failures_assigned_from_network_error": 0,
-    "automatic_resubmissions": 0,
-    "other_processes_changed": 0
+    "utc": "2026-10-11T07:00:50.257453+00:00"
   },
   "evaluation_preservation": {
     "raw_roots": [
       "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data",
       "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data",
-      "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data"
+      "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data",
+      "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data"
     ],
     "delivery": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data",
-    "server_verified_completed_runs": 16,
-    "server_hashed_files": 25003,
+    "server_verified_completed_runs": 24,
+    "server_hashed_files": 37065,
     "server_hash_mismatches": 0,
     "integrity": [
       {
@@ -1863,17 +2709,248 @@
         "mismatches": [],
         "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63004-calib_traversed_zone",
         "utc": "2026-10-11T05:10:14.966850+00:00"
+      },
+      {
+        "name": "egomap70-63005-baseline",
+        "files": 2745,
+        "manifest_sha256": "5ab7ab1bb7e78902c1b112f802c2558c983d2236f522e3bee7db9bb2897f7c96",
+        "original_files": 2740,
+        "mismatches": [],
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63005-baseline",
+        "utc": "2026-10-11T07:00:50.254120+00:00"
+      },
+      {
+        "name": "egomap70-63005-calib",
+        "files": 824,
+        "manifest_sha256": "c67f2e83444dd85dfc7ae395f31729b9539d26248e8a5a956410ddfb085c2a37",
+        "original_files": 819,
+        "mismatches": [],
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63005-calib",
+        "utc": "2026-10-11T06:17:21.490215+00:00"
+      },
+      {
+        "name": "egomap70-63005-calib_traversed",
+        "files": 1069,
+        "manifest_sha256": "cfe23782a0e6ddafe760cf07351417cfaa5f5b2c111db30db9dc2f92d02cdd0d",
+        "original_files": 1064,
+        "mismatches": [],
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63005-calib_traversed",
+        "utc": "2026-10-11T06:20:25.948003+00:00"
+      },
+      {
+        "name": "egomap70-63005-calib_traversed_zone",
+        "files": 959,
+        "manifest_sha256": "d4e81e57b8d13c8150b9e57f4eef9798b21c28ecd7debe0167e2ffc36e543d70",
+        "original_files": 954,
+        "mismatches": [],
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63005-calib_traversed_zone",
+        "utc": "2026-10-11T06:19:23.434652+00:00"
+      },
+      {
+        "name": "egomap70-63006-baseline",
+        "files": 1915,
+        "manifest_sha256": "3391dd009843b5c80f61798825dc6c53e7a02cc0ad0d839bf1e79b6c2ed65588",
+        "original_files": 1910,
+        "mismatches": [],
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63006-baseline",
+        "utc": "2026-10-11T06:33:09.881723+00:00"
+      },
+      {
+        "name": "egomap70-63006-calib",
+        "files": 1876,
+        "manifest_sha256": "06d717e3610f0058987c5e6a0a0806cc578f31b616a21d2dec2e651a4ca7eb2f",
+        "original_files": 1871,
+        "mismatches": [],
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63006-calib",
+        "utc": "2026-10-11T06:32:34.208095+00:00"
+      },
+      {
+        "name": "egomap70-63006-calib_traversed",
+        "files": 1876,
+        "manifest_sha256": "8fec3de023d232dd6bfbc26ecf781025efd052ed614ce2f3d42323ffdd58c211",
+        "original_files": 1871,
+        "mismatches": [],
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63006-calib_traversed",
+        "utc": "2026-10-11T06:25:58.734009+00:00"
+      },
+      {
+        "name": "egomap70-63006-calib_traversed_zone",
+        "files": 798,
+        "manifest_sha256": "65ec92d48a22db4f6429743fc3ef8f5b57a8899f877ee167f7365c45481f9f14",
+        "original_files": 793,
+        "mismatches": [],
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3-retry1/data/egomap70-63006-calib_traversed_zone",
+        "utc": "2026-10-11T06:16:49.809662+00:00"
       }
     ],
-    "local_metadata_verification": {
-      "completed_runs": 16,
-      "manifest_sha_passed": 16,
-      "scores_sha_passed": 16,
-      "full_record_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/completed"
+    "interrupted_hashed_files": 3523,
+    "interrupted_integrity": [
+      {
+        "name": "egomap70-63005-baseline",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63005-baseline",
+        "files": 532,
+        "manifest": "/home/ubuntu/ugrp-sim/runs/egomap70-evaluation-delivery/data/egomap70-63005-baseline-host-interrupted.sha256.json",
+        "sha256": "fb378636039fe03540b9205e58d0eee93432d9de560f7c0b75df902f0a0ece0c",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "status": "HOST_ERROR",
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63005-calib",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63005-calib",
+        "files": 469,
+        "manifest": "/home/ubuntu/ugrp-sim/runs/egomap70-evaluation-delivery/data/egomap70-63005-calib-host-interrupted.sha256.json",
+        "sha256": "c4aae08957643cad7ca899dc8cf713d0e9660400c96967fb4b828f3ad3f4882f",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "status": "HOST_ERROR",
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63005-calib_traversed",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63005-calib_traversed",
+        "files": 467,
+        "manifest": "/home/ubuntu/ugrp-sim/runs/egomap70-evaluation-delivery/data/egomap70-63005-calib_traversed-host-interrupted.sha256.json",
+        "sha256": "ade4174dd913bcb1c4f909b46593fc3df20928023e936c55bab57b4e1fff5e4d",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "status": "HOST_ERROR",
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63005-calib_traversed_zone",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63005-calib_traversed_zone",
+        "files": 467,
+        "manifest": "/home/ubuntu/ugrp-sim/runs/egomap70-evaluation-delivery/data/egomap70-63005-calib_traversed_zone-host-interrupted.sha256.json",
+        "sha256": "d09ad13a446b0e2ec79116a677e2fda5829a1daa35d829bf2de397eb89059327",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "status": "HOST_ERROR",
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63006-baseline",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63006-baseline",
+        "files": 415,
+        "manifest": "/home/ubuntu/ugrp-sim/runs/egomap70-evaluation-delivery/data/egomap70-63006-baseline-host-interrupted.sha256.json",
+        "sha256": "76dcb969283c468baae73c90b5dac27ad317fdd667171ba225845713f2e8b578",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "status": "HOST_ERROR",
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63006-calib",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63006-calib",
+        "files": 380,
+        "manifest": "/home/ubuntu/ugrp-sim/runs/egomap70-evaluation-delivery/data/egomap70-63006-calib-host-interrupted.sha256.json",
+        "sha256": "63926fafbbe15e092681d47eaad95a5b242c196e7ddc02ec5fec70babf64b74d",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "status": "HOST_ERROR",
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63006-calib_traversed",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63006-calib_traversed",
+        "files": 375,
+        "manifest": "/home/ubuntu/ugrp-sim/runs/egomap70-evaluation-delivery/data/egomap70-63006-calib_traversed-host-interrupted.sha256.json",
+        "sha256": "2e863a489790770712da5b09020145b7843a42dbbaf8486ef15ca35612ab77b1",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "status": "HOST_ERROR",
+        "simulation_failure": false
+      },
+      {
+        "name": "egomap70-63006-calib_traversed_zone",
+        "raw": "/home/ubuntu/ugrp-sim/runs/egomap70-wave3/data/egomap70-63006-calib_traversed_zone",
+        "files": 418,
+        "manifest": "/home/ubuntu/ugrp-sim/runs/egomap70-evaluation-delivery/data/egomap70-63006-calib_traversed_zone-host-interrupted.sha256.json",
+        "sha256": "8bb1b055044a79bdbb0c426bd469a1b9fbd4ff6fabab8fd073e2cd71d11dd00f",
+        "reason": "server_hard_cap_shutdown_user_confirmed",
+        "status": "HOST_ERROR",
+        "simulation_failure": false
+      }
+    ],
+    "automatic_archive": "server originals left intact for supervisor automatic compression/archive; no manual delete/move",
+    "mac_retrieval": "fetch-lite compact metadata only; no raw images/npz/video",
+    "summary_sha256": "7803d7e4305a72c6e5f563703464ea19a359798697fd423bcb4ec87a84b522ed",
+    "gt_audit_sha256": "6fe4288829c45f7ef1c17f2e2a1bb289963f4d3d85d963cb38a2e97eb0c14046",
+    "baseline_core_sha256": "1ee7f9b9c56335d897b7ec0693b9d434704b794a52bc64691bcdd4ff41662e22",
+    "prior16_posthoc_RUN_META": {
+      "record": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/completed16-posthoc-run-meta.json",
+      "sha256": "9d7217d9de72343bb7dff0b465025a6e2fa98f1cb9b7aebf916281641dc5be64",
+      "runs": 16,
+      "note": "added after original completion hashes; data files unchanged"
     },
-    "automatic_archive": "supervisor managed; evaluated and hashed originals left on server; no manual move/delete",
-    "new_arm_copies_independently_verified": false
+    "RUN_META": {
+      "valid": 32,
+      "record": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/run-meta-32.json",
+      "sha256": "a17e1cfdeb876720520b4ecc55d1f1898b5304fb973ef9f913086c2bb8b01475",
+      "retry8_at_execution": true,
+      "original24_posthoc": true
+    }
   },
   "thresholds_changed": false,
-  "reason_diagnostic": "Calibration changes future commands only; checkpoints and remembered map/targets remain unchanged. Partial cohort includes early physical stops; no candidate selection or E2E claim."
+  "reason_diagnostic": [
+    "Observed median path RMSE baseline/calib/traversed/zone = .420/.316/.364/.294 m. Durations and samples differ because wall failures and declarations end runs; this is not a matched-horizon accuracy proof or reliable E2E completion.",
+    "Historical host shutdown:8 interrupted attempts retained; 24 unique conditions completed using 16 originals +8 retries.",
+    "Return validity recomputed at each declaration using GT distance <=0.20m to actual own start; false declarations remain separate."
+  ],
+  "infrastructure_event_history": [
+    {
+      "recorded_utc": "2026-10-11T05:57:59.247746+00:00",
+      "host": "oracle-x86",
+      "ssh_attempts": 2,
+      "exit_codes": [
+        255,
+        255
+      ],
+      "error": "SSH connect timeout",
+      "last_verified_utc": "2026-10-11T05:51:45.633126+00:00",
+      "completed": 16,
+      "remaining_last_state": "RUNNING",
+      "remaining": 8,
+      "server_power_state": "unknown",
+      "remote_exit_codes": "unavailable",
+      "physical_failures_assigned_from_network_error": 0,
+      "automatic_resubmissions": 0,
+      "other_processes_changed": 0
+    }
+  ],
+  "infrastructure_event": {
+    "reason": "x86 12-hour hard cap shut down server; user confirmed",
+    "reported_shutdown_utc": "2026-10-11T05:49:00Z",
+    "restart_utc": "2026-10-11T06:03:00Z",
+    "lease_until_utc": "2026-10-11T18:04:00Z",
+    "missing_exit_and_result": 8,
+    "synthetic_exit": 143,
+    "originals_preserved": true,
+    "physical_failure": false,
+    "only_unscored_eight_retried": true,
+    "source_seed_options_unchanged": true
+  },
+  "full_execution_trace": {
+    "frames": 36025,
+    "valid": 36025,
+    "on_runs": 18,
+    "record": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/return-ground-truth-audit.json",
+    "sha256": "6fe4288829c45f7ef1c17f2e2a1bb289963f4d3d85d963cb38a2e97eb0c14046"
+  },
+  "retry_prefix_byte_identity": {
+    "files": 24,
+    "equal": 24,
+    "record": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/retry-prefix-equivalence.json",
+    "sha256": "78af11d3680389c84b72d2ece731b8b580ca21170928b8651a8b8a7838ffb23c"
+  },
+  "evaluation_audit_io": {
+    "initial_reader_error": "existing raw JSONL had been automatically losslessly compressed to .zst",
+    "resolution": "server-only streaming decompression for independent GT and byte checks",
+    "controller_changes": 0,
+    "physical_retries_for_audit": 0,
+    "artifact": "egomap70-audit-results-v2.py",
+    "baseline_reference_unavailable": {
+      "seed": 63005,
+      "file": "own-controller.jsonl",
+      "old_path": "/home/ubuntu/ugrp-sim/arm/egomap68-batch/data/egomap68-63005-baseline/own-controller.jsonl",
+      "fallback": "preserved original artifacts.sha256.json.zst hash; no reconstructed old raw",
+      "new_run_raw_preserved": true
+    },
+    "local_helper_launch": "Initial system Python imported adjacent operator.py instead of stdlib operator; rerun isolated Python (-I), metadata only, no physics or controller changes."
+  },
+  "finalized_utc": "2026-10-11T07:03:03.164339+00:00"
 }
