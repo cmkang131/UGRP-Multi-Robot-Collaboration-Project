@@ -65,6 +65,15 @@ class StorageTests(unittest.TestCase):
         for value in ('nan', '-1', 'inf'):
             self.assertEqual(budget.main(['--host', 'arm', '--runs', '1', '--per-run-mb', value]), 1)
 
+    def test_low_space_alarm_returns_failure(self):
+        with mock.patch.object(budget, 'free_bytes', return_value=14 * budget.GIB):
+            self.assertEqual(budget.main(['--host', 'mac', '--alert-only']), 1)
+
+    def test_compressed_legacy_estimate_without_original_size_refuses(self):
+        self.write('trace.json.zst', 20)
+        with self.assertRaises(ValueError):
+            budget.estimate(self.root, 1)
+
     def test_legacy_estimate_requires_denominator_and_completion(self):
         self.write('trace.jsonl', 80000)
         (self.root / 'RUN_META.json').unlink()
@@ -117,6 +126,11 @@ class StorageTests(unittest.TestCase):
         (self.root / 'COMPRESSED.jsonl').write_text(json.dumps({
             'compressed_path': 'trace.jsonl.zst', 'bytes': 100000}) + '\n')
         self.assertEqual(prune.plan(self.root, 123)['bytes'], 20)
+        self.assertGreaterEqual(budget.estimate(self.root, None), 125000)
+
+    def test_compression_manifest_is_never_compressed_recursively(self):
+        self.write('COMPRESSED.jsonl', 70000)
+        self.assertEqual(compress.compress_run(self.root)['files'], 0)
 
     def test_classes_unfinished_active_and_parent_study_are_preserved(self):
         self.write('frame.png')
@@ -227,6 +241,37 @@ class StorageTests(unittest.TestCase):
         meta = json.loads((root / 'RUN_META.json').read_text())
         self.assertEqual((meta['class'], meta['pr'], meta['batch'], meta['active']), ('dev', 123, 'batch', False))
         self.assertEqual((root / 'EXIT').read_text(), '0\n')
+
+    def test_archive_dry_run_skips_unfinished_and_unevaluated(self):
+        import time
+        base = Path(self.tmp.name)
+        runs, tools, archive, commands = [base / s for s in ('runs', 'tools', 'archive', 'bin')]
+        for p in (runs, tools / 'scripts', archive, commands):
+            p.mkdir(parents=True)
+        for executable in ('mountpoint', 'flock'):
+            p = commands / executable
+            p.write_text('#!/bin/sh\nexit 0\n')
+            p.chmod(0o755)
+        (tools / 'scripts/compress_json_traces.py').write_text('import sys; print(sys.argv[1])\n')
+        for name in ('unfinished', 'unevaluated', 'complete'):
+            root = runs / name
+            root.mkdir()
+            if name != 'unfinished':
+                (root / 'EXIT').touch()
+            if name == 'complete':
+                (root / 'summary.json').write_text('{}')
+            for p in [*root.iterdir(), root]:
+                os.utime(p, (time.time()-1800, time.time()-1800))
+        script = Path(__file__).resolve().parents[1] / 'scripts/ugrp_auto_archive.sh'
+        result = subprocess.run(['bash', str(script), '--dry-run'], capture_output=True, text=True,
+                                env={**os.environ, 'PATH': str(commands) + os.pathsep + os.environ['PATH'],
+                                     'UGRP_RUNS': str(runs), 'UGRP_ARCHIVE': str(archive),
+                                     'UGRP_STORAGE_TOOLS': str(tools), 'UGRP_ARCHIVE_LOCK': str(base / 'archive.lock')})
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn(str(runs / 'complete'), result.stdout)
+        self.assertNotIn(str(runs / 'unfinished'), result.stdout)
+        self.assertNotIn(str(runs / 'unevaluated'), result.stdout)
+        self.assertTrue((runs / 'complete').is_dir())
 
 
 if __name__ == '__main__':

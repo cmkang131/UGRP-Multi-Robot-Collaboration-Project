@@ -26,16 +26,27 @@ def estimate(batch: Path, past_runs: int | None) -> int:
     measured = list(files(batch))
     if not measured:
         raise ValueError('past batch is empty')
+    # Recovered archives may already be compressed; estimate original raw peak.
+    original_sizes = {}
+    for manifest in measured:
+        if manifest.name == 'COMPRESSED.jsonl':
+            for line in manifest.read_text().splitlines():
+                item = json.loads(line)
+                original_sizes[manifest.parent / item['compressed_path']] = int(item['bytes'])
+    if any(p.name.endswith(('.json.zst', '.jsonl.zst')) and p not in original_sizes for p in measured):
+        raise ValueError('compressed past batch lacks original sizes; supply --per-run-mb from raw evidence')
+    def size_of(paths):
+        return sum(max(p.stat().st_size, original_sizes.get(p, 0)) for p in paths)
     runs = [p.parent for p in measured if p.name == 'RUN_META.json' and (p.parent / 'EXIT').exists()]
     if runs and past_runs is None:
         # Use the largest finished run, not a mean that hides heavy failures.
-        size = max(sum(p.stat().st_size for p in files(run)) for run in runs)
+        size = max(size_of(files(run)) for run in runs)
     else:
         if not past_runs or past_runs < 1:
             raise ValueError('legacy batch needs --past-runs (including failures/HOST_ERROR)')
         if not (batch / 'EXIT').is_file():
             raise ValueError('past batch is not complete (EXIT absent)')
-        size = sum(p.stat().st_size for p in measured) / past_runs
+        size = size_of(measured) / past_runs
     return math.ceil(size * 1.25)  # explicit 25% estimate margin
 
 

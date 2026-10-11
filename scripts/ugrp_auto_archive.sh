@@ -10,13 +10,19 @@ dry=false
 if [[ ${1:-} == --dry-run ]]; then dry=true; elif [[ $# != 0 ]]; then exit 2; fi
 mountpoint -q "$A" || ls "$A" >/dev/null 2>&1
 mountpoint -q "$A" || exit 1
-exec 9>/tmp/ugrp-auto-archive.lock
+exec 9>"${UGRP_ARCHIVE_LOCK:-/tmp/ugrp-auto-archive.lock}"
 flock -n 9 || exit 0
 for d in "$R"/*/; do
   d=${d%/}; n=$(basename "$d")
   [[ -L "$d" ]] && continue
   [[ -f "$d/EXIT" ]] || continue
   [[ -n $(find "$d" -newermt '-20 min' -print -quit) ]] && continue
+  # Evaluator output/marker is required; EXIT alone is not an evaluation.
+  if [[ -z $(find "$d" -type f \( -name EVALUATED -o -name summary.json -o -name summary.json.zst \
+      -o -name result.json -o -name result.json.zst -o -name '*verdict*.json' -o -name '*verdict*.json.zst' \) -print -quit) ]]; then
+    echo "auto-archive skipped $n: evaluation output/marker absent" >&2
+    continue
+  fi
   if $dry; then
     python3 "$TOOLS/scripts/compress_json_traces.py" "$d" || continue
     continue
@@ -45,7 +51,7 @@ for d in "$R"/*/; do
   python3 - "$d" "$target" "$TOOLS" "$A/$n" <<'PY' || continue
 import os, pathlib, shutil, sys
 sys.path.insert(0, sys.argv[3])
-from scripts.storage_common import files, sha256, lock_run, idle_reason
+from scripts.storage_common import files, sha256, snapshot, lock_run, idle_reason
 from scripts.worktree_guard import refuse_if_in_use
 root = pathlib.Path(sys.argv[1])
 target, published = pathlib.Path(sys.argv[2]), pathlib.Path(sys.argv[4])
@@ -53,11 +59,23 @@ with lock_run(root):
     if idle_reason(root):
         raise SystemExit('run became active')
     refuse_if_in_use(root, 0, None)
-    def key(folder):
-        return {(p.relative_to(folder).as_posix(), p.stat().st_size, sha256(p)) for p in files(folder)}
+    def index(folder):
+        hashes, states = set(), {}
+        for p in files(folder):
+            name, before = p.relative_to(folder).as_posix(), snapshot(p)
+            hashes.add((name, before[2], sha256(p)))
+            if snapshot(p) != before:
+                raise SystemExit('file changed during archive verification')
+            states[name] = before
+        return hashes, states
     # Include the hash inventories themselves in this archive comparison.
-    if key(root) != key(target):
+    left, states = index(root)
+    right, _ = index(target)
+    if left != right:
         raise SystemExit('archive SHA-256 mismatch')
+    if states != {p.relative_to(root).as_posix(): snapshot(p) for p in files(root)}:
+        raise SystemExit('source changed after hashing')
+    refuse_if_in_use(root, 0, None)
     if published.exists() or published.is_symlink() or idle_reason(root):
         raise SystemExit('destination exists or run became active')
     target.rename(published)

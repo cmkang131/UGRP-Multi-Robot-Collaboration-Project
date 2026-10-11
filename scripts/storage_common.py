@@ -23,6 +23,17 @@ def files(root: Path):
                 yield path
 
 
+def run_dirs(root: Path):
+    """Find metadata without stat'ing every raw frame."""
+    if root.is_symlink():
+        return
+    for directory, dirs, names in os.walk(root, followlinks=False):
+        dirs[:] = sorted(d for d in dirs if not (Path(directory) / d).is_symlink())
+        marker = Path(directory) / 'RUN_META.json'
+        if 'RUN_META.json' in names and marker.is_file() and not marker.is_symlink():
+            yield Path(directory)
+
+
 def sha256(path: Path) -> str:
     with path.open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()

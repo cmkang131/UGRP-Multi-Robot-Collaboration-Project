@@ -15,7 +15,7 @@ import uuid
 if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.storage_common import (TRACE_LIMIT, atomic_text, files, hash_tsv, idle_reason,
-                                    inventory, lock_run, sha256, snapshot)
+                                    inventory, lock_run, run_dirs, sha256, snapshot)
 from scripts.worktree_guard import Refused, refuse_if_in_use
 
 REPO = 'kcm0127-dotcom/ugrp'
@@ -166,7 +166,7 @@ def main(argv=None):
             root = root.expanduser().absolute()
             if not root.is_dir():
                 raise ValueError(f'missing search root: {root}')
-            found.update(p.parent for p in files(root) if p.name == 'RUN_META.json')
+            found.update(run_dirs(root))
         rows = []
         for root in sorted(found):
             row = plan(root, a.pr)

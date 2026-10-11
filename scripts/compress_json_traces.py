@@ -34,7 +34,7 @@ def compress_run(root: Path, execute=False) -> dict:
     if reason:
         return {'run': str(root), 'skipped': reason, 'files': 0, 'saved_bytes': 0}
     candidates = [p for p in files(root) if p.suffix in {'.json', '.jsonl'} and p.stat().st_size > TRACE_LIMIT
-                  and p.name != 'RUN_META.json']
+                  and p.name not in {'RUN_META.json', 'COMPRESSED.jsonl'}]
     if not execute:
         return {'run': str(root), 'dry_run': True, 'files': len(candidates),
                 'input_bytes': sum(p.stat().st_size for p in candidates)}
