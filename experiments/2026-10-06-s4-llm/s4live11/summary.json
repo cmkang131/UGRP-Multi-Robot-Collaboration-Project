@@ -12,15 +12,21 @@
   "metrics": {
     "goal_B_landed": {
       "n": 0,
-      "N": 8
+      "N": 4,
+      "planned_N": 8,
+      "HOST_ERROR": 4
     },
     "beam_drop": {
       "n": 0,
-      "N": 8
+      "N": 4,
+      "HOST_ERROR": 4,
+      "partial_host_runs_observed_drops": 0
     },
     "cyan_drop": {
       "n": 0,
-      "N": 8
+      "N": 4,
+      "HOST_ERROR": 4,
+      "partial_host_runs_observed_drops": 0
     },
     "paths_m": [
       4.195266283703266,
@@ -44,7 +50,8 @@
     ],
     "completed_eight_carry_legs": {
       "n": 3,
-      "N": 8
+      "N": 4,
+      "HOST_ERROR": 4
     },
     "messages_sent": 195,
     "GO_ACK_cycles": [
@@ -406,7 +413,12 @@
         "r1": "PARTNER_ABORT",
         "r2": "REFIX_HOVER_BARRIER_TIMEOUT"
       },
-      "termination_cause": "CLIPPED_REGRASP_TIMEOUT"
+      "termination_cause": "CLIPPED_REGRASP_TIMEOUT",
+      "adjudication": {
+        "class": "DEV_EVALUABLE",
+        "raw_verdict_preserved": true,
+        "included_in_goal_denominator": true
+      }
     },
     {
       "name": "s4live11-peer_ko-s601-v182",
@@ -703,7 +715,12 @@
         }
       },
       "s3_failures": {},
-      "termination_cause": "ROUTE_COMPLETE_BUT_GOAL_OFFSET"
+      "termination_cause": "ROUTE_COMPLETE_BUT_GOAL_OFFSET",
+      "adjudication": {
+        "class": "DEV_EVALUABLE",
+        "raw_verdict_preserved": true,
+        "included_in_goal_denominator": true
+      }
     },
     {
       "name": "s4live11-leader_ko-s601-v182",
@@ -1024,7 +1041,12 @@
         }
       },
       "s3_failures": {},
-      "termination_cause": "ROUTE_COMPLETE_BUT_GOAL_OFFSET"
+      "termination_cause": "ROUTE_COMPLETE_BUT_GOAL_OFFSET",
+      "adjudication": {
+        "class": "DEV_EVALUABLE",
+        "raw_verdict_preserved": true,
+        "included_in_goal_denominator": true
+      }
     },
     {
       "name": "s4live11-structured-s601-v182",
@@ -1342,7 +1364,12 @@
         }
       },
       "s3_failures": {},
-      "termination_cause": "ROUTE_COMPLETE_BUT_GOAL_OFFSET"
+      "termination_cause": "ROUTE_COMPLETE_BUT_GOAL_OFFSET",
+      "adjudication": {
+        "class": "DEV_EVALUABLE",
+        "raw_verdict_preserved": true,
+        "included_in_goal_denominator": true
+      }
     },
     {
       "name": "s4live11-no_comm-s602-v182",
@@ -1639,7 +1666,15 @@
         "r1": "PAIR_VISUAL_LEASE_EXPIRED",
         "r2": "PAIR_VISUAL_LEASE_EXPIRED"
       },
-      "termination_cause": "TRANSPORT_TIMEOUT_THEN_LEASE"
+      "termination_cause": "TRANSPORT_TIMEOUT_THEN_LEASE",
+      "adjudication": {
+        "class": "HOST_ERROR",
+        "cause": "SSH_TUNNEL_DISCONNECT",
+        "robot_failure": false,
+        "raw_verdict_preserved": true,
+        "included_in_goal_denominator": false,
+        "goal_B_landed": null
+      }
     },
     {
       "name": "s4live11-peer_ko-s602-v182",
@@ -1936,7 +1971,15 @@
         "r1": "PAIR_VISUAL_LEASE_EXPIRED",
         "r2": "PAIR_VISUAL_LEASE_EXPIRED"
       },
-      "termination_cause": "TRANSPORT_TIMEOUT_THEN_LEASE"
+      "termination_cause": "TRANSPORT_TIMEOUT_THEN_LEASE",
+      "adjudication": {
+        "class": "HOST_ERROR",
+        "cause": "SSH_TUNNEL_DISCONNECT",
+        "robot_failure": false,
+        "raw_verdict_preserved": true,
+        "included_in_goal_denominator": false,
+        "goal_B_landed": null
+      }
     },
     {
       "name": "s4live11-leader_ko-s602-v182",
@@ -2233,7 +2276,15 @@
         "r1": "PAIR_VISUAL_LEASE_EXPIRED",
         "r2": "PAIR_VISUAL_LEASE_EXPIRED"
       },
-      "termination_cause": "TRANSPORT_TIMEOUT_THEN_LEASE"
+      "termination_cause": "TRANSPORT_TIMEOUT_THEN_LEASE",
+      "adjudication": {
+        "class": "HOST_ERROR",
+        "cause": "SSH_TUNNEL_DISCONNECT",
+        "robot_failure": false,
+        "raw_verdict_preserved": true,
+        "included_in_goal_denominator": false,
+        "goal_B_landed": null
+      }
     },
     {
       "name": "s4live11-structured-s602-v182",
@@ -2531,7 +2582,15 @@
         "r1": "PAIR_VISUAL_LEASE_EXPIRED",
         "r2": "PAIR_VISUAL_LEASE_EXPIRED"
       },
-      "termination_cause": "TRANSPORT_TIMEOUT_THEN_LEASE"
+      "termination_cause": "TRANSPORT_TIMEOUT_THEN_LEASE",
+      "adjudication": {
+        "class": "HOST_ERROR",
+        "cause": "SSH_TUNNEL_DISCONNECT",
+        "robot_failure": false,
+        "raw_verdict_preserved": true,
+        "included_in_goal_denominator": false,
+        "goal_B_landed": null
+      }
     }
   ],
   "model_accounting": {
@@ -2654,8 +2713,9 @@
     "scope": "offline regression and startup preflight only; excludes subsequent live model batch"
   },
   "status_counts": {
-    "PAIR_STOP": 5,
-    "DEV_STAGE_FINISHED": 3
+    "HOST_ERROR": 4,
+    "DEV_STAGE_FINISHED": 3,
+    "PAIR_STOP": 1
   },
   "remaining_causes": {
     "TRANSPORT_TIMEOUT_THEN_LEASE": {
@@ -2666,11 +2726,13 @@
       "timeout_wall_s": 180,
       "SSH_error": "Can't assign requested address / Broken pipe",
       "cause_scope": "tunnel disconnect observed; exact network root cause undetermined; no HTTP429 observed",
-      "no_command_duplicate_after_terminal": true
+      "no_command_duplicate_after_terminal": true,
+      "classification": "HOST_ERROR",
+      "robot_failure": false
     },
     "ROUTE_COMPLETE_BUT_GOAL_OFFSET": {
       "n": 3,
-      "N": 8,
+      "N": 4,
       "goal_tolerance_m": 0.02,
       "observed_error_m": [
         0.5259685196915462,
@@ -2682,7 +2744,7 @@
     },
     "CLIPPED_REGRASP_TIMEOUT": {
       "n": 1,
-      "N": 8,
+      "N": 4,
       "condition": "no_comm",
       "seed": 601,
       "own_RGB_BAND_CLIPPED": {
@@ -2835,7 +2897,8 @@
     "host_interrupted_extra_attempts": 4,
     "submitted_attempts": 12,
     "all_raw_inventory_ARM_SHA_verified": 12,
-    "research_success_claimed": false
+    "research_success_claimed": false,
+    "adjudication_note": "Seed602 four cases HOST_ERROR per supervisor review; original all-eight metrics and every raw verdict retained separately."
   },
   "interrupted_attempts": {
     "classification": "HOST_ERROR",
@@ -2998,5 +3061,73 @@
     "known_failure": "one inspected shard: existing tests/test_s4_live5.py collection missing mujoco; other failed shard causes unreviewed",
     "all_passed": false
   },
-  "PR_state": "DRAFT; supervisor merges"
+  "PR_state": "DRAFT; supervisor merges",
+  "adjudication_revision": {
+    "at": "2026-10-11",
+    "authority": "supervisor-confirmed tunnel failure; user s4live12",
+    "prior_summary": "experiments/2026-10-06-s4-llm/s4live11/summary-before-host-reclassification.json",
+    "sha256": "4ae0c33409aca6901db63ef9c550ce0aa75c88fc55c78d32bfcf970dd5868c2c",
+    "raw_modified": false
+  },
+  "metrics_before_host_reclassification": {
+    "goal_B_landed": {
+      "n": 0,
+      "N": 8
+    },
+    "beam_drop": {
+      "n": 0,
+      "N": 8
+    },
+    "cyan_drop": {
+      "n": 0,
+      "N": 8
+    },
+    "paths_m": [
+      4.195266283703266,
+      5.857686684947281,
+      5.855071251673471,
+      5.855692716306342,
+      0.15469678763829114,
+      0.15438036941290964,
+      0.15476562246720582,
+      0.15523733318919844
+    ],
+    "supported_carry_legs": [
+      6,
+      8,
+      8,
+      8,
+      1,
+      1,
+      1,
+      1
+    ],
+    "completed_eight_carry_legs": {
+      "n": 3,
+      "N": 8
+    },
+    "messages_sent": 195,
+    "GO_ACK_cycles": [
+      6,
+      8,
+      8,
+      8,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "host_error": {
+    "n": 4,
+    "N": 8,
+    "seed": 602,
+    "classification": "HOST_ERROR",
+    "cause": "SSH_TUNNEL_DISCONNECT",
+    "not_research_failure": true
+  },
+  "status_counts_original": {
+    "PAIR_STOP": 5,
+    "DEV_STAGE_FINISHED": 3
+  }
 }
