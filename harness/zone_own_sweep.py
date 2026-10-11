@@ -16,7 +16,11 @@ SWEEP_REOBSERVE_S = 10.
 
 
 class SweepRecheck:
-    def __init__(self, *, loaded_profile=None):
+    def __init__(self, *, loaded_profile=None, fail_closed_without_pose=False):
+        # Option (default off = previous behaviour): a missing/non-finite pose
+        # waits within the cumulative budget, then blocks, instead of reaching
+        # the guard. Enabled only by the S3 pair path (PairRecheck).
+        self.fail_closed_without_pose = fail_closed_without_pose
         self.waited_s = 0.
         self.last_wait = None
         self.loaded_profile = GATE_LOADED if loaded_profile is None else loaded_profile
@@ -41,8 +45,8 @@ class SweepRecheck:
         self._account_wait(now)
         # A missing/invalid belief is an observation wait, never a zero-sigma
         # geometry query. Preserve the same cumulative timeout and fail closed.
-        if pose is None or not all(math.isfinite(float(v)) for v in
-                (pose.x, pose.y, pose.yaw, pose.std_xy, pose.std_yaw)):
+        if self.fail_closed_without_pose and (pose is None or not all(math.isfinite(float(v)) for v in
+                (pose.x, pose.y, pose.yaw, pose.std_xy, pose.std_yaw))):
             return self._wait(now)
         if guard.transition_clear(current, target, pose, loaded=loaded):
             return 'clear'

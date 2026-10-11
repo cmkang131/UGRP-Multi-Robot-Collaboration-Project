@@ -40,8 +40,18 @@ def test_all_long_routes_statically_fit_unchanged_map_door_and_bounds():
 
 def test_full_distance_pulses_pass_real_ports_once_and_never_turn(tmp_path,monkeypatch):
     from tests.test_s3_full_route import probe
+    from scripts import run_s3_continuous_distance as runner
+    from harness import zone_s3_recovery_contract as legacy
     from harness.zone_s3_synchronized_carry import attach as coupled,OPTION as CARRY
     from harness.zone_s3_integer_carry import attach,OPTION,PulseWindows
+    # The motor stub tests current ports with this diagnostic's committed inputs.
+    # Main's speed changes invalidate the historical v152 execution seal; keep
+    # that production check intact rather than admitting new code as old v152.
+    def unit_inputs(sha):
+        b=runner.bundle(sha,.85,18601)
+        b['execution_bundle_id']='unit-fixture-not-runnable'
+        return b
+    monkeypatch.setattr(legacy,'bundle',unit_inputs)
     p=probe(tmp_path,monkeypatch)
     try:
         for d in (.85,1.5,2.5,4.):
