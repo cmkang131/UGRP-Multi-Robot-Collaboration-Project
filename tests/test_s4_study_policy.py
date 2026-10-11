@@ -84,6 +84,21 @@ def test_extractively_trim_read_history_preserves_all_unread_and_failures():
     assert x['history_summary']['omitted_read_messages']==2
 
 
+def test_invalid_reply_does_not_acknowledge_trimmed_inbox(monkeypatch):
+    from harness import s4_event_policy as policy
+    from types import SimpleNamespace
+    trial=object.__new__(Trial);trial.prompt_seen={}
+    prepared=SimpleNamespace(bundled=SimpleNamespace(payload_dict=lambda:{'inbox':[{'message_id':'unread'}]}))
+    call=SimpleNamespace(actor='r1')
+    result=SimpleNamespace(action=None)
+    monkeypatch.setattr(policy,'bind',lambda *a,**kw:lambda *a,**kw:result)
+    assert trial.finish_call(call,prepared,'bad') is result
+    assert trial.prompt_seen=={}
+    result.action={'kind':'continue'}
+    trial.finish_call(call,prepared,'valid')
+    assert trial.prompt_seen=={'r1':{'unread'}}
+
+
 def test_map_image_toggle_preserves_existing_figure_only_in_legacy_diagnostic():
     b=payload();r=dict(messages=[{'role':'system','content':'old'},{'role':'user','content':json.dumps(b)}],
         images=[{'label':'CURRENT OWN WRIST RGB','image':'data:image/jpeg;base64,YQ=='},

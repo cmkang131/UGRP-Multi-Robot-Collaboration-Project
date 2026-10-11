@@ -130,8 +130,9 @@ class Trial(prior.Trial):
                 raise prior.epoch.base.pair.zp.ProtocolError('removed static_map is not a decision source')
             return checked
         result=bind(prior.epoch.base.Trial.finish_call,validate_reply=validate)(self,call,prepared,raw,**kwargs)
-        self.prompt_seen.setdefault(call.actor,set()).update(
-            m['message_id'] for m in prepared.bundled.payload_dict().get('inbox',[]))
+        if result.action is not None:
+            self.prompt_seen.setdefault(call.actor,set()).update(
+                m['message_id'] for m in prepared.bundled.payload_dict().get('inbox',[]))
         return result
 
     def on_executor_event(self,event,*,at_s):
