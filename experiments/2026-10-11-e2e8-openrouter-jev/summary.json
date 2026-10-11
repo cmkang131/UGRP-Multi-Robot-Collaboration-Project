@@ -669,7 +669,21 @@
     "mac_simulation_lite_bytes": 7278761,
     "large_json": "33 files compressed with zstd; decompressed SHA256 verified",
     "pending": [],
-    "mac_files_rechecked_against_ARM": 413
+    "mac_files_rechecked_against_ARM": 413,
+    "relay_artifact": {
+      "verified": true,
+      "native_verification": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e8-relay-resume-evidence",
+        "files": 56,
+        "hash_matches": 56,
+        "inventory_sha256": "98c7accb2ee9c79407572a0810dc9d537e23e38a9440944a33dca6926c7c89bb",
+        "reused": false,
+        "receiver_seconds": 0.231
+      },
+      "marker_sha256": "71beacd6b9e3485dd9e36eb547729709d4049bffdfa77f1d90f5ef0b611078fe"
+    }
   },
   "remaining": [
     "Initial window contains only turns/holds, no translation and no B route. Frontier transition is unqualified; full trajectory was not run.",
@@ -704,12 +718,17 @@
   "local_evidence": {
     "path": "/Users/changmin/projects/ugrp/outputs/e2e8-resume-20261011",
     "manifest": "resume-evidence-sha256.json",
-    "manifest_sha256": "9a1ee9c420a32976171ab0fc8e59218068d6cce5f59eec592c89b3251c4236d1"
+    "manifest_sha256": "71ebee71d193cbe6e3f4b5b6ec11d72242f168c5795e88b2f24d6e1ec20a3e18"
   },
   "host_cleanup": {
     "own_simulations_alive": 0,
     "own_relays_and_tunnel_stopped": true,
     "own_eight_run_leases_released": true,
-    "VM_lifecycle_unchanged": true
+    "VM_lifecycle_unchanged": true,
+    "final_host_evidence_sha256": "4def483f9c12f9b0214ccd24377d649e01c78c88a4d1b26d7c66126ebfc57d80",
+    "remaining_other_leases": [
+      "egojump-98ffd823-pipeline-a",
+      "egojump-98ffd823-pipeline-b"
+    ]
   }
 }
