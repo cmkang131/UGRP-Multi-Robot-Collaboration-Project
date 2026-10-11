@@ -1,0 +1,170 @@
+{
+  "schema": "ugrp.s4grip3.plan.v1",
+  "research_result": false,
+  "max_concurrent": 8,
+  "LP_NUM_THREADS": 4,
+  "cap_sim_s_per_job": 65.4,
+  "seeds": {
+    "explore": [
+      32200,
+      32201
+    ],
+    "confirm": [
+      52200,
+      52201
+    ]
+  },
+  "modes": [
+    "existing",
+    "edge_roi",
+    "absence_vote",
+    "active_reobserve"
+  ],
+  "judgment": "First5 post-grasp labels bilateral; loss onset first of3 zero; first alarm before onset is early, not TP; hold unknown included; intervention-induced drops counted",
+  "frozen_paths_sha256": {
+    "harness/s4_grip_visual.py": "094ff01d3727068b0de0798585076690e2fd8ab2db9bc1931d0ee0b020b65512",
+    "harness/s4_pair_stage.py": "35b24dadbf4c3e9cdef5b0421711291877f8f59bbc5e0fc87917ddeed4993794",
+    "harness/s4_pair_handshake.py": "d2e869efa81294a369db2cd0c9caa1410a5ac9864298f0689dd15daacbdc4a75",
+    "scripts/run_s4_live.py": "e910e3d0b75feacc1949b029f58608a1901eaf3e15f27c9a2e51779def022cce",
+    "scripts/run_s4_grip_dataset.py": "ace1b4b145ebedb5dccf23e2e8be94e89692ba19225c94cd6bf9733cf562c110",
+    "sim/s4_grip_dataset.py": "5126b7bb8a331a43c135cd0ce4a0edaf800604fc38ac7d0c279ae6544ca10975"
+  },
+  "runs": [
+    {
+      "name": "s4grip3-existing-explore-r1",
+      "mode": "existing",
+      "split": "explore",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_r3",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip3-existing-explore-r1/raw",
+        "--job",
+        "s4grip3-existing-explore-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip3-existing-confirm-r1",
+      "mode": "existing",
+      "split": "confirm",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_r3",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip3-existing-confirm-r1/raw",
+        "--job",
+        "s4grip3-existing-confirm-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip3-edge_roi-explore-r1",
+      "mode": "edge_roi",
+      "split": "explore",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_r3",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip3-edge_roi-explore-r1/raw",
+        "--job",
+        "s4grip3-edge_roi-explore-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip3-edge_roi-confirm-r1",
+      "mode": "edge_roi",
+      "split": "confirm",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_r3",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip3-edge_roi-confirm-r1/raw",
+        "--job",
+        "s4grip3-edge_roi-confirm-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip3-absence_vote-explore-r1",
+      "mode": "absence_vote",
+      "split": "explore",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_r3",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip3-absence_vote-explore-r1/raw",
+        "--job",
+        "s4grip3-absence_vote-explore-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip3-absence_vote-confirm-r1",
+      "mode": "absence_vote",
+      "split": "confirm",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_r3",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip3-absence_vote-confirm-r1/raw",
+        "--job",
+        "s4grip3-absence_vote-confirm-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip3-active_reobserve-explore-r1",
+      "mode": "active_reobserve",
+      "split": "explore",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_r3",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip3-active_reobserve-explore-r1/raw",
+        "--job",
+        "s4grip3-active_reobserve-explore-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip3-active_reobserve-confirm-r1",
+      "mode": "active_reobserve",
+      "split": "confirm",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_r3",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip3-active_reobserve-confirm-r1/raw",
+        "--job",
+        "s4grip3-active_reobserve-confirm-r1",
+        "--execute"
+      ]
+    }
+  ]
+}

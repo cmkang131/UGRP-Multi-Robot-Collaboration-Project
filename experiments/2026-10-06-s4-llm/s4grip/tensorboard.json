@@ -1,0 +1,83 @@
+{
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1010-s4grip-offline",
+  "runs": [
+    {
+      "run": "1010-s4grip-offline/dataset",
+      "values": {
+        "offline/frames": 49232.0,
+        "offline/held_frames": 184.0,
+        "offline/lost_frames": 0.0,
+        "offline/contact_loss_episodes": 47.0,
+        "offline/loss_episodes_with_rgb": 0.0,
+        "offline/unique_held_images": 92.0,
+        "offline/partial_frames": 4.0,
+        "offline/physics_runs": 0.0,
+        "offline/render_calls": 0.0,
+        "result/model_calls": 0.0
+      },
+      "event_and_http_match": true
+    },
+    {
+      "run": "1010-s4grip-offline/legacy-cv",
+      "values": {
+        "offline/held_accept": 0.0,
+        "offline/held_reject": 184.0,
+        "offline/held_frames": 184.0,
+        "offline/pregrasp_false_held": 0.0,
+        "offline/pregrasp_frames": 49044.0,
+        "offline/physics_runs": 0.0,
+        "offline/render_calls": 0.0,
+        "result/model_calls": 0.0
+      },
+      "event_and_http_match": true
+    },
+    {
+      "run": "1010-s4grip-offline/s4-llm-unmeasured",
+      "values": {
+        "offline/recorded_predictions": 0.0,
+        "offline/held_frames": 184.0,
+        "offline/lost_frames": 0.0,
+        "offline/physics_runs": 0.0,
+        "offline/render_calls": 0.0,
+        "result/model_calls": 0.0
+      },
+      "event_and_http_match": true
+    }
+  ],
+  "pinned_tags": [
+    "offline/held_frames",
+    "offline/lost_frames",
+    "offline/contact_loss_episodes",
+    "offline/held_accept",
+    "offline/held_reject",
+    "offline/recorded_predictions",
+    "offline/physics_runs",
+    "result/model_calls"
+  ],
+  "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fheld_frames%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flost_frames%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcontact_loss_episodes%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fheld_accept%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fheld_reject%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Frecorded_predictions%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fphysics_runs%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E1010-s4grip-offline%2F#timeseries",
+  "hparams_visible_columns": [
+    "case",
+    "policy",
+    "outcome",
+    "source_sha"
+  ],
+  "native_ui_verified": true,
+  "scope": "counts only; no S4 accuracy/delay fabricated",
+  "native_ui": {
+    "profile": "강",
+    "tab": "964002043",
+    "time_series_selected_runs": 3,
+    "pinned_cards": 8,
+    "held_frames_visible": 184,
+    "lost_frames_visible": 0,
+    "hparams_columns": [
+      "case",
+      "policy",
+      "outcome",
+      "source_sha"
+    ],
+    "hparams_metric": "result/model_calls",
+    "hparams_scope": "global table; Time Series filtered to these three runs",
+    "new_video": "none; no render/video creation"
+  }
+}

@@ -200,3 +200,7 @@
 - 2026-10-09 S3 `zone-s3-sweep-v149`는 원본 `b73ce193` 및 raw 증거를 보존한 과거 DEV 실행이다. 후속 실행은 pre-GO 재대기와 사전 등록된 motion 옵션 선택을 묶은 `zone-s3-odometry-v150` /7.43.0을 사용한다. 기존 실행/실패 기록과 재생 소스는 삭제·덮어쓰지 않는다.
 
 - 2026-10-10 S3 `zone-s3-odometry-v150` / `zone-s3-consistency-v151`는 원본 SHA `4c9eb3aa` / `3ec2d781`와 raw를 보존하는 과거 DEV 실행이다. 새 실행은 문 임대·자기 RGB 정렬의 `zone-s3-recovery-v152` /7.45.0을 사용한다. PF 다양성 후보는 저장 재생에서 미채택되어 off를 유지한다. 과거 번들의 봉인은 완화하지 않는다.
+
+- 2026-10-11 S4 `zone-s4-pair-live-v170` /7.63.0은 비활성 endpoint heartbeat 누락이 확인된 과거 DEV 후보다. 실행 소스 `254ffd4844db9f14968feae723de7cf0ef883fdf`, 원본 plan.json·8개 raw·해시는 s4live7 기록에 보존한다. 보완 비교는 v171 /7.64.0을 사용하며 과거 실행의 소스·판정을 덮어쓰지 않는다.
+
+- 2026-10-11 S4 `zone-s4-pair-live-v173` /7.66.0 명령표는 interpreter 진입 전 HOST EXIT127 8/8로 퇴역한다(물리·모델0). 소스 `95a258dc8245df3e045ff107e679ac1d19466a50`와 첫 plan.json·raw는 s4live8 기록에 보존한다. 실제 모델·물리 비교는 가상환경 경로를 명시한 v174 /7.67.0, 소스 `7b25757369d0a069d9c5fa47d916caec35681382`이다.

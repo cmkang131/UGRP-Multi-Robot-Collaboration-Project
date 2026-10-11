@@ -1,0 +1,2710 @@
+{
+  "status": "COMPLETE_EVALUATED_ARCHIVED_FETCH_LITE",
+  "research_result": false,
+  "bundle": "zone-s4-pair-live-v181",
+  "metrics": {
+    "claim": {
+      "n": 8,
+      "N": 8
+    },
+    "go_ack": {
+      "n": 8,
+      "N": 8
+    },
+    "simultaneous_departure": {
+      "n": 8,
+      "N": 8
+    },
+    "reobserve": {
+      "n": 8,
+      "N": 8
+    },
+    "regrasp": {
+      "n": 8,
+      "N": 8
+    },
+    "fresh_go_ack_continue": {
+      "n": 8,
+      "N": 8
+    },
+    "goal_arrival": {
+      "n": 0,
+      "N": 8
+    },
+    "cyan_drop": {
+      "n": 0,
+      "N": 8
+    },
+    "third_supported_leg": {
+      "n": 8,
+      "N": 8
+    },
+    "complete_eight_supported_legs": {
+      "n": 0,
+      "N": 8
+    },
+    "beam_drop": {
+      "n": 0,
+      "N": 8
+    },
+    "lease_expiry": {
+      "n": 1,
+      "N": 8
+    },
+    "total_supported_carry_path_m": [
+      2.502071191092302,
+      3.3453226059367713,
+      3.350377557528556,
+      3.342074042193574,
+      3.3424791473996813,
+      2.5031406525948183,
+      3.349491605512382,
+      3.347809170668179
+    ],
+    "fifth_supported_leg": {
+      "n": 6,
+      "N": 8
+    },
+    "provider_individual_quota_stop": {
+      "n": 7,
+      "N": 8
+    }
+  },
+  "baseline": "../s4live10-r2/summary.json",
+  "validation": {
+    "passed": 34,
+    "tests": [
+      "tests/test_s4_live10.py"
+    ],
+    "log_path": "/Users/changmin/projects/ugrp/outputs/s4live10b-offline/pytest-full-guards.log",
+    "log_sha256": "4fd82b20043d5958d617455206be6177b545ebafbd6c532f73cec8f5655fc692",
+    "source_sha": "a9c0e3d8030ff3ad3869310a2339cbfac929aec5",
+    "Mac_physics": 0,
+    "Mac_render": 0,
+    "offline_real_model_calls": 0
+  },
+  "source_sha": "a9c0e3d8030ff3ad3869310a2339cbfac929aec5",
+  "plan_sha256": "0d1199ced34e02dc2769858eaae1fe9bc7e2d43c3bb85e5f350d02a1b3400d9f",
+  "admission_resources": {
+    "loadavg": [
+      5.10986328125,
+      10.0439453125,
+      38.53564453125
+    ],
+    "mem_available_GiB": 55.93531036376953
+  },
+  "admitted": 8,
+  "initial_checks": {
+    "s4live10c-leader_ko-s601-v181": {
+      "status": "PASS",
+      "checked_after_s": 181.86099279200425,
+      "first": {
+        "sim_s": 2.0,
+        "frames": 41,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 6.362558345696062e-06,
+            "arm_delta_m": 7.102999742896918e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          },
+          "r2": {
+            "base_delta_m": 6.202277598230425e-06,
+            "arm_delta_m": 6.949679691795732e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          }
+        }
+      },
+      "last": {
+        "sim_s": 26.0,
+        "frames": 521,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 0.02807051184369124,
+            "arm_delta_m": 0.10379346357851553,
+            "commands": 713,
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_delta_m": 0.05041550198630065,
+            "arm_delta_m": 0.12241291625002709,
+            "commands": 716,
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      }
+    },
+    "s4live10c-leader_ko-s602-v181": {
+      "status": "PASS",
+      "checked_after_s": 181.8611106669996,
+      "first": {
+        "sim_s": 2.0,
+        "frames": 41,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 6.368485665087877e-06,
+            "arm_delta_m": 7.052558680882474e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          },
+          "r2": {
+            "base_delta_m": 6.406955043879727e-06,
+            "arm_delta_m": 7.218967806422592e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          }
+        }
+      },
+      "last": {
+        "sim_s": 26.0,
+        "frames": 521,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 0.040460950599024874,
+            "arm_delta_m": 0.11560908777592306,
+            "commands": 713,
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_delta_m": 0.048987778736346715,
+            "arm_delta_m": 0.12203401049939117,
+            "commands": 716,
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      }
+    },
+    "s4live10c-no_comm-s601-v181": {
+      "status": "PASS",
+      "checked_after_s": 181.86113641702104,
+      "first": {
+        "sim_s": 2.0,
+        "frames": 41,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 6.362558345696062e-06,
+            "arm_delta_m": 7.102999742896918e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          },
+          "r2": {
+            "base_delta_m": 6.202277598230425e-06,
+            "arm_delta_m": 6.949679691795732e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          }
+        }
+      },
+      "last": {
+        "sim_s": 27.0,
+        "frames": 541,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 0.039244985420196436,
+            "arm_delta_m": 0.1141088160652241,
+            "commands": 713,
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_delta_m": 0.060007196898387155,
+            "arm_delta_m": 0.13505817136471496,
+            "commands": 717,
+            "translation_commands": 3,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      }
+    },
+    "s4live10c-no_comm-s602-v181": {
+      "status": "PASS",
+      "checked_after_s": 181.86114612501115,
+      "first": {
+        "sim_s": 2.0,
+        "frames": 41,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 6.368485665087877e-06,
+            "arm_delta_m": 7.052558680882474e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          },
+          "r2": {
+            "base_delta_m": 6.406955043879727e-06,
+            "arm_delta_m": 7.218967806422592e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          }
+        }
+      },
+      "last": {
+        "sim_s": 27.0,
+        "frames": 541,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 0.02818267397223344,
+            "arm_delta_m": 0.10493949666268952,
+            "commands": 713,
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_delta_m": 0.06022323585705722,
+            "arm_delta_m": 0.13140122884126806,
+            "commands": 716,
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      }
+    },
+    "s4live10c-peer_ko-s601-v181": {
+      "status": "PASS",
+      "checked_after_s": 181.8611544999876,
+      "first": {
+        "sim_s": 2.0,
+        "frames": 41,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 6.362558345696062e-06,
+            "arm_delta_m": 7.102999742896918e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          },
+          "r2": {
+            "base_delta_m": 6.202277598230425e-06,
+            "arm_delta_m": 6.949679691795732e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          }
+        }
+      },
+      "last": {
+        "sim_s": 27.0,
+        "frames": 541,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 0.028379318640472974,
+            "arm_delta_m": 0.10403210686701235,
+            "commands": 713,
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_delta_m": 0.04917650141109645,
+            "arm_delta_m": 0.1211447176475844,
+            "commands": 716,
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      }
+    },
+    "s4live10c-peer_ko-s602-v181": {
+      "status": "PASS",
+      "checked_after_s": 181.86116312496597,
+      "first": {
+        "sim_s": 1.0,
+        "frames": 21,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 3.2349453299618734e-06,
+            "arm_delta_m": 3.686781868315999e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          },
+          "r2": {
+            "base_delta_m": 3.2389369163365365e-06,
+            "arm_delta_m": 3.719572513814266e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          }
+        }
+      },
+      "last": {
+        "sim_s": 27.0,
+        "frames": 541,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 0.04044540027014346,
+            "arm_delta_m": 0.11560217001364424,
+            "commands": 713,
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_delta_m": 0.04912753157057478,
+            "arm_delta_m": 0.12216238006540181,
+            "commands": 716,
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      }
+    },
+    "s4live10c-structured-s601-v181": {
+      "status": "PASS",
+      "checked_after_s": 181.86118416697718,
+      "first": {
+        "sim_s": 2.0,
+        "frames": 41,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 6.362558345696062e-06,
+            "arm_delta_m": 7.102999742896918e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          },
+          "r2": {
+            "base_delta_m": 6.202277598230425e-06,
+            "arm_delta_m": 6.949679691795732e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          }
+        }
+      },
+      "last": {
+        "sim_s": 27.0,
+        "frames": 541,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 0.03952048688769833,
+            "arm_delta_m": 0.11448724831914439,
+            "commands": 713,
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_delta_m": 0.049979544827923626,
+            "arm_delta_m": 0.12319865336322741,
+            "commands": 716,
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      }
+    },
+    "s4live10c-structured-s602-v181": {
+      "status": "PASS",
+      "checked_after_s": 181.86119279201375,
+      "first": {
+        "sim_s": 2.0,
+        "frames": 41,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 6.368485665087877e-06,
+            "arm_delta_m": 7.052558680882474e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          },
+          "r2": {
+            "base_delta_m": 6.406955043879727e-06,
+            "arm_delta_m": 7.218967806422592e-06,
+            "commands": 0,
+            "translation_commands": 0,
+            "turn_commands": 0,
+            "state": "await_claim"
+          }
+        }
+      },
+      "last": {
+        "sim_s": 26.0,
+        "frames": 521,
+        "model_calls": 3,
+        "error": null,
+        "status": "RUNNING",
+        "robots": {
+          "r1": {
+            "base_delta_m": 0.04006879725719586,
+            "arm_delta_m": 0.1152237235821201,
+            "commands": 713,
+            "translation_commands": 1,
+            "turn_commands": 0,
+            "state": "lift"
+          },
+          "r2": {
+            "base_delta_m": 0.05021935883098602,
+            "arm_delta_m": 0.1232509267631602,
+            "commands": 716,
+            "translation_commands": 2,
+            "turn_commands": 2,
+            "state": "lift"
+          }
+        }
+      }
+    }
+  },
+  "admission_receipt": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/admissions.json",
+    "sha256": "2d9a325c1731ea09ff44767b07b0d782f866be6802133f6d45a6b8fe544fb5f5"
+  },
+  "raw_root": "/home/ubuntu/ugrp-sim/runs",
+  "completed_runs": {
+    "n": 8,
+    "N": 8
+  },
+  "runtime_environment": {
+    "checked_unix": 1791670936.6049552,
+    "runs": [
+      {
+        "name": "s4live10c-leader_ko-s601-v181",
+        "MUJOCO_GL": "osmesa",
+        "LP_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "1",
+        "API_key_variables_present": [],
+        "nice": 0
+      },
+      {
+        "name": "s4live10c-leader_ko-s602-v181",
+        "MUJOCO_GL": "osmesa",
+        "LP_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "1",
+        "API_key_variables_present": [],
+        "nice": 0
+      },
+      {
+        "name": "s4live10c-no_comm-s601-v181",
+        "MUJOCO_GL": "osmesa",
+        "LP_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "1",
+        "API_key_variables_present": [],
+        "nice": 0
+      },
+      {
+        "name": "s4live10c-no_comm-s602-v181",
+        "MUJOCO_GL": "osmesa",
+        "LP_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "1",
+        "API_key_variables_present": [],
+        "nice": 0
+      },
+      {
+        "name": "s4live10c-peer_ko-s601-v181",
+        "MUJOCO_GL": "osmesa",
+        "LP_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "1",
+        "API_key_variables_present": [],
+        "nice": 0
+      },
+      {
+        "name": "s4live10c-peer_ko-s602-v181",
+        "MUJOCO_GL": "osmesa",
+        "LP_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "1",
+        "API_key_variables_present": [],
+        "nice": 0
+      },
+      {
+        "name": "s4live10c-structured-s601-v181",
+        "MUJOCO_GL": "osmesa",
+        "LP_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "1",
+        "API_key_variables_present": [],
+        "nice": 0
+      },
+      {
+        "name": "s4live10c-structured-s602-v181",
+        "MUJOCO_GL": "osmesa",
+        "LP_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "1",
+        "API_key_variables_present": [],
+        "nice": 0
+      }
+    ]
+  },
+  "prior_Mac_full_raw_cleanup": {
+    "receipt": "/Users/changmin/projects/ugrp/outputs/cleanup-records/s4live9-server-verified-20261011/receipt.json",
+    "receipt_sha256": "faa11154f0913e2b6580a5b18dc7165547c4b6d432fd6623f5123a3c08dddb94",
+    "remaining_s4live9_image_video_array_files": 0,
+    "checked_dirs": 8,
+    "deletion_authorized_by_user": true
+  },
+  "runs": [
+    {
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 41.3,
+          "r2": 41.3
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1370,
+            "sha256": "6ba547c0ab808f8cd618af9e89c8a5f3b3fc65ac813d3ff4bbfbc0991aeb7893",
+            "sim_s": 70.8,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1370,
+            "sha256": "8ccd5ae8dd38ea088303155d1ebe48659a5030dfe94f42f297a649e975ee58dc",
+            "sim_s": 70.8,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 77.05
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.8403629029118266,
+        "additional_path_m": 2.3474415385277703
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "name": "s4live10c-no_comm-s601-v181",
+      "condition": "no_comm",
+      "seed": 601,
+      "status": "HOST_ERROR",
+      "end_sim_s": 377.25,
+      "pair_failure": null,
+      "failure": "RateLimited",
+      "s3_failures": {},
+      "cycles": {
+        "GO_ACK_epochs": 4,
+        "completed_supported_carry_legs": 4,
+        "supported_restarts": 3
+      },
+      "regrasp_cycles": 6,
+      "grasp_epoch_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15430153811408417,
+          "1": 0.7506122434928887,
+          "2": 0.7532737851141544,
+          "3": 0.8403629029118266
+        },
+        "goal_distance_m": 2.0525956287670857,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "total_supported_carry_path_m": 2.502071191092302,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_height_stops_suppressed": 26,
+      "floor_guard_samples": {
+        "N": 7546,
+        "floor_admitted": 3495,
+        "command_release_allowed": 3458,
+        "floor_admitted_despite_command_false": 37,
+        "truth_feedback_rows": 0
+      },
+      "model_calls": 206,
+      "model_usage": {
+        "requests": 206,
+        "blocked": 0,
+        "tokens_prompt": 1608303,
+        "tokens_completion": 14222,
+        "tokens_total_known": 1628010,
+        "usage_unknown_requests": 1,
+        "tokens_complete": false,
+        "api_error_requests": 1,
+        "api_error_fraction": 0.0048543689320388345,
+        "api_clean": false,
+        "latency_ms": {
+          "n": 206,
+          "sum": 670812.727,
+          "max": 7933.92,
+          "median": 3087.733
+        },
+        "failure_classes": {
+          "infra:API": 1
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0206-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: http: Gemini 프록시 HTTP 429",
+          "usage_known": false,
+          "unparsed_utterances": 0
+        }
+      ],
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10c-no_comm-s601-v181/raw",
+      "EXIT": "1",
+      "raw_files": 23338,
+      "raw_bytes": 685635778,
+      "manifest_sha256": "f2bd9714fcbb03ab0d2309ae6d15b63a769b77bb4bb30966116221354759dbd6",
+      "result_sha256": "0db546b824038ba5aef4600996890db4a2b1683358e79d71225718135662ee8f",
+      "inventory": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-no_comm-s601-v181-inventory.json",
+        "sha256": "dd93fc4740bf9de4dd3dc2db7be57b7103d6371262d6042bcb4bb928aac4e664"
+      },
+      "report": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-no_comm-s601-v181-report.json",
+        "sha256": "b10ff04681be6614f150f9d0e89d14d625882037eecbc80ef369c55a17ca4e7d"
+      },
+      "outstanding": 0,
+      "raw_original_now": "/home/ubuntu/ugrp-archive/runs/s4live10c-no_comm-s601-v181/raw",
+      "raw_path_scope": "original execution location; authoritative retained raw_original_now is ARM"
+    },
+    {
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.7,
+          "r2": 44.7
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1438,
+            "sha256": "e847f988f267b7e7d3975dbb5b3162b6bcbd585db6c18e8c9ae56ccc4b68c580",
+            "sim_s": 74.2,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1438,
+            "sha256": "c7d05021fff4e6e1364be80d1223f7e6955f7f9d9d9426c425664d8de0270f79",
+            "sim_s": 74.2,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 80.55
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.8445717571042018,
+        "additional_path_m": 3.190601548132754
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "name": "s4live10c-peer_ko-s601-v181",
+      "condition": "peer_ko",
+      "seed": 601,
+      "status": "HOST_ERROR",
+      "end_sim_s": 374.0,
+      "pair_failure": null,
+      "failure": "RateLimited",
+      "s3_failures": {},
+      "cycles": {
+        "GO_ACK_epochs": 5,
+        "completed_supported_carry_legs": 5,
+        "supported_restarts": 4
+      },
+      "regrasp_cycles": 5,
+      "grasp_epoch_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.1542000825991417,
+          "1": 0.7537940024760953,
+          "2": 0.7506089968707287,
+          "3": 0.8394139535029236,
+          "4": 0.8445717571042018
+        },
+        "goal_distance_m": 1.743887208270667,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "total_supported_carry_path_m": 3.3453226059367713,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_height_stops_suppressed": 26,
+      "floor_guard_samples": {
+        "N": 7481,
+        "floor_admitted": 1879,
+        "command_release_allowed": 1843,
+        "floor_admitted_despite_command_false": 36,
+        "truth_feedback_rows": 0
+      },
+      "model_calls": 184,
+      "model_usage": {
+        "requests": 184,
+        "blocked": 0,
+        "tokens_prompt": 1649222,
+        "tokens_completion": 18011,
+        "tokens_total_known": 1667706,
+        "usage_unknown_requests": 1,
+        "tokens_complete": false,
+        "api_error_requests": 1,
+        "api_error_fraction": 0.005434782608695652,
+        "api_clean": false,
+        "latency_ms": {
+          "n": 184,
+          "sum": 630748.217,
+          "max": 11418.524,
+          "median": 3309.537
+        },
+        "failure_classes": {
+          "model_output_rejected": 7,
+          "infra:API": 1
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0076-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0078-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0094-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0115-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0119-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0129-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0151-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0184-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: http: Gemini 프록시 HTTP 429",
+          "usage_known": false,
+          "unparsed_utterances": 0
+        }
+      ],
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 47,
+        "accepted_messages": 47,
+        "rejected": 0,
+        "delivery_edges": 49,
+        "free_text_messages": 47,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 24,
+          "r2": 25,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10c-peer_ko-s601-v181/raw",
+      "EXIT": "1",
+      "raw_files": 23077,
+      "raw_bytes": 707369441,
+      "manifest_sha256": "14160eb05eb692a4d7bfc0d5a3d605396dfb2754453dbf8ac5e295f0d18ca050",
+      "result_sha256": "2462b42491c526add947a73c50d7d634c876255567e21e2b8e63f7468f7f0354",
+      "inventory": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-peer_ko-s601-v181-inventory.json",
+        "sha256": "6c4f67a001b4e3dda644d232e59916dca42f71b0564f97f6431c2c95842d0524"
+      },
+      "report": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-peer_ko-s601-v181-report.json",
+        "sha256": "f21a481e4e8d3abedd08d01582cb38e76bbc1c107b4a0328f17c91edd7703f9d"
+      },
+      "outstanding": 0,
+      "raw_original_now": "/home/ubuntu/ugrp-archive/runs/s4live10c-peer_ko-s601-v181/raw",
+      "raw_path_scope": "original execution location; authoritative retained raw_original_now is ARM"
+    },
+    {
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 45.9,
+          "r2": 45.9
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1460,
+            "sha256": "8938fc97494afcb5a6a3e1783f4fa363dded070fb01f881ec072c1742c34875e",
+            "sim_s": 75.3,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1460,
+            "sha256": "65654e0d3595e9a8aea246613ceb5942813689253b728a99f17f2113dfa3c970",
+            "sim_s": 75.3,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 81.55
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.845736901151033,
+        "additional_path_m": 3.195644392814218
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "name": "s4live10c-leader_ko-s601-v181",
+      "condition": "leader_ko",
+      "seed": 601,
+      "status": "HOST_ERROR",
+      "end_sim_s": 379.09999999999997,
+      "pair_failure": null,
+      "failure": "RateLimited",
+      "s3_failures": {},
+      "cycles": {
+        "GO_ACK_epochs": 5,
+        "completed_supported_carry_legs": 5,
+        "supported_restarts": 4
+      },
+      "regrasp_cycles": 5,
+      "grasp_epoch_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15419623027623117,
+          "1": 0.749469218900904,
+          "2": 0.7527168579743114,
+          "3": 0.8453896157514614,
+          "4": 0.845736901151033
+        },
+        "goal_distance_m": 1.6510884649598447,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "total_supported_carry_path_m": 3.350377557528556,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_height_stops_suppressed": 26,
+      "floor_guard_samples": {
+        "N": 7583,
+        "floor_admitted": 3532,
+        "command_release_allowed": 3495,
+        "floor_admitted_despite_command_false": 37,
+        "truth_feedback_rows": 0
+      },
+      "model_calls": 159,
+      "model_usage": {
+        "requests": 159,
+        "blocked": 0,
+        "tokens_prompt": 1431117,
+        "tokens_completion": 22169,
+        "tokens_total_known": 1453286,
+        "usage_unknown_requests": 1,
+        "tokens_complete": false,
+        "api_error_requests": 1,
+        "api_error_fraction": 0.006289308176100629,
+        "api_clean": false,
+        "latency_ms": {
+          "n": 159,
+          "sum": 616659.708,
+          "max": 49241.43,
+          "median": 3462.679
+        },
+        "failure_classes": {
+          "infra:API": 1
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0159-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: http: Gemini 프록시 HTTP 429",
+          "usage_known": false,
+          "unparsed_utterances": 0
+        }
+      ],
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r2",
+        "sent": 126,
+        "accepted_messages": 125,
+        "rejected": 0,
+        "delivery_edges": 125,
+        "free_text_messages": 125,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 61,
+          "r2": 63,
+          "r3": 1
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10c-leader_ko-s601-v181/raw",
+      "EXIT": "1",
+      "raw_files": 23308,
+      "raw_bytes": 673419626,
+      "manifest_sha256": "943c1a20407a4c22ac34a0f9d95ff7a0304fdf18547a807234a5b104cd3dda3e",
+      "result_sha256": "8a862f73ed5909aab27180057712bfb9d22aa2fd8e92cb94d607975ea50877ad",
+      "inventory": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-leader_ko-s601-v181-inventory.json",
+        "sha256": "c860c41d5cf7db0539ad461397d0b1a5d28b9d66b90421c0bb30230864a3dbe0"
+      },
+      "report": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-leader_ko-s601-v181-report.json",
+        "sha256": "410d24f68d75b275d8ff2c48021800656f106ebad865f14d9a586b9a1722c08e"
+      },
+      "outstanding": 0,
+      "raw_original_now": "/home/ubuntu/ugrp-archive/runs/s4live10c-leader_ko-s601-v181/raw",
+      "raw_path_scope": "original execution location; authoritative retained raw_original_now is ARM"
+    },
+    {
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 53.5,
+          "r2": 53.5
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1614,
+            "sha256": "e35de10692a20806d7a568e7114180f770e221504976c1e89cd53282769bee12",
+            "sim_s": 83.0,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1614,
+            "sha256": "fb71b53a09ed6b491e5da906ec87e06dd0295d8bbccb9cd49b5a6a932004efe7",
+            "sim_s": 83.0,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 89.35
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.8421847859146488,
+        "additional_path_m": 3.1877868824897773
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "name": "s4live10c-structured-s601-v181",
+      "condition": "structured",
+      "seed": 601,
+      "status": "HOST_ERROR",
+      "end_sim_s": 376.0,
+      "pair_failure": null,
+      "failure": "RateLimited",
+      "s3_failures": {},
+      "cycles": {
+        "GO_ACK_epochs": 5,
+        "completed_supported_carry_legs": 5,
+        "supported_restarts": 4
+      },
+      "regrasp_cycles": 4,
+      "grasp_epoch_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15356866982075823,
+          "1": 0.7529302549302437,
+          "2": 0.7506204322542543,
+          "3": 0.8394196608824734,
+          "4": 0.8421847859146488
+        },
+        "goal_distance_m": 1.7163313621738738,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "total_supported_carry_path_m": 3.342074042193574,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_height_stops_suppressed": 26,
+      "floor_guard_samples": {
+        "N": 7521,
+        "floor_admitted": 3470,
+        "command_release_allowed": 3433,
+        "floor_admitted_despite_command_false": 37,
+        "truth_feedback_rows": 0
+      },
+      "model_calls": 180,
+      "model_usage": {
+        "requests": 180,
+        "blocked": 0,
+        "tokens_prompt": 1621754,
+        "tokens_completion": 17440,
+        "tokens_total_known": 1640339,
+        "usage_unknown_requests": 1,
+        "tokens_complete": false,
+        "api_error_requests": 1,
+        "api_error_fraction": 0.005555555555555556,
+        "api_clean": false,
+        "latency_ms": {
+          "n": 180,
+          "sum": 606102.154,
+          "max": 6866.64,
+          "median": 3224.392
+        },
+        "failure_classes": {
+          "model_output_rejected": 1,
+          "infra:API": 1
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0081-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0180-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: http: Gemini 프록시 HTTP 429",
+          "usage_known": false,
+          "unparsed_utterances": 0
+        }
+      ],
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 23,
+        "accepted_messages": 23,
+        "rejected": 0,
+        "delivery_edges": 23,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 12,
+          "r2": 11,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10c-structured-s601-v181/raw",
+      "EXIT": "1",
+      "raw_files": 23185,
+      "raw_bytes": 680472266,
+      "manifest_sha256": "bbaa37bed9ba2f15d6000361bfbbd53ee06e9fcbbe3adccad156afd67a9cc988",
+      "result_sha256": "3ea2a7587de1fcf87162343f492969ffe40ec6c46187f3b6ec2f748e9ba5a1a9",
+      "inventory": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-structured-s601-v181-inventory.json",
+        "sha256": "bdb1b4a97fd7115f2dd9b17b8ac2844bcfdb8e17fd1fdca0c2a3daebf46ff867"
+      },
+      "report": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-structured-s601-v181-report.json",
+        "sha256": "115cfc5341c6c420e3f11b2689c9a4083b64df785e3872816eaa3a4ef2fca109"
+      },
+      "outstanding": 0,
+      "raw_original_now": "/home/ubuntu/ugrp-archive/runs/s4live10c-structured-s601-v181/raw",
+      "raw_path_scope": "original execution location; authoritative retained raw_original_now is ARM"
+    },
+    {
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 40.8,
+          "r2": 40.8
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1360,
+            "sha256": "49382a39411d239ffd2ef82132047421fee81bb93b230045eb278021391e91ec",
+            "sim_s": 70.3,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1360,
+            "sha256": "b33d36edc5e390d445b92b01945249b2e007a7061c0832c5c4a4fc777aff95eb",
+            "sim_s": 70.3,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 76.55
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.8422217336949142,
+        "additional_path_m": 3.1874517665236013
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "name": "s4live10c-no_comm-s602-v181",
+      "condition": "no_comm",
+      "seed": 602,
+      "status": "HOST_ERROR",
+      "end_sim_s": 373.5,
+      "pair_failure": null,
+      "failure": "RateLimited",
+      "s3_failures": {},
+      "cycles": {
+        "GO_ACK_epochs": 5,
+        "completed_supported_carry_legs": 5,
+        "supported_restarts": 4
+      },
+      "regrasp_cycles": 5,
+      "grasp_epoch_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.1547461903131438,
+          "1": 0.7505818909957938,
+          "2": 0.7512125065408992,
+          "3": 0.8408373695876233,
+          "4": 0.8422217336949142
+        },
+        "goal_distance_m": 1.7086867305205686,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "total_supported_carry_path_m": 3.3424791473996813,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_height_stops_suppressed": 26,
+      "floor_guard_samples": {
+        "N": 7471,
+        "floor_admitted": 3576,
+        "command_release_allowed": 3539,
+        "floor_admitted_despite_command_false": 37,
+        "truth_feedback_rows": 0
+      },
+      "model_calls": 199,
+      "model_usage": {
+        "requests": 199,
+        "blocked": 0,
+        "tokens_prompt": 1554674,
+        "tokens_completion": 14678,
+        "tokens_total_known": 1576137,
+        "usage_unknown_requests": 1,
+        "tokens_complete": false,
+        "api_error_requests": 1,
+        "api_error_fraction": 0.005025125628140704,
+        "api_clean": false,
+        "latency_ms": {
+          "n": 199,
+          "sum": 657454.645,
+          "max": 10740.84,
+          "median": 3055.103
+        },
+        "failure_classes": {
+          "infra:API": 1
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0199-r3",
+          "actor": "r3",
+          "stage": "reply",
+          "error": "TransportFailure: http: Gemini 프록시 HTTP 429",
+          "usage_known": false,
+          "unparsed_utterances": 0
+        }
+      ],
+      "channel": {
+        "condition": "no_comm",
+        "topology": "none",
+        "encoding": "none",
+        "leader_id": null,
+        "sent": 0,
+        "accepted_messages": 0,
+        "rejected": 0,
+        "delivery_edges": 0,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "no_comm"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10c-no_comm-s602-v181/raw",
+      "EXIT": "1",
+      "raw_files": 23092,
+      "raw_bytes": 673129613,
+      "manifest_sha256": "1bf61f1d474feb857b3d0c45d2a23b886b3951295557e27b0c53aa866b9fe609",
+      "result_sha256": "4a2c82ec05409e40398f9b9e902581b5ab6856d9faacc5019c790d0d3a2a6726",
+      "inventory": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-no_comm-s602-v181-inventory.json",
+        "sha256": "bb01060c2e5623a7762be311bcf313cc0052b478dec001e0d61ab795d02d20fd"
+      },
+      "report": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-no_comm-s602-v181-report.json",
+        "sha256": "19b299df81f3b9f538ea79e46b284b49ad9de3afafa430230f628f3d85f69b71"
+      },
+      "outstanding": 0,
+      "raw_original_now": "/home/ubuntu/ugrp-archive/runs/s4live10c-no_comm-s602-v181/raw",
+      "raw_path_scope": "original execution location; authoritative retained raw_original_now is ARM"
+    },
+    {
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.8,
+          "r2": 44.8
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1440,
+            "sha256": "6e6a138ab98361a541c8d6cc83d22f30089cf5ca58edc5c1f46dd4497500a094",
+            "sim_s": 74.3,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1440,
+            "sha256": "e4363d524c623cb9d5f397091781e69650dc9e15fb03beda332d4b4ace460dbb",
+            "sim_s": 74.3,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 81.35
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.8422669570072052,
+        "additional_path_m": 2.3484741339632182
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "name": "s4live10c-peer_ko-s602-v181",
+      "condition": "peer_ko",
+      "seed": 602,
+      "status": "PAIR_STOP",
+      "end_sim_s": 315.25,
+      "pair_failure": "PAIR_VISUAL_LEASE_EXPIRED",
+      "failure": null,
+      "s3_failures": {
+        "r1": "PAIR_VISUAL_LEASE_EXPIRED",
+        "r2": "PAIR_VISUAL_LEASE_EXPIRED"
+      },
+      "cycles": {
+        "GO_ACK_epochs": 4,
+        "completed_supported_carry_legs": 4,
+        "supported_restarts": 3
+      },
+      "regrasp_cycles": 4,
+      "grasp_epoch_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15403918362062075,
+          "1": 0.7512727279575584,
+          "2": 0.7514368300180029,
+          "3": 0.8422669570072052
+        },
+        "goal_distance_m": 2.0585768017885324,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "total_supported_carry_path_m": 2.5031406525948183,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_height_stops_suppressed": 26,
+      "floor_guard_samples": {
+        "N": 6306,
+        "floor_admitted": 2411,
+        "command_release_allowed": 2374,
+        "floor_admitted_despite_command_false": 37,
+        "truth_feedback_rows": 0
+      },
+      "model_calls": 152,
+      "model_usage": {
+        "requests": 152,
+        "blocked": 0,
+        "tokens_prompt": 1353662,
+        "tokens_completion": 14972,
+        "tokens_total_known": 1368858,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 152,
+          "sum": 503072.111,
+          "max": 5488.666,
+          "median": 3228.915
+        },
+        "failure_classes": {
+          "model_output_rejected": 11
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0035-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0050-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0070-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0087-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0091-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0108-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0112-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0113-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0146-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0149-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        },
+        {
+          "call_id": "call-0150-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_fields_missing_or_extra",
+          "usage_known": true,
+          "unparsed_utterances": 0
+        }
+      ],
+      "channel": {
+        "condition": "peer_ko",
+        "topology": "mesh",
+        "encoding": "free_ko",
+        "leader_id": null,
+        "sent": 37,
+        "accepted_messages": 37,
+        "rejected": 0,
+        "delivery_edges": 37,
+        "free_text_messages": 37,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 19,
+          "r2": 18,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "peer_ko"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10c-peer_ko-s602-v181/raw",
+      "EXIT": "0",
+      "raw_files": 19456,
+      "raw_bytes": 569329741,
+      "manifest_sha256": "377811978c1d44c30471daa09e4020265ffcbb3071d67cda568f8ebdae1c671f",
+      "result_sha256": "75d3de1e3b070f7dacacd9f88c542670d0edd5a97ac8e52f25dddbeb41e2a234",
+      "inventory": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-peer_ko-s602-v181-inventory.json",
+        "sha256": "235bc15f0ccd7e40795fb7896974d7a3069f3085d9e262063606ba004e2e5844"
+      },
+      "report": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-peer_ko-s602-v181-report.json",
+        "sha256": "429645104b9603b708aa17bcf4158288146fc17edee9d2811e8a3071c378289e"
+      },
+      "outstanding": 0,
+      "raw_original_now": "/home/ubuntu/ugrp-archive/runs/s4live10c-peer_ko-s602-v181/raw",
+      "raw_path_scope": "original execution location; authoritative retained raw_original_now is ARM"
+    },
+    {
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 44.4,
+          "r2": 44.4
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1430,
+            "sha256": "da422757d1aa5b7bc5cf2f774dd581a2033342513f3839d154f70cf445081dfe",
+            "sim_s": 73.8,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1430,
+            "sha256": "91aefd7e521b0db0ef942ac62a73a7324d4b6c0be3755dac7c541e90f9d3e5b3",
+            "sim_s": 73.8,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 80.05
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.847485241209573,
+        "additional_path_m": 3.1947259830451777
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "name": "s4live10c-leader_ko-s602-v181",
+      "condition": "leader_ko",
+      "seed": 602,
+      "status": "HOST_ERROR",
+      "end_sim_s": 368.04999999999995,
+      "pair_failure": null,
+      "failure": "RateLimited",
+      "s3_failures": {},
+      "cycles": {
+        "GO_ACK_epochs": 5,
+        "completed_supported_carry_legs": 5,
+        "supported_restarts": 4
+      },
+      "regrasp_cycles": 5,
+      "grasp_epoch_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15396217068168502,
+          "1": 0.7524022422140588,
+          "2": 0.7478825817300985,
+          "3": 0.847485241209573,
+          "4": 0.8436515345253368
+        },
+        "goal_distance_m": 1.6982983407103749,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "total_supported_carry_path_m": 3.349491605512382,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_height_stops_suppressed": 26,
+      "floor_guard_samples": {
+        "N": 7362,
+        "floor_admitted": 3099,
+        "command_release_allowed": 3062,
+        "floor_admitted_despite_command_false": 37,
+        "truth_feedback_rows": 0
+      },
+      "model_calls": 193,
+      "model_usage": {
+        "requests": 193,
+        "blocked": 0,
+        "tokens_prompt": 1588668,
+        "tokens_completion": 17150,
+        "tokens_total_known": 1607254,
+        "usage_unknown_requests": 1,
+        "tokens_complete": false,
+        "api_error_requests": 1,
+        "api_error_fraction": 0.0051813471502590676,
+        "api_clean": false,
+        "latency_ms": {
+          "n": 193,
+          "sum": 644753.886,
+          "max": 10073.962,
+          "median": 3222.815
+        },
+        "failure_classes": {
+          "infra:API": 1
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0193-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: http: Gemini 프록시 HTTP 429",
+          "usage_known": false,
+          "unparsed_utterances": 0
+        }
+      ],
+      "channel": {
+        "condition": "leader_ko",
+        "topology": "star",
+        "encoding": "free_ko",
+        "leader_id": "r3",
+        "sent": 29,
+        "accepted_messages": 29,
+        "rejected": 0,
+        "delivery_edges": 30,
+        "free_text_messages": 29,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 1,
+          "r2": 1,
+          "r3": 28
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "leader_ko"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10c-leader_ko-s602-v181/raw",
+      "EXIT": "1",
+      "raw_files": 22747,
+      "raw_bytes": 670115056,
+      "manifest_sha256": "d28bce97611c67da7cc9e9d67084b31b0a17acdb5a4eae4b7f1123a859f26ac3",
+      "result_sha256": "e4885a348d21c4a0efb0cc8ee8087a77b398a62455c0f9286a2d94890db0e315",
+      "inventory": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-leader_ko-s602-v181-inventory.json",
+        "sha256": "1f74746e49004dbc065a75c0711784b4099bba909cd97c68644d1f3f9c5e6b24"
+      },
+      "report": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-leader_ko-s602-v181-report.json",
+        "sha256": "6784d55ea9f0ae6cc63f666dd98dfeae4d4921358e5db4a41a7da35b3fc4f658"
+      },
+      "outstanding": 0,
+      "raw_original_now": "/home/ubuntu/ugrp-archive/runs/s4live10c-leader_ko-s602-v181/raw",
+      "raw_path_scope": "original execution location; authoritative retained raw_original_now is ARM"
+    },
+    {
+      "claim": {
+        "n": 1,
+        "N": 1
+      },
+      "go_ack": {
+        "n": 1,
+        "N": 1
+      },
+      "simultaneous_departure": {
+        "n": 1,
+        "N": 1,
+        "first_command_t": {
+          "r1": 47.4,
+          "r2": 47.4
+        }
+      },
+      "reobserve": {
+        "n": 1,
+        "N": 1,
+        "own_frame_receipts": {
+          "r1": {
+            "robot_id": "r1",
+            "frame_id": 1490,
+            "sha256": "cda05b34104983f42d2d91961deb1195d18b55d726d7aa481321be6dfc0b3eb0",
+            "sim_s": 76.8,
+            "phase": "align"
+          },
+          "r2": {
+            "robot_id": "r2",
+            "frame_id": 1490,
+            "sha256": "cfadf9745f4b28707ed5c319849d272a9aef4643d391e2f20a4fb4a0d1217a34",
+            "sim_s": 76.8,
+            "phase": "align"
+          }
+        }
+      },
+      "regrasp": {
+        "n": 1,
+        "N": 1,
+        "first_supported_t": 83.05
+      },
+      "fresh_go_ack_continue": {
+        "n": 1,
+        "N": 1,
+        "additional_distance_m": 0.8436286122549919,
+        "additional_path_m": 3.1933114477864337
+      },
+      "goal_arrival": {
+        "n": 0,
+        "N": 1
+      },
+      "cyan_drop": {
+        "n": 0,
+        "N": 1
+      },
+      "name": "s4live10c-structured-s602-v181",
+      "condition": "structured",
+      "seed": 602,
+      "status": "HOST_ERROR",
+      "end_sim_s": 383.15,
+      "pair_failure": null,
+      "failure": "RateLimited",
+      "s3_failures": {},
+      "cycles": {
+        "GO_ACK_epochs": 5,
+        "completed_supported_carry_legs": 5,
+        "supported_restarts": 4
+      },
+      "regrasp_cycles": 4,
+      "grasp_epoch_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "goal_route": {
+        "n": 0,
+        "N": 1,
+        "planned_segments": 8,
+        "held_segments": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_floor_release_t": null,
+        "contact_supported_segment_excursion_m": {
+          "0": 0.15369898827578043,
+          "1": 0.7501286564520019,
+          "2": 0.7547606537199576,
+          "3": 0.8436286122549919,
+          "4": 0.8415627775669066
+        },
+        "goal_distance_m": 1.7946966513615608,
+        "scope": "existing synthetic beam alignment entrance to goal; no navigation/E2E study success"
+      },
+      "total_supported_carry_path_m": 3.347809170668179,
+      "lowering": {
+        "n": 1,
+        "N": 1,
+        "entered": 1,
+        "stable_floor_placement": true,
+        "drop": false,
+        "drop_first_t": null
+      },
+      "cyan_height_stops_suppressed": 26,
+      "floor_guard_samples": {
+        "N": 7664,
+        "floor_admitted": 3769,
+        "command_release_allowed": 3732,
+        "floor_admitted_despite_command_false": 37,
+        "truth_feedback_rows": 0
+      },
+      "model_calls": 187,
+      "model_usage": {
+        "requests": 187,
+        "blocked": 0,
+        "tokens_prompt": 1677048,
+        "tokens_completion": 17621,
+        "tokens_total_known": 1697838,
+        "usage_unknown_requests": 1,
+        "tokens_complete": false,
+        "api_error_requests": 1,
+        "api_error_fraction": 0.0053475935828877,
+        "api_clean": false,
+        "latency_ms": {
+          "n": 187,
+          "sum": 617197.729,
+          "max": 10696.514,
+          "median": 3157.888
+        },
+        "failure_classes": {
+          "model_output_rejected": 1,
+          "infra:API": 1
+        },
+        "response_models": [
+          "gemini-3.8-flash"
+        ]
+      },
+      "model_failures": [
+        {
+          "call_id": "call-0085-r2",
+          "actor": "r2",
+          "stage": "reply",
+          "error": "TransportFailure: non_normal_completion: Gemini completion rejected: study_reply_incomplete_or_non_json",
+          "usage_known": true,
+          "unparsed_utterances": 1
+        },
+        {
+          "call_id": "call-0187-r1",
+          "actor": "r1",
+          "stage": "reply",
+          "error": "TransportFailure: http: Gemini 프록시 HTTP 429",
+          "usage_known": false,
+          "unparsed_utterances": 0
+        }
+      ],
+      "channel": {
+        "condition": "structured",
+        "topology": "mesh",
+        "encoding": "schema",
+        "leader_id": null,
+        "sent": 22,
+        "accepted_messages": 22,
+        "rejected": 0,
+        "delivery_edges": 22,
+        "free_text_messages": 0,
+        "follower_to_follower": 0,
+        "received": {
+          "r1": 10,
+          "r2": 12,
+          "r3": 0
+        },
+        "inbox_agrees_with_scheduler": true,
+        "study_spec": "structured"
+      },
+      "raw_path": "/home/ubuntu/ugrp-sim/runs/s4live10c-structured-s602-v181/raw",
+      "EXIT": "1",
+      "raw_files": 23635,
+      "raw_bytes": 684748737,
+      "manifest_sha256": "78213957bebc99c626b9af402f0da94eb39cb4fd7b1c19380f738803f35db065",
+      "result_sha256": "d23394fa62e84af301ec62c8340dd1bc176b2dbd8066387cc2ab60cd33946bd9",
+      "inventory": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-structured-s602-v181-inventory.json",
+        "sha256": "0f81985c5ff83f8ffa259430a6e3a1ec67a656ee147c25740ec538c7af603b30"
+      },
+      "report": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/s4live10c-structured-s602-v181-report.json",
+        "sha256": "150378b071e2cf23432edf69987e36c9b8e77fdf758720833068bb0aa8e9c640"
+      },
+      "outstanding": 0,
+      "raw_original_now": "/home/ubuntu/ugrp-archive/runs/s4live10c-structured-s602-v181/raw",
+      "raw_path_scope": "original execution location; authoritative retained raw_original_now is ARM"
+    }
+  ],
+  "remaining_causes": {
+    "status_counts": {
+      "HOST_ERROR": 7,
+      "PAIR_STOP": 1
+    },
+    "pair_failures": [
+      {
+        "name": "s4live10c-peer_ko-s602-v181",
+        "failure": "PAIR_VISUAL_LEASE_EXPIRED"
+      }
+    ],
+    "physical_or_controller_failures": [
+      {
+        "name": "s4live10c-no_comm-s601-v181",
+        "failure": "RateLimited",
+        "s3_failures": {}
+      },
+      {
+        "name": "s4live10c-peer_ko-s601-v181",
+        "failure": "RateLimited",
+        "s3_failures": {}
+      },
+      {
+        "name": "s4live10c-leader_ko-s601-v181",
+        "failure": "RateLimited",
+        "s3_failures": {}
+      },
+      {
+        "name": "s4live10c-structured-s601-v181",
+        "failure": "RateLimited",
+        "s3_failures": {}
+      },
+      {
+        "name": "s4live10c-no_comm-s602-v181",
+        "failure": "RateLimited",
+        "s3_failures": {}
+      },
+      {
+        "name": "s4live10c-leader_ko-s602-v181",
+        "failure": "RateLimited",
+        "s3_failures": {}
+      },
+      {
+        "name": "s4live10c-structured-s602-v181",
+        "failure": "RateLimited",
+        "s3_failures": {}
+      }
+    ],
+    "lease_failure": {
+      "cause": "two malformed r1 responses exhaust a 10-SIM-second valid-response lease; next normal response arrives exactly at expiry and is rejected, not revived",
+      "last_valid_r1_SIM": 305.25,
+      "expiry_SIM": 315.25,
+      "failures": [
+        {
+          "call_id": "call-0146-r1",
+          "rejection_reasons": [
+            "study_reply_fields_missing_or_extra"
+          ]
+        },
+        {
+          "call_id": "call-0149-r1",
+          "rejection_reasons": [
+            "study_reply_fields_missing_or_extra"
+          ]
+        }
+      ],
+      "next_response_renewal": {
+        "robot_id": "r1",
+        "call_id": "call-0151-r1",
+        "action": {
+          "choice": "held",
+          "epoch": 4003,
+          "kind": "pair_decision",
+          "peer_go_ref": null
+        },
+        "at": 315.25,
+        "requested_at": 311.05,
+        "frame_t": 311.05,
+        "frame_sha256": "db97e4539064b84587d46fe545160a0afc143b8ab68041628e6263874ad1157d",
+        "epoch": 4003,
+        "command_accepted": false,
+        "mode": "all_active_phase_rgb_heartbeat_v3",
+        "own_executor_phase": "lift",
+        "decision_sources": [
+          "own_rgb"
+        ],
+        "grasp_success_claim": false,
+        "previous_response_at": 305.25,
+        "accepted": false,
+        "reason": "UNADMITTED_OR_STALE_CARRY_RGB",
+        "captured_phase": "carry",
+        "same_epoch_rebind": false
+      },
+      "source_sha": "a9c0e3d8030ff3ad3869310a2339cbfac929aec5",
+      "evidence": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live10c-peer_ko-s602-v181/raw/pair-handshake.json",
+          "sha256": "9086b08c1a4147d7cf439957084b5d16bf3fb110df2367001a304ff1ae988bce"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live10c-peer_ko-s602-v181/raw/llm/model_calls.json",
+          "sha256": "cfec92a27bad4e900e583b95e90dd9a16284a21281f3e15e823cf81cb10c270d"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live10c-peer_ko-s602-v181/raw/llm/dispatch.json",
+          "sha256": "8df24c63458cc8da3420b0ae4f0a52220db4fff6b10e8accc9631db23858c65b"
+        }
+      ],
+      "receipt": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/peer602-lease-cause.json",
+        "sha256": "44f8d715512d49f7d340f41baaaeee91a58860bcb892e057ac0f64f4766ecc44"
+      }
+    },
+    "alignment_delay": {
+      "name": "s4live10c-no_comm-s601-v181",
+      "stage": 4,
+      "cause": "r2 own-RGB grip band remains clipped; r1 repeats approach barrier while r2 cannot confirm standoff",
+      "BAND_CLIPPED": {
+        "n": 556,
+        "N": 556
+      },
+      "window_SIM": [
+        287.0,
+        379.5
+      ],
+      "last_band": {
+        "near_m": -0.036,
+        "far_m": -0.002,
+        "length_m": 0.0341,
+        "points": 4124,
+        "touches_invalid_border": true
+      },
+      "last_grip_base_m": [
+        0.24250234181106084,
+        0.00027093272148942277
+      ],
+      "r1_segment4_visual_confirmations": [
+        288.0,
+        320.0,
+        351.1
+      ],
+      "ruled_out": "508,2432,1320,1500 is present in both registered camera calibration tables; no 1-PWM calibration mismatch",
+      "existing_toggle_candidate": "S3 clipped_backoff plus explicit mutual approach recovery; unchanged S3 safe gate needs assessment",
+      "not_new_physics_or_model_calls": true,
+      "evidence": {
+        "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live10c-no_comm-s601-v181/raw/student_record.json",
+        "sha256": "caa5d46e967c065d08b2aef7fa6153505ef2c10c3421decabf071414d362d1f2"
+      },
+      "receipt": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/no_comm601-alignment-cause.json",
+        "sha256": "849d2c3756a9fb55bfc2517b2434e9dcad9a65bf24c975457596aba77b757b85"
+      }
+    }
+  },
+  "model_audit": {
+    "reconciled_posts": {
+      "n": 1460,
+      "N": 1460
+    },
+    "image_references_checked": 2920,
+    "anomalies": [],
+    "upstream_finish_verified": false,
+    "provider_billing_verified": false,
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/final-audit.json",
+    "sha256": "460b4e59d4d79f1ff11805d85a980872bd1eec1ce7d4b4cb481686618fa020bd",
+    "outstanding": 0,
+    "terminal_mutations": 0,
+    "HTTP_error_bodies": {
+      "n": 7,
+      "N": 7,
+      "preservation": "existing error_response.path; exact raw-body SHA equals audited proxy SHA",
+      "auditor_initial_blind_spot_corrected": true
+    },
+    "auditor_source": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/server-audit.py",
+      "sha256": "2a9fff202be75e72d5cc8ccab73e4a923a804dba374b8d5758762785a791e39b"
+    }
+  },
+  "Mac_lite_validation": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/lite-validation-all.json",
+    "sha256": "9e5484670aa998bcd10965fcb7a5b5495f66a73904781bc5c3df17dc33569c72",
+    "files": 2100,
+    "bytes": 3049535482,
+    "errors": 0,
+    "image_video_array_files": 0,
+    "inline_image_wire_request_files": 0
+  },
+  "archive": {
+    "status": "ARM_FULL_SHA_VERIFIED",
+    "n": 8,
+    "N": 8,
+    "files": 181838,
+    "bytes": 5344220258,
+    "runs": {
+      "s4live10c-no_comm-s601-v181": {
+        "name": "s4live10c-no_comm-s601-v181",
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live10c-no_comm-s601-v181",
+        "matched_files": 23338,
+        "expected_files": 23338,
+        "expected_bytes": 685635778,
+        "errors": [],
+        "checked_unix": 1791673311.9646482,
+        "x86_duplicate_removed_after_SHA": true
+      },
+      "s4live10c-peer_ko-s601-v181": {
+        "name": "s4live10c-peer_ko-s601-v181",
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live10c-peer_ko-s601-v181",
+        "matched_files": 23077,
+        "expected_files": 23077,
+        "expected_bytes": 707369441,
+        "errors": [],
+        "checked_unix": 1791673326.306348,
+        "x86_duplicate_removed_after_SHA": true
+      },
+      "s4live10c-leader_ko-s601-v181": {
+        "name": "s4live10c-leader_ko-s601-v181",
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live10c-leader_ko-s601-v181",
+        "matched_files": 23308,
+        "expected_files": 23308,
+        "expected_bytes": 673419626,
+        "errors": [],
+        "checked_unix": 1791673338.3161361,
+        "x86_duplicate_removed_after_SHA": true
+      },
+      "s4live10c-structured-s601-v181": {
+        "name": "s4live10c-structured-s601-v181",
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live10c-structured-s601-v181",
+        "matched_files": 23185,
+        "expected_files": 23185,
+        "expected_bytes": 680472266,
+        "errors": [],
+        "checked_unix": 1791673351.0573928,
+        "x86_duplicate_removed_after_SHA": true
+      },
+      "s4live10c-no_comm-s602-v181": {
+        "name": "s4live10c-no_comm-s602-v181",
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live10c-no_comm-s602-v181",
+        "matched_files": 23092,
+        "expected_files": 23092,
+        "expected_bytes": 673129613,
+        "errors": [],
+        "checked_unix": 1791673363.624068,
+        "x86_duplicate_removed_after_SHA": true
+      },
+      "s4live10c-peer_ko-s602-v181": {
+        "name": "s4live10c-peer_ko-s602-v181",
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live10c-peer_ko-s602-v181",
+        "matched_files": 19456,
+        "expected_files": 19456,
+        "expected_bytes": 569329741,
+        "errors": [],
+        "checked_unix": 1791673377.3473213,
+        "x86_duplicate_removed_after_SHA": true
+      },
+      "s4live10c-leader_ko-s602-v181": {
+        "name": "s4live10c-leader_ko-s602-v181",
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live10c-leader_ko-s602-v181",
+        "matched_files": 22747,
+        "expected_files": 22747,
+        "expected_bytes": 670115056,
+        "errors": [],
+        "checked_unix": 1791673391.593462,
+        "x86_duplicate_removed_after_SHA": true
+      },
+      "s4live10c-structured-s602-v181": {
+        "name": "s4live10c-structured-s602-v181",
+        "path": "/home/ubuntu/ugrp-archive/runs/s4live10c-structured-s602-v181",
+        "matched_files": 23635,
+        "expected_files": 23635,
+        "expected_bytes": 684748737,
+        "errors": [],
+        "checked_unix": 1791673405.1760643,
+        "x86_duplicate_removed_after_SHA": true
+      }
+    },
+    "receipt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/archive-final.json",
+      "sha256": "a61d7ecd067edb13c08591f58ff373209415a66c55373c67b7fde0d126a79423"
+    }
+  },
+  "security_audit": {
+    "scope": "own s4live10 fixed8 command/log/JSON text, not entire server",
+    "scanned_files": 3520,
+    "secret_pattern_matches": 0,
+    "active_driver_pids": [],
+    "remote_tunnel_listener": false,
+    "local_relay_alive": [],
+    "mac_relay_listener": false,
+    "original_proxy_listener": true,
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/final-security-audit.json",
+    "sha256": "7b690d557fda546746930d7a0b8422f6aa6f41e6abaf77826d1da4aa1f215069"
+  },
+  "limitations": [
+    "DEV repeated exploration seeds; no confirmation or paired causal claim",
+    "Synthetic S3 alignment entrance; no full warehouse navigation or main-study E2E claim",
+    "Goal is unchanged complete eight-leg route plus final stable floor placement within 20mm; no partial-distance success",
+    "Proxy response and reported usage audited; upstream finish reason, exact upstream attempts and billing unverified"
+  ],
+  "completed_unix": 1791673551.53914,
+  "model_totals": {
+    "posts": 1460,
+    "known_tokens": 12639428,
+    "unknown_usage_requests": 7,
+    "delivered_edges": 286,
+    "accepted_messages": 283,
+    "failure_classes": {
+      "infra:API": 7,
+      "model_output_rejected": 20
+    },
+    "response_latency_scope": "every run model_usage.latency_ms and exact proxy wall in final-audit.json"
+  },
+  "quota_failure_evidence": [
+    {
+      "name": "s4live10c-no_comm-s601-v181",
+      "call_id": "call-0206-r2",
+      "sha256": "ece12d3817e1076f9b09d5c2cc6bfabcbff33b4b1089a3e65002fa00ca40cab1",
+      "bytes": 154,
+      "error_body_path": "000206-call-0206-r2-error.json",
+      "excerpt": "{\"error\": {\"message\": \"Gemini API: Individual quota reached. Please upgrade your subscription to increase your limits. Resets in 2h33m50s.\", \"code\": 429}}",
+      "retry_after": null
+    },
+    {
+      "name": "s4live10c-peer_ko-s601-v181",
+      "call_id": "call-0184-r1",
+      "sha256": "738eb6bac92a764fa3b45331b41d47714d57d83da22fc8f708dffc124dc04544",
+      "bytes": 154,
+      "error_body_path": "000184-call-0184-r1-error.json",
+      "excerpt": "{\"error\": {\"message\": \"Gemini API: Individual quota reached. Please upgrade your subscription to increase your limits. Resets in 2h33m51s.\", \"code\": 429}}",
+      "retry_after": null
+    },
+    {
+      "name": "s4live10c-leader_ko-s601-v181",
+      "call_id": "call-0159-r1",
+      "sha256": "ba09bf0676bc70fca401208093372ae9f2f47fff74bae79a5f102dce2c016889",
+      "bytes": 154,
+      "error_body_path": "000159-call-0159-r1-error.json",
+      "excerpt": "{\"error\": {\"message\": \"Gemini API: Individual quota reached. Please upgrade your subscription to increase your limits. Resets in 2h33m56s.\", \"code\": 429}}",
+      "retry_after": null
+    },
+    {
+      "name": "s4live10c-structured-s601-v181",
+      "call_id": "call-0180-r1",
+      "sha256": "ece12d3817e1076f9b09d5c2cc6bfabcbff33b4b1089a3e65002fa00ca40cab1",
+      "bytes": 154,
+      "error_body_path": "000180-call-0180-r1-error.json",
+      "excerpt": "{\"error\": {\"message\": \"Gemini API: Individual quota reached. Please upgrade your subscription to increase your limits. Resets in 2h33m50s.\", \"code\": 429}}",
+      "retry_after": null
+    },
+    {
+      "name": "s4live10c-no_comm-s602-v181",
+      "call_id": "call-0199-r3",
+      "sha256": "738eb6bac92a764fa3b45331b41d47714d57d83da22fc8f708dffc124dc04544",
+      "bytes": 154,
+      "error_body_path": "000199-call-0199-r3-error.json",
+      "excerpt": "{\"error\": {\"message\": \"Gemini API: Individual quota reached. Please upgrade your subscription to increase your limits. Resets in 2h33m51s.\", \"code\": 429}}",
+      "retry_after": null
+    },
+    {
+      "name": "s4live10c-leader_ko-s602-v181",
+      "call_id": "call-0193-r1",
+      "sha256": "a5e42be34823c380286ff4638f9a124ae8591417c810c5688efee10fb09702ac",
+      "bytes": 153,
+      "error_body_path": "000193-call-0193-r1-error.json",
+      "excerpt": "{\"error\": {\"message\": \"Gemini API: Individual quota reached. Please upgrade your subscription to increase your limits. Resets in 2h34m0s.\", \"code\": 429}}",
+      "retry_after": null
+    },
+    {
+      "name": "s4live10c-structured-s602-v181",
+      "call_id": "call-0187-r1",
+      "sha256": "5b2a763931bfda7ea8aaa6e4bdec16c48213e335fa6e109a6e0082367c6b69d9",
+      "bytes": 154,
+      "error_body_path": "000187-call-0187-r1-error.json",
+      "excerpt": "{\"error\": {\"message\": \"Gemini API: Individual quota reached. Please upgrade your subscription to increase your limits. Resets in 2h33m43s.\", \"code\": 429}}",
+      "retry_after": null
+    }
+  ],
+  "retry": "No run retry for quota replies; exact response gives individual quota reset in approximately 2h34m at the first failure; availability has not been re-probed",
+  "next_candidates": [
+    "After quota reset: repeat fixed source/batch; do not change credentials or bypass limits",
+    "Default-off provider-native required JSON schema or host-bound response envelope, with semantic GO/ACK validation retained",
+    "Existing S3 clipped_backoff plus mutual approach recovery; safe gate/barrier assessment needed; S3 sources unchanged"
+  ],
+  "CI": {
+    "scope": "source a9 check observations; whole CI not green; draft retained",
+    "receipt": "/Users/changmin/projects/ugrp/outputs/s4live10c-offline/ci-observed.json",
+    "sha256": "3110390f8a2ab4f726969fe892ae88796ba7a8e1d64cf73ff3c8fef58d8926e8"
+  },
+  "ARM_metadata": {
+    "path": "/home/ubuntu/ugrp-archive/s4live10c-integrity",
+    "file_sha256": {
+      "server-audit.py": "2a9fff202be75e72d5cc8ccab73e4a923a804dba374b8d5758762785a791e39b",
+      "final-audit.json": "460b4e59d4d79f1ff11805d85a980872bd1eec1ce7d4b4cb481686618fa020bd",
+      "admissions.json": "2d9a325c1731ea09ff44767b07b0d782f866be6802133f6d45a6b8fe544fb5f5",
+      "validation.json": "9adec66bcd7de1e4a1f97adff0d35900707fe7157f32886ec81af10866fd313b",
+      "runtime-environment.json": "57c34436aaca8bdc75c741eaa39eeee82c9dab21e66a4f842c11ed26a5357735",
+      "final-security-audit.json": "7b690d557fda546746930d7a0b8422f6aa6f41e6abaf77826d1da4aa1f215069",
+      "lite-validation-all.json": "9e5484670aa998bcd10965fcb7a5b5495f66a73904781bc5c3df17dc33569c72",
+      "peer602-lease-cause.json": "44f8d715512d49f7d340f41baaaeee91a58860bcb892e057ac0f64f4766ecc44",
+      "no_comm601-alignment-cause.json": "849d2c3756a9fb55bfc2517b2434e9dcad9a65bf24c975457596aba77b757b85",
+      "archive-final.json": "a61d7ecd067edb13c08591f58ff373209415a66c55373c67b7fde0d126a79423",
+      "ci-observed.json": "3110390f8a2ab4f726969fe892ae88796ba7a8e1d64cf73ff3c8fef58d8926e8",
+      "source-stage.json": "ac8cdc2c53fffa9c7e106f565eafb719a7bf3cc4dcba1e578856f86feed8633f",
+      "relay-receipts.jsonl": "76c5f4b4a0aed2ebb9361c3c27ef63ee0babb12356905107b53b7b6f47752a2b"
+    },
+    "verified": {
+      "server-audit.py": true,
+      "final-audit.json": true,
+      "admissions.json": true,
+      "validation.json": true,
+      "runtime-environment.json": true,
+      "final-security-audit.json": true,
+      "lite-validation-all.json": true,
+      "peer602-lease-cause.json": true,
+      "no_comm601-alignment-cause.json": true,
+      "archive-final.json": true,
+      "ci-observed.json": true,
+      "source-stage.json": true,
+      "relay-receipts.jsonl": true
+    }
+  }
+}

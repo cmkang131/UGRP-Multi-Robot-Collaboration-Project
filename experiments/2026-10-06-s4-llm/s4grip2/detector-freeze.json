@@ -1,0 +1,18 @@
+{
+  "schema": "ugrp.s4grip2.detector_freeze.v1",
+  "stage": "before any s4grip2 physics or images",
+  "config": {
+    "min_area": 0.02,
+    "min_iou": 0.6,
+    "min_retained": 0.6,
+    "max_centroid_shift": 0.1,
+    "consecutive": 3,
+    "max_gap_s": 0.15
+  },
+  "sha256": {
+    "harness/s4_grip_visual.py": "094ff01d3727068b0de0798585076690e2fd8ab2db9bc1931d0ee0b020b65512",
+    "scripts/evaluate_s4_grip_dataset.py": "3614c8cafdd122de38e72f5549318727d6a3cd997656637023cdb30c0f6ead5e",
+    "experiments/2026-10-06-s4-llm/s4grip2/batch-plan.json": "1ccb08b4db467404f2fda2099a84f02e094b551610c7604370e3a334b06d4ffb"
+  },
+  "tuning_after_explore": false
+}
