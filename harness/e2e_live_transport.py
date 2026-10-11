@@ -31,7 +31,7 @@ class AgreementView:
 
 
 class Transport:
-    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off'):
+    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False):
         self.robots,self.dialogue,self.profiles=robots,dialogue,profiles
         self.pulse_budget=pulse_budget;self.relook_option=setdown_only_when_relook
         self.state='mapping';self.stage_t=0.;self.seg=0;self.first_seg=0;self.epoch=0
@@ -40,6 +40,7 @@ class Transport:
         self.aligned={};self.queue=[];self.queue_until=0.;self.permit=None
         self.authorizations={};self.used=set();self.last_route_error=None
         self.final_correction=False
+        self.dev_light=dev_light;self.would_stops=set()
 
     def event(self,t,kind,**data):self.events.append(dict(t=t,event=kind,**data))
     def set(self,state,t):self.state=state;self.stage_t=t;self.event(t,'phase',state=state,seg=self.seg,epoch=self.epoch)
@@ -47,6 +48,14 @@ class Transport:
         self.failure=reason;self.queue.clear();self.permit=None
         self.set('failed',t)
         return [(r,dict(kind='hold')) for r in PAIR]
+
+    def observation_timeout(self,reason,t):
+        if not self.dev_light:return self.fail(reason,t)
+        key=(self.state,self.epoch,self.seg,reason)
+        if key not in self.would_stops:
+            self.event(t,'would_stop',reason=reason,state=self.state,dev_light=True)
+            self.would_stops.add(key)
+        return []
 
     def _poses(self,rid,now,path):
         # Fixed command-space trajectory, one common start, no servo measurements.
@@ -116,7 +125,7 @@ class Transport:
                     (dict(hover)|{1:1500},.8,.4),
                     *[(dict(p)|{1:1500},d,s) for p,d,s in raise_path()]])
             self.set('grasp_lift',now)
-        elif now-self.stage_t>75:return self.fail('OWN_RGB_ALIGNMENT_TIMEOUT',now)
+        elif now-self.stage_t>75:return self.observation_timeout('OWN_RGB_ALIGNMENT_TIMEOUT',now)
         return out
 
     def _open_epoch(self,now):
@@ -190,8 +199,8 @@ class Transport:
             if not self._carry(now) and now-self.stage_t>15:out+=self.fail('CURRENT_GO_ACK_TIMEOUT',now)
         elif self.state=='carry':self._after_carry(now)
         elif self.state=='final_rgb_wait':
-            if now-self.stage_t>15:out+=self.fail('FINAL_OWN_RGB_REOBSERVATION_TIMEOUT',now)
-            else:self._final_reobserve(now)
+            if now-self.stage_t>15:out+=self.observation_timeout('FINAL_OWN_RGB_REOBSERVATION_TIMEOUT',now)
+            if not self.failure:self._final_reobserve(now)
         elif self.state=='final_route_approval':
             if self.dialogue.approved and self.dialogue.claims==set(PAIR):
                 robot=self.robots['r1']
@@ -235,5 +244,5 @@ class Transport:
                     self.dialogue.claims=set();self.dialogue.key=None;self.dialogue.votes={}
                     self.aligned={};self.seg=0;self.first_seg=0;self.plan=None
                     self.set('mapping',now)
-            elif now-self.stage_t>15:out+=self.fail('OWN_RGB_METRIC_CORRECTION_TIMEOUT',now)
+            elif now-self.stage_t>15:out+=self.observation_timeout('OWN_RGB_METRIC_CORRECTION_TIMEOUT',now)
         return out

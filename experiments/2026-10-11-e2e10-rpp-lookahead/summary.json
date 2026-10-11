@@ -1,0 +1,194 @@
+{
+  "schema": "ugrp.e2e10.v1",
+  "status": "PREREGISTERED",
+  "pr": 433,
+  "run_class": "dev",
+  "research_result": false,
+  "execution_count": 0,
+  "execution_bundle": "e2e-rpp-lookahead-v196",
+  "workflow_version": "7.89.0",
+  "preregistration": {
+    "max_runs": 8,
+    "seeds": {
+      "A": [
+        61001,
+        61002,
+        61003,
+        61004
+      ],
+      "B": [
+        61001,
+        61002
+      ],
+      "C": [
+        61001,
+        61002
+      ]
+    },
+    "conditions": {
+      "A": "rpp_v1 + OpenRouter Gemma",
+      "B": "rpp_v1 + Gemma shadow/Jev decider",
+      "C": "path_follow off + round9 settings"
+    },
+    "success": "All three in the same run: LLM_operated, own_map_completed (admitted own B route), start_to_finish_transport (separate physical evaluator)",
+    "no_new_start_after_utc": "2026-10-11T21:30:00Z",
+    "wall_end_before_utc": "2026-10-11T21:40:00Z",
+    "cap_utc": "2026-10-11T21:50:00Z",
+    "host_cap": "existing eight-hour uptime guard unchanged; finish this batch by 17:55 UTC before host guard ~18:04 UTC",
+    "early_check_s": 210,
+    "health_policy": "DEV observational: missing translation, turn sign reversals, no-progress and observation deadlines do not stop; execution errors/physical failures and finite resource/time budgets still stop"
+  },
+  "diagnosis": {
+    "source_run": "e2e9-a-s61003",
+    "robot": "r2",
+    "source_sha256": "a8b18e70b9320559c0d2bba3434ffaf455efb9a93f4254d5d3f5ad512bb79967",
+    "scope": "fixed saved inputs; proposed commands not executed; no closed-loop success evidence",
+    "results": {
+      "off": {
+        "frames": 56,
+        "turns": 55,
+        "forward": 1,
+        "holds": 0,
+        "turn_sign_flips": 11,
+        "matches_actual": 56,
+        "carrot_range_m": null
+      },
+      "rpp_v1": {
+        "frames": 56,
+        "turns": 6,
+        "forward": 50,
+        "holds": 0,
+        "turn_sign_flips": 0,
+        "matches_actual": 3,
+        "carrot_range_m": [
+          0.6008803009433603,
+          0.6247551975070298
+        ]
+      }
+    }
+  },
+  "method": {
+    "upstream_commit": "645abd95f2be02a13ca539b29c2ddc065db34f89",
+    "lookahead_dist": 0.6,
+    "min_lookahead_dist": 0.3,
+    "max_lookahead_dist": 0.9,
+    "use_velocity_scaled_lookahead_dist": false,
+    "lookahead_time": 1.5,
+    "use_rotate_to_heading": true,
+    "rotate_to_heading_min_angle": 0.785,
+    "turn_direction_hysteresis": false,
+    "selection": "First radial path point >= lookahead, else last point, as requested. Jazzy interpolates circle/segment after selecting the point; this port uses the selected grid point. Current main instead accumulates path length.",
+    "pulse_adaptation": "Own pose/path transformed through existing REP105 command frame. Existing measured single-axis 0.1s turn/positive-forward pulses, coast and fresh feedback. No uncalibrated mixed-axis velocity/acceleration, no physical speed input. This ports lookahead/rotation, not continuous curvature/velocity regulation.",
+    "goal_tolerance": "existing 0.03m / 0.06rad own navigation contract"
+  },
+  "storage_budget": {
+    "runs": 8,
+    "per_run_mib": 4096,
+    "mac_lite_per_run_mib": 64,
+    "reserved_mib": 2048,
+    "floors_gib": {
+      "x86": 8,
+      "arm": 25,
+      "mac": 20
+    }
+  },
+  "tests": {
+    "files": [
+      "tests/test_e2e_rpp_path.py",
+      "tests/test_e2e_explore_posefix.py",
+      "tests/test_s2_path_heading.py"
+    ],
+    "passed": 40,
+    "changed_followup_pending": false,
+    "changed_file_followup_passed": 6,
+    "initial_fixture_failure": "New timeout test passed empty calibration; fixed to use the existing S3 four pulse profile fixture."
+  },
+  "references": [
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_regulated_pure_pursuit_controller/src/regulated_pure_pursuit_controller.cpp",
+      "verified": true,
+      "sha256": "9f5f23dc174e2bfae10c502fdebecc37b65d5397039d0c2c4504404557101d85"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_regulated_pure_pursuit_controller/src/parameter_handler.cpp",
+      "verified": true,
+      "sha256": "19c6af2e3308868a034d869f8dc2ca3333a625349fcc4f11eb2c33e98cd22969"
+    },
+    {
+      "url": "https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/controller_plugins/configuring_regulated_pp/",
+      "verified": true,
+      "use": "Official Jazzy defaults, radial lookahead and heading rotation."
+    }
+  ],
+  "runs": [],
+  "remaining": [
+    "Commit/push frozen source, paired online run, retrieval and outcome verification."
+  ],
+  "bundle_number_audit": [
+    {
+      "pr": 0,
+      "ref": "origin/main",
+      "max_id": 193
+    },
+    {
+      "pr": 440,
+      "ref": "origin/codex/ego-pose-continuity",
+      "max_id": 145
+    },
+    {
+      "pr": 437,
+      "ref": "origin/codex/egomap70-overview",
+      "max_id": 145
+    },
+    {
+      "pr": 436,
+      "ref": "origin/codex/s4live11-overview",
+      "max_id": 182
+    },
+    {
+      "pr": 434,
+      "ref": "origin/codex/e2e-overview-view",
+      "max_id": 179
+    },
+    {
+      "pr": 433,
+      "ref": "origin/codex/e2e-integration",
+      "max_id": 194
+    },
+    {
+      "pr": 432,
+      "ref": "origin/codex/s3-overview-view3",
+      "max_id": 170
+    },
+    {
+      "pr": 431,
+      "ref": "origin/codex/s4-overview-view",
+      "max_id": 168
+    },
+    {
+      "pr": 427,
+      "ref": "origin/codex/s3-overview-view",
+      "max_id": 165
+    },
+    {
+      "pr": 425,
+      "ref": "origin/codex/s4-llm-host",
+      "max_id": 195
+    },
+    {
+      "pr": 405,
+      "ref": "origin/claude/ego-wall-map",
+      "max_id": 145
+    },
+    {
+      "pr": 385,
+      "ref": "origin/codex/real-robot-link",
+      "max_id": 2
+    },
+    {
+      "pr": 339,
+      "ref": "origin/codex/integ-target-backend",
+      "max_id": 101
+    }
+  ]
+}
