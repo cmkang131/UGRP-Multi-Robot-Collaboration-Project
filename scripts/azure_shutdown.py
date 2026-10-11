@@ -279,7 +279,8 @@ def main():
                            {'action': 'daily', 'result': 'skipped', 'blockers': state})
             return 75
         if args.action == 'daily':
-            lifecycle('stop', 'daily_backup', args.root, args.grace_seconds)
+            report = lifecycle('stop', 'daily_backup', args.root, args.grace_seconds)
+            return 74 if report['failed'] else 0
     elif args.action == 'admit':
         return 75 if admission_closed(args.root) else 0
     elif args.action == 'archive-one':
@@ -287,7 +288,8 @@ def main():
             raise ValueError('unsafe run name')
         archive_one(args.root, args.root / 'runs' / args.run)
     else:
-        lifecycle(args.action, args.reason, args.root, args.grace_seconds)
+        report = lifecycle(args.action, args.reason, args.root, args.grace_seconds)
+        return 74 if report['failed'] else 0
     return 0
 
 

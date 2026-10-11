@@ -25,6 +25,7 @@ from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
     "tests/test_azure*.py",
+    "tests/test_storage_automation.py",
     "tests/test_ownmap_s2.py",
     "tests/test_lazy_camera.py",
     "tests/test_s2_path_heading.py",

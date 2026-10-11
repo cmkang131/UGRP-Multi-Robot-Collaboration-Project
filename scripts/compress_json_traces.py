@@ -38,6 +38,8 @@ def compress_run(root: Path, execute=False) -> dict:
     if not execute:
         return {'run': str(root), 'dry_run': True, 'files': len(candidates),
                 'input_bytes': sum(p.stat().st_size for p in candidates)}
+    if not candidates:
+        return {'run': str(root), 'files': 0, 'saved_bytes': 0, 'sha256_verified': True}
     with lock_run(root):
         refuse_if_in_use(root, 0, None)
         if idle_reason(root):
@@ -67,6 +69,8 @@ def compress_run(root: Path, execute=False) -> dict:
                 # Publish without replacing an existing target.
                 os.link(temporary, target)
                 temporary.unlink()
+                # Compression is housekeeping, not new experimental evidence.
+                os.utime(target, ns=(source.stat().st_atime_ns, before[3]))
                 record = {'path': source.relative_to(root).as_posix(), 'bytes': before[2],
                           'sha256': original_hash, 'compressed_path': target.relative_to(root).as_posix(),
                           'compressed_bytes': target.stat().st_size, 'compressed_sha256': sha256(target),

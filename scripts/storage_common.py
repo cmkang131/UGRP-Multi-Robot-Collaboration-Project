@@ -9,6 +9,14 @@ from pathlib import Path
 import subprocess
 
 TRACE_LIMIT = 64 * 1024
+HOUSEKEEPING = {'.evidence.lock', 'RUN_META.json', 'ALL-hashes.tsv', 'PRUNED-hashes.tsv',
+                'SHA256SUMS.tsv', 'COMPRESSED.jsonl', 'RUN_STORAGE.json'}
+
+
+def latest_evidence(root: Path) -> float:
+    """Housekeeping must not restart the age of an otherwise unchanged run."""
+    return max((p.stat().st_mtime for p in files(root) if p.name not in HOUSEKEEPING),
+               default=root.stat().st_mtime)
 
 
 def has_symlink(path: Path) -> bool:
@@ -27,7 +35,9 @@ def files(root: Path):
     """Never follow symlinks, including ancestors of the search root."""
     if has_symlink(root):
         return
-    for directory, dirs, names in os.walk(root, followlinks=False):
+    def failed(exc):
+        raise exc
+    for directory, dirs, names in os.walk(root, followlinks=False, onerror=failed):
         if not safe_path(Path(directory), root):
             dirs[:] = []
             continue

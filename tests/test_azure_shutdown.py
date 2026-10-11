@@ -116,6 +116,40 @@ def test_archive_retry_then_next_boot_recovers_failed_raw(root, monkeypatch):
     assert marker['inventory']['raw']['sha256'] == shutdown.inventory(folder)['raw']['sha256']
 
 
+@pytest.mark.parametrize('action', ['recover', 'stop', 'daily'])
+def test_archive_failure_cli_returns_nonzero_and_preserves_evidence(root, monkeypatch, action):
+    folder = run(root)
+    monkeypatch.setattr(shutdown, 'bounded_archive', lambda *args: False)
+    # Daily can race with a newly pending run after its initial blocker scan.
+    monkeypatch.setattr(shutdown, 'blockers', lambda root: {})
+    monkeypatch.setattr(sys, 'argv', ['guard', action, '--root', str(root), '--grace-seconds', '0.01'])
+    assert shutdown.main() == 74
+    assert folder.joinpath('raw').read_bytes() == b'flushed original'
+    assert (root / 'leases/one').exists()
+    record = json.loads(next((root / 'lifecycle/events').iterdir()).read_text())
+    assert record['failed'] == ['one']
+
+
+def test_recover_cli_success_returns_zero(root, monkeypatch):
+    monkeypatch.setattr(sys, 'argv', ['guard', 'recover', '--root', str(root)])
+    assert shutdown.main() == 0
+
+
+def test_start_recovery_archive_failure_refuses_admission(root, monkeypatch):
+    run(root)
+    monkeypatch.setattr(shutdown, 'bounded_archive', lambda *args: False)
+    monkeypatch.setattr(azctl.subprocess, 'run', lambda *args, **kw: subprocess.CompletedProcess([], 0))
+    def guest(action):
+        monkeypatch.setattr(sys, 'argv', ['guard', 'recover', '--root', str(root), '--grace-seconds', '0.01'])
+        return subprocess.CompletedProcess([], shutdown.main())
+    monkeypatch.setattr(azctl, 'guest', guest)
+    fetch = Mock()
+    monkeypatch.setattr(remote_run, 'fetch_lifecycle', fetch)
+    with pytest.raises(RuntimeError, match='new execution refused'):
+        azctl.recover()
+    fetch.assert_not_called()
+
+
 def test_failed_rsync_resumes_incoming_and_never_overwrites_published(root, monkeypatch):
     folder = run(root)
     monkeypatch.setattr(shutdown.os.path, 'ismount', lambda path: True)
@@ -239,6 +273,48 @@ def test_runbook_only_updates_content_and_publish(monkeypatch):
     content = arm.request.call_args_list[0].args[2]
     assert '__UGRP_SHUTDOWN_SOURCE__' not in content
     assert 'GRACE_SECONDS = 600' in content and 'asyncExecution=$true' in content
+
+
+def test_lifecycle_deployment_scopes_commands_to_own_vm_without_webhook_rotation(monkeypatch):
+    monkeypatch.setattr(sys, 'argv', ['setup', '--lifecycle-only'])
+    arm = Mock()
+    setup = azure_safety_setup
+    def request(method, path, *args, **kwargs):
+        if method == 'GET':
+            if path == setup.ACCOUNT + setup.API:
+                return {'identity': {'principalId': 'automation'}, 'properties': {'state': 'Published'}}
+            if path == setup.VM_ID + '?api-version=2024-11-01':
+                return {'identity': {'principalId': 'self-vm'}}
+            if path == setup.RUNBOOK + '/content' + setup.API:
+                return setup.runbook_content()
+            if path == setup.RUNBOOK + setup.API:
+                return {'properties': {'state': 'Published'}}
+            pytest.fail('Unexpected read: ' + path)
+        return {}
+    arm.request.side_effect = request
+    monkeypatch.setattr(setup, 'Arm', lambda: arm)
+    setup.main()
+    writes = [c for c in arm.request.call_args_list if c.args[0] in ('PUT', 'POST', 'DELETE')]
+    for call in writes:
+        assert call.args[1].startswith('/subscriptions/' + setup.SUB + '/')
+        assert not any(word in call.args[1] for word in ('webhooks', 'actionGroups', '/start', '/deallocate'))
+    roles = [c for c in writes if '/roleDefinitions/' in c.args[1]]
+    assert len(roles) == 1
+    props = roles[0].args[2]['properties']
+    assert props['assignableScopes'] == [setup.BASE]
+    assert props['permissions'][0]['actions'] == [
+        'Microsoft.Compute/virtualMachines/runCommands/write', 'Microsoft.Compute/virtualMachines/runCommands/read']
+    assignments = [c for c in writes if '/roleAssignments/' in c.args[1]]
+    assert len(assignments) == 2
+    assert {c.args[2]['properties']['principalId'] for c in assignments} == {'automation', 'self-vm'}
+    assert all(c.args[1].startswith(setup.VM_ID + '/') for c in assignments)
+    daily = next(c for c in writes if '/schedules/daily-backup-kst?' in c.args[1]).args[2]['properties']
+    assert daily['timeZone'] == 'Asia/Seoul' and daily['isEnabled']
+    assert daily['startTime'].endswith('T00:00:00+09:00')
+    link = next(c for c in writes if '/jobSchedules/' in c.args[1]).args[2]['properties']
+    assert link['parameters'] == {'Mode': 'Daily'}
+    old = next(c for c in writes if '/Microsoft.DevTestLab/' in c.args[1]).args[2]['properties']
+    assert old['status'] == 'Disabled' and old['targetResourceId'] == setup.VM_ID
 
 
 @pytest.mark.parametrize('mode,scenario,deallocate', [

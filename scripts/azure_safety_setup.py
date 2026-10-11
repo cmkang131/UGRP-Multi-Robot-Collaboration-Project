@@ -39,14 +39,56 @@ def publish_runbook(arm):
         raise RuntimeError('Published runbook readback mismatch')
 
 
+def command_permissions(arm, principal):
+    # Both identities receive only managed Run Command on this one VM.
+    # Existing cross-subscription cost/deallocation roles are untouched.
+    vm_principal = arm.request('GET', VM_ID + '?api-version=2024-11-01')['identity']['principalId']
+    role = f'/subscriptions/{SUB}/providers/Microsoft.Authorization/roleDefinitions/{uuid.uuid5(uuid.NAMESPACE_URL, ACCOUNT + "/graceful-command-role")}'
+    arm.request('PUT', role + '?api-version=2022-04-01', {'properties': {
+        'roleName': 'UGRP Graceful VM Stop Command',
+        'description': 'Managed run command read/write on the UGRP VM only.',
+        'type': 'CustomRole', 'assignableScopes': [BASE],
+        'permissions': [{'actions': ['Microsoft.Compute/virtualMachines/runCommands/write',
+            'Microsoft.Compute/virtualMachines/runCommands/read'], 'notActions': []}]}})
+    for who in (principal, vm_principal):
+        name = uuid.uuid5(uuid.NAMESPACE_URL, VM_ID + who + role)
+        arm.request('PUT', VM_ID + f'/providers/Microsoft.Authorization/roleAssignments/{name}?api-version=2022-04-01',
+            {'properties': {'roleDefinitionId': role, 'principalId': who, 'principalType': 'ServicePrincipal'}})
+
+
+def daily_schedule(arm):
+    start = (dt.datetime.now(dt.timezone.utc).astimezone(dt.timezone(dt.timedelta(hours=9)))
+             .replace(hour=0, minute=0, second=0, microsecond=0) + dt.timedelta(days=1)).isoformat()
+    arm.request('PUT', ACCOUNT + '/schedules/daily-backup-kst' + API, {'properties': {
+        'startTime': start, 'frequency': 'Day', 'interval': 1, 'timeZone': 'Asia/Seoul', 'isEnabled': True}})
+    job = uuid.uuid5(uuid.NAMESPACE_URL, ACCOUNT + 'daily-backup-kst')
+    arm.request('PUT', ACCOUNT + f'/jobSchedules/{job}' + API,
+        {'properties': {'schedule': {'name': 'daily-backup-kst'}, 'runbook': {'name': 'Stop-UgrpVMs'},
+                        'parameters': {'Mode': 'Daily'}}})
+    arm.request('PUT', BASE + '/providers/Microsoft.DevTestLab/schedules/shutdown-computevm-ugrp-sim-azure?api-version=2018-09-15',
+        {'location': 'koreacentral', 'properties': {'status': 'Disabled', 'taskType': 'ComputeVmShutdownTask',
+            'dailyRecurrence': {'time': '0000'}, 'timeZoneId': 'Korea Standard Time', 'targetResourceId': VM_ID,
+            'notificationSettings': {'status': 'Disabled', 'timeInMinutes': 30}}})
+    print('Lease-aware midnight backup linked; unconditional DevTest shutdown disabled', flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--runbook-only', action='store_true')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--runbook-only', action='store_true')
+    mode.add_argument('--lifecycle-only', action='store_true',
+                      help='existing VM command permissions/runbook/daily schedule; no webhook rotation or VM start')
     args = parser.parse_args()
     arm = Arm()
     if args.runbook_only:
         publish_runbook(arm)
         print('Existing runbook content updated; no VM/RBAC/schedule changes', flush=True)
+        return
+    if args.lifecycle_only:
+        principal = arm.request('GET', ACCOUNT + API)['identity']['principalId']
+        command_permissions(arm, principal)
+        publish_runbook(arm)
+        daily_schedule(arm)
         return
     for sub in SUBS:
         vms = arm.request('GET', f'/subscriptions/{sub}/providers/Microsoft.Compute/virtualMachines?api-version=2024-11-01')['value']
@@ -65,15 +107,9 @@ def main():
         'permissions': [{'actions': ['Microsoft.Compute/virtualMachines/read',
             'Microsoft.Compute/virtualMachines/instanceView/read',
             'Microsoft.Compute/virtualMachines/deallocate/action'], 'notActions': []}]}})
-    # Only Automation receives guest-command permissions. VM identity stays narrow.
-    command_role = f'/subscriptions/{SUB}/providers/Microsoft.Authorization/roleDefinitions/{uuid.uuid5(uuid.NAMESPACE_URL, ACCOUNT + "/graceful-command-role")}'
-    arm.request('PUT', command_role + '?api-version=2022-04-01', {'properties': {
-        'roleName': 'UGRP Graceful VM Stop Command', 'description': 'Managed run command only; Automation guest stop/archive.',
-        'type': 'CustomRole', 'assignableScopes': [f'/subscriptions/{s}' for s in SUBS],
-        'permissions': [{'actions': ['Microsoft.Compute/virtualMachines/runCommands/write',
-            'Microsoft.Compute/virtualMachines/runCommands/read'], 'notActions': []}]}})
+    command_permissions(arm, principal)
     cost_role = f'/subscriptions/{SUB}/providers/Microsoft.Authorization/roleDefinitions/72fafb9e-0641-4937-9268-a91bfd8191a3'
-    for scope, who, role_ref in [(f'/subscriptions/{s}', principal, r) for s in SUBS for r in (role, cost_role, command_role)] + [
+    for scope, who, role_ref in [(f'/subscriptions/{s}', principal, r) for s in SUBS for r in (role, cost_role)] + [
         (VM_ID, '201eb390-599d-4c95-9e66-78874e25f04e', role)]:
         name = uuid.uuid5(uuid.NAMESPACE_URL, scope + who + role_ref)
         arm.request('PUT', scope + f'/providers/Microsoft.Authorization/roleAssignments/{name}?api-version=2022-04-01',
@@ -117,19 +153,13 @@ def main():
     first = (dt.datetime.now(dt.timezone.utc) + dt.timedelta(minutes=10)).isoformat()
     for name, props, mode in [
         ('credit-expiry-kst', {'startTime': '2026-11-18T15:00:00Z', 'frequency': 'OneTime', 'timeZone': 'Asia/Seoul'}, 'Force'),
-        ('hourly-credit-check', {'startTime': first, 'expiryTime': '2026-11-18T15:00:00Z', 'frequency': 'Hour', 'interval': 1, 'timeZone': 'UTC'}, 'Cost'),
-        ('daily-backup-kst', {'startTime': (dt.datetime.now(dt.timezone.utc).astimezone(dt.timezone(dt.timedelta(hours=9))).replace(hour=0, minute=0, second=0, microsecond=0) + dt.timedelta(days=1)).isoformat(),
-            'frequency': 'Day', 'interval': 1, 'timeZone': 'Asia/Seoul'}, 'Daily')]:
+        ('hourly-credit-check', {'startTime': first, 'expiryTime': '2026-11-18T15:00:00Z', 'frequency': 'Hour', 'interval': 1, 'timeZone': 'UTC'}, 'Cost')]:
         arm.request('PUT', ACCOUNT + f'/schedules/{name}' + API, {'properties': props})
         job = uuid.uuid5(uuid.NAMESPACE_URL, ACCOUNT + name)
         arm.request('PUT', ACCOUNT + f'/jobSchedules/{job}' + API,
             {'properties': {'schedule': {'name': name}, 'runbook': {'name': 'Stop-UgrpVMs'}, 'parameters': {'Mode': mode}}})
         print('Schedule linked:', name, flush=True)
-    arm.request('PUT', BASE + '/providers/Microsoft.DevTestLab/schedules/shutdown-computevm-ugrp-sim-azure?api-version=2018-09-15',
-        {'location': 'koreacentral', 'properties': {'status': 'Disabled', 'taskType': 'ComputeVmShutdownTask',
-            'dailyRecurrence': {'time': '0000'}, 'timeZoneId': 'Korea Standard Time', 'targetResourceId': VM_ID,
-            'notificationSettings': {'status': 'Disabled', 'timeInMinutes': 30}}})
-    print('Lease-aware midnight backup linked; unconditional DevTest shutdown disabled', flush=True)
+    daily_schedule(arm)
 
 
 if __name__ == '__main__':
