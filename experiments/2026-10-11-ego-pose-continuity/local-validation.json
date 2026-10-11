@@ -1,5 +1,21 @@
 {
   "command": "python -m pytest -q tests/test_ego_pose_continuity.py tests/test_ego_pose_runner.py tests/test_egomap_fresh_pair.py",
   "passed": 13,
-  "scope": "offline numeric/controller adapter/runner checks; no Mac physics/render; no provider calls"
+  "scope": "offline numeric/controller adapter/runner checks; no Mac physics/render; no provider calls",
+  "v2": {
+    "worker_sha": "98ffd82347c764fc6ddcd319d1d383df16d994a5",
+    "initial_reproduction": "AttributeError: pose in active_information_gain.forecast with PoseView",
+    "test_command": "pytest -q tests/test_ego_pose_continuity.py tests/test_active_wall_mapping.py tests/test_ego_pose_runner.py",
+    "full_result": "16 passed, 1 failed in 6.25s",
+    "scoped_result": "16 passed, 1 deselected in 1.49s",
+    "preexisting_failure": {
+      "test": "test_off_is_exact_passthrough_and_source_copies_are_frozen",
+      "base_sha": "29c0c169bdfd7eff91186bb90af901393340f2a1",
+      "path": "harness/public_navigation/native.py",
+      "base_actual": "acb8e1f139ae5ad78d3ccc0d604a8dc5a81008c68d9f731db3c6ae354c17209c",
+      "base_manifest": "0fc6c993828091c3dd302b6d34a7c32023c206f7bc2f8f0ecc0ff72469096a64",
+      "changed_by_this_pr": false
+    },
+    "physics_tested_locally": false
+  }
 }

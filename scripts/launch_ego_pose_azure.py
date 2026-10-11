@@ -150,6 +150,12 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
             summary=ssh(f'test ! -f {root}/data/summary.json || cat {root}/data/summary.json')
             record=dict(name=name,exit_code=state,raw=f'azure:/home/ugrp/ugrp-sim/runs/{name}',
                 summary=json.loads(summary) if summary else None)
+            if record['summary'] and all(j.get('score') for j in record['summary']['runs']):
+                script=(a.worktree/'scripts/score_ego_pose_common_horizon.py').read_text()
+                paired=remote.ssh('azure',f'cd ~/ugrp-sim/src/{sha} && taskset -c 0-11 .venv-sim/bin/python - {root}',
+                    input=script,capture_output=True,text=True,timeout=120)
+                record['common_horizon']=json.loads(paired.stdout)
+                record['common_horizon']['processor_sha256']=hashlib.sha256(script.encode()).hexdigest()
             save(name+'-summary.json',record)
             print('FINISHED',name,'exit',state,flush=True)
             ssh(f'timeout 600 python3 /usr/local/lib/ugrp-storage/scripts/compress_json_traces.py {root} --execute',timeout=650)
