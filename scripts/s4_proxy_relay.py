@@ -22,6 +22,7 @@ def main():
     p.add_argument('--seconds', type=int, default=3600)
     p.add_argument('--idempotent', action='store_true')
     p.add_argument('--gemma-fallback', action='store_true', help='DEV only; default off')
+    p.add_argument('--multi-key-v1', action='store_true', help='multi_key_v1; default off, Mac keys only')
     p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
                    default='main_study_gemini_v1')
     p.add_argument('--gemma-state', type=Path,
@@ -30,6 +31,8 @@ def main():
     if not 0 < a.seconds <= 14400: raise ValueError('finite <=4h relay required')
     a.output.mkdir(parents=True, exist_ok=False)
     single=a.driver_profile=='study_gemma4_31b_v1'
+    if a.multi_key_v1 and not (single or a.gemma_fallback):
+        raise ValueError('multi_key_v1 requires a Gemma profile')
     if single and a.gemma_fallback:raise ValueError('single model cannot fallback')
     profile = load_registry()['driver_profiles'][a.driver_profile]
     if single:
@@ -44,7 +47,7 @@ def main():
         from scripts.gemma_fallback_proxy import Gemma
         registered = profile['model']['model'] if single else load_registry()['driver_profiles']['dev_gemini_gemma_fallback_v1']['fallback']['model_id']
         fallback = Gemma(a.gemma_state, expected_model=registered,standard=single,
-                         expected_version='001' if single else None)
+                         expected_version='001' if single else None, multi_key_v1=a.multi_key_v1)
         fallback.require_image_probe()
     receipt = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url=URL, proxy=proxy,
         runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, audit_per_post=True,
@@ -64,6 +67,12 @@ def main():
             receipt.update(driver_profile=a.driver_profile,single_model=True,gemma_model_pin=dict(
                 model_id=fallback.model_id,version=fallback.model['version']),
                 global_quota=dict(tpm=14400,rpm=27,rpd=12960),fallback_enabled=False)
+        if a.multi_key_v1:
+            receipt['multi_key_v1'] = True
+            receipt['key_indexes'] = sorted(fallback._keys)
+            if fallback.key_pool is not None:
+                receipt['gemma_fallback']['attempts_per_request'] = len(fallback._keys)
+                receipt['global_quota'] = dict(per_key=fallback.key_pool.LIMITS)
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
 
     class Handler(BaseHTTPRequestHandler):
