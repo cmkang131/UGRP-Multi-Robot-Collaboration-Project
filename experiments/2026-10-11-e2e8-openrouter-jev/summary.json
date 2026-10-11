@@ -1,0 +1,45 @@
+{
+  "schema": "ugrp.e2e8.v1",
+  "status": "PREPARING",
+  "pr": 433,
+  "run_class": "dev",
+  "seeds": [
+    61001,
+    61002
+  ],
+  "expansion_seeds": [
+    61003,
+    61004
+  ],
+  "max_runs": 8,
+  "candidates": [
+    "A:openrouter_v1,decider=off",
+    "B:openrouter_v1,decider=jev_v1"
+  ],
+  "criteria": [
+    "LLM_operated: admitted normal completion",
+    "own_map_completed: own_map_B_route_generated event",
+    "start_to_finish_transport: post-run complete transport/whole B outline/floor/no drop"
+  ],
+  "expansion": "Only if initial A2+B2 all pass health",
+  "storage_budget": {
+    "runs": 2,
+    "per_run_mib": 1152,
+    "reserved_mib": 512,
+    "per_run_stop_mib": 1024,
+    "floors_gib": {
+      "x86": 8,
+      "arm": 25,
+      "mac": 20
+    }
+  },
+  "prestart_findings": [
+    "OpenRouter receipt rejected by AI Studio-only validator; pinned opt-in validation added",
+    "Existing strict parser already removes whole JSON fences"
+  ],
+  "references": [
+    "https://docs.typesafe.ai/introduction",
+    "https://openrouter.ai/docs/guides/routing/provider-selection"
+  ],
+  "runs": []
+}

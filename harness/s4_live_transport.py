@@ -21,8 +21,15 @@ def validate_receipt(receipt, now=None, *, remote_url=URL):
     if remote_url not in (URL,'http://127.0.0.1:18393/v1/chat/completions'):
         raise HostError('unregistered loopback relay URL')
     single=receipt.get('driver_profile')=='study_gemma4_31b_v1'
-    expected=hashlib.sha256((Path(__file__).resolve().parents[1]/'scripts/gemma_fallback_proxy.py').read_bytes()).hexdigest() if single else PROXY_SHA256
-    if single and (receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
+    openrouter=receipt.get('upstream')=='openrouter_v1'
+    source='scripts/openrouter_upstream.py' if openrouter else 'scripts/gemma_fallback_proxy.py'
+    expected=hashlib.sha256((Path(__file__).resolve().parents[1]/source).read_bytes()).hexdigest() if single else PROXY_SHA256
+    if openrouter:
+        from scripts.openrouter_upstream import config
+        if (not single or receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
+                or receipt.get('openrouter_v1') != dict(config(),source_sha256=expected)):
+            raise HostError('pinned OpenRouter identity required')
+    if single and not openrouter and (receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
                    or receipt.get('gemma_model_pin')!={'model_id':'gemma-4-31b-it','version':'001'}
                    or receipt.get('gemma_fallback',{}).get('image_input_confirmed') is not True):
         raise HostError('single Gemma identity/model/image verification missing')

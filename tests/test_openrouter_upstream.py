@@ -94,3 +94,19 @@ def test_journal_default_still_caches_errors(tmp_path):
         n.append(1); return 503, b'{}', None
     j.call(key, b'b', fwd); j.call(key, b'b', fwd)
     assert len(n) == 1
+
+
+def test_remote_receipt_accepts_only_pinned_openrouter_identity():
+    from pathlib import Path
+    from harness.s4_live_transport import validate_receipt
+    from harness.zone_study_llm_driver import HostError
+    sha=hashlib.sha256(Path(orp.__file__).read_bytes()).hexdigest()
+    r=dict(schema='ugrp.s4_ssh_proxy.v1',remote_url='http://127.0.0.1:18393/v1/chat/completions',
+        proxy=dict(source_sha256=sha),driver_profile='study_gemma4_31b_v1',single_model=True,
+        fallback_enabled=False,upstream='openrouter_v1',openrouter_v1=dict(orp.config(),source_sha256=sha),
+        checked_unix=100,valid_for_s=3600,audit_per_post=True,
+        authentication='existing_mac_proxy_no_credentials_transferred')
+    assert validate_receipt(r,now=101,remote_url=r['remote_url'])==r
+    for field,value in [('allow_fallbacks',True),('provider_order',['Other']),('source_sha256','0'*64)]:
+        bad={**r,'openrouter_v1':{**r['openrouter_v1'],field:value}}
+        with pytest.raises(HostError):validate_receipt(bad,now=101,remote_url=r['remote_url'])
