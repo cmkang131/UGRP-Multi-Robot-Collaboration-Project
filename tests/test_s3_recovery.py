@@ -381,24 +381,35 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
     finally:p.runtime.close()
 
 
-def test_retired_v152_bytes_and_consumers_match_original_git_source():
+@pytest.mark.parametrize('bundle_id', ['zone-s3-recovery-v152', 'zone-s3-recovery-v193'])
+def test_retired_bytes_and_consumers_match_original_git_source(bundle_id):
     import hashlib
     import io
     import json
     import subprocess
     import tarfile
     from harness import zone_s3_recovery_contract as contract
-    record=json.loads((contract.ROOT/contract.RETIRED).read_text())['retired'][0]
-    comparison=contract.ROOT/record['comparison_path']
-    assert hashlib.sha256(comparison.read_bytes()).hexdigest()==record['comparison_sha256']
-    decision=json.loads(comparison.read_text())
-    expected=decision['runtime_source_sha256']
-    assert len(expected)==record['runtime_source_count']==379
-    paths=[*expected,record['comparison_path'],*record['preserved_files']]
+    record=next(row for row in json.loads((contract.ROOT/contract.RETIRED).read_text())['retired']
+                if row['execution_bundle_id']==bundle_id)
+    if bundle_id=='zone-s3-recovery-v152':
+        comparison=contract.ROOT/record['comparison_path']
+        assert hashlib.sha256(comparison.read_bytes()).hexdigest()==record['comparison_sha256']
+        decision=json.loads(comparison.read_text())
+        expected=decision['runtime_source_sha256']
+        assert len(expected)==record['runtime_source_count']==379
+        paths=[*expected,record['comparison_path'],*record['preserved_files']]
+    else:
+        seal_path='experiments/2026-10-11-pr416-review-fixes/source-seal-v193.json'
+        decision=json.loads((contract.ROOT/record['preserved_files'][seal_path]['path']).read_text())
+        expected=decision['runtime_source_sha256']
+        assert len(expected)==record['runtime_source_count']==433
+        assert record['replacement']==contract.BUNDLE_ID
+        paths=[*expected,*record['preserved_files']]
     archive=subprocess.check_output(['git','archive',record['source_sha'],'--',*paths],cwd=contract.ROOT)
     with tarfile.open(fileobj=io.BytesIO(archive)) as source:
         blobs={m.name:source.extractfile(m).read() for m in source if m.isfile()}
-    assert blobs[record['comparison_path']]==comparison.read_bytes()
+    if bundle_id=='zone-s3-recovery-v152':
+        assert blobs[record['comparison_path']]==comparison.read_bytes()
     for path,digest in expected.items():
         assert hashlib.sha256(blobs[path]).hexdigest()==digest,path
     for path,row in record['preserved_files'].items():

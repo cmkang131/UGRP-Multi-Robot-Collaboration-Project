@@ -316,7 +316,6 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-sweep-v149": ["--expected-source-sha", "0" * 40],
             "zone-s3-odometry-v150": ["--expected-source-sha", "0" * 40],
             "zone-s3-consistency-v151": ["--expected-source-sha", "0" * 40],
-            "zone-s3-recovery-v193": ["--expected-source-sha", "0" * 40],
             "zone-s3-recovery-v195": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-probe-v153": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-entry-probe-v154": ["--expected-source-sha", "0" * 40],
@@ -420,6 +419,8 @@ raise SystemExit(3 if a.fail else 0)
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
             plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}
+            with self.assertRaisesRegex(ValueError, "unknown workflow: zone-s3-recovery-v193"):
+                wm.plan(PROJECT, "zone-s3-recovery-v193", ["--expected-source-sha", "0" * 40])
         self.assertEqual(set(plans), set(samples))
         self.assertEqual(plans["physical"]["command"][-1], "<record>/artifacts")
         self.assertEqual(plans["communication"]["output"], "<record>/artifacts.json")

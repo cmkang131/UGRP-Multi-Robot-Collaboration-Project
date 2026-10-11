@@ -154,6 +154,48 @@
       },
       "reason": "PR425 main sync: preserve merged PR416 v193 registration and S3-only adapters; re-register the S4 consumer composition without inheriting execution results",
       "replacement": "zone-s3-recovery-v195"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v193",
+      "workflow_version": "7.86.0",
+      "source_sha": "eebb2490b46934f5c96ab9e2eeb70261875e6364",
+      "registration_source_sha": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+      "recorded_runs": 0,
+      "runtime_source_count": 433,
+      "changed_runtime_sources": [
+        "harness/zone_s3_recovery_contract.py",
+        "harness/zone_study_llm_driver.py",
+        "scripts/run_s3_recovery.py",
+        "sim/zone_s3_no_prior.py"
+      ],
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/harness/zone_s3_recovery_contract.py",
+          "sha256": "1371985a31be3cccd6c92f6e81f6d51d72cd45c048a92210cfe591d02733b64f"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/scripts/run_s3_recovery.py",
+          "sha256": "1b76d0c02146188fea8a3fbe5bdf12d1b6d3726ebfb5f22b55da4c323e61e5a8"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v193.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/configs/simulation_workflows.d/s3_recovery_v193.json",
+          "sha256": "0015db9831629c6e89e668b337b097691e9930c3755124f931fcf4479fba14b5"
+        },
+        "experiments/2026-10-11-pr416-review-fixes/registration-v193.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/experiments/2026-10-11-pr416-review-fixes/registration-v193.json",
+          "sha256": "2aa5987792c4e8f66d72af04a31cabac483151f091a5d3611df235b966e1fbd5"
+        },
+        "experiments/2026-10-11-pr416-review-fixes/source-seal-v193.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/experiments/2026-10-11-pr416-review-fixes/source-seal-v193.json",
+          "sha256": "2c0d4feb94af785776d35e9923f9bedb34791d9a4e21fa0c28b346d2bbddacd8"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+          "sha256": "cb125b6b07feafbe1d2399d2bacd052a8baf893de1a1f46ab9e9c8134c572f9e"
+        }
+      },
+      "reason": "PR425 changed four of 433 sealed runtime sources; the stale v193 workflow would create a v195 bundle. Preserve records and original sources; replay only at the original SHA.",
+      "replacement": "zone-s3-recovery-v195"
     }
   ]
 }
