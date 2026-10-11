@@ -10,7 +10,7 @@ if (-not $stop) {
     try {
         foreach ($sub in $subscriptions) {
             $body = @{type='ActualCost';timeframe='Custom';timePeriod=@{from='2026-10-01T00:00:00Z';to=[DateTime]::UtcNow.ToString('o')};dataset=@{granularity='None';aggregation=@{usd=@{name='CostUSD';function='Sum'}}}} | ConvertTo-Json -Depth 8
-            $result = Invoke-AzRestMethod -Method POST -Path "/subscriptions/$sub/providers/Microsoft.CostManagement/query?api-version=2025-03-01" -Payload $body
+            $result = Invoke-AzRestMethod -Method POST -Path "/subscriptions/$sub/providers/Microsoft.CostManagement/query?api-version=2025-03-01" -Payload $body -Headers @{ClientType='UGRPSimulationCostGuard'}
             if ($result.StatusCode -ne 200) { throw 'Cost query failed' }
             $data = ($result.Content | ConvertFrom-Json).properties
             $index = [array]::IndexOf(@($data.columns.name), 'CostUSD')

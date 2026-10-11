@@ -59,3 +59,4 @@ S3 설치 스모크는 기존 표준 Scene·접촉·카메라·0.5초 물리 진
 - [Retail Prices API](https://learn.microsoft.com/en-us/rest/api/cost-management/retail-prices/azure-retail-prices)
 - [Linux OS 디스크 확장](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/expand-disks)
 - [OpenSSH 역방향 전달](https://man.openbsd.org/ssh)
+- [Microsoft 공개 코드의 Cost API 429 처리 규칙](https://github.com/microsoft/azure-skills/blob/main/skills/azure-cost/cost-forecast/guardrails.md): 고정 ClientType을 쓰고 모든 retry-after 헤더 중 최댓값을 기다린다. 재시도 후 실패도 시작을 거부한다.

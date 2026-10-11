@@ -1,6 +1,7 @@
 """ARM client: explicit subscription; credentials remain in process memory."""
 import json
 import subprocess
+import time
 import urllib.error
 import urllib.request
 
@@ -20,13 +21,14 @@ class Arm:
                                 capture_output=True, text=True, check=True)
         self._token = json.loads(result.stdout)['accessToken']
 
-    def request(self, method, path, body=None, *, raw=False):
+    def request(self, method, path, body=None, *, raw=False, _attempt=0):
         url = path if path.startswith('https://') else 'https://management.azure.com' + path
         if not url.startswith('https://management.azure.com/'):
             raise ValueError('Only ARM URLs are allowed')
         payload = body.encode() if raw else (json.dumps(body).encode() if body is not None else None)
         req = urllib.request.Request(url, data=payload, method=method,
             headers={'Authorization': 'Bearer ' + self._token,
+                     'ClientType': 'UGRPSimulationCostGuard',
                      'Content-Type': 'text/powershell' if raw else 'application/json'})
         try:
             with urllib.request.urlopen(req, timeout=120) as response:
@@ -39,6 +41,14 @@ class Arm:
                 except json.JSONDecodeError:
                     return content
         except urllib.error.HTTPError as exc:
+            if exc.code == 429 and _attempt < 3:
+                waits = [float(value) for key, value in exc.headers.items()
+                         if 'retry-after' in key.lower() and value.replace('.', '', 1).isdigit()]
+                delay = max(waits, default=60)
+                if delay <= 600:
+                    print(f'ARM rate limit; honoring retry-after {delay:g}s (attempt {_attempt + 1}/3)', flush=True)
+                    time.sleep(delay)
+                    return self.request(method, path, body, raw=raw, _attempt=_attempt + 1)
             # Do not include request payloads, which can contain webhook secrets.
             content = exc.read().decode()
             try:

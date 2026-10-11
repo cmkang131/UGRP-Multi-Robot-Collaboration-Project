@@ -76,7 +76,7 @@ def main():
         print(fetch(host, name))
         return
     if args.first == 'archive':
-        ssh(host, '/usr/local/bin/ugrp-auto-archive')
+        ssh(host, 'UGRP_RUNS=$HOME/ugrp-sim/runs UGRP_ARCHIVE=$HOME/ugrp-sim/arm /usr/local/bin/ugrp-auto-archive')
         return
     worktree = Path(args.first).resolve()
     command = args.command[1:] if args.command[:1] == ['--'] else args.command
@@ -137,7 +137,7 @@ find "$HOME/ugrp-sim/runs/{name}" -type f ! -name SHA256SUMS -print0 | sort -z |
         # The archive script requires genuine 20-minute source quiescence.
         archive_deadline = time.monotonic() + 35 * 60
         while time.monotonic() < archive_deadline:
-            ssh(host, f'touch {lease}; /usr/local/bin/ugrp-auto-archive')
+            ssh(host, f'touch {lease}; UGRP_RUNS=$HOME/ugrp-sim/runs UGRP_ARCHIVE=$HOME/ugrp-sim/arm /usr/local/bin/ugrp-auto-archive')
             result = ssh(host, f'test ! -L {root} || readlink {root}', capture_output=True, text=True).stdout.strip()
             if result:
                 print('ARM archive:', result, flush=True)
