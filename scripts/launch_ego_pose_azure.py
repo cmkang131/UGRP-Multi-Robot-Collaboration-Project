@@ -19,6 +19,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--worktree',type=Path,required=True)
     p.add_argument('--runner-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--worker-sha',help='reuse an explicitly frozen committed worker source')
+    p.add_argument('--attempt',type=int,default=1,help='new output suffix; never overwrite prior failures')
     p.add_argument('--task-budget-s',type=int,default=10800);a=p.parse_args()
     if not 600<=a.task_budget_s<=10800:raise ValueError('FINITE_TASK_BUDGET_REQUIRED')
     spec=importlib.util.spec_from_file_location('ego_remote',a.runner_root/'scripts/remote_run.py')
@@ -63,15 +64,19 @@ def main():
     pending=[]
     try:
         remote.ship('azure',a.worktree,sha)
+        # XML/hash admission catches missing sparse runtime assets without
+        # constructing MuJoCo or submitting a whole failed group.
+        check='from scripts.run_ego_pose_continuity import bundle; from sim.goal_route_assets import xml_preflight; [xml_preflight(bundle(s,"off","'+sha+'"),s) for s in range(63001,63007)]; print("ASSET_PREFLIGHT_6_OK")'
+        print(ssh(f'cd ~/ugrp-sim/src/{sha} && taskset -c 0-11 .venv-sim/bin/python -c '+shlex.quote(check)),flush=True)
         for seed in range(63001,63007):
             remaining=a.task_budget_s-(time.monotonic()-started)
             if remaining<900:raise TimeoutError('TASK_ARCHIVE_RESERVE')
             budget(seed)
-            name=f'egojump-{seed}-{sha[:8]}';root=f'$HOME/ugrp-sim/runs/{name}'
+            name=f'egojump-{seed}-{sha[:8]}-r{a.attempt}';root=f'$HOME/ugrp-sim/runs/{name}'
             wall=min(5400,int(remaining-900))
             command=['env','UGRP_EXECUTION_HOST=azure','MUJOCO_GL=osmesa','MPLBACKEND=Agg',
                 'OMP_NUM_THREADS=1','OPENBLAS_NUM_THREADS=1','LP_NUM_THREADS=1',
-                'timeout','-s','INT','-k','90',str(wall+120),'.venv-sim/bin/python','-m','scripts.sim_cli',
+                'timeout','-s','INT','-k','90',str(wall+120),'taskset','-c','0-11','.venv-sim/bin/python','-m','scripts.sim_cli',
                 'workflow','run','ego-pose-continuity-dev','--timeout',str(wall+60),'--',
                 '--mode','group','--seed',str(seed),'--cpus','0,1,2','--wall-budget-s',str(wall),
                 '--output',f'/home/ugrp/ugrp-sim/runs/{name}/data']
@@ -129,6 +134,8 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
             records.append(record);pending.remove(name)
             save('summary.json',dict(source_sha=sha,registered=18,groups=records,pending=pending,elapsed_s=time.monotonic()-started))
             print('ARCHIVED_AND_LITE_VERIFIED',name,marker['path'],flush=True)
+            if record['summary'] is None or any(j.get('status')!='RECORDED' for j in record['summary']['runs']):
+                raise RuntimeError('GROUP_FAILED_FIX_BEFORE_NEXT_SEED')
     finally:
         stop.set();thread.join(timeout=25)
         # Never stop the VM. Keep any incomplete archive explicit in local record.
