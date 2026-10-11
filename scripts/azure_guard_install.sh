@@ -31,3 +31,8 @@ systemctl start ugrp-azure-guard.service
 if systemctl cat ugrp-azure-idle-guard.timer >/dev/null 2>&1; then
   systemctl disable --now ugrp-azure-idle-guard.timer
 fi
+# This VM also retained the retired always-restarting GPU worker supervisor.
+# CPU jobs run from committed source via sim_cli; keep its files, stop its unit.
+if systemctl cat ugrp-sim-worker.service >/dev/null 2>&1; then
+  systemctl disable --now ugrp-sim-worker.service
+fi
