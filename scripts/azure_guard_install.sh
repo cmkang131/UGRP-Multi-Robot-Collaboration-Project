@@ -6,6 +6,7 @@ install -m 755 "$SOURCE/scripts/azure_idle_guard.py" /usr/local/bin/ugrp-azure-g
 install -d /usr/local/lib/ugrp-storage/scripts
 install -m 644 "$SOURCE/scripts/__init__.py" /usr/local/lib/ugrp-storage/scripts/__init__.py
 install -m 644 "$SOURCE/scripts/azure_shutdown.py" /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py
+install -m 644 "$SOURCE/scripts/azure_archive_native.py" /usr/local/lib/ugrp-storage/scripts/azure_archive_native.py
 install -m 644 "$SOURCE/scripts/remote_run_finish.py" /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py
 mkdir -p /var/lib/ugrp-guard /home/ugrp/ugrp-sim/{src,runs,leases}
 chown -R ugrp:ugrp /var/lib/ugrp-guard
@@ -18,6 +19,7 @@ After=network-online.target
 Type=oneshot
 User=ugrp
 TimeoutStartSec=720
+EnvironmentFile=-/etc/ugrp/archive-native.env
 ExecStart=/usr/bin/python3 /usr/local/bin/ugrp-azure-guard
 EOF
 cat > /etc/systemd/system/ugrp-azure-guard.timer <<'EOF'
@@ -39,6 +41,7 @@ Wants=network-online.target home-ugrp-ugrp\x2dsim-arm.mount
 Type=oneshot
 User=ugrp
 TimeoutStartSec=660
+EnvironmentFile=-/etc/ugrp/archive-native.env
 ExecStart=/usr/bin/python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py recover --reason boot_recovery
 [Install]
 WantedBy=multi-user.target

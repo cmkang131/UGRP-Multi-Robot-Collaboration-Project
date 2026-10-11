@@ -47,6 +47,48 @@ Azure 모드는 시작 → 실행 완료 대기 → fetch-lite → 검증된 ARM
 
 정지·보관 결과는 `~/ugrp-sim/lifecycle/events/`, 파일별 SHA-256·보관 확인은 `lifecycle/archives/`에 기록한다. 실행기와 `azctl`은 가벼운 기록만 Mac 기본 체크아웃 `outputs/azure-lifecycle/`로 checksum 확인 후 회수한다. Mac 연결이 끊기면 pending 기록을 남기고 다음 시작/회수 때 영속 디스크의 결과를 다시 회수한다. 회수되지 않은 기록을 완료로 보고하지 않는다.
 
+### 선택적 ARM 네이티브 전송
+
+`UGRP_ARCHIVE_NATIVE=on_v1`은 `archive-one`과 자동 보관을
+`scripts/azure_archive_native.py`의 tar/zstd SSH 스트림으로 전환한다. 기본은
+`off`이고 기존 sshfs/rsync 경로를 유지한다. 이 모드는 파일별 SSH 왕복 없이
+ARM 로컬 디스크에 추출하고 **전체 파일명·크기·SHA-256**을 비교한다.
+부분 복사본은 고유 `.incoming-native-*`에 보존하며, 일치한 디렉터리만
+`native-<run>`으로 원자 공개한다. ARM의 25 GiB reserve와 64 MiB 여유를
+확인하고 네이티브 수신을 직렬화한다. 링크·특수 파일이 있는 소스는 거부한다.
+
+Azure 원본은 압축·삭제·이동하거나 symlink로 바꾸지 않는다. 기존
+`.incoming-*`와 `shutdown-*`도 보존한다. 전송 전후 원본 해시·상태와 writer
+부재를 확인한 뒤 기존 `lifecycle/archives/<run>.json`에 `verified`,
+`source_state`, 전체 inventory 및 ARM 검증 proof를 기록한다. `recover`가
+그 마커를 그대로 검증하며 실패는 기존 종료 코드74로 유지한다. 자동 보관은
+이 모드에서 기존 원본을 재압축해 검증 마커를 무효화하지 않는다.
+
+VM의 `/etc/ugrp/archive-native.env`를 자동 보관·guard·boot recovery 서비스가
+선택적으로 읽는다. `UGRP_ARCHIVE_NATIVE_HOST=ubuntu@161.33.46.134`,
+`UGRP_ARCHIVE_NATIVE_IDENTITY=/home/ugrp/.ssh/id_ed25519_arm_archive`를
+명시한다. 설치된 CLI의 수동/실행기 `recover`·`archive-one`도 이 파일을
+읽으며 호출자의 명시적 환경값을 우선한다. ARM에는
+이 Python 모듈만 root 소유 `/usr/local/lib/ugrp-archive-native.py`로 설치한다.
+기존 archive 공개키에 대해 Ubuntu의 authorized_keys에 `restrict`,
+Azure IP의 `from=`, 고정 `command`를 붙인 **별도 줄**을 추가한다.
+고정 명령은 `/usr/bin/python3 /usr/local/lib/ugrp-archive-native.py receive
+--archive-root /home/ubuntu/ugrp-archive/runs`이며, 수신기는
+`SSH_ORIGINAL_COMMAND=ugrp-archive-native-v1`만 허용한다. 기존 SFTP 전용
+사용자·키와 SSH 설정은 변경하지 않는다. 개인키는 VM 밖으로 복사하지 않는다.
+stock-bot·crontab·다른 실행 프로세스를 변경하지 않는다.
+
+2026-10-11 이번 VM의 명시적 활성화·전송·admission 검증은
+[네이티브 전송 기록](../experiments/2026-10-11-archive-native-transport/summary.json)에 남긴다.
+설치 helper 교체 시 rollback 사본을 보존하고, 실행 중인 서비스에는 새 코드를
+소급 적용하지 않는다. 새 installer는 이 환경 파일을 만들거나 토글을 켜지 않는다.
+
+방법 근거: [OpenSSH 명령/stdin 전송](https://man.openbsd.org/ssh),
+[Zstd CLI stdin/stdout](https://github.com/facebook/zstd/blob/dev/programs/zstd.1.md),
+[Python tar stream/data extraction filter](https://docs.python.org/3.12/library/tarfile.html#extraction-filters).
+기존 egojump 전송의 ARM 네이티브 해시 검증·원본 보존 원칙을 따르되,
+이 구현은 로컬 tar 파일과 sshfs blob 복사를 생략한다.
+
 ### #438 검토 수정의 적용 범위
 
 2026-10-11 앞선 P1 수정은 **기존 runbook 내용 갱신만** 허용된 범위에서 수행했고, 당시 두 VM은 `deallocated`, RBAC·일정·게스트는 미적용이었다. 이후 사용자가 #438 마무리에서 이 세 항목 배포를 승인했다. 소스 `9589255c`에서 자기 VM만의 Run Command 권한, lease-aware 자정 일정과 기존 DevTest 강제 종료 비활성화, runbook Published/바이트 일치를 재조회했다. VM identity의 실제 무해한 명령도 PUT201·GET200·exit0을 확인했다. 첫 다음 자정은 2026-10-12 00:00 KST다.
