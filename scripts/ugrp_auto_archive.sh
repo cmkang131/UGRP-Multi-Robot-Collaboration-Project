@@ -5,6 +5,15 @@ set -euo pipefail
 R=${UGRP_RUNS:-/home/ubuntu/ugrp-sim/runs}
 A=${UGRP_ARCHIVE:-/home/ubuntu/ugrp-sim/arm}
 TOOLS=${UGRP_STORAGE_TOOLS:-/usr/local/lib/ugrp-storage}
+# Manual runner calls use the same explicit VM opt-in as systemd services.
+if [[ -r /etc/ugrp/archive-native.env ]]; then
+  while IFS='=' read -r key value; do
+    case "$key" in
+      UGRP_ARCHIVE_NATIVE|UGRP_ARCHIVE_NATIVE_HOST|UGRP_ARCHIVE_NATIVE_IDENTITY)
+        if ! declare -p "$key" >/dev/null 2>&1; then export "$key=$value"; fi ;;
+    esac
+  done < /etc/ugrp/archive-native.env
+fi
 L=$R/SUPERVISOR-NOTES.txt
 dry=false
 if [[ ${1:-} == --dry-run ]]; then dry=true; elif [[ $# != 0 ]]; then exit 2; fi
@@ -25,6 +34,13 @@ for d in "$R"/*/; do
   fi
   if $dry; then
     python3 "$TOOLS/scripts/compress_json_traces.py" "$d" || continue
+    continue
+  fi
+  # Opt-in transport retains raw and publishes the lifecycle's verified marker.
+  # Do not recompress an already verified source and invalidate its source state.
+  if [[ ${UGRP_ARCHIVE_NATIVE:-off} == on_v1 ]]; then
+    python3 "$TOOLS/scripts/azure_shutdown.py" archive-one --root "$(dirname "$R")" --run "$n" || continue
+    echo "$(date -u +%FT%TZ) auto-archived $n (native tar/zstd SSH, SHA-256 verified; source retained)" >> "$L"
     continue
   fi
   # Compression includes decompressed SHA-256 verification + durable inventories.

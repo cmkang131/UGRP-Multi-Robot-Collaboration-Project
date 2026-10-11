@@ -12,8 +12,25 @@ import sys
 import time
 import uuid
 
+if __package__ in (None, ''):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    # Managed Run Command embeds this helper in /tmp; native modules stay installed.
+    sys.path.append('/usr/local/lib/ugrp-storage')
+
 ROOT = Path('/home/ugrp/ugrp-sim')
 GRACE_SECONDS = 600
+NATIVE_ENV = Path('/etc/ugrp/archive-native.env')
+
+
+def load_native_environment():
+    """Installed CLI calls also honor the VM's explicit opt-in; env wins."""
+    if not NATIVE_ENV.exists():
+        return
+    allowed = {'UGRP_ARCHIVE_NATIVE', 'UGRP_ARCHIVE_NATIVE_HOST', 'UGRP_ARCHIVE_NATIVE_IDENTITY'}
+    for line in NATIVE_ENV.read_text().splitlines():
+        name, separator, value = line.partition('=')
+        if separator and name.strip() in allowed:
+            os.environ.setdefault(name.strip(), value.strip())
 
 
 def boot_id():
@@ -212,6 +229,9 @@ def _archive_one(root, run):
         # After reboot there is no writer: preserve partial run as HOST_ERROR.
         write_json(run / 'HOST_ERROR.json', {'reason': 'interrupted_before_exit', 'boot_id': boot_id()})
         (run / 'EXIT').write_text('74\n')
+    if os.environ.get('UGRP_ARCHIVE_NATIVE', 'off') == 'on_v1':
+        from scripts.azure_archive_native import archive
+        return archive(root, run)
     left = inventory(run)
     # Flush the completed command's local files inside the bounded copy worker.
     for path in run.rglob('*'):
@@ -338,6 +358,7 @@ def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
 
 
 def main():
+    load_native_environment()
     parser = argparse.ArgumentParser()
     parser.add_argument('action', choices=['stop', 'recover', 'status', 'admit', 'daily', 'archive-one'])
     parser.add_argument('--root', type=Path, default=ROOT)
