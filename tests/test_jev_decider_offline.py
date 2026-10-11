@@ -125,3 +125,9 @@ def test_improved_representation_changes_only_criteria_and_keeps_state():
     assert set(ev.options_for('dialogue', ev.IMPROVED)) == set(ev.options_for('dialogue'))
     assert 'peer' in ev.options_for('dialogue', ev.IMPROVED)['GO']
     assert 'acceptable' not in json.dumps(ev.jev_body(c, ev.IMPROVED))
+
+
+def test_probe_suite_frozen_and_consistent():
+    probe = su.build_probe()
+    assert json.loads((FROZEN.parent / 'probe_suite.json').read_text()) == json.loads(json.dumps(probe))
+    assert len(probe['cases']) == 13 and all(c['acceptable'] and c['acceptable'][0] in c['structurally_admissible'] for c in probe['cases'])

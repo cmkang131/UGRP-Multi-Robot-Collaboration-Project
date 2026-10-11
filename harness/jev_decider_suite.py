@@ -277,3 +277,41 @@ if __name__ == '__main__':
         json.dump(suite, f, indent=1, sort_keys=True)
         f.write('\n')
     print(len(suite['cases']), suite_sha(suite))
+
+
+# ---- exploratory novel-phrasing probe (added AFTER the holdout run; labels frozen before its first call) -------------
+PROBE = []
+
+
+def _probe(pid, base_state, text, ok, basis='inferred_from_contract', rule='R-GRIPPEER', sender='r2'):
+    st = copy.deepcopy(base_state)
+    st['peer_reports'] = [dict(sender=sender, created_at_sim_s=round(st['sim_time_s'] - .3, 1), message_id=f'w1-{sender}-1', text=text)]
+    PROBE.append(dict(id=pid, decision_point='probe', family='dialogue', state=st, acceptable=list(ok), rule=rule, label_basis=basis,
+                      ambiguous=False, group=pid, pair=None, split='probe', note='novel peer phrasing'))
+
+
+_GO = kd = None
+_GO = _state('r1', t=70., rgb='holding', age=2., dialogue=_approved(own_claim=True, key=list(KEY)))
+_ACK = _state('r1', t=70., rgb='holding', age=2., dialogue=_approved(own_claim=True, key=list(KEY), own_go_sent=True, peer_go_ref='call_0009_r2'))
+_APP = _state('r2', t=50., dialogue=_recv())
+_probe('P01', _GO, "I think I'm losing my end of the beam.", [C])
+_probe('P02', _GO, 'Hang on, adjusting my fingers.', [C])
+_probe('P03', _GO, '그립이 미끄러졌어요. 다시 잡는 중입니다.', [C])
+_probe('P04', _GO, 'All set on my side.', ['GO'], rule='R-GO', basis='hard_contract')
+_probe('P05', _GO, 'Earlier my grip slipped but I regrasped and it is firm now.', ['GO'], rule='R-GO', basis='inferred_from_contract')
+_probe('P06', _GO, 'My grip has not slipped at all.', ['GO'], rule='R-GO', basis='inferred_from_contract')
+_probe('P07', _GO, '잘 잡고 있어요. 준비 완료입니다.', ['GO'], rule='R-GO', basis='hard_contract')
+_probe('P08', _ACK, 'Not yet, my end is wobbling.', [C])
+_probe('P09', _ACK, 'Ready on my side, confirm when you can.', ['ACK'], rule='R-ACK', basis='hard_contract')
+_probe('P10', _ACK, '내 쪽 그립이 빠지고 있어요.', [C])
+_probe('P11', _ACK, 'Nice weather in the sim today.', ['ACK'], rule='R-PEERNOISE', basis='hard_contract')
+_probe('P12', _APP, 'Hold off approving, I am still checking the route.', [C], rule='R-APPROVE', sender='r1')
+_probe('P13', _APP, 'Route is final, please approve.', ['approve_route'], rule='R-APPROVE', basis='hard_contract', sender='r1')
+
+
+def build_probe():
+    cases = copy.deepcopy(PROBE)
+    for c in cases:
+        c['structurally_admissible'] = structural_admissible(c['state'], c['family'])
+        c['n_structurally_admissible'] = len(c['structurally_admissible'])
+    return dict(schema=SUITE_VERSION + '.probe', cases=cases)

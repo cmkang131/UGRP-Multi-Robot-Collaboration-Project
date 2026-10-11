@@ -79,9 +79,10 @@ def report(a, suite):
     by_split = {c['id']: c['split'] for c in cases}
     real = load_rows(raw / 'real' / 'calls.jsonl')
     imp = load_rows(raw / 'improved' / 'calls.jsonl')
+    probe_rows = load_rows(raw / 'probe' / 'calls.jsonl')
     summary = dict(schema='ugrp.jev_decider_offline_summary.v1', raw_dir=str(raw), suite_sha256=sha(EXP / 'suite.json'),
                    n_cases=len(cases), n_phase1_calls=len(rows), n_real_calls=len(real),
-                   n_http_attempts=sum(len(r['attempts']) for r in rows + imp + real), call_cap=ev.CALL_CAP)
+                   n_http_attempts=sum(len(r['attempts']) for r in rows + imp + probe_rows + real), call_cap=ev.CALL_CAP)
     pol = {}
     for p in ('jev', 'gemma'):
         for rep in ev.REPRESENTATIONS:
@@ -93,6 +94,12 @@ def report(a, suite):
             pol[f'{p}.{ev.IMPROVED}'] = {sp: ev.analyze([r for r in sub if by_split[r['case_id']] in (sp, *(('dev', 'holdout') if sp == 'all' else ()))],
                                                         [c for c in cases if sp == 'all' or c['split'] == sp]) for sp in ('all', 'dev', 'holdout')
                                          if any(by_split[r['case_id']] == sp or sp == 'all' for r in sub)}
+    probe_cases = json.loads((EXP / 'probe_suite.json').read_text())['cases']
+    for p in ('jev', 'gemma'):
+        sub = [r for r in probe_rows if r['policy'] == p]
+        if sub:
+            pol[f'{p}.{ev.IMPROVED}.probe'] = ev.analyze(sub, probe_cases)
+    summary['probe_rule_choices'] = {c['id']: ev.rule_action(c['state'], 'dialogue') for c in probe_cases}
     rr = rule_rows(cases)
     pol['rule.structural'] = {split: ev.analyze(rr, [c for c in cases if split == 'all' or c['split'] == split]) for split in ('all', 'dev', 'holdout')}
     summary['policies'] = pol
@@ -110,7 +117,7 @@ def report(a, suite):
     summary['dev_failures' if not a.reveal_holdout else 'failures_all_splits'] = fails
     summary['rule_choices'] = {r['case_id']: r['choice'] for r in rr}
     cmap = {}
-    for r in rows + imp + real:
+    for r in rows + imp + probe_rows + real:
         cmap[r['call_id']] = dict(status=r['status'], choice=r['choice'], confidence=r['confidence'], latency_s=r['latency_s'],
                                   http_attempts=len(r['attempts']), error=r['error'], request_sha256=r['request_sha256'],
                                   response_sha256=r['response_sha256'], usage=r['usage'], cost=r['cost'], provider=r.get('provider'))
@@ -122,7 +129,7 @@ def report(a, suite):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('phase', choices=('suite', 'phase1', 'real', 'improved', 'report'))
+    ap.add_argument('phase', choices=('suite', 'phase1', 'real', 'improved', 'probe', 'report'))
     ap.add_argument('--raw-dir', default=str(RAW))
     ap.add_argument('--wire', nargs='+', default=['/tmp/jevdec/azwire', '/Users/changmin/projects/ugrp/outputs/gemma-latency-check-20261011/wire'])
     ap.add_argument('--reveal-holdout', action='store_true', help='list holdout failures (only after the improved representation is frozen)')
@@ -147,6 +154,11 @@ def main():
         jobs = [(p, ev.IMPROVED, c, k) for p in ('jev', 'gemma') for c in cases if c['split'] == a.split for k in range(1, REPEATS + 1)]
         run.run(jobs)
         print('done', a.split, len(jobs), 'http attempts total', run.http_attempts)
+    elif a.phase == 'probe':
+        probe = json.loads((EXP / 'probe_suite.json').read_text())['cases']
+        run = ev.Runner(Path(a.raw_dir) / 'probe', jev_key=jev, gemma_key=gem)
+        run.run([(p, ev.IMPROVED, c, k) for p in ('jev', 'gemma') for c in probe for k in range(1, REPEATS + 1)])
+        print('done probe', len(run.done), 'http attempts', run.http_attempts)
     elif a.phase == 'real':
         real = real_cases(a.wire)
         (EXP / 'real_states.json').write_text(json.dumps(real, indent=1, sort_keys=True) + '\n')
