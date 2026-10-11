@@ -12,6 +12,7 @@ import json
 import math
 import statistics
 import subprocess
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -180,6 +181,7 @@ class Runner:
                 row = json.loads(line)
                 self.done[row['call_id']] = row
         self.http_attempts = sum(len(r['attempts']) for r in self.done.values())
+        self.lock = threading.Lock()
 
     def _scrub(self, text):
         for k in self.keys.values():
@@ -196,10 +198,13 @@ class Runner:
         url, key = (JEV_URL, self.keys['jev']) if policy == 'jev' else (GEMMA_ENDPOINT, self.keys['gemma'])
         attempts, result = [], None
         for n in range(3):
-            if self.http_attempts >= self.cap:
+            with self.lock:
+                capped = self.http_attempts >= self.cap
+                if not capped:
+                    self.http_attempts += 1
+            if capped:
                 attempts.append(dict(status='budget_cap_reached'))
                 break
-            self.http_attempts += 1
             result = self.post(url, body, key)
             attempts.append({k: result.get(k) for k in ('status', 'http_status', 'latency_s', 'error_type')})
             if result.get('status') == 'ok' or result.get('http_status') not in (429, 500, 502, 503, 504):
@@ -231,12 +236,13 @@ class Runner:
             row['error'] = (result or {}).get('status') or 'no_call'
             if result and result.get('http_status'):
                 row['error'] += f':{result["http_status"]}'
-        with open(self.journal, 'a') as f:
-            f.write(json.dumps(row, sort_keys=True) + '\n')
-        self.done[call_id] = row
+        with self.lock:
+            with open(self.journal, 'a') as f:
+                f.write(json.dumps(row, sort_keys=True) + '\n')
+            self.done[call_id] = row
         return row
 
-    def run(self, jobs, workers=6):
+    def run(self, jobs, workers=4):
         with ThreadPoolExecutor(workers) as pool:
             return list(pool.map(lambda j: self.call(*j), jobs))
 
@@ -262,6 +268,7 @@ def analyze(rows, cases, rule_rows=None):
     ok = lambda r: r['status'] == 'ok' and r['choice'] in by_id[r['case_id']]['acceptable']
     out = dict(n_calls=len(rows), n_errors=sum(r['status'] != 'ok' for r in rows),
                acceptable_labelled=[sum(ok(r) for r in labelled), len(labelled)])
+    out['gemma_provider_not_deepinfra'] = sum(r.get('provider') not in (None, 'DeepInfra') for r in rows if r['policy'] == 'gemma')
     out['by_decision_point'] = {}
     for dp in sorted({c['decision_point'] for c in cases}):
         sub = [r for r in labelled if by_id[r['case_id']]['decision_point'] == dp]

@@ -109,3 +109,10 @@ def test_analyze_counts(tmp_path):
     assert res['acceptable_labelled'][0] == sum(c['acceptable'] == ['continue'] for c in CASES) * 3 - sum(
         c['ambiguous'] and c['acceptable'] == ['continue'] for c in CASES) * 3 or True
     assert res['stable_cases'][0] <= res['stable_cases'][1]
+
+
+def test_runner_threads_write_clean_journal(tmp_path):
+    run = ev.Runner(tmp_path, jev_key='x', gemma_key='y', post=fake_post)
+    run.run([(p, 'raw', c, 1) for c in CASES[:10] for p in ('jev', 'gemma')], workers=4)
+    lines = (tmp_path / 'calls.jsonl').read_text().splitlines()
+    assert len(lines) == 20 and all(json.loads(l)['status'] == 'ok' for l in lines) and run.http_attempts == 20
