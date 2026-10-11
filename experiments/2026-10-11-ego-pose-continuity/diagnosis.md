@@ -8,3 +8,5 @@
 - `harness/goal_route_continuous.py:346`의 tracking_reset=False는 상수이다. 입자 교체·정합 보정 탐지기로 사용하면 안 된다. 원본 결정·online cloud를 ARM에서 읽어 숫자만 추출했으며 전체 원본은 변경하지 않았다.
 
 오프라인은 8기록 모두 포함하되 checkpoint prefix 중복과 프레임 상관이 있다. 본 연구 성공률·독립 검증 통계로 사용하지 않는다. 전체 숫자와 source SHA-256은 summary.json이 연결한 로컬 분석에 있다.
+
+S3 적용 범위: `zone_s3_no_prior.py:44-59` → `run_s2_unknown_start.py:20-28`은 별도 S2 PF localizer를 구성하고 `zone_s3_no_prior.py:65-83`의 OwnPosePort로 같은 추정을 pair actor에 전달한다. `zone_solo_cyan_best_cluster.py:72-121`에는 이미 AMCL 최대 질량 클러스터 보고가, `zone_solo_cyan_amcl_update.py:86-92`에는 최소 운동 갱신 게이트가 있다. egomap의 `CloudOdometry.poses[best]` RBPF 출력 경로를 직접 공유하지 않으므로 이번 토글이 S3에 자동 적용되지 않는다. S3 시작 scan 생략·σ≈2.2m는 사용자 제공 진단이며 여기서는 실행하지 않았다. 읽은 SHA·파일 해시는 s3-scope.json.

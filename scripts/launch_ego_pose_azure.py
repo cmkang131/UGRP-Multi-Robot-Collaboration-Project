@@ -18,11 +18,15 @@ import time
 def main():
     p=argparse.ArgumentParser();p.add_argument('--worktree',type=Path,required=True)
     p.add_argument('--runner-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--worker-sha',help='reuse an explicitly frozen committed worker source')
     p.add_argument('--task-budget-s',type=int,default=10800);a=p.parse_args()
     if not 600<=a.task_budget_s<=10800:raise ValueError('FINITE_TASK_BUDGET_REQUIRED')
     spec=importlib.util.spec_from_file_location('ego_remote',a.runner_root/'scripts/remote_run.py')
     remote=importlib.util.module_from_spec(spec);spec.loader.exec_module(remote)
-    sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=a.worktree,text=True).strip()
+    launcher_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=a.worktree,text=True).strip()
+    sha=subprocess.check_output(['git','rev-parse',a.worker_sha or 'HEAD'],cwd=a.worktree,text=True).strip()
+    if len(sha)!=40 or any(c not in '0123456789abcdef' for c in sha):
+        raise ValueError('EXACT_WORKER_COMMIT_REQUIRED')
     if subprocess.check_output(['git','status','--porcelain'],cwd=a.worktree).strip():
         raise ValueError('COMMITTED_CLEAN_SOURCE_REQUIRED')
     a.output.mkdir(parents=True,exist_ok=False)
@@ -46,7 +50,9 @@ def main():
         if any(r['exit_code'] for r in reports):raise RuntimeError('STORAGE_BUDGET_REFUSED')
     # Successful SSH is the only VM-state check. No start/stop API is called.
     ssh('python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py admit')
-    budget('source',shipping=True)
+    already_shipped=ssh(f'test ! -f ~/ugrp-sim/src/{sha}/.git/ugrp-source-complete || cat ~/ugrp-sim/src/{sha}/.git/ugrp-source-complete')==sha
+    budget('source',shipping=not already_shipped)
+    save('source.json',dict(worker_sha=sha,launcher_sha=launcher_sha,reused_source=already_shipped))
     ssh(f'mkdir -p ~/ugrp-sim/leases; test ! -e {lease}; touch {lease}')
     started=time.monotonic();stop=threading.Event();records=[]
     def heartbeat():
