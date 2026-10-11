@@ -12,7 +12,7 @@
 
 표준 근거: [Nav2 RPP](https://github.com/ros-navigation/navigation2/blob/main/nav2_regulated_pure_pursuit_controller/README.md)의 경로 추종/진행 방향 정렬과 도착 시 orientation을 구분하는 구조를 유지한다. REAL의 `.10s` 및 단일 축 제약은 이 프로젝트 `sim/s2_real_output.py`의 계약이며 Nav2의 수치로 주장하지 않는다. 변경이 필요한 이유와 불허 펄스 생략은 사용자 결정에 따른 출력 경계 수정이다.
 
-로컬 검증 결과: 관련2파일의 고유 시험30개 통과(29개 통과 후 새 fixture의 읽기 전용 `terminal` 속성 대입 오류를 제거하고 해당1개 재검증). 프로그램 실패를 숨긴 skip/xfail0, 새 물리0, CI 대기0. 기존 북향 경로 모델 재생은 unloaded/loaded 모두 완료하고, heading off 초기 record SHA·명령·RNG 동일성을 유지했다.
+로컬 검증 결과: (2026-10-11 리뷰 수정 전 기록) 관련2파일 30개 통과로 적었으나 같은 파일의 PR 본문 34개와 불일치했다. 아래 수정 후 실측으로 대체한다. 프로그램 실패를 숨긴 skip/xfail0, 새 물리0, CI 대기0. 기존 북향 경로 모델 재생은 unloaded/loaded 모두 완료하고, heading off 초기 record SHA·명령·RNG 동일성을 유지했다.
 
 ## s3fix4 단계 probe 후속
 
@@ -38,7 +38,7 @@ main에 이미 반영된 수정을 함께 받아 해결하며 과거 fixture/has
 | offline-regressions | 위 shard 실패의 집계 결과. 모든 shard의 새 CI 성공 확인이 필요. |
 
 로컬은 기존 `.venv-sim-worker-mac`에서 `test_s2_path_heading.py`와
-`test_path_heading_default.py`만 실행해 **34 PASS / 79.79초**를 확인했다.
+리뷰 수정 전 `test_path_heading_default.py`만 실행해 34 PASS / 79.79초였다(수정 후 실측은 아래).
 native 물리·렌더·실제 모델 호출은 실행하지 않았다. main 자체의 전체 CI
 `38126818044`는 성공이지만 #422의 새 후보 CI와 구분한다.
 새 후보 CI는 push 이후 확인하며 이 커밋 시점에는 대기다.
@@ -53,3 +53,12 @@ native 물리·렌더·실제 모델 호출은 실행하지 않았다. main 자�
 `fetch-depth: 0`,
 [Nav2 RPP](https://github.com/ros-navigation/navigation2/blob/main/nav2_regulated_pure_pursuit_controller/README.md)의
 path heading / goal orientation 분리. REAL의 0.10초·단일 축 수치는 프로젝트 계약이다.
+
+## 2026-10-11 리뷰 수정: 명시 옵션 `min_command_contract`
+
+- 새 REAL 최소 0.10~0.80초·단일 축 계약은 등록 번들 v143/v145와 같은 heading-on 경로에 있어 같은 ID의 동작을 바꿀 수 있었다. 이제 **기본 off(=기존 동작 그대로)**인 옵션 `min_command_contract='on_v1'`(runtime), `min_command_contract=True`(`select`/`select_waypoint`/`own_map_heading.command`)로만 켠다.
+- 기존 `PARAMS`는 바이트 그대로 보존(번들에 해시됨); 새 값은 `CONTRACT_PARAMS`. off에서는 풀 필터·최종 lateral `==.06`·발행 경계 모두 기존과 동일(`_heading_admit`은 rows 그대로 반환). 소스 파일 자체의 해시는 바뀌므로 v143/v145의 source_sha256은 이 PR 이후 SHA 고정 실행에서만 유효하다.
+- 이 옵션을 켜는 번들은 **등록하지 않았다**(새 번들 ID 없음). 쓰려면 main·열린 PR 최대 RUNNABLE_ID(2026-10-11 확인: main `rgb-standard-dispatch-v63`) 다음 번호로 새로 등록해야 한다.
+- `command_reason`은 `sim/s2_real_output.py`의 최소 wheel 명령 검사와 같이 `kind == 'mecanum'`만 대상으로 한다(이전의 `drive` 포함 제거).
+- 추가 시험: NaN/inf/음수/0.0999999/0.10/0.80/>0.80 경계, 비유한 축·혼합 축·kind, ±π 회전 축, option-off가 v145 장면(최종 3cm 안 0.06초 lateral)을 기존 그대로 재현함과 PARAMS 동일성, runtime 옵션 검증.
+- 수정 후 실측: `tests/test_s2_path_heading.py` 37 passed(16.27초), `tests/test_path_heading_default.py` 9 passed(47.24초) = 46개. 이 둘 외 시험·CI 외 검증은 이 수정에서 하지 않았고 물리·렌더·모델 호출 없음.
