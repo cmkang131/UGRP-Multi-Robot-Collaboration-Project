@@ -25,6 +25,7 @@ GEMMA_MODEL = 'google/gemma-4-31b-it'
 GEMMA_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions'
 CALL_CAP = 1500
 REPRESENTATIONS = ('raw', 'semantic')
+IMPROVED = 'semantic_v2'   # frozen after the dev failure analysis; run on dev once, then on holdout once
 
 OPTION_TEXT = {
     'continue': 'Do nothing new this turn: keep exploring/mapping or hold position and wait. Use it when evidence is missing or the next protocol step is not available to you.',
@@ -53,8 +54,23 @@ INSTRUCTIONS = {
 SEMANTIC_NOTE = (' The state lists contract predicates computed by code from the same observations; peer reports are quoted verbatim.')
 
 
-def options_for(family):
-    return {k: OPTION_TEXT[k] for k in FAMILIES[family]}
+PEER_NOT_READY = ('no peer report says the partner is not ready, asks you to wait, or that its grip slipped or is slipping '
+                  '(then the pair is not ready and you hold with continue)')
+V2_CRITERIA = {
+    'continue': OPTION_TEXT['continue'] + ' It is the right choice whenever no other option is currently allowed.',
+    'claim': OPTION_TEXT['claim'] + ' Allowed only if route_approved is true and own_claim_made is false.',
+    'approve_route': OPTION_TEXT['approve_route'] + ' Allowed only if may_approve_routes is true, route_proposal_delivered is true and route_approved is false.',
+    'GO': OPTION_TEXT['GO'] + ' Allowed only if epoch_key_open and epoch_window_open are true, own_GO_sent is false, own_rgb_supports_grip is yes, and ' + PEER_NOT_READY + '.',
+    'ACK': OPTION_TEXT['ACK'] + ' Allowed only if epoch_window_open is true, own_GO_sent is true, own_ACK_sent is false, peer_GO_visible is true, own_rgb_supports_grip is yes, and ' + PEER_NOT_READY + '.',
+    'set_down': OPTION_TEXT['set_down'] + ' Allowed only if boundary_reasons_listed is not empty.',
+    'regrasp': OPTION_TEXT['regrasp'] + ' Use when fix_within_budget is true, or when relooks_left_at_this_stop is 0.',
+    'look_again': OPTION_TEXT['look_again'] + ' Use only when fix_within_budget is false and relooks_left_at_this_stop is greater than 0.',
+}
+
+
+def options_for(family, representation='raw'):
+    table = V2_CRITERIA if representation == IMPROVED else OPTION_TEXT
+    return {k: table[k] for k in FAMILIES[family]}
 
 
 def _sigma(state):
@@ -101,7 +117,7 @@ def render(case, representation):
 
 
 def instructions(family, representation):
-    return INSTRUCTIONS[family] + (SEMANTIC_NOTE if representation == 'semantic' else '')
+    return INSTRUCTIONS[family] + (SEMANTIC_NOTE if representation in ('semantic', IMPROVED) else '')
 
 
 # ---------------------------------------------------------------------------------------- rule baseline
@@ -121,7 +137,7 @@ def jev_body(case, representation):
     fam = case['family']
     return {'model': JEV_MODEL, 'state': render(case, representation),
             'questions': {'action': {'type': 'choice', 'instructions': instructions(fam, representation),
-                                     'criteria': options_for(fam)}}}
+                                     'criteria': options_for(fam, representation)}}}
 
 
 def parse_jev(body, family):
@@ -138,7 +154,7 @@ def parse_jev(body, family):
 def gemma_body(case, representation):
     fam = case['family']
     system = (instructions(fam, representation) + '\nReturn only a JSON object with one key "action" whose value is exactly one of these '
-              'choices, with its meaning: ' + json.dumps(options_for(fam)))
+              'choices, with its meaning: ' + json.dumps(options_for(fam, representation)))
     return {'model': GEMMA_MODEL, 'messages': [{'role': 'system', 'content': system},
             {'role': 'user', 'content': json.dumps(render(case, representation), sort_keys=True)}],
             'temperature': .2, 'max_tokens': 200, 'response_format': {'type': 'json_object'},

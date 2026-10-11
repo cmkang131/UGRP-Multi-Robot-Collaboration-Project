@@ -116,3 +116,12 @@ def test_runner_threads_write_clean_journal(tmp_path):
     run.run([(p, 'raw', c, 1) for c in CASES[:10] for p in ('jev', 'gemma')], workers=4)
     lines = (tmp_path / 'calls.jsonl').read_text().splitlines()
     assert len(lines) == 20 and all(json.loads(l)['status'] == 'ok' for l in lines) and run.http_attempts == 20
+
+
+def test_improved_representation_changes_only_criteria_and_keeps_state():
+    c = CASES[0]
+    assert ev.render(c, ev.IMPROVED) == ev.render(c, 'semantic')
+    assert ev.jev_body(c, ev.IMPROVED)['questions']['action']['criteria'] != ev.jev_body(c, 'semantic')['questions']['action']['criteria']
+    assert set(ev.options_for('dialogue', ev.IMPROVED)) == set(ev.options_for('dialogue'))
+    assert 'peer' in ev.options_for('dialogue', ev.IMPROVED)['GO']
+    assert 'acceptable' not in json.dumps(ev.jev_body(c, ev.IMPROVED))
