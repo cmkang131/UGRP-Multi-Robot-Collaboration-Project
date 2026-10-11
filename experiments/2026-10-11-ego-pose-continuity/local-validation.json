@@ -46,12 +46,127 @@
     "failed_job": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38144323189/job/114484555878",
     "log_sha256": "22636655673284efee46e0b8cdde885038b7675b9b5dd52c4d419626f8c7bab4",
     "source_comparison": {
-      "path": "/Users/changmin/projects/ugrp/outputs/egojump-ci-base-source-comparison.json",
-      "sha256": "52c0cc223bebd39e5fb5910d6145b71a91bc17d666589c5e8926b81e2f977edc",
+      "path": "/Users/changmin/projects/ugrp/outputs/egojump-ci-base-source-comparison.json.zst",
       "base_final_pair_paths_identical": 251,
       "coela_actual_base_sha256": "e1e5dcb16052896878230a05da77ae65e2f55a29fd9991f5a04f105a1b1498b3",
       "coela_expected_sha256": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
-      "additional_ci_failures": "historical hash/archive, optional MuJoCo, import-order failures; not all isolated or repaired"
+      "additional_ci_failures": "historical hash/archive, optional MuJoCo, import-order failures; not all isolated or repaired",
+      "uncompressed_sha256": "52c0cc223bebd39e5fb5910d6145b71a91bc17d666589c5e8926b81e2f977edc",
+      "sha256": "5f52345cc10850b64b4a03691d036fca5394c2d6116e4e97060a9dffba4782d6"
+    },
+    "own_junit": {
+      "run": 38148279777,
+      "head": "1c809ebd",
+      "files": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/egojump-ci-own-shard2/shard-2.xml",
+          "sha256": "a3aa01a7361df6f2ada29901d6f1dbcc5b0a72ae353fd63b0d11ec5bf83391fd",
+          "cases": [
+            {
+              "classname": "tests.test_ego_pose_continuity",
+              "name": "test_off_has_no_wrappers_or_state",
+              "file": "tests/test_ego_pose_continuity.py",
+              "line": "12",
+              "time": "0.001",
+              "passed": true
+            },
+            {
+              "classname": "tests.test_ego_pose_continuity",
+              "name": "test_cluster_total_mass_not_highest_particle_and_yaw_seam",
+              "file": "tests/test_ego_pose_continuity.py",
+              "line": "20",
+              "time": "0.001",
+              "passed": true
+            },
+            {
+              "classname": "tests.test_ego_pose_continuity",
+              "name": "test_mahalanobis_xy_99_percent_and_joseph_psd",
+              "file": "tests/test_ego_pose_continuity.py",
+              "line": "29",
+              "time": "0.001",
+              "passed": true
+            },
+            {
+              "classname": "tests.test_ego_pose_continuity",
+              "name": "test_process_bound_rejects_measurement_at_true_command_standstill",
+              "file": "tests/test_ego_pose_continuity.py",
+              "line": "40",
+              "time": "0.001",
+              "passed": true
+            },
+            {
+              "classname": "tests.test_ego_pose_continuity",
+              "name": "test_live_receive_uses_cluster_reporter_before_control_and_skips_static_pf",
+              "file": "tests/test_ego_pose_continuity.py",
+              "line": "75",
+              "time": "0.016",
+              "passed": true
+            },
+            {
+              "classname": "tests.test_ego_pose_continuity",
+              "name": "test_rep105_transforms_targets_after_reference_path_selection",
+              "file": "tests/test_ego_pose_continuity.py",
+              "line": "85",
+              "time": "0.013",
+              "passed": true
+            },
+            {
+              "classname": "tests.test_ego_pose_continuity",
+              "name": "test_information_forecast_copies_underlying_cloud_without_live_state_changes",
+              "file": "tests/test_ego_pose_continuity.py",
+              "line": "106",
+              "time": "0.031",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/egojump-ci-own-shard4/shard-4.xml",
+          "sha256": "3f3dbb1de666339877f1925607da3fe8cece6aa6f6e21388b82d71cb83c4a19a",
+          "cases": [
+            {
+              "classname": "tests.test_ego_pose_runner",
+              "name": "test_reservations_include_unstarted_groups_and_partial_active_siblings",
+              "file": "tests/test_ego_pose_runner.py",
+              "line": "8",
+              "time": "0.003",
+              "passed": true
+            },
+            {
+              "classname": "tests.test_ego_pose_runner",
+              "name": "test_physical_failure_is_retained_but_host_and_supervisor_errors_block_batch",
+              "file": "tests/test_ego_pose_runner.py",
+              "line": "26",
+              "time": "0.001",
+              "passed": true
+            },
+            {
+              "classname": "tests.test_ego_pose_runner",
+              "name": "test_pair_bundles_only_differ_in_pose_options",
+              "file": "tests/test_ego_pose_runner.py",
+              "line": "36",
+              "time": "0.001",
+              "passed": true
+            },
+            {
+              "classname": "tests.test_ego_pose_runner",
+              "name": "test_early_check_uses_physical_movement_and_records_turn_only_failure",
+              "file": "tests/test_ego_pose_runner.py",
+              "line": "54",
+              "time": "0.003",
+              "passed": true
+            }
+          ]
+        }
+      ],
+      "passed": 11,
+      "full_ci_passed": false
+    },
+    "latest_completed": {
+      "run": 38150406785,
+      "head": "88a370b4f9e053bc90e331be604bd046b9f54020",
+      "conclusion": "failure",
+      "own_test_files_unchanged_since_verified_ci": true
     }
   },
   "ci_registration_validation": {
@@ -102,5 +217,20 @@
     "main_runs": 11,
     "smoke_runs": 1,
     "scope": "pure numeric fixed posterior replay; not physics; additional input selection with original evidence unchanged"
+  },
+  "final_numeric_audit": {
+    "receipt": "numeric-verification.json",
+    "sha256": "2f0ec4d4ef102852d4ff5939c500919925fe96ca27829ef9bd51cfd535da73d7",
+    "cases": 18,
+    "frames": 27639,
+    "controller_imports": 0,
+    "physical_runs": 0,
+    "tolerance_m": 1e-10
+  },
+  "final_artifact_checks": {
+    "json_and_compressed_json_parse": true,
+    "controller_files_unchanged_since_worker": "98ffd82347c764fc6ddcd319d1d383df16d994a5",
+    "local_lossless_compression": "local-compression.json",
+    "whole_archive_verification": "summary.json#delivery"
   }
 }

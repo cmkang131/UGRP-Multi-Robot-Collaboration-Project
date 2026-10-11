@@ -1,0 +1,406 @@
+{
+  "checked_utc": "2026-10-11T15:10Z",
+  "main_registered": 24,
+  "main_available": 11,
+  "smoke_available": 1,
+  "missing_main": [
+    "egomap70-63003-calib_traversed",
+    "egomap70-63003-calib_traversed_zone",
+    "egomap70-63004-baseline",
+    "egomap70-63004-calib",
+    "egomap70-63004-calib_traversed",
+    "egomap70-63004-calib_traversed_zone",
+    "egomap70-63005-calib",
+    "egomap70-63005-calib_traversed",
+    "egomap70-63005-calib_traversed_zone",
+    "egomap70-63006-baseline",
+    "egomap70-63006-calib",
+    "egomap70-63006-calib_traversed",
+    "egomap70-63006-calib_traversed_zone"
+  ],
+  "missing_reason": "required decisions, controller, cloud, route, covariance, evaluation trajectory, result absent in ARM incoming child directories",
+  "excluded_calibrations": "15 calibration trials have no own-controller ledger and are not egomap localization mission runs",
+  "original_host_read_only_ssh": "oracle-x86 connection timeout; no start/stop requested",
+  "source_stability": {
+    "verified": true,
+    "files": 32,
+    "scope": "numeric extraction and lite source bytes unchanged after retrieval; incoming group completeness not asserted"
+  },
+  "original_selection_preserved": true,
+  "source_files": [
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/decisions.json.zst",
+      "bytes": 6192704,
+      "sha256": "85cc20ee34fa97daa84fbd78e8ef2482e8f595cdde8d4a006bbd7b8757647200"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/own-controller.jsonl.zst",
+      "bytes": 1130298,
+      "sha256": "b39943b083ff1e82c0a3bb40480d6a96c5440188173d4ac694fce54fb5746ca9"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/online-maps.jsonl.zst",
+      "bytes": 3320381,
+      "sha256": "bf79895f40831ffb2a168264b4cd185490c9fea6922e1ebf77e03044b1f4c2a6"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/route-map.json.zst",
+      "bytes": 3883683,
+      "sha256": "f8a5cc61a64354832a74477acf4355e19a1713904498cddaa0e4e7cf57a0f5e3"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/decisions.json.zst",
+      "bytes": 5112484,
+      "sha256": "e4a022f4978b6992b7be0143b51386bb278bed0e777e80005bf8ac7ae753b734"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/own-controller.jsonl.zst",
+      "bytes": 1031201,
+      "sha256": "a61da84ef10f71c452903cc3218ec7bd24bf2ec4c423f25e649545c85a5fa2e4"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/online-maps.jsonl.zst",
+      "bytes": 2675700,
+      "sha256": "d328976b34c07afa20e7904685c667d2b73e731199d9f5f8969f4e596b53b149"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/route-map.json.zst",
+      "bytes": 3864525,
+      "sha256": "53a3f1bf9527e3e3f694feda60362e1d58af683ef9372713dff5e5fb05b4f9ad"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/decisions.json.zst",
+      "bytes": 8919394,
+      "sha256": "086cb57f05c3f93db93cf791089ecf36641572af01c32e51bedb2e01d97ecb35"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/own-controller.jsonl.zst",
+      "bytes": 1198579,
+      "sha256": "d7934d05bdbf4dca4cd9ead8714ca0a7ccc28cd39b5add28b2cf521de6dd5b60"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/online-maps.jsonl.zst",
+      "bytes": 4432536,
+      "sha256": "e4e6b63f65ade504de636951c880f0e57742eaf5965ce172c67665471e5350e1"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/route-map.json.zst",
+      "bytes": 5917288,
+      "sha256": "bb593b365b8913b2522afbac6dbd6e1d2379c48a1d03a8dc7e839c756da4a3ab"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/decisions.json",
+      "bytes": 5918491,
+      "sha256": "e3a848996cbfc400cc26839ec39ec8392f07ddff3ee5b38ccefb5fc14aaa49ae"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/own-controller.jsonl",
+      "bytes": 3811142,
+      "sha256": "00804bf688104725f609f73321d71f3065812d6d130bbf61c7e594da5a134ebf"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/online-maps.jsonl",
+      "bytes": 1917481,
+      "sha256": "244d7b3f8083efc9e4134071aa92804bbc9061579acb18f7d11b5da8ef68e150"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/route-map.json",
+      "bytes": 5174376,
+      "sha256": "ce52506b5f8524716f5ad0773062c50cc855c12e7cef2586bbf91494956ce72c"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/own-controller.jsonl.zst",
+      "sha256": "b39943b083ff1e82c0a3bb40480d6a96c5440188173d4ac694fce54fb5746ca9"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/frontend-covariances.jsonl.zst",
+      "sha256": "88792786ebed9b7c50ac384d3ac88f51c42372f398fdc0a658241c7cf01b7f12"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/eval_only/trajectory.jsonl.zst",
+      "sha256": "00dbd721182350bd7a61c9be4f9082ebb804a97de64862aec68a357e7932a6c3"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/result.json",
+      "sha256": "0c1039788706afc60371cb031e1d18b2afedec2a865e428dd13dbe70c3eec489"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/own-controller.jsonl.zst",
+      "sha256": "a61da84ef10f71c452903cc3218ec7bd24bf2ec4c423f25e649545c85a5fa2e4"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/frontend-covariances.jsonl.zst",
+      "sha256": "ef283b765a5a838f28667cbf28d5646fa81120e8142d849de2a5a5db2f1b1730"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/eval_only/trajectory.jsonl.zst",
+      "sha256": "aeb7b3f68e7c6d9f162a7067bbc67132d4f760a635dad04e135cf779579d47e0"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/result.json",
+      "sha256": "679cd52cb93e5475d305ca1923301c2c8044db4fbab802cf274cb641e5b661d1"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/own-controller.jsonl.zst",
+      "sha256": "d7934d05bdbf4dca4cd9ead8714ca0a7ccc28cd39b5add28b2cf521de6dd5b60"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/frontend-covariances.jsonl.zst",
+      "sha256": "bdb6d7e0f8a37704eceb341f351cb3bb7bd49b503fa231f416e555f4232350ca"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/eval_only/trajectory.jsonl.zst",
+      "sha256": "e80dadd214c48b2cab169b641b0b6ae35079ae265e4d8a42668b19313d48b09d"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/result.json",
+      "sha256": "0c27a68eb1749fa469bd8b9c91ad12583ba380c700c989eeb9a3f62052d50cf8"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/own-controller.jsonl",
+      "sha256": "00804bf688104725f609f73321d71f3065812d6d130bbf61c7e594da5a134ebf"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/frontend-covariances.jsonl",
+      "sha256": "b41ee5ebc0a094dfdd0418773f006c0fdfab30f254254de1ab4146ed87905b64"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/eval_only/trajectory.jsonl",
+      "sha256": "bdf060d2bc5155d81aaf72056f6fc1764c5b965046c3dfe19b9fc16b2dd46cbc"
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/result.json",
+      "sha256": "f28009d40085b8d7aeea1fb873aa6bf70690e68a12bdac9817b55a202f689b94"
+    }
+  ],
+  "original_artifact_manifest_verification": [
+    {
+      "folder": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline",
+      "manifest": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/artifacts.sha256.json.zst",
+      "manifest_sha256": "801c09d913ebd6f411870ce2b0781813e174bdd30ac52bace783108cd30dfa22",
+      "files": [
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/decisions.json.zst",
+          "packed_sha256": "85cc20ee34fa97daa84fbd78e8ef2482e8f595cdde8d4a006bbd7b8757647200",
+          "raw_sha256": "102601a4e1fd3d49af411e1006c1cec553978ba7c6609a7d16d72ed5a2649697",
+          "expected_sha256": "102601a4e1fd3d49af411e1006c1cec553978ba7c6609a7d16d72ed5a2649697",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/own-controller.jsonl.zst",
+          "packed_sha256": "b39943b083ff1e82c0a3bb40480d6a96c5440188173d4ac694fce54fb5746ca9",
+          "raw_sha256": "0259d788fce98d4b0739423f9bb8434149f2044514ce80e2ea20c349f6df48ca",
+          "expected_sha256": "0259d788fce98d4b0739423f9bb8434149f2044514ce80e2ea20c349f6df48ca",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/online-maps.jsonl.zst",
+          "packed_sha256": "bf79895f40831ffb2a168264b4cd185490c9fea6922e1ebf77e03044b1f4c2a6",
+          "raw_sha256": "7b1920d1bb2b87811d7b1a64dac19ed0c15b0312c0984cf0fa807a921bfe496d",
+          "expected_sha256": "7b1920d1bb2b87811d7b1a64dac19ed0c15b0312c0984cf0fa807a921bfe496d",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/route-map.json.zst",
+          "packed_sha256": "f8a5cc61a64354832a74477acf4355e19a1713904498cddaa0e4e7cf57a0f5e3",
+          "raw_sha256": "d424fcd5e976dbd20523b566eac923ff39fe5b7c606af673294d593953d38b86",
+          "expected_sha256": "d424fcd5e976dbd20523b566eac923ff39fe5b7c606af673294d593953d38b86",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/frontend-covariances.jsonl.zst",
+          "packed_sha256": "88792786ebed9b7c50ac384d3ac88f51c42372f398fdc0a658241c7cf01b7f12",
+          "raw_sha256": "d83a03672bdb8916700ec225dcd81ee88a6008fba06fc4e6da3b80c91e6ebb4f",
+          "expected_sha256": "d83a03672bdb8916700ec225dcd81ee88a6008fba06fc4e6da3b80c91e6ebb4f",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/eval_only/trajectory.jsonl.zst",
+          "packed_sha256": "00dbd721182350bd7a61c9be4f9082ebb804a97de64862aec68a357e7932a6c3",
+          "raw_sha256": "74695c4864401bccc5657581212a56a87cb5bf90696157788d15ff551334dbe5",
+          "expected_sha256": "74695c4864401bccc5657581212a56a87cb5bf90696157788d15ff551334dbe5",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline/result.json",
+          "packed_sha256": "0c1039788706afc60371cb031e1d18b2afedec2a865e428dd13dbe70c3eec489",
+          "raw_sha256": "0c1039788706afc60371cb031e1d18b2afedec2a865e428dd13dbe70c3eec489",
+          "expected_sha256": "0c1039788706afc60371cb031e1d18b2afedec2a865e428dd13dbe70c3eec489",
+          "verified": true
+        }
+      ],
+      "whole_group_complete_asserted": false
+    },
+    {
+      "folder": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib",
+      "manifest": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/artifacts.sha256.json.zst",
+      "manifest_sha256": "5adb3c97153c5fef8a7eaf10f12e4daf9dd1d4f682baa74e41aad205bf04ec33",
+      "files": [
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/decisions.json.zst",
+          "packed_sha256": "e4a022f4978b6992b7be0143b51386bb278bed0e777e80005bf8ac7ae753b734",
+          "raw_sha256": "6b643a355c6bb0d3536a61fda76d420e0f5078a302730ad7179c787c320bf563",
+          "expected_sha256": "6b643a355c6bb0d3536a61fda76d420e0f5078a302730ad7179c787c320bf563",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/own-controller.jsonl.zst",
+          "packed_sha256": "a61da84ef10f71c452903cc3218ec7bd24bf2ec4c423f25e649545c85a5fa2e4",
+          "raw_sha256": "37159d142e2b991651af00c7a22e7c23197ca87723ef5c897253932798945f5d",
+          "expected_sha256": "37159d142e2b991651af00c7a22e7c23197ca87723ef5c897253932798945f5d",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/online-maps.jsonl.zst",
+          "packed_sha256": "d328976b34c07afa20e7904685c667d2b73e731199d9f5f8969f4e596b53b149",
+          "raw_sha256": "e3e21d79108ff843470d52bee7a41764181cac019fe88ee56272ff278971f99b",
+          "expected_sha256": "e3e21d79108ff843470d52bee7a41764181cac019fe88ee56272ff278971f99b",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/route-map.json.zst",
+          "packed_sha256": "53a3f1bf9527e3e3f694feda60362e1d58af683ef9372713dff5e5fb05b4f9ad",
+          "raw_sha256": "f32868bcff14d2dec0f6a4627630ae33833bc5bd3ac59e5b2fed82c709fc00aa",
+          "expected_sha256": "f32868bcff14d2dec0f6a4627630ae33833bc5bd3ac59e5b2fed82c709fc00aa",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/frontend-covariances.jsonl.zst",
+          "packed_sha256": "ef283b765a5a838f28667cbf28d5646fa81120e8142d849de2a5a5db2f1b1730",
+          "raw_sha256": "f39c52fef6f1c7a20bfead93493130f4b3ae5e9f175c7b7484d4fd49e484edb2",
+          "expected_sha256": "f39c52fef6f1c7a20bfead93493130f4b3ae5e9f175c7b7484d4fd49e484edb2",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/eval_only/trajectory.jsonl.zst",
+          "packed_sha256": "aeb7b3f68e7c6d9f162a7067bbc67132d4f760a635dad04e135cf779579d47e0",
+          "raw_sha256": "fe8874af6230d7071552dfe27a68a97be3b4db4fc66ff229633bf1b9a89fce5b",
+          "expected_sha256": "fe8874af6230d7071552dfe27a68a97be3b4db4fc66ff229633bf1b9a89fce5b",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib/result.json",
+          "packed_sha256": "679cd52cb93e5475d305ca1923301c2c8044db4fbab802cf274cb641e5b661d1",
+          "raw_sha256": "679cd52cb93e5475d305ca1923301c2c8044db4fbab802cf274cb641e5b661d1",
+          "expected_sha256": "679cd52cb93e5475d305ca1923301c2c8044db4fbab802cf274cb641e5b661d1",
+          "verified": true
+        }
+      ],
+      "whole_group_complete_asserted": false
+    },
+    {
+      "folder": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline",
+      "manifest": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/artifacts.sha256.json.zst",
+      "manifest_sha256": "cda59431bf7030b281e7625db13d8876dfc083bfbc82a9837561ad2f823c9462",
+      "files": [
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/decisions.json.zst",
+          "packed_sha256": "086cb57f05c3f93db93cf791089ecf36641572af01c32e51bedb2e01d97ecb35",
+          "raw_sha256": "2113e166b66ab65cde0da3189a98d6f659a5f7149cb4c1e768c00447ff77ae41",
+          "expected_sha256": "2113e166b66ab65cde0da3189a98d6f659a5f7149cb4c1e768c00447ff77ae41",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/own-controller.jsonl.zst",
+          "packed_sha256": "d7934d05bdbf4dca4cd9ead8714ca0a7ccc28cd39b5add28b2cf521de6dd5b60",
+          "raw_sha256": "b1ca6e9d2adaf2f5e0343b5ec20de2186827efd17f1b9751501ea63d4db04935",
+          "expected_sha256": "b1ca6e9d2adaf2f5e0343b5ec20de2186827efd17f1b9751501ea63d4db04935",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/online-maps.jsonl.zst",
+          "packed_sha256": "e4e6b63f65ade504de636951c880f0e57742eaf5965ce172c67665471e5350e1",
+          "raw_sha256": "490a385d1c83b990b78a90cf6d839ec453edaf8d7c0904558c15a35461e4a70f",
+          "expected_sha256": "490a385d1c83b990b78a90cf6d839ec453edaf8d7c0904558c15a35461e4a70f",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/route-map.json.zst",
+          "packed_sha256": "bb593b365b8913b2522afbac6dbd6e1d2379c48a1d03a8dc7e839c756da4a3ab",
+          "raw_sha256": "e44aabaea657eef8270fcfb6933ec40f479519a423ab19b991d9f6f4e4e83a14",
+          "expected_sha256": "e44aabaea657eef8270fcfb6933ec40f479519a423ab19b991d9f6f4e4e83a14",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/frontend-covariances.jsonl.zst",
+          "packed_sha256": "bdb6d7e0f8a37704eceb341f351cb3bb7bd49b503fa231f416e555f4232350ca",
+          "raw_sha256": "6b748b9d4ffe8a12a9ba439b8477413d0ed12fa5a1aca07f6e574b1ff17d94db",
+          "expected_sha256": "6b748b9d4ffe8a12a9ba439b8477413d0ed12fa5a1aca07f6e574b1ff17d94db",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/eval_only/trajectory.jsonl.zst",
+          "packed_sha256": "e80dadd214c48b2cab169b641b0b6ae35079ae265e4d8a42668b19313d48b09d",
+          "raw_sha256": "5356aafdfab80656ed2ba361981bd721d2e165c7505dfecd4fd0c6b7a8cd31e2",
+          "expected_sha256": "5356aafdfab80656ed2ba361981bd721d2e165c7505dfecd4fd0c6b7a8cd31e2",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave3-retry1/data/egomap70-63005-baseline/result.json",
+          "packed_sha256": "0c27a68eb1749fa469bd8b9c91ad12583ba380c700c989eeb9a3f62052d50cf8",
+          "raw_sha256": "0c27a68eb1749fa469bd8b9c91ad12583ba380c700c989eeb9a3f62052d50cf8",
+          "expected_sha256": "0c27a68eb1749fa469bd8b9c91ad12583ba380c700c989eeb9a3f62052d50cf8",
+          "verified": true
+        }
+      ],
+      "whole_group_complete_asserted": false
+    },
+    {
+      "folder": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data",
+      "manifest": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/artifacts.sha256.json",
+      "manifest_sha256": "d38cf06370a05a2ce1d9e0891b949ec7e2c0862cae97ab5630c4e3372eacf183",
+      "files": [
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/decisions.json",
+          "packed_sha256": "e3a848996cbfc400cc26839ec39ec8392f07ddff3ee5b38ccefb5fc14aaa49ae",
+          "raw_sha256": "e3a848996cbfc400cc26839ec39ec8392f07ddff3ee5b38ccefb5fc14aaa49ae",
+          "expected_sha256": "e3a848996cbfc400cc26839ec39ec8392f07ddff3ee5b38ccefb5fc14aaa49ae",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/own-controller.jsonl",
+          "packed_sha256": "00804bf688104725f609f73321d71f3065812d6d130bbf61c7e594da5a134ebf",
+          "raw_sha256": "00804bf688104725f609f73321d71f3065812d6d130bbf61c7e594da5a134ebf",
+          "expected_sha256": "00804bf688104725f609f73321d71f3065812d6d130bbf61c7e594da5a134ebf",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/online-maps.jsonl",
+          "packed_sha256": "244d7b3f8083efc9e4134071aa92804bbc9061579acb18f7d11b5da8ef68e150",
+          "raw_sha256": "244d7b3f8083efc9e4134071aa92804bbc9061579acb18f7d11b5da8ef68e150",
+          "expected_sha256": "244d7b3f8083efc9e4134071aa92804bbc9061579acb18f7d11b5da8ef68e150",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/route-map.json",
+          "packed_sha256": "ce52506b5f8524716f5ad0773062c50cc855c12e7cef2586bbf91494956ce72c",
+          "raw_sha256": "ce52506b5f8524716f5ad0773062c50cc855c12e7cef2586bbf91494956ce72c",
+          "expected_sha256": "ce52506b5f8524716f5ad0773062c50cc855c12e7cef2586bbf91494956ce72c",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/frontend-covariances.jsonl",
+          "packed_sha256": "b41ee5ebc0a094dfdd0418773f006c0fdfab30f254254de1ab4146ed87905b64",
+          "raw_sha256": "b41ee5ebc0a094dfdd0418773f006c0fdfab30f254254de1ab4146ed87905b64",
+          "expected_sha256": "b41ee5ebc0a094dfdd0418773f006c0fdfab30f254254de1ab4146ed87905b64",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/eval_only/trajectory.jsonl",
+          "packed_sha256": "bdf060d2bc5155d81aaf72056f6fc1764c5b965046c3dfe19b9fc16b2dd46cbc",
+          "raw_sha256": "bdf060d2bc5155d81aaf72056f6fc1764c5b965046c3dfe19b9fc16b2dd46cbc",
+          "expected_sha256": "bdf060d2bc5155d81aaf72056f6fc1764c5b965046c3dfe19b9fc16b2dd46cbc",
+          "verified": true
+        },
+        {
+          "path": "/home/ubuntu/ugrp-archive/runs/egomap70-smoke/data/result.json",
+          "packed_sha256": "f28009d40085b8d7aeea1fb873aa6bf70690e68a12bdac9817b55a202f689b94",
+          "raw_sha256": "f28009d40085b8d7aeea1fb873aa6bf70690e68a12bdac9817b55a202f689b94",
+          "expected_sha256": "f28009d40085b8d7aeea1fb873aa6bf70690e68a12bdac9817b55a202f689b94",
+          "verified": true
+        }
+      ],
+      "whole_group_complete_asserted": false
+    }
+  ]
+}

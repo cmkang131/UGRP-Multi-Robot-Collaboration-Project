@@ -11,5 +11,24 @@
   "same_rbpf_output_path": false,
   "already_has_cluster_and_motion_gates": true,
   "sigma_2_2_m": "user-provided separate startup nonconvergence; not remeasured here",
-  "automatic_transfer": false
+  "automatic_transfer": false,
+  "recheck": {
+    "utc": "2026-10-11T15:34Z",
+    "sha": "ec87ee73577a096eae07aeee6c10522238934cdd",
+    "files": {
+      "harness/zone_s3_no_prior.py": "f4ecfc315c9e5b9d031b6cf0cb0db291f8cd038c4fd9addd15d5547998f2782d",
+      "scripts/run_s2_unknown_start.py": "a989c43df0fc68a727cd592e3b42080f0119f7b684097592248f0582d8f08ec6",
+      "harness/zone_solo_cyan_best_cluster.py": "8ac9a142d848f26e3a3fc4041f7a148fe61e12a9dae8f5eb976f2ae919b804ee",
+      "harness/zone_solo_cyan_amcl_update.py": "f0a3e2a80a27164955fafce9d7a4ec5c4d98cbe03ccf15528166d98c37185ad9",
+      "harness/zone_own_executor.py": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+      "harness/zone_s3_pulse_odometry.py": "7d150827ae3865ce13935d7c0218f4b31c46ad6c17332abde9aabc1eb7c88b32",
+      "harness/zone_s3_pair_recheck.py": "5b7d69ebed8d46c136f19915c3fd60e4a05336b8c071ed17ae8c0f1477da45a1"
+    },
+    "changed_relevant_files": [
+      "harness/zone_s3_no_prior.py"
+    ],
+    "scope": "read only; no S3 run or worktree modification",
+    "route": "zone_s3_no_prior.py:42 -> zone_s3_pulse_odometry.py:22-24 -> run_s2_unknown_start.runtime_factory; still separate S2 PF",
+    "conclusion_unchanged": true
+  }
 }

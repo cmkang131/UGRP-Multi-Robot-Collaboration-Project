@@ -194,3 +194,7 @@
 ## 감사 기록
 
 [작업 기록과 검증 결과](../experiments/2026-10-09-module-retirement/README.md). DRAFT PR이며 감독·사용자 확인 전 병합 금지.
+
+## 2026-10-12 egojump DEV 회수 경로
+
+`scripts/archive_ego_pose_job.py`는 SSHFS에서 파일별 검증이 900초 제한을 넘겨 `scripts/ego_pose_archive_transport.py`의 영속 tar 운송·ARM 직접 전체 해시 검증으로 교체했다. 현재 실행기·시험의 옛 경로 참조는 0개다. 옛 소스는 `git show 88a370b4f9e053bc90e331be604bd046b9f54020:scripts/archive_ego_pose_job.py`로 복원할 수 있다. 실행 SHA `98ffd82347c764fc6ddcd319d1d383df16d994a5`와 모든 원본·검증 기록은 보존하며, 이 항목은 위 10/9 집계에 합산하지 않는다.
