@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.e2e10.v1",
-  "status": "RETRY_PREPARED",
+  "status": "RUNNING",
   "pr": 433,
   "run_class": "dev",
   "research_result": false,
@@ -142,6 +142,18 @@
         0.65185546875,
         1.8310546875,
         8.1162109375
+      ],
+      "runs": 8,
+      "per_run_bytes": 4294967296,
+      "reserved_bytes": 2147483648
+    },
+    "retry_admission": {
+      "memory_available_bytes": 65355026432,
+      "free_bytes": 49331585024,
+      "loadavg": [
+        0.40869140625,
+        0.98095703125,
+        6.26953125
       ],
       "runs": 8,
       "per_run_bytes": 4294967296,
@@ -537,7 +549,7 @@
     }
   ],
   "remaining": [
-    "Retry same eight cells after pre-simulation CLI failure; retain all eight HOST_ERROR launch records. No physics or model was started in failed submissions."
+    "Eight running cells passed <=5min checks. B boundary, admitted own route and transport still pending. Terminal retrieval is not complete."
   ],
   "bundle_number_audit": [
     {
@@ -606,7 +618,7 @@
       "max_id": 101
     }
   ],
-  "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+  "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4",
   "submissions": [
     {
       "run": "e2e10-a-s61001",
@@ -683,13 +695,738 @@
       "sha256": "b38a043cae8365f7d6d5c8b1b5b6dffec08679a156eac5445892eff11a1484c1"
     }
   },
-  "launch_attempt_count": 8,
-  "simulation_count": 0,
+  "launch_attempt_count": 16,
+  "simulation_count": 8,
   "retired_bundle": {
     "id": "e2e-rpp-lookahead-v196",
     "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
     "physical_runs": 0,
     "host_errors": 8,
     "catalog_preserved": true
-  }
+  },
+  "submissions_r2": [
+    {
+      "run": "e2e10-a-s61001-r2",
+      "pid": 274120,
+      "submitted_unix": 1791735121.2761238,
+      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+    },
+    {
+      "run": "e2e10-b-s61001-r2",
+      "pid": 274177,
+      "submitted_unix": 1791735122.5506754,
+      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+    },
+    {
+      "run": "e2e10-c-s61001-r2",
+      "pid": 274238,
+      "submitted_unix": 1791735123.8387945,
+      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+    },
+    {
+      "run": "e2e10-a-s61002-r2",
+      "pid": 274342,
+      "submitted_unix": 1791735125.103173,
+      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+    },
+    {
+      "run": "e2e10-b-s61002-r2",
+      "pid": 274396,
+      "submitted_unix": 1791735126.3908153,
+      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+    },
+    {
+      "run": "e2e10-c-s61002-r2",
+      "pid": 274451,
+      "submitted_unix": 1791735127.7587895,
+      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+    },
+    {
+      "run": "e2e10-a-s61003-r2",
+      "pid": 274514,
+      "submitted_unix": 1791735129.033173,
+      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+    },
+    {
+      "run": "e2e10-a-s61004-r2",
+      "pid": 274620,
+      "submitted_unix": 1791735130.2582176,
+      "source_sha": "e81c817cc0ad68431aa9532f4a175f6c863c40e4"
+    }
+  ],
+  "initial_health": {
+    "e2e10-c-s61001-r2": {
+      "passed": true,
+      "elapsed_since_submit_s": 212.06138515472412,
+      "sim_s": 15.0,
+      "frames": 76,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "deepinfra_normal": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "jev_response": true,
+        "translation_command": true,
+        "model_response_accepted": true
+      },
+      "actual_displacement_m": {
+        "r1": 0.12529387305622786,
+        "r2": 0.12275240415798803,
+        "r3": 8.114526146219145e-05
+      },
+      "commands": {
+        "r1": {
+          "forward": 11,
+          "turns": 65,
+          "turn_sign_flips": 12
+        },
+        "r2": {
+          "forward": 9,
+          "turns": 67,
+          "turn_sign_flips": 17
+        },
+        "r3": {
+          "forward": 0,
+          "turns": 0,
+          "turn_sign_flips": 0
+        }
+      },
+      "pose_jumps": {
+        "r1": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 6,
+            "over_20cm": 0,
+            "max_m": 0.10112786436371897
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167528
+          }
+        },
+        "r2": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.1127075956529511
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.01292341377316754
+          }
+        },
+        "r3": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.075001022305662
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.0
+          }
+        }
+      }
+    },
+    "e2e10-a-s61004-r2": {
+      "passed": true,
+      "elapsed_since_submit_s": 211.9435694217682,
+      "sim_s": 15.0,
+      "frames": 76,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "deepinfra_normal": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "jev_response": true,
+        "translation_command": true,
+        "model_response_accepted": true
+      },
+      "actual_displacement_m": {
+        "r1": 0.682262869749025,
+        "r2": 0.29341812970436976,
+        "r3": 8.172271666635471e-05
+      },
+      "commands": {
+        "r1": {
+          "forward": 54,
+          "turns": 22,
+          "turn_sign_flips": 1
+        },
+        "r2": {
+          "forward": 76,
+          "turns": 0,
+          "turn_sign_flips": 0
+        },
+        "r3": {
+          "forward": 0,
+          "turns": 0,
+          "turn_sign_flips": 0
+        }
+      },
+      "pose_jumps": {
+        "r1": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.09203872567533024
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.01292341377316763
+          }
+        },
+        "r2": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.08065995154883591
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.01292341377316764
+          }
+        },
+        "r3": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.075001022305662
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.0
+          }
+        }
+      }
+    },
+    "e2e10-b-s61002-r2": {
+      "passed": true,
+      "elapsed_since_submit_s": 212.65215039253235,
+      "sim_s": 15.0,
+      "frames": 76,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "deepinfra_normal": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "jev_response": true,
+        "translation_command": true,
+        "model_response_accepted": true
+      },
+      "actual_displacement_m": {
+        "r1": 0.6610155235758007,
+        "r2": 0.2947406018867206,
+        "r3": 7.944070739023477e-05
+      },
+      "commands": {
+        "r1": {
+          "forward": 53,
+          "turns": 23,
+          "turn_sign_flips": 1
+        },
+        "r2": {
+          "forward": 76,
+          "turns": 0,
+          "turn_sign_flips": 0
+        },
+        "r3": {
+          "forward": 0,
+          "turns": 0,
+          "turn_sign_flips": 0
+        }
+      },
+      "pose_jumps": {
+        "r1": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.14912048085602428
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167625
+          }
+        },
+        "r2": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.1021575556607719
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.01292341377316764
+          }
+        },
+        "r3": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.075001022305662
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.0
+          }
+        }
+      }
+    },
+    "e2e10-a-s61001-r2": {
+      "passed": true,
+      "elapsed_since_submit_s": 211.44164061546326,
+      "sim_s": 15.0,
+      "frames": 76,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "deepinfra_normal": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "jev_response": true,
+        "translation_command": true,
+        "model_response_accepted": true
+      },
+      "actual_displacement_m": {
+        "r1": 0.6597423158969616,
+        "r2": 0.2934105667699602,
+        "r3": 8.114526146219145e-05
+      },
+      "commands": {
+        "r1": {
+          "forward": 54,
+          "turns": 22,
+          "turn_sign_flips": 1
+        },
+        "r2": {
+          "forward": 76,
+          "turns": 0,
+          "turn_sign_flips": 0
+        },
+        "r3": {
+          "forward": 0,
+          "turns": 0,
+          "turn_sign_flips": 0
+        }
+      },
+      "pose_jumps": {
+        "r1": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.15570970126018974
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167627
+          }
+        },
+        "r2": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.08065995154883591
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.01292341377316764
+          }
+        },
+        "r3": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.075001022305662
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.0
+          }
+        }
+      }
+    },
+    "e2e10-a-s61003-r2": {
+      "passed": true,
+      "elapsed_since_submit_s": 210.11456179618835,
+      "sim_s": 16.0,
+      "frames": 81,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "deepinfra_normal": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "jev_response": true,
+        "translation_command": true,
+        "model_response_accepted": true
+      },
+      "actual_displacement_m": {
+        "r1": 0.6577310114547399,
+        "r2": 0.2964822529157976,
+        "r3": 8.703064332928814e-05
+      },
+      "commands": {
+        "r1": {
+          "forward": 55,
+          "turns": 26,
+          "turn_sign_flips": 1
+        },
+        "r2": {
+          "forward": 81,
+          "turns": 0,
+          "turn_sign_flips": 0
+        },
+        "r3": {
+          "forward": 0,
+          "turns": 0,
+          "turn_sign_flips": 0
+        }
+      },
+      "pose_jumps": {
+        "r1": {
+          "map": {
+            "intervals": 80,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.1534981994013758
+          },
+          "control": {
+            "intervals": 80,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167618
+          }
+        },
+        "r2": {
+          "map": {
+            "intervals": 80,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.08065995154883591
+          },
+          "control": {
+            "intervals": 80,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167663
+          }
+        },
+        "r3": {
+          "map": {
+            "intervals": 80,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.075001022305662
+          },
+          "control": {
+            "intervals": 80,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.0
+          }
+        }
+      }
+    },
+    "e2e10-a-s61002-r2": {
+      "passed": true,
+      "elapsed_since_submit_s": 210.82354474067688,
+      "sim_s": 15.0,
+      "frames": 76,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "deepinfra_normal": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "jev_response": true,
+        "translation_command": true,
+        "model_response_accepted": true
+      },
+      "actual_displacement_m": {
+        "r1": 0.6610155235758007,
+        "r2": 0.2947406018867206,
+        "r3": 7.944070739023477e-05
+      },
+      "commands": {
+        "r1": {
+          "forward": 53,
+          "turns": 23,
+          "turn_sign_flips": 1
+        },
+        "r2": {
+          "forward": 76,
+          "turns": 0,
+          "turn_sign_flips": 0
+        },
+        "r3": {
+          "forward": 0,
+          "turns": 0,
+          "turn_sign_flips": 0
+        }
+      },
+      "pose_jumps": {
+        "r1": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.14912048085602428
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167625
+          }
+        },
+        "r2": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.1021575556607719
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.01292341377316764
+          }
+        },
+        "r3": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.075001022305662
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.0
+          }
+        }
+      }
+    },
+    "e2e10-c-s61002-r2": {
+      "passed": true,
+      "elapsed_since_submit_s": 211.42066955566406,
+      "sim_s": 15.0,
+      "frames": 76,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "deepinfra_normal": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "jev_response": true,
+        "translation_command": true,
+        "model_response_accepted": true
+      },
+      "actual_displacement_m": {
+        "r1": 0.41437732145289163,
+        "r2": 0.149261397126703,
+        "r3": 7.944070739023477e-05
+      },
+      "commands": {
+        "r1": {
+          "forward": 33,
+          "turns": 41,
+          "turn_sign_flips": 12
+        },
+        "r2": {
+          "forward": 13,
+          "turns": 63,
+          "turn_sign_flips": 15
+        },
+        "r3": {
+          "forward": 0,
+          "turns": 0,
+          "turn_sign_flips": 0
+        }
+      },
+      "pose_jumps": {
+        "r1": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 3,
+            "over_20cm": 0,
+            "max_m": 0.07733039251493075
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167566
+          }
+        },
+        "r2": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 5,
+            "over_20cm": 0,
+            "max_m": 0.08070955497730094
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167532
+          }
+        },
+        "r3": {
+          "map": {
+            "intervals": 75,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.075001022305662
+          },
+          "control": {
+            "intervals": 75,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.0
+          }
+        }
+      }
+    },
+    "e2e10-b-s61001-r2": {
+      "passed": true,
+      "elapsed_since_submit_s": 210.23682498931885,
+      "sim_s": 14.0,
+      "frames": 71,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "deepinfra_normal": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "jev_response": true,
+        "translation_command": true,
+        "model_response_accepted": true
+      },
+      "actual_displacement_m": {
+        "r1": 0.6322389106062254,
+        "r2": 0.2926629410337932,
+        "r3": 7.633249938053306e-05
+      },
+      "commands": {
+        "r1": {
+          "forward": 51,
+          "turns": 20,
+          "turn_sign_flips": 1
+        },
+        "r2": {
+          "forward": 71,
+          "turns": 0,
+          "turn_sign_flips": 0
+        },
+        "r3": {
+          "forward": 0,
+          "turns": 0,
+          "turn_sign_flips": 0
+        }
+      },
+      "pose_jumps": {
+        "r1": {
+          "map": {
+            "intervals": 70,
+            "over_5cm": 2,
+            "over_20cm": 0,
+            "max_m": 0.15570970126018974
+          },
+          "control": {
+            "intervals": 70,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.012923413773167627
+          }
+        },
+        "r2": {
+          "map": {
+            "intervals": 70,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.08065995154883591
+          },
+          "control": {
+            "intervals": 70,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.01292341377316764
+          }
+        },
+        "r3": {
+          "map": {
+            "intervals": 70,
+            "over_5cm": 1,
+            "over_20cm": 0,
+            "max_m": 0.075001022305662
+          },
+          "control": {
+            "intervals": 70,
+            "over_5cm": 0,
+            "over_20cm": 0,
+            "max_m": 0.0
+          }
+        }
+      }
+    }
+  },
+  "initial_health_passed": 8
 }
