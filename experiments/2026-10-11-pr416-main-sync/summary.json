@@ -59,7 +59,25 @@
     }
   },
   "ci": {
-    "status_at_commit": "pending push",
+    "status": "passed",
+    "total": 33,
+    "buckets": {
+      "pass": 33
+    },
+    "required_check": "offline-regressions",
+    "required_check_state": "SUCCESS",
+    "workflow_runs": [
+      {
+        "id": "38141925114",
+        "conclusion": "success",
+        "headSha": "6af2afa47152c1de49077df9dae42d4d62c3d1e6",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38141925114"
+      }
+    ],
+    "head_sha": "6af2afa47152c1de49077df9dae42d4d62c3d1e6",
+    "scope": "Historical CI success for 6af2afa4; later bca75e25 and review-fix CI are separate",
+    "status_at_commit": "passed after push (historical 6af2afa4)",
     "receipt": "outputs/pr416-main-sync/contract-on-v1/ci-summary.json"
   },
   "raw_locations": {
@@ -98,8 +116,8 @@
     "outputs/pr416-main-sync/contract-on-v1/test-stage-fixture.xml": "5eea4e32f92143d0e1aaeb2118dbd63af3fd04ca0e8ea04fccd2fb691318efe2"
   },
   "status": "OFFLINE_EQUIVALENT_LOCAL_TESTS_PASSED",
-  "merge_commit": null,
-  "pushed": false,
+  "merge_commit": "173cf812c8f95e4ca756f8448c4eef353febbb33",
+  "pushed": true,
   "stage_probe": {
     "reference_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
     "min_command_contract": "on_v1",
@@ -129,7 +147,7 @@
     "after_command_sha256": "f837827b16e2e7af6ce019d140bcdb9fda95670c2e213c54a0b610155adc0945",
     "physics_runs": 0,
     "model_calls": 0,
-    "verification_scope": "offline selectors and synthetic stage commands",
+    "verification_scope": "700 offline selector/adapter cases and 68 synthetic stage entries; 3,190 commands belong to the synthetic stage sweep only. No complete physical trajectory, final-pair/highpose default behavior, or model validation.",
     "artifacts": {
       "outputs/pr416-main-sync/contract-on-v1/before/commands.json.zst": {
         "sha256": "ac8389603aee4f807b28040d2295f0b70d217dfd05badc249274ae2a13dc351f",
@@ -166,7 +184,7 @@
       "duration_s": 0.1,
       "error": null
     },
-    "resolution": "S3 explicitly selects on_v1; pre-merge commands preserved"
+    "resolution": "S3 explicitly selects on_v1; the tested offline selector and synthetic stage command outputs are preserved"
   },
   "blocking_callers": [],
   "next_candidate": null,
@@ -202,7 +220,7 @@
       "uncompressed_bytes": 377705
     }
   },
-  "verification_scope": "700 offline selector/adapter cases and 68 synthetic stage entries; 3190 issued commands byte-identical to pre-merge heading behavior; no physical or model validation",
+  "verification_scope": "700 offline selector/adapter cases and 68 synthetic stage entries; 3,190 commands belong to the synthetic stage sweep only. No complete physical trajectory, final-pair/highpose default behavior, or model validation.",
   "min_command_contract": "on_v1",
   "previous_attempt": "experiments/2026-10-11-pr416-main-sync/blocked-before-decision.json",
   "method": "Keep the library default off; explicitly select the existing on branch at S3 call sites. git show loads the exact pre-merge heading source in memory for same-input comparison. No new control algorithm or changed pulse duration.",
@@ -210,5 +228,7 @@
   "pushed_record": "outputs/pr416-main-sync/contract-on-v1/ci-summary.json",
   "commits_before_final_push": [
     "173cf812c8f95e4ca756f8448c4eef353febbb33"
-  ]
+  ],
+  "merge_commit_scope": "main feb0d818 merged into this feature branch; PR416 is still OPEN",
+  "current_review_fix_record": "experiments/2026-10-11-pr416-review-fixes/summary.json"
 }

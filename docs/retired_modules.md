@@ -7,6 +7,15 @@
 
 ## 판단과 재현
 
+2026-10-11: #416 독립 검토 수정으로 미실행 v190 / 7.83.0도 등록 당시 SHA
+`bca75e25`의 계약·실행기·workflow·등록·봉인 5파일을 바이트/해시 그대로 퇴역 보존했다.
+새 등록은 v193 / 7.86.0이며 S3 가드·pulse_odometry는 전용 모듈에 격리한다.
+공통 가드 3파일과 S2 pulse 소스는 main 원본으로 복원했다. v127의 오프라인 실행 admission은
+복원되며 v128·v129는 main의 기존 공유 소스 8개 변경 때문에 현재 소스에서 계속 퇴역이다
+(첫 거부: `harness/idle_robot_contacts_contract.py`; 전체 목록은 연결된 기록).
+두 번들의 원래 봉인·판정·시험을 유지하며 재현은 원래 등록 SHA에서만 한다.
+[admission과 봉인 확인](../experiments/2026-10-11-pr416-review-fixes/summary.json).
+
 2026-10-11: #416 main PR422 반영 후 미실행 v188 / 7.81.0을 원래 SHA `b3d52826`의 바이트로 퇴역 목록에 보존했다. 새 등록은 v190 / 7.83.0이며 공통 `min_command_contract` 기본 off를 유지하고 S3는 on_v1을 명시해 병합 전 명령을 보존한다. [기록](../experiments/2026-10-11-pr416-main-sync/summary.json).
 
 2026-10-11: #416의 `zone-s3-recovery-v152` / 7.45.0은 실행 당시 SHA
