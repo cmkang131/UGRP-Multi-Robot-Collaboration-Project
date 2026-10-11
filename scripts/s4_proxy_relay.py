@@ -3,6 +3,7 @@ import argparse
 import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import re
 from pathlib import Path
 import threading
 import time
@@ -13,6 +14,13 @@ from harness.zone_study_llm_driver import live_proxy, load_registry
 from harness.zone_study_llm_transport import no_redirect_opener
 from harness.s4_live_transport import URL
 from harness.s4_relay_journal import Journal
+
+
+def accepted_call_id(value):
+    # Both registered runners use run_key:call_id:attempt; keep the historical
+    # S4 namespace and explicitly admit only this E2E pilot's registered cells.
+    return value.startswith('s4live1-') or re.fullmatch(
+        r'e2eaz1-(?:gemma|gemini)-s6100[1-4]-(?:on|off)(?:-r[1-3])?:call-\d+-r[123]:\d+',value) is not None
 
 
 def main():
@@ -82,7 +90,7 @@ def main():
             if self.path != '/v1/chat/completions': self.send_error(404); return
             n = int(self.headers.get('Content-Length', '0'))
             call_id = self.headers.get('X-UGRP-Call-ID', '')
-            if not 0 < n <= 8_000_000 or not call_id.startswith('s4live1-'):
+            if not 0 < n <= 8_000_000 or not accepted_call_id(call_id):
                 self.send_error(400); return
             body = self.rfile.read(n)
             started = time.time()

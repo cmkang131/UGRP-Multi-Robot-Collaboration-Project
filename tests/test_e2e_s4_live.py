@@ -148,3 +148,12 @@ def test_gemini_cached_credential_uses_keychain_only(monkeypatch):
     store=SimpleNamespace(find=lambda:({'access_token':'test-token','expiry_date':10**16},None))
     monkeypatch.setattr(proxy.urllib.request,'urlopen',lambda *a,**k:pytest.fail('unneeded network call'))
     assert proxy.refresh({},store)=='test-token'
+
+
+def test_relay_admits_actual_e2e_ledger_id_without_widening_to_arbitrary_runs():
+    from scripts.s4_proxy_relay import accepted_call_id
+    for model in ('gemma','gemini'):
+        assert accepted_call_id(f'e2eaz1-{model}-s61001-on-r1:call-0001-r1:1')
+    assert accepted_call_id('s4live1-old-run:call-0001-r2:2')
+    assert not accepted_call_id('arbitrary:call-0001-r1:1')
+    assert not accepted_call_id('e2eaz1-gemma-s99999-on:call-0001-r1:1')

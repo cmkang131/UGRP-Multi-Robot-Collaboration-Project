@@ -150,7 +150,10 @@ def run(b,out,receipt,*,backend_factory=None):
                         sha256=obs['sha256'],pose_own_m=robot.goal.explorer.local_pose.tolist(),
                         remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command))
                 frames_seen+=1
-                if not host.started:host.begin(now)
+                if not host.started:
+                    write(out/'e2e-progress.json',health(robots,host,transport,now,time.monotonic()-started,frames_seen))
+                    backend.flush()
+                    host.begin(now)
             if not host.started:continue
             if tick%20==0:
                 write(out/'e2e-progress.json',health(robots,host,transport,now,time.monotonic()-started,frames_seen))
