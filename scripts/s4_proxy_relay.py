@@ -21,18 +21,34 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--seconds', type=int, default=3600)
     p.add_argument('--idempotent', action='store_true')
+    p.add_argument('--gemma-fallback', action='store_true', help='DEV only; default off')
+    p.add_argument('--gemma-state', type=Path,
+        default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
     a = p.parse_args()
     if not 0 < a.seconds <= 14400: raise ValueError('finite <=4h relay required')
     a.output.mkdir(parents=True, exist_ok=False)
     profile = load_registry()['driver_profiles']['main_study_gemini_v1']
     proxy, runtime = live_proxy(profile, a.proxy_pid)
+    fallback = None
+    if a.gemma_fallback:
+        from scripts.gemma_fallback_proxy import Gemma
+        registered = load_registry()['driver_profiles']['dev_gemini_gemma_fallback_v1']['fallback']['model_id']
+        fallback = Gemma(a.gemma_state, expected_model=registered)
+        fallback.require_image_probe()
     receipt = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url=URL, proxy=proxy,
         runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, audit_per_post=True,
         authentication='existing_mac_proxy_no_credentials_transferred')
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
     lock = threading.Lock()
-    journal = Journal(a.output/'responses') if a.idempotent else None
-    receipt['idempotent_response_journal'] = a.idempotent
+    journal = Journal(a.output/'responses', retry_rate_limits=not a.gemma_fallback) if a.idempotent or a.gemma_fallback else None
+    receipt['idempotent_response_journal'] = bool(journal)
+    if fallback:
+        from scripts.gemma_fallback_proxy import PROFILE
+        receipt.update(driver_profile=PROFILE, dev_only=True, gemma_fallback=dict(
+            model_id=fallback.model_id, provider='google_aistudio_gemma',
+            model_source='models.list', image_input_confirmed=True,
+            source_sha256=hashlib.sha256((Path(__file__).parent/'gemma_fallback_proxy.py').read_bytes()).hexdigest(),
+            attempts_per_request=1, key_location='macOS Keychain: ugrp-gemma-aistudio'))
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
 
     class Handler(BaseHTTPRequestHandler):
@@ -57,14 +73,21 @@ def main():
                 try:
                     current, _ = live_proxy(profile, a.proxy_pid)
                     if current != proxy: raise ValueError('proxy identity changed')
-                    request = Request(profile['proxy_url'], data=body, headers={
-                        'Content-Type': 'application/json', 'X-UGRP-Call-ID': call_id})
-                    try:
-                        with no_redirect_opener().open(request, timeout=180) as response:
-                            status, raw = response.status, response.read(8_000_000)
-                    except HTTPError as exc:
-                        status, raw = exc.code, exc.read(8_000_000)
-                        retry_after = exc.headers.get('Retry-After')
+                    if fallback and hashlib.sha256((Path(__file__).parent/'gemma_fallback_proxy.py').read_bytes()).hexdigest() != receipt['gemma_fallback']['source_sha256']:
+                        raise ValueError('fallback source changed')
+                    def primary():
+                        request = Request(profile['proxy_url'], data=body, headers={
+                            'Content-Type': 'application/json', 'X-UGRP-Call-ID': call_id})
+                        try:
+                            with no_redirect_opener().open(request, timeout=180) as response:
+                                return response.status, response.read(8_000_000), None
+                        except HTTPError as exc:
+                            return exc.code, exc.read(8_000_000), exc.headers.get('Retry-After')
+                    if fallback:
+                        from scripts.gemma_fallback_proxy import route
+                        status, raw, retry_after = route(primary, body, call_id, fallback=fallback)
+                    else:
+                        status, raw, retry_after = primary()
                 except Exception as exc:
                     status = 502
                     raw = json.dumps({'error': 'relay_identity_or_transport', 'type': type(exc).__name__}).encode()
@@ -76,6 +99,12 @@ def main():
                 response_sha256=hashlib.sha256(raw).hexdigest(), retry_after=retry_after,
                 proxy_source_sha256=proxy['source_sha256'], idempotency_key=key,
                 disposition=disposition, upstream_forwarded=disposition in ('forwarded', 'legacy'))
+            if fallback:
+                try:
+                    response = json.loads(raw)
+                    row.update(response_model=response.get('model'), provider=response.get('provider'),
+                        route=response.get('ugrp_route'))
+                except (ValueError, AttributeError): pass
             with lock, (a.output/'receipts.jsonl').open('a') as f:
                 f.write(json.dumps(row)+'\n')
             self.send_response(status); self.send_header('Content-Type', 'application/json')

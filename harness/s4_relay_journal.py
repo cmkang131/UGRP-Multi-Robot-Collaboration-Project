@@ -14,12 +14,13 @@ from harness.s4_call_recovery import server_delay
 
 
 class Journal:
-    def __init__(self, root, *, clock=time.time):
+    def __init__(self, root, *, clock=time.time, retry_rate_limits=True):
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = threading.Lock()
         self.pending = {}
         self.clock = clock
+        self.retry_rate_limits = retry_rate_limits
 
     def write(self, path, value):
         temporary = path.with_suffix('.new')
@@ -57,7 +58,7 @@ class Journal:
             status, response, retry_after = value
             # Only an explicit rate-limit permits another upstream attempt.
             # Ambiguous network errors remain cached failures, not double calls.
-            record = dict(state='retryable' if status == 429 else 'complete',
+            record = dict(state='retryable' if status == 429 and self.retry_rate_limits else 'complete',
                 request_sha256=digest, status=status, response=response.decode('utf-8'),
                 retry_after=retry_after, response_sha256=hashlib.sha256(response).hexdigest())
             if status == 429:

@@ -104,6 +104,13 @@ class PairLiveLedger(llm.MainStudySendLedger):
                 raise self._storage_error(row, error, 'store error response') from error
             record['path'] = path.name
         row['error_response'] = record
+        try:
+            response = json.loads(body)
+            if isinstance(response, dict) and 'provider' in response:
+                row.update(response_model=response.get('model'), response_provider=response['provider'],
+                           provider_route=response.get('ugrp_route'), provider_usage=response.get('usage'))
+        except ValueError:
+            pass
         row['rate_limit'] = is_rate_limit(exc.code, excerpt)
 
 

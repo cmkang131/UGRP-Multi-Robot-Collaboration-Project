@@ -35,6 +35,14 @@ class TunnelLedger(PairLiveLedger):
         raw = self.receipt_path.read_bytes()
         self.receipt_sha256 = hashlib.sha256(raw).hexdigest()
         self.receipt = validate_receipt(json.loads(raw))
+        fallback_profile = 'dev_gemini_gemma_fallback_v1'
+        requested = kwargs['profile'].get('profile_id', 'main_study_gemini_v1')
+        offered = self.receipt.get('driver_profile', 'main_study_gemini_v1')
+        if requested != offered:
+            raise HostError('relay driver profile differs from selected run profile')
+        if offered == fallback_profile and (self.receipt.get('dev_only') is not True or
+                self.receipt.get('gemma_fallback', {}).get('image_input_confirmed') is not True):
+            raise HostError('Gemma fallback requires DEV and verified image input')
         if kwargs['profile']['proxy_url'] != URL or kwargs.get('wire') is not None:
             raise HostError('S4 live relay requires its fixed loopback URL and real ledger wire')
         super().__init__(**kwargs)

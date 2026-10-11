@@ -17,11 +17,13 @@ PLAN=RECORD+'/README.md'
 BUNDLE_ID='zone-s4-pair-live-v183'
 VERSION='7.76.0'
 WORKFLOW='configs/simulation_workflows.d/s4_pair_live_v183.json'
+GEMMA_BUNDLE_ID=BUNDLE_ID+'-gemma-dev-v1'
+GEMMA_WORKFLOW='configs/simulation_workflows.d/s4_pair_live_v183_gemma_dev.json'
 
 
-def bundle(sha,condition,seed=601,*,tunnel_recovery=False,**kwargs):
+def bundle(sha,condition,seed=601,*,tunnel_recovery=False,gemma_fallback=False,**kwargs):
     from scripts import run_s4_pair_live11 as prior
-    if type(tunnel_recovery) is not bool or seed not in (601,602,603):
+    if type(tunnel_recovery) is not bool or type(gemma_fallback) is not bool or seed not in (601,602,603):
         raise ValueError('registered toggle and seed required')
     b=bind(prior.bundle,RECORD=RECORD,PLAN=PLAN,BUNDLE_ID=BUNDLE_ID,VERSION=VERSION,
            WORKFLOW=WORKFLOW)(sha,condition,seed if seed in (601,602) else 601,**kwargs)
@@ -35,6 +37,16 @@ def bundle(sha,condition,seed=601,*,tunnel_recovery=False,**kwargs):
         stage_scope='legacy-route DEV only; own-map E2E and goal correction not connected')
     paths=set(source_closure(ROOT,['scripts/run_s4_pair_live12.py','scripts/s4_proxy_relay.py',
         'scripts/s4_reverse_tunnel.py','scripts/s4_deadline_run.py']))|{WORKFLOW,PLAN,RECORD+'/plan.json'}
+    if gemma_fallback:
+        from harness.zone_study_llm_driver import load_registry, REGISTRY
+        from harness.zone_study_contract import digest
+        profile_id='dev_gemini_gemma_fallback_v1'
+        profile=load_registry()['driver_profiles'][profile_id]
+        b.update(execution_bundle_id=GEMMA_BUNDLE_ID, driver_profile=profile_id,
+            driver_profile_sha256=digest(profile), gemma_fallback=True,
+            model_policy='DEV Gemini subscription -> models.list-resolved Gemma 4 31B; once per request',
+            workflow_catalog=GEMMA_WORKFLOW)
+        paths.update((GEMMA_WORKFLOW,str(REGISTRY.relative_to(ROOT))))
     b['source_sha256'].update({p:prior.old.old.old.admission.old.sha(ROOT/p) for p in paths})
     return b
 
@@ -64,10 +76,11 @@ def main(argv=None):
     p.add_argument('--condition',choices=('no_comm','peer_ko','leader_ko','structured'),required=True)
     p.add_argument('--seed',type=int,choices=(601,602,603),required=True)
     p.add_argument('--tunnel-recovery',action='store_true');p.add_argument('--legacy-route-dev',action='store_true')
+    p.add_argument('--gemma-fallback',action='store_true',help='DEV only; requires matching verified Mac relay')
     p.add_argument('--execute',action='store_true');a=p.parse_args(argv)
     if not a.execute:
         print(json.dumps(dict(execution_started=False,tunnel_recovery=a.tunnel_recovery,
-            own_map_transport_connected=False,e2e_eligible=False)));return 0
+            gemma_fallback=a.gemma_fallback, own_map_transport_connected=False,e2e_eligible=False)));return 0
     if not a.legacy_route_dev:
         raise ValueError('OWN_MAP_TRANSPORT_NOT_CONNECTED: no physical/model execution admitted')
     # Existing source/host/output gates stay in place for a separately authorized
@@ -83,6 +96,7 @@ def main(argv=None):
     _,undo=install('v98-exact-v6')
     try:
         result=run(bundle(a.expected_source_sha,a.condition,a.seed,tunnel_recovery=a.tunnel_recovery,
+            gemma_fallback=a.gemma_fallback,
             reconnect=True,rounds=True,cyan=True,floor=True,feedback=True,retry_429=True,
             reply_contract=True,clipped_backoff=True),a.output,a.relay_receipt,legacy_route_dev=True)
     finally:undo()

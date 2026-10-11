@@ -117,6 +117,8 @@ def driver_profile(profile_id, *, bundle_id=None, registry=None) -> dict:
     if profile_id not in _bundle_entry(registry, bundle_id)['driver_profiles']:
         raise ContractViolation(f'driver profile {profile_id!r} is not registered for bundle {bundle_id}')
     profile = dict(registry['driver_profiles'][profile_id])
+    if profile.get('scope') == 'DEV_only':
+        raise ContractViolation('DEV_only fallback is admitted by the explicit S4 DEV runner only')
     model = profile['model']
     if set(model) != set(MODEL_KEYS):
         raise ContractViolation(f'driver profile {profile_id}: model keys must be {MODEL_KEYS}')
@@ -320,6 +322,9 @@ class MainStudySendLedger(SendLedger):
             usage = response.get('usage') if isinstance(response, dict) else None
             row['provider_usage'] = usage if isinstance(usage, dict) else None
             row['response_model'] = response.get('model') if isinstance(response, dict) else None
+            if isinstance(response, dict) and 'provider' in response:
+                row['response_provider'] = response['provider']
+                row['provider_route'] = response.get('ugrp_route')
             row['completion'] = assess_completion(response, study_json=True)
 
     def _preflight_live(self):
@@ -487,6 +492,8 @@ def call_rows(ledger) -> list:
                      'completion': e.get('completion'),
                      'failure_class': e.get('failure_class', call_failure_class(e)),
                      'budget_request_id': e.get('budget_request_id')})
+        if 'response_provider' in e:
+            rows[-1].update(response_provider=e['response_provider'], provider_route=e.get('provider_route'))
     return rows
 
 
@@ -495,7 +502,25 @@ def usage_summary(rows) -> dict:
     known = [known_total(r['provider_usage']) for r in sent]
     latencies = sorted(r['latency_ms'] for r in sent if r['latency_ms'] is not None)
     field = lambda k: sum(r['provider_usage'][k] for r in sent if r['usage_known'])  # noqa: E731
-    return {'requests': len(sent), 'blocked': len(rows) - len(sent),
+    by_model, upstream_by_model = {}, {}
+    for row in sent:
+        key = (row.get('response_provider') or 'unknown') + '/' + (row.get('response_model') or 'unknown')
+        group = by_model.setdefault(key, {'requests': 0, 'tokens_total_known': 0, 'usage_unknown_requests': 0})
+        group['requests'] += 1
+        total = known_total(row['provider_usage'])
+        group['tokens_total_known'] += total or 0
+        group['usage_unknown_requests'] += total is None
+        for attempt in (row.get('provider_route') or {}).get('attempts', []):
+            attempt_key = (attempt.get('provider') or 'unknown') + '/' + (attempt.get('model') or 'unknown')
+            upstream = upstream_by_model.setdefault(attempt_key, {'responses': 0, 'http_errors': 0,
+                'tokens_total_known': 0, 'usage_unknown_responses': 0})
+            upstream['responses'] += 1
+            upstream['http_errors'] += attempt['status'] >= 400
+            attempt_total = known_total(attempt.get('usage'))
+            upstream['tokens_total_known'] += attempt_total or 0
+            upstream['usage_unknown_responses'] += attempt_total is None
+    return {'requests': len(sent), 'blocked': len(rows) - len(sent), 'by_model': by_model,
+            'upstream_by_model': upstream_by_model,
             'tokens_prompt': field('prompt_tokens'), 'tokens_completion': field('completion_tokens'),
             'tokens_total_known': sum(t for t in known if t is not None),
             'usage_unknown_requests': sum(t is None for t in known),
