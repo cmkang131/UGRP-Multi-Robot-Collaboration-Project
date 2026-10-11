@@ -1,13 +1,13 @@
 """Mac-only, opt-in DEV Gemma gateway. Keys never leave Keychain except in an API header.
 
-No model name or quota is guessed: models.list resolves the requested family;
-headers/QuotaFailure establish account limits. Unknown limits remain unknown.
+models.list resolves the requested family. Legacy limits come from upstream
+evidence; multi_key_v1 uses the user-approved per-project caps and cooldowns.
 """
 from __future__ import annotations
 
 import argparse
 import base64
-from contextlib import contextmanager
+from contextlib import contextmanager, ExitStack
 from datetime import datetime, timedelta
 import fcntl
 import hashlib
@@ -16,6 +16,7 @@ import json
 import math
 from pathlib import Path
 import re
+import random
 import subprocess
 import threading
 import time
@@ -44,17 +45,46 @@ def write(path, value):
     temporary.replace(path)
 
 
-def keychain_key():
-    result = subprocess.run(['security', 'find-generic-password', '-s', SERVICE, '-w'],
+def keychain_key(service=SERVICE):
+    result = subprocess.run(['security', 'find-generic-password', '-s', service, '-a', 'aistudio', '-w'],
                             capture_output=True, timeout=15)
     if result.returncode or not result.stdout.strip():
         raise ValueError('key_needed: macOS Keychain service ' + SERVICE)
     return result.stdout.decode().strip()
 
 
-def google(path, payload=None, *, timeout=180):
-    # Only this function sees the key. No query-string key, CLI arg, env or redirect.
-    key = keychain_key()
+def keychain_keys():
+    """Enumerate metadata (never security -d); load only matching account/services.
+
+    Indexes are stable service suffixes, including gaps. Duplicate credentials
+    share one bucket. Different credentials must belong to different projects.
+    """
+    result = subprocess.run(['security', 'dump-keychain'], capture_output=True, timeout=15)
+    if result.returncode:
+        raise ValueError('keychain_service_inventory_failed')
+    indexes = set()
+    for item in result.stdout.decode().split('keychain:'):
+        if not re.search(r'"acct"<blob>="aistudio"', item):
+            continue
+        match = re.search(r'"svce"<blob>="ugrp-gemma-aistudio(?:-([2-9]\d*|1\d+))?"', item)
+        if match:
+            indexes.add(int(match[1]) if match[1] else 1)
+    keys = {}
+    for index in sorted(indexes):
+        try:
+            key = keychain_key(SERVICE if index == 1 else SERVICE + '-' + str(index))
+        except ValueError:
+            continue
+        if key not in keys.values():
+            keys[index] = key
+    if not keys:
+        raise ValueError('key_needed: macOS Keychain account aistudio')
+    return keys
+
+
+def google(path, payload=None, *, timeout=180, key=None, secrets=()):
+    # Credentials stay in memory/API headers. No URL, CLI arg, env or redirect.
+    key = key if key is not None else keychain_key()
     request = Request(API + path, data=None if payload is None else json.dumps(payload).encode(),
                       headers={'x-goog-api-key': key, 'Content-Type': 'application/json'})
     try:
@@ -64,8 +94,9 @@ def google(path, payload=None, *, timeout=180):
         except HTTPError as error:
             status, raw, headers = error.code, error.read(8_000_000), dict(error.headers)
         # Even an upstream error echoing the credential cannot persist it.
-        raw = raw.replace(key.encode(), b'[REDACTED_SECRET]')
-        headers = {k: v.replace(key, '[REDACTED_SECRET]') for k, v in headers.items()}
+        for secret in (key, *secrets):
+            raw = raw.replace(secret.encode(), b'[REDACTED_SECRET]')
+            headers = {k: v.replace(secret, '[REDACTED_SECRET]') for k, v in headers.items()}
         return status, json.loads(raw), headers
     except Exception:
         raise RuntimeError('google_transport_or_invalid_json; ambiguous request not retried') from None
@@ -236,22 +267,126 @@ class Quota:
         return evidence
 
 
+class PoolUnavailable(Exception):
+    def __init__(self, reservation):
+        super().__init__('gemma_key_pool_wait')
+        self.reservation = reservation
+
+
+class KeyPool:
+    """Atomic most-headroom admission; only stable key_index values reach disk.
+
+    Key 1 shares the legacy Mac-wide bucket, so an active single-key relay's
+    reservations remain visible. Locks are released before every API call.
+    """
+    LIMITS = dict(rpm=30, tpm=16000, rpd=14400)
+
+    def __init__(self, root, indexes, *, clock=time.time):
+        self.root, self.clock = Path(root), clock
+        self.buckets = {i: SharedQuota(self.root if i == 1 else self.root/('key-'+str(i)),
+                                      clock=clock, limits=self.LIMITS)
+                        for i in sorted(indexes)}
+        self.providers = {i: Quota(q.root/'provider', clock=clock) for i, q in self.buckets.items()}
+
+    def select(self, tokens, *, exclude=(), reserve=True, request_id='', request_sha256=''):
+        # Lock order is numeric and identical in every process. The legacy
+        # relay acquires only key 1; no extra global capacity bottleneck exists.
+        with ExitStack() as stack:
+            states = {i: stack.enter_context(q.locked()) for i, q in self.buckets.items()}
+            available = {i: q.availability(states[i], tokens) for i, q in self.buckets.items()}
+            choices = [i for i, (wait, _) in available.items() if wait <= 0 and i not in exclude]
+            if not choices:
+                waits = [wait for i,(wait,_) in available.items() if i not in exclude]
+                return dict(admitted=False, retry_after_s=max(1, math.ceil(min(waits or [v[0] for v in available.values()]))),
+                            effective_limits=self.LIMITS)
+            index = max(choices, key=lambda i: (*available[i][1], -i))
+            if not reserve:
+                return dict(admitted=True, key_index=index)
+            return self.buckets[index].reserve_state(states[index], tokens, request_id=request_id,
+                request_sha256=request_sha256, key_index=index)
+
+    def observe(self, index, status, body, headers):
+        provider = self.providers[index]
+        with provider.transaction() as state:
+            provider.observe(state, status, body, headers)
+            if status in (403, 429):
+                from harness.s4_call_recovery import server_delay
+                streak = min(7, state.get('failure_streak', 0)+1)
+                state['failure_streak'] = streak
+                retry = next((v for k,v in headers.items() if k.lower() == 'retry-after'), None)
+                delay = max(min(3600, 60*2**(streak-1)),
+                            server_delay({'Retry-After': retry}, json.dumps(body), self.clock()))
+                error = body.get('error')
+                for detail in error.get('details',[]) if isinstance(error,dict) else []:
+                    value = str(detail.get('retryDelay',''))
+                    if detail.get('@type','').endswith('RetryInfo') and re.fullmatch(r'\d+(?:\.\d+)?s',value):
+                        delay = max(delay,float(value[:-1]))
+                state['hold_until'] = max(state['hold_until'], self.clock()+delay)
+            elif status == 200:
+                state['failure_streak'] = 0
+            with self.buckets[index].locked() as bucket:
+                bucket['hold_until'] = max(bucket.get('hold_until', 0), state['hold_until'])
+            return dict(state)
+
+
 class Gemma:
     def __init__(self, root, *, send=google, clock=time.time, expected_model=None,
-                 expected_version=None, shared_quota=None, standard=False):
+                 expected_version=None, shared_quota=None, standard=False,
+                 multi_key_v1=False, keys=None, sleep=time.sleep, jitter=random.random):
         self.root, self.send = Path(root), send
         self.root.mkdir(parents=True, exist_ok=True)
         self.quota = Quota(self.root, clock=clock)
         self.shared_quota = shared_quota or SharedQuota(clock=clock)
         self.standard = standard
-        self.model, self.discovery = discover(send)
+        self.multi_key_v1 = multi_key_v1
+        self.sleep, self.jitter = sleep, jitter
+        self.key_pool = None
+        if multi_key_v1:
+            self._keys = keychain_keys() if keys is None else dict(keys)
+            if not self._keys:
+                raise ValueError('key_needed')
+            # Exactly one key keeps the legacy quota/journal/response behavior.
+            if len(self._keys) == 1:
+                self.send = lambda path, payload=None: send(path, payload, key=next(iter(self._keys.values())))
+            else:
+                self.key_pool = KeyPool(self.shared_quota.root, self._keys, clock=clock)
+                self._key_send = send
+                self.send = self._metadata_send
+        self.model, self.discovery = discover(self.send)
         self.model_id = self.discovery['model_id']
         if expected_model is not None and self.model_id != expected_model:
             raise ValueError('models.list_model_differs_from_registered_DEV_profile')
         if expected_version is not None and self.model.get('version') != expected_version:
             raise ValueError('models.list_version_drift')
         write(self.root / 'models-list.json', self.discovery)
-        self.journal = Journal(self.root / 'responses', clock=clock, retry_rate_limits=standard)
+        self.journal = Journal(self.root / 'responses', clock=clock,
+                               retry_rate_limits=standard or self.key_pool is not None)
+
+    def _metadata_send(self, path, payload=None):
+        attempted = set()
+        while True:
+            reservation = self.key_pool.select(1, exclude=attempted, reserve=False)
+            if not reservation['admitted']:
+                raise PoolUnavailable(reservation)
+            index = reservation['key_index']; attempted.add(index)
+            status, body, headers = self._key_send(path, payload, key=self._keys[index],
+                                                  secrets=tuple(self._keys.values()))
+            self.key_pool.observe(index, status, body, headers)
+            with (self.root / 'metadata-attempts.jsonl').open('a') as handle:
+                handle.write(json.dumps(dict(key_index=index, path=path.split('?')[0], status=status))+'\n')
+            if status not in (403, 429) and not 500 <= status <= 599:
+                return status, body, headers
+            if 500 <= status <= 599:
+                delay = self._server_retry_delay(len(attempted), headers, body)
+                if len(attempted) >= min(3, len(self._keys)) or delay > 5:
+                    return status, body, headers
+                self.sleep(delay)
+
+    def _server_retry_delay(self, attempt, headers, body):
+        from harness.s4_call_recovery import server_delay
+        retry = next((v for k,v in headers.items() if k.lower() == 'retry-after'), None)
+        return max(min(2., 2.**(attempt-1)) + .25*self.jitter(),
+                   server_delay({'Retry-After': retry}, json.dumps(body), self.quota.clock()))
 
     def count_tokens(self, body):
         payload={'generateContentRequest':{'model':self.model['name'],**body}}
@@ -278,6 +413,8 @@ class Gemma:
         return self.journal.call(key, raw, lambda: self._complete(raw, request_id))[0]
 
     def _complete(self, raw, request_id):
+        if self.key_pool is not None:
+            return self._complete_multi(raw, request_id)
         request = json.loads(raw); body = generate_body(request)
         if self.standard and request.get('model') != self.model_id:
             raise ValueError('single_model_profile_mismatch')
@@ -325,7 +462,80 @@ class Gemma:
             return status, json.dumps(result).encode(), (str(max(1, math.ceil(state['hold_until']-self.quota.clock())))
                                                        if status == 429 else None)
 
-    def record(self, request_id, raw, status, response, quota, *, forwarded, result=None):
+    def _pool_wait(self, reservation, attempts):
+        result = dict(error='global_gemma_token_bucket', provider=PROVIDER, model=self.model_id,
+                      ugrp_upstream_forwarded=bool(attempts), quota_wait=reservation,
+                      ugrp_key_attempts=attempts, multi_key_v1=True,
+                      usage=None if attempts else {'prompt_tokens':0,'completion_tokens':0,'total_tokens':0})
+        return 429, json.dumps(result).encode(), str(reservation['retry_after_s'])
+
+    def _complete_multi(self, raw, request_id):
+        request = json.loads(raw); body = generate_body(request)
+        if self.standard and request.get('model') != self.model_id:
+            raise ValueError('single_model_profile_mismatch')
+        try:
+            counted = self.count_tokens(body)
+        except PoolUnavailable as wait:
+            return self._pool_wait(wait.reservation, [])
+        if self.standard and counted['totalTokens'] > 2500:
+            return 400,b'{"error":"compact_input_exceeds_2500_tokens","ugrp_upstream_forwarded":false}',None
+        attempts, attempted = [], set()
+        retry_delay = 0.
+        started = time.monotonic()
+        while True:
+            reservation = self.key_pool.select(counted['totalTokens']+body['generationConfig']['maxOutputTokens'],
+                exclude=attempted, request_id=request_id, request_sha256=hashlib.sha256(raw).hexdigest())
+            if not reservation['admitted']:
+                return self._pool_wait(reservation, attempts)
+            index = reservation['key_index']; attempted.add(index)
+            began = time.monotonic(); ambiguous = False
+            try:
+                status, response, headers = self._key_send(self.model['name']+':generateContent', body,
+                    key=self._keys[index], secrets=tuple(self._keys.values()))
+            except Exception:
+                status, response, headers = 502, {'error':'ambiguous_google_transport_not_retried'}, {}
+                ambiguous = True
+            wall = time.monotonic()-began
+            quota = self.key_pool.observe(index, status, response, headers)
+            result = openai_reply(response, self.model_id, request_id) if status == 200 else dict(
+                error='google_generateContent_http_'+str(status), provider=PROVIDER, model=self.model_id)
+            attempts.append(dict(key_index=index, status=status, usage=result.get('usage'),
+                                 wall_s=wall, ambiguous=ambiguous, delay_before_s=retry_delay,
+                                 response_sha256=hashlib.sha256(json.dumps(response,sort_keys=True).encode()).hexdigest()))
+            retry_delay = 0.
+            result.update(ugrp_upstream_forwarded=True, ugrp_upstream_wall_s=wall,
+                ugrp_count_tokens=counted, ugrp_quota_reservation=reservation, key_index=index,
+                multi_key_v1=True, ugrp_key_attempts=list(attempts),
+                ugrp_model_pin=dict(model_id=self.model_id, models_list_version=self.model.get('version'),
+                    response_model_version=response.get('modelVersion'), immutable_revision_available=False),
+                ugrp_thoughts_tokens=response.get('usageMetadata',{}).get('thoughtsTokenCount'))
+            if self.standard and status == 200 and response.get('modelVersion') != self.model_id:
+                status = 502; result.pop('choices',None); result['error']='response_model_version_drift'
+            transient = not ambiguous and 500 <= status <= 599 and result.get('error') != 'response_model_version_drift'
+            if transient:
+                retry_delay = self._server_retry_delay(len(attempts), headers, response)
+                next_key = self.key_pool.select(counted['totalTokens']+body['generationConfig']['maxOutputTokens'],
+                                                exclude=attempted, reserve=False)
+                if len(attempts) >= 3 or not next_key['admitted'] or retry_delay > 5:
+                    result.update(error='gemma_server_retry_exhausted', failure_class='HOST_ERROR')
+                    transient = False
+            if ambiguous or result.get('error') == 'response_model_version_drift':
+                result['failure_class'] = 'HOST_ERROR'
+            result['ugrp_retry_metrics'] = dict(
+                first_failure_count=int(attempts[0]['status'] != 200),
+                server_error_count=sum(500 <= a['status'] <= 599 and not a['ambiguous'] for a in attempts),
+                retry_count=len(attempts)-1, delay_s=sum(a['delay_before_s'] for a in attempts),
+                upstream_wall_s=sum(a['wall_s'] for a in attempts), elapsed_s=time.monotonic()-started)
+            self.record(request_id, raw, status, response, quota, result=result, forwarded=True,
+                        key_index=index)
+            # Only explicit completed HTTP failures can switch keys. A timeout,
+            # malformed response or model-pin failure is terminal in the journal.
+            if result.get('failure_class') == 'HOST_ERROR' or status not in (403,429) and not transient:
+                return status, json.dumps(result).encode(), None
+            if transient:
+                self.sleep(retry_delay)
+
+    def record(self, request_id, raw, status, response, quota, *, forwarded, result=None, key_index=None):
         from harness.zone_study_llm_driver import _request_summary
         digest = hashlib.sha256(raw).hexdigest()
         # Preserve text and image hashes; callers retain original RGBs in their wire logs.
@@ -341,6 +551,10 @@ class Gemma:
                    request_sha256=digest, request_summary=_request_summary(raw), request=request,
                    response=response, provider_usage=(result or {}).get('usage'),
                    quota={k: quota[k] for k in ('rpm', 'rpd', 'hold_until', 'last_evidence') if k in quota})
+        if key_index is not None:
+            row['key_index'] = key_index
+            row['retry_metrics'] = (result or {}).get('ugrp_retry_metrics')
+            row['failure_class'] = (result or {}).get('failure_class')
         with (self.root / 'ledger.jsonl').open('a') as handle:
             handle.write(json.dumps(row, ensure_ascii=False) + '\n')
 
@@ -377,18 +591,23 @@ def main(argv=None):
     p.add_argument('--image', type=Path)
     p.add_argument('--enable', action='store_true')
     p.add_argument('--seconds', type=int, default=3600)
+    p.add_argument('--multi-key-v1', action='store_true', help='multi_key_v1; default off')
     a = p.parse_args(argv)
     if not a.check and not a.enable:
         print(json.dumps(dict(enabled=False, model_id=None, key_service=SERVICE))); return 0
     try:
-        keychain_key()
+        if a.multi_key_v1:
+            keys = keychain_keys()
+        else:
+            keychain_key()
     except ValueError:
         report = dict(model_id=None, key_needed=True, image_input_confirmed=None, rpm=None, rpd=None)
         a.output.mkdir(parents=True, exist_ok=True); write(a.output/'check.json', report)
         print(json.dumps(report)); return 2
     from harness.zone_study_llm_driver import load_registry
     registered = load_registry()['driver_profiles'][PROFILE]['fallback']['model_id']
-    engine = Gemma(a.output, expected_model=registered)
+    engine = Gemma(a.output, expected_model=registered, multi_key_v1=a.multi_key_v1,
+                   keys=keys if a.multi_key_v1 else None)
     if a.check:
         report = dict(model_id=engine.model_id, key_needed=False, image_input_confirmed=None)
         if a.image:
@@ -409,6 +628,10 @@ def main(argv=None):
             write(a.output/'image-probe.json', report)
         with engine.quota.transaction() as state:
             report.update(rpm=state['rpm'], rpd=state['rpd'], quota_evidence=state.get('last_evidence'))
+        if a.multi_key_v1:
+            report.update(multi_key_v1=True, keys=[dict(key_index=i) for i in sorted(engine._keys)],
+                          per_key_limits=engine.key_pool.LIMITS if engine.key_pool else None,
+                          single_key_legacy_behavior=engine.key_pool is None)
         write(a.output/'check.json', report); print(json.dumps(report)); return 0
     if not 0 < a.seconds <= 14400:
         raise ValueError('finite <=4h service required')

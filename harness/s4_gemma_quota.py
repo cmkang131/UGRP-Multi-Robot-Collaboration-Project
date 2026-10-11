@@ -19,8 +19,9 @@ PACIFIC = ZoneInfo('America/Los_Angeles')
 
 
 class SharedQuota:
-    def __init__(self, root=ROOT, *, clock=time.time):
+    def __init__(self, root=ROOT, *, clock=time.time, limits=None):
         self.root, self.clock = Path(root), clock
+        self.limits = limits or dict(tpm=TPM, rpm=RPM, rpd=RPD)
         self.root.mkdir(parents=True, exist_ok=True)
 
     @contextmanager
@@ -34,32 +35,47 @@ class SharedQuota:
             tmp.write_text(json.dumps(state)+'\n'); tmp.replace(path)
 
     def reserve(self, tokens, *, request_id, request_sha256):
-        if type(tokens) is not int or not 0 < tokens <= TPM:
+        with self.locked() as state:
+            return self.reserve_state(state, tokens, request_id=request_id,
+                                      request_sha256=request_sha256)
+
+    def availability(self, s, tokens):
+        tpm, rpm, rpd = (self.limits[k] for k in ('tpm', 'rpm', 'rpd'))
+        if type(tokens) is not int or not 0 < tokens <= tpm:
             raise ValueError('request exceeds the shared token bucket capacity')
         now = self.clock()
-        with self.locked() as s:
-            local = datetime.fromtimestamp(now, PACIFIC)
-            if s.get('day') != local.date().isoformat():
-                s.update(day=local.date().isoformat(), day_requests=0)
-            elapsed = max(0, now-s.get('updated', now))
-            s['tokens'] = min(TPM, s.get('tokens', TPM)+elapsed*TPM/60)
-            s['requests'] = min(RPM, s.get('requests', RPM)+elapsed*RPM/60)
-            s['updated'] = now
-            s['window'] = [r for r in s.get('window', []) if r['at'] > now-60]
-            wait = max(0, (tokens-s['tokens'])*60/TPM, (1-s['requests'])*60/RPM)
-            if s['day_requests'] >= RPD:
-                wait = max(wait, ((local+timedelta(days=1)).replace(hour=0,minute=0,second=0,microsecond=0).timestamp()-now))
-            rows = list(s['window'])
-            while len(rows) >= RPM or sum(r['tokens'] for r in rows)+tokens > TPM:
-                wait = max(wait, rows.pop(0)['at']+60-now)
-            admitted = wait <= 0
-            if admitted:
-                s['tokens'] -= tokens; s['requests'] -= 1; s['day_requests'] += 1
-                s['window'].append(dict(at=now,tokens=tokens))
-            row = dict(at=now, request_id=request_id, request_sha256=request_sha256,
-                       reserved_tokens=tokens, admitted=admitted, retry_after_s=math.ceil(wait),
-                       effective_limits=dict(tpm=TPM,rpm=RPM,rpd=RPD),
-                       accounting='input + max output; conservative versus input-only TPM')
-            with (self.root/'reservations.jsonl').open('a') as f:
-                f.write(json.dumps(row)+'\n')
-            return row
+        local = datetime.fromtimestamp(now, PACIFIC)
+        if s.get('day') != local.date().isoformat():
+            s.update(day=local.date().isoformat(), day_requests=0)
+        elapsed = max(0, now-s.get('updated', now))
+        s['tokens'] = min(tpm, s.get('tokens', tpm)+elapsed*tpm/60)
+        s['requests'] = min(rpm, s.get('requests', rpm)+elapsed*rpm/60)
+        s['updated'] = now
+        s['window'] = [r for r in s.get('window', []) if r['at'] > now-60]
+        wait = max(0, (tokens-s['tokens'])*60/tpm, (1-s['requests'])*60/rpm,
+                   s.get('hold_until', 0)-now)
+        if s['day_requests'] >= rpd:
+            wait = max(wait, ((local+timedelta(days=1)).replace(hour=0,minute=0,second=0,microsecond=0).timestamp()-now))
+        rows = list(s['window'])
+        while len(rows) >= rpm or sum(r['tokens'] for r in rows)+tokens > tpm:
+            wait = max(wait, rows.pop(0)['at']+60-now)
+        remaining = (min(s['tokens'], tpm-sum(r['tokens'] for r in s['window']))/tpm,
+                     min(s['requests'], rpm-len(s['window']))/rpm,
+                     max(0, rpd-s['day_requests'])/rpd)
+        return wait, (min(remaining), sum(remaining))
+
+    def reserve_state(self, s, tokens, *, request_id, request_sha256, key_index=None):
+        wait, _ = self.availability(s, tokens)
+        admitted = wait <= 0
+        if admitted:
+            s['tokens'] -= tokens; s['requests'] -= 1; s['day_requests'] += 1
+            s['window'].append(dict(at=self.clock(), tokens=tokens))
+        row = dict(at=self.clock(), request_id=request_id, request_sha256=request_sha256,
+                   reserved_tokens=tokens, admitted=admitted, retry_after_s=math.ceil(wait),
+                   effective_limits=dict(self.limits),
+                   accounting='input + max output; conservative versus input-only TPM')
+        if key_index is not None:
+            row['key_index'] = key_index
+        with (self.root/'reservations.jsonl').open('a') as f:
+            f.write(json.dumps(row)+'\n')
+        return row
