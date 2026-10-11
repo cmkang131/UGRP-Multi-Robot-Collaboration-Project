@@ -1,0 +1,472 @@
+{
+  "schema": "ugrp.evaluation_overview_summary.v1",
+  "date": "2026-10-11",
+  "status": "COMPLETED_RETRIEVED_HASHED",
+  "command_trajectory_match": {
+    "n": 3,
+    "N": 3
+  },
+  "runs": [
+    {
+      "name": "s4live11view-peer_ko-s601",
+      "remote_result": {
+        "condition": "peer_ko",
+        "status": "COMPLETED",
+        "execution_sha": "42afb15ff96038a6b84d591dd0005b6f75818805",
+        "base_sha": "4316bdd5804f37e46d7eb3866f9c7d2ae774168f",
+        "original_source_sha": "4316bdd5804f37e46d7eb3866f9c7d2ae774168f",
+        "original_path": "/home/ubuntu/ugrp-sim/arm/s4live11-peer_ko-s601-v182",
+        "original_outcome": "DEV_STAGE_FINISHED",
+        "model_calls": 0,
+        "evaluation_only": true,
+        "controller_run": false,
+        "physics_correction": false,
+        "loadavg_start": [
+          4.80810546875,
+          2.39013671875,
+          5.142578125
+        ],
+        "start_sim_s": 2.35,
+        "end_sim_s": 515.05,
+        "subtitle_time_basis": "recorded stage-relative acceptance time; SIM+ label, absolute t also shown",
+        "playback_speed": 8,
+        "width": 1280,
+        "height": 480,
+        "initial_state_exact": true,
+        "video_frames": 2564,
+        "terminal_still_frames": 60,
+        "wall_s": 1827.4043590269998,
+        "loadavg_end": [
+          1.7568359375,
+          2.46044921875,
+          3.34130859375
+        ],
+        "global_command_order": {
+          "original": "22bb8f599151bda47ad5587ee07cf361681aa92e701fcfaf23c6aa34d1eb25c2",
+          "replay": "22bb8f599151bda47ad5587ee07cf361681aa92e701fcfaf23c6aa34d1eb25c2"
+        },
+        "commands": {
+          "r1": {
+            "original": "845f062d0908c847d8e3d48181007d91a21c935fb908df554dfbaa494a015510",
+            "replay": "845f062d0908c847d8e3d48181007d91a21c935fb908df554dfbaa494a015510"
+          },
+          "r2": {
+            "original": "1a681808aeaf23b83207b858ceafea775936968d1e02f47d6a6da89f956bf7fc",
+            "replay": "1a681808aeaf23b83207b858ceafea775936968d1e02f47d6a6da89f956bf7fc"
+          },
+          "r3": {
+            "original": "4a12bc0a7633dc7d47b70b3480b32b271f747ed3b54c51d545a4bcd5ca807380",
+            "replay": "4a12bc0a7633dc7d47b70b3480b32b271f747ed3b54c51d545a4bcd5ca807380"
+          }
+        },
+        "command_trajectory_match": true,
+        "evaluation_trajectories": {
+          "r1": {
+            "original": "751a71fb578ff6e5499395193f32b8c5eb096d6009d8b247e84cc8a6905b190c",
+            "replay": "751a71fb578ff6e5499395193f32b8c5eb096d6009d8b247e84cc8a6905b190c"
+          },
+          "r2": {
+            "original": "77ced89f6f1b6475ca7cbaf5ef1a62ea24fe234f190cb7e3f41a6d494a2cc465",
+            "replay": "77ced89f6f1b6475ca7cbaf5ef1a62ea24fe234f190cb7e3f41a6d494a2cc465"
+          },
+          "r3": {
+            "original": "484a5e1aaec74bacf58e21e958f1034d688a03073dce34b5122365a53ddc619a",
+            "replay": "484a5e1aaec74bacf58e21e958f1034d688a03073dce34b5122365a53ddc619a"
+          }
+        },
+        "evaluation_trajectory_match": true,
+        "own_camera_match": true,
+        "beam_truth_match": true,
+        "video_sha256": "9c3a901d4db9a434fa2dbcc6fa8a90ed1de9eccdb7b8149699e9db0f7d430291",
+        "checked_source_files": 558,
+        "checked_source_manifest_sha256": "4b9bd6fbbfa0318bf0d2d19bb185c6eb3464e68c7ccdbda7a39e46a5e4c7abc0",
+        "extra_comparisons": {
+          "robots/r1/frames.jsonl": {
+            "original": "870cbe7446690f75736a483c320c57f6ab91e2a38a0827a6a992c6ec880ad478",
+            "replay": "870cbe7446690f75736a483c320c57f6ab91e2a38a0827a6a992c6ec880ad478"
+          },
+          "robots/r2/frames.jsonl": {
+            "original": "b965568495a487b2014dd6e4c3713d490aae14efa5a863d974ec688ca392fb27",
+            "replay": "b965568495a487b2014dd6e4c3713d490aae14efa5a863d974ec688ca392fb27"
+          },
+          "robots/r3/frames.jsonl": {
+            "original": "59638b449fb305d5069516633a960de657f90c271e5665890cde166163a052e6",
+            "replay": "59638b449fb305d5069516633a960de657f90c271e5665890cde166163a052e6"
+          },
+          "eval_only/referee_truth.jsonl": {
+            "original": "36411bf78fb20f7862c62e1272278b8d483c565ccec1239dea99c76bf835cc52",
+            "replay": "36411bf78fb20f7862c62e1272278b8d483c565ccec1239dea99c76bf835cc52"
+          },
+          "eval_only/setdown.jsonl": {
+            "original": "2aca4165fb26a3ba0fe65383f75392893d0aa0f7f87de61ce75a84a3cde2d0ba",
+            "replay": "2aca4165fb26a3ba0fe65383f75392893d0aa0f7f87de61ce75a84a3cde2d0ba"
+          }
+        },
+        "exit_code": "0"
+      },
+      "health_check_after_3min": {
+        "status": "RUNNING",
+        "absolute_sim_s": 61.35,
+        "relative_sim_s": 59,
+        "wall_s": 216.51746173799984,
+        "video_frames": 296,
+        "pid": 35889,
+        "loadavg": [
+          4.53857421875,
+          3.27099609375,
+          4.8994140625
+        ],
+        "utc": "2026-10-11T06:50:58Z",
+        "mem_available_kib": 53130168
+      },
+      "video": {
+        "sha256": "9c3a901d4db9a434fa2dbcc6fa8a90ed1de9eccdb7b8149699e9db0f7d430291",
+        "width": 1280,
+        "height": 480,
+        "fps": 40,
+        "frames": 2624,
+        "duration_s": 65.6,
+        "size_bytes": 1253065,
+        "decode": true,
+        "visual_qa": true,
+        "archive_checksum_differences": [],
+        "archive_hash_verified": true,
+        "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11view-peer_ko-s601/overview.mp4"
+      },
+      "durable_raw": "oracle:/home/ubuntu/ugrp-archive/runs/s4live11view-peer_ko-s601"
+    },
+    {
+      "name": "egomap70view-calib_traversed-s63004",
+      "remote_result": {
+        "status": "COMPLETED",
+        "source_sha": "112658362ab67f150918afa70819faf84b43cbce",
+        "original_source_sha": "f26d9322c48eadbe2b28777ac1f07684ca03e124",
+        "seed": 63004,
+        "condition": "calib_traversed",
+        "original": "/home/ubuntu/ugrp-sim/runs/egomap70-wave2/data/egomap70-63004-calib_traversed",
+        "checkpoint": {
+          "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+          "sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+          "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+          "sim_s": 67.7
+        },
+        "prefix_source_sha": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "full_command_replay": true,
+        "checkpoint_state_correction": false,
+        "controller_run": false,
+        "model_calls": 0,
+        "overlay_evaluation_only": true,
+        "return_valid": true,
+        "start_sim_s": 1.3,
+        "end_sim_s": 546.5,
+        "playback_speed": 8,
+        "terminal_still_s": 1.5,
+        "loadavg_start": [
+          3.0869140625,
+          2.5546875,
+          4.88134765625
+        ],
+        "wall_s": 937.4328511229996,
+        "video_frames": 2727,
+        "comparison": {
+          "robots/r3/commands.jsonl": {
+            "original": "c861ecbb07aea52afa80ad107e78756b85f4c7a0318fec1b2f11f21362c9410a",
+            "replay": "c861ecbb07aea52afa80ad107e78756b85f4c7a0318fec1b2f11f21362c9410a"
+          },
+          "robots/r3/frames.jsonl": {
+            "original": "630420ae45988ec4d4619cab07dab89b6e392e3bd100da71c8f4c0a2a1a3245b",
+            "replay": "630420ae45988ec4d4619cab07dab89b6e392e3bd100da71c8f4c0a2a1a3245b"
+          },
+          "eval_only/trajectory.jsonl": {
+            "original": "a192c651d0f57c570fd1a5c41bf502fa5b48b2d60ed3c19ecc1b77c44fd6321a",
+            "replay": "a192c651d0f57c570fd1a5c41bf502fa5b48b2d60ed3c19ecc1b77c44fd6321a"
+          },
+          "eval_only/camera.jsonl": {
+            "original": "215cc9c36f9da59238c42207a75ad392bf0ab6ec1ac97e732dda3c9dc07f8fc8",
+            "replay": "215cc9c36f9da59238c42207a75ad392bf0ab6ec1ac97e732dda3c9dc07f8fc8"
+          },
+          "eval_only/servo.jsonl": {
+            "original": "20cda60d7603b38f7a583553cb8e0b24632d62107f748f9c0675289dcc4dfca8",
+            "replay": "20cda60d7603b38f7a583553cb8e0b24632d62107f748f9c0675289dcc4dfca8"
+          }
+        },
+        "command_trajectory_match": true,
+        "all_physics_camera_match": true,
+        "video_sha256": "fd86e8c2d45abab77d78797f70e95e1df6dfe26710e990ab458269c4b40927a5"
+      },
+      "health_check_after_3min": {
+        "status": "RUNNING",
+        "sim_s": 101.3,
+        "wall_s": 180.19546219699987,
+        "video_frames": 501,
+        "pid": 37144,
+        "loadavg": [
+          5.5615234375,
+          3.830078125,
+          4.95751953125
+        ],
+        "utc": "2026-10-11T06:52:16Z",
+        "prefix": {
+          "robots/r3/commands.jsonl": {
+            "bytes": 46080,
+            "exact": true
+          },
+          "robots/r3/frames.jsonl": {
+            "bytes": 199946,
+            "exact": true
+          },
+          "eval_only/trajectory.jsonl": {
+            "bytes": 211962,
+            "exact": true
+          }
+        },
+        "mem_available_kib": 53180760
+      },
+      "video": {
+        "sha256": "fd86e8c2d45abab77d78797f70e95e1df6dfe26710e990ab458269c4b40927a5",
+        "width": 1280,
+        "height": 480,
+        "fps": 40,
+        "frames": 2787,
+        "duration_s": 69.675,
+        "size_bytes": 2965369,
+        "decode": true,
+        "visual_qa": true,
+        "archive_checksum_differences": [],
+        "archive_hash_verified": true,
+        "actual_distance_to_start_m": 0.043,
+        "estimated_distance_to_start_m": 0.097,
+        "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70view-calib_traversed-s63004/overview.mp4"
+      },
+      "durable_raw": "oracle:/home/ubuntu/ugrp-archive/runs/egomap70view-calib_traversed-s63004"
+    },
+    {
+      "name": "egomap70view-calib_traversed-s63002",
+      "remote_result": {
+        "status": "COMPLETED",
+        "source_sha": "112658362ab67f150918afa70819faf84b43cbce",
+        "original_source_sha": "f26d9322c48eadbe2b28777ac1f07684ca03e124",
+        "seed": 63002,
+        "condition": "calib_traversed",
+        "original": "/home/ubuntu/ugrp-sim/runs/egomap70-wave1/data/egomap70-63002-calib_traversed",
+        "checkpoint": {
+          "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+          "sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+          "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+          "sim_s": 41.1
+        },
+        "prefix_source_sha": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "full_command_replay": true,
+        "checkpoint_state_correction": false,
+        "controller_run": false,
+        "model_calls": 0,
+        "overlay_evaluation_only": true,
+        "return_valid": false,
+        "start_sim_s": 1.3,
+        "end_sim_s": 255.1,
+        "playback_speed": 8,
+        "terminal_still_s": 1.5,
+        "loadavg_start": [
+          3.0869140625,
+          2.5546875,
+          4.88134765625
+        ],
+        "wall_s": 430.86958643299977,
+        "video_frames": 1270,
+        "comparison": {
+          "robots/r3/commands.jsonl": {
+            "original": "96e82611f643091a7cb052dd2d49dcc35873fbc0e408a4c149760b6c6196fc02",
+            "replay": "96e82611f643091a7cb052dd2d49dcc35873fbc0e408a4c149760b6c6196fc02"
+          },
+          "robots/r3/frames.jsonl": {
+            "original": "865e81d372ff2ab86837e16679ce7c0f19749325afe076fad2acdc9c79586012",
+            "replay": "865e81d372ff2ab86837e16679ce7c0f19749325afe076fad2acdc9c79586012"
+          },
+          "eval_only/trajectory.jsonl": {
+            "original": "4a438d89dd267beb99f9376f1719b522bb439e906df44cea298877993cc1e713",
+            "replay": "4a438d89dd267beb99f9376f1719b522bb439e906df44cea298877993cc1e713"
+          },
+          "eval_only/camera.jsonl": {
+            "original": "be8c8330e7e7ce41abe7869ae353eebd0d782ad2704be64b9316676aa3e173a5",
+            "replay": "be8c8330e7e7ce41abe7869ae353eebd0d782ad2704be64b9316676aa3e173a5"
+          },
+          "eval_only/servo.jsonl": {
+            "original": "8eb3061bc761420c1eec9f402b06036d46076344f691cbdd1615c9c06c352691",
+            "replay": "8eb3061bc761420c1eec9f402b06036d46076344f691cbdd1615c9c06c352691"
+          }
+        },
+        "command_trajectory_match": true,
+        "all_physics_camera_match": true,
+        "video_sha256": "b1955ed5bf1244728470a7f2e0100b40b7725e4c23ea796809c87ec6b0f5d329"
+      },
+      "health_check_after_3min": {
+        "status": "RUNNING",
+        "sim_s": 105.3,
+        "wall_s": 181.09956955500002,
+        "video_frames": 521,
+        "pid": 37077,
+        "loadavg": [
+          5.5615234375,
+          3.830078125,
+          4.95751953125
+        ],
+        "utc": "2026-10-11T06:52:16Z",
+        "prefix": {
+          "robots/r3/commands.jsonl": {
+            "bytes": 48416,
+            "exact": true
+          },
+          "robots/r3/frames.jsonl": {
+            "bytes": 208304,
+            "exact": true
+          },
+          "eval_only/trajectory.jsonl": {
+            "bytes": 145698,
+            "exact": true
+          }
+        },
+        "mem_available_kib": 53187312
+      },
+      "video": {
+        "sha256": "b1955ed5bf1244728470a7f2e0100b40b7725e4c23ea796809c87ec6b0f5d329",
+        "width": 1280,
+        "height": 480,
+        "fps": 40,
+        "frames": 1330,
+        "duration_s": 33.25,
+        "size_bytes": 1733213,
+        "decode": true,
+        "visual_qa": true,
+        "archive_checksum_differences": [],
+        "archive_hash_verified": true,
+        "actual_distance_to_start_m": 0.856,
+        "estimated_distance_to_start_m": 0.1,
+        "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70view-calib_traversed-s63002/overview.mp4"
+      },
+      "durable_raw": "oracle:/home/ubuntu/ugrp-archive/runs/egomap70view-calib_traversed-s63002"
+    }
+  ],
+  "layout": {
+    "size": [
+      1280,
+      480
+    ],
+    "left": "full-arena overhead oblique observer, doorway and B boundary",
+    "right": "S4 r1/r2/r3 own RGB, egomap r3 own RGB",
+    "fps": 40,
+    "sim_fps": 5,
+    "speed": 8,
+    "terminal_still_s": 1.5,
+    "header": "condition, seed, absolute SIM time",
+    "overlay": "evaluation only; separate observer and pixels only, no controller input"
+  },
+  "classification": {
+    "S4": {
+      "seed": 601,
+      "condition": "peer_ko",
+      "supported_path_m": 5.857686684947281,
+      "goal_B_landed": false,
+      "goal_center_distance_m": 0.5259685196915462,
+      "scope": "existing synthetic alignment entrance, original DEV run, not E2E study success"
+    },
+    "egomap": {
+      "condition": "calib_traversed",
+      "true_return_seed": 63004,
+      "false_return_seed": 63002,
+      "actual_distances_m": {
+        "63002": 0.8564282745538161,
+        "63004": 0.04317281536967514
+      },
+      "return_threshold_m": 0.2,
+      "audit_sha256": "6fe4288829c45f7ef1c17f2e2a1bb289963f4d3d85d963cb38a2e97eb0c14046",
+      "estimated_world_coordinates": "original own local_pose transformed using original first evaluation pose, evaluation display only"
+    }
+  },
+  "attempts": [
+    {
+      "name": "s4live11view-peer_ko-s601-check",
+      "status": "PATH_CHECK",
+      "source_sha": "42afb15ff96038a6b84d591dd0005b6f75818805",
+      "sim_ticks": 2,
+      "initial_integration_state_exact": true,
+      "all_three_RGB_and_trajectory_prefix_exact": true
+    },
+    {
+      "name": "egomap70view-calib_traversed-s63002-check",
+      "status": "HOST_ERROR",
+      "exit_code": 1,
+      "physics_started": false,
+      "expected_source_sha": "030e9f68d55bb1baf5e6d55dc334af30e4d1406f",
+      "archive_sha": "112658362ab67f150918afa70819faf84b43cbce",
+      "reason": "HEAD advanced while first runner was preparing; archive guard rejected expected/actual SHA mismatch"
+    },
+    {
+      "name": "egomap70view-calib_traversed-s63002-check-r2",
+      "status": "HOST_ERROR",
+      "exit_code": 127,
+      "physics_started": false,
+      "reason": "same archive existed during extraction; Python environment symlink not ready"
+    },
+    {
+      "name": "egomap70view-calib_traversed-s63002-check-r3",
+      "status": "PATH_CHECK",
+      "exit_code": 0,
+      "sim_ticks": 2,
+      "RGB_trajectory_camera_servo_prefix_exact": true
+    },
+    {
+      "name": "s4live11view-peer_ko-s601",
+      "status": "COMPLETED",
+      "exit_code": 0,
+      "command_trajectory_match": true
+    },
+    {
+      "name": "egomap70view-calib_traversed-s63004",
+      "status": "COMPLETED",
+      "exit_code": 0,
+      "command_trajectory_match": true
+    },
+    {
+      "name": "egomap70view-calib_traversed-s63002",
+      "status": "COMPLETED",
+      "exit_code": 0,
+      "command_trajectory_match": true
+    }
+  ],
+  "preservation": {
+    "originals_changed": false,
+    "other_processes_changed": false,
+    "own_replay_processes_exited": true,
+    "mac_physics": 0,
+    "mac_simulation_render": 0,
+    "received_only": [
+      "s4live11view-peer_ko-s601/overview.mp4",
+      "egomap70view-calib_traversed-s63004/overview.mp4",
+      "egomap70view-calib_traversed-s63002/overview.mp4"
+    ],
+    "raw_downloaded_to_mac": false,
+    "all_generated_raw_on_ARM_checksum_verified": true,
+    "warmups_retained": "oracle-x86:/home/ubuntu/ugrp-sim/runs/<attempt-name>"
+  },
+  "git": {
+    "S4_worktree": "/Users/changmin/projects/ugrp-wt/view-s4live11",
+    "egomap_worktree": "/Users/changmin/projects/ugrp-wt/view-egomap70",
+    "PRs": [
+      436,
+      437
+    ],
+    "source_committed_and_pushed_before_each_full_replay": true,
+    "PR_status": "draft; inherited CI failures",
+    "CI_failures": [
+      "2026-10-11T06:49:50.6242972Z ImportError while importing test module '/home/runner/work/UGRP-Multi-Robot-Collaboration-Project/UGRP-Multi-Robot-Collaboration-Project/tests/test_s4_live5.py'.\n2026-10-11T06:49:50.6254978Z E   ModuleNotFoundError: No module named 'mujoco'\n",
+      "2026-10-11T07:05:11.1094999Z =================================== FAILURES ===================================\n2026-10-11T07:05:11.1100304Z E   ModuleNotFoundError: No module named 'mujoco'\n2026-10-11T07:05:11.1100653Z sim/wall_parallax_strafe.py:5: ModuleNotFoundError\n2026-10-11T07:05:11.1106093Z E   ModuleNotFoundError: No module named 'mujoco'\n2026-10-11T07:05:11.1106310Z sim/wall_parallax_strafe.py:5: ModuleNotFoundError\n2026-10-11T07:05:11.1110752Z E       AssertionError: assert ['sim/goal_ro...le_stages.py'] == []\n2026-10-11T07:05:11.1113612Z tests/test_ultrasonic_input.py:211: AssertionError\n2026-10-11T07:05:11.1119263Z E           AssertionError: scripts/run_final_environment_checks.py\n2026-10-11T07:05:11.1251794Z tests/test_zone_final_environment_floor_light.py:51: AssertionError\n2026-10-11T07:05:11.1252514Z FAILED tests/test_goal_route_continuous.py::test_standard_p1_scene_registry_spawn_without_physics - ModuleNotFoundError: No module named 'mujoco'\n2026-10-11T07:05:11.1253075Z FAILED tests/test_goal_route_continuous.py::test_own_range_channel_contains_no_hit_identity_and_off_no_reads - ModuleNotFoundError: No module named 'mujoco'\n2026-10-11T07:05:11.1253630Z FAILED tests/test_ultrasonic_input.py::test_no_controller_or_skill_reads_the_range - AssertionError: assert ['sim/goal_ro...le_stages.py'] == []\n2026-10-11T07:05:11.1255573Z FAILED tests/test_zone_final_environment_floor_light.py::test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts - AssertionError: scripts/run_final_environment_checks.py\n",
+      "2026-10-11T07:09:21.5324990Z =================================== FAILURES ===================================\n2026-10-11T07:09:21.5332337Z E           AssertionError: assert {'schema': 'u...': 20101, ...} == {'schema': 'u...': 20101, ...}\n2026-10-11T07:09:21.5845597Z tests/test_arena_wall_map.py:14: AssertionError\n2026-10-11T07:09:21.5846907Z E           AssertionError: assert {'id': 'zone_...m': 1.15, ...} == {'id': 'zone_...m': 1.15, ...}\n2026-10-11T07:09:21.5876744Z tests/test_wall_texture.py:48: AssertionError\n2026-10-11T07:09:21.5882771Z tests/test_wall_texture.py:123: AssertionError\n2026-10-11T07:09:21.5883201Z FAILED tests/test_arena_wall_map.py::test_plans_supported_sealed_and_reach_authored_own_goals - AssertionError: assert {'schema': 'u...': 20101, ...} == {'schema': 'u...': 20101, ...}\n2026-10-11T07:09:21.6095261Z FAILED tests/test_wall_texture.py::test_physical_table_bounds_handedness_and_nonperiodic_design - AssertionError: assert {'id': 'zone_...m': 1.15, ...} == {'id': 'zone_...m': 1.15, ...}\n2026-10-11T07:09:21.6482909Z FAILED tests/test_wall_texture.py::test_assets_and_replay_are_small_and_frozen - assert False\n",
+      "2026-10-11T07:08:54.1952124Z =================================== FAILURES ===================================\n2026-10-11T07:08:54.1952932Z E           AssertionError: configs/simulation_workflows.json\n2026-10-11T07:08:54.1953625Z tests/test_consumer_criterion_b_v91.py:120: AssertionError\n2026-10-11T07:08:54.1954215Z FAILED tests/test_consumer_criterion_b_v91.py::test_frozen_files_registrations_and_handoff_prefix_are_byte_identical - AssertionError: configs/simulation_workflows.json\n"
+    ],
+    "validation": {
+      "S4_static_tests": 3,
+      "egomap_static_tests": 2
+    },
+    "metadata_fix_after_replay": "S4 subtitle_time_basis text corrected to absolute SIM; no rendering/control code changed"
+  }
+}

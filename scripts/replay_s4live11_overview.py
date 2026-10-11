@@ -119,7 +119,7 @@ def run(original, output, execution_sha, *, path_check=False):
         original_outcome=read(raw/'result.json')['status'], source_sha256=checked,
         model_calls=0, evaluation_only=True, controller_run=False, physics_correction=False,
         loadavg_start=os.getloadavg(), start_sim_s=start, end_sim_s=end,
-        subtitle_time_basis='recorded stage-relative acceptance time; SIM+ label, absolute t also shown',
+        subtitle_time_basis='absolute SIM time from the original capture clock',
         playback_speed=8, width=1280, height=480)
     backend = video = None; issued = []; began = time.monotonic(); _, undo = install('v98-exact-v6')
     try:
