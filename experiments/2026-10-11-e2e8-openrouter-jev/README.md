@@ -4,3 +4,6 @@
 - 판정: 정상 LLM / 자기 지도 경로 생성 / 시작부터 B 전체 착지까지 운반을 각각 센다.
 - 원본: Azure 영속 runs → ARM 검증 보관; Mac fetch-lite.
 - summary.json에 실패·초기 점검·호출·불일치·위치 점프·해시를 기록한다.
+- 새 비교 번들 v192 / decider=jev_v1; 기본 v185는 off. 관련 회귀 58/58.
+- 참고: [TypeSafe Choice](https://docs.typesafe.ai/primitives/choice), [OpenRouter provider pin](https://openrouter.ai/docs/guides/routing/provider-selection).
+- Azure 보관 admission 차단 시 실행/성공으로 세지 않으며 요약의 null은 미측정이다.

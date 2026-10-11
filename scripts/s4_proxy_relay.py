@@ -20,7 +20,7 @@ def accepted_call_id(value):
     # Both registered runners use run_key:call_id:attempt; keep the historical
     # S4 namespace and explicitly admit only this E2E pilot's registered cells.
     return value.startswith('s4live1-') or re.fullmatch(
-        r'e2eaz1-(?:gemma|gemini)-s6100[1-4]-(?:on|off)(?:-r[1-3])?:call-\d+-r[123]:\d+',value) is not None
+        r'(?:e2eaz1-(?:gemma|gemini)-s6100[1-4]-(?:on|off)(?:-r[1-3])?|e2e8-[ab]-s6100[1-4](?:-r[12])?):call-\d+-r[123]:\d+',value) is not None
 
 
 def main():
@@ -40,6 +40,7 @@ def main():
                    help='comma-separated pinned provider order (recorded in identity.json)')
     p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
                    default='main_study_gemini_v1')
+    p.add_argument('--decider',choices=('off','jev_v1'),default='off')
     p.add_argument('--gemma-state', type=Path,
         default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
     a = p.parse_args()
@@ -49,6 +50,7 @@ def main():
     if a.multi_key_v1 and not (single or a.gemma_fallback):
         raise ValueError('multi_key_v1 requires a Gemma profile')
     openrouter = a.upstream == 'openrouter_v1'
+    if a.decider!='off' and not openrouter:raise ValueError('JEV_REQUIRES_OPENROUTER')
     if openrouter and not single: raise ValueError('openrouter_v1 requires --driver-profile study_gemma4_31b_v1')
     if openrouter and (a.multi_key_v1 or a.gemma_fallback): raise ValueError('openrouter_v1 excludes multi_key_v1/gemma_fallback')
     if single and a.gemma_fallback:raise ValueError('single model cannot fallback')
@@ -77,6 +79,15 @@ def main():
         runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, audit_per_post=True,
         authentication='existing_mac_proxy_no_credentials_transferred')
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
+
+    jev = None
+    if a.decider=='jev_v1':
+        from scripts.jev_relay_upstream import Jev
+        jev=Jev(a.output/'jev')
+        receipt['decider']='jev_v1'
+        receipt['jev_source_sha256']={p:hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest()
+            for p in ('scripts/jev_relay_upstream.py','harness/e2e_jev_decider.py','harness/jev_decider_eval.py')}
+        (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
     lock = threading.Lock()
     journal = Journal(a.output/'responses', retry_rate_limits=single or not a.gemma_fallback, cache_errors=not openrouter) if a.idempotent or fallback else None
     receipt['idempotent_response_journal'] = bool(journal)
@@ -137,6 +148,11 @@ def main():
                             return exc.code, exc.read(8_000_000), exc.headers.get('Retry-After')
                     if single:
                         status,raw,retry_after=fallback.complete(body,call_id,idempotency_key=key)
+                        if jev is not None and status==200:
+                            for p,digest in receipt['jev_source_sha256'].items():
+                                if hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest()!=digest:
+                                    raise ValueError('JEV_SOURCE_CHANGED')
+                            raw=json.dumps(jev.complete(json.loads(body),json.loads(raw),call_id)).encode()
                     elif fallback:
                         from scripts.gemma_fallback_proxy import route
                         status, raw, retry_after = route(primary, body, call_id, fallback=fallback, idempotency_key=key)
@@ -158,6 +174,7 @@ def main():
                     response = json.loads(raw)
                     row.update(upstream='openrouter_v1', response_model=response.get('model'),
                         provider=response.get('provider'), openrouter=response.get('ugrp_openrouter'),
+                        jev=response.get('ugrp_jev'),
                         host_error=response.get('host_error', False))
                 except (ValueError, AttributeError): pass
             elif fallback:

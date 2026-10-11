@@ -19,14 +19,14 @@ Until a route exists, continue while the own-camera mapper explores. r1 must sen
 GO/ACK use the exact current dialogue.key [order_id,route_hash,grip_epoch,seg]. GO requires own RGB supporting the grip; ACK requires your GO and the current peer_go_ref. Never reuse a previous epoch or segment. When unsure, continue holds transport. Only channel.can_send_to may receive messages. reply_to must be a received ID or null. All prose is English. Examples describe syntax, not evidence.'''
 
 
-def project(request, *, options):
+def project(request, *, options, decider='off', epoch_age_s=None):
     """Validate before projection; retain the typed E2E action/message contract."""
     r = copy.deepcopy(request)
     b = json.loads(r['messages'][1]['content'])
     own.scan(b)
     if b.get('schema') != own.SCHEMA or 'dialogue' not in b:
         raise base.ContractViolation('E2E_DIALOGUE_INPUT_REQUIRED')
-    if not options.compact_prompt_v1 and options.prompt_lang == 'ko':
+    if not options.compact_prompt_v1 and options.prompt_lang == 'ko' and decider=='off':
         return r
     b['condition'] = prompt.external_condition(b['condition'], options.prompt_lang)
     b['channel']['condition'] = b['condition']
@@ -63,6 +63,13 @@ def project(request, *, options):
     # output syntax, never a synthetic peer observation or accepted decision.
     b['reply_format_example'] = dict(request_id=b['request_id'],action=dict(kind='continue'),
         decision_sources=['order_sheet'],messages=[])
+    if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
+    if decider=='jev_v1':
+        b.update(decider=decider,dialogue_epoch_age_s=epoch_age_s)
+        b['reply_format_example']['own_rgb_grip']='unknown'
+        system=system.replace('exactly request_id, action, decision_sources, messages.',
+            'exactly request_id, action, decision_sources, messages, own_rgb_grip.')
+        system+=' Return exactly request_id, action, decision_sources, messages, own_rgb_grip. Your action is recorded as a shadow choice. Classify ONLY your current wrist RGB in own_rgb_grip: holding, not_visible, slipping, none, or unknown. Issued gripper commands do not prove holding. If occluded or uncertain, use unknown. Do not infer the partner grip from your image.'
     b['prompt_lang'] = options.prompt_lang
     own.scan(b)
     if len(r['images']) != 1 or len(r['image_refs']) != 1:
@@ -83,6 +90,8 @@ class Trial(base.Trial):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.options = getattr(self.links['r1'].inner, 'study_options', Options())
+        self.decider=getattr(self.links['r1'].inner,'decider','off')
+        self.jev_guard_events=[]
         if not self.own_input_mode or self.dialogue is None:
             raise base.ContractViolation('E2E_OWN_INPUTS_AND_DIALOGUE_REQUIRED')
         self.transport = RetryTransport(self, send_ledger=self.send_ledger, client_factory=self.client_factory)
@@ -96,8 +105,26 @@ class Trial(base.Trial):
 
     def prepare_call(self, call):
         p = super().prepare_call(call)
-        request = project(p.request, options=self.options)
+        view=self.dialogue.view(call.actor,call.started_sim_s)
+        age=None if view['key'] is None else call.started_sim_s-self.dialogue.opened
+        request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age)
         return type(p)(ProjectedInputs(p.bundled,json.loads(request['messages'][1]['content'])),request,p.request_id)
+
+    def finish_call(self,call,prepared,raw,*,provider_usage=None):
+        if self.decider=='jev_v1':
+            from harness.three_robot_plan import parse
+            from harness.zone_sim_cost import Attempt,call_cost
+            value=parse(raw)
+            cost=call_cost((Attempt(outcome='ok',input_tokens=prepared.request['billed_tokens']['total_billed'],
+                output_tokens=self.sim_output_tokens(raw,len(value['messages'])),utterances=len(value['messages'])),),self.params)
+            try:
+                self.dialogue.check_action(value['action'],self.dialogue.captures[call.call_id],round(call.started_sim_s+cost.sim_s,6))
+            except (base.ContractViolation,KeyError,TypeError,ValueError) as exc:
+                self.jev_guard_events.append(dict(call_id=call.call_id,selected_action=copy.deepcopy(value['action']),
+                    reason=str(exc),replacement={'kind':'continue'}))
+                value['action']={'kind':'continue'}
+                raw=json.dumps(value,ensure_ascii=False)
+        return super().finish_call(call,prepared,raw,provider_usage=provider_usage)
 
     def observe_events(self, now):
         if not self.options.event_driven_llm: return

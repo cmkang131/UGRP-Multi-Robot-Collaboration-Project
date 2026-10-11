@@ -27,9 +27,11 @@ def write(path,value):
     path.write_text(json.dumps(value,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
 
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options()):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off'):
     if profile not in PROFILES or seed not in (61001,61002,61003,61004):raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
+    if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
+    if decider!='off' and profile!='study_gemma4_31b_v1':raise ValueError('JEV_GEMMA_REQUIRED')
     from harness.zone_study_llm_driver import load_registry
     b=json.loads((ROOT/'configs/e2e_s3_test_runtime_v1.json').read_text())
     # The template contributes physical/calibration constants only. Its authored
@@ -48,6 +50,9 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options()):
             goal_geometry='e2e_b80_v1' if enabled else 'off',
             covariance_inflation='nees_frozen_v1' if enabled else 'off',
             setdown_reobserve='boundary_reobserve_v1' if enabled else 'off',setdown_only_when_relook=relook))
+    b['e2e_options']['decider']=decider
+    if decider=='jev_v1':
+        b.update(schema='ugrp.e2e_ownmap_live.v192',execution_bundle_id='e2e-ownmap-jev-v192',workflow_version='7.85.0')
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -56,6 +61,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options()):
     paths.update((WORKFLOW,RECORD+'/azure-plan.json','configs/e2e_s3_test_runtime_v1.json',
         'configs/s2_v133_full_template.json','configs/e2e_nees_egomap70_dev_v1.json',
         'configs/zone_study_dev/e2e_one_beam_ownmap.json'))
+    if decider=='jev_v1':paths.add('configs/simulation_workflows.d/e2e_ownmap_jev_v192.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -106,6 +112,10 @@ def run(b,out,receipt,*,backend_factory=None):
         robots={r:Robot(r,b['seed']+i,cov,options,relook=b['e2e_options']['setdown_only_when_relook'],
                         goal_geometry=b['e2e_options']['goal_geometry'])
                 for i,r in enumerate(('r1','r2','r3'))}
+        for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
+        offered=json.loads(receipt.read_text())
+        if offered.get('decider','off')!=b['e2e_options'].get('decider','off'):
+            raise ValueError('RELAY_DECIDER_MISMATCH')
         backend=(backend_factory or PhysicsBackend)(b,out,seed=b['seed'])
         backend.reset(b['reset_cap_s']);origin=backend.now
         backend.set_deadline(origin+b['case_cap_s'])
@@ -120,7 +130,7 @@ def run(b,out,receipt,*,backend_factory=None):
         budget=MainStudyBudget.create(out/'budget.sqlite');key=out.parent.name
         budget.register_cohort(key,token_cap=800000,unknown_usage_charge_tokens=16000,
             prereg_sha256=b['source_sha256'][RECORD+'/azure-plan.json'],source={'source_sha':b['source_sha']})
-        budget.start_run(key,cohort_id=key,bundle_id=BUNDLE_ID,bundle_sha256=digest(b),record={'research_result':False})
+        budget.start_run(key,cohort_id=key,bundle_id=b['execution_bundle_id'],bundle_sha256=digest(b),record={'research_result':False})
         ledger=RecoveryLedger(receipt=receipt,remote_url=profile['proxy_url'],store_dir=out/'wire',budget=budget,
             run_key=key,profile=profile,tunnel_recovery=True,retry_429=True)
         ledger.retry_snapshot=lambda:dict(sim_s=backend.now,frames=backend.frame)
@@ -135,6 +145,8 @@ def run(b,out,receipt,*,backend_factory=None):
         transport=Transport(robots,host.trial.dialogue,profiles,pulse_budget=b['e2e_options']['pulse_budget'],
                             setdown_only_when_relook=b['e2e_options']['setdown_only_when_relook'])
         host.trial.dialogue.motion_connected=True
+        host.trial.provenance.update(provider=offered.get('upstream',host.trial.provenance['provider']),
+            decider=b['e2e_options'].get('decider','off'))
         backend.authorize_pulse=lambda rid,a,t:transport.authorize(rid,a,round(t-origin,8))
         backend.final_segment_getter=lambda:bool(transport.plan and transport.seg==len(transport.plan['own_route']['legs'])-1)
         for tick in range(round(b['case_cap_s']/.05)):
@@ -196,6 +208,7 @@ def run(b,out,receipt,*,backend_factory=None):
             saved=host.save(out/'llm');result.update(model_calls=len(host.trial.send_ledger.entries),
                 model_usage=saved['model_usage'],response_wall_s=saved['response_wall_s'],
                 LLM_operated=any(normal_completion(r.get('completion')) for r in host.trial.send_ledger.entries))
+            write(out/'jev-guard-events.json',host.trial.jev_guard_events)
         for rid,robot in robots.items():
             write(out/f'{rid}-ownmap-final.json',robot.goal.snapshot())
             write(out/f'{rid}-relook.json',robot.goal.e2e_relook.events)
@@ -225,9 +238,10 @@ def main():
     p.add_argument('--driver-profile',choices=PROFILES,required=True);p.add_argument('--relay-receipt',type=Path,required=True)
     p.add_argument('--e2e-live',action='store_true');p.add_argument('--event-driven-llm',action='store_true')
     p.add_argument('--compact-prompt',action='store_true');p.add_argument('--setdown-only-when-relook',choices=('off','on_v1'),default='off')
+    p.add_argument('--decider',choices=('off','jev_v1'),default='off')
     p.add_argument('--execute',action='store_true');a=p.parse_args()
     b=bundle(a.expected_source_sha,a.seed,a.driver_profile,enabled=a.e2e_live,relook=a.setdown_only_when_relook,
-             options=Options(a.event_driven_llm,a.compact_prompt,'en'))
+             options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider)
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
         raise ValueError('AZURE_X86_OSMESA_ONLY')
