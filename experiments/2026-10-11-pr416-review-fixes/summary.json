@@ -4,7 +4,7 @@
   "branch": "codex/s3-no-prior-smoke",
   "reviewed_head": "bca75e2562c68ceab70493af3d0a3d30da54d178",
   "main_reference_sha": "996f0b84969298106088b45734fbf10349fd1156",
-  "status": "LOCAL_FIXES_VERIFIED_PENDING_PUSH",
+  "status": "FIXES_COMMITTED_PUSHED_LOCAL_TESTS_PASSED",
   "bundle_id": "zone-s3-recovery-v193",
   "workflow_version": "7.86.0",
   "retired_bundle": "zone-s3-recovery-v190",
@@ -115,10 +115,24 @@
   "simulation_runs": 0,
   "model_calls": 0,
   "verification_scope": "45 selected offline test cases; 6 frozen source byte/hash comparisons; v127 admission restored, v128/v129 fail closed on 8 main changes; no physical/model validation. Historical 700 selector cases and 68 stage entries/3190 commands are not an entire physical trajectory comparison.",
-  "pushed": false,
+  "pushed": true,
   "ci": {
-    "status": "pending push",
-    "scope": "Final review-fix source has not yet been pushed; historical main-sync CI stays separate."
+    "status": "pending/in_progress",
+    "head_sha": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+    "snapshot": {
+      "pr": 416,
+      "state": "OPEN",
+      "source_commit": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+      "remote_head": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+      "head_matches": true,
+      "mergeable": "MERGEABLE",
+      "checks": {
+        "IN_PROGRESS": 1
+      },
+      "required_check": "pending",
+      "pr_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/416"
+    },
+    "scope": "New review-fix source checks only; snapshot immediately after source push"
   },
   "raw_locations": {
     "local": "outputs/pr416-review-fixes",
@@ -192,16 +206,20 @@
       "bytes": 111
     },
     "outputs/pr416-review-fixes/RUN_META.json": {
-      "sha256": "29231c9a7d33e02698348a6b78f80e4209ae204735cee705689790ff36668653",
-      "bytes": 185
+      "sha256": "7c0fdc89c2868991909880b31323728d348c33d44e883a60652f7dccb899a89c",
+      "bytes": 358
     },
     "outputs/pr416-review-fixes/reservation-scan.json": {
       "sha256": "2d81dd27ed4bae3420cd92e1342cada7ca442950f5f40b85b8ec669898c77692",
       "bytes": 3182
+    },
+    "outputs/pr416-review-fixes/source-push-receipt.json": {
+      "sha256": "f6179837adb12bf7751f0f8db8add6b3c416af726c5f7d04c9ebc380c813210a",
+      "bytes": 374
     }
   },
   "artifact_sha256": {
-    "experiments/2026-10-11-pr416-review-fixes/RUN_META.json": "1cf95d0340c027629a142953655248887e55168785fc05e6cb2aad941613611e",
+    "experiments/2026-10-11-pr416-review-fixes/RUN_META.json": "7c0fdc89c2868991909880b31323728d348c33d44e883a60652f7dccb899a89c",
     "experiments/2026-10-11-pr416-review-fixes/frozen-source-checks.json": "fec0964ef82e84e68c8fa3c9d65f4d568448513be1fd0032d7c3b4cbc9e219b2",
     "experiments/2026-10-11-pr416-review-fixes/README.md": "dcc53821df14fc75a33c46da8b1e8811e4b28baed3c12a26ef5555f66b2d7a69",
     "experiments/2026-10-11-pr416-review-fixes/s2-admission.json": "c7332f02ceb5cdff323160b5ccf1252445a1826f93fff32906c9791e8c76ab2c",
@@ -215,7 +233,10 @@
     "https://docs.python.org/3/tutorial/controlflow.html#keyword-arguments"
   ],
   "remaining": [
-    "push final source and record receipt",
     "CI and independent review of changed scope before merge"
-  ]
+  ],
+  "code_commit": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+  "pushed_source_commit": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+  "push_receipt": "outputs/pr416-review-fixes/source-push-receipt.json",
+  "delivery_receipt": "outputs/pr416-review-fixes/delivery-receipt.json (written after the final record push; exact final head/check snapshot/comment URL)"
 }
