@@ -76,7 +76,8 @@ def synthetic_raw(tmp_path):
     write('bundle.json',dict(continuous_distance=dict(target_m=.85),seed=18601,source_sha='a'*40))
     write('result.json',dict(status='DEV_STAGE_FINISHED',model_calls=0,wall_s=1,check_sim_s=1,
         final={r:dict(state='released',failure=None) for r in ('r1','r2')}))
-    write('stage-states.json',[dict(t=t,robots={r:dict(state='carry') for r in ('r1','r2')}) for t in tt])
+    write('stage-states.json',[dict(t=t,robots={r:dict(state='carry') for r in ('r1','r2')}) for t in tt]
+        +[dict(t=.35,robots={r:dict(state='lower') for r in ('r1','r2')})])
     lines('eval_only/setdown.jsonl',[dict(t=t,fingers={r:[True,True] for r in ('r1','r2')},cargo_tilt_deg=1.,body_origin_z_m=.1) for t in tt])
     lines('eval_only/referee_truth.jsonl',[dict(t=t,items=dict(beam_1=dict(x=t/.3*.85,y=0,z=.1))) for t in tt])
     lines('eval_only/continuous-poses.jsonl',[dict(t=t,robots={r:dict(actual_xy_m=[t/.3*.85+i,0.],actual_yaw_rad=i*math.pi,
@@ -92,6 +93,13 @@ def test_evaluation_only_safe_distance_and_persistent_grip_loss_counterexample(t
     good=evaluate(raw,limits)
     assert good['safe'] and good['actual_continuous_distance_m']==pytest.approx(.85)
     assert good['carrier_axis_error_max_m']==pytest.approx([0.,0.])
+    # Whole-episode terminal remains a failure; an unrelated, supported-floor
+    # guard after carry must not be labelled a load drop inside the carry window.
+    write('result.json',dict(status='PHYSICAL_STOP',failure='PhysicalStop: LOAD_DROP:beam_1',
+        model_calls=0,wall_s=1,check_sim_s=1,final={}))
+    terminal=evaluate(raw,limits)
+    assert terminal['safe'] and not terminal['drop']
+    assert not terminal['whole_episode_completed'] and terminal['post_carry_guard_abort']
     samples=[json.loads(x) for x in (raw/'eval_only/setdown.jsonl').read_text().splitlines()]
     for x in samples:x['fingers']['r2']=[False,True]
     lines('eval_only/setdown.jsonl',samples)

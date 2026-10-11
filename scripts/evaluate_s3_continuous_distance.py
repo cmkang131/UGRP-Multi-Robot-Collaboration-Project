@@ -59,11 +59,16 @@ def evaluate(raw,limits):
     carried=max(dist([p['x'],p['y']],origin) for p in points)
     tilt=max(x['cargo_tilt_deg'] for x in witnesses)
     axis=[max(abs(v[i]) for v in sync) for i in range(2)]
-    drop=any(x['body_origin_z_m']<=.035 for x in witnesses) or 'LOAD_DROP' in (r.get('failure') or '')
-    released=all(v['state'] in ('released','cp_open') and not v['failure'] for v in r.get('final',{}).values())
+    # A guard AFTER supported setdown is not a drop during the carry window.
+    drop=any(x['body_origin_z_m']<=.035 for x in witnesses)
+    final=r.get('final',{})
+    released=set(final)=={'r1','r2'} and all(v['state'] in ('released','cp_open') and not v['failure'] for v in final.values())
+    carry_completed=any(s['t']>end and all(v['state'] in
+        ('wait_lower','lower','wait_open','released','cp_open') for v in s['robots'].values()) for s in states)
+    drop=drop or ('LOAD_DROP' in (r.get('failure') or '') and not carry_completed)
     target=b['continuous_distance']['target_m']
     reasons=[]
-    if r['status']!='DEV_STAGE_FINISHED' or not released:reasons.append('run_not_completed')
+    if not carry_completed:reasons.append('carry_not_completed')
     if carried<target-limits['endpoint_shortfall_m']:reasons.append('distance_shortfall')
     if drop:reasons.append('load_drop')
     if tilt>=limits['tilt_deg']:reasons.append('tilt')
@@ -74,7 +79,10 @@ def evaluate(raw,limits):
         tilt_max_deg=tilt,drop=drop,grip_loss_samples=loss_samples,max_grip_loss_s=longest,
         carrier_axis_error_max_m=axis,opposed_heading_drift_max_rad=max(yaw),
         localization_error_m={rid:dict(max=max(v),final=v[-1],rms=math.sqrt(sum(z*z for z in v)/len(v))) if v else None for rid,v in errors.items()},
-        samples=len(witnesses),final_release=released,safe=not reasons,reasons=reasons,curve=curve)
+        samples=len(witnesses),final_release=released,carry_completed=carry_completed,
+        whole_episode_completed=r['status']=='DEV_STAGE_FINISHED' and released,
+        post_carry_guard_abort=(r.get('failure') if carry_completed and r.get('failure') else None),
+        safe=not reasons,reasons=reasons,curve=curve)
     return result
 
 
