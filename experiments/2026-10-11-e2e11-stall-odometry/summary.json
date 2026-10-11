@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.e2e11.v1",
-  "status": "RETRY_PREPARATION_AFTER_HOST_ERROR",
+  "status": "RUNNING",
   "pr": 433,
   "run_class": "dev",
   "research_result": false,
@@ -45,6 +45,14 @@
         "median_px": 2.0719615817070007,
         "p90_px": 4.42897276878357,
         "mean_abs_diff": 1.301407400178098
+      }
+    },
+    "residual_heading_error": {
+      "file": "e2e10-heading-error.json",
+      "scope": "evaluation only; does not establish cause",
+      "round10_r1_command_heading_median_deg": {
+        "61001": 42.21837342886587,
+        "61002": 25.033136269750344
       }
     }
   },
@@ -776,9 +784,64 @@
   "conditions": {},
   "artifacts": [
     {
-      "path": "replay-v1-s61001.json.zst",
-      "bytes": 340875,
-      "sha256": "f724e46968a9074eb6842cdf236c36dd58702014a43c0b967048a5c899e6cd2c"
+      "path": "README.md",
+      "bytes": 730,
+      "sha256": "3b912ad3091a37a5c8719508097703324af25ae54b9efa014c263683c937ce00"
+    },
+    {
+      "path": "a61001-r1-hold-diagnosis.json.zst",
+      "bytes": 2567,
+      "sha256": "aafdb81baf064317e19d9fda6726685d48a433eadebadbb8d9fa67131f592ded"
+    },
+    {
+      "path": "bundle-number-audit.json",
+      "bytes": 1019,
+      "sha256": "cb60c0dde5b26ed7e930f01c53e751366e8e75a88065cc0d9c38c389edb5f6b2"
+    },
+    {
+      "path": "diagnosis.json",
+      "bytes": 57660,
+      "sha256": "b6caafc8682455f0116e23823fc9aafc4d7b0638c3d3a07cfea7fd6365b44b0b"
+    },
+    {
+      "path": "e2e10-heading-error.json",
+      "bytes": 1194,
+      "sha256": "a11e5374022e92b39dad92e939b049dc9886b829a94e05e384370f996956695e"
+    },
+    {
+      "path": "evaluate.py",
+      "bytes": 9209,
+      "sha256": "09eecf1147cc184f1e5e63c19d46656874c08ee1f093f1103b066a6416603bd5"
+    },
+    {
+      "path": "online-first120.json.zst",
+      "bytes": 4525,
+      "sha256": "0b0a80212271268afc11bc4397d5004efc6402df58b6569395236a949fe80b12"
+    },
+    {
+      "path": "online-first18.json.zst",
+      "bytes": 3102,
+      "sha256": "813720b9ec50d41bd35f6e3e68f241473c19a422dcf2db41772efacfa8132f2e"
+    },
+    {
+      "path": "online-first60.json.zst",
+      "bytes": 4022,
+      "sha256": "e6edfc97769bf3f201f0fbc8e99c5220dede3422a80cdc481d3cfd2d536d3f96"
+    },
+    {
+      "path": "online-residual-first120.json",
+      "bytes": 4717,
+      "sha256": "ec453d89c1ed57f93bbc64a9843b2fbbd57a4ad88c41afa3b82fe9a05fc42018"
+    },
+    {
+      "path": "references/methods.md",
+      "bytes": 3830,
+      "sha256": "410057cd969df52019d711bacfbb0be3cfeb421b2219102d83a4c2a7b612ef88"
+    },
+    {
+      "path": "references/sources.json",
+      "bytes": 2510,
+      "sha256": "a12acdc6eb395ebaf678d58bd8286818246f9fd16e5578c095a44504a6b46213"
     },
     {
       "path": "replay-comparison.json",
@@ -791,19 +854,14 @@
       "sha256": "e671769d3401172fd84cc408c014ec18444f85dd4523ae921e94b2152b2ca25b"
     },
     {
-      "path": "README.md",
-      "bytes": 889,
-      "sha256": "416c7d17b72dd31b7cafbaa38b7e290b601c0b7087de8396529499b11c46d447"
+      "path": "replay-pulse-s61002.json.zst",
+      "bytes": 361571,
+      "sha256": "6c0231cc277cbbf650542bc223480bd18f69b2938d65763995c9c1160a59cde0"
     },
     {
-      "path": "bundle-number-audit.json",
-      "bytes": 1019,
-      "sha256": "cb60c0dde5b26ed7e930f01c53e751366e8e75a88065cc0d9c38c389edb5f6b2"
-    },
-    {
-      "path": "selected-intervals.json.zst",
-      "bytes": 159404,
-      "sha256": "5be00f149d7cd29c4517c3b6018e5557d80249e660dfb6f99e8cade405e10b1e"
+      "path": "replay-v1-s61001.json.zst",
+      "bytes": 340875,
+      "sha256": "f724e46968a9074eb6842cdf236c36dd58702014a43c0b967048a5c899e6cd2c"
     },
     {
       "path": "replay-v1-s61002.json.zst",
@@ -811,24 +869,14 @@
       "sha256": "cc0f73eab404de6ea1dc7e31988e595efc4d10efa1bfe2bebd1c7f0bd008d700"
     },
     {
-      "path": "replay-pulse-s61002.json.zst",
-      "bytes": 361571,
-      "sha256": "6c0231cc277cbbf650542bc223480bd18f69b2938d65763995c9c1160a59cde0"
+      "path": "running-checkpoint.json",
+      "bytes": 7480,
+      "sha256": "21e021631d01f39c9b6324b301257170a86644ddffe913d7f2797e1702b0479b"
     },
     {
-      "path": "diagnosis.json",
-      "bytes": 57660,
-      "sha256": "b6caafc8682455f0116e23823fc9aafc4d7b0638c3d3a07cfea7fd6365b44b0b"
-    },
-    {
-      "path": "references/sources.json",
-      "bytes": 2510,
-      "sha256": "a12acdc6eb395ebaf678d58bd8286818246f9fd16e5578c095a44504a6b46213"
-    },
-    {
-      "path": "references/methods.md",
-      "bytes": 3482,
-      "sha256": "819701b0fc3d893bc4b827f1611fec4c0cebfed0dac83c16047589a819da46f0"
+      "path": "selected-intervals.json.zst",
+      "bytes": 159404,
+      "sha256": "5be00f149d7cd29c4517c3b6018e5557d80249e660dfb6f99e8cade405e10b1e"
     }
   ],
   "remaining": [
@@ -847,7 +895,7 @@
   },
   "created_utc": "2026-10-11T18:23:52.961063+00:00",
   "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
-  "launch_attempt_count": 4,
+  "launch_attempt_count": 8,
   "preparation": {
     "readiness": {
       "ready_utc": "2026-10-11T18:25:03.254494+00:00",
@@ -871,7 +919,20 @@
     "max_concurrent_runs": 4,
     "reason": "relay allowlist omitted new round namespace; no provider requests or locomotion occurred",
     "controller_changes": false,
-    "source": "https://docs.python.org/3/library/re.html#re.fullmatch"
+    "source": "https://docs.python.org/3/library/re.html#re.fullmatch",
+    "initial_checks_passed": 4,
+    "resources": {
+      "memory_available_bytes": 66099826688,
+      "free_bytes": 43614109696,
+      "loadavg": [
+        0.33203125,
+        0.3955078125,
+        0.279296875
+      ],
+      "runs": 4,
+      "per_run_bytes": 4294967296,
+      "reserved_bytes": 2147483648
+    }
   },
   "relay_fix_tests": {
     "files": [
@@ -888,5 +949,579 @@
       "r2": 3.552713678800501e-15
     },
     "stall_denominator": "independent ungated replay of actual commands for both conditions"
-  }
+  },
+  "active_source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+  "active_runs": [
+    {
+      "id": "e2e11-a-s61001-r2",
+      "initial_check": {
+        "passed": true,
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "translation_command": true,
+          "model_response_accepted": true
+        },
+        "elapsed_since_submit_s": 210.45966482162476,
+        "actual_displacement_m": {
+          "r1": 0.6631964983814406,
+          "r2": 0.28967531769170995,
+          "r3": 9.099065776849467e-05
+        },
+        "pose_jumps": {
+          "r1": {
+            "map": {
+              "intervals": 90,
+              "over_5cm": 3,
+              "over_20cm": 0,
+              "max_m": 0.15570970126018974
+            },
+            "control": {
+              "intervals": 90,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.012923413773167627
+            }
+          },
+          "r2": {
+            "map": {
+              "intervals": 90,
+              "over_5cm": 1,
+              "over_20cm": 0,
+              "max_m": 0.08065995154883591
+            },
+            "control": {
+              "intervals": 90,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.012923413773167577
+            }
+          },
+          "r3": {
+            "map": {
+              "intervals": 90,
+              "over_5cm": 1,
+              "over_20cm": 0,
+              "max_m": 0.075001022305662
+            },
+            "control": {
+              "intervals": 90,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.0
+            }
+          }
+        },
+        "commands": {
+          "r1": {
+            "forward": 54,
+            "turns": 37,
+            "turn_sign_flips": 1
+          },
+          "r2": {
+            "forward": 66,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r3": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          }
+        }
+      },
+      "status": "RUNNING"
+    },
+    {
+      "id": "e2e11-a-s61002-r2",
+      "initial_check": {
+        "passed": true,
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "translation_command": true,
+          "model_response_accepted": true
+        },
+        "elapsed_since_submit_s": 211.03339910507202,
+        "actual_displacement_m": {
+          "r1": 0.6526754571289023,
+          "r2": 0.28954415229636415,
+          "r3": 8.842972302562876e-05
+        },
+        "pose_jumps": {
+          "r1": {
+            "map": {
+              "intervals": 90,
+              "over_5cm": 2,
+              "over_20cm": 0,
+              "max_m": 0.14912048085602428
+            },
+            "control": {
+              "intervals": 90,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.012923413773167625
+            }
+          },
+          "r2": {
+            "map": {
+              "intervals": 90,
+              "over_5cm": 2,
+              "over_20cm": 0,
+              "max_m": 0.08065995154883591
+            },
+            "control": {
+              "intervals": 90,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.012923413773167577
+            }
+          },
+          "r3": {
+            "map": {
+              "intervals": 90,
+              "over_5cm": 1,
+              "over_20cm": 0,
+              "max_m": 0.075001022305662
+            },
+            "control": {
+              "intervals": 90,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.0
+            }
+          }
+        },
+        "commands": {
+          "r1": {
+            "forward": 56,
+            "turns": 35,
+            "turn_sign_flips": 1
+          },
+          "r2": {
+            "forward": 66,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r3": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          }
+        }
+      },
+      "status": "RUNNING"
+    },
+    {
+      "id": "e2e11-b-s61001-r2",
+      "initial_check": {
+        "passed": true,
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "translation_command": true,
+          "model_response_accepted": true
+        },
+        "elapsed_since_submit_s": 212.24427938461304,
+        "actual_displacement_m": {
+          "r1": 0.6631964983814406,
+          "r2": 0.2972030438520942,
+          "r3": 9.099065776849467e-05
+        },
+        "pose_jumps": {
+          "r1": {
+            "map": {
+              "intervals": 90,
+              "over_5cm": 2,
+              "over_20cm": 0,
+              "max_m": 0.15570970126018974
+            },
+            "control": {
+              "intervals": 90,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.012923413773167627
+            }
+          },
+          "r2": {
+            "map": {
+              "intervals": 90,
+              "over_5cm": 2,
+              "over_20cm": 0,
+              "max_m": 0.08065995154883591
+            },
+            "control": {
+              "intervals": 90,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.012923413773167663
+            }
+          },
+          "r3": {
+            "map": {
+              "intervals": 90,
+              "over_5cm": 1,
+              "over_20cm": 0,
+              "max_m": 0.075001022305662
+            },
+            "control": {
+              "intervals": 90,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.0
+            }
+          }
+        },
+        "commands": {
+          "r1": {
+            "forward": 54,
+            "turns": 37,
+            "turn_sign_flips": 1
+          },
+          "r2": {
+            "forward": 91,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r3": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          }
+        }
+      },
+      "status": "RUNNING"
+    },
+    {
+      "id": "e2e11-b-s61002-r2",
+      "initial_check": {
+        "passed": true,
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "translation_command": true,
+          "model_response_accepted": true
+        },
+        "elapsed_since_submit_s": 212.82281064987183,
+        "actual_displacement_m": {
+          "r1": 0.6707166578248083,
+          "r2": 0.29968197057694135,
+          "r3": 8.931090312017426e-05
+        },
+        "pose_jumps": {
+          "r1": {
+            "map": {
+              "intervals": 95,
+              "over_5cm": 2,
+              "over_20cm": 0,
+              "max_m": 0.14912048085602428
+            },
+            "control": {
+              "intervals": 95,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.012923413773167625
+            }
+          },
+          "r2": {
+            "map": {
+              "intervals": 95,
+              "over_5cm": 3,
+              "over_20cm": 0,
+              "max_m": 0.1021575556607719
+            },
+            "control": {
+              "intervals": 95,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.012923413773167663
+            }
+          },
+          "r3": {
+            "map": {
+              "intervals": 95,
+              "over_5cm": 1,
+              "over_20cm": 0,
+              "max_m": 0.075001022305662
+            },
+            "control": {
+              "intervals": 95,
+              "over_5cm": 0,
+              "over_20cm": 0,
+              "max_m": 0.0
+            }
+          }
+        },
+        "commands": {
+          "r1": {
+            "forward": 63,
+            "turns": 33,
+            "turn_sign_flips": 1
+          },
+          "r2": {
+            "forward": 96,
+            "turns": 0,
+            "turn_sign_flips": 0
+          },
+          "r3": {
+            "forward": 0,
+            "turns": 0,
+            "turn_sign_flips": 0
+          }
+        }
+      },
+      "status": "RUNNING"
+    }
+  ],
+  "online_first18": {
+    "scope": "Evaluation-only first18 SIMseconds, not final",
+    "artifact": "online-first18.json.zst",
+    "r2": {
+      "e2e11-a-s61001-r2": {
+        "map_error_m": {
+          "n": 91,
+          "max": 0.10366995158282831,
+          "median": 0.08331147252086367
+        },
+        "control_error_m": {
+          "n": 91,
+          "max": 0.027915230146187842,
+          "median": 0.023648594073532238
+        },
+        "stall_duration_s": 4.6,
+        "gated_frames": 27
+      },
+      "e2e11-a-s61002-r2": {
+        "map_error_m": {
+          "n": 91,
+          "max": 0.18077991099430668,
+          "median": 0.14801371711429198
+        },
+        "control_error_m": {
+          "n": 91,
+          "max": 0.14597898133893616,
+          "median": 0.1387985846279769
+        },
+        "stall_duration_s": 5.0,
+        "gated_frames": 18
+      },
+      "e2e11-b-s61001-r2": {
+        "map_error_m": {
+          "n": 91,
+          "max": 0.8322839657420322,
+          "median": 0.32892162180872175
+        },
+        "control_error_m": {
+          "n": 91,
+          "max": 0.8665167662363967,
+          "median": 0.29470016995128523
+        },
+        "stall_duration_s": 12.0,
+        "gated_frames": 0
+      },
+      "e2e11-b-s61002-r2": {
+        "map_error_m": {
+          "n": 91,
+          "max": 0.7074887518190989,
+          "median": 0.3040397039330518
+        },
+        "control_error_m": {
+          "n": 91,
+          "max": 0.8643687720317743,
+          "median": 0.294204472650681
+        },
+        "stall_duration_s": 12.0,
+        "gated_frames": 0
+      }
+    }
+  },
+  "online_first60": {
+    "scope": "Evaluation-only first60 SIMseconds, not final",
+    "artifact": "online-first60.json.zst",
+    "r2": {
+      "e2e11-a-s61001-r2": {
+        "map_error_m": {
+          "n": 301,
+          "max": 0.16163066582722735,
+          "median": 0.09851687665307073
+        },
+        "control_error_m": {
+          "n": 301,
+          "max": 0.8693805242279768,
+          "median": 0.13525206382090887
+        },
+        "stall_duration_s": 9.999999999999998,
+        "gated_frames": 47,
+        "gated_moving_intervals": 0,
+        "moving_intervals": 157
+      },
+      "e2e11-a-s61002-r2": {
+        "map_error_m": {
+          "n": 301,
+          "max": 1.100459296995044,
+          "median": 0.18077991099430668
+        },
+        "control_error_m": {
+          "n": 301,
+          "max": 0.6395819135683427,
+          "median": 0.3038220074184676
+        },
+        "stall_duration_s": 10.400000000000002,
+        "gated_frames": 34,
+        "gated_moving_intervals": 0,
+        "moving_intervals": 157
+      },
+      "e2e11-b-s61001-r2": {
+        "map_error_m": {
+          "n": 301,
+          "max": 2.8939777682940195,
+          "median": 1.5934268447029967
+        },
+        "control_error_m": {
+          "n": 301,
+          "max": 2.8422751958957515,
+          "median": 1.6278311930843221
+        },
+        "stall_duration_s": 39.19999999999999,
+        "gated_frames": 0,
+        "gated_moving_intervals": 0,
+        "moving_intervals": 23
+      },
+      "e2e11-b-s61002-r2": {
+        "map_error_m": {
+          "n": 301,
+          "max": 2.6142659265309613,
+          "median": 1.470400248658858
+        },
+        "control_error_m": {
+          "n": 301,
+          "max": 3.0870158679642095,
+          "median": 1.6310958807113602
+        },
+        "stall_duration_s": 45.4,
+        "gated_frames": 0,
+        "gated_moving_intervals": 0,
+        "moving_intervals": 22
+      }
+    }
+  },
+  "online_first120": {
+    "scope": "Evaluation-only first120 SIMseconds, not final",
+    "artifact": "online-first120.json.zst",
+    "r2": {
+      "e2e11-a-s61001-r2": {
+        "map_error_m": {
+          "n": 601,
+          "max": 1.4358020479471347,
+          "median": 0.16163066582722735
+        },
+        "control_error_m": {
+          "n": 601,
+          "max": 1.9636785037839044,
+          "median": 0.8693805242279768
+        },
+        "stall_duration_s": 21.40000000000002,
+        "gated_frames": 96,
+        "gated_moving_intervals": 0,
+        "moving_intervals": 228
+      },
+      "e2e11-a-s61002-r2": {
+        "map_error_m": {
+          "n": 601,
+          "max": 3.1932843784092135,
+          "median": 1.100459296995044
+        },
+        "control_error_m": {
+          "n": 601,
+          "max": 3.247879530821401,
+          "median": 0.6395819135683427
+        },
+        "stall_duration_s": 10.400000000000002,
+        "gated_frames": 35,
+        "gated_moving_intervals": 0,
+        "moving_intervals": 169
+      },
+      "e2e11-b-s61001-r2": {
+        "map_error_m": {
+          "n": 601,
+          "max": 5.659395693121275,
+          "median": 2.8939777682940195
+        },
+        "control_error_m": {
+          "n": 601,
+          "max": 5.503750953942529,
+          "median": 2.8422751958957515
+        },
+        "stall_duration_s": 77.99999999999999,
+        "gated_frames": 0,
+        "gated_moving_intervals": 0,
+        "moving_intervals": 23
+      },
+      "e2e11-b-s61002-r2": {
+        "map_error_m": {
+          "n": 601,
+          "max": 3.626234732754522,
+          "median": 2.405162124067485
+        },
+        "control_error_m": {
+          "n": 601,
+          "max": 4.300041384880178,
+          "median": 3.0870158679642095
+        },
+        "stall_duration_s": 74.60000000000002,
+        "gated_frames": 0,
+        "gated_moving_intervals": 0,
+        "moving_intervals": 22
+      }
+    }
+  },
+  "online_residual_first120": {
+    "file": "online-residual-first120.json",
+    "scope": "evaluation only; no change to active source",
+    "seed61002_r2_partial_motion_60_120": {
+      "duration_s": 41.4,
+      "commanded_m": 2.675146651045619,
+      "actual_path_m": 1.063888727090006,
+      "gated_intervals": 1,
+      "total_intervals": 207
+    },
+    "remaining": "Binary stationarity cannot estimate a nonzero slip ratio or correct heading drift. Keep the frozen four-run comparison; report final failure if unmet."
+  },
+  "online_navigation_exhaustion": {
+    "run": "e2e11-a-s61001-r2",
+    "robot": "r1",
+    "first_observed_by_sim_s": 84,
+    "last_inspected_sim_s": 189,
+    "status": "exploration_finished",
+    "reason": "no reachable frontier after one sweep",
+    "gate_active": false,
+    "command": "hold",
+    "artifact": "a61001-r1-hold-diagnosis.json.zst",
+    "action": "record_only_dev_light",
+    "scope": "design-level navigation exhaustion, not a physical failure; source frozen"
+  },
+  "completed_launches": 4,
+  "unfinished_launches": 4,
+  "running_checkpoint": "running-checkpoint.json",
+  "last_recorded_utc": "2026-10-11T19:39:45.362885+00:00"
 }
