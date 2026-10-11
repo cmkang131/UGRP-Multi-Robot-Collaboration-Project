@@ -37,11 +37,13 @@ def rows(path):
     return [json.loads(line) for line in read(path).splitlines() if line]
 
 
-def load_bank(root, seed, start):
+def load_bank(root, seed, start, checkpoint_sha256):
     import numpy as np
     from harness.own_rgb_homing import Memory
     metadata_bytes = read(root/f'bank-{seed}.json')
     metadata = json.loads(metadata_bytes)
+    if metadata['checkpoint_sha256'] != checkpoint_sha256:
+        raise ValueError('BANK_CHECKPOINT_SHA256_MISMATCH')
     payload = read(root/f'bank-{seed}.npz')
     if sha(payload) != metadata['sha256']:
         raise ValueError('BANK_SHA256_MISMATCH')
@@ -142,7 +144,7 @@ def replay_run(archive, seed, condition, max_frames):
     report.update(event_denominator=len(events), declarations=[dict(t=e['t'], kind=e['reason'],
         complete=False, status='INPUT_ERROR', last_five_geometry_accepted=None) for e in events])
     try:
-        bank, record = load_bank(archive/'egomap68-banks/data', seed, start)
+        bank, record = load_bank(archive/'egomap68-banks/data', seed, start, result['checkpoint']['sha256'])
         trace = [r for r in rows(run/'own-controller.jsonl') if r['t'] >= start]
         images = {r['frame_id']: r for r in rows(run/'robots/r3/frames.jsonl')}
     except Exception as exc:
@@ -217,7 +219,7 @@ def main():
         try:
             reports.append(replay_run(args.archive, seed, args.condition, args.max_frames))
         except Exception as exc:
-            reports.append(dict(seed=seed, condition=args.condition, status='INPUT_ERROR', error=repr(exc), declarations=[]))
+            reports.append(dict(seed=seed, condition=args.condition, status='INPUT_ERROR', error=repr(exc), declarations=[], event_denominator=None))
     # GT is unavailable to the gate, including when processing the next run.
     for report in reports:
         try:
@@ -231,6 +233,7 @@ def main():
         seeds=args.seeds, condition=args.condition, max_frames_per_event=args.max_frames,
         physics_runs=0, model_calls=0, images_exported=0, thresholds_changed=False,
         counterfactual_actions_executed=False, aggregate=summarize(reports), runs=reports,
+        unknown_declaration_denominator_runs=sum(r.get('event_denominator') is None for r in reports),
         limitations=[
             'Historical frames only: missing active other-angle views cannot be synthesized or counted as a runtime failure.',
             'B semantics and candidate association were not replayed; geometric acceptance is necessary, not sufficient.',
