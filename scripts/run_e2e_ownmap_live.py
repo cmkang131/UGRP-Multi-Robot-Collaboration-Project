@@ -66,7 +66,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if exploration_progress!='off' or pose_fix!='off':
         b.update(schema='ugrp.e2e_ownmap_live.v194',execution_bundle_id='e2e-explore-posefix-v194',workflow_version='7.87.0')
     if path_follow!='off' or dev_light:
-        b.update(schema='ugrp.e2e_ownmap_live.v196',execution_bundle_id='e2e-rpp-lookahead-v196',workflow_version='7.89.0')
+        b.update(schema='ugrp.e2e_ownmap_live.v197',execution_bundle_id='e2e-rpp-lookahead-v197',workflow_version='7.90.0')
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -79,7 +79,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if exploration_progress!='off' or pose_fix!='off':
         paths.add('configs/simulation_workflows.d/e2e_explore_posefix_v194.json')
     if path_follow!='off' or dev_light:
-        paths.add('configs/simulation_workflows.d/e2e_rpp_lookahead_v196.json')
+        paths.add('configs/simulation_workflows.d/e2e_rpp_lookahead_v197.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 

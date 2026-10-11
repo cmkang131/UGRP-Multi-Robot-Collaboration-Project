@@ -1,12 +1,12 @@
 {
   "schema": "ugrp.e2e10.v1",
-  "status": "PREREGISTERED",
+  "status": "RETRY_PREPARED",
   "pr": 433,
   "run_class": "dev",
   "research_result": false,
-  "execution_count": 0,
-  "execution_bundle": "e2e-rpp-lookahead-v196",
-  "workflow_version": "7.89.0",
+  "execution_count": 8,
+  "execution_bundle": "e2e-rpp-lookahead-v197",
+  "workflow_version": "7.90.0",
   "preregistration": {
     "max_runs": 8,
     "seeds": {
@@ -90,6 +90,62 @@
       "x86": 8,
       "arm": 25,
       "mac": 20
+    },
+    "checks": [
+      {
+        "schema": "ugrp.storage-budget.v1",
+        "ok": true,
+        "checks": [
+          {
+            "host": "x86",
+            "free_bytes": 53038862336,
+            "expected_bytes": 36507222016,
+            "projected_free_bytes": 16531640320,
+            "floor_bytes": 8589934592,
+            "ok": true
+          }
+        ]
+      },
+      {
+        "schema": "ugrp.storage-budget.v1",
+        "ok": true,
+        "checks": [
+          {
+            "host": "arm",
+            "free_bytes": 87239241728,
+            "expected_bytes": 36507222016,
+            "projected_free_bytes": 50732019712,
+            "floor_bytes": 26843545600,
+            "ok": true
+          }
+        ]
+      },
+      {
+        "schema": "ugrp.storage-budget.v1",
+        "ok": true,
+        "checks": [
+          {
+            "host": "mac",
+            "free_bytes": 135437037568,
+            "expected_bytes": 1073741824,
+            "projected_free_bytes": 134363295744,
+            "floor_bytes": 21474836480,
+            "ok": true
+          }
+        ]
+      }
+    ],
+    "admission": {
+      "memory_available_bytes": 65521291264,
+      "free_bytes": 51605364736,
+      "loadavg": [
+        0.65185546875,
+        1.8310546875,
+        8.1162109375
+      ],
+      "runs": 8,
+      "per_run_bytes": 4294967296,
+      "reserved_bytes": 2147483648
     }
   },
   "tests": {
@@ -98,10 +154,11 @@
       "tests/test_e2e_explore_posefix.py",
       "tests/test_s2_path_heading.py"
     ],
-    "passed": 40,
+    "passed": 41,
     "changed_followup_pending": false,
-    "changed_file_followup_passed": 6,
-    "initial_fixture_failure": "New timeout test passed empty calibration; fixed to use the existing S3 four pulse profile fixture."
+    "changed_file_followup_passed": 7,
+    "initial_fixture_failure": "New timeout test passed empty calibration; fixed to use the existing S3 four pulse profile fixture.",
+    "managed_cli_regression": true
   },
   "references": [
     {
@@ -118,11 +175,369 @@
       "url": "https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/controller_plugins/configuring_regulated_pp/",
       "verified": true,
       "use": "Official Jazzy defaults, radial lookahead and heading rotation."
+    },
+    {
+      "url": "https://docs.python.org/3/library/argparse.html#action",
+      "verified": true,
+      "use": "store_true flags consume no value; omit from legacy workflow manager value-required list."
     }
   ],
-  "runs": [],
+  "runs": [
+    {
+      "id": "e2e10-a-s61001",
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "sim_s": 0,
+      "wall_s": 14.590696811676025,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "cause": "workflow: --dev-light requires a value, got another option",
+      "exit": 2,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61001",
+      "archive": {
+        "run": "e2e10-a-s61001",
+        "summary_sha256": "fc27bad0834cf7c39ec6c2eb55ba632dbc2af3b97ce2357243389505e5ddc648",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e10-a-s61001",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "9479f48a401cfc8acd2117168d9591f98939486e5718b39daf008a53b362ecd8",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61001",
+          "files": 18,
+          "hash_matches": 18,
+          "inventory_sha256": "8c920ac78d8a7d8ab07073391e924734220e2bd253fbf9fc0bd0ecacd41188ca",
+          "reused": false,
+          "receiver_seconds": 0.083
+        },
+        "archive_bytes": 14410
+      },
+      "retrieval": {
+        "run": "e2e10-a-s61001",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001",
+        "checksum_verified": true,
+        "excluded_embedded_images": 0,
+        "files": 18,
+        "bytes": 14410
+      }
+    },
+    {
+      "id": "e2e10-b-s61001",
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "sim_s": 0,
+      "wall_s": 13.340088844299316,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "cause": "workflow: --dev-light requires a value, got another option",
+      "exit": 2,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-b-s61001",
+      "archive": {
+        "run": "e2e10-b-s61001",
+        "summary_sha256": "894b6d0d38b299ec1c4802100781b63a79d17f12f5b513c784adce01e51e56d8",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e10-b-s61001",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "d7d6a94e7a7c2533c778ce179fe1d6a25125dc94a70121003c7f503592f1b7d2",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-b-s61001",
+          "files": 18,
+          "hash_matches": 18,
+          "inventory_sha256": "7d5b8a2aed7a866601a38899312bbce2f445ae3bf860e35a7ba55718b16e19be",
+          "reused": false,
+          "receiver_seconds": 0.088
+        },
+        "archive_bytes": 14415
+      },
+      "retrieval": {
+        "run": "e2e10-b-s61001",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001",
+        "checksum_verified": true,
+        "excluded_embedded_images": 0,
+        "files": 18,
+        "bytes": 14415
+      }
+    },
+    {
+      "id": "e2e10-c-s61001",
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "sim_s": 0,
+      "wall_s": 12.080543518066406,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "cause": "workflow: --dev-light requires a value, got another option",
+      "exit": 2,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-c-s61001",
+      "archive": {
+        "run": "e2e10-c-s61001",
+        "summary_sha256": "58a23abd0b9060bb4691a9914e4fe45eda6a9ee1596c43c9add86beae4ca07ce",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e10-c-s61001",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "8324e5cd02e34b1d2150fba0dc5947fac03c30bc5cd2fec8d99c61700d213e39",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-c-s61001",
+          "files": 18,
+          "hash_matches": 18,
+          "inventory_sha256": "624b46672e47a09d24ec3944cc046036bf92047e3ea3ac70096ba33671716cf9",
+          "reused": false,
+          "receiver_seconds": 0.077
+        },
+        "archive_bytes": 14401
+      },
+      "retrieval": {
+        "run": "e2e10-c-s61001",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001",
+        "checksum_verified": true,
+        "excluded_embedded_images": 0,
+        "files": 18,
+        "bytes": 14401
+      }
+    },
+    {
+      "id": "e2e10-a-s61002",
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "sim_s": 0,
+      "wall_s": 10.796459197998047,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "cause": "workflow: --dev-light requires a value, got another option",
+      "exit": 2,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61002",
+      "archive": {
+        "run": "e2e10-a-s61002",
+        "summary_sha256": "220f8d9e83a31312c4b776e3d5a39742c57f4a908e91d4d94dac6b8f2c549e92",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e10-a-s61002",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "834160b5edbb3793966e79181853ba26f3fbfa5531a0607f6e375fbb5d4f5768",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61002",
+          "files": 18,
+          "hash_matches": 18,
+          "inventory_sha256": "49523e09c3d00de85e03bcd0f962d83231fc089b83630c300c8f380b402b4117",
+          "reused": false,
+          "receiver_seconds": 0.086
+        },
+        "archive_bytes": 14407
+      },
+      "retrieval": {
+        "run": "e2e10-a-s61002",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002",
+        "checksum_verified": true,
+        "excluded_embedded_images": 0,
+        "files": 18,
+        "bytes": 14407
+      }
+    },
+    {
+      "id": "e2e10-b-s61002",
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "sim_s": 0,
+      "wall_s": 9.554059028625488,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "cause": "workflow: --dev-light requires a value, got another option",
+      "exit": 2,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-b-s61002",
+      "archive": {
+        "run": "e2e10-b-s61002",
+        "summary_sha256": "57bb456b633dff88fdd7bfdc40aa2ef0e00e6025b0dedaa68b9d3c0ad2f963a8",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e10-b-s61002",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "f91dfe2736dcedcbadc0c185687db3b0c3ec39cc0ffc4f62a06dd0e5b7d4123c",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-b-s61002",
+          "files": 18,
+          "hash_matches": 18,
+          "inventory_sha256": "8b046ab48e6e6545d3f5771abc256386cae0100d63d197732946686855663755",
+          "reused": false,
+          "receiver_seconds": 0.072
+        },
+        "archive_bytes": 14408
+      },
+      "retrieval": {
+        "run": "e2e10-b-s61002",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002",
+        "checksum_verified": true,
+        "excluded_embedded_images": 0,
+        "files": 18,
+        "bytes": 14408
+      }
+    },
+    {
+      "id": "e2e10-c-s61002",
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "sim_s": 0,
+      "wall_s": 8.287484884262085,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "cause": "workflow: --dev-light requires a value, got another option",
+      "exit": 2,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-c-s61002",
+      "archive": {
+        "run": "e2e10-c-s61002",
+        "summary_sha256": "8b199d4f215107bb7b860dbc88c9bc63e87b5cc38571898027ad9cf286769104",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e10-c-s61002",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "4866bcb24580c6b6b656937c51779826cdd106d9332ddd6f36dcf4efcd349c11",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-c-s61002",
+          "files": 18,
+          "hash_matches": 18,
+          "inventory_sha256": "1218f046b060e9caf6fcecc1282851acbbc031edf87885d3ab28b748112a55fe",
+          "reused": false,
+          "receiver_seconds": 0.079
+        },
+        "archive_bytes": 14399
+      },
+      "retrieval": {
+        "run": "e2e10-c-s61002",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002",
+        "checksum_verified": true,
+        "excluded_embedded_images": 0,
+        "files": 18,
+        "bytes": 14399
+      }
+    },
+    {
+      "id": "e2e10-a-s61003",
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "sim_s": 0,
+      "wall_s": 7.009382963180542,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "cause": "workflow: --dev-light requires a value, got another option",
+      "exit": 2,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61003",
+      "archive": {
+        "run": "e2e10-a-s61003",
+        "summary_sha256": "326ce2c69ac3a92b391126b81b75a2900811ed1734947afc9ad08b858233ef03",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e10-a-s61003",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "264e22eaf1332a81d7707a5d0fd7cadc5d8f137bebb82d3d5ba5aff114a98ed0",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61003",
+          "files": 18,
+          "hash_matches": 18,
+          "inventory_sha256": "cbc920e132e2acf5e022d166fd3293d863d83d0cd1a674932a62093da16dcd8f",
+          "reused": false,
+          "receiver_seconds": 0.071
+        },
+        "archive_bytes": 14404
+      },
+      "retrieval": {
+        "run": "e2e10-a-s61003",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003",
+        "checksum_verified": true,
+        "excluded_embedded_images": 0,
+        "files": 18,
+        "bytes": 14404
+      }
+    },
+    {
+      "id": "e2e10-a-s61004",
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "sim_s": 0,
+      "wall_s": 5.6948769092559814,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "cause": "workflow: --dev-light requires a value, got another option",
+      "exit": 2,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e10-a-s61004",
+      "archive": {
+        "run": "e2e10-a-s61004",
+        "summary_sha256": "0da5eb68226ebfde9cd08752539da92c0bba93da7b3647c96b8e54a0f8152a90",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/e2e10-a-s61004",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        },
+        "archive_marker_sha256": "97d17f25b0d8570e79ebcd20c1837520fab6953386e8ec1ffcd11d8d05bb0244",
+        "proof": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e10-a-s61004",
+          "files": 18,
+          "hash_matches": 18,
+          "inventory_sha256": "556e7fe4c826ea5f43b6a38493e49bce32aeb47147ac63b7f6fb45917232e817",
+          "reused": false,
+          "receiver_seconds": 0.073
+        },
+        "archive_bytes": 14407
+      },
+      "retrieval": {
+        "run": "e2e10-a-s61004",
+        "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004",
+        "checksum_verified": true,
+        "excluded_embedded_images": 0,
+        "files": 18,
+        "bytes": 14407
+      }
+    }
+  ],
   "remaining": [
-    "Commit/push frozen source, paired online run, retrieval and outcome verification."
+    "Retry same eight cells after pre-simulation CLI failure; retain all eight HOST_ERROR launch records. No physics or model was started in failed submissions."
   ],
   "bundle_number_audit": [
     {
@@ -190,5 +605,91 @@
       "ref": "origin/codex/integ-target-backend",
       "max_id": 101
     }
-  ]
+  ],
+  "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+  "submissions": [
+    {
+      "run": "e2e10-a-s61001",
+      "pid": 271089,
+      "submitted_unix": 1791734873.6287382,
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
+    },
+    {
+      "run": "e2e10-b-s61001",
+      "pid": 271144,
+      "submitted_unix": 1791734874.9128304,
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
+    },
+    {
+      "run": "e2e10-c-s61001",
+      "pid": 271205,
+      "submitted_unix": 1791734876.2168996,
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
+    },
+    {
+      "run": "e2e10-a-s61002",
+      "pid": 271267,
+      "submitted_unix": 1791734877.4874156,
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
+    },
+    {
+      "run": "e2e10-b-s61002",
+      "pid": 271329,
+      "submitted_unix": 1791734878.7700105,
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
+    },
+    {
+      "run": "e2e10-c-s61002",
+      "pid": 271388,
+      "submitted_unix": 1791734880.07342,
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
+    },
+    {
+      "run": "e2e10-a-s61003",
+      "pid": 271454,
+      "submitted_unix": 1791734881.3425379,
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
+    },
+    {
+      "run": "e2e10-a-s61004",
+      "pid": 271519,
+      "submitted_unix": 1791734882.9556792,
+      "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b"
+    }
+  ],
+  "orchestration": {
+    "submit.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/submit.py",
+      "sha256": "ec138ac1a78a304e0d8a8bd8bbaa1567fbe6dede1098423d4565c3fecf29f9d9"
+    },
+    "fetch-finished.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/fetch-finished.py",
+      "sha256": "3567e98dff652f3437eb318c0475cd1bd1362998f30a46ffa642d20992ab9b43"
+    },
+    "export-lite.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/export-lite.py",
+      "sha256": "bc7b91e61da8b0606bc3813d21433ac3836db5979fef526f6ef962d853343f51"
+    },
+    "relay-supervisor.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/relay-supervisor.py",
+      "sha256": "462e19a100d3e2c767141fee6c02cda8ed6f43b3fd7e5a4f224a82a23522be11"
+    },
+    "watch.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/watch.py",
+      "sha256": "c1eec0f0f0d91b47cd295d1a58591ecc14c361b49359660d9f23c4f8f6dc6638"
+    },
+    "finish.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e10-rpp-lookahead/finish.py",
+      "sha256": "b38a043cae8365f7d6d5c8b1b5b6dffec08679a156eac5445892eff11a1484c1"
+    }
+  },
+  "launch_attempt_count": 8,
+  "simulation_count": 0,
+  "retired_bundle": {
+    "id": "e2e-rpp-lookahead-v196",
+    "source_sha": "65ddd09dce70b8ec28e2f5e5f422839e52e8247b",
+    "physical_runs": 0,
+    "host_errors": 8,
+    "catalog_preserved": true
+  }
 }

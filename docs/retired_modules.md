@@ -219,3 +219,5 @@ TERM/HUP 실패 기록과 현재 lease 신원 확인을 추가했다. SIGTERM으
 - 2026-10-11 S4 `zone-s4-pair-live-v170` /7.63.0은 비활성 endpoint heartbeat 누락이 확인된 과거 DEV 후보다. 실행 소스 `254ffd4844db9f14968feae723de7cf0ef883fdf`, 원본 plan.json·8개 raw·해시는 s4live7 기록에 보존한다. 보완 비교는 v171 /7.64.0을 사용하며 과거 실행의 소스·판정을 덮어쓰지 않는다.
 
 - 2026-10-11 S4 `zone-s4-pair-live-v173` /7.66.0 명령표는 interpreter 진입 전 HOST EXIT127 8/8로 퇴역한다(물리·모델0). 소스 `95a258dc8245df3e045ff107e679ac1d19466a50`와 첫 plan.json·raw는 s4live8 기록에 보존한다. 실제 모델·물리 비교는 가상환경 경로를 명시한 v174 /7.67.0, 소스 `7b25757369d0a069d9c5fa47d916caec35681382`이다.
+
+- 2026-10-11: E2E `e2e-rpp-lookahead-v196 / 7.89.0` (`65ddd09d`)는 boolean `--dev-light`를 값 필수 항목으로 등록하여 8/8 HOST_ERROR(물리 진입 0)였다. 카탈로그 바이트를 보존하고 `e2e-rpp-lookahead-v197 / 7.90.0`으로 대체한다. [기록](../experiments/2026-10-11-e2e10-rpp-lookahead/summary.json).

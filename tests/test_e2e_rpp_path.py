@@ -52,11 +52,12 @@ def test_dev_startup_is_observational_but_legacy_still_stops():
            robots={r:dict(map_frames=20,translation_commands=0) for r in ('r1','r2')})
     assert startup_decision(p,legacy)==dict(passed=False,would_stop=True,stop=True)
     assert startup_decision(p,dev)==dict(passed=False,would_stop=True,stop=False)
-    assert dev['execution_bundle_id']=='e2e-rpp-lookahead-v196'
+    assert dev['execution_bundle_id']=='e2e-rpp-lookahead-v197'
     assert 'harness/e2e_rpp_path.py' in dev['source_sha256']
     from scripts.s4_proxy_relay import accepted_call_id
     assert accepted_call_id('e2e10-a-s61004:call-0001-r1:1')
     assert accepted_call_id('e2e10-b-s61002:call-0001-r2:1')
+    assert accepted_call_id('e2e10-b-s61002-r2:call-0001-r2:1')
     assert not accepted_call_id('e2e10-b-s61004:call-0001-r2:1')
 
 
@@ -86,3 +87,13 @@ def test_dev_reobservation_deadline_records_once_and_actual_go_failure_stops():
     assert transport.failure is None and len(transport.events)==1
     transport.fail('CURRENT_GO_ACK_TIMEOUT',22.)
     assert transport.failure=='CURRENT_GO_ACK_TIMEOUT' and transport.state=='failed'
+
+
+def test_managed_workflow_does_not_require_a_value_for_store_true_flag():
+    from sim.workflow_manager import _row,_validate_args
+    row,_=_row(Path.cwd(),'e2e-rpp-lookahead-v197')
+    argv=[]
+    for flag in row['required_inputs']:
+        argv.extend([flag,'off' if flag=='--path-follow' else 'fixture'])
+    argv.extend(['--dev-light','--execute'])
+    assert _validate_args(row,argv)=='--output'
