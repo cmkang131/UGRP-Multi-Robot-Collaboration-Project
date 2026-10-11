@@ -16,6 +16,27 @@ from harness.zone_solo_cyan_v106 import ENVELOPE
 from harness.path_heading_policy import DEFAULT, VISUAL_LOCK
 
 OPTION = DEFAULT
+MIN_COMMAND_S = .10
+CONTRACT = 'on_v1'  # explicit option min_command_contract; default 'off' = historical behaviour
+
+
+def command_reason(action):
+    """Common heading issue contract; omit, never stretch an unmeasured pulse."""
+    if action.get('kind') != 'mecanum':  # sim/s2_real_output.py gates min wheel cmd on mecanum only
+        return None
+    axes = [float(action.get(k, 0.)) for k in ('forward', 'left', 'turn')]
+    if not any(axes):
+        return None
+    if sum(v != 0. for v in axes) != 1:
+        return 'mixed_axes'
+    duration = float(action.get('duration_s', 0.))
+    if not all(math.isfinite(v) for v in [*axes, duration]):
+        return 'nonfinite'
+    return None if MIN_COMMAND_S <= duration <= .80 else 'duration_outside_real_contract'
+
+CONTRACT_PARAMS = dict(min_command_s=MIN_COMMAND_S, max_command_s=.80,
+    short_command_policy='omit; no unmeasured duration extension')
+# PARAMS is hashed into registered bundles v143/v145: keep it byte-identical.
 PARAMS = dict(final_alignment_m=.10, heading_tolerance_rad=.06,
               turn_raw_limit=.35, turn_duration_s=.10,
               lateral_raw_limit=.35, lateral_duration_s=.06,
@@ -27,7 +48,8 @@ def wrap(angle):
     return math.atan2(math.sin(angle), math.cos(angle))
 
 
-def select(profiles, loaded, body_error, yaw, goal_distance):
+def select(profiles, loaded, body_error, yaw, goal_distance, *, position_tolerance_m=.03,
+           min_command_contract=False):
     """Rotate on the spot, then positive body-forward; trim only near FINAL goal.
 
     Distance to an intermediate waypoint never enables strafe. Finite turn
@@ -37,7 +59,20 @@ def select(profiles, loaded, body_error, yaw, goal_distance):
     final = goal_distance <= PARAMS['final_alignment_m']
     bearing = math.atan2(error[1], error[0])
     heading_error = wrap(-yaw if final else bearing)
-    pool = {k: p for k, p in profiles.items() if p['loaded'] == loaded}
+    pool = {k: p for k, p in profiles.items() if p['loaded'] == loaded
+            and (not min_command_contract or command_reason(action_of(p)) is None)}
+    # If no legal fine strafe exists, approach the final position by the same
+    # rotate/forward policy, then establish final yaw within the existing 3 cm
+    # arrival radius. Never alternate final-yaw and path-yaw at each tick.
+    fine_lateral = min_command_contract and any(p['axis'] == 'left' and abs(p['u']) <= PARAMS['lateral_raw_limit']
+                       for p in pool.values())
+    position_heading = False
+    if min_command_contract:
+        if not math.isfinite(position_tolerance_m) or position_tolerance_m <= 0:
+            raise ValueError('positive finite task position tolerance required')
+        position_heading = final and not fine_lateral and goal_distance > position_tolerance_m
+    if position_heading:
+        heading_error = bearing
     turns = {k: p for k, p in pool.items() if p['axis'] == 'turn'
              and abs(p['u']) <= PARAMS['turn_raw_limit']
              and p['duration_s'] == PARAMS['turn_duration_s']}
@@ -47,26 +82,27 @@ def select(profiles, loaded, body_error, yaw, goal_distance):
         candidates = [p for p in turns.values() if p['mean_delta'][2]*heading_error > 0
                       if abs(wrap(heading_error-p['mean_delta'][2])) < abs(heading_error)]
         p = min(candidates, key=lambda p: abs(wrap(heading_error-p['mean_delta'][2]))) if candidates else None
-        return p, dict(phase='rotate_goal' if final else 'rotate_path',
+        return p, dict(phase='rotate_goal' if final and not position_heading else 'rotate_path',
                        heading_error_rad=heading_error, goal_distance_m=goal_distance,
                        before=heading_error**2,
                        after=heading_error**2 if p is None else wrap(heading_error-p['mean_delta'][2])**2)
-    if final:
+    if final and not position_heading:
         pool = {k: p for k, p in pool.items()
                 if (p['axis'] == 'left' and abs(p['u']) <= PARAMS['lateral_raw_limit']
-                    and p['duration_s'] == PARAMS['lateral_duration_s'])
+                    and (p['duration_s'] >= MIN_COMMAND_S if min_command_contract
+                         else p['duration_s'] == PARAMS['lateral_duration_s']))
                 or (p['axis'] == 'forward' and p['duration_s'] == .10)}
     else:
         pool = {k: p for k, p in pool.items()
                 if p['axis'] == 'forward' and p['u'] > 0 and p['duration_s'] == .10}
     p, score = select_pulse(pool, loaded, error, 0.)
-    score.update(phase='final_alignment' if final else 'forward_path',
+    score.update(phase='final_alignment' if final and not position_heading else 'forward_path',
                  heading_error_rad=heading_error, goal_distance_m=goal_distance)
     return p, score
 
 
 def select_waypoint(profiles, loaded, own_pose, waypoint, goal, *,
-                    heading_mode=DEFAULT, goal_yaw=0.):
+                    heading_mode=DEFAULT, goal_yaw=0., min_command_contract=False):
     """One selector for authored/own-map paths; inputs share the own pose frame."""
     x, y, yaw = map(float, own_pose)
     c, s = math.cos(yaw), math.sin(yaw)
@@ -75,7 +111,8 @@ def select_waypoint(profiles, loaded, own_pose, waypoint, goal, *,
         return select_pulse(profiles, loaded, error, wrap(yaw))
     if heading_mode != DEFAULT:
         raise ValueError('unknown heading_mode')
-    return select(profiles, loaded, error, wrap(yaw-goal_yaw), math.dist((x, y), goal))
+    return select(profiles, loaded, error, wrap(yaw-goal_yaw), math.dist((x, y), goal),
+                  min_command_contract=min_command_contract)
 
 
 class _HeadingPulse(PulseRuntime):
@@ -105,7 +142,8 @@ class _HeadingPulse(PulseRuntime):
         while len(self.path) > 1 and math.dist(here, self.path[0]) < .035:
             self.path.pop(0)
         loaded = self.pose.provider.loc._pf.load.loaded
-        p, score = select_waypoint(self.pulse_profiles, loaded, (*here, yaw), self.path[0], xy)
+        p, score = select_waypoint(self.pulse_profiles, loaded, (*here, yaw), self.path[0], xy,
+                                   min_command_contract=getattr(self, 'min_command_contract', False))
         self.heading_rows.append(dict(t=now, state=self.state, goal=list(xy),
                                      waypoint=list(self.path[0]), **copy.deepcopy(score)))
         if p is None:
@@ -122,7 +160,8 @@ def runtime_class(previous):
     if issubclass(previous, _HeadingPulse):
         return previous  # historical v143 factory already injected this layer
     class Runtime(previous, _HeadingPulse):
-        def __init__(self, *args, heading_mode=DEFAULT, heading_visual_lock='off', **kwargs):
+        def __init__(self, *args, heading_mode=DEFAULT, heading_visual_lock='off',
+                     min_command_contract='off', **kwargs):
             if heading_mode not in ('off', OPTION):
                 raise ValueError('unknown heading_mode')
             if heading_mode != 'off' and kwargs.get('pulse_motion_model') != 'v7_pulse_cal_v1':
@@ -131,12 +170,18 @@ def runtime_class(previous):
                 raise ValueError('unknown heading_visual_lock')
             if heading_visual_lock != 'off' and heading_mode == 'off':
                 raise ValueError('visual lock is an explicit heading comparison option')
+            if min_command_contract not in ('off', CONTRACT):
+                raise ValueError('unknown min_command_contract')
+            if min_command_contract != 'off' and heading_mode == 'off':
+                raise ValueError('min_command_contract requires heading mode')
             super().__init__(*args, **kwargs)
             # Default off does not even add instance state or change records.
             if heading_mode != 'off':
                 self.heading_mode, self.heading_rows = heading_mode, []
                 self.heading_align_until = None
                 self.heading_align_settled = -math.inf
+                if min_command_contract != 'off':
+                    self.min_command_contract = True
                 if heading_visual_lock != 'off':
                     self.heading_visual_lock = heading_visual_lock
 
@@ -164,6 +209,24 @@ def runtime_class(previous):
             finally:
                 self.pulse_profiles = original
 
+        def _heading_admit(self, now, rows):
+            if not getattr(self, 'min_command_contract', False):
+                return rows
+            admitted = []
+            for rid, action in rows:
+                reason = command_reason(action)
+                if reason is not None:
+                    self.heading_rows.append(dict(t=now, state=self.state,
+                        omitted_proposal=copy.deepcopy(action), reason=reason,
+                        issued=dict(kind='hold')))
+                    # The inner fine controller may already have installed a
+                    # wait for the rejected proposal. No pulse was issued.
+                    self.fine_until = None
+                    self.fine_observe_after = now
+                    action = dict(kind='hold')
+                admitted.append((rid, action))
+            return admitted
+
         def step(self, now):
             if getattr(self, 'heading_mode', 'off') == 'off' or self.terminal:
                 return super().step(now)
@@ -176,20 +239,28 @@ def runtime_class(previous):
                 return []
             rows = super().step(now)
             if self.state != 'align' or self.target is None:
-                return rows
-            from harness.zone_final_pair_vision import GRASP_RADIUS_M
+                return self._heading_admit(now, rows)
+            from harness.zone_final_pair_vision import GRASP_RADIUS_M, ALIGN_TOL_X_M, ALIGN_TOL_Y_M
             error = np.array(self.target)-[GRASP_RADIUS_M, 0.]
             distance = float(np.linalg.norm(error))
-            if distance <= PARAMS['final_alignment_m']:
-                return rows
+            near = distance <= PARAMS['final_alignment_m']
+            contract = getattr(self, 'min_command_contract', False)
+            if near and (not contract or all(command_reason(action) is None for _,action in rows)):
+                return self._heading_admit(now, rows)
             result = []
             for rid, action in rows:
                 if action['kind'] != 'mecanum' or not any(action.get(k,0) for k in ('forward','left','turn')):
                     result.append((rid, action)); continue
+                if near and (not contract or command_reason(action) is None):
+                    result.append((rid, action)); continue
                 # Preserve the visual detector/view state machine; replace only
-                # its far approach proposal BEFORE the host issues any command.
+                # its far approach or illegal fine proposal BEFORE actuator
+                # issue. Manipulation keeps its existing 3 mm position bound;
+                # the navigation 3 cm arrival radius must not create a dead zone.
                 p, score = select(self.pulse_profiles, self.pose.provider.loc._pf.load.loaded,
-                                  error, self.last_report.yaw_rad, distance)
+                                  error, self.last_report.yaw_rad, distance,
+                                  position_tolerance_m=min(ALIGN_TOL_X_M,ALIGN_TOL_Y_M),
+                                  min_command_contract=contract)
                 issued = dict(kind='hold') if p is None else action_of(p)
                 self.heading_rows.append(dict(t=now, state='align', target_base_m=list(self.target),
                     replaced_proposal=copy.deepcopy(action), issued=issued, **score))
@@ -201,7 +272,7 @@ def runtime_class(previous):
                     self.heading_align_settled = now+p['times'][-1]
                     self.fine_observe_after = self.heading_align_settled
                 result.append((rid, issued))
-            return result
+            return self._heading_admit(now, result)
 
         def record(self):
             out = super().record()
