@@ -17,10 +17,16 @@ class Options:
     event_driven_llm: bool = False
     compact_prompt_v1: bool = False
     prompt_lang: str = 'en'
+    event_coalesce_v1: bool = False
+    map_as_image_v1: bool = False
+    context_trim_v1: bool = False
 
     def __post_init__(self):
-        if any(type(v) is not bool for v in (self.event_driven_llm,self.compact_prompt_v1)):
+        if any(type(v) is not bool for v in (self.event_driven_llm,self.compact_prompt_v1,
+                self.event_coalesce_v1,self.map_as_image_v1,self.context_trim_v1)):
             raise ValueError('event/compact switches must be bool')
+        if self.event_coalesce_v1 and not self.event_driven_llm:
+            raise ValueError('event_coalesce_v1 requires event_driven_llm')
         if self.prompt_lang not in ('en','ko'):raise ValueError('prompt_lang must be en or ko')
 
 
@@ -94,19 +100,26 @@ class Trial(prior.Trial):
         super().__init__(*args,**kwargs)
         self.options=getattr(self.handshake,'study_options',Options())
         self.decision_events=Events()
+        self.coalesce_forced={};self.prompt_seen={}
         model=self.client_factory.settings['model']
         self.provenance.update(provider='google_aistudio_gemma' if model.startswith('gemma-') else 'gemini_subscription_proxy',
                                prompt_lang=self.options.prompt_lang)
         if self.options.event_driven_llm:
             # The scheduler's delivered-message lane remains intact for all arms.
             self.scheduler.event_available_at=lambda actor,cause:self.scheduler.clock
+        if self.options.event_coalesce_v1:
+            from harness.s4_event_coalesce import install
+            install(self)
 
     def _arm_reask(self,actor,sim_s):
         if not self.options.event_driven_llm:return super()._arm_reask(actor,sim_s)
 
     def prepare_call(self,call):
         p=super().prepare_call(call)
-        request=prompt.transform(p.request,compact=self.options.compact_prompt_v1,lang=self.options.prompt_lang)
+        seen=self.prompt_seen.setdefault(call.actor,set())
+        request=prompt.transform(p.request,compact=self.options.compact_prompt_v1,lang=self.options.prompt_lang,
+            map_as_image_v1=self.options.map_as_image_v1,context_trim_v1=self.options.context_trim_v1,
+            seen_message_ids=seen)
         bundled=ProjectedInputs(p.bundled,json.loads(request['messages'][1]['content']))
         return type(p)(bundled,request,p.request_id)
 
@@ -116,9 +129,17 @@ class Trial(prior.Trial):
             if self.options.compact_prompt_v1 and 'static_map' in checked['decision_sources']:
                 raise prior.epoch.base.pair.zp.ProtocolError('removed static_map is not a decision source')
             return checked
-        return bind(prior.epoch.base.Trial.finish_call,validate_reply=validate)(self,call,prepared,raw,**kwargs)
+        result=bind(prior.epoch.base.Trial.finish_call,validate_reply=validate)(self,call,prepared,raw,**kwargs)
+        self.prompt_seen.setdefault(call.actor,set()).update(
+            m['message_id'] for m in prepared.bundled.payload_dict().get('inbox',[]))
+        return result
 
     def on_executor_event(self,event,*,at_s):
+        kind=(event.get('detail') or {}).get('kind',event.get('event'))
+        if self.options.event_coalesce_v1 and kind in (
+                'door_entered','door_passed','reinspection_result','regrasp_result',
+                'grip_lost','pose_uncertain','job_failed','job_done','S4_DEPARTURE_PENDING'):
+            self.coalesce_forced.setdefault(event['robot_id'],set()).add(kind)
         super().on_executor_event(event,at_s=at_s)
         if not self.options.event_driven_llm:return
         kind=(event.get('detail') or {}).get('kind',event.get('event'))
@@ -132,7 +153,8 @@ class Trial(prior.Trial):
             'condition':prompt.external_condition(self.arm,self.options.prompt_lang),
             'prompt_version':'ugrp.s4_english_compact.v1' if self.options.prompt_lang=='en' or self.options.compact_prompt_v1 else prior.epoch.base.si.PROMPT_VERSION,
             'legacy_channel_codec':self.condition,'pool_with_korean_or_other_models':False,
-            'event_trace':self.decision_events.trace}
+            'event_trace':self.decision_events.trace,
+            'coalesce_trace':self.coalescer.trace if self.options.event_coalesce_v1 else []}
 
     def channel_summary(self):
         row=super().channel_summary()
@@ -204,6 +226,8 @@ class Driver(prior.epoch.Driver):
                     self.heartbeat_trace.append(dict(robot=rid,epoch=epoch,sim_s=rel,frame_sha256=frame.sha256,
                         previous=previous,kind='own_controller_rgb_liveness',command_replayed=False))
             reasons=trial.decision_events.observe(rid,payload)
+            if trial.options.event_coalesce_v1 and 'own_observation_abnormal' in reasons:
+                trial.coalesce_forced.setdefault(rid,set()).add('own_observation_abnormal')
             # GO/ACK already triggered above. Initial claims come from begin().
             reasons=[r for r in reasons if r not in ('initial_claim','go_ack_epoch')]
             if reasons:trial.scheduler.trigger(rid,'report',at=rel)

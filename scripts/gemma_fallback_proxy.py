@@ -16,6 +16,7 @@ import json
 import math
 from pathlib import Path
 import re
+import random
 import subprocess
 import threading
 import time
@@ -308,7 +309,7 @@ class KeyPool:
         provider = self.providers[index]
         with provider.transaction() as state:
             provider.observe(state, status, body, headers)
-            if status in (403, 429) or 500 <= status <= 599:
+            if status in (403, 429):
                 from harness.s4_call_recovery import server_delay
                 streak = min(7, state.get('failure_streak', 0)+1)
                 state['failure_streak'] = streak
@@ -331,13 +332,14 @@ class KeyPool:
 class Gemma:
     def __init__(self, root, *, send=google, clock=time.time, expected_model=None,
                  expected_version=None, shared_quota=None, standard=False,
-                 multi_key_v1=False, keys=None):
+                 multi_key_v1=False, keys=None, sleep=time.sleep, jitter=random.random):
         self.root, self.send = Path(root), send
         self.root.mkdir(parents=True, exist_ok=True)
         self.quota = Quota(self.root, clock=clock)
         self.shared_quota = shared_quota or SharedQuota(clock=clock)
         self.standard = standard
         self.multi_key_v1 = multi_key_v1
+        self.sleep, self.jitter = sleep, jitter
         self.key_pool = None
         if multi_key_v1:
             self._keys = keychain_keys() if keys is None else dict(keys)
@@ -374,6 +376,17 @@ class Gemma:
                 handle.write(json.dumps(dict(key_index=index, path=path.split('?')[0], status=status))+'\n')
             if status not in (403, 429) and not 500 <= status <= 599:
                 return status, body, headers
+            if 500 <= status <= 599:
+                delay = self._server_retry_delay(len(attempted), headers, body)
+                if len(attempted) >= min(3, len(self._keys)) or delay > 5:
+                    return status, body, headers
+                self.sleep(delay)
+
+    def _server_retry_delay(self, attempt, headers, body):
+        from harness.s4_call_recovery import server_delay
+        retry = next((v for k,v in headers.items() if k.lower() == 'retry-after'), None)
+        return max(min(2., 2.**(attempt-1)) + .25*self.jitter(),
+                   server_delay({'Retry-After': retry}, json.dumps(body), self.quota.clock()))
 
     def count_tokens(self, body):
         payload={'generateContentRequest':{'model':self.model['name'],**body}}
@@ -467,6 +480,8 @@ class Gemma:
         if self.standard and counted['totalTokens'] > 2500:
             return 400,b'{"error":"compact_input_exceeds_2500_tokens","ugrp_upstream_forwarded":false}',None
         attempts, attempted = [], set()
+        retry_delay = 0.
+        started = time.monotonic()
         while True:
             reservation = self.key_pool.select(counted['totalTokens']+body['generationConfig']['maxOutputTokens'],
                 exclude=attempted, request_id=request_id, request_sha256=hashlib.sha256(raw).hexdigest())
@@ -485,7 +500,9 @@ class Gemma:
             result = openai_reply(response, self.model_id, request_id) if status == 200 else dict(
                 error='google_generateContent_http_'+str(status), provider=PROVIDER, model=self.model_id)
             attempts.append(dict(key_index=index, status=status, usage=result.get('usage'),
+                                 wall_s=wall, ambiguous=ambiguous, delay_before_s=retry_delay,
                                  response_sha256=hashlib.sha256(json.dumps(response,sort_keys=True).encode()).hexdigest()))
+            retry_delay = 0.
             result.update(ugrp_upstream_forwarded=True, ugrp_upstream_wall_s=wall,
                 ugrp_count_tokens=counted, ugrp_quota_reservation=reservation, key_index=index,
                 multi_key_v1=True, ugrp_key_attempts=list(attempts),
@@ -494,12 +511,29 @@ class Gemma:
                 ugrp_thoughts_tokens=response.get('usageMetadata',{}).get('thoughtsTokenCount'))
             if self.standard and status == 200 and response.get('modelVersion') != self.model_id:
                 status = 502; result.pop('choices',None); result['error']='response_model_version_drift'
+            transient = not ambiguous and 500 <= status <= 599 and result.get('error') != 'response_model_version_drift'
+            if transient:
+                retry_delay = self._server_retry_delay(len(attempts), headers, response)
+                next_key = self.key_pool.select(counted['totalTokens']+body['generationConfig']['maxOutputTokens'],
+                                                exclude=attempted, reserve=False)
+                if len(attempts) >= 3 or not next_key['admitted'] or retry_delay > 5:
+                    result.update(error='gemma_server_retry_exhausted', failure_class='HOST_ERROR')
+                    transient = False
+            if ambiguous or result.get('error') == 'response_model_version_drift':
+                result['failure_class'] = 'HOST_ERROR'
+            result['ugrp_retry_metrics'] = dict(
+                first_failure_count=int(attempts[0]['status'] != 200),
+                server_error_count=sum(500 <= a['status'] <= 599 and not a['ambiguous'] for a in attempts),
+                retry_count=len(attempts)-1, delay_s=sum(a['delay_before_s'] for a in attempts),
+                upstream_wall_s=sum(a['wall_s'] for a in attempts), elapsed_s=time.monotonic()-started)
             self.record(request_id, raw, status, response, quota, result=result, forwarded=True,
                         key_index=index)
             # Only explicit completed HTTP failures can switch keys. A timeout,
             # malformed response or model-pin failure is terminal in the journal.
-            if ambiguous or status not in (403,429) and not 500 <= status <= 599 or result.get('error') == 'response_model_version_drift':
+            if result.get('failure_class') == 'HOST_ERROR' or status not in (403,429) and not transient:
                 return status, json.dumps(result).encode(), None
+            if transient:
+                self.sleep(retry_delay)
 
     def record(self, request_id, raw, status, response, quota, *, forwarded, result=None, key_index=None):
         from harness.zone_study_llm_driver import _request_summary
@@ -519,6 +553,8 @@ class Gemma:
                    quota={k: quota[k] for k in ('rpm', 'rpd', 'hold_until', 'last_evidence') if k in quota})
         if key_index is not None:
             row['key_index'] = key_index
+            row['retry_metrics'] = (result or {}).get('ugrp_retry_metrics')
+            row['failure_class'] = (result or {}).get('failure_class')
         with (self.root / 'ledger.jsonl').open('a') as handle:
             handle.write(json.dumps(row, ensure_ascii=False) + '\n')
 

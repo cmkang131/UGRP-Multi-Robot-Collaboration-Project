@@ -41,7 +41,7 @@ def engine(tmp_path, responses=None, now=None, keys=KEYS):
         return value
     clock = (lambda:now[0]) if now else g.time.time
     return g.Gemma(tmp_path, send=send, clock=clock, keys=keys, multi_key_v1=True,
-                   shared_quota=g.SharedQuota(tmp_path/'shared',clock=clock)), calls
+                   shared_quota=g.SharedQuota(tmp_path/'shared',clock=clock),sleep=lambda _:None,jitter=lambda:0), calls
 
 
 def test_keychain_inventory_gaps_account_and_duplicates(monkeypatch):
@@ -94,6 +94,42 @@ def test_distribution_and_same_id_cached_after_switch(tmp_path):
         assert row['key_index']==index and row['effective_limits']==g.KeyPool.LIMITS
 
 
+@pytest.mark.parametrize('status',[500,503,599])
+def test_server_error_short_wait_other_key_no_cooldown(tmp_path,status):
+    now=[1791740000.];waits=[]
+    e,calls=engine(tmp_path,[(status,{'error':'server'},{}),(200,REPLY,{})],now)
+    e.sleep=waits.append
+    result=e.complete(BODY,'server')
+    value=json.loads(result[1])
+    assert result[0]==200 and waits==[1.] and len(calls)==2
+    assert calls[0][0]!=calls[1][0] and calls[0][1]==calls[1][1]
+    metrics=value['ugrp_retry_metrics']
+    assert metrics['first_failure_count']==1 and metrics['retry_count']==1 and metrics['delay_s']==1.
+    bucket=e.key_pool.buckets[1]
+    assert json.loads((bucket.root/'bucket.json').read_text()).get('hold_until',0)<=now[0]
+    assert e.complete(BODY,'server')==result and len(calls)==2
+    ledger=[json.loads(r) for r in (e.root/'ledger.jsonl').read_text().splitlines()]
+    assert ledger[-1]['retry_metrics']['retry_count']==1
+
+
+def test_repeated_server_failure_is_terminal_host_error_not_quota_loop(tmp_path):
+    keys={1:'fake-one',2:'fake-two',3:'fake-three',4:'fake-four'}
+    e,calls=engine(tmp_path,[(500,{'error':'server'}, {})]*4,keys=keys)
+    waits=[];e.sleep=waits.append
+    result=e.complete(BODY,'failure');value=json.loads(result[1])
+    assert result[0]==500 and value['failure_class']=='HOST_ERROR'
+    assert len(calls)==3 and waits==[1.,2.]
+    assert value['ugrp_retry_metrics']['retry_count']==2
+    assert e.complete(BODY,'failure')==result and len(calls)==3
+
+
+def test_long_retry_after_fails_closed_without_sleep_or_key_cooldown(tmp_path):
+    e,calls=engine(tmp_path,[(500,{'error':'server'},{'Retry-After':'60'})])
+    e.sleep=lambda _:pytest.fail('must not sleep past bounded retry budget')
+    status,raw,_=e.complete(BODY,'long')
+    assert status==500 and json.loads(raw)['failure_class']=='HOST_ERROR' and len(calls)==1
+
+
 def test_metadata_switch_and_retry_info_cooldown(tmp_path):
     now=[1791740000.];seen=[]
     def send(path,payload=None,*,key=None,secrets=()):
@@ -105,12 +141,12 @@ def test_metadata_switch_and_retry_info_cooldown(tmp_path):
                shared_quota=g.SharedQuota(tmp_path/'shared',clock=lambda:now[0]),clock=lambda:now[0])
     assert seen==list(KEYS.values())
     info={'error':{'details':[{'@type':'type.googleapis.com/google.rpc.RetryInfo','retryDelay':'180s'}]}}
-    e.key_pool.observe(3,503,info,{})
+    e.key_pool.observe(3,429,info,{})
     assert e.key_pool.select(1,exclude={1})['retry_after_s']==180
     assert e.key_pool.select(1)['retry_after_s']==120
 
 
-@pytest.mark.parametrize('status',[403,429,500,503,599])
+@pytest.mark.parametrize('status',[403,429])
 def test_cooldown_switch_and_logical_idempotency(tmp_path,status):
     now=[1791740000.]
     e,calls=engine(tmp_path,[(status,{'error':'fixture reject'},{'Retry-After':'120'}),(200,REPLY,{})],now)
@@ -129,7 +165,7 @@ def test_cooldown_switch_and_logical_idempotency(tmp_path,status):
 
 def test_all_keys_wait_then_same_request_resumes_after_restart(tmp_path):
     now=[1791740000.]
-    e,calls=engine(tmp_path,[(503,{'error':'down'},{'Retry-After':'60'})]*2,now)
+    e,calls=engine(tmp_path,[(429,{'error':'down'},{'Retry-After':'60'})]*2,now)
     first=e.complete(BODY,'queued')
     assert first[0]==429 and first[2]=='60' and len(calls)==2
     assert e.complete(BODY,'queued')[0]==429 and len(calls)==2
