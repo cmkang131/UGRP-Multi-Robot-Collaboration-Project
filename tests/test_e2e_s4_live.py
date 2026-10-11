@@ -60,6 +60,20 @@ def test_real_mapper_constructor_uses_no_authored_inputs():
     assert robot.goal.e2e_options['own_route']=='goal_route_v1'
     assert robot.goal.e2e_relook.receipt is None
     with pytest.raises(own.ContractViolation,match='NOT_YET_RECEIVED'):robot.own_inputs_at(0.)
+    assert robot.goal.explorer.goal.options.known_region_width_m==.6
+    corrected=Robot('r1',601,profile,Options(True,True,'en'),goal_geometry='e2e_b80_v1')
+    assert corrected.goal.explorer.goal.options.known_region_width_m==.8
+
+
+def test_e2e_b80_metric_size_toggle_keeps_legacy_gate_and_rejects_oversize():
+    from dataclasses import replace
+    from harness.floor_goal_v3 import FloorGoalV3Options,metric_rejection
+    legacy=FloorGoalV3Options();corrected=replace(legacy,known_region_width_m=.8)
+    measured=dict(observed_area_m2=.8893011695,rect_sides_m=[.8307955265,1.3034039736],footprint_solidity=.9762593)
+    assert metric_rejection(measured,legacy)=='metric_size'
+    assert metric_rejection(measured,corrected) is None
+    assert metric_rejection({**measured,'rect_sides_m':[.961,1.3034]},corrected)=='metric_size'
+    assert metric_rejection({**measured,'rect_sides_m':[.8,1.681]},corrected)=='metric_size'
 
 
 def test_live_trial_preserves_native_dialogue_validation(tmp_path,setup_data):

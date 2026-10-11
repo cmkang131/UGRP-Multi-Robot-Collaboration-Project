@@ -45,6 +45,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options()):
         e2e_options=dict(enabled=enabled,own_inputs='on_v1' if enabled else 'off',dialogue='on_v1' if enabled else 'off',
             pulse_budget='fractional_duration_v1' if enabled else 'off',
             own_route='goal_route_v1' if enabled else 'off',arrival_gate='rgb_geometry_v1' if enabled else 'off',
+            goal_geometry='e2e_b80_v1' if enabled else 'off',
             covariance_inflation='nees_frozen_v1' if enabled else 'off',
             setdown_reobserve='boundary_reobserve_v1' if enabled else 'off',setdown_only_when_relook=relook))
     from harness.python_source_closure import source_closure
@@ -102,7 +103,8 @@ def run(b,out,receipt,*,backend_factory=None):
             if hashlib.sha256((ROOT/p).read_bytes()).hexdigest()!=sha:raise ValueError('SOURCE_HASH_MISMATCH:'+p)
         options=Options(**b['study_options'])
         cov=json.loads((ROOT/'configs/e2e_nees_egomap70_dev_v1.json').read_text())
-        robots={r:Robot(r,b['seed']+i,cov,options,relook=b['e2e_options']['setdown_only_when_relook'])
+        robots={r:Robot(r,b['seed']+i,cov,options,relook=b['e2e_options']['setdown_only_when_relook'],
+                        goal_geometry=b['e2e_options']['goal_geometry'])
                 for i,r in enumerate(('r1','r2','r3'))}
         backend=(backend_factory or PhysicsBackend)(b,out,seed=b['seed'])
         backend.reset(b['reset_cap_s']);origin=backend.now

@@ -20,11 +20,13 @@ class FloorGoalV3Options(FloorGoalV2Options):
     minimum_observed_area_m2: float = .005
     temporal_overlap_min: float = .35
     temporal_center_max_m: float = .10
+    known_region_width_m: float = .6
 
     def __post_init__(self):
         super().__post_init__()
         if not (0 < self.minimum_observed_area_m2 < .84 and 0 < self.temporal_overlap_min <= 1 and
-                0 < self.temporal_center_max_m <= 1):
+                0 < self.temporal_center_max_m <= 1 and math.isfinite(self.known_region_width_m) and
+                0 < self.known_region_width_m <= 1.4):
             raise ValueError('INVALID_GOAL_V3_OPTIONS')
 
 
@@ -47,7 +49,7 @@ def metric_rejection(shape, options):
     if shape['observed_area_m2'] < options.minimum_observed_area_m2:
         return 'metric_area'
     short, long = shape['rect_sides_m']
-    if short < .03 or short > .6*1.2 or long > 1.4*1.2:
+    if short < .03 or short > options.known_region_width_m*1.2 or long > 1.4*1.2:
         return 'metric_size'
     if shape['footprint_solidity'] < .25:
         return 'metric_shape'

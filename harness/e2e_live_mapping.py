@@ -4,6 +4,7 @@ No environment, scene, world, authored geometry or evaluator is accepted here.
 """
 import base64
 import copy
+from dataclasses import replace
 import math
 from types import SimpleNamespace
 import numpy as np
@@ -15,7 +16,8 @@ from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
 
 
-def make_goal(rid, seed, covariance_profile, *, relook='off'):
+def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'):
+    if goal_geometry not in ('off','e2e_b80_v1'):raise ValueError('UNKNOWN_GOAL_GEOMETRY')
     from harness.active_navfn_start import make_mapper
     from harness.grid_acceleration import install
     from harness.self_graph_cache import install as graph_cache
@@ -24,6 +26,9 @@ def make_goal(rid, seed, covariance_profile, *, relook='off'):
         active_loop='information_gain_v1', seed=seed, active_recovery='nav2_frontier_v1',
         navigation_map='public_ros_v8', motion_model='s2_pulse_v122_rotL_v1',
         navigation_start='navfn_recovery_v1', frontier_observation='yamauchi_cycle_v1')
+    if goal_geometry=='e2e_b80_v1':
+        # Fixed task dimensions only; no map/scene position or evaluation input.
+        explorer.goal.options=replace(explorer.goal.options,known_region_width_m=.80)
     graph_cache(explorer.memory,graph_acceleration='match_cache_v1')
     install_profile(explorer.memory.self_map,profile='egomap27_wide')
     from harness.goal_route_heading import OPTION as HEADING
@@ -57,9 +62,9 @@ def beam_observer():
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off'):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off'):
         self.robot_id=rid;self.study_options=options
-        self.goal=make_goal(rid,seed,covariance_profile,relook=relook)
+        self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry)
         self.observe_beam=beam_observer()
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]

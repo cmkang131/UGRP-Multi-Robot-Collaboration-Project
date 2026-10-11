@@ -2,7 +2,7 @@
   "class": "dev",
   "pr": 433,
   "bundle": "e2e-ownmap-live-v185",
-  "azure_runner_sha": "e206bf3182363657fae832bda612dcd894bf10ac",
+  "azure_runner_sha": "4c20f4c0",
   "s4_import_sha": "b91a7eaf",
   "e2e_parent_sha": "dc57dd7c14ca22a1680685f7613ca08dff85aa5e",
   "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
@@ -40,7 +40,8 @@
     "compact_prompt_v1": true,
     "prompt_lang": "en",
     "e2e_live": true,
-    "pulse_budget": "fractional_duration_v1"
+    "pulse_budget": "fractional_duration_v1",
+    "goal_geometry": "e2e_b80_v1"
   },
   "resources": {
     "vcpus": 16,
@@ -139,5 +140,20 @@
     "reason": "Gemma returned singular message and string action in 3/3 HTTP200 replies",
     "strategy": "Complete valid one-shot JSON syntax example; strict validator unchanged",
     "source": "https://ai.google.dev/gemini-api/docs/prompting-strategies#few-shot"
+  },
+  "B_dimension_fix": {
+    "default": "off",
+    "known_task_dimensions_m": [
+      0.8,
+      1.4
+    ],
+    "coordinates_provided": false,
+    "raw_first_RGB_width_m": 0.8307955265045166,
+    "legacy_rejected": "0.6m default x1.2 = 0.72m",
+    "offline_metric_replay_accepted": {
+      "off": 5,
+      "e2e_b80_v1": 12
+    },
+    "N": 22
   }
 }
