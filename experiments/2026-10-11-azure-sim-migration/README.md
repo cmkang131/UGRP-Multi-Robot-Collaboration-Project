@@ -7,3 +7,9 @@
 CostUSD 정상 조회, 비용 검사 실패 시 두 구독 실제 정지, Action Group 실제 정지, VM 자신의 identity 정지(1201초 유휴 시각 주입)를 확인했다. 미래 만료/매일/실제8시간 발동·이메일 도착·실제 모델 응답은 미검증이다. 비용 집계 지연 때문에 $160 실시간 결제 상한은 아니며 디스크/IP 등 비용은 남는다.
 
 [설정·공식 참고 자료](../../docs/azure_simulation.md), [PR #438](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/438). 정책 독립 검토 전 병합하지 않는다. Oracle x86은 SSH 연결 실패까지만 확인했고 cloud deallocated 상태를 확인하지 않았다.
+
+## #438 독립 검토 P1 3건 수정
+
+소스 `f566eeefb8b6afd3c041064e1706c9f2e1f8cac3`: 비용 상한은 SIGINT·flush와 최대 10분 checksum 보관 시도 후 반드시 할당 해제한다. 일반 종료는 EXIT만 있는 미보관 원본·실패 lease를 보존하고 시작/부팅 때 재보관한다. 관련 두 시험 파일 38개(모의 PowerShell 실행 포함) 통과. [수정·시험·실배포 범위](review-fixes-20261011.json).
+
+실제 변경은 기존 runbook 내용만 publish했고 바이트/Published 재조회가 일치했다. VM을 켜지 않았으며 두 구독 모두 deallocated다. Run Command 권한·lease-aware 자정 일정/기존 강제 일정 비활성화·게스트 가드/복구 설치는 허용 범위 밖이라 미적용이며, 실제 우아한 정지/ARM 보관은 검증하지 않았다. 이전 스모크 증거를 새 후보의 실배포 검증으로 승계하지 않는다.
