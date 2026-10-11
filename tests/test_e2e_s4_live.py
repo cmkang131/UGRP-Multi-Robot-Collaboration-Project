@@ -166,3 +166,12 @@ def test_guarded_batch_contains_exactly_first_four_registered_cells():
     assert len(rows)==4 and len(set(r[0] for r in rows))==4
     assert {(r[1],r[2]) for r in rows}=={(s,m) for s in (61001,61002) for m in ('gemma','gemini')}
     assert all(accepted_call_id(name+':call-0001-r1:1') for name,*_ in rows)
+
+
+def test_dedicated_cpu_admission_rejects_overlap_busy_and_concurrency():
+    from scripts.run_e2e_azure_batch import dedicated_verdict
+    cpus=[12,13,14,15];idle={c:1. for c in cpus}
+    assert dedicated_verdict(cpus,idle,[dict(pid=1,cpus=[0,1,2])])['reserved_cores']==4
+    with pytest.raises(ValueError,match='OVERLAP'):dedicated_verdict(cpus,idle,[dict(pid=1,cpus=[12])])
+    with pytest.raises(ValueError,match='BUSY'):dedicated_verdict(cpus,{**idle,12:.79},[])
+    with pytest.raises(ValueError,match='CONCURRENT'):dedicated_verdict(cpus,idle,[dict(pid=i,cpus=[0]) for i in range(15)])

@@ -48,7 +48,34 @@
     "concurrent_max": 16,
     "cpu_admission_load_1m_lt": 12.8,
     "memory_available_min_GiB": 6,
-    "per_run_reserve_MiB": 512
+    "per_run_reserve_MiB": 512,
+    "dedicated_cpu_alternative": {
+      "default": "off",
+      "cpus": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "requires": "all four measured >=80% idle and no existing simulation thread affinity overlaps; total simulations <=18; same memory/disk floors",
+      "reason": "S3 explicitly reserved these CPUs; whole-host load includes queued threads pinned to CPUs 0-11",
+      "first_measurement_idle_fraction": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "thread_limits": {
+        "OMP_NUM_THREADS": 1,
+        "OPENBLAS_NUM_THREADS": 1,
+        "MKL_NUM_THREADS": 1,
+        "LP_NUM_THREADS": 1
+      },
+      "sources": [
+        "https://docs.kernel.org/filesystems/proc.html",
+        "https://docs.python.org/3/library/os.html#os.sched_getaffinity"
+      ]
+    }
   },
   "quota": {
     "Gemma_shared_RPM_limit": 30,
