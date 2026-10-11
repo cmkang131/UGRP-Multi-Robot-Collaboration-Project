@@ -9,6 +9,25 @@ from harness import pf_resampling_diversity as pf
 from harness import zone_s3_door_lease as door
 
 
+@pytest.mark.parametrize('pose', [None, SimpleNamespace(
+    x=float('nan'), y=0., yaw=0., std_xy=.01, std_yaw=.01)])
+def test_missing_pose_wait_is_explicit_and_s3_only(pose):
+    from harness.zone_final_pair_guards import PairRecheck as Frozen
+    from harness.zone_s3_pair_recheck import PairRecheck, SweepRecheck
+    calls = []
+    guard = SimpleNamespace(transition_clear=lambda *a, **kw: calls.append(a[2]) or True)
+    # Historical final-pair/highpose and the S3 adapter's omitted option
+    # preserve the existing geometry decision, even for an unavailable pose.
+    for recheck in (Frozen(), PairRecheck(), SweepRecheck()):
+        assert recheck.check(0., guard, {}, {}, pose, loaded=False) == 'clear'
+    assert len(calls) == 3
+    for cls in (PairRecheck, SweepRecheck):
+        recheck = cls(fail_closed_without_pose=True)
+        assert recheck.check(0., guard, {}, {}, pose, loaded=False) == 'wait'
+        assert recheck.check(10., guard, {}, {}, pose, loaded=False) == 'blocked'
+        assert recheck.waited_s == 10. and len(calls) == 3
+
+
 def signals(pair=True, solo=True, clear=True, progress=False):
     return [door.Signal(r, pair if r != 'r3' else solo, clear, progress) for r in door.ROBOTS]
 
@@ -330,8 +349,8 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
     from harness import zone_s3_recovery_contract as contract
     from harness.zone_s3_recovery_runtime import Runtime
     b=contract.bundle('0'*40)
-    assert b['execution_bundle_id']=='zone-s3-recovery-v191'
-    assert b['workflow_version']=='7.84.0'
+    assert b['execution_bundle_id']=='zone-s3-recovery-v195'
+    assert b['workflow_version']=='7.88.0'
     assert b['retired_bundles'][0]['execution_bundle_id']=='zone-s3-recovery-v152'
     assert b['preregistration']['inherited_results'] is False
     contract.verify(b)
@@ -346,6 +365,10 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
         out=p.runtime.record()
         assert out['door_yield']['profile']==b['options']['door_lease']
         for r in ('r1','r2'):
+            recheck = p.eps[r].command_guard.recheck
+            from harness.zone_s3_pair_recheck import PairRecheck
+            assert isinstance(recheck, PairRecheck) and recheck.fail_closed_without_pose
+            assert p.eps[r].controller.driver.sweep_recheck is recheck
             assert out['pair']['visual_alignment'][r]['option']==b['options']['visual_alignment']
             assert out['pair']['visual_alignment'][r]['pf_used_for_local_error'] is False
         for own in p.runtime.localizers.values():

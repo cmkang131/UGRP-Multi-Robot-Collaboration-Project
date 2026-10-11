@@ -7,7 +7,14 @@
 
 ## 판단과 재현
 
-2026-10-11: #425는 #416 `6af2afa4`를 반영한 S4 소비자를 v191 / 7.84.0으로 별도 봉인한다. 미실행 v189/v190 등록·계약·실행기·workflow·seal은 원래 SHA의 바이트로 퇴역 목록에 보존하며 결과를 승계하지 않는다. S3/S4 런타임의 `min_command_contract=on_v1`, 공통 기본 off를 유지한다. [기록](../experiments/2026-10-11-pr425-main-sync/summary.json).
+2026-10-11: #416 독립 검토 수정으로 미실행 v190 / 7.83.0도 등록 당시 SHA
+`bca75e25`의 계약·실행기·workflow·등록·봉인 5파일을 바이트/해시 그대로 퇴역 보존했다.
+새 등록은 v193 / 7.86.0이며 S3 가드·pulse_odometry는 전용 모듈에 격리한다.
+공통 가드 3파일과 S2 pulse 소스는 main 원본으로 복원했다. v127의 오프라인 실행 admission은
+복원되며 v128·v129는 main의 기존 공유 소스 8개 변경 때문에 현재 소스에서 계속 퇴역이다
+(첫 거부: `harness/idle_robot_contacts_contract.py`; 전체 목록은 연결된 기록).
+두 번들의 원래 봉인·판정·시험을 유지하며 재현은 원래 등록 SHA에서만 한다.
+[admission과 봉인 확인](../experiments/2026-10-11-pr416-review-fixes/summary.json).
 
 2026-10-11: #416 main PR422 반영 후 미실행 v188 / 7.81.0을 원래 SHA `b3d52826`의 바이트로 퇴역 목록에 보존했다. 새 등록은 v190 / 7.83.0이며 공통 `min_command_contract` 기본 off를 유지하고 S3는 on_v1을 명시해 병합 전 명령을 보존한다. [기록](../experiments/2026-10-11-pr416-main-sync/summary.json).
 
@@ -15,8 +22,14 @@
 `981baa95`에서만 재현한다. 비교 JSON은 그대로 보존하고 원래 계약·실행기·workflow·등록을
 [퇴역 목록](../experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json)에 바이트/해시로 보존했다.
 현재 소스는 v188 / 7.81.0으로 재등록하며 과거 결과를 승계하지 않는다.
-#425의 S4 공통 소비자 2개 차이는 v189 / 7.82.0으로 별도 등록했다. v188은 실행 0회의
-등록이며 원래 바이트를 같은 퇴역 목록에 보존한다.
+
+2026-10-11 Azure CPU 이관: VM의 기존 `ugrp-azure-idle-guard.timer`
+(15분·batch lease 미지원)와 `ugrp-sim-worker.service`
+(무한 GPU worker 재시작 supervisor)를 비활성화했다. 서버의 정의·스크립트·자료는
+보존했다. 대체는 [20분/8시간 가드](../scripts/azure_idle_guard.py)와
+유한 [CPU 실행기](../scripts/remote_run.py)이며,
+이전 가드의 보관 중 할당 해제와 복구는
+[검증 기록](../experiments/2026-10-11-azure-sim-migration/summary.json)에 남겼다.
 
 2026-10-10: `controller-replay-abba` adapter 1.0.0은 1.1.0(visibility 비교 옵션,
 측정 source/산출물 경로 명시)으로, `controller-replay-profile` 1.1.0은
@@ -220,14 +233,13 @@ RGB 구간 출력 누락·S3 종료 검사·동결 adapter Python 지문 검증�
 - 2026-10-09 S3 `zone-s3-sweep-v149`는 원본 `b73ce193` 및 raw 증거를 보존한 과거 DEV 실행이다. 후속 실행은 pre-GO 재대기와 사전 등록된 motion 옵션 선택을 묶은 `zone-s3-odometry-v150` /7.43.0을 사용한다. 기존 실행/실패 기록과 재생 소스는 삭제·덮어쓰지 않는다.
 
 - 2026-10-10 S3 `zone-s3-odometry-v150` / `zone-s3-consistency-v151`는 원본 SHA `4c9eb3aa` / `3ec2d781`와 raw를 보존하는 과거 DEV 실행이다. 새 실행은 문 임대·자기 RGB 정렬의 `zone-s3-recovery-v152` /7.45.0을 사용한다. PF 다양성 후보는 저장 재생에서 미채택되어 off를 유지한다. 과거 번들의 봉인은 완화하지 않는다.
-
-- 2026-10-11 S4 `zone-s4-pair-live-v170` /7.63.0은 비활성 endpoint heartbeat 누락이 확인된 과거 DEV 후보다. 실행 소스 `254ffd4844db9f14968feae723de7cf0ef883fdf`, 원본 plan.json·8개 raw·해시는 s4live7 기록에 보존한다. 보완 비교는 v171 /7.64.0을 사용하며 과거 실행의 소스·판정을 덮어쓰지 않는다.
-
-- 2026-10-11 S4 `zone-s4-pair-live-v173` /7.66.0 명령표는 interpreter 진입 전 HOST EXIT127 8/8로 퇴역한다(물리·모델0). 소스 `95a258dc8245df3e045ff107e679ac1d19466a50`와 첫 plan.json·raw는 s4live8 기록에 보존한다. 실제 모델·물리 비교는 가상환경 경로를 명시한 v174 /7.67.0, 소스 `7b25757369d0a069d9c5fa47d916caec35681382`이다.
-
 ## speedctrl2 종료 기록 보완 (2026-10-10)
 
 `controller-replay-abba` 1.2.0과 `controller-replay-profile` 1.3.0의 새 실행은
 1.3.0/1.4.0으로 대체한다. 기존 raw는 보존하며 정상 제어기 수학은 동일하다.
 TERM/HUP 실패 기록과 현재 lease 신원 확인을 추가했다. SIGTERM으로 미완료인
 `speedctrl2-20261010-v2`를 완료로 승계하지 않는다.
+
+2026-10-11: #425는 #416 `6af2afa4`를 반영한 S4 소비자를 v191 / 7.84.0으로 별도 봉인한다. 미실행 v189/v190 등록·계약·실행기·workflow·seal은 원래 SHA의 바이트로 퇴역 목록에 보존하며 결과를 승계하지 않는다. S3/S4 런타임의 `min_command_contract=on_v1`, 공통 기본 off를 유지한다. [기록](../experiments/2026-10-11-pr425-main-sync/summary.json).
+
+2026-10-12: #425 main 동기화: #416 병합 `eebb2490`의 v193 / 7.86.0 등록·봉인·퇴역 기록은 원본 바이트로 보존한다. 미병합·실행 0회의 v191 / 7.84.0은 `00418638` 원본 6파일(계약·실행기·workflow·등록·봉인·퇴역 원장)을 퇴역 목록에 보존하고 S4 소비자 차이를 v195 / 7.88.0으로 재등록했다. PR433의 v194 / 7.87.0 예약을 확인했다. S3 전용 가드와 공통 `min_command_contract` 기본 off를 유지하며 새 실행 결과를 승계하지 않는다. [기록](../experiments/2026-10-11-pr425-main-sync/summary.json).

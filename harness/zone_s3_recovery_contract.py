@@ -1,15 +1,15 @@
-"""v191 re-registration of retired v152: bounded door leases, own-RGB local servo, preregistered PF choice."""
+"""v195 re-registration of retired v152: bounded door leases, own-RGB local servo, preregistered PF choice."""
 from harness import zone_s3_odometry_contract as old
 from harness.python_source_closure import source_closure
 from harness.pf_resampling_diversity import OPTIONS
 
 ROOT, hp, SEEDS, inputs = old.ROOT, old.hp, old.SEEDS, old.inputs
-BUNDLE_ID = 'zone-s3-recovery-v191'
-WORKFLOW_VERSION = '7.84.0'
-PLAN = 'experiments/2026-10-11-ci-bundle-reregistration/registration-v191.json'
-WORKFLOW = 'configs/simulation_workflows.d/s3_recovery_v191.json'
+BUNDLE_ID = 'zone-s3-recovery-v195'
+WORKFLOW_VERSION = '7.88.0'
+PLAN = 'experiments/2026-10-11-ci-bundle-reregistration/registration-v195.json'
+WORKFLOW = 'configs/simulation_workflows.d/s3_recovery_v195.json'
 DECISION = 'experiments/2026-10-09-s3-no-prior/s3fix7/comparison.json'
-SEAL = 'experiments/2026-10-11-ci-bundle-reregistration/source-seal-v191.json'
+SEAL = 'experiments/2026-10-11-ci-bundle-reregistration/source-seal-v195.json'
 RETIRED = 'experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json'
 
 
@@ -36,7 +36,7 @@ def bundle(sha, *, seed=14201, speedups='v98-exact-v6'):
         door_lease=plan['door_lease'],visual_alignment=plan['visual_alignment'],
         observation_consistency='off',pose_validity='defer_unmeasured_v1',
         min_command_contract=plan['min_command_contract'])
-    b.update(schema='ugrp.s3_recovery_bundle.v191',execution_bundle_id=BUNDLE_ID,
+    b.update(schema='ugrp.s3_recovery_bundle.v195',execution_bundle_id=BUNDLE_ID,
         workflow_version=WORKFLOW_VERSION,options=b['controller_config']['options'],
         preregistration=plan,parent_bundles=[*b['parent_bundles'],old.BUNDLE_ID,
             'zone-s3-consistency-v151','zone-s3-recovery-v152'],

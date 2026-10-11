@@ -1,3 +1,15 @@
+# PR425 main eebb2490 동기화
+
+- #416 병합 main `eebb2490`을 현재 worktree에 반영; S3 전용 가드·공통 기본 off 유지.
+- main v193 / 7.86.0 등록 3파일과 기존 퇴역 14파일·3항목은 원본 보존.
+- PR433의 v194 / 7.87.0 확인 후 S4 소비자 구성을 **v195 / 7.88.0**으로 새로 등록(소스 434개).
+- 미병합·미실행 v191은 `00418638` 원본 6파일·432개 소스 해시로 퇴역 보존.
+- 지정한 오프라인 시험 3파일 **46/46 통과**(179.47초); main/병합 SHA·원본 해시는 `summary.json`.
+- 시뮬레이션·모델 호출 0회; 과거 명령 동등성 비교는 재실행하지 않았고 `summary-v191.json`에 보존.
+- 방법: [Git merge](https://git-scm.com/docs/git-merge), [Git show](https://git-scm.com/docs/git-show), [Git grep](https://git-scm.com/docs/git-grep).
+
+## 이전 v191 라운드 기록
+
 # #425에 #416 main 반영
 
 - #416 `6af2afa4` 병합; S4 고유 소비자 432개를 v191 / 7.84.0에 봉인.

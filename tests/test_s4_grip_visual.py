@@ -60,7 +60,7 @@ def test_batch_balanced_frozen_disjoint_splits_and_bundle_boundary():
         assert sorted(s for v,s in seq if v=='hold')==sorted(s for v,s in seq if v=='loss')
     from harness import zone_s3_recovery_contract as current
     registered=current.bundle('a'*40)
-    assert registered['execution_bundle_id']=='zone-s3-recovery-v191'
+    assert registered['execution_bundle_id']=='zone-s3-recovery-v195'
     assert registered['retired_bundles'][0]['execution_bundle_id']=='zone-s3-recovery-v152'
     assert registered['preregistration']['inherited_results'] is False
     b=bundle('a'*40,'r3',42000)

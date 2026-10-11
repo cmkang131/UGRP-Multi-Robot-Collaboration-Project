@@ -2,17 +2,40 @@
   "class": "dev",
   "pr": 425,
   "branch": "codex/s4-llm-host",
-  "pre_merge_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
-  "merged_pr416_sha": "6af2afa47152c1de49077df9dae42d4d62c3d1e6",
-  "merged_main_sha": "feb0d8184ea729f183d9e867a39f4eb0ebf4ed77",
-  "bundle_id": "zone-s3-recovery-v191",
-  "workflow_version": "7.84.0",
+  "pre_merge_sha": "00418638f700d3b19421e0457acbdfe8ad1e07d4",
+  "merged_main_sha": "eebb2490b46934f5c96ab9e2eeb70261875e6364",
+  "merged_pr416_sha": "ec87ee73577a096eae07aeee6c10522238934cdd",
+  "merge_commit_sha": null,
+  "bundle_id": "zone-s3-recovery-v195",
+  "workflow_version": "7.88.0",
+  "reservation_max_bundle": 194,
+  "reservation_max_workflow_version": "7.87.0",
+  "reservation_max_owner_pr": 433,
   "retired_bundles": [
+    "zone-s3-recovery-v152",
+    "zone-s3-recovery-v188",
+    "zone-s3-recovery-v190",
     "zone-s3-recovery-v189",
-    "zone-s3-recovery-v190"
+    "zone-s3-recovery-v191"
   ],
-  "source_files": 432,
+  "newly_retired_bundle": "zone-s3-recovery-v191",
+  "preserved_main_bundle": "zone-s3-recovery-v193",
+  "preserved_main_workflow_version": "7.86.0",
+  "source_files": 434,
+  "source_composition_diff": {
+    "changed": [
+      "harness/zone_s3_recovery_contract.py",
+      "harness/zone_study_llm_driver.py",
+      "scripts/run_s3_recovery.py",
+      "sim/zone_s3_no_prior.py"
+    ],
+    "added": [
+      "sim/s4_beam_drop_guard.py"
+    ],
+    "removed": []
+  },
   "conflicts_resolved": [
+    "docs/retired_modules.md",
     "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
     "harness/zone_s3_recovery_contract.py",
     "scripts/run_s3_recovery.py",
@@ -21,131 +44,121 @@
   ],
   "min_command_contract": "on_v1",
   "min_command_contract_default": "off",
-  "s4_additional_heading_call_sites": [],
-  "stage_probe": {
-    "reference_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
-    "min_command_contract": "on_v1",
-    "default": "off",
-    "selector_cases": {
-      "select": 280,
-      "select_waypoint": 140,
-      "own_map_heading.command": 140,
-      "S3 approach": 70,
-      "S3 RGB alignment": 70
-    },
-    "selector_mismatches": 0,
-    "stage_probe": {
-      "before": {
-        "errors": 0,
-        "cases": 68,
-        "commands": 3190
+  "preservation_verification": {
+    "main_registration_and_retired_asset_files_unchanged": 17,
+    "main_retired_entries_unchanged": 3,
+    "main_retirement_document_bytes_preserved": true,
+    "retired_verification": [
+      {
+        "bundle": "zone-s3-recovery-v152",
+        "source_sha": "981baa95e77aa78e5ffd6bc87c172cbb97aea7ed",
+        "preserved_files_verified": 4
       },
-      "after": {
-        "errors": 0,
-        "cases": 68,
-        "commands": 3190
-      }
-    },
-    "command_mismatches": 0,
-    "before_command_sha256": "f837827b16e2e7af6ce019d140bcdb9fda95670c2e213c54a0b610155adc0945",
-    "after_command_sha256": "f837827b16e2e7af6ce019d140bcdb9fda95670c2e213c54a0b610155adc0945",
-    "physics_runs": 0,
-    "model_calls": 0,
-    "verification_scope": "offline selectors and synthetic stage commands",
-    "artifacts": {
-      "outputs/pr425-main-sync/contract-on-v1/before/commands.json.zst": {
-        "sha256": "0d7efb352a4e3503a903aeed32f27b80a460daa5f983f464fe93665fd8bbfff3",
-        "bytes": 14579,
-        "uncompressed_sha256": "341d0d4d00ab3d655bc05ce60ef1d226bf7b0b2b70df4734f6d239fef72a8d74",
-        "uncompressed_bytes": 378687
+      {
+        "bundle": "zone-s3-recovery-v188",
+        "source_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
+        "preserved_files_verified": 5
       },
-      "outputs/pr425-main-sync/contract-on-v1/after/commands.json.zst": {
-        "sha256": "0d7efb352a4e3503a903aeed32f27b80a460daa5f983f464fe93665fd8bbfff3",
-        "bytes": 14579,
-        "uncompressed_sha256": "341d0d4d00ab3d655bc05ce60ef1d226bf7b0b2b70df4734f6d239fef72a8d74",
-        "uncompressed_bytes": 378687
+      {
+        "bundle": "zone-s3-recovery-v190",
+        "source_sha": "bca75e2562c68ceab70493af3d0a3d30da54d178",
+        "preserved_files_verified": 5
+      },
+      {
+        "bundle": "zone-s3-recovery-v189",
+        "source_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
+        "preserved_files_verified": 5
+      },
+      {
+        "bundle": "zone-s3-recovery-v191",
+        "source_sha": "00418638f700d3b19421e0457acbdfe8ad1e07d4",
+        "preserved_files_verified": 6,
+        "runtime_source_verified": 432,
+        "recorded_runs": 0
       }
-    }
+    ],
+    "new_runtime_source_verified": 434,
+    "main_guard_and_common_default_files_unchanged": [
+      "harness/zone_final_pair_guards.py",
+      "harness/zone_own_sweep.py",
+      "harness/zone_pair_guards.py",
+      "harness/zone_solo_cyan_pulse_cal.py",
+      "harness/zone_solo_cyan_path_heading.py",
+      "harness/zone_s3_pair_recheck.py",
+      "harness/zone_s3_pulse_odometry.py"
+    ],
+    "simulation_runs": 0,
+    "model_calls": 0
   },
-  "historical_source_verification": [
-    {
-      "bundle": "zone-s3-recovery-v189",
-      "source_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
-      "matched": 432,
-      "total": 432,
-      "errors": []
-    },
-    {
-      "bundle": "zone-s3-recovery-v190",
-      "source_sha": "6af2afa47152c1de49077df9dae42d4d62c3d1e6",
-      "matched": 431,
-      "total": 431,
-      "errors": []
-    }
-  ],
   "local_tests": {
-    "passed": 44,
-    "failed": 0,
+    "status": "passed",
     "files": [
+      "tests/test_s3_recovery.py",
+      "tests/test_simulation_workflow_manager.py",
+      "tests/test_s4_grip_visual.py"
+    ],
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_s3_recovery.py tests/test_simulation_workflow_manager.py tests/test_s4_grip_visual.py --junitxml=outputs/pr425-main-sync/main-eebb2490/tests.xml",
+    "passed": 46,
+    "total": 46,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 179.47,
+    "file_results": [
       {
         "file": "tests/test_s3_recovery.py",
-        "passed": 15,
+        "total": 17,
+        "passed": 17,
         "failed": 0,
-        "seconds": 145.592
+        "skipped": 0,
+        "seconds": 139.514
+      },
+      {
+        "file": "tests/test_simulation_workflow_manager.py",
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 2.579
       },
       {
         "file": "tests/test_s4_grip_visual.py",
+        "total": 8,
         "passed": 8,
         "failed": 0,
-        "seconds": 36.679
-      },
-      {
-        "file": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests",
-        "passed": 21,
-        "failed": 0,
-        "seconds": 2.732
+        "skipped": 0,
+        "seconds": 36.736
       }
-    ]
+    ],
+    "exit_code": 0
   },
   "ci": {
-    "status_at_commit": "pending push",
-    "receipt": "outputs/pr425-main-sync/contract-on-v1/ci-summary.json"
+    "status": "new push not yet submitted; prior 00418638 CI result is historical"
   },
   "simulation_runs": 0,
   "model_calls": 0,
   "raw_locations": {
-    "local": "outputs/pr425-main-sync/contract-on-v1",
-    "remote": "GitHub Actions PR425"
+    "local": "/Users/changmin/projects/ugrp-wt/s4-llm/outputs/pr425-main-sync/main-eebb2490"
   },
-  "status": "OFFLINE_EQUIVALENT_LOCAL_TESTS_PASSED",
-  "method": "Reuse existing explicit keyword option instead of changing the common default; compare git-show pre-merge heading source with identical inputs. Preserve S4 workflow-manager entries during merge.",
+  "previous_round_summary": "experiments/2026-10-11-pr425-main-sync/summary-v191.json",
+  "status": "OFFLINE_REGISTRATION_AND_REQUESTED_TESTS_PASSED",
+  "method": "Git merge in the existing PR425 worktree; preserve main registration assets and retired entries; copy original v191 git blobs before re-registering the merged S4 source closure. No simulation.",
   "references": [
-    "https://docs.python.org/3/tutorial/controlflow.html#keyword-arguments",
+    "https://git-scm.com/docs/git-merge",
     "https://git-scm.com/docs/git-show",
-    "https://git-scm.com/docs/git-diff"
+    "https://git-scm.com/docs/git-grep"
   ],
-  "verification_scope": "700 offline selector/adapter cases and 68 synthetic stage entries; 3190 commands byte-identical to pre-merge S4 heading source; no physical or provider validation",
+  "verification_scope": "Static registration/source preservation and three requested offline test files; historical command-equivalence evidence is retained separately and was not rerun. No simulation, rendering, or provider calls.",
   "artifact_sha256": {
-    "outputs/pr425-main-sync/contract-on-v1/RUN_META.json": "39854b977823eb4e1249fb4c052716ccfafbb2872dbe9704a298ef8a26822300",
-    "outputs/pr425-main-sync/contract-on-v1/comparison.json": "e2b69389234aead511cfb5c53724fdd7064f531da7acff7bd98b0fc130bea033",
-    "outputs/pr425-main-sync/contract-on-v1/before/commands.json.zst": "0d7efb352a4e3503a903aeed32f27b80a460daa5f983f464fe93665fd8bbfff3",
-    "outputs/pr425-main-sync/contract-on-v1/before/progress.json": "0d69322975b9ed4eeaba463a5d328eaad05bbb2152b2b1866652ccc4bf4c659b",
-    "outputs/pr425-main-sync/contract-on-v1/before/sweep.json": "c39d3a9713e3cb49daf9b62faf1ba1036102e697e50025ba8bb9ccf658acd5bb",
-    "outputs/pr425-main-sync/contract-on-v1/after/commands.json.zst": "0d7efb352a4e3503a903aeed32f27b80a460daa5f983f464fe93665fd8bbfff3",
-    "outputs/pr425-main-sync/contract-on-v1/after/progress.json": "0d69322975b9ed4eeaba463a5d328eaad05bbb2152b2b1866652ccc4bf4c659b",
-    "outputs/pr425-main-sync/contract-on-v1/after/sweep.json": "c39d3a9713e3cb49daf9b62faf1ba1036102e697e50025ba8bb9ccf658acd5bb",
-    "outputs/pr425-main-sync/contract-on-v1/after/eval_only/pair-motion-ports.json": "b762f3964d36dff26adc42ab030dce7c3dc2d55904a712ee76f388933aff3dd7",
-    "outputs/pr425-main-sync/contract-on-v1/before/eval_only/pair-motion-ports.json": "b762f3964d36dff26adc42ab030dce7c3dc2d55904a712ee76f388933aff3dd7",
-    "experiments/2026-10-11-pr425-main-sync/reservation-scan.json": "d279a740d29b34fc26fb966dda261c714c919434d81711c6569c9f83e87e9df5",
-    "experiments/2026-10-11-pr425-main-sync/historical-source-verification.json": "96a7c5a359026f1627ab94ba83693dfef4133b4ffc52acf383325877c3d02d02",
-    "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v191.json": "dd4bfad94b1a2ecae267b0c47077763e1ddc6d0595159e71ee2a2896d38e1adb",
-    "experiments/2026-10-11-ci-bundle-reregistration/registration-v191.json": "dc097f1237e03467cd07a7f0d9f081f8b41114af8a704a4d49b9a7bb40a30e3f",
-    "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": "8501be7164763134cbf4a916f761e4365e63b9a14c75389e968fc46361f67abb",
-    "outputs/pr425-main-sync/contract-on-v1/test-workflows.log": "ece5446732043f5d648b4c9b64934139cb6f6048ac3adc59e28fd8bdc587b0a5",
-    "outputs/pr425-main-sync/contract-on-v1/test-s3.log": "48353edd91769bd1bdc1f408fbacb2c4b14e0a0b16b870b597f7645ac9338ef0",
-    "outputs/pr425-main-sync/contract-on-v1/test-grip.xml": "69811d7e5328eecd0fa66f019dd468b22859c01068602381150c63f669b12065",
-    "outputs/pr425-main-sync/contract-on-v1/test-s3.xml": "26600a74cc392c0cdd84f787d257e1232716de72ba3c603ee2bb48661129bd14",
-    "outputs/pr425-main-sync/contract-on-v1/test-grip.log": "b704ac363fb357db1a264d7c46567dcac5994a7f8d4fa049ad57597b26353358",
-    "outputs/pr425-main-sync/contract-on-v1/test-workflows.xml": "924a9244b005c232b89b2815be449c403cd1cda319fd99e1d1106cba986acdba"
-  }
+    "experiments/2026-10-11-pr425-main-sync/reservation-scan-v195.json": "083c3fdee76418b326115f794a3ef0ca32af771b728029d221cc4884e5aafcc6",
+    "experiments/2026-10-11-pr425-main-sync/preservation-verification-v195.json": "182be07fc6cbbc7b212ba2952ce55e351b3b4c19b47e704d436a1b5b7eba489f",
+    "experiments/2026-10-11-pr425-main-sync/source-composition-diff-v195.json": "91e941778c7c61cd053aa8d9798fba27a88d7a00eaf4f4057d16b2f3f5cff4ff",
+    "experiments/2026-10-11-pr425-main-sync/summary-v191.json": "a857198a51f6e71169a80d889ce5671f31691847e02bfdb3ac3006baabc70088",
+    "experiments/2026-10-11-ci-bundle-reregistration/registration-v195.json": "2bd7eca29ead8a20a6cc9043497da8f03076ebee716d0a4c232381e5a2a5dd65",
+    "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v195.json": "d97158618647ad88c9c6452a028c3de143e9d6e83c3b49553bd508000b1a74f5",
+    "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": "2976dd9de10dabfde8b8839f7af6e24fdbc3fb1d003b9c7c6a6e58a27e2d452e",
+    "outputs/pr425-main-sync/main-eebb2490/tests.xml": "7f4d748fa265315e29ab65dc0e8fee8f64eb7dfe9f5aecfa59bfc8e13152ddac",
+    "outputs/pr425-main-sync/main-eebb2490/tests.log": "635c4f13925cb5d5f66b530b7fb51a807755b4abe9d3a984ba88682e4837b5ab",
+    "experiments/2026-10-11-pr425-main-sync/RUN_META.json": "be7b7215e0ccb0257e7b3d6a5c183ca1d06030785fd79e23039dc6b6a1bc207a"
+  },
+  "push_status": "not yet pushed"
 }
