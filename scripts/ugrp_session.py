@@ -67,7 +67,13 @@ def run_evidence_session(args, command: list[str]) -> int:
         meta.update(active=False, exit_code=status)
         atomic_text(root / 'RUN_META.json', json.dumps(meta, indent=2) + '\n')
         atomic_text(root / 'EXIT', str(status) + '\n')
-        return status
+    # Shared opt-in evidence wrapper; controller/capture toggles remain elsewhere.
+    from scripts.storage_automation import post_run
+    try:
+        post_run(root)
+    except (OSError, ValueError) as exc:
+        print(f'UGRP post-run storage error: {exc}', file=sys.stderr)
+    return status
 
 
 def default_min_free_gib() -> float:
