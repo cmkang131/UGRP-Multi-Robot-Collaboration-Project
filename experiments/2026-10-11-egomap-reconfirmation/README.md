@@ -7,4 +7,6 @@ RGB는 B·통로정합·복귀 선언 전 다른 각도에서 영상 일치, 최
 관련22시험 통과(초기18통과/1fixture실패 수정 후 최종); Mac물리0. [사전계획](prereg.json): Azure구독88b7ee7f,3worker,90분실행+30분보관/종료,다른lease보존.
 실행은 표준 `sim_cli workflow run egomap-reconfirmation-dev`; 기존 azctl/remote_run API로 live VM을 재사용하고 frozen Git object만 보낸다. [실행 조정기](code/launch_azure.py).
 결과 원본은 Azure 영속디스크→검증ARM,Mac fetch-lite; 체크포인트 원본은 기존ARM,새입력복원목록은 실행에 기록한다. HOST_ERROR·분모를 summary.json에 모두 남긴다.
-이 커밋 시점 신규12회는 미실행, DRAFT 유지. 후속 결과·TensorBoard·보관검증은 같은 기록에 추가한다.
+실행 소스 `813424857666340176ebfcf96707641bba1e3eb6`로 Azure에 제출했으나 체크포인트의 필수 `own-contacts.jsonl`이 5seed에서 누락되어 입력 복원 단계에서 차단됐다. 12/12 HOST_ERROR_INPUT_ADMISSION, 실제 물리0/12, 측정된 짝0/6. 거짓 복귀·B 오인은 각각 측정 분모0이며 성능 변화는 미확인이다. [전체 결과](summary.json).
+실패 원본16파일을 ARM 전체 해시 검증 후 Mac fetch-lite로 회수했다. VM 사용149.55초; 자기 lease만 해제했고 다른 s3 lease 때문에 VM을 유지했다. [보관 검증](azure-preservation.json). 원본 로그를 합성하거나 체크포인트 무결성 검사를 완화하지 않았다. `oracle-x86`은 SSH 시간초과, ARM incoming의 일부 대응 폴더는 비어 있다.
+동일 개발 자료의 RGB 오프라인 재생은 선언 직전 최대20프레임의 기하 필요조건만 확인한다. 다른 각도 행동의 반사실 결과나 B 의미 추적 전체를 재현하지 않는다. [재생기](code/replay_rgb_gate.py). 12회 주행 완료·개선·채택은 주장하지 않으며 DRAFT를 유지한다.

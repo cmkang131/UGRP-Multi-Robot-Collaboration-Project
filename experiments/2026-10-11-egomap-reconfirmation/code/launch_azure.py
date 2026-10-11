@@ -21,6 +21,7 @@ def main():
     p.add_argument('--worktree',type=Path,required=True)
     p.add_argument('--runner-root',type=Path,required=True)
     p.add_argument('--name',required=True)
+    p.add_argument('--offline-replay',action='store_true',help='Bounded historical RGB replay, no simulation')
     args=p.parse_args()
     if not args.name.replace('-','').isalnum(): raise ValueError('unsafe name')
     sys.path.insert(0,str(args.runner_root))
@@ -52,7 +53,8 @@ def main():
         helpers=ssh('sha256sum /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py')
         resources=ssh('nproc; cat /proc/loadavg; df -B1 ~/ugrp-sim/runs; ls -l ~/ugrp-sim/leases')
         metadata={'class':'dev','pr':405,'branch':branch,'sha':sha,'batch':name,'vm_task_limit_s':7200,
-                  'batch_limit_s':5400,'runner':'azure-sim/scripts/remote_run.py APIs + existing live VM',
+                  'batch_limit_s':300 if args.offline_replay else 5400,'runner':'azure-sim/scripts/remote_run.py APIs + existing live VM',
+                  'mode':'historical_rgb_replay' if args.offline_replay else 'paired_simulation',
                   'runner_sha256':hashlib.sha256((args.runner_root/'scripts/remote_run.py').read_bytes()).hexdigest(),
                   'installed_helpers_sha256':helpers,'resources_before':resources,'model_calls':0}
         (local/(name+'-submission.json')).write_text(json.dumps(metadata,indent=2)+'\n')
@@ -61,6 +63,12 @@ def main():
                  'timeout','-s','INT','-k','60','5500','.venv-sim/bin/python','-m','scripts.sim_cli','workflow','run',
                  'egomap-reconfirmation-dev','--timeout','5450','--','--mode','batch','--workers','3','--wall-budget-s','5400',
                  '--output',f'/home/ugrp/ugrp-sim/runs/{name}/data']
+        if args.offline_replay:
+            command=['env','OMP_NUM_THREADS=1','OPENBLAS_NUM_THREADS=1',
+                     'timeout','-s','INT','-k','15','300','.venv-sim/bin/python',
+                     'experiments/2026-10-11-egomap-reconfirmation/code/replay_rgb_gate.py',
+                     '--archive','/home/ugrp/ugrp-sim/arm','--source-root',f'/home/ugrp/ugrp-sim/src/{sha}',
+                     '--output',f'/home/ugrp/ugrp-sim/runs/{name}/data/summary.json']
         line=shlex.join(command)
         script=f'''#!/bin/bash
 set -eu
@@ -75,7 +83,7 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
             f'setsid -f bash {root}/run_wrapper.sh </dev/null >/dev/null 2>&1')
         print(f'STARTED {name} {sha}',flush=True)
         last=''
-        while time.monotonic()-started<5700:
+        while time.monotonic()-started<(480 if args.offline_replay else 5700):
             state=ssh(f'touch {lease}; test ! -f {root}/EXIT || cat {root}/EXIT')
             status=ssh(f'test ! -f {root}/data/batch-status.json || python3 -c '+shlex.quote(
                 'import json,collections;from pathlib import Path;p=Path.home()/"ugrp-sim/runs/'+name+'/data/batch-status.json";print(dict(collections.Counter(x["status"] for x in json.loads(p.read_text()))))'))
