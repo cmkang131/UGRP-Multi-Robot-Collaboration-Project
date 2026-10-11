@@ -397,6 +397,21 @@ def parent_catalog():
     return json.loads(line)
 
 
+def save_report(records, tag, report):
+    """Own terminal maintenance receipt; large JSON is immediately verified zstd."""
+    unit = records / ('auto-' + tag)
+    unit.mkdir()
+    report['record_dir'] = str(unit)
+    atomic_text(unit / 'RUN_META.json', json.dumps({
+        'schema': 'ugrp.run-meta.v1', 'class': 'dev', 'pr': None,
+        'branch': None, 'sha': None, 'batch': unit.name, 'keep': ['report.json'],
+        'note': 'terminal storage maintenance receipt; not a simulation run'}) + '\n')
+    atomic_text(unit / 'report.json', json.dumps(report, indent=2) + '\n')
+    atomic_text(unit / 'EXIT', '1\n' if report['errors'] or report.get('arm', {}).get('errors') else '0\n')
+    compress_run(unit, execute=True)
+    return unit
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--host', choices=FLOORS, required=True)
@@ -454,7 +469,7 @@ def main(argv=None):
                 except (OSError, ValueError, subprocess.SubprocessError) as exc:
                     report['errors'].append({'stage': 'arm', 'error': str(exc)})
             tag = time.strftime('%Y%m%dT%H%M%SZ', time.gmtime()) + '-' + uuid.uuid4().hex[:8]
-            atomic_text(records / f'auto-{tag}.json', json.dumps(report, indent=2)+'\n')
+            save_report(records, tag, report)
             if args.execute and not report['errors'] and not report.get('arm', {}).get('errors'):
                 atomic_text(state_file, json.dumps({'last_attempt': now, 'last_success': now})+'\n')
             print(json.dumps(report))

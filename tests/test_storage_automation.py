@@ -171,5 +171,18 @@ class AutomationTests(unittest.TestCase):
         self.assertEqual(row['compression_error'], 'busy')
         self.assertTrue((self.run / 'frame.jpg').exists())
 
+    def test_large_maintenance_receipt_is_compressed_with_keep_and_original_hash(self):
+        records = self.base / 'records'
+        records.mkdir()
+        report = {'errors': [], 'padding': 'x' * 100000}
+        with mock.patch.object(auto, 'compress_run', wraps=auto.compress_run), \
+                mock.patch('scripts.compress_json_traces.refuse_if_in_use'):
+            unit = auto.save_report(records, 'test', report)
+        self.assertFalse((unit / 'report.json').exists())
+        manifest = json.loads((unit / 'COMPRESSED.jsonl').read_text())
+        from scripts.compress_json_traces import decompressed_hash
+        self.assertEqual(decompressed_hash(unit / 'report.json.zst'), manifest['sha256'])
+        self.assertEqual(prune.plan(unit, None)['bytes'], 0)
+
 if __name__ == '__main__':
     unittest.main()
