@@ -31,7 +31,31 @@
     "skipped": 0,
     "wall_s": 3.58,
     "raw_path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/pytest.xml",
-    "raw_sha256": "cbf0cb93095a3579047e96fa04290a581a9a05f983df1ea4c1b7d35add4be89e"
+    "raw_sha256": "cbf0cb93095a3579047e96fa04290a581a9a05f983df1ea4c1b7d35add4be89e",
+    "rounds": [
+      {
+        "tests": 55,
+        "passed": 55,
+        "failures": 0,
+        "errors": 0,
+        "wall_s": 3.88,
+        "source": "uncommitted working copy before final RetryInfo/metadata case",
+        "command": "python -m pytest -q tests/test_gemma_fallback_proxy.py tests/test_gemma_multi_key.py tests/test_s4_study_policy.py",
+        "captured_output": "55 passed in 3.88s",
+        "junit_captured": false,
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/offline-preliminary.json",
+        "raw_sha256": "7bff4d4ca96d56c58809f5ce49efb7ea334ce22cf876d57b1416e42655d1315a"
+      },
+      {
+        "tests": 56,
+        "passed": 56,
+        "failures": 0,
+        "errors": 0,
+        "wall_s": 3.58,
+        "raw_path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/pytest.xml",
+        "raw_sha256": "cbf0cb93095a3579047e96fa04290a581a9a05f983df1ea4c1b7d35add4be89e"
+      }
+    ]
   },
   "environment": {
     "host": "Mac",
@@ -40,12 +64,116 @@
     "platform": "macOS-27.2-arm64-arm-64bit-Mach-O"
   },
   "api": {
-    "status": "pending_after_code_commit",
+    "source_sha": "139b8aee3a9c66ed54101ed2177f2efa22fa1fb0",
     "registered_key_count": 5,
-    "keys": [
+    "model": "gemma-4-31b-it",
+    "status": "attempts_finished_with_unverified_upstream",
+    "generation_requests": 5,
+    "rows": [
       {
-        "key_index": 1
+        "key_index": 1,
+        "http_status": 200,
+        "model_version": "gemma-4-31b-it",
+        "usage": {
+          "promptTokenCount": 5,
+          "candidatesTokenCount": 1,
+          "totalTokenCount": 6,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 5
+            }
+          ],
+          "serviceTier": "standard"
+        },
+        "finish_reason": "STOP",
+        "disposition": "forwarded",
+        "response_sha256": "c6075daac54eb0a6420cdc1c761901696d3d0ea7b29fbfe5c71cf6caa8c5842f",
+        "upstream_http_status": 200,
+        "failure_class": null,
+        "verified": true,
+        "wall_s": 20.12433925003279
       },
+      {
+        "key_index": 2,
+        "http_status": 502,
+        "model_version": null,
+        "usage": null,
+        "finish_reason": null,
+        "disposition": "forwarded",
+        "response_sha256": "a39e531c0fd26010d6ab6ec0cacd3633d5adf7fdd1b4488726c0078d74a9a932",
+        "upstream_http_status": null,
+        "failure_class": "ambiguous_transport_or_invalid_json",
+        "verified": false,
+        "wall_s": 20.166983417002484
+      },
+      {
+        "key_index": 3,
+        "http_status": 502,
+        "model_version": null,
+        "usage": null,
+        "finish_reason": null,
+        "disposition": "forwarded",
+        "response_sha256": "a39e531c0fd26010d6ab6ec0cacd3633d5adf7fdd1b4488726c0078d74a9a932",
+        "upstream_http_status": null,
+        "failure_class": "ambiguous_transport_or_invalid_json",
+        "verified": false,
+        "wall_s": 20.152089582988992
+      },
+      {
+        "key_index": 4,
+        "http_status": 502,
+        "model_version": null,
+        "usage": null,
+        "finish_reason": null,
+        "disposition": "forwarded",
+        "response_sha256": "a39e531c0fd26010d6ab6ec0cacd3633d5adf7fdd1b4488726c0078d74a9a932",
+        "upstream_http_status": null,
+        "failure_class": "ambiguous_transport_or_invalid_json",
+        "verified": false,
+        "wall_s": 20.14453912503086
+      },
+      {
+        "key_index": 5,
+        "http_status": 502,
+        "model_version": null,
+        "usage": null,
+        "finish_reason": null,
+        "disposition": "forwarded",
+        "response_sha256": "a39e531c0fd26010d6ab6ec0cacd3633d5adf7fdd1b4488726c0078d74a9a932",
+        "upstream_http_status": null,
+        "failure_class": "ambiguous_transport_or_invalid_json",
+        "verified": false,
+        "wall_s": 20.122679207997862
+      }
+    ],
+    "scope": "one short REST generateContent per registered key; no model quality, image or project-independence verification",
+    "project_independence": "user_configuration_assumption_not_verified",
+    "reserved_tokens_per_request": 256,
+    "request": {
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            {
+              "text": "Reply exactly OK."
+            }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "temperature": 0,
+        "maxOutputTokens": 32,
+        "thinkingConfig": {
+          "thinkingLevel": "minimal"
+        }
+      }
+    },
+    "request_sha256": "1ab1be019126267604ac6990db658eb0b55db14988f33e06feeee50156318ea9",
+    "http_200_count": 1,
+    "secret_scan_matches": 0,
+    "all_keys_verified": false,
+    "unverified_keys": [
       {
         "key_index": 2
       },
@@ -59,8 +187,14 @@
         "key_index": 5
       }
     ],
-    "generation_requests": 0,
-    "project_independence": "user_configuration_assumption_not_verified"
+    "known_total_tokens": 6,
+    "unknown_usage_requests": 4,
+    "max_requests_per_key": 1,
+    "retries": 0,
+    "request_timeout_s": 20,
+    "cost": "unmeasured; unconfirmed requests may have executed upstream",
+    "raw_path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/api-summary.json",
+    "raw_sha256": "264a6b31c9e14ed321fbc94865b436339e28052d3a87f5428486896d7f4f802d"
   },
   "process_actions": {
     "proxy_started": false,
@@ -73,5 +207,87 @@
     "https://ai.google.dev/gemini-api/docs/rate-limits",
     "https://ai.google.dev/gemini-api/docs/troubleshooting",
     "https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html"
-  ]
+  ],
+  "raw_files": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/RUN_META.json",
+      "bytes": 158,
+      "sha256": "b3bbba53711eb77b922a84a6f837a0ef87bc9c10d06aea7d8284370defa72a43"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/actual-responses/0d2d4b0b12ebdaffacb6cdf73ef27a47aae7fdc0e713822d8a5f92b081f3a9a8.json",
+      "bytes": 322,
+      "sha256": "9825b79805be79cf89f10c95aa73d297fd45caad48a803757e862f80ceace12e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/actual-responses/15fb01d0c515d8257e75a1ee79deedfebb8030aad5301b33775c350b71da0f00.json",
+      "bytes": 322,
+      "sha256": "9825b79805be79cf89f10c95aa73d297fd45caad48a803757e862f80ceace12e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/actual-responses/50178356c9d54ae5aa491f4d1f147d0b6bb963856f2867dcb3019e79184ec488.json",
+      "bytes": 699,
+      "sha256": "03f53557a47b7addb2716876dbba932f667c97257124aac1e4aa8ed3f95858ab"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/actual-responses/85bf67bf718995db00b6a3f3835c4348024d9aa364483aaa4237ca7509fcf6c3.json",
+      "bytes": 322,
+      "sha256": "9825b79805be79cf89f10c95aa73d297fd45caad48a803757e862f80ceace12e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/actual-responses/e2d3f2d93004749fe0e48d71a85b5f7f8b808da14b89030259cf5eea8177da9b.json",
+      "bytes": 322,
+      "sha256": "9825b79805be79cf89f10c95aa73d297fd45caad48a803757e862f80ceace12e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/api-key-1.json",
+      "bytes": 1747,
+      "sha256": "00a0ac873235b14087fe4f5d14e439f7e8cf9dd2e13aa139c24fff2d9c2c9085"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/api-key-2.json",
+      "bytes": 1145,
+      "sha256": "c95cdd413c68b32529c31ce2a881307083dae62e5de33205e6fea09436ca6932"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/api-key-3.json",
+      "bytes": 1144,
+      "sha256": "ddfa5f081223d318e43986ef60e8cee1b0d1867dc48b6eef0457972e55124313"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/api-key-4.json",
+      "bytes": 1145,
+      "sha256": "608ad3e42bd3bd3c2e5f16a847147d1e9c867dbb7813a66e513a9a13d3e751c7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/api-key-5.json",
+      "bytes": 1145,
+      "sha256": "3e8ea88cb5caefb7ffee0b320687b5378f3feab789027462793d13c2bfbcd62e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/api-summary.json",
+      "bytes": 3691,
+      "sha256": "264a6b31c9e14ed321fbc94865b436339e28052d3a87f5428486896d7f4f802d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/offline-preliminary.json",
+      "bytes": 362,
+      "sha256": "7bff4d4ca96d56c58809f5ce49efb7ea334ce22cf876d57b1416e42655d1315a"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/protected-worktree.json",
+      "bytes": 534,
+      "sha256": "3a8f6a51dac2a1213e6259f07d8eb9e08869ea810d814415f7b85138d9d7b272"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-multi-key-20261011/pytest.xml",
+      "bytes": 7460,
+      "sha256": "cbf0cb93095a3579047e96fa04290a581a9a05f983df1ea4c1b7d35add4be89e"
+    }
+  ],
+  "secret_scan": {
+    "matches": 0,
+    "scope": "new raw artifacts and changed source/record files; actual keys checked only in memory"
+  },
+  "remote_ci": "pending; first code push run 38131473456 observed in progress; record push starts new checks"
 }
