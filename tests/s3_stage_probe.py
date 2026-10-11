@@ -33,7 +33,8 @@ def consistency_fixture(sha):
     b=parent.bundle(sha)
     plan=sealed.hp.base.read(sealed.ROOT/sealed.PLAN)
     b['controller_config']['options'].update(pose_validity=plan['pose_validity'],
-        observation_consistency=plan['observation_consistency'])
+        observation_consistency=plan['observation_consistency'],
+        min_command_contract='on_v1')  # explicit pre-merge S3 heading contract
     b['options']=b['controller_config']['options']
     b['preregistration']=plan
     b['execution_bundle_id']='unit-fixture-not-runnable'

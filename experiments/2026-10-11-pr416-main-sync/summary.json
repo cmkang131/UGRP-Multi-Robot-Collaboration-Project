@@ -25,7 +25,7 @@
   "min_command_contract_default": "off",
   "simulation_runs": 0,
   "local_tests": {
-    "passed": 73,
+    "passed": 75,
     "failed": 0,
     "files": [
       {
@@ -46,7 +46,17 @@
         "failed": 0,
         "seconds": 2.339
       }
-    ]
+    ],
+    "followup": {
+      "passed": 2,
+      "failed": 0,
+      "seconds": 60.15,
+      "scope": [
+        "tests/test_s3_stage_sweep.py",
+        "tests/test_s3_recovery.py::test_composed_off_initial_commands_and_record_identical"
+      ],
+      "reason": "Current-code synthetic consistency fixture explicitly retains pre-merge S3 min-command option; global off is unchanged"
+    }
   },
   "ci": {
     "status_at_commit": "pending push",
@@ -83,7 +93,9 @@
     "outputs/pr416-main-sync/contract-on-v1/test-s3.log": "450eb5b14eed13b09f5badfbd132761d983ac957d321d83d059d157dec70ac0f",
     "outputs/pr416-main-sync/contract-on-v1/test-s3.xml": "e69a8cec83fb6c75773ce0a06ee98ddb6e7542d3e89dc9c31a4a6704873be907",
     "outputs/pr416-main-sync/contract-on-v1/test-workflows.xml": "cc48a9c2b0584b6d01dd2453da0fc66640270eaea1ffc1ec49a1047603e76800",
-    "outputs/pr416-main-sync/contract-on-v1/test-heading.xml": "98feb837f17c80dc3f8db7823a19fd8703f678b5d390f87d1aa37b566b59c762"
+    "outputs/pr416-main-sync/contract-on-v1/test-heading.xml": "98feb837f17c80dc3f8db7823a19fd8703f678b5d390f87d1aa37b566b59c762",
+    "outputs/pr416-main-sync/contract-on-v1/test-stage-fixture.log": "64ae67a112d19604c4789e2d20c1702bf50d39714639ba1f5c6266441f1c3ad1",
+    "outputs/pr416-main-sync/contract-on-v1/test-stage-fixture.xml": "5eea4e32f92143d0e1aaeb2118dbd63af3fd04ca0e8ea04fccd2fb691318efe2"
   },
   "status": "OFFLINE_EQUIVALENT_LOCAL_TESTS_PASSED",
   "merge_commit": null,
@@ -195,5 +207,8 @@
   "previous_attempt": "experiments/2026-10-11-pr416-main-sync/blocked-before-decision.json",
   "method": "Keep the library default off; explicitly select the existing on branch at S3 call sites. git show loads the exact pre-merge heading source in memory for same-input comparison. No new control algorithm or changed pulse duration.",
   "merge_commit_record": "outputs/pr416-main-sync/contract-on-v1/ci-summary.json",
-  "pushed_record": "outputs/pr416-main-sync/contract-on-v1/ci-summary.json"
+  "pushed_record": "outputs/pr416-main-sync/contract-on-v1/ci-summary.json",
+  "commits_before_final_push": [
+    "173cf812c8f95e4ca756f8448c4eef353febbb33"
+  ]
 }
