@@ -149,6 +149,26 @@ def test_start_recovery_preserves_live_sibling_without_archiving_or_signalling(r
     archive.assert_not_called();signal.assert_not_called()
 
 
+def test_start_recovery_preserves_existing_archive_and_keeps_stop_blocker(root, monkeypatch):
+    run(root)
+    monkeypatch.setattr(shutdown,'active_archive_processes',lambda root,run:{1234})
+    archive=Mock(side_effect=AssertionError('do not start duplicate copy'))
+    monkeypatch.setattr(shutdown,'bounded_archive',archive)
+    result=shutdown.lifecycle('recover','start_recovery',root,grace=.01)
+    assert result['active_archive_preserved']==['one'] and not result['failed']
+    assert shutdown.blockers(root)['unarchived']==['one']
+    archive.assert_not_called()
+
+
+def test_archive_one_locks_same_run_before_copying(root, monkeypatch):
+    folder=run(root)
+    monkeypatch.setattr(shutdown.fcntl,'flock',Mock(side_effect=BlockingIOError))
+    copy=Mock(side_effect=AssertionError('duplicate copy forbidden'))
+    monkeypatch.setattr(shutdown,'_archive_one',copy)
+    with pytest.raises(shutdown.ArchiveBusy):shutdown.archive_one(root,folder)
+    copy.assert_not_called()
+
+
 def test_start_recovery_archive_failure_refuses_admission(root, monkeypatch):
     run(root)
     monkeypatch.setattr(shutdown, 'bounded_archive', lambda *args: False)

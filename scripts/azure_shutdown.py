@@ -151,7 +151,41 @@ def signal_runs(root):
     return signalled
 
 
+class ArchiveBusy(RuntimeError):
+    pass
+
+
+def active_archive_processes(root, run):
+    """Identify an existing archive worker, including workers started before locks.
+
+    This is only admission coordination: the raw remains an ordinary stop
+    blocker until its independent checksum marker is verified.
+    """
+    found=set()
+    proc=Path('/proc')
+    if not proc.exists():return found
+    for p in proc.iterdir():
+        if not p.name.isdigit() or int(p.name)==os.getpid():continue
+        try:
+            argv=(p/'cmdline').read_bytes().decode().split('\0')
+            if str(Path(__file__).resolve()) not in argv or 'archive-one' not in argv:continue
+            if argv[argv.index('--run')+1]!=run.name:continue
+            selected=Path(argv[argv.index('--root')+1]) if '--root' in argv else ROOT
+            if selected!=root:continue
+            if Path(argv[0]).name.startswith('python'):found.add(int(p.name))
+        except (OSError,ValueError,IndexError,UnicodeError):continue
+    return found
+
+
 def archive_one(root, run):
+    locks=root/'lifecycle/archive-locks';locks.mkdir(parents=True,exist_ok=True)
+    with (locks/(run.name+'.lock')).open('a') as lock:
+        try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:raise ArchiveBusy('archive worker already owns '+run.name) from None
+        return _archive_one(root,run)
+
+
+def _archive_one(root, run):
     """Resumable separate destination; preserve both source and failed incoming."""
     archive = root / 'arm'
     if not os.path.ismount(archive):
@@ -236,6 +270,10 @@ def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
             # ordinary stop still sees them as blockers and cost stop signals.
             if action == 'recover' and run_processes(run):
                 report.setdefault('active_preserved', []).append(run.name)
+                write_json(record, report)
+                continue
+            if action == 'recover' and active_archive_processes(root,run):
+                report.setdefault('active_archive_preserved', []).append(run.name)
                 write_json(record, report)
                 continue
             ok = archived(root, run)
