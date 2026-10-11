@@ -17,17 +17,29 @@ import numpy as np
 
 from harness.active_camera import bind
 from harness.ego_pose_continuity import Options, REP105, CLUSTER, MAHALANOBIS, install
-from scripts import run_egomap_fresh_pair as base
 from scripts.evaluate_ego_pose_continuity import jump_metrics
 from scripts.evaluate_egomap_covariance import lines
 
 ROOT=Path(__file__).resolve().parents[1]
 CONDITIONS={'off':Options(), 'cluster':Options(pose_reporting=CLUSTER,pose_continuity=REP105),
             'innovation':Options(correction_gate=MAHALANOBIS,pose_continuity=REP105)}
-dump=base.dump
+
+
+def _base():
+    # Physical adapters import MuJoCo. Numeric health/metadata inspection does not.
+    from scripts import run_egomap_fresh_pair
+    return run_egomap_fresh_pair
+
+
+def dump(path, value):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    temporary=path.with_name(path.name+'.tmp')
+    temporary.write_text(json.dumps(value,indent=2,allow_nan=False)+'\n')
+    temporary.replace(path)
 
 
 def bundle(seed,condition,source):
+    base=_base()
     b=base.bundle(seed,'off',source)
     b.update(execution_bundle_id=f'egojump-{seed}-{condition}-v2',
              comparison='same fresh seed/Scene/schedule, registered pose toggles only')
@@ -36,6 +48,7 @@ def bundle(seed,condition,source):
 
 
 def run(args):
+    base=_base()
     condition=args.condition
     b=bundle(args.seed,condition,ROOT.name)
     def schedule(c):
@@ -49,6 +62,7 @@ def run(args):
 
 
 def score(folder):
+    base=_base()
     record=base.score(folder)
     own,_=lines(folder/'own-controller.jsonl')
     truth,_=lines(folder/'eval_only/trajectory.jsonl')
@@ -101,6 +115,7 @@ def initial_check(folder,elapsed_s,log):
 
 def group(args):
     """One seed's OFF + two candidates, admitted and launched together."""
+    base=_base()
     with base.old.server_slot():
         cpus=[int(x) for x in args.cpus.split(',')]
         if len(cpus)!=3 or len(set(cpus))!=3 or not set(cpus)<=set(range(12)):
@@ -167,6 +182,7 @@ def group(args):
 
 
 def main():
+    base=_base()
     p=argparse.ArgumentParser();p.add_argument('--mode',choices=('full','group'),required=True)
     p.add_argument('--seed',type=int,choices=base.SEEDS,required=True)
     p.add_argument('--condition',choices=CONDITIONS,default='off');p.add_argument('--output',type=Path,required=True)

@@ -59,6 +59,19 @@
   "parallel_admission": {
     "test_file": "tests/test_ego_pose_runner.py",
     "passed": 4,
-    "scope": "queued groups, partial active siblings, conservative handling of partial status JSON; no local physics"
+    "scope": "queued groups, partial active siblings, conservative handling of partial status JSON; no local physics",
+    "azure_refusal_without_physics": {
+      "receipt": "/Users/changmin/projects/ugrp/outputs/egojump-atomic-admission-test.json",
+      "sha256": "ead69e2ed87ebec6d5d73af88fc3b040af10126e093d833ecce2ac0c6f4624bd",
+      "started": false
+    }
+  },
+  "offline_import_boundary": {
+    "failure": "CI test collection imported MuJoCo through the legacy physical adapter",
+    "fix": "lazy physical adapter import; atomic pure JSON dump; baseline factory spy for metadata-only contract",
+    "command": "pytest test_ego_pose_runner.py test_ego_pose_continuity.py with sys.modules[mujoco]=None",
+    "passed": 11,
+    "elapsed_s": 1.04,
+    "frozen_azure_worker_unchanged": "98ffd82347c764fc6ddcd319d1d383df16d994a5"
   }
 }

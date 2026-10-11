@@ -1,5 +1,6 @@
 import copy
 import json
+from types import SimpleNamespace
 from scripts import run_ego_pose_continuity as m
 from scripts.launch_ego_pose_azure import measured_terminal
 from scripts.ego_pose_archive_transport import remaining_run_bytes
@@ -33,8 +34,15 @@ def test_physical_failure_is_retained_but_host_and_supervisor_errors_block_batch
     assert not measured_terminal(dict(status='PHYSICAL_FAILURE'))
 
 
-def test_pair_bundles_only_differ_in_pose_options():
+def test_pair_bundles_only_differ_in_pose_options(monkeypatch):
+    calls=[]
+    def baseline(seed,condition,source):
+        calls.append((seed,condition,source))
+        return dict(seed=seed,source=source,physics={'unchanged':True},options={
+            'rgb_reconfirmation':condition,'covariance_inflation':condition})
+    monkeypatch.setattr(m,'_base',lambda:SimpleNamespace(bundle=baseline))
     bundles=[m.bundle(63001,k,'a'*40) for k in m.CONDITIONS]
+    assert calls==[(63001,'off','a'*40)]*3
     for b in bundles:
         assert b['options']['rgb_reconfirmation']=='off'
         assert b['options']['covariance_inflation']=='off'
