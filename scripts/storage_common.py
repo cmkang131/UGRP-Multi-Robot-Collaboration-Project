@@ -11,26 +11,44 @@ import subprocess
 TRACE_LIMIT = 64 * 1024
 
 
+def has_symlink(path: Path) -> bool:
+    """Check every component, including ancestors of a supplied search root."""
+    absolute = path.absolute()
+    return any(p.is_symlink() for p in (absolute, *absolute.parents))
+
+
+def safe_path(path: Path, root: Path) -> bool:
+    """Require a link-free path whose real location stays inside the root."""
+    return (not has_symlink(path) and path.absolute().is_relative_to(root.absolute())
+            and path.resolve().is_relative_to(root.resolve()))
+
+
 def files(root: Path):
-    """Never follow symlinks, including symlink roots."""
-    if root.is_symlink():
+    """Never follow symlinks, including ancestors of the search root."""
+    if has_symlink(root):
         return
     for directory, dirs, names in os.walk(root, followlinks=False):
+        if not safe_path(Path(directory), root):
+            dirs[:] = []
+            continue
         dirs[:] = sorted(d for d in dirs if not (Path(directory) / d).is_symlink())
         for name in sorted(names):
             path = Path(directory) / name
-            if path.is_file() and not path.is_symlink():
+            if safe_path(path, root) and path.is_file():
                 yield path
 
 
 def run_dirs(root: Path):
     """Find metadata without stat'ing every raw frame."""
-    if root.is_symlink():
+    if has_symlink(root):
         return
     for directory, dirs, names in os.walk(root, followlinks=False):
+        if not safe_path(Path(directory), root):
+            dirs[:] = []
+            continue
         dirs[:] = sorted(d for d in dirs if not (Path(directory) / d).is_symlink())
         marker = Path(directory) / 'RUN_META.json'
-        if 'RUN_META.json' in names and marker.is_file() and not marker.is_symlink():
+        if 'RUN_META.json' in names and safe_path(marker, root) and marker.is_file():
             yield Path(directory)
 
 
@@ -66,8 +84,8 @@ def persistent(path: Path):
 
 
 def idle_reason(root: Path) -> str | None:
-    if root.is_symlink():
-        return 'symlink root'
+    if has_symlink(root):
+        return 'symlink root or ancestor'
     if not (root / 'EXIT').is_file():
         return 'EXIT absent (unfinished)'
     for parent in (root, *root.parents):
@@ -82,6 +100,8 @@ def idle_reason(root: Path) -> str | None:
 
 
 def lock_run(root: Path):
+    if has_symlink(root):
+        raise ValueError(f'symlink root or ancestor: {root}')
     lock = (root / '.evidence.lock').open('a+')
     try:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)

@@ -15,7 +15,7 @@ import uuid
 if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.storage_common import (TRACE_LIMIT, atomic_text, files, hash_tsv, idle_reason,
-                                    inventory, lock_run, run_dirs, sha256, snapshot)
+                                    inventory, lock_run, run_dirs, safe_path, sha256, snapshot)
 from scripts.worktree_guard import Refused, refuse_if_in_use
 
 REPO = 'kcm0127-dotcom/ugrp'
@@ -23,6 +23,8 @@ MEDIA = {'.jpg', '.jpeg', '.png', '.webp', '.npz', '.npy', '.mp4', '.mov', '.avi
 PERMANENT = ('summary', 'result', 'verdict', 'judgment', 'request', 'response', 'llm',
              'command', 'trajectory', 'action', 'ledger', 'sha256', 'hashes', 'manifest',
              'score', 'integrity', 'admission', 'run_meta', 'compressed')
+LLM_RECORDS = ('ledger', 'llm', 'model', 'prompt', 'request', 'response', 'message',
+               'dialogue', 'episode')
 
 
 def pr_info(number: int) -> dict:
@@ -51,15 +53,17 @@ def keep_paths(meta: dict) -> list[Path]:
 
 
 def heavy(relative: Path, size: int, meta: dict, original_sizes: dict) -> bool:
-    name = relative.name.lower()
     if any(part.lower().startswith('representative') for part in relative.parts):
         return False
     # Explicit keep works for directories and compressed forms of the same file.
-    plain = relative.with_suffix('') if relative.suffix == '.zst' else relative
+    plain = relative.with_suffix('') if relative.suffix.lower() == '.zst' else relative
     for kept in keep_paths(meta):
         if relative == kept or kept in relative.parents or plain == kept or kept in plain.parents:
             return False
     # Text requests/responses/commands and verdicts survive regardless of size.
+    if plain.suffix.lower() in {'.json', '.jsonl'} and any(
+            word in plain.name.lower() for word in LLM_RECORDS):
+        return False
     if any(word in plain.name.lower() for word in PERMANENT) or any(
             part.lower() in {'llm', 'requests', 'responses', 'commands', 'trajectories'}
             for part in relative.parts[:-1]):
@@ -131,12 +135,13 @@ def execute(root: Path, number: int, records: Path):
                   'all_hashes': str(root / 'ALL-hashes.tsv'), 'completed': []}
         atomic_text(receipt, json.dumps(record, indent=2) + '\n')
         for row in all_rows:
-            if snapshot(root / row['path']) != tuple(row['snapshot']):
+            if (not safe_path(root / row['path'], root)
+                    or snapshot(root / row['path']) != tuple(row['snapshot'])):
                 raise ValueError('run changed after inventory')
         trash = Path.home() / '.Trash' / f'ugrp-pr-{number}-{tag}'
         for row in planned['candidates']:
             path = root / row['path']
-            if path.is_symlink() or snapshot(path) != tuple(row['snapshot']) or idle_reason(root):
+            if not safe_path(path, root) or snapshot(path) != tuple(row['snapshot']) or idle_reason(root):
                 raise ValueError(f'run/file changed before pruning: {path}')
             if sys.platform == 'darwin':
                 destination = trash / row['path']

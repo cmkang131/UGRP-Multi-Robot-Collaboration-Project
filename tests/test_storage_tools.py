@@ -20,7 +20,8 @@ from scripts import ugrp_session as session
 class StorageTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
-        self.root = Path(self.tmp.name) / 'run'
+        # macOS /var is itself a symlink; use the actual temporary directory.
+        self.root = Path(self.tmp.name).resolve() / 'run'
         self.root.mkdir()
         (self.root / 'EXIT').write_text('0\n')
         (self.root / 'RUN_META.json').write_text(json.dumps({
@@ -128,6 +129,71 @@ class StorageTests(unittest.TestCase):
         self.assertEqual(prune.plan(self.root, 123)['bytes'], 20)
         self.assertGreaterEqual(budget.estimate(self.root, None), 125000)
 
+    def test_llm_records_survive_every_size_and_compressed_form(self):
+        originals = {}
+        manifest = []
+        for word in ('ledger', 'llm', 'model', 'prompt', 'request', 'response',
+                     'message', 'dialogue', 'episode'):
+            for suffix in ('.json', '.jsonl', '.json.zst', '.jsonl.zst'):
+                for size in (20, common.TRACE_LIMIT + 1):
+                    name = f'{size}/robot-{word.upper()}-history{suffix}'
+                    path = self.write(name, size)
+                    originals[path] = path.read_bytes()
+                    if suffix.endswith('.zst'):
+                        manifest.append({'compressed_path': name, 'bytes': 10**9})
+        episode = self.write('episode.jsonl', common.TRACE_LIMIT + 1)
+        originals[episode] = episode.read_bytes()
+        (self.root / 'COMPRESSED.jsonl').write_text(
+            ''.join(json.dumps(row) + '\n' for row in manifest))
+        media = self.write('frame.jpg')
+        with mock.patch.object(prune, 'pr_info', return_value={'number': 123, 'state': 'MERGED'}), \
+                mock.patch.object(prune, 'refuse_if_in_use'), mock.patch.object(prune.sys, 'platform', 'linux'):
+            planned = prune.execute(self.root, 123, self.root.parent / 'records')
+        self.assertEqual([row['path'] for row in planned['candidates']], ['frame.jpg'])
+        self.assertFalse(media.exists())
+        self.assertEqual(originals, {p: p.read_bytes() for p in originals})
+
+    def test_walkers_skip_nested_directory_links_and_linked_ancestors(self):
+        self.write('nested/frame.jpg')
+        linked = self.root.parent / 'linked'
+        linked.symlink_to(self.root, target_is_directory=True)
+        (self.root / 'nested/link').symlink_to(self.root, target_is_directory=True)
+        (self.root / 'nested/outside').symlink_to(self.root.parent, target_is_directory=True)
+        self.assertEqual({p.relative_to(self.root).as_posix() for p in common.files(self.root)},
+                         {'EXIT', 'RUN_META.json', 'nested/frame.jpg'})
+        self.assertEqual(list(common.run_dirs(self.root)), [self.root])
+        for root in (linked, linked / 'nested'):
+            with self.subTest(root=root):
+                self.assertEqual(list(common.files(root)), [])
+                self.assertEqual(list(common.run_dirs(root)), [])
+                self.assertIn('symlink', common.idle_reason(root))
+                self.assertIn('symlink', compress.compress_run(root, execute=True)['skipped'])
+                with self.assertRaises(ValueError):
+                    prune.execute(root, 123, self.root.parent / 'records')
+        self.assertFalse((self.root / '.evidence.lock').exists())
+        self.assertFalse(common.safe_path(self.root.parent / 'outside.jpg', self.root))
+        self.assertFalse(common.safe_path(self.root / 'nested/link/EXIT', self.root))
+
+    def test_execute_rechecks_parent_link_before_removal(self):
+        media = self.write('frames/frame.jpg')
+        outside = self.root.parent / 'outside-frames'
+
+        def replace_parent_after_inventory(path, root):
+            safe = common.safe_path(path, root)
+            if path == media and safe:
+                # Same inode/stat via the link: snapshots alone cannot detect it.
+                media.parent.rename(outside)
+                media.parent.symlink_to(outside, target_is_directory=True)
+            return safe
+
+        with mock.patch.object(prune, 'pr_info', return_value={'number': 123, 'state': 'MERGED'}), \
+                mock.patch.object(prune, 'refuse_if_in_use'), \
+                mock.patch.object(prune, 'safe_path', side_effect=replace_parent_after_inventory), \
+                mock.patch.object(prune.sys, 'platform', 'linux'):
+            with self.assertRaisesRegex(ValueError, 'run/file changed before pruning'):
+                prune.execute(self.root, 123, self.root.parent / 'records')
+        self.assertEqual((outside / 'frame.jpg').read_bytes(), b'x' * 100)
+
     def test_compression_manifest_is_never_compressed_recursively(self):
         self.write('COMPRESSED.jsonl', 70000)
         self.assertEqual(compress.compress_run(self.root)['files'], 0)
@@ -226,7 +292,7 @@ class StorageTests(unittest.TestCase):
         self.assertFalse((self.root / 'ALL-hashes.tsv').exists())
 
     def test_metadata_wrapper_defaults_dev_and_marks_completion(self):
-        root = Path(self.tmp.name) / 'new'
+        root = self.root.parent / 'new'
         args = argparse.Namespace(evidence_dir=root, evidence_class='dev', pr=123,
                                   batch='batch', name='meta', keep=['representative.mp4'],
                                   storage_host='mac', expected_mb=1, grace=0)

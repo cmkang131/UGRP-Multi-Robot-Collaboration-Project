@@ -13,7 +13,7 @@ import sys
 if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.storage_common import (TRACE_LIMIT, atomic_text, files, hash_tsv, idle_reason,
-                                    inventory, lock_run, sha256, snapshot)
+                                    inventory, lock_run, safe_path, sha256, snapshot)
 from scripts.worktree_guard import Refused, refuse_if_in_use
 
 
@@ -76,7 +76,7 @@ def compress_run(root: Path, execute=False) -> dict:
                     stream.write(json.dumps(record) + '\n')
                     stream.flush()
                     os.fsync(stream.fileno())
-                if snapshot(source) != before or idle_reason(root):
+                if not safe_path(source, root) or snapshot(source) != before or idle_reason(root):
                     raise ValueError(f'source/run changed before removal: {source}')
                 source.unlink()
                 saved += record['bytes'] - record['compressed_bytes']
