@@ -6,5 +6,5 @@ B 새 판정=자기가 확인한 바닥 칸 안5프레임; 기존 .20m·현재�
 원인: eg69 좌/우 횡이동 예측 −2.818/−1.805mm 대 실제 −.292/+.294mm; 63004 pickup hue110 vs B112로 색 단독 미분리(실행 전 진단); B 규격 .6×1.4m와 기존1.2 허용폭의 전체 크기 확인 추가, 부분조각 보류.
 참고 자료: [Borenstein–Feng 1996](https://doi.org/10.1109/70.544770), [원문](https://web.cecs.pdx.edu/~mperkows/CLASS_479/S2006/Paper-correction-odometry-error.pdf): 양방향 기동·반복으로 체계/산포 분리. 차동차륜 공식 대신 메카넘 명령별 Y 평균곡선, 공간 제약상 .26m 사각으로 변경. [Nav2 footprint](https://github.com/ros-navigation/navigation2/blob/jazzy/nav2_costmap_2d/src/footprint.cpp#L40-L66) 최대반경 팽창으로 보정 fixture 검사(.02m는 기존 레포값).
 참고 자료: [OpenCV HSV](https://docs.opencv.org/4.x/df/d9d/tutorial_py_colorspaces.html): 기존 HSV+연결성/형상 유지, 알려진 B/pickup 재질의 hue 최근접 분류(동일 사전확률); 기존 v3 minAreaRect 규격 확인, 위치/정답 마스크 입력0; 부분시야 recall 비용.
-Mac 물리/재생0, x86 영속 raw·3분 초기 표식 확인·ARM SHA 보관·Mac 가벼운 회수; 새 물리 전 관련 시험과 커밋, 결과 후 재튜닝0.
-결과: 보정5/5·보류관문6/6(횡 RMSE 2.15–2.59→.37–.53mm), 앞선HOST5·벽실패5도 보존. 18시험·8SIM초 스모크41/41표식 정상; 평가0/24(용량대기), E2E 미검증. [summary.json](summary.json), PR405 DRAFT.
+Mac 물리/재생0; x86 영속 raw 16회·25,003파일 SHA검증/불일치0, 자동보관에 맡김; Mac fetch-lite만. 초기24/24·on18/18·7103trace유효, 관련18시험초록(동결소스), 기본off 핵심9파일동일.
+부분 결과16/24(각4/6, 나머지8 SSH단절로미확인): baseline/보정/+궤적/+구역·색의 B=1/2/2/1, 귀환=0/0/1/1, 거짓귀환=0/0/2/1; RMSE중앙=.578/.402/.435/.285m. 최종판정 보류·[summary.json](summary.json), PR405 DRAFT.
