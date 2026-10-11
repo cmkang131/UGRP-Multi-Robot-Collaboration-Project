@@ -42,3 +42,41 @@ def test_partial_host_error_keeps_measured_events_separate_from_complete(monkeyp
     assert g['false_return']['count']==1 and g['false_return']['declaration_denominator']==1
     assert g['false_B']['count']==0 and g['completed']==0 and g['measured']==1
     assert len(s['host_errors'])==1
+
+
+def test_fresh_schedule_waits_for_own_B_then_reuses_fixed_leg_budget(monkeypatch):
+    from types import SimpleNamespace
+    from unittest.mock import Mock
+    c=SimpleNamespace(entities={},reached={},active=None,leg_start=0,streak=0,events=[],done=False,
+        navigator=SimpleNamespace(reset_action=Mock(),target=None))
+    c.event=lambda t,reason,**kw:c.events.append(dict(t=t,reason=reason,**kw))
+    c.receive=lambda **kw:({'kind':'hold'},{'t':kw['t']})
+    entered=[]
+    monkeypatch.setattr(m.fresh.old,'enter_return',lambda c,t:entered.append(t))
+    m.install_fresh_schedule(c)
+    _,trace=c.receive(t=10)
+    assert trace['fresh_task_schedule']['B_approach_start'] is None
+    c.entities['B']={'first_t':12}
+    _,trace=c.receive(t=12.2)
+    assert trace['fresh_task_schedule']['B_approach_start']==12.2 and c.active=='B'
+    assert c.events[-1]['checkpoint_source'] is None
+    c.receive(t=282.2)
+    assert entered==[282.2]
+    c.receive(t=282.4)
+    assert entered==[282.2]
+
+
+def test_fresh_schedule_suppresses_box_command_after_B_declaration(monkeypatch):
+    from types import SimpleNamespace
+    from unittest.mock import Mock
+    c=SimpleNamespace(entities={'B':{'first_t':1}},reached={},active='B',leg_start=0,streak=0,events=[],done=False,
+        navigator=SimpleNamespace(reset_action=Mock(),target=None))
+    c.event=lambda t,reason,**kw:c.events.append(dict(t=t,reason=reason,**kw))
+    def receive(**kw):
+        c.reached['B']={'t':kw['t']}
+        command={'kind':'mecanum','forward':.3}
+        return command,{'command':command}
+    c.receive=receive
+    m.install_fresh_schedule(c)
+    cmd,trace=c.receive(t=2.)
+    assert cmd=={'t':2.,'kind':'hold'} and trace['command']==cmd

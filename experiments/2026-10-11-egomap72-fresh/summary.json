@@ -1,6 +1,6 @@
 {
   "round": "egomap72",
-  "status": "REGISTERED_NOT_STARTED",
+  "status": "REVISED_B_RETURN_REGISTERED",
   "class": "dev",
   "pr": 405,
   "base_sha": "a7e30c5c0cabbf018007e00535d16cc6a3890d10",
@@ -17,7 +17,7 @@
     "on"
   ],
   "registered": 12,
-  "schedule": "existing full continuous own B/box/home mission; 270 SIM seconds per leg; 810 maximum; no forced return",
+  "schedule": "same_run_own_B_discovery (up to270 SIM seconds), then existing B270/return270 schedule; maximum810; no checkpoint",
   "checkpoint_inputs": false,
   "external_RGB_bank": false,
   "control_static_map": false,
@@ -34,20 +34,30 @@
     ]
   },
   "budgets": {
-    "workers": 4,
+    "workers": 12,
     "cpus": [
-      12,
-      13,
-      14,
-      15
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
     ],
-    "per_run_wall_s": 2700,
-    "batch_wall_s": 9000,
+    "per_run_wall_s": 6000,
+    "batch_wall_s": 7200,
     "VM_task_wall_s": 10800,
     "archive_reserve_s": 1800,
-    "raw_per_run_MiB": 1024,
-    "other_jobs_remaining_MiB": 8192,
-    "Mac_fetch_lite_MiB": 128
+    "raw_per_run_MiB": 512,
+    "other_jobs_remaining_MiB": 4096,
+    "Mac_fetch_lite_MiB": 128,
+    "remaining_task_wall_s": 9000,
+    "source_shipping_MiB": 3072
   },
   "prior_egomap71": {
     "path": "experiments/2026-10-11-egomap-reconfirmation/summary.json",
@@ -488,5 +498,706 @@
       "path": "experiments/2026-10-11-egomap-reconfirmation/gate_references.md",
       "scope": "existing classical and recent-source comparison; no new model or parameter fitting"
     }
-  ]
+  ],
+  "execution_sha": "92f52205f832fe75715d12606cc04b112547e638",
+  "attempts": [
+    {
+      "batch": "egomap72-fresh-92f52205",
+      "status": "HOST_ERROR",
+      "runs": [
+        {
+          "name": "egomap72-63001-off",
+          "seed": 63001,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 16839,
+          "cpu": 12,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63001-off",
+          "result_sha256": "366f8e2cf81dd9f89d8580bf3c41b590a0118378218989f3eaa4b14170070df2",
+          "wall_s": 32.45245641500014,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63001-on",
+          "seed": 63001,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 16840,
+          "cpu": 13,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63001-on",
+          "result_sha256": "f03eae2c1041bdbf418b5fd6419374b5fb6e929822bcb8e1ed1cac67ddb8a637",
+          "wall_s": 32.47522843000024,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63002-on",
+          "seed": 63002,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 16971,
+          "cpu": 14,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63002-on",
+          "result_sha256": "8a85f99b11b82ff39a09462225d09464b25c133df340e89a7024f1ca1cb8b9be",
+          "wall_s": 26.605476473999715,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63002-off",
+          "seed": 63002,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 16972,
+          "cpu": 15,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63002-off",
+          "result_sha256": "238761e7efa50811be07520e962850842ad553d860339c14f174373ae83e6f75",
+          "wall_s": 26.586458214999766,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63003-off",
+          "seed": 63003,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 17486,
+          "cpu": 12,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63003-off",
+          "result_sha256": "09e0ebfb6631c932f2bfe87e993c5b939710da29c26220e04af75d430e7c23a4",
+          "wall_s": 23.233592210000097,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63003-on",
+          "seed": 63003,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 17487,
+          "cpu": 13,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63003-on",
+          "result_sha256": "1b42f3317f4451ff30d42d1a940c6d3f0a7d939fbe723439302143803930523f",
+          "wall_s": 23.280749775999993,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63004-on",
+          "seed": 63004,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 17518,
+          "cpu": 14,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63004-on",
+          "result_sha256": "189aca2a1c9bfca53cd05e3a9229a5ae97e8894f84b3042507c62eb818ce116a",
+          "wall_s": 23.17684965599983,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63004-off",
+          "seed": 63004,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 17519,
+          "cpu": 15,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63004-off",
+          "result_sha256": "a02a9efd407343831fef117a4aa5a3f2ddc7ca78890de295fc93900a558527f1",
+          "wall_s": 23.13500899199971,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63005-off",
+          "seed": 63005,
+          "condition": "off",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "exit_code": null,
+          "pid": null,
+          "cpu": null,
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63005-off",
+          "result_sha256": null,
+          "wall_s": null,
+          "model_calls": 0,
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63005-on",
+          "seed": 63005,
+          "condition": "on",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "exit_code": null,
+          "pid": null,
+          "cpu": null,
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63005-on",
+          "result_sha256": null,
+          "wall_s": null,
+          "model_calls": 0,
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63006-on",
+          "seed": 63006,
+          "condition": "on",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "exit_code": null,
+          "pid": null,
+          "cpu": null,
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63006-on",
+          "result_sha256": null,
+          "wall_s": null,
+          "model_calls": 0,
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63006-off",
+          "seed": 63006,
+          "condition": "off",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "exit_code": null,
+          "pid": null,
+          "cpu": null,
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63006-off",
+          "result_sha256": null,
+          "wall_s": null,
+          "model_calls": 0,
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        }
+      ],
+      "host_errors": [
+        {
+          "name": "egomap72-63001-off",
+          "seed": 63001,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 16839,
+          "cpu": 12,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63001-off",
+          "result_sha256": "366f8e2cf81dd9f89d8580bf3c41b590a0118378218989f3eaa4b14170070df2",
+          "wall_s": 32.45245641500014,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63001-on",
+          "seed": 63001,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 16840,
+          "cpu": 13,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63001-on",
+          "result_sha256": "f03eae2c1041bdbf418b5fd6419374b5fb6e929822bcb8e1ed1cac67ddb8a637",
+          "wall_s": 32.47522843000024,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63002-on",
+          "seed": 63002,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 16971,
+          "cpu": 14,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63002-on",
+          "result_sha256": "8a85f99b11b82ff39a09462225d09464b25c133df340e89a7024f1ca1cb8b9be",
+          "wall_s": 26.605476473999715,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63002-off",
+          "seed": 63002,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 16972,
+          "cpu": 15,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63002-off",
+          "result_sha256": "238761e7efa50811be07520e962850842ad553d860339c14f174373ae83e6f75",
+          "wall_s": 26.586458214999766,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63003-off",
+          "seed": 63003,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 17486,
+          "cpu": 12,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63003-off",
+          "result_sha256": "09e0ebfb6631c932f2bfe87e993c5b939710da29c26220e04af75d430e7c23a4",
+          "wall_s": 23.233592210000097,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63003-on",
+          "seed": 63003,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 17487,
+          "cpu": 13,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63003-on",
+          "result_sha256": "1b42f3317f4451ff30d42d1a940c6d3f0a7d939fbe723439302143803930523f",
+          "wall_s": 23.280749775999993,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63004-on",
+          "seed": 63004,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 17518,
+          "cpu": 14,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63004-on",
+          "result_sha256": "189aca2a1c9bfca53cd05e3a9229a5ae97e8894f84b3042507c62eb818ce116a",
+          "wall_s": 23.17684965599983,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63004-off",
+          "seed": 63004,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "exit_code": 1,
+          "pid": 17519,
+          "cpu": 15,
+          "failure": {
+            "type": "ModuleNotFoundError",
+            "message": "No module named 'matplotlib'"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63004-off",
+          "result_sha256": "a02a9efd407343831fef117a4aa5a3f2ddc7ca78890de295fc93900a558527f1",
+          "wall_s": 23.13500899199971,
+          "model_calls": 0,
+          "samples": 4,
+          "declarations": [],
+          "stage": null,
+          "sim_s": 2.8,
+          "commands": 4,
+          "B_arrived": false,
+          "returned": false,
+          "return_stage_entered": false,
+          "command_counts": {
+            "turn": 4
+          },
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63005-off",
+          "seed": 63005,
+          "condition": "off",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "exit_code": null,
+          "pid": null,
+          "cpu": null,
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63005-off",
+          "result_sha256": null,
+          "wall_s": null,
+          "model_calls": 0,
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63005-on",
+          "seed": 63005,
+          "condition": "on",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "exit_code": null,
+          "pid": null,
+          "cpu": null,
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63005-on",
+          "result_sha256": null,
+          "wall_s": null,
+          "model_calls": 0,
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63006-on",
+          "seed": 63006,
+          "condition": "on",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "exit_code": null,
+          "pid": null,
+          "cpu": null,
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63006-on",
+          "result_sha256": null,
+          "wall_s": null,
+          "model_calls": 0,
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        },
+        {
+          "name": "egomap72-63006-off",
+          "seed": 63006,
+          "condition": "off",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "exit_code": null,
+          "pid": null,
+          "cpu": null,
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63006-off",
+          "result_sha256": null,
+          "wall_s": null,
+          "model_calls": 0,
+          "host_error": true,
+          "false_return": 0,
+          "false_B": 0
+        }
+      ],
+      "preservation": {
+        "arm": "/home/ugrp/ugrp-sim/arm/shutdown-egomap72-fresh-92f52205",
+        "verified": true,
+        "inventory_files": 491,
+        "bytes": 8709965,
+        "archive_receipt_local": "/Users/changmin/projects/ugrp/outputs/egomap72-orchestration/egomap72-fresh-92f52205-archive.json",
+        "archive_receipt_sha256": "9aa652a25621fc69196d07be6f9c49f2f5f477ca70755bff386d306f868349c1",
+        "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/egomap72-fresh-92f52205",
+        "summary_sha256": "60990853786f398d13a9aa967893cf76c6abe530ee24e6bf67da146252f09741"
+      }
+    }
+  ],
+  "orchestration_errors": [
+    {
+      "stage": "retry_storage_admission",
+      "status": "HOST_ERROR_STORAGE_BUDGET",
+      "free_bytes": 29887488000,
+      "expected_bytes": 21474836480,
+      "projected_free_bytes": 8412651520,
+      "floor_bytes": 8589934592,
+      "physical_runs": 0,
+      "recovery": "other physical jobs completed; remaining sibling writes recalculated as 4096 MiB, same 8 GiB floor"
+    },
+    {
+      "stage": "initial_launcher_final_status",
+      "status": "HOST_ERROR_LAUNCHER_STATUS_EXIT75",
+      "meaning": "azure_shutdown status returns 75 while leases/unarchived evidence exist; no VM stop was issued; first raw archive and lite fetch already verified",
+      "recovery": "allow status codes 0/75 and inspect JSON; retry launcher corrected"
+    }
+  ],
+  "environment_repair": {
+    "missing": "matplotlib",
+    "installed": "3.11.2",
+    "version_basis": "same as existing Mac simulation environment",
+    "backend": "Agg",
+    "probe": "upstream pursuit import and follow_twist produced [0.12,0,0]; no figure created",
+    "existing_packages_changed": false,
+    "physics_controller_source_changed": false,
+    "reference": "https://matplotlib.org/stable/users/explain/figure/backends.html"
+  },
+  "retry": {
+    "batch": "egomap72-retry-92f52205",
+    "source_sha": "92f52205f832fe75715d12606cc04b112547e638",
+    "registered": 12,
+    "status": "RUNNING",
+    "vm_task_wall_s_remaining": 10200,
+    "batch_wall_s": 8400
+  },
+  "validation": {
+    "tests": 23,
+    "files": [
+      "tests/test_own_rgb_reconfirmation.py",
+      "tests/test_egomap_fresh_pair.py",
+      "tests/test_egomap_covariance.py"
+    ],
+    "mac_physics": 0,
+    "changed_schedule_tests": "tests/test_egomap_fresh_pair.py and tests/test_own_rgb_reconfirmation.py"
+  },
+  "schedule_revision_reason": "egomap71 compares B approach and return; first full-path adapter also included a box visit, so that partial attempt is excluded from the paired performance comparison",
+  "resource_change": "other physical jobs ended; verified only our four workers and an archive compressor before stopping this partial attempt; use 12 free vCPUs, reserve four"
 }

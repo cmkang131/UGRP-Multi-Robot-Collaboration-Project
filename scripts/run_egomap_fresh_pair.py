@@ -30,16 +30,46 @@ dump = old.dump
 
 def bundle(seed, condition, source):
     b = fresh.bundle(seed, source, 'baseline', 'full')
-    b.update(execution_bundle_id=f'egomap72-full-{seed}-{condition}-v1', host='azure',
-             host_alarm_s=2700, case_cap_s=810., stage_diagnostic=False,
-             admission='fresh continuous DEV; original own B/box/home mission; no checkpoint')
+    b.update(execution_bundle_id=f'egomap72-Breturn-{seed}-{condition}-v2', host='azure',
+             host_alarm_s=6000, case_cap_s=810., stage_diagnostic=False,
+             admission='fresh continuous DEV; own B exploration then original B/return budgets; no checkpoint')
     b['options'].update(return_own_free_astar='on_v1', traversed_free='footprint_history_v1',
         motion_model_turn_lateral_v2=MOTION,
         rgb_reconfirmation=RGB if condition == 'on' else 'off',
         covariance_inflation=COV if condition == 'on' else 'off',
-        fresh_home='first_own_graph_frame_v1' if condition == 'on' else 'off')
+        fresh_home='first_own_graph_frame_v1' if condition == 'on' else 'off',
+        fresh_task_schedule='observe_B_then_b_return_270_v1')
     b['comparison'] = 'same seed/source/initial Scene; combined RGB+covariance toggles only'
     return b
+
+
+def install_fresh_schedule(c):
+    """Start the existing B/return schedule at first causal own B observation.
+
+    The initial exploration gets the original 270s leg cap. Both conditions
+    use identical task selection; no checkpoint admission or GT is involved.
+    """
+    from scripts.own_route_budget_schedule import Schedule, OPTION
+    original = c.receive
+    schedule = None
+    def receive(**kw):
+        nonlocal schedule
+        if schedule is None and 'B' in c.entities and 'B' not in c.reached:
+            schedule = Schedule(c, kw['t'], option=OPTION)
+            # Replace only the historical provenance label emitted by Schedule.
+            c.events[-1]['checkpoint_source'] = None
+            c.events[-1]['source'] = 'same_run_first_own_B'
+        if schedule is not None:
+            schedule.before_frame(c, kw['t'], fresh.old.enter_return)
+        command, trace = original(**kw)
+        if schedule is not None:
+            command, trace = schedule.after_frame(c, kw['t'], command, trace)
+        trace['fresh_task_schedule'] = dict(option='observe_B_then_b_return_270_v1',
+            B_approach_start=None if schedule is None else schedule.start,
+            return_start=None if schedule is None else schedule.return_start)
+        return command, trace
+    c.receive = receive
+    return c
 
 
 def run(args):
@@ -66,12 +96,13 @@ def run(args):
             if not row['valid']:
                 raise RuntimeError('EGOMAP72_REFERENCE_NOT_EXECUTED')
         old.previous.previous.execution_audit(c, OPTIONS, emit)
+        install_fresh_schedule(c)
         return c
     continuous = SimpleNamespace(**{**vars(fresh.old.continuous), 'controller': controller})
     def alarm(n):
         return signal.alarm(b['host_alarm_s'] if n else 0)
-    # Original full-run loop, initial Scene, warmup and natural task transitions.
-    # No checkpoint admission, task reset, forced return or restored object state.
+    # Original full-run loop, initial Scene and warmup. The B/return task
+    # schedule is the same as egomap71, starting from this run's own discovery.
     result = bind(fresh.old.run, bundle=lambda *a: b, continuous=continuous,
         install=fresh.install, server_slot=old.server_slot,
         signal=SimpleNamespace(**{**vars(signal), 'alarm': alarm}))(args)
@@ -172,7 +203,7 @@ def summarize(plan, out):
         prior_egomap71=dict(summary_path=str(prior_path.relative_to(ROOT)), sha256=old.digest(prior_path.read_bytes()),
                            host_errors=history, registered=12, measured=0),
         checkpoint_inputs=False, external_RGB_bank=False, control_static_map=False, control_GT=False,
-        schedule='original continuous own B/box/home; 270s per leg, 810s maximum, no forced transition',
+        schedule='own B exploration up to 270s; original B270/return270 after own discovery; max810s',
         confirmation=False, threshold_retuning=False, model_calls=0,
         scope='same six DEV seeds, both toggles combined; not separate effects or transport E2E')
     dump(out/'summary.json', report)
