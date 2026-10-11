@@ -231,6 +231,13 @@ def lifecycle(action, reason, root=ROOT, grace=GRACE_SECONDS):
         for run in run_dirs(root):
             if run.is_symlink():
                 continue
+            # Repeated azctl start is also batch admission on an already running
+            # VM. Recovery preserves live, identity-checked sibling writers;
+            # ordinary stop still sees them as blockers and cost stop signals.
+            if action == 'recover' and run_processes(run):
+                report.setdefault('active_preserved', []).append(run.name)
+                write_json(record, report)
+                continue
             ok = archived(root, run)
             attempts = 0
             while not ok and time.monotonic() < deadline:

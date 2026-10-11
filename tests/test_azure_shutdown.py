@@ -135,6 +135,20 @@ def test_recover_cli_success_returns_zero(root, monkeypatch):
     assert shutdown.main() == 0
 
 
+def test_start_recovery_preserves_live_sibling_without_archiving_or_signalling(root, monkeypatch):
+    folder=run(root)
+    monkeypatch.setattr(shutdown,'run_processes',lambda p:{1234})
+    archive=Mock(side_effect=AssertionError('live writer must not be archived'))
+    signal=Mock(side_effect=AssertionError('recovery must not signal sibling'))
+    monkeypatch.setattr(shutdown,'bounded_archive',archive)
+    monkeypatch.setattr(shutdown,'signal_runs',signal)
+    report=shutdown.lifecycle('recover','start_recovery',root,grace=.01)
+    assert report['active_preserved']==['one'] and not report['failed']
+    assert not report['archived'] and folder.joinpath('raw').read_bytes()==b'flushed original'
+    assert shutdown.blockers(root)['unarchived']==['one']
+    archive.assert_not_called();signal.assert_not_called()
+
+
 def test_start_recovery_archive_failure_refuses_admission(root, monkeypatch):
     run(root)
     monkeypatch.setattr(shutdown, 'bounded_archive', lambda *args: False)
