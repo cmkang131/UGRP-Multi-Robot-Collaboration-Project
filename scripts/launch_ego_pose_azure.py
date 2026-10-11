@@ -20,8 +20,16 @@ def main():
     p.add_argument('--runner-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--worker-sha',help='reuse an explicitly frozen committed worker source')
     p.add_argument('--attempt',type=int,default=1,help='new output suffix; never overwrite prior failures')
+    p.add_argument('--seeds',default='63001,63002,63003,63004,63005,63006')
+    p.add_argument('--cpus',default='1,2,3',help='three distinct worker CPUs within 0..11')
+    p.add_argument('--resume-existing',action='store_true',help='attach to exact own existing group without resubmission')
     p.add_argument('--task-budget-s',type=int,default=10800);a=p.parse_args()
-    if not 600<=a.task_budget_s<=10800:raise ValueError('FINITE_TASK_BUDGET_REQUIRED')
+    if not 600<=a.task_budget_s<=21600:raise ValueError('FINITE_TASK_BUDGET_REQUIRED')
+    seeds=[int(s) for s in a.seeds.split(',')];cpus=[int(c) for c in a.cpus.split(',')]
+    if not seeds or len(set(seeds))!=len(seeds) or not set(seeds)<=set(range(63001,63007)):
+        raise ValueError('REGISTERED_UNIQUE_SEEDS_REQUIRED')
+    if len(cpus)!=3 or len(set(cpus))!=3 or not set(cpus)<=set(range(12)):
+        raise ValueError('THREE_DISTINCT_CPUS_0_TO_11_REQUIRED')
     spec=importlib.util.spec_from_file_location('ego_remote',a.runner_root/'scripts/remote_run.py')
     remote=importlib.util.module_from_spec(spec);spec.loader.exec_module(remote)
     launcher_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=a.worktree,text=True).strip()
@@ -53,7 +61,7 @@ def main():
     ssh('python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py admit')
     already_shipped=ssh(f'test ! -f ~/ugrp-sim/src/{sha}/.git/ugrp-source-complete || cat ~/ugrp-sim/src/{sha}/.git/ugrp-source-complete')==sha
     budget('source',shipping=not already_shipped)
-    save('source.json',dict(worker_sha=sha,launcher_sha=launcher_sha,reused_source=already_shipped))
+    save('source.json',dict(worker_sha=sha,launcher_sha=launcher_sha,reused_source=already_shipped,seeds=seeds,cpus=cpus))
     ssh(f'mkdir -p ~/ugrp-sim/leases; test ! -e {lease}; touch {lease}')
     started=time.monotonic();stop=threading.Event();records=[]
     def heartbeat():
@@ -68,21 +76,25 @@ def main():
         # constructing MuJoCo or submitting a whole failed group.
         check='from scripts.run_ego_pose_continuity import bundle; from sim.goal_route_assets import xml_preflight; [xml_preflight(bundle(s,"off","'+sha+'"),s) for s in range(63001,63007)]; print("ASSET_PREFLIGHT_6_OK")'
         print(ssh(f'cd ~/ugrp-sim/src/{sha} && taskset -c 0-11 .venv-sim/bin/python -c '+shlex.quote(check)),flush=True)
-        for seed in range(63001,63007):
+        for seed in seeds:
             remaining=a.task_budget_s-(time.monotonic()-started)
             if remaining<900:raise TimeoutError('TASK_ARCHIVE_RESERVE')
-            budget(seed)
             name=f'egojump-{seed}-{sha[:8]}-r{a.attempt}';root=f'$HOME/ugrp-sim/runs/{name}'
+            exists=ssh(f'test ! -d {root} || cat {root}/SOURCE_SHA')
+            attach=a.resume_existing and exists==sha
+            if exists and not attach:raise RuntimeError('EXISTING_RUN_REQUIRES_EXPLICIT_RESUME')
+            if not attach:budget(seed)
             wall=min(5400,int(remaining-900))
-            command=['env','UGRP_EXECUTION_HOST=azure','MUJOCO_GL=osmesa','MPLBACKEND=Agg',
+            command=['systemd-run','--user','--scope','--quiet','--unit='+name,
+                '--property=AllowedCPUs=0-11','env','UGRP_EXECUTION_HOST=azure','MUJOCO_GL=osmesa','MPLBACKEND=Agg',
                 'OMP_NUM_THREADS=1','OPENBLAS_NUM_THREADS=1','LP_NUM_THREADS=1',
                 'timeout','-s','INT','-k','90',str(wall+120),'taskset','-c','0-11','.venv-sim/bin/python','-m','scripts.sim_cli',
                 'workflow','run','ego-pose-continuity-dev','--timeout',str(wall+60),'--',
-                '--mode','group','--seed',str(seed),'--cpus','0,1,2','--wall-budget-s',str(wall),
+                '--mode','group','--seed',str(seed),'--cpus',a.cpus,'--wall-budget-s',str(wall),
                 '--output',f'/home/ugrp/ugrp-sim/runs/{name}/data']
             line=shlex.join(command)
             metadata=dict(schema='ugrp.run-meta.v1',**{'class':'dev'},pr=405,
-                branch='codex/ego-pose-continuity',sha=sha,batch=name,cpus=[0,1,2],
+                branch='codex/ego-pose-continuity',sha=sha,batch=name,cpus=cpus,
                 group_wall_budget_s=wall,task_budget_s=a.task_budget_s,
                 storage='3 x 768MiB peak plus 1024MiB existing/temporary writes; future groups unadmitted',
                 keep=['summary.json','data/summary.json'],model_calls=0)
@@ -91,11 +103,12 @@ set -eu
 cd "$HOME/ugrp-sim/src/{sha}"
 exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "$PWD" --run "$HOME/ugrp-sim/runs/{name}" -- {line}
 '''
-            ssh(f'test ! -e {root} && mkdir {root} && printf %s {shlex.quote(json.dumps(metadata))} > {root}/RUN_META.json && '
-                f'printf %s {sha} > {root}/SOURCE_SHA && printf %s {shlex.quote(line)} > {root}/COMMAND && '
-                f'printf %s {shlex.quote(script)} > {root}/run_wrapper.sh && cat /proc/loadavg > {root}/LOADAVG && '
-                f'setsid -f bash {root}/run_wrapper.sh </dev/null >{root}/wrapper.log 2>&1')
-            pending.append(name);print('STARTED',name,sha,flush=True)
+            if not attach:
+                ssh(f'test ! -e {root} && mkdir {root} && printf %s {shlex.quote(json.dumps(metadata))} > {root}/RUN_META.json && '
+                    f'printf %s {sha} > {root}/SOURCE_SHA && printf %s {shlex.quote(line)} > {root}/COMMAND && '
+                    f'printf %s {shlex.quote(script)} > {root}/run_wrapper.sh && cat /proc/loadavg > {root}/LOADAVG && '
+                    f'setsid -f bash {root}/run_wrapper.sh </dev/null >{root}/wrapper.log 2>&1')
+            pending.append(name);print('ATTACHED' if attach else 'STARTED',name,sha,flush=True)
             previous=None
             while True:
                 state=ssh(f'test ! -f {root}/EXIT || cat {root}/EXIT')

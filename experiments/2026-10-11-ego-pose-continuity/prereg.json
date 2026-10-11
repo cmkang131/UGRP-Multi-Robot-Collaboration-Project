@@ -43,7 +43,10 @@
     "available_mem_gib": 6,
     "vm_start_stop": false,
     "class": "dev",
-    "pr": 405
+    "pr": 405,
+    "driver_budget_s": 21600,
+    "per_seed_group_budget_s": 5400,
+    "budget_note": "Initial measured throughput about 5-10 wall/SIM; six sequential three-condition groups due 768MiB/run disk reserve. Finite 6h driver with 15min archive reserve; each unchanged worker remains capped at 90min."
   },
   "preserve": [
     "summary",
