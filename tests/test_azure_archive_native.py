@@ -150,8 +150,8 @@ def test_cli_loads_explicit_vm_toggle_and_respects_environment_override(tmp_path
     env.write_text('UGRP_ARCHIVE_NATIVE=on_v1\nUGRP_ARCHIVE_NATIVE_HOST=archive-host\n'
                    'UGRP_ARCHIVE_NATIVE_IDENTITY=/key/path\nUNRELATED=value\n')
     monkeypatch.setattr(shutdown, 'NATIVE_ENV', env)
-    for name in ('UGRP_ARCHIVE_NATIVE', 'UGRP_ARCHIVE_NATIVE_HOST', 'UGRP_ARCHIVE_NATIVE_IDENTITY'):
-        monkeypatch.delenv(name, raising=False)
+    # The loader itself sets variables; restore the whole mapping after this test.
+    monkeypatch.setattr(shutdown.os, 'environ', {})
     shutdown.load_native_environment()
     assert os.environ['UGRP_ARCHIVE_NATIVE'] == 'on_v1'
     assert os.environ['UGRP_ARCHIVE_NATIVE_HOST'] == 'archive-host'
