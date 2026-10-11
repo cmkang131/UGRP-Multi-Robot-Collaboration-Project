@@ -166,6 +166,18 @@ def test_guarded_batch_contains_exactly_first_four_registered_cells():
     assert len(rows)==4 and len(set(r[0] for r in rows))==4
     assert {(r[1],r[2]) for r in rows}=={(s,m) for s in (61001,61002) for m in ('gemma','gemini')}
     assert all(accepted_call_id(name+':call-0001-r1:1') for name,*_ in rows)
+    assert {r[0] for r in cells('r2')}.isdisjoint(r[0] for r in rows)
+    assert all(accepted_call_id(name+':call-0001-r1:1') for name,*_ in cells('r2'))
+    with pytest.raises(ValueError,match='REGISTERED_ATTEMPT'):cells('r4')
+
+
+def test_native_preflight_loads_real_planners_before_rgb_or_physics(monkeypatch):
+    import sys
+    from scripts.run_e2e_azure_batch import prepare_native
+    monkeypatch.setitem(sys.modules,'mujoco',None)
+    libraries=prepare_native()
+    assert {'core','unknown','monitor'} <= {p.rsplit('/',1)[-1].split('-')[0] for p in libraries}
+    assert all(v['bytes']>1000 and len(v['sha256'])==64 for v in libraries.values())
 
 
 def test_dedicated_cpu_admission_rejects_overlap_busy_and_concurrency():

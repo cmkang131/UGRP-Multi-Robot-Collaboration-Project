@@ -2,7 +2,7 @@
   "class": "dev",
   "pr": 433,
   "bundle": "e2e-ownmap-live-v185",
-  "azure_runner_sha": "1bfa2bde2d60d214d775585d937e005e109f1922",
+  "azure_runner_sha": "e206bf3182363657fae832bda612dcd894bf10ac",
   "s4_import_sha": "b91a7eaf",
   "e2e_parent_sha": "dc57dd7c14ca22a1680685f7613ca08dff85aa5e",
   "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
@@ -29,11 +29,10 @@
       61004
     ],
     "off_seeds": [
-      61001,
-      61002
+      61001
     ],
-    "additional_runs": 8,
-    "total_max": 13
+    "additional_runs": 6,
+    "total_max": 15
   },
   "options": {
     "event_driven_llm": true,
@@ -123,11 +122,16 @@
   },
   "requested_azure_runner_sha": "d0a5080402f30e8eccdf7b4852d1cb36d05c0ced",
   "attempt_accounting": {
-    "completed_failed_attempts": 1,
+    "completed_failed_attempts": 5,
     "first_four_retry": 4,
-    "conditional_expansion": 8,
-    "total_max_including_failures": 13,
+    "conditional_expansion": 6,
+    "total_max_including_failures": 15,
     "absolute_user_cap": 16
   },
-  "submission": "one remote_run supervised batch with four independent sim_cli workflows, RUN_META and EXIT per case"
+  "submission": "one remote_run supervised batch with four independent sim_cli workflows, RUN_META and EXIT per case",
+  "native_preflight": {
+    "before_children": true,
+    "source": "https://docs.python.org/3/library/multiprocessing.html#synchronization-between-processes",
+    "cause": "Two concurrent cold-start dlopen calls saw a partially linked final .so; serialize planner build/load before child startup; no input, provider or physics during preflight"
+  }
 }

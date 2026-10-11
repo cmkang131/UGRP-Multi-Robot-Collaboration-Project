@@ -4,6 +4,7 @@ The host runner calls boot recovery at admission. Submit this single batch so
 recovery never attempts to archive a sibling which is still running.
 """
 import argparse
+import fcntl
 import hashlib
 import json
 import os
@@ -16,10 +17,29 @@ import time
 from scripts.run_e2e_ownmap_live import write
 
 
-def cells():
-    return [(f'e2eaz1-{model}-s{seed}-on-r1',seed,model,profile)
+def cells(attempt='r1'):
+    if attempt not in ('r1','r2','r3'):raise ValueError('REGISTERED_ATTEMPT_REQUIRED')
+    return [(f'e2eaz1-{model}-s{seed}-on-{attempt}',seed,model,profile)
         for seed in (61001,61002)
         for model,profile in (('gemma','study_gemma4_31b_v1'),('gemini','main_study_gemini_v1'))]
+
+
+def prepare_native():
+    """Finish and load shared planner libraries before any child can read them.
+
+    Native build() historically publishes directly to the final .so path. A
+    single serialized constructor is a build barrier, without RGB or physics.
+    """
+    from harness.e2e_live_mapping import make_goal
+    source=Path(__file__).resolve().parents[1]
+    cache=source/'outputs/mapfree-public-navigation-build'
+    cache.mkdir(parents=True,exist_ok=True)
+    with (cache/'e2e-build.lock').open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        goal=make_goal('r1',61001,json.loads((source/'configs/e2e_nees_egomap70_dev_v1.json').read_text()),relook='on_v1')
+        assert not goal.e2e_observed and not goal.entities
+        return {str(p.relative_to(source)):dict(bytes=p.stat().st_size,
+            sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in sorted(cache.glob('*.so'))}
 
 
 def dedicated_verdict(cpus,idle,writers):
@@ -60,6 +80,7 @@ def dedicated_admission(cpus):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--run-root',type=Path,required=True)
     p.add_argument('--expected-source-sha',required=True);p.add_argument('--relay-root',type=Path,required=True)
+    p.add_argument('--attempt',choices=('r1','r2','r3'),default='r1')
     p.add_argument('--reserved-cpus',help='Default off: four otherwise unused Linux CPU IDs, rechecked at admission')
     a=p.parse_args();root=a.run_root.resolve()
     if not root.is_relative_to(Path.home()/'ugrp-sim/runs'):raise ValueError('PERSISTENT_RUN_REQUIRED')
@@ -78,7 +99,8 @@ def main():
     def stop(*_):raise KeyboardInterrupt('TASK_STOP')
     signal.signal(signal.SIGTERM,stop)
     try:
-        for index,(name,seed,model,profile) in enumerate(cells()):
+        write(root/'native-preflight.json',dict(libraries=prepare_native(),before_any_case=True))
+        for index,(name,seed,model,profile) in enumerate(cells(a.attempt)):
             target=root/'cases'/name;target.mkdir(parents=True,exist_ok=False)
             write(target/'RUN_META.json',{**parent,'batch':root.name,'run':name,'class':'dev','pr':433})
             command=[sys.executable,'-m','scripts.sim_cli','workflow','run','e2e-ownmap-live-v185',
