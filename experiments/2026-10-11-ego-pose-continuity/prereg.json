@@ -46,7 +46,32 @@
     "pr": 405,
     "driver_budget_s": 21600,
     "per_seed_group_budget_s": 5400,
-    "budget_note": "Initial measured throughput about 5-10 wall/SIM; six sequential three-condition groups due 768MiB/run disk reserve. Finite 6h driver with 15min archive reserve; each unchanged worker remains capped at 90min."
+    "budget_note": "Finite total task window retained; initially sequential, then at most two seed groups after source-cache capacity recovery. Every submission counts all own active/queued remaining peak bytes and uses an atomic server lock plus CPU/memory recheck. Frozen worker and per-group 90min cap unchanged.",
+    "pipelines": {
+      "a": {
+        "seeds": [
+          63002,
+          63004,
+          63006
+        ],
+        "cpus": [
+          1,
+          2,
+          3
+        ]
+      },
+      "b": {
+        "seeds": [
+          63003,
+          63005
+        ],
+        "cpus": [
+          4,
+          5,
+          6
+        ]
+      }
+    }
   },
   "preserve": [
     "summary",

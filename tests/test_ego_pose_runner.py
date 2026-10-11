@@ -2,6 +2,25 @@ import copy
 import json
 from scripts import run_ego_pose_continuity as m
 from scripts.launch_ego_pose_azure import measured_terminal
+from scripts.ego_pose_archive_transport import remaining_run_bytes
+
+
+def test_reservations_include_unstarted_groups_and_partial_active_siblings(tmp_path):
+    peak=768*2**20
+    queued=tmp_path/'egojump-63003-12345678-r1';queued.mkdir()
+    active=tmp_path/'egojump-63002-12345678-r1';(active/'data').mkdir(parents=True)
+    jobs=[]
+    for i in range(3):
+        p=active/'data'/str(i);p.mkdir();(p/'trace').write_bytes(b'x'*100)
+        jobs.append(dict(root=str(p),status='RUNNING'))
+    jobs[0].update(status='RECORDED',exit_code=0)
+    status=active/'data/batch-status.json';status.write_text(json.dumps(jobs))
+    assert remaining_run_bytes(tmp_path)['bytes']==5*peak-200
+    # A partial metadata write must reserve the full group, never silently omit it.
+    status.write_text('[')
+    assert remaining_run_bytes(tmp_path)['bytes']==6*peak
+    (queued/'EXIT').write_text('0\n')
+    assert remaining_run_bytes(tmp_path)['bytes']==3*peak
 
 
 def test_physical_failure_is_retained_but_host_and_supervisor_errors_block_batch():

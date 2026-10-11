@@ -9,6 +9,33 @@ import json
 import re
 
 
+def remaining_run_bytes(root):
+    """Reserve queued groups and all active sibling groups before new writes."""
+    from pathlib import Path
+    import json
+    peak=768*2**20
+    groups={}
+    over_peak=[]
+    for group in Path(root).glob('egojump-63*-*-r*'):
+        if not group.is_dir() or (group/'EXIT').exists():continue
+        try:
+            jobs=json.loads((group/'data/batch-status.json').read_text())
+        except (FileNotFoundError,json.JSONDecodeError):
+            groups[group.name]=3*peak
+            continue
+        if len(jobs)!=3:
+            groups[group.name]=3*peak
+            continue
+        remaining=0
+        for job in jobs:
+            if 'exit_code' in job:continue
+            used=sum(p.stat().st_size for p in Path(job['root']).rglob('*') if p.is_file())
+            if used>peak:over_peak.append(job['root'])
+            remaining+=max(0,peak-used)
+        groups[group.name]=remaining
+    return dict(bytes=sum(groups.values()),groups=groups,over_peak=over_peak)
+
+
 def inventory(folder):
     import os
     import hashlib
@@ -34,7 +61,7 @@ def inventory(folder):
 
 def run(remote,host,payload,body):
     prefix='import os,sys,json,hashlib,subprocess,shutil\nfrom pathlib import Path\n'
-    script=prefix+inspect.getsource(inventory)+'\nx=json.loads('+repr(json.dumps(payload))+')\n'+body
+    script=prefix+inspect.getsource(inventory)+inspect.getsource(remaining_run_bytes)+'\nx=json.loads('+repr(json.dumps(payload))+')\n'+body
     command='taskset -c 0-11 python3 -' if host=='azure' else 'python3 -'
     r=remote.ssh(host,command,input=script,capture_output=True,text=True,timeout=900)
     return json.loads(r.stdout)
@@ -59,11 +86,8 @@ if known and known.get("verified") and Path(known["path"]).is_dir() and known["i
 if source.is_symlink() or not (source/"EXIT").exists() or run_processes(source):raise RuntimeError("COMPLETED_OWN_SOURCE_REQUIRED")
 subprocess.run([sys.executable,"/usr/local/lib/ugrp-storage/scripts/compress_json_traces.py",str(source),"--execute"],check=True,capture_output=True)
 hashes=inventory(source);state=source_state(source);size=sum(v.get("bytes",0) for v in hashes.values())
-remaining=0
-for j in json.loads((group/"data/batch-status.json").read_text()):
-    if j["status"]=="RUNNING":
-        used=sum(p.stat().st_size for p in Path(j["root"]).rglob("*") if p.is_file())
-        remaining+=max(0,768*2**20-used)
+reservation=remaining_run_bytes(root/"runs")
+remaining=reservation["bytes"]
 estimate=size+64*2**20
 if shutil.disk_usage(source).free-estimate-remaining-1024*2**20<8*2**30:raise RuntimeError("TRANSPORT_X86_BUDGET")
 if shutil.disk_usage(root/"arm").free-2*estimate-3*768*2**20<25*2**30:raise RuntimeError("TRANSPORT_ARM_BUDGET")
