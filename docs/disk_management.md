@@ -23,7 +23,7 @@
 
 모든 등급에서 영구 보존: summary/판정, LLM 요청·응답 **텍스트**, 자기 발행 명령 궤적, 가벼운 결과·trace 원장, **모든 파일의 SHA-256 목록**, 버전별 대표 영상 1개와 그 데이터. 프레임·이미지·npz·일반 영상·큰 trace는 dev의 무거운 원본이다. 알 수 없는 이름의 파일은 삭제 대상으로 추측하지 않는다. 모델 가중치는 기존 [모델 배포](model_artifacts.md) 규칙대로 보존한다.
 
-각 실행 디렉터리에 다음 `RUN_META.json`을 쓴다. PR 번호는 정수, 미정은 `null`이다. PR 미정·메타데이터 누락·불명확한 과거 자료는 자동 정리하지 않는다.
+각 실행 디렉터리에 다음 `RUN_META.json`을 쓴다. PR 번호는 정수, 미정은 `null`이다. 2026-10-11 자동화 요청에 따라 누락 메타데이터는 이름·PR 본문·연결된 experiments 기록으로 소급한다. 불명확하면 class=dev/pr=null/note를 기록한다. PR 없는 DEV는 7일 지난 완료 자료를 압박의 마지막 단계에서 정리하며, 명시적 1회 정리도 가능하다. 기존 study/milestone을 낮추지 않는다.
 
 ```json
 {"schema":"ugrp.run-meta.v1","class":"dev","pr":435,"branch":"codex/example","sha":"<full-source-SHA>","batch":"example-wave1","keep":["representative.mp4","representative-data","commands.jsonl","llm"]}
@@ -81,7 +81,7 @@ python3 scripts/compress_json_traces.py <완료 실행> --execute   # 검증 압
 
 ```sh
 python3 scripts/evidence_prune.py --pr <번호> <경로1> <경로2>   # 기본 dry-run
-# 별도 정리 작업에서만 명시적으로 실행; 이번 10/11 작업은 dry-run만
+# 10/11 후속 자동화에서 dry-run 검토 후 execute를 승인받음
 python3 scripts/evidence_prune.py --pr <번호> <경로들> --execute \
   --records <프로젝트>/outputs/cleanup-records
 ```
@@ -90,7 +90,7 @@ python3 scripts/evidence_prune.py --pr <번호> <경로들> --execute \
 - 이미지·프레임·배열·일반 영상과 >64 KiB JSON/JSONL을 찾되, 영구 보존 이름·`keep`·`representative*`는 제외한다. 압축된 trace는 `COMPRESSED.jsonl`의 **원본 크기**로 분류한다. 이름을 모르는 기타 파일은 보존한다. 가벼운 trace(≤64 KiB)는 남긴다.
 - dry-run은 후보 경로·현재 바이트·SHA-256을 stdout JSON으로 보고하고 실행 자료를 쓰거나 삭제하지 않는다. 중복 경로는 한 번만 계산한다. RUN_META가 없는 폴더는 후보 0으로 보존하며 이는 원본이 없다는 뜻이 아니다.
 - execute는 배타 잠금·실제 cwd/열린 파일/실행 명령 검사를 재사용한다. 전체 파일 목록 `ALL-hashes.tsv`, 후보 `PRUNED-hashes.tsv`, `outputs/cleanup-records/`의 계획 영수증을 먼저 저장한다. 그 뒤 파일 불변·완료 상태를 다시 확인하고 처리한 파일을 영수증에 남긴다. 이전 목록·영수증은 보존한다.
-- Mac은 `~/.Trash/ugrp-pr-<번호>-<시각>/`으로 이동한다. 사용자가 휴지통을 비운다. 서버는 해시·기록을 저장한 뒤 후보 파일만 삭제한다. milestone/study·대표 증거·가벼운 파일은 삭제 대상이 아니다. PR 미정 자료·raw 등급 변경·그 밖의 삭제는 별도 결정이 필요하다.
+- Mac은 `~/.Trash/ugrp-pr-<번호>-<시각>/`으로 이동한다. 사용자가 휴지통을 비운다. 서버는 해시·기록을 저장한 뒤 후보 파일만 삭제한다. milestone/study·대표 증거·가벼운 파일은 삭제 대상이 아니다. 2026-10-11 사용자 승인 범위의 PR 없는 7일 지난 DEV도 해시·기록 뒤 같은 방식으로 정리한다. raw 등급 변경·그 밖의 삭제는 별도 결정이 필요하다.
 
 ## 6. 공용 실행 경로의 RUN_META 옵션
 
@@ -120,3 +120,55 @@ python3 scripts/ugrp_session.py run \
 - [Zstandard 공식 CLI](https://github.com/facebook/zstd/blob/dev/programs/zstd.1.md): 무손실 압축, 원본 기본 보존, `-d`/`-t`. 자체 압축 해제 SHA-256 비교를 추가했다.
 - [rsync 공식 매뉴얼](https://www.samba.org/ftp/rsync/generated-files/rsync.1.html): `-c`는 복사 필요 여부를 내용 체크섬으로 결정한다. 전송 중 체크섬 검증과 별개이며, 이번 아카이브는 `-anc` 재비교와 전체 SHA-256도 확인한다.
 - [DCC: Five steps to decide what data to keep](https://dcc.ac.uk/guidance/how-guides/five-steps-decide-what-data-keep): 재사용 가치와 재현 필요에 따라 보존 자료를 선택한다. dev/milestone/study의 구체적 수명·숫자 바닥은 논문 표준값이 아닌 10/11 사용자 결정이다.
+
+## 8. 사용자 승인 자동 정리 (2026-10-11 후속)
+
+`storage_automation.py`는 기존 압축·prune·배타 잠금·실제 사용 검사를 재사용한다.
+Mac `com.ugrp.storage-auto` 사용자 LaunchAgent는 매일 04:15와 5분 간격에 호출된다.
+5분 호출은 여유 검사만 하고, 하루가 지났거나 Mac <20 GiB / ARM <35 GiB일 때만
+실제 작업한다. 압박 재시도는 시간당 한 번으로 제한한다. 동시에 실행되면 공용
+maintenance 잠금으로 하나만 진행한다. KeepAlive·무한 로그 파일은 만들지 않는다.
+절전/로그아웃 중에는 실행되지 않으므로 제출 전 예산 검사는 계속 필요하다.
+
+- Mac에서 인증된 GitHub API로 **모든 PR**을 페이지 끝까지 조회한다. ARM에는 비밀·토큰을
+  복사하지 않고 SSH 표준 입력으로 5분 유효 PR 목록만 전달한다. 잘못된 저장소·만료·빈 목록,
+  열린 PR·같은 브랜치 다른 열린 PR은 정리를 거부한다. API/SSH 실패는 기록하고 다음에 재시도한다.
+- 소급 RUN_META는 최상위 배치와 EXIT 있는 자식에 붙인다. 기존 메타데이터는 보존하고
+  자식은 부모 PR·study/milestone을 상속한다. 미완료 EXIT는 만들어내지 않는다.
+  `egomap→405`, `s4live/s4grip→425`, `s3fix숫자→416`, `s3view→427`,
+  `s3view3→432`, `e2e1–4→433`이며 보기 전용 이름과 PR 본문의 정확한 실행 이름이 우선한다.
+  연결된 experiments의 정확한 경로도 참고한다. 모호한 자료는 dev/null/note이며 영구 제외하지 않는다.
+- 최근 **24시간** 바뀐 증거·실행 중·테스트 사용·보호 등급·대표 영상과 데이터는 보존한다.
+  RUN_META·hash 목록·압축 매니페스트 등의 정리 작업은 증거 나이를 초기화하지 않는다.
+  압축 결과 파일은 원본 mtime을 보존한다. 메타데이터 없는 기존 폴더도 dry-run에서 가상
+  메타데이터로 계획하며, dry-run은 원본 폴더를 변경하지 않는다(별도 cleanup 기록만 저장).
+- 여유가 바닥+10 GiB 미만이면 (a) 종료한 eligible DEV의 큰 JSON을 zstd로 무손실 압축하고
+  (b) MERGED/CLOSED DEV를 정리하며, 여전히 압박이면 (c) PR 없는 7일 지난 DEV를 정리한다.
+  평상시에도 (b)는 매일 수행한다. `--include-orphans`는 승인된 1회 (c)를 명시적으로 수행한다.
+  압축·삭제마다 기존 전체 해시·복원 SHA·삭제 영수증과 단계별 여유를 기록한다.
+- Mac은 휴지통으로 이동하므로 그 단계로 실제 여유가 늘어나지 않을 수 있다. 자동 비우기는
+  하지 않는다. 휴지통 >10 GiB는 `outputs/cleanup-records/TRASH-OVER-10GiB.txt`,
+  접근 실패와 바닥 미달도 별도 알림 파일에 남긴다. 서버는 해시 뒤 실제 삭제한다.
+- opt-in `ugrp_session.py --evidence-dir` 경로는 종료 시 `RUN_STORAGE.json`에 크기를 기록하고
+  300 MiB 초과를 경고하며 큰 JSON을 즉시 검증 압축한다. 압축 오류가 원래 실행의 종료 코드나
+  HOST_ERROR를 덮어쓰지 않는다. 직접 호출된 옛 실행기의 자동 연결·캡처 토글은 별도 작업 범위다.
+
+```sh
+python3 scripts/install_storage_automation.py --install-arm
+python3 scripts/storage_automation.py --host mac --root ~/projects/ugrp/outputs --remote-arm
+# 계획 검토 뒤 실행(10/11 1회는 PR 없는 7일 지난 DEV도 명시적으로 포함)
+python3 scripts/storage_automation.py --host mac --root ~/projects/ugrp/outputs \
+  --remote-arm --include-orphans --execute
+```
+
+설치 후 자체 worktree를 지워도 도구는 Mac `~/Library/Application Support/ugrp-storage-tools/`와
+ARM `~/ugrp-storage-tools/`에 남는다. 이전 도구는 버전별 backups에 보존하고 설치 파일의
+전체 SHA-256을 확인한다. ARM stock-bot·crontab·기존 timer는 변경하지 않는다.
+Azure는 `--host azure`/`configs/storage_auto/azure-command.txt`의 적용 명령만 준비했다.
+준비 작업 종료 뒤 서버가 이미 켜져 있을 때 dry-run/검토/설치를 수행해야 한다.
+자동화는 Azure·oracle-x86에 접속하거나 VM을 시작하지 않는다.
+
+참고: [Apple launchd 주기 실행](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html)의
+StartInterval/StartCalendarInterval을 그대로 사용한다. 삭제 조건·7일·용량 문턱은 사용자 결정이다.
+[Zstandard 공식 CLI](https://github.com/facebook/zstd/blob/dev/programs/zstd.1.md)의 무손실 압축과
+해제 방법을 따르며, 기존 도구의 독립 SHA-256 복원 검증을 유지한다.

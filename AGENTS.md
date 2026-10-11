@@ -56,6 +56,7 @@
 - **등급:** 실행마다 `RUN_META.json(class, pr, branch, sha, batch)`을 쓴다. 기본 `dev`, 첫 성공·버전별 대표 증거는 `milestone`, 정식 E2E·사전 등록 본 연구는 `study`다. 메타데이터 없는 과거 자료는 추측해 삭제하지 않는다.
 - **보존·정리:** summary/판정, LLM 요청·응답 텍스트, 명령 궤적, 가벼운 결과·trace 원장, 모든 파일 sha256 목록, 버전별 대표 영상 1개와 그 데이터는 영구 보존한다. `milestone`·`study` 원본은 전부 보존한다. `dev`의 무거운 원본(프레임·이미지·npz·영상·대형 trace)은 해당 PR 병합·종료 시 정리한다(날짜 기준 없음). 열린 PR·진행 중 작업·테스트 사용 자료는 보존한다. `evidence_prune.py`로 기본 dry-run, `--execute` 때만 정리하며 전체 해시·가벼운 파일·`outputs/cleanup-records/` 기록을 먼저 남긴다. Mac은 휴지통으로, 서버는 해시 목록 저장 뒤 삭제한다.
 - **배치 예산·경보:** 제출 전에 `실행 수 × 예상 실행당 크기`와 이미 승인한 작업의 남은 쓰기를 합쳐 x86·ARM·Mac 예상 여유를 검사한다(`storage_budget.py --all-hosts`). 바닥 x86 8 GiB·ARM 25 GiB·Mac 20 GiB 아래면 제출 거부한다. 세 호스트의 여유 공간 경보는 x86 8 GiB·ARM 25 GiB·Mac 15 GiB다. ENOSPC는 HOST_ERROR로 기록한다. 사용량은 기존 `disk_report.py`로 확인한다.
+- **자동 정리(2026-10-11 후속 승인):** Mac 사용자 LaunchAgent가 매일 및 여유 <20 GiB에서 Mac·ARM의 MERGED/CLOSED DEV 원본을 해시 기록 뒤 정리한다. 최근 24시간 변경·열린 PR·실행/테스트 사용·milestone/study·대표 영상/데이터·영구 텍스트는 보존한다. 과거 RUN_META는 PR/experiments 근거로 소급하고 불명확하면 dev/pr=null/note로 기록한다. PR 없는 완료 DEV는 7일 뒤 압박의 마지막 단계 또는 명시적 1회 정리 대상이며 누락 메타데이터 자체를 영구 제외 사유로 쓰지 않는다. 바닥+10 GiB 압박은 큰 JSON 압축→종료 PR DEV→오래된 PR 없는 DEV 순서다. Mac 휴지통은 비우지 않고 >10 GiB 알림 파일을 남긴다. ARM stock-bot·crontab 및 Oracle x86은 건드리지 않으며 Azure는 별도 준비 작업 완료 후 적용한다.
 - **Git 크기:** `experiments/`에는 파일당 1 MiB·실험당 5 MiB를 넘는 미디어를 커밋하지 않는다. 원본은 실행 호스트 경로와 sha256으로 연결한다. Mac 기존 raw는 삭제 권한 없이 옮기거나 지우지 않는다.
 
 ## 빠른 진행 규칙 (2026-09-30)
