@@ -151,6 +151,15 @@ def test_e2e11_registered_calls_reach_relay_admission():
         assert not accepted_call_id(name+':call-0001-r1:1')
 
 
+def test_e2e12_registered_calls_reach_relay_admission():
+    from scripts.s4_proxy_relay import accepted_call_id
+    for batch in ('a', 'b'):
+        for seed in (61001, 61002):
+            assert accepted_call_id(f'e2e12-{batch}-s{seed}:call-0001-r1:1')
+    for name in ('e2e12-c-s61001', 'e2e12-a-s61003', 'other-e2e12-a-s61001'):
+        assert not accepted_call_id(name + ':call-0001-r1:1')
+
+
 def test_registered_mission_budget_reaches_goal_and_preserves_legacy_cutoff():
     from scripts.run_e2e_ownmap_live import bundle
     legacy=bundle('a'*40,61001,'study_gemma4_31b_v1',enabled=True,stall_bundle=True)

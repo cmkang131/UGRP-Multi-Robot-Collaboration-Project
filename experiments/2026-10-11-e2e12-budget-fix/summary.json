@@ -1,0 +1,31 @@
+{
+  "status": "PREREGISTERED",
+  "pr": 433,
+  "run_class": "dev",
+  "source_parent": "0afacefbca6e78f3da3a2b0e794894ba71fca918",
+  "bundle": "e2e-stall-budget-v199",
+  "preregistration": {
+    "seeds": [
+      61001,
+      61002
+    ],
+    "conditions": {
+      "A": "v199 + RPP + Gemma + rgb_pulse_gate_v1 + backup_replan_v1 + amcl_alpha_v1",
+      "B": "v199 + RPP + Gemma; stall toggles off"
+    },
+    "mapping_budget": "case_cap_v1",
+    "case_cap_sim_s": 1800,
+    "start_before_utc": "2026-10-11T20:30:00Z",
+    "run_end_before_utc": "2026-10-11T21:35:00Z",
+    "guard_cap_utc": "2026-10-11T21:50:00Z",
+    "outcomes": [
+      "LLM_operated",
+      "own_map_completed",
+      "start_to_finish_transport"
+    ],
+    "early_check_s": 210,
+    "conservative_guards": "record_only",
+    "raw_per_run_mib": 4096
+  },
+  "runs": []
+}
