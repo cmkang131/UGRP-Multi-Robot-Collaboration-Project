@@ -32,6 +32,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--source', type=Path, required=True)
     p.add_argument('--prefix', type=Path, required=True)
+    p.add_argument('--prefix-images', type=Path)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--lease', type=Path, required=True)
     a = p.parse_args()
@@ -72,6 +73,16 @@ def main():
         if not target.exists():
             with target.open('xb') as stream:
                 subprocess.run(['zstd', '-dc', str(packed)], stdout=stream, check=True)
+    prefix_frames = rows(prefix / 'robots/r3/frames.jsonl')
+    for frame in prefix_frames:
+        image = prefix / frame['path']
+        if not image.exists() and a.prefix_images:
+            image.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(a.prefix_images / image.name, image)
+        if hashlib.sha256(image.read_bytes()).hexdigest() != frame['sha256']:
+            raise ValueError('PREFIX_IMAGE_HASH_MISMATCH_' + frame['path'])
+    write(run / 'prefix-verification.json', dict(matches=len(prefix_frames), count=len(prefix_frames),
+        reconstructed_images=str(a.prefix_images) if a.prefix_images else None, checkpoint_payload_unchanged=True))
     checkpoint = prefix / 'checkpoints' / CHECKPOINT
     if hashlib.sha256(checkpoint.read_bytes()).hexdigest() != CHECKPOINT_SHA:
         raise ValueError('original checkpoint mismatch')
