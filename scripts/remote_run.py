@@ -123,6 +123,11 @@ ln -s "$HOME/ugrp-sim/runs/{name}" "outputs/{name}"
 /usr/bin/time -f 'wall=%e cpu=%U+%S' {run_command} > "$HOME/ugrp-sim/runs/{name}/log.txt" 2>&1
 result=$?
 python3 scripts/remote_run_finish.py --source "$HOME/ugrp-sim/src/{sha}" --run "$HOME/ugrp-sim/runs/{name}" > "$HOME/ugrp-sim/runs/{name}/record-copy.log" 2>&1
+record_result=$?
+if [ "$record_result" -ne 0 ]; then
+  echo "$result" > "$HOME/ugrp-sim/runs/{name}/COMMAND_EXIT"
+  result=70
+fi
 echo "$result" > "$HOME/ugrp-sim/runs/{name}/EXIT"
 find "$HOME/ugrp-sim/runs/{name}" -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > "$HOME/ugrp-sim/runs/{name}/SHA256SUMS"
 '''
