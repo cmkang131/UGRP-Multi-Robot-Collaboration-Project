@@ -12,6 +12,9 @@ import sys
 import time
 import uuid
 
+if __package__ in (None, ''):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 ROOT = Path('/home/ugrp/ugrp-sim')
 GRACE_SECONDS = 600
 

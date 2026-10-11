@@ -136,3 +136,10 @@ def test_receiver_refuses_unapproved_ssh_command(tmp_path, monkeypatch):
     monkeypatch.setenv('SSH_ORIGINAL_COMMAND', 'cat /etc/passwd')
     with pytest.raises(ValueError, match='protocol command'):
         native.receive(tmp_path)
+
+
+def test_direct_installed_shutdown_script_can_import_native_module(tmp_path):
+    result = subprocess.run([os.sys.executable, '-c',
+        'import runpy,sys; runpy.run_path(sys.argv[1],run_name="archive_cli"); import scripts.azure_archive_native',
+        str(Path(shutdown.__file__).resolve())], cwd=tmp_path, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
