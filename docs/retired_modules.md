@@ -7,6 +7,10 @@
 
 ## 판단과 재현
 
+2026-10-11: #425는 #416 `6af2afa4`를 반영한 S4 소비자를 v191 / 7.84.0으로 별도 봉인한다. 미실행 v189/v190 등록·계약·실행기·workflow·seal은 원래 SHA의 바이트로 퇴역 목록에 보존하며 결과를 승계하지 않는다. S3/S4 런타임의 `min_command_contract=on_v1`, 공통 기본 off를 유지한다. [기록](../experiments/2026-10-11-pr425-main-sync/summary.json).
+
+2026-10-11: #416 main PR422 반영 후 미실행 v188 / 7.81.0을 원래 SHA `b3d52826`의 바이트로 퇴역 목록에 보존했다. 새 등록은 v190 / 7.83.0이며 공통 `min_command_contract` 기본 off를 유지하고 S3는 on_v1을 명시해 병합 전 명령을 보존한다. [기록](../experiments/2026-10-11-pr416-main-sync/summary.json).
+
 2026-10-11: #416의 `zone-s3-recovery-v152` / 7.45.0은 실행 당시 SHA
 `981baa95`에서만 재현한다. 비교 JSON은 그대로 보존하고 원래 계약·실행기·workflow·등록을
 [퇴역 목록](../experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json)에 바이트/해시로 보존했다.

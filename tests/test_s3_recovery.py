@@ -138,7 +138,8 @@ def test_full_existing_sweep_on_new_options(tmp_path,monkeypatch):
     def selected(sha):
         b=old.bundle(sha)
         b['controller_config']['options'].update(pose_validity='defer_unmeasured_v1',
-            door_lease=door.OPTION,visual_alignment='own_rgb_align_v1',resampling_diversity='off')
+            door_lease=door.OPTION,visual_alignment='own_rgb_align_v1',resampling_diversity='off',
+            min_command_contract='on_v1')
         return b
     monkeypatch.setattr(probe,'contract',SimpleNamespace(**{**vars(old),'bundle':selected}))
     monkeypatch.setattr(probe,'Runtime',Runtime)
@@ -329,13 +330,14 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
     from harness import zone_s3_recovery_contract as contract
     from harness.zone_s3_recovery_runtime import Runtime
     b=contract.bundle('0'*40)
-    assert b['execution_bundle_id']=='zone-s3-recovery-v189'
-    assert b['workflow_version']=='7.82.0'
+    assert b['execution_bundle_id']=='zone-s3-recovery-v191'
+    assert b['workflow_version']=='7.84.0'
     assert b['retired_bundles'][0]['execution_bundle_id']=='zone-s3-recovery-v152'
     assert b['preregistration']['inherited_results'] is False
     contract.verify(b)
     assert b['s3_camera_binding']=='v3_persistent_v1' and b['eval_render_camera']
     assert b['options']['heading_mode']=='path_tangent_v1'
+    assert b['options']['min_command_contract']=='on_v1'
     assert b['options']==b['controller_config']['options']
     monkeypatch.setattr(probe,'contract',contract)
     monkeypatch.setattr(probe,'Runtime',Runtime)
@@ -347,6 +349,7 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
             assert out['pair']['visual_alignment'][r]['option']==b['options']['visual_alignment']
             assert out['pair']['visual_alignment'][r]['pf_used_for_local_error'] is False
         for own in p.runtime.localizers.values():
+            assert own.min_command_contract is True
             assert own.record()['heading_mode']['option']=='path_tangent_v1'
             if b['options']['resampling_diversity']=='off':
                 assert not hasattr(own,'resampling_diversity_audit')

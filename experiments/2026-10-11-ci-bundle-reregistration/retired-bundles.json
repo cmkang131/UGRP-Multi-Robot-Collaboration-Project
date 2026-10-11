@@ -57,8 +57,68 @@
           "sha256": "7adcac5d7cb26242ab3dd85fe1a681d139e53d23a5541afdb538f1001f426b41"
         }
       },
-      "reason": "S4-specific common driver and backend source differ; unexecuted registration only",
-      "replacement": "zone-s3-recovery-v189"
+      "reason": "Merged main PR422 changes the sealed heading source; registration only",
+      "replacement": "zone-s3-recovery-v190"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v189",
+      "workflow_version": "7.82.0",
+      "source_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
+      "recorded_runs": 0,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/harness/zone_s3_recovery_contract.py",
+          "sha256": "18cc67e213a3d4def7b1dfd9e1110148dd31be2573d0e4cc5fa09c56cc59f53a"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/scripts/run_s3_recovery.py",
+          "sha256": "6468085063700d6803d35032c9b23692e5054356c5f86dcc159a2ce64f7868bf"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v189.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/configs/simulation_workflows.d/s3_recovery_v189.json",
+          "sha256": "894af92035cde2f3996b300331839813eb8110db78397eac6d2978aaafff1990"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v189.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/experiments/2026-10-11-ci-bundle-reregistration/registration-v189.json",
+          "sha256": "df33ead1e6f6a0fed08c3fed4b74c0a6c81172962182ce98a9a1157a18188065"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v189.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v189.json",
+          "sha256": "3c2389e9d87bdf9390deb6f0039fed5b2fc38caac37b136bf7810b45c9655f05"
+        }
+      },
+      "reason": "S4 source composition after main PR422 and explicit pre-merge minimum-command contract; separate current registration",
+      "replacement": "zone-s3-recovery-v191"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v190",
+      "workflow_version": "7.83.0",
+      "source_sha": "6af2afa47152c1de49077df9dae42d4d62c3d1e6",
+      "recorded_runs": 0,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/harness/zone_s3_recovery_contract.py",
+          "sha256": "fc4daf9e4e15d4c0c9b4c69bed55bc7400fdd2f8e16fe9191a3d0b8425c16330"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/scripts/run_s3_recovery.py",
+          "sha256": "66b676b06d64c6144e71819ab3dc1ea2315590d8a275c3c16a7c75d69c7edfca"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v190.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/configs/simulation_workflows.d/s3_recovery_v190.json",
+          "sha256": "1aab08e37f254a74662f846988a5c458061b23a3652ccb3e248faad81e2bea95"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v190.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/experiments/2026-10-11-ci-bundle-reregistration/registration-v190.json",
+          "sha256": "604abe92803edff3ca2b1a2534d7e6cb172256eeb904c5fbfd7edb9cbc2a7be6"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v190.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v190.json",
+          "sha256": "0fa27a45017ee50bc763fb6cd076b13e27c46d3ec6f6bc52c8a486074b6a2691"
+        }
+      },
+      "reason": "S4 source composition after main PR422 and explicit pre-merge minimum-command contract; separate current registration",
+      "replacement": "zone-s3-recovery-v191"
     }
   ]
 }
