@@ -25,7 +25,7 @@ function Get-CostResponse([string]$Path, [string]$Body) {
                     }
                 }
                 if ($delay -gt 600) { throw }
-                Write-Output "Cost query throttled; retry-after=$delay seconds"
+                Write-Warning "Cost query throttled; retry-after=$delay seconds"
                 Start-Sleep -Seconds $delay
             }
         }

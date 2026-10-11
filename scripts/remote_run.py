@@ -88,6 +88,14 @@ def main():
     branch = subprocess.check_output(['git', '-C', str(worktree), 'branch', '--show-current'], text=True).strip()
     if host == 'azure':
         subprocess.run([sys.executable, str(Path(__file__).with_name('azctl.py')), 'start'], check=True)
+        for attempt in range(12):
+            ready = subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10',
+                host, 'true'], capture_output=True)
+            if ready.returncode == 0:
+                break
+            time.sleep(5)
+        else:
+            raise RuntimeError('Azure VM started but SSH did not become ready; automatic guards remain active')
     root = f'$HOME/ugrp-sim/runs/{name}'
     lease = f'$HOME/ugrp-sim/leases/{name}'
     ssh(host, f'mkdir -p ~/ugrp-sim/leases && test ! -e {root} && touch {lease}')
