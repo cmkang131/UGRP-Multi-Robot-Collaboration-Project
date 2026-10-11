@@ -4,11 +4,16 @@ Webhook capability URLs are generated and passed through memory, never files.
 Re-running intentionally rotates the action-group webhook; schedules use fixed IDs.
 """
 import datetime as dt
+import argparse
 import json
 from pathlib import Path
 import uuid
+import sys
 
-from azure_api import ACCOUNT, BASE, RG, SUB, SUBS, VM_ID, Arm
+if __package__ in (None, ''):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts.azure_api import ACCOUNT, BASE, RG, SUB, SUBS, VM_ID, Arm
 
 API = '?api-version=2024-10-23'
 RUNBOOK = ACCOUNT + '/runbooks/Stop-UgrpVMs'
@@ -17,8 +22,32 @@ ROLE_ID = '7b327b09-c7ad-5fea-a260-6a079521da91'
 BILLING = '/providers/Microsoft.Billing/billingAccounts/ac7160ea-2fe4-5090-e725-a1cb7cf051e4:0cb190e6-7889-4867-b734-53aa504234b7_2019-05-31/billingProfiles/MINB-TPIA-BG7-PGB'
 
 
+def runbook_content():
+    folder = Path(__file__).parent
+    source = (folder / 'azure_shutdown.py').read_text().replace('sys.exit(main())',
+        "sys.argv += ['--grace-seconds', '540']; sys.exit(main())")
+    return (folder / 'azure_stop_vms.ps1').read_text().replace('__UGRP_SHUTDOWN_SOURCE__', source)
+
+
+def publish_runbook(arm):
+    # Updates only existing runbook content, preserving webhook, RBAC and schedules.
+    arm.request('PUT', RUNBOOK + '/draft/content' + API, runbook_content(), raw=True)
+    arm.request('POST', RUNBOOK + '/publish' + API)
+    actual = arm.request('GET', RUNBOOK + '/content' + API)
+    state = arm.request('GET', RUNBOOK + API)['properties']['state']
+    if actual != runbook_content() or state != 'Published':
+        raise RuntimeError('Published runbook readback mismatch')
+
+
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--runbook-only', action='store_true')
+    args = parser.parse_args()
     arm = Arm()
+    if args.runbook_only:
+        publish_runbook(arm)
+        print('Existing runbook content updated; no VM/RBAC/schedule changes', flush=True)
+        return
     for sub in SUBS:
         vms = arm.request('GET', f'/subscriptions/{sub}/providers/Microsoft.Compute/virtualMachines?api-version=2024-11-01')['value']
         for vm in vms:
@@ -36,8 +65,15 @@ def main():
         'permissions': [{'actions': ['Microsoft.Compute/virtualMachines/read',
             'Microsoft.Compute/virtualMachines/instanceView/read',
             'Microsoft.Compute/virtualMachines/deallocate/action'], 'notActions': []}]}})
+    # Only Automation receives guest-command permissions. VM identity stays narrow.
+    command_role = f'/subscriptions/{SUB}/providers/Microsoft.Authorization/roleDefinitions/{uuid.uuid5(uuid.NAMESPACE_URL, ACCOUNT + "/graceful-command-role")}'
+    arm.request('PUT', command_role + '?api-version=2022-04-01', {'properties': {
+        'roleName': 'UGRP Graceful VM Stop Command', 'description': 'Managed run command only; Automation guest stop/archive.',
+        'type': 'CustomRole', 'assignableScopes': [f'/subscriptions/{s}' for s in SUBS],
+        'permissions': [{'actions': ['Microsoft.Compute/virtualMachines/runCommands/write',
+            'Microsoft.Compute/virtualMachines/runCommands/read'], 'notActions': []}]}})
     cost_role = f'/subscriptions/{SUB}/providers/Microsoft.Authorization/roleDefinitions/72fafb9e-0641-4937-9268-a91bfd8191a3'
-    for scope, who, role_ref in [(f'/subscriptions/{s}', principal, r) for s in SUBS for r in (role, cost_role)] + [
+    for scope, who, role_ref in [(f'/subscriptions/{s}', principal, r) for s in SUBS for r in (role, cost_role, command_role)] + [
         (VM_ID, '201eb390-599d-4c95-9e66-78874e25f04e', role)]:
         name = uuid.uuid5(uuid.NAMESPACE_URL, scope + who + role_ref)
         arm.request('PUT', scope + f'/providers/Microsoft.Authorization/roleAssignments/{name}?api-version=2022-04-01',
@@ -45,9 +81,7 @@ def main():
     print('Minimum deallocate permissions + cost reader assigned', flush=True)
     arm.request('PUT', RUNBOOK + API, {'location': 'koreacentral', 'properties': {
         'runbookType': 'PowerShell', 'logProgress': False, 'logVerbose': False, 'draft': {}}})
-    arm.request('PUT', RUNBOOK + '/draft/content' + API,
-                Path(__file__).with_name('azure_stop_vms.ps1').read_text(), raw=True)
-    arm.request('POST', RUNBOOK + '/publish' + API)
+    publish_runbook(arm)
     print('Runbook published', flush=True)
     hook = ACCOUNT + '/webhooks/credit-stop'
     try:
@@ -83,17 +117,19 @@ def main():
     first = (dt.datetime.now(dt.timezone.utc) + dt.timedelta(minutes=10)).isoformat()
     for name, props, mode in [
         ('credit-expiry-kst', {'startTime': '2026-11-18T15:00:00Z', 'frequency': 'OneTime', 'timeZone': 'Asia/Seoul'}, 'Force'),
-        ('hourly-credit-check', {'startTime': first, 'expiryTime': '2026-11-18T15:00:00Z', 'frequency': 'Hour', 'interval': 1, 'timeZone': 'UTC'}, 'Cost')]:
+        ('hourly-credit-check', {'startTime': first, 'expiryTime': '2026-11-18T15:00:00Z', 'frequency': 'Hour', 'interval': 1, 'timeZone': 'UTC'}, 'Cost'),
+        ('daily-backup-kst', {'startTime': (dt.datetime.now(dt.timezone.utc).astimezone(dt.timezone(dt.timedelta(hours=9))).replace(hour=0, minute=0, second=0, microsecond=0) + dt.timedelta(days=1)).isoformat(),
+            'frequency': 'Day', 'interval': 1, 'timeZone': 'Asia/Seoul'}, 'Daily')]:
         arm.request('PUT', ACCOUNT + f'/schedules/{name}' + API, {'properties': props})
         job = uuid.uuid5(uuid.NAMESPACE_URL, ACCOUNT + name)
         arm.request('PUT', ACCOUNT + f'/jobSchedules/{job}' + API,
             {'properties': {'schedule': {'name': name}, 'runbook': {'name': 'Stop-UgrpVMs'}, 'parameters': {'Mode': mode}}})
         print('Schedule linked:', name, flush=True)
     arm.request('PUT', BASE + '/providers/Microsoft.DevTestLab/schedules/shutdown-computevm-ugrp-sim-azure?api-version=2018-09-15',
-        {'location': 'koreacentral', 'properties': {'status': 'Enabled', 'taskType': 'ComputeVmShutdownTask',
+        {'location': 'koreacentral', 'properties': {'status': 'Disabled', 'taskType': 'ComputeVmShutdownTask',
             'dailyRecurrence': {'time': '0000'}, 'timeZoneId': 'Korea Standard Time', 'targetResourceId': VM_ID,
             'notificationSettings': {'status': 'Disabled', 'timeInMinutes': 30}}})
-    print('Daily midnight KST backup configured', flush=True)
+    print('Lease-aware midnight backup linked; unconditional DevTest shutdown disabled', flush=True)
 
 
 if __name__ == '__main__':

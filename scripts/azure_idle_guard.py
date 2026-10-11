@@ -6,9 +6,35 @@ from pathlib import Path
 import shutil
 import time
 import urllib.request
+import sys
+import signal
+import subprocess
+import uuid
+
+sys.path.insert(0, '/usr/local/lib/ugrp-storage')
+from scripts import azure_shutdown
+from scripts.azure_shutdown import ROOT, blockers, write_json
 
 IDLE_SECONDS = 1200
 MAX_UPTIME = 28800
+
+
+def lifecycle(action, trigger):
+    # Bound the WHOLE guest operation, including filesystem/agent stalls.
+    process = subprocess.Popen([sys.executable, str(Path(azure_shutdown.__file__).resolve()),
+                                action, '--reason', trigger], start_new_session=True)
+    try:
+        code = process.wait(timeout=600)
+        if code:
+            raise RuntimeError('Graceful helper failed; originals retained')
+    except subprocess.TimeoutExpired:
+        os.killpg(process.pid, signal.SIGKILL)
+        process.wait()
+        runs = ROOT / 'runs'
+        pending = [p.name for p in runs.iterdir() if not p.is_symlink() and p.is_dir()]
+        write_json(ROOT / 'lifecycle/events' / (uuid.uuid4().hex + '.json'),
+                   {'action': action, 'reason': trigger, 'status': 'deadline_exceeded',
+                    'failed_or_unconfirmed': pending, 'retry': 'next_boot', 'grace_seconds': 600})
 
 
 def reason(uptime, idle):
@@ -33,7 +59,15 @@ def active():
             return True
     # Runner leases prevent a guard from interrupting source transfer/admission.
     leases = Path('/home/ugrp/ugrp-sim/leases')
-    return leases.exists() and any(time.time() - p.stat().st_mtime < 120 for p in leases.iterdir())
+    return (leases.exists() and any(time.time() - p.stat().st_mtime < 120 for p in leases.iterdir())) or bool(blockers(ROOT)['unarchived'])
+
+
+def stop(trigger):
+    # A flush/archive error must never bypass a cost cap. Originals stay on disk.
+    try:
+        lifecycle('stop', trigger)
+    finally:
+        deallocate()
 
 
 def deallocate():
@@ -64,17 +98,18 @@ def main():
     if not boot_file.exists() or boot_file.read_text() != boot_id:
         boot_file.write_text(boot_id)
         busy_file.write_text(str(now))
-    busy = active()
+    uptime = float(Path('/proc/uptime').read_text().split()[0])
+    # Do not let an unavailable archive mount/pending scan bypass the hard cap.
+    busy = active() if uptime < MAX_UPTIME else False
     if busy:
         busy_file.write_text(str(now))
     idle = now - float(busy_file.read_text())
-    uptime = float(Path('/proc/uptime').read_text().split()[0])
     trigger = reason(uptime, idle)
     free = shutil.disk_usage('/home/ugrp/ugrp-sim').free
     print(json.dumps({'busy': busy, 'idle_seconds': round(idle), 'uptime_seconds': round(uptime),
         'reason': trigger, 'disk_free_bytes': free, 'disk_alarm': free < 8 * 2**30}), flush=True)
     if trigger and not args.dry_run:
-        deallocate()
+        stop(trigger)
 
 
 if __name__ == '__main__':

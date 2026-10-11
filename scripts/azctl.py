@@ -5,6 +5,7 @@ import json
 import subprocess
 from pathlib import Path
 import sys
+import time
 
 if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -12,6 +13,27 @@ if __package__ in (None, ''):
 from scripts.azure_api import ACCOUNT, BASE, RG, SUB, SUBS, VM, Arm
 
 EXPIRY = dt.datetime(2026, 11, 18, 15, tzinfo=dt.timezone.utc)
+
+
+def guest(action):
+    return subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', 'azure',
+        'python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py ' + action],
+        capture_output=True, text=True, timeout=660)
+
+
+def recover():
+    for attempt in range(12):
+        ready = subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', 'azure', 'true'], capture_output=True)
+        if ready.returncode == 0:
+            break
+        time.sleep(5)
+    else:
+        raise RuntimeError('SSH unavailable; boot recovery will retry, admission refused')
+    result = guest('recover --reason start_recovery')
+    if result.returncode:
+        raise RuntimeError('Recovery helper failed; new execution refused')
+    from scripts.remote_run import fetch_lifecycle
+    fetch_lifecycle()
 
 
 def az(*args):
@@ -54,14 +76,14 @@ def main():
         if any(s['code'] == 'PowerState/deallocated' for s in view['statuses']):
             print('Already deallocated')
             return
-        running = subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10',
-            'azure', "find ~/ugrp-sim/runs -mindepth 1 -maxdepth 1 -type d -exec sh -c 'test -f \"$1/EXIT\" || echo \"$1\"' sh {} \\; ; find ~/ugrp-sim/leases -type f -mmin -2 -print"],
-            capture_output=True, text=True)
+        running = guest('status')
+        from scripts.remote_run import fetch_lifecycle
+        fetch_lifecycle()
+        if running.returncode == 75:
+            print('Unarchived runs/leases; deallocation deferred: ' + running.stdout.strip())
+            return
         if running.returncode:
             raise RuntimeError('Cannot verify remote jobs; stop refused (cloud and VM guards remain active)')
-        if running.stdout.strip():
-            print('Other unfinished runs/leases; deallocation deferred: ' + running.stdout.strip())
-            return
         az('vm', 'deallocate', '-g', RG, '-n', VM)
     elif args.action == 'resize':
         arm = Arm()
@@ -75,6 +97,7 @@ def main():
         total = safety(Arm())
         print(f'Safety resources enabled; cumulative CostUSD={total:.4f}', flush=True)
         az('vm', 'start', '-g', RG, '-n', VM)
+        recover()
 
 
 if __name__ == '__main__':

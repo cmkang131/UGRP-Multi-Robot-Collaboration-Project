@@ -13,6 +13,10 @@ import shlex
 import subprocess
 import sys
 import time
+import hashlib
+
+if __package__ in (None, ''):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 PRIMARY = Path('/Users/changmin/projects/ugrp')
 
@@ -28,7 +32,39 @@ def fetch(host, name):
     subprocess.run(['rsync', '-aL', '--exclude=*.png', '--exclude=*.jpg', '--exclude=*.jpeg',
         '--exclude=*.mp4', '--exclude=*.gif', '--exclude=*.npz', '--exclude=*.npy',
         f'{host}:~/ugrp-sim/runs/{name}/', str(target) + '/'], check=True)
+    if host == 'azure':
+        fetch_lifecycle()
     return str(target)
+
+
+def fetch_lifecycle():
+    target = PRIMARY / 'outputs/azure-lifecycle'
+    target.mkdir(parents=True, exist_ok=True)
+    subprocess.run(['rsync', '-ac', 'azure:~/ugrp-sim/lifecycle/', str(target) + '/'], check=True)
+    differences = subprocess.check_output(['rsync', '-anc', '--out-format=%n',
+        'azure:~/ugrp-sim/lifecycle/', str(target) + '/'], text=True)
+    if differences.strip():
+        raise RuntimeError('Lifecycle record changed during Mac checksum verification; retry retrieval')
+    return str(target)
+
+
+def finish_lease(host, name, lease, archived, detached=False):
+    if host != 'azure' or archived:
+        ssh(host, f'rm -f {lease}')
+    elif not detached:
+        # Refresh and retain the lease even on fetch/SSH/archive exceptions.
+        try:
+            ssh(host, f'touch {lease}')
+        except subprocess.CalledProcessError:
+            pass
+        target = PRIMARY / 'outputs/azure-lifecycle/pending'
+        target.mkdir(parents=True, exist_ok=True)
+        from scripts.azure_shutdown import write_json
+        write_json(target / (name + '.json'), {'run': name, 'archive': 'pending',
+                   'raw': f'azure:~/ugrp-sim/runs/{name}', 'lease': 'retained', 'retry': 'next_start'})
+    if host == 'azure' and not detached:
+        # azctl also refuses EXIT-only evidence and failed/stale archival leases.
+        subprocess.run([sys.executable, str(Path(__file__).with_name('azctl.py')), 'stop'], check=True)
 
 
 def ship(host, worktree, sha):
@@ -98,7 +134,10 @@ def main():
             raise RuntimeError('Azure VM started but SSH did not become ready; automatic guards remain active')
     root = f'$HOME/ugrp-sim/runs/{name}'
     lease = f'$HOME/ugrp-sim/leases/{name}'
+    if host == 'azure':
+        ssh(host, 'python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py admit')
     ssh(host, f'mkdir -p ~/ugrp-sim/leases && test ! -e {root} && touch {lease}')
+    archived = False
     try:
         for budget_host, budget_ssh, path, estimate in (
             ('x86', host, '~/ugrp-sim/runs', args.per_run_mb),
@@ -111,16 +150,21 @@ def main():
             subprocess.run(call, check=True)
         ssh(host, "awk '/MemAvailable/{if ($2 < 6291456) exit 1}' /proc/meminfo; cat /proc/loadavg")
         ship(host, worktree, sha)
-        metadata = json.dumps({'class': args.run_class, 'pr': args.pr, 'branch': branch, 'sha': sha, 'batch': name})
+        metadata = {'class': args.run_class, 'pr': args.pr, 'branch': branch, 'sha': sha, 'batch': name}
+        if host == 'azure':
+            metadata['runner_assets'] = {module: hashlib.sha256(Path(__file__).with_name(module).read_bytes()).hexdigest()
+                                         for module in ('remote_run_finish.py', 'azure_shutdown.py')}
+            checks = ' && '.join(f'test "$(sha256sum /usr/local/lib/ugrp-storage/scripts/{module} | cut -d " " -f1)" = {digest}'
+                                 for module, digest in metadata['runner_assets'].items())
+            ssh(host, checks)
+        metadata = json.dumps(metadata)
         # The shell wrapper and command use shlex.quote; $()/backticks stay literal.
         run_command = shlex.join(command)
-        script = f'''#!/bin/bash
-set -u
-export MUJOCO_GL=osmesa OMP_NUM_THREADS=1 LP_NUM_THREADS={int(os.environ.get('LP_NUM_THREADS', '4'))}
-cd "$HOME/ugrp-sim/src/{sha}"
-mkdir -p outputs
-ln -s "$HOME/ugrp-sim/runs/{name}" "outputs/{name}"
-/usr/bin/time -f 'wall=%e cpu=%U+%S' {run_command} > "$HOME/ugrp-sim/runs/{name}/log.txt" 2>&1
+        if host == 'azure':
+            finish = f'exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "$HOME/ugrp-sim/src/{sha}" --run "$HOME/ugrp-sim/runs/{name}" -- {run_command}'
+        else:
+            # Keep older committed Oracle controller sources compatible.
+            finish = f'''/usr/bin/time -f 'wall=%e cpu=%U+%S' {run_command} > "$HOME/ugrp-sim/runs/{name}/log.txt" 2>&1
 result=$?
 python3 scripts/remote_run_finish.py --source "$HOME/ugrp-sim/src/{sha}" --run "$HOME/ugrp-sim/runs/{name}" > "$HOME/ugrp-sim/runs/{name}/record-copy.log" 2>&1
 record_result=$?
@@ -129,7 +173,14 @@ if [ "$record_result" -ne 0 ]; then
   result=70
 fi
 echo "$result" > "$HOME/ugrp-sim/runs/{name}/EXIT"
-find "$HOME/ugrp-sim/runs/{name}" -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > "$HOME/ugrp-sim/runs/{name}/SHA256SUMS"
+find "$HOME/ugrp-sim/runs/{name}" -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > "$HOME/ugrp-sim/runs/{name}/SHA256SUMS"'''
+        script = f'''#!/bin/bash
+set -u
+export MUJOCO_GL=osmesa OMP_NUM_THREADS=1 LP_NUM_THREADS={int(os.environ.get('LP_NUM_THREADS', '4'))}
+cd "$HOME/ugrp-sim/src/{sha}"
+mkdir -p outputs
+ln -s "$HOME/ugrp-sim/runs/{name}" "outputs/{name}"
+{finish}
 '''
         ssh(host, f'mkdir {root} && printf %s {shlex.quote(metadata)} > {root}/RUN_META.json && '
             f'printf %s {sha} > {root}/SOURCE_SHA && printf %s {shlex.quote(run_command)} > {root}/COMMAND && '
@@ -142,6 +193,7 @@ find "$HOME/ugrp-sim/runs/{name}" -type f ! -name SHA256SUMS -print0 | sort -z |
         deadline = time.monotonic() + 7.5 * 3600
         while time.monotonic() < deadline:
             state = ssh(host, f'touch {lease}; test ! -f {root}/EXIT || cat {root}/EXIT', capture_output=True, text=True).stdout.strip()
+            fetch_lifecycle()
             if state:
                 print('Exit:', state, 'fetch-lite:', fetch(host, name), flush=True)
                 break
@@ -151,9 +203,26 @@ find "$HOME/ugrp-sim/runs/{name}" -type f ! -name SHA256SUMS -print0 | sort -z |
         # The archive script requires genuine 20-minute source quiescence.
         archive_deadline = time.monotonic() + 35 * 60
         while time.monotonic() < archive_deadline:
-            ssh(host, f'touch {lease}; UGRP_RUNS=$HOME/ugrp-sim/runs UGRP_ARCHIVE=$HOME/ugrp-sim/arm /usr/local/bin/ugrp-auto-archive')
+            try:
+                ssh(host, f'touch {lease}; UGRP_RUNS=$HOME/ugrp-sim/runs UGRP_ARCHIVE=$HOME/ugrp-sim/arm /usr/local/bin/ugrp-auto-archive')
+            except subprocess.CalledProcessError:
+                print('ARM archive failed; lease retained, retrying', flush=True)
+                try:
+                    fetch_lifecycle()
+                except (subprocess.CalledProcessError, RuntimeError):
+                    pass
+                time.sleep(30)
+                continue
             result = ssh(host, f'test ! -L {root} || readlink {root}', capture_output=True, text=True).stdout.strip()
+            if not result:
+                # Recovery archives retain local originals and publish a separate marker.
+                marker = ssh(host, f'test ! -f $HOME/ugrp-sim/lifecycle/archives/{name}.json || cat $HOME/ugrp-sim/lifecycle/archives/{name}.json',
+                             capture_output=True, text=True).stdout.strip()
+                if marker:
+                    result = json.loads(marker)['path']
+            fetch_lifecycle()
             if result:
+                archived = True
                 print('ARM archive:', result, flush=True)
                 print('Final fetch-lite:', fetch(host, name), flush=True)
                 break
@@ -161,9 +230,7 @@ find "$HOME/ugrp-sim/runs/{name}" -type f ! -name SHA256SUMS -print0 | sort -z |
         else:
             raise RuntimeError('Archive incomplete; raw preserved on persistent Azure disk')
     finally:
-        ssh(host, f'rm -f {lease}')
-        if host == 'azure' and not args.detach:
-            subprocess.run([sys.executable, str(Path(__file__).with_name('azctl.py')), 'stop'], check=True)
+        finish_lease(host, name, lease, archived, args.detach)
     if state != '0':
         raise RuntimeError(f'Remote command failed with EXIT={state}; evidence archived and VM lifecycle completed')
 

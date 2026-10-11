@@ -7,14 +7,14 @@
 ## 비용과 종료
 
 - Microsoft for Startups 잔여 크레딧은 사용자 확인 기준 $166, 만료는 **2026-11-19 00:00 KST = 2026-11-18 15:00 UTC**다. spending limit Off이므로 이 장치가 Azure의 결제 상한을 만드는 것은 아니다.
-- `scripts/azure_safety_setup.py`: 구독 88b7ee7f의 Action Group → managed identity Automation runbook. `Stop-UgrpVMs`는 두 구독 VM을 발견하고 ARM **deallocate**를 호출한다. 시스템 종료(poweroff)와 다르다.
+- `scripts/azure_safety_setup.py`: 구독 88b7ee7f의 Action Group → managed identity Automation runbook. `Stop-UgrpVMs`는 두 구독 VM을 발견하고 비동기 Managed Run Command로 우아한 정지를 먼저 요청한 뒤 ARM **deallocate**를 호출한다. 전체 유예는 최대 10분이며 보관 실패·VM agent/API 오류도 비용 상한의 할당 해제를 취소하지 않는다. 시스템 종료(poweroff)와 다르다.
 - 구독·공유 결제 프로필에 2026-10-01~2027-01-01 분기 예산을 둔다. 월이 바뀌어도 10~11월 누적을 초기화하지 않는다. 결제 통화는 KRW다. 실제 `Cost / CostUSD` 비율 1364.75보다 낮은 **1360 KRW/USD**를 적용해 217,600원 예산, 68,000/136,000/204,000원 이메일을 설정한다($50/$100/$150 근사값). 구독 예산의 $150 및 $160 근사 임계값은 Action Group을 호출한다. 환율이 변하면 원화 알림은 정확한 USD 임계값과 달라질 수 있다.
 - 매시간 `CostUSD`를 두 구독 합산한다(2026-10-01부터, 이관 이전 비용도 포함). **$150 조기 정지**로 집계 지연에 대한 여유를 두며, 비용 조회 실패도 두 구독 VM을 할당 해제한다. $160 예산 알림은 추가 백업이다. 비용 데이터는 보통 8~24시간 지연되고 예산은 24시간 간격 평가이므로 $160의 정확한 실시간 강제 상한은 검증·보장하지 않는다.
-- 동일 runbook의 `Force` 모드를 만료 순간 OneTime 일정에 연결한다. 매일 00:00 KST VM auto-shutdown도 백업으로 설정한다. 미래 일정의 생성·runbook 연결 확인과 해당 날짜 실제 발동은 별개다.
-- VM system identity에는 **자기 VM**의 read/instanceView/deallocate만 부여한다. Automation에는 두 구독의 같은 최소 compute 역할과 Cost Management Reader만 부여한다. VM Contributor보다 좁으며 VM 생성·시작·크기 변경·삭제 권한이 없다.
+- 동일 runbook의 `Force` 모드를 만료 순간 OneTime 일정에 연결한다. `Daily` 모드의 매일 00:00 KST Automation 일정은 백업이다. 활성 lease·미보관 원본·게스트 확인 실패가 있으면 건너뛰고 기록한다. 기존 무조건 DevTest auto-shutdown은 새 일일 일정 설치 때 비활성화한다. 미래 일정의 생성·runbook 연결 확인과 해당 날짜 실제 발동은 별개다.
+- VM system identity에는 **자기 VM**의 read/instanceView/deallocate만 부여한다. Automation에는 두 구독의 같은 compute 역할과 Cost Management Reader를 부여하며, 우아한 정지에 필요한 `virtualMachines/runCommands/read`·`write`를 추가한다. VM Contributor보다 좁으며 VM 생성·시작·크기 변경·삭제 권한이 없다.
 - 기존 VM의 `ugrp-azure-idle-guard.timer`는 15분·lease 미지원 가드였다. 새 가드 활성화 뒤 이 중복 timer만 비활성화하며 정의·기록은 보존한다. 이관 스모크 중 기존 가드가 보관 대기 VM을 실제로 할당 해제한 반례를 기록했다.
 - 기존 `ugrp-sim-worker.service`의 무한 GPU worker 재시작 supervisor도 비활성화한다. 파일·과거 자료는 보존하며 새 CPU 실행은 유한 `sim_cli` 작업으로만 시작한다.
-- `scripts/azure_idle_guard.py`는 1분 timer로 시뮬레이션/rsync/아카이브와 실행기 lease를 확인한다. 유휴 20분 또는 부팅 후 8시간이면 IMDS의 메모리 내 identity token으로 CLI `az vm deallocate`와 동일한 ARM 작업을 호출한다. 토큰 파일을 만들지 않는다. 8시간 상한은 실행 중에도 적용한다. 부팅마다 유휴 상태를 새로 초기화한다.
+- `scripts/azure_idle_guard.py`는 1분 timer로 시뮬레이션/rsync/아카이브와 실행기 lease를 확인한다. 유휴 20분은 lease·보관 작업·EXIT만 있는 미보관 원본이 있으면 정지하지 않는다. 부팅 후 8시간 상한은 실행 중에도 적용한다. `azure_shutdown.py`가 해당 실행의 SIGINT → 현재 원본 flush/기록 → 최대 10분 ARM 보관 시도(`rsync -ac`, `rsync -anc`, 전체 SHA-256) → 성공/실패 영속 기록을 수행하고, 그 뒤 IMDS의 메모리 내 identity token으로 ARM 할당 해제를 호출한다. 전체 게스트 절차도 600초 외부 deadline으로 제한하고, 실패 시에도 할당 해제한다. 토큰 파일을 만들지 않는다. 부팅마다 유휴 상태를 새로 초기화한다.
 - 할당 해제 후에도 OS 디스크·공용 IP·기타 서비스 비용은 남는다. 이 자동화는 VM compute를 정지하며 결제 프로필 전체 서비스의 사용을 중단하는 장치는 아니다.
 
 ```sh
@@ -24,7 +24,7 @@ python3 scripts/azctl.py stop
 python3 scripts/azctl.py resize --size Standard_D16as_v5
 ```
 
-`start`는 만료·예산/일정 활성화·USD 합산 비용을 먼저 검사하며 실패하면 켜지 않는다. `stop`은 다른 미완료 실행과 lease가 있으면 정지를 미룬다. `resize`는 할당 해제 상태에서만 허용한다. 모든 CLI 자원 명령은 구독을 명시한다. `azure_safety_setup.py` 재실행은 webhook을 교체하므로 VM이 모두 할당 해제된 유지보수 시점에만 한다.
+`start`는 만료·예산/일정 활성화·USD 합산 비용을 먼저 검사하며 실패하면 켜지 않는다. `start`는 SSH 준비 뒤 미보관 원본을 자동 재보관하며, boot recovery service도 같은 작업을 수행한다. `stop`은 미보관 원본(EXIT 유무와 관계없음)·활성 lease가 있으면 정지를 미룬다. `resize`는 할당 해제 상태에서만 허용한다. 모든 CLI 자원 명령은 구독을 명시한다. `azure_safety_setup.py` 재실행은 webhook을 교체하므로 VM이 모두 할당 해제된 유지보수 시점에만 한다.
 
 ## 환경·증거·모델 터널
 
@@ -43,7 +43,13 @@ bash scripts/oracle_run.sh --host azure fetch-lite RUN
 
 Azure 모드는 시작 → 실행 완료 대기 → fetch-lite → 검증된 ARM 아카이브 → 할당 해제다. `--detach`는 명시적으로 이 대기/회수/종료 래퍼를 끄며, 비용·VM 내부 가드는 유지한다. SSH alias `azure`는 기존 NSG가 허용한 Oracle ARM(`oracle-codex`)을 ProxyJump로 사용한다. Mac 공개키를 VM에 추가하며 기존 authorized_keys는 보존한다.
 
-아카이브는 PR #435의 `scripts/ugrp_auto_archive.sh`를 그대로 설치한다. 완료·평가 출력·20분 실제 정적 상태를 기다리고, >64 KiB JSON/JSONL zstd 압축 후 해제 SHA-256, ARM 25 GiB 여유, rsync checksum 및 전체 파일 SHA-256 일치를 확인한 다음 ARM 경로로 공개한다. Azure의 검증된 원본은 ARM symlink로 바뀐다. 신규 archive SSH identity는 해당 VM에서만 생성하며 ARM `ugrparch`의 SFTP 전용 접근에만 쓴다. 클라우드/API/모델 키와 다르며 개인키는 로그·Git·Mac 회수에 포함하지 않는다. 실패하면 Azure 영속 원본을 보존한다. Mac에는 이미지·대형 배열·영상 없이 가벼운 기록만 회수한다.
+아카이브는 PR #435의 `scripts/ugrp_auto_archive.sh`를 그대로 설치한다. 완료·평가 출력·20분 실제 정적 상태를 기다리고, >64 KiB JSON/JSONL zstd 압축 후 해제 SHA-256, ARM 25 GiB 여유, rsync checksum 및 전체 파일 SHA-256 일치를 확인한 다음 ARM 경로로 공개한다. Azure의 검증된 원본은 ARM symlink로 바뀐다. 신규 archive SSH identity는 해당 VM에서만 생성하며 ARM `ugrparch`의 SFTP 전용 접근에만 쓴다. 클라우드/API/모델 키와 다르며 개인키는 로그·Git·Mac 회수에 포함하지 않는다. 실패하면 Azure 영속 원본과 lease를 보존하고 재시도한다. 비용 상한/부팅 복구 보관은 20분 정적 상태·평가 출력 조건을 기다리지 않고, 작성 프로세스 종료를 확인한 부분 원본도 HOST_ERROR로 보관한다. 별도 `shutdown-<이름>` 경로를 checksum 검증 뒤 공개하며 Azure 원본은 삭제하지 않는다. 실패한 `.incoming-shutdown-*`도 다음 시도에 재사용한다. Mac에는 이미지·대형 배열·영상 없이 가벼운 기록만 회수한다.
+
+정지·보관 결과는 `~/ugrp-sim/lifecycle/events/`, 파일별 SHA-256·보관 확인은 `lifecycle/archives/`에 기록한다. 실행기와 `azctl`은 가벼운 기록만 Mac 기본 체크아웃 `outputs/azure-lifecycle/`로 checksum 확인 후 회수한다. Mac 연결이 끊기면 pending 기록을 남기고 다음 시작/회수 때 영속 디스크의 결과를 다시 회수한다. 회수되지 않은 기록을 완료로 보고하지 않는다.
+
+### #438 검토 수정의 적용 범위
+
+2026-10-11 후속 수정에서 실제 Azure 변경은 사용자 지시대로 **기존 runbook 내용 갱신만** 허용됐다. VM 시작, RBAC 변경, 일정 변경, 게스트 설치는 수행하지 않는다. 조회 당시 두 VM은 모두 `deallocated`이며 기존 역할에는 Run Command 권한이 없고 무조건 DevTest 자정 종료가 Enabled였다. 따라서 새 Run Command 권한·lease-aware 일일 일정/기존 일정 비활성화·새 게스트 가드/복구 서비스 설치는 미적용이다. 현재 코드/모의 시험 통과를 전체 안전장치의 실배포 완료로 해석하지 않는다. `python3 scripts/azure_safety_setup.py --runbook-only`는 webhook·역할·일정을 유지하며 내용 publish 후 바이트/Published 상태를 재조회한다. 전체 설치는 별도 허용 범위에서 수행해야 한다.
 
 모델은 Mac relay의 `127.0.0.1:18392`로 연결하는 유한 역방향 SSH `127.0.0.1:18391 → Mac:18392`를 사용한다. S4 브랜치의 `scripts/s4_reverse_tunnel.py`에 `--host azure`를 추가할 수 있는 일반 실행기 `scripts/remote_reverse_tunnel.py`는 기본 재연결 OFF, 명시적 `--reconnect`, 최대 4시간 종료 시각을 유지한다. S4의 request idempotency/재시도 토글은 그 브랜치에서 계속 적용한다. 단순 HTTP 터널 확인은 모델 실제 응답 검증이 아니다.
 
@@ -62,3 +68,6 @@ S3 설치 스모크는 기존 표준 Scene·접촉·카메라·0.5초 물리 진
 - [Linux OS 디스크 확장](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/expand-disks)
 - [OpenSSH 역방향 전달](https://man.openbsd.org/ssh)
 - [Microsoft 공개 코드의 Cost API 429 처리 규칙](https://github.com/microsoft/azure-skills/blob/main/skills/azure-cost/cost-forecast/guardrails.md): 고정 ClientType을 쓰고 모든 retry-after 헤더 중 최댓값을 기다린다. 재시도 후 실패도 시작을 거부한다.
+
+- [Azure Managed Run Command 비동기 실행·timeout·instanceView](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command-managed)
+- [Rsync 공식 구현/매뉴얼의 checksum·부분 재전송](https://github.com/RsyncProject/rsync/blob/master/rsync.1.md)

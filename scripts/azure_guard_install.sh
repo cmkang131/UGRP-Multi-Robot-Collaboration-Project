@@ -3,7 +3,12 @@
 set -euo pipefail
 SOURCE=${1:?path to committed source containing scripts/azure_idle_guard.py}
 install -m 755 "$SOURCE/scripts/azure_idle_guard.py" /usr/local/bin/ugrp-azure-guard
+install -d /usr/local/lib/ugrp-storage/scripts
+install -m 644 "$SOURCE/scripts/__init__.py" /usr/local/lib/ugrp-storage/scripts/__init__.py
+install -m 644 "$SOURCE/scripts/azure_shutdown.py" /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py
+install -m 644 "$SOURCE/scripts/remote_run_finish.py" /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py
 mkdir -p /var/lib/ugrp-guard /home/ugrp/ugrp-sim/{src,runs,leases}
+chown -R ugrp:ugrp /var/lib/ugrp-guard
 chown -R ugrp:ugrp /home/ugrp/ugrp-sim
 cat > /etc/systemd/system/ugrp-azure-guard.service <<'EOF'
 [Unit]
@@ -11,6 +16,8 @@ Description=UGRP idle/8-hour Azure deallocation guard
 After=network-online.target
 [Service]
 Type=oneshot
+User=ugrp
+TimeoutStartSec=720
 ExecStart=/usr/bin/python3 /usr/local/bin/ugrp-azure-guard
 EOF
 cat > /etc/systemd/system/ugrp-azure-guard.timer <<'EOF'
@@ -23,7 +30,21 @@ AccuracySec=5
 [Install]
 WantedBy=timers.target
 EOF
+cat > /etc/systemd/system/ugrp-azure-recover.service <<'EOF'
+[Unit]
+Description=Retry unarchived Azure evidence after boot
+After=network-online.target home-ugrp-ugrp\x2dsim-arm.mount
+Wants=network-online.target home-ugrp-ugrp\x2dsim-arm.mount
+[Service]
+Type=oneshot
+User=ugrp
+TimeoutStartSec=660
+ExecStart=/usr/bin/python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py recover --reason boot_recovery
+[Install]
+WantedBy=multi-user.target
+EOF
 systemctl daemon-reload
+systemctl enable ugrp-azure-recover.service
 systemctl enable --now ugrp-azure-guard.timer
 systemctl start ugrp-azure-guard.service
 # Existing Azure VM had a separate 15-minute guard that ignores batch leases.
