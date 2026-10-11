@@ -5,6 +5,7 @@ import hashlib
 import itertools
 import json
 import os
+import re
 import shutil
 import subprocess
 
@@ -34,7 +35,14 @@ class Video:
         import numpy as np
         from PIL import ImageFont
         self.mj,self.np=mujoco,np;self.title,self.robots=title,robots
-        self.model=mujoco.MjModel.from_xml_path(str(host.out/'scene.xml'))
+        source=os.environ.get('UGRP_OVERVIEW_SOURCE')
+        if source:
+            # Evaluation model only: resolve retained XML assets on a new host.
+            xml=(host.out/'scene.xml').read_text()
+            xml=re.sub(r'/home/ubuntu/ugrp-sim/src/[0-9a-f]{40}/',str(Path(source))+'/',xml)
+            self.model=mujoco.MjModel.from_xml_string(xml)
+        else:
+            self.model=mujoco.MjModel.from_xml_path(str(host.out/'scene.xml'))
         self.model.vis.global_.offwidth=max(960,self.model.vis.global_.offwidth)
         self.model.vis.global_.offheight=max(420,self.model.vis.global_.offheight)
         self.model.vis.global_.fovy=32
