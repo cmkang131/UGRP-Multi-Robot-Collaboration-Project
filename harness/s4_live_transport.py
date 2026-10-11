@@ -21,7 +21,8 @@ def validate_receipt(receipt, now=None):
     if (receipt.get('schema') != 'ugrp.s4_ssh_proxy.v1'
             or receipt.get('remote_url') != URL
             or receipt.get('proxy', {}).get('source_sha256') != PROXY_SHA256
-            or not 0 <= now-receipt.get('checked_unix', 0) <= 3600
+            or not 0 < receipt.get('valid_for_s', 3600) <= 14400
+            or not 0 <= now-receipt.get('checked_unix', 0) <= receipt.get('valid_for_s', 3600)
             or receipt.get('authentication') != 'existing_mac_proxy_no_credentials_transferred'
             or receipt.get('audit_per_post') is not True):
         raise HostError('S4 SSH relay identity expired or mismatched')

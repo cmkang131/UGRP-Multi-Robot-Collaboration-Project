@@ -108,7 +108,8 @@ class PairLiveLedger(llm.MainStudySendLedger):
 
 
 def rate_limited_rows(ledger) -> list:
-    return [r for r in ledger.entries if r.get('rate_limit') or r.get('http_status') == 429]
+    return [r for r in ledger.entries if (r.get('rate_limit') or r.get('http_status') == 429)
+            and not r.get('rate_limit_recovered', False)]
 
 
 def check_health(trial, *, final=False) -> None:
@@ -190,7 +191,7 @@ def live_records(ledger) -> dict | None:
     by_seq = {e['seq']: e for e in ledger.entries}
     for row in rows:                                       # keep the evidence the study rows leave out
         entry = by_seq[row['seq']]
-        for key in ('error_response', 'rate_limit', 'sent_at_ns'):
+        for key in ('error_response', 'rate_limit', 'sent_at_ns', 'rate_limit_recovered', 'retry_wait_s'):
             if key in entry:
                 row[key] = entry[key]
         text = _reply_text(ledger, row)

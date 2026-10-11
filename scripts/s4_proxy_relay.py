@@ -25,7 +25,7 @@ def main():
     profile = load_registry()['driver_profiles']['main_study_gemini_v1']
     proxy, runtime = live_proxy(profile, a.proxy_pid)
     receipt = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url=URL, proxy=proxy,
-        runtime=runtime, checked_unix=time.time(), audit_per_post=True,
+        runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, audit_per_post=True,
         authentication='existing_mac_proxy_no_credentials_transferred')
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
     lock = threading.Lock()
@@ -47,6 +47,7 @@ def main():
             body = self.rfile.read(n)
             started = time.time()
             status, raw = 502, b'{"error":"relay unavailable"}'
+            retry_after = None
             try:
                 current, _ = live_proxy(profile, a.proxy_pid)
                 if current != proxy: raise ValueError('proxy identity changed')
@@ -57,14 +58,17 @@ def main():
                         status, raw = response.status, response.read(8_000_000)
                 except HTTPError as exc:
                     status, raw = exc.code, exc.read(8_000_000)
+                    retry_after = exc.headers.get('Retry-After')
             except Exception as exc:
                 raw = json.dumps({'error': 'relay_identity_or_transport', 'type': type(exc).__name__}).encode()
             row = dict(call_id=call_id, started_unix=started, wall_s=time.time()-started,
                 status=status, request_sha256=hashlib.sha256(body).hexdigest(),
-                response_sha256=hashlib.sha256(raw).hexdigest(), proxy_source_sha256=proxy['source_sha256'])
+                response_sha256=hashlib.sha256(raw).hexdigest(), retry_after=retry_after,
+                proxy_source_sha256=proxy['source_sha256'])
             with lock, (a.output/'receipts.jsonl').open('a') as f:
                 f.write(json.dumps(row)+'\n')
             self.send_response(status); self.send_header('Content-Type', 'application/json')
+            if retry_after is not None: self.send_header('Retry-After', retry_after)
             self.send_header('Content-Length', str(len(raw))); self.end_headers()
             self.wfile.write(raw)
 
