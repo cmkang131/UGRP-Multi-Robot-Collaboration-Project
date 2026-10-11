@@ -67,6 +67,45 @@
         "rpm": null,
         "rpd": null
       }
+    },
+    "study_gemma4_31b_v1": {
+      "model": {
+        "model": "gemma-4-31b-it",
+        "temperature": 0.2,
+        "reasoning_effort": "none",
+        "max_tokens": 800,
+        "timeout": 180.0
+      },
+      "proxy_url": "http://127.0.0.1:18391/v1/chat/completions",
+      "proxy_source": "scripts/s4_proxy_relay.py",
+      "min_free_disk_gib": 10,
+      "retry_policy": "once_in_place_only_if_host_error_before_first_model_request",
+      "api_failure_trial_rule": "any_api_error_or_budget_cap_or_no_successful_model_reply",
+      "note_ko": "단일 Gemma 모델; Gemini 대체 호출 없음. 영어 기본. 키는 Mac 키체인만. 실제 countTokens와 전체 실행 공용 TPM/RPM 버킷.",
+      "min_request_interval_s": 2.0,
+      "scope": "single_model_standard",
+      "prompt_lang": "en",
+      "fallback": null,
+      "model_pin": {
+        "model_id": "gemma-4-31b-it",
+        "models_list_version": "001",
+        "immutable_revision_available": false,
+        "drift_rule": "reject_models_list_version_change; record_each_response_modelVersion"
+      },
+      "free_limits": {
+        "tpm": 16000,
+        "rpm": 30,
+        "rpd": 14400,
+        "source": "user_AI_Studio_screen_2026-10-11",
+        "headroom": 0.1
+      },
+      "thinking": {
+        "thinkingLevel": "minimal",
+        "separate_thought_token_cap_supported": false,
+        "max_output_tokens_includes_thinking": true
+      },
+      "input_token_cap": 2500,
+      "quality_gate": "paired_RGB_protocol_probe_then_Azure_DEV_comparison; no_historical_pooling"
     }
   },
   "bundles": {

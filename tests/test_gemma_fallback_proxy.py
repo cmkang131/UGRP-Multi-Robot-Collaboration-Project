@@ -40,9 +40,12 @@ def api(tmp_path, responses=None, now=None):
     replies = list(responses or [(200, copy.deepcopy(REPLY), {})])
     def send(path, payload=None):
         if path.startswith('models?'): return 200, {'models': [MODEL]}, {}
+        if path.endswith(':countTokens'):return 200,{'totalTokens':11},{}
         calls.append((path, copy.deepcopy(payload)))
         return replies.pop(0)
-    return gemma.Gemma(tmp_path, send=send, clock=(lambda: now[0]) if now else gemma.time.time), calls
+    clock=(lambda: now[0]) if now else gemma.time.time
+    return gemma.Gemma(tmp_path, send=send, clock=clock,
+                       shared_quota=gemma.SharedQuota(tmp_path/'shared',clock=clock)), calls
 
 
 def test_keychain_missing_never_uses_environment(tmp_path, monkeypatch, capsys):
@@ -238,8 +241,9 @@ def test_ambiguous_google_failure_is_cached_without_another_call(tmp_path):
     calls=[]
     def send(path,payload=None):
         if path.startswith('models?'):return 200,{'models':[MODEL]},{}
+        if path.endswith(':countTokens'):return 200,{'totalTokens':11},{}
         calls.append(1);raise TimeoutError('ambiguous Google response')
-    engine=gemma.Gemma(tmp_path,send=send)
+    engine=gemma.Gemma(tmp_path,send=send,shared_quota=gemma.SharedQuota(tmp_path/'shared'))
     assert engine.complete(BODY,'same-id')[0]==502
     assert engine.complete(BODY,'same-id')[0]==502 and calls==[1]
     assert 'ambiguous' in (tmp_path/'ledger.jsonl').read_text()
@@ -252,3 +256,36 @@ def test_same_logical_key_survives_changed_wire_attempt_id(tmp_path):
     two=gemma.route(lambda:(429,b'{"error":"quota"}',None),BODY,'wire-attempt-2',fallback=engine,idempotency_key=key)
     assert len(calls)==1
     assert json.loads(one[1])['choices']==json.loads(two[1])['choices']
+
+
+def test_standard_model_pin_input_count_cap_and_no_fallback(tmp_path):
+    calls=[];count=[2501];model={**MODEL,'version':'001'}
+    def send(path,payload=None):
+        if path.startswith('models?'):return 200,{'models':[model]},{}
+        if path.endswith(':countTokens'):return 200,{'totalTokens':count[0]},{}
+        calls.append(path);return 200,REPLY,{}
+    with pytest.raises(ValueError,match='version_drift'):
+        gemma.Gemma(tmp_path/'bad',send=send,expected_version='002',shared_quota=gemma.SharedQuota(tmp_path/'quota'))
+    engine=gemma.Gemma(tmp_path/'good',send=send,standard=True,expected_version='001',shared_quota=gemma.SharedQuota(tmp_path/'quota'))
+    with pytest.raises(ValueError,match='single_model_profile_mismatch'):engine.complete(BODY,'wrong-model')
+    body=json.loads(BODY);body['model']=engine.model_id
+    result=engine.complete(json.dumps(body).encode(),'too-large')
+    assert result[0]==400 and not calls
+    assert b'2500' in result[1]
+
+
+def test_global_bucket_hold_can_retry_same_id_without_duplicate_generation(tmp_path):
+    now=[1791740000.];engine,calls=api(tmp_path,now=now)
+    with engine.shared_quota.locked() as state:
+        state.update(updated=now[0],tokens=0,requests=0)
+    first=engine.complete(BODY,'queued')
+    assert first[0]==429 and not calls
+    now[0]+=61
+    assert engine.complete(BODY,'queued')[0]==200 and len(calls)==1
+    assert engine.complete(BODY,'queued')[0]==200 and len(calls)==1
+    value=json.loads(first[1]);assert value['ugrp_upstream_forwarded'] is False and value['usage']['total_tokens']==0
+    row=dict(status='sent',response_provider=gemma.PROVIDER,response_model=engine.model_id,
+        provider_usage=value['usage'],usage_known=True,latency_ms=1,failure_class=None,
+        upstream_forwarded=False,quota_wait=value['quota_wait'])
+    report=usage_summary([row]);assert report['upstream_generation_requests_confirmed']==0
+    assert report['local_quota_wait_responses']==1 and report['tokens_total_known']==0

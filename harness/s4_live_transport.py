@@ -18,9 +18,15 @@ URL = 'http://127.0.0.1:18391/v1/chat/completions'
 
 def validate_receipt(receipt, now=None):
     now = time.time() if now is None else now
+    single=receipt.get('driver_profile')=='study_gemma4_31b_v1'
+    expected=hashlib.sha256((Path(__file__).resolve().parents[1]/'scripts/gemma_fallback_proxy.py').read_bytes()).hexdigest() if single else PROXY_SHA256
+    if single and (receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
+                   or receipt.get('gemma_model_pin')!={'model_id':'gemma-4-31b-it','version':'001'}
+                   or receipt.get('gemma_fallback',{}).get('image_input_confirmed') is not True):
+        raise HostError('single Gemma identity/model/image verification missing')
     if (receipt.get('schema') != 'ugrp.s4_ssh_proxy.v1'
             or receipt.get('remote_url') != URL
-            or receipt.get('proxy', {}).get('source_sha256') != PROXY_SHA256
+            or receipt.get('proxy', {}).get('source_sha256') != expected
             or not 0 < receipt.get('valid_for_s', 3600) <= 14400
             or not 0 <= now-receipt.get('checked_unix', 0) <= receipt.get('valid_for_s', 3600)
             or receipt.get('authentication') != 'existing_mac_proxy_no_credentials_transferred'

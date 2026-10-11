@@ -325,6 +325,9 @@ class MainStudySendLedger(SendLedger):
             if isinstance(response, dict) and 'provider' in response:
                 row['response_provider'] = response['provider']
                 row['provider_route'] = response.get('ugrp_route')
+                if 'ugrp_upstream_forwarded' in response:
+                    row.update(upstream_forwarded=response['ugrp_upstream_forwarded'],
+                        quota_wait=response.get('quota_wait'),actual_count_tokens=response.get('ugrp_count_tokens'))
             row['completion'] = assess_completion(response, study_json=True)
 
     def _preflight_live(self):
@@ -494,6 +497,9 @@ def call_rows(ledger) -> list:
                      'budget_request_id': e.get('budget_request_id')})
         if 'response_provider' in e:
             rows[-1].update(response_provider=e['response_provider'], provider_route=e.get('provider_route'))
+        if 'upstream_forwarded' in e:
+            rows[-1].update(upstream_forwarded=e['upstream_forwarded'],quota_wait=e.get('quota_wait'),
+                           actual_count_tokens=e.get('actual_count_tokens'))
     return rows
 
 
@@ -519,7 +525,12 @@ def usage_summary(rows) -> dict:
             attempt_total = known_total(attempt.get('usage'))
             upstream['tokens_total_known'] += attempt_total or 0
             upstream['usage_unknown_responses'] += attempt_total is None
-    return {'requests': len(sent), 'blocked': len(rows) - len(sent), 'by_model': by_model,
+    extra={}
+    if any('upstream_forwarded' in r for r in sent):
+        extra=dict(upstream_generation_requests_confirmed=sum(r.get('upstream_forwarded') is True for r in sent),
+            local_quota_wait_responses=sum(r.get('upstream_forwarded') is False and bool(r.get('quota_wait')) for r in sent),
+            upstream_generation_status_unknown=sum('upstream_forwarded' not in r for r in sent))
+    return {**extra,'requests': len(sent), 'blocked': len(rows) - len(sent), 'by_model': by_model,
             'upstream_by_model': upstream_by_model,
             'tokens_prompt': field('prompt_tokens'), 'tokens_completion': field('completion_tokens'),
             'tokens_total_known': sum(t for t in known if t is not None),

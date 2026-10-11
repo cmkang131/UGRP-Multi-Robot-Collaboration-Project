@@ -109,6 +109,8 @@ class PairLiveLedger(llm.MainStudySendLedger):
             if isinstance(response, dict) and 'provider' in response:
                 row.update(response_model=response.get('model'), response_provider=response['provider'],
                            provider_route=response.get('ugrp_route'), provider_usage=response.get('usage'))
+                if 'ugrp_upstream_forwarded' in response:
+                    row.update(upstream_forwarded=response['ugrp_upstream_forwarded'],quota_wait=response.get('quota_wait'))
         except ValueError:
             pass
         row['rate_limit'] = is_rate_limit(exc.code, excerpt)

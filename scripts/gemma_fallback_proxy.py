@@ -26,11 +26,13 @@ from zoneinfo import ZoneInfo
 
 from harness.s4_relay_journal import Journal
 from harness.zone_study_llm_transport import no_redirect_opener
+from harness.s4_gemma_quota import SharedQuota
 
 API = 'https://generativelanguage.googleapis.com/v1beta/'
 SERVICE = 'ugrp-gemma-aistudio'
 PROVIDER = 'google_aistudio_gemma'
 PROFILE = 'dev_gemini_gemma_fallback_v1'
+STANDARD_PROFILE = 'study_gemma4_31b_v1'
 ROOT = Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback')
 PACIFIC = ZoneInfo('America/Los_Angeles')
 
@@ -235,16 +237,35 @@ class Quota:
 
 
 class Gemma:
-    def __init__(self, root, *, send=google, clock=time.time, expected_model=None):
+    def __init__(self, root, *, send=google, clock=time.time, expected_model=None,
+                 expected_version=None, shared_quota=None, standard=False):
         self.root, self.send = Path(root), send
         self.root.mkdir(parents=True, exist_ok=True)
         self.quota = Quota(self.root, clock=clock)
+        self.shared_quota = shared_quota or SharedQuota(clock=clock)
+        self.standard = standard
         self.model, self.discovery = discover(send)
         self.model_id = self.discovery['model_id']
         if expected_model is not None and self.model_id != expected_model:
             raise ValueError('models.list_model_differs_from_registered_DEV_profile')
+        if expected_version is not None and self.model.get('version') != expected_version:
+            raise ValueError('models.list_version_drift')
         write(self.root / 'models-list.json', self.discovery)
-        self.journal = Journal(self.root / 'responses', retry_rate_limits=False)
+        self.journal = Journal(self.root / 'responses', clock=clock, retry_rate_limits=True)
+
+    def count_tokens(self, body):
+        payload={'generateContentRequest':{'model':self.model['name'],**body}}
+        sha=hashlib.sha256(json.dumps(payload,sort_keys=True).encode()).hexdigest()
+        path=self.shared_quota.root/('count-'+sha+'.json')
+        if path.exists():return json.loads(path.read_text())
+        status,value,_=self.send(self.model['name']+':countTokens',payload)
+        if status!=200 or type(value.get('totalTokens')) is not int:
+            raise ValueError('countTokens_failed_closed')
+        row=dict(request_sha256=sha,model=self.model_id,version=self.model.get('version'),
+                 totalTokens=value['totalTokens'],response=value,source='actual_countTokens')
+        # Hash-named cache contains no input text, images or credentials.
+        with self.shared_quota.locked():write(path,row)
+        return row
 
     def require_image_probe(self):
         path = self.root / 'image-probe.json'
@@ -258,6 +279,17 @@ class Gemma:
 
     def _complete(self, raw, request_id):
         request = json.loads(raw); body = generate_body(request)
+        if self.standard and request.get('model') != self.model_id:
+            raise ValueError('single_model_profile_mismatch')
+        counted=self.count_tokens(body)
+        if self.standard and counted['totalTokens']>2500:
+            return 400,b'{"error":"compact_input_exceeds_2500_tokens","ugrp_upstream_forwarded":false}',None
+        reservation=self.shared_quota.reserve(counted['totalTokens']+body['generationConfig']['maxOutputTokens'],
+            request_id=request_id,request_sha256=hashlib.sha256(raw).hexdigest())
+        if not reservation['admitted']:
+            return 429,json.dumps(dict(error='global_gemma_token_bucket',provider=PROVIDER,
+                model=self.model_id,ugrp_upstream_forwarded=False,quota_wait=reservation,
+                usage={'prompt_tokens':0,'completion_tokens':0,'total_tokens':0})).encode(),str(reservation['retry_after_s'])
         with self.quota.transaction() as state:
             retry = self.quota.reserve(state)
             if retry:
@@ -275,6 +307,14 @@ class Gemma:
                 'error': 'google_generateContent_http_' + str(status), 'provider': PROVIDER,
                 'model': self.model_id}
             result['ugrp_upstream_forwarded'] = True
+            result['ugrp_count_tokens']=counted
+            result['ugrp_quota_reservation']=reservation
+            result['ugrp_model_pin']=dict(model_id=self.model_id,models_list_version=self.model.get('version'),
+                response_model_version=response.get('modelVersion'),immutable_revision_available=False)
+            result['ugrp_thoughts_tokens']=response.get('usageMetadata',{}).get('thoughtsTokenCount')
+            if self.standard and status==200 and response.get('modelVersion')!=self.model_id:
+                status=502
+                result.pop('choices',None);result['error']='response_model_version_drift'
             self.record(request_id, raw, status, response, state, result=result, forwarded=True)
             return status, json.dumps(result).encode(), (str(max(1, math.ceil(state['hold_until']-self.quota.clock())))
                                                        if status == 429 else None)

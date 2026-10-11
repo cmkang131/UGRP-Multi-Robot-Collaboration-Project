@@ -120,6 +120,7 @@ TEST_PATTERNS = (
     "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
     "tests/test_s4_live_stage.py",  # S4 stage admission and transport: stub model, fake physics
     "tests/test_gemma_fallback_proxy.py",  # Mac DEV fallback/quota/Keychain: fake API only
+    "tests/test_s4_study_policy.py",  # English/event/quota policy: offline only
     "tests/test_s4_live5.py",  # opt-in frozen S3 pair integration, no physics/model
     "tests/test_s4_grip_r3.py",
     "tests/test_s4_grip_visual.py",

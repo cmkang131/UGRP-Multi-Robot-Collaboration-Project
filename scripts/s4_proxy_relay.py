@@ -17,30 +17,41 @@ from harness.s4_relay_journal import Journal
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--proxy-pid', type=int, required=True)
+    p.add_argument('--proxy-pid', type=int)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--seconds', type=int, default=3600)
     p.add_argument('--idempotent', action='store_true')
     p.add_argument('--gemma-fallback', action='store_true', help='DEV only; default off')
+    p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
+                   default='main_study_gemini_v1')
     p.add_argument('--gemma-state', type=Path,
         default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
     a = p.parse_args()
     if not 0 < a.seconds <= 14400: raise ValueError('finite <=4h relay required')
     a.output.mkdir(parents=True, exist_ok=False)
-    profile = load_registry()['driver_profiles']['main_study_gemini_v1']
-    proxy, runtime = live_proxy(profile, a.proxy_pid)
+    single=a.driver_profile=='study_gemma4_31b_v1'
+    if single and a.gemma_fallback:raise ValueError('single model cannot fallback')
+    profile = load_registry()['driver_profiles'][a.driver_profile]
+    if single:
+        source=Path(__file__).parent/'gemma_fallback_proxy.py'
+        proxy=dict(source_sha256=hashlib.sha256(source.read_bytes()).hexdigest())
+        runtime=dict(provider='google_aistudio_gemma',key_location='Mac Keychain only')
+    else:
+        if a.proxy_pid is None:raise ValueError('Gemini proxy PID required')
+        proxy, runtime = live_proxy(profile, a.proxy_pid)
     fallback = None
-    if a.gemma_fallback:
+    if a.gemma_fallback or single:
         from scripts.gemma_fallback_proxy import Gemma
-        registered = load_registry()['driver_profiles']['dev_gemini_gemma_fallback_v1']['fallback']['model_id']
-        fallback = Gemma(a.gemma_state, expected_model=registered)
+        registered = profile['model']['model'] if single else load_registry()['driver_profiles']['dev_gemini_gemma_fallback_v1']['fallback']['model_id']
+        fallback = Gemma(a.gemma_state, expected_model=registered,standard=single,
+                         expected_version='001' if single else None)
         fallback.require_image_probe()
     receipt = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url=URL, proxy=proxy,
         runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, audit_per_post=True,
         authentication='existing_mac_proxy_no_credentials_transferred')
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
     lock = threading.Lock()
-    journal = Journal(a.output/'responses', retry_rate_limits=not a.gemma_fallback) if a.idempotent or a.gemma_fallback else None
+    journal = Journal(a.output/'responses', retry_rate_limits=True) if a.idempotent or fallback else None
     receipt['idempotent_response_journal'] = bool(journal)
     if fallback:
         from scripts.gemma_fallback_proxy import PROFILE
@@ -49,6 +60,10 @@ def main():
             model_source='models.list', image_input_confirmed=True,
             source_sha256=hashlib.sha256((Path(__file__).parent/'gemma_fallback_proxy.py').read_bytes()).hexdigest(),
             attempts_per_request=1, key_location='macOS Keychain: ugrp-gemma-aistudio'))
+        if single:
+            receipt.update(driver_profile=a.driver_profile,single_model=True,gemma_model_pin=dict(
+                model_id=fallback.model_id,version=fallback.model['version']),
+                global_quota=dict(tpm=14400,rpm=27,rpd=12960),fallback_enabled=False)
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
 
     class Handler(BaseHTTPRequestHandler):
@@ -71,7 +86,7 @@ def main():
             def forward():
                 retry_after = None
                 try:
-                    current, _ = live_proxy(profile, a.proxy_pid)
+                    current = dict(source_sha256=hashlib.sha256(source.read_bytes()).hexdigest()) if single else live_proxy(profile,a.proxy_pid)[0]
                     if current != proxy: raise ValueError('proxy identity changed')
                     if fallback and hashlib.sha256((Path(__file__).parent/'gemma_fallback_proxy.py').read_bytes()).hexdigest() != receipt['gemma_fallback']['source_sha256']:
                         raise ValueError('fallback source changed')
@@ -83,7 +98,9 @@ def main():
                                 return response.status, response.read(8_000_000), None
                         except HTTPError as exc:
                             return exc.code, exc.read(8_000_000), exc.headers.get('Retry-After')
-                    if fallback:
+                    if single:
+                        status,raw,retry_after=fallback.complete(body,call_id,idempotency_key=key)
+                    elif fallback:
                         from scripts.gemma_fallback_proxy import route
                         status, raw, retry_after = route(primary, body, call_id, fallback=fallback, idempotency_key=key)
                     else:
