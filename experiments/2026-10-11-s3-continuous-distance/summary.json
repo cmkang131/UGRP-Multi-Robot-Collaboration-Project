@@ -1,17 +1,1656 @@
 {
-  "status": "PREREGISTERED",
-  "executed": 0,
-  "planned": 12,
+  "schema": "ugrp.s3_continuous_distance.delivery.v1",
+  "status": "COMPLETED_EVALUATED_ARCHIVED",
   "host": "ugrp-sim-azure",
+  "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
   "pr": 416,
+  "batch": "s3-continuous-20261011-v186",
+  "execution_bundle_id": "zone-s3-continuous-distance-v186",
+  "workflow_version": "7.79.0",
+  "physical_source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+  "evaluation_source_sha": "8bda9023acd29329dd1ae8f8081da21ee51ccc02",
+  "evaluation_source_sha256": "439e3ceaafc064ff2cee9192e42674d059d90583e806a5fb2870f9ae9df55ec6",
+  "registration_sha256": "ac45aac5885b155e113b8414efa81606417dced3238b65eea562f16c068a5252",
+  "planned": 12,
+  "executed": 12,
+  "evaluated": 12,
+  "effective_independent_seeds": 3,
+  "groups": {
+    "0.85": {
+      "n": 3,
+      "safe": 1,
+      "mechanical_hold_safe": 3,
+      "reached": 3,
+      "actual_distance_range_m": [
+        0.8528190078185488,
+        0.8572750655028041
+      ],
+      "max_tilt_deg": 1.4115124204931933,
+      "max_axis_disagreement_m": 0.026732796089312755,
+      "max_heading_drift_rad": 0.004818698894109907,
+      "max_localization_error_m": 2.8586147208962966
+    },
+    "1.5": {
+      "n": 3,
+      "safe": 0,
+      "mechanical_hold_safe": 3,
+      "reached": 3,
+      "actual_distance_range_m": [
+        1.5016884468507787,
+        1.5084747806445042
+      ],
+      "max_tilt_deg": 1.4957211919236302,
+      "max_axis_disagreement_m": 0.03995665071588751,
+      "max_heading_drift_rad": 0.00534601752849051,
+      "max_localization_error_m": 3.7689725797255234
+    },
+    "2.5": {
+      "n": 3,
+      "safe": 0,
+      "mechanical_hold_safe": 3,
+      "reached": 3,
+      "actual_distance_range_m": [
+        2.5157522083840194,
+        2.5222076140768763
+      ],
+      "max_tilt_deg": 1.6033479579629326,
+      "max_axis_disagreement_m": 0.05317599056152414,
+      "max_heading_drift_rad": 0.009572499511352639,
+      "max_localization_error_m": 3.7689725797255234
+    },
+    "4.0": {
+      "n": 3,
+      "safe": 0,
+      "mechanical_hold_safe": 3,
+      "reached": 3,
+      "actual_distance_range_m": [
+        4.027159360754656,
+        4.030157398261602
+      ],
+      "max_tilt_deg": 1.7225548410210436,
+      "max_axis_disagreement_m": 0.07973562369364687,
+      "max_heading_drift_rad": 0.01739330951436837,
+      "max_localization_error_m": 4.472279112911846
+    }
+  },
+  "counts": {
+    "distance_reached_with_bilateral_grip": 12,
+    "carry_drop": 0,
+    "persistent_grip_loss": 0,
+    "tilt_limit_exceeded": 0,
+    "axis_sync_criterion_passed": 1,
+    "whole_episodes_completed": 0,
+    "post_carry_supported_floor_guard_false_positives": 12,
+    "host_errors": 0,
+    "initial_checks_healthy": 12
+  },
+  "maximum_tested_mechanical_hold_distance_m": 4.0,
+  "maximum_tested_safe_distance_m": null,
+  "recommended_max_continuous_distance_m": null,
+  "integration": {
+    "provisional_candidate_distance_m": 0.4,
+    "adopted_safe_distance_m": null,
+    "earliest_sync_limit_crossing_m": 0.5357218647670151,
+    "margin_fraction": 0.2,
+    "round_down_step_m": 0.05,
+    "prefix_0p4m_max_axis_m_by_seed": {
+      "18601": 0.01168094119196983,
+      "18602": 0.01767652000071815,
+      "18603": 0.014221331368883594
+    },
+    "basis": "Exploratory trace-prefix candidate only: no registered target passed all criteria 3/3. 0.40m is 20% before the earliest 0.53572m fixed-20mm sync-limit crossing, rounded down to 50mm. Not an independent confirmation or a formal E2E safety limit."
+  },
+  "setup_scope": "DEV synthetic alignment entrance; 3 seeds; no formal/real-robot safety guarantee",
+  "control_boundary": {
+    "own_rgb": true,
+    "static_map_and_fixed_calibration": true,
+    "own_command_history": true,
+    "known_start_pose": false,
+    "gt_control": false,
+    "gt_eval_only": true,
+    "model_calls": 0,
+    "weld": "off",
+    "render": "floor_light_v1",
+    "single_straight_segment": true,
+    "intermediate_release": false,
+    "door_crossing_target_m": [
+      2.5,
+      4.0
+    ],
+    "dock_to_B_E2E": false
+  },
+  "remaining_issues": {
+    "localization": "Already wrong at carry entrance: r1 2.765–2.859m, r2 1.929–1.963m; maximum 4.472m. Do not use this cohort to claim camera localization/navigation success.",
+    "terminal_guard": "All 12 raw episodes end PHYSICAL_STOP after completed carry. wait_open transitions to released before queued OPEN reaches the host; supported-lower predicate rejects released while release-epoch still sees closed PWM. Final witnesses retain four finger contacts, positive floor reaction, <=0.00254m/s vertical speed, <=0.851deg tilt. Carry-window and whole-episode judgments are separate; guard was not disabled or patched during measurement."
+  },
+  "provenance": {
+    "raw_azure": "azure:/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186",
+    "raw_arm": "oracle-codex:/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186",
+    "raw_original_files_verified": 55074,
+    "all_raw_original_hashes_match": true,
+    "full_summary_original_sha256": "56295bb4e6a1c2f2edbc7245c5006611a24adfb376bf9fd726e7a0fb032ad205",
+    "full_summary_compressed_sha256": "50525cffbddbfab13e762998437a19e67c6d84cee471e937e9d4c63d1e9459b2",
+    "full_summary": "summary-continuous.json.zst",
+    "archive": {
+      "verified": true,
+      "path": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186",
+      "files": 55223,
+      "bytes": 853011173,
+      "inventory_sha256": "17c06db00fef2b6a671f1fbc7ebc03340a9c70719a58543e459706739040cb68",
+      "tar_sha256": "17671e60dfb64172a634a91c2a8775fb92e8e705cb0497bcc4a8fdb3537552c5",
+      "compressed_originals_verified": 242,
+      "method": "packed transfer, ARM full file SHA256, decompressed original SHA256",
+      "utc": "2026-10-11T10:59:12Z"
+    },
+    "mac": {
+      "mode": "fetch-lite",
+      "files": 617,
+      "bytes": 166146749,
+      "all_subset_hashes_match": true,
+      "media_files": 0,
+      "local": "/Users/changmin/projects/ugrp/outputs/azure-runs/s3-continuous-20261011-v186",
+      "azure": "azure:/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186"
+    }
+  },
+  "resources": {
+    "vm": "Standard_D16as_v5",
+    "vcpus": 16,
+    "expected_cores_per_run": 0.6,
+    "own_cpus": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "reserved_other_task_cpus": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "cpu_affinity_adjustment": "Observed 26 threads/run and load 82.6: pinned every own worker thread to distinct CPU0–11. Remaining three later used four disjoint CPUs each within0–11; no priority changes.",
+    "wall_sim_median": 14.58436159106886,
+    "lease_completion": {
+      "run": "s3-continuous-20261011-v186",
+      "archive_verified": true,
+      "own_processes_remaining": [],
+      "own_lease_released": true,
+      "other_leases": [
+        {
+          "name": "e2eaz1-gemini-s61001-on",
+          "age_s": 3003.8
+        },
+        {
+          "name": "egomap72-b-return-29c0c169",
+          "age_s": 8.1
+        },
+        {
+          "name": "egomap72-retry-92f52205",
+          "age_s": 24.6
+        },
+        {
+          "name": "e2e433-bootstrap",
+          "age_s": 2886.2
+        }
+      ],
+      "vm_action": "kept running: other leases",
+      "task_begin_utc": "2026-10-11T10:15:00Z",
+      "task_end_utc": "2026-10-11T11:01:13Z",
+      "task_elapsed_wall_s": 2773.9052827358246,
+      "cap_wall_s": 7200
+    }
+  },
   "tests": {
     "passed": 24,
     "files": [
       "tests/test_s3_continuous_distance.py",
       "tests/test_simulation_workflow_manager.py"
-    ]
+    ],
+    "later_evaluator_regression_passed": 4,
+    "mac_physics": false
   },
-  "raw": "pending",
-  "archive": "pending",
-  "maximum_safe_distance_m": null
+  "runs": [
+    {
+      "name": "s3-continuous-d0p85-s18601",
+      "distance_m": 0.85,
+      "seed": 18601,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 798.3298997009999,
+      "sim_s": 54.699999999999996,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 42.55,
+      "actual_continuous_distance_m": 0.8572750655028041,
+      "tilt_max_deg": 1.4115124204931933,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.018098660813339773,
+        0.014575180583967
+      ],
+      "opposed_heading_drift_max_rad": 0.004818698894109907,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.7645709946653145,
+          "max": 2.7645709946653145,
+          "final": 1.9199245051912228,
+          "rms": 2.3650878460227505
+        },
+        "r2": {
+          "initial": 1.9628257732982293,
+          "max": 1.9628298351803484,
+          "final": 1.2371570399411846,
+          "rms": 1.600931055553561
+        }
+      },
+      "samples": 270,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": true,
+      "mechanical_hold_safe": true,
+      "reasons": [],
+      "first_axis_limit": null,
+      "prefix_axis_max_m": {
+        "0.25": 0.008095281253246045,
+        "0.4": 0.01168094119196983,
+        "0.5": 0.0135675933115329,
+        "0.6": 0.015008184990021989,
+        "0.7": 0.016043618947458205,
+        "0.8": 0.01749547114376515
+      },
+      "raw_manifest_sha256": "4f1e6208d5ff76924806b2a608b8fa5af0f33c7538b1b20d1563720470e404c1",
+      "verified_files": 3322,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d0p85-s18601/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d0p85-s18601/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d0p85-s18601",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.024910281894342818,
+            "finger_xyz_m": 0.16131663859671705
+          },
+          "r2": {
+            "base_xyz_m": 0.04355395219122083,
+            "finger_xyz_m": 0.16959001583004557
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.07041710600004
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d0p85-s18601",
+        "t": 57.0,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 2.4218770031907617,
+        "cargo_z_m": 0.01590880420304436,
+        "vertical_speed_m_s": 0.00033805409251021744,
+        "tilt_deg": 0.8506280920078572,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d0p85-s18602",
+      "distance_m": 0.85,
+      "seed": 18602,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 799.199467082,
+      "sim_s": 54.699999999999996,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 42.55,
+      "actual_continuous_distance_m": 0.8534340805627453,
+      "tilt_max_deg": 1.1582709254750323,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.02190956444301051,
+        0.026732796089312755
+      ],
+      "opposed_heading_drift_max_rad": 0.004529580403295431,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.805833045292095,
+          "max": 2.805842812136763,
+          "final": 2.0245016549395833,
+          "rms": 2.434318643999927
+        },
+        "r2": {
+          "initial": 1.9491003309368284,
+          "max": 1.9491489672617153,
+          "final": 1.1766160099783438,
+          "rms": 1.5753937463686247
+        }
+      },
+      "samples": 270,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 37.6,
+        "distance_m": 0.5357218647670151,
+        "axis_error_m": 0.020382665063394027
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.01109269517687159,
+        "0.4": 0.01767652000071815,
+        "0.5": 0.019474901096970924,
+        "0.6": 0.02338184367437839,
+        "0.7": 0.025014452888922324,
+        "0.8": 0.02642573503779226
+      },
+      "raw_manifest_sha256": "f9e605d288f00f9010fa5843f30271326c82c795a0f2eeb484f19fcb04023136",
+      "verified_files": 3322,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d0p85-s18602/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d0p85-s18602/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d0p85-s18602",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.026853176136429374,
+            "finger_xyz_m": 0.16137352456884474
+          },
+          "r2": {
+            "base_xyz_m": 0.04072369379496632,
+            "finger_xyz_m": 0.16889586057791034
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.07835716099999
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d0p85-s18602",
+        "t": 57.0,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 2.564702065968784,
+        "cargo_z_m": 0.015887575920445304,
+        "vertical_speed_m_s": 0.00028677864110608875,
+        "tilt_deg": 0.6092058702433419,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d0p85-s18603",
+      "distance_m": 0.85,
+      "seed": 18603,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 796.1721578620001,
+      "sim_s": 54.699999999999996,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 42.55,
+      "actual_continuous_distance_m": 0.8528190078185488,
+      "tilt_max_deg": 1.3230271289852584,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.023676867292964587,
+        0.012101059886913429
+      ],
+      "opposed_heading_drift_max_rad": 0.002830539183046543,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.8586147208962966,
+          "max": 2.8586147208962966,
+          "final": 2.1671969095167944,
+          "rms": 2.4497703374473883
+        },
+        "r2": {
+          "initial": 1.9292690209981707,
+          "max": 1.9293123528482707,
+          "final": 1.025711125624632,
+          "rms": 1.6443129843308868
+        }
+      },
+      "samples": 270,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 39.35,
+        "distance_m": 0.646660144656757,
+        "axis_error_m": 0.020064266129517172
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.009599749118573864,
+        "0.4": 0.014221331368883594,
+        "0.5": 0.016690175380431327,
+        "0.6": 0.01904970890989577,
+        "0.7": 0.021111727240414435,
+        "0.8": 0.02302571750979443
+      },
+      "raw_manifest_sha256": "2de4201cf1a25036684161284bf1fc5dd7290e949e7c9dd1c73c62b981f87b65",
+      "verified_files": 3322,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d0p85-s18603/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d0p85-s18603/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d0p85-s18603",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.026961569294459916,
+            "finger_xyz_m": 0.1611791076958445
+          },
+          "r2": {
+            "base_xyz_m": 0.03939231969339842,
+            "finger_xyz_m": 0.16960192172684516
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.06226982099997
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d0p85-s18603",
+        "t": 57.0,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 3.4740663908170744,
+        "cargo_z_m": 0.015850595944619645,
+        "vertical_speed_m_s": 0.0013369842599400615,
+        "tilt_deg": 0.8393818412680335,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d1p5-s18601",
+      "distance_m": 1.5,
+      "seed": 18601,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 892.822006239,
+      "sim_s": 64.80000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 52.55,
+      "actual_continuous_distance_m": 1.5084747806445042,
+      "tilt_max_deg": 1.4957211919236302,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.021543340271172662,
+        0.021473992126403288
+      ],
+      "opposed_heading_drift_max_rad": 0.00534601752849051,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.7645709946653145,
+          "max": 3.7689725797255234,
+          "final": 1.7818652822998435,
+          "rms": 2.4914050350163106
+        },
+        "r2": {
+          "initial": 1.9628257732982293,
+          "max": 1.9628298351803484,
+          "final": 1.2138615088418248,
+          "rms": 1.4720693443539694
+        }
+      },
+      "samples": 470,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 46.3,
+        "distance_m": 1.1044261496881562,
+        "axis_error_m": 0.0200314649881439
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.008095281253246045,
+        "0.4": 0.01168094119196983,
+        "0.5": 0.0135675933115329,
+        "0.6": 0.015008184990021989,
+        "0.7": 0.016043618947458205,
+        "0.8": 0.01749547114376515
+      },
+      "raw_manifest_sha256": "fa9aae85f7a3bfe10c033261e7a7b510b70002a269aa78cff4690e24b3fe785c",
+      "verified_files": 3928,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d1p5-s18601/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d1p5-s18601/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d1p5-s18601",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.024910281894342818,
+            "finger_xyz_m": 0.16131663859671705
+          },
+          "r2": {
+            "base_xyz_m": 0.04355395219122083,
+            "finger_xyz_m": 0.16959001583004557
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.07874066800002
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d1p5-s18601",
+        "t": 67.1,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 4.605852782290671,
+        "cargo_z_m": 0.015800641448277846,
+        "vertical_speed_m_s": 0.0001146982948652879,
+        "tilt_deg": 0.6011624142796729,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d1p5-s18602",
+      "distance_m": 1.5,
+      "seed": 18602,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 950.84890193,
+      "sim_s": 64.80000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 52.55,
+      "actual_continuous_distance_m": 1.5031870249552284,
+      "tilt_max_deg": 1.2172846274700138,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.02762030750629485,
+        0.03995665071588751
+      ],
+      "opposed_heading_drift_max_rad": 0.005120612422448101,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.805833045292095,
+          "max": 2.805842812136763,
+          "final": 1.776321244016781,
+          "rms": 2.2481584154940344
+        },
+        "r2": {
+          "initial": 1.9491003309368284,
+          "max": 1.9491489672617153,
+          "final": 0.6922801518667012,
+          "rms": 1.373811818953227
+        }
+      },
+      "samples": 470,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 37.6,
+        "distance_m": 0.5357218647670151,
+        "axis_error_m": 0.020382665063394027
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.01109269517687159,
+        "0.4": 0.01767652000071815,
+        "0.5": 0.019474901096970924,
+        "0.6": 0.02338184367437839,
+        "0.7": 0.025014452888922324,
+        "0.8": 0.02642573503779226
+      },
+      "raw_manifest_sha256": "fc32c8826062fa2ede62379690197318a29fd6dcf24560903e94a8161dd1e540",
+      "verified_files": 3928,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d1p5-s18602/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d1p5-s18602/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d1p5-s18602",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.026853176136429374,
+            "finger_xyz_m": 0.16137352456884474
+          },
+          "r2": {
+            "base_xyz_m": 0.04072369379496632,
+            "finger_xyz_m": 0.16889586057791034
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.066144432
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d1p5-s18602",
+        "t": 67.1,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 1.855717141263944,
+        "cargo_z_m": 0.015854924167952623,
+        "vertical_speed_m_s": -0.00019657379958606675,
+        "tilt_deg": 0.5805281481820456,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d1p5-s18603",
+      "distance_m": 1.5,
+      "seed": 18603,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 944.3969276389998,
+      "sim_s": 64.80000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 52.55,
+      "actual_continuous_distance_m": 1.5016884468507787,
+      "tilt_max_deg": 1.402402943068477,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.029956568622382163,
+        0.014902296749321267
+      ],
+      "opposed_heading_drift_max_rad": 0.004272682476904155,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.8586147208962966,
+          "max": 2.8586147208962966,
+          "final": 1.909912660538823,
+          "rms": 2.09209072115933
+        },
+        "r2": {
+          "initial": 1.9292690209981707,
+          "max": 2.289430580154357,
+          "final": 2.009036824481519,
+          "rms": 1.6027900146135297
+        }
+      },
+      "samples": 470,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 39.35,
+        "distance_m": 0.646660144656757,
+        "axis_error_m": 0.020064266129517172
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.009599749118573864,
+        "0.4": 0.014221331368883594,
+        "0.5": 0.016690175380431327,
+        "0.6": 0.01904970890989577,
+        "0.7": 0.021111727240414435,
+        "0.8": 0.02302571750979443
+      },
+      "raw_manifest_sha256": "ae413e94d0584c3085b0dbd43d90db24dd8e546ff3dcd45369dfab2ed163861e",
+      "verified_files": 3928,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d1p5-s18603/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d1p5-s18603/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d1p5-s18603",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.026961569294459916,
+            "finger_xyz_m": 0.1611791076958445
+          },
+          "r2": {
+            "base_xyz_m": 0.03939231969339842,
+            "finger_xyz_m": 0.16960192172684516
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.06499206900003
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d1p5-s18603",
+        "t": 67.1,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 2.9362366310384065,
+        "cargo_z_m": 0.01586205914939024,
+        "vertical_speed_m_s": 0.0004502465332433237,
+        "tilt_deg": 0.5476334010523581,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d2p5-s18601",
+      "distance_m": 2.5,
+      "seed": 18601,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 1176.8781436190002,
+      "sim_s": 80.2,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 68.15,
+      "actual_continuous_distance_m": 2.5222076140768763,
+      "tilt_max_deg": 1.6033479579629326,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.02267839839099839,
+        0.03613059886760106
+      ],
+      "opposed_heading_drift_max_rad": 0.009200600270607318,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.7645709946653145,
+          "max": 3.7689725797255234,
+          "final": 1.984803388672308,
+          "rms": 2.2039960742840057
+        },
+        "r2": {
+          "initial": 1.9628257732982293,
+          "max": 2.2467838784764793,
+          "final": 1.7199558186865513,
+          "rms": 1.5500309791323352
+        }
+      },
+      "samples": 782,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 46.3,
+        "distance_m": 1.1044261496881562,
+        "axis_error_m": 0.0200314649881439
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.008095281253246045,
+        "0.4": 0.01168094119196983,
+        "0.5": 0.0135675933115329,
+        "0.6": 0.015008184990021989,
+        "0.7": 0.016043618947458205,
+        "0.8": 0.01749547114376515
+      },
+      "raw_manifest_sha256": "3c7aa7a066a6053961db2077dda869cf84d2d7cf2a9251548e46e0333469fbc1",
+      "verified_files": 4852,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d2p5-s18601/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d2p5-s18601/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d2p5-s18601",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.024910281894342818,
+            "finger_xyz_m": 0.16131663859671705
+          },
+          "r2": {
+            "base_xyz_m": 0.04355395219122083,
+            "finger_xyz_m": 0.16959001583004557
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.08082807799997
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d2p5-s18601",
+        "t": 82.5,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 2.2067481001037454,
+        "cargo_z_m": 0.01581334931720662,
+        "vertical_speed_m_s": 1.7539110425194734e-05,
+        "tilt_deg": 0.5329883732809108,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d2p5-s18602",
+      "distance_m": 2.5,
+      "seed": 18602,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 1178.1566958619999,
+      "sim_s": 80.2,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 68.15,
+      "actual_continuous_distance_m": 2.5179985742556275,
+      "tilt_max_deg": 1.279879481175897,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.03019928490279078,
+        0.05317599056152414
+      ],
+      "opposed_heading_drift_max_rad": 0.005120612422448101,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.805833045292095,
+          "max": 2.805842812136763,
+          "final": 1.4195016592572547,
+          "rms": 1.9522963372432913
+        },
+        "r2": {
+          "initial": 1.9491003309368284,
+          "max": 2.5246301603390173,
+          "final": 1.9629152777363497,
+          "rms": 1.5041232887733518
+        }
+      },
+      "samples": 782,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 37.6,
+        "distance_m": 0.5357218647670151,
+        "axis_error_m": 0.020382665063394027
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.01109269517687159,
+        "0.4": 0.01767652000071815,
+        "0.5": 0.019474901096970924,
+        "0.6": 0.02338184367437839,
+        "0.7": 0.025014452888922324,
+        "0.8": 0.02642573503779226
+      },
+      "raw_manifest_sha256": "977f59eeb7d594595f0ac7e3f5b8bc1b97845c4e0e24ad243090192371ffe7bb",
+      "verified_files": 4852,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d2p5-s18602/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d2p5-s18602/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d2p5-s18602",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:01Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.026853176136429374,
+            "finger_xyz_m": 0.16137352456884474
+          },
+          "r2": {
+            "base_xyz_m": 0.04072369379496632,
+            "finger_xyz_m": 0.16889586057791034
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.3212565089999
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d2p5-s18602",
+        "t": 82.5,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 5.090784782670199,
+        "cargo_z_m": 0.0158343034236737,
+        "vertical_speed_m_s": -0.0004321010500648699,
+        "tilt_deg": 0.19422517925622232,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d2p5-s18603",
+      "distance_m": 2.5,
+      "seed": 18603,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 1180.325059997,
+      "sim_s": 80.2,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 68.15,
+      "actual_continuous_distance_m": 2.5157522083840194,
+      "tilt_max_deg": 1.5252827776867517,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.031797952944433217,
+        0.02653109892790212
+      ],
+      "opposed_heading_drift_max_rad": 0.009572499511352639,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.8586147208962966,
+          "max": 3.006849187013887,
+          "final": 2.476022465618272,
+          "rms": 1.952943185885293
+        },
+        "r2": {
+          "initial": 1.9292690209981707,
+          "max": 3.1527789833194126,
+          "final": 3.0322037665552806,
+          "rms": 1.8881627541987076
+        }
+      },
+      "samples": 782,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 39.35,
+        "distance_m": 0.646660144656757,
+        "axis_error_m": 0.020064266129517172
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.009599749118573864,
+        "0.4": 0.014221331368883594,
+        "0.5": 0.016690175380431327,
+        "0.6": 0.01904970890989577,
+        "0.7": 0.021111727240414435,
+        "0.8": 0.02302571750979443
+      },
+      "raw_manifest_sha256": "f8761054519bed6f8be145cb96f7bb64bbed4422de8a67414c4828e96c51659a",
+      "verified_files": 4852,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d2p5-s18603/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d2p5-s18603/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d2p5-s18603",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.026961569294459916,
+            "finger_xyz_m": 0.1611791076958445
+          },
+          "r2": {
+            "base_xyz_m": 0.03939231969339842,
+            "finger_xyz_m": 0.16960192172684516
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.072252951
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d2p5-s18603",
+        "t": 82.5,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 3.5468461461919665,
+        "cargo_z_m": 0.0158552753541245,
+        "vertical_speed_m_s": 0.0008951839001940751,
+        "tilt_deg": 0.46173300982138327,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d4p0-s18601",
+      "distance_m": 4.0,
+      "seed": 18601,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 1396.2792873,
+      "sim_s": 103.60000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 91.35,
+      "actual_continuous_distance_m": 4.028347105936369,
+      "tilt_max_deg": 1.7225548410210436,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.02269345789496313,
+        0.054973548494184094
+      ],
+      "opposed_heading_drift_max_rad": 0.01739330951436837,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.7645709946653145,
+          "max": 3.7689725797255234,
+          "final": 1.7839496603802318,
+          "rms": 1.9742169763026847
+        },
+        "r2": {
+          "initial": 1.9628257732982293,
+          "max": 4.100716103917701,
+          "final": 2.6321525145837414,
+          "rms": 1.8902237613536925
+        }
+      },
+      "samples": 1246,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 46.3,
+        "distance_m": 1.1044261496881562,
+        "axis_error_m": 0.0200314649881439
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.008095281253246045,
+        "0.4": 0.01168094119196983,
+        "0.5": 0.0135675933115329,
+        "0.6": 0.015008184990021989,
+        "0.7": 0.016043618947458205,
+        "0.8": 0.01749547114376515
+      },
+      "raw_manifest_sha256": "4c5bed309481c1639b4c76aa4e3d1c66b997a6a722bcdacb23d31b6640174ce1",
+      "verified_files": 6256,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d4p0-s18601/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d4p0-s18601/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d4p0-s18601",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.024910281894342818,
+            "finger_xyz_m": 0.16131663859671705
+          },
+          "r2": {
+            "base_xyz_m": 0.04355395219122083,
+            "finger_xyz_m": 0.16959001583004557
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.07831526799998
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d4p0-s18601",
+        "t": 105.9,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 2.661973224244637,
+        "cargo_z_m": 0.0158592031574057,
+        "vertical_speed_m_s": 0.0001986870678135736,
+        "tilt_deg": 0.351669005694239,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d4p0-s18602",
+      "distance_m": 4.0,
+      "seed": 18602,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 1425.662636814,
+      "sim_s": 103.60000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 91.35,
+      "actual_continuous_distance_m": 4.030157398261602,
+      "tilt_max_deg": 1.337346902764962,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.030689710122405067,
+        0.07973562369364687
+      ],
+      "opposed_heading_drift_max_rad": 0.005120612422448101,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.805833045292095,
+          "max": 3.6966295241983342,
+          "final": 3.6966295241983342,
+          "rms": 2.2431544256260443
+        },
+        "r2": {
+          "initial": 1.9491003309368284,
+          "max": 4.471552315463051,
+          "final": 4.469849999133782,
+          "rms": 2.4108400573825435
+        }
+      },
+      "samples": 1246,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 37.6,
+        "distance_m": 0.5357218647670151,
+        "axis_error_m": 0.020382665063394027
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.01109269517687159,
+        "0.4": 0.01767652000071815,
+        "0.5": 0.019474901096970924,
+        "0.6": 0.02338184367437839,
+        "0.7": 0.025014452888922324,
+        "0.8": 0.02642573503779226
+      },
+      "raw_manifest_sha256": "69e99a7a2dfe9c0d0944d5ea0c60b2d3112f7a105e39c025fd1c7f8d2ad687b4",
+      "verified_files": 6256,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d4p0-s18602/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d4p0-s18602/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d4p0-s18602",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.026853176136429374,
+            "finger_xyz_m": 0.16137352456884474
+          },
+          "r2": {
+            "base_xyz_m": 0.04072369379496632,
+            "finger_xyz_m": 0.16889586057791034
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.06029349100004
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d4p0-s18602",
+        "t": 105.9,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 4.7687016352607134,
+        "cargo_z_m": 0.01583055163089189,
+        "vertical_speed_m_s": 0.0025323608316512244,
+        "tilt_deg": 0.22238554254943457,
+        "false_positive": true
+      }
+    },
+    {
+      "name": "s3-continuous-d4p0-s18603",
+      "distance_m": 4.0,
+      "seed": 18603,
+      "status": "PHYSICAL_STOP",
+      "source_sha": "127cd4fdd83acc0a1675fa56462190118d36804b",
+      "wall_s": 1423.1865932859998,
+      "sim_s": 103.60000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 91.35,
+      "actual_continuous_distance_m": 4.027159360754656,
+      "tilt_max_deg": 1.6303391309259352,
+      "drop": false,
+      "grip_loss_samples": {
+        "r1": 0,
+        "r2": 0
+      },
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.03193468859551718,
+        0.04891759028156378
+      ],
+      "opposed_heading_drift_max_rad": 0.015912800261369764,
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.8586147208962966,
+          "max": 4.472279112911846,
+          "final": 2.0230809985553972,
+          "rms": 2.55780462502699
+        },
+        "r2": {
+          "initial": 1.9292690209981707,
+          "max": 4.390162519779254,
+          "final": 4.390162519779254,
+          "rms": 2.2729120069416537
+        }
+      },
+      "samples": 1246,
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "mechanical_hold_safe": true,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "first_axis_limit": {
+        "t": 39.35,
+        "distance_m": 0.646660144656757,
+        "axis_error_m": 0.020064266129517172
+      },
+      "prefix_axis_max_m": {
+        "0.25": 0.009599749118573864,
+        "0.4": 0.014221331368883594,
+        "0.5": 0.016690175380431327,
+        "0.6": 0.01904970890989577,
+        "0.7": 0.021111727240414435,
+        "0.8": 0.02302571750979443
+      },
+      "raw_manifest_sha256": "074c4334f02069f94b5057b091fe20b1af8403d2dd3eaa93fa775859f26a1437",
+      "verified_files": 6256,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186/cohort/s3-continuous-d4p0-s18603/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-continuous-20261011-v186/cohort/s3-continuous-d4p0-s18603/raw",
+      "terminal_reason": "supported_floor_LOAD_DROP_guard_false_positive",
+      "model_calls": 0,
+      "initial_check": {
+        "name": "s3-continuous-d4p0-s18603",
+        "host": "ugrp-sim-azure",
+        "checked_at_utc": "2026-10-11T10:20:00Z",
+        "progress_samples": 12,
+        "sim_s": 13.35,
+        "frames": 220,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.026961569294459916,
+            "finger_xyz_m": 0.1611791076958445
+          },
+          "r2": {
+            "base_xyz_m": 0.03939231969339842,
+            "finger_xyz_m": 0.16960192172684516
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.06515610999998
+      },
+      "terminal_support": {
+        "name": "s3-continuous-d4p0-s18603",
+        "t": 105.9,
+        "states": {
+          "r1": "wait_open",
+          "r2": "wait_open"
+        },
+        "fingers": {
+          "r1": [
+            true,
+            true
+          ],
+          "r2": [
+            true,
+            true
+          ]
+        },
+        "floor_normal_n": 2.6729139847519745,
+        "cargo_z_m": 0.01592453392905456,
+        "vertical_speed_m_s": 0.0002952797368295535,
+        "tilt_deg": 0.5526873396177574,
+        "false_positive": true
+      }
+    }
+  ]
 }
