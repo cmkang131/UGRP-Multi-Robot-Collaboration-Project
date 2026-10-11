@@ -27,6 +27,13 @@ for d in "$R"/*/; do
     python3 "$TOOLS/scripts/compress_json_traces.py" "$d" || continue
     continue
   fi
+  # Opt-in transport retains raw and publishes the lifecycle's verified marker.
+  # Do not recompress an already verified source and invalidate its source state.
+  if [[ ${UGRP_ARCHIVE_NATIVE:-off} == on_v1 ]]; then
+    python3 "$TOOLS/scripts/azure_shutdown.py" archive-one --root "$(dirname "$R")" --run "$n" || continue
+    echo "$(date -u +%FT%TZ) auto-archived $n (native tar/zstd SSH, SHA-256 verified; source retained)" >> "$L"
+    continue
+  fi
   # Compression includes decompressed SHA-256 verification + durable inventories.
   python3 "$TOOLS/scripts/compress_json_traces.py" "$d" --execute || continue
   bytes=$(du -sb "$d" | cut -f1)

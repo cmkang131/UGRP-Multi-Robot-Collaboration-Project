@@ -1,0 +1,26 @@
+{
+  "schema": "ugrp.archive-native-transport.summary.v1",
+  "status": "prepared_not_transferred",
+  "run": "s3-continuous-20261011-v186",
+  "source": "azure:/home/ugrp/ugrp-sim/runs/s3-continuous-20261011-v186",
+  "transport": "tar-zstd-ssh-v1",
+  "toggle_default": "off",
+  "vm_toggle": "not_yet_enabled",
+  "legacy_partial": "arm:/home/ubuntu/ugrp-archive/runs/.incoming-s3-continuous-20261011-v186",
+  "source_preserved": true,
+  "invalidated_marker_files": ["ALL-hashes.tsv", "SHA256SUMS.tsv"],
+  "transfer_seconds": null,
+  "files": null,
+  "hash_match_n": null,
+  "hash_match_N": null,
+  "recover_exit_code": null,
+  "admit_exit_code": null,
+  "local_tests": {"files": 3, "passed": 75, "skipped": 12, "subtests_passed": 2},
+  "references": [
+    "https://man.openbsd.org/ssh",
+    "https://github.com/facebook/zstd/blob/dev/programs/zstd.1.md",
+    "https://docs.python.org/3.12/library/tarfile.html#extraction-filters",
+    "scripts/ego_pose_archive_transport.py at egojump 6b5ce978 (native hash/preservation precedent)"
+  ],
+  "scope": "storage transport and admission only"
+}

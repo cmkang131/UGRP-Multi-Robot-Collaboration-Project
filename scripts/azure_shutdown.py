@@ -212,6 +212,9 @@ def _archive_one(root, run):
         # After reboot there is no writer: preserve partial run as HOST_ERROR.
         write_json(run / 'HOST_ERROR.json', {'reason': 'interrupted_before_exit', 'boot_id': boot_id()})
         (run / 'EXIT').write_text('74\n')
+    if os.environ.get('UGRP_ARCHIVE_NATIVE', 'off') == 'on_v1':
+        from scripts.azure_archive_native import archive
+        return archive(root, run)
     left = inventory(run)
     # Flush the completed command's local files inside the bounded copy worker.
     for path in run.rglob('*'):

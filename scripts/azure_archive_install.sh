@@ -3,7 +3,7 @@
 set -euo pipefail
 SOURCE=${1:?committed source directory}
 install -d /usr/local/lib/ugrp-storage/scripts
-for module in __init__ storage_common storage_budget compress_json_traces worktree_guard; do
+for module in __init__ storage_common storage_budget compress_json_traces worktree_guard azure_shutdown azure_archive_native; do
   install -m 644 "$SOURCE/scripts/$module.py" "/usr/local/lib/ugrp-storage/scripts/$module.py"
 done
 install -m 755 "$SOURCE/scripts/ugrp_auto_archive.sh" /usr/local/bin/ugrp-auto-archive
@@ -30,6 +30,7 @@ Type=oneshot
 User=ugrp
 Environment=UGRP_RUNS=/home/ugrp/ugrp-sim/runs
 Environment=UGRP_ARCHIVE=/home/ugrp/ugrp-sim/arm
+EnvironmentFile=-/etc/ugrp/archive-native.env
 ExecStart=/usr/local/bin/ugrp-auto-archive
 EOF
 cat > /etc/systemd/system/ugrp-auto-archive.timer <<'EOF'
