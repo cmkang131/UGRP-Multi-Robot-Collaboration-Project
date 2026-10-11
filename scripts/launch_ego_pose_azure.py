@@ -15,6 +15,13 @@ import threading
 import time
 
 
+def measured_terminal(job):
+    """A measured physical failure is an outcome, not a host admission error."""
+    return (job.get('status') in ('RECORDED','PHYSICAL_FAILURE')
+            and bool(job.get('score')) and not job.get('scoring_error')
+            and not job.get('interrupted_reason'))
+
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--worktree',type=Path,required=True)
     p.add_argument('--runner-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
@@ -147,7 +154,7 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
             records.append(record);pending.remove(name)
             save('summary.json',dict(source_sha=sha,registered=18,groups=records,pending=pending,elapsed_s=time.monotonic()-started))
             print('ARCHIVED_AND_LITE_VERIFIED',name,marker['path'],flush=True)
-            if record['summary'] is None or any(j.get('status')!='RECORDED' for j in record['summary']['runs']):
+            if record['summary'] is None or not all(measured_terminal(j) for j in record['summary']['runs']):
                 raise RuntimeError('GROUP_FAILED_FIX_BEFORE_NEXT_SEED')
     finally:
         stop.set();thread.join(timeout=25)

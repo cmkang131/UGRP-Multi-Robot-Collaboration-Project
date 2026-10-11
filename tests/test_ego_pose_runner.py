@@ -1,6 +1,17 @@
 import copy
 import json
 from scripts import run_ego_pose_continuity as m
+from scripts.launch_ego_pose_azure import measured_terminal
+
+
+def test_physical_failure_is_retained_but_host_and_supervisor_errors_block_batch():
+    row=dict(status='PHYSICAL_FAILURE',score={'samples':305})
+    assert measured_terminal(row)
+    assert measured_terminal(dict(row,status='RECORDED'))
+    assert not measured_terminal(dict(row,status='HOST_ERROR'))
+    assert not measured_terminal(dict(row,scoring_error='missing truth'))
+    assert not measured_terminal(dict(row,interrupted_reason='INITIAL_CHECK_ABNORMAL'))
+    assert not measured_terminal(dict(status='PHYSICAL_FAILURE'))
 
 
 def test_pair_bundles_only_differ_in_pose_options():

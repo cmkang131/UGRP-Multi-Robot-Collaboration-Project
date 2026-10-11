@@ -580,7 +580,35 @@
         }
       }
     ],
-    "asset_repair": "Restore only tracked wall assets in own idle source sparse checkout; six-seed XML/hash preflight passed before r2. Frozen source SHA unchanged."
+    "asset_repair": "Restore only tracked wall assets in own idle source sparse checkout; six-seed XML/hash preflight passed before r2. Frozen source SHA unchanged.",
+    "admission_events": [
+      {
+        "status": "STORAGE_ADMISSION_REFUSED",
+        "physics_submitted": 0,
+        "path": "/Users/changmin/projects/ugrp/outputs/egojump-online-3a823f8f/budget-63001.json",
+        "sha256": "f42e909929a27e05c639ab4ad2025957bcb605e90a8ca7f86cddcafafe2da305",
+        "failures": [
+          {
+            "host": "x86",
+            "exit_code": 1,
+            "details": "{\"schema\": \"ugrp.storage-budget.v1\", \"ok\": false, \"checks\": [{\"host\": \"x86\", \"free_bytes\": 11949543424, \"expected_bytes\": 3489660928, \"projected_free_bytes\": 8459882496, \"floor_bytes\": 8589934592, \"ok\": false}]}\n"
+          }
+        ]
+      },
+      {
+        "status": "STORAGE_ADMISSION_REFUSED",
+        "physics_submitted": 0,
+        "path": "/Users/changmin/projects/ugrp/outputs/egojump-online-3a823f8f-retry1/budget-source.json",
+        "sha256": "59a466f7e1470a18aee75d5ae103657e03fa1563d2d6600ec6807d8733674ec4",
+        "failures": [
+          {
+            "host": "x86",
+            "exit_code": 1,
+            "details": "{\"schema\": \"ugrp.storage-budget.v1\", \"ok\": false, \"checks\": [{\"host\": \"x86\", \"free_bytes\": 12436205568, \"expected_bytes\": 5100273664, \"projected_free_bytes\": 7335931904, \"floor_bytes\": 8589934592, \"ok\": false}]}\n"
+          }
+        ]
+      }
+    ]
   },
   "limits": [
     "B/return reassessment only at historical declarations; no new mission success prediction",
