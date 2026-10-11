@@ -1,78 +1,479 @@
 {
-  "status": "SOURCE_UNAVAILABLE",
-  "checked_utc": "2026-10-11T11:56:00.118342+00:00",
+  "status": "DELIVERED",
+  "label": "재현 실행(원본과 다름)",
+  "source_sha": "f26d9322c48eadbe2b28777ac1f07684ca03e124",
   "seed": 63003,
   "condition": "calib_traversed_zone",
-  "pr": 405,
   "class": "milestone",
-  "requested_video": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70view-calib_traversed_zone-s63003/overview.mp4",
-  "video_created": false,
-  "replay_started": false,
-  "command_match": {
-    "verified": 0,
-    "requested": 1,
-    "match": null
-  },
-  "archive_check": {
-    "host": "oracle (ARM)",
-    "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib_traversed_zone",
-    "regular_files": 0,
-    "required_original_or_zstd_files": {
-      "result.json": false,
-      "bundle.json": false,
-      "robots/r3/commands.jsonl": false,
-      "robots/r3/frames.jsonl": false,
-      "own-controller.jsonl": false,
-      "eval_only/trajectory.jsonl": false,
-      "eval_only/camera.jsonl": false,
-      "eval_only/servo.jsonl": false
+  "pr": 405,
+  "host": "azure",
+  "raw": "/home/ugrp/ugrp-sim/runs/egomap70view-calib_traversed_zone-s63003-r4/raw",
+  "video": "/home/ugrp/ugrp-sim/runs/egomap70view-calib_traversed_zone-s63003-r4/overview.mp4",
+  "playback_speed": 8,
+  "video_start_sim_s": 15.5,
+  "inherited_prefix_not_filmed": true,
+  "overlay_evaluation_only": true,
+  "original_comparison": {
+    "robots/r3/commands.jsonl": {
+      "original": "16ef40956c9263cb14c04843d682cac7b2aaab13f2eb503e4aee6d8b0d5f6937",
+      "rerun": "16ef40956c9263cb14c04843d682cac7b2aaab13f2eb503e4aee6d8b0d5f6937",
+      "match": true
     },
-    "published_wave2_archive_found": false,
-    "scope": "sudo directory listing, archive-wide target command/controller path search; no original deletion or mutation"
-  },
-  "original_manifest": {
-    "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70-evaluation-delivery/data/completed/egomap70-63003-calib_traversed_zone/complete.sha256.json",
-    "sha256": "5f53ae05526d151dea5917aec32d1b6ec65edddfd7c8749e4978703bc6d0bc24",
-    "server_original_verification_utc": "2026-10-11T05:17:46.612691+00:00",
-    "server_original_files": 879,
-    "required_original_sha256": {
-      "result.json": "701f3eeeb074dd68840698d61e7f5b0e8c54ddcd2f148666d0cc1d2f3b492029",
-      "bundle.json": "80fdeff5baf31dbbc695287d35825f5924daddee1d8f2ac3e6490323ff906bdc",
-      "robots/r3/commands.jsonl": "16ef40956c9263cb14c04843d682cac7b2aaab13f2eb503e4aee6d8b0d5f6937",
-      "robots/r3/frames.jsonl": "7e1ce74c85350b18113c098917701e244ee81c6385c04fbe470702cf5a27bc73",
-      "own-controller.jsonl": "7a651c09c2b55a8da2a257748b252e7a1a8c77a057544c3dc16babd03248f69b",
-      "eval_only/trajectory.jsonl": "41562d2a8925b2b4e5df2322b71e007193a99c79131bf3d825c3e63cc20b956e",
-      "eval_only/camera.jsonl": "16f902a788dfb401b7f245862b107ad445d1e062945f06635dd2a44362585b8d",
-      "eval_only/servo.jsonl": "57935b86a6540d150c6de2edb7b6ae1b8c9c486573dd6b8ff0257626877d7749"
+    "own-controller.jsonl": {
+      "original": "7a651c09c2b55a8da2a257748b252e7a1a8c77a057544c3dc16babd03248f69b",
+      "rerun": "cab056ac74561cc96d878b86af7f016d1106c19a6ef5f8ec52036b896e940810",
+      "match": false
+    },
+    "result.json": {
+      "original": "701f3eeeb074dd68840698d61e7f5b0e8c54ddcd2f148666d0cc1d2f3b492029",
+      "rerun": "85a4f154d844793b4fbd9f9d44038856bfe97f0b03361f94a59d14931b6ff2d5",
+      "match": false
     }
   },
-  "archive_compression_inventory": {
-    "path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/COMPRESSED.jsonl",
-    "recorded_command_zstd_sha256": "05deb977bfb86f6948daba5205b0bd99d77abd39e131a9e32853c71dfc502a79",
-    "recorded_controller_zstd_sha256": "3c3dfac092c3c40d74f2a6600736187fbe167915a8985bd7b2d7e056b723f2c9",
-    "note": "compression receipts are present; referenced data files absent in checked archive"
+  "original_match_n": 1,
+  "initial_check": {
+    "wall_age_s": 181.70412641799976,
+    "sim_s": 30.0,
+    "frames": 151,
+    "commands": {
+      "forward": 53,
+      "turn": 97,
+      "hold": 1
+    },
+    "displacement_m": 0.669491469939855,
+    "yaw_span_rad": 0.6017634123737547,
+    "stage": "approach",
+    "anomaly": null,
+    "gt_evaluation_only": true,
+    "execution_path": {
+      "frames": 151,
+      "valid": 151,
+      "first": {
+        "call": 1,
+        "execution": {
+          "calls": 1,
+          "dispatched": {
+            "arrival_verify_fsm": false,
+            "progress_lookahead": false,
+            "return_local_vtr": false,
+            "return_own_free_astar": true
+          },
+          "exercised": {
+            "heading": true,
+            "localize": true,
+            "receive": true
+          },
+          "version": "receive_composed_v1"
+        },
+        "frame_id": 72,
+        "options": {
+          "arrival_verify_fsm": false,
+          "progress_lookahead": false,
+          "return_local_vtr": false,
+          "return_own_free_astar": true
+        },
+        "receiver": "ReferenceRoute.receive",
+        "t": 15.5,
+        "turn_lateral": {
+          "changed_axes": [
+            "turn_lateral"
+          ],
+          "option": "motion_model_turn_lateral_v2",
+          "prefix_recomputed": false,
+          "sha256": "9a3d06f5bdecc9bd709c7b4cfc0c33da3b8809aab5206cbec3fc6b9d1bf2f3bf",
+          "yaw_noise_forward_unchanged": true
+        },
+        "turn_profiles_applied": true,
+        "valid": true,
+        "zone_calls": 1
+      }
+    },
+    "log_exception": false
   },
-  "x86_access": {
-    "ssh_exit": 255,
-    "reason": "ConnectTimeout=10: operation timed out",
-    "vm_start_stop": false
-  },
-  "source_result": {
+  "rerun": {
     "B_arrived": true,
-    "true_return": true,
-    "position_estimation_final_error_m": 0.02635518781456547,
-    "actual_distance_to_start_m": 0.17177799719940554,
-    "return_threshold_m": 0.2,
-    "note": "previous recorded result, not a new replay verification"
+    "returned": true,
+    "final_error_m": 0.026355187814570906,
+    "final_return_distance_m": 0.17177799719940554,
+    "declarations": [
+      {
+        "t": 113.5,
+        "kind": "goal_reached",
+        "valid": true
+      },
+      {
+        "t": 183.5,
+        "kind": "return_start_declared",
+        "valid": true
+      }
+    ],
+    "samples": 841
+  },
+  "original": {
+    "B_arrived": true,
+    "returned": true,
+    "final_error_m": 0.02635518781456547,
+    "final_return_distance_m": 0.17177799719940554
+  },
+  "video_frames": 841,
+  "video_sha256": "d819f5c374aa8e809f4d58f0d21a503034c1353f66ca7f8e9893781d3d923379",
+  "archive_wave2_audit": {
+    "checked_utc": "2026-10-11T12:04:06.778846+00:00",
+    "host": "oracle ARM",
+    "published_wave2_exists": false,
+    "scope": "original Mac per-run manifests vs ARM incoming wave2; decompressed content hashes, no mutation",
+    "runs": [
+      {
+        "name": "egomap70-63003-baseline",
+        "available_original_files": 2244,
+        "missing_files": 0,
+        "hash_matches": 2244,
+        "hash_mismatches": [],
+        "required_available": {
+          "result.json": true,
+          "bundle.json": true,
+          "robots/r3/commands.jsonl": true,
+          "own-controller.jsonl": true,
+          "eval_only/trajectory.jsonl": true
+        },
+        "regular_files": 2244,
+        "status": "complete",
+        "archive_path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-baseline",
+        "previous_verified_original_files": 2239,
+        "manifest_entries_including_evaluation": 2244
+      },
+      {
+        "name": "egomap70-63003-calib",
+        "available_original_files": 524,
+        "missing_files": 2002,
+        "hash_matches": 524,
+        "hash_mismatches": [],
+        "required_available": {
+          "result.json": true,
+          "bundle.json": true,
+          "robots/r3/commands.jsonl": true,
+          "own-controller.jsonl": true,
+          "eval_only/trajectory.jsonl": true
+        },
+        "regular_files": 524,
+        "status": "partial",
+        "archive_path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib",
+        "previous_verified_original_files": 2521,
+        "manifest_entries_including_evaluation": 2526
+      },
+      {
+        "name": "egomap70-63003-calib_traversed",
+        "available_original_files": 0,
+        "missing_files": 2012,
+        "hash_matches": 0,
+        "hash_mismatches": [],
+        "required_available": {
+          "result.json": false,
+          "bundle.json": false,
+          "robots/r3/commands.jsonl": false,
+          "own-controller.jsonl": false,
+          "eval_only/trajectory.jsonl": false
+        },
+        "regular_files": 0,
+        "status": "empty",
+        "archive_path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib_traversed",
+        "previous_verified_original_files": 2007,
+        "manifest_entries_including_evaluation": 2012
+      },
+      {
+        "name": "egomap70-63003-calib_traversed_zone",
+        "available_original_files": 0,
+        "missing_files": 884,
+        "hash_matches": 0,
+        "hash_mismatches": [],
+        "required_available": {
+          "result.json": false,
+          "bundle.json": false,
+          "robots/r3/commands.jsonl": false,
+          "own-controller.jsonl": false,
+          "eval_only/trajectory.jsonl": false
+        },
+        "regular_files": 0,
+        "status": "empty",
+        "archive_path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63003-calib_traversed_zone",
+        "previous_verified_original_files": 879,
+        "manifest_entries_including_evaluation": 884
+      },
+      {
+        "name": "egomap70-63004-baseline",
+        "available_original_files": 0,
+        "missing_files": 2744,
+        "hash_matches": 0,
+        "hash_mismatches": [],
+        "required_available": {
+          "result.json": false,
+          "bundle.json": false,
+          "robots/r3/commands.jsonl": false,
+          "own-controller.jsonl": false,
+          "eval_only/trajectory.jsonl": false
+        },
+        "regular_files": 0,
+        "status": "empty",
+        "archive_path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63004-baseline",
+        "previous_verified_original_files": 2739,
+        "manifest_entries_including_evaluation": 2744
+      },
+      {
+        "name": "egomap70-63004-calib",
+        "available_original_files": 0,
+        "missing_files": 2744,
+        "hash_matches": 0,
+        "hash_mismatches": [],
+        "required_available": {
+          "result.json": false,
+          "bundle.json": false,
+          "robots/r3/commands.jsonl": false,
+          "own-controller.jsonl": false,
+          "eval_only/trajectory.jsonl": false
+        },
+        "regular_files": 0,
+        "status": "empty",
+        "archive_path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63004-calib",
+        "previous_verified_original_files": 2739,
+        "manifest_entries_including_evaluation": 2744
+      },
+      {
+        "name": "egomap70-63004-calib_traversed",
+        "available_original_files": 0,
+        "missing_files": 2438,
+        "hash_matches": 0,
+        "hash_mismatches": [],
+        "required_available": {
+          "result.json": false,
+          "bundle.json": false,
+          "robots/r3/commands.jsonl": false,
+          "own-controller.jsonl": false,
+          "eval_only/trajectory.jsonl": false
+        },
+        "regular_files": 0,
+        "status": "empty",
+        "archive_path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63004-calib_traversed",
+        "previous_verified_original_files": 2433,
+        "manifest_entries_including_evaluation": 2438
+      },
+      {
+        "name": "egomap70-63004-calib_traversed_zone",
+        "available_original_files": 0,
+        "missing_files": 169,
+        "hash_matches": 0,
+        "hash_mismatches": [],
+        "required_available": {
+          "result.json": false,
+          "bundle.json": false,
+          "robots/r3/commands.jsonl": false,
+          "own-controller.jsonl": false,
+          "eval_only/trajectory.jsonl": false
+        },
+        "regular_files": 0,
+        "status": "empty",
+        "archive_path": "/home/ubuntu/ugrp-archive/runs/.incoming-egomap70-wave2/data/egomap70-63004-calib_traversed_zone",
+        "previous_verified_original_files": 164,
+        "manifest_entries_including_evaluation": 169
+      }
+    ],
+    "alternate_target_archive_search": "ARM archive-wide directory search found selected target only under .incoming-egomap70-wave2",
+    "alternate_archive_search": "ARM archive-wide find of egomap70-6300[34]-* directories: all 8 found only under .incoming-egomap70-wave2",
+    "complete_runs": 1,
+    "partial_runs": 1,
+    "empty_runs": 6,
+    "affected_runs": 7
+  },
+  "startup_attempts": [
+    {
+      "run": "egomap70view-calib_traversed_zone-s63003",
+      "status": "HOST_ERROR_PREFLIGHT",
+      "physics_started": false,
+      "cause": "source deploy omitted PNG; added original committed assets"
+    },
+    {
+      "run": "egomap70view-calib_traversed_zone-s63003-r2",
+      "status": "HOST_ERROR_CHECKPOINT_IMPORT",
+      "physics_frames": 0
+    },
+    {
+      "run": "egomap70view-calib_traversed_zone-s63003-r3",
+      "status": "HOST_ERROR_PREFIX_RGB",
+      "physics_frames": 0
+    }
+  ],
+  "archive_status": "verified",
+  "video_mac_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap70view-calib_traversed_zone-s63003/overview.mp4",
+  "driver_sha": "52db3d6c3c8d6cebe7f21d380f43ec04703d1326",
+  "prefix_image_hash_match": "71/71",
+  "stage_bundle_id": "egomap70-stage-calib_traversed_zone-63003-v1",
+  "inherited_prefix_bundle_sha256": "80fdeff5baf31dbbc695287d35825f5924daddee1d8f2ac3e6490323ff906bdc",
+  "source_checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+  "ci_remaining": {
+    "pr": 437,
+    "reason": "existing CI durations coverage 477/548 <90%, tests/test_ci_sharding.py:212",
+    "run_id": 38138495694,
+    "merged": false
+  },
+  "video_verified": {
+    "codec": "h264",
+    "width": 1280,
+    "height": 480,
+    "fps": 40,
+    "frames_including_terminal_still": 901,
+    "duration_s": 22.525,
+    "bytes": 1068840,
+    "full_decode": true,
+    "remote_mac_sha256_match": true,
+    "mac_rendering": false
+  },
+  "video_created": true,
+  "source_original_file_count": 879,
+  "physics_runs": 1,
+  "startup_host_errors": 3,
+  "model_calls": 0,
+  "archive": {
+    "verified": true,
+    "method": "ARM-local complete SHA-256 compared with Azure source inventory",
+    "path": "/home/ubuntu/ugrp-archive/runs/shutdown-egomap70view-calib_traversed_zone-s63003-r4",
+    "files": 1087,
+    "bytes": 49240380,
+    "missing": 0,
+    "mismatches": 0,
+    "receipt_inventory_sha256": "e4226b599df4565de1d7679fa7bfa1606dc3417323b2c6fabcecd58379762b9a"
+  },
+  "archive_original_comparison": {
+    "result.json": {
+      "original": "701f3eeeb074dd68840698d61e7f5b0e8c54ddcd2f148666d0cc1d2f3b492029",
+      "archived_rerun": "85a4f154d844793b4fbd9f9d44038856bfe97f0b03361f94a59d14931b6ff2d5",
+      "match": false
+    },
+    "bundle.json": {
+      "original": "80fdeff5baf31dbbc695287d35825f5924daddee1d8f2ac3e6490323ff906bdc",
+      "archived_rerun": "80fdeff5baf31dbbc695287d35825f5924daddee1d8f2ac3e6490323ff906bdc",
+      "match": true
+    },
+    "robots/r3/commands.jsonl": {
+      "original": "16ef40956c9263cb14c04843d682cac7b2aaab13f2eb503e4aee6d8b0d5f6937",
+      "archived_rerun": "16ef40956c9263cb14c04843d682cac7b2aaab13f2eb503e4aee6d8b0d5f6937",
+      "match": true
+    },
+    "robots/r3/frames.jsonl": {
+      "original": "7e1ce74c85350b18113c098917701e244ee81c6385c04fbe470702cf5a27bc73",
+      "archived_rerun": "7e1ce74c85350b18113c098917701e244ee81c6385c04fbe470702cf5a27bc73",
+      "match": true
+    },
+    "own-controller.jsonl": {
+      "original": "7a651c09c2b55a8da2a257748b252e7a1a8c77a057544c3dc16babd03248f69b",
+      "archived_rerun": "cab056ac74561cc96d878b86af7f016d1106c19a6ef5f8ec52036b896e940810",
+      "match": false
+    },
+    "eval_only/trajectory.jsonl": {
+      "original": "41562d2a8925b2b4e5df2322b71e007193a99c79131bf3d825c3e63cc20b956e",
+      "archived_rerun": "41562d2a8925b2b4e5df2322b71e007193a99c79131bf3d825c3e63cc20b956e",
+      "match": true
+    },
+    "eval_only/camera.jsonl": {
+      "original": "16f902a788dfb401b7f245862b107ad445d1e062945f06635dd2a44362585b8d",
+      "archived_rerun": "16f902a788dfb401b7f245862b107ad445d1e062945f06635dd2a44362585b8d",
+      "match": true
+    },
+    "eval_only/servo.jsonl": {
+      "original": "57935b86a6540d150c6de2edb7b6ae1b8c9c486573dd6b8ff0257626877d7749",
+      "archived_rerun": "57935b86a6540d150c6de2edb7b6ae1b8c9c486573dd6b8ff0257626877d7749",
+      "match": true
+    }
+  },
+  "requested_match_from_ARM": 1,
+  "all_own_archives": {
+    "status": "VERIFIED",
+    "archives": [
+      {
+        "run": "egomap70view-calib_traversed_zone-s63003-r4",
+        "verified": true,
+        "path": "/home/ugrp/ugrp-sim/arm/shutdown-egomap70view-calib_traversed_zone-s63003-r4",
+        "files": 1087,
+        "receipt_sha256": "9fe8672e660f1f97c241050b1e4bca3a4472e5ec66052388a6d9bb8f44d93a3c",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/egomap70view-calib_traversed_zone-s63003-r4",
+          "files": 20,
+          "saved_bytes": 132807627,
+          "sha256_verified": true
+        }
+      },
+      {
+        "run": "egomap70view-prefix-s63003",
+        "verified": true,
+        "path": "/home/ugrp/ugrp-sim/arm/shutdown-egomap70view-prefix-s63003",
+        "files": 103,
+        "receipt_sha256": "a3b58e011977ad01c095b318ad122753bdf73a90ebf56beae1af2b25758a9099",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/egomap70view-prefix-s63003",
+          "files": 1,
+          "saved_bytes": 109934,
+          "sha256_verified": true
+        }
+      },
+      {
+        "run": "egomap70view-calib_traversed_zone-s63003-r3",
+        "verified": true,
+        "path": "/home/ugrp/ugrp-sim/arm/shutdown-egomap70view-calib_traversed_zone-s63003-r3",
+        "files": 87,
+        "receipt_sha256": "61cf62f00f90df2891352bc680db8474b86141fedf373f1d0d8278dddc7397c1",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/egomap70view-calib_traversed_zone-s63003-r3",
+          "files": 4,
+          "saved_bytes": 6215855,
+          "sha256_verified": true
+        }
+      },
+      {
+        "run": "egomap70view-calib_traversed_zone-s63003-r2",
+        "verified": true,
+        "path": "/home/ugrp/ugrp-sim/arm/shutdown-egomap70view-calib_traversed_zone-s63003-r2",
+        "files": 74,
+        "receipt_sha256": "1e3c6e21780e49bf76b13d1e7a871cd0244af43b281ed6bf602efcc01f54166f",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/egomap70view-calib_traversed_zone-s63003-r2",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        }
+      },
+      {
+        "run": "egomap70view-calib_traversed_zone-s63003",
+        "verified": true,
+        "path": "/home/ugrp/ugrp-sim/arm/shutdown-egomap70view-calib_traversed_zone-s63003",
+        "files": 52,
+        "receipt_sha256": "a03209825e015e8a8b1bc88d3f49b2c38504d06e6ef8374174625d2b6d592055",
+        "compression": {
+          "run": "/home/ugrp/ugrp-sim/runs/egomap70view-calib_traversed_zone-s63003",
+          "files": 0,
+          "saved_bytes": 0,
+          "sha256_verified": true
+        }
+      }
+    ]
   },
   "preservation": {
-    "mac_raw_downloads": 0,
-    "mac_rendering": 0,
-    "azure_runs_started": 0,
-    "own_lease_created": false,
-    "other_leases_changed": false,
-    "other_processes_changed": false,
-    "ARM_stock_bot_or_crontab_touched": false
+    "mac_files_retrieved": [
+      "overview.mp4"
+    ],
+    "mac_raw_frames_npz_images": 0,
+    "mac_rendering": false,
+    "VM_start_stop": false,
+    "other_work_processes_signalled": false,
+    "ARM_stock_bot_crontab_touched": false,
+    "class": "milestone",
+    "pr": 405
   },
-  "next_required": "Recover verified original files on ARM, or provide another existing location; then single-core Azure replay and MP4-only retrieval."
+  "runtime_versions": {
+    "python": "3.12.3",
+    "mujoco": "3.12.0",
+    "numpy": "2.5.2",
+    "cloudpickle": "3.1.2",
+    "cloudpickle_installed_to_match_checkpoint": true
+  },
+  "pr_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/437",
+  "lease_released": true,
+  "owned_processes_active": false
 }
