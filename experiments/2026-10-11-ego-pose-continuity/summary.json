@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.egojump.summary.v1",
-  "status": "OFFLINE_COMPLETE_AZURE_R2_RUNNING",
+  "status": "V1_DIAGNOSED_V2_RERUN_PENDING",
   "base_sha": "29c0c169bdfd7eff91186bb90af901393340f2a1",
   "offline": {
     "runs": 8,
@@ -223,9 +223,9 @@
     "registered": 18,
     "completed": 0,
     "runs": [],
-    "worker_sha": "3a823f8f2ffcd40beac4cb79093c226e87fa4a3b",
-    "launcher_sha": "2454a11f",
-    "live_output": "/Users/changmin/projects/ugrp/outputs/egojump-online-3a823f8f-r2-attached",
+    "worker_sha": "98ffd82347c764fc6ddcd319d1d383df16d994a5",
+    "launcher_sha": "49f0c47c",
+    "live_output": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823-admitted",
     "prior_host_errors": [
       {
         "name": "egojump-63001-3a823f8f",
@@ -607,8 +607,180 @@
             "details": "{\"schema\": \"ugrp.storage-budget.v1\", \"ok\": false, \"checks\": [{\"host\": \"x86\", \"free_bytes\": 12436205568, \"expected_bytes\": 5100273664, \"projected_free_bytes\": 7335931904, \"floor_bytes\": 8589934592, \"ok\": false}]}\n"
           }
         ]
+      },
+      {
+        "status": "STORAGE_ADMISSION_REFUSED",
+        "physics_submitted": 0,
+        "path": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823/budget-source.json",
+        "sha256": "faea154cfbcde5b7b8a7370e95cff219610b62d783e0aed5cc3cbdd7ea772fe7",
+        "reason": "Git clone/fetch materialized duplicate objects; restored alternates and local-only repack before resubmission"
       }
-    ]
+    ],
+    "v1_diagnostic": {
+      "source_sha": "3a823f8f2ffcd40beac4cb79093c226e87fa4a3b",
+      "attempted_physics": 3,
+      "off": "PHYSICAL_FAILURE WALL_CONTACT at64.1",
+      "cluster": "true B at130.1, HOST_ERROR forecast clone at130.3",
+      "innovation": "supervisor-stopped at211.3 for shared known clone defect; not mission-complete",
+      "lite": "/Users/changmin/projects/ugrp/outputs/egojump-online-3a823f8f-r2-driver3",
+      "common_horizon": {
+        "scope": "same elapsed own-camera prefix; distinct policy trajectories, not identical commands",
+        "horizon_s": 60.8,
+        "evaluation_truth_control_input": false,
+        "runs": [
+          {
+            "condition": "cluster",
+            "frames": 305,
+            "squared_error_sum_m2": 0.5518269702365163,
+            "rmse_m": 0.04253549993680365,
+            "final_error_m": 0.07993749833451104,
+            "map_jumps": {
+              "transitions": 304,
+              "counts": {
+                "0.05": 1,
+                "0.2": 0,
+                "0.5": 0
+              },
+              "max_m": 0.05726276224995864,
+              "quantiles": {
+                "0.5": 0.0004226246973697,
+                "0.95": 0.012923413773167584,
+                "0.99": 0.0328835276559465
+              }
+            },
+            "control_jumps": {
+              "transitions": 304,
+              "counts": {
+                "0.05": 0,
+                "0.2": 0,
+                "0.5": 0
+              },
+              "max_m": 0.01292341377316755,
+              "quantiles": {
+                "0.5": 0.0004226246973696737,
+                "0.95": 0.012923413773167507,
+                "0.99": 0.012923413773167533
+              }
+            },
+            "sources": [
+              {
+                "path": "/home/ugrp/ugrp-sim/runs/egojump-63001-3a823f8f-r2/data/63001-cluster/data/own-controller.jsonl.zst",
+                "bytes": 457648,
+                "sha256": "e91693bdf244fa560119ab24afbbdcfe62adf6b450cde8bf168b3719a4d4710b"
+              },
+              {
+                "path": "/home/ugrp/ugrp-sim/runs/egojump-63001-3a823f8f-r2/data/63001-cluster/data/eval_only/trajectory.jsonl.zst",
+                "bytes": 31879,
+                "sha256": "26dce99eadc7140b226fac3a9c167e458b55478625b01106649475f5f7fd6c76"
+              }
+            ]
+          },
+          {
+            "condition": "innovation",
+            "frames": 305,
+            "squared_error_sum_m2": 1.3108184201263158,
+            "rmse_m": 0.06555734369153131,
+            "final_error_m": 0.0018286257659593922,
+            "map_jumps": {
+              "transitions": 304,
+              "counts": {
+                "0.05": 2,
+                "0.2": 0,
+                "0.5": 0
+              },
+              "max_m": 0.06129745707013358,
+              "quantiles": {
+                "0.5": 0.0004226246973697381,
+                "0.95": 0.02968269163382937,
+                "0.99": 0.045217586412992096
+              }
+            },
+            "control_jumps": {
+              "transitions": 304,
+              "counts": {
+                "0.05": 0,
+                "0.2": 0,
+                "0.5": 0
+              },
+              "max_m": 0.012923413773167554,
+              "quantiles": {
+                "0.5": 0.0004226246973696781,
+                "0.95": 0.012923413773167504,
+                "0.99": 0.012923413773167528
+              }
+            },
+            "sources": [
+              {
+                "path": "/home/ugrp/ugrp-sim/runs/egojump-63001-3a823f8f-r2/data/63001-innovation/data/own-controller.jsonl.zst",
+                "bytes": 778275,
+                "sha256": "6504298aa1325c8cca4899bf5fd622e00744508af660eb4e9f8f31e26a476e67"
+              },
+              {
+                "path": "/home/ugrp/ugrp-sim/runs/egojump-63001-3a823f8f-r2/data/63001-innovation/data/eval_only/trajectory.jsonl.zst",
+                "bytes": 48088,
+                "sha256": "7dafaab03e8ebb5e25639af6df5ca742f61b0527344bf7043ae733a5dfb360fa"
+              }
+            ]
+          },
+          {
+            "condition": "off",
+            "frames": 305,
+            "squared_error_sum_m2": 6.7049350410326305,
+            "rmse_m": 0.148267978933943,
+            "final_error_m": 0.12746952738776016,
+            "map_jumps": {
+              "transitions": 304,
+              "counts": {
+                "0.05": 24,
+                "0.2": 6,
+                "0.5": 0
+              },
+              "max_m": 0.30399464345306426,
+              "quantiles": {
+                "0.5": 0.00042262469736980494,
+                "0.95": 0.11490424694659071,
+                "0.99": 0.2485517952653896
+              }
+            },
+            "control_jumps": {
+              "transitions": 304,
+              "counts": {
+                "0.05": 24,
+                "0.2": 6,
+                "0.5": 0
+              },
+              "max_m": 0.30399464345306426,
+              "quantiles": {
+                "0.5": 0.00042262469736980494,
+                "0.95": 0.11490424694659071,
+                "0.99": 0.2485517952653896
+              }
+            },
+            "sources": [
+              {
+                "path": "/home/ugrp/ugrp-sim/runs/egojump-63001-3a823f8f-r2/data/63001-off/data/own-controller.jsonl.zst",
+                "bytes": 329195,
+                "sha256": "b08feda07185067da5ba4e62fb1e83b8a55b58cf9333f25538e5799098557fe0"
+              },
+              {
+                "path": "/home/ugrp/ugrp-sim/runs/egojump-63001-3a823f8f-r2/data/63001-off/data/eval_only/trajectory.jsonl.zst",
+                "bytes": 13921,
+                "sha256": "f08b1a7b891f121706c0d4881193177f1ec93908d876673a1defebc454526493"
+              }
+            ]
+          }
+        ]
+      },
+      "scope": "diagnostic only; excluded from v2 denominator"
+    },
+    "source_provision": {
+      "bundle": "/Users/changmin/projects/ugrp/outputs/egojump-source-98ffd823.bundle",
+      "bundle_sha256": "6229347e642041d8566e305a39d89c1dcdcf32c68756d0e546138bcf50903cc2",
+      "sha_verified": true,
+      "connectivity_fsck": "passed",
+      "source_dependency": "azure:/home/ugrp/ugrp-sim/src/3a823f8f2ffcd40beac4cb79093c226e87fa4a3b/.git/objects",
+      "dedup": "git alternates plus local-only repack; original source retained; no raw experiment deletion"
+    }
   },
   "limits": [
     "B/return reassessment only at historical declarations; no new mission success prediction",
