@@ -137,7 +137,7 @@ class Trial(prior.Trial):
     def on_executor_event(self,event,*,at_s):
         kind=(event.get('detail') or {}).get('kind',event.get('event'))
         if self.options.event_coalesce_v1 and kind in (
-                'door_entered','door_passed','reinspection_result','regrasp_result',
+                'door_entered','door_passed','reinspection_result',
                 'grip_lost','pose_uncertain','job_failed','job_done','S4_DEPARTURE_PENDING'):
             self.coalesce_forced.setdefault(event['robot_id'],set()).add(kind)
         super().on_executor_event(event,at_s=at_s)
@@ -147,6 +147,16 @@ class Trial(prior.Trial):
         if kind in ('door_entered','door_passed','reinspection_result','grip_lost','pose_uncertain',
                     'setdown_started','setdown_completed','carry_leg_started','job_failed','job_done'):
             self.scheduler.trigger(event['robot_id'],'report',at=at_s)
+
+    def _on_action(self,actor,action,sim_s):
+        result=super()._on_action(actor,action,sim_s)
+        if self.options.event_coalesce_v1:
+            last=(self._history[actor] or [{}])[-1]
+            if last.get('local_state')=='command_rejected':
+                # Eligibility/boundedness is checked from own command history
+                # by the gate after the scheduler settles this reply.
+                self.scheduler.trigger(actor,'report',at=sim_s)
+        return result
 
     def study_config(self):
         return {**super().study_config(),**vars(self.options),

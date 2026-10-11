@@ -2,14 +2,11 @@
 
 An executing action's progress is telemetry, not a fresh high-level decision.
 Delivered messages stay in the scheduler inbox and are read together at the
-next decision boundary, or after at most 30 SIM seconds. This changes dialogue
+next decision boundary, or after at most 60 SIM seconds. This changes dialogue
 timing and therefore belongs to a separate, default-off DEV cohort.
 """
-import copy
-
-
 class Coalescer:
-    MAX_MESSAGE_WAIT_S = 30.
+    MAX_MESSAGE_WAIT_S = 60.
     REQUIRED = frozenset(('initial_claim', 'go_ack_epoch', 'decision_window',
                           'own_observation_abnormal', 'bounded_invalid_retry', 'phase_done'))
 
@@ -19,6 +16,7 @@ class Coalescer:
         self.edges = Events()
         self.pending = {}
         self.message_since = {}
+        self.retried_windows = set()
         self.trace = []
 
     def observe(self, actor, payload, *, force=()):
@@ -29,6 +27,19 @@ class Coalescer:
         pending = self.pending.setdefault(actor, set())
         pending.update(r for r in reasons if r in self.REQUIRED)
         pending.update(force)
+        # A rejected command is NOT an accepted decision that can be coalesced.
+        # One correction per still-live own decision window; stale rejections
+        # cannot reopen a window or obtain another allowance by changing IDs.
+        window=payload.get('decision_window') or {}
+        history=payload.get('own_command_history') or []
+        last=history[-1] if history else {}
+        opened=window.get('opened_at_sim_s',float('inf'))
+        key=(actor,(payload.get('pair_handshake') or {}).get('epoch'),window.get('kind'),opened)
+        if (window and last.get('local_state')=='command_rejected'
+                and last.get('issued_at_sim_s',-1)>=opened
+                and now<window.get('latch_until_sim_s',0) and key not in self.retried_windows):
+            pending.add('own_command_rejected')
+            self.retried_windows.add(key)
         since = self.message_since.get(actor)
         if since is not None and now - since >= self.MAX_MESSAGE_WAIT_S:
             pending.add('inbox_max_wait')
@@ -59,7 +70,11 @@ def install(trial):
     def start(event):
         actor = event['actor']
         if actor in scheduler.holding():
-            return original(event)
+            # The legacy common/message lanes can overlap for one actor. Wait
+            # for the first reply before judging whether another is needed.
+            return scheduler._defer(actor,event['trigger'],event.get('merged',()),'outstanding',
+                scheduling_lane=event.get('scheduling_lane',''),event_inputs=event.get('event_inputs',()),
+                retry_of=event.get('retry_of',''))
         now = scheduler.clock
         link = trial.links[actor]
         view = trial.handshake.view(actor, now) if actor in ('r1', 'r2') else {}
@@ -71,6 +86,7 @@ def install(trial):
             belief = adapter.own_belief(now + adapter.origin_s)
         payload = dict(pair_handshake=view, decision_window=window, own_belief=belief,
                        sim_time_s=now, inbox=list(scheduler.inbox(actor)),
+                       own_command_history=trial._history[actor],
                        s4_round={'previous_rejection': trial.epoch_retry_context.get((actor, view.get('epoch')))})
         # Failures and explicit reinspection/door/solo departure events bypass
         # batching, as do scheduler-owned bounded transport retries.

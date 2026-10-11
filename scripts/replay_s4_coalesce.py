@@ -23,7 +23,8 @@ def replay(root, supplemental=()):
     ids={r['call_id'] for r in rows}
     rows += [r for r in supplemental if r['run']==root.parent.name and r['call_id'] not in ids]
     rows.sort(key=lambda r:int(r['call_id'].split('-')[1]))
-    actions={r['call_id']:r['action'] for r in json.loads(files['dispatch.json'].read_text())}
+    dispatched={r['call_id']:r for r in json.loads(files['dispatch.json'].read_text())}
+    actions={k:r['action'] for k,r in dispatched.items()}
     old=Events();new=Coalescer();seen={};previous={};counts=Counter();types=Counter();details=[]
     old_tokens=new_tokens=0
     for row in rows:
@@ -49,11 +50,15 @@ def replay(root, supplemental=()):
             counts['skipped_literal_matches_previous']+=action is not None and action==previous.get(actor)
             counts['skipped_continue_or_held']+=bool(action and (action.get('kind')=='continue' or
                 action.get('kind')=='pair_decision' and action.get('choice')=='held'))
-            counts['skipped_changed_noncontinuation']+=bool(action and action.get('kind')!='continue' and
+            changed=bool(action and action.get('kind')!='continue' and
                 not (action.get('kind')=='pair_decision' and action.get('choice')=='held') and action!=previous.get(actor))
+            counts['skipped_changed_noncontinuation']+=changed
+            ack=dispatched.get(row['call_id'],{}).get('ack') or {}
+            counts['skipped_changed_accepted_noncontinuation']+=changed and ack.get('accepted') is True
         details.append(dict(call_id=row['call_id'],actor=actor,sim_s=b['sim_time_s'],before=before,after=after,
             input_sha256=hashlib.sha256(row['user'].encode()).hexdigest(),
             old_text_tokens_estimate=a,new_text_tokens_estimate=z,recorded_action=action,
+            recorded_command_accepted=(dispatched.get(row['call_id'],{}).get('ack') or {}).get('accepted'),
             literal_matches_previous=action is not None and action==previous.get(actor)))
         if action is not None:previous[actor]=action
     counts['pending_inboxes_at_end']=len(new.message_since)
@@ -78,7 +83,9 @@ def main(argv=None):
     packed=subprocess.run(['zstd','-q','-c'],input=detail,capture_output=True,check=True).stdout
     assert subprocess.run(['zstd','-q','-d','-c'],input=packed,capture_output=True,check=True).stdout==detail
     (a.output/'replay.json.zst').write_bytes(packed)
-    summary=dict(research_result=False,physical_calls=0,model_calls=0,runs=[{k:v for k,v in r.items() if k!='details'} for r in runs],
+    summary=dict(research_result=False,physical_calls=0,model_calls=0,
+                 source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+                 runs=[{k:v for k,v in r.items() if k!='details'} for r in runs],
                  detail_sha256=hashlib.sha256(detail).hexdigest(),compressed_sha256=hashlib.sha256(packed).hexdigest(),
                  changed_prompt_decision_agreement=None)
     (a.output/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')

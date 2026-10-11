@@ -43,17 +43,32 @@ def test_coalescer_progress_inbox_deadline_and_critical_edges():
         assert policy.observe('r1',b)==[]
         b['inbox']=[{'message_id':'msg1'}];b['sim_time_s']=1
         assert policy.observe('r1',b)==[]
-        b['sim_time_s']=30;assert policy.observe('r1',b)==[]
-        b['sim_time_s']=31;assert policy.observe('r1',b)==['inbox_max_wait']
+        b['sim_time_s']=60;assert policy.observe('r1',b)==[]
+        b['sim_time_s']=61;assert policy.observe('r1',b)==['inbox_max_wait']
         policy.acknowledge('r1')
-        b['decision_window']={'kind':'post_look_decision','opened_at_sim_s':31,'latch_until_sim_s':40}
+        b['decision_window']={'kind':'post_look_decision','opened_at_sim_s':61,'latch_until_sim_s':70}
         assert policy.observe('r1',b)==['decision_window'];policy.acknowledge('r1')
-        b['sim_time_s']=32;assert policy.observe('r1',b)==[]
+        b['sim_time_s']=62;assert policy.observe('r1',b)==[]
         b['visual_monitor']={'state':'grip_lost'}
         assert policy.observe('r1',b)==['own_observation_abnormal']
         traces.append(policy.trace)
     assert traces.count(traces[0])==4
     with pytest.raises(ValueError):Options(event_coalesce_v1=True)
+
+
+def test_coalescer_rejected_decision_gets_one_correction_in_own_live_window():
+    from harness.s4_event_coalesce import Coalescer
+    e=Coalescer();b=payload();b['inbox']=[]
+    b['decision_window']={'kind':'carry_decision','opened_at_sim_s':0.,'latch_until_sim_s':9.}
+    e.observe('r1',b);e.acknowledge('r1')
+    b['own_command_history']=[dict(command_id='failed1',local_state='command_rejected',issued_at_sim_s=2.)]
+    b['sim_time_s']=2.;assert e.observe('r1',b)==['own_command_rejected'];e.acknowledge('r1')
+    b['own_command_history'][-1]['command_id']='failed2'
+    b['sim_time_s']=3.;assert e.observe('r1',b)==[]
+    b['decision_window']['opened_at_sim_s']=10.;b['decision_window']['latch_until_sim_s']=19.
+    b['sim_time_s']=11.;assert e.observe('r1',b)==['decision_window'];e.acknowledge('r1')
+    b['own_command_history'][-1]['issued_at_sim_s']=12.
+    b['sim_time_s']=20.;assert e.observe('r1',b)==[]
 
 
 def test_extractively_trim_read_history_preserves_all_unread_and_failures():
@@ -190,13 +205,14 @@ def test_global_quota_429_holds_same_sim_and_request_then_claim_once(tmp_path,se
 
 
 @pytest.mark.parametrize('coalesce',[False,True])
-def test_event_driver_go_ack_then_controller_heartbeat_no_model_timer(tmp_path,setup_data,monkeypatch,coalesce):
+@pytest.mark.parametrize('condition',['no_comm','peer_ko'])
+def test_event_driver_go_ack_then_controller_heartbeat_no_model_timer(tmp_path,setup_data,monkeypatch,coalesce,condition):
     from harness import s4_pair_epochs as ep,s4_grip_visual
     def handshake(**kwargs):
         h=ep.Handshake(carry_lease_renewal=ep.hs.ACTIVE_PHASE_HEARTBEAT,epoch_reconnect=True,go_ack_rounds=True)
         h.study_options=Options(True,True,'en',event_coalesce_v1=coalesce);h.reply_contract=True;return h
     monkeypatch.setattr(fx.hs,'Handshake',handshake);monkeypatch.setattr(fx.stage,'Host',Host)
-    host,old,inner=fx.build(tmp_path,setup_data,'no_comm')
+    host,old,inner=fx.build(tmp_path,setup_data,condition)
     driver=Driver(host,old.runtime)
     class Monitor:
         def __init__(self,**kwargs):pass
