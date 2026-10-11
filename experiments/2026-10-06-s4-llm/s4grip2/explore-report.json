@@ -1,0 +1,796 @@
+{
+  "schema": "ugrp.s4grip2.offline.v1",
+  "research_result": false,
+  "split": "explore",
+  "detector": "grip_temporal_rgb_v1",
+  "freeze": {
+    "schema": "ugrp.s4grip2.detector_freeze.v1",
+    "stage": "before any s4grip2 physics or images",
+    "config": {
+      "min_area": 0.02,
+      "min_iou": 0.6,
+      "min_retained": 0.6,
+      "max_centroid_shift": 0.1,
+      "consecutive": 3,
+      "max_gap_s": 0.15
+    },
+    "sha256": {
+      "harness/s4_grip_visual.py": "094ff01d3727068b0de0798585076690e2fd8ab2db9bc1931d0ee0b020b65512",
+      "scripts/evaluate_s4_grip_dataset.py": "3614c8cafdd122de38e72f5549318727d6a3cd997656637023cdb30c0f6ead5e",
+      "experiments/2026-10-06-s4-llm/s4grip2/batch-plan.json": "1ccb08b4db467404f2fda2099a84f02e094b551610c7604370e3a334b06d4ffb"
+    },
+    "tuning_after_explore": false
+  },
+  "episodes": [
+    {
+      "job": "s4grip2-r1-hold-r1",
+      "robot_id": "r1",
+      "case": {
+        "id": "explore-s32000",
+        "split": "explore",
+        "seed": 32000,
+        "variant": "hold",
+        "onset_s": 2.3,
+        "force_xy_n": [
+          0.511472,
+          -0.529978
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32000",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": null,
+        "detected": false,
+        "false_alarm": false,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "held_unknown": 2,
+          "true_negative": 59
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 59
+        }
+      },
+      "legacy": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": 0,
+        "detected": false,
+        "false_alarm": true,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "false_positive": 61
+        },
+        "prediction_counts": {
+          "grip_lost": 61
+        }
+      }
+    },
+    {
+      "job": "s4grip2-r1-hold-r1",
+      "robot_id": "r1",
+      "case": {
+        "id": "explore-s32001",
+        "split": "explore",
+        "seed": 32001,
+        "variant": "hold",
+        "onset_s": 2.0,
+        "force_xy_n": [
+          -0.357777,
+          -0.182936
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32001",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": null,
+        "detected": false,
+        "false_alarm": false,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "held_unknown": 2,
+          "true_negative": 59
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 59
+        }
+      },
+      "legacy": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": 0,
+        "detected": false,
+        "false_alarm": true,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "false_positive": 61
+        },
+        "prediction_counts": {
+          "grip_lost": 61
+        }
+      }
+    },
+    {
+      "job": "s4grip2-r1-loss-r1",
+      "robot_id": "r1",
+      "case": {
+        "id": "explore-s32000",
+        "split": "explore",
+        "seed": 32000,
+        "variant": "loss",
+        "onset_s": 2.3,
+        "force_xy_n": [
+          0.511472,
+          -0.529978
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32000",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 24,
+        "alarm_frame": 26,
+        "detected": true,
+        "false_alarm": false,
+        "delay_frames": 2,
+        "delay_sim_s": 0.2,
+        "frame_counts": {
+          "label_held": 24,
+          "held_unknown": 2,
+          "true_negative": 22,
+          "label_lost": 37,
+          "false_negative": 2,
+          "true_positive": 35
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 24,
+          "grip_lost": 35
+        }
+      },
+      "legacy": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 24,
+        "alarm_frame": 0,
+        "detected": false,
+        "false_alarm": true,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 24,
+          "false_positive": 24,
+          "label_lost": 37,
+          "true_positive": 37
+        },
+        "prediction_counts": {
+          "grip_lost": 61
+        }
+      }
+    },
+    {
+      "job": "s4grip2-r1-loss-r1",
+      "robot_id": "r1",
+      "case": {
+        "id": "explore-s32001",
+        "split": "explore",
+        "seed": 32001,
+        "variant": "loss",
+        "onset_s": 2.0,
+        "force_xy_n": [
+          -0.357777,
+          -0.182936
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32001",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 21,
+        "alarm_frame": 23,
+        "detected": true,
+        "false_alarm": false,
+        "delay_frames": 2,
+        "delay_sim_s": 0.2,
+        "frame_counts": {
+          "label_held": 21,
+          "held_unknown": 2,
+          "true_negative": 19,
+          "label_lost": 40,
+          "false_negative": 2,
+          "true_positive": 38
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 21,
+          "grip_lost": 38
+        }
+      },
+      "legacy": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 21,
+        "alarm_frame": 0,
+        "detected": false,
+        "false_alarm": true,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 21,
+          "false_positive": 21,
+          "label_lost": 40,
+          "true_positive": 40
+        },
+        "prediction_counts": {
+          "grip_lost": 61
+        }
+      }
+    },
+    {
+      "job": "s4grip2-r2-hold-r1",
+      "robot_id": "r2",
+      "case": {
+        "id": "explore-s32100",
+        "split": "explore",
+        "seed": 32100,
+        "variant": "hold",
+        "onset_s": 2.3,
+        "force_xy_n": [
+          0.437348,
+          0.362295
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32100",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": null,
+        "detected": false,
+        "false_alarm": false,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "held_unknown": 2,
+          "true_negative": 59
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 59
+        }
+      },
+      "legacy": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": 0,
+        "detected": false,
+        "false_alarm": true,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "false_positive": 61
+        },
+        "prediction_counts": {
+          "grip_lost": 61
+        }
+      }
+    },
+    {
+      "job": "s4grip2-r2-hold-r1",
+      "robot_id": "r2",
+      "case": {
+        "id": "explore-s32101",
+        "split": "explore",
+        "seed": 32101,
+        "variant": "hold",
+        "onset_s": 2.3,
+        "force_xy_n": [
+          0.624754,
+          0.479969
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32101",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": null,
+        "detected": false,
+        "false_alarm": false,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "held_unknown": 2,
+          "true_negative": 59
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 59
+        }
+      },
+      "legacy": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": 0,
+        "detected": false,
+        "false_alarm": true,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "false_positive": 61
+        },
+        "prediction_counts": {
+          "grip_lost": 61
+        }
+      }
+    },
+    {
+      "job": "s4grip2-r2-loss-r1",
+      "robot_id": "r2",
+      "case": {
+        "id": "explore-s32100",
+        "split": "explore",
+        "seed": 32100,
+        "variant": "loss",
+        "onset_s": 2.3,
+        "force_xy_n": [
+          0.437348,
+          0.362295
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32100",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 24,
+        "alarm_frame": 26,
+        "detected": true,
+        "false_alarm": false,
+        "delay_frames": 2,
+        "delay_sim_s": 0.2,
+        "frame_counts": {
+          "label_held": 24,
+          "held_unknown": 2,
+          "true_negative": 22,
+          "label_lost": 37,
+          "false_negative": 2,
+          "true_positive": 35
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 24,
+          "grip_lost": 35
+        }
+      },
+      "legacy": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 24,
+        "alarm_frame": 0,
+        "detected": false,
+        "false_alarm": true,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 24,
+          "false_positive": 24,
+          "label_lost": 37,
+          "true_positive": 37
+        },
+        "prediction_counts": {
+          "grip_lost": 61
+        }
+      }
+    },
+    {
+      "job": "s4grip2-r2-loss-r1",
+      "robot_id": "r2",
+      "case": {
+        "id": "explore-s32101",
+        "split": "explore",
+        "seed": 32101,
+        "variant": "loss",
+        "onset_s": 2.3,
+        "force_xy_n": [
+          0.624754,
+          0.479969
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32101",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 24,
+        "alarm_frame": 26,
+        "detected": true,
+        "false_alarm": false,
+        "delay_frames": 2,
+        "delay_sim_s": 0.2,
+        "frame_counts": {
+          "label_held": 24,
+          "held_unknown": 2,
+          "true_negative": 22,
+          "label_lost": 37,
+          "false_negative": 2,
+          "true_positive": 35
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 24,
+          "grip_lost": 35
+        }
+      },
+      "legacy": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 24,
+        "alarm_frame": 0,
+        "detected": false,
+        "false_alarm": true,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 24,
+          "false_positive": 24,
+          "label_lost": 37,
+          "true_positive": 37
+        },
+        "prediction_counts": {
+          "grip_lost": 61
+        }
+      }
+    },
+    {
+      "job": "s4grip2-r3-hold-r1",
+      "robot_id": "r3",
+      "case": {
+        "id": "explore-s32200",
+        "split": "explore",
+        "seed": 32200,
+        "variant": "hold",
+        "onset_s": 2.3,
+        "force_xy_n": [
+          -0.47945,
+          0.415432
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32200",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": null,
+        "detected": false,
+        "false_alarm": false,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "held_unknown": 61
+        },
+        "prediction_counts": {
+          "unknown": 61
+        }
+      },
+      "legacy": null
+    },
+    {
+      "job": "s4grip2-r3-hold-r1",
+      "robot_id": "r3",
+      "case": {
+        "id": "explore-s32201",
+        "split": "explore",
+        "seed": 32201,
+        "variant": "hold",
+        "onset_s": 2.2,
+        "force_xy_n": [
+          -0.410476,
+          0.141404
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32201",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": false,
+        "onset_frame": null,
+        "alarm_frame": null,
+        "detected": false,
+        "false_alarm": false,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 61,
+          "held_unknown": 2,
+          "true_negative": 59
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 59
+        }
+      },
+      "legacy": null
+    },
+    {
+      "job": "s4grip2-r3-loss-r1",
+      "robot_id": "r3",
+      "case": {
+        "id": "explore-s32200",
+        "split": "explore",
+        "seed": 32200,
+        "variant": "loss",
+        "onset_s": 2.3,
+        "force_xy_n": [
+          -0.47945,
+          0.415432
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32200",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 30,
+        "alarm_frame": null,
+        "detected": false,
+        "false_alarm": false,
+        "delay_frames": null,
+        "delay_sim_s": null,
+        "frame_counts": {
+          "label_held": 24,
+          "held_unknown": 24,
+          "label_partial": 6,
+          "label_lost": 31,
+          "lost_unknown": 31
+        },
+        "prediction_counts": {
+          "unknown": 61
+        }
+      },
+      "legacy": null
+    },
+    {
+      "job": "s4grip2-r3-loss-r1",
+      "robot_id": "r3",
+      "case": {
+        "id": "explore-s32201",
+        "split": "explore",
+        "seed": 32201,
+        "variant": "loss",
+        "onset_s": 2.2,
+        "force_xy_n": [
+          -0.410476,
+          0.141404
+        ]
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32201",
+      "status": "COLLECTED",
+      "candidate": {
+        "start_held": true,
+        "actual_loss": true,
+        "onset_frame": 25,
+        "alarm_frame": 25,
+        "detected": true,
+        "false_alarm": false,
+        "delay_frames": 0,
+        "delay_sim_s": 0.0,
+        "frame_counts": {
+          "label_held": 23,
+          "held_unknown": 2,
+          "true_negative": 21,
+          "label_zero": 1,
+          "label_partial": 1,
+          "label_lost": 36,
+          "true_positive": 36
+        },
+        "prediction_counts": {
+          "unknown": 2,
+          "held": 23,
+          "grip_lost": 36
+        }
+      },
+      "legacy": null
+    }
+  ],
+  "sources_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32000/result.json": "93dccbb6e68bc2a631a2d5cf8f4b33b7e34f88c8517cabdb4acd8e34f409e38c",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32000/bundle.json": "671376f359c8985de5993969c5fc0131b974c1c00d3be67fd797c6f3957124ed",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32000/robots/r1/frames.jsonl": "9a1a1edae7b4e3dc28340ad0b5d4e6ea083e53382aab8c113870b177346e0993",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32000/eval_only/labels.jsonl": "838cb1ad1c883529e70ff18c20cdb30b9d3f58a96569edd148470809e5e4a0a4",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32001/result.json": "ea629a90e085f446e228604143fb8747c3a5e979953eea51c866d343caa2061a",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32001/bundle.json": "908f746a17107dbfd212d936addbe46cc16624741e1b5ab71bdf58c367d21f05",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32001/robots/r1/frames.jsonl": "d292438e82ab557b36d9c345417a64e27c1339eebcf5ab6dccee981457b16326",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-hold-r1/raw/explore-s32001/eval_only/labels.jsonl": "dc6146c9667f7e1e886900ffafd84dd42844f174a6a46120ecfc65ca0ba2eee2",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32000/result.json": "93954724233b837134f6e97952a50cbd02f550bb0de7beca0f643be353998775",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32000/bundle.json": "671376f359c8985de5993969c5fc0131b974c1c00d3be67fd797c6f3957124ed",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32000/robots/r1/frames.jsonl": "511f4958338dccca1adac023d73c8b4c67139cd924678de8a4e44fef13bbda58",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32000/eval_only/labels.jsonl": "c9fd0becd3957b5d0668203df6ce9d4c33af824cba6789713bedabc0d7b141b0",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32001/result.json": "41ded0d9be8483d06002729cbe75fd799f855de81a8f8524b067e3c2ff21839d",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32001/bundle.json": "908f746a17107dbfd212d936addbe46cc16624741e1b5ab71bdf58c367d21f05",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32001/robots/r1/frames.jsonl": "1f5e8f34bd103d5ca4497f4ba4bcea574a76b77d28cdbc9c9576658660891ff2",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r1-loss-r1/raw/explore-s32001/eval_only/labels.jsonl": "ddf40fc676b6af4a11ffbd6c3f815b7679027ece84c7b106deb31fe36e13996c",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32100/result.json": "30130065790c185905facf4a99ef957e52059576176ed2278a45db6ce22356c1",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32100/bundle.json": "23b16b51f8246c5038046be81f2bc4ce4be1e462c7686ced5c03c2f406606813",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32100/robots/r2/frames.jsonl": "c94b3caebf9efe255bb9b465ee31b6759644d0c5c741f948f9f4b8a4c5b1fd38",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32100/eval_only/labels.jsonl": "9ebe2e95a653f4966a61cf37f62ac2252ae49576439554e8a0c9182497a8e7e1",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32101/result.json": "720ec6a6656608eaad6ff6a6afbd71eb48dbf6d97ddbcee13498749f6e442309",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32101/bundle.json": "bf593e12877af1ea23cb160e3bf47ef0fc7fb8a6cb26cda8fc599558bbe95670",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32101/robots/r2/frames.jsonl": "229090d32cd4ebdbf9969dfc4a2383457a7ae663c13ef6d17769a75e0f18c62d",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-hold-r1/raw/explore-s32101/eval_only/labels.jsonl": "6f07d90b636e1344b27a28f18725307e13c6d4098e81722b6e42afc9f39a2390",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32100/result.json": "c4942be2c6cbad4c774884fc3e3264991d79f54e7d91337114109ed8bcfaf365",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32100/bundle.json": "23b16b51f8246c5038046be81f2bc4ce4be1e462c7686ced5c03c2f406606813",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32100/robots/r2/frames.jsonl": "b5d9ff22e8a3589c546acfae71aa2d612a68a7352b6b4663ae3b4912be7eecd7",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32100/eval_only/labels.jsonl": "4456699b8080b34247b04b36fc91d56b5a726f45a1b734b6added2203c923120",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32101/result.json": "306ff5876f6a79b52860ed7f58e69f1a7422ae774d4bc9ef01a7f237ac925e36",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32101/bundle.json": "bf593e12877af1ea23cb160e3bf47ef0fc7fb8a6cb26cda8fc599558bbe95670",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32101/robots/r2/frames.jsonl": "5c4eec4a2cecaf552f2feba30e7e9484336ffd53bac552520bf1d381f6f0eb74",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r2-loss-r1/raw/explore-s32101/eval_only/labels.jsonl": "4f3ea18ed9a17eae7c7dadfa09f8024ec6a094b6e37f3d309a18baec5686a3ea",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32200/result.json": "f6834ef69b30c889fd86a65de56fbe13fcffa965c462ea392261b06e55345632",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32200/bundle.json": "d119d51003ab016431f87b6854cd47843cc88e932cebc2e795d011aef62ba1f8",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32200/robots/r3/frames.jsonl": "52b8748290ffa83f45ba1d8f6731eacc91df75f0a132b5046bda715fadec49c5",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32200/eval_only/labels.jsonl": "d53b52218886784bc7f1350c9e44c0fef5ff95f2efabe6fda47e4c87a6969b00",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32201/result.json": "8a8c8ba5b8128a3bba32d48101859ad03b7ba6d1ad0f4edc6b68c0e9de7bbc1b",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32201/bundle.json": "455d5bdf448fba59da4d637c7a0545b2619965aa3f2f6d4850540036801dbe93",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32201/robots/r3/frames.jsonl": "bc54c413376658070fc1d45e3a430547c9a744b8e6247804f9ef5b27f7d71564",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-hold-r1/raw/explore-s32201/eval_only/labels.jsonl": "868488256586efa2edcfd9f30358fbdaa303bb7105f333b0b7b3b2ccb71f910c",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32200/result.json": "fa5215251f2bd1b0405632e62f09ebfa5123d868ed8ccf1864af721572c5c83d",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32200/bundle.json": "d119d51003ab016431f87b6854cd47843cc88e932cebc2e795d011aef62ba1f8",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32200/robots/r3/frames.jsonl": "ef6cfbc21e49814afbd4a7e1e090931cc367cf09363aca870c544b57b29d7375",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32200/eval_only/labels.jsonl": "963f4c64a858b85a7b3581300b55409d7b950d4e44a864c742820ab417f08a13",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32201/result.json": "f1c8a9dc066b339de8dc8dea4c211a3fd8f008de0beaafd486f36fe0eda98231",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32201/bundle.json": "455d5bdf448fba59da4d637c7a0545b2619965aa3f2f6d4850540036801dbe93",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32201/robots/r3/frames.jsonl": "f0c62d3d157e97badae460bf48335f5aacad86e3a9c600d41fe6fc4799d5f0b2",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4grip2-r3-loss-r1/raw/explore-s32201/eval_only/labels.jsonl": "218c3ce49ff0ee05460c3254ab58a61d817af9e5dc5801d12907d4609fbf009c"
+  },
+  "total_frames": 732,
+  "unique_image_sha256": 592,
+  "model_calls": 0,
+  "mac_physics_runs": 0,
+  "mac_render_calls": 0,
+  "by_robot": {
+    "r1": {
+      "planned": 4,
+      "collected": 4,
+      "start_held": 4,
+      "true_positive_episodes": 2,
+      "actual_loss_episodes": 2,
+      "false_positive_hold_episodes": 0,
+      "actual_hold_episodes": 2,
+      "premature_loss_alarms": 0,
+      "delays_frames": [
+        2,
+        2
+      ],
+      "delays_sim_s": [
+        0.2,
+        0.2
+      ],
+      "frame_counts": {
+        "label_held": 167,
+        "held_unknown": 8,
+        "true_negative": 159,
+        "label_lost": 77,
+        "false_negative": 4,
+        "true_positive": 73
+      }
+    },
+    "r2": {
+      "planned": 4,
+      "collected": 4,
+      "start_held": 4,
+      "true_positive_episodes": 2,
+      "actual_loss_episodes": 2,
+      "false_positive_hold_episodes": 0,
+      "actual_hold_episodes": 2,
+      "premature_loss_alarms": 0,
+      "delays_frames": [
+        2,
+        2
+      ],
+      "delays_sim_s": [
+        0.2,
+        0.2
+      ],
+      "frame_counts": {
+        "label_held": 170,
+        "held_unknown": 8,
+        "true_negative": 162,
+        "label_lost": 74,
+        "false_negative": 4,
+        "true_positive": 70
+      }
+    },
+    "r3": {
+      "planned": 4,
+      "collected": 4,
+      "start_held": 4,
+      "true_positive_episodes": 1,
+      "actual_loss_episodes": 2,
+      "false_positive_hold_episodes": 0,
+      "actual_hold_episodes": 2,
+      "premature_loss_alarms": 0,
+      "delays_frames": [
+        0
+      ],
+      "delays_sim_s": [
+        0.0
+      ],
+      "frame_counts": {
+        "label_held": 169,
+        "held_unknown": 89,
+        "true_negative": 80,
+        "label_partial": 7,
+        "label_lost": 67,
+        "lost_unknown": 31,
+        "label_zero": 1,
+        "true_positive": 36
+      }
+    }
+  },
+  "all": {
+    "planned": 12,
+    "collected": 12,
+    "start_held": 12,
+    "true_positive_episodes": 5,
+    "actual_loss_episodes": 6,
+    "false_positive_hold_episodes": 0,
+    "actual_hold_episodes": 6,
+    "premature_loss_alarms": 0,
+    "delays_frames": [
+      2,
+      2,
+      2,
+      2,
+      0
+    ],
+    "delays_sim_s": [
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.0
+    ],
+    "frame_counts": {
+      "label_held": 506,
+      "held_unknown": 105,
+      "true_negative": 401,
+      "label_lost": 218,
+      "false_negative": 8,
+      "true_positive": 179,
+      "label_partial": 7,
+      "lost_unknown": 31,
+      "label_zero": 1
+    }
+  }
+}

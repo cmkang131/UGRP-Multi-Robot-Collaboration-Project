@@ -6,3 +6,4 @@
 - 열린 PR 전체 번호 검사: v185 E2E, v186 연속 운반, v187 OPEN ACK 사용 중.
 - 연구 방법: [Git show](https://git-scm.com/docs/git-show), [Git archive](https://git-scm.com/docs/git-archive); 현재 checkout 대신 원래 커밋의 blob/트리 검증.
 - 시뮬레이션·모델 호출 0회; 시험과 CI 결과는 `summary.json`.
+- #425: S4 공통 소비자 2개 차이는 v189 / 7.82.0으로 별도 등록; 미실행 v188 바이트도 보존.

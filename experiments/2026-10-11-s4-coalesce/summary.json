@@ -1,0 +1,1189 @@
+{
+  "schema": "ugrp.s4_coalesce_dev.v1",
+  "research_result": false,
+  "status": "DEV_MEASURED_NOT_QUALIFIED",
+  "pr": 425,
+  "source_sha": "bdfa50514ff00536f96f71705cb00506ba35b03b",
+  "api_source_sha": "4d85e0b5063a7160b8dff91cb6c6b070b020fe3f",
+  "replay_source_sha": "bdfa50514ff00536f96f71705cb00506ba35b03b",
+  "final_source_sha256": {
+    "harness/s4_compact_prompt.py": "082fb56392522de6cf0326d08777a73795009dc6f1c243ebd338e7542bfd6cb2",
+    "harness/s4_event_coalesce.py": "7d558e0b089c0b8734942f6d45938590eecd0804695f76af647d91045064738f",
+    "harness/s4_event_policy.py": "811b6eca6cc9857ebc4fc713064759d7bb67ba6219f9b714d1dc476f3b1c519f",
+    "scripts/gemma_fallback_proxy.py": "d11bc4a0f000a8e344e68559866a909c1bb8f9715cbbbf24427c651d6beaa810",
+    "scripts/probe_s4_coalesce.py": "bef1a62f5130b45ed9950242a0262d1c13d3a7231be2e1cdbb3bc55c9e133b18",
+    "scripts/replay_s4_coalesce.py": "fc43f172c7a1b21d8b32d65df345de832d98eab4a95470def370644fd03c440c",
+    "scripts/run_s4_study_v184.py": "bc81a5e3ff4258b71b6cbe25ca7abd8a3d382eb938e8104ce38fe6ae71c0688a",
+    "tests/test_gemma_multi_key.py": "adc215db25ad9f3dc2f9c196fb668d048384310e1ad8b2584f36faf0302676da",
+    "tests/test_s4_study_policy.py": "c7f21b7a756af28e1a1d44581db230a520fc6e6a0bf34b03a81c80c61467e7ea"
+  },
+  "defaults": {
+    "event_coalesce_v1": false,
+    "map_as_image_v1": false,
+    "context_trim_v1": false
+  },
+  "call_estimate": {
+    "before": [
+      82,
+      118,
+      126,
+      121
+    ],
+    "after": [
+      45,
+      51,
+      51,
+      59
+    ],
+    "condition_order": [
+      "no_comm",
+      "peer_en",
+      "leader_en",
+      "structured"
+    ],
+    "target_met": 4,
+    "target_denominator": 4,
+    "counts_are_actual": false,
+    "scope": "Saved-input eligibility only; changed replies/timing/continuous observations not simulated.",
+    "max_message_wait_sim_s": 60,
+    "seed601_totals": {
+      "wire_snapshots": 1203,
+      "event_v1_calls": 447,
+      "coalesced_calls": 206,
+      "skipped": 997,
+      "skipped_known_action": 989,
+      "skipped_literal_matches_previous": 739,
+      "skipped_continue_or_held": 923,
+      "skipped_changed_noncontinuation": 3,
+      "skipped_changed_accepted_noncontinuation": 1,
+      "pending_inboxes_at_end": 6
+    },
+    "seed602_host_error_runs": 4,
+    "all_runs": [
+      {
+        "run": "s4live11-no_comm-s601-v182",
+        "status": "FINISHED",
+        "host_error": false,
+        "counts": {
+          "wire_snapshots": 306,
+          "event_v1_calls": 82,
+          "coalesced_calls": 45,
+          "skipped": 261,
+          "skipped_known_action": 259,
+          "skipped_literal_matches_previous": 202,
+          "skipped_continue_or_held": 251,
+          "skipped_changed_noncontinuation": 0,
+          "skipped_changed_accepted_noncontinuation": 0,
+          "pending_inboxes_at_end": 0
+        },
+        "event_types": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 24,
+          "phase_carry_start": 12,
+          "phase_reobserve": 12,
+          "decision_window": 12,
+          "phase_set_down": 12,
+          "phase_grasp": 11,
+          "phase_carry": 10
+        },
+        "selected_reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 24,
+          "decision_window": 12,
+          "own_command_rejected": 6
+        },
+        "text_token_estimate": {
+          "event_v1_total": 112826,
+          "coalesced_trim_total": 57654,
+          "method": "repository regex token estimator; excludes images, not Google countTokens"
+        },
+        "scope": "snapshot counterfactual; no changed replies, messages, continuous observations or physical outcomes simulated",
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-no_comm-s601-v182/raw",
+        "sha256": {
+          "requests.json": "3ee75db0a17b4c8bbe07a2947734f0a739e5322ee18e88670472c9c96f995345",
+          "dispatch.json": "5edd54a75e47a539f979346315c0049056bcf6ec46c147844fa6c20dc8ffed28",
+          "result.json": "6beb9df6f39d5f30c5786cf4e019303e09dee76253199aaef4beec686c0f0e8a",
+          "executor_events.json": "45c2cb3ebd9474c97527faf2dbd3a29823e8d0242e5b366d42539ea5e592cd1f"
+        }
+      },
+      {
+        "run": "s4live11-peer_ko-s601-v182",
+        "status": "FINISHED",
+        "host_error": false,
+        "counts": {
+          "wire_snapshots": 265,
+          "event_v1_calls": 118,
+          "coalesced_calls": 51,
+          "skipped": 214,
+          "skipped_known_action": 213,
+          "skipped_literal_matches_previous": 154,
+          "skipped_continue_or_held": 193,
+          "skipped_changed_noncontinuation": 0,
+          "skipped_changed_accepted_noncontinuation": 0,
+          "pending_inboxes_at_end": 2
+        },
+        "event_types": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 32,
+          "phase_carry_start": 16,
+          "received_message": 57,
+          "phase_reobserve": 14,
+          "decision_window": 14,
+          "phase_set_down": 14,
+          "phase_grasp": 10,
+          "phase_carry": 14
+        },
+        "selected_reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 32,
+          "decision_window": 14,
+          "own_command_rejected": 2
+        },
+        "text_token_estimate": {
+          "event_v1_total": 207583,
+          "coalesced_trim_total": 77611,
+          "method": "repository regex token estimator; excludes images, not Google countTokens"
+        },
+        "scope": "snapshot counterfactual; no changed replies, messages, continuous observations or physical outcomes simulated",
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-peer_ko-s601-v182/raw",
+        "sha256": {
+          "requests.json": "cd5ad224b01b47e8950cf9d249bffd78931362a5abfe941551e402ca2db9e58d",
+          "dispatch.json": "250ec63dc49f6e7ac29d3b81c7fc6b00c7718a3f3d84d26dc819e3151a67964d",
+          "result.json": "213034bfdd55ebe4e39df43ad45255f2638ba78e7fa418ac2e55fb084357aea7",
+          "executor_events.json": "6e09bd2cf642caf65e4f9acb2759de0f25b23bacd60ab014c19acb87dae03902"
+        }
+      },
+      {
+        "run": "s4live11-leader_ko-s601-v182",
+        "status": "FINISHED",
+        "host_error": false,
+        "counts": {
+          "wire_snapshots": 313,
+          "event_v1_calls": 126,
+          "coalesced_calls": 51,
+          "skipped": 262,
+          "skipped_known_action": 260,
+          "skipped_literal_matches_previous": 194,
+          "skipped_continue_or_held": 240,
+          "skipped_changed_noncontinuation": 1,
+          "skipped_changed_accepted_noncontinuation": 0,
+          "pending_inboxes_at_end": 2
+        },
+        "event_types": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 32,
+          "phase_carry_start": 16,
+          "received_message": 57,
+          "phase_reobserve": 14,
+          "decision_window": 14,
+          "phase_set_down": 17,
+          "phase_grasp": 13,
+          "phase_carry": 14
+        },
+        "selected_reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 32,
+          "decision_window": 14,
+          "own_command_rejected": 2
+        },
+        "text_token_estimate": {
+          "event_v1_total": 222772,
+          "coalesced_trim_total": 77577,
+          "method": "repository regex token estimator; excludes images, not Google countTokens"
+        },
+        "scope": "snapshot counterfactual; no changed replies, messages, continuous observations or physical outcomes simulated",
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-leader_ko-s601-v182/raw",
+        "sha256": {
+          "requests.json": "c86cec6b6917ffae30b2e797f1f32d1dccfa40b393cb9e42010b2e9a16c04ccd",
+          "dispatch.json": "b5a7a9e527271d1802e066d67438e80af065e4939ab6f3a9b8beb2d4716cf12d",
+          "result.json": "e4f82a5beab4d0396f979b2085eab8ff5ca024f4023a4df13c0185a36a64fe81",
+          "executor_events.json": "7490085177ad2431b3c50bebebf64c0afbe219ec87424b9f890c71779b2c8c63"
+        }
+      },
+      {
+        "run": "s4live11-structured-s601-v182",
+        "status": "FINISHED",
+        "host_error": false,
+        "counts": {
+          "wire_snapshots": 319,
+          "event_v1_calls": 121,
+          "coalesced_calls": 59,
+          "skipped": 260,
+          "skipped_known_action": 257,
+          "skipped_literal_matches_previous": 189,
+          "skipped_continue_or_held": 239,
+          "skipped_changed_noncontinuation": 2,
+          "skipped_changed_accepted_noncontinuation": 1,
+          "pending_inboxes_at_end": 2
+        },
+        "event_types": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 32,
+          "phase_carry_start": 16,
+          "received_message": 37,
+          "phase_reobserve": 14,
+          "decision_window": 14,
+          "phase_set_down": 16,
+          "phase_grasp": 13,
+          "phase_carry": 14,
+          "bounded_invalid_retry": 2
+        },
+        "selected_reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 32,
+          "decision_window": 14,
+          "own_command_rejected": 8,
+          "bounded_invalid_retry": 2
+        },
+        "text_token_estimate": {
+          "event_v1_total": 248644,
+          "coalesced_trim_total": 103312,
+          "method": "repository regex token estimator; excludes images, not Google countTokens"
+        },
+        "scope": "snapshot counterfactual; no changed replies, messages, continuous observations or physical outcomes simulated",
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-structured-s601-v182/raw",
+        "sha256": {
+          "requests.json": "ff783f1ddcc1ca6ebdc82fd44ef4162472db1b38e6e324b9b76d39d740184669",
+          "dispatch.json": "5135a7280afdf3a4db1cd56d489d318500df854e02c2d57b0840b5292b95a815",
+          "result.json": "7cc8f01e74ff093a07d137231b4894a68442d4ed026db839dc476cebbec222e1",
+          "executor_events.json": "f0a4cd84a6a296f5f92c14795e259b6893c30d6610ff09fc66a34b7c83340af9"
+        }
+      },
+      {
+        "run": "s4live11-no_comm-s602-v182",
+        "status": "FINISHED",
+        "host_error": true,
+        "counts": {
+          "wire_snapshots": 16,
+          "event_v1_calls": 9,
+          "coalesced_calls": 11,
+          "skipped": 5,
+          "skipped_known_action": 3,
+          "skipped_literal_matches_previous": 0,
+          "skipped_continue_or_held": 3,
+          "skipped_changed_noncontinuation": 0,
+          "skipped_changed_accepted_noncontinuation": 0,
+          "pending_inboxes_at_end": 0
+        },
+        "event_types": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "phase_carry_start": 2,
+          "phase_reobserve": 2,
+          "decision_window": 2
+        },
+        "selected_reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "decision_window": 2,
+          "own_command_rejected": 2
+        },
+        "text_token_estimate": {
+          "event_v1_total": 11453,
+          "coalesced_trim_total": 13878,
+          "method": "repository regex token estimator; excludes images, not Google countTokens"
+        },
+        "scope": "snapshot counterfactual; no changed replies, messages, continuous observations or physical outcomes simulated",
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-no_comm-s602-v182/raw",
+        "sha256": {
+          "requests.json": "69339f0ad52b4da1f15cd19f35b46ea0e7c3b9dfce5c5646b577d826044717d6",
+          "dispatch.json": "633624922e8979054ce4e288668215c73456b9e25cba49b28859ece2f29cbcf9",
+          "result.json": "0840981f7f9778c800e9b6ab5a730eb8dab03998a028f8143c5814aeefce4a26",
+          "executor_events.json": "a80e2bf56578b00dec5d7a37d7a42f9fa243029918849e35379972faeeec2425"
+        }
+      },
+      {
+        "run": "s4live11-peer_ko-s602-v182",
+        "status": "FINISHED",
+        "host_error": true,
+        "counts": {
+          "wire_snapshots": 16,
+          "event_v1_calls": 10,
+          "coalesced_calls": 11,
+          "skipped": 5,
+          "skipped_known_action": 5,
+          "skipped_literal_matches_previous": 2,
+          "skipped_continue_or_held": 3,
+          "skipped_changed_noncontinuation": 0,
+          "skipped_changed_accepted_noncontinuation": 0,
+          "pending_inboxes_at_end": 0
+        },
+        "event_types": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "phase_carry_start": 2,
+          "received_message": 7,
+          "phase_reobserve": 2,
+          "decision_window": 2
+        },
+        "selected_reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "decision_window": 2,
+          "own_command_rejected": 2
+        },
+        "text_token_estimate": {
+          "event_v1_total": 15801,
+          "coalesced_trim_total": 16338,
+          "method": "repository regex token estimator; excludes images, not Google countTokens"
+        },
+        "scope": "snapshot counterfactual; no changed replies, messages, continuous observations or physical outcomes simulated",
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-peer_ko-s602-v182/raw",
+        "sha256": {
+          "requests.json": "c892feb7e50cf697300236b5edc98a44e2bed56249d10ec532423749f734ea74",
+          "dispatch.json": "137984786c42d7f6485bdc325cd78ed369e8aa68250d51ba33e2610f1bb640fb",
+          "result.json": "ca33b11e17fd593ccf262c12708431bb8c44651e776689eec245b41f002318a2",
+          "executor_events.json": "b734c67ed93dffbb2bab3380807a45abcfc4f69c57c55cd2e3d96338dc5365f3"
+        }
+      },
+      {
+        "run": "s4live11-leader_ko-s602-v182",
+        "status": "FINISHED",
+        "host_error": true,
+        "counts": {
+          "wire_snapshots": 14,
+          "event_v1_calls": 10,
+          "coalesced_calls": 10,
+          "skipped": 4,
+          "skipped_known_action": 3,
+          "skipped_literal_matches_previous": 0,
+          "skipped_continue_or_held": 3,
+          "skipped_changed_noncontinuation": 0,
+          "skipped_changed_accepted_noncontinuation": 0,
+          "pending_inboxes_at_end": 1
+        },
+        "event_types": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "phase_carry_start": 2,
+          "received_message": 3,
+          "phase_reobserve": 2,
+          "decision_window": 2
+        },
+        "selected_reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "decision_window": 2,
+          "own_command_rejected": 1
+        },
+        "text_token_estimate": {
+          "event_v1_total": 14665,
+          "coalesced_trim_total": 14147,
+          "method": "repository regex token estimator; excludes images, not Google countTokens"
+        },
+        "scope": "snapshot counterfactual; no changed replies, messages, continuous observations or physical outcomes simulated",
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-leader_ko-s602-v182/raw",
+        "sha256": {
+          "requests.json": "0d84dae2a932f96ad3e6e36d23ef9834d1b0fcbffb1ddb188c8eb64e2493d018",
+          "dispatch.json": "03c30218488607dae5ed8e36d4d115b1179e5d50ffbd4b8a329e7ffe65f322a0",
+          "result.json": "d603761e3ac487efad6e19ebb48ce46a56d326849e22f65e83359b47199a194f",
+          "executor_events.json": "b734c67ed93dffbb2bab3380807a45abcfc4f69c57c55cd2e3d96338dc5365f3"
+        }
+      },
+      {
+        "run": "s4live11-structured-s602-v182",
+        "status": "FINISHED",
+        "host_error": true,
+        "counts": {
+          "wire_snapshots": 15,
+          "event_v1_calls": 9,
+          "coalesced_calls": 10,
+          "skipped": 5,
+          "skipped_known_action": 5,
+          "skipped_literal_matches_previous": 2,
+          "skipped_continue_or_held": 3,
+          "skipped_changed_noncontinuation": 0,
+          "skipped_changed_accepted_noncontinuation": 0,
+          "pending_inboxes_at_end": 0
+        },
+        "event_types": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "phase_carry_start": 2,
+          "received_message": 4,
+          "phase_reobserve": 2,
+          "decision_window": 2
+        },
+        "selected_reasons": {
+          "initial_claim": 3,
+          "own_observation_abnormal": 2,
+          "go_ack_epoch": 4,
+          "decision_window": 2,
+          "own_command_rejected": 1
+        },
+        "text_token_estimate": {
+          "event_v1_total": 15794,
+          "coalesced_trim_total": 16535,
+          "method": "repository regex token estimator; excludes images, not Google countTokens"
+        },
+        "scope": "snapshot counterfactual; no changed replies, messages, continuous observations or physical outcomes simulated",
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-structured-s602-v182/raw",
+        "sha256": {
+          "requests.json": "f7dc80418ec92093acd4036f62a771c51c82cc527b840a16da212bf8e0e1b00a",
+          "dispatch.json": "7b2808ce26b7665bf05ab9bbdec26673e73941716a4267c9078ef89aa8ac7fde",
+          "result.json": "3f2e365bd284bc4c24bd280f821f10858ebb2e70acdd902eb551f5634add6a12",
+          "executor_events.json": "5f2a1626aa56a922f4186191c336dea556ca213d23f33807e705f8e601d1272b"
+        }
+      }
+    ]
+  },
+  "token_estimate": {
+    "method": "Repository regex text tokens only; images excluded",
+    "before": 791825,
+    "after": 316154,
+    "reduction_fraction": 0.6007274334606763
+  },
+  "measured_input_tokens": {
+    "source": "Google countTokens including original own RGB",
+    "representative": "s4live11-peer_ko-s601-v182 call-0261-r1",
+    "before": 2034,
+    "after": 1674,
+    "reduction_fraction": 0.17699115044247793,
+    "scope": "all four initial claims plus one long-history case; not a bound on all future inboxes",
+    "initial_claims_before": [
+      1364,
+      1458,
+      1463,
+      1570
+    ],
+    "initial_claims_after": [
+      1300,
+      1393,
+      1398,
+      1505
+    ],
+    "map_diagnostic": [
+      {
+        "map_as_image_v1": false,
+        "totalTokens": 5689,
+        "error": null,
+        "image_refs": [
+          {
+            "label": "CURRENT OWN WRIST RGB",
+            "ref": "own-r1-10102",
+            "sha256": "dae5d7dab1fa94a1ba234bb41ddbcc6eb693f9f7b38ee079ab951c6e6a634557",
+            "captured_at_sim_s": 505.05,
+            "bytes_sha256": "dae5d7dab1fa94a1ba234bb41ddbcc6eb693f9f7b38ee079ab951c6e6a634557"
+          },
+          {
+            "label": "STATIC MAP FIGURE",
+            "ref": "map-zone_wide_door_geometry_v3-schematic",
+            "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+            "captured_at_sim_s": null,
+            "bytes_sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5"
+          }
+        ],
+        "request_sha256": "5384395b7265ecf3a3cda4e0a3b1efc02fabbf07d54301d9d2241424a671e05b",
+        "scope": "legacy static-map token diagnostic only; not an own-map admissible input"
+      },
+      {
+        "map_as_image_v1": true,
+        "totalTokens": 3903,
+        "error": null,
+        "image_refs": [
+          {
+            "label": "CURRENT OWN WRIST RGB",
+            "ref": "own-r1-10102",
+            "sha256": "dae5d7dab1fa94a1ba234bb41ddbcc6eb693f9f7b38ee079ab951c6e6a634557",
+            "captured_at_sim_s": 505.05,
+            "bytes_sha256": "dae5d7dab1fa94a1ba234bb41ddbcc6eb693f9f7b38ee079ab951c6e6a634557"
+          },
+          {
+            "label": "STATIC MAP FIGURE",
+            "ref": "map-zone_wide_door_geometry_v3-schematic",
+            "sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5",
+            "captured_at_sim_s": null,
+            "bytes_sha256": "24a2138a473392d33a5ea00e6680400c256fc9dc57df83f34e48a4d50b93b6f5"
+          }
+        ],
+        "request_sha256": "60fe7eb1b83cc7fab32cc8f4e657da50f0b2a3b556891ccc11015f23eb69e60f",
+        "scope": "legacy static-map token diagnostic only; not an own-map admissible input"
+      }
+    ],
+    "own_map_boundary": "Legacy figure includes authored B; omitted in compact own-input mode. No own-map figure fabricated; B remains own-observation only."
+  },
+  "decisions": {
+    "offline_literal_same_previous_n": 739,
+    "offline_known_action_N": 989,
+    "offline_all_skipped_N": 997,
+    "offline_same_previous_fraction": 0.7472194135490394,
+    "continuation_or_held_n": 923,
+    "changed_noncontinuation_n": 3,
+    "changed_previously_accepted_noncontinuation_n": 1,
+    "counterexample": {
+      "run": "s4live11-structured-s601-v182",
+      "call_id": "call-0089-r1",
+      "action": "ack_go",
+      "detail": "Earlier overlapping call-0088-r1 started 190.90 and failed at 196.50; old accepted ack call-0089 started 190.95. New gate waits for first reply; its future retry/output is not simulated."
+    },
+    "actual_api_valid_matching_pairs": 2,
+    "actual_api_valid_pair_N": 2,
+    "actual_api_attempted_pair_N": 5,
+    "incomplete_pairs": [
+      "no_comm: trim ambiguous timeout",
+      "structured: baseline 500,500,ambiguous timeout",
+      "peer call-0261: both cite invalid decision source pair_handshake"
+    ],
+    "decision_equivalence_qualified": false
+  },
+  "api": {
+    "status": "COMPLETED_WITH_FAILURES",
+    "generation_attempts": 14,
+    "generation_cap": 30,
+    "count_tokens_api_calls": 11,
+    "models_list_calls": 1,
+    "all_google_api_calls": 26,
+    "logical_requests": 10,
+    "http200": 8,
+    "host_error": 2,
+    "valid_protocol_replies": 6,
+    "model_output_rejected": 2,
+    "first_failure_count": 4,
+    "explicit_500_attempts": 4,
+    "retries": 4,
+    "requested_retry_delay_s": 5.432065031410083,
+    "upstream_wall_s": 337.2629531660932,
+    "recovered_after_500_requests": 2,
+    "unknown_usage_attempts": 6,
+    "unknown_usage_not_zero": true,
+    "monetary_cost": null,
+    "key_indexes_logged_only": true,
+    "active_service_restarted": false,
+    "probe_process_stopped": true,
+    "rows": [
+      {
+        "case": "no_comm:call-0001-r1",
+        "variant": "baseline",
+        "http_status": 200,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-no_comm-s601-v182/raw/llm/requests.json",
+        "source_sha256": "3ee75db0a17b4c8bbe07a2947734f0a739e5322ee18e88670472c9c96f995345",
+        "request_sha256": "98d06fcb190b3b0f7b3205504a66df4ca21c4a4851329b6b8b87333c6340fedf",
+        "judgement": {
+          "valid": true,
+          "action": {
+            "destination_zone": "B",
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg"
+          }
+        },
+        "historical_action": {
+          "destination_zone": "B",
+          "kind": "claim",
+          "order_id": "order-5",
+          "role": "end_neg"
+        },
+        "old_action_match": true,
+        "count_tokens": 1364,
+        "retry_metrics": {
+          "first_failure_count": 0,
+          "server_error_count": 0,
+          "retry_count": 0,
+          "delay_s": 0.0,
+          "upstream_wall_s": 29.568217457970604,
+          "elapsed_s": 29.571536833012942
+        },
+        "failure_class": null,
+        "usage": {
+          "prompt_tokens": 1364,
+          "total_tokens": 1428,
+          "completion_tokens": 64
+        }
+      },
+      {
+        "case": "no_comm:call-0001-r1",
+        "variant": "trim",
+        "http_status": 502,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-no_comm-s601-v182/raw/llm/requests.json",
+        "source_sha256": "3ee75db0a17b4c8bbe07a2947734f0a739e5322ee18e88670472c9c96f995345",
+        "request_sha256": "e2a75dca9c4af36d35d545ef5d80d2003f109cc03c8c37bd0f3a66586a124127",
+        "judgement": {
+          "valid": false,
+          "error": "KeyError:'choices'"
+        },
+        "historical_action": {
+          "destination_zone": "B",
+          "kind": "claim",
+          "order_id": "order-5",
+          "role": "end_neg"
+        },
+        "old_action_match": null,
+        "count_tokens": 1300,
+        "retry_metrics": {
+          "first_failure_count": 1,
+          "server_error_count": 0,
+          "retry_count": 0,
+          "delay_s": 0.0,
+          "upstream_wall_s": 40.123155542009044,
+          "elapsed_s": 40.12629304098664
+        },
+        "failure_class": "HOST_ERROR",
+        "usage": null
+      },
+      {
+        "case": "peer_ko:call-0001-r1",
+        "variant": "baseline",
+        "http_status": 200,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-peer_ko-s601-v182/raw/llm/requests.json",
+        "source_sha256": "cd5ad224b01b47e8950cf9d249bffd78931362a5abfe941551e402ca2db9e58d",
+        "request_sha256": "444983d3b77d6fd724592f388677a20174b74a536fd563999a2e217e32031695",
+        "judgement": {
+          "valid": true,
+          "action": {
+            "destination_zone": "B",
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg"
+          }
+        },
+        "historical_action": {
+          "destination_zone": "B",
+          "kind": "claim",
+          "order_id": "order-5",
+          "role": "end_neg"
+        },
+        "old_action_match": true,
+        "count_tokens": 1458,
+        "retry_metrics": {
+          "first_failure_count": 0,
+          "server_error_count": 0,
+          "retry_count": 0,
+          "delay_s": 0.0,
+          "upstream_wall_s": 32.45443283300847,
+          "elapsed_s": 32.45805612503318
+        },
+        "failure_class": null,
+        "usage": {
+          "prompt_tokens": 1458,
+          "total_tokens": 1522,
+          "completion_tokens": 64
+        }
+      },
+      {
+        "case": "peer_ko:call-0001-r1",
+        "variant": "trim",
+        "http_status": 200,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-peer_ko-s601-v182/raw/llm/requests.json",
+        "source_sha256": "cd5ad224b01b47e8950cf9d249bffd78931362a5abfe941551e402ca2db9e58d",
+        "request_sha256": "11cc61ca5830a4a6f23367725f43e098311048d453178fafaf58dd479bacece4",
+        "judgement": {
+          "valid": true,
+          "action": {
+            "destination_zone": "B",
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg"
+          }
+        },
+        "historical_action": {
+          "destination_zone": "B",
+          "kind": "claim",
+          "order_id": "order-5",
+          "role": "end_neg"
+        },
+        "old_action_match": true,
+        "count_tokens": 1393,
+        "retry_metrics": {
+          "first_failure_count": 0,
+          "server_error_count": 0,
+          "retry_count": 0,
+          "delay_s": 0.0,
+          "upstream_wall_s": 23.12233758403454,
+          "elapsed_s": 23.12492650002241
+        },
+        "failure_class": null,
+        "usage": {
+          "prompt_tokens": 1393,
+          "total_tokens": 1471,
+          "completion_tokens": 78
+        }
+      },
+      {
+        "case": "leader_ko:call-0001-r1",
+        "variant": "baseline",
+        "http_status": 200,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-leader_ko-s601-v182/raw/llm/requests.json",
+        "source_sha256": "c86cec6b6917ffae30b2e797f1f32d1dccfa40b393cb9e42010b2e9a16c04ccd",
+        "request_sha256": "522a6141fe5019111ae231549417336d14077a4d9e82fc3b9682c5a084550007",
+        "judgement": {
+          "valid": true,
+          "action": {
+            "destination_zone": "B",
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg"
+          }
+        },
+        "historical_action": {
+          "destination_zone": "B",
+          "kind": "claim",
+          "order_id": "order-5",
+          "role": "end_neg"
+        },
+        "old_action_match": true,
+        "count_tokens": 1463,
+        "retry_metrics": {
+          "first_failure_count": 1,
+          "server_error_count": 1,
+          "retry_count": 1,
+          "delay_s": 1.1888479571915678,
+          "upstream_wall_s": 25.161180207971483,
+          "elapsed_s": 26.37499833398033
+        },
+        "failure_class": null,
+        "usage": {
+          "prompt_tokens": 1463,
+          "total_tokens": 1541,
+          "completion_tokens": 78
+        }
+      },
+      {
+        "case": "leader_ko:call-0001-r1",
+        "variant": "trim",
+        "http_status": 200,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-leader_ko-s601-v182/raw/llm/requests.json",
+        "source_sha256": "c86cec6b6917ffae30b2e797f1f32d1dccfa40b393cb9e42010b2e9a16c04ccd",
+        "request_sha256": "98c6c6f76e87124d62b1c34b2797ab7e0d5ffcf5cf0bb890e15e8979121ff853",
+        "judgement": {
+          "valid": true,
+          "action": {
+            "destination_zone": "B",
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg"
+          }
+        },
+        "historical_action": {
+          "destination_zone": "B",
+          "kind": "claim",
+          "order_id": "order-5",
+          "role": "end_neg"
+        },
+        "old_action_match": true,
+        "count_tokens": 1398,
+        "retry_metrics": {
+          "first_failure_count": 0,
+          "server_error_count": 0,
+          "retry_count": 0,
+          "delay_s": 0.0,
+          "upstream_wall_s": 33.550518750038464,
+          "elapsed_s": 33.55489970900817
+        },
+        "failure_class": null,
+        "usage": {
+          "prompt_tokens": 1398,
+          "total_tokens": 1476,
+          "completion_tokens": 78
+        }
+      },
+      {
+        "case": "structured:call-0001-r1",
+        "variant": "baseline",
+        "http_status": 502,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-structured-s601-v182/raw/llm/requests.json",
+        "source_sha256": "ff783f1ddcc1ca6ebdc82fd44ef4162472db1b38e6e324b9b76d39d740184669",
+        "request_sha256": "5d6303aa243874b856a6237b2ce15784b5b552f62992e5d96b019e405e2f9bb4",
+        "judgement": {
+          "valid": false,
+          "error": "KeyError:'choices'"
+        },
+        "historical_action": {
+          "kind": "claim",
+          "order_id": "order-5",
+          "role": "end_neg",
+          "destination_zone": "B"
+        },
+        "old_action_match": null,
+        "count_tokens": 1570,
+        "retry_metrics": {
+          "first_failure_count": 1,
+          "server_error_count": 2,
+          "retry_count": 2,
+          "delay_s": 3.0901655714409593,
+          "upstream_wall_s": 62.952316542039625,
+          "elapsed_s": 66.0798227500054
+        },
+        "failure_class": "HOST_ERROR",
+        "usage": null
+      },
+      {
+        "case": "structured:call-0001-r1",
+        "variant": "trim",
+        "http_status": 200,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-structured-s601-v182/raw/llm/requests.json",
+        "source_sha256": "ff783f1ddcc1ca6ebdc82fd44ef4162472db1b38e6e324b9b76d39d740184669",
+        "request_sha256": "a6240b59bcc40bc90ba053b3a997c457003077662ed862406f1f4664d3a89152",
+        "judgement": {
+          "valid": true,
+          "action": {
+            "destination_zone": "B",
+            "kind": "claim",
+            "order_id": "order-5",
+            "role": "end_neg"
+          }
+        },
+        "historical_action": {
+          "kind": "claim",
+          "order_id": "order-5",
+          "role": "end_neg",
+          "destination_zone": "B"
+        },
+        "old_action_match": true,
+        "count_tokens": 1505,
+        "retry_metrics": {
+          "first_failure_count": 1,
+          "server_error_count": 1,
+          "retry_count": 1,
+          "delay_s": 1.1530515027775565,
+          "upstream_wall_s": 33.600528999988455,
+          "elapsed_s": 34.78428491600789
+        },
+        "failure_class": null,
+        "usage": {
+          "prompt_tokens": 1505,
+          "total_tokens": 1569,
+          "completion_tokens": 64
+        }
+      },
+      {
+        "case": "peer_ko:call-0261-r1",
+        "variant": "baseline",
+        "http_status": 200,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-peer_ko-s601-v182/raw/llm/requests.json",
+        "source_sha256": "cd5ad224b01b47e8950cf9d249bffd78931362a5abfe941551e402ca2db9e58d",
+        "request_sha256": "23e1e87b3c99041fb069fe380f8226c684fa867d00d50dbb41695b1c31a7fabe",
+        "judgement": {
+          "valid": false,
+          "error": "ProtocolError:unknown decision source 'pair_handshake'; use ('static_map', 'order_sheet', 'own_rgb', 'own_commands', 'own_belief', 'message')"
+        },
+        "historical_action": {
+          "kind": "continue"
+        },
+        "old_action_match": null,
+        "count_tokens": 2034,
+        "retry_metrics": {
+          "first_failure_count": 0,
+          "server_error_count": 0,
+          "retry_count": 0,
+          "delay_s": 0.0,
+          "upstream_wall_s": 27.870238583011087,
+          "elapsed_s": 27.873742749972735
+        },
+        "failure_class": null,
+        "usage": {
+          "prompt_tokens": 2034,
+          "total_tokens": 2111,
+          "completion_tokens": 77
+        }
+      },
+      {
+        "case": "peer_ko:call-0261-r1",
+        "variant": "trim",
+        "http_status": 200,
+        "source": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live11-peer_ko-s601-v182/raw/llm/requests.json",
+        "source_sha256": "cd5ad224b01b47e8950cf9d249bffd78931362a5abfe941551e402ca2db9e58d",
+        "request_sha256": "8055c54b40e49d03368bff19d13f587ff2810687cb1d09dde5d842df5652c55e",
+        "judgement": {
+          "valid": false,
+          "error": "ProtocolError:unknown decision source 'pair_handshake'; use ('static_map', 'order_sheet', 'own_rgb', 'own_commands', 'own_belief', 'message')"
+        },
+        "historical_action": {
+          "kind": "continue"
+        },
+        "old_action_match": null,
+        "count_tokens": 1674,
+        "retry_metrics": {
+          "first_failure_count": 0,
+          "server_error_count": 0,
+          "retry_count": 0,
+          "delay_s": 0.0,
+          "upstream_wall_s": 28.86002666602144,
+          "elapsed_s": 28.86754991696216
+        },
+        "failure_class": null,
+        "usage": {
+          "prompt_tokens": 1674,
+          "total_tokens": 1721,
+          "completion_tokens": 47
+        }
+      }
+    ]
+  },
+  "tests": {
+    "unique_passed": 70,
+    "failed": 0,
+    "files": [
+      "tests/test_s4_study_policy.py",
+      "tests/test_gemma_multi_key.py",
+      "tests/test_gemma_fallback_proxy.py"
+    ],
+    "runs": [
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4-coalesce-v1/tests-final.xml",
+        "passed": 69,
+        "scope": "three related files before inbox acknowledgement guard"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/s4-coalesce-v1/tests-policy-final.xml",
+        "passed": 24,
+        "scope": "changed policy file after guard; other 46 tests unchanged"
+      }
+    ]
+  },
+  "ci": {
+    "source_sha": "4d85e0b5063a7160b8dff91cb6c6b070b020fe3f",
+    "run_id": 38132337153,
+    "known_failure": "test_s4_live5.py collection: ModuleNotFoundError mujoco",
+    "scope": "separate from successful related local tests; latest push will have a new CI run",
+    "merged": false
+  },
+  "physical_calls": 0,
+  "render_calls": 0,
+  "raw": "/Users/changmin/projects/ugrp/outputs/s4-coalesce-v1",
+  "raw_remote_backup": false,
+  "unfinished_retrieval": false,
+  "limitations": [
+    "Default-off DEV only; not E2E, safety or quality parity.",
+    "Up to 60 SIM seconds of inbox batching changes communication timing.",
+    "Historical accepted ACK differs under serialized scheduling; model fallback/counterfactual outcome is unknown.",
+    "All unread messages retained; token size can grow beyond the representative measurement.",
+    "Moving-wrist visual monitor and own-map E2E adapter remain pre-existing admission blockers."
+  ],
+  "supplemental": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4-gemma-standard/missing-snapshots.json",
+    "sha256": "2bc34b05408fd015cc5d6ce83946525d2347521f0ea8e3070d5fbc856e3d74b0"
+  },
+  "secret_scan": {
+    "exact_registered_secret_hits": 0,
+    "scope": "new task raw (including decompressed text) and source diff",
+    "registered_key_count": 5
+  },
+  "references": [
+    {
+      "url": "https://design.ros2.org/articles/actions.html",
+      "scope": "standard feedback versus decision separation"
+    },
+    {
+      "url": "https://arxiv.org/abs/2403.12968",
+      "scope": "extractive compression abstract; no model execution"
+    },
+    {
+      "url": "https://github.com/microsoft/LLMLingua/blob/main/llmlingua/prompt_compressor.py",
+      "scope": "structured compression implementation inspected"
+    },
+    {
+      "url": "https://arxiv.org/abs/2604.02985",
+      "scope": "2026 abstract; compression cost, latency and quality separately measured"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/troubleshooting",
+      "scope": "bounded backoff and jitter"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/tokens",
+      "scope": "actual image-inclusive countTokens"
+    }
+  ],
+  "raw_manifest": [
+    {
+      "path": "RUN_META.json",
+      "bytes": 137,
+      "sha256": "f287fdd716284b17241d190e04b74d2b705f8f20432fceff0bbc8bf80e1bf390"
+    },
+    {
+      "path": "api/coalesce-leader_ko-call-0001-r1-baseline.json",
+      "bytes": 8591,
+      "sha256": "cf82844285f47df5ed60b73faaddd6758a77c5dcab32a0673dec51f442f069e6"
+    },
+    {
+      "path": "api/coalesce-leader_ko-call-0001-r1-trim.json",
+      "bytes": 8199,
+      "sha256": "74e9c1e41bc03ffa672dbeb128de7c0d3a316ee8c47fa8a0bf69fdeaa76690be"
+    },
+    {
+      "path": "api/coalesce-no_comm-call-0001-r1-baseline.json",
+      "bytes": 7934,
+      "sha256": "5cde177331def5fb88ce8c5475c63a8d9a159e3096749f777ada4e810b40ba51"
+    },
+    {
+      "path": "api/coalesce-no_comm-call-0001-r1-trim.json",
+      "bytes": 7037,
+      "sha256": "5d4dc4ae45fb0c91f105bad1ec2d809c44605b8c30ccbee00bcd0c17adf0f005"
+    },
+    {
+      "path": "api/coalesce-peer_ko-call-0001-r1-baseline.json",
+      "bytes": 8220,
+      "sha256": "95981ad1708eec5f60a96f7de109c0617cb3f7a6418f8f9a983b297c29bc3052"
+    },
+    {
+      "path": "api/coalesce-peer_ko-call-0001-r1-trim.json",
+      "bytes": 8153,
+      "sha256": "92df7e55296c2ca8b0402c278f49c91cb2b3015b7d610b5d5cb9671f456ed7cc"
+    },
+    {
+      "path": "api/coalesce-peer_ko-call-0261-r1-baseline.json",
+      "bytes": 9774,
+      "sha256": "82755a31956a9eb5878465b0c9f29284fb647401df722991d02f6af6c4da7e73"
+    },
+    {
+      "path": "api/coalesce-peer_ko-call-0261-r1-trim.json",
+      "bytes": 8749,
+      "sha256": "162e79a2a9188d9355dc0627798e4862afcd04c7170fc3ef84b2eacee61e2a9f"
+    },
+    {
+      "path": "api/coalesce-structured-call-0001-r1-baseline.json",
+      "bytes": 8540,
+      "sha256": "f45bab9864366dda27fa41894e455eb21fbe19f5c5b2d11c92177cdac962c05a"
+    },
+    {
+      "path": "api/coalesce-structured-call-0001-r1-trim.json",
+      "bytes": 8992,
+      "sha256": "17afac505a287d84a7874e21061da35aeffdebcc01a9b27ec1530d792af056a0"
+    },
+    {
+      "path": "api/gemma/ledger.jsonl.zst",
+      "bytes": 6252,
+      "sha256": "e06c1e805934b945e866f8249d20828c9ab7e4fe54137aae5d1e834839cae8bc"
+    },
+    {
+      "path": "api/gemma/metadata-attempts.jsonl",
+      "bytes": 897,
+      "sha256": "86701a2d0e6234d4cce448c81a967e97b2aad3898f0892de641e97db9d3d42f3"
+    },
+    {
+      "path": "api/gemma/models-list.json",
+      "bytes": 516,
+      "sha256": "62efec443277b7e8e0c568fa192ea4413d4cac0b3d6b09e14195c96e6a32d607"
+    },
+    {
+      "path": "api/gemma/responses/10c82b53aa5af089991143f9e90bc2b574cf8e84ab722f700fd72348927f9b9b.json",
+      "bytes": 2914,
+      "sha256": "f9da8247b705030c93b61777b5690644b834455078b268594f0b8936df807427"
+    },
+    {
+      "path": "api/gemma/responses/1fff855c461ed08c336727db4a6cccb2c64d106be44dd535aab34e6a61aa40c6.json",
+      "bytes": 2672,
+      "sha256": "6ec5f2e066cd8c8c2099b9b95c6eec86b2fbba21dba164116db3bdeba40410d9"
+    },
+    {
+      "path": "api/gemma/responses/7d7d2aaf5acc9dc25bac2dca44358bd39cfa28db851dd6b63f6e67838f46e4b5.json",
+      "bytes": 2667,
+      "sha256": "f47a41086d97cac71ef6cbae69b57917190669e4097b4e9660dccaec5639d6a6"
+    },
+    {
+      "path": "api/gemma/responses/9d1220e5bca13cdd679c5ffc0dfc43cfa4259830fd30a6c7c9ffd2c21b60e483.json",
+      "bytes": 1987,
+      "sha256": "8887be4419b4d4ff3c4dcd7713b1d26c06b106b09f4439e7041dffb47f52a314"
+    },
+    {
+      "path": "api/gemma/responses/a2a42f30cdc6967bd3a74d4d88df48e770cd886045213fb6c11dcd1c178af570.json",
+      "bytes": 2658,
+      "sha256": "e7a3a9171b647a89e663941ab53ca6cb2ee9ec5f55483bee170833b5c5f9e204"
+    },
+    {
+      "path": "api/gemma/responses/ab37a9fe4f2df2aa8235274089cf7b333569cefd2d1d58311a3a1abb0a6d0772.json",
+      "bytes": 2577,
+      "sha256": "9342de499c3c3cfcfd74dfb2df9206f37c18bd940057392721abc91149254af6"
+    },
+    {
+      "path": "api/gemma/responses/c146e1e5281a5f76379da1ba163d11048ff8478a3fe0e8af66b908061f832f70.json",
+      "bytes": 2484,
+      "sha256": "12911d5230127f2daf7bdab94f6b8318e8567b00608e2aa6a87c0640d45250ac"
+    },
+    {
+      "path": "api/gemma/responses/e280a560658943c61a338f2620bdf260612e925032a882bc8ee72faa6e50ef5e.json",
+      "bytes": 2664,
+      "sha256": "3859eab49eaf1d3706fb27905468b6bf701ed448f4d016c362636176e8b0cfc1"
+    },
+    {
+      "path": "api/gemma/responses/ea8bee5a89da23ee2ad4abffca2ec455cd9dd66c5aa523cb5cfe449c8ef99e7d.json",
+      "bytes": 2632,
+      "sha256": "349109d22568b80131fd8a1206aef1bbba1a2d47c331633f0efddbe0fdb92a4f"
+    },
+    {
+      "path": "api/gemma/responses/fac1d0dbcca350b0676a42df5241957bbf846fffa25f65f6c4b443bd11e681c5.json",
+      "bytes": 2934,
+      "sha256": "812c379faffd98f3c1a9c1f90f240fc980ba13a9d5798c4ede339d5b3236a2f7"
+    },
+    {
+      "path": "api/summary.json",
+      "bytes": 14541,
+      "sha256": "f05c9e960858dd6e5eef8d21c555d315c66bf738df667b84b7e9c1ee9268666f"
+    },
+    {
+      "path": "ci-shard1.log",
+      "bytes": 44207,
+      "sha256": "bf56cf69f40f85d03a49862b339980ca117b7f4ba15637c0f53b378c574198d0"
+    },
+    {
+      "path": "compression-manifest.json",
+      "bytes": 477,
+      "sha256": "205c950ec0761b188171e0edd79c0439ca01a044336904ae244a730a54031c6f"
+    },
+    {
+      "path": "initial-audit.json",
+      "bytes": 566,
+      "sha256": "f261910808f7bf99ea3262287249d41526cc1478ae5f57537a2c4e02e92a990d"
+    },
+    {
+      "path": "replay/replay.json.zst",
+      "bytes": 67882,
+      "sha256": "185fa0072b8150a636cecc039833e8e6bc2136d3a4038aab3bad899948c21197"
+    },
+    {
+      "path": "replay/summary.json",
+      "bytes": 14389,
+      "sha256": "8f6c5321724cad270e2f9498226f9646781253fb252dd17e86498d2311ad41e5"
+    },
+    {
+      "path": "replay-final/replay.json.zst",
+      "bytes": 68356,
+      "sha256": "d2372a0f238cfe9588ce4e4b49dad4fd064274a911628556b927eba56d5fba31"
+    },
+    {
+      "path": "replay-final/summary.json",
+      "bytes": 15084,
+      "sha256": "6cc841574eb6e8194b70d4e7fe1d8cb5fff1bd095c479777dbee19ea144ee5ff"
+    },
+    {
+      "path": "replay-release/replay.json.zst",
+      "bytes": 68356,
+      "sha256": "d2372a0f238cfe9588ce4e4b49dad4fd064274a911628556b927eba56d5fba31"
+    },
+    {
+      "path": "replay-release/summary.json",
+      "bytes": 15084,
+      "sha256": "f552f7e76710f5e32459ada4c26093dfb8ae0b9583b7a66b2818b9ae982ee2e3"
+    },
+    {
+      "path": "secret-scan.json",
+      "bytes": 142,
+      "sha256": "d0965c223d583877239fa9eb59dac53181f92dd22329533c6969cfeb8aebed95"
+    },
+    {
+      "path": "tests-final.xml",
+      "bytes": 9380,
+      "sha256": "13927baa5849647d38716e4d10cc41f0f17a2d1f43ffe20cb14bfba6e6fdf28d"
+    },
+    {
+      "path": "tests-policy-final.xml",
+      "bytes": 3621,
+      "sha256": "75f05cfeb67ed0cb1092d4dfa1485d680f1f971ee55b5dfe9e384cb311cd1c53"
+    }
+  ]
+}

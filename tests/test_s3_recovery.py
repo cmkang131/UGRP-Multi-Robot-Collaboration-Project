@@ -349,8 +349,8 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
     from harness import zone_s3_recovery_contract as contract
     from harness.zone_s3_recovery_runtime import Runtime
     b=contract.bundle('0'*40)
-    assert b['execution_bundle_id']=='zone-s3-recovery-v193'
-    assert b['workflow_version']=='7.86.0'
+    assert b['execution_bundle_id']=='zone-s3-recovery-v195'
+    assert b['workflow_version']=='7.88.0'
     assert b['retired_bundles'][0]['execution_bundle_id']=='zone-s3-recovery-v152'
     assert b['preregistration']['inherited_results'] is False
     contract.verify(b)

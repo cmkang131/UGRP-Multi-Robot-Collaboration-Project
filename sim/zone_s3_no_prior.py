@@ -123,6 +123,26 @@ class PhysicsBackend(OldBackend):
                 raise PhysicalStop('ROBOT_TILT_LIMIT:'+rid)
         for item, config in self.objects.items():
             body = self.world.data.body(config['body_name'])
+            if config['kind'] != 'cyan' and self.bundle.get('pair_drop_guard', 'off') != 'off':
+                from sim.s4_beam_drop_guard import DropGuard, MODE
+                import mujoco
+                if self.bundle['pair_drop_guard'] != MODE:
+                    raise ValueError('unknown beam evaluation guard')
+                guards = self.__dict__.setdefault('_s4_beam_drop_guards', {})
+                guard = guards.setdefault(item, DropGuard())
+                touching = set()
+                for c in self.world.data.contact[:self.world.data.ncon]:
+                    pair = (int(c.geom1), int(c.geom2))
+                    if self._box_geom[item].intersection(pair):
+                        touching.update(mujoco.mj_id2name(self.world.model, mujoco.mjtObj.mjOBJ_GEOM, g)
+                                        for g in pair)
+                fingers = {r+'__'+side+'_finger' for r in ('r1', 'r2') for side in ('left', 'right')}
+                row = guard.observe(t=self.now, com_z=float(body.xipos[2]), origin_z=float(body.xpos[2]),
+                    finger_contact=bool(fingers.intersection(touching)), floor_contact='floor' in touching)
+                self._append('eval_only/beam-drop-guard.jsonl', dict(item=item, **row))
+                if row['drop']:
+                    raise PhysicalStop('LOAD_DROP:'+item)
+                continue
             if float(body.xpos[2]) > .08:
                 self.lifted.add(item)
             owners = ('r3',) if config['kind'] == 'cyan' else ('r1', 'r2')

@@ -89,6 +89,71 @@
       },
       "reason": "PR416 review fixes restore sealed common sources and move S3 behavior into dedicated adapters; registered bundles are never overwritten",
       "replacement": "zone-s3-recovery-v193"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v189",
+      "workflow_version": "7.82.0",
+      "source_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
+      "recorded_runs": 0,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/harness/zone_s3_recovery_contract.py",
+          "sha256": "18cc67e213a3d4def7b1dfd9e1110148dd31be2573d0e4cc5fa09c56cc59f53a"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/scripts/run_s3_recovery.py",
+          "sha256": "6468085063700d6803d35032c9b23692e5054356c5f86dcc159a2ce64f7868bf"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v189.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/configs/simulation_workflows.d/s3_recovery_v189.json",
+          "sha256": "894af92035cde2f3996b300331839813eb8110db78397eac6d2978aaafff1990"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v189.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/experiments/2026-10-11-ci-bundle-reregistration/registration-v189.json",
+          "sha256": "df33ead1e6f6a0fed08c3fed4b74c0a6c81172962182ce98a9a1157a18188065"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v189.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v189.json",
+          "sha256": "3c2389e9d87bdf9390deb6f0039fed5b2fc38caac37b136bf7810b45c9655f05"
+        }
+      },
+      "reason": "S4 source composition after main PR422 and explicit pre-merge minimum-command contract; separate current registration",
+      "replacement": "zone-s3-recovery-v191"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v191",
+      "workflow_version": "7.84.0",
+      "source_sha": "00418638f700d3b19421e0457acbdfe8ad1e07d4",
+      "recorded_runs": 0,
+      "runtime_source_count": 432,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/harness/zone_s3_recovery_contract.py",
+          "sha256": "53bce79d2c64dc6304baf2959ce5a9087dd030f1a574eb3fc3f2821ef69af329"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/scripts/run_s3_recovery.py",
+          "sha256": "e51e79c4d80920c81a7ed4f46a83b5bbbddad226851d0f980a5a022f67813d3f"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v191.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/configs/simulation_workflows.d/s3_recovery_v191.json",
+          "sha256": "06e6dabed32ae467c63ae6d02099c447c8d00ab8119a1e9312a6fe6f3ed3a851"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v191.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/experiments/2026-10-11-ci-bundle-reregistration/registration-v191.json",
+          "sha256": "dc097f1237e03467cd07a7f0d9f081f8b41114af8a704a4d49b9a7bb40a30e3f"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v191.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v191.json",
+          "sha256": "dd4bfad94b1a2ecae267b0c47077763e1ddc6d0595159e71ee2a2896d38e1adb"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+          "sha256": "8501be7164763134cbf4a916f761e4365e63b9a14c75389e968fc46361f67abb"
+        }
+      },
+      "reason": "PR425 main sync: preserve merged PR416 v193 registration and S3-only adapters; re-register the S4 consumer composition without inheriting execution results",
+      "replacement": "zone-s3-recovery-v195"
     }
   ]
 }

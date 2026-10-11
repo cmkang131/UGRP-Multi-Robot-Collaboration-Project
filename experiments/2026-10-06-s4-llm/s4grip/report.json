@@ -1,0 +1,161 @@
+{
+  "scope": "offline stored RGB; research_result=false; evaluation-only contact proxy",
+  "physics_runs": 0,
+  "render_calls": 0,
+  "actual_model_calls": 0,
+  "source_summary": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4grip-offline/replay-v2/summary.json",
+    "sha256": "35f9d0f347dc191a065555fe674cba9b4d900e5fa740fc3f07b40970a6f57b6b"
+  },
+  "dataset": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s4grip-offline/replay-v2/eval-only-frames.jsonl",
+    "sha256": "4ee95064476949013fe58480aae2368f400e4b9f1937a724b538409116cb0530",
+    "frames": 49232
+  },
+  "counts": {
+    "contact_not_held": 72683,
+    "contact_loss_episodes": 47,
+    "rgb_series": 50,
+    "frames": 49232,
+    "frame_not_held": 49044,
+    "cv_not_held_reject": 49044,
+    "excluded_ambiguous_contact_series": 14,
+    "contact_partial_contact": 2704,
+    "contact_held_contact": 39116,
+    "contact_lost_contact": 7745,
+    "frame_partial_contact": 4,
+    "cv_partial_contact_reject": 4,
+    "frame_held_contact": 184,
+    "cv_held_contact_reject": 184
+  },
+  "unique_image_sha256_counts": {
+    "not_held": 47608,
+    "partial_contact": 2,
+    "held_contact": 92
+  },
+  "by_group": {
+    "s3fix10": {
+      "not_held": 5388
+    },
+    "s3fix11": {
+      "not_held": 14400
+    },
+    "s3fix13": {
+      "not_held": 14600
+    },
+    "s3fix14": {
+      "not_held": 56,
+      "partial_contact": 4,
+      "held_contact": 184
+    },
+    "s3fix15": {
+      "not_held": 14600
+    }
+  },
+  "s4_llm": {
+    "recorded_predictions": 0,
+    "held_prediction_coverage": {
+      "n": 0,
+      "N": 184,
+      "rate": 0.0
+    },
+    "loss_prediction_coverage": {
+      "n": 0,
+      "N": 0,
+      "rate": null
+    },
+    "true_positive": null,
+    "false_positive": null,
+    "detection_delay_frames": null,
+    "reason": "No S4 LLM predictions for these S3 images; new model calls forbidden"
+  },
+  "legacy_cv_diagnostic": {
+    "held_accept": {
+      "n": 0,
+      "N": 184,
+      "rate": 0.0
+    },
+    "held_reject": {
+      "n": 184,
+      "N": 184,
+      "rate": 1.0
+    },
+    "false_held_on_pregrasp": {
+      "n": 0,
+      "N": 49044,
+      "rate": 0.0
+    },
+    "pregrasp_reject": {
+      "n": 49044,
+      "N": 49044,
+      "rate": 1.0
+    },
+    "hypothetical_loss_true_positive": {
+      "n": 0,
+      "N": 0,
+      "rate": null
+    },
+    "hypothetical_loss_false_positive": {
+      "n": 184,
+      "N": 184,
+      "rate": 1.0
+    },
+    "detection_delay_frames": null,
+    "reasons": {
+      "GRIP_RELATION_LOST_OR_UNOBSERVABLE": 49232
+    },
+    "warning": "False is LOST_OR_UNOBSERVABLE, not a deployed binary loss alarm; held runs duplicate"
+  },
+  "loss_episodes": {
+    "contact_only": 47,
+    "own_rgb_at_onset": 0,
+    "paired_loss_frames": 0
+  },
+  "source_shas": [
+    "259f17e1e442c9bf6519954bde11b42244493885",
+    "4384d61cfeafef96e62fd90355fe05c8cfa38699",
+    "4e19382d59a9bb2bbf351a7fca1356cdf480e8a0",
+    "5e78ab3c049f37b6d9a7aa6b5e688e613a5cef8a",
+    "7a4bda7ac71bc7b59d7d9a9101d9d3c619498df1",
+    "c0bf138f24d8afa2bdd540375fc008ad6a65c2e4"
+  ],
+  "raw_runs_with_rgb": 25,
+  "ambiguous_raw_runs": [
+    "s3fix11-measure-batch-r1/cohort/s3fix11-measure-c0-r1/raw",
+    "s3fix11-measure-batch-r1/cohort/s3fix11-measure-c1-r1/raw",
+    "s3fix11-measure-batch-r1/cohort/s3fix11-measure-c2-r1/raw",
+    "s3fix11-measure-batch-r1/cohort/s3fix11-measure-c3-r1/raw",
+    "s3fix11-measure-batch-r1/cohort/s3fix11-measure-c4-r1/raw",
+    "s3fix11-measure-batch-r1/cohort/s3fix11-measure-c5-r1/raw",
+    "s3fix11-pathcheck-r1/raw"
+  ],
+  "replay_module_sha256": {
+    "scripts/evaluate_s4_grip_raw.py": "9afb752110a298250bd49a8f7b3f3695a5a7dbda22ee73be72b62e3c5d788725",
+    "scripts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "harness/registry.py": "57111cc2054502cb24804e681343a9130bf042792f527beebf624319567e9d90",
+    "harness/catalog.py": "02641a93eb119ac2b1c5754599364a51f42d0a6c0dc5a255a910c8e8dd44b344",
+    "harness/protocol.py": "eb8b935668b0e7dcc09522f1011077d910f6abd1f46d1c0b51bb7d80174a3d24",
+    "harness/state.py": "7f23b4f276326fb6d646c989614c204739f4e89e8f35f78bfe85b29836cc3ffd",
+    "harness/goals.py": "ca5d4fb9e6f8cee372fdf8f42b01e7a73bf5d3b5427d499abaa8a122be3cec28",
+    "harness/executive.py": "535a2e9a75886a19c26c174007dcad750e782e94d9950a0d6eb736ae0be302b8",
+    "harness/perception.py": "a1bc0d8ff03cf70ca6ec3b9479aa85860cc54d8a3bc1adb1e809db8a0e5ac925",
+    "harness/action_queue.py": "98d59281bbe3b67747ccdf928f957df191b9b4b884bd29d92e10279aa50d1eb9",
+    "harness/vlm.py": "6b38dad79afe0fcb365e396976f9e346288acdd523f2200fa3e2891155cea6c1",
+    "harness/loop.py": "6872dd3d2b7ae669290b6e46db0838241f35bf559d0625374ec9e47ddc5d8761",
+    "harness/chat.py": "b6f20946c138beb8746a9128509aa4564efa4bf5002597532434bc8852895694",
+    "harness/__init__.py": "953d3229d4ed66dc30e1ddeab38440397fc01303fcd022fb147d45d4345abdcf",
+    "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+    "sim/__init__.py": "21113ac356c2bf0704db91edc1dce9e3f999d2ff2d1b576e8d34395562c452d5",
+    "sim/masterpi_geometry_v3.py": "bed49926f11cba9fe338ee228866771efd29d0a94c5ca3a0c65d67e7e82aa942",
+    "harness/visual_arm_v3.py": "b6b1f9ebf3b6e6510e4068e264b9472b2d83bea24996590f678e69805dbb1100",
+    "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+    "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+    "harness/owncam_pair_beam.py": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+    "harness/owncam_pair_beam_v2.py": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+    "harness/owncam_pair_lift_v3.py": "faf725e3b1b1ee1e387c0f8c593b7508b6e170387d010debb551df7bd05d087d",
+    "harness/zone_pair_highpose_grip.py": "6f38f34536751d757af7d9a9c0acaaee1671dfc684b52f1917a5e9d990037476",
+    "sim/zone_cargo.py": "84cc956c22ca0d1b0d76fabcb4da61c33c73fcf77600d3079bced5658aa04a6b",
+    "harness/s4_pair_stage.py": "35b24dadbf4c3e9cdef5b0421711291877f8f59bbc5e0fc87917ddeed4993794",
+    "harness/s4_pair_handshake.py": "d2e869efa81294a369db2cd0c9caa1410a5ac9864298f0689dd15daacbdc4a75"
+  }
+}
