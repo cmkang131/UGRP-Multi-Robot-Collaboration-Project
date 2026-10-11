@@ -34,7 +34,7 @@ def current_B(c, pose, rgb, t, *, entity=None):
     return any(r['accepted'] for r in rows), dict(candidate_id=candidate, current_components=rows)
 
 
-def install(c, *, rgb_reconfirmation='off', memory=None):
+def install(c, *, rgb_reconfirmation='off', memory=None, fresh_home=False):
     if rgb_reconfirmation == 'off':
         return c  # identity, including no input reads or wrappers
     if rgb_reconfirmation != OPTION:
@@ -44,6 +44,8 @@ def install(c, *, rgb_reconfirmation='off', memory=None):
     bank = memory if memory is not None else Memory(c.robot_id)
     if bank.robot_id != c.robot_id:
         raise ValueError('OWN_RGB_MEMORY_REQUIRED')
+    if fresh_home and (bank.frames or bank.home or c.graph.nodes):
+        raise ValueError('FRESH_HOME_REQUIRES_EMPTY_OWN_MEMORY')
     gate = TwoViewGate(bank.K)
     # Prefix home references stay immutable; a drifted new observation must
     # not be promoted to a home reference using its own estimated proximity.
@@ -175,6 +177,7 @@ def install(c, *, rgb_reconfirmation='off', memory=None):
         return command, dict(diagnostic, rgb_view_acquisition=dict(request))
 
     def receive(**kw):
+        nonlocal home
         inputs.clear(); inputs.update(kw); frame_cache.clear()
         c._rgb_reconfirmation_calls += 1
         command, trace = base_receive(**kw)
@@ -204,6 +207,12 @@ def install(c, *, rgb_reconfirmation='off', memory=None):
             # No triangulation: this adapter needs descriptors, not 3D points.
             bank.frames.append(captured)
             c._rgb_reconfirmation_captures += 1
+            # A fresh run freezes ONLY its first observed home keyframe, after
+            # this frame's decisions. Never promote later estimated proximity.
+            if fresh_home and not home:
+                home = (captured,)
+                bank.home.append(captured)
+        trace['rgb_reconfirmation']['home_references'] = len(home)
         trace['rgb_reconfirmation'].update(references=len(bank.frames), captured=c._rgb_reconfirmation_captures)
         c.last_trace = copy.deepcopy(trace)
         return command, trace

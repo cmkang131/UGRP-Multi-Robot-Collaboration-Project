@@ -186,3 +186,28 @@ def test_new_node_capture_is_causal_and_cannot_extend_home(monkeypatch):
     assert bank.home == [] and trace['rgb_reconfirmation']['home_references'] == 0
     assert trace['rgb_reconfirmation']['captured'] == 1
     assert not c._rgb_reconfirmation_gate.rows  # no same-frame self match
+
+
+def test_fresh_home_is_first_causal_frame_and_never_grows(monkeypatch):
+    c, _ = prepared(monkeypatch)
+    c.graph = type(c.graph)(c.robot_id)
+    bank = Bank()
+    route.install(c, rgb_reconfirmation=m.OPTION, memory=bank, fresh_home=True)
+    _, trace = frame(c)
+    assert [f.frame_id for f in bank.home] == [2]
+    assert trace['rgb_reconfirmation']['home_references'] == 1
+    original = c.graph.observe
+    def force_node(sample):
+        original(sample)
+        c.graph.nodes[-1]['frame_id'] = sample['frame_id']
+    c.graph.observe = force_node
+    c.receive(robot_id='r3', t=3., frame_id=3, rgb=np.zeros((12,16,3),np.uint8), servo={},
+        observation={'segments':[[[1.,-.5],[1.,.5]]],'camera':[0.,0.]}, frame_sha256='later')
+    assert [f.frame_id for f in bank.frames] == [2, 3]
+    assert [f.frame_id for f in bank.home] == [2]
+
+
+def test_fresh_home_rejects_restored_graph(monkeypatch):
+    c, _ = prepared(monkeypatch)
+    with pytest.raises(ValueError, match='EMPTY_OWN_MEMORY'):
+        route.install(c, rgb_reconfirmation=m.OPTION, memory=Bank(), fresh_home=True)
