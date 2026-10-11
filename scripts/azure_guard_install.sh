@@ -26,3 +26,8 @@ EOF
 systemctl daemon-reload
 systemctl enable --now ugrp-azure-guard.timer
 systemctl start ugrp-azure-guard.service
+# Existing Azure VM had a separate 15-minute guard that ignores batch leases.
+# Keep its definition/data, but prevent it from interrupting verified archival.
+if systemctl cat ugrp-azure-idle-guard.timer >/dev/null 2>&1; then
+  systemctl disable --now ugrp-azure-idle-guard.timer
+fi

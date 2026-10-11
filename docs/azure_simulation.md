@@ -12,6 +12,7 @@
 - 매시간 `CostUSD`를 두 구독 합산한다(2026-10-01부터, 이관 이전 비용도 포함). **$150 조기 정지**로 집계 지연에 대한 여유를 두며, 비용 조회 실패도 두 구독 VM을 할당 해제한다. $160 예산 알림은 추가 백업이다. 비용 데이터는 보통 8~24시간 지연되고 예산은 24시간 간격 평가이므로 $160의 정확한 실시간 강제 상한은 검증·보장하지 않는다.
 - 동일 runbook의 `Force` 모드를 만료 순간 OneTime 일정에 연결한다. 매일 00:00 KST VM auto-shutdown도 백업으로 설정한다. 미래 일정의 생성·runbook 연결 확인과 해당 날짜 실제 발동은 별개다.
 - VM system identity에는 **자기 VM**의 read/instanceView/deallocate만 부여한다. Automation에는 두 구독의 같은 최소 compute 역할과 Cost Management Reader만 부여한다. VM Contributor보다 좁으며 VM 생성·시작·크기 변경·삭제 권한이 없다.
+- 기존 VM의 `ugrp-azure-idle-guard.timer`는 15분·lease 미지원 가드였다. 새 가드 활성화 뒤 이 중복 timer만 비활성화하며 정의·기록은 보존한다. 이관 스모크 중 기존 가드가 보관 대기 VM을 실제로 할당 해제한 반례를 기록했다.
 - `scripts/azure_idle_guard.py`는 1분 timer로 시뮬레이션/rsync/아카이브와 실행기 lease를 확인한다. 유휴 20분 또는 부팅 후 8시간이면 IMDS의 메모리 내 identity token으로 CLI `az vm deallocate`와 동일한 ARM 작업을 호출한다. 토큰 파일을 만들지 않는다. 8시간 상한은 실행 중에도 적용한다. 부팅마다 유휴 상태를 새로 초기화한다.
 - 할당 해제 후에도 OS 디스크·공용 IP·기타 서비스 비용은 남는다. 이 자동화는 VM compute를 정지하며 결제 프로필 전체 서비스의 사용을 중단하는 장치는 아니다.
 
