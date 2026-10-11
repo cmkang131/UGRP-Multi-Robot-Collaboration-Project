@@ -32,8 +32,8 @@
       61001
     ],
     "additional_runs": 6,
-    "total_max": 15,
-    "admission": "suspended after initial cohort failed; final same-cell retry only; requested balanced six-run expansion no longer fits remaining 3 attempts under absolute cap"
+    "total_max": 16,
+    "admission": "not admitted: latest 0/4 startup health and total13 already used; no additional physics submitted"
   },
   "options": {
     "event_driven_llm": true,
@@ -124,10 +124,11 @@
   },
   "requested_azure_runner_sha": "d0a5080402f30e8eccdf7b4852d1cb36d05c0ced",
   "attempt_accounting": {
-    "completed_failed_attempts": 9,
-    "first_four_retry": 4,
+    "started_failed_attempts": 13,
+    "scene_initialized": 9,
+    "latest_four_healthy": 0,
     "conditional_expansion": 0,
-    "total_max_including_failures": 13,
+    "remaining_absolute_slots": 3,
     "absolute_user_cap": 16
   },
   "submission": "one remote_run supervised batch with four independent sim_cli workflows, RUN_META and EXIT per case",
