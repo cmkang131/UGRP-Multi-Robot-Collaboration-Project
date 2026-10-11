@@ -114,6 +114,14 @@ def test_default_off_and_distinct_hashed_bundle():
     assert 'harness/e2e_jev_decider.py' in b['source_sha256']
 
 
+def test_paired_gemma_and_jev_use_independent_admitted_loopback_ports():
+    from scripts.run_e2e_ownmap_live import relay_url
+    from harness.s4_live_transport import URL
+    assert relay_url('study_gemma4_31b_v1') == 'http://127.0.0.1:18393/v1/chat/completions'
+    assert relay_url('study_gemma4_31b_v1', 'jev_v1') == URL
+    assert relay_url('main_study_gemini_v1') == URL
+
+
 def test_jump_metrics_and_absent_run_are_not_success(tmp_path):
     from scripts.evaluate_e2e8 import jumps,inspect
     x=jumps([[0,0,0],[.06,0,3],[.27,0,0]])

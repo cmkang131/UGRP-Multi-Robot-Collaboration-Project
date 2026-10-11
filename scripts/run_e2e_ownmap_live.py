@@ -22,6 +22,12 @@ PROFILES=('study_gemma4_31b_v1','main_study_gemini_v1')
 PORTS=dict(zip(PROFILES,(18393,18391)))
 
 
+def relay_url(profile, decider='off'):
+    # Paired Gemma/Jev uses the existing second loopback relay independently.
+    port = 18391 if decider == 'jev_v1' else PORTS[profile]
+    return f'http://127.0.0.1:{port}/v1/chat/completions'
+
+
 def write(path,value):
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(value,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
@@ -125,7 +131,7 @@ def run(b,out,receipt,*,backend_factory=None):
                 backend.issue(rid,a);robot.commanded(a,0.)
         profile=copy.deepcopy(load_registry()['driver_profiles'][b['driver_profile']])
         if digest(profile)!=b['driver_profile_sha256']:raise ValueError('MODEL_PROFILE_HASH_MISMATCH')
-        profile.update(profile_id=b['driver_profile'],proxy_url=f'http://127.0.0.1:{PORTS[b["driver_profile"]]}/v1/chat/completions')
+        profile.update(profile_id=b['driver_profile'],proxy_url=relay_url(b['driver_profile'],b['e2e_options'].get('decider','off')))
         profile['sha256']=digest(profile)
         budget=MainStudyBudget.create(out/'budget.sqlite');key=out.parent.name
         budget.register_cohort(key,token_cap=800000,unknown_usage_charge_tokens=16000,

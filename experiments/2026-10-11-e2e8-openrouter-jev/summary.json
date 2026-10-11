@@ -274,5 +274,17 @@
       "exit": 23,
       "reason": "No such run; no data transferred; empty local directory removed"
     }
+  },
+  "resume_preflight": {
+    "started_utc": "2026-10-11T14:20:30Z",
+    "port_fix": "Gemma A uses 18393; Gemma+Jev B uses existing 18391; receipt and live identity remain enforced",
+    "tests": {
+      "file": "tests/test_e2e_jev_decider.py",
+      "passed": 15
+    },
+    "references": [
+      "https://docs.python.org/3/library/urllib.request.html"
+    ],
+    "method": "Reuse registered loopback endpoints; explicit request URL selects upstream relay. No controller observation change."
   }
 }
