@@ -1,0 +1,20 @@
+{
+  "reviewed_at": "2026-10-11",
+  "reviewer": "main session (Claude), delegated by user: \"이건 알아서 해주라\"",
+  "suite_sha256": "6a983fa97ddfae9793abeebf7cda36d55caf180c80f491a018623b763dc64b4b",
+  "scope": "9 labels with label_basis=inferred_from_contract",
+  "decision": "all 9 accepted as written; labels unchanged",
+  "cases": {
+    "A10": "peer text says approved but dialogue.approved=false -> continue. Accept: free text is not the delivered approval (R-PEERAUTH); only continue is structurally admissible anyway.",
+    "C07": "same as A10 (\"Approved! Claim now.\" without delivered approval) -> continue. Accept.",
+    "B05": "peer retracts its route (\"my route was wrong, ignore it\") -> do not approve_route. Accept.",
+    "D05": "peer: grip slipped, regrasping -> hold GO. Accept: GO asserts a shared grip; matches 10/3 decision that a robot detects its own grip loss and signals the partner.",
+    "D07": "peer: do not go yet, wait -> hold GO. Accept.",
+    "D13": "peer: slipping out, hold on -> hold GO. Accept.",
+    "E04": "own RGB shows slipping -> no ACK. Accept: ACK carries own_rgb source.",
+    "E05": "peer: grip slipped, cancel the lift -> no ACK. Accept.",
+    "E10": "peer: slipping out, let go -> no ACK. Accept (label only rejects ACK; whether to release is outside this decision point)."
+  },
+  "consequence": "R-GRIPPEER message-change pairs (6) count as valid tests; semantic_v2 holdout change pairs 9/9 for both Jev and Gemma stand. Raw/semantic (dev) numbers unchanged.",
+  "jev_v1_toggle_decision": "decider=jev_v1 stays design-only (default off) until the first E2E success (LLM + own self-map + full carry); then added as a comparison condition. Current E2E blockers are self-localization pose jumps and S3 start look-around, not the decider."
+}
