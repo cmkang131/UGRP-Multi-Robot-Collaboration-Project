@@ -1,0 +1,233 @@
+"""Storage loss/over-budget regressions; only disposable temporary directories."""
+import argparse
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+import unittest
+from unittest import mock
+
+from scripts import compress_json_traces as compress
+from scripts import evidence_prune as prune
+from scripts import storage_budget as budget
+from scripts import storage_common as common
+from scripts import ugrp_session as session
+
+
+class StorageTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name) / 'run'
+        self.root.mkdir()
+        (self.root / 'EXIT').write_text('0\n')
+        (self.root / 'RUN_META.json').write_text(json.dumps({
+            'class': 'dev', 'pr': 123, 'branch': 'codex/test', 'sha': 'a' * 40,
+            'batch': 'test', 'keep': ['representative-data', 'special.npz']}))
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def write(self, path, size=100):
+        target = self.root / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(b'x' * size)
+        return target
+
+    def test_projected_floor_exact_boundary_and_pending_output(self):
+        for host, floor in budget.FLOORS.items():
+            free = floor * budget.GIB + 5 * 2**20
+            self.assertTrue(budget.check(host, free, 5, 2**20)['ok'])
+            self.assertFalse(budget.check(host, free, 5, 2**20, 1)['ok'])
+        self.assertTrue(budget.check('mac', 16 * budget.GIB, 0, 0, alert=True)['ok'])
+        self.assertFalse(budget.check('mac', 16 * budget.GIB, 0, 0)['ok'])
+
+    def test_remote_query_preserves_shell_metacharacters_as_data(self):
+        result = mock.Mock(stdout=str(50 * budget.GIB))
+        with mock.patch.object(budget.subprocess, 'run', return_value=result) as run:
+            budget.free_bytes('~/runs;touch /bad', 'oracle')
+        command = run.call_args.args[0][-1]
+        import shlex
+        parsed = shlex.split(command)
+        self.assertEqual(parsed[:2], ['python3', '-c'])
+        self.assertIn("'~/runs;touch /bad'", parsed[2])
+
+    def test_cross_host_gate_fails_when_arm_would_fill(self):
+        with mock.patch.object(budget, 'free_bytes', side_effect=[30 * budget.GIB, 25 * budget.GIB, 50 * budget.GIB]):
+            self.assertEqual(budget.main(['--all-hosts', '--runs', '36', '--per-run-mb', '430',
+                                          '--mac-per-run-mb', '5']), 1)
+
+    def test_lookup_error_and_bad_estimates_fail_closed(self):
+        with mock.patch.object(budget, 'free_bytes', side_effect=OSError('offline')):
+            self.assertEqual(budget.main(['--host', 'arm', '--runs', '1', '--per-run-mb', '1']), 1)
+        for value in ('nan', '-1', 'inf'):
+            self.assertEqual(budget.main(['--host', 'arm', '--runs', '1', '--per-run-mb', value]), 1)
+
+    def test_legacy_estimate_requires_denominator_and_completion(self):
+        self.write('trace.jsonl', 80000)
+        (self.root / 'RUN_META.json').unlink()
+        with self.assertRaises(ValueError):
+            budget.estimate(self.root, None)
+        self.assertEqual(budget.estimate(self.root, 4), 25001)
+        (self.root / 'EXIT').unlink()
+        with self.assertRaises(ValueError):
+            budget.estimate(self.root, 4)
+
+    def test_raw_cannot_use_ephemeral_or_tmpfs(self):
+        with self.assertRaises(ValueError):
+            common.persistent(Path('/dev/shm/evidence'))
+        with self.assertRaises(ValueError):
+            common.persistent(Path('/tmp/evidence'))
+        if Path('/proc/self/mountinfo').exists():
+            with mock.patch.object(common.subprocess, 'run', return_value=mock.Mock(stdout='tmpfs\n')):
+                with self.assertRaises(ValueError):
+                    common.persistent(Path('/home'))
+
+    def test_pr_open_or_lookup_failure_never_authorizes_pruning(self):
+        with mock.patch.object(prune.subprocess, 'run', return_value=mock.Mock(stdout='{"number":123,"state":"OPEN"}')):
+            with self.assertRaises(ValueError):
+                prune.pr_info(123)
+        with mock.patch.object(prune.subprocess, 'run', side_effect=subprocess.CalledProcessError(1, 'gh')):
+            self.assertEqual(prune.main(['--pr', '123', str(self.root)]), 1)
+
+    def test_another_open_pr_on_same_branch_blocks(self):
+        with mock.patch.object(prune.subprocess, 'run', side_effect=[
+                mock.Mock(stdout='{"number":123,"state":"MERGED","headRefName":"codex/test"}'),
+                mock.Mock(stdout='[{"number":456}]')]):
+            with self.assertRaises(ValueError):
+                prune.pr_info(123)
+
+    def test_dry_run_preserves_media_text_keep_and_hashes(self):
+        self.write('frames/a.jpg')
+        self.write('array.npz')
+        self.write('trace.jsonl', 70000)
+        for name in ('representative.mp4', 'representative-data/frames.jpg', 'special.npz',
+                     'llm-request.json', 'pair-commands.jsonl', 'summary.json', 'small-trace.jsonl'):
+            self.write(name, 70000 if 'json' in name and 'small' not in name else 10)
+        original = {p: p.read_bytes() for p in common.files(self.root)}
+        planned = prune.plan(self.root, 123)
+        self.assertEqual({r['path'] for r in planned['candidates']}, {'frames/a.jpg', 'array.npz', 'trace.jsonl'})
+        self.assertEqual(original, {p: p.read_bytes() for p in common.files(self.root)})
+        self.assertFalse((self.root / 'PRUNED-hashes.tsv').exists())
+
+    def test_compressed_large_trace_still_prunable_when_small(self):
+        self.write('trace.jsonl.zst', 20)
+        (self.root / 'COMPRESSED.jsonl').write_text(json.dumps({
+            'compressed_path': 'trace.jsonl.zst', 'bytes': 100000}) + '\n')
+        self.assertEqual(prune.plan(self.root, 123)['bytes'], 20)
+
+    def test_classes_unfinished_active_and_parent_study_are_preserved(self):
+        self.write('frame.png')
+        for change in ({'class': 'milestone'}, {'class': 'study'}, {'active': True}, {'in_use': True}, {'pr': 999}):
+            (self.root / 'RUN_META.json').write_text(json.dumps({'class': 'dev', 'pr': 123, **change}))
+            self.assertEqual(prune.plan(self.root, 123)['bytes'], 0)
+        (self.root / 'RUN_META.json').write_text('{"class":"dev","pr":123}')
+        (self.root / 'EXIT').unlink()
+        self.assertEqual(prune.plan(self.root, 123)['bytes'], 0)
+        (self.root / 'EXIT').touch()
+        (self.root.parent / 'RUN_META.json').write_text('{"class":"study"}')
+        self.assertEqual(prune.plan(self.root, 123)['bytes'], 0)
+
+    def test_nested_runs_and_symlinks_are_not_deleted(self):
+        target = Path(self.tmp.name) / 'outside.jpg'
+        target.write_bytes(b'outside')
+        (self.root / 'linked.jpg').symlink_to(target)
+        self.assertEqual(prune.plan(self.root, 123)['bytes'], 0)
+        self.write('nested/RUN_META.json', 0).write_text('{"class":"study"}')
+        self.write('nested/frame.jpg')
+        self.assertIn('nested', prune.plan(self.root, 123)['skipped'])
+        self.assertEqual(target.read_bytes(), b'outside')
+
+    def test_invalid_keep_path_refuses(self):
+        (self.root / 'RUN_META.json').write_text('{"class":"dev","pr":123,"keep":["../outside"]}')
+        with self.assertRaises(ValueError):
+            prune.plan(self.root, 123)
+
+    def test_execute_temp_run_writes_full_inventory_before_removal(self):
+        media = self.write('frame.jpg')
+        self.write('commands.jsonl')
+        records = Path(self.tmp.name) / 'outputs' / 'cleanup-records'
+        with mock.patch.object(prune, 'pr_info', return_value={'number': 123, 'state': 'MERGED'}), \
+                mock.patch.object(prune, 'refuse_if_in_use'), mock.patch.object(prune.sys, 'platform', 'linux'):
+            row = prune.execute(self.root, 123, records)
+        self.assertEqual(row['bytes'], 100)
+        self.assertFalse(media.exists())
+        self.assertIn('commands.jsonl', (self.root / 'ALL-hashes.tsv').read_text())
+        self.assertIn('frame.jpg', (self.root / 'PRUNED-hashes.tsv').read_text())
+        self.assertEqual(json.loads(next(records.glob('*.json')).read_text())['status'], 'done')
+
+    def test_execute_refuses_busy_process_before_hash_or_removal(self):
+        media = self.write('frame.jpg')
+        with mock.patch.object(prune, 'refuse_if_in_use', side_effect=prune.Refused('busy')):
+            with self.assertRaises(prune.Refused):
+                prune.execute(self.root, 123, Path(self.tmp.name) / 'records')
+        self.assertTrue(media.exists())
+        self.assertFalse((self.root / 'PRUNED-hashes.tsv').exists())
+
+    @unittest.skipUnless(shutil.which('zstd'), 'zstd CLI needed')
+    def test_real_zstd_roundtrip_and_manifest_keep_original_sha(self):
+        source = self.write('trace.jsonl', 100000)
+        digest = common.sha256(source)
+        with mock.patch.object(compress, 'refuse_if_in_use'):
+            self.assertEqual(compress.compress_run(self.root, execute=True)['files'], 1)
+            before = (self.root / 'ALL-hashes.tsv').read_text()
+            self.assertEqual(compress.compress_run(self.root, execute=True)['files'], 0)
+        self.assertFalse(source.exists())
+        self.assertEqual(compress.decompressed_hash(self.root / 'trace.jsonl.zst'), digest)
+        self.assertIn(before, (self.root / 'ALL-hashes.tsv').read_text())
+        record = json.loads((self.root / 'COMPRESSED.jsonl').read_text())
+        self.assertEqual(record['sha256'], digest)
+
+    @unittest.skipUnless(shutil.which('zstd'), 'zstd CLI needed')
+    def test_mismatch_leaves_original_and_no_published_target(self):
+        source = self.write('trace.jsonl', 70000)
+        with mock.patch.object(compress, 'decompressed_hash', return_value='wrong'), \
+                mock.patch.object(compress, 'refuse_if_in_use'):
+            with self.assertRaises(ValueError):
+                compress.compress_run(self.root, execute=True)
+        self.assertTrue(source.exists())
+        self.assertFalse((self.root / 'trace.jsonl.zst').exists())
+
+    def test_compression_skips_unfinished_and_does_not_overwrite(self):
+        source = self.write('trace.jsonl', 70000)
+        (self.root / 'EXIT').unlink()
+        self.assertIn('skipped', compress.compress_run(self.root, execute=True))
+        self.assertTrue(source.exists())
+        (self.root / 'EXIT').touch()
+        target = self.write('trace.jsonl.zst', 20)
+        with mock.patch.object(compress, 'refuse_if_in_use'):
+            with self.assertRaises(ValueError):
+                compress.compress_run(self.root, execute=True)
+        self.assertEqual(target.read_bytes(), b'x' * 20)
+        self.assertTrue(source.exists())
+
+    def test_missing_metadata_multiple_roots_are_dry_run_no_write(self):
+        (self.root / 'RUN_META.json').unlink()
+        self.write('frame.jpg')
+        with mock.patch.object(prune, 'pr_info', return_value={'number': 123, 'state': 'CLOSED'}):
+            self.assertEqual(prune.main(['--pr', '123', str(self.root), str(self.root.parent)]), 0)
+        self.assertTrue((self.root / 'frame.jpg').exists())
+        self.assertFalse((self.root / 'ALL-hashes.tsv').exists())
+
+    def test_metadata_wrapper_defaults_dev_and_marks_completion(self):
+        root = Path(self.tmp.name) / 'new'
+        args = argparse.Namespace(evidence_dir=root, evidence_class='dev', pr=123,
+                                  batch='batch', name='meta', keep=['representative.mp4'],
+                                  storage_host='mac', expected_mb=1, grace=0)
+        with mock.patch.object(common, 'persistent'), \
+                mock.patch.object(session.shutil, 'disk_usage', return_value=mock.Mock(free=30 * budget.GIB)), \
+                mock.patch.object(session.subprocess, 'run', side_effect=[
+                    mock.Mock(stdout='codex/test\n'), mock.Mock(stdout='a' * 40), mock.Mock(stdout='')]), \
+                mock.patch.object(session, 'run_session', return_value=0):
+            self.assertEqual(session.run_evidence_session(args, ['true']), 0)
+            with self.assertRaises(ValueError):
+                session.run_evidence_session(args, ['true'])
+        meta = json.loads((root / 'RUN_META.json').read_text())
+        self.assertEqual((meta['class'], meta['pr'], meta['batch'], meta['active']), ('dev', 123, 'batch', False))
+        self.assertEqual((root / 'EXIT').read_text(), '0\n')
+
+
+if __name__ == '__main__':
+    unittest.main()

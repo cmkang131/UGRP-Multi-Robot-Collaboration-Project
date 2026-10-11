@@ -23,6 +23,53 @@ TERM_GRACE_SECONDS = 5.0
 DEFAULT_MIN_FREE_GIB = 10.0
 
 
+def run_evidence_session(args, command: list[str]) -> int:
+    """Opt-in metadata/budget mode; legacy sessions keep their existing behavior."""
+    # Lazy import keeps standalone legacy wrappers and frozen execution paths usable.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from scripts.storage_common import atomic_text, lock_run, persistent
+    from scripts.storage_budget import check, FLOORS
+    if not args.storage_host:
+        raise ValueError('--evidence-dir requires --storage-host x86|arm|mac')
+    if not command:
+        raise ValueError('a command is required after --')
+    import math
+    if not math.isfinite(args.expected_mb) or args.expected_mb < 0:
+        raise ValueError('--expected-mb must be finite and nonnegative')
+    root = args.evidence_dir.expanduser().absolute()
+    parent = root
+    while not parent.exists():
+        parent = parent.parent
+    persistent(parent)
+    budget = check(args.storage_host, shutil.disk_usage(parent).free, 1,
+                   math.ceil(args.expected_mb * 2**20))
+    if not budget['ok']:
+        raise ValueError(f'evidence budget refused: floor {FLOORS[args.storage_host]} GiB')
+    if root.exists() and any(root.iterdir()):
+        raise ValueError('evidence directory must be new or empty (no overwrite)')
+    source = Path(__file__).resolve().parents[1]
+    def git_value(*options):
+        return subprocess.run(['git', '-C', str(source), *options], check=True,
+                              capture_output=True, text=True).stdout.strip()
+    meta = {'schema': 'ugrp.run-meta.v1', 'class': args.evidence_class,
+            'pr': args.pr, 'branch': git_value('branch', '--show-current'),
+            'sha': git_value('rev-parse', 'HEAD'), 'batch': args.batch or args.name,
+            'keep': args.keep, 'active': True,
+            'source_dirty': bool(git_value('status', '--porcelain')), 'storage_budget': budget}
+    if args.pr is not None and args.pr <= 0:
+        raise ValueError('--pr must be positive')
+    root.mkdir(parents=True, exist_ok=True)
+    persistent(root)
+    with lock_run(root):
+        atomic_text(root / 'RUN_META.json', json.dumps(meta, indent=2) + '\n')
+        # Runner output should be under this directory, e.g. <run>/data.
+        status = run_session(args.name, command, max(0.0, args.grace))
+        meta.update(active=False, exit_code=status)
+        atomic_text(root / 'RUN_META.json', json.dumps(meta, indent=2) + '\n')
+        atomic_text(root / 'EXIT', str(status) + '\n')
+        return status
+
+
 def default_min_free_gib() -> float:
     configured = os.environ.get("UGRP_MIN_FREE_GIB")
     if configured:
@@ -293,6 +340,13 @@ def main(argv: list[str] | None = None) -> int:
                             help="start even when free space is below the floor")
     run_parser.add_argument("--min-free-gib", type=float, default=None,
                             help=f"free-space floor in GiB (default {DEFAULT_MIN_FREE_GIB:g}; env UGRP_MIN_FREE_GIB)")
+    run_parser.add_argument('--evidence-dir', type=Path, help='opt-in RUN_META directory; output under <dir>/data')
+    run_parser.add_argument('--evidence-class', choices=('dev', 'milestone', 'study'), default='dev')
+    run_parser.add_argument('--pr', type=int)
+    run_parser.add_argument('--batch')
+    run_parser.add_argument('--keep', action='append', default=[], help='relative file/directory to preserve')
+    run_parser.add_argument('--storage-host', choices=('x86', 'arm', 'mac'))
+    run_parser.add_argument('--expected-mb', type=float, default=0, help='expected output MiB for this run')
     run_parser.add_argument("name", type=validate_name)
     run_parser.add_argument("command", nargs=argparse.REMAINDER)
     stop_parser = subparsers.add_parser("stop", help="stop one owned session and all descendants")
@@ -318,6 +372,10 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 break
         command = command[1:] if command[:1] == ["--"] else command
+        if args.evidence_dir:
+            return run_evidence_session(args, command)
+        if args.pr is not None or args.batch or args.keep or args.storage_host or args.evidence_class != 'dev':
+            raise ValueError('evidence options require --evidence-dir (before session name)')
         if command and not allow_low_disk:
             refusal = free_space_refusal(Path.cwd(), default_min_free_gib() if min_free is None else min_free)
             if refusal:
