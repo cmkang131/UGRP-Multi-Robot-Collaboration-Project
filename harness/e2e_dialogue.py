@@ -151,7 +151,8 @@ class Dialogue:
         return context['frame_t'] <= context['requested_at'] <= now < context['frame_t'] + WINDOW_S
 
     def outgoing(self, contract, context):
-        contract = route_contract(contract)
+        from harness.e2e_route_handle import expand
+        contract = route_contract(expand(self,contract,context))
         actor, source = context['actor'], contract['source_message_id']
         if source is None:
             mapped = context['state']['own_map'];route = contract['route']
