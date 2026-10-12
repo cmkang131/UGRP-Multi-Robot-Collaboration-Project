@@ -63,7 +63,9 @@ def main():
             if mem>=6*2**30 and os.getloadavg()[0]<51:break
             time.sleep(10)
         assert shutil.disk_usage(base).free >= 8*2**30
-        assert time.time()+remaining+300<DEADLINE+5
+        remaining=min(25200,int(DEADLINE-time.time()-300),int(28800-float(Path('/proc/uptime').read_text().split()[0])-600))
+        assert remaining>600
+        common[common.index('--wall-cap-s')+1]=str(remaining)
         run=base/'runs'/cell['name'];run.mkdir()
         (base/'leases'/cell['name']).touch()
         meta=dict(cell,pr=453,sha=a.sha,branch='codex/e2e-idle',batch='e2e17-'+a.registration,submitted_unix=time.time(),wall_cap_s=remaining,storage_budget_bytes=4*2**30)
