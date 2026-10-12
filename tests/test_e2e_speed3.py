@@ -12,7 +12,7 @@ def test_explicit_new_cohort_keeps_scene_and_contact(mode):
     common=dict(enabled=True,runtime_registration='reviewed_v1')
     old=bundle('a'*40,61001,'study_gemma4_31b_v1',**common)
     new=bundle('a'*40,61001,'study_gemma4_31b_v1',**common,speed3=mode)
-    assert new['execution_bundle_id']=='e2e-speed3-v214'
+    assert new['execution_bundle_id']==('e2e-speed3-v215' if mode=='adaptive_v1' else 'e2e-speed3-v214')
     assert not new['inherited_results']
     assert len(new['e2e_options']['exact_speedups'])==10
     assert all(new['e2e_options']['exact_speedups'].values())
@@ -46,3 +46,17 @@ def test_capture_same_sim_time_renders_once(monkeypatch):
     a=host.capture();assert host.capture() is a
     host.world.data.time=1.2
     assert host.capture() is not a and calls==[1.,1.2]
+
+
+def test_adaptive_switch_uses_issued_action_and_resnaps_clock():
+    from sim.e2e_speed3_profile import enter_contact
+    calls=[]
+    host=SimpleNamespace(bundle={'e2e_options':{'speed3':'adaptive_v1'}},dt=.002,now=12.4,
+         world=SimpleNamespace(model=SimpleNamespace(opt=SimpleNamespace(timestep=.002))),
+         _clock_snap=lambda:calls.append('snap'),_append=lambda *x:calls.append(x))
+    assert not enter_contact(host,dict(kind='arm',servo_id=3,pulse=740))
+    assert not enter_contact(host,dict(kind='look',pan_pulse=1600))
+    assert enter_contact(host,dict(kind='arm',servo_id=1,pulse=1700))
+    assert host.dt==host.world.model.opt.timestep==.00025
+    assert calls[0]=='snap'
+    assert not enter_contact(host,dict(kind='arm',servo_id=1,pulse=1600))

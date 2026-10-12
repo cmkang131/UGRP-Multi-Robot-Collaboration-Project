@@ -463,7 +463,7 @@ def main(argv=None):
                    help='Measurement-only RBPF audit digest (with --measure-sim-s); off = legacy JSON digest')
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
-    p.add_argument('--speed3',choices=('off','dt1_v1','dt2_v1'),default='off')
+    p.add_argument('--speed3',choices=('off','dt1_v1','dt2_v1','adaptive_v1'),default='off')
     p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
     p.add_argument('--expected-workflow-id')
     p.add_argument('--execute',action='store_true');a=p.parse_args(argv)

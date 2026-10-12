@@ -38,12 +38,12 @@ def main():
         '--runtime-registration','reviewed_v1','--measure-sim-s','60','--rbpf-audit-hash','none','--execute']
     env={**os.environ,'MUJOCO_GL':'osmesa','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1','LP_NUM_THREADS':'1'}
     jobs=[]
-    for seed in (61001,61002):
-        for variant in ('base','dt1','dt2'):
+    for seed in (61001,61002,61003):
+        for variant in ('base','adaptive'):
             name=f'e2e-speed3-{variant}-s{seed}-r{a.repeat}'
             target=a.run_root/name;target.mkdir()
             write(target/'RUN_META.json',{'class':'dev','pr':a.pr,'branch':'codex/e2e-speed3','sha':a.expected_source_sha,'batch':a.run_root.name,'variant':variant,'seed':seed})
-            workflow='e2e-boundary-native-v213' if variant=='base' else 'e2e-speed3-v214'
+            workflow='e2e-boundary-native-v213' if variant=='base' else 'e2e-speed3-v215'
             cmd=[sys.executable,'-m','scripts.sim_cli','workflow','run',workflow,'--timeout','1800','--',*common,
                  '--seed',str(seed),'--output',str(target/'raw')]
             if variant!='base':cmd+=['--speed3',variant+'_v1']

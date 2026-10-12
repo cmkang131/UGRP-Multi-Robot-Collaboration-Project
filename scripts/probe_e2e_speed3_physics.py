@@ -169,8 +169,12 @@ def run_one(profile, case, output):
     from scripts import probe_drive_pair_beam as pair
     audits = []
     result = {}
+    contact_phase = profile == 'adaptive_v1' and case in ('grasp_hold', 'pair_lift_hold')
+    # This diagnostic already knows its fixture phase. Actual E2E switching
+    # must be tested separately using own issued arm commands, never truth.
+    effective_profile = 'off' if contact_phase else profile
     try:
-        with configured_worlds(profile, audits):
+        with configured_worlds(effective_profile, audits):
             if case == 'pair_lift_hold':
                 original = pair.design
 
@@ -201,6 +205,13 @@ def run_one(profile, case, output):
     result.update(case=case, speed3_profile=profile, physics_audit=audit,
                   camera='masterpi_camera_review_v3', servo_stiffness='real_v1',
                   controller_feedback=False, model_calls=0, renders=0)
+    if profile == 'adaptive_v1':
+        result['adaptive_probe_scope'] = dict(
+            phase_source='known diagnostic fixture, not runtime state',
+            contact_resolution_preselected=contact_phase,
+            effective_profile=effective_profile,
+            runtime_command_switch_verified=False,
+            qualification='drive/contact component plausibility; dynamic transition not exercised')
     result['acceptance'] = acceptance(case, result, audit)
     write(output/'result.json', result)
     return result
@@ -231,7 +242,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output', required=True, type=Path)
     p.add_argument('--expected-source-sha', required=True)
-    p.add_argument('--profiles', nargs='+', choices=('off', 'dt1_v1', 'dt2_v1'), default=['dt1_v1', 'dt2_v1'])
+    p.add_argument('--profiles', nargs='+', choices=('off', 'dt1_v1', 'dt2_v1', 'adaptive_v1'), default=['dt1_v1', 'dt2_v1'])
     p.add_argument('--cases', nargs='+', choices=CASES, default=list(CASES))
     p.add_argument('--pr', type=int)
     p.add_argument('--execute', action='store_true')
@@ -265,7 +276,8 @@ def main(argv=None):
                 result = run_one(profile, case, output/(profile+'-'+case))
                 row = {k: result.get(k) for k in ('case', 'speed3_profile', 'status', 'acceptance',
                        'physics_audit', 'displacement_m', 'yaw_change_rad', 'cargo_min_z_m',
-                       'max_grip_slip_m', 'last_sample', 'error', 'stop_reason', 'wall_per_sim')}
+                       'max_grip_slip_m', 'last_sample', 'error', 'stop_reason', 'wall_per_sim',
+                       'adaptive_probe_scope')}
                 row['raw_path'] = str(output/(profile+'-'+case))
                 summary['results'].append(row)
                 summary.update(n=sum(r['acceptance']['passed'] for r in summary['results']),

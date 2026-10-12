@@ -63,3 +63,10 @@ class PhysicsBackend(Evaluation):
             self._speed3_frames = super().capture()
             self._speed3_capture_at = self.now
         return self._speed3_frames
+
+    def issue(self, rid, action):
+        from sim.e2e_speed3_profile import enter_contact
+        # Validate before changing a physics profile, and keep the existing port checks.
+        self.ports[rid].validate_action(action)
+        enter_contact(self,action)
+        return super().issue(rid,action)
