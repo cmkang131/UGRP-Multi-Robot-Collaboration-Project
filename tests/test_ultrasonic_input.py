@@ -195,9 +195,25 @@ def test_range_report_helper_is_none_when_off_and_reports_own_provider_when_on()
     assert report.range_m == .8 and report.age_s == pytest.approx(.5)
 
 
+# Registered opt-in consumers (user decision #221 allows the own front range only in runs whose bundle turns
+# it on). Each must keep its gate: the rig exists only for sensors.ultrasonic_front == 'on_v1' (default off).
+REGISTERED_RANGE_CONSUMERS = {
+    'sim/goal_route_continuous.py': ("get('ultrasonic_front','off')=='on_v1'", 'if self.range_rig is None:return None'),
+    'scripts/run_own_route_particle_stages.py': ('if backend.range_rig is not None:',),
+}
+
+
+def test_registered_range_consumers_keep_their_default_off_gate():
+    for name, gates in REGISTERED_RANGE_CONSUMERS.items():
+        text = (ROOT / name).read_text()
+        assert all(gate in text for gate in gates), name
+
+
 def test_no_controller_or_skill_reads_the_range():
-    """Wiring only: the value is not used by any skill, controller or study input builder."""
-    allowed = {ROOT / name for name in WIRING_FILES} | {ROOT / 'harness/range_provider.py'}
+    """Wiring only: the value is not used by any skill, controller or study input builder, except the
+    registered opt-in consumers above."""
+    allowed = ({ROOT / name for name in WIRING_FILES} | {ROOT / 'harness/range_provider.py'}
+               | {ROOT / name for name in REGISTERED_RANGE_CONSUMERS})
     offenders = []
     for path in list((ROOT / 'harness').glob('*.py')) + list((ROOT / 'sim').glob('*.py')) + list((ROOT / 'scripts').glob('*.py')):
         if path in allowed or path.name.startswith('ultrasonic') or path.name in ('range_provider.py',):

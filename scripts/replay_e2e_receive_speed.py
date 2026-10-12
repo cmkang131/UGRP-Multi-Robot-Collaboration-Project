@@ -99,13 +99,14 @@ def replay(frames, speedups, *, profile=None, period=.2):
     hash_s = dict(json_v1=0., binary_v1=0.)
     robots, installed = build_robots(speedups)
     rows = []
+    stopped = set()
     n = max(len(v) for v in frames.values())
     profiler = cProfile.Profile() if profile else None
     receive_s = 0.
     for k in range(n):
         now = round((k + 1) * period, 8)
         for rid, robot in robots.items():
-            if k >= len(frames[rid]):
+            if rid in stopped or k >= len(frames[rid]):
                 continue
             f = frames[rid][k]
             obs = dict(frame_id=k + 1, sim_time=now, sha256=f['sha256'],
@@ -122,6 +123,7 @@ def replay(frames, speedups, *, profile=None, period=.2):
             elapsed = time.perf_counter() - start
             receive_s += elapsed
             row = dict(robot=rid, frame=k + 1, t=now, receive_s=elapsed, error=error,
+                       frame_name=f['name'], frame_sha256=f['sha256'],
                        rgb_unchanged=bool(np.array_equal(rgb, f['rgb'])))
             if error is None:
                 try:
@@ -141,7 +143,7 @@ def replay(frames, speedups, *, profile=None, period=.2):
                 if rid != 'r3' and robot.packet is None:
                     robot.commanded(copy.deepcopy(robot.nav_command), now)
             else:
-                frames[rid] = frames[rid][:k]
+                stopped.add(rid)
             rows.append(row)
     if profiler:
         profiler.dump_stats(profile)

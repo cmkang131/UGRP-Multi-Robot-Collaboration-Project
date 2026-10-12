@@ -275,3 +275,42 @@ def test_audit_modes_rows_compare_like_with_like_and_mapping():
     assert mapping['functional'] and mapping['mapping'][0]['json_v1'] == off['sha256']
     with pytest.raises(ValueError):
         audit_row(robot, 'json', seconds)
+
+
+def test_selected_workflow_rejects_mismatched_bundle_before_preparation(tmp_path, capsys):
+    import json
+    from pathlib import Path
+    from sim import workflow_manager as wm
+    from scripts import run_e2e_ownmap_live as run
+    root=Path(__file__).resolve().parents[1]
+    row=wm._row(root,'e2e-exact-speed2-v203')[0]
+    args=['--expected-source-sha','a'*40,'--seed','61001',
+          '--driver-profile','study_gemma4_31b_v1','--relay-receipt',str(tmp_path/'receipt.json'),
+          '--output',str(tmp_path/'unused'),'--decider','off','--exploration-progress','off',
+          '--pose-fix','off','--path-follow','off','--wall-cap-s','12600',
+          '--stall-odometry','off','--stall-recovery','off','--stall-noise','off',
+          '--mapping-budget','case_cap_v1']
+    command,_=wm._runner_command(root,row,args,record=None)
+    assert command[-2:]==['--expected-workflow-id','e2e-exact-speed2-v203']
+    with pytest.raises(ValueError,match='WORKFLOW_BUNDLE_ID_MISMATCH'):
+        run.main(command[3:])
+    assert not capsys.readouterr().out and not (tmp_path/'unused').exists()
+    run.main([*command[3:],'--exact-speed2-bundle'])
+    assert json.loads(capsys.readouterr().out)['execution_bundle_id']==row['id']
+    with pytest.raises(ValueError,match='WORKFLOW_OWNS_BUNDLE_ID'):
+        wm._runner_command(root,row,[*args,'--expected-workflow-id=arbitrary'],record=None)
+
+
+def test_receive_failure_keeps_original_frame_manifest(monkeypatch):
+    from types import SimpleNamespace
+    from scripts import replay_e2e_receive_speed as replay
+    class BrokenRobot:
+        def receive(self,*a):raise RuntimeError('fixture failure')
+    monkeypatch.setattr(replay,'build_robots',lambda *a:({'r1':BrokenRobot()},SimpleNamespace(snapshot=lambda:{})))
+    frames={'r1':[dict(name='first.jpg',sha256='1'*64,jpeg=b'first',rgb=np.zeros((1,1,3),np.uint8)),
+                  dict(name='second.jpg',sha256='2'*64,jpeg=b'second',rgb=np.zeros((1,1,3),np.uint8))]}
+    before=pickle.dumps(frames)
+    rows,_,_=replay.replay(frames,{})
+    assert pickle.dumps(frames)==before and len(rows)==1
+    assert rows[0]['frame_name']=='first.jpg' and rows[0]['frame_sha256']=='1'*64
+    assert rows[0]['error']=='RuntimeError:fixture failure'

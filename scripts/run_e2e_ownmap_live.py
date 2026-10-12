@@ -30,7 +30,7 @@ def relay_url(profile, decider='off'):
 
 from harness.e2e_result_writer import write, Finalizer
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,speed2_bundle=False):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,speed2_bundle=False,runtime_registration='off'):
     if profile not in PROFILES or seed not in (61001,61002,61003,61004):raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
@@ -87,6 +87,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if speed2:
         b['e2e_options']['exact_speedups']=dataclasses.asdict(speed)
         b.update(schema='ugrp.e2e_ownmap_live.v203',execution_bundle_id='e2e-exact-speed2-v203',workflow_version='7.96.0')
+    from harness.e2e_runtime_registration import register
+    runtime_assets=register(b,runtime_registration)
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -104,6 +106,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if mapping_budget!='off':paths.add('configs/simulation_workflows.d/e2e_stall_budget_v199.json')
     if speed_bundle or any(vars(speed).values()):paths.add('configs/simulation_workflows.d/e2e_exact_speed_v200.json')
     if speed2:paths.update(('configs/simulation_workflows.d/e2e_exact_speed2_v203.json','scripts/e2e_speed_measure.py'))
+    paths.update(runtime_assets)
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -138,6 +141,8 @@ def startup_decision(progress, b):
 
 def run(b,out,receipt,*,backend_factory=None):
     if not b['e2e_options']['enabled']:raise ValueError('E2E_LIVE_TOGGLE_OFF')
+    from harness.e2e_runtime_registration import require_current
+    require_current(b,ROOT)
     from harness.e2e_live_mapping import Robot,Link
     from harness.e2e_exact_speedups import Options as SpeedOptions
     from harness.e2e_stall_odometry import Options as StallOptions
@@ -311,7 +316,7 @@ def run(b,out,receipt,*,backend_factory=None):
     return result
 
 
-def main():
+def main(argv=None):
     p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,required=True)
     p.add_argument('--driver-profile',choices=PROFILES,required=True);p.add_argument('--relay-receipt',type=Path,required=True)
@@ -344,7 +349,9 @@ def main():
                    help='Measurement-only RBPF audit digest (with --measure-sim-s); off = legacy JSON digest')
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
-    p.add_argument('--execute',action='store_true');a=p.parse_args()
+    p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
+    p.add_argument('--expected-workflow-id')
+    p.add_argument('--execute',action='store_true');a=p.parse_args(argv)
     b=bundle(a.expected_source_sha,a.seed,a.driver_profile,enabled=a.e2e_live,relook=a.setdown_only_when_relook,
              options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider,
              exploration_progress=a.exploration_progress,pose_fix=a.pose_fix,
@@ -353,8 +360,10 @@ def main():
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
                  vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
                  vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
-             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle)
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,runtime_registration=a.runtime_registration)
     if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
+    if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
+        raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
         raise ValueError('AZURE_X86_OSMESA_ONLY')

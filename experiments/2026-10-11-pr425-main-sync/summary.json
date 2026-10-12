@@ -1,0 +1,188 @@
+{
+  "class": "dev",
+  "pr": 425,
+  "branch": "codex/s4-llm-host",
+  "pre_merge_sha": "00418638f700d3b19421e0457acbdfe8ad1e07d4",
+  "merged_main_sha": "eebb2490b46934f5c96ab9e2eeb70261875e6364",
+  "merged_pr416_sha": "ec87ee73577a096eae07aeee6c10522238934cdd",
+  "merge_commit_sha": "5a6e845daced2f065c3c45cb6e2b94a1249fd00e",
+  "bundle_id": "zone-s3-recovery-v195",
+  "workflow_version": "7.88.0",
+  "reservation_max_bundle": 194,
+  "reservation_max_workflow_version": "7.87.0",
+  "reservation_max_owner_pr": 433,
+  "retired_bundles": [
+    "zone-s3-recovery-v152",
+    "zone-s3-recovery-v188",
+    "zone-s3-recovery-v190",
+    "zone-s3-recovery-v189",
+    "zone-s3-recovery-v191"
+  ],
+  "newly_retired_bundle": "zone-s3-recovery-v191",
+  "preserved_main_bundle": {
+    "execution_bundle_id": "zone-s3-recovery-v193",
+    "preserved_scope": "Only the three registration, source-seal, and retirement-ledger record files were preserved from PR416 main; four sealed runtime sources changed in PR425, so the bundle is retired.",
+    "preserved_record_files": [
+      "experiments/2026-10-11-pr416-review-fixes/registration-v193.json",
+      "experiments/2026-10-11-pr416-review-fixes/source-seal-v193.json",
+      "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json"
+    ],
+    "runtime_source_count": 433,
+    "changed_runtime_sources": [
+      "harness/zone_s3_recovery_contract.py",
+      "harness/zone_study_llm_driver.py",
+      "scripts/run_s3_recovery.py",
+      "sim/zone_s3_no_prior.py"
+    ],
+    "retired": true,
+    "replacement": "zone-s3-recovery-v195",
+    "retirement_record": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+    "followup_summary": "experiments/2026-10-12-retire-v193/summary.json"
+  },
+  "preserved_main_workflow_version": "7.86.0",
+  "source_files": 434,
+  "source_composition_diff": {
+    "changed": [
+      "harness/zone_s3_recovery_contract.py",
+      "harness/zone_study_llm_driver.py",
+      "scripts/run_s3_recovery.py",
+      "sim/zone_s3_no_prior.py"
+    ],
+    "added": [
+      "sim/s4_beam_drop_guard.py"
+    ],
+    "removed": []
+  },
+  "conflicts_resolved": [
+    "docs/retired_modules.md",
+    "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+    "harness/zone_s3_recovery_contract.py",
+    "scripts/run_s3_recovery.py",
+    "tests/test_s3_recovery.py",
+    "tests/test_simulation_workflow_manager.py"
+  ],
+  "min_command_contract": "on_v1",
+  "min_command_contract_default": "off",
+  "preservation_verification": {
+    "main_registration_and_retired_asset_files_unchanged": 17,
+    "main_retired_entries_unchanged": 3,
+    "main_retirement_document_bytes_preserved": true,
+    "retired_verification": [
+      {
+        "bundle": "zone-s3-recovery-v152",
+        "source_sha": "981baa95e77aa78e5ffd6bc87c172cbb97aea7ed",
+        "preserved_files_verified": 4
+      },
+      {
+        "bundle": "zone-s3-recovery-v188",
+        "source_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
+        "preserved_files_verified": 5
+      },
+      {
+        "bundle": "zone-s3-recovery-v190",
+        "source_sha": "bca75e2562c68ceab70493af3d0a3d30da54d178",
+        "preserved_files_verified": 5
+      },
+      {
+        "bundle": "zone-s3-recovery-v189",
+        "source_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
+        "preserved_files_verified": 5
+      },
+      {
+        "bundle": "zone-s3-recovery-v191",
+        "source_sha": "00418638f700d3b19421e0457acbdfe8ad1e07d4",
+        "preserved_files_verified": 6,
+        "runtime_source_verified": 432,
+        "recorded_runs": 0
+      }
+    ],
+    "new_runtime_source_verified": 434,
+    "main_guard_and_common_default_files_unchanged": [
+      "harness/zone_final_pair_guards.py",
+      "harness/zone_own_sweep.py",
+      "harness/zone_pair_guards.py",
+      "harness/zone_solo_cyan_pulse_cal.py",
+      "harness/zone_solo_cyan_path_heading.py",
+      "harness/zone_s3_pair_recheck.py",
+      "harness/zone_s3_pulse_odometry.py"
+    ],
+    "simulation_runs": 0,
+    "model_calls": 0
+  },
+  "local_tests": {
+    "status": "passed",
+    "files": [
+      "tests/test_s3_recovery.py",
+      "tests/test_simulation_workflow_manager.py",
+      "tests/test_s4_grip_visual.py"
+    ],
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_s3_recovery.py tests/test_simulation_workflow_manager.py tests/test_s4_grip_visual.py --junitxml=outputs/pr425-main-sync/main-eebb2490/tests.xml",
+    "passed": 46,
+    "total": 46,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 179.47,
+    "file_results": [
+      {
+        "file": "tests/test_s3_recovery.py",
+        "total": 17,
+        "passed": 17,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 139.514
+      },
+      {
+        "file": "tests/test_simulation_workflow_manager.py",
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 2.579
+      },
+      {
+        "file": "tests/test_s4_grip_visual.py",
+        "total": 8,
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 36.736
+      }
+    ],
+    "exit_code": 0
+  },
+  "ci": {
+    "status_at_record_commit": "new head not yet pushed; previous CI is historical"
+  },
+  "simulation_runs": 0,
+  "model_calls": 0,
+  "raw_locations": {
+    "local": "/Users/changmin/projects/ugrp-wt/s4-llm/outputs/pr425-main-sync/main-eebb2490"
+  },
+  "previous_round_summary": "experiments/2026-10-11-pr425-main-sync/summary-v191.json",
+  "status": "OFFLINE_REGISTRATION_AND_REQUESTED_TESTS_PASSED",
+  "method": "Git merge in the existing PR425 worktree; preserve main registration assets and retired entries; copy original v191 git blobs before re-registering the merged S4 source closure. No simulation.",
+  "references": [
+    "https://git-scm.com/docs/git-merge",
+    "https://git-scm.com/docs/git-show",
+    "https://git-scm.com/docs/git-grep"
+  ],
+  "verification_scope": "Static registration/source preservation and three requested offline test files; historical command-equivalence evidence is retained separately and was not rerun. No simulation, rendering, or provider calls.",
+  "artifact_sha256": {
+    "experiments/2026-10-11-pr425-main-sync/reservation-scan-v195.json": "083c3fdee76418b326115f794a3ef0ca32af771b728029d221cc4884e5aafcc6",
+    "experiments/2026-10-11-pr425-main-sync/preservation-verification-v195.json": "182be07fc6cbbc7b212ba2952ce55e351b3b4c19b47e704d436a1b5b7eba489f",
+    "experiments/2026-10-11-pr425-main-sync/source-composition-diff-v195.json": "91e941778c7c61cd053aa8d9798fba27a88d7a00eaf4f4057d16b2f3f5cff4ff",
+    "experiments/2026-10-11-pr425-main-sync/summary-v191.json": "a857198a51f6e71169a80d889ce5671f31691847e02bfdb3ac3006baabc70088",
+    "experiments/2026-10-11-ci-bundle-reregistration/registration-v195.json": "2bd7eca29ead8a20a6cc9043497da8f03076ebee716d0a4c232381e5a2a5dd65",
+    "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v195.json": "d97158618647ad88c9c6452a028c3de143e9d6e83c3b49553bd508000b1a74f5",
+    "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": "2976dd9de10dabfde8b8839f7af6e24fdbc3fb1d003b9c7c6a6e58a27e2d452e",
+    "outputs/pr425-main-sync/main-eebb2490/tests.xml": "7f4d748fa265315e29ab65dc0e8fee8f64eb7dfe9f5aecfa59bfc8e13152ddac",
+    "outputs/pr425-main-sync/main-eebb2490/tests.log": "635c4f13925cb5d5f66b530b7fb51a807755b4abe9d3a984ba88682e4837b5ab",
+    "experiments/2026-10-11-pr425-main-sync/RUN_META.json": "1f8ee8f9a26d30b5a1221fcffca4cb1398af9129815f41f1251ea769633e1b13"
+  },
+  "tested_source_sha": "5a6e845daced2f065c3c45cb6e2b94a1249fd00e",
+  "push": {
+    "branch": "codex/s4-llm-host",
+    "status_at_record_commit": "pending push and remote HEAD verification",
+    "delivery_receipt": "/Users/changmin/projects/ugrp-wt/s4-llm/outputs/pr425-main-sync/main-eebb2490/delivery-receipt.json"
+  }
+}

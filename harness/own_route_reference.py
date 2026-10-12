@@ -127,11 +127,14 @@ class ReferenceRoute(GoalRoute):
         return tail
 
     def _return_target(self, pose):
+        self._reference_executed['return_target'] = True
         o = self.reference_options
         if o.return_own_free_astar:
             e = self.explorer
             observed = from_observed_grid(e.grid, e.pose, e.latest, set())
-            cm = Costmap(observed.raw.copy(), observed.origin, observed.resolution)
+            cm = (Costmap(observed.raw.copy(), observed.origin, observed.resolution)
+                  if self._traversed is None else self._traversed.overlay(observed, e.map_to_odom))
+            self._free_costmap = cm if self._traversed is not None else None
             end = self.graph.nodes[0]['pose'][:2]
             target = compose(e.map_to_odom, [*end, 0.])[:2]
             path = free_plan(self._free_core, cm, e.pose, target)
@@ -147,8 +150,12 @@ class ReferenceRoute(GoalRoute):
         return super()._return_target(pose)
 
     def _localize(self, sample, t):
+        self._reference_executed['localize'] = True
         if not self.reference_options.return_local_vtr or self.stage != 'return' or not self.route:
-            return super()._localize(sample, t)
+            value = super()._localize(sample, t)
+            if self._traversed is not None:
+                self._traversed.add(sample['pose'], sample['frame_id'])
+            return value
         self.route_progress(sample['pose'])
         if t-self.last_localize < 10.:
             return
@@ -180,6 +187,7 @@ class ReferenceRoute(GoalRoute):
         sample['covariance'] = g.odom.covariance.tolist()
 
     def _arrival(self, t, frame_id, pose, box_visible):
+        self._reference_executed['arrival'] = True
         if not self.reference_options.arrival_verify_fsm or self.active != 'B':
             return super()._arrival(t, frame_id, pose, box_visible)
         near = math.dist(pose[:2], self.entities['B']['center_m']) <= .20
@@ -204,7 +212,9 @@ class ReferenceRoute(GoalRoute):
             self.current_patches = patches
 
     def receive(self, **kw):
-        cmd, trace = super().receive(**kw)
+        self._reference_calls += 1
+        self._reference_executed = {'receive': True}
+        cmd, trace = self._reference_base_receive(**kw)
         # Near-goal NavFn can produce no local path, so its host call may have
         # been skipped. Visual verification still owns that command slot.
         if (not self.done and self.reference_options.arrival_verify_fsm and self._verify
@@ -217,6 +227,10 @@ class ReferenceRoute(GoalRoute):
                 points=sample_segments(kw['observation']['segments']), map_pose=e.pose, dev_light=self.dev_light)
             trace['command'] = cmd
         trace['reference_navigation'] = dict(options=asdict(self.reference_options),
+            execution=dict(version='receive_composed_v1', calls=self._reference_calls,
+                           dispatched=asdict(self.reference_options),
+                           exercised=dict(self._reference_executed)),
+            traversed_free=None if self._traversed is None else self._traversed.diagnostics(),
             return_progress=None if self._progress is None else self._progress.ratio,
             free_remaining_m=self._free_remaining, free_initial_m=self._free_initial,
             free_path=self._free_status, visual_gate=self._visual_reason,
@@ -228,12 +242,28 @@ class ReferenceRoute(GoalRoute):
         return dict(super().snapshot(), reference_navigation=asdict(self.reference_options))
 
 
-def install(controller, options=Options()):
+def install(controller, options=Options(), *, traversed_free='off'):
+    if traversed_free not in ('off', 'footprint_history_v1'):
+        raise ValueError('UNKNOWN_TRAVERSED_FREE')
+    if traversed_free != 'off' and not options.return_own_free_astar:
+        raise ValueError('TRAVERSED_REQUIRES_OWN_FREE')
     if not any(asdict(options).values()):
         return controller  # no reads or wrappers on off, frozen output identity
     if type(controller) is not GoalRoute or controller.heading_host is None:
         raise ValueError('FROZEN_CONTINUOUS_HEADING_HOST_REQUIRED')
+    # Preserve the checkpoint's instance scalar_rays wrapper as the BASE call.
+    # Class replacement alone leaves instance attributes shadowing methods.
+    base_receive = controller.receive
     controller.__class__ = ReferenceRoute
+    controller._reference_base_receive = base_receive
+    controller.receive = MethodType(ReferenceRoute.receive, controller)
+    controller._reference_calls = 0
+    controller._reference_executed = {}
+    controller._traversed = None
+    controller._free_costmap = None
+    if traversed_free != 'off':
+        from harness.own_traversed_free import TraversedFree
+        controller._traversed = TraversedFree.from_graph(controller.graph)
     controller.reference_options = options
     controller._reference_route = controller._progress = controller._verify = None
     controller._return_path = []
@@ -245,6 +275,7 @@ def install(controller, options=Options()):
 
     def command(host, **kw):
         c = controller
+        c._reference_executed['heading'] = True
         c._host_t = kw['t']
         pose = np.asarray(kw['pose'])
         def hold(reason):
@@ -254,6 +285,8 @@ def install(controller, options=Options()):
                 return hold('repeat_localization_wait')
             if options.return_own_free_astar and not c._return_path:
                 return hold('no_observed_free_path')
+            if c._free_costmap is not None:
+                kw['costmap'] = c._free_costmap
             if options.progress_lookahead or options.return_local_vtr or options.return_own_free_astar:
                 kw['path'] = c._return_path
         if options.arrival_verify_fsm and c.stage == 'approach' and c.active == 'B' and c._verify:
