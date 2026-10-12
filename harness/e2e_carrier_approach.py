@@ -29,6 +29,8 @@ def advance(transport,rid,now):
         end,grip,basis=station(b,target['center_m'],rid)
         state.update(station=end,grip=grip,basis=basis,last_seen=now)
         state.pop('search_started',None);state.pop('search_step',None)
+    from harness.e2e_mapping_cadence import expire
+    expire(transport,rid,now,state,fresh)
     if 'station' not in state and getattr(transport,'pregrasp_acquire','off')!='off':
         from harness.e2e_pregrasp_acquire import acquire
         result=acquire(transport,rid,now,state,target)

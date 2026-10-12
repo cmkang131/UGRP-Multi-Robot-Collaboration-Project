@@ -9,7 +9,7 @@ WORKFLOW='configs/simulation_workflows.d/e2e18_v220.json'
 
 
 def limits(period):
-    if period not in (.2,.4):raise ValueError('UNREGISTERED_RGB_CADENCE')
+    if period not in (.2,.4,.6):raise ValueError('UNREGISTERED_RGB_CADENCE')
     return dict(observation_period_s=period,max_pair_gap_s=period+.05,max_range_gap_s=period+.05)
 
 
