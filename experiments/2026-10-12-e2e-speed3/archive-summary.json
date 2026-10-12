@@ -24,7 +24,634 @@
       },
       "vm_deallocated": false,
       "speed3_lease_preserved": true
+    },
+    {
+      "name": "e2e-speed3-measure-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e-speed3-measure-r1",
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-speed3-measure-r1",
+      "verified": true,
+      "full_file_sha256_match": true,
+      "files": 558,
+      "bytes": 11078643,
+      "inventory_sha256": "693d262e46966e7360365ea270709f750f5900a6c861e904416f5e23b1e6c51a",
+      "checked_unix": 1791801335.2523067,
+      "source_preserved": true,
+      "exit": "1",
+      "run_meta_as_recorded": {
+        "class": "dev",
+        "pr": 454,
+        "branch": "codex/e2e-speed3",
+        "sha": "f5cb4cb2fb0bc8af85f4ca9c931ad58a3083ac37",
+        "batch": "e2e-speed3-measure-r1"
+      },
+      "archive_marker": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-measure-r1.archive.json",
+      "archive_marker_sha256": "f0ecc9b655d4f6db26e857cea33cd6a1582ce0310cf0bd9cf897d066e2641ae9",
+      "lite": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-measure-r1",
+        "files": 462,
+        "bytes": 1262040,
+        "all_file_sha256_match": true,
+        "excluded": "images, video, arrays, XML scenes, trace, wire request and files larger than 64 KiB"
+      },
+      "vm_deallocated": false,
+      "speed3_lease_preserved": true,
+      "batch_result_mismatch": {
+        "raw_child_exit": "1 for 6/6",
+        "batch_recorded_exit": "0 for 6/6; preserved",
+        "root_exit": "1",
+        "status": "HOST_ERROR 6/6 at SIM 0",
+        "record": "BATCH_FINALIZATION.json"
+      },
+      "large_json_as_archived": {
+        "count": 12,
+        "note": "Existing archive-one stores bytes without compression; published originals retained, excluded from Mac lite."
+      },
+      "compressed_preservation_copy": "e2e-speed3-measure-r1-zstd"
+    },
+    {
+      "name": "e2e-speed3-probe-baseline-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e-speed3-probe-baseline-r1",
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-speed3-probe-baseline-r1",
+      "verified": true,
+      "full_file_sha256_match": true,
+      "files": 15,
+      "bytes": 2182797,
+      "inventory_sha256": "1f55d7168ae930231f23704f0d2fe29f59e930f3864f9659d8af5de34746c1b3",
+      "checked_unix": 1791801341.346392,
+      "source_preserved": true,
+      "exit": "0",
+      "run_meta_as_recorded": {
+        "class": "dev",
+        "pr": null,
+        "branch": "master",
+        "sha": "670a5644ebe0893e1b06bceaa4d33b77dc5c90cf",
+        "batch": "e2e-speed3-physics-probe"
+      },
+      "archive_marker": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-probe-baseline-r1.archive.json",
+      "archive_marker_sha256": "ae19b92e319b952a269326d5b611d3397d145cb71ab062c00d2bfdcda0ec6944",
+      "lite": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-probe-baseline-r1",
+        "files": 10,
+        "bytes": 113457,
+        "all_file_sha256_match": true,
+        "excluded": "images, video, arrays, XML scenes, trace, wire request and files larger than 64 KiB"
+      },
+      "vm_deallocated": false,
+      "speed3_lease_preserved": true
+    },
+    {
+      "name": "e2e-speed3-probe-adaptive-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e-speed3-probe-adaptive-r1",
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-speed3-probe-adaptive-r1",
+      "verified": true,
+      "full_file_sha256_match": true,
+      "files": 27,
+      "bytes": 3375578,
+      "inventory_sha256": "9becabee595f2e3487a980f5cd62664ecb29b8c4397856fab1d015a7898a2ad8",
+      "checked_unix": 1791802054.1251416,
+      "source_preserved": true,
+      "exit": "0",
+      "archive_marker": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-probe-adaptive-r1.archive.json",
+      "archive_marker_sha256": "7990d3ba36a87e414cfaab7d071ff67f65165a4ac32cc6fd158572ffe24e825e",
+      "compression": {
+        "run": "/home/ugrp/ugrp-sim/runs/e2e-speed3-probe-adaptive-r1",
+        "files": 0,
+        "saved_bytes": 0,
+        "sha256_verified": true
+      },
+      "lite": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-probe-adaptive-r1",
+        "files": 18,
+        "bytes": 249651,
+        "all_file_sha256_match": true,
+        "excluded": "images, video, arrays, XML scenes, trace, wire request and files larger than 64 KiB"
+      },
+      "vm_deallocated": false,
+      "speed3_lease_preserved": true
+    },
+    {
+      "name": "e2e-speed3-measure-r1-zstd",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e-speed3-measure-r1-zstd",
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-speed3-measure-r1-zstd",
+      "verified": true,
+      "full_file_sha256_match": true,
+      "files": 564,
+      "bytes": 6593053,
+      "inventory_sha256": "0439a6fe5f870766e9393ab253dd588158f95170543685b89be6cc6ebf7ffd88",
+      "checked_unix": 1791802059.8670814,
+      "source_preserved": true,
+      "exit": "1",
+      "archive_marker": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-measure-r1-zstd.archive.json",
+      "archive_marker_sha256": "11195f846db6c2afbba30a25461d4e205af3f13083f16ef18a7ed18c6a255b1a",
+      "compression": {
+        "run": "/home/ugrp/ugrp-sim/runs/e2e-speed3-measure-r1-zstd",
+        "files": 12,
+        "saved_bytes": 4634312,
+        "sha256_verified": true
+      },
+      "lite": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-measure-r1-zstd",
+        "files": 466,
+        "bytes": 1268117,
+        "all_file_sha256_match": true,
+        "excluded": "images, video, arrays, XML scenes, trace, wire request and files larger than 64 KiB"
+      },
+      "vm_deallocated": false,
+      "speed3_lease_preserved": true,
+      "copy_provenance": {
+        "schema": "ugrp.lossless-compressed-archive-copy.v1",
+        "copied_unix": 1791801978.779379,
+        "source": "/home/ugrp/ugrp-sim/runs/e2e-speed3-measure-r1",
+        "original_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-speed3-measure-r1",
+        "original_inventory_sha256": "693d262e46966e7360365ea270709f750f5900a6c861e904416f5e23b1e6c51a",
+        "original_marker_sha256": "f0ecc9b655d4f6db26e857cea33cd6a1582ce0310cf0bd9cf897d066e2641ae9",
+        "byte_identical_before_compression": true,
+        "new_experiment": false,
+        "original_preserved": true
+      }
+    },
+    {
+      "name": "e2e-speed3-measure-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e-speed3-measure-r2",
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-speed3-measure-r2",
+      "verified": true,
+      "full_file_sha256_match": true,
+      "files": 4613,
+      "bytes": 82762920,
+      "inventory_sha256": "12af1713759404fc6654dcf51b08f4fdee1e387ae93a5be8f1f3cbddd16532e5",
+      "checked_unix": 1791802098.3308988,
+      "source_preserved_after_verified_lossless_compression": true,
+      "exit": "0",
+      "archive_marker": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-measure-r2.archive.json",
+      "archive_marker_sha256": "47ce25728c96f1ffcfe7e397a69bf204a8c569e26891c1cd712596d9bc1ef5ab",
+      "compression": {
+        "run": "/home/ugrp/ugrp-sim/runs/e2e-speed3-measure-r2",
+        "files": 114,
+        "saved_bytes": 91322804,
+        "sha256_verified": true
+      },
+      "batch_finalization": {
+        "checked_unix": 1791802018.9174733,
+        "reason": "All 6 runs reached planned 60 SIM-second measurement limit; child EXIT1 is intentional stop, not HOST_ERROR",
+        "expected_stops": 6,
+        "expected_N": 6,
+        "parent_exit": 0,
+        "batch_result_preserved": true,
+        "batch_result_sha256": "e321a4d951ad676a100a1cad904dde9b5f90be6afaecf5dbfd8f8193896bc7a5",
+        "runs": [
+          {
+            "name": "e2e-speed3-base-s61001-r2",
+            "actual_exit": 1,
+            "batch_recorded_exit": 0,
+            "status": "EARLY_STOP",
+            "sim_s": 60.0,
+            "expected_stop": true,
+            "wall_per_sim": 9.02807857066667,
+            "measurement_sha256": "4e1986caa2256b2d2955f9ae987c0ab1c72e871f60c124a3f053b2f366f106c4",
+            "result_sha256": "960baec4e64f1ab67eda9df6777e69995eca3954d78eb7e85f49c19d79e89167"
+          },
+          {
+            "name": "e2e-speed3-adaptive-s61001-r2",
+            "actual_exit": 1,
+            "batch_recorded_exit": 0,
+            "status": "EARLY_STOP",
+            "sim_s": 60.0,
+            "expected_stop": true,
+            "wall_per_sim": 3.09815627316666,
+            "measurement_sha256": "228cafb760ca7161d767c79d66b3a6a9de290b64fad5dda94f6377f6958cb561",
+            "result_sha256": "f0d88cd73edc0082296ee4f3bf5c2217c0ad6e5a8605f0ff9b367380745f171b"
+          },
+          {
+            "name": "e2e-speed3-base-s61002-r2",
+            "actual_exit": 1,
+            "batch_recorded_exit": 0,
+            "status": "EARLY_STOP",
+            "sim_s": 60.0,
+            "expected_stop": true,
+            "wall_per_sim": 8.686677363716672,
+            "measurement_sha256": "a3356306aca4c06c9d301e66b34ee6ddd8ae249bb7316de184a2bf91c9afec90",
+            "result_sha256": "fbdabf9b734efd992be749cfbbcb0a4c6f50d82c092cdac6d33ddc077c5503ac"
+          },
+          {
+            "name": "e2e-speed3-adaptive-s61002-r2",
+            "actual_exit": 1,
+            "batch_recorded_exit": 0,
+            "status": "EARLY_STOP",
+            "sim_s": 60.0,
+            "expected_stop": true,
+            "wall_per_sim": 2.9843935258666687,
+            "measurement_sha256": "b5531545ec5b966959d58838cd496849bca3904a733bd875a6e3a59799be6b0d",
+            "result_sha256": "89227b903b7c2ea56451582d116d161912f92f976d18031646eba37c99a7f0f0"
+          },
+          {
+            "name": "e2e-speed3-base-s61003-r2",
+            "actual_exit": 1,
+            "batch_recorded_exit": 0,
+            "status": "EARLY_STOP",
+            "sim_s": 60.0,
+            "expected_stop": true,
+            "wall_per_sim": 9.027847761966678,
+            "measurement_sha256": "9692ade83e8c7bac7012030fa700623eb03dd6eb5793373992559e5ac031c080",
+            "result_sha256": "f50f0b617a026058619aa6aa1332d113b291ec975b34b9a01255555aceedcc57"
+          },
+          {
+            "name": "e2e-speed3-adaptive-s61003-r2",
+            "actual_exit": 1,
+            "batch_recorded_exit": 0,
+            "status": "EARLY_STOP",
+            "sim_s": 60.0,
+            "expected_stop": true,
+            "wall_per_sim": 2.8898496582333335,
+            "measurement_sha256": "0743509a9cc27085a72c0a6b61a95911b93bedfb2408f91c6a28ec6cc1393f9e",
+            "result_sha256": "8710a0cdc7c3e8edc3a5009a59efe0a0ed7c1ed0fd5215d598c06e4f840180af"
+          }
+        ]
+      },
+      "lite": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-measure-r2",
+        "files": 443,
+        "bytes": 6466344,
+        "all_file_sha256_match": true,
+        "excluded": "images, video, arrays, XML scenes, trace, wire request and files larger than 64 KiB"
+      },
+      "vm_deallocated": false,
+      "speed3_lease_preserved": true
+    },
+    {
+      "name": "e2e-speed3-gate-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e-speed3-gate-r1",
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-speed3-gate-r1",
+      "verified": true,
+      "full_file_sha256_match": true,
+      "files": 1869,
+      "bytes": 32497782,
+      "inventory_sha256": "f788bd974aa1b9d0c1d68a579221d7471da573fb8f6a4dd5e17203f43fbd594d",
+      "checked_unix": 1791802235.04688,
+      "source_preserved_after_verified_lossless_compression": true,
+      "exit": "0",
+      "archive_marker": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-gate-r1.archive.json",
+      "archive_marker_sha256": "a4c2bcb209bff51ca69de4dc85f5f6f7ead5a0f232fa9b8b27afef4f37a39cfd",
+      "compression": {
+        "run": "/home/ugrp/ugrp-sim/runs/e2e-speed3-gate-r1",
+        "files": 96,
+        "saved_bytes": 32966772,
+        "sha256_verified": true
+      },
+      "outcome": {
+        "status": "SPEED_GATE_PASS",
+        "started_N": null,
+        "completed": 6,
+        "median_wall_per_sim": 3.249957300616643,
+        "research_result": false
+      },
+      "lite": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-gate-r1",
+        "files": 426,
+        "bytes": 4335976,
+        "all_file_sha256_match": true,
+        "excluded": "images, video, arrays, XML scenes, trace, wire request and files larger than 64 KiB"
+      },
+      "vm_deallocated": false,
+      "speed3_lease_preserved": true
+    },
+    {
+      "name": "e2e-speed3-gate-intent-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e-speed3-gate-intent-r1",
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-speed3-gate-intent-r1",
+      "verified": true,
+      "full_file_sha256_match": true,
+      "files": 25,
+      "bytes": 7778,
+      "inventory_sha256": "0ccc40c04989ac84e9b5a5f813e5d11e2bc19819f86de2d6428cf6ca3a1c6bda",
+      "checked_unix": 1791802241.100338,
+      "source_preserved_after_verified_lossless_compression": true,
+      "exit": "0",
+      "archive_marker": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-gate-intent-r1.archive.json",
+      "archive_marker_sha256": "adc2dfb341ceb50f7410bdb2a98f88e7a9d071d7b5a04d9ff0b9d908e7733e1f",
+      "compression": {
+        "run": "/home/ugrp/ugrp-sim/runs/e2e-speed3-gate-intent-r1",
+        "files": 0,
+        "saved_bytes": 0,
+        "sha256_verified": true
+      },
+      "outcome": {
+        "status": "COHORT_NOT_STARTED",
+        "started_N": 0,
+        "completed": null,
+        "median_wall_per_sim": null,
+        "research_result": false
+      },
+      "lite": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/e2e-speed3-gate-intent-r1",
+        "files": 25,
+        "bytes": 7778,
+        "all_file_sha256_match": true,
+        "excluded": "images, video, arrays, XML scenes, trace, wire request and files larger than 64 KiB"
+      },
+      "vm_deallocated": false,
+      "speed3_lease_preserved": true
     }
   ],
-  "updated_unix": 1791801023.3026078
+  "updated_unix": 1791802513.6098099,
+  "final_host_check": {
+    "checked_unix": 1791802270.2934926,
+    "speed3": [
+      {
+        "name": "e2e-speed3-gate-intent-r1",
+        "exit": "0",
+        "writers": [],
+        "archived": true
+      },
+      {
+        "name": "e2e-speed3-gate-r1",
+        "exit": "0",
+        "writers": [],
+        "archived": true
+      },
+      {
+        "name": "e2e-speed3-measure-r1",
+        "exit": "1",
+        "writers": [],
+        "archived": true
+      },
+      {
+        "name": "e2e-speed3-measure-r1-zstd",
+        "exit": "1",
+        "writers": [],
+        "archived": true
+      },
+      {
+        "name": "e2e-speed3-measure-r2",
+        "exit": "0",
+        "writers": [],
+        "archived": true
+      },
+      {
+        "name": "e2e-speed3-probe-adaptive-r1",
+        "exit": "0",
+        "writers": [],
+        "archived": true
+      },
+      {
+        "name": "e2e-speed3-probe-baseline-r1",
+        "exit": "0",
+        "writers": [],
+        "archived": true
+      },
+      {
+        "name": "e2e-speed3-probe-r1",
+        "exit": "1",
+        "writers": [],
+        "archived": true
+      }
+    ],
+    "other_unarchived": [
+      {
+        "name": "speed4-baseline-s61001",
+        "writers": []
+      },
+      {
+        "name": "speed4-baseline-s61001-r2",
+        "writers": []
+      },
+      {
+        "name": "speed4-baseline-s61001-r3",
+        "writers": []
+      }
+    ],
+    "speed3_lease_exists": true
+  },
+  "other_task_preservation": {
+    "scope": "Separate speed4 completed originals preserved solely for requested VM3 shutdown; not speed3 results",
+    "raw_modified": false,
+    "compression": false,
+    "admission": {
+      "checked_unix": 1791802301.0484416,
+      "reason": "User requested VM3 deallocation after preserving completed other-task originals; no source mutation or compression",
+      "runs": [
+        {
+          "name": "speed4-baseline-s61001",
+          "exit": "2",
+          "process": {
+            "pid": 28941,
+            "start": "717851",
+            "boot_id": "80fd9094-bb9b-4169-b0dc-5d18dc92ee29"
+          },
+          "matching_pid_alive": false,
+          "writers": [],
+          "lease_existed": true,
+          "lease_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lease_mtime": 1791801183.739537
+        },
+        {
+          "name": "speed4-baseline-s61001-r2",
+          "exit": "1",
+          "process": {
+            "pid": 29334,
+            "start": "725623",
+            "boot_id": "80fd9094-bb9b-4169-b0dc-5d18dc92ee29"
+          },
+          "matching_pid_alive": false,
+          "writers": [],
+          "lease_existed": true,
+          "lease_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lease_mtime": 1791801261.458419
+        },
+        {
+          "name": "speed4-baseline-s61001-r3",
+          "exit": "1",
+          "process": {
+            "pid": 36069,
+            "start": "809694",
+            "boot_id": "80fd9094-bb9b-4169-b0dc-5d18dc92ee29"
+          },
+          "matching_pid_alive": false,
+          "writers": [],
+          "lease_existed": true,
+          "lease_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lease_mtime": 1791802102.1759334
+        }
+      ]
+    },
+    "verification": {
+      "checked_unix": 1791802366.9553256,
+      "runs": [
+        {
+          "name": "speed4-baseline-s61001",
+          "source": "/home/ugrp/ugrp-sim/runs/speed4-baseline-s61001",
+          "verified": true,
+          "source_preserved": true,
+          "compressed": false,
+          "source_state_match": true,
+          "archive_marker_sha256": "3332b16443d52616aaaf011b202589f7b702043af0fd6844352f8b1413dada6a",
+          "proof": {
+            "verified": true,
+            "schema": "ugrp.archive-native.v1",
+            "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-speed4-baseline-s61001",
+            "files": 10,
+            "hash_matches": 10,
+            "inventory_sha256": "ffed75cd86ead2df8fb4d89f1da9f4429323dc923b1dc8448d57331a27803b2c",
+            "reused": false,
+            "receiver_seconds": 0.047
+          },
+          "bytes": 2297,
+          "lease_removed_by_verified_archive": true,
+          "arm_independent_recheck": {
+            "name": "speed4-baseline-s61001",
+            "files": 10,
+            "bytes": 2297,
+            "inventory_sha256": "ffed75cd86ead2df8fb4d89f1da9f4429323dc923b1dc8448d57331a27803b2c",
+            "full_hash_reread": true
+          }
+        },
+        {
+          "name": "speed4-baseline-s61001-r2",
+          "source": "/home/ugrp/ugrp-sim/runs/speed4-baseline-s61001-r2",
+          "verified": true,
+          "source_preserved": true,
+          "compressed": false,
+          "source_state_match": true,
+          "archive_marker_sha256": "37f8af149d8d2797529823b2a83e427c88db4a18f96abd4a2520b5c27e5af3ac",
+          "proof": {
+            "verified": true,
+            "schema": "ugrp.archive-native.v1",
+            "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-speed4-baseline-s61001-r2",
+            "files": 41,
+            "hash_matches": 41,
+            "inventory_sha256": "96bd1b1e9333252a0723914972831c23fb0195e67a059c0d3774a0f8c917e342",
+            "reused": false,
+            "receiver_seconds": 0.25
+          },
+          "bytes": 1812414,
+          "lease_removed_by_verified_archive": true,
+          "arm_independent_recheck": {
+            "name": "speed4-baseline-s61001-r2",
+            "files": 41,
+            "bytes": 1812414,
+            "inventory_sha256": "96bd1b1e9333252a0723914972831c23fb0195e67a059c0d3774a0f8c917e342",
+            "full_hash_reread": true
+          }
+        },
+        {
+          "name": "speed4-baseline-s61001-r3",
+          "source": "/home/ugrp/ugrp-sim/runs/speed4-baseline-s61001-r3",
+          "verified": true,
+          "source_preserved": true,
+          "compressed": false,
+          "source_state_match": true,
+          "archive_marker_sha256": "8f2f0eff09e492c0201baec10d9d880959f517ac044c3c74ee2b9a594dcf0953",
+          "proof": {
+            "verified": true,
+            "schema": "ugrp.archive-native.v1",
+            "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-speed4-baseline-s61001-r3",
+            "files": 92,
+            "hash_matches": 92,
+            "inventory_sha256": "e423e0db30f90106070ca593f82db81880966905d06550c355c8c17e4e6244cb",
+            "reused": false,
+            "receiver_seconds": 0.311
+          },
+          "bytes": 2525355,
+          "lease_removed_by_verified_archive": true,
+          "arm_independent_recheck": {
+            "name": "speed4-baseline-s61001-r3",
+            "files": 92,
+            "bytes": 2525355,
+            "inventory_sha256": "e423e0db30f90106070ca593f82db81880966905d06550c355c8c17e4e6244cb",
+            "full_hash_reread": true
+          }
+        }
+      ]
+    }
+  },
+  "vm3_shutdown": {
+    "state": "deallocated",
+    "confirmed_unix": 1791802458.749485,
+    "state_evidence": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/vm3-final-state.json",
+    "state_sha256": "ebf5e56c180714d146c56b27bdecdd5aeb598865c928dee9de578127bb2bba8b",
+    "shutdown_race": {
+      "schema": "ugrp.vm-shutdown-race.v1",
+      "recorded_unix": 1791802458.7488902,
+      "status": "VM_DEALLOCATED_OTHER_RUN_UNRETRIEVED",
+      "vm": "ugrp-sim-azure3",
+      "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+      "other_run": "speed4-map-baseline-s61001",
+      "source_path": "azure3:/home/ugrp/ugrp-sim/runs/speed4-map-baseline-s61001",
+      "detected_by": "azure_shutdown.blockers after speed3 archive completion and own e2e-speed3 lease removal",
+      "blocker_state": {
+        "unarchived": [
+          "speed4-map-baseline-s61001"
+        ],
+        "leases": [
+          "speed4-map-baseline-s61001"
+        ],
+        "stopping": false
+      },
+      "failure": "Shell did not stop after remote Python assertion rejected shutdown, so subsequent az vm deallocate --no-wait was submitted",
+      "speed3_results_separate": true,
+      "other_raw_status": "UNRETRIEVED: new run EXIT, PID, SHA, progress and ARM copy were not obtained before VM deallocation",
+      "other_run_interruption": "VM compute confirmed deallocated; exact run termination/flush outcome unverified",
+      "new_run_started_or_modified_by_this_task": false,
+      "vm_restarted": false,
+      "vm_api_state": {
+        "name": "ugrp-sim-azure3",
+        "status": [
+          {
+            "code": "ProvisioningState/succeeded",
+            "displayStatus": "Provisioning succeeded",
+            "level": "Info",
+            "time": "2026-10-12T10:53:14.0564121+00:00"
+          },
+          {
+            "code": "PowerState/deallocated",
+            "displayStatus": "VM deallocated",
+            "level": "Info"
+          }
+        ]
+      },
+      "persistent_os_disk": {
+        "diskSizeGB": 128,
+        "diskState": "Reserved",
+        "id": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/disks/ugrp-sim-azure3-os",
+        "managedBy": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure3",
+        "name": "ugrp-sim-azure3-os",
+        "provisioningState": "Succeeded"
+      },
+      "disk_scope": "Managed OS disk resource exists with state Reserved and provisioning Succeeded; file-level contents cannot be verified while VM is deallocated",
+      "required_followup": "At a separately authorized VM3 start, inspect source persistent directory and recover/verify archive before new admission",
+      "legacy_speed4_preservation": "Earlier 3 completed speed4 runs preserved separately and verified before this new run appeared",
+      "ssh_recheck": {
+        "exit_code": 255,
+        "result": "Connection timed out during banner exchange; no guest file access after deallocation"
+      },
+      "coordinator_notification": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/455#issuecomment-6122832694"
+    },
+    "incident_evidence": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/vm3-shutdown-incident.json",
+    "incident_sha256": "a3f05706ee077bb5b26ea888e3124698d653685b1f52d697349a3bfa3f0a34d9",
+    "own_speed3_lease_removed": true
+  },
+  "vm4_shutdown": {
+    "state": "deallocated",
+    "confirmed_unix": 1791802484.564117,
+    "action_by_this_task": "none; was already deallocated",
+    "current_api": {
+      "name": "ugrp-sim-azure4",
+      "status": [
+        {
+          "code": "ProvisioningState/succeeded",
+          "displayStatus": "Provisioning succeeded",
+          "level": "Info",
+          "time": "2026-10-12T10:17:18.3534315+00:00"
+        },
+        {
+          "code": "PowerState/deallocated",
+          "displayStatus": "VM deallocated",
+          "level": "Info"
+        }
+      ]
+    },
+    "current_evidence": "/Users/changmin/projects/ugrp-wt/e2e-speed3/outputs/e2e-speed3/archive-lite/vm4-final-state.json",
+    "current_evidence_sha256": "0d2ba2db770b96835a46a9f67ac1ac9806a680b3d417c8166e76a44888446207",
+    "prior_17th_round_preservation": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/24c442ac33e98394cb3e5de2c9fffa6310345a7b/experiments/2026-10-12-e2e-idle/speed-stop-archive.json",
+    "prior_record_local": "/Users/changmin/projects/ugrp-wt/e2e-idle/experiments/2026-10-12-e2e-idle/speed-stop-archive.json"
+  }
 }
