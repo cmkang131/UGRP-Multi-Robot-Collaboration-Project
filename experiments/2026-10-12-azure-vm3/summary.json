@@ -77,6 +77,23 @@
         "delegatedManagedIdentityResourceId": null,
         "description": null
       }
+    ],
+    "live_probe": [
+      {
+        "put_status": 201
+      },
+      {
+        "state": "Succeeded",
+        "view": {
+          "exitCode": 0,
+          "executionState": "Succeeded",
+          "executionMessage": "Execution completed",
+          "output": "VM3_IDENTITY_PROBE_OK",
+          "error": "",
+          "startTime": "2026-10-12T03:12:59+00:00",
+          "endTime": "2026-10-12T03:12:59+00:00"
+        }
+      }
     ]
   },
   "safety": {
@@ -267,10 +284,13 @@
       "raw": "azure3:~/ugrp-sim/runs/azure3-smoke-20261012-01",
       "archive": {
         "verified": true,
-        "native_arm_path": null,
-        "files": null,
-        "inventory_sha256": null,
-        "native_proof": null
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-azure3-smoke-20261012-01",
+        "files": 9,
+        "hash_matches": 9,
+        "inventory_sha256": "898ccc9ba58fe88232206b6c90a792dcdcbb11a92c62738dba491e9c020dde4f",
+        "reused": false,
+        "receiver_seconds": 0.154
       }
     },
     {
@@ -304,10 +324,13 @@
       "raw": "azure3:~/ugrp-sim/runs/azure3-smoke-20261012-02",
       "archive": {
         "verified": true,
-        "native_arm_path": null,
-        "files": null,
-        "inventory_sha256": null,
-        "native_proof": null
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-azure3-smoke-20261012-02",
+        "files": 36,
+        "hash_matches": 36,
+        "inventory_sha256": "da97fce5651b1a1823733449bb32cbf97ae487405dc9852317655bfe1bf20e17",
+        "reused": false,
+        "receiver_seconds": 0.173
       }
     }
   ],
@@ -323,5 +346,17 @@
     "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-manage-disks",
     "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command-managed",
     "https://learn.microsoft.com/en-nz/azure/backup/backup-azure-troubleshoot-vm-backup-fails-snapshot-timeout"
+  ],
+  "independent_arm_hash_verification": [
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-azure3-smoke-20261012-02",
+      "files": 36,
+      "hash_matches": 36
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-azure3-smoke-20261012-01",
+      "files": 9,
+      "hash_matches": 9
+    }
   ]
 }
