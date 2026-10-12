@@ -1,0 +1,224 @@
+{
+  "checks": [
+    {
+      "name": "e2e18-v224-s61004-r10",
+      "host": "ugrp-sim-azure3",
+      "checked_unix": 1791810542.9840727,
+      "wall_s": 35.51846730399939,
+      "sim_s": 3.0,
+      "frames": 8,
+      "LLM": true,
+      "B_boundary": true,
+      "eval_only_motion": {
+        "r1": {
+          "first_t": 1.3,
+          "last_t": 4.3,
+          "displacement_m": 0.19812998115110955,
+          "stationary_sim_s": 0.34999999999999964,
+          "shift_last30sim_m": 0.19812998115110955,
+          "tail_max_tilt_deg": 0.12499562436092441
+        },
+        "r2": {
+          "first_t": 1.3,
+          "last_t": 4.3,
+          "displacement_m": 0.19768280554989193,
+          "stationary_sim_s": 0.34999999999999964,
+          "shift_last30sim_m": 0.19768280554989193,
+          "tail_max_tilt_deg": 0.1210158742579937
+        }
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 16
+        },
+        "r2": {
+          "stage": "explore",
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 16
+        }
+      },
+      "initial_ok": true,
+      "proof": "outputs/e2e18-admin/initial-auto/e2e18-v224-s61004-r10.json",
+      "proof_sha256": "1b5f0bc2d169aed70051a951c988d7b5543b813179b0975f99f82c86e5ff01e8"
+    },
+    {
+      "name": "e2e18-v224-s61005-r10",
+      "host": "ugrp-sim-azure3",
+      "checked_unix": 1791810542.9840727,
+      "wall_s": 35.72793025699957,
+      "sim_s": 7.0,
+      "frames": 18,
+      "LLM": true,
+      "B_boundary": true,
+      "eval_only_motion": {
+        "r1": {
+          "first_t": 1.3,
+          "last_t": 8.3,
+          "displacement_m": 0.4588249964518955,
+          "stationary_sim_s": 0.35000000000000053,
+          "shift_last30sim_m": 0.4588249964518955,
+          "tail_max_tilt_deg": 0.17187922607638245
+        },
+        "r2": {
+          "first_t": 1.3,
+          "last_t": 8.3,
+          "displacement_m": 0.2869572361650129,
+          "stationary_sim_s": 2.950000000000001,
+          "shift_last30sim_m": 0.2869572361650129,
+          "tail_max_tilt_deg": 0.13414863354537626
+        }
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 36
+        },
+        "r2": {
+          "stage": "explore",
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 36
+        }
+      },
+      "initial_ok": true,
+      "proof": "outputs/e2e18-admin/initial-auto/e2e18-v224-s61005-r10.json",
+      "proof_sha256": "b13be6a9ab72e47ca924f07e4534da04adb6283e539ba8df5f22887da3e361de"
+    },
+    {
+      "name": "e2e18-v224-s61009-r10",
+      "host": "ugrp-sim-azure4",
+      "checked_unix": 1791810543.0412688,
+      "wall_s": 37.27508244599994,
+      "sim_s": 9.0,
+      "frames": 23,
+      "LLM": true,
+      "B_boundary": true,
+      "eval_only_motion": {
+        "r1": {
+          "first_t": 1.3,
+          "last_t": 10.3,
+          "displacement_m": 0.5495388745707143,
+          "stationary_sim_s": 0.5500000000000007,
+          "shift_last30sim_m": 0.5495388745707143,
+          "tail_max_tilt_deg": 0.13378320910376607
+        },
+        "r2": {
+          "first_t": 1.3,
+          "last_t": 10.3,
+          "displacement_m": 0.28766265230328947,
+          "stationary_sim_s": 4.950000000000001,
+          "shift_last30sim_m": 0.28766265230328947,
+          "tail_max_tilt_deg": 0.13795470892069508
+        }
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.0,
+            "turn": -0.35,
+            "duration_s": 0.1
+          },
+          "translation_commands": 42
+        },
+        "r2": {
+          "stage": "explore",
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 46
+        }
+      },
+      "initial_ok": true,
+      "proof": "outputs/e2e18-admin/initial-auto/e2e18-v224-s61009-r10.json",
+      "proof_sha256": "c7084bd26cbc473b1c5d09c01402bf126b8245750c7713700e14f63bca537c0d"
+    },
+    {
+      "name": "e2e18-v224-s61010-r10",
+      "host": "ugrp-sim-azure4",
+      "checked_unix": 1791810543.0412688,
+      "wall_s": 39.58436276999964,
+      "sim_s": 7.0,
+      "frames": 18,
+      "LLM": true,
+      "B_boundary": true,
+      "eval_only_motion": {
+        "r1": {
+          "first_t": 1.3,
+          "last_t": 7.3,
+          "displacement_m": 0.39271565406515696,
+          "stationary_sim_s": 0.34999999999999964,
+          "shift_last30sim_m": 0.39271565406515696,
+          "tail_max_tilt_deg": 0.13154234273509657
+        },
+        "r2": {
+          "first_t": 1.3,
+          "last_t": 7.3,
+          "displacement_m": 0.2864421622103816,
+          "stationary_sim_s": 1.9500000000000002,
+          "shift_last30sim_m": 0.2864421622103816,
+          "tail_max_tilt_deg": 0.13246886348302053
+        }
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 35
+        },
+        "r2": {
+          "stage": "explore",
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 35
+        }
+      },
+      "initial_ok": true,
+      "proof": "outputs/e2e18-admin/initial-auto/e2e18-v224-s61010-r10.json",
+      "proof_sha256": "eb86f2b478ff7c5232ffc3c0ea422fe4c784835bf827f3ef9f7c6f59d9adbba6"
+    }
+  ]
+}
