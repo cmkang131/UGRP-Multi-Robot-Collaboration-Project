@@ -1,0 +1,112 @@
+{
+ "schema": "ugrp.dev.summary.v1",
+ "pr": null,
+ "branch": "codex/e2e-usstall",
+ "base_sha": "6baadb20ec941d7887d98dc3003acc9f754f7b9d",
+ "requested_ancestor": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+ "controller_source_sha": "e6e381fec9df4e9ad7164cd05e09de531a8d35bc",
+ "replay_source_sha": "839048337a78e15d6286c9438e71a4857b970c0b",
+ "status": "prepared_not_executed",
+ "execution_bundle_id": "e2e-usstall-v206",
+ "workflow_version": "7.99.0",
+ "sources_verified": 8,
+ "tests": {
+  "n": 68,
+  "N": 68,
+  "files": [
+   "tests/test_e2e_us_stall.py",
+   "tests/test_e2e_rgb_vo.py",
+   "tests/test_ultrasonic_input.py"
+  ],
+  "deselected_physics_cases": 7,
+  "scope": "pure controller, RGB numerical fixture, fake acquisition backend; no physics or provider",
+  "failures": [
+   {
+    "attempt": 1,
+    "passed": 66,
+    "failed": 1,
+    "cause": "existing egomap56 acquisition/finalizer absent from old no-consumer AST allowlist",
+    "fix": "explicit named wiring registration; no old behavior change"
+   },
+   {
+    "attempt": 2,
+    "passed": 67,
+    "failed": 1,
+    "cause": "zero net interval still had nonzero internal translations at RBPF callbacks",
+    "fix": "us_zero forces zero translation in every substep; preserves commanded yaw and Q"
+   }
+  ]
+ },
+ "replay": {
+  "n": 124,
+  "N": 124,
+  "scope": "fixed issued-command replay; v2 fallback equivalence, not ZUPT accuracy or E2E success",
+  "ultrasonic_status": "unavailable: no recorded ranges",
+  "us_zero_observed": 0,
+  "range_available_runs": {
+   "n": 0,
+   "N": 4
+  },
+  "e2e15_local_inventory": {
+   "runs": 6,
+   "ranges": 0,
+   "note": "first six receipt-failure attempts, no frames; corrected live runs not retrieved or evaluated here"
+  },
+  "record": "offline-final/offline-audit.json"
+ },
+ "mask_audit": {
+  "n": 4,
+  "N": 4,
+  "annotation": "visually inspected common wall ROI x200:540,y110:170; not semantic ground truth",
+  "admitted_wall_pixels_per_frame": 20204,
+  "roi_pixels": 20400,
+  "admitted_mask_fraction_min": 0.10430885830227059,
+  "admitted_mask_fraction_max": 0.10975066543538486,
+  "wall_roi_detected_corners": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "conclusion": "fixed floor-ray mask admits wall pixels; zero corners in inspected uniform ROI, so this does not prove which VO matches caused error",
+  "initial_attempt": "offline-audit.json used x100:540 ROI that includes non-wall in fourth frame; superseded by offline-final; original retained"
+ },
+ "remote_execution": {
+  "submitted": 0,
+  "N_planned": 6,
+  "seeds": [
+   61001,
+   61002,
+   61003
+  ],
+  "comparison": [
+   "e2e-usstall-v206",
+   "e2e-combo14-vo2-v205"
+  ],
+  "wall_cap_s": 25200,
+  "initial_check": {
+   "status": "not_run",
+   "reason": "explicit coordinator-only execution"
+  },
+  "command": "azure-pair.sh",
+  "workflow_plan_verified": true,
+  "shell_syntax_verified": true
+ },
+ "raw": {
+  "path": "/Users/changmin/projects/ugrp-wt/e2e-usstall/outputs/e2e-usstall-audit",
+  "remote_original": "azure:~/ugrp-sim/runs/e2e14-a-s6100[1-4]-r2/raw",
+  "files": 124,
+  "bytes": 1619604,
+  "sha256_verified": 124,
+  "full_raw_fetched": false
+ },
+ "limits": [
+  "Default off; no physical or E2E success claim",
+  "Unloaded SEARCH issued arm posture only; near <=0.5 m, forward only",
+  "Single range cannot distinguish moving obstacle, wall-parallel motion or own arm pose error",
+  "Thresholds are DEV hypotheses; no physical sonar calibration",
+  "CI and independent controller review required before adoption; draft only"
+ ],
+ "next": "Coordinator paired Azure execution and fresh range history; no source/baseline checkout update",
+ "class": "dev"
+}
