@@ -139,15 +139,20 @@ def test_no_loop_cached_replay_and_uncorrected_prefix():
     assert json.dumps([rows,path,legacy])==original
 
 
-def test_score_diagnostic_does_not_claim_probability_calibration():
-    import importlib.util
+def test_score_diagnostic_does_not_claim_probability_calibration(monkeypatch):
     from pathlib import Path
+    from types import ModuleType
     import sys
+    from tests.isolated_code_dir import load
     directory=Path(__file__).resolve().parents[1]/'experiments/2026-10-07-robust-wall-map/code'
-    sys.path.insert(0,str(directory))
-    spec=importlib.util.spec_from_file_location('egomap21_score_test',directory/'offline_score.py')
-    module=importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    # Reproduce collection-order pollution from another experiment's common.py.
+    foreign=ModuleType('common')
+    foreign.__file__=str(directory.parent.parent/'unrelated/code/common.py')
+    monkeypatch.setitem(sys.modules,'common',foreign)
+    original_path=list(sys.path)
+    module=load(directory,'egomap21_score_test','offline_score.py')
+    assert sys.modules['common'] is foreign
+    assert sys.path==original_path
     result=module.score_gap(np.array([.95,.95]),np.array([0.,1.]))
     assert result['score_ece']==pytest.approx(.45)
     assert 'NOT a probability' in result['qualification']
