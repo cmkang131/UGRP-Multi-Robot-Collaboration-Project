@@ -90,3 +90,61 @@ def test_opt_in_bundle_retains_physical_parameters_and_default_off():
     assert 'exact_speedups' not in old['e2e_options']
     changed={k for k in old if old[k]!=new[k]}
     assert changed=={'schema','execution_bundle_id','workflow_version','e2e_options','source_sha256'}
+
+
+def test_scalar_cell_float64_boundaries_and_fallback_equal_legacy():
+    import numpy as np
+    from harness.own_map_navigation import ObservedGrid
+    from harness.e2e_exact_speedups import Options,using
+    rng=np.random.default_rng(43)
+    for resolution in (.1,.05,.2):
+        grid=ObservedGrid('r1',resolution)
+        values=np.r_[rng.uniform(-100,100,3000),np.arange(-100,101)*resolution,0.,-0.]
+        values=np.r_[values,np.nextafter(values,np.inf),np.nextafter(values,-np.inf)]
+        points=np.column_stack((values,values[::-1]))
+        baseline=[grid.cell(p) for p in points]
+        with using(Options(scalar_cells=True)):
+            assert [grid.cell(p) for p in points]==baseline
+            for p in ([.1,-.1],np.array([.1,-.1],np.float32),np.array([1,2],np.int64)):
+                assert grid.cell(p)==tuple(int(v) for v in np.floor(np.asarray(p)/resolution))
+
+
+def test_geometry_cache_is_bit_exact_owned_and_invalidates_changed_inputs():
+    import numpy as np
+    from harness.e2e_exact_speedups import Options,using
+    from harness.floor_goal import optical_rays,floor_intersections
+    from harness.floor_goal_self_mask import project_envelopes,body_envelopes
+    from harness.active_camera import SEARCH,goal_camera
+    origin,axes=goal_camera(SEARCH,'camera_v3');rays=optical_rays(64,48)
+    expected=floor_intersections(rays,origin,axes)
+    mask=project_envelopes(body_envelopes(SEARCH,'camera_v3'),origin,axes,64,48)
+    with using(Options(geometry_cache=True)):
+        for _ in range(2):
+            result=floor_intersections(rays,origin,axes)
+            assert [a.tobytes() for a in result]==[a.tobytes() for a in expected]
+            result[0][0,0]=[999]*3
+            got=project_envelopes(body_envelopes(SEARCH,'camera_v3'),origin,axes,64,48)
+            assert got.tobytes()==mask.tobytes();got[:]=~got
+        changed=origin.copy();changed[2]+=.01
+        actual=floor_intersections(rays,changed,axes)
+    fresh=floor_intersections(rays,changed,axes)
+    assert [a.tobytes() for a in actual]==[a.tobytes() for a in fresh]
+    # Context must never leak into another robot or the default path.
+    from harness.e2e_exact_speedups import geometry_enabled,cells_enabled
+    assert not geometry_enabled() and not cells_enabled()
+
+
+def test_dense_integer_indexing_preserves_duplicates_unknown_and_provenance():
+    import numpy as np
+    from harness.own_map_navigation import ObservedGrid
+    from harness.e2e_exact_speedups import Options,using
+    grid=ObservedGrid('r1',.05)
+    for i in range(-20,21):
+        grid.odds[(i,i//3)]=float((i%3)-1)
+        if i%2:grid.floor_frames[(i,i//3)]={1}
+        if i%5:grid.support.add((i,i//3))
+    grid.support.add((-24,3))
+    for pose in ([0.,0.,0.],[-1.05,.15,0.],[2.,-2.,1.]):
+        before=grid.dense(pose)
+        with using(Options(scalar_cells=True)):after=grid.dense(pose)
+        assert all(a.dtype==b.dtype and a.shape==b.shape and a.tobytes()==b.tobytes() for a,b in zip(before,after))

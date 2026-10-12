@@ -31,7 +31,8 @@ def bundle(sha,condition,seed=601,*,profile=DEFAULT_PROFILE,options=Options()):
         driver_profile=profile,driver_profile_sha256=digest(registered),study_options=asdict(options),
         condition=external_condition(condition,options.prompt_lang),
         legacy_channel_codec=legacy_condition(condition),model=registered['model'],
-        cohort_key=f'{profile}:{options.prompt_lang}:event{int(options.event_driven_llm)}:compact{int(options.compact_prompt_v1)}',
+        cohort_key=f'{profile}:{options.prompt_lang}:event{int(options.event_driven_llm)}:compact{int(options.compact_prompt_v1)}'
+            +f':coalesce{int(options.event_coalesce_v1)}:mapimage{int(options.map_as_image_v1)}:trim{int(options.context_trim_v1)}',
         execution_admitted=False,admission_blockers=['Azure readiness notification','own-map E2E integration'],
         pool_historical_results=False,research_result=False)
     from harness.python_source_closure import source_closure
@@ -66,12 +67,15 @@ def main(argv=None):
     p.add_argument('--prompt-lang',choices=('en','ko'),default='en')
     p.add_argument('--driver-profile',choices=(DEFAULT_PROFILE,'main_study_gemini_v1'),default=DEFAULT_PROFILE)
     p.add_argument('--event-driven-llm',action='store_true');p.add_argument('--compact-prompt-v1',action='store_true')
+    p.add_argument('--event-coalesce-v1',action='store_true');p.add_argument('--map-as-image-v1',action='store_true')
+    p.add_argument('--context-trim-v1',action='store_true')
     p.add_argument('--expected-source-sha',required=True);p.add_argument('--execute',action='store_true')
     p.add_argument('--output',type=Path)
     a=p.parse_args(argv)
     if a.execute:raise ValueError('AZURE_AND_OWN_MAP_ADMISSION_REQUIRED: preparation only')
     result=bundle(a.expected_source_sha,a.condition,a.seed,profile=a.driver_profile,
-        options=Options(a.event_driven_llm,a.compact_prompt_v1,a.prompt_lang))
+        options=Options(a.event_driven_llm,a.compact_prompt_v1,a.prompt_lang,
+                        a.event_coalesce_v1,a.map_as_image_v1,a.context_trim_v1))
     if a.output:
         a.output.parent.mkdir(parents=True,exist_ok=True)
         a.output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')

@@ -139,13 +139,15 @@ def test_bundle_registers_v201_and_source():
     assert off['execution_bundle_id'] != 'e2e-rgb-vo-v201' and 'stall_odometry' not in off['e2e_options']
 
 
-def test_live_robot_wiring_feeds_driver_and_rbpf_cloud(monkeypatch):
+@pytest.mark.parametrize('measured', [True, False])
+def test_live_robot_wiring_feeds_driver_and_rbpf_cloud(monkeypatch, measured):
     """Real make_goal/install path: VO increment reaches the driver AND the RBPF particles."""
     import base64, json
     from harness.e2e_live_mapping import Robot
     from harness.s4_event_policy import Options as Study
-    monkeypatch.setattr(vo, 'ground_pair', lambda *a: dict(status='measured', tracks=40, inliers=40, cells=6,
-        delta=[0., 0., 0.], covariance=(np.eye(3)*1e-8).tolist(), fit_rms_m=0.))
+    result = dict(status='measured', tracks=40, inliers=40, cells=6,
+        delta=[0., 0., 0.], covariance=(np.eye(3)*1e-8).tolist(), fit_rms_m=0.) if measured else dict(status='unknown_texture')
+    monkeypatch.setattr(vo, 'ground_pair', lambda *a: result)
     cov = json.loads(Path('configs/e2e_nees_egomap70_dev_v1.json').read_text())
     r = Robot('r1', 61001, cov, Study(), exploration_progress='frontier_progress_v1',
               pose_fix='innovation', path_follow='rpp_v1', stall_options=Options(VO))
@@ -154,13 +156,24 @@ def test_live_robot_wiring_feeds_driver_and_rbpf_cloud(monkeypatch):
         rgb = np.zeros((480, 640, 3), np.uint8);_, data = cv2.imencode('.jpg', rgb);data = data.tobytes()
         trace = r.receive(dict(frame_id=i+1, sim_time=i*.2, sha256=hashlib.sha256(data).hexdigest(),
                                image=base64.b64encode(data).decode()), rgb)
-        r.commanded({k: v for k, v in pulse(i*.2).items() if k != 't'}, i*.2)
+        if i < 9:
+            r.commanded({k: v for k, v in pulse(i*.2).items() if k != 't'}, i*.2)
+            # A real scheduler stops a 100 ms pulse between the 5 Hz RGB frames.
+            # This must not integrate half of the interval before VO is available.
+            r.commanded(dict(kind='hold'), i*.2+.1)
     row = trace['stall_odometry']
-    assert row['options']['stall_odometry'] == VO and row['status'] == 'measured' and row['fusion'] == 'vo_replaced'
+    assert row['options']['stall_odometry'] == VO
     assert r.goal.e2e_vo.nominal.pose[0] > .08
-    assert abs(view.base.driver.pose[0]) < .03  # only camera-settle intervals kept the command
-    assert np.abs(view.base.owner.poses[:, 0]).max() < .06
+    if measured:
+        assert row['status'] == 'measured' and row['fusion'] == 'vo_replaced'
+        assert abs(view.base.driver.pose[0]) < .03  # only camera-settle intervals kept the command
+        assert np.abs(view.base.owner.poses[:, 0]).max() < .06
+        assert row['fusion_applied']
+    else:
+        assert row['status'] == 'unknown_texture' and row['fusion'] == 'command_kept'
+        np.testing.assert_allclose(view.base.driver.pose, r.goal.e2e_vo.nominal.pose, atol=1e-12)
     assert r.goal.e2e_vo.counts['substep_mismatch'] == 0
+    assert row['command_substeps'] == 4
 
 
 @pytest.mark.parametrize('n', [0, 1])

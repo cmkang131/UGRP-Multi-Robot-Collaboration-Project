@@ -11,6 +11,7 @@ import math
 
 import cv2
 import numpy as np
+from harness.e2e_exact_speedups import cells_enabled
 from scipy.ndimage import binary_dilation, distance_transform_edt, label
 
 from harness.self_odom_grid import transform
@@ -86,6 +87,11 @@ class ObservedGrid:
         self.support = set()
 
     def cell(self, xy):
+        if (cells_enabled() and type(xy) is np.ndarray and xy.shape==(2,) and xy.dtype==np.float64
+                and type(self.resolution) in (float,int) and self.resolution>0):
+            x,y=float(xy[0]),float(xy[1])
+            if math.isfinite(x) and math.isfinite(y):
+                return math.floor(x/self.resolution),math.floor(y/self.resolution)
         return tuple(int(v) for v in np.floor(np.asarray(xy)/self.resolution))
 
     def point(self, cell):
@@ -140,6 +146,12 @@ class ObservedGrid:
         if np.prod(hi-lo) > 1_000_000:
             raise ValueError('NAV_GRID_RESOURCE_LIMIT')
         a = np.zeros(tuple((hi-lo)[::-1]),np.int8)
+        if cells_enabled() and type(self) is ObservedGrid and xy.dtype.kind in 'iu':
+            # Integer indexing only. Repeated cells have the same pure state,
+            # so duplicate indexed writes preserve the original dense bytes.
+            indices=xy-lo
+            a[indices[:,1],indices[:,0]]=np.fromiter((self.state(c) for c in cells),np.int8)
+            return a,lo
         for c in set(cells):
             x,y = np.array(c)-lo
             a[y,x] = self.state(c)

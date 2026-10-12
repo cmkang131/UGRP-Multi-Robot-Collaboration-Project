@@ -1,3 +1,4 @@
+import math
 import importlib.util
 import json
 from pathlib import Path
@@ -11,7 +12,7 @@ def test_plans_supported_sealed_and_reach_authored_own_goals():
     spec.loader.exec_module(module)
     for reverse in (False,True):
         plan=module.compile_route(reverse)
-        assert json.loads(json.dumps(plan))==json.loads((run.EXP/(plan['case']+'-plan.json')).read_text())
+        assert _close(json.loads(json.dumps(plan)),json.loads((run.EXP/(plan['case']+'-plan.json')).read_text()))
         assert plan['end_command_s']<=180 and len(plan['milestones'])==8
         for cmd in plan['commands']:
             assert profile_key(cmd,False) in model()['profiles']
@@ -43,14 +44,20 @@ def test_calibration_has_empty_bins_and_rejects_nonfinite_scores():
     import sys
     import numpy as np
     import pytest
-    sys.path.insert(0,str(run.EXP/'code'))
-    # Load by path; script module names must not shadow existing frozen replay modules.
-    spec=importlib.util.spec_from_file_location('arena_score',run.EXP/'code/score.py')
-    m=importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(m)
+    # Load by path with sibling modules (common/replay) isolated from other experiment folders.
+    from tests.isolated_code_dir import load
+    m=load(run.EXP/'code','arena_score','score.py')
     r=m.calibration([.55,.55,.95],[1.,0.,1.])
     assert r['bins'][0]['n']==0 and r['bins'][0]['precision'] is None
     assert r['bins'][5]['n']==2 and r['bins'][5]['precision']==.5
     assert r['brier']==pytest.approx((.45**2+.55**2+.05**2)/3)
     assert 'ece' not in m.calibration([.2],[0.],probability=False)
     with pytest.raises(AssertionError):m.calibration([np.nan],[1.])
+
+
+def _close(a,b):
+    """Exact structure/ints/strings; floats to 1e-12 relative (Linux/macOS libm differ in the last ulp)."""
+    if isinstance(a,dict):return isinstance(b,dict) and a.keys()==b.keys() and all(_close(a[k],b[k]) for k in a)
+    if isinstance(a,(list,tuple)):return isinstance(b,(list,tuple)) and len(a)==len(b) and all(_close(x,y) for x,y in zip(a,b))
+    if isinstance(a,float) or isinstance(b,float):return math.isclose(a,b,rel_tol=1e-12,abs_tol=1e-15)
+    return a==b

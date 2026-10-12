@@ -365,6 +365,7 @@ def install(goal, option=OPTION):
         raise ValueError('UNKNOWN_RGB_VO_OPTION')
     vo = VOFusion(driver, fallback='pulse_gate' if option == OPTION_V2 else None);goal.e2e_vo = vo
     active = False
+    pending_commands = []
 
     def motion_filter(delta, variance):
         return vo.motion_filter(delta, variance) if active else (delta, variance)
@@ -372,7 +373,12 @@ def install(goal, option=OPTION):
     command = goal.command
 
     def commanded(row):
-        vo.command(row);return command(row)
+        # The physical command has already been dispatched by Robot.commanded.
+        # Defer only estimator integration until its complete RGB interval is
+        # available, then replay every issued timestamp through the same facade.
+        vo.command(row)
+        pending_commands.append(copy.deepcopy(row))
+        goal.last_command = copy.deepcopy(row)
     goal.command = commanded
     receive = goal.receive
 
@@ -382,10 +388,17 @@ def install(goal, option=OPTION):
             raise ValueError('SELF_MAP_PEER_INPUT_FORBIDDEN')
         row = vo.observe(t=kw['t'], frame_id=kw['frame_id'], rgb=kw['rgb'], servo=kw['servo'], sha256=kw['frame_sha256'])
         active = True;before = np.asarray(driver.pose)
+        mismatches = vo.counts['substep_mismatch']
         try:
+            for issued in pending_commands:
+                command(issued)
+            pending_commands.clear()
             odom.advance(kw['t'])
         finally:
             active = False;vo.finish_interval()
+        if vo.counts['substep_mismatch'] != mismatches:
+            row['fusion_applied'] = False
+            raise ValueError('RGB_VO_SUBSTEP_MISMATCH')
         row['applied_delta'] = between(before, np.asarray(driver.pose)).tolist()
         row['counts'] = dict(vo.counts)
         action, trace = receive(**kw)
