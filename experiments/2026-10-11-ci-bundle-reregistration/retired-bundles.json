@@ -196,6 +196,51 @@
       },
       "reason": "PR425 changed four of 433 sealed runtime sources; the stale v193 workflow would create a v195 bundle. Preserve records and original sources; replay only at the original SHA.",
       "replacement": "zone-s3-recovery-v195"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v195",
+      "workflow_version": "7.88.0",
+      "source_sha": "62110b5402e1a991c00f61a4ee7a1baa3aac8167",
+      "runtime_source_count": 434,
+      "changed_runtime_sources": [
+        "harness/zone_environment_registry.py",
+        "harness/zone_final_environment.py",
+        "harness/zone_final_pair_skill.py",
+        "harness/zone_s3_host.py",
+        "harness/zone_s3_recovery_runtime.py",
+        "harness/zone_solo_cyan_path_heading.py",
+        "sim/workflow_manager.py",
+        "sim/zone_scenario_scene.py"
+      ],
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/harness/zone_s3_recovery_contract.py",
+          "sha256": "f2bd6b86261995d6e8ed956b6c44cd7bb4fb25581ed9d7607c85f181dce35fc6"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/scripts/run_s3_recovery.py",
+          "sha256": "67aa919063f64235062e3197bc608518b77adbf381707914b5c778fb0f83000e"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v195.json": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/configs/simulation_workflows.d/s3_recovery_v195.json",
+          "sha256": "a4983315407e2f98f5dce5be8ce1fdd249dcf62fe85688a7fa679940197a7a8b"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v195.json": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/experiments/2026-10-11-ci-bundle-reregistration/registration-v195.json",
+          "sha256": "2bd7eca29ead8a20a6cc9043497da8f03076ebee716d0a4c232381e5a2a5dd65"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v195.json": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v195.json",
+          "sha256": "d97158618647ad88c9c6452a028c3de143e9d6e83c3b49553bd508000b1a74f5"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+          "sha256": "0409b47cc44d122de8eb81a2d467a2be34f12b8ea246f2db84dc040f753b0d10"
+        }
+      },
+      "reason": "PR433 source composition changed; replay old bundle only at its original SHA.",
+      "replacement": "zone-s3-recovery-v209",
+      "inherited_results": false
     }
   ]
 }

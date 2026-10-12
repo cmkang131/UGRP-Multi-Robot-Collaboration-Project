@@ -24,6 +24,7 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_e2e_runtime_registration.py",
     "tests/test_e2e_s4_live.py",
     "tests/test_e2e_goal_route.py",
     "tests/test_e2e_dialogue.py",
