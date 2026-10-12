@@ -10,10 +10,8 @@ import cv2
 
 CODE=Path(__file__).resolve().parents[1]/'experiments/2026-10-08-wall-contact-types/code'
 def load_module(name):
-    sys.path.insert(0,str(CODE))
-    spec=importlib.util.spec_from_file_location('contact_types_'+name,CODE/f'{name}.py')
-    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
-    return module
+    from tests.isolated_code_dir import load
+    return load(CODE,'contact_types_'+name,f'{name}.py')
 
 def test_actual_column_pixel_projection_roundtrip():
     common=load_module('common')

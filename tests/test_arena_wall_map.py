@@ -44,11 +44,9 @@ def test_calibration_has_empty_bins_and_rejects_nonfinite_scores():
     import sys
     import numpy as np
     import pytest
-    sys.path.insert(0,str(run.EXP/'code'))
-    # Load by path; script module names must not shadow existing frozen replay modules.
-    spec=importlib.util.spec_from_file_location('arena_score',run.EXP/'code/score.py')
-    m=importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(m)
+    # Load by path with sibling modules (common/replay) isolated from other experiment folders.
+    from tests.isolated_code_dir import load
+    m=load(run.EXP/'code','arena_score','score.py')
     r=m.calibration([.55,.55,.95],[1.,0.,1.])
     assert r['bins'][0]['n']==0 and r['bins'][0]['precision'] is None
     assert r['bins'][5]['n']==2 and r['bins'][5]['precision']==.5

@@ -18,3 +18,4 @@
 - `controller_exact_speedups`: main의 선택적 가속은 PR 모듈(self_map_rbpf 등)이 있으면 5개를 더 적용한다. 기본 5개 순서는 정확히 확인하고, 추가분은 허용 목록 안에서만 허용한다.
 - 초음파: `sim/goal_route_continuous.py`·`scripts/run_own_route_particle_stages.py`를 등록 소비자로 명시했다(#221, 번들 `ultrasonic_front=on_v1`에서만 리그 생성, 기본 off). 게이트 문자열이 사라지면 시험이 실패한다. 그 밖의 새 판독 코드는 여전히 실패한다.
 - shard 시간표: run 38189056056의 8개 JUnit으로 새 파일 83개 측정값을 추가했다(기존 값은 유지하고 겹치면 큰 값). 커버리지 634/634, 예상 shard 28.4분.
+- 2차 CI(run 38193573824) 정리: shard 재배치로 드러난 같은 이름 모듈 충돌(`common`/`replay`, 실험 `code/` 폴더마다 있음)을 `tests/isolated_code_dir.py`로 격리한다. 수정 전 같은 순서에서 2개 실패가 재현되고 수정 후 통과. `copied-sources.json`도 freeze와 같은 기록 커밋 대조를 쓴다. `self_map_causal`은 센서가 `sim.masterpi_model_v3`(MuJoCo)를 쓰므로 `importorskip`.

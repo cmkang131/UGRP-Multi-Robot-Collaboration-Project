@@ -122,18 +122,22 @@ def test_assets_and_replay_are_small_and_frozen():
     assert all(p.stat().st_size <= 1024 ** 2 for p in files)
     assert sum(p.stat().st_size for p in files) < 5 * 1024 ** 2
     f = json.loads((run.ROOT / 'experiments/2026-10-07-wall-parallax/freeze.json').read_text())
-    # Halted track: later PR #405 commits evolved some frozen sources, so each hash must match either the
-    # current file or the file at the commit that last wrote freeze.json (CI clones full history). The runner
+    # Halted track: later commits evolved some frozen/copied sources, so each hash must match either the
+    # current file or the file at the commit that last wrote the record (CI clones full history). The runner
     # itself still refuses to execute unless every current hash matches.
+    _current_or_recorded('experiments/2026-10-07-wall-parallax/freeze.json', f['hashes'])
+    copied = run.previous.EXP / 'copied-sources.json'
+    c = json.loads(copied.read_text())
+    _current_or_recorded(str(copied.relative_to(run.ROOT)), {p: v['sha256'] for p, v in c['files'].items()})
+
+
+def _current_or_recorded(record, hashes):
     import subprocess
-    freeze = 'experiments/2026-10-07-wall-parallax/freeze.json'
-    commit = subprocess.check_output(['git', 'log', '-1', '--format=%H', '--', freeze], cwd=run.ROOT, text=True).strip()
-    for p, h in f['hashes'].items():
+    commit = subprocess.check_output(['git', 'log', '-1', '--format=%H', '--', record], cwd=run.ROOT, text=True).strip()
+    for p, h in hashes.items():
         if run.sha(run.ROOT / p) != h:
             old = subprocess.check_output(['git', 'show', f'{commit}:{p}'], cwd=run.ROOT)
             assert hashlib.sha256(old).hexdigest() == h, p
-    c = json.loads((run.previous.EXP / 'copied-sources.json').read_text())
-    assert all(run.sha(run.ROOT / p) == v['sha256'] for p, v in c['files'].items())
 
 
 def _close(a, b):
