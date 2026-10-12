@@ -1,0 +1,58 @@
+{
+ "refs": 453,
+ "bundle_id": null,
+ "options": {
+  "b_marker_style": {
+   "value": "corner_cones_v1",
+   "default": "off"
+  },
+  "b_marker_detect": {
+   "value": "cones_v1",
+   "default": "off"
+  },
+  "b_cone_accept": {
+   "value": "on_v1",
+   "default": "off",
+   "requires": "b_marker_detect=cones_v1"
+  }
+ },
+ "map": {
+  "path": "maps/zones_e2e/zone_wide_door_e2e_b80_cones_v1.json",
+  "version": 7,
+  "sha256": "c100ee54a49e50aa0378e93ea77f24de55953b9268a43c9c96a0f3f723a48848",
+  "parent": "zone_wide_door_e2e_b80_v1 v6"
+ },
+ "cone": {
+  "height_m": 0.3,
+  "base_m": 0.18,
+  "hue_opencv": 43,
+  "rgba": ".55 .95 .05 1",
+  "corner_offset_m": 0.12
+ },
+ "unit_tests": "9 passed (tests/test_e2e_b_cones.py)",
+ "synthetic": {
+  "poses": 280,
+  "accepted": 38,
+  "pos_err_median_m": 0.023,
+  "pos_err_p90_m": 0.06
+ },
+ "rendered": {
+  "host": "azure3",
+  "frames": 40,
+  "accepted": 0,
+  "cones_ge1_frames": 33,
+  "cones_ge2_frames": 16,
+  "cones_3_frames": 1,
+  "camera_mount_mismatch": "sim z .227/pitch -19.05 vs FK .231/-18.08",
+  "raw_on_vm": "/tmp/bcones_probe3",
+  "note": "thresholds tuned once on these frames: exploratory, not confirmation"
+ },
+ "files": {
+  "render_detections_vm_run.json": "5ceb3cb0d97973f9d94dbb03b0e6ab071a547e73f3011b2dae8f36e7f3c5ed35",
+  "render_evaluation_ground_truth.json": "7e991f02ed6bfadbae745e29007cf0499eccf5c5d56657227f46d74dfeeeaab5",
+  "render_redetect_local.txt": "8395b27f8fba75e6e2c61492823d2c5f58751c4eb04f665f06b3c4bc7356da6d",
+  "sample_f003_3blobs.jpg": "f01f0a2b550b2511957a908731b1f25dd9c65e1f307c0fe3bc9cf9f70c37a43e",
+  "sample_f010.jpg": "33bcb9e26cd030c0ca040164917d46aa7f144bd0ba156b37c4643668d37de33c",
+  "synthetic_coverage.json": "c09efd291b39af66afe25b83c786c09a7b6c166dfdd4cc6564c5427dc0fa8fbb"
+ }
+}

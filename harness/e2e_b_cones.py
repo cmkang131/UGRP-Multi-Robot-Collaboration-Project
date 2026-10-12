@@ -14,7 +14,7 @@ import numpy as np
 
 OPTION = 'cones_v1'
 ACCEPT_OPTION = 'on_v1'
-CFG = dict(hsv_lo=(34, 110, 110), hsv_hi=(52, 255, 255), min_area_px2=20, min_height_px=8,
+CFG = dict(hsv_lo=(37, 130, 40), hsv_hi=(50, 255, 255), min_area_px2=20, min_height_px=8,
            min_aspect=.9, fill_range=(.30, .90), height_m=(.20, .42), max_range_m=5.0, base_radius_m=.09,
            edge_clear_px=4, pair_tol_m=.20, max_rms_m=.08, max_point_m=.12, cluster_m=.10, cluster_yaw_deg=8.)
 

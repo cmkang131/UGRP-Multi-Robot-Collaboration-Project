@@ -25,6 +25,8 @@ definition.config['static_map'] = static  # cones map: same walls/B geometry + l
 world = MultiMasterPiProductionV2(seed=11, width=640, height=480, render=True, warehouse_layout=definition.engine_layout,
                                   warehouse_cargo_ids=None, xml_transform=definition.transform)
 definition.setup(world)
+from sim.s2_realism_camera_binding import bind_camera  # explicit real camera mount v3 (as the e2e runs)
+bind_camera(world.robot('r1'))
 import mujoco
 poses = []
 for x in (2.5, 2.9, 3.3, 3.7):
@@ -37,7 +39,14 @@ det, ev = [], []
 for i, (x, y, yaw) in enumerate(poses):
     world.robot('r1').set_base_pose_for_test((x, y, .032355118817659255), yaw)
     mujoco.mj_forward(world.model, world.data)
-    world._team_joint_move_servos({'r1': dict(SEARCH)}, .3, settle_s=.3)
+    world._team_joint_move_servos({'r1': dict(SEARCH)}, 1.5, settle_s=2.0)
+    world.robot('r1')._sync_real_camera_mount(); mujoco.mj_forward(world.model, world.data)
+    if i == 0:  # camera mount check against the commanded-servo FK the detector uses
+        cid = mujoco.mj_name2id(world.model, mujoco.mjtObj.mjOBJ_CAMERA, 'r1__robot_cam')
+        fwd = -world.data.cam_xmat[cid].reshape(3, 3)[:, 2]
+        from harness.active_camera import pitch, transform
+        print('cam world z', float(world.data.cam_xpos[cid][2]), 'sim pitch deg', math.degrees(math.asin(fwd[2])),
+              'FK pitch deg', pitch(SEARCH), 'FK origin', transform(SEARCH)[0].tolist(), 'sim cam xy rel base', (world.data.cam_xpos[cid][:2]-[x, y]).tolist(), 'yaw', yaw, 'fwd', fwd.tolist(), flush=True)
     jpg = world.render_jpeg(robot_id='r1', camera='robot_cam', quality=95)
     (OUT/f'f{i:03d}.jpg').write_bytes(jpg)
     rgb = np.asarray(Image.open(OUT/f'f{i:03d}.jpg').convert('RGB'))
