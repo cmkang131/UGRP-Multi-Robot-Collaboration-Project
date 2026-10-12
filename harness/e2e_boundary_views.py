@@ -126,17 +126,28 @@ class CandidateNavigator(Navigator):
         self.coverage_option = 'off'
         self.coverage_checks = None
         self.coverage_would_stops = 0
+        self.coverage_by_stage = {}
+        self.coverage_logged_stages = set()
+
+    def record_coverage(self, strict, native, t, stage, **details):
+        self.coverage_checks = dict(t=t, stage=stage, strict_clear=bool(strict),
+                                    native_clear=bool(native), **details)
+        # Arrival and rotation can occur in the same receive call. Preserve
+        # each site's latest decision rather than overwriting one with another.
+        self.coverage_by_stage[stage] = self.coverage_checks
+        if not strict and native:
+            self.coverage_would_stops += 1
+            if stage not in self.coverage_logged_stages:
+                self.coverage_logged_stages.add(stage)
+                self.event(t,'B_view_would_stop_observed_coverage',dev_light=True,
+                           **{k:v for k,v in self.coverage_checks.items() if k!='t'})
+        return bool(native)
 
     def coverage_check(self, costmap, pose, path, yaw, t):
         strict = bool(path) and observed_path_clear(costmap, pose, path, yaw)
         native = strict or bool(path) and observed_path_clear(costmap, pose, path, yaw, observed=False)
-        self.coverage_checks = dict(t=t, path_points=len(path), strict_clear=bool(strict), native_clear=bool(native),
+        return self.record_coverage(strict, native, t, 'path', path_points=len(path),
             strict_start_clear=bool(Costmap.pose_clear(costmap,pose)), native_start_clear=bool(costmap.pose_clear(pose)))
-        if not strict and native:
-            self.coverage_would_stops += 1
-            if self.coverage_would_stops == 1:
-                self.event(t,'B_view_would_stop_observed_coverage',dev_light=True,**{k:v for k,v in self.coverage_checks.items() if k!='t'})
-        return native
 
     def can_attempt(self):
         if self.retry_option == 'off': return len(self.tried_own) < MAX_VIEWS
@@ -188,9 +199,12 @@ class CandidateNavigator(Navigator):
                 self.event(t, 'B_candidate_unresolved_no_reachable_view')
                 self.last_view_reason = 'no_reachable_view'
         if self.view_active:
-            terminal_clear = (costmap.pose_clear if self.coverage_option == COVERAGE_OPTION else
-                              lambda p:Costmap.pose_clear(costmap,p))
-            if not terminal_clear([*self.target, self.heading]):
+            terminal_pose = [*self.target, self.heading]
+            strict_terminal = Costmap.pose_clear(costmap, terminal_pose)
+            terminal_clear = (self.record_coverage(strict_terminal, costmap.pose_clear(terminal_pose),
+                t, 'terminal', terminal_pose=list(terminal_pose))
+                if self.coverage_option == COVERAGE_OPTION else strict_terminal)
+            if not terminal_clear:
                 self.end_view(t, 'B_view_coverage_lost')
                 return super().update(costmap, pose, t, static_goal)
             if np.linalg.norm(self.target-np.asarray(pose)[:2]) <= .05:
@@ -224,8 +238,11 @@ class CandidateNavigator(Navigator):
             turn = math.copysign(.35, error)
             # Check the actual terminal spin even in dev_light.
             end = [*pose[:2], pose[2]+math.copysign(.1, error)]
-            sweep = costmap.sweep_clear if self.coverage_option == COVERAGE_OPTION else lambda a,b:observed_sweep_clear(costmap,a,b)
-            if not sweep(pose, end):
+            strict_turn = observed_sweep_clear(costmap, pose, end)
+            turn_clear = (self.record_coverage(strict_turn, costmap.sweep_clear(pose, end), t, 'rotation',
+                start_pose=np.asarray(pose).tolist(), end_pose=list(end))
+                if self.coverage_option == COVERAGE_OPTION else strict_turn)
+            if not turn_clear:
                 self.end_view(t, 'B_view_rotation_blocked'); turn = 0.
             return command_from_twist(np.array([0.,0.,turn]), t)
         row = self.goal.e2e_gate.current
@@ -264,7 +281,8 @@ def install(goal, option='off', *, retry='off', coverage='off'):
             trace['boundary_view'].update(retry=retry, completed_views=n.completed_views,
                 navigation_failures=n.navigation_failures, max_navigation_failures=MAX_NAVIGATION_FAILURES)
         if coverage != 'off':
-            trace['boundary_view'].update(coverage=coverage, checks=n.coverage_checks, would_stops=n.coverage_would_stops)
+            trace['boundary_view'].update(coverage=coverage, checks=n.coverage_checks,
+                checks_by_stage=dict(n.coverage_by_stage), would_stops=n.coverage_would_stops)
         return command, trace
     goal.receive = with_diagnostics
     return goal

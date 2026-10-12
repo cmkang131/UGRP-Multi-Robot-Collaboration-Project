@@ -184,3 +184,84 @@ def test_unstable_association_is_preserved_in_actual_ownmap_record():
     assert saved['overlap_fraction'] == pytest.approx(.4)
     assert saved['frames'] == 1 and saved['accepted'] is False
     assert 'boundary_association' not in ownmap_record(robot, obs, {}, .4)
+
+
+def test_native_arrival_and_rotation_keep_both_would_stop_records():
+    from harness import e2e_boundary_views as v
+    from harness.e2e_exploration import Navigator
+    from harness.public_navigation_unknown import UnknownCostmap
+    g, _ = fixture(); driver = SimpleNamespace(pose=np.zeros(3))
+    g.explorer = SimpleNamespace(map_to_odom=np.zeros(3), navigator=Navigator(driver))
+    g.dev_light = True; g.e2e_gate.current = {}
+    g.receive = lambda **kw: ({'kind':'hold'}, {})
+    v.install(g, v.OPTION, coverage=v.COVERAGE_OPTION)
+    n = g.explorer.navigator
+    n.view_active = True; n.view_started = 0.
+    n.target = np.zeros(2); n.view_target_own = np.zeros(2); n.heading = .5
+    c = UnknownCostmap(np.full((100,100),255,np.uint8), [-2.5,-2.5], .05)
+    before = c.raw.copy(); pose = np.zeros(3)
+    plan = n.update(c, pose, .2)
+    assert n.phase == 'B_candidate_observe' and n.view_active
+    action = n.command(c, pose, plan, .2)
+    assert action['turn'] != 0
+    _, trace = g.receive()
+    saved = json.loads(json.dumps(trace))['boundary_view']
+    assert saved['would_stops'] == 2
+    assert set(saved['checks_by_stage']) == {'terminal','rotation'}
+    for row in saved['checks_by_stage'].values():
+        assert row['strict_clear'] is False and row['native_clear'] is True
+    assert {e['stage'] for e in n.events if e['reason']=='B_view_would_stop_observed_coverage'} == {'terminal','rotation'}
+    np.testing.assert_array_equal(before, c.raw)
+
+
+def test_saved_view_probe_forwards_observed_keyword_and_restores_hook(monkeypatch, tmp_path):
+    import hashlib
+    import importlib.util
+    from harness import e2e_boundary_views as v
+    from harness.public_navigation_unknown import UnknownCostmap
+    path = Path('experiments/2026-10-12-e2e-idle/probe_view_path.py')
+    spec = importlib.util.spec_from_file_location('_merge_train_view_probe', path)
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    data = b'synthetic frame bytes'; (tmp_path/'frame.bin').write_bytes(data)
+    digest = hashlib.sha256(data).hexdigest()
+    records = {
+        'bundle.json':[{'seed':61001,'e2e_options':{},'study_options':{}}],
+        'frames.jsonl':[{'frame_id':1,'sim_time':0.,'path':'frame.bin','sha256':digest}],
+        'ownmap.jsonl':[{'frame_id':1,'t':0.,'sha256':digest,'pose_own_m':[0.,0.,0.],'command':{'kind':'hold'}}],
+        'commands.jsonl':[], 'range.jsonl':[{}]}
+    monkeypatch.setattr(module, 'rows', lambda p:records[p.name])
+    monkeypatch.setattr(module.Image, 'open', lambda f:SimpleNamespace(convert=lambda mode:np.zeros((2,2,3),np.uint8)))
+    c = UnknownCostmap(np.full((100,100),255,np.uint8), [-2.5,-2.5], .05)
+    outcomes = []
+    class Robot:
+        def __init__(self, *args, **kwargs):
+            self.goal=SimpleNamespace(explorer=SimpleNamespace(local_pose=np.zeros(3),navigator=SimpleNamespace(view_active=True)))
+            self.nav_command={'kind':'hold'}
+        def receive(self, *args):
+            for observed in (True, False):
+                outcomes.append(v.observed_path_clear(c,[0.,0.,0.],[[0.,0.],[.5,0.]],0.,observed=observed))
+            return {}
+    monkeypatch.setattr(module, 'Robot', Robot)
+    original = v.observed_path_clear
+    result = module.probe(tmp_path, 1)
+    assert outcomes == [False, True]
+    assert result['path_checks'][0]['native_path_clear'] is True
+    assert result['navigation_command_differences'] == 0
+    assert v.observed_path_clear is original
+
+
+def test_native_artifact_correction_preserves_original_manifest_and_verifies_entries():
+    import hashlib
+    correction = json.loads(Path('experiments/2026-10-12-merge-train/pr453/native-artifact-correction.json').read_text())
+    manifest = Path(correction['original_manifest']).read_bytes()
+    assert hashlib.sha256(manifest).hexdigest() == correction['original_manifest_sha256']
+    entries = json.loads(manifest)
+    assert len(entries) == correction['unchanged_entries_verified'] + len(correction['corrections'])
+    for name, recorded in entries.items():
+        if name in correction['corrections']:
+            item = correction['corrections'][name]
+            assert recorded == item['recorded']
+            recorded = item['corrected']
+        data = Path(name).read_bytes()
+        assert len(data) == recorded['bytes']
+        assert hashlib.sha256(data).hexdigest() == recorded['sha256']
