@@ -42,7 +42,7 @@
       61007
     ],
     "azure4": [
-      61011,
+      61009,
       61012
     ]
   },
@@ -105,5 +105,10 @@
     "command": "pytest tests/test_e2e_fine_view.py tests/test_e2e_arm_clearance.py tests/test_e2e_camera_hold.py -q",
     "passed": 48,
     "scope": "offline regressions and exact bundle registration; no Mac physics"
+  },
+  "prelaunch_seed_revision": {
+    "removed": 61011,
+    "added": 61009,
+    "reason": "r42 s61011 variants remain identical in mapping at 624-627 SIM seconds, so the near-approach toggle is not exercised. s61009 previously reached align and had a tilt stop; retain matched 3-variant DEV comparison. No r43 run has started."
   }
 }

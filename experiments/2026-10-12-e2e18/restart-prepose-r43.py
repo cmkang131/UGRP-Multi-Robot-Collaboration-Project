@@ -7,7 +7,7 @@ from harness.s4_live_transport import validate_receipt
 
 b=Path.home()/'ugrp-sim';sha=sys.argv[1];host=os.uname().nodename
 assert host in ('ugrp-sim-azure3','ugrp-sim-azure4')
-seeds=[61006,61007] if host.endswith('3') else [61011,61012]
+seeds=[61006,61007] if host.endswith('3') else [61009,61012]
 selected=[(seed,version,mode) for seed in seeds for version,mode in [(258,'stage20_v1'),(259,'inspect40_v1'),(260,'inspect60_v1')]]
 assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
 assert not subprocess.check_output(['git','status','--porcelain'])
