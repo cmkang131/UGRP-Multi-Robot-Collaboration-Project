@@ -563,5 +563,447 @@
   "Held-out frames from a new run before any gate/threshold change."
  ],
  "references": "references.json",
- "last_recorded_utc": "2026-10-12T00:55:28Z"
+ "last_recorded_utc": "2026-10-12T00:55:28Z",
+ "v2": {
+  "option": "rgb_vo_v2",
+  "source_sha": "c5e49fbe89527dfb249be419fc87d0319a2c1dd2",
+  "rule": "VO measured -> rgb_vo_v1 fusion; VO unknown and rgb_pulse_gate_v1 confirmed stationary_view while translating -> zero translation, commanded yaw, AMCL alpha 2.0 extra Q; else command increment",
+  "replay_18_windows": {
+   "intervals": {
+    "moving": {
+     "n": 141,
+     "N": 376,
+     "sum_xy_err_mm": {
+      "off": 105.7,
+      "pulse_gate": 105.7,
+      "vo_fused": 122.7,
+      "vo2": 122.7
+     },
+     "sum_yaw_err_deg": {
+      "off": 18.95,
+      "pulse_gate": 18.95,
+      "vo_fused": 9.39,
+      "vo2": 9.39
+     },
+     "vo2_vs_vo_fused_xy": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 141
+     },
+     "vo_fused_vs_off_xy": {
+      "improved": 1,
+      "worse": 4,
+      "unchanged": 136
+     },
+     "vo_fused_vs_off_yaw": {
+      "improved": 41,
+      "worse": 0,
+      "unchanged": 100
+     }
+    },
+    "no_command_motion": {
+     "n": 19,
+     "N": 376,
+     "sum_xy_err_mm": {
+      "off": 3.2,
+      "pulse_gate": 3.2,
+      "vo_fused": 3.2,
+      "vo2": 3.2
+     },
+     "sum_yaw_err_deg": {
+      "off": 0.42,
+      "pulse_gate": 0.42,
+      "vo_fused": 0.42,
+      "vo2": 0.42
+     },
+     "vo2_vs_vo_fused_xy": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 19
+     },
+     "vo_fused_vs_off_xy": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 19
+     },
+     "vo_fused_vs_off_yaw": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 19
+     }
+    },
+    "partial_slip": {
+     "n": 55,
+     "N": 376,
+     "sum_xy_err_mm": {
+      "off": 664.4,
+      "pulse_gate": 664.4,
+      "vo_fused": 243.5,
+      "vo2": 243.5
+     },
+     "sum_yaw_err_deg": {
+      "off": 34.12,
+      "pulse_gate": 34.12,
+      "vo_fused": 6.08,
+      "vo2": 6.08
+     },
+     "vo2_vs_vo_fused_xy": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 55
+     },
+     "vo_fused_vs_off_xy": {
+      "improved": 41,
+      "worse": 0,
+      "unchanged": 14
+     },
+     "vo_fused_vs_off_yaw": {
+      "improved": 35,
+      "worse": 1,
+      "unchanged": 19
+     }
+    },
+    "rotation": {
+     "n": 17,
+     "N": 376,
+     "sum_xy_err_mm": {
+      "off": 56.0,
+      "pulse_gate": 56.0,
+      "vo_fused": 59.3,
+      "vo2": 59.3
+     },
+     "sum_yaw_err_deg": {
+      "off": 11.59,
+      "pulse_gate": 11.59,
+      "vo_fused": 3.85,
+      "vo2": 3.85
+     },
+     "vo2_vs_vo_fused_xy": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 17
+     },
+     "vo_fused_vs_off_xy": {
+      "improved": 2,
+      "worse": 2,
+      "unchanged": 13
+     },
+     "vo_fused_vs_off_yaw": {
+      "improved": 7,
+      "worse": 0,
+      "unchanged": 10
+     }
+    },
+    "stalled": {
+     "n": 144,
+     "N": 376,
+     "sum_xy_err_mm": {
+      "off": 1788.8,
+      "pulse_gate": 1339.9,
+      "vo_fused": 535.9,
+      "vo2": 535.9
+     },
+     "sum_yaw_err_deg": {
+      "off": 38.4,
+      "pulse_gate": 38.34,
+      "vo_fused": 5.5,
+      "vo2": 5.5
+     },
+     "vo2_vs_vo_fused_xy": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 144
+     },
+     "vo_fused_vs_off_xy": {
+      "improved": 110,
+      "worse": 0,
+      "unchanged": 34
+     },
+     "vo_fused_vs_off_yaw": {
+      "improved": 54,
+      "worse": 0,
+      "unchanged": 90
+     }
+    }
+   },
+   "windows": {
+    "N": 18,
+    "label_counts": {
+     "moving": 4,
+     "rotation": 3,
+     "stalled": 10,
+     "partial_slip": 1
+    },
+    "mean_body_xy_err_m": {
+     "off": 0.1406,
+     "pulse_gate": 0.1148,
+     "vo_fused": 0.0364,
+     "vo2": 0.0364
+    },
+    "mean_heading_err_deg": {
+     "off": 4.586,
+     "pulse_gate": 4.565,
+     "vo_fused": 0.719,
+     "vo2": 0.719
+    },
+    "vo2_vs_vo_fused_body_xy": {
+     "improved": 0,
+     "worse": 0,
+     "unchanged": 18
+    },
+    "vo2_vs_off_body_xy": {
+     "improved": 16,
+     "worse": 1,
+     "unchanged": 1,
+     "max_worsening": 0.004302612240231436,
+     "worse_items": [
+      {
+       "start_s": 132.2,
+       "end_s": 136.2,
+       "label": "rotation",
+       "run": "s61001",
+       "robot": "r1",
+       "delta": 0.004302612240231436
+      }
+     ]
+    },
+    "vo2_vs_off_heading": {
+     "improved": 14,
+     "worse": 1,
+     "unchanged": 3,
+     "max_worsening": 0.0021319441602543066,
+     "worse_items": [
+      {
+       "start_s": 101.4,
+       "end_s": 105.4,
+       "label": "rotation",
+       "run": "s61002",
+       "robot": "r1",
+       "delta": 0.0021319441602543066
+      }
+     ]
+    }
+   },
+   "vo2_counts": {
+    "measured": 340,
+    "fused": 177,
+    "vo_replaced": 163,
+    "unknown": 50,
+    "unapplied": 19,
+    "substep_mismatch": 0,
+    "gate_zero": 0
+   },
+   "outputs": {
+    "intervals.json.zst": "70f0aaa7e6b6f562344f77f34e19fc036a66c15523c92094ba47e0391a240a8e",
+    "predictions.json.zst": "f9728175e4f12c8d2e7c73988baddc592052e51777be96df4b739599b924858a",
+    "summary.json": "f05c2cd0792d53bf6601ee4b75c59fbe0efaf4ee207fa01c7b2254592a90275d"
+   }
+  },
+  "replay_e2e14_crash_sequences": {
+   "intervals": {
+    "moving": {
+     "n": 64,
+     "N": 120,
+     "sum_xy_err_mm": {
+      "off": 51.0,
+      "pulse_gate": 51.0,
+      "vo_fused": 103.0,
+      "vo2": 103.0
+     },
+     "sum_yaw_err_deg": {
+      "off": 7.87,
+      "pulse_gate": 7.87,
+      "vo_fused": 7.07,
+      "vo2": 7.07
+     },
+     "vo2_vs_vo_fused_xy": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 64
+     },
+     "vo_fused_vs_off_xy": {
+      "improved": 0,
+      "worse": 10,
+      "unchanged": 54
+     },
+     "vo_fused_vs_off_yaw": {
+      "improved": 13,
+      "worse": 4,
+      "unchanged": 47
+     }
+    },
+    "partial_slip": {
+     "n": 14,
+     "N": 120,
+     "sum_xy_err_mm": {
+      "off": 181.5,
+      "pulse_gate": 181.5,
+      "vo_fused": 147.9,
+      "vo2": 147.9
+     },
+     "sum_yaw_err_deg": {
+      "off": 0.5,
+      "pulse_gate": 0.5,
+      "vo_fused": 0.74,
+      "vo2": 0.74
+     },
+     "vo2_vs_vo_fused_xy": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 14
+     },
+     "vo_fused_vs_off_xy": {
+      "improved": 3,
+      "worse": 0,
+      "unchanged": 11
+     },
+     "vo_fused_vs_off_yaw": {
+      "improved": 0,
+      "worse": 1,
+      "unchanged": 13
+     }
+    },
+    "rotation": {
+     "n": 42,
+     "N": 120,
+     "sum_xy_err_mm": {
+      "off": 106.2,
+      "pulse_gate": 106.2,
+      "vo_fused": 113.6,
+      "vo2": 113.6
+     },
+     "sum_yaw_err_deg": {
+      "off": 8.76,
+      "pulse_gate": 8.76,
+      "vo_fused": 6.53,
+      "vo2": 6.53
+     },
+     "vo2_vs_vo_fused_xy": {
+      "improved": 0,
+      "worse": 0,
+      "unchanged": 42
+     },
+     "vo_fused_vs_off_xy": {
+      "improved": 1,
+      "worse": 6,
+      "unchanged": 35
+     },
+     "vo_fused_vs_off_yaw": {
+      "improved": 8,
+      "worse": 0,
+      "unchanged": 34
+     }
+    }
+   },
+   "windows": {
+    "N": 4,
+    "label_counts": {
+     "rotation": 3,
+     "partial_slip": 1
+    },
+    "mean_body_xy_err_m": {
+     "off": 0.0687,
+     "pulse_gate": 0.0687,
+     "vo_fused": 0.0597,
+     "vo2": 0.0597
+    },
+    "mean_heading_err_deg": {
+     "off": 0.525,
+     "pulse_gate": 0.525,
+     "vo_fused": 1.44,
+     "vo2": 1.44
+    },
+    "vo2_vs_vo_fused_body_xy": {
+     "improved": 0,
+     "worse": 0,
+     "unchanged": 4
+    },
+    "vo2_vs_off_body_xy": {
+     "improved": 2,
+     "worse": 2,
+     "unchanged": 0,
+     "max_worsening": 0.010549924698419817,
+     "worse_items": [
+      {
+       "start_s": 66.0,
+       "end_s": 72.0,
+       "label": "rotation",
+       "run": "e2e14-a-s61001",
+       "robot": "r2",
+       "delta": 0.001881311849071296
+      },
+      {
+       "start_s": 70.0,
+       "end_s": 76.0,
+       "label": "rotation",
+       "run": "e2e14-a-s61003",
+       "robot": "r2",
+       "delta": 0.010549924698419817
+      }
+     ]
+    },
+    "vo2_vs_off_heading": {
+     "improved": 0,
+     "worse": 3,
+     "unchanged": 1,
+     "max_worsening": 0.03385206477897995,
+     "worse_items": [
+      {
+       "start_s": 66.0,
+       "end_s": 72.0,
+       "label": "rotation",
+       "run": "e2e14-a-s61001",
+       "robot": "r2",
+       "delta": 0.02673021958257671
+      },
+      {
+       "start_s": 53.6,
+       "end_s": 59.6,
+       "label": "rotation",
+       "run": "e2e14-a-s61002",
+       "robot": "r1",
+       "delta": 0.0028365963313845555
+      },
+      {
+       "start_s": 70.0,
+       "end_s": 76.0,
+       "label": "rotation",
+       "run": "e2e14-a-s61003",
+       "robot": "r2",
+       "delta": 0.03385206477897995
+      }
+     ]
+    }
+   },
+   "vo2_counts": {
+    "measured": 77,
+    "fused": 54,
+    "vo_replaced": 23,
+    "unknown": 43,
+    "unapplied": 0,
+    "substep_mismatch": 0,
+    "gate_zero": 0
+   },
+   "outputs": {
+    "input-hashes.tsv": "4b693bd0e21005a0a3dd9e77a97dee7e435d2dc76f0cf791fb2e4956c03d077e",
+    "intervals.json.zst": "58a8e89273c42725bc81dd2c57394040a08bdc1a27b665d411bf34d8a641171c",
+    "predictions.json.zst": "d587cd7979d054437ea00e7c7c412ebff03eb9b7c7d8cc8cb1008c8b66f7ff0a",
+    "summary.json": "059ef142c3dba815b216634f57c79649bc14b477bac990242861af355429c223"
+   },
+   "data": "e2e14-a-s6100{1..4}-r2 (v202, source e4fc8354): crashing robot only (s61001 r2, s61002 r1, s61003 r2, s61004 r1), last 31 frames (6 s) ending at the crash frame, fetched read-only from Azure; hashes in replay-e2e14-crash/input-hashes.tsv",
+   "crash_frame_pairs": "old code 4/4 AttributeError reproduced; fixed code 4/4 unknown_texture (0 tracks) -> command kept",
+   "why_no_gate": "pressed to a plain wall: gate flow also unknown_texture (1-5 tracks < 6); in rotation windows the gate resets on each turn command (warming_up); so the gate never decided (gate_zero 0)"
+  },
+  "conclusion": "On all available saved frames rgb_vo_v2 is identical to rgb_vo_v1 (gate_zero 0 of 518 observed frames: 394 window + 124 crash-sequence). The plain-wall case has no image information for either method; an image-free cue (allowed front ultrasonic, #221) is the candidate next step.",
+  "worse_in_crash_sequences": "VO (v1=v2) worsened heading in 3/4 crash windows (e.g. s61003 0.15 -> 2.09 deg) and moving-interval xy sum 51.0 -> 103.0 mm near walls; wall pixels inside the floor mask are a suspected cause (unverified).",
+  "worse_windows_crash_sequences": {
+   "body_xy": "2/4 (e2e14-a-s61001 r2 66-72 s +1.9 mm, e2e14-a-s61003 r2 70-76 s +10.5 mm)",
+   "heading": "3/4 (s61001 +1.53 deg, s61002 +0.16 deg, s61003 +1.94 deg)"
+  }
+ },
+ "vo_crash_fix": {
+  "sha": "2d46cbc2",
+  "cause": "0 tracked floor points -> cv2.fisheye.undistortPoints None -> AttributeError in ground()",
+  "fix": "min_tracks check before projection; ground() handles empty/None"
+ }
 }
