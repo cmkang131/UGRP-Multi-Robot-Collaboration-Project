@@ -20,8 +20,8 @@ from harness.e2e_speed4 import OFF as SPEED4_OFF, using as speed4_using
 
 def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
     if goal_geometry not in ('off','e2e_b80_v1'):raise ValueError('UNKNOWN_GOAL_GEOMETRY')
-    from harness.e2e_rgb_gate import MARKER_OPTION
-    if b_marker_detect not in ('off',MARKER_OPTION):raise ValueError('UNKNOWN_B_MARKER_DETECT')
+    from harness.e2e_rgb_gate import MARKER_OPTIONS
+    if b_marker_detect not in ('off',*MARKER_OPTIONS):raise ValueError('UNKNOWN_B_MARKER_DETECT')
     from harness.active_navfn_start import make_mapper
     from harness.grid_acceleration import install
     from harness.self_graph_cache import install as graph_cache

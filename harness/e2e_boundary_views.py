@@ -19,6 +19,8 @@ from harness.self_odom_grid import transform
 from harness.zone_study_contract import ContractViolation
 
 OPTION = 'candidate_views_v1'
+STANDOFF_OPTION = 'standoff_fullquad_v1'  # static-map stand-off poses where all four B corners are in frame
+OPTIONS = (OPTION, STANDOFF_OPTION)
 RADII_M = (.8, 1.2, 1.6, 2., 2.4)  # SAP-Nav AVV Eq. 4, same finite rings
 N_ANGLES = 24
 MAX_VIEWS = 3
@@ -60,7 +62,7 @@ def observed_path_clear(costmap, pose, path, yaw, *, observed=True):
 def request(candidate, boundary_remembered, *, option='off'):
     """Pure scheduling predicate, also replayable without a saved costmap."""
     if option == 'off': return False
-    if option != OPTION: raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
+    if option not in OPTIONS: raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
     if candidate is None or boundary_remembered: return False
     scan(candidate)
     if candidate.get('source') != 'own' or candidate.get('kind') != 'B':
@@ -71,7 +73,7 @@ def request(candidate, boundary_remembered, *, option='off'):
     return True
 
 
-def choose_view(costmap, pose, center, plan_to, *, tried=(), coverage='off'):
+def choose_view(costmap, pose, center, plan_to, *, tried=(), coverage='off', standoff=None):
     """Sample free stand-off positions facing the observed partial candidate.
 
     Unknown cells are not approach positions. Require a complete collision-free
@@ -84,28 +86,30 @@ def choose_view(costmap, pose, center, plan_to, *, tried=(), coverage='off'):
     views = []
     goal_cell = costmap.world_to_map(center)
     if goal_cell is None: return None
-    for radius in RADII_M:
-        for angle in np.arange(N_ANGLES)*2*math.pi/N_ANGLES:
-            xy = center + radius*np.array([math.cos(angle), math.sin(angle)])
-            if any(np.linalg.norm(xy-p) < .25 for p in tried): continue
-            cell = costmap.world_to_map(xy)
-            if cell is None or costmap.raw[cell[1], cell[0]] != 0: continue
-            if costmap.costs[cell[1], cell[0]] >= 253: continue
-            # Known occlusion disqualifies a view; unknown sight lines remain
-            # hypotheses to inspect, never permission to traverse unknown cells.
-            sight = list(raytrace_cells(cell, goal_cell))
-            if any(costmap.raw[y,x] == 254 for x,y in sight): continue
-            unknown_sight = sum(costmap.raw[y,x] == 255 for x,y in sight)
-            yaw = math.atan2(center[1]-xy[1], center[0]-xy[0])
-            pose_clear = costmap.pose_clear if coverage == COVERAGE_OPTION else lambda p:Costmap.pose_clear(costmap,p)
-            if not pose_clear([*xy, yaw]): continue
-            path = plan_to(costmap, pose, xy)
-            if not path: continue
-            if not observed_path_clear(costmap, pose, path, yaw, observed=coverage != COVERAGE_OPTION): continue
-            length = float(np.linalg.norm(np.diff(path, axis=0), axis=1).sum())
-            views.append(dict(target=xy.tolist(), heading=yaw, path=path,
-                              score=length+abs(radius-1.2)+.05*unknown_sight,
-                              stand_off_m=radius, unknown_sight_cells=int(unknown_sight)))
+    # standoff: precomputed static-map poses (own frame) with a fixed heading; rings otherwise.
+    samples = ([(math.hypot(*(np.asarray(p[:2])-center)), None, np.asarray(p[:2]), p[2]) for p in standoff] if standoff is not None else
+               [(radius, angle, center + radius*np.array([math.cos(angle), math.sin(angle)]), None)
+                for radius in RADII_M for angle in np.arange(N_ANGLES)*2*math.pi/N_ANGLES])
+    for radius, _, xy, fixed_yaw in samples:
+        if any(np.linalg.norm(xy-p) < .25 for p in tried): continue
+        cell = costmap.world_to_map(xy)
+        if cell is None or costmap.raw[cell[1], cell[0]] != 0: continue
+        if costmap.costs[cell[1], cell[0]] >= 253: continue
+        # Known occlusion disqualifies a view; unknown sight lines remain
+        # hypotheses to inspect, never permission to traverse unknown cells.
+        sight = list(raytrace_cells(cell, goal_cell))
+        if any(costmap.raw[y,x] == 254 for x,y in sight): continue
+        unknown_sight = sum(costmap.raw[y,x] == 255 for x,y in sight)
+        yaw = math.atan2(center[1]-xy[1], center[0]-xy[0]) if fixed_yaw is None else fixed_yaw
+        pose_clear = costmap.pose_clear if coverage == COVERAGE_OPTION else lambda p:Costmap.pose_clear(costmap,p)
+        if not pose_clear([*xy, yaw]): continue
+        path = plan_to(costmap, pose, xy)
+        if not path: continue
+        if not observed_path_clear(costmap, pose, path, yaw, observed=coverage != COVERAGE_OPTION): continue
+        length = float(np.linalg.norm(np.diff(path, axis=0), axis=1).sum())
+        views.append(dict(target=xy.tolist(), heading=yaw, path=path,
+                          score=length+(0. if fixed_yaw is not None else abs(radius-1.2))+.05*unknown_sight,
+                          stand_off_m=radius, unknown_sight_cells=int(unknown_sight)))
     return min(views, key=lambda v:v['score']) if views else None
 
 
@@ -113,6 +117,7 @@ class CandidateNavigator(Navigator):
     def __init__(self, driver, goal):
         super().__init__(driver)
         self.goal = goal
+        self.option = OPTION
         self.view_active = False
         self.view_started = None
         self.view_target_own = None
@@ -124,6 +129,7 @@ class CandidateNavigator(Navigator):
         self.completed_views = 0
         self.navigation_failures = 0
         self.coverage_option = 'off'
+        self.standoff = None  # [(x, y, yaw)] map frame, set by install(standoff_fullquad_v1)
         self.coverage_checks = None
         self.coverage_would_stops = 0
         self.coverage_by_stage = {}
@@ -154,7 +160,7 @@ class CandidateNavigator(Navigator):
         return self.completed_views < MAX_VIEWS and self.navigation_failures < MAX_NAVIGATION_FAILURES
 
     def pending(self):
-        return request(self.goal.entities.get('B'), 'B' in self.goal.e2e_gate.references, option=OPTION)
+        return request(self.goal.entities.get('B'), 'B' in self.goal.e2e_gate.references, option=self.option)
 
     def end_view(self, t, reason):
         if self.view_target_own is not None: self.tried_own.append(self.view_target_own.copy())
@@ -181,7 +187,10 @@ class CandidateNavigator(Navigator):
             tf = self.goal.explorer.map_to_odom
             center = transform([self.goal.entities['B']['center_m']], tf)[0]
             tried = transform(self.tried_own, tf) if self.tried_own else ()
-            view = choose_view(costmap, pose, center, self.plan_to, tried=tried, coverage=self.coverage_option)
+            own_standoff = None
+            if self.standoff is not None:
+                own_standoff = [(*transform([p[:2]], tf)[0], p[2]+tf[2]) for p in self.standoff]
+            view = choose_view(costmap, pose, center, self.plan_to, tried=tried, coverage=self.coverage_option, standoff=own_standoff)
             if view:
                 self.reset_action()
                 self.target = np.asarray(view['target'])
@@ -263,10 +272,15 @@ def install(goal, option='off', *, retry='off', coverage='off'):
     if coverage not in ('off',COVERAGE_OPTION): raise ValueError('UNKNOWN_BOUNDARY_COVERAGE')
     if coverage != 'off' and (option == 'off' or not goal.dev_light): raise ValueError('DEV_BOUNDARY_VIEWS_REQUIRED_BEFORE_NATIVE_COVERAGE')
     if option == 'off': return goal
-    if option != OPTION: raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
+    if option not in OPTIONS: raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
     old = goal.explorer.navigator
     if type(old) is not Navigator: raise ValueError('FRONTIER_PROGRESS_V1_REQUIRED_BEFORE_VIEWS')
     goal.explorer.navigator = CandidateNavigator(old.driver, goal)
+    goal.explorer.navigator.option = option
+    if option == STANDOFF_OPTION:
+        from harness.e2e_b_standoff import plan_standoffs
+        views, _, _ = plan_standoffs(top=100)  # static map + fixed camera only; one-time, ~9 s
+        goal.explorer.navigator.standoff = [v['pose'] for v in views]
     goal.explorer.navigator.retry_option = retry
     goal.explorer.navigator.coverage_option = coverage
     goal.e2e_gate.diagnostics_enabled = True
