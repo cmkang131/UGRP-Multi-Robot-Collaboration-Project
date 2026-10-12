@@ -38,10 +38,14 @@ def validate_receipt(receipt, now=None, *, remote_url=URL):
                    or receipt.get('gemma_model_pin')!={'model_id':'gemma-4-31b-it','version':'001'}
                    or receipt.get('gemma_fallback',{}).get('image_input_confirmed') is not True):
         raise HostError('single Gemma identity/model/image verification missing')
+    session = receipt.get('session_profile', 'standard')
+    if session not in ('standard', 'e2e13_7h_v1') or (session == 'e2e13_7h_v1' and not (single and openrouter)):
+        raise HostError('unregistered long relay session')
+    limit = 27000 if session == 'e2e13_7h_v1' else 14400
     if (receipt.get('schema') != 'ugrp.s4_ssh_proxy.v1'
             or receipt.get('remote_url') != remote_url
             or receipt.get('proxy', {}).get('source_sha256') != expected
-            or not 0 < receipt.get('valid_for_s', 3600) <= 14400
+            or not 0 < receipt.get('valid_for_s', 3600) <= limit
             or not 0 <= now-receipt.get('checked_unix', 0) <= receipt.get('valid_for_s', 3600)
             or receipt.get('authentication') != 'existing_mac_proxy_no_credentials_transferred'
             or receipt.get('audit_per_post') is not True):

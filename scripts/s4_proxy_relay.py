@@ -19,7 +19,7 @@ from harness.s4_relay_journal import Journal
 def accepted_call_id(value):
     # Both registered runners use run_key:call_id:attempt; keep the historical
     # S4 namespace and explicitly admit only this E2E pilot's registered cells.
-    return value.startswith('s4live1-') or re.fullmatch(r'e2e13-(?:profile|off|index|validate|copy|cell|geometry|validation|both)-s61001(?:-p[123])?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(
+    return re.fullmatch(r'e2e13-long-(?:a-s6100[1-4]|b-s6100[12]):call-\d+-r[123]:\d+', value) is not None or value.startswith('s4live1-') or re.fullmatch(r'e2e13-(?:profile|off|index|validate|copy|cell|geometry|validation|both)-s61001(?:-p[123])?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(
         r'(?:e2eaz1-(?:gemma|gemini)-s6100[1-4]-(?:on|off)(?:-r[1-3])?|e2e[89]-[ab]-s6100[1-4](?:-r[12])?|e2e10-(?:a-s6100[1-4]|[bc]-s6100[12])(?:-r2)?|e2e1[12]-[ab]-s6100[12](?:-r2)?):call-\d+-r[123]:\d+',value) is not None
 
 
@@ -28,8 +28,9 @@ def main():
     p.add_argument('--proxy-pid', type=int)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--seconds', type=int, default=3600)
+    p.add_argument('--session-profile', choices=('standard', 'e2e13_7h_v1'), default='standard')
     p.add_argument('--idempotent', action='store_true')
-    p.add_argument('--listen-port',type=int,choices=(18392,18394),default=18392)
+    p.add_argument('--listen-port',type=int,choices=(18392,18394,18396),default=18392)
     p.add_argument('--remote-port',type=int,choices=(18391,18393),default=18391)
     p.add_argument('--gemini-port',type=int,choices=(8391,8395),default=8391)
     p.add_argument('--gemma-fallback', action='store_true', help='DEV only; default off')
@@ -44,7 +45,10 @@ def main():
     p.add_argument('--gemma-state', type=Path,
         default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
     a = p.parse_args()
-    if not 0 < a.seconds <= 14400: raise ValueError('finite <=4h relay required')
+    limit = 27000 if a.session_profile == 'e2e13_7h_v1' else 14400
+    if not 0 < a.seconds <= limit: raise ValueError('finite relay session cap required')
+    if a.session_profile == 'e2e13_7h_v1' and (a.upstream != 'openrouter_v1' or a.driver_profile != 'study_gemma4_31b_v1'):
+        raise ValueError('long relay requires registered Gemma OpenRouter profile')
     a.output.mkdir(parents=True, exist_ok=False)
     single=a.driver_profile=='study_gemma4_31b_v1'
     if a.multi_key_v1 and not (single or a.gemma_fallback):
@@ -76,7 +80,7 @@ def main():
         fallback.require_image_probe()
     fb_source = Path(__file__).parent/('openrouter_upstream.py' if openrouter else 'gemma_fallback_proxy.py')
     receipt = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url=f'http://127.0.0.1:{a.remote_port}/v1/chat/completions', proxy=proxy,
-        runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, audit_per_post=True,
+        runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, session_profile=a.session_profile, audit_per_post=True,
         authentication='existing_mac_proxy_no_credentials_transferred')
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
 

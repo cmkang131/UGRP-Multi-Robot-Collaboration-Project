@@ -1,0 +1,81 @@
+{
+  "status": "PREPARED_NOT_SUBMITTED",
+  "pr": 433,
+  "branch": "codex/e2e13-long",
+  "vm": "ugrp-sim-azure2",
+  "run_class": "dev",
+  "preregistration": {
+    "conditions": {
+      "A": "v199 + RPP + Gemma OpenRouter + rgb_pulse_gate_v1 + backup_replan_v1 + amcl_alpha_v1",
+      "B": "v199 + RPP + Gemma OpenRouter; stall toggles off"
+    },
+    "seeds": {
+      "A": [
+        61001,
+        61002,
+        61003,
+        61004
+      ],
+      "B": [
+        61001,
+        61002
+      ]
+    },
+    "runs": 6,
+    "case_cap_sim_s": 1800,
+    "wall_cap_s": 25200,
+    "mapping_budget": "case_cap_v1",
+    "dev_light": true,
+    "conservative_guards": "record_only",
+    "physical_failure_stops": true,
+    "initial_check_wall_s": 240,
+    "progress_interval_wall_s": 1800,
+    "raw_per_run_mib": 4096,
+    "reserved_mib": 8192,
+    "outcomes": [
+      "LLM_operated",
+      "own_map_completed",
+      "start_to_finish_transport"
+    ],
+    "denominator": "All actual run processes, including startup failures and HOST_ERROR; admission failures before any process recorded separately."
+  },
+  "exact_speedups": {
+    "provenance_index": false,
+    "sha_validation_cache": false,
+    "omit_discarded_copy": false,
+    "scalar_cells": false,
+    "geometry_cache": false
+  },
+  "operational_changes": [
+    "Explicit 7h wall cap accepted; default remains 3.5h, SIM cap 1800 unchanged",
+    "Opt-in e2e13_7h_v1 Gemma OpenRouter receipt capped at 7.5h; default 4h unchanged",
+    "Six explicit relay names and dedicated Mac port 18396; VM2 remote loopback 18393"
+  ],
+  "model_credentials": "Mac Keychain and process memory only",
+  "raw_root": "azure2:/home/ugrp/ugrp-sim/runs",
+  "mac_retrieval": "fetch-lite, media and embedded-image requests excluded; stripped LLM text + image hashes retained",
+  "retention": {
+    "dev_pr": 433,
+    "heavy_raw_until": "PR merged/closed, then governed cleanup with hash inventories; no deletion this task",
+    "permanent": [
+      "summaries",
+      "verdicts",
+      "LLM text",
+      "issued commands",
+      "all hashes",
+      "representative evidence"
+    ]
+  },
+  "scope": "Controller evaluation, no teacher correction or evaluator feedback. New speed candidates remain off; no Mac physics/render.",
+  "references": [
+    "https://docs.python.org/3/library/subprocess.html#subprocess.Popen",
+    "https://man.openbsd.org/ssh",
+    "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command-managed"
+  ],
+  "parent_source_sha": "9d6eb56779274e608e6480651958226251134fe9",
+  "verification": {
+    "tests": "tests/test_e2e13_long.py tests/test_e2e_stall_odometry.py tests/test_openrouter_upstream.py",
+    "passed": 27,
+    "duration_s": 34.76
+  }
+}

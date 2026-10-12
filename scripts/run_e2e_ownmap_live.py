@@ -38,7 +38,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if exploration_progress not in ('off','frontier_progress_v1'):raise ValueError('UNKNOWN_EXPLORATION_PROGRESS')
     if pose_fix not in ('off','innovation'):raise ValueError('UNKNOWN_E2E_POSE_FIX')
     if path_follow not in ('off','rpp_v1'):raise ValueError('UNKNOWN_PATH_FOLLOW')
-    if not 0 < wall_cap_s <= 12600:raise ValueError('FINITE_WALL_CAP_REQUIRED')
+    if not 0 < wall_cap_s <= 25200:raise ValueError('FINITE_WALL_CAP_REQUIRED')
     if mapping_budget not in ('off','case_cap_v1'):raise ValueError('UNKNOWN_MAPPING_BUDGET')
     from harness.e2e_stall_odometry import Options as StallOptions
     stall=StallOptions(stall_odometry,stall_recovery,stall_noise)
