@@ -1,4 +1,5 @@
 # E2E 14차 통합 브랜치 준비 (DEV, 실행 아님)
+- draft PR #446 (base `codex/e2e-integration`).
 
 - 브랜치 `claude/e2e14-combo` = `codex/e2e-integration`(9d6eb567) + PR #443(`codex/e2e-bboundary`, ee3d656b) + PR #444(`claude/e2e-vo`, 02d6af82). 시뮬레이션·VM 사용 0회.
 - 새 번들 `e2e-combo14-v202` / workflow `7.95.0`. main과 열린 PR 브랜치 전체 최댓값 v201(`e2e-rgb-vo-v201`, 7.94.0) 다음 번호다. `RUNNABLE_ID`(rgb-standard-dispatch-v63)는 바꾸지 않았다.
@@ -59,7 +60,7 @@ for SEED in 61001 61002; do
     --stall-odometry rgb_pulse_gate_v1 --stall-recovery backup_replan_v1 --stall-noise amcl_alpha_v1 &
 done
 ```
-- 실제 제출은 12차처럼 `remote_run_finish.py` 래퍼, `RUN_META.json`(class=dev, pr=<이 PR>, branch, sha, batch), 환경변수 `MUJOCO_GL=osmesa`와 스레드 1개 설정을 붙인다.
+- 실제 제출은 12차처럼 `remote_run_finish.py` 래퍼, `RUN_META.json`(class=dev, pr=446, branch, sha, batch), 환경변수 `MUJOCO_GL=osmesa`와 스레드 1개 설정을 붙인다.
 - 13차 v200 정확 속도 토글(`--exact-*`)은 60 SIM초 구간에서 상태 일치만 확인됐다. 비교군을 12차 A 그대로 두기 위해 두 쪽 모두 끈다. 켜려면 A/B에 같이 켜야 한다.
 
 ## 참고 자료
