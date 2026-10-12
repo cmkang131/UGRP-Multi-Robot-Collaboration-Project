@@ -1,0 +1,420 @@
+{
+  "status": "PASS",
+  "checked_utc": "2026-10-12T03:31:57.522830+00:00",
+  "vm": "ugrp-sim-azure3",
+  "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+  "resource_group": "UGRP-SIM-RG",
+  "size": "Standard_D16as_v6",
+  "cpu": "AMD EPYC 9V74",
+  "disk_gib": 128,
+  "network": {
+    "ip": "20.194.17.223",
+    "ssh_alias": "azure3",
+    "proxyjump": "oracle-codex",
+    "allowed_ssh_source": "161.33.46.134/32",
+    "bootstrap_egress_fence_removed": true,
+    "nsg_rules": [
+      {
+        "access": "Allow",
+        "destinationPort": "22",
+        "direction": "Inbound",
+        "name": "allow-ssh-from-oracle",
+        "source": "161.33.46.134/32"
+      }
+    ]
+  },
+  "identity": {
+    "principal": "8bfaf742-6a37-4def-b64d-20cf26b05c19",
+    "automation_principal": "26a8adba-7d58-4bf9-a12c-effc2389c6e4",
+    "roles": [
+      {
+        "id": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/7b327b09-c7ad-5fea-a260-6a079521da91",
+        "actions": [
+          "Microsoft.Compute/virtualMachines/read",
+          "Microsoft.Compute/virtualMachines/instanceView/read",
+          "Microsoft.Compute/virtualMachines/deallocate/action"
+        ]
+      },
+      {
+        "id": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/1970c1fc-18fa-569a-9f20-6115f6b61641",
+        "actions": [
+          "Microsoft.Compute/virtualMachines/runCommands/write",
+          "Microsoft.Compute/virtualMachines/runCommands/read"
+        ]
+      }
+    ],
+    "assignments": [
+      {
+        "roleDefinitionId": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/7b327b09-c7ad-5fea-a260-6a079521da91",
+        "principalId": "8bfaf742-6a37-4def-b64d-20cf26b05c19",
+        "principalType": "ServicePrincipal",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure3",
+        "condition": null,
+        "conditionVersion": null,
+        "createdOn": "2026-10-12T03:07:59.2431241Z",
+        "updatedOn": "2026-10-12T03:07:59.7131310Z",
+        "createdBy": null,
+        "updatedBy": "67a43555-7084-4352-9ac0-90a44b767b62",
+        "delegatedManagedIdentityResourceId": null,
+        "description": null
+      },
+      {
+        "roleDefinitionId": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/1970c1fc-18fa-569a-9f20-6115f6b61641",
+        "principalId": "8bfaf742-6a37-4def-b64d-20cf26b05c19",
+        "principalType": "ServicePrincipal",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure3",
+        "condition": null,
+        "conditionVersion": null,
+        "createdOn": "2026-10-12T03:08:04.4198643Z",
+        "updatedOn": "2026-10-12T03:08:05.0178734Z",
+        "createdBy": null,
+        "updatedBy": "67a43555-7084-4352-9ac0-90a44b767b62",
+        "delegatedManagedIdentityResourceId": null,
+        "description": null
+      },
+      {
+        "roleDefinitionId": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/1970c1fc-18fa-569a-9f20-6115f6b61641",
+        "principalId": "26a8adba-7d58-4bf9-a12c-effc2389c6e4",
+        "principalType": "ServicePrincipal",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure3",
+        "condition": null,
+        "conditionVersion": null,
+        "createdOn": "2026-10-12T03:08:10.0151644Z",
+        "updatedOn": "2026-10-12T03:08:10.3951719Z",
+        "createdBy": null,
+        "updatedBy": "67a43555-7084-4352-9ac0-90a44b767b62",
+        "delegatedManagedIdentityResourceId": null,
+        "description": null
+      }
+    ],
+    "live_probe": [
+      {
+        "put_status": 201
+      },
+      {
+        "state": "Succeeded",
+        "view": {
+          "exitCode": 0,
+          "executionState": "Succeeded",
+          "executionMessage": "Execution completed",
+          "output": "VM3_IDENTITY_PROBE_OK",
+          "error": "",
+          "startTime": "2026-10-12T03:12:59+00:00",
+          "endTime": "2026-10-12T03:12:59+00:00"
+        }
+      }
+    ],
+    "verified_assignments": [
+      {
+        "role": "UGRP VM Deallocator",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure3"
+      },
+      {
+        "role": "UGRP Graceful VM Stop Command",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure3"
+      }
+    ]
+  },
+  "safety": {
+    "runbook": {
+      "state": "Published",
+      "sha256": "81264d45ad0b04e722886490a21baf1ec9bb51f692e42efa1687353b0f81723b",
+      "discovery": "same subscription VM list query discovers VM3; no shutdown runbook invoked",
+      "vm3_discovered": true,
+      "stop_usd": 150,
+      "expiry_utc": "2026-11-18T15:00:00Z"
+    },
+    "schedules": {
+      "daily-backup-kst": {
+        "description": null,
+        "startTime": "2026-10-12T00:00:00+09:00",
+        "startTimeOffsetMinutes": 540.0,
+        "expiryTime": "9999-12-31T23:59:59.9999999+00:00",
+        "expiryTimeOffsetMinutes": 0.0,
+        "isEnabled": true,
+        "nextRun": "2026-10-13T00:00:00+09:00",
+        "nextRunOffsetMinutes": 540.0,
+        "interval": 1,
+        "frequency": "Day",
+        "creationTime": "2026-10-11T10:10:24.57+00:00",
+        "lastModifiedTime": "2026-10-11T10:10:24.57+00:00",
+        "timeZone": "Asia/Seoul",
+        "advancedSchedule": null
+      },
+      "credit-expiry-kst": {
+        "description": null,
+        "startTime": "2026-11-19T00:00:00+09:00",
+        "startTimeOffsetMinutes": 540.0,
+        "expiryTime": "2026-11-19T00:00:00+09:00",
+        "expiryTimeOffsetMinutes": 540.0,
+        "isEnabled": true,
+        "nextRun": "2026-11-19T00:00:00+09:00",
+        "nextRunOffsetMinutes": 540.0,
+        "interval": null,
+        "frequency": "OneTime",
+        "creationTime": "2026-10-11T07:26:46.7433333+00:00",
+        "lastModifiedTime": "2026-10-11T07:26:46.7433333+00:00",
+        "timeZone": "Asia/Seoul",
+        "advancedSchedule": null
+      },
+      "hourly-credit-check": {
+        "description": null,
+        "startTime": "2026-10-11T07:36:00+00:00",
+        "startTimeOffsetMinutes": 0.0,
+        "expiryTime": "2026-11-18T15:00:00+00:00",
+        "expiryTimeOffsetMinutes": 0.0,
+        "isEnabled": true,
+        "nextRun": "2026-10-12T03:36:00+00:00",
+        "nextRunOffsetMinutes": 0.0,
+        "interval": 1,
+        "frequency": "Hour",
+        "creationTime": "2026-10-11T07:26:47.89+00:00",
+        "lastModifiedTime": "2026-10-11T07:26:47.89+00:00",
+        "timeZone": "Etc/UTC",
+        "advancedSchedule": null
+      }
+    },
+    "bindings": [
+      {
+        "jobScheduleId": "7c0d49a4-c523-41eb-bc92-fb0d4199ccae",
+        "runbook": {
+          "name": "Stop-UgrpVMs"
+        },
+        "schedule": {
+          "name": "credit-expiry-kst"
+        },
+        "runOn": null,
+        "parameters": {
+          "Mode": "Force"
+        }
+      },
+      {
+        "jobScheduleId": "41a3fbf5-928c-4f8c-98bc-f89648225f20",
+        "runbook": {
+          "name": "Stop-UgrpVMs"
+        },
+        "schedule": {
+          "name": "daily-backup-kst"
+        },
+        "runOn": null,
+        "parameters": {
+          "Mode": "Daily"
+        }
+      },
+      {
+        "jobScheduleId": "d9a9d10d-0a85-40c4-8d4b-ab4434845218",
+        "runbook": {
+          "name": "Stop-UgrpVMs"
+        },
+        "schedule": {
+          "name": "hourly-credit-check"
+        },
+        "runOn": null,
+        "parameters": {
+          "Mode": "Cost"
+        }
+      }
+    ],
+    "budget": {
+      "timePeriod": {
+        "startDate": "2026-10-01T00:00:00Z",
+        "endDate": "2027-01-01T00:00:00Z"
+      },
+      "timeGrain": "Quarterly",
+      "amount": 217600.0,
+      "currentSpend": {
+        "amount": 14948.482220415353,
+        "unit": "KRW"
+      },
+      "category": "Cost",
+      "notifications": {
+        "usD50-approx-KRW": {
+          "enabled": true,
+          "operator": "GreaterThanOrEqualTo",
+          "threshold": 31.25,
+          "contactEmails": [
+            "kcm0127@gmail.com"
+          ],
+          "contactRoles": [],
+          "contactGroups": [],
+          "thresholdType": "Actual"
+        },
+        "usD100-approx-KRW": {
+          "enabled": true,
+          "operator": "GreaterThanOrEqualTo",
+          "threshold": 62.5,
+          "contactEmails": [
+            "kcm0127@gmail.com"
+          ],
+          "contactRoles": [],
+          "contactGroups": [],
+          "thresholdType": "Actual"
+        },
+        "usD150-approx-KRW": {
+          "enabled": true,
+          "operator": "GreaterThanOrEqualTo",
+          "threshold": 93.75,
+          "contactEmails": [
+            "kcm0127@gmail.com"
+          ],
+          "contactRoles": [],
+          "contactGroups": [
+            "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Insights/actionGroups/ugrp-credit-stop"
+          ],
+          "thresholdType": "Actual"
+        },
+        "usD160-approx-KRW": {
+          "enabled": true,
+          "operator": "GreaterThanOrEqualTo",
+          "threshold": 100.0,
+          "contactEmails": [
+            "kcm0127@gmail.com"
+          ],
+          "contactRoles": [],
+          "contactGroups": [
+            "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Insights/actionGroups/ugrp-credit-stop"
+          ],
+          "thresholdType": "Actual"
+        }
+      },
+      "filter": {}
+    }
+  },
+  "guard": {
+    "idle_seconds": 1200,
+    "max_uptime_seconds": 28800,
+    "archive_native": "on_v1",
+    "idle_actual_verified": true,
+    "boot_recovery": "success; no cloned runs admitted",
+    "idle_deallocated": {
+      "utc": "2026-10-12T03:35:59.548724+00:00",
+      "statuses": [
+        {
+          "code": "ProvisioningState/succeeded",
+          "level": "Info",
+          "displayStatus": "Provisioning succeeded",
+          "time": "2026-10-12T03:35:51.1079449+00:00"
+        },
+        {
+          "code": "PowerState/deallocated",
+          "level": "Info",
+          "displayStatus": "VM deallocated"
+        }
+      ]
+    },
+    "idle_events": [
+      {
+        "id": "2206b2fbeae5477fb1310b0fdfabf262",
+        "action": "stop",
+        "reason": "twenty_minutes_idle",
+        "boot_id": "698be5b1-2826-421d-8e27-d5266c7b3569",
+        "status": "complete",
+        "signalled": [],
+        "archived": [
+          "azure3-smoke-20261012-01",
+          "azure3-smoke-20261012-02"
+        ],
+        "failed": [],
+        "elapsed_seconds": 0.045
+      }
+    ],
+    "auto_archive_timer_observed": {
+      "utc": "2026-10-12T03:41:37Z",
+      "run": "azure3-smoke-20261012-02",
+      "mode": "native tar/zstd SSH",
+      "status": "SHA-256 verified; source retained",
+      "evidence": "azure3:~/ugrp-sim/runs/SUPERVISOR-NOTES.txt"
+    }
+  },
+  "clone": {
+    "path": "azure3:~/ugrp-sim/clone-excluded-vm1-20261012",
+    "raw_deleted": false,
+    "excluded_from_runs": true
+  },
+  "smoke": [
+    {
+      "run": "azure3-smoke-20261012-01",
+      "exit": 2,
+      "result": {
+        "status": "HOST_ERROR",
+        "reason": "workflow absent in initial E2E source; no physics started"
+      },
+      "raw": "azure3:~/ugrp-sim/runs/azure3-smoke-20261012-01",
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-azure3-smoke-20261012-01",
+        "files": 9,
+        "hash_matches": 9,
+        "inventory_sha256": "898ccc9ba58fe88232206b6c90a792dcdcbb11a92c62738dba491e9c020dde4f",
+        "reused": false,
+        "receiver_seconds": 0.154
+      }
+    },
+    {
+      "run": "azure3-smoke-20261012-02",
+      "exit": 0,
+      "result": {
+        "status": "PASS",
+        "source_sha": "630d76e8c7566e21c5ce4a0ef2b86652f45b3401",
+        "model_calls": 0,
+        "physical_success": null,
+        "scope": "S3 scene reset, hold, 0.5 SIM seconds and three own RGB cameras",
+        "gl": "osmesa",
+        "loadavg": [
+          0.58056640625,
+          0.4111328125,
+          0.20947265625
+        ],
+        "reset_sim_s": 1.3,
+        "step_sim_s": 0.5,
+        "camera_frames": 6,
+        "image_sha256": {
+          "robots/r1/rgb/00000.jpg": "104bed3d641a971665037c81b78bb698fea33d2648e00a19bba78eeda5186aea",
+          "robots/r1/rgb/00001.jpg": "7acdbc258241dc47d6f53f442175cea893d29e6d49eb633837a4f1e7ca3c7009",
+          "robots/r2/rgb/00000.jpg": "580ceea8c5e4a2cdf56654a2a5591d96f87f9da276def73fbf5c245eedc9a1ad",
+          "robots/r2/rgb/00001.jpg": "684408f7aaea297198687d91dbb9fc2846aedb199bd23cfd7701a0311a2296a4",
+          "robots/r3/rgb/00000.jpg": "d8a7ea3a88b9ad0f9417dca5b5253d792e89a8503cc1149e434669bf9e40355c",
+          "robots/r3/rgb/00001.jpg": "d8a7ea3a88b9ad0f9417dca5b5253d792e89a8503cc1149e434669bf9e40355c"
+        },
+        "wall_s": 16.867300382999986
+      },
+      "raw": "azure3:~/ugrp-sim/runs/azure3-smoke-20261012-02",
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-azure3-smoke-20261012-02",
+        "files": 36,
+        "hash_matches": 36,
+        "inventory_sha256": "da97fce5651b1a1823733449bb32cbf97ae487405dc9852317655bfe1bf20e17",
+        "reused": false,
+        "receiver_seconds": 0.173
+      }
+    }
+  ],
+  "tests": {
+    "passed": 7,
+    "file": "tests/test_azure_vm_target.py"
+  },
+  "limitations": [
+    "Future cost/midnight triggers were inspected, not fired.",
+    "VM1 and VM2 were read only."
+  ],
+  "references": [
+    "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-manage-disks",
+    "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command-managed",
+    "https://learn.microsoft.com/en-nz/azure/backup/backup-azure-troubleshoot-vm-backup-fails-snapshot-timeout"
+  ],
+  "independent_arm_hash_verification": [
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-azure3-smoke-20261012-02",
+      "files": 36,
+      "hash_matches": 36
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-azure3-smoke-20261012-01",
+      "files": 9,
+      "hash_matches": 9
+    }
+  ]
+}
