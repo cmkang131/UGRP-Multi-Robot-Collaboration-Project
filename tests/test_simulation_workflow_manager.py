@@ -328,7 +328,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-sweep-v149": ["--expected-source-sha", "0" * 40],
             "zone-s3-odometry-v150": ["--expected-source-sha", "0" * 40],
             "zone-s3-consistency-v151": ["--expected-source-sha", "0" * 40],
-            "zone-s3-recovery-v152": ["--expected-source-sha", "0" * 40],
+            "zone-s3-recovery-v195": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-probe-v153": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-entry-probe-v154": ["--expected-source-sha", "0" * 40],
             "zone-s3-oracle-stage-probe-v155": ["--expected-source-sha", "0" * 40],
@@ -349,11 +349,25 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-full-route-v175": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
             "zone-s3-checkpoint-correction-v177": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
             "e2e-s3-ownroute-v179": ["--expected-source-sha", "0" * 40, "--seed", "61001"],
+            "zone-s3-release-ack-v187": ["--expected-source-sha", "0" * 40],
+            "zone-s3-continuous-distance-v186": ["--expected-source-sha", "0" * 40],
             "zone-s3-synchronized-start-v165": ["--expected-source-sha", "0" * 40],
             "zone-s4-pair-live-v166": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
             "zone-s4-pair-live-v167": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
             "zone-s4-pair-live-v168": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
-            "zone-s4-pair-live-v176": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v169": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v170": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v171": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v173": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v174": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v178": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v180": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v181": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v182": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v183": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v183-gemma-dev-v1": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201", "--gemma-fallback", "on"],
+            "zone-s4-study-v184": ["--expected-source-sha", "0" * 40, "--condition", "no_comm"],
+            "zone-s4-pair-live-v176": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
             "zone-s3-capture-diagnostic-v160": ["--expected-source-sha", "0" * 40, "--kind", "capture"],
             "zone-s3-x86-trim-probe-v158": ["--expected-source-sha", "0" * 40, "--model", "/nonexistent/trim.json", "--model-sha256", "0" * 64],
             "v7-exact-speed-benchmark": ["--suite", str(source), "--expected-source-sha", "0" * 40],
@@ -392,6 +406,7 @@ raise SystemExit(3 if a.fail else 0)
             'zone-s2-real-output-diag-v112',
         )})
         samples['zone-s2-realism-v132'] = ['--expected-source-sha', '0'*40, '--mode', 'start']
+        samples['azure-s3-environment-smoke'] = ['--expected-source-sha', '0'*40]
         samples['zone-s2-realism-v133'] = ['--expected-source-sha', '0'*40, '--mode', 'full']
         samples['zone-s2-v133-reproduction'] = ['--expected-registration-sha', '0'*40, '--seed', '1053']
         samples['zone-s2-v133-baseline-v52'] = ['--expected-registration-sha', '0'*40, '--seed', '1056']
@@ -414,9 +429,24 @@ raise SystemExit(3 if a.fail else 0)
         for name in ('zone-s2-look-before-move-v135', 'zone-s2-goal-heading-v136',
                      'zone-s2-staged-approach-v137', 'zone-s2-staging-only-v138'):
             samples[name] = ['--expected-source-sha', '0'*40, '--seed', '1054']
+        # PR #405 own-map/egomap DEV workflows (planning only; each runner still needs --execute + lock).
+        sha = ['--expected-source-sha', '0'*40]
+        samples.update({
+            'active-frontier-cycle': sha, 'navfn-start-recovery': sha, 'own-map-goal-dev': sha,
+            'active-rotleft-dev': ['--case', 'new-seed', *sha],
+            'frontier-duration': ['--condition', 'baseline', *sha],
+            'egomap-reconfirmation-dev': ['--mode', 'smoke'], 'egomap-fresh-paired-dev': ['--mode', 'smoke'],
+            'own-route-particle-stages-dev': ['--mode', 'smoke', '--seed', '60012'],
+        })
+        for name, seed in (('goal-route-continuous-dev', '55001'), ('goal-route-motion-audit-dev', '55001'),
+                           ('goal-route-preflight-dev', '55001'), ('own-map-return-repeat', '49001'),
+                           ('own-teach-capture', '49002'), ('own-teach-return-dev', '54001')):
+            samples[name] = ['--seed', seed, *sha]
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
             plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}
+            with self.assertRaisesRegex(ValueError, "unknown workflow: zone-s3-recovery-v193"):
+                wm.plan(PROJECT, "zone-s3-recovery-v193", ["--expected-source-sha", "0" * 40])
         self.assertEqual(set(plans), set(samples))
         self.assertEqual(plans["physical"]["command"][-1], "<record>/artifacts")
         self.assertEqual(plans["communication"]["output"], "<record>/artifacts.json")

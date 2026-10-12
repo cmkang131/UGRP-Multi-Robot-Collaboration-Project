@@ -33,6 +33,85 @@ def test_defaults_legacy_exact_and_english_cohort_identity():
     with pytest.raises(ValueError):cp.external_condition('peer_en','ko')
 
 
+def test_coalescer_progress_inbox_deadline_and_critical_edges():
+    from harness.s4_event_coalesce import Coalescer
+    traces=[]
+    for condition in ('no_comm','peer_ko','leader_ko','structured'):
+        policy=Coalescer();b=payload(condition);b['inbox']=[]
+        assert 'initial_claim' in policy.observe('r1',b);policy.acknowledge('r1')
+        b['pair_handshake'].update(phase='carry',own_executor_phase='lower')
+        assert policy.observe('r1',b)==[]
+        b['inbox']=[{'message_id':'msg1'}];b['sim_time_s']=1
+        assert policy.observe('r1',b)==[]
+        b['sim_time_s']=60;assert policy.observe('r1',b)==[]
+        b['sim_time_s']=61;assert policy.observe('r1',b)==['inbox_max_wait']
+        policy.acknowledge('r1')
+        b['decision_window']={'kind':'post_look_decision','opened_at_sim_s':61,'latch_until_sim_s':70}
+        assert policy.observe('r1',b)==['decision_window'];policy.acknowledge('r1')
+        b['sim_time_s']=62;assert policy.observe('r1',b)==[]
+        b['visual_monitor']={'state':'grip_lost'}
+        assert policy.observe('r1',b)==['own_observation_abnormal']
+        traces.append(policy.trace)
+    assert traces.count(traces[0])==4
+    with pytest.raises(ValueError):Options(event_coalesce_v1=True)
+
+
+def test_coalescer_rejected_decision_gets_one_correction_in_own_live_window():
+    from harness.s4_event_coalesce import Coalescer
+    e=Coalescer();b=payload();b['inbox']=[]
+    b['decision_window']={'kind':'carry_decision','opened_at_sim_s':0.,'latch_until_sim_s':9.}
+    e.observe('r1',b);e.acknowledge('r1')
+    b['own_command_history']=[dict(command_id='failed1',local_state='command_rejected',issued_at_sim_s=2.)]
+    b['sim_time_s']=2.;assert e.observe('r1',b)==['own_command_rejected'];e.acknowledge('r1')
+    b['own_command_history'][-1]['command_id']='failed2'
+    b['sim_time_s']=3.;assert e.observe('r1',b)==[]
+    b['decision_window']['opened_at_sim_s']=10.;b['decision_window']['latch_until_sim_s']=19.
+    b['sim_time_s']=11.;assert e.observe('r1',b)==['decision_window'];e.acknowledge('r1')
+    b['own_command_history'][-1]['issued_at_sim_s']=12.
+    b['sim_time_s']=20.;assert e.observe('r1',b)==[]
+
+
+def test_extractively_trim_read_history_preserves_all_unread_and_failures():
+    b=payload();b['inbox']=[dict(message_id=f'm{i}',sender='r2',body={'text':f'opaque {i}'},
+        created_at_sim_s=i,reply_to=None,schema='redundant') for i in range(9)]
+    b['own_command_history']=[dict(command_id='move',kind='move',arguments={'distance':1}),
+        dict(command_id='heartbeat',kind='noop',arguments={'reason_code':'held'}),
+        dict(command_id='reject',kind='noop',local_state='command_rejected',arguments={'reason_code':'stale'})]
+    x=cp.project(b,compact=True,context_trim_v1=True,seen_message_ids={'m0','m1'})
+    assert [m['message_id'] for m in x['inbox']]==[f'm{i}' for i in range(2,9)]
+    assert all(m['body']==b['inbox'][i+2]['body'] for i,m in enumerate(x['inbox']))
+    assert x['own_command_history']==[b['own_command_history'][0],b['own_command_history'][2]]
+    assert x['history_summary']['omitted_read_messages']==2
+
+
+def test_invalid_reply_does_not_acknowledge_trimmed_inbox(monkeypatch):
+    from harness import s4_event_policy as policy
+    from types import SimpleNamespace
+    trial=object.__new__(Trial);trial.prompt_seen={}
+    prepared=SimpleNamespace(bundled=SimpleNamespace(payload_dict=lambda:{'inbox':[{'message_id':'unread'}]}))
+    call=SimpleNamespace(actor='r1')
+    result=SimpleNamespace(action=None)
+    monkeypatch.setattr(policy,'bind',lambda *a,**kw:lambda *a,**kw:result)
+    assert trial.finish_call(call,prepared,'bad') is result
+    assert trial.prompt_seen=={}
+    result.action={'kind':'continue'}
+    trial.finish_call(call,prepared,'valid')
+    assert trial.prompt_seen=={'r1':{'unread'}}
+
+
+def test_map_image_toggle_preserves_existing_figure_only_in_legacy_diagnostic():
+    b=payload();r=dict(messages=[{'role':'system','content':'old'},{'role':'user','content':json.dumps(b)}],
+        images=[{'label':'CURRENT OWN WRIST RGB','image':'data:image/jpeg;base64,YQ=='},
+                {'label':'STATIC MAP FIGURE','image':'data:image/png;base64,Yg=='}],
+        image_refs=[{'label':'CURRENT OWN WRIST RGB','bytes_sha256':'a'*64},
+                    {'label':'STATIC MAP FIGURE','bytes_sha256':'b'*64}])
+    legacy=cp.transform(r,map_as_image_v1=True)
+    assert legacy['images']==r['images'] and 'static_map' not in json.loads(legacy['messages'][1]['content'])
+    own=cp.transform(r,compact=True,map_as_image_v1=True)
+    assert len(own['images'])==1 and own['map_image_scope']=='omitted_authored_map_for_own_input'
+    assert json.loads(own['messages'][1]['content'])['self_belief']['status']=='unknown'
+
+
 @pytest.mark.parametrize('lang',['ko','en'])
 def test_compact_preserves_safety_contracts_and_no_map(lang):
     b=payload('structured');original=copy.deepcopy(b)
@@ -84,11 +163,12 @@ def test_quota_shared_restart_tpm_rpm_daily_and_no_refund(tmp_path):
 
 
 @pytest.mark.parametrize('condition',['no_comm','peer_ko','leader_ko','structured'])
-def test_real_scheduler_english_compact_single_claim_no_timer(tmp_path,setup_data,monkeypatch,condition):
+@pytest.mark.parametrize('coalesce',[False,True])
+def test_real_scheduler_english_compact_single_claim_no_timer(tmp_path,setup_data,monkeypatch,condition,coalesce):
     from harness import s4_pair_epochs as ep
     def handshake(**kwargs):
         h=ep.Handshake(carry_lease_renewal=ep.hs.ACTIVE_PHASE_HEARTBEAT,epoch_reconnect=True,go_ack_rounds=True)
-        h.study_options=Options(True,True,'en');h.reply_contract=True;return h
+        h.study_options=Options(True,True,'en',event_coalesce_v1=coalesce,context_trim_v1=coalesce);h.reply_contract=True;return h
     monkeypatch.setattr(fx.hs,'Handshake',handshake)
     monkeypatch.setattr(fx.stage,'Host',Host)
     host,driver,inner=fx.build(tmp_path,setup_data,condition)
@@ -139,13 +219,15 @@ def test_global_quota_429_holds_same_sim_and_request_then_claim_once(tmp_path,se
     assert resumed and all(r['hold_verified'] and r['before']==r['after'] for r in resumed)
 
 
-def test_event_driver_go_ack_then_controller_heartbeat_no_model_timer(tmp_path,setup_data,monkeypatch):
+@pytest.mark.parametrize('coalesce',[False,True])
+@pytest.mark.parametrize('condition',['no_comm','peer_ko'])
+def test_event_driver_go_ack_then_controller_heartbeat_no_model_timer(tmp_path,setup_data,monkeypatch,coalesce,condition):
     from harness import s4_pair_epochs as ep,s4_grip_visual
     def handshake(**kwargs):
         h=ep.Handshake(carry_lease_renewal=ep.hs.ACTIVE_PHASE_HEARTBEAT,epoch_reconnect=True,go_ack_rounds=True)
-        h.study_options=Options(True,True,'en');h.reply_contract=True;return h
+        h.study_options=Options(True,True,'en',event_coalesce_v1=coalesce);h.reply_contract=True;return h
     monkeypatch.setattr(fx.hs,'Handshake',handshake);monkeypatch.setattr(fx.stage,'Host',Host)
-    host,old,inner=fx.build(tmp_path,setup_data,'no_comm')
+    host,old,inner=fx.build(tmp_path,setup_data,condition)
     driver=Driver(host,old.runtime)
     class Monitor:
         def __init__(self,**kwargs):pass

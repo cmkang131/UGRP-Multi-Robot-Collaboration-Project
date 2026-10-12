@@ -1,0 +1,8 @@
+[Unit]
+Description=UGRP free-space alarm (read-only, no cleanup)
+
+[Service]
+Type=oneshot
+Environment=UGRP_STORAGE_HOST=arm
+Environment=UGRP_STORAGE_PATH=%h/ugrp-archive/runs
+ExecStart=/usr/bin/python3 %h/ugrp-storage-tools/scripts/storage_budget.py --host ${UGRP_STORAGE_HOST} --path ${UGRP_STORAGE_PATH} --alert-only
