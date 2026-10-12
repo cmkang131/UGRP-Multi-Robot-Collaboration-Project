@@ -167,6 +167,7 @@ def test_registered_sensor_bundle_and_baseline_and_relay_admission():
 
 
 def test_sensor_adapter_clock_ownership_history_and_close_without_physics(monkeypatch,tmp_path):
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
     from sim import e2e_us_input as adapter
     events=[]
     class Rig:

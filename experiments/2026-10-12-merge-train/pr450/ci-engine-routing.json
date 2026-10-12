@@ -1,0 +1,15 @@
+{
+  "cause": "Mocked sensor adapter imports optional MuJoCo rig module",
+  "fix": "Only adapter wiring test skips without engine; whole file explicitly runs in engine-installed CI",
+  "validation": {
+    "engine_available": "25 passed",
+    "engine_unavailable": "24 passed, 1 skipped"
+  },
+  "logs": {
+    "outputs/merge-train-20261012/pr450-engine-tests.txt": "e46c3858c628be75400a2814e51c430b72cf54ffb9d8e906607b9ee004707c6e",
+    "outputs/merge-train-20261012/pr450-no-engine-tests.txt": "a58ca5150b7f3dae88abe17f2c46258034f84296428191ec13be2ec6816cbb0b"
+  },
+  "reference": "https://docs.pytest.org/en/stable/reference/reference.html#pytest-importorskip",
+  "controller_source_changed": false,
+  "physical_runs": 0
+}
