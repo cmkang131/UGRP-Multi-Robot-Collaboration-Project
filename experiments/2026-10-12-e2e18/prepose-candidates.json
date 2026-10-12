@@ -143,5 +143,11 @@
       "LP_NUM_THREADS": "1"
     },
     "validation": "Python AST parsed both finite runners; actual remote gate is required before cohort admission."
+  },
+  "r44_resource_limit": {
+    "wall_cap_s": 7200,
+    "sim_cap_s": 1800,
+    "global_stop": "2026-10-13T01:00:00Z",
+    "reason": "Allow a promising first grasp to continue through slow loaded carry instead of truncating all cases at 40 minutes. Confirmed repeated blockages remain eligible for supervised replacement. Cap also bounded by relay, VM lifetime and 15-minute final archive reserve."
   }
 }

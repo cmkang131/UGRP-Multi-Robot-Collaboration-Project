@@ -23,7 +23,7 @@ assert len(active)<=6-len(selected),[(r.name) for r in active]
 receipt=json.loads((b/'relays/e2e18/a-r3.json').read_text())
 from datetime import datetime
 deadline=datetime.fromisoformat('2026-10-13T01:00:00+00:00').timestamp()
-cap=int(min(2400,receipt['checked_unix']+receipt['valid_for_s']-time.time()-660,deadline-time.time()-900))
+cap=int(min(7200,receipt['checked_unix']+receipt['valid_for_s']-time.time()-660,deadline-time.time()-900))
 assert cap>=900,'INSUFFICIENT_RELAY_LIFETIME_FOR_BATCH'
 assert float(Path('/proc/uptime').read_text().split()[0])+cap+1200<28800,'FINITE_VM_LIFETIME_REQUIRED'
 validate_receipt(receipt,now=time.time()+cap+600,remote_url=relay_url('study_gemma4_31b_v1'))
