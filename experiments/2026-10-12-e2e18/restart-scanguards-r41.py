@@ -12,7 +12,6 @@ assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sh
 assert not subprocess.check_output(['git','status','--porcelain'])
 assert os.getpriority(os.PRIO_PROCESS,0)==0 and os.getloadavg()[0]<51
 assert int(next(l.split()[1] for l in Path('/proc/meminfo').read_text().splitlines() if l.startswith('MemAvailable:')))>6*1024**2
-assert float(Path('/proc/uptime').read_text().split()[0])+2400+1200<28800,'FINITE_VM_LIFETIME_REQUIRED'
 for h,minimum in [('x86',6*2048*2**20),('arm',12*2048*2**20),('mac',12*80*2**20)]:
  p=b/f'e2e18-r41-budget-{h}.json';x=json.loads(p.read_text());assert time.time()-p.stat().st_mtime<300 and x['ok']
  assert x['checks'][0]['expected_bytes']>=minimum
@@ -21,6 +20,7 @@ assert len(active)<=6-len(selected),[(r.name) for r in active]
 receipt=json.loads((b/'relays/e2e18/a.json').read_text())
 cap=int(min(2400,receipt['checked_unix']+receipt['valid_for_s']-time.time()-660))
 assert cap>=900,'INSUFFICIENT_RELAY_LIFETIME_FOR_BATCH'
+assert float(Path('/proc/uptime').read_text().split()[0])+cap+1200<28800,'FINITE_VM_LIFETIME_REQUIRED'
 validate_receipt(receipt,now=time.time()+cap+600,remote_url=relay_url('study_gemma4_31b_v1'))
 old_plan=json.loads(next((b/'runs').glob('speed-gate-e2e18-*-r33-*-plan.json')).read_text())
 specs=[]
