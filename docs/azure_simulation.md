@@ -28,6 +28,42 @@ python3 scripts/azctl.py resize --size Standard_D16as_v5
 
 ## 환경·증거·모델 터널
 
+### 두 번째 실행 VM (2026-10-12)
+
+`ugrp-sim-azure2` / SSH `azure2`는 같은 승인 구독·RG·Korea Central의
+독립 D16as_v5 실행 호스트다. VM1 실행 중 OS 디스크의 crash-consistent
+스냅샷에서 128 GiB Standard SSD를 만들었으며 새 NIC·공용 IP·NSG를 쓴다.
+SSH 허용 출발지는 기존과 같은 Oracle ARM 한 곳이다. 초기 부팅 중 ARM행
+아웃바운드를 임시 차단하고 복제된 `runs`, `leases`, `lifecycle`을
+`~/ugrp-sim/clone-excluded-vm1-20261012/`에 보존·격리했다. 이 경로는
+VM2 보관/복구 대상이 아니며 VM1의 실행 결과로만 취급한다. VM2 호스트명,
+machine-id, SSH host key와 archive identity를 새로 만들었다. 개인키는 VM2에만 둔다.
+
+VM2 identity에는 기존 두 custom role의 다섯 작업(read, instanceView,
+deallocate, runCommands read/write)을 **VM2 리소스 범위에만** 부여한다.
+Automation에는 VM2의 Run Command 역할 할당만 추가하며 공유 runbook·일정,
+VM1의 설정은 변경하지 않는다. 구독 VM 목록을 사용하는 기존 runbook은
+VM2도 발견한다. 네이티브 ARM 전송은 `UGRP_ARCHIVE_NATIVE=on_v1`이다.
+
+```sh
+python3 scripts/azctl.py status --host azure2
+python3 scripts/azctl.py start --vm ugrp-sim-azure2
+bash scripts/oracle_run.sh --host azure2 --detach WORKTREE RUN -- COMMAND
+bash scripts/oracle_run.sh --host azure2 fetch-lite RUN
+python3 scripts/azctl.py stop --host azure2
+```
+
+기본 `azctl` 대상은 VM1이다. `--vm`/`--host`가 서로 다른 VM을 선택하면
+거부한다. VM2 회수는 `outputs/azure2-runs`, `outputs/azure2-lifecycle`에
+격리한다. `remote_reverse_tunnel.py --max-session-hours 7.5`는 명시적 긴
+세션 선택이며 기본 4시간·절대 상한 7.5시간이다. 모델 relay 자체의 수명과
+실제 모델 응답은 별도로 확인한다. 생성·스모크·보관·유휴 종료 검증은
+`experiments/2026-10-12-azure-vm2/summary.json`에 기록한다.
+
+참고: [Azure 디스크 스냅샷과 새 VM](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-manage-disks),
+[Managed Run Command](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command-managed),
+[SSH host key 확인](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys).
+
 Ubuntu 24.04 x86_64, Python 3.12, `requirements-sim-server.txt`, OSMesa 소프트웨어 렌더를 사용한다. 서버 requirements는 기본 sim requirements와 S3 제어기 추가 의존성 SciPy 1.17.1(기존 Mac/test pin)을 포함한다. 기본 VM은 **Standard_D16as_v5: 16 vCPU / 64 GiB RAM**, Linux 정가 **$0.848/시간**(2026-10-11 Retail Prices API 조회, 할인·세금·디스크·IP 제외). 기존 64 GiB Standard SSD OS 디스크를 우선 사용하고 배치별 저장 예산을 확인한다. CPU·RAM·디스크 예산이 허용하는 범위에서 동시 실행한다.
 
 `~/ugrp-sim/src/<SHA>`는 커밋 전체 트리의 shallow Git 소스, `~/ugrp-sim/ugrp/.venv-sim`은 공유 환경, `~/ugrp-sim/runs/<이름>`은 영속 OS 디스크 원본이다. tmpfs에 원본을 쓰지 않는다. 파일명은 고유해야 하며 미커밋 소스로 실행하지 않는다. `RUN_META.json`, 소스 SHA·명령·부하·EXIT·SHA256SUMS와 실패를 보존한다.
