@@ -31,7 +31,7 @@ class AgreementView:
 
 
 class Transport:
-    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False):
+    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off'):
         self.robots,self.dialogue,self.profiles=robots,dialogue,profiles
         self.pulse_budget=pulse_budget;self.relook_option=setdown_only_when_relook
         self.state='mapping';self.stage_t=0.;self.seg=0;self.first_seg=0;self.epoch=0
@@ -41,6 +41,8 @@ class Transport:
         self.authorizations={};self.used=set();self.last_route_error=None
         self.final_correction=False
         self.dev_light=dev_light;self.would_stops=set()
+        if carrier_approach not in ('off','standoff_v1'):raise ValueError('UNKNOWN_CARRIER_APPROACH')
+        self.carrier_approach=carrier_approach;self.approach={}
 
     def event(self,t,kind,**data):self.events.append(dict(t=t,event=kind,**data))
     def set(self,state,t):self.state=state;self.stage_t=t;self.event(t,'phase',state=state,seg=self.seg,epoch=self.epoch)
@@ -103,13 +105,18 @@ class Transport:
         for rid in PAIR:
             r=self.robots[rid];b=r.beam
             if rid in self.aligned:continue
+            if self.carrier_approach!='off':
+                from harness.e2e_carrier_approach import advance
+                fine,actions=advance(self,rid,now)
+                out.extend((rid,a) for a in actions)
+                if not fine:continue
             if b is None or now-b['rgb']['t_sim']>.25:continue
             # Require the actual common carrier orientation. A same-facing pair
             # cannot be sent opposite body commands simply because roles differ.
             from harness.active_wall_mapping import wrap
             yaw=r.goal.explorer.local_pose[2]
             required=0. if rid=='r1' else math.pi
-            if abs(wrap(yaw-required))>math.radians(5):
+            if self.carrier_approach=='off' and abs(wrap(yaw-required))>math.radians(5):
                 self.event(now,'own_carrier_axes_unavailable',robot_id=rid)
                 continue
             phase,value=self.align[rid].observe(now,r.last_obs,r.servo,b['grip_base_m'],b['axis_heading_rad'])
@@ -243,7 +250,7 @@ class Transport:
                             now=now,profiles=self.profiles,agreement=self.dialogue,pulse_budget=self.pulse_budget)
                     self.dialogue.approved=False;self.dialogue.proposal=None
                     self.dialogue.claims=set();self.dialogue.key=None;self.dialogue.votes={}
-                    self.aligned={};self.seg=0;self.first_seg=0;self.plan=None
+                    self.aligned={};self.approach={};self.seg=0;self.first_seg=0;self.plan=None
                     self.set('mapping',now)
             elif now-self.stage_t>15:out+=self.observation_timeout('OWN_RGB_METRIC_CORRECTION_TIMEOUT',now)
         return out

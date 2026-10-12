@@ -32,7 +32,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off',beam_axis='off',route_coverage='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off',beam_axis='off',route_coverage='off',carrier_axes='off',carrier_approach='off'):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
     registered_seeds = range(61001,61013) if b_partial_accept != 'off' else range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
     if profile not in PROFILES or seed not in registered_seeds:raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
@@ -227,6 +227,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     paths.update(beam_axis_compose(b,beam_axis))
     from harness.e2e_route_coverage import compose as coverage_compose
     paths.update(coverage_compose(b,route_coverage))
+    from harness.e2e_carrier_axes import compose as axes_compose
+    paths.update(axes_compose(b,carrier_axes,carrier_approach))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -236,7 +238,7 @@ def ownmap_record(robot, obs, trace, now):
     return dict(t=now,frame_id=obs['frame_id'],sha256=obs['sha256'],
         pose_own_m=robot.goal.explorer.local_pose.tolist(),
         remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
-        sigma_xy_m=trace.get('sigma_xy'),own_beam=robot.beam,route_diagnostics=getattr(robot.goal,'e2e_route_diagnostics',None),
+        carrier_approach=getattr(robot,'carrier_approach',None),sigma_xy_m=trace.get('sigma_xy'),own_beam=robot.beam,route_diagnostics=getattr(robot.goal,'e2e_route_diagnostics',None),
         pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
         navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry'),
         **{k:trace[k] for k in ('boundary_view','boundary_diagnostics','explore_deadlock','boundary_association') if k in trace})
@@ -256,7 +258,7 @@ def health(robots,host,transport,sim_s,wall_s,frames):
         phase=transport.state if transport else 'boot',setdowns=transport.setdowns if transport else 0,
         robots={r:dict(pose_own_m=v.goal.explorer.local_pose.tolist(),stage=v.goal.stage,
             map_frames=len(v.goal.e2e_observed),command=v.nav_command,
-            translation_commands=v.translation_commands) for r,v in robots.items()},
+            translation_commands=v.translation_commands,carrier_approach=getattr(v,'carrier_approach',None)) for r,v in robots.items()},
         latest_route_wait=transport.last_route_error if transport else None,
         route_diagnostics=getattr(r1.goal,'e2e_route_diagnostics',None) if r1 else None)
 
@@ -335,6 +337,7 @@ def run(b,out,receipt,*,backend_factory=None):
             robot.goal.e2e_route_guard=b['e2e_options'].get('route_guard','off')
             robot.goal.e2e_beam_axis=b['e2e_options'].get('beam_axis','off')
             robot.goal.e2e_route_coverage=b['e2e_options'].get('route_coverage','off')
+            robot.goal.e2e_carrier_axes=b['e2e_options'].get('carrier_axes','off')
         for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
         offered=json.loads(receipt.read_text())
         if offered.get('decider','off')!=b['e2e_options'].get('decider','off'):
@@ -370,7 +373,7 @@ def run(b,out,receipt,*,backend_factory=None):
         profiles=json.loads((ROOT/'configs/s2_v133_full_template.json').read_text())['pulse_calibration']['profiles']
         transport=Transport(robots,host.trial.dialogue,profiles,pulse_budget=b['e2e_options']['pulse_budget'],
                             setdown_only_when_relook=b['e2e_options']['setdown_only_when_relook'],
-                            dev_light=b['e2e_options'].get('dev_light',False))
+                            dev_light=b['e2e_options'].get('dev_light',False),carrier_approach=b['e2e_options'].get('carrier_approach','off'))
         host.trial.dialogue.motion_connected=True
         host.trial.provenance.update(provider=offered.get('upstream',host.trial.provenance['provider']),
             decider=b['e2e_options'].get('decider','off'))
@@ -519,6 +522,8 @@ def main(argv=None):
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
     p.add_argument('--speed3',choices=('off','dt1_v1','dt2_v1','adaptive_v1'),default='off')
+    p.add_argument('--carrier-axes',choices=('off','beam_v1'),default='off')
+    p.add_argument('--carrier-approach',choices=('off','standoff_v1'),default='off')
     p.add_argument('--route-coverage',choices=('off','native_v1'),default='off')
     p.add_argument('--beam-axis',choices=('off','undirected_v1'),default='off')
     p.add_argument('--route-guard',choices=('off','dev_nominal_v1'),default='off')
@@ -536,7 +541,7 @@ def main(argv=None):
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
                  vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
                  vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
-             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4,b_partial_accept=a.b_partial_accept,speed5=a.speed5,observation_cadence=a.observation_cadence,route_guard=a.route_guard,beam_axis=a.beam_axis,route_coverage=a.route_coverage)
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4,b_partial_accept=a.b_partial_accept,speed5=a.speed5,observation_cadence=a.observation_cadence,route_guard=a.route_guard,beam_axis=a.beam_axis,route_coverage=a.route_coverage,carrier_axes=a.carrier_axes,carrier_approach=a.carrier_approach)
     if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
     if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
         raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')

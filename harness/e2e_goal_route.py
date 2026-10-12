@@ -114,7 +114,8 @@ class IntegratedGoalRoute(GoalRoute):
         from harness.e2e_beam_axis import error as axis_error
         beam_axis_error=axis_error(beam['pose_own_m'][2],getattr(self,'e2e_beam_axis','off'))
         if diagnostic:self.e2e_route_diagnostics['beam_axis_error_rad']=beam_axis_error
-        if beam_axis_error > math.radians(5):
+        carrier_axes=getattr(self,'e2e_carrier_axes','off')=='beam_v1'
+        if beam_axis_error > math.radians(5) and not carrier_axes:
             raise ContractViolation('S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED')
         entity, reference = self.entities.get('B'), self.e2e_gate.references.get('B')
         if entity is None or entity['source'] != 'own' or reference is None:
@@ -151,7 +152,13 @@ class IntegratedGoalRoute(GoalRoute):
                 if not (0 <= y < allowed.shape[0] and 0 <= x < allowed.shape[1] and allowed[y, x]): return False
             return True
 
-        points = cardinal_path(path, clear)
+        carrier_basis=None
+        if carrier_axes:
+            from harness.e2e_carrier_axes import basis,to_axes,from_axes
+            carrier_basis=basis(beam,target)
+            points=from_axes(cardinal_path(to_axes(path,carrier_basis),
+                lambda a,b:clear(*from_axes([a,b],carrier_basis))),carrier_basis)
+        else:points = cardinal_path(path, clear)
         # Occupied cell edges retain the actual wall RGB references. Empty or
         # unknown cells are not fabricated as observations of free space.
         refs = {r['frame_id']: r for r in sources}; walls = []
@@ -170,6 +177,9 @@ class IntegratedGoalRoute(GoalRoute):
                       walls=walls, goal=dict(label='B', sources=copy.deepcopy(goal_sources)), sources=sources)
         route = dict(schema=own.ROUTE_SCHEMA, robot_id='r1', frame_id=sources[-1]['frame_id'],
                      map_version=self.e2e_version, own_map=mapped, B_rgb_sources=copy.deepcopy(goal_sources), waypoints=points)
+        if carrier_basis is not None:
+            from harness.e2e_carrier_axes import ROUTE_SCHEMA
+            route.update(schema=ROUTE_SCHEMA,carrier_basis=carrier_basis)
         route['route_hash'] = digest(route)
         compiled = compile_route(route, now=now, observed=sources, profiles=profiles, option='on_v1',
                                  source='own_map', pulse_budget=pulse_budget,

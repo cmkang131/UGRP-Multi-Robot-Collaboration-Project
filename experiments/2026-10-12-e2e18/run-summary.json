@@ -909,7 +909,7 @@
       "seed": 61001,
       "bundle": "e2e18-v222",
       "attempt": 8,
-      "status": "SPEED_GATE_RUNNING",
+      "status": "RUNNING",
       "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
       "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61001-r8/raw"
     },
@@ -918,7 +918,7 @@
       "seed": 61002,
       "bundle": "e2e18-v222",
       "attempt": 8,
-      "status": "SPEED_GATE_RUNNING",
+      "status": "RUNNING",
       "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
       "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61002-r8/raw"
     },
@@ -927,7 +927,7 @@
       "seed": 61007,
       "bundle": "e2e18-v222",
       "attempt": 8,
-      "status": "SPEED_GATE_RUNNING",
+      "status": "RUNNING",
       "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61007-r8/raw"
     },
@@ -936,7 +936,7 @@
       "seed": 61008,
       "bundle": "e2e18-v222",
       "attempt": 8,
-      "status": "SPEED_GATE_RUNNING",
+      "status": "RUNNING",
       "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61008-r8/raw"
     }
@@ -1189,6 +1189,44 @@
       "samples_file": "gate-azure4-v221.json",
       "samples_sha256": "c85d94cc1ba0332e4b6245b1b87cd3892b059da0ab37c5d50168f326f775c71b",
       "load_context": "2 replacement samples +4 continuing cohorts;total6"
+    },
+    {
+      "status": "SPEED_GATE_PASS",
+      "admitted": true,
+      "measured_pass": true,
+      "override_reason": null,
+      "limit_wall_per_sim": 3.0,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 2,
+      "completed": 2,
+      "median_wall_per_sim": 2.7988621860499885,
+      "invalid_samples": [],
+      "host": "azure3",
+      "bundle": "e2e18-v222",
+      "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
+      "samples_file": "gate-azure3-v222.json",
+      "samples_sha256": "4819b56318f9c94049b31d9a4074b2cc1443ab180cc4692d7605d639e2af60bc",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r8-b59f212a0196",
+      "load_context": "2 replacement samples +4 continuing cohorts;total6"
+    },
+    {
+      "status": "SPEED_GATE_PASS",
+      "admitted": true,
+      "measured_pass": true,
+      "override_reason": null,
+      "limit_wall_per_sim": 3.0,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 2,
+      "completed": 2,
+      "median_wall_per_sim": 2.7798599421666648,
+      "invalid_samples": [],
+      "host": "azure4",
+      "bundle": "e2e18-v222",
+      "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
+      "samples_file": "gate-azure4-v222.json",
+      "samples_sha256": "d2ea0b52fc6a6b368393372112cc613f367573dd263de82ccadfe4ed270c6fcc",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r8-b59f212a0196",
+      "load_context": "2 replacement samples +4 continuing cohorts;total6"
     }
   ],
   "vm": {
@@ -1285,5 +1323,6 @@
   },
   "initial_health_cohort_r6": "initial-health-cohort-r6.json",
   "cohort_r6_selected_results": "cohort-r6-selected-results.json",
-  "initial_health_cohort_r7": "initial-health-cohort-r7.json"
+  "initial_health_cohort_r7": "initial-health-cohort-r7.json",
+  "initial_health_cohort_r8": "initial-health-cohort-r8.json"
 }
