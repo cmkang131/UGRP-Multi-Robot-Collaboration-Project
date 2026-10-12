@@ -1,0 +1,23 @@
+{
+  "ci_run": 38225517236,
+  "failed_job": 114732962575,
+  "failure": "test_self_wall_robust imported foreign cached common module from another experiment",
+  "scope": "Test-only isolated load; historical experiment scripts unchanged",
+  "fix": "Reuse tests.isolated_code_dir.load; inject foreign cache and verify module/path restoration",
+  "tests": {
+    "passed": 24,
+    "failed": 0,
+    "files": [
+      "test_self_wall_robust.py",
+      "test_arena_wall_map.py",
+      "test_wall_parallax.py"
+    ]
+  },
+  "logs": {
+    "outputs/merge-train-20261012/pr433-import-isolation-tests.txt": "6d8c27a1f6db722fbe01c78daa2c86bd7b5c20266739922811cfe53fc3d36238",
+    "outputs/merge-train-20261012/pr433-failed-shard4.log": "592adfa5c5b68a384549b3aa4190cdb5d3b2b73eb333636be0c57f7b116dfbb3"
+  },
+  "reference": "https://docs.python.org/3/reference/import.html#the-module-cache",
+  "controller_source_changed": false,
+  "physical_runs": 0
+}
