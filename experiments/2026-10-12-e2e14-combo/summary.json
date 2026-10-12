@@ -1,0 +1,75 @@
+{
+ "id": "2026-10-12-e2e14-combo",
+ "status": "PREPARED_NOT_RUN",
+ "run_class": "dev",
+ "branch": "claude/e2e14-combo",
+ "pr": null,
+ "refs": [
+  433,
+  443,
+  444
+ ],
+ "code_sha": "e8b63c5e7fb61bff379e8471a7f9971e5ebffc59",
+ "merged": {
+  "integration": "9d6eb567",
+  "pr443": "ee3d656b",
+  "pr444": "02d6af82"
+ },
+ "conflicts": [
+  {
+   "file": "harness/e2e_live_mapping.py",
+   "where": "Robot.__init__ signature",
+   "resolution": "keep boundary_views/b_marker_detect (#443) and exact_speedups (v200)"
+  }
+ ],
+ "bundle": {
+  "id": "e2e-combo14-v202",
+  "workflow_version": "7.95.0",
+  "schema": "ugrp.e2e_ownmap_live.v202",
+  "reservation": "max across origin/main and all open-PR branches = e2e-rgb-vo-v201 / 7.94.0; RUNNABLE_ID unchanged (rgb-standard-dispatch-v63)"
+ },
+ "comparator": {
+  "id": "e2e-stall-budget-v199",
+  "config": "12th-round A verbatim; new source SHA, no outcome inherited"
+ },
+ "deviation": "rgb_vo_v1 occupies stall_odometry and replaces rgb_pulse_gate_v1; #444 contract forbids recovery/noise with VO, so A(v202) differs from B(12A) in 5 settings; not toggle-isolated",
+ "wall_cap": {
+  "old_ceiling_s": 12600,
+  "new_ceiling_s": 25200,
+  "default_s": 12600,
+  "unverified": "Azure-side remote_run_finish.py/azure_shutdown.py caps outside repo"
+ },
+ "simulations": 0,
+ "vm_use": 0,
+ "smoke": {
+  "kind": "saved_frame_fixed_replay",
+  "simulation": false,
+  "frames_per_config": 394,
+  "configs": 4,
+  "errors": 0,
+  "combo_trace_complete": 394,
+  "combo_vo_measured": 340,
+  "combo_vo_replaced": 163,
+  "vo_and_pose_equal_vo_only_cases": 4,
+  "cases": 4,
+  "boundary_diag_equal_b443_only": 394,
+  "boundary_view_equal_b443_only": 280,
+  "file": "smoke-replay.json",
+  "sha256": "413bd1b7018c5af123b6d165570dcdc2b687c4f819cc63ee1fd268c72102e3ca",
+  "inputs": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry/selected-frames + outputs/azure-runs/<run>/raw (Mac local, not backed up by this record)"
+ },
+ "tests": {
+  "passed": 27,
+  "N": 27,
+  "files": [
+   "tests/test_e2e14_combo.py",
+   "tests/test_e2e_rgb_vo.py",
+   "tests/test_e2e_boundary_views.py"
+  ]
+ },
+ "workflow_plan_check": {
+  "A": "e2e-combo14-v202 plan ok",
+  "B": "e2e-stall-budget-v199 plan ok",
+  "executed": false
+ }
+}
