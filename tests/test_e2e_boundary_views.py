@@ -122,6 +122,7 @@ def test_boundary_diagnostics_preserve_baseline_and_never_make_missing_contour_c
 
 
 def test_real_robot_wires_option_and_logs_diagnostics_without_promoting_coverage():
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
     from harness.e2e_live_mapping import Robot
     from harness.s4_event_policy import Options
     import base64,hashlib,cv2

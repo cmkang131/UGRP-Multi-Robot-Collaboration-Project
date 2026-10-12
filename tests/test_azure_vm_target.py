@@ -13,16 +13,19 @@ def test_default_and_explicit_targets_cannot_cross_machines():
     assert vm_target() == (VM, 'azure')
     assert vm_target(host='azure2') == ('ugrp-sim-azure2', 'azure2')
     assert vm_target(vm='ugrp-sim-azure2') == ('ugrp-sim-azure2', 'azure2')
+    assert vm_target(host='azure3') == ('ugrp-sim-azure3', 'azure3')
+    assert vm_target(vm='ugrp-sim-azure3') == ('ugrp-sim-azure3', 'azure3')
     for vm, host in [('ugrp-sim-azure', 'azure2'), ('other', None), (None, 'other')]:
         with pytest.raises(ValueError):
             vm_target(vm, host)
 
 
-def test_vm2_status_is_explicitly_scoped():
-    with patch('sys.argv', ['azctl', 'status', '--host', 'azure2']), patch.object(azctl, 'az') as call:
+@pytest.mark.parametrize('host', ['azure2', 'azure3'])
+def test_vm_status_is_explicitly_scoped(host):
+    with patch('sys.argv', ['azctl', 'status', '--host', host]), patch.object(azctl, 'az') as call:
         azctl.main()
     args = call.call_args.args
-    assert args[args.index('-n') + 1] == 'ugrp-sim-azure2'
+    assert args[args.index('-n') + 1] == 'ugrp-sim-' + host
     with patch.object(subprocess, 'run') as run:
         azctl.az(*args)
     assert run.call_args.args[0][-3:] == ['--subscription', SUB, '--only-show-errors']

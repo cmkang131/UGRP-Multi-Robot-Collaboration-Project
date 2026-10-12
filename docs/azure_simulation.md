@@ -64,6 +64,23 @@ python3 scripts/azctl.py stop --host azure2
 [Managed Run Command](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command-managed),
 [SSH host key 확인](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys).
 
+### 세 번째 실행 VM (2026-10-12)
+
+`ugrp-sim-azure3` / SSH `azure3`는 승인 구독의 독립 **Standard_D16as_v6**
+(Zen4, 16 vCPU / 64 GiB) 호스트다. VM1·VM2의 실행·설정은 바꾸지 않는다.
+VM2와 같은 스냅샷→128 GiB Standard SSD 절차를 쓰고, 새 NIC·IP·NSG에서
+Oracle ARM의 SSH만 허용한다. 첫 부팅의 아웃바운드 차단 상태에서 복제된
+runs/leases/lifecycle을 `clone-excluded-vm1-20261012`로 격리하고 호스트명·
+machine-id·SSH host key·VM3 archive identity를 재생성한다. 복제 자료는 보존한다.
+VM3 identity의 기존 두 custom role과 Automation의 Run Command 추가 권한은
+VM3 리소스 범위에만 배정한다. 공유 runbook·예산·일정은 재설정하지 않는다.
+
+`python3 scripts/azctl.py status --host azure3`로 대상을 명시한다.
+유휴 20분·부팅 8시간 가드, boot recovery, ARM native 전송을 유지한다.
+14차 재실행은 별도 relay 포트와 25,200초 실행 상한을 사용하고 결과·회수는
+이 worktree에만 쓴다. 구성·실제 유휴 할당 해제·원본 해시 검증의 판정은
+`experiments/2026-10-12-azure-vm3/summary.json`을 따른다.
+
 Ubuntu 24.04 x86_64, Python 3.12, `requirements-sim-server.txt`, OSMesa 소프트웨어 렌더를 사용한다. 서버 requirements는 기본 sim requirements와 S3 제어기 추가 의존성 SciPy 1.17.1(기존 Mac/test pin)을 포함한다. 기본 VM은 **Standard_D16as_v5: 16 vCPU / 64 GiB RAM**, Linux 정가 **$0.848/시간**(2026-10-11 Retail Prices API 조회, 할인·세금·디스크·IP 제외). 기존 64 GiB Standard SSD OS 디스크를 우선 사용하고 배치별 저장 예산을 확인한다. CPU·RAM·디스크 예산이 허용하는 범위에서 동시 실행한다.
 
 `~/ugrp-sim/src/<SHA>`는 커밋 전체 트리의 shallow Git 소스, `~/ugrp-sim/ugrp/.venv-sim`은 공유 환경, `~/ugrp-sim/runs/<이름>`은 영속 OS 디스크 원본이다. tmpfs에 원본을 쓰지 않는다. 파일명은 고유해야 하며 미커밋 소스로 실행하지 않는다. `RUN_META.json`, 소스 SHA·명령·부하·EXIT·SHA256SUMS와 실패를 보존한다.
