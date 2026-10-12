@@ -3,8 +3,20 @@ import json
 from pathlib import Path
 import numpy as np
 import pytest
+import subprocess
 from scripts.replay_e2e_idle import FIXTURE, restored, replay
 from harness.e2e_explore_deadlock import install, PARAMS
+
+
+def test_e2e17_shell_expands_only_six_registered_cells_per_vm():
+    script = 'experiments/2026-10-12-e2e-idle/azure-pair.sh'
+    for mode, vm, seeds, arms in (
+        ('pair', 'ugrp-sim-azure3', range(61001,61004), ('a','b')),
+        ('broad', 'ugrp-sim-azure4', range(61004,61010), ('a',)),
+    ):
+        rows = subprocess.check_output(['bash',script,'test-sha','453','--plan',mode],text=True).splitlines()
+        assert rows == [f'{vm} {arm} {seed}' for seed in seeds for arm in arms]
+        assert len(rows) == 6
 
 
 def fixture():

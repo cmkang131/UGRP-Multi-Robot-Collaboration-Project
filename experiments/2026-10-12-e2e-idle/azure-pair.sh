@@ -11,13 +11,21 @@
 # Retrieve only fetch-lite to Mac. Heavy DEV raw is pruned only at this PR merge/close with cleanup-records.
 set -euo pipefail
 SHA=${1:?source SHA required}; PR=${2:?PR number required}
-test "${3:-}" = --execute
+ACTION=${3:?--plan or --execute required}
+[[ "$ACTION" = --execute || "$ACTION" = --plan ]]
 MODE=${4:-pair}
 case "$MODE" in
-  pair) VM=ugrp-sim-azure3; SEEDS=(61001 61002 61003); GROUPS=(a b);;
-  broad) VM=ugrp-sim-azure4; SEEDS=(61004 61005 61006 61007 61008 61009); GROUPS=(a);;
+  pair) VM=ugrp-sim-azure3; SEEDS=(61001 61002 61003); COHORT_ARMS=(a b);;
+  broad) VM=ugrp-sim-azure4; SEEDS=(61004 61005 61006 61007 61008 61009); COHORT_ARMS=(a);;
   *) echo 'mode must be pair or broad' >&2; exit 2;;
 esac
+if [ "$ACTION" = --plan ]; then
+  for seed in "${SEEDS[@]}"; do
+    for group in "${COHORT_ARMS[@]}"; do printf "%s %s %s\n" "$VM" "$group" "$seed"; done
+  done
+  exit 0
+fi
+test "$(( ${#SEEDS[@]} * ${#COHORT_ARMS[@]} ))" = 6
 test "$(hostname -s)" = "$VM"
 test "$PR" = 453
 B=$HOME/ugrp-sim; S=$B/src/$SHA
@@ -59,11 +67,20 @@ export MUJOCO_GL=osmesa OMP_NUM_THREADS=1 LP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=
 .venv-sim/bin/python -c 'from scripts.run_e2e_azure_batch import prepare_native; prepare_native()'
 COMMON=(--expected-source-sha "$SHA" --driver-profile study_gemma4_31b_v1 --relay-receipt "$B/relays/e2e-idle/a.json" --e2e-live --event-driven-llm --compact-prompt --setdown-only-when-relook on_v1 --decider off --exploration-progress frontier_progress_v1 --pose-fix innovation --path-follow rpp_v1 --dev-light --stall-bundle --mapping-budget case_cap_v1 --wall-cap-s 25200 --stall-recovery off --stall-noise off --boundary-views candidate_views_v1 --b-marker-detect contrast_v1 --stall-odometry rgb_vo_us_v1 --ultrasonic-front on_v1 --vo-floor-mask homography_v1 --vo-rotation-policy no_ransac_v1)
 for seed in "${SEEDS[@]}"; do
-  for group in "${GROUPS[@]}"; do
+  for group in "${COHORT_ARMS[@]}"; do
     # Admission is checked for every child; wait if memory/load cannot admit it.
     python3 - <<'PYTHON'
 import os,time
 from pathlib import Path
+# The process tree has one actual runner per cell; wrappers are not counted.
+active=[]
+for p in Path('/proc').iterdir():
+ if not p.name.isdigit():continue
+ try:
+  argv=(p/'cmdline').read_bytes().split(b'\0')
+  if b'scripts.run_e2e_ownmap_live' in argv and b'--execute' in argv:active.append(p.name)
+ except (OSError,ProcessLookupError):pass
+assert len(active)<6, f'VM_SIX_RUN_CAP: {active}'
 while True:
  mem=int(next(x.split()[1] for x in Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')))*1024
  if mem>=6*2**30 and os.getloadavg()[0]<51:break
