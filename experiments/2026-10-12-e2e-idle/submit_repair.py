@@ -30,9 +30,10 @@ def active():
 def main():
     p=argparse.ArgumentParser();p.add_argument('--sha',required=True)
     p.add_argument('--host',choices=('azure3','azure4'),required=True)
+    p.add_argument('--registration',choices=('repair','native'),default='repair')
     p.add_argument('--plan',action='store_true');a=p.parse_args()
-    cells=[r for r in json.loads((HERE/'boundary-repair-registration.json').read_text())['cells'] if r['host']==a.host]
-    assert len(cells)==(6 if a.host=='azure3' else 5)
+    cells=[r for r in json.loads((HERE/f'boundary-{a.registration}-registration.json').read_text())['cells'] if r['host']==a.host]
+    assert len(cells)==(3 if a.registration=='native' else 6 if a.host=='azure3' else 5)
     assert len({r['name'] for r in cells})==len(cells)
     if a.plan:print(json.dumps(cells));return
     assert socket.gethostname().split('.')[0]=='ugrp-sim-'+a.host
@@ -65,12 +66,12 @@ def main():
         assert time.time()+remaining+300<DEADLINE+5
         run=base/'runs'/cell['name'];run.mkdir()
         (base/'leases'/cell['name']).touch()
-        meta=dict(cell,pr=453,sha=a.sha,branch='codex/e2e-idle',batch='e2e17-repair',submitted_unix=time.time(),wall_cap_s=remaining,storage_budget_bytes=4*2**30)
+        meta=dict(cell,pr=453,sha=a.sha,branch='codex/e2e-idle',batch='e2e17-'+a.registration,submitted_unix=time.time(),wall_cap_s=remaining,storage_budget_bytes=4*2**30)
         meta['class']='dev'
         (run/'RUN_META.json').write_text(json.dumps(meta)+'\n');(run/'SOURCE_SHA').write_text(a.sha+'\n')
         (run/'resource-admission.json').write_text(json.dumps(dict(loadavg=os.getloadavg(),mem_available_bytes=mem,free_bytes=shutil.disk_usage(base).free,active_pids=active()))+'\n')
-        workflow={211:'e2e-boundary-repair-v211',208:'e2e-explore-deadlock-v208',207:'e2e-vomask-turn-v207'}[cell['bundle']]
-        command=[str(ROOT/'.venv-sim/bin/python'),'-m','scripts.sim_cli','workflow','run',workflow,'--timeout',str(remaining),'--',*common,'--seed',str(cell['seed']),'--output',str(run/'raw'),'--explore-deadlock',cell['deadlock'],'--boundary-association',cell['association'],'--boundary-retry',cell['retry'],'--execute']
+        workflow={212:'e2e-boundary-native-v212',211:'e2e-boundary-repair-v211',208:'e2e-explore-deadlock-v208',207:'e2e-vomask-turn-v207'}[cell['bundle']]
+        command=[str(ROOT/'.venv-sim/bin/python'),'-m','scripts.sim_cli','workflow','run',workflow,'--timeout',str(remaining),'--',*common,'--seed',str(cell['seed']),'--output',str(run/'raw'),'--explore-deadlock',cell['deadlock'],'--boundary-association',cell['association'],'--boundary-retry',cell['retry'],'--boundary-coverage',cell.get('coverage','off'),'--execute']
         with (run/'launch.log').open('wb') as log:
             proc=subprocess.Popen(['python3','/usr/local/lib/ugrp-storage/scripts/remote_run_finish.py','--source',str(ROOT),'--run',str(run),'--',*command],cwd=ROOT,env=env,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
         print(json.dumps(dict(run=cell['name'],supervisor_pid=proc.pid,sha=a.sha,workflow=workflow)),flush=True)

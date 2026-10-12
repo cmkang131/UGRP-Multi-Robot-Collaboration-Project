@@ -102,3 +102,36 @@ def test_recorded_full_boundary_replay_overcomes_partial_centroid_rejection():
         assert np.linalg.norm(np.asarray(r['boundary']['center'])-r['candidate']['center_m'])>.20
         a.observe()
     assert g.e2e_gate.references and a.last['accepted']
+
+
+def test_native_coverage_distinguishes_unknown_from_obstacles_without_making_free_cells():
+    from harness import e2e_boundary_views as v
+    from harness.public_navigation_unknown import UnknownCostmap
+    g,_=fixture();g.explorer=SimpleNamespace(map_to_odom=np.zeros(3))
+    n=CandidateNavigator(SimpleNamespace(pose=np.zeros(3)),g)
+    n.coverage_option=v.COVERAGE_OPTION
+    c=UnknownCostmap(np.full((100,100),255,np.uint8),[-2.5,-2.5],.05)
+    before=c.raw.copy();path=[[0.,0.],[.5,0.]]
+    assert not v.observed_path_clear(c,[0,0,0],path,0)
+    assert n.coverage_check(c,[0,0,0],path,0,1.)
+    assert n.coverage_would_stops==1 and np.array_equal(before,c.raw)
+    # Known occupied perimeter remains rejected by the native planner.
+    c.raw[:]=254;c.costs=c.inflate()
+    assert not n.coverage_check(c,[0,0,0],path,0,2.)
+    assert not n.coverage_check(c,[0,0,0],[],0,3.)
+
+
+def test_native_coverage_bundle_is_dev_only_and_off_is_identical():
+    from scripts.run_e2e_ownmap_live import bundle
+    kw=dict(enabled=True,stall_odometry='rgb_vo_us_v1',ultrasonic_front='on_v1',
+        exploration_progress='frontier_progress_v1',boundary_views='candidate_views_v1',b_marker_detect='contrast_v1',
+        vo_floor_mask='homography_v1',vo_rotation_policy='no_ransac_v1',explore_deadlock='replan_v1',
+        boundary_association='extent_v1')
+    old=bundle('sha',61001,'study_gemma4_31b_v1',**kw)
+    assert old==bundle('sha',61001,'study_gemma4_31b_v1',**kw,boundary_coverage='off')
+    with pytest.raises(ValueError,match='DEV_V211'):
+        bundle('sha',61001,'study_gemma4_31b_v1',**kw,boundary_coverage='native_v1')
+    for retry in ('off','navigation_v1'):
+        new=bundle('sha',61001,'study_gemma4_31b_v1',**kw,boundary_coverage='native_v1',boundary_retry=retry,dev_light=True)
+        assert new['execution_bundle_id']=='e2e-boundary-native-v212'
+        assert new['e2e_options']['boundary_coverage']=='native_v1'

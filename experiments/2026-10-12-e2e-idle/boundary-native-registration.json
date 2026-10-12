@@ -1,0 +1,84 @@
+{
+  "schema": "ugrp.e2e17.native-registration.v1",
+  "pr": 453,
+  "criteria": [
+    "LLM_operated",
+    "own_map_completed",
+    "start_to_finish_transport"
+  ],
+  "early_compare": [
+    "B_boundary",
+    "native_clear vs strict_clear",
+    "completed views",
+    "physical error"
+  ],
+  "cohort": "DEV adaptive; sampled seeds reused; not confirmatory",
+  "cells": [
+    {
+      "host": "azure3",
+      "name": "e2e-idle-a-s61001-r5",
+      "seed": 61001,
+      "bundle": 212,
+      "association": "extent_v1",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage"
+    },
+    {
+      "host": "azure3",
+      "name": "e2e-idle-a-s61002-r5",
+      "seed": 61002,
+      "bundle": 212,
+      "association": "extent_v1",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage"
+    },
+    {
+      "host": "azure3",
+      "name": "e2e-idle-a-s61003-r5",
+      "seed": 61003,
+      "bundle": 212,
+      "association": "extent_v1",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-b-s61001-r5",
+      "seed": 61001,
+      "bundle": 212,
+      "association": "extent_v1",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage + retry"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-b-s61002-r5",
+      "seed": 61002,
+      "bundle": 212,
+      "association": "extent_v1",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage + retry"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-b-s61003-r5",
+      "seed": 61003,
+      "bundle": 212,
+      "association": "extent_v1",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage + retry"
+    }
+  ]
+}

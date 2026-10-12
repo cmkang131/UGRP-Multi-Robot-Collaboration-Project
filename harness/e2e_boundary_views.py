@@ -25,6 +25,7 @@ MAX_VIEWS = 3
 VIEW_BUDGET_S = 30.
 RETRY_OPTION = 'navigation_v1'
 MAX_NAVIGATION_FAILURES = 6
+COVERAGE_OPTION = 'native_v1'
 
 
 def observed_sweep_clear(costmap, start, end):
@@ -39,18 +40,19 @@ def observed_sweep_clear(costmap, start, end):
     return costmap.sweep_clear(start, end) and Costmap.sweep_clear(known, start, end)
 
 
-def observed_path_clear(costmap, pose, path, yaw):
+def observed_path_clear(costmap, pose, path, yaw, *, observed=True):
     if not path: return False
+    sweep = (lambda a,b:observed_sweep_clear(costmap,a,b)) if observed else costmap.sweep_clear
     previous = np.asarray(pose, float)
     for point in path[1:]:
         point = np.asarray(point)
         heading = math.atan2(point[1]-previous[1], point[0]-previous[0])
         oriented = np.array([*previous[:2], heading])
         endpoint = np.array([*point, heading])
-        if not observed_sweep_clear(costmap, previous, oriented) or not observed_sweep_clear(costmap, oriented, endpoint):
+        if not sweep(previous, oriented) or not sweep(oriented, endpoint):
             return False
         previous = endpoint
-    return observed_sweep_clear(costmap, previous, [*path[-1], yaw])
+    return sweep(previous, [*path[-1], yaw])
 
 
 def request(candidate, boundary_remembered, *, option='off'):
@@ -67,7 +69,7 @@ def request(candidate, boundary_remembered, *, option='off'):
     return True
 
 
-def choose_view(costmap, pose, center, plan_to, *, tried=()):
+def choose_view(costmap, pose, center, plan_to, *, tried=(), coverage='off'):
     """Sample free stand-off positions facing the observed partial candidate.
 
     Unknown cells are not approach positions. Require a complete collision-free
@@ -93,10 +95,11 @@ def choose_view(costmap, pose, center, plan_to, *, tried=()):
             if any(costmap.raw[y,x] == 254 for x,y in sight): continue
             unknown_sight = sum(costmap.raw[y,x] == 255 for x,y in sight)
             yaw = math.atan2(center[1]-xy[1], center[0]-xy[0])
-            if not Costmap.pose_clear(costmap, [*xy, yaw]): continue
+            pose_clear = costmap.pose_clear if coverage == COVERAGE_OPTION else lambda p:Costmap.pose_clear(costmap,p)
+            if not pose_clear([*xy, yaw]): continue
             path = plan_to(costmap, pose, xy)
             if not path: continue
-            if not observed_path_clear(costmap, pose, path, yaw): continue
+            if not observed_path_clear(costmap, pose, path, yaw, observed=coverage != COVERAGE_OPTION): continue
             length = float(np.linalg.norm(np.diff(path, axis=0), axis=1).sum())
             views.append(dict(target=xy.tolist(), heading=yaw, path=path,
                               score=length+abs(radius-1.2)+.05*unknown_sight,
@@ -118,6 +121,20 @@ class CandidateNavigator(Navigator):
         self.retry_option = 'off'
         self.completed_views = 0
         self.navigation_failures = 0
+        self.coverage_option = 'off'
+        self.coverage_checks = None
+        self.coverage_would_stops = 0
+
+    def coverage_check(self, costmap, pose, path, yaw, t):
+        strict = bool(path) and observed_path_clear(costmap, pose, path, yaw)
+        native = strict or bool(path) and observed_path_clear(costmap, pose, path, yaw, observed=False)
+        self.coverage_checks = dict(t=t, path_points=len(path), strict_clear=bool(strict), native_clear=bool(native),
+            strict_start_clear=bool(Costmap.pose_clear(costmap,pose)), native_start_clear=bool(costmap.pose_clear(pose)))
+        if not strict and native:
+            self.coverage_would_stops += 1
+            if self.coverage_would_stops == 1:
+                self.event(t,'B_view_would_stop_observed_coverage',dev_light=True,**{k:v for k,v in self.coverage_checks.items() if k!='t'})
+        return native
 
     def can_attempt(self):
         if self.retry_option == 'off': return len(self.tried_own) < MAX_VIEWS
@@ -151,7 +168,7 @@ class CandidateNavigator(Navigator):
             tf = self.goal.explorer.map_to_odom
             center = transform([self.goal.entities['B']['center_m']], tf)[0]
             tried = transform(self.tried_own, tf) if self.tried_own else ()
-            view = choose_view(costmap, pose, center, self.plan_to, tried=tried)
+            view = choose_view(costmap, pose, center, self.plan_to, tried=tried, coverage=self.coverage_option)
             if view:
                 self.reset_action()
                 self.target = np.asarray(view['target'])
@@ -169,14 +186,18 @@ class CandidateNavigator(Navigator):
                 self.event(t, 'B_candidate_unresolved_no_reachable_view')
                 self.last_view_reason = 'no_reachable_view'
         if self.view_active:
-            if not Costmap.pose_clear(costmap, [*self.target, self.heading]):
+            terminal_clear = (costmap.pose_clear if self.coverage_option == COVERAGE_OPTION else
+                              lambda p:Costmap.pose_clear(costmap,p))
+            if not terminal_clear([*self.target, self.heading]):
                 self.end_view(t, 'B_view_coverage_lost')
                 return super().update(costmap, pose, t, static_goal)
             if np.linalg.norm(self.target-np.asarray(pose)[:2]) <= .05:
                 self.phase = 'B_candidate_observe'
                 return self.idle(pose, 'B_candidate_observe')
             self.path = self.plan_to(costmap, pose, self.target)
-            if not self.path or not observed_path_clear(costmap, pose, self.path, self.heading):
+            clear = (self.coverage_check(costmap,pose,self.path,self.heading,t) if self.coverage_option == COVERAGE_OPTION else
+                     bool(self.path) and observed_path_clear(costmap, pose, self.path, self.heading))
+            if not clear:
                 self.end_view(t, 'B_view_path_lost')
             else:
                 self.last_plan_t = t
@@ -201,7 +222,8 @@ class CandidateNavigator(Navigator):
             turn = math.copysign(.35, error)
             # Check the actual terminal spin even in dev_light.
             end = [*pose[:2], pose[2]+math.copysign(.1, error)]
-            if not observed_sweep_clear(costmap, pose, end):
+            sweep = costmap.sweep_clear if self.coverage_option == COVERAGE_OPTION else lambda a,b:observed_sweep_clear(costmap,a,b)
+            if not sweep(pose, end):
                 self.end_view(t, 'B_view_rotation_blocked'); turn = 0.
             return command_from_twist(np.array([0.,0.,turn]), t)
         row = self.goal.e2e_gate.current
@@ -216,15 +238,18 @@ class CandidateNavigator(Navigator):
         return command_from_twist(np.zeros(3), t)
 
 
-def install(goal, option='off', *, retry='off'):
+def install(goal, option='off', *, retry='off', coverage='off'):
     if retry not in ('off', RETRY_OPTION): raise ValueError('UNKNOWN_BOUNDARY_RETRY')
     if retry != 'off' and option == 'off': raise ValueError('BOUNDARY_VIEWS_REQUIRED_BEFORE_RETRY')
+    if coverage not in ('off',COVERAGE_OPTION): raise ValueError('UNKNOWN_BOUNDARY_COVERAGE')
+    if coverage != 'off' and (option == 'off' or not goal.dev_light): raise ValueError('DEV_BOUNDARY_VIEWS_REQUIRED_BEFORE_NATIVE_COVERAGE')
     if option == 'off': return goal
     if option != OPTION: raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
     old = goal.explorer.navigator
     if type(old) is not Navigator: raise ValueError('FRONTIER_PROGRESS_V1_REQUIRED_BEFORE_VIEWS')
     goal.explorer.navigator = CandidateNavigator(old.driver, goal)
     goal.explorer.navigator.retry_option = retry
+    goal.explorer.navigator.coverage_option = coverage
     goal.e2e_gate.diagnostics_enabled = True
     receive = goal.receive
     def with_diagnostics(**kwargs):
@@ -236,6 +261,8 @@ def install(goal, option='off', *, retry='off'):
         if retry != 'off':
             trace['boundary_view'].update(retry=retry, completed_views=n.completed_views,
                 navigation_failures=n.navigation_failures, max_navigation_failures=MAX_NAVIGATION_FAILURES)
+        if coverage != 'off':
+            trace['boundary_view'].update(coverage=coverage, checks=n.coverage_checks, would_stops=n.coverage_would_stops)
         return command, trace
     goal.receive = with_diagnostics
     return goal
