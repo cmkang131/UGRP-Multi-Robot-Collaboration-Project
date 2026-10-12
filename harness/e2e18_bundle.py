@@ -23,6 +23,10 @@ def compose(bundle, partial_accept):
 
 
 def validate(bundle):
+    speed4=SPEED4
+    if bundle['execution_bundle_id']=='e2e18-v236':
+        from harness.e2e_compute_budget import PROFILE
+        speed4=PROFILE
     if (bundle['e2e_options'].get('b_partial_accept')!='on_v1' or
-        any(bundle['e2e_options'].get(k)!=v for k,v in REQUIRED.items()) or bundle.get('speed4')!=SPEED4):
+        any(bundle['e2e_options'].get(k)!=v for k,v in REQUIRED.items()) or bundle.get('speed4')!=speed4):
         raise ValueError('E2E18_ALL_REGISTERED_OPTIONS_REQUIRED')
