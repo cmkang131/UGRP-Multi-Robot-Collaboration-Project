@@ -60,3 +60,14 @@ def test_adaptive_switch_uses_issued_action_and_resnaps_clock():
     assert host.dt==host.world.model.opt.timestep==.00025
     assert calls[0]=='snap'
     assert not enter_contact(host,dict(kind='arm',servo_id=1,pulse=1600))
+
+
+def test_issue_keeps_high_level_drive_conversion_in_parent(monkeypatch):
+    from sim.e2e_ownmap_live import PhysicsBackend,Evaluation
+    action=dict(kind='drive',forward=.3,lateral=0.,yaw=0.)
+    calls=[]
+    monkeypatch.setattr(Evaluation,'issue',lambda self,rid,a:calls.append((rid,a)))
+    host=PhysicsBackend.__new__(PhysicsBackend)
+    host.bundle={'e2e_options':{'speed3':'adaptive_v1'}}
+    host.issue('r1',action)
+    assert calls==[('r1',action)]
