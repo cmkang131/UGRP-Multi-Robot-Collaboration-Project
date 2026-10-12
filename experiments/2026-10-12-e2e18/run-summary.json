@@ -1,8 +1,8 @@
 {
-  "status": "V222_FOUR_V223_FOUR_V224_FOUR_RUNNING",
+  "status": "V223_FOUR_V224_THREE_V225_FIVE_RUNNING",
   "started_utc": "2026-10-12T11:03:00Z",
   "deadline_utc": "2026-10-12T21:03:00Z",
-  "bundle": "e2e18-v224",
+  "bundle": "e2e18-v225",
   "tests": {
     "passed": 49,
     "files": [
@@ -933,36 +933,56 @@
       "seed": 61001,
       "bundle": "e2e18-v222",
       "attempt": 8,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_GOAL_EXTENT_FIX",
       "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61001-r8/raw"
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61001-r8/raw",
+      "exit": 130,
+      "failure": "SIGNAL_SIGINT",
+      "result_file": "cohort-r8-results.json",
+      "sim_s": 687.158,
+      "wall_per_sim": 3.916552682815306
     },
     {
       "vm": "azure3",
       "seed": 61002,
       "bundle": "e2e18-v222",
       "attempt": 8,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_GOAL_EXTENT_FIX",
       "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61002-r8/raw"
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61002-r8/raw",
+      "exit": 130,
+      "failure": "SIGNAL_SIGINT",
+      "result_file": "cohort-r8-results.json",
+      "sim_s": 790.0,
+      "wall_per_sim": 3.406751322701266
     },
     {
       "vm": "azure4",
       "seed": 61007,
       "bundle": "e2e18-v222",
       "attempt": 8,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_GOAL_EXTENT_FIX",
       "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61007-r8/raw"
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61007-r8/raw",
+      "exit": 130,
+      "failure": "SIGNAL_SIGINT",
+      "result_file": "cohort-r8-results.json",
+      "sim_s": 716.75,
+      "wall_per_sim": 3.7580794879260546
     },
     {
       "vm": "azure4",
       "seed": 61008,
       "bundle": "e2e18-v222",
       "attempt": 8,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_GOAL_EXTENT_FIX",
       "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61008-r8/raw"
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61008-r8/raw",
+      "exit": 130,
+      "failure": "SIGNAL_SIGINT",
+      "result_file": "cohort-r8-results.json",
+      "sim_s": 803.2,
+      "wall_per_sim": 3.353585950821713
     },
     {
       "vm": "azure3",
@@ -1032,9 +1052,59 @@
       "seed": 61010,
       "bundle": "e2e18-v224",
       "attempt": 10,
-      "status": "RUNNING",
+      "status": "HOST_ERROR",
       "source_sha": "075d4273b83c52542b1df3eeaa125adfe39497c7",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v224-s61010-r10/raw"
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v224-s61010-r10/raw",
+      "exit": 1,
+      "failure": "Object of type bool is not JSON serializable",
+      "result_file": "cohort-r10-results.json",
+      "sim_s": 126.4,
+      "wall_per_sim": 2.9707124065427197
+    },
+    {
+      "vm": "azure3",
+      "seed": 61001,
+      "bundle": "e2e18-v225",
+      "attempt": 11,
+      "status": "RUNNING",
+      "source_sha": "0ed14cd478d59f8829c6b20f677a6f4ac1bf5edc",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v225-s61001-r11/raw"
+    },
+    {
+      "vm": "azure3",
+      "seed": 61002,
+      "bundle": "e2e18-v225",
+      "attempt": 11,
+      "status": "RUNNING",
+      "source_sha": "0ed14cd478d59f8829c6b20f677a6f4ac1bf5edc",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v225-s61002-r11/raw"
+    },
+    {
+      "vm": "azure4",
+      "seed": 61007,
+      "bundle": "e2e18-v225",
+      "attempt": 11,
+      "status": "RUNNING",
+      "source_sha": "0ed14cd478d59f8829c6b20f677a6f4ac1bf5edc",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v225-s61007-r11/raw"
+    },
+    {
+      "vm": "azure4",
+      "seed": 61008,
+      "bundle": "e2e18-v225",
+      "attempt": 11,
+      "status": "RUNNING",
+      "source_sha": "0ed14cd478d59f8829c6b20f677a6f4ac1bf5edc",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v225-s61008-r11/raw"
+    },
+    {
+      "vm": "azure4",
+      "seed": 61010,
+      "bundle": "e2e18-v225",
+      "attempt": 11,
+      "status": "RUNNING",
+      "source_sha": "0ed14cd478d59f8829c6b20f677a6f4ac1bf5edc",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v225-s61010-r11/raw"
     }
   ],
   "gates": [
@@ -1399,6 +1469,44 @@
       "samples_sha256": "46369d1caef4d81955637de19013fdbf481d9992549e800838aac048f1cb53d9",
       "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r10-075d4273b83c",
       "load_context": "2 replacement samples +4 continuing cohorts;total6"
+    },
+    {
+      "status": "SPEED_GATE_PASS",
+      "admitted": true,
+      "measured_pass": true,
+      "override_reason": null,
+      "limit_wall_per_sim": 3.0,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 2,
+      "completed": 2,
+      "median_wall_per_sim": 2.9522234304833392,
+      "invalid_samples": [],
+      "host": "azure3",
+      "bundle": "e2e18-v225",
+      "source_sha": "0ed14cd478d59f8829c6b20f677a6f4ac1bf5edc",
+      "samples_file": "gate-azure3-v225.json",
+      "samples_sha256": "6aaf5437d92963129de45ad37b9eb4fecb22ffee78d096fc43db976b82af51f0",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r11-0ed14cd478d5",
+      "load_context": "2 replacement samples +4 continuing cohorts;total6"
+    },
+    {
+      "status": "SPEED_GATE_PASS",
+      "admitted": true,
+      "measured_pass": true,
+      "override_reason": null,
+      "limit_wall_per_sim": 3.0,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 3,
+      "completed": 3,
+      "median_wall_per_sim": 2.869201963033326,
+      "invalid_samples": [],
+      "host": "azure4",
+      "bundle": "e2e18-v225",
+      "source_sha": "0ed14cd478d59f8829c6b20f677a6f4ac1bf5edc",
+      "samples_file": "gate-azure4-v225.json",
+      "samples_sha256": "0caf535008a68201ae9f7e6867bea3c725ef6dc75117bd0b94e50abf48c4940c",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r11-0ed14cd478d5",
+      "load_context": "3 replacement samples +3 continuing cohorts;total6"
     }
   ],
   "vm": {
@@ -1481,6 +1589,11 @@
     {
       "bundle": "e2e18-v224",
       "evidence": "carrier-axes-fix-v224.json"
+    },
+    {
+      "bundle": "e2e18-v225",
+      "evidence": "route-extent-fix-v225.json",
+      "tests": "10 passed"
     }
   ],
   "initial_health_cohort_r5": "initial-health-cohort-r5.json",
@@ -1516,5 +1629,18 @@
       "test_e2e_s4_live.py"
     ]
   },
-  "initial_health_cohort_r10": "initial-health-cohort-r10.json"
+  "initial_health_cohort_r10": "initial-health-cohort-r10.json",
+  "archive_files": [
+    "archives-r10-extra.json",
+    "archives-r11.json",
+    "archives.json"
+  ],
+  "first_route": {
+    "name": "e2e18-v224-s61010-r10",
+    "sim_s": 126.0,
+    "observed_coverage_complete": false,
+    "terminal": "HOST_ERROR numpy.bool_ diagnostic serialization at126.4SIM",
+    "result_file": "cohort-r10-results.json"
+  },
+  "initial_health_cohort_r11": "initial-health-cohort-r11.json"
 }

@@ -1,0 +1,285 @@
+[
+  {
+    "host": "azure4",
+    "name": "e2e18-v224-s61010-r10",
+    "exit": 1,
+    "result": {
+      "status": "HOST_ERROR",
+      "source_sha": "075d4273b83c52542b1df3eeaa125adfe39497c7",
+      "seed": 61010,
+      "model": "study_gemma4_31b_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "off",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "goal_geometry": "e2e_b80_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1",
+        "decider": "off",
+        "exploration_progress": "frontier_progress_v1",
+        "pose_fix": "innovation",
+        "path_follow": "rpp_v1",
+        "dev_light": true,
+        "stall_odometry": "rgb_vo_us_v1",
+        "stall_recovery": "off",
+        "stall_noise": "off",
+        "mapping_budget": "case_cap_v1",
+        "mapping_budget_s": 1800.0,
+        "boundary_views": "standoff_fullquad_v1",
+        "b_marker_detect": "partial_known_size_v1",
+        "vo_floor_mask": "homography_v1",
+        "vo_rotation_policy": "no_ransac_v1",
+        "explore_deadlock": "replan_v1",
+        "boundary_association": "extent_v1",
+        "boundary_retry": "navigation_v1",
+        "boundary_coverage": "native_v1",
+        "runtime_registration": "reviewed_v1",
+        "pulse_authorization": "current_go_v1",
+        "exact_speedups": {
+          "provenance_index": true,
+          "sha_validation_cache": true,
+          "omit_discarded_copy": true,
+          "scalar_cells": true,
+          "geometry_cache": true,
+          "vector_rays": true,
+          "shared_wall_frontend": true,
+          "lazy_scan_path": true,
+          "vector_costmap_writes": true,
+          "track_cell_tuples": true
+        },
+        "speed3": "adaptive_v1",
+        "b_partial_accept": "on_v1",
+        "speed5": "lean_v3",
+        "observation_cadence": "on_v1",
+        "route_guard": "dev_nominal_v1",
+        "beam_axis": "undirected_v1",
+        "route_coverage": "native_v1",
+        "carrier_axes": "beam_v1",
+        "carrier_approach": "standoff_v1"
+      },
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 4,
+      "physical_hardware": false,
+      "route_source": "own_map",
+      "host": "azure",
+      "class_": "dev",
+      "pr": 458,
+      "finalization_complete": true,
+      "shutdown_signals": [],
+      "finalization_errors": [],
+      "failure_type": "TypeError",
+      "failure": "Object of type bool is not JSON serializable",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/075d4273b83c52542b1df3eeaa125adfe39497c7/scripts/run_e2e_ownmap_live.py\", line 397, in run\n    backend._append(f'robots/{rid}/ownmap.jsonl',ownmap_record(robot,obs,trace,now))\n  File \"/home/ugrp/ugrp-sim/src/075d4273b83c52542b1df3eeaa125adfe39497c7/sim/s3_buffered_io.py\", line 44, in _append\n    self.streams[relative].write(json.dumps(value, ensure_ascii=False, allow_nan=False)+'\\n')\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/encoder.py\", line 200, in encode\n    chunks = self.iterencode(o, _one_shot=True)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/encoder.py\", line 258, in iterencode\n    return _iterencode(o, 0)\n           ^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\nTypeError: Object of type bool is not JSON serializable\n",
+      "wall_s": 375.49804818699977,
+      "frames": 316,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 23.56875534699975
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 23.56875534699975
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 30.629421540000294
+        },
+        "route": {
+          "sim_s": 126.0,
+          "wall_s": 336.84342357900005
+        }
+      },
+      "sim_s": 126.4,
+      "controller_failure": null,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 4,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 4,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 4,
+            "tokens_total_known": 7861,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 6936,
+        "tokens_completion": 925,
+        "tokens_total_known": 7861,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 4,
+          "sum": 55600.401,
+          "max": 37587.901,
+          "median": 9228.204
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "response_wall_s": [
+        4.341286,
+        4.44301,
+        9.228204,
+        37.587900999999995
+      ],
+      "drops": 0
+    },
+    "progress": {
+      "wall_s": 336.84342357900005,
+      "sim_s": 126.0,
+      "frames": 316,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": true,
+      "own_route_observed_complete": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -0.7051058068517484,
+            0.47914383360355,
+            0.3073886699649564
+          ],
+          "stage": "explore",
+          "map_frames": 316,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 506,
+          "carrier_approach": null
+        },
+        "r2": {
+          "pose_own_m": [
+            2.320620282072831,
+            0.3711988694700806,
+            0.1805828993107541
+          ],
+          "stage": "explore",
+          "map_frames": 316,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 515,
+          "carrier_approach": null
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08209371821764261,
+            -0.02119113177369505,
+            0.011729955940706027
+          ],
+          "stage": "explore",
+          "map_frames": 316,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0,
+          "carrier_approach": null
+        }
+      },
+      "latest_route_wait": "OWN_GRID_ROUTE_UNAVAILABLE",
+      "route_diagnostics": {
+        "t": 126.0,
+        "beam_pose_own_m": [
+          0.39063232510223744,
+          0.5528522648256418,
+          -0.16806519826836883
+        ],
+        "beam_rgb": {
+          "robot_id": "r1",
+          "frame_id": 316,
+          "t_sim": 126.0,
+          "sha256": "424862b5d8fb32d5d88589d97c082bb738c3371e2ee07cf16aec37345e35ad69"
+        },
+        "sigma_xy_m": 0.07735514193267373,
+        "stage": "grid_route",
+        "beam_axis_error_rad": 0.16806519826836883,
+        "strict_margin_m": 0.2520654257980212,
+        "B_own_m": [
+          1.0517479463841826,
+          0.06387361818729072
+        ],
+        "nominal_footprint_cells": {
+          "start": {
+            "free": 201,
+            "unknown": 76,
+            "occupied": 0,
+            "outside": 0
+          },
+          "target": {
+            "free": 0,
+            "unknown": 277,
+            "occupied": 0,
+            "outside": 0
+          }
+        },
+        "would_stop_unknown": true,
+        "attempts": [
+          {
+            "margin_m": 0.2520654257980212,
+            "allowed_cells": 4,
+            "total_cells": 15194,
+            "start_clear": false,
+            "target_clear": false,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "allowed_cells": 445,
+            "total_cells": 15194,
+            "start_clear": false,
+            "target_clear": false,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "coverage": "native_allow_unknown",
+            "allowed_cells": 6742,
+            "total_cells": 15194,
+            "start_clear": true,
+            "target_clear": true,
+            "path_cells": 15
+          }
+        ],
+        "would_stop_sigma": false,
+        "applied_margin_m": 0.02,
+        "pair_dimensions_m": [
+          1.25,
+          0.4
+        ],
+        "observed_coverage_complete": false,
+        "sigma_contribution_unresolved": true
+      }
+    },
+    "result_sha256": "c5352b9f14f7f36dac781cfdafcbba55f3fa06e32b1c3a396dfd0facba02d0d2"
+  }
+]
