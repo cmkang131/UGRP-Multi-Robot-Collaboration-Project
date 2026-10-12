@@ -41,9 +41,9 @@ def probe(raw, limit):
     ci=ri=0;checks=[];max_pose_error=0.;command_differences=0
     navigator=robot.goal.explorer.navigator;original=views.observed_path_clear
     now=0.
-    def checked(costmap,pose,path,yaw):
-        result=original(costmap,pose,path,yaw)
-        if navigator.view_active and not result:
+    def checked(costmap,pose,path,yaw,*,observed=True):
+        result=original(costmap,pose,path,yaw,observed=observed)
+        if navigator.view_active and observed and not result:
             strict_sweep=views.observed_sweep_clear
             first_block=[]
             def native_only(cm,a,b):
@@ -73,18 +73,21 @@ def probe(raw, limit):
                 unknown_path_centers=samples.count(255),occupied_path_centers=samples.count(254)))
         return result
     views.observed_path_clear=checked
-    for old in recorded:
-        now=old['t'];frame=frames[old['frame_id']]
-        while ci<len(commands) and (commands[ci]['t']<now-1e-8 or now==0 and commands[ci]['kind'] in ('arm','look')):
-            c=commands[ci];robot.commanded({k:v for k,v in c.items() if k!='t'},c['t']);ci+=1
-        while ri<len(ranges) and ranges[ri]['t']<=now+1e-8:
-            r=ranges[ri];robot.range_provider.on_reading(RangeReading(r['t'],r['range_m'] if r['valid'] else float('nan'),r['valid'],r['status']));ri+=1
-        data=(raw/frame['path']).read_bytes();assert hashlib.sha256(data).hexdigest()==old['sha256']==frame['sha256']
-        rgb=np.asarray(Image.open(io.BytesIO(data)).convert('RGB'))
-        trace=robot.receive(dict(frame_id=frame['frame_id'],sim_time=now,sha256=frame['sha256'],image=base64.b64encode(data).decode()),rgb)
-        max_pose_error=max(max_pose_error,float(np.max(np.abs(robot.goal.explorer.local_pose-np.array(old['pose_own_m'])))))
-        command_differences+=robot.nav_command!=old['command']
-        if checks:break
+    try:
+        for old in recorded:
+            now=old['t'];frame=frames[old['frame_id']]
+            while ci<len(commands) and (commands[ci]['t']<now-1e-8 or now==0 and commands[ci]['kind'] in ('arm','look')):
+                c=commands[ci];robot.commanded({k:v for k,v in c.items() if k!='t'},c['t']);ci+=1
+            while ri<len(ranges) and ranges[ri]['t']<=now+1e-8:
+                r=ranges[ri];robot.range_provider.on_reading(RangeReading(r['t'],r['range_m'] if r['valid'] else float('nan'),r['valid'],r['status']));ri+=1
+            data=(raw/frame['path']).read_bytes();assert hashlib.sha256(data).hexdigest()==old['sha256']==frame['sha256']
+            rgb=np.asarray(Image.open(io.BytesIO(data)).convert('RGB'))
+            trace=robot.receive(dict(frame_id=frame['frame_id'],sim_time=now,sha256=frame['sha256'],image=base64.b64encode(data).decode()),rgb)
+            max_pose_error=max(max_pose_error,float(np.max(np.abs(robot.goal.explorer.local_pose-np.array(old['pose_own_m'])))))
+            command_differences+=robot.nav_command!=old['command']
+            if checks:break
+    finally:
+        views.observed_path_clear=original
     return dict(scope='saved own RGB/range/issued commands; no physics/referee/model',run=raw.parent.name,
         frames=frame['frame_id'],last_sim_s=now,max_pose_abs_difference=max_pose_error,
         navigation_command_differences=command_differences,path_checks=checks)
