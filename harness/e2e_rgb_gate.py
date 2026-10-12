@@ -32,7 +32,11 @@ MARKER_OPTION = 'contrast_v1'
 # contrast_v2: same mark pixels as v1; the B quad is fitted by harness/e2e_b_quad.py
 # (floor-blue hue mask, undistort + convex hull + adaptive approxPolyDP, lens/border/solidity guards).
 MARKER_OPTION_V2 = 'contrast_v2'
-MARKER_OPTIONS = (MARKER_OPTION, MARKER_OPTION_V2)
+# cones_v1: blue-patch path as contrast_v2, plus corner-cone detection (harness/e2e_b_cones.py). Cone evidence reaches
+# boundary()/ArrivalGate only with cone_accept='on_v1' (b_cone_accept); otherwise it is diagnostics-only.
+MARKER_OPTION_CONES = 'cones_v1'
+CONE_ACCEPT = 'on_v1'
+MARKER_OPTIONS = (MARKER_OPTION, MARKER_OPTION_V2, MARKER_OPTION_CONES)
 MARKER_CONTRAST = dict(min_rgb_ratio=1.3, min_rgb_delta=12, saturation_ratio=.78, background_value_min=50,
                        kernel_fraction=.25, kernel_px_min=15, kernel_px_max=151)
 
@@ -106,7 +110,7 @@ def geometric_match(reference, current):
                 matches=len(matches), inliers=int(good.sum()), coverage=float(spread))
 
 
-def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off'):
+def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off', cone_accept='off', cone_layout=None):
     """All four visible blue edges + three white islands, projected by command FK.
 
     Image/camera-mask clipped regions remain unknown. A partial patch's hull or
@@ -116,7 +120,7 @@ def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off'):
     origin, axes = goal_camera(servo, 'camera_v3')
     self_mask = project_envelopes(body_envelopes(servo, 'camera_v3'), origin, axes, width, height)
     hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
-    v2 = marker_detect == MARKER_OPTION_V2
+    v2 = marker_detect in (MARKER_OPTION_V2, MARKER_OPTION_CONES)
     if v2:
         from harness import e2e_b_quad
         blue = e2e_b_quad.floor_blue_mask(hsv, self_mask)
@@ -176,14 +180,32 @@ def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off'):
                                pixel_polygon=quad.tolist(), complete=True, white_markers=3))
     if diagnostics is not None:
         diagnostics['accepted_candidates'] = len(candidates)
-    return candidates[0] if len(candidates) == 1 else None
+    if len(candidates) == 1: return candidates[0]
+    if marker_detect == MARKER_OPTION_CONES:
+        from harness import e2e_b_cones
+        cone = e2e_b_cones.detect_cones(rgb, servo, pose, cone_layout or default_cone_layout(),
+                                        diagnostics=diagnostics)
+        if cone is not None and cone_accept == CONE_ACCEPT and not candidates: return cone
+    return None
+
+
+@functools.lru_cache(maxsize=1)
+def default_cone_layout():
+    """Cone layout from the versioned static map with corner cones (fixed map data, not an observation)."""
+    import json
+    from pathlib import Path
+    from harness import e2e_b_cones
+    path = Path(__file__).resolve().parents[1]/'maps/zones_e2e/zone_wide_door_e2e_b80_cones_v1.json'
+    return e2e_b_cones.layout_from_static(json.loads(path.read_text()))
 
 
 class ArrivalGate:
-    def __init__(self, robot_id, *, option='off', marker_detect='off'):
+    def __init__(self, robot_id, *, option='off', marker_detect='off', cone_accept='off'):
         if option not in ('off', OPTION): raise ContractViolation('UNKNOWN_RGB_ARRIVAL_GATE')
         if marker_detect not in ('off', *MARKER_OPTIONS): raise ContractViolation('UNKNOWN_B_MARKER_DETECT')
-        self.option, self.robot_id, self.marker_detect = option, robot_id, marker_detect
+        if cone_accept not in ('off', CONE_ACCEPT) or (cone_accept != 'off' and marker_detect != MARKER_OPTION_CONES):
+            raise ContractViolation('UNKNOWN_B_CONE_ACCEPT')
+        self.option, self.robot_id, self.marker_detect, self.cone_accept = option, robot_id, marker_detect, cone_accept
         self.references, self.current, self.history = {}, None, {}
 
     def observe(self, *, ref, rgb, servo, pose, covariance):
@@ -198,7 +220,7 @@ class ArrivalGate:
         diagnostics = {} if getattr(self, 'diagnostics_enabled', False) else None
         self.current = dict(ref=copy.deepcopy(ref), features=features(rgb, (~mask).astype(np.uint8)*255),
                             boundary=boundary(rgb, servo, pose, diagnostics=diagnostics,
-                                                   marker_detect=self.marker_detect),
+                                                   marker_detect=self.marker_detect, cone_accept=self.cone_accept),
                             pose=list(pose), covariance=copy.deepcopy(covariance))
         if diagnostics is not None: self.current['boundary_diagnostics'] = diagnostics
         self.references.setdefault('start', copy.deepcopy(self.current))

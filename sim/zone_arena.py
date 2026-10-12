@@ -309,6 +309,34 @@ def authored_map(variant=DEFAULT_VARIANT):
     return value
 
 
+# b_marker_style=corner_cones_v1 (default off): four fixed lime traffic-cone landmarks just outside B's
+# corners (static map, allowed map exception). Lime (OpenCV hue ~43) avoids wall/floor blue (105-113),
+# zone A orange (~12), yellow cargo (~24), green cargo (~63), cyan cargo (~91), zone C purple (~145).
+B_MARKER_STYLES = ('off', 'corner_cones_v1')
+CONE = {'height_m': .30, 'base_m': .18, 'rgba': '.55 .95 .05 1', 'corner_offset_m': .12,
+        'hue_note': 'lime; HSV hue ~43 (OpenCV 0-180)'}
+
+
+def apply_b_marker_style(static, style):
+    """Copy of a static map with the B marker style (landmarks + record; hash changes). 'off' returns it unchanged."""
+    if style not in B_MARKER_STYLES:
+        raise ValueError(f'unknown b_marker_style: {style}')
+    if style == 'off':
+        return static
+    value = copy.deepcopy(static)
+    (cx, cy), (hx, hy) = value['regions']['zone_B']['center_m'], value['regions']['zone_B']['half_extents_m']
+    d = CONE['corner_offset_m']
+    value['landmarks'] = [
+        {'id': f'cone_B_{name}', 'kind': 'cone', 'position_m': [round(cx+sx*(hx+d), 4), round(cy+sy*(hy+d), 4)],
+         'height_m': CONE['height_m'], 'base_m': CONE['base_m'], 'rgba': CONE['rgba'], 'marks': 'zone_B corner '+name}
+        for name, sx, sy in (('sw', -1, -1), ('se', 1, -1), ('ne', 1, 1), ('nw', -1, 1))]
+    record = {'id': style, 'version': 1, **{k: v for k, v in CONE.items()}}
+    record['sha256'] = digest(record)
+    value['b_marker_style'] = record
+    value['version'] = int(value['version'])+1  # new map version; parent map file unchanged
+    return value
+
+
 def goal_counts(goal):
     """Validate {zone: {kind: count}}; returns a normalized copy."""
     if not isinstance(goal, dict) or not goal or not set(goal) <= set(ZONE_IDS):
@@ -415,6 +443,12 @@ def build_zone_xml(source, config):
         for slot in slots:
             _geom(world, 'slot_'+slot['slot_id'], slot['center_m'], slot['half_extents_m'], .001,
                   '.95 .95 .95 .35', collision=False, z=.0013)
+    for lm in static.get('landmarks', []):  # fixed cones: stacked cylinders (MuJoCo has no cone primitive)
+        x, y = lm['position_m']
+        r, h = lm['base_m']/2, lm['height_m']
+        for i, (rr, z0, z1) in enumerate(((r, 0, h/3), (r*.67, h/3, 2*h/3), (r*.34, 2*h/3, h))):
+            ET.SubElement(world, 'geom', name=f"zone_{lm['id']}_{i}", type='cylinder', pos=f'{x} {y} {(z0+z1)/2}',
+                          size=f'{rr} {(z1-z0)/2}', rgba=lm['rgba'], contype='1', conaffinity='3', group='0', mass='0')
     prototype = world.find("body[@name='dispatch_box']")
     signature = shape_signature(prototype)
     replicas = {}
