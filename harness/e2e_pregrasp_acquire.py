@@ -48,6 +48,9 @@ def acquire(tr,rid,now,state,target):
             return False,[dict(kind='hold')]
         return False,[command]
     if phase=='explore':
+        from harness.e2e_acquisition_mobility import explore
+        recovered=explore(tr,rid,now,a)
+        if recovered is not None:return recovered
         if elapsed<5.:return False,[{k:v for k,v in r.nav_command.items() if k!='t'}]
         a.update(phase='turn',started=now,yaw=float(pose[2]+math.pi/3))
         return False,[dict(kind='hold')]
