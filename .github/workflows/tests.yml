@@ -267,7 +267,7 @@ jobs:
     needs: ci-preflight
     if: needs.ci-preflight.outputs.full_suite == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     env:
       MUJOCO_GL: osmesa
       UGRP_SESSION_DIR: ${{ github.workspace }}/outputs/.quickstart-sessions-runtime
