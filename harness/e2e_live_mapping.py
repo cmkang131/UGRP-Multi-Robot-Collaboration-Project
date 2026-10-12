@@ -102,9 +102,11 @@ class Robot:
         self.call_ref=None;self.trace=None;self.revision=0
         self.wall_segments=[]
         self.translation_commands=0
+        self.camera_load='off'
 
     def receive(self,obs,rgb):
-        with using(self.exact_speedups), speed4_using(self.speed4), speed5_using(self.speed5):
+        from harness.e2e_camera_load import using as load_using
+        with using(self.exact_speedups), speed4_using(self.speed4), speed5_using(self.speed5), load_using(self.camera_load):
             return self._receive(obs,rgb)
 
     def _receive(self,obs,rgb):
@@ -134,6 +136,9 @@ class Robot:
             yaw=math.atan2(math.sin(pose[2]+b['axis_heading_rad']),math.cos(pose[2]+b['axis_heading_rad']))
             self.beam=dict(rgb=copy.deepcopy(self.goal.e2e_observed[-1]),pose_own_m=[*xy.tolist(),yaw],
                            grip_base_m=b['grip_base_m'],axis_heading_rad=b['axis_heading_rad'])
+        if self.camera_load!='off':
+            from harness.e2e_camera_load import qualification
+            trace['camera_geometry']=qualification(self.servo)
         return trace
 
     def commanded(self,action,now):

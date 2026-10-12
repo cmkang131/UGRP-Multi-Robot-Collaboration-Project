@@ -1,0 +1,57 @@
+{
+  "bundle": "e2e18-v227",
+  "status": "LOCAL_TESTED_NOT_YET_RUN",
+  "evidence": {
+    "closed_grip_static_counterexample": "active_camera.transform({**SEARCH,1:1500}) raises loaded_or_unknown_load_not_qualified; Transport closes gripper to1500 before next receive",
+    "truncated_proposal": {
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v225-s61007-r11/raw",
+      "call": "call-0004-r1",
+      "finish_reason": "length",
+      "completion_tokens": 800,
+      "waypoints": 7,
+      "compact_contract_chars": 898,
+      "route_sim": 288.4,
+      "delivery": false,
+      "stationary_sim_s_over": 120
+    }
+  },
+  "changes": {
+    "camera_load": "nominal_command_v1: explicit per-receive context; same rigid fixed geometry and issued command targets; never actual joints/load or compensation; trace marks loaded_geometry_qualified=false",
+    "route_tokens": "1600_v1: copy runtime profile max_tokens1600; source registry800 unchanged; effective-model-settings.json records actual request settings; non-normal completion still executes nothing",
+    "static_views": "all85 unloaded views reprojected and admitted after source-only hash change"
+  },
+  "planned_seeds": {
+    "azure3": [
+      61004,
+      61005
+    ],
+    "azure4": [
+      61007,
+      61009
+    ]
+  },
+  "references": [
+    {
+      "url": "https://github.com/ros/robot_state_publisher/blob/rolling/README.md",
+      "use": "Fixed/movable transform chain FK; our constraint substitutes own issued targets and records absence of measured joints/load"
+    },
+    {
+      "url": "https://modernrobotics.northwestern.edu/",
+      "use": "Rigid forward kinematics only, no loaded-deflection qualification"
+    },
+    {
+      "url": "https://ai.google.dev/gemma/docs/capabilities/text/function-calling-gemma4",
+      "use": "Complete structured arguments; preserve whole schema and semantic validation"
+    }
+  ],
+  "tests": {
+    "passed": 43,
+    "skipped": 1,
+    "files": [
+      "test_e2e_camera_load.py",
+      "test_servo_camera_fk.py",
+      "test_e2e_s4_live.py"
+    ],
+    "scope": "offline fixed geometry and live receive/scheduler; no physics/provider"
+  }
+}
