@@ -36,12 +36,17 @@ def test_observation_cadence_keeps_turn_stop_servo_and_transport_fresh():
     r = SimpleNamespace(speed4=Options(moving_observation_stride=2),
                         last_obs={'sim_time':1.}, packet=None,
                         nav_command=dict(kind='mecanum',forward=.35,left=0.,turn=0.))
+    assert processing_due(r, 1.2, 'mapping')  # suggested motion is not an issued command
+    r._speed4_last_motion = dict(r.nav_command)
     assert not processing_due(r, 1.2, 'mapping')
     assert processing_due(r, 1.4, 'mapping')
     assert processing_due(r, 1.2, 'carrying')
     r._speed4_servo_changed = True
     assert processing_due(r, 1.2, 'mapping')
     r.nav_command['turn'] = .1
+    assert processing_due(r, 1.2, 'mapping')
+    r.goal = SimpleNamespace(e2e_vo=object())
+    r.nav_command['turn'] = 0.
     assert processing_due(r, 1.2, 'mapping')
     r.nav_command = {'kind':'hold'}
     assert processing_due(r, 1.2, 'mapping')

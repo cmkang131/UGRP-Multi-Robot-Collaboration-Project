@@ -133,6 +133,8 @@ class Robot:
         return trace
 
     def commanded(self,action,now):
+        if self.speed4.enabled and action['kind'] in ('mecanum','drive','hold','wait'):
+            self._speed4_last_motion = dict(action)
         if self.speed4.enabled and action['kind'] in ('arm','look'):
             self._speed4_servo_changed = True
         if action['kind']=='mecanum' and abs(action.get('forward',0))+abs(action.get('left',0))>0:

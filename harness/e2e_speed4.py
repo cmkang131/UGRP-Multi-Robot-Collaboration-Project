@@ -56,7 +56,7 @@ def record(options):
                 controller_raster=[640, 480],
                 camera_pose_fov='unchanged; scaled K then linear resize for fixed calibration',
                 floor_rays='subsample observed free rays only; every wall endpoint retained',
-                moving_observation='mapping translation only; hold/turn/transport remain 5 Hz')
+                moving_observation='mapping translation only; hold/turn/transport and RGB VO remain 5 Hz')
 
 
 def processing_due(robot, now, phase):
@@ -67,6 +67,14 @@ def processing_due(robot, now, phase):
     """
     opt = getattr(robot, 'speed4', OFF)
     if opt.moving_observation_stride == 1 or phase != 'mapping' or robot.last_obs is None:
+        return True
+    # RGB VO is calibrated for <=0.25 s pairs; preserve its input clock.
+    # A future split VO/map schedule needs independent validation.
+    if hasattr(getattr(robot, 'goal', None), 'e2e_vo'):
+        return True
+    issued = getattr(robot, '_speed4_last_motion', {})
+    if (issued.get('kind') not in ('mecanum','drive') or abs(float(issued.get('turn',0))) > 1e-12
+            or not any(abs(float(issued.get(k,0))) > 0 for k in ('forward','left'))):
         return True
     cmd = robot.nav_command
     translating = (cmd.get('kind') in ('mecanum', 'drive') and
