@@ -1,163 +1,1644 @@
 {
-  "schema": "ugrp.e2e17.run-summary.v1",
-  "started_unix": 1791793959.3457322,
-  "deadline_unix": 1791822759.3457322,
-  "pr": 453,
-  "status": "repairing_host_launcher",
-  "runs": [
-    {
-      "vm": "azure3",
-      "group": "a",
-      "seed": 61001,
-      "bundle": 208,
-      "cohort": "paired",
-      "name": "e2e-idle-a-s61001",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61001",
-      "status": "not_started_wrong_shell_expansion"
+ "schema": "ugrp.e2e17.run-summary.v1",
+ "started_unix": 1791793959.3457322,
+ "deadline_unix": 1791822360,
+ "pr": 453,
+ "status": "running",
+ "runs": [
+  {
+   "vm": "azure3",
+   "name": "e2e-idle-a-s61001",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "paired",
+   "bundle": 208,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61001",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure3-1791795736.json",
+   "observation_sha256": "39ffd17f6e67ad23fcffd833552622173419551c1988d1bbc6a8105d8d10db26",
+   "health": {
+    "sim_s": 90.0,
+    "wall_s": 896.181542709,
+    "phase": "mapping",
+    "frames": 451,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
     },
-    {
-      "vm": "azure3",
-      "group": "b",
-      "seed": 61001,
-      "bundle": 207,
-      "cohort": "paired",
-      "name": "e2e-idle-b-s61001",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-b-s61001",
-      "status": "not_started_wrong_shell_expansion"
+    "first_model_response_logged_wall_s": 19.624481796000055,
+    "first_forward_logged_wall_s": 19.624481796000055
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 342,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -0.23289539395146372,
+      0.6096088786918735,
+      1.9199463630971252
+     ]
     },
-    {
-      "vm": "azure3",
-      "group": "a",
-      "seed": 61002,
-      "bundle": 208,
-      "cohort": "paired",
-      "name": "e2e-idle-a-s61002",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61002",
-      "status": "not_started_wrong_shell_expansion"
-    },
-    {
-      "vm": "azure3",
-      "group": "b",
-      "seed": 61002,
-      "bundle": 207,
-      "cohort": "paired",
-      "name": "e2e-idle-b-s61002",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-b-s61002",
-      "status": "not_started_wrong_shell_expansion"
-    },
-    {
-      "vm": "azure3",
-      "group": "a",
-      "seed": 61003,
-      "bundle": 208,
-      "cohort": "paired",
-      "name": "e2e-idle-a-s61003",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61003",
-      "status": "not_started_wrong_shell_expansion"
-    },
-    {
-      "vm": "azure3",
-      "group": "b",
-      "seed": 61003,
-      "bundle": 207,
-      "cohort": "paired",
-      "name": "e2e-idle-b-s61003",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-b-s61003",
-      "status": "not_started_wrong_shell_expansion"
-    },
-    {
-      "vm": "azure4",
-      "group": "a",
-      "seed": 61004,
-      "bundle": 208,
-      "cohort": "broad_candidate_only",
-      "name": "e2e-idle-a-s61004",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61004",
-      "status": "not_started_wrong_shell_expansion"
-    },
-    {
-      "vm": "azure4",
-      "group": "a",
-      "seed": 61005,
-      "bundle": 208,
-      "cohort": "broad_candidate_only",
-      "name": "e2e-idle-a-s61005",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61005",
-      "status": "not_started_wrong_shell_expansion"
-    },
-    {
-      "vm": "azure4",
-      "group": "a",
-      "seed": 61006,
-      "bundle": 208,
-      "cohort": "broad_candidate_only",
-      "name": "e2e-idle-a-s61006",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61006",
-      "status": "not_started_wrong_shell_expansion"
-    },
-    {
-      "vm": "azure4",
-      "group": "a",
-      "seed": 61007,
-      "bundle": 208,
-      "cohort": "broad_candidate_only",
-      "name": "e2e-idle-a-s61007",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61007",
-      "status": "not_started_wrong_shell_expansion"
-    },
-    {
-      "vm": "azure4",
-      "group": "a",
-      "seed": 61008,
-      "bundle": 208,
-      "cohort": "broad_candidate_only",
-      "name": "e2e-idle-a-s61008",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61008",
-      "status": "not_started_wrong_shell_expansion"
-    },
-    {
-      "vm": "azure4",
-      "group": "a",
-      "seed": 61009,
-      "bundle": 208,
-      "cohort": "broad_candidate_only",
-      "name": "e2e-idle-a-s61009",
-      "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61009",
-      "status": "not_started_wrong_shell_expansion"
+    "r2": {
+     "translation_commands": 227,
+     "own_pose_stationary_sim_s": 16.0,
+     "own_estimated_pose_m": [
+      0.8623725476620324,
+      0.570413462903989,
+      2.218162208514337
+     ]
     }
-  ],
-  "planned_N": 12,
-  "preflight": {
-    "related_tests": "13 passed",
-    "seed_scope": "61001..61009 only v208; v207 unchanged",
-    "workflow": "v208/v207 registered"
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 0.7688429598882923,
+     "xy_stationary_sim_s": 0.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 0.6533309904369335,
+     "xy_stationary_sim_s": 30.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61001,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 455,
+    "wall_s": 905.2212112550001,
+    "sim_s": 91.0,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 19.624481796000055
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 19.624481796000055
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
   },
-  "prior_runs": "archive-vm1.json and archive-vm34.json",
-  "record_scope": "all new runs and resubmissions; no other worktree mutation",
-  "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-  "submitted_unix": 1791794229.790069,
-  "launcher_failure": {
-    "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
-    "reason": "Bash special GROUPS ignores cohort assignment and expands unix groups; unintended 18+36 failed jobs",
-    "failure_N": 54,
-    "exit_1": 54,
-    "LLM_operated": 0,
-    "simulation_progress_s": 0,
-    "detected_within_first_check": true,
-    "signal_attempt": "all were already EXIT=1 when scoped SIGINT check executed",
-    "fix": "COHORT_ARMS; actual bash --plan check=6 each; active runner cap<6",
-    "reference": "https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html"
+  {
+   "vm": "azure3",
+   "name": "e2e-idle-a-s61002",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "paired",
+   "bundle": 208,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61002",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure3-1791795736.json",
+   "observation_sha256": "39ffd17f6e67ad23fcffd833552622173419551c1988d1bbc6a8105d8d10db26",
+   "health": {
+    "sim_s": 99.0,
+    "wall_s": 973.492206,
+    "phase": "mapping",
+    "frames": 496,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 22.873389040999996,
+    "first_forward_logged_wall_s": 22.873389040999996
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 391,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -0.6008727479208839,
+      1.1008831458892714,
+      2.7135309536524765
+     ]
+    },
+    "r2": {
+     "translation_commands": 486,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      3.9428991737902743,
+      0.25166880483838905,
+      0.17500119035129602
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 1.3420844677928985,
+     "xy_stationary_sim_s": 0.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 0.3548190650948727,
+     "xy_stationary_sim_s": 2.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61002,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 500,
+    "wall_s": 999.278459004,
+    "sim_s": 100.0,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 22.873389040999996
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 22.873389040999996
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
+  },
+  {
+   "vm": "azure3",
+   "name": "e2e-idle-a-s61003",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "paired",
+   "bundle": 208,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61003",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure3-1791795736.json",
+   "observation_sha256": "39ffd17f6e67ad23fcffd833552622173419551c1988d1bbc6a8105d8d10db26",
+   "health": {
+    "sim_s": 99.0,
+    "wall_s": 989.4818686650001,
+    "phase": "mapping",
+    "frames": 496,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 19.59701407800003,
+    "first_forward_logged_wall_s": 19.59701407800003
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 428,
+     "own_pose_stationary_sim_s": 1.0,
+     "own_estimated_pose_m": [
+      -1.2630954642272294,
+      -1.5128205749779475,
+      -1.904217704298088
+     ]
+    },
+    "r2": {
+     "translation_commands": 380,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      1.8908455463449283,
+      0.02879363979251191,
+      0.5281799857536624
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 2.343959523139933,
+     "xy_stationary_sim_s": 7.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 1.502352669017964,
+     "xy_stationary_sim_s": 9.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61003,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 500,
+    "wall_s": 999.315628732,
+    "sim_s": 100.0,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 19.59701407800003
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 19.59701407800003
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
+  },
+  {
+   "vm": "azure3",
+   "name": "e2e-idle-b-s61001",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "paired",
+   "bundle": 207,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-b-s61001",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure3-1791795736.json",
+   "observation_sha256": "39ffd17f6e67ad23fcffd833552622173419551c1988d1bbc6a8105d8d10db26",
+   "health": {
+    "sim_s": 90.0,
+    "wall_s": 903.185561691,
+    "phase": "mapping",
+    "frames": 451,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 22.864662559000067,
+    "first_forward_logged_wall_s": 22.864662559000067
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 342,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -0.23289539395146372,
+      0.6096088786918735,
+      1.9199463630971252
+     ]
+    },
+    "r2": {
+     "translation_commands": 227,
+     "own_pose_stationary_sim_s": 16.0,
+     "own_estimated_pose_m": [
+      0.8623725476620324,
+      0.570413462903989,
+      2.218162208514337
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 0.7051417141869061,
+     "xy_stationary_sim_s": 0.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 0.6533243177767301,
+     "xy_stationary_sim_s": 29.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61001,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 452,
+    "wall_s": 905.130422379,
+    "sim_s": 90.25,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 22.864662559000067
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 22.864662559000067
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
+  },
+  {
+   "vm": "azure3",
+   "name": "e2e-idle-b-s61002",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "paired",
+   "bundle": 207,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-b-s61002",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure3-1791795736.json",
+   "observation_sha256": "39ffd17f6e67ad23fcffd833552622173419551c1988d1bbc6a8105d8d10db26",
+   "health": {
+    "sim_s": 99.0,
+    "wall_s": 971.9470227689999,
+    "phase": "mapping",
+    "frames": 496,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 24.659239672000012,
+    "first_forward_logged_wall_s": 24.659239672000012
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 391,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -0.6008727479208839,
+      1.1008831458892714,
+      2.7135309536524765
+     ]
+    },
+    "r2": {
+     "translation_commands": 486,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      3.9428991737902743,
+      0.25166880483838905,
+      0.17500119035129602
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 1.3420844677928985,
+     "xy_stationary_sim_s": 0.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 0.3548190650948727,
+     "xy_stationary_sim_s": 2.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61002,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 500,
+    "wall_s": 999.3471259820001,
+    "sim_s": 100.0,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 24.659239672000012
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 24.659239672000012
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
+  },
+  {
+   "vm": "azure3",
+   "name": "e2e-idle-b-s61003",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "paired",
+   "bundle": 207,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e-idle-b-s61003",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure3-1791795736.json",
+   "observation_sha256": "39ffd17f6e67ad23fcffd833552622173419551c1988d1bbc6a8105d8d10db26",
+   "health": {
+    "sim_s": 99.0,
+    "wall_s": 994.295342874,
+    "phase": "mapping",
+    "frames": 496,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 24.608300426000028,
+    "first_forward_logged_wall_s": 24.608300426000028
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 428,
+     "own_pose_stationary_sim_s": 1.0,
+     "own_estimated_pose_m": [
+      -1.2630954642272294,
+      -1.5128205749779475,
+      -1.904217704298088
+     ]
+    },
+    "r2": {
+     "translation_commands": 380,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      1.8908455463449283,
+      0.02879363979251191,
+      0.5281799857536624
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 2.3441041793013855,
+     "xy_stationary_sim_s": 6.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 1.5026435831834262,
+     "xy_stationary_sim_s": 8.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61003,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 498,
+    "wall_s": 999.3841742720001,
+    "sim_s": 99.60000000000001,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 24.608300426000028
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 24.608300426000028
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
+  },
+  {
+   "vm": "azure4",
+   "name": "e2e-idle-a-s61004",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "broad_candidate_only",
+   "bundle": 208,
+   "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61004",
+   "status": "live",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure4-1791795736.json",
+   "observation_sha256": "054577263d2ca8f9af19a8b6a346e372f544f5f1669a9fdf3129c043130d6d7e",
+   "health": {
+    "sim_s": 119.0,
+    "wall_s": 1187.929426227,
+    "phase": "mapping",
+    "frames": 596,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": true,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 19.656527536,
+    "first_forward_logged_wall_s": 19.656527536
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 290,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -0.4337048027929291,
+      2.274768894029958,
+      2.687221272473745
+     ]
+    },
+    "r2": {
+     "translation_commands": 428,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      1.1268252466714628,
+      -1.340859292689527,
+      -1.8085655121095638
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 1.9495684141965788,
+     "xy_stationary_sim_s": 0.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 1.6667697304108346,
+     "xy_stationary_sim_s": 7.0
+    }
+   },
+   "alerts": [
+    "B_BOUNDARY_PRESENT_ROUTE_PENDING"
+   ],
+   "result": null,
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 19.656527536
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 19.656527536
+    },
+    "B_boundary": {
+     "sim_s": 45.0,
+     "wall_s": 422.08135277499997
+    }
+   }
+  },
+  {
+   "vm": "azure4",
+   "name": "e2e-idle-a-s61005",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "broad_candidate_only",
+   "bundle": 208,
+   "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61005",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure4-1791795736.json",
+   "observation_sha256": "054577263d2ca8f9af19a8b6a346e372f544f5f1669a9fdf3129c043130d6d7e",
+   "health": {
+    "sim_s": 99.0,
+    "wall_s": 974.4348352229999,
+    "phase": "mapping",
+    "frames": 496,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 16.22046269699996,
+    "first_forward_logged_wall_s": 16.22046269699996
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 391,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -0.9531222471094539,
+      1.1964269210418508,
+      1.916136332759307
+     ]
+    },
+    "r2": {
+     "translation_commands": 390,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -0.29915761962525983,
+      -0.10814447233846954,
+      -1.5707283249519397
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 1.2831015291561028,
+     "xy_stationary_sim_s": 0.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 0.8753414979648672,
+     "xy_stationary_sim_s": 0.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61005,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 500,
+    "wall_s": 999.3283218879999,
+    "sim_s": 100.0,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 16.22046269699996
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 16.22046269699996
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
+  },
+  {
+   "vm": "azure4",
+   "name": "e2e-idle-a-s61006",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "broad_candidate_only",
+   "bundle": 208,
+   "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61006",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure4-1791795736.json",
+   "observation_sha256": "054577263d2ca8f9af19a8b6a346e372f544f5f1669a9fdf3129c043130d6d7e",
+   "health": {
+    "sim_s": 101.0,
+    "wall_s": 994.417053765,
+    "phase": "mapping",
+    "frames": 506,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 18.45550065699996,
+    "first_forward_logged_wall_s": 18.45550065699996
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 336,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -1.9288308888004442,
+      -0.22241024971461268,
+      -2.3590793632741462
+     ]
+    },
+    "r2": {
+     "translation_commands": 480,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      4.292291377065925,
+      -0.6612717459872205,
+      -0.4496499816260737
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 2.045961640986756,
+     "xy_stationary_sim_s": 0.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 0.3816183622752092,
+     "xy_stationary_sim_s": 8.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61006,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 508,
+    "wall_s": 999.366329495,
+    "sim_s": 101.60000000000001,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 18.45550065699996
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 18.45550065699996
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
+  },
+  {
+   "vm": "azure4",
+   "name": "e2e-idle-a-s61007",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "broad_candidate_only",
+   "bundle": 208,
+   "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61007",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure4-1791795736.json",
+   "observation_sha256": "054577263d2ca8f9af19a8b6a346e372f544f5f1669a9fdf3129c043130d6d7e",
+   "health": {
+    "sim_s": 101.0,
+    "wall_s": 998.2240746790001,
+    "phase": "mapping",
+    "frames": 506,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 18.104736064999997,
+    "first_forward_logged_wall_s": 18.104736064999997
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 430,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -2.437349368270297,
+      0.616914443933081,
+      2.3752154645665886
+     ]
+    },
+    "r2": {
+     "translation_commands": 506,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      5.001371726901592,
+      0.0731207176195199,
+      0.09052104667274552
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 2.234343689845238,
+     "xy_stationary_sim_s": 0.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 0.33241224962420945,
+     "xy_stationary_sim_s": 66.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61007,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 506,
+    "wall_s": 999.3545210900002,
+    "sim_s": 101.2,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 18.104736064999997
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 18.104736064999997
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
+  },
+  {
+   "vm": "azure4",
+   "name": "e2e-idle-a-s61008",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "broad_candidate_only",
+   "bundle": 208,
+   "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61008",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure4-1791795736.json",
+   "observation_sha256": "054577263d2ca8f9af19a8b6a346e372f544f5f1669a9fdf3129c043130d6d7e",
+   "health": {
+    "sim_s": 96.0,
+    "wall_s": 996.859577617,
+    "phase": "mapping",
+    "frames": 481,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 17.79312343800001,
+    "first_forward_logged_wall_s": 17.79312343800001
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 308,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      -1.0400012327930384,
+      2.0216804142899303,
+      -2.9346680038694677
+     ]
+    },
+    "r2": {
+     "translation_commands": 390,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      2.330739117363534,
+      -0.34959810031510125,
+      0.05764990991742991
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 2.379432442187859,
+     "xy_stationary_sim_s": 1.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 1.5327327331106995,
+     "xy_stationary_sim_s": 1.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61008,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 482,
+    "wall_s": 999.50472246,
+    "sim_s": 96.4,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 17.79312343800001
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 17.79312343800001
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
+  },
+  {
+   "vm": "azure4",
+   "name": "e2e-idle-a-s61009",
+   "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+   "cohort": "broad_candidate_only",
+   "bundle": 208,
+   "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61009",
+   "status": "finished",
+   "observation_artifact": "/Users/changmin/projects/ugrp/outputs/e2e17-idle/checks/azure4-1791795736.json",
+   "observation_sha256": "054577263d2ca8f9af19a8b6a346e372f544f5f1669a9fdf3129c043130d6d7e",
+   "health": {
+    "sim_s": 105.0,
+    "wall_s": 996.7360915479999,
+    "phase": "mapping",
+    "frames": 526,
+    "first_model_response": true,
+    "own_map_B_generated": true,
+    "own_B_boundary_remembered": false,
+    "own_route_generated": false,
+    "model_attempts": 3,
+    "setdowns": 0
+   },
+   "initial_5min": {
+    "passed": true,
+    "checks": {
+     "first_model_response": true,
+     "forward_command": true,
+     "frames_and_sim_increasing": true,
+     "actual_r1_r2_moved_over_1cm": true,
+     "mapping_entered": true,
+     "no_execution_exception": true
+    },
+    "first_model_response_logged_wall_s": 23.103048865999995,
+    "first_forward_logged_wall_s": 23.103048865999995
+   },
+   "robots": {
+    "r1": {
+     "translation_commands": 305,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      0.12727866990911987,
+      2.8123673888107787,
+      -1.012053958947455
+     ]
+    },
+    "r2": {
+     "translation_commands": 446,
+     "own_pose_stationary_sim_s": 0.0,
+     "own_estimated_pose_m": [
+      4.219109137852294,
+      -0.3209151674562459,
+      -0.10154877363066372
+     ]
+    }
+   },
+   "actual_motion": {
+    "r1": {
+     "net_xy_displacement_m": 2.0333349471973414,
+     "xy_stationary_sim_s": 0.0
+    },
+    "r2": {
+     "net_xy_displacement_m": 0.38921544894501325,
+     "xy_stationary_sim_s": 7.0
+    }
+   },
+   "alerts": [],
+   "result": {
+    "status": "EARLY_STOP",
+    "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+    "seed": 61009,
+    "LLM_operated": true,
+    "own_map_completed": false,
+    "start_to_finish_transport": false,
+    "E2E_success": false,
+    "model_calls": 3,
+    "frames": 527,
+    "wall_s": 999.4255104279998,
+    "sim_s": 105.4,
+    "finalization_complete": true,
+    "shutdown_signals": [
+     2,
+     15
+    ],
+    "failure_type": "KeyboardInterrupt",
+    "failure_code": "SIGNAL_SIGINT",
+    "finalization_error_count": 0
+   },
+   "stage_milestones": {
+    "LLM": {
+     "sim_s": 0.0,
+     "wall_s": 23.103048865999995
+    },
+    "mapping": {
+     "sim_s": 0.0,
+     "wall_s": 23.103048865999995
+    }
+   },
+   "stop_reason": "Confirmed B association or exhausted navigation view attempts; coordinator SIGINT for repair"
   }
+ ],
+ "planned_N": 12,
+ "preflight": {
+  "related_tests": "13 passed",
+  "seed_scope": "61001..61009 only v208; v207 unchanged",
+  "workflow": "v208/v207 registered"
+ },
+ "prior_runs": "archive-vm1.json and archive-vm34.json",
+ "record_scope": "all new runs and resubmissions; no other worktree mutation",
+ "source_sha": "aa2d8484719e60f566d7e2c230c0545f3242da91",
+ "submitted_unix": 1791794229.790069,
+ "launcher_failure": {
+  "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+  "reason": "Bash special GROUPS ignores cohort assignment and expands unix groups; unintended 18+36 failed jobs",
+  "failure_N": 54,
+  "exit_1": 54,
+  "LLM_operated": 0,
+  "simulation_progress_s": 0,
+  "detected_within_first_check": true,
+  "signal_attempt": "all were already EXIT=1 when scoped SIGINT check executed",
+  "fix": "COHORT_ARMS; actual bash --plan check=6 each; active runner cap<6",
+  "reference": "https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html"
+ },
+ "valid_runs_started": 12,
+ "actual_attempts_including_launcher_errors": 66,
+ "updated_unix": 1791794843.1099782,
+ "initial_check_passed": 12,
+ "failed_launch_detail": "failed-launch.json.zst",
+ "failed_launch_records": [
+  {
+   "run": "e2e-idle-1000-s61001",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-1000-s61001/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-1000-s61002",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-1000-s61002/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-1000-s61003",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-1000-s61003/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-105-s61001",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-105-s61001/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-105-s61002",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-105-s61002/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-105-s61003",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-105-s61003/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-24-s61001",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-24-s61001/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-24-s61002",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-24-s61002/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-24-s61003",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-24-s61003/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-27-s61001",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-27-s61001/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-27-s61002",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-27-s61002/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-27-s61003",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-27-s61003/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-30-s61001",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-30-s61001/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-30-s61002",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-30-s61002/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-30-s61003",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-30-s61003/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-4-s61001",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-4-s61001/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-4-s61002",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-4-s61002/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-4-s61003",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure3",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-4-s61003/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-1000-s61004",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-1000-s61004/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-1000-s61005",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-1000-s61005/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-1000-s61006",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-1000-s61006/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-1000-s61007",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-1000-s61007/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-1000-s61008",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-1000-s61008/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-1000-s61009",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-1000-s61009/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-105-s61004",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-105-s61004/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-105-s61005",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-105-s61005/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-105-s61006",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-105-s61006/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-105-s61007",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-105-s61007/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-105-s61008",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-105-s61008/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-105-s61009",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-105-s61009/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-24-s61004",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-24-s61004/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-24-s61005",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-24-s61005/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-24-s61006",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-24-s61006/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-24-s61007",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-24-s61007/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-24-s61008",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-24-s61008/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-24-s61009",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-24-s61009/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-27-s61004",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-27-s61004/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-27-s61005",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-27-s61005/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-27-s61006",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-27-s61006/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-27-s61007",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-27-s61007/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-27-s61008",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-27-s61008/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-27-s61009",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-27-s61009/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-30-s61004",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-30-s61004/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-30-s61005",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-30-s61005/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-30-s61006",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-30-s61006/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-30-s61007",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-30-s61007/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-30-s61008",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-30-s61008/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-30-s61009",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-30-s61009/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-4-s61004",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-4-s61004/raw",
+   "failure_category": "no_successful_model_response"
+  },
+  {
+   "run": "e2e-idle-4-s61005",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-4-s61005/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-4-s61006",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-4-s61006/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-4-s61007",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-4-s61007/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-4-s61008",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-4-s61008/raw",
+   "failure_category": "registered_model_seed_required"
+  },
+  {
+   "run": "e2e-idle-4-s61009",
+   "source_sha": "c0b87f0028681ebca96581833b2dd0da0b152d8b",
+   "vm": "ugrp-sim-azure4",
+   "exit": 1,
+   "raw_path": "/home/ugrp/ugrp-sim/runs/e2e-idle-4-s61009/raw",
+   "failure_category": "registered_model_seed_required"
+  }
+ ],
+ "phase": "11 initial runs stopped at confirmed B blockers; seed 61004 continuing; v211 three candidates in preparation"
 }

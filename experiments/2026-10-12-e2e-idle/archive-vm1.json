@@ -1,0 +1,696 @@
+{
+  "schema": "e2e17.archive-vm1.v1",
+  "updated_utc": "2026-10-12T08:36:54.163981+00:00",
+  "scope": "e2e14-b-*-r2 only; other worktree original records read only",
+  "source_experiment": "2026-10-12-e2e14-combo",
+  "vm": "ugrp-sim-azure",
+  "status": "complete",
+  "summary": {
+    "runs_terminated": 4,
+    "runs_total": 4,
+    "LLM_operated": 4,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "B_boundary": 0,
+    "furthest_stage": "mapping",
+    "reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+    "archive_verified": 4
+  },
+  "runs": [
+    {
+      "status": "EARLY_STOP",
+      "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
+      "seed": 61001,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "model_calls": 3,
+      "sim_s": 1096.2,
+      "wall_s": 23537.890015140998,
+      "frames": 5481,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 20.78286611600015
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 20.78286611600015
+        }
+      },
+      "failure_type": "KeyboardInterrupt",
+      "failure": "SIGNAL_SIGINT",
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "controller_failure": null,
+      "id": "e2e14-b-s61001-r2",
+      "vm": "ugrp-sim-azure",
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-b-s61001-r2",
+      "run_meta_pr": 446,
+      "result_pr": 433,
+      "pr_note": "RUN_META PR446 is authoritative; legacy result writer reports PR433",
+      "exit": 1,
+      "reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "furthest_stage": "mapping",
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "robots": {
+        "r1": {
+          "translation_commands": 299,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            0.6450589345179025,
+            2.836047407264931,
+            -0.04844511154333064
+          ],
+          "static_rounded_1cm_sim_s": 827.0,
+          "stage": "explore"
+        },
+        "r2": {
+          "translation_commands": 3765,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            1.4054671185892365,
+            3.1067762861253843,
+            2.3731273660359617
+          ],
+          "static_rounded_1cm_sim_s": 194.0,
+          "stage": "explore"
+        },
+        "r3": {
+          "translation_commands": 0,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            -0.08858745942864356,
+            0.023217705012616545,
+            0.037335128603708245
+          ],
+          "static_rounded_1cm_sim_s": 687.0,
+          "stage": "explore"
+        }
+      },
+      "evidence_sha256_before_postrun": {
+        "RUN_META.json": "40e438cb6b98a9dcb52fb74ff1dfec792a246171374c91a7b3fccd41cf3d59b6",
+        "SOURCE_SHA": "a3738c9a9bf536bba270d145c18f664b36e1584765a9fbcb197389f08654d67a",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "raw/result.json": "6a8abfe987998e997c45c6653e757c1935508381bc3a36513a561d6b3284a113",
+        "raw/stage-milestones.json": "97bbcaba831747e44721be9497bf3f02af1fe6afcb537a129e6d325d45beb987",
+        "log.txt": "6cd1927936760926e80604be87c1b7a77baa4bd3676c8b7f251856276b9980b9"
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e14-b-s61001-r2",
+        "files": 16547,
+        "bytes": 255857222,
+        "inventory_sha256": "a618b48d9bec55bb7ad3310e8831abd2169136f03cdd367ae9cd6da2c1c122fc",
+        "sha256_manifest_matches": 16544,
+        "sha256_manifest_mismatches": [],
+        "extra_metadata_files": [
+          ".evidence.lock",
+          "ALL-hashes.tsv",
+          "SHA256SUMS.tsv"
+        ],
+        "compressed_files_verified": 26,
+        "verified_unix": 1791794194.568623,
+        "manifest_sha256": "0fa2323539d2672231f223b65694bea33788f1c1ea93b3a6e5c954d4a21dae81",
+        "postrun_boundary": {
+          "robots": {
+            "r1": {
+              "scope": "postrun_exact_saved_RGB",
+              "frames": 5482,
+              "own_frames": 5482,
+              "missing_frames": 0,
+              "accepted_frames": 0,
+              "maxima": {
+                "blue_pixels": 230727,
+                "area_px2": 176620.0,
+                "vertices": 14,
+                "border_margin_px": 80,
+                "self_mask_overlap_px": 0,
+                "white_islands": 0,
+                "low_saturation_pixels": 7031,
+                "low_saturation_value_max": 164
+              },
+              "rejection_counts": {
+                "area_below_100": 295486,
+                "not_convex_quad": 760,
+                "white_islands_not_three": 5355
+              },
+              "marker_detect": "off"
+            },
+            "r2": {
+              "scope": "postrun_exact_saved_RGB",
+              "frames": 5481,
+              "own_frames": 5481,
+              "missing_frames": 0,
+              "accepted_frames": 0,
+              "maxima": {
+                "blue_pixels": 249474,
+                "area_px2": 248257.5,
+                "vertices": 15,
+                "border_margin_px": 146,
+                "self_mask_overlap_px": 0,
+                "white_islands": 1,
+                "low_saturation_pixels": 8615,
+                "low_saturation_value_max": 255
+              },
+              "rejection_counts": {
+                "area_below_100": 575986,
+                "white_islands_not_three": 5276,
+                "not_convex_quad": 14236
+              },
+              "marker_detect": "off"
+            }
+          },
+          "elapsed_wall_s": 295.7036712169647,
+          "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
+          "evaluation_only": true,
+          "feedback_to_controller": false
+        },
+        "final_evidence_sha256": {
+          "COMPRESSED.jsonl": "302bd2ae5277206d66e2a43e434b8529289cc68bdfde730fae45231107afe6c8",
+          "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+          "RUN_META.json": "40e438cb6b98a9dcb52fb74ff1dfec792a246171374c91a7b3fccd41cf3d59b6",
+          "SOURCE_SHA": "a3738c9a9bf536bba270d145c18f664b36e1584765a9fbcb197389f08654d67a",
+          "log.txt": "6cd1927936760926e80604be87c1b7a77baa4bd3676c8b7f251856276b9980b9",
+          "postrun-boundary.json": "9cd81858733f91bb7fbf5626b2007b826dcccc43af8ebf6e7796edac63946c83",
+          "raw/result.json": "6a8abfe987998e997c45c6653e757c1935508381bc3a36513a561d6b3284a113",
+          "raw/stage-milestones.json": "97bbcaba831747e44721be9497bf3f02af1fe6afcb537a129e6d325d45beb987"
+        },
+        "automatic_native_archive_log_verified": true,
+        "verification_scope": "Existing native sender printed verified=true for all four; independent ARM complete inventory hashing and source SHA256SUMS.tsv matching, compression hash ledger, and six pre-archive source evidence hashes compared."
+      }
+    },
+    {
+      "status": "EARLY_STOP",
+      "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
+      "seed": 61002,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "model_calls": 3,
+      "sim_s": 1150.0,
+      "wall_s": 23538.04391059,
+      "frames": 5750,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 27.84975156900009
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 27.84975156900009
+        }
+      },
+      "failure_type": "KeyboardInterrupt",
+      "failure": "SIGNAL_SIGINT",
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "controller_failure": null,
+      "id": "e2e14-b-s61002-r2",
+      "vm": "ugrp-sim-azure",
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-b-s61002-r2",
+      "run_meta_pr": 446,
+      "result_pr": 433,
+      "pr_note": "RUN_META PR446 is authoritative; legacy result writer reports PR433",
+      "exit": 1,
+      "reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "furthest_stage": "mapping",
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "robots": {
+        "r1": {
+          "translation_commands": 2159,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            -2.2116302399246623,
+            -1.077846404796108,
+            -0.13101935476033688
+          ],
+          "static_rounded_1cm_sim_s": 671.0,
+          "stage": "explore"
+        },
+        "r2": {
+          "translation_commands": 2540,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            0.5716129595513277,
+            -1.6378289181384578,
+            -1.0115611601895957
+          ],
+          "static_rounded_1cm_sim_s": 549.0,
+          "stage": "explore"
+        },
+        "r3": {
+          "translation_commands": 0,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            -0.0890410406595655,
+            0.008367634382818945,
+            0.03547074783968407
+          ],
+          "static_rounded_1cm_sim_s": 490.0,
+          "stage": "explore"
+        }
+      },
+      "evidence_sha256_before_postrun": {
+        "RUN_META.json": "237a1a4041865b1d6de726a78b0e46a0ae12a23c9eea8b32deaf5e430acb7e92",
+        "SOURCE_SHA": "a3738c9a9bf536bba270d145c18f664b36e1584765a9fbcb197389f08654d67a",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "raw/result.json": "dc8dca2db9d577e32d77188c6fd32f5702ea0695e0e5653264d02c9544118bbf",
+        "raw/stage-milestones.json": "d8bf937f9efb9caee748feaa1cf01a8bb2b4a5e4c340a11f10d05ea18451f1d1",
+        "log.txt": "1de5abd3bf6b09b4b934cf9ca6a11879954cc7751a10c1df9a1bdec3b667e755"
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e14-b-s61002-r2",
+        "files": 17354,
+        "bytes": 309731208,
+        "inventory_sha256": "aa7bd5c6dcbd43e72b19428b6d4c4c92daec8371bc6898b74ce63f303e82f4d4",
+        "sha256_manifest_matches": 17351,
+        "sha256_manifest_mismatches": [],
+        "extra_metadata_files": [
+          ".evidence.lock",
+          "ALL-hashes.tsv",
+          "SHA256SUMS.tsv"
+        ],
+        "compressed_files_verified": 26,
+        "verified_unix": 1791794208.3541136,
+        "manifest_sha256": "37a860e7115ec9f743432334d6979b1b66bba36107c0b2d2db7697e9e0e06a12",
+        "postrun_boundary": {
+          "robots": {
+            "r1": {
+              "scope": "postrun_exact_saved_RGB",
+              "frames": 5750,
+              "own_frames": 5750,
+              "missing_frames": 0,
+              "accepted_frames": 0,
+              "maxima": {
+                "blue_pixels": 230732,
+                "area_px2": 184256.0,
+                "vertices": 17,
+                "border_margin_px": 164,
+                "self_mask_overlap_px": 0,
+                "white_islands": 2,
+                "low_saturation_pixels": 7757,
+                "low_saturation_value_max": 255
+              },
+              "rejection_counts": {
+                "area_below_100": 579873,
+                "not_convex_quad": 17910,
+                "white_islands_not_three": 5523
+              },
+              "marker_detect": "off"
+            },
+            "r2": {
+              "scope": "postrun_exact_saved_RGB",
+              "frames": 5750,
+              "own_frames": 5750,
+              "missing_frames": 0,
+              "accepted_frames": 0,
+              "maxima": {
+                "blue_pixels": 249552,
+                "area_px2": 248354.5,
+                "vertices": 17,
+                "border_margin_px": 183,
+                "self_mask_overlap_px": 0,
+                "white_islands": 1,
+                "low_saturation_pixels": 8258,
+                "low_saturation_value_max": 238
+              },
+              "rejection_counts": {
+                "area_below_100": 682808,
+                "white_islands_not_three": 12291,
+                "not_convex_quad": 14773
+              },
+              "marker_detect": "off"
+            }
+          },
+          "elapsed_wall_s": 333.2773377895355,
+          "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
+          "evaluation_only": true,
+          "feedback_to_controller": false
+        },
+        "final_evidence_sha256": {
+          "COMPRESSED.jsonl": "bc9beaef3707a3eb08f8b5406443286f00708beb650929090247e69260fb8548",
+          "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+          "RUN_META.json": "237a1a4041865b1d6de726a78b0e46a0ae12a23c9eea8b32deaf5e430acb7e92",
+          "SOURCE_SHA": "a3738c9a9bf536bba270d145c18f664b36e1584765a9fbcb197389f08654d67a",
+          "log.txt": "1de5abd3bf6b09b4b934cf9ca6a11879954cc7751a10c1df9a1bdec3b667e755",
+          "postrun-boundary.json": "7738e4a140a83266e2c2646733496c004ab0d60fc471ae36a7bfb71f60a97990",
+          "raw/result.json": "dc8dca2db9d577e32d77188c6fd32f5702ea0695e0e5653264d02c9544118bbf",
+          "raw/stage-milestones.json": "d8bf937f9efb9caee748feaa1cf01a8bb2b4a5e4c340a11f10d05ea18451f1d1"
+        },
+        "automatic_native_archive_log_verified": true,
+        "verification_scope": "Existing native sender printed verified=true for all four; independent ARM complete inventory hashing and source SHA256SUMS.tsv matching, compression hash ledger, and six pre-archive source evidence hashes compared."
+      }
+    },
+    {
+      "status": "EARLY_STOP",
+      "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
+      "seed": 61003,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "model_calls": 3,
+      "sim_s": 779.2,
+      "wall_s": 23538.041020408,
+      "frames": 3896,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 24.175616643000012
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 24.175616643000012
+        }
+      },
+      "failure_type": "KeyboardInterrupt",
+      "failure": "SIGNAL_SIGINT",
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "controller_failure": null,
+      "id": "e2e14-b-s61003-r2",
+      "vm": "ugrp-sim-azure",
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-b-s61003-r2",
+      "run_meta_pr": 446,
+      "result_pr": 433,
+      "pr_note": "RUN_META PR446 is authoritative; legacy result writer reports PR433",
+      "exit": 1,
+      "reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "furthest_stage": "mapping",
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "robots": {
+        "r1": {
+          "translation_commands": 379,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            -0.08460068362295933,
+            0.23669204981400696,
+            2.4133043675400083
+          ],
+          "static_rounded_1cm_sim_s": 652.0,
+          "stage": "explore"
+        },
+        "r2": {
+          "translation_commands": 3353,
+          "translation_commands_last_100sim": 484,
+          "pose_own_m": [
+            1.7278185099557641,
+            -8.41429918773065,
+            -2.939283514386998
+          ],
+          "static_rounded_1cm_sim_s": 1.0,
+          "stage": "explore"
+        },
+        "r3": {
+          "translation_commands": 0,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            -0.08554036333676474,
+            0.01133564522685553,
+            0.034794425904240533
+          ],
+          "static_rounded_1cm_sim_s": 10.0,
+          "stage": "explore"
+        }
+      },
+      "evidence_sha256_before_postrun": {
+        "RUN_META.json": "e90a1f497bd38c0874be3a43783f7ac8f804e577d7b69612bda8682e53b40c06",
+        "SOURCE_SHA": "a3738c9a9bf536bba270d145c18f664b36e1584765a9fbcb197389f08654d67a",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "raw/result.json": "acae7fa3c99bcd1ef036907464a4d176fb4c90457b926041fdd0801efd336955",
+        "raw/stage-milestones.json": "bec0a3825f12ba70f1dead4b1e54d396b113e1f6f07e4a73b99f3707f5b6c283",
+        "log.txt": "a119268e640e98b7f1df45883fc26e2e291029df0d533fb4e8c96083bc2a9ea9"
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e14-b-s61003-r2",
+        "files": 11792,
+        "bytes": 211517564,
+        "inventory_sha256": "e7e57733e07e8283ddc2e0a6af07c274a3770ecff88737c951a46e87f3d513aa",
+        "sha256_manifest_matches": 11789,
+        "sha256_manifest_mismatches": [],
+        "extra_metadata_files": [
+          ".evidence.lock",
+          "ALL-hashes.tsv",
+          "SHA256SUMS.tsv"
+        ],
+        "compressed_files_verified": 26,
+        "verified_unix": 1791794209.9072852,
+        "manifest_sha256": "913275c26d6885b16360d26c52228dad6d84ba1ef925a67da2756ae1b7af46d8",
+        "postrun_boundary": {
+          "robots": {
+            "r1": {
+              "scope": "postrun_exact_saved_RGB",
+              "frames": 3897,
+              "own_frames": 3897,
+              "missing_frames": 0,
+              "accepted_frames": 0,
+              "maxima": {
+                "blue_pixels": 230511,
+                "area_px2": 176615.0,
+                "vertices": 17,
+                "border_margin_px": 100,
+                "self_mask_overlap_px": 0,
+                "white_islands": 0,
+                "low_saturation_pixels": 8277,
+                "low_saturation_value_max": 169
+              },
+              "rejection_counts": {
+                "area_below_100": 225931,
+                "not_convex_quad": 16431,
+                "white_islands_not_three": 380
+              },
+              "marker_detect": "off"
+            },
+            "r2": {
+              "scope": "postrun_exact_saved_RGB",
+              "frames": 3897,
+              "own_frames": 3897,
+              "missing_frames": 0,
+              "accepted_frames": 0,
+              "maxima": {
+                "blue_pixels": 249552,
+                "area_px2": 248354.5,
+                "vertices": 16,
+                "border_margin_px": 128,
+                "self_mask_overlap_px": 0,
+                "white_islands": 2,
+                "low_saturation_pixels": 9858,
+                "low_saturation_value_max": 248
+              },
+              "rejection_counts": {
+                "area_below_100": 320413,
+                "white_islands_not_three": 3076,
+                "not_convex_quad": 7240
+              },
+              "marker_detect": "off"
+            }
+          },
+          "elapsed_wall_s": 199.8898777961731,
+          "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
+          "evaluation_only": true,
+          "feedback_to_controller": false
+        },
+        "final_evidence_sha256": {
+          "COMPRESSED.jsonl": "909053fe59dcaec56e5542a5aa2a1d1dec4997b8aae53d26f9a0a3489f34f22d",
+          "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+          "RUN_META.json": "e90a1f497bd38c0874be3a43783f7ac8f804e577d7b69612bda8682e53b40c06",
+          "SOURCE_SHA": "a3738c9a9bf536bba270d145c18f664b36e1584765a9fbcb197389f08654d67a",
+          "log.txt": "a119268e640e98b7f1df45883fc26e2e291029df0d533fb4e8c96083bc2a9ea9",
+          "postrun-boundary.json": "cf6658af7529ad3c89bb5785798d96896e36c3a790c62354997dd8fc25d447c6",
+          "raw/result.json": "acae7fa3c99bcd1ef036907464a4d176fb4c90457b926041fdd0801efd336955",
+          "raw/stage-milestones.json": "bec0a3825f12ba70f1dead4b1e54d396b113e1f6f07e4a73b99f3707f5b6c283"
+        },
+        "automatic_native_archive_log_verified": true,
+        "verification_scope": "Existing native sender printed verified=true for all four; independent ARM complete inventory hashing and source SHA256SUMS.tsv matching, compression hash ledger, and six pre-archive source evidence hashes compared."
+      }
+    },
+    {
+      "status": "EARLY_STOP",
+      "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
+      "seed": 61004,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "model_calls": 3,
+      "sim_s": 940.0,
+      "wall_s": 23537.936819577997,
+      "frames": 4700,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 24.142671874000143
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 24.142671874000143
+        }
+      },
+      "failure_type": "KeyboardInterrupt",
+      "failure": "SIGNAL_SIGINT",
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "controller_failure": null,
+      "id": "e2e14-b-s61004-r2",
+      "vm": "ugrp-sim-azure",
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-b-s61004-r2",
+      "run_meta_pr": 446,
+      "result_pr": 433,
+      "pr_note": "RUN_META PR446 is authoritative; legacy result writer reports PR433",
+      "exit": 1,
+      "reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "furthest_stage": "mapping",
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "robots": {
+        "r1": {
+          "translation_commands": 2424,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            -4.0692703676753466,
+            2.379915113838866,
+            0.7688095116185947
+          ],
+          "static_rounded_1cm_sim_s": 319.0,
+          "stage": "explore"
+        },
+        "r2": {
+          "translation_commands": 283,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            0.7079486193625735,
+            -0.04028380262928473,
+            -0.06419219212857685
+          ],
+          "static_rounded_1cm_sim_s": 883.0,
+          "stage": "explore"
+        },
+        "r3": {
+          "translation_commands": 0,
+          "translation_commands_last_100sim": 0,
+          "pose_own_m": [
+            -0.08625473170215962,
+            0.014667759636571263,
+            0.03311691622681545
+          ],
+          "static_rounded_1cm_sim_s": 70.0,
+          "stage": "explore"
+        }
+      },
+      "evidence_sha256_before_postrun": {
+        "RUN_META.json": "667b333e97bad4fdad3cfda374ca58436689e59a8477078ffcab6b95432361c5",
+        "SOURCE_SHA": "a3738c9a9bf536bba270d145c18f664b36e1584765a9fbcb197389f08654d67a",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "raw/result.json": "755642990eadf627bb78272ca525738db1eaf44eca1b9ca62ba6f22d0798704b",
+        "raw/stage-milestones.json": "3dfccd5a639966db778cb5a67e41b4cccd3c32b5bcdc604dc043579106854a62",
+        "log.txt": "e799c8ac3eb75c203a6e84fc71a2fcba5bef296b6197c5fe3c65a4a3d07be4a3"
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e14-b-s61004-r2",
+        "files": 14204,
+        "bytes": 239687894,
+        "inventory_sha256": "3ae334da53c241380416ea1245bfd0b1738f2060556aa9045e2645b8d0d70515",
+        "sha256_manifest_matches": 14201,
+        "sha256_manifest_mismatches": [],
+        "extra_metadata_files": [
+          ".evidence.lock",
+          "ALL-hashes.tsv",
+          "SHA256SUMS.tsv"
+        ],
+        "compressed_files_verified": 26,
+        "verified_unix": 1791794214.0855415,
+        "manifest_sha256": "65cb65125d7500eb5d75b52712a142134dad6fa85689345c2c845f81e281d54a",
+        "postrun_boundary": {
+          "robots": {
+            "r1": {
+              "scope": "postrun_exact_saved_RGB",
+              "frames": 4701,
+              "own_frames": 4701,
+              "missing_frames": 0,
+              "accepted_frames": 0,
+              "maxima": {
+                "blue_pixels": 249811,
+                "area_px2": 248660.5,
+                "vertices": 16,
+                "border_margin_px": 128,
+                "self_mask_overlap_px": 0,
+                "white_islands": 1,
+                "low_saturation_pixels": 9046,
+                "low_saturation_value_max": 227
+              },
+              "rejection_counts": {
+                "area_below_100": 197745,
+                "not_convex_quad": 4921,
+                "white_islands_not_three": 3811
+              },
+              "marker_detect": "off"
+            },
+            "r2": {
+              "scope": "postrun_exact_saved_RGB",
+              "frames": 4700,
+              "own_frames": 4700,
+              "missing_frames": 0,
+              "accepted_frames": 0,
+              "maxima": {
+                "blue_pixels": 109951,
+                "area_px2": 83126.5,
+                "vertices": 18,
+                "border_margin_px": 149,
+                "self_mask_overlap_px": 0,
+                "white_islands": 0,
+                "low_saturation_pixels": 135,
+                "low_saturation_value_max": 167
+              },
+              "rejection_counts": {
+                "area_below_100": 759406,
+                "white_islands_not_three": 1067,
+                "not_convex_quad": 21608
+              },
+              "marker_detect": "off"
+            }
+          },
+          "elapsed_wall_s": 238.63165879249573,
+          "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
+          "evaluation_only": true,
+          "feedback_to_controller": false
+        },
+        "final_evidence_sha256": {
+          "COMPRESSED.jsonl": "76eb43e357cf4fe086353bfbfc9a5073db7f010e799e3389b2366ea1cb740890",
+          "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+          "RUN_META.json": "667b333e97bad4fdad3cfda374ca58436689e59a8477078ffcab6b95432361c5",
+          "SOURCE_SHA": "a3738c9a9bf536bba270d145c18f664b36e1584765a9fbcb197389f08654d67a",
+          "log.txt": "e799c8ac3eb75c203a6e84fc71a2fcba5bef296b6197c5fe3c65a4a3d07be4a3",
+          "postrun-boundary.json": "6c8de6c7532eb19e40f722fa97e25adf988cbf8c7aa489b5ec361a59a17ffcf8",
+          "raw/result.json": "755642990eadf627bb78272ca525738db1eaf44eca1b9ca62ba6f22d0798704b",
+          "raw/stage-milestones.json": "3dfccd5a639966db778cb5a67e41b4cccd3c32b5bcdc604dc043579106854a62"
+        },
+        "automatic_native_archive_log_verified": true,
+        "verification_scope": "Existing native sender printed verified=true for all four; independent ARM complete inventory hashing and source SHA256SUMS.tsv matching, compression hash ledger, and six pre-archive source evidence hashes compared."
+      }
+    }
+  ],
+  "vm_power_state": "PowerState/deallocated",
+  "other_worktree_modified": false,
+  "heavy_raw_retrieved_to_mac": false,
+  "archive_files_verified": 59897,
+  "archive_manifest_hash_matches": 59885,
+  "archive_bytes": 1016793888,
+  "arm_free_bytes_after_archive": 80950972416,
+  "vm_deallocation": {
+    "observed_via": "az vm get-instance-view",
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "resource_group": "UGRP-SIM-RG",
+    "vm": "ugrp-sim-azure",
+    "deallocated_before_manual_request": true,
+    "note": "Automatic lifecycle shutdown inferred: native archive 4/4 complete then SSH severed; API confirmed deallocated. No restart."
+  }
+}

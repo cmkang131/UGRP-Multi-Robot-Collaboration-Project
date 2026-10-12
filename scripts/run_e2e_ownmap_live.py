@@ -32,7 +32,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off'):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
     registered_seeds = range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
     if profile not in PROFILES or seed not in registered_seeds:raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
@@ -135,6 +135,15 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         b.update(schema='ugrp.e2e_ownmap_live.v208',execution_bundle_id='e2e-explore-deadlock-v208',workflow_version='7.101.0')
         b['e2e_options']['explore_deadlock']=explore_deadlock
         b['explore_deadlock']=dict(params=DEADLOCK_PARAMS,scope='own issued zero-motion commands; local goal suppression only')
+    from harness.e2e_boundary_association import OPTION as ASSOC, PARAMS as ASSOC_PARAMS
+    from harness.e2e_boundary_views import RETRY_OPTION, MAX_NAVIGATION_FAILURES
+    if boundary_association not in ('off',ASSOC):raise ValueError('UNKNOWN_BOUNDARY_ASSOCIATION')
+    if boundary_retry not in ('off',RETRY_OPTION):raise ValueError('UNKNOWN_BOUNDARY_RETRY')
+    if boundary_association != 'off' or boundary_retry != 'off':
+        if explore_deadlock != DEADLOCK:raise ValueError('V208_REQUIRED_BEFORE_BOUNDARY_REPAIR')
+        b.update(schema='ugrp.e2e_ownmap_live.v211',execution_bundle_id='e2e-boundary-repair-v211',workflow_version='7.104.0')
+        b['e2e_options'].update(boundary_association=boundary_association,boundary_retry=boundary_retry)
+        b['boundary_repair']=dict(association=ASSOC_PARAMS,max_navigation_failures=MAX_NAVIGATION_FAILURES)
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -162,6 +171,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         paths.add('experiments/2026-10-12-e2e-vomask-registration/registration.json')
         paths.add('experiments/2026-10-12-e2e-vomask-registration/bundle-decision.json')
     if explore_deadlock != 'off':paths.add('configs/simulation_workflows.d/e2e_explore_deadlock_v208.json')
+    if boundary_association != 'off' or boundary_retry != 'off':paths.add('configs/simulation_workflows.d/e2e_boundary_repair_v211.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -231,6 +241,8 @@ def run(b,out,receipt,*,backend_factory=None):
                         path_follow=b['e2e_options'].get('path_follow','off'),
                         stall_options=StallOptions(**{k:b['e2e_options'].get(k,'off') for k in ('stall_odometry','stall_recovery','stall_noise')}),
                         explore_deadlock=b['e2e_options'].get('explore_deadlock','off'),
+                        boundary_association=b['e2e_options'].get('boundary_association','off'),
+                        boundary_retry=b['e2e_options'].get('boundary_retry','off'),
                         vo_floor_mask=b['e2e_options'].get('vo_floor_mask','off'),
                         vo_rotation_policy=b['e2e_options'].get('vo_rotation_policy','off'),
                         mapping_budget_s=b['e2e_options'].get('mapping_budget_s'),
@@ -387,6 +399,8 @@ def main():
     p.add_argument('--decider',choices=('off','jev_v1'),default='off')
     p.add_argument('--exploration-progress',choices=('off','frontier_progress_v1'),default='off')
     p.add_argument('--explore-deadlock',choices=('off','replan_v1'),default='off')
+    p.add_argument('--boundary-association',choices=('off','extent_v1'),default='off')
+    p.add_argument('--boundary-retry',choices=('off','navigation_v1'),default='off')
     p.add_argument('--pose-fix',choices=('off','innovation'),default='off')
     p.add_argument('--path-follow',choices=('off','rpp_v1'),default='off')
     p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1','rgb_vo_v1','rgb_vo_v2','rgb_vo_us_v1'),default='off')
@@ -416,7 +430,7 @@ def main():
              path_follow=a.path_follow,dev_light=a.dev_light,wall_cap_s=a.wall_cap_s,
              stall_odometry=a.stall_odometry,stall_recovery=a.stall_recovery,stall_noise=a.stall_noise,stall_bundle=a.stall_bundle,mapping_budget=a.mapping_budget,
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache),
-             speed_bundle=a.exact_speed_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock)
+             speed_bundle=a.exact_speed_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry)
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
         raise ValueError('AZURE_X86_OSMESA_ONLY')

@@ -23,6 +23,8 @@ RADII_M = (.8, 1.2, 1.6, 2., 2.4)  # SAP-Nav AVV Eq. 4, same finite rings
 N_ANGLES = 24
 MAX_VIEWS = 3
 VIEW_BUDGET_S = 30.
+RETRY_OPTION = 'navigation_v1'
+MAX_NAVIGATION_FAILURES = 6
 
 
 def observed_sweep_clear(costmap, start, end):
@@ -113,12 +115,21 @@ class CandidateNavigator(Navigator):
         self.observe_frames = []
         self.last_view_reason = None
         self.last_view_search = -math.inf
+        self.retry_option = 'off'
+        self.completed_views = 0
+        self.navigation_failures = 0
+
+    def can_attempt(self):
+        if self.retry_option == 'off': return len(self.tried_own) < MAX_VIEWS
+        return self.completed_views < MAX_VIEWS and self.navigation_failures < MAX_NAVIGATION_FAILURES
 
     def pending(self):
         return request(self.goal.entities.get('B'), 'B' in self.goal.e2e_gate.references, option=OPTION)
 
     def end_view(self, t, reason):
         if self.view_target_own is not None: self.tried_own.append(self.view_target_own.copy())
+        if reason == 'B_view_observed_still_unconfirmed': self.completed_views += 1
+        elif reason != 'B_view_boundary_remembered': self.navigation_failures += 1
         self.event(t, reason, views_attempted=len(self.tried_own))
         self.view_active = False
         self.view_target_own = None
@@ -134,7 +145,7 @@ class CandidateNavigator(Navigator):
         if self.view_active and not self.pending(): self.end_view(t, 'B_view_boundary_remembered')
         if self.view_active and t-self.view_started >= VIEW_BUDGET_S:
             self.end_view(t, 'B_view_timeout')
-        if (not self.view_active and not self.phase and self.pending() and len(self.tried_own) < MAX_VIEWS
+        if (not self.view_active and not self.phase and self.pending() and self.can_attempt()
                 and t-self.last_view_search >= 1.-1e-8):
             self.last_view_search = t
             tf = self.goal.explorer.map_to_odom
@@ -205,12 +216,15 @@ class CandidateNavigator(Navigator):
         return command_from_twist(np.zeros(3), t)
 
 
-def install(goal, option='off'):
+def install(goal, option='off', *, retry='off'):
+    if retry not in ('off', RETRY_OPTION): raise ValueError('UNKNOWN_BOUNDARY_RETRY')
+    if retry != 'off' and option == 'off': raise ValueError('BOUNDARY_VIEWS_REQUIRED_BEFORE_RETRY')
     if option == 'off': return goal
     if option != OPTION: raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
     old = goal.explorer.navigator
     if type(old) is not Navigator: raise ValueError('FRONTIER_PROGRESS_V1_REQUIRED_BEFORE_VIEWS')
     goal.explorer.navigator = CandidateNavigator(old.driver, goal)
+    goal.explorer.navigator.retry_option = retry
     goal.e2e_gate.diagnostics_enabled = True
     receive = goal.receive
     def with_diagnostics(**kwargs):
@@ -219,6 +233,9 @@ def install(goal, option='off'):
         trace['boundary_view'] = dict(option=option, pending=n.pending(), active=n.view_active,
             attempted=len(n.tried_own), max_views=MAX_VIEWS, phase=n.phase)
         trace['boundary_diagnostics'] = goal.e2e_gate.current.get('boundary_diagnostics')
+        if retry != 'off':
+            trace['boundary_view'].update(retry=retry, completed_views=n.completed_views,
+                navigation_failures=n.navigation_failures, max_navigation_failures=MAX_NAVIGATION_FAILURES)
         return command, trace
     goal.receive = with_diagnostics
     return goal
