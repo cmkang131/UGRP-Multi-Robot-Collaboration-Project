@@ -58,6 +58,7 @@ def predict(raw, images, rid):
     gate = False
     drivers['pulse_gate'].motion_filter = lambda delta, variance: (np.zeros(3) if gate else delta, variance)
     active = {k: False for k in fusion}
+    pending = {k: [] for k in fusion}
     for key in fusion:
         drivers[key].motion_filter = (lambda k: lambda delta, variance:
                                       fusion[k].motion_filter(delta, variance) if active[k] else (delta, variance))(key)
@@ -67,8 +68,11 @@ def predict(raw, images, rid):
         detector.command(cmd)
         for f in fusion.values():
             f.command(cmd)
-        for d in drivers.values():
-            d.command(cmd)
+        for k, d in drivers.items():
+            if k in fusion:
+                pending[k].append(dict(cmd))
+            else:
+                d.command(cmd)
     for index, frame in enumerate(frames):
         # A crashed run's last frame has no ownmap row: replay it, skip only the reproduction check.
         prior = own[index] if index < len(own) else None
@@ -101,6 +105,9 @@ def predict(raw, images, rid):
             if k in fusion:
                 active[k] = True
                 try:
+                    for cmd in pending[k]:
+                        d.command(cmd)
+                    pending[k].clear()
                     d.advance(t)
                 finally:
                     active[k] = False;fusion[k].finish_interval()

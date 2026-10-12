@@ -1,0 +1,56 @@
+{
+  "pr": 448,
+  "previous_source": "35422105b6901bb907fe958c1ac08ac4ec8e2d5a",
+  "previous_bundle": "zone-s3-recovery-v209",
+  "new_bundle": "zone-s3-recovery-v211",
+  "workflow_version": "7.104.0",
+  "changed_runtime_sources": [
+    "harness/e2e_exact_speedups.py",
+    "harness/e2e_own_inputs.py",
+    "sim/workflow_manager.py"
+  ],
+  "previous_runtime_hashes_verified": 446,
+  "preserved_files": {
+    "harness/zone_s3_recovery_contract.py": {
+      "path": "experiments/2026-10-12-merge-train/pr448/retired-bundle/v209/harness/zone_s3_recovery_contract.py",
+      "sha256": "22579dd88c6a13b3a51c647cd73b1ac9ebda4c4663bd2036dc5c32548793dc1f"
+    },
+    "scripts/run_s3_recovery.py": {
+      "path": "experiments/2026-10-12-merge-train/pr448/retired-bundle/v209/scripts/run_s3_recovery.py",
+      "sha256": "ab1eb720ec8a14e200dfa10e06415c7fd6f6937b93dbbfc40c9e33521a9fc5d2"
+    },
+    "configs/simulation_workflows.d/s3_recovery_v209.json": {
+      "path": "experiments/2026-10-12-merge-train/pr448/retired-bundle/v209/configs/simulation_workflows.d/s3_recovery_v209.json",
+      "sha256": "742697d3c825f7539f501638342f827c7f99efb4d9dd5840237df5e949abf6f8"
+    },
+    "experiments/2026-10-12-merge-train/pr433/registration-v209.json": {
+      "path": "experiments/2026-10-12-merge-train/pr448/retired-bundle/v209/experiments/2026-10-12-merge-train/pr433/registration-v209.json",
+      "sha256": "c861c196d8cffb5d9a86d09bd96334c95af6b1d02d78f9d18e2c8785f51f3922"
+    },
+    "experiments/2026-10-12-merge-train/pr433/source-seal-v209.json": {
+      "path": "experiments/2026-10-12-merge-train/pr448/retired-bundle/v209/experiments/2026-10-12-merge-train/pr433/source-seal-v209.json",
+      "sha256": "c79cdb4bae5218cc5deb44982e3194a1a1a482f3965e87d6ed5c108d78daa214"
+    },
+    "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": {
+      "path": "experiments/2026-10-12-merge-train/pr448/retired-bundle/v209/experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+      "sha256": "6cce4ac843518c5cd91c94de3114888304758808040cc921aeab85e04ec8e14d"
+    }
+  },
+  "physical_runs": 0,
+  "inherited_results": false,
+  "review_fixes": {
+    "workflow_identity": "Manager-owned expected-workflow-id is checked before bundle output; mismatching selected identity fails. Protected historical catalog bytes unchanged.",
+    "failed_input": "Immutable input lists plus separate stopped set; every row carries frame name and sha256",
+    "ci_collection": "Explicit test_e2e_exact_speedups2.py registration"
+  },
+  "local_tests": "92 passed",
+  "research": {
+    "sources": [
+      "https://git-scm.com/docs/git-show",
+      "https://docs.python.org/3/library/copy.html"
+    ],
+    "approach": "Preserve original source/input identities, separate processing state, compare selected workflow with constructed execution bundle."
+  },
+  "log": "outputs/merge-train-20261012/pr448-tests.txt",
+  "log_sha256": "5e65442b06537593102cd46ecbe1d7d48e71f60d3a1bfc530b8f7214285507ca"
+}

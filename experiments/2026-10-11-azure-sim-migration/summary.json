@@ -1,0 +1,879 @@
+{
+  "schema": "ugrp.azure_migration.v1",
+  "status": "VERIFIED_EXCEPT_FUTURE_SCHEDULES_AND_REVIEW",
+  "pr": 438,
+  "recorded_utc": "2026-10-11T08:37:09.384132+00:00",
+  "base_main_sha": "7c97ef2a755a036ea71ea23cfd32374d0802af2e",
+  "branch": "codex/azure-sim",
+  "head_at_record": "278afc48f21c9160191ba922b94067b794f3bbfa",
+  "safety": {
+    "email_thresholds_usd_approx": [
+      50,
+      100,
+      150
+    ],
+    "budget_currency": "KRW",
+    "budget_amount": 217600,
+    "native_fx": 1360,
+    "email_delivery_verified": false,
+    "native_budget_configuration_verified": true,
+    "aggregate_cost_usd_checked": 5.674628416,
+    "early_stop_usd": 150,
+    "backup_stop_usd_approx": 160,
+    "action_group_live_deallocation_verified": true,
+    "cost_check_failure_live_deallocation_verified": true,
+    "managed_identity_cost_query_verified": true,
+    "expiry_kst": "2026-11-19T00:00:00+09:00",
+    "expiry_schedule_binding_verified": true,
+    "expiry_actual_trigger_verified": false,
+    "daily_shutdown_kst": "00:00",
+    "daily_schedule_verified": true,
+    "daily_actual_trigger_verified": false,
+    "idle_guard_live_deallocate_verified": true,
+    "idle_guard_test": "injected last-busy timestamp 1201 seconds old; actual IMDS/ARM HTTP202 and deallocated state",
+    "eight_hour_boundary_test_passed": true,
+    "eight_hour_actual_elapsed_verified": false,
+    "legacy_15_minute_guard_disabled": true,
+    "legacy_infinite_gpu_worker_disabled": true,
+    "published_runbook_bytes_match": true,
+    "limit": "Cost API data and budget evaluation are delayed; this is not a hard real-time $160 billing cap. Disk/IP/other services remain billable."
+  },
+  "server": {
+    "vm": "ugrp-sim-azure",
+    "region": "koreacentral",
+    "size": "Standard_D16as_v5",
+    "vcpu": 16,
+    "ram_gib": 64,
+    "os_disk_gib": 64,
+    "expanded": false,
+    "disk_free_bytes_at_final_guard": 52045520896,
+    "retail_linux_usd_per_hour": 0.848,
+    "price_exclusions": [
+      "tax",
+      "disk",
+      "public IP",
+      "automation",
+      "other services"
+    ],
+    "state": "deallocated"
+  },
+  "runs": [
+    {
+      "run": "azure-s3-smoke-20261011-01",
+      "class": "milestone",
+      "status": "HOST_ERROR",
+      "source_sha": "9ea8c312735f0b3bceaecab1e27de061004f79f5",
+      "summary": {
+        "status": "HOST_ERROR",
+        "source_sha": "9ea8c312735f0b3bceaecab1e27de061004f79f5",
+        "expected_source_sha": "9ea8c312ed978d5978aae17d38d2a2bbf3d64f3d",
+        "error": "operator supplied incorrect expected SHA; source check rejected before physics construction",
+        "entered_physics": false,
+        "model_calls": 0,
+        "pr": 438,
+        "audited_utc": "2026-10-11T07:57:58.017292+00:00"
+      },
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/azure-s3-smoke-20261011-01",
+      "arm_archive": "/home/ubuntu/ugrp-archive/runs/azure-s3-smoke-20261011-01",
+      "mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/azure-s3-smoke-20261011-01",
+      "archive_file_count": 16,
+      "archive_files": [
+        {
+          "path": ".evidence.lock",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "ALL-hashes.tsv",
+          "bytes": 1140,
+          "sha256": "46ba67eaf1cebc5a5f0f9d4710b8e477ede6de46ace2966ed20cc6df6c660115"
+        },
+        {
+          "path": "COMMAND",
+          "bytes": 195,
+          "sha256": "ce90c25e2cf9f8be806a050ec2e2b65b45dff2a5f5555b8741510de066c2ae55"
+        },
+        {
+          "path": "COMPRESSED.jsonl",
+          "bytes": 462,
+          "sha256": "78c23ae026bb6137cbf61aa256010a7ab540c06555662e73a877d1daa061452a"
+        },
+        {
+          "path": "EXIT",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "LOADAVG",
+          "bytes": 27,
+          "sha256": "e657456c9d17d561904b43eb9987b65924134beeb6ba0a5d619bf67de08ceb6b"
+        },
+        {
+          "path": "RUN_META.json",
+          "bytes": 153,
+          "sha256": "f839431b847ae540cc164f17b38df8469670011d88dcc9ab3a2a73e49a1d935a"
+        },
+        {
+          "path": "SHA256SUMS",
+          "bytes": 895,
+          "sha256": "54f4271803b8b376ac6f2ca13d728a30d62cb135d8a4a95c0ba754e1c49584ee"
+        },
+        {
+          "path": "SHA256SUMS.operator",
+          "bytes": 971,
+          "sha256": "e8ad6085cafbc6581581eb68d384d5b398a6f7a3498beb5a18d8d0147e6efd99"
+        },
+        {
+          "path": "SHA256SUMS.tsv",
+          "bytes": 1231,
+          "sha256": "06c0959172d941b8f993a115dac8fb88704c6f8a8affc411385a9f0fd4c71e6d"
+        },
+        {
+          "path": "SOURCE_SHA",
+          "bytes": 40,
+          "sha256": "1064a07f9ffd8ae4c250bb411c0e3d977f10b9b5ece3acf527e18249ce8036d7"
+        },
+        {
+          "path": "log.txt",
+          "bytes": 1161,
+          "sha256": "7ef3ea407ab1f7f6b0ed3efadcf76aabd83c80ebf1e00bc136d6962509e0ce56"
+        },
+        {
+          "path": "management/20261011-074159-azure-s3-environment-smoke-c32d3ba2/console.log",
+          "bytes": 751,
+          "sha256": "00a80e7d2a86206980d6504f225ca872bd813418f5c27e66f00671b658a2c1c9"
+        },
+        {
+          "path": "management/20261011-074159-azure-s3-environment-smoke-c32d3ba2/manifest.json.zst",
+          "bytes": 82580,
+          "sha256": "63c78774b0be365b482cb2b43b97ce4680781fd6b879a90af5ae59eed0156341"
+        },
+        {
+          "path": "run_wrapper.sh",
+          "bytes": 812,
+          "sha256": "7a8b305c3864e9f4a04e6fcd1bc5a013c4420714d2ef77f5939deaa6c482e011"
+        },
+        {
+          "path": "summary.json",
+          "bytes": 377,
+          "sha256": "654101c6046f27fe31ae5bbb279aa91f2deb0042d1dfe90d6743aa984564fd2c"
+        }
+      ],
+      "compression": [
+        {
+          "path": "management/20261011-074159-azure-s3-environment-smoke-c32d3ba2/manifest.json.zst",
+          "decompressed_sha256": "38179e8ccac91aa1294c4c46436b3bc413e98fd624fb0d593ffa472c95fd79b0",
+          "record": {
+            "path": "management/20261011-074159-azure-s3-environment-smoke-c32d3ba2/manifest.json",
+            "bytes": 473986,
+            "sha256": "38179e8ccac91aa1294c4c46436b3bc413e98fd624fb0d593ffa472c95fd79b0",
+            "compressed_path": "management/20261011-074159-azure-s3-environment-smoke-c32d3ba2/manifest.json.zst",
+            "compressed_bytes": 82580,
+            "compressed_sha256": "63c78774b0be365b482cb2b43b97ce4680781fd6b879a90af5ae59eed0156341",
+            "codec": "zstd -3 -T1",
+            "verified": "decompressed_sha256"
+          }
+        }
+      ],
+      "summary_sha256": "654101c6046f27fe31ae5bbb279aa91f2deb0042d1dfe90d6743aa984564fd2c"
+    },
+    {
+      "run": "azure-s3-smoke-20261011-03",
+      "class": "milestone",
+      "status": "HOST_ERROR",
+      "source_sha": "a885411e502e645f38805fc71f3b86e66e1cf428",
+      "summary": {
+        "status": "HOST_ERROR",
+        "source_sha": "a885411e502e645f38805fc71f3b86e66e1cf428",
+        "model_calls": 0,
+        "physical_success": null,
+        "scope": "S3 scene reset, hold, 0.5 SIM seconds and three own RGB cameras",
+        "gl": "osmesa",
+        "loadavg": [
+          0.7041015625,
+          0.29052734375,
+          0.10986328125
+        ],
+        "error": "ModuleNotFoundError: No module named 'scipy'",
+        "wall_s": 1.9714689320000076
+      },
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/azure-s3-smoke-20261011-03",
+      "arm_archive": "/home/ubuntu/ugrp-archive/runs/azure-s3-smoke-20261011-03",
+      "mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/azure-s3-smoke-20261011-03",
+      "archive_file_count": 17,
+      "archive_files": [
+        {
+          "path": ".evidence.lock",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "ALL-hashes.tsv",
+          "bytes": 1240,
+          "sha256": "0d79c8897bb1053dabcbbbdab5c03cc619fd3ac2fb6e483c1a2c3a4767948ac5"
+        },
+        {
+          "path": "COMMAND",
+          "bytes": 195,
+          "sha256": "3554bb23fe9a7b9dfe637aafee0e8641bed2cafb83903fce4b19007f94e43759"
+        },
+        {
+          "path": "COMPRESSED.jsonl",
+          "bytes": 462,
+          "sha256": "8afd8ebadf249cdb052c84567933882b1f2f86a3be746899e390b522ff6ac266"
+        },
+        {
+          "path": "EXIT",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "LOADAVG",
+          "bytes": 26,
+          "sha256": "cfac0bf177262bdf6ccd93ec9c0b3f7c01063189424c441e356b7711ec1c183e"
+        },
+        {
+          "path": "RUN_META.json",
+          "bytes": 152,
+          "sha256": "99d22adfe5d09362ec7b6e969c2693afe86ba5635a90bf2ae6ff8287afe441c5"
+        },
+        {
+          "path": "SHA256SUMS",
+          "bytes": 1168,
+          "sha256": "32c976a518d4d0bc2dea340b5e637080b0a8123329b44e449d0ebce656387452"
+        },
+        {
+          "path": "SHA256SUMS.operator",
+          "bytes": 1061,
+          "sha256": "2199622574e82ef0ea38ec29b6019e1918a1bc4416aed6115b67377ccb2d2385"
+        },
+        {
+          "path": "SHA256SUMS.tsv",
+          "bytes": 1331,
+          "sha256": "a804d0e90672b926212c95d29d576970b5d128d327c841d848708ea233709604"
+        },
+        {
+          "path": "SOURCE_SHA",
+          "bytes": 40,
+          "sha256": "7ef3c321a52ce98100dc39271b1039b8f4cf73023b1b95d64ba8833dcae5b7da"
+        },
+        {
+          "path": "log.txt",
+          "bytes": 2625,
+          "sha256": "959ab5b1040885e720834f07a5c41c57b756d76966c910d0a6db997f96ca6b4d"
+        },
+        {
+          "path": "management/20261011-075653-azure-s3-environment-smoke-3ffa9888/console.log",
+          "bytes": 2213,
+          "sha256": "9030ba282f847d0d0ace92fd569c78c49453b0bba437a960fec058452581fb14"
+        },
+        {
+          "path": "management/20261011-075653-azure-s3-environment-smoke-3ffa9888/manifest.json.zst",
+          "bytes": 82743,
+          "sha256": "72b2c48d65259e0f132cdb5d7cd54471199caf55d52b54ef8248f9e3392231a2"
+        },
+        {
+          "path": "run_wrapper.sh",
+          "bytes": 812,
+          "sha256": "595ef92b3ed3907a0bed7c2096553df27f811dbdec37ce357f31dee298737808"
+        },
+        {
+          "path": "smoke/bundle.json",
+          "bytes": 46712,
+          "sha256": "b68ccf1ba1420983296f02c807269314d691fef8153f7770a1de9570e31fce74"
+        },
+        {
+          "path": "smoke/summary.json",
+          "bytes": 399,
+          "sha256": "502eb61b90deb19cc0747dbc47866852121b009cd6b2880138969610711a89ef"
+        }
+      ],
+      "compression": [
+        {
+          "path": "management/20261011-075653-azure-s3-environment-smoke-3ffa9888/manifest.json.zst",
+          "decompressed_sha256": "55990e4e0591736bc95f47229470b7a08745250f1757b339c8762cb611b4932e",
+          "record": {
+            "path": "management/20261011-075653-azure-s3-environment-smoke-3ffa9888/manifest.json",
+            "bytes": 474498,
+            "sha256": "55990e4e0591736bc95f47229470b7a08745250f1757b339c8762cb611b4932e",
+            "compressed_path": "management/20261011-075653-azure-s3-environment-smoke-3ffa9888/manifest.json.zst",
+            "compressed_bytes": 82743,
+            "compressed_sha256": "72b2c48d65259e0f132cdb5d7cd54471199caf55d52b54ef8248f9e3392231a2",
+            "codec": "zstd -3 -T1",
+            "verified": "decompressed_sha256"
+          }
+        }
+      ],
+      "summary_sha256": "502eb61b90deb19cc0747dbc47866852121b009cd6b2880138969610711a89ef"
+    },
+    {
+      "run": "azure-s3-smoke-20261011-04",
+      "class": "milestone",
+      "status": "PASS",
+      "source_sha": "d4ba328c172faedf3008b4ea908737fa6ab4fb06",
+      "summary": {
+        "status": "PASS",
+        "source_sha": "d4ba328c172faedf3008b4ea908737fa6ab4fb06",
+        "model_calls": 0,
+        "physical_success": null,
+        "scope": "S3 scene reset, hold, 0.5 SIM seconds and three own RGB cameras",
+        "gl": "osmesa",
+        "loadavg": [
+          0.42529296875,
+          0.224609375,
+          0.1181640625
+        ],
+        "reset_sim_s": 1.3,
+        "step_sim_s": 0.5,
+        "camera_frames": 6,
+        "image_sha256": {
+          "robots/r1/rgb/00000.jpg": "104bed3d641a971665037c81b78bb698fea33d2648e00a19bba78eeda5186aea",
+          "robots/r1/rgb/00001.jpg": "7acdbc258241dc47d6f53f442175cea893d29e6d49eb633837a4f1e7ca3c7009",
+          "robots/r2/rgb/00000.jpg": "580ceea8c5e4a2cdf56654a2a5591d96f87f9da276def73fbf5c245eedc9a1ad",
+          "robots/r2/rgb/00001.jpg": "684408f7aaea297198687d91dbb9fc2846aedb199bd23cfd7701a0311a2296a4",
+          "robots/r3/rgb/00000.jpg": "d8a7ea3a88b9ad0f9417dca5b5253d792e89a8503cc1149e434669bf9e40355c",
+          "robots/r3/rgb/00001.jpg": "d8a7ea3a88b9ad0f9417dca5b5253d792e89a8503cc1149e434669bf9e40355c"
+        },
+        "wall_s": 4.515624628000069
+      },
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/azure-s3-smoke-20261011-04",
+      "arm_archive": "/home/ubuntu/ugrp-archive/runs/azure-s3-smoke-20261011-04",
+      "mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/azure-s3-smoke-20261011-04",
+      "archive_file_count": 41,
+      "archive_files": [
+        {
+          "path": ".evidence.lock",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "ALL-hashes.tsv",
+          "bytes": 3646,
+          "sha256": "fdf53c62a03e770b733312f00e16015f96888c78b33e77a605b32360b05049ad"
+        },
+        {
+          "path": "COMMAND",
+          "bytes": 195,
+          "sha256": "11db95b231363a182c162e841a12fa56862312a83ea4b5031cc42a8dc60d9fc1"
+        },
+        {
+          "path": "COMPRESSED.jsonl",
+          "bytes": 462,
+          "sha256": "6fa873a27f5c499ebbdb2f354747a761081949e73d3e481e6800976fa0c3ab10"
+        },
+        {
+          "path": "EXIT",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "LOADAVG",
+          "bytes": 26,
+          "sha256": "acfad58135ab4640e75c9891b1763760f23bb7a0cb5238bff69de84138e7bf16"
+        },
+        {
+          "path": "RUN_META.json",
+          "bytes": 152,
+          "sha256": "3d7bdbd616e3c9695530069279f76185b8f8626636da3515690b520a8b77cec3"
+        },
+        {
+          "path": "SHA256SUMS",
+          "bytes": 4548,
+          "sha256": "8c69f30378d135f44d01a1ea3675591cc04c0a76bc083be34442c64d55f09f74"
+        },
+        {
+          "path": "SHA256SUMS.operator",
+          "bytes": 3326,
+          "sha256": "31044505a18c8f19ac7bfe68f2c5f7bfe53608d957886c904dae95ff36911340"
+        },
+        {
+          "path": "SHA256SUMS.tsv",
+          "bytes": 3737,
+          "sha256": "d79e07b45d421cd12636fe013ba12e0a1b0c9135a902edc47faf56b4f741e692"
+        },
+        {
+          "path": "SOURCE_SHA",
+          "bytes": 40,
+          "sha256": "d326b7bae8bfd2585c62213eae00cf866af8f8141fa0532bf295d79e5d4653be"
+        },
+        {
+          "path": "log.txt",
+          "bytes": 1318,
+          "sha256": "7e8cda7143fce28c8ed1b576c03709b3aaa64862639b5fefc3f1e8d4d6a223cd"
+        },
+        {
+          "path": "management/20261011-080427-azure-s3-environment-smoke-fd3804a5/console.log",
+          "bytes": 944,
+          "sha256": "00fa5687bb0686e7a0df99ef0d4162981c3c015dc8d803020f0db7416414b88d"
+        },
+        {
+          "path": "management/20261011-080427-azure-s3-environment-smoke-fd3804a5/manifest.json.zst",
+          "bytes": 83749,
+          "sha256": "2e426bf11ce34add717e7f5fa9bc1128e67777e8dc5bdfd301770cfee88be418"
+        },
+        {
+          "path": "render-qa.json",
+          "bytes": 1306,
+          "sha256": "371b79420fe52250592158651e5cf403a0dd148e45d29fbec1a7d0604f2c9d54"
+        },
+        {
+          "path": "run_wrapper.sh",
+          "bytes": 812,
+          "sha256": "bd43bdcf382d1e9502de627d4499403ee6e97a7902c0854b21fa295e92d52eb8"
+        },
+        {
+          "path": "smoke/bundle.json",
+          "bytes": 46712,
+          "sha256": "1120a29f0241dc7848a7a26143793ab8d4b8dfcca0251ff9d0a6b0791b154507"
+        },
+        {
+          "path": "smoke/camera-render.json",
+          "bytes": 393,
+          "sha256": "4108cba34981101a61f76902b614762b1aad2ee5e34865f69f44808c0ee24366"
+        },
+        {
+          "path": "smoke/controller-speedups.json",
+          "bytes": 1355,
+          "sha256": "1890cfae618236d91f108234afb84246239f43fdb42221951f2474800b663afe"
+        },
+        {
+          "path": "smoke/eval_only/applied.json",
+          "bytes": 1457,
+          "sha256": "5d5866e2658cc090b5bf26fe756a4a448995fc61fc52077c74fb366dd61c1068"
+        },
+        {
+          "path": "smoke/eval_only/contacts.jsonl",
+          "bytes": 4943,
+          "sha256": "e43b808f84dd319e3daa69f04e032510321e11b045d19816ddfdfe2f6cbcdf49"
+        },
+        {
+          "path": "smoke/eval_only/referee_truth.jsonl",
+          "bytes": 590,
+          "sha256": "a6b13226b8691bdcee6dc8455c349b1e30e9d0fefc221027271bb147b613fe35"
+        },
+        {
+          "path": "smoke/eval_only/render.json",
+          "bytes": 260,
+          "sha256": "bd2466f7798392309e9a3409c02c8e595b6e1e67c79e13c056b2914e7249a4cb"
+        },
+        {
+          "path": "smoke/eval_only/render_nearclip.json",
+          "bytes": 793,
+          "sha256": "b2ca064ee638f897c28e8774757388581359d1214c04a53e8f9ab72104caab6b"
+        },
+        {
+          "path": "smoke/eval_only/setup.json",
+          "bytes": 829,
+          "sha256": "5ec659584ba851e6a5728d03f39a3500ec3bcf477a4b309fd7750e367b14772d"
+        },
+        {
+          "path": "smoke/inputs/static_map.json",
+          "bytes": 6154,
+          "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+        },
+        {
+          "path": "smoke/robots/r1/commands.jsonl",
+          "bytes": 152,
+          "sha256": "2d95c9d4d989152709da641e7762cccce930870670d000d1f1a5b68c09788e6d"
+        },
+        {
+          "path": "smoke/robots/r1/frames.jsonl",
+          "bytes": 788,
+          "sha256": "35407b9645620ac089c929cd0187ebf963698b0ad954ea3d7fee903deddf8b3d"
+        },
+        {
+          "path": "smoke/robots/r1/rgb/00000.jpg",
+          "bytes": 15223,
+          "sha256": "104bed3d641a971665037c81b78bb698fea33d2648e00a19bba78eeda5186aea"
+        },
+        {
+          "path": "smoke/robots/r1/rgb/00001.jpg",
+          "bytes": 15249,
+          "sha256": "7acdbc258241dc47d6f53f442175cea893d29e6d49eb633837a4f1e7ca3c7009"
+        },
+        {
+          "path": "smoke/robots/r2/commands.jsonl",
+          "bytes": 152,
+          "sha256": "2d95c9d4d989152709da641e7762cccce930870670d000d1f1a5b68c09788e6d"
+        },
+        {
+          "path": "smoke/robots/r2/frames.jsonl",
+          "bytes": 788,
+          "sha256": "1d1e27103adf0da9969d14e880e188f48c9fb6e98fe1896f7cfc284cc2e3e346"
+        },
+        {
+          "path": "smoke/robots/r2/rgb/00000.jpg",
+          "bytes": 14795,
+          "sha256": "580ceea8c5e4a2cdf56654a2a5591d96f87f9da276def73fbf5c245eedc9a1ad"
+        },
+        {
+          "path": "smoke/robots/r2/rgb/00001.jpg",
+          "bytes": 14784,
+          "sha256": "684408f7aaea297198687d91dbb9fc2846aedb199bd23cfd7701a0311a2296a4"
+        },
+        {
+          "path": "smoke/robots/r3/commands.jsonl",
+          "bytes": 152,
+          "sha256": "2d95c9d4d989152709da641e7762cccce930870670d000d1f1a5b68c09788e6d"
+        },
+        {
+          "path": "smoke/robots/r3/frames.jsonl",
+          "bytes": 788,
+          "sha256": "10391528d109df48d6737c9c0893be8fc833468e6f1b5c70cb7dadfcf86f0710"
+        },
+        {
+          "path": "smoke/robots/r3/rgb/00000.jpg",
+          "bytes": 14932,
+          "sha256": "d8a7ea3a88b9ad0f9417dca5b5253d792e89a8503cc1149e434669bf9e40355c"
+        },
+        {
+          "path": "smoke/robots/r3/rgb/00001.jpg",
+          "bytes": 14932,
+          "sha256": "d8a7ea3a88b9ad0f9417dca5b5253d792e89a8503cc1149e434669bf9e40355c"
+        },
+        {
+          "path": "smoke/scene.json",
+          "bytes": 4662,
+          "sha256": "0c459694ca730a3c241e22c58f779b333731094de213099c816bda5714a2a63a"
+        },
+        {
+          "path": "smoke/scene.xml",
+          "bytes": 327460,
+          "sha256": "7a2994cdf6e65cc1552d94b9b7e810cda5c62b6c99552fd339e17bd9ac0303c7"
+        },
+        {
+          "path": "smoke/summary.json",
+          "bytes": 1014,
+          "sha256": "bb73cdb0f2c5daf8241656ec3f85e545ac8adb53c48f752e7931b83d78eab978"
+        }
+      ],
+      "compression": [
+        {
+          "path": "management/20261011-080427-azure-s3-environment-smoke-fd3804a5/manifest.json.zst",
+          "decompressed_sha256": "d1130a3055c43a248fbede7da49477ec537cbe77d9ccbfdd929b4f8fc36433b6",
+          "record": {
+            "path": "management/20261011-080427-azure-s3-environment-smoke-fd3804a5/manifest.json",
+            "bytes": 478645,
+            "sha256": "d1130a3055c43a248fbede7da49477ec537cbe77d9ccbfdd929b4f8fc36433b6",
+            "compressed_path": "management/20261011-080427-azure-s3-environment-smoke-fd3804a5/manifest.json.zst",
+            "compressed_bytes": 83749,
+            "compressed_sha256": "2e426bf11ce34add717e7f5fa9bc1128e67777e8dc5bdfd301770cfee88be418",
+            "codec": "zstd -3 -T1",
+            "verified": "decompressed_sha256"
+          }
+        }
+      ],
+      "summary_sha256": "bb73cdb0f2c5daf8241656ec3f85e545ac8adb53c48f752e7931b83d78eab978"
+    }
+  ],
+  "pre_admission_failures": [
+    {
+      "run": "azure-s3-smoke-20261011-02",
+      "status": "HOST_ERROR",
+      "stage": "start rejected on Cost API HTTP429; no remote run created",
+      "raw": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/smoke-runner-02.log",
+      "sha256": "37c5f03c5760d94a96009794c0f0718b6468d7a604fdedb1da04c5b0919c987c"
+    }
+  ],
+  "pipeline_interruption": {
+    "cause": "existing separate 15-minute idle guard ignored batch leases and deallocated before archival",
+    "recovered": true,
+    "all_remote_runs_archived": true,
+    "original_failed_wrapper_logs_preserved": true
+  },
+  "model_tunnel": {
+    "model_calls": 0,
+    "scope": "loopback SSH transport; no provider request",
+    "initial_http": true,
+    "reconnect_http": true,
+    "listener_removed": true
+  },
+  "scope": "S3 standard scene/reset/0.5 SIM seconds/3 own RGB cameras. No LLM calls, mission completion or physical robot claim.",
+  "remaining": [
+    "future expiry/daily/eight-hour real elapsed trigger",
+    "actual email delivery",
+    "actual model response and S4 cohort",
+    "independent policy review and CI/merge",
+    "Oracle x86 cloud power state (SSH unavailable only)"
+  ],
+  "records": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/action-delivery.json",
+      "bytes": 518,
+      "sha256": "22e16143b818739c5338e83008bf24e037d874bb0652e058661d66f89d3d964f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/action-job.json",
+      "bytes": 391,
+      "sha256": "a586e311efcdec022b77dc7c10b55aa888d6b6faa7268171aadf9370229d58c6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/action-test.json",
+      "bytes": 240,
+      "sha256": "d37138b405efc9313adc90fa0a833d07c93af3871325571be8e1c199b349280d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/activity-log.json",
+      "bytes": 5280,
+      "sha256": "1110835e33ae9c8fb3ce3c9f82b041ced479bada7dee090ef0c7ceac4ef71da3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/archive-install.log",
+      "bytes": 294,
+      "sha256": "698ac4703eba6034b230e29227354cc75dfc55c3afb25e162093a3540febd9ad"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/archive-mount.log",
+      "bytes": 353,
+      "sha256": "746ad79724b4fa63d6259106f4995ab0d2995d777647a349bc76ff7f44e7cb7d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/archive-verification-final.log",
+      "bytes": 681,
+      "sha256": "5375d1019b5b820d7a67392e6d7d60378fc80d62e2fd6d1c19de085f7c87ac59"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/archive-verification.log",
+      "bytes": 381,
+      "sha256": "cd60249ae2c1a03c21f48833b87d92ed2a5d9491e8410d483e3724521a5ffcc9"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/arm-hashes.json",
+      "bytes": 15227,
+      "sha256": "55b9bcadbb85c9543850df6c21be94488785fc7290e56a22aeaa644ee7019582"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/bootstrap.log",
+      "bytes": 127,
+      "sha256": "8297f30febb77070a126a5ef233213ddf9aedea2eeaa92052694d2737d28098e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/cost-job.json",
+      "bytes": 111,
+      "sha256": "891a03588faee0399c6463e8102a386b11b85b66aea37510ed6017ade1d422fb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/cost-test.json",
+      "bytes": 55,
+      "sha256": "494b940989d7fe2c1080023e33e49db0bfb1b30bc85ade476bc08b61110bff74"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/d16-start.log",
+      "bytes": 52,
+      "sha256": "a2f28532a024b1b142ddf458346632b92cac69137b77f8945deae59b86ec2ff5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/duplicate-guard.log",
+      "bytes": 2143,
+      "sha256": "e9094a91c9ce16836380ab6fd240bbb5bc19450695d9edfed65a158a5a72a9f1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/environment-setup.log",
+      "bytes": 1148,
+      "sha256": "e77ab00da7c60c1ab97231ef5e92963347724948099932cbb5840bdac9508fbf"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/final-cost-job.json",
+      "bytes": 111,
+      "sha256": "891a03588faee0399c6463e8102a386b11b85b66aea37510ed6017ade1d422fb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/final-cost-test.json",
+      "bytes": 50,
+      "sha256": "1e942fa8a706aae839a784fe94e6a7addc787b556b925d0b527c00bb71023805"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/final-local-tests.log",
+      "bytes": 99,
+      "sha256": "1aae22fd1401965e159688c761d58ec4b19f254a77879fd16757734ba7140bc4"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/final-python312-tests.log",
+      "bytes": 99,
+      "sha256": "c2153eb7cff134f95c0e31ed9256c9e941ac73c8b7d86d8b53fb7e58b4ce044f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/final-vm-88.json",
+      "bytes": 105,
+      "sha256": "b0fc26f8e544da38d076215f635b51e0dcb496a3814663b1805d513edbccbd6c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/final-vm-c02.json",
+      "bytes": 70,
+      "sha256": "6214c80bf057430b4405fbe55a17f140f3c79c99c07c894b04151552e5dc8654"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/guard-diagnosis-live.log",
+      "bytes": 5642,
+      "sha256": "fefc776d6026a5998ff6363e351016dd0e8e1897d487bd5a223f5493d7aa80b5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/guard-diagnosis.log",
+      "bytes": 89,
+      "sha256": "5cb0c1231d33323ce235f9f008691e9d3289a9f68bba908efbb9e27d3d565890"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/initial-start.log",
+      "bytes": 52,
+      "sha256": "a2f28532a024b1b142ddf458346632b92cac69137b77f8945deae59b86ec2ff5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/legacy-worker-retired.log",
+      "bytes": 88,
+      "sha256": "f5ee01c8789961e1178b0abe9b3fc9edfc3fdcac01b99a4da870a8684aec575a"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/live-smoke-status.log",
+      "bytes": 324,
+      "sha256": "84376ed516f0d5f3e7bc5d92a51ab347907b0f5079bee78cd40fd7b5f4879308"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/pre-archive-state.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/prices.json",
+      "bytes": 6270,
+      "sha256": "dc78df398227ae5247e4059efe7406280c09ee6b7c3c5c222894a14395c8bd79"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/reboot-environment.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/representative-r1.jpg",
+      "bytes": 15223,
+      "sha256": "104bed3d641a971665037c81b78bb698fea33d2648e00a19bba78eeda5186aea"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/resize.log",
+      "bytes": 2505,
+      "sha256": "d6f5f8bb76df58f8c4b01a1b7c17b084f74f2e7baed436498b16a4e2e0617b36"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/restart-for-archive.log",
+      "bytes": 52,
+      "sha256": "a2f28532a024b1b142ddf458346632b92cac69137b77f8945deae59b86ec2ff5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/restart-for-smoke.log",
+      "bytes": 52,
+      "sha256": "a2f28532a024b1b142ddf458346632b92cac69137b77f8945deae59b86ec2ff5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/safety-setup-2.log",
+      "bytes": 328,
+      "sha256": "fabe913eb62f0368d9cc332f715c61c837a06a96d33118d3d9fa09b57ca5567d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/safety-setup.log",
+      "bytes": 1420,
+      "sha256": "889e3aba869f0644e24d0979b7d49354e639c580778f2454bd47290ce20fdf33"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/safety-snapshot.json",
+      "bytes": 4801,
+      "sha256": "374032db03691dd29847b3f1321e4f2da6c0a52f2f6d50bee56ea6fb08aa9805"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/scipy-pinned-setup.log",
+      "bytes": 37,
+      "sha256": "ce3980509516826c34cc1df0ee4e3cf519fd7e9308111c2928ad9299cdb77fcb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/scipy-setup.log",
+      "bytes": 327,
+      "sha256": "3e038aa7a5ee0f3d0e56764a34180cf092546aa60c65cf381345e56f543c8d1d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/self-guard-test.log",
+      "bytes": 292,
+      "sha256": "2118973ab68c4797c6b0ad70d8e545d3a4dbc889dbb2c01969592faa81d0ac55"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/smoke-runner-02.log",
+      "bytes": 2472,
+      "sha256": "37c5f03c5760d94a96009794c0f0718b6468d7a604fdedb1da04c5b0919c987c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/smoke-runner-03.log",
+      "bytes": 5533,
+      "sha256": "15b88b0094f94db423d1bf2e75103ba7d97b41071dd265afc39a19c9b8afa481"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/smoke-runner-04.log",
+      "bytes": 7047,
+      "sha256": "2b3bfcf0974dc5c5b9b758e0f5d205236889d0da444548cba69d3c20ced7b3e6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/smoke-runner.log",
+      "bytes": 5470,
+      "sha256": "b87bbebbfc23f6e78571f40d8ac432adeb86d016cb85c122c5e78599ad8e8984"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/ssh-access-setup.json",
+      "bytes": 51,
+      "sha256": "464ac9c5cf42c2fd5fc80b254ccc6d00084271457b7b95d226d0c4f78a96caee"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/tunnel-test-events/events.jsonl",
+      "bytes": 455,
+      "sha256": "960beaf784a0ce4f3b2f4a0665a31f4ad0a143a3146f5f0c05aaac3d4d4db741"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/tunnel-test-events/ssh.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/tunnel-test-result.json",
+      "bytes": 159,
+      "sha256": "cad95223dae8ef014fd786f18361f44dccf558413492300975ec27f58f56ef3e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/updated-cost-job.json",
+      "bytes": 460,
+      "sha256": "b354ae5a4d9114050cdd6527c0bc05e447f93996a07ab9adb32a7c30ddaf3598"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/updated-cost-test.json",
+      "bytes": 50,
+      "sha256": "fa57a84de0bb982be3951c19c956da2a0c7d24d53c0ebeb3a81ce45b66440e1b"
+    }
+  ],
+  "final_vm_states": {
+    "88b7ee7f": [
+      {
+        "name": "ugrp-sim-azure",
+        "size": "Standard_D16as_v5",
+        "state": "VM deallocated"
+      }
+    ],
+    "c02f839a": [
+      {
+        "name": "ugrp-a10-sim",
+        "state": "VM deallocated"
+      }
+    ]
+  },
+  "local_tests": {
+    "python": "3.12.13",
+    "files": [
+      "tests/test_azure_lifecycle.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "passed": 28
+  },
+  "latest_followup": {
+    "record": "finalize-438.json",
+    "source_sha": "1bfa2bde2d60d214d775585d937e005e109f1922",
+    "validation": "45 passed, 0 failed/skipped after concurrent live-sibling recovery fix",
+    "deployment": "own-VM command role + daily schedule read back; installed guard current, helper atomic update; other leases preserved",
+    "vm_start_stop_by_this_followup": false,
+    "vm_observed": "running for other tasks",
+    "previous_records_scope": "historical, not final-source lifecycle/physical verification",
+    "delivery": "source and deployment record pushed; draft removed, mergeable; CI live at PR checks, final independent review pending"
+  }
+}

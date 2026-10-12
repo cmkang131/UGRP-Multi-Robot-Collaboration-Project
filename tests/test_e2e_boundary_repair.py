@@ -80,7 +80,7 @@ def test_bundle_default_identity_three_candidates_relay_and_real_wiring():
     assert old==bundle('sha',61001,'study_gemma4_31b_v1',**kw,boundary_association='off',boundary_retry='off')
     for association,retry in [('extent_v1','off'),('off','navigation_v1'),('extent_v1','navigation_v1')]:
         b=bundle('sha',61001,'study_gemma4_31b_v1',**kw,boundary_association=association,boundary_retry=retry)
-        assert b['execution_bundle_id']=='e2e-boundary-repair-v211'
+        assert b['execution_bundle_id']=='e2e-boundary-repair-v212'
         assert b['e2e_options']['boundary_association']==association
         assert b['e2e_options']['boundary_retry']==retry
     for name in ['e2e-idle-a-s61001-r2','e2e-idle-b-s61003-r3']:
@@ -133,5 +133,54 @@ def test_native_coverage_bundle_is_dev_only_and_off_is_identical():
         bundle('sha',61001,'study_gemma4_31b_v1',**kw,boundary_coverage='native_v1')
     for retry in ('off','navigation_v1'):
         new=bundle('sha',61001,'study_gemma4_31b_v1',**kw,boundary_coverage='native_v1',boundary_retry=retry,dev_light=True)
-        assert new['execution_bundle_id']=='e2e-boundary-native-v212'
+        assert new['execution_bundle_id']=='e2e-boundary-native-v213'
         assert new['e2e_options']['boundary_coverage']=='native_v1'
+        from harness.e2e_runtime_registration import require_current
+        from scripts.run_e2e_ownmap_live import ROOT
+        require_current(new,ROOT)
+        new['e2e_options']['dev_light']=False
+        with pytest.raises(ValueError,match='DEV_BOUNDARY_NATIVE'):
+            require_current(new,ROOT)
+
+
+def test_renumbered_cli_and_historical_registration_preserved(capsys):
+    import hashlib
+    from scripts.run_e2e_ownmap_live import main
+    from scripts.run_e2e_reviewed import main as reviewed
+    args = ['--expected-source-sha', 'x', '--output', '/tmp/unused', '--seed', '61001',
+            '--driver-profile', 'study_gemma4_31b_v1', '--relay-receipt', '/tmp/receipt.json',
+            '--exploration-progress', 'frontier_progress_v1', '--stall-odometry', 'rgb_vo_us_v1',
+            '--ultrasonic-front', 'on_v1', '--boundary-views', 'candidate_views_v1',
+            '--b-marker-detect', 'contrast_v1', '--vo-floor-mask', 'homography_v1',
+            '--vo-rotation-policy', 'no_ransac_v1', '--explore-deadlock', 'replan_v1',
+            '--boundary-association', 'extent_v1', '--boundary-retry', 'navigation_v1']
+    main([*args, '--expected-workflow-id', 'e2e-boundary-repair-v212'])
+    b = json.loads(capsys.readouterr().out)
+    assert b['execution_bundle_id'] == 'e2e-boundary-repair-v212'
+    assert b['e2e_options']['boundary_association'] == 'extent_v1'
+    assert b['e2e_options']['boundary_retry'] == 'navigation_v1'
+    reviewed([*args, '--expected-workflow-id', 'e2e-reviewed-runtime-v210'])
+    b = json.loads(capsys.readouterr().out)
+    assert b['parent_execution_bundle_id'] == 'e2e-boundary-repair-v212'
+    assert b['inherited_results'] is False
+    record = json.loads(Path('experiments/2026-10-12-merge-train/pr453/retired-bundles.json').read_text())
+    for item in record['retired'][0]['blobs']:
+        assert hashlib.sha256(Path(item['preserved']).read_bytes()).hexdigest() == item['sha256']
+
+
+def test_unstable_association_is_preserved_in_actual_ownmap_record():
+    from scripts.run_e2e_ownmap_live import ownmap_record
+    g, boundary = fixture(); association = Association(g)
+    for i, x in enumerate((1., 1., 1.2)):
+        boundary['center'] = [x, -.6]
+        receive(association, boundary, i, i*.2)
+    assert not g.e2e_gate.references
+    g.explorer = SimpleNamespace(local_pose=np.zeros(3)); g.stage = 'explore'
+    robot = SimpleNamespace(goal=g, nav_command={'kind':'hold'})
+    obs = {'frame_id':2, 'sha256':'own-frame'}
+    record = ownmap_record(robot, obs, {'boundary_association':association.last}, .4)
+    saved = json.loads(json.dumps(record))['boundary_association']
+    assert saved == association.last
+    assert saved['overlap_fraction'] == pytest.approx(.4)
+    assert saved['frames'] == 1 and saved['accepted'] is False
+    assert 'boundary_association' not in ownmap_record(robot, obs, {}, .4)

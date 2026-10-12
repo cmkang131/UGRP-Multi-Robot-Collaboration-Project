@@ -32,7 +32,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
     registered_seeds = range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
     if profile not in PROFILES or seed not in registered_seeds:raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
@@ -67,6 +67,9 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         raise ValueError('VO_MASK_BUNDLE_REQUIRES_V206_AND_SELECTED_TURN_POLICY')
     from harness.e2e_exact_speedups import Options as SpeedOptions
     speed=SpeedOptions(**(exact_speedups or {}))
+    from harness.e2e_exact_speedups import ROUND2_FIELDS
+    # Round-2 toggles are only part of the v203 bundle; v200 bytes stay unchanged.
+    speed2=speed2_bundle or any(getattr(speed,k) for k in ROUND2_FIELDS)
     from harness.zone_study_llm_driver import load_registry
     b=json.loads((ROOT/'configs/e2e_s3_test_runtime_v1.json').read_text())
     # The template contributes physical/calibration constants only. Its authored
@@ -102,8 +105,11 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         b['e2e_options'].update(mapping_budget=mapping_budget,mapping_budget_s=b['case_cap_s'])
         b.update(schema='ugrp.e2e_ownmap_live.v199',execution_bundle_id='e2e-stall-budget-v199',workflow_version='7.92.0')
     if speed_bundle or any(vars(speed).values()):
-        b['e2e_options']['exact_speedups']=dataclasses.asdict(speed)
+        b['e2e_options']['exact_speedups']={k:v for k,v in dataclasses.asdict(speed).items() if k not in ROUND2_FIELDS}
         b.update(schema='ugrp.e2e_ownmap_live.v200',execution_bundle_id='e2e-exact-speed-v200',workflow_version='7.93.0')
+    if speed2:
+        b['e2e_options']['exact_speedups']=dataclasses.asdict(speed)
+        b.update(schema='ugrp.e2e_ownmap_live.v203',execution_bundle_id='e2e-exact-speed2-v203',workflow_version='7.96.0')
     if stall.stall_odometry=='rgb_vo_v1':
         b.update(schema='ugrp.e2e_ownmap_live.v201',execution_bundle_id='e2e-rgb-vo-v201',workflow_version='7.94.0')
     combo=boundary_views!='off' or b_marker_detect!='off'
@@ -141,16 +147,19 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if boundary_retry not in ('off',RETRY_OPTION):raise ValueError('UNKNOWN_BOUNDARY_RETRY')
     if boundary_association != 'off' or boundary_retry != 'off':
         if explore_deadlock != DEADLOCK:raise ValueError('V208_REQUIRED_BEFORE_BOUNDARY_REPAIR')
-        b.update(schema='ugrp.e2e_ownmap_live.v211',execution_bundle_id='e2e-boundary-repair-v211',workflow_version='7.104.0')
+        b.update(schema='ugrp.e2e_ownmap_live.v212',execution_bundle_id='e2e-boundary-repair-v212',workflow_version='7.105.0')
         b['e2e_options'].update(boundary_association=boundary_association,boundary_retry=boundary_retry)
         b['boundary_repair']=dict(association=ASSOC_PARAMS,max_navigation_failures=MAX_NAVIGATION_FAILURES)
     from harness.e2e_boundary_views import COVERAGE_OPTION
     if boundary_coverage not in ('off',COVERAGE_OPTION):raise ValueError('UNKNOWN_BOUNDARY_COVERAGE')
     if boundary_coverage != 'off':
         if not dev_light or boundary_association != ASSOC:raise ValueError('DEV_V211_ASSOCIATION_REQUIRED_BEFORE_NATIVE_COVERAGE')
-        b.update(schema='ugrp.e2e_ownmap_live.v212',execution_bundle_id='e2e-boundary-native-v212',workflow_version='7.105.0')
+        b.update(schema='ugrp.e2e_ownmap_live.v213',execution_bundle_id='e2e-boundary-native-v213',workflow_version='7.106.0')
         b['e2e_options']['boundary_coverage']=boundary_coverage
         b['boundary_coverage_scope']='DEV existing native unknown tracking; extra fully observed sweep is diagnostic, no observation fabrication'
+    from harness.e2e_runtime_registration import register
+    if boundary_coverage != 'off':runtime_registration='reviewed_v1'
+    runtime_assets=register(b,runtime_registration)
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -178,10 +187,22 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         paths.add('experiments/2026-10-12-e2e-vomask-registration/registration.json')
         paths.add('experiments/2026-10-12-e2e-vomask-registration/bundle-decision.json')
     if explore_deadlock != 'off':paths.add('configs/simulation_workflows.d/e2e_explore_deadlock_v208.json')
-    if boundary_association != 'off' or boundary_retry != 'off':paths.add('configs/simulation_workflows.d/e2e_boundary_repair_v211.json')
-    if boundary_coverage != 'off':paths.add('configs/simulation_workflows.d/e2e_boundary_native_v212.json')
+    if boundary_association != 'off' or boundary_retry != 'off':paths.add('configs/simulation_workflows.d/e2e_boundary_repair_v212.json')
+    if speed2:paths.update(('configs/simulation_workflows.d/e2e_exact_speed2_v203.json','scripts/e2e_speed_measure.py'))
+    paths.update(runtime_assets)
+    if boundary_coverage != 'off':paths.add('configs/simulation_workflows.d/e2e_boundary_native_v213.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
+
+
+def ownmap_record(robot, obs, trace, now):
+    """Persist both accepted and rejected own-input association diagnostics."""
+    return dict(t=now,frame_id=obs['frame_id'],sha256=obs['sha256'],
+        pose_own_m=robot.goal.explorer.local_pose.tolist(),
+        remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
+        pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
+        navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry'),
+        **{k:trace[k] for k in ('boundary_view','boundary_diagnostics','explore_deadlock','boundary_association') if k in trace})
 
 
 def health(robots,host,transport,sim_s,wall_s,frames):
@@ -214,6 +235,8 @@ def startup_decision(progress, b):
 
 def run(b,out,receipt,*,backend_factory=None):
     if not b['e2e_options']['enabled']:raise ValueError('E2E_LIVE_TOGGLE_OFF')
+    from harness.e2e_runtime_registration import require_current
+    require_current(b,ROOT)
     from harness.e2e_live_mapping import Robot,Link
     from harness.e2e_exact_speedups import Options as SpeedOptions
     from harness.e2e_stall_odometry import Options as StallOptions
@@ -311,12 +334,7 @@ def run(b,out,receipt,*,backend_factory=None):
                     own_obs={k:obs[k] for k in ('frame_id','sim_time','sha256','image')}
                     own_obs['sim_time']=round(obs['sim_time']-origin,8)
                     trace=robot.receive(own_obs,rgb)
-                    backend._append(f'robots/{rid}/ownmap.jsonl',dict(t=now,frame_id=obs['frame_id'],
-                        sha256=obs['sha256'],pose_own_m=robot.goal.explorer.local_pose.tolist(),
-                        remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
-                        pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
-                        navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry'),
-                        **{k:trace[k] for k in ('boundary_view','boundary_diagnostics','explore_deadlock','boundary_association') if k in trace}))
+                    backend._append(f'robots/{rid}/ownmap.jsonl',ownmap_record(robot,obs,trace,now))
                 frames_seen+=1
                 if not host.started:
                     write(out/'e2e-progress.json',health(robots,host,transport,now,time.monotonic()-started,frames_seen))
@@ -399,7 +417,7 @@ def run(b,out,receipt,*,backend_factory=None):
     return result
 
 
-def main():
+def main(argv=None):
     p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,required=True)
     p.add_argument('--driver-profile',choices=PROFILES,required=True);p.add_argument('--relay-receipt',type=Path,required=True)
@@ -431,16 +449,31 @@ def main():
     p.add_argument('--exact-scalar-cells',action='store_true')
     p.add_argument('--exact-geometry-cache',action='store_true')
     p.add_argument('--exact-speed-bundle',action='store_true')
+    p.add_argument('--exact-vector-rays',action='store_true')
+    p.add_argument('--exact-shared-wall-frontend',action='store_true')
+    p.add_argument('--exact-lazy-scan-path',action='store_true')
+    p.add_argument('--exact-vector-costmap-writes',action='store_true')
+    p.add_argument('--exact-track-cell-tuples',action='store_true')
+    p.add_argument('--exact-speed2-bundle',action='store_true')
+    p.add_argument('--rbpf-audit-hash',choices=('off','binary_v1','both_v1'),default='off',
+                   help='Measurement-only RBPF audit digest (with --measure-sim-s); off = legacy JSON digest')
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
-    p.add_argument('--execute',action='store_true');a=p.parse_args()
+    p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
+    p.add_argument('--expected-workflow-id')
+    p.add_argument('--execute',action='store_true');a=p.parse_args(argv)
     b=bundle(a.expected_source_sha,a.seed,a.driver_profile,enabled=a.e2e_live,relook=a.setdown_only_when_relook,
              options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider,
              exploration_progress=a.exploration_progress,pose_fix=a.pose_fix,
              path_follow=a.path_follow,dev_light=a.dev_light,wall_cap_s=a.wall_cap_s,
              stall_odometry=a.stall_odometry,stall_recovery=a.stall_recovery,stall_noise=a.stall_noise,stall_bundle=a.stall_bundle,mapping_budget=a.mapping_budget,
-             exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache),
-             speed_bundle=a.exact_speed_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage)
+             exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
+                 vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
+                 vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage)
+    if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
+    if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
+        raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
         raise ValueError('AZURE_X86_OSMESA_ONLY')
@@ -451,7 +484,7 @@ def main():
     try:
         if a.measure_sim_s:
             from scripts.e2e_speed_measure import measured_run
-            r=measured_run(run,b,a.output,a.relay_receipt,a.measure_sim_s,a.measure_profile)
+            r=measured_run(run,b,a.output,a.relay_receipt,a.measure_sim_s,a.measure_profile,a.rbpf_audit_hash)
         else:r=run(b,a.output,a.relay_receipt)
     finally:undo()
     print(json.dumps(r));return int(r['status']!='FINISHED')

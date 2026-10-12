@@ -1,0 +1,39 @@
+{
+  "retired": [
+    {
+      "id": "e2e-boundary-repair-v211",
+      "version": "7.104.0",
+      "source_sha": "750bc10e5896d3f4ee8c9a66535ac4b8e9022e74",
+      "reason": "Collision with earlier S3 v211 registration",
+      "replacement_parent_id": "e2e-boundary-repair-v212",
+      "current_execution_adapter": "e2e-reviewed-runtime-v210",
+      "inherited_results": false,
+      "blobs": [
+        {
+          "path": "configs/simulation_workflows.d/e2e_boundary_repair_v211.json",
+          "preserved": "experiments/2026-10-12-merge-train/pr453/retired-boundary-v211/configs/simulation_workflows.d/e2e_boundary_repair_v211.json",
+          "sha256": "36f334012cfad3fa3eaaf73670cda186b0bdd02e75603a417f764231485780bb",
+          "bytes": 1323
+        },
+        {
+          "path": "scripts/run_e2e_ownmap_live.py",
+          "preserved": "experiments/2026-10-12-merge-train/pr453/retired-boundary-v211/scripts/run_e2e_ownmap_live.py",
+          "sha256": "9678b81cd2d0513db48929602eb157c973439a9131f409cc385f7bcb97a148d5",
+          "bytes": 32822
+        },
+        {
+          "path": "experiments/2026-10-12-e2e-idle/boundary-repair-registration.json",
+          "preserved": "experiments/2026-10-12-merge-train/pr453/retired-boundary-v211/experiments/2026-10-12-e2e-idle/boundary-repair-registration.json",
+          "sha256": "7b77c96a27bc99a4cef60065c9940897f6f55e6abdc375edb1673ad0820ff996",
+          "bytes": 2930
+        },
+        {
+          "path": "experiments/2026-10-12-e2e-idle/bundle-reservation.json",
+          "preserved": "experiments/2026-10-12-merge-train/pr453/retired-boundary-v211/experiments/2026-10-12-e2e-idle/bundle-reservation.json",
+          "sha256": "a4599fcb49e7572c5b55f6d2307b14276ae2186333dec99f2325a3fafa09ff1e",
+          "bytes": 1738
+        }
+      ]
+    }
+  ]
+}

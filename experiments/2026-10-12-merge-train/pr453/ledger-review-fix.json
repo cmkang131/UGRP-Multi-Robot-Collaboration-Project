@@ -1,0 +1,15 @@
+{
+  "finding": "P2 boundary_association omitted from ownmap ledger",
+  "fix": "Extract existing writer record assembly and persist optional association diagnostics",
+  "counterexample": "overlap .4; centers (1,-.6),(1,-.6),(1.2,-.6) resets streak, rejected row must remain diagnosable",
+  "tests": {
+    "passed": 13,
+    "failed": 0,
+    "log": "outputs/merge-train-20261012/pr453-ledger-tests-final.txt",
+    "sha256": "c0fd47429fbedf718e3dbf9dbced3e7c13a9b60426a39d913604f84063a24445"
+  },
+  "reference": "https://docs.python.org/3/library/logging.html#logrecord-attributes",
+  "reference_scope": "Keep event-specific diagnostics in structured records; existing JSONL schema retained, no logging framework change",
+  "physical_runs": 0,
+  "old_records_modified": false
+}

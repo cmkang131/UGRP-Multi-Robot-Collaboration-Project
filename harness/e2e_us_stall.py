@@ -33,7 +33,7 @@ class RangeStall:
             self.reset()
         self.direction = direction
 
-    def observe(self, *, t, report, servo, delta, measured):
+    def observe(self, *, t, report, servo, delta, measured, rgb_motion=False):
         row = dict(status='unavailable', stationary=False, samples=0)
 
         def reject(reason):
@@ -42,6 +42,8 @@ class RangeStall:
 
         if measured:
             return reject('vo_available')
+        if rgb_motion:
+            return reject('rgb_motion_veto')
         if self.direction is None or delta[0] <= 1e-6 or abs(delta[2]) > PARAMS['max_yaw_rad']:
             return reject('not_forward')
         if any(int(servo.get(k, -1)) != v for k, v in SEARCH.items() if k != 6):

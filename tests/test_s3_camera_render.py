@@ -7,6 +7,8 @@ import threading
 import numpy as np
 import pytest
 
+pytest.importorskip("mujoco")
+
 from sim import masterpi_camera_review_v3 as v3
 from sim.s3_camera_binding import attach, camera_pose
 

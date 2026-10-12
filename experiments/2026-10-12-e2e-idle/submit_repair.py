@@ -70,7 +70,7 @@ def main():
         meta['class']='dev'
         (run/'RUN_META.json').write_text(json.dumps(meta)+'\n');(run/'SOURCE_SHA').write_text(a.sha+'\n')
         (run/'resource-admission.json').write_text(json.dumps(dict(loadavg=os.getloadavg(),mem_available_bytes=mem,free_bytes=shutil.disk_usage(base).free,active_pids=active()))+'\n')
-        workflow={212:'e2e-boundary-native-v212',211:'e2e-boundary-repair-v211',208:'e2e-explore-deadlock-v208',207:'e2e-vomask-turn-v207'}[cell['bundle']]
+        workflow={213:'e2e-boundary-native-v213',211:'e2e-boundary-repair-v211',208:'e2e-explore-deadlock-v208',207:'e2e-vomask-turn-v207'}[cell['bundle']]
         command=[str(ROOT/'.venv-sim/bin/python'),'-m','scripts.sim_cli','workflow','run',workflow,'--timeout',str(remaining),'--',*common,'--seed',str(cell['seed']),'--output',str(run/'raw'),'--explore-deadlock',cell['deadlock'],'--boundary-association',cell['association'],'--boundary-retry',cell['retry'],'--boundary-coverage',cell.get('coverage','off'),'--execute']
         with (run/'launch.log').open('wb') as log:
             proc=subprocess.Popen(['python3','/usr/local/lib/ugrp-storage/scripts/remote_run_finish.py','--source',str(ROOT),'--run',str(run),'--',*command],cwd=ROOT,env=env,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)

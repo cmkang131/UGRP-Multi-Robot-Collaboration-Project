@@ -5,16 +5,21 @@ from harness.e2e_pulse_budget import OPTIONS
 
 
 class ResidualPulsePort(CarryPulsePort):
-    def __init__(self, *args, pulse_budget='off', authorize_pulse=None, **kwargs):
+    def __init__(self, *args, pulse_budget='off', authorize_pulse=None, require_authorization=False, **kwargs):
         if pulse_budget not in OPTIONS: raise ValueError('UNKNOWN_E2E_PULSE_BUDGET')
-        if pulse_budget != 'off' and not callable(authorize_pulse):
+        if (pulse_budget != 'off' or require_authorization) and not callable(authorize_pulse):
             raise ValueError('CURRENT_GO_AND_SCHEDULE_AUTHORIZER_REQUIRED')
         super().__init__(*args, **kwargs)
         self.pulse_budget, self.authorize_pulse = pulse_budget, authorize_pulse
+        self.require_authorization = require_authorization
 
     def apply(self, action, sim_time):
         moving = action.get('kind') == 'mecanum' and any(action.get(k, 0.) for k in ('forward', 'left', 'turn'))
-        if self.pulse_budget == 'off' or not moving or not self.coupled():
+        if not moving or not self.coupled():
+            return super().apply(action, sim_time)
+        if self.pulse_budget == 'off':
+            if self.require_authorization and not self.authorize_pulse(action, sim_time):
+                raise ValueError('PULSE_GO_OR_SCHEDULE_MISMATCH')
             return super().apply(action, sim_time)
         if set(action) != {'kind', 'forward', 'left', 'turn', 'duration_s'}:
             raise ValueError('EXACT_RESIDUAL_PULSE_FIELDS_REQUIRED')

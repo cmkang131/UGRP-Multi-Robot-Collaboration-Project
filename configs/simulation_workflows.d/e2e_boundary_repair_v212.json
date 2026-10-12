@@ -2,9 +2,9 @@
   "schema": "ugrp.local_workflow_catalog.v1",
   "workflows": [
     {
-      "id": "e2e-boundary-native-v212",
+      "id": "e2e-boundary-repair-v212",
       "version": "7.105.0",
-      "purpose": "DEV v211 + default-off native unknown tracking for B observation approaches; compare retry off/on.",
+      "purpose": "DEV v208 + default-off extent association and separately bounded navigation retries; three toggle candidates.",
       "entry": "scripts/run_e2e_ownmap_live.py",
       "runner": "scripts.run_e2e_ownmap_live",
       "docs": "experiments/2026-10-12-e2e-idle/README.md",
@@ -32,8 +32,7 @@
         "--vo-rotation-policy",
         "--explore-deadlock",
         "--boundary-association",
-        "--boundary-retry",
-        "--boundary-coverage"
+        "--boundary-retry"
       ],
       "side_effect": "local_simulation",
       "adapter": "managed_legacy_cli",

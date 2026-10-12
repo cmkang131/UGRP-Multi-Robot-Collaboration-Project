@@ -7,4 +7,4 @@
 - 초기180–300초 응답·프레임·실제 이동·전진·단계 확인, 이후10분 간격; 확정 막힘은 SIGINT 후 수정·새 번들 재제출.
 - 원본은 Azure 영속 디스크→ARM 전체 해시 검증; Mac은 이미지 없는 가벼운 기록만. DEV 원본 정리는 해당 PR 종료 때 기록과 함께.
 - v211: 부분 영역-전체 경계 연결 / 접근 실패 재시도 / 둘의 조합; [후보11개](boundary-repair-registration.json), 관련35시험+raw재생1 통과. 초기11개 종료·ARM 검증, seed61004 계속.
-- v212: DEV 미관측 footprint 정지를 기존 native 경로 검사+기록으로 전환; [후보6개](boundary-native-registration.json), [원인·출처·검증](boundary-native-references.md), 관련24시험 통과.
+- v213: DEV 미관측 footprint 정지를 기존 native 경로 검사+기록으로 전환; [후보6개](boundary-native-registration.json), [원인·출처·검증](boundary-native-references.md), 관련24시험 통과.

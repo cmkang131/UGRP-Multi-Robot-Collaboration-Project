@@ -14,9 +14,9 @@ def controller(active='B'):
 
 
 def test_frozen_controllers_and_checkpoint_list():
+    from tests.own_route_retired_plans import assert_frozen_or_retired
     r=runner.registration();assert len(r['checkpoints'])==6
-    for name,digest in r['frozen_modules'].items():
-        assert hashlib.sha256((runner.ROOT/name).read_bytes()).hexdigest()==digest,name
+    assert_frozen_or_retired(runner.ROOT,PLAN)
 
 
 def test_12_pair_plan_and_only_budget_options_change(tmp_path):

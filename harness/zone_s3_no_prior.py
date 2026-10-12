@@ -39,7 +39,7 @@ def public_tasks(orders):
 
 
 def solo_factory(config):
-    from scripts.run_s2_unknown_start import runtime_factory
+    from harness.zone_s3_pulse_odometry import runtime_factory
     from harness.zone_solo_cyan_active_observation import attach as active
     from harness.zone_solo_cyan_rotation_envelope import attach as guard
     from harness.zone_s3_localization_certification import attach as certify
@@ -92,6 +92,7 @@ class PairRuntime(old.pair.Runtime):
         from harness.zone_own_executor import ZoneOwnExecutor
         from harness.pair_passage_plan import executor_view
         from harness.zone_final_pair_guards import PairArmGuard
+        from harness.zone_s3_pair_recheck import attach as attach_recheck
         from harness.pose_provider import is_own_pose_provider
         task = old.pair_task(static, order)
         planner = bind(old.skill.make_plan, task=lambda _: task)
@@ -102,7 +103,14 @@ class PairRuntime(old.pair.Runtime):
 
             def __init__(self, *args):
                 super().__init__(*args)
-                self.start = MethodType(bind(self.start.__func__, make_plan=planner), self)
+                start = MethodType(bind(self.start.__func__, make_plan=planner), self)
+                def submit(*args, **kwargs):
+                    result = start(*args, **kwargs)
+                    for session in self.sessions:
+                        for execution in session['endpoints'].values():
+                            attach_recheck(execution, fail_closed_without_pose=True)
+                    return result
+                self.start = submit
 
         def initialize_pair(instance, static, calibration_path, calibration_sha, *, seed, provider_factory=None):
             instance.actors, instance.providers, instance.submitted = {}, dict(ports), set()

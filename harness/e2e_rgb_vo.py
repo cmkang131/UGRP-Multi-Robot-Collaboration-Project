@@ -332,7 +332,8 @@ class VOFusion:
         us = None
         if self.range_stall is not None:
             us = self.range_stall.observe(t=t, report=range_reading, servo=servo, delta=command_delta,
-                                         measured=row['status'] == 'measured')
+                                         measured=row['status'] == 'measured',
+                                         rgb_motion=gate is not None and gate.get('status') == 'changed_view')
             row['ultrasonic'] = us
         fused = command_delta
         if row['status'] == 'measured':
@@ -443,6 +444,7 @@ def install(goal, option=OPTION, *, vo_floor_mask='off', static_map=None, map_po
                   rotation_policy=rotation_policy)
     goal.e2e_vo = vo
     active = False
+    pending_commands = []
 
     def motion_filter(delta, variance):
         return vo.motion_filter(delta, variance) if active else (delta, variance)
@@ -450,7 +452,12 @@ def install(goal, option=OPTION, *, vo_floor_mask='off', static_map=None, map_po
     command = goal.command
 
     def commanded(row):
-        vo.command(row);return command(row)
+        # The physical command has already been dispatched by Robot.commanded.
+        # Defer only estimator integration until its complete RGB interval is
+        # available, then replay every issued timestamp through the same facade.
+        vo.command(row)
+        pending_commands.append(copy.deepcopy(row))
+        goal.last_command = copy.deepcopy(row)
     goal.command = commanded
     receive = goal.receive
 
@@ -467,10 +474,17 @@ def install(goal, option=OPTION, *, vo_floor_mask='off', static_map=None, map_po
         row = vo.observe(range_reading=own_range, t=kw['t'], frame_id=kw['frame_id'], rgb=kw['rgb'], servo=kw['servo'],
                          sha256=kw['frame_sha256'], estimated_map_pose=map_pose)
         active = True;before = np.asarray(driver.pose)
+        mismatches = vo.counts['substep_mismatch']
         try:
+            for issued in pending_commands:
+                command(issued)
+            pending_commands.clear()
             odom.advance(kw['t'])
         finally:
             active = False;vo.finish_interval()
+        if vo.counts['substep_mismatch'] != mismatches:
+            row['fusion_applied'] = False
+            raise ValueError('RGB_VO_SUBSTEP_MISMATCH')
         row['applied_delta'] = between(before, np.asarray(driver.pose)).tolist()
         row['counts'] = dict(vo.counts)
         action, trace = receive(**kw)

@@ -1,0 +1,696 @@
+{
+  "schema": "ugrp.early-stop-archive-summary.v1",
+  "reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+  "updated_by": "codex/e2e-idle PR453; same-worktree record, other worktrees untouched",
+  "runs": [
+    {
+      "run": "e2e-usstall-a-s61001",
+      "host": "ugrp-sim-azure4",
+      "class": "dev",
+      "pr": 450,
+      "source_sha": "f92abe144c5b0db0f3bfecd47bfd3edf7554a75d",
+      "workflow": "e2e-usstall-v206",
+      "bundle_id": "v206",
+      "group": "a",
+      "seed": 61001,
+      "exit": 130,
+      "status": "EARLY_STOP",
+      "stop_reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "sim_s": 403.15,
+      "wall_s": 6140.403078432,
+      "frames": 2016,
+      "criteria": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "farthest_stage": "B_view_approach",
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0,
+          "wall_s": 17.363825507
+        },
+        "mapping": {
+          "sim_s": 0,
+          "wall_s": 17.363825507
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 33.654658330000075,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 100.81242605,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00044039999999999997,
+        "missing_cost_calls": 0
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "translation_commands": 846,
+          "forward_commands": 846,
+          "actual_displacement_m": 2.274819632482397
+        },
+        "r2": {
+          "stage": "explore",
+          "translation_commands": 1697,
+          "forward_commands": 1697,
+          "actual_displacement_m": 4.892554724709788
+        },
+        "r3": {
+          "stage": "explore",
+          "translation_commands": 0,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.002904687662694035
+        }
+      },
+      "translation_inactivity": {
+        "run": "e2e-usstall-a-s61001",
+        "log_progress_rows": 404,
+        "last_logged_sim_s": 403,
+        "robots": {
+          "r1": {
+            "translation_commands": 846,
+            "last_count_change_sim_s": 222,
+            "unchanged_translation_count_sim_s": 181
+          },
+          "r2": {
+            "translation_commands": 1697,
+            "last_count_change_sim_s": 403,
+            "unchanged_translation_count_sim_s": 0
+          },
+          "r3": {
+            "translation_commands": 0,
+            "last_count_change_sim_s": 0,
+            "unchanged_translation_count_sim_s": 403
+          }
+        }
+      },
+      "source_path": "/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61001",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61001",
+      "archive_proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e-usstall-a-s61001.json",
+      "archive_proof_sha256": "2cf804b8ccb116aa253c88c80b446c62fcf2f57a0f93a7bf674512888bbebf51",
+      "final_health_sha256": "2532bb968915b091828210980eb40ddfb75ee572d195a993834878a3a0faed49",
+      "archive_verification": {
+        "run": "e2e-usstall-a-s61001",
+        "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61001",
+        "host": "azure4",
+        "verified": true,
+        "files": 6154,
+        "bytes": 97546397,
+        "inventory_sha256": "7cb7eebc5f5478fd0ac18687be7d8bd3ce5853f203097985cb449f1ad755c5b8",
+        "independent_full_sha256_read": true,
+        "verification_unix": 1791793969.5833845,
+        "verification_seconds": 2.3963027000427246
+      }
+    },
+    {
+      "run": "e2e-usstall-a-s61002",
+      "host": "ugrp-sim-azure4",
+      "class": "dev",
+      "pr": 450,
+      "source_sha": "f92abe144c5b0db0f3bfecd47bfd3edf7554a75d",
+      "workflow": "e2e-usstall-v206",
+      "bundle_id": "v206",
+      "group": "a",
+      "seed": 61002,
+      "exit": 130,
+      "status": "EARLY_STOP",
+      "stop_reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "sim_s": 449.2,
+      "wall_s": 6140.378889844,
+      "frames": 2246,
+      "criteria": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "farthest_stage": "B_view_approach",
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0,
+          "wall_s": 15.238919828999997
+        },
+        "mapping": {
+          "sim_s": 0,
+          "wall_s": 15.238919828999997
+        },
+        "B_candidate": {
+          "sim_s": 4.4,
+          "wall_s": 48.10388018899994,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 26.4,
+          "wall_s": 234.944097575,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00046737000000000005,
+        "missing_cost_calls": 0
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "translation_commands": 940,
+          "forward_commands": 940,
+          "actual_displacement_m": 1.6658833789472276
+        },
+        "r2": {
+          "stage": "explore",
+          "translation_commands": 928,
+          "forward_commands": 928,
+          "actual_displacement_m": 3.932190095285654
+        },
+        "r3": {
+          "stage": "explore",
+          "translation_commands": 0,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.003072177917995924
+        }
+      },
+      "translation_inactivity": {
+        "run": "e2e-usstall-a-s61002",
+        "log_progress_rows": 450,
+        "last_logged_sim_s": 449,
+        "robots": {
+          "r1": {
+            "translation_commands": 940,
+            "last_count_change_sim_s": 246,
+            "unchanged_translation_count_sim_s": 203
+          },
+          "r2": {
+            "translation_commands": 928,
+            "last_count_change_sim_s": 227,
+            "unchanged_translation_count_sim_s": 222
+          },
+          "r3": {
+            "translation_commands": 0,
+            "last_count_change_sim_s": 0,
+            "unchanged_translation_count_sim_s": 449
+          }
+        }
+      },
+      "source_path": "/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61002",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61002",
+      "archive_proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e-usstall-a-s61002.json",
+      "archive_proof_sha256": "ca89bbc87d03e2de1f36da19e85c22430035ca0f0d304e53d1d381614292b3cf",
+      "final_health_sha256": "34fbac504a93d108ad6bb3340323abe8f7b989f68f4e190e3c290bb2fa932d93",
+      "archive_verification": {
+        "run": "e2e-usstall-a-s61002",
+        "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61002",
+        "host": "azure4",
+        "verified": true,
+        "files": 6845,
+        "bytes": 102484216,
+        "inventory_sha256": "a441fa1f99ab662f15316bb42932552b5f56a45f1eb1a23a7d68bab8a5a6ee52",
+        "independent_full_sha256_read": true,
+        "verification_unix": 1791793980.7171998,
+        "verification_seconds": 11.131294012069702
+      }
+    },
+    {
+      "run": "e2e-usstall-a-s61003",
+      "host": "ugrp-sim-azure4",
+      "class": "dev",
+      "pr": 450,
+      "source_sha": "f92abe144c5b0db0f3bfecd47bfd3edf7554a75d",
+      "workflow": "e2e-usstall-v206",
+      "bundle_id": "v206",
+      "group": "a",
+      "seed": 61003,
+      "exit": 130,
+      "status": "EARLY_STOP",
+      "stop_reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "sim_s": 426.59999999999997,
+      "wall_s": 6140.385293775,
+      "frames": 2133,
+      "criteria": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "farthest_stage": "B_view_approach",
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0,
+          "wall_s": 18.42462548399999
+        },
+        "mapping": {
+          "sim_s": 0,
+          "wall_s": 18.42462548399999
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 35.04295136500002,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 102.13267830000007,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00044609,
+        "missing_cost_calls": 0
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "translation_commands": 1059,
+          "forward_commands": 1059,
+          "actual_displacement_m": 2.655311826444422
+        },
+        "r2": {
+          "stage": "explore",
+          "translation_commands": 1743,
+          "forward_commands": 1743,
+          "actual_displacement_m": 2.768630458617534
+        },
+        "r3": {
+          "stage": "explore",
+          "translation_commands": 0,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.13396202062640863
+        }
+      },
+      "translation_inactivity": {
+        "run": "e2e-usstall-a-s61003",
+        "log_progress_rows": 427,
+        "last_logged_sim_s": 426,
+        "robots": {
+          "r1": {
+            "translation_commands": 1059,
+            "last_count_change_sim_s": 298,
+            "unchanged_translation_count_sim_s": 128
+          },
+          "r2": {
+            "translation_commands": 1741,
+            "last_count_change_sim_s": 426,
+            "unchanged_translation_count_sim_s": 0
+          },
+          "r3": {
+            "translation_commands": 0,
+            "last_count_change_sim_s": 0,
+            "unchanged_translation_count_sim_s": 426
+          }
+        }
+      },
+      "source_path": "/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61003",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61003",
+      "archive_proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e-usstall-a-s61003.json",
+      "archive_proof_sha256": "bc185bedad75e2226003f45147635b61a84f249414d378d9debecaa1479b4812",
+      "final_health_sha256": "8d51f46f26ebe868c39d9768bfdc36411f0355f88dd19b489c9ed16fbba050f2",
+      "archive_verification": {
+        "run": "e2e-usstall-a-s61003",
+        "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61003",
+        "host": "azure4",
+        "verified": true,
+        "files": 6508,
+        "bytes": 115885930,
+        "inventory_sha256": "70dd9ef36e50fd7f415c997b6e9fe606ba267148851a19b1786ba2af23383687",
+        "independent_full_sha256_read": true,
+        "verification_unix": 1791793981.4966433,
+        "verification_seconds": 0.779374361038208
+      }
+    },
+    {
+      "run": "e2e-usstall-b-s61001",
+      "host": "ugrp-sim-azure4",
+      "class": "dev",
+      "pr": 450,
+      "source_sha": "f92abe144c5b0db0f3bfecd47bfd3edf7554a75d",
+      "workflow": "e2e-combo14-vo2-v205",
+      "bundle_id": "v205",
+      "group": "b",
+      "seed": 61001,
+      "exit": 130,
+      "status": "EARLY_STOP",
+      "stop_reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "sim_s": 409.09999999999997,
+      "wall_s": 6142.034916844,
+      "frames": 2046,
+      "criteria": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "farthest_stage": "B_view_approach",
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0,
+          "wall_s": 17.056305651999992
+        },
+        "mapping": {
+          "sim_s": 0,
+          "wall_s": 17.056305651999992
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 32.99910287900002,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 99.93613135499993,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.000402,
+        "missing_cost_calls": 0
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "translation_commands": 1664,
+          "forward_commands": 1664,
+          "actual_displacement_m": 5.509232341788225
+        },
+        "r2": {
+          "stage": "explore",
+          "translation_commands": 1709,
+          "forward_commands": 1709,
+          "actual_displacement_m": 4.118713757104926
+        },
+        "r3": {
+          "stage": "explore",
+          "translation_commands": 0,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.251730225716912
+        }
+      },
+      "translation_inactivity": {
+        "run": "e2e-usstall-b-s61001",
+        "log_progress_rows": 410,
+        "last_logged_sim_s": 409,
+        "robots": {
+          "r1": {
+            "translation_commands": 1664,
+            "last_count_change_sim_s": 409,
+            "unchanged_translation_count_sim_s": 0
+          },
+          "r2": {
+            "translation_commands": 1709,
+            "last_count_change_sim_s": 409,
+            "unchanged_translation_count_sim_s": 0
+          },
+          "r3": {
+            "translation_commands": 0,
+            "last_count_change_sim_s": 0,
+            "unchanged_translation_count_sim_s": 409
+          }
+        }
+      },
+      "source_path": "/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61001",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61001",
+      "archive_proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e-usstall-b-s61001.json",
+      "archive_proof_sha256": "0f1f9254f5a7345b7320f235f82ea45b33b701355df056d1847cf4b9be964c55",
+      "final_health_sha256": "bdd85f8e8a5b27c2315d79db53834c3b9fa0dd28ea7bb25c45ac1a630ab32eb0",
+      "archive_verification": {
+        "run": "e2e-usstall-b-s61001",
+        "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61001",
+        "host": "azure4",
+        "verified": true,
+        "files": 6241,
+        "bytes": 111036941,
+        "inventory_sha256": "3df5e1d23c1d5d1891bf3bb75728dee2e890e77f177ceb4e2de99fc52a27e99b",
+        "independent_full_sha256_read": true,
+        "verification_unix": 1791793982.2414925,
+        "verification_seconds": 0.7447874546051025
+      }
+    },
+    {
+      "run": "e2e-usstall-b-s61002",
+      "host": "ugrp-sim-azure4",
+      "class": "dev",
+      "pr": 450,
+      "source_sha": "f92abe144c5b0db0f3bfecd47bfd3edf7554a75d",
+      "workflow": "e2e-combo14-vo2-v205",
+      "bundle_id": "v205",
+      "group": "b",
+      "seed": 61002,
+      "exit": 130,
+      "status": "EARLY_STOP",
+      "stop_reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "sim_s": 416,
+      "wall_s": 6142.037798064,
+      "frames": 2080,
+      "criteria": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "farthest_stage": "B_view_approach",
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0,
+          "wall_s": 19.345467690999953
+        },
+        "mapping": {
+          "sim_s": 0,
+          "wall_s": 19.345467690999953
+        },
+        "B_candidate": {
+          "sim_s": 4.4,
+          "wall_s": 52.19923173399991,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 26.4,
+          "wall_s": 237.800693959,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00043793,
+        "missing_cost_calls": 0
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "translation_commands": 841,
+          "forward_commands": 841,
+          "actual_displacement_m": 1.903925430260079
+        },
+        "r2": {
+          "stage": "explore",
+          "translation_commands": 654,
+          "forward_commands": 654,
+          "actual_displacement_m": 3.992966683591082
+        },
+        "r3": {
+          "stage": "explore",
+          "translation_commands": 0,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.0025494220094159346
+        }
+      },
+      "translation_inactivity": {
+        "run": "e2e-usstall-b-s61002",
+        "log_progress_rows": 416,
+        "last_logged_sim_s": 415,
+        "robots": {
+          "r1": {
+            "translation_commands": 841,
+            "last_count_change_sim_s": 225,
+            "unchanged_translation_count_sim_s": 190
+          },
+          "r2": {
+            "translation_commands": 654,
+            "last_count_change_sim_s": 176,
+            "unchanged_translation_count_sim_s": 239
+          },
+          "r3": {
+            "translation_commands": 0,
+            "last_count_change_sim_s": 0,
+            "unchanged_translation_count_sim_s": 415
+          }
+        }
+      },
+      "source_path": "/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61002",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61002",
+      "archive_proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e-usstall-b-s61002.json",
+      "archive_proof_sha256": "a8dadcb465ee8123e1adeee4264310c304aa76e4327857e3b053f63d16388a28",
+      "final_health_sha256": "070c5f794db1c780ce09d3afb8b85f004ce73ce9cb075819aea8e43bbe31397b",
+      "archive_verification": {
+        "run": "e2e-usstall-b-s61002",
+        "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61002",
+        "host": "azure4",
+        "verified": true,
+        "files": 6346,
+        "bytes": 108734672,
+        "inventory_sha256": "e6bed69c3e31e1f1b8e9af9d0c741c1387d9f0552cc03f1e69ca1dcc1c17288c",
+        "independent_full_sha256_read": true,
+        "verification_unix": 1791793987.993914,
+        "verification_seconds": 5.752362489700317
+      }
+    },
+    {
+      "run": "e2e-usstall-b-s61003",
+      "host": "ugrp-sim-azure4",
+      "class": "dev",
+      "pr": 450,
+      "source_sha": "f92abe144c5b0db0f3bfecd47bfd3edf7554a75d",
+      "workflow": "e2e-combo14-vo2-v205",
+      "bundle_id": "v205",
+      "group": "b",
+      "seed": 61003,
+      "exit": 130,
+      "status": "EARLY_STOP",
+      "stop_reason": "조기 종료(탐색 종료 latch 확인, 조정자 SIGINT)",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "sim_s": 435.4,
+      "wall_s": 6142.035920422,
+      "frames": 2177,
+      "criteria": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "farthest_stage": "B_view_approach",
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0,
+          "wall_s": 17.843757124000035
+        },
+        "mapping": {
+          "sim_s": 0,
+          "wall_s": 17.843757124000035
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 34.182378604000064,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 100.05926989199997,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00031523,
+        "missing_cost_calls": 0
+      },
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "translation_commands": 1790,
+          "forward_commands": 1790,
+          "actual_displacement_m": 3.838328167964536
+        },
+        "r2": {
+          "stage": "explore",
+          "translation_commands": 1245,
+          "forward_commands": 1245,
+          "actual_displacement_m": 3.0984565107572934
+        },
+        "r3": {
+          "stage": "explore",
+          "translation_commands": 0,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.0027816622579024883
+        }
+      },
+      "translation_inactivity": {
+        "run": "e2e-usstall-b-s61003",
+        "log_progress_rows": 436,
+        "last_logged_sim_s": 435,
+        "robots": {
+          "r1": {
+            "translation_commands": 1790,
+            "last_count_change_sim_s": 432,
+            "unchanged_translation_count_sim_s": 3
+          },
+          "r2": {
+            "translation_commands": 1245,
+            "last_count_change_sim_s": 295,
+            "unchanged_translation_count_sim_s": 140
+          },
+          "r3": {
+            "translation_commands": 0,
+            "last_count_change_sim_s": 0,
+            "unchanged_translation_count_sim_s": 435
+          }
+        }
+      },
+      "source_path": "/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61003",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61003",
+      "archive_proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e-usstall-b-s61003.json",
+      "archive_proof_sha256": "91e5cc01dd7d30ad04d50b0f3b733885018ad553564be4ddf32778aaf25d81f0",
+      "final_health_sha256": "b0895c152424fdc7c4ab9289ca2dd8acde88c72624f06b47bd08a6d76f70072f",
+      "archive_verification": {
+        "run": "e2e-usstall-b-s61003",
+        "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61003",
+        "host": "azure4",
+        "verified": true,
+        "files": 6637,
+        "bytes": 111961816,
+        "inventory_sha256": "3d5ec2e0ab627a0b288115f6b748a32aa901ad783f0888cda7131af667ba4022",
+        "independent_full_sha256_read": true,
+        "verification_unix": 1791793994.359607,
+        "verification_seconds": 6.365631580352783
+      }
+    }
+  ],
+  "N": 6,
+  "archive_verified": 6,
+  "LLM_operated": 6,
+  "own_map_completed": 0,
+  "start_to_finish_transport": 0
+}

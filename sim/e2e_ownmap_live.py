@@ -44,6 +44,7 @@ class PhysicsBackend(Evaluation):
                 coupled=lambda:all(self.commands.get(r,{}).get(1,2000)<=1600 for r in ('r1','r2')),
                 allow_reverse=True,allow_mecanum=True,min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1',
                 pulse_budget=self.bundle['e2e_options']['pulse_budget'],
+                require_authorization=self.bundle['e2e_options'].get('pulse_authorization')=='current_go_v1',
                 authorize_pulse=lambda action,now,rid=rid:self.authorize_pulse(rid,action,now))
         self.ports['r3']=FinePulsePort(self.world,'r3',allow_reverse=True,allow_mecanum=True,
                                      min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1')
