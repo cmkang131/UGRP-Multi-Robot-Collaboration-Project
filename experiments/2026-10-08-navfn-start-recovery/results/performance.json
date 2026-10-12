@@ -1,0 +1,173 @@
+{
+  "profile_window_elapsed_s": [
+    0,
+    30
+  ],
+  "physical_result_unchanged": true,
+  "physics_added": 0,
+  "acceleration": "scalar_rays_v1",
+  "default": "off",
+  "profile_invocations": 1,
+  "unprofiled_speedup": 1.523634401034232,
+  "canonical_serialized_outputs_equal": true,
+  "output_sha256": "af0969c41610a963723a99f281efd032a48b5e7018d0613bba84d158333a4b69",
+  "max_pose_difference": 0,
+  "max_map_difference": 0,
+  "rows": [
+    {
+      "name": "off-profile",
+      "profile": true,
+      "acceleration": "off",
+      "sim_s": 30,
+      "rgb": 151,
+      "controller_frames": 141,
+      "identical_to_physical": 141,
+      "all_outputs_sha256": "af0969c41610a963723a99f281efd032a48b5e7018d0613bba84d158333a4b69",
+      "measured_wall_s": 41.271759713214124,
+      "wall_per_sim": 1.375725323773804,
+      "total_replay_wall_s": 41.6796911250276,
+      "parts": {
+        "image_decode": 0.17955651186639443,
+        "wall_detection": 2.237791558873141,
+        "map_insertion": 12.291807830799371,
+        "rbpf_matching": 1.2690623082744423,
+        "controller_other": 17.95839059073478,
+        "command_propagation": 0.004233725747326389,
+        "pose_graph": 7.333031361049507,
+        "frontier_search": 0.001271208981052041,
+        "navfn_plan": 0.00335625305888243
+      },
+      "rendering": "NOT_MEASURED_saved_JPEG_only",
+      "gt_input": false,
+      "physics": 0
+    },
+    {
+      "name": "off-timing",
+      "profile": false,
+      "acceleration": "off",
+      "sim_s": 30,
+      "rgb": 151,
+      "controller_frames": 141,
+      "identical_to_physical": 141,
+      "all_outputs_sha256": "af0969c41610a963723a99f281efd032a48b5e7018d0613bba84d158333a4b69",
+      "measured_wall_s": 29.22189908713335,
+      "wall_per_sim": 0.9740633029044451,
+      "total_replay_wall_s": 29.435969124984695,
+      "parts": {
+        "image_decode": 0.17473916299059056,
+        "wall_detection": 1.99242562186555,
+        "map_insertion": 6.899821198254358,
+        "rbpf_matching": 1.2929602957738098,
+        "controller_other": 13.962607048044447,
+        "command_propagation": 0.003027751110494137,
+        "pose_graph": 4.898217872774694,
+        "frontier_search": 0.001296208007261157,
+        "navfn_plan": 0.0033222110068891197
+      },
+      "rendering": "NOT_MEASURED_saved_JPEG_only",
+      "gt_input": false,
+      "physics": 0
+    },
+    {
+      "name": "on-timing",
+      "profile": false,
+      "acceleration": "scalar_rays_v1",
+      "sim_s": 30,
+      "rgb": 151,
+      "controller_frames": 141,
+      "identical_to_physical": 141,
+      "all_outputs_sha256": "af0969c41610a963723a99f281efd032a48b5e7018d0613bba84d158333a4b69",
+      "measured_wall_s": 19.17907541815657,
+      "wall_per_sim": 0.6393025139385524,
+      "total_replay_wall_s": 19.3683848749788,
+      "parts": {
+        "image_decode": 0.16302749700844288,
+        "wall_detection": 1.9161933329887688,
+        "map_insertion": 1.0155060288088862,
+        "rbpf_matching": 0.9243625347444322,
+        "controller_other": 12.025522852462018,
+        "command_propagation": 0.00278650302789174,
+        "pose_graph": 3.132307587104151,
+        "frontier_search": 0.0012688330025412142,
+        "navfn_plan": 0.00328491601976566
+      },
+      "rendering": "NOT_MEASURED_saved_JPEG_only",
+      "gt_input": false,
+      "physics": 0
+    }
+  ],
+  "growth": [
+    {
+      "window": [
+        0,
+        10
+      ],
+      "n": 41,
+      "profile_wall_s": 9.1102471689519,
+      "map_cells": [
+        64,
+        739
+      ],
+      "particles": [
+        100
+      ],
+      "sweep_frames": 41
+    },
+    {
+      "window": [
+        10,
+        20
+      ],
+      "n": 50,
+      "profile_wall_s": 17.98681892020977,
+      "map_cells": [
+        739,
+        902
+      ],
+      "particles": [
+        100
+      ],
+      "sweep_frames": 24
+    },
+    {
+      "window": [
+        20,
+        30
+      ],
+      "n": 50,
+      "profile_wall_s": 14.174693624052452,
+      "map_cells": [
+        902,
+        1513
+      ],
+      "particles": [
+        100
+      ],
+      "sweep_frames": 26
+    }
+  ],
+  "cross_cut_sweep": {
+    "n": 91,
+    "profile_wall_s": 32.172647169965785,
+    "qualification": "whole frame during sweep; overlaps other stage rows"
+  },
+  "raw": "/Users/changmin/projects/ugrp/outputs/navfn-start-recovery-v1/profile",
+  "source_files": {
+    "harness/grid_acceleration.py": "cfcecd86b81f4db4be80c6d815228f277fca4ff2f6b1c0a970e47cb27ba3ea14",
+    "harness/self_odom_grid.py": "e1e5dcb16052896878230a05da77ae65e2f55a29fd9991f5a04f105a1b1498b3",
+    "harness/public_navigation_persistent.py": "231dbe488eab190ca14496ee60b8d2b93a8b011b323d9840380f49411ab659bf",
+    "harness/active_navfn_start.py": "54b207e9ac96763c08a8cf582f901e2e947ccdfab66531f44526a19db57d5182",
+    "tests/test_grid_acceleration.py": "a6cd5eae18cb568b8654b3595109a0b2ceffd1e4be795ec3bdcf9a712fb3872f",
+    "experiments/2026-10-08-navfn-start-recovery/code/profile_replay.py": "ba2724b84c233071c49129a9c561def449b3ad667bdbfdc140155dcc23876752"
+  },
+  "artifact_hashes": {
+    "off-profile/lock.json": "5417c716077fc10997164c7e8ae62c714ca241ea806aa30efd088d585476c2eb",
+    "off-profile/result.json": "e99f08c2b50cd137f7ac94b5db22787d1f18f6ac952b7723ec29c60016cd48d6",
+    "off-profile/cpu.prof": "54e1b73afc1e08d5ad6e572ec5724be182fa8ed43fc1f4379d77f0b5a10688b9",
+    "off-profile/top.txt": "84bc6da950a519a8dcd50286812a492257102e770cce9788bf853ee66d97c7ba",
+    "off-timing/lock.json": "591a3e96265828e04b082ccf05fc161824ac4f0bbfbc26bc219a778f75fb09d0",
+    "off-timing/result.json": "5d6f5b3249f6fb48fa19114173b60da7ced48e5f57812e2ffa86be088a1a1c1c",
+    "on-timing/lock.json": "6867854417b6fb9210ced93c0cacd989ce49f5966e0ba6e6d7edab393c5dbac3",
+    "on-timing/result.json": "66d85a27a0a4ce2f3badb68b583346f494c5b1d2bee4be96f73a9d7cdbc9ed7f"
+  }
+}

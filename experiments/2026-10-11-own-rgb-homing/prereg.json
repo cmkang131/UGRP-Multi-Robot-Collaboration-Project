@@ -1,0 +1,614 @@
+{
+  "checkpoints": [
+    {
+      "seed": 63001,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "file": "ckpt_00378_t00076.900.pkl.zlib",
+      "sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "tick": 378,
+      "sim_s": 76.9,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 18600304
+    },
+    {
+      "seed": 63002,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "file": "ckpt_00199_t00041.100.pkl.zlib",
+      "sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "tick": 199,
+      "sim_s": 41.1,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 12883161
+    },
+    {
+      "seed": 63003,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "file": "ckpt_00071_t00015.500.pkl.zlib",
+      "sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "tick": 71,
+      "sim_s": 15.5,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 8453302
+    },
+    {
+      "seed": 63004,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "file": "ckpt_00332_t00067.700.pkl.zlib",
+      "sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "tick": 332,
+      "sim_s": 67.7,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 16163572
+    },
+    {
+      "seed": 63005,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "file": "ckpt_00167_t00034.700.pkl.zlib",
+      "sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "tick": 167,
+      "sim_s": 34.7,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 11897690
+    },
+    {
+      "seed": 63006,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "file": "ckpt_00135_t00028.300.pkl.zlib",
+      "sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "tick": 135,
+      "sim_s": 28.3,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 10922284
+    }
+  ],
+  "seeds": [
+    63001,
+    63002,
+    63003,
+    63004,
+    63005,
+    63006
+  ],
+  "host_alarm_s": 8715,
+  "stage_budgets_sim_s": {
+    "B_approach": 270,
+    "return_leg": 270
+  },
+  "gates": {
+    "arrival_distance_m": 0.2,
+    "consecutive_frames": 5,
+    "current_confirmed_same_B_required": true,
+    "GT": "evaluation only; never controller goals"
+  },
+  "batch_admission": {
+    "loadavg_less_than": 51,
+    "available_gib_min": 6,
+    "pending60s_cpu_reservation": 2,
+    "pending60s_gib_reservation": 1.5,
+    "no_fixed10_cap": true
+  },
+  "round": "egomap68",
+  "registered": 24,
+  "host": "oracle-x86",
+  "conditions": [
+    "baseline",
+    "traversed",
+    "homing",
+    "loopclosure"
+  ],
+  "params": {
+    "features": 1000,
+    "scale_factor": 1.2,
+    "levels": 8,
+    "ratio": 0.75,
+    "min_matches": 15,
+    "min_pose_inliers": 50,
+    "chi2": 5.991,
+    "confidence": 0.99,
+    "iterations": 300,
+    "max_cos_parallax": 0.9998,
+    "neighbor_keyframes": 20,
+    "candidate_keyframes": 5,
+    "match_interval_s": 10.0,
+    "arrival_m": 0.2,
+    "arrival_frames": 5,
+    "homography_px": 3.0,
+    "essential_px": 1.0,
+    "metric_scale": "own_motion_only"
+  },
+  "controls": "same100 particles, detector/motion/heading/270+270s/.20m+5 frames; progress/FSM/VTR off",
+  "metric_scale": "own commanded-motion RBPF pose at captured RGB keyframes; no GT, static coordinates, stereo, or unit-E translation",
+  "method": "ORB mutual ratio matching, H/E RANSAC check, positive-depth/parallax/reprojection triangulation, 3D-2D PnP RANSAC+LM, >=50 inliers",
+  "adaptations": [
+    "finite own bank brute-force top5 instead of DBoW2 vocabulary",
+    "existing VT&R keyframe selection instead of ORB-SLAM covisibility insertion; last20 temporal neighbors",
+    "known own-motion scale, command-only wrist FK, same calibrated K/D; not ground-plane projection",
+    "OpenCV EPNP/LM instead of ORB-SLAM custom P4P/g2o; stricter mutual ratio and ambiguous-candidate rejection; no global BA",
+    "return-only periodic10s corrections, no variance shrink, no correction from ambiguous or metric-unobservable views",
+    "current home PnP and measured-relative own-start distance .20 required on each of5 frames, align one saved yaw for narrow FOV, no 360 sweep"
+  ],
+  "references": [
+    {
+      "url": "https://github.com/raulmur/ORB_SLAM2/blob/master/src/Tracking.cc",
+      "lines": "1244-1389",
+      "verified": "original code",
+      "license": "GPL-3.0 reference only; not vendored",
+      "gates": "ratio .75; >=15 initial; RANSAC .99/300/5.991; >=50 final"
+    },
+    {
+      "url": "https://github.com/raulmur/ORB_SLAM2/blob/master/src/LocalMapping.cc",
+      "lines": "279-401",
+      "verified": "original code",
+      "gates": "0<cos(parallax)<.9998, depths>0, reprojection squared<=5.991*scale_variance, distance/scale consistency"
+    },
+    {
+      "url": "https://docs.opencv.org/4.x/d5/d1f/calib3d_solvePnP.html",
+      "verified": "official documentation",
+      "method": "solvePnPRansac + solvePnPRefineLM"
+    },
+    {
+      "url": "https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html",
+      "verified": "official documentation",
+      "limitation": "homography/essential alone are not metric loop closure"
+    },
+    {
+      "url": "https://doi.org/10.1364/JOSAA.20.000450",
+      "verified": "abstract only, full original unverified",
+      "reason": "panoramic image-difference homing not chosen for fixed narrow wrist FOV"
+    }
+  ],
+  "denominator": "all24 including physical failures/HOST; no exclusions or tuning after results",
+  "cache": "6 prefix banks before checkpoint only, hashes, frozen before physical bundle",
+  "initial_check": "180wall seconds: movement+frame+stage+exception+receive markers including homing wrapper",
+  "outputs": "raw persistent x86 runs; full hashes/ARM archive; Mac oracle_run.sh fetch-lite only",
+  "end_goal": "LLM/self-map/full transport E2E; this round tests only B/return DEV stages, not E2E",
+  "commands": [
+    {
+      "name": "egomap68-63001-baseline",
+      "seed": 63001,
+      "condition": "baseline",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63001-baseline"
+      ]
+    },
+    {
+      "name": "egomap68-63001-traversed",
+      "seed": 63001,
+      "condition": "traversed",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--condition",
+        "traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63001-traversed"
+      ]
+    },
+    {
+      "name": "egomap68-63001-homing",
+      "seed": 63001,
+      "condition": "homing",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--condition",
+        "homing",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63001-homing"
+      ]
+    },
+    {
+      "name": "egomap68-63001-loopclosure",
+      "seed": 63001,
+      "condition": "loopclosure",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--condition",
+        "loopclosure",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63001-loopclosure"
+      ]
+    },
+    {
+      "name": "egomap68-63002-baseline",
+      "seed": 63002,
+      "condition": "baseline",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63002-baseline"
+      ]
+    },
+    {
+      "name": "egomap68-63002-traversed",
+      "seed": 63002,
+      "condition": "traversed",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--condition",
+        "traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63002-traversed"
+      ]
+    },
+    {
+      "name": "egomap68-63002-homing",
+      "seed": 63002,
+      "condition": "homing",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--condition",
+        "homing",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63002-homing"
+      ]
+    },
+    {
+      "name": "egomap68-63002-loopclosure",
+      "seed": 63002,
+      "condition": "loopclosure",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--condition",
+        "loopclosure",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63002-loopclosure"
+      ]
+    },
+    {
+      "name": "egomap68-63003-baseline",
+      "seed": 63003,
+      "condition": "baseline",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63003-baseline"
+      ]
+    },
+    {
+      "name": "egomap68-63003-traversed",
+      "seed": 63003,
+      "condition": "traversed",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--condition",
+        "traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63003-traversed"
+      ]
+    },
+    {
+      "name": "egomap68-63003-homing",
+      "seed": 63003,
+      "condition": "homing",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--condition",
+        "homing",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63003-homing"
+      ]
+    },
+    {
+      "name": "egomap68-63003-loopclosure",
+      "seed": 63003,
+      "condition": "loopclosure",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--condition",
+        "loopclosure",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63003-loopclosure"
+      ]
+    },
+    {
+      "name": "egomap68-63004-baseline",
+      "seed": 63004,
+      "condition": "baseline",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63004-baseline"
+      ]
+    },
+    {
+      "name": "egomap68-63004-traversed",
+      "seed": 63004,
+      "condition": "traversed",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--condition",
+        "traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63004-traversed"
+      ]
+    },
+    {
+      "name": "egomap68-63004-homing",
+      "seed": 63004,
+      "condition": "homing",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--condition",
+        "homing",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63004-homing"
+      ]
+    },
+    {
+      "name": "egomap68-63004-loopclosure",
+      "seed": 63004,
+      "condition": "loopclosure",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--condition",
+        "loopclosure",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63004-loopclosure"
+      ]
+    },
+    {
+      "name": "egomap68-63005-baseline",
+      "seed": 63005,
+      "condition": "baseline",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63005-baseline"
+      ]
+    },
+    {
+      "name": "egomap68-63005-traversed",
+      "seed": 63005,
+      "condition": "traversed",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--condition",
+        "traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63005-traversed"
+      ]
+    },
+    {
+      "name": "egomap68-63005-homing",
+      "seed": 63005,
+      "condition": "homing",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--condition",
+        "homing",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63005-homing"
+      ]
+    },
+    {
+      "name": "egomap68-63005-loopclosure",
+      "seed": 63005,
+      "condition": "loopclosure",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--condition",
+        "loopclosure",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63005-loopclosure"
+      ]
+    },
+    {
+      "name": "egomap68-63006-baseline",
+      "seed": 63006,
+      "condition": "baseline",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--condition",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63006-baseline"
+      ]
+    },
+    {
+      "name": "egomap68-63006-traversed",
+      "seed": 63006,
+      "condition": "traversed",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--condition",
+        "traversed",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63006-traversed"
+      ]
+    },
+    {
+      "name": "egomap68-63006-homing",
+      "seed": 63006,
+      "condition": "homing",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--condition",
+        "homing",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63006-homing"
+      ]
+    },
+    {
+      "name": "egomap68-63006-loopclosure",
+      "seed": 63006,
+      "condition": "loopclosure",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_homing",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--condition",
+        "loopclosure",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap68-batch/data/egomap68-63006-loopclosure"
+      ]
+    }
+  ],
+  "bank_command": ".venv-sim/bin/python -m scripts.run_own_route_homing --mode banks --output outputs/egomap68-banks/data",
+  "smoke_command": ".venv-sim/bin/python -m scripts.run_own_route_homing --mode smoke --condition loopclosure --seed 63001 --output outputs/egomap68-smoke/data",
+  "batch_command": ".venv-sim/bin/python -m scripts.run_own_route_homing --mode batch --output outputs/egomap68-batch/data"
+}

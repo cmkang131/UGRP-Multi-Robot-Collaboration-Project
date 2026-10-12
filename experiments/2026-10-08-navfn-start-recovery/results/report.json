@@ -1,0 +1,661 @@
+{
+  "condition": "egomap47 B+start",
+  "seed": 47001,
+  "budget_s": 360,
+  "n": 1,
+  "result": {
+    "case": "new-seed",
+    "acquisition": {
+      "status": "HOST_ERROR",
+      "source_sha": "c37f2b23b74d044163b43e139599207f248ae3c1",
+      "case": "new-seed",
+      "model_calls": 0,
+      "freeze": false,
+      "loadavg_start": [
+        2.34814453125,
+        2.38427734375,
+        4.3173828125
+      ],
+      "start_sim_s": 1.3,
+      "frames": 1801,
+      "total_sim_s": 361.3,
+      "failure": {
+        "type": "TimeoutError",
+        "message": "HOST_BUDGET_30_MINUTES"
+      },
+      "enospc": false,
+      "prediction_view": "partial_frontend_unfinished_graph",
+      "wall_s": 1802.3689912919945,
+      "loadavg_end": [
+        3.07958984375,
+        3.50048828125,
+        3.537109375
+      ]
+    },
+    "full_map": {
+      "occupied_cells": 843,
+      "precision_015": 0.3973902728351127,
+      "precision_cell": 0.17319098457888493,
+      "wall_coverage": 0.6960486322188449,
+      "wall_error_rmse_m": 0.6387453404701126
+    },
+    "wall_sample_count": 329,
+    "prediction_view": "partial_frontend_unfinished_graph",
+    "observed_region": {
+      "precision": 0.7325102880658436,
+      "precision_correct": 178,
+      "precision_cells": 243,
+      "recall": 0.6724137931034483,
+      "recalled_samples": 117,
+      "visible_samples": 174,
+      "visible_wall_fraction": 0.5288753799392097,
+      "sampled_wall_length_proxy_m": 17.400000000000002,
+      "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+    },
+    "coverage": {
+      "travelled_m": 9.429081089669438,
+      "footprint_union_m2": 2.5400000000000005,
+      "footprint_cells_005m": 1016,
+      "frames": 1801,
+      "mapped_frames": 204,
+      "occupied_cells": 843
+    },
+    "path": {
+      "n": 1790,
+      "rmse_m": 0.230436423613484,
+      "end_m": 0.49045453418496127,
+      "missing_gt_samples": 1
+    },
+    "b": {
+      "first_own_confirmation_s": 67.1,
+      "reached_gt": false,
+      "first_gt_reach_s": null
+    },
+    "wall_contacts": 0,
+    "wrong_door_attempts": [
+      {
+        "t": 17.1,
+        "door": "r3:opening_036"
+      },
+      {
+        "t": 25.5,
+        "door": "r3:opening_044"
+      },
+      {
+        "t": 44.1,
+        "door": "r3:opening_021"
+      },
+      {
+        "t": 68.1,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 96.3,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 96.3,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 100.3,
+        "door": "r3:opening_019"
+      },
+      {
+        "t": 100.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 101.1,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 101.9,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 102.5,
+        "door": "r3:opening_019"
+      },
+      {
+        "t": 102.5,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 105.1,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 105.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 107.1,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 107.5,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 141.7,
+        "door": "r3:opening_044"
+      },
+      {
+        "t": 141.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 196.9,
+        "door": "r3:opening_247"
+      },
+      {
+        "t": 198.1,
+        "door": "r3:opening_183"
+      },
+      {
+        "t": 213.1,
+        "door": "r3:opening_178"
+      },
+      {
+        "t": 214.7,
+        "door": "r3:opening_224"
+      },
+      {
+        "t": 218.3,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 220.3,
+        "door": "r3:opening_036"
+      },
+      {
+        "t": 221.5,
+        "door": "r3:opening_001"
+      },
+      {
+        "t": 221.5,
+        "door": "r3:opening_008"
+      },
+      {
+        "t": 236.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 240.1,
+        "door": "r3:opening_008"
+      },
+      {
+        "t": 242.1,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 243.7,
+        "door": "r3:opening_008"
+      },
+      {
+        "t": 244.1,
+        "door": "r3:opening_002"
+      }
+    ],
+    "door_exposure": {
+      "candidate_frames": 1696,
+      "feasible_rows": 414,
+      "selected_path_rows": 121
+    },
+    "loop_counts": null,
+    "switch_counts": null,
+    "calibration": {
+      "occupancy_ece_diagnostic": {
+        "n": 843,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.1,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.2,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.3,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.4,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.5,
+            "n": 681,
+            "score": 0.5213859864255723,
+            "precision": 0.31718061674008813
+          },
+          {
+            "lo": 0.6,
+            "n": 66,
+            "score": 0.6401384387115864,
+            "precision": 0.7272727272727273
+          },
+          {
+            "lo": 0.7,
+            "n": 39,
+            "score": 0.7520343994835446,
+            "precision": 0.6410256410256411
+          },
+          {
+            "lo": 0.8,
+            "n": 39,
+            "score": 0.8462002323583155,
+            "precision": 0.717948717948718
+          },
+          {
+            "lo": 0.9,
+            "n": 18,
+            "score": 0.9446452733917405,
+            "precision": 1.0
+          }
+        ],
+        "gap": 0.18403589029849493
+      },
+      "support_score_gap": {
+        "n": 843,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 281,
+            "score": 0.033634688703474296,
+            "precision": 0.06405693950177936
+          },
+          {
+            "lo": 0.1,
+            "n": 129,
+            "score": 0.15307009799384189,
+            "precision": 0.40310077519379844
+          },
+          {
+            "lo": 0.2,
+            "n": 102,
+            "score": 0.24887024746678688,
+            "precision": 0.6666666666666666
+          },
+          {
+            "lo": 0.3,
+            "n": 91,
+            "score": 0.35324092646668265,
+            "precision": 0.5604395604395604
+          },
+          {
+            "lo": 0.4,
+            "n": 59,
+            "score": 0.4496318802611185,
+            "precision": 0.4915254237288136
+          },
+          {
+            "lo": 0.5,
+            "n": 43,
+            "score": 0.5461727614192831,
+            "precision": 0.5348837209302325
+          },
+          {
+            "lo": 0.6,
+            "n": 37,
+            "score": 0.6451694941883981,
+            "precision": 0.5945945945945946
+          },
+          {
+            "lo": 0.7,
+            "n": 26,
+            "score": 0.7475406651953669,
+            "precision": 0.7307692307692307
+          },
+          {
+            "lo": 0.8,
+            "n": 19,
+            "score": 0.8587967239897918,
+            "precision": 0.7368421052631579
+          },
+          {
+            "lo": 0.9,
+            "n": 56,
+            "score": 0.9839222018415847,
+            "precision": 0.6964285714285714
+          }
+        ],
+        "gap": 0.14941183597585525
+      },
+      "qualification": "TSDF support is NOT probability"
+    },
+    "criteria": {
+      "recorded": false,
+      "no_contact": true,
+      "no_wrong_door": false,
+      "distance": true,
+      "area": true,
+      "visible_samples": true,
+      "precision": true,
+      "recall": true,
+      "wall_rmse": false,
+      "path_rmse": true
+    },
+    "passed": false
+  },
+  "extra": {
+    "hold_n": 111,
+    "n": 1790,
+    "hold_fraction": 0.06201117318435754,
+    "frontend": {
+      "endpoint_error_m": 0.49045453418496127,
+      "sigma_xy_m": 0.10238959638675724,
+      "overconfidence_ratio": 4.790081722095695,
+      "path_rmse_m": 0.230436423613484
+    },
+    "insertions": 204,
+    "decisions": {
+      "bootstrap:bootstrap": 1,
+      "deferred:gmapping_motion_gate": 1580,
+      "rejected:low_overlap": 20,
+      "accepted:improved_proposal": 118,
+      "rejected:high_residual": 57,
+      "deferred:insufficient_match_points": 7,
+      "rejected:search_boundary": 1
+    },
+    "geometry_frames": 1783,
+    "rgb_frames": 1801,
+    "door_crossings": [
+      {
+        "t": 104.9,
+        "door": "middle",
+        "y": 0.10037616271050318,
+        "padded_footprint_margin_m": 0.05679297025289043,
+        "later_center_left": true
+      }
+    ],
+    "confirmed_left_crossings": 1,
+    "contact_frames": {
+      "wall": 0,
+      "robot": 0
+    },
+    "contact_events": {
+      "wall": 0,
+      "robot": 0
+    },
+    "event_counts": {
+      "sensor_sweep_started": 12,
+      "graph_preserved_recovery": 35,
+      "sensor_sweep_completed": 12,
+      "information_cycle_committed": 11,
+      "controller_no_progress": 11,
+      "navigation_action_aborted": 11,
+      "ABORTED_goal_blacklisted": 11,
+      "next_frontier_requested": 11,
+      "sensor_sweep_requested": 11,
+      "planner_failed": 27,
+      "recovery_context_clear": 22,
+      "context_clear_planner": 22,
+      "navigation_layer_reset": 24,
+      "recovery_success": 27,
+      "recovery_clear": 2,
+      "recovery_spin": 1,
+      "recovery_wait": 1,
+      "recovery_backup": 1
+    },
+    "sweep_events": [
+      {
+        "t": 3.3,
+        "reason": "sensor_sweep_started",
+        "cause": "initial_view"
+      },
+      {
+        "t": 15.5,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.360632351926018,
+        "duration_s": 12.2
+      },
+      {
+        "t": 25.9,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 26.1,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 38.5,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.3334448048579475,
+        "duration_s": 12.399999999999999
+      },
+      {
+        "t": 48.7,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 48.9,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 61.3,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.324301711421329,
+        "duration_s": 12.399999999999999
+      },
+      {
+        "t": 71.5,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 71.7,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 84.1,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.339204202287627,
+        "duration_s": 12.399999999999991
+      },
+      {
+        "t": 120.9,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 121.1,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 133.7,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.359107334079218,
+        "duration_s": 12.599999999999994
+      },
+      {
+        "t": 144.1,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 144.3,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 156.7,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.305468126001452,
+        "duration_s": 12.399999999999977
+      },
+      {
+        "t": 167.1,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 167.3,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 179.5,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.357714938442275,
+        "duration_s": 12.199999999999989
+      },
+      {
+        "t": 199.5,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 199.7,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 211.7,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.277261373901308,
+        "duration_s": 12.0
+      },
+      {
+        "t": 222.1,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 222.3,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 234.5,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.318784034456066,
+        "duration_s": 12.199999999999989
+      },
+      {
+        "t": 244.9,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 245.1,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 257.5,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.285637613456062,
+        "duration_s": 12.400000000000006
+      },
+      {
+        "t": 267.9,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 268.1,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 280.1,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.31987521417758,
+        "duration_s": 12.0
+      },
+      {
+        "t": 345.5,
+        "reason": "sensor_sweep_requested",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 345.7,
+        "reason": "sensor_sweep_started",
+        "cause": "progress_timeout_sensor_sweep"
+      },
+      {
+        "t": 357.7,
+        "reason": "sensor_sweep_completed",
+        "rotation_rad": 6.313754698224557,
+        "duration_s": 12.0
+      }
+    ],
+    "no_frontier_times": []
+  },
+  "curve": [
+    {
+      "elapsed_s": 120.0,
+      "status": "observed",
+      "coverage": 0.5653495440729484,
+      "covered_wall_samples": 186,
+      "total_wall_samples": 329,
+      "occupied_cells": 427,
+      "mapped_scans": 67,
+      "snapshot_elapsed_s": 117.4,
+      "view": "online_frontend_past_only"
+    },
+    {
+      "elapsed_s": 180.0,
+      "status": "observed",
+      "coverage": 0.6656534954407295,
+      "covered_wall_samples": 219,
+      "total_wall_samples": 329,
+      "occupied_cells": 662,
+      "mapped_scans": 114,
+      "snapshot_elapsed_s": 177.79999999999998,
+      "view": "online_frontend_past_only"
+    },
+    {
+      "elapsed_s": 240.0,
+      "status": "observed",
+      "coverage": 0.6838905775075987,
+      "covered_wall_samples": 225,
+      "total_wall_samples": 329,
+      "occupied_cells": 721,
+      "mapped_scans": 151,
+      "snapshot_elapsed_s": 233.6,
+      "view": "online_frontend_past_only"
+    },
+    {
+      "elapsed_s": 360.0,
+      "status": "observed",
+      "coverage": 0.6960486322188449,
+      "covered_wall_samples": 229,
+      "total_wall_samples": 329,
+      "occupied_cells": 843,
+      "mapped_scans": 204,
+      "snapshot_elapsed_s": 356.0,
+      "view": "online_frontend_past_only"
+    }
+  ],
+  "criteria": {
+    "coverage_ge_080": false,
+    "region_precision_ge_0636": true
+  },
+  "criteria_count": 1,
+  "completed_360s": false,
+  "passed": false
+}

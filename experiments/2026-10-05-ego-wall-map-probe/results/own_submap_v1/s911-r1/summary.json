@@ -1,0 +1,259 @@
+{
+  "case": "s911-r1",
+  "source_sha": "278fee8b067b4fb5e36031843276df1ebc80fc5b",
+  "pose_graph": "own_submap_v1",
+  "split": "development",
+  "options": {
+    "submap_scans": 20,
+    "stride": 10,
+    "separation_s": 5.0,
+    "candidate_distance_m": 6.0,
+    "translation_window_m": 1.0,
+    "yaw_window_deg": 15.0,
+    "translation_step_m": 0.1,
+    "yaw_step_deg": 1.0,
+    "min_score": 0.55,
+    "min_overlap": 0.6,
+    "overlap_m": 0.2,
+    "max_residual_m": 0.15,
+    "mode_distance_m": 0.2,
+    "mode_yaw_deg": 5.0,
+    "mode_gap": 0.02,
+    "hessian_ratio": 0.03,
+    "min_points": 6,
+    "effective_points": 12.0,
+    "sigma_xy_m": 0.1,
+    "sigma_yaw_deg": 2.0,
+    "huber_delta": 1.5,
+    "max_nfev": 200
+  },
+  "metrics": {
+    "off": {
+      "final": {
+        "occupied_cells": 193,
+        "precision_015": 0.47150259067357514,
+        "precision_cell": 0.35751295336787564,
+        "wall_coverage": 0.28653295128939826,
+        "wall_error_rmse_m": 0.5424208044613068,
+        "covered_all_count": 100,
+        "recall_visible": 0.6504854368932039,
+        "covered_visible_count": 67,
+        "recall_contact_visible": 0.6504854368932039,
+        "covered_contact_visible_count": 67,
+        "recall_contact_near4": 0.7613636363636364,
+        "covered_contact_near4_count": 67,
+        "recall_contact_admitted": 0.6504854368932039,
+        "covered_contact_admitted_count": 67
+      },
+      "path_position_error": {
+        "median_m": 1.0219384990270786,
+        "p90_m": 1.0577928975859088,
+        "p95_m": 1.0577928978522628,
+        "max_m": 1.0669962635930479,
+        "rmse_m": 0.8688427354323071,
+        "count": 1848
+      },
+      "end_position_error_m": 1.0669962635930479,
+      "end_yaw_error_deg": 0.26310202036952934
+    },
+    "rbpf100_guard": {
+      "final": {
+        "occupied_cells": 190,
+        "precision_015": 0.5894736842105263,
+        "precision_cell": 0.38421052631578945,
+        "wall_coverage": 0.2693409742120344,
+        "wall_error_rmse_m": 0.22579721023359695,
+        "covered_all_count": 94,
+        "recall_visible": 0.6116504854368932,
+        "covered_visible_count": 63,
+        "recall_contact_visible": 0.6116504854368932,
+        "covered_contact_visible_count": 63,
+        "recall_contact_near4": 0.7159090909090909,
+        "covered_contact_near4_count": 63,
+        "recall_contact_admitted": 0.6116504854368932,
+        "covered_contact_admitted_count": 63
+      },
+      "path_position_error": {
+        "median_m": 0.1546015533932111,
+        "p90_m": 0.9028877544949598,
+        "p95_m": 0.9597418943855502,
+        "max_m": 1.0357593288561961,
+        "rmse_m": 0.43191897451431,
+        "count": 1848
+      },
+      "end_position_error_m": 0.14345710675516102,
+      "end_yaw_error_deg": 6.09261527427227
+    },
+    "graph": {
+      "final": {
+        "occupied_cells": 186,
+        "precision_015": 0.5591397849462365,
+        "precision_cell": 0.34946236559139787,
+        "wall_coverage": 0.22636103151862463,
+        "wall_error_rmse_m": 0.22499273310055512,
+        "covered_all_count": 79,
+        "recall_visible": 0.5339805825242718,
+        "covered_visible_count": 55,
+        "recall_contact_visible": 0.5339805825242718,
+        "covered_contact_visible_count": 55,
+        "recall_contact_near4": 0.625,
+        "covered_contact_near4_count": 55,
+        "recall_contact_admitted": 0.5339805825242718,
+        "covered_contact_admitted_count": 55
+      },
+      "path_position_error": {
+        "median_m": 0.1597914206485429,
+        "p90_m": 0.9291771608511359,
+        "p95_m": 0.9909798403647562,
+        "max_m": 1.0416208743979465,
+        "rmse_m": 0.45376409216563685,
+        "count": 1848
+      },
+      "end_position_error_m": 0.15733902413179787,
+      "end_yaw_error_deg": 4.827067690627079
+    },
+    "gt_guard": {
+      "final": {
+        "occupied_cells": 187,
+        "precision_015": 0.6684491978609626,
+        "precision_cell": 0.5454545454545454,
+        "wall_coverage": 0.33810888252148996,
+        "wall_error_rmse_m": 0.18549040649993923,
+        "covered_all_count": 118,
+        "recall_visible": 0.7766990291262136,
+        "covered_visible_count": 80,
+        "recall_contact_visible": 0.7766990291262136,
+        "covered_contact_visible_count": 80,
+        "recall_contact_near4": 0.9090909090909091,
+        "covered_contact_near4_count": 80,
+        "recall_contact_admitted": 0.7766990291262136,
+        "covered_contact_admitted_count": 80
+      },
+      "scope": "evaluation-only map; not estimator performance"
+    }
+  },
+  "checks": {
+    "terminal_30pct_and_075m": true,
+    "path_median_not_worse": true,
+    "path_p95_not_worse": true,
+    "path_rmse_20pct": true,
+    "map_precision_not_worse": true,
+    "map_recall_within_2pp": false,
+    "map_rmse_20pct": true,
+    "zero_invalid_endpoints": true,
+    "zero_behind_camera_evidence": true,
+    "guard_precision_nondecrease": false,
+    "guard_visible_recall_within_2pp": false,
+    "off_bytes": true
+  },
+  "success": false,
+  "golden": {
+    "graph_off_ledger_bytes": true,
+    "graph_off_pose_bytes": true,
+    "graph_off_cells_bytes": true,
+    "graph_off_llm_bytes": true,
+    "dr_off_pose_bytes": true,
+    "dr_off_cells_bytes": true,
+    "dr_off_llm_bytes": true
+  },
+  "origin_eval_only": [
+    0.22680456372770658,
+    0.05000000599772155,
+    4.689800244275325e-09
+  ],
+  "visibility_counts": {
+    "visible": 103,
+    "contact_visible": 103,
+    "contact_near4": 88,
+    "contact_admitted": 103
+  },
+  "accepted_invalid_endpoints": 0,
+  "loop_counts": {
+    "member_scan": 262,
+    "temporal_separation": 635,
+    "accepted": 121,
+    "unobservable": 205,
+    "search_boundary": 222,
+    "ambiguous_modes": 409,
+    "refinement_failed": 13,
+    "low_probability": 25,
+    "low_overlap": 8,
+    "high_residual": 4
+  },
+  "optimization": {
+    "accepted": true,
+    "reason": "converged",
+    "initial_cost": 393.1479778053937,
+    "final_cost": 149.023565570934,
+    "nfev": 6,
+    "status": 2,
+    "message": "`ftol` termination condition is satisfied.",
+    "max_translation_change_m": 0.23813609573732694
+  },
+  "changed": true,
+  "submaps": 14,
+  "inserted_scans": 136,
+  "path_frame_count": 1848,
+  "prediction_hashes": {
+    "rbpf100_guard-poses.jsonl": "dab5e97c4cdb20ac8e7849e268079a5103b48b4d4a9a762636511fd9001feb24",
+    "off-poses.jsonl": "9e14cc1b6b96e8574feffaaf4e66fa7b136ae8d12c3d42fa67bcc968f0ce68a0",
+    "graph-ledger.jsonl": "9cdb62c9607edb8b89fd405c1dc8ca894172bb3d561c2d202b63e06d1a10ba34",
+    "rbpf100_guard-grid.json": "807591e8d76a7c1ffaa776a7d7f9b084c365d804d8a2e064568f1b1a22b7a136",
+    "graph-llm.txt": "7ec7d61dc89306ea724ee2ee25c6163b9ac2413cf39c6d354bb422a18ea467bd",
+    "off-grid.json": "788ceadbb2f6848982eb431cdc2ec2efad846194ca067729be051c8f36c03dfb",
+    "graph-grid.json": "53b7de15c167707825dc87b461a306df86bd91eefffff9bb05665c0b3ee7d7ae",
+    "submaps.json": "f36dafd86401bb7b762fa1abfc5a75d26320f1284b5a54ca740f74a25f6c6d39",
+    "loops.jsonl": "5fa5cbc3fb9279ffc26a01dc2cd5ebd18e3d9f611eeb3762c3bf04e1f219ddf9",
+    "constraints.json": "800afa1fc0563ef951aac3cc5e135418ec105e0007a86fa369b0d6c17418ad05",
+    "graph-poses.jsonl": "f19d377c21b7b3e32d70ee3749e057d498bcf37651d1ee09af1fd7974b2c3d56",
+    "optimization.json": "799681a5241416e79f82357c66d343e7b188e7c6e3b14d6fbfe909d1c3bfd74e"
+  },
+  "scope": "offline global backend on final-particle ledger; local estimator unchanged; no new simulation",
+  "path_convention": "apply latest final-lineage scan local/global transform to saved online max-particle path",
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s911-r1/summary.json",
+      "sha256": "d338100a1394ec2acac9ed72765d416053ddede5610deb13c68210ad5b792d51"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s911-r1/guarded-ledger.jsonl",
+      "sha256": "81c6a2597b141a1a146f066c545a760c51307676f0cd35d63eaa447645e791ad"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s911-r1/rbpf100-fixed-poses.jsonl",
+      "sha256": "dab5e97c4cdb20ac8e7849e268079a5103b48b4d4a9a762636511fd9001feb24"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s911-r1/gt_guard-grid.json",
+      "sha256": "553fa763b6ba6517a04e0e1dc19ff31e2761a221eb1387052a62fae3429fc4b1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/wall-projection-guard-v1-complete/s911-r1/projection-decisions.jsonl",
+      "sha256": "38e74bd93fd5ad3ff98238d736f156d7e5624bfdeac36e02d038366ccfb3fe99"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/frames.jsonl",
+      "sha256": "160ca4badd5359a014fdcbdbad112ecb3b67dcff14571558f80b35342cb2ff6c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/commands.jsonl",
+      "sha256": "edada3d03fa06c87ae8de8e0fa7f348867ded13c7c4b60d97cfa30c422cd7b9c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-odom-grid-v1-complete/s911-r1/observations.jsonl",
+      "sha256": "e02e11903e4d47256764bc03c42180b5e2b40abe482ef570866a1f81e1c5eb62"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/results/map_error_oracle_v2/s911-r1/wall_samples.json",
+      "sha256": "dff47759886ca3397bf37d47cb79b8a6e25e18f09d9b0c35a59252049d337aae"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/inputs/static_map.json",
+      "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/eval_only/trajectory.jsonl",
+      "sha256": "d9b0ef6dbc3ba7a4ce287922a59764fccc6c0b838bf8aabf44c44266e7579714"
+    }
+  ]
+}

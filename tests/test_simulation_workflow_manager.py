@@ -248,6 +248,18 @@ raise SystemExit(3 if a.fail else 0)
         model.mkdir()
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
+            "active-nav2": ["--case", "new-seed", "--expected-source-sha", "0"*40],
+            "pulse-rotation-audit": ["--expected-source-sha", "0"*40],
+            "active-recovery": ["--case", "new-seed", "--expected-source-sha", "0"*40],
+            "rbpf-wide-confirm": ["--case", "new-seed", "--expected-source-sha", "0"*40],
+            "rbpf-motion-gate": ["--case", "baseline", "--expected-source-sha", "0"*40],
+            "active-wall-map": ["--case", "static", "--expected-source-sha", "0"*40],
+            "arena-wall-map": ["--case", "forward", "--expected-source-sha", "0"*40],
+            "wall-parallax-strafe": ["--case", "strafe-north", "--expected-source-sha", "0"*40],
+            "wall-parallax-texture": ["--case", "preview", "--expected-source-sha", "0"*40,
+                                      "--wall-texture", "tape_v1"],
+            "wall-servo-stiffness": ["--case", "static-on", "--expected-source-sha", "0"*40,
+                                     "--servo-stiffness", "real_v1"],
             "zone-study-pilot": [],
             "local": ["run", str(PROJECT / "configs/simulation/drive.json"), "--headless"], "dispatch": ["--headless"],
             "dispatch-skills": ["--plan-replay", str(source), "--grasp-model-dir", str(model), "--stage-model-dir", str(model)],
@@ -416,6 +428,19 @@ raise SystemExit(3 if a.fail else 0)
         for name in ('zone-s2-look-before-move-v135', 'zone-s2-goal-heading-v136',
                      'zone-s2-staged-approach-v137', 'zone-s2-staging-only-v138'):
             samples[name] = ['--expected-source-sha', '0'*40, '--seed', '1054']
+        # PR #405 own-map/egomap DEV workflows (planning only; each runner still needs --execute + lock).
+        sha = ['--expected-source-sha', '0'*40]
+        samples.update({
+            'active-frontier-cycle': sha, 'navfn-start-recovery': sha, 'own-map-goal-dev': sha,
+            'active-rotleft-dev': ['--case', 'new-seed', *sha],
+            'frontier-duration': ['--condition', 'baseline', *sha],
+            'egomap-reconfirmation-dev': ['--mode', 'smoke'], 'egomap-fresh-paired-dev': ['--mode', 'smoke'],
+            'own-route-particle-stages-dev': ['--mode', 'smoke', '--seed', '60012'],
+        })
+        for name, seed in (('goal-route-continuous-dev', '55001'), ('goal-route-motion-audit-dev', '55001'),
+                           ('goal-route-preflight-dev', '55001'), ('own-map-return-repeat', '49001'),
+                           ('own-teach-capture', '49002'), ('own-teach-return-dev', '54001')):
+            samples[name] = ['--seed', seed, *sha]
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
             plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}

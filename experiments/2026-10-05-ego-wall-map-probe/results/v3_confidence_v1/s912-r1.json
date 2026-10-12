@@ -1,0 +1,131 @@
+{
+  "diagnostic": {
+    "case": "s912-r1",
+    "groups": {
+      "all": {
+        "detections": 388,
+        "mean_weight": 0.36292704367357714,
+        "median_weight": 0.3750622338136419,
+        "correct_samples": 3800,
+        "samples": 4138
+      },
+      "slanted_false": {
+        "detections": 8,
+        "mean_weight": 0.7497360531154365,
+        "median_weight": 0.6623158612144981,
+        "correct_samples": 133,
+        "samples": 344
+      },
+      "mostly_correct": {
+        "detections": 380,
+        "mean_weight": 0.3547836961063801,
+        "median_weight": 0.3714240924257778,
+        "correct_samples": 3667,
+        "samples": 3794
+      }
+    },
+    "unmatched": 0,
+    "feature_hash": "f5ec147f8b1995dc5d570120dac30aef9865f925272878090f8fe8ed5b170b2f"
+  },
+  "map_comparison": {
+    "case": "s912-r1",
+    "scope": "insertion-only fixed old graph poses; NOT a new RBPF estimate",
+    "unchanged_graph": {
+      "final": {
+        "occupied_cells": 158,
+        "precision_015": 0.6518987341772152,
+        "precision_cell": 0.4620253164556962,
+        "wall_coverage": 0.3438395415472779,
+        "wall_error_rmse_m": 0.21008429972970866,
+        "covered_all_count": 120,
+        "recall_visible": 0.75,
+        "covered_visible_count": 78,
+        "recall_contact_visible": 0.75,
+        "covered_contact_visible_count": 78,
+        "recall_contact_near4": 0.8863636363636364,
+        "covered_contact_near4_count": 78,
+        "recall_contact_admitted": 0.7572815533980582,
+        "covered_contact_admitted_count": 78
+      },
+      "path_position_error": {
+        "median_m": 0.11710851452027357,
+        "p90_m": 0.3504022622002676,
+        "p95_m": 0.37737536453405635,
+        "max_m": 0.5133314679323702,
+        "rmse_m": 0.21672816400170122,
+        "count": 1521
+      },
+      "end_position_error_m": 0.10936660128454305,
+      "end_yaw_error_deg": 1.0414827872569952
+    },
+    "weighted_graph": {
+      "final": {
+        "occupied_cells": 155,
+        "precision_015": 0.6580645161290323,
+        "precision_cell": 0.47096774193548385,
+        "wall_coverage": 0.3438395415472779,
+        "wall_error_rmse_m": 0.21226185218247914,
+        "covered_all_count": 120,
+        "recall_visible": 0.75,
+        "covered_visible_count": 78,
+        "recall_contact_visible": 0.75,
+        "covered_contact_visible_count": 78,
+        "recall_contact_near4": 0.8863636363636364,
+        "covered_contact_near4_count": 78,
+        "recall_contact_admitted": 0.7572815533980582,
+        "covered_contact_admitted_count": 78
+      }
+    },
+    "gt_unweighted": {
+      "final": {
+        "occupied_cells": 161,
+        "precision_015": 0.7080745341614907,
+        "precision_cell": 0.5962732919254659,
+        "wall_coverage": 0.33810888252148996,
+        "wall_error_rmse_m": 0.18042676705066832,
+        "covered_all_count": 118,
+        "recall_visible": 0.7692307692307693,
+        "covered_visible_count": 80,
+        "recall_contact_visible": 0.7692307692307693,
+        "covered_contact_visible_count": 80,
+        "recall_contact_near4": 0.9090909090909091,
+        "covered_contact_near4_count": 80,
+        "recall_contact_admitted": 0.7766990291262136,
+        "covered_contact_admitted_count": 80
+      },
+      "scope": "evaluation-only map; not estimator performance"
+    },
+    "gt_weighted": {
+      "final": {
+        "occupied_cells": 157,
+        "precision_015": 0.7133757961783439,
+        "precision_cell": 0.5987261146496815,
+        "wall_coverage": 0.33810888252148996,
+        "wall_error_rmse_m": 0.18181162060052156,
+        "covered_all_count": 118,
+        "recall_visible": 0.7692307692307693,
+        "covered_visible_count": 80,
+        "recall_contact_visible": 0.7692307692307693,
+        "covered_contact_visible_count": 80,
+        "recall_contact_near4": 0.9090909090909091,
+        "covered_contact_near4_count": 80,
+        "recall_contact_admitted": 0.7766990291262136,
+        "covered_contact_admitted_count": 80
+      }
+    },
+    "sources": [
+      {
+        "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/own-submap-v1-complete/s912-r1/graph-ledger.jsonl",
+        "sha256": "b9d5e44239e721422f191821c77aab4507e7f3bff9ee62962f359b5358147cfc"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete/rbpf100/s912-r1/covariance.jsonl",
+        "sha256": "36968d0226fc27636f9f668421f102e4bc87285a77a7038dc9035de636a15f21"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-v3-confidence-v1/old/s912-r1/own-features.jsonl",
+        "sha256": "f5ec147f8b1995dc5d570120dac30aef9865f925272878090f8fe8ed5b170b2f"
+      }
+    ]
+  }
+}

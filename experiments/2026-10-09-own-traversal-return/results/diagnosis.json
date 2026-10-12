@@ -1,0 +1,546 @@
+[
+  {
+    "seed": 49001,
+    "frames": 1790,
+    "nodes": 272,
+    "edges": 259,
+    "components": 13,
+    "breaks": 103,
+    "break_reasons": {
+      "controller_no_progress": 20,
+      "recover": 81,
+      "navigation_action_aborted": 2
+    },
+    "B_node": 25,
+    "B_component_size": 34,
+    "last_component_size": 19,
+    "route": false,
+    "match": "accepted",
+    "match_eval": {
+      "xy_m": 0.2329312049253963,
+      "yaw_deg": 1.3680768532755374
+    },
+    "all_edges_audit": {
+      "estimated": {
+        "center_crossing_segments": 0,
+        "center_segments": 1603,
+        "footprint_overlap_samples": 52,
+        "footprint_samples": 4877
+      },
+      "actual": {
+        "center_crossing_segments": 0,
+        "center_segments": 1603,
+        "footprint_overlap_samples": 52,
+        "footprint_samples": 4245
+      }
+    },
+    "first_B_following_break": {
+      "start": 43.5,
+      "end": 43.7,
+      "frames": 2,
+      "reason": "controller_no_progress"
+    },
+    "break_intervals_after_B": [
+      {
+        "start": 43.5,
+        "end": 43.7,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 66.1,
+        "end": 66.3,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 97.1,
+        "end": 97.3,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 119.7,
+        "end": 119.9,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 141.5,
+        "end": 141.7,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 163.9,
+        "end": 164.1,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 221.3,
+        "end": 221.5,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 244.3,
+        "end": 244.5,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 267.1,
+        "end": 267.3,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 290.1,
+        "end": 290.3,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 328.7,
+        "end": 331.1,
+        "frames": 13,
+        "reason": "recover"
+      },
+      {
+        "start": 332.3,
+        "end": 346.1,
+        "frames": 70,
+        "reason": "recover"
+      }
+    ],
+    "first_break_translation_06s_m": 0.013548142731068047,
+    "actual_door_crossings": [
+      {
+        "id": "door_narrow",
+        "t": 190.2554003523349,
+        "point": [
+          2.2,
+          -0.09505362251229947
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 49002,
+    "frames": 1790,
+    "nodes": 223,
+    "edges": 215,
+    "components": 8,
+    "breaks": 27,
+    "break_reasons": {
+      "controller_no_progress": 12,
+      "recover": 15
+    },
+    "B_node": 25,
+    "B_component_size": 26,
+    "last_component_size": 4,
+    "route": false,
+    "match": "unobservable",
+    "match_eval": null,
+    "all_edges_audit": {
+      "estimated": {
+        "center_crossing_segments": 6,
+        "center_segments": 1696,
+        "footprint_overlap_samples": 75,
+        "footprint_samples": 4866
+      },
+      "actual": {
+        "center_crossing_segments": 0,
+        "center_segments": 1696,
+        "footprint_overlap_samples": 0,
+        "footprint_samples": 4117
+      }
+    },
+    "first_B_following_break": {
+      "start": 25.9,
+      "end": 26.1,
+      "frames": 2,
+      "reason": "controller_no_progress"
+    },
+    "break_intervals_after_B": [
+      {
+        "start": 25.9,
+        "end": 26.1,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 48.7,
+        "end": 48.9,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 71.1,
+        "end": 71.3,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 107.7,
+        "end": 107.9,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 129.9,
+        "end": 130.1,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 287.5,
+        "end": 287.7,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 349.3,
+        "end": 352.1,
+        "frames": 15,
+        "reason": "recover"
+      }
+    ],
+    "first_break_translation_06s_m": 0.011943240006956828,
+    "actual_door_crossings": [
+      {
+        "id": "door_wide",
+        "t": 206.09570470991184,
+        "point": [
+          2.2,
+          -2.5520065621336188
+        ]
+      },
+      {
+        "id": "door_narrow",
+        "t": 327.9383943848421,
+        "point": [
+          2.2,
+          0.10941449841173058
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 49003,
+    "frames": 169,
+    "nodes": 22,
+    "edges": 21,
+    "components": 1,
+    "breaks": 0,
+    "break_reasons": {},
+    "B_node": null,
+    "B_component_size": null,
+    "last_component_size": 22,
+    "route": false,
+    "match": null,
+    "match_eval": null,
+    "all_edges_audit": {
+      "estimated": {
+        "center_crossing_segments": 0,
+        "center_segments": 168,
+        "footprint_overlap_samples": 0,
+        "footprint_samples": 461
+      },
+      "actual": {
+        "center_crossing_segments": 0,
+        "center_segments": 168,
+        "footprint_overlap_samples": 3,
+        "footprint_samples": 407
+      }
+    },
+    "first_B_following_break": null,
+    "break_intervals_after_B": [],
+    "first_break_translation_06s_m": null,
+    "actual_door_crossings": []
+  },
+  {
+    "seed": 49004,
+    "frames": 389,
+    "nodes": 29,
+    "edges": 25,
+    "components": 4,
+    "breaks": 46,
+    "break_reasons": {
+      "controller_no_progress": 2,
+      "recover": 44
+    },
+    "B_node": null,
+    "B_component_size": null,
+    "last_component_size": null,
+    "route": false,
+    "match": null,
+    "match_eval": null,
+    "all_edges_audit": {
+      "estimated": {
+        "center_crossing_segments": 0,
+        "center_segments": 175,
+        "footprint_overlap_samples": 51,
+        "footprint_samples": 571
+      },
+      "actual": {
+        "center_crossing_segments": 0,
+        "center_segments": 175,
+        "footprint_overlap_samples": 0,
+        "footprint_samples": 443
+      }
+    },
+    "first_B_following_break": null,
+    "break_intervals_after_B": [],
+    "first_break_translation_06s_m": null,
+    "actual_door_crossings": []
+  },
+  {
+    "seed": 49005,
+    "frames": 1790,
+    "nodes": 271,
+    "edges": 259,
+    "components": 12,
+    "breaks": 22,
+    "break_reasons": {
+      "controller_no_progress": 22
+    },
+    "B_node": 106,
+    "B_component_size": 24,
+    "last_component_size": 19,
+    "route": false,
+    "match": "unobservable",
+    "match_eval": null,
+    "all_edges_audit": {
+      "estimated": {
+        "center_crossing_segments": 30,
+        "center_segments": 1608,
+        "footprint_overlap_samples": 811,
+        "footprint_samples": 4765
+      },
+      "actual": {
+        "center_crossing_segments": 0,
+        "center_segments": 1608,
+        "footprint_overlap_samples": 293,
+        "footprint_samples": 4167
+      }
+    },
+    "first_B_following_break": {
+      "start": 145.9,
+      "end": 146.1,
+      "frames": 2,
+      "reason": "controller_no_progress"
+    },
+    "break_intervals_after_B": [
+      {
+        "start": 145.9,
+        "end": 146.1,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 182.3,
+        "end": 182.5,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 219.3,
+        "end": 219.5,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 243.5,
+        "end": 243.7,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 275.9,
+        "end": 276.1,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 307.1,
+        "end": 307.3,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 329.7,
+        "end": 329.9,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      }
+    ],
+    "first_break_translation_06s_m": 0.011196673870549187,
+    "actual_door_crossings": [
+      {
+        "id": "door_narrow",
+        "t": 53.980780934530735,
+        "point": [
+          2.2,
+          -0.03608025944834075
+        ]
+      },
+      {
+        "id": "door_narrow",
+        "t": 99.39988091126754,
+        "point": [
+          2.2,
+          0.10654917038358827
+        ]
+      },
+      {
+        "id": "door_narrow",
+        "t": 121.04911584354038,
+        "point": [
+          2.2,
+          0.13996114660649828
+        ]
+      },
+      {
+        "id": "door_narrow",
+        "t": 145.702619535022,
+        "point": [
+          2.2,
+          -0.013152222947509846
+        ]
+      },
+      {
+        "id": "door_narrow",
+        "t": 170.41997149229556,
+        "point": [
+          2.2,
+          -0.048720519007907345
+        ]
+      },
+      {
+        "id": "door_narrow",
+        "t": 194.6616351208516,
+        "point": [
+          2.2,
+          0.1258635698164555
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 49006,
+    "frames": 1790,
+    "nodes": 212,
+    "edges": 203,
+    "components": 9,
+    "breaks": 29,
+    "break_reasons": {
+      "controller_no_progress": 14,
+      "recover": 15
+    },
+    "B_node": 25,
+    "B_component_size": 31,
+    "last_component_size": 2,
+    "route": false,
+    "match": "insufficient_points",
+    "match_eval": null,
+    "all_edges_audit": {
+      "estimated": {
+        "center_crossing_segments": 3,
+        "center_segments": 1678,
+        "footprint_overlap_samples": 231,
+        "footprint_samples": 4547
+      },
+      "actual": {
+        "center_crossing_segments": 0,
+        "center_segments": 1678,
+        "footprint_overlap_samples": 48,
+        "footprint_samples": 4095
+      }
+    },
+    "first_B_following_break": {
+      "start": 70.9,
+      "end": 71.1,
+      "frames": 2,
+      "reason": "controller_no_progress"
+    },
+    "break_intervals_after_B": [
+      {
+        "start": 70.9,
+        "end": 71.1,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 93.3,
+        "end": 93.5,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 116.1,
+        "end": 116.3,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 204.5,
+        "end": 204.7,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 227.3,
+        "end": 227.5,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 312.5,
+        "end": 312.7,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      },
+      {
+        "start": 346.3,
+        "end": 349.1,
+        "frames": 15,
+        "reason": "recover"
+      },
+      {
+        "start": 359.3,
+        "end": 359.5,
+        "frames": 2,
+        "reason": "controller_no_progress"
+      }
+    ],
+    "first_break_translation_06s_m": 0.01521922100079351,
+    "actual_door_crossings": [
+      {
+        "id": "door_narrow",
+        "t": 39.06460284730797,
+        "point": [
+          2.2,
+          -0.03776593380613315
+        ]
+      },
+      {
+        "id": "door_narrow",
+        "t": 160.06247991702355,
+        "point": [
+          2.2,
+          0.12911869102040457
+        ]
+      },
+      {
+        "id": "door_narrow",
+        "t": 262.0794276553146,
+        "point": [
+          2.2,
+          0.06510020119425625
+        ]
+      }
+    ]
+  }
+]
