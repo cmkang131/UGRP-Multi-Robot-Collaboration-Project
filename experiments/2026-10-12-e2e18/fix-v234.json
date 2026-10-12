@@ -1,0 +1,60 @@
+{
+  "schema": "e2e18.fix.v234",
+  "parent": "e2e18-v233",
+  "toggles": {
+    "beam_end_model": "long_side_v1",
+    "beam_avoidance": "own_obstacle_v1",
+    "defaults": "off"
+  },
+  "raw_evidence_file": "band-end-evidence.json",
+  "raw_evidence_sha256": "76abf144e7d4917c937fb94354f73b358a467eee641e72e5a77e581631e8206e",
+  "cause": {
+    "far_end": "Band loop accepted short colored end cap beyond a far band; Robot._receive always extrapolated +.27 m, shifting center by .54 m instead of -.27 m",
+    "ambiguous_band": "Some BAND_VISIBLE readings had neither side with >=.12 m observed colored extent",
+    "path": "Approach costmap represented walls but omitted observed beam; DEV NoPath fallback could cross it"
+  },
+  "changes": {
+    "end": "PCA axis remains undirected until long observed colored side establishes inward sign; >=25 support points beyond .12 m, opposite q98 <=.10 m; no long side -> end_visible false; far edge needs measured band",
+    "obstacle": "Transient own observed beam rectangle .60x.06 m added to existing costmap; native NavFn inflation. DEV fallback uses only planning copy but retains beam obstacle; no RGB map coverage added"
+  },
+  "prereg": {
+    "seeds": {
+      "azure3": [
+        61004,
+        61006
+      ],
+      "azure4": [
+        61007,
+        61008,
+        61010,
+        61012
+      ]
+    },
+    "probe_sim_s": 30,
+    "total_concurrency_per_vm": 6,
+    "gate_limit": 3.0,
+    "wall_cap_s": 7200,
+    "criterion": "all3 single run; no inherited physical outcomes"
+  },
+  "tests": {
+    "files": [
+      "test_e2e_beam_end_model.py",
+      "test_e2e_beam_avoidance.py",
+      "test_e2e_carrier_axes.py"
+    ],
+    "passed": 15,
+    "seconds": 7.51,
+    "recorded_frame_replay": "ed2fd94e38fa07c9fb9381ffadd670ab9ba6c2ef693153d16eebc053c233570d",
+    "scope": "offline image/controller/native NavFn; no Mac physics"
+  },
+  "references": [
+    "https://docs.opencv.org/4.13.0/d1/dee/tutorial_introduction_to_pca.html",
+    "https://nvlabs.github.io/FoundationPose/",
+    "https://github.com/ros-navigation/navigation2/tree/main/nav2_costmap_2d"
+  ],
+  "research": "PCA axis orientation needs object geometry to resolve sign. Use simple known-length model consistency and standard observed-obstacle inflation, not a new model. FoundationPose model-based hypotheses/refinement reviewed only; no depth/GT pose/assets imported.",
+  "limitations": [
+    "thresholds are DEV candidates, not calibrated guarantees",
+    "known-wall conservative stop remains would-stop in DEV; transient fallback does not establish coverage"
+  ]
+}

@@ -65,10 +65,20 @@ def advance(transport,rid,now):
             return True,[]
     tf=g.explorer.map_to_odom;mp=compose(tf,pose);mt=compose(tf,end)
     costmap=from_observed_grid(g.explorer.grid,mp,g.explorer.latest,set())
+    avoidance=getattr(transport,'beam_avoidance','off')=='own_obstacle_v1'
+    if avoidance:
+        from harness.e2e_beam_avoidance import add
+        beam_center=transform([state['basis']['center_m']],tf)[0]
+        beam_yaw=state['basis']['yaw_rad']+tf[2]
+        costmap=add(costmap,beam_center,beam_yaw)
+        diag['beam_obstacle_source']='own_rgb_center_axis_known_size'
     path=g.explorer.navigator.plan_to(costmap,mp,mt[:2])
     diag['path_points']=len(path)
     if not path and recovery and (fresh or cached_navigation) and transport.dev_light:
-        path=[mp[:2],mt[:2]]
+        if avoidance:
+            from harness.e2e_beam_avoidance import fallback
+            path=fallback(g.explorer.navigator,mp,mt[:2],beam_center,beam_yaw)
+        else:path=[mp[:2],mt[:2]]
         diag['would_stop_path_unavailable']=True
         transport.event(now,'would_stop_pregrasp_no_path',robot_id=rid,dev_light=True,source='fresh_own_rgb_station' if fresh else 'last_own_rgb_station',last_seen_age_s=now-state['last_seen'])
     if not path:
