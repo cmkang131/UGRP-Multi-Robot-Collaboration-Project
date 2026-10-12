@@ -1,0 +1,74 @@
+{
+  "scope": "Merge-only integration of PR452-458; no new physical/model/VM execution.",
+  "base_sha": "681d83e43355df3d66c20c597293627bb2ab8830",
+  "source_snapshot_sha": "cf805b77555f079ec65d49c49a33c47bdc36673e",
+  "included_prs": [
+    {
+      "number": 452,
+      "branch": "codex/e2e-vomask",
+      "sha": "83bdff828b3f1067bd80e6e687b4f4c3f0ad8a5c"
+    },
+    {
+      "number": 453,
+      "branch": "codex/e2e-idle",
+      "sha": "24c442ac33e98394cb3e5de2c9fffa6310345a7b"
+    },
+    {
+      "number": 454,
+      "branch": "codex/e2e-speed3",
+      "sha": "e8d31cd4df240d99c2a93d7ae6704af58366f039"
+    },
+    {
+      "number": 455,
+      "branch": "codex/e2e-speed4",
+      "sha": "dbbb245197caddf03b32fa4452d4f56e63842af1"
+    },
+    {
+      "number": 456,
+      "branch": "claude/e2e-route",
+      "sha": "1d16f8450599252ab0e28653902d51d0936b1f1e"
+    },
+    {
+      "number": 457,
+      "branch": "claude/e2e-bquad",
+      "sha": "6525faf8f30daee8c574949c5714828c0c5a289d"
+    },
+    {
+      "number": 458,
+      "branch": "codex/e2e18",
+      "sha": "cf805b77555f079ec65d49c49a33c47bdc36673e"
+    }
+  ],
+  "excluded_prs": [
+    459
+  ],
+  "candidate_before_ci_fixes": "00367e61247aac1bef3f17fc9ff9e42fcb686cb9",
+  "bundle_workflow_byte_check": {
+    "compared": 36,
+    "different": 0
+  },
+  "targeted_initial": {
+    "passed": 41,
+    "failed": 2,
+    "log": "outputs/merge-a-20261012/targeted-tests.log"
+  },
+  "ci": "pending_push",
+  "review": "in_progress",
+  "raw_modified": false,
+  "ci_new_test_registration": {
+    "new_files": 16,
+    "omitted_before_fix": 8,
+    "missing_after_fix": 0
+  },
+  "targeted_final": {
+    "passed": 34,
+    "failed": 0,
+    "files": [
+      "tests/test_e2e_boundary_repair.py",
+      "tests/test_e2e18.py",
+      "tests/test_e2e_record_scalars.py"
+    ],
+    "log": "outputs/merge-a-20261012/targeted-tests-fix.log",
+    "log_sha256": "0ab329906e55160b651313f77e0d2b09dd84085c42ce160880284bd618eb5191"
+  }
+}

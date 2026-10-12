@@ -25,6 +25,13 @@ from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
     "tests/test_e2e18.py",
+    "tests/test_e2e18_beam_axis.py",
+    "tests/test_e2e18_cadence.py",
+    "tests/test_e2e18_route_coverage.py",
+    "tests/test_e2e18_route_guard.py",
+    "tests/test_e2e_carrier_axes.py",
+    "tests/test_e2e_record_scalars.py",
+    "tests/test_e2e_route_extent.py",
     "tests/test_e2e_b_partial.py",
     "tests/test_e2e_boundary_views.py",
     "tests/test_e2e_boundary_repair.py",
@@ -36,6 +43,7 @@ TEST_PATTERNS = (
     "tests/test_e2e_us_stall.py",
     "tests/test_e2e14_combo.py",
     "tests/test_e2e_exact_speedups2.py",
+    "tests/test_e2e_speed3.py",
     "tests/test_e2e_speed4.py",
     "tests/test_e2e_overview_replay.py",
     "tests/test_e2e_runtime_registration.py",
