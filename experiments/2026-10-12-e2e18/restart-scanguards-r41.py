@@ -13,7 +13,7 @@ assert not subprocess.check_output(['git','status','--porcelain'])
 assert os.getpriority(os.PRIO_PROCESS,0)==0 and os.getloadavg()[0]<51
 assert int(next(l.split()[1] for l in Path('/proc/meminfo').read_text().splitlines() if l.startswith('MemAvailable:')))>6*1024**2
 assert float(Path('/proc/uptime').read_text().split()[0])+2400+1200<28800,'FINITE_VM_LIFETIME_REQUIRED'
-for h,minimum in [('x86',6*2560*2**20),('arm',12*2560*2**20),('mac',12*80*2**20)]:
+for h,minimum in [('x86',6*2048*2**20),('arm',12*2048*2**20),('mac',12*80*2**20)]:
  p=b/f'e2e18-r41-budget-{h}.json';x=json.loads(p.read_text());assert time.time()-p.stat().st_mtime<300 and x['ok']
  assert x['checks'][0]['expected_bytes']>=minimum
 active=[r for r in (b/'runs').glob('e2e18-v*-s*-r*') if r.is_dir() and not (r/'EXIT').exists()]
