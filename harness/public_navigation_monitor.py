@@ -5,6 +5,7 @@ ROS-independent port: original kinematics/frontier/NavFn compiled unchanged,
 polygon/TTC loop copied with Apache-2.0 attribution in the native adapter.
 """
 import ctypes
+from harness.native_build_cache import build_target
 import hashlib
 import math
 import subprocess
@@ -37,11 +38,11 @@ def build():
     inputs+=sorted((HERE/'shim').rglob('*.h'))+sorted(VENDOR.rglob('*.h'))+sorted((monitor/'include').rglob('*.hpp'))
     digest=hashlib.sha256(b''.join(p.read_bytes() for p in inputs)).hexdigest()[:16]
     target=ROOT/'outputs/mapfree-public-navigation-build'/f'monitor-{digest}.so'
-    if not target.exists():
-        target.parent.mkdir(parents=True,exist_ok=True)
-        subprocess.run(['c++','-std=c++17','-O2','-shared','-fPIC','-I'+str(HERE/'shim'),
-            '-I'+str(VENDOR/'navigation/navfn/include'),'-I'+str(VENDOR/'m-explore/explore/include'),
-            '-I'+str(monitor/'include'),*map(str,sources),'-o',str(target)],check=True,capture_output=True,text=True)
+    with build_target(target) as output:
+        if output is not None:
+            subprocess.run(['c++','-std=c++17','-O2','-shared','-fPIC','-I'+str(HERE/'shim'),
+                '-I'+str(VENDOR/'navigation/navfn/include'),'-I'+str(VENDOR/'m-explore/explore/include'),
+                '-I'+str(monitor/'include'),*map(str,sources),'-o',str(output)],check=True,capture_output=True,text=True)
     return target
 
 

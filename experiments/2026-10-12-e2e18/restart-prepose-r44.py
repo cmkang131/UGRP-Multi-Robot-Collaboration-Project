@@ -28,6 +28,11 @@ assert cap>=900,'INSUFFICIENT_RELAY_LIFETIME_FOR_BATCH'
 assert float(Path('/proc/uptime').read_text().split()[0])+cap+1200<28800,'FINITE_VM_LIFETIME_REQUIRED'
 validate_receipt(receipt,now=time.time()+cap+600,remote_url=relay_url('study_gemma4_31b_v1'))
 old_plan=json.loads(next((b/'runs').glob('speed-gate-e2e18-*-r33-*-plan.json')).read_text())
+from harness.public_navigation.native import PublicCore
+from harness.public_navigation_unknown import UnknownCore
+from harness.public_navigation_monitor import MonitorCore
+for cls in (PublicCore,UnknownCore,MonitorCore):cls()
+print('NATIVE_BUILD_AND_LOAD_READY',flush=True)
 specs=[]
 for seed,version,mode in selected:
  name=f'e2e18-v{version}-s{seed}-r44';target=b/'runs'/name;target.mkdir(exist_ok=False)

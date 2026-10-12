@@ -1,0 +1,9 @@
+{
+  "failure": "concurrent compilation published an incomplete shared library before compiler completion",
+  "observed": "r45 gate completed 3/6; three HOST_ERROR file too short at 0 SIM; no actual cohort admitted",
+  "source": "harness/public_navigation_unknown.py:28",
+  "fix": "Per-target POSIX flock; compile to unique file in target directory and atomic os.replace only after success. Warm all three native cores before concurrent gate. Algorithm and C++ sources unchanged.",
+  "reference": "https://docs.python.org/3/library/os.html#os.replace",
+  "validation": "test_native_build_cache.py: 2 passed (failure/retry and independent producer/consumer processes); test_own_route_reference.py: 14 passed including real vendored NavFn barrier/path check. No Mac physics.",
+  "retry": "r46 same three bundle candidates and same seeds; r44 remains later second wave"
+}
