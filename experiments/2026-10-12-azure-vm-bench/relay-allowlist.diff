@@ -1,0 +1,4 @@
+22c22
+<     return value.startswith('s4live1-') or re.fullmatch(r'e2e13-(?:profile|off|index|validate|copy|both)-s61001(?:-p[123])?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(
+---
+>     return re.fullmatch(r'vmb-(?:d16v5|d16v6|f16v6)-(?:solo|c[1-6]):call-\d+-r[123]:\d+',value) is not None or value.startswith('s4live1-') or re.fullmatch(r'e2e13-(?:profile|off|index|validate|copy|both)-s61001(?:-p[123])?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(

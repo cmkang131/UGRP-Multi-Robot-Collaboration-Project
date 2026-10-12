@@ -32,7 +32,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False):
     if profile not in PROFILES or seed not in (61001,61002,61003,61004):raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
@@ -56,6 +56,9 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         raise ValueError('RGB_VO_V2_HAS_NO_STANDALONE_BUNDLE')
     from harness.e2e_exact_speedups import Options as SpeedOptions
     speed=SpeedOptions(**(exact_speedups or {}))
+    from harness.e2e_exact_speedups import ROUND2_FIELDS
+    # Round-2 toggles are only part of the v203 bundle; v200 bytes stay unchanged.
+    speed2=speed2_bundle or any(getattr(speed,k) for k in ROUND2_FIELDS)
     from harness.zone_study_llm_driver import load_registry
     b=json.loads((ROOT/'configs/e2e_s3_test_runtime_v1.json').read_text())
     # The template contributes physical/calibration constants only. Its authored
@@ -91,8 +94,11 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         b['e2e_options'].update(mapping_budget=mapping_budget,mapping_budget_s=b['case_cap_s'])
         b.update(schema='ugrp.e2e_ownmap_live.v199',execution_bundle_id='e2e-stall-budget-v199',workflow_version='7.92.0')
     if speed_bundle or any(vars(speed).values()):
-        b['e2e_options']['exact_speedups']=dataclasses.asdict(speed)
+        b['e2e_options']['exact_speedups']={k:v for k,v in dataclasses.asdict(speed).items() if k not in ROUND2_FIELDS}
         b.update(schema='ugrp.e2e_ownmap_live.v200',execution_bundle_id='e2e-exact-speed-v200',workflow_version='7.93.0')
+    if speed2:
+        b['e2e_options']['exact_speedups']=dataclasses.asdict(speed)
+        b.update(schema='ugrp.e2e_ownmap_live.v203',execution_bundle_id='e2e-exact-speed2-v203',workflow_version='7.96.0')
     if stall.stall_odometry=='rgb_vo_v1':
         b.update(schema='ugrp.e2e_ownmap_live.v201',execution_bundle_id='e2e-rgb-vo-v201',workflow_version='7.94.0')
     combo=boundary_views!='off' or b_marker_detect!='off'
@@ -126,6 +132,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if stall.stall_odometry=='rgb_vo_v1':paths.add('configs/simulation_workflows.d/e2e_rgb_vo_v201.json')
     if combo:paths.add('configs/simulation_workflows.d/e2e_combo14_v204.json' if stall.stall_odometry!='rgb_vo_v2' else
                        'configs/simulation_workflows.d/e2e_combo14_vo2_v205.json')
+    if speed2:paths.update(('configs/simulation_workflows.d/e2e_exact_speed2_v203.json','scripts/e2e_speed_measure.py'))
     paths.update(runtime_assets)
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
@@ -364,17 +371,31 @@ def main(argv=None):
     p.add_argument('--exact-scalar-cells',action='store_true')
     p.add_argument('--exact-geometry-cache',action='store_true')
     p.add_argument('--exact-speed-bundle',action='store_true')
+    p.add_argument('--exact-vector-rays',action='store_true')
+    p.add_argument('--exact-shared-wall-frontend',action='store_true')
+    p.add_argument('--exact-lazy-scan-path',action='store_true')
+    p.add_argument('--exact-vector-costmap-writes',action='store_true')
+    p.add_argument('--exact-track-cell-tuples',action='store_true')
+    p.add_argument('--exact-speed2-bundle',action='store_true')
+    p.add_argument('--rbpf-audit-hash',choices=('off','binary_v1','both_v1'),default='off',
+                   help='Measurement-only RBPF audit digest (with --measure-sim-s); off = legacy JSON digest')
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
     p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
+    p.add_argument('--expected-workflow-id')
     p.add_argument('--execute',action='store_true');a=p.parse_args(argv)
     b=bundle(a.expected_source_sha,a.seed,a.driver_profile,enabled=a.e2e_live,relook=a.setdown_only_when_relook,
              options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider,
              exploration_progress=a.exploration_progress,pose_fix=a.pose_fix,
              path_follow=a.path_follow,dev_light=a.dev_light,wall_cap_s=a.wall_cap_s,
              stall_odometry=a.stall_odometry,stall_recovery=a.stall_recovery,stall_noise=a.stall_noise,stall_bundle=a.stall_bundle,mapping_budget=a.mapping_budget,
-             exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache),
-             speed_bundle=a.exact_speed_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration)
+             exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
+                 vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
+                 vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration)
+    if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
+    if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
+        raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
         raise ValueError('AZURE_X86_OSMESA_ONLY')
@@ -385,7 +406,7 @@ def main(argv=None):
     try:
         if a.measure_sim_s:
             from scripts.e2e_speed_measure import measured_run
-            r=measured_run(run,b,a.output,a.relay_receipt,a.measure_sim_s,a.measure_profile)
+            r=measured_run(run,b,a.output,a.relay_receipt,a.measure_sim_s,a.measure_profile,a.rbpf_audit_hash)
         else:r=run(b,a.output,a.relay_receipt)
     finally:undo()
     print(json.dumps(r));return int(r['status']!='FINISHED')

@@ -8,6 +8,7 @@ import math
 
 import cv2
 import numpy as np
+from harness.e2e_exact_speedups import track_cells_enabled
 
 from harness.floor_goal import FloorGoalMemory, FloorGoalOptions, commanded_camera, floor_intersections, optical_rays
 from harness.floor_goal_v2 import FloorGoalV2Options, detect_floor_v2
@@ -154,7 +155,11 @@ class FloorGoalMemoryV3(FloorGoalMemory):
             used.add(track['id'])
             track['last_center'], track['last_hull'] = center, hull
             cells = np.floor(transform(patch.pop('_points_body_m'), pose)/self.options.cell_m).astype(int)
-            track['cells'].update(tuple(x) for x in cells)
+            if track_cells_enabled() and type(cells) is np.ndarray and cells.ndim == 2 and cells.shape[1] == 2:
+                # Same np.int64 scalars, values and insertion order as tuple(row).
+                track['cells'].update(zip(cells[:, 0], cells[:, 1]))
+            else:
+                track['cells'].update(tuple(x) for x in cells)
             track['box'] = np.array([np.minimum(track['box'][0], hull.min(axis=0)), np.maximum(track['box'][1], hull.max(axis=0))])
             track['views'][frame_id] = (t, tuple(pose))
             track['last_t'] = t

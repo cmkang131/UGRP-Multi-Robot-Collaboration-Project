@@ -20,7 +20,7 @@ COMBO = dict(stall_odometry='rgb_vo_v1', boundary_views='candidate_views_v1', b_
 def test_paired_speed_options_and_relay_admission():
     from harness.e2e_exact_speedups import Options as Speed
     from scripts.s4_proxy_relay import accepted_call_id
-    speed = {k: True for k in vars(Speed())}
+    speed = {k: True for k in ('provenance_index','sha_validation_cache','omit_discarded_copy','scalar_cells','geometry_cache')}
     a = make(**COMBO, exact_speedups=speed, wall_cap_s=25200.)
     b = make(**A12, exact_speedups=speed, wall_cap_s=25200.)
     assert a['e2e_options']['exact_speedups'] == b['e2e_options']['exact_speedups'] == speed
