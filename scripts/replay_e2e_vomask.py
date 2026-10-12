@@ -43,7 +43,7 @@ def predict(raw_root, image_root, ledger_root):
         raw = raw_root/run/'raw'; base = raw/'robots'/rid
         frames = rows(base/'frames.jsonl'); origin = frames[0]['sim_time']
         ledger_path = ledger_root/run/'raw/robots'/rid/'ownmap.jsonl.zst'
-        ledger = rows(ledger_path)
+        ledger = rows(ledger_path.with_suffix(''))  # shared reader resolves .jsonl -> .jsonl.zst
         own_rows = {r['frame_id']: r for r in ledger}
         if len(own_rows) != len(ledger):
             raise ValueError('DUPLICATE_CONTROLLER_FRAME')
