@@ -1,8 +1,8 @@
 {
-  "status": "SPEED_GATE_FAIL_FIXING",
+  "status": "FALLBACK_3.0_GATE_PENDING",
   "started_utc": "2026-10-12T11:03:00Z",
   "deadline_utc": "2026-10-12T21:03:00Z",
-  "bundle": "e2e18-v218",
+  "bundle": "e2e18-v219",
   "tests": {
     "passed": 49,
     "files": [
@@ -12,7 +12,7 @@
       "test_azure_speed_gate.py"
     ]
   },
-  "gate_limit": 2.5,
+  "gate_limit": 3.0,
   "planned_seeds": [
     61001,
     61002,
@@ -315,6 +315,102 @@
       "attempt": 3,
       "status": "COHORT_NOT_STARTED",
       "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61001,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61002,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61003,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61004,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61005,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61006,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61007,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61008,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61009,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61010,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61011,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61012,
+      "bundle": "e2e18-v219",
+      "attempt": 4,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
     }
   ],
   "gates": [
@@ -421,6 +517,42 @@
       "samples_sha256": "823230657dd99edbda9d3f4efbc957823495d78a49bead6ff1dde02d79b1de63",
       "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r3-80fa2aa0ac17",
       "bundle": "e2e18-v218"
+    },
+    {
+      "status": "SPEED_GATE_FAIL",
+      "admitted": false,
+      "measured_pass": false,
+      "override_reason": null,
+      "limit_wall_per_sim": 2.5,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 6,
+      "completed": 6,
+      "median_wall_per_sim": 2.8984631161000003,
+      "invalid_samples": [],
+      "host": "azure3",
+      "source_sha": "2469a8d3ff71d11ed3fcc8374950a5f71ba50d36",
+      "bundle": "e2e18-v219",
+      "samples_file": "gate-azure3-v219.json",
+      "samples_sha256": "2918a9f8cca56f021235163dcf86f111ba98109a315972f64a1320cc7d77f64a",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r4-2469a8d3ff71"
+    },
+    {
+      "status": "SPEED_GATE_FAIL",
+      "admitted": false,
+      "measured_pass": false,
+      "override_reason": null,
+      "limit_wall_per_sim": 2.5,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 6,
+      "completed": 6,
+      "median_wall_per_sim": 2.8280021453999997,
+      "invalid_samples": [],
+      "host": "azure4",
+      "source_sha": "2469a8d3ff71d11ed3fcc8374950a5f71ba50d36",
+      "bundle": "e2e18-v219",
+      "samples_file": "gate-azure4-v219.json",
+      "samples_sha256": "01108e335c3f8d9a61eda7567ae1b5abd1728f3cfddd15d1185367320d88c76f",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r4-2469a8d3ff71"
     }
   ],
   "vm": {
@@ -1045,5 +1177,14 @@
       "arm_path": "/home/ubuntu/ugrp-archive/runs/native-speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7",
       "hash_matches": 1869
     }
-  ]
+  ],
+  "gate_policy": {
+    "initial_limit": 2.5,
+    "fallback_limit": 3.0,
+    "optimization_minutes": 28,
+    "max_minutes": 45,
+    "reason": "four completed probes; v216->219 CPU/SIM ~6.5->2.2, remaining setup/model latency and physics costs; user-authorized 3.0, no measurement bypass",
+    "preview_class": "dev"
+  },
+  "initial_health_v218": "initial-health-v218.json"
 }
