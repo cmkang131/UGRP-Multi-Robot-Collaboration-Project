@@ -3,11 +3,11 @@
   "workflows": [
     {
       "id": "controller-replay-profile",
-      "version": "1.0.0",
+      "version": "1.4.0",
       "purpose": "Saved own-input controller profiling (offline)",
       "entry": "scripts/profile_controller_replay.py",
       "runner": "scripts.profile_controller_replay",
-      "docs": "experiments/2026-10-09-sim-speed-ctrl/README.md",
+      "docs": "experiments/2026-10-10-sim-speed-ctrl2/README.md",
       "requires": "Committed source; immutable completed own inputs; exclusive host lock after S3 smoke",
       "output_flag": "--output",
       "output_kind": "directory",
