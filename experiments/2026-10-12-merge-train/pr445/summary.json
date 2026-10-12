@@ -1,0 +1,14 @@
+{
+  "pr": 445,
+  "base": "ef42b771f6bd725d46a815852f0b4350d6b52c95",
+  "cause": "Generic replay/common/evaluate module names collided inside CI shard process",
+  "fix": "Exact source import with scoped sys.path and restored common/evaluate module entries; preserved experiment code",
+  "verification": {
+    "lifecycle": "50 passed,12 skipped (PowerShell absent)",
+    "import_isolation": "9 passed with prepopulated foreign module names; originals restored",
+    "log": "outputs/merge-train-20261012/pr445-import-isolation-tests.txt",
+    "sha256": "e3c9d8a2ed98e75df3f95f33132e7db857874cf66009f1cf745da1eb608896b3"
+  },
+  "research": "https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly",
+  "vm_operations": 0
+}
