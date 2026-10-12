@@ -313,6 +313,8 @@ def main():
     p.add_argument('--mapping-budget',choices=('off','case_cap_v1'),default='off')
     p.add_argument('--dev-light',action='store_true')
     p.add_argument('--wall-cap-s',type=float,default=12600.)
+    p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
+    p.add_argument('--measure-profile',action='store_true')
     p.add_argument('--execute',action='store_true');a=p.parse_args()
     b=bundle(a.expected_source_sha,a.seed,a.driver_profile,enabled=a.e2e_live,relook=a.setdown_only_when_relook,
              options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider,
@@ -326,7 +328,11 @@ def main():
     if subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()!=a.expected_source_sha:raise ValueError('COMMITTED_SHA_REQUIRED')
     from harness.zone_pair_highpose_exact_speedups import install
     _,undo=install('v98-exact-v6')
-    try:r=run(b,a.output,a.relay_receipt)
+    try:
+        if a.measure_sim_s:
+            from scripts.e2e_speed_measure import measured_run
+            r=measured_run(run,b,a.output,a.relay_receipt,a.measure_sim_s,a.measure_profile)
+        else:r=run(b,a.output,a.relay_receipt)
     finally:undo()
     print(json.dumps(r));return int(r['status']!='FINISHED')
 

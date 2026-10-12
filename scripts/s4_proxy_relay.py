@@ -19,7 +19,7 @@ from harness.s4_relay_journal import Journal
 def accepted_call_id(value):
     # Both registered runners use run_key:call_id:attempt; keep the historical
     # S4 namespace and explicitly admit only this E2E pilot's registered cells.
-    return value.startswith('s4live1-') or re.fullmatch(
+    return value.startswith('s4live1-') or re.fullmatch(r'e2e13-(?:profile|off|index|validate|both)-s61001(?:-p[12])?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(
         r'(?:e2eaz1-(?:gemma|gemini)-s6100[1-4]-(?:on|off)(?:-r[1-3])?|e2e[89]-[ab]-s6100[1-4](?:-r[12])?|e2e10-(?:a-s6100[1-4]|[bc]-s6100[12])(?:-r2)?|e2e1[12]-[ab]-s6100[12](?:-r2)?):call-\d+-r[123]:\d+',value) is not None
 
 

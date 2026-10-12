@@ -1,0 +1,25 @@
+{
+  "status": "PREPARING",
+  "pr": 433,
+  "class": "dev",
+  "seed": 61001,
+  "profile_sim_s": 60,
+  "comparison_sim_s": 60,
+  "source_baseline": "31f4f41ac7594ebc82c8cfc089c64ef50f65c57c",
+  "profile_top20": null,
+  "equivalence": null,
+  "references": [
+    {
+      "url": "https://github.com/benfred/py-spy",
+      "use": "native sampling speedscope"
+    },
+    {
+      "url": "https://docs.python.org/3/library/profile.html",
+      "use": "cProfile cumulative function time"
+    },
+    {
+      "url": "https://mujoco.readthedocs.io/en/stable/programming/simulation.html",
+      "use": "mjcb_time and mjData.timer"
+    }
+  ]
+}
