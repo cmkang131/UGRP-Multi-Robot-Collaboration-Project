@@ -219,6 +219,11 @@ class CheckpointPickler:
                     return _slot, ('stream', key)
                 if kind.__module__.startswith('mujoco') and kind.__name__ in MJV_STRUCTS:
                     return _mjv_struct, (kind.__name__, _mjv_fields(obj))
+                if kind.__module__ == 'sim.v7_exact_speedups' and kind.__name__ == 'CachedParameters':
+                    # Its lru_cache closure is not serializable. Values are pure memoized original arithmetic,
+                    # so rebuild an empty cache around the same parameters (sim/v7_exact_speedups.py stays
+                    # byte-identical to the main v195 seal; this replaces the former __reduce__ there).
+                    return kind, (obj.original,)
                 if not isinstance(obj, type) and hasattr(obj, '__dict__') and kind.__module__ != 'builtins':
                     own = {k for c in kind.__mro__[:-1] for k in vars(c)}
                     if '__getattr__' in own and not own & {'__reduce__', '__reduce_ex__', '__getstate__',

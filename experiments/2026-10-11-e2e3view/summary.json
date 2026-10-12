@@ -1,0 +1,312 @@
+{
+  "schema": "ugrp.evaluation_overview_summary.v1",
+  "status": "COMPLETED",
+  "date": "2026-10-11",
+  "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+  "execution_sha": "bb73c5d9bf7faf2cf18072a0b48e94a53be02d0d",
+  "worktree": "/Users/changmin/projects/ugrp-wt/e2e-view",
+  "pr": 434,
+  "original": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-floor_latch-s61001-r3",
+  "original_scope": {
+    "status": "DEV_STAGE_FINISHED",
+    "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+    "seed": 61001,
+    "model_calls": 0,
+    "route_source": "test_route_provider",
+    "E2E_success": false,
+    "research_result": false,
+    "gt_inputs": false,
+    "stage_end": "final_route_release_commanded",
+    "check_sim_s": 421.95,
+    "final": {
+      "r1": {
+        "state": "released",
+        "failure": null,
+        "seg": 6
+      },
+      "r2": {
+        "state": "released",
+        "failure": null,
+        "seg": 6
+      }
+    },
+    "wall_s": 2671.5864675459998,
+    "loadavg_end": [
+      82.62744140625,
+      94.94580078125,
+      86.82666015625
+    ],
+    "runtime_speedups": {
+      "schema": "ugrp.v7_exact_speedups.v1",
+      "mode": "relay-cache-v1",
+      "enabled": true,
+      "fallback": null,
+      "module_sha256": "04894dbd9a269b1653014ca812614f8da17872b18eafc9595c63752d5bf2b91a",
+      "cache_maxsize": 256,
+      "physics_changed": false,
+      "log_buffering": false
+    },
+    "heading_mode": "path_tangent_v1",
+    "heading_visual_lock": "off"
+  },
+  "run": {
+    "status": "COMPLETED",
+    "name": "e2e3-visual-local_servo-floor_latch-s61001-r3",
+    "execution_sha": "bb73c5d9bf7faf2cf18072a0b48e94a53be02d0d",
+    "base_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+    "original_source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+    "original_path": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-floor_latch-s61001-r3",
+    "changed_unused_runners": {},
+    "original_outcome": {
+      "status": "DEV_STAGE_FINISHED",
+      "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+      "seed": 61001,
+      "model_calls": 0,
+      "route_source": "test_route_provider",
+      "E2E_success": false,
+      "research_result": false,
+      "gt_inputs": false,
+      "stage_end": "final_route_release_commanded",
+      "check_sim_s": 421.95,
+      "final": {
+        "r1": {
+          "state": "released",
+          "failure": null,
+          "seg": 6
+        },
+        "r2": {
+          "state": "released",
+          "failure": null,
+          "seg": 6
+        }
+      },
+      "wall_s": 2671.5864675459998,
+      "loadavg_end": [
+        82.62744140625,
+        94.94580078125,
+        86.82666015625
+      ],
+      "runtime_speedups": {
+        "schema": "ugrp.v7_exact_speedups.v1",
+        "mode": "relay-cache-v1",
+        "enabled": true,
+        "fallback": null,
+        "module_sha256": "04894dbd9a269b1653014ca812614f8da17872b18eafc9595c63752d5bf2b91a",
+        "cache_maxsize": 256,
+        "physics_changed": false,
+        "log_buffering": false
+      },
+      "heading_mode": "path_tangent_v1",
+      "heading_visual_lock": "off"
+    },
+    "evaluation_only": true,
+    "model_calls": 0,
+    "controller_run": false,
+    "physics_correction": false,
+    "same_tick_order": "r1 then r2, each original per-robot order preserved; coupled grip predicate audited invariant on all motion ticks",
+    "start_sim_s": 2.3,
+    "end_sim_s": 424.25,
+    "playback_speed": 8,
+    "width": 1280,
+    "height": 480,
+    "font_sha256": "69071005e523e3a2bf276b35b0066f68a7ec0d942c860941ad188ef15ef69c51",
+    "loadavg_start": [
+      39.78076171875,
+      37.0087890625,
+      41.65087890625
+    ],
+    "initialization": "original scene/reset/boot command log, no checkpoint correction",
+    "video_frames": 2110,
+    "terminal_own_RGB": "last original frame during 2.05s floor witness",
+    "wall_s": 1952.3442468559988,
+    "loadavg_end": [
+      32.73291015625,
+      32.09326171875,
+      37.22705078125
+    ],
+    "comparison": {
+      "robots/r1/commands.jsonl": {
+        "original": "ac4c1fbcd137f4550894a315072d482dc8e35bf6e4bf5eb7a80c4e36b2803556",
+        "replay": "ac4c1fbcd137f4550894a315072d482dc8e35bf6e4bf5eb7a80c4e36b2803556"
+      },
+      "robots/r2/commands.jsonl": {
+        "original": "e90d982377eaa461f1d37da72e15f9fa25ab86f120c5b2d66418f3cfb2b4920d",
+        "replay": "e90d982377eaa461f1d37da72e15f9fa25ab86f120c5b2d66418f3cfb2b4920d"
+      },
+      "robots/r3/commands.jsonl": {
+        "original": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+        "replay": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23"
+      },
+      "eval_only/r1/trajectory.jsonl": {
+        "original": "715933220b46adc76a9768709d57bf325b9d5e1a4217e4d76c4dd7a1e6996bb5",
+        "replay": "715933220b46adc76a9768709d57bf325b9d5e1a4217e4d76c4dd7a1e6996bb5"
+      },
+      "eval_only/r2/trajectory.jsonl": {
+        "original": "3dacdad07e06ab0c9bf11aadc6b0de1a90d3a9335db4cd4d6faf01894f0c874a",
+        "replay": "3dacdad07e06ab0c9bf11aadc6b0de1a90d3a9335db4cd4d6faf01894f0c874a"
+      },
+      "eval_only/r3/trajectory.jsonl": {
+        "original": "8e3ce6b3b97502508e91bb83c53aa2bd8aaa001d2470860e7014022e9f9c948a",
+        "replay": "8e3ce6b3b97502508e91bb83c53aa2bd8aaa001d2470860e7014022e9f9c948a"
+      },
+      "eval_only/referee_truth.jsonl": {
+        "original": "fb8903294d525f81c4765e93134331f14296b97a245842bc36f28fdbe5685be9",
+        "replay": "fb8903294d525f81c4765e93134331f14296b97a245842bc36f28fdbe5685be9"
+      },
+      "eval_only/setdown.jsonl": {
+        "original": "f8afd6fd6ef87b3313e0592406023c649baa0e39d2b383931469415d4e7b952c",
+        "replay": "f8afd6fd6ef87b3313e0592406023c649baa0e39d2b383931469415d4e7b952c"
+      },
+      "robots/r1/frames.jsonl": {
+        "original": "b86c09ec4615270e0f5233a7ff0c4b7bdf90fd6fc9dba4d8f5fc605833295288",
+        "replay": "b86c09ec4615270e0f5233a7ff0c4b7bdf90fd6fc9dba4d8f5fc605833295288"
+      },
+      "robots/r2/frames.jsonl": {
+        "original": "71e580b6b5ce6caa97c34b1f171d5eca7112d76ff4c128babff7652d4df280d9",
+        "replay": "71e580b6b5ce6caa97c34b1f171d5eca7112d76ff4c128babff7652d4df280d9"
+      },
+      "robots/r3/frames.jsonl": {
+        "original": "35434f40d3edef007a051e6d14459482de152269a8fa30fc1a10a8bcc1710d9a",
+        "replay": "35434f40d3edef007a051e6d14459482de152269a8fa30fc1a10a8bcc1710d9a"
+      }
+    },
+    "command_trajectory_match": true,
+    "evaluation_trajectory_match": true,
+    "own_camera_match": true,
+    "video_sha256": "f5f18a6deaf7ad0a8406cab69d10db6ade5e1462cf93721851cdc69130a7d7c5",
+    "checked_source_files": 486,
+    "checked_source_manifest_sha256": "6a81babf356f85adb3b2015842cbc6561e3e75b81c3307a3f69a629b457cc60b",
+    "remote_summary_sha256": "44e967bc47b938411e72c048bb785cb47fa97cf26251f4aea39834d41da0f4cb",
+    "exit_code": "0"
+  },
+  "health_check_3min": {
+    "status": "RUNNING",
+    "relative_sim_s": 40,
+    "wall_s": 188.87622853499852,
+    "video_frames": 201,
+    "pid": 282278,
+    "loadavg": [
+      37.6767578125,
+      35.5224609375,
+      40.07568359375
+    ],
+    "checked_utc": "2026-10-10T22:24:19Z",
+    "mem_available_kib": 54122564,
+    "disk_available_bytes": 32654364672,
+    "prefix_checks": {
+      "robots/r1/commands.jsonl": {
+        "exact": true,
+        "bytes": 0,
+        "rows": 0
+      },
+      "robots/r2/commands.jsonl": {
+        "exact": true,
+        "bytes": 0,
+        "rows": 0
+      },
+      "robots/r1/frames.jsonl": {
+        "exact": true,
+        "bytes": 292418,
+        "rows": 735
+      },
+      "eval_only/r1/trajectory.jsonl": {
+        "exact": true,
+        "bytes": 116281,
+        "rows": 714
+      },
+      "eval_only/referee_truth.jsonl": {
+        "exact": true,
+        "bytes": 174683,
+        "rows": 686
+      }
+    }
+  },
+  "attempts": [
+    {
+      "name": "e2e3view-s61001-pathcheck",
+      "source_sha": "f108304e06cbb94e33a7b8171364b6496a38310a",
+      "status": "HOST_ERROR",
+      "physics_started": false,
+      "exit_code": 1,
+      "error": "reset floating timestamp 1.3000000000000178 before integer 1.3 falsely rejected as nonchronological; audit fixed to original 1e-8 tolerance",
+      "raw": "oracle-x86:/home/ubuntu/ugrp-sim/runs/e2e3view-s61001-pathcheck"
+    },
+    {
+      "name": "e2e3view-s61001-pathcheck-r2",
+      "source_sha": "bb73c5d9bf7faf2cf18072a0b48e94a53be02d0d",
+      "status": "PATH_CHECK",
+      "exit_code": 0,
+      "sim_ticks": 2,
+      "original_prefix_exact": [
+        "robots/r1/frames.jsonl",
+        "eval_only/r1/trajectory.jsonl",
+        "eval_only/referee_truth.jsonl"
+      ],
+      "raw": "oracle-x86:/home/ubuntu/ugrp-sim/runs/e2e3view-s61001-pathcheck-r2"
+    },
+    {
+      "name": "e2e3view-s61001",
+      "status": "COMPLETED",
+      "exit_code": 0,
+      "sim_duration_s": 421.95,
+      "trajectory_match": true
+    }
+  ],
+  "video": {
+    "path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/e2e3view-s61001/overview.mp4",
+    "sha256": "f5f18a6deaf7ad0a8406cab69d10db6ade5e1462cf93721851cdc69130a7d7c5",
+    "width": 1280,
+    "height": 480,
+    "fps": 40,
+    "frames": 2110,
+    "duration_s": 52.75,
+    "size_bytes": 1374898,
+    "speed": 8,
+    "sim_capture_fps": 5,
+    "layout": "left 960x444 full-arena oblique view, right two own RGB thumbnails, 36px header",
+    "camera": {
+      "lookat": [
+        2.175,
+        -0.85,
+        0.12
+      ],
+      "distance": 8,
+      "azimuth": 90,
+      "elevation": -60,
+      "fovy": 32
+    },
+    "captions": "segment 1..7 / recorded stage name / SIM relative time",
+    "received_files": [
+      "overview.mp4"
+    ],
+    "mac_hash_matches_x86_and_arm": true,
+    "full_decode_exit": 0,
+    "visual_qa": [
+      "arena perimeter, original carriers/beam, doorway, B visible in first and final-route screenshots",
+      "r1/r2 own RGB and Korean segment/stage/SIM header visible"
+    ]
+  },
+  "preservation": {
+    "originals_unchanged": true,
+    "raw": "oracle-x86:/home/ubuntu/ugrp-sim/runs/e2e3view-s61001",
+    "durable_archive": "oracle:/home/ubuntu/ugrp-archive/runs/e2e3view-s61001",
+    "archive_rsync_checksum_differences": [],
+    "archive_video_sha256": "f5f18a6deaf7ad0a8406cab69d10db6ade5e1462cf93721851cdc69130a7d7c5",
+    "own_replay_process_exited": true
+  },
+  "validation": {
+    "static_tests": "4 passed",
+    "source_dependencies_unchanged": 486,
+    "all_compared_sha_match": true,
+    "compared_files": 11,
+    "observer_model_independent": true,
+    "controller_reexecution": false,
+    "physics_state_correction": false,
+    "osmesa": true,
+    "host": "oracle-x86",
+    "OMP_NUM_THREADS": 1,
+    "LP_NUM_THREADS": 4,
+    "nice": 0,
+    "CI_blocker": "inherited tests/test_s4_live5.py collection requires mujoco in offline-regression-shard (7/8); ModuleNotFoundError; PR remains draft"
+  }
+}

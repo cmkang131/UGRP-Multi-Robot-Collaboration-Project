@@ -373,6 +373,12 @@ def _validate_args(row: dict, argv: list[str]) -> str | None:
 def _runner_command(root: Path, row: dict, args: list[str], *, record: Path | None) -> tuple[list[str], Path | None]:
     argv = list(args)
     output_flag = _validate_args(row, argv)
+    if row["runner"] in ("scripts.run_e2e_ownmap_live", "scripts.run_e2e_reviewed"):
+        if any(a == "--expected-workflow-id" or a.startswith("--expected-workflow-id=") for a in argv):
+            raise ValueError("WORKFLOW_OWNS_BUNDLE_ID")
+        # Preserve historical catalogs while making their selected identity an
+        # explicit runner contract, checked before preparation or execution.
+        argv.extend(["--expected-workflow-id", row["id"]])
     output = _at_root(root, _option(argv, output_flag)) if output_flag and _option(argv, output_flag) else None
     if output is not None and output.exists():
         raise FileExistsError(f"workflow output already exists: {output}")
