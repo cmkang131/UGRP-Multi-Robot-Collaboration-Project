@@ -84,6 +84,10 @@ class ActiveMapper:
         selected_model(motion_model)  # validate without changing the default OPTIONS
         self.motion_model=motion_model
         memory_options=OPTIONS if motion_model=='off' else {**OPTIONS,'motion_model':motion_model}
+        from harness.e2e_speed4 import current
+        if current().rbpf_particles:
+            memory_options={**memory_options, 'pose_correction_options':
+                {**memory_options['pose_correction_options'], 'particles':current().rbpf_particles}}
         self.memory=SelfWallMemory(robot_id,**memory_options,self_map_options={'start_time':start})
         self.memory.command(dict(t=start,kind='initial_servo_command',pulses=servo))
         self.navigator=MonitorNavigator()
@@ -117,7 +121,8 @@ class ActiveMapper:
     def _rays(self,record,pose):
         from harness.self_map_csm import sample_segments
         wall=sample_segments(record['segments']) if record['segments'] else np.empty((0,2))
-        floor=np.asarray(record['floor_xy']).reshape(-1,2)
+        from harness.e2e_speed4 import current
+        floor=np.asarray(record['floor_xy']).reshape(-1,2)[::current().floor_ray_stride]
         obs=dict(robot_id=self.robot_id,frame_id=record['frame_id'],floor_xy=floor,wall_xy=wall,
             floor_origins_xy=np.tile(record['camera'],(len(floor),1)),wall_origins_xy=np.tile(record['camera'],(len(wall),1)))
         receive_rays(self.grid,self.latest,set(),obs,pose)

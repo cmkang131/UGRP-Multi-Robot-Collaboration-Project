@@ -33,6 +33,7 @@ TEST_PATTERNS = (
     "tests/test_e2e_us_stall.py",
     "tests/test_e2e14_combo.py",
     "tests/test_e2e_exact_speedups2.py",
+    "tests/test_e2e_speed4.py",
     "tests/test_e2e_overview_replay.py",
     "tests/test_e2e_runtime_registration.py",
     "tests/test_e2e_s4_live.py",

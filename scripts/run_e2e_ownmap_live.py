@@ -32,7 +32,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
     registered_seeds = range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
     if profile not in PROFILES or seed not in registered_seeds:raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
@@ -194,6 +194,12 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     paths.update(runtime_assets)
     paths.update(speed3_assets)
     if boundary_coverage != 'off':paths.add('configs/simulation_workflows.d/e2e_boundary_native_v213.json')
+    from harness.e2e_speed4 import Options as Speed4Options, record as speed4_record
+    candidate = Speed4Options(**(speed4 or {}))
+    if candidate.enabled:
+        if not dev_light:raise ValueError('SPEED4_DEV_COHORT_REQUIRED')
+        b['speed4']=dataclasses.asdict(candidate)
+        b['speed4_record']=speed4_record(candidate)
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -267,8 +273,11 @@ def run(b,out,receipt,*,backend_factory=None):
         for p,sha in b['source_sha256'].items():
             if hashlib.sha256((ROOT/p).read_bytes()).hexdigest()!=sha:raise ValueError('SOURCE_HASH_MISMATCH:'+p)
         options=Options(**b['study_options'])
+        from harness.e2e_speed4 import Options as Speed4Options, processing_due
+        speed4=Speed4Options(**b.get('speed4',{}))
+        if speed4.enabled:write(out/'speed4.json',b['speed4_record'])
         cov=json.loads((ROOT/'configs/e2e_nees_egomap70_dev_v1.json').read_text())
-        robots={r:Robot(r,b['seed']+i,cov,options,relook=b['e2e_options']['setdown_only_when_relook'],
+        robots={r:Robot(r,b['seed']+i,cov,options,speed4=speed4,relook=b['e2e_options']['setdown_only_when_relook'],
                         goal_geometry=b['e2e_options']['goal_geometry'],
                         exploration_progress=b['e2e_options'].get('exploration_progress','off'),
                         pose_fix=b['e2e_options'].get('pose_fix','off'),
@@ -334,6 +343,9 @@ def run(b,out,receipt,*,backend_factory=None):
             if tick%observation_ticks==0:
                 raw=backend.capture()
                 for rid,robot in robots.items():
+                    if not processing_due(robot,now,transport.state):
+                        backend._append(f'robots/{rid}/speed4-skips.jsonl',dict(t=now,reason='moving_observation_stride'))
+                        continue
                     obs,rgb=raw[rid]
                     own_obs={k:obs[k] for k in ('frame_id','sim_time','sha256','image')}
                     own_obs['sim_time']=round(obs['sim_time']-origin,8)
@@ -464,6 +476,7 @@ def main(argv=None):
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
     p.add_argument('--speed3',choices=('off','dt1_v1','dt2_v1','adaptive_v1'),default='off')
+    p.add_argument('--speed4',type=json.loads,default=None,help='DEV compute budget JSON; all fields default off')
     p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
     p.add_argument('--expected-workflow-id')
     p.add_argument('--execute',action='store_true');a=p.parse_args(argv)
@@ -475,7 +488,7 @@ def main(argv=None):
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
                  vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
                  vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
-             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3)
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4)
     if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
     if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
         raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')
