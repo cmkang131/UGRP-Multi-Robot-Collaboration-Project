@@ -205,7 +205,7 @@ def test_start_recovery_archive_failure_refuses_admission(root, monkeypatch):
     run(root)
     monkeypatch.setattr(shutdown, 'bounded_archive', lambda *args: False)
     monkeypatch.setattr(azctl.subprocess, 'run', lambda *args, **kw: subprocess.CompletedProcess([], 0))
-    def guest(action):
+    def guest(action, host='azure'):
         monkeypatch.setattr(sys, 'argv', ['guard', 'recover', '--root', str(root), '--grace-seconds', '0.01'])
         return subprocess.CompletedProcess([], shutdown.main())
     monkeypatch.setattr(azctl, 'guest', guest)
@@ -236,7 +236,7 @@ def test_recover_failed_copy_then_scheduled_copy_keeps_failure_and_refuses_admis
     assert (root / 'leases/one').exists()
     assert folder.joinpath('raw').read_bytes() == b'flushed original'
     monkeypatch.setattr(azctl.subprocess, 'run', lambda *args, **kw: subprocess.CompletedProcess([], 0))
-    monkeypatch.setattr(azctl, 'guest', lambda action: subprocess.CompletedProcess([], shutdown.main()))
+    monkeypatch.setattr(azctl, 'guest', lambda action, host='azure': subprocess.CompletedProcess([], shutdown.main()))
     fetch = Mock()
     monkeypatch.setattr(remote_run, 'fetch_lifecycle', fetch)
     with pytest.raises(RuntimeError, match='new execution refused'):
@@ -360,8 +360,8 @@ def test_ordinary_azctl_stop_defers_on_guest_exit75(monkeypatch):
     arm = Mock()
     arm.request.return_value = {'statuses': [{'code': 'PowerState/running'}]}
     monkeypatch.setattr(azctl, 'Arm', lambda: arm)
-    monkeypatch.setattr(azctl, 'guest', lambda action: subprocess.CompletedProcess([], 75, '{"unarchived":["one"]}'))
-    monkeypatch.setattr(remote_run, 'fetch_lifecycle', lambda: None)
+    monkeypatch.setattr(azctl, 'guest', lambda action, host='azure': subprocess.CompletedProcess([], 75, '{"unarchived":["one"]}'))
+    monkeypatch.setattr(remote_run, 'fetch_lifecycle', lambda host='azure': None)
     monkeypatch.setattr(azctl, 'az', Mock())
     azctl.main()
     azctl.az.assert_not_called()
@@ -374,7 +374,7 @@ def test_start_runs_recovery_before_return(monkeypatch):
     monkeypatch.setattr(azctl, 'safety', lambda arm: 1)
     calls = []
     monkeypatch.setattr(azctl, 'az', lambda *args: calls.append('start'))
-    monkeypatch.setattr(azctl, 'recover', lambda: calls.append('recover'))
+    monkeypatch.setattr(azctl, 'recover', lambda host='azure': calls.append('recover'))
     azctl.main()
     assert calls == ['start', 'recover']
 
