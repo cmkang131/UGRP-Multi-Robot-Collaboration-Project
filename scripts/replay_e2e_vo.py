@@ -4,6 +4,7 @@ Compares, on the SAME saved-image windows as scripts/replay_e2e_stall.py:
   off            issued-command pulse odometry
   pulse_gate     rgb_pulse_gate_v1 (binary stationarity gate, zero increment)
   vo_fused       rgb_vo_v1 (ground VO + command Kalman fusion, chi-square replace)
+  vo2            rgb_vo_v2: vo_fused + rgb_pulse_gate_v1 zero-translation when VO unavailable
   vo_replace     diagnostic column: every measured VO increment replaces command
   vo_fused_p95   diagnostic sensitivity: chi-square p=.95 (7.815) gate; chosen
                  after seeing this data, so NOT an adoptable result
@@ -26,7 +27,7 @@ from harness.e2e_rgb_vo import VOFusion, between
 from harness.self_pulse_rotation import RotationPulseOdometry
 from harness.active_camera import SEARCH
 
-ESTIMATORS = ('off', 'pulse_gate', 'vo_fused', 'vo_replace', 'vo_fused_p95')
+ESTIMATORS = ('off', 'pulse_gate', 'vo_fused', 'vo2', 'vo_replace', 'vo_fused_p95')
 UNCHANGED_M = .001
 UNCHANGED_RAD = math.radians(.1)
 
@@ -51,8 +52,9 @@ def predict(raw, images, rid):
     for d in drivers.values():
         d.command(dict(t=0., kind='initial_servo_command', pulses=SEARCH))
     detector = Detector(drivers['off'], PULSE_GATE)
-    fusion = {k: VOFusion(drivers['off'], mode, chi2_gate=gate95) for k, mode, gate95 in
-              (('vo_fused', 'fused', None), ('vo_replace', 'replace', None), ('vo_fused_p95', 'fused', 7.815))}
+    fusion = {k: VOFusion(drivers['off'], mode, chi2_gate=gate95, fallback=fb) for k, mode, gate95, fb in
+              (('vo_fused', 'fused', None, None), ('vo2', 'fused', None, 'pulse_gate'),
+               ('vo_replace', 'replace', None, None), ('vo_fused_p95', 'fused', 7.815, None))}
     gate = False
     drivers['pulse_gate'].motion_filter = lambda delta, variance: (np.zeros(3) if gate else delta, variance)
     active = {k: False for k in fusion}
@@ -67,7 +69,9 @@ def predict(raw, images, rid):
             f.command(cmd)
         for d in drivers.values():
             d.command(cmd)
-    for frame, prior in zip(frames, own):
+    for index, frame in enumerate(frames):
+        # A crashed run's last frame has no ownmap row: replay it, skip only the reproduction check.
+        prior = own[index] if index < len(own) else None
         t = round(frame['sim_time']-origin, 8)
         while cursor < len(commands) and commands[cursor]['t'] < t-1e-8:
             issue(commands[cursor]);cursor += 1
@@ -92,7 +96,7 @@ def predict(raw, images, rid):
             detector.frames.clear();detector.stationary_since = None;detector.streak = 0
             detector.nominal.advance(t);detector.last_nominal = np.asarray(detector.nominal.pose)
             for f in fusion.values():
-                f.nominal.advance(t);f.steps = []  # no pair across a missing image (gap check also applies)
+                f.skip(t)  # no pair across a missing image; gate history reset like the detector above
         for k, d in drivers.items():
             if k in fusion:
                 active[k] = True
@@ -103,12 +107,13 @@ def predict(raw, images, rid):
             else:
                 d.advance(t)
         gate = False
-        max_match = max(max_match, float(np.max(abs(np.asarray(drivers['off'].pose)-prior['pose_continuity']['control_pose']))))
+        if prior is not None and 'pose_continuity' in prior:
+            max_match = max(max_match, float(np.max(abs(np.asarray(drivers['off'].pose)-prior['pose_continuity']['control_pose']))))
         out.append(dict(t=t, absolute_t=frame['sim_time'], has_image=has, frame_id=frame['frame_id'],
                         sha256=frame['sha256'] if has else None,
                         **{k: list(d.pose) for k, d in drivers.items()},
                         flow_status=(flow or {}).get('status'), gated=bool((flow or {}).get('stationary')),
-                        vo={k: {x: v.get(x) for x in ('status', 'fusion', 'nis', 'inliers', 'cells', 'delta', 'fused_delta',
+                        vo={k: {x: v.get(x) for x in ('gate', 'status', 'fusion', 'nis', 'inliers', 'cells', 'delta', 'fused_delta',
                                                       'command_delta', 'fusion_applied')} for k, v in vo.items()}))
         while cursor < len(commands) and commands[cursor]['t'] <= t+1e-8:
             issue(commands[cursor]);cursor += 1
@@ -121,6 +126,7 @@ def score(raw, rid, predictions, origin):
     """Evaluation only, after all predictions: own-start truth frame."""
     truth = rows(raw/f'eval_only/{rid}/trajectory.jsonl')
     by_t = {round(r['t']-origin, 8): r for r in truth};ts = sorted(by_t)
+    predictions[:] = [p for p in predictions if p['t'] in by_t]  # truth may end before a crash frame
     first = by_t[0.];yaw0 = first['robot_yaw_rad'];c, s = math.cos(yaw0), math.sin(yaw0)
 
     def own(r):
@@ -201,7 +207,9 @@ def aggregate(intervals, windows):
                        median_yaw_err_deg=math.degrees(statistics.median(i[k+'_yaw_err_rad'] for i in part)))
                for k in ESTIMATORS},
             **{f'{k}_vs_off_{axis}': compare(part, f'{k}_{axis}_err_{unit}', f'off_{axis}_err_{unit}', tol) | {'worse_items': None}
-               for k in ESTIMATORS[1:] for axis, unit, tol in (('xy', 'm', UNCHANGED_M), ('yaw', 'rad', UNCHANGED_RAD))})
+               for k in ESTIMATORS[1:] for axis, unit, tol in (('xy', 'm', UNCHANGED_M), ('yaw', 'rad', UNCHANGED_RAD))},
+            **{f'vo2_vs_vo_fused_{axis}': compare(part, f'vo2_{axis}_err_{unit}', f'vo_fused_{axis}_err_{unit}', tol) | {'worse_items': None}
+               for axis, unit, tol in (('xy', 'm', UNCHANGED_M), ('yaw', 'rad', UNCHANGED_RAD))})
     win = dict(N=len(windows), by_label=dict(Counter(w['label'] for w in windows)),
         mean_xy_err_m={k: statistics.mean(w[k+'_xy_err_m'] for w in windows) for k in ESTIMATORS},
         mean_yaw_err_deg={k: math.degrees(statistics.mean(w[k+'_yaw_err_rad'] for w in windows)) for k in ESTIMATORS},
@@ -211,6 +219,8 @@ def aggregate(intervals, windows):
         win[k+'_vs_off_yaw'] = compare(windows, k+'_yaw_err_rad', 'off_yaw_err_rad', UNCHANGED_RAD)
         win[k+'_vs_off_body_xy'] = compare(windows, k+'_body_xy_err_m', 'off_body_xy_err_m', UNCHANGED_M)
     win['vo_fused_vs_pulse_gate_xy'] = compare(windows, 'vo_fused_xy_err_m', 'pulse_gate_xy_err_m', UNCHANGED_M)
+    for axis, unit, tol in (('xy', 'm', UNCHANGED_M), ('body_xy', 'm', UNCHANGED_M), ('yaw', 'rad', UNCHANGED_RAD)):
+        win[f'vo2_vs_vo_fused_{axis}'] = compare(windows, f'vo2_{axis}_err_{unit}', f'vo_fused_{axis}_err_{unit}', tol)
     win['by_label_detail'] = {}
     for label in sorted({w['label'] for w in windows}):
         part = [w for w in windows if w['label'] == label]
@@ -230,6 +240,8 @@ def main():
     for spec in a.run:
         name, paths = spec.split('=', 1);raw, images = (Path(x) for x in paths.split(':'))
         for rid in ('r1', 'r2'):
+            if not any((raw/f'robots/{rid}').glob('frames.jsonl*')):
+                continue
             preds, origin, meta = predict(raw, images, rid)
             intervals, windows, glob = score(raw, rid, preds, origin)
             for x in intervals+windows:

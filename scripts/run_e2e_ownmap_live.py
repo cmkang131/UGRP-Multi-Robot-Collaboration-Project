@@ -42,6 +42,9 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if mapping_budget not in ('off','case_cap_v1'):raise ValueError('UNKNOWN_MAPPING_BUDGET')
     from harness.e2e_stall_odometry import Options as StallOptions
     stall=StallOptions(stall_odometry,stall_recovery,stall_noise)
+    if stall.stall_odometry=='rgb_vo_v2':
+        # Registered only inside a composition bundle that names it; never fall back to v198/v201.
+        raise ValueError('RGB_VO_V2_HAS_NO_STANDALONE_BUNDLE')
     from harness.e2e_exact_speedups import Options as SpeedOptions
     speed=SpeedOptions(**(exact_speedups or {}))
     from harness.zone_study_llm_driver import load_registry
@@ -317,7 +320,7 @@ def main():
     p.add_argument('--exploration-progress',choices=('off','frontier_progress_v1'),default='off')
     p.add_argument('--pose-fix',choices=('off','innovation'),default='off')
     p.add_argument('--path-follow',choices=('off','rpp_v1'),default='off')
-    p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1','rgb_vo_v1'),default='off')
+    p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1','rgb_vo_v1','rgb_vo_v2'),default='off')
     p.add_argument('--stall-recovery',choices=('off','backup_replan_v1'),default='off')
     p.add_argument('--stall-noise',choices=('off','amcl_alpha_v1'),default='off')
     p.add_argument('--stall-bundle',action='store_true')

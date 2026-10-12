@@ -15,6 +15,7 @@ import numpy as np
 GATE = 'rgb_gate_v1'
 PULSE_GATE = 'rgb_pulse_gate_v1'
 VO = 'rgb_vo_v1'  # metric own-RGB ground VO fused with commands: harness/e2e_rgb_vo.py
+VO2 = 'rgb_vo_v2'  # VO + this module's pulse-gate decision when VO is unavailable
 RECOVERY = 'backup_replan_v1'
 NOISE = 'amcl_alpha_v1'
 FLOW = dict(min_tracks=6, min_cells=2, fb_max_px=1., median_max_px=1., p90_max_px=2.,
@@ -30,10 +31,10 @@ class Options:
 
     def __post_init__(self):
         for key, value in zip(asdict(self), (GATE, RECOVERY, NOISE)):
-            allowed=('off',value,PULSE_GATE,VO) if key=='stall_odometry' else ('off',value)
+            allowed=('off',value,PULSE_GATE,VO,VO2) if key=='stall_odometry' else ('off',value)
             if getattr(self, key) not in allowed:
                 raise ValueError('UNKNOWN_STALL_OPTION:'+key)
-        if self.stall_odometry==VO and (self.stall_recovery!='off' or self.stall_noise!='off'):
+        if self.stall_odometry in (VO,VO2) and (self.stall_recovery!='off' or self.stall_noise!='off'):
             # The binary-gate recovery/noise comparators are not defined for VO.
             raise ValueError('RGB_VO_REQUIRES_RECOVERY_AND_NOISE_OFF')
 
@@ -176,9 +177,9 @@ class Backup:
 
 def install(goal,options=Options()):
     if not options.enabled:return goal
-    if options.stall_odometry==VO:
+    if options.stall_odometry in (VO,VO2):
         from harness.e2e_rgb_vo import install as vo_install
-        return vo_install(goal)
+        return vo_install(goal,options.stall_odometry)
     grid=goal.explorer.memory.self_map;odom=grid.odom;base=getattr(odom,'base',odom);driver=base.driver
     from harness.self_pulse_odom import PulseOdometry
     if not isinstance(driver,PulseOdometry) or driver.motion_filter is not None:
