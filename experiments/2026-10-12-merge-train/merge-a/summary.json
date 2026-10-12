@@ -52,7 +52,7 @@
     "failed": 2,
     "log": "outputs/merge-a-20261012/targeted-tests.log"
   },
-  "ci": "pending_push",
+  "ci": "new_head_required_after_P1_fix",
   "review": "in_progress",
   "raw_modified": false,
   "ci_new_test_registration": {
@@ -70,5 +70,60 @@
     ],
     "log": "outputs/merge-a-20261012/targeted-tests-fix.log",
     "log_sha256": "0ab329906e55160b651313f77e0d2b09dd84085c42ce160880284bd618eb5191"
+  },
+  "independent_review": {
+    "sha": "00367e61247aac1bef3f17fc9ff9e42fcb686cb9",
+    "report": "outputs/merge-a-20261012/review.md",
+    "report_sha256": "4cf4fc388b2304b011e1ed2ec7017fbae7739929ac90cb6eaf952257f7438630",
+    "P1": 1,
+    "P2": 1,
+    "P3": 1
+  },
+  "review_fixes": {
+    "P1": "Reject live standoff_fullquad_v1 before navigator mutation: no RGB-derived static-map-to-own registration exists. Offline planner and historical bundles remain available. E2E18 live use of this option requires a future registration adapter.",
+    "P2": "Preserve historical text snapshots from the recorded SHA; original manifest unchanged.",
+    "P3": "All 16 new regression modules are registered; 8 omissions fixed before CI."
+  },
+  "references": [
+    {
+      "url": "https://modernrobotics.northwestern.edu/nu-gm-book-resource/3-3-1-homogeneous-transformation-matrices/",
+      "checked": "2026-10-12",
+      "scope": "Frame transforms require the missing static-map-to-own relation; self-SLAM map_to_odom is not that relation.",
+      "method": "Reject unsupported live conversion; do not infer it from simulator spawn state."
+    }
+  ],
+  "P1_counterexample": {
+    "static_start_pose": [
+      3.9,
+      -1.4,
+      -0.7853981633974483
+    ],
+    "static_candidate_pose": [
+      2.3,
+      0.0,
+      5.585053606381854
+    ],
+    "expected_own_pose": [
+      -2.121320343559643,
+      -0.14142135623730945,
+      0.08726646259971614
+    ],
+    "incorrect_own_xy": [
+      2.3,
+      0.0
+    ],
+    "position_error_m": 4.423581533144196,
+    "scope": "Static review counterexample only. Spawn pose was never passed to the controller."
+  },
+  "review_fix_tests": {
+    "passed": 46,
+    "failed": 0,
+    "files": [
+      "tests/test_e2e_boundary_views.py",
+      "tests/test_e2e_boundary_repair.py",
+      "tests/test_e2e18.py"
+    ],
+    "log": "outputs/merge-a-20261012/review-fix-tests.log",
+    "log_sha256": "62c3291c865a0d268e4e89b63ac3368659533943c6dfc67dba19b418a4030891"
   }
 }

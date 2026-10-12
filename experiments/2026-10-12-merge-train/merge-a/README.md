@@ -5,3 +5,4 @@
 - Historical text is copied from its recorded SHA into `native-artifact-snapshots/`.
 - CI and independent read-only review are recorded in `summary.json` and the PR.
 - No new physical, model, browser, or VM execution.
+- Live `standoff_fullquad_v1` is rejected until an own-RGB static-map registration exists.

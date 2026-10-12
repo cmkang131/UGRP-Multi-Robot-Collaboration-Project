@@ -19,7 +19,7 @@ from harness.self_odom_grid import transform
 from harness.zone_study_contract import ContractViolation
 
 OPTION = 'candidate_views_v1'
-STANDOFF_OPTION = 'standoff_fullquad_v1'  # static-map stand-off poses where all four B corners are in frame
+STANDOFF_OPTION = 'standoff_fullquad_v1'  # offline static-map planner; live registration is unavailable
 OPTIONS = (OPTION, STANDOFF_OPTION)
 RADII_M = (.8, 1.2, 1.6, 2., 2.4)  # SAP-Nav AVV Eq. 4, same finite rings
 N_ANGLES = 24
@@ -86,7 +86,7 @@ def choose_view(costmap, pose, center, plan_to, *, tried=(), coverage='off', sta
     views = []
     goal_cell = costmap.world_to_map(center)
     if goal_cell is None: return None
-    # standoff: precomputed static-map poses (own frame) with a fixed heading; rings otherwise.
+    # standoff inputs must already be in the same own frame as pose/center.
     samples = ([(math.hypot(*(np.asarray(p[:2])-center)), None, np.asarray(p[:2]), p[2]) for p in standoff] if standoff is not None else
                [(radius, angle, center + radius*np.array([math.cos(angle), math.sin(angle)]), None)
                 for radius in RADII_M for angle in np.arange(N_ANGLES)*2*math.pi/N_ANGLES])
@@ -129,7 +129,6 @@ class CandidateNavigator(Navigator):
         self.completed_views = 0
         self.navigation_failures = 0
         self.coverage_option = 'off'
-        self.standoff = None  # [(x, y, yaw)] map frame, set by install(standoff_fullquad_v1)
         self.coverage_checks = None
         self.coverage_would_stops = 0
         self.coverage_by_stage = {}
@@ -187,10 +186,7 @@ class CandidateNavigator(Navigator):
             tf = self.goal.explorer.map_to_odom
             center = transform([self.goal.entities['B']['center_m']], tf)[0]
             tried = transform(self.tried_own, tf) if self.tried_own else ()
-            own_standoff = None
-            if self.standoff is not None:
-                own_standoff = [(*transform([p[:2]], tf)[0], p[2]+tf[2]) for p in self.standoff]
-            view = choose_view(costmap, pose, center, self.plan_to, tried=tried, coverage=self.coverage_option, standoff=own_standoff)
+            view = choose_view(costmap, pose, center, self.plan_to, tried=tried, coverage=self.coverage_option)
             if view:
                 self.reset_action()
                 self.target = np.asarray(view['target'])
@@ -273,16 +269,15 @@ def install(goal, option='off', *, retry='off', coverage='off'):
     if coverage != 'off' and (option == 'off' or not goal.dev_light): raise ValueError('DEV_BOUNDARY_VIEWS_REQUIRED_BEFORE_NATIVE_COVERAGE')
     if option == 'off': return goal
     if option not in OPTIONS: raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
+    # map_to_odom connects two self-SLAM frames, not the surveyed static map.
+    # No RGB-derived static-map registration is wired into this live adapter.
+    # Keep offline plans and historical bundles, but reject their live use.
+    if option == STANDOFF_OPTION:
+        raise ValueError('STATIC_MAP_TO_OWN_RGB_REGISTRATION_REQUIRED')
     old = goal.explorer.navigator
     if type(old) is not Navigator: raise ValueError('FRONTIER_PROGRESS_V1_REQUIRED_BEFORE_VIEWS')
     goal.explorer.navigator = CandidateNavigator(old.driver, goal)
     goal.explorer.navigator.option = option
-    if option == STANDOFF_OPTION:
-        from harness.e2e_b_standoff import plan_standoffs
-        from harness.e2e_speed5 import ACTIVE, plan_views
-        if ACTIVE.get() != 'off': views = plan_views()
-        else: views, _, _ = plan_standoffs(top=100)
-        goal.explorer.navigator.standoff = [v['pose'] for v in views]
     goal.explorer.navigator.retry_option = retry
     goal.explorer.navigator.coverage_option = coverage
     goal.e2e_gate.diagnostics_enabled = True

@@ -34,6 +34,17 @@ def test_off_identity_and_closed_input_boundary():
     with pytest.raises(ValueError):m.install(x,'unknown')
 
 
+def test_static_map_views_require_rgb_registration_before_live_install():
+    n, goal, _ = fixture()
+    goal.explorer.navigator = n
+    # A self-map->odometry transform, even nonzero, cannot register the static map.
+    goal.explorer.map_to_odom = np.array([3.9, -1.4, -np.pi/4])
+    with pytest.raises(ValueError, match='STATIC_MAP_TO_OWN_RGB_REGISTRATION_REQUIRED'):
+        m.install(goal, m.STANDOFF_OPTION)
+    assert goal.explorer.navigator is n
+    assert not n.view_active and not n.events
+
+
 def test_view_is_reachable_free_faces_candidate_and_checks_swept_connectors():
     n,g,c=fixture()
     v=m.choose_view(c,np.zeros(3),[1,0],n.plan_to)
