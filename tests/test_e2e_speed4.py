@@ -92,3 +92,36 @@ def test_new_robot_gets_particle_budget_without_global_mutation(monkeypatch):
     assert all(len(r.goal.explorer.memory.self_map.poses) == 50 for r in robots.values())
     from harness.active_wall_mapping import OPTIONS
     assert OPTIONS['pose_correction_options']['particles'] == 100
+
+
+def test_door_pair_filter_keeps_scalar_candidates_and_order():
+    import math
+    from harness.e2e_speed4 import door_pair_indices
+    rng = np.random.default_rng(104)
+    starts = rng.integers(-50,50,(150,2))
+    delta = rng.integers(-10,10,(150,2))
+    delta[np.all(delta==0,axis=1)] = [1,0]
+    lines = np.stack((starts,starts+delta),axis=1)
+    for i,a in enumerate(lines):
+        va = a[1]-a[0];va=va/np.linalg.norm(va)
+        normal=np.array([-va[1],va[0]]);expected=[]
+        for j in range(i+1,len(lines)):
+            b=lines[j];vb=b[1]-b[0];vb=vb/np.linalg.norm(vb)
+            if abs(np.dot(va,vb)) < math.cos(math.radians(10)):continue
+            if max(abs((b-a[0])@normal))*.05 > .15:continue
+            expected.append(j)
+        assert door_pair_indices(lines,i,.05).tolist()==expected
+
+
+def test_vector_door_updates_preserve_real_grid_outputs(monkeypatch):
+    import cv2
+    from harness.own_map_navigation import ObservedGrid, DoorMemory
+    grid=ObservedGrid('r1',.05)
+    grid.initial_support()
+    lines=np.array([[[2,2],[2,8]],[[2,16],[2,25]],[[6,2],[6,8]],[[6,16],[6,25]],[[20,20],[30,20]]])
+    monkeypatch.setattr(cv2,'HoughLinesP',lambda *a,**kw:lines[:,None].reshape(-1,1,4))
+    a=DoorMemory('r1');expected=a.update(grid,[0,0,0])
+    b=DoorMemory('r1')
+    with using(Options(vector_door_pairs=True)):
+        got=b.update(grid,[0,0,0])
+    assert got==expected and b.tracks==a.tracks

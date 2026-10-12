@@ -17,9 +17,10 @@ class Options:
     floor_ray_stride: int = 1
     moving_observation_stride: int = 1
     vector_envelopes: bool = False
+    vector_door_pairs: bool = False
 
     def __post_init__(self):
-        for key in ('render_half', 'vector_envelopes'):
+        for key in ('render_half', 'vector_envelopes', 'vector_door_pairs'):
             if type(getattr(self, key)) is not bool:
                 raise ValueError('SPEED4_BOOLEAN_REQUIRED:'+key)
         for key, choices in (('rbpf_particles', (0, 30, 50)),
@@ -99,3 +100,22 @@ def envelope_samples(optical):
     a, b = a[cross], b[cross]
     near = a + ((.001-a[:, 2])/(b[:, 2]-a[:, 2]))[:, None]*(b-a)
     return np.concatenate((optical[optical[:, 2] >= .001], chords[chords[:, 2] >= .001], near))
+
+
+def door_pair_indices(lines, i, resolution):
+    """Filter collinear Hough pairs in NumPy; preserve original pair order.
+
+    The downstream jamb/coverage/clearance checks are untouched. This reduces
+    repeated per-pair array allocation, rather than reusing old map decisions.
+    """
+    import math
+    a = lines[i]
+    delta = lines[:, 1] - lines[:, 0]
+    with np.errstate(divide='ignore', invalid='ignore'):
+        unit = delta / np.linalg.norm(delta, axis=1, keepdims=True)
+    va = unit[i]
+    later = lines[i+1:]
+    parallel = ~(abs(unit[i+1:] @ va) < math.cos(math.radians(10)))
+    normal = np.array([-va[1], va[0]])
+    close = ~(np.max(abs((later-a[0]) @ normal), axis=1)*resolution > .15)
+    return np.flatnonzero(parallel & close) + i + 1
