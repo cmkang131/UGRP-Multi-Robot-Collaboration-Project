@@ -1,5 +1,5 @@
 {
-  "status": "PREPARED_NOT_SUBMITTED",
+  "status": "RUNNING",
   "pr": 433,
   "branch": "codex/e2e13-long",
   "vm": "ugrp-sim-azure2",
@@ -77,5 +77,221 @@
     "tests": "tests/test_e2e13_long.py tests/test_e2e_stall_odometry.py tests/test_openrouter_upstream.py",
     "passed": 27,
     "duration_s": 34.76
+  },
+  "source_sha": "7befc0f2de999846ac271f044909752d8b135e07",
+  "submissions": [
+    {
+      "run": "e2e13-long-a-s61001",
+      "pid": 2506,
+      "submitted_unix": 1791767965.7023993,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07"
+    },
+    {
+      "run": "e2e13-long-a-s61002",
+      "pid": 2586,
+      "submitted_unix": 1791767967.4700341,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07"
+    },
+    {
+      "run": "e2e13-long-a-s61003",
+      "pid": 2666,
+      "submitted_unix": 1791767968.9000847,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07"
+    },
+    {
+      "run": "e2e13-long-a-s61004",
+      "pid": 2747,
+      "submitted_unix": 1791767970.3741672,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07"
+    },
+    {
+      "run": "e2e13-long-b-s61001",
+      "pid": 2828,
+      "submitted_unix": 1791767971.8004637,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07"
+    },
+    {
+      "run": "e2e13-long-b-s61002",
+      "pid": 2909,
+      "submitted_unix": 1791767973.2097528,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07"
+    }
+  ],
+  "storage_budget": {
+    "schema": "ugrp.storage-budget.v1",
+    "ok": true,
+    "checks": [
+      {
+        "host": "x86",
+        "free_bytes": 100804284416,
+        "expected_bytes": 34359738368,
+        "projected_free_bytes": 66444546048,
+        "floor_bytes": 8589934592,
+        "ok": true
+      },
+      {
+        "host": "arm",
+        "free_bytes": 85082669056,
+        "expected_bytes": 34359738368,
+        "projected_free_bytes": 50722930688,
+        "floor_bytes": 26843545600,
+        "ok": true
+      },
+      {
+        "host": "mac",
+        "free_bytes": 134760345600,
+        "expected_bytes": 3758096384,
+        "projected_free_bytes": 131002249216,
+        "floor_bytes": 21474836480,
+        "ok": true
+      }
+    ]
+  },
+  "infra_pr": 445,
+  "initial_health": {
+    "e2e13-long-a-s61001": {
+      "passed": true,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "normal_model_response": true,
+        "model_response_accepted": true,
+        "translation_command": true,
+        "recent_translation_command": true
+      },
+      "elapsed_s": 242.1376736164093,
+      "sim_s": 20.0,
+      "actual_displacement_m": {
+        "r1": 0.6637547759294601,
+        "r2": 0.28967531769170995,
+        "r3": 9.219910789495546e-05
+      },
+      "sha256": "06ef5a743a2571557bc8f0ed8dd2ade015d44c171cf80fbe905af5e7ed7f714e",
+      "log_exceptions": false
+    },
+    "e2e13-long-a-s61002": {
+      "passed": true,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "normal_model_response": true,
+        "model_response_accepted": true,
+        "translation_command": true,
+        "recent_translation_command": true
+      },
+      "elapsed_s": 240.7092249393463,
+      "sim_s": 20.0,
+      "actual_displacement_m": {
+        "r1": 0.6526754571289023,
+        "r2": 0.28954415229636415,
+        "r3": 9.013910166995631e-05
+      },
+      "sha256": "35aa399410a8e248dbf13faaa28fa8dcc833d3f1336cf49903e06a67bfbb3de2",
+      "log_exceptions": false
+    },
+    "e2e13-long-a-s61003": {
+      "passed": true,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "normal_model_response": true,
+        "model_response_accepted": true,
+        "translation_command": true,
+        "recent_translation_command": true
+      },
+      "elapsed_s": 244.47583889961243,
+      "sim_s": 21.0,
+      "actual_displacement_m": {
+        "r1": 0.6449257447668444,
+        "r2": 0.29303218661972275,
+        "r3": 0.00010027293306676652
+      },
+      "sha256": "7609577dd9daf79ce8ae2aaf139e796457da09e875ca0b7fd8322539de7ca02e",
+      "log_exceptions": false
+    },
+    "e2e13-long-a-s61004": {
+      "passed": true,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "normal_model_response": true,
+        "model_response_accepted": true,
+        "translation_command": true,
+        "recent_translation_command": true
+      },
+      "elapsed_s": 243.20905089378357,
+      "sim_s": 21.0,
+      "actual_displacement_m": {
+        "r1": 0.689716946309081,
+        "r2": 0.2914462793305307,
+        "r3": 9.583674793562177e-05
+      },
+      "sha256": "6f5cee7c13d7aa0f459073e1456b32e3d04320997616a197cbf12042b4045f31",
+      "log_exceptions": false
+    },
+    "e2e13-long-b-s61001": {
+      "passed": true,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "normal_model_response": true,
+        "model_response_accepted": true,
+        "translation_command": true,
+        "recent_translation_command": true
+      },
+      "elapsed_s": 241.9604368209839,
+      "sim_s": 21.0,
+      "actual_displacement_m": {
+        "r1": 0.6637547759294601,
+        "r2": 0.3011230138738242,
+        "r3": 9.223761042363616e-05
+      },
+      "sha256": "179d7cf9204562516a523439c9e27b78cbb50895331589355dd349ca4f050345",
+      "log_exceptions": false
+    },
+    "e2e13-long-b-s61002": {
+      "passed": true,
+      "checks": {
+        "no_exceptions": true,
+        "frames_increased": true,
+        "sim_time_increased": true,
+        "actual_translation": true,
+        "ownmap_trace": true,
+        "mapping_phase_entered": true,
+        "normal_model_response": true,
+        "model_response_accepted": true,
+        "translation_command": true,
+        "recent_translation_command": true
+      },
+      "elapsed_s": 240.72730350494385,
+      "sim_s": 21.0,
+      "actual_displacement_m": {
+        "r1": 0.6707166578248083,
+        "r2": 0.30099182466663704,
+        "r3": 9.020677934663743e-05
+      },
+      "sha256": "9e2846aed9ac6de131093b20f8a86f2b4f1ad14008c3da66b092d0f66e75496f",
+      "log_exceptions": false
+    }
   }
 }
