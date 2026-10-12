@@ -25,6 +25,8 @@ from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
     "tests/test_e2e_exact_speedups2.py",
+    "tests/test_e2e_boundary_views.py",
+    "tests/test_e2e_b_marker_detect.py",
     "tests/test_e2e_runtime_registration.py",
     "tests/test_e2e_s4_live.py",
     "tests/test_e2e_goal_route.py",

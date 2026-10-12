@@ -1,0 +1,68 @@
+{
+ "verified": [
+  {
+   "cite": "Seegmiller & Wettergreen, Optical flow odometry with robustness to self-shadowing, IROS 2011, 613-618",
+   "doi": "10.1109/IROS.2011.6048614",
+   "use": "ground-plane LK, robust SE(2), measurement model"
+  },
+  {
+   "cite": "Scaramuzza & Fraundorfer, Visual Odometry Part I, IEEE RAM 18(4) 2011",
+   "doi": "10.1109/MRA.2011.943233",
+   "use": "VO pipeline, RANSAC"
+  },
+  {
+   "cite": "Fraundorfer & Scaramuzza, Visual Odometry Part II, IEEE RAM 19 2012",
+   "doi": "10.1109/MRA.2012.2182810",
+   "use": "robust estimation (issue number differs by source)"
+  },
+  {
+   "cite": "Zienkiewicz & Davison, Extrinsics autocalibration for dense planar visual odometry, JFR 32(5) 2015",
+   "doi": "10.1002/rob.21547",
+   "use": "downward planar VO with fixed extrinsics"
+  },
+  {
+   "cite": "Helmick, Cheng, Clouse, Matthies, Roumeliotis, Path following using visual odometry for a Mars rover in high-slip environments, IEEE Aerospace Conf. 2004",
+   "url": "https://www-users.cse.umn.edu/~stergios/papers/aero04.pdf",
+   "use": "slip detection by comparing VO vs wheel estimates with uncertainty; VO used under slip (venue wording not fully confirmed)"
+  },
+  {
+   "cite": "Moore & Stouch, A Generalized EKF Implementation for ROS (robot_localization), IAS-13 2014",
+   "doi": "10.1007/978-3-319-08338-4_25",
+   "use": "differential odometry fusion (Mahalanobis threshold detail unverified)"
+  },
+  {
+   "cite": "Grisetti, Stachniss, Burgard, Improved techniques for grid mapping with RBPF, T-RO 23(1) 2007",
+   "doi": "10.1109/TRO.2006.889486",
+   "use": "odometry proposal consumed by RBPF"
+  },
+  {
+   "cite": "Nister, An efficient solution to the five-point relative pose problem, TPAMI 26(6) 2004",
+   "doi": "10.1109/TPAMI.2004.17",
+   "use": "essential-matrix alternative (not used: planar SE(2) with known height fixes scale)"
+  },
+  {
+   "cite": "Campbell, Sukthankar, Nourbakhsh, Techniques for evaluating optical flow for visual odometry in extreme terrain, IROS 2004",
+   "url": "https://www.cs.cmu.edu/~illah/PAPERS/iros2004-finalcr-visualodometry.pdf",
+   "use": "ground VO evaluation"
+  },
+  {
+   "cite": "Nourani-Vatani, Roberts, Srinivasan, Practical visual odometry for car-like vehicles, ICRA 2009",
+   "doi": "10.1109/ROBOT.2009.5152403",
+   "use": "ground-facing camera VO"
+  }
+ ],
+ "unverified": [
+  "Thrun, Burgard, Fox, Probabilistic Robotics 2005 ch.5 alpha motion model (not web-confirmed)",
+  "Shi & Tomasi, Good features to track, CVPR 1994",
+  "Bouguet, Pyramidal LK (only via OpenCV doc reference)",
+  "OpenCV docs findHomography / fisheye.undistortPoints (403)",
+  "Popescu et al. 2026 cited in S2 docstring: not used here"
+ ],
+ "note": "No paper found that directly applies chi-square VO-vs-command slip replacement to a mecanum robot; this is a Helmick-style generalization.",
+ "reused_repo_code": [
+  "harness/zone_solo_cyan_progress_noise.py rigid_ransac + PARAMS (S2 ground_flow_noise_v1)",
+  "harness/zone_solo_cyan_ground_vo.py replace-on-slip rule (S2 ground_vo_v1)",
+  "harness/e2e_stall_odometry.py clone/install wrapper and colour mask rule",
+  "harness/active_camera.py + sim/masterpi_camera_profile.py fixed camera calibration"
+ ]
+}

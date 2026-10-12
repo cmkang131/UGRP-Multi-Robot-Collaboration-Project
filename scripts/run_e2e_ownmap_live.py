@@ -42,6 +42,9 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if mapping_budget not in ('off','case_cap_v1'):raise ValueError('UNKNOWN_MAPPING_BUDGET')
     from harness.e2e_stall_odometry import Options as StallOptions
     stall=StallOptions(stall_odometry,stall_recovery,stall_noise)
+    if stall.stall_odometry=='rgb_vo_v2':
+        # Registered only inside a composition bundle that names it; never fall back to v198/v201.
+        raise ValueError('RGB_VO_V2_HAS_NO_STANDALONE_BUNDLE')
     from harness.e2e_exact_speedups import Options as SpeedOptions
     speed=SpeedOptions(**(exact_speedups or {}))
     from harness.e2e_exact_speedups import ROUND2_FIELDS
@@ -87,6 +90,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if speed2:
         b['e2e_options']['exact_speedups']=dataclasses.asdict(speed)
         b.update(schema='ugrp.e2e_ownmap_live.v203',execution_bundle_id='e2e-exact-speed2-v203',workflow_version='7.96.0')
+    if stall.stall_odometry=='rgb_vo_v1':
+        b.update(schema='ugrp.e2e_ownmap_live.v201',execution_bundle_id='e2e-rgb-vo-v201',workflow_version='7.94.0')
     from harness.e2e_runtime_registration import register
     runtime_assets=register(b,runtime_registration)
     from harness.python_source_closure import source_closure
@@ -106,6 +111,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if mapping_budget!='off':paths.add('configs/simulation_workflows.d/e2e_stall_budget_v199.json')
     if speed_bundle or any(vars(speed).values()):paths.add('configs/simulation_workflows.d/e2e_exact_speed_v200.json')
     if speed2:paths.update(('configs/simulation_workflows.d/e2e_exact_speed2_v203.json','scripts/e2e_speed_measure.py'))
+    if stall.stall_odometry=='rgb_vo_v1':paths.add('configs/simulation_workflows.d/e2e_rgb_vo_v201.json')
     paths.update(runtime_assets)
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
@@ -233,7 +239,8 @@ def run(b,out,receipt,*,backend_factory=None):
                         sha256=obs['sha256'],pose_own_m=robot.goal.explorer.local_pose.tolist(),
                         remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
                         pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
-                        navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry')))
+                        navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry'),
+                        **{k:trace[k] for k in ('boundary_view','boundary_diagnostics') if k in trace}))
                 frames_seen+=1
                 if not host.started:
                     write(out/'e2e-progress.json',health(robots,host,transport,now,time.monotonic()-started,frames_seen))
@@ -326,7 +333,7 @@ def main(argv=None):
     p.add_argument('--exploration-progress',choices=('off','frontier_progress_v1'),default='off')
     p.add_argument('--pose-fix',choices=('off','innovation'),default='off')
     p.add_argument('--path-follow',choices=('off','rpp_v1'),default='off')
-    p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1'),default='off')
+    p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1','rgb_vo_v1','rgb_vo_v2'),default='off')
     p.add_argument('--stall-recovery',choices=('off','backup_replan_v1'),default='off')
     p.add_argument('--stall-noise',choices=('off','amcl_alpha_v1'),default='off')
     p.add_argument('--stall-bundle',action='store_true')
