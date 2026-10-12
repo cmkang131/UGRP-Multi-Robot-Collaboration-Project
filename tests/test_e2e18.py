@@ -91,16 +91,33 @@ def test_cached_static_views_and_fast_distance():
     np.testing.assert_array_equal(old,new)
 
 
-def test_speed5_registered_and_preserves_fit_quality():
+@pytest.mark.parametrize('mode,version',[('lean_v1',217),('lean_v2',218)])
+def test_speed5_registered_and_preserves_fit_quality(mode,version):
     from harness.e2e_runtime_registration import require_current
     from harness.e2e_speed5 import using
     from tests.test_e2e_b_partial import render
     from harness.e2e_b_partial import detect_partial
-    b=bundle('a'*40,61001,'study_gemma4_31b_v1',**options(),speed5='lean_v1')
-    assert b['execution_bundle_id']=='e2e18-v217';require_current(b,ROOT)
-    with using('lean_v1'):
+    b=bundle('a'*40,61001,'study_gemma4_31b_v1',**options(),speed5=mode)
+    assert b['execution_bundle_id']==f'e2e18-v{version}';require_current(b,ROOT)
+    if version==218:
+        bad=copy.deepcopy(b);bad['opencv_threads']=16
+        with pytest.raises(ValueError):require_current(bad,ROOT)
+    with using(mode):
         for center,yaw in [((.9,.45),0.),((1.,.5),.07),((.95,-.5),-.09)]:
             got=detect_partial(render(np.array(center),yaw),SEARCH,(0,0,0))
             assert len(got)==1 and valid_fit(got[0])
             assert math.dist(got[0]['center_robot_m'],center)<.06
         assert detect_partial(render(np.array([.9,0.]),0.),SEARCH,(0,0,0))==[]
+
+
+def test_squared_grid_cost_matches_distance_formula():
+    from harness.e2e_speed5 import rectangle_grid_cost
+    from harness.e2e_b_partial import rect_sd
+    rng=np.random.default_rng(77)
+    points=rng.uniform(-2,2,(81,2));centers=rng.uniform(-1,1,(51,2))
+    for yaw in (.3,1.7):
+        sd=rect_sd(points[None,:],centers[:,None],yaw,(.4,.7))
+        for interior in (True,False):
+            old=(np.minimum(np.maximum(sd,0) if interior else np.abs(sd),.06)**2).mean(axis=1)
+            new=rectangle_grid_cost(points,centers,yaw,(.4,.7),.06,interior=interior)
+            np.testing.assert_allclose(new,old,rtol=1e-12,atol=1e-15)

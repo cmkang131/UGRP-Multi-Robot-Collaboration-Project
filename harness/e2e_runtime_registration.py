@@ -35,23 +35,25 @@ def register(bundle, option='off'):
 def require_current(bundle, root):
     options = bundle['e2e_options']
     if (options.get('runtime_registration') != OPTION or
-            bundle['execution_bundle_id'] not in (BUNDLE_ID, NATIVE_COVERAGE_ID, 'e2e-speed3-v214', 'e2e-speed3-v215', 'e2e18-v216','e2e18-v217') or options['pulse_budget'] != 'off' or
+            bundle['execution_bundle_id'] not in (BUNDLE_ID, NATIVE_COVERAGE_ID, 'e2e-speed3-v214', 'e2e-speed3-v215', 'e2e18-v216','e2e18-v217','e2e18-v218') or options['pulse_budget'] != 'off' or
             options.get('pulse_authorization') != 'current_go_v1'):
         raise ValueError('E2E_ORIGINAL_CHECKOUT_OR_REVIEWED_RUNTIME_REQUIRED')
     if bundle['execution_bundle_id'] == NATIVE_COVERAGE_ID and not (
             options.get('boundary_coverage') == 'native_v1' and options.get('dev_light') is True and
             options.get('boundary_association') == 'extent_v1'):
         raise ValueError('DEV_BOUNDARY_NATIVE_REGISTRATION_REQUIRED')
-    if bundle['execution_bundle_id'] in ('e2e-speed3-v214','e2e-speed3-v215','e2e18-v216','e2e18-v217'):
+    if bundle['execution_bundle_id'] in ('e2e-speed3-v214','e2e-speed3-v215','e2e18-v216','e2e18-v217','e2e18-v218'):
         from sim.e2e_speed3_profile import PROFILES
         mode=options.get('speed3')
         if mode not in PROFILES or any(bundle.get('speed3_profile',{}).get(k)!=v for k,v in PROFILES[mode].items()):
             raise ValueError('SPEED3_PROFILE_MISMATCH')
         if not options.get('exact_speedups') or not all(options['exact_speedups'].values()):
             raise ValueError('SPEED3_ALL_EXACT_OPTIONS_REQUIRED')
-    if bundle['execution_bundle_id'] in ('e2e18-v216','e2e18-v217'):
+    if bundle['execution_bundle_id'] in ('e2e18-v216','e2e18-v217','e2e18-v218'):
         from harness.e2e18_bundle import validate
         validate(bundle)
+        if bundle['execution_bundle_id']=='e2e18-v218' and (options.get('speed5')!='lean_v2' or bundle.get('opencv_threads')!=1):
+            raise ValueError('SPEED5_RUNTIME_PROFILE_MISMATCH')
     for name in ASSETS:
         expected = bundle['source_sha256'].get(name)
         if expected is None or hashlib.sha256((Path(root)/name).read_bytes()).hexdigest() != expected:

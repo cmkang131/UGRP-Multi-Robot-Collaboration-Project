@@ -211,6 +211,10 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         b['e2e_options']['speed5']=speed5
         b.update(schema='ugrp.e2e_ownmap_live.v217',execution_bundle_id='e2e18-v217',workflow_version='7.110.0')
         paths.update((STATIC,*INPUTS,'configs/simulation_workflows.d/e2e18_v217.json'))
+        if speed5=='lean_v2':
+            b.update(schema='ugrp.e2e_ownmap_live.v218',execution_bundle_id='e2e18-v218',workflow_version='7.111.0')
+            b['opencv_threads']=1
+            paths.add('configs/simulation_workflows.d/e2e18_v218.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -284,6 +288,9 @@ def run(b,out,receipt,*,backend_factory=None):
     try:
         for p,sha in b['source_sha256'].items():
             if hashlib.sha256((ROOT/p).read_bytes()).hexdigest()!=sha:raise ValueError('SOURCE_HASH_MISMATCH:'+p)
+        if b.get('opencv_threads')==1:
+            import cv2
+            cv2.setNumThreads(1)
         options=Options(**b['study_options'])
         from harness.e2e_speed4 import Options as Speed4Options, processing_due
         speed4=Speed4Options(**b.get('speed4',{}))
@@ -490,7 +497,7 @@ def main(argv=None):
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
     p.add_argument('--speed3',choices=('off','dt1_v1','dt2_v1','adaptive_v1'),default='off')
-    p.add_argument('--speed5',choices=('off','cache_v1','lean_v1'),default='off')
+    p.add_argument('--speed5',choices=('off','cache_v1','lean_v1','lean_v2'),default='off')
     p.add_argument('--speed4',type=json.loads,default=None,help='DEV compute budget JSON; all fields default off')
     p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
     p.add_argument('--expected-workflow-id')

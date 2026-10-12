@@ -7,7 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 
-OPTIONS=('cache_v1','lean_v1')
+OPTIONS=('cache_v1','lean_v1','lean_v2')
 ACTIVE=ContextVar('e2e_speed5',default='off')
 STATIC='configs/e2e18_static_views_v1.json'
 INPUTS=('harness/e2e_b_standoff.py','harness/active_camera.py','harness/servo_camera_fk.py',
@@ -39,3 +39,20 @@ def static_views():
 
 def plan_views():
     return copy.deepcopy(static_views())
+
+
+def rectangle_grid_cost(points, centers, yaw, half, trunc, *, interior=False):
+    """Squared rectangle distance: outside dx^2+dy^2; inside max(dx,dy)^2.
+
+    The coarse search consumes squared/truncated costs, so sqrt/hypot and
+    N*2 broadcast temporaries can be eliminated algebraically.
+    """
+    import math
+    import numpy as np
+    c,s=math.cos(yaw),math.sin(yaw)
+    points=np.asarray(points);centers=np.asarray(centers)
+    ex=np.abs((c*points[:,0]+s*points[:,1])[None,:]-(c*centers[:,0]+s*centers[:,1])[:,None])-half[0]
+    ey=np.abs((-s*points[:,0]+c*points[:,1])[None,:]-(-s*centers[:,0]+c*centers[:,1])[:,None])-half[1]
+    d=np.maximum(ex,0)**2+np.maximum(ey,0)**2
+    if not interior:d+=np.minimum(np.maximum(ex,ey),0)**2
+    return np.minimum(d,trunc**2).mean(axis=1)
