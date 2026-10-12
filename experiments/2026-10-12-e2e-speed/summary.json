@@ -1,5 +1,5 @@
 {
-  "status": "PREPARING",
+  "status": "PROFILING",
   "pr": 433,
   "class": "dev",
   "seed": 61001,
@@ -14,12 +14,61 @@
       "use": "native sampling speedscope"
     },
     {
-      "url": "https://docs.python.org/3/library/profile.html",
+      "url": "https://docs.python.org/3.12/library/profile.html",
       "use": "cProfile cumulative function time"
     },
     {
       "url": "https://mujoco.readthedocs.io/en/stable/programming/simulation.html",
       "use": "mjcb_time and mjData.timer"
+    },
+    {
+      "url": "https://docs.python.org/3.12/library/functools.html#functools.lru_cache",
+      "use": "bounded cache for pure immutable SHA syntax validation"
+    },
+    {
+      "url": "https://docs.python.org/3.12/library/stdtypes.html#set-types-set-frozenset",
+      "use": "local set membership index; list fallback preserves unsupported equality"
+    },
+    {
+      "url": "https://docs.python.org/3.12/library/copy.html",
+      "use": "skip only an unused defensive copy; all causal validation remains"
     }
-  ]
+  ],
+  "profile_source": "7821864aa7a37005e67749f368e152495b520ae8",
+  "candidate_bundle": "e2e-exact-speed-v200",
+  "candidates": {
+    "index": {
+      "provenance_index": true
+    },
+    "validate": {
+      "sha_validation_cache": true
+    },
+    "copy": {
+      "omit_discarded_copy": true
+    },
+    "both": {
+      "provenance_index": true,
+      "sha_validation_cache": true,
+      "omit_discarded_copy": true
+    }
+  },
+  "comparison_plan": {
+    "seed": 61001,
+    "pairs": 3,
+    "single_toggle_runs": 3,
+    "same_time_submission": true,
+    "bitwise": [
+      "issued_commands",
+      "observation_media",
+      "RBPF arrays maps histories RNG after each frame"
+    ]
+  },
+  "tests": {
+    "passed": 104,
+    "files": [
+      "tests/test_e2e_speed.py",
+      "tests/test_e2e_own_inputs.py",
+      "tests/test_e2e_stall_odometry.py"
+    ]
+  }
 }
