@@ -11,6 +11,7 @@ import math
 
 import cv2
 import numpy as np
+from harness.e2e_exact_speedups import cells_enabled
 from scipy.ndimage import binary_dilation, distance_transform_edt, label
 
 from harness.self_odom_grid import transform
@@ -86,6 +87,11 @@ class ObservedGrid:
         self.support = set()
 
     def cell(self, xy):
+        if (cells_enabled() and type(xy) is np.ndarray and xy.shape==(2,) and xy.dtype==np.float64
+                and type(self.resolution) in (float,int) and self.resolution>0):
+            x,y=float(xy[0]),float(xy[1])
+            if math.isfinite(x) and math.isfinite(y):
+                return math.floor(x/self.resolution),math.floor(y/self.resolution)
         return tuple(int(v) for v in np.floor(np.asarray(xy)/self.resolution))
 
     def point(self, cell):

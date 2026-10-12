@@ -1,12 +1,113 @@
 {
-  "status": "PROFILING",
+  "status": "COMPARISON_PREPARING",
   "pr": 433,
   "class": "dev",
   "seed": 61001,
   "profile_sim_s": 60,
   "comparison_sim_s": 60,
   "source_baseline": "31f4f41ac7594ebc82c8cfc089c64ef50f65c57c",
-  "profile_top20": null,
+  "profile_top20": [
+    {
+      "function": "e2e_speed_measure.py:44:receive",
+      "cumulative_s": 967.913708171,
+      "wall_per_sim": 16.131895136183335
+    },
+    {
+      "function": "e2e_live_mapping.py:88:receive",
+      "cumulative_s": 810.38185324,
+      "wall_per_sim": 13.506364220666667
+    },
+    {
+      "function": "e2e_stall_odometry.py:204:received",
+      "cumulative_s": 743.0960407790001,
+      "wall_per_sim": 12.384934012983335
+    },
+    {
+      "function": "e2e_exploration.py:135:receive_progress",
+      "cumulative_s": 732.87877143,
+      "wall_per_sim": 12.2146461905
+    },
+    {
+      "function": "ego_pose_continuity.py:274:receive_pose",
+      "cumulative_s": 732.8683956460001,
+      "wall_per_sim": 12.214473260766669
+    },
+    {
+      "function": "e2e_setdown_relook.py:97:receive_rgb",
+      "cumulative_s": 730.222512151,
+      "wall_per_sim": 12.170375202516668
+    },
+    {
+      "function": "grid_acceleration.py:105:receive",
+      "cumulative_s": 713.62958876,
+      "wall_per_sim": 11.893826479333335
+    },
+    {
+      "function": "e2e_goal_route.py:66:receive",
+      "cumulative_s": 713.5628683140001,
+      "wall_per_sim": 11.892714471900002
+    },
+    {
+      "function": "goal_route_continuous.py:246:receive",
+      "cumulative_s": 701.816797079,
+      "wall_per_sim": 11.696946617983334
+    },
+    {
+      "function": "active_wall_recovery.py:143:receive",
+      "cumulative_s": 430.69169446700005,
+      "wall_per_sim": 7.178194907783334
+    },
+    {
+      "function": "e2e_speed_measure.py:54:advance_to",
+      "cumulative_s": 195.250676551,
+      "wall_per_sim": 3.254177942516667
+    },
+    {
+      "function": "s3_buffered_io.py:57:advance_to",
+      "cumulative_s": 195.240943073,
+      "wall_per_sim": 3.2540157178833335
+    },
+    {
+      "function": "final_pair_highpose_clock.py:76:advance_to",
+      "cumulative_s": 195.19228993000002,
+      "wall_per_sim": 3.253204832166667
+    },
+    {
+      "function": "masterpi_drive_friction_v7.py:212:_physics_step_for",
+      "cumulative_s": 190.31928111300002,
+      "wall_per_sim": 3.1719880185500005
+    },
+    {
+      "function": "~:0:<built-in method mujoco._functions.mj_step>",
+      "cumulative_s": 171.04079508,
+      "wall_per_sim": 2.850679918
+    },
+    {
+      "function": "active_wall_recovery.py:101:_rays",
+      "cumulative_s": 154.71124765000002,
+      "wall_per_sim": 2.578520794166667
+    },
+    {
+      "function": "active_wall_mapping.py:117:_rays",
+      "cumulative_s": 154.694771417,
+      "wall_per_sim": 2.578246190283333
+    },
+    {
+      "function": "e2e_speed_measure.py:19:rbpf_digest",
+      "cumulative_s": 151.82956541800002,
+      "wall_per_sim": 2.530492756966667
+    },
+    {
+      "function": "public_navigation_raytrace.py:23:receive_rays",
+      "cumulative_s": 148.686921872,
+      "wall_per_sim": 2.478115364533333
+    },
+    {
+      "function": "s3_buffered_io.py:51:capture",
+      "cumulative_s": 128.64940242100002,
+      "wall_per_sim": 2.144156707016667
+    }
+  ],
   "equivalence": null,
   "references": [
     {
@@ -32,21 +133,33 @@
     {
       "url": "https://docs.python.org/3.12/library/copy.html",
       "use": "skip only an unused defensive copy; all causal validation remains"
+    },
+    {
+      "url": "https://numpy.org/doc/stable/reference/generated/numpy.floor.html",
+      "use": "same floor semantics; finite float64 scalar fast path with fallback"
+    },
+    {
+      "url": "https://docs.python.org/3.12/library/math.html#math.floor",
+      "use": "scalar floor retaining IEEE division; exact boundary regression"
     }
   ],
   "profile_source": "7821864aa7a37005e67749f368e152495b520ae8",
   "candidate_bundle": "e2e-exact-speed-v200",
   "candidates": {
-    "index": {
-      "provenance_index": true
+    "cell": {
+      "scalar_cells": true
     },
-    "validate": {
-      "sha_validation_cache": true
+    "geometry": {
+      "geometry_cache": true
     },
-    "copy": {
+    "validation": {
+      "provenance_index": true,
+      "sha_validation_cache": true,
       "omit_discarded_copy": true
     },
     "both": {
+      "scalar_cells": true,
+      "geometry_cache": true,
       "provenance_index": true,
       "sha_validation_cache": true,
       "omit_discarded_copy": true
@@ -64,11 +177,12 @@
     ]
   },
   "tests": {
-    "passed": 104,
+    "passed": 94,
     "files": [
       "tests/test_e2e_speed.py",
-      "tests/test_e2e_own_inputs.py",
-      "tests/test_e2e_stall_odometry.py"
+      "tests/test_grid_acceleration.py",
+      "tests/test_e2e_own_inputs.py"
     ]
-  }
+  },
+  "profile_artifact": "profile.json"
 }

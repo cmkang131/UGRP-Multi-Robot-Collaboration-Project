@@ -14,7 +14,7 @@ from harness.active_wall_vision import observe
 from harness.e2e_goal_route import GoalRoute, attach
 from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
-from harness.e2e_exact_speedups import OFF
+from harness.e2e_exact_speedups import OFF, using
 
 
 def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None):
@@ -88,6 +88,10 @@ class Robot:
         self.translation_commands=0
 
     def receive(self,obs,rgb):
+        with using(self.exact_speedups):
+            return self._receive(obs,rgb)
+
+    def _receive(self,obs,rgb):
         own.closed(obs,('frame_id','sim_time','sha256','image'),'OWN_CAPTURE')
         self.now=float(obs['sim_time']);self.last_obs=copy.deepcopy(obs)
         self.frame=SimpleNamespace(index=obs['frame_id'],t=self.now,sha256=obs['sha256'],

@@ -324,6 +324,8 @@ def main():
     p.add_argument('--exact-provenance-index',action='store_true')
     p.add_argument('--exact-sha-cache',action='store_true')
     p.add_argument('--exact-omit-copy',action='store_true')
+    p.add_argument('--exact-scalar-cells',action='store_true')
+    p.add_argument('--exact-geometry-cache',action='store_true')
     p.add_argument('--exact-speed-bundle',action='store_true')
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
@@ -333,7 +335,7 @@ def main():
              exploration_progress=a.exploration_progress,pose_fix=a.pose_fix,
              path_follow=a.path_follow,dev_light=a.dev_light,wall_cap_s=a.wall_cap_s,
              stall_odometry=a.stall_odometry,stall_recovery=a.stall_recovery,stall_noise=a.stall_noise,stall_bundle=a.stall_bundle,mapping_budget=a.mapping_budget,
-             exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy),
+             exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache),
              speed_bundle=a.exact_speed_bundle)
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':

@@ -1,6 +1,8 @@
 """Opt-in exact validation shortcuts; never cache mutable controller state."""
 from dataclasses import dataclass
 from functools import lru_cache
+from contextvars import ContextVar
+from contextlib import contextmanager
 
 
 @dataclass(frozen=True)
@@ -8,6 +10,8 @@ class Options:
     provenance_index: bool = False
     sha_validation_cache: bool = False
     omit_discarded_copy: bool = False
+    scalar_cells: bool = False
+    geometry_cache: bool = False
 
     def __post_init__(self):
         if any(type(v) is not bool for v in vars(self).values()):
@@ -15,6 +19,18 @@ class Options:
 
 
 OFF = Options()
+_ACTIVE = ContextVar('e2e_exact_geometry_options',default=OFF)
+
+
+@contextmanager
+def using(options):
+    token=_ACTIVE.set(options)
+    try:yield
+    finally:_ACTIVE.reset(token)
+
+
+def cells_enabled():return _ACTIVE.get().scalar_cells
+def geometry_enabled():return _ACTIVE.get().geometry_cache
 
 
 def invalid_sha(value):

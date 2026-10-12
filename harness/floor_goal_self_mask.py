@@ -68,6 +68,26 @@ def body_envelopes(servo, profile):
 
 
 def project_envelopes(envelopes, origin, axes, width, height, padding_m=.002, dilate_px=2):
+    from harness.e2e_exact_speedups import geometry_enabled
+    if geometry_enabled():
+        # Materialize the one-shot geometry iterator exactly once. Calibration
+        # content is part of the key, along with every envelope and camera bit.
+        return _projection_memo()(list(envelopes),origin,axes,width,height,padding_m,dilate_px,
+            np.asarray(scaled_camera_matrix(width,height)),np.asarray(CAMERA_FISHEYE_D))
+    return _project_envelopes(envelopes,origin,axes,width,height,padding_m,dilate_px)
+
+
+def _projection(envelopes,origin,axes,width,height,padding_m,dilate_px,camera_K,camera_D):
+    return _project_envelopes(envelopes,origin,axes,width,height,padding_m,dilate_px)
+
+
+@lru_cache(maxsize=1)
+def _projection_memo():
+    from harness.controller_exact_speedups import PureMemo
+    return PureMemo(_projection,maxsize=8)
+
+
+def _project_envelopes(envelopes, origin, axes, width, height, padding_m=.002, dilate_px=2):
     """Conservative pinhole convex envelopes, then fisheye projection and dilation.
 
     Near-plane intersections are retained. A camera inside an envelope is masked
