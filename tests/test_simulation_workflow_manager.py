@@ -328,7 +328,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-sweep-v149": ["--expected-source-sha", "0" * 40],
             "zone-s3-odometry-v150": ["--expected-source-sha", "0" * 40],
             "zone-s3-consistency-v151": ["--expected-source-sha", "0" * 40],
-            "zone-s3-recovery-v209": ["--expected-source-sha", "0" * 40],
+            "zone-s3-recovery-v211": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-probe-v153": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-entry-probe-v154": ["--expected-source-sha", "0" * 40],
             "zone-s3-oracle-stage-probe-v155": ["--expected-source-sha", "0" * 40],
@@ -449,7 +449,7 @@ raise SystemExit(3 if a.fail else 0)
                     '--stall-recovery', 'off', '--stall-noise', 'off', '--mapping-budget', 'off']
         for name in ('e2e-ownmap-live-v185', 'e2e-ownmap-jev-v192', 'e2e-explore-posefix-v194',
                      'e2e-rpp-lookahead-v197', 'e2e-stall-odometry-v198', 'e2e-stall-budget-v199',
-                     'e2e-exact-speed-v200', 'e2e-reviewed-runtime-v210'):
+                     'e2e-exact-speed-v200', 'e2e-rgb-vo-v201', 'e2e-exact-speed2-v203', 'e2e-reviewed-runtime-v210'):
             samples[name] = list(e2e_args)
         samples['e2e-one-beam-ownmap-inputs'] = sha
         # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
