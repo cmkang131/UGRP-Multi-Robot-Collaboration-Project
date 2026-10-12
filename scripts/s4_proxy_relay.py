@@ -19,7 +19,7 @@ from harness.s4_relay_journal import Journal
 def accepted_call_id(value):
     # Both registered runners use run_key:call_id:attempt; keep the historical
     # S4 namespace and explicitly admit only this E2E pilot's registered cells.
-    return re.fullmatch(r'e2e-(?:usstall|vomask|idle)-[ab]-s6100[1-3]:call-\d+-r[123]:\d+',value) is not None or value.startswith('s4live1-') or re.fullmatch(r'e2e14-[ab]-s6100[1-4](?:-r2)?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(r'e2e15-[ab]-s6100[1-3]:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(r'e2e13-(?:profile|off|index|validate|copy|cell|geometry|validation|both)-s61001(?:-p[123])?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(
+    return re.fullmatch(r'e2e-idle-a-s6100[4-9]:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(r'e2e-(?:usstall|vomask|idle)-[ab]-s6100[1-3]:call-\d+-r[123]:\d+',value) is not None or value.startswith('s4live1-') or re.fullmatch(r'e2e14-[ab]-s6100[1-4](?:-r2)?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(r'e2e15-[ab]-s6100[1-3]:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(r'e2e13-(?:profile|off|index|validate|copy|cell|geometry|validation|both)-s61001(?:-p[123])?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(
         r'(?:e2eaz1-(?:gemma|gemini)-s6100[1-4]-(?:on|off)(?:-r[1-3])?|e2e[89]-[ab]-s6100[1-4](?:-r[12])?|e2e10-(?:a-s6100[1-4]|[bc]-s6100[12])(?:-r2)?|e2e1[12]-[ab]-s6100[12](?:-r2)?):call-\d+-r[123]:\d+',value) is not None
 
 
@@ -29,7 +29,7 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--seconds', type=int, default=3600)
     p.add_argument('--idempotent', action='store_true')
-    p.add_argument('--listen-port',type=int,choices=(18392,18394,18414,18416),default=18392)
+    p.add_argument('--listen-port',type=int,choices=(18392,18394,18414,18416,18424,18426),default=18392)
     p.add_argument('--remote-port',type=int,choices=(18391,18393),default=18391)
     p.add_argument('--gemini-port',type=int,choices=(8391,8395),default=8391)
     p.add_argument('--gemma-fallback', action='store_true', help='DEV only; default off')

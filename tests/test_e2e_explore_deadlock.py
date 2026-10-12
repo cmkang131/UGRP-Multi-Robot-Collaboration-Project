@@ -101,7 +101,16 @@ def test_v208_bundle_v207_off_identity_relay_and_real_robot_wiring():
         bundle('sha',61001,'study_gemma4_31b_v1',explore_deadlock='replan_v1')
     for arm in ('a','b'):
         for seed in (61001,61002,61003):assert accepted_call_id(f'e2e-idle-{arm}-s{seed}:call-0001-r1:1')
-    assert not accepted_call_id('e2e-idle-a-s61004:call-0001-r1:1')
+    for seed in range(61004,61010):
+        assert accepted_call_id(f'e2e-idle-a-s{seed}:call-0001-r1:1')
+        assert not accepted_call_id(f'e2e-idle-b-s{seed}:call-0001-r1:1')
+        assert bundle('sha',seed,'study_gemma4_31b_v1',**kw,explore_deadlock='replan_v1')['seed'] == seed
+        if seed > 61004:
+            with pytest.raises(ValueError,match='REGISTERED_MODEL_SEED_REQUIRED'):
+                bundle('sha',seed,'study_gemma4_31b_v1',**kw)
+    with pytest.raises(ValueError,match='REGISTERED_MODEL_SEED_REQUIRED'):
+        bundle('sha',61010,'study_gemma4_31b_v1',**kw,explore_deadlock='replan_v1')
+    assert not accepted_call_id('e2e-idle-a-s61010:call-0001-r1:1')
     cov=json.loads(Path('configs/e2e_nees_egomap70_dev_v1.json').read_text())
     robot=Robot('r1',61001,cov,Options(),exploration_progress='frontier_progress_v1',
         boundary_views='candidate_views_v1',explore_deadlock='replan_v1',
