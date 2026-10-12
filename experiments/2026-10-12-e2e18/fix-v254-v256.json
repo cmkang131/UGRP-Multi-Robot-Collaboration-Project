@@ -1,0 +1,38 @@
+{
+  "versions": [
+    254,
+    255,
+    256
+  ],
+  "parent": 253,
+  "default": "off",
+  "tests_passed": 38,
+  "diagnosis": {
+    "run": "e2e18-v249-s61002-r38",
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v249-s61002-r38",
+    "stop_sim_s": 191.1,
+    "tilt_deg": 10.605027425241971,
+    "front_echo_m": [
+      1.834,
+      1.903
+    ],
+    "missed_sector": "divider_2 front_plate/right_finger; no clearance event before scan",
+    "source": "tilt-v249-s61002.txt",
+    "sha256": "756acea11f773845bff875df86124857795b726c514a0ee37ec38d0e08add153"
+  },
+  "hypotheses": {
+    "254": "persistent own occupancy-map wall within0.45m supplements current RGB and front sonar",
+    "255": "0.30m commanded backup and turn before scan; grant lasts12SIM or0.10m/0.26rad own movement",
+    "256": "same backup plus disjoint fixed arm start slots; no private partner pose"
+  },
+  "criteria": [
+    "replayv249 p45 to inspect fixture baseline/candidate tilt",
+    "full run tilt count",
+    "LLM own-map route fine alignment grasp delivery tracked separately"
+  ],
+  "references": [
+    "https://docs.nav2.org/configuration/packages/bt-plugins/actions/BackUp.html",
+    "https://moveit.picknik.ai/main/doc/examples/planning_scene/planning_scene_tutorial.html"
+  ],
+  "scope": "Saved truth only fixes diagnostic initial base; online candidates see own RGB/own map/own range/commands only."
+}

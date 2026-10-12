@@ -60,14 +60,26 @@ def scan_path(robot,path):
 
 
 class Clearance:
-    def __init__(self,option='off'):
+    def __init__(self,option='off',scan_guard='off'):
+        from harness.e2e_scan_guard import OPTIONS as GUARDS
+        if scan_guard not in ('off',*GUARDS):raise ValueError('UNKNOWN_SCAN_GUARD')
+        if scan_guard!='off' and option!='range_wall_v1':raise ValueError('SCAN_GUARD_REQUIRES_RANGE_WALL')
+        self.scan_guard=scan_guard;self.retreat_grants={}
         if option not in ('off',*OPTIONS):raise ValueError('UNKNOWN_ARM_CLEARANCE')
         self.option=option;self.pending={};self.excluded={};self.cooldown={}
+
+    def evidence(self,robot,now):
+        ev=evidence(robot,now,self.option)
+        if self.scan_guard=='map_v1':
+            from harness.e2e_scan_guard import mapped_wall_distance,PARAMS as GUARD_PARAMS
+            distance=mapped_wall_distance(robot);ev['map_wall_m']=distance
+            ev['near']=bool(ev['near'] or distance is not None and distance<GUARD_PARAMS['map_wall_radius_m'])
+        return ev
 
     def busy(self,rid):return rid in self.pending
 
     def slot(self,rid,now):
-        if self.option!='range_wall_slots_v1':return True
+        if self.option!='range_wall_slots_v1' and self.scan_guard!='retreat_slots_v1':return True
         # A complete 1.4 s scan fits; r1 and r2 have disjoint three-second slots.
         offset=0. if rid=='r1' else 3.
         return 0<=now%6.-offset<=1.5
@@ -79,15 +91,17 @@ class Clearance:
         if rid in self.pending:return True
         if now<self.cooldown.get(rid,0.):return True
         pose=np.asarray(r.goal.explorer.local_pose,float)
-        ev=evidence(r,now,self.option)
+        ev=self.evidence(r,now)
+        from harness.e2e_scan_guard import forced
+        retreat=forced(self,rid,now,pose)
         repeated=any(np.linalg.norm(pose[:2]-p)<PARAMS['repeat_radius_m'] for p in self.excluded.get(rid,[]))
-        if not ev['near'] and not repeated and self.slot(rid,now):return False
-        phase='backup' if ev['near'] or repeated else 'slot'
+        if not ev['near'] and not repeated and not retreat and self.slot(rid,now):return False
+        phase='backup' if ev['near'] or repeated or retreat else 'slot'
         self.pending[rid]=dict(path=copy.deepcopy(path),phase=phase,since=now,
                                pose=pose.copy(),cycle=1,ev=ev)
         if phase=='backup':self.excluded.setdefault(rid,[]).append(pose[:2].copy())
         tr.event(now,'own_arm_clearance_deferred',robot_id=rid,phase=phase,
-                 repeated_location=repeated,**ev)
+                 repeated_location=repeated,command_space_retreat=retreat,**ev)
         return True
 
     def filter(self,tr,now,commands):
@@ -111,7 +125,7 @@ class Clearance:
                 if action['kind']=='hold' or elapsed>=PARAMS['turn_cap_s']:
                     s.update(phase='verify',since=now);action=stop()
             elif phase in ('verify','slot'):
-                ev=evidence(r,now,self.option)
+                ev=self.evidence(r,now)
                 repeated=any(np.linalg.norm(pose[:2]-p)<PARAMS['repeat_radius_m'] for p in self.excluded.get(rid,[]))
                 if phase=='verify' and elapsed<.7:pass
                 elif ev['near'] or repeated:
@@ -121,6 +135,7 @@ class Clearance:
                     else:s.update(phase='backup',since=now,pose=pose.copy(),cycle=s['cycle']+1)
                 elif self.slot(rid,now):
                     self.pending.pop(rid)
+                    self.retreat_grants[rid]=(now,pose.copy())
                     tr._poses(rid,now,s['path'],_clearance_checked=True)
                     tr.event(now,'own_arm_clearance_released',robot_id=rid,cycles=s['cycle'],**ev)
             r.carrier_approach=dict(t=now,status='arm_clearance_'+s['phase'],cycle=s['cycle'])

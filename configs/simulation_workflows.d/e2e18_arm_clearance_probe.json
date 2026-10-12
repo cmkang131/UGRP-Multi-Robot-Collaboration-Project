@@ -3,7 +3,7 @@
   "workflows": [
     {
       "id": "e2e18-arm-clearance-probe",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "purpose": "20 SIM-second staged wall/arm clearance diagnostic; no E2E claim",
       "entry": "scripts/probe_e2e_arm_clearance.py",
       "runner": "scripts.probe_e2e_arm_clearance",
@@ -13,7 +13,8 @@
       "output_kind": "directory",
       "required_inputs": [
         "--expected-source-sha",
-        "--bundle"
+        "--bundle",
+        "--fixture"
       ],
       "side_effect": "local_simulation",
       "adapter": "managed_legacy_cli",

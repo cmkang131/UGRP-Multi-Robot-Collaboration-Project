@@ -20,7 +20,7 @@ def load(path):
     return json.loads(path.read_bytes() if path.exists() else subprocess.check_output(['zstd','-dc',str(path)+'.zst']))
 
 
-def run_case(bundle,option,dt,out):
+def run_case(bundle,option,dt,out,fixture="v229",scan_guard="off"):
     import mujoco
     import numpy as np
     from sim.e2e_ownmap_live import PhysicsBackend
@@ -38,6 +38,12 @@ def run_case(bundle,option,dt,out):
     robots={};odoms={}
     try:
         backend.reset(10.)
+        if fixture=='v249':
+            # Set the commanded p45 posture away from the wall, then place the
+            # saved static base fixture. Diagnostic setup only, not a rollout.
+            for sid,value in pose_of('p45').items():
+                backend.issue('r1',dict(kind='look',pan_pulse=value) if sid==6 else dict(kind='arm',servo_id=sid,pulse=value))
+            backend.advance_to(backend.now+1.4)
         # Static initial condition copied from v229 s61005, immediately before
         # SEARCH departure. This setup does not enter the candidate's own pose.
         m,d=backend.world.model,backend.world.data
@@ -45,22 +51,30 @@ def run_case(bundle,option,dt,out):
         yaw=2.9888941300084326
         d.qpos[q:q+7]=[2.3058508336151635,.2406592657924713,.03194707159033561,
                          math.cos(yaw/2),0.,0.,math.sin(yaw/2)]
+        if fixture=='v249':
+            yaw=2.7378753654087853
+            d.qpos[q:q+7]=[2.2920882194449677,.22160274548966766,.031937397712404274,
+                            math.cos(yaw/2),0.,0.,math.sin(yaw/2)]
         d.qvel[v:v+6]=0.;mujoco.mj_forward(m,d)
         m.opt.timestep=dt;backend.dt=dt;backend._clock_snap()
         origin=backend.now
         backend.set_deadline(origin+20.)
         for rid in ('r1','r2','r3'):
-            odom=PulseOdometry();odom.command(dict(kind='initial_servo_command',t=0.,pulses=SEARCH))
+            initial=pose_of('p45') if fixture=='v249' and rid=='r1' else dict(SEARCH)
+            odom=PulseOdometry();odom.command(dict(kind='initial_servo_command',t=0.,pulses=initial))
             odoms[rid]=odom
-            robots[rid]=SimpleNamespace(robot_id=rid,servo=dict(SEARCH),now=0.,wall_segments=[],
+            robots[rid]=SimpleNamespace(robot_id=rid,servo=dict(initial),now=0.,wall_segments=[],
                 goal=SimpleNamespace(explorer=SimpleNamespace(local_pose=np.zeros(3))))
         rig=attach(backend,robots,seed=61005,out=out)
         tr=Transport(robots,None,profiles,dev_light=True,align_queues='per_robot_v1')
-        tr.arm_clearance=Clearance(option);tr.camera_motion='slow_scan_v1'
+        tr.arm_clearance=Clearance(option,scan_guard);tr.camera_motion='slow_scan_v1'
         admission=Admission('finish_active_v1')
         for i in range(400):
             now=i*.05
-            if i==20:tr._poses('r1',now,[(pose_of('p45'),.8,.6)])
+            if i==20:tr._poses('r1',now,[(pose_of('inspect' if fixture=='v249' else 'p45'),.8,.6)])
+            if fixture=='v249' and i in (60,100):
+                target=pose_of('search');target[6]=1250 if i==60 else 1750
+                tr._poses('r1',now,[(target,.3,.6)])
             commands=tr.arm_clearance.filter(tr,now,tr._drain(now))
             for rid,a in admission.step(now,commands):
                 backend.issue(rid,a);odoms[rid].command(dict(t=now,**a))
@@ -89,16 +103,16 @@ def run_case(bundle,option,dt,out):
     finally:
         try:backend.close()
         except Exception as exc:result.update(status="HOST_ERROR",close_error=str(exc))
-        result.update(option=option,timestep_s=dt,sim_s=rows[-1]['t'] if rows else 0.,wall_s=time.monotonic()-started,
+        result.update(option=option,scan_guard=scan_guard,fixture=fixture,timestep_s=dt,sim_s=rows[-1]['t'] if rows else 0.,wall_s=time.monotonic()-started,
             max_tilt_deg=max((r['tilt_deg'] for r in rows),default=None),wall_contact_samples=sum(bool(r['wall_contacts']) for r in rows),
-            scope='staged wall fixture; no policy camera, LLM, grasp, delivery or E2E success',source_fixture='v229 s61005 trajectory t316.95',
+            scope='staged wall fixture; no policy camera, LLM, grasp, delivery or E2E success',source_fixture='v249 s61002 trajectory t189.65 p45' if fixture=='v249' else 'v229 s61005 trajectory t316.95',
             events=tr.events if 'tr' in locals() else [])
         write(out/'evaluation.json',rows);write(out/'result.json',result)
     return result
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--sonar-frame',choices=('off','site_z_v1'),default='off');p.add_argument('--bundle',required=True);p.add_argument('--output',required=True,type=Path)
+    p=argparse.ArgumentParser();p.add_argument('--fixture',choices=('v229','v249'),default='v229');p.add_argument('--sonar-frame',choices=('off','site_z_v1'),default='off');p.add_argument('--bundle',required=True);p.add_argument('--output',required=True,type=Path)
     p.add_argument('--expected-source-sha',required=True);p.add_argument('--expected-workflow-id');p.add_argument('--execute',action='store_true')
     a=p.parse_args()
     if not a.execute or platform.system()!='Linux' or not platform.node().startswith('ugrp-sim-azure'):p.error('AZURE_ONLY_EXPLICIT_PROBE')
@@ -112,9 +126,10 @@ def main():
     # Retain implicitfast/80 iterations, fixing dt instead of phase adaptation.
     b['e2e_options']['stage_physics']='off';b['e2e_options']['speed3']='dt2_v1'
     rows=[]
-    for option,dt in [('off',.002),('range_v1',.002),('off',.00025),('range_v1',.00025)]:
-        rows.append(run_case(b,option,dt,a.output/(option+'-'+str(dt))))
-        write(a.output/'summary.json',dict(source_sha=sha,sonar_frame=a.sonar_frame,results=rows,complete=len(rows)==4,loadavg=os.getloadavg()))
+    cases=[('off',.002,'off'),('range_v1',.002,'off'),('off',.00025,'off'),('range_v1',.00025,'off')] if a.fixture=='v229' else [('range_wall_v1',.002,g) for g in ('off','retreat_v1','retreat_slots_v1')]
+    for option,dt,guard in cases:
+        rows.append(run_case(b,option,dt,a.output/(option+'-'+guard+'-'+str(dt)),a.fixture,guard))
+        write(a.output/'summary.json',dict(source_sha=sha,sonar_frame=a.sonar_frame,fixture=a.fixture,results=rows,complete=len(rows)==len(cases),loadavg=os.getloadavg()))
     from scripts.probe_e2e_speed3_physics import compress_and_hash
     compress_and_hash(a.output)
     return int(any(r['status']=='HOST_ERROR' for r in rows))
