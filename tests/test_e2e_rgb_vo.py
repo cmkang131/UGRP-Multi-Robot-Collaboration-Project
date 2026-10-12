@@ -187,3 +187,64 @@ def test_few_tracked_points_keep_command_increment(monkeypatch, n):
     assert all(r['status'].startswith('unknown_') or r['status'] == 'no_previous_frame' for r in rows)
     assert all(r['fusion'] == 'command_kept' for r in rows[1:])
     np.testing.assert_allclose(d.pose, f.nominal.pose, atol=1e-12)  # identical to off
+
+
+def run_v2(monkeypatch, gate_status, frames=10):
+    import harness.e2e_stall_odometry as stall
+    monkeypatch.setattr(vo, 'ground_pair', lambda *a: dict(status='unknown_texture', tracks=0, inliers=0, cells=0))
+    monkeypatch.setattr(stall, 'flow_pair', lambda *a: dict(status=gate_status, tracks=30, cells=6,
+        median_px=0., p90_px=0., mean_abs_diff=0.))
+    d = RotationPulseOdometry();d.command(dict(t=0., kind='initial_servo_command', pulses=SEARCH))
+    f = vo.VOFusion(d, fallback='pulse_gate');active = [False]
+    d.motion_filter = lambda delta, var: f.motion_filter(delta, var) if active[0] else (delta, var)
+    rows = []
+    for i in range(frames):
+        t = i*.2
+        rows.append(f.observe(t=t, frame_id=i, rgb=render((0., 0., 0.), noise_seed=i), servo=SEARCH, sha256=str(i)))
+        active[0] = True
+        try:
+            d.advance(t)
+        finally:
+            active[0] = False;f.finish_interval()
+        f.command(pulse(t));d.command(pulse(t))
+    return d, f, rows
+
+
+def test_v2_gate_zeroes_translation_and_inflates_covariance_when_vo_unknown(monkeypatch):
+    d, f, rows = run_v2(monkeypatch, 'stationary_view')
+    zero = [r for r in rows if r['fusion'] == 'gate_zero']
+    assert zero and f.counts['gate_zero'] == len(zero) and f.counts['substep_mismatch'] == 0
+    assert all(r['fused_delta'][:2] == [0., 0.] for r in zero)
+    assert all(r['fused_variance'][0] > 4e-7 for r in zero)  # inflated above the calibrated pulse variance
+    assert d.pose[0] < f.nominal.pose[0]-.05
+
+
+def test_v2_keeps_command_when_gate_also_cannot_decide(monkeypatch):
+    d, f, rows = run_v2(monkeypatch, 'unknown_texture')
+    assert f.counts['gate_zero'] == 0 and all(r['fusion'] == 'command_kept' for r in rows[1:])
+    np.testing.assert_allclose(d.pose, f.nominal.pose, atol=1e-12)
+
+
+def test_v2_option_contract_and_no_standalone_bundle():
+    from harness.e2e_stall_odometry import VO2
+    from scripts.run_e2e_ownmap_live import bundle
+    assert Options(VO2).enabled and vo.OPTION_V2 == VO2
+    with pytest.raises(ValueError):
+        Options(VO2, stall_recovery=RECOVERY)
+    with pytest.raises(ValueError, match='RGB_VO_V2_HAS_NO_STANDALONE_BUNDLE'):
+        bundle('a'*40, 61001, 'study_gemma4_31b_v1', enabled=True, path_follow='rpp_v1', stall_odometry=VO2)
+
+
+def test_v2_live_install_dispatch():
+    import base64, json
+    from harness.e2e_live_mapping import Robot
+    from harness.s4_event_policy import Options as Study
+    from harness.e2e_stall_odometry import VO2
+    cov = json.loads(Path('configs/e2e_nees_egomap70_dev_v1.json').read_text())
+    r = Robot('r1', 61001, cov, Study(), exploration_progress='frontier_progress_v1',
+              pose_fix='innovation', path_follow='rpp_v1', stall_options=Options(VO2))
+    assert r.goal.e2e_vo.fallback == 'pulse_gate'
+    rgb = np.zeros((480, 640, 3), np.uint8);_, data = cv2.imencode('.jpg', rgb);data = data.tobytes()
+    trace = r.receive(dict(frame_id=1, sim_time=0., sha256=hashlib.sha256(data).hexdigest(),
+                           image=base64.b64encode(data).decode()), rgb)
+    assert trace['stall_odometry']['options']['stall_odometry'] == VO2 and 'gate' in trace['stall_odometry']
