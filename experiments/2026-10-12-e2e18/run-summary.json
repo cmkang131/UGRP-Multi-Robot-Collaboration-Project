@@ -1,5 +1,5 @@
 {
-  "status": "V220_EIGHT_CONTINUING_V221_FOUR_GATING",
+  "status": "V220_FOUR_V221_FOUR_V222_FOUR_GATING",
   "started_utc": "2026-10-12T11:03:00Z",
   "deadline_utc": "2026-10-12T21:03:00Z",
   "bundle": "e2e18-v220",
@@ -741,18 +741,24 @@
       "seed": 61001,
       "bundle": "e2e18-v220",
       "attempt": 6,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_BEAM_AXIS_FIX",
       "source_sha": "f8a73ce415d7e5d8915710cbe0c604e1306f67de",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61001-r6/raw"
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61001-r6/raw",
+      "exit": 130,
+      "result_file": "cohort-r6-selected2-results.json",
+      "failure": "SIGNAL_SIGINT"
     },
     {
       "vm": "azure3",
       "seed": 61002,
       "bundle": "e2e18-v220",
       "attempt": 6,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_BEAM_AXIS_FIX",
       "source_sha": "f8a73ce415d7e5d8915710cbe0c604e1306f67de",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61002-r6/raw"
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61002-r6/raw",
+      "exit": 130,
+      "result_file": "cohort-r6-selected2-results.json",
+      "failure": "SIGNAL_SIGTERM"
     },
     {
       "vm": "azure3",
@@ -801,18 +807,24 @@
       "seed": 61007,
       "bundle": "e2e18-v220",
       "attempt": 6,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_BEAM_AXIS_FIX",
       "source_sha": "f8a73ce415d7e5d8915710cbe0c604e1306f67de",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61007-r6/raw"
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61007-r6/raw",
+      "exit": 130,
+      "result_file": "cohort-r6-selected2-results.json",
+      "failure": "SIGNAL_SIGINT"
     },
     {
       "vm": "azure4",
       "seed": 61008,
       "bundle": "e2e18-v220",
       "attempt": 6,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_BEAM_AXIS_FIX",
       "source_sha": "f8a73ce415d7e5d8915710cbe0c604e1306f67de",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61008-r6/raw"
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61008-r6/raw",
+      "exit": 130,
+      "result_file": "cohort-r6-selected2-results.json",
+      "failure": "SIGNAL_SIGINT"
     },
     {
       "vm": "azure4",
@@ -861,7 +873,7 @@
       "seed": 61004,
       "bundle": "e2e18-v221",
       "attempt": 7,
-      "status": "SPEED_GATE_RUNNING",
+      "status": "RUNNING",
       "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
       "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v221-s61004-r7/raw"
     },
@@ -870,7 +882,7 @@
       "seed": 61005,
       "bundle": "e2e18-v221",
       "attempt": 7,
-      "status": "SPEED_GATE_RUNNING",
+      "status": "RUNNING",
       "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
       "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v221-s61005-r7/raw"
     },
@@ -879,7 +891,7 @@
       "seed": 61009,
       "bundle": "e2e18-v221",
       "attempt": 7,
-      "status": "SPEED_GATE_RUNNING",
+      "status": "RUNNING",
       "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v221-s61009-r7/raw"
     },
@@ -888,9 +900,45 @@
       "seed": 61010,
       "bundle": "e2e18-v221",
       "attempt": 7,
-      "status": "SPEED_GATE_RUNNING",
+      "status": "RUNNING",
       "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v221-s61010-r7/raw"
+    },
+    {
+      "vm": "azure3",
+      "seed": 61001,
+      "bundle": "e2e18-v222",
+      "attempt": 8,
+      "status": "SPEED_GATE_RUNNING",
+      "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61001-r8/raw"
+    },
+    {
+      "vm": "azure3",
+      "seed": 61002,
+      "bundle": "e2e18-v222",
+      "attempt": 8,
+      "status": "SPEED_GATE_RUNNING",
+      "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61002-r8/raw"
+    },
+    {
+      "vm": "azure4",
+      "seed": 61007,
+      "bundle": "e2e18-v222",
+      "attempt": 8,
+      "status": "SPEED_GATE_RUNNING",
+      "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61007-r8/raw"
+    },
+    {
+      "vm": "azure4",
+      "seed": 61008,
+      "bundle": "e2e18-v222",
+      "attempt": 8,
+      "status": "SPEED_GATE_RUNNING",
+      "source_sha": "b59f212a0196dcd30e3095d2cae65387c4e52219",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v222-s61008-r8/raw"
     }
   ],
   "gates": [
@@ -1105,6 +1153,42 @@
       "samples_file": "gate-azure4-v220.json",
       "samples_sha256": "5ca2bb3ed8828d53c7bb31e2cff557c3925966c9e05a89969b29022581c82be5",
       "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r6-f8a73ce415d7"
+    },
+    {
+      "status": "SPEED_GATE_PASS",
+      "admitted": true,
+      "measured_pass": true,
+      "override_reason": null,
+      "limit_wall_per_sim": 3.0,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 2,
+      "completed": 2,
+      "median_wall_per_sim": 2.69357305403333,
+      "invalid_samples": [],
+      "host": "azure3",
+      "bundle": "e2e18-v221",
+      "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
+      "samples_file": "gate-azure3-v221.json",
+      "samples_sha256": "3368fbbf3a861995fb8cb1e68f76ea224736ccd01b766a504813300fedd787ed",
+      "load_context": "2 replacement samples +4 continuing cohorts;total6"
+    },
+    {
+      "status": "SPEED_GATE_PASS",
+      "admitted": true,
+      "measured_pass": true,
+      "override_reason": null,
+      "limit_wall_per_sim": 3.0,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 2,
+      "completed": 2,
+      "median_wall_per_sim": 2.8513269989833283,
+      "invalid_samples": [],
+      "host": "azure4",
+      "bundle": "e2e18-v221",
+      "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
+      "samples_file": "gate-azure4-v221.json",
+      "samples_sha256": "c85d94cc1ba0332e4b6245b1b87cd3892b059da0ab37c5d50168f326f775c71b",
+      "load_context": "2 replacement samples +4 continuing cohorts;total6"
     }
   ],
   "vm": {
@@ -1174,6 +1258,11 @@
       "bundle": "e2e18-v221",
       "evidence": "route-fix-v221.json",
       "tests": "41 passed"
+    },
+    {
+      "bundle": "e2e18-v222",
+      "evidence": "beam-axis-fix-v222.json",
+      "tests": "44 passed"
     }
   ],
   "initial_health_cohort_r5": "initial-health-cohort-r5.json",
@@ -1195,5 +1284,6 @@
     "substep_mismatch": 0
   },
   "initial_health_cohort_r6": "initial-health-cohort-r6.json",
-  "cohort_r6_selected_results": "cohort-r6-selected-results.json"
+  "cohort_r6_selected_results": "cohort-r6-selected-results.json",
+  "initial_health_cohort_r7": "initial-health-cohort-r7.json"
 }

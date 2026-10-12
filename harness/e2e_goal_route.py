@@ -174,7 +174,7 @@ class IntegratedGoalRoute(GoalRoute):
         compiled = compile_route(route, now=now, observed=sources, profiles=profiles, option='on_v1',
                                  source='own_map', pulse_budget=pulse_budget,
                                  setdown_only_when_relook=self.e2e_options['setdown_only_when_relook'])
-        return dict(source='own_map', route=route, compiled=compiled,
+        return dict(source='own_map', observed_coverage_complete=not getattr(self,'e2e_route_diagnostics',{}).get('would_stop_unknown',False), route=route, compiled=compiled,
                     inputs=own.s3_inputs(route, rid='r1', now=now, observed=sources),
                     proposal=dict(kind='OwnRoute', route=wire_route(route), source_message_id=None),
                     s3_plan={**plan_from_route(None, compiled), 'agreement_route_hash':wire_route(route)['route_hash']})

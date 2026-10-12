@@ -91,7 +91,8 @@ class Transport:
             if packet is not None:
                 r1.packet=packet
                 self.event(now,'own_map_B_route_generated',route_hash=packet['route']['route_hash'],
-                    B_rgb_sources=packet['route']['B_rgb_sources'],length_m=packet['compiled']['length_m'])
+                    B_rgb_sources=packet['route']['B_rgb_sources'],length_m=packet['compiled']['length_m'],
+                    observed_coverage_complete=packet.get('observed_coverage_complete',True))
         if r1.packet is not None and self.dialogue.approved and self.dialogue.claims==set(PAIR):
             self.plan=provider_plan(r1.packet,agreement=AgreementView(self.dialogue),now=now,
                 observed=r1.goal.e2e_observed,profiles=self.profiles)

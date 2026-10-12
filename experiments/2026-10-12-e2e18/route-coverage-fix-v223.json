@@ -1,0 +1,20 @@
+{
+  "bundle": "e2e18-v223",
+  "toggle": "route_coverage=native_v1",
+  "raw_evidence": "v221 seed61010 t124.8/125.6/158: strict allowed0/2/147; nominal336/418/937, start and B goal still blocked",
+  "hypothesis": "Sparse low-saturation floor samples leave unknown footprint cells; adding nominal sigma alone did not yield a path. Occupied versus unknown contribution will be logged separately.",
+  "change": "DEV-only NativeView mirrors NavFn allow_unknown, retaining occupied cells and finite map bounds; does not mutate grid or invent floor provenance. Unknown-only route excluded from own_map_completed and separately marked in progress/event.",
+  "tests": "45 passed: route_coverage + beam_axis + goal_route; occupied closed-ring and finite-grid rejection; native-only success event excluded from map completion",
+  "references": [
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/planners_plugins/configuring_navfn/",
+    "https://github.com/ros-navigation/navigation2/blob/main/nav2_navfn_planner/src/navfn.cpp"
+  ],
+  "seeds": [
+    61003,
+    61006,
+    61011,
+    61012
+  ],
+  "gate": "2 new previews +4 continuing per VM=6total, 30SIM,<=3.0",
+  "wall_cap_s": 21600
+}

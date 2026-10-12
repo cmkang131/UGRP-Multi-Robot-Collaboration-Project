@@ -26,8 +26,21 @@ def search(goal,grid,tf,beam,first,last,strict_margin,strict_result=None):
         attempts.append(dict(margin_m=margin,allowed_cells=int(allowed.sum()),total_cells=int(allowed.size),start_clear=clear(start),target_clear=clear(end),path_cells=len(cells) if cells else 0))
         result=allowed,clearance,lo,cells
         if cells:break
-    bypass=len(attempts)==2 and bool(result[-1])
-    goal.e2e_route_diagnostics.update(attempts=attempts,would_stop_sigma=bypass,applied_margin_m=attempts[-1]['margin_m'],pair_dimensions_m=[1.25,.40])
+    native=False
+    if not result[-1] and getattr(goal,'e2e_route_coverage','off')=='native_v1':
+        from harness.e2e_route_coverage import NativeView,counts
+        yaw=float(tf[2])+beam['pose_own_m'][2]
+        goal.e2e_route_diagnostics['nominal_footprint_cells']=dict(start=counts(grid,first,yaw,.02),target=counts(grid,last,yaw,.02))
+        if grid.floor_frames:
+            _,allowed,clearance,lo=footprint_clearance(NativeView(grid),PAIR_FOOTPRINT,.02,yaw=yaw)
+            start=np.asarray(grid.cell(first))-lo;end=np.asarray(grid.cell(last))-lo
+            cells=astar(allowed,start,end,grid.resolution,clearance)
+            attempts.append(dict(margin_m=.02,coverage='native_allow_unknown',allowed_cells=int(allowed.sum()),total_cells=int(allowed.size),start_clear=clear(start),target_clear=clear(end),path_cells=len(cells) if cells else 0))
+            result=allowed,clearance,lo,cells;native=bool(cells)
+        goal.e2e_route_diagnostics['would_stop_unknown']=native
+        if native:goal.event(goal.e2e_route_diagnostics['t'],'would_stop_route_unknown',observed_coverage_complete=False)
+    bypass=len(attempts)>=2 and bool(attempts[1]['path_cells'])
+    goal.e2e_route_diagnostics.update(attempts=attempts,would_stop_sigma=bypass,applied_margin_m=attempts[-1]['margin_m'],pair_dimensions_m=[1.25,.40],observed_coverage_complete=not native,sigma_contribution_unresolved=native)
     if bypass:goal.event(goal.e2e_route_diagnostics['t'],'would_stop_route_sigma',strict_margin_m=strict_margin,applied_margin_m=.02)
     return result
 
