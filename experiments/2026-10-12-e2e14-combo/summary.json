@@ -1,75 +1,120 @@
 {
- "id": "2026-10-12-e2e14-combo",
- "status": "PREPARED_NOT_RUN",
- "run_class": "dev",
- "branch": "claude/e2e14-combo",
- "pr": 446,
- "refs": [
-  433,
-  443,
-  444
- ],
- "code_sha": "e8b63c5e7fb61bff379e8471a7f9971e5ebffc59",
- "merged": {
-  "integration": "9d6eb567",
-  "pr443": "ee3d656b",
-  "pr444": "02d6af82"
- },
- "conflicts": [
-  {
-   "file": "harness/e2e_live_mapping.py",
-   "where": "Robot.__init__ signature",
-   "resolution": "keep boundary_views/b_marker_detect (#443) and exact_speedups (v200)"
-  }
- ],
- "bundle": {
-  "id": "e2e-combo14-v202",
-  "workflow_version": "7.95.0",
-  "schema": "ugrp.e2e_ownmap_live.v202",
-  "reservation": "max across origin/main and all open-PR branches = e2e-rgb-vo-v201 / 7.94.0; RUNNABLE_ID unchanged (rgb-standard-dispatch-v63)"
- },
- "comparator": {
-  "id": "e2e-stall-budget-v199",
-  "config": "12th-round A verbatim; new source SHA, no outcome inherited"
- },
- "deviation": "rgb_vo_v1 occupies stall_odometry and replaces rgb_pulse_gate_v1; #444 contract forbids recovery/noise with VO, so A(v202) differs from B(12A) in 5 settings; not toggle-isolated",
- "wall_cap": {
-  "old_ceiling_s": 12600,
-  "new_ceiling_s": 25200,
-  "default_s": 12600,
-  "unverified": "Azure-side remote_run_finish.py/azure_shutdown.py caps outside repo"
- },
- "simulations": 0,
- "vm_use": 0,
- "smoke": {
-  "kind": "saved_frame_fixed_replay",
-  "simulation": false,
-  "frames_per_config": 394,
-  "configs": 4,
-  "errors": 0,
-  "combo_trace_complete": 394,
-  "combo_vo_measured": 340,
-  "combo_vo_replaced": 163,
-  "vo_and_pose_equal_vo_only_cases": 4,
-  "cases": 4,
-  "boundary_diag_equal_b443_only": 394,
-  "boundary_view_equal_b443_only": 280,
-  "file": "smoke-replay.json",
-  "sha256": "413bd1b7018c5af123b6d165570dcdc2b687c4f819cc63ee1fd268c72102e3ca",
-  "inputs": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry/selected-frames + outputs/azure-runs/<run>/raw (Mac local, not backed up by this record)"
- },
- "tests": {
-  "passed": 27,
-  "N": 27,
-  "files": [
-   "tests/test_e2e14_combo.py",
-   "tests/test_e2e_rgb_vo.py",
-   "tests/test_e2e_boundary_views.py"
+  "id": "2026-10-12-e2e14-combo",
+  "status": "PREPARING_PAIRED_RUNS",
+  "run_class": "dev",
+  "branch": "claude/e2e14-combo",
+  "pr": 446,
+  "refs": [
+    433,
+    443,
+    444
+  ],
+  "code_sha": "e8b63c5e7fb61bff379e8471a7f9971e5ebffc59",
+  "merged": {
+    "integration": "9d6eb567",
+    "pr443": "ee3d656b",
+    "pr444": "02d6af82"
+  },
+  "conflicts": [
+    {
+      "file": "harness/e2e_live_mapping.py",
+      "where": "Robot.__init__ signature",
+      "resolution": "keep boundary_views/b_marker_detect (#443) and exact_speedups (v200)"
+    }
+  ],
+  "bundle": {
+    "id": "e2e-combo14-v202",
+    "workflow_version": "7.95.0",
+    "schema": "ugrp.e2e_ownmap_live.v202",
+    "reservation": "max across origin/main and all open-PR branches = e2e-rgb-vo-v201 / 7.94.0; RUNNABLE_ID unchanged (rgb-standard-dispatch-v63)"
+  },
+  "comparator": {
+    "id": "e2e-exact-speed-v200",
+    "base": "e2e-stall-budget-v199",
+    "config": "12th-round A with identical five exact speed toggles and 25200 wall seconds"
+  },
+  "deviation": "rgb_vo_v1 occupies stall_odometry and replaces rgb_pulse_gate_v1; #444 contract forbids recovery/noise with VO, so A(v202) differs from B(12A) in 5 settings; not toggle-isolated",
+  "wall_cap": {
+    "old_ceiling_s": 12600,
+    "new_ceiling_s": 25200,
+    "default_s": 12600,
+    "unverified": "Azure-side remote_run_finish.py/azure_shutdown.py caps outside repo",
+    "verified": {
+      "runner_s": 25200,
+      "workflow_s": 25260,
+      "remote_run_finish": "no independent timeout",
+      "guest_guard_idle_s": 1200,
+      "guest_guard_max_s": 28800,
+      "relay_s": 28800,
+      "ssh_tunnel": "finite same relay deadline; dedicated local port 18414, VM1 remote 18393"
+    }
+  },
+  "simulations": 0,
+  "vm_use": 0,
+  "smoke": {
+    "kind": "saved_frame_fixed_replay",
+    "simulation": false,
+    "frames_per_config": 394,
+    "configs": 4,
+    "errors": 0,
+    "combo_trace_complete": 394,
+    "combo_vo_measured": 340,
+    "combo_vo_replaced": 163,
+    "vo_and_pose_equal_vo_only_cases": 4,
+    "cases": 4,
+    "boundary_diag_equal_b443_only": 394,
+    "boundary_view_equal_b443_only": 280,
+    "file": "smoke-replay.json",
+    "sha256": "413bd1b7018c5af123b6d165570dcdc2b687c4f819cc63ee1fd268c72102e3ca",
+    "inputs": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry/selected-frames + outputs/azure-runs/<run>/raw (Mac local, not backed up by this record)"
+  },
+  "tests": {
+    "passed": 93,
+    "N": 93,
+    "files": [
+      "tests/test_e2e14_combo.py",
+      "tests/test_e2e_speed.py",
+      "tests/test_s4_live12.py"
+    ]
+  },
+  "workflow_plan_check": {
+    "A": "e2e-combo14-v202 plan ok",
+    "B": "e2e-stall-budget-v199 plan ok",
+    "executed": false
+  },
+  "seeds": [
+    61001,
+    61002,
+    61003,
+    61004
+  ],
+  "planned_runs": 8,
+  "exact_speedups": {
+    "provenance_index": true,
+    "sha_validation_cache": true,
+    "omit_discarded_copy": true,
+    "scalar_cells": true,
+    "geometry_cache": true
+  },
+  "storage_estimate": {
+    "per_run_bytes": 2147483648,
+    "runs": 8,
+    "reserved_arm_other_batch_bytes": 34359738368,
+    "evidence": [
+      {
+        "run": "e2e12-a-s61001",
+        "sim_s": 330.05,
+        "raw_before_compression_bytes": 138679788
+      },
+      {
+        "run": "e2e13-both-s61001-p1",
+        "sim_s": 60,
+        "raw_before_compression_bytes": 29302107
+      }
+    ],
+    "projection": "max linear 1800 SIM estimate 879063210 bytes; 2GiB budget is 2.44x; monitor disk floor, no 3.5GiB per-run cap"
+  },
+  "operational_changes": [
+    "Admit e2e14 A/B seeds 61001-61004; add Mac loopback port18414; raise relay finite max4h to8h. No controller changes."
   ]
- },
- "workflow_plan_check": {
-  "A": "e2e-combo14-v202 plan ok",
-  "B": "e2e-stall-budget-v199 plan ok",
-  "executed": false
- }
 }

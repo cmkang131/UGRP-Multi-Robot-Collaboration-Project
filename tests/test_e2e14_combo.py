@@ -17,6 +17,22 @@ A12 = dict(stall_odometry='rgb_pulse_gate_v1', stall_recovery='backup_replan_v1'
 COMBO = dict(stall_odometry='rgb_vo_v1', boundary_views='candidate_views_v1', b_marker_detect='contrast_v1')
 
 
+def test_paired_speed_options_and_relay_admission():
+    from harness.e2e_exact_speedups import Options as Speed
+    from scripts.s4_proxy_relay import accepted_call_id
+    speed = {k: True for k in vars(Speed())}
+    a = make(**COMBO, exact_speedups=speed, wall_cap_s=25200.)
+    b = make(**A12, exact_speedups=speed, wall_cap_s=25200.)
+    assert a['e2e_options']['exact_speedups'] == b['e2e_options']['exact_speedups'] == speed
+    assert a['execution_bundle_id'] == 'e2e-combo14-v202'
+    assert b['execution_bundle_id'] == 'e2e-exact-speed-v200'
+    for group in ('a', 'b'):
+        for seed in range(61001, 61005):
+            assert accepted_call_id(f'e2e14-{group}-s{seed}:call-0001-r1:1')
+    assert not accepted_call_id('e2e14-c-s61001:call-0001-r1:1')
+    assert not accepted_call_id('e2e14-a-s61005:call-0001-r1:1')
+
+
 def make(**kw):
     return bundle('x', 61001, GEMMA, **{**BASE, **kw})
 
