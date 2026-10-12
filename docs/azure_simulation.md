@@ -81,6 +81,20 @@ VM3 리소스 범위에만 배정한다. 공유 runbook·예산·일정은 재�
 이 worktree에만 쓴다. 구성·실제 유휴 할당 해제·원본 해시 검증의 판정은
 `experiments/2026-10-12-azure-vm3/summary.json`을 따른다.
 
+### 네 번째 실행 VM (2026-10-12)
+
+`ugrp-sim-azure4` / SSH `azure4`는 VM3와 같은 Standard_D16as_v6다.
+VM3용 불변 스냅샷에서 독립 128 GiB SSD·NIC·IP·NSG를 생성하며
+첫 부팅 아웃바운드 차단 중 복제 runs/leases/lifecycle을 격리 보존한다.
+VM4의 host key·machine-id·archive identity를 새로 생성한다.
+기존 custom role 2개는 VM4 identity의 자기 VM 범위에만,
+Automation의 Run Command 추가 권한도 VM4 범위에만 부여한다.
+공유 예산·runbook·자정 일정을 재설정하지 않으며 VM1–3를 변경하지 않는다.
+`azctl.py --host azure4`로 명시하며 유휴20분·부팅8시간 가드를 유지한다.
+E2E 16차는 PR #450 소스의 v206/v205 6개 짝 비교, 25,200초 상한,
+Mac relay 18416 → VM4 18393이다. 결과는 해당 PR의 run-summary.json에 기록한다.
+구성 확인 범위는 `experiments/2026-10-12-azure-vm4/summary.json`을 따른다.
+
 Ubuntu 24.04 x86_64, Python 3.12, `requirements-sim-server.txt`, OSMesa 소프트웨어 렌더를 사용한다. 서버 requirements는 기본 sim requirements와 S3 제어기 추가 의존성 SciPy 1.17.1(기존 Mac/test pin)을 포함한다. 기본 VM은 **Standard_D16as_v5: 16 vCPU / 64 GiB RAM**, Linux 정가 **$0.848/시간**(2026-10-11 Retail Prices API 조회, 할인·세금·디스크·IP 제외). 기존 64 GiB Standard SSD OS 디스크를 우선 사용하고 배치별 저장 예산을 확인한다. CPU·RAM·디스크 예산이 허용하는 범위에서 동시 실행한다.
 
 `~/ugrp-sim/src/<SHA>`는 커밋 전체 트리의 shallow Git 소스, `~/ugrp-sim/ugrp/.venv-sim`은 공유 환경, `~/ugrp-sim/runs/<이름>`은 영속 OS 디스크 원본이다. tmpfs에 원본을 쓰지 않는다. 파일명은 고유해야 하며 미커밋 소스로 실행하지 않는다. `RUN_META.json`, 소스 SHA·명령·부하·EXIT·SHA256SUMS와 실패를 보존한다.
