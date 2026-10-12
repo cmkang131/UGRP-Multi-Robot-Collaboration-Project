@@ -1,0 +1,734 @@
+{
+  "schema": "ugrp.e2e8.v2",
+  "status": "COMPLETED_DEV_EARLY_HEALTH_STOP",
+  "pr": 433,
+  "run_class": "dev",
+  "research_result": false,
+  "source_sha": "7743f530f04bf4b9d300b787ccc1c7d495fa0cd5",
+  "seeds": [
+    61001,
+    61002
+  ],
+  "unrun_expansion_seeds": [
+    61003,
+    61004
+  ],
+  "max_attempts": 8,
+  "previous_record": {
+    "git_commit": "4f15e62b",
+    "path": "experiments/2026-10-11-e2e8-openrouter-jev/summary.json",
+    "status": "IMPLEMENTED_AZURE_ADMISSION_BLOCKED",
+    "runs_started": 0
+  },
+  "candidates": {
+    "A": "OpenRouter Gemma dialogue/action; decider=off; e2e-ownmap-live-v185",
+    "B": "OpenRouter Gemma dialogue/own RGB grip/shadow; decider=jev_v1; e2e-ownmap-jev-v192"
+  },
+  "comparison": {
+    "attempted": 8,
+    "finished": 8,
+    "host_error_before_simulation": 4,
+    "simulation_runs": 4,
+    "initial_health_pass": 0,
+    "LLM_operated": 4,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "E2E_success": 0,
+    "expansion_admitted": false,
+    "scope": "Four paired simulated runs plus four pre-simulation HOST_ERROR attempts, all retained. Early health stops do not establish full-horizon controller failure. One interrupted run lacks result.json; LLM operation is independently evidenced by progress and wire responses."
+  },
+  "environment": {
+    "host": "azure",
+    "vm": "ugrp-sim-azure",
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "vm_start_stop_calls": 0,
+    "physics": "native v7 OSMesa; standard initial scene; no fixture restore; weld off",
+    "dev_light": true,
+    "other_processes_signalled": [],
+    "initial_submission": {
+      "memory_available_bytes": 60786253824,
+      "free_bytes": 54386954240,
+      "loadavg": [
+        3.99560546875,
+        3.9765625,
+        4.076171875
+      ],
+      "runs": 4,
+      "per_run_bytes": 1073741824,
+      "reserved_bytes": 536870912
+    },
+    "retry_submission": {
+      "memory_available_bytes": 60484575232,
+      "free_bytes": 54088515584,
+      "loadavg": [
+        3.6572265625,
+        3.89599609375,
+        4.02783203125
+      ],
+      "runs": 4,
+      "per_run_bytes": 1073741824,
+      "reserved_bytes": 536870912
+    }
+  },
+  "storage_budget": {
+    "runs": 4,
+    "per_run_mib": 1024,
+    "reserved_mib": 512,
+    "per_run_stop_mib": 896,
+    "floors_gib": {
+      "x86": 8,
+      "arm": 25,
+      "mac": 20
+    },
+    "admission": "Budget and resource checks repeated after source transfer; all passed",
+    "retention": "PR433 remains open: preserve DEV heavy raw until PR merge/close, then hash-preserving cleanup-records. Permanent text, commands, summaries, verdicts and hashes retained."
+  },
+  "batches": {
+    "A": {
+      "Gemma_calls": 6,
+      "http_attempts": 6,
+      "provider_counts": {
+        "DeepInfra": 6
+      },
+      "prompt_tokens": 9259,
+      "completion_tokens": 288,
+      "tokens": 9547,
+      "latency_median_s": 2.9021765209909063,
+      "latency_max_s": 5.235063040978275,
+      "cost_usd": 0.0009286699999999999,
+      "relay_posts": 6,
+      "retries": 0,
+      "Jev": {
+        "calls": 0,
+        "tokens": 0,
+        "latency_median_s": null,
+        "cost_usd": 0,
+        "cost_status": "not used",
+        "shadow_disagreements": null,
+        "shadow_comparisons": 0,
+        "choices": []
+      },
+      "attempts": 4,
+      "simulation_runs": 2,
+      "LLM_operated": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0
+    },
+    "B": {
+      "Gemma_calls": 6,
+      "http_attempts": 6,
+      "provider_counts": {
+        "DeepInfra": 6
+      },
+      "prompt_tokens": 9955,
+      "completion_tokens": 365,
+      "tokens": 10320,
+      "latency_median_s": 4.036095896008192,
+      "latency_max_s": 4.969654291984625,
+      "cost_usd": 0.00101493,
+      "relay_posts": 6,
+      "retries": 0,
+      "Jev": {
+        "calls": 6,
+        "tokens": 6542,
+        "latency_median_s": 0.24598564550979063,
+        "cost_usd": null,
+        "cost_status": "not supplied by provider",
+        "shadow_disagreements": 0,
+        "shadow_comparisons": 6,
+        "choices": [
+          "continue",
+          "continue",
+          "continue",
+          "continue",
+          "continue",
+          "continue"
+        ]
+      },
+      "attempts": 4,
+      "simulation_runs": 2,
+      "LLM_operated": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0
+    }
+  },
+  "known_gemma_total_cost_usd": 0.0019436,
+  "Jev_cost_usd": null,
+  "own_pose_frame_jumps": {
+    "intervals": 768,
+    "over_5cm": 57,
+    "over_20cm": 17,
+    "max_m": 0.7097264562825204,
+    "scope": "all r1/r2/r3 consecutive own-map frames; not actual robot displacement"
+  },
+  "runs": [
+    {
+      "id": "e2e8-a-s61001",
+      "batch": "A",
+      "seed": 61001,
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "exit": 1,
+      "raw": "azure:~/ugrp-sim/runs/e2e8-a-s61001",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e8-a-s61001",
+      "summary_sha256": "1afdc17b5784fc9275ec296627466e326de4e8511bda5869f983d39b4c74967d",
+      "archive_inventory_sha256": "31df085b7e9910e871c9a468d781078f2a18496fc2e766723092168fb0565e75",
+      "archive_hash_matches": 11,
+      "cause": "SPARSE_CHECKOUT_CALIBRATION_INPUT_MISSING",
+      "initial_check": {
+        "performed": true,
+        "passed": false,
+        "process_wall_s": 1.19,
+        "frames": 0,
+        "model_calls": 0,
+        "source": "log.txt /usr/bin/time; supersedes archived approximate elapsed_s=1.3"
+      }
+    },
+    {
+      "id": "e2e8-b-s61001",
+      "batch": "B",
+      "seed": 61001,
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "exit": 1,
+      "raw": "azure:~/ugrp-sim/runs/e2e8-b-s61001",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e8-b-s61001",
+      "summary_sha256": "23ae4fd4f18e70d1cf87d4977c6ec3de914c8bd6879f9fa8de84c569b627ca4e",
+      "archive_inventory_sha256": "f4d9db503837b391e98473c26d7a1b64d7c793e1e949866d1d4f181bd33abd99",
+      "archive_hash_matches": 11,
+      "cause": "SPARSE_CHECKOUT_CALIBRATION_INPUT_MISSING",
+      "initial_check": {
+        "performed": true,
+        "passed": false,
+        "process_wall_s": 0.62,
+        "frames": 0,
+        "model_calls": 0,
+        "source": "log.txt /usr/bin/time; supersedes archived approximate elapsed_s=1.3"
+      }
+    },
+    {
+      "id": "e2e8-a-s61002",
+      "batch": "A",
+      "seed": 61002,
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "exit": 1,
+      "raw": "azure:~/ugrp-sim/runs/e2e8-a-s61002",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e8-a-s61002",
+      "summary_sha256": "7dccbcb6a3fc29a6a0e61780b64f0b6ecf2774ac9efe1218c02d527cc6b1c283",
+      "archive_inventory_sha256": "e53fe5333f82fda34c4aec52ef551c8a434081e5f709a718c5b0d8d7ae1e5678",
+      "archive_hash_matches": 11,
+      "cause": "SPARSE_CHECKOUT_CALIBRATION_INPUT_MISSING",
+      "initial_check": {
+        "performed": true,
+        "passed": false,
+        "process_wall_s": 0.64,
+        "frames": 0,
+        "model_calls": 0,
+        "source": "log.txt /usr/bin/time; supersedes archived approximate elapsed_s=1.3"
+      }
+    },
+    {
+      "id": "e2e8-b-s61002",
+      "batch": "B",
+      "seed": 61002,
+      "status": "HOST_ERROR",
+      "simulation_started": false,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "exit": 1,
+      "raw": "azure:~/ugrp-sim/runs/e2e8-b-s61002",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e8-b-s61002",
+      "summary_sha256": "24f1a4f21e69ead59c0da4fbe1d0dffae90405b2f5ecc1c80cdfd228d3f7c75c",
+      "archive_inventory_sha256": "4ae871cc0ffa239f0d50757bc7ad04ace689eca15ffb6359f03a6e108e5f2d21",
+      "archive_hash_matches": 11,
+      "cause": "SPARSE_CHECKOUT_CALIBRATION_INPUT_MISSING",
+      "initial_check": {
+        "performed": true,
+        "passed": false,
+        "process_wall_s": 0.66,
+        "frames": 0,
+        "model_calls": 0,
+        "source": "log.txt /usr/bin/time; supersedes archived approximate elapsed_s=1.3"
+      }
+    },
+    {
+      "id": "e2e8-a-s61001-r2",
+      "batch": "A",
+      "seed": 61001,
+      "status": "HOST_ERROR",
+      "simulation_started": true,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "exit": 130,
+      "raw": "azure:~/ugrp-sim/runs/e2e8-a-s61001-r2",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e8-a-s61001-r2",
+      "summary_sha256": "cf7e405a6e2c72c0dda862427938138ffbf8b326f397abc009b2c3150b8842b4",
+      "archive_inventory_sha256": "60b28fd6abbd2b56a7f315b07bcbb4a247a6d327a4176dfc60479315db381efd",
+      "archive_hash_matches": 288,
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 180.15892577171326,
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "deepinfra_normal": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "jev_response": true,
+          "model_response_accepted": true,
+          "translation_command": false
+        },
+        "actual_displacement_m": {
+          "r1": 0.0060160190686048744,
+          "r2": 0.0059444368171879414,
+          "r3": 6.628543907253296e-05
+        },
+        "sim_s": 12.0,
+        "frames": 61
+      },
+      "result_missing": true,
+      "LLM_evidence": "saved progress first_model_response plus normal wire response; final result missing",
+      "response_checks": {
+        "count": 3,
+        "normal": 3,
+        "fences_removed": 3,
+        "deepinfra": 3,
+        "jev_count": 0
+      },
+      "command_counts": {
+        "r1": {
+          "turn_only": 60,
+          "hold": 1
+        },
+        "r2": {
+          "turn_only": 61
+        },
+        "r3": {
+          "turn_only": 61
+        }
+      },
+      "own_pose_frame_jumps": {
+        "r1": {
+          "intervals": 60,
+          "over_5cm": 5,
+          "over_20cm": 1,
+          "max_m": 0.2729457826411876
+        },
+        "r2": {
+          "intervals": 60,
+          "over_5cm": 7,
+          "over_20cm": 3,
+          "max_m": 0.34334854839682544
+        },
+        "r3": {
+          "intervals": 60,
+          "over_5cm": 1,
+          "over_20cm": 0,
+          "max_m": 0.13413384750361546
+        }
+      },
+      "diagnosis": {
+        "r1": {
+          "own_unwrapped_yaw_rad": 6.399117972840741,
+          "actual_unwrapped_yaw_rad": 6.144950668852005,
+          "last_sim_s": 12.0,
+          "frames": 61
+        },
+        "r2": {
+          "own_unwrapped_yaw_rad": 5.882126453469666,
+          "actual_unwrapped_yaw_rad": 6.237745163273727,
+          "last_sim_s": 12.0,
+          "frames": 61
+        }
+      },
+      "cause": "ROTATION_ONLY_INITIAL_HEALTH_STOP; SHUTDOWN_FINAL_RESULT_MISSING"
+    },
+    {
+      "id": "e2e8-b-s61001-r2",
+      "batch": "B",
+      "seed": 61001,
+      "status": "EARLY_STOP",
+      "simulation_started": true,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "exit": 130,
+      "raw": "azure:~/ugrp-sim/runs/e2e8-b-s61001-r2",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e8-b-s61001-r2",
+      "summary_sha256": "1b1a56f14aee10ba008695ba064671ecdb06cf41e46d80d54a71607e967b399d",
+      "archive_inventory_sha256": "dd0c69d6550726e21c74c43702a4754ee99f9c2b98fcb792cc8681927a11b5e0",
+      "archive_hash_matches": 301,
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 183.8846402168274,
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "deepinfra_normal": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "jev_response": true,
+          "model_response_accepted": true,
+          "translation_command": false
+        },
+        "actual_displacement_m": {
+          "r1": 0.0060160190686048744,
+          "r2": 0.0059444368171879414,
+          "r3": 7.14138994719792e-05
+        },
+        "sim_s": 13.0,
+        "frames": 66
+      },
+      "result_missing": false,
+      "LLM_evidence": "result.json",
+      "response_checks": {
+        "count": 3,
+        "normal": 3,
+        "fences_removed": 0,
+        "deepinfra": 3,
+        "jev_count": 3
+      },
+      "command_counts": {
+        "r1": {
+          "turn_only": 65,
+          "hold": 1
+        },
+        "r2": {
+          "turn_only": 65,
+          "hold": 1
+        },
+        "r3": {
+          "turn_only": 66
+        }
+      },
+      "own_pose_frame_jumps": {
+        "r1": {
+          "intervals": 65,
+          "over_5cm": 5,
+          "over_20cm": 1,
+          "max_m": 0.2729457826411876
+        },
+        "r2": {
+          "intervals": 65,
+          "over_5cm": 8,
+          "over_20cm": 4,
+          "max_m": 0.7097264562825204
+        },
+        "r3": {
+          "intervals": 65,
+          "over_5cm": 1,
+          "over_20cm": 0,
+          "max_m": 0.13413384750361546
+        }
+      },
+      "diagnosis": {
+        "r1": {
+          "own_unwrapped_yaw_rad": 7.069601169899448,
+          "actual_unwrapped_yaw_rad": 6.770483549334055,
+          "last_sim_s": 13.0,
+          "frames": 66
+        },
+        "r2": {
+          "own_unwrapped_yaw_rad": 6.168975452769862,
+          "actual_unwrapped_yaw_rad": 6.147667174697142,
+          "last_sim_s": 13.0,
+          "frames": 66
+        }
+      },
+      "cause": "ROTATION_ONLY_INITIAL_HEALTH_STOP"
+    },
+    {
+      "id": "e2e8-a-s61002-r2",
+      "batch": "A",
+      "seed": 61002,
+      "status": "EARLY_STOP",
+      "simulation_started": true,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "exit": 130,
+      "raw": "azure:~/ugrp-sim/runs/e2e8-a-s61002-r2",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e8-a-s61002-r2",
+      "summary_sha256": "9b99e933c60bff90f8924e78cd7446f3ffb60bd8f4bbaf967e5be6e6acbd1878",
+      "archive_inventory_sha256": "a6fb592490e8d9d3359540fc5061fa725f1a4f445dff8295d30e540b95c3494d",
+      "archive_hash_matches": 307,
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 182.41882801055908,
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "deepinfra_normal": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "jev_response": true,
+          "model_response_accepted": true,
+          "translation_command": false
+        },
+        "actual_displacement_m": {
+          "r1": 0.0053828777020289926,
+          "r2": 0.005895315003606601,
+          "r3": 6.975994391735397e-05
+        },
+        "sim_s": 13.0,
+        "frames": 66
+      },
+      "result_missing": false,
+      "LLM_evidence": "result.json",
+      "response_checks": {
+        "count": 3,
+        "normal": 3,
+        "fences_removed": 3,
+        "deepinfra": 3,
+        "jev_count": 0
+      },
+      "command_counts": {
+        "r1": {
+          "turn_only": 67,
+          "hold": 1
+        },
+        "r2": {
+          "turn_only": 67,
+          "hold": 1
+        },
+        "r3": {
+          "turn_only": 68
+        }
+      },
+      "own_pose_frame_jumps": {
+        "r1": {
+          "intervals": 67,
+          "over_5cm": 6,
+          "over_20cm": 1,
+          "max_m": 0.2729457826411876
+        },
+        "r2": {
+          "intervals": 67,
+          "over_5cm": 8,
+          "over_20cm": 3,
+          "max_m": 0.2512331996527023
+        },
+        "r3": {
+          "intervals": 67,
+          "over_5cm": 1,
+          "over_20cm": 0,
+          "max_m": 0.13413384750361546
+        }
+      },
+      "diagnosis": {
+        "r1": {
+          "own_unwrapped_yaw_rad": 6.788664763689221,
+          "actual_unwrapped_yaw_rad": 6.9723227640193635,
+          "last_sim_s": 13.4,
+          "frames": 68
+        },
+        "r2": {
+          "own_unwrapped_yaw_rad": 6.018333559709103,
+          "actual_unwrapped_yaw_rad": 5.937823667877986,
+          "last_sim_s": 13.4,
+          "frames": 68
+        }
+      },
+      "cause": "ROTATION_ONLY_INITIAL_HEALTH_STOP"
+    },
+    {
+      "id": "e2e8-b-s61002-r2",
+      "batch": "B",
+      "seed": 61002,
+      "status": "EARLY_STOP",
+      "simulation_started": true,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "exit": 130,
+      "raw": "azure:~/ugrp-sim/runs/e2e8-b-s61002-r2",
+      "arm_raw": "oracle:/home/ubuntu/ugrp-archive/runs/native-e2e8-b-s61002-r2",
+      "summary_sha256": "b9f146f3f625d5b38eb8ec1c8ea0a945f26332bed6e2e38015c9237d57feb7a7",
+      "archive_inventory_sha256": "58081a311aebfc816a08e600aa0dcf9fb3f69b9e898f0b29cd79df1cde5b4bec",
+      "archive_hash_matches": 295,
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 181.0671775341034,
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "deepinfra_normal": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "jev_response": true,
+          "model_response_accepted": true,
+          "translation_command": false
+        },
+        "actual_displacement_m": {
+          "r1": 0.0053828777020289926,
+          "r2": 0.005895315003606601,
+          "r3": 6.335793142317048e-05
+        },
+        "sim_s": 12.0,
+        "frames": 61
+      },
+      "result_missing": false,
+      "LLM_evidence": "result.json",
+      "response_checks": {
+        "count": 3,
+        "normal": 3,
+        "fences_removed": 0,
+        "deepinfra": 3,
+        "jev_count": 3
+      },
+      "command_counts": {
+        "r1": {
+          "turn_only": 64,
+          "hold": 1
+        },
+        "r2": {
+          "turn_only": 64,
+          "hold": 1
+        },
+        "r3": {
+          "turn_only": 65
+        }
+      },
+      "own_pose_frame_jumps": {
+        "r1": {
+          "intervals": 64,
+          "over_5cm": 6,
+          "over_20cm": 1,
+          "max_m": 0.2729457826411876
+        },
+        "r2": {
+          "intervals": 64,
+          "over_5cm": 8,
+          "over_20cm": 3,
+          "max_m": 0.2512331996527023
+        },
+        "r3": {
+          "intervals": 64,
+          "over_5cm": 1,
+          "over_20cm": 0,
+          "max_m": 0.13413384750361546
+        }
+      },
+      "diagnosis": {
+        "r1": {
+          "own_unwrapped_yaw_rad": 6.478034359928224,
+          "actual_unwrapped_yaw_rad": 6.581842628730344,
+          "last_sim_s": 12.8,
+          "frames": 65
+        },
+        "r2": {
+          "own_unwrapped_yaw_rad": 6.3290776741418515,
+          "actual_unwrapped_yaw_rad": 6.3167748376035275,
+          "last_sim_s": 12.8,
+          "frames": 65
+        }
+      },
+      "cause": "ROTATION_ONLY_INITIAL_HEALTH_STOP"
+    }
+  ],
+  "fixes": [
+    {
+      "change": "A and B use separate already-registered loopback ports 18393/18391",
+      "source_sha": "7743f530f04bf4b9d300b787ccc1c7d495fa0cd5",
+      "tests": "tests/test_e2e_jev_decider.py: 15 passed"
+    },
+    {
+      "change": "Restored frozen calibration inputs using standard light sparse patterns before retry",
+      "code_change": false,
+      "native_preflight_pass": true,
+      "first_attempt_failure": "calibration_m1_dev.json missing; no physics or model"
+    }
+  ],
+  "transport_incident": "SSH/ARM jump transiently disconnected before first submission; recovered without VM lifecycle commands.",
+  "retrieval": {
+    "archive_verified_runs": 8,
+    "archive_hash_matches": 1235,
+    "archive_files": 1235,
+    "archive_bytes": 19872768,
+    "mac_fetch": "standard fetch-lite filters plus exclusion of embedded image JSON; request text and image hashes exported",
+    "mac_simulation_lite_bytes": 7278761,
+    "large_json": "33 files compressed with zstd; decompressed SHA256 verified",
+    "pending": [],
+    "mac_files_rechecked_against_ARM": 413,
+    "relay_artifact": {
+      "verified": true,
+      "native_verification": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e8-relay-resume-evidence",
+        "files": 56,
+        "hash_matches": 56,
+        "inventory_sha256": "98c7accb2ee9c79407572a0810dc9d537e23e38a9440944a33dca6926c7c89bb",
+        "reused": false,
+        "receiver_seconds": 0.231
+      },
+      "marker_sha256": "71beacd6b9e3485dd9e36eb547729709d4049bffdfa77f1d90f5ef0b611078fe"
+    }
+  },
+  "remaining": [
+    "Initial window contains only turns/holds, no translation and no B route. Frontier transition is unqualified; full trajectory was not run.",
+    "Own-position discontinuities persist (up to 0.709726m); coordinate jumps are not physical translation.",
+    "e2e8-a-s61001-r2 final result.json is absent after interrupt; preserve HOST_ERROR and partial evidence.",
+    "Jev choices are continue only (6/6); 0/6 disagreement does not validate GO/ACK/claim decisions or prove a performance advantage.",
+    "Eight-attempt cap consumed; no seed expansion. Independent merge review/CI not completed; PR remains draft."
+  ],
+  "next_candidates": [
+    "Diagnose initial sweep-to-frontier transition using recorded commands and RGB without GT feedback.",
+    "Compare opt-in own-pose continuity from the separate PR440 work only after integration; do not count that task evidence as this cohort.",
+    "Use a single signal owner and wait for worker finalization before publishing EXIT."
+  ],
+  "references": [
+    {
+      "url": "https://docs.python.org/3/library/urllib.request.html",
+      "use": "explicit URL endpoint selection for A/B relay separation"
+    },
+    {
+      "url": "https://git-scm.com/docs/git-sparse-checkout",
+      "use": "sparse checkout omits files; restore required tracked calibration inputs"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_behaviors/plugins/spin.cpp",
+      "use": "standard bounded spin compares accumulated angular progress before transition; candidate reference, not established cause here"
+    },
+    {
+      "url": "https://docs.python.org/3/library/subprocess.html",
+      "use": "signal forwarding and child wait ownership; local source paths identified, not changed in this round"
+    }
+  ],
+  "local_evidence": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e8-resume-20261011",
+    "manifest": "resume-evidence-sha256.json",
+    "manifest_sha256": "71ebee71d193cbe6e3f4b5b6ec11d72242f168c5795e88b2f24d6e1ec20a3e18"
+  },
+  "host_cleanup": {
+    "own_simulations_alive": 0,
+    "own_relays_and_tunnel_stopped": true,
+    "own_eight_run_leases_released": true,
+    "VM_lifecycle_unchanged": true,
+    "final_host_evidence_sha256": "4def483f9c12f9b0214ccd24377d649e01c78c88a4d1b26d7c66126ebfc57d80",
+    "remaining_other_leases": [
+      "egojump-98ffd823-pipeline-a",
+      "egojump-98ffd823-pipeline-b"
+    ]
+  }
+}

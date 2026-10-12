@@ -1,0 +1,64 @@
+{
+  "class": "dev",
+  "pr": 425,
+  "branch": "codex/s4-llm-host",
+  "original_worktree_head": "081cd3dedb11aa70a122d60369e84255e969cdba",
+  "merged_pr416_commit": "b3d52826997712e964812eecefe32aeb67d20b7f",
+  "bundle_id": "zone-s3-recovery-v189",
+  "workflow_version": "7.82.0",
+  "source_files": 432,
+  "source_difference_from_v188": [
+    "harness/zone_study_llm_driver.py",
+    "sim/zone_s3_no_prior.py"
+  ],
+  "retired_bundles": [
+    "zone-s3-recovery-v152",
+    "zone-s3-recovery-v188"
+  ],
+  "controller_behavior_changes": false,
+  "simulation_runs": 0,
+  "local_tests": [
+    {
+      "file": "tests/test_s4_grip_visual.py",
+      "passed": 8,
+      "failed": 0,
+      "seconds": 37.51
+    },
+    {
+      "file": "tests/test_s4_live5.py",
+      "passed": 6,
+      "failed": 0,
+      "seconds": 106.06
+    },
+    {
+      "file": "tests/test_s3_recovery.py",
+      "passed": 15,
+      "failed": 0,
+      "seconds": 155.59
+    },
+    {
+      "file": "tests/test_simulation_workflow_manager.py",
+      "passed": 21,
+      "failed": 0,
+      "seconds": 2.74
+    }
+  ],
+  "failures_before_fix": [
+    {
+      "file": "tests/test_s4_live5.py",
+      "failure": "missing MuJoCo during offline collection; positive seal test also checked current instead of historical source",
+      "failed": 1,
+      "passed": 5
+    }
+  ],
+  "historical_positive_source": "917b485c5494dac3cc1586fa361c2ac9f021a0e5",
+  "historical_positive_bundles": 4,
+  "ci": "unverified; PR416 new-head CI blocked by main conflict requiring heading-controller changes outside scope",
+  "ci_raw_location": "GitHub Actions / PR425 checks",
+  "local_final_ci_record": "outputs/ci-bundle-reregistration/pr425/summary.json",
+  "artifact_sha256": {
+    "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v189.json": "3c2389e9d87bdf9390deb6f0039fed5b2fc38caac37b136bf7810b45c9655f05",
+    "experiments/2026-10-11-ci-bundle-reregistration/registration-v189.json": "df33ead1e6f6a0fed08c3fed4b74c0a6c81172962182ce98a9a1157a18188065",
+    "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": "473a4357ad417f7464e007c96033d868fddf6f7aded3e4ae53ba3383306a5f94"
+  }
+}

@@ -22,12 +22,21 @@ class Host:
     def command(self,*,t,pose,path,goal,costmap,core,points,map_pose,dev_light):
         if t<self.ready-1e-8:
             return dict(t=float(t),kind='hold'),dict(reason='heading_coast_wait',predicted_delta=[0.,0.,0.])
+        frame_transform=getattr(self,'pose_frame_transform',None)
+        if frame_transform is not None:
+            pose,path,goal=frame_transform(pose,path,goal)
         # Last point is the mission goal, not a dense teach waypoint: the
         # shared selector permits lateral trim only at the final goal.
         plan=dict(coordinate_frame=f'{self.robot_id}/own_odom',status='goal_approach',
                   path_m=[list(pose[:2]),*map(list,path),list(goal)],heading_rad=float(pose[2]))
-        action=shared.command(plan,pose,self.profiles,robot_id=self.robot_id,heading_mode=DEFAULT)
+        pursuit={}
+        if getattr(self,'path_follow','off')=='rpp_v1':
+            from harness.e2e_rpp_path import command
+            action,pursuit=command(plan,pose,self.profiles,robot_id=self.robot_id)
+        else:
+            action=shared.command(plan,pose,self.profiles,robot_id=self.robot_id,heading_mode=DEFAULT)
         info=dict(reason='shared_v145',predicted_delta=[0.,0.,0.],blocked=False)
+        if pursuit:info.update(pursuit)
         if action['kind']!='hold':
             p=self.profiles[profile_key(action,False)]
             end=response(p,p['times'][-1]);info['predicted_delta']=end.tolist()

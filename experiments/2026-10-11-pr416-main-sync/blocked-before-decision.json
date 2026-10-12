@@ -1,0 +1,176 @@
+{
+  "class": "dev",
+  "pr": 416,
+  "branch": "codex/s3-no-prior-smoke",
+  "pre_merge_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
+  "merged_main_sha": "feb0d8184ea729f183d9e867a39f4eb0ebf4ed77",
+  "text_conflicts": [],
+  "bundle_id": "zone-s3-recovery-v190",
+  "workflow_version": "7.83.0",
+  "retired_bundle": "zone-s3-recovery-v188",
+  "historical_source_hashes": {
+    "matched": 431,
+    "total": 431,
+    "source_sha": "b3d52826997712e964812eecefe32aeb67d20b7f"
+  },
+  "changed_sealed_sources": [
+    "harness/zone_s3_recovery_contract.py",
+    "harness/zone_solo_cyan_path_heading.py",
+    "scripts/run_s3_recovery.py"
+  ],
+  "new_source_files": 431,
+  "controller_edits_beyond_main_merge": false,
+  "min_command_contract_default": "off",
+  "simulation_runs": 0,
+  "local_tests": {
+    "passed": 72,
+    "failed": 1,
+    "total": 73,
+    "seconds": 168.9,
+    "files": {
+      "tests.test_s3_recovery": {
+        "passed": 14,
+        "failed": 1,
+        "skipped": 0
+      },
+      "tests.test_s2_path_heading": {
+        "passed": 37,
+        "failed": 0,
+        "skipped": 0
+      },
+      "tests.test_simulation_workflow_manager.WorkflowManagerTests": {
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "failure": "tests/test_s3_recovery.py::test_full_existing_sweep_on_new_options"
+  },
+  "ci": "not submitted: local regression failed; existing remote heads listed separately",
+  "raw_locations": {
+    "local": "outputs/pr416-main-sync",
+    "remote": "GitHub Actions PR416"
+  },
+  "references": [
+    "https://git-scm.com/docs/git-merge",
+    "https://git-scm.com/docs/git-show"
+  ],
+  "artifact_sha256": {
+    "experiments/2026-10-11-pr416-main-sync/reservation-scan.json": "fc2b8842e019981013340d6315eba3d8c534e03d421fcae2b1e1f7a7239488ec",
+    "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": "051b7eeb7b1a19575af0884b6500e60bcb52b8f368e042b4379acac24dfcd964",
+    "experiments/2026-10-11-ci-bundle-reregistration/registration-v190.json": "6416cc41d0b946a69faf7d101db99e0b290c6072a06b39a35016ddb24a8a59d4",
+    "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v190.json": "03b1c44feef57093964365ee941e24bce8b08e18e212dcecd14a20d550474202",
+    "outputs/pr416-main-sync/local-tests.xml": "4bfa35d8373578b8c564e151575f487c41cd85b578f34c1e9b5a7e96a59f3320",
+    "outputs/pr416-main-sync/local-tests.log": "adc79a3f47a263eeff5c103afa649125e89896633bc0fa54bc03e05537f458a6"
+  },
+  "status": "BLOCKED_CONTROLLER_DECISION",
+  "merge_commit": null,
+  "pushed": false,
+  "stage_probe": {
+    "errors": [
+      {
+        "case": "final_rgb_alignment",
+        "robot": "r1",
+        "error": "ValueError: shared heading contract: duration_outside_real_contract"
+      },
+      {
+        "case": "final_rgb_alignment",
+        "robot": "r2",
+        "error": "ValueError: shared heading contract: duration_outside_real_contract"
+      },
+      {
+        "case": "pair_final_alignment_0.01",
+        "robot": "r1",
+        "error": "ValueError: shared heading contract: duration_outside_real_contract"
+      },
+      {
+        "case": "pair_final_alignment_0.01",
+        "robot": "r2",
+        "error": "ValueError: shared heading contract: duration_outside_real_contract"
+      },
+      {
+        "case": "pair_final_alignment_0.02",
+        "robot": "r1",
+        "error": "ValueError: shared heading contract: duration_outside_real_contract"
+      },
+      {
+        "case": "pair_final_alignment_0.02",
+        "robot": "r2",
+        "error": "ValueError: shared heading contract: duration_outside_real_contract"
+      },
+      {
+        "case": "solo_final_alignment_0.01",
+        "robot": "r3",
+        "error": "AssertionError: [('r3', {'kind': 'mecanum', 'forward': 0.0, 'left': 0.35, 'turn': 0.0, 'duration_s': 0.06})]"
+      },
+      {
+        "case": "solo_final_alignment_0.02",
+        "robot": "r3",
+        "error": "AssertionError: [('r3', {'kind': 'mecanum', 'forward': 0.0, 'left': 0.35, 'turn': 0.0, 'duration_s': 0.06})]"
+      }
+    ],
+    "error_count": 8,
+    "physics_runs": 0,
+    "model_calls": 0
+  },
+  "counterexample": {
+    "body_error_m": [
+      0,
+      0.04
+    ],
+    "yaw_rad": 0,
+    "goal_distance_m": 0.04,
+    "min_command_contract": "off (main default)",
+    "issued": {
+      "kind": "mecanum",
+      "forward": 0.0,
+      "left": 0.35,
+      "turn": 0.0,
+      "duration_s": 0.06
+    },
+    "production_error": "shared heading contract: duration_outside_real_contract",
+    "explicit_on_comparison": {
+      "turn": 0.35,
+      "duration_s": 0.1,
+      "error": null
+    }
+  },
+  "blocking_callers": [
+    "harness/zone_s3_pair_alignment.py:17",
+    "harness/zone_s3_pair_heading.py:35"
+  ],
+  "next_candidate": "Explicit contract selection at S3 call sites requires a controller decision; not applied",
+  "remote": [
+    {
+      "pr": 416,
+      "head_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
+      "mergeable": "CONFLICTING",
+      "existing_checks": {},
+      "scope": "unchanged remote head; no new push in this task"
+    },
+    {
+      "pr": 425,
+      "head_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
+      "mergeable": "MERGEABLE",
+      "existing_checks": {
+        "SUCCESS": 25,
+        "IN_PROGRESS": 7
+      },
+      "scope": "unchanged remote head; no new push in this task"
+    }
+  ],
+  "s4_updated": false,
+  "raw_files": {
+    "outputs/pr416-main-sync/sweep.json": {
+      "sha256": "d61075c9b261323000814de2138a4b6870e99d22c4b7ab4df155bc7691d77ca4",
+      "bytes": 29713
+    },
+    "outputs/pr416-main-sync/commands.json.zst": {
+      "sha256": "4938cb6a9e460c08350e38418b8a3464ad3c69ef0f66aaa24d49064e53043c44",
+      "bytes": 14480,
+      "uncompressed_sha256": "a79bb8dc6235d122c065995407fcf6ce8c4bcd33b8291668dc97b9ed9a908cd2",
+      "uncompressed_bytes": 377705
+    }
+  },
+  "verification_scope": "offline stubs and selectors only; no simulation or model call"
+}

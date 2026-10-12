@@ -1,0 +1,130 @@
+{
+  "schema": "ugrp.pr-merge-preparation.v1",
+  "date": "2026-10-11",
+  "pr": 422,
+  "dependent_pr": 416,
+  "branch": "codex/heading-command-contract",
+  "original_head": "256a1b0c6633609f2fb91584e01f77f133afb642",
+  "merged_base": "8d7720933a6f007565c1b4999790ff3be613b323",
+  "merge_conflicts": [],
+  "old_ci": {
+    "run_id": 37935975349,
+    "failed_jobs": 7,
+    "failed_shards": [
+      0,
+      2,
+      3,
+      5,
+      6,
+      7
+    ],
+    "aggregate": "offline-regressions",
+    "test_failures": {
+      "offline-regression-shard (5/8)": {
+        "ERROR tests/test_consumer_criterion_b_v91.py": 56
+      },
+      "offline-regression-shard (0/8)": {
+        "FAILED tests/test_final_environment_measurement_v2.py": 1,
+        "ERROR tests/test_consumer_criterion_b_v91_yaw.py": 15
+      },
+      "offline-regression-shard (6/8)": {
+        "FAILED tests/test_review_352.py": 6
+      },
+      "offline-regression-shard (2/8)": {
+        "FAILED tests/test_zone_final_environment_floor_light.py": 1
+      },
+      "offline-regression-shard (7/8)": {
+        "FAILED tests/test_zone_final_pair_heldout.py": 3
+      },
+      "offline-regression-shard (3/8)": {
+        "FAILED tests/test_path_heading_default.py": 1,
+        "FAILED tests/test_review_355.py": 15
+      }
+    }
+  },
+  "fixes_from_main": [
+    {
+      "commit": "f5ad22c4",
+      "cause": "missing historical Git commits",
+      "fix": "full-history offline checkout"
+    },
+    {
+      "commit": "cfff3a1d",
+      "cause": "current source closure substituted into historical receipts",
+      "fix": "execute pinned historical source producer; validate current receipts separately"
+    },
+    {
+      "commit": "33f8f182",
+      "cause": "camera-derived record identity varies across numeric host environments",
+      "fix": "compare explicit-off record with historical producer in same environment; preserve frozen fixture SHA"
+    }
+  ],
+  "local_validation": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_s2_path_heading.py tests/test_path_heading_default.py --junitxml=outputs/pr422-merge-prep/heading.xml",
+    "result": {
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "duration_s": 79.79,
+    "native_physics": false,
+    "renderer": false,
+    "real_model_calls": 0
+  },
+  "main_ci": {
+    "run_id": 38126818044,
+    "head_sha": "8d7720933a6f007565c1b4999790ff3be613b323",
+    "conclusion": "success"
+  },
+  "candidate_ci": "pending push; must verify final PR head separately",
+  "merge_authorized": false,
+  "next_state": "independent review pending after full candidate CI",
+  "raw_location": "/Users/changmin/projects/ugrp-wt/pr422/outputs/pr422-merge-prep",
+  "raw_assets": {
+    "outputs/pr422-merge-prep/actions-checkout.md": {
+      "sha256": "3df94d90d0df6df603a549cc779bc6cab4b21f8deef82eb6fef1f4d88b788174",
+      "bytes": 14138
+    },
+    "outputs/pr422-merge-prep/ci-37935975349-failed.log": {
+      "sha256": "4e6e3c42ef00dbb7a1befadaf7df758166113befabf938c3de7de99a8209fc85",
+      "bytes": 3786667
+    },
+    "outputs/pr422-merge-prep/git-archive.html": {
+      "sha256": "bb4378a4d0ef9aa9cf5a08807a58527fa568e2a36bc7eae8e44401377fbe744f",
+      "bytes": 50116
+    },
+    "outputs/pr422-merge-prep/heading.log": {
+      "sha256": "58901c8e729745f0d3d6411e79e54db8cca8a7d49dcc60ebbda3261a1ee4a8d7",
+      "bytes": 110
+    },
+    "outputs/pr422-merge-prep/heading.xml": {
+      "sha256": "d2f68547397c193f3643761ef7a3ae745c593ccaba6d1d5e2e78f89aa4b39d80",
+      "bytes": 5130
+    },
+    "outputs/pr422-merge-prep/nav2-rpp.md": {
+      "sha256": "af9631cf5991be4aa9a66f76599b069003d94c545cf83ddbf563a158549c02d6",
+      "bytes": 20939
+    },
+    "outputs/pr422-merge-prep/previous-failures.json": {
+      "sha256": "a1b065acc62c532ca0f1420eac67ceb8140047641915fd8b3a32e3220c6dac55",
+      "bytes": 693
+    }
+  },
+  "worktree_cap_exception": "Requested isolated pr422 worktree; existing 27 Codex worktrees and all raw preserved; tool reason recorded",
+  "references": [
+    {
+      "url": "https://git-scm.com/docs/git-archive",
+      "verified": "2026-10-11 CLI original page"
+    },
+    {
+      "url": "https://github.com/actions/checkout#fetch-all-history-for-all-tags-and-branches",
+      "verified": "2026-10-11 CLI upstream README"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/blob/main/nav2_regulated_pure_pursuit_controller/README.md",
+      "verified": "2026-10-11 CLI upstream README"
+    }
+  ],
+  "class": "dev"
+}

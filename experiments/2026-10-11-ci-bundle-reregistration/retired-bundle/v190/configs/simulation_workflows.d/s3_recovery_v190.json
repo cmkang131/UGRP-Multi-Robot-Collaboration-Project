@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-recovery-v190",
+      "version": "7.83.0",
+      "purpose": "S3 main PR422 반영; min_command_contract=on_v1로 병합 전 명령 계약 유지 (공통 기본 off)",
+      "entry": "scripts/run_s3_recovery.py",
+      "runner": "scripts.run_s3_recovery",
+      "docs": "experiments/2026-10-11-pr416-main-sync/README.md",
+      "requires": "committed SHA; explicit option; own exclusive SIM lock; one finite smoke",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

@@ -77,6 +77,10 @@ class Handshake:
         if rid in self.own and not self.failure:
             self.completed.setdefault(rid, now)
 
+    def deadline(self, rid):
+        own = self.own[rid]
+        return own['last_response_at']+WINDOW_S if own['committed'] else own['opened']+HANDSHAKE_S
+
     def decide(self, rid, action, *, call_id, requested_at, now, frame_t, frame_sha256, seen):
         """Only a released, validated response to its captured request may vote."""
         own = self.own.get(rid)
@@ -87,7 +91,7 @@ class Handshake:
                  and own['opened'] <= requested_at and action['epoch'] == own['epoch'] == seen['epoch']
                  and isinstance(frame_sha256, str) and len(frame_sha256) == 64)
         if valid:
-            valid = now < (own['last_response_at']+WINDOW_S if own['committed'] else own['opened']+HANDSHAKE_S)
+            valid = now < self.deadline(rid)
         reason = 'STALE_OR_CLOSED_PAIR_WINDOW'
         if valid and choice == 'go':
             valid = not own['committed'] and own['go'] is None
@@ -121,7 +125,7 @@ class Handshake:
         for rid, own in self.own.items():
             if rid in self.completed:
                 continue
-            until = own['last_response_at']+WINDOW_S if own['committed'] else own['opened']+HANDSHAKE_S
+            until = self.deadline(rid)
             if now >= until:
                 self.abort(rid, now, 'PAIR_VISUAL_LEASE_EXPIRED' if own['committed'] else 'PAIR_GO_TIMEOUT')
                 return False

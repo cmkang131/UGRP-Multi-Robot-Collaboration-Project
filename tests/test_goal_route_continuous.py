@@ -110,6 +110,7 @@ def test_registered_cohort_workflow_and_no_reset():
 
 
 def test_standard_p1_scene_registry_spawn_without_physics():
+    pytest.importorskip('mujoco')  # scene/backend modules need MuJoCo; CI offline shards lack it
     from scripts.run_goal_route_continuous import bundle
     from sim.goal_route_continuous import make_scene
     for seed in range(55001,55010):
@@ -161,6 +162,7 @@ def test_evaluation_shortest_path_respects_wall_and_door():
 
 
 def test_own_range_channel_contains_no_hit_identity_and_off_no_reads():
+    pytest.importorskip('mujoco')  # scene/backend modules need MuJoCo; CI offline shards lack it
     from sim.goal_route_continuous import PhysicsBackend
     b=PhysicsBackend.__new__(PhysicsBackend);b.range_rig=None
     assert b.own_range() is None
@@ -213,3 +215,14 @@ def test_leg_report_splits_on_arrival_not_detection_and_marks_270s():
     assert len(v)==2 and [p['sim_s'] for p in v]==[20,270]
     assert [p['budget_failed'] for p in v]==[False,True]
     assert [p['own_tracked_path_m'] for p in v]==[2,2]
+
+
+def test_r1_goal_memory_has_own_identity_and_default_hooks_preserve_decisions():
+    from harness.self_map_closed_loop import remembered_goal
+    snap=dict(robot_id='r1',coordinate_frame='r1/own_odom',candidates=[])
+    assert remembered_goal(snap,t=1.,frame_id=1,frame_sha256='a'*64,robot_id='r1') is None
+    with pytest.raises(AssertionError):remembered_goal(snap,t=1.,frame_id=1,frame_sha256='a'*64)
+    c=fake_controller()
+    assert c.arrival_evidence('B',1.,1,[0,0,0],True)
+    assert not c.arrival_evidence('B',1.,1,[0,0,0],False)
+    assert c.return_evidence(None,True) and not c.return_evidence(None,False)

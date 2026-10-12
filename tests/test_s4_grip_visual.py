@@ -3,6 +3,8 @@ from types import SimpleNamespace
 import cv2
 import numpy as np
 import pytest
+
+pytest.importorskip("mujoco")
 from harness.s4_grip_visual import TemporalGrip, GripMonitor, OPTION
 from scripts.submit_s4_grip_batch import commands, submit_one
 from scripts.run_s4_grip_dataset import cases, bundle
@@ -56,7 +58,14 @@ def test_batch_balanced_frozen_disjoint_splits_and_bundle_boundary():
     for key,seq in seeds.items():
         assert len(seq)==4
         assert sorted(s for v,s in seq if v=='hold')==sorted(s for v,s in seq if v=='loss')
+    from harness import zone_s3_recovery_contract as current
+    registered=current.bundle('a'*40)
+    assert registered['execution_bundle_id']=='zone-s3-recovery-v209'
+    assert registered['retired_bundles'][0]['execution_bundle_id']=='zone-s3-recovery-v152'
+    assert registered['preregistration']['inherited_results'] is False
     b=bundle('a'*40,'r3',42000)
+    assert current.SEAL in b['source_sha256']
+    assert b['retired_bundles']==registered['retired_bundles']
     assert b['student_control'] is False and b['model_calls']==0 and not b['research_result']
     assert b['case']=='cyan' and b['execution_bundle_id'].endswith('v163')
 

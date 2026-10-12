@@ -13,6 +13,7 @@ import math
 
 from harness.zone_study_contract import ContractViolation, Vocabulary, channel_section, digest
 from harness import zone_study_prompts_ko as pk
+from harness.e2e_exact_speedups import OFF, ObservedIndex, cached_invalid_sha
 
 OPTION = 'on_v1'
 SCHEMA = 'ugrp.e2e_own_inputs.v1'
@@ -59,25 +60,27 @@ def numbers(value, n, label):
         raise ContractViolation(label + ': FINITE_VECTOR_REQUIRED')
 
 
-def rgb_ref(ref, rid, now, observed):
+def rgb_ref(ref, rid, now, observed, *, sha_cache=False):
     closed(ref, ('robot_id', 'frame_id', 't_sim', 'sha256'), 'RGB_REF')
     if (ref['robot_id'] != rid or type(ref['frame_id']) is not int or ref['frame_id'] < 0
             or type(ref['t_sim']) not in (int, float) or not 0 <= ref['t_sim'] <= now
             or not isinstance(ref['sha256'], str) or len(ref['sha256']) != 64
-            or any(c not in '0123456789abcdef' for c in ref['sha256'])):
+            or (cached_invalid_sha(ref['sha256']) if sha_cache and type(ref['sha256']) is str
+                else any(c not in '0123456789abcdef' for c in ref['sha256']))):
         raise ContractViolation('OWN_CAUSAL_RGB_REQUIRED')
     if ref not in observed:
         raise ContractViolation('UNOBSERVED_RGB_SOURCE')
 
 
-def validate_map(value, rid, now, observed):
+def validate_map(value, rid, now, observed, *, speedups=OFF):
+    if speedups.provenance_index:observed=ObservedIndex(observed)
     closed(value, ('robot_id', 'frame', 'map_version', 'pose', 'walls', 'goal', 'sources'), 'OWN_MAP')
     if (value['robot_id'] != rid or value['frame'] != rid + '/own_start'
             or type(value['map_version']) is not int or value['map_version'] < 0):
         raise ContractViolation('OWN_START_FRAME_REQUIRED')
     if not isinstance(value['sources'], list) or not value['sources']:
         raise ContractViolation('MAP_RGB_SOURCE_REQUIRED')
-    for ref in value['sources']: rgb_ref(ref, rid, now, observed)
+    for ref in value['sources']: rgb_ref(ref, rid, now, observed,sha_cache=speedups.sha_validation_cache)
     pose = value['pose']
     closed(pose, ('mean', 'covariance', 'sources'), 'OWN_POSE')
     numbers(pose['mean'], 3, 'POSE')
@@ -90,21 +93,21 @@ def validate_map(value, rid, now, observed):
         raise ContractViolation('POSITIVE_SEMIDEFINITE_COVARIANCE_REQUIRED')
     if not isinstance(pose['sources'], list) or not pose['sources']:
         raise ContractViolation('POSE_RGB_SOURCE_REQUIRED')
-    for ref in pose['sources']: rgb_ref(ref, rid, now, observed)
+    for ref in pose['sources']: rgb_ref(ref, rid, now, observed,sha_cache=speedups.sha_validation_cache)
     if not isinstance(value['walls'], list): raise ContractViolation('WALL_LIST_REQUIRED')
     for wall in value['walls']:
         closed(wall, ('a', 'b', 'sources'), 'OWN_WALL')
         numbers(wall['a'], 2, 'WALL'); numbers(wall['b'], 2, 'WALL')
         if not isinstance(wall['sources'], list) or not wall['sources']:
             raise ContractViolation('WALL_RGB_SOURCE_REQUIRED')
-        for ref in wall['sources']: rgb_ref(ref, rid, now, observed)
+        for ref in wall['sources']: rgb_ref(ref, rid, now, observed,sha_cache=speedups.sha_validation_cache)
     if value['goal'] is not None:
         closed(value['goal'], ('label', 'sources'), 'OWN_GOAL')
         if value['goal']['label'] != 'B' or not value['goal']['sources']:
             raise ContractViolation('OBSERVED_B_REQUIRED')
-        for ref in value['goal']['sources']: rgb_ref(ref, rid, now, observed)
+        for ref in value['goal']['sources']: rgb_ref(ref, rid, now, observed,sha_cache=speedups.sha_validation_cache)
     scan(value)
-    return copy.deepcopy(value)
+    return None if speedups.omit_discarded_copy else copy.deepcopy(value)
 
 
 def validate_route(value, rid, now, observed):

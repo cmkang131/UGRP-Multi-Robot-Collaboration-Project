@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "e2e-ownmap-live-v185",
+    "version": "7.78.0",
+    "purpose": "Own RGB GoalRoute, received OwnRoute dialogue and S3 calibrated primitives from the standard initial scene",
+    "entry": "scripts/run_e2e_ownmap_live.py",
+    "runner": "scripts.run_e2e_ownmap_live",
+    "docs": "experiments/2026-10-11-e2e-azure-first/README.md",
+    "requires": "Explicit e2e-live; committed Azure x86 OSMesa source; current guest guard; persistent runs",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha", "--seed", "--driver-profile", "--relay-receipt"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

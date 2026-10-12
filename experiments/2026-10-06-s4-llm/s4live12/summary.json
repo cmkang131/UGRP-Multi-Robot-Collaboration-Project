@@ -1,0 +1,1279 @@
+{
+  "research_result": false,
+  "class": "dev",
+  "pr": 425,
+  "status": "PARTIAL_BLOCKED_OWN_MAP_TRANSPORT",
+  "source_commit": "recorded by containing Git commit; no physical source SHA executed",
+  "bundle": "zone-s4-pair-live-v183",
+  "workflow": "7.76.0",
+  "seeds": [
+    601,
+    602,
+    603
+  ],
+  "metrics": {
+    "goal_B_landed": {
+      "n": 0,
+      "N": 0,
+      "planned_N": 12,
+      "scope": "NOT_RUN; not twelve failures"
+    },
+    "HOST_ERROR": {
+      "n": 0,
+      "N": 0,
+      "scope": "no new simulation attempts"
+    },
+    "initial_health": {
+      "n": 0,
+      "N": 0,
+      "planned_N": 12
+    }
+  },
+  "prior_reclassification": {
+    "experiment": "s4live11",
+    "goal_B_landed": {
+      "n": 0,
+      "N": 4
+    },
+    "HOST_ERROR": {
+      "n": 4,
+      "N": 8,
+      "seed": 602,
+      "cause": "SSH_TUNNEL_DISCONNECT",
+      "research_failure": false
+    },
+    "original_summary": "../s4live11/summary-before-host-reclassification.json",
+    "original_sha256": "4ae0c33409aca6901db63ef9c550ce0aa75c88fc55c78d32bfcf970dd5868c2c",
+    "raw_verdicts_modified": false,
+    "reboot_interrupted_attempts": "four other original602attempts remain separately archived/accounted; not merged into this classification"
+  },
+  "diagnosis": {
+    "evaluation_only": true,
+    "runs": {
+      "s4live11-leader_ko-s601-v182": {
+        "raw": "/home/ubuntu/ugrp-archive/runs/s4live11-leader_ko-s601-v182/raw",
+        "endpoint_minus_B": [
+          0.0,
+          0.0
+        ],
+        "final_error_xy": [
+          -0.020272387629206357,
+          -0.44858709982838674
+        ],
+        "lateral_rounding_excess_m": 0.3541794279575926,
+        "lateral_actual_signed_dy_m": -2.527573895473522,
+        "y_telescoping": {
+          "initial": 0.05,
+          "before_first_carry": 0.002232470314482621,
+          "during_carry": -2.604578805753644,
+          "after_carry": 0.0034622348238173978,
+          "between_epochs": 0.0002970007869569774,
+          "tail": 0.0,
+          "reconstruction_error": 0.0
+        },
+        "files": {
+          "student_record.json": "f1e2fa101e3d07d0b24d45320e7a2775c35f85edbeb9fad0c068263ca5271f09",
+          "pair-grip-epochs.jsonl": "b4ed6bde70e560af602dedb631f2746e672b05d0a12f15fd571762e43906dea8",
+          "pair-route.json": "9eb06a12acae4f726047b0047a1a319c98a0e81343e44d1b0e14157b8d362f18",
+          "eval_only/referee_truth.jsonl": "6d62a8bdcf4b92a6025de67258db4b4c09c4ffbad32feff29056c00b0cdec31e",
+          "eval_only/r1/trajectory.jsonl": "09a6f6cc2f2b19e850dc3f53d9f5f27807ab3ce225868787cb8397a9f2470940",
+          "eval_only/r2/trajectory.jsonl": "9337b6e3ed626acde020111d836b5c04d86106428b8a95da6c412781b5d73654"
+        },
+        "segments": [
+          {
+            "seg": 0,
+            "nominal_m": 0.15180000000000016,
+            "pulses": 12,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.15354211832693299,
+              -0.01130610803210285
+            ],
+            "lower_delta_xy": [
+              -0.00553182128001839,
+              -0.0017940691662568092
+            ]
+          },
+          {
+            "seg": 1,
+            "nominal_m": 0.7482,
+            "pulses": 58,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.7514755909785573,
+              -0.04016911419065654
+            ],
+            "lower_delta_xy": [
+              -0.002766282466961645,
+              0.011454628350832902
+            ]
+          },
+          {
+            "seg": 2,
+            "nominal_m": 0.7481999999999998,
+            "pulses": 58,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.7513165458012097,
+              -0.013696830705475845
+            ],
+            "lower_delta_xy": [
+              -0.0005953437706769371,
+              -0.00807246726623272
+            ]
+          },
+          {
+            "seg": 3,
+            "nominal_m": 0.7166666666666667,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.010121808755350958,
+              -0.845449561423489
+            ],
+            "lower_delta_xy": [
+              0.006757687226251807,
+              -0.002137462192879247
+            ]
+          },
+          {
+            "seg": 4,
+            "nominal_m": 0.7166666666666667,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.0013758691553875657,
+              -0.8433239562783026
+            ],
+            "lower_delta_xy": [
+              -0.006413799488257155,
+              0.0019339167577419047
+            ]
+          },
+          {
+            "seg": 5,
+            "nominal_m": 0.7166666666666668,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              3.37566976105208e-05,
+              -0.8388003777717301
+            ],
+            "lower_delta_xy": [
+              0.0015091154019728492,
+              0.00825395574559229
+            ]
+          },
+          {
+            "seg": 6,
+            "nominal_m": 0.8258999999999999,
+            "pulses": 64,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.8342350456708969,
+              -0.00478738315257532
+            ],
+            "lower_delta_xy": [
+              0.002035933295764014,
+              -0.0064860666790726995
+            ]
+          },
+          {
+            "seg": 7,
+            "nominal_m": 0.8258999999999999,
+            "pulses": 64,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.8277695513612384,
+              -0.007045474199311563
+            ],
+            "lower_delta_xy": [
+              -0.0038696777418607553,
+              0.00039522297726701794
+            ]
+          }
+        ],
+        "localization": {
+          "r1": {
+            "samples": 11943,
+            "first": {
+              "t": 2.35,
+              "t_est": 2.19,
+              "t_error_xy_m": [
+                1.3704503902119356,
+                -0.9322514768914067
+              ],
+              "t_est_error_xy_m": [
+                1.3704503902119356,
+                -0.9322514768914067
+              ]
+            },
+            "last": {
+              "t": 599.45,
+              "t_est": 599.29,
+              "t_error_xy_m": [
+                -1.507913244826287,
+                0.5300982037432438
+              ],
+              "t_est_error_xy_m": [
+                -1.5079457621781978,
+                0.5301151893515095
+              ]
+            },
+            "max_xy_error_at_estimate_time_m": 3.478168751388865,
+            "used_to_adjust_loaded_carry_pulse_count": false
+          },
+          "r2": {
+            "samples": 11943,
+            "first": {
+              "t": 2.35,
+              "t_est": 2.19,
+              "t_error_xy_m": [
+                0.3644588269454452,
+                -0.8546234439438903
+              ],
+              "t_est_error_xy_m": [
+                0.3644588269454452,
+                -0.8546234439438903
+              ]
+            },
+            "last": {
+              "t": 599.45,
+              "t_est": 599.29,
+              "t_error_xy_m": [
+                0.5447403927425771,
+                -0.8911682489790214
+              ],
+              "t_est_error_xy_m": [
+                0.5444599461376534,
+                -0.8910895023451246
+              ]
+            },
+            "max_xy_error_at_estimate_time_m": 3.5327659534862046,
+            "used_to_adjust_loaded_carry_pulse_count": false
+          }
+        }
+      },
+      "s4live11-no_comm-s601-v182": {
+        "raw": "/home/ubuntu/ugrp-archive/runs/s4live11-no_comm-s601-v182/raw",
+        "endpoint_minus_B": [
+          0.0,
+          0.0
+        ],
+        "final_error_xy": [
+          -1.8212132478165945,
+          -0.4585608079017609
+        ],
+        "lateral_rounding_excess_m": 0.3541794279575926,
+        "lateral_actual_signed_dy_m": -2.5303174905785712,
+        "y_telescoping": {
+          "initial": 0.05,
+          "before_first_carry": 0.0024375272563090383,
+          "during_carry": -2.625494442155163,
+          "after_carry": -0.0019263640175529208,
+          "between_epochs": 0.01642247101464592,
+          "tail": 0.0,
+          "reconstruction_error": 0.0
+        },
+        "files": {
+          "student_record.json": "5040686114d7371fecea183f9de94159a81b88670641185e50518b039703d691",
+          "pair-grip-epochs.jsonl": "f6ebfb836ad3e6d10804fd358d4437340af7ed284c16b17f671102b440309a2a",
+          "pair-route.json": "bd9ea25f3d706164bb37422f6c17fca734f1acebe3b1b9529742676e1076fe2f",
+          "eval_only/referee_truth.jsonl": "62d3cdbd45605d13e9224664a6c8253f9d925d4df329292cc476a672d6cd2d92",
+          "eval_only/r1/trajectory.jsonl": "72bf41ce9d41af068591ee6bbd4fd733d5968f693f0cc3ae8f1c36661915316e",
+          "eval_only/r2/trajectory.jsonl": "10e24715f070f3813fbdfaf12dfc52d13ef7570c924a822336c2da966f09aaa4"
+        },
+        "segments": [
+          {
+            "seg": 0,
+            "nominal_m": 0.15180000000000016,
+            "pulses": 12,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.15364050504508575,
+              -0.011912044721929242
+            ],
+            "lower_delta_xy": [
+              -0.0030540975151929217,
+              -0.003916287832542539
+            ]
+          },
+          {
+            "seg": 1,
+            "nominal_m": 0.7482,
+            "pulses": 58,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.7504996013621628,
+              -0.03579349468359293
+            ],
+            "lower_delta_xy": [
+              -0.0003056599129660498,
+              -0.0005854384124493288
+            ]
+          },
+          {
+            "seg": 2,
+            "nominal_m": 0.7481999999999998,
+            "pulses": 58,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.7489750623271507,
+              -0.0474714121710697
+            ],
+            "lower_delta_xy": [
+              -0.0026026532829894755,
+              -0.006142385807538422
+            ]
+          },
+          {
+            "seg": 3,
+            "nominal_m": 0.7166666666666667,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.05206389792000765,
+              -0.8445841709947882
+            ],
+            "lower_delta_xy": [
+              -0.00690768834860922,
+              0.0034542920539831767
+            ]
+          },
+          {
+            "seg": 4,
+            "nominal_m": 0.7166666666666667,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.056603647873887386,
+              -0.8432335265027184
+            ],
+            "lower_delta_xy": [
+              0.0026566644677563644,
+              -0.0012243386725965255
+            ]
+          },
+          {
+            "seg": 5,
+            "nominal_m": 0.7166666666666668,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.05833582858429187,
+              -0.8424997930810645
+            ],
+            "lower_delta_xy": [
+              0.009366718507206606,
+              0.00639243401761691
+            ]
+          }
+        ],
+        "localization": {
+          "r1": {
+            "samples": 10828,
+            "first": {
+              "t": 2.35,
+              "t_est": 2.19,
+              "t_error_xy_m": [
+                1.3704503902119356,
+                -0.9322514768914067
+              ],
+              "t_est_error_xy_m": [
+                1.3704503902119356,
+                -0.9322514768914067
+              ]
+            },
+            "last": {
+              "t": 543.7,
+              "t_est": 543.54,
+              "t_error_xy_m": [
+                1.110811426946325,
+                -0.0945187293732177
+              ],
+              "t_est_error_xy_m": [
+                1.1108109550926462,
+                -0.09451878375550571
+              ]
+            },
+            "max_xy_error_at_estimate_time_m": 2.995125816231106,
+            "used_to_adjust_loaded_carry_pulse_count": false
+          },
+          "r2": {
+            "samples": 10828,
+            "first": {
+              "t": 2.35,
+              "t_est": 2.19,
+              "t_error_xy_m": [
+                0.3644588269454452,
+                -0.8546234439438903
+              ],
+              "t_est_error_xy_m": [
+                0.3644588269454452,
+                -0.8546234439438903
+              ]
+            },
+            "last": {
+              "t": 543.7,
+              "t_est": 543.54,
+              "t_error_xy_m": [
+                -0.12309555544458162,
+                -0.24596110110704217
+              ],
+              "t_est_error_xy_m": [
+                -0.12304039422310664,
+                -0.2459617458015395
+              ]
+            },
+            "max_xy_error_at_estimate_time_m": 2.9082940054134463,
+            "used_to_adjust_loaded_carry_pulse_count": false
+          }
+        }
+      },
+      "s4live11-peer_ko-s601-v182": {
+        "raw": "/home/ubuntu/ugrp-archive/runs/s4live11-peer_ko-s601-v182/raw",
+        "endpoint_minus_B": [
+          0.0,
+          0.0
+        ],
+        "final_error_xy": [
+          -0.08646496838681283,
+          -0.518812772537824
+        ],
+        "lateral_rounding_excess_m": 0.3541794279575926,
+        "lateral_actual_signed_dy_m": -2.5277541359716222,
+        "y_telescoping": {
+          "initial": 0.05,
+          "before_first_carry": 0.0021942328691170257,
+          "during_carry": -2.669332077891735,
+          "after_carry": -0.009423592197447364,
+          "between_epochs": 0.007748664682241478,
+          "tail": 0.0,
+          "reconstruction_error": 0.0
+        },
+        "files": {
+          "student_record.json": "f0ac1a2e3a9655e9c351d163d228af3101dbbcb5e68ce96e41bd503f19726805",
+          "pair-grip-epochs.jsonl": "b4491d1d2af40f9a66dd5f506c72fd31cb0628f4ae032ee4f88a71194db0608c",
+          "pair-route.json": "9eb06a12acae4f726047b0047a1a319c98a0e81343e44d1b0e14157b8d362f18",
+          "eval_only/referee_truth.jsonl": "36411bf78fb20f7862c62e1272278b8d483c565ccec1239dea99c76bf835cc52",
+          "eval_only/r1/trajectory.jsonl": "751a71fb578ff6e5499395193f32b8c5eb096d6009d8b247e84cc8a6905b190c",
+          "eval_only/r2/trajectory.jsonl": "77ced89f6f1b6475ca7cbaf5ef1a62ea24fe234f190cb7e3f41a6d494a2cc465"
+        },
+        "segments": [
+          {
+            "seg": 0,
+            "nominal_m": 0.15180000000000016,
+            "pulses": 12,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.15382799464381347,
+              -0.010321177589034912
+            ],
+            "lower_delta_xy": [
+              -0.005561512320014339,
+              -0.0032441862869127813
+            ]
+          },
+          {
+            "seg": 1,
+            "nominal_m": 0.7482,
+            "pulses": 58,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.7514920219323755,
+              -0.04077852286251322
+            ],
+            "lower_delta_xy": [
+              0.005412582191447246,
+              0.0011625533716954847
+            ]
+          },
+          {
+            "seg": 2,
+            "nominal_m": 0.7481999999999998,
+            "pulses": 58,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.7511344668234519,
+              -0.03878071231791072
+            ],
+            "lower_delta_xy": [
+              0.00793254996583359,
+              -0.008955904537922804
+            ]
+          },
+          {
+            "seg": 3,
+            "nominal_m": 0.7166666666666667,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.056394502564358184,
+              -0.8421793574994921
+            ],
+            "lower_delta_xy": [
+              0.0023973223939104393,
+              0.0031573524584382895
+            ]
+          },
+          {
+            "seg": 4,
+            "nominal_m": 0.7166666666666667,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.03009054037229353,
+              -0.8447052837215152
+            ],
+            "lower_delta_xy": [
+              -0.0016537910105265397,
+              -0.0018591961042788707
+            ]
+          },
+          {
+            "seg": 5,
+            "nominal_m": 0.7166666666666668,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.03530720958492628,
+              -0.8408694947506148
+            ],
+            "lower_delta_xy": [
+              0.00024352572033947695,
+              0.00026320256347611704
+            ]
+          },
+          {
+            "seg": 6,
+            "nominal_m": 0.8258999999999999,
+            "pulses": 64,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.8307343946624459,
+              -0.027084835193821544
+            ],
+            "lower_delta_xy": [
+              0.003162221644265273,
+              -2.966112159619172e-05
+            ]
+          },
+          {
+            "seg": 7,
+            "nominal_m": 0.8258999999999999,
+            "pulses": 64,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.8310792877232798,
+              -0.024612693956832743
+            ],
+            "lower_delta_xy": [
+              -0.0035376979021064514,
+              -7.788997897328898e-06
+            ]
+          }
+        ],
+        "localization": {
+          "r1": {
+            "samples": 10243,
+            "first": {
+              "t": 2.35,
+              "t_est": 2.19,
+              "t_error_xy_m": [
+                1.3704503902119356,
+                -0.9322514768914067
+              ],
+              "t_est_error_xy_m": [
+                1.3704503902119356,
+                -0.9322514768914067
+              ]
+            },
+            "last": {
+              "t": 514.45,
+              "t_est": 514.29,
+              "t_error_xy_m": [
+                0.6477378033502026,
+                -0.24755152768617927
+              ],
+              "t_est_error_xy_m": [
+                0.6473370257545823,
+                -0.24762624711948922
+              ]
+            },
+            "max_xy_error_at_estimate_time_m": 3.390547602825679,
+            "used_to_adjust_loaded_carry_pulse_count": false
+          },
+          "r2": {
+            "samples": 10243,
+            "first": {
+              "t": 2.35,
+              "t_est": 2.19,
+              "t_error_xy_m": [
+                0.3644588269454452,
+                -0.8546234439438903
+              ],
+              "t_est_error_xy_m": [
+                0.3644588269454452,
+                -0.8546234439438903
+              ]
+            },
+            "last": {
+              "t": 514.45,
+              "t_est": 514.29,
+              "t_error_xy_m": [
+                -3.0883554371997533,
+                4.305800104269044
+              ],
+              "t_est_error_xy_m": [
+                -3.0886282432951675,
+                4.3059075763883525
+              ]
+            },
+            "max_xy_error_at_estimate_time_m": 5.2991975984299335,
+            "used_to_adjust_loaded_carry_pulse_count": false
+          }
+        }
+      },
+      "s4live11-structured-s601-v182": {
+        "raw": "/home/ubuntu/ugrp-archive/runs/s4live11-structured-s601-v182/raw",
+        "endpoint_minus_B": [
+          0.0,
+          0.0
+        ],
+        "final_error_xy": [
+          -0.062263519529188294,
+          -0.4416547864847371
+        ],
+        "lateral_rounding_excess_m": 0.3541794279575926,
+        "lateral_actual_signed_dy_m": -2.535864449003583,
+        "y_telescoping": {
+          "initial": 0.05,
+          "before_first_carry": -0.002017007295274105,
+          "during_carry": -2.575764648983868,
+          "after_carry": -0.0007797992979979972,
+          "between_epochs": -0.013093330907597157,
+          "tail": 0.0,
+          "reconstruction_error": -4.440892098500626e-16
+        },
+        "files": {
+          "student_record.json": "59eb61649d1cd42216349ba534c06227e099bb8149e664f59b0cd0965ec7b7d6",
+          "pair-grip-epochs.jsonl": "05908f405d0a6598a57616e068fa77cea7e6615f6882120d8304cbc17799293f",
+          "pair-route.json": "d490e74c7e2e8a4b55dad537966939aa4845f03339dbcdde7a9ddfe85ca3bd2f",
+          "eval_only/referee_truth.jsonl": "8e7da2690f147ba99d7b698a44b98f645f9bf642b2ea52aaaa493a4e13b781c1",
+          "eval_only/r1/trajectory.jsonl": "a874cbd3a75e825e7d371ae0586eb24157829d6f8836e97d952f4c9f7f6bcd70",
+          "eval_only/r2/trajectory.jsonl": "85bafa0bcfd5a1eaa5745188975b6c03fc498b0218e9e1c4d72718012a668b55"
+        },
+        "segments": [
+          {
+            "seg": 0,
+            "nominal_m": 0.15180000000000016,
+            "pulses": 12,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.1541449611889023,
+              -0.009944846931423973
+            ],
+            "lower_delta_xy": [
+              -0.020377953409033367,
+              0.00016866893783185066
+            ]
+          },
+          {
+            "seg": 1,
+            "nominal_m": 0.7482,
+            "pulses": 58,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.7482415530977675,
+              -0.026731176297927678
+            ],
+            "lower_delta_xy": [
+              -0.002719059290214876,
+              -0.004140836014110839
+            ]
+          },
+          {
+            "seg": 2,
+            "nominal_m": 0.7481999999999998,
+            "pulses": 58,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.7514355303624041,
+              -0.02275831046418447
+            ],
+            "lower_delta_xy": [
+              -0.0026925525873795486,
+              -0.0005121482309840414
+            ]
+          },
+          {
+            "seg": 3,
+            "nominal_m": 0.7166666666666667,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.006279695132902496,
+              -0.8463139599643321
+            ],
+            "lower_delta_xy": [
+              0.001429747823703753,
+              -0.00014257362932879047
+            ]
+          },
+          {
+            "seg": 4,
+            "nominal_m": 0.7166666666666667,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.00647394799192913,
+              -0.8457506095557958
+            ],
+            "lower_delta_xy": [
+              -0.001411079051914399,
+              0.00015468204183188838
+            ]
+          },
+          {
+            "seg": 5,
+            "nominal_m": 0.7166666666666668,
+            "pulses": 5,
+            "pulse_m": 0.16694529519717285,
+            "carry_delta_xy": [
+              -0.014862231599582998,
+              -0.8437998794834551
+            ],
+            "lower_delta_xy": [
+              0.006279788853316148,
+              -1.2320418611100337e-05
+            ]
+          },
+          {
+            "seg": 6,
+            "nominal_m": 0.8258999999999999,
+            "pulses": 64,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.8290729980818417,
+              -0.002781400190294381
+            ],
+            "lower_delta_xy": [
+              -0.007275113903300046,
+              0.003577046475427448
+            ]
+          },
+          {
+            "seg": 7,
+            "nominal_m": 0.8258999999999999,
+            "pulses": 64,
+            "pulse_m": 0.012938721811341378,
+            "carry_delta_xy": [
+              0.8285830374084457,
+              0.02231553390354568
+            ],
+            "lower_delta_xy": [
+              -0.012328040420719333,
+              -0.00017920884608324528
+            ]
+          }
+        ],
+        "localization": {
+          "r1": {
+            "samples": 12315,
+            "first": {
+              "t": 2.35,
+              "t_est": 2.19,
+              "t_error_xy_m": [
+                1.3704503902119356,
+                -0.9322514768914067
+              ],
+              "t_est_error_xy_m": [
+                1.3704503902119356,
+                -0.9322514768914067
+              ]
+            },
+            "last": {
+              "t": 618.05,
+              "t_est": 617.89,
+              "t_error_xy_m": [
+                -3.937054612213456,
+                1.3444022986314397
+              ],
+              "t_est_error_xy_m": [
+                -3.9371001259378793,
+                1.3443754737172249
+              ]
+            },
+            "max_xy_error_at_estimate_time_m": 4.264248066133092,
+            "used_to_adjust_loaded_carry_pulse_count": false
+          },
+          "r2": {
+            "samples": 12315,
+            "first": {
+              "t": 2.35,
+              "t_est": 2.19,
+              "t_error_xy_m": [
+                0.3644588269454452,
+                -0.8546234439438903
+              ],
+              "t_est_error_xy_m": [
+                0.3644588269454452,
+                -0.8546234439438903
+              ]
+            },
+            "last": {
+              "t": 618.05,
+              "t_est": 617.89,
+              "t_error_xy_m": [
+                0.6358128255509685,
+                -0.8506010554877119
+              ],
+              "t_est_error_xy_m": [
+                0.6359018806473422,
+                -0.850595462050661
+              ]
+            },
+            "max_xy_error_at_estimate_time_m": 3.448758019229228,
+            "used_to_adjust_loaded_carry_pulse_count": false
+          }
+        }
+      }
+    },
+    "full_decomposition": "/Users/changmin/projects/ugrp/outputs/s4live12-offline/prior-diagnosis-v3.json"
+  },
+  "own_RGB_visibility": {
+    "scope": "two selected actual own RGB frames, peer_ko seed601 at493.75SIM; no render",
+    "thresholds": {
+      "lime_H": [
+        25,
+        55
+      ],
+      "lime_S_min": 100,
+      "blue_H": [
+        95,
+        130
+      ],
+      "blue_S_min": 70,
+      "V_min": 50
+    },
+    "rows": {
+      "r1": {
+        "sha256": "f8444e7562bad969d183c4cc12e612b0ed8c2048fd6d9e214022cd2a9bac07f2",
+        "shape": [
+          480,
+          640,
+          3
+        ],
+        "total_pixels": 307200,
+        "lime_pixels": 248514,
+        "blue_pixels": 4224,
+        "white_pixels": 0,
+        "manual_review": "beam occludes view; complete B boundary and three white markers not observable; no metric correction certified"
+      },
+      "r2": {
+        "sha256": "1e45866b1b76693dcd316d6f10b81bd3f0b852614560ae2ae85ade5bc09582d8",
+        "shape": [
+          480,
+          640,
+          3
+        ],
+        "total_pixels": 307200,
+        "lime_pixels": 130021,
+        "blue_pixels": 8464,
+        "white_pixels": 0,
+        "manual_review": "beam occludes view; complete B boundary and three white markers not observable; no metric correction certified"
+      }
+    }
+  },
+  "findings": {
+    "route_endpoint_offset_m": [
+      0,
+      0
+    ],
+    "lateral_target_total_m": 2.15,
+    "per_leg_target_m": 0.7166666666666667,
+    "calibrated_pulse_m": 0.16694529519717285,
+    "per_leg_pulses": 5,
+    "nominal_lateral_m": 2.5041794279575926,
+    "nominal_rounding_excess_m": 0.3541794279575926,
+    "actual_lateral_m_completed": [
+      2.527573895473522,
+      2.5277541359716222,
+      2.535864449003583
+    ],
+    "last_setdown_y_delta_m_completed": [
+      0.00039522297726701794,
+      -7.788997897328898e-06,
+      -0.00017920884608324528
+    ],
+    "localization_scope": "carry pulse count comes from each authored cardinal leg; it does not close a loop on current pose/B error. Residual physical/off-axis/handling changes are measured in telescoping decomposition; not attributed entirely to PF drift.",
+    "causal_limit": "Arithmetic defect proven; correcting it has not yet been physically tested. Own-map RGB target correction NOT implemented.",
+    "final_robot_estimation_error_norm_range_m_completed": [
+      0.6930829554788309,
+      5.29910034644365
+    ],
+    "estimation_error_interpretation": "Posthoc same-frame own-estimate vs robot trajectory at t_est; not used for pulse count. First/last and publication-time alternative retained. Not a direct causal attribution of beam y error."
+  },
+  "implemented": {
+    "tunnel_recovery": {
+      "default": "off",
+      "same_request_body_and_request_id": true,
+      "six_retries_max": true,
+      "wait_budget_s": 600,
+      "no_physics_or_duplicate_command_during_wait": "four-condition actual scheduler/ledger fault injection",
+      "exhaustion": "HOST_ERROR"
+    },
+    "relay_journal": {
+      "default": "off",
+      "scope": "logical-key + body hash; one in-flight upstream; completed response durable before client write; cached response reused; ambiguous pending after crash fails closed",
+      "request_images_stored": false,
+      "Retry_After_respected": true
+    },
+    "ssh_reconnect": {
+      "default": "off",
+      "server_alive_interval_s": 15,
+      "server_alive_count_max": 3,
+      "restart_delay_s": 10,
+      "finite_session_max_s": 14400
+    },
+    "absolute_deadline": {
+      "hard_cap_utc": "2026-10-11T18:04:00Z",
+      "run_wall_max_s": 10800,
+      "graceful_shutdown_starts_at_least_s_before_cap": 5,
+      "RUN_META": {
+        "class": "dev",
+        "pr": 425
+      },
+      "verification": "offline owned-process-group deadline test; no new remote run RUN_META exists"
+    }
+  },
+  "network_probe": {
+    "network_only": true,
+    "model_requests": 0,
+    "physics_steps": 0,
+    "first_healthy_unix": 1791702023.3266811,
+    "fault_unix": 1791702023.341731,
+    "restored_unix": 1791702035.463309,
+    "recovery_wall_s": 12.121577978134155,
+    "old_pid": 69284,
+    "events": [
+      {
+        "event": "START",
+        "unix": 1791702022.3374279,
+        "attempt": 1,
+        "pid": 69284,
+        "reconnect": true,
+        "deadline_unix": 1791702201.669188
+      },
+      {
+        "event": "EXIT",
+        "unix": 1791702024.348049,
+        "attempt": 1,
+        "pid": 69284,
+        "reconnect": true,
+        "deadline_unix": 1791702201.669188,
+        "returncode": 255
+      },
+      {
+        "event": "START",
+        "unix": 1791702034.354395,
+        "attempt": 2,
+        "pid": 69431,
+        "reconnect": true,
+        "deadline_unix": 1791702201.669188
+      }
+    ],
+    "source_sha256": {
+      "scripts/s4_proxy_relay.py": "b33c7142bfce58231e9bf8aae716efcfb56c317c16760ae7aaae5da228f2ff8b",
+      "scripts/s4_reverse_tunnel.py": "0c74fbcf8c9939fd7144f2705118041aa01da924e693e6afc1bb039fcb9f62de",
+      "harness/s4_relay_journal.py": "72106acaea9ae38b915b052bba8d1dd0e2fb29f6de499c87fede5c052d3f5b80"
+    }
+  },
+  "network_probe_scope": "two GET identity-only disconnect probes, zero model POSTs/physics; final source proof below; first recovery11.453s retained separately",
+  "verification": {
+    "new": {
+      "n": 14,
+      "N": 14,
+      "file": "tests/test_s4_live12.py",
+      "final": "..............                                                           [100%]\n14 passed in 1.54s"
+    },
+    "related": {
+      "n": 13,
+      "N": 13,
+      "file": "tests/test_s4_live11.py"
+    },
+    "combined": "27 passed in46.38s; deadline adjustment then new14rerun",
+    "S3_frozen_files": 130,
+    "preparation_issues_resolved": [
+      "offline eager MuJoCo import rejected by no-external fixture; admission now precedes lazy executor import",
+      "new603 rejected by old pure template; explicit runtime seed/provider-seed override verified601/602/603",
+      "second network proof refused existing output directory before launch; fresh directory used, no overwrite"
+    ],
+    "bundle_preflight": [
+      {
+        "bundle": "zone-s4-pair-live-v183",
+        "version": "7.76.0",
+        "seed": 601,
+        "provider_seeds": {
+          "r1": 601,
+          "r2": 602,
+          "r3": 603
+        },
+        "tunnel_on": true,
+        "source_files": 606,
+        "physics": 0,
+        "models": 0,
+        "admitted": false
+      },
+      {
+        "bundle": "zone-s4-pair-live-v183",
+        "version": "7.76.0",
+        "seed": 602,
+        "provider_seeds": {
+          "r1": 602,
+          "r2": 603,
+          "r3": 604
+        },
+        "tunnel_on": true,
+        "source_files": 606,
+        "physics": 0,
+        "models": 0,
+        "admitted": false
+      },
+      {
+        "bundle": "zone-s4-pair-live-v183",
+        "version": "7.76.0",
+        "seed": 603,
+        "provider_seeds": {
+          "r1": 603,
+          "r2": 604,
+          "r3": 605
+        },
+        "tunnel_on": true,
+        "source_files": 606,
+        "physics": 0,
+        "models": 0,
+        "admitted": false
+      }
+    ]
+  },
+  "runs": [
+    {
+      "name": "s4live12-no_comm-s601-v183",
+      "condition": "no_comm",
+      "seed": 601,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-peer_ko-s601-v183",
+      "condition": "peer_ko",
+      "seed": 601,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-leader_ko-s601-v183",
+      "condition": "leader_ko",
+      "seed": 601,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-structured-s601-v183",
+      "condition": "structured",
+      "seed": 601,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-no_comm-s602-v183",
+      "condition": "no_comm",
+      "seed": 602,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-peer_ko-s602-v183",
+      "condition": "peer_ko",
+      "seed": 602,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-leader_ko-s602-v183",
+      "condition": "leader_ko",
+      "seed": 602,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-structured-s602-v183",
+      "condition": "structured",
+      "seed": 602,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-no_comm-s603-v183",
+      "condition": "no_comm",
+      "seed": 603,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-peer_ko-s603-v183",
+      "condition": "peer_ko",
+      "seed": 603,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-leader_ko-s603-v183",
+      "condition": "leader_ko",
+      "seed": 603,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    },
+    {
+      "name": "s4live12-structured-s603-v183",
+      "condition": "structured",
+      "seed": 603,
+      "status": "NOT_SUBMITTED_OWN_MAP_INPUT_BLOCKER",
+      "goal_B_landed": null,
+      "HOST_ERROR": false
+    }
+  ],
+  "blocker": {
+    "reason": "OWN_MAP_TRANSPORT_NOT_CONNECTED",
+    "S4_source": "scripts/run_s4_live.py Runtime/static map and model map_bundle; synchronized pulses consume authored B route",
+    "upstream_PR": 433,
+    "upstream_SHA": "572bdb80d6f8b364ce510acefbdf7bdb2d64a309",
+    "upstream_evidence": "experiments/2026-10-11-e2e3-s3-route/README.md: test_route_provider E2E success always false; e2e4a README: own-map adapter/physical integration later",
+    "policy": "user s4live12 forbids static B for E2E, own map only; no fallback or privileged correction",
+    "additional_visual_prerequisite": "loaded ownRGB2selected frames cannot certify B boundary; a safe supported reinspection/own-map observation must be connected first"
+  },
+  "next_candidates": {
+    "tunnel_recovery": "implemented defaultoff; bounded reconnect+same request id/cache; no duplicated command",
+    "cumulative_pulse_budget": "proposed only; whole-route quantization residual instead of per-segment ceil; own-route input prerequisite",
+    "B_boundary_reinspect": "proposed only; require causal own-map route and visible B before metric correction; selected loaded views occluded"
+  },
+  "remaining_work": [
+    "connect causal own-map route and own observation based B correction (goal correction not implemented)",
+    "finish related tests, then source freeze and submit all12in3waves before hard cap",
+    "180–300s per-run toggle/physics health checks, full server evaluation/hash and fetch-lite"
+  ],
+  "raw": {
+    "prior_full_originals": "oracle:/home/ubuntu/ugrp-archive/runs/s4live11-*-v182/raw",
+    "new_small_records": "/Users/changmin/projects/ugrp/outputs/s4live12-offline",
+    "new_simulation_raw": null,
+    "Mac_full_raw_fetches": 0,
+    "selected_JPEGs": 2,
+    "selected_JPEG_bytes": 24222,
+    "deletions": 0,
+    "new_small_records_ARM": "/home/ubuntu/ugrp-archive/s4live12-integrity/metadata-v2"
+  },
+  "security": {
+    "new_model_calls": 0,
+    "Mac_physics_render": 0,
+    "model_keys_transferred": false,
+    "relay_port18392_closed_after_probe": true,
+    "x86_port18391_closed_after_probe": true,
+    "original_Mac_proxy_PID1529_untouched": true,
+    "server_task_metadata_secret_pattern_hits": 0
+  },
+  "references": [
+    {
+      "url": "https://man.openbsd.org/ssh_config.5",
+      "use": "ServerAlive15s/count3 detect dead SSH; restart wrapper finite",
+      "verified": "official manual"
+    },
+    {
+      "url": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/",
+      "use": "caller supplied logical id plus same body; retain response on lost reply; fail on mismatch",
+      "verified": "primary provider engineering article"
+    },
+    {
+      "url": "https://www-cvr.ai.uiuc.edu/ResPages/vs.php",
+      "use": "classical feature error feedback and visibility constraints; no unseen target reconstruction",
+      "verified": "author tutorial overview; IRISA PDF unavailable"
+    },
+    {
+      "url": "https://arxiv.org/abs/2001.05650",
+      "use": "own RGB image based final-phase servoing considered",
+      "verified": "paper abstract"
+    },
+    {
+      "url": "https://arxiv.org/abs/2410.12432",
+      "use": "recent visual servoing with generated subgoals reviewed; not adopted because unobserved B cannot certify goal",
+      "verified": "paper abstract"
+    }
+  ],
+  "PR_state": "DRAFT; not merged",
+  "evidence_files": {
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/prior-diagnosis-v2.json": {
+      "sha256": "4b2f9e1083884b6fb5b5f2c9923fb161fd14cffef6e0d75a40142088a10db29a",
+      "bytes": 79408
+    },
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/visibility-diagnosis.json": {
+      "sha256": "b133cf139373fc30df376a14e7ba182e3dc3da3a5f1512fb662bcc92057975e5",
+      "bytes": 1101
+    },
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/selected-frame-manifest.json": {
+      "sha256": "e79f3df09edc3c88359e2f959be1bfd345944a376734b55d1d7de4069ded58e0",
+      "bytes": 577
+    },
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/network-probe-final/result.json": {
+      "sha256": "5369cd7bb1a28f20c6c925a7d84d58de790523d36332fd2196815300b2eece1e",
+      "bytes": 1154
+    },
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/bundle-preflight.json": {
+      "sha256": "468b8aabd10138b5372a31d981c2bc4388f511e55726bde3b40904c1fc804b06",
+      "bytes": 834
+    },
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/id-scan.json": {
+      "sha256": "f47d1ca486047fcba795ac17669b9eeda67ad08bd3d8d9f20a16958ded2407fe",
+      "bytes": 3165
+    },
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/prior-diagnosis-v3.json": {
+      "sha256": "00148837c111ad15efd05b83d272c994b6a2cae07b7722def9e50c6bda546880",
+      "bytes": 86868
+    },
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/pytest-final.txt": {
+      "sha256": "4b337a469ed4e97758f6201f1a95c5329e0961ab87d4531bf42d71cf2a03b98a",
+      "bytes": 99
+    },
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/archive-manifest-v2.json": {
+      "sha256": "15645be3523c034a04359ed1cac2899fdd575f59f108b34a3c75b585dac77f17",
+      "bytes": 2772
+    },
+    "/Users/changmin/projects/ugrp/outputs/s4live12-offline/archive-proof-v2.json": {
+      "sha256": "acb20af29b412f763f03526f8ccfe2e32b8b1469216ef54a2d53bf8fa861092a",
+      "bytes": 235
+    }
+  },
+  "integrity": {
+    "metadata_archive": {
+      "root": "/home/ubuntu/ugrp-archive/s4live12-integrity/metadata-v2",
+      "verified": 20,
+      "files": 20,
+      "bytes": 263124,
+      "mismatches": [],
+      "secret_pattern_hits": 0,
+      "scan_scope": "task metadata; no credentials or process environments read"
+    },
+    "scope": "small metadata only; old full original raw remains separately ARM hashed",
+    "old_raw_or_verdict_deletions": 0
+  }
+}

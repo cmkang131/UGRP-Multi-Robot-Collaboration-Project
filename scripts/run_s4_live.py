@@ -80,7 +80,17 @@ def run(b, out, receipt, *, pair_extension=None, backend_factory=None):
     out.mkdir(parents=True, exist_ok=False)
     write(out/'bundle.json', b); write(out/'environment.json', environment_record())
     scenario, mapped, sheet = inputs()
-    profile = copy.deepcopy(load_registry()['driver_profiles']['main_study_gemini_v1'])
+    profile_id = b.get('driver_profile', 'main_study_gemini_v1')
+    if profile_id not in ('main_study_gemini_v1', 'dev_gemini_gemma_fallback_v1','study_gemma4_31b_v1'):
+        raise ValueError('unsupported S4 DEV driver profile')
+    profile = copy.deepcopy(load_registry()['driver_profiles'][profile_id])
+    if profile_id=='study_gemma4_31b_v1' and b.get('driver_profile_sha256')!=digest(profile):
+        raise ValueError('single Gemma profile must be pinned in the bundle')
+    if profile.get('scope') == 'DEV_only':
+        if (b.get('research_result') is not False or not b.get('gemma_fallback') or
+                b.get('driver_profile_sha256') != digest(profile)):
+            raise ValueError('DEV fallback profile must be explicitly pinned in the DEV bundle')
+    profile['profile_id'] = profile_id
     profile['proxy_url'] = URL
     profile['sha256'] = digest(profile)
     run_key = f's4live1-{b["condition"]}-{out.parent.name}'

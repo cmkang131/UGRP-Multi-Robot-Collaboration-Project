@@ -1,3 +1,4 @@
+import importlib.util
 import numpy as np
 import pytest
 from harness.controller_exact_speedups import ArrayRevision, PosteriorMemo, PureMemo, MethodSummaryMemo, IntegerClipNumpy, mode
@@ -431,7 +432,13 @@ def test_common_install_off_and_restore(monkeypatch):
         for a, b in zip(actual[:2], expected[:2]):
             assert a.tobytes() == b.tobytes()
         assert actual[2] == expected[2]
-        assert on.snapshot()['applied'] == ['owncam_moments','markerless_integer_clip','opencv_integer_clip','shared_shadow_depths','posterior_summary']
+        # Base speedups first; entries after them patch optional own-map modules (PR #405) only when present.
+        base = ['owncam_moments','markerless_integer_clip','opencv_integer_clip','shared_shadow_depths','posterior_summary']
+        optional = {'offsets_grid','sensor_sigma','grid_field','nearest_probability_lookup','forecast_evidence_copy'}
+        applied = on.snapshot()['applied']
+        assert applied[:len(base)] == base and set(applied[len(base):]) <= optional
+        if importlib.util.find_spec('harness.self_map_rbpf') is None:
+            assert applied == base
         assert on.snapshot()['referee_event_speedups'] == 'off'
         from harness.vision_loc_protocol import load_vis3
         from harness import zone_pair_highpose_opencv_exact as opencv
