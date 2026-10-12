@@ -1,0 +1,23 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e18-arm-clearance-probe",
+      "version": "1.0.0",
+      "purpose": "20 SIM-second staged wall/arm clearance diagnostic; no E2E claim",
+      "entry": "scripts/probe_e2e_arm_clearance.py",
+      "runner": "scripts.probe_e2e_arm_clearance",
+      "docs": "experiments/2026-10-12-e2e18/README.md",
+      "requires": "Committed Azure x86 OSMesa source; current lease/admission; persistent runs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--bundle"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    }
+  ]
+}
