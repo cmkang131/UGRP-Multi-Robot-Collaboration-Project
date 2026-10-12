@@ -27,8 +27,8 @@ class RBPFOptions:
     seed: int = 20261006
 
     def __post_init__(self):
-        if type(self.particles) is not int or self.particles not in (30, 100, 500):
-            raise ValueError('RBPF_PARTICLES_REQUIRE_30_OR_100')
+        if type(self.particles) is not int or self.particles not in (30, 50, 100, 500):
+            raise ValueError('RBPF_PARTICLES_REQUIRE_30_50_100_OR_500')
         if type(self.seed) is not int or self.seed < 0:
             raise ValueError('RBPF_INVALID_SEED')
 

@@ -15,6 +15,7 @@ from harness.e2e_goal_route import GoalRoute, attach
 from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
 from harness.e2e_exact_speedups import OFF, using
+from harness.e2e_speed4 import OFF as SPEED4_OFF, using as speed4_using
 
 
 def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
@@ -84,11 +85,13 @@ def beam_observer():
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed4=SPEED4_OFF):
         self.exact_speedups=exact_speedups
+        self.speed4=speed4
         self.robot_id=rid;self.study_options=options
-        self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
-                            exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect,vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy,explore_deadlock=explore_deadlock,boundary_association=boundary_association,boundary_retry=boundary_retry,boundary_coverage=boundary_coverage)
+        with speed4_using(speed4):
+            self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
+                                exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect,vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy,explore_deadlock=explore_deadlock,boundary_association=boundary_association,boundary_retry=boundary_retry,boundary_coverage=boundary_coverage)
         self.observe_beam=beam_observer()
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]
@@ -97,7 +100,7 @@ class Robot:
         self.translation_commands=0
 
     def receive(self,obs,rgb):
-        with using(self.exact_speedups):
+        with using(self.exact_speedups), speed4_using(self.speed4):
             return self._receive(obs,rgb)
 
     def _receive(self,obs,rgb):
@@ -130,6 +133,8 @@ class Robot:
         return trace
 
     def commanded(self,action,now):
+        if self.speed4.enabled and action['kind'] in ('arm','look'):
+            self._speed4_servo_changed = True
         if action['kind']=='mecanum' and abs(action.get('forward',0))+abs(action.get('left',0))>0:
             self.translation_commands+=1
         if action['kind']=='arm':self.servo[action['servo_id']]=action['pulse']
