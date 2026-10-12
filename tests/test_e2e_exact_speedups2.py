@@ -76,11 +76,12 @@ def _receive_rays_state(seed):
         yield grid, latest, static_hits, obs, pose
 
 
+@pytest.mark.parametrize('scalar', [False, True])
 @pytest.mark.parametrize('seed', [0, 1, 2])
-def test_receive_rays_state_and_iteration_order_identical(seed):
+def test_receive_rays_state_and_iteration_order_identical(seed, scalar):
     from harness.public_navigation_raytrace import receive_rays
     states = []
-    for options in (Options(scalar_cells=True), Options(scalar_cells=True, vector_rays=True)):
+    for options in (Options(scalar_cells=scalar), Options(scalar_cells=scalar, vector_rays=True)):
         out = []
         grid = latest = None
         for grid, latest, static_hits, obs, pose in _receive_rays_state(seed):
@@ -113,7 +114,9 @@ def test_wall_frontend_hit_returns_owned_copies_and_checks_bits():
         assert len(calls) == 4
         s2.wall_frontend(compute, rgb, **{**kw, 'contact_rule': 'floor_appearance_ulrich_v1'})
         s2.wall_frontend(compute, rgb, **{**kw, 'servo': {1: 1500, 6: 1401}})
-        assert len(calls) == 6
+        s2.wall_frontend(compute, rgb, **{**kw, 'wall_detector': 'floor_boundary_v1'})
+        s2.wall_frontend(compute, rgb, **{**kw, 'wall_detector': 'floor_boundary_v1'})
+        assert len(calls) == 8
 
 
 def _scan_cases():
@@ -153,3 +156,14 @@ def test_costmap_writes_identical_including_fallback():
                 except Exception as exc:
                     outputs.append((type(exc).__name__, str(exc)))
         assert outputs[0] == outputs[1]
+
+
+def test_v200_bundle_unchanged_and_round2_requires_new_bundle():
+    from scripts.run_e2e_ownmap_live import bundle
+    v200 = dict(provenance_index=True, sha_validation_cache=True, omit_discarded_copy=True, scalar_cells=True,
+                geometry_cache=True)
+    b = bundle('0'*40, 61001, 'study_gemma4_31b_v1', enabled=True, exact_speedups=v200)
+    assert b['execution_bundle_id'] == 'e2e-exact-speed-v200'
+    assert b['e2e_options']['exact_speedups'] == v200
+    with pytest.raises(ValueError, match='ROUND2_EXACT_SPEEDUPS_REQUIRE_NEW_BUNDLE_ID'):
+        bundle('0'*40, 61001, 'study_gemma4_31b_v1', enabled=True, exact_speedups={**v200, 'vector_rays': True})

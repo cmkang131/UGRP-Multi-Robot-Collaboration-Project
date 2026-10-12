@@ -25,6 +25,7 @@ class Options:
 
 
 OFF = Options()
+ROUND2_FIELDS = ('vector_rays', 'shared_wall_frontend', 'lazy_scan_path', 'vector_costmap_writes', 'track_cell_tuples')
 _ACTIVE = ContextVar('e2e_exact_geometry_options',default=OFF)
 
 

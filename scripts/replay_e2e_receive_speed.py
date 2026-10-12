@@ -140,9 +140,12 @@ def replay(frames, speedups, *, profile=None, period=.2):
             rows.append(row)
     if profiler:
         profiler.dump_stats(profile)
-    from harness.e2e_exact_speedups2 import STATS
     snapshot = installed.snapshot()
-    snapshot['exact_speedups2'] = dict(STATS)
+    try:
+        from harness.e2e_exact_speedups2 import STATS
+        snapshot['exact_speedups2'] = dict(STATS)
+    except ImportError:  # pre-round-2 harness (default-path overhead check)
+        snapshot['exact_speedups2'] = None
     return rows, receive_s, snapshot
 
 

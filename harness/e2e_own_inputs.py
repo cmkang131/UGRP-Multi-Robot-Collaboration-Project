@@ -44,15 +44,20 @@ def closed(value, keys, label):
 def scan(value, path='input'):
     if lazy_scan_enabled():
         from harness.e2e_exact_speedups2 import scan_lazy
-        return scan_lazy(value, path, forbidden=FORBIDDEN, violation=ContractViolation, original=scan)
+        return scan_lazy(value, path, forbidden=FORBIDDEN, violation=ContractViolation, original=_scan)
+    return _scan(value, path)
+
+
+def _scan(value, path='input'):
+    # Original recursive validator; the toggle is checked once per entry call.
     if isinstance(value, dict):
         for key, child in value.items():
             if key in FORBIDDEN:
                 raise ContractViolation(path + '.' + key + ': PRIVILEGED_INPUT')
-            scan(child, path + '.' + key)
+            _scan(child, path + '.' + key)
     elif isinstance(value, (list, tuple)):
         for i, child in enumerate(value):
-            scan(child, f'{path}[{i}]')
+            _scan(child, f'{path}[{i}]')
     elif isinstance(value, float) and not math.isfinite(value):
         raise ContractViolation(path + ': NONFINITE_INPUT')
 

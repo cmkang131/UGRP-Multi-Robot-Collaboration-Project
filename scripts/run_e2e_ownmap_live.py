@@ -44,6 +44,10 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     stall=StallOptions(stall_odometry,stall_recovery,stall_noise)
     from harness.e2e_exact_speedups import Options as SpeedOptions
     speed=SpeedOptions(**(exact_speedups or {}))
+    from harness.e2e_exact_speedups import ROUND2_FIELDS
+    if any(getattr(speed,k) for k in ROUND2_FIELDS):
+        # Round-2 toggles are not part of the registered v200 bundle.
+        raise ValueError('ROUND2_EXACT_SPEEDUPS_REQUIRE_NEW_BUNDLE_ID')
     from harness.zone_study_llm_driver import load_registry
     b=json.loads((ROOT/'configs/e2e_s3_test_runtime_v1.json').read_text())
     # The template contributes physical/calibration constants only. Its authored
@@ -79,7 +83,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         b['e2e_options'].update(mapping_budget=mapping_budget,mapping_budget_s=b['case_cap_s'])
         b.update(schema='ugrp.e2e_ownmap_live.v199',execution_bundle_id='e2e-stall-budget-v199',workflow_version='7.92.0')
     if speed_bundle or any(vars(speed).values()):
-        b['e2e_options']['exact_speedups']=dataclasses.asdict(speed)
+        b['e2e_options']['exact_speedups']={k:v for k,v in dataclasses.asdict(speed).items() if k not in ROUND2_FIELDS}
         b.update(schema='ugrp.e2e_ownmap_live.v200',execution_bundle_id='e2e-exact-speed-v200',workflow_version='7.93.0')
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',

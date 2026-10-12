@@ -11,7 +11,8 @@ code. No physics, camera, render cadence, threshold or evidence byte changes.
 * shared_wall_frontend: the two per-frame wall-contact callers
   (active_wall_vision.observe, self_wall_segment_points.contact_points) run
   the same RGB->BGR, undistort, stateless contact detector and grey
-  conversion on the same image and command FK. The post-detector result is
+  conversion on the same image and command FK. Only the original height-free
+  detector (wall_detector='off') with a stateless contact rule is shared. The post-detector result is
   kept for the exact input bits and returned as owned copies.
 * lazy_scan_path: e2e_own_inputs.scan builds the path string only when it
   raises; traversal order, checks and messages are unchanged.
@@ -113,8 +114,8 @@ def wall_frontend(compute, rgb, *, servo, origin, rotation, params, loaded, wall
     """Return (und, scan, grey) from ``compute()`` or an exact earlier result."""
     from harness.controller_exact_speedups import array_equal
     from harness.e2e_exact_speedups import wall_frontend_enabled
-    if (not wall_frontend_enabled() or contact_rule not in STATELESS_RULES or contact_state is not None
-            or type(rgb) is not np.ndarray or rgb.dtype != np.uint8):
+    if (not wall_frontend_enabled() or wall_detector != 'off' or contact_rule not in STATELESS_RULES
+            or contact_state is not None or type(rgb) is not np.ndarray or rgb.dtype != np.uint8):
         STATS['frontend_bypass'] += 1
         return compute()
     key = _frontend_key(servo, origin, rotation, params, loaded, wall_detector, contact_rule, mp, hfw)
