@@ -349,8 +349,8 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
     from harness import zone_s3_recovery_contract as contract
     from harness.zone_s3_recovery_runtime import Runtime
     b=contract.bundle('0'*40)
-    assert b['execution_bundle_id']=='zone-s3-recovery-v195'
-    assert b['workflow_version']=='7.88.0'
+    assert b['execution_bundle_id']=='zone-s3-recovery-v209'
+    assert b['workflow_version']=='7.102.0'
     assert b['retired_bundles'][0]['execution_bundle_id']=='zone-s3-recovery-v152'
     assert b['preregistration']['inherited_results'] is False
     contract.verify(b)
@@ -381,7 +381,7 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
     finally:p.runtime.close()
 
 
-@pytest.mark.parametrize('bundle_id', ['zone-s3-recovery-v152', 'zone-s3-recovery-v193'])
+@pytest.mark.parametrize('bundle_id', ['zone-s3-recovery-v152', 'zone-s3-recovery-v193', 'zone-s3-recovery-v195'])
 def test_retired_bytes_and_consumers_match_original_git_source(bundle_id):
     import hashlib
     import io
@@ -399,11 +399,15 @@ def test_retired_bytes_and_consumers_match_original_git_source(bundle_id):
         assert len(expected)==record['runtime_source_count']==379
         paths=[*expected,record['comparison_path'],*record['preserved_files']]
     else:
-        seal_path='experiments/2026-10-11-pr416-review-fixes/source-seal-v193.json'
+        seal_path=next(p for p in record['preserved_files'] if p.endswith('source-seal-'+bundle_id.rsplit('-',1)[1]+'.json'))
         decision=json.loads((contract.ROOT/record['preserved_files'][seal_path]['path']).read_text())
         expected=decision['runtime_source_sha256']
-        assert len(expected)==record['runtime_source_count']==433
-        assert record['replacement']==contract.BUNDLE_ID
+        assert len(expected)==record['runtime_source_count']==(433 if bundle_id.endswith('v193') else 434)
+        retired={row['execution_bundle_id']:row for row in json.loads((contract.ROOT/contract.RETIRED).read_text())['retired']}
+        cursor=record['replacement'];seen={bundle_id}
+        while cursor!=contract.BUNDLE_ID:
+            assert cursor not in seen
+            seen.add(cursor);cursor=retired[cursor]['replacement']
         paths=[*expected,*record['preserved_files']]
     archive=subprocess.check_output(['git','archive',record['source_sha'],'--',*paths],cwd=contract.ROOT)
     with tarfile.open(fileobj=io.BytesIO(archive)) as source:
