@@ -644,7 +644,7 @@ def main(argv=None):
     p.add_argument('--mapping-acquire',choices=('off','interleaved_v1'),default='off')
     p.add_argument('--perception-settle',choices=('off','command0p6_v1'),default='off')
     p.add_argument('--landmark-cache',choices=('off','bounded64_v1'),default='off')
-    p.add_argument('--fine-view',choices=('off','stage08_v1','stage20_v1'),default='off')
+    p.add_argument('--fine-view',choices=('off','stage08_v1','stage20_v1','inspect40_v1','inspect60_v1'),default='off')
     p.add_argument('--scan-guard',choices=('off','map_v1','retreat_v1','retreat_slots_v1'),default='off')
     p.add_argument('--approach-commit',choices=('off','memory20_v1','memory60_v1','memory60_view_v1'),default='off')
     p.add_argument('--acquisition-mobility',choices=('off','resume_v1','remembered_view_v1'),default='off')

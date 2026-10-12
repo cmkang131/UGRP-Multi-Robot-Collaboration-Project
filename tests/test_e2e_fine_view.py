@@ -46,3 +46,30 @@ def test_registration_requires_exact_parent_and_default_does_not_mutate():
     before=copy.deepcopy(b);assert m.compose(b,'off')==() and b==before
     m.compose(b,'stage08_v1');assert b['execution_bundle_id']=='e2e18-v257'
     with pytest.raises(ValueError):m.compose(b,'stage20_v1')
+
+
+@pytest.mark.parametrize('mode',('inspect40_v1','inspect60_v1'))
+def test_prepare_inspection_latches_through_clearance_retreat_but_expires_with_station(mode):
+    tr,r=recorded(mode);state={'station':np.array([1.,0.,0.])}
+    r.goal.explorer.local_pose=np.array([1.-m.RADII[mode]+.01,0.,0.])
+    assert m.view(tr,'r2',state,.8)[0]=='inspect'
+    # The requested posture stays fixed when the arm guard backs away.
+    r.goal.explorer.local_pose[0]=-.1
+    assert m.view(tr,'r2',state,1.3)[0]=='inspect'
+    state['station']=np.array([2.,0.,0.])
+    assert m.view(tr,'r2',state,2.3) is None
+    state.pop('station');assert not m.active(tr,'r2',state)
+    assert 'inspect_station' not in state
+
+
+def test_prepare_inspection_preserves_actual_arm_clearance_interception():
+    from types import SimpleNamespace
+    from harness.e2e_arm_clearance import Clearance
+    from harness.range_provider import RangeReport,source_label
+    tr,r=recorded('inspect40_v1');tr.arm_clearance=Clearance('range_v1')
+    r.now=2.;r.wall_segments=[]
+    r.range_provider=SimpleNamespace(report=lambda now:RangeReport(now,0.,True,.1,.002,source=source_label(),status='ok'))
+    fine,_=advance(tr,'r2',2.)
+    assert not fine and not tr.queue and 'r2' in tr.arm_clearance.pending
+    actions=tr.arm_clearance.filter(tr,2.1,[])
+    assert next(a for rid,a in actions if rid=='r2')['forward']<0
