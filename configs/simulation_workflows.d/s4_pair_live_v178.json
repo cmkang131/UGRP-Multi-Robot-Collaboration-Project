@@ -1,0 +1,24 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s4-pair-live-v178",
+      "version": "7.71.0",
+      "purpose": "S4 epoch and GO/ACK recovery, evaluation-only cyan guard, complete route DEV",
+      "entry": "scripts/run_s4_pair_live10.py",
+      "runner": "scripts.run_s4_pair_live10",
+      "docs": "experiments/2026-10-06-s4-llm/s4live10/README.md",
+      "requires": "committed Oracle x86 OSMesa archive and audited SSH relay; no Mac physics",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--condition",
+        "--relay-receipt",
+        "--seed"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

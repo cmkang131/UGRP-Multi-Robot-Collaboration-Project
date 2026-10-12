@@ -1,0 +1,80 @@
+{
+  "reason": "supervisor host poweroff bug at 09:32:44Z; authorized same-command same-SHA retry",
+  "recorded_unix": 1791625285.7388248,
+  "runs": [
+    {
+      "name": "s4live1-no_comm-s601-v157",
+      "seed": 601,
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "command": ".venv-sim/bin/python -m scripts.sim_cli workflow run zone-s4-live-dev-v157 --record outputs/s4live1-no_comm-s601-v157/managed -- --expected-source-sha 6cffbc514200ee2aedda59ad65d75b1f2fe1d844 --condition no_comm --cap-s 90 --relay-receipt /home/ubuntu/ugrp-sim/s4live1-relay.json --output outputs/s4live1-no_comm-s601-v157/raw --execute",
+      "archive": "s4live1-no_comm-s601-v157-host-stop-093244Z"
+    },
+    {
+      "name": "s4live1-peer_ko-s601-v157",
+      "seed": 601,
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "command": ".venv-sim/bin/python -m scripts.sim_cli workflow run zone-s4-live-dev-v157 --record outputs/s4live1-peer_ko-s601-v157/managed -- --expected-source-sha 6cffbc514200ee2aedda59ad65d75b1f2fe1d844 --condition peer_ko --cap-s 90 --relay-receipt /home/ubuntu/ugrp-sim/s4live1-relay.json --output outputs/s4live1-peer_ko-s601-v157/raw --execute",
+      "archive": "s4live1-peer_ko-s601-v157-host-stop-093244Z"
+    },
+    {
+      "name": "s4live1-leader_ko-s601-v157",
+      "seed": 601,
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "command": ".venv-sim/bin/python -m scripts.sim_cli workflow run zone-s4-live-dev-v157 --record outputs/s4live1-leader_ko-s601-v157/managed -- --expected-source-sha 6cffbc514200ee2aedda59ad65d75b1f2fe1d844 --condition leader_ko --cap-s 90 --relay-receipt /home/ubuntu/ugrp-sim/s4live1-relay.json --output outputs/s4live1-leader_ko-s601-v157/raw --execute",
+      "archive": "s4live1-leader_ko-s601-v157-host-stop-093244Z"
+    },
+    {
+      "name": "s4live1-structured-s601-v157",
+      "seed": 601,
+      "source_sha": "6cffbc514200ee2aedda59ad65d75b1f2fe1d844",
+      "command": ".venv-sim/bin/python -m scripts.sim_cli workflow run zone-s4-live-dev-v157 --record outputs/s4live1-structured-s601-v157/managed -- --expected-source-sha 6cffbc514200ee2aedda59ad65d75b1f2fe1d844 --condition structured --cap-s 90 --relay-receipt /home/ubuntu/ugrp-sim/s4live1-relay.json --output outputs/s4live1-structured-s601-v157/raw --execute",
+      "archive": "s4live1-structured-s601-v157-host-stop-093244Z"
+    }
+  ],
+  "submissions": [
+    {
+      "name": "s4live1-no_comm-s601-v157",
+      "started_unix": 1791625297.513921,
+      "ended_unix": 1791625302.716384,
+      "returncode": 0,
+      "stdout": "started s4live1-no_comm-s601-v157 at 6cffbc514200ee2aedda59ad65d75b1f2fe1d844 on oracle-x86\n",
+      "stderr": ""
+    },
+    {
+      "name": "s4live1-peer_ko-s601-v157",
+      "started_unix": 1791625297.515351,
+      "ended_unix": 1791625303.057058,
+      "returncode": 0,
+      "stdout": "started s4live1-peer_ko-s601-v157 at 6cffbc514200ee2aedda59ad65d75b1f2fe1d844 on oracle-x86\n",
+      "stderr": ""
+    },
+    {
+      "name": "s4live1-leader_ko-s601-v157",
+      "started_unix": 1791625297.516972,
+      "ended_unix": 1791625302.7219589,
+      "returncode": 0,
+      "stdout": "started s4live1-leader_ko-s601-v157 at 6cffbc514200ee2aedda59ad65d75b1f2fe1d844 on oracle-x86\n",
+      "stderr": ""
+    },
+    {
+      "name": "s4live1-structured-s601-v157",
+      "started_unix": 1791625297.518637,
+      "ended_unix": 1791625303.05699,
+      "returncode": 0,
+      "stdout": "started s4live1-structured-s601-v157 at 6cffbc514200ee2aedda59ad65d75b1f2fe1d844 on oracle-x86\n",
+      "stderr": ""
+    }
+  ],
+  "interrupted_retrieval": {
+    "checked_unix": 1791625360.8776672,
+    "runs": {
+      "s4live1-leader_ko-s601-v157-host-stop-093244Z": 1614,
+      "s4live1-no_comm-s601-v157-host-stop-093244Z": 1329,
+      "s4live1-peer_ko-s601-v157-host-stop-093244Z": 1650,
+      "s4live1-structured-s601-v157-host-stop-093244Z": 1626
+    },
+    "mismatches": [],
+    "host_stop_utc": "2026-10-10T09:32:44Z",
+    "cause": "supervisor auto-poweroff bug, user confirmed; not simulation failure"
+  }
+}

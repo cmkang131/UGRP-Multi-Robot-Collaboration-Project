@@ -1,0 +1,108 @@
+{
+  "schema": "ugrp.s4live4.batch.v1",
+  "research_result": false,
+  "max_concurrent": 4,
+  "execution_authorized_this_round": false,
+  "runs": [
+    {
+      "name": "s4live4-no_comm-s601-pair-go",
+      "seed": 601,
+      "condition": "no_comm",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_live",
+        "--expected-source-sha",
+        "<S4_SHA>",
+        "--output",
+        "outputs/s4live4-no_comm-s601-pair-go/raw",
+        "--condition",
+        "no_comm",
+        "--cap-s",
+        "90",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live4-relay.json",
+        "--pair-mode",
+        "mutual_go_v1",
+        "--pair-release",
+        "experiments/2026-10-06-s4-llm/s4live4/release.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live4-peer_ko-s601-pair-go",
+      "seed": 601,
+      "condition": "peer_ko",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_live",
+        "--expected-source-sha",
+        "<S4_SHA>",
+        "--output",
+        "outputs/s4live4-peer_ko-s601-pair-go/raw",
+        "--condition",
+        "peer_ko",
+        "--cap-s",
+        "90",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live4-relay.json",
+        "--pair-mode",
+        "mutual_go_v1",
+        "--pair-release",
+        "experiments/2026-10-06-s4-llm/s4live4/release.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live4-leader_ko-s601-pair-go",
+      "seed": 601,
+      "condition": "leader_ko",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_live",
+        "--expected-source-sha",
+        "<S4_SHA>",
+        "--output",
+        "outputs/s4live4-leader_ko-s601-pair-go/raw",
+        "--condition",
+        "leader_ko",
+        "--cap-s",
+        "90",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live4-relay.json",
+        "--pair-mode",
+        "mutual_go_v1",
+        "--pair-release",
+        "experiments/2026-10-06-s4-llm/s4live4/release.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live4-structured-s601-pair-go",
+      "seed": 601,
+      "condition": "structured",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_live",
+        "--expected-source-sha",
+        "<S4_SHA>",
+        "--output",
+        "outputs/s4live4-structured-s601-pair-go/raw",
+        "--condition",
+        "structured",
+        "--cap-s",
+        "90",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live4-relay.json",
+        "--pair-mode",
+        "mutual_go_v1",
+        "--pair-release",
+        "experiments/2026-10-06-s4-llm/s4live4/release.json",
+        "--execute"
+      ]
+    }
+  ]
+}

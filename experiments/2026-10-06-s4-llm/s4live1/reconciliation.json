@@ -1,0 +1,28 @@
+{
+  "same_retry_commands_and_sha": [
+    "s4live1-no_comm-s601-v157",
+    "s4live1-peer_ko-s601-v157",
+    "s4live1-leader_ko-s601-v157",
+    "s4live1-structured-s601-v157"
+  ],
+  "fixed_system_billed_tokens_all_conditions": 952,
+  "batch_model_calls": 28,
+  "batch_provider_reported_tokens": 172773,
+  "smoke_model_calls": 3,
+  "smoke_provider_reported_tokens": 17677,
+  "host_interrupted_model_calls": 12,
+  "host_interrupted_provider_reported_tokens_lower_bound": 73721,
+  "all_ledger_proxy_correlated_calls": 43,
+  "all_provider_reported_tokens": 264171,
+  "provider_usage_discrepancy": {
+    "run": "s4live1-structured-s601-v157",
+    "call_id": "call-0007-r2",
+    "prompt_tokens": 6434,
+    "completion_tokens": 76,
+    "total_tokens": 6803,
+    "unexplained_delta": 293,
+    "handling": "Preserved verbatim; reported totals are not independently verified billing"
+  },
+  "delay_scope": "10 SIM-second admission window uses the existing token-based SIM cost scheduler, not real-time wall deadlines; actual HTTP durations recorded separately",
+  "live_failure_scope": "No malformed response/HTTP failure observed; all four repeated continue responses rejected by already closed departure gate; deliberate stale/expired/non-normal/429 tests are offline only"
+}

@@ -104,11 +104,21 @@ class PairLiveLedger(llm.MainStudySendLedger):
                 raise self._storage_error(row, error, 'store error response') from error
             record['path'] = path.name
         row['error_response'] = record
+        try:
+            response = json.loads(body)
+            if isinstance(response, dict) and 'provider' in response:
+                row.update(response_model=response.get('model'), response_provider=response['provider'],
+                           provider_route=response.get('ugrp_route'), provider_usage=response.get('usage'))
+                if 'ugrp_upstream_forwarded' in response:
+                    row.update(upstream_forwarded=response['ugrp_upstream_forwarded'],quota_wait=response.get('quota_wait'))
+        except ValueError:
+            pass
         row['rate_limit'] = is_rate_limit(exc.code, excerpt)
 
 
 def rate_limited_rows(ledger) -> list:
-    return [r for r in ledger.entries if r.get('rate_limit') or r.get('http_status') == 429]
+    return [r for r in ledger.entries if (r.get('rate_limit') or r.get('http_status') == 429)
+            and not r.get('rate_limit_recovered', False)]
 
 
 def check_health(trial, *, final=False) -> None:
@@ -190,7 +200,7 @@ def live_records(ledger) -> dict | None:
     by_seq = {e['seq']: e for e in ledger.entries}
     for row in rows:                                       # keep the evidence the study rows leave out
         entry = by_seq[row['seq']]
-        for key in ('error_response', 'rate_limit', 'sent_at_ns'):
+        for key in ('error_response', 'rate_limit', 'sent_at_ns', 'rate_limit_recovered', 'retry_wait_s'):
             if key in entry:
                 row[key] = entry[key]
         text = _reply_text(ledger, row)
