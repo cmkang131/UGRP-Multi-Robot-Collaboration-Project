@@ -60,7 +60,12 @@ def main():
                 import signal
                 os.killpg(process.pid,signal.SIGINT)
             process.wait();log.close()
-    write(a.run_root/'batch-result.json',dict(runs=[dict(name=t.name,exit=p.returncode) for t,p,_ in jobs]))
+    rows=[]
+    for target,process,_ in jobs:
+        exit_path=target/'EXIT'
+        code=int(exit_path.read_text()) if exit_path.exists() else None
+        rows.append(dict(name=target.name,exit=code,supervisor_exit=process.returncode))
+    write(a.run_root/'batch-result.json',dict(runs=rows))
 
 
 if __name__=='__main__':main()

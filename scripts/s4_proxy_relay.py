@@ -20,6 +20,7 @@ def accepted_call_id(value):
     if value.startswith('speed-gate-'):
         return accepted_call_id(value[len('speed-gate-'):])
     if re.fullmatch(r'e2e-speed3-(?:base|dt1|dt2|adaptive)-s6100[1-3](?:-r[1-9])?:call-\d+-r[123]:\d+',value):return True
+    if re.fullmatch(r'e2e-speed3-adaptive-s6100[1-6]-r3:call-\d+-r[123]:\d+',value):return True
     # Both registered runners use run_key:call_id:attempt; keep the historical
     # S4 namespace and explicitly admit only this E2E pilot's registered cells.
     return re.fullmatch(r'e2e-idle-[ab]-s6100[1-3]-r[2-9][0-9]*:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(r'e2e-idle-a-s6100[4-9]:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(r'e2e-(?:usstall|vomask|idle)-[ab]-s6100[1-3]:call-\d+-r[123]:\d+',value) is not None or value.startswith('s4live1-') or re.fullmatch(r'e2e14-[ab]-s6100[1-4](?:-r2)?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(r'e2e15-[ab]-s6100[1-3]:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(r'e2e13-(?:profile|off|index|validate|copy|cell|geometry|validation|both)-s61001(?:-p[123])?:call-\d+-r[123]:\d+',value) is not None or re.fullmatch(

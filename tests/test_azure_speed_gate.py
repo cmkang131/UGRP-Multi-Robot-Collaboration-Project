@@ -10,7 +10,7 @@ from scripts import azure_speed_gate as gate
 
 
 def sample(wall=90., **changes):
-    return dict(sim_s=30., wall_s=wall, expected_stop=True, finalization_errors=[], exit=1, **changes)
+    return dict(sim_s=30., wall_s=wall, expected_stop=True, finalization_errors=[], finalization_complete=True, exit=1, **changes)
 
 
 def test_full_planned_concurrency_required_and_median_includes_every_member():
@@ -22,7 +22,8 @@ def test_full_planned_concurrency_required_and_median_includes_every_member():
 
 @pytest.mark.parametrize('changes', [dict(sim_s=29.9), dict(wall_s=float('nan')),
     dict(wall_s=float('inf')), dict(sim_s=float('inf')), dict(expected_stop=False),
-    dict(finalization_errors=['disk_full']), dict(exit=-9), dict(sim_s=0)])
+    dict(finalization_errors=['disk_full']), dict(finalization_complete=False),
+    dict(finalization_complete=None), dict(exit=-9), dict(sim_s=0)])
 def test_partial_failed_or_nonfinite_member_never_passes(changes):
     row = sample(); row.update(changes)
     assert not gate.verdict([sample(10), row], 2, 4)['admitted']
@@ -77,7 +78,7 @@ p=argparse.ArgumentParser();p.add_argument('--output');a,_=p.parse_known_args()
 r=Path(a.output);r.mkdir(parents=True)
 (r/'started').write_text(str(time.monotonic()))
 time.sleep(.15)
-(r/'result.json').write_text(json.dumps(dict(failure='MEASUREMENT_SIM_LIMIT',finalization_errors=[])))
+(r/'result.json').write_text(json.dumps(dict(failure='MEASUREMENT_SIM_LIMIT',finalization_errors=[],finalization_complete=True)))
 (r.parent/'measurement.json').write_text(json.dumps(dict(sim_s=30.,wall_s=60.,expected_stop=True)))
 raise SystemExit(1)
 '''
@@ -131,3 +132,13 @@ def test_all_shell_launchers_gate_start_and_preserve_six_cell_plan():
     rows = subprocess.check_output(['bash', 'experiments/2026-10-12-e2e-idle/azure-pair.sh',
         'sha', '453', '--plan', 'pair'], text=True).splitlines()
     assert len(rows) == 6
+
+
+def test_zero_supervisor_exit_does_not_hide_incomplete_finalization(monkeypatch, tmp_path):
+    monkeypatch.setattr(gate, 'require_azure', lambda _: None)
+    fake = FAKE.replace('finalization_complete=True', 'finalization_complete=False').replace('SystemExit(1)', 'SystemExit(0)')
+    planned = specs(tmp_path, 1, [sys.executable, '-c', fake])
+    result = gate.preflight(planned, tmp_path / 'gate')
+    assert not result['admitted'] and result['completed'] == 0
+    assert result['samples'][0]['exit'] == 0
+    assert result['samples'][0]['expected_stop'] and not result['samples'][0]['finalization_complete']

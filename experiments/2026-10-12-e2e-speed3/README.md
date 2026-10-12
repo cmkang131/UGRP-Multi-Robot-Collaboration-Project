@@ -1,8 +1,9 @@
-# E2E speed3 DEV — 2026-10-12
-- Refs #448 #453; 새 물리/관측 코호트, 이전 성공/비트등가성 승계 없음.
-- 후보: baseline 0.25ms/5Hz, dt1 1ms/5Hz, dt2 2ms/2.5Hz; implicitfast, noslip10 유지.
-- dt 출처: sim/dispatch_contact_profile.py local_contact_fine (0.25ms); 4096은 reset 포함 추정.
-- [MuJoCo 권고](https://mujoco.readthedocs.io/en/3.6.0/computation/#numerical-integration): timestep은 모델별 안정성 확인, implicitfast 권장.
-- 판정: 6개 동시 60 SIM초 wall/SIM 중앙값 목표 ≤3; 정적 probe는 유한 물리 개연성만.
-- speed gate: 같은 계획 동시수 30 SIM초, 기본 상한4; 우회 사유와 실패·경고 영구 기록.
-- 요약·원본 위치·sha256: summary.json; 연구 재시작은 조정자가 수행.
+# E2E speed3 DEV — 2026-10-12 (Refs #448 #453)
+- v215: 주행2ms·팔 조작 발행 뒤0.25ms, implicitfast/noslip10·가속10개·관측0.4s; 카메라640×480/FOV/배치·weld OFF.
+- 이전 성공 승계 없음; v214의1/2ms 고정 후보는 접촉 probe실패로 진단 보존.
+- 같은 시각6개(기존3/후보3)×60SIM초: 후보 중앙2.984 wall/SIM(n=3), 기존 종료 대기; summary.json에 전체 실패·원본·sha.
+- 단계별 probe4/4: 직진·회전·파지·공동들기, 동적 dt전환은 별도 단위시험(전체 운반 아님).
+- [MuJoCo timestep/integrator](https://mujoco.readthedocs.io/en/3.6.0/computation/#numerical-integration); dt출처 dispatch_contact_profile.local_contact_fine=.25ms.
+- Gate: 계획동시수×30SIM초 중앙≤4.0, 초과/불완료 SPEED_GATE_FAIL; 6.0초과 연속10분 경고, 우회사유 필수.
+- 재시작(조정자, 미실행): VM3 새SHA에서 `bash experiments/2026-10-12-e2e-speed3/restart.sh "$SHA" 454 --execute --speed-gate-limit 4.0` (`--plan`으로 먼저 확인).
+- 준비: 새소스·유한relay `~/ugrp-sim/relays/e2e-speed3/a.json`, fresh `e2e-speed3-r3-budget-{x86,arm,mac}.json`; x86/ARM6×4608MiB, Mac6×80MiB.

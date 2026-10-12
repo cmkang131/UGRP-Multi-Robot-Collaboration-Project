@@ -86,6 +86,7 @@ def verdict(samples, expected, limit, override=None):
             valid = (math.isfinite(sim) and sim >= PROBE_SIM_S - 1e-6
                      and math.isfinite(wall) and wall > 0
                      and row.get('expected_stop') is True and row.get('finalization_errors') == []
+                     and row.get('finalization_complete') is True
                      and row.get('exit') in (0, 1))
         except (KeyError, ValueError, TypeError):
             valid = False
@@ -216,6 +217,7 @@ def preflight(specs, root, limit=4., override=None, *, timeout_s=None):
                 sample = json.loads((target / 'measurement.json').read_text())
                 result = json.loads((target / 'raw/result.json').read_text())
                 sample['finalization_errors'] = result.get('finalization_errors')
+                sample['finalization_complete'] = result.get('finalization_complete')
                 sample['expected_stop'] = (sample.get('expected_stop') is True
                                            and result.get('failure') == 'MEASUREMENT_SIM_LIMIT')
             except (OSError, ValueError):
