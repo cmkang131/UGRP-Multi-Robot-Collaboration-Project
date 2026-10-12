@@ -1,0 +1,20 @@
+{
+ "toggle": "b_marker_detect=contrast_v2",
+ "default": "off",
+ "recommended_value": "contrast_v2 only together with a view-planning change; by itself it does NOT make B confirmable (0 accepts on all saved frames)",
+ "bundle_id_registered": null,
+ "code_base_sha": "1d16f845 (origin/claude/e2e-route) + working-tree changes of this PR",
+ "replay": {
+  "script": "scripts/replay_b_quad_v2.py",
+  "rows": {"file": "replay-rows.json.zst", "sha256": "f6c7814ba6cb615de60817be13634557e751ccbe112aa346ca74a8020173f5cf"},
+  "e2e11_labeled": {"frames": 394, "B_not_in_view": 352, "B_partial_in_view": 42, "B_all_4_corners_in_view": 0,
+   "accepted": {"off": "0/394", "contrast_v1": "0/394", "contrast_v2": "0/394"},
+   "false_accepts_on_B_not_in_view": {"off": "0/352", "contrast_v1": "0/352", "contrast_v2": "0/352"},
+   "v2_non_B_quads_reaching_marker_stage": "60/352 frames (rejected: islands != 3)",
+   "partial_B_frames_v2_reason": "lens_clipped 42/42; v1 reason not_convex_quad 84 contours"},
+  "e2e14_unlabeled": {"frames": 120, "accepted": {"off": "0/120", "contrast_v1": "0/120", "contrast_v2": "0/120"}, "note": "no scene/trajectory saved locally, no labels; counts only"},
+  "v213_frames": "only 2 saved JPEGs locally (outputs/e2e17-idle/diagnostic-images); inspected by eye, not scored. The other v213 frames are on the Azure/ARM run dirs and were not fetched (ssh alias arm does not resolve)."
+ },
+ "diagnosis": "B is large and the robot is at/near it: every saved B view is cut by the lens circle or image border (0/42 with all 4 corners). 'not_convex_quad' mixes (a) wall+floor blobs (wall hue ~105 vs B floor ~112), (b) clipped partial B, (c) body-mask bites. Polygon tolerance alone cannot create a complete quad.",
+ "unverified": ["ArUco/AprilTag citations are from memory except polygonalApproxAccuracyRate=0.03 (read from cv2 4.13)", "v213 full-resolution frames not scored", "no live run with contrast_v2"]
+}

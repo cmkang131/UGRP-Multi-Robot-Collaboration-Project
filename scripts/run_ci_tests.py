@@ -27,6 +27,7 @@ TEST_PATTERNS = (
     "tests/test_e2e_boundary_views.py",
     "tests/test_e2e_boundary_repair.py",
     "tests/test_e2e_b_marker_detect.py",
+    "tests/test_e2e_b_quad_v2.py",
     "tests/test_e2e_rgb_vo.py",
     "tests/test_e2e_vo_floor_mask.py",
     "tests/test_e2e_explore_deadlock.py",
