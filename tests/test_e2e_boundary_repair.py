@@ -127,3 +127,21 @@ def test_renumbered_cli_and_historical_registration_preserved(capsys):
     record = json.loads(Path('experiments/2026-10-12-merge-train/pr453/retired-bundles.json').read_text())
     for item in record['retired'][0]['blobs']:
         assert hashlib.sha256(Path(item['preserved']).read_bytes()).hexdigest() == item['sha256']
+
+
+def test_unstable_association_is_preserved_in_actual_ownmap_record():
+    from scripts.run_e2e_ownmap_live import ownmap_record
+    g, boundary = fixture(); association = Association(g)
+    for i, x in enumerate((1., 1., 1.2)):
+        boundary['center'] = [x, -.6]
+        receive(association, boundary, i, i*.2)
+    assert not g.e2e_gate.references
+    g.explorer = SimpleNamespace(local_pose=np.zeros(3)); g.stage = 'explore'
+    robot = SimpleNamespace(goal=g, nav_command={'kind':'hold'})
+    obs = {'frame_id':2, 'sha256':'own-frame'}
+    record = ownmap_record(robot, obs, {'boundary_association':association.last}, .4)
+    saved = json.loads(json.dumps(record))['boundary_association']
+    assert saved == association.last
+    assert saved['overlap_fraction'] == pytest.approx(.4)
+    assert saved['frames'] == 1 and saved['accepted'] is False
+    assert 'boundary_association' not in ownmap_record(robot, obs, {}, .4)
