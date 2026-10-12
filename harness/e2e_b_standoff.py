@@ -54,7 +54,8 @@ def _usable(servo):
     """Image pixels usable by the detector: inside lens circle and not own body. Fixed per servo."""
     from harness.e2e_rgb_gate import lens_valid
     from harness.floor_goal_self_mask import body_envelopes, project_envelopes
-    origin, axes = goal_camera(servo, 'camera_v3')
+    from harness.active_camera import mask_camera
+    origin, axes = mask_camera(servo, 'camera_v3')  # body envelopes stay on the nominal FK frame
     body = project_envelopes(body_envelopes(servo, 'camera_v3'), origin, axes, W, H)
     body = cv2.dilate(body.astype(np.uint8), np.ones((CFG['self_dilate_px'],)*2, np.uint8)) != 0
     valid = lens_valid(W, H)
@@ -125,11 +126,65 @@ def view_check(pose, board, servo=SEARCH, cfg=CFG):
     return dict(out, ok=reason == 'ok', reason=reason)
 
 
-def robust(pose, board, servo=SEARCH, cfg=CFG):
+CONE_MAP = Path(__file__).resolve().parents[1]/'maps/zones_e2e/zone_wide_door_e2e_b80_cones_v1.json'
+CONE_CFG = dict(margin_px=14., min_range_m=1.5, max_range_m=3.8, min_cones=3, tip_height_m=.30, min_blob_px=8.)
+
+
+def load_cone_board(path=CONE_MAP, zone='B'):
+    """Board dict as load_board plus the corner cones' floor positions (static map `landmarks`, fixed map data)."""
+    board = load_board(path, zone)
+    cones = [l for l in board['map'].get('landmarks', []) if l.get('kind') == 'cone']
+    if len(cones) < 3: raise ValueError('map has no corner cones')
+    return dict(board, cones=np.array([l['position_m'] for l in cones], float))
+
+
+def cone_view_check(pose, board, servo=SEARCH, cfg=CFG, ccfg=CONE_CFG):
+    """cones_v1 viewpoint: at least `min_cones` (3: the rigid fit needs >=3) cone BASES inside the usable image with a
+    margin, closer than the detector's range, not hidden by static walls, and tall enough in pixels. Uses goal_camera
+    (camera_calib applies when on)."""
+    valid, body, dist = usable(servo)
+    cones = board['cones']; n = len(cones)
+    seen = ~occluded(_camera_xy(pose, servo), cones, board['map'])
+    uv, ok = project_floor(cones, pose, servo)
+    rng = np.linalg.norm(cones-np.asarray(pose[:2]), axis=1)
+    seen &= ok & (rng <= ccfg['max_range_m']) & (rng >= ccfg['min_range_m'])  # a cone nearer than ~1.5 m overfills the frame (not blobbed)
+    top = _project_points_robot(np.column_stack([cones, np.full(n, ccfg['tip_height_m'])]), pose, servo)
+    if top is None: top = np.full((n, 2), np.nan)
+    # the detector uses base points; a tip above the lens edge is fine (README: tips are often cut), so only the BASE needs a margin
+    finite = np.isfinite(uv).all(axis=1)
+    ij = np.where(finite[:, None], np.rint(np.nan_to_num(uv)), -1).astype(int)
+    inside = (ij[:, 0] >= 0) & (ij[:, 0] < W) & (ij[:, 1] >= 0) & (ij[:, 1] < H)
+    margin = np.full(n, -1.)
+    margin[inside] = dist[ij[inside, 1], ij[inside, 0]]
+    height_px = np.linalg.norm(np.nan_to_num(uv, nan=1e9)-np.nan_to_num(top, nan=-1e9), axis=1)
+    good = seen & (margin >= ccfg['margin_px']) & (height_px >= ccfg['min_blob_px'])
+    out = dict(cones_ok=int(good.sum()), cones_seen=int(seen.sum()), margin_px=float(np.sort(margin[good])[:ccfg['min_cones']].min()) if good.sum() >= ccfg['min_cones'] else -1.,
+               min_cone_height_px=float(height_px[good].min()) if good.any() else 0., good=good.tolist())
+    return dict(out, ok=int(good.sum()) >= ccfg['min_cones'], reason='ok' if good.sum() >= ccfg['min_cones'] else f'only_{int(good.sum())}_cones_visible')
+
+
+def _camera_xy(pose, servo):
+    origin, _ = goal_camera(servo, 'camera_v3'); c, s = math.cos(pose[2]), math.sin(pose[2])
+    return [pose[0]+c*origin[0]-s*origin[1], pose[1]+s*origin[0]+c*origin[1]]
+
+
+def _project_points_robot(points_world_xyz, pose, servo):
+    x, y, yaw = pose; c, s = math.cos(yaw), math.sin(yaw)
+    d = np.asarray(points_world_xyz, float)-[x, y, 0.]
+    body = np.column_stack([c*d[:, 0]+s*d[:, 1], -s*d[:, 0]+c*d[:, 1], d[:, 2]])
+    origin, axes = goal_camera(servo, 'camera_v3')
+    optical = (body-origin)@axes.T
+    if (optical[:, 2] <= .02).any(): return None
+    q, _ = cv2.fisheye.projectPoints(optical.reshape(-1, 1, 3), np.zeros(3), np.zeros(3),
+                                     np.asarray(scaled_camera_matrix(W, H)), np.asarray(CAMERA_FISHEYE_D))
+    return q.reshape(-1, 2)
+
+
+def robust(pose, board, servo=SEARCH, cfg=CFG, view=None):
     """Still admitted under own-pose error (+-jitter xy, +-jitter yaw): corners must stay inside the usable image."""
     j, a = cfg['jitter_xy_m'], math.radians(cfg['jitter_yaw_deg'])
     for dx, dy, dyaw in [(sx*j, sy*j, sa*a) for sx in (-1, 1) for sy in (-1, 1) for sa in (-1, 1)]:
-        if not view_check([pose[0]+dx, pose[1]+dy, pose[2]+dyaw], board, servo, cfg)['ok']: return False
+        if not (view or view_check)([pose[0]+dx, pose[1]+dy, pose[2]+dyaw], board, servo, cfg)['ok']: return False
     return True
 
 
@@ -163,9 +218,10 @@ def reach_lengths(costmap, start_xy):
     return dist
 
 
-def plan_standoffs(board=None, start_xy=(.7, -.85), servo=SEARCH, cfg=CFG, top=12, board_map=None):
+def plan_standoffs(board=None, start_xy=(.7, -.85), servo=SEARCH, cfg=CFG, top=12, board_map=None, cones=False):
     """Admitted stand-off poses (map frame), best first: all four corners inside the usable image."""
-    board = board or load_board()
+    board = board or (load_cone_board() if cones else load_board())
+    check = cone_view_check if cones else view_check
     cm = static_costmap(board['map']); reach = reach_lengths(cm, start_xy)
     res, rng = cfg['res_m'], cfg['max_range_m']
     xs = np.arange(board['center'][0]-rng, board['center'][0]+rng+1e-9, res)
@@ -188,18 +244,18 @@ def plan_standoffs(board=None, start_xy=(.7, -.85), servo=SEARCH, cfg=CFG, top=1
                 if abs(math.atan2(math.sin(yaw-bearing), math.cos(yaw-bearing))) > math.radians(60): continue
                 if not cm.pose_clear([x, y, yaw]): continue
                 n['footprint_clear'] += 1; n['poses_tested'] += 1
-                v = view_check([x, y, yaw], board, servo, cfg)
+                v = check([x, y, yaw], board, servo, cfg)
                 if v['ok']:
                     n['admitted'] += 1
                     found.append(dict(pose=[float(x), float(y), float(yaw)], margin_px=v['margin_px'], path_m=float(reach[cell[1], cell[0]]),
-                                      stand_off_m=float(np.linalg.norm([x, y]-board['center'])), board_area_px2=v['board_area_px2'],
-                                      min_mark_px=v['min_mark_px'], bearing_error_deg=float(np.degrees(abs(math.atan2(math.sin(yaw-bearing), math.cos(yaw-bearing)))))))
+                                      stand_off_m=float(np.linalg.norm([x, y]-board['center'])), board_area_px2=v.get('board_area_px2', 0.),
+                                      min_mark_px=v.get('min_mark_px', 0.), min_cone_height_px=v.get('min_cone_height_px'), bearing_error_deg=float(np.degrees(abs(math.atan2(math.sin(yaw-bearing), math.cos(yaw-bearing)))))))
     # prefer robust framing first (margin capped at 40 px), then short travel
     found.sort(key=lambda v: (-(min(v['margin_px'], 30.)//10), v['path_m']))
     kept = []
     for v in found:
         if len(kept) >= top: break
         n['robust_tested'] = n.get('robust_tested', 0)+1
-        if robust(v['pose'], board, servo, cfg): kept.append(v)
+        if robust(v['pose'], board, servo, cfg, view=check): kept.append(v)
     n['robust_admitted'] = len(kept)
     return kept, n, len(found)

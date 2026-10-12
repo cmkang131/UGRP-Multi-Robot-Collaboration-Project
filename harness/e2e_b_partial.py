@@ -165,13 +165,14 @@ def detect_partial(rgb, servo, pose, *, diagnostics=None, board_half=None):
     full B boundary is what the gate forbids.
     """
     from harness import e2e_b_quad
-    from harness.active_camera import goal_camera
+    from harness.active_camera import goal_camera, mask_camera
     from harness.e2e_rgb_gate import lens_valid
     from harness.floor_goal_self_mask import body_envelopes, project_envelopes
     from harness.self_odom_grid import transform
     height, width = rgb.shape[:2]
     origin, axes = goal_camera(servo, 'camera_v3')
-    self_mask = project_envelopes(body_envelopes(servo, 'camera_v3'), origin, axes, width, height)
+    m_origin, m_axes = mask_camera(servo, 'camera_v3')  # body envelopes stay on the nominal FK frame
+    self_mask = project_envelopes(body_envelopes(servo, 'camera_v3'), m_origin, m_axes, width, height)
     blue = e2e_b_quad.floor_blue_mask(cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV), self_mask)
     usable = lens_valid(width, height) & ~(cv2.dilate(self_mask.astype(np.uint8), np.ones((7, 7), np.uint8)) != 0)
     out = []

@@ -52,13 +52,14 @@ def _rays(px, width, height):
 
 def find_cones(rgb, servo, *, cfg=CFG, diagnostics=None):
     """Cone base points (robot frame, m) from one own RGB frame. Returns list of dicts."""
-    from harness.active_camera import goal_camera
+    from harness.active_camera import goal_camera, mask_camera
     from harness.e2e_rgb_gate import lens_valid
     from harness.floor_goal import floor_intersections
     from harness.floor_goal_self_mask import body_envelopes, project_envelopes
     height, width = rgb.shape[:2]
     origin, axes = goal_camera(servo, 'camera_v3')
-    self_mask = project_envelopes(body_envelopes(servo, 'camera_v3'), origin, axes, width, height)
+    m_origin, m_axes = mask_camera(servo, 'camera_v3')  # body envelopes stay on the nominal FK frame
+    self_mask = project_envelopes(body_envelopes(servo, 'camera_v3'), m_origin, m_axes, width, height)
     usable = lens_valid(width, height) & ~(cv2.dilate(self_mask.astype(np.uint8), np.ones((7, 7), np.uint8)) != 0)
     k = cfg['edge_clear_px']*2+1
     clear = cv2.erode(usable.astype(np.uint8), np.ones((k, k), np.uint8)) != 0

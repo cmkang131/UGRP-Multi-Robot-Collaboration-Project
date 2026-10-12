@@ -9,7 +9,7 @@ import functools
 import math
 import cv2
 import numpy as np
-from harness.active_camera import goal_camera
+from harness.active_camera import goal_camera, mask_camera
 from harness.floor_goal import optical_rays, floor_intersections
 from harness.floor_goal_self_mask import body_envelopes, project_envelopes
 from harness.self_odom_grid import transform
@@ -118,7 +118,7 @@ def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off', cone_ac
     """
     height, width = rgb.shape[:2]
     origin, axes = goal_camera(servo, 'camera_v3')
-    self_mask = project_envelopes(body_envelopes(servo, 'camera_v3'), origin, axes, width, height)
+    self_mask = project_envelopes(body_envelopes(servo, 'camera_v3'), *mask_camera(servo, 'camera_v3'), width, height)
     hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
     v2 = marker_detect in (MARKER_OPTION_V2, MARKER_OPTION_CONES)
     if v2:
@@ -215,8 +215,7 @@ class ArrivalGate:
         if self.current and (ref['frame_id'] <= self.current['ref']['frame_id'] or
                              ref['t_sim'] <= self.current['ref']['t_sim']):
             raise ContractViolation('NEW_OWN_RGB_REQUIRED')
-        origin, axes = goal_camera(servo, 'camera_v3')
-        mask = project_envelopes(body_envelopes(servo, 'camera_v3'), origin, axes, rgb.shape[1], rgb.shape[0])
+        mask = project_envelopes(body_envelopes(servo, 'camera_v3'), *mask_camera(servo, 'camera_v3'), rgb.shape[1], rgb.shape[0])
         diagnostics = {} if getattr(self, 'diagnostics_enabled', False) else None
         self.current = dict(ref=copy.deepcopy(ref), features=features(rgb, (~mask).astype(np.uint8)*255),
                             boundary=boundary(rgb, servo, pose, diagnostics=diagnostics,

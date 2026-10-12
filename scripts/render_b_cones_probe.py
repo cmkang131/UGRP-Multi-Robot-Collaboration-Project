@@ -10,23 +10,14 @@ import numpy as np
 from PIL import Image
 sys.path.insert(0, '.')
 OUT = Path(sys.argv[1]); OUT.mkdir(parents=True, exist_ok=True)
-from sim.multi_masterpi_production import MultiMasterPiProductionV2
-from sim.zone_arena import episode, digest
-from sim.zone_scene import ZoneScene
+from sim.zone_arena import digest
 from harness.active_camera import SEARCH
 from harness import e2e_b_cones as C
 from harness.e2e_rgb_gate import default_cone_layout, boundary
 
 static = json.loads(Path('maps/zones_e2e/zone_wide_door_e2e_b80_cones_v1.json').read_text())
-config = episode('zone_wide_door', 11, goal={'B': {'cyan': 1}})
-config['contact_solver_profile'] = 'local_contact_fine'; config['extra_boxes'] = {}
-definition = ZoneScene.from_zone_config(config)
-definition.config['static_map'] = static  # cones map: same walls/B geometry + landmarks
-world = MultiMasterPiProductionV2(seed=11, width=640, height=480, render=True, warehouse_layout=definition.engine_layout,
-                                  warehouse_cargo_ids=None, xml_transform=definition.transform)
-definition.setup(world)
-from sim.s2_realism_camera_binding import bind_camera  # explicit real camera mount v3 (as the e2e runs)
-bind_camera(world.robot('r1'))
+from scripts._calib_world import build_world
+world, definition = build_world(static_map=static)  # E2E-faithful: v3 camera, real_v1 servo stiffness (arm sag)
 import mujoco
 poses = []
 for x in (2.5, 2.9, 3.3, 3.7):

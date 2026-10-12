@@ -1,0 +1,344 @@
+{
+ "calibration_file": {
+  "path": "harness/data/camera_calib_measured_v1.json",
+  "sha256": "e52276b92bdd465a871591574bf6b2960078853f043dcd5fe65de80614f158d0",
+  "postures": {
+   "SEARCH": {
+    "fitted": {
+     "pitch_deg": -18.24950964206022,
+     "yaw_deg": -0.040180251930467405,
+     "roll_deg": 0.006662812305809766,
+     "height_m": 0.2286290672849211,
+     "forward_m": 0.0768245915103287,
+     "left_m": -8.75113378427371e-05
+    },
+    "nominal": {
+     "pitch_deg": -18.08000000000001,
+     "yaw_deg": 0.0,
+     "roll_deg": 1.796519514038081e-14,
+     "height_m": 0.23086086509496048,
+     "forward_m": 0.1252442319522042,
+     "left_m": 0.0
+    },
+    "rms_px": 0.4249173341846487,
+    "n_detected": 32,
+    "n_frames": 40,
+    "holdout_median_cm_nominal": 7.80028388151089,
+    "holdout_median_cm_measured": 0.0808234596266575,
+    "holdout_n_frames": 9
+   },
+   "LOOK_AHEAD": {
+    "fitted": {
+     "pitch_deg": -7.637329765548775,
+     "yaw_deg": -0.0417306087942252,
+     "roll_deg": 0.011983786380314502,
+     "height_m": 0.23966470095882864,
+     "forward_m": 0.07603283867586384,
+     "left_m": -5.081992377370997e-05
+    },
+    "nominal": {
+     "pitch_deg": -7.459999999999986,
+     "yaw_deg": 0.0,
+     "roll_deg": 1.1451519941058784e-14,
+     "height_m": 0.24191968112891568,
+     "forward_m": 0.12423505736609652,
+     "left_m": 0.0
+    },
+    "rms_px": 0.36549679067961927,
+    "n_detected": 32,
+    "n_frames": 40,
+    "holdout_median_cm_nominal": 7.696430508461383,
+    "holdout_median_cm_measured": 0.08428574654017476,
+    "holdout_n_frames": 9
+   },
+   "SEARCH@6=1300": {
+    "fitted": {
+     "pitch_deg": -18.253454075101956,
+     "yaw_deg": -18.05189996269881,
+     "roll_deg": 0.010003654753476051,
+     "height_m": 0.2287699380945022,
+     "forward_m": 0.07285261602762191,
+     "left_m": -0.023469548656036107
+    },
+    "nominal": {
+     "pitch_deg": -18.08000000000001,
+     "yaw_deg": -18.000000000000004,
+     "roll_deg": 1.796519514038081e-14,
+     "height_m": 0.23086086509496048,
+     "forward_m": 0.12147341884109908,
+     "left_m": -0.023807976991796435
+    },
+    "rms_px": 0.4602276164261964,
+    "n_detected": 31,
+    "n_frames": 40,
+    "holdout_median_cm_nominal": 7.614742189462914,
+    "holdout_median_cm_measured": 0.07552003914181875,
+    "holdout_n_frames": 9
+   },
+   "SEARCH@6=1700": {
+    "fitted": {
+     "pitch_deg": -18.24677001474842,
+     "yaw_deg": 17.97055283266117,
+     "roll_deg": 0.002369775286728614,
+     "height_m": 0.22852793868458798,
+     "forward_m": 0.07339723547884425,
+     "left_m": 0.023485753571872756
+    },
+    "nominal": {
+     "pitch_deg": -18.08000000000001,
+     "yaw_deg": 18.000000000000004,
+     "roll_deg": 1.796519514038081e-14,
+     "height_m": 0.23086086509496048,
+     "forward_m": 0.12147341884109908,
+     "left_m": 0.023807976991796435
+    },
+    "rms_px": 0.4524371105716289,
+    "n_detected": 31,
+    "n_frames": 40,
+    "holdout_median_cm_nominal": 7.779252884465871,
+    "holdout_median_cm_measured": 0.08021373395865465,
+    "holdout_n_frames": 9
+   }
+  },
+  "world": "E2E-faithful: camera_review_v3 profile + real_v1 servo stiffness (arm sag) + v3 camera binding; board 8x5 squares 0.10 m top z 0.0045 m; chassis placements = lab fixture",
+  "fitter": "scripts/fit_camera_calib.py",
+  "capture": "scripts/render_camera_calib_board.py (azure3, 1 process, 160 frames)"
+ },
+ "partial_known_size_42": {
+  "off": {
+   "accepted": 42,
+   "N": 42,
+   "err_m": {
+    "n": 42,
+    "median": 0.04157141391460844,
+    "p90": 0.04651152764317939,
+    "max": 0.04902749970846456
+   },
+   "mean_err_xy_cm": [
+    3.9533042746257205,
+    -1.5556602118213922
+   ],
+   "std_xy_cm": [
+    0.23665705401802217,
+    0.3231867758293005
+   ]
+  },
+  "on": {
+   "accepted": 42,
+   "N": 42,
+   "err_m": {
+    "n": 42,
+    "median": 0.04479963790823768,
+    "p90": 0.0469431108999606,
+    "max": 0.04985718305545913
+   },
+   "mean_err_xy_cm": [
+    -4.476566388331197,
+    -0.3114921530324858
+   ],
+   "std_xy_cm": [
+    0.18659220672266483,
+    0.10622893187800422
+   ]
+  },
+  "off_reproduces_stored_est_max_abs_m": 0.0
+ },
+ "cones_40_frames": {
+  "off": {
+   "accepted": 1,
+   "N": 40,
+   "frames_ge3_blobs": 1,
+   "pos_err_m": {
+    "n": 1,
+    "median": 0.11631060386194747,
+    "p90": 0.11631060386194747,
+    "max": 0.11631060386194747
+   }
+  },
+  "on": {
+   "accepted": 1,
+   "N": 40,
+   "frames_ge3_blobs": 1,
+   "pos_err_m": {
+    "n": 1,
+    "median": 0.020103429865038148,
+    "p90": 0.020103429865038148,
+    "max": 0.020103429865038148
+   }
+  }
+ },
+ "cone_standoff_planned_24": {
+  "off_calib": {
+   "plan_by_off": {
+    "n": 12,
+    "accepted": 11,
+    "blobs_ge3": 12,
+    "pos_err_median_m": 0.1552847182925508,
+    "pos_err_max_m": 0.16842180644222213
+   },
+   "plan_by_on": {
+    "n": 12,
+    "accepted": 11,
+    "blobs_ge3": 12,
+    "pos_err_median_m": 0.1552847182925508,
+    "pos_err_max_m": 0.16842180644222213
+   }
+  },
+  "on_calib": {
+   "plan_by_off": {
+    "n": 12,
+    "accepted": 12,
+    "blobs_ge3": 12,
+    "pos_err_median_m": 0.017526322291349813,
+    "pos_err_max_m": 0.0306705555483655
+   },
+   "plan_by_on": {
+    "n": 12,
+    "accepted": 12,
+    "blobs_ge3": 12,
+    "pos_err_median_m": 0.017526322291349813,
+    "pos_err_max_m": 0.0306705555483655
+   }
+  },
+  "note": "12 door-side poses (2.1-2.6, ~0, yaw -41deg) from top-12 planner output, off-plan and on-plan lists identical; effectively ONE viewpoint, low independence"
+ },
+ "floor_vo_124": {
+  "off": {
+   "moving": {
+    "n": 64,
+    "N": 64,
+    "xy_mm_off": 103.0,
+    "xy_mm_on": 92.5,
+    "yaw_deg_off": 7.07,
+    "yaw_deg_on": 6.64
+   },
+   "rotation": {
+    "n": 42,
+    "N": 42,
+    "xy_mm_off": 113.7,
+    "xy_mm_on": 145.9,
+    "yaw_deg_off": 6.55,
+    "yaw_deg_on": 6.34
+   },
+   "partial_slip": {
+    "n": 14,
+    "N": 14,
+    "xy_mm_off": 147.9,
+    "xy_mm_on": 123.3,
+    "yaw_deg_off": 0.74,
+    "yaw_deg_on": 0.57
+   },
+   "all_120_xy_mm_off": 364.6,
+   "all_120_xy_mm_on": 361.7
+  },
+  "homography_v1": {
+   "moving": {
+    "n": 64,
+    "N": 64,
+    "xy_mm_off": 86.4,
+    "xy_mm_on": 86.4,
+    "yaw_deg_off": 6.49,
+    "yaw_deg_on": 6.58
+   },
+   "rotation": {
+    "n": 42,
+    "N": 42,
+    "xy_mm_off": 119.9,
+    "xy_mm_on": 151.9,
+    "yaw_deg_off": 5.99,
+    "yaw_deg_on": 6.16
+   },
+   "partial_slip": {
+    "n": 14,
+    "N": 14,
+    "xy_mm_off": 148.2,
+    "xy_mm_on": 136.6,
+    "yaw_deg_off": 0.71,
+    "yaw_deg_on": 0.6
+   },
+   "all_120_xy_mm_off": 354.5,
+   "all_120_xy_mm_on": 374.9
+  },
+  "homography_turn_off": {
+   "moving": {
+    "n": 64,
+    "N": 64,
+    "xy_mm_off": 86.4,
+    "xy_mm_on": 86.4,
+    "yaw_deg_off": 6.49,
+    "yaw_deg_on": 6.58
+   },
+   "rotation": {
+    "n": 42,
+    "N": 42,
+    "xy_mm_off": 113.7,
+    "xy_mm_on": 145.9,
+    "yaw_deg_off": 6.55,
+    "yaw_deg_on": 6.34
+   },
+   "partial_slip": {
+    "n": 14,
+    "N": 14,
+    "xy_mm_off": 148.2,
+    "xy_mm_on": 136.6,
+    "yaw_deg_off": 0.71,
+    "yaw_deg_on": 0.6
+   },
+   "all_120_xy_mm_off": 348.3,
+   "all_120_xy_mm_on": 368.9
+  },
+  "frames": 124,
+  "baseline_reproduction_abs_off": 0.000333327208811518
+ },
+ "cone_standoff_diverse_v1": {
+  "note": "12 poses by farthest-point sampling of the calibrated planner (min_range off); exploratory",
+  "off": {
+   "accepted": 8,
+   "N": 12,
+   "blobs_ge3": 8,
+   "pos_err_median_m": 0.1411,
+   "pos_err_max_m": 0.1595
+  },
+  "on": {
+   "accepted": 8,
+   "N": 12,
+   "blobs_ge3": 8,
+   "pos_err_median_m": 0.0183,
+   "pos_err_max_m": 0.0237
+  }
+ },
+ "cone_standoff_diverse_v2": {
+  "note": "same sampling after adding min_range_m=1.5 (chosen after seeing v1 failures, so exploratory, not confirmatory)",
+  "off": {
+   "accepted": 8,
+   "N": 12,
+   "blobs_ge3": 9,
+   "pos_err_median_m": 0.1465,
+   "pos_err_max_m": 0.1734
+  },
+  "on": {
+   "accepted": 9,
+   "N": 12,
+   "blobs_ge3": 9,
+   "pos_err_median_m": 0.0215,
+   "pos_err_max_m": 0.0414
+  }
+ },
+ "recommended_toggles": {
+  "camera_calib": "measured_v1",
+  "b_marker_style": "corner_cones_v1",
+  "b_marker_detect": "cones_v1",
+  "b_cone_accept": "on_v1",
+  "boundary_views": "standoff_cones_v1",
+  "registered_bundle_id": null
+ },
+ "verification_scope": {
+  "tests": "tests/test_camera_calib.py + test_e2e_b_cones + test_e2e_b_partial + test_e2e_boundary_views + test_e2e_rgb_vo + test_servo_camera_fk: 67 passed",
+  "not_verified": [
+   "calibration under a different physics build than the E2E-faithful replica (real_v1 stiffness, v3 camera, v3 binding)",
+   "closed-loop run with camera_calib on",
+   "real robot",
+   "poses with servo pulses not in the calibration table (fallback to nominal FK, counted)"
+  ]
+ }
+}
