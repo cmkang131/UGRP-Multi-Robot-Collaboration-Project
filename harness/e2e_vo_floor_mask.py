@@ -14,7 +14,10 @@ import numpy as np
 from harness.active_camera import transform
 from sim.masterpi_camera_profile import CAMERA_FISHEYE_D, scaled_camera_matrix
 
-OPTIONS = ('off', 'homography_v1', 'geom_v1')
+OPTIONS = ('off', 'homography_v1', 'map_v1', 'geom_v1')
+MAP_OPTIONS = ('map_v1', 'geom_v1')
+HOMOGRAPHY_OPTIONS = ('homography_v1', 'geom_v1')
+ROTATION_OPTIONS = ('off', 'no_ransac_v1', 'command_v1')
 PARAMS = dict(homography_px=3., confidence=.995, max_iters=2000,
               wall_margin_px=3, horizon_margin_px=3)
 K = scaled_camera_matrix(640, 480)
@@ -24,6 +27,43 @@ D = np.asarray(CAMERA_FISHEYE_D, np.float64).reshape(4, 1)
 def validate(option):
     if option not in OPTIONS:
         raise ValueError('UNKNOWN_VO_FLOOR_MASK')
+
+
+def registered_map_pose(frame, ledger, *, robot_id, origin, static_map_sha256, map_frame):
+    """Join a stored controller estimate to an explicitly anchored static map.
+
+    REP-105 map_to_odom in ownmap.jsonl is *local* SLAM, not world localization.
+    Never infer a world transform from that field, a start pose, or a B center.
+    An upstream own-RGB localizer must have recorded the registration as well.
+    """
+    if ledger is None:
+        return None, 'missing_controller_pose'
+    if (ledger['frame_id'] != frame['frame_id'] or ledger['sha256'] != frame['sha256'] or
+            abs(ledger['t']-(frame['sim_time']-origin)) > 1e-7):
+        raise ValueError('CONTROLLER_FRAME_JOIN_MISMATCH')
+    pose = np.asarray(ledger['pose_own_m'], float)
+    if pose.shape != (3,) or not np.isfinite(pose).all():
+        raise ValueError('FINITE_OWN_POSE_REQUIRED')
+    reg = ledger.get('static_map_registration')
+    if reg is None:
+        return None, 'missing_static_map_to_own_transform'
+    if (reg.get('source') != 'own_rgb_static_map' or
+            reg.get('own_frame') != robot_id+'/own_start' or
+            reg.get('map_frame') != map_frame or
+            reg.get('static_map_sha256') != static_map_sha256 or
+            not reg.get('rgb_refs')):
+        raise ValueError('OWN_RGB_STATIC_MAP_REGISTRATION_REQUIRED')
+    for ref in reg['rgb_refs']:
+        if (ref['robot_id'] != robot_id or ref['t_sim'] > ledger['t'] or
+                ref['frame_id'] > ledger['frame_id'] or not ref.get('sha256')):
+            raise ValueError('CAUSAL_OWN_REGISTRATION_REQUIRED')
+    tf = np.asarray(reg['map_from_own'], float)
+    if tf.shape != (3,) or not np.isfinite(tf).all():
+        raise ValueError('FINITE_MAP_TRANSFORM_REQUIRED')
+    c, s = math.cos(tf[2]), math.sin(tf[2])
+    xy = np.array([[c, -s], [s, c]]) @ pose[:2] + tf[:2]
+    yaw = math.atan2(math.sin(tf[2]+pose[2]), math.cos(tf[2]+pose[2]))
+    return [*xy.tolist(), yaw], 'registered'
 
 
 @lru_cache(maxsize=16)

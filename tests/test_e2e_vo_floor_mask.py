@@ -47,6 +47,85 @@ def test_missing_registration_is_explicit_unknown_not_own_start_or_identity():
         mask.geometric_mask(SEARCH, (), [math.nan, 0, 0])
 
 
+def test_ledger_join_does_not_confuse_local_slam_with_static_world_registration():
+    frame = dict(frame_id=3, sim_time=1.7, sha256='rgb3')
+    ledger = dict(frame_id=3, t=.4, sha256='rgb3', pose_own_m=[.2, .3, .1],
+                  pose_continuity=dict(map_to_odom=[1., 2., .4]))
+    kw = dict(robot_id='r1', origin=1.3, static_map_sha256='map1', map_frame='world')
+    assert mask.registered_map_pose(frame, None, **kw) == (None, 'missing_controller_pose')
+    assert mask.registered_map_pose(frame, ledger, **kw) == (None, 'missing_static_map_to_own_transform')
+    ledger['static_map_registration'] = dict(source='own_rgb_static_map', own_frame='r1/own_start',
+        map_frame='world', static_map_sha256='map1', map_from_own=[2., 3., math.pi/2],
+        rgb_refs=[dict(robot_id='r1', t_sim=.2, frame_id=2, sha256='rgb2')])
+    pose, status = mask.registered_map_pose(frame, ledger, **kw)
+    np.testing.assert_allclose(pose, [1.7, 3.2, math.pi/2+.1]); assert status == 'registered'
+    with pytest.raises(ValueError, match='FRAME_JOIN'):
+        mask.registered_map_pose({**frame, 'sha256':'different'}, ledger, **kw)
+    with pytest.raises(ValueError, match='REGISTRATION_REQUIRED'):
+        mask.registered_map_pose(frame, ledger, **{**kw, 'static_map_sha256':'different'})
+    ledger['static_map_registration']['rgb_refs'][0]['t_sim'] = 1.
+    with pytest.raises(ValueError, match='CAUSAL_OWN'):
+        mask.registered_map_pose(frame, ledger, **kw)
+
+
+@pytest.mark.parametrize('option,expect_homography', [('map_v1', False), ('geom_v1', True)])
+def test_map_only_and_combined_apply_both_frame_masks(monkeypatch, option, expect_homography):
+    a = np.random.default_rng(8).integers(50, 160, (480, 640), dtype=np.uint8)
+    a = np.repeat(a[:, :, None], 3, axis=2); b = np.roll(a, 1, axis=1)
+    poses = []; calls = []
+    def geometry(servo, boxes, pose):
+        poses.append(pose)
+        result = np.full((480, 640), 255, np.uint8);result[:, :100] = 0
+        return result
+    def h(p, q):
+        calls.append(True); assert (p[:, 0] >= 100).all() and (q[:, 0] >= 99.5).all()
+        return np.ones(len(p), bool)
+    monkeypatch.setattr(mask, 'geometric_mask', geometry)
+    monkeypatch.setattr(mask, 'homography_inliers', h)
+    vo.ground_pair(a, b, SEARCH, vo_floor_mask=option, static_walls=(),
+                   before_map_pose=[0., 0., 0.], after_map_pose=[.1, 0., 0.])
+    assert poses == [[0., 0., 0.], [.1, 0., 0.]]
+    assert bool(calls) == expect_homography
+
+
+@pytest.mark.parametrize('policy,expected', [('no_ransac_v1', 'off'), ('command_v1', None)])
+def test_turn_policy_uses_issued_axis_including_tail_not_parasitic_translation(monkeypatch, policy, expected):
+    calls = []
+    def pair(*args, **kw):
+        calls.append(kw.get('vo_floor_mask', 'off'))
+        return dict(status='unknown_texture', tracks=0, inliers=0, cells=0)
+    monkeypatch.setattr(vo, 'ground_pair', pair)
+    d = RotationPulseOdometry();d.command(dict(t=0., kind='initial_servo_command', pulses=SEARCH))
+    f = vo.VOFusion(d, vo_floor_mask='homography_v1', rotation_policy=policy)
+    a = np.full((480, 640, 3), 120, np.uint8)
+    f.observe(t=1., frame_id=1, rgb=a, servo=SEARCH)
+    f.command(dict(t=1., kind='mecanum', turn=.35, forward=0., left=0., duration_s=.1))
+    r = f.observe(t=1.2, frame_id=2, rgb=a, servo=SEARCH)
+    assert r['commanded_turn'] and abs(r['command_delta'][1]) > .001
+    assert calls == ([] if expected is None else [expected])
+    f.observe(t=1.4, frame_id=3, rgb=a, servo=SEARCH)
+    assert calls[-1] == 'homography_v1'  # completed tail must not mark future hold as turn
+
+
+def test_missing_geometry_never_contributes_fallback_as_mask_accuracy(monkeypatch, tmp_path):
+    import json
+    from scripts import replay_e2e_vomask as replay
+    monkeypatch.setattr(replay, 'CASES', [('test-r2', 'r1')])
+    prior = [dict(run='test', robot='r1', t=t, sha256=str(t), vo2=[0., 0., 0.], truth=[t, 0., 0.]) for t in (0., .2)]
+    truth = [dict(run='test', robot='r1', t0=0., t1=.2, kind='moving', truth_increment=[.2, 0., 0.])]
+    monkeypatch.setattr(replay.subprocess, 'check_output', lambda cmd: json.dumps(
+        prior if 'predictions' in cmd[-1] else truth).encode())
+    predictions = [dict(run='test-r2', robot='r1', t=t, sha256=str(t),
+        poses={k:[0., 0., 0.] for k in replay.OPTIONS},
+        measurements={k:dict(status='unknown_map_registration') for k in replay.OPTIONS},
+        registration=dict(status='missing_static_map_to_own_transform')) for t in (0., .2)]
+    metrics, scored = replay.score(predictions, tmp_path)
+    for k in ('map_v1', 'geom_v1'):
+        m = metrics['intervals_by_kind']['moving']['metrics'][k]
+        assert m['n'] == 0 and m['N'] == 1 and m['sum_xy_mm'] is None
+        assert scored[0]['metrics'][k]['unregistered_fallback_only']['xy_mm'] == 200.
+
+
 def test_homography_rejects_outliers_in_undistorted_coordinates():
     p = np.array([(x, y) for x in (.45, .6, .85, 1.1, 1.4) for y in (-.3, -.1, .1, .3)])
     q = p - [.012, .002]
