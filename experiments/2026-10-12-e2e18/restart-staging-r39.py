@@ -17,7 +17,7 @@ for h,minimum in [('x86',6*2560*2**20),('arm',12*2560*2**20),('mac',12*80*2**20)
  p=b/f'e2e18-r39-budget-{h}.json';x=json.loads(p.read_text());assert time.time()-p.stat().st_mtime<300 and x['ok']
  assert x['checks'][0]['expected_bytes']>=minimum
 active=[r for r in (b/'runs').glob('e2e18-v*-s*-r*') if r.is_dir() and not (r/'EXIT').exists()]
-assert len(active)==6-len(selected),[(r.name) for r in active]
+assert len(active)<=6-len(selected),[(r.name) for r in active]
 receipt=json.loads((b/'relays/e2e18/a.json').read_text())
 cap=int(min(2400,receipt['checked_unix']+receipt['valid_for_s']-time.time()-660))
 assert cap>=900,'INSUFFICIENT_RELAY_LIFETIME_FOR_BATCH'
@@ -30,7 +30,7 @@ for seed,version,mode in selected:
  meta={'class':'dev','pr':461,'branch':'codex/e2e18','sha':sha,'batch':'e2e18-r39','seed':seed,
        'execution_bundle_id':f'e2e18-v{version}','variant':mode,'sonar_frame':'site_z_v1',
        'wall_cap_s':cap,'storage_budget_bytes':2048*2**20,'submitted_unix':time.time(),
-       'gate_new_samples':len(selected),'continuing':len(active),'planned_concurrency':6,'research_result':False}
+       'gate_new_samples':len(selected),'continuing':len(active),'planned_concurrency':len(active)+len(selected),'research_result':False}
  (target/'RUN_META.json').write_text(json.dumps(meta)+'\n');(target/'SOURCE_SHA').write_text(sha+'\n')
  (target/'resource-admission.json').write_text(json.dumps({'loadavg':os.getloadavg(),'continuing':[r.name for r in active]})+'\n')
  command=next(x['command'] for x in old_plan if f'-s{seed}-' in x['name'])
@@ -39,5 +39,5 @@ for seed,version,mode in selected:
   command=replace_option(command,flag,value)
  specs.append(dict(name=name,target=str(target),command=command))
 plan=b/'runs'/f'speed-gate-e2e18-{host}-r39-plan.json';assert not plan.exists();plan.write_text(json.dumps(specs,indent=2)+'\n')
-print(f'NEW {len(selected)} + CONTINUING {len(active)} = 6; 30 SIM gate; limit3.0',flush=True)
+print(f'NEW {len(selected)} + CONTINUING {len(active)} = {len(selected)+len(active)}; 30 SIM gate; limit3.0',flush=True)
 raise SystemExit(gate_main(['start','--plan',str(plan),'--gate-root',str(b/'runs'/f'speed-gate-e2e18-{host}-r39-{sha[:12]}'),'--speed-gate-limit','3.0']))
