@@ -17,7 +17,7 @@
 ```bash
 # Mac (기본 체크아웃 아님: 이 worktree), SHA = 실행할 claude/e2e14-combo 커밋
 cd /Users/changmin/projects/ugrp-wt/e2e14-combo && SHA=$(git rev-parse origin/claude/e2e14-combo) && OUT=outputs/e2e15 && mkdir -p $OUT
-python3 scripts/ugrp_session.py run e2e15-relay -- .venv-sim/bin/python -m scripts.s4_proxy_relay --output $OUT/relay --seconds 28800 --idempotent \
+python3 scripts/ugrp_session.py run e2e15-relay -- python3 -m scripts.s4_proxy_relay  # e2e14 중계와 같은 Mac python3 --output $OUT/relay --seconds 28800 --idempotent \
   --listen-port 18394 --remote-port 18391 --driver-profile study_gemma4_31b_v1 --upstream openrouter_v1 --gemma-state $OUT/upstream &
 python3 scripts/ugrp_session.py run e2e15-tunnel -- ssh -T -n -o BatchMode=yes -o ServerAliveInterval=15 -o ExitOnForwardFailure=yes \
   -R 127.0.0.1:18391:127.0.0.1:18394 azure 'sleep 28800' &
