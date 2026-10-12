@@ -46,7 +46,7 @@ def run_case(bundle,option,dt,out):
         d.qpos[q:q+7]=[2.3058508336151635,.2406592657924713,.03194707159033561,
                          math.cos(yaw/2),0.,0.,math.sin(yaw/2)]
         d.qvel[v:v+6]=0.;mujoco.mj_forward(m,d)
-        m.opt.timestep=dt;backend.dt=dt
+        m.opt.timestep=dt;backend.dt=dt;backend._clock_snap()
         origin=backend.now
         backend.set_deadline(origin+20.)
         for rid in ('r1','r2','r3'):
@@ -54,7 +54,7 @@ def run_case(bundle,option,dt,out):
             odoms[rid]=odom
             robots[rid]=SimpleNamespace(robot_id=rid,servo=dict(SEARCH),now=0.,wall_segments=[],
                 goal=SimpleNamespace(explorer=SimpleNamespace(local_pose=np.zeros(3))))
-        attach(backend,robots,seed=61005,out=out)
+        rig=attach(backend,robots,seed=61005,out=out)
         tr=Transport(robots,None,profiles,dev_light=True,align_queues='per_robot_v1')
         tr.arm_clearance=Clearance(option);tr.camera_motion='slow_scan_v1'
         admission=Admission('finish_active_v1')
@@ -75,6 +75,10 @@ def run_case(bundle,option,dt,out):
                 if any(n and n.startswith('r1__') for n in names) and any(n and 'zone_wall' in n for n in names):
                     contacts.append(dict(geoms=names,penetration_m=max(0.,-float(c.dist))))
             row=dict(t=(i+1)*.05,xyz=body.xpos.tolist(),tilt_deg=math.degrees(math.acos(float(np.clip(body.xmat[8],-1.,1.)))),wall_contacts=contacts)
+            if i%20==0:
+                from harness.ultrasonic_model import first_echo_index
+                sensor=rig.sensors['r1'];c=sensor.cast();echo=first_echo_index(c['dist'],sensor.alpha,c['beta'],sensor.spec)
+                row['sonar_eval_only']=dict(echo_geom=None if echo is None else m.geom(int(c['geom'][echo])).name,true_range_m=None if echo is None else float(c['dist'][echo]))
             rows.append(row)
             if row['tilt_deg']>=10.:
                 result['status']='ROBOT_TILT_LIMIT';break
@@ -83,7 +87,8 @@ def run_case(bundle,option,dt,out):
         import traceback
         result.update(status='HOST_ERROR',error=str(exc),traceback=traceback.format_exc())
     finally:
-        backend.close()
+        try:backend.close()
+        except Exception as exc:result.update(status="HOST_ERROR",close_error=str(exc))
         result.update(option=option,timestep_s=dt,sim_s=rows[-1]['t'] if rows else 0.,wall_s=time.monotonic()-started,
             max_tilt_deg=max((r['tilt_deg'] for r in rows),default=None),wall_contact_samples=sum(bool(r['wall_contacts']) for r in rows),
             scope='staged wall fixture; no policy camera, LLM, grasp, delivery or E2E success',source_fixture='v229 s61005 trajectory t316.95',
