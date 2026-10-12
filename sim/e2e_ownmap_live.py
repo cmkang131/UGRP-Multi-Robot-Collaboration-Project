@@ -19,6 +19,10 @@ def make_scene(bundle,seed):
     def transform(xml,**kwargs):
         xml=camera.transform_xml(original(xml,**kwargs),profile_id=camera.PROFILE_ID)
         for rid in ('r1','r2','r3'):xml=transform_xml(xml,servo_stiffness='real_v1',robot_id=rid)
+        profile=bundle['e2e_options'].get('speed3','off')
+        if profile!='off':
+            from sim.e2e_speed3_profile import transform_xml as speed_xml
+            xml=speed_xml(xml,profile)
         return xml
     scene.robot_transform=transform
     return scene
@@ -31,6 +35,7 @@ class PhysicsBackend(Evaluation):
         bind(Constructor.__init__,make_scene=make_scene)(self,bundle,out,seed=seed)
 
     def reset(self,cap):
+        self._speed3_capture_at=None
         from sim.solo_cyan_v106 import PhysicsBackend as Reset
         from sim.e2e_pulse_port import ResidualPulsePort
         from sim.s2_align_pulse import FinePulsePort
@@ -49,3 +54,12 @@ class PhysicsBackend(Evaluation):
         self.ports['r3']=FinePulsePort(self.world,'r3',allow_reverse=True,allow_mecanum=True,
                                      min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1')
         return elapsed
+
+    def capture(self):
+        if self.bundle['e2e_options'].get('speed3','off') == 'off':
+            return super().capture()
+        # Same SIM state cannot need a second render, encode, or image hash.
+        if getattr(self, '_speed3_capture_at', None) != self.now:
+            self._speed3_frames = super().capture()
+            self._speed3_capture_at = self.now
+        return self._speed3_frames

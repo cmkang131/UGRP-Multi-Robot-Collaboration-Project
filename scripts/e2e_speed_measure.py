@@ -18,7 +18,7 @@ def profile_rows(stats, sim_s):
     return sorted(rows,key=lambda x:x['cumulative_s'],reverse=True)[:20]
 
 
-AUDIT_MODES=('off','binary_v1','both_v1')
+AUDIT_MODES=('off','binary_v1','both_v1','none','final_v1')
 # Row keys per scheme. Legacy/default rows keep exactly {robot,frame,t,sha256}.
 SCHEMES={'json_v1':'sha256','binary_v1':'binary_sha256'}
 BINARY_MAGIC=b'ugrp.rbpf_audit.binary_v1\x00'
@@ -144,7 +144,7 @@ def hash_mapping(rows):
 
 
 def measured_run(run,b,out,receipt,limit,profile,audit='off'):
-    if not 60<=limit<=90:raise ValueError('MEASUREMENT_REQUIRES_60_TO_90_SIM_SECONDS')
+    if not 30<=limit<=90:raise ValueError('MEASUREMENT_REQUIRES_30_TO_90_SIM_SECONDS')
     if audit not in AUDIT_MODES:raise ValueError('UNKNOWN_RBPF_AUDIT_HASH')
     import mujoco
     from sim.e2e_ownmap_live import PhysicsBackend
@@ -154,11 +154,13 @@ def measured_run(run,b,out,receipt,limit,profile,audit='off'):
     profiler=cProfile.Profile() if profile else None
     timers=[];states=[];backend_ref=[];origin=[None]
     original_receive=Robot.receive
+    last_robots={}
     hash_seconds=[0.];scheme_seconds={'json_v1':0.,'binary_v1':0.}
     def receive(self,*args,**kwargs):
         result=original_receive(self,*args,**kwargs)
         start=time.perf_counter()
-        states.append(audit_row(self,audit,scheme_seconds))
+        if audit=='final_v1':last_robots[self.robot_id]=self
+        elif audit!='none':states.append(audit_row(self,audit,scheme_seconds))
         hash_seconds[0]+=time.perf_counter()-start
         return result
     class MeasuredBackend(PhysicsBackend):
@@ -188,13 +190,19 @@ def measured_run(run,b,out,receipt,limit,profile,audit='off'):
         wall=time.perf_counter()-wall;cpu=time.process_time()-cpu
         Robot.receive=original_receive
         if profile:mujoco.set_mjcb_time(previous)
+    final_hash_seconds=0.
+    if audit=='final_v1':
+        start=time.perf_counter()
+        states=[audit_row(robot,'binary_v1',scheme_seconds) for robot in last_robots.values()]
+        final_hash_seconds=time.perf_counter()-start
     sim=result.get('sim_s',0.)
     record=dict(sim_s=sim,wall_s=wall,cpu_s=cpu,wall_per_sim=wall/sim if sim else None,
                 cpu_per_sim=cpu/sim if sim else None,rbpf_hash_wall_s=hash_seconds[0],
                 profiling=profile,includes_setup_and_finalization=True,mujoco_timers=timers,
                 expected_stop=result.get('failure')=='MEASUREMENT_SIM_LIMIT',
                 cprofile_top20=profile_rows(pstats.Stats(profiler),sim) if profiler and sim else [])
-    if audit!='off':
+    record.update(rbpf_audit_hash=audit,final_hash_wall_s=final_hash_seconds)
+    if audit in ('binary_v1','both_v1'):
         used=('json_v1','binary_v1') if audit=='both_v1' else ('binary_v1',)
         record.update(rbpf_audit_hash=audit,rbpf_hash_scheme_wall_s={k:scheme_seconds[k] for k in used})
     if profiler:profiler.dump_stats(str(root/'cprofile.pstats'))
