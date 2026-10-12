@@ -38,7 +38,11 @@ def advance(transport,rid,now):
         basis_yaw_rad=state['basis']['yaw_rad'])
     r.carrier_approach=diag
     recovery=getattr(transport,'pregrasp_recovery','off')=='bounded_search_v1'
-    if recovery and not fresh and now-state['last_seen']>2.:
+    from harness.e2e_pregrasp_progress import step as progress_step
+    progressed=progress_step(transport,rid,now,state,distance)
+    if progressed is not None:return progressed
+    cached_navigation=getattr(transport,'pregrasp_progress','off')=='backup_replan_v1' and now<=state.get('lost_nav_until',-math.inf)
+    if recovery and not fresh and now-state['last_seen']>2. and not cached_navigation:
         from harness.e2e_align_progress import lost_search
         return lost_search(transport,rid,now,state)
     if any(r.servo.get(sid)!=pwm[sid] for sid in (3,4,5)):
@@ -59,10 +63,10 @@ def advance(transport,rid,now):
     costmap=from_observed_grid(g.explorer.grid,mp,g.explorer.latest,set())
     path=g.explorer.navigator.plan_to(costmap,mp,mt[:2])
     diag['path_points']=len(path)
-    if not path and recovery and fresh and transport.dev_light:
+    if not path and recovery and (fresh or cached_navigation) and transport.dev_light:
         path=[mp[:2],mt[:2]]
         diag['would_stop_path_unavailable']=True
-        transport.event(now,'would_stop_pregrasp_no_path',robot_id=rid,dev_light=True,source='fresh_own_rgb_station')
+        transport.event(now,'would_stop_pregrasp_no_path',robot_id=rid,dev_light=True,source='fresh_own_rgb_station' if fresh else 'last_own_rgb_station',last_seen_age_s=now-state['last_seen'])
     if not path:
         diag['status']='approach_path_unavailable'
         transport.event(now,'own_pregrasp_path_wait',robot_id=rid,distance_m=distance)

@@ -42,6 +42,7 @@ def recover(transport,rid,now,state):
         source='own_rgb_last_seen_and_own_command_odometry')
     if action['kind']=='hold':
         state['search_started']=now;state.pop('search_step',None)
+        if getattr(transport,'pregrasp_progress','off')=='backup_replan_v1':state['lost_nav_until']=now+5.
     else:
         state['motion_until']=now+action['duration_s']
     return False,[action]

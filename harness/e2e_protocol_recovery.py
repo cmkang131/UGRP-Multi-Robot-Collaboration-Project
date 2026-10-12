@@ -31,7 +31,8 @@ class Recovery:
                 or dialogue.key is not None):continue
             old=context['state'].get('own_route')
             old_hash=old.get('route_hash') if old else context['view']['route_hash']
-            current=trial.links[call.actor].inner.own_inputs_at(now).get('own_route')
+            from harness.e2e_event_projection import route_for_events
+            current=route_for_events(trial,call.actor,now)
             view=dialogue.view(call.actor,now)
             current_hash=current.get('route_hash') if current else view['route_hash']
             if old_hash is None or old_hash!=current_hash or view['own_claim']:continue

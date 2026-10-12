@@ -36,7 +36,8 @@ class Reminders:
     def poll(self,trial,now):
         for rid in ('r1','r2'):
             view=trial.dialogue.view(rid,now)
-            route=trial.links[rid].inner.own_inputs_at(now).get('own_route')
+            from harness.e2e_event_projection import route_for_events
+            route=route_for_events(trial,rid,now)
             key=phase(rid,view,route)
             if key is None:self.states.pop(rid,None);continue
             state=self.states.get(rid)

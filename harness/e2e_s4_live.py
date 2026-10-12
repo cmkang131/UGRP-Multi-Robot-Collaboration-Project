@@ -104,6 +104,7 @@ class Trial(base.Trial):
         from harness.e2e_protocol_recovery import Recovery
         self.protocol_reasks=Recovery()
         self.protocol_progress=getattr(self.links['r1'].inner,'protocol_progress','off')
+        self.event_projection=getattr(self.links['r1'].inner,'event_projection','off')
         from harness.e2e_protocol_progress import Reminders
         self.protocol_reminders=Reminders()
         if not self.own_input_mode or self.dialogue is None:
@@ -145,8 +146,8 @@ class Trial(base.Trial):
         if self.protocol_recovery=='envelope_retry_v1':self.protocol_reasks.poll(self,now)
         if self.protocol_progress=='stage_retry_v1':self.protocol_reminders.poll(self,now)
         for rid in ('r1','r2','r3'):
-            state = self.links[rid].inner.own_inputs_at(now)
-            route = state.get('own_route')
+            from harness.e2e_event_projection import route_for_events
+            route = route_for_events(self,rid,now)
             view = self.dialogue.view(rid, now)
             key = (route['route_hash'] if route else None, view['route_hash'], view['approved'],
                    view['own_claim'], tuple(view['key'] or ()),view['own_go_sent'],
