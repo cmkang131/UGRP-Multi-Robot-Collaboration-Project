@@ -110,6 +110,20 @@ def test_cli_dry_run_and_catalog(monkeypatch, capsys):
     rows, _ = catalog(Path('.'))
     w = next(w for w in rows['workflows'] if w['id'] == 'e2e-combo14-v204')
     assert w['version'] == '7.97.0' and {'--boundary-views', '--b-marker-detect', '--stall-odometry'} <= set(w['required_inputs'])
+    from sim import workflow_manager as wm
+    from scripts import run_e2e_reviewed as current
+    args = [*sys.argv[1:], '--decider', 'off', '--stall-recovery', 'off', '--stall-noise', 'off']
+    old = wm._row(Path('.'), 'e2e-combo14-v202')[0]
+    command, _ = wm._runner_command(Path('.'), old, args, record=None)
+    with pytest.raises(ValueError, match='WORKFLOW_BUNDLE_ID_MISMATCH'):
+        main(command[3:])
+    assert not capsys.readouterr().out
+    row = wm._row(Path('.'), 'e2e-reviewed-runtime-v210')[0]
+    command, _ = wm._runner_command(Path('.'), row, args, record=None)
+    current.main(command[3:])
+    prepared = json.loads(capsys.readouterr().out)
+    assert prepared['execution_bundle_id'] == row['id']
+    assert prepared['parent_execution_bundle_id'] == 'e2e-combo14-v204'
 
 
 def test_robot_with_all_three_wires_each_toggle():
