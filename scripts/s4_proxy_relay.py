@@ -17,6 +17,7 @@ from harness.s4_relay_journal import Journal
 
 
 def accepted_call_id(value):
+    if re.fullmatch(r'e2e18-v[0-9]+-s610(?:0[1-9]|1[0-2])-r[1-9][0-9]*:call-\d+-r[123]:\d+',value):return True
     if value.startswith('speed-gate-'):
         return accepted_call_id(value[len('speed-gate-'):])
     if re.fullmatch(r'e2e-speed3-(?:base|dt1|dt2|adaptive)-s6100[1-3](?:-r[1-9])?:call-\d+-r[123]:\d+',value):return True

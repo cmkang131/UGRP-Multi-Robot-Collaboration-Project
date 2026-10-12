@@ -45,7 +45,7 @@ def override_reason(value):
 
 
 def add_arguments(parser):
-    parser.add_argument('--speed-gate-limit', type=positive, default=4.)
+    parser.add_argument('--speed-gate-limit', type=positive, default=2.5)
     parser.add_argument('--speed-gate-override', type=override_reason)
 
 
@@ -152,7 +152,7 @@ def kill_group(process, signum=signal.SIGINT):
             pass
 
 
-def preflight(specs, root, limit=4., override=None, *, timeout_s=None):
+def preflight(specs, root, limit=2.5, override=None, *, timeout_s=None):
     root = Path(root)
     require_azure(root)
     if not specs or len({s['name'] for s in specs}) != len(specs):
@@ -286,7 +286,7 @@ def main(argv=None):
     add_arguments(check)
     monitor = commands.add_parser('watch')
     monitor.add_argument('--run', type=Path, required=True)
-    monitor.add_argument('--speed-gate-limit', type=positive, default=4.)
+    monitor.add_argument('--speed-gate-limit', type=positive, default=2.5)
     monitor.add_argument('command', nargs=argparse.REMAINDER)
     start = commands.add_parser('start')
     start.add_argument('--plan', type=Path, required=True)

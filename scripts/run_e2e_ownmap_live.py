@@ -32,9 +32,9 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off'):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
-    registered_seeds = range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
+    registered_seeds = range(61001,61013) if b_partial_accept != 'off' else range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
     if profile not in PROFILES or seed not in registered_seeds:raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
@@ -60,7 +60,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     sensors = normalize_sensors({'ultrasonic_front': ultrasonic_front})
     us_on = stall.stall_odometry == 'rgb_vo_us_v1'
     if us_on != bool(sensors):raise ValueError('US_STALL_REQUIRES_SENSOR_ON_AND_CONSUMER')
-    if us_on and (boundary_views != 'candidate_views_v1' or b_marker_detect not in MARKER_OPTIONS):
+    if us_on and (boundary_views not in VIEWS_OPTIONS or b_marker_detect not in MARKER_OPTIONS):
         raise ValueError('US_STALL_REQUIRES_V205_COMPOSITION')
     mask_on = vo_floor_mask != 'off' or vo_rotation_policy != 'off'
     if mask_on and (not us_on or (vo_floor_mask, vo_rotation_policy) != ('homography_v1', 'no_ransac_v1')):
@@ -200,6 +200,10 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         if not dev_light:raise ValueError('SPEED4_DEV_COHORT_REQUIRED')
         b['speed4']=dataclasses.asdict(candidate)
         b['speed4_record']=speed4_record(candidate)
+    if b_partial_accept not in ('off','on_v1'):raise ValueError('UNKNOWN_B_PARTIAL_ACCEPT')
+    if b_partial_accept != 'off':
+        from harness.e2e18_bundle import compose as compose18
+        paths.update(compose18(b, b_partial_accept))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -292,6 +296,7 @@ def run(b,out,receipt,*,backend_factory=None):
                         mapping_budget_s=b['e2e_options'].get('mapping_budget_s'),
                         boundary_views=b['e2e_options'].get('boundary_views','off'),
                         b_marker_detect=b['e2e_options'].get('b_marker_detect','off'),
+                        b_partial_accept=b['e2e_options'].get('b_partial_accept','off'),
                         exact_speedups=SpeedOptions(**b['e2e_options'].get('exact_speedups',{})))
                 for i,r in enumerate(('r1','r2','r3'))}
         for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
@@ -457,7 +462,8 @@ def main(argv=None):
     p.add_argument('--mapping-budget',choices=('off','case_cap_v1'),default='off')
     p.add_argument('--dev-light',action='store_true')
     p.add_argument('--boundary-views',choices=('off','candidate_views_v1','standoff_fullquad_v1'),default='off')
-    p.add_argument('--b-marker-detect',choices=('off','contrast_v1','contrast_v2'),default='off')
+    p.add_argument('--b-marker-detect',choices=('off','contrast_v1','contrast_v2','partial_known_size_v1'),default='off')
+    p.add_argument('--b-partial-accept',choices=('off','on_v1'),default='off')
     p.add_argument('--wall-cap-s',type=float,default=12600.)
     p.add_argument('--exact-provenance-index',action='store_true')
     p.add_argument('--exact-sha-cache',action='store_true')
@@ -488,7 +494,7 @@ def main(argv=None):
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
                  vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
                  vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
-             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4)
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4,b_partial_accept=a.b_partial_accept)
     if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
     if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
         raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')
