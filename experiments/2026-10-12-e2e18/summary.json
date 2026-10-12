@@ -1,0 +1,52 @@
+{
+  "schema": "ugrp.e2e18.takeover.v1",
+  "checked_unix": 1791827951.688477,
+  "status": "RUNNING",
+  "PR": 461,
+  "deadline_utc": "2026-10-13T01:00:00Z",
+  "scope": "DEV; VM3/VM4; no Mac physics",
+  "predecessor_records": "run-summary.json",
+  "inherited_current": {
+    "bundle": "e2e18-v241",
+    "sha": "4cdeccb5b8eeffc5af0208b8930683677613f7bb",
+    "runs": 12,
+    "initial_model_and_motion": 12,
+    "initial_health_file": "initial-health-takeover-r33.json",
+    "sha256": "d9dae14e0a76206fe9261cb1c4bb3d2f11c32550a34f37bca9e3457d94b66875"
+  },
+  "completion": {
+    "LLM_operated": {
+      "observed": 12,
+      "total": 12
+    },
+    "own_map_completed": {
+      "confirmed": 0,
+      "total": 12
+    },
+    "start_to_finish_transport": {
+      "confirmed": 0,
+      "total": 12
+    },
+    "all_three": {
+      "confirmed": 0,
+      "total": 12
+    }
+  },
+  "tilt_prior_analysis": {
+    "failures": 4,
+    "scope": "saved-data association; not controlled reproduction",
+    "source": "tilt-analysis.md"
+  },
+  "vm": {
+    "azure3": "running 6 inherited",
+    "azure4": "running 6 inherited"
+  },
+  "new_candidates": {
+    "versions": [
+      242,
+      243,
+      244
+    ],
+    "status": "offline_tests"
+  }
+}
