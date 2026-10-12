@@ -67,14 +67,14 @@ def audit(raw_root, image_root):
         mask=image_mask(rgb,servo)>0;static=floor_mask(_servo_key(servo))>0
         # Manually inspected common upper-wall ROI in these four saved RGBs.
         # Conservative visual annotation; no simulator segmentation or pose.
-        roi=np.zeros((480,640),bool);roi[110:170,100:540]=True
+        roi=np.zeros((480,640),bool);roi[110:170,200:540]=True
         pts=cv2.goodFeaturesToTrack(cv2.cvtColor(rgb,cv2.COLOR_RGB2GRAY),maxCorners=120,
             qualityLevel=.01,minDistance=10,mask=(mask*255).astype(np.uint8),blockSize=7)
-        nroi=0 if pts is None else sum(100<=x<540 and 110<=y<170 for x,y in pts[:,0])
+        nroi=0 if pts is None else sum(200<=x<540 and 110<=y<170 for x,y in pts[:,0])
         results.append(dict(run=run,robot=rid,saved_frames=count,fallback_equal=equal,vo_status=dict(status),
             command_kinds=dict(command_kinds),range_history_files=0,us_zero=fusions['us'].counts['us_zero'],
             mask=dict(frame_id=frame_id,image_shape=list(rgb.shape),static_mask_px=int(static.sum()),
-                image_mask_px=int(mask.sum()),wall_roi_xyxy=[100,110,540,170],wall_roi_px=int(roi.sum()),
+                image_mask_px=int(mask.sum()),wall_roi_xyxy=[200,110,540,170],wall_roi_px=int(roi.sum()),
                 admitted_wall_roi_px=int((roi&mask).sum()),admitted_fraction=float((roi&mask).sum()/mask.sum()),
                 corners=None if pts is None else len(pts),wall_roi_corners=int(nroi))))
     return results,hashes,details
