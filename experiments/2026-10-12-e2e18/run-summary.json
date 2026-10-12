@@ -32,5 +32,24 @@
   "vm": {
     "azure3": "deallocated",
     "azure4": "deallocated"
+  },
+  "pr": 458,
+  "source_sha": "899f44e1",
+  "budget_initial": {
+    "arm_free_bytes": 80281391104,
+    "expected_bytes": 57982058496,
+    "ok": false,
+    "reason": "4.5GiB_per_run_reservation_exceeds_ARM_floor; recalculating_from_raw"
+  },
+  "budget_revised": {
+    "basis": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e-idle-a-s61004",
+    "sim_s": 405.4,
+    "stored_bytes": 105905053,
+    "uncompressed_bytes": 220887903,
+    "extrapolated_1800_bytes": 980755366,
+    "reserved_cohort_bytes": 2147483648,
+    "reserved_probe_bytes": 536870912,
+    "per_run_mib": 2560,
+    "reason": "2.19x uncompressed 1800SIM extrapolation plus independent probe reserve; no deletion"
   }
 }

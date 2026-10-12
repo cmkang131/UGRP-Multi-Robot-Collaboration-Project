@@ -3,7 +3,7 @@
 # Run on the already admitted VM3 after source deployment. This never starts a VM or relay.
 # Supply current relay identity at ~/ugrp-sim/relays/e2e18/a.json.
 # Fresh storage_budget receipts: ~/ugrp-sim/e2e18-r1-budget-{x86,arm,mac}.json.
-# Reserve six * 4608 MiB on x86/ARM (4096 cohort + 512 preflight each), plus other jobs;
+# Reserve six * 2560 MiB on x86/ARM (2048 cohort + 512 preflight each), plus other jobs;
 # Mac: six * 80 MiB (64 cohort + 16 preflight fetch-lite), plus other jobs.
 # x86/ARM/Mac floors: 8/25/20 GiB. Preserve raw on persistent disk and archive to ARM.
 # EACH run needs the coordinator's initial-health check at wall 180..300 seconds.
@@ -37,12 +37,12 @@ from pathlib import Path
 from scripts.azure_speed_gate import add_arguments
 b=Path(sys.argv[1]);assert int(sys.argv[2])>0
 p=argparse.ArgumentParser();add_arguments(p);a=p.parse_args(sys.argv[3:])
-for host,minimum in (('x86',6*4608*2**20),('arm',6*4608*2**20),('mac',6*80*2**20)):
+for host,minimum in (('x86',6*2560*2**20),('arm',6*2560*2**20),('mac',6*80*2**20)):
  path=b/f'e2e18-r1-budget-{host}.json';receipt=json.loads(path.read_text())
  assert 0 <= time.time()-path.stat().st_mtime < 300 and receipt['ok'], f'STALE_STORAGE_BUDGET:{host}'
  checks=[c for c in receipt['checks'] if c['host']==host]
  assert len(checks)==1 and checks[0]['expected_bytes']>=minimum and checks[0]['ok'], f'PROBE_PLUS_COHORT_BUDGET_REQUIRED:{host}'
-assert shutil.disk_usage(b).free >= (8+6*4.5)*2**30
+assert shutil.disk_usage(b).free >= (8+6*2.5)*2**30
 assert os.getpriority(os.PRIO_PROCESS,0)==0
 required=25200+max(300.,30*a.speed_gate_limit*3)+6*45+600
 assert float(Path('/proc/uptime').read_text().split()[0])+required < 28800, 'FINITE_VM_LIFETIME_REQUIRED'
@@ -87,7 +87,7 @@ from pathlib import Path
 r,sha,pr,seed,vm=sys.argv[1:];r=Path(r)
 meta={'class':'dev','pr':int(pr),'branch':'codex/e2e18','sha':sha,'batch':'e2e18-r1',
       'variant':'integrated_v1','seed':int(seed),'vm':vm,'submitted_unix':time.time(),
-      'wall_cap_s':25200,'storage_budget_bytes':4*2**30,'execution_bundle_id':'e2e18-v216',
+      'wall_cap_s':25200,'storage_budget_bytes':2*2**30,'execution_bundle_id':'e2e18-v216',
       'cohort':'new adaptive physics; no inherited outcomes'}
 (r/'RUN_META.json').write_text(json.dumps(meta)+'\n');(r/'SOURCE_SHA').write_text(sha+'\n')
 (r/'resource-admission.json').write_text(json.dumps(dict(loadavg=os.getloadavg(),
