@@ -32,7 +32,12 @@ def search(goal,grid,tf,beam,first,last,strict_margin,strict_result=None):
         yaw=float(tf[2])+beam['pose_own_m'][2]
         goal.e2e_route_diagnostics['nominal_footprint_cells']=dict(start=counts(grid,first,yaw,.02),target=counts(grid,last,yaw,.02))
         if grid.floor_frames:
-            _,allowed,clearance,lo=footprint_clearance(NativeView(grid),PAIR_FOOTPRINT,.02,yaw=yaw)
+            view=NativeView(grid)
+            if getattr(goal,'e2e_route_extent','off')=='goal_envelope_v1':
+                from harness.e2e_route_extent import GoalEnvelopeView
+                view=GoalEnvelopeView(grid,first,last)
+            _,allowed,clearance,lo=footprint_clearance(view,PAIR_FOOTPRINT,.02,yaw=yaw)
+            if getattr(view,'bounds',None):goal.e2e_route_diagnostics['planning_extent']=view.bounds
             start=np.asarray(grid.cell(first))-lo;end=np.asarray(grid.cell(last))-lo
             cells=astar(allowed,start,end,grid.resolution,clearance)
             attempts.append(dict(margin_m=.02,coverage='native_allow_unknown',allowed_cells=int(allowed.sum()),total_cells=int(allowed.size),start_clear=clear(start),target_clear=clear(end),path_cells=len(cells) if cells else 0))
