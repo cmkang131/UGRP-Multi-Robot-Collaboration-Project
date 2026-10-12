@@ -1,0 +1,92 @@
+{
+  "record_commit": "24c442ac33e98394cb3e5de2c9fffa6310345a7b",
+  "verification_scope": "committed records and compressed payloads only; remote originals not queried",
+  "compressed": [
+    {
+      "file": "experiments/2026-10-12-e2e-idle/run-detail.json.zst",
+      "sha256": "8b5623fa6105ddc89b9da3ea6f7947ad9d6bef54d8e97b5525ad99061ec2c369",
+      "uncompressed_sha256": "83e272937c4cded8e327b2322cbbff46c44ce4aba33cec998aee7cca8b711729",
+      "uncompressed_bytes": 82061,
+      "json_valid": true,
+      "count": 22,
+      "keys": [
+        "schema",
+        "started_unix",
+        "deadline_unix",
+        "pr",
+        "status",
+        "runs",
+        "planned_N",
+        "preflight",
+        "prior_runs",
+        "record_scope",
+        "source_sha",
+        "submitted_unix",
+        "launcher_failure",
+        "valid_runs_started",
+        "actual_attempts_including_launcher_errors",
+        "updated_unix",
+        "initial_check_passed",
+        "failed_launch_detail",
+        "failed_launch_records",
+        "phase",
+        "counts",
+        "failed_launch_raw_template"
+      ]
+    },
+    {
+      "file": "experiments/2026-10-12-e2e-idle/speed-stop-arm-detail.json.zst",
+      "sha256": "f6bf39018537fdb846c0a5a1ce0de3c7c08945f2cb156071bb69ba361a0fcf12",
+      "uncompressed_sha256": "ee037c0feee228b4496b95e6f07b57e6efdb847103a65d29f1eec7365004de0f",
+      "uncompressed_bytes": 91786,
+      "json_valid": true,
+      "count": 8,
+      "keys": [
+        "schema",
+        "checked_unix",
+        "expected_runs",
+        "completed_runs",
+        "verified_runs",
+        "full_files_sha256_read",
+        "source_originals_changed",
+        "runs"
+      ]
+    },
+    {
+      "file": "experiments/2026-10-12-e2e-idle/v213-view-diagnosis-azure3.json.zst",
+      "sha256": "d850118d9c7b1eba87c8dcae3e4786ea2afff59d704b514ef752b568e5966b60",
+      "uncompressed_sha256": "c5dc278cd6d3de1914a6bfb7622d743da186f021e95e77a8398842e5c0f71ab1",
+      "uncompressed_bytes": 96258,
+      "json_valid": true,
+      "count": 3,
+      "keys": null
+    },
+    {
+      "file": "experiments/2026-10-12-e2e-idle/v213-view-diagnosis-azure4.json.zst",
+      "sha256": "b687604c468da40072a40101593616a53580fb3f0b8012b90a2e6f35c1cdc524",
+      "uncompressed_sha256": "4db319d6d1e6420b2527a668f5aafcf4c99cbd49e5d8cecbdf67fb074789ec72",
+      "uncompressed_bytes": 201689,
+      "json_valid": true,
+      "count": 3,
+      "keys": null
+    }
+  ],
+  "summary_arithmetic": "35 candidates + 54 invalid launcher attempts = 89 archives; 29 early stops + 6 HOST_ERROR = 35; E2E 0/35",
+  "code_changed": false,
+  "schema": "ugrp.merge-train.pr453-historical-record-binding.v1",
+  "issue": "P2: historical artifact test compared a pinned 153f6ac9 correction against current files after valid 24c442ac record updates",
+  "reproduction": "README expected 1450 bytes, current 1362 bytes; former test fails",
+  "fix": "Read each artifact at the correction source_sha with git show; still verify unchanged original manifest bytes and every recorded size/digest",
+  "historical_source_sha": "153f6ac954cd039ab4ddc1c9015100b724fd231d",
+  "validation": {
+    "test_file": "tests/test_e2e_boundary_repair.py",
+    "passed": 18,
+    "log_sha256": "4672bc9c473f9323e22c9632f3d5df2b606dc9e9404f12d7504f5f99c9070c0f",
+    "ci_requires_history": "offline-regression-shard already uses fetch-depth: 0"
+  },
+  "references": [
+    "https://git-scm.com/docs/git-show",
+    "https://git-scm.com/docs/gitrevisions"
+  ],
+  "raw_modified": false
+}

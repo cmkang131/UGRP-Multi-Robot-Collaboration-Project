@@ -252,9 +252,16 @@ def test_saved_view_probe_forwards_observed_keyword_and_restores_hook(monkeypatc
 
 def test_native_artifact_correction_preserves_original_manifest_and_verifies_entries():
     import hashlib
+    import subprocess
     correction = json.loads(Path('experiments/2026-10-12-merge-train/pr453/native-artifact-correction.json').read_text())
     manifest = Path(correction['original_manifest']).read_bytes()
     assert hashlib.sha256(manifest).hexdigest() == correction['original_manifest_sha256']
+    source_sha = correction['source_sha']
+    assert len(source_sha) == 40 and all(c in '0123456789abcdef' for c in source_sha)
+    repo = Path(__file__).resolve().parents[1]
+    def archived_bytes(name):
+        return subprocess.check_output(['git', 'show', f'{source_sha}:{name}'], cwd=repo)
+    assert archived_bytes(correction['original_manifest']) == manifest
     entries = json.loads(manifest)
     assert len(entries) == correction['unchanged_entries_verified'] + len(correction['corrections'])
     for name, recorded in entries.items():
@@ -262,6 +269,8 @@ def test_native_artifact_correction_preserves_original_manifest_and_verifies_ent
             item = correction['corrections'][name]
             assert recorded == item['recorded']
             recorded = item['corrected']
-        data = Path(name).read_bytes()
+        # This correction describes a fixed historical snapshot. Later run
+        # summaries and README updates must not rewrite its recorded hashes.
+        data = archived_bytes(name)
         assert len(data) == recorded['bytes']
         assert hashlib.sha256(data).hexdigest() == recorded['sha256']
