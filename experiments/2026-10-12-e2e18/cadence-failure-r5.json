@@ -1,0 +1,1867 @@
+[
+  {
+    "host": "ugrp-sim-azure3",
+    "runs": [
+      {
+        "name": "e2e18-v219-s61001-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61001-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 120.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 302
+            },
+            "us_status_counts": {
+              "not_forward": 68,
+              "unconfirmed": 10,
+              "rgb_motion_veto": 195,
+              "invalid_reading": 30
+            },
+            "eval_shift_last10sim_m": 0.47185469741741864,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 120.8,
+              "frame_id": 303,
+              "sha256": "cfa87f8ab663b113c62b6f16f11692762bbfa1d6301e047bb76dbfee30d50b85",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 1.907842993736267,
+                "p90_px": 5.120610523223877,
+                "tracks": 19
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985334,
+                -0.0008079308700174141,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 302,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 120.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 302
+            },
+            "us_status_counts": {
+              "not_forward": 43,
+              "unconfirmed": 82,
+              "rgb_motion_veto": 111,
+              "invalid_reading": 13,
+              "duplicate_or_gap": 54
+            },
+            "eval_shift_last10sim_m": 0.09629026835275832,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 120.8,
+              "frame_id": 303,
+              "sha256": "53e1f6d0d8b7a244b15f3f3bd96eb96fd68d8884a56e53969ef953ab9a90f566",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "unconfirmed",
+                "stationary": false,
+                "samples": 1,
+                "t_meas": 120.8,
+                "age_s": 0.0,
+                "range_m": 0.057,
+                "spread_m": 0.0,
+                "noise_bound_m": 0.01071,
+                "expected_m": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "unknown_texture",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 2
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985455,
+                -0.0008079308700176639,
+                -0.0005875790712757123
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 240,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 62,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61002-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61002-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 110.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 277
+            },
+            "us_status_counts": {
+              "not_forward": 44,
+              "unconfirmed": 35,
+              "rgb_motion_veto": 188,
+              "invalid_reading": 3,
+              "duplicate_or_gap": 8
+            },
+            "eval_shift_last10sim_m": 0.008380314742671488,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 110.8,
+              "frame_id": 278,
+              "sha256": "4a1d5c554a66f1baa440ca94f7e6286c6619d8069e9673d73c1a3ce5ed601efe",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "duplicate_or_gap",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "gate_zero",
+              "fused_delta": [
+                0.0,
+                0.0,
+                -0.0005875790712738798
+              ],
+              "fused_variance": [
+                0.0012039188430064043,
+                0.0012065662403857725,
+                0.001231442263602168
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "stationary_view",
+                "stationary": true,
+                "stationary_streak": 4,
+                "median_px": 0.3385807126760483,
+                "p90_px": 0.7048436164855959,
+                "tracks": 54
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                7.836938995343404e-16,
+                -4.3244737101495853e-16,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 268,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 9,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 110.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 277
+            },
+            "us_status_counts": {
+              "not_forward": 43,
+              "unconfirmed": 73,
+              "rgb_motion_veto": 103,
+              "invalid_reading": 13,
+              "not_near": 3,
+              "duplicate_or_gap": 43
+            },
+            "eval_shift_last10sim_m": 0.23326528546875175,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 110.8,
+              "frame_id": 278,
+              "sha256": "a8013289a0fbbe6e13c750117d84194ffe9896aa13e9142a141d30e79eadea2d",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "duplicate_or_gap",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "unknown_texture",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985258,
+                -0.000807930870017402,
+                -0.0005875790712757123
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 216,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 61,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61003-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61003-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 108.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 272
+            },
+            "us_status_counts": {
+              "not_forward": 58,
+              "unconfirmed": 37,
+              "rgb_motion_veto": 173,
+              "not_near": 2,
+              "invalid_reading": 2,
+              "duplicate_or_gap": 1
+            },
+            "eval_shift_last10sim_m": 0.633493548850501,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 108.8,
+              "frame_id": 273,
+              "sha256": "d1a3b12b923b81b0dd588e133b27d426952ab8315d084c943520ba7ab49254bb",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "unconfirmed",
+                "stationary": false,
+                "samples": 1,
+                "t_meas": 108.8,
+                "age_s": 0.0,
+                "range_m": 0.049,
+                "spread_m": 0.0,
+                "noise_bound_m": 0.01047,
+                "expected_m": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985303,
+                -0.0008079308700173162,
+                -0.0005875790712757123
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 272,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 108.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 272
+            },
+            "us_status_counts": {
+              "not_forward": 47,
+              "unconfirmed": 66,
+              "rgb_motion_veto": 125,
+              "duplicate_or_gap": 20,
+              "invalid_reading": 14,
+              "not_near": 1
+            },
+            "eval_shift_last10sim_m": 0.03634724181158645,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 108.8,
+              "frame_id": 273,
+              "sha256": "89e70dcdc27a5b3474e06fe60395041d8d838cd98c1b0153da4f74d78eaff433",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 35.09517288208008,
+                "p90_px": 35.8466552734375,
+                "tracks": 48
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985327,
+                -0.0008079308700173517,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 228,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 44,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61004-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61004-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 112.0,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 280
+            },
+            "us_status_counts": {
+              "not_forward": 45,
+              "unconfirmed": 28,
+              "rgb_motion_veto": 204,
+              "invalid_reading": 3,
+              "not_near": 1
+            },
+            "eval_shift_last10sim_m": 0.6564503586012195,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 112.0,
+              "frame_id": 281,
+              "sha256": "af620f80696eca8ad2bffb9a14167b4fb6914c22acbc7820818848477039743b",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 3.4163318872451782,
+                "p90_px": 13.786344051361084,
+                "tracks": 26
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.02583419686198553,
+                -0.0008079308700173829,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 280,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 112.0,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 280
+            },
+            "us_status_counts": {
+              "not_forward": 41,
+              "unconfirmed": 49,
+              "rgb_motion_veto": 148,
+              "duplicate_or_gap": 26,
+              "invalid_reading": 15,
+              "not_near": 2
+            },
+            "eval_shift_last10sim_m": 0.120134356522155,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 112.0,
+              "frame_id": 281,
+              "sha256": "2141a578737ca556a394cb6106d97716612fa46a178b2213cf7e3401752805aa",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 23.870421409606934,
+                "p90_px": 24.364483642578126,
+                "tracks": 78
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985223,
+                -0.0008079308700174141,
+                -0.0005875790712721596
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 222,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 58,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61005-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61005-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 116.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 292
+            },
+            "us_status_counts": {
+              "not_forward": 100,
+              "unconfirmed": 30,
+              "rgb_motion_veto": 161,
+              "invalid_reading": 2
+            },
+            "eval_shift_last10sim_m": 0.004158700695843423,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 116.8,
+              "frame_id": 293,
+              "sha256": "a38effd009fb56afac16022f523006b9c2e43750a311d390d6e786c3c3a52f04",
+              "command_delta": [
+                0.000556054487322558,
+                -0.005606191360098539,
+                0.20708693584066643
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "not_forward",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.000556054487322558,
+                -0.005606191360098539,
+                0.20708693584066643
+              ],
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": true,
+              "effective_vo_floor_mask": "off",
+              "applied_delta": [
+                0.0005560544873223611,
+                -0.005606191360098241,
+                0.2070869358406675
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 292,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 116.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 292
+            },
+            "us_status_counts": {
+              "not_forward": 37,
+              "unconfirmed": 65,
+              "rgb_motion_veto": 140,
+              "duplicate_or_gap": 39,
+              "invalid_reading": 11,
+              "not_near": 1
+            },
+            "eval_shift_last10sim_m": 0.17101854477988337,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 116.8,
+              "frame_id": 293,
+              "sha256": "e9c03fe7ed683eb11b4b88331eeb24f67cd58faaaee0d68cca98ddb282ccd3fb",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "duplicate_or_gap",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "unknown_texture",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985598,
+                -0.0008079308700177958,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 236,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 56,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61006-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61006-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 114.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 287
+            },
+            "us_status_counts": {
+              "not_forward": 81,
+              "unconfirmed": 35,
+              "rgb_motion_veto": 171,
+              "invalid_reading": 1
+            },
+            "eval_shift_last10sim_m": 0.22182290418963616,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 114.8,
+              "frame_id": 288,
+              "sha256": "279b5e0a4d1aaae8836e77a9348379300e40c08bb014bcea3f95bf77be1e9a50",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 4.885329246520996,
+                "p90_px": 13.534985637664795,
+                "tracks": 12
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985854,
+                -0.0008079308700173402,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 287,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 114.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 287
+            },
+            "us_status_counts": {
+              "not_forward": 63,
+              "unconfirmed": 44,
+              "rgb_motion_veto": 141,
+              "duplicate_or_gap": 22,
+              "invalid_reading": 16,
+              "not_near": 2
+            },
+            "eval_shift_last10sim_m": 0.014612286922967769,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 114.8,
+              "frame_id": 288,
+              "sha256": "13fa1d980d79018b7758f95d080ec321a933deb5a48589d6ada2d1ec2e64c7f3",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 12.08974313735962,
+                "p90_px": 12.483111572265624,
+                "tracks": 12
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985324,
+                -0.0008079308700169379,
+                -0.0005875790712721596
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 227,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 60,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "host": "ugrp-sim-azure4",
+    "runs": [
+      {
+        "name": "e2e18-v219-s61007-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61007-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 116.0,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 290
+            },
+            "us_status_counts": {
+              "not_forward": 59,
+              "unconfirmed": 29,
+              "rgb_motion_veto": 158,
+              "not_near": 2,
+              "invalid_reading": 43
+            },
+            "eval_shift_last10sim_m": 0.10711522048923441,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 116.0,
+              "frame_id": 291,
+              "sha256": "91fc35d585bbdecb6f8fb143c0a3dbae31d261bfc3023d1047a8b90ce5b4163e",
+              "command_delta": [
+                0.000556054487322558,
+                -0.005606191360098539,
+                0.20708693584066643
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "not_forward",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.000556054487322558,
+                -0.005606191360098539,
+                0.20708693584066643
+              ],
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": true,
+              "effective_vo_floor_mask": "off",
+              "applied_delta": [
+                0.0005560544873228568,
+                -0.005606191360098796,
+                0.2070869358406675
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 290,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 116.0,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 290
+            },
+            "us_status_counts": {
+              "not_forward": 46,
+              "invalid_reading": 7,
+              "rgb_motion_veto": 137,
+              "unconfirmed": 66,
+              "duplicate_or_gap": 35
+            },
+            "eval_shift_last10sim_m": 0.636152931492997,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 116.0,
+              "frame_id": 291,
+              "sha256": "fd714d065c21d6f593c080d126797cf14cd51eb2953698ba8f14fe8a866dcdeb",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 8.090449333190918,
+                "p90_px": 12.399568557739258,
+                "tracks": 23
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985126,
+                -0.0008079308700172918,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 228,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 62,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61008-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61008-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 108.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 272
+            },
+            "us_status_counts": {
+              "not_forward": 58,
+              "unconfirmed": 29,
+              "rgb_motion_veto": 179,
+              "invalid_reading": 3,
+              "not_near": 1,
+              "duplicate_or_gap": 3
+            },
+            "eval_shift_last10sim_m": 0.01761362153711128,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 108.8,
+              "frame_id": 273,
+              "sha256": "c0c38a41c2b0a0b31255aac31a60d6dc15e53e1ca04fa8f77b70242ed2da0308",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 15.682823181152344,
+                "p90_px": 16.105548477172853,
+                "tracks": 30
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985202,
+                -0.0008079308700172615,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 271,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 1,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 108.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 272
+            },
+            "us_status_counts": {
+              "not_forward": 49,
+              "unconfirmed": 56,
+              "rgb_motion_veto": 133,
+              "duplicate_or_gap": 25,
+              "invalid_reading": 10
+            },
+            "eval_shift_last10sim_m": 0.5234542216964936,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 108.8,
+              "frame_id": 273,
+              "sha256": "78d53fd53383b26e61c9457fa707ba4f0fa2323de2556a3f2baac2b3c5b0c81e",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 7.4362921714782715,
+                "p90_px": 10.022121620178222,
+                "tracks": 17
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985022,
+                -0.0008079308700174228,
+                -0.0005875790712757123
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 217,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 55,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61009-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61009-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 112.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 282
+            },
+            "us_status_counts": {
+              "not_forward": 130,
+              "unconfirmed": 17,
+              "rgb_motion_veto": 130,
+              "invalid_reading": 6
+            },
+            "eval_shift_last10sim_m": 0.6608346888545141,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 112.8,
+              "frame_id": 283,
+              "sha256": "104042dbd4fb216a54db6bffd2c3126c9787c5d4237124089adab17e4fb78d6c",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 4.640429496765137,
+                "p90_px": 7.157620048522949,
+                "tracks": 23
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985164,
+                -0.0008079308700172138,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 282,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 112.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 282
+            },
+            "us_status_counts": {
+              "not_forward": 103,
+              "unconfirmed": 43,
+              "rgb_motion_veto": 103,
+              "invalid_reading": 9,
+              "duplicate_or_gap": 22,
+              "not_near": 3
+            },
+            "eval_shift_last10sim_m": 0.16588211870654868,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 112.8,
+              "frame_id": 283,
+              "sha256": "a0413f2b9b8516b6c96af71980da4b4faf4695e875db282c4a5dbee04ea49089",
+              "command_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "command_substeps": 0,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "not_forward",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 229,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 53,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61010-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61010-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 114.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 287
+            },
+            "us_status_counts": {
+              "not_forward": 66,
+              "unconfirmed": 62,
+              "rgb_motion_veto": 113,
+              "invalid_reading": 16,
+              "duplicate_or_gap": 30,
+              "not_near": 1
+            },
+            "eval_shift_last10sim_m": 0.15996822235609895,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 114.8,
+              "frame_id": 288,
+              "sha256": "21160a7ce74c15f1115c7c080226b76f1dd2af72bf11a6887307bd1eb1c6a5dc",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 2.901546835899353,
+                "p90_px": 6.440726470947268,
+                "tracks": 22
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985504,
+                -0.0008079308700170169,
+                -0.0005875790712757123
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 287,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 114.8,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 287
+            },
+            "us_status_counts": {
+              "not_forward": 105,
+              "unconfirmed": 49,
+              "rgb_motion_veto": 98,
+              "duplicate_or_gap": 27,
+              "invalid_reading": 9
+            },
+            "eval_shift_last10sim_m": 0.1610662284286621,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 114.8,
+              "frame_id": 288,
+              "sha256": "3b5162b3291de79f2cf45e38b7fee1aa89d4e2598454b31b77d68d598219bcf7",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "unconfirmed",
+                "stationary": false,
+                "samples": 1,
+                "t_meas": 114.8,
+                "age_s": 0.0,
+                "range_m": 0.053,
+                "spread_m": 0.0,
+                "noise_bound_m": 0.01059,
+                "expected_m": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985296,
+                -0.0008079308700174436,
+                -0.0005875790712734918
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 225,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 62,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61011-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61011-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 110.0,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 275
+            },
+            "us_status_counts": {
+              "not_forward": 38,
+              "unconfirmed": 53,
+              "rgb_motion_veto": 162,
+              "invalid_reading": 5,
+              "duplicate_or_gap": 18
+            },
+            "eval_shift_last10sim_m": 0.06070468295597593,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 110.0,
+              "frame_id": 276,
+              "sha256": "3cd11a05a3812ef3cfadb29123eff444b600d7f58228d008aa7abfda5668a944",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 7.409938335418701,
+                "p90_px": 7.860939121246338,
+                "tracks": 27
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985494,
+                -0.0008079308700175668,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 250,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 25,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 110.0,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 275
+            },
+            "us_status_counts": {
+              "not_forward": 38,
+              "unconfirmed": 50,
+              "rgb_motion_veto": 145,
+              "invalid_reading": 14,
+              "duplicate_or_gap": 27,
+              "not_near": 2
+            },
+            "eval_shift_last10sim_m": 0.05699354130734389,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 110.0,
+              "frame_id": 276,
+              "sha256": "e7d8135d778f9590703a1e1abafe4242c4b145ac93984d14029b16e291c9cbdc",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 2.836003065109253,
+                "p90_px": 3.1468327045440674,
+                "tracks": 44
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.02583419686198573,
+                -0.000807930870017428,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 206,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 69,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "e2e18-v219-s61012-r5",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v219-s61012-r5/raw",
+        "robots": [
+          {
+            "robot": "r1",
+            "sim_s": 114.0,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 285
+            },
+            "us_status_counts": {
+              "not_forward": 108,
+              "unconfirmed": 34,
+              "rgb_motion_veto": 139,
+              "invalid_reading": 3,
+              "duplicate_or_gap": 2
+            },
+            "eval_shift_last10sim_m": 0.5511215502090222,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 114.0,
+              "frame_id": 286,
+              "sha256": "a4c4aa2ec29e25dea17b2a7742db3f1ff2f9b5e5a82783fe6da5d1004fa85179",
+              "command_delta": [
+                0.000556054487322558,
+                -0.005606191360098539,
+                0.20708693584066643
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "not_forward",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.000556054487322558,
+                -0.005606191360098539,
+                0.20708693584066643
+              ],
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": true,
+              "effective_vo_floor_mask": "off",
+              "applied_delta": [
+                0.0005560544873226586,
+                -0.005606191360098222,
+                0.20708693584066573
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 285,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          {
+            "robot": "r2",
+            "sim_s": 114.0,
+            "vo_status_counts": {
+              "no_previous_frame": 1,
+              "unknown_frame_gap": 285
+            },
+            "us_status_counts": {
+              "not_forward": 86,
+              "unconfirmed": 41,
+              "rgb_motion_veto": 129,
+              "duplicate_or_gap": 21,
+              "invalid_reading": 8,
+              "not_near": 1
+            },
+            "eval_shift_last10sim_m": 0.41019639431311555,
+            "last_stall": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 114.0,
+              "frame_id": 286,
+              "sha256": "07b86ac4c9d1e2d99e953c939365ed4ff8da25aa1fa2e8abf0bce6bacd107653",
+              "command_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "command_substeps": 8,
+              "status": "unknown_frame_gap",
+              "ultrasonic": {
+                "status": "rgb_motion_veto",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "command_kept",
+              "fused_delta": [
+                0.02583419686198526,
+                -0.000807930870017331,
+                -0.0005875790712738798
+              ],
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 3.291684865951538,
+                "p90_px": 20.031457901000977,
+                "tracks": 55
+              },
+              "vo_floor_mask": "homography_v1",
+              "rotation_policy": "no_ransac_v1",
+              "commanded_turn": false,
+              "effective_vo_floor_mask": "homography_v1",
+              "applied_delta": [
+                0.025834196861985174,
+                -0.0008079308700176101,
+                -0.0005875790712739359
+              ],
+              "counts": {
+                "measured": 0,
+                "fused": 0,
+                "vo_replaced": 0,
+                "unknown": 241,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 44,
+                "us_zero": 0
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

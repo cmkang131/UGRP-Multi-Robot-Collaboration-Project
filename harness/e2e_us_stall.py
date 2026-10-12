@@ -21,6 +21,7 @@ class RangeStall:
     def __init__(self):
         self.frames = deque(maxlen=PARAMS['window_frames'])
         self.direction = None
+        self.max_gap_s = PARAMS['max_gap_s']
 
     def reset(self):
         self.frames.clear()
@@ -64,7 +65,7 @@ class RangeStall:
         if r > PARAMS['max_range_m']:
             return reject('not_near')
         if self.frames and (report.t_meas <= self.frames[-1]['t'] or
-                            report.t_meas-self.frames[-1]['t'] > PARAMS['max_gap_s']+1e-8):
+                            report.t_meas-self.frames[-1]['t'] > self.max_gap_s+1e-8):
             return reject('duplicate_or_gap')
         self.frames.append(dict(t=report.t_meas, r=r, expected=float(delta[0]), yaw=abs(float(delta[2]))))
         # The first sample is the window anchor; its preceding motion is outside it.
