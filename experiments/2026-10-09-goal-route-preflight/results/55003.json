@@ -1,0 +1,168 @@
+{
+  "seed": 55003,
+  "condition": "T1",
+  "started": true,
+  "status": "RECORDED",
+  "acquisition": {
+    "status": "RECORDED",
+    "source_sha": "1f5269db3eb06f0db529941e3e3a95519c099cd0",
+    "seed": 55003,
+    "condition": "T1",
+    "model_calls": 0,
+    "freeze": false,
+    "physical_hardware": false,
+    "loadavg_start": [
+      14.0341796875,
+      14.03955078125,
+      12.6904296875
+    ],
+    "start_sim_s": 1.3,
+    "frames": 2462,
+    "total_sim_s": 493.5,
+    "stage": "budget_exhausted",
+    "reached": [
+      "B"
+    ],
+    "declared_B": true,
+    "declared_return": false,
+    "wall_s": 3136.9092250000103,
+    "loadavg_end": [
+      3.72216796875,
+      5.6455078125,
+      7.7548828125
+    ],
+    "heading_contract": {
+      "shared_version": "zone-s2-realism-v145",
+      "main_sha": "6813f8a15930bbf3a039887219c76a7acb863648",
+      "command_factory": "harness.own_map_heading.command",
+      "selector": "harness.zone_solo_cyan_path_heading.select_waypoint",
+      "mode": "path_tangent_v1",
+      "host": "shared_v145",
+      "motion_model": "s2_pulse_v122_rotL_v1",
+      "return_shortcuts": false
+    },
+    "heading_mode": "path_tangent_v1",
+    "heading_visual_lock": "off",
+    "runtime_speedups": {
+      "schema": "ugrp.v7_exact_speedups.v1",
+      "mode": "relay-cache-v1",
+      "enabled": true,
+      "fallback": null,
+      "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+      "cache_maxsize": 256,
+      "physics_changed": false,
+      "log_buffering": false
+    }
+  },
+  "arrived_B": true,
+  "false_declarations": 0,
+  "returned_start": false,
+  "excluded": false,
+  "legs": [
+    {
+      "leg": 1,
+      "target": "B",
+      "start_sim_s": 1.3,
+      "end_sim_s": 223.5,
+      "sim_s": 222.2,
+      "own_tracked_path_m": 25.852475769108135,
+      "actual_path_m": 3.8657622781008882,
+      "status": "arrived",
+      "budget_failed": false
+    },
+    {
+      "leg": 2,
+      "target": "unfinished",
+      "start_sim_s": 223.5,
+      "end_sim_s": 493.5,
+      "sim_s": 270.0,
+      "own_tracked_path_m": 25.03483132946117,
+      "actual_path_m": 1.5264080029071967,
+      "status": "budget_exhausted",
+      "budget_failed": true
+    }
+  ],
+  "declarations": [
+    {
+      "t": 223.5,
+      "inside": true
+    }
+  ],
+  "return_GT_distance_m": null,
+  "reached_entities": {
+    "B": {
+      "t": 223.5,
+      "frame_id": 1112,
+      "pose": [
+        -1.2993311397826959,
+        2.9794778293960587,
+        2.033162422431187
+      ],
+      "node": 799
+    }
+  },
+  "failure": "success",
+  "final_error_m": 0.7776594902298075,
+  "path_rmse_m": 0.5394691682916773,
+  "final_sigma_m": 0.09378587144398323,
+  "final_error_sigma": 8.291861857831014,
+  "final_nees": 78.92421144542317,
+  "over_3sigma_frames": 1842,
+  "error_samples": 2452,
+  "map": {
+    "occupied_cells": 665,
+    "precision_015": 0.36390977443609024,
+    "precision_cell": 0.162406015037594,
+    "wall_coverage": 0.5873925501432665,
+    "wall_error_rmse_m": 0.8043131310139724
+  },
+  "map_samples": 349,
+  "map_covered_samples": 205,
+  "tube": {
+    "occupied_cells": 110,
+    "precision_015": 0.8,
+    "precision_cell": 0.33636363636363636,
+    "wall_coverage": 0.9178082191780822,
+    "wall_error_rmse_m": 0.14564682530554787
+  },
+  "tube_samples": 73,
+  "tube_covered_samples": 67,
+  "tube_occupied_cells": 110,
+  "outside_cells": 286,
+  "contacts": {
+    "wall": 0,
+    "robot": 0
+  },
+  "cue_count": 2453,
+  "nodes": 2032,
+  "local_match_accepted": 9,
+  "local_match_attempts": 24,
+  "local_match_success": 0.375,
+  "travelled_m": 5.3921702810080845,
+  "hold_fraction": 0.014274061990212071,
+  "rotation_fraction": 0.8568515497553018,
+  "sim_s": 492.2,
+  "route_length_to_B_m": 25.852475769108135,
+  "GT_shortest_to_B_center_m": 3.409188309203674,
+  "route_length_ratio": 7.583176235620383,
+  "insertion_frames": 419,
+  "insertion_reasons": {
+    "bootstrap": 1,
+    "gmapping_motion_gate": 2013,
+    "high_residual": 81,
+    "insufficient_match_points": 4,
+    "search_boundary": 1,
+    "low_overlap": 31,
+    "improved_proposal": 301
+  },
+  "gates": {
+    "B_arrival": true,
+    "no_false_declaration": true,
+    "tube_coverage": true,
+    "tube_precision": true,
+    "tube_rmse": true,
+    "no_outside": false,
+    "cue_ledger": true,
+    "route_ratio": false
+  }
+}

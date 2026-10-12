@@ -1,0 +1,770 @@
+{
+  "registered": 9,
+  "started": 5,
+  "excluded": [],
+  "reports": [
+    {
+      "seed": 55001,
+      "condition": "T1",
+      "started": true,
+      "status": "RECORDED",
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "1f5269db3eb06f0db529941e3e3a95519c099cd0",
+        "seed": 55001,
+        "condition": "T1",
+        "model_calls": 0,
+        "freeze": false,
+        "physical_hardware": false,
+        "loadavg_start": [
+          3.90673828125,
+          3.63818359375,
+          3.515625
+        ],
+        "start_sim_s": 1.3,
+        "frames": 1351,
+        "total_sim_s": 271.3,
+        "stage": "budget_exhausted",
+        "reached": [],
+        "declared_B": false,
+        "declared_return": false,
+        "wall_s": 837.5856039589853,
+        "loadavg_end": [
+          16.109375,
+          14.73291015625,
+          10.63134765625
+        ],
+        "heading_contract": {
+          "shared_version": "zone-s2-realism-v145",
+          "main_sha": "6813f8a15930bbf3a039887219c76a7acb863648",
+          "command_factory": "harness.own_map_heading.command",
+          "selector": "harness.zone_solo_cyan_path_heading.select_waypoint",
+          "mode": "path_tangent_v1",
+          "host": "shared_v145",
+          "motion_model": "s2_pulse_v122_rotL_v1",
+          "return_shortcuts": false
+        },
+        "heading_mode": "path_tangent_v1",
+        "heading_visual_lock": "off",
+        "runtime_speedups": {
+          "schema": "ugrp.v7_exact_speedups.v1",
+          "mode": "relay-cache-v1",
+          "enabled": true,
+          "fallback": null,
+          "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+          "cache_maxsize": 256,
+          "physics_changed": false,
+          "log_buffering": false
+        }
+      },
+      "arrived_B": false,
+      "false_declarations": 0,
+      "returned_start": false,
+      "excluded": false,
+      "legs": [
+        {
+          "leg": 1,
+          "target": "unfinished",
+          "start_sim_s": 1.3,
+          "end_sim_s": 271.3,
+          "sim_s": 270.0,
+          "own_tracked_path_m": 24.95841974247883,
+          "actual_path_m": 4.226121406152606,
+          "status": "budget_exhausted",
+          "budget_failed": true
+        }
+      ],
+      "declarations": [],
+      "return_GT_distance_m": null,
+      "reached_entities": {},
+      "failure": "approach_or_localization",
+      "final_error_m": 0.7078852098751668,
+      "path_rmse_m": 0.3077602570769542,
+      "final_sigma_m": 0.17559714981626315,
+      "final_error_sigma": 4.03130239081822,
+      "final_nees": 72.52289432567206,
+      "over_3sigma_frames": 651,
+      "error_samples": 1341,
+      "map": {
+        "occupied_cells": 538,
+        "precision_015": 0.4052044609665427,
+        "precision_cell": 0.20074349442379183,
+        "wall_coverage": 0.4785100286532951,
+        "wall_error_rmse_m": 0.718236097553993
+      },
+      "map_samples": 349,
+      "map_covered_samples": 167,
+      "tube": {
+        "occupied_cells": 87,
+        "precision_015": 0.6666666666666666,
+        "precision_cell": 0.3333333333333333,
+        "wall_coverage": 0.4857142857142857,
+        "wall_error_rmse_m": 0.18406619621540593
+      },
+      "tube_samples": 70,
+      "tube_covered_samples": 34,
+      "tube_occupied_cells": 87,
+      "outside_cells": 108,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "cue_count": 1342,
+      "nodes": 906,
+      "local_match_accepted": 4,
+      "local_match_attempts": 16,
+      "local_match_success": 0.25,
+      "travelled_m": 4.226121406152606,
+      "hold_fraction": 0.0924683072334079,
+      "rotation_fraction": 0.7002237136465325,
+      "sim_s": 270.0,
+      "route_length_to_B_m": null,
+      "GT_shortest_to_B_center_m": null,
+      "route_length_ratio": null,
+      "insertion_frames": 188,
+      "insertion_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 1150,
+        "high_residual": 29,
+        "low_overlap": 10,
+        "insufficient_match_points": 6,
+        "search_boundary": 2,
+        "improved_proposal": 140
+      },
+      "gates": {
+        "B_arrival": false,
+        "no_false_declaration": true,
+        "tube_coverage": false,
+        "tube_precision": false,
+        "tube_rmse": true,
+        "no_outside": false,
+        "cue_ledger": true,
+        "route_ratio": false
+      }
+    },
+    {
+      "seed": 55002,
+      "condition": "T1",
+      "started": true,
+      "status": "HOST_ERROR",
+      "acquisition": {
+        "status": "HOST_ERROR",
+        "source_sha": "1f5269db3eb06f0db529941e3e3a95519c099cd0",
+        "seed": 55002,
+        "condition": "T1",
+        "model_calls": 0,
+        "freeze": false,
+        "physical_hardware": false,
+        "loadavg_start": [
+          16.3408203125,
+          14.8037109375,
+          10.68017578125
+        ],
+        "start_sim_s": 1.3,
+        "total_sim_s": 218.9,
+        "frames": 1089,
+        "failure": {
+          "type": "ValueError",
+          "message": "REAL primitive requires one axis and bounded duration"
+        },
+        "enospc": false,
+        "wall_s": 718.6875923330081,
+        "loadavg_end": [
+          15.08203125,
+          14.2431640625,
+          12.75390625
+        ],
+        "heading_contract": {
+          "shared_version": "zone-s2-realism-v145",
+          "main_sha": "6813f8a15930bbf3a039887219c76a7acb863648",
+          "command_factory": "harness.own_map_heading.command",
+          "selector": "harness.zone_solo_cyan_path_heading.select_waypoint",
+          "mode": "path_tangent_v1",
+          "host": "shared_v145",
+          "motion_model": "s2_pulse_v122_rotL_v1",
+          "return_shortcuts": false
+        },
+        "heading_mode": "path_tangent_v1",
+        "heading_visual_lock": "off",
+        "runtime_speedups": {
+          "schema": "ugrp.v7_exact_speedups.v1",
+          "mode": "relay-cache-v1",
+          "enabled": true,
+          "fallback": null,
+          "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+          "cache_maxsize": 256,
+          "physics_changed": false,
+          "log_buffering": false
+        }
+      },
+      "arrived_B": false,
+      "false_declarations": 0,
+      "returned_start": false,
+      "excluded": false,
+      "legs": [
+        {
+          "leg": 1,
+          "target": "unfinished",
+          "start_sim_s": 1.3,
+          "end_sim_s": 218.7,
+          "sim_s": 217.39999999999998,
+          "own_tracked_path_m": 19.797518667284386,
+          "actual_path_m": 3.707646680310146,
+          "status": "HOST_ERROR",
+          "budget_failed": false
+        }
+      ],
+      "declarations": [],
+      "return_GT_distance_m": null,
+      "reached_entities": {},
+      "failure": "physical_or_host",
+      "final_error_m": 0.35368421861782773,
+      "path_rmse_m": 0.17899220732875562,
+      "final_sigma_m": 0.10319376438455626,
+      "final_error_sigma": 3.4273797523250282,
+      "final_nees": 17.38828550690669,
+      "over_3sigma_frames": 161,
+      "error_samples": 1078,
+      "map": {
+        "occupied_cells": 518,
+        "precision_015": 0.5366795366795367,
+        "precision_cell": 0.21814671814671815,
+        "wall_coverage": 0.670487106017192,
+        "wall_error_rmse_m": 0.7415752828235939
+      },
+      "map_samples": 349,
+      "map_covered_samples": 234,
+      "tube": {
+        "occupied_cells": 78,
+        "precision_015": 0.8205128205128205,
+        "precision_cell": 0.3974358974358974,
+        "wall_coverage": 0.9384615384615385,
+        "wall_error_rmse_m": 0.10759364943338179
+      },
+      "tube_samples": 65,
+      "tube_covered_samples": 61,
+      "tube_occupied_cells": 78,
+      "outside_cells": 84,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "cue_count": 1080,
+      "nodes": 792,
+      "local_match_accepted": 1,
+      "local_match_attempts": 6,
+      "local_match_success": 0.16666666666666666,
+      "travelled_m": 3.707646680310146,
+      "hold_fraction": 0.009267840593141797,
+      "rotation_fraction": 0.7608897126969416,
+      "sim_s": 217.39999999999998,
+      "route_length_to_B_m": null,
+      "GT_shortest_to_B_center_m": null,
+      "route_length_ratio": null,
+      "insertion_frames": 165,
+      "insertion_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 910,
+        "high_residual": 18,
+        "low_overlap": 12,
+        "search_boundary": 1,
+        "improved_proposal": 130,
+        "insufficient_match_points": 3
+      },
+      "gates": {
+        "B_arrival": false,
+        "no_false_declaration": true,
+        "tube_coverage": true,
+        "tube_precision": true,
+        "tube_rmse": true,
+        "no_outside": false,
+        "cue_ledger": true,
+        "route_ratio": false
+      }
+    },
+    {
+      "seed": 55003,
+      "condition": "T1",
+      "started": true,
+      "status": "RECORDED",
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "1f5269db3eb06f0db529941e3e3a95519c099cd0",
+        "seed": 55003,
+        "condition": "T1",
+        "model_calls": 0,
+        "freeze": false,
+        "physical_hardware": false,
+        "loadavg_start": [
+          14.0341796875,
+          14.03955078125,
+          12.6904296875
+        ],
+        "start_sim_s": 1.3,
+        "frames": 2462,
+        "total_sim_s": 493.5,
+        "stage": "budget_exhausted",
+        "reached": [
+          "B"
+        ],
+        "declared_B": true,
+        "declared_return": false,
+        "wall_s": 3136.9092250000103,
+        "loadavg_end": [
+          3.72216796875,
+          5.6455078125,
+          7.7548828125
+        ],
+        "heading_contract": {
+          "shared_version": "zone-s2-realism-v145",
+          "main_sha": "6813f8a15930bbf3a039887219c76a7acb863648",
+          "command_factory": "harness.own_map_heading.command",
+          "selector": "harness.zone_solo_cyan_path_heading.select_waypoint",
+          "mode": "path_tangent_v1",
+          "host": "shared_v145",
+          "motion_model": "s2_pulse_v122_rotL_v1",
+          "return_shortcuts": false
+        },
+        "heading_mode": "path_tangent_v1",
+        "heading_visual_lock": "off",
+        "runtime_speedups": {
+          "schema": "ugrp.v7_exact_speedups.v1",
+          "mode": "relay-cache-v1",
+          "enabled": true,
+          "fallback": null,
+          "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+          "cache_maxsize": 256,
+          "physics_changed": false,
+          "log_buffering": false
+        }
+      },
+      "arrived_B": true,
+      "false_declarations": 0,
+      "returned_start": false,
+      "excluded": false,
+      "legs": [
+        {
+          "leg": 1,
+          "target": "B",
+          "start_sim_s": 1.3,
+          "end_sim_s": 223.5,
+          "sim_s": 222.2,
+          "own_tracked_path_m": 25.852475769108135,
+          "actual_path_m": 3.8657622781008882,
+          "status": "arrived",
+          "budget_failed": false
+        },
+        {
+          "leg": 2,
+          "target": "unfinished",
+          "start_sim_s": 223.5,
+          "end_sim_s": 493.5,
+          "sim_s": 270.0,
+          "own_tracked_path_m": 25.03483132946117,
+          "actual_path_m": 1.5264080029071967,
+          "status": "budget_exhausted",
+          "budget_failed": true
+        }
+      ],
+      "declarations": [
+        {
+          "t": 223.5,
+          "inside": true
+        }
+      ],
+      "return_GT_distance_m": null,
+      "reached_entities": {
+        "B": {
+          "t": 223.5,
+          "frame_id": 1112,
+          "pose": [
+            -1.2993311397826959,
+            2.9794778293960587,
+            2.033162422431187
+          ],
+          "node": 799
+        }
+      },
+      "failure": "success",
+      "final_error_m": 0.7776594902298075,
+      "path_rmse_m": 0.5394691682916773,
+      "final_sigma_m": 0.09378587144398323,
+      "final_error_sigma": 8.291861857831014,
+      "final_nees": 78.92421144542317,
+      "over_3sigma_frames": 1842,
+      "error_samples": 2452,
+      "map": {
+        "occupied_cells": 665,
+        "precision_015": 0.36390977443609024,
+        "precision_cell": 0.162406015037594,
+        "wall_coverage": 0.5873925501432665,
+        "wall_error_rmse_m": 0.8043131310139724
+      },
+      "map_samples": 349,
+      "map_covered_samples": 205,
+      "tube": {
+        "occupied_cells": 110,
+        "precision_015": 0.8,
+        "precision_cell": 0.33636363636363636,
+        "wall_coverage": 0.9178082191780822,
+        "wall_error_rmse_m": 0.14564682530554787
+      },
+      "tube_samples": 73,
+      "tube_covered_samples": 67,
+      "tube_occupied_cells": 110,
+      "outside_cells": 286,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "cue_count": 2453,
+      "nodes": 2032,
+      "local_match_accepted": 9,
+      "local_match_attempts": 24,
+      "local_match_success": 0.375,
+      "travelled_m": 5.3921702810080845,
+      "hold_fraction": 0.014274061990212071,
+      "rotation_fraction": 0.8568515497553018,
+      "sim_s": 492.2,
+      "route_length_to_B_m": 25.852475769108135,
+      "GT_shortest_to_B_center_m": 3.409188309203674,
+      "route_length_ratio": 7.583176235620383,
+      "insertion_frames": 419,
+      "insertion_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 2013,
+        "high_residual": 81,
+        "insufficient_match_points": 4,
+        "search_boundary": 1,
+        "low_overlap": 31,
+        "improved_proposal": 301
+      },
+      "gates": {
+        "B_arrival": true,
+        "no_false_declaration": true,
+        "tube_coverage": true,
+        "tube_precision": true,
+        "tube_rmse": true,
+        "no_outside": false,
+        "cue_ledger": true,
+        "route_ratio": false
+      }
+    },
+    {
+      "seed": 55004,
+      "condition": "T2",
+      "started": true,
+      "status": "HOST_ERROR",
+      "acquisition": {
+        "status": "HOST_ERROR",
+        "source_sha": "1f5269db3eb06f0db529941e3e3a95519c099cd0",
+        "seed": 55004,
+        "condition": "T2",
+        "model_calls": 0,
+        "freeze": false,
+        "physical_hardware": false,
+        "loadavg_start": [
+          3.45703125,
+          5.525390625,
+          7.68701171875
+        ],
+        "start_sim_s": 1.3,
+        "total_sim_s": 99.1,
+        "frames": 490,
+        "failure": {
+          "type": "ValueError",
+          "message": "REAL primitive requires one axis and bounded duration"
+        },
+        "enospc": false,
+        "wall_s": 282.9962151249638,
+        "loadavg_end": [
+          3.392578125,
+          4.43603515625,
+          6.59326171875
+        ],
+        "heading_contract": {
+          "shared_version": "zone-s2-realism-v145",
+          "main_sha": "6813f8a15930bbf3a039887219c76a7acb863648",
+          "command_factory": "harness.own_map_heading.command",
+          "selector": "harness.zone_solo_cyan_path_heading.select_waypoint",
+          "mode": "path_tangent_v1",
+          "host": "shared_v145",
+          "motion_model": "s2_pulse_v122_rotL_v1",
+          "return_shortcuts": false
+        },
+        "heading_mode": "path_tangent_v1",
+        "heading_visual_lock": "off",
+        "runtime_speedups": {
+          "schema": "ugrp.v7_exact_speedups.v1",
+          "mode": "relay-cache-v1",
+          "enabled": true,
+          "fallback": null,
+          "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+          "cache_maxsize": 256,
+          "physics_changed": false,
+          "log_buffering": false
+        }
+      },
+      "arrived_B": false,
+      "false_declarations": 0,
+      "returned_start": false,
+      "excluded": false,
+      "legs": [
+        {
+          "leg": 1,
+          "target": "unfinished",
+          "start_sim_s": 1.3,
+          "end_sim_s": 98.9,
+          "sim_s": 97.60000000000001,
+          "own_tracked_path_m": 8.699405583529575,
+          "actual_path_m": 2.162458448005875,
+          "status": "HOST_ERROR",
+          "budget_failed": false
+        }
+      ],
+      "declarations": [],
+      "return_GT_distance_m": null,
+      "reached_entities": {},
+      "failure": "physical_or_host",
+      "final_error_m": 0.30592419137747195,
+      "path_rmse_m": 0.31892488599408775,
+      "final_sigma_m": 0.1532300397301071,
+      "final_error_sigma": 1.9965027217660054,
+      "final_nees": 5.189450254742741,
+      "over_3sigma_frames": 310,
+      "error_samples": 479,
+      "map": {
+        "occupied_cells": 311,
+        "precision_015": 0.39228295819935693,
+        "precision_cell": 0.22186495176848875,
+        "wall_coverage": 0.27507163323782235,
+        "wall_error_rmse_m": 0.4403144344591012
+      },
+      "map_samples": 349,
+      "map_covered_samples": 96,
+      "tube": {
+        "occupied_cells": 41,
+        "precision_015": 0.07317073170731707,
+        "precision_cell": 0.024390243902439025,
+        "wall_coverage": 0.10256410256410256,
+        "wall_error_rmse_m": 0.35248602645718907
+      },
+      "tube_samples": 39,
+      "tube_covered_samples": 4,
+      "tube_occupied_cells": 41,
+      "outside_cells": 37,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "cue_count": 481,
+      "nodes": 318,
+      "local_match_accepted": 0,
+      "local_match_attempts": 7,
+      "local_match_success": 0.0,
+      "travelled_m": 2.162458448005875,
+      "hold_fraction": 0.004166666666666667,
+      "rotation_fraction": 0.6791666666666667,
+      "sim_s": 97.60000000000001,
+      "route_length_to_B_m": null,
+      "GT_shortest_to_B_center_m": null,
+      "route_length_ratio": null,
+      "insertion_frames": 65,
+      "insertion_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 404,
+        "low_overlap": 7,
+        "insufficient_match_points": 5,
+        "high_residual": 19,
+        "improved_proposal": 33
+      },
+      "gates": {
+        "B_arrival": false,
+        "no_false_declaration": true,
+        "tube_coverage": false,
+        "tube_precision": false,
+        "tube_rmse": false,
+        "no_outside": false,
+        "cue_ledger": true,
+        "route_ratio": false
+      }
+    },
+    {
+      "seed": 55005,
+      "condition": "T2",
+      "started": true,
+      "status": "HOST_ERROR",
+      "acquisition": {
+        "status": "HOST_ERROR",
+        "source_sha": "1f5269db3eb06f0db529941e3e3a95519c099cd0",
+        "seed": 55005,
+        "condition": "T2",
+        "model_calls": 0,
+        "freeze": false,
+        "physical_hardware": false,
+        "loadavg_start": [
+          3.28076171875,
+          4.3955078125,
+          6.56591796875
+        ],
+        "start_sim_s": 1.3,
+        "total_sim_s": 123.9,
+        "frames": 614,
+        "failure": {
+          "type": "ValueError",
+          "message": "REAL primitive requires one axis and bounded duration"
+        },
+        "enospc": false,
+        "wall_s": 356.6115472080419,
+        "loadavg_end": [
+          4.12451171875,
+          4.23828125,
+          5.74853515625
+        ],
+        "heading_contract": {
+          "shared_version": "zone-s2-realism-v145",
+          "main_sha": "6813f8a15930bbf3a039887219c76a7acb863648",
+          "command_factory": "harness.own_map_heading.command",
+          "selector": "harness.zone_solo_cyan_path_heading.select_waypoint",
+          "mode": "path_tangent_v1",
+          "host": "shared_v145",
+          "motion_model": "s2_pulse_v122_rotL_v1",
+          "return_shortcuts": false
+        },
+        "heading_mode": "path_tangent_v1",
+        "heading_visual_lock": "off",
+        "runtime_speedups": {
+          "schema": "ugrp.v7_exact_speedups.v1",
+          "mode": "relay-cache-v1",
+          "enabled": true,
+          "fallback": null,
+          "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+          "cache_maxsize": 256,
+          "physics_changed": false,
+          "log_buffering": false
+        }
+      },
+      "arrived_B": false,
+      "false_declarations": 0,
+      "returned_start": false,
+      "excluded": false,
+      "legs": [
+        {
+          "leg": 1,
+          "target": "unfinished",
+          "start_sim_s": 1.3,
+          "end_sim_s": 123.7,
+          "sim_s": 122.4,
+          "own_tracked_path_m": 18.776655614886135,
+          "actual_path_m": 2.3564739916754087,
+          "status": "HOST_ERROR",
+          "budget_failed": false
+        }
+      ],
+      "declarations": [],
+      "return_GT_distance_m": null,
+      "reached_entities": {},
+      "failure": "physical_or_host",
+      "final_error_m": 0.298494092779082,
+      "path_rmse_m": 0.3620730913370654,
+      "final_sigma_m": 0.09368255750494142,
+      "final_error_sigma": 3.1862291202216326,
+      "final_nees": 16.382177655347014,
+      "over_3sigma_frames": 205,
+      "error_samples": 603,
+      "map": {
+        "occupied_cells": 399,
+        "precision_015": 0.3508771929824561,
+        "precision_cell": 0.14285714285714285,
+        "wall_coverage": 0.2148997134670487,
+        "wall_error_rmse_m": 0.44663842453964736
+      },
+      "map_samples": 349,
+      "map_covered_samples": 75,
+      "tube": {
+        "occupied_cells": 58,
+        "precision_015": 0.3620689655172414,
+        "precision_cell": 0.13793103448275862,
+        "wall_coverage": 0.6785714285714286,
+        "wall_error_rmse_m": 0.18841473324897173
+      },
+      "tube_samples": 28,
+      "tube_covered_samples": 19,
+      "tube_occupied_cells": 58,
+      "outside_cells": 26,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "cue_count": 606,
+      "nodes": 422,
+      "local_match_accepted": 0,
+      "local_match_attempts": 10,
+      "local_match_success": 0.0,
+      "travelled_m": 2.3564739916754087,
+      "hold_fraction": 0.004966887417218543,
+      "rotation_fraction": 0.7284768211920529,
+      "sim_s": 122.4,
+      "route_length_to_B_m": null,
+      "GT_shortest_to_B_center_m": null,
+      "route_length_ratio": null,
+      "insertion_frames": 89,
+      "insertion_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 513,
+        "high_residual": 16,
+        "improved_proposal": 62,
+        "insufficient_match_points": 4,
+        "low_overlap": 6
+      },
+      "gates": {
+        "B_arrival": false,
+        "no_false_declaration": true,
+        "tube_coverage": false,
+        "tube_precision": false,
+        "tube_rmse": true,
+        "no_outside": false,
+        "cue_ledger": true,
+        "route_ratio": false
+      }
+    },
+    {
+      "seed": 55006,
+      "started": false,
+      "status": "NOT_RUN",
+      "excluded": false
+    },
+    {
+      "seed": 55007,
+      "started": false,
+      "status": "NOT_RUN",
+      "excluded": false
+    },
+    {
+      "seed": 55008,
+      "started": false,
+      "status": "NOT_RUN",
+      "excluded": false
+    },
+    {
+      "seed": 55009,
+      "started": false,
+      "status": "NOT_RUN",
+      "excluded": false
+    }
+  ],
+  "T1": {
+    "arrivals": 1,
+    "denominator": 3,
+    "error_n": 3,
+    "error_median": 0.7078852098751668,
+    "error_max": 0.7776594902298075
+  },
+  "T2": {
+    "arrivals": 0,
+    "denominator": 6,
+    "error_n": 2,
+    "error_median": 0.302209142078277,
+    "error_max": 0.30592419137747195
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "active-frontier-cycle", "version": "1.0.0",
+    "purpose": "egomap45 one 180s DEV frontier observation lifecycle",
+    "entry": "scripts/run_active_frontier_cycle.py", "runner": "scripts.run_active_frontier_cycle",
+    "docs": "experiments/2026-10-08-frontier-visibility/README.md",
+    "requires": "Committed source, exclusive agent lock, seed45001, no freeze or model",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha"], "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

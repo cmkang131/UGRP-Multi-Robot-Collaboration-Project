@@ -1,0 +1,321 @@
+{
+  "case": "s911-r1",
+  "scope": "evaluation-only recorded-state geometry; no dynamics, rendering, models or timing benchmark",
+  "source_sha": "fde6f50594b0fcc84c96fca2e0ce2d1b901d5d2d",
+  "mujoco_geometry_version": "3.12.0",
+  "ray_count": 1308332,
+  "recorded_frames": 1848,
+  "wall_rectangles": 6,
+  "wall_samples_all": 349,
+  "visibility_counts": {
+    "visible": 103,
+    "contact_visible": 103,
+    "contact_near4": 88,
+    "contact_admitted": 103
+  },
+  "origin_eval_only": [
+    0.22680456372770658,
+    0.05000000599772155,
+    4.689800244275325e-09
+  ],
+  "conditions": {
+    "off": {
+      "original": {
+        "occupied_cells": 193,
+        "precision_015": 0.47150259067357514,
+        "precision_cell": 0.35751295336787564,
+        "wall_coverage": 0.28653295128939826,
+        "wall_error_rmse_m": 0.5424208044613068,
+        "covered_all_count": 100,
+        "recall_visible": 0.6504854368932039,
+        "covered_visible_count": 67,
+        "recall_contact_visible": 0.6504854368932039,
+        "covered_contact_visible_count": 67,
+        "recall_contact_near4": 0.7613636363636364,
+        "covered_contact_near4_count": 67,
+        "recall_contact_admitted": 0.6504854368932039,
+        "covered_contact_admitted_count": 67
+      },
+      "matched_gt_pose": {
+        "occupied_cells": 189,
+        "precision_015": 0.6666666666666666,
+        "precision_cell": 0.5396825396825397,
+        "wall_coverage": 0.33810888252148996,
+        "wall_error_rmse_m": 0.18523744886559623,
+        "covered_all_count": 118,
+        "recall_visible": 0.7766990291262136,
+        "covered_visible_count": 80,
+        "recall_contact_visible": 0.7766990291262136,
+        "covered_contact_visible_count": 80,
+        "recall_contact_near4": 0.9090909090909091,
+        "covered_contact_near4_count": 80,
+        "recall_contact_admitted": 0.7766990291262136,
+        "covered_contact_admitted_count": 80
+      },
+      "attribution": {
+        "false_cells": 102,
+        "cell_equivalents": {
+          "range_projection": 21.40264297583978,
+          "pose": 57.70846813527132,
+          "nonwall": 22.388888888888896,
+          "cell_boundary": 0.5,
+          "unresolved": 0.0
+        },
+        "fractions": {
+          "range_projection": 0.2098298330964684,
+          "pose": 0.5657692954438365,
+          "nonwall": 0.21949891067538133,
+          "cell_boundary": 0.004901960784313725,
+          "unresolved": 0.0
+        },
+        "mixed_patch_cell_equivalents": 28.5,
+        "behind_camera_cell_equivalents": 1.0
+      },
+      "frames": 138,
+      "exact_original_grid_and_metrics": true
+    },
+    "v2": {
+      "original": {
+        "occupied_cells": 169,
+        "precision_015": 0.5502958579881657,
+        "precision_cell": 0.4319526627218935,
+        "wall_coverage": 0.2922636103151863,
+        "wall_error_rmse_m": 0.30368410038890065,
+        "covered_all_count": 102,
+        "recall_visible": 0.6796116504854369,
+        "covered_visible_count": 70,
+        "recall_contact_visible": 0.6796116504854369,
+        "covered_contact_visible_count": 70,
+        "recall_contact_near4": 0.7954545454545454,
+        "covered_contact_near4_count": 70,
+        "recall_contact_admitted": 0.6796116504854369,
+        "covered_contact_admitted_count": 70
+      },
+      "matched_gt_pose": {
+        "occupied_cells": 189,
+        "precision_015": 0.6666666666666666,
+        "precision_cell": 0.5396825396825397,
+        "wall_coverage": 0.33810888252148996,
+        "wall_error_rmse_m": 0.18523744886559623,
+        "covered_all_count": 118,
+        "recall_visible": 0.7766990291262136,
+        "covered_visible_count": 80,
+        "recall_contact_visible": 0.7766990291262136,
+        "covered_contact_visible_count": 80,
+        "recall_contact_near4": 0.9090909090909091,
+        "covered_contact_near4_count": 80,
+        "recall_contact_admitted": 0.7766990291262136,
+        "covered_contact_admitted_count": 80
+      },
+      "attribution": {
+        "false_cells": 76,
+        "cell_equivalents": {
+          "range_projection": 18.435475972226225,
+          "pose": 35.51711950963043,
+          "nonwall": 19.111111111111114,
+          "cell_boundary": 2.9362934070322284,
+          "unresolved": 0.0
+        },
+        "fractions": {
+          "range_projection": 0.24257205226613454,
+          "pose": 0.46733051986355834,
+          "nonwall": 0.2514619883040936,
+          "cell_boundary": 0.038635439566213535,
+          "unresolved": 0.0
+        },
+        "mixed_patch_cell_equivalents": 23.0,
+        "behind_camera_cell_equivalents": 1.0
+      },
+      "frames": 126,
+      "exact_original_grid_and_metrics": true
+    },
+    "prob": {
+      "original": {
+        "occupied_cells": 232,
+        "precision_015": 0.47413793103448276,
+        "precision_cell": 0.38362068965517243,
+        "wall_coverage": 0.3495702005730659,
+        "wall_error_rmse_m": 0.4059413711433922,
+        "covered_all_count": 122,
+        "recall_visible": 0.7766990291262136,
+        "covered_visible_count": 80,
+        "recall_contact_visible": 0.7766990291262136,
+        "covered_contact_visible_count": 80,
+        "recall_contact_near4": 0.9090909090909091,
+        "covered_contact_near4_count": 80,
+        "recall_contact_admitted": 0.7766990291262136,
+        "covered_contact_admitted_count": 80
+      },
+      "matched_gt_pose": {
+        "occupied_cells": 173,
+        "precision_015": 0.6994219653179191,
+        "precision_cell": 0.5838150289017341,
+        "wall_coverage": 0.33810888252148996,
+        "wall_error_rmse_m": 0.1775530042036078,
+        "covered_all_count": 118,
+        "recall_visible": 0.7766990291262136,
+        "covered_visible_count": 80,
+        "recall_contact_visible": 0.7766990291262136,
+        "covered_contact_visible_count": 80,
+        "recall_contact_near4": 0.9090909090909091,
+        "covered_contact_near4_count": 80,
+        "recall_contact_admitted": 0.7766990291262136,
+        "covered_contact_admitted_count": 80
+      },
+      "attribution": {
+        "false_cells": 122,
+        "cell_equivalents": {
+          "range_projection": 28.677095945616774,
+          "pose": 62.49463375678572,
+          "nonwall": 22.81481481481482,
+          "cell_boundary": 8.013455482782687,
+          "unresolved": 0.0
+        },
+        "fractions": {
+          "range_projection": 0.23505816348866207,
+          "pose": 0.5122510963670961,
+          "nonwall": 0.18700667880995755,
+          "cell_boundary": 0.06568406133428432,
+          "unresolved": 0.0
+        },
+        "mixed_patch_cell_equivalents": 28.5,
+        "behind_camera_cell_equivalents": 1.0
+      },
+      "frames": 123,
+      "exact_original_grid_and_metrics": true
+    },
+    "rbpf100": {
+      "original": {
+        "occupied_cells": 192,
+        "precision_015": 0.59375,
+        "precision_cell": 0.390625,
+        "wall_coverage": 0.27507163323782235,
+        "wall_error_rmse_m": 0.22464507056702296,
+        "covered_all_count": 96,
+        "recall_visible": 0.6116504854368932,
+        "covered_visible_count": 63,
+        "recall_contact_visible": 0.6116504854368932,
+        "covered_contact_visible_count": 63,
+        "recall_contact_near4": 0.7159090909090909,
+        "covered_contact_near4_count": 63,
+        "recall_contact_admitted": 0.6116504854368932,
+        "covered_contact_admitted_count": 63
+      },
+      "matched_gt_pose": {
+        "occupied_cells": 189,
+        "precision_015": 0.6666666666666666,
+        "precision_cell": 0.5396825396825397,
+        "wall_coverage": 0.33810888252148996,
+        "wall_error_rmse_m": 0.18523744886559623,
+        "covered_all_count": 118,
+        "recall_visible": 0.7766990291262136,
+        "covered_visible_count": 80,
+        "recall_contact_visible": 0.7766990291262136,
+        "covered_contact_visible_count": 80,
+        "recall_contact_near4": 0.9090909090909091,
+        "covered_contact_near4_count": 80,
+        "recall_contact_admitted": 0.7766990291262136,
+        "covered_contact_admitted_count": 80
+      },
+      "attribution": {
+        "false_cells": 78,
+        "cell_equivalents": {
+          "range_projection": 14.89343004231099,
+          "pose": 38.597632533763154,
+          "nonwall": 19.46656304764269,
+          "cell_boundary": 5.042374376283179,
+          "unresolved": 0.0
+        },
+        "fractions": {
+          "range_projection": 0.19094141079885885,
+          "pose": 0.49484144274055325,
+          "nonwall": 0.24957132112362423,
+          "cell_boundary": 0.06464582533696384,
+          "unresolved": 0.0
+        },
+        "mixed_patch_cell_equivalents": 22.940434603920476,
+        "behind_camera_cell_equivalents": 0.0
+      },
+      "frames": 136,
+      "exact_original_grid_and_metrics": true
+    }
+  },
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-odom-grid-v1-complete/s911-r1/observations.jsonl",
+      "sha256": "e02e11903e4d47256764bc03c42180b5e2b40abe482ef570866a1f81e1c5eb62"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-odom-grid-v1-complete/s911-r1/summary.json",
+      "sha256": "ca530fb68ea268af4d7a899119d5bc15e2d125d67ff31de1c48258056ccf6ba7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/scene.xml",
+      "sha256": "c0ca59eaff06c191f6e933c1e680350b64dc0839efe7271794b977b438faa5e3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/inputs/static_map.json",
+      "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/eval_only/trajectory.jsonl",
+      "sha256": "d9b0ef6dbc3ba7a4ce287922a59764fccc6c0b838bf8aabf44c44266e7579714"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/eval_only/r1/camera_labels.jsonl",
+      "sha256": "2d899d65b2457e351d6f1df61c299e47c5ecc466d40604a2cd999338690a518f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r1/frames.jsonl",
+      "sha256": "160ca4badd5359a014fdcbdbad112ecb3b67dcff14571558f80b35342cb2ff6c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-csm-v2-development/s911-r1/off/observations.jsonl",
+      "sha256": "e02e11903e4d47256764bc03c42180b5e2b40abe482ef570866a1f81e1c5eb62"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-csm-v2-development/s911-r1/off/grid.json",
+      "sha256": "788ceadbb2f6848982eb431cdc2ec2efad846194ca067729be051c8f36c03dfb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-csm-v2-development/s911-r1/off/summary.json",
+      "sha256": "7ebe1973af6b33da20d0e3d82984ba39b9a9c846e16ac6890bce0ad396b1ac1c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-csm-v2-development/s911-r1/on/map_ledger.jsonl",
+      "sha256": "0e38ec1fdb2c795b4aaf2074f8178d09906656cee52a680a50ba4551414230c1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-csm-v2-development/s911-r1/on/grid.json",
+      "sha256": "04943162850c32f326d3b860c3f98ff4b0238adfed97ddd9a7919ddb71c59a34"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-csm-v2-development/s911-r1/on/summary.json",
+      "sha256": "d91008be20f4496a0eff8b01f1d87f5796953d2d14209f155aed2cf1dac002c3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete/prob/s911-r1/map_ledger.jsonl",
+      "sha256": "b979fc11b4ed2945b164f8bc805be269ec6b81c1918799e9ae06409f0e881899"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete/prob/s911-r1/grid.json",
+      "sha256": "21041455e7a502d6de695efecd9d4fb391c744ff0281c77f1e84fb65d7f48ed6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete/prob/s911-r1/summary.json",
+      "sha256": "fef8df311454a4cc25736267539d998a2d57e89f023ecae567a0bdb2c8e3f0af"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete/rbpf100/s911-r1/map_ledger.jsonl",
+      "sha256": "119752c44a04750293614d4666731d05b965cdf2ebaaee6ba99458b3fba2472b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete/rbpf100/s911-r1/grid.json",
+      "sha256": "a41514900c14acb64d7b116162cbe30b931013cfe3974a3b992749b8625e090a"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete/rbpf100/s911-r1/summary.json",
+      "sha256": "be02bba9cb1c63402db03a5c8398d61e08e386aa82ba84df07aacda185c750c0"
+    }
+  ]
+}

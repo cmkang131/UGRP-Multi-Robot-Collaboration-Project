@@ -1,0 +1,172 @@
+{
+  "0.1": {
+    "resolution": 0.1,
+    "shape": [
+      59,
+      67
+    ],
+    "free_cells": 937,
+    "occupied_cells": 48,
+    "unknown_cells": 2968,
+    "free_components": 7,
+    "start_component_cells": 924,
+    "footprint_clear": true,
+    "frontiers": [
+      {
+        "center": [
+          4.679477611940298,
+          1.8466417910447752
+        ],
+        "goal_raw": 0,
+        "goal_cost": 253,
+        "blacklisted": false,
+        "path_points": 0,
+        "navfn_cells": 99
+      },
+      {
+        "center": [
+          5.450490196078429,
+          4.034803921568627
+        ],
+        "goal_raw": 0,
+        "goal_cost": 0,
+        "blacklisted": false,
+        "path_points": 0,
+        "navfn_cells": 0
+      }
+    ],
+    "available": 0,
+    "false_wall_cells_gt_eval": 38,
+    "GT_EVALUATION_ONLY_false_cells_removed": {
+      "resolution": 0.1,
+      "shape": [
+        59,
+        67
+      ],
+      "free_cells": 975,
+      "occupied_cells": 10,
+      "unknown_cells": 2968,
+      "free_components": 6,
+      "start_component_cells": 966,
+      "footprint_clear": true,
+      "frontiers": [
+        {
+          "center": [
+            5.0365145228215775,
+            2.8174273858921177
+          ],
+          "goal_raw": 0,
+          "goal_cost": 0,
+          "blacklisted": false,
+          "path_points": 54,
+          "navfn_cells": 52
+        }
+      ],
+      "available": 1
+    }
+  },
+  "0.05": {
+    "resolution": 0.05,
+    "shape": [
+      117,
+      134
+    ],
+    "free_cells": 3313,
+    "occupied_cells": 96,
+    "unknown_cells": 12269,
+    "free_components": 22,
+    "start_component_cells": 3265,
+    "footprint_clear": true,
+    "frontiers": [
+      {
+        "center": [
+          5.176647564469913,
+          3.952435530085959
+        ],
+        "goal_raw": 255,
+        "goal_cost": 255,
+        "blacklisted": false,
+        "path_points": 151,
+        "navfn_cells": 149
+      },
+      {
+        "center": [
+          6.065746753246754,
+          2.004383116883119
+        ],
+        "goal_raw": 0,
+        "goal_cost": 137,
+        "blacklisted": false,
+        "path_points": 166,
+        "navfn_cells": 164
+      },
+      {
+        "center": [
+          2.8873786407766993,
+          2.221844660194175
+        ],
+        "goal_raw": 0,
+        "goal_cost": 0,
+        "blacklisted": false,
+        "path_points": 9,
+        "navfn_cells": 7
+      },
+      {
+        "center": [
+          5.192905405405406,
+          1.2976351351351347
+        ],
+        "goal_raw": 0,
+        "goal_cost": 41,
+        "blacklisted": false,
+        "path_points": 115,
+        "navfn_cells": 113
+      },
+      {
+        "center": [
+          6.104166666666668,
+          2.790833333333333
+        ],
+        "goal_raw": 0,
+        "goal_cost": 45,
+        "blacklisted": false,
+        "path_points": 196,
+        "navfn_cells": 194
+      }
+    ],
+    "available": 5,
+    "false_wall_cells_gt_eval": 64,
+    "GT_EVALUATION_ONLY_false_cells_removed": {
+      "resolution": 0.05,
+      "shape": [
+        117,
+        134
+      ],
+      "free_cells": 3377,
+      "occupied_cells": 32,
+      "unknown_cells": 12269,
+      "free_components": 20,
+      "start_component_cells": 3332,
+      "footprint_clear": true,
+      "frontiers": [
+        {
+          "center": [
+            5.106404109589042,
+            2.944417808219174
+          ],
+          "goal_raw": 0,
+          "goal_cost": 0,
+          "blacklisted": false,
+          "path_points": 109,
+          "navfn_cells": 107
+        }
+      ],
+      "available": 1
+    }
+  },
+  "t": 90.5,
+  "navigation_epoch": 77.5,
+  "record_count": 66,
+  "full_trace_frames": 891,
+  "qualification": "0.05 navigation is rebuilt from raw own rays/own poses. GT ablation is evaluation only, never used by controller or option. No new pose/physical performance from fixed recording."
+}

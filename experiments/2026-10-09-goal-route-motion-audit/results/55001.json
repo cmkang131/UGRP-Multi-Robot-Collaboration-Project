@@ -1,0 +1,230 @@
+{
+  "seed": 55001,
+  "condition": "T1",
+  "started": true,
+  "status": "RECORDED",
+  "acquisition": {
+    "status": "RECORDED",
+    "source_sha": "5b33094635804662a8a604718aead132c420b5ba",
+    "seed": 55001,
+    "condition": "T1",
+    "model_calls": 0,
+    "freeze": false,
+    "physical_hardware": false,
+    "loadavg_start": [
+      3.86376953125,
+      3.50048828125,
+      4.13037109375
+    ],
+    "start_sim_s": 1.3,
+    "frames": 1351,
+    "total_sim_s": 271.3,
+    "stage": "budget_exhausted",
+    "reached": [],
+    "declared_B": false,
+    "declared_return": false,
+    "wall_s": 660.521823707968,
+    "loadavg_end": [
+      3.56689453125,
+      3.896484375,
+      4.1474609375
+    ],
+    "heading_contract": {
+      "shared_version": "zone-s2-realism-v145",
+      "main_sha": "6813f8a15930bbf3a039887219c76a7acb863648",
+      "command_factory": "harness.own_map_heading.command",
+      "selector": "harness.zone_solo_cyan_path_heading.select_waypoint",
+      "mode": "path_tangent_v1",
+      "host": "shared_v145",
+      "motion_model": "s2_pulse_v122_rotL_v1",
+      "return_shortcuts": false,
+      "command_contract_source": "6ffa74dfcf004458e450fde5a897dc343bd13e1b",
+      "command_contract": "single_axis_0.10_to_0.80_s"
+    },
+    "heading_mode": "path_tangent_v1",
+    "heading_visual_lock": "off",
+    "runtime_speedups": {
+      "schema": "ugrp.v7_exact_speedups.v1",
+      "mode": "relay-cache-v1",
+      "enabled": true,
+      "fallback": null,
+      "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+      "cache_maxsize": 256,
+      "physics_changed": false,
+      "log_buffering": false
+    }
+  },
+  "arrived_B": false,
+  "false_declarations": 0,
+  "returned_start": false,
+  "excluded": false,
+  "legs": [
+    {
+      "leg": 1,
+      "target": "unfinished",
+      "start_sim_s": 1.3,
+      "end_sim_s": 271.3,
+      "sim_s": 270.0,
+      "own_tracked_path_m": 24.95841974247883,
+      "actual_path_m": 4.226121406152606,
+      "status": "budget_exhausted",
+      "budget_failed": true
+    }
+  ],
+  "declarations": [],
+  "return_GT_distance_m": null,
+  "reached_entities": {},
+  "failure": "approach_or_localization",
+  "final_error_m": 0.7078852098751668,
+  "path_rmse_m": 0.3077602570769542,
+  "final_sigma_m": 0.17559714981626315,
+  "final_error_sigma": 4.03130239081822,
+  "final_nees": 72.52289432567206,
+  "over_3sigma_frames": 651,
+  "error_samples": 1341,
+  "map": {
+    "occupied_cells": 538,
+    "precision_015": 0.4052044609665427,
+    "precision_cell": 0.20074349442379183,
+    "wall_coverage": 0.4785100286532951,
+    "wall_error_rmse_m": 0.718236097553993
+  },
+  "map_samples": 349,
+  "map_covered_samples": 167,
+  "tube": {
+    "occupied_cells": 87,
+    "precision_015": 0.6666666666666666,
+    "precision_cell": 0.3333333333333333,
+    "wall_coverage": 0.4857142857142857,
+    "wall_error_rmse_m": 0.18406619621540593
+  },
+  "tube_samples": 70,
+  "tube_covered_samples": 34,
+  "tube_occupied_cells": 87,
+  "outside_cells": 108,
+  "contacts": {
+    "wall": 0,
+    "robot": 0
+  },
+  "cue_count": 1342,
+  "nodes": 906,
+  "local_match_accepted": 4,
+  "local_match_attempts": 16,
+  "local_match_success": 0.25,
+  "travelled_m": 4.226121406152606,
+  "hold_fraction": 0.0924683072334079,
+  "rotation_fraction": 0.7002237136465325,
+  "sim_s": 270.0,
+  "route_length_to_B_m": null,
+  "GT_shortest_to_B_center_m": null,
+  "route_length_ratio": null,
+  "insertion_frames": 188,
+  "insertion_reasons": {
+    "bootstrap": 1,
+    "gmapping_motion_gate": 1150,
+    "high_residual": 29,
+    "low_overlap": 10,
+    "insufficient_match_points": 6,
+    "search_boundary": 2,
+    "improved_proposal": 140
+  },
+  "gates": {
+    "B_arrival": false,
+    "no_false_declaration": true,
+    "tube_coverage": false,
+    "tube_precision": false,
+    "tube_rmse": true,
+    "no_outside": false,
+    "cue_ledger": true,
+    "route_ratio": false
+  },
+  "motion_audit": {
+    "dr_path_m": 5.876615982354703,
+    "posterior_path_m": 24.95841974247883,
+    "actual_path_m": 4.226114211341205,
+    "dr_to_actual": 1.390548311871035,
+    "posterior_to_actual": 5.905760822909231,
+    "correction_norm_sum_m": 19.55792459306304,
+    "pulse_groups": [
+      {
+        "axis": "forward",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 278,
+        "predicted_xy_sum_m": 3.5927090289405417,
+        "actual_xy_sum_m": 3.5737657922184463,
+        "predicted_body_mean": [
+          0.012917157771402074,
+          -0.00040206798082011234,
+          -0.0002937895356369216
+        ],
+        "actual_body_mean": [
+          0.01285052980026,
+          3.961870314860159e-06,
+          0.0003495044994724934
+        ],
+        "actual_body_std": [
+          0.0006280666856299943,
+          0.0003495258074515873,
+          0.004570459829180441
+        ],
+        "predicted_yaw_sum_deg": -4.679546327074879,
+        "actual_yaw_sum_deg": 5.5669869018885185
+      },
+      {
+        "axis": "turn",
+        "u": -0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 368,
+        "predicted_xy_sum_m": 0.6733275949746202,
+        "actual_xy_sum_m": 0.24874805106381076,
+        "predicted_body_mean": [
+          -0.0002967923972441449,
+          -0.001805462939235208,
+          -0.10358137147758174
+        ],
+        "actual_body_mean": [
+          6.440885827829384e-05,
+          0.0002929533439502231,
+          -0.1032822737521857
+        ],
+        "actual_body_std": [
+          0.00048734562158227857,
+          0.00047977112305780167,
+          0.004283838107207904
+        ],
+        "predicted_yaw_sum_deg": -2183.9973552379406,
+        "actual_yaw_sum_deg": -2177.6909255015353
+      },
+      {
+        "axis": "turn",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 571,
+        "predicted_xy_sum_m": 1.6105793584395989,
+        "actual_xy_sum_m": 0.3858523726048239,
+        "predicted_body_mean": [
+          0.00013277632403878954,
+          -0.0028175025064410253,
+          0.10354346792033206
+        ],
+        "actual_body_mean": [
+          6.966810968706291e-05,
+          -0.0002933497133172592,
+          0.10362045154517902
+        ],
+        "actual_body_std": [
+          0.0005215601714222234,
+          0.0004569750113013524,
+          0.004476060503730057
+        ],
+        "predicted_yaw_sum_deg": 3387.5167172584615,
+        "actual_yaw_sum_deg": 3390.0353050685876
+      }
+    ],
+    "command_replay_sha256": "30049597b56c561b78de9da8eb4d263ed636246aa00faf049bbab37513832036"
+  }
+}

@@ -1,0 +1,434 @@
+{
+  "case": "s1047",
+  "camera_pitch": "online_vp_v1",
+  "split": "confirmation_replay",
+  "frames": 6,
+  "points": 276,
+  "positive": 120,
+  "within4m": 120,
+  "metrics": {
+    "baseline": {
+      "n": 276,
+      "median": 0.6647947232084787,
+      "p05": 0.46191266978002543,
+      "p90": 0.7394839104014304,
+      "p95": 0.756289996532092,
+      "rmse": 0.6359046472340247
+    },
+    "candidate": {
+      "n": 120,
+      "median": 0.6740485276365556,
+      "p05": 0.007977965323146659,
+      "p90": 0.7560087203433717,
+      "p95": 0.766377388661469,
+      "rmse": 0.5728621408796399
+    },
+    "oracle": {
+      "n": 276,
+      "median": 0.020002636140632246,
+      "p05": 0.002830102765647425,
+      "p90": 0.05499461103828642,
+      "p95": 0.06621655593424328,
+      "rmse": 0.031788126908308234
+    }
+  },
+  "counts": {
+    "accepted": 5,
+    "insufficient_vertical_support": 1
+  },
+  "pitch_delta_deg": {
+    "n": 6,
+    "median": 4.414821286098085,
+    "p05": -0.22864559964680886,
+    "p90": 16.886088360579652,
+    "p95": 18.79622167004241
+  },
+  "gate": {
+    "checks": {
+      "points": true,
+      "positive": false,
+      "valid_fraction": false,
+      "median": false,
+      "p90": false,
+      "nonincrease": false
+    },
+    "passed": false
+  },
+  "frame_scores": [
+    {
+      "frame_id": 147,
+      "fixed_points": 41,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": true,
+        "reason": "accepted",
+        "lines": 29,
+        "vps": [
+          [
+            0.7391272114931514,
+            -0.13239770998189307,
+            0.6604254777201655
+          ],
+          [
+            -0.6735658486329718,
+            -0.14528460457045672,
+            0.7247078247336307
+          ],
+          [
+            0.0,
+            0.9804913219217857,
+            0.19656237594226755
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 1.3684448348142684,
+        "support_lines": [
+          10,
+          10,
+          2
+        ],
+        "pitch_deg": -11.33600771685714
+      },
+      "metrics": {
+        "baseline": {
+          "n": 41,
+          "median": 0.6924832915660485,
+          "p05": 0.6477728075822663,
+          "p90": 0.7465432143384888,
+          "p95": 0.7544975362309413
+        },
+        "candidate": {
+          "n": 41,
+          "median": 0.0232638595519997,
+          "p05": 0.0026655131213339164,
+          "p90": 0.0702995085534194,
+          "p95": 0.07748322733204041
+        },
+        "oracle": {
+          "n": 41,
+          "median": 0.024137885384165038,
+          "p05": 0.0027850809772604,
+          "p90": 0.0726322713632889,
+          "p95": 0.07979176356562437
+        }
+      },
+      "candidate_pitch_deg": -11.336007716857148,
+      "actual_pitch_deg": -11.296979537213902
+    },
+    {
+      "frame_id": 311,
+      "fixed_points": 78,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": true,
+        "reason": "accepted",
+        "lines": 40,
+        "vps": [
+          [
+            0.15918246373201034,
+            -0.20090534375564847,
+            0.9665909093771946
+          ],
+          [
+            -0.9866563261082367,
+            0.0015512720265204237,
+            0.1628093600064092
+          ],
+          [
+            0.034208715023790554,
+            0.9796094316055624,
+            0.19797758793825151
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 7.030734497847895,
+        "support_lines": [
+          8,
+          21,
+          5
+        ],
+        "pitch_deg": -11.418718736940686
+      },
+      "metrics": {
+        "baseline": {
+          "n": 78,
+          "median": 0.6677211424290378,
+          "p05": 0.5434215442519277,
+          "p90": 0.703852693781745,
+          "p95": 0.7084707263963218
+        },
+        "candidate": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        },
+        "oracle": {
+          "n": 78,
+          "median": 0.013019648556601073,
+          "p05": 0.0014362977162283332,
+          "p90": 0.022125788151851466,
+          "p95": 0.02348535855715057
+        }
+      },
+      "candidate_pitch_deg": -11.418718736940699,
+      "actual_pitch_deg": -19.04001369724187
+    },
+    {
+      "frame_id": 437,
+      "fixed_points": 78,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": true,
+        "reason": "accepted",
+        "lines": 40,
+        "vps": [
+          [
+            0.26041743361557906,
+            -0.09996488768018072,
+            0.9603071287354709
+          ],
+          [
+            -0.9654940135203754,
+            -0.02904073079321418,
+            0.25880097722248474
+          ],
+          [
+            -0.002017009951671135,
+            0.9945670707617341,
+            0.10407820822476951
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 12.207543243385198,
+        "support_lines": [
+          1,
+          26,
+          6
+        ],
+        "pitch_deg": -5.9740608015689585
+      },
+      "metrics": {
+        "baseline": {
+          "n": 78,
+          "median": 0.48414265238916576,
+          "p05": 0.4554310526612685,
+          "p90": 0.51015123381127,
+          "p95": 0.5135684110370452
+        },
+        "candidate": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        },
+        "oracle": {
+          "n": 78,
+          "median": 0.025754711593561373,
+          "p05": 0.00681520571480969,
+          "p90": 0.0423557864415887,
+          "p95": 0.044404809178962716
+        }
+      },
+      "candidate_pitch_deg": -5.9740608015689585,
+      "actual_pitch_deg": -19.039882543223094
+    },
+    {
+      "frame_id": 561,
+      "fixed_points": 79,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": false,
+        "reason": "insufficient_vertical_support",
+        "lines": 39,
+        "vps": [
+          [
+            0.9996830504436052,
+            -0.008343613939761355,
+            0.02375253170069814
+          ],
+          [
+            -0.025175357605726645,
+            -0.3313148368186389,
+            0.9431843299553181
+          ],
+          [
+            0.0,
+            0.9434833634983647,
+            0.33141988896536184
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 1.1740063779035277,
+        "support_lines": [
+          25,
+          7,
+          1
+        ]
+      },
+      "metrics": {
+        "baseline": {
+          "n": 79,
+          "median": 0.7090498720093107,
+          "p05": 0.603941546656506,
+          "p90": 0.7631678467728106,
+          "p95": 0.7707741687658343
+        },
+        "candidate": {
+          "n": 79,
+          "median": 0.7090498720093107,
+          "p05": 0.603941546656506,
+          "p90": 0.7631678467728106,
+          "p95": 0.7707741687658343
+        },
+        "oracle": {
+          "n": 79,
+          "median": 0.030626200511800226,
+          "p05": 0.002762066900840223,
+          "p90": 0.06616445174790311,
+          "p95": 0.07057273250062024
+        }
+      },
+      "candidate_pitch_deg": -18.1809995808156,
+      "actual_pitch_deg": -19.3893471927106
+    },
+    {
+      "frame_id": 711,
+      "fixed_points": 0,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": true,
+        "reason": "accepted",
+        "lines": 13,
+        "vps": [
+          [
+            0.4778422828665553,
+            -0.2385399101398654,
+            0.8454380308309676
+          ],
+          [
+            -0.8784456375475223,
+            -0.12975698890322102,
+            0.4598873619751868
+          ],
+          [
+            0.0,
+            0.9624249818706916,
+            0.27154770164963427
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 19.127252157523408,
+        "support_lines": [
+          3,
+          1,
+          3
+        ],
+        "pitch_deg": -15.756384890379854
+      },
+      "metrics": {
+        "baseline": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        },
+        "candidate": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        },
+        "oracle": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "candidate_pitch_deg": -15.75638489037986,
+      "actual_pitch_deg": -36.46273986988503
+    },
+    {
+      "frame_id": 859,
+      "fixed_points": 0,
+      "meta": {
+        "option": "online_vp_v1",
+        "accepted": true,
+        "reason": "accepted",
+        "lines": 11,
+        "vps": [
+          [
+            0.9998020659613335,
+            -0.015258494031439532,
+            0.012767429629404093
+          ],
+          [
+            -0.019895448738272512,
+            -0.7667820840620595,
+            0.6415991012158195
+          ],
+          [
+            0.0,
+            0.6417261435733218,
+            0.7669338671974999
+          ]
+        ],
+        "vertical_axis": 2,
+        "axis_delta_deg": 1.0176198013702797,
+        "support_lines": [
+          5,
+          2,
+          2
+        ],
+        "pitch_deg": -50.07934556967265
+      },
+      "metrics": {
+        "baseline": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        },
+        "candidate": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        },
+        "oracle": {
+          "n": 0,
+          "median": null,
+          "p05": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "candidate_pitch_deg": -50.079345569672654,
+      "actual_pitch_deg": -49.78749416335799
+    }
+  ],
+  "prediction_sha256": "797ff5983613c3d5aca4c5d9394aa01b73c291df1b9ff12dadb56af006e06849",
+  "hashes": {
+    "experiments/2026-10-07-online-camera-pitch/README.md": "813b17fe3fdc45f6a435148cfd03b5f9e6729119172b84b4d09ef5593764b928",
+    "experiments/2026-10-07-online-camera-pitch/SOURCES.json": "36e151448ded77945fca9bb37147201d5b7b38b9080dbc49f7826c37a246689b",
+    "experiments/2026-10-07-online-camera-pitch/code/evaluate_pitch.py": "8af2249d025fdd195557a183a2cd3bd20b6cc1b24aa40783ed72a631d8582f8c",
+    "harness/online_camera_pitch.py": "cafc11c4b44eff03c2a75a08275dcf1a318394ea19c0279bf6dee149e1829e57",
+    "harness/vendor/lu_vp/__init__.py": "8fa823452f466e883305d3514138456841adc689b26bdd14617df6843bb7badd",
+    "harness/vendor/lu_vp/vp_detection.py": "27a75756d632ab43d17634e9edab1b6334f06ec220d7d9d61cda1bf1aa90c911",
+    "harness/vendor/lu_vp/UPSTREAM.json": "36e151448ded77945fca9bb37147201d5b7b38b9080dbc49f7826c37a246689b",
+    "experiments/2026-10-07-camera-pose-projection/code/audit.py": "f2a492a3bd22ed227803fd9e98b9f3aff5965ea101a7f27a800b5d5e3af9b728",
+    "experiments/2026-10-07-camera-pose-projection/code/evaluate_fk.py": "c1634a26a624cbd6d9daa08bec44c759bda38d44fa7dbcc60e42f7d68a31e461",
+    "experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py": "503b6f9008cf4c50300ca0a0aa14120f89381ef6d38c98414bc126d10bb34cd1",
+    "experiments/2026-10-07-wall-floor-boundary/annotation-sample.json": "e545f71d93b41388ddfd9c93c430a05317cd6ddafcc7f17a7f6d40b413dd674f"
+  },
+  "physics": 0,
+  "models": 0
+}

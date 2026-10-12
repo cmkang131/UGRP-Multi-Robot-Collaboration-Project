@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "own-teach-capture", "version": "1.0.0",
+    "purpose": "egomap53 VT&R camera keyframe capture, two initial return trials then gated four",
+    "entry": "scripts/run_teach_capture.py", "runner": "scripts.run_teach_capture",
+    "docs": "experiments/2026-10-09-teach-capture/README.md",
+    "requires": "Frozen committed SHA, exclusive lock, seeds49001-49006, no GT control/model/freeze",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--seed", "--expected-source-sha"], "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

@@ -1,0 +1,90 @@
+{
+  "readonly_ref": "45b0c173d34f53c2016e2560cdc70c9a908a8325",
+  "files": [
+    {
+      "path": "harness/zone_s2_realism_contract_v122.py",
+      "sha256": "d1693d1c01da70e802bee7e21abeaefe9a2bf2716f4e78dec40d9fd43b873897",
+      "source_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/45b0c173d34f53c2016e2560cdc70c9a908a8325/harness/zone_s2_realism_contract_v122.py"
+    },
+    {
+      "path": "harness/zone_solo_cyan_pulse_cal.py",
+      "sha256": "44a51b1bc5a95aa35f87d039741c2813101a90c87c287873947150f2d85d89be",
+      "source_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/45b0c173d34f53c2016e2560cdc70c9a908a8325/harness/zone_solo_cyan_pulse_cal.py"
+    },
+    {
+      "path": "configs/s2_motion_v7_pulse_cal_v1.json",
+      "sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+      "source_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/45b0c173d34f53c2016e2560cdc70c9a908a8325/configs/s2_motion_v7_pulse_cal_v1.json"
+    },
+    {
+      "path": "scripts/fit_s2_pulse_calibration.py",
+      "sha256": "664425d1202acc841b18909bf9f62c12f754b60f338da4a69c17dc18fd42532d",
+      "source_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/45b0c173d34f53c2016e2560cdc70c9a908a8325/scripts/fit_s2_pulse_calibration.py"
+    }
+  ],
+  "profiles": {
+    "0:left:-0.65:0.65": {
+      "mean_delta": [
+        0.00042614519793670696,
+        -0.16785638525949334,
+        0.01113848388591108
+      ],
+      "n": 79,
+      "source_seeds": [
+        1042,
+        1043,
+        1045
+      ],
+      "transfer": null,
+      "response_end_s": 0.75
+    },
+    "0:left:0.65:0.65": {
+      "mean_delta": [
+        0.0005829443450150198,
+        0.16850402690823743,
+        -0.009734377903264832
+      ],
+      "n": 79,
+      "source_seeds": [
+        1042,
+        1043,
+        1045
+      ],
+      "transfer": null,
+      "response_end_s": 0.75
+    }
+  },
+  "old_M1_motion": {
+    "gain": [
+      [
+        1.4655,
+        -0.0904,
+        -0.0058
+      ],
+      [
+        0.0047,
+        0.9271,
+        -0.0421
+      ],
+      [
+        -0.0045,
+        0.1279,
+        1.4885
+      ]
+    ],
+    "tau_s": 0.3,
+    "noise_rel": [
+      0.3176,
+      0.4438,
+      0.1116
+    ],
+    "noise_abs": [
+      0.01538,
+      0.00504,
+      0.01406
+    ],
+    "scale_std": 0.2148,
+    "scale_walk": 0.01
+  },
+  "model_adopted": false
+}

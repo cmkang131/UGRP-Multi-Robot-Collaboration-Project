@@ -1,0 +1,143 @@
+{
+  "active_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1011-egomap71-v1",
+  "run_filter": "^1011-egomap71-v1/",
+  "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2FNEES_p999_exceedances%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2FNEES_rows%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fhost_errors%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fmeasured%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffalse_return%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffalse_B%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E1011-egomap71-v1%2F#timeseries",
+  "pinned_tags": [
+    "offline/NEES_p999_exceedances",
+    "offline/NEES_rows",
+    "offline/host_errors",
+    "offline/measured",
+    "offline/false_return",
+    "offline/false_B",
+    "result/model_calls"
+  ],
+  "hparams_visible_columns": [
+    "outcome",
+    "result/wall_s",
+    "result/commands",
+    "result/model_calls"
+  ],
+  "events_verified": true,
+  "readback": [
+    {
+      "run": "azure-off",
+      "scalars": {
+        "offline/registered": 6.0,
+        "offline/attempted": 0.0,
+        "offline/measured": 0.0,
+        "offline/host_errors": 6.0,
+        "offline/false_return_observed": 0.0,
+        "offline/false_return_measured_denominator": 0.0,
+        "offline/false_B_observed": 0.0,
+        "offline/false_B_measured_denominator": 0.0,
+        "result/model_calls": 0.0
+      },
+      "manifest_sha256": "f75bae034b2684c296f20454b807da474213a107362fd6487989ceafb68c4e69"
+    },
+    {
+      "run": "azure-on",
+      "scalars": {
+        "offline/registered": 6.0,
+        "offline/attempted": 0.0,
+        "offline/measured": 0.0,
+        "offline/host_errors": 6.0,
+        "offline/false_return_observed": 0.0,
+        "offline/false_return_measured_denominator": 0.0,
+        "offline/false_B_observed": 0.0,
+        "offline/false_B_measured_denominator": 0.0,
+        "result/model_calls": 0.0
+      },
+      "manifest_sha256": "e0a53ab0ab0f59f05718c5c98c077dd518565c604e31b2f18e1bc9efcd225814"
+    },
+    {
+      "run": "prior-baseline",
+      "scalars": {
+        "offline/false_return": 3.0,
+        "offline/false_B": 1.0,
+        "offline/registered": 6.0,
+        "result/model_calls": 0.0
+      },
+      "manifest_sha256": "92270ba58d44605712dde5e5b3f8ba29142c66499bac0f217f2455c36b36f902"
+    },
+    {
+      "run": "cov-raw",
+      "scalars": {
+        "offline/NEES_p999_exceedances": 1747.0,
+        "offline/NEES_p95_exceedances": 3003.0,
+        "offline/NEES_rows": 5084.0,
+        "offline/NEES_mean": 20.551342010498047,
+        "result/model_calls": 0.0
+      },
+      "manifest_sha256": "7ff16fae082381bf2b94ba9687ec76518185da96978ae029666e49a8e25d697c"
+    },
+    {
+      "run": "cov-pooled",
+      "scalars": {
+        "offline/NEES_p999_exceedances": 1.0,
+        "offline/NEES_p95_exceedances": 3.0,
+        "offline/NEES_rows": 5084.0,
+        "offline/NEES_mean": 0.518980085849762,
+        "result/model_calls": 0.0
+      },
+      "manifest_sha256": "2c359d2a51602553f1ef098c0ff423942e5480931c0bea132fb7131d65ef0a29"
+    },
+    {
+      "run": "cov-stratified",
+      "scalars": {
+        "offline/NEES_p999_exceedances": 3.0,
+        "offline/NEES_p95_exceedances": 5.0,
+        "offline/NEES_rows": 5084.0,
+        "offline/NEES_mean": 0.9842069745063782,
+        "result/model_calls": 0.0
+      },
+      "manifest_sha256": "c1a80818935a7774f0e07ffc26c298358fe0747b7b3cb63f0531db9d5cd5ca35"
+    },
+    {
+      "run": "rgb-goal_reached",
+      "scalars": {
+        "offline/declarations": 1.0,
+        "offline/truth_scored": 1.0,
+        "offline/truth_false": 0.0,
+        "offline/fully_replayed": 0.0,
+        "offline/false_geometry_accepted": 0.0,
+        "offline/false_geometry_rejected": 0.0,
+        "offline/true_geometry_rejected": 0.0,
+        "result/model_calls": 0.0
+      },
+      "manifest_sha256": "af8a372f9294ab1f776a2d11e657c2773a622163fc778329c9a2debf2a859eff"
+    },
+    {
+      "run": "rgb-return_start_declared",
+      "scalars": {
+        "offline/declarations": 1.0,
+        "offline/truth_scored": 1.0,
+        "offline/truth_false": 1.0,
+        "offline/fully_replayed": 0.0,
+        "offline/false_geometry_accepted": 0.0,
+        "offline/false_geometry_rejected": 0.0,
+        "offline/true_geometry_rejected": 0.0,
+        "result/model_calls": 0.0
+      },
+      "manifest_sha256": "0b47418c28b12a705046e528a0ae53ef07b4454e9ffc68df7c31ef2d01d4421f"
+    }
+  ],
+  "new_videos_registered": 0,
+  "media_limit": "No new simulation ran; historical RGB stays remote and Mac uses fetch-lite. No new video is claimed.",
+  "unavailable_metrics": [
+    "robot success",
+    "runtime of executed trial",
+    "model response time"
+  ],
+  "live_verification": {
+    "server_logdir_verified": true,
+    "native_ui_opened": true,
+    "browser": "Chrome 강 / kcm0127@gmail.com",
+    "pinned_url_opened": true,
+    "live_values_verified": false,
+    "hparams_columns_verified": false,
+    "reason": "Owned native TensorBoard processes repeatedly received SIGTERM before shared-root loading completed; HTTP connection refused after startup. No unrelated viewer was stopped.",
+    "viewer_running": false,
+    "remaining": "Reload saved snapshot in a stable native viewer, verify pinned values and HParams columns."
+  }
+}

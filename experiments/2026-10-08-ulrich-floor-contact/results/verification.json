@@ -1,0 +1,100 @@
+{
+  "records": {
+    "31001": {
+      "prediction_sha": "e001b029dc30e7a7d53b0958bfc58f1964e7e57e",
+      "input_frames": 891,
+      "insertion_times": 47,
+      "nonempty_insertions_on": 22,
+      "original_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 844,
+        "low_overlap": 8,
+        "improved_proposal": 22,
+        "high_residual": 14,
+        "search_boundary": 2
+      },
+      "original_pose_and_camera_exact": true,
+      "original_grid_bytes_identical": true,
+      "paired_off_grid_identical_to_egomap37": true,
+      "point_recall_same_denominator": true,
+      "point_gate": false,
+      "map_gate": {
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false
+      },
+      "queue_odometry_is_command_only": true,
+      "gt_inputs_hash_verified": true
+    },
+    "32002": {
+      "prediction_sha": "9202b8971e8adffeeb3db75020eb0f47ac9900d2",
+      "input_frames": 891,
+      "insertion_times": 64,
+      "nonempty_insertions_on": 14,
+      "original_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 814,
+        "improved_proposal": 30,
+        "search_boundary": 2,
+        "high_residual": 19,
+        "insufficient_match_points": 5,
+        "low_overlap": 7
+      },
+      "original_pose_and_camera_exact": true,
+      "original_grid_bytes_identical": true,
+      "paired_off_grid_identical_to_egomap37": true,
+      "point_recall_same_denominator": true,
+      "point_gate": false,
+      "map_gate": {
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false
+      },
+      "queue_odometry_is_command_only": true,
+      "gt_inputs_hash_verified": true
+    }
+  },
+  "tests": 17,
+  "preregistration": "9d7a8662",
+  "implementation": "e001b029",
+  "freeze_commit": "9202b8971e8adffeeb3db75020eb0f47ac9900d2",
+  "held_on_evaluations": 1,
+  "physics": 0,
+  "render": 0,
+  "models": 0,
+  "lock_acquired": false,
+  "retuning": 0,
+  "original_untracked_unchanged": true,
+  "raw_path": "/Users/changmin/projects/ugrp/outputs/ulrich-floor-contact-v1",
+  "manifest_sha256": "7c38484896acc43db6cc411eb0d1aa7b226515dad3c4885997fb3d0bcae0a13a",
+  "figure_hashes": {
+    "31001-examples.jpg": {
+      "sha256": "014222783cffabfa9b64e066a3322ad8ad44eafd567ce499b0e2216b5a458c55",
+      "bytes": 150411
+    },
+    "31001-learned-bins.png": {
+      "sha256": "c655a2c6b5f848ffedea80dcd45271e9c0785ab4ca63b1dc2c5c0d002b58071b",
+      "bytes": 125878
+    },
+    "31001-time-quantiles.jpg": {
+      "sha256": "3274535deb1c15619e7f00089b185e20a4f415f942e15219503fcc421ae756fb",
+      "bytes": 59677
+    },
+    "32002-examples.jpg": {
+      "sha256": "afa44f3a64ec8a915585186504ac0d059bbe34d721ae62e104d130ab4eb29077",
+      "bytes": 154652
+    },
+    "32002-learned-bins.png": {
+      "sha256": "739ee684d2f03d49f75272ac78afb8a1f65cea7af9584437c88293b37910a539",
+      "bytes": 127354
+    },
+    "32002-time-quantiles.jpg": {
+      "sha256": "1ca6ee9dccc9b8216587c2e3966ba4e80675be1262d12fd9cc1693e74a74205d",
+      "bytes": 57910
+    },
+    "maps.png": {
+      "sha256": "a2be9dd19ac2b934389ee852e19ae904e7520ce242bfcdf889fd9194b9467b55",
+      "bytes": 86746
+    }
+  }
+}

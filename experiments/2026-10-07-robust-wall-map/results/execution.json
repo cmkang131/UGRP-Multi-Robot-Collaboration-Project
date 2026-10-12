@@ -1,0 +1,81 @@
+{
+  "source_sha": "f15c1cbb7f67dfb55bee74d4039302792bbd989d",
+  "tests": {
+    "files": [
+      "tests/test_self_wall_robust.py",
+      "tests/test_self_pose_graph.py",
+      "tests/test_wall_confidence.py"
+    ],
+    "passed": 45,
+    "failed": 0,
+    "scope": "local offline; no full CI claim"
+  },
+  "predictions": [
+    {
+      "case": "forward",
+      "prediction_sha256": "eed3228a9ac8fe9e92e5f438763233dbfc8363b17ad6aafe64bdbcf2cd1994a1",
+      "source_sha": "f15c1cbb7f67dfb55bee74d4039302792bbd989d",
+      "graph_source_sha": "0618438f",
+      "off_golden": {
+        "graph-ledger.jsonl": "ffafcd16b9f4a496984e6fe20c1d428968c634917002440256c726fe8d62d8e0",
+        "graph-poses.jsonl": "f0904fd2748f0e696575b0ef43432fbbc18722206b14b4eefbfe055c108d212f",
+        "graph-diagnostics.json": "dc4555231b87ff00284fb074e92cb9049d059089536007defd8f512164bd5dc8",
+        "grid.json": "d65333f163333c5db52907df5bd05b23a907252aa08cdfc546dc9457a12406ec",
+        "llm.txt": "011559903d06d16fa5dc42352ebb7e0a26ddcc112b8a9033bcd5312ef4b7c1bf"
+      }
+    },
+    {
+      "case": "reverse",
+      "prediction_sha256": "0ffe986720097b270524e714ff3f43bbee40e09801d815b5cd79d835985bfdb1",
+      "source_sha": "f15c1cbb7f67dfb55bee74d4039302792bbd989d",
+      "graph_source_sha": "f15c1cbb7f67dfb55bee74d4039302792bbd989d",
+      "off_golden": {
+        "graph-ledger.jsonl": "b29783529b32d9c8c114ec42a04e7fff7f24bc0f53ee6e3e2d395b06b62d896d",
+        "graph-poses.jsonl": "3d1783fb53d9ac46a10a243156b19fd98cb4ce137ff5efc6e08950fdee76cd43",
+        "graph-diagnostics.json": "a45fe28704b23b0802ee107fecb1ed6bdae8b99860062c7f9d5940e3f10f5b93",
+        "grid.json": "7e536c345520c221625d81c7bfff90030790d25e0b02f45caf7f7872923722b7",
+        "llm.txt": "51ba9b5a58222efcda5f75925fb7843d2badf4cb809f94655cf3f1ee0e61710d"
+      }
+    }
+  ],
+  "frozen_files_verified": 29,
+  "protected_user_files": {
+    "analyze_wall_detection.py": "26c818f1cd4673c7f4a1b6ab535b4e70ac68167f1f56989f10c8c6bebe0c3dd0",
+    "create_wall_visualizations.py": "e2b77c1f678d1ba27658dffecf99bcf7bfd7c12c056d41869a7a38cc482f8efa",
+    "create_wall_visualizations_v2.py": "8e6fa7f6598336bc6f7c61ad956d1902be9925443d7656cea2801362195d83c8",
+    "parameter_probe.py": "43f91584406ba91a73032514b8409357fc9c7ac2c3cbc3e72d26bce5257e103b"
+  },
+  "physical_runs": 0,
+  "render_runs": 0,
+  "model_calls": 0,
+  "agent_lock_calls": 0,
+  "motion_fitting": false,
+  "threshold_changes_after_results": false,
+  "export_implemented": false,
+  "gate_passed": 0,
+  "gate_cases": 2,
+  "host_errors": [
+    {
+      "status": "HOST_ERROR",
+      "stage": "evidence_serialization",
+      "source_sha": "0618438f",
+      "error": "TypeError: Object of type int64 is not JSON serializable",
+      "gt_read": false,
+      "graph_complete": true,
+      "hashes": {
+        "off/graph-diagnostics.json": "dc4555231b87ff00284fb074e92cb9049d059089536007defd8f512164bd5dc8",
+        "off/graph-ledger.jsonl": "ffafcd16b9f4a496984e6fe20c1d428968c634917002440256c726fe8d62d8e0",
+        "off/graph-poses.jsonl": "f0904fd2748f0e696575b0ef43432fbbc18722206b14b4eefbfe055c108d212f",
+        "off/grid.json": "d65333f163333c5db52907df5bd05b23a907252aa08cdfc546dc9457a12406ec",
+        "off/llm.txt": "011559903d06d16fa5dc42352ebb7e0a26ddcc112b8a9033bcd5312ef4b7c1bf",
+        "on/graph-diagnostics.json": "05d84cc1c962c024470eb96abf44cd3ba9ae90e7afa503139d72324a68c98076",
+        "on/graph-ledger.jsonl": "cec550aec2dfbf1a7b71edb4684c9206c58e82c925fe9b08ae6fedd8d2416f18",
+        "on/graph-poses.jsonl": "ae60fea9a710a16f4bbbfa00b73966c707e20e3fa7d5eab0588de49ac67d45c5",
+        "on/grid.json": "2fda7a65f37d9bf6a4234d8a1c8b71daadff360240e4ba9ba74d85f6a239709f"
+      }
+    }
+  ],
+  "raw_files": 25,
+  "raw_bytes": 47581450,
+  "remote_raw_backup": false
+}

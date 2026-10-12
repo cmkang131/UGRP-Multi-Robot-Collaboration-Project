@@ -1,0 +1,398 @@
+{
+  "modes": {
+    "off": {
+      "frontend": {
+        "endpoint_error_m": 1.4505923741762374,
+        "path_rmse_m": 1.7532190389774591,
+        "yaw_end_deg": -98.52421356148598,
+        "yaw_rmse_deg": 62.674113662658364,
+        "occupied_cells": 446,
+        "inserted_frames": 55,
+        "full_map": {
+          "occupied_cells": 446,
+          "precision_015": 0.10762331838565023,
+          "precision_cell": 0.04932735426008968,
+          "wall_coverage": 0.1945288753799392,
+          "wall_error_rmse_m": 1.2541956567819819
+        },
+        "region": {
+          "precision_correct": 35,
+          "precision_cells": 241,
+          "precision": 0.14522821576763487,
+          "recall_samples": 38,
+          "visible_samples": 137,
+          "total_samples": 329,
+          "recall": 0.2773722627737226
+        },
+        "sigma_xy_m": 0.0238272482358981,
+        "error_sigma_ratio": 60.87955939413839,
+        "over_2sigma": 729,
+        "pose_n": 891,
+        "resamples": 29,
+        "neff": 100.0,
+        "rejected_resamples": 19,
+        "rejected_sensor_updates": null,
+        "reasons": {
+          "bootstrap": 1,
+          "gmapping_motion_gate": 836,
+          "improved_proposal": 25,
+          "low_overlap": 13,
+          "insufficient_match_points": 3,
+          "high_residual": 13
+        }
+      },
+      "graph": {
+        "endpoint_error_m": 1.4505923741762374,
+        "path_rmse_m": 1.7532190389774591,
+        "yaw_end_deg": -98.52421356148598,
+        "yaw_rmse_deg": 62.674113662658364,
+        "occupied_cells": 446,
+        "inserted_frames": 55,
+        "full_map": {
+          "occupied_cells": 446,
+          "precision_015": 0.10762331838565023,
+          "precision_cell": 0.04932735426008968,
+          "wall_coverage": 0.1945288753799392,
+          "wall_error_rmse_m": 1.2541956567819819
+        },
+        "region": {
+          "precision_correct": 35,
+          "precision_cells": 241,
+          "precision": 0.14522821576763487,
+          "recall_samples": 38,
+          "visible_samples": 137,
+          "total_samples": 329,
+          "recall": 0.2773722627737226
+        }
+      },
+      "graph_diagnostics": {
+        "options": {
+          "submap_scans": 20,
+          "stride": 10,
+          "separation_s": 5.0,
+          "candidate_distance_m": 6.0,
+          "translation_window_m": 1.0,
+          "yaw_window_deg": 15.0,
+          "translation_step_m": 0.1,
+          "yaw_step_deg": 1.0,
+          "min_score": 0.55,
+          "min_overlap": 0.6,
+          "overlap_m": 0.2,
+          "max_residual_m": 0.15,
+          "mode_distance_m": 0.2,
+          "mode_yaw_deg": 5.0,
+          "mode_gap": 0.02,
+          "hessian_ratio": 0.03,
+          "min_points": 6,
+          "effective_points": 12.0,
+          "sigma_xy_m": 0.1,
+          "sigma_yaw_deg": 2.0,
+          "huber_delta": 1.5,
+          "max_nfev": 200
+        },
+        "loop_counts": {
+          "member_scan": 100,
+          "search_boundary": 32,
+          "ambiguous_modes": 35,
+          "low_probability": 138,
+          "insufficient_points": 14,
+          "temporal_separation": 8,
+          "unobservable": 2,
+          "high_residual": 1
+        },
+        "switch_counts": {},
+        "changed": false,
+        "optimization": {
+          "accepted": false,
+          "reason": "no_loop_constraints",
+          "switches": []
+        }
+      },
+      "seal": {
+        "source_sha": "cc6fd19860940ba067c68f93a6603cf51cbb8bf1",
+        "gt_read": false,
+        "files": {
+          "prediction.json": "5e0453ea1c9936109ff6b5ef83880b6f6be8e46a520a89094cc8895217664949",
+          "graph.json": "7cf874319fea8fc46da4a2dbcd514ca2b67aff8ffc5e8e49258e979d1a5332c2"
+        },
+        "inputs": {
+          "own-contacts.jsonl": "fca96d1ebf83b615c76eaf29ec784db57ace0f5de5ceebf519fe2d76764ce81c",
+          "robots/r3/commands.jsonl": "3b90ec1182da8f731171bdba4d8d52b1de30da12142d2e11d4db61de1866a06c"
+        }
+      }
+    },
+    "all": {
+      "frontend": {
+        "endpoint_error_m": 0.22282876144722027,
+        "path_rmse_m": 0.202418351193249,
+        "yaw_end_deg": 3.783570644851114,
+        "yaw_rmse_deg": 5.63891934133329,
+        "occupied_cells": 367,
+        "inserted_frames": 55,
+        "full_map": {
+          "occupied_cells": 367,
+          "precision_015": 0.5204359673024523,
+          "precision_cell": 0.21798365122615804,
+          "wall_coverage": 0.5896656534954408,
+          "wall_error_rmse_m": 0.4226874100239423
+        },
+        "region": {
+          "precision_correct": 89,
+          "precision_cells": 127,
+          "precision": 0.7007874015748031,
+          "recall_samples": 69,
+          "visible_samples": 137,
+          "total_samples": 329,
+          "recall": 0.5036496350364964
+        },
+        "sigma_xy_m": 0.07774408565042144,
+        "error_sigma_ratio": 2.8661828045566877,
+        "over_2sigma": 286,
+        "pose_n": 891,
+        "resamples": 12,
+        "neff": 100.0,
+        "rejected_resamples": 0,
+        "rejected_sensor_updates": 0,
+        "reasons": {
+          "bootstrap": 1,
+          "gmapping_motion_gate": 836,
+          "improved_proposal": 22,
+          "low_overlap": 11,
+          "insufficient_match_points": 3,
+          "high_residual": 13,
+          "search_boundary": 5
+        }
+      },
+      "graph": {
+        "endpoint_error_m": 0.22282876144722027,
+        "path_rmse_m": 0.202418351193249,
+        "yaw_end_deg": 3.783570644851114,
+        "yaw_rmse_deg": 5.63891934133329,
+        "occupied_cells": 367,
+        "inserted_frames": 55,
+        "full_map": {
+          "occupied_cells": 367,
+          "precision_015": 0.5204359673024523,
+          "precision_cell": 0.21798365122615804,
+          "wall_coverage": 0.5896656534954408,
+          "wall_error_rmse_m": 0.4226874100239423
+        },
+        "region": {
+          "precision_correct": 89,
+          "precision_cells": 127,
+          "precision": 0.7007874015748031,
+          "recall_samples": 69,
+          "visible_samples": 137,
+          "total_samples": 329,
+          "recall": 0.5036496350364964
+        }
+      },
+      "graph_diagnostics": {
+        "options": {
+          "submap_scans": 20,
+          "stride": 10,
+          "separation_s": 5.0,
+          "candidate_distance_m": 6.0,
+          "translation_window_m": 1.0,
+          "yaw_window_deg": 15.0,
+          "translation_step_m": 0.1,
+          "yaw_step_deg": 1.0,
+          "min_score": 0.55,
+          "min_overlap": 0.6,
+          "overlap_m": 0.2,
+          "max_residual_m": 0.15,
+          "mode_distance_m": 0.2,
+          "mode_yaw_deg": 5.0,
+          "mode_gap": 0.02,
+          "hessian_ratio": 0.03,
+          "min_points": 6,
+          "effective_points": 12.0,
+          "sigma_xy_m": 0.1,
+          "sigma_yaw_deg": 2.0,
+          "huber_delta": 1.5,
+          "max_nfev": 200
+        },
+        "loop_counts": {
+          "member_scan": 100,
+          "search_boundary": 27,
+          "low_probability": 141,
+          "ambiguous_modes": 39,
+          "insufficient_points": 14,
+          "temporal_separation": 8,
+          "unobservable": 1
+        },
+        "switch_counts": {},
+        "changed": false,
+        "optimization": {
+          "accepted": false,
+          "reason": "no_loop_constraints",
+          "switches": []
+        }
+      },
+      "seal": {
+        "source_sha": "cc6fd19860940ba067c68f93a6603cf51cbb8bf1",
+        "gt_read": false,
+        "files": {
+          "prediction.json": "cd3977648ede32a60f50d0e0a69d38aa1966c7385355d83dcda97462f32d80ad",
+          "graph.json": "f72ca0baa88fcd565934052076e88e177ed9f0844627502633b21df6143eeff5"
+        },
+        "inputs": {
+          "own-contacts.jsonl": "fca96d1ebf83b615c76eaf29ec784db57ace0f5de5ceebf519fe2d76764ce81c",
+          "robots/r3/commands.jsonl": "3b90ec1182da8f731171bdba4d8d52b1de30da12142d2e11d4db61de1866a06c"
+        }
+      },
+      "software_gate": {
+        "insertion_55": true,
+        "rejected_weight_zero": true,
+        "rejected_resample_zero": true
+      },
+      "performance_gate": {
+        "within_2sigma": false,
+        "precision_improves": true
+      }
+    },
+    "wide": {
+      "frontend": {
+        "endpoint_error_m": 0.13058751423282597,
+        "path_rmse_m": 0.24402998235632917,
+        "yaw_end_deg": 0.7560915797520593,
+        "yaw_rmse_deg": 5.464904455502504,
+        "occupied_cells": 349,
+        "inserted_frames": 55,
+        "full_map": {
+          "occupied_cells": 349,
+          "precision_015": 0.5243553008595988,
+          "precision_cell": 0.24355300859598855,
+          "wall_coverage": 0.5896656534954408,
+          "wall_error_rmse_m": 0.40186470103592
+        },
+        "region": {
+          "precision_correct": 83,
+          "precision_cells": 110,
+          "precision": 0.7545454545454545,
+          "recall_samples": 74,
+          "visible_samples": 137,
+          "total_samples": 329,
+          "recall": 0.5401459854014599
+        },
+        "sigma_xy_m": 0.09595428113146034,
+        "error_sigma_ratio": 1.3609347357197854,
+        "over_2sigma": 525,
+        "pose_n": 891,
+        "resamples": 13,
+        "neff": 100.0,
+        "rejected_resamples": 0,
+        "rejected_sensor_updates": 0,
+        "reasons": {
+          "bootstrap": 1,
+          "gmapping_motion_gate": 836,
+          "improved_proposal": 26,
+          "low_overlap": 13,
+          "insufficient_match_points": 3,
+          "high_residual": 12
+        }
+      },
+      "graph": {
+        "endpoint_error_m": 0.13058751423282597,
+        "path_rmse_m": 0.24402998235632917,
+        "yaw_end_deg": 0.7560915797520593,
+        "yaw_rmse_deg": 5.464904455502504,
+        "occupied_cells": 349,
+        "inserted_frames": 55,
+        "full_map": {
+          "occupied_cells": 349,
+          "precision_015": 0.5243553008595988,
+          "precision_cell": 0.24355300859598855,
+          "wall_coverage": 0.5896656534954408,
+          "wall_error_rmse_m": 0.40186470103592
+        },
+        "region": {
+          "precision_correct": 83,
+          "precision_cells": 110,
+          "precision": 0.7545454545454545,
+          "recall_samples": 74,
+          "visible_samples": 137,
+          "total_samples": 329,
+          "recall": 0.5401459854014599
+        }
+      },
+      "graph_diagnostics": {
+        "options": {
+          "submap_scans": 20,
+          "stride": 10,
+          "separation_s": 5.0,
+          "candidate_distance_m": 6.0,
+          "translation_window_m": 1.0,
+          "yaw_window_deg": 15.0,
+          "translation_step_m": 0.1,
+          "yaw_step_deg": 1.0,
+          "min_score": 0.55,
+          "min_overlap": 0.6,
+          "overlap_m": 0.2,
+          "max_residual_m": 0.15,
+          "mode_distance_m": 0.2,
+          "mode_yaw_deg": 5.0,
+          "mode_gap": 0.02,
+          "hessian_ratio": 0.03,
+          "min_points": 6,
+          "effective_points": 12.0,
+          "sigma_xy_m": 0.1,
+          "sigma_yaw_deg": 2.0,
+          "huber_delta": 1.5,
+          "max_nfev": 200
+        },
+        "loop_counts": {
+          "member_scan": 100,
+          "search_boundary": 22,
+          "low_probability": 140,
+          "ambiguous_modes": 45,
+          "insufficient_points": 14,
+          "temporal_separation": 8,
+          "unobservable": 1
+        },
+        "switch_counts": {},
+        "changed": false,
+        "optimization": {
+          "accepted": false,
+          "reason": "no_loop_constraints",
+          "switches": []
+        }
+      },
+      "seal": {
+        "source_sha": "cc6fd19860940ba067c68f93a6603cf51cbb8bf1",
+        "gt_read": false,
+        "files": {
+          "prediction.json": "81a06ad7f49a667c4ca3cc7a6e29960242a71518ec3a1937caea33fce7c7880a",
+          "graph.json": "8371c71fee73669ff15bb5031b3a2bb09370759f24167046725a38ec4f5cdc6b"
+        },
+        "inputs": {
+          "own-contacts.jsonl": "fca96d1ebf83b615c76eaf29ec784db57ace0f5de5ceebf519fe2d76764ce81c",
+          "robots/r3/commands.jsonl": "3b90ec1182da8f731171bdba4d8d52b1de30da12142d2e11d4db61de1866a06c"
+        }
+      },
+      "software_gate": {
+        "insertion_55": true,
+        "rejected_weight_zero": true,
+        "rejected_resample_zero": true
+      },
+      "performance_gate": {
+        "within_2sigma": true,
+        "precision_improves": true
+      }
+    }
+  },
+  "physical_runs": 0,
+  "coverage": {
+    "travelled_m": 7.378768056526994,
+    "footprint_union_m2": 2.3125000000000004,
+    "footprint_cells_005m": 925,
+    "frames": 901,
+    "mapped_frames": 7,
+    "occupied_cells": 25
+  },
+  "qualifications": [
+    "Same recorded DEV acquisition; not a new control run.",
+    "Potential visibility uses GT camera FOV, 4m and wall-only occlusion.",
+    "Graph covariance unavailable; no graph e/sigma or fake posterior reported."
+  ]
+}
