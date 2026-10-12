@@ -925,7 +925,7 @@
     "HOST_ERROR": 4,
     "B_boundary_remembered_observed": 1
   },
-  "last_recorded_utc": "2026-10-12T02:26:04.917634+00:00",
+  "last_recorded_utc": "2026-10-12T03:43:42.348774+00:00",
   "references": [
     {
       "url": "https://docs.python.org/3/library/time.html#time.monotonic",
@@ -996,41 +996,210 @@
     "61004": 107.6
   },
   "last_progress": {
-    "e2e14-b-s61001-r2": {
-      "sim_s": 187.0,
-      "wall_s": 1931.15688502,
-      "frames": 936,
-      "phase": "mapping",
-      "own_map_B_generated": true,
-      "own_B_boundary_remembered": false,
-      "own_route_generated": false
-    },
-    "e2e14-b-s61002-r2": {
-      "sim_s": 188.0,
-      "wall_s": 1920.2661124640001,
-      "frames": 941,
-      "phase": "mapping",
-      "own_map_B_generated": true,
-      "own_B_boundary_remembered": false,
-      "own_route_generated": false
-    },
-    "e2e14-b-s61003-r2": {
-      "sim_s": 175.0,
-      "wall_s": 1922.1770428920001,
-      "frames": 876,
-      "phase": "mapping",
-      "own_map_B_generated": true,
-      "own_B_boundary_remembered": false,
-      "own_route_generated": false
-    },
-    "e2e14-b-s61004-r2": {
-      "sim_s": 182.0,
-      "wall_s": 1926.6443123940003,
-      "frames": 911,
-      "phase": "mapping",
-      "own_map_B_generated": true,
-      "own_B_boundary_remembered": false,
-      "own_route_generated": false
+    "unix": 1791776010.913176,
+    "loadavg": [
+      5.08837890625,
+      5.23095703125,
+      5.6455078125
+    ],
+    "disk_free_bytes": 27921457152,
+    "runs": {
+      "e2e14-b-s61001-r2": {
+        "progress": {
+          "sim_s": 555.0,
+          "wall_s": 5996.774972428,
+          "phase": "mapping",
+          "own_map_B_generated": true,
+          "own_B_boundary_remembered": false,
+          "own_route_generated": false
+        },
+        "health_age": 5611.3724801540375,
+        "robots": {
+          "r1": {
+            "stage": "explore",
+            "map_error_m": {
+              "n": 2611,
+              "max": 1.81565187874657,
+              "median": 1.7734743472371763
+            },
+            "control_error_m": {
+              "n": 2611,
+              "max": 0.5652783522167341,
+              "median": 0.5649550324942996
+            },
+            "position_jump_m": {
+              "n": 2610,
+              "max": 0.15570970126018974,
+              "median": 0.0
+            }
+          },
+          "r2": {
+            "stage": "explore",
+            "map_error_m": {
+              "n": 2611,
+              "max": 6.892163818920007,
+              "median": 2.9444240558543235
+            },
+            "control_error_m": {
+              "n": 2611,
+              "max": 7.052825596846482,
+              "median": 3.9337080654755896
+            },
+            "position_jump_m": {
+              "n": 2610,
+              "max": 0.3101598263274056,
+              "median": 0.012923413773167186
+            }
+          }
+        }
+      },
+      "e2e14-b-s61002-r2": {
+        "progress": {
+          "sim_s": 423.0,
+          "wall_s": 5991.399202675,
+          "phase": "mapping",
+          "own_map_B_generated": true,
+          "own_B_boundary_remembered": false,
+          "own_route_generated": false
+        },
+        "health_age": 5612.0595161914825,
+        "robots": {
+          "r1": {
+            "stage": "explore",
+            "map_error_m": {
+              "n": 2046,
+              "max": 4.263945247339805,
+              "median": 1.089943279968069
+            },
+            "control_error_m": {
+              "n": 2046,
+              "max": 5.0103664931865906,
+              "median": 0.950313504987359
+            },
+            "position_jump_m": {
+              "n": 2045,
+              "max": 0.8586892136894915,
+              "median": 0.01292341377316719
+            }
+          },
+          "r2": {
+            "stage": "explore",
+            "map_error_m": {
+              "n": 2046,
+              "max": 6.694481365252879,
+              "median": 3.334221120273943
+            },
+            "control_error_m": {
+              "n": 2046,
+              "max": 6.224311512865857,
+              "median": 3.1890577270608307
+            },
+            "position_jump_m": {
+              "n": 2045,
+              "max": 0.7753108272131531,
+              "median": 0.012923413773167216
+            }
+          }
+        }
+      },
+      "e2e14-b-s61003-r2": {
+        "progress": {
+          "sim_s": 375.0,
+          "wall_s": 5989.001576765,
+          "phase": "mapping",
+          "own_map_B_generated": true,
+          "own_B_boundary_remembered": false,
+          "own_route_generated": false
+        },
+        "health_age": 5612.601091146469,
+        "robots": {
+          "r1": {
+            "stage": "explore",
+            "map_error_m": {
+              "n": 1831,
+              "max": 1.3105106475305146,
+              "median": 0.3202672003415086
+            },
+            "control_error_m": {
+              "n": 1831,
+              "max": 0.30051980690847035,
+              "median": 0.10297037710968426
+            },
+            "position_jump_m": {
+              "n": 1830,
+              "max": 0.1534981994013758,
+              "median": 0.0
+            }
+          },
+          "r2": {
+            "stage": "explore",
+            "map_error_m": {
+              "n": 1831,
+              "max": 6.811588103438018,
+              "median": 3.432442988371213
+            },
+            "control_error_m": {
+              "n": 1831,
+              "max": 7.1299161213553,
+              "median": 3.751996748991837
+            },
+            "position_jump_m": {
+              "n": 1830,
+              "max": 0.8941002011404091,
+              "median": 0.012923413773167098
+            }
+          }
+        }
+      },
+      "e2e14-b-s61004-r2": {
+        "progress": {
+          "sim_s": 469.0,
+          "wall_s": 5963.361862335,
+          "phase": "mapping",
+          "own_map_B_generated": true,
+          "own_B_boundary_remembered": false,
+          "own_route_generated": false
+        },
+        "health_age": 5613.230651855469,
+        "robots": {
+          "r1": {
+            "stage": "explore",
+            "map_error_m": {
+              "n": 2211,
+              "max": 5.742048565112647,
+              "median": 1.5910613595825307
+            },
+            "control_error_m": {
+              "n": 2211,
+              "max": 4.554551138198349,
+              "median": 1.4199540961354877
+            },
+            "position_jump_m": {
+              "n": 2210,
+              "max": 1.0354324871983889,
+              "median": 0.012923413773167155
+            }
+          },
+          "r2": {
+            "stage": "explore",
+            "map_error_m": {
+              "n": 2211,
+              "max": 0.7162427568131623,
+              "median": 0.7157399783741336
+            },
+            "control_error_m": {
+              "n": 2211,
+              "max": 0.8587900063797077,
+              "median": 0.858269386038539
+            },
+            "position_jump_m": {
+              "n": 2210,
+              "max": 0.13616748400550904,
+              "median": 0.0
+            }
+          }
+        }
+      }
     }
   },
   "progress_30min": {
@@ -1174,5 +1343,26 @@
         }
       }
     }
+  },
+  "VO_failure_diagnosis": {
+    "artifact": "vo-failure-diagnosis.json",
+    "reproduced": 4,
+    "failed_A_runs": 4,
+    "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
+    "cause": "LK forward/backward+floor mask leaves 0 points; ground() passes shape (0,1,2) to fisheye.undistortPoints and calls reshape on None; insufficient-track check occurs later at line168.",
+    "raw_feature_counts": [
+      16,
+      7,
+      19,
+      3
+    ],
+    "valid_after_filter": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "location": "harness/e2e_rgb_vo.py:161-168 and :81",
+    "scope": "Saved RGB replay on VM1; physics/render/model 0; no controller mutation or feedback to running B"
   }
 }
