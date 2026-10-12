@@ -142,6 +142,7 @@ def test_bundle_registers_v201_and_source():
 @pytest.mark.parametrize('measured', [True, False])
 def test_live_robot_wiring_feeds_driver_and_rbpf_cloud(monkeypatch, measured):
     """Real make_goal/install path: VO increment reaches the driver AND the RBPF particles."""
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
     import base64, json
     from harness.e2e_live_mapping import Robot
     from harness.s4_event_policy import Options as Study
@@ -249,6 +250,7 @@ def test_v2_option_contract_and_no_standalone_bundle():
 
 
 def test_v2_live_install_dispatch():
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
     import base64, json
     from harness.e2e_live_mapping import Robot
     from harness.s4_event_policy import Options as Study

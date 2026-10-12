@@ -128,6 +128,7 @@ def test_cli_dry_run_and_catalog(monkeypatch, capsys):
 
 def test_robot_with_all_three_wires_each_toggle():
     """Real make_goal path: VO wrapper, candidate navigator and contrast marker coexist."""
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
     import base64
     from harness.e2e_boundary_views import CandidateNavigator
     from harness.e2e_live_mapping import Robot
