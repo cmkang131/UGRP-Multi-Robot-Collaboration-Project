@@ -19,7 +19,9 @@ for h,minimum in [('x86',6*2560*2**20),('arm',12*2560*2**20),('mac',12*80*2**20)
 active=[r for r in (b/'runs').glob('e2e18-v*-s*-r*') if r.is_dir() and not (r/'EXIT').exists()]
 assert len(active)==6-len(selected),[(r.name) for r in active]
 receipt=json.loads((b/'relays/e2e18/a.json').read_text())
-validate_receipt(receipt,now=time.time()+3300,remote_url=relay_url('study_gemma4_31b_v1'))
+cap=int(min(2400,receipt['checked_unix']+receipt['valid_for_s']-time.time()-660))
+assert cap>=900,'INSUFFICIENT_RELAY_LIFETIME_FOR_BATCH'
+validate_receipt(receipt,now=time.time()+cap+600,remote_url=relay_url('study_gemma4_31b_v1'))
 old_plan=json.loads(next((b/'runs').glob('speed-gate-e2e18-*-r33-*-plan.json')).read_text())
 specs=[]
 for seed,version,mode in selected:
@@ -27,13 +29,13 @@ for seed,version,mode in selected:
  (b/'leases'/name).touch()
  meta={'class':'dev','pr':461,'branch':'codex/e2e18','sha':sha,'batch':'e2e18-r38','seed':seed,
        'execution_bundle_id':f'e2e18-v{version}','variant':mode,'sonar_frame':'site_z_v1',
-       'wall_cap_s':2400,'storage_budget_bytes':2048*2**20,'submitted_unix':time.time(),
+       'wall_cap_s':cap,'storage_budget_bytes':2048*2**20,'submitted_unix':time.time(),
        'gate_new_samples':len(selected),'continuing':len(active),'planned_concurrency':6,'research_result':False}
  (target/'RUN_META.json').write_text(json.dumps(meta)+'\n');(target/'SOURCE_SHA').write_text(sha+'\n')
  (target/'resource-admission.json').write_text(json.dumps({'loadavg':os.getloadavg(),'continuing':[r.name for r in active]})+'\n')
  command=next(x['command'] for x in old_plan if f'-s{seed}-' in x['name'])
  command=[f'e2e18-v{version}' if x=='e2e18-v241' else x for x in command]
- for flag,value in [('--timeout',3000),('--wall-cap-s',2400),('--expected-source-sha',sha),('--output',str(target/'raw')),('--arm-clearance','range_wall_v1'),('--acquisition-mobility',mode),('--sonar-frame','site_z_v1')]:
+ for flag,value in [('--timeout',cap+300),('--wall-cap-s',cap),('--expected-source-sha',sha),('--output',str(target/'raw')),('--arm-clearance','range_wall_v1'),('--acquisition-mobility',mode),('--sonar-frame','site_z_v1')]:
   command=replace_option(command,flag,value)
  specs.append(dict(name=name,target=str(target),command=command))
 plan=b/'runs'/f'speed-gate-e2e18-{host}-r38-plan.json';assert not plan.exists();plan.write_text(json.dumps(specs,indent=2)+'\n')
