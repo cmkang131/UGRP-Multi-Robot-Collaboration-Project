@@ -34,6 +34,12 @@ def undistort(points, width, height):
     return out.reshape(-1, 2)
 
 
+def undistort_norm(points, width, height):
+    """Raw pixels -> normalised pinhole rays (x/z, y/z), fisheye model."""
+    k, d = _camera(width, height)
+    return cv2.fisheye.undistortPoints(np.asarray(points, np.float64).reshape(-1, 1, 2), k, d).reshape(-1, 2)
+
+
 def distort(points, width, height):
     k, d = _camera(width, height)
     xy = (np.asarray(points, np.float64).reshape(-1, 2) - [k[0, 2], k[1, 2]]) / [k[0, 0], k[1, 1]]

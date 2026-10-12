@@ -45,9 +45,9 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     # Finite ceiling 7 h (E2E14): the old 12600 s (3.5 h) ceiling stopped case_cap_s=1800
     # SIM runs at ~12-15 wall/SIM before the case cap. Default stays 12600 s.
     if not 0 < wall_cap_s <= WALL_CAP_MAX_S:raise ValueError('FINITE_WALL_CAP_REQUIRED')
-    from harness.e2e_boundary_views import OPTION as VIEWS_OPTION
+    from harness.e2e_boundary_views import OPTIONS as VIEWS_OPTIONS
     from harness.e2e_rgb_gate import MARKER_OPTIONS
-    if boundary_views not in ('off',VIEWS_OPTION):raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
+    if boundary_views not in ('off',*VIEWS_OPTIONS):raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
     if b_marker_detect not in ('off',*MARKER_OPTIONS):raise ValueError('UNKNOWN_B_MARKER_DETECT')
     if boundary_views!='off' and exploration_progress=='off':raise ValueError('FRONTIER_PROGRESS_V1_REQUIRED_BEFORE_VIEWS')
     if mapping_budget not in ('off','case_cap_v1'):raise ValueError('UNKNOWN_MAPPING_BUDGET')
@@ -440,7 +440,7 @@ def main(argv=None):
     p.add_argument('--stall-bundle',action='store_true')
     p.add_argument('--mapping-budget',choices=('off','case_cap_v1'),default='off')
     p.add_argument('--dev-light',action='store_true')
-    p.add_argument('--boundary-views',choices=('off','candidate_views_v1'),default='off')
+    p.add_argument('--boundary-views',choices=('off','candidate_views_v1','standoff_fullquad_v1'),default='off')
     p.add_argument('--b-marker-detect',choices=('off','contrast_v1','contrast_v2'),default='off')
     p.add_argument('--wall-cap-s',type=float,default=12600.)
     p.add_argument('--exact-provenance-index',action='store_true')
