@@ -1,0 +1,177 @@
+{
+ "source_sha": "839048337a78e15d6286c9438e71a4857b970c0b",
+ "simulation": false,
+ "model_calls": 0,
+ "ultrasonic_replay": "unavailable: no recorded ranges",
+ "n": 124,
+ "N": 124,
+ "cases": [
+  {
+   "run": "e2e14-a-s61001-r2",
+   "robot": "r2",
+   "saved_frames": 31,
+   "fallback_equal": 31,
+   "vo_status": {
+    "no_previous_frame": 1,
+    "measured": 18,
+    "unknown_rigid_consensus": 7,
+    "unknown_texture": 5
+   },
+   "command_kinds": {
+    "initial_servo_command": 1,
+    "arm": 4,
+    "look": 1,
+    "mecanum": 360
+   },
+   "range_history_files": 0,
+   "us_zero": 0,
+   "mask": {
+    "frame_id": 361,
+    "image_shape": [
+     480,
+     640,
+     3
+    ],
+    "static_mask_px": 195520,
+    "image_mask_px": 193694,
+    "wall_roi_xyxy": [
+     200,
+     110,
+     540,
+     170
+    ],
+    "wall_roi_px": 20400,
+    "admitted_wall_roi_px": 20204,
+    "admitted_fraction": 0.10430885830227059,
+    "corners": 10,
+    "wall_roi_corners": 0
+   }
+  },
+  {
+   "run": "e2e14-a-s61002-r2",
+   "robot": "r1",
+   "saved_frames": 31,
+   "fallback_equal": 31,
+   "vo_status": {
+    "no_previous_frame": 1,
+    "measured": 25,
+    "unknown_rigid_consensus": 2,
+    "unknown_texture": 3
+   },
+   "command_kinds": {
+    "initial_servo_command": 1,
+    "arm": 4,
+    "look": 1,
+    "mecanum": 294,
+    "hold": 4
+   },
+   "range_history_files": 0,
+   "us_zero": 0,
+   "mask": {
+    "frame_id": 299,
+    "image_shape": [
+     480,
+     640,
+     3
+    ],
+    "static_mask_px": 195520,
+    "image_mask_px": 193611,
+    "wall_roi_xyxy": [
+     200,
+     110,
+     540,
+     170
+    ],
+    "wall_roi_px": 20400,
+    "admitted_wall_roi_px": 20204,
+    "admitted_fraction": 0.10435357495183642,
+    "corners": 3,
+    "wall_roi_corners": 0
+   }
+  },
+  {
+   "run": "e2e14-a-s61003-r2",
+   "robot": "r2",
+   "saved_frames": 31,
+   "fallback_equal": 31,
+   "vo_status": {
+    "no_previous_frame": 1,
+    "measured": 29,
+    "unknown_texture": 1
+   },
+   "command_kinds": {
+    "initial_servo_command": 1,
+    "arm": 4,
+    "look": 1,
+    "mecanum": 376,
+    "hold": 4
+   },
+   "range_history_files": 0,
+   "us_zero": 0,
+   "mask": {
+    "frame_id": 381,
+    "image_shape": [
+     480,
+     640,
+     3
+    ],
+    "static_mask_px": 195520,
+    "image_mask_px": 193693,
+    "wall_roi_xyxy": [
+     200,
+     110,
+     540,
+     170
+    ],
+    "wall_roi_px": 20400,
+    "admitted_wall_roi_px": 20204,
+    "admitted_fraction": 0.1043093968290026,
+    "corners": 12,
+    "wall_roi_corners": 0
+   }
+  },
+  {
+   "run": "e2e14-a-s61004-r2",
+   "robot": "r1",
+   "saved_frames": 31,
+   "fallback_equal": 31,
+   "vo_status": {
+    "no_previous_frame": 1,
+    "unknown_texture": 23,
+    "unknown_rigid_consensus": 2,
+    "measured": 5
+   },
+   "command_kinds": {
+    "initial_servo_command": 1,
+    "arm": 4,
+    "look": 1,
+    "mecanum": 536,
+    "hold": 3
+   },
+   "range_history_files": 0,
+   "us_zero": 0,
+   "mask": {
+    "frame_id": 540,
+    "image_shape": [
+     480,
+     640,
+     3
+    ],
+    "static_mask_px": 195520,
+    "image_mask_px": 184090,
+    "wall_roi_xyxy": [
+     200,
+     110,
+     540,
+     170
+    ],
+    "wall_roi_px": 20400,
+    "admitted_wall_roi_px": 20204,
+    "admitted_fraction": 0.10975066543538486,
+    "corners": 32,
+    "wall_roi_corners": 0
+   }
+  }
+ ],
+ "scope": "fixed issued-command replay; v2 fallback equivalence, not ZUPT accuracy or E2E success"
+}

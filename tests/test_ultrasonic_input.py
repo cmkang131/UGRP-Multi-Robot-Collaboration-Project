@@ -209,11 +209,11 @@ def test_registered_range_consumers_keep_their_default_off_gate():
         assert all(gate in text for gate in gates), name
 
 
-def test_no_controller_or_skill_reads_the_range():
-    """Wiring only: the value is not used by any skill, controller or study input builder, except the
-    registered opt-in consumers above."""
-    allowed = ({ROOT / name for name in WIRING_FILES} | {ROOT / 'harness/range_provider.py'}
-               | {ROOT / name for name in REGISTERED_RANGE_CONSUMERS})
+def test_only_registered_controllers_read_the_range():
+    """Every range-reading consumer or acquisition/finalizer has an explicit registration."""
+    allowed = {ROOT / name for name in WIRING_FILES} | {ROOT / 'harness/range_provider.py'}
+    allowed |= {ROOT / name for paths in ui.REGISTERED_RANGE_CONSUMERS.values() for name in paths}
+    allowed |= {ROOT / name for name in ui.REGISTERED_RANGE_WIRING}
     offenders = []
     for path in list((ROOT / 'harness').glob('*.py')) + list((ROOT / 'sim').glob('*.py')) + list((ROOT / 'scripts').glob('*.py')):
         if path in allowed or path.name.startswith('ultrasonic') or path.name in ('range_provider.py',):

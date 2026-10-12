@@ -1,0 +1,58 @@
+{
+ "accessed": "2026-10-12",
+ "verified_sources": [
+  {
+   "title": "OpenVINS ZUPT derivation",
+   "url": "https://docs.openvins.com/update-zerovelocity.html",
+   "scope": "docs read",
+   "conclusion": "Separate stationarity detection from synthetic measurement; dynamic objects and constant-velocity false detections need gating."
+  },
+  {
+   "title": "OpenVINS UpdaterZeroVelocity.cpp",
+   "url": "https://raw.githubusercontent.com/rpng/open_vins/master/ov_msckf/src/update/UpdaterZeroVelocity.cpp",
+   "scope": "code read",
+   "conclusion": "Public implementation; ours does not use its IMU residual or claim equivalence to an inertial EKF."
+  },
+  {
+   "title": "robot_localization sensor configuration",
+   "url": "https://raw.githubusercontent.com/cra-ros-pkg/robot_localization/ros2/doc/configuring_robot_localization.rst",
+   "scope": "docs read",
+   "conclusion": "Fuse independent observations, avoid duplicate wheel-derived pose and velocity; documented zero lateral velocity is a nonholonomic constraint, not automatic sonar stall detection."
+  },
+  {
+   "title": "Helmick et al. Slip-compensated path following, Advanced Robotics 2006",
+   "url": "https://www-users.cse.umn.edu/~stergios/papers/AdvancedRobotics-SlipDetection.pdf",
+   "scope": "paper abstract and method read",
+   "conclusion": "Compare visual/inertial and wheel-kinematic estimates with their uncertainty; our calibrated commands are not measured wheel encoders."
+  },
+  {
+   "title": "Kobuki safety controller",
+   "url": "https://raw.githubusercontent.com/kobuki-base/kobuki_ros/devel/kobuki_safety_controller/src/safety_controller.cpp",
+   "scope": "code read",
+   "conclusion": "Bumper/cliff/wheel-drop events drive safety actions. Bumper contact is unavailable under our observation contract and must not be substituted by simulator contact."
+  },
+  {
+   "title": "Kilic et al. Slip-Based Autonomous ZUPT, RA-L 2021",
+   "url": "https://arxiv.org/abs/2103.07587",
+   "scope": "abstract read only",
+   "conclusion": "Predict slip and schedule stops for wheel-inertial ZUPT. Does not establish single-sonar stationarity thresholds."
+  },
+  {
+   "title": "Zhang et al. 2DLIW-SLAM, 2024",
+   "url": "https://arxiv.org/html/2404.07644v5",
+   "scope": "abstract and section 4 read",
+   "conclusion": "LiDAR line constraints plus wheel and inertial observations address geometric degeneracy. Full scans/IMU exceed our input boundary."
+  },
+  {
+   "title": "Jia et al. Generative Spatial-Temporal Ultrasonic Odometry, 2024",
+   "url": "https://arxiv.org/abs/2412.17343",
+   "scope": "abstract read only",
+   "conclusion": "Uses overlapping sensor array and temporal window; one forward scalar range cannot reproduce array odometry. Code/results not independently verified."
+  }
+ ],
+ "unverified": [
+  "robot_localization direct sensor_msgs/Range or automatic sonar ZUPT support: not established by inspected docs",
+  "Sonar threshold calibration on physical MasterPi: unverified"
+ ],
+ "decision": "Keep existing VO first; add finite fresh near-range window only when VO unavailable. Zero translation and inflate process covariance as requested, unlike covariance-reducing inertial ZUPT. Default off, SEARCH arm commands only."
+}

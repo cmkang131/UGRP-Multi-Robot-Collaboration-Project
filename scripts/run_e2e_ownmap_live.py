@@ -32,7 +32,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off'):
     if profile not in PROFILES or seed not in (61001,61002,61003,61004):raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
@@ -54,6 +54,12 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if stall.stall_odometry=='rgb_vo_v2' and boundary_views=='off' and b_marker_detect=='off':
         # Registered only inside the E2E14 composition bundle (v205); never fall back to v198/v201.
         raise ValueError('RGB_VO_V2_HAS_NO_STANDALONE_BUNDLE')
+    from harness.ultrasonic_input import normalize_sensors, bundle_record
+    sensors = normalize_sensors({'ultrasonic_front': ultrasonic_front})
+    us_on = stall.stall_odometry == 'rgb_vo_us_v1'
+    if us_on != bool(sensors):raise ValueError('US_STALL_REQUIRES_SENSOR_ON_AND_CONSUMER')
+    if us_on and (boundary_views != 'candidate_views_v1' or b_marker_detect != 'contrast_v1'):
+        raise ValueError('US_STALL_REQUIRES_V205_COMPOSITION')
     from harness.e2e_exact_speedups import Options as SpeedOptions
     speed=SpeedOptions(**(exact_speedups or {}))
     from harness.e2e_exact_speedups import ROUND2_FIELDS
@@ -111,6 +117,14 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         if stall.stall_odometry=='rgb_vo_v2':
             # v205 = v204 composition with rgb_vo_v2 (VO, then pulse-gate stall fallback, then command).
             b.update(schema='ugrp.e2e_ownmap_live.v205',execution_bundle_id='e2e-combo14-vo2-v205',workflow_version='7.98.0')
+    if us_on:
+        from harness.e2e_us_stall import PARAMS as US_PARAMS
+        b.update(schema='ugrp.e2e_ownmap_live.v206',execution_bundle_id='e2e-usstall-v206',workflow_version='7.99.0')
+        b['sensors'] = bundle_record(sensors)
+        b['sensors']['ultrasonic_front']['controller_use'] = 'rgb_vo_us_v1: own forward increment ZUPT hypothesis'
+        b['sensors'].pop('sha256')
+        b['sensors']['sha256'] = digest(b['sensors'])
+        b['us_stall'] = dict(params=US_PARAMS, clock='episode_since_reset',poll_interval_s=.05,effective_period_s=.10)
     from harness.e2e_runtime_registration import register
     runtime_assets=register(b,runtime_registration)
     from harness.python_source_closure import source_closure
@@ -132,6 +146,9 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if stall.stall_odometry=='rgb_vo_v1':paths.add('configs/simulation_workflows.d/e2e_rgb_vo_v201.json')
     if combo:paths.add('configs/simulation_workflows.d/e2e_combo14_v204.json' if stall.stall_odometry!='rgb_vo_v2' else
                        'configs/simulation_workflows.d/e2e_combo14_vo2_v205.json')
+    if us_on:
+        paths.update(source_closure(ROOT, ['sim/e2e_us_input.py','harness/e2e_us_stall.py']))
+        paths.add('configs/simulation_workflows.d/e2e_usstall_v206.json')
     if speed2:paths.update(('configs/simulation_workflows.d/e2e_exact_speed2_v203.json','scripts/e2e_speed_measure.py'))
     paths.update(runtime_assets)
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
@@ -216,6 +233,9 @@ def run(b,out,receipt,*,backend_factory=None):
         backend=(backend_factory or PhysicsBackend)(b,out,seed=b['seed'])
         backend.reset(b['reset_cap_s']);origin=backend.now
         backend.set_deadline(origin+b['case_cap_s'])
+        if b.get('sensors'):
+            from sim.e2e_us_input import attach as attach_sonar
+            attach_sonar(backend, robots, seed=b['seed'], out=out)
         for rid,robot in robots.items():
             for sid,pwm in SEARCH.items():
                 a=dict(kind='look',pan_pulse=pwm) if sid==6 else dict(kind='arm',servo_id=sid,pulse=pwm)
@@ -356,7 +376,8 @@ def main(argv=None):
     p.add_argument('--exploration-progress',choices=('off','frontier_progress_v1'),default='off')
     p.add_argument('--pose-fix',choices=('off','innovation'),default='off')
     p.add_argument('--path-follow',choices=('off','rpp_v1'),default='off')
-    p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1','rgb_vo_v1','rgb_vo_v2'),default='off')
+    p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1','rgb_vo_v1','rgb_vo_v2','rgb_vo_us_v1'),default='off')
+    p.add_argument('--ultrasonic-front',choices=('off','on_v1'),default='off')
     p.add_argument('--stall-recovery',choices=('off','backup_replan_v1'),default='off')
     p.add_argument('--stall-noise',choices=('off','amcl_alpha_v1'),default='off')
     p.add_argument('--stall-bundle',action='store_true')
@@ -392,7 +413,7 @@ def main(argv=None):
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
                  vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
                  vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
-             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration)
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front)
     if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
     if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
         raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')

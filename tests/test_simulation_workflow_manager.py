@@ -451,8 +451,9 @@ raise SystemExit(3 if a.fail else 0)
                      'e2e-rpp-lookahead-v197', 'e2e-stall-odometry-v198', 'e2e-stall-budget-v199',
                      'e2e-exact-speed-v200', 'e2e-rgb-vo-v201', 'e2e-exact-speed2-v203', 'e2e-reviewed-runtime-v210'):
             samples[name] = list(e2e_args)
-        for name in ('e2e-combo14-v202', 'e2e-combo14-v204', 'e2e-combo14-vo2-v205'):
+        for name in ('e2e-combo14-v202', 'e2e-combo14-v204', 'e2e-combo14-vo2-v205', 'e2e-usstall-v206'):
             samples[name] = [*e2e_args, '--boundary-views', 'off', '--b-marker-detect', 'off']
+        samples['e2e-usstall-v206'] += ['--ultrasonic-front', 'on_v1']
         samples['e2e-one-beam-ownmap-inputs'] = sha
         # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
         # value for this boolean. Keep its original bytes and the rejection.
