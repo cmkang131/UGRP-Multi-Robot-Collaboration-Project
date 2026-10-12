@@ -6,5 +6,5 @@
 - 종료 판정: 같은 실행에서 LLM 작동·자기 지도 완성·시작→끝 운반 모두 확인. 상한은 실행7시간·작업8시간.
 - 초기180–300초 응답·프레임·실제 이동·전진·단계 확인, 이후10분 간격; 확정 막힘은 SIGINT 후 수정·새 번들 재제출.
 - 원본은 Azure 영속 디스크→ARM 전체 해시 검증; Mac은 이미지 없는 가벼운 기록만. DEV 원본 정리는 해당 PR 종료 때 기록과 함께.
-- v211: 부분 영역-전체 경계 연결 / 접근 실패 재시도 / 둘의 조합; [후보11개](boundary-repair-registration.json), 관련35시험+raw재생1 통과. 초기11개 종료·ARM 검증, seed61004 계속.
-- v213: DEV 미관측 footprint 정지를 기존 native 경로 검사+기록으로 전환; [후보6개](boundary-native-registration.json), [원인·출처·검증](boundary-native-references.md), 관련24시험 통과.
+- 2026-10-12 사용자 지시로 속도 해결 위해 중단: 모델29/35, 지도·운반·E2E0/35; EARLY_STOP29·HOST_ERROR6, 잘못된 launch54 별도.
+- ARM89/89 보관본 전체 해시 재검증·가벼운 기록3,065파일 회수; [중단·보관 검증](speed-stop-archive.json). VM4는 이미 deallocated 확인, VM3는 speed3 측정에 유지.

@@ -1,0 +1,73 @@
+{
+  "schema": "ugrp.e2e17.speed-stop-archive.v1",
+  "checked_unix": 1791800630.8597338,
+  "reason": "사용자 지시로 속도 해결 위해 중단",
+  "raw_scope": "89 attempts = 35 registered candidate attempts + 54 invalid-launch attempts",
+  "expected_runs": 89,
+  "archived_runs": 89,
+  "verified_runs": 89,
+  "total_files": 64636,
+  "total_bytes": 1118577967,
+  "verification": {
+    "full_files_sha256_read_on_arm": true,
+    "stored_manifest_entries": 64369,
+    "manifest_hash_matches": 64369,
+    "manifest_mismatch_count": 0,
+    "prior_full_inventory_digest_matches": 85,
+    "prior_full_inventory_digest_unavailable": [
+      "e2e-idle-a-s61004",
+      "e2e-idle-b-s61001-r6",
+      "e2e-idle-b-s61002-r6",
+      "e2e-idle-b-s61003-r6"
+    ],
+    "scope_note": "All 89 ARM copies reread; source manifest entries verified. The three self/generated metadata files per run are hashed in the new full inventory. VM3 36 source-state/native receipts matched. VM4 was already deallocated; its live source state and four unpublished local native receipts were not reread. No restart or new transfer was needed."
+  },
+  "raw_root": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e-idle-*",
+  "inventory_root": "oracle-codex:/home/ubuntu/ugrp-archive/e2e17-speed-stop-20261012",
+  "detail": {
+    "path": "speed-stop-arm-detail.json.zst",
+    "sha256": "f6bf39018537fdb846c0a5a1ce0de3c7c08945f2cb156071bb69ba361a0fcf12",
+    "uncompressed_sha256": "ee037c0feee228b4496b95e6f07b57e6efdb847103a65d29f1eec7365004de0f",
+    "uncompressed_bytes": 91786
+  },
+  "fetch_lite": {
+    "path": "/Users/changmin/projects/ugrp-wt/e2e-idle/outputs/e2e17-speed-stop/lite",
+    "runs": 89,
+    "files": 3065,
+    "bytes": 36205036,
+    "all_file_sha256_match_arm": true,
+    "image_npz_video_payloads": false,
+    "raw_progress_trace_retrieved": false,
+    "source_originals_changed": false
+  },
+  "vm4": {
+    "status": "deallocated",
+    "was_already_deallocated_at_first_check": true,
+    "restarted": false,
+    "azure_api": {
+      "name": "ugrp-sim-azure4",
+      "status": [
+        {
+          "code": "ProvisioningState/succeeded",
+          "displayStatus": "Provisioning succeeded",
+          "level": "Info",
+          "time": "2026-10-12T10:17:18.3534315+00:00"
+        },
+        {
+          "code": "PowerState/deallocated",
+          "displayStatus": "VM deallocated",
+          "level": "Info"
+        }
+      ]
+    },
+    "owned_sessions_stopped": [
+      "e2e17-relay-repair-azure4",
+      "e2e17-tunnel-reconnect-azure4"
+    ]
+  },
+  "vm3": {
+    "stopped_by_this_task": false,
+    "reserved_for_speed3_measurement": true
+  },
+  "raw_deleted": false
+}
