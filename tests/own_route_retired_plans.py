@@ -2,7 +2,7 @@
 
 The plans pin `frozen_modules` so that egomap63 checkpoints pickled at
 `checkpoint_source_sha` only resume under the same code. Merging main changed
-13 of those modules, so on a merged tree the plans are retired (resume only at
+14 of those modules, so on a merged tree the plans are retired (resume only at
 the original SHA) instead of re-hashed: re-hashing would let old pickles resume
 under different code. `scripts/own_route_budget_schedule.admit_checkpoint`
 already refuses with FROZEN_MODULE_CHANGED; this helper checks that the

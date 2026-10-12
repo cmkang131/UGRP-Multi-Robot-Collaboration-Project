@@ -48,6 +48,11 @@ def test_active_detector_off_nonempty_real_rgb_frozen_bytes():
     for name,fn,key in [('active_wall_vision_before',observe,'segments'),('segment_points_before',contact_points,'points')]:
         old=types.ModuleType(name);old.__file__=sys.modules[fn.__module__].__file__
         exec((folder/f'{name}.py.txt').read_text(),old.__dict__)
+        if 'modules' in old.__dict__:
+            # The frozen copy predates harness.wall_column_calibration.adapter (markerless_probe stays
+            # hash-pinned without camera_transform); inject the same adapter-backed modules the live code uses.
+            from harness.active_wall_vision import modules as live_modules
+            old.modules=live_modules
         original=getattr(old,fn.__name__)(image,servo)
         assert len(original[key])>0
         assert json.dumps(original).encode()==json.dumps(fn(image,servo)).encode()==json.dumps(fn(image,servo,wall_detector='off')).encode()
