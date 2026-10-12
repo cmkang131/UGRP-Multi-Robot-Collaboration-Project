@@ -22,14 +22,16 @@ def register(bundle, option='off'):
     # The command estimator has only the measured full-duration profiles.
     # Retain the established ceil-to-full-pulse schedule, including its logged
     # overshoot; do not invent a measured response for fractional durations.
-    bundle['e2e_options'].update(runtime_registration=OPTION, pulse_budget='off')
+    bundle['e2e_options'].update(runtime_registration=OPTION, pulse_budget='off',
+                               pulse_authorization='current_go_v1')
     return (*ASSETS, WORKFLOW, 'scripts/run_e2e_reviewed.py')
 
 
 def require_current(bundle, root):
     options = bundle['e2e_options']
     if (options.get('runtime_registration') != OPTION or
-            bundle['execution_bundle_id'] != BUNDLE_ID or options['pulse_budget'] != 'off'):
+            bundle['execution_bundle_id'] != BUNDLE_ID or options['pulse_budget'] != 'off' or
+            options.get('pulse_authorization') != 'current_go_v1'):
         raise ValueError('E2E_ORIGINAL_CHECKOUT_OR_REVIEWED_RUNTIME_REQUIRED')
     for name in ASSETS:
         expected = bundle['source_sha256'].get(name)
