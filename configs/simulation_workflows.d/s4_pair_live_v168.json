@@ -1,0 +1,23 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s4-pair-live-v168",
+      "version": "7.61.0",
+      "purpose": "S4 LLM GO/ACK + S3 v165 first beam transport DEV",
+      "entry": "scripts/run_s4_pair_live5_r3.py",
+      "runner": "scripts.run_s4_pair_live5_r3",
+      "docs": "experiments/2026-10-06-s4-llm/s4live5/README.md",
+      "requires": "committed Oracle x86 OSMesa archive and audited SSH relay; no Mac physics",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--condition",
+        "--relay-receipt"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

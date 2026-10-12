@@ -1,0 +1,288 @@
+{
+  "schema": "ugrp.s3_stage_origin_results.v1",
+  "task": "s3fix21",
+  "status": "completed",
+  "recorded_utc": "2026-10-10T16:44:52.500882+00:00",
+  "host": "oracle-x86",
+  "scope": "DEV synthetic stage start contract; no mission-localization or E2E success claim; multi-route stage failed",
+  "source_shas": {
+    "twenty": "71c656e726235b11a2a45562eecbd17f6aa67b78",
+    "multi_first": "71c656e726235b11a2a45562eecbd17f6aa67b78",
+    "multi_retry": "9d50e37d3415b2cfe065fe836df855befee664ed"
+  },
+  "bundle_id": "zone-s3-stage-origin-v170",
+  "option": "public_stage_origin_v1",
+  "default": "off",
+  "preregistration": {
+    "experiments/2026-10-11-s3-stage-origin/registration.json": "c3fc6d9eba963d74f808a9b53e0d44a142504dc553b9a7e7b3709e2be2dad441",
+    "experiments/2026-10-11-s3-stage-origin/route-retry.json": "938f83c99e98f86fc96e5eb5ced336e28ad291b4639fdbf01979283d93c8d2f1"
+  },
+  "cause": {
+    "vector_identity": "endpoint = start offset + transport error",
+    "max_identity_residual_m": 0.0,
+    "public_route_start_xy_m": [
+      1.3,
+      0.05
+    ],
+    "committed_fixture_xy_m": [
+      1.2749148886483785,
+      0.05011256421084961
+    ],
+    "translation_mm": [
+      25.085111351621503,
+      -0.11256421084960416
+    ],
+    "before_start_norm_mm": [
+      25.586095891998212,
+      36.10468834104112
+    ],
+    "before_transport_norm_mm": [
+      10.768725477442175,
+      15.861485003174979
+    ],
+    "before_endpoint_norm_mm": [
+      24.510593196003146,
+      36.54646541497047
+    ],
+    "after_start_norm_mm": [
+      1.1196710749629062,
+      11.556690049105542
+    ],
+    "after_transport_norm_mm": [
+      8.441813236113582,
+      15.757288663335933
+    ],
+    "after_endpoint_norm_mm": [
+      13.375002822669911,
+      19.925676501096326
+    ],
+    "worst_endpoint_margin_mm": 0.07432349890367362,
+    "method": "host initial synthetic fixture rigid translation of beam+r1/r2, before any controller; static goal/20mm threshold/seed/PF prior unchanged"
+  },
+  "by_option": {
+    "off": {
+      "n": 10,
+      "pair_n": 6,
+      "cyan_n": 4,
+      "counts": {
+        "alignment": 10,
+        "grasp": 10,
+        "lift": 10,
+        "carry": 10
+      },
+      "pulse_count_correct": 6,
+      "endpoint_reached": 0,
+      "setdown": 6,
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "host_errors": 0,
+      "cyan_regression_carry": 4
+    },
+    "public_stage_origin_v1": {
+      "n": 10,
+      "pair_n": 6,
+      "cyan_n": 4,
+      "counts": {
+        "alignment": 10,
+        "grasp": 10,
+        "lift": 10,
+        "carry": 10
+      },
+      "pulse_count_correct": 6,
+      "endpoint_reached": 6,
+      "setdown": 6,
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "host_errors": 0,
+      "cyan_regression_carry": 4
+    }
+  },
+  "second_stage_gate_passed": true,
+  "initial_checks": {
+    "twenty_healthy": 20,
+    "twenty_n": 20,
+    "twenty_elapsed_wall_range": [
+      180.1861974469998,
+      180.7234846890001
+    ],
+    "twenty_sim_range": [
+      13.35,
+      16.35
+    ],
+    "twenty_frame_range": [
+      220,
+      280
+    ],
+    "multi_retry_healthy": 3,
+    "multi_retry_n": 3,
+    "multi_retry_elapsed_wall_range": [
+      192.38381838798523,
+      192.44459462165833
+    ]
+  },
+  "storage": {
+    "remote_root": "/home/ubuntu/ugrp-sim/runs",
+    "filesystem": "ext4 /dev/sda1 persistent",
+    "local_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs",
+    "full_raw_retrieved": 26,
+    "physical_attempts": 26,
+    "files_sha256_verified": 80286,
+    "all_hashes_match": true,
+    "twenty_fetch_completed": "2026-10-10T16:19:10.929105+00:00",
+    "multi_fetch_completed": "2026-10-10T16:36:13.853271+00:00",
+    "scope": "per-completion retrieval started automatically; serial rsync queued later workers; all original files fetched and hashes verified",
+    "raw_roots": {
+      "twenty_remote": "/home/ubuntu/ugrp-sim/runs/s3fix21-batch-r2/cohort",
+      "multi_remote": "/home/ubuntu/ugrp-sim/runs",
+      "all_local": "/Users/changmin/projects/ugrp/outputs/oracle-runs"
+    }
+  },
+  "admission": {
+    "twenty_load1": [
+      50.767578125,
+      50.767578125
+    ],
+    "twenty_min_mem_available_bytes": 28979793920,
+    "later_observed_load1": 608.8125,
+    "multi_retry": {
+      "loadavg": [
+        47.54345703125,
+        88.16259765625,
+        158.2001953125
+      ],
+      "mem_bytes": 36452716544,
+      "disk_free": 15025569792
+    }
+  },
+  "verification": {
+    "initial_related_files": 3,
+    "initial_unique_tests_passed": 40,
+    "route_retry_related_files": 2,
+    "route_retry_tests_passed": 22,
+    "Mac_physics_render_replay": 0,
+    "physics_unit_test_deselected": 1,
+    "off_byte_verification": {
+      "n": 10,
+      "all_bytes_identical": true,
+      "scope": "v170 origin=off vs ce06/v167 integer=on; identical conditions/seeds on Oracle",
+      "receipt": "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/off-byte-verification.json"
+    },
+    "CI_wait": false,
+    "PR": 416,
+    "PR_draft": true
+  },
+  "timing": {
+    "twenty_median_wall_per_sim": 8.767617840403512,
+    "multi_retry_median_wall_per_sim": 5.065287059768483
+  },
+  "runs": [
+    {"name":"s3fix21-off-cyan-c0-r1","case":"cyan","condition":0,"seed":14201,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":60.0,"wall_s":555.0182798390001,"setdown":null,"endpoint_error_mm":null,"issued_pulses":null,"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-cyan-c0-r1/raw","manifest_sha256":"519a6dcb5a96d2d54ffaee49afee55e2a7480b43ec31c26685c64a7a6860feaf","verified_files":3640}},
+    {"name":"s3fix21-off-cyan-c3-r1","case":"cyan","condition":3,"seed":14204,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":60.0,"wall_s":553.0528060249999,"setdown":null,"endpoint_error_mm":null,"issued_pulses":null,"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-cyan-c3-r1/raw","manifest_sha256":"7eafe193c9eed22e570ae9f3ada732e60fe67059cd72515e67662bf20b748259","verified_files":3640}},
+    {"name":"s3fix21-off-cyan-c4-r1","case":"cyan","condition":4,"seed":14205,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":60.0,"wall_s":579.266958397,"setdown":null,"endpoint_error_mm":null,"issued_pulses":null,"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-cyan-c4-r1/raw","manifest_sha256":"4d7ffab684e2e5682801a662ea4312892e0e4f5af455d052314404d83ac91d41","verified_files":3640}},
+    {"name":"s3fix21-off-cyan-c5-r1","case":"cyan","condition":5,"seed":14206,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":60.0,"wall_s":577.4660192399997,"setdown":null,"endpoint_error_mm":null,"issued_pulses":null,"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-cyan-c5-r1/raw","manifest_sha256":"93a7e71667d99c6a57b7bf6f182b92c6bf9fcbade976e35884b322f8dabc749b","verified_files":3640}},
+    {"name":"s3fix21-off-pair-c0-r1","case":"pair","condition":0,"seed":14201,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":55.6,"wall_s":488.78975904000026,"setdown":true,"endpoint_error_mm":28.6581849593314,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-pair-c0-r1/raw","manifest_sha256":"9b883ecc0b330f83adefa3b09d25da826cf83d514c9bac9dc284370e76848ee1","verified_files":3375},"decomposition_mm":{"start_offset_mm":[-29.638119710007736,4.8331371656614515],"transport_error_mm":[2.022667611999207,-12.49331801116664],"endpoint_error_mm":[-27.615452098008532,-7.660180845505189]}},
+    {"name":"s3fix21-off-pair-c1-r1","case":"pair","condition":1,"seed":14202,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":55.1,"wall_s":479.90189968999994,"setdown":true,"endpoint_error_mm":33.828148944417116,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-pair-c1-r1/raw","manifest_sha256":"0ab0d3129b095285e84bdef4e70a6502950c97d801a2c97e2a7c68ed2bcce1eb","verified_files":3345},"decomposition_mm":{"start_offset_mm":[-29.51144402903738,-5.031446047985791],"transport_error_mm":[1.6406846796885866,-14.14052396806513],"endpoint_error_mm":[-27.870759349348795,-19.17197001605092]}},
+    {"name":"s3fix21-off-pair-c2-r1","case":"pair","condition":2,"seed":14203,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":56.6,"wall_s":489.7047801819999,"setdown":true,"endpoint_error_mm":36.54646541497047,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-pair-c2-r1/raw","manifest_sha256":"eacb970ab88b170c52d9e51706d999a094b4be1663cd157fad215d3a212a9cc2","verified_files":3434},"decomposition_mm":{"start_offset_mm":[-36.10420932134528,-0.18598248357083041],"transport_error_mm":[1.4862594689053488,-11.529037035900178],"endpoint_error_mm":[-34.617949852439935,-11.715019519471008]}},
+    {"name":"s3fix21-off-pair-c3-r1","case":"pair","condition":3,"seed":14204,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":57.1,"wall_s":472.165196167,"setdown":true,"endpoint_error_mm":27.235953881903246,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-pair-c3-r1/raw","manifest_sha256":"99734875a24bdcbb294064780d9218f7677e2e749ee4490baccf964d1cb7926c","verified_files":3464},"decomposition_mm":{"start_offset_mm":[-25.875338775786403,-0.41536652878835373],"transport_error_mm":[2.3358637583783537,-13.28464441142562],"endpoint_error_mm":[-23.53947501740805,-13.700010940213975]}},
+    {"name":"s3fix21-off-pair-c4-r1","case":"pair","condition":4,"seed":14205,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":54.6,"wall_s":472.1809308339998,"setdown":true,"endpoint_error_mm":24.510593196003146,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-pair-c4-r1/raw","manifest_sha256":"de0b8ee6806dbda6a0c117e60b83d69f37fd86e12730f8d8703dcef2459f82f4","verified_files":3315},"decomposition_mm":{"start_offset_mm":[-25.568056892283142,-0.9606090502906408],"transport_error_mm":[3.70135968140084,-10.11263491467048],"endpoint_error_mm":[-21.8666972108823,-11.073243964961122]}},
+    {"name":"s3fix21-off-pair-c5-r1","case":"pair","condition":5,"seed":14206,"option":"off","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":56.1,"wall_s":482.4533024899997,"setdown":true,"endpoint_error_mm":30.2452884716433,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-off-pair-c5-r1/raw","manifest_sha256":"3312bf1e9ed04cfbde882524e2d1ac51ef437963afcfff351eaa0524ddf79452","verified_files":3405},"decomposition_mm":{"start_offset_mm":[-27.25478638600709,-1.7635410926474249],"transport_error_mm":[2.531125100363907,-15.658228259680357],"endpoint_error_mm":[-24.723661285643182,-17.421769352327782]}},
+    {"name":"s3fix21-on-cyan-c0-r1","case":"cyan","condition":0,"seed":14201,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":60.0,"wall_s":553.188816243,"setdown":null,"endpoint_error_mm":null,"issued_pulses":null,"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-cyan-c0-r1/raw","manifest_sha256":"f8bdd388fe01dfb3d0744fb9811567a73181be48e0d823bf6b6a51804df7a442","verified_files":3640}},
+    {"name":"s3fix21-on-cyan-c3-r1","case":"cyan","condition":3,"seed":14204,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":60.0,"wall_s":548.1633399349998,"setdown":null,"endpoint_error_mm":null,"issued_pulses":null,"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-cyan-c3-r1/raw","manifest_sha256":"7f313291c491c8c7eee4160ecefcfea6ca4890ee0f1abb47a85cde1e2238916f","verified_files":3640}},
+    {"name":"s3fix21-on-cyan-c4-r1","case":"cyan","condition":4,"seed":14205,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":60.0,"wall_s":571.0780881000001,"setdown":null,"endpoint_error_mm":null,"issued_pulses":null,"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-cyan-c4-r1/raw","manifest_sha256":"3a3e991eee53f471954fd4a23e438cd4045b96cda033a5bb4c5399e42d65d614","verified_files":3640}},
+    {"name":"s3fix21-on-cyan-c5-r1","case":"cyan","condition":5,"seed":14206,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":60.0,"wall_s":567.2706061030003,"setdown":null,"endpoint_error_mm":null,"issued_pulses":null,"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-cyan-c5-r1/raw","manifest_sha256":"26533b3e4baef25ad2f56c0f7f4e323ae75d0587041eea500afccf1ba3f10a19","verified_files":3640}},
+    {"name":"s3fix21-on-pair-c0-r1","case":"pair","condition":0,"seed":14201,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":55.6,"wall_s":480.0573980089998,"setdown":true,"endpoint_error_mm":14.20131892502667,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-pair-c0-r1/raw","manifest_sha256":"774ef89504387914a54ad05d989166b3ce68e8e7e2987bc1cd071d36265c783a","verified_files":3375},"decomposition_mm":{"start_offset_mm":[0.051599816213165894,-1.118481459424052],"transport_error_mm":[2.2064834734338845,-12.902164712109462],"endpoint_error_mm":[2.2580832896470504,-14.020646171533514]}},
+    {"name":"s3fix21-on-pair-c1-r1","case":"pair","condition":1,"seed":14202,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":55.1,"wall_s":513.48631798,"setdown":true,"endpoint_error_mm":18.848873619514997,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-pair-c1-r1/raw","manifest_sha256":"0ec55e3e4b731c48097670e4bbcbc6f68a0c56d836992012d8d4d9b688cc374f","verified_files":3344},"decomposition_mm":{"start_offset_mm":[2.79371582055421,-2.881243257030576],"transport_error_mm":[2.5444302600847735,-15.19593111138793],"endpoint_error_mm":[5.3381460806389835,-18.077174368418504]}},
+    {"name":"s3fix21-on-pair-c2-r1","case":"pair","condition":2,"seed":14203,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":56.6,"wall_s":492.5704794830003,"setdown":true,"endpoint_error_mm":15.76859086202542,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-pair-c2-r1/raw","manifest_sha256":"49822a46364d7f3cb8f11546dcdcd6b0369341b83a0263867eda4aca50f34799","verified_files":3434},"decomposition_mm":{"start_offset_mm":[-10.503178279243963,-0.002238457780100178],"transport_error_mm":[1.2931884261515592,-12.797157804539715],"endpoint_error_mm":[-9.209989853092404,-12.799396262319815]}},
+    {"name":"s3fix21-on-pair-c3-r1","case":"pair","condition":3,"seed":14204,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":57.1,"wall_s":477.3897644130002,"setdown":true,"endpoint_error_mm":16.468964433528523,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-pair-c3-r1/raw","manifest_sha256":"ed59c55e852dee04b9957cd2dc9e6ad41df8724c254aa6f1a445d97b8ca1f745","verified_files":3464},"decomposition_mm":{"start_offset_mm":[-3.7599500732021784,-2.7095560858737406],"transport_error_mm":[2.9099740693752096,-13.737459762168294],"endpoint_error_mm":[-0.8499760038269688,-16.447015848042035]}},
+    {"name":"s3fix21-on-pair-c4-r1","case":"pair","condition":4,"seed":14205,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":55.1,"wall_s":480.46335147000036,"setdown":true,"endpoint_error_mm":19.925676501096326,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-pair-c4-r1/raw","manifest_sha256":"50c2872314b562444856b5c0c8ff3e599339e159279f5caa399b71537d9858b8","verified_files":3345},"decomposition_mm":{"start_offset_mm":[2.012574670216427,-11.38009789447781],"transport_error_mm":[2.8779456040040063,-7.936097265899434],"endpoint_error_mm":[4.8905202742204334,-19.316195160377244]}},
+    {"name":"s3fix21-on-pair-c5-r1","case":"pair","condition":5,"seed":14206,"option":"public_stage_origin_v1","status":"DEV_STAGE_FINISHED","stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"sim_s":56.1,"wall_s":490.5413712950003,"setdown":true,"endpoint_error_mm":13.375002822669911,"issued_pulses":{"r1":12,"r2":12},"initial_healthy":true,"raw":{"relative_directory":"s3fix21-on-pair-c5-r1/raw","manifest_sha256":"dd0629d0f4dc3f89fa9d0ccb3a32ab3eb1ac8e28e9b16a1079f8bce8b594d3c1","verified_files":3404},"decomposition_mm":{"start_offset_mm":[-5.306045697612172,2.479072999284973],"transport_error_mm":[2.503441162760911,-15.557150393445754],"endpoint_error_mm":[-2.8026045348512607,-13.07807739416078]}}
+  ],
+  "multi": {
+    "first_attempt": {
+      "n": 3,
+      "HOST_ERROR": 3,
+      "cause": "incorrect planner callback; fixed and22 tests passed",
+      "runs": [
+    {"name":"s3fix21-multi-left-c0-r1","status":"HOST_ERROR","sim_s":0.5,"wall_s":18.030745261999982,"cause":"captured OwnLink submit planner differs from replaced team.start dispatcher","raw":{"relative_directory":"s3fix21-multi-left-c0-r1/raw","manifest_sha256":"9797991ea183961730efd2a2f578d2b7f24cdd1586c15026f87e4526f2091c01","verified_files":71},"initial_healthy":false},
+    {"name":"s3fix21-multi-right-c3-r1","status":"HOST_ERROR","sim_s":0.5,"wall_s":18.35414845699961,"cause":"captured OwnLink submit planner differs from replaced team.start dispatcher","raw":{"relative_directory":"s3fix21-multi-right-c3-r1/raw","manifest_sha256":"d0cc9fed64ee5515025e9214a479ba025bff0f98bb9ef928df6fa94a0701dbce","verified_files":71},"initial_healthy":false},
+    {"name":"s3fix21-multi-three-c5-r1","status":"HOST_ERROR","sim_s":0.5,"wall_s":18.930997718999606,"cause":"captured OwnLink submit planner differs from replaced team.start dispatcher","raw":{"relative_directory":"s3fix21-multi-three-c5-r1/raw","manifest_sha256":"1bec5f17949e3b94f1a163aa734f99d5092e9fe0bb11d99a823e26bb274d0f32","verified_files":71},"initial_healthy":false}
+  ]
+    },
+    "retry": {
+      "n": 3,
+      "counts": {
+        "alignment": 3,
+        "grasp": 3,
+        "lift": 3,
+        "carry": 3
+      },
+      "first_corner_reached": 3,
+      "second_leg_started": 0,
+      "full_route_success": 0,
+      "setdown_accepted": 2,
+      "premature_complete": 2,
+      "HOST_ERROR": 1,
+      "drops": 0,
+      "tilt_aborts": 0,
+      "runs": [
+    {"name":"s3fix21-multi-left-c0-r2","status":"DEV_STAGE_FINISHED","condition":0,"seed":14201,"sim_s":55.6,"wall_s":283.6012243699997,"stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"actual_route_applied":true,"planned_legs":2,"observed_legs":1,"legs":[{"seg":0,"start_sim_s":29.1,"end_sim_s":31.8,"planned_pulses":12,"endpoint_error_m":0.014201318925026706,"endpoint_reached":true}],"setdown_accepted":true,"cause":"post-open segment already incremented but stop predicate adds1 again","initial_healthy":true,"raw":{"relative_directory":"s3fix21-multi-left-c0-r2/raw","manifest_sha256":"3fe425f7ba2c8071a38e81ef4749a9546531c1ae9dc4a71abb5ec8dc368c8f13","verified_files":3375}},
+    {"name":"s3fix21-multi-right-c3-r2","status":"DEV_STAGE_FINISHED","condition":3,"seed":14204,"sim_s":57.1,"wall_s":288.777417366,"stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"actual_route_applied":true,"planned_legs":2,"observed_legs":1,"legs":[{"seg":0,"start_sim_s":30.6,"end_sim_s":33.3,"planned_pulses":12,"endpoint_error_m":0.016468964433528514,"endpoint_reached":true}],"setdown_accepted":true,"cause":"post-open segment already incremented but stop predicate adds1 again","initial_healthy":true,"raw":{"relative_directory":"s3fix21-multi-right-c3-r2/raw","manifest_sha256":"ee389c1deaf7da37223d154c4797ecfe2b3a991767d56f04c2f350b373bba89a","verified_files":3464}},
+    {"name":"s3fix21-multi-three-c5-r2","status":"HOST_ERROR","condition":5,"seed":14206,"sim_s":56.15,"wall_s":284.4158684060003,"stages":{"alignment":true,"grasp":true,"lift":true,"carry":true,"target_distance":true},"actual_route_applied":true,"planned_legs":3,"observed_legs":1,"legs":[{"seg":0,"start_sim_s":29.6,"end_sim_s":32.3,"planned_pulses":12,"endpoint_error_m":0.013375002822669865,"endpoint_reached":true}],"setdown_accepted":false,"cause":"UNMEASURED_V3_CAMERA_POSTURE during next-segment alignment","initial_healthy":true,"raw":{"relative_directory":"s3fix21-multi-three-c5-r2/raw","manifest_sha256":"d73baeb6caa230fe2081d0010b87baccd4af9d6fa5a2220ecb6ae106e5655328","verified_files":3410}}
+  ]
+    }
+  },
+  "submission_failure": {
+    "name": "s3fix21-batch-r1",
+    "exit_code": 1,
+    "physical_runs_started": 0,
+    "cause": "incorrect expected-source-sha argument; archive guard rejected before stage creation",
+    "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-batch-r1",
+    "sha256": {
+      "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+      "log.txt": "ca2b2768c17d31d51b69470463293fa50cd7c6582596974679ad1014cc5167b5",
+      "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "COMMAND": "9854deaa9e31056ff3a355376932fa33ac2ef4b3d61c5f5e3c9e980a65ed81c7",
+      "SOURCE_SHA": "3229e4f939638df05fcea5134ed504254d17d0d981e321055e9fc11f46cccc06"
+    }
+  },
+  "remaining_causes": {
+    "premature_completion": {
+      "n": 2,
+      "evidence": "zone_final_pair_skill._cp_open increments seg before wrapper checks seg+1>=len(segments); two2leg cases terminate after only seg0",
+      "source": [
+        "harness/zone_final_pair_skill.py:153",
+        "scripts/run_s3_integer_carry.py:70",
+        "scripts/run_s3_integer_carry.py:89"
+      ]
+    },
+    "camera_reentry": {
+      "n": 1,
+      "evidence": "three-leg case reenters alignment after checkpoint; look before inspect-posture restore requests unloaded key807,1897,2187,1568",
+      "source": [
+        "harness/zone_s3_coarse_fine.py:227",
+        "harness/zone_s3_coarse_fine.py:236"
+      ],
+      "error": "UNMEASURED_V3_CAMERA_POSTURE"
+    }
+  },
+  "next_candidates": [
+    "check completion using released segment before parent increments, or post-increment seg>=len(segments)",
+    "restore a calibrated inspect posture and settle before RGB look on every segment reentry; keep calibration error guard"
+  ],
+  "receipts": {
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/local-tests.json": "98c0ec53db524a5fd7455a5912d8e59439ed2b7819e7fb09f852af50612fd527",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/cohort.json": "c1fd830648780ac55f61680ccd343b730ff51a59e31edfaf9306dd4daa66f4c9",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/off-byte-verification.json": "8b8889b71dd4c7db2d63529a63c4aa03af2b304aa74e9cf31be4eca248fee24d",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/retrieval.json": "b303c5c0299f8d4f0eccc6e9c09a56e97a7fa5afc7885639450e3a3ff7cd1df7",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/multi-first-multi-retrieval.json": "133a66929576d9c2620570fc9cdc1bf314bb929e5cf5817295a4fa19d695dde8",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/multi-retrieval.json": "73cecbb371dd808705808f61b7ef36af7be2f0688be549393263880f56a230b9",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/retry-source-verification.json": "fca38d2eb3ebae7cfdcf59f63b243345947156ea48324df1070a340d9e30809b",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/multi-first-multi-admission.json": "26dfc92a08b1cf9eca017e3e4e2cb9af25f6dc93e9912f145bc53e69fe0ce419",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/multi-admission.json": "4619f604518d378c3ad3dbada4e59166114bc3ea028bef5c543f639b1d4703b9",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-eval-r1/summary.json": "630395f0cf5f838af238919d61bdedc773c4c725059b7765249d7af78fa024d3",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-eval-r1/endpoint-decomposition.json": "2bea9a0317bd7b2209988b205561aa5108d8599e83dff4aff6aa3f0a992f5ff5",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-evaluation-r2/summary.json": "640c0976af4a14601bee2c47c92a968984d2bb24f9565c5e6679dae044ad921d",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/evaluate-multi.py": "5e1a485b59103e00fe2490cf7b1b760f838d26f8429b9a56e9f2cff8231b562f",
+    "/Users/changmin/projects/ugrp/outputs/s3fix21-control-20261011/submission-failure.json": "49f7619fa874022805d29c7dd67fab806470e26b800377b831950324113bb793"
+  }
+}

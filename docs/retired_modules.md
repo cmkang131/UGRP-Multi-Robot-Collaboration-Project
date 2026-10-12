@@ -7,6 +7,39 @@
 
 ## 판단과 재현
 
+2026-10-11: #416 독립 검토 수정으로 미실행 v190 / 7.83.0도 등록 당시 SHA
+`bca75e25`의 계약·실행기·workflow·등록·봉인 5파일을 바이트/해시 그대로 퇴역 보존했다.
+새 등록은 v193 / 7.86.0이며 S3 가드·pulse_odometry는 전용 모듈에 격리한다.
+공통 가드 3파일과 S2 pulse 소스는 main 원본으로 복원했다. v127의 오프라인 실행 admission은
+복원되며 v128·v129는 main의 기존 공유 소스 8개 변경 때문에 현재 소스에서 계속 퇴역이다
+(첫 거부: `harness/idle_robot_contacts_contract.py`; 전체 목록은 연결된 기록).
+두 번들의 원래 봉인·판정·시험을 유지하며 재현은 원래 등록 SHA에서만 한다.
+[admission과 봉인 확인](../experiments/2026-10-11-pr416-review-fixes/summary.json).
+
+2026-10-11: #416 main PR422 반영 후 미실행 v188 / 7.81.0을 원래 SHA `b3d52826`의 바이트로 퇴역 목록에 보존했다. 새 등록은 v190 / 7.83.0이며 공통 `min_command_contract` 기본 off를 유지하고 S3는 on_v1을 명시해 병합 전 명령을 보존한다. [기록](../experiments/2026-10-11-pr416-main-sync/summary.json).
+
+2026-10-11: #416의 `zone-s3-recovery-v152` / 7.45.0은 실행 당시 SHA
+`981baa95`에서만 재현한다. 비교 JSON은 그대로 보존하고 원래 계약·실행기·workflow·등록을
+[퇴역 목록](../experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json)에 바이트/해시로 보존했다.
+현재 소스는 v188 / 7.81.0으로 재등록하며 과거 결과를 승계하지 않는다.
+
+2026-10-11 Azure CPU 이관: VM의 기존 `ugrp-azure-idle-guard.timer`
+(15분·batch lease 미지원)와 `ugrp-sim-worker.service`
+(무한 GPU worker 재시작 supervisor)를 비활성화했다. 서버의 정의·스크립트·자료는
+보존했다. 대체는 [20분/8시간 가드](../scripts/azure_idle_guard.py)와
+유한 [CPU 실행기](../scripts/remote_run.py)이며,
+이전 가드의 보관 중 할당 해제와 복구는
+[검증 기록](../experiments/2026-10-11-azure-sim-migration/summary.json)에 남겼다.
+
+2026-10-10: `controller-replay-abba` adapter 1.0.0은 1.1.0(visibility 비교 옵션,
+측정 source/산출물 경로 명시)으로, `controller-replay-profile` 1.1.0은
+1.2.0(private binding/RGB 구간, visibility 옵션)으로 대체한다. 이전 실행 소스는
+`c35cd553df431628fb3288dd77e4850086c64f22`, 원본은 기본 checkout
+`outputs/speedctrl2-20261010-v1`에 보존한다. 당시 큐 취소/미완료 ABBA를 새 완료 판정으로 승계하지 않는다.
+같은 후속 PR에서 ABBA 1.1.0→1.2.0, profile 1.2.0→1.3.0으로 바꾼다.
+RGB 구간 출력 누락·S3 종료 검사·동결 adapter Python 지문 검증을 보완한 버전이며,
+이전 버전으로 새 완료/속도 판정을 만들지 않는다.
+
 `import`/상대 import, importlib 별칭·상수·모듈 문자열, subprocess `-m`, pathlib 경로 조합의 AST 그래프를 계산했다. 파일 이름의 부분 문자열 유무로 삭제를 결정하지 않았다. 현재 실행 경로, main 안내 명령, 운영/실물 경로, 열린 PR의 변경 코드·설정·명령과 전이 의존성을 시작점으로 삼았다. 유지 모듈을 직접 검사하는 시험은 의존성 전체를 유지한다. 그대로 남기는 과거 실험 Python 스크립트의 호출 대상도 보류했다. 임의 외부 설정/체크포인트에 담긴 동적 import는 정적으로 완전하게 증명할 수 없다.
 
 기본 카탈로그 41항목 + 조각 18항목은 모두 유지 경로/문서/PR 의존성에 연결되어 이번에 퇴역하지 않는다. 오래됐다는 이유만으로 현재 번들 소스나 고정 시험을 지우지 않았다. 카탈로그별 근거는 아래 표와 `inventory.json`의 시작점/브랜치 경로에 있다.
@@ -200,3 +233,15 @@
 - 2026-10-09 S3 `zone-s3-sweep-v149`는 원본 `b73ce193` 및 raw 증거를 보존한 과거 DEV 실행이다. 후속 실행은 pre-GO 재대기와 사전 등록된 motion 옵션 선택을 묶은 `zone-s3-odometry-v150` /7.43.0을 사용한다. 기존 실행/실패 기록과 재생 소스는 삭제·덮어쓰지 않는다.
 
 - 2026-10-10 S3 `zone-s3-odometry-v150` / `zone-s3-consistency-v151`는 원본 SHA `4c9eb3aa` / `3ec2d781`와 raw를 보존하는 과거 DEV 실행이다. 새 실행은 문 임대·자기 RGB 정렬의 `zone-s3-recovery-v152` /7.45.0을 사용한다. PF 다양성 후보는 저장 재생에서 미채택되어 off를 유지한다. 과거 번들의 봉인은 완화하지 않는다.
+## speedctrl2 종료 기록 보완 (2026-10-10)
+
+`controller-replay-abba` 1.2.0과 `controller-replay-profile` 1.3.0의 새 실행은
+1.3.0/1.4.0으로 대체한다. 기존 raw는 보존하며 정상 제어기 수학은 동일하다.
+TERM/HUP 실패 기록과 현재 lease 신원 확인을 추가했다. SIGTERM으로 미완료인
+`speedctrl2-20261010-v2`를 완료로 승계하지 않는다.
+
+2026-10-11: #425는 #416 `6af2afa4`를 반영한 S4 소비자를 v191 / 7.84.0으로 별도 봉인한다. 미실행 v189/v190 등록·계약·실행기·workflow·seal은 원래 SHA의 바이트로 퇴역 목록에 보존하며 결과를 승계하지 않는다. S3/S4 런타임의 `min_command_contract=on_v1`, 공통 기본 off를 유지한다. [기록](../experiments/2026-10-11-pr425-main-sync/summary.json).
+
+2026-10-12: #425 main 동기화: #416 병합 `eebb2490`의 v193 / 7.86.0 등록·봉인·퇴역 기록은 원본 바이트로 보존한다. 미병합·실행 0회의 v191 / 7.84.0은 `00418638` 원본 6파일(계약·실행기·workflow·등록·봉인·퇴역 원장)을 퇴역 목록에 보존하고 S4 소비자 차이를 v195 / 7.88.0으로 재등록했다. PR433의 v194 / 7.87.0 예약을 확인했다. S3 전용 가드와 공통 `min_command_contract` 기본 off를 유지하며 새 실행 결과를 승계하지 않는다. [기록](../experiments/2026-10-11-pr425-main-sync/summary.json).
+
+2026-10-12: #425 후속 P2 정리로 v193 / 7.86.0을 퇴역한다. 등록 커밋 `cadf4da8`과 #416 병합 `eebb2490`의 봉인 런타임 소스 433개는 동일하지만, #425에서 계약·실행기·`harness/zone_study_llm_driver.py`·`sim/zone_s3_no_prior.py` 4개가 변경되어 기존 workflow ID로 v195 번들이 생성된다. 앞선 보존은 등록·봉인·퇴역 원장 기록 3파일에 한정되며 런타임 보존을 뜻하지 않는다. `eebb2490`의 계약·실행기·workflow·등록·봉인·퇴역 원장 6파일을 [퇴역 목록](../experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json)의 `retired-bundle/v193/`에 원본 바이트와 sha256으로 보존하고, 현재 workflow 등록을 제거했다. 대체는 `zone-s3-recovery-v195` / 7.88.0이며 과거 결과를 승계하지 않는다. [검증 범위](../experiments/2026-10-12-retire-v193/summary.json).

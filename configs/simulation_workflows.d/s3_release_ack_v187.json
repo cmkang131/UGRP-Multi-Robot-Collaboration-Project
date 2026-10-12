@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-release-ack-v187",
+      "version": "7.80.0",
+      "purpose": "S3 own-command OPEN acknowledgement paired DEV comparison",
+      "entry": "scripts/run_s3_release_ack_cohort.py",
+      "runner": "scripts.run_s3_release_ack_cohort",
+      "docs": "experiments/2026-10-11-s3-release-ack/README.md",
+      "requires": "already-running Azure immutable x86 OSMesa LP4; lease; persistent output; no LLM",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

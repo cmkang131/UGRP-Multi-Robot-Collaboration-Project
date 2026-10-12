@@ -132,7 +132,7 @@ def enter_pair(rt,now,option):
         attach_endpoint(ep,option)
     return endpoints
 
-def run(b,out,*,backend_factory=None,solo_configure=None):
+def run(b,out,*,backend_factory=None,solo_configure=None,stop_when=None):
     from sim.s3_motion_ports import PhysicsBackend
     from harness.zone_s3_recovery_runtime import Runtime
     out.mkdir(parents=True,exist_ok=False);write(out/'bundle.json',b);write(out/'environment.json',environment_record())
@@ -154,6 +154,9 @@ def run(b,out,*,backend_factory=None,solo_configure=None):
         rt.boot_finished_at=start
         for i in range(round(CAP/.05)+1):
             now=host.now;host.eval_sample()
+            if stop_when is not None and stop_when():
+                result['stage_end']='first_setdown_release_commanded'
+                break
             if i==round(CAP/.05):break
             if time.monotonic()-started>b['wall_cap_s']:raise TimeoutError('PROBE_WALL_CAP')
             frames=host.capture();assert_frame_commands(host,frames);rt.on_frames(now,frames)
