@@ -1,0 +1,308 @@
+{
+  "case": "s1043",
+  "split": "development",
+  "origin_eval_only": [
+    -0.8981822007590279,
+    -0.8499952927782365,
+    -3.062593405247863e-05
+  ],
+  "wall_samples": 349,
+  "metrics": {
+    "off__dr": {
+      "final": {
+        "occupied_cells": 243,
+        "precision_015": 0.06172839506172839,
+        "precision_cell": 0.03292181069958848,
+        "wall_coverage": 0.045845272206303724,
+        "wall_error_rmse_m": 0.9300547962984461
+      },
+      "path_position_error": {
+        "median_m": 1.6175725037440472,
+        "p90_m": 2.5254103459963266,
+        "p95_m": 2.5254203988997785,
+        "max_m": 2.525491211532006,
+        "rmse_m": 1.8281977476854434,
+        "count": 2173
+      },
+      "end_position_error_m": 2.525375591682648,
+      "end_yaw_error_deg": 0.885834979934659
+    },
+    "off__gt": {
+      "final": {
+        "occupied_cells": 146,
+        "precision_015": 0.0273972602739726,
+        "precision_cell": 0.0136986301369863,
+        "wall_coverage": 0.0057306590257879654,
+        "wall_error_rmse_m": 0.8216129021407823
+      }
+    },
+    "off__gt_confidence": {
+      "final": {
+        "occupied_cells": 166,
+        "precision_015": 0.060240963855421686,
+        "precision_cell": 0.024096385542168676,
+        "wall_coverage": 0.017191977077363897,
+        "wall_error_rmse_m": 0.789702568744148
+      }
+    },
+    "v3_unloaded_extrinsic_v1__dr": {
+      "final": {
+        "occupied_cells": 212,
+        "precision_015": 0.04245283018867924,
+        "precision_cell": 0.009433962264150943,
+        "wall_coverage": 0.022922636103151862,
+        "wall_error_rmse_m": 0.7147337980391608
+      },
+      "path_position_error": {
+        "median_m": 1.6175725037440472,
+        "p90_m": 2.5254103459963266,
+        "p95_m": 2.5254203988997785,
+        "max_m": 2.525491211532006,
+        "rmse_m": 1.8281977476854434,
+        "count": 2173
+      },
+      "end_position_error_m": 2.525375591682648,
+      "end_yaw_error_deg": 0.885834979934659
+    },
+    "v3_unloaded_extrinsic_v1__gt": {
+      "final": {
+        "occupied_cells": 173,
+        "precision_015": 0.0,
+        "precision_cell": 0.0,
+        "wall_coverage": 0.0,
+        "wall_error_rmse_m": 0.7701765050570123
+      }
+    },
+    "v3_unloaded_extrinsic_v1__gt_confidence": {
+      "final": {
+        "occupied_cells": 172,
+        "precision_015": 0.0,
+        "precision_cell": 0.0,
+        "wall_coverage": 0.0,
+        "wall_error_rmse_m": 0.7689211340108111
+      }
+    },
+    "off__rbpf_graph": {
+      "final": {
+        "occupied_cells": 253,
+        "precision_015": 0.0,
+        "precision_cell": 0.0,
+        "wall_coverage": 0.0,
+        "wall_error_rmse_m": 0.8356806098637032
+      },
+      "path_position_error": {
+        "median_m": 0.6735306999966886,
+        "p90_m": 0.8199660563511159,
+        "p95_m": 0.8199973242791678,
+        "max_m": 1.6903445995624236,
+        "rmse_m": 0.657709189545279,
+        "count": 2173
+      },
+      "end_position_error_m": 0.8199286856259101,
+      "end_yaw_error_deg": 16.63525709087077,
+      "inserted_scans": 497,
+      "loop_counts": {
+        "member_scan": 984,
+        "temporal_separation": 4403,
+        "high_residual": 111,
+        "ambiguous_modes": 5942,
+        "refinement_failed": 332,
+        "search_boundary": 7242,
+        "low_overlap": 9,
+        "unobservable": 4511,
+        "low_probability": 904,
+        "accepted": 412
+      },
+      "frontend_counts": {
+        "bootstrap": 1,
+        "keyframe_interval": 450,
+        "high_residual": 2,
+        "low_overlap": 3,
+        "improved_proposal": 46
+      }
+    },
+    "v3_unloaded_extrinsic_v1__rbpf_graph": {
+      "final": {
+        "occupied_cells": 294,
+        "precision_015": 0.08843537414965986,
+        "precision_cell": 0.04421768707482993,
+        "wall_coverage": 0.02865329512893983,
+        "wall_error_rmse_m": 1.0588907210070189
+      },
+      "path_position_error": {
+        "median_m": 1.3711944669959197,
+        "p90_m": 1.74644282361956,
+        "p95_m": 1.7464531694503689,
+        "max_m": 1.8431710723068422,
+        "rmse_m": 1.3703071052709583,
+        "count": 2173
+      },
+      "end_position_error_m": 1.7463966020410835,
+      "end_yaw_error_deg": 1.5123929215905787,
+      "inserted_scans": 415,
+      "loop_counts": {
+        "member_scan": 820,
+        "temporal_separation": 3406,
+        "ambiguous_modes": 8923,
+        "insufficient_points": 515,
+        "search_boundary": 1962,
+        "high_residual": 81,
+        "low_overlap": 1,
+        "low_probability": 37,
+        "unobservable": 1576,
+        "refinement_failed": 95,
+        "accepted": 14
+      },
+      "frontend_counts": {
+        "insufficient_match_points": 14,
+        "bootstrap": 1,
+        "keyframe_interval": 356,
+        "improved_proposal": 44,
+        "high_residual": 1
+      }
+    },
+    "v3_unloaded_extrinsic_v1__confidence": {
+      "final": {
+        "occupied_cells": 376,
+        "precision_015": 0.0851063829787234,
+        "precision_cell": 0.0425531914893617,
+        "wall_coverage": 0.03151862464183381,
+        "wall_error_rmse_m": 0.7689712228690125
+      },
+      "path_position_error": {
+        "median_m": 1.9377057637228547,
+        "p90_m": 2.5789437608395027,
+        "p95_m": 2.578954142161768,
+        "max_m": 2.579051864383313,
+        "rmse_m": 1.9381687203345979,
+        "count": 2173
+      },
+      "end_position_error_m": 2.5789023537335094,
+      "end_yaw_error_deg": 5.877107724321204,
+      "inserted_scans": 415,
+      "loop_counts": {
+        "member_scan": 820,
+        "temporal_separation": 3406,
+        "low_probability": 12689,
+        "insufficient_points": 515
+      },
+      "frontend_counts": {
+        "insufficient_match_points": 14,
+        "bootstrap": 1,
+        "keyframe_interval": 356,
+        "improved_proposal": 44,
+        "high_residual": 1
+      }
+    },
+    "off__rbpf_guard": {
+      "final": {
+        "occupied_cells": 353,
+        "precision_015": 0.0906515580736544,
+        "precision_cell": 0.042492917847025496,
+        "wall_coverage": 0.0830945558739255,
+        "wall_error_rmse_m": 1.0497265997064535
+      },
+      "path_position_error": {
+        "median_m": 1.3923581363952235,
+        "p90_m": 1.8585507976825988,
+        "p95_m": 1.8585603655200733,
+        "max_m": 2.147357432448128,
+        "rmse_m": 1.433242092005378,
+        "count": 2173
+      },
+      "end_position_error_m": 1.8585233344553393,
+      "end_yaw_error_deg": 31.596064677697505
+    },
+    "v3_unloaded_extrinsic_v1__rbpf_guard": {
+      "final": {
+        "occupied_cells": 259,
+        "precision_015": 0.10038610038610038,
+        "precision_cell": 0.04247104247104247,
+        "wall_coverage": 0.04011461318051576,
+        "wall_error_rmse_m": 0.7506052166096807
+      },
+      "path_position_error": {
+        "median_m": 1.8467920067654195,
+        "p90_m": 2.5555891237509964,
+        "p95_m": 2.5555994756223996,
+        "max_m": 2.555680869151982,
+        "rmse_m": 1.9102743600100127,
+        "count": 2173
+      },
+      "end_position_error_m": 2.5555473648437923,
+      "end_yaw_error_deg": 5.959851009093366
+    }
+  },
+  "checks": {
+    "off__rbpf_graph": {
+      "terminal_30pct_and_075m": false,
+      "path_median_not_worse": true,
+      "path_p95_not_worse": true,
+      "path_rmse_20pct": true,
+      "map_precision_not_worse": false,
+      "map_recall_within_2pp": false,
+      "map_rmse_20pct": false,
+      "guard_visible_recall_verified": false,
+      "zero_invalid_endpoints": true,
+      "guard_precision_nondecrease": false,
+      "zero_behind_camera_evidence": true,
+      "off_bytes": true
+    },
+    "v3_unloaded_extrinsic_v1__rbpf_graph": {
+      "terminal_30pct_and_075m": false,
+      "path_median_not_worse": true,
+      "path_p95_not_worse": true,
+      "path_rmse_20pct": true,
+      "map_precision_not_worse": true,
+      "map_recall_within_2pp": true,
+      "map_rmse_20pct": false,
+      "guard_visible_recall_verified": false,
+      "zero_invalid_endpoints": true,
+      "guard_precision_nondecrease": false,
+      "zero_behind_camera_evidence": true,
+      "off_bytes": true
+    },
+    "v3_unloaded_extrinsic_v1__confidence": {
+      "terminal_30pct_and_075m": false,
+      "path_median_not_worse": false,
+      "path_p95_not_worse": false,
+      "path_rmse_20pct": false,
+      "map_precision_not_worse": true,
+      "map_recall_within_2pp": true,
+      "map_rmse_20pct": false,
+      "guard_visible_recall_verified": false,
+      "zero_invalid_endpoints": true,
+      "guard_precision_nondecrease": false,
+      "zero_behind_camera_evidence": true,
+      "off_bytes": true
+    }
+  },
+  "success": {
+    "off__rbpf_graph": false,
+    "v3_unloaded_extrinsic_v1__rbpf_graph": false,
+    "v3_unloaded_extrinsic_v1__confidence": false
+  },
+  "actual_visible_recall": null,
+  "visibility_limitation": "No actual camera pose/joints in these recordings; exact visibility unscorable.",
+  "truth_sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/eval_only/trajectory.jsonl",
+      "sha256": "71ef4a200ef7363499f7f241e86446956aa0867f0db21d85d03be1a7dd8e937e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/inputs/static_map.json",
+      "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    }
+  ],
+  "prediction_hashes": {
+    "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-v3-confidence-v1/s1043/off/unweighted": "c991b74a55ba6464ee4a25a640558a0cccb57de50a9685bc4376aab66b24cc1c",
+    "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-v3-confidence-v1/s1043/v3_unloaded_extrinsic_v1/unweighted": "bd0a80e1bb98a0bc2da7c43b0c1e1388bfa8ed28bdbd8316d082d5d7bee47a3a",
+    "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-v3-confidence-v1/s1043/v3_unloaded_extrinsic_v1/confidence": "c9c975b5d9648490e286cdaa967e8e2d079e68c433d40daf63c04f19b30ec6b2"
+  },
+  "section17_19_success": {
+    "off__rbpf_graph": false,
+    "v3_unloaded_extrinsic_v1__rbpf_graph": false,
+    "v3_unloaded_extrinsic_v1__confidence": false
+  },
+  "off_bytes_test": "tests/test_wall_confidence.py::test_rbpf_disabled_matches_frozen_estimator_bytes + default/explicit memory bytes"
+}

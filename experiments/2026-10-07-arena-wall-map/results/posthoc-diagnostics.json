@@ -1,0 +1,319 @@
+{
+  "forward": {
+    "role": "posthoc evaluation only; no coefficient or gate changes",
+    "frontend": {
+      "final": {
+        "occupied_cells": 307,
+        "precision_015": 0.28338762214983715,
+        "precision_cell": 0.08794788273615635,
+        "wall_coverage": 0.2613981762917933,
+        "wall_error_rmse_m": 0.7914773932055822
+      },
+      "path_position_error": {
+        "median_m": 0.14235397450100135,
+        "p90_m": 0.2655839954827295,
+        "p95_m": 0.33453999714001204,
+        "max_m": 0.6121911169318132,
+        "rmse_m": 0.19728403201738895,
+        "count": 360
+      },
+      "end_position_error_m": 0.6121911169318132,
+      "end_yaw_error_deg": 10.181598952391335
+    },
+    "optimization": {
+      "accepted": true,
+      "reason": "converged",
+      "initial_cost": 10.141059786769535,
+      "final_cost": 9.236722983473317,
+      "nfev": 7,
+      "status": 2,
+      "message": "`ftol` termination condition is satisfied.",
+      "max_translation_change_m": 0.10976472387371718
+    },
+    "accepted_loop_errors": [
+      {
+        "submap": 7,
+        "scan": 45,
+        "translation_error_m": 0.9239367526966944,
+        "yaw_error_deg": 3.3236999158183473
+      }
+    ],
+    "pulse_summary": {
+      "0:left:0.65:0.65": {
+        "n": 20,
+        "actual_yaw_deg": {
+          "n": 20,
+          "median": -0.7395635436087853,
+          "p90": -0.40989888281868647,
+          "max": -0.27874384616700576
+        },
+        "expected_yaw_deg": -0.5577387700424824,
+        "translation_residual_m": {
+          "n": 20,
+          "median": 0.0038511285785136854,
+          "p90": 0.004519578842227205,
+          "max": 0.004999417321308255
+        }
+      },
+      "0:turn:0.35:0.10": {
+        "n": 19,
+        "actual_yaw_deg": {
+          "n": 19,
+          "median": 5.9586524353615244,
+          "p90": 6.193231739950621,
+          "max": 6.227733035080131
+        },
+        "expected_yaw_deg": 5.369137728245055,
+        "translation_residual_m": {
+          "n": 19,
+          "median": 0.002599161992283976,
+          "p90": 0.0033277824435542338,
+          "max": 0.003635147641080069
+        }
+      },
+      "0:left:-0.65:0.65": {
+        "n": 15,
+        "actual_yaw_deg": {
+          "n": 15,
+          "median": 0.4437651037792346,
+          "p90": 1.2712532375929053,
+          "max": 1.428310427774144
+        },
+        "expected_yaw_deg": 0.6381881168371817,
+        "translation_residual_m": {
+          "n": 15,
+          "median": 0.004571679936981243,
+          "p90": 0.005133315830173349,
+          "max": 0.005230480428335558
+        }
+      },
+      "0:turn:-0.35:0.10": {
+        "n": 2,
+        "actual_yaw_deg": {
+          "n": 2,
+          "median": -5.826687861089352,
+          "p90": -5.814937810993084,
+          "max": -5.812000298469017
+        },
+        "expected_yaw_deg": -5.934775421842247,
+        "translation_residual_m": {
+          "n": 2,
+          "median": 0.0016062184366949566,
+          "p90": 0.0018397126722376272,
+          "max": 0.0018980862311232948
+        }
+      }
+    },
+    "wall_contacts": [
+      {
+        "t": 37.2,
+        "geom1": "zone_wall_south",
+        "geom2": "r3__right_finger",
+        "dist_m": -0.0006774414481648772
+      }
+    ]
+  },
+  "reverse": {
+    "role": "posthoc evaluation only; no coefficient or gate changes",
+    "frontend": {
+      "final": {
+        "occupied_cells": 1352,
+        "precision_015": 0.22115384615384615,
+        "precision_cell": 0.10281065088757396,
+        "wall_coverage": 0.6747720364741642,
+        "wall_error_rmse_m": 1.267706144922951
+      },
+      "path_position_error": {
+        "median_m": 0.6257601775567019,
+        "p90_m": 2.039325992983775,
+        "p95_m": 2.1631137976836543,
+        "max_m": 2.1633671508703713,
+        "rmse_m": 1.1605219531883555,
+        "count": 1801
+      },
+      "end_position_error_m": 2.039202113370397,
+      "end_yaw_error_deg": 10.49776122483655
+    },
+    "optimization": {
+      "accepted": true,
+      "reason": "converged",
+      "initial_cost": 143.4884174910904,
+      "final_cost": 86.13113354663031,
+      "nfev": 27,
+      "status": 2,
+      "message": "`ftol` termination condition is satisfied.",
+      "max_translation_change_m": 0.8596225497353605
+    },
+    "accepted_loop_errors": [
+      {
+        "submap": 0,
+        "scan": 342,
+        "translation_error_m": 1.0556516042561916,
+        "yaw_error_deg": 1.983068687450481
+      },
+      {
+        "submap": 0,
+        "scan": 343,
+        "translation_error_m": 1.1191063729844992,
+        "yaw_error_deg": 5.343486614448323
+      },
+      {
+        "submap": 0,
+        "scan": 354,
+        "translation_error_m": 0.9814410986472,
+        "yaw_error_deg": 6.681303039794162
+      },
+      {
+        "submap": 1,
+        "scan": 54,
+        "translation_error_m": 1.0576228581551583,
+        "yaw_error_deg": 5.203910658089279
+      },
+      {
+        "submap": 11,
+        "scan": 154,
+        "translation_error_m": 1.0018101460369262,
+        "yaw_error_deg": 3.284154633104969
+      },
+      {
+        "submap": 21,
+        "scan": 605,
+        "translation_error_m": 0.943981947378165,
+        "yaw_error_deg": 3.7547414099374583
+      },
+      {
+        "submap": 23,
+        "scan": 602,
+        "translation_error_m": 0.576210543521744,
+        "yaw_error_deg": 0.12096869523353272
+      },
+      {
+        "submap": 25,
+        "scan": 602,
+        "translation_error_m": 0.45230124636999974,
+        "yaw_error_deg": 21.916350223399444
+      },
+      {
+        "submap": 35,
+        "scan": 27,
+        "translation_error_m": 1.5716207116939656,
+        "yaw_error_deg": 27.98044642652309
+      },
+      {
+        "submap": 40,
+        "scan": 375,
+        "translation_error_m": 0.5506866306327121,
+        "yaw_error_deg": 8.475682926925927
+      },
+      {
+        "submap": 56,
+        "scan": 260,
+        "translation_error_m": 0.768315416361959,
+        "yaw_error_deg": 3.639204471040922
+      },
+      {
+        "submap": 58,
+        "scan": 265,
+        "translation_error_m": 0.8421564706558533,
+        "yaw_error_deg": 6.797760313000353
+      },
+      {
+        "submap": 59,
+        "scan": 259,
+        "translation_error_m": 0.5500814012472391,
+        "yaw_error_deg": 2.956769367982637
+      },
+      {
+        "submap": 59,
+        "scan": 265,
+        "translation_error_m": 0.48797854155237236,
+        "yaw_error_deg": 3.5821175902695055
+      },
+      {
+        "submap": 60,
+        "scan": 215,
+        "translation_error_m": 1.1137636384642946,
+        "yaw_error_deg": 9.317420585967641
+      },
+      {
+        "submap": 60,
+        "scan": 231,
+        "translation_error_m": 0.42622091931207795,
+        "yaw_error_deg": 1.8896469502870532
+      },
+      {
+        "submap": 69,
+        "scan": 665,
+        "translation_error_m": 1.0242379383787323,
+        "yaw_error_deg": 1.1996278454758615
+      }
+    ],
+    "pulse_summary": {
+      "0:turn:-0.35:0.10": {
+        "n": 69,
+        "actual_yaw_deg": {
+          "n": 69,
+          "median": -5.816764112022467,
+          "p90": -4.46990871195546,
+          "max": -3.6826594740478895
+        },
+        "expected_yaw_deg": -5.934775421842247,
+        "translation_residual_m": {
+          "n": 69,
+          "median": 0.002163627549272522,
+          "p90": 0.004375054018937881,
+          "max": 0.005983682315902401
+        }
+      },
+      "0:left:-0.65:0.65": {
+        "n": 68,
+        "actual_yaw_deg": {
+          "n": 68,
+          "median": 0.6941414817294536,
+          "p90": 1.1309839524683953,
+          "max": 1.5152054810283406
+        },
+        "expected_yaw_deg": 0.6381881168371817,
+        "translation_residual_m": {
+          "n": 68,
+          "median": 0.004863639262993393,
+          "p90": 0.005590191793833524,
+          "max": 0.005900263938624155
+        }
+      },
+      "0:turn:0.35:0.10": {
+        "n": 75,
+        "actual_yaw_deg": {
+          "n": 75,
+          "median": 4.630581805586996,
+          "p90": 5.984066810853833,
+          "max": 6.294080073877584
+        },
+        "expected_yaw_deg": 5.369137728245055,
+        "translation_residual_m": {
+          "n": 75,
+          "median": 0.003844291862929295,
+          "p90": 0.005367686841789753,
+          "max": 0.0057192254378213144
+        }
+      },
+      "0:left:0.65:0.65": {
+        "n": 70,
+        "actual_yaw_deg": {
+          "n": 70,
+          "median": -0.2540367028979429,
+          "p90": 2.748483282867021,
+          "max": 9.734779330311083
+        },
+        "expected_yaw_deg": -0.5577387700424824,
+        "translation_residual_m": {
+          "n": 70,
+          "median": 0.06289067826980733,
+          "p90": 0.08837437873835635,
+          "max": 0.1582720049994527
+        }
+      }
+    },
+    "wall_contacts": []
+  }
+}

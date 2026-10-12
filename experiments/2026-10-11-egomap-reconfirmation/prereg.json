@@ -1,0 +1,109 @@
+{
+  "round": "egomap71",
+  "class_": "dev",
+  "pr": 405,
+  "baseline_source": "4199f7e126e2e4a1b9c4a29eb7b3fe740cc2ce34",
+  "baseline": "calib_traversed",
+  "checkpoints": [
+    {
+      "seed": 63001,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "file": "ckpt_00378_t00076.900.pkl.zlib",
+      "sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "tick": 378,
+      "sim_s": 76.9,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 18600304
+    },
+    {
+      "seed": 63002,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "file": "ckpt_00199_t00041.100.pkl.zlib",
+      "sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "tick": 199,
+      "sim_s": 41.1,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 12883161
+    },
+    {
+      "seed": 63003,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "file": "ckpt_00071_t00015.500.pkl.zlib",
+      "sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "tick": 71,
+      "sim_s": 15.5,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 8453302
+    },
+    {
+      "seed": 63004,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "file": "ckpt_00332_t00067.700.pkl.zlib",
+      "sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "tick": 332,
+      "sim_s": 67.7,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 16163572
+    },
+    {
+      "seed": 63005,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "file": "ckpt_00167_t00034.700.pkl.zlib",
+      "sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "tick": 167,
+      "sim_s": 34.7,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 11897690
+    },
+    {
+      "seed": 63006,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "file": "ckpt_00135_t00028.300.pkl.zlib",
+      "sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "tick": 135,
+      "sim_s": 28.3,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 10922284
+    }
+  ],
+  "conditions": [
+    "off",
+    "on"
+  ],
+  "registered": 12,
+  "paired_seeds": [
+    63001,
+    63002,
+    63003,
+    63004,
+    63005,
+    63006
+  ],
+  "schedule": "B270+return270 SIM seconds",
+  "per_run_wall_s": 2700,
+  "batch_wall_s": 5400,
+  "task_vm_limit_s": 7200,
+  "archive_reserve_s": 1800,
+  "workers_max": 4,
+  "default_workers": 3,
+  "lp_num_threads": 1,
+  "model_calls": 0,
+  "retries": 0,
+  "toggles_default": "off",
+  "control_inputs": "own RGB and issued command history only; NEES fit offline",
+  "failures": "Every admitted trial retained; ENOSPC and missing results HOST_ERROR; no failure replacement",
+  "comparison": "Both toggles together vs calibrated traversed baseline; repeated DEV seeds not confirmatory",
+  "raw": "Azure persistent disk then verified ARM archive; Mac fetch-lite"
+}

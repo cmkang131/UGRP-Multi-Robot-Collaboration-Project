@@ -1,0 +1,71 @@
+{
+  "purpose": "post-seal descriptive audit; no new acceptance thresholds",
+  "conditions": [
+    {
+      "seed": 49001,
+      "goal_center_error_m": 0.46409363698316025,
+      "goal_center_inside_B": true,
+      "post_loss_over_3sigma": 1165,
+      "post_loss_frames": 1350,
+      "correct_convergence": true,
+      "map_coverage_denominator": 329
+    },
+    {
+      "seed": 49002,
+      "goal_center_error_m": 0.40779950082793226,
+      "goal_center_inside_B": false,
+      "post_loss_over_3sigma": 387,
+      "post_loss_frames": 1350,
+      "correct_convergence": true,
+      "map_coverage_denominator": 329
+    },
+    {
+      "seed": 49003,
+      "goal_center_error_m": null,
+      "goal_center_inside_B": null,
+      "post_loss_over_3sigma": 0,
+      "post_loss_frames": 0,
+      "correct_convergence": false,
+      "map_coverage_denominator": 329
+    },
+    {
+      "seed": 49004,
+      "goal_center_error_m": null,
+      "goal_center_inside_B": null,
+      "post_loss_over_3sigma": 0,
+      "post_loss_frames": 0,
+      "correct_convergence": false,
+      "map_coverage_denominator": 329
+    },
+    {
+      "seed": 49005,
+      "goal_center_error_m": 0.294689991927752,
+      "goal_center_inside_B": true,
+      "post_loss_over_3sigma": 355,
+      "post_loss_frames": 866,
+      "correct_convergence": true,
+      "map_coverage_denominator": 329
+    },
+    {
+      "seed": 49006,
+      "goal_center_error_m": 4.87366703907103,
+      "goal_center_inside_B": false,
+      "post_loss_over_3sigma": 275,
+      "post_loss_frames": 682,
+      "correct_convergence": true,
+      "map_coverage_denominator": 329
+    }
+  ],
+  "return_phase_endpoint_n": 4,
+  "return_phase_endpoint_median_m": 0.3845130904885665,
+  "return_phase_endpoint_max_m": 0.8820390971431559,
+  "wall_s_total": 11098.828236374946,
+  "sigma_definitions": {
+    "49001": "sqrt_trace_cov_xy",
+    "49002": "sqrt_trace_cov_xy",
+    "49003": "frontend_reported_max_axis",
+    "49004": "frontend_reported_max_axis",
+    "49005": "sqrt_trace_cov_xy",
+    "49006": "sqrt_trace_cov_xy"
+  }
+}

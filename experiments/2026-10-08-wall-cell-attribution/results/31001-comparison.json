@@ -1,0 +1,92 @@
+{
+  "seed": "31001",
+  "physics": 0,
+  "pose_replay": false,
+  "pose_lineage_unchanged": true,
+  "source_sha": "a8d11d91e6b6769fd632adaa2857f46945bb97b4",
+  "off_bytes_identical": true,
+  "rgb_frames": 901,
+  "controller_frames": 891,
+  "inserted_frames": 47,
+  "potential_visible_samples": 119,
+  "total_samples": 329,
+  "recorded_acquisition_footprint_m2": 2.39,
+  "travelled_m": 8.053481752822126,
+  "conditions": {
+    "off": {
+      "full": {
+        "occupied_cells": 359,
+        "precision_015": 0.38997214484679665,
+        "precision_cell": 0.21727019498607242,
+        "wall_coverage": 0.3768996960486322,
+        "wall_error_rmse_m": 0.7599465402186876
+      },
+      "occupied_cells": 359,
+      "correct_cells": 140,
+      "covered_samples": 124,
+      "region": {
+        "precision": 0.5675675675675675,
+        "precision_correct": 42,
+        "precision_cells": 74,
+        "recall": 0.5210084033613446,
+        "recalled_samples": 62,
+        "visible_samples": 119
+      },
+      "surviving_false_categories": {
+        "detector": 95,
+        "pose": 111,
+        "range_projection": 7,
+        "cell_boundary": 6
+      },
+      "absolute_gate": {
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false
+      }
+    },
+    "on": {
+      "full": {
+        "occupied_cells": 25,
+        "precision_015": 0.48,
+        "precision_cell": 0.4,
+        "wall_coverage": 0.0425531914893617,
+        "wall_error_rmse_m": 0.19291839107401135
+      },
+      "occupied_cells": 25,
+      "correct_cells": 12,
+      "covered_samples": 14,
+      "region": {
+        "precision": 0.6,
+        "precision_correct": 3,
+        "precision_cells": 5,
+        "recall": 0.0,
+        "recalled_samples": 0,
+        "visible_samples": 119
+      },
+      "surviving_false_categories": {
+        "pose": 13
+      },
+      "absolute_gate": {
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false
+      }
+    }
+  },
+  "support": {
+    "candidates": 359,
+    "confirmed": 25,
+    "view_count_histogram": {
+      "1": 224,
+      "2": 71,
+      "3": 39,
+      "4": 16,
+      "5": 7,
+      "6": 2
+    },
+    "correlated_hits_skipped": 136,
+    "cleared": 31,
+    "frames_adding_support": 47
+  },
+  "absolute_gate_pass_count": 0
+}

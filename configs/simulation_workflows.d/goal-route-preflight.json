@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "goal-route-preflight-dev",
+      "version": "1.0.0",
+      "purpose": "egomap58 same P1 cohort with map-derived tape, XML preflight and two-identical-HOST_ERROR breaker",
+      "entry": "scripts/run_goal_route_preflight.py",
+      "runner": "scripts.run_goal_route_preflight",
+      "docs": "experiments/2026-10-09-goal-route-preflight/README.md",
+      "requires": "Committed frozen SHA, XML preflight, S3 s3fix terminal, exclusive lock, seeds55001-55009, unchanged P1 gates",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--seed",
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

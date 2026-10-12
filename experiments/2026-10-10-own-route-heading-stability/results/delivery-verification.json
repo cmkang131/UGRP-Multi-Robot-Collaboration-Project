@@ -1,0 +1,82 @@
+{
+  "1010-egomap65-v2": {
+    "runs": 24,
+    "scalar_tags": 600,
+    "hparams": 24,
+    "all_declared_values_match": true
+  },
+  "1010-egomap65-infra-v2": {
+    "runs": 5,
+    "scalar_tags": 20,
+    "hparams": 5,
+    "all_declared_values_match": true
+  },
+  "total_runs": 29,
+  "v1_v2_values_identical": true,
+  "scope_correction": "v1 partial-retrieval boilerplate superseded; v2 records all manifest files local",
+  "source_sha": "4f759965ca00d4ae29ec9419083a8dca62cfb736",
+  "viewer": {
+    "snapshot": "1010-egomap65-v2",
+    "infrastructure_snapshot": "1010-egomap65-infra-v2",
+    "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2FB_arrived%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Freturned%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fover_3sigma_rate%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fturn_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fturn_moving_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fturn_sign_reversals%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fsamples%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E1010-egomap65-v2%2F#timeseries",
+    "pinned_tags": [
+      "offline/B_arrived",
+      "offline/returned",
+      "offline/over_3sigma_rate",
+      "offline/turn_fraction",
+      "offline/turn_moving_fraction",
+      "offline/turn_sign_reversals",
+      "offline/samples",
+      "result/commands",
+      "result/wall_s",
+      "result/model_calls"
+    ],
+    "default_runs": [
+      "1010-egomap65-v2/baseline-old-63001",
+      "1010-egomap65-v2/baseline-stable-63001",
+      "1010-egomap65-v2/a-old-63001",
+      "1010-egomap65-v2/a-stable-63001",
+      "1010-egomap65-v2/baseline-old-63002",
+      "1010-egomap65-v2/baseline-stable-63002",
+      "1010-egomap65-v2/a-old-63002",
+      "1010-egomap65-v2/a-stable-63002",
+      "1010-egomap65-v2/baseline-old-63003",
+      "1010-egomap65-v2/baseline-stable-63003",
+      "1010-egomap65-v2/a-old-63003",
+      "1010-egomap65-v2/a-stable-63003",
+      "1010-egomap65-v2/baseline-old-63004",
+      "1010-egomap65-v2/baseline-stable-63004",
+      "1010-egomap65-v2/a-old-63004",
+      "1010-egomap65-v2/a-stable-63004",
+      "1010-egomap65-v2/baseline-old-63005",
+      "1010-egomap65-v2/baseline-stable-63005",
+      "1010-egomap65-v2/a-old-63005",
+      "1010-egomap65-v2/a-stable-63005",
+      "1010-egomap65-v2/baseline-old-63006",
+      "1010-egomap65-v2/baseline-stable-63006",
+      "1010-egomap65-v2/a-old-63006",
+      "1010-egomap65-v2/a-stable-63006"
+    ],
+    "hparams_visible_columns": [
+      "case",
+      "policy",
+      "seed",
+      "source_sha",
+      "outcome"
+    ],
+    "scope": "24 physical DEV conditions, 6 checkpoints; 5 zero-physics input-loss submissions separate. Old heading B2/6 each, on0/6 each, return0/6 all; no adoption.",
+    "event_readback": {
+      "runs": 29,
+      "scalars": 620,
+      "hparams": 29
+    },
+    "native_server_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+    "native_api_loaded_runs": 24,
+    "ui_verified": false,
+    "hparams_columns_applied": false,
+    "ui_limit": "Browser session changed and native Chrome reported active user interaction; no other profile used, display/column verification left incomplete.",
+    "viewer_session": "tensorboard-egomap65-view",
+    "videos": [],
+    "video_note": "No new video requested or generated in this round; all wrist RGB preserved."
+  }
+}
