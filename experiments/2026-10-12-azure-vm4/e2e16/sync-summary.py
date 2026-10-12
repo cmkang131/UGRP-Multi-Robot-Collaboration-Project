@@ -1,6 +1,6 @@
 """Write only the explicitly authorized PR450 run-summary.json."""
 from pathlib import Path
-import json,time,datetime,hashlib
+import json,time,datetime,hashlib,subprocess
 out=Path(__file__).resolve().parent
 live=json.loads((out/'live.json').read_text());runs=[]
 for r in live['runs']:
@@ -15,6 +15,15 @@ retrieval=out/'ALL_RETRIEVED.json';shutdown=out/'deallocated.json';verified=out/
 status='RUNNING' if any(r['exit'] is None for r in runs) else 'COMPLETED_PENDING_RETRIEVAL'
 if retrieval.exists() and verified.exists() and shutdown.exists():status='COMPLETE'
 d=dict(schema='ugrp.e2e16.vm4.summary.v1',status=status,checked_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),source_sha=(out/'source-sha.txt').read_text().strip(),pr=450,setup_pr=451,branch='codex/e2e-usstall',vm='ugrp-sim-azure4',conditions={'A':'v206 rgb_vo_us_v1 + ultrasonic on_v1','B':'v205 rgb_vo_v2 + ultrasonic off'},seeds=[61001,61002,61003],N=6,submitted=len(runs),exited=sum(r['exit'] is not None for r in runs),three_condition_success=sum(all(r['conditions'].values()) for r in runs),condition_counts=counts,zupt_judgements=sum(v.get('ultrasonic',{}).get('judgements',0) for r in runs if '-a-' in r['run'] for v in r['robots'].values()),zupt_stationary=sum(v.get('ultrasonic',{}).get('zupt_count',0) for r in runs if '-a-' in r['run'] for v in r['robots'].values()),zupt_applied=sum(v.get('ultrasonic',{}).get('zupt_applied',0) for r in runs if '-a-' in r['run'] for v in r['robots'].values()),execution_errors=sum(bool(r['failure']) for r in runs),caps=dict(runner_wall_s=25200,workflow_timeout_s=25200,observer_wall_s=25200,guest_uptime_s=28800),relay=dict(local_port=18416,remote_port=18393,credential_location='Mac Keychain only'),admission_errors=json.loads((out/'admission-errors.json').read_text()),retention=dict(run_class='dev',pr=450,raw='VM4 persistent disk then hash-verified ARM',mac='fetch-lite, no media/npz/embedded images',prune='only after PR merge/close with hashes and cleanup-records'),evidence=dict(live_sha256=hashlib.sha256((out/'live.json').read_bytes()).hexdigest(),live_local=str(out/'live.json'),source_location='azure4:/home/ugrp/ugrp-sim/src/'+(out/'source-sha.txt').read_text().strip()),runs=runs)
+first=out/'zupt-first.json'
+if first.exists():
+ z=json.loads(first.read_text())
+ d['interim_findings']=[dict(kind='moving_robot_zero_increment_counterexample',run=z['run'],robot='r1',aligned_decisions=z['robots']['r1']['aligned_events'],actual_interval_displacement_m=z['robots']['r1']['actual_displacement_m'],raw_interval_seconds=.2,evidence_local=str(first),sha256=hashlib.sha256(first.read_bytes()).hexdigest(),controller_source_unchanged=True)]
+for r in d['runs']:
+ f=out/'fetch-lite'/r['run']/'zupt-evaluation.json'
+ if f.exists() or Path(str(f)+'.zst').exists():
+  z=json.loads(f.read_bytes() if f.exists() else subprocess.check_output(['zstd','-qdc',str(f)+'.zst']))
+  r['zupt_displacement_evaluation']={rid:{k:v[k] for k in ('zupt_applied','aligned_events','actual_displacement_m')} for rid,v in z['robots'].items()}
 if shutdown.exists():d['vm_final']=json.loads(shutdown.read_text())
 if verified.exists():d['arm_hash_verification']=json.loads(verified.read_text())
 p=Path('/Users/changmin/projects/ugrp-wt/e2e-usstall/experiments/2026-10-12-e2e-usstall/run-summary.json');tmp=p.with_suffix('.json.tmp');tmp.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n');tmp.replace(p)
