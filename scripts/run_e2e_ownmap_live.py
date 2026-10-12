@@ -626,7 +626,7 @@ def main(argv=None):
     p.add_argument('--mapping-acquire',choices=('off','interleaved_v1'),default='off')
     p.add_argument('--perception-settle',choices=('off','command0p6_v1'),default='off')
     p.add_argument('--landmark-cache',choices=('off','bounded64_v1'),default='off')
-    p.add_argument('--camera-hold',choices=('off','wheel_only_v1'),default='off')
+    p.add_argument('--camera-hold',choices=('off','wheel_only_v1','zero_wheel_v1'),default='off')
     p.add_argument('--camera-motion',choices=('off','slow_scan_v1'),default='off')
     p.add_argument('--carrier-goal',choices=('off','seek_own_B_v1'),default='off')
     p.add_argument('--blocked-path-recovery',choices=('off','backup_v1'),default='off')

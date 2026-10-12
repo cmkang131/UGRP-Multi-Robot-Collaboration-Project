@@ -1,0 +1,28 @@
+{
+  "bundle": "e2e18-v241",
+  "option": {
+    "camera_hold": "zero_wheel_v1"
+  },
+  "cause": "v240 native wait preserves servo targets, but PulseOdometry rejects wait as SELF_MAP_UNKNOWN_COMMAND. All 12 previews invalid; no v240 cohort admitted.",
+  "fix": "Use supported zero-speed mecanum with duration0 to stop wheels without cancelling servo interpolation; same command passed to native port and own-command odometry.",
+  "prior": "fix-v240.json",
+  "scope": "Normal open-gripper mapping/align only. Emergency full hold and grasp/carry unchanged.",
+  "tests": {
+    "files": [
+      "tests/test_e2e_camera_hold.py",
+      "tests/test_e2e_camera_settle.py",
+      "tests/test_e2e_pulse_admission.py"
+    ],
+    "scope": "Native port + real PulseOdometry consuming identical issued commands, no physics",
+    "passed": 14,
+    "seconds": 10.9
+  },
+  "research": [
+    {
+      "url": "https://control.ros.org/master/doc/ros2_controllers/joint_trajectory_controller/doc/trajectory.html",
+      "verified": true,
+      "adaptation": "Keep independent arm trajectory during wheel wait; use repository-supported zero wheel command"
+    }
+  ],
+  "physical_success": false
+}
