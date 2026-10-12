@@ -52,7 +52,7 @@
     "failed": 2,
     "log": "outputs/merge-a-20261012/targeted-tests.log"
   },
-  "ci": "new_head_required_after_P1_fix",
+  "ci": "new_head_required_after_catalog_fixture_fix",
   "review": "in_progress",
   "raw_modified": false,
   "ci_new_test_registration": {
@@ -125,5 +125,18 @@
     ],
     "log": "outputs/merge-a-20261012/review-fix-tests.log",
     "log_sha256": "62c3291c865a0d268e4e89b63ac3368659533943c6dfc67dba19b418a4030891"
+  },
+  "ci_failure_fix": {
+    "run": 38259642855,
+    "source_sha": "719555e22829b5c6b66613698d17f8e6c029bdd7",
+    "failed_job": 114847310033,
+    "failure": "Explicit-plan samples omitted 13 new workflows; first KeyError e2e18-v216.",
+    "changed_file": "tests/test_simulation_workflow_manager.py",
+    "new_workflow_samples": 13,
+    "targeted_file_passed": 21,
+    "targeted_file_failed": 0,
+    "log": "outputs/merge-a-20261012/catalog-fix-tests.log",
+    "log_sha256": "72c0a098434ff57a46350a5eb089bcad7a95762aec8baaa3d0552fe7f515f1fb",
+    "production_code_changed": false
   }
 }
