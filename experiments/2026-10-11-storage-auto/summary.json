@@ -1,0 +1,192 @@
+{
+  "schema": "ugrp.storage-auto-summary.v1",
+  "date": "2026-10-11",
+  "base_sha": "7c97ef2a755a036ea71ea23cfd32374d0802af2e",
+  "execution_sha": "e1b34fcf8819e147e0840a661ba3e80248fc56e2",
+  "first_execution_sha": "f94dc4618bbdce0247cb80870189eda373a5084f",
+  "class": "dev",
+  "tests": {
+    "passed": 53,
+    "subtests_passed": 2,
+    "files": [
+      "tests/test_storage_tools.py",
+      "tests/test_storage_automation.py",
+      "tests/test_ugrp_session.py"
+    ]
+  },
+  "runs": [
+    {
+      "id": "dry_initial",
+      "complete": true,
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/storage-auto/dry.json.zst",
+        "bytes": 62986,
+        "sha256": "f28e4077c4b2eb993c598831105c0d1336f12a14a735a3c2a83a6b3827b1b59d",
+        "original_path": "/Users/changmin/projects/ugrp/outputs/storage-auto/dry.json",
+        "original_bytes": 1112824,
+        "original_sha256": "46649bf97731a96e1891af816bfc24aff39ac84bbc83c6e6eae2960fe14f75c9",
+        "verified": "decompressed_sha256"
+      }
+    },
+    {
+      "id": "dry_nested_fix",
+      "complete": true,
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/storage-auto/dry-final.json.zst",
+        "bytes": 63025,
+        "sha256": "5f98c55dd516b8955fa172ab1c4a5a5dc5449a2a78f4cdc47b2578c77ff1c13f",
+        "original_path": "/Users/changmin/projects/ugrp/outputs/storage-auto/dry-final.json",
+        "original_bytes": 1113216,
+        "original_sha256": "270b5e4eb139398ec5d302bd2ff2567773723d09e5b943572463a309c035e261",
+        "verified": "decompressed_sha256"
+      }
+    },
+    {
+      "id": "execute_first",
+      "status": "PARTIAL_ERROR",
+      "mac_written": 1627,
+      "arm_error": "ugrparch-owned nested directory; no chmod/chown performed",
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/storage-auto/execute.json.zst",
+        "bytes": 49864,
+        "sha256": "f5166273371f745db78fa576b3d7654058ebe1968ed139cf4305436d7f3c3f43",
+        "original_path": "/Users/changmin/projects/ugrp/outputs/storage-auto/execute.json",
+        "original_bytes": 823204,
+        "original_sha256": "20b1ce5d367d0aefc93b71d40241a852c1eb2cfc64392dd14772e3d988305d9a",
+        "verified": "decompressed_sha256"
+      }
+    },
+    {
+      "id": "dry_permission_recovery",
+      "complete": true,
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/storage-auto/dry-recovery.json.zst",
+        "bytes": 27669,
+        "sha256": "149657e5930a2161df9750d95c086aad3a26678b9a76444a209895d2bbe91554",
+        "original_path": "/Users/changmin/projects/ugrp/outputs/storage-auto/dry-recovery.json",
+        "original_bytes": 469655,
+        "original_sha256": "5d02801c46c1fa2f8f114a34da023f469cb2c0912b1659f90044053865641cc5",
+        "verified": "decompressed_sha256"
+      }
+    },
+    {
+      "id": "execute_recovery",
+      "complete": true,
+      "errors": [],
+      "mac_new": 0,
+      "arm_new": 572,
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/storage-auto/execute-final.json.zst",
+        "bytes": 27742,
+        "sha256": "8c81575ac7014b89720dbbecdf8317a28c6788213b929a8c1a4dfd2d4d0df377",
+        "original_path": "/Users/changmin/projects/ugrp/outputs/storage-auto/execute-final.json",
+        "original_bytes": 470248,
+        "original_sha256": "0b1e67f4a76f40ed403f5d695d8d1c099233e563a2af6ebece39a0f567d4c048",
+        "verified": "decompressed_sha256"
+      }
+    },
+    {
+      "id": "postrun_synthetic",
+      "complete": true,
+      "exit": 0,
+      "compressed_files": 1,
+      "saved_bytes": 99975,
+      "root": "/Users/changmin/projects/ugrp/outputs/storage-auto/postrun-smoke-r1"
+    },
+    {
+      "id": "real_ssh_catalog_refresh",
+      "complete": true,
+      "result": {
+        "catalog_fresh": true,
+        "prs": 388
+      }
+    }
+  ],
+  "metadata_verification": {
+    "mac_verified": 1627,
+    "arm_verified": 573,
+    "metadata_refinements": [
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e-stage2-offline-20261011/RUN_META.json",
+        "original_pr": null,
+        "current_pr": 433
+      }
+    ],
+    "mac_report_sha256": "1fe5159cd05d55ca928242a6933933832073ce3cc5233d169ed8a96165980023",
+    "arm_report_sha256": "d192a93861b3622c594b7a1aebe384110ee2b82938305d22f1917cfb5c3e92d0"
+  },
+  "pruned_raw_bytes": 0,
+  "space_gib": {
+    "mac": {
+      "initial_dry_before": 124.45250701904297,
+      "execute_before": 124.24517059326172,
+      "execute_after": 124.2436408996582
+    },
+    "arm": {
+      "initial_dry_before": 92.13483428955078,
+      "execute_before": 92.12109756469727,
+      "execute_after": 92.1185531616211
+    }
+  },
+  "raw_record_dirs": {
+    "mac": "/Users/changmin/projects/ugrp/outputs/cleanup-records/auto-20261011T080723Z-822f91eb",
+    "arm": "/home/ubuntu/ugrp-archive/runs/cleanup-records/auto-20261011T080721Z-aecfeb17"
+  },
+  "installation": {
+    "installed": "/Users/changmin/Library/LaunchAgents/com.ugrp.storage-auto.plist",
+    "arm_verified": true,
+    "sha256": {
+      "storage_automation.py": "bb0cb335aeeae0c9eeed8502c6702dbc399e51fbffbe2de9def25896aabd7ba6",
+      "storage_common.py": "717ed913f40546bad3459db31ce34a49866b121b31d68558ec74c1f08593be60",
+      "storage_budget.py": "f6f96d3143096303145360afe101cf9f0fcea02883e7949d4208dc546bcb9206",
+      "evidence_prune.py": "f38c8cb593a4c60aca65472c8215723f11c28959e075e5bb23341e45c40a0de5",
+      "compress_json_traces.py": "f74bd6987fe45180c5947a8e9efd20c90bf38d771a0f1dfb2fb624db73a2a715",
+      "worktree_guard.py": "e7b41711bd933327281edf2e34d65c73c1ace14c629efbf23ab690142e2d2f80"
+    }
+  },
+  "launchagent": {
+    "label": "com.ugrp.storage-auto",
+    "runs_verified": 1,
+    "last_exit_code": 0,
+    "arm_connection_error": false,
+    "interval_seconds": 300,
+    "cleanup_daily": true,
+    "pressure_retry_seconds": 3600
+  },
+  "scope": {
+    "physical": 0,
+    "render": 0,
+    "model_calls": 0,
+    "azure_contact": 0,
+    "oracle_x86_contact": 0,
+    "stock_bot_changes": 0,
+    "crontab_changes": 0,
+    "chmod_chown_changes": 0,
+    "ci_queries": 0,
+    "merged": false
+  },
+  "remaining": [
+    "Azure apply after the separate VM setup task; no VM started",
+    "CI and independent policy review remain; no polling/merge",
+    "Unfinished EXIT-absent, open-PR, recent, milestone/study evidence retained; sleep/log-out pauses Mac coordinator"
+  ],
+  "note": "Current candidates are 0B. Free-space differences include concurrent host activity; no reclaimed raw bytes claimed.",
+  "metadata_hash_manifests": {
+    "mac-metadata-hashes.tsv": {
+      "path": "/Users/changmin/projects/ugrp/outputs/storage-auto/mac-metadata-hashes.tsv",
+      "bytes": 257090,
+      "sha256": "065d5ea53cdcbbaf131feff49a2e7a8925f11133bd86c27a87ae6024a4095311"
+    },
+    "arm-metadata-hashes.tsv": {
+      "path": "/Users/changmin/projects/ugrp/outputs/storage-auto/arm-metadata-hashes.tsv",
+      "bytes": 87737,
+      "sha256": "3f6f0a529577018d5d02ceb3262d2ba8e7b8deae2e0bd2a8daa4be61c8073aa6"
+    }
+  },
+  "audit_compression": {
+    "run": "/Users/changmin/projects/ugrp/outputs/storage-auto",
+    "files": 5,
+    "saved_bytes": 3757861,
+    "sha256_verified": true
+  }
+}

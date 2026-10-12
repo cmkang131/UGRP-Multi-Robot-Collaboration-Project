@@ -33,7 +33,8 @@ def consistency_fixture(sha):
     b=parent.bundle(sha)
     plan=sealed.hp.base.read(sealed.ROOT/sealed.PLAN)
     b['controller_config']['options'].update(pose_validity=plan['pose_validity'],
-        observation_consistency=plan['observation_consistency'])
+        observation_consistency=plan['observation_consistency'],
+        min_command_contract='on_v1')  # explicit pre-merge S3 heading contract
     b['options']=b['controller_config']['options']
     b['preregistration']=plan
     b['execution_bundle_id']='unit-fixture-not-runnable'
@@ -573,7 +574,7 @@ def sweep(out, monkeypatch, *, invalid_pose_cases=False):
     p.case('final_record_serialization','r1+r2+r3',serialize)
     if invalid_pose_cases:
         from harness.zone_own_guards import OwnPose
-        from harness.zone_own_sweep import SweepRecheck
+        from harness.zone_s3_pair_recheck import SweepRecheck
         from harness.zone_s3_pose_validity import finite_record
         now=max(p.host.now,*(o.pose.provider.loc._pf.t for o in p.runtime.localizers.values()))+20.
         for rid in ROBOTS:
@@ -582,7 +583,8 @@ def sweep(out, monkeypatch, *, invalid_pose_cases=False):
                 now += 11.
                 def missing_pose(rid=rid,pose=pose):
                     own=p.runtime.localizers[rid]
-                    recheck=(type(p.eps[rid].command_guard.recheck)() if rid in p.eps else SweepRecheck())
+                    recheck=(type(p.eps[rid].command_guard.recheck)(fail_closed_without_pose=True)
+                             if rid in p.eps else SweepRecheck(fail_closed_without_pose=True))
                     assert recheck.check(now,own.guard,own.servo,{6:1500},pose,loaded=False)=='wait'
                     p.issue(rid,dict(kind='hold'),now)
                     assert recheck.check(now+10.,own.guard,own.servo,{6:1500},pose,loaded=False)=='blocked'

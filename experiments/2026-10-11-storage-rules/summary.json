@@ -1,0 +1,169 @@
+{
+  "schema": "ugrp.storage-rules-verification.v1",
+  "recorded_at": "2026-10-11T05:44:50.357889+00:00",
+  "tool_source_sha": "d075136a0116d94dc4bbb4f2965d770c2c90e71d",
+  "policy_source_sha": "6750615defb430d867688389b10f10c4b2efec58",
+  "class": "dev",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "tests": {
+    "files": [
+      "tests/test_storage_tools.py",
+      "tests/test_ugrp_session.py"
+    ],
+    "passed": 37,
+    "skipped": 0,
+    "seconds": 2.09,
+    "environment": "existing .venv-sim-worker-mac, Python 3.12, real zstd CLI"
+  },
+  "attempts": [
+    {
+      "step": "first pytest path",
+      "outcome": "ENV_ERROR",
+      "detail": "existing .venv-dev lacks pytest; used existing sim-worker environment"
+    },
+    {
+      "step": "first storage tests",
+      "outcome": "2 FAILED, 31 PASSED",
+      "detail": "zstd -o after -- was parsed as a filename; option order fixed before commit"
+    },
+    {
+      "step": "first synthetic archive",
+      "outcome": "LOCK_BUSY",
+      "detail": "automatic real archive already held lock; synthetic originals remained; attempt log retained"
+    },
+    {
+      "step": "final tests",
+      "outcome": "37 PASSED"
+    },
+    {
+      "step": "final synthetic archive and ARM decompression",
+      "outcome": "PASS",
+      "raw_locations": [
+        "oracle-x86:~/ugrp-sim/storage-rule-smoke/runs/storage-rules-smoke-20261011",
+        "oracle:~/ugrp-archive/runs/storage-rules-smoke-20261011"
+      ]
+    }
+  ],
+  "archive": {
+    "installed_path": "oracle-x86:/usr/local/bin/ugrp-auto-archive",
+    "backup": "/usr/local/bin/ugrp-auto-archive.before-20261011-storage",
+    "final_script_sha256": "e0184f81cc6880878f43fd922cb1fd73121cf23cdc4e63d3b7bc800b144ac353",
+    "real_completed_batch": "egomap70-wave1",
+    "real_compressed_files": 159,
+    "real_raw_json_bytes": 1872433498,
+    "real_compressed_json_bytes": 218715490,
+    "source_copy_replaced_by_ARM_symlink": true,
+    "decompressed_sha256_and_rsync_c_and_full_sha256_verified": true,
+    "synthetic": {
+      "raw_bytes": 105000,
+      "compressed_bytes": 61,
+      "raw_sha256": "33a3c8deaaadab39b1aeb6ae0f3252840658e2375975a95ab1c80811b3c52398",
+      "compressed_sha256": "aa74467de7815ae24c2d9646ed9caeedaf20ded21ddff3f311ed381a1e4d015c"
+    }
+  },
+  "budget_example": {
+    "schema": "ugrp.storage-budget.v1",
+    "ok": false,
+    "checks": [
+      {
+        "host": "x86",
+        "free_bytes": 13192806400,
+        "expected_bytes": 19327352832,
+        "projected_free_bytes": -6134546432,
+        "floor_bytes": 8589934592,
+        "ok": false
+      },
+      {
+        "host": "arm",
+        "free_bytes": 56925253632,
+        "expected_bytes": 19327352832,
+        "projected_free_bytes": 37597900800,
+        "floor_bytes": 26843545600,
+        "ok": true
+      },
+      {
+        "host": "mac",
+        "free_bytes": 48013271040,
+        "expected_bytes": 188743680,
+        "projected_free_bytes": 47824527360,
+        "floor_bytes": 21474836480,
+        "ok": true
+      }
+    ]
+  },
+  "prune": {
+    "production_execute": false,
+    "live_merged_PR": 424,
+    "live_open_PR_refused": 405,
+    "candidate_bytes": 0,
+    "dry_runs": {
+      "mac": {
+        "schema": "ugrp.evidence-prune.v1",
+        "pr": {
+          "headRefName": "codex/sim-speed-ctrl2",
+          "number": 424,
+          "state": "MERGED"
+        },
+        "dry_run": true,
+        "metadata_runs": 0,
+        "runs": [],
+        "candidate_bytes": 0,
+        "unclassified_policy": "missing RUN_META is preserved"
+      },
+      "x86": {
+        "host": "x86",
+        "dry_run": true,
+        "pr": {
+          "headRefName": "codex/sim-speed-ctrl2",
+          "number": 424,
+          "state": "MERGED"
+        },
+        "pr_verification": "live gh on Mac; remote read-only planning",
+        "metadata_runs": 0,
+        "candidate_bytes": 0,
+        "runs": [],
+        "missing_metadata": "preserved"
+      },
+      "arm": {
+        "host": "arm",
+        "dry_run": true,
+        "pr": {
+          "headRefName": "codex/sim-speed-ctrl2",
+          "number": 424,
+          "state": "MERGED"
+        },
+        "pr_verification": "live gh on Mac; remote read-only planning",
+        "metadata_runs": 1,
+        "candidate_bytes": 0,
+        "runs": [
+          {
+            "run": "/home/ubuntu/ugrp-archive/runs/storage-rules-smoke-20261011",
+            "skipped": "PR mismatch or protected class",
+            "bytes": 0,
+            "candidates": []
+          }
+        ],
+        "missing_metadata": "preserved"
+      }
+    },
+    "historical_runs_without_RUN_META": "preserved; no class/PR guessed",
+    "remote_PR_check": "local live gh query followed by remote read-only plan; remote gh not installed/authenticated"
+  },
+  "watchers": {
+    "interval_seconds": 300,
+    "mac": "launchd com.ugrp.storage-watch, last exit 0",
+    "x86": "user systemd ugrp-storage-watch.timer, enabled, last exit 0, linger enabled",
+    "arm": "user systemd ugrp-storage-watch.timer, enabled, last exit 0, existing linger=yes"
+  },
+  "deployed_files_sha256_verified": true,
+  "limits": [
+    "CI intentionally not queried or polled; PR review/merge remain for user",
+    "new wrapper storage metadata is opt-in; legacy/custom launchers do not gain it automatically",
+    "historical PR/class ownership remains unverified and therefore protected",
+    "remote prune CLI still requires gh installation/authentication; no Mac secrets copied",
+    "batch admission is not an atomic shared reservation service; coordinator must include pending writes",
+    "actual low-space Mac notification UI not triggered; alarm failure path unit-tested",
+    "no production evidence prune executed; archive migration and verified lossless compression remove only verified source copies"
+  ]
+}

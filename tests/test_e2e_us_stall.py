@@ -102,6 +102,17 @@ def test_vo_priority_and_missing_range_exact_v2_fallback(monkeypatch):
     assert [(r['fusion'],r['fused_delta']) for r in ar] == [(r['fusion'],r['fused_delta']) for r in br]
 
 
+def test_changed_rgb_vetoes_constant_range_zero_update_and_clears_window(monkeypatch):
+    monkeypatch.setattr('harness.e2e_stall_odometry.flow_pair',lambda *a: dict(
+        status='changed_view',tracks=30,cells=6,median_px=2.,p90_px=4.))
+    d,f,rows=run_fusion(monkeypatch=monkeypatch)
+    moving=[r for r in rows if r['gate']['status']=='changed_view']
+    assert moving and all(r['ultrasonic']['status']=='rgb_motion_veto' for r in moving)
+    assert all(r['fusion']=='command_kept' for r in moving)
+    assert f.counts['us_zero']==0 and not f.range_stall.frames
+    np.testing.assert_allclose(d.pose,f.nominal.pose,atol=1e-12)
+
+
 def test_live_wrapper_consumes_only_own_range_and_injects_zero_into_callback():
     from harness.e2e_rgb_vo import install
     d=RotationPulseOdometry();d.command(dict(t=0.,kind='initial_servo_command',pulses=SEARCH))

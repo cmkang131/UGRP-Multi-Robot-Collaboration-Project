@@ -81,9 +81,10 @@ def _tail(body,key,n):
             if isinstance(dropped[-1],dict) else dropped[-1])
 
 
-def project(body, *, compact=False, lang='en'):
+def project(body, *, compact=False, lang='en', map_as_image_v1=False,
+            context_trim_v1=False, seen_message_ids=()):
     b=copy.deepcopy(body)
-    if not compact and lang=='ko': return b
+    if not compact and lang=='ko' and not (map_as_image_v1 or context_trim_v1): return b
     b['condition']=external_condition(b['condition'],lang)
     if 'channel' in b:
         b['channel']['condition']=b['condition']
@@ -118,13 +119,56 @@ def project(body, *, compact=False, lang='en'):
             for m in (example or {}).get('messages',[]):
                 if 'text' in m:m['text']='I report my own visual assessment and current GO/ACK intention.'
     b['action_message_contract']=contracts(b,lang)
+    if map_as_image_v1:
+        b.pop('static_map',None)
+        # Even historical image-only diagnostics cannot retain a map-derived
+        # own position/B belief. Compact own-input mode also removes the image.
+        if 'static_map' in (b.get('self_belief') or {}).get('sources',[]):
+            b['self_belief']={'status':'unknown','reason':'authored_map_derived_belief_omitted'}
+        for order in b.get('order_sheet',{}).get('orders',[]):order.pop('initial_location',None)
+    if context_trim_v1:
+        trim_context(b,body,seen_message_ids)
     b['prompt_lang']=lang
     return b
 
 
-def transform(request, *, compact=False, lang='en'):
-    if not compact and lang=='ko':return copy.deepcopy(request)
-    r=copy.deepcopy(request);b=project(json.loads(r['messages'][1]['content']),compact=compact,lang=lang)
+def trim_context(body, original, seen_message_ids):
+    """Extractive only: unread messages are never truncated or paraphrased."""
+    seen=set(seen_message_ids)
+    inbox=original.get('inbox',[])
+    # All unread deliveries plus the newest already-read message per sender.
+    latest={m.get('sender'):m['message_id'] for m in inbox}
+    keep=[m for m in inbox if m['message_id'] not in seen or latest.get(m.get('sender'))==m['message_id']]
+    body['inbox']=[{k:copy.deepcopy(m[k]) for k in ('message_id','sender','created_at_sim_s','reply_to','body') if k in m}
+                   for m in keep]
+    commands=original.get('own_command_history',[])
+    significant=[c for c in commands if c.get('kind')!='noop']
+    kept=significant[-1:]
+    if commands and (not kept or kept[-1]!=commands[-1]):kept=kept+[commands[-1]]
+    body['own_command_history']=copy.deepcopy(kept)
+    body['history_summary']={'omitted_commands':len(commands)-len(kept),
+                             'omitted_read_messages':len(inbox)-len(keep)}
+    window=body.get('dialogue_window')
+    if window is not None:
+        window['sent_count']=len(original.get('dialogue_window',{}).get('sent',[]))
+        window.pop('sent',None)
+    round_=body.get('s4_round',{})
+    if body.get('reply_contract',{}).get('example')==round_.get('reply_example'):
+        round_.pop('reply_example',None)
+    # Hashes remain in the request/image archive; they carry no decision content.
+    for row in body.get('own_rgb_refs',[]):row.pop('sha256',None)
+    sheet=body.get('order_sheet',{})
+    for key in ('schema','scenario_id','public_map_sha256','map_file_sha256','map_id'):sheet.pop(key,None)
+
+
+def transform(request, *, compact=False, lang='en', map_as_image_v1=False,
+              context_trim_v1=False, seen_message_ids=()):
+    if not compact and lang=='ko' and not (map_as_image_v1 or context_trim_v1):return copy.deepcopy(request)
+    r=copy.deepcopy(request);b=project(json.loads(r['messages'][1]['content']),compact=compact,lang=lang,
+        map_as_image_v1=map_as_image_v1,context_trim_v1=context_trim_v1,seen_message_ids=seen_message_ids)
+    if map_as_image_v1 and not compact:
+        if not any('STATIC MAP' in i['label'].upper() for i in r.get('images',[])):
+            raise ValueError('map_as_image_v1 requires the existing map figure; no generated substitute')
     if compact:
         for key in ('images','image_refs'):
             r[key]=[i for i in r.get(key,[]) if 'STATIC MAP' not in i['label'].upper()]
@@ -136,6 +180,10 @@ def transform(request, *, compact=False, lang='en'):
     r.update(condition=b['condition'],prompt_lang=lang,compact_prompt_v1=compact,
              prompt_version='ugrp.s4_english_compact.v1',input_sha256=digest(b),
              messages=[dict(role='system',content=text),dict(role='user',content=user)])
+    if map_as_image_v1 or context_trim_v1:
+        r.update(map_as_image_v1=map_as_image_v1,context_trim_v1=context_trim_v1,
+                 prompt_version='ugrp.s4_context_trim.v1',
+                 map_image_scope='omitted_authored_map_for_own_input' if compact else 'legacy_static_diagnostic_only')
     if compact:r.update(payload_schema=b['schema'],input_profile_id='s4_own_rgb_compact_v1')
     r['request_sha256']=pk.request_digest_from_refs(text,user,r['image_refs'])
     r['tokens']=pk.request_tokens(text,user,r['images'])
