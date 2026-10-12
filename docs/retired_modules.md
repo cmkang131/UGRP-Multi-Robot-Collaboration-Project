@@ -251,3 +251,5 @@ TERM/HUP 실패 기록과 현재 lease 신원 확인을 추가했다. SIGTERM으
 2026-10-12: #425 후속 P2 정리로 v193 / 7.86.0을 퇴역한다. 등록 커밋 `cadf4da8`과 #416 병합 `eebb2490`의 봉인 런타임 소스 433개는 동일하지만, #425에서 계약·실행기·`harness/zone_study_llm_driver.py`·`sim/zone_s3_no_prior.py` 4개가 변경되어 기존 workflow ID로 v195 번들이 생성된다. 앞선 보존은 등록·봉인·퇴역 원장 기록 3파일에 한정되며 런타임 보존을 뜻하지 않는다. `eebb2490`의 계약·실행기·workflow·등록·봉인·퇴역 원장 6파일을 [퇴역 목록](../experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json)의 `retired-bundle/v193/`에 원본 바이트와 sha256으로 보존하고, 현재 workflow 등록을 제거했다. 대체는 `zone-s3-recovery-v195` / 7.88.0이며 과거 결과를 승계하지 않는다. [검증 범위](../experiments/2026-10-12-retire-v193/summary.json).
 
 2026-10-12: PR #433 병합으로 zone-s3-recovery-v195를 퇴역하고 zone-s3-recovery-v209 / 7.102.0으로 별도 등록한다. 원본 등록·봉인·실행기와 전체 런타임 해시는 `experiments/2026-10-12-merge-train/pr433/summary.json`에 보존하며 실행 결과는 승계하지 않는다.
+
+2026-10-12: PR #448 병합으로 zone-s3-recovery-v209를 퇴역하고 zone-s3-recovery-v211 / 7.104.0으로 별도 등록한다. 원본 등록·봉인·실행기와 전체 런타임 해시는 `experiments/2026-10-12-merge-train/pr448/summary.json`에 보존하며 실행 결과는 승계하지 않는다.

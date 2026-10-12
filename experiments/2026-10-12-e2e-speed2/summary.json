@@ -1,0 +1,954 @@
+{
+ "status": "CODE_AND_MAC_EQUIVALENCE_DONE_AZURE_TIMING_NOT_RUN",
+ "pr": 448,
+ "branch": "claude/e2e-speed2",
+ "base": "origin/codex/e2e-integration 9d6eb567",
+ "source_sha": "02db7c1f (toggles a58866dc, review fd862803, audit hash + v203 02db7c1f)",
+ "refs": "#433",
+ "profile_source": {
+  "run": "e2e13-profile-s61001",
+  "source_sha": "7821864aa7a37005e67749f368e152495b520ae8",
+  "note": "pre-v200 source; v200 toggles were off; cProfile and py-spy ran together (wall/SIM 22.64 profiled)",
+  "mac_paths": {
+   "cprofile.pstats": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-profile-s61001/cprofile.pstats",
+   "pyspy.speedscope.json.zst": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-profile-s61001/pyspy.speedscope.json.zst",
+   "measurement.json": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-profile-s61001/measurement.json"
+  },
+  "sha256": {
+   "cprofile.pstats": "7c49d34a2dc72d81a2367a6add883969bfd38c693ee7c8f9ef113b164dc5daff",
+   "pyspy.speedscope.json.zst": "030cb294ca17ecbb34f50046ceeab0d6884eb22ab8d778ed14087b00c8738b92",
+   "measurement.json": "aec1119c10eef2ac2b63fddd2bb182834f61178cf50902124fd9c0f312dc7655"
+  },
+  "sha256_matches_round1_summary": true,
+  "sim_s": 60,
+  "receives": 900,
+  "receive_definition": "per Robot.receive: 3 robots x 300 frames (5 Hz each)"
+ },
+ "self_time_top30": [
+  {
+   "rank": 1,
+   "function": "~:0:<built-in method mujoco._functions.mj_step>",
+   "self_s_cprofile": 171.04,
+   "cumulative_s": 171.04,
+   "calls": 245748,
+   "calls_per_receive": 273.1,
+   "pyspy_self_s": null,
+   "category": "physics",
+   "top_caller": "masterpi_drive_friction_v7.py:_physics_step_for",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 2,
+   "function": "encoder.py:205:iterencode",
+   "self_s_cprofile": 108.81,
+   "cumulative_s": 108.81,
+   "calls": 14585,
+   "calls_per_receive": 16.2,
+   "pyspy_self_s": 108.18,
+   "category": "audit_hash",
+   "top_caller": "encoder.py:encode",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 3,
+   "function": "own_map_navigation.py:88:cell",
+   "self_s_cprofile": 64.77,
+   "cumulative_s": 101.16,
+   "calls": 16887644,
+   "calls_per_receive": 18764.0,
+   "pyspy_self_s": 60.77,
+   "category": "controller",
+   "top_caller": "public_navigation_raytrace.py:<genexpr>",
+   "v200": "scalar_cells",
+   "round2": "vector_rays"
+  },
+  {
+   "rank": 4,
+   "function": "~:0:<built-in method mujoco._render.mjr_render>",
+   "self_s_cprofile": 60.52,
+   "cumulative_s": 60.52,
+   "calls": 900,
+   "calls_per_receive": 1.0,
+   "pyspy_self_s": null,
+   "category": "capture",
+   "top_caller": "renderer.py:render",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 5,
+   "function": "~:0:<built-in method mujoco._render.mjr_readPixels>",
+   "self_s_cprofile": 56.96,
+   "cumulative_s": 56.96,
+   "calls": 900,
+   "calls_per_receive": 1.0,
+   "pyspy_self_s": null,
+   "category": "capture",
+   "top_caller": "renderer.py:render",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 6,
+   "function": "floor_goal_self_mask.py:70:project_envelopes",
+   "self_s_cprofile": 55.94,
+   "cumulative_s": 86.81,
+   "calls": 1801,
+   "calls_per_receive": 2.0,
+   "pyspy_self_s": 58.38,
+   "category": "controller",
+   "top_caller": "e2e_rgb_gate.py:boundary",
+   "v200": "geometry_cache",
+   "round2": null
+  },
+  {
+   "rank": 7,
+   "function": "~:0:<method 'reduce' of 'numpy.ufunc' objects>",
+   "self_s_cprofile": 54.55,
+   "cumulative_s": 54.55,
+   "calls": 4008243,
+   "calls_per_receive": 4453.6,
+   "pyspy_self_s": null,
+   "category": "controller",
+   "top_caller": "_linalg.py:norm",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 8,
+   "function": "floor_goal.py:85:floor_intersections",
+   "self_s_cprofile": 36.66,
+   "cumulative_s": 74.34,
+   "calls": 1788,
+   "calls_per_receive": 2.0,
+   "pyspy_self_s": 36.88,
+   "category": "controller",
+   "top_caller": "floor_goal_v2.py:detect_floor_v2",
+   "v200": "geometry_cache",
+   "round2": null
+  },
+  {
+   "rank": 9,
+   "function": "own_map_navigation.py:135:dense",
+   "self_s_cprofile": 35.7,
+   "cumulative_s": 61.34,
+   "calls": 2700,
+   "calls_per_receive": 3.0,
+   "pyspy_self_s": 48.48,
+   "category": "controller",
+   "top_caller": "public_navigation_unknown.py:from_observed_grid",
+   "v200": "scalar_cells (writes only)",
+   "round2": null
+  },
+  {
+   "rank": 10,
+   "function": "own_map_navigation.py:89:<genexpr>",
+   "self_s_cprofile": 34.23,
+   "cumulative_s": 34.23,
+   "calls": 50662932,
+   "calls_per_receive": 56292.1,
+   "pyspy_self_s": 42.95,
+   "category": "controller",
+   "top_caller": "own_map_navigation.py:cell",
+   "v200": null,
+   "round2": "vector_rays"
+  },
+  {
+   "rank": 11,
+   "function": "~:0:<built-in method builtins.sorted>",
+   "self_s_cprofile": 33.57,
+   "cumulative_s": 33.65,
+   "calls": 210770,
+   "calls_per_receive": 234.2,
+   "pyspy_self_s": null,
+   "category": "audit_hash",
+   "top_caller": "e2e_speed_measure.py:rbpf_digest",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 12,
+   "function": "floor_goal_v3.py:157:<genexpr>",
+   "self_s_cprofile": 20.66,
+   "cumulative_s": 20.66,
+   "calls": 15112377,
+   "calls_per_receive": 16791.5,
+   "pyspy_self_s": 22.21,
+   "category": "controller",
+   "top_caller": "~:<method 'update' of 'set' objects>",
+   "v200": null,
+   "round2": "track_cell_tuples"
+  },
+  {
+   "rank": 13,
+   "function": "e2e_own_inputs.py:43:scan",
+   "self_s_cprofile": 20.46,
+   "cumulative_s": 28.09,
+   "calls": 16150864,
+   "calls_per_receive": 17945.4,
+   "pyspy_self_s": 28.48,
+   "category": "controller",
+   "top_caller": "e2e_own_inputs.py:scan",
+   "v200": null,
+   "round2": "lazy_scan_path"
+  },
+  {
+   "rank": 14,
+   "function": "public_navigation_unknown.py:102:from_observed_grid",
+   "self_s_cprofile": 19.79,
+   "cumulative_s": 69.55,
+   "calls": 1800,
+   "calls_per_receive": 2.0,
+   "pyspy_self_s": 24.71,
+   "category": "controller",
+   "top_caller": "goal_route_continuous.py:receive",
+   "v200": null,
+   "round2": "vector_costmap_writes"
+  },
+  {
+   "rank": 15,
+   "function": "own_map_navigation.py:274:update",
+   "self_s_cprofile": 18.6,
+   "cumulative_s": 57.98,
+   "calls": 900,
+   "calls_per_receive": 1.0,
+   "pyspy_self_s": 20.53,
+   "category": "controller",
+   "top_caller": "active_wall_recovery.py:receive",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 16,
+   "function": "~:0:<built-in method numpy.array>",
+   "self_s_cprofile": 17.91,
+   "cumulative_s": 17.91,
+   "calls": 12787327,
+   "calls_per_receive": 14208.1,
+   "pyspy_self_s": null,
+   "category": "controller",
+   "top_caller": "own_map_navigation.py:dense",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 17,
+   "function": "~:0:<built-in method numpy.asarray>",
+   "self_s_cprofile": 17.69,
+   "cumulative_s": 18.57,
+   "calls": 28629031,
+   "calls_per_receive": 31810.0,
+   "pyspy_self_s": null,
+   "category": "controller",
+   "top_caller": "public_navigation_unknown.py:from_observed_grid",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 18,
+   "function": "height_free_wall.py:132:window",
+   "self_s_cprofile": 15.58,
+   "cumulative_s": 16.38,
+   "calls": 3600,
+   "calls_per_receive": 4.0,
+   "pyspy_self_s": 16.69,
+   "category": "controller",
+   "top_caller": "height_free_wall.py:detect",
+   "v200": null,
+   "round2": "shared_wall_frontend (1 of 2 calls)"
+  },
+  {
+   "rank": 19,
+   "function": "landmarks.py:63:floor_features",
+   "self_s_cprofile": 14.98,
+   "cumulative_s": 60.32,
+   "calls": 900,
+   "calls_per_receive": 1.0,
+   "pyspy_self_s": 29.85,
+   "category": "controller",
+   "top_caller": "self_map_landmark_sensor.py:measure",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 20,
+   "function": "~:0:<method 'cumsum' of 'numpy.ndarray' objects>",
+   "self_s_cprofile": 14.22,
+   "cumulative_s": 14.22,
+   "calls": 14409,
+   "calls_per_receive": 16.0,
+   "pyspy_self_s": null,
+   "category": "controller",
+   "top_caller": "fromnumeric.py:_wrapfunc",
+   "v200": null,
+   "round2": "shared_wall_frontend (partly)"
+  },
+  {
+   "rank": 21,
+   "function": "_linalg.py:2598:norm",
+   "self_s_cprofile": 13.98,
+   "cumulative_s": 45.68,
+   "calls": 2501931,
+   "calls_per_receive": 2779.9,
+   "pyspy_self_s": 46.25,
+   "category": "controller",
+   "top_caller": "floor_goal.py:floor_intersections",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 22,
+   "function": "~:0:<method 'get' of 'dict' objects>",
+   "self_s_cprofile": 11.74,
+   "cumulative_s": 11.75,
+   "calls": 37788235,
+   "calls_per_receive": 41986.9,
+   "pyspy_self_s": null,
+   "category": "controller",
+   "top_caller": "own_map_navigation.py:state",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 23,
+   "function": "copy.py:118:deepcopy",
+   "self_s_cprofile": 10.76,
+   "cumulative_s": 25.71,
+   "calls": 8367217,
+   "calls_per_receive": 9296.9,
+   "pyspy_self_s": 17.74,
+   "category": "controller",
+   "top_caller": "copy.py:_deepcopy_dict",
+   "v200": "omit_discarded_copy (validate_map only)",
+   "round2": null
+  },
+  {
+   "rank": 24,
+   "function": "public_navigation_raytrace.py:23:receive_rays",
+   "self_s_cprofile": 10.58,
+   "cumulative_s": 148.69,
+   "calls": 2258,
+   "calls_per_receive": 2.5,
+   "pyspy_self_s": 14.07,
+   "category": "controller",
+   "top_caller": "active_wall_mapping.py:_rays",
+   "v200": null,
+   "round2": "vector_rays"
+  },
+  {
+   "rank": 25,
+   "function": "~:0:<method 'detectAndCompute' of 'cv2.Feature2D' objects>",
+   "self_s_cprofile": 10.01,
+   "cumulative_s": 10.01,
+   "calls": 1800,
+   "calls_per_receive": 2.0,
+   "pyspy_self_s": null,
+   "category": "controller",
+   "top_caller": "e2e_rgb_gate.py:features",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 26,
+   "function": "~:0:<built-in method builtins.isinstance>",
+   "self_s_cprofile": 8.49,
+   "cumulative_s": 8.56,
+   "calls": 50837966,
+   "calls_per_receive": 56486.6,
+   "pyspy_self_s": null,
+   "category": "controller",
+   "top_caller": "e2e_own_inputs.py:scan",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 27,
+   "function": "e2e_speed_measure.py:19:rbpf_digest",
+   "self_s_cprofile": 7.75,
+   "cumulative_s": 151.83,
+   "calls": 900,
+   "calls_per_receive": 1.0,
+   "pyspy_self_s": 45.16,
+   "category": "audit_hash",
+   "top_caller": "e2e_speed_measure.py:receive",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 28,
+   "function": "height_free_wall.py:115:__init__",
+   "self_s_cprofile": 7.56,
+   "cumulative_s": 21.87,
+   "calls": 1800,
+   "calls_per_receive": 2.0,
+   "pyspy_self_s": 7.66,
+   "category": "controller",
+   "top_caller": "height_free_wall.py:detect",
+   "v200": null,
+   "round2": "shared_wall_frontend (1 of 2 calls)"
+  },
+  {
+   "rank": 29,
+   "function": "~:0:<HoughLinesP>",
+   "self_s_cprofile": 7.42,
+   "cumulative_s": 7.42,
+   "calls": 4500,
+   "calls_per_receive": 5.0,
+   "pyspy_self_s": null,
+   "category": "controller",
+   "top_caller": "landmarks.py:floor_features",
+   "v200": null,
+   "round2": null
+  },
+  {
+   "rank": 30,
+   "function": "masterpi_drive_friction_v7.py:212:_physics_step_for",
+   "self_s_cprofile": 7.33,
+   "cumulative_s": 190.32,
+   "calls": 245200,
+   "calls_per_receive": 272.4,
+   "pyspy_self_s": 178.69,
+   "category": "physics",
+   "top_caller": "final_pair_highpose_clock.py:advance_to",
+   "v200": null,
+   "round2": null
+  }
+ ],
+ "self_time_top30_note": "self_s_cprofile = tottime (instrumented, inflates small Python calls 2-3x); pyspy_self_s = sampled self of deepest Python frame (native leaf time folded in; None for C builtins); category audit_hash = scripts/e2e_speed_measure.rbpf_digest (measurement evidence, unchanged); v200 = first-round toggle covering the row; round2 = this PR toggle",
+ "top_bottlenecks": [
+  {
+   "name": "mujoco mj_step (physics)",
+   "self_s": 171.04,
+   "calls": 245748,
+   "scope": "out of scope"
+  },
+  {
+   "name": "RBPF audit hash: json iterencode 108.81 + sorted 33.57 + rbpf_digest 7.75",
+   "self_s": 150.13,
+   "scope": "measurement-only evidence hash; unchanged; ~2.5 wall/SIM inside measured runs"
+  },
+  {
+   "name": "ObservedGrid.cell + genexpr",
+   "self_s": 99.0,
+   "calls": 16887644,
+   "calls_per_receive": 18764,
+   "scope": "v200 scalar_cells + round2 vector_rays"
+  },
+  {
+   "name": "capture mjr_render + mjr_readPixels",
+   "self_s": 117.48,
+   "calls": 900,
+   "scope": "out of scope"
+  },
+  {
+   "name": "project_envelopes",
+   "self_s": 55.94,
+   "calls": 1801,
+   "scope": "v200 geometry_cache"
+  },
+  {
+   "name": "dense",
+   "self_s": 35.7,
+   "calls": 2700,
+   "scope": "v200 scalar_cells (writes)"
+  },
+  {
+   "name": "floor_goal_v3 track-cell genexpr",
+   "self_s": 20.66,
+   "calls": 15112377,
+   "scope": "round2 track_cell_tuples"
+  },
+  {
+   "name": "e2e_own_inputs.scan",
+   "self_s": 20.46,
+   "calls": 16150864,
+   "scope": "round2 lazy_scan_path"
+  }
+ ],
+ "duplicates_found": [
+  {
+   "what": "wall contact front end twice per frame on the same rgb/servo",
+   "where": "active_wall_vision.observe + self_wall_segment_points.contact_points (via self_map_closed_loop.own_measurement)",
+   "evidence": "height_free_wall.detect 1800 calls / 900 receives, 71.8 s cumulative",
+   "fixed_by": "shared_wall_frontend"
+  },
+  {
+   "what": "per-point grid.cell and per-cell Bresenham generators; graph rebuild re-rays every past frame",
+   "where": "public_navigation_raytrace.receive_rays, ObservedGrid.observe, active_wall_mapping.graph",
+   "evidence": "cell 16.9M calls (11.0M from receive_rays genexpr); receive_rays 148.8 s cumulative; graph 91 s cumulative for 15 calls",
+   "fixed_by": "vector_rays (per call); graph incremental rebuild not done"
+  },
+  {
+   "what": "same observation dict scanned twice per receive with per-element path strings",
+   "where": "e2e_setdown_relook.receive_rgb + IntegratedGoalRoute.receive (own.scan)",
+   "evidence": "scan 16.2M recursive calls",
+   "fixed_by": "lazy_scan_path (cost per scan); second scan kept (validation semantics)"
+  },
+  {
+   "what": "costmap rebuilt twice per receive with per-cell np.asarray writes",
+   "where": "public_navigation_unknown.from_observed_grid",
+   "evidence": "1800 calls, numpy.asarray 28.6M calls",
+   "fixed_by": "vector_costmap_writes (writes only)"
+  },
+  {
+   "what": "dense grid three times per receive",
+   "where": "own_map_navigation.dense from DoorMemory.update and from_observed_grid x2",
+   "evidence": "2700 calls",
+   "fixed_by": "v200 scalar_cells writes; content memo not done (grid.odds written without revision bump)"
+  },
+  {
+   "what": "project_envelopes and floor_intersections twice per frame",
+   "where": "e2e_rgb_gate.observe/boundary, detect_floor_v2/v3",
+   "evidence": "1801 / 1788 calls",
+   "fixed_by": "v200 geometry_cache (already)"
+  },
+  {
+   "what": "third undistort / RGB->BGR for the landmark sensor",
+   "where": "self_map_landmark_sensor.measure",
+   "evidence": "small (cv2 remap)",
+   "fixed_by": "not done"
+  },
+  {
+   "what": "not duplicates",
+   "items": [
+    "ORB detectAndCompute twice per frame uses different masks (relook unmasked, gate masked)",
+    "landmarks.floor_features is real per-frame HSV/Hough work"
+   ]
+  }
+ ],
+ "standard_solutions_priority": [
+  "same-frame memoization keyed on exact input bits (shared_wall_frontend)",
+  "numpy vectorization of per-element Python loops with identical insertion order (vector_rays, vector_costmap_writes, track_cell_tuples)",
+  "lazy error-path construction (lazy_scan_path)",
+  "incremental graph ray rebuild (not done: refactor; would need replay of graph events)",
+  "content-verified dense/costmap memo (not done: grid.odds mutated without revision)",
+  "faster digest serialization (rejected: changes evidence bytes)"
+ ],
+ "implemented_toggles": {
+  "vector_rays": {
+   "default": false
+  },
+  "shared_wall_frontend": {
+   "default": false
+  },
+  "lazy_scan_path": {
+   "default": false
+  },
+  "vector_costmap_writes": {
+   "default": false
+  },
+  "track_cell_tuples": {
+   "default": false
+  }
+ },
+ "microbench": {
+  "host": "Mac Apple M3",
+  "method": "inputs captured from the saved-frame replay with v200 on; each function re-run on deep copies with toggle off/on; min of 3; outputs compared as pickle bytes (set/dict order included)",
+  "source_sha": "a58866dc",
+  "cases": {
+   "rays": {
+    "toggle": "vector_rays",
+    "inputs": 80,
+    "identical": 80,
+    "off_s": 1.0495234586996958,
+    "on_s": 0.23634903877973557,
+    "off_ms_per_call": 13.119043233746197,
+    "on_ms_per_call": 2.9543629847466946,
+    "saved_ms_per_call": 10.164680248999503,
+    "reduction_pct": 77.48034721657775
+   },
+   "costmap": {
+    "toggle": "vector_costmap_writes",
+    "inputs": 80,
+    "identical": 80,
+    "off_s": 0.12384566466789693,
+    "on_s": 0.07139503839425743,
+    "off_ms_per_call": 1.5480708083487116,
+    "on_ms_per_call": 0.8924379799282178,
+    "saved_ms_per_call": 0.6556328284204938,
+    "reduction_pct": 42.35160464784171
+   },
+   "scan": {
+    "toggle": "lazy_scan_path",
+    "inputs": 80,
+    "identical": 80,
+    "off_s": 0.09485937829595059,
+    "on_s": 0.04124466166831553,
+    "off_ms_per_call": 1.1857422286993824,
+    "on_ms_per_call": 0.5155582708539441,
+    "saved_ms_per_call": 0.6701839578454383,
+    "reduction_pct": 56.520206637200566
+   },
+   "wall": {
+    "toggle": "shared_wall_frontend",
+    "inputs": 80,
+    "identical": 80,
+    "off_s": 2.0296675029676408,
+    "on_s": 1.1964580403873697,
+    "off_ms_per_call": 25.37084378709551,
+    "on_ms_per_call": 14.955725504842121,
+    "saved_ms_per_call": 10.415118282253388,
+    "reduction_pct": 41.05152500899823
+   },
+   "track": {
+    "toggle": "track_cell_tuples",
+    "inputs": 5,
+    "identical": 5,
+    "off_s": 0.18496579106431454,
+    "on_s": 0.06802320794668049,
+    "off_ms_per_call": 36.99315821286291,
+    "on_ms_per_call": 13.604641589336097,
+    "saved_ms_per_call": 23.38851662352681,
+    "reduction_pct": 63.22389802175468
+   }
+  }
+ },
+ "projection_60_sim_s": {
+  "saved_s": {
+   "rays": 22.95,
+   "wall": 9.37,
+   "scan": 3.64,
+   "costmap": 1.18,
+   "track": 4.91
+  },
+  "total_saved_s": 42.0,
+  "wall_per_sim": 0.7,
+  "note": "Mac per-call saving x Azure profile call counts (rays 2258, wall pairs 900, scan 5424 top-level, costmap 1800, track 15.1M cells). Lower-bound style estimate at Mac speed; not an Azure measurement. scan per-call saving was measured on receive-chain observation scans; validate_map scans differ in size."
+ },
+ "equivalence": {
+  "method": "Mac fixed saved-frame Robot.receive replay (scripts/replay_e2e_receive_speed.py), separate processes per arm, base = v200 both",
+  "frames": {
+   "r1": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry/selected-frames/e2e10-a-s61002-r2/raw/robots/r1/rgb (89)",
+   "r2": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry/selected-frames/e2e10-a-s61002-r2/raw/robots/r2/rgb (116)",
+   "r3": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry/selected-frames/e2e10-a-s61001-r2/raw/robots/r2/rgb (126, r2 frames fed to r3)"
+  },
+  "compared": [
+   "trace digest",
+   "nav command",
+   "wall segments",
+   "own_inputs_at output",
+   "rbpf_digest",
+   "local pose",
+   "error",
+   "input rgb unchanged"
+  ],
+  "comparisons": [
+   {
+    "arm": "vector_rays only",
+    "N": 331,
+    "n": 331
+   },
+   {
+    "arm": "shared_wall_frontend only",
+    "N": 331,
+    "n": 331
+   },
+   {
+    "arm": "lazy_scan_path only",
+    "N": 331,
+    "n": 331
+   },
+   {
+    "arm": "vector_costmap_writes only",
+    "N": 331,
+    "n": 331
+   },
+   {
+    "arm": "track_cell_tuples only",
+    "N": 331,
+    "n": 331
+   },
+   {
+    "arm": "4 toggles",
+    "runs": 3,
+    "N": 331,
+    "n": 331
+   },
+   {
+    "arm": "5 toggles",
+    "runs": 3,
+    "N": 331,
+    "n": 331
+   }
+  ],
+  "fast_path_counts": {
+   "cells_fallback": 0,
+   "cells_fast": 3374,
+   "costmap_fallback": 0,
+   "costmap_fast": 662,
+   "frontend_bypass": 0,
+   "frontend_hits": 331,
+   "frontend_misses": 331,
+   "rays_fallback": 0,
+   "rays_fast": 482
+  },
+  "unit_tests": {
+   "file": "tests/test_e2e_exact_speedups2.py",
+   "passed": 50
+  },
+  "related_tests": {
+   "files": [
+    "tests/test_e2e_speed.py",
+    "tests/test_e2e_own_inputs.py",
+    "tests/test_e2e_exact_speedups2.py"
+   ],
+   "passed": 142,
+   "seconds": 12.06,
+   "sha": "02db7c1f (overflow mutation added before commit)"
+  },
+  "note": "toggle-on replays/bench ran on a58866dc; review fixes only narrow the cache gate and move the off-path scan recursion (unit tests rerun on fd862803)"
+ },
+ "replay_timing": {
+  "host": "Mac Apple M3, other agents running (load 3-5.5)",
+  "receive_s_reduction_pct": {
+   "single": {
+    "vector_rays": 4.9,
+    "shared_wall_frontend": 11.1,
+    "lazy_scan_path": 2.6,
+    "vector_costmap_writes": 2.7,
+    "track_cell_tuples": 3.0
+   },
+   "four_toggles": [
+    18.5,
+    19.2,
+    19.2
+   ],
+   "five_toggles": [
+    23.2,
+    21.0,
+    15.2
+   ]
+  },
+  "base_repeat_spread_pct": [
+   -0.4,
+   0.7
+  ],
+  "record_run": {
+   "source_sha": "a58866dc",
+   "base_receive_s": 34.31,
+   "all5_receive_s": 29.1
+  },
+  "note": "replay workload is lighter (~0.1 s/receive on Mac, graph rebuild twice) than the live 60 SIM s; ratios need not transfer"
+ },
+ "v200_replay_profile_top": {
+  "note": "Mac replay cProfile with v200 on, 331 receives, total tottime 50.22 s; with 4 round-2 toggles 38.17 s",
+  "file": "replay-v200.pstats / replay-all4.pstats"
+ },
+ "unchanged": [
+  "physics parameters",
+  "camera/FOV",
+  "render cadence",
+  "evidence bytes",
+  "RBPF audit digest",
+  "v200 toggle behaviour"
+ ],
+ "limitations": [
+  "Azure wall/SIM not measured (VM use forbidden for this task); bundle not registered",
+  "replay uses decoded JPEG not raw render arrays, selected windows, open loop (images do not follow commands)",
+  "r3 replay uses r2 frames",
+  "graph incremental rebuild and dense memo not implemented",
+  "Mac timing noisy (shared host)"
+ ],
+ "next": [
+  "paired Azure run v203 (five toggles, rbpf_audit_hash=both_v1 once to record the mapping, then binary_v1) against v200 json when the VM is free",
+  "incremental graph ray rebuild (91 s cumulative)"
+ ],
+ "outputs": {
+  "mac": "/Users/changmin/projects/ugrp/outputs/e2e-speed2/a58866dc",
+  "sha256": {
+   "RUN_META.json": "5e77eaac604af46f940d5bf68d34d70462cc2890c9cd0c81efce5836ce0b071f",
+   "LOADAVG_START": "002d08d918fe02db4459fe919d29acedb33458a4623bbe6e651e0fe710c75baa",
+   "LOADAVG_END": "2176639f2cca648244974480248e08ccb45d090d40c3bb8322873fded9adceeb",
+   "bench.json": "ab579332542f5119167f81b3fbcd0eed48d03e1a709c716aa01eff19428a861d",
+   "replay-base.json": "28f01ac0f1a02b22e05367c06bc1b4696e8266036c90bea9cc34c15a0d476247",
+   "replay-all5.json": "f39f5b23d04513d5158eece48a2840bb14c03b7d758c38a26c47e467bceee578",
+   "replay-v200.pstats": "f9a3e26452fed1ad14f65e08e350983d2c1c6f5e6076bf2d410a0f929a383a1b",
+   "replay-all4.pstats": "e0fae35cb989f73ce4d16da7f995e5777c3ea74a57f8a22a0d11a7f00e584c3f",
+   "COMPRESSED.jsonl": "908c8a355bfa91ce58b0e9aec3c4f218afc40c1d6d67a2794607ae7753672560",
+   "replay-base.json.zst": "8c2e13a8557aee750637f35e30aa41fe02498fb79a23cc514d9d3adf0e70558a",
+   "replay-all5.json.zst": "cb940924b6edfea1c08226e6f8633736e9ab6376277fdc26f083acdd4cd36b32"
+  },
+  "compressed": [
+   {
+    "source": "replay-base.json",
+    "source_sha256": "28f01ac0f1a02b22e05367c06bc1b4696e8266036c90bea9cc34c15a0d476247",
+    "compressed": "replay-base.json.zst",
+    "compressed_sha256": "8c2e13a8557aee750637f35e30aa41fe02498fb79a23cc514d9d3adf0e70558a",
+    "verified": true
+   },
+   {
+    "source": "replay-all5.json",
+    "source_sha256": "f39f5b23d04513d5158eece48a2840bb14c03b7d758c38a26c47e467bceee578",
+    "compressed": "replay-all5.json.zst",
+    "compressed_sha256": "cb940924b6edfea1c08226e6f8633736e9ab6376277fdc26f083acdd4cd36b32",
+    "verified": true
+   }
+  ],
+  "note": "replay JSONs zstd-compressed (decompressed sha256 verified), originals moved to Mac Trash; local Mac storage only, not a remote backup"
+ },
+ "references": [
+  "Bresenham 1965 IBM Systems Journal 4(1):25-30",
+  "Nav2 costmap_2d raytraceLine/bresenham2D (BSD-3), experiments/2026-10-07-mapfree-raytrace/REFERENCES.md",
+  "Python functools.lru_cache / cProfile docs; py-spy",
+  "CPython set iteration depends on insertion history (implementation detail, citation unverified)",
+  "NumPy indexing: repeated-index assignment order not guaranteed (wording unverified)",
+  "experiments/2026-10-12-e2e-speed/summary.json"
+ ],
+ "tensorboard": "not used",
+ "class": "dev",
+ "default_off_path": {
+  "method": "same saved-frame replay, v200 on, harness/ from 9d6eb567 vs fd862803 alternated twice in the same worktree",
+  "outputs_identical": [
+   {
+    "N": 331,
+    "n": 331
+   },
+   {
+    "N": 331,
+    "n": 331
+   }
+  ],
+  "receive_s": {
+   "old": [
+    34.85,
+    35.61
+   ],
+   "new": [
+    36.87,
+    34.12
+   ]
+  },
+  "overhead_pct_mean": 0.8,
+  "note": "within run-to-run noise (+-5%) on the shared Mac; overhead not resolved"
+ },
+ "review_fixes": [
+  "scan checks the toggle once per entry call (original recursion moved to _scan)",
+  "shared_wall_frontend bypassed unless wall_detector==off (floor_boundary_v1 path not verified)",
+  "receive_rays test also covers scalar_cells=False",
+  "v200 bundle keeps only the v200 fields; round-2 toggles select the v203 bundle"
+ ],
+ "ci": "PR #448 CI not checked at record time",
+ "rbpf_audit_hash": {
+  "toggle": "rbpf_audit_hash",
+  "values": [
+   "off (legacy JSON, default)",
+   "binary_v1",
+   "both_v1 (validation: both per row + rbpf-hash-mapping.json)"
+  ],
+  "scope": "measurement-only (scripts/e2e_speed_measure.py, with --measure-sim-s); never enters the controller; off keeps rows/measurement.json bytes and keys unchanged",
+  "encoding": [
+   "magic ugrp.rbpf_audit.binary_v1",
+   "arrays poses/pending_cov/weights/log_weights: identical name+dtype.str(endianness)+shape header and C-order tobytes as JSON digest",
+   "rng/best/resamples/revision: fixed order, prefix-free typed TLV (None/bool/int big-endian signed/float >d bits/str utf-8/list/str-key dict sorted)",
+   "histories: canonical JSON bytes (sort_keys, compact) length-prefixed",
+   "maps: per particle, if keys are (int,int) tuples and values float: lexsort == sorted(items), >i8 keys + >f8 values; otherwise typed TLV of sorted(items) (distinct tag)"
+  ],
+  "injectivity": "prefix-free encoding of the same value tree; JSON text is a function of that tree, so a JSON digest change implies a binary digest change (binary may be finer: NaN payloads, fast/fallback tag). Tested by 25 single-field mutations (arrays value/dtype/shape/-0.0, rng advance, best/resamples/revision incl. bool/float, histories value/np.float64/key/append, map value/-0.0/int/key move/bool key/add/remove/int64 overflow/empty/reorder/drop): JSON and binary both change in all 25.",
+  "purity": "same digest under reversed dict insertion order (maps and history records), like JSON",
+  "comparison": "compare_rbpf / python -m scripts.e2e_speed_measure A B [--scheme]: compares only a scheme present on every row of both runs; json-only vs binary-only raises RBPF_HASH_SCHEME_MISMATCH",
+  "replay": {
+   "receives": 331,
+   "json_v1_s": [
+    3.6,
+    3.59,
+    3.63,
+    3.71
+   ],
+   "binary_v1_s": [
+    1.29,
+    1.28,
+    1.29,
+    1.29
+   ],
+   "per_call_ms": {
+    "json_v1": 10.9,
+    "binary_v1": 3.9
+   },
+   "reduction_pct": 64,
+   "cross_run": {
+    "json_v1": {
+     "N": 331,
+     "n": 331
+    },
+    "binary_v1": {
+     "N": 331,
+     "n": 331
+    }
+   },
+   "mixed": "refused",
+   "mapping": {
+    "rows": 331,
+    "distinct_json": 205,
+    "distinct_binary": 205,
+    "functional": true
+   },
+   "binary_digest_stable_across_optimization": true,
+   "record_sha": "02db7c1f"
+  },
+  "azure_estimate": {
+   "audit_wall_per_sim": [
+    2.44,
+    2.62
+   ],
+   "basis": "round-1 paired medians minus audit-subtracted reference (off 15.49-13.04, both 13.30-10.68); profiled run 157.5 s hash / 60 SIM s",
+   "saved_wall_per_sim": 1.6,
+   "note": "x 0.64 replay reduction; Azure maps are larger (fast path share up, histories share unknown); not measured"
+  },
+  "remaining_cost": "per digest ~3.9 ms on Mac replay, of which canonical histories JSON ~2.2 ms"
+ },
+ "bundle_v203": {
+  "id": "e2e-exact-speed2-v203",
+  "workflow_version": "7.96.0",
+  "workflow": "configs/simulation_workflows.d/e2e_exact_speed2_v203.json",
+  "reservation": "max across origin/main and open PR branches was v202 / 7.95.0 (#446 e2e14-combo; #444 e2e-vo v201/7.94.0)",
+  "cli": [
+   "--exact-vector-rays",
+   "--exact-shared-wall-frontend",
+   "--exact-lazy-scan-path",
+   "--exact-vector-costmap-writes",
+   "--exact-track-cell-tuples",
+   "--exact-speed2-bundle",
+   "--rbpf-audit-hash {off,binary_v1,both_v1} (requires --measure-sim-s)"
+  ],
+  "contents": "e2e_options.exact_speedups = all ten fields; source closure adds the v203 workflow and scripts/e2e_speed_measure.py; physical/calibration keys identical to v200 (test)",
+  "v200": "unchanged when no round-2 toggle is set",
+  "run": "not executed (no VM)"
+ },
+ "outputs_02db7c1f": {
+  "mac": "/Users/changmin/projects/ugrp/outputs/e2e-speed2/02db7c1f",
+  "sha256": {
+   "COMPRESSED.jsonl": "98ef453598734a78743cbf45f0fa32f692ad8a3f52474d28d27ab2d6afdf00a7",
+   "LOADAVG_END": "ea1f1c8be06f1fa9ea570c0abce28905017007f9b945926512b9acb9a1084d8c",
+   "LOADAVG_START": "bb02b00dc950a4e4458f9a9e6ebae5d798945ffc2e7d8c89afb4fd75159c4a71",
+   "RUN_META.json": "d1d7d5062455602dbc5699c19d1b51d7660d1f8877fc1b27b80876cdb8b9bdf3",
+   "rbpf-hash-check.json.zst": "60cf3b70588f15f2d6d33aedcef0cfd290a267a5680c548865fb93307c3638e9",
+   "replay-all5.json.zst": "165bd49d38c8d419b2cecaa7c5936da6eeb9970025f8776d967d3ed57cd23fc5",
+   "replay-base.json.zst": "87347cb444405a59655f483372b7e8174c1b2cac663d59a51be76a8d42395efb"
+  },
+  "compressed": [
+   {
+    "source": "replay-base.json",
+    "source_sha256": "e81ee947e906c64a5ee5472b126c16f579a95b0f31477d88f1b8e7c2407a3c61",
+    "compressed": "replay-base.json.zst",
+    "compressed_sha256": "87347cb444405a59655f483372b7e8174c1b2cac663d59a51be76a8d42395efb",
+    "verified": true
+   },
+   {
+    "source": "replay-all5.json",
+    "source_sha256": "108dbded61864dc43f185966569d8b0b74c4cea69f9ee50456a4b0ffde406506",
+    "compressed": "replay-all5.json.zst",
+    "compressed_sha256": "165bd49d38c8d419b2cecaa7c5936da6eeb9970025f8776d967d3ed57cd23fc5",
+    "verified": true
+   },
+   {
+    "source": "rbpf-hash-check.json",
+    "source_sha256": "d1fbec28ca76a18dcb8b698074868eea30d7cdd7035b09669ce36f1848adeecc",
+    "compressed": "rbpf-hash-check.json.zst",
+    "compressed_sha256": "60cf3b70588f15f2d6d33aedcef0cfd290a267a5680c548865fb93307c3638e9",
+    "verified": true
+   }
+  ]
+ }
+}

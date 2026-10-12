@@ -12,12 +12,17 @@ def contact_points(rgb,servo,*,wall_detector='off',contact_rule='off',
     mp,hfw,ewm=modules()
     origin,rotation=camera_transform(servo)
     cm=mp.ColumnModel(tuple(sorted(servo.items())),0.,mp.column_positions(96,2),camera_transform=(origin,rotation))
-    und=mp.undistort(cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
     params={'floor_patch_max_m':.81,'run_step_window':3,'top_edge_px':4}
     from harness.wall_contact_detector import detect
-    scan=detect(hfw,und,cm,params=params,loaded=False,wall_detector=wall_detector,contact_rule=contact_rule,
-        contact_state=contact_state,frame_id=frame_id,odometry_pose=odometry_pose)
-    grey=cv2.cvtColor(und,cv2.COLOR_BGR2GRAY).astype(float)
+    def compute():
+        und=mp.undistort(cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
+        scan=detect(hfw,und,cm,params=params,loaded=False,wall_detector=wall_detector,contact_rule=contact_rule,
+            contact_state=contact_state,frame_id=frame_id,odometry_pose=odometry_pose)
+        grey=cv2.cvtColor(und,cv2.COLOR_BGR2GRAY).astype(float)
+        return und,scan,grey
+    from harness.e2e_exact_speedups2 import wall_frontend
+    und,scan,grey=wall_frontend(compute,rgb,servo=servo,origin=origin,rotation=rotation,params=params,loaded=False,
+        wall_detector=wall_detector,contact_rule=contact_rule,contact_state=contact_state,mp=mp,hfw=hfw)
     basis=rotation@np.linalg.inv(mp.K)
     collected={}
     for segment in hfw.link_segments(scan,params):
