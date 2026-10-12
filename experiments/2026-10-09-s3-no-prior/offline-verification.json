@@ -1,0 +1,51 @@
+{
+  "scope": "offline only; no MuJoCo model/reset/step; S3 smoke not yet executed",
+  "records": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix-20261009/394-junit.xml",
+      "sha256": "5cb5bda884acba5aaf6ba2e5b796985962065e76a15de49f37778be914985177"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix-20261009/399-junit.xml",
+      "sha256": "1e089f68dc72d514af2707f8c951c869556533b01dc3182cad9cc1b05bff82c7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix-20261009/s3-main-merge-junit.xml",
+      "sha256": "e38f42575d3b344e3aff9821e149ca62257928a6e91a08f770bb1d377cc5de16"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix-20261009/s3-frame-wait-junit.xml",
+      "sha256": "37f717e43d4ae2949399b6bb2972615664c5568f65c8d039aa52676712122016"
+    }
+  ],
+  "counts": {
+    "pr394": 20,
+    "pr399": 40,
+    "s3_main_merge": 92,
+    "s3_own_frame_and_wait": 6
+  },
+  "source_before_last_fix": "0122221a162136e9f28793d31be301473df847bd",
+  "last_fix": "startup observation commands do not accumulate door reservation wait",
+  "physics_runs": 0,
+  "new_bundle": "zone-s3-no-prior-v142",
+  "s2v59_observed_completed": {
+    "1065": {
+      "delivery": false,
+      "started_converged": true,
+      "end": "search"
+    },
+    "1066": {
+      "delivery": true
+    },
+    "1067": {
+      "delivery": true
+    },
+    "1068": {
+      "delivery": false,
+      "controller_done": true,
+      "inside_B": false,
+      "carry_end_error_m": 3.2150383984400586
+    }
+  },
+  "other_agent_results_not_pooled": true
+}

@@ -1,0 +1,152 @@
+{
+  "table": {
+    "100": {
+      "frames": 1341,
+      "invalid_frames": 0,
+      "xy_rmse_m": 0.3077602570769542,
+      "final_error_m": 0.7078852098751671,
+      "final_sigma_m": 0.17559714981626315,
+      "sigma_rms_m": 0.09831036776161847,
+      "over_3sigma": 651,
+      "over_3sigma_fraction": 0.4854586129753915,
+      "xy_nees_mean": 2463.2800710069328,
+      "xy_nees_gt_11_829_fraction": 0.5287099179716629,
+      "prediction_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b",
+      "truth_sha256": "c80698cf22564547abdca334280ed07561377088bd0a10b70ceb9e28add8d5d2",
+      "sigma_definition": "sqrt(max eigenvalue(XY covariance)); original own-map definition",
+      "gauge": "initial truth only; evaluation transform, no trajectory alignment",
+      "particles": 100,
+      "min_xy_eigenvalue": 9.999999991312816e-11,
+      "covariance_floor_fraction": 0.0,
+      "min_unique_after": 2,
+      "resample_checks": 259,
+      "median_ess_before": 66.34126387673494,
+      "wall_s": 378.4825805409928,
+      "cpu_s": 389.893096,
+      "wall_per_input_sim": 1.4017873353370103,
+      "cpu_per_input_sim": 1.4440485037037039,
+      "peak_rss_bytes": 1374289920,
+      "loadavg_start": [
+        1.97705078125,
+        2.86474609375,
+        2.7333984375
+      ],
+      "loadavg_end": [
+        2.10302734375,
+        2.5263671875,
+        2.6484375
+      ],
+      "original_frontend_equal": true,
+      "original_proposals_equal": true,
+      "original_contacts_equal": true,
+      "receipt_sha256": "4cb96f580ac5935d295bcb10c47bef54bf5668ebf8cba49d4f43e6ce23538349",
+      "population_sha256": "7ad386bf9e11c7e6f55006afdab1e48f64b56cb0a996be2d8526a3168d31db96"
+    },
+    "500": {
+      "frames": 1341,
+      "invalid_frames": 0,
+      "xy_rmse_m": 0.2771979369153603,
+      "final_error_m": 0.39168905256431646,
+      "final_sigma_m": 0.26314182984832823,
+      "sigma_rms_m": 0.12931347398240498,
+      "over_3sigma": 219,
+      "over_3sigma_fraction": 0.16331096196868009,
+      "xy_nees_mean": 6.595885065378734,
+      "xy_nees_gt_11_829_fraction": 0.2117822520507084,
+      "prediction_sha256": "9e9e7f2af4f0cf47d65421d8ba08dffb172ffc4976c6777521d5cd413e30f433",
+      "truth_sha256": "c80698cf22564547abdca334280ed07561377088bd0a10b70ceb9e28add8d5d2",
+      "sigma_definition": "sqrt(max eigenvalue(XY covariance)); original own-map definition",
+      "gauge": "initial truth only; evaluation transform, no trajectory alignment",
+      "particles": 500,
+      "min_xy_eigenvalue": 0.00022513017061753302,
+      "covariance_floor_fraction": 0.0,
+      "min_unique_after": 13,
+      "resample_checks": 256,
+      "median_ess_before": 343.04144432078914,
+      "wall_s": 730.9595598330488,
+      "cpu_s": 741.987299,
+      "wall_per_input_sim": 2.707257629011292,
+      "cpu_per_input_sim": 2.7481011074074075,
+      "peak_rss_bytes": 1689124864,
+      "loadavg_start": [
+        2.10302734375,
+        2.5263671875,
+        2.6484375
+      ],
+      "loadavg_end": [
+        1.8642578125,
+        2.20849609375,
+        2.3896484375
+      ],
+      "original_frontend_equal": false,
+      "original_proposals_equal": false,
+      "original_contacts_equal": true,
+      "receipt_sha256": "f49890e66cdaf27efbf7a6d9d344f77dc47415d5f09a6c981f1f6102ea7da75a",
+      "population_sha256": "af31ffb7edb772f8e1e5b1e46c17f9e092afe7a4d656e7d00f6847020c953ad5"
+    }
+  },
+  "gt_evaluation_only": true,
+  "sole_change": "RBPFOptions.particles=100 or500",
+  "input_sim_s": 270.0,
+  "timing_scope": {
+    "note": "N-only serial CPU and wall costs are descriptive, not causal ABBA speed claims.",
+    "baseline_overlap": {
+      "task": "tests/test_s3_alignment_probe.py",
+      "duration_s": 17.73,
+      "result": "8 passed"
+    },
+    "exclude_clean_wall_speed_claim": true
+  },
+  "queue": {
+    "source_sha": "2bb6148dad2f20658ed074ca048dc4c62dff6c8f",
+    "adapter_before": "9b83956c3c2df742f99af074e164a46e8028e9f87f2d3f128711a6afd5b49b88",
+    "acquired": {
+      "owner": "codex",
+      "branch": "codex/s3-no-prior-smoke",
+      "purpose": "s3fix8 archived 55001 particles 100/500 only, serial",
+      "pid": 9953,
+      "acquired_unix": 1791608337.8526442,
+      "expected_end_unix": 1791610137.8526452,
+      "loadavg_at_acquire": [
+        2.0625,
+        2.896484375,
+        2.74365234375
+      ],
+      "timing_sensitive": true
+    },
+    "results": [
+      {
+        "particles": 100,
+        "returncode": 0
+      },
+      {
+        "particles": 500,
+        "returncode": 0
+      }
+    ],
+    "adapter_after": "9b83956c3c2df742f99af074e164a46e8028e9f87f2d3f128711a6afd5b49b88",
+    "released": {
+      "owner": "codex",
+      "branch": "codex/s3-no-prior-smoke",
+      "purpose": "s3fix8 archived 55001 particles 100/500 only, serial",
+      "pid": 9953,
+      "acquired_unix": 1791608337.8526442,
+      "expected_end_unix": 1791610137.8526452,
+      "loadavg_at_acquire": [
+        2.0625,
+        2.896484375,
+        2.74365234375
+      ],
+      "timing_sensitive": true,
+      "pid_alive": true
+    }
+  },
+  "selection": {
+    "consistent_with_population_shortage": true,
+    "s3_adoption": false,
+    "thresholds_changed": false,
+    "wall_ratio": 1.9312898331760342,
+    "cpu_ratio": 1.903053187174158,
+    "scope": "one development input, fixed issued commands; not a physical success or universal cause"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-motion-v148",
+      "version": "7.41.0",
+      "purpose": "S3 공통 heading 명령 계약·공동 빔 예외·정확 캐시 혼합 DEV1회",
+      "entry": "scripts/run_s3_motion.py",
+      "runner": "scripts.run_s3_motion",
+      "docs": "experiments/2026-10-09-s3-no-prior/s3fix3/README.md",
+      "requires": "committed SHA; explicit option; own exclusive SIM lock; one finite smoke",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

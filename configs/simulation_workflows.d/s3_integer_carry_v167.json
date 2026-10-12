@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-integer-carry-v167",
+      "version": "7.60.0",
+      "purpose": "S3 A+\uc815\uc218 \uc6b4\ubc18 \ud384\uc2a4 on/off \uc804\uccb410\uc870\uac74",
+      "entry": "scripts/run_s3_integer_carry.py",
+      "runner": "scripts.run_s3_integer_carry",
+      "docs": "experiments/2026-10-10-s3-integer-carry/README.md",
+      "requires": "committed oracle-x86 OSMesa LP4; load<51 memory>=6GiB",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

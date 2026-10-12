@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "azure-s3-environment-smoke",
+      "version": "1.0.0",
+      "purpose": "Azure S3 장면·0.5초 물리·3대 자기 RGB 설치 확인 (임무 성공 아님)",
+      "entry": "scripts/run_azure_sim_smoke.py",
+      "runner": "scripts.run_azure_sim_smoke",
+      "docs": "docs/azure_simulation.md",
+      "requires": "committed SHA; explicit remote lifecycle; cloud cost guards enabled; no model calls",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": ["--expected-source-sha"],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

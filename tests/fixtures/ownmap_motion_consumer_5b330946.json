@@ -1,0 +1,53 @@
+{
+  "source_sha": "5b33094635804662a8a604718aead132c420b5ba",
+  "snippets": [
+    {
+      "path": "harness/self_pulse_odom.py",
+      "name": "profile_key",
+      "file_sha256": "ec0d16f788327b2c8d7c10139cd837923958c09ddacc055633a9cf0bd4cfded0",
+      "source": "def profile_key(action, loaded):\n    u = [float(action.get(k,0.)) for k in AXES]\n    if sum(v!=0 for v in u)!=1:\n        raise ValueError('calibrated motion requires one axis')\n    axis = int(np.argmax(np.abs(u)))\n    return f\"{int(loaded)}:{AXES[axis]}:{u[axis]:.2f}:{float(action['duration_s']):.2f}\""
+    },
+    {
+      "path": "harness/self_pulse_odom.py",
+      "name": "response",
+      "file_sha256": "ec0d16f788327b2c8d7c10139cd837923958c09ddacc055633a9cf0bd4cfded0",
+      "source": "def response(profile, t):\n    curve=np.asarray(profile['mean_curve'])\n    return np.array([np.interp(t,profile['times'],curve[:,i]) for i in range(3)])"
+    },
+    {
+      "path": "harness/self_pulse_odom.py",
+      "name": "PulseOdometry",
+      "file_sha256": "ec0d16f788327b2c8d7c10139cd837923958c09ddacc055633a9cf0bd4cfded0",
+      "source": "class PulseOdometry:\n    def __init__(self, start_time=0.):\n        self.t = float(start_time)\n        self._pose = np.zeros(3)\n        self.servo, self.servo_since, self.has_servo = {}, self.t, False\n        self.loaded, self.active = False, None\n        self.covariance = CSMOptions().floor()\n        self.step_callback = None\n        self.profiles = model()['profiles']\n\n    @property\n    def pose(self):\n        return tuple(map(float, self._pose))\n\n    def advance(self, t):\n        t = float(t)\n        if not math.isfinite(t) or t < self.t-1e-8:\n            raise ValueError('SELF_MAP_NON_MONOTONIC_TIME')\n        while self.t < t-1e-9:\n            dt = min(.05, t-self.t)\n            if self.active is not None:\n                started, p = self.active\n                a, b = max(0., self.t-started), max(0., self.t+dt-started)\n                va, vb = response(p, a), response(p, b)\n                delta = vb-va\n                c, s = math.cos(va[2]), math.sin(va[2])\n                delta[:2] = np.array([[c,s],[-s,c]])@delta[:2]\n                fraction = max(0., min(b,p['times'][-1])-min(a,p['times'][-1]))/p['times'][-1]\n                variance = np.asarray(p['prediction_variance'])*fraction\n                c, s = math.cos(self._pose[2]), math.sin(self._pose[2])\n                R = np.array([[c,-s,0],[s,c,0],[0,0,1.]])\n                world_delta = R@delta\n                F = np.eye(3)\n                F[:2,2] = [-world_delta[1],world_delta[0]]\n                self.covariance = F@self.covariance@F.T+R@np.diag(variance)@R.T\n                self._pose += world_delta\n                self._pose[2] = wrap(self._pose[2])\n                if self.step_callback is not None:\n                    self.step_callback(delta, variance)\n                if b >= p['times'][-1]-1e-9:\n                    self.active = None\n            self.t += dt\n        self.t = max(self.t,t)\n        return self.pose\n\n    def command(self, row):\n        kind, t = row['kind'], float(row['t'])\n        if kind not in ('initial_servo_command','arm','look','mecanum','drive','hold','stop'):\n            raise ValueError('SELF_MAP_UNKNOWN_COMMAND')\n        self.advance(t)\n        # A calibrated pulse includes its tail. Unknown early interruption has\n        # no fixed curve; fail explicitly instead of inventing a continuation.\n        if self.active is not None and t < self.active[0]+self.active[1]['duration_s']-1e-8:\n            raise ValueError('UNCALIBRATED_EARLY_INTERRUPTION')\n        before = self.servo.copy()\n        if kind == 'initial_servo_command':\n            self.servo = {int(k):int(v) for k,v in row['pulses'].items()}\n        elif kind == 'arm':\n            self.servo[int(row['servo_id'])] = int(row['pulse'])\n        elif kind == 'look':\n            self.servo[6] = int(row['pan_pulse'])\n        if self.servo != before:\n            self.servo_since = self.t\n        self.has_servo = bool(self.servo)\n        self.loaded = self.servo.get(1,2000) <= 1600\n        if kind in ('mecanum','drive') and any(row.get(k,0) for k in AXES):\n            key = profile_key(row,self.loaded)\n            if key not in self.profiles:\n                raise ValueError('UNCALIBRATED_PULSE '+key)\n            p = self.profiles[key]\n            # Reject values which would only match because of key rounding.\n            if (float(row['duration_s']) != p['duration_s'] or\n                    float(row[p['axis']]) != p['u']):\n                raise ValueError('UNCALIBRATED_PULSE_ROUNDING')\n            self.active = (self.t,p)\n\n    def correct(self, pose, covariance):\n        self._pose = np.asarray(pose,dtype=float).copy()\n        self._pose[2] = wrap(self._pose[2])\n        self.covariance = np.asarray(covariance,dtype=float).copy()"
+    },
+    {
+      "path": "harness/self_map_rbpf.py",
+      "name": "CloudOdometry",
+      "file_sha256": "8352c8fe9efcdbf5962efa2dd58835940325dad52f0a02db05cfdaca3703e37c",
+      "source": "class CloudOdometry:\n    \"\"\"Command facade: one mean drive integrator propagates every own hypothesis.\"\"\"\n    def __init__(self, owner, start_time, profiles):\n        self.owner = owner\n        self.driver = V7CommandOdometry(start_time, profiles)\n        self.driver.step_callback = owner.propagate\n\n    def __getattr__(self, name):\n        return getattr(self.driver, name)\n\n    @property\n    def pose(self):\n        return tuple(float(x) for x in self.owner.poses[self.owner.best])\n\n    @property\n    def covariance(self):\n        w = self.owner.weights\n        p = self.owner.poses.copy()\n        yaw = math.atan2(w@np.sin(p[:, 2]), w@np.cos(p[:, 2]))\n        p[:, 2] = wrap(p[:, 2]-yaw)\n        center = w@p\n        delta = p-center\n        return (delta.T*w)@delta+np.einsum('n,nij->ij', w, self.owner.pending_cov)\n\n    def advance(self, t):\n        self.driver.advance(t)\n        return self.pose\n\n    def command(self, row):\n        self.driver.command(row)"
+    },
+    {
+      "path": "harness/self_map_rbpf.py",
+      "name": "RaoBlackwellizedGrid.propagate",
+      "file_sha256": "8352c8fe9efcdbf5962efa2dd58835940325dad52f0a02db05cfdaca3703e37c",
+      "source": "def propagate(self, body_delta, body_variance):\n        c, s = np.cos(self.poses[:, 2]), np.sin(self.poses[:, 2])\n        delta = np.column_stack([c*body_delta[0]-s*body_delta[1], s*body_delta[0]+c*body_delta[1],\n                                 np.full(len(c), body_delta[2])])\n        F = np.repeat(np.eye(3)[None], len(c), 0)\n        F[:, 0, 2], F[:, 1, 2] = -delta[:, 1], delta[:, 0]\n        R = np.zeros_like(F)\n        R[:, 0, 0], R[:, 0, 1], R[:, 1, 0], R[:, 1, 1], R[:, 2, 2] = c, -s, s, c, 1.\n        self.pending_cov = F@self.pending_cov@F.transpose(0, 2, 1)+(R*body_variance)@R.transpose(0, 2, 1)\n        self.poses += delta\n        self.poses[:, 2] = wrap(self.poses[:, 2])"
+    },
+    {
+      "path": "harness/rbpf_rejection.py",
+      "name": "motion_variance",
+      "file_sha256": "a193179075364de53c61e0e2cd6198a5a2bbf02122a482f8f96de02bf718ecd3",
+      "source": "def motion_variance(delta):\n    \"\"\"OpenSLAM motionmodel.cpp:25-35; ROS defaults:224-239, no GT fit.\"\"\"\n    x, y, theta = np.abs(delta)\n    return np.square([.1*x+.1*theta+.03*y, .1*y+.1*theta+.03*x,\n                      .2*theta+.2*math.hypot(x, y)])"
+    },
+    {
+      "path": "harness/rbpf_rejection.py",
+      "name": "_command_propagate",
+      "file_sha256": "a193179075364de53c61e0e2cd6198a5a2bbf02122a482f8f96de02bf718ecd3",
+      "source": "def _command_propagate(self, delta, ignored_v122_variance):\n    # Mean / F Jacobian at .05s integration steps; do not double-count v122 Q.\n    RaoBlackwellizedGrid.propagate(self, delta, np.zeros(3))"
+    },
+    {
+      "path": "harness/rbpf_rejection.py",
+      "name": "_advance",
+      "file_sha256": "a193179075364de53c61e0e2cd6198a5a2bbf02122a482f8f96de02bf718ecd3",
+      "source": "def _advance(self, t):\n    CloudOdometry.advance(self, t)\n    g = self.owner\n    state = g._selective_state\n    old, now = np.asarray(state['previous']), np.asarray(self.driver.pose)\n    delta = now-old\n    c, s = math.cos(old[2]), math.sin(old[2])\n    delta[:2] = np.array([[c, s], [-s, c]])@delta[:2]\n    delta[2] = wrap(delta[2])\n    variance = motion_variance(delta)\n    if np.any(variance):\n        # Each own scan's delta is expressed at its starting particle heading.\n        c, s = np.cos(g.poses[:, 2]-delta[2]), np.sin(g.poses[:, 2]-delta[2])\n        R = np.zeros_like(g.pending_cov)\n        R[:, 0, 0], R[:, 0, 1], R[:, 1, 0], R[:, 1, 1], R[:, 2, 2] = c, -s, s, c, 1.\n        g.pending_cov += (R*variance)@R.transpose(0, 2, 1)\n        state['noise_frames'] += 1\n    state['previous'] = now.tolist()\n    return self.pose"
+    }
+  ]
+}

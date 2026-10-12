@@ -1,0 +1,92 @@
+{
+  "option": "rotation_xy_alpha_v1",
+  "runtime_gt": false,
+  "profiles": {
+    "0:turn:-0.35:0.10": {
+      "times": [
+        0.0,
+        0.05,
+        0.1,
+        0.15,
+        0.2
+      ],
+      "xy_curve": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.9876960498737167e-05,
+          0.0001831909384306169
+        ],
+        [
+          3.530361811723986e-05,
+          0.00038327487326359703
+        ],
+        [
+          2.972526696498702e-05,
+          0.00040525321776274523
+        ],
+        [
+          2.48375103210109e-05,
+          0.00040302734327704506
+        ]
+      ],
+      "n": 33,
+      "independent_repeats": 3
+    },
+    "0:turn:0.35:0.10": {
+      "times": [
+        0.0,
+        0.05,
+        0.1,
+        0.15,
+        0.2
+      ],
+      "xy_curve": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -1.0608408902355913e-05,
+          -0.00015987925982263978
+        ],
+        [
+          9.370606381741074e-06,
+          -0.0003473994905765704
+        ],
+        [
+          1.0011368840833115e-05,
+          -0.000365949598429308
+        ],
+        [
+          7.984318565906154e-06,
+          -0.0003374554979989276
+        ]
+      ],
+      "n": 33,
+      "independent_repeats": 3
+    }
+  },
+  "alpha_1_to_4": [
+    0.006769457195013936,
+    0.2804932623889647,
+    0.00935052913837163,
+    5.035338480203034e-05
+  ],
+  "scope": "unloaded turn XY and noise only; existing yaw, forward, lateral, loaded unchanged",
+  "fit": "rotation seed32001 repeats1-3; v122 existing unloaded forward training split",
+  "check": "rotation repeats4-5; retrospective calibration check, not independent research",
+  "source_sha": "60d4e83368f70cc0ce553d432e032d7cc25f4341",
+  "base_model_sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+  "input_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/pulse-rotation-audit-v1/measurement/eval_only/trajectory.jsonl": "bb886e705cfc1c48c7774147061cc0841e4c15b548bfbaa15f0d76fd480a1728",
+    "/Users/changmin/projects/ugrp/outputs/pulse-rotation-audit-v1/measurement/schedule.json": "60e37b2ba97dd91308981e170e0b69ea300967a354419eeec6ff0478bcb875cd",
+    "/Users/changmin/projects/ugrp/outputs/pulse-rotation-audit-v1/measurement/result.json": "e1eab9abf0aa821ce482797a1971feebcd87b66c85620ac4913fda0c94c95bae"
+  },
+  "forward_input": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-pulse-cal-20261007/offline/pulses.jsonl",
+    "sha256": "a7ba6302424f7f9c0b8fa321dee88b9ac32ce335170283855e7c1896971dc11e"
+  }
+}

@@ -1,0 +1,848 @@
+{
+  "schema": "ugrp.s3_integer_carry.dev.v1",
+  "status": "blocked_remote_raw_lost_and_ssh_unavailable",
+  "host": "oracle-x86",
+  "bundle_id": "zone-s3-integer-carry-v167",
+  "preregistration": {
+    "workers": 20,
+    "sim_cap_s": 60,
+    "LP_NUM_THREADS": 4,
+    "admission": "1min load<51; MemAvailable>=6GiB, independent Oracle jobs do not block",
+    "runs": [
+      {
+        "name": "s3fix19-off-pair-c0-r1",
+        "case": "pair",
+        "condition": 0,
+        "seed": 14201,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c1-r1",
+        "case": "pair",
+        "condition": 1,
+        "seed": 14202,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c2-r1",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c3-r1",
+        "case": "pair",
+        "condition": 3,
+        "seed": 14204,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c4-r1",
+        "case": "pair",
+        "condition": 4,
+        "seed": 14205,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c5-r1",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c0-r1",
+        "case": "cyan",
+        "condition": 0,
+        "seed": 14201,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c3-r1",
+        "case": "cyan",
+        "condition": 3,
+        "seed": 14204,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c4-r1",
+        "case": "cyan",
+        "condition": 4,
+        "seed": 14205,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c5-r1",
+        "case": "cyan",
+        "condition": 5,
+        "seed": 14206,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-on-pair-c0-r1",
+        "case": "pair",
+        "condition": 0,
+        "seed": 14201,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c1-r1",
+        "case": "pair",
+        "condition": 1,
+        "seed": 14202,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c2-r1",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c3-r1",
+        "case": "pair",
+        "condition": 3,
+        "seed": 14204,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c4-r1",
+        "case": "pair",
+        "condition": 4,
+        "seed": 14205,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c5-r1",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c0-r1",
+        "case": "cyan",
+        "condition": 0,
+        "seed": 14201,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c3-r1",
+        "case": "cyan",
+        "condition": 3,
+        "seed": 14204,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c4-r1",
+        "case": "cyan",
+        "condition": 4,
+        "seed": 14205,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c5-r1",
+        "case": "cyan",
+        "condition": 5,
+        "seed": 14206,
+        "option": "integer_ticks_v1"
+      }
+    ],
+    "criteria": "pair: exactly12 nonzero first-leg carry commands per robot; matching mirrored commands/common timestamps; first-leg static endpoint error<=20mm. Setdown: original s3fix18 floor>=.1N, COM<=25mm, |vz|<=20mm/s, tilt<10deg for>=.20SIM after both full-open; zero physical/host/controller terminal. Cyan: unchanged alignment/grasp/lift/carry>=20mm regression; no pair pulse contract or artificial cyan final-stage bypass.",
+    "second_stage_gate": "on pair6/6 pulse count, endpoint and setdown; cyan carry4/4; zero drop/tilt/HOST_ERROR. No criteria changes after seeing results.",
+    "initial_check_wall_s": 180,
+    "options": {
+      "off": "A canonical floor; original floating windows",
+      "integer_ticks_v1": "A plus integer50ms tick half-open windows; each pulse once; same duration/amplitude/plan/count/GO/hold monitor; cyan toggle is negative control"
+    },
+    "scope": "20runs=10conditions xon/off; repeated DEV tuning conditions, not confirmation",
+    "storage": "attempt3 durable x86 root output; archive own completed source caches toARM/checksum first, preserve all raw; same20conditions/seed/flags; r3names. No tmpfs source/output.",
+    "retry_runs": [
+      {
+        "name": "s3fix19-off-pair-c0-r3",
+        "case": "pair",
+        "condition": 0,
+        "seed": 14201,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c1-r3",
+        "case": "pair",
+        "condition": 1,
+        "seed": 14202,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c2-r3",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c3-r3",
+        "case": "pair",
+        "condition": 3,
+        "seed": 14204,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c4-r3",
+        "case": "pair",
+        "condition": 4,
+        "seed": 14205,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-pair-c5-r3",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c0-r3",
+        "case": "cyan",
+        "condition": 0,
+        "seed": 14201,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c3-r3",
+        "case": "cyan",
+        "condition": 3,
+        "seed": 14204,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c4-r3",
+        "case": "cyan",
+        "condition": 4,
+        "seed": 14205,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-off-cyan-c5-r3",
+        "case": "cyan",
+        "condition": 5,
+        "seed": 14206,
+        "option": "off"
+      },
+      {
+        "name": "s3fix19-on-pair-c0-r3",
+        "case": "pair",
+        "condition": 0,
+        "seed": 14201,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c1-r3",
+        "case": "pair",
+        "condition": 1,
+        "seed": 14202,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c2-r3",
+        "case": "pair",
+        "condition": 2,
+        "seed": 14203,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c3-r3",
+        "case": "pair",
+        "condition": 3,
+        "seed": 14204,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c4-r3",
+        "case": "pair",
+        "condition": 4,
+        "seed": 14205,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-pair-c5-r3",
+        "case": "pair",
+        "condition": 5,
+        "seed": 14206,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c0-r3",
+        "case": "cyan",
+        "condition": 0,
+        "seed": 14201,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c3-r3",
+        "case": "cyan",
+        "condition": 3,
+        "seed": 14204,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c4-r3",
+        "case": "cyan",
+        "condition": 4,
+        "seed": 14205,
+        "option": "integer_ticks_v1"
+      },
+      {
+        "name": "s3fix19-on-cyan-c5-r3",
+        "case": "cyan",
+        "condition": 5,
+        "seed": 14206,
+        "option": "integer_ticks_v1"
+      }
+    ]
+  },
+  "diagnosis": {
+    "runs": [
+      {
+        "condition": 0,
+        "planned_pulses": 12,
+        "issued_pulses": 17,
+        "excess_pulses": 5,
+        "excess_calibrated_translation_m": 0.06469360905670689,
+        "command_times_s": [
+          29.3,
+          29.4,
+          29.5,
+          29.7,
+          30.0,
+          30.1,
+          30.2,
+          30.3,
+          30.4,
+          30.5,
+          30.7,
+          31.0,
+          31.1,
+          31.2,
+          31.3,
+          31.4,
+          31.5
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c0-r2/raw",
+        "commands_sha256": "bfc2167872bb09b25db14995a91a52f466ad22791670062ed5050f1ce2fdd2c7"
+      },
+      {
+        "condition": 1,
+        "planned_pulses": 12,
+        "issued_pulses": 17,
+        "excess_pulses": 5,
+        "excess_calibrated_translation_m": 0.06469360905670689,
+        "command_times_s": [
+          28.8,
+          28.9,
+          29.0,
+          29.2,
+          29.5,
+          29.6,
+          29.7,
+          29.8,
+          29.9,
+          30.0,
+          30.2,
+          30.5,
+          30.6,
+          30.7,
+          30.8,
+          30.9,
+          31.0
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c1-r2/raw",
+        "commands_sha256": "bb2ee3c98bbfa476ffe0086343e1406d658f87859d99342327129414fbaf5bae"
+      },
+      {
+        "condition": 2,
+        "planned_pulses": 12,
+        "issued_pulses": 14,
+        "excess_pulses": 2,
+        "excess_calibrated_translation_m": 0.025877443622682756,
+        "command_times_s": [
+          30.3,
+          30.4,
+          30.5,
+          30.7,
+          31.0,
+          31.1,
+          31.2,
+          31.3,
+          31.4,
+          31.5,
+          31.7,
+          32.1,
+          32.3,
+          32.5
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c2-r2/raw",
+        "commands_sha256": "f71e4733b382f17f82a190b0be35b1addef930e5d5ec78bed313601c915dd665"
+      },
+      {
+        "condition": 3,
+        "planned_pulses": 12,
+        "issued_pulses": 16,
+        "excess_pulses": 4,
+        "excess_calibrated_translation_m": 0.05175488724536551,
+        "command_times_s": [
+          30.8,
+          30.9,
+          31.0,
+          31.2,
+          31.5,
+          31.6,
+          31.7,
+          31.8,
+          31.9,
+          32.0,
+          32.2,
+          32.3,
+          32.4,
+          32.6,
+          32.8,
+          33.0
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c3-r2/raw",
+        "commands_sha256": "43ad37546c86e59bef7d288b2ddaff1c8adce0dd7dc2b598acf00fa79982bc27"
+      },
+      {
+        "condition": 4,
+        "planned_pulses": 12,
+        "issued_pulses": 17,
+        "excess_pulses": 5,
+        "excess_calibrated_translation_m": 0.06469360905670689,
+        "command_times_s": [
+          28.3,
+          28.4,
+          28.5,
+          28.7,
+          29.0,
+          29.1,
+          29.2,
+          29.3,
+          29.4,
+          29.5,
+          29.7,
+          30.0,
+          30.1,
+          30.2,
+          30.3,
+          30.4,
+          30.5
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c4-r2/raw",
+        "commands_sha256": "2b2d3c73b724a4e6bbee696ad0a95e1389352fbc2e28d0f000454c81c3b956e1"
+      },
+      {
+        "condition": 5,
+        "planned_pulses": 12,
+        "issued_pulses": 17,
+        "excess_pulses": 5,
+        "excess_calibrated_translation_m": 0.06469360905670689,
+        "command_times_s": [
+          29.8,
+          29.9,
+          30.0,
+          30.2,
+          30.5,
+          30.6,
+          30.7,
+          30.8,
+          30.9,
+          31.0,
+          31.2,
+          31.5,
+          31.6,
+          31.7,
+          31.8,
+          31.9,
+          32.0
+        ],
+        "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix17-batch-r2-ready/cohort/s3fix17-pair-c5-r2/raw",
+        "commands_sha256": "e76047e10891ffa503214df308c87d5b1d5606924ef659b7539e4dfa3b371db4"
+      }
+    ],
+    "size_check": "2\u20135 excess pulses x12.9387mm=25.9\u201364.7mm; endpoint16\u201354mm fits scale; root floating end boundary reissues, not tuned speed"
+  },
+  "next_stage_preregistration": {
+    "status": "prepared_not_executed_gate_not_adjudicable",
+    "seed_list": [
+      14201,
+      14204,
+      14206
+    ],
+    "cases": [
+      {
+        "name": "s3fix19-multi-left-c0",
+        "condition": 0,
+        "route": [
+          [
+            1.3,
+            0.05
+          ],
+          [
+            1.4518,
+            0.05
+          ],
+          [
+            1.4518,
+            0.21694529519717284
+          ]
+        ],
+        "seed": 14201,
+        "module": "scripts.run_s3_integer_carry",
+        "flags": [
+          "--case",
+          "pair",
+          "--condition",
+          "0",
+          "--integer-carry",
+          "integer_ticks_v1",
+          "--route-case",
+          "multi-left",
+          "--execute"
+        ]
+      },
+      {
+        "name": "s3fix19-multi-right-c3",
+        "condition": 3,
+        "route": [
+          [
+            1.3,
+            0.05
+          ],
+          [
+            1.4518,
+            0.05
+          ],
+          [
+            1.4518,
+            -0.11694529519717285
+          ]
+        ],
+        "seed": 14204,
+        "module": "scripts.run_s3_integer_carry",
+        "flags": [
+          "--case",
+          "pair",
+          "--condition",
+          "3",
+          "--integer-carry",
+          "integer_ticks_v1",
+          "--route-case",
+          "multi-right",
+          "--execute"
+        ]
+      },
+      {
+        "name": "s3fix19-multi-three-c5",
+        "condition": 5,
+        "route": [
+          [
+            1.3,
+            0.05
+          ],
+          [
+            1.4518,
+            0.05
+          ],
+          [
+            1.4518,
+            0.21694529519717284
+          ],
+          [
+            1.348290225509269,
+            0.21694529519717284
+          ]
+        ],
+        "seed": 14206,
+        "module": "scripts.run_s3_integer_carry",
+        "flags": [
+          "--case",
+          "pair",
+          "--condition",
+          "5",
+          "--integer-carry",
+          "integer_ticks_v1",
+          "--route-case",
+          "multi-three",
+          "--execute"
+        ]
+      }
+    ],
+    "criteria": "each static corner<=20mm; retain bilateral grasp/tilt<10deg; both reach second leg, final registered floor settling; horizon60SIM; no runtimeGT",
+    "turn_scope": "static travel direction turns90deg via jointly authorized crab; beam yaw remains fixed. Individual loaded heading turns remain prohibited; actual beam/body rotation is a separate uncalibrated plant, not claimed here.",
+    "option": "integer_ticks_v1+canonical_floor_v1; existing per-segment two-party high-stop andGO",
+    "static_sweep_note": "third route initially rejected wall_divider_2 before prereg/source commit; replaced final +x leg with -x leg; no executed result used",
+    "final_release_contract": "multi-route stops after final segment release only; temporary re-fix release must continue. Offline motor/state regression fixed before additional physics."
+  },
+  "references": [
+    {
+      "url": "https://www.gafferongames.com/post/fix_your_timestep/",
+      "scope": "author fixed timestep design and floating precision caveat; integer pulse index is local implementation"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_controllers/blob/master/joint_trajectory_controller/src/trajectory.cpp",
+      "scope": "primary timed trajectory sampler; retain original monitor andcommand-only timing"
+    }
+  ],
+  "local_validation": {
+    "pytest_passed": 22,
+    "files": [
+      "tests/test_s3_integer_carry.py",
+      "tests/test_s3_setdown.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "scope": "pure regression/motorstub and managed read-only plans; no local physics/render/replay",
+    "latest_integer_file": "12 passed in40.80s; cumulative22unique related tests in3files; no Mac physics/render/replay"
+  },
+  "infrastructure_attempts": [
+    {
+      "attempt": 1,
+      "batch": "s3fix19-batch-r1",
+      "source_sha": "2a6739d1bb11d0d4cb8eb7e49eb0502505750bb8",
+      "workers": 20,
+      "worker_exit_1": 20,
+      "physics_started": 0,
+      "cause": "archive_guard before creation: root free10.60GB<11GiB",
+      "raw": "oracle-x86:~/ugrp-sim/runs/s3fix19-batch-r1",
+      "status": "all rejected before physics; original logs/EXIT retained",
+      "retrieved_files_sha256": {
+        "COMMAND": "6400bd3c34c356779a754fe2ec1d0b315d2a7fe576ad697347fff02c312c80bd",
+        "ENV": "0c787a2f1a16451d77fe503fb287c9fdb1cf6607298385eab364c69878cb261c",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/cohort.json": "853e0a3dfb0a8c17934091b8a3fa479f8165e05ee6056e462dfe83c9e60c3cdb",
+        "cohort/s3fix19-off-cyan-c0-r1/COMMAND.json": "4b6831c0d58d3c1c902f7c11c2b48cab63f415961a65370fca0448a3568176ff",
+        "cohort/s3fix19-off-cyan-c0-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-cyan-c0-r1/PID": "b466fc6b3ac159b2d6883f21adfdd3613aeffe23fe7f5431b914c729616a8dc2",
+        "cohort/s3fix19-off-cyan-c0-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-cyan-c0-r1/STOP_REQUEST": "85d9daf1be6ea54bea6a59b4d0f03128f36beae0822a437605c962d98b4597a0",
+        "cohort/s3fix19-off-cyan-c0-r1/admission.json": "e9611a47b4925bd6a9ba274d40dadcca4a1c4b5b6cf89e69b4dc735188a19384",
+        "cohort/s3fix19-off-cyan-c0-r1/initial-check.json": "3da9776f9522949d796fd82d8f14e8d74b9823dc521c8722d220929a26a6edfc",
+        "cohort/s3fix19-off-cyan-c0-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-off-cyan-c3-r1/COMMAND.json": "7021d554374ab19941fdf069782c1d80e14f32f213faf5cd6b7f0ae892aeae19",
+        "cohort/s3fix19-off-cyan-c3-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-cyan-c3-r1/PID": "45f42608fca345c110a328ebeffa0f03f0132eafa912b834310cb5fb0c8a5e4d",
+        "cohort/s3fix19-off-cyan-c3-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-cyan-c3-r1/STOP_REQUEST": "000779be4245a0c0989cefe37a1d16265b7cbe5c54d690c5cd8f455f088d893b",
+        "cohort/s3fix19-off-cyan-c3-r1/admission.json": "094be77bcb8c0cbe5a45302db6345cc763d3d496ef0d4879061585d4da75605f",
+        "cohort/s3fix19-off-cyan-c3-r1/initial-check.json": "c7e2988a78fc9f1326177e5f5d2afa686d0c1953b192ed3e602f651898f1b2cf",
+        "cohort/s3fix19-off-cyan-c3-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-off-cyan-c4-r1/COMMAND.json": "242cd4c804e46786eebdad525708b46e9bfa709500710f6603e0eb4d4df70a41",
+        "cohort/s3fix19-off-cyan-c4-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-cyan-c4-r1/PID": "f898c89020c08d41b01fd4770ff385027f68d25f5e1ae57dd48217287de5fcbf",
+        "cohort/s3fix19-off-cyan-c4-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-cyan-c4-r1/STOP_REQUEST": "8e9acf6cdfb41a3e95b3d8b2535dfef1fd1af762654af677050f8f051d5248dd",
+        "cohort/s3fix19-off-cyan-c4-r1/admission.json": "d4d38e999e580f64cd6c954fb98c136bcff71be9ca9820f1656e53f4411c4bf2",
+        "cohort/s3fix19-off-cyan-c4-r1/initial-check.json": "443a6dfe0ab1131709ef2b6034d581ae31c7ce3c7f5a7f8c22eca2ef96669415",
+        "cohort/s3fix19-off-cyan-c4-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-off-cyan-c5-r1/COMMAND.json": "0a8d5a55262868d430fedad73bda553998b7eab238e6c1272ebaddbf8349f4f8",
+        "cohort/s3fix19-off-cyan-c5-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-cyan-c5-r1/PID": "dcdbf9fb3807c1b3ffa2d42ed2f778508187099f8308d236ec53d91945fd45af",
+        "cohort/s3fix19-off-cyan-c5-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-cyan-c5-r1/STOP_REQUEST": "d9e20e363b87d5281ea0d8651c441c6b0a8ee7d981e41ceebddbe050f79e564a",
+        "cohort/s3fix19-off-cyan-c5-r1/admission.json": "f7f9135daa3d21cbe0536bc3a1059b37362077cf6fe9ef7332aef63af50bd096",
+        "cohort/s3fix19-off-cyan-c5-r1/initial-check.json": "f8cd40e654635eb174434c985c14fe9e847b62e8c3965abef54e4ac1bc0ee110",
+        "cohort/s3fix19-off-cyan-c5-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-off-pair-c0-r1/COMMAND.json": "7c37a9debb38a1ba83c0a304171dec833f17dfc9da4dba64d82bdf011c9874de",
+        "cohort/s3fix19-off-pair-c0-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-pair-c0-r1/PID": "0239e23dc14ba39e9e9f9794fc3e3334f9bc98bf62f96f8a27264039fe935998",
+        "cohort/s3fix19-off-pair-c0-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-pair-c0-r1/STOP_REQUEST": "28d283ebf6808962f306b1fe2d48a0611dd5ef3fa918afa1d3d1c47b77ea7f08",
+        "cohort/s3fix19-off-pair-c0-r1/admission.json": "65a42d05b7fb951781ff02eaacf47c7bc885cd79f617b6f429539181646db0ce",
+        "cohort/s3fix19-off-pair-c0-r1/initial-check.json": "32298956a1401cc690f64ef7286f222e9d9dda7a0f902ccb2d30e2f3083e551d",
+        "cohort/s3fix19-off-pair-c0-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-off-pair-c1-r1/COMMAND.json": "9b97153415ca981093900c259ca618a338a48ddfa9e4ec6cd1f1e4bdd48f3b69",
+        "cohort/s3fix19-off-pair-c1-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-pair-c1-r1/PID": "a32ff5ac6419e4d89f049e09905079248eb0c3e6f4a82f6bd13a85f8f7ed0894",
+        "cohort/s3fix19-off-pair-c1-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-pair-c1-r1/STOP_REQUEST": "41756cb69ac55983efcf60022d40b51ea209c4d272f63b828f54126fb1c55a66",
+        "cohort/s3fix19-off-pair-c1-r1/admission.json": "1d41265d44e67bb625ebe9231ea0351f55087b4da9e5bc14c62959cc32426f14",
+        "cohort/s3fix19-off-pair-c1-r1/initial-check.json": "7de010c2d61d0e288c149f334ff043193b58152b130b5c19a401eecc97acf711",
+        "cohort/s3fix19-off-pair-c1-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-off-pair-c2-r1/COMMAND.json": "3dc32887a5eab503ddcda10af6e91bdf66ec2d0e107a794bfc7ff686f5c575c6",
+        "cohort/s3fix19-off-pair-c2-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-pair-c2-r1/PID": "7fb91ee535bad9b9e4a124bc32aaf8b45971bf7e95c2f37e75a16e62b2134d34",
+        "cohort/s3fix19-off-pair-c2-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-pair-c2-r1/STOP_REQUEST": "4ae75a3a2ee11bfd81f8b39c7e144b1ed6eb0152ec92f04f25c8d92e749b4aaf",
+        "cohort/s3fix19-off-pair-c2-r1/admission.json": "27a94c727d17934f7e36b1e906be4c3ea76bf89156714982c59a470629276fc9",
+        "cohort/s3fix19-off-pair-c2-r1/initial-check.json": "7fc6907e3a0595df7971cabcdeb8b78f89f881766c5e13c0de40f154af4479a4",
+        "cohort/s3fix19-off-pair-c2-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-off-pair-c3-r1/COMMAND.json": "f74690393674b3637c4c714b8ec4331612c961c04c00bb77a7c2573c992701cc",
+        "cohort/s3fix19-off-pair-c3-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-pair-c3-r1/PID": "8939a41d028a7cc31f50e35a8f0421a68a53d895cd032a2d4b8975dc268d6e19",
+        "cohort/s3fix19-off-pair-c3-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-pair-c3-r1/STOP_REQUEST": "a7331ad405c691f620966724cd18f4722659b3e662800a72af332ce097d438a4",
+        "cohort/s3fix19-off-pair-c3-r1/admission.json": "e9611a47b4925bd6a9ba274d40dadcca4a1c4b5b6cf89e69b4dc735188a19384",
+        "cohort/s3fix19-off-pair-c3-r1/initial-check.json": "64d91649f66951bcfabbedca0b3ece916ac45824d3332ab3dc51d0def4efe1c1",
+        "cohort/s3fix19-off-pair-c3-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-off-pair-c4-r1/COMMAND.json": "426a35951472f936ba2ef76282249b1614b408d232cc8298cffc74f827426ede",
+        "cohort/s3fix19-off-pair-c4-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-pair-c4-r1/PID": "893bdb4d7d673cee86febb33d464c801f6b351dbd0b58dcece6f7edc03757cd9",
+        "cohort/s3fix19-off-pair-c4-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-pair-c4-r1/STOP_REQUEST": "fab730caf9057a310ab8a1f64077c93526b27bdf67292492718a4254468f6b5d",
+        "cohort/s3fix19-off-pair-c4-r1/admission.json": "d51ef4d9b31292757081dc8af12410b5e1e75eb3fd80589d5e22f4d00ad0ea54",
+        "cohort/s3fix19-off-pair-c4-r1/initial-check.json": "0d8f6e2985a1c715f8984f9a74f309ee57f36a283c4b960dbff306c9b330ad08",
+        "cohort/s3fix19-off-pair-c4-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-off-pair-c5-r1/COMMAND.json": "66c356961ab5b053f8c575e2464b30867a618f74977ba4145a0b8a6b63d416b3",
+        "cohort/s3fix19-off-pair-c5-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-off-pair-c5-r1/PID": "19651826453e74cabe59d5250853c48cca81d0a90921697c3b474d0434e2a4f6",
+        "cohort/s3fix19-off-pair-c5-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-off-pair-c5-r1/STOP_REQUEST": "1388e13cae898f3849e02357ef13c1dcf204f0a001ea4d86dfba13baa303922a",
+        "cohort/s3fix19-off-pair-c5-r1/admission.json": "e9611a47b4925bd6a9ba274d40dadcca4a1c4b5b6cf89e69b4dc735188a19384",
+        "cohort/s3fix19-off-pair-c5-r1/initial-check.json": "7256421324e7b589f885eb0c21302f99c06c93909c03ccc0cd90f8267f7dec08",
+        "cohort/s3fix19-off-pair-c5-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-cyan-c0-r1/COMMAND.json": "51f57998074a5fa4d2ef7974fd6ca5fdd2cbd26f96eb91b8fce4bf79bb0b25a4",
+        "cohort/s3fix19-on-cyan-c0-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-cyan-c0-r1/PID": "9129d4bce25c21d82015116019a815b4cbd9e0953cd2ae2bef70d38a7b63f3ed",
+        "cohort/s3fix19-on-cyan-c0-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-cyan-c0-r1/STOP_REQUEST": "c72dd9d31c389b43f5844aeba74c320ea6de04c1602de2af7326bafb18a41a70",
+        "cohort/s3fix19-on-cyan-c0-r1/admission.json": "4bdb2eb6c355c7f9af84649b3e1b098be98f9348a3bee4751a939739d9d21ab6",
+        "cohort/s3fix19-on-cyan-c0-r1/initial-check.json": "e8d8802a20afd26411e82e3ff916a58be4b58dd4fcf7a4201f137e5b390d4489",
+        "cohort/s3fix19-on-cyan-c0-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-cyan-c3-r1/COMMAND.json": "9bc6bd42e18b5cee3b4534300a2943aee068a89922e02dceab18637aac371836",
+        "cohort/s3fix19-on-cyan-c3-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-cyan-c3-r1/PID": "a7acdf1aa8f56e581732cf9ab64ab8441d109f3fedd6611c4ae1772985e0a785",
+        "cohort/s3fix19-on-cyan-c3-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-cyan-c3-r1/STOP_REQUEST": "3a55b7bf3e663235c54aec705b189cf1bb6ef766405da3e15927f82415fec191",
+        "cohort/s3fix19-on-cyan-c3-r1/admission.json": "17935e7f88406dd25aff1ace8102049440c9e6b4c69ba958c24db6287021c1b0",
+        "cohort/s3fix19-on-cyan-c3-r1/initial-check.json": "38c66dcd27f3f4084f88e57954afcba5965c4a9b378e8d04ed5753efb2835c1f",
+        "cohort/s3fix19-on-cyan-c3-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-cyan-c4-r1/COMMAND.json": "d9b42cfa379282821dd610560589b74310b8ef154a03d6f0b68730d1a474110a",
+        "cohort/s3fix19-on-cyan-c4-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-cyan-c4-r1/PID": "3d7bb36b2a184f8e72d653e2e9f562e7fec2c0f8c89271fbc45ec5c58081aeed",
+        "cohort/s3fix19-on-cyan-c4-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-cyan-c4-r1/STOP_REQUEST": "0876a5dbfe9a247bb1cfd35e4fe1bec4e0a78fa6e77fde2f412708cddd745ff0",
+        "cohort/s3fix19-on-cyan-c4-r1/admission.json": "07614d34966ad187644e7be7cf37a4c590ddbe78d5ee9b9cadec2dcb88d246d3",
+        "cohort/s3fix19-on-cyan-c4-r1/initial-check.json": "715426c828cff5745fb8cea68adea00a855a8fed51be1829e3dd2d09bbe7e95b",
+        "cohort/s3fix19-on-cyan-c4-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-cyan-c5-r1/COMMAND.json": "9b9f132fceab60da39203469be7f34e9df04bde46dca31ca14d0895b8131725b",
+        "cohort/s3fix19-on-cyan-c5-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-cyan-c5-r1/PID": "7e8244e0f0d2588423f5fceef12ccbd06283bed9379acf5a7a9db4343616308f",
+        "cohort/s3fix19-on-cyan-c5-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-cyan-c5-r1/STOP_REQUEST": "2cb3b90c45062c6a72511d6f7f186f60703efde0d6f98dfe9892c95893aee78e",
+        "cohort/s3fix19-on-cyan-c5-r1/admission.json": "1011b8dca9c7d6e51283093cfc29a4588f1165258334d109dde941b5a0d9fc92",
+        "cohort/s3fix19-on-cyan-c5-r1/initial-check.json": "ff6e4fda88644a13578a981d3c265bae214fa27a66e1f4ce9cb79cdf6df81261",
+        "cohort/s3fix19-on-cyan-c5-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-pair-c0-r1/COMMAND.json": "f370ae5acc11d511adca76c24cfe5e370e99334843bc7ae0b1fdb5a7493e6af5",
+        "cohort/s3fix19-on-pair-c0-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-pair-c0-r1/PID": "39b324420cf28a4aa79133bed0e9446fdbb22638fcff3c90dc5d2a31bfd163a7",
+        "cohort/s3fix19-on-pair-c0-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-pair-c0-r1/STOP_REQUEST": "db460dd9901c7aeca4d06adec542350c98d3ca44907355109be666993fe724e6",
+        "cohort/s3fix19-on-pair-c0-r1/admission.json": "aab7da2398f8e869e092fc914ba41e18afc58d4e3aaee27af8fcb1e68c4bd13d",
+        "cohort/s3fix19-on-pair-c0-r1/initial-check.json": "42d6423c8cb1561c2e29634e12115a3351743ef10b1771f710f4cc02ad577fb1",
+        "cohort/s3fix19-on-pair-c0-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-pair-c1-r1/COMMAND.json": "c4a2c1245a5a69826bbd247ccde1bd0570c625a2aa0daadbadf0e73a891b5081",
+        "cohort/s3fix19-on-pair-c1-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-pair-c1-r1/PID": "27a54bbd25b9d971ec44bedf94eaebae6292ca0359645b97846cd8e2c28bce5b",
+        "cohort/s3fix19-on-pair-c1-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-pair-c1-r1/STOP_REQUEST": "9502d84bd931c4c68099e37920a835695c2997f3538da5aa7876fa3ab0faaf30",
+        "cohort/s3fix19-on-pair-c1-r1/admission.json": "9d2cfbb67d5b4938359cf17167bfb9c184dc7d5aab995e30f38957cee2a822fc",
+        "cohort/s3fix19-on-pair-c1-r1/initial-check.json": "ebc8c6d71f103a0fa7d6381dbc12de032eaf1ebf0c6f064b4508c7a8adabafd0",
+        "cohort/s3fix19-on-pair-c1-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-pair-c2-r1/COMMAND.json": "d83900085c937fca582ed0b6fd09ca67298be6cdcdb65426300d1ce528a3f530",
+        "cohort/s3fix19-on-pair-c2-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-pair-c2-r1/PID": "ee93f4e433e97759e4e6756389e5a2a8fa3fef90e27915ba3941a667b67820e2",
+        "cohort/s3fix19-on-pair-c2-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-pair-c2-r1/STOP_REQUEST": "821847588adfc3c41aa9ab4c4ec612daeaf914f31335096804de6d62555f393d",
+        "cohort/s3fix19-on-pair-c2-r1/admission.json": "76dd8cb27e2e53f43461f0b7db89471d35a988a3f78adcbc9337dd80f1dd215e",
+        "cohort/s3fix19-on-pair-c2-r1/initial-check.json": "99eee7891406e85b3a96773f79cc8f0892cb4ce1b72b38b12a2dee2cc316dd1f",
+        "cohort/s3fix19-on-pair-c2-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-pair-c3-r1/COMMAND.json": "33d2181af69728490b95d4c8d22a62ffb229f8ae44e9ffbf542652bb978b4795",
+        "cohort/s3fix19-on-pair-c3-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-pair-c3-r1/PID": "7804f6df12166362d96a86031c21442fad17690c423436b6b6b2cef675c2a2d4",
+        "cohort/s3fix19-on-pair-c3-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-pair-c3-r1/STOP_REQUEST": "16ebc3fcf26225c9b364523cc786db055f28d3b5305e9f28f5ad474acee35d5f",
+        "cohort/s3fix19-on-pair-c3-r1/admission.json": "583edfee8bf647be9489a7c160130d7672131932bb63261a61f42f5bba6c0e77",
+        "cohort/s3fix19-on-pair-c3-r1/initial-check.json": "05d6f833b10a81e03e0f09212089609f3538b957484664b9d97fa3b5c1b56bf6",
+        "cohort/s3fix19-on-pair-c3-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-pair-c4-r1/COMMAND.json": "06b6c36e74d056d1f34586b8194d2fd73451488848496af0961a0169b586adee",
+        "cohort/s3fix19-on-pair-c4-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-pair-c4-r1/PID": "244438c6be5431af8e31d1f4ea349a7f14ce8e1a0499e93a59633bd571f5b49b",
+        "cohort/s3fix19-on-pair-c4-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-pair-c4-r1/STOP_REQUEST": "067fa79f42587b913c0f8e7ab27d9d31573998dd32eca78a3cdbf25f7015f110",
+        "cohort/s3fix19-on-pair-c4-r1/admission.json": "763dbdc6cd7aac23bed86b37043af934251ac27dc862414d89e540437d7c219f",
+        "cohort/s3fix19-on-pair-c4-r1/initial-check.json": "b19db57a2ac4b845e837da5307217214302ac186bde8b33f3dee0d7d9d0bbca0",
+        "cohort/s3fix19-on-pair-c4-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "cohort/s3fix19-on-pair-c5-r1/COMMAND.json": "83b8514c31a476edb662bf8e136da25893da8c1899c18d4aaa928032ba55764a",
+        "cohort/s3fix19-on-pair-c5-r1/EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "cohort/s3fix19-on-pair-c5-r1/PID": "af8f3c6c120d62553ded082fc528654c51f317744a170d0a1c525bc865d46bc2",
+        "cohort/s3fix19-on-pair-c5-r1/SOURCE_SHA": "9e75d362e82e1b5b43a3fa7609a89b7f4ac9b34247701a5b87113f8be57ac7bc",
+        "cohort/s3fix19-on-pair-c5-r1/STOP_REQUEST": "a3f66c7740c320a1c434d1130343b1161b77b3050b68e0330088484a84497b74",
+        "cohort/s3fix19-on-pair-c5-r1/admission.json": "75baf558034f8502857e8913293e04aa6a1ba6b3725c28adade101d5cb499fa3",
+        "cohort/s3fix19-on-pair-c5-r1/initial-check.json": "75b386f9f4ee952cfb140a1364435a3083b6f480c4f667abb7eecb814d15b38d",
+        "cohort/s3fix19-on-pair-c5-r1/log.txt": "6af13162f14a6b8c4c7fb7a6248efd1ca2892caddc4acdfe5845ea659ba8b4b5",
+        "log.txt": "41553f4fc983d26ede771c0e3da405dc2437180f9da03200a4a8ce403b7db3c9"
+      },
+      "initial_checks": "20/20 immediate failed log checks at<=2.1wall; zero frames/SIM, pre-physics guard, EXIT1; all preserved"
+    },
+    {
+      "attempt": 2,
+      "batch": "s3fix19-batch-r2",
+      "source_sha": "6f4cc0f5b5232558242b08b8ea53fec1291d43f7",
+      "physics_started": 20,
+      "status": "raw unavailable, cannot adjudicate or combine with completed cohort",
+      "cause": "external /dev/shm clear observed14:53UTC; boot unchanged/up5h15m; actor unknown; no removal performed by this task",
+      "initial_check": {
+        "healthy": 20,
+        "n": 20,
+        "wall_s": 180,
+        "sim_absolute_s": [
+          21.35,
+          23.35
+        ],
+        "frames": [
+          380,
+          420
+        ],
+        "scope": "live tool transcript only; original receipts lost"
+      },
+      "observed_partial_terminal": {
+        "pair_finished_without_controller_error": 12,
+        "cyan_unretrieved": 8,
+        "scope": "live tool transcript, not final physical success"
+      },
+      "source_tree_verification": {
+        "files": 11541,
+        "all_blob_hashes_matched": true,
+        "scope": "live transcript; original remote receipt lost; local source-tree.json preserved"
+      }
+    }
+  ],
+  "physics_source_sha": "6f4cc0f5b5232558242b08b8ea53fec1291d43f7",
+  "results": {
+    "adjudicated_n": 0,
+    "success_count": null,
+    "scope": "Do not infer physical success from partial live stdout; entire20case raw unavailable. No completed success denominator.",
+    "attempt1_infrastructure_errors": 20,
+    "attempt2_raw_unavailable": 20,
+    "third_attempt_started": false
+  },
+  "remaining": {
+    "cause": "x86 /dev/shm source+run missing after14:53UTC; boot unchanged at14:54; SSH129.225.174.247:22 timeout14:56\u201314:58UTC. Disk-cache preservation/archive commands could not connect and did not run. Scoped repo search found no /dev/shm cleanup in scripts/harness/sim; actor remains unknown.",
+    "next": "restore reachable64-core oracle-x86; checksum-archive own inactive completed source caches toARM to recover>=14GiB root free; exactHEAD source in persistent ~/ugrp-sim/src and persistent outputs; rerun same20 on/off conditions asr3. Copy/archive live receipts before end.",
+    "approval": "no CI/merge/user approval waiting; external host unavailable",
+    "raw_retrieval": "only attempt1 pre-physics receipts retrieved; attempt2 raw lost; no completed physics result or backup claim",
+    "cleanup": "terminated only own pendingSSH PID18567 after command ownership check; no other processes stopped; no sourcecache/raw removed or moved bythis task"
+  },
+  "integrity": {
+    "local_source_tree_manifest": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix19-control-20261010/source-tree.json",
+      "sha256": "b510d0403deccda52b2d70cba3f2de61d66e89378f522752b13d871360f73e59"
+    },
+    "local_prephysics_receipts": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-batch-r1",
+    "lost_physics_raw": "oracle-x86:/dev/shm/s3fix19-batch-r2/cohort/*/raw",
+    "lost_source_cache": "oracle-x86:/dev/shm/ugrp-s3fix19-src/6f4cc0f5b5232558242b08b8ea53fec1291d43f7",
+    "images_retrieved": false,
+    "backup_verified": false,
+    "scope": "No completed physics/source-to-result artifact integrity claim forattempt2. All preserved raw manifests are attempt1 pre-physics logs only."
+  }
+}

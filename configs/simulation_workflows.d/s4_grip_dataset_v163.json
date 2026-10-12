@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s4-grip-dataset-v163",
+      "version": "7.56.0",
+      "purpose": "Evaluation-only paired hold/loss RGB dataset from S3 O grasp; no student or model",
+      "entry": "scripts/run_s4_grip_dataset.py",
+      "runner": "scripts.run_s4_grip_dataset",
+      "docs": "experiments/2026-10-06-s4-llm/s4grip2/README.md",
+      "requires": "committed Oracle x86 OSMesa archive; LP_NUM_THREADS=4; at most six jobs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--job"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

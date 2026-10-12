@@ -1,0 +1,997 @@
+{
+  "runs": [
+    {
+      "name": "s3fix16-pair-c0-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 315.63125860500077,
+      "sim_s": 60.0,
+      "robots": {
+        "r1": {
+          "alignment": 4.9,
+          "hover": 4.9,
+          "descent": 6.4,
+          "close": 9.8,
+          "lift_entry": 11.1,
+          "carry_entry": 30.1,
+          "turn_reversals": 0,
+          "commands": 1276,
+          "fine_pan_commands": 1,
+          "grasp": 10.2,
+          "lift": 11.95,
+          "carry_xy_m": 0.0041986617502038975,
+          "carry": false,
+          "contact_lift_samples": 1009,
+          "max_cargo_z_m": 0.09569157770959899,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 6.9,
+          "hover": 6.9,
+          "descent": 8.4,
+          "close": 9.8,
+          "lift_entry": 11.1,
+          "carry_entry": 30.1,
+          "turn_reversals": 0,
+          "commands": 1280,
+          "fine_pan_commands": 1,
+          "grasp": 10.15,
+          "lift": 11.95,
+          "carry_xy_m": 0.0041986617502038975,
+          "carry": false,
+          "contact_lift_samples": 1009,
+          "max_cargo_z_m": 0.09569157770959899,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3635,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15767,
+            "wall_s": 0.9680875840476801
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 118.2504383570049
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 1.0572230750221934
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 95.48141915301312
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 103.6014018469723
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false
+      },
+      "commands": 2556,
+      "report_sha256": "2fe488f53dcb4ef4a74846d3379480a2d3ec11ecc89dc937556c361902ade916",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-pair-c0-r1/execution.mp4",
+        "sha256": "a797d688ec2a3b0ee49157f41b557158f971e69c49fa6837eccd0151a1d5cc14",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix16-pair-c1-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 1,
+      "seed": 14202,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 313.64694039499955,
+      "sim_s": 60.0,
+      "robots": {
+        "r1": {
+          "alignment": 5.7,
+          "hover": 5.7,
+          "descent": 7.2,
+          "close": 9.3,
+          "lift_entry": 10.6,
+          "carry_entry": 29.6,
+          "turn_reversals": 0,
+          "commands": 1313,
+          "fine_pan_commands": 2,
+          "grasp": 9.7,
+          "lift": 11.45,
+          "carry_xy_m": 0.005746648154288943,
+          "carry": false,
+          "contact_lift_samples": 1018,
+          "max_cargo_z_m": 0.09376633921312348,
+          "restore_collisions": 0,
+          "last_visible_uses": 1,
+          "endpoint_rejected_frames": 1,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 6.4,
+          "hover": 6.4,
+          "descent": 7.9,
+          "close": 9.3,
+          "lift_entry": 10.6,
+          "carry_entry": 29.6,
+          "turn_reversals": 0,
+          "commands": 1309,
+          "fine_pan_commands": 1,
+          "grasp": 9.65,
+          "lift": 11.45,
+          "carry_xy_m": 0.005746648154288943,
+          "carry": false,
+          "contact_lift_samples": 1018,
+          "max_cargo_z_m": 0.09376633921312348,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3635,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15833,
+            "wall_s": 0.9646641578729032
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 117.49491343803493
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 1.033927141019376
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 94.36998442711592
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 102.4764487529992
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false
+      },
+      "commands": 2622,
+      "report_sha256": "f8c71af9d268c89e0a71218a9994053c98b702bdf8b052988a3e436e2fd0ca6d",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-pair-c1-r1/execution.mp4",
+        "sha256": "e88571090270cf8cfd122ed914500d817f6cdae63f5e39fe9f39043391801f47",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix16-pair-c2-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 2,
+      "seed": 14203,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 311.8732170099993,
+      "sim_s": 60.0,
+      "robots": {
+        "r1": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 1278,
+          "fine_pan_commands": 1,
+          "grasp": 10.7,
+          "lift": 12.45,
+          "carry_xy_m": 0.007829289786360357,
+          "carry": false,
+          "contact_lift_samples": 999,
+          "max_cargo_z_m": 0.09583656622042809,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 7.4,
+          "hover": 7.4,
+          "descent": 8.9,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 1281,
+          "fine_pan_commands": 1,
+          "grasp": 10.65,
+          "lift": 12.45,
+          "carry_xy_m": 0.007829289786360357,
+          "carry": false,
+          "contact_lift_samples": 999,
+          "max_cargo_z_m": 0.09583656622042809,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3635,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15770,
+            "wall_s": 0.9666591559562221
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 114.71213299603187
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 1.0173173080584093
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 95.35419131895105
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 103.51498325396642
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false
+      },
+      "commands": 2559,
+      "report_sha256": "b3c4e1aac37dfd84bde103d1b694954e2c8d3f8e7c7f42efae9f04280c0b459b",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-pair-c2-r1/execution.mp4",
+        "sha256": "9cd14904ba34dc39cb23ceed5a799e75e2eab62c286915e5029ba85947bebcc7",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix16-pair-c3-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 139.1868083219997,
+      "sim_s": 26.349999999999998,
+      "robots": {
+        "r1": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": null,
+          "lift_entry": null,
+          "carry_entry": null,
+          "turn_reversals": 0,
+          "commands": 233,
+          "fine_pan_commands": 1,
+          "grasp": null,
+          "lift": null,
+          "carry_xy_m": 0.0,
+          "carry": false,
+          "contact_lift_samples": 0,
+          "max_cargo_z_m": 0.015892244579783835,
+          "restore_collisions": 0,
+          "last_visible_uses": 1,
+          "endpoint_rejected_frames": 1,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": null,
+          "hover": null,
+          "descent": null,
+          "close": null,
+          "lift_entry": null,
+          "carry_entry": null,
+          "turn_reversals": 0,
+          "commands": 186,
+          "fine_pan_commands": 0,
+          "grasp": null,
+          "lift": null,
+          "carry_xy_m": 0.0,
+          "carry": false,
+          "contact_lift_samples": 0,
+          "max_cargo_z_m": 0.015892244579783835,
+          "restore_collisions": 0,
+          "last_visible_uses": 76,
+          "endpoint_rejected_frames": 172,
+          "endpoint_stall": true
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 1619,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 6233,
+            "wall_s": 0.4239664150682074
+          },
+          "physics_advance": {
+            "calls": 529,
+            "wall_s": 40.41694213697701
+          },
+          "eval_sample_including_io": {
+            "calls": 528,
+            "wall_s": 0.41593059398473997
+          },
+          "render_rgb": {
+            "calls": 1584,
+            "wall_s": 42.78156187294371
+          },
+          "capture_including_render_io": {
+            "calls": 528,
+            "wall_s": 46.43341444299767
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": false,
+        "grasp": false,
+        "lift": false,
+        "carry": false
+      },
+      "commands": 419,
+      "report_sha256": "97b3419ce4985c499d1dc0eabc450caaa164cc16b122e1baf44e887d4e052dbc",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-pair-c3-r1/execution.mp4",
+        "sha256": "412f7f954aa32f48d7e7b3394f269a6b86157b2b1f1ac172370373defb06649d",
+        "frames": 132,
+        "fps": 20.0,
+        "duration_s": 6.6,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix16-pair-c4-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 4,
+      "seed": 14205,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 319.75056623400087,
+      "sim_s": 60.0,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 8.3,
+          "lift_entry": 9.6,
+          "carry_entry": 28.6,
+          "turn_reversals": 0,
+          "commands": 1395,
+          "fine_pan_commands": 1,
+          "grasp": 8.7,
+          "lift": 10.45,
+          "carry_xy_m": 0.008521314636890202,
+          "carry": false,
+          "contact_lift_samples": 1018,
+          "max_cargo_z_m": 0.0940063923537923,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 5.4,
+          "hover": 5.4,
+          "descent": 6.9,
+          "close": 8.3,
+          "lift_entry": 9.6,
+          "carry_entry": 28.6,
+          "turn_reversals": 0,
+          "commands": 1397,
+          "fine_pan_commands": 1,
+          "grasp": 8.65,
+          "lift": 10.45,
+          "carry_xy_m": 0.008521314636890202,
+          "carry": false,
+          "contact_lift_samples": 1018,
+          "max_cargo_z_m": 0.0940063923537923,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3635,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 16003,
+            "wall_s": 0.9798375249283708
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 119.82311595096326
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 1.0480468980022124
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 97.11401433695391
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 105.32892191399878
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false
+      },
+      "commands": 2792,
+      "report_sha256": "ddb5dfa88827a1223e8122b6019ca088c7cec06a51b0103fb7b9536be2f2ce0d",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-pair-c4-r1/execution.mp4",
+        "sha256": "424e5ec0f17b09beeddf51d9a0ecc51f32711ed0c75bcc55a0d6a00d7f074a28",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix16-pair-c5-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 317.09889272799956,
+      "sim_s": 60.0,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 1355,
+          "fine_pan_commands": 1,
+          "grasp": 9.15,
+          "lift": 10.95,
+          "carry_xy_m": 0.008434132040529724,
+          "carry": false,
+          "contact_lift_samples": 1018,
+          "max_cargo_z_m": 0.09535262586936945,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 1358,
+          "fine_pan_commands": 1,
+          "grasp": 9.15,
+          "lift": 10.95,
+          "carry_xy_m": 0.008434132040529724,
+          "carry": false,
+          "contact_lift_samples": 1018,
+          "max_cargo_z_m": 0.09535262586936945,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3635,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15924,
+            "wall_s": 0.9656081480752619
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 117.60245072501675
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 1.0220641359846923
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 96.68712579403473
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 104.95285931697617
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false
+      },
+      "commands": 2713,
+      "report_sha256": "543be944c2e680cf4f03d658c298d7c679ed71d59bc8bbd83e84cf273e42769b",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-pair-c5-r1/execution.mp4",
+        "sha256": "907e6e1c2b7a4615f64f49aacca875403e44d8c417d5c9f75deb1f5843526c04",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix16-cyan-c0-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 0,
+      "seed": 14201,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 347.87240831300005,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 1,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.75,
+          "lift": 9.05,
+          "carry_xy_m": 0.6315798127733844,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.16058571015458917,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3636,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15564,
+            "wall_s": 0.9391712269261916
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 91.68571881499338
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 0.9208352120149357
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 93.84166246999848
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 102.00448421596775
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true
+      },
+      "commands": 1146,
+      "report_sha256": "68ac1299ed813db4dcf66084096ffa1a605db17ea5030f0af51a536b8fc07081",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-cyan-c0-r1/execution.mp4",
+        "sha256": "bba786639a8f38601e99603c6ba7dfea922c614fba09b0497ac6b65b0a3a1706",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix16-cyan-c3-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 3,
+      "seed": 14204,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 351.9145512289997,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 4,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.7,
+          "lift": 9.05,
+          "carry_xy_m": 0.2747275759755554,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.16110467922222532,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3636,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15564,
+            "wall_s": 0.9537747799568024
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 93.37740539303013
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 0.9489711389869626
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 94.91760021400114
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 103.0798000569921
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true
+      },
+      "commands": 1146,
+      "report_sha256": "eeb01bdb87a2f870f0cbf1287e430e774a465d4f9add899a71d4f4bbb151bbbd",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-cyan-c3-r1/execution.mp4",
+        "sha256": "1ab456e538abdd0c5cfa94e8d83ade8bbde890bafa9831618e1ed35a2a6e0301",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix16-cyan-c4-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 4,
+      "seed": 14205,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 365.5718153449998,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 1,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.7,
+          "lift": 9.05,
+          "carry_xy_m": 0.5752221733470659,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.1607301733583738,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3636,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15564,
+            "wall_s": 0.9509380531671923
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 90.9523898369498
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 0.9357367379707284
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 112.6084434350505
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 120.78202570597023
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true
+      },
+      "commands": 1146,
+      "report_sha256": "61bdb75f3039ea961640dd02e775671c0c046f40eec577344994fcaf3054e554",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-cyan-c4-r1/execution.mp4",
+        "sha256": "2ff328f1939018acc3a8f2d84bcb101c89af07e46b4e2e20c9a8df017725e2ca",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix16-cyan-c5-r1",
+      "source_sha": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 5,
+      "seed": 14206,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 367.24244177500077,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 1,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.75,
+          "lift": 9.05,
+          "carry_xy_m": 0.6620247939781052,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.16064314848720854,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3636,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15564,
+            "wall_s": 0.9520845070364885
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 92.40337420902324
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 0.9285789220411971
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 113.16069612099636
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 121.26330702595806
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true
+      },
+      "commands": 1146,
+      "report_sha256": "4613dcbe5b9b68e55d3a07d377992780df625e45b25538491ad2898bf38270eb",
+      "video": {
+        "path": "outputs/s3fix16-eval-r1/evaluation/s3fix16-cyan-c5-r1/execution.mp4",
+        "sha256": "edb9cdaf3bc2cc3606ceca451c5b4d16577c16bd35966b6c6adf4253a591183b",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    }
+  ],
+  "n": 10,
+  "counts": {
+    "alignment": 9,
+    "grasp": 9,
+    "lift": 9,
+    "carry": 4
+  }
+}

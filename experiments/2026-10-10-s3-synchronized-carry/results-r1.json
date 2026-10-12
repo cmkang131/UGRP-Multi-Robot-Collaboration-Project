@@ -1,0 +1,1224 @@
+{
+  "runs": [
+    {
+      "name": "s3fix17-pair-c0-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201,
+      "status": "HOST_ERROR",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_s3_alignment_probe.py\", line 173, in run\n    actions=pair.step(now)+pair.arm_step(now)\n            ^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 804, in step\n    return self._vetoed('step', now, collect, lambda t: None)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 789, in _vetoed\n    issued = call(now)\n             ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 803, in collect\n    return self.look_recovery.filter(self, t, parent(t))\n                                              ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_final_pair_runtime.py\", line 67, in step\n    decision = own.step(now)\n               ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 535, in step\n    return getattr(self, '_step_' + job.kind)(now, job)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 565, in _step_pair_carry\n    return self._pair.step(now)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 664, in step\n    return run(now)\n           ^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_executor.py\", line 374, in step\n    self.controller.tick(now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_alignment_ownership.py\", line 100, in owned_tick\n    if not owns_posture(ctl):return tick(now)\n                                    ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 95, in tick\n    return old_tick(now)\n           ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_posture_defer.py\", line 157, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_refix.py\", line 906, in tick\n    out = super().tick(now)\n          ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_grasp.py\", line 320, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_align.py\", line 280, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 428, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 216, in tick\n    handler(now, arm_idle)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/study_owncam_pair_beam.py\", line 421, in _carry\n    self.port.apply({'kind': 'mecanum', **cmd, 'duration_s': .15}, now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_synchronized_carry.py\", line 86, in issue\n    return apply(action,now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
+      "physical_stop": null,
+      "wall_s": 170.51937304199964,
+      "sim_s": 26.849999999999998,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 719,
+          "fine_pan_commands": 1,
+          "grasp": 9.15,
+          "lift": 10.9,
+          "carry_xy_m": 2.7430654616735493e-05,
+          "carry": false,
+          "contact_lift_samples": 367,
+          "max_cargo_z_m": 0.10312121161029317,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 722,
+          "fine_pan_commands": 1,
+          "grasp": 9.15,
+          "lift": 10.9,
+          "carry_xy_m": 2.7430654616735493e-05,
+          "carry": false,
+          "contact_lift_samples": 367,
+          "max_cargo_z_m": 0.10312121161029317,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 1650,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 7903,
+            "wall_s": 0.4867152249953506
+          },
+          "physics_advance": {
+            "calls": 539,
+            "wall_s": 60.957699122986014
+          },
+          "eval_sample_including_io": {
+            "calls": 538,
+            "wall_s": 0.5033076439976867
+          },
+          "render_rgb": {
+            "calls": 1614,
+            "wall_s": 54.346235551014615
+          },
+          "capture_including_render_io": {
+            "calls": 538,
+            "wall_s": 58.49947960501959
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false,
+        "target_distance": false
+      },
+      "commands": 1441,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.38960710733851783,
+        "r2": 0.5328668279647717
+      },
+      "cargo_max_tilt_deg": 1.1272383265021177,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.90974497802955,
+          "max_resultant": 1.8992608804928148
+        },
+        "r2": {
+          "max_normal_sum": 13.95195490174751,
+          "max_resultant": 2.064358844315331
+        }
+      },
+      "report_sha256": "67bb1d686744506f5241ae9484f612f8ed64311e0aa08225e07a65594feb00f6",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-pair-c0-r1/execution.mp4",
+        "sha256": "7b57d1cb4487893a030e46cf14d8707ba59c9339635422020dfbe3ae1eb9c34a",
+        "frames": 135,
+        "fps": 20.0,
+        "duration_s": 6.75,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c1-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 1,
+      "seed": 14202,
+      "status": "HOST_ERROR",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_s3_alignment_probe.py\", line 173, in run\n    actions=pair.step(now)+pair.arm_step(now)\n            ^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 804, in step\n    return self._vetoed('step', now, collect, lambda t: None)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 789, in _vetoed\n    issued = call(now)\n             ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 803, in collect\n    return self.look_recovery.filter(self, t, parent(t))\n                                              ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_final_pair_runtime.py\", line 67, in step\n    decision = own.step(now)\n               ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 535, in step\n    return getattr(self, '_step_' + job.kind)(now, job)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 565, in _step_pair_carry\n    return self._pair.step(now)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 664, in step\n    return run(now)\n           ^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_executor.py\", line 374, in step\n    self.controller.tick(now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_alignment_ownership.py\", line 100, in owned_tick\n    if not owns_posture(ctl):return tick(now)\n                                    ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 95, in tick\n    return old_tick(now)\n           ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_posture_defer.py\", line 157, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_refix.py\", line 906, in tick\n    out = super().tick(now)\n          ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_grasp.py\", line 320, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_align.py\", line 280, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 428, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 216, in tick\n    handler(now, arm_idle)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/study_owncam_pair_beam.py\", line 421, in _carry\n    self.port.apply({'kind': 'mecanum', **cmd, 'duration_s': .15}, now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_synchronized_carry.py\", line 86, in issue\n    return apply(action,now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
+      "physical_stop": null,
+      "wall_s": 173.47832324699993,
+      "sim_s": 26.349999999999998,
+      "robots": {
+        "r1": {
+          "alignment": 3.9,
+          "hover": 3.9,
+          "descent": 5.4,
+          "close": 8.3,
+          "lift_entry": 9.6,
+          "carry_entry": 28.6,
+          "turn_reversals": 0,
+          "commands": 717,
+          "fine_pan_commands": 1,
+          "grasp": 8.65,
+          "lift": 10.45,
+          "carry_xy_m": 3.904415270122694e-06,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.09755132664618076,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 5.4,
+          "hover": 5.4,
+          "descent": 6.9,
+          "close": 8.3,
+          "lift_entry": 9.6,
+          "carry_entry": 28.6,
+          "turn_reversals": 0,
+          "commands": 721,
+          "fine_pan_commands": 1,
+          "grasp": 8.65,
+          "lift": 10.45,
+          "carry_xy_m": 3.904415270122694e-06,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.09755132664618076,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 1620,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 7780,
+            "wall_s": 0.48303397098243295
+          },
+          "physics_advance": {
+            "calls": 529,
+            "wall_s": 59.83852113601097
+          },
+          "eval_sample_including_io": {
+            "calls": 528,
+            "wall_s": 0.4934267339849612
+          },
+          "render_rgb": {
+            "calls": 1584,
+            "wall_s": 52.72983994702554
+          },
+          "capture_including_render_io": {
+            "calls": 528,
+            "wall_s": 56.82012195299285
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false,
+        "target_distance": false
+      },
+      "commands": 1438,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.2916806442095392,
+        "r2": 0.33416860062828113
+      },
+      "cargo_max_tilt_deg": 0.603912387301454,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.974073092810626,
+          "max_resultant": 1.800377386331426
+        },
+        "r2": {
+          "max_normal_sum": 14.006839850966639,
+          "max_resultant": 2.0072481207705635
+        }
+      },
+      "report_sha256": "0bd1276cea520381088c9466b5a5a00b69268ea888f82f2d9f0d9b754b03d3ff",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-pair-c1-r1/execution.mp4",
+        "sha256": "d46c58bc40ab154215efe8f9cb8e76619aae767706d63b01addf519ce832d8b8",
+        "frames": 132,
+        "fps": 20.0,
+        "duration_s": 6.6,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c2-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 2,
+      "seed": 14203,
+      "status": "HOST_ERROR",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_s3_alignment_probe.py\", line 173, in run\n    actions=pair.step(now)+pair.arm_step(now)\n            ^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 804, in step\n    return self._vetoed('step', now, collect, lambda t: None)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 789, in _vetoed\n    issued = call(now)\n             ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 803, in collect\n    return self.look_recovery.filter(self, t, parent(t))\n                                              ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_final_pair_runtime.py\", line 67, in step\n    decision = own.step(now)\n               ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 535, in step\n    return getattr(self, '_step_' + job.kind)(now, job)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 565, in _step_pair_carry\n    return self._pair.step(now)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 664, in step\n    return run(now)\n           ^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_executor.py\", line 374, in step\n    self.controller.tick(now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_alignment_ownership.py\", line 100, in owned_tick\n    if not owns_posture(ctl):return tick(now)\n                                    ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 95, in tick\n    return old_tick(now)\n           ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_posture_defer.py\", line 157, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_refix.py\", line 906, in tick\n    out = super().tick(now)\n          ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_grasp.py\", line 320, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_align.py\", line 280, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 428, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 216, in tick\n    handler(now, arm_idle)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/study_owncam_pair_beam.py\", line 421, in _carry\n    self.port.apply({'kind': 'mecanum', **cmd, 'duration_s': .15}, now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_synchronized_carry.py\", line 86, in issue\n    return apply(action,now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
+      "physical_stop": null,
+      "wall_s": 174.0333867549998,
+      "sim_s": 27.849999999999998,
+      "robots": {
+        "r1": {
+          "alignment": 4.9,
+          "hover": 4.9,
+          "descent": 6.4,
+          "close": 9.8,
+          "lift_entry": 11.1,
+          "carry_entry": 30.1,
+          "turn_reversals": 0,
+          "commands": 720,
+          "fine_pan_commands": 1,
+          "grasp": 10.15,
+          "lift": 11.95,
+          "carry_xy_m": 4.882649294463086e-06,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.09383684978925634,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 6.9,
+          "hover": 6.9,
+          "descent": 8.4,
+          "close": 9.8,
+          "lift_entry": 11.1,
+          "carry_entry": 30.1,
+          "turn_reversals": 0,
+          "commands": 724,
+          "fine_pan_commands": 1,
+          "grasp": 10.15,
+          "lift": 11.95,
+          "carry_xy_m": 4.882649294463086e-06,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.09383684978925634,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 1710,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 8146,
+            "wall_s": 0.5045240170129546
+          },
+          "physics_advance": {
+            "calls": 559,
+            "wall_s": 61.39700039597301
+          },
+          "eval_sample_including_io": {
+            "calls": 558,
+            "wall_s": 0.5210817349598074
+          },
+          "render_rgb": {
+            "calls": 1674,
+            "wall_s": 55.694268648992875
+          },
+          "capture_including_render_io": {
+            "calls": 558,
+            "wall_s": 60.01638746898425
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false,
+        "target_distance": false
+      },
+      "commands": 1444,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.34060230319231416,
+        "r2": 0.31807193142405144
+      },
+      "cargo_max_tilt_deg": 0.4171282437276223,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.719293476960619,
+          "max_resultant": 1.729762213624227
+        },
+        "r2": {
+          "max_normal_sum": 13.300256781990285,
+          "max_resultant": 1.8804737254265194
+        }
+      },
+      "report_sha256": "44d496025e3c6f02faac38137db6c7e185b426a713dded067c5f4f01ece29274",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-pair-c2-r1/execution.mp4",
+        "sha256": "f7adf19a79d830942770f97e10a95366d1ba15ec1dc226362511294f9e05a21b",
+        "frames": 140,
+        "fps": 20.0,
+        "duration_s": 7.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c3-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204,
+      "status": "HOST_ERROR",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_s3_alignment_probe.py\", line 173, in run\n    actions=pair.step(now)+pair.arm_step(now)\n            ^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 804, in step\n    return self._vetoed('step', now, collect, lambda t: None)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 789, in _vetoed\n    issued = call(now)\n             ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 803, in collect\n    return self.look_recovery.filter(self, t, parent(t))\n                                              ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_final_pair_runtime.py\", line 67, in step\n    decision = own.step(now)\n               ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 535, in step\n    return getattr(self, '_step_' + job.kind)(now, job)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 565, in _step_pair_carry\n    return self._pair.step(now)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 664, in step\n    return run(now)\n           ^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_executor.py\", line 374, in step\n    self.controller.tick(now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_alignment_ownership.py\", line 100, in owned_tick\n    if not owns_posture(ctl):return tick(now)\n                                    ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 95, in tick\n    return old_tick(now)\n           ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_posture_defer.py\", line 157, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_refix.py\", line 906, in tick\n    out = super().tick(now)\n          ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_grasp.py\", line 320, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_align.py\", line 280, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 428, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 216, in tick\n    handler(now, arm_idle)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/study_owncam_pair_beam.py\", line 421, in _carry\n    self.port.apply({'kind': 'mecanum', **cmd, 'duration_s': .15}, now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_synchronized_carry.py\", line 86, in issue\n    return apply(action,now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
+      "physical_stop": null,
+      "wall_s": 176.23785828100154,
+      "sim_s": 28.349999999999998,
+      "robots": {
+        "r1": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 722,
+          "fine_pan_commands": 1,
+          "grasp": 10.65,
+          "lift": 12.45,
+          "carry_xy_m": 7.858324255776626e-06,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.09256241587161973,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 7.4,
+          "hover": 7.4,
+          "descent": 8.9,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 725,
+          "fine_pan_commands": 1,
+          "grasp": 10.65,
+          "lift": 12.45,
+          "carry_xy_m": 7.858324255776626e-06,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.09256241587161973,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 1740,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 8269,
+            "wall_s": 0.518927682100184
+          },
+          "physics_advance": {
+            "calls": 569,
+            "wall_s": 61.91399882798396
+          },
+          "eval_sample_including_io": {
+            "calls": 568,
+            "wall_s": 0.5277789020146884
+          },
+          "render_rgb": {
+            "calls": 1704,
+            "wall_s": 57.04132105001554
+          },
+          "capture_including_render_io": {
+            "calls": 568,
+            "wall_s": 61.44771914900957
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false,
+        "target_distance": false
+      },
+      "commands": 1447,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.32255897377120024,
+        "r2": 0.44056243866371053
+      },
+      "cargo_max_tilt_deg": 0.5115396631559215,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.331422549387398,
+          "max_resultant": 2.1016371432481886
+        },
+        "r2": {
+          "max_normal_sum": 13.787628754577657,
+          "max_resultant": 2.02411132430612
+        }
+      },
+      "report_sha256": "8393e1b5f19815ca723254a92db536318a235e550cd90d6a5ee4726e3e9a7729",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-pair-c3-r1/execution.mp4",
+        "sha256": "d93a9a5449042946058ae65c01d187a49dd7e6855caa78d8a3da86f9295acb3a",
+        "frames": 142,
+        "fps": 20.0,
+        "duration_s": 7.1,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c4-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 4,
+      "seed": 14205,
+      "status": "HOST_ERROR",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_s3_alignment_probe.py\", line 173, in run\n    actions=pair.step(now)+pair.arm_step(now)\n            ^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 804, in step\n    return self._vetoed('step', now, collect, lambda t: None)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 789, in _vetoed\n    issued = call(now)\n             ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 803, in collect\n    return self.look_recovery.filter(self, t, parent(t))\n                                              ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_final_pair_runtime.py\", line 67, in step\n    decision = own.step(now)\n               ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 535, in step\n    return getattr(self, '_step_' + job.kind)(now, job)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 565, in _step_pair_carry\n    return self._pair.step(now)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 664, in step\n    return run(now)\n           ^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_executor.py\", line 374, in step\n    self.controller.tick(now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_alignment_ownership.py\", line 100, in owned_tick\n    if not owns_posture(ctl):return tick(now)\n                                    ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 95, in tick\n    return old_tick(now)\n           ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_posture_defer.py\", line 157, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_refix.py\", line 906, in tick\n    out = super().tick(now)\n          ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_grasp.py\", line 320, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_align.py\", line 280, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 428, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 216, in tick\n    handler(now, arm_idle)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/study_owncam_pair_beam.py\", line 421, in _carry\n    self.port.apply({'kind': 'mecanum', **cmd, 'duration_s': .15}, now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_synchronized_carry.py\", line 86, in issue\n    return apply(action,now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
+      "physical_stop": null,
+      "wall_s": 164.75866440699974,
+      "sim_s": 25.849999999999998,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 7.8,
+          "lift_entry": 9.1,
+          "carry_entry": 28.1,
+          "turn_reversals": 0,
+          "commands": 719,
+          "fine_pan_commands": 1,
+          "grasp": 8.2,
+          "lift": 9.95,
+          "carry_xy_m": 0.00013009689162087092,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.0966409608314373,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 4.9,
+          "hover": 4.9,
+          "descent": 6.4,
+          "close": 7.8,
+          "lift_entry": 9.1,
+          "carry_entry": 28.1,
+          "turn_reversals": 0,
+          "commands": 720,
+          "fine_pan_commands": 1,
+          "grasp": 8.15,
+          "lift": 9.95,
+          "carry_xy_m": 0.00013009689162087092,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.0966409608314373,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 1590,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 7661,
+            "wall_s": 0.5085339879515232
+          },
+          "physics_advance": {
+            "calls": 519,
+            "wall_s": 58.824043039010576
+          },
+          "eval_sample_including_io": {
+            "calls": 518,
+            "wall_s": 0.4915018559895543
+          },
+          "render_rgb": {
+            "calls": 1554,
+            "wall_s": 52.76075434295126
+          },
+          "capture_including_render_io": {
+            "calls": 518,
+            "wall_s": 56.765322225983255
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false,
+        "target_distance": false
+      },
+      "commands": 1439,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.329475449627967,
+        "r2": 0.4629166793375161
+      },
+      "cargo_max_tilt_deg": 0.9749816830028004,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 12.241137628915773,
+          "max_resultant": 1.6315178723737638
+        },
+        "r2": {
+          "max_normal_sum": 13.936172380923855,
+          "max_resultant": 1.5849042902110901
+        }
+      },
+      "report_sha256": "effd8146175cfb90c3b4fab75057444730a88427562fcca7e1a999c903098b0a",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-pair-c4-r1/execution.mp4",
+        "sha256": "2a37fc97a5b1865cbe05c48aa808c3356e419d7bd9253b450dfd216b6c40caa3",
+        "frames": 130,
+        "fps": 20.0,
+        "duration_s": 6.5,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c5-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206,
+      "status": "HOST_ERROR",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_s3_alignment_probe.py\", line 173, in run\n    actions=pair.step(now)+pair.arm_step(now)\n            ^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 804, in step\n    return self._vetoed('step', now, collect, lambda t: None)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 789, in _vetoed\n    issued = call(now)\n             ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 803, in collect\n    return self.look_recovery.filter(self, t, parent(t))\n                                              ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_final_pair_runtime.py\", line 67, in step\n    decision = own.step(now)\n               ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 535, in step\n    return getattr(self, '_step_' + job.kind)(now, job)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_own_executor.py\", line 565, in _step_pair_carry\n    return self._pair.step(now)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_runtime.py\", line 664, in step\n    return run(now)\n           ^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_executor.py\", line 374, in step\n    self.controller.tick(now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_alignment_ownership.py\", line 100, in owned_tick\n    if not owns_posture(ctl):return tick(now)\n                                    ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 95, in tick\n    return old_tick(now)\n           ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_posture_defer.py\", line 157, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_highpose_refix.py\", line 906, in tick\n    out = super().tick(now)\n          ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_grasp.py\", line 320, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_pair_align.py\", line 280, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 428, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/run_m2_pair.py\", line 216, in tick\n    handler(now, arm_idle)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/scripts/study_owncam_pair_beam.py\", line 421, in _carry\n    self.port.apply({'kind': 'mecanum', **cmd, 'duration_s': .15}, now)\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_synchronized_carry.py\", line 86, in issue\n    return apply(action,now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/03029adb32387640eb6f003bcb8a48be3ab0262a/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
+      "physical_stop": null,
+      "wall_s": 171.21539291599947,
+      "sim_s": 27.349999999999998,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 9.3,
+          "lift_entry": 10.6,
+          "carry_entry": 29.6,
+          "turn_reversals": 0,
+          "commands": 719,
+          "fine_pan_commands": 1,
+          "grasp": 9.65,
+          "lift": 11.45,
+          "carry_xy_m": 1.83686286474954e-05,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.09794194949607062,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 6.4,
+          "hover": 6.4,
+          "descent": 7.9,
+          "close": 9.3,
+          "lift_entry": 10.6,
+          "carry_entry": 29.6,
+          "turn_reversals": 0,
+          "commands": 723,
+          "fine_pan_commands": 1,
+          "grasp": 9.65,
+          "lift": 11.45,
+          "carry_xy_m": 1.83686286474954e-05,
+          "carry": false,
+          "contact_lift_samples": 366,
+          "max_cargo_z_m": 0.09794194949607062,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 1680,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 8024,
+            "wall_s": 0.5008899710301193
+          },
+          "physics_advance": {
+            "calls": 549,
+            "wall_s": 62.23242224497335
+          },
+          "eval_sample_including_io": {
+            "calls": 548,
+            "wall_s": 0.5838925469906826
+          },
+          "render_rgb": {
+            "calls": 1644,
+            "wall_s": 54.84140141696844
+          },
+          "capture_including_render_io": {
+            "calls": 548,
+            "wall_s": 59.17585272496399
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": false,
+        "target_distance": false
+      },
+      "commands": 1442,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.39760024912872866,
+        "r2": 0.35679335596403466
+      },
+      "cargo_max_tilt_deg": 0.8277517844513641,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.296576809710784,
+          "max_resultant": 1.700438416568633
+        },
+        "r2": {
+          "max_normal_sum": 13.717118963980766,
+          "max_resultant": 1.8643417165474006
+        }
+      },
+      "report_sha256": "d230f19f0cac37cec1b641e4672b246dd213a1e61f7e920053636da5c16f7b14",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-pair-c5-r1/execution.mp4",
+        "sha256": "f5f27e9458621f82bdb61ff81988919a99ec10c0cb8751069d54ea9cdafb63a7",
+        "frames": 137,
+        "fps": 20.0,
+        "duration_s": 6.85,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-cyan-c0-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 0,
+      "seed": 14201,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 381.97637358999964,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 1,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.75,
+          "lift": 9.05,
+          "carry_xy_m": 0.6315798127733844,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.16058571015458917,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3637,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 16765,
+            "wall_s": 1.046132608093103
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 99.3933447029849
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 0.9732965270359273
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 105.65002938599719
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 114.57063062300585
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 1146,
+      "target_distance_m": 0.1,
+      "robot_max_tilt_deg": {
+        "r3": 0.23075655825940725
+      },
+      "cargo_max_tilt_deg": 24.007881855100173,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r3": {
+          "state": "carry",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        },
+        "r2": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        }
+      },
+      "report_sha256": "9e53c95ee4e48a06324795890652ba3a35b3961a091586786ac8643eb9af12d8",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-cyan-c0-r1/execution.mp4",
+        "sha256": "0cff8cc3f73f4c745543439d2cfbb84f5b141d84c4caadecf2f4234f94bf747e",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-cyan-c3-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 3,
+      "seed": 14204,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 384.72083985300014,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 4,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.7,
+          "lift": 9.05,
+          "carry_xy_m": 0.2747275759755554,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.16110467922222532,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3637,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 16765,
+            "wall_s": 1.055038010879798
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 100.68036886397385
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 0.9805027059901477
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 106.4285932959574
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 115.54721053803041
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 1146,
+      "target_distance_m": 0.1,
+      "robot_max_tilt_deg": {
+        "r3": 0.2108600825126829
+      },
+      "cargo_max_tilt_deg": 23.92296009580853,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r3": {
+          "state": "carry",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        },
+        "r2": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        }
+      },
+      "report_sha256": "590717951340a925a29697b29d43b4ee553e57ff7004c2d12c7d51e3095eab26",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-cyan-c3-r1/execution.mp4",
+        "sha256": "2dfdb7745858fa43ed24efd5a9dfc025c2c4249fa95d690347ac8c8bf0b050fc",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-cyan-c4-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 4,
+      "seed": 14205,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 400.00336732899996,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 1,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.7,
+          "lift": 9.05,
+          "carry_xy_m": 0.5752221733470659,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.1607301733583738,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3637,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 16765,
+            "wall_s": 1.0408853381195513
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 99.16989637699953
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 0.9935514400385728
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 124.82799816005354
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 133.71719897300318
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 1146,
+      "target_distance_m": 0.1,
+      "robot_max_tilt_deg": {
+        "r3": 0.20787525672749835
+      },
+      "cargo_max_tilt_deg": 24.226980325617344,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r3": {
+          "state": "carry",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        },
+        "r2": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        }
+      },
+      "report_sha256": "18fa25887169e5325595aa03f4ef7904f825bca45c225eee9539597b1dd0a58e",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-cyan-c4-r1/execution.mp4",
+        "sha256": "e8e71ec58a27febb9238e922f29598988f4b9d3f2594d4a775a915f410d2efdc",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-cyan-c5-r1",
+      "source_sha": "03029adb32387640eb6f003bcb8a48be3ab0262a",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 5,
+      "seed": 14206,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 402.0830265450004,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 1,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.75,
+          "lift": 9.05,
+          "carry_xy_m": 0.6620247939781052,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.16064314848720854,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3637,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 16765,
+            "wall_s": 1.0340719979285495
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 99.68474256103946
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 0.988422498012369
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 125.97980883207492
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 134.94880731503144
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 1146,
+      "target_distance_m": 0.1,
+      "robot_max_tilt_deg": {
+        "r3": 0.21782905325892823
+      },
+      "cargo_max_tilt_deg": 24.074704880097475,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r3": {
+          "state": "carry",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        },
+        "r2": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        }
+      },
+      "report_sha256": "1396ac0c90f433431331433c987a40b283810ddd83cefaecfeade06bffcbcb52",
+      "video": {
+        "path": "outputs/s3fix17-eval-r1/evaluation/s3fix17-cyan-c5-r1/execution.mp4",
+        "sha256": "7f3ce70854de8ec046ed71fb301509c6395bde1c8a3e8129a9a49c63496d80a7",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    }
+  ],
+  "n": 10,
+  "counts": {
+    "alignment": 10,
+    "grasp": 10,
+    "lift": 10,
+    "carry": 4,
+    "target_distance": 4
+  }
+}
