@@ -1,0 +1,268 @@
+{
+  "status": "RUNNING",
+  "source_sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+  "batch": "e2e14-rerun-vm3",
+  "vm": "ugrp-sim-azure3",
+  "vm_size": "Standard_D16as_v6",
+  "provisioning_pr": 449,
+  "pr": 446,
+  "class": "dev",
+  "planned": 6,
+  "submitted": 6,
+  "completed": 0,
+  "all_three_conditions": {
+    "n": 0,
+    "N": 6,
+    "pending": 6
+  },
+  "groups": {
+    "a": "e2e-combo14-vo2-v205",
+    "b": "e2e-stall-budget-v199"
+  },
+  "seeds": [
+    61001,
+    61002,
+    61003
+  ],
+  "wall_cap_s": 25200,
+  "workflow_timeout_s": 25200,
+  "initial_health_s": 205,
+  "monitor_interval_s": 600,
+  "exception_poll_s": 5,
+  "relay_ports": {
+    "mac": 18394,
+    "vm3": 18391
+  },
+  "initial_health": "PENDING",
+  "submissions": [
+    {
+      "run": "e2e15-a-s61001",
+      "pid": 1765,
+      "submitted_unix": 1791776303.169284,
+      "meta": {
+        "pr": 446,
+        "branch": "claude/e2e14-combo",
+        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+        "batch": "e2e14-rerun-vm3",
+        "group": "a",
+        "seed": 61001,
+        "started_unix": 1791776303.1487415,
+        "wall_cap_s": 25200,
+        "workflow_timeout_s": 25200,
+        "storage_budget_bytes": 4294967296,
+        "memory_available_bytes": 66093043712,
+        "loadavg": [
+          1.05810546875,
+          0.28955078125,
+          0.09375
+        ],
+        "runner_assets": {
+          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
+          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
+          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+        },
+        "class": "dev"
+      }
+    },
+    {
+      "run": "e2e15-b-s61001",
+      "pid": 1766,
+      "submitted_unix": 1791776303.1701543,
+      "meta": {
+        "pr": 446,
+        "branch": "claude/e2e14-combo",
+        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+        "batch": "e2e14-rerun-vm3",
+        "group": "b",
+        "seed": 61001,
+        "started_unix": 1791776303.1695328,
+        "wall_cap_s": 25200,
+        "workflow_timeout_s": 25200,
+        "storage_budget_bytes": 4294967296,
+        "memory_available_bytes": 66101731328,
+        "loadavg": [
+          1.05810546875,
+          0.28955078125,
+          0.09375
+        ],
+        "runner_assets": {
+          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
+          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
+          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+        },
+        "class": "dev"
+      }
+    },
+    {
+      "run": "e2e15-a-s61002",
+      "pid": 1767,
+      "submitted_unix": 1791776303.170904,
+      "meta": {
+        "pr": 446,
+        "branch": "claude/e2e14-combo",
+        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+        "batch": "e2e14-rerun-vm3",
+        "group": "a",
+        "seed": 61002,
+        "started_unix": 1791776303.1703422,
+        "wall_cap_s": 25200,
+        "workflow_timeout_s": 25200,
+        "storage_budget_bytes": 4294967296,
+        "memory_available_bytes": 66101731328,
+        "loadavg": [
+          1.05810546875,
+          0.28955078125,
+          0.09375
+        ],
+        "runner_assets": {
+          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
+          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
+          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+        },
+        "class": "dev"
+      }
+    },
+    {
+      "run": "e2e15-b-s61002",
+      "pid": 1768,
+      "submitted_unix": 1791776303.171611,
+      "meta": {
+        "pr": 446,
+        "branch": "claude/e2e14-combo",
+        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+        "batch": "e2e14-rerun-vm3",
+        "group": "b",
+        "seed": 61002,
+        "started_unix": 1791776303.171071,
+        "wall_cap_s": 25200,
+        "workflow_timeout_s": 25200,
+        "storage_budget_bytes": 4294967296,
+        "memory_available_bytes": 66101731328,
+        "loadavg": [
+          1.05810546875,
+          0.28955078125,
+          0.09375
+        ],
+        "runner_assets": {
+          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
+          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
+          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+        },
+        "class": "dev"
+      }
+    },
+    {
+      "run": "e2e15-a-s61003",
+      "pid": 1769,
+      "submitted_unix": 1791776303.172318,
+      "meta": {
+        "pr": 446,
+        "branch": "claude/e2e14-combo",
+        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+        "batch": "e2e14-rerun-vm3",
+        "group": "a",
+        "seed": 61003,
+        "started_unix": 1791776303.1717803,
+        "wall_cap_s": 25200,
+        "workflow_timeout_s": 25200,
+        "storage_budget_bytes": 4294967296,
+        "memory_available_bytes": 66101731328,
+        "loadavg": [
+          1.05810546875,
+          0.28955078125,
+          0.09375
+        ],
+        "runner_assets": {
+          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
+          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
+          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+        },
+        "class": "dev"
+      }
+    },
+    {
+      "run": "e2e15-b-s61003",
+      "pid": 1770,
+      "submitted_unix": 1791776303.1730306,
+      "meta": {
+        "pr": 446,
+        "branch": "claude/e2e14-combo",
+        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+        "batch": "e2e14-rerun-vm3",
+        "group": "b",
+        "seed": 61003,
+        "started_unix": 1791776303.172506,
+        "wall_cap_s": 25200,
+        "workflow_timeout_s": 25200,
+        "storage_budget_bytes": 4294967296,
+        "memory_available_bytes": 66101731328,
+        "loadavg": [
+          1.05810546875,
+          0.28955078125,
+          0.09375
+        ],
+        "runner_assets": {
+          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
+          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
+          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+        },
+        "class": "dev"
+      }
+    }
+  ],
+  "storage_budget": {
+    "x86": {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "x86",
+          "free_bytes": 91976433664,
+          "expected_bytes": 25769803776,
+          "projected_free_bytes": 66206629888,
+          "floor_bytes": 8589934592,
+          "ok": true
+        }
+      ]
+    },
+    "arm": {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "arm",
+          "free_bytes": 84953890816,
+          "expected_bytes": 47244640256,
+          "projected_free_bytes": 37709250560,
+          "floor_bytes": 26843545600,
+          "ok": true
+        }
+      ]
+    },
+    "mac": {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "mac",
+          "free_bytes": 130813771776,
+          "expected_bytes": 201326592,
+          "projected_free_bytes": 130612445184,
+          "floor_bytes": 21474836480,
+          "ok": true
+        }
+      ]
+    }
+  },
+  "raw_root": "azure3:/home/ugrp/ugrp-sim/runs",
+  "local_light_records": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun",
+  "scope": "DEV paired comparison; no real robot or causal separation of combined toggles",
+  "created_unix": 1791776359.66145,
+  "remaining": [
+    "initial health",
+    "completion",
+    "ARM archive hashes",
+    "fetch-lite",
+    "VM3 final deallocation"
+  ]
+}
