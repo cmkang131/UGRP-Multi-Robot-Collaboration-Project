@@ -3,7 +3,7 @@
  "pr": 448,
  "branch": "claude/e2e-speed2",
  "base": "origin/codex/e2e-integration 9d6eb567",
- "source_sha": "a58866dc",
+ "source_sha": "fd862803 (toggles a58866dc + review fixes)",
  "refs": "#433",
  "profile_source": {
   "run": "e2e13-profile-s61001",
@@ -686,7 +686,7 @@
   },
   "unit_tests": {
    "file": "tests/test_e2e_exact_speedups2.py",
-   "passed": 19
+   "passed": 23
   },
   "related_tests": {
    "files": [
@@ -694,9 +694,11 @@
     "tests/test_e2e_own_inputs.py",
     "tests/test_e2e_exact_speedups2.py"
    ],
-   "passed": 111,
-   "seconds": 6.4
-  }
+   "passed": 115,
+   "seconds": 9.14,
+   "sha": "fd862803"
+  },
+  "note": "toggle-on replays/bench ran on a58866dc; review fixes only narrow the cache gate and move the off-path scan recursion (unit tests rerun on fd862803)"
  },
  "replay_timing": {
   "host": "Mac Apple M3, other agents running (load 3-5.5)",
@@ -750,7 +752,7 @@
   "Mac timing noisy (shared host)"
  ],
  "next": [
-  "register a bundle with the five toggles and run a paired Azure comparison against v200 when the VM is free",
+  "register a new bundle ID with the round-2 toggles (run_e2e_ownmap_live CLI has fixed --exact-* flags; add flags for the five fields) and run a paired Azure comparison against v200 when the VM is free",
   "consider incremental graph ray rebuild (91 s cumulative in the profile)"
  ],
  "outputs": {
@@ -795,5 +797,37 @@
   "experiments/2026-10-12-e2e-speed/summary.json"
  ],
  "tensorboard": "not used",
- "class": "dev"
+ "class": "dev",
+ "default_off_path": {
+  "method": "same saved-frame replay, v200 on, harness/ from 9d6eb567 vs fd862803 alternated twice in the same worktree",
+  "outputs_identical": [
+   {
+    "N": 331,
+    "n": 331
+   },
+   {
+    "N": 331,
+    "n": 331
+   }
+  ],
+  "receive_s": {
+   "old": [
+    34.85,
+    35.61
+   ],
+   "new": [
+    36.87,
+    34.12
+   ]
+  },
+  "overhead_pct_mean": 0.8,
+  "note": "within run-to-run noise (+-5%) on the shared Mac; overhead not resolved"
+ },
+ "review_fixes": [
+  "scan checks the toggle once per entry call (original recursion moved to _scan)",
+  "shared_wall_frontend bypassed unless wall_detector==off (floor_boundary_v1 path not verified)",
+  "receive_rays test also covers scalar_cells=False",
+  "v200 bundle e2e_options.exact_speedups keeps only the v200 fields; any round-2 toggle raises ROUND2_EXACT_SPEEDUPS_REQUIRE_NEW_BUNDLE_ID"
+ ],
+ "ci": "PR #448 CI not checked at record time"
 }
