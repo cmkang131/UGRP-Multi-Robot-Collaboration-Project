@@ -2,6 +2,8 @@ from pathlib import Path
 import sys,subprocess,time,json,fcntl,os
 name=sys.argv[1];base=Path.home()/'ugrp-sim';run=base/'runs'/name
 assert name in [f'e2e-usstall-{g}-s{s}' for s in range(61001,61004) for g in ('a','b')] and (run/'EXIT').exists()
+with (run/'zupt-evaluation.json').open('x') as f:
+ subprocess.run(['python3',str(base/'e2e-usstall-evaluate-us.py'),str(run)],stdout=f,check=True)
 subprocess.run(['python3',str(base/'e2e-usstall-export-lite.py'),str(run)],check=True)
 for attempt in range(6):
  p=subprocess.run(['python3','/usr/local/lib/ugrp-storage/scripts/compress_json_traces.py',str(run),'--execute'],capture_output=True,text=True)
