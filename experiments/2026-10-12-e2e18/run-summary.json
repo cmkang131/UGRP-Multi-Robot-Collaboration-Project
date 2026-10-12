@@ -2,7 +2,7 @@
   "status": "SPEED_GATE_FAIL_FIXING",
   "started_utc": "2026-10-12T11:03:00Z",
   "deadline_utc": "2026-10-12T21:03:00Z",
-  "bundle": "e2e18-v216",
+  "bundle": "e2e18-v218",
   "tests": {
     "passed": 49,
     "files": [
@@ -219,6 +219,102 @@
       "attempt": 2,
       "status": "COHORT_NOT_STARTED",
       "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61001,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61002,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61003,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61004,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61005,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure3",
+      "seed": 61006,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61007,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61008,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61009,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61010,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61011,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
+    },
+    {
+      "vm": "azure4",
+      "seed": 61012,
+      "bundle": "e2e18-v218",
+      "attempt": 3,
+      "status": "COHORT_NOT_STARTED",
+      "exit": 75
     }
   ],
   "gates": [
@@ -233,128 +329,11 @@
       "completed": 6,
       "median_wall_per_sim": 5.172403594166665,
       "invalid_samples": [],
-      "samples": [
-        {
-          "sim_s": 30.0,
-          "wall_s": 165.21811549400002,
-          "cpu_s": 206.76318651699998,
-          "wall_per_sim": 5.507270516466667,
-          "cpu_per_sim": 6.892106217233333,
-          "rbpf_hash_wall_s": 0.0004161680002425783,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61001-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61001-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 156.39541430699998,
-          "cpu_s": 196.27734086799998,
-          "wall_per_sim": 5.213180476899999,
-          "cpu_per_sim": 6.542578028933333,
-          "rbpf_hash_wall_s": 0.00044217900023113543,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61002-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61002-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 150.98958362800002,
-          "cpu_s": 198.750484229,
-          "wall_per_sim": 5.032986120933334,
-          "cpu_per_sim": 6.625016140966666,
-          "rbpf_hash_wall_s": 0.0004812320002542947,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61003-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61003-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 153.94880134299999,
-          "cpu_s": 195.238220697,
-          "wall_per_sim": 5.1316267114333325,
-          "cpu_per_sim": 6.5079406899,
-          "rbpf_hash_wall_s": 0.0004469430002984609,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61004-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61004-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 156.57090808799998,
-          "cpu_s": 195.476709234,
-          "wall_per_sim": 5.219030269599999,
-          "cpu_per_sim": 6.5158903078,
-          "rbpf_hash_wall_s": 0.0004056749998539999,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61005-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61005-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 148.354983085,
-          "cpu_s": 194.05989788,
-          "wall_per_sim": 4.9451661028333325,
-          "cpu_per_sim": 6.4686632626666665,
-          "rbpf_hash_wall_s": 0.0004291529995725796,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61006-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61006-r1/raw"
-        }
-      ]
+      "samples_file": "gate-azure3-v216.json",
+      "samples_sha256": "956a7bbe61d0d76cf6645ea10ab01add9fc667f542b856cda1a7513dceb9a278",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3",
+      "host": "azure3",
+      "bundle": "e2e18-v216"
     },
     {
       "status": "SPEED_GATE_FAIL",
@@ -367,128 +346,11 @@
       "completed": 6,
       "median_wall_per_sim": 5.370204216416667,
       "invalid_samples": [],
-      "samples": [
-        {
-          "sim_s": 30.0,
-          "wall_s": 161.018289483,
-          "cpu_s": 196.630065337,
-          "wall_per_sim": 5.3672763161,
-          "cpu_per_sim": 6.554335511233333,
-          "rbpf_hash_wall_s": 0.0004420760003540636,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61007-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61007-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 161.193963502,
-          "cpu_s": 194.919040112,
-          "wall_per_sim": 5.373132116733333,
-          "cpu_per_sim": 6.497301337066667,
-          "rbpf_hash_wall_s": 0.0004547970001453905,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61008-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61008-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 174.01241172899998,
-          "cpu_s": 199.920166186,
-          "wall_per_sim": 5.800413724299999,
-          "cpu_per_sim": 6.664005539533333,
-          "rbpf_hash_wall_s": 0.0004191529997683574,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61009-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61009-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 152.208673336,
-          "cpu_s": 194.19893425200002,
-          "wall_per_sim": 5.073622444533333,
-          "cpu_per_sim": 6.473297808400001,
-          "rbpf_hash_wall_s": 0.0004969810001966835,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61010-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61010-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 162.75146178799997,
-          "cpu_s": 196.282802036,
-          "wall_per_sim": 5.425048726266666,
-          "cpu_per_sim": 6.542760067866666,
-          "rbpf_hash_wall_s": 0.00042374800005973157,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61011-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61011-r1/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 151.124763877,
-          "cpu_s": 193.709770672,
-          "wall_per_sim": 5.037492129233333,
-          "cpu_per_sim": 6.456992355733333,
-          "rbpf_hash_wall_s": 0.0004569310002580096,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v216-s61012-r1",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3/speed-gate-e2e18-v216-s61012-r1/raw"
-        }
-      ]
+      "samples_file": "gate-azure4-v216.json",
+      "samples_sha256": "3f41e388fb8652b4fde17e3f5a33dc2a3975d52347a4f09ff901430a535b6ec6",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3",
+      "host": "azure4",
+      "bundle": "e2e18-v216"
     },
     {
       "status": "SPEED_GATE_FAIL",
@@ -501,128 +363,11 @@
       "completed": 6,
       "median_wall_per_sim": 3.0176896061,
       "invalid_samples": [],
-      "samples": [
-        {
-          "sim_s": 30.0,
-          "wall_s": 95.71876190700004,
-          "cpu_s": 140.234174026,
-          "wall_per_sim": 3.1906253969000016,
-          "cpu_per_sim": 4.674472467533334,
-          "rbpf_hash_wall_s": 0.0003600769999820841,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61001-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61001-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 90.107591006,
-          "cpu_s": 135.901315823,
-          "wall_per_sim": 3.0035863668666667,
-          "cpu_per_sim": 4.530043860766667,
-          "rbpf_hash_wall_s": 0.00042853800084685645,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61002-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61002-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 91.94864568399998,
-          "cpu_s": 139.07990168700002,
-          "wall_per_sim": 3.064954856133333,
-          "cpu_per_sim": 4.635996722900001,
-          "rbpf_hash_wall_s": 0.00042377600038889796,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61003-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61003-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 90.51059324300002,
-          "cpu_s": 135.38715556,
-          "wall_per_sim": 3.017019774766667,
-          "cpu_per_sim": 4.5129051853333335,
-          "rbpf_hash_wall_s": 0.00036950400010482554,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61004-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61004-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 90.55078312299997,
-          "cpu_s": 135.203917022,
-          "wall_per_sim": 3.0183594374333325,
-          "cpu_per_sim": 4.506797234066667,
-          "rbpf_hash_wall_s": 0.0004154849998485588,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61005-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61005-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 88.04228207899996,
-          "cpu_s": 133.212196981,
-          "wall_per_sim": 2.9347427359666654,
-          "cpu_per_sim": 4.440406566033333,
-          "rbpf_hash_wall_s": 0.0004026479998628929,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61006-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61006-r2/raw"
-        }
-      ]
+      "samples_file": "gate-azure3-v217.json",
+      "samples_sha256": "838d79c0d395fd11fe76fcb08129636f621305cf67606365f4d0d00b1914f794",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7",
+      "host": "azure3",
+      "bundle": "e2e18-v217"
     },
     {
       "status": "SPEED_GATE_FAIL",
@@ -635,136 +380,55 @@
       "completed": 6,
       "median_wall_per_sim": 3.228750186916667,
       "invalid_samples": [],
-      "samples": [
-        {
-          "sim_s": 30.0,
-          "wall_s": 96.842984035,
-          "cpu_s": 137.105184915,
-          "wall_per_sim": 3.2280994678333332,
-          "cpu_per_sim": 4.5701728305,
-          "rbpf_hash_wall_s": 0.0003972329999157864,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61007-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61007-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 96.514207642,
-          "cpu_s": 138.064732327,
-          "wall_per_sim": 3.217140254733333,
-          "cpu_per_sim": 4.602157744233334,
-          "rbpf_hash_wall_s": 0.0004193439999085058,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61008-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61008-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 106.16591278299998,
-          "cpu_s": 135.71533672,
-          "wall_per_sim": 3.5388637594333328,
-          "cpu_per_sim": 4.523844557333334,
-          "rbpf_hash_wall_s": 0.00038770200004023536,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61009-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61009-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 97.68797882199999,
-          "cpu_s": 137.48450444399998,
-          "wall_per_sim": 3.256265960733333,
-          "cpu_per_sim": 4.582816814799999,
-          "rbpf_hash_wall_s": 0.00041110299991942156,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61010-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61010-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 95.38975479299998,
-          "cpu_s": 137.05068323,
-          "wall_per_sim": 3.1796584930999994,
-          "cpu_per_sim": 4.568356107666667,
-          "rbpf_hash_wall_s": 0.0004042799999979252,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61011-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61011-r2/raw"
-        },
-        {
-          "sim_s": 30.0,
-          "wall_s": 96.88202718000002,
-          "cpu_s": 136.919517004,
-          "wall_per_sim": 3.229400906000001,
-          "cpu_per_sim": 4.5639839001333335,
-          "rbpf_hash_wall_s": 0.0003971589999594016,
-          "profiling": false,
-          "includes_setup_and_finalization": true,
-          "mujoco_timers": [],
-          "expected_stop": true,
-          "cprofile_top20": [],
-          "rbpf_audit_hash": "none",
-          "final_hash_wall_s": 0.0,
-          "finalization_errors": [],
-          "finalization_complete": true,
-          "name": "speed-gate-e2e18-v217-s61012-r2",
-          "exit": 1,
-          "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7/speed-gate-e2e18-v217-s61012-r2/raw"
-        }
-      ]
+      "samples_file": "gate-azure4-v217.json",
+      "samples_sha256": "3fd49ddac319a82785620d61e2a885e21a06798f0cd17b471cea452db457c867",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7",
+      "host": "azure4",
+      "bundle": "e2e18-v217"
+    },
+    {
+      "status": "SPEED_GATE_FAIL",
+      "admitted": false,
+      "measured_pass": false,
+      "override_reason": null,
+      "limit_wall_per_sim": 2.5,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 6,
+      "completed": 6,
+      "median_wall_per_sim": 2.7834781999166696,
+      "invalid_samples": [],
+      "host": "azure3",
+      "source_sha": "80fa2aa0ac17265085b93926c10cb4e8bf0ad47f",
+      "samples_file": "gate-azure3-v218.json",
+      "samples_sha256": "fdb63b8c51d5a1a84cbc2199b7730aa3525a9ba5fcc8f38a8da8301a077b5787",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r3-80fa2aa0ac17",
+      "bundle": "e2e18-v218"
+    },
+    {
+      "status": "SPEED_GATE_FAIL",
+      "admitted": false,
+      "measured_pass": false,
+      "override_reason": null,
+      "limit_wall_per_sim": 2.5,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 6,
+      "completed": 6,
+      "median_wall_per_sim": 2.6748804328333318,
+      "invalid_samples": [],
+      "host": "azure4",
+      "source_sha": "80fa2aa0ac17265085b93926c10cb4e8bf0ad47f",
+      "samples_file": "gate-azure4-v218.json",
+      "samples_sha256": "823230657dd99edbda9d3f4efbc957823495d78a49bead6ff1dde02d79b1de63",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r3-80fa2aa0ac17",
+      "bundle": "e2e18-v218"
     }
   ],
   "vm": {
-    "azure3": "deallocated",
-    "azure4": "deallocated"
+    "azure3": "running",
+    "azure4": "running"
   },
   "pr": 458,
-  "source_sha": "899f44e1",
+  "source_sha": "80fa2aa0ac17265085b93926c10cb4e8bf0ad47f",
   "budget_initial": {
     "arm_free_bytes": 80281391104,
     "expected_bytes": 57982058496,
@@ -790,10 +454,596 @@
     "research_sources": [
       "https://docs.python.org/3/library/functools.html#functools.lru_cache",
       "https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.least_squares.html",
-      "https://docs.opencv.org/4.13.0/db/de0/group__core__utils.html"
+      "https://docs.opencv.org/4.13.0/db/de0/group__core__utils.html",
+      "https://numpy.org/doc/stable/reference/arrays.promotion.html"
     ],
     "targeted_tests": "11 passed; unchanged partial detector/standoff tests 11 passed in preceding run",
     "v218": "same .06m grid, squared costs without hypot or 2D point temporaries, cv2.setNumThreads(1) instead of measured16",
-    "targeted_tests_v218": 13
-  }
+    "targeted_tests_v218": 13,
+    "v219": "float32 coarse grid only; float64 robust fitting and residual/size/consensus thresholds unchanged",
+    "targeted_tests_v219": 15
+  },
+  "archives": [
+    {
+      "host": "azure3",
+      "name": "e2e18-v216-s61001-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61001-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61001-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 1.655
+      },
+      "elapsed_seconds": 1.693,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "5de160df45ffa19ecc695c9ae0d0b2d6e6af5ef121ea5a4bef35e1c04874cb47"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61001-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v216-s61002-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61002-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61002-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.744
+      },
+      "elapsed_seconds": 0.778,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "c1664fbcc92cc55ebe17a6518f38d0f35ac2bdc28c1b1d991706223117fcf1da"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61002-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v216-s61003-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61003-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61003-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.661
+      },
+      "elapsed_seconds": 0.696,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "95ae54edeb3b34f6b01e9d5066eece537efb2d013c24ab99c20e5e663ce76569"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61003-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v216-s61004-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61004-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61004-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.627
+      },
+      "elapsed_seconds": 0.664,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "0d82faec06e87cc4aa4efa2b215f305abddec130774c10b558bcf7c2f21f38b2"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61004-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v216-s61005-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61005-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61005-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.696
+      },
+      "elapsed_seconds": 0.735,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "7011dcbd900d7a41f361c858065bd6db69062be79bf6b3d7c4481f49482ca5f4"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61005-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v216-s61006-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61006-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61006-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.702
+      },
+      "elapsed_seconds": 0.735,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "8b2c17faa39ce82d4580a497a6244df9f05972e3a3c5b9bf00f5dd2e26fda425"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61006-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v217-s61001-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61001-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61001-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.625
+      },
+      "elapsed_seconds": 0.658,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "9779033e45c6d9bf00dc6ef1ac5cebc996cc3d7697993171e05da89b637c089a"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61001-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v217-s61002-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61002-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61002-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.577
+      },
+      "elapsed_seconds": 0.61,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "e965a380a7bda1833f3c1f9d486eec4db40f8e784d5bc74e47651e22aa1a0b37"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61002-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v217-s61003-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61003-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61003-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.673
+      },
+      "elapsed_seconds": 0.706,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "1bd456686078510ac9c34d5b5f79abb095e9d9e46b040b07532cc41600861b52"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61003-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v217-s61004-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61004-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61004-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.566
+      },
+      "elapsed_seconds": 0.598,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "026f4df46cf27fbc078cdc6c23bf0a9e4f0953e508917d484a6724578dc390ec"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61004-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v217-s61005-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61005-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61005-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.565
+      },
+      "elapsed_seconds": 0.597,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "26f8d4eb8c34dda50df30f9738f3f4fc2d050b88adc0bfd9348d57eb7c33d001"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61005-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v217-s61006-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61006-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61006-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.565
+      },
+      "elapsed_seconds": 0.598,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "8163e3cefa7130a03e680550f2bcab77b783772fb175f3d37990b1624b7ddcf8"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61006-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure3",
+      "name": "speed-gate-e2e18-r1-2d320e5369e3-azure3",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-speed-gate-e2e18-r1-2d320e5369e3-azure3",
+      "source": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3-azure3",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 7.467
+      },
+      "elapsed_seconds": 8.148,
+      "verification": {
+        "verified": true,
+        "files": 1866,
+        "inventory_sha256": "bb5ca242185c54f405804934cbb6dee1fe016c7c56ee6af8da9b5152b4d1a5a3"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-speed-gate-e2e18-r1-2d320e5369e3-azure3",
+      "hash_matches": 1866
+    },
+    {
+      "host": "azure3",
+      "name": "speed-gate-e2e18-r1-2d320e5369e3",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-speed-gate-e2e18-r1-2d320e5369e3-azure3",
+      "source": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 7.467
+      },
+      "elapsed_seconds": 8.148,
+      "archive_alias": "speed-gate-e2e18-r1-2d320e5369e3-azure3",
+      "verification": {
+        "verified": true,
+        "files": 1866,
+        "inventory_sha256": "bb5ca242185c54f405804934cbb6dee1fe016c7c56ee6af8da9b5152b4d1a5a3"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-speed-gate-e2e18-r1-2d320e5369e3-azure3",
+      "hash_matches": 1866
+    },
+    {
+      "host": "azure3",
+      "name": "speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7",
+      "source": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 7.536
+      },
+      "elapsed_seconds": 8.19,
+      "verification": {
+        "verified": true,
+        "files": 1869,
+        "inventory_sha256": "8832b57eaf529763de83cf5d061b40a195bb9eb95a0fe7a4632a9eb3cd3cb8ef"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-speed-gate-e2e18-ugrp-sim-azure3-r2-e73294c9e2e7",
+      "hash_matches": 1869
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v216-s61007-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61007-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61007-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.735
+      },
+      "elapsed_seconds": 0.768,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "a8fd7265533beb3dbaae95a9e7617ba9cae84d59a73796e851a619a8c1713664"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61007-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v216-s61008-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61008-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61008-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.541
+      },
+      "elapsed_seconds": 0.573,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "51352de25c6829041e31dd5ca2e2ca0f0e764e22b85945dc5350e9f8ab9bea81"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61008-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v216-s61009-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61009-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61009-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.539
+      },
+      "elapsed_seconds": 0.573,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "58c3830803e989537d175a73cea89e680fff20257327d68e8e770b23c5112e44"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61009-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v216-s61010-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61010-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61010-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.526
+      },
+      "elapsed_seconds": 0.558,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "c9f21002f73b8b7c49fe82f306107e4c624dcc20873b14dbf0f43d7b898148c3"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61010-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v216-s61011-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61011-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61011-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.533
+      },
+      "elapsed_seconds": 0.565,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "20ec3987cffbe17404c789571c68508340b862aa11f832a123f3d8efbff375fe"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61011-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v216-s61012-r1",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v216-s61012-r1",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v216-s61012-r1",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.523
+      },
+      "elapsed_seconds": 0.556,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "c5a0885bc3e0c3f108f43a8015ab353eb8cc49d351bba7d2eb9b8d8e9d26c84b"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v216-s61012-r1",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v217-s61007-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61007-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61007-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.632
+      },
+      "elapsed_seconds": 0.664,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "743acfb22a0b3ea85c57675bd32dcc37171dc520d03a5b4f3d1b1942cbe722f6"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61007-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v217-s61008-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61008-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61008-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.561
+      },
+      "elapsed_seconds": 0.594,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "1c7ce7f016d06cd1bef632a429c0f0fb89aa51f4b3ff3d5d0efda10d17fbfd08"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61008-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v217-s61009-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61009-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61009-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.54
+      },
+      "elapsed_seconds": 0.572,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "17ff3272f6b4c40337e11c017d95e53b39b2d28c3351f11cb2be4e9e33ea3ee2"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61009-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v217-s61010-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61010-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61010-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.559
+      },
+      "elapsed_seconds": 0.591,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "d1ecf22d9fab541a4c360f400dc9b5bf205397c5047dc202768fc3d91a289824"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61010-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v217-s61011-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61011-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61011-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.551
+      },
+      "elapsed_seconds": 0.584,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "1c9738291a470d3eeaa757e168d3ff10095e2f4a3c6b3661f6dfe77ad26999de"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61011-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v217-s61012-r2",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v217-s61012-r2",
+      "source": "/home/ugrp/ugrp-sim/runs/e2e18-v217-s61012-r2",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 0.622
+      },
+      "elapsed_seconds": 0.655,
+      "verification": {
+        "verified": true,
+        "files": 6,
+        "inventory_sha256": "e407d91ede3b38f2dc4b25ce61bae4cad859d707a9fc683c9c8d2f92054c9322"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v217-s61012-r2",
+      "hash_matches": 6
+    },
+    {
+      "host": "azure4",
+      "name": "speed-gate-e2e18-r1-2d320e5369e3",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-speed-gate-e2e18-r1-2d320e5369e3",
+      "source": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-r1-2d320e5369e3",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 7.43
+      },
+      "elapsed_seconds": 8.107,
+      "verification": {
+        "verified": true,
+        "files": 1865,
+        "inventory_sha256": "37fcac4c730c5303ed13f5cc439adc9bee325b5c0c224b340ab71392f164beea"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-speed-gate-e2e18-r1-2d320e5369e3",
+      "hash_matches": 1865
+    },
+    {
+      "host": "azure4",
+      "name": "speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7",
+      "verified": true,
+      "path": "/home/ugrp/ugrp-sim/arm/native-speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7",
+      "source": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7",
+      "preserved_local": true,
+      "transport": {
+        "mode": "tar-zstd-ssh-v1",
+        "seconds": 8.12
+      },
+      "elapsed_seconds": 8.756,
+      "verification": {
+        "verified": true,
+        "files": 1869,
+        "inventory_sha256": "76e7260ba9873c4e956af18712f709d187d5b727ec1f6f6bac52a89236c983a9"
+      },
+      "arm_path": "/home/ubuntu/ugrp-archive/runs/native-speed-gate-e2e18-ugrp-sim-azure4-r2-e73294c9e2e7",
+      "hash_matches": 1869
+    }
+  ]
 }

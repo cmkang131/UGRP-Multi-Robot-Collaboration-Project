@@ -91,7 +91,7 @@ def test_cached_static_views_and_fast_distance():
     np.testing.assert_array_equal(old,new)
 
 
-@pytest.mark.parametrize('mode,version',[('lean_v1',217),('lean_v2',218)])
+@pytest.mark.parametrize('mode,version',[('lean_v1',217),('lean_v2',218),('lean_v3',219)])
 def test_speed5_registered_and_preserves_fit_quality(mode,version):
     from harness.e2e_runtime_registration import require_current
     from harness.e2e_speed5 import using
@@ -99,7 +99,7 @@ def test_speed5_registered_and_preserves_fit_quality(mode,version):
     from harness.e2e_b_partial import detect_partial
     b=bundle('a'*40,61001,'study_gemma4_31b_v1',**options(),speed5=mode)
     assert b['execution_bundle_id']==f'e2e18-v{version}';require_current(b,ROOT)
-    if version==218:
+    if version>=218:
         bad=copy.deepcopy(b);bad['opencv_threads']=16
         with pytest.raises(ValueError):require_current(bad,ROOT)
     with using(mode):
@@ -121,3 +121,16 @@ def test_squared_grid_cost_matches_distance_formula():
             old=(np.minimum(np.maximum(sd,0) if interior else np.abs(sd),.06)**2).mean(axis=1)
             new=rectangle_grid_cost(points,centers,yaw,(.4,.7),.06,interior=interior)
             np.testing.assert_allclose(new,old,rtol=1e-12,atol=1e-15)
+
+
+def test_float32_search_cost_remains_bounded():
+    from harness.e2e_speed5 import rectangle_grid_cost,using
+    rng=np.random.default_rng(4)
+    for offset in (-3.,0.,3.):
+        points=rng.uniform(-4,4,(80,2))+offset
+        centers=rng.uniform(-1.2,1.2,(1681,2))+offset
+        for interior in (False,True):
+            ref=rectangle_grid_cost(points,centers,.97,(.4,.7),.06,interior=interior)
+            with using('lean_v3'):got=rectangle_grid_cost(points,centers,.97,(.4,.7),.06,interior=interior)
+            assert got.dtype==np.float32
+            np.testing.assert_allclose(got,ref,rtol=1e-5,atol=1e-8)

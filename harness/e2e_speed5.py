@@ -7,7 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 
-OPTIONS=('cache_v1','lean_v1','lean_v2')
+OPTIONS=('cache_v1','lean_v1','lean_v2','lean_v3')
 ACTIVE=ContextVar('e2e_speed5',default='off')
 STATIC='configs/e2e18_static_views_v1.json'
 INPUTS=('harness/e2e_b_standoff.py','harness/active_camera.py','harness/servo_camera_fk.py',
@@ -50,7 +50,9 @@ def rectangle_grid_cost(points, centers, yaw, half, trunc, *, interior=False):
     import math
     import numpy as np
     c,s=math.cos(yaw),math.sin(yaw)
-    points=np.asarray(points);centers=np.asarray(centers)
+    dtype=np.float32 if ACTIVE.get()=='lean_v3' else np.float64
+    points=np.asarray(points,dtype=dtype);centers=np.asarray(centers,dtype=dtype)
+    half=np.asarray(half,dtype=dtype)
     ex=np.abs((c*points[:,0]+s*points[:,1])[None,:]-(c*centers[:,0]+s*centers[:,1])[:,None])-half[0]
     ey=np.abs((-s*points[:,0]+c*points[:,1])[None,:]-(-s*centers[:,0]+c*centers[:,1])[:,None])-half[1]
     d=np.maximum(ex,0)**2+np.maximum(ey,0)**2

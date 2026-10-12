@@ -96,7 +96,7 @@ def estimate(contour, servo, usable, board_half=None, *, cfg=CFG):
     t = cfg['trunc_m']; cost = np.empty((len(yaws), len(centers)))
     from harness.e2e_speed5 import ACTIVE, rectangle_grid_cost
     for i, yaw in enumerate(yaws):
-        if ACTIVE.get() == 'lean_v2':
+        if ACTIVE.get() in ('lean_v2','lean_v3'):
             c=rectangle_grid_cost(sub,centers,yaw,half,t)
             if len(floor_i):c+=rectangle_grid_cost(floor_i,centers,yaw,half,t,interior=True)
             cost[i]=c
@@ -196,7 +196,7 @@ def detect_partial(rgb, servo, pose, *, diagnostics=None, board_half=None):
             if diagnostics is not None: diagnostics.setdefault('patches', []).append(dict(reason='full_quad_stage'))
             continue
         from harness.e2e_speed5 import ACTIVE
-        cfg = dict(CFG,interior_samples=80) if ACTIVE.get() in ('lean_v1','lean_v2') else CFG
+        cfg = dict(CFG,interior_samples=80) if ACTIVE.get() in ('lean_v1','lean_v2','lean_v3') else CFG
         fit, reason, stats = estimate(contour, servo, usable, board_half, cfg=cfg)
         if diagnostics is not None: diagnostics.setdefault('patches', []).append(dict(full_quad_reason=why, reason=reason, **stats))
         if fit is None: continue
