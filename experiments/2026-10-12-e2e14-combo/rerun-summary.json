@@ -1,1126 +1,1020 @@
 {
   "status": "RUNNING",
+  "updated_unix": 1791785500.3408356,
   "source_sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
-  "batch": "e2e14-rerun-vm3",
-  "vm": "ugrp-sim-azure3",
-  "vm_size": "Standard_D16as_v6",
-  "provisioning_pr": 449,
+  "branch": "claude/e2e14-combo",
   "pr": 446,
   "class": "dev",
-  "planned": 6,
-  "submitted": 6,
-  "completed": 0,
-  "all_three_conditions": {
-    "n": 0,
-    "N": 6,
-    "pending": 6
-  },
+  "host": "azure3",
+  "vm": "ugrp-sim-azure3",
+  "size": "Standard_D16as_v6",
+  "provisioning_pr": 449,
+  "execution_config_revision": "vm3-relay-r2",
   "groups": {
     "a": "e2e-combo14-vo2-v205",
     "b": "e2e-stall-budget-v199"
   },
+  "exact_speed_toggles": "off both arms",
+  "wall_cap_s": 25200,
+  "workflow_timeout_s": 25200,
   "seeds": [
     61001,
     61002,
     61003
   ],
-  "wall_cap_s": 25200,
-  "workflow_timeout_s": 25200,
-  "initial_health_s": 205,
-  "monitor_interval_s": 600,
-  "exception_poll_s": 5,
   "relay_ports": {
     "mac": 18394,
     "vm3": 18393
   },
-  "initial_health": {
-    "n": 6,
-    "N": 6,
-    "checks": [
-      {
-        "run": "e2e15r2-a-s61001",
-        "checked_unix": 1791776780.4713633,
-        "elapsed_since_submit_s": 205.15714597702026,
-        "passed": true,
-        "checks": {
-          "first_model_response": true,
-          "sim_frames_increase": true,
-          "actual_movement": true,
-          "straight_commands": true,
-          "mapping_entered": true,
-          "no_exception": true,
-          "vo_recorded": true
-        },
-        "sim_s": 21.0,
-        "frames": 106,
-        "robots": {
-          "r1": {
-            "forward_commands": 53,
-            "actual_displacement_m": 0.6833238220601846,
-            "vo": {
-              "trace_frames": 106,
-              "measured_frames": 92,
-              "applied_frames": 92,
-              "applied_fraction": 0.8679245283018868,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_vo_v2",
-                  "stall_recovery": "off",
-                  "stall_noise": "off"
-                },
-                "option": "rgb_vo_v2",
-                "mode": "fused",
-                "t": 21.0,
-                "frame_id": 106,
-                "sha256": "b8658b0ab5501cdeff77ed1e69784733f4b07e71e08aa30c10890990c9ee6add",
-                "command_delta": [
-                  0.00013277632403880675,
-                  -0.002817502506441058,
-                  0.10354346792033252
-                ],
-                "command_substeps": 4,
-                "status": "measured",
-                "tracks": 63,
-                "inliers": 41,
-                "cells": 4,
-                "delta": [
-                  0.0037184679948165655,
-                  -0.0022664737602840594,
-                  0.10643021828187851
-                ],
-                "fit_rms_m": 0.001701856200516659,
-                "fusion": "vo_replaced",
-                "nis": 13.272440571852039,
-                "fused_delta": [
-                  0.0037184679948165655,
-                  -0.0022664737602840594,
-                  0.10643021828187851
-                ],
-                "fused_variance": [
-                  1.2472076583209793e-06,
-                  1.6866197349710346e-05,
-                  1.6243397757205462e-05
-                ],
-                "fusion_applied": true,
-                "gate": {
-                  "status": "warming_up",
-                  "stationary": false,
-                  "stationary_streak": 0,
-                  "median_px": null,
-                  "p90_px": null,
-                  "tracks": 0
-                },
-                "applied_delta": [
-                  0.0037184679948165707,
-                  -0.002266473760284039,
-                  0.10643021828187837
-                ],
-                "counts": {
-                  "measured": 92,
-                  "fused": 77,
-                  "vo_replaced": 15,
-                  "unknown": 13,
-                  "unapplied": 0,
-                  "substep_mismatch": 0,
-                  "gate_zero": 0
-                }
-              }
-            }
-          },
-          "r2": {
-            "forward_commands": 106,
-            "actual_displacement_m": 0.3011230138738242,
-            "vo": {
-              "trace_frames": 106,
-              "measured_frames": 103,
-              "applied_frames": 103,
-              "applied_fraction": 0.9716981132075472,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_vo_v2",
-                  "stall_recovery": "off",
-                  "stall_noise": "off"
-                },
-                "option": "rgb_vo_v2",
-                "mode": "fused",
-                "t": 21.0,
-                "frame_id": 106,
-                "sha256": "d6b77caa25287f8f99cd406503ccc7bb56482872f72e38cb31bdb290e85d6d81",
-                "command_delta": [
-                  0.012917157771402142,
-                  -0.0004020679808201143,
-                  -0.00029378953563691376
-                ],
-                "command_substeps": 4,
-                "status": "measured",
-                "tracks": 7,
-                "inliers": 7,
-                "cells": 3,
-                "delta": [
-                  0.0008274563633061671,
-                  -0.0019019216611295964,
-                  -0.0003785657365466401
-                ],
-                "fit_rms_m": 0.0012814215640770917,
-                "fusion": "fused",
-                "nis": 8.329954824004705,
-                "fused_delta": [
-                  0.01264424552174561,
-                  -0.0004014564007764929,
-                  -0.0016491246943684322
-                ],
-                "fused_variance": [
-                  3.870539291650522e-07,
-                  1.6329998106618997e-06,
-                  6.125335460470003e-06
-                ],
-                "fusion_applied": true,
-                "gate": {
-                  "status": "changed_view",
-                  "stationary": false,
-                  "stationary_streak": 0,
-                  "median_px": 1.3601478338241577,
-                  "p90_px": 1.4382563829421997,
-                  "tracks": 11
-                },
-                "applied_delta": [
-                  0.012644245521745616,
-                  -0.0004014564007764924,
-                  -0.0016491246943681759
-                ],
-                "counts": {
-                  "measured": 103,
-                  "fused": 58,
-                  "vo_replaced": 45,
-                  "unknown": 2,
-                  "unapplied": 0,
-                  "substep_mismatch": 0,
-                  "gate_zero": 0
-                }
-              }
-            }
-          }
-        }
-      },
-      {
-        "run": "e2e15r2-b-s61001",
-        "checked_unix": 1791776780.5006168,
-        "elapsed_since_submit_s": 205.18520593643188,
-        "passed": true,
-        "checks": {
-          "first_model_response": true,
-          "sim_frames_increase": true,
-          "actual_movement": true,
-          "straight_commands": true,
-          "mapping_entered": true,
-          "no_exception": true
-        },
-        "sim_s": 22.0,
-        "frames": 111,
-        "robots": {
-          "r1": {
-            "forward_commands": 54,
-            "actual_displacement_m": 0.6637547759294601,
-            "vo": {
-              "trace_frames": 111,
-              "measured_frames": 0,
-              "applied_frames": 0,
-              "applied_fraction": 0.0,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_pulse_gate_v1",
-                  "stall_recovery": "backup_replan_v1",
-                  "stall_noise": "amcl_alpha_v1"
-                },
-                "status": "warming_up",
-                "t": 22.0,
-                "frame_id": 111,
-                "sha256": "7ea5ced1670c71f6ff49f79f99ece3f4bdffeaae874d4546fb53e7d33a8ddfa2",
-                "nominal_delta": [
-                  0.00013277632403880453,
-                  -0.0028175025064410357,
-                  0.10354346792033241
-                ],
-                "tracks": 0,
-                "cells": 0,
-                "median_px": null,
-                "p90_px": null,
-                "mean_abs_diff": null,
-                "stationary": false,
-                "stationary_streak": 0,
-                "mode": "rgb_pulse_gate_v1",
-                "stationary_since": null,
-                "stationary_duration_s": 0.0,
-                "applied_delta": [
-                  0.00013277632403880453,
-                  -0.0028175025064410357,
-                  0.10354346792033241
-                ],
-                "translation_gated": false,
-                "extra_body_variance": [
-                  0.0,
-                  0.0,
-                  0.0
-                ],
-                "recovery": "idle",
-                "recovery_events": []
-              }
-            }
-          },
-          "r2": {
-            "forward_commands": 86,
-            "actual_displacement_m": 0.29356718465377285,
-            "vo": {
-              "trace_frames": 111,
-              "measured_frames": 0,
-              "applied_frames": 0,
-              "applied_fraction": 0.0,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_pulse_gate_v1",
-                  "stall_recovery": "backup_replan_v1",
-                  "stall_noise": "amcl_alpha_v1"
-                },
-                "status": "stationary_view",
-                "t": 22.0,
-                "frame_id": 111,
-                "sha256": "b6032800d1abb6d8036e7f91c72115778a298fb9c06a7eac66e1ed77748fb45b",
-                "nominal_delta": [
-                  0.01291715777140217,
-                  -0.0004020679808201173,
-                  -0.00029378953563696797
-                ],
-                "tracks": 11,
-                "cells": 4,
-                "median_px": 0.4848909378051758,
-                "p90_px": 0.5144532322883606,
-                "mean_abs_diff": 0.13934064246078223,
-                "before_t": 21.8,
-                "before_frame_id": 110,
-                "before_sha256": "18e6813a5cda83d6935c10c8ef2531b958857a9b3ef89a76c1a95105c14540db",
-                "window_expected_delta": [
-                  0.01291715777140217,
-                  -0.0004020679808201173,
-                  -0.00029378953563696797
-                ],
-                "window_s": 0.1999999999999993,
-                "stationary": true,
-                "stationary_streak": 8,
-                "mode": "rgb_pulse_gate_v1",
-                "stationary_since": 21.0,
-                "stationary_duration_s": 1.0,
-                "applied_delta": [
-                  0.0,
-                  0.0,
-                  0.0
-                ],
-                "translation_gated": true,
-                "extra_body_variance": [
-                  0.00030078168451874287,
-                  0.00030078168451874287,
-                  0.00030078168451874287
-                ],
-                "recovery": "idle",
-                "recovery_events": []
-              }
-            }
-          }
-        }
-      },
-      {
-        "run": "e2e15r2-a-s61002",
-        "checked_unix": 1791776780.5514631,
-        "elapsed_since_submit_s": 205.23525524139404,
-        "passed": true,
-        "checks": {
-          "first_model_response": true,
-          "sim_frames_increase": true,
-          "actual_movement": true,
-          "straight_commands": true,
-          "mapping_entered": true,
-          "no_exception": true,
-          "vo_recorded": true
-        },
-        "sim_s": 21.0,
-        "frames": 106,
-        "robots": {
-          "r1": {
-            "forward_commands": 54,
-            "actual_displacement_m": 0.6953335880836174,
-            "vo": {
-              "trace_frames": 106,
-              "measured_frames": 94,
-              "applied_frames": 94,
-              "applied_fraction": 0.8867924528301887,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_vo_v2",
-                  "stall_recovery": "off",
-                  "stall_noise": "off"
-                },
-                "option": "rgb_vo_v2",
-                "mode": "fused",
-                "t": 21.0,
-                "frame_id": 106,
-                "sha256": "49a94bdb6ec7d4e1963901970a981dd1c3d526f9d512f65e12dc3871a785e293",
-                "command_delta": [
-                  0.00013277632403880675,
-                  -0.002817502506441058,
-                  0.10354346792033252
-                ],
-                "command_substeps": 4,
-                "status": "measured",
-                "tracks": 24,
-                "inliers": 16,
-                "cells": 4,
-                "delta": [
-                  0.0005680558924356927,
-                  -0.00323595043326802,
-                  0.1031925416416333
-                ],
-                "fit_rms_m": 0.0014714955689674274,
-                "fusion": "fused",
-                "nis": 0.06286309047736453,
-                "fused_delta": [
-                  0.00014049214899656949,
-                  -0.0028297283322493063,
-                  0.10346105295687656
-                ],
-                "fused_variance": [
-                  2.462323067130093e-07,
-                  2.466210029162679e-07,
-                  8.750954242453386e-07
-                ],
-                "fusion_applied": true,
-                "gate": {
-                  "status": "warming_up",
-                  "stationary": false,
-                  "stationary_streak": 0,
-                  "median_px": null,
-                  "p90_px": null,
-                  "tracks": 0
-                },
-                "applied_delta": [
-                  0.00014049214899652918,
-                  -0.0028297283322492248,
-                  0.10346105295687645
-                ],
-                "counts": {
-                  "measured": 94,
-                  "fused": 84,
-                  "vo_replaced": 10,
-                  "unknown": 11,
-                  "unapplied": 0,
-                  "substep_mismatch": 0,
-                  "gate_zero": 0
-                }
-              }
-            }
-          },
-          "r2": {
-            "forward_commands": 106,
-            "actual_displacement_m": 0.30099182466663704,
-            "vo": {
-              "trace_frames": 106,
-              "measured_frames": 103,
-              "applied_frames": 103,
-              "applied_fraction": 0.9716981132075472,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_vo_v2",
-                  "stall_recovery": "off",
-                  "stall_noise": "off"
-                },
-                "option": "rgb_vo_v2",
-                "mode": "fused",
-                "t": 21.0,
-                "frame_id": 106,
-                "sha256": "b60ab7e202b3572b4475e47d42ccda8eb1d04a44f03ac5e583d999cdf61d1cd4",
-                "command_delta": [
-                  0.012917157771402142,
-                  -0.0004020679808201143,
-                  -0.00029378953563691376
-                ],
-                "command_substeps": 4,
-                "status": "measured",
-                "tracks": 12,
-                "inliers": 10,
-                "cells": 4,
-                "delta": [
-                  0.0001832967904717986,
-                  -3.740793600657145e-05,
-                  -9.001686548319416e-05
-                ],
-                "fit_rms_m": 0.00013724156019961938,
-                "fusion": "vo_replaced",
-                "nis": 14.649305270889206,
-                "fused_delta": [
-                  0.0001832967904717986,
-                  -3.740793600657145e-05,
-                  -9.001686548319416e-05
-                ],
-                "fused_variance": [
-                  1.068330463816572e-05,
-                  0.00012822895951608107,
-                  8.133244464436835e-05
-                ],
-                "fusion_applied": true,
-                "gate": {
-                  "status": "stationary_view",
-                  "stationary": false,
-                  "stationary_streak": 1,
-                  "median_px": 0.10273904725909233,
-                  "p90_px": 0.13164051622152328,
-                  "tracks": 14
-                },
-                "applied_delta": [
-                  0.00018329679047189636,
-                  -3.740793600656883e-05,
-                  -9.001686548293363e-05
-                ],
-                "counts": {
-                  "measured": 103,
-                  "fused": 47,
-                  "vo_replaced": 56,
-                  "unknown": 2,
-                  "unapplied": 0,
-                  "substep_mismatch": 0,
-                  "gate_zero": 0
-                }
-              }
-            }
-          }
-        }
-      },
-      {
-        "run": "e2e15r2-b-s61002",
-        "checked_unix": 1791776780.57635,
-        "elapsed_since_submit_s": 205.25941967964172,
-        "passed": true,
-        "checks": {
-          "first_model_response": true,
-          "sim_frames_increase": true,
-          "actual_movement": true,
-          "straight_commands": true,
-          "mapping_entered": true,
-          "no_exception": true
-        },
-        "sim_s": 22.0,
-        "frames": 111,
-        "robots": {
-          "r1": {
-            "forward_commands": 75,
-            "actual_displacement_m": 0.6526754571289023,
-            "vo": {
-              "trace_frames": 111,
-              "measured_frames": 0,
-              "applied_frames": 0,
-              "applied_fraction": 0.0,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_pulse_gate_v1",
-                  "stall_recovery": "backup_replan_v1",
-                  "stall_noise": "amcl_alpha_v1"
-                },
-                "status": "changed_view",
-                "t": 22.0,
-                "frame_id": 111,
-                "sha256": "936aa92e84b7087c56ea4e91713b6e385d390e9051a8003363440ce8dc945a00",
-                "nominal_delta": [
-                  0.012917157771402128,
-                  -0.0004020679808201089,
-                  -0.00029378953563785615
-                ],
-                "tracks": 52,
-                "cells": 9,
-                "median_px": 6.301290512084961,
-                "p90_px": 8.742445468902586,
-                "mean_abs_diff": 1.8663285015434048,
-                "before_t": 21.8,
-                "before_frame_id": 110,
-                "before_sha256": "067710579aa0b45df20bedd284958bce1ec71761d3bc69768975ce73a887cf3b",
-                "window_expected_delta": [
-                  0.012917157771402128,
-                  -0.0004020679808201089,
-                  -0.00029378953563785615
-                ],
-                "window_s": 0.1999999999999993,
-                "stationary": false,
-                "stationary_streak": 0,
-                "mode": "rgb_pulse_gate_v1",
-                "stationary_since": null,
-                "stationary_duration_s": 0.0,
-                "applied_delta": [
-                  0.012917157771402128,
-                  -0.0004020679808201089,
-                  -0.00029378953563785615
-                ],
-                "translation_gated": false,
-                "extra_body_variance": [
-                  0.0,
-                  0.0,
-                  0.0
-                ],
-                "recovery": "idle",
-                "recovery_events": []
-              }
-            }
-          },
-          "r2": {
-            "forward_commands": 86,
-            "actual_displacement_m": 0.29356699762472444,
-            "vo": {
-              "trace_frames": 111,
-              "measured_frames": 0,
-              "applied_frames": 0,
-              "applied_fraction": 0.0,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_pulse_gate_v1",
-                  "stall_recovery": "backup_replan_v1",
-                  "stall_noise": "amcl_alpha_v1"
-                },
-                "status": "stationary_view",
-                "t": 22.0,
-                "frame_id": 111,
-                "sha256": "d26bb52aead20139d2b790766c956ba1c0b019ae194db70e641a061c392bb097",
-                "nominal_delta": [
-                  0.01291715777140217,
-                  -0.0004020679808201173,
-                  -0.00029378953563696797
-                ],
-                "tracks": 11,
-                "cells": 5,
-                "median_px": 0.9708055257797241,
-                "p90_px": 1.019195556640625,
-                "mean_abs_diff": 0.22695295183393405,
-                "before_t": 21.8,
-                "before_frame_id": 110,
-                "before_sha256": "91800b7e606a59bfa3231c973e988ee72155107ae3ecdabb648177bd6d701fda",
-                "window_expected_delta": [
-                  0.01291715777140217,
-                  -0.0004020679808201173,
-                  -0.00029378953563696797
-                ],
-                "window_s": 0.1999999999999993,
-                "stationary": true,
-                "stationary_streak": 3,
-                "mode": "rgb_pulse_gate_v1",
-                "stationary_since": 22.0,
-                "stationary_duration_s": 0.0,
-                "applied_delta": [
-                  0.0,
-                  0.0,
-                  0.0
-                ],
-                "translation_gated": true,
-                "extra_body_variance": [
-                  0.00030078168451874287,
-                  0.00030078168451874287,
-                  0.00030078168451874287
-                ],
-                "recovery": "idle",
-                "recovery_events": []
-              }
-            }
-          }
-        }
-      },
-      {
-        "run": "e2e15r2-a-s61003",
-        "checked_unix": 1791776780.6240382,
-        "elapsed_since_submit_s": 205.30640578269958,
-        "passed": true,
-        "checks": {
-          "first_model_response": true,
-          "sim_frames_increase": true,
-          "actual_movement": true,
-          "straight_commands": true,
-          "mapping_entered": true,
-          "no_exception": true,
-          "vo_recorded": true
-        },
-        "sim_s": 21.0,
-        "frames": 106,
-        "robots": {
-          "r1": {
-            "forward_commands": 71,
-            "actual_displacement_m": 0.7757411897669335,
-            "vo": {
-              "trace_frames": 106,
-              "measured_frames": 92,
-              "applied_frames": 92,
-              "applied_fraction": 0.8679245283018868,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_vo_v2",
-                  "stall_recovery": "off",
-                  "stall_noise": "off"
-                },
-                "option": "rgb_vo_v2",
-                "mode": "fused",
-                "t": 21.0,
-                "frame_id": 106,
-                "sha256": "4efd7fcd6af76690fc7f7dd4b38e15a488652d5ed08e38791fa1a82e2eaaa71c",
-                "command_delta": [
-                  0.00013277632403880675,
-                  -0.002817502506441058,
-                  0.10354346792033252
-                ],
-                "command_substeps": 4,
-                "status": "measured",
-                "tracks": 13,
-                "inliers": 12,
-                "cells": 5,
-                "delta": [
-                  -0.001207107988862921,
-                  -0.0013095945528332348,
-                  0.10678691228977881
-                ],
-                "fit_rms_m": 0.0009314494689738963,
-                "fusion": "fused",
-                "nis": 2.4527856265975045,
-                "fused_delta": [
-                  0.00010348005670440413,
-                  -0.0027219937270340946,
-                  0.10407347575210997
-                ],
-                "fused_variance": [
-                  2.451668179197589e-07,
-                  2.456773447820606e-07,
-                  8.78378523778344e-07
-                ],
-                "fusion_applied": true,
-                "gate": {
-                  "status": "warming_up",
-                  "stationary": false,
-                  "stationary_streak": 0,
-                  "median_px": null,
-                  "p90_px": null,
-                  "tracks": 0
-                },
-                "applied_delta": [
-                  0.0001034800567043801,
-                  -0.002721993727034111,
-                  0.10407347575211023
-                ],
-                "counts": {
-                  "measured": 92,
-                  "fused": 77,
-                  "vo_replaced": 15,
-                  "unknown": 13,
-                  "unapplied": 0,
-                  "substep_mismatch": 0,
-                  "gate_zero": 0
-                }
-              }
-            }
-          },
-          "r2": {
-            "forward_commands": 106,
-            "actual_displacement_m": 0.30167316204806555,
-            "vo": {
-              "trace_frames": 106,
-              "measured_frames": 103,
-              "applied_frames": 103,
-              "applied_fraction": 0.9716981132075472,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_vo_v2",
-                  "stall_recovery": "off",
-                  "stall_noise": "off"
-                },
-                "option": "rgb_vo_v2",
-                "mode": "fused",
-                "t": 21.0,
-                "frame_id": 106,
-                "sha256": "3d8cca49893ae4d77e5eef50599da7c43ac7ba8a00426c67a1337f1106bdc6fa",
-                "command_delta": [
-                  0.012917157771402142,
-                  -0.0004020679808201143,
-                  -0.00029378953563691376
-                ],
-                "command_substeps": 4,
-                "status": "measured",
-                "tracks": 8,
-                "inliers": 7,
-                "cells": 3,
-                "delta": [
-                  0.0012587326962638645,
-                  0.001841169580571525,
-                  -0.005562261010055031
-                ],
-                "fit_rms_m": 0.0005695009428759332,
-                "fusion": "fused",
-                "nis": 10.327707977133988,
-                "fused_delta": [
-                  0.012593038472118191,
-                  -0.0005180776197789806,
-                  -0.002798631672998521
-                ],
-                "fused_variance": [
-                  3.853467643275336e-07,
-                  1.621762780456056e-06,
-                  5.987591488836497e-06
-                ],
-                "fusion_applied": true,
-                "gate": {
-                  "status": "changed_view",
-                  "stationary": false,
-                  "stationary_streak": 0,
-                  "median_px": 2.7291159629821777,
-                  "p90_px": 2.801165294647217,
-                  "tracks": 13
-                },
-                "applied_delta": [
-                  0.01259303847211817,
-                  -0.0005180776197789773,
-                  -0.002798631672998209
-                ],
-                "counts": {
-                  "measured": 103,
-                  "fused": 45,
-                  "vo_replaced": 58,
-                  "unknown": 2,
-                  "unapplied": 0,
-                  "substep_mismatch": 0,
-                  "gate_zero": 0
-                }
-              }
-            }
-          }
-        }
-      },
-      {
-        "run": "e2e15r2-b-s61003",
-        "checked_unix": 1791776780.6496708,
-        "elapsed_since_submit_s": 205.33133959770203,
-        "passed": true,
-        "checks": {
-          "first_model_response": true,
-          "sim_frames_increase": true,
-          "actual_movement": true,
-          "straight_commands": true,
-          "mapping_entered": true,
-          "no_exception": true
-        },
-        "sim_s": 22.0,
-        "frames": 111,
-        "robots": {
-          "r1": {
-            "forward_commands": 79,
-            "actual_displacement_m": 0.6449257447668444,
-            "vo": {
-              "trace_frames": 111,
-              "measured_frames": 0,
-              "applied_frames": 0,
-              "applied_fraction": 0.0,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_pulse_gate_v1",
-                  "stall_recovery": "backup_replan_v1",
-                  "stall_noise": "amcl_alpha_v1"
-                },
-                "status": "changed_view",
-                "t": 22.0,
-                "frame_id": 111,
-                "sha256": "132acf43f8339cd8946fe6899844ff6d479ea0170d13e61bf618b0e7fc47eba7",
-                "nominal_delta": [
-                  0.01291715777140212,
-                  -0.0004020679808201487,
-                  -0.00029378953563785615
-                ],
-                "tracks": 21,
-                "cells": 4,
-                "median_px": 2.8786299228668213,
-                "p90_px": 4.923415184020996,
-                "mean_abs_diff": 1.844046399418355,
-                "before_t": 21.8,
-                "before_frame_id": 110,
-                "before_sha256": "3c9f3325fce56ccc452d2e8fe0c712e43b45713c18f3612d4a8dcc216a441ed6",
-                "window_expected_delta": [
-                  0.01291715777140212,
-                  -0.0004020679808201487,
-                  -0.00029378953563785615
-                ],
-                "window_s": 0.1999999999999993,
-                "stationary": false,
-                "stationary_streak": 0,
-                "mode": "rgb_pulse_gate_v1",
-                "stationary_since": null,
-                "stationary_duration_s": 0.0,
-                "applied_delta": [
-                  0.01291715777140212,
-                  -0.0004020679808201487,
-                  -0.00029378953563785615
-                ],
-                "translation_gated": false,
-                "extra_body_variance": [
-                  0.0,
-                  0.0,
-                  0.0
-                ],
-                "recovery": "idle",
-                "recovery_events": []
-              }
-            }
-          },
-          "r2": {
-            "forward_commands": 86,
-            "actual_displacement_m": 0.294389852351585,
-            "vo": {
-              "trace_frames": 111,
-              "measured_frames": 0,
-              "applied_frames": 0,
-              "applied_fraction": 0.0,
-              "latest": {
-                "options": {
-                  "stall_odometry": "rgb_pulse_gate_v1",
-                  "stall_recovery": "backup_replan_v1",
-                  "stall_noise": "amcl_alpha_v1"
-                },
-                "status": "stationary_view",
-                "t": 22.0,
-                "frame_id": 111,
-                "sha256": "feac42d31a8f6d23950ac4433a2317b3d5d816189cbc388e37282aefbefe9b1e",
-                "nominal_delta": [
-                  0.01291715777140217,
-                  -0.0004020679808201173,
-                  -0.00029378953563696797
-                ],
-                "tracks": 13,
-                "cells": 4,
-                "median_px": 0.661963701248169,
-                "p90_px": 0.7156879305839539,
-                "mean_abs_diff": 0.18176745260025143,
-                "before_t": 21.8,
-                "before_frame_id": 110,
-                "before_sha256": "cabdd34586e7fb03ebc278b35777b48d416dc86b33b9bc980ff6a497fae11883",
-                "window_expected_delta": [
-                  0.01291715777140217,
-                  -0.0004020679808201173,
-                  -0.00029378953563696797
-                ],
-                "window_s": 0.1999999999999993,
-                "stationary": false,
-                "stationary_streak": 1,
-                "mode": "rgb_pulse_gate_v1",
-                "stationary_since": null,
-                "stationary_duration_s": 0.0,
-                "applied_delta": [
-                  0.012917157771402163,
-                  -0.00040206798082011435,
-                  -0.00029378953563696797
-                ],
-                "translation_gated": false,
-                "extra_body_variance": [
-                  0.0,
-                  0.0,
-                  0.0
-                ],
-                "recovery": "idle",
-                "recovery_events": []
-              }
-            }
-          }
-        }
-      }
-    ]
+  "monitoring": {
+    "initial_s": 205,
+    "health_interval_s": 600,
+    "exception_poll_s": 5,
+    "raw_records": "initial-health.json, progress-checks.jsonl, latest-health.json, final-health.json inside each run",
+    "latest_remote_checks": "Each run passed 15 checks by 2026-10-12 06:07 UTC; remote observer continued during Mac SSH interruption. Exact intervals are in progress-checks.jsonl."
   },
-  "submissions": [
+  "count": {
+    "N": 6,
+    "submitted": 6,
+    "completed": 0,
+    "all_three": 0,
+    "LLM_operated": 6,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "initial_health_passed": 6
+  },
+  "runs": [
     {
       "run": "e2e15r2-a-s61001",
-      "pid": 4709,
-      "submitted_unix": 1791776575.3152175,
-      "meta": {
-        "raw_relative": "e2e15-a-s61001/raw",
-        "execution_config_revision": "vm3-relay-r2",
-        "host": "azure3",
-        "pr": 446,
-        "branch": "claude/e2e14-combo",
-        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
-        "batch": "e2e14-rerun-vm3",
-        "group": "a",
-        "seed": 61001,
-        "started_unix": 1791776575.3142176,
-        "wall_cap_s": 25200,
-        "workflow_timeout_s": 25200,
-        "storage_budget_bytes": 4294967296,
-        "memory_available_bytes": 66136948736,
-        "loadavg": [
-          0.09375,
-          0.34814453125,
-          0.19140625
-        ],
-        "runner_assets": {
-          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
-          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
-          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+      "group": "a",
+      "seed": 61001,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 23.56457392599998
         },
-        "class": "dev"
-      }
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 23.56457392599998
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 39.718440739000016,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 106.28184767599998,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.15714597702026,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785233.0988207,
+        "elapsed_s": 8657.784603357315,
+        "no_traceback": true,
+        "sim_s": 533.0
+      },
+      "sim_s": 543.0,
+      "wall_s": 8911.849384763,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-a-s61001/e2e15-a-s61001/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2666,
+          "forward_commands": 1867,
+          "actual_displacement_m": 5.525392831159985,
+          "control_error_m": {
+            "n": 2666,
+            "max": 2.248879842711854,
+            "median": 1.0999683944199594
+          },
+          "map_error_m": {
+            "n": 2666,
+            "max": 10.806645769411878,
+            "median": 7.598446715298952
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 10,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 57,
+            "not_convex_quad": 1
+          },
+          "vo_counts": {
+            "measured": 1678,
+            "fused": 1240,
+            "vo_replaced": 438,
+            "unknown": 987,
+            "unapplied": 274,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.5266316579144786
+        },
+        "r2": {
+          "frames": 2666,
+          "forward_commands": 1795,
+          "actual_displacement_m": 4.118713757104926,
+          "control_error_m": {
+            "n": 2666,
+            "max": 5.744715189035828,
+            "median": 2.5674221362783314
+          },
+          "map_error_m": {
+            "n": 2666,
+            "max": 6.812512016718187,
+            "median": 6.4346206313975545
+          },
+          "candidate_first_sim_s": 88.8,
+          "boundary_accepted_frames": 27,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 103,
+            "white_islands_not_three": 1
+          },
+          "vo_counts": {
+            "measured": 1456,
+            "fused": 889,
+            "vo_replaced": 567,
+            "unknown": 1206,
+            "unapplied": 24,
+            "substep_mismatch": 0,
+            "gate_zero": 3
+          },
+          "vo_applied_fraction": 0.5382595648912228
+        }
+      },
+      "wall_per_sim": 16.412245644130756
     },
     {
       "run": "e2e15r2-b-s61001",
-      "pid": 4710,
-      "submitted_unix": 1791776575.3160272,
-      "meta": {
-        "raw_relative": "e2e15-b-s61001/raw",
-        "execution_config_revision": "vm3-relay-r2",
-        "host": "azure3",
-        "pr": 446,
-        "branch": "claude/e2e14-combo",
-        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
-        "batch": "e2e14-rerun-vm3",
-        "group": "b",
-        "seed": 61001,
-        "started_unix": 1791776575.315411,
-        "wall_cap_s": 25200,
-        "workflow_timeout_s": 25200,
-        "storage_budget_bytes": 4294967296,
-        "memory_available_bytes": 66136948736,
-        "loadavg": [
-          0.09375,
-          0.34814453125,
-          0.19140625
-        ],
-        "runner_assets": {
-          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
-          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
-          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+      "group": "b",
+      "seed": 61001,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 22.846706127999994
         },
-        "class": "dev"
-      }
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 22.846706127999994
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 38.19660501100003,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.18520593643188,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785234.0778806,
+        "elapsed_s": 8658.762469768524,
+        "no_traceback": true,
+        "sim_s": 563.0
+      },
+      "sim_s": 573.0,
+      "wall_s": 8910.73489018,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-b-s61001/e2e15-b-s61001/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2816,
+          "forward_commands": 299,
+          "actual_displacement_m": 2.5328029748113505,
+          "control_error_m": {
+            "n": 2816,
+            "max": 0.5653240278446475,
+            "median": 0.5649838504535261
+          },
+          "map_error_m": {
+            "n": 2816,
+            "max": 1.8151353090365123,
+            "median": 1.7918412013057838
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        },
+        "r2": {
+          "frames": 2816,
+          "forward_commands": 2294,
+          "actual_displacement_m": 3.0862819203473957,
+          "control_error_m": {
+            "n": 2816,
+            "max": 7.429144262297957,
+            "median": 4.131118077525288
+          },
+          "map_error_m": {
+            "n": 2816,
+            "max": 6.892163818920005,
+            "median": 3.3568637610351386
+          },
+          "candidate_first_sim_s": 116.4,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        }
+      },
+      "wall_per_sim": 15.551020750750435
     },
     {
       "run": "e2e15r2-a-s61002",
-      "pid": 4711,
-      "submitted_unix": 1791776575.316762,
-      "meta": {
-        "raw_relative": "e2e15-a-s61002/raw",
-        "execution_config_revision": "vm3-relay-r2",
-        "host": "azure3",
-        "pr": 446,
-        "branch": "claude/e2e14-combo",
-        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
-        "batch": "e2e14-rerun-vm3",
-        "group": "a",
-        "seed": 61002,
-        "started_unix": 1791776575.316208,
-        "wall_cap_s": 25200,
-        "workflow_timeout_s": 25200,
-        "storage_budget_bytes": 4294967296,
-        "memory_available_bytes": 66136948736,
-        "loadavg": [
-          0.09375,
-          0.34814453125,
-          0.19140625
-        ],
-        "runner_assets": {
-          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
-          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
-          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+      "group": "a",
+      "seed": 61002,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 24.04674895400001
         },
-        "class": "dev"
-      }
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 24.04674895400001
+        },
+        "B_candidate": {
+          "sim_s": 4.4,
+          "wall_s": 56.882766756000024,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 26.4,
+          "wall_s": 242.591642658,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.23525524139404,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785235.5121455,
+        "elapsed_s": 8660.195937871933,
+        "no_traceback": true,
+        "sim_s": 501.0
+      },
+      "sim_s": 510.0,
+      "wall_s": 8908.716425597,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-a-s61002/e2e15-a-s61002/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2506,
+          "forward_commands": 841,
+          "actual_displacement_m": 1.903925430260079,
+          "control_error_m": {
+            "n": 2506,
+            "max": 0.9270086195739572,
+            "median": 0.8776421885702643
+          },
+          "map_error_m": {
+            "n": 2506,
+            "max": 1.6121614932744963,
+            "median": 1.6118981107186867
+          },
+          "candidate_first_sim_s": 4.4,
+          "boundary_accepted_frames": 6,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 70,
+            "white_islands_not_three": 1,
+            "not_convex_quad": 2
+          },
+          "vo_counts": {
+            "measured": 2226,
+            "fused": 2022,
+            "vo_replaced": 204,
+            "unknown": 279,
+            "unapplied": 1399,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.33000798084596966
+        },
+        "r2": {
+          "frames": 2506,
+          "forward_commands": 654,
+          "actual_displacement_m": 3.992966683591082,
+          "control_error_m": {
+            "n": 2506,
+            "max": 0.4658311650736626,
+            "median": 0.23588981046187224
+          },
+          "map_error_m": {
+            "n": 2506,
+            "max": 0.569028169320969,
+            "median": 0.46857159058565445
+          },
+          "candidate_first_sim_s": 120.6,
+          "boundary_accepted_frames": 11,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 48,
+            "not_convex_quad": 1
+          },
+          "vo_counts": {
+            "measured": 2333,
+            "fused": 2121,
+            "vo_replaced": 212,
+            "unknown": 172,
+            "unapplied": 1632,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.2797286512370311
+        }
+      },
+      "wall_per_sim": 17.468071422739214
     },
     {
       "run": "e2e15r2-b-s61002",
-      "pid": 4712,
-      "submitted_unix": 1791776575.317462,
-      "meta": {
-        "raw_relative": "e2e15-b-s61002/raw",
-        "execution_config_revision": "vm3-relay-r2",
-        "host": "azure3",
-        "pr": 446,
-        "branch": "claude/e2e14-combo",
-        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
-        "batch": "e2e14-rerun-vm3",
-        "group": "b",
-        "seed": 61002,
-        "started_unix": 1791776575.3169303,
-        "wall_cap_s": 25200,
-        "workflow_timeout_s": 25200,
-        "storage_budget_bytes": 4294967296,
-        "memory_available_bytes": 66136535040,
-        "loadavg": [
-          0.09375,
-          0.34814453125,
-          0.19140625
-        ],
-        "runner_assets": {
-          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
-          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
-          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+      "group": "b",
+      "seed": 61002,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 23.012319838999986
         },
-        "class": "dev"
-      }
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 23.012319838999986
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 38.42516706399999,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.25941967964172,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785236.2606122,
+        "elapsed_s": 8660.943681955338,
+        "no_traceback": true,
+        "sim_s": 485.0
+      },
+      "sim_s": 492.0,
+      "wall_s": 8890.478694371,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-b-s61002/e2e15-b-s61002/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2426,
+          "forward_commands": 2087,
+          "actual_displacement_m": 3.4466806202138125,
+          "control_error_m": {
+            "n": 2426,
+            "max": 5.0103664931865906,
+            "median": 1.5911122146303038
+          },
+          "map_error_m": {
+            "n": 2426,
+            "max": 4.263945247339804,
+            "median": 0.8769313848773244
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        },
+        "r2": {
+          "frames": 2426,
+          "forward_commands": 2022,
+          "actual_displacement_m": 3.498159148324164,
+          "control_error_m": {
+            "n": 2426,
+            "max": 6.224311512865857,
+            "median": 2.7360291076951757
+          },
+          "map_error_m": {
+            "n": 2426,
+            "max": 6.694481365252879,
+            "median": 2.779493023886422
+          },
+          "candidate_first_sim_s": 121.0,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        }
+      },
+      "wall_per_sim": 18.070078647095528
     },
     {
       "run": "e2e15r2-a-s61003",
-      "pid": 4713,
-      "submitted_unix": 1791776575.3181684,
-      "meta": {
-        "raw_relative": "e2e15-a-s61003/raw",
-        "execution_config_revision": "vm3-relay-r2",
-        "host": "azure3",
-        "pr": 446,
-        "branch": "claude/e2e14-combo",
-        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
-        "batch": "e2e14-rerun-vm3",
-        "group": "a",
-        "seed": 61003,
-        "started_unix": 1791776575.3176324,
-        "wall_cap_s": 25200,
-        "workflow_timeout_s": 25200,
-        "storage_budget_bytes": 4294967296,
-        "memory_available_bytes": 66135293952,
-        "loadavg": [
-          0.09375,
-          0.34814453125,
-          0.19140625
-        ],
-        "runner_assets": {
-          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
-          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
-          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+      "group": "a",
+      "seed": 61003,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 24.563539144999993
         },
-        "class": "dev"
-      }
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 24.563539144999993
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 41.39164820000002,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 108.15446093000003,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.30640578269958,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785237.919274,
+        "elapsed_s": 8662.601642131805,
+        "no_traceback": true,
+        "sim_s": 523.0
+      },
+      "sim_s": 531.0,
+      "wall_s": 8915.994559671999,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-a-s61003/e2e15-a-s61003/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2616,
+          "forward_commands": 2187,
+          "actual_displacement_m": 3.838328167964536,
+          "control_error_m": {
+            "n": 2616,
+            "max": 1.9104304964748189,
+            "median": 1.0913635725664483
+          },
+          "map_error_m": {
+            "n": 2616,
+            "max": 3.6529814086062613,
+            "median": 1.5345855457266901
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 59,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 49,
+            "white_islands_not_three": 1
+          },
+          "vo_counts": {
+            "measured": 1668,
+            "fused": 1388,
+            "vo_replaced": 280,
+            "unknown": 947,
+            "unapplied": 3,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.6364678899082569
+        },
+        "r2": {
+          "frames": 2616,
+          "forward_commands": 1245,
+          "actual_displacement_m": 3.0984565107572934,
+          "control_error_m": {
+            "n": 2616,
+            "max": 2.7067301932080117,
+            "median": 0.8104727260008169
+          },
+          "map_error_m": {
+            "n": 2616,
+            "max": 2.3876320091522385,
+            "median": 1.92775108795484
+          },
+          "candidate_first_sim_s": 103.6,
+          "boundary_accepted_frames": 0,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 80,
+            "not_convex_quad": 2,
+            "white_islands_not_three": 1
+          },
+          "vo_counts": {
+            "measured": 2071,
+            "fused": 1669,
+            "vo_replaced": 402,
+            "unknown": 544,
+            "unapplied": 1152,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.35129969418960244
+        }
+      },
+      "wall_per_sim": 16.790950206538604
     },
     {
       "run": "e2e15r2-b-s61003",
-      "pid": 4714,
-      "submitted_unix": 1791776575.3188887,
-      "meta": {
-        "raw_relative": "e2e15-b-s61003/raw",
-        "execution_config_revision": "vm3-relay-r2",
-        "host": "azure3",
-        "pr": 446,
-        "branch": "claude/e2e14-combo",
-        "sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
-        "batch": "e2e14-rerun-vm3",
-        "group": "b",
-        "seed": 61003,
-        "started_unix": 1791776575.3183315,
-        "wall_cap_s": 25200,
-        "workflow_timeout_s": 25200,
-        "storage_budget_bytes": 4294967296,
-        "memory_available_bytes": 66135293952,
-        "loadavg": [
-          0.09375,
-          0.34814453125,
-          0.19140625
-        ],
-        "runner_assets": {
-          "remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
-          "azure_shutdown.py": "5f42f34c2d9f27be390dea03013e06993003548b8a1d49ab0437724dab016a61",
-          "azure_archive_native.py": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+      "group": "b",
+      "seed": 61003,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 23.12877745200001
         },
-        "class": "dev"
-      }
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 23.12877745200001
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 38.60878356799998,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.33133959770203,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785238.5809972,
+        "elapsed_s": 8663.262665748596,
+        "no_traceback": true,
+        "sim_s": 467.0
+      },
+      "sim_s": 477.0,
+      "wall_s": 8918.106212798999,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-b-s61003/e2e15-b-s61003/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2336,
+          "forward_commands": 379,
+          "actual_displacement_m": 1.3489916907308768,
+          "control_error_m": {
+            "n": 2336,
+            "max": 1.3536735244713858,
+            "median": 0.10298484066169389
+          },
+          "map_error_m": {
+            "n": 2336,
+            "max": 1.377225440646267,
+            "median": 0.3203019933465522
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        },
+        "r2": {
+          "frames": 2336,
+          "forward_commands": 1810,
+          "actual_displacement_m": 4.072060154300055,
+          "control_error_m": {
+            "n": 2336,
+            "max": 7.1299161213553,
+            "median": 3.7890864658987207
+          },
+          "map_error_m": {
+            "n": 2336,
+            "max": 6.991967276105102,
+            "median": 3.6421418705952813
+          },
+          "candidate_first_sim_s": 165.2,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        }
+      },
+      "wall_per_sim": 18.696239439830187
     }
   ],
+  "pairs": [
+    {
+      "seed": 61001,
+      "a": "e2e15r2-a-s61001",
+      "b": "e2e15r2-b-s61001",
+      "both_completed": false
+    },
+    {
+      "seed": 61002,
+      "a": "e2e15r2-a-s61002",
+      "b": "e2e15r2-b-s61002",
+      "both_completed": false
+    },
+    {
+      "seed": 61003,
+      "a": "e2e15r2-a-s61003",
+      "b": "e2e15r2-b-s61003",
+      "both_completed": false
+    }
+  ],
+  "admission_failed_attempts": [
+    {
+      "run": "e2e15-a-s61001",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61001",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "28341a5c294b35f1dd90af3f2f1d3a9d5b7ee8c278c175fba29a27da3a899804",
+        "reused": false,
+        "receiver_seconds": 0.2
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-a-s61001",
+        "files": 39,
+        "bytes": 772307,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-b-s61001",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61001",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "95fe785286c4c1f4c32a4046a3cc90546732aeb7da2f664f571a98bb90ce6a81",
+        "reused": false,
+        "receiver_seconds": 0.201
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-b-s61001",
+        "files": 39,
+        "bytes": 771782,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-a-s61002",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61002",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "edbfc153c7251ac483e3667834da63ec5648590a235817a5e113ed94872ca9c4",
+        "reused": false,
+        "receiver_seconds": 0.26
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-a-s61002",
+        "files": 39,
+        "bytes": 772333,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-b-s61002",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61002",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "07dcd3a62f337af49915a2aaca04d7029c75428a4221a88113a16a37ccfbdbb0",
+        "reused": false,
+        "receiver_seconds": 0.21
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-b-s61002",
+        "files": 39,
+        "bytes": 771771,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-a-s61003",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61003",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "edbf81755e9501e3fed9add00d08d7f5e060def9ee3a038420c42a5232a9dc7c",
+        "reused": false,
+        "receiver_seconds": 0.201
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-a-s61003",
+        "files": 39,
+        "bytes": 772313,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-b-s61003",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61003",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "9c7a21a0bc3d7a0fa899dc8047cad74be2aa579e30a541216a468a0a389cfdf0",
+        "reused": false,
+        "receiver_seconds": 0.205
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-b-s61003",
+        "files": 39,
+        "bytes": 771790,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    }
+  ],
+  "admission_failure_cause": "README remote18391 mismatched actual Gemma18393; six0SIM/model0 failures preserved; controller source unchanged",
   "storage_budget": {
     "x86": {
       "schema": "ugrp.storage-budget.v1",
@@ -1165,258 +1059,12 @@
       ]
     }
   },
-  "raw_root": "azure3:/home/ugrp/ugrp-sim/runs",
-  "local_light_records": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/r2",
-  "scope": "DEV paired comparison; no real robot or causal separation of combined toggles",
-  "created_unix": 1791776359.66145,
+  "final_vm_state": null,
+  "scope": "DEV paired comparison; phase entry is not physical success; unfinished rows are not failures or completed evidence",
   "remaining": [
-    "10-minute monitoring",
-    "completion",
-    "ARM archive hashes",
-    "fetch-lite",
-    "VM3 final deallocation"
+    "completion, archive/hash verification and final VM3 deallocation remain as indicated by each row"
   ],
-  "failed_attempts": [
-    {
-      "run": "e2e15-a-s61001",
-      "exit": "1",
-      "status": "HOST_ERROR",
-      "failure_type": "HostError",
-      "failure": "S4 SSH relay identity expired or mismatched",
-      "sim_s": 0.0,
-      "model_calls": 0,
-      "initial_health": {
-        "passed": false,
-        "checks": {
-          "first_model_response": false,
-          "sim_frames_increase": false,
-          "actual_movement": false,
-          "straight_commands": false,
-          "mapping_entered": false,
-          "no_exception": false,
-          "vo_recorded": false
-        },
-        "elapsed_since_submit_s": 30.06324338912964
-      },
-      "archive": {
-        "verified": true,
-        "schema": "ugrp.archive-native.v1",
-        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61001",
-        "files": 46,
-        "hash_matches": 46,
-        "inventory_sha256": "28341a5c294b35f1dd90af3f2f1d3a9d5b7ee8c278c175fba29a27da3a899804",
-        "reused": false,
-        "receiver_seconds": 0.2
-      },
-      "mac_light": {
-        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-a-s61001",
-        "files": 39,
-        "bytes": 772307,
-        "checksum_verified": true
-      }
-    },
-    {
-      "run": "e2e15-b-s61001",
-      "exit": "1",
-      "status": "HOST_ERROR",
-      "failure_type": "HostError",
-      "failure": "S4 SSH relay identity expired or mismatched",
-      "sim_s": 0.0,
-      "model_calls": 0,
-      "initial_health": {
-        "passed": false,
-        "checks": {
-          "first_model_response": false,
-          "sim_frames_increase": false,
-          "actual_movement": false,
-          "straight_commands": false,
-          "mapping_entered": false,
-          "no_exception": false
-        },
-        "elapsed_since_submit_s": 30.044339895248413
-      },
-      "archive": {
-        "verified": true,
-        "schema": "ugrp.archive-native.v1",
-        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61001",
-        "files": 46,
-        "hash_matches": 46,
-        "inventory_sha256": "95fe785286c4c1f4c32a4046a3cc90546732aeb7da2f664f571a98bb90ce6a81",
-        "reused": false,
-        "receiver_seconds": 0.201
-      },
-      "mac_light": {
-        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-b-s61001",
-        "files": 39,
-        "bytes": 771782,
-        "checksum_verified": true
-      }
-    },
-    {
-      "run": "e2e15-a-s61002",
-      "exit": "1",
-      "status": "HOST_ERROR",
-      "failure_type": "HostError",
-      "failure": "S4 SSH relay identity expired or mismatched",
-      "sim_s": 0.0,
-      "model_calls": 0,
-      "initial_health": {
-        "passed": false,
-        "checks": {
-          "first_model_response": false,
-          "sim_frames_increase": false,
-          "actual_movement": false,
-          "straight_commands": false,
-          "mapping_entered": false,
-          "no_exception": false,
-          "vo_recorded": false
-        },
-        "elapsed_since_submit_s": 30.045201778411865
-      },
-      "archive": {
-        "verified": true,
-        "schema": "ugrp.archive-native.v1",
-        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61002",
-        "files": 46,
-        "hash_matches": 46,
-        "inventory_sha256": "edbfc153c7251ac483e3667834da63ec5648590a235817a5e113ed94872ca9c4",
-        "reused": false,
-        "receiver_seconds": 0.26
-      },
-      "mac_light": {
-        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-a-s61002",
-        "files": 39,
-        "bytes": 772333,
-        "checksum_verified": true
-      }
-    },
-    {
-      "run": "e2e15-b-s61002",
-      "exit": "1",
-      "status": "HOST_ERROR",
-      "failure_type": "HostError",
-      "failure": "S4 SSH relay identity expired or mismatched",
-      "sim_s": 0.0,
-      "model_calls": 0,
-      "initial_health": {
-        "passed": false,
-        "checks": {
-          "first_model_response": false,
-          "sim_frames_increase": false,
-          "actual_movement": false,
-          "straight_commands": false,
-          "mapping_entered": false,
-          "no_exception": false
-        },
-        "elapsed_since_submit_s": 30.0460467338562
-      },
-      "archive": {
-        "verified": true,
-        "schema": "ugrp.archive-native.v1",
-        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61002",
-        "files": 46,
-        "hash_matches": 46,
-        "inventory_sha256": "07dcd3a62f337af49915a2aaca04d7029c75428a4221a88113a16a37ccfbdbb0",
-        "reused": false,
-        "receiver_seconds": 0.21
-      },
-      "mac_light": {
-        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-b-s61002",
-        "files": 39,
-        "bytes": 771771,
-        "checksum_verified": true
-      }
-    },
-    {
-      "run": "e2e15-a-s61003",
-      "exit": "1",
-      "status": "HOST_ERROR",
-      "failure_type": "HostError",
-      "failure": "S4 SSH relay identity expired or mismatched",
-      "sim_s": 0.0,
-      "model_calls": 0,
-      "initial_health": {
-        "passed": false,
-        "checks": {
-          "first_model_response": false,
-          "sim_frames_increase": false,
-          "actual_movement": false,
-          "straight_commands": false,
-          "mapping_entered": false,
-          "no_exception": false,
-          "vo_recorded": false
-        },
-        "elapsed_since_submit_s": 30.046916961669922
-      },
-      "archive": {
-        "verified": true,
-        "schema": "ugrp.archive-native.v1",
-        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61003",
-        "files": 46,
-        "hash_matches": 46,
-        "inventory_sha256": "edbf81755e9501e3fed9add00d08d7f5e060def9ee3a038420c42a5232a9dc7c",
-        "reused": false,
-        "receiver_seconds": 0.201
-      },
-      "mac_light": {
-        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-a-s61003",
-        "files": 39,
-        "bytes": 772313,
-        "checksum_verified": true
-      }
-    },
-    {
-      "run": "e2e15-b-s61003",
-      "exit": "1",
-      "status": "HOST_ERROR",
-      "failure_type": "HostError",
-      "failure": "S4 SSH relay identity expired or mismatched",
-      "sim_s": 0.0,
-      "model_calls": 0,
-      "initial_health": {
-        "passed": false,
-        "checks": {
-          "first_model_response": false,
-          "sim_frames_increase": false,
-          "actual_movement": false,
-          "straight_commands": false,
-          "mapping_entered": false,
-          "no_exception": false
-        },
-        "elapsed_since_submit_s": 30.047797679901123
-      },
-      "archive": {
-        "verified": true,
-        "schema": "ugrp.archive-native.v1",
-        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61003",
-        "files": 46,
-        "hash_matches": 46,
-        "inventory_sha256": "9c7a21a0bc3d7a0fa899dc8047cad74be2aa579e30a541216a468a0a389cfdf0",
-        "reused": false,
-        "receiver_seconds": 0.205
-      },
-      "mac_light": {
-        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-b-s61003",
-        "files": 39,
-        "bytes": 771790,
-        "checksum_verified": true
-      }
-    }
-  ],
-  "completed_attempts": 6,
-  "failure_cause": "README remote 18391 mismatches actual Gemma relay_url 18393; receipt failed before model calls and simulation time.",
-  "source_unchanged_for_transport_fix": true,
-  "execution_config_revision": "vm3-relay-r2",
-  "attempts_submitted": 12,
-  "condition_counts": {
-    "LLM_operated": 6,
-    "own_map_completed": 0,
-    "start_to_finish_transport": 0,
-    "all_three": 0,
-    "N": 6,
-    "unfinished": 6
-  },
-  "failed_attempt_arm_reverified": [
+  "failed_attempt_independent_arm_verification": [
     {
       "path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61001",
       "files": 46,
@@ -1448,5 +1096,18 @@
       "hash_matches": 46
     }
   ],
-  "last_checked_unix": 1791776833.0168047
+  "batch": "e2e14-rerun-vm3",
+  "attempts_submitted": 12,
+  "local_light_records": "outputs/e2e14-rerun/r2 in codex/azure-vm3 worktree",
+  "source_unchanged_for_transport_fix": true,
+  "execution_files": {
+    "experiments/2026-10-12-azure-vm3/r2/fetch-finish.py": "048678fa3ed11daad5543d3b7a836660d1c9a15244f02ad5a5e349fdceb5bcf2",
+    "experiments/2026-10-12-azure-vm3/r2/export-lite.py": "bc7b91e61da8b0606bc3813d21433ac3836db5979fef526f6ef962d853343f51",
+    "experiments/2026-10-12-azure-vm3/r2/submit-remote.py": "fd8e1bfe94ab40fa0d6acbc861619b91b84660667cc1c374f5b119f6809b18f2",
+    "experiments/2026-10-12-azure-vm3/r2/observe.py": "cab44a49e22c4efb054505d520c34dd767584437e4e871515bcebadaf7762def",
+    "experiments/2026-10-12-azure-vm3/r2/relay.py": "cb84e4721de3ef1d5cbe01b03e84b46357cca3666b370136f5b35415f0120fa4",
+    "experiments/2026-10-12-azure-vm3/r2/watch.py": "669dbc36db09bf8814053e9498ff7aa1d3601c30280bd53324f934cdeeb41c2c",
+    "experiments/2026-10-12-azure-vm3/r2/finish.py": "42d295ebcbc3ae98b37696695dbe3183a638f656f8881b98292618d9e4b83ef4",
+    "experiments/2026-10-12-azure-vm3/r2/poll-remote.py": "03fae307ad138be762051d494ef9a287de1e826dd73ea34f974318191e80b25c"
+  }
 }
