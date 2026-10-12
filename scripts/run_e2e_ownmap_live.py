@@ -32,7 +32,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off',beam_axis='off'):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
     registered_seeds = range(61001,61013) if b_partial_accept != 'off' else range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
     if profile not in PROFILES or seed not in registered_seeds:raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
@@ -223,6 +223,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     paths.update(cadence_compose(b,observation_cadence))
     from harness.e2e_route_guard import compose as route_guard_compose
     paths.update(route_guard_compose(b,route_guard))
+    from harness.e2e_beam_axis import compose as beam_axis_compose
+    paths.update(beam_axis_compose(b,beam_axis))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -326,7 +328,9 @@ def run(b,out,receipt,*,backend_factory=None):
                 for i,r in enumerate(('r1','r2','r3'))}
         from harness.e2e_observation_cadence import configure as cadence_configure
         for robot in robots.values():cadence_configure(robot.goal,b['e2e_options'].get('observation_cadence','off'),b.get('speed3_profile',{}).get('observation_period_s',.2))
-        for robot in robots.values():robot.goal.e2e_route_guard=b['e2e_options'].get('route_guard','off')
+        for robot in robots.values():
+            robot.goal.e2e_route_guard=b['e2e_options'].get('route_guard','off')
+            robot.goal.e2e_beam_axis=b['e2e_options'].get('beam_axis','off')
         for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
         offered=json.loads(receipt.read_text())
         if offered.get('decider','off')!=b['e2e_options'].get('decider','off'):
@@ -510,6 +514,7 @@ def main(argv=None):
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
     p.add_argument('--speed3',choices=('off','dt1_v1','dt2_v1','adaptive_v1'),default='off')
+    p.add_argument('--beam-axis',choices=('off','undirected_v1'),default='off')
     p.add_argument('--route-guard',choices=('off','dev_nominal_v1'),default='off')
     p.add_argument('--observation-cadence',choices=('off','on_v1'),default='off')
     p.add_argument('--speed5',choices=('off','cache_v1','lean_v1','lean_v2','lean_v3'),default='off')
@@ -525,7 +530,7 @@ def main(argv=None):
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
                  vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
                  vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
-             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4,b_partial_accept=a.b_partial_accept,speed5=a.speed5,observation_cadence=a.observation_cadence,route_guard=a.route_guard)
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4,b_partial_accept=a.b_partial_accept,speed5=a.speed5,observation_cadence=a.observation_cadence,route_guard=a.route_guard,beam_axis=a.beam_axis)
     if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
     if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
         raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')

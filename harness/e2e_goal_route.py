@@ -111,7 +111,10 @@ class IntegratedGoalRoute(GoalRoute):
         diagnostic=getattr(self,'e2e_route_guard','off')!='off'
         if diagnostic:
             self.e2e_route_diagnostics=dict(t=now,beam_pose_own_m=copy.deepcopy(beam['pose_own_m']),beam_rgb=copy.deepcopy(beam['rgb']),sigma_xy_m=math.sqrt(float(np.linalg.eigvalsh(np.asarray(self.pose_covariance())[:2,:2]).max())),stage='beam_axes')
-        if abs(beam['pose_own_m'][2]) > math.radians(5):
+        from harness.e2e_beam_axis import error as axis_error
+        beam_axis_error=axis_error(beam['pose_own_m'][2],getattr(self,'e2e_beam_axis','off'))
+        if diagnostic:self.e2e_route_diagnostics['beam_axis_error_rad']=beam_axis_error
+        if beam_axis_error > math.radians(5):
             raise ContractViolation('S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED')
         entity, reference = self.entities.get('B'), self.e2e_gate.references.get('B')
         if entity is None or entity['source'] != 'own' or reference is None:

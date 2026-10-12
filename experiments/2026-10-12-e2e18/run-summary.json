@@ -1,5 +1,5 @@
 {
-  "status": "V220_COHORT_RUNNING",
+  "status": "V220_EIGHT_CONTINUING_V221_FOUR_GATING",
   "started_utc": "2026-10-12T11:03:00Z",
   "deadline_utc": "2026-10-12T21:03:00Z",
   "bundle": "e2e18-v220",
@@ -768,18 +768,24 @@
       "seed": 61004,
       "bundle": "e2e18-v220",
       "attempt": 6,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_ROUTE_DIAGNOSTICS",
       "source_sha": "f8a73ce415d7e5d8915710cbe0c604e1306f67de",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61004-r6/raw"
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61004-r6/raw",
+      "exit": 130,
+      "result_file": "cohort-r6-selected-results.json",
+      "failure": "SIGNAL_SIGINT"
     },
     {
       "vm": "azure3",
       "seed": 61005,
       "bundle": "e2e18-v220",
       "attempt": 6,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_ROUTE_DIAGNOSTICS",
       "source_sha": "f8a73ce415d7e5d8915710cbe0c604e1306f67de",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61005-r6/raw"
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61005-r6/raw",
+      "exit": 130,
+      "result_file": "cohort-r6-selected-results.json",
+      "failure": "SIGNAL_SIGINT"
     },
     {
       "vm": "azure3",
@@ -813,18 +819,24 @@
       "seed": 61009,
       "bundle": "e2e18-v220",
       "attempt": 6,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_ROUTE_DIAGNOSTICS",
       "source_sha": "f8a73ce415d7e5d8915710cbe0c604e1306f67de",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61009-r6/raw"
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61009-r6/raw",
+      "exit": 130,
+      "result_file": "cohort-r6-selected-results.json",
+      "failure": "SIGNAL_SIGINT"
     },
     {
       "vm": "azure4",
       "seed": 61010,
       "bundle": "e2e18-v220",
       "attempt": 6,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_ROUTE_DIAGNOSTICS",
       "source_sha": "f8a73ce415d7e5d8915710cbe0c604e1306f67de",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61010-r6/raw"
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61010-r6/raw",
+      "exit": 130,
+      "result_file": "cohort-r6-selected-results.json",
+      "failure": "SIGNAL_SIGINT"
     },
     {
       "vm": "azure4",
@@ -843,6 +855,42 @@
       "status": "RUNNING",
       "source_sha": "f8a73ce415d7e5d8915710cbe0c604e1306f67de",
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v220-s61012-r6/raw"
+    },
+    {
+      "vm": "azure3",
+      "seed": 61004,
+      "bundle": "e2e18-v221",
+      "attempt": 7,
+      "status": "SPEED_GATE_RUNNING",
+      "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v221-s61004-r7/raw"
+    },
+    {
+      "vm": "azure3",
+      "seed": 61005,
+      "bundle": "e2e18-v221",
+      "attempt": 7,
+      "status": "SPEED_GATE_RUNNING",
+      "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v221-s61005-r7/raw"
+    },
+    {
+      "vm": "azure4",
+      "seed": 61009,
+      "bundle": "e2e18-v221",
+      "attempt": 7,
+      "status": "SPEED_GATE_RUNNING",
+      "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v221-s61009-r7/raw"
+    },
+    {
+      "vm": "azure4",
+      "seed": 61010,
+      "bundle": "e2e18-v221",
+      "attempt": 7,
+      "status": "SPEED_GATE_RUNNING",
+      "source_sha": "5a9d10d7ce51044440282b2c40d18a10591bae9a",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v221-s61010-r7/raw"
     }
   ],
   "gates": [
@@ -1121,6 +1169,11 @@
         "https://docs.opencv.org/4.13.0/d4/dee/tutorial_optical_flow.html",
         "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/controller_server/controller_server_plugins/simple_progress_checker/"
       ]
+    },
+    {
+      "bundle": "e2e18-v221",
+      "evidence": "route-fix-v221.json",
+      "tests": "41 passed"
     }
   ],
   "initial_health_cohort_r5": "initial-health-cohort-r5.json",
@@ -1141,5 +1194,6 @@
     "r2_measured": 22,
     "substep_mismatch": 0
   },
-  "initial_health_cohort_r6": "initial-health-cohort-r6.json"
+  "initial_health_cohort_r6": "initial-health-cohort-r6.json",
+  "cohort_r6_selected_results": "cohort-r6-selected-results.json"
 }
