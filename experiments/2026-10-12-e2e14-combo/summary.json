@@ -1,6 +1,6 @@
 {
   "id": "2026-10-12-e2e14-combo",
-  "status": "PREPARING_PAIRED_RUNS",
+  "status": "HOST_ERROR_RETRY_PREPARING",
   "run_class": "dev",
   "branch": "claude/e2e14-combo",
   "pr": 446,
@@ -9,7 +9,7 @@
     443,
     444
   ],
-  "code_sha": "e8b63c5e7fb61bff379e8471a7f9971e5ebffc59",
+  "code_sha": "447e95424bb1696e738b50fbcf1201e055a3c3d0",
   "merged": {
     "integration": "9d6eb567",
     "pr443": "ee3d656b",
@@ -46,11 +46,12 @@
       "guest_guard_idle_s": 1200,
       "guest_guard_max_s": 28800,
       "relay_s": 28800,
-      "ssh_tunnel": "finite same relay deadline; dedicated local port 18414, VM1 remote 18393"
+      "ssh_tunnel": "finite same relay deadline; dedicated local port 18414, VM1 remote 18393",
+      "receipt_validator_s": 28800
     }
   },
-  "simulations": 0,
-  "vm_use": 0,
+  "simulations": 8,
+  "vm_use": 1,
   "smoke": {
     "kind": "saved_frame_fixed_replay",
     "simulation": false,
@@ -115,6 +116,207 @@
     "projection": "max linear 1800 SIM estimate 879063210 bytes; 2GiB budget is 2.44x; monitor disk floor, no 3.5GiB per-run cap"
   },
   "operational_changes": [
-    "Admit e2e14 A/B seeds 61001-61004; add Mac loopback port18414; raise relay finite max4h to8h. No controller changes."
-  ]
+    "Admit e2e14 A/B seeds 61001-61004; add Mac loopback port18414; raise relay finite max4h to8h. No controller changes.",
+    "Receiver receipt validation also had 14400 s cap; shared MAX_RELAY_SECONDS=28800 now covers relay, receiver and standard tunnel. First 8 launches failed before LLM/frame 0 and remain in denominator ledger."
+  ],
+  "started_utc": "2026-10-12T01:34:15.643994+00:00",
+  "storage_budget": [
+    {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "arm",
+          "free_bytes": 85081059328,
+          "expected_bytes": 51539607552,
+          "projected_free_bytes": 33541451776,
+          "floor_bytes": 26843545600,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "mac",
+          "free_bytes": 134008954880,
+          "expected_bytes": 1073741824,
+          "projected_free_bytes": 132935213056,
+          "floor_bytes": 21474836480,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "x86",
+          "free_bytes": 33342861312,
+          "expected_bytes": 19327352832,
+          "projected_free_bytes": 14015508480,
+          "floor_bytes": 8589934592,
+          "ok": true
+        }
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "id": "e2e14-a-s61001",
+      "status": "HOST_ERROR",
+      "group": "a",
+      "seed": 61001,
+      "started_unix": 1791768855.6439943,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61001",
+      "cause": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "wall_s": 5.191172783000013,
+      "archive_verified": true,
+      "arm_raw": null
+    },
+    {
+      "id": "e2e14-b-s61001",
+      "status": "HOST_ERROR",
+      "group": "b",
+      "seed": 61001,
+      "started_unix": 1791768855.6452107,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-b-s61001",
+      "cause": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "wall_s": 5.007856737999987,
+      "archive_verified": true,
+      "arm_raw": null
+    },
+    {
+      "id": "e2e14-a-s61002",
+      "status": "HOST_ERROR",
+      "group": "a",
+      "seed": 61002,
+      "started_unix": 1791768855.6464512,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61002",
+      "cause": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "wall_s": 5.092175182999995,
+      "archive_verified": true,
+      "arm_raw": null
+    },
+    {
+      "id": "e2e14-b-s61002",
+      "status": "HOST_ERROR",
+      "group": "b",
+      "seed": 61002,
+      "started_unix": 1791768855.6476085,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-b-s61002",
+      "cause": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "wall_s": 5.131829819000018,
+      "archive_verified": true,
+      "arm_raw": null
+    },
+    {
+      "id": "e2e14-a-s61003",
+      "status": "HOST_ERROR",
+      "group": "a",
+      "seed": 61003,
+      "started_unix": 1791768855.648699,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61003",
+      "cause": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "wall_s": 5.251619277999964,
+      "archive_verified": true,
+      "arm_raw": null
+    },
+    {
+      "id": "e2e14-b-s61003",
+      "status": "HOST_ERROR",
+      "group": "b",
+      "seed": 61003,
+      "started_unix": 1791768855.6498032,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-b-s61003",
+      "cause": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "wall_s": 5.106221793999964,
+      "archive_verified": true,
+      "arm_raw": null
+    },
+    {
+      "id": "e2e14-a-s61004",
+      "status": "HOST_ERROR",
+      "group": "a",
+      "seed": 61004,
+      "started_unix": 1791768855.6508837,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61004",
+      "cause": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "wall_s": 5.193992519000005,
+      "archive_verified": true,
+      "arm_raw": null
+    },
+    {
+      "id": "e2e14-b-s61004",
+      "status": "HOST_ERROR",
+      "group": "b",
+      "seed": 61004,
+      "started_unix": 1791768855.6522765,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-b-s61004",
+      "cause": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "wall_s": 5.088690245999999,
+      "archive_verified": true,
+      "arm_raw": null
+    }
+  ],
+  "outcomes": {
+    "N": 8,
+    "completed": 0,
+    "LLM_operated": null,
+    "own_map_completed": null,
+    "start_to_finish_transport": null,
+    "note": "running; no completion claimed"
+  },
+  "last_recorded_utc": "2026-10-12T01:35:36.567556+00:00",
+  "references": [
+    {
+      "url": "https://docs.python.org/3/library/time.html#time.monotonic",
+      "use": "finite elapsed runtime uses existing monotonic run cap; wall-clock receipt identity lifetime remains explicitly bounded; no new control algorithm"
+    }
+  ],
+  "tests_receipt_fix": {
+    "files": [
+      "tests/test_e2e14_combo.py",
+      "tests/test_s4_live_stage.py",
+      "tests/test_openrouter_upstream.py"
+    ],
+    "status": "passed",
+    "n": 27,
+    "N": 27
+  }
 }

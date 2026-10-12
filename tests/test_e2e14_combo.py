@@ -33,6 +33,22 @@ def test_paired_speed_options_and_relay_admission():
     assert not accepted_call_id('e2e14-a-s61005:call-0001-r1:1')
 
 
+def test_eight_hour_receipt_remains_valid_for_seven_hour_run():
+    from harness.s4_live_transport import validate_receipt, URL, MAX_RELAY_SECONDS
+    from harness.zone_pilot_budget import PROXY_SHA256
+    from harness.zone_study_llm_driver import HostError
+    r = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url=URL,
+             proxy=dict(source_sha256=PROXY_SHA256), checked_unix=100.,
+             valid_for_s=MAX_RELAY_SECONDS, audit_per_post=True,
+             authentication='existing_mac_proxy_no_credentials_transferred')
+    assert validate_receipt(r, now=100.+25200) == r
+    assert validate_receipt(r, now=100.+28800) == r
+    with pytest.raises(HostError):
+        validate_receipt(r, now=100.+28801)
+    with pytest.raises(HostError):
+        validate_receipt({**r, 'valid_for_s': 28801}, now=101.)
+
+
 def make(**kw):
     return bundle('x', 61001, GEMMA, **{**BASE, **kw})
 

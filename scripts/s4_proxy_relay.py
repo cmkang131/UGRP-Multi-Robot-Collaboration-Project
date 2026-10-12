@@ -12,7 +12,7 @@ from urllib.error import HTTPError
 
 from harness.zone_study_llm_driver import live_proxy, load_registry
 from harness.zone_study_llm_transport import no_redirect_opener
-from harness.s4_live_transport import URL
+from harness.s4_live_transport import URL, MAX_RELAY_SECONDS
 from harness.s4_relay_journal import Journal
 
 
@@ -44,7 +44,7 @@ def main():
     p.add_argument('--gemma-state', type=Path,
         default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
     a = p.parse_args()
-    if not 0 < a.seconds <= 28800: raise ValueError('finite <=8h relay required')
+    if not 0 < a.seconds <= MAX_RELAY_SECONDS: raise ValueError('finite <=8h relay required')
     a.output.mkdir(parents=True, exist_ok=False)
     single=a.driver_profile=='study_gemma4_31b_v1'
     if a.multi_key_v1 and not (single or a.gemma_fallback):
