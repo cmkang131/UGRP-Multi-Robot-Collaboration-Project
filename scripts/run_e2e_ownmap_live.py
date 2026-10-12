@@ -97,7 +97,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         # E2E14 composition: B confirmation views / B mark contrast (#443) on the same
         # runner; keys are added only when on so older bundles stay byte-identical.
         b['e2e_options'].update(boundary_views=boundary_views,b_marker_detect=b_marker_detect)
-        b.update(schema='ugrp.e2e_ownmap_live.v202',execution_bundle_id='e2e-combo14-v202',workflow_version='7.95.0')
+        # v202 (source e4fc8354) crashed in rgb_vo_v1 ground() on 0 floor points; v204 carries the guard.
+        b.update(schema='ugrp.e2e_ownmap_live.v204',execution_bundle_id='e2e-combo14-v204',workflow_version='7.97.0')
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -115,7 +116,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if mapping_budget!='off':paths.add('configs/simulation_workflows.d/e2e_stall_budget_v199.json')
     if speed_bundle or any(vars(speed).values()):paths.add('configs/simulation_workflows.d/e2e_exact_speed_v200.json')
     if stall.stall_odometry=='rgb_vo_v1':paths.add('configs/simulation_workflows.d/e2e_rgb_vo_v201.json')
-    if combo:paths.add('configs/simulation_workflows.d/e2e_combo14_v202.json')
+    if combo:paths.add('configs/simulation_workflows.d/e2e_combo14_v204.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 

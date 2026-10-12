@@ -24,7 +24,7 @@ def test_paired_speed_options_and_relay_admission():
     a = make(**COMBO, exact_speedups=speed, wall_cap_s=25200.)
     b = make(**A12, exact_speedups=speed, wall_cap_s=25200.)
     assert a['e2e_options']['exact_speedups'] == b['e2e_options']['exact_speedups'] == speed
-    assert a['execution_bundle_id'] == 'e2e-combo14-v202'
+    assert a['execution_bundle_id'] == 'e2e-combo14-v204'
     assert b['execution_bundle_id'] == 'e2e-exact-speed-v200'
     for group in ('a', 'b'):
         for seed in range(61001, 61005):
@@ -53,16 +53,16 @@ def make(**kw):
     return bundle('x', 61001, GEMMA, **{**BASE, **kw})
 
 
-def test_combo_bundle_v202_has_all_three_and_vo_contract():
+def test_combo_bundle_v204_has_all_three_and_vo_contract():
     b = make(wall_cap_s=25200., **COMBO)
     o = b['e2e_options']
-    assert (b['execution_bundle_id'], b['workflow_version'], b['schema']) == ('e2e-combo14-v202', '7.95.0', 'ugrp.e2e_ownmap_live.v202')
+    assert (b['execution_bundle_id'], b['workflow_version'], b['schema']) == ('e2e-combo14-v204', '7.97.0', 'ugrp.e2e_ownmap_live.v204')
     assert (o['stall_odometry'], o['stall_recovery'], o['stall_noise']) == ('rgb_vo_v1', 'off', 'off')
     assert (o['boundary_views'], o['b_marker_detect']) == ('candidate_views_v1', 'contrast_v1')
     assert (o['path_follow'], o['pose_fix'], o['mapping_budget'], o['exploration_progress']) == \
         ('rpp_v1', 'innovation', 'case_cap_v1', 'frontier_progress_v1')
     assert b['wall_cap_s'] == 25200. and b['case_cap_s'] == 1800.
-    assert 'configs/simulation_workflows.d/e2e_combo14_v202.json' in b['source_sha256']
+    assert 'configs/simulation_workflows.d/e2e_combo14_v204.json' in b['source_sha256']
     assert 'configs/simulation_workflows.d/e2e_rgb_vo_v201.json' in b['source_sha256']
 
 
@@ -105,11 +105,11 @@ def test_cli_dry_run_and_catalog(monkeypatch, capsys):
         '--wall-cap-s', '25200'])
     main()
     b = json.loads(capsys.readouterr().out)
-    assert b['execution_bundle_id'] == 'e2e-combo14-v202' and b['wall_cap_s'] == 25200.
+    assert b['execution_bundle_id'] == 'e2e-combo14-v204' and b['wall_cap_s'] == 25200.
     from sim.workflow_manager import catalog
     rows, _ = catalog(Path('.'))
-    w = next(w for w in rows['workflows'] if w['id'] == 'e2e-combo14-v202')
-    assert w['version'] == '7.95.0' and {'--boundary-views', '--b-marker-detect', '--stall-odometry'} <= set(w['required_inputs'])
+    w = next(w for w in rows['workflows'] if w['id'] == 'e2e-combo14-v204')
+    assert w['version'] == '7.97.0' and {'--boundary-views', '--b-marker-detect', '--stall-odometry'} <= set(w['required_inputs'])
 
 
 def test_robot_with_all_three_wires_each_toggle():
