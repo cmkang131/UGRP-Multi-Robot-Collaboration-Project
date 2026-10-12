@@ -1,0 +1,173 @@
+{
+  "case": "s1043",
+  "split": "development",
+  "camera_pose": "servo_fk_v1",
+  "frames": 586,
+  "fixed_annotation_points": 387,
+  "positive_points": 387,
+  "within4m_points": 374,
+  "baseline": {
+    "n": 387,
+    "median": 0.48446353266666564,
+    "p05": 0.43852548345597486,
+    "p90": 0.6757898546616532,
+    "p95": 0.678084344852811
+  },
+  "candidate": {
+    "n": 387,
+    "median": 0.5650951457560581,
+    "p05": 0.5208170380105749,
+    "p90": 0.7847189617563066,
+    "p95": 0.7856341275252089
+  },
+  "gate": {
+    "checks": {
+      "points": true,
+      "positive": true,
+      "valid_fraction": true,
+      "median": false,
+      "p90": false,
+      "nonincrease": false
+    },
+    "passed": false
+  },
+  "hashes": {
+    "harness/servo_camera_fk.py": "0083e07af1a78b1da35cefb7f85011f65e1e2c61b5c21c03f337ceaff741a3b3",
+    "harness/data/servo_camera_v3_chain.json": "0cced72fd129556cb1e1ecbeef63155129426e669f77b6d5a70244d3d9b269be",
+    "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+    "experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py": "df921757787f909e0a81ec96995eae60c77a72cf0fa0d9b622930e521a4f7c79",
+    "experiments/2026-10-07-camera-pose-projection/code/evaluate_fk.py": "c1634a26a624cbd6d9daa08bec44c759bda38d44fa7dbcc60e42f7d68a31e461",
+    "experiments/2026-10-07-camera-pose-projection/code/audit.py": "f2a492a3bd22ed227803fd9e98b9f3aff5965ea101a7f27a800b5d5e3af9b728",
+    "experiments/2026-10-07-wall-floor-boundary/annotation-sample.json": "e545f71d93b41388ddfd9c93c430a05317cd6ddafcc7f17a7f6d40b413dd674f",
+    "experiments/2026-10-05-ego-wall-map-probe/calibration/s2_camera_v3_extrinsic_v1.json": "dc3157dbf77d5df5ab7ee63145e5c2cf7f5e8c0fbfc2231dd60712e26bc77b8c"
+  },
+  "prediction_sha256": "ebde5b30e2989bec721d5b40d7e3538db6368bac90246548ffe317a0c7f2854f",
+  "frame_scores": [
+    {
+      "frame_id": 221,
+      "t": 12.3,
+      "fixed_points": 71,
+      "positive_points": 71,
+      "within4m": 58,
+      "baseline": {
+        "n": 71,
+        "median": 0.6762211779090105,
+        "p05": 0.6724677018359763,
+        "p90": 0.6818200632565511,
+        "p95": 0.6822322088139762
+      },
+      "candidate": {
+        "n": 71,
+        "median": 0.7848910566738064,
+        "p05": 0.685103862595783,
+        "p90": 0.7862182293426517,
+        "p95": 0.7880613775855632
+      }
+    },
+    {
+      "frame_id": 417,
+      "t": 22.1,
+      "fixed_points": 80,
+      "positive_points": 80,
+      "within4m": 80,
+      "baseline": {
+        "n": 80,
+        "median": 0.4590524267916155,
+        "p05": 0.4294345679915369,
+        "p90": 0.48453656901046815,
+        "p95": 0.48766016190982897
+      },
+      "candidate": {
+        "n": 80,
+        "median": 0.5414804049640404,
+        "p05": 0.497088341715568,
+        "p90": 0.5645531782789935,
+        "p95": 0.5673786154751304
+      }
+    },
+    {
+      "frame_id": 613,
+      "t": 31.9,
+      "fixed_points": 78,
+      "positive_points": 78,
+      "within4m": 78,
+      "baseline": {
+        "n": 78,
+        "median": 0.4757025441094037,
+        "p05": 0.4577638298026375,
+        "p90": 0.4903433392977889,
+        "p95": 0.4924183389383927
+      },
+      "candidate": {
+        "n": 78,
+        "median": 0.5578103973162917,
+        "p05": 0.54053721007715,
+        "p90": 0.5718970810203177,
+        "p95": 0.5739893020022783
+      }
+    },
+    {
+      "frame_id": 807,
+      "t": 41.6,
+      "fixed_points": 80,
+      "positive_points": 80,
+      "within4m": 80,
+      "baseline": {
+        "n": 80,
+        "median": 0.4646697114325632,
+        "p05": 0.4383811875645334,
+        "p90": 0.48887278396203665,
+        "p95": 0.49345432577587484
+      },
+      "candidate": {
+        "n": 80,
+        "median": 0.545168740012579,
+        "p05": 0.5186727295508838,
+        "p90": 0.56955231948421,
+        "p95": 0.5756693423226366
+      }
+    },
+    {
+      "frame_id": 1003,
+      "t": 51.4,
+      "fixed_points": 78,
+      "positive_points": 78,
+      "within4m": 78,
+      "baseline": {
+        "n": 78,
+        "median": 0.5400645420636384,
+        "p05": 0.5116945903918956,
+        "p90": 0.5681274663956374,
+        "p95": 0.5706986684378383
+      },
+      "candidate": {
+        "n": 78,
+        "median": 0.6189542721715758,
+        "p05": 0.5894376881020505,
+        "p90": 0.6490790949400155,
+        "p95": 0.6530056665799989
+      }
+    },
+    {
+      "frame_id": 1247,
+      "t": 63.6,
+      "fixed_points": 0,
+      "positive_points": 0,
+      "within4m": 0,
+      "baseline": {
+        "n": 0,
+        "median": null,
+        "p05": null,
+        "p90": null,
+        "p95": null
+      },
+      "candidate": {
+        "n": 0,
+        "median": null,
+        "p05": null,
+        "p90": null,
+        "p95": null
+      }
+    }
+  ]
+}

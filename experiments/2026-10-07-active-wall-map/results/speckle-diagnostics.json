@@ -1,0 +1,73 @@
+{
+  "case": "speckle",
+  "source_sha": "bd0a30c554fbc59165995e162f7e23eb5c6dc7e4",
+  "gt_body_contacts": {
+    "n": 8893,
+    "correct": 4266,
+    "precision": 0.4797031372989992,
+    "median_m": 0.15229830352212184,
+    "rmse_m": 0.36171809720777287
+  },
+  "actual_camera_contacts": {
+    "n": 8893,
+    "correct": 4015,
+    "precision": 0.45147869110536376,
+    "median_m": 0.1539948104024819,
+    "rmse_m": 0.351888835524249
+  },
+  "pitch": {
+    "n": 740,
+    "median_abs_deg": 0.12562014957328588,
+    "p95_abs_deg": 0.1269404681892051
+  },
+  "online_uncertainty": {
+    "n": 740,
+    "error_over_3sigma": 599,
+    "max_sigma_xy_m": 0.11470632402930116,
+    "online_rmse_m": 0.14395068557751842
+  },
+  "information": {
+    "decisions": 14,
+    "uncertain": 0,
+    "selected": {
+      "frontier": 2,
+      "null": 12
+    },
+    "revisit_reached": 0
+  },
+  "navigation": {
+    "frontier_selected": 6,
+    "planner_failed": 5,
+    "recovery_context_clear": 3,
+    "context_clear_planner": 3,
+    "costmap_rebuilt_persistent_reapplied": 4,
+    "recovery_success": 4,
+    "recovery_clear": 1,
+    "recovery_spin": 1,
+    "ABORTED_unreachable": 1,
+    "exploration_finished_no_frontier": 13
+  },
+  "frame_status": {
+    "public_frontier": 90,
+    "no_path": 10,
+    "exploration_finished": 580,
+    "navigation_stopped": 60
+  },
+  "frontend": {
+    "bootstrap": 1,
+    "keyframe_interval": 544,
+    "insufficient_match_points": 5,
+    "high_residual": 2,
+    "improved_proposal": 134
+  },
+  "doors": {
+    "candidate_rows": 1,
+    "candidate_frames": 1,
+    "feasible_rows": 0,
+    "reasons": {
+      "free_connection_unknown": 1
+    },
+    "qualification": "No eligible door means zero measured wrong-door attempts is not passage validation."
+  },
+  "qualification": "Post-seal GT diagnostics only; repeated-frame samples are not independent; no fitted thresholds."
+}

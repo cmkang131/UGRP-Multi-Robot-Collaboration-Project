@@ -1,0 +1,2287 @@
+{
+  "round": "egomap66",
+  "host": "oracle-x86",
+  "source_sha": "af2eaa43ce35c6508bd0dc2b57fb59fc6b4f45ac",
+  "registered": 36,
+  "conditions": {
+    "baseline": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "RECORDED": 5,
+        "PHYSICAL_FAILURE": 1
+      },
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 13611,
+      "over3_frames": 9353,
+      "commands": {
+        "turn": 8163,
+        "forward": 3904,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 1544
+      },
+      "turn_fraction": 0.5997355080449637,
+      "turn_reversals": 1271,
+      "match_accepted": 12,
+      "match_attempts": 139,
+      "visual_gate_failures": {
+        "outside_20cm": 5433,
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "final_error_median": 0.5050521480957121,
+      "over3_rate": 0.6871647931819852,
+      "return_pulse_reasons": {
+        "shared_v145": 6836,
+        "calibrated_pulse": 4,
+        "zero_or_blocked": 1
+      },
+      "near_visual_reasons": {
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "match_event_rejections": {
+        "search_boundary": 24,
+        "ambiguous_modes": 33,
+        "unobservable": 59,
+        "high_residual": 7,
+        "low_overlap": 4
+      },
+      "candidate_accepted": 12,
+      "candidate_trials": 139
+    },
+    "progress_lookahead": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "RECORDED": 5,
+        "PHYSICAL_FAILURE": 1
+      },
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 13484,
+      "over3_frames": 6272,
+      "commands": {
+        "turn": 7039,
+        "forward": 3368,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 3077
+      },
+      "turn_fraction": 0.5220261050133491,
+      "turn_reversals": 762,
+      "match_accepted": 13,
+      "match_attempts": 126,
+      "visual_gate_failures": {
+        "outside_20cm": 3695,
+        "unconfirmed": 875,
+        "no_current_patch": 2143,
+        "current_evidence": 16
+      },
+      "final_error_median": 0.2776688715221438,
+      "over3_rate": 0.4651438742212993,
+      "return_pulse_reasons": {
+        "shared_v145": 6750,
+        "calibrated_pulse": 4,
+        "zero_or_blocked": 1
+      },
+      "near_visual_reasons": {
+        "unconfirmed": 875,
+        "no_current_patch": 2143,
+        "current_evidence": 16
+      },
+      "match_event_rejections": {
+        "unobservable": 55,
+        "low_overlap": 1,
+        "high_residual": 6,
+        "search_boundary": 33,
+        "ambiguous_modes": 16,
+        "insufficient_points": 2
+      },
+      "candidate_accepted": 13,
+      "candidate_trials": 134
+    },
+    "return_local_vtr": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "RECORDED": 6
+      },
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 0,
+      "robot_contacts": 0,
+      "frames": 14876,
+      "over3_frames": 8769,
+      "commands": {
+        "turn": 3780,
+        "forward": 1601,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 9495
+      },
+      "turn_fraction": 0.25410056466792147,
+      "turn_reversals": 923,
+      "match_accepted": 3,
+      "match_attempts": 164,
+      "visual_gate_failures": {
+        "outside_20cm": 5433,
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "final_error_median": 0.4832091260712017,
+      "over3_rate": 0.5894729766066147,
+      "return_pulse_reasons": {
+        "repeat_localization_wait": 7950,
+        "shared_v145": 150,
+        "calibrated_pulse": 4,
+        "zero_or_blocked": 2
+      },
+      "near_visual_reasons": {
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "match_event_rejections": {
+        "unobservable": 26,
+        "ambiguous_modes": 82,
+        "high_residual": 27,
+        "low_overlap": 22,
+        "search_boundary": 4
+      },
+      "candidate_accepted": 11,
+      "candidate_trials": 737
+    },
+    "return_own_free_astar": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "RECORDED": 6
+      },
+      "B_arrived": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 0,
+      "robot_contacts": 0,
+      "frames": 14876,
+      "over3_frames": 8361,
+      "commands": {
+        "turn": 4156,
+        "forward": 1883,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 8837
+      },
+      "turn_fraction": 0.2793761763915031,
+      "turn_reversals": 1033,
+      "match_accepted": 1,
+      "match_attempts": 164,
+      "visual_gate_failures": {
+        "outside_20cm": 5433,
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "final_error_median": 0.3712086332197674,
+      "over3_rate": 0.5620462489916644,
+      "return_pulse_reasons": {
+        "no_observed_free_path": 7292,
+        "calibrated_pulse": 4,
+        "shared_v145": 808,
+        "zero_or_blocked": 2
+      },
+      "near_visual_reasons": {
+        "no_current_patch": 822,
+        "unconfirmed": 491,
+        "current_evidence": 24
+      },
+      "match_event_rejections": {
+        "search_boundary": 46,
+        "unobservable": 61,
+        "ambiguous_modes": 29,
+        "high_residual": 22,
+        "low_overlap": 5
+      },
+      "candidate_accepted": 1,
+      "candidate_trials": 164
+    },
+    "arrival_verify_fsm": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "RECORDED": 6
+      },
+      "B_arrived": 0,
+      "returned": 0,
+      "false_declarations": 0,
+      "wall_contacts": 0,
+      "robot_contacts": 0,
+      "frames": 16206,
+      "over3_frames": 11041,
+      "commands": {
+        "turn": 8981,
+        "forward": 4116,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 3109
+      },
+      "turn_fraction": 0.5541774651363692,
+      "turn_reversals": 1357,
+      "match_accepted": 11,
+      "match_attempts": 163,
+      "visual_gate_failures": {
+        "outside_20cm": 6895,
+        "no_current_patch": 1193,
+        "unconfirmed_or_other_B": 12
+      },
+      "final_error_median": 0.32964805611037484,
+      "over3_rate": 0.6812908799210169,
+      "return_pulse_reasons": {
+        "shared_v145": 8101,
+        "calibrated_pulse": 5
+      },
+      "near_visual_reasons": {
+        "no_current_patch": 1193,
+        "unconfirmed_or_other_B": 12
+      },
+      "match_event_rejections": {
+        "search_boundary": 31,
+        "ambiguous_modes": 35,
+        "unobservable": 75,
+        "low_overlap": 6,
+        "high_residual": 5
+      },
+      "candidate_accepted": 11,
+      "candidate_trials": 163
+    },
+    "combined": {
+      "registered": 6,
+      "attempts": 6,
+      "measured": 6,
+      "statuses": {
+        "RECORDED": 5,
+        "PHYSICAL_FAILURE": 1
+      },
+      "B_arrived": 0,
+      "returned": 0,
+      "false_declarations": 2,
+      "wall_contacts": 1,
+      "robot_contacts": 0,
+      "frames": 12366,
+      "over3_frames": 3266,
+      "commands": {
+        "turn": 1638,
+        "forward": 2277,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 8451
+      },
+      "turn_fraction": 0.1324599708879185,
+      "turn_reversals": 276,
+      "match_accepted": 25,
+      "match_attempts": 92,
+      "visual_gate_failures": {
+        "outside_20cm": 7100,
+        "unconfirmed_or_other_B": 697,
+        "no_current_patch": 18
+      },
+      "final_error_median": 0.30959291023018354,
+      "over3_rate": 0.26411127284489727,
+      "return_pulse_reasons": {
+        "shared_v145": 601,
+        "no_observed_free_path": 3945,
+        "calibrated_pulse": 5
+      },
+      "near_visual_reasons": {
+        "unconfirmed_or_other_B": 697,
+        "no_current_patch": 18
+      },
+      "match_event_rejections": {
+        "unobservable": 16,
+        "insufficient_points": 20,
+        "low_overlap": 1,
+        "ambiguous_modes": 30
+      },
+      "candidate_accepted": 25,
+      "candidate_trials": 196
+    }
+  },
+  "runs": [
+    {
+      "seed": 63001,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2287,
+      "final_error_m": 1.6608683293284388,
+      "final_sigma_m": 0.09203801656723937,
+      "final_error_sigma": 18.045459814044055,
+      "final_return_distance_m": 2.6569041605635277,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 1.6599877743863476,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.1781140861466822,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63001-baseline",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63001-baseline",
+      "result_sha256": "97d9d8ee77d6561e091fb41885c3f786ee336ae79c1d0ebab6f8a2cc3b276657",
+      "raw_manifest_sha256": "5838e352864fd3bd4169725636bc1a294491b6e566cf03f1d60e63d89332199a",
+      "arrival_gates_sha256": "921b16d66f96fdffde938be12390f230e789527987af9b9b3f52eecc7c925f9e",
+      "command_audit": {
+        "counts": {
+          "turn": 1770,
+          "forward": 734,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 197
+        },
+        "turn_fraction": 0.655312847093669,
+        "turn_sign_reversals": 287
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 306,
+        "samples": 1718,
+        "recorded_arc_m": 7.5644297131039435,
+        "route_m": 44.786855938126244,
+        "arc_fraction_lower_bound": 0.1688984313512501,
+        "GT_remaining_start_m": 2.6569041605635277,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63001,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 690,
+      "final_error_m": 0.2833971732760529,
+      "final_sigma_m": 0.048913891171609665,
+      "final_error_sigma": 5.793797354657009,
+      "final_return_distance_m": 2.0930899108737298,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 1.0640172411717774,
+      "match_accepted": 4,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.02677532013969732,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63001-progress_lookahead",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63001-progress_lookahead",
+      "result_sha256": "2b145854b02cc8ae6941780c0e6111f2912470673cfa9488768eafd9832f6080",
+      "raw_manifest_sha256": "7f9d2ebfe1ef21aefc3b17abd314e6009b94dc20fae1fddd5c087dc116231c10",
+      "arrival_gates_sha256": "d184c9841dd7fe853aa1319963904a19529861ecca2a225d23ec8eb9ae64e428",
+      "command_audit": {
+        "counts": {
+          "turn": 1803,
+          "forward": 758,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 140
+        },
+        "turn_fraction": 0.6675305442428731,
+        "turn_sign_reversals": 211
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 46,
+        "samples": 1718,
+        "recorded_arc_m": 0.8243241626258403,
+        "route_m": 40.77404406889462,
+        "arc_fraction_lower_bound": 0.02021688506622021,
+        "GT_remaining_start_m": 2.0930899108737298,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63001,
+      "condition": "return_local_vtr",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2287,
+      "final_error_m": 1.5124346465651588,
+      "final_sigma_m": 0.1583261513155376,
+      "final_error_sigma": 9.552652129785798,
+      "final_return_distance_m": 2.771845776538353,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 1.6599877743863476,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.004074505238649592,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63001-return_local_vtr",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63001-return_local_vtr",
+      "result_sha256": "62cb4d72d42e382a5b2ae94382017ada2b20dd576920903024423d19b650ae03",
+      "raw_manifest_sha256": "a2be727f0121e5a43ec44bc460165fea9f32f3a73fb6600163f0c0c04132166b",
+      "arrival_gates_sha256": "921b16d66f96fdffde938be12390f230e789527987af9b9b3f52eecc7c925f9e",
+      "command_audit": {
+        "counts": {
+          "turn": 931,
+          "forward": 273,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1497
+        },
+        "turn_fraction": 0.344687152906331,
+        "turn_sign_reversals": 227
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 7,
+        "samples": 1718,
+        "recorded_arc_m": 0.19095498614257944,
+        "route_m": 44.786855938126244,
+        "arc_fraction_lower_bound": 0.00426363901065944,
+        "GT_remaining_start_m": 2.771845776538353,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63001,
+      "condition": "return_own_free_astar",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2287,
+      "final_error_m": 1.8404377286424123,
+      "final_sigma_m": 0.1731681447214412,
+      "final_error_sigma": 10.62803861300787,
+      "final_return_distance_m": 2.9418054808125857,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 1.6599877743863476,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63001-return_own_free_astar",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63001-return_own_free_astar",
+      "result_sha256": "8baec702837c636b83dbbe5fa7fb96613fca342e0e86b5037742891f4420b7b9",
+      "raw_manifest_sha256": "cf176b20b4bb2904164f59d7f8ef7f3039766f540c567992ab73fe989cc29cc2",
+      "arrival_gates_sha256": "921b16d66f96fdffde938be12390f230e789527987af9b9b3f52eecc7c925f9e",
+      "command_audit": {
+        "counts": {
+          "turn": 894,
+          "forward": 260,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1547
+        },
+        "turn_fraction": 0.3309885227693447,
+        "turn_sign_reversals": 225
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 0,
+        "samples": 1718,
+        "recorded_arc_m": 0,
+        "route_m": 44.786855938126244,
+        "arc_fraction_lower_bound": 0.0,
+        "GT_remaining_start_m": 2.9418054808125857,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63001,
+      "condition": "arrival_verify_fsm",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2287,
+      "final_error_m": 1.6608683293284388,
+      "final_sigma_m": 0.09203801656723937,
+      "final_error_sigma": 18.045459814044055,
+      "final_return_distance_m": 2.6569041605635277,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 1.6599877743863476,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.1781140861466822,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63001-arrival_verify_fsm",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63001-arrival_verify_fsm",
+      "result_sha256": "10b5f768a291e2edd8a5b0343ecfc342243de20ea723f25fe3f1455573d342ea",
+      "raw_manifest_sha256": "c0f07318a3413a0ed85891beae7d82fddc0f7da1bdf1513e9571c9b3b263a588",
+      "arrival_gates_sha256": "921b16d66f96fdffde938be12390f230e789527987af9b9b3f52eecc7c925f9e",
+      "command_audit": {
+        "counts": {
+          "turn": 1770,
+          "forward": 734,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 197
+        },
+        "turn_fraction": 0.655312847093669,
+        "turn_sign_reversals": 287
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 306,
+        "samples": 1718,
+        "recorded_arc_m": 7.5644297131039435,
+        "route_m": 44.786855938126244,
+        "arc_fraction_lower_bound": 0.1688984313512501,
+        "GT_remaining_start_m": 2.6569041605635277,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63001,
+      "condition": "combined",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 179,
+      "final_error_m": 0.1531863468807974,
+      "final_sigma_m": 0.06775768344267946,
+      "final_error_sigma": 2.260796696368575,
+      "final_return_distance_m": 1.81118302486577,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 1.0640172411717774,
+      "match_accepted": 1,
+      "match_attempts": 28,
+      "legacy_cursor_ratio": 0.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63001-combined",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63001-combined",
+      "result_sha256": "4e93fc741a7f0f66dcceefde2a010adaa18b4a76ef6ae38bb95904f748327a68",
+      "raw_manifest_sha256": "46c57d499f79ddd636bf5db009af14f91e4bb3ee252a37aa612adada0a1c9f36",
+      "arrival_gates_sha256": "d184c9841dd7fe853aa1319963904a19529861ecca2a225d23ec8eb9ae64e428",
+      "command_audit": {
+        "counts": {
+          "turn": 741,
+          "forward": 575,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1385
+        },
+        "turn_fraction": 0.2743428359866716,
+        "turn_sign_reversals": 102
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 0,
+        "samples": 1718,
+        "recorded_arc_m": 0,
+        "route_m": 40.77404406889462,
+        "arc_fraction_lower_bound": 0.0,
+        "GT_remaining_start_m": 1.81118302486577,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "baseline",
+      "status": "PHYSICAL_FAILURE",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "samples": 1436,
+      "over_3sigma": 217,
+      "final_error_m": 0.41216594597439293,
+      "final_sigma_m": 0.10721606367255009,
+      "final_error_sigma": 3.8442555327641394,
+      "final_return_distance_m": 3.3960898079937456,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 17.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 1,
+      "match_attempts": 2,
+      "legacy_cursor_ratio": 0.00649772579597141,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63002-baseline",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63002-baseline",
+      "result_sha256": "4894c1a1f769b4f12f3d710c89005dc9b8e5662fc07e9502cf316b95992315f0",
+      "raw_manifest_sha256": "76c0e7f4bc98be5e86a34bd5101a5162707c57b996f8961c7e6bad54fa9ae712",
+      "arrival_gates_sha256": "18b16b04f846e5c2f2746532307b6c4cd0f8d92b9f00837c92f0dd2a27c35fa6",
+      "command_audit": {
+        "counts": {
+          "turn": 492,
+          "forward": 323,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 621
+        },
+        "turn_fraction": 0.3426183844011142,
+        "turn_sign_reversals": 141
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 10,
+        "samples": 1539,
+        "recorded_arc_m": 0.10770593371530361,
+        "route_m": 23.781275579871185,
+        "arc_fraction_lower_bound": 0.00452902256456199,
+        "GT_remaining_start_m": 3.3960898079937456,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 1634,
+      "over_3sigma": 382,
+      "final_error_m": 0.2719405697682348,
+      "final_sigma_m": 0.18023217645813272,
+      "final_error_sigma": 1.5088347436752259,
+      "final_return_distance_m": 1.6950399931299032,
+      "approach_sim_s": 56.6,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.2648305084745763,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63002-progress_lookahead",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63002-progress_lookahead",
+      "result_sha256": "ab3d283d4f6946e41a5d9224a6f2dac0d8328e3eb36280ee129588c1d5c89237",
+      "raw_manifest_sha256": "6e6ce5ac2f464cba509c8e136dc05a5d00c667a87d521e95ab6dfbe2e1e96e68",
+      "arrival_gates_sha256": "e3517746b923f15a6cc825f4b6066f39a508dafda83b9adc96a976bb7abca27a",
+      "command_audit": {
+        "counts": {
+          "turn": 1021,
+          "forward": 611,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 2
+        },
+        "turn_fraction": 0.6248470012239902,
+        "turn_sign_reversals": 103
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 125,
+        "samples": 472,
+        "recorded_arc_m": 2.257656989954323,
+        "route_m": 10.996008785121429,
+        "arc_fraction_lower_bound": 0.2053160409447046,
+        "GT_remaining_start_m": 1.6950399931299032,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "return_local_vtr",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 191,
+      "final_error_m": 0.07745935781852523,
+      "final_sigma_m": 0.08886676555116255,
+      "final_error_sigma": 0.8716347144864879,
+      "final_return_distance_m": 3.416116817368702,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.001299545159194282,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63002-return_local_vtr",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63002-return_local_vtr",
+      "result_sha256": "0fc4ebefd43c8a5af1367c70cfa75223ac6d48fa58ab7e027e0c8027167b88f1",
+      "raw_manifest_sha256": "9be374a0e276aab2aadb690c827acaa2bd70fce8a46af181330be43e8dec7156",
+      "arrival_gates_sha256": "18b16b04f846e5c2f2746532307b6c4cd0f8d92b9f00837c92f0dd2a27c35fa6",
+      "command_audit": {
+        "counts": {
+          "turn": 446,
+          "forward": 283,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1972
+        },
+        "turn_fraction": 0.16512402813772678,
+        "turn_sign_reversals": 139
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 2,
+        "samples": 1539,
+        "recorded_arc_m": 0.025846827546334338,
+        "route_m": 23.781275579871185,
+        "arc_fraction_lower_bound": 0.0010868562310514356,
+        "GT_remaining_start_m": 3.416116817368702,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "return_own_free_astar",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 207,
+      "final_error_m": 0.12381005618265167,
+      "final_sigma_m": 0.124949553203334,
+      "final_error_sigma": 0.990880343374834,
+      "final_return_distance_m": 2.084648185863708,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63002-return_own_free_astar",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63002-return_own_free_astar",
+      "result_sha256": "e8ea40381b75e720b3166076b85d4510f77b992e8977ec6d0fcd65e33c0fd641",
+      "raw_manifest_sha256": "a48c0da63a0adbe42a5a97a125255016b47902f1ac762a67b8dae2b5bc0dea11",
+      "arrival_gates_sha256": "18b16b04f846e5c2f2746532307b6c4cd0f8d92b9f00837c92f0dd2a27c35fa6",
+      "command_audit": {
+        "counts": {
+          "turn": 562,
+          "forward": 392,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1747
+        },
+        "turn_fraction": 0.20807108478341355,
+        "turn_sign_reversals": 177
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 0,
+        "samples": 1539,
+        "recorded_arc_m": 0,
+        "route_m": 23.781275579871185,
+        "arc_fraction_lower_bound": 0.0,
+        "GT_remaining_start_m": 2.084648185863708,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "arrival_verify_fsm",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 1361,
+      "final_error_m": 0.11639343633863625,
+      "final_sigma_m": 0.09545478181783129,
+      "final_error_sigma": 1.219356789906711,
+      "final_return_distance_m": 2.2975384377732873,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 2,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.6016894087069525,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63002-arrival_verify_fsm",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63002-arrival_verify_fsm",
+      "result_sha256": "f4be43227c72aa2d04e701d3e8f1514ef5502720b54b1a3c179a4b41e93fc571",
+      "raw_manifest_sha256": "bb4c5a82e2aef013abbc736123c78c60c7e6aa8d09b782d8784b8ce5cc2ba843",
+      "arrival_gates_sha256": "1042c08870580a2b759b3cd3ac42743fef8f69e7a350c40a5e892e11e20c7d72",
+      "command_audit": {
+        "counts": {
+          "turn": 1322,
+          "forward": 674,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 705
+        },
+        "turn_fraction": 0.4894483524620511,
+        "turn_sign_reversals": 211
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 926,
+        "samples": 1539,
+        "recorded_arc_m": 5.131872060429619,
+        "route_m": 22.515664995249306,
+        "arc_fraction_lower_bound": 0.22792451662042487,
+        "GT_remaining_start_m": 2.2975384377732873,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63002,
+      "condition": "combined",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 1,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 1597,
+      "over_3sigma": 0,
+      "final_error_m": 0.2842333815835049,
+      "final_sigma_m": 0.23242100277364913,
+      "final_error_sigma": 1.2229246849103177,
+      "final_return_distance_m": 0.510199041341202,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 49.19999999999999,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 5,
+      "legacy_cursor_ratio": 1.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63002-combined",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63002-combined",
+      "result_sha256": "5afe6f45ca4eb51d784376c6770976feaa681cf9d7ed7c28ad4d6261d5954548",
+      "raw_manifest_sha256": "fa56b7b188609cb70d4c8b7002c5b71739995df9999943a68c2b90a3835edd5d",
+      "arrival_gates_sha256": "cd077458b55d679b6840cfc94ccb676cb3ea1a02cff8501cc0ce6d68e7b02c4f",
+      "command_audit": {
+        "counts": {
+          "turn": 92,
+          "forward": 447,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1058
+        },
+        "turn_fraction": 0.057608015028177834,
+        "turn_sign_reversals": 31
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 1539,
+        "samples": 1539,
+        "recorded_arc_m": 11.674377742682225,
+        "route_m": 11.674377742682225,
+        "arc_fraction_lower_bound": 1.0,
+        "GT_remaining_start_m": 0.510199041341202,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2201,
+      "over_3sigma": 1748,
+      "final_error_m": 0.8198801004914216,
+      "final_sigma_m": 0.07629310177731988,
+      "final_error_sigma": 10.746451270056403,
+      "final_return_distance_m": 2.0452823478687687,
+      "approach_sim_s": 170.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 5,
+      "match_attempts": 28,
+      "legacy_cursor_ratio": 0.407244785949506,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63003-baseline",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63003-baseline",
+      "result_sha256": "84e5348f90d9528bff0abc6f51a4000b86f19c1d16324964a04be3a01254c38e",
+      "raw_manifest_sha256": "8e0c2c30f1c7001bd2b5fdd82a02ff0113a486fd26db0f580cd151dd58e27220",
+      "arrival_gates_sha256": "de255ce32ea0635ddbdd7605e10e80745558a0701c15e5bd0786054cff8381d9",
+      "command_audit": {
+        "counts": {
+          "turn": 1421,
+          "forward": 709,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 71
+        },
+        "turn_fraction": 0.6456156292594275,
+        "turn_sign_reversals": 201
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 371,
+        "samples": 911,
+        "recorded_arc_m": 7.650331409358539,
+        "route_m": 22.27580732552657,
+        "arc_fraction_lower_bound": 0.34343677414518553,
+        "GT_remaining_start_m": 2.0452823478687687,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 295,
+      "final_error_m": 0.15967285289624808,
+      "final_sigma_m": 0.06197142722432987,
+      "final_error_sigma": 2.5765560040799063,
+      "final_return_distance_m": 3.185988446530479,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 4,
+      "match_attempts": 23,
+      "legacy_cursor_ratio": 0.4181431608788094,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63003-progress_lookahead",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63003-progress_lookahead",
+      "result_sha256": "e511d5dbcaf806dc695750cbaaafcede85a9caae98babf3433ea297272f71bb1",
+      "raw_manifest_sha256": "5e46fdbd412314a57e8b80c3af37af8d6d65f7e801a81f107d82171f1f0ad768",
+      "arrival_gates_sha256": "c94f38f6a10db03dfdb70983d7b2bed545b029fc6acb5c5c706de31ef9c33cae",
+      "command_audit": {
+        "counts": {
+          "turn": 1169,
+          "forward": 553,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 979
+        },
+        "turn_fraction": 0.43280266567937803,
+        "turn_sign_reversals": 111
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 590,
+        "samples": 1411,
+        "recorded_arc_m": 0.13046685407200642,
+        "route_m": 7.775090712884964,
+        "arc_fraction_lower_bound": 0.016780106996796235,
+        "GT_remaining_start_m": 3.185988446530479,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "return_local_vtr",
+      "status": "RECORDED",
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2201,
+      "over_3sigma": 1783,
+      "final_error_m": 0.5758226689296343,
+      "final_sigma_m": 0.12961274796849617,
+      "final_error_sigma": 4.44263915359309,
+      "final_return_distance_m": 2.9308962498162394,
+      "approach_sim_s": 170.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 28,
+      "legacy_cursor_ratio": 0.0043907793633369925,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63003-return_local_vtr",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63003-return_local_vtr",
+      "result_sha256": "b2d55be3452a34e826eaf7e62287ae0070583766f3e53f0834aee022ce3165d8",
+      "raw_manifest_sha256": "df46db3b375fc04ef79163c0b9fe97ee05928dd543282ba25ea2e408154a7b36",
+      "arrival_gates_sha256": "de255ce32ea0635ddbdd7605e10e80745558a0701c15e5bd0786054cff8381d9",
+      "command_audit": {
+        "counts": {
+          "turn": 521,
+          "forward": 259,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1421
+        },
+        "turn_fraction": 0.23671058609722853,
+        "turn_sign_reversals": 125
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 4,
+        "samples": 911,
+        "recorded_arc_m": 0.011282517397125002,
+        "route_m": 22.27580732552657,
+        "arc_fraction_lower_bound": 0.0005064919637815325,
+        "GT_remaining_start_m": 2.9308962498162394,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "return_own_free_astar",
+      "status": "RECORDED",
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2201,
+      "over_3sigma": 1675,
+      "final_error_m": 0.35182168322676566,
+      "final_sigma_m": 0.09759339281287394,
+      "final_error_sigma": 3.604974405402119,
+      "final_return_distance_m": 2.2065663681847196,
+      "approach_sim_s": 170.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 28,
+      "legacy_cursor_ratio": 0.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63003-return_own_free_astar",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63003-return_own_free_astar",
+      "result_sha256": "478670753de71f67b14b16630f96104d6c27c41080fa68da3ebfe4aee645b0e9",
+      "raw_manifest_sha256": "20345a91098cfc2f330039b9cb1b061f41e09e99c40cae04e726a612c3abee38",
+      "arrival_gates_sha256": "de255ce32ea0635ddbdd7605e10e80745558a0701c15e5bd0786054cff8381d9",
+      "command_audit": {
+        "counts": {
+          "turn": 629,
+          "forward": 319,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1253
+        },
+        "turn_fraction": 0.28577919127669243,
+        "turn_sign_reversals": 157
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 0,
+        "samples": 911,
+        "recorded_arc_m": 0,
+        "route_m": 22.27580732552657,
+        "arc_fraction_lower_bound": 0.0,
+        "GT_remaining_start_m": 2.2065663681847196,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "arrival_verify_fsm",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2126,
+      "final_error_m": 0.44806336506144373,
+      "final_sigma_m": 0.06507252305966214,
+      "final_error_sigma": 6.885600004331076,
+      "final_return_distance_m": 1.4266179961819974,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 3,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.7101346562721474,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63003-arrival_verify_fsm",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63003-arrival_verify_fsm",
+      "result_sha256": "daba48052ad4b871e7375486a33d09bfbf61f52fe78b62c9aa94f07c105838bf",
+      "raw_manifest_sha256": "c59a837a0671ab0b4c8a41f532b65372d0eeb0f263a77e566817e4c27517d783",
+      "arrival_gates_sha256": "4eb2ef7fd0d548b1b74e479c79e72e0db3c6154f9cec46d9f9be530c1525bd71",
+      "command_audit": {
+        "counts": {
+          "turn": 1311,
+          "forward": 715,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 675
+        },
+        "turn_fraction": 0.48537578674564974,
+        "turn_sign_reversals": 218
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 1002,
+        "samples": 1411,
+        "recorded_arc_m": 6.9581467386588525,
+        "route_m": 18.742434142075297,
+        "arc_fraction_lower_bound": 0.37125096377094147,
+        "GT_remaining_start_m": 1.4266179961819974,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63003,
+      "condition": "combined",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 0,
+      "final_error_m": 0.5961901946625904,
+      "final_sigma_m": 0.25048314543099015,
+      "final_error_sigma": 2.3801609231501963,
+      "final_return_distance_m": 3.3119439497458747,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63003-combined",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63003-combined",
+      "result_sha256": "4a20efe9809244a00c474f4cc418773d77fa3657355ac7079a538313df548146",
+      "raw_manifest_sha256": "131e63eb5a5187611ace4d6c4b907efaeb715fd3de68bd47676326b36730bdec",
+      "arrival_gates_sha256": "fd1064d026bdf0a529acff86d82d66c19618c40438ad830f186c3aa08b3caa49",
+      "command_audit": {
+        "counts": {
+          "turn": 55,
+          "forward": 245,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 2401
+        },
+        "turn_fraction": 0.020362828582006665,
+        "turn_sign_reversals": 21
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 0,
+        "samples": 1411,
+        "recorded_arc_m": 0,
+        "route_m": 11.688570059708441,
+        "arc_fraction_lower_bound": 0.0,
+        "GT_remaining_start_m": 3.3119439497458747,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2424,
+      "final_error_m": 0.5979383502170312,
+      "final_sigma_m": 0.08534221282869446,
+      "final_error_sigma": 7.006360983599754,
+      "final_return_distance_m": 3.4082135151612225,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 2.3553208497129594,
+      "match_accepted": 2,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.4246411483253589,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63004-baseline",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63004-baseline",
+      "result_sha256": "12d6aec9966faa69777fd03ded6ff249f37c7eb04e0bbad2fb101f93424df7be",
+      "raw_manifest_sha256": "54291753d239414fee114ca834a1b8386182e973f0ae332aa95017c7c594d6d2",
+      "arrival_gates_sha256": "d91d87a09658d3b05a7518d20be53dcdf616ac34b545ed4bbdae9b478d8ca6f0",
+      "command_audit": {
+        "counts": {
+          "turn": 1413,
+          "forward": 864,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 424
+        },
+        "turn_fraction": 0.5231395779340985,
+        "turn_sign_reversals": 229
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 710,
+        "samples": 1672,
+        "recorded_arc_m": 8.837343009131748,
+        "route_m": 34.94007857162981,
+        "arc_fraction_lower_bound": 0.2529285385267387,
+        "GT_remaining_start_m": 3.4082135151612225,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2600,
+      "final_error_m": 0.4943287611172836,
+      "final_sigma_m": 0.10944840405953442,
+      "final_error_sigma": 4.516546087308807,
+      "final_return_distance_m": 3.6801548610875527,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 2.3573961045611327,
+      "match_accepted": 1,
+      "match_attempts": 28,
+      "legacy_cursor_ratio": 0.33133971291866027,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63004-progress_lookahead",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63004-progress_lookahead",
+      "result_sha256": "fe04d789c3b08216ac7ab8fc20d252c9ec6b7871b04fa5b11b8e0cd93cd809c9",
+      "raw_manifest_sha256": "e2a839529910bcdfe2c0ab5a39e67aaa48b4d7cd6f821495ed387e26eb03fa26",
+      "arrival_gates_sha256": "01e074efa439f640ad8241f08a7ff773a0a7f61e125efc49368b534dd0036da9",
+      "command_audit": {
+        "counts": {
+          "turn": 1220,
+          "forward": 596,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 885
+        },
+        "turn_fraction": 0.45168456127360235,
+        "turn_sign_reversals": 126
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 554,
+        "samples": 1672,
+        "recorded_arc_m": 0.3388293874516315,
+        "route_m": 18.144417526608233,
+        "arc_fraction_lower_bound": 0.018674029461389352,
+        "GT_remaining_start_m": 3.6801548610875527,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "return_local_vtr",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2444,
+      "final_error_m": 0.6883712303618903,
+      "final_sigma_m": 0.18099064025386916,
+      "final_error_sigma": 3.8033526451773216,
+      "final_return_distance_m": 4.18800187160462,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 2.3553208497129594,
+      "match_accepted": 0,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.0005980861244019139,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63004-return_local_vtr",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63004-return_local_vtr",
+      "result_sha256": "2d04eaafa426b08286c492d5f3fd72f76de8574b5a3a061e79efcbbd6680e5f6",
+      "raw_manifest_sha256": "3afb5a5c50015458156cb99c4694a7cf102e59196c499e0495a164a411663e96",
+      "arrival_gates_sha256": "d91d87a09658d3b05a7518d20be53dcdf616ac34b545ed4bbdae9b478d8ca6f0",
+      "command_audit": {
+        "counts": {
+          "turn": 647,
+          "forward": 280,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1774
+        },
+        "turn_fraction": 0.23954091077378747,
+        "turn_sign_reversals": 171
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 1,
+        "samples": 1672,
+        "recorded_arc_m": 0.0028206293492813402,
+        "route_m": 34.94007857162981,
+        "arc_fraction_lower_bound": 8.072761895766308e-05,
+        "GT_remaining_start_m": 4.18800187160462,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "return_own_free_astar",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2444,
+      "final_error_m": 0.6883712303618903,
+      "final_sigma_m": 0.18099064025386916,
+      "final_error_sigma": 3.8033526451773216,
+      "final_return_distance_m": 4.18800187160462,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 2.3553208497129594,
+      "match_accepted": 0,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63004-return_own_free_astar",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63004-return_own_free_astar",
+      "result_sha256": "29de6335ae8c21fcaa7a5f879fa092b77441b48f0d5cd07cca0de0b77960eb2b",
+      "raw_manifest_sha256": "9b2509b446a836f16dc98ea383fce9f7a705e446c74b18a04447a02233b9c345",
+      "arrival_gates_sha256": "d91d87a09658d3b05a7518d20be53dcdf616ac34b545ed4bbdae9b478d8ca6f0",
+      "command_audit": {
+        "counts": {
+          "turn": 647,
+          "forward": 280,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1774
+        },
+        "turn_fraction": 0.23954091077378747,
+        "turn_sign_reversals": 171
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 0,
+        "samples": 1672,
+        "recorded_arc_m": 0,
+        "route_m": 34.94007857162981,
+        "arc_fraction_lower_bound": 0.0,
+        "GT_remaining_start_m": 4.18800187160462,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "arrival_verify_fsm",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2459,
+      "final_error_m": 0.39227962749523304,
+      "final_sigma_m": 0.05575108218203571,
+      "final_error_sigma": 7.036269290959783,
+      "final_return_distance_m": 3.5440759684928724,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 2.3553208497129594,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.43241626794258375,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63004-arrival_verify_fsm",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63004-arrival_verify_fsm",
+      "result_sha256": "a1605b9f7b6eb5f7bf35cf3bb04f39352989a9ecda95895427f6949f277c91f6",
+      "raw_manifest_sha256": "32a7e8db88078ce80f76ca2873fc44340e6f6be3825da46110ccc60201f9d743",
+      "arrival_gates_sha256": "aa1c965e303a3abe861f66ffdae1ec1324bfb3da3ea33b7bcd37a3bc76558f0c",
+      "command_audit": {
+        "counts": {
+          "turn": 1417,
+          "forward": 802,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 482
+        },
+        "turn_fraction": 0.5246205109218808,
+        "turn_sign_reversals": 218
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 723,
+        "samples": 1672,
+        "recorded_arc_m": 8.205216868859644,
+        "route_m": 33.62901014429357,
+        "arc_fraction_lower_bound": 0.24399222081331376,
+        "GT_remaining_start_m": 3.5440759684928724,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63004,
+      "condition": "combined",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 2628,
+      "final_error_m": 0.838332945151084,
+      "final_sigma_m": 0.18158161449961824,
+      "final_error_sigma": 4.6168382600918365,
+      "final_return_distance_m": 3.8649054920400046,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 2.3573961045611327,
+      "match_accepted": 24,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63004-combined",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63004-combined",
+      "result_sha256": "a488e87205d0865aa8a9ad306381c59d930e51ecebb10bd281f8505a632b5bc7",
+      "raw_manifest_sha256": "d24ba1272b000b5111bd807b03523c735975b920977e3c9f407b627c55b7e81f",
+      "arrival_gates_sha256": "7cddbf3a91f8e3d0445ffe0a928acf091d1e7f5d462b0e5ff0aeb27be9b8ea7b",
+      "command_audit": {
+        "counts": {
+          "turn": 111,
+          "forward": 275,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 2315
+        },
+        "turn_fraction": 0.0410958904109589,
+        "turn_sign_reversals": 19
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 0,
+        "samples": 1672,
+        "recorded_arc_m": 0,
+        "route_m": 17.452455322086834,
+        "arc_fraction_lower_bound": 0.0,
+        "GT_remaining_start_m": 3.8649054920400046,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 1789,
+      "final_error_m": 0.26701648472551665,
+      "final_sigma_m": 0.07114878240948472,
+      "final_error_sigma": 3.7529311912711125,
+      "final_return_distance_m": 2.2604074334758093,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 0.06599054996626008,
+      "match_accepted": 3,
+      "match_attempts": 28,
+      "legacy_cursor_ratio": 0.23357664233576642,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63005-baseline",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63005-baseline",
+      "result_sha256": "72c57bcdfc2b15d8d3f76493c3149512b2dc040e6aa2e7e6d14aa643eadf4470",
+      "raw_manifest_sha256": "8f0fa743106e6c89bd0f2c1de37ed65a6c90c75c51ad43d35120b542b6bccaa1",
+      "arrival_gates_sha256": "b95d5c2d68d3561b6ea44dfe2d3f78e8cd0943c72fa1c515871a28993736bb28",
+      "command_audit": {
+        "counts": {
+          "turn": 1922,
+          "forward": 552,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 227
+        },
+        "turn_fraction": 0.7115883006293965,
+        "turn_sign_reversals": 240
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 352,
+        "samples": 1507,
+        "recorded_arc_m": 6.644963740442841,
+        "route_m": 29.87915743276107,
+        "arc_fraction_lower_bound": 0.22239461589224588,
+        "GT_remaining_start_m": 2.2604074334758093,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "progress_lookahead",
+      "status": "PHYSICAL_FAILURE",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "samples": 1065,
+      "over_3sigma": 75,
+      "final_error_m": 0.3349524388768622,
+      "final_sigma_m": 0.07586252626185526,
+      "final_error_sigma": 4.415255533683446,
+      "final_return_distance_m": 1.8797496526082096,
+      "approach_sim_s": 212.8,
+      "return_sim_s": 0,
+      "B_nearest_boundary_distance_m": 2.0349871613233854,
+      "match_accepted": 0,
+      "match_attempts": 0,
+      "legacy_cursor_ratio": null,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63005-progress_lookahead",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63005-progress_lookahead",
+      "result_sha256": "ae7bcbf44ce761ca96649a55c6fc51c5bad99c30055b4a32a0c49a8e6fda578b",
+      "raw_manifest_sha256": "226ecbfba181f323a39bb07b1e1dfd1d3c49f397df4e51091bdd8d61ddcc911c",
+      "arrival_gates_sha256": "74d85b534e2050943ee7f55a013cac2834f4c612c3e3fff268040b4a1e84dd64",
+      "command_audit": {
+        "counts": {
+          "turn": 552,
+          "forward": 288,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 225
+        },
+        "turn_fraction": 0.5183098591549296,
+        "turn_sign_reversals": 74
+      },
+      "return_progress": null
+    },
+    {
+      "seed": 63005,
+      "condition": "return_local_vtr",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 1971,
+      "final_error_m": 0.2833693160220159,
+      "final_sigma_m": 0.07538209405212987,
+      "final_error_sigma": 3.759106450744844,
+      "final_return_distance_m": 1.836797393547207,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 0.06599054996626008,
+      "match_accepted": 2,
+      "match_attempts": 28,
+      "legacy_cursor_ratio": 0.0033178500331785005,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63005-return_local_vtr",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63005-return_local_vtr",
+      "result_sha256": "af2a7a3479ede4fd23a26b66a367e797d480af581424eebd7b84823c89830a14",
+      "raw_manifest_sha256": "e2c5bfb5624e6c7f9e447c6c2326a186a288dc9208fb65d72e0ce6e034b526fc",
+      "arrival_gates_sha256": "b95d5c2d68d3561b6ea44dfe2d3f78e8cd0943c72fa1c515871a28993736bb28",
+      "command_audit": {
+        "counts": {
+          "turn": 938,
+          "forward": 286,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1477
+        },
+        "turn_fraction": 0.34727878563495,
+        "turn_sign_reversals": 163
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 5,
+        "samples": 1507,
+        "recorded_arc_m": 0.09447955409357763,
+        "route_m": 29.87915743276107,
+        "arc_fraction_lower_bound": 0.003162055499931377,
+        "GT_remaining_start_m": 1.836797393547207,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "return_own_free_astar",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 1655,
+      "final_error_m": 0.1447114057872416,
+      "final_sigma_m": 0.0412750641662729,
+      "final_error_sigma": 3.5060249744079055,
+      "final_return_distance_m": 0.30878505323930217,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 0.06599054996626008,
+      "match_accepted": 0,
+      "match_attempts": 28,
+      "legacy_cursor_ratio": 0.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63005-return_own_free_astar",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63005-return_own_free_astar",
+      "result_sha256": "d8987f1d4dd288084073b696bf082e57bbf91de96143e84ed623646c4a8a335d",
+      "raw_manifest_sha256": "702c3171e05b9ecb1f2e754b95782db7fd5ee7342403305632b20ff542aa0ecb",
+      "arrival_gates_sha256": "b95d5c2d68d3561b6ea44dfe2d3f78e8cd0943c72fa1c515871a28993736bb28",
+      "command_audit": {
+        "counts": {
+          "turn": 1127,
+          "forward": 412,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1162
+        },
+        "turn_fraction": 0.4172528693076638,
+        "turn_sign_reversals": 205
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 0,
+        "samples": 1507,
+        "recorded_arc_m": 0,
+        "route_m": 29.87915743276107,
+        "arc_fraction_lower_bound": 0.0,
+        "GT_remaining_start_m": 0.30878505323930217,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "arrival_verify_fsm",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 1789,
+      "final_error_m": 0.26701648472551665,
+      "final_sigma_m": 0.07114878240948472,
+      "final_error_sigma": 3.7529311912711125,
+      "final_return_distance_m": 2.2604074334758093,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "B_nearest_boundary_distance_m": 0.06599054996626008,
+      "match_accepted": 3,
+      "match_attempts": 28,
+      "legacy_cursor_ratio": 0.23357664233576642,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63005-arrival_verify_fsm",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63005-arrival_verify_fsm",
+      "result_sha256": "5a72a4512cbbfd5d5f8bb53fecb2d5fe930c8b8cf8ba452ac694ef5f15b759e6",
+      "raw_manifest_sha256": "93189694449097185d1976ecad7ad09e398fd0b15548583ed8d4a3a07017e0b9",
+      "arrival_gates_sha256": "b95d5c2d68d3561b6ea44dfe2d3f78e8cd0943c72fa1c515871a28993736bb28",
+      "command_audit": {
+        "counts": {
+          "turn": 1922,
+          "forward": 552,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 227
+        },
+        "turn_fraction": 0.7115883006293965,
+        "turn_sign_reversals": 240
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 352,
+        "samples": 1507,
+        "recorded_arc_m": 6.644963740442841,
+        "route_m": 29.87915743276107,
+        "arc_fraction_lower_bound": 0.22239461589224588,
+        "GT_remaining_start_m": 2.2604074334758093,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63005,
+      "condition": "combined",
+      "status": "PHYSICAL_FAILURE",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "samples": 1065,
+      "over_3sigma": 75,
+      "final_error_m": 0.3349524388768622,
+      "final_sigma_m": 0.07586252626185526,
+      "final_error_sigma": 4.415255533683446,
+      "final_return_distance_m": 1.8797496526082096,
+      "approach_sim_s": 212.8,
+      "return_sim_s": 0,
+      "B_nearest_boundary_distance_m": 2.0349871613233854,
+      "match_accepted": 0,
+      "match_attempts": 0,
+      "legacy_cursor_ratio": null,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63005-combined",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63005-combined",
+      "result_sha256": "1d2896d0e5000df05348b654e6b1d94e5676a56773d63f71af6b9f354e17c55e",
+      "raw_manifest_sha256": "85c27ffd530784e798089305f3ee9811c71f45c7c9e441bc9e31555c31d43d14",
+      "arrival_gates_sha256": "74d85b534e2050943ee7f55a013cac2834f4c612c3e3fff268040b4a1e84dd64",
+      "command_audit": {
+        "counts": {
+          "turn": 552,
+          "forward": 288,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 225
+        },
+        "turn_fraction": 0.5183098591549296,
+        "turn_sign_reversals": 74
+      },
+      "return_progress": null
+    },
+    {
+      "seed": 63006,
+      "condition": "baseline",
+      "status": "RECORDED",
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 1871,
+      "over_3sigma": 888,
+      "final_error_m": 0.20493867987503167,
+      "final_sigma_m": 0.06897879012328641,
+      "final_error_sigma": 2.971039061554181,
+      "final_return_distance_m": 1.7993147816385895,
+      "approach_sim_s": 104.00000000000001,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.4434108527131783,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63006-baseline",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63006-baseline",
+      "result_sha256": "a84d15a23c382e24d9cdc3ab6a41ff1b60d87259c13632f8baddb77b0621a9af",
+      "raw_manifest_sha256": "5f7fb37ced127f9581ad58f0dc7e5ca1a8c0984c5125406e096257e0c56ae599",
+      "arrival_gates_sha256": "1b82dd3840b0b4dc5e69bfab0e3ac1cc7ecbff084bf324df544624c45999b740",
+      "command_audit": {
+        "counts": {
+          "turn": 1145,
+          "forward": 722,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 4
+        },
+        "turn_fraction": 0.6119722073757349,
+        "turn_sign_reversals": 173
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 286,
+        "samples": 645,
+        "recorded_arc_m": 7.55485164980596,
+        "route_m": 16.060507574944733,
+        "arc_fraction_lower_bound": 0.4703993080263503,
+        "GT_remaining_start_m": 1.7993147816385895,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "progress_lookahead",
+      "status": "RECORDED",
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2682,
+      "over_3sigma": 2230,
+      "final_error_m": 0.25072201235767494,
+      "final_sigma_m": 0.10276316373863785,
+      "final_error_sigma": 2.439804334901049,
+      "final_return_distance_m": 2.7550041329859387,
+      "approach_sim_s": 266.2,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 3,
+      "match_attempts": 21,
+      "legacy_cursor_ratio": 0.003434065934065934,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63006-progress_lookahead",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63006-progress_lookahead",
+      "result_sha256": "021ee026db452d7c0d5c894ab7f4ad8a5085e8548c80a70621a1bfb952030c06",
+      "raw_manifest_sha256": "1d2f693198a2439d3f2980c1e32aec808f5e6faf38b7753391a3b569edb0bdcd",
+      "arrival_gates_sha256": "b1a4cd48b8e4b9987946567d2243464c47270b3fa6a7158fbfa3d9c65fb20c70",
+      "command_audit": {
+        "counts": {
+          "turn": 1274,
+          "forward": 562,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 846
+        },
+        "turn_fraction": 0.4750186428038777,
+        "turn_sign_reversals": 137
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 5,
+        "samples": 1456,
+        "recorded_arc_m": 0.0646170688658363,
+        "route_m": 10.983170588754959,
+        "arc_fraction_lower_bound": 0.005883280091451373,
+        "GT_remaining_start_m": 2.7550041329859387,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "return_local_vtr",
+      "status": "RECORDED",
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 1871,
+      "over_3sigma": 93,
+      "final_error_m": 0.39059558321276905,
+      "final_sigma_m": 0.13131828826403827,
+      "final_error_sigma": 2.9744187833716556,
+      "final_return_distance_m": 2.8152146905749436,
+      "approach_sim_s": 104.00000000000001,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.004651162790697674,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63006-return_local_vtr",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63006-return_local_vtr",
+      "result_sha256": "6e4e561b70b1401dd4bdf75820bd66a9f06a3f8a44a78b0c2d7334528e7b7b83",
+      "raw_manifest_sha256": "fdb4a4ba5d2d6508cb85cde8de836642ab8041e967e04694ef2d206b549f424e",
+      "arrival_gates_sha256": "1b82dd3840b0b4dc5e69bfab0e3ac1cc7ecbff084bf324df544624c45999b740",
+      "command_audit": {
+        "counts": {
+          "turn": 297,
+          "forward": 220,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1354
+        },
+        "turn_fraction": 0.15873864243719935,
+        "turn_sign_reversals": 98
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 3,
+        "samples": 645,
+        "recorded_arc_m": 0.008461888047843941,
+        "route_m": 16.060507574944733,
+        "arc_fraction_lower_bound": 0.0005268755055441055,
+        "GT_remaining_start_m": 2.8152146905749436,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "return_own_free_astar",
+      "status": "RECORDED",
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 1871,
+      "over_3sigma": 93,
+      "final_error_m": 0.39059558321276905,
+      "final_sigma_m": 0.13131828826403827,
+      "final_error_sigma": 2.9744187833716556,
+      "final_return_distance_m": 2.8152146905749436,
+      "approach_sim_s": 104.00000000000001,
+      "return_sim_s": 270.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63006-return_own_free_astar",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63006-return_own_free_astar",
+      "result_sha256": "ec954c1dbcb48500f5b4b9edab32fefd709ed9768ac224d366aada49bcb08661",
+      "raw_manifest_sha256": "2fcbc412baaf330798b7e82d10f7ccf5c4e4d2c435131cffa978ed5340b39575",
+      "arrival_gates_sha256": "1b82dd3840b0b4dc5e69bfab0e3ac1cc7ecbff084bf324df544624c45999b740",
+      "command_audit": {
+        "counts": {
+          "turn": 297,
+          "forward": 220,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1354
+        },
+        "turn_fraction": 0.15873864243719935,
+        "turn_sign_reversals": 98
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 0,
+        "samples": 645,
+        "recorded_arc_m": 0,
+        "route_m": 16.060507574944733,
+        "arc_fraction_lower_bound": 0.0,
+        "GT_remaining_start_m": 2.8152146905749436,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "arrival_verify_fsm",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 2701,
+      "over_3sigma": 1019,
+      "final_error_m": 0.1677722628324389,
+      "final_sigma_m": 0.06371427262683699,
+      "final_error_sigma": 2.6331974911657676,
+      "final_return_distance_m": 1.5569101037679483,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 269.99999999999994,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 1,
+      "match_attempts": 27,
+      "legacy_cursor_ratio": 0.7532203389830509,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63006-arrival_verify_fsm",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63006-arrival_verify_fsm",
+      "result_sha256": "5247eb6aba9c987452655d89fa6dc8a0070a0eebf164a7201dd8d013ead52374",
+      "raw_manifest_sha256": "45b20a6d0b92cbd96649ceabb68f4f201d5038adbe9e392f5762d7171f659520",
+      "arrival_gates_sha256": "bae4cc97cac9a0afb0ad7057c04c617295542ffc2abc74e865567801a422f1b4",
+      "command_audit": {
+        "counts": {
+          "turn": 1239,
+          "forward": 639,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 823
+        },
+        "turn_fraction": 0.4587189929655683,
+        "turn_sign_reversals": 183
+      },
+      "return_progress": {
+        "kind": "recorded_breadcrumb_cursor_arc_lower_bound",
+        "cursor": 1111,
+        "samples": 1475,
+        "recorded_arc_m": 7.806884798121945,
+        "route_m": 16.804601895313155,
+        "arc_fraction_lower_bound": 0.46456826807062324,
+        "GT_remaining_start_m": 1.5569101037679483,
+        "exact_reference_telemetry_missing": true
+      }
+    },
+    {
+      "seed": 63006,
+      "condition": "combined",
+      "status": "RECORDED",
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 1,
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "samples": 1601,
+      "over_3sigma": 384,
+      "final_error_m": 0.22620631563813742,
+      "final_sigma_m": 0.1757376986821327,
+      "final_error_sigma": 1.2871815059288463,
+      "final_return_distance_m": 0.3415816461716572,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 50.0,
+      "B_nearest_boundary_distance_m": 0.0,
+      "match_accepted": 0,
+      "match_attempts": 5,
+      "legacy_cursor_ratio": 1.0,
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch/data/egomap66-63006-combined",
+      "raw_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch/data/egomap66-63006-combined",
+      "result_sha256": "9c8fec99b06846bb43f7a21b73d52f1f9e931c845d34d0fa0194e980c789a771",
+      "raw_manifest_sha256": "1efdc10cb008d37b30d77cf86457b86db1bb8ddbed7d5ce821876e2e19718943",
+      "arrival_gates_sha256": "62e91cc96b13481ef31fa60b45121c42e9bbe6ffa3572a29e0ad214518cf2baa",
+      "command_audit": {
+        "counts": {
+          "turn": 87,
+          "forward": 447,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1067
+        },
+        "turn_fraction": 0.05434103685196752,
+        "turn_sign_reversals": 29
+      },
+      "return_progress": {
+        "kind": "cursor_is_only_binary_own_start_gate_not_free_path_progress",
+        "cursor": 1475,
+        "samples": 1475,
+        "recorded_arc_m": 7.021214553067631,
+        "route_m": 7.021214553067631,
+        "arc_fraction_lower_bound": 1.0,
+        "GT_remaining_start_m": 0.3415816461716572,
+        "exact_reference_telemetry_missing": true
+      }
+    }
+  ],
+  "thresholds_changed": false,
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-batch",
+  "scores_sha256": "c101e966503c1abc37174e829e213bd31dfec9b49f4f4a8585585f66881ecb45",
+  "status": "COMPLETED_WITH_ADAPTER_LIMITATION",
+  "executed": 36,
+  "completed": 36,
+  "retrieved": 36,
+  "blocked": 0,
+  "host_stops": 0,
+  "physics_retries": 0,
+  "excluded": [],
+  "statuses": {
+    "RECORDED": 33,
+    "PHYSICAL_FAILURE": 3
+  },
+  "prereg_commit": "697947cd",
+  "sampling_scope": "6 reused DEV checkpoints paired across 6 conditions; not a new confirmation cohort",
+  "checkpoint_inputs_verified": 6,
+  "checkpoints": [
+    {
+      "seed": 63001,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256"
+    },
+    {
+      "seed": 63002,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943"
+    },
+    {
+      "seed": 63003,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824"
+    },
+    {
+      "seed": 63004,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2"
+    },
+    {
+      "seed": 63005,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24"
+    },
+    {
+      "seed": 63006,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174"
+    }
+  ],
+  "tests": {
+    "passed": 32,
+    "files": [
+      "tests/test_own_route_reference.py",
+      "tests/test_own_route_references_batch.py",
+      "tests/test_own_route_full_budget.py"
+    ]
+  },
+  "smoke": {
+    "source_sha": "cde14c9a231fdbcfabacf4059d7f4af1fb95d16b",
+    "status": "RECORDED",
+    "sim_s": 8,
+    "wall_s": 35.58828214799996,
+    "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap66-smoke/data",
+    "files_verified": 78,
+    "early_check": {
+      "wall_age_s": 35.58828214799996,
+      "sim_s": 8.0,
+      "frames": 41,
+      "commands": {
+        "turn": 2,
+        "forward": 39
+      },
+      "displacement_m": 0.496805398147188,
+      "yaw_span_rad": 0.21787612996666472,
+      "stage": "approach",
+      "anomaly": null,
+      "gt_evaluation_only": true
+    },
+    "sha256": {
+      "result.json": "44d1849c9ba9d22fffa405afc95a6bbf871e9fc2cb0d0239db659028f580b9ba",
+      "artifacts.sha256.json": "3bc0688c9f47c46a4f890c67235c50f32c65d68b7509f9cd7306f6461bf38132",
+      "arrival-gates.json": "3d68f81c3963d3b917a27d6ce1ad796e3bce684cd7d929a64358b0545af9b15d"
+    }
+  },
+  "raw_root_remote": "/home/ubuntu/ugrp-sim/runs/egomap66-batch",
+  "off_golden": {
+    "seeds": 6,
+    "legacy_files_identical": 36,
+    "legacy_files_compared": 36,
+    "first60_rows_identical": 1800,
+    "first60_rows_compared": 1800,
+    "detail": "/Users/changmin/projects/ugrp/outputs/egomap66-delivery/audit.json",
+    "detail_sha256": "2eabda10566f3b9d5aa1260a5a421607e5bbc28e3c36a3196b543301439f2ca4"
+  },
+  "settings_verified": 36,
+  "early_check": {
+    "checked": 36,
+    "anomalies": 0,
+    "source": "/Users/changmin/projects/ugrp/outputs/egomap66-delivery/status-check36.json",
+    "sha256": "74ab22810a51515a62f8fab5906a153d218ee39b95b2cb027115215f20fdab8a",
+    "min_displacement_m": 0.039084781232850606,
+    "min_forward_commands": 7,
+    "min_sim_s": 36.4,
+    "wall_age_range_s": [
+      180.11813363099986,
+      182.1197202909998
+    ]
+  },
+  "delivery": {
+    "batch_exit": 0,
+    "manifest_files_verified": 86751,
+    "retrieval_receipts": "/Users/changmin/projects/ugrp/outputs/egomap66-delivery/retrieval.json",
+    "retrieval_receipts_sha256": "53e245337e65b8f2bfd6289b3f99ca415f079a7fc86ef8994f80418e99a15492",
+    "transfer_errors": [
+      {
+        "utc": "2026-10-10T17:42:16Z",
+        "error": "RuntimeError(\"rsync rsync(72406): error: poll: timeout\\nRead from remote host 129.225.174.247: Can't assign requested address\\nclient_loop: send disconnect: Broken pipe\\n\")"
+      }
+    ],
+    "all_recovered": true,
+    "completed": "/Users/changmin/projects/ugrp/outputs/egomap66-delivery/complete.json",
+    "audit": "/Users/changmin/projects/ugrp/outputs/egomap66-delivery/audit.json",
+    "audit_sha256": "2eabda10566f3b9d5aa1260a5a421607e5bbc28e3c36a3196b543301439f2ca4",
+    "raw_summary_sha256": "eeef8af610d39cbefbe7ba77a4560cbcecd551aca2f00f885a670411cf0c130e",
+    "scores_sha256": "c101e966503c1abc37174e829e213bd31dfec9b49f4f4a8585585f66881ecb45",
+    "full_report": "/Users/changmin/projects/ugrp/outputs/egomap66-delivery/full-report.json",
+    "full_report_sha256": "5ead0422480fa424a13196d6567f735034d5027444ed9518f9c8fd3725854f30"
+  },
+  "implementation_limitation": {
+    "affected_on_runs": 30,
+    "registered_on_runs": 30,
+    "reason": "grid_acceleration.install installs an instance receive closure capturing GoalRoute.receive; changing class to ReferenceRoute leaves this closure in precedence",
+    "source_locations": [
+      "harness/grid_acceleration.py:100",
+      "harness/own_route_reference.py:206",
+      "harness/own_route_reference.py:235",
+      "scripts/run_goal_route_continuous.py:40"
+    ],
+    "bypassed": [
+      "ReferenceRoute.receive visual verification fallback when normal host invocation is skipped",
+      "reference_navigation trace extension"
+    ],
+    "still_applied": [
+      "dynamic _return_target",
+      "dynamic _localize",
+      "instance _arrival audit calls ReferenceRoute._arrival",
+      "wrapped shared heading_host.command"
+    ],
+    "progress_scope": "only recorded breadcrumb cursor arc lower bound and GT remaining start distance; exact ReferenceRoute/free-path progress was not recorded",
+    "probe": {
+      "physics_created": false,
+      "receive_called": false,
+      "reference_class_installed": true,
+      "instance_receive_unchanged": true,
+      "captured_functions": [
+        "GoalRoute.receive"
+      ],
+      "reference_receive_bypassed": true,
+      "source": "af2eaa43"
+    },
+    "probe_raw": "/Users/changmin/projects/ugrp/outputs/egomap66-delivery/receive-wrapper-probe.json",
+    "probe_sha256": "db0f30544d64e1160b3fbf1be99dfe08894672d57c85c29194cc1e7b524d78bf",
+    "coverage_gap": "32 prior tests did not compose the checkpoint scalar_rays_v1 receive wrapper with the new class"
+  },
+  "adopted": null,
+  "causes": [
+    "VTR repeat matching accepted only 3/164 events; 7950/8106 return frames wait for matching",
+    "Own-free return has no observed-free path in 7292/8106 return frames",
+    "FSM has zero current-evidence frames and missed subclass receive fallback due to accelerated receiver composition",
+    "Combined self-pose return declarations were false: 63002 GT start distance .510m and 63006 .342m versus fixed .20m"
+  ],
+  "next_candidates": [
+    "Fix accelerated receive composition and add a prepared-controller integration regression before interpreting complete FSM/progress behavior",
+    "Validate current same-B observation association/reacquisition and own-free connectivity without changing .20m/5-frame gates"
+  ],
+  "updated_utc": "2026-10-10T17:48:24.849106+00:00"
+}

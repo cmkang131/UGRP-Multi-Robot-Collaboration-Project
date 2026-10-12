@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "own-map-goal-dev",
+      "purpose": "egomap43 자기 snapshot 재위치 후 기억한 B 복귀 DEV 1회",
+      "entry": "scripts/run_own_map_goal_dev.py",
+      "docs": "experiments/2026-10-08-own-map-closed-loop/README.md",
+      "requires": "committed clean source; explicit execute; agent_lock; own RGB and commands only",
+      "version": "1.0.0",
+      "runner": "scripts.run_own_map_goal_dev",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "output_kind": "directory"
+    }
+  ]
+}

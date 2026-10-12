@@ -1,0 +1,127 @@
+{
+  "records": {
+    "31001": {
+      "prediction_sha": "565bf42844112983f16eb0c113939709437fc09d",
+      "input_frames": 891,
+      "insertion_times": 47,
+      "nonempty_insertions_on": 5,
+      "original_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 844,
+        "low_overlap": 8,
+        "improved_proposal": 22,
+        "high_residual": 14,
+        "search_boundary": 2
+      },
+      "original_pose_and_camera_exact": true,
+      "original_grid_bytes_identical": true,
+      "paired_off_maps_identical_to_egomap37": true,
+      "point_recall_same_denominator": true,
+      "point_gate": true,
+      "map_gates": {
+        "grid": {
+          "precision": true,
+          "recall": false,
+          "wall_rmse": true
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        }
+      },
+      "selected_gates": {
+        "grid": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        }
+      }
+    },
+    "32002": {
+      "prediction_sha": "16f7e7901d5a5d3ce73ce12528731ed93734ba4c",
+      "input_frames": 891,
+      "insertion_times": 64,
+      "nonempty_insertions_on": 9,
+      "original_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 814,
+        "improved_proposal": 30,
+        "search_boundary": 2,
+        "high_residual": 19,
+        "insufficient_match_points": 5,
+        "low_overlap": 7
+      },
+      "original_pose_and_camera_exact": true,
+      "original_grid_bytes_identical": true,
+      "paired_off_maps_identical_to_egomap37": true,
+      "point_recall_same_denominator": true,
+      "point_gate": true,
+      "map_gates": {
+        "grid": {
+          "precision": true,
+          "recall": false,
+          "wall_rmse": true
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        }
+      },
+      "selected_gates": {
+        "grid": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        },
+        "segments": {
+          "precision": false,
+          "recall": false,
+          "wall_rmse": false
+        }
+      }
+    }
+  },
+  "tests": 12,
+  "preregistration": "ce4f920b",
+  "implementation": "0a77c5c1",
+  "empty_scan_adapter_fix": "565bf428",
+  "freeze_commit": "16f7e7901d5a5d3ce73ce12528731ed93734ba4c",
+  "held_on_evaluations": 1,
+  "physics": 0,
+  "render": 0,
+  "models": 0,
+  "lock_acquired": false,
+  "retuning": 0,
+  "original_untracked_unchanged": true,
+  "raw_path": "/Users/changmin/projects/ugrp/outputs/bottom-connected-contact-v1",
+  "manifest_sha256": "7c95ae6c35d55e96d21dee6bf9f6682da8c023050dfbe373372271047d1c8a77",
+  "figure_hashes": {
+    "31001-first-boundary.jpg": {
+      "sha256": "e02147b2be860411cf775b9ef8ecdb9aafa4110586688febd8545d520aa3189f",
+      "bytes": 43456
+    },
+    "31001-on-rgb.jpg": {
+      "sha256": "a51907532bea034fcec86c5d474af72b9b42d497ee5f68feeff9883a482c73f4",
+      "bytes": 63930
+    },
+    "32002-first-boundary.jpg": {
+      "sha256": "51d87a0f8f518554eeccc48237dd8dad6e43bb5ce6efceed71f66b64129d9ce7",
+      "bytes": 41562
+    },
+    "32002-on-rgb.jpg": {
+      "sha256": "ff0e5fcbb2b41eac9b577998246dc550431e28e80ea157f18994735c150e37c8",
+      "bytes": 61538
+    },
+    "maps.png": {
+      "sha256": "d7214d959746d0502e2513e3a2791c9157ea2a3faef5dd97105ab65d2cc23dfd",
+      "bytes": 269639
+    }
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "replay": {
+    "n": 736,
+    "cutoff": 150.3,
+    "trace_bytes_equal": true,
+    "gt_read": false,
+    "input_sha256": {
+      "own-controller.jsonl": "9f5002247bf3799021e8a0d124b87552d62a74f20548595d7ce2bf35aaad9e5b",
+      "own-contacts.jsonl": "1ed2b76a655c904f49b9e3bfb9980020a635984724e1b93f79899ae911a55333",
+      "robots/r3/frames.jsonl": "afb74d966df8d7e304fc6ca57e2f8fcf518ed70d32dd13fac229d4c4b621a39c"
+    }
+  },
+  "state": {
+    "t": 150.3,
+    "epoch": 140.3,
+    "blacklist_before": [
+      [
+        0.5051558752997605,
+        3.797122302158272
+      ]
+    ],
+    "blacklist_after": [
+      [
+        0.5051558752997605,
+        3.797122302158272
+      ],
+      [
+        5.498571428571429,
+        4.100285714285714
+      ],
+      [
+        4.40680473372781,
+        2.830473372781065
+      ],
+      [
+        6.007045454545454,
+        2.8888636363636375
+      ],
+      [
+        4.288541666666666,
+        4.295486111111111
+      ]
+    ],
+    "events": [
+      {
+        "t": 150.3,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          5.498571428571429,
+          4.100285714285714
+        ]
+      },
+      {
+        "t": 150.3,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          4.40680473372781,
+          2.830473372781065
+        ]
+      },
+      {
+        "t": 150.3,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          6.007045454545454,
+          2.8888636363636375
+        ]
+      },
+      {
+        "t": 150.3,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          4.288541666666666,
+          4.295486111111111
+        ]
+      },
+      {
+        "t": 150.3,
+        "reason": "exploration_finished_no_frontier"
+      }
+    ],
+    "grid_cells": 1702,
+    "finished": true
+  },
+  "free_cells": 1601,
+  "unknown_cells": 10142,
+  "occupied_cells": 101,
+  "unknown_boundary_cells": 561,
+  "free_boundary_cells": 538,
+  "free_components": 23,
+  "all_clusters": 11,
+  "all_cluster_cells": 547,
+  "min_size_rejected_clusters": 7,
+  "min_size_rejected_cells": 21,
+  "size_accepted_clusters": 4,
+  "size_accepted_cells": 526,
+  "blacklist_rejected": 0,
+  "new_unreachable": 4,
+  "native_path_exists": 4,
+  "adapter_start_sweep_rejected": 4,
+  "usable": 0,
+  "candidates": [
+    {
+      "center": [
+        5.498571428571429,
+        4.100285714285714
+      ],
+      "size": 175,
+      "blacklisted": false,
+      "path_points": 0,
+      "goal_cost": 0,
+      "native_path_points": 122,
+      "start_pose_clear": true,
+      "first_point": [
+        3.0250000000000004,
+        3.7750000000000004
+      ],
+      "start_to_cell_center_m": 0.017837168658531688,
+      "start_sweep_clear": false,
+      "first_footprint_lethal_cells": [
+        [
+          28,
+          55
+        ]
+      ]
+    },
+    {
+      "center": [
+        4.40680473372781,
+        2.830473372781065
+      ],
+      "size": 169,
+      "blacklisted": false,
+      "path_points": 0,
+      "goal_cost": 100,
+      "native_path_points": 87,
+      "start_pose_clear": true,
+      "first_point": [
+        3.0250000000000004,
+        3.7750000000000004
+      ],
+      "start_to_cell_center_m": 0.017837168658531688,
+      "start_sweep_clear": false,
+      "first_footprint_lethal_cells": [
+        [
+          28,
+          55
+        ]
+      ]
+    },
+    {
+      "center": [
+        6.007045454545454,
+        2.8888636363636375
+      ],
+      "size": 110,
+      "blacklisted": false,
+      "path_points": 0,
+      "goal_cost": 172,
+      "native_path_points": 178,
+      "start_pose_clear": true,
+      "first_point": [
+        3.0250000000000004,
+        3.7750000000000004
+      ],
+      "start_to_cell_center_m": 0.017837168658531688,
+      "start_sweep_clear": false,
+      "first_footprint_lethal_cells": [
+        [
+          28,
+          55
+        ]
+      ]
+    },
+    {
+      "center": [
+        4.288541666666666,
+        4.295486111111111
+      ],
+      "size": 72,
+      "blacklisted": false,
+      "path_points": 0,
+      "goal_cost": 172,
+      "native_path_points": 61,
+      "start_pose_clear": true,
+      "first_point": [
+        3.0250000000000004,
+        3.7750000000000004
+      ],
+      "start_to_cell_center_m": 0.017837168658531688,
+      "start_sweep_clear": false,
+      "first_footprint_lethal_cells": [
+        [
+          28,
+          55
+        ]
+      ]
+    }
+  ],
+  "ray_ranges": {
+    "floor": {
+      "n": 1477402,
+      "max_m": 3.9899886198463763,
+      "above_4m": 0
+    },
+    "wall": {
+      "n": 11709,
+      "max_m": 3.994706682272378,
+      "above_4m": 0
+    }
+  },
+  "native_filter_equal": true,
+  "bounds_policy": "unbounded own map; dynamic extent +1m unknown padding; no GT arena clip",
+  "ray_policy": "measured finite floor/wall endpoints only; clear to endpoint, mark wall last; no max-range extrapolation"
+}

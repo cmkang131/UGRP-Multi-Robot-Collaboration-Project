@@ -1,0 +1,123 @@
+{
+  "name": "off-profile",
+  "profile": true,
+  "graph_acceleration": "off",
+  "wall_s": 36.75623708299827,
+  "stage_s": {
+    "make_submaps": 1.8114756669965573,
+    "probability_field": 6.550404510460794,
+    "match_loop": 28.558674059662735,
+    "distance_field": 0.1503039670351427,
+    "legacy_optimize": 0.08431149998796172,
+    "legacy_rebuild": 0.8926534999918658,
+    "switchable_optimize": 0.1686809999810066,
+    "robust_rebuild": 0.905848333000904
+  },
+  "calls": {
+    "make_submaps": 1,
+    "probability_field": 3623,
+    "match_loop": 3751,
+    "distance_field": 64,
+    "legacy_optimize": 1,
+    "legacy_rebuild": 1,
+    "switchable_optimize": 1,
+    "robust_rebuild": 1
+  },
+  "optimizers": {
+    "legacy_optimize": {
+      "accepted": true,
+      "reason": "converged",
+      "initial_cost": 5.3139357445982025,
+      "final_cost": 3.3752997965867753,
+      "nfev": 6,
+      "status": 2,
+      "message": "`ftol` termination condition is satisfied.",
+      "max_translation_change_m": 0.1828567243041873
+    },
+    "switchable_optimize": {
+      "accepted": true,
+      "reason": "converged",
+      "initial_cost": 6.300947261582369,
+      "final_cost": 1.2396952048042202,
+      "nfev": 12,
+      "status": 2,
+      "message": "`ftol` termination condition is satisfied.",
+      "switches": [
+        {
+          "constraint_index": 398,
+          "submap": 0,
+          "scan": 126,
+          "switch": 0.11194268028775824,
+          "information_scale": 0.012531163670007256,
+          "unscaled_chi2": 7.936762850191991,
+          "retained": false,
+          "reason": "switch_suppressed"
+        },
+        {
+          "constraint_index": 399,
+          "submap": 7,
+          "scan": 109,
+          "switch": 0.6928629594763658,
+          "information_scale": 0.4800590806143481,
+          "unscaled_chi2": 0.44335601856815876,
+          "retained": true,
+          "reason": "switch_retained"
+        },
+        {
+          "constraint_index": 400,
+          "submap": 16,
+          "scan": 109,
+          "switch": 0.39901592566426947,
+          "information_scale": 0.1592137089337138,
+          "unscaled_chi2": 1.5062650913894933,
+          "retained": false,
+          "reason": "switch_suppressed"
+        },
+        {
+          "constraint_index": 401,
+          "submap": 17,
+          "scan": 96,
+          "switch": 0.37696119569923736,
+          "information_scale": 0.14209974306299872,
+          "unscaled_chi2": 1.653096230969631,
+          "retained": false,
+          "reason": "switch_suppressed"
+        }
+      ],
+      "switch_prior_mean": 1.0,
+      "switch_prior_variance": 1.0,
+      "max_translation_change_m": 0.027593968360881384
+    }
+  },
+  "scans": 204,
+  "path_nodes": 1791,
+  "pose_nodes": 225,
+  "submaps": 21,
+  "constraints": 402,
+  "loop_counts": {
+    "member_scan": 398,
+    "temporal_separation": 135,
+    "ambiguous_modes": 1080,
+    "insufficient_points": 128,
+    "search_boundary": 319,
+    "low_probability": 2160,
+    "accepted": 4,
+    "unobservable": 47,
+    "high_residual": 7,
+    "refinement_failed": 6
+  },
+  "switch_counts": {
+    "switch_suppressed": 3,
+    "switch_retained": 1
+  },
+  "graph_sha256": "dd2c4b878b05038513fa82994879c1b0ab268c2ca06b118bbdf7ab1244f04145",
+  "grid_sha256": "86dfddfbcd18e65c8403d619c71a6932d15ecf6b581afb242120b5265f577625",
+  "source_sha": "a72a1cc26af4590266ae1173af6b5231a3dea053",
+  "input_sha256": {
+    "frontend-ledger.json": "20c4e4278014e5399680cff96bfb7e96951397cee4ff769c205cd7465a4b2854",
+    "frontend-poses.json": "1e0466c820ed5b2b4890f021f1a90cb203b7d39e6a88b1a4d513291930904def",
+    "bundle.json": "424d42ef827e9464bcddde6efc61c735ae3c0aa35c21976441c5d0f2faaaa08b"
+  },
+  "gt_input": false,
+  "physics": 0
+}

@@ -1,0 +1,349 @@
+{
+  "qualification": "four saved abort events only; not closed-loop return result",
+  "cases": [
+    {
+      "seed": 49001,
+      "t": 388.9,
+      "failed_local_waypoint": [
+        5.523166023166024,
+        2.377027027027027
+      ],
+      "B": [
+        -1.080708661417323,
+        3.2279527559055117
+      ],
+      "cause": "progress_timeout_sensor_sweep",
+      "off": {
+        "B_blacklisted": true,
+        "local_blacklisted": true,
+        "events": [
+          {
+            "t": 388.9,
+            "reason": "navigation_action_aborted",
+            "cause": "progress_timeout_sensor_sweep"
+          },
+          {
+            "t": 388.9,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              5.523166023166024,
+              2.377027027027027
+            ]
+          },
+          {
+            "t": 388.9,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              -1.080708661417323,
+              3.2279527559055117
+            ]
+          },
+          {
+            "t": 388.9,
+            "reason": "next_frontier_requested"
+          },
+          {
+            "t": 388.9,
+            "reason": "sensor_sweep_requested",
+            "cause": "progress_timeout_sensor_sweep"
+          }
+        ]
+      },
+      "on": {
+        "B_blacklisted": false,
+        "local_blacklisted": true,
+        "events": [
+          {
+            "t": 388.9,
+            "reason": "navigation_action_aborted",
+            "cause": "progress_timeout_sensor_sweep"
+          },
+          {
+            "t": 388.9,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              5.523166023166024,
+              2.377027027027027
+            ]
+          },
+          {
+            "t": 388.9,
+            "reason": "next_frontier_requested"
+          },
+          {
+            "t": 388.9,
+            "reason": "mission_retained_local_action_failed",
+            "cause": "progress_timeout_sensor_sweep",
+            "mission": [
+              -1.080708661417323,
+              3.2279527559055117
+            ],
+            "waypoint": [
+              5.523166023166024,
+              2.377027027027027
+            ],
+            "door": null
+          }
+        ]
+      }
+    },
+    {
+      "seed": 49002,
+      "t": 424.1,
+      "failed_local_waypoint": [
+        -0.0475609756097562,
+        -2.5719512195121954
+      ],
+      "B": [
+        -1.747014925373134,
+        2.7567164179104475
+      ],
+      "cause": "progress_timeout_sensor_sweep",
+      "off": {
+        "B_blacklisted": true,
+        "local_blacklisted": true,
+        "events": [
+          {
+            "t": 424.1,
+            "reason": "navigation_action_aborted",
+            "cause": "progress_timeout_sensor_sweep"
+          },
+          {
+            "t": 424.1,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              -0.0475609756097562,
+              -2.5719512195121954
+            ]
+          },
+          {
+            "t": 424.1,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              -1.747014925373134,
+              2.7567164179104475
+            ]
+          },
+          {
+            "t": 424.1,
+            "reason": "next_frontier_requested"
+          },
+          {
+            "t": 424.1,
+            "reason": "sensor_sweep_requested",
+            "cause": "progress_timeout_sensor_sweep"
+          }
+        ]
+      },
+      "on": {
+        "B_blacklisted": false,
+        "local_blacklisted": true,
+        "events": [
+          {
+            "t": 424.1,
+            "reason": "navigation_action_aborted",
+            "cause": "progress_timeout_sensor_sweep"
+          },
+          {
+            "t": 424.1,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              -0.0475609756097562,
+              -2.5719512195121954
+            ]
+          },
+          {
+            "t": 424.1,
+            "reason": "next_frontier_requested"
+          },
+          {
+            "t": 424.1,
+            "reason": "mission_retained_local_action_failed",
+            "cause": "progress_timeout_sensor_sweep",
+            "mission": [
+              -1.747014925373134,
+              2.7567164179104475
+            ],
+            "waypoint": [
+              -0.0475609756097562,
+              -2.5719512195121954
+            ],
+            "door": null
+          }
+        ]
+      }
+    },
+    {
+      "seed": 49005,
+      "t": 455.3,
+      "failed_local_waypoint": [
+        -1.2061823104693146,
+        5.031092057761734
+      ],
+      "B": [
+        -1.4129032258064524,
+        3.1379032258064514
+      ],
+      "cause": "progress_timeout_sensor_sweep",
+      "off": {
+        "B_blacklisted": true,
+        "local_blacklisted": true,
+        "events": [
+          {
+            "t": 455.3,
+            "reason": "navigation_action_aborted",
+            "cause": "progress_timeout_sensor_sweep"
+          },
+          {
+            "t": 455.3,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              -1.2061823104693146,
+              5.031092057761734
+            ]
+          },
+          {
+            "t": 455.3,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              -1.4129032258064524,
+              3.1379032258064514
+            ]
+          },
+          {
+            "t": 455.3,
+            "reason": "next_frontier_requested"
+          },
+          {
+            "t": 455.3,
+            "reason": "sensor_sweep_requested",
+            "cause": "progress_timeout_sensor_sweep"
+          }
+        ]
+      },
+      "on": {
+        "B_blacklisted": false,
+        "local_blacklisted": true,
+        "events": [
+          {
+            "t": 455.3,
+            "reason": "navigation_action_aborted",
+            "cause": "progress_timeout_sensor_sweep"
+          },
+          {
+            "t": 455.3,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              -1.2061823104693146,
+              5.031092057761734
+            ]
+          },
+          {
+            "t": 455.3,
+            "reason": "next_frontier_requested"
+          },
+          {
+            "t": 455.3,
+            "reason": "mission_retained_local_action_failed",
+            "cause": "progress_timeout_sensor_sweep",
+            "mission": [
+              -1.4129032258064524,
+              3.1379032258064514
+            ],
+            "waypoint": [
+              -1.2061823104693146,
+              5.031092057761734
+            ],
+            "door": null
+          }
+        ]
+      }
+    },
+    {
+      "seed": 49006,
+      "t": 435.9,
+      "failed_local_waypoint": [
+        5.352268145161292,
+        1.9132560483870973
+      ],
+      "B": [
+        3.523333333333333,
+        2.9033333333333333
+      ],
+      "cause": "progress_timeout_sensor_sweep",
+      "off": {
+        "B_blacklisted": true,
+        "local_blacklisted": true,
+        "events": [
+          {
+            "t": 435.9,
+            "reason": "navigation_action_aborted",
+            "cause": "progress_timeout_sensor_sweep"
+          },
+          {
+            "t": 435.9,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              5.352268145161292,
+              1.9132560483870973
+            ]
+          },
+          {
+            "t": 435.9,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              3.523333333333333,
+              2.9033333333333333
+            ]
+          },
+          {
+            "t": 435.9,
+            "reason": "next_frontier_requested"
+          },
+          {
+            "t": 435.9,
+            "reason": "sensor_sweep_requested",
+            "cause": "progress_timeout_sensor_sweep"
+          }
+        ]
+      },
+      "on": {
+        "B_blacklisted": false,
+        "local_blacklisted": true,
+        "events": [
+          {
+            "t": 435.9,
+            "reason": "navigation_action_aborted",
+            "cause": "progress_timeout_sensor_sweep"
+          },
+          {
+            "t": 435.9,
+            "reason": "ABORTED_goal_blacklisted",
+            "target": [
+              5.352268145161292,
+              1.9132560483870973
+            ]
+          },
+          {
+            "t": 435.9,
+            "reason": "next_frontier_requested"
+          },
+          {
+            "t": 435.9,
+            "reason": "mission_retained_local_action_failed",
+            "cause": "progress_timeout_sensor_sweep",
+            "mission": [
+              3.523333333333333,
+              2.9033333333333333
+            ],
+            "waypoint": [
+              5.352268145161292,
+              1.9132560483870973
+            ],
+            "door": null
+          }
+        ]
+      }
+    }
+  ]
+}

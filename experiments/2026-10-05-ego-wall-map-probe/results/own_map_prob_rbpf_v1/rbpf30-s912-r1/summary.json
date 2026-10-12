@@ -1,0 +1,110 @@
+{
+  "wall_boundary_samples": 349,
+  "wall_tolerance_m": 0.15,
+  "final": {
+    "t": 53.7,
+    "occupied_cells": 183,
+    "precision_015": 0.46994535519125685,
+    "precision_cell": 0.3114754098360656,
+    "wall_coverage": 0.24641833810888253,
+    "wall_error_rmse_m": 0.2711812740121291,
+    "wall_coverage_ever": 0.4040114613180516,
+    "oracle_precision_015": 0.7183908045977011,
+    "oracle_wall_coverage": 0.3495702005730659,
+    "oracle_wall_error_rmse_m": 0.17728394654099228
+  },
+  "end_sim_s": 77.3,
+  "last_wall_sim_s": 53.7,
+  "end_position_error_m": 0.4678298375789187,
+  "end_yaw_error_deg": 32.23040530922432,
+  "end_4m_point_error_bound_m": 2.6883864231652144,
+  "mapped_endpoint_pose_rmse_m": 0.553147074095142,
+  "last_wall_endpoint_pose_rmse_m": 0.9274802544801812,
+  "alignment": "actual grid: start GT SE(2) only; oracle grid: eval-only counterfactual per-frame GT",
+  "origin_eval_only": [
+    0.22680456372770658,
+    0.05000000599772155,
+    4.689800244275325e-09
+  ],
+  "path_position_error": {
+    "median_m": 0.4707021694955166,
+    "p90_m": 0.6569913148828403,
+    "p95_m": 0.7585979602957889,
+    "max_m": 0.8914073795213108,
+    "rmse_m": 0.48033529720520907,
+    "count": 1521
+  },
+  "name": "s912-r1",
+  "condition": "rbpf30",
+  "source_sha": "fe70e641e0d2a39a44f240830fd6a19fe2774745",
+  "split": "confirmation_replay",
+  "inserted_frames": 147,
+  "resources": {
+    "prediction_wall_s": 12.92376170901116,
+    "peak_rss_mib": 104.125,
+    "loadavg_start": [
+      3.7265625,
+      3.42919921875,
+      3.6787109375
+    ],
+    "loadavg_end": [
+      3.60791015625,
+      3.41455078125,
+      3.669921875
+    ],
+    "scope": "fresh process peak through prediction; wall excludes file writing and GT evaluation",
+    "pid": 11339,
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "darwin"
+  },
+  "correction_status_counts": {
+    "bootstrap": 1,
+    "deferred": 124,
+    "accepted": 22,
+    "rejected": 2
+  },
+  "correction_reason_counts": {
+    "bootstrap": 1,
+    "keyframe_interval": 124,
+    "improved_proposal": 22,
+    "low_overlap": 1,
+    "high_residual": 1
+  },
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/commands.jsonl",
+      "sha256": "b8bbf600a47eae5976869343ba523320b94289922e30515872f33984fd14e20f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/robots/r1/frames.jsonl",
+      "sha256": "9b2656ad7f7861b3a5e8ffb32979f156064ebc0b4270842a50ff14f5fb4018e2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-odom-grid-v1-complete/s912-r1/observations.jsonl",
+      "sha256": "e08b40f17629d8ba62b4fe4f2c3b937a084391e20ed970983e85c1289a65fd87"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/scene.xml",
+      "sha256": "0ffa276ccbb548eeece4773ecba5291ba55db7f0fc0d363cc126ad650c5aac13"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/eval_only/trajectory.jsonl",
+      "sha256": "ec74ae7347b619eb4204928a31c7834618f7b84bf788bdbac17154b402701e8d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s912/zone_wide_door_geometry_v3/inputs/static_map.json",
+      "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    }
+  ],
+  "resamples": 8,
+  "neff_min": 2.320875687370644,
+  "particle_reasons": {
+    "bootstrap": 30,
+    "keyframe_interval": 3720,
+    "improved_proposal": 659,
+    "low_overlap": 42,
+    "search_boundary": 1,
+    "high_residual": 18
+  },
+  "selection": "online MAP path; final map belongs to final selected particle; no GT selection"
+}

@@ -1,0 +1,2406 @@
+{
+  "first60_prefix_checks": [
+    {
+      "seed": 63001,
+      "profile": "baseline",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    },
+    {
+      "seed": 63001,
+      "profile": "a",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    },
+    {
+      "seed": 63002,
+      "profile": "baseline",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    },
+    {
+      "seed": 63002,
+      "profile": "a",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    },
+    {
+      "seed": 63003,
+      "profile": "baseline",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    },
+    {
+      "seed": 63003,
+      "profile": "a",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    },
+    {
+      "seed": 63004,
+      "profile": "baseline",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 0,
+      "all_identical": false,
+      "expected_task_change": true
+    },
+    {
+      "seed": 63004,
+      "profile": "a",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 0,
+      "all_identical": false,
+      "expected_task_change": true
+    },
+    {
+      "seed": 63005,
+      "profile": "baseline",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    },
+    {
+      "seed": 63005,
+      "profile": "a",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    },
+    {
+      "seed": 63006,
+      "profile": "baseline",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    },
+    {
+      "seed": 63006,
+      "profile": "a",
+      "frames": [
+        300,
+        300
+      ],
+      "identical_frames": 300,
+      "all_identical": true,
+      "expected_task_change": false
+    }
+  ],
+  "host": "oracle-x86",
+  "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+  "checkpoint_source_sha": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+  "registered_slots": 12,
+  "seeds": [
+    63001,
+    63002,
+    63003,
+    63004,
+    63005,
+    63006
+  ],
+  "summary": {
+    "baseline": {
+      "registered": 6,
+      "recorded": 5,
+      "measured": 6,
+      "blocked": 0,
+      "host_errors": 0,
+      "frames": 13611,
+      "over3_frames": 9353,
+      "end_over3": 5,
+      "error_median_m": 0.5050521480957121,
+      "error_max_m": 1.6608683293284388,
+      "B": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "contact_runs": 1,
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "both_arrived": 0,
+      "command_counts": {
+        "turn": 8163,
+        "forward": 3904,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 1544
+      },
+      "turn_fraction": 0.5997355080449637,
+      "forward_fraction": 0.2868268312394387,
+      "turn_moving_fraction": 0.6764730256070274,
+      "turn_sign_reversals": 1271,
+      "within_alignment_reversals": 792,
+      "shared_heading_turns": 7980
+    },
+    "a": {
+      "registered": 6,
+      "recorded": 2,
+      "measured": 6,
+      "blocked": 0,
+      "host_errors": 2,
+      "frames": 12514,
+      "over3_frames": 6436,
+      "end_over3": 3,
+      "error_median_m": 0.33504152376939206,
+      "error_max_m": 0.8649843840686745,
+      "B": 2,
+      "returned": 0,
+      "false_declarations": 0,
+      "contact_runs": 2,
+      "contacts": {
+        "wall": 2,
+        "robot": 0
+      },
+      "both_arrived": 0,
+      "command_counts": {
+        "turn": 7400,
+        "forward": 3915,
+        "backward": 0,
+        "lateral": 0,
+        "hold": 1199
+      },
+      "turn_fraction": 0.5913377017740131,
+      "forward_fraction": 0.3128496084385488,
+      "turn_moving_fraction": 0.6539991162174105,
+      "turn_sign_reversals": 1111,
+      "within_alignment_reversals": 647,
+      "shared_heading_turns": 7187
+    }
+  },
+  "scores": [
+    {
+      "seed": 63001,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 3178.835434965,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+        "sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 76.9
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63001-baseline",
+      "result_sha256": "e45de46c0eb6b708b6c5a892690c0e89455ce4423d4281b0ce8150f75b307497",
+      "samples": 2701,
+      "over_3sigma": 2287,
+      "over_3sigma_rate": 0.8467234357645317,
+      "final_error_m": 1.6608683293284388,
+      "final_sigma_m": 0.09203801656723937,
+      "final_error_sigma": 18.045459814044055,
+      "path_rmse_m": 1.4693301804668226,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 2.6569041605635277,
+      "sim_s": 540.0,
+      "occupied_cells": 861,
+      "tube": {
+        "occupied_cells": 178,
+        "precision_015": 0.21910112359550563,
+        "precision_cell": 0.07865168539325842,
+        "wall_coverage": 1.0,
+        "wall_error_rmse_m": 0.7764696649495104
+      },
+      "tube_wall_samples": 46,
+      "tube_covered_samples": 46,
+      "per_phase": {
+        "approach": {
+          "samples": 1350,
+          "over_3sigma": 936,
+          "over_3sigma_rate": 0.6933333333333334,
+          "final_error_m": 1.8849775292608042,
+          "final_sigma_m": 0.17284573012588797,
+          "commands": {
+            "commands": 1350,
+            "counts": {
+              "turn": 894,
+              "forward": 260,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 196
+            },
+            "turn_fraction": 0.6622222222222223,
+            "forward_fraction": 0.1925925925925926,
+            "turn_moving_fraction": 0.7746967071057193,
+            "turn_sign_reversals": 225,
+            "within_alignment_reversals": 184,
+            "turn_groups": 86,
+            "repeat_turn_groups": 57,
+            "max_turn_group": 156,
+            "shared_heading_turns": 848,
+            "heading_reasons": {
+              "shared_v145": 848
+            },
+            "heading_target_step_deg_median": 5.932603707983381
+          }
+        },
+        "return": {
+          "samples": 1351,
+          "over_3sigma": 1351,
+          "over_3sigma_rate": 1.0,
+          "final_error_m": 1.6608683293284388,
+          "final_sigma_m": 0.09203801656723937,
+          "commands": {
+            "commands": 1351,
+            "counts": {
+              "turn": 876,
+              "forward": 474,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 1
+            },
+            "turn_fraction": 0.6484085862324205,
+            "forward_fraction": 0.35085122131754254,
+            "turn_moving_fraction": 0.6488888888888888,
+            "turn_sign_reversals": 62,
+            "within_alignment_reversals": 29,
+            "turn_groups": 65,
+            "repeat_turn_groups": 42,
+            "max_turn_group": 90,
+            "shared_heading_turns": 876,
+            "heading_reasons": {
+              "shared_v145": 876
+            },
+            "heading_target_step_deg_median": 5.934775421841714
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 2701,
+        "counts": {
+          "turn": 1770,
+          "forward": 734,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 197
+        },
+        "turn_fraction": 0.655312847093669,
+        "forward_fraction": 0.2717512032580526,
+        "turn_moving_fraction": 0.7068690095846646,
+        "turn_sign_reversals": 287,
+        "within_alignment_reversals": 213,
+        "turn_groups": 150,
+        "repeat_turn_groups": 98,
+        "max_turn_group": 156,
+        "shared_heading_turns": 1724,
+        "heading_reasons": {
+          "shared_v145": 1724
+        },
+        "heading_target_step_deg_median": 5.934775421841714
+      },
+      "return_transition": {
+        "t": 346.9,
+        "reason": "registered_return_stage_started",
+        "cause": "approach_budget",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.076465050719766,
+      "B_nearest_boundary_distance_m": 1.6599877743863476,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.0,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": false,
+      "turn_status_counts": {
+        "public_static": 1637,
+        "no_path": 3,
+        "recover_spin": 70,
+        "recover_wait": 24,
+        "recover_backup": 36
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 1724,
+        "calibrated_pulse": 46
+      }
+    },
+    {
+      "seed": 63001,
+      "profile": "a",
+      "status": "HOST_ERROR",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 3606.7079663839995,
+      "failure": {
+        "type": "TimeoutError",
+        "message": "REGISTERED_HOST_BUDGET"
+      },
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+        "sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 76.9
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63001-a",
+      "result_sha256": "14bfbb99c0055e00f82886f04bd92ef860a67bed40fd00ddb3c972c37a176d05",
+      "samples": 2572,
+      "over_3sigma": 1426,
+      "over_3sigma_rate": 0.5544323483670296,
+      "final_error_m": 0.3655673937544169,
+      "final_sigma_m": 0.06991772070434842,
+      "final_error_sigma": 5.228537058584077,
+      "path_rmse_m": 0.3454210679194728,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 1.1661231072680052,
+      "sim_s": 514.2,
+      "occupied_cells": 709,
+      "tube": {
+        "occupied_cells": 138,
+        "precision_015": 0.45652173913043476,
+        "precision_cell": 0.1956521739130435,
+        "wall_coverage": 0.5844155844155844,
+        "wall_error_rmse_m": 0.19775651548886417
+      },
+      "tube_wall_samples": 77,
+      "tube_covered_samples": 45,
+      "per_phase": {
+        "approach": {
+          "samples": 1350,
+          "over_3sigma": 436,
+          "over_3sigma_rate": 0.32296296296296295,
+          "final_error_m": 0.18645947801187063,
+          "final_sigma_m": 0.07092142826087851,
+          "commands": {
+            "commands": 1350,
+            "counts": {
+              "turn": 929,
+              "forward": 276,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 145
+            },
+            "turn_fraction": 0.6881481481481482,
+            "forward_fraction": 0.20444444444444446,
+            "turn_moving_fraction": 0.7709543568464731,
+            "turn_sign_reversals": 161,
+            "within_alignment_reversals": 107,
+            "turn_groups": 86,
+            "repeat_turn_groups": 56,
+            "max_turn_group": 93,
+            "shared_heading_turns": 881,
+            "heading_reasons": {
+              "shared_v145": 881
+            },
+            "heading_target_step_deg_median": 5.932603707983356
+          }
+        },
+        "return": {
+          "samples": 1222,
+          "over_3sigma": 990,
+          "over_3sigma_rate": 0.8101472995090017,
+          "final_error_m": 0.3655673937544169,
+          "final_sigma_m": 0.06991772070434842,
+          "commands": {
+            "commands": 1222,
+            "counts": {
+              "turn": 785,
+              "forward": 437,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 0
+            },
+            "turn_fraction": 0.6423895253682488,
+            "forward_fraction": 0.3576104746317512,
+            "turn_moving_fraction": 0.6423895253682488,
+            "turn_sign_reversals": 63,
+            "within_alignment_reversals": 39,
+            "turn_groups": 62,
+            "repeat_turn_groups": 37,
+            "max_turn_group": 84,
+            "shared_heading_turns": 785,
+            "heading_reasons": {
+              "shared_v145": 785
+            },
+            "heading_target_step_deg_median": 5.932603707984017
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 2572,
+        "counts": {
+          "turn": 1714,
+          "forward": 713,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 145
+        },
+        "turn_fraction": 0.666407465007776,
+        "forward_fraction": 0.2772161741835148,
+        "turn_moving_fraction": 0.7062216728471363,
+        "turn_sign_reversals": 225,
+        "within_alignment_reversals": 147,
+        "turn_groups": 147,
+        "repeat_turn_groups": 93,
+        "max_turn_group": 93,
+        "shared_heading_turns": 1666,
+        "heading_reasons": {
+          "shared_v145": 1666
+        },
+        "heading_target_step_deg_median": 5.932603707983356
+      },
+      "return_transition": {
+        "t": 346.9,
+        "reason": "registered_return_stage_started",
+        "cause": "approach_budget",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.076465050719766,
+      "B_nearest_boundary_distance_m": 1.6493761605294168,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 244.39999999999998,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": false,
+      "turn_status_counts": {
+        "public_static": 1619,
+        "no_path": 3,
+        "recover_spin": 76,
+        "recover_wait": 16
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 1666,
+        "calibrated_pulse": 48
+      }
+    },
+    {
+      "seed": 63002,
+      "profile": "baseline",
+      "status": "PHYSICAL_FAILURE",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 738.246673611,
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      },
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+        "sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 41.1
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63002-baseline",
+      "result_sha256": "c4b80ce6d160c4a947b2e557d2353f126fcf9a5a99db6f0fb9e7d94f39ab4ef4",
+      "samples": 1436,
+      "over_3sigma": 217,
+      "over_3sigma_rate": 0.1511142061281337,
+      "final_error_m": 0.41216594597439293,
+      "final_sigma_m": 0.10721606367255009,
+      "final_error_sigma": 3.8442555327641394,
+      "path_rmse_m": 0.3263311920389973,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "final_return_distance_m": 3.3960898079937456,
+      "sim_s": 287.0,
+      "occupied_cells": 383,
+      "tube": {
+        "occupied_cells": 122,
+        "precision_015": 0.4344262295081967,
+        "precision_cell": 0.1721311475409836,
+        "wall_coverage": 0.6774193548387096,
+        "wall_error_rmse_m": 0.25173736131544644
+      },
+      "tube_wall_samples": 62,
+      "tube_covered_samples": 42,
+      "per_phase": {
+        "approach": {
+          "samples": 1350,
+          "over_3sigma": 191,
+          "over_3sigma_rate": 0.14148148148148149,
+          "final_error_m": 0.07801077895893216,
+          "final_sigma_m": 0.08888676878130662,
+          "commands": {
+            "commands": 1350,
+            "counts": {
+              "turn": 446,
+              "forward": 283,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 621
+            },
+            "turn_fraction": 0.33037037037037037,
+            "forward_fraction": 0.20962962962962964,
+            "turn_moving_fraction": 0.6117969821673526,
+            "turn_sign_reversals": 139,
+            "within_alignment_reversals": 79,
+            "turn_groups": 95,
+            "repeat_turn_groups": 62,
+            "max_turn_group": 26,
+            "shared_heading_turns": 418,
+            "heading_reasons": {
+              "shared_v145": 418
+            },
+            "heading_target_step_deg_median": 5.934775421842197
+          }
+        },
+        "return": {
+          "samples": 86,
+          "over_3sigma": 26,
+          "over_3sigma_rate": 0.3023255813953488,
+          "final_error_m": 0.41216594597439293,
+          "final_sigma_m": 0.10721606367255009,
+          "commands": {
+            "commands": 86,
+            "counts": {
+              "turn": 46,
+              "forward": 40,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 0
+            },
+            "turn_fraction": 0.5348837209302325,
+            "forward_fraction": 0.46511627906976744,
+            "turn_moving_fraction": 0.5348837209302325,
+            "turn_sign_reversals": 2,
+            "within_alignment_reversals": 1,
+            "turn_groups": 4,
+            "repeat_turn_groups": 2,
+            "max_turn_group": 34,
+            "shared_heading_turns": 46,
+            "heading_reasons": {
+              "shared_v145": 46
+            },
+            "heading_target_step_deg_median": 5.932603707983304
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 1436,
+        "counts": {
+          "turn": 492,
+          "forward": 323,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 621
+        },
+        "turn_fraction": 0.3426183844011142,
+        "forward_fraction": 0.22493036211699163,
+        "turn_moving_fraction": 0.603680981595092,
+        "turn_sign_reversals": 141,
+        "within_alignment_reversals": 80,
+        "turn_groups": 99,
+        "repeat_turn_groups": 64,
+        "max_turn_group": 34,
+        "shared_heading_turns": 464,
+        "heading_reasons": {
+          "shared_v145": 464
+        },
+        "heading_target_step_deg_median": 5.932603707983356
+      },
+      "return_transition": {
+        "t": 311.1,
+        "reason": "registered_return_stage_started",
+        "cause": "approach_budget",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.113260172666375,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 17.0,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": false,
+      "turn_status_counts": {
+        "public_static": 466,
+        "recover_spin": 26
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 464,
+        "calibrated_pulse": 28
+      }
+    },
+    {
+      "seed": 63002,
+      "profile": "a",
+      "status": "PHYSICAL_FAILURE",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 1225.0322975170002,
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      },
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+        "sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 41.1
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63002-a",
+      "result_sha256": "aec98d8209ae3a413ec11468032e47960357a7562f8525493e9c8e970a2bbcca",
+      "samples": 1437,
+      "over_3sigma": 533,
+      "over_3sigma_rate": 0.3709116214335421,
+      "final_error_m": 0.2788178766917687,
+      "final_sigma_m": 0.21348813986147264,
+      "final_error_sigma": 1.3060110827359637,
+      "path_rmse_m": 0.457015192861542,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "final_return_distance_m": 1.8502146186332293,
+      "sim_s": 287.2,
+      "occupied_cells": 529,
+      "tube": {
+        "occupied_cells": 108,
+        "precision_015": 0.46296296296296297,
+        "precision_cell": 0.2037037037037037,
+        "wall_coverage": 0.527027027027027,
+        "wall_error_rmse_m": 0.2617361334869723
+      },
+      "tube_wall_samples": 74,
+      "tube_covered_samples": 39,
+      "per_phase": {
+        "approach": {
+          "samples": 1350,
+          "over_3sigma": 509,
+          "over_3sigma_rate": 0.37703703703703706,
+          "final_error_m": 0.8286823962827888,
+          "final_sigma_m": 0.19618694167503953,
+          "commands": {
+            "commands": 1350,
+            "counts": {
+              "turn": 764,
+              "forward": 361,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 225
+            },
+            "turn_fraction": 0.5659259259259259,
+            "forward_fraction": 0.2674074074074074,
+            "turn_moving_fraction": 0.6791111111111111,
+            "turn_sign_reversals": 169,
+            "within_alignment_reversals": 93,
+            "turn_groups": 125,
+            "repeat_turn_groups": 83,
+            "max_turn_group": 79,
+            "shared_heading_turns": 703,
+            "heading_reasons": {
+              "shared_v145": 703
+            },
+            "heading_target_step_deg_median": 5.932603707983356
+          }
+        },
+        "return": {
+          "samples": 87,
+          "over_3sigma": 24,
+          "over_3sigma_rate": 0.27586206896551724,
+          "final_error_m": 0.2788178766917687,
+          "final_sigma_m": 0.21348813986147264,
+          "commands": {
+            "commands": 87,
+            "counts": {
+              "turn": 43,
+              "forward": 44,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 0
+            },
+            "turn_fraction": 0.4942528735632184,
+            "forward_fraction": 0.5057471264367817,
+            "turn_moving_fraction": 0.4942528735632184,
+            "turn_sign_reversals": 5,
+            "within_alignment_reversals": 2,
+            "turn_groups": 5,
+            "repeat_turn_groups": 2,
+            "max_turn_group": 31,
+            "shared_heading_turns": 43,
+            "heading_reasons": {
+              "shared_v145": 43
+            },
+            "heading_target_step_deg_median": 5.934775421842223
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 1437,
+        "counts": {
+          "turn": 807,
+          "forward": 405,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 225
+        },
+        "turn_fraction": 0.5615866388308977,
+        "forward_fraction": 0.2818371607515658,
+        "turn_moving_fraction": 0.6658415841584159,
+        "turn_sign_reversals": 174,
+        "within_alignment_reversals": 95,
+        "turn_groups": 130,
+        "repeat_turn_groups": 85,
+        "max_turn_group": 79,
+        "shared_heading_turns": 746,
+        "heading_reasons": {
+          "shared_v145": 746
+        },
+        "heading_target_step_deg_median": 5.932603707983356
+      },
+      "return_transition": {
+        "t": 311.1,
+        "reason": "registered_return_stage_started",
+        "cause": "approach_budget",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.113260172666375,
+      "B_nearest_boundary_distance_m": 1.4564452855766676,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 17.19999999999999,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": false,
+      "turn_status_counts": {
+        "public_static": 746,
+        "no_path": 4,
+        "recover_spin": 57
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 746,
+        "calibrated_pulse": 61
+      }
+    },
+    {
+      "seed": 63003,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 1912.0774827000005,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+        "sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 15.5
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63003-baseline",
+      "result_sha256": "30d1697f1c97b4d6f0655167798995d57865a854687df2586c13af66cf1a0a94",
+      "samples": 2201,
+      "over_3sigma": 1748,
+      "over_3sigma_rate": 0.7941844616083599,
+      "final_error_m": 0.8198801004914216,
+      "final_sigma_m": 0.07629310177731988,
+      "final_error_sigma": 10.746451270056403,
+      "path_rmse_m": 0.5143435800915955,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 185.3,
+          "kind": "goal_reached",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 2.0452823478687687,
+      "sim_s": 440.0,
+      "occupied_cells": 562,
+      "tube": {
+        "occupied_cells": 132,
+        "precision_015": 0.49242424242424243,
+        "precision_cell": 0.23484848484848486,
+        "wall_coverage": 0.9032258064516129,
+        "wall_error_rmse_m": 0.2935833645373647
+      },
+      "tube_wall_samples": 62,
+      "tube_covered_samples": 56,
+      "per_phase": {
+        "approach": {
+          "samples": 850,
+          "over_3sigma": 432,
+          "over_3sigma_rate": 0.508235294117647,
+          "final_error_m": 0.5750739005253122,
+          "final_sigma_m": 0.12961274796849617,
+          "commands": {
+            "commands": 850,
+            "counts": {
+              "turn": 521,
+              "forward": 259,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 70
+            },
+            "turn_fraction": 0.6129411764705882,
+            "forward_fraction": 0.30470588235294116,
+            "turn_moving_fraction": 0.6679487179487179,
+            "turn_sign_reversals": 125,
+            "within_alignment_reversals": 75,
+            "turn_groups": 93,
+            "repeat_turn_groups": 61,
+            "max_turn_group": 57,
+            "shared_heading_turns": 503,
+            "heading_reasons": {
+              "shared_v145": 503
+            },
+            "heading_target_step_deg_median": 5.932603707983356
+          }
+        },
+        "return": {
+          "samples": 1351,
+          "over_3sigma": 1316,
+          "over_3sigma_rate": 0.9740932642487047,
+          "final_error_m": 0.8198801004914216,
+          "final_sigma_m": 0.07629310177731988,
+          "commands": {
+            "commands": 1351,
+            "counts": {
+              "turn": 900,
+              "forward": 450,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 1
+            },
+            "turn_fraction": 0.6661732050333087,
+            "forward_fraction": 0.33308660251665434,
+            "turn_moving_fraction": 0.6666666666666666,
+            "turn_sign_reversals": 76,
+            "within_alignment_reversals": 44,
+            "turn_groups": 74,
+            "repeat_turn_groups": 46,
+            "max_turn_group": 53,
+            "shared_heading_turns": 900,
+            "heading_reasons": {
+              "shared_v145": 900
+            },
+            "heading_target_step_deg_median": 5.93260370798333
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 2201,
+        "counts": {
+          "turn": 1421,
+          "forward": 709,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 71
+        },
+        "turn_fraction": 0.6456156292594275,
+        "forward_fraction": 0.32212630622444344,
+        "turn_moving_fraction": 0.6671361502347418,
+        "turn_sign_reversals": 201,
+        "within_alignment_reversals": 119,
+        "turn_groups": 166,
+        "repeat_turn_groups": 106,
+        "max_turn_group": 57,
+        "shared_heading_turns": 1403,
+        "heading_reasons": {
+          "shared_v145": 1403
+        },
+        "heading_target_step_deg_median": 5.932603707983356
+      },
+      "return_transition": {
+        "t": 185.5,
+        "reason": "registered_return_stage_started",
+        "cause": "own_B_declared",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.2410055749630655,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 170.0,
+      "return_sim_s": 270.0,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": true,
+      "turn_status_counts": {
+        "public_static": 1336,
+        "recover_spin": 37,
+        "recover_wait": 20,
+        "recover_backup": 28
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 1403,
+        "calibrated_pulse": 18
+      }
+    },
+    {
+      "seed": 63003,
+      "profile": "a",
+      "status": "PHYSICAL_FAILURE",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 1183.820031569,
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      },
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+        "sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 15.5
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63003-a",
+      "result_sha256": "2e5f7f78ff60d9372eeb307f4cff06a7f952c3952c4540b809447884377b6cb7",
+      "samples": 1205,
+      "over_3sigma": 7,
+      "over_3sigma_rate": 0.005809128630705394,
+      "final_error_m": 0.5668083920810655,
+      "final_sigma_m": 0.307695604222744,
+      "final_error_sigma": 1.8421075384318688,
+      "path_rmse_m": 0.34062668723463047,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 135.5,
+          "kind": "goal_reached",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 1,
+        "robot": 0
+      },
+      "final_return_distance_m": 3.180972908317367,
+      "sim_s": 240.8,
+      "occupied_cells": 474,
+      "tube": {
+        "occupied_cells": 91,
+        "precision_015": 0.7362637362637363,
+        "precision_cell": 0.26373626373626374,
+        "wall_coverage": 0.8904109589041096,
+        "wall_error_rmse_m": 0.13492581580281335
+      },
+      "tube_wall_samples": 73,
+      "tube_covered_samples": 65,
+      "per_phase": {
+        "approach": {
+          "samples": 601,
+          "over_3sigma": 7,
+          "over_3sigma_rate": 0.011647254575707155,
+          "final_error_m": 0.1363742576049347,
+          "final_sigma_m": 0.22853834347377674,
+          "commands": {
+            "commands": 601,
+            "counts": {
+              "turn": 317,
+              "forward": 283,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 1
+            },
+            "turn_fraction": 0.5274542429284526,
+            "forward_fraction": 0.47088186356073214,
+            "turn_moving_fraction": 0.5283333333333333,
+            "turn_sign_reversals": 99,
+            "within_alignment_reversals": 49,
+            "turn_groups": 80,
+            "repeat_turn_groups": 45,
+            "max_turn_group": 18,
+            "shared_heading_turns": 317,
+            "heading_reasons": {
+              "shared_v145": 317
+            },
+            "heading_target_step_deg_median": 5.932603707983406
+          }
+        },
+        "return": {
+          "samples": 604,
+          "over_3sigma": 0,
+          "over_3sigma_rate": 0.0,
+          "final_error_m": 0.5668083920810655,
+          "final_sigma_m": 0.307695604222744,
+          "commands": {
+            "commands": 604,
+            "counts": {
+              "turn": 318,
+              "forward": 286,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 0
+            },
+            "turn_fraction": 0.5264900662251656,
+            "forward_fraction": 0.4735099337748344,
+            "turn_moving_fraction": 0.5264900662251656,
+            "turn_sign_reversals": 28,
+            "within_alignment_reversals": 16,
+            "turn_groups": 34,
+            "repeat_turn_groups": 17,
+            "max_turn_group": 48,
+            "shared_heading_turns": 318,
+            "heading_reasons": {
+              "shared_v145": 318
+            },
+            "heading_target_step_deg_median": 5.932603707983304
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 1205,
+        "counts": {
+          "turn": 635,
+          "forward": 569,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 1
+        },
+        "turn_fraction": 0.5269709543568465,
+        "forward_fraction": 0.4721991701244813,
+        "turn_moving_fraction": 0.5274086378737541,
+        "turn_sign_reversals": 127,
+        "within_alignment_reversals": 65,
+        "turn_groups": 113,
+        "repeat_turn_groups": 61,
+        "max_turn_group": 48,
+        "shared_heading_turns": 635,
+        "heading_reasons": {
+          "shared_v145": 635
+        },
+        "heading_target_step_deg_median": 5.932603707983356
+      },
+      "return_transition": {
+        "t": 135.7,
+        "reason": "registered_return_stage_started",
+        "cause": "own_B_declared",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.2410055749630655,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 120.19999999999999,
+      "return_sim_s": 120.60000000000002,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": true,
+      "turn_status_counts": {
+        "public_static": 635
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 635
+      }
+    },
+    {
+      "seed": 63004,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 2300.331022953,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+        "sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 67.7
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63004-baseline",
+      "result_sha256": "3d4566a4b27d2ec177bc05417f2783b40029f47cd19b7801bba4e16918237563",
+      "samples": 2701,
+      "over_3sigma": 2424,
+      "over_3sigma_rate": 0.8974453905960755,
+      "final_error_m": 0.5979383502170312,
+      "final_sigma_m": 0.08534221282869446,
+      "final_error_sigma": 7.006360983599754,
+      "path_rmse_m": 0.6406613153409096,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 3.4082135151612225,
+      "sim_s": 540.0,
+      "occupied_cells": 622,
+      "tube": {
+        "occupied_cells": 89,
+        "precision_015": 0.23595505617977527,
+        "precision_cell": 0.06741573033707865,
+        "wall_coverage": 0.6206896551724138,
+        "wall_error_rmse_m": 0.2597913133047381
+      },
+      "tube_wall_samples": 58,
+      "tube_covered_samples": 36,
+      "per_phase": {
+        "approach": {
+          "samples": 1350,
+          "over_3sigma": 1093,
+          "over_3sigma_rate": 0.8096296296296296,
+          "final_error_m": 0.6892958631384267,
+          "final_sigma_m": 0.18068849172507256,
+          "commands": {
+            "commands": 1350,
+            "counts": {
+              "turn": 647,
+              "forward": 280,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 423
+            },
+            "turn_fraction": 0.4792592592592593,
+            "forward_fraction": 0.2074074074074074,
+            "turn_moving_fraction": 0.697950377562028,
+            "turn_sign_reversals": 171,
+            "within_alignment_reversals": 111,
+            "turn_groups": 107,
+            "repeat_turn_groups": 66,
+            "max_turn_group": 43,
+            "shared_heading_turns": 633,
+            "heading_reasons": {
+              "shared_v145": 633
+            },
+            "heading_target_step_deg_median": 5.932603707983356
+          }
+        },
+        "return": {
+          "samples": 1351,
+          "over_3sigma": 1331,
+          "over_3sigma_rate": 0.9851961509992598,
+          "final_error_m": 0.5979383502170312,
+          "final_sigma_m": 0.08534221282869446,
+          "commands": {
+            "commands": 1351,
+            "counts": {
+              "turn": 766,
+              "forward": 584,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 1
+            },
+            "turn_fraction": 0.5669874167283494,
+            "forward_fraction": 0.4322723908216136,
+            "turn_moving_fraction": 0.5674074074074074,
+            "turn_sign_reversals": 58,
+            "within_alignment_reversals": 28,
+            "turn_groups": 71,
+            "repeat_turn_groups": 42,
+            "max_turn_group": 44,
+            "shared_heading_turns": 766,
+            "heading_reasons": {
+              "shared_v145": 766
+            },
+            "heading_target_step_deg_median": 5.934775421841662
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 2701,
+        "counts": {
+          "turn": 1413,
+          "forward": 864,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 424
+        },
+        "turn_fraction": 0.5231395779340985,
+        "forward_fraction": 0.3198815253609774,
+        "turn_moving_fraction": 0.6205533596837944,
+        "turn_sign_reversals": 229,
+        "within_alignment_reversals": 139,
+        "turn_groups": 177,
+        "repeat_turn_groups": 107,
+        "max_turn_group": 44,
+        "shared_heading_turns": 1399,
+        "heading_reasons": {
+          "shared_v145": 1399
+        },
+        "heading_target_step_deg_median": 5.932603707984068
+      },
+      "return_transition": {
+        "t": 337.7,
+        "reason": "registered_return_stage_started",
+        "cause": "approach_budget",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.3591709510346686,
+      "B_nearest_boundary_distance_m": 2.3553208497129594,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": false,
+      "turn_status_counts": {
+        "public_static": 1343,
+        "recover_spin": 32,
+        "no_path": 4,
+        "recover_wait": 16,
+        "recover_backup": 18
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 1399,
+        "calibrated_pulse": 14
+      }
+    },
+    {
+      "seed": 63004,
+      "profile": "a",
+      "status": "RECORDED",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 2656.160276464,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+        "sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 67.7
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63004-a",
+      "result_sha256": "d3d91299e18e9b4a08e07f9b6ad44a0939b40c1a1e71cd2acfe5a94d09bc398c",
+      "samples": 2701,
+      "over_3sigma": 2642,
+      "over_3sigma_rate": 0.978156238430211,
+      "final_error_m": 0.8649843840686745,
+      "final_sigma_m": 0.11023338037354782,
+      "final_error_sigma": 7.846846219697719,
+      "path_rmse_m": 0.6422438085121502,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 3.6780124393504434,
+      "sim_s": 540.0,
+      "occupied_cells": 671,
+      "tube": {
+        "occupied_cells": 135,
+        "precision_015": 0.22962962962962963,
+        "precision_cell": 0.05185185185185185,
+        "wall_coverage": 0.7169811320754716,
+        "wall_error_rmse_m": 0.2794960528071014
+      },
+      "tube_wall_samples": 53,
+      "tube_covered_samples": 38,
+      "per_phase": {
+        "approach": {
+          "samples": 1350,
+          "over_3sigma": 1326,
+          "over_3sigma_rate": 0.9822222222222222,
+          "final_error_m": 0.7212475648120472,
+          "final_sigma_m": 0.11251483765763512,
+          "commands": {
+            "commands": 1350,
+            "counts": {
+              "turn": 504,
+              "forward": 276,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 570
+            },
+            "turn_fraction": 0.37333333333333335,
+            "forward_fraction": 0.20444444444444446,
+            "turn_moving_fraction": 0.6461538461538462,
+            "turn_sign_reversals": 141,
+            "within_alignment_reversals": 76,
+            "turn_groups": 109,
+            "repeat_turn_groups": 72,
+            "max_turn_group": 36,
+            "shared_heading_turns": 481,
+            "heading_reasons": {
+              "shared_v145": 481
+            },
+            "heading_target_step_deg_median": 5.934775421842197
+          }
+        },
+        "return": {
+          "samples": 1351,
+          "over_3sigma": 1316,
+          "over_3sigma_rate": 0.9740932642487047,
+          "final_error_m": 0.8649843840686745,
+          "final_sigma_m": 0.11023338037354782,
+          "commands": {
+            "commands": 1351,
+            "counts": {
+              "turn": 862,
+              "forward": 488,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 1
+            },
+            "turn_fraction": 0.6380458919319023,
+            "forward_fraction": 0.3612139156180607,
+            "turn_moving_fraction": 0.6385185185185185,
+            "turn_sign_reversals": 68,
+            "within_alignment_reversals": 41,
+            "turn_groups": 66,
+            "repeat_turn_groups": 42,
+            "max_turn_group": 74,
+            "shared_heading_turns": 862,
+            "heading_reasons": {
+              "shared_v145": 862
+            },
+            "heading_target_step_deg_median": 5.932603707984017
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 2701,
+        "counts": {
+          "turn": 1366,
+          "forward": 764,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 571
+        },
+        "turn_fraction": 0.5057386153276564,
+        "forward_fraction": 0.28285820066641987,
+        "turn_moving_fraction": 0.6413145539906103,
+        "turn_sign_reversals": 209,
+        "within_alignment_reversals": 117,
+        "turn_groups": 174,
+        "repeat_turn_groups": 113,
+        "max_turn_group": 74,
+        "shared_heading_turns": 1343,
+        "heading_reasons": {
+          "shared_v145": 1343
+        },
+        "heading_target_step_deg_median": 5.932603707984017
+      },
+      "return_transition": {
+        "t": 337.7,
+        "reason": "registered_return_stage_started",
+        "cause": "approach_budget",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.3591709510346686,
+      "B_nearest_boundary_distance_m": 2.356015680352338,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": false,
+      "turn_status_counts": {
+        "public_static": 1225,
+        "recover_spin": 80,
+        "recover_wait": 22,
+        "recover_backup": 38,
+        "recover_clear": 1
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 1343,
+        "calibrated_pulse": 23
+      }
+    },
+    {
+      "seed": 63005,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 3275.820319736,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+        "sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 34.7
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63005-baseline",
+      "result_sha256": "4396a8383c83b28cb9cfa54b97cccb4bc1b54e828970b4b1ae8e2a11a7e74f39",
+      "samples": 2701,
+      "over_3sigma": 1789,
+      "over_3sigma_rate": 0.6623472787856349,
+      "final_error_m": 0.26701648472551665,
+      "final_sigma_m": 0.07114878240948472,
+      "final_error_sigma": 3.7529311912711125,
+      "path_rmse_m": 0.3028404946331802,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 2.2604074334758093,
+      "sim_s": 540.0,
+      "occupied_cells": 620,
+      "tube": {
+        "occupied_cells": 64,
+        "precision_015": 0.78125,
+        "precision_cell": 0.328125,
+        "wall_coverage": 0.95,
+        "wall_error_rmse_m": 0.10713080164629692
+      },
+      "tube_wall_samples": 40,
+      "tube_covered_samples": 38,
+      "per_phase": {
+        "approach": {
+          "samples": 1350,
+          "over_3sigma": 620,
+          "over_3sigma_rate": 0.45925925925925926,
+          "final_error_m": 0.3291739158753874,
+          "final_sigma_m": 0.06688044277832023,
+          "commands": {
+            "commands": 1350,
+            "counts": {
+              "turn": 875,
+              "forward": 249,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 226
+            },
+            "turn_fraction": 0.6481481481481481,
+            "forward_fraction": 0.18444444444444444,
+            "turn_moving_fraction": 0.7784697508896797,
+            "turn_sign_reversals": 158,
+            "within_alignment_reversals": 101,
+            "turn_groups": 95,
+            "repeat_turn_groups": 72,
+            "max_turn_group": 54,
+            "shared_heading_turns": 798,
+            "heading_reasons": {
+              "shared_v145": 798
+            },
+            "heading_target_step_deg_median": 5.932603707983356
+          }
+        },
+        "return": {
+          "samples": 1351,
+          "over_3sigma": 1169,
+          "over_3sigma_rate": 0.8652849740932642,
+          "final_error_m": 0.26701648472551665,
+          "final_sigma_m": 0.07114878240948472,
+          "commands": {
+            "commands": 1351,
+            "counts": {
+              "turn": 1047,
+              "forward": 303,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 1
+            },
+            "turn_fraction": 0.774981495188749,
+            "forward_fraction": 0.22427831236121393,
+            "turn_moving_fraction": 0.7755555555555556,
+            "turn_sign_reversals": 82,
+            "within_alignment_reversals": 46,
+            "turn_groups": 75,
+            "repeat_turn_groups": 49,
+            "max_turn_group": 73,
+            "shared_heading_turns": 1047,
+            "heading_reasons": {
+              "shared_v145": 1047
+            },
+            "heading_target_step_deg_median": 5.932603707984017
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 2701,
+        "counts": {
+          "turn": 1922,
+          "forward": 552,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 227
+        },
+        "turn_fraction": 0.7115883006293965,
+        "forward_fraction": 0.2043687523139578,
+        "turn_moving_fraction": 0.7768795472918351,
+        "turn_sign_reversals": 240,
+        "within_alignment_reversals": 147,
+        "turn_groups": 169,
+        "repeat_turn_groups": 120,
+        "max_turn_group": 73,
+        "shared_heading_turns": 1845,
+        "heading_reasons": {
+          "shared_v145": 1845
+        },
+        "heading_target_step_deg_median": 5.932603707983356
+      },
+      "return_transition": {
+        "t": 304.7,
+        "reason": "registered_return_stage_started",
+        "cause": "approach_budget",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.2025053822503624,
+      "B_nearest_boundary_distance_m": 0.06599054996626008,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 270.00000000000006,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": false,
+      "turn_status_counts": {
+        "public_static": 1759,
+        "no_path": 5,
+        "recover_spin": 99,
+        "recover_wait": 24,
+        "recover_backup": 35
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 1845,
+        "calibrated_pulse": 77
+      }
+    },
+    {
+      "seed": 63005,
+      "profile": "a",
+      "status": "HOST_ERROR",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 3606.8147748850006,
+      "failure": {
+        "type": "TimeoutError",
+        "message": "REGISTERED_HOST_BUDGET"
+      },
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+        "sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 34.7
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63005-a",
+      "result_sha256": "628afca36959bbe8d57da188a53c265be87976203f9f7fbb9842a9ec98bd21b0",
+      "samples": 2683,
+      "over_3sigma": 728,
+      "over_3sigma_rate": 0.2713380544166977,
+      "final_error_m": 0.12177675810191908,
+      "final_sigma_m": 0.06834983089128153,
+      "final_error_sigma": 1.7816687549032766,
+      "path_rmse_m": 0.224856480682178,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 1.6790073282544797,
+      "sim_s": 536.4,
+      "occupied_cells": 692,
+      "tube": {
+        "occupied_cells": 135,
+        "precision_015": 0.8,
+        "precision_cell": 0.4,
+        "wall_coverage": 0.9850746268656716,
+        "wall_error_rmse_m": 0.13175184143749163
+      },
+      "tube_wall_samples": 67,
+      "tube_covered_samples": 66,
+      "per_phase": {
+        "approach": {
+          "samples": 1350,
+          "over_3sigma": 332,
+          "over_3sigma_rate": 0.24592592592592594,
+          "final_error_m": 0.08602840676461435,
+          "final_sigma_m": 0.07810162946884894,
+          "commands": {
+            "commands": 1350,
+            "counts": {
+              "turn": 806,
+              "forward": 292,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 252
+            },
+            "turn_fraction": 0.597037037037037,
+            "forward_fraction": 0.2162962962962963,
+            "turn_moving_fraction": 0.7340619307832422,
+            "turn_sign_reversals": 149,
+            "within_alignment_reversals": 88,
+            "turn_groups": 93,
+            "repeat_turn_groups": 57,
+            "max_turn_group": 86,
+            "shared_heading_turns": 725,
+            "heading_reasons": {
+              "shared_v145": 725
+            },
+            "heading_target_step_deg_median": 5.932603707983356
+          }
+        },
+        "return": {
+          "samples": 1333,
+          "over_3sigma": 396,
+          "over_3sigma_rate": 0.2970742685671418,
+          "final_error_m": 0.12177675810191908,
+          "final_sigma_m": 0.06834983089128153,
+          "commands": {
+            "commands": 1333,
+            "counts": {
+              "turn": 944,
+              "forward": 389,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 0
+            },
+            "turn_fraction": 0.7081770442610653,
+            "forward_fraction": 0.29182295573893474,
+            "turn_moving_fraction": 0.7081770442610653,
+            "turn_sign_reversals": 73,
+            "within_alignment_reversals": 52,
+            "turn_groups": 60,
+            "repeat_turn_groups": 40,
+            "max_turn_group": 88,
+            "shared_heading_turns": 944,
+            "heading_reasons": {
+              "shared_v145": 944
+            },
+            "heading_target_step_deg_median": 5.932603707983356
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 2683,
+        "counts": {
+          "turn": 1750,
+          "forward": 681,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 252
+        },
+        "turn_fraction": 0.6522549385016773,
+        "forward_fraction": 0.25382035035408124,
+        "turn_moving_fraction": 0.7198683669271905,
+        "turn_sign_reversals": 222,
+        "within_alignment_reversals": 140,
+        "turn_groups": 153,
+        "repeat_turn_groups": 97,
+        "max_turn_group": 88,
+        "shared_heading_turns": 1669,
+        "heading_reasons": {
+          "shared_v145": 1669
+        },
+        "heading_target_step_deg_median": 5.932603707983356
+      },
+      "return_transition": {
+        "t": 304.7,
+        "reason": "registered_return_stage_started",
+        "cause": "approach_budget",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.2025053822503624,
+      "B_nearest_boundary_distance_m": 0.929803552202455,
+      "approach_sim_s": 270.0,
+      "return_sim_s": 266.59999999999997,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": false,
+      "turn_status_counts": {
+        "public_static": 1541,
+        "no_path": 6,
+        "recover_spin": 134,
+        "recover_wait": 18,
+        "recover_backup": 50,
+        "recover_clear": 1
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 1669,
+        "calibrated_pulse": 81
+      }
+    },
+    {
+      "seed": 63006,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 1547.066685486,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+        "sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 28.3
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63006-baseline",
+      "result_sha256": "c25e8391a03f8138b922b22d9e769d72683cca706f807bb13af4317b17378b69",
+      "samples": 1871,
+      "over_3sigma": 888,
+      "over_3sigma_rate": 0.4746125066809193,
+      "final_error_m": 0.20493867987503167,
+      "final_sigma_m": 0.06897879012328641,
+      "final_error_sigma": 2.971039061554181,
+      "path_rmse_m": 0.31853848380627997,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 132.1,
+          "kind": "goal_reached",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 1.7993147816385895,
+      "sim_s": 374.0,
+      "occupied_cells": 616,
+      "tube": {
+        "occupied_cells": 81,
+        "precision_015": 0.5185185185185185,
+        "precision_cell": 0.14814814814814814,
+        "wall_coverage": 0.8421052631578947,
+        "wall_error_rmse_m": 0.15034500371904175
+      },
+      "tube_wall_samples": 57,
+      "tube_covered_samples": 48,
+      "per_phase": {
+        "approach": {
+          "samples": 520,
+          "over_3sigma": 93,
+          "over_3sigma_rate": 0.17884615384615385,
+          "final_error_m": 0.3892758606624877,
+          "final_sigma_m": 0.13131828826403827,
+          "commands": {
+            "commands": 520,
+            "counts": {
+              "turn": 297,
+              "forward": 220,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 3
+            },
+            "turn_fraction": 0.5711538461538461,
+            "forward_fraction": 0.4230769230769231,
+            "turn_moving_fraction": 0.574468085106383,
+            "turn_sign_reversals": 98,
+            "within_alignment_reversals": 56,
+            "turn_groups": 63,
+            "repeat_turn_groups": 43,
+            "max_turn_group": 22,
+            "shared_heading_turns": 297,
+            "heading_reasons": {
+              "shared_v145": 297
+            },
+            "heading_target_step_deg_median": 5.932603707983368
+          }
+        },
+        "return": {
+          "samples": 1351,
+          "over_3sigma": 795,
+          "over_3sigma_rate": 0.5884529977794226,
+          "final_error_m": 0.20493867987503167,
+          "final_sigma_m": 0.06897879012328641,
+          "commands": {
+            "commands": 1351,
+            "counts": {
+              "turn": 848,
+              "forward": 502,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 1
+            },
+            "turn_fraction": 0.6276831976313841,
+            "forward_fraction": 0.3715766099185788,
+            "turn_moving_fraction": 0.6281481481481481,
+            "turn_sign_reversals": 75,
+            "within_alignment_reversals": 38,
+            "turn_groups": 77,
+            "repeat_turn_groups": 47,
+            "max_turn_group": 70,
+            "shared_heading_turns": 848,
+            "heading_reasons": {
+              "shared_v145": 848
+            },
+            "heading_target_step_deg_median": 5.932603707983356
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 1871,
+        "counts": {
+          "turn": 1145,
+          "forward": 722,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 4
+        },
+        "turn_fraction": 0.6119722073757349,
+        "forward_fraction": 0.38588989845002675,
+        "turn_moving_fraction": 0.6132833422603107,
+        "turn_sign_reversals": 173,
+        "within_alignment_reversals": 94,
+        "turn_groups": 139,
+        "repeat_turn_groups": 89,
+        "max_turn_group": 70,
+        "shared_heading_turns": 1145,
+        "heading_reasons": {
+          "shared_v145": 1145
+        },
+        "heading_target_step_deg_median": 5.932603707983356
+      },
+      "return_transition": {
+        "t": 132.3,
+        "reason": "registered_return_stage_started",
+        "cause": "own_B_declared",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.1653561769999614,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 104.00000000000001,
+      "return_sim_s": 270.0,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": true,
+      "turn_status_counts": {
+        "public_static": 1061,
+        "recover_spin": 24,
+        "recover_wait": 20,
+        "recover_backup": 39,
+        "recover_clear": 1
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 1145
+      }
+    },
+    {
+      "seed": 63006,
+      "profile": "a",
+      "status": "RECORDED",
+      "host": "oracle-x86",
+      "mode": "stage",
+      "source_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+      "wall_s": 2242.234932749,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+        "sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+        "source": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+        "sim_s": 28.3
+      },
+      "raw": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63006-a",
+      "result_sha256": "62b163e79a287133f49bc3c65fac96305359a4b87a461b4372eeafa49c34d947",
+      "samples": 1916,
+      "over_3sigma": 1100,
+      "over_3sigma_rate": 0.5741127348643006,
+      "final_error_m": 0.30451565378436724,
+      "final_sigma_m": 0.07644689252732251,
+      "final_error_sigma": 3.9833620925210504,
+      "path_rmse_m": 0.3607120235485756,
+      "B_arrived": true,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [
+        {
+          "t": 141.1,
+          "kind": "goal_reached",
+          "valid": true
+        }
+      ],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 2.2490853180132127,
+      "sim_s": 383.0,
+      "occupied_cells": 555,
+      "tube": {
+        "occupied_cells": 93,
+        "precision_015": 0.8279569892473119,
+        "precision_cell": 0.3010752688172043,
+        "wall_coverage": 0.9811320754716981,
+        "wall_error_rmse_m": 0.10810202544533123
+      },
+      "tube_wall_samples": 53,
+      "tube_covered_samples": 52,
+      "per_phase": {
+        "approach": {
+          "samples": 565,
+          "over_3sigma": 23,
+          "over_3sigma_rate": 0.04070796460176991,
+          "final_error_m": 0.28570607227686545,
+          "final_sigma_m": 0.11157887675134914,
+          "commands": {
+            "commands": 565,
+            "counts": {
+              "turn": 347,
+              "forward": 214,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 4
+            },
+            "turn_fraction": 0.6141592920353982,
+            "forward_fraction": 0.3787610619469027,
+            "turn_moving_fraction": 0.6185383244206774,
+            "turn_sign_reversals": 92,
+            "within_alignment_reversals": 45,
+            "turn_groups": 73,
+            "repeat_turn_groups": 47,
+            "max_turn_group": 25,
+            "shared_heading_turns": 347,
+            "heading_reasons": {
+              "shared_v145": 347
+            },
+            "heading_target_step_deg_median": 5.934775421842197
+          }
+        },
+        "return": {
+          "samples": 1351,
+          "over_3sigma": 1077,
+          "over_3sigma_rate": 0.7971872686898593,
+          "final_error_m": 0.30451565378436724,
+          "final_sigma_m": 0.07644689252732251,
+          "commands": {
+            "commands": 1351,
+            "counts": {
+              "turn": 781,
+              "forward": 569,
+              "backward": 0,
+              "lateral": 0,
+              "hold": 1
+            },
+            "turn_fraction": 0.5780903034789046,
+            "forward_fraction": 0.42116950407105846,
+            "turn_moving_fraction": 0.5785185185185185,
+            "turn_sign_reversals": 62,
+            "within_alignment_reversals": 38,
+            "turn_groups": 69,
+            "repeat_turn_groups": 43,
+            "max_turn_group": 81,
+            "shared_heading_turns": 781,
+            "heading_reasons": {
+              "shared_v145": 781
+            },
+            "heading_target_step_deg_median": 5.934775421842197
+          }
+        }
+      },
+      "command_audit": {
+        "commands": 1916,
+        "counts": {
+          "turn": 1128,
+          "forward": 783,
+          "backward": 0,
+          "lateral": 0,
+          "hold": 5
+        },
+        "turn_fraction": 0.5887265135699373,
+        "forward_fraction": 0.40866388308977036,
+        "turn_moving_fraction": 0.5902668759811617,
+        "turn_sign_reversals": 154,
+        "within_alignment_reversals": 83,
+        "turn_groups": 142,
+        "repeat_turn_groups": 90,
+        "max_turn_group": 81,
+        "shared_heading_turns": 1128,
+        "heading_reasons": {
+          "shared_v145": 1128
+        },
+        "heading_target_step_deg_median": 5.934775421842197
+      },
+      "return_transition": {
+        "t": 141.3,
+        "reason": "registered_return_stage_started",
+        "cause": "own_B_declared",
+        "budget_s": 270.0
+      },
+      "B_initial_boundary_distance_m": 2.1653561769999614,
+      "B_nearest_boundary_distance_m": 0.0,
+      "approach_sim_s": 113.00000000000001,
+      "return_sim_s": 270.0,
+      "both_arrived": false,
+      "stage_schedule": "b_return_270_v1",
+      "B_declared_before_return": true,
+      "turn_status_counts": {
+        "public_static": 1095,
+        "recover_spin": 14,
+        "recover_wait": 5,
+        "recover_backup": 14
+      },
+      "turn_pulse_reason_counts": {
+        "shared_v145": 1128
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "name": "egomap64-63001-baseline",
+      "mode": "stage",
+      "seed": 63001,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63001-baseline",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "checkpoint_sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--profile",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63001-baseline"
+      ],
+      "pid": 34752,
+      "exit_code": 0
+    },
+    {
+      "name": "egomap64-63001-a",
+      "mode": "stage",
+      "seed": 63001,
+      "profile": "a",
+      "status": "HOST_ERROR",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63001-a",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "checkpoint_sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63001",
+        "--profile",
+        "a",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63001-a"
+      ],
+      "pid": 34753,
+      "exit_code": 1
+    },
+    {
+      "name": "egomap64-63002-baseline",
+      "mode": "stage",
+      "seed": 63002,
+      "profile": "baseline",
+      "status": "PHYSICAL_FAILURE",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63002-baseline",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "checkpoint_sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--profile",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63002-baseline"
+      ],
+      "pid": 34754,
+      "exit_code": 1
+    },
+    {
+      "name": "egomap64-63002-a",
+      "mode": "stage",
+      "seed": 63002,
+      "profile": "a",
+      "status": "PHYSICAL_FAILURE",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63002-a",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "checkpoint_sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63002",
+        "--profile",
+        "a",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63002-a"
+      ],
+      "pid": 34755,
+      "exit_code": 1
+    },
+    {
+      "name": "egomap64-63003-baseline",
+      "mode": "stage",
+      "seed": 63003,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63003-baseline",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--profile",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63003-baseline"
+      ],
+      "pid": 34756,
+      "exit_code": 0
+    },
+    {
+      "name": "egomap64-63003-a",
+      "mode": "stage",
+      "seed": 63003,
+      "profile": "a",
+      "status": "PHYSICAL_FAILURE",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63003-a",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63003",
+        "--profile",
+        "a",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63003-a"
+      ],
+      "pid": 34757,
+      "exit_code": 1
+    },
+    {
+      "name": "egomap64-63004-baseline",
+      "mode": "stage",
+      "seed": 63004,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63004-baseline",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "checkpoint_sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--profile",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63004-baseline"
+      ],
+      "pid": 34758,
+      "exit_code": 0
+    },
+    {
+      "name": "egomap64-63004-a",
+      "mode": "stage",
+      "seed": 63004,
+      "profile": "a",
+      "status": "RECORDED",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63004-a",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "checkpoint_sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63004",
+        "--profile",
+        "a",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63004-a"
+      ],
+      "pid": 34759,
+      "exit_code": 0
+    },
+    {
+      "name": "egomap64-63005-baseline",
+      "mode": "stage",
+      "seed": 63005,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63005-baseline",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "checkpoint_sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--profile",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63005-baseline"
+      ],
+      "pid": 34760,
+      "exit_code": 0
+    },
+    {
+      "name": "egomap64-63005-a",
+      "mode": "stage",
+      "seed": 63005,
+      "profile": "a",
+      "status": "HOST_ERROR",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63005-a",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "checkpoint_sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63005",
+        "--profile",
+        "a",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63005-a"
+      ],
+      "pid": 34761,
+      "exit_code": 1
+    },
+    {
+      "name": "egomap64-63006-baseline",
+      "mode": "stage",
+      "seed": 63006,
+      "profile": "baseline",
+      "status": "RECORDED",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63006-baseline",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "checkpoint_sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--profile",
+        "baseline",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63006-baseline"
+      ],
+      "pid": 36400,
+      "exit_code": 0
+    },
+    {
+      "name": "egomap64-63006-a",
+      "mode": "stage",
+      "seed": 63006,
+      "profile": "a",
+      "status": "RECORDED",
+      "output": "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63006-a",
+      "checkpoint": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "checkpoint_sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "command": [
+        "/home/ubuntu/ugrp-sim/src/2cfe8852ba3b8db8045bb946d45d5f678d134e86/.venv-sim/bin/python",
+        "-m",
+        "scripts.run_own_route_full_budget",
+        "--mode",
+        "stage",
+        "--seed",
+        "63006",
+        "--profile",
+        "a",
+        "--output",
+        "/home/ubuntu/ugrp-sim/runs/egomap64-batch/data/stage-63006-a"
+      ],
+      "pid": 37112,
+      "exit_code": 0
+    }
+  ],
+  "verified_files": 26649,
+  "hash_mismatches": [],
+  "source_hashes": {
+    "scores.json": "924f29c0d10925ae134fb52848542b0a14014c6601799f9834c5ef3ceb006dbf",
+    "batch-status.json": "2eafdda022620bfcb8d8b1d33ca5bef6692858c036bfac60b2410a48f7c52b43",
+    "batch-plan.json": "5dee4007f15a3035807becda81bedcac45fac600c36af8d7a28f6e890fe0b653"
+  },
+  "thresholds_changed": false,
+  "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap64-batch/data",
+  "approach_budget_s": 270,
+  "return_budget_s": 270
+}

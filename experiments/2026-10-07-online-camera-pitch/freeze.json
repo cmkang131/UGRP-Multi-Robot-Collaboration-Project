@@ -1,0 +1,44 @@
+{
+  "source_sha": "c9c4aba01fa53ff5726bbcf3bf2901ffa7585f78",
+  "hashes": {
+    "experiments/2026-10-07-online-camera-pitch/README.md": "813b17fe3fdc45f6a435148cfd03b5f9e6729119172b84b4d09ef5593764b928",
+    "experiments/2026-10-07-online-camera-pitch/SOURCES.json": "36e151448ded77945fca9bb37147201d5b7b38b9080dbc49f7826c37a246689b",
+    "experiments/2026-10-07-online-camera-pitch/code/evaluate_pitch.py": "8af2249d025fdd195557a183a2cd3bd20b6cc1b24aa40783ed72a631d8582f8c",
+    "harness/online_camera_pitch.py": "cafc11c4b44eff03c2a75a08275dcf1a318394ea19c0279bf6dee149e1829e57",
+    "harness/vendor/lu_vp/__init__.py": "8fa823452f466e883305d3514138456841adc689b26bdd14617df6843bb7badd",
+    "harness/vendor/lu_vp/vp_detection.py": "27a75756d632ab43d17634e9edab1b6334f06ec220d7d9d61cda1bf1aa90c911",
+    "harness/vendor/lu_vp/UPSTREAM.json": "36e151448ded77945fca9bb37147201d5b7b38b9080dbc49f7826c37a246689b",
+    "experiments/2026-10-07-camera-pose-projection/code/audit.py": "f2a492a3bd22ed227803fd9e98b9f3aff5965ea101a7f27a800b5d5e3af9b728",
+    "experiments/2026-10-07-camera-pose-projection/code/evaluate_fk.py": "c1634a26a624cbd6d9daa08bec44c759bda38d44fa7dbcc60e42f7d68a31e461",
+    "experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py": "503b6f9008cf4c50300ca0a0aa14120f89381ef6d38c98414bc126d10bb34cd1",
+    "experiments/2026-10-07-wall-floor-boundary/annotation-sample.json": "e545f71d93b41388ddfd9c93c430a05317cd6ddafcc7f17a7f6d40b413dd674f"
+  },
+  "parameters": {
+    "length_px": 30,
+    "seed": 1337,
+    "axis_limit_deg": 30,
+    "cluster_deg": 6,
+    "min_vertical_lines": 2,
+    "min_other_lines": 2
+  },
+  "criteria": {
+    "median_m": 0.1,
+    "p90_m": 0.25,
+    "min_points": 50,
+    "valid_fraction": 0.95,
+    "baseline_nonincrease": true
+  },
+  "development_cases": [
+    "s1042",
+    "s1043"
+  ],
+  "development_passes": 0,
+  "retuning": false,
+  "confirmation_cases": [
+    "s1044",
+    "s1045",
+    "s1046",
+    "s1047"
+  ],
+  "qualification": "confirmation replay of previously seen recordings; no fresh evidence"
+}
