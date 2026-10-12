@@ -8,9 +8,10 @@
     "defaults": "off"
   },
   "evidence": {
-    "file": "camera-settle-evidence-v239.json",
-    "sha256": "c0b2571f189f51c73423195b008625f6c844a100393e04bdd76b891d557157f4",
-    "tilt_file": "tilt-v236-s61005.json"
+    "file": "camera-settle-evidence-v239-clock-corrected.json",
+    "sha256": "cc10f3b3e76cfe203a1d284497c68b8953b07ead1423cd48986a2899dd8c4e29",
+    "tilt_file": "tilt-v236-s61005.json",
+    "superseded_clock_diagnostic": "camera-settle-evidence-v239.json"
   },
   "profile": {
     "source": "outputs/e2e18-admin/profile-align-v236.raw",
@@ -86,7 +87,7 @@
     "scope": "30wall sampling of actual Azurev236 align; not gate measurement"
   },
   "causes": [
-    "v237 seed61007 r1:86/288 and r2:44/288 integrated frames within0.6SIM after camera command; nominal camera FK does not prove actual settling",
+    "After aligning clocks, seed61007 integrated r1 206/686 frames within0.6SIM after camera command, r2 146/686 frames within0.6SIM after camera command; actual settling still unmeasured.",
     "camera movement correlated with tilt exit; no proven timestep cause",
     "Sensor per-command geometry cache never evicted; interpolation poses generate one-use expensive ray/box masks"
   ],
