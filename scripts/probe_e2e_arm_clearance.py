@@ -98,7 +98,7 @@ def run_case(bundle,option,dt,out):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--bundle',required=True);p.add_argument('--output',required=True,type=Path)
+    p=argparse.ArgumentParser();p.add_argument('--sonar-frame',choices=('off','site_z_v1'),default='off');p.add_argument('--bundle',required=True);p.add_argument('--output',required=True,type=Path)
     p.add_argument('--expected-source-sha',required=True);p.add_argument('--expected-workflow-id');p.add_argument('--execute',action='store_true')
     a=p.parse_args()
     if not a.execute or platform.system()!='Linux' or not platform.node().startswith('ugrp-sim-azure'):p.error('AZURE_ONLY_EXPLICIT_PROBE')
@@ -108,13 +108,13 @@ def main():
     from harness.e2e_result_writer import write
     a.output.mkdir(parents=True,exist_ok=False)
     write(a.output/'RUN_META.json',dict(**{'class':'dev'},pr=461,sha=sha,branch='codex/e2e18',batch='arm-clearance-probe'))
-    b=load(a.bundle)
+    b=load(a.bundle);b['e2e_options']['sonar_frame']=a.sonar_frame
     # Retain implicitfast/80 iterations, fixing dt instead of phase adaptation.
     b['e2e_options']['stage_physics']='off';b['e2e_options']['speed3']='dt2_v1'
     rows=[]
     for option,dt in [('off',.002),('range_v1',.002),('off',.00025),('range_v1',.00025)]:
         rows.append(run_case(b,option,dt,a.output/(option+'-'+str(dt))))
-        write(a.output/'summary.json',dict(source_sha=sha,results=rows,complete=len(rows)==4,loadavg=os.getloadavg()))
+        write(a.output/'summary.json',dict(source_sha=sha,sonar_frame=a.sonar_frame,results=rows,complete=len(rows)==4,loadavg=os.getloadavg()))
     from scripts.probe_e2e_speed3_physics import compress_and_hash
     compress_and_hash(a.output)
     return int(any(r['status']=='HOST_ERROR' for r in rows))

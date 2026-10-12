@@ -39,12 +39,12 @@ def sensor_site(model: mujoco.MjModel, rid: str) -> str | None:
 
 
 class OwnUltrasonicRig:
-    def __init__(self, model: mujoco.MjModel, data: mujoco.MjData, robots, *, episode_seed: int, range_input: OwnRangeInput):
+    def __init__(self, model: mujoco.MjModel, data: mujoco.MjData, robots, *, episode_seed: int, range_input: OwnRangeInput, site_frame='off'):
         self.model, self.data, self.input = model, data, range_input
         self.robots = tuple(robots)
         self.seeds = {rid: sensor_seed(episode_seed, rid) for rid in self.robots}
         self.sensors = {rid: MujocoUltrasonic(model, data, rid, seed=self.seeds[rid], spec=range_input.spec,
-                                              site=sensor_site(model, rid)) for rid in self.robots}
+                                              site=sensor_site(model, rid), site_frame=site_frame) for rid in self.robots}
         self.last_t: float | None = None
 
     def tick(self, now: float) -> int:

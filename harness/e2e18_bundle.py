@@ -24,7 +24,7 @@ def compose(bundle, partial_accept):
 
 def validate(bundle):
     speed4=SPEED4
-    if bundle['execution_bundle_id'] in ('e2e18-v236','e2e18-v237','e2e18-v238','e2e18-v239','e2e18-v240','e2e18-v241','e2e18-v242','e2e18-v243','e2e18-v244'):
+    if bundle['execution_bundle_id'] in ('e2e18-v236','e2e18-v237','e2e18-v238','e2e18-v239','e2e18-v240','e2e18-v241','e2e18-v242','e2e18-v243','e2e18-v244','e2e18-v245','e2e18-v246','e2e18-v247','e2e18-v248'):
         from harness.e2e_compute_budget import PROFILE
         speed4=PROFILE
     if (bundle['e2e_options'].get('b_partial_accept')!='on_v1' or
