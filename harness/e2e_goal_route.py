@@ -129,6 +129,7 @@ class IntegratedGoalRoute(GoalRoute):
         for ref in goal_sources: own.rgb_ref(ref, 'r1', now, self.e2e_observed)
         sources = copy.deepcopy(self.e2e_observed)
         grid, tf = self.explorer.grid, self.explorer.map_to_odom
+        if getattr(self,'e2e_route_cost','off')=='bounded_morphology_v1':grid._clearance_bounds_v1=True
         if grid.robot_id != 'r1': raise ContractViolation('PEER_GRID_FORBIDDEN')
         covariance = np.asarray(self.pose_covariance())
         margin = .02 + 3*math.sqrt(float(np.linalg.eigvalsh(covariance[:2, :2]).max()))

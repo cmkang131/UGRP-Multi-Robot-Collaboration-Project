@@ -1,0 +1,66 @@
+{
+  "bundle": "e2e18-v228",
+  "status": "LOCAL_TESTED_NOT_YET_RUN",
+  "evidence": {
+    "protocol": {
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v226-s61006-r12/raw",
+      "observed_route_sim": 104.0,
+      "approval_visible_sim": 115.9,
+      "r1_call8_action": "continue",
+      "r2_call9_action": "approve_route repeated after approved=true",
+      "calls_after": 9,
+      "claims": 0
+    },
+    "large_margin": {
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v226-s61012-r12/raw",
+      "t": 72.4,
+      "sigma_xy_m": 3.642603094268544,
+      "strict_margin_m": 10.94780928280563,
+      "grid_shape_xy": [
+        164,
+        161
+      ],
+      "finite_grid_impossible": true
+    },
+    "profile": {
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v226-s61003-r12/profile-route-cost.raw",
+      "pid": 63260,
+      "sampling_s": 20,
+      "rate_hz": 20,
+      "samples": 338,
+      "errors": 24,
+      "receive_inclusive_samples": 255,
+      "receive_percent": 75.44,
+      "scope": "Python stack sampling only; dominated by mapping. No sampled footprint-clearance stack; large-margin optimization is an exact bound justified separately, not claimed dominant from this sample.",
+      "local": "profile-route-cost-v226.raw",
+      "sha256": "2717ef6346db429543a39fcfcbf2770fbed62a024d7aaff7940ca5b134f914ab"
+    }
+  },
+  "changes": {
+    "protocol_progress": "stage_retry_v1: current propose/approve/claim syntax from own or actually delivered protocol state; actual model decision still required; valid done/stop no-progress choice gets at most3 reminders per phase at12 SIM intervals; no epoch override",
+    "route_cost": "bounded_morphology_v1: same binary occupied+unknown dilation using OpenCV and constant occupied border; return all-blocked if symmetric footprint nonzero span cannot fit finite map; grid reset handled at route entry"
+  },
+  "tests": {
+    "passed": 10,
+    "files": [
+      "test_e2e_protocol_progress.py",
+      "test_e2e_route_cost.py",
+      "test_e2e_protocol_recovery.py"
+    ],
+    "scope": "offline actual scheduler/model-fixture dispatch and exact rotated binary morphology comparison; no provider or physics"
+  },
+  "references": [
+    {
+      "url": "https://arxiv.org/abs/2210.03629",
+      "use": "ReAct: update actions from observed state; adaptation exposes current protocol step without requesting chain of thought or automatic decisions"
+    },
+    {
+      "url": "https://docs.langchain.com/oss/python/langgraph/workflows-agents",
+      "use": "Current public workflow/agent patterns: typed state and verifiable model steps; bounded reminders are project adaptation"
+    },
+    {
+      "url": "https://docs.opencv.org/4.13.0/db/df6/tutorial_erosion_dilatation.html",
+      "use": "Standard morphological dilation with explicit kernel/border"
+    }
+  ]
+}

@@ -185,7 +185,11 @@ def footprint_clearance(grid, footprint, margin, yaw=None):
         c,s = math.cos(yaw),math.sin(yaw)
         kernel = ((abs(c*xs+s*ys) <= footprint.half_length_m+margin+r*.71) &
                   (abs(-s*xs+c*ys) <= footprint.half_width_m+margin+r*.71))
-    blocked = binary_dilation(state != -1,structure=kernel,border_value=1)
+    if getattr(grid,'_clearance_bounds_v1',False):
+        from harness.e2e_route_cost import blocked as bounded_blocked
+        blocked=bounded_blocked(state,kernel)
+    else:
+        blocked = binary_dilation(state != -1,structure=kernel,border_value=1)
     return state, ~blocked, distance_transform_edt(state == -1)*r, lo
 
 

@@ -19,7 +19,7 @@ Until a route exists, continue while the own-camera mapper explores. r1 must sen
 GO/ACK use the exact current dialogue.key [order_id,route_hash,grip_epoch,seg]. GO requires own RGB supporting the grip; ACK requires your GO and the current peer_go_ref. Never reuse a previous epoch or segment. When unsure, continue holds transport. Only channel.can_send_to may receive messages. reply_to must be a received ID or null. All prose is English. Examples describe syntax, not evidence.'''
 
 
-def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off'):
+def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off'):
     """Validate before projection; retain the typed E2E action/message contract."""
     r = copy.deepcopy(request)
     b = json.loads(r['messages'][1]['content'])
@@ -74,6 +74,10 @@ def project(request, *, options, decider='off', epoch_age_s=None, protocol_recov
         from harness.e2e_protocol_recovery import OPTION,prompt as recovery_prompt
         if protocol_recovery!=OPTION:raise ValueError('UNKNOWN_PROTOCOL_RECOVERY')
         system=recovery_prompt(b,system)
+    if protocol_progress!='off':
+        from harness.e2e_protocol_progress import OPTION,prompt as progress_prompt
+        if protocol_progress!=OPTION:raise ValueError('UNKNOWN_PROTOCOL_PROGRESS')
+        system=progress_prompt(b,system)
     b['prompt_lang'] = options.prompt_lang
     own.scan(b)
     if len(r['images']) != 1 or len(r['image_refs']) != 1:
@@ -99,6 +103,9 @@ class Trial(base.Trial):
         self.protocol_recovery=getattr(self.links['r1'].inner,'protocol_recovery','off')
         from harness.e2e_protocol_recovery import Recovery
         self.protocol_reasks=Recovery()
+        self.protocol_progress=getattr(self.links['r1'].inner,'protocol_progress','off')
+        from harness.e2e_protocol_progress import Reminders
+        self.protocol_reminders=Reminders()
         if not self.own_input_mode or self.dialogue is None:
             raise base.ContractViolation('E2E_OWN_INPUTS_AND_DIALOGUE_REQUIRED')
         self.transport = RetryTransport(self, send_ledger=self.send_ledger, client_factory=self.client_factory)
@@ -114,7 +121,7 @@ class Trial(base.Trial):
         p = super().prepare_call(call)
         view=self.dialogue.view(call.actor,call.started_sim_s)
         age=None if view['key'] is None else call.started_sim_s-self.dialogue.opened
-        request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery)
+        request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery,protocol_progress=self.protocol_progress)
         return type(p)(ProjectedInputs(p.bundled,json.loads(request['messages'][1]['content'])),request,p.request_id)
 
     def finish_call(self,call,prepared,raw,*,provider_usage=None):
@@ -136,6 +143,7 @@ class Trial(base.Trial):
     def observe_events(self, now):
         if not self.options.event_driven_llm: return
         if self.protocol_recovery=='envelope_retry_v1':self.protocol_reasks.poll(self,now)
+        if self.protocol_progress=='stage_retry_v1':self.protocol_reminders.poll(self,now)
         for rid in ('r1','r2','r3'):
             state = self.links[rid].inner.own_inputs_at(now)
             route = state.get('own_route')

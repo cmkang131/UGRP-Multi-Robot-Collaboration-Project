@@ -1,8 +1,8 @@
 {
-  "status": "V224_THREE_V225_FOUR_V226_FIVE_RUNNING",
+  "status": "V225_THREE_V226_FIVE_V227_FOUR_RUNNING",
   "started_utc": "2026-10-12T11:03:00Z",
   "deadline_utc": "2026-10-12T21:03:00Z",
-  "bundle": "e2e18-v226",
+  "bundle": "e2e18-v227",
   "tests": {
     "passed": 49,
     "files": [
@@ -1045,27 +1045,42 @@
       "seed": 61004,
       "bundle": "e2e18-v224",
       "attempt": 10,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_V227",
       "source_sha": "075d4273b83c52542b1df3eeaa125adfe39497c7",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v224-s61004-r10/raw"
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v224-s61004-r10/raw",
+      "exit": 130,
+      "failure": "SIGNAL_SIGINT",
+      "result_file": "cohort-r10-replaced.json",
+      "sim_s": 768.4000000000001,
+      "wall_per_sim": 3.6128409898347207
     },
     {
       "vm": "azure3",
       "seed": 61005,
       "bundle": "e2e18-v224",
       "attempt": 10,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_V227",
       "source_sha": "075d4273b83c52542b1df3eeaa125adfe39497c7",
-      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v224-s61005-r10/raw"
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v224-s61005-r10/raw",
+      "exit": 130,
+      "failure": "SIGNAL_SIGINT",
+      "result_file": "cohort-r10-replaced.json",
+      "sim_s": 767.6,
+      "wall_per_sim": 3.6164871181657112
     },
     {
       "vm": "azure4",
       "seed": 61009,
       "bundle": "e2e18-v224",
       "attempt": 10,
-      "status": "RUNNING",
+      "status": "STOPPED_FOR_V227",
       "source_sha": "075d4273b83c52542b1df3eeaa125adfe39497c7",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v224-s61009-r10/raw"
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v224-s61009-r10/raw",
+      "exit": 130,
+      "failure": "SIGNAL_SIGINT",
+      "result_file": "cohort-r10-replaced.json",
+      "sim_s": 666.0,
+      "wall_per_sim": 4.17435759737988
     },
     {
       "vm": "azure4",
@@ -1104,9 +1119,14 @@
       "seed": 61007,
       "bundle": "e2e18-v225",
       "attempt": 11,
-      "status": "RUNNING",
+      "status": "STOPPED_TRUNCATED_ROUTE_RESPONSE",
       "source_sha": "0ed14cd478d59f8829c6b20f677a6f4ac1bf5edc",
-      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v225-s61007-r11/raw"
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v225-s61007-r11/raw",
+      "exit": 130,
+      "failure": "SIGNAL_SIGINT",
+      "result_file": "cohort-r11-results.json",
+      "sim_s": 460.5,
+      "wall_per_sim": 3.484686389022803
     },
     {
       "vm": "azure4",
@@ -1175,6 +1195,42 @@
       "status": "RUNNING",
       "source_sha": "85f5e885eefa7115c1ae646d38162d6f857303c7",
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v226-s61012-r12/raw"
+    },
+    {
+      "vm": "azure3",
+      "seed": 61004,
+      "bundle": "e2e18-v227",
+      "attempt": 13,
+      "status": "RUNNING",
+      "source_sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v227-s61004-r13/raw"
+    },
+    {
+      "vm": "azure3",
+      "seed": 61005,
+      "bundle": "e2e18-v227",
+      "attempt": 13,
+      "status": "RUNNING",
+      "source_sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v227-s61005-r13/raw"
+    },
+    {
+      "vm": "azure4",
+      "seed": 61007,
+      "bundle": "e2e18-v227",
+      "attempt": 13,
+      "status": "RUNNING",
+      "source_sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v227-s61007-r13/raw"
+    },
+    {
+      "vm": "azure4",
+      "seed": 61009,
+      "bundle": "e2e18-v227",
+      "attempt": 13,
+      "status": "RUNNING",
+      "source_sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v227-s61009-r13/raw"
     }
   ],
   "gates": [
@@ -1615,6 +1671,44 @@
       "samples_sha256": "85b39465f87950c5f160d4e3742b71196ccc638c5b318ae4f3890b5c12322cf5",
       "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r12-85f5e885eefa",
       "load_context": "3 replacement samples +3 continuing cohorts;total6"
+    },
+    {
+      "status": "SPEED_GATE_PASS",
+      "admitted": true,
+      "measured_pass": true,
+      "override_reason": null,
+      "limit_wall_per_sim": 3.0,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 2,
+      "completed": 2,
+      "median_wall_per_sim": 2.8331174382833373,
+      "invalid_samples": [],
+      "host": "azure3",
+      "bundle": "e2e18-v227",
+      "source_sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "samples_file": "gate-azure3-v227.json",
+      "samples_sha256": "6c60703f66ba130494d9dd6a22ccbe0c13c125e69d09292e1e012a274056c1a6",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r13-440aae19ff9d",
+      "load_context": "2 replacement samples +4 continuing cohorts;total6"
+    },
+    {
+      "status": "SPEED_GATE_PASS",
+      "admitted": true,
+      "measured_pass": true,
+      "override_reason": null,
+      "limit_wall_per_sim": 3.0,
+      "probe_sim_s": 30.0,
+      "planned_concurrency": 2,
+      "completed": 2,
+      "median_wall_per_sim": 2.721108875666687,
+      "invalid_samples": [],
+      "host": "azure4",
+      "bundle": "e2e18-v227",
+      "source_sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "samples_file": "gate-azure4-v227.json",
+      "samples_sha256": "ccb726417c0cc90ec226d3d1233d93255799ab9fe40d9173fc8f5fcf3a71c1a4",
+      "raw_root": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure4-r13-440aae19ff9d",
+      "load_context": "2 replacement samples +4 continuing cohorts;total6"
     }
   ],
   "vm": {
@@ -1622,7 +1716,7 @@
     "azure4": "running"
   },
   "pr": 458,
-  "source_sha": "85f5e885eefa7115c1ae646d38162d6f857303c7",
+  "source_sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
   "budget_initial": {
     "arm_free_bytes": 80281391104,
     "expected_bytes": 57982058496,
@@ -1706,6 +1800,10 @@
     {
       "bundle": "e2e18-v226",
       "record": "pose-protocol-fix-v226.json"
+    },
+    {
+      "bundle": "e2e18-v227",
+      "record": "camera-tokens-fix-v227.json"
     }
   ],
   "initial_health_cohort_r5": "initial-health-cohort-r5.json",
@@ -1731,7 +1829,7 @@
   "initial_health_cohort_r7": "initial-health-cohort-r7.json",
   "initial_health_cohort_r8": "initial-health-cohort-r8.json",
   "initial_health_cohort_r9": "initial-health-cohort-r9.json",
-  "last_reconciled_unix": 1791812940.09459,
+  "last_reconciled_unix": 1791813964.330799,
   "latest_tests": {
     "files": [
       "test_e2e_pose_guard.py",
@@ -1747,6 +1845,8 @@
     "archives-r11.json",
     "archives-r12-replaced.json",
     "archives-r12.json",
+    "archives-r13-replaced.json",
+    "archives-r13.json",
     "archives.json"
   ],
   "first_route": {
@@ -1757,5 +1857,6 @@
     "result_file": "cohort-r10-results.json"
   },
   "initial_health_cohort_r11": "initial-health-cohort-r11.json",
-  "initial_health_cohort_r12": "initial-health-cohort-r12.json"
+  "initial_health_cohort_r12": "initial-health-cohort-r12.json",
+  "initial_health_cohort_r13": "initial-health-cohort-r13.json"
 }
