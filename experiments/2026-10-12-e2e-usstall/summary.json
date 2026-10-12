@@ -1,6 +1,6 @@
 {
  "schema": "ugrp.dev.summary.v1",
- "pr": null,
+ "pr": 450,
  "branch": "codex/e2e-usstall",
  "base_sha": "6baadb20ec941d7887d98dc3003acc9f754f7b9d",
  "requested_ancestor": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
@@ -35,7 +35,8 @@
     "cause": "zero net interval still had nonzero internal translations at RBPF callbacks",
     "fix": "us_zero forces zero translation in every substep; preserves commanded yaw and Q"
    }
-  ]
+  ],
+  "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_e2e_us_stall.py tests/test_e2e_rgb_vo.py tests/test_ultrasonic_input.py -k 'not rig_reads and not matched_noise and not rig_never and not physics_is_identical and not attach_gives and not host_subclass and not v3_robots'"
  },
  "replay": {
   "n": 124,
@@ -50,7 +51,10 @@
   "e2e15_local_inventory": {
    "runs": 6,
    "ranges": 0,
-   "note": "first six receipt-failure attempts, no frames; corrected live runs not retrieved or evaluated here"
+   "note": "first six receipt-failure attempts, no frames; corrected live runs not retrieved or evaluated here",
+   "status": "HOST_ERROR",
+   "frames": 0,
+   "evidence": "e2e15-inventory.json"
   },
   "record": "offline-final/offline-audit.json"
  },
@@ -98,7 +102,8 @@
   "files": 124,
   "bytes": 1619604,
   "sha256_verified": 124,
-  "full_raw_fetched": false
+  "full_raw_fetched": false,
+  "hash_manifest": "offline-final/input-hashes.json"
  },
  "limits": [
   "Default off; no physical or E2E success claim",
@@ -108,5 +113,7 @@
   "CI and independent controller review required before adoption; draft only"
  ],
  "next": "Coordinator paired Azure execution and fresh range history; no source/baseline checkout update",
- "class": "dev"
+ "class": "dev",
+ "pr_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/450",
+ "artifact_hash_manifest": "artifact-hashes.json"
 }

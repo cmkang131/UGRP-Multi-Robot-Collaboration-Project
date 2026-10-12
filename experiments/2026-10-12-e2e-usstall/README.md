@@ -6,5 +6,5 @@
 - Mac 릴레이 18416(13·14·15차 18392/18414/18394와 분리), VM loopback 18393; 할당·기존 실행 종료·수신기 여유·저장 예산·초기 3–5분 점검은 조정자 책임. 현재 VM1–3에는 제출하지 않았다.
 - [Azure 짝 실행 명령](azure-pair.sh): 최신 소스를 배치한 선택 VM에서만 아래 명령. 스크립트에 Mac 릴레이/터널·6개 명령·RUN_META·보존 절차가 있다.
 ```bash
-bash experiments/2026-10-12-e2e-usstall/azure-pair.sh "$(git rev-parse HEAD)" <PR번호> --execute
+bash experiments/2026-10-12-e2e-usstall/azure-pair.sh "$(git rev-parse HEAD)" 450 --execute
 ```
