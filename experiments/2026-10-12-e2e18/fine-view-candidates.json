@@ -158,8 +158,32 @@
     }
   ],
   "seed_plan": [
+    61003,
+    61004,
     61006,
     61007
   ],
-  "criterion": "fresh correct assigned-band fine alignment and actual grasp/transport; all physical failures retained"
+  "criterion": "fresh correct assigned-band fine alignment and actual grasp/transport; all physical failures retained",
+  "next_batch": {
+    "id": "r42",
+    "hosts": {
+      "azure3": [
+        61006,
+        61007
+      ],
+      "azure4": [
+        61003,
+        61004
+      ]
+    },
+    "versions": [
+      254,
+      257,
+      258
+    ],
+    "planned_runs": 12,
+    "per_vm": 6,
+    "wall_cap_s": 2400,
+    "must_start_on_fresh_vm_session": true
+  }
 }
