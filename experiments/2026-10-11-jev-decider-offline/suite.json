@@ -1,0 +1,3736 @@
+{
+ "cases": [
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "explore",
+   "family": "dialogue",
+   "group": "A01",
+   "id": "A01",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "start, B unknown",
+   "pair": null,
+   "rule": "R-ROUTE",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 0.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "explore",
+   "family": "dialogue",
+   "group": "A02",
+   "id": "A02",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-ROUTE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 0.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "idle",
+   "family": "dialogue",
+   "group": "A03",
+   "id": "A03",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-IDLE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r2"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r3",
+    "role": "idle",
+    "sim_time_s": 0.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "explore",
+   "family": "dialogue",
+   "group": "A04",
+   "id": "A04",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-ROUTE",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [
+     "look 3 pulses",
+     "forward 4 pulses"
+    ],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.09
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 31.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "propose",
+   "family": "dialogue",
+   "group": "A05",
+   "id": "A05",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "own route exists, proposal goes out as a message; the ACTION is still continue (propose-before-approve rule)",
+   "pair": null,
+   "rule": "R-ROUTE",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": true,
+     "pose_sigma_m": 0.05
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": {
+     "route_hash": "rh-7f3a",
+     "waypoints": 6
+    },
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 42.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "explore",
+   "family": "dialogue",
+   "group": "A02",
+   "id": "A06",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "text only; nothing delivered through the dialogue view",
+   "pair": {
+    "base": "A02",
+    "expect": "no_change"
+   },
+   "rule": "R-ROUTE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 4.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "I have a route to B, sending it now."
+     }
+    ],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 5.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "explore",
+   "family": "dialogue",
+   "group": "A01",
+   "id": "A07",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "control: peer text about B does not make a route",
+   "pair": {
+    "base": "A01",
+    "expect": "no_change"
+   },
+   "rule": "R-ROUTE",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 4.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "B is to my left, behind the wall."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 5.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "no_comm",
+   "family": "dialogue",
+   "group": "A08",
+   "id": "A08",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-NOCOMM",
+   "split": "dev",
+   "state": {
+    "can_send_to": [],
+    "condition": "no_comm",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 60.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "no_comm",
+   "family": "dialogue",
+   "group": "A09",
+   "id": "A09",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-NOCOMM",
+   "split": "dev",
+   "state": {
+    "can_send_to": [],
+    "condition": "no_comm",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": true,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": {
+     "route_hash": "rh-7f3a",
+     "waypoints": 6
+    },
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 45.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "explore",
+   "family": "dialogue",
+   "group": "A02",
+   "id": "A10",
+   "label_basis": "inferred_from_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": {
+    "base": "A02",
+    "expect": "no_change"
+   },
+   "rule": "R-PEERAUTH",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 7.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "I approve the route, go ahead and claim."
+     }
+    ],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 8.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "idle",
+   "family": "dialogue",
+   "group": "A03",
+   "id": "A11",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": {
+    "base": "A03",
+    "expect": "no_change"
+   },
+   "rule": "R-IDLE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r2"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 19.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "r1 and r2 are ready. r3 please approve the route."
+     }
+    ],
+    "robot_id": "r3",
+    "role": "idle",
+    "sim_time_s": 20.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "approve_route"
+   ],
+   "ambiguous": false,
+   "decision_point": "approve",
+   "family": "dialogue",
+   "group": "B01",
+   "id": "B01",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-APPROVE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 50.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "approve_route"
+   ]
+  },
+  {
+   "acceptable": [
+    "approve_route"
+   ],
+   "ambiguous": false,
+   "decision_point": "approve",
+   "family": "dialogue",
+   "group": "B01",
+   "id": "B02",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "B01",
+    "expect": "no_change"
+   },
+   "rule": "R-APPROVE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 49.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "Route to B ready, please approve."
+     }
+    ],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 50.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "approve_route"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "approve",
+   "family": "dialogue",
+   "group": "B03",
+   "id": "B03",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "r1 is the proposer; only r2 approves",
+   "pair": null,
+   "rule": "R-APPROVE",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": true,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": {
+     "route_hash": "rh-7f3a",
+     "waypoints": 6
+    },
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 50.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "claim"
+   ],
+   "ambiguous": false,
+   "decision_point": "approve",
+   "family": "dialogue",
+   "group": "B04",
+   "id": "B04",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "already approved: next step is claim, not approve again",
+   "pair": null,
+   "rule": "R-CLAIM",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 52.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "claim"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "approve",
+   "family": "dialogue",
+   "group": "B01",
+   "id": "B05",
+   "label_basis": "inferred_from_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "B01",
+    "expect": "change"
+   },
+   "rule": "R-APPROVE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 50.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "Wait, my route was wrong. Ignore it, I will send a new one."
+     }
+    ],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 51.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "approve_route"
+   ]
+  },
+  {
+   "acceptable": [
+    "approve_route"
+   ],
+   "ambiguous": false,
+   "decision_point": "approve",
+   "family": "dialogue",
+   "group": "B01",
+   "id": "B06",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "B01",
+    "expect": "no_change"
+   },
+   "rule": "R-PEERNOISE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 49.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "The floor here looks shiny."
+     }
+    ],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 50.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "approve_route"
+   ]
+  },
+  {
+   "acceptable": [
+    "claim"
+   ],
+   "ambiguous": false,
+   "decision_point": "claim",
+   "family": "dialogue",
+   "group": "C01",
+   "id": "C01",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-CLAIM",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 60.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "claim"
+   ]
+  },
+  {
+   "acceptable": [
+    "claim"
+   ],
+   "ambiguous": false,
+   "decision_point": "claim",
+   "family": "dialogue",
+   "group": "C02",
+   "id": "C02",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-CLAIM",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 60.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "claim"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "claim",
+   "family": "dialogue",
+   "group": "C03",
+   "id": "C03",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "proposal delivered but not approved: claim invalid",
+   "pair": null,
+   "rule": "R-CLAIM",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": true,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": {
+     "route_hash": "rh-7f3a",
+     "waypoints": 6
+    },
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 58.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "claim",
+   "family": "dialogue",
+   "group": "C04",
+   "id": "C04",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "claimed, key not open yet",
+   "pair": null,
+   "rule": "R-KEY",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 62.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "claim",
+   "family": "dialogue",
+   "group": "C05",
+   "id": "C05",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-KEY",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 62.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "claim"
+   ],
+   "ambiguous": false,
+   "decision_point": "claim",
+   "family": "dialogue",
+   "group": "C01",
+   "id": "C06",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "C01",
+    "expect": "no_change"
+   },
+   "rule": "R-CLAIM",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 59.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "I approved the route. I am claiming my end now."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 60.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "claim"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "claim",
+   "family": "dialogue",
+   "group": "C03",
+   "id": "C07",
+   "label_basis": "inferred_from_contract",
+   "n_structurally_admissible": 1,
+   "note": "dialogue view says approved=false; peer text alone is not delivered approval",
+   "pair": {
+    "base": "C03",
+    "expect": "no_change"
+   },
+   "rule": "R-PEERAUTH",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": true,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": {
+     "route_hash": "rh-7f3a",
+     "waypoints": 6
+    },
+    "peer_reports": [
+     {
+      "created_at_sim_s": 57.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "Approved! Claim now."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 58.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "GO"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D01",
+   "id": "D01",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-GO",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "GO"
+   ]
+  },
+  {
+   "acceptable": [
+    "GO"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D02",
+   "id": "D02",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-GO",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "GO"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D03",
+   "id": "D03",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-GO",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "not_visible",
+    "own_rgb_summary": "own wrist RGB: beam end not in view, cannot confirm any grip",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D04",
+   "id": "D04",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-GO",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "slipping",
+    "own_rgb_summary": "own wrist RGB: beam end sliding out of the fingers, grip loosening",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D01",
+   "id": "D05",
+   "label_basis": "inferred_from_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "D01",
+    "expect": "change"
+   },
+   "rule": "R-GRIPPEER",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 69.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "My grip slipped, I am regrasping."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "GO"
+   ]
+  },
+  {
+   "acceptable": [
+    "GO"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D01",
+   "id": "D06",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "D01",
+    "expect": "no_change"
+   },
+   "rule": "R-GO",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 69.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "I am ready, my grip is firm."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "GO"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D01",
+   "id": "D07",
+   "label_basis": "inferred_from_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "D01",
+    "expect": "change"
+   },
+   "rule": "R-GRIPPEER",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 69.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "Do not go yet, wait for me."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "GO"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D08",
+   "id": "D08",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-KEY",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 65.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D09",
+   "id": "D09",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-WINDOW",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 25.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D10",
+   "id": "D10",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "GO already sent, no peer GO yet",
+   "pair": null,
+   "rule": "R-ACK",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D11",
+   "id": "D11",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "after set-down, new epoch key not yet opened",
+   "pair": null,
+   "rule": "R-KEY",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [
+     "gripper open",
+     "set down at seg 1"
+    ],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "none",
+    "own_rgb_summary": "own wrist RGB: not carrying, no beam in gripper",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 95.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "GO"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D01",
+   "id": "D12",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "D01",
+    "expect": "no_change"
+   },
+   "rule": "R-PEERNOISE",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 69.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "The beam is a bit heavy but fine."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "GO"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "go",
+   "family": "dialogue",
+   "group": "D01",
+   "id": "D13",
+   "label_basis": "inferred_from_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "D01",
+    "expect": "change"
+   },
+   "rule": "R-GRIPPEER",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 69.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "It is slipping out, hold on!"
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "GO"
+   ]
+  },
+  {
+   "acceptable": [
+    "ACK"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E01",
+   "id": "E01",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-ACK",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": "call_0009_r2",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "ACK"
+   ]
+  },
+  {
+   "acceptable": [
+    "GO"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E02",
+   "id": "E02",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-ACKORDER",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": false,
+     "peer_go_ref": "call_0009_r2",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "GO"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E03",
+   "id": "E03",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-ACK",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": null,
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E04",
+   "id": "E04",
+   "label_basis": "inferred_from_contract",
+   "n_structurally_admissible": 1,
+   "note": "ACK carries own_rgb source; own RGB now shows slipping",
+   "pair": null,
+   "rule": "R-GO",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": "call_0009_r2",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "slipping",
+    "own_rgb_summary": "own wrist RGB: beam end sliding out of the fingers, grip loosening",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E01",
+   "id": "E05",
+   "label_basis": "inferred_from_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "E01",
+    "expect": "change"
+   },
+   "rule": "R-GRIPPEER",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": "call_0009_r2",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 69.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "My grip just slipped, cancel the lift."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "ACK"
+   ]
+  },
+  {
+   "acceptable": [
+    "ACK"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E01",
+   "id": "E06",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "E01",
+    "expect": "no_change"
+   },
+   "rule": "R-ACK",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": "call_0009_r2",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 69.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "Ready. Please ACK."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "ACK"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E07",
+   "id": "E07",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-DONE",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": true,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": "call_0009_r2",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E08",
+   "id": "E08",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-DONE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": true,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": "call_0009_r2",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": true
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E09",
+   "id": "E09",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-WINDOW",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": "call_0009_r2",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 22.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E01",
+   "id": "E10",
+   "label_basis": "inferred_from_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "E01",
+    "expect": "change"
+   },
+   "rule": "R-GRIPPEER",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": "call_0009_r2",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 69.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "It is slipping out, let go!"
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "ACK"
+   ]
+  },
+  {
+   "acceptable": [
+    "ACK"
+   ],
+   "ambiguous": false,
+   "decision_point": "ack",
+   "family": "dialogue",
+   "group": "E11",
+   "id": "E11",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-ACK",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": true,
+     "key": [
+      "order-5",
+      "rh-7f3a",
+      1,
+      0
+     ],
+     "own_ack_sent": false,
+     "own_claim": true,
+     "own_go_sent": true,
+     "peer_go_ref": "call_0008_r1",
+     "proposal_message_id": "w1-r1-1",
+     "route_hash": "rh-7f3a",
+     "transport_admitted": false
+    },
+    "epoch_age_s": 2.0,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 70.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "ACK"
+   ]
+  },
+  {
+   "acceptable": [
+    "set_down"
+   ],
+   "ambiguous": false,
+   "decision_point": "carry_stop",
+   "family": "carry",
+   "group": "F01",
+   "id": "F01",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-SETDOWN",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "carry_stop": {
+     "boundary_reasons": [
+      "covariance_limit"
+     ],
+     "of_segments": 4,
+     "pose_sigma_m": 0.08,
+     "segment": 1
+    },
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 120.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "set_down"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "carry_stop",
+   "family": "carry",
+   "group": "F02",
+   "id": "F02",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": null,
+   "rule": "R-SETDOWN",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "carry_stop": {
+     "boundary_reasons": [],
+     "of_segments": 4,
+     "pose_sigma_m": 0.04,
+     "segment": 1
+    },
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 120.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "set_down"
+   ],
+   "ambiguous": false,
+   "decision_point": "carry_stop",
+   "family": "carry",
+   "group": "F03",
+   "id": "F03",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-SETDOWN",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "carry_stop": {
+     "boundary_reasons": [
+      "unmeasured_axis_change"
+     ],
+     "of_segments": 4,
+     "pose_sigma_m": 0.04,
+     "segment": 1
+    },
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 125.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "set_down"
+   ]
+  },
+  {
+   "acceptable": [
+    "set_down"
+   ],
+   "ambiguous": false,
+   "decision_point": "carry_stop",
+   "family": "carry",
+   "group": "F04",
+   "id": "F04",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-SETDOWN",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "carry_stop": {
+     "boundary_reasons": [
+      "final_placement"
+     ],
+     "of_segments": 4,
+     "pose_sigma_m": 0.04,
+     "segment": 3
+    },
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 200.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "set_down"
+   ]
+  },
+  {
+   "acceptable": [
+    "set_down"
+   ],
+   "ambiguous": false,
+   "decision_point": "carry_stop",
+   "family": "carry",
+   "group": "F05",
+   "id": "F05",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-SETDOWN",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "carry_stop": {
+     "boundary_reasons": [
+      "measured_continuous_limit"
+     ],
+     "of_segments": 4,
+     "pose_sigma_m": 0.04,
+     "segment": 2
+    },
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 140.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "set_down"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue",
+    "set_down"
+   ],
+   "ambiguous": true,
+   "decision_point": "carry_stop",
+   "family": "carry",
+   "group": "F06",
+   "id": "F06",
+   "label_basis": "ambiguous",
+   "n_structurally_admissible": 1,
+   "note": "own grip slipping, no boundary reason: continue loses the beam, set_down gets NO_RELOOK_TRIGGER",
+   "pair": null,
+   "rule": "R-SETDOWN",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "carry_stop": {
+     "boundary_reasons": [],
+     "of_segments": 4,
+     "pose_sigma_m": 0.04,
+     "segment": 1
+    },
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "slipping",
+    "own_rgb_summary": "own wrist RGB: beam end sliding out of the fingers, grip loosening",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 130.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue",
+    "set_down"
+   ],
+   "ambiguous": true,
+   "decision_point": "carry_stop",
+   "family": "carry",
+   "group": "F02",
+   "id": "F07",
+   "label_basis": "ambiguous",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": {
+    "base": "F02",
+    "expect": "either"
+   },
+   "rule": "R-GRIPPEER",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "carry_stop": {
+     "boundary_reasons": [],
+     "of_segments": 4,
+     "pose_sigma_m": 0.04,
+     "segment": 1
+    },
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 129.7,
+      "message_id": "w1-r2-1",
+      "sender": "r2",
+      "text": "My grip is slipping badly."
+     }
+    ],
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 130.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "set_down"
+   ],
+   "ambiguous": false,
+   "decision_point": "carry_stop",
+   "family": "carry",
+   "group": "F08",
+   "id": "F08",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-SETDOWN",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "carry_stop": {
+     "boundary_reasons": [
+      "narrow_passage",
+      "covariance_limit"
+     ],
+     "of_segments": 4,
+     "pose_sigma_m": 0.07,
+     "segment": 2
+    },
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 150.0
+   },
+   "structurally_admissible": [
+    "continue",
+    "set_down"
+   ]
+  },
+  {
+   "acceptable": [
+    "continue"
+   ],
+   "ambiguous": false,
+   "decision_point": "carry_stop",
+   "family": "carry",
+   "group": "F02",
+   "id": "F09",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "",
+   "pair": {
+    "base": "F02",
+    "expect": "no_change"
+   },
+   "rule": "R-PEERNOISE",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "carry_stop": {
+     "boundary_reasons": [],
+     "of_segments": 4,
+     "pose_sigma_m": 0.04,
+     "segment": 1
+    },
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "holding",
+    "own_rgb_summary": "own wrist RGB: beam end clearly between both fingers, gripper closed on it",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 121.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "All good here, moving on."
+     }
+    ],
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 122.0
+   },
+   "structurally_admissible": [
+    "continue"
+   ]
+  },
+  {
+   "acceptable": [
+    "regrasp"
+   ],
+   "ambiguous": false,
+   "decision_point": "post_look",
+   "family": "postlook",
+   "group": "G01",
+   "id": "G01",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-POSTLOOK",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "none",
+    "own_rgb_summary": "own wrist RGB: not carrying, no beam in gripper",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "relook_result": {
+     "dr_budget_m": 0.06743,
+     "note": "own RGB fix matched the B marks",
+     "own_rgb_fix": "accepted",
+     "pose_sigma_m": 0.031,
+     "relooks_left_this_stop": 1
+    },
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 170.0
+   },
+   "structurally_admissible": [
+    "regrasp",
+    "look_again"
+   ]
+  },
+  {
+   "acceptable": [
+    "look_again"
+   ],
+   "ambiguous": false,
+   "decision_point": "post_look",
+   "family": "postlook",
+   "group": "G02",
+   "id": "G02",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": null,
+   "rule": "R-POSTLOOK",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "none",
+    "own_rgb_summary": "own wrist RGB: not carrying, no beam in gripper",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "relook_result": {
+     "dr_budget_m": 0.06743,
+     "note": "no marks matched in the inspect view",
+     "own_rgb_fix": "failed_no_match",
+     "pose_sigma_m": 0.11,
+     "relooks_left_this_stop": 1
+    },
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 170.0
+   },
+   "structurally_admissible": [
+    "regrasp",
+    "look_again"
+   ]
+  },
+  {
+   "acceptable": [
+    "regrasp"
+   ],
+   "ambiguous": false,
+   "decision_point": "post_look",
+   "family": "postlook",
+   "group": "G03",
+   "id": "G03",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 1,
+   "note": "no re-look left (cap 1 per stop): the protocol resumes",
+   "pair": null,
+   "rule": "R-POSTLOOK",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "none",
+    "own_rgb_summary": "own wrist RGB: not carrying, no beam in gripper",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "relook_result": {
+     "dr_budget_m": 0.06743,
+     "note": "second look also found no marks",
+     "own_rgb_fix": "failed_no_match",
+     "pose_sigma_m": 0.11,
+     "relooks_left_this_stop": 0
+    },
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 185.0
+   },
+   "structurally_admissible": [
+    "regrasp"
+   ]
+  },
+  {
+   "acceptable": [
+    "regrasp",
+    "look_again"
+   ],
+   "ambiguous": true,
+   "decision_point": "post_look",
+   "family": "postlook",
+   "group": "G01",
+   "id": "G04",
+   "label_basis": "ambiguous",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "G01",
+    "expect": "either"
+   },
+   "rule": "R-POSTLOOK",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "none",
+    "own_rgb_summary": "own wrist RGB: not carrying, no beam in gripper",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 169.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "I still do not see the marks well, my estimate is unsure."
+     }
+    ],
+    "relook_result": {
+     "dr_budget_m": 0.06743,
+     "note": "fix accepted",
+     "own_rgb_fix": "accepted",
+     "pose_sigma_m": 0.031,
+     "relooks_left_this_stop": 1
+    },
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 170.0
+   },
+   "structurally_admissible": [
+    "regrasp",
+    "look_again"
+   ]
+  },
+  {
+   "acceptable": [
+    "regrasp"
+   ],
+   "ambiguous": false,
+   "decision_point": "post_look",
+   "family": "postlook",
+   "group": "G01",
+   "id": "G05",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "G01",
+    "expect": "no_change"
+   },
+   "rule": "R-POSTLOOK",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "none",
+    "own_rgb_summary": "own wrist RGB: not carrying, no beam in gripper",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 169.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "I have my fix, ready to regrasp."
+     }
+    ],
+    "relook_result": {
+     "dr_budget_m": 0.06743,
+     "note": "fix accepted",
+     "own_rgb_fix": "accepted",
+     "pose_sigma_m": 0.031,
+     "relooks_left_this_stop": 1
+    },
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 170.0
+   },
+   "structurally_admissible": [
+    "regrasp",
+    "look_again"
+   ]
+  },
+  {
+   "acceptable": [
+    "regrasp",
+    "look_again"
+   ],
+   "ambiguous": true,
+   "decision_point": "post_look",
+   "family": "postlook",
+   "group": "G06",
+   "id": "G06",
+   "label_basis": "ambiguous",
+   "n_structurally_admissible": 2,
+   "note": "sigma 0.066 vs budget 0.0674",
+   "pair": null,
+   "rule": "R-POSTLOOK",
+   "split": "holdout",
+   "state": {
+    "can_send_to": [
+     "r2",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "none",
+    "own_rgb_summary": "own wrist RGB: not carrying, no beam in gripper",
+    "own_route_proposal": null,
+    "peer_reports": [],
+    "relook_result": {
+     "dr_budget_m": 0.06743,
+     "note": "fix accepted but at the budget edge",
+     "own_rgb_fix": "accepted",
+     "pose_sigma_m": 0.066,
+     "relooks_left_this_stop": 1
+    },
+    "robot_id": "r1",
+    "role": "end_neg",
+    "sim_time_s": 172.0
+   },
+   "structurally_admissible": [
+    "regrasp",
+    "look_again"
+   ]
+  },
+  {
+   "acceptable": [
+    "look_again"
+   ],
+   "ambiguous": false,
+   "decision_point": "post_look",
+   "family": "postlook",
+   "group": "G02",
+   "id": "G07",
+   "label_basis": "hard_contract",
+   "n_structurally_admissible": 2,
+   "note": "",
+   "pair": {
+    "base": "G02",
+    "expect": "no_change"
+   },
+   "rule": "R-POSTLOOK",
+   "split": "dev",
+   "state": {
+    "can_send_to": [
+     "r1",
+     "r3"
+    ],
+    "condition": "peer_en",
+    "dialogue": {
+     "approved": false,
+     "key": null,
+     "own_ack_sent": false,
+     "own_claim": false,
+     "own_go_sent": false,
+     "peer_go_ref": null,
+     "proposal_message_id": null,
+     "route_hash": null,
+     "transport_admitted": false
+    },
+    "epoch_age_s": null,
+    "own_command_history": [],
+    "own_map": {
+     "B_seen_in_own_rgb": false,
+     "pose_sigma_m": 0.2
+    },
+    "own_rgb_grip": "none",
+    "own_rgb_summary": "own wrist RGB: not carrying, no beam in gripper",
+    "own_route_proposal": null,
+    "peer_reports": [
+     {
+      "created_at_sim_s": 171.7,
+      "message_id": "w1-r1-1",
+      "sender": "r1",
+      "text": "I am fine here, regrasp whenever."
+     }
+    ],
+    "relook_result": {
+     "dr_budget_m": 0.06743,
+     "note": "inspect view blocked",
+     "own_rgb_fix": "failed_no_match",
+     "pose_sigma_m": 0.12,
+     "relooks_left_this_stop": 1
+    },
+    "robot_id": "r2",
+    "role": "end_pos",
+    "sim_time_s": 172.0
+   },
+   "structurally_admissible": [
+    "regrasp",
+    "look_again"
+   ]
+  }
+ ],
+ "families": {
+  "carry": [
+   "continue",
+   "set_down"
+  ],
+  "dialogue": [
+   "continue",
+   "claim",
+   "approve_route",
+   "GO",
+   "ACK"
+  ],
+  "postlook": [
+   "regrasp",
+   "look_again"
+  ]
+ },
+ "rules": {
+  "R-ACK": "ACK requires your own GO already sent and the current peer_go_ref (CAPTURED_PEER_GO_REQUIRED); once per epoch.",
+  "R-ACKORDER": "Peer GO visible but own GO not sent -> GO first (ACK needs own GO).",
+  "R-APPROVE": "Only r2 approves, only a proposal actually in its inbox (CAPTURED_RECEIVED_R2_APPROVAL_REQUIRED); r2 must receive the exact proposal before approve_route.",
+  "R-CLAIM": "Claim only after approval, own role, once (CURRENT_APPROVED_OWN_ROLE_CLAIM_REQUIRED).",
+  "R-DONE": "Both ACKs done (transport_admitted) -> nothing more to vote; motion is code-run: continue.",
+  "R-GO": "GO requires own RGB supporting the grip (prompt; GO_ACK_OWN_RGB_SOURCE_REQUIRED) and is sent once per epoch.",
+  "R-GRIPPEER": "INFERRED (not a hard check): a delivered peer report that its grip slipped/is not ready means the pair is not ready; GO/ACK would assert a shared grip. Hold.",
+  "R-IDLE": "r3 is idle (fixed_roles): only continue (check_action actor not in PAIR).",
+  "R-KEY": "GO/ACK only with a current dialogue.key (MATCHING_CURRENT_GO_ACK_REQUIRED); with key null -> continue.",
+  "R-NOCOMM": "No_comm cannot deliver B or approve a route (prompt); r2 stays at continue.",
+  "R-PEERAUTH": "Peer text cannot replace delivered dialogue state (approval/proposal exist only via the dialogue view).",
+  "R-PEERNOISE": "Peer chatter with no protocol content must not change the protocol step.",
+  "R-POSTLOOK": "After a set-down re-look: regrasp when the own-RGB fix is within the DR budget; look_again only when the fix failed and the single allowed re-look (LOOK_AGAIN_PER_STOP=1) is unused.",
+  "R-ROUTE": "No route received -> only continue is valid (check_action RECEIVED_B_ROUTE_REQUIRED; prompt: until a route exists continue while the mapper explores).",
+  "R-SETDOWN": "set_down only at a named re-look boundary (e2e_setdown_relook.boundary_reasons: covariance_limit, narrow passage, unmeasured_axis_change, measured_continuous_limit, final_placement); otherwise NO_RELOOK_TRIGGER.",
+  "R-WINDOW": "GO/ACK only inside the 20 s epoch window; stale epoch is never reused (EPOCH_WINDOW_S, prompt: never reuse previous epoch)."
+ },
+ "schema": "ugrp.jev_decider_suite.v1",
+ "split_salt": "s0:"
+}

@@ -1,0 +1,2428 @@
+{
+  "status": "COMPLETE_DIAGNOSTIC",
+  "scope": "test_route_provider S3-only; ownmap and live dialogue are not connected; no E2E success counted",
+  "execution_bundle_id": "e2e-s3-ownroute-v179",
+  "workflow_version": "7.72.0",
+  "evaluation_version": "e2e_supported_final_release_v1",
+  "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+  "merged_heads": {
+    "S3": "78aa80a99285bc5ea5157ad48bfcf38eacc66bc8",
+    "S4": "3d8f421731c40343c0836057ce37ac904591e22e"
+  },
+  "result": {
+    "selected_guard": "supported_phase",
+    "entrance": "local_servo",
+    "n": 2,
+    "N": 2,
+    "E2E_success": false,
+    "research_result": false
+  },
+  "comparison": {
+    "off": {
+      "n": 0,
+      "N": 2,
+      "B_setdown": 0,
+      "reported_drop_guard_stops": 2,
+      "initial_healthy": 2,
+      "median_wall_per_SIM": 6.312983417019851
+    },
+    "supported_phase": {
+      "n": 2,
+      "N": 2,
+      "B_setdown": 2,
+      "reported_drop_guard_stops": 0,
+      "initial_healthy": 2,
+      "median_wall_per_SIM": 6.255942954252992
+    },
+    "floor_latch": {
+      "n": 2,
+      "N": 2,
+      "B_setdown": 2,
+      "reported_drop_guard_stops": 0,
+      "initial_healthy": 2,
+      "median_wall_per_SIM": 6.29649986735846
+    }
+  },
+  "previous_entrance_comparison": {
+    "off": {
+      "n": 0,
+      "N": 2,
+      "carry_completed_legs": [
+        0,
+        0
+      ],
+      "reported_guard_stops": 0
+    },
+    "saved_phase": {
+      "n": 1,
+      "N": 2,
+      "carry_completed_legs": [
+        7,
+        7
+      ],
+      "reported_guard_stops": 1
+    },
+    "local_servo": {
+      "n": 0,
+      "N": 2,
+      "carry_completed_legs": [
+        7,
+        7
+      ],
+      "reported_guard_stops": 2
+    }
+  },
+  "route": {
+    "source": "test_route_provider",
+    "length_m": 5.475,
+    "segments": 7,
+    "cardinal_bends": 1,
+    "loaded_heading_turn_rad": 0,
+    "B_m": [
+      0.8,
+      1.4
+    ]
+  },
+  "attempts": {
+    "completed": 14,
+    "status_counts": {
+      "HOST_ERROR": 2,
+      "PHYSICAL_STOP": 5,
+      "EARLY_STOP": 2,
+      "DEV_STAGE_FINISHED": 5
+    },
+    "initial_healthy": 10,
+    "reported_guard_stops": 5
+  },
+  "offline_tests": {
+    "n": 73,
+    "N": 73,
+    "files": [
+      "tests/test_e2e_s3_route.py",
+      "tests/test_e2e_dialogue.py",
+      "tests/test_e2e_own_inputs.py"
+    ],
+    "raw": "/Users/changmin/projects/ugrp/outputs/e2e3-control-20261011/pytest-r3.txt",
+    "sha256": "7bdadcba739138876df74d38170032f0c1acf718c7ebe955fe8ce6d2f719a337"
+  },
+  "source_closure": {
+    "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+    "files": 492,
+    "all_sha256_match": true,
+    "mismatches": []
+  },
+  "command_prefix_check": {
+    "raw": "/Users/changmin/projects/ugrp/outputs/e2e3-control-20261011/command-prefix-check-final.json",
+    "sha256": "6c685c798ef789766301c22bdbf42b31d293d852a921d8fc08c4e82d5f199e29",
+    "scope": "byte equality through baseline stop before final OPEN",
+    "rows": [
+      {
+        "seed": 61001,
+        "robot": "r1",
+        "candidate": "supported_phase",
+        "baseline_commands": 10008,
+        "candidate_commands": 10158,
+        "baseline_prefix_equal": true,
+        "baseline_sha256": "00081ea2fed7af54a0f601520d47a0a0b36ad605894ef0d25aff2c98efa40de1"
+      },
+      {
+        "seed": 61001,
+        "robot": "r1",
+        "candidate": "floor_latch",
+        "baseline_commands": 10008,
+        "candidate_commands": 10158,
+        "baseline_prefix_equal": true,
+        "baseline_sha256": "00081ea2fed7af54a0f601520d47a0a0b36ad605894ef0d25aff2c98efa40de1"
+      },
+      {
+        "seed": 61001,
+        "robot": "r2",
+        "candidate": "supported_phase",
+        "baseline_commands": 10011,
+        "candidate_commands": 10161,
+        "baseline_prefix_equal": true,
+        "baseline_sha256": "25ec2e883d8b8bc36c1b27070c217c2784a8bd3bffeb4fa2a23b9e797c4701e3"
+      },
+      {
+        "seed": 61001,
+        "robot": "r2",
+        "candidate": "floor_latch",
+        "baseline_commands": 10011,
+        "candidate_commands": 10161,
+        "baseline_prefix_equal": true,
+        "baseline_sha256": "25ec2e883d8b8bc36c1b27070c217c2784a8bd3bffeb4fa2a23b9e797c4701e3"
+      },
+      {
+        "seed": 61002,
+        "robot": "r1",
+        "candidate": "supported_phase",
+        "baseline_commands": 10021,
+        "candidate_commands": 10171,
+        "baseline_prefix_equal": true,
+        "baseline_sha256": "2c6d501ee694af52264c64022a97fc18e0f93432d0f7e28c5315b7ce8f6adb5b"
+      },
+      {
+        "seed": 61002,
+        "robot": "r1",
+        "candidate": "floor_latch",
+        "baseline_commands": 10021,
+        "candidate_commands": 10171,
+        "baseline_prefix_equal": true,
+        "baseline_sha256": "2c6d501ee694af52264c64022a97fc18e0f93432d0f7e28c5315b7ce8f6adb5b"
+      },
+      {
+        "seed": 61002,
+        "robot": "r2",
+        "candidate": "supported_phase",
+        "baseline_commands": 10011,
+        "candidate_commands": 10161,
+        "baseline_prefix_equal": true,
+        "baseline_sha256": "6a3b035339d9197139879190e736574c66af2f31feb6c64fda8a6aa5d3e9dfdd"
+      },
+      {
+        "seed": 61002,
+        "robot": "r2",
+        "candidate": "floor_latch",
+        "baseline_commands": 10011,
+        "candidate_commands": 10161,
+        "baseline_prefix_equal": true,
+        "baseline_sha256": "6a3b035339d9197139879190e736574c66af2f31feb6c64fda8a6aa5d3e9dfdd"
+      }
+    ],
+    "all_baseline_prefixes_equal": true
+  },
+  "ARM_native_verification": {
+    "raw": "/Users/changmin/projects/ugrp/outputs/e2e3-control-20261011/native-ARM-verification-r3.json",
+    "sha256": "db4d81bcc1574c121e2f8b056b294de5db1a62b9d5051ba3985ed63837fea6e9",
+    "method": "SHA256 on native ARM filesystem",
+    "elapsed_wall_s": 211.7508589909994,
+    "runs": [
+      {
+        "name": "e2e3-visual-local_servo-off-s61001-r3",
+        "path": "/srv/ugrp-archive/runs/e2e3-visual-local_servo-off-s61001-r3",
+        "verified_files": 25081,
+        "manifest_sha256": "afb7ad8f195d75a18045a4b6d68530741398567db4ca6336a3ca19e1233bbfa8",
+        "all_sha256_match": true
+      },
+      {
+        "name": "e2e3-visual-local_servo-off-s61002-r3",
+        "path": "/srv/ugrp-archive/runs/e2e3-visual-local_servo-off-s61002-r3",
+        "verified_files": 25111,
+        "manifest_sha256": "990aac2f75c6662c96eb8adeb15efda322fa27cf728d9f7d412e927480098e71",
+        "all_sha256_match": true
+      },
+      {
+        "name": "e2e3-visual-local_servo-supported_phase-s61001-r3",
+        "path": "/srv/ugrp-archive/runs/e2e3-visual-local_servo-supported_phase-s61001-r3",
+        "verified_files": 25238,
+        "manifest_sha256": "a06721d98650795a8a1cbae51eb4bacbb8199aba38932b9ef80a1568df118766",
+        "all_sha256_match": true
+      },
+      {
+        "name": "e2e3-visual-local_servo-supported_phase-s61002-r3",
+        "path": "/srv/ugrp-archive/runs/e2e3-visual-local_servo-supported_phase-s61002-r3",
+        "verified_files": 25268,
+        "manifest_sha256": "839c4eeb374216eb3c8d31d44814aae6c08fb9651d08c0efc9c203feed32c2f5",
+        "all_sha256_match": true
+      },
+      {
+        "name": "e2e3-visual-local_servo-floor_latch-s61001-r3",
+        "path": "/srv/ugrp-archive/runs/e2e3-visual-local_servo-floor_latch-s61001-r3",
+        "verified_files": 25238,
+        "manifest_sha256": "4fdacecfe5c4a1523b67f8748a37d67ab551f88ab0d962396b5af35c3914a3d1",
+        "all_sha256_match": true
+      },
+      {
+        "name": "e2e3-visual-local_servo-floor_latch-s61002-r3",
+        "path": "/srv/ugrp-archive/runs/e2e3-visual-local_servo-floor_latch-s61002-r3",
+        "verified_files": 25268,
+        "manifest_sha256": "248637d3fa7e6369cab6e6fb74ec8d24f2cecc32c84d88ebd23820f144902c8b",
+        "all_sha256_match": true
+      }
+    ]
+  },
+  "diagnostics": {
+    "first_RGB_grip_x_m": [
+      0.2265371464,
+      0.2433979604
+    ],
+    "legacy_expected_x_m": 0.5032,
+    "legacy_tolerance_m": 0.25,
+    "final_release": {
+      "states": "released",
+      "issued_grip_PWM": 1500,
+      "stable_floor_N": [
+        2.644,
+        2.935,
+        3.269
+      ],
+      "COM_z_m": [
+        0.0159158,
+        0.0158961,
+        0.0158659
+      ],
+      "max_abs_vertical_speed_m_s": 1.59e-05,
+      "tilt_deg": [
+        0.0503,
+        0.0335,
+        0.00668
+      ],
+      "cause": "released phase precedes actual OPEN dispatch; old evaluator excludes released from supported_lower"
+    }
+  },
+  "archive": {
+    "raw": "/Users/changmin/projects/ugrp/outputs/e2e3-control-20261011/archive-move.json",
+    "sha256": "a8f86bf92364e773c982799e1210a723aab2213e45b7a9d770a61d35ba0c7b59",
+    "earlier_verified_runs_moved_to_ARM": 8,
+    "x86_free_before_r3_GiB": 12.341625213623047,
+    "Git_backed_deployment_cache_files": 67,
+    "required_source_files_preserved": 492
+  },
+  "runs": [
+    {
+      "name": "e2e3-visual-s61001-r1",
+      "attempt": 1,
+      "seed": 61001,
+      "entrance": "off",
+      "final_guard": "off",
+      "source_sha": "ed908b382e1847fe8a5a376b520b467e45b8c037",
+      "status": "HOST_ERROR",
+      "EXIT": 1,
+      "S3_route_success": false,
+      "E2E_success": false,
+      "sim_s": 26.0,
+      "wall_s": 179.2946768940019,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          45.06005859375,
+          66.55859375,
+          59.09912109375
+        ],
+        "mem_available_bytes": 24528330752,
+        "utc": "2026-10-10T20:08:07Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-s61001-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T20:11:07Z",
+        "progress_samples": 26,
+        "sim_s": 27.3,
+        "frames": 500,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.017062728115751862,
+            "finger_xyz_m": 0.10343894992143675
+          },
+          "r2": {
+            "base_xyz_m": 0.017044568620682966,
+            "finger_xyz_m": 0.1034049516124947
+          }
+        },
+        "seen_states": [
+          "align",
+          "reapproach"
+        ],
+        "healthy": false,
+        "reasons": [
+          "key grasp/lift stage absent"
+        ],
+        "completed": false,
+        "elapsed_wall_s": 180.02711012800137
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r1/cohort/e2e3-visual-s61001-r1/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-s61001-r1/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-s61001-r1/raw",
+      "manifest_sha256": "8b7ceb2e73e7f21c595971e34b40378c16a8586ffd95872fa69ff1fbbc11a7db",
+      "verified_files": 1598,
+      "sha256_all_match": true,
+      "ARM_verified_files": 1598,
+      "route_hash": "62e1925bc8a6801050080c46f3e8df39efb939d048161f478f7769b5e4165a36",
+      "plan_hash": "5df180e0c46105afb0e13360008650fecd4e586f35befb297529da959bdf27e7",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        }
+      ],
+      "door_crossed": false,
+      "B_setdown": false,
+      "B_whole_outline_inside": false,
+      "B_min_margin_m": -3.2250000000000005,
+      "final_xy_m": [
+        1.275,
+        0.05
+      ],
+      "reported_drop_guard_stops": 0,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": "legacy_far_prestance_check_preempts_near_alignment"
+    },
+    {
+      "name": "e2e3-visual-s61002-r1",
+      "attempt": 1,
+      "seed": 61002,
+      "entrance": "off",
+      "final_guard": "off",
+      "source_sha": "ed908b382e1847fe8a5a376b520b467e45b8c037",
+      "status": "HOST_ERROR",
+      "EXIT": 1,
+      "S3_route_success": false,
+      "E2E_success": false,
+      "sim_s": 26.0,
+      "wall_s": 180.24693473099978,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          45.06005859375,
+          66.55859375,
+          59.09912109375
+        ],
+        "mem_available_bytes": 24528072704,
+        "utc": "2026-10-10T20:08:07Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-s61002-r1",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T20:11:07Z",
+        "progress_samples": 26,
+        "sim_s": 27.3,
+        "frames": 500,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.0170566501711713,
+            "finger_xyz_m": 0.10339057474788933
+          },
+          "r2": {
+            "base_xyz_m": 0.017056625181212138,
+            "finger_xyz_m": 0.10340753119114396
+          }
+        },
+        "seen_states": [
+          "align",
+          "reapproach"
+        ],
+        "healthy": false,
+        "reasons": [
+          "key grasp/lift stage absent"
+        ],
+        "completed": false,
+        "elapsed_wall_s": 180.0267346110013
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r1/cohort/e2e3-visual-s61002-r1/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-s61002-r1/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-s61002-r1/raw",
+      "manifest_sha256": "2c5c71261f85ffc5038d68c3254fc0e016522ea50b2b338feaac01529ae02ef8",
+      "verified_files": 1598,
+      "sha256_all_match": true,
+      "ARM_verified_files": 1598,
+      "route_hash": "7d1cab75da723e2dc2c5299a188ad00d0a23e57d09465a793205aee4d0533823",
+      "plan_hash": "235b40c3185dffa1e318f796d2a0e6ea06fe4d03c69ec2fa66761157346e035f",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        }
+      ],
+      "door_crossed": false,
+      "B_setdown": false,
+      "B_whole_outline_inside": false,
+      "B_min_margin_m": -3.2250000000000005,
+      "final_xy_m": [
+        1.275,
+        0.05
+      ],
+      "reported_drop_guard_stops": 0,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": "legacy_far_prestance_check_preempts_near_alignment"
+    },
+    {
+      "name": "e2e3-visual-local_servo-s61001-r2",
+      "attempt": 2,
+      "seed": 61001,
+      "entrance": "local_servo",
+      "final_guard": "off",
+      "source_sha": "3981ad6d4c598bec520f76b41c4c312f29ffb50d",
+      "status": "PHYSICAL_STOP",
+      "EXIT": 1,
+      "S3_route_success": false,
+      "E2E_success": false,
+      "sim_s": 417.34999999999997,
+      "wall_s": 2633.3751732570017,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          48.73779296875,
+          73.9580078125,
+          70.267578125
+        ],
+        "mem_available_bytes": 36166918144,
+        "utc": "2026-10-10T20:17:27Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-local_servo-s61001-r2",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T20:20:27Z",
+        "progress_samples": 29,
+        "sim_s": 30.3,
+        "frames": 560,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.029505004843922964,
+            "finger_xyz_m": 0.16141734653088013
+          },
+          "r2": {
+            "base_xyz_m": 0.04942521496803744,
+            "finger_xyz_m": 0.1693207851074472
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0288487200014
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r2/cohort/e2e3-visual-local_servo-s61001-r2/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-local_servo-s61001-r2/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-s61001-r2/raw",
+      "manifest_sha256": "0379ad633032fee669df53ff3f4876ef13dd7bad75238e6de20bcc8b26a1ded3",
+      "verified_files": 25081,
+      "sha256_all_match": true,
+      "ARM_verified_files": 25081,
+      "route_hash": "62e1925bc8a6801050080c46f3e8df39efb939d048161f478f7769b5e4165a36",
+      "plan_hash": "5df180e0c46105afb0e13360008650fecd4e586f35befb297529da959bdf27e7",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.842762308039496,
+          "end_sim_s": 43.9,
+          "endpoint_error_m": 0.058754069106070776,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.840718799930147,
+          "end_sim_s": 108.5,
+          "endpoint_error_m": 0.060205867371516404,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8415436524783858,
+          "end_sim_s": 173.2,
+          "endpoint_error_m": 0.058637174669524485,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8407445606356353,
+          "end_sim_s": 237.9,
+          "endpoint_error_m": 0.06105399346603412,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8445067336303369,
+          "end_sim_s": 293.7,
+          "endpoint_error_m": 0.19061292248048362,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8449621270948184,
+          "end_sim_s": 349.4,
+          "endpoint_error_m": 0.318904659045184,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8464893996822838,
+          "end_sim_s": 405.2,
+          "endpoint_error_m": 0.4406445286825271,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": false,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.019852806923204902,
+      "final_xy_m": [
+        4.523871567424781,
+        -2.533184346974944
+      ],
+      "reported_drop_guard_stops": 1,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": "final_release_phase_before_OPEN_dispatch"
+    },
+    {
+      "name": "e2e3-visual-local_servo-s61002-r2",
+      "attempt": 2,
+      "seed": 61002,
+      "entrance": "local_servo",
+      "final_guard": "off",
+      "source_sha": "3981ad6d4c598bec520f76b41c4c312f29ffb50d",
+      "status": "PHYSICAL_STOP",
+      "EXIT": 1,
+      "S3_route_success": false,
+      "E2E_success": false,
+      "sim_s": 417.84999999999997,
+      "wall_s": 2625.0500469340004,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          48.73779296875,
+          73.9580078125,
+          70.267578125
+        ],
+        "mem_available_bytes": 36162273280,
+        "utc": "2026-10-10T20:17:27Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-local_servo-s61002-r2",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T20:20:27Z",
+        "progress_samples": 29,
+        "sim_s": 30.3,
+        "frames": 560,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.02861701750946928,
+            "finger_xyz_m": 0.16138398574988264
+          },
+          "r2": {
+            "base_xyz_m": 0.04930223899139899,
+            "finger_xyz_m": 0.16934412322174897
+          }
+        },
+        "seen_states": [
+          "align",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.02373993899892
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r2/cohort/e2e3-visual-local_servo-s61002-r2/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-local_servo-s61002-r2/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-s61002-r2/raw",
+      "manifest_sha256": "8a78d47762705b856643d38e7e500ec166c2a585db8baa476cc4d4e414440166",
+      "verified_files": 25111,
+      "sha256_all_match": true,
+      "ARM_verified_files": 25111,
+      "route_hash": "7d1cab75da723e2dc2c5299a188ad00d0a23e57d09465a793205aee4d0533823",
+      "plan_hash": "235b40c3185dffa1e318f796d2a0e6ea06fe4d03c69ec2fa66761157346e035f",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8399880632001875,
+          "end_sim_s": 43.9,
+          "endpoint_error_m": 0.060163712021514736,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.8442028852463777,
+          "end_sim_s": 108.5,
+          "endpoint_error_m": 0.0855175164048241,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8412823535824167,
+          "end_sim_s": 173.2,
+          "endpoint_error_m": 0.09032690956034048,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8431019326489477,
+          "end_sim_s": 237.9,
+          "endpoint_error_m": 0.10827558371198746,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.839523150314537,
+          "end_sim_s": 293.7,
+          "endpoint_error_m": 0.22856774915289374,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8479420465545086,
+          "end_sim_s": 349.9,
+          "endpoint_error_m": 0.3457479283640717,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8387474611959037,
+          "end_sim_s": 405.7,
+          "endpoint_error_m": 0.46595108964125126,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": false,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.08169201881944321,
+      "final_xy_m": [
+        4.582560198912128,
+        -2.5607208609712155
+      ],
+      "reported_drop_guard_stops": 1,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": "final_release_phase_before_OPEN_dispatch"
+    },
+    {
+      "name": "e2e3-visual-off-s61001-r2",
+      "attempt": 2,
+      "seed": 61001,
+      "entrance": "off",
+      "final_guard": "off",
+      "source_sha": "3981ad6d4c598bec520f76b41c4c312f29ffb50d",
+      "status": "EARLY_STOP",
+      "EXIT": 1,
+      "S3_route_success": false,
+      "E2E_success": false,
+      "sim_s": 26.0,
+      "wall_s": 178.54669845700118,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          48.73779296875,
+          73.9580078125,
+          70.267578125
+        ],
+        "mem_available_bytes": 36166918144,
+        "utc": "2026-10-10T20:17:27Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-off-s61001-r2",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T20:20:27Z",
+        "progress_samples": 26,
+        "sim_s": 27.3,
+        "frames": 500,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.017062728115751862,
+            "finger_xyz_m": 0.10343894992143675
+          },
+          "r2": {
+            "base_xyz_m": 0.017044568620682966,
+            "finger_xyz_m": 0.1034049516124947
+          }
+        },
+        "seen_states": [
+          "align",
+          "reapproach"
+        ],
+        "healthy": false,
+        "reasons": [
+          "key grasp/lift stage absent"
+        ],
+        "completed": false,
+        "elapsed_wall_s": 180.0256871720012
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r2/cohort/e2e3-visual-off-s61001-r2/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-off-s61001-r2/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-off-s61001-r2/raw",
+      "manifest_sha256": "a5a08dd9d0183cc279e21f009dec286eaf95c904679ee4c12f0aa04824b0624e",
+      "verified_files": 1598,
+      "sha256_all_match": true,
+      "ARM_verified_files": 1598,
+      "route_hash": "62e1925bc8a6801050080c46f3e8df39efb939d048161f478f7769b5e4165a36",
+      "plan_hash": "5df180e0c46105afb0e13360008650fecd4e586f35befb297529da959bdf27e7",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        }
+      ],
+      "door_crossed": false,
+      "B_setdown": false,
+      "B_whole_outline_inside": false,
+      "B_min_margin_m": -3.2250000000000005,
+      "final_xy_m": [
+        1.275,
+        0.05
+      ],
+      "reported_drop_guard_stops": 0,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": "legacy_far_prestance_check_preempts_near_alignment"
+    },
+    {
+      "name": "e2e3-visual-off-s61002-r2",
+      "attempt": 2,
+      "seed": 61002,
+      "entrance": "off",
+      "final_guard": "off",
+      "source_sha": "3981ad6d4c598bec520f76b41c4c312f29ffb50d",
+      "status": "EARLY_STOP",
+      "EXIT": 1,
+      "S3_route_success": false,
+      "E2E_success": false,
+      "sim_s": 26.0,
+      "wall_s": 181.40408653099803,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          48.73779296875,
+          73.9580078125,
+          70.267578125
+        ],
+        "mem_available_bytes": 36166918144,
+        "utc": "2026-10-10T20:17:27Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-off-s61002-r2",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T20:20:27Z",
+        "progress_samples": 26,
+        "sim_s": 27.3,
+        "frames": 500,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.0170566501711713,
+            "finger_xyz_m": 0.10339057474788933
+          },
+          "r2": {
+            "base_xyz_m": 0.017056625181212138,
+            "finger_xyz_m": 0.10340753119114396
+          }
+        },
+        "seen_states": [
+          "align",
+          "reapproach"
+        ],
+        "healthy": false,
+        "reasons": [
+          "key grasp/lift stage absent"
+        ],
+        "completed": false,
+        "elapsed_wall_s": 180.02436887700242
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r2/cohort/e2e3-visual-off-s61002-r2/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-off-s61002-r2/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-off-s61002-r2/raw",
+      "manifest_sha256": "272d2f1c1a037384cdac2d57570499ab36e675a7290e4696a98fa56610a754b6",
+      "verified_files": 1598,
+      "sha256_all_match": true,
+      "ARM_verified_files": 1598,
+      "route_hash": "7d1cab75da723e2dc2c5299a188ad00d0a23e57d09465a793205aee4d0533823",
+      "plan_hash": "235b40c3185dffa1e318f796d2a0e6ea06fe4d03c69ec2fa66761157346e035f",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.0,
+          "end_sim_s": null,
+          "endpoint_error_m": null,
+          "completed": false,
+          "carried": false
+        }
+      ],
+      "door_crossed": false,
+      "B_setdown": false,
+      "B_whole_outline_inside": false,
+      "B_min_margin_m": -3.2250000000000005,
+      "final_xy_m": [
+        1.275,
+        0.05
+      ],
+      "reported_drop_guard_stops": 0,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": "legacy_far_prestance_check_preempts_near_alignment"
+    },
+    {
+      "name": "e2e3-visual-saved_phase-s61001-r2",
+      "attempt": 2,
+      "seed": 61001,
+      "entrance": "saved_phase",
+      "final_guard": "off",
+      "source_sha": "3981ad6d4c598bec520f76b41c4c312f29ffb50d",
+      "status": "DEV_STAGE_FINISHED",
+      "EXIT": 0,
+      "S3_route_success": true,
+      "E2E_success": false,
+      "sim_s": 420.15,
+      "wall_s": 2631.8953816089997,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          48.73779296875,
+          73.9580078125,
+          70.267578125
+        ],
+        "mem_available_bytes": 36166402048,
+        "utc": "2026-10-10T20:17:27Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-saved_phase-s61001-r2",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T20:20:27Z",
+        "progress_samples": 28,
+        "sim_s": 29.3,
+        "frames": 540,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.0585953095859143,
+            "finger_xyz_m": 0.16135864449345594
+          },
+          "r2": {
+            "base_xyz_m": 0.04994786466556147,
+            "finger_xyz_m": 0.16968001072197803
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0187646049999
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r2/cohort/e2e3-visual-saved_phase-s61001-r2/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-saved_phase-s61001-r2/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-saved_phase-s61001-r2/raw",
+      "manifest_sha256": "3500d36e6037becec07793879795246270866b0b5b3586cb0443e5743f6146f6",
+      "verified_files": 25129,
+      "sha256_all_match": true,
+      "ARM_verified_files": 25129,
+      "route_hash": "62e1925bc8a6801050080c46f3e8df39efb939d048161f478f7769b5e4165a36",
+      "plan_hash": "5df180e0c46105afb0e13360008650fecd4e586f35befb297529da959bdf27e7",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8439702778482231,
+          "end_sim_s": 42.1,
+          "endpoint_error_m": 0.061740081525014916,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.841712428793893,
+          "end_sim_s": 106.8,
+          "endpoint_error_m": 0.0648452048766295,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.842763948898676,
+          "end_sim_s": 171.4,
+          "endpoint_error_m": 0.05808684616240491,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8378302806198091,
+          "end_sim_s": 236.0,
+          "endpoint_error_m": 0.05851651450169172,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8408494837354984,
+          "end_sim_s": 291.9,
+          "endpoint_error_m": 0.185569327065819,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8430916502253258,
+          "end_sim_s": 347.7,
+          "endpoint_error_m": 0.2968897471633351,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8446134746778312,
+          "end_sim_s": 403.4,
+          "endpoint_error_m": 0.4129391283234963,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": true,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.06096753722679171,
+      "final_xy_m": [
+        4.638992782503317,
+        -2.5166551157314974
+      ],
+      "reported_drop_guard_stops": 0,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": null
+    },
+    {
+      "name": "e2e3-visual-saved_phase-s61002-r2",
+      "attempt": 2,
+      "seed": 61002,
+      "entrance": "saved_phase",
+      "final_guard": "off",
+      "source_sha": "3981ad6d4c598bec520f76b41c4c312f29ffb50d",
+      "status": "PHYSICAL_STOP",
+      "EXIT": 1,
+      "S3_route_success": false,
+      "E2E_success": false,
+      "sim_s": 415.55,
+      "wall_s": 2627.5908973859987,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          48.73779296875,
+          73.9580078125,
+          70.267578125
+        ],
+        "mem_available_bytes": 36161757184,
+        "utc": "2026-10-10T20:17:27Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-saved_phase-s61002-r2",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T20:20:27Z",
+        "progress_samples": 28,
+        "sim_s": 29.3,
+        "frames": 540,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.0468259117096612,
+            "finger_xyz_m": 0.1613390884480553
+          },
+          "r2": {
+            "base_xyz_m": 0.05169862949098811,
+            "finger_xyz_m": 0.1694359819358056
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.02581063199978
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r2/cohort/e2e3-visual-saved_phase-s61002-r2/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-saved_phase-s61002-r2/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-saved_phase-s61002-r2/raw",
+      "manifest_sha256": "69535d87a4e41fb4a55ff11ed8d6723c0ca8140c8a3f6b9b69fff1dad6ff4d0b",
+      "verified_files": 24973,
+      "sha256_all_match": true,
+      "ARM_verified_files": 24973,
+      "route_hash": "7d1cab75da723e2dc2c5299a188ad00d0a23e57d09465a793205aee4d0533823",
+      "plan_hash": "235b40c3185dffa1e318f796d2a0e6ea06fe4d03c69ec2fa66761157346e035f",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8394015712195602,
+          "end_sim_s": 42.1,
+          "endpoint_error_m": 0.05175762121739785,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.8376042280696472,
+          "end_sim_s": 106.8,
+          "endpoint_error_m": 0.09375371061376678,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8417933686958909,
+          "end_sim_s": 171.4,
+          "endpoint_error_m": 0.12896758391559626,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8430315578949114,
+          "end_sim_s": 236.0,
+          "endpoint_error_m": 0.13342071479477324,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8431199777939017,
+          "end_sim_s": 291.9,
+          "endpoint_error_m": 0.2612377532299743,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.846044718237757,
+          "end_sim_s": 347.7,
+          "endpoint_error_m": 0.38726115480335876,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8448508551239334,
+          "end_sim_s": 403.4,
+          "endpoint_error_m": 0.5078333260044502,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": false,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.06448536002458027,
+      "final_xy_m": [
+        4.574493008564728,
+        -2.604680410750017
+      ],
+      "reported_drop_guard_stops": 1,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": "final_release_phase_before_OPEN_dispatch"
+    },
+    {
+      "name": "e2e3-visual-local_servo-floor_latch-s61001-r3",
+      "attempt": 3,
+      "seed": 61001,
+      "entrance": "local_servo",
+      "final_guard": "floor_latch",
+      "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+      "status": "DEV_STAGE_FINISHED",
+      "EXIT": 0,
+      "S3_route_success": true,
+      "E2E_success": false,
+      "sim_s": 421.95,
+      "wall_s": 2671.5864675459998,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          0.69921875,
+          3.3427734375,
+          27.41796875
+        ],
+        "mem_available_bytes": 64818589696,
+        "utc": "2026-10-10T21:15:34Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-local_servo-floor_latch-s61001-r3",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T21:18:34Z",
+        "progress_samples": 34,
+        "sim_s": 35.3,
+        "frames": 660,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.3252133880653357,
+            "finger_xyz_m": 0.3886751655047054
+          },
+          "r2": {
+            "base_xyz_m": 0.24007034380298312,
+            "finger_xyz_m": 0.1825562945550141
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0213967949967
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r3/cohort/e2e3-visual-local_servo-floor_latch-s61001-r3/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-local_servo-floor_latch-s61001-r3/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-floor_latch-s61001-r3/raw",
+      "manifest_sha256": "4fdacecfe5c4a1523b67f8748a37d67ab551f88ab0d962396b5af35c3914a3d1",
+      "verified_files": 25238,
+      "sha256_all_match": true,
+      "ARM_verified_files": 25238,
+      "route_hash": "62e1925bc8a6801050080c46f3e8df39efb939d048161f478f7769b5e4165a36",
+      "plan_hash": "5df180e0c46105afb0e13360008650fecd4e586f35befb297529da959bdf27e7",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.842762308039496,
+          "end_sim_s": 43.9,
+          "endpoint_error_m": 0.058754069106070776,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.840718799930147,
+          "end_sim_s": 108.5,
+          "endpoint_error_m": 0.060205867371516404,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8415436524783858,
+          "end_sim_s": 173.2,
+          "endpoint_error_m": 0.058637174669524485,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8407445606356353,
+          "end_sim_s": 237.9,
+          "endpoint_error_m": 0.06105399346603412,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8445067336303369,
+          "end_sim_s": 293.7,
+          "endpoint_error_m": 0.19061292248048362,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8449621270948184,
+          "end_sim_s": 349.4,
+          "endpoint_error_m": 0.318904659045184,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8464893996822838,
+          "end_sim_s": 405.2,
+          "endpoint_error_m": 0.4406445286825271,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": true,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.023273791645951114,
+      "final_xy_m": [
+        4.523869984574643,
+        -2.5331878732928144
+      ],
+      "reported_drop_guard_stops": 0,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": null
+    },
+    {
+      "name": "e2e3-visual-local_servo-floor_latch-s61002-r3",
+      "attempt": 3,
+      "seed": 61002,
+      "entrance": "local_servo",
+      "final_guard": "floor_latch",
+      "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+      "status": "DEV_STAGE_FINISHED",
+      "EXIT": 0,
+      "S3_route_success": true,
+      "E2E_success": false,
+      "sim_s": 422.45,
+      "wall_s": 2645.1605084850016,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          0.69921875,
+          3.3427734375,
+          27.41796875
+        ],
+        "mem_available_bytes": 64817557504,
+        "utc": "2026-10-10T21:15:34Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-local_servo-floor_latch-s61002-r3",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T21:18:34Z",
+        "progress_samples": 34,
+        "sim_s": 35.3,
+        "frames": 660,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.3246443222485153,
+            "finger_xyz_m": 0.388667862587518
+          },
+          "r2": {
+            "base_xyz_m": 0.24029015273775609,
+            "finger_xyz_m": 0.1830896553351269
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.02071122300185
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r3/cohort/e2e3-visual-local_servo-floor_latch-s61002-r3/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-local_servo-floor_latch-s61002-r3/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-floor_latch-s61002-r3/raw",
+      "manifest_sha256": "248637d3fa7e6369cab6e6fb74ec8d24f2cecc32c84d88ebd23820f144902c8b",
+      "verified_files": 25268,
+      "sha256_all_match": true,
+      "ARM_verified_files": 25268,
+      "route_hash": "7d1cab75da723e2dc2c5299a188ad00d0a23e57d09465a793205aee4d0533823",
+      "plan_hash": "235b40c3185dffa1e318f796d2a0e6ea06fe4d03c69ec2fa66761157346e035f",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8399880632001875,
+          "end_sim_s": 43.9,
+          "endpoint_error_m": 0.060163712021514736,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.8442028852463777,
+          "end_sim_s": 108.5,
+          "endpoint_error_m": 0.0855175164048241,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8412823535824167,
+          "end_sim_s": 173.2,
+          "endpoint_error_m": 0.09032690956034048,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8431019326489477,
+          "end_sim_s": 237.9,
+          "endpoint_error_m": 0.10827558371198746,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.839523150314537,
+          "end_sim_s": 293.7,
+          "endpoint_error_m": 0.22856774915289374,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8479420465545086,
+          "end_sim_s": 349.9,
+          "endpoint_error_m": 0.3457479283640717,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8387474611959037,
+          "end_sim_s": 405.7,
+          "endpoint_error_m": 0.46595108964125126,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": true,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.08222339193431516,
+      "final_xy_m": [
+        4.5825455750535244,
+        -2.5607172853655196
+      ],
+      "reported_drop_guard_stops": 0,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": null
+    },
+    {
+      "name": "e2e3-visual-local_servo-off-s61001-r3",
+      "attempt": 3,
+      "seed": 61001,
+      "entrance": "local_servo",
+      "final_guard": "off",
+      "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+      "status": "PHYSICAL_STOP",
+      "EXIT": 1,
+      "S3_route_success": false,
+      "E2E_success": false,
+      "sim_s": 417.34999999999997,
+      "wall_s": 2636.8715183489985,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          0.69921875,
+          3.3427734375,
+          27.41796875
+        ],
+        "mem_available_bytes": 64819621888,
+        "utc": "2026-10-10T21:15:34Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-local_servo-off-s61001-r3",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T21:18:34Z",
+        "progress_samples": 34,
+        "sim_s": 35.3,
+        "frames": 660,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.3252133880653357,
+            "finger_xyz_m": 0.3886751655047054
+          },
+          "r2": {
+            "base_xyz_m": 0.24007034380298312,
+            "finger_xyz_m": 0.1825562945550141
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.01833816600265
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r3/cohort/e2e3-visual-local_servo-off-s61001-r3/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-local_servo-off-s61001-r3/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-off-s61001-r3/raw",
+      "manifest_sha256": "afb7ad8f195d75a18045a4b6d68530741398567db4ca6336a3ca19e1233bbfa8",
+      "verified_files": 25081,
+      "sha256_all_match": true,
+      "ARM_verified_files": 25081,
+      "route_hash": "62e1925bc8a6801050080c46f3e8df39efb939d048161f478f7769b5e4165a36",
+      "plan_hash": "5df180e0c46105afb0e13360008650fecd4e586f35befb297529da959bdf27e7",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.842762308039496,
+          "end_sim_s": 43.9,
+          "endpoint_error_m": 0.058754069106070776,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.840718799930147,
+          "end_sim_s": 108.5,
+          "endpoint_error_m": 0.060205867371516404,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8415436524783858,
+          "end_sim_s": 173.2,
+          "endpoint_error_m": 0.058637174669524485,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8407445606356353,
+          "end_sim_s": 237.9,
+          "endpoint_error_m": 0.06105399346603412,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8445067336303369,
+          "end_sim_s": 293.7,
+          "endpoint_error_m": 0.19061292248048362,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8449621270948184,
+          "end_sim_s": 349.4,
+          "endpoint_error_m": 0.318904659045184,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8464893996822838,
+          "end_sim_s": 405.2,
+          "endpoint_error_m": 0.4406445286825271,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": false,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.019852806923204902,
+      "final_xy_m": [
+        4.523871567424781,
+        -2.533184346974944
+      ],
+      "reported_drop_guard_stops": 1,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": "final_release_phase_before_OPEN_dispatch"
+    },
+    {
+      "name": "e2e3-visual-local_servo-off-s61002-r3",
+      "attempt": 3,
+      "seed": 61002,
+      "entrance": "local_servo",
+      "final_guard": "off",
+      "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+      "status": "PHYSICAL_STOP",
+      "EXIT": 1,
+      "S3_route_success": false,
+      "E2E_success": false,
+      "sim_s": 417.84999999999997,
+      "wall_s": 2635.7296582989984,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          0.69921875,
+          3.3427734375,
+          27.41796875
+        ],
+        "mem_available_bytes": 64819105792,
+        "utc": "2026-10-10T21:15:34Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-local_servo-off-s61002-r3",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T21:18:34Z",
+        "progress_samples": 34,
+        "sim_s": 35.3,
+        "frames": 660,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.3246443222485153,
+            "finger_xyz_m": 0.388667862587518
+          },
+          "r2": {
+            "base_xyz_m": 0.24029015273775609,
+            "finger_xyz_m": 0.1830896553351269
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.02161456999966
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r3/cohort/e2e3-visual-local_servo-off-s61002-r3/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-local_servo-off-s61002-r3/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-off-s61002-r3/raw",
+      "manifest_sha256": "990aac2f75c6662c96eb8adeb15efda322fa27cf728d9f7d412e927480098e71",
+      "verified_files": 25111,
+      "sha256_all_match": true,
+      "ARM_verified_files": 25111,
+      "route_hash": "7d1cab75da723e2dc2c5299a188ad00d0a23e57d09465a793205aee4d0533823",
+      "plan_hash": "235b40c3185dffa1e318f796d2a0e6ea06fe4d03c69ec2fa66761157346e035f",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8399880632001875,
+          "end_sim_s": 43.9,
+          "endpoint_error_m": 0.060163712021514736,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.8442028852463777,
+          "end_sim_s": 108.5,
+          "endpoint_error_m": 0.0855175164048241,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8412823535824167,
+          "end_sim_s": 173.2,
+          "endpoint_error_m": 0.09032690956034048,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8431019326489477,
+          "end_sim_s": 237.9,
+          "endpoint_error_m": 0.10827558371198746,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.839523150314537,
+          "end_sim_s": 293.7,
+          "endpoint_error_m": 0.22856774915289374,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8479420465545086,
+          "end_sim_s": 349.9,
+          "endpoint_error_m": 0.3457479283640717,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8387474611959037,
+          "end_sim_s": 405.7,
+          "endpoint_error_m": 0.46595108964125126,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": false,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.08169201881944321,
+      "final_xy_m": [
+        4.582560198912128,
+        -2.5607208609712155
+      ],
+      "reported_drop_guard_stops": 1,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": "final_release_phase_before_OPEN_dispatch"
+    },
+    {
+      "name": "e2e3-visual-local_servo-supported_phase-s61001-r3",
+      "attempt": 3,
+      "seed": 61001,
+      "entrance": "local_servo",
+      "final_guard": "supported_phase",
+      "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+      "status": "DEV_STAGE_FINISHED",
+      "EXIT": 0,
+      "S3_route_success": true,
+      "E2E_success": false,
+      "sim_s": 421.95,
+      "wall_s": 2645.2393653929976,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          0.69921875,
+          3.3427734375,
+          27.41796875
+        ],
+        "mem_available_bytes": 64817557504,
+        "utc": "2026-10-10T21:15:34Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-local_servo-supported_phase-s61001-r3",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T21:18:34Z",
+        "progress_samples": 34,
+        "sim_s": 35.3,
+        "frames": 660,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.3252133880653357,
+            "finger_xyz_m": 0.3886751655047054
+          },
+          "r2": {
+            "base_xyz_m": 0.24007034380298312,
+            "finger_xyz_m": 0.1825562945550141
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.01684627299983
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r3/cohort/e2e3-visual-local_servo-supported_phase-s61001-r3/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-local_servo-supported_phase-s61001-r3/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-supported_phase-s61001-r3/raw",
+      "manifest_sha256": "a06721d98650795a8a1cbae51eb4bacbb8199aba38932b9ef80a1568df118766",
+      "verified_files": 25238,
+      "sha256_all_match": true,
+      "ARM_verified_files": 25238,
+      "route_hash": "62e1925bc8a6801050080c46f3e8df39efb939d048161f478f7769b5e4165a36",
+      "plan_hash": "5df180e0c46105afb0e13360008650fecd4e586f35befb297529da959bdf27e7",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.842762308039496,
+          "end_sim_s": 43.9,
+          "endpoint_error_m": 0.058754069106070776,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.840718799930147,
+          "end_sim_s": 108.5,
+          "endpoint_error_m": 0.060205867371516404,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8415436524783858,
+          "end_sim_s": 173.2,
+          "endpoint_error_m": 0.058637174669524485,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8407445606356353,
+          "end_sim_s": 237.9,
+          "endpoint_error_m": 0.06105399346603412,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8445067336303369,
+          "end_sim_s": 293.7,
+          "endpoint_error_m": 0.19061292248048362,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8449621270948184,
+          "end_sim_s": 349.4,
+          "endpoint_error_m": 0.318904659045184,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8464893996822838,
+          "end_sim_s": 405.2,
+          "endpoint_error_m": 0.4406445286825271,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": true,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.023273791645951114,
+      "final_xy_m": [
+        4.523869984574643,
+        -2.5331878732928144
+      ],
+      "reported_drop_guard_stops": 0,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": null
+    },
+    {
+      "name": "e2e3-visual-local_servo-supported_phase-s61002-r3",
+      "attempt": 3,
+      "seed": 61002,
+      "entrance": "local_servo",
+      "final_guard": "supported_phase",
+      "source_sha": "7c89db71ecbeeb992fcb0352bec2fe138b091144",
+      "status": "DEV_STAGE_FINISHED",
+      "EXIT": 0,
+      "S3_route_success": true,
+      "E2E_success": false,
+      "sim_s": 422.45,
+      "wall_s": 2637.272295400002,
+      "model_calls": 0,
+      "cost_usd": 0,
+      "admission": {
+        "loadavg": [
+          0.69921875,
+          3.3427734375,
+          27.41796875
+        ],
+        "mem_available_bytes": 64819105792,
+        "utc": "2026-10-10T21:15:34Z"
+      },
+      "initial_check": {
+        "name": "e2e3-visual-local_servo-supported_phase-s61002-r3",
+        "host": "oracle-x86",
+        "checked_at_utc": "2026-10-10T21:18:34Z",
+        "progress_samples": 34,
+        "sim_s": 35.3,
+        "frames": 660,
+        "motion_m": {
+          "r1": {
+            "base_xyz_m": 0.3246443222485153,
+            "finger_xyz_m": 0.388667862587518
+          },
+          "r2": {
+            "base_xyz_m": 0.24029015273775609,
+            "finger_xyz_m": 0.1830896553351269
+          }
+        },
+        "seen_states": [
+          "align",
+          "carry",
+          "grasp",
+          "lift",
+          "pregrasp_descend",
+          "wait_close"
+        ],
+        "healthy": true,
+        "reasons": [],
+        "completed": false,
+        "elapsed_wall_s": 180.0230746039997
+      },
+      "original_x86": "/home/ubuntu/ugrp-sim/runs/e2e3-batch-r3/cohort/e2e3-visual-local_servo-supported_phase-s61002-r3/raw",
+      "raw_current_ARM": "oracle:/srv/ugrp-archive/runs/e2e3-visual-local_servo-supported_phase-s61002-r3/raw",
+      "x86_ARM_mount": "/home/ubuntu/ugrp-sim/arm/e2e3-visual-local_servo-supported_phase-s61002-r3/raw",
+      "manifest_sha256": "839c4eeb374216eb3c8d31d44814aae6c08fb9651d08c0efc9c203feed32c2f5",
+      "verified_files": 25268,
+      "sha256_all_match": true,
+      "ARM_verified_files": 25268,
+      "route_hash": "7d1cab75da723e2dc2c5299a188ad00d0a23e57d09465a793205aee4d0533823",
+      "plan_hash": "235b40c3185dffa1e318f796d2a0e6ea06fe4d03c69ec2fa66761157346e035f",
+      "legs": [
+        {
+          "seg": 0,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8399880632001875,
+          "end_sim_s": 43.9,
+          "endpoint_error_m": 0.060163712021514736,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 1,
+          "axis": "forward",
+          "planned_m": 0.8312500000000003,
+          "actual_contact_transport_m": 0.8442028852463777,
+          "end_sim_s": 108.5,
+          "endpoint_error_m": 0.0855175164048241,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 2,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8412823535824167,
+          "end_sim_s": 173.2,
+          "endpoint_error_m": 0.09032690956034048,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 3,
+          "axis": "forward",
+          "planned_m": 0.8312499999999998,
+          "actual_contact_transport_m": 0.8431019326489477,
+          "end_sim_s": 237.9,
+          "endpoint_error_m": 0.10827558371198746,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 4,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.839523150314537,
+          "end_sim_s": 293.7,
+          "endpoint_error_m": 0.22856774915289374,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 5,
+          "axis": "left",
+          "planned_m": 0.7166666666666667,
+          "actual_contact_transport_m": 0.8479420465545086,
+          "end_sim_s": 349.9,
+          "endpoint_error_m": 0.3457479283640717,
+          "completed": true,
+          "carried": true
+        },
+        {
+          "seg": 6,
+          "axis": "left",
+          "planned_m": 0.7166666666666668,
+          "actual_contact_transport_m": 0.8387474611959037,
+          "end_sim_s": 405.7,
+          "endpoint_error_m": 0.46595108964125126,
+          "completed": true,
+          "carried": true
+        }
+      ],
+      "door_crossed": true,
+      "B_setdown": true,
+      "B_whole_outline_inside": true,
+      "B_min_margin_m": 0.08222339193431516,
+      "final_xy_m": [
+        4.5825455750535244,
+        -2.5607172853655196
+      ],
+      "reported_drop_guard_stops": 0,
+      "tilt_aborts": 0,
+      "controller_failures": {},
+      "cause": null
+    }
+  ],
+  "lite": {
+    "e2e3-visual-local_servo-off-s61002-r3-lite": {
+      "files": 38,
+      "bytes": 2344022,
+      "max_file_bytes": 554545,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-local_servo-off-s61001-r3-lite": {
+      "files": 38,
+      "bytes": 2361657,
+      "max_file_bytes": 554508,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-local_servo-supported_phase-s61002-r3-lite": {
+      "files": 39,
+      "bytes": 2403022,
+      "max_file_bytes": 562959,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-local_servo-supported_phase-s61001-r3-lite": {
+      "files": 39,
+      "bytes": 2420012,
+      "max_file_bytes": 562922,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-local_servo-floor_latch-s61002-r3-lite": {
+      "files": 39,
+      "bytes": 2402116,
+      "max_file_bytes": 562959,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-local_servo-floor_latch-s61001-r3-lite": {
+      "files": 39,
+      "bytes": 2419114,
+      "max_file_bytes": 562922,
+      "all_sha256_match": true
+    }
+  },
+  "previous_lite": {
+    "e2e3-visual-off-s61001-r2-lite": {
+      "files": 49,
+      "bytes": 3058395,
+      "max_file_bytes": 496314,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-saved_phase-s61001-r2-lite": {
+      "files": 38,
+      "bytes": 2312956,
+      "max_file_bytes": 556345,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-local_servo-s61001-r2-lite": {
+      "files": 38,
+      "bytes": 2361139,
+      "max_file_bytes": 554508,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-off-s61002-r2-lite": {
+      "files": 49,
+      "bytes": 3058335,
+      "max_file_bytes": 496314,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-saved_phase-s61002-r2-lite": {
+      "files": 38,
+      "bytes": 2329005,
+      "max_file_bytes": 548251,
+      "all_sha256_match": true
+    },
+    "e2e3-visual-local_servo-s61002-r2-lite": {
+      "files": 38,
+      "bytes": 2343505,
+      "max_file_bytes": 554545,
+      "all_sha256_match": true
+    }
+  },
+  "remaining": [
+    "own map and B inference unconnected",
+    "actual initial approach and live dialogue transport untested",
+    "historical parent-map guard/provider and calibration diagnostic only",
+    "full integrated CI is not passing; PR remains DRAFT"
+  ],
+  "next": "connect actual own-map route and received approval/fresh per-grip-epoch GO/ACK before formal E2E"
+}

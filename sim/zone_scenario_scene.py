@@ -28,13 +28,17 @@ def load_scenario(scenario):
 def scene_spec(scenario, seed):
     """Validate static map/hash/slots/clearance, then derive private initialization."""
     scenario = load_scenario(scenario)
+    if scenario['scenario_id'] == 'e2e_one_beam_ownmap':
+        from harness.e2e_environment import MAP_ID
+        if scenario['map_id'] != MAP_ID:
+            raise ValueError('E2E_NEW_MAP_REQUIRED')
     static, _, _ = final_v3.resolve(scenario['map_id'])
     report = registry.validate(scenario)
     if not report.ok:
         raise ValueError(f'invalid scenario setup: {report.problems}')
     setup = scenario['eval']['setup']
     if (setup['weld'] != 'off' or setup['contact_profile'] != 'cargo_noslip_v1'
-            or setup['robot_spawns'] != 'arena_default'):
+            or (setup['robot_spawns'] != 'arena_default' and scenario['scenario_id'] != 'e2e_one_beam_ownmap')):
         raise ValueError('scenario scene requires cargo_noslip_v1, weld off and arena_default')
     # ZoneScene reset uses the production box's identity quaternion. Refuse
     # unsupported colour yaw rather than silently resetting an authored rotation.
@@ -72,7 +76,8 @@ class ScenarioFinalV3Scene(FinalV3Scene):
         scene = cls(selected, base_dir)
         scene.spec = spec
         if source:
-            path = (ROOT / DEV_CONFIG if source == 'dev_s1lite' else
+            path = (ROOT / 'configs/zone_study_dev/e2e_one_beam_ownmap.json' if source == 'e2e_one_beam_ownmap' else
+                    ROOT / DEV_CONFIG if source == 'dev_s1lite' else
                     registry.ROOT / 'configs' / 'zone_study_scenarios_v4' / (source + '.json'))
             scene._read(path)
         return scene
@@ -91,6 +96,15 @@ class ScenarioFinalV3Scene(FinalV3Scene):
                                 'joint_name': 'cargo_' + item_id + '_free',
                                 'position_m': [*p['pose_m'][:2], BOX_HALF[2]],
                                 'half_extents_m': list(BOX_HALF)}
+        if scenario['scenario_id'] == 'e2e_one_beam_ownmap':
+            spawns = scenario['eval']['setup']['robot_spawns']
+            import math
+            if (not isinstance(spawns, dict) or set(spawns) != {'r1','r2','r3'}
+                    or any(not isinstance(p, list) or len(p) != 4
+                           or any(type(v) not in (int,float) or not math.isfinite(v) for v in p)
+                           for p in spawns.values())):
+                raise ValueError('E2E_EXPLICIT_INITIAL_SPAWNS_REQUIRED')
+            self.config['setup_only']['spawns'] = copy.deepcopy(spawns)
         self.config['setup_only']['objects'] = objects
         self.config['setup_only']['scenario'] = {
             'scenario_id': scenario['scenario_id'], 'config_sha256': final_v3.digest(scenario),

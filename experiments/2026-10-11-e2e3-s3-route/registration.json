@@ -1,0 +1,114 @@
+{
+  "schema": "ugrp.dev_registration.v1",
+  "seeds": [
+    61001,
+    61002
+  ],
+  "source": "test_route_provider",
+  "E2E_success_eligible": false,
+  "candidates": [
+    "off",
+    "supported_phase",
+    "floor_latch"
+  ],
+  "selected": null,
+  "route": [
+    [
+      1.275,
+      0.05
+    ],
+    [
+      4.6,
+      0.05
+    ],
+    [
+      4.6,
+      -2.1
+    ]
+  ],
+  "length_m": 5.475,
+  "segment_max_m": 0.85,
+  "cap_sim_s": 900,
+  "wall_cap_s": 18000,
+  "criteria": {
+    "segment_carry": "bilateral finger contacts, height>0.06, actual translation >= planned minus 0.10m, segment completed",
+    "B": "entire actual MuJoCo box-geometry outline inside 0.80 x 1.40m B after bilateral release, stable floor witness >=1s",
+    "drops": 0,
+    "door": "whole beam crosses east edge",
+    "ENOSPC": "HOST_ERROR"
+  },
+  "references": [
+    {
+      "url": "https://docs.wpilib.org/en/latest/docs/software/kinematics-and-odometry/mecanum-drive-kinematics.html",
+      "method": "separate forward, sideways and angular components; existing S3 forbids loaded angular command"
+    },
+    {
+      "url": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/waypoint_follower/",
+      "method": "ordered waypoints with per-waypoint execution; reuse S3 release/regrasp checkpoints"
+    },
+    {
+      "url": "https://mujoco.readthedocs.io/en/stable/programming/simulation.html",
+      "method": "contact normal force and separate physics/control state; use support only in evaluation"
+    },
+    {
+      "url": "https://control.ros.org/rolling/doc/ros2_controllers/parallel_gripper_controller/doc/userdoc.html",
+      "method": "gripper command requests and completion are distinct; do not infer OPEN from released phase"
+    }
+  ],
+  "scope": "S3-only synthetic entrance; legacy authored guard/provider, historical calibration unmeasured on new map; no ownmap or live dialogue success",
+  "candidate_field": "final_release_guard",
+  "carry_candidate": "visual",
+  "diagnosis": {
+    "attempt1": "two early stops after 180 wall seconds",
+    "source_sha": "ed908b382e1847fe8a5a376b520b467e45b8c037",
+    "own_RGB_grip_x_m": [
+      0.2265371464020663,
+      0.24339796042208875
+    ],
+    "legacy_expected_x_m": 0.5032,
+    "legacy_tolerance_x_m": 0.25,
+    "legacy_absolute_errors_m": [
+      0.27666285359793374,
+      0.25980203957791126
+    ],
+    "states": [
+      "align",
+      "reapproach"
+    ],
+    "frames": 500,
+    "initial_check_SIM_s": 27.3,
+    "first_carry_segments": 0,
+    "cause": "far-prestation legacy first-view check takes ownership before stopped-base near alignment"
+  },
+  "comparison": "local_servo entrance x final guard off/supported_phase/floor_latch x identical two seeds; same SHA/batch; all earlier runs preserved",
+  "round2_entrances": [
+    "off",
+    "saved_phase",
+    "local_servo"
+  ],
+  "entrance": "local_servo",
+  "round3_diagnosis": {
+    "carry_segments": "7/7 in all four entrance-candidate runs",
+    "completed": 1,
+    "guard_stops": 3,
+    "states": "released before OPEN PWM dispatch",
+    "issued_grip": 1500,
+    "floor_normal_N": [
+      2.644,
+      2.935,
+      3.269
+    ],
+    "COM_z_m": [
+      0.0159158,
+      0.0158961,
+      0.0158659
+    ],
+    "max_abs_vertical_speed_m_s": 1.59e-05,
+    "tilt_deg": [
+      0.0503,
+      0.0335,
+      0.00668
+    ],
+    "hypothesis": "false drop at final release phase boundary; physics/control unchanged by evaluation toggles"
+  }
+}

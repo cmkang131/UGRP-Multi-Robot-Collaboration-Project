@@ -1,0 +1,110 @@
+{
+  "schema": "ugrp.e2e4a.summary.v1",
+  "status": "OFFLINE_CONTRACT_VERIFIED",
+  "research_result": false,
+  "source_sha": "4e3b058e7dc1a1f8341824b27b60484b052ad651",
+  "source_files_sha256": {
+    "harness/e2e_dialogue.py": "29fe4fbdd4a71e3b5040ca5d45c957acbf6bab54bac15fe0a4506c8138e3c5be",
+    "harness/e2e_own_inputs.py": "fa84f63244517fa7d40eda7925fe3b5d25d7ba0230271025fb5a24bd4a7c57d9",
+    "harness/s4_llm_host.py": "524a3f2aeeeb8619b9fac3e42a49922f8979acbb0c211fcc12e395ca6ab57e64",
+    "tests/test_e2e_dialogue.py": "6f1d090c912d1f7fe00e35cb47a95eb77416dcb2473efb52fe88025bbb200880",
+    "scripts/run_ci_tests.py": "49b9a4815668881e453f70ca7da5ce2ad9c19895429cdcdd06a3d67a1a91f572"
+  },
+  "toggle": {
+    "e2e_dialogue_v1": "off",
+    "requires": "e2e_own_inputs_v1=on_v1"
+  },
+  "validation": {
+    "n": 71,
+    "N": 71,
+    "new_contract_tests": {
+      "n": 24,
+      "N": 24
+    },
+    "test_files": [
+      "tests/test_e2e_dialogue.py",
+      "tests/test_e2e_own_inputs.py",
+      "tests/test_pair_llm_s4_host.py"
+    ],
+    "duration_s": 3.79,
+    "first_attempt": {
+      "n": 47,
+      "N": 65,
+      "failed": 18,
+      "cause": "test fixture reused an already-owned send ledger; fresh ledger fixed this"
+    },
+    "wire_bug_fixed": "e2e1 image had extra sha256 rejected by real client; hash stays in image_refs",
+    "positive_mock_conditions": {
+      "n": 5,
+      "N": 5,
+      "includes": "peer_ko, structured, all rotating leader positions; initial and fresh regrasp epoch"
+    },
+    "expected_blocked_no_comm": {
+      "n": 1,
+      "N": 1
+    },
+    "model_calls": 0,
+    "physics_runs": 0,
+    "renders": 0
+  },
+  "contract": {
+    "wire": "OwnRoute bytes inside existing scheduled/costed envelope; full own map omitted",
+    "route_source": "captured r1 own-map adapter route, map_version, waypoints, B frame SHA; canonical hash supplied to model",
+    "approval": "r2 response to captured committed proposal_message_id and route_hash",
+    "carry_key": [
+      "order_id",
+      "route_hash",
+      "grip_epoch",
+      "seg"
+    ],
+    "ack": "captured peer GO request ID and own earlier GO; separate released responses",
+    "retry": "one normal invalid response per robot/current key, new frame/request; no HTTP replay or non-normal retry",
+    "admission_scope": "dialogue only; no executor dispatch"
+  },
+  "conditions": {
+    "no_comm": "zero B route deliveries; r2 approval/claim withheld",
+    "peer_ko": "direct Korean explanation plus typed OwnRoute",
+    "leader_ko": "existing star; leader forwards identical received route; r2 approves",
+    "structured": "fixed message plus closed OwnRoute extension; no prose; distinct from old protocol"
+  },
+  "raw": {
+    "original_test_scratch": "/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-819",
+    "preserved_archive": "/Users/changmin/projects/ugrp/outputs/e2e4a-dialogue-20261011/synthetic-dialogue-evidence.tar.gz",
+    "sha256": "da4bdebf915dae03f1f32dcf2a8905cf049060660c968203b04c1368b11f6666",
+    "files": 770,
+    "uncompressed_bytes": 5126012,
+    "archive_bytes": 231901,
+    "all_file_sha256_verified": true,
+    "manifest_inside_archive": "source-manifest.json",
+    "test_stdout": "/Users/changmin/projects/ugrp/outputs/e2e4a-dialogue-20261011/pytest.txt",
+    "test_stdout_sha256": "b4ced7a6c98b6125be23b211e230e4c93182103bf0e0920256ca7dec588521cc",
+    "remote_backup": false
+  },
+  "remaining": [
+    "egomap67 own-route adapter integration",
+    "actual LLM + own-map + S3 motion E2E not run",
+    "PR draft; independent review/full CI not claimed"
+  ],
+  "references": [
+    {
+      "url": "https://design.ros2.org/articles/actions.html",
+      "scope": "goal identifiers, acceptance and correlated responses"
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+      "scope": "side-effect replay avoidance"
+    },
+    {
+      "url": "https://arxiv.org/abs/2307.02485",
+      "scope": "CoELA abstract only; modular memory/communication/execution"
+    },
+    {
+      "url": "https://github.com/UMass-Embodied-AGI/CoELA",
+      "scope": "official README only"
+    },
+    {
+      "url": "https://arxiv.org/abs/2502.19417",
+      "scope": "v2 abstract only; high-level decisions vs low-level action; not reproduced"
+    }
+  ]
+}

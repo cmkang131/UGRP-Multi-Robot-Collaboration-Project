@@ -1,0 +1,81 @@
+{
+  "schema": "ugrp.zone_scenario.v1",
+  "scenario_id": "e2e_one_beam_ownmap",
+  "map_id": "zone_wide_door_e2e_b80_v1",
+  "landmark_detail": "none",
+  "seeds": [
+    61001,
+    61002,
+    61003
+  ],
+  "orders": [
+    {
+      "order_id": "order-5",
+      "kind": "long_beam",
+      "count": 1,
+      "identity": "specific_item",
+      "item_ids": [
+        "beam_1"
+      ],
+      "required_robots": 2,
+      "destination_zone": "B",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-3"
+      }
+    }
+  ],
+  "eval": {
+    "schema": "ugrp.zone_study_scenario_private.v1",
+    "design_notes_ko": "e2e1 입력·상태 계약: 빔 0.60m/300g 하나, r1/r2 운반·r3 idle. 새 B 바닥 0.80×1.40m. 평가 전용 시작과 목적지는 제어 입력으로 전달하지 않는다.",
+    "tests_ko": "oracle-x86 최초 RGB 정보 격차 확인 전용. LLM/E2E 완주 판정은 후속 단계.",
+    "notes_ko": "새 지도에 기존 s1–s8 성공을 승계하지 않는다. 명시 초기 배치로 r1 B 관측·r2 미관측을 확인한다.",
+    "setup": {
+      "arena_variant": "zone_wide_door",
+      "map_file_sha256": "2da6cd61a9a8289e1f46ca105a23d16a828eb610b17ede22890211c5f9461032",
+      "contact_profile": "cargo_noslip_v1",
+      "weld": "off",
+      "robot_spawns": {
+        "r1": [
+          3.9,
+          -1.4,
+          0.032355118817659255,
+          -0.7853981633974483
+        ],
+        "r2": [
+          0.6,
+          0.05,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.8,
+          1.05,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "placements": [
+        {
+          "item_id": "beam_1",
+          "kind": "long_beam",
+          "order_id": "order-5",
+          "slot": "P2-3",
+          "pose_m": [
+            1.275,
+            0.05,
+            0.0
+          ],
+          "notes_ko": "동서 시작 자세. 정적 P2-3 slot 경계를 지키도록 x만 중심으로 이동."
+        }
+      ]
+    },
+    "hidden_events": [],
+    "budget": {
+      "sim_seconds": 1800,
+      "http_attempts_per_trial": 90,
+      "http_attempts_per_actor": 30,
+      "output_tokens_per_call": 768
+    }
+  }
+}

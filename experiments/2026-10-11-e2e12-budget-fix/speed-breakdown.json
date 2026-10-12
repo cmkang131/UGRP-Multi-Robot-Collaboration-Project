@@ -1,0 +1,921 @@
+{
+  "scope": "Existing archived Mac fetch-lite only; no new physics, rendering or timing instrumentation",
+  "rounds": {
+    "9": {
+      "N": 8,
+      "median_wall_per_sim": 17.880424225908932,
+      "median_components_per_sim": {
+        "jsonl_append": 0.008708998181889194,
+        "eval_sample_including_io": 0.02595800792555484,
+        "capture_including_render_io": 2.065425880185863,
+        "physics_advance": 3.350573368164566,
+        "unattributed": 12.406317408022662,
+        "model_response_latency_sum": 0.2072967049133029
+      },
+      "total_wall_s": 7625.855308398994,
+      "total_sim_s": 430.11925
+    },
+    "10": {
+      "N": 8,
+      "median_wall_per_sim": 13.064827863465199,
+      "median_components_per_sim": {
+        "jsonl_append": 0.006931767755413179,
+        "eval_sample_including_io": 0.019520513378618494,
+        "capture_including_render_io": 1.8104663204752036,
+        "physics_advance": 2.6320442712055363,
+        "unattributed": 8.600512088851568,
+        "model_response_latency_sum": 0.026928308567479388
+      },
+      "total_wall_s": 48681.440209562,
+      "total_sim_s": 3634.0
+    },
+    "11": {
+      "N": 4,
+      "median_wall_per_sim": 11.43234936633413,
+      "median_components_per_sim": {
+        "jsonl_append": 0.006255854359612493,
+        "eval_sample_including_io": 0.017263004548143383,
+        "capture_including_render_io": 1.4547150965242825,
+        "physics_advance": 2.3468372935690156,
+        "unattributed": 7.696601780003693,
+        "model_response_latency_sum": 0.04782640122864697
+      },
+      "total_wall_s": 18088.85705401,
+      "total_sim_s": 1551.03525
+    }
+  },
+  "runs": [
+    {
+      "run": "e2e10-a-s61001-r2",
+      "round": 10,
+      "sim_s": 461.5,
+      "wall_s": 6089.201483368997,
+      "wall_per_sim": 13.194369411417112,
+      "frames": 2308,
+      "timers": {
+        "jsonl_append": {
+          "calls": 101555,
+          "wall_s": 3.212797203610535
+        },
+        "eval_sample_including_io": {
+          "calls": 9230,
+          "wall_s": 8.914550944948132
+        },
+        "capture_including_render_io": {
+          "calls": 2308,
+          "wall_s": 845.4133220670956
+        },
+        "physics_advance": {
+          "calls": 9230,
+          "wall_s": 1216.9604409569329
+        }
+      },
+      "measured_top_level_s": 2071.2883139689766,
+      "unattributed_s": 4017.9131694000207,
+      "model_response_latency_sum_s": 10.871403,
+      "unattributed_minus_latency_s": 4007.0417664000206,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.006961640744551538,
+        "eval_sample_including_io": 0.0193164700865615,
+        "capture_including_render_io": 1.8318815212721464,
+        "physics_advance": 2.6369673693541342,
+        "unattributed": 8.70620405070427,
+        "model_response_latency_sum": 0.023556669555796318
+      }
+    },
+    {
+      "run": "e2e10-a-s61002-r2",
+      "round": 10,
+      "sim_s": 470.5,
+      "wall_s": 6086.052211449001,
+      "wall_per_sim": 12.935286315513286,
+      "frames": 2353,
+      "timers": {
+        "jsonl_append": {
+          "calls": 103535,
+          "wall_s": 3.288214231502934
+        },
+        "eval_sample_including_io": {
+          "calls": 9410,
+          "wall_s": 9.27253577494048
+        },
+        "capture_including_render_io": {
+          "calls": 2353,
+          "wall_s": 855.3337076649441
+        },
+        "physics_advance": {
+          "calls": 9410,
+          "wall_s": 1302.1601711051662
+        }
+      },
+      "measured_top_level_s": 2166.766414545051,
+      "unattributed_s": 3919.2857969039505,
+      "model_response_latency_sum_s": 15.054344,
+      "unattributed_minus_latency_s": 3904.2314529039504,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.006988765635500391,
+        "eval_sample_including_io": 0.019707833740574877,
+        "capture_including_render_io": 1.8179249897235794,
+        "physics_advance": 2.7676092903404172,
+        "unattributed": 8.330044201708715,
+        "model_response_latency_sum": 0.03199648034006376
+      }
+    },
+    {
+      "run": "e2e10-a-s61003-r2",
+      "round": 10,
+      "sim_s": 490.59999999999997,
+      "wall_s": 6082.038350838,
+      "wall_per_sim": 12.397142989885856,
+      "frames": 2453,
+      "timers": {
+        "jsonl_append": {
+          "calls": 107953,
+          "wall_s": 3.3725812818556733
+        },
+        "eval_sample_including_io": {
+          "calls": 9812,
+          "wall_s": 9.435774159162975
+        },
+        "capture_including_render_io": {
+          "calls": 2453,
+          "wall_s": 962.1279561558222
+        },
+        "physics_advance": {
+          "calls": 9812,
+          "wall_s": 1281.6820404901664
+        }
+      },
+      "measured_top_level_s": 2253.2457708051516,
+      "unattributed_s": 3828.7925800328485,
+      "model_response_latency_sum_s": 10.353132,
+      "unattributed_minus_latency_s": 3818.4394480328483,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.006874401308307528,
+        "eval_sample_including_io": 0.019233131184596363,
+        "capture_including_render_io": 1.9611250635055488,
+        "physics_advance": 2.6124786801674817,
+        "unattributed": 7.804306115028228,
+        "model_response_latency_sum": 0.021103000407664087
+      }
+    },
+    {
+      "run": "e2e10-a-s61004-r2",
+      "round": 10,
+      "sim_s": 473.95,
+      "wall_s": 6080.1655917690005,
+      "wall_per_sim": 12.828706808247707,
+      "frames": 2370,
+      "timers": {
+        "jsonl_append": {
+          "calls": 104292,
+          "wall_s": 3.4133722230617423
+        },
+        "eval_sample_including_io": {
+          "calls": 9479,
+          "wall_s": 9.30732232005903
+        },
+        "capture_including_render_io": {
+          "calls": 2370,
+          "wall_s": 777.7246736589768
+        },
+        "physics_advance": {
+          "calls": 9479,
+          "wall_s": 1267.013596598852
+        }
+      },
+      "measured_top_level_s": 2054.045592577888,
+      "unattributed_s": 4026.1199991911126,
+      "model_response_latency_sum_s": 17.769221,
+      "unattributed_minus_latency_s": 4008.3507781911126,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.00720196692280144,
+        "eval_sample_including_io": 0.019637772592170123,
+        "capture_including_render_io": 1.6409424489059539,
+        "physics_advance": 2.6733064597507163,
+        "unattributed": 8.494820126998865,
+        "model_response_latency_sum": 0.03749176284418188
+      }
+    },
+    {
+      "run": "e2e10-b-s61001-r2",
+      "round": 10,
+      "sim_s": 433.05,
+      "wall_s": 6088.455401187999,
+      "wall_per_sim": 14.05947442832929,
+      "frames": 2166,
+      "timers": {
+        "jsonl_append": {
+          "calls": 95298,
+          "wall_s": 2.9903581223843503
+        },
+        "eval_sample_including_io": {
+          "calls": 8661,
+          "wall_s": 8.436792554090061
+        },
+        "capture_including_render_io": {
+          "calls": 2166,
+          "wall_s": 794.1767075180687
+        },
+        "physics_advance": {
+          "calls": 8661,
+          "wall_s": 1137.6748239923072
+        }
+      },
+      "measured_top_level_s": 1940.288324064466,
+      "unattributed_s": 4148.167077123533,
+      "model_response_latency_sum_s": 21.776795,
+      "unattributed_minus_latency_s": 4126.390282123533,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.00690534146723092,
+        "eval_sample_including_io": 0.01948225967922887,
+        "capture_including_render_io": 1.8339145768804266,
+        "physics_advance": 2.6271211730569384,
+        "unattributed": 9.578956418712696,
+        "model_response_latency_sum": 0.05028702228380095
+      }
+    },
+    {
+      "run": "e2e10-b-s61002-r2",
+      "round": 10,
+      "sim_s": 499.7,
+      "wall_s": 6084.157615835,
+      "wall_per_sim": 12.175620604032419,
+      "frames": 2499,
+      "timers": {
+        "jsonl_append": {
+          "calls": 109959,
+          "wall_s": 3.3909461009134247
+        },
+        "eval_sample_including_io": {
+          "calls": 9994,
+          "wall_s": 9.773515908880654
+        },
+        "capture_including_render_io": {
+          "calls": 2499,
+          "wall_s": 900.9629233180458
+        },
+        "physics_advance": {
+          "calls": 9994,
+          "wall_s": 1381.0368307551253
+        }
+      },
+      "measured_top_level_s": 2291.7732699820517,
+      "unattributed_s": 3792.384345852948,
+      "model_response_latency_sum_s": 13.759326999999999,
+      "unattributed_minus_latency_s": 3778.625018852948,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.006785963780094907,
+        "eval_sample_including_io": 0.019558767078008115,
+        "capture_including_render_io": 1.8030076512268278,
+        "physics_advance": 2.763731900650641,
+        "unattributed": 7.589322285076943,
+        "model_response_latency_sum": 0.027535175105063037
+      }
+    },
+    {
+      "run": "e2e10-c-s61001-r2",
+      "round": 10,
+      "sim_s": 398.05,
+      "wall_s": 6087.643044678,
+      "wall_per_sim": 15.293664224790854,
+      "frames": 1991,
+      "timers": {
+        "jsonl_append": {
+          "calls": 87598,
+          "wall_s": 2.6474568765988806
+        },
+        "eval_sample_including_io": {
+          "calls": 7961,
+          "wall_s": 7.634028612785187
+        },
+        "capture_including_render_io": {
+          "calls": 1991,
+          "wall_s": 593.0951068369068
+        },
+        "physics_advance": {
+          "calls": 7961,
+          "wall_s": 1012.4949480020041
+        }
+      },
+      "measured_top_level_s": 1613.224083451696,
+      "unattributed_s": 4474.4189612263035,
+      "model_response_latency_sum_s": 10.47725,
+      "unattributed_minus_latency_s": 4463.941711226304,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.0066510661389244585,
+        "eval_sample_including_io": 0.019178567046313745,
+        "capture_including_render_io": 1.490001524524323,
+        "physics_advance": 2.543637603321201,
+        "unattributed": 11.240846529899017,
+        "model_response_latency_sum": 0.02632144202989574
+      }
+    },
+    {
+      "run": "e2e10-c-s61002-r2",
+      "round": 10,
+      "sim_s": 406.65,
+      "wall_s": 6083.726510436001,
+      "wall_per_sim": 14.960596361578757,
+      "frames": 2034,
+      "timers": {
+        "jsonl_append": {
+          "calls": 89490,
+          "wall_s": 2.829549607828085
+        },
+        "eval_sample_including_io": {
+          "calls": 8133,
+          "wall_s": 7.961480838057469
+        },
+        "capture_including_render_io": {
+          "calls": 2034,
+          "wall_s": 646.5501163759291
+        },
+        "physics_advance": {
+          "calls": 8133,
+          "wall_s": 1067.3938610678451
+        }
+      },
+      "measured_top_level_s": 1721.9054582818317,
+      "unattributed_s": 4361.82105215417,
+      "model_response_latency_sum_s": 10.553382,
+      "unattributed_minus_latency_s": 4351.2676701541695,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.006958194043595438,
+        "eval_sample_including_io": 0.019578214282693886,
+        "capture_including_render_io": 1.5899424969283884,
+        "physics_advance": 2.6248465783052874,
+        "unattributed": 10.726229072062388,
+        "model_response_latency_sum": 0.025952002950940613
+      }
+    },
+    {
+      "run": "e2e11-a-s61001-r2",
+      "round": 11,
+      "sim_s": 400.23525,
+      "wall_s": 4522.205725389,
+      "wall_per_sim": 11.29886916604422,
+      "frames": 2002,
+      "timers": {
+        "jsonl_append": {
+          "calls": 88082,
+          "wall_s": 2.520072111939726
+        },
+        "eval_sample_including_io": {
+          "calls": 8005,
+          "wall_s": 6.835669461008365
+        },
+        "capture_including_render_io": {
+          "calls": 2002,
+          "wall_s": 529.0694934480044
+        },
+        "physics_advance": {
+          "calls": 8005,
+          "wall_s": 908.4857360620042
+        }
+      },
+      "measured_top_level_s": 1444.3908989710171,
+      "unattributed_s": 3077.8148264179827,
+      "model_response_latency_sum_s": 19.662362,
+      "unattributed_minus_latency_s": 3058.1524644179826,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.0062964771642171095,
+        "eval_sample_including_io": 0.017079128989783796,
+        "capture_including_render_io": 1.3218962933624772,
+        "physics_advance": 2.2698793673520865,
+        "unattributed": 7.690014376339872,
+        "model_response_latency_sum": 0.04912701217596401
+      }
+    },
+    {
+      "run": "e2e11-a-s61002-r2",
+      "round": 11,
+      "sim_s": 341.65,
+      "wall_s": 4522.205855266,
+      "wall_per_sim": 13.236370131028831,
+      "frames": 1709,
+      "timers": {
+        "jsonl_append": {
+          "calls": 75199,
+          "wall_s": 2.1852201139871568
+        },
+        "eval_sample_including_io": {
+          "calls": 6834,
+          "wall_s": 5.909615779000092
+        },
+        "capture_including_render_io": {
+          "calls": 1709,
+          "wall_s": 489.6804654950055
+        },
+        "physics_advance": {
+          "calls": 6833,
+          "wall_s": 796.8081521750133
+        }
+      },
+      "measured_top_level_s": 1292.3982334490188,
+      "unattributed_s": 3229.8076218169813,
+      "model_response_latency_sum_s": 21.915266,
+      "unattributed_minus_latency_s": 3207.8923558169813,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.006396078191093683,
+        "eval_sample_including_io": 0.017297280196107396,
+        "capture_including_render_io": 1.43328103467,
+        "physics_advance": 2.3322351885702135,
+        "unattributed": 9.453556627592512,
+        "model_response_latency_sum": 0.06414537099370701
+      }
+    },
+    {
+      "run": "e2e11-b-s61001-r2",
+      "round": 11,
+      "sim_s": 391.0,
+      "wall_s": 4522.23936055,
+      "wall_per_sim": 11.565829566624041,
+      "frames": 1955,
+      "timers": {
+        "jsonl_append": {
+          "calls": 86051,
+          "wall_s": 2.43015553800808
+        },
+        "eval_sample_including_io": {
+          "calls": 7821,
+          "wall_s": 6.736432999970134
+        },
+        "capture_including_render_io": {
+          "calls": 1956,
+          "wall_s": 580.2331518960156
+        },
+        "physics_advance": {
+          "calls": 7820,
+          "wall_s": 923.3228048400167
+        }
+      },
+      "measured_top_level_s": 1510.2923897360024,
+      "unattributed_s": 3011.9469708139977,
+      "model_response_latency_sum_s": 18.191584,
+      "unattributed_minus_latency_s": 2993.7553868139976,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.006215231555007877,
+        "eval_sample_including_io": 0.01722872890017937,
+        "capture_including_render_io": 1.4839722554885308,
+        "physics_advance": 2.3614393985678177,
+        "unattributed": 7.703189183667513,
+        "model_response_latency_sum": 0.04652579028132992
+      }
+    },
+    {
+      "run": "e2e11-b-s61002-r2",
+      "round": 11,
+      "sim_s": 418.15,
+      "wall_s": 4522.206112805001,
+      "wall_per_sim": 10.814794004077488,
+      "frames": 2091,
+      "timers": {
+        "jsonl_append": {
+          "calls": 92025,
+          "wall_s": 2.5950689889501746
+        },
+        "eval_sample_including_io": {
+          "calls": 8364,
+          "wall_s": 7.364240413985499
+        },
+        "capture_including_render_io": {
+          "calls": 2091,
+          "wall_s": 617.2517705759968
+        },
+        "physics_advance": {
+          "calls": 8363,
+          "wall_s": 1035.1399914980113
+        }
+      },
+      "measured_top_level_s": 1659.7560024879936,
+      "unattributed_s": 2862.4501103170073,
+      "model_response_latency_sum_s": 16.87585,
+      "unattributed_minus_latency_s": 2845.5742603170074,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.006206071957312387,
+        "eval_sample_including_io": 0.01761148012432261,
+        "capture_including_render_io": 1.4761491583785649,
+        "physics_advance": 2.4755231172976475,
+        "unattributed": 6.845510248276952,
+        "model_response_latency_sum": 0.04035836422336482
+      }
+    },
+    {
+      "run": "e2e9-a-s61001",
+      "round": 9,
+      "sim_s": 72.55,
+      "wall_s": 1295.7253873369991,
+      "wall_per_sim": 17.85975723414196,
+      "frames": 363,
+      "timers": {
+        "jsonl_append": {
+          "calls": 15993,
+          "wall_s": 0.6140155589855567
+        },
+        "eval_sample_including_io": {
+          "calls": 1452,
+          "wall_s": 1.799353298101778
+        },
+        "capture_including_render_io": {
+          "calls": 363,
+          "wall_s": 152.48959118094717
+        },
+        "physics_advance": {
+          "calls": 1451,
+          "wall_s": 234.14727777102598
+        }
+      },
+      "measured_top_level_s": 388.43622225007493,
+      "unattributed_s": 907.2891650869242,
+      "model_response_latency_sum_s": 10.58189,
+      "unattributed_minus_latency_s": 896.7072750869241,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.00846334333543152,
+        "eval_sample_including_io": 0.024801561655434567,
+        "capture_including_render_io": 2.1018551506677765,
+        "physics_advance": 3.227391836954183,
+        "unattributed": 12.505708684864565,
+        "model_response_latency_sum": 0.1458565127498277
+      }
+    },
+    {
+      "run": "e2e9-a-s61002",
+      "round": 9,
+      "sim_s": 74.4,
+      "wall_s": 1293.6321411979989,
+      "wall_per_sim": 17.387528779542993,
+      "frames": 372,
+      "timers": {
+        "jsonl_append": {
+          "calls": 16401,
+          "wall_s": 0.646547066153289
+        },
+        "eval_sample_including_io": {
+          "calls": 1489,
+          "wall_s": 1.9164193829783471
+        },
+        "capture_including_render_io": {
+          "calls": 373,
+          "wall_s": 145.757673574004
+        },
+        "physics_advance": {
+          "calls": 1488,
+          "wall_s": 244.05106589800198
+        }
+      },
+      "measured_top_level_s": 391.72515885498433,
+      "unattributed_s": 901.9069823430145,
+      "model_response_latency_sum_s": 17.177801,
+      "unattributed_minus_latency_s": 884.7291813430145,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.008690148738619476,
+        "eval_sample_including_io": 0.025758325040031546,
+        "capture_including_render_io": 1.9591085157796235,
+        "physics_advance": 3.2802562620699187,
+        "unattributed": 12.12240567665342,
+        "model_response_latency_sum": 0.2308844220430107
+      }
+    },
+    {
+      "run": "e2e9-a-s61003",
+      "round": 9,
+      "sim_s": 11.2,
+      "wall_s": 202.42583373399975,
+      "wall_per_sim": 18.073735154821406,
+      "frames": 56,
+      "timers": {
+        "jsonl_append": {
+          "calls": 2497,
+          "wall_s": 0.10484898300273926
+        },
+        "eval_sample_including_io": {
+          "calls": 225,
+          "wall_s": 0.3111600340453151
+        },
+        "capture_including_render_io": {
+          "calls": 57,
+          "wall_s": 23.264125026009424
+        },
+        "physics_advance": {
+          "calls": 224,
+          "wall_s": 40.18466177999653
+        }
+      },
+      "measured_top_level_s": 63.75994684005127,
+      "unattributed_s": 138.66588689394848,
+      "model_response_latency_sum_s": 8.484715,
+      "unattributed_minus_latency_s": 130.1811718939485,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.009361516339530291,
+        "eval_sample_including_io": 0.027782145896903136,
+        "capture_including_render_io": 2.077154020179413,
+        "physics_advance": 3.5879162303568335,
+        "unattributed": 12.380882758388259,
+        "model_response_latency_sum": 0.7575638392857142
+      }
+    },
+    {
+      "run": "e2e9-a-s61004",
+      "round": 9,
+      "sim_s": 57.21925,
+      "wall_s": 1024.2870136570018,
+      "wall_per_sim": 17.9010912176759,
+      "frames": 287,
+      "timers": {
+        "jsonl_append": {
+          "calls": 12622,
+          "wall_s": 0.5007299627941393
+        },
+        "eval_sample_including_io": {
+          "calls": 1145,
+          "wall_s": 1.4967234499417827
+        },
+        "capture_including_render_io": {
+          "calls": 287,
+          "wall_s": 115.33256069601339
+        },
+        "physics_advance": {
+          "calls": 1145,
+          "wall_s": 196.12220058595267
+        }
+      },
+      "measured_top_level_s": 312.95148473190784,
+      "unattributed_s": 711.335528925094,
+      "model_response_latency_sum_s": 9.439264,
+      "unattributed_minus_latency_s": 701.896264925094,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.008751075255165688,
+        "eval_sample_including_io": 0.026157690811078136,
+        "capture_including_render_io": 2.01562517327671,
+        "physics_advance": 3.4275562959310486,
+        "unattributed": 12.431752057657064,
+        "model_response_latency_sum": 0.16496658030295747
+      }
+    },
+    {
+      "run": "e2e9-b-s61001",
+      "round": 9,
+      "sim_s": 70.45,
+      "wall_s": 1294.6603689189978,
+      "wall_per_sim": 18.377010204669947,
+      "frames": 353,
+      "timers": {
+        "jsonl_append": {
+          "calls": 15535,
+          "wall_s": 0.6011691950334352
+        },
+        "eval_sample_including_io": {
+          "calls": 1410,
+          "wall_s": 1.7907480311041581
+        },
+        "capture_including_render_io": {
+          "calls": 353,
+          "wall_s": 149.56684957902326
+        },
+        "physics_advance": {
+          "calls": 1409,
+          "wall_s": 229.10731584802852
+        }
+      },
+      "measured_top_level_s": 380.46491345815593,
+      "unattributed_s": 914.1954554608419,
+      "model_response_latency_sum_s": 25.436546,
+      "unattributed_minus_latency_s": 888.7589094608419,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.00853327459238375,
+        "eval_sample_including_io": 0.02541870874526839,
+        "capture_including_render_io": 2.123021285720699,
+        "physics_advance": 3.2520555833644926,
+        "unattributed": 12.976514626839487,
+        "model_response_latency_sum": 0.36105814052519514
+      }
+    },
+    {
+      "run": "e2e9-b-s61002",
+      "round": 9,
+      "sim_s": 76.2,
+      "wall_s": 1290.8680601019987,
+      "wall_per_sim": 16.940525723123343,
+      "frames": 381,
+      "timers": {
+        "jsonl_append": {
+          "calls": 16798,
+          "wall_s": 0.6477673577610403
+        },
+        "eval_sample_including_io": {
+          "calls": 1525,
+          "wall_s": 1.8802537210540322
+        },
+        "capture_including_render_io": {
+          "calls": 382,
+          "wall_s": 145.50179111701073
+        },
+        "physics_advance": {
+          "calls": 1524,
+          "wall_s": 243.26295268909962
+        }
+      },
+      "measured_top_level_s": 390.6449975271644,
+      "unattributed_s": 900.2230625748343,
+      "model_response_latency_sum_s": 12.14011,
+      "unattributed_minus_latency_s": 888.0829525748343,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.00850088396011864,
+        "eval_sample_including_io": 0.02467524568312378,
+        "capture_including_render_io": 1.9094723243702194,
+        "physics_advance": 3.1924272006443517,
+        "unattributed": 11.813950952425646,
+        "model_response_latency_sum": 0.15931902887139107
+      }
+    },
+    {
+      "run": "e2e9-b-s61003",
+      "round": 9,
+      "sim_s": 10.799999999999999,
+      "wall_s": 201.30092041099851,
+      "wall_per_sim": 18.638974112129493,
+      "frames": 54,
+      "timers": {
+        "jsonl_append": {
+          "calls": 2410,
+          "wall_s": 0.10035422299915808
+        },
+        "eval_sample_including_io": {
+          "calls": 217,
+          "wall_s": 0.30890640102370526
+        },
+        "capture_including_render_io": {
+          "calls": 55,
+          "wall_s": 22.6840268779888
+        },
+        "physics_advance": {
+          "calls": 216,
+          "wall_s": 38.95716128101776
+        }
+      },
+      "measured_top_level_s": 61.950094560030266,
+      "unattributed_s": 139.35082585096825,
+      "model_response_latency_sum_s": 11.418405,
+      "unattributed_minus_latency_s": 127.93242085096824,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.00929205768510723,
+        "eval_sample_including_io": 0.028602444539231973,
+        "capture_including_render_io": 2.1003728590730373,
+        "physics_advance": 3.6071445630572003,
+        "unattributed": 12.902854245460023,
+        "model_response_latency_sum": 1.0572597222222224
+      }
+    },
+    {
+      "run": "e2e9-b-s61004",
+      "round": 9,
+      "sim_s": 57.300000000000004,
+      "wall_s": 1022.955583040999,
+      "wall_per_sim": 17.852627976282704,
+      "frames": 287,
+      "timers": {
+        "jsonl_append": {
+          "calls": 12640,
+          "wall_s": 0.5001056689216057
+        },
+        "eval_sample_including_io": {
+          "calls": 1147,
+          "wall_s": 1.563167508047627
+        },
+        "capture_including_render_io": {
+          "calls": 287,
+          "wall_s": 117.67688051301957
+        },
+        "physics_advance": {
+          "calls": 1146,
+          "wall_s": 196.01702417505294
+        }
+      },
+      "measured_top_level_s": 315.25707219612013,
+      "unattributed_s": 707.6985108448789,
+      "model_response_latency_sum_s": 10.526525,
+      "unattributed_minus_latency_s": 697.1719858448789,
+      "notes": "Model response latency may overlap scheduler work; latency-subtracted residual is not an exact RBPF timer. jsonl_append is nested and must not be added again. capture includes rendering, encoding and image writes; no pure render timer recorded.",
+      "per_sim": {
+        "jsonl_append": 0.008727847625158911,
+        "eval_sample_including_io": 0.027280410262611292,
+        "capture_including_render_io": 2.0536977401923133,
+        "physics_advance": 3.420890474259213,
+        "unattributed": 12.350759351568566,
+        "model_response_latency_sum": 0.1837089877835951
+      }
+    }
+  ],
+  "limitations": [
+    "No exact RBPF/map timer in historical logs",
+    "render_rgb timer absent: reset replaced wrapped world; capture timer includes render + image encode/write",
+    "unattributed includes map perception/RBPF/planning, map validation/deepcopies, scheduling, model waits, setup and other I/O",
+    "wall time includes concurrent host load; no causal speedup comparison"
+  ],
+  "within_run_budget_transition": {
+    "10": {
+      "0.0": {
+        "N": 8,
+        "median_wall_per_sim": 11.12630416414995
+      },
+      "240.0": {
+        "N": 8,
+        "median_wall_per_sim": 21.322466713549996
+      },
+      "271.0": {
+        "N": 8,
+        "median_wall_per_sim": 10.234522155206864
+      }
+    },
+    "11": {
+      "0.0": {
+        "N": 4,
+        "median_wall_per_sim": 9.177287641250008
+      },
+      "240.0": {
+        "N": 4,
+        "median_wall_per_sim": 17.064439370583326
+      },
+      "271.0": {
+        "N": 4,
+        "median_wall_per_sim": 8.020243449482756
+      }
+    }
+  },
+  "top3": [
+    {
+      "rank": 1,
+      "name": "unattributed control/perception/map/validation/scheduler work",
+      "round_median_wall_per_sim": [
+        12.406317408022662,
+        8.600512088851568,
+        7.696601780003693
+      ],
+      "exact_rbpf_isolated": false,
+      "candidate": "Timer spans around Robot.receive / own_inputs_at / host.step_to; immutable per-frame snapshots and indexed provenance membership with identical causal checks. No implementation in this round."
+    },
+    {
+      "rank": 2,
+      "name": "physics_advance (step loop and issued-command port ticks)",
+      "round_median_wall_per_sim": [
+        3.350573368164566,
+        2.6320442712055363,
+        2.3468372935690156
+      ],
+      "candidate": "MuJoCo built-in step/collision/solver timers, then separately versioned solver/sparse-Jacobian comparison. No physical parameters changed."
+    },
+    {
+      "rank": 3,
+      "name": "capture including software render, encoding and image I/O",
+      "round_median_wall_per_sim": [
+        2.065425880185863,
+        1.8104663204752036,
+        1.4547150965242825
+      ],
+      "candidate": "Persistent render context / exact render reuse; EGL only if suitable hardware exists. Preserve camera, render cadence and evidence bytes."
+    }
+  ],
+  "code_evidence": [
+    {
+      "file": "harness/e2e_s4_live.py",
+      "line": 129,
+      "fact": "observe_events invokes own_inputs_at for all 3 robots every 0.05 SIM seconds; only route/handshake key is used afterward"
+    },
+    {
+      "file": "harness/e2e_live_mapping.py",
+      "line": 126,
+      "fact": "own_inputs_at rebuilds sources list and validates full map"
+    },
+    {
+      "file": "harness/e2e_own_inputs.py",
+      "line": 69,
+      "fact": "each source tests list membership; sources list loop is quadratic in accumulated frames"
+    },
+    {
+      "file": "harness/e2e_own_inputs.py",
+      "line": 107,
+      "fact": "validate_map deepcopies its value; caller in own_inputs_at discards returned copy"
+    }
+  ],
+  "saved_text_diagnostic": "saved-ref-validation.json; 51\u21921351 refs increases Mac validation-only median0.000150\u21920.020775s, 138.5x; not Azure runtime attribution"
+}

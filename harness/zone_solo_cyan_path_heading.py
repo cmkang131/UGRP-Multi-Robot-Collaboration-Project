@@ -49,14 +49,14 @@ def wrap(angle):
 
 
 def select(profiles, loaded, body_error, yaw, goal_distance, *, position_tolerance_m=.03,
-           min_command_contract=False):
+           path_rotate_min_angle=None, final_alignment_m=None, min_command_contract=False):
     """Rotate on the spot, then positive body-forward; trim only near FINAL goal.
 
     Distance to an intermediate waypoint never enables strafe. Finite turn
     resolution is the existing .06 rad threshold, not a fitted new motor law.
     """
     error = np.asarray(body_error, float)
-    final = goal_distance <= PARAMS['final_alignment_m']
+    final = goal_distance <= (PARAMS['final_alignment_m'] if final_alignment_m is None else final_alignment_m)
     bearing = math.atan2(error[1], error[0])
     heading_error = wrap(-yaw if final else bearing)
     pool = {k: p for k, p in profiles.items() if p['loaded'] == loaded
@@ -78,7 +78,9 @@ def select(profiles, loaded, body_error, yaw, goal_distance, *, position_toleran
              and p['duration_s'] == PARAMS['turn_duration_s']}
     # Final task orientation is east (existing grasp/door/place contract).
     # Finish that turn before lateral/fore-aft fine positioning.
-    if abs(heading_error) > PARAMS['heading_tolerance_rad']:
+    rotate_angle = (PARAMS['heading_tolerance_rad'] if final or path_rotate_min_angle is None
+                    else path_rotate_min_angle)
+    if abs(heading_error) > rotate_angle:
         candidates = [p for p in turns.values() if p['mean_delta'][2]*heading_error > 0
                       if abs(wrap(heading_error-p['mean_delta'][2])) < abs(heading_error)]
         p = min(candidates, key=lambda p: abs(wrap(heading_error-p['mean_delta'][2]))) if candidates else None
