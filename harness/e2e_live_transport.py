@@ -32,6 +32,8 @@ class AgreementView:
 
 class Transport:
     def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pregrasp_progress='off',gaze_cadence='off',pregrasp_acquire='off',align_queues='off'):
+        from harness.e2e_arm_clearance import Clearance
+        self.arm_clearance=Clearance()
         self.robots,self.dialogue,self.profiles=robots,dialogue,profiles
         self.pulse_budget=pulse_budget;self.relook_option=setdown_only_when_relook
         self.state='mapping';self.stage_t=0.;self.seg=0;self.first_seg=0;self.epoch=0
@@ -69,7 +71,8 @@ class Transport:
             self.would_stops.add(key)
         return []
 
-    def _poses(self,rid,now,path):
+    def _poses(self,rid,now,path,*,_clearance_checked=False):
+        if not _clearance_checked and self.arm_clearance.defer(self,rid,now,path):return
         # Fixed command-space trajectory, one common start, no servo measurements.
         start=now
         for pose,duration,settle in path:

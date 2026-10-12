@@ -17,6 +17,7 @@ VIEWS=(('search',1500),('p45',1500),('inspect',1500),('search',1250),('search',1
 
 
 def busy(tr,rid,now):
+    if getattr(tr,'arm_clearance',None) is not None and tr.arm_clearance.busy(rid):return True
     return (getattr(tr,'align_queues','off')==QUEUES and
             (now<tr.robot_queue_until.get(rid,-1.)-1e-8 or any(r==rid for _,r,_ in tr.queue)))
 
