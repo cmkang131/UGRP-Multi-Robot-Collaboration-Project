@@ -1,0 +1,36 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e-combo14-vo2-v205",
+      "version": "7.98.0",
+      "purpose": "DEV E2E14 composition v204 with stall_odometry=rgb_vo_v2 (own-RGB VO; if VO unavailable, rgb_pulse_gate_v1 stationary -> zero translation + Q inflation; else command) + B confirmation views + B mark contrast; paired against 12A v199",
+      "entry": "scripts/run_e2e_ownmap_live.py",
+      "runner": "scripts.run_e2e_ownmap_live",
+      "docs": "experiments/2026-10-12-e2e14-combo/README.md",
+      "requires": "Committed Azure x86 OSMesa source; current lease/admission; persistent runs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--seed",
+        "--driver-profile",
+        "--relay-receipt",
+        "--decider",
+        "--exploration-progress",
+        "--pose-fix",
+        "--path-follow",
+        "--wall-cap-s",
+        "--stall-odometry",
+        "--stall-recovery",
+        "--stall-noise",
+        "--mapping-budget",
+        "--boundary-views",
+        "--b-marker-detect"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    }
+  ]
+}

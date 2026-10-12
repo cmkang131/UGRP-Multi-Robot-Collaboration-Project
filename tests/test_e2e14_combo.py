@@ -131,3 +131,22 @@ def test_robot_with_all_three_wires_each_toggle():
                            image=base64.b64encode(data).decode()), rgb)
     assert trace['stall_odometry']['options']['stall_odometry'] == 'rgb_vo_v1'
     assert trace['boundary_view']['option'] == 'candidate_views_v1' and 'boundary_diagnostics' in trace
+
+
+def test_v205_vo2_composition_and_e2e15_relay_cells():
+    from scripts.s4_proxy_relay import accepted_call_id
+    b = make(wall_cap_s=25200., **{**COMBO, 'stall_odometry': 'rgb_vo_v2'})
+    assert (b['execution_bundle_id'], b['workflow_version'], b['schema']) == ('e2e-combo14-vo2-v205', '7.98.0', 'ugrp.e2e_ownmap_live.v205')
+    assert b['e2e_options']['stall_odometry'] == 'rgb_vo_v2'
+    assert 'configs/simulation_workflows.d/e2e_combo14_vo2_v205.json' in b['source_sha256']
+    assert make(wall_cap_s=25200., **COMBO)['execution_bundle_id'] == 'e2e-combo14-v204'
+    assert make(wall_cap_s=25200., **A12)['execution_bundle_id'] == 'e2e-stall-budget-v199'
+    with pytest.raises(ValueError):
+        make(stall_odometry='rgb_vo_v2')
+    from sim.workflow_manager import catalog
+    rows, _ = catalog(Path('.'))
+    assert any(w['id'] == 'e2e-combo14-vo2-v205' and w['version'] == '7.98.0' for w in rows['workflows'])
+    for group in ('a', 'b'):
+        for seed in (61001, 61002, 61003):
+            assert accepted_call_id(f'e2e15-{group}-s{seed}:call-0001-r1:1')
+    assert not accepted_call_id('e2e15-a-s61004:call-0001-r1:1')
