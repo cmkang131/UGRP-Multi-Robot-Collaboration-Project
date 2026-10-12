@@ -32,7 +32,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',ultrasonic_front='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off'):
     if profile not in PROFILES or seed not in (61001,61002,61003,61004):raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
@@ -60,6 +60,9 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if us_on != bool(sensors):raise ValueError('US_STALL_REQUIRES_SENSOR_ON_AND_CONSUMER')
     if us_on and (boundary_views != 'candidate_views_v1' or b_marker_detect != 'contrast_v1'):
         raise ValueError('US_STALL_REQUIRES_V205_COMPOSITION')
+    mask_on = vo_floor_mask != 'off' or vo_rotation_policy != 'off'
+    if mask_on and (not us_on or (vo_floor_mask, vo_rotation_policy) != ('homography_v1', 'no_ransac_v1')):
+        raise ValueError('VO_MASK_BUNDLE_REQUIRES_V206_AND_SELECTED_TURN_POLICY')
     from harness.e2e_exact_speedups import Options as SpeedOptions
     speed=SpeedOptions(**(exact_speedups or {}))
     from harness.zone_study_llm_driver import load_registry
@@ -119,6 +122,10 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         b['sensors'].pop('sha256')
         b['sensors']['sha256'] = digest(b['sensors'])
         b['us_stall'] = dict(params=US_PARAMS, clock='episode_since_reset',poll_interval_s=.05,effective_period_s=.10)
+    if mask_on:
+        b.update(schema='ugrp.e2e_ownmap_live.v207',execution_bundle_id='e2e-vomask-turn-v207',workflow_version='7.100.0')
+        b['e2e_options'].update(vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy)
+        b['vo_mask_scope']='RANSAC only on non-turn intervals; authored map projection unavailable, not enabled'
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -141,6 +148,10 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if us_on:
         paths.update(source_closure(ROOT, ['sim/e2e_us_input.py','harness/e2e_us_stall.py']))
         paths.add('configs/simulation_workflows.d/e2e_usstall_v206.json')
+    if mask_on:
+        paths.add('configs/simulation_workflows.d/e2e_vomask_turn_v207.json')
+        paths.add('experiments/2026-10-12-e2e-vomask-registration/registration.json')
+        paths.add('experiments/2026-10-12-e2e-vomask-registration/bundle-decision.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -209,6 +220,8 @@ def run(b,out,receipt,*,backend_factory=None):
                         pose_fix=b['e2e_options'].get('pose_fix','off'),
                         path_follow=b['e2e_options'].get('path_follow','off'),
                         stall_options=StallOptions(**{k:b['e2e_options'].get(k,'off') for k in ('stall_odometry','stall_recovery','stall_noise')}),
+                        vo_floor_mask=b['e2e_options'].get('vo_floor_mask','off'),
+                        vo_rotation_policy=b['e2e_options'].get('vo_rotation_policy','off'),
                         mapping_budget_s=b['e2e_options'].get('mapping_budget_s'),
                         boundary_views=b['e2e_options'].get('boundary_views','off'),
                         b_marker_detect=b['e2e_options'].get('b_marker_detect','off'),
@@ -366,6 +379,8 @@ def main():
     p.add_argument('--path-follow',choices=('off','rpp_v1'),default='off')
     p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1','rgb_vo_v1','rgb_vo_v2','rgb_vo_us_v1'),default='off')
     p.add_argument('--ultrasonic-front',choices=('off','on_v1'),default='off')
+    p.add_argument('--vo-floor-mask',choices=('off','homography_v1'),default='off')
+    p.add_argument('--vo-rotation-policy',choices=('off','no_ransac_v1'),default='off')
     p.add_argument('--stall-recovery',choices=('off','backup_replan_v1'),default='off')
     p.add_argument('--stall-noise',choices=('off','amcl_alpha_v1'),default='off')
     p.add_argument('--stall-bundle',action='store_true')
@@ -389,7 +404,7 @@ def main():
              path_follow=a.path_follow,dev_light=a.dev_light,wall_cap_s=a.wall_cap_s,
              stall_odometry=a.stall_odometry,stall_recovery=a.stall_recovery,stall_noise=a.stall_noise,stall_bundle=a.stall_bundle,mapping_budget=a.mapping_budget,
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache),
-             speed_bundle=a.exact_speed_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,ultrasonic_front=a.ultrasonic_front)
+             speed_bundle=a.exact_speed_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy)
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
         raise ValueError('AZURE_X86_OSMESA_ONLY')

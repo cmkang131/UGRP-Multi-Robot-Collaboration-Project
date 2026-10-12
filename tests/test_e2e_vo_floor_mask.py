@@ -126,6 +126,41 @@ def test_missing_geometry_never_contributes_fallback_as_mask_accuracy(monkeypatc
         assert scored[0]['metrics'][k]['unregistered_fallback_only']['xy_mm'] == 200.
 
 
+def test_v207_selects_only_replayed_policy_keeps_v206_off_and_wires_real_robot():
+    import json
+    from pathlib import Path
+    from scripts.run_e2e_ownmap_live import bundle
+    from scripts.s4_proxy_relay import accepted_call_id
+    from harness.e2e_live_mapping import Robot
+    from harness.e2e_stall_odometry import Options as StallOptions
+    from harness.s4_event_policy import Options
+    kw = dict(enabled=True, stall_odometry='rgb_vo_us_v1', ultrasonic_front='on_v1',
+        exploration_progress='frontier_progress_v1', boundary_views='candidate_views_v1', b_marker_detect='contrast_v1')
+    base = bundle('sha', 61001, 'study_gemma4_31b_v1', **kw)
+    selected = dict(vo_floor_mask='homography_v1', vo_rotation_policy='no_ransac_v1')
+    candidate = bundle('sha', 61001, 'study_gemma4_31b_v1', **kw, **selected)
+    assert base['execution_bundle_id'] == 'e2e-usstall-v206'
+    assert candidate['execution_bundle_id'] == 'e2e-vomask-turn-v207'
+    assert candidate['workflow_version'] == '7.100.0'
+    for k in ('schema', 'execution_bundle_id', 'workflow_version', 'source_sha256', 'vo_mask_scope'):
+        base.pop(k, None); candidate.pop(k, None)
+    for k, v in selected.items():
+        assert candidate['e2e_options'].pop(k) == v
+    assert base == candidate
+    for bad in ({'vo_floor_mask':'geom_v1'}, {'vo_rotation_policy':'command_v1'}, {'vo_floor_mask':'homography_v1'}):
+        with pytest.raises(ValueError, match='SELECTED_TURN_POLICY'):
+            bundle('sha', 61001, 'study_gemma4_31b_v1', **kw, **bad)
+    cov = json.loads(Path('configs/e2e_nees_egomap70_dev_v1.json').read_text())
+    robot = Robot('r1', 61001, cov, Options(), stall_options=StallOptions('rgb_vo_us_v1'), **selected)
+    assert robot.goal.e2e_vo.vo_floor_mask == 'homography_v1'
+    assert robot.goal.e2e_vo.rotation_policy == 'no_ransac_v1'
+    assert robot.goal.e2e_vo.range_stall is not None
+    for arm in 'ab':
+        for seed in (61001, 61002, 61003):
+            assert accepted_call_id(f'e2e-vomask-{arm}-s{seed}:call-0001-r1:1')
+    assert not accepted_call_id('e2e-vomask-a-s61004:call-0001-r1:1')
+
+
 def test_homography_rejects_outliers_in_undistorted_coordinates():
     p = np.array([(x, y) for x in (.45, .6, .85, 1.1, 1.4) for y in (-.3, -.1, .1, .3)])
     q = p - [.012, .002]
