@@ -1,0 +1,567 @@
+{
+ "schema": "ugrp.e2e_vo.v1",
+ "status": "COMPLETE_OFFLINE_REPLAY_ONLY",
+ "run_class": "dev",
+ "pr": null,
+ "branch": "claude/e2e-vo",
+ "base_branch": "codex/e2e-integration",
+ "base_sha": "641d9c6e",
+ "source_sha": "78f2e8c7e868e4f82a908bf1f03b1bf306ee4cd4",
+ "refs": [
+  433
+ ],
+ "research_result": false,
+ "simulation": false,
+ "model_calls": 0,
+ "option": {
+  "field": "stall_odometry",
+  "value": "rgb_vo_v1",
+  "default": "off",
+  "note": "task example odometry_source=rgb_vo_v1 folded into the existing stall_odometry field; Options asdict unchanged so existing bundles keep their hash"
+ },
+ "execution_bundle": {
+  "id": "e2e-rgb-vo-v201",
+  "workflow_version": "7.94.0",
+  "number_check": "max on main + open PR branches was v200 / 7.93.0 on 2026-10-12",
+  "live_runs": 0
+ },
+ "method": {
+  "measurement": "OpenCV Shi-Tomasi + pyramidal LK (FB<=1px) on own floor pixels; fixed fisheye K/D + issued-servo camera FK to floor z=0 (camera height 0.231 m fixes scale); registered S2 rigid_ransac (3-pt, 5 mm) + residual/pixel SE(2) covariance",
+  "fusion": "per frame interval (<=1 calibrated 0.2 s pulse): Kalman update of the command increment (calibrated pulse variance) with the VO increment; NIS>chi2(3,.99)=11.345 -> VO replaces command (stall/slip); applied via PulseOdometry.motion_filter so the RBPF step_callback sees it",
+  "unknown": "missing/identical image, frame gap, servo change, camera settle (0.25 s unloaded / 2.25 s loaded), weak texture/rank -> command increment kept (never zero)",
+  "inputs_allowed": "own RGB, own issued commands/servo, fixed camera calibration",
+  "forbidden_inputs_used": false,
+  "truth_use": "eval_only trajectory read after all predictions, scoring only"
+ },
+ "replay": {
+  "script": "scripts/replay_e2e_vo.py",
+  "scope": "fixed saved own RGB + actual issued commands; command estimator only; not held-out",
+  "data": "e2e10-a-s61001-r2 and e2e10-a-s61002-r2, robots r1/r2; 394 individually retrieved saved own RGB frames (5,924,681 bytes; each sha256 asserted against frames.jsonl); the same 18 windows as the e2e11 replay",
+  "baseline_reproduction": {
+   "off_max_abs_error_vs_saved_control_pose": 2.4868995751603507e-14,
+   "pulse_gate_window_mean_xy_m": 0.1376159231959825,
+   "e2e11_recorded_pulse_gate_mean_m": 0.1376159231959825
+  },
+  "estimators": {
+   "off": "issued-command pulse odometry",
+   "pulse_gate": "rgb_pulse_gate_v1 binary gate",
+   "vo_fused": "rgb_vo_v1 (the toggle)",
+   "vo_replace": "diagnostic: every measured VO replaces the command",
+   "vo_fused_p95": "diagnostic sensitivity chi2 p=.95; chosen after seeing the data, NOT adoptable"
+  },
+  "vo_status_counts_vo_fused": {
+   "no_previous_frame": 4,
+   "unknown_camera_settling": 8,
+   "measured": 340,
+   "unknown_frame_gap": 14,
+   "unknown_rigid_consensus": 26,
+   "unknown_texture": 2
+  },
+  "vo_fusion_counts": {
+   "measured": 340,
+   "fused": 177,
+   "vo_replaced": 163,
+   "unknown": 50,
+   "unapplied": 19,
+   "substep_mismatch": 0
+  },
+  "interval_classes": "evaluation only: rotation |issued yaw|>=0.02 rad; else issued xy>=5 mm: stalled truth path<20%, moving >=80%, partial_slip between; else no_command_motion. Unchanged tolerance 1 mm / 0.1 deg.",
+  "intervals": {
+   "moving": {
+    "n": 141,
+    "N": 376,
+    "sum_xy_err_mm": {
+     "off": 105.7,
+     "pulse_gate": 105.7,
+     "vo_fused": 122.7,
+     "vo_replace": 308.4,
+     "vo_fused_p95": 131.1
+    },
+    "sum_yaw_err_deg": {
+     "off": 18.95,
+     "pulse_gate": 18.95,
+     "vo_fused": 9.39,
+     "vo_replace": 12.18,
+     "vo_fused_p95": 9.53
+    },
+    "vo_fused_vs_off_xy": {
+     "improved": 1,
+     "worse": 4,
+     "unchanged": 136,
+     "max_worsening_mm": 5.59
+    },
+    "vo_fused_vs_off_yaw": {
+     "improved": 41,
+     "worse": 0,
+     "unchanged": 100,
+     "max_worsening_deg": 0.0
+    },
+    "pulse_gate_vs_off_xy": {
+     "improved": 0,
+     "worse": 0,
+     "unchanged": 141
+    }
+   },
+   "no_command_motion": {
+    "n": 19,
+    "N": 376,
+    "sum_xy_err_mm": {
+     "off": 3.2,
+     "pulse_gate": 3.2,
+     "vo_fused": 3.2,
+     "vo_replace": 3.2,
+     "vo_fused_p95": 3.2
+    },
+    "sum_yaw_err_deg": {
+     "off": 0.42,
+     "pulse_gate": 0.42,
+     "vo_fused": 0.42,
+     "vo_replace": 0.42,
+     "vo_fused_p95": 0.42
+    },
+    "vo_fused_vs_off_xy": {
+     "improved": 0,
+     "worse": 0,
+     "unchanged": 19,
+     "max_worsening_mm": 0.0
+    },
+    "vo_fused_vs_off_yaw": {
+     "improved": 0,
+     "worse": 0,
+     "unchanged": 19,
+     "max_worsening_deg": 0.0
+    },
+    "pulse_gate_vs_off_xy": {
+     "improved": 0,
+     "worse": 0,
+     "unchanged": 19
+    }
+   },
+   "partial_slip": {
+    "n": 55,
+    "N": 376,
+    "sum_xy_err_mm": {
+     "off": 664.4,
+     "pulse_gate": 664.4,
+     "vo_fused": 243.5,
+     "vo_replace": 160.2,
+     "vo_fused_p95": 188.6
+    },
+    "sum_yaw_err_deg": {
+     "off": 34.12,
+     "pulse_gate": 34.12,
+     "vo_fused": 6.08,
+     "vo_replace": 5.45,
+     "vo_fused_p95": 5.33
+    },
+    "vo_fused_vs_off_xy": {
+     "improved": 41,
+     "worse": 0,
+     "unchanged": 14,
+     "max_worsening_mm": 0.0
+    },
+    "vo_fused_vs_off_yaw": {
+     "improved": 35,
+     "worse": 1,
+     "unchanged": 19,
+     "max_worsening_deg": 0.114
+    },
+    "pulse_gate_vs_off_xy": {
+     "improved": 0,
+     "worse": 0,
+     "unchanged": 55
+    }
+   },
+   "rotation": {
+    "n": 17,
+    "N": 376,
+    "sum_xy_err_mm": {
+     "off": 56.0,
+     "pulse_gate": 56.0,
+     "vo_fused": 59.3,
+     "vo_replace": 67.3,
+     "vo_fused_p95": 62.7
+    },
+    "sum_yaw_err_deg": {
+     "off": 11.59,
+     "pulse_gate": 11.59,
+     "vo_fused": 3.85,
+     "vo_replace": 4.0,
+     "vo_fused_p95": 3.87
+    },
+    "vo_fused_vs_off_xy": {
+     "improved": 2,
+     "worse": 2,
+     "unchanged": 13,
+     "max_worsening_mm": 5.21
+    },
+    "vo_fused_vs_off_yaw": {
+     "improved": 7,
+     "worse": 0,
+     "unchanged": 10,
+     "max_worsening_deg": 0.0
+    },
+    "pulse_gate_vs_off_xy": {
+     "improved": 0,
+     "worse": 0,
+     "unchanged": 17
+    }
+   },
+   "stalled": {
+    "n": 144,
+    "N": 376,
+    "sum_xy_err_mm": {
+     "off": 1788.8,
+     "pulse_gate": 1339.9,
+     "vo_fused": 535.9,
+     "vo_replace": 147.2,
+     "vo_fused_p95": 178.4
+    },
+    "sum_yaw_err_deg": {
+     "off": 38.4,
+     "pulse_gate": 38.34,
+     "vo_fused": 5.5,
+     "vo_replace": 4.04,
+     "vo_fused_p95": 4.1
+    },
+    "vo_fused_vs_off_xy": {
+     "improved": 110,
+     "worse": 0,
+     "unchanged": 34,
+     "max_worsening_mm": 0.0
+    },
+    "vo_fused_vs_off_yaw": {
+     "improved": 54,
+     "worse": 0,
+     "unchanged": 90,
+     "max_worsening_deg": 0.0
+    },
+    "pulse_gate_vs_off_xy": {
+     "improved": 36,
+     "worse": 0,
+     "unchanged": 108
+    }
+   }
+  },
+  "windows": {
+   "N": 18,
+   "label_counts": {
+    "moving": 4,
+    "rotation": 3,
+    "stalled": 10,
+    "partial_slip": 1
+   },
+   "mean_endpoint_xy_err_m_ownframe": {
+    "off": 0.1634,
+    "pulse_gate": 0.1376,
+    "vo_fused": 0.0586,
+    "vo_replace": 0.0331,
+    "vo_fused_p95": 0.0355
+   },
+   "mean_endpoint_xy_err_m_window_body": {
+    "off": 0.1406,
+    "pulse_gate": 0.1148,
+    "vo_fused": 0.0364,
+    "vo_replace": 0.0117,
+    "vo_fused_p95": 0.0129
+   },
+   "mean_endpoint_heading_err_deg": {
+    "off": 4.586,
+    "pulse_gate": 4.565,
+    "vo_fused": 0.719,
+    "vo_replace": 0.708,
+    "vo_fused_p95": 0.608
+   },
+   "by_label": {
+    "moving": {
+     "n": 4,
+     "mean_body_xy_err_m": {
+      "off": 0.0079,
+      "pulse_gate": 0.0079,
+      "vo_fused": 0.006,
+      "vo_replace": 0.0104,
+      "vo_fused_p95": 0.006
+     },
+     "mean_heading_err_deg": {
+      "off": 0.53,
+      "pulse_gate": 0.53,
+      "vo_fused": 0.38,
+      "vo_replace": 0.48,
+      "vo_fused_p95": 0.38
+     }
+    },
+    "partial_slip": {
+     "n": 1,
+     "mean_body_xy_err_m": {
+      "off": 0.2292,
+      "pulse_gate": 0.2292,
+      "vo_fused": 0.0651,
+      "vo_replace": 0.0237,
+      "vo_fused_p95": 0.0404
+     },
+     "mean_heading_err_deg": {
+      "off": 5.36,
+      "pulse_gate": 5.36,
+      "vo_fused": 2.03,
+      "vo_replace": 1.83,
+      "vo_fused_p95": 1.46
+     }
+    },
+    "rotation": {
+     "n": 3,
+     "mean_body_xy_err_m": {
+      "off": 0.0132,
+      "pulse_gate": 0.0132,
+      "vo_fused": 0.0134,
+      "vo_replace": 0.0145,
+      "vo_fused_p95": 0.0122
+     },
+     "mean_heading_err_deg": {
+      "off": 1.16,
+      "pulse_gate": 1.16,
+      "vo_fused": 0.52,
+      "vo_replace": 0.64,
+      "vo_fused_p95": 0.5
+     }
+    },
+    "stalled": {
+     "n": 10,
+     "mean_body_xy_err_m": {
+      "off": 0.223,
+      "pulse_gate": 0.1766,
+      "vo_fused": 0.0526,
+      "vo_replace": 0.0103,
+      "vo_fused_p95": 0.0131
+     },
+     "mean_heading_err_deg": {
+      "off": 7.16,
+      "pulse_gate": 7.12,
+      "vo_fused": 0.79,
+      "vo_replace": 0.71,
+      "vo_fused_p95": 0.65
+     }
+    }
+   },
+   "vo_fused_vs_off_ownframe_xy": {
+    "improved": 17,
+    "worse": 0,
+    "unchanged": 1
+   },
+   "vo_fused_vs_off_body_xy": {
+    "improved": 16,
+    "worse": 1,
+    "unchanged": 1
+   },
+   "vo_fused_vs_off_heading": {
+    "improved": 14,
+    "worse": 1,
+    "unchanged": 3
+   },
+   "vo_fused_vs_pulse_gate_ownframe_xy": {
+    "improved": 17,
+    "worse": 0,
+    "unchanged": 1
+   },
+   "worse_windows": {
+    "vo_fused_body_xy": [
+     {
+      "run": "s61001",
+      "robot": "r1",
+      "start_s": 132.2,
+      "label": "rotation",
+      "worse_by": 0.0043
+     }
+    ],
+    "vo_fused_heading_rad": [
+     {
+      "run": "s61002",
+      "robot": "r1",
+      "start_s": 101.4,
+      "label": "rotation",
+      "worse_by": 0.00213
+     }
+    ],
+    "vo_replace_body_xy": [
+     {
+      "run": "s61001",
+      "robot": "r1",
+      "start_s": 0.0,
+      "label": "moving",
+      "worse_by": 0.00381
+     },
+     {
+      "run": "s61001",
+      "robot": "r1",
+      "start_s": 132.2,
+      "label": "rotation",
+      "worse_by": 0.00268
+     },
+     {
+      "run": "s61002",
+      "robot": "r1",
+      "start_s": 0.0,
+      "label": "moving",
+      "worse_by": 0.00616
+     },
+     {
+      "run": "s61002",
+      "robot": "r1",
+      "start_s": 101.4,
+      "label": "rotation",
+      "worse_by": 0.00617
+     }
+    ],
+    "pulse_gate_heading_rad": [
+     {
+      "run": "s61002",
+      "robot": "r2",
+      "start_s": 199.4,
+      "label": "stalled",
+      "worse_by": 0.00176
+     }
+    ]
+   }
+  },
+  "global_error_all_frames_max_m": {
+   "s61001:r1": {
+    "off": 3.998,
+    "pulse_gate": 3.998,
+    "vo_fused": 3.74,
+    "vo_replace": 3.733,
+    "vo_fused_p95": 3.74
+   },
+   "s61001:r2": {
+    "off": 6.566,
+    "pulse_gate": 6.364,
+    "vo_fused": 6.022,
+    "vo_replace": 5.828,
+    "vo_fused_p95": 5.826
+   },
+   "s61002:r1": {
+    "off": 2.267,
+    "pulse_gate": 2.267,
+    "vo_fused": 1.859,
+    "vo_replace": 1.844,
+    "vo_fused_p95": 1.853
+   },
+   "s61002:r2": {
+    "off": 4.522,
+    "pulse_gate": 4.395,
+    "vo_fused": 4.321,
+    "vo_replace": 4.227,
+    "vo_fused_p95": 4.215
+   }
+  },
+  "global_note": "VO only acts inside the 18 saved-image windows (394 of the frames); outside them every column is the command estimator, so whole-run max errors barely move. Do not extrapolate to the 7-9 m E2E map error.",
+  "scale_bias": {
+   "moving_forward_vo_over_truth": 1.0486,
+   "moving_intervals": 113,
+   "rotation_yaw_vo_over_truth": 1.0453,
+   "rotation_intervals": 12,
+   "note": "reported, not corrected (no truth-fitted gain)"
+  },
+  "wall_s": 19.96,
+  "load_average_1m_at_start": 3.64,
+  "outputs": {
+   "intervals.json.zst": "6e75d05c006ab780bd3a33f4500964d09eba7180453825f65af565d1acba1f7d",
+   "predictions.json.zst": "e77af4b406181437b316c3eb1c96fe4024da79b62de128d7c85e839fbd563d75",
+   "summary.json": "02b96cc8605a5748b19fee3701fdc62129f19cbbf72d0e604e5c89f049d13319"
+  }
+ },
+ "inputs": {
+  "raw_logs": [
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r1/frames.jsonl.zst",
+    "sha256": "257e8de7b991f45e03d15353a70dab84beb5a6639b881964c3dbe40fa824a9fe"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r1/commands.jsonl.zst",
+    "sha256": "a8f041e22c66ca1eec2e07e65bafc044d26bbaef006a4806b6fdfc4900764073"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "4be6b525c37b24666c206805e79d76e7bc039495b8baddc8386054016807679f"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r2/frames.jsonl.zst",
+    "sha256": "be51a53b6cd01a01db2527911d5fa2c60f4f150bc080e144a32aaf2164791b4e"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r2/commands.jsonl.zst",
+    "sha256": "fb3c1d930c00f1c8a6fee9bea7ff2673e26c88882bbe2caff59a85f5033e3963"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r2/ownmap.jsonl.zst",
+    "sha256": "1497be2935ac71df439eec80fbc2ebb7bd59c147192d8ce6191e28974b86fecc"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61001-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+    "sha256": "285a45c58bced24d3fdf6e585b865b7b9b5171eaeabe4f53542b4d7072d8e336"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61001-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+    "sha256": "837b24495d3f34decaeb0bbb420e1c8051a1785369ae3d2f6505d27a9e08ae78"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r1/frames.jsonl.zst",
+    "sha256": "000304403d6999f11b5980f09d115bc1f667dc944f38378eae1b8175b8759021"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r1/commands.jsonl.zst",
+    "sha256": "5dc2076c4cf6b7dbb57141a13774ac536fab8f3608a90ce1017de0fb4d45da7d"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "3a7588bfc4b56ebfc8258b14a66cf3c382d1d8432e73651597912078678c69e8"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r2/frames.jsonl.zst",
+    "sha256": "f91ecfd5a08522de20f8ed802171082ce0e0823cfe3aa5da0d93b550295b89b5"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r2/commands.jsonl.zst",
+    "sha256": "bfb4a54e56558be1ac26e5c0fab25be9f61cb6bfed7e011c6f0a0bf28d34463f"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r2/ownmap.jsonl.zst",
+    "sha256": "ebe1b7da70d9dc3c63d9356d1478d1c9a96d50e7a56a887699891a25074f6db6"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61002-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+    "sha256": "aea5ece4b1eddbcf5e952047e5b6c646df515944b7fd674b2883132fcc2e7973"
+   },
+   {
+    "path": "outputs/azure-runs/e2e10-a-s61002-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+    "sha256": "5fb06aa9e6fef2d1f5be44a46829eab127c21735df3cc3bc0ff8eba579f8635e"
+   }
+  ],
+  "images_root": "outputs/e2e11-stall-odometry/selected-frames",
+  "images": 394,
+  "images_bytes": 5924681,
+  "images_concat_sha256": "cc2d6d3f79db9071acc21aa10367a198d058e3cdf8457e8024f4b06ce77d5616 (sorted path order)"
+ },
+ "tests": {
+  "files": [
+   "tests/test_e2e_rgb_vo.py",
+   "tests/test_e2e_stall_odometry.py"
+  ],
+  "passed": 26,
+  "failed": 0,
+  "live_wiring_check": "fixed zero-motion VO stub: off robot driver/particles 0.116 m vs VO < 0.03 m"
+ },
+ "limits": [
+  "Offline saved-frame replay only: no closed-loop/physical run; RBPF maps, navigation, recovery not replayed.",
+  "Windows are mapping-phase, SEARCH camera only; carry/loaded camera poses untested.",
+  "Same frames already seen in e2e11 and used while building (not held-out).",
+  "Below-gate slip leaks: 34/144 stalled and 14/55 partial-slip intervals unchanged (NIS 7.9-11.3 with 7-9 inliers).",
+  "Normal-motion translation slightly worse with VO fusion (moving intervals sum 105.7 -> 122.7 mm over 141); heading improves.",
+  "VO scale bias about +4.9% forward and +4.5% yaw in this data; not corrected.",
+  "rgb_vo_v1 cannot be combined with backup_replan_v1/amcl_alpha_v1 (validation error by construction)."
+ ],
+ "next": [
+  "Live DEV pair (v201 vs off) on Azure from this SHA, measuring map error and E2E outcome.",
+  "Held-out frames from a new run before any gate/threshold change."
+ ],
+ "references": "references.json",
+ "last_recorded_utc": "2026-10-12T00:55:28Z"
+}
